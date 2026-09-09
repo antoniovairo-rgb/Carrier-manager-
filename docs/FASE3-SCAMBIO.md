@@ -3633,3 +3633,31 @@ sul pallone (attesa 847: uomo e pallone sul punto), arco fino alla rete, portier
 e l'affermazione 7.811 diventa il caso di riserva, non la regola; il gol ambientale dell'eroe
 passa dallo stesso piano. Misura: `gol74` su 4 partite, «porta in quadro alla riga» ≥ 8/9 e
 «pallone reso in rete entro 1,5 s da un corpo entro 3u» ≥ 8/9.
+
+## 7.852 — il gol è un tiro che entra, non un'affermazione
+
+L'ultima battuta del piano del gol (`_pianoGol649`, tre famiglie) mandava il pallone a x 92-94:
+davanti alla porta, non dentro. La rete arrivava per lock (7.811, 1,4 s dal bordo dell'area) senza
+tiro. Ora la battuta col tiro ha per bersaglio la rete (x 100,6, y fra i pali): `rete:1` esenta il
+bersaglio dal morsetto 4-96 (r.4524, r.4544), non nomina nessuno da mandare in porta (7.848) e
+lascia il portatore nullo (il pallone vola). L'arco è quello del tiro (7.808), parte da dove uomo
+e pallone si sono trovati (attesa 847), il tuffo del portiere si arma sul tiro in area (ATE-2).
+Rosso `__CPM_NO852`. Sonda `gol74`, gol del microsim in fase ambientale:
+
+| | rosso `NO852` (Conti) | 7.852 (Conti + Moretti) |
+|---|---|---|
+| pallone reso in rete (100,6) alla riga | 0/3 (88,6 · 84,5 · 90,3; uno arriva a 97,8 dopo 0,6 s) | **4/4** |
+| porta in quadro nei 5 s | 70 · 78 · 24 % | 74 · 80 · 54 · 92 % |
+| porta in quadro alla riga (0,0 s) | 0/3 | 3/4 |
+
+Rettifica sui «gol dell'eroe col pallone a centrocampo» (Moretti 26', 40'): non sono gol in fase
+ambientale. La riga «⚽ Moretti segna su assist di …» esce 140 ms dopo l'esito della scena (r.7073,
+`fxTimeout` 140) quando la scena è già chiusa e la ripresa ha riportato il pallone logico al centro
+(50): la sonda la legge in `playing` col pallone a 50 → 21, ma il fatto visivo — tiro e rete — sta
+nella scena (`hl_result`, pallone reso a 99). Non serve una 7.853: al più la riga potrebbe uscire
+dentro la scena, e si valuta col telefono.
+
+Telefono (4 partite, 7.852): pallone ai piedi del padrone 38 / 34 / 19 / 40 % (7.850: 32 / 34 / 23 /
+14): nessuna regressione. Career PASS, CI exit 0 (manovra-viva 67, gol del simulatore 7/7).
+**Sul branch.** Prossima misura: la sonda da telefono con i fotogrammi dei gol letti a occhio (è il
+metro del PO), e `gol74` su quattro partite.

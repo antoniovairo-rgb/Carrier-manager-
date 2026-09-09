@@ -45,7 +45,7 @@ for(let k=0;k<6000;k++){await sleep(70);
   if(s.pg&&!c.pgPrev){await scatta(min,'occasione-apre','');}
   c.pgPrev=s.pg;
   if(s.cro>c.croVisti){const nuove=await page.evaluate((da)=>(window.__CPM_CRO802||[]).slice(da).filter(x=>!x.intro).map(x=>x.txt),c.croVisti);c.croVisti=s.cro;
-    for(const t of nuove){if(/\bsegna\b|⚽|^😨|\bGol di\b|in rete/.test(t)&&!/GOL \[/.test(t))/* \b: «consegna», «disegna» non sono gol; «😨 Gol di» e «palla in rete» (7.840) si' */await scatta(min,'gol',t);else if(/^💥/.test(t))await scatta(min,'tiro',t);else if(/^🚩|^⏸️|^🟡|^⏸/.test(t))await scatta(min,'fermo',t);else if(/^🧤/.test(t))await scatta(min,'portiere',t);}}
+    for(const t of nuove){if(/\bsegna\b|⚽|😨 Gol di|\bGol di\b|in rete/.test(t)&&!/GOL \[/.test(t))/* \b: «consegna», «disegna» non sono gol; «😨 Gol di» e «palla in rete» (7.840) si' */await scatta(min,'gol',t);else if(/^💥/.test(t))await scatta(min,'tiro',t);else if(/^🚩|^⏸️|^🟡|^⏸/.test(t))await scatta(min,'fermo',t);else if(/^🧤/.test(t))await scatta(min,'portiere',t);}}
   if(Date.now()-c.ultimaFoto>20000){c.ultimaFoto=Date.now();await scatta(min,'gioco','');}
   if(s.ph==='playing'&&s.w){c.n++;
     if(s.w.lx!=null)c.scarto.push(Math.hypot(s.w.rx-s.w.lx,s.w.ry-s.w.ly));

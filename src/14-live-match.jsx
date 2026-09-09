@@ -3409,6 +3409,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _sigN=(lato)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO809)return "";const c=(lato==='home')?_homeClubObj:_awayClubObj;const ab=(c&&c.a)||(c&&c.id?String(c.id).slice(0,3).toUpperCase():"");return ab?" ("+ab+")":"";}catch(_e){return "";}};/* [7.809.0] vedi _sigO */
           const _cgN=(n,lato)=>{const t=String(n||"").trim();return (t?t.charAt(0)+t.slice(1).toLowerCase():"un compagno")+_sigN(lato||_latoN);};
           const _fam=_hp("fam")%3;
+          /* ⚠️ [7.852.0 — IL GOL E' UN TIRO CHE ENTRA, NON UN'AFFERMAZIONE. Rosso __CPM_NO852]
+             Sonda gol74 (Conti fuori, Moretti casa, 8 gol): alla riga del gol il pallone reso sta al bordo dell'area (85-90) o e' gia'
+             in rete perche' l'affermazione 7.811 ce l'ha portato in 1,4 s dal bordo; in un caso non entra mai. La battuta del tiro
+             mandava il pallone a x 92-94 — davanti alla porta, non dentro — e la rete arrivava per lock, senza tiro. Qui l'ultima
+             battuta del piano del gol ha per bersaglio la RETE (x 100,6, fra i pali): l'arco e' quello del tiro (7.808), parte da
+             dove uomo e pallone si sono trovati (attesa 847), il portiere si arma sul tiro in area (ATE-2), e l'affermazione 7.811
+             resta di riserva. `rete:1` esenta il bersaglio dal morsetto 4-96 e non manda nessuno a correre in porta. */
+          const _NO852=(typeof window!=='undefined'&&!!window.__CPM_NO852);
           const _a=_pk(1);let _b=_pk(2);if(_b.i===_a.i)_b=_mpA[(_hp("u2")+1)%_mpA.length];
           let _c=_pk(3);if(_c.i===_a.i||_c.i===_b.i)_c=_mpA[(_hp("u3")+2)%_mpA.length];
           const _na=_cgN(_a.q.name),_nb=_cgN(_b.q.name),_nc=_cgN(_c.q.name);
@@ -3418,18 +3426,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             {t:"⚙️ "+_na+" alza il ritmo nella meta' avversaria: la squadra sale in blocco.",x:_X(62+_J(1,8)),y:50+_J(2,20),chi:_a.i},
             {t:"📈 "+_na+" verticalizza per "+_nb+" fra le linee: la manovra si accende.",x:_X(72+_J(3,8)),y:50+_J(4,24),chi:_b.i},
             {t:"🎯 Filtrante di "+_nb+": "+_nc+" attacca il limite dell'area!",x:_X(77+_J(5,6)),y:50+_J(6,18),chi:_c.i},
-            {t:"💥 Conclusione secca di "+_nc+" dal limite: il pallone parte teso verso la porta!",x:_X(93+_J(7,3)),y:50+_J(8,10),chi:_c.i,ms:1},
+            {t:"💥 Conclusione secca di "+_nc+" dal limite: il pallone parte teso verso la porta!",x:_X(_NO852?93+_J(7,3):100.6),y:50+_J(8,_NO852?10:7),chi:_c.i,ms:1,rete:!_NO852},
           ];
           if(_fam===1)return[
             {t:"↔️ "+_na+" apre sulla corsia: "+_nb+" ha campo davanti a se'.",x:_X(66+_J(1,8)),y:_fy+_J(2,8),chi:_b.i},
             {t:"💨 "+_nb+" affonda sulla fascia e guadagna il fondo.",x:_X(81+_J(3,5)),y:_fy+_J(4,6),chi:_b.i},
             {t:"🎯 Cross teso di "+_nb+": "+_nc+" stacca sul secondo palo!",x:_X(86+_J(5,4)),y:50+_J(6,14),chi:_c.i},
-            {t:"💥 Incornata di "+_nc+" a botta sicura!",x:_X(94+_J(7,2)),y:50+_J(8,8),chi:_c.i,ms:1},
+            {t:"💥 Incornata di "+_nc+" a botta sicura!",x:_X(_NO852?94+_J(7,2):100.6),y:50+_J(8,_NO852?8:7),chi:_c.i,ms:1,rete:!_NO852},
           ];
           return[
             {t:"⚡ "+_na+" ruba il tempo alla trequarti: si riparte in verticale!",x:_X(64+_J(1,8)),y:50+_J(2,22),chi:_a.i},
             {t:"🏃 Transizione rapida: "+_nb+" conduce e scarica su "+_nc+" al limite dell'area.",x:_X(79+_J(3,6)),y:50+_J(4,20),chi:_c.i},/* [7.693.0] 74→79: il testo dice «al limite dell'area» e il limite sta a 78-84 — a 74 il racconto mandava il pallone tre metri prima di cio' che nominava, e con la custodia del piano quella differenza ora si VEDE */
-            {t:"💥 "+_nc+" calcia di prima, senza controllare!",x:_X(92+_J(7,3)),y:50+_J(8,10),chi:_c.i,ms:1},
+            {t:"💥 "+_nc+" calcia di prima, senza controllare!",x:_X(_NO852?92+_J(7,3):100.6),y:50+_J(8,_NO852?10:7),chi:_c.i,ms:1,rete:!_NO852},
           ];
         };
         /* ⚠️ [7.695.0 — LA PARATA. Collaudo PO: «tiro pericoloso, gol, parata del portiere, punizione»]
@@ -4521,7 +4529,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(_pgH649&&_pgH649.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(_pgH649.step|0)<_pgH649.piano.length&&!_attendi847/* [7.848 v2] la battuta del tiro aspetta il tiratore anche sulla via del dado */&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!outRef.current&&!spRef.current&&!fermoRef.current){
             const _pe649=_pgH649.piano[_pgH649.step|0];_pgH649.step=(_pgH649.step|0)+1;
             _recHij545=true;_recKind546="manovra-gol";_recSide546=_pgH649.dir>0?"home":"away";
-            ev={txt:_pe649.t,_beatTxt812:_pe649.t,ef:null,w:1,bpos:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)},pd:_dec499,at:((typeof window!=='undefined'&&window.__CPM_NO808)?"pass":(_pe649.gk?"save":(_pe649.ms?"shot":"pass"))),/* [7.808.0 — LA BATTUTA DICHIARA IL PROPRIO TIPO. Rosso __CPM_NO808] Tutte e tre le battute uscivano con at:"pass": l'arco di cronaca (BALL_ARC_BY_TYPE, src/12) faceva volare il TIRO con altezza 0,9 e 0,48 s invece di 2,8 e 0,52 (shot), e il sito ATE-2 — che arma il tuffo del portiere solo su shot/save con bersaglio in area — dalle battute non partiva mai (misurato: tuffi T8 durante le occasioni, vedi quota-821). Ora la battuta col tiro (ms) vola da tiro, quella col portiere (gk) da parata, l'apertura resta un passaggio. Il segnale 7.695 resta a valle. */_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
+            ev={txt:_pe649.t,_beatTxt812:_pe649.t,ef:null,w:1,bpos:{x:_pe649.rete?clamp(_pe649.x,-1,101):clamp(_pe649.x,4,96),y:_pe649.rete?clamp(_pe649.y,44,56):clamp(_pe649.y,6,94)},/* [7.852] la battuta della rete passa la linea */pd:_dec499,at:((typeof window!=='undefined'&&window.__CPM_NO808)?"pass":(_pe649.gk?"save":(_pe649.ms?"shot":"pass"))),/* [7.808.0 — LA BATTUTA DICHIARA IL PROPRIO TIPO. Rosso __CPM_NO808] Tutte e tre le battute uscivano con at:"pass": l'arco di cronaca (BALL_ARC_BY_TYPE, src/12) faceva volare il TIRO con altezza 0,9 e 0,48 s invece di 2,8 e 0,52 (shot), e il sito ATE-2 — che arma il tuffo del portiere solo su shot/save con bersaglio in area — dalle battute non partiva mai (misurato: tuffi T8 durante le occasioni, vedi quota-821). Ora la battuta col tiro (ms) vola da tiro, quella col portiere (gk) da parata, l'apertura resta un passaggio. Il segnale 7.695 resta a valle. */_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
             if(_pe649.gk&&!(typeof window!=='undefined'&&window.__CPM_NO695)){gkSave695.current={t:Date.now(),side:_pgH649.dir>0?"home":"away"};_pgH649.esito703=_pe649.esito||null;/* [7.702.0] l'esito da regolamento dichiarato dal TESTO: alla chiusura arma la palla morta corrispondente *//* [7.695.0] la riga che NOMINA il portiere accende il tuffo: una sola fonte, il testo e il gesto non possono divergere */
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OCC695=window.__CPM_OCC695||{armate:0,parate:0,min:[]});_w.parate++;}catch(_e){}}}
             /* [7.792 strumentazione] QUANTO DISTA CHI IL RACCONTO NOMINA DAL PUNTO DOVE MANDA LA PALLA.
@@ -4539,9 +4547,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 px:_q792?+(_q792.x||0).toFixed(1):null,py:_q792?+(_q792.y||0).toFixed(1):null,tx:+_tx792.toFixed(1),ty:+_ty792.toFixed(1),
                 d:_q792?+Math.hypot((_q792.x||0)-_tx792,(_q792.y||0)-_ty792).toFixed(1):null,db:(_q792&&ballPosRef.current)?+Math.hypot((_q792.x||0)-(ballPosRef.current.x||50),(_q792.y||0)-(ballPosRef.current.y||50)).toFixed(1):null,/* [7.847 strumento] il tiratore e' sul pallone? */gk:_pe649.gk?1:0,
                 tiro:_pe649.ms?1:0,tiroDa:(_pe649.tiroDa792!=null?+(_pe649.tiroDa792).toFixed(1):null)});}catch(_e792){}}
-            if(_pe649.chi!=null)_pgH649.lastChi814=_pe649.chi;/* [7.814.0] l'ultimo protagonista nominato dal piano */if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_J818T=window.__CPM_J818T||[]).push({ev:'beat',min:nx,step:(_pgH649.step|0),occ:_pgH649.occ?1:0,tk:_pgH649.ticks|0});}catch(_e){}}
-            if(_pe649.chi!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_pe649.chi};/* il protagonista dell'evento e' il portatore */
-            if(!(typeof window!=='undefined'&&window.__CPM_NO693)){pianoLock693.current=3;_pgH649.lastTg={x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)};/* [7.693.0] dove il racconto ha mandato il pallone l'ultima volta: la rete aspetta che ci ARRIVI *//* [7.693.0] tre tick di custodia: questo, piu' i due in cui il pallone viaggia */
+            if(_pe649.chi!=null&&!_pe649.rete)_pgH649.lastChi814=_pe649.chi;/* [7.852] sulla rete nessuno corre in porta *//* [7.814.0] l'ultimo protagonista nominato dal piano */if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_J818T=window.__CPM_J818T||[]).push({ev:'beat',min:nx,step:(_pgH649.step|0),occ:_pgH649.occ?1:0,tk:_pgH649.ticks|0});}catch(_e){}}
+            if(_pe649.chi!=null&&!_pe649.rete&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_pe649.chi};/* il protagonista dell'evento e' il portatore · [7.852] non sulla rete: il pallone vola */
+            else if(_pe649.rete)carrierRef.current=null;
+            if(!(typeof window!=='undefined'&&window.__CPM_NO693)){pianoLock693.current=3;_pgH649.lastTg=_pe649.rete?{x:clamp(_pe649.x,-1,101),y:clamp(_pe649.y,44,56)}:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)};/* [7.693.0] dove il racconto ha mandato il pallone l'ultima volta: la rete aspetta che ci ARRIVI *//* [7.693.0] tre tick di custodia: questo, piu' i due in cui il pallone viaggia */
               /* [7.693.0] IL RICEVENTE VA DOVE VA LA PALLA. Spostare solo il pallone lo lascerebbe senza
                  padrone (e la banda custodia del guardiano andrebbe giu' per un difetto che non c'e'):
                  l'uomo che il testo NOMINA si porta sul punto d'arrivo, come farebbe in campo. */

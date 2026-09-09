@@ -207,6 +207,9 @@ sono disegnati sul loro punto logico, corrono a 13 u/s senza freno di sterzata, 
 v5 revocata. 7.851 (l'etichetta cade quando il pallone lascia l'uomo) **revocata** sul telefono: 31 → 25 % e
 19 → 28 % col rosso, rumore ±6. #74 misurato con `gol74`: la camera segue il pallone (in quadro 78-100 %), ma alla riga del gol il
 pallone reso è al bordo dell'area o già in rete per affermazione, senza tiro né portiere; due gol
-dell'eroe in fase ambientale col pallone a centrocampo. Prossimo (7.852): il gol del microsim e il
-gol ambientale dell'eroe come ultima battuta di un'occasione (tiro da un corpo sul pallone, arco
-fino alla rete), affermazione 7.811 solo di riserva. Poi l'elezione d'arrivo (chi riceve entro 2,5u).
+dell'eroe in fase ambientale col pallone a centrocampo. **7.852 sul branch**: l'ultima battuta del piano del gol punta la rete (x 100,6) con l'arco del
+tiro; pallone reso in rete alla riga 0/3 → 4/4, porta in quadro alla riga 0/3 → 3/4 (`gol74`);
+telefono senza regressione (38/34/19/40 %). I «gol dell'eroe a centrocampo» erano la riga in
+ritardo di 140 ms sulla scena, non un gol: rettificato. Prossimo: fotogrammi dei gol letti a occhio
+sul telefono; l'elezione d'arrivo (chi riceve entro 2,5u); il tiro «da due passi» con la porta fuori
+quadro.
