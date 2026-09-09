@@ -998,7 +998,7 @@ Il seme cambia le partite (Vairo 0-0, Conti 4-2): non è la 7.843, è il mondo c
 | 11 Immersione | 6 | **6** |
 | 12 Carriera | 6 | **6** |
 
-**Media: 6,4** (n° 22: 6,3). Metro 8,0. Rituali in corso.
+**Media: 6,3** (n° 22: 6,3; scritto 6,4 per un errore di arrotondamento, la somma dei dodici voti fa 76). Metro 8,0.
 
 
 ---
@@ -1041,3 +1041,22 @@ l'apertura, il picco dell'andamento decide il minuto: si dichiara parziale e si 
 suoi timer, l'indice non è mai avanzato e la regola (a) del 7.833 ha taciuto il tick fino al duplice
 fischio. → **7.846**: oltre 9 s reali l'azione è morta e lascia il microfono (un'azione vive 1,3 s ×
 5 righe). Galli: «vuoto» 3 minuti, da guardare.
+
+## Scorecard n° 25
+
+| # | Area | n°23 | **n°25** |
+|---|------|:---:|:---:|
+| 1 Realismo | 6 | **6** |
+| 2 Credibilità da attaccante | 6 | **6** |
+| 3 Causalità | 7 | **7** |
+| 4 Varietà | 6 | **6** |
+| 5 Ritmo | 6 | **6** (14 / 28 / 32 / 33; ma nove minuti muti a Moretti 36'-44' → 7.846) |
+| 6 Azioni extra-eroe | 7 | **7** |
+| 7 Highlight dell'eroe | 6 | **6** (prima scena 21/24/21/13) |
+| 8 Telecronaca | 6 | **6** |
+| 9 Interazioni | 7 | **7** |
+| 10 Coerenza fra i sistemi | 7 | **7** |
+| 11 Immersione | 6 | **6** |
+| 12 Carriera | 6 | **6** |
+
+**Media: 6,3.** Metro 8,0.
