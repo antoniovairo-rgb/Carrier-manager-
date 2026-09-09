@@ -694,3 +694,44 @@ Vairo: 0-1 in casa con tre scene dell'eroe fallite (intercept, gol subito, «not
 tiro nostro in 89 minuti — il ritmo in casa è il difetto che resta, e non è di racconto.
 
 **Media: 5,7** (uguale al n° 10; Q-loro chiusa, nessuna area cambia di un punto intero).
+
+---
+
+# Rapporto n° 12 — build 7.836 v2 (il turno segue il possesso della simulazione) — 09/09 notte
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 73 / **38** | 64 / 46 | 52 / 50 | 80 / 33 |
+| scene dell'eroe | 19', 32' | 10', 31' | 30', 60', 69', 86' | 10', 29' |
+| finale | **1-0** | 2-0 | 2-1 | 4-0 |
+
+Vairo in casa, per la prima volta in quattro playtest: **tre occasioni nostre** (13'-18', 26'-31',
+57'-62': bordata da fuori, destro dal limite, destro dal limite), due corner nostri, il gol
+dell'eroe al 32' subito dopo il corner del 31'; minuti muti 53 → **38**. Tiri nostri nel diario:
+Vairo 0 → 3, Moretti 2, Galli 2, Conti 7.
+
+Misurato sul testo: [AD] 1 · [AE] 2 (Moretti; la v2 del troncamento lascia passare qualcosa) ·
+chi conclude è chi segna 5/5 · corner al minuto dopo · portiere/cognomi 0 errori.
+
+Nuova: **AF** — Vairo 45'-47' *«Corner avversario spazzato di testa… Campo aperto, tre contro due…
+Cross rasoterra… Uscita bassa del portiere»* dopo il duplice fischio: l'azione della libreria non
+si ferma all'intervallo (7.828 fermava solo l'occasione). → 7.837 (sorgente).
+
+## Scorecard n° 12
+
+| # | Area | n°11 | **n°12** |
+|---|------|:---:|:---:|
+| 1 Realismo | 5 | **6** (in casa la squadra tira; 1-0 con tre occasioni) |
+| 2 Credibilità da attaccante | 5 | **5** |
+| 3 Causalità | 6 | **6** |
+| 4 Varietà | 6 | **6** |
+| 5 Ritmo | 4 | **5** (38 / 46 / 50 / 33) |
+| 6 Azioni extra-eroe | 7 | **7** |
+| 7 Highlight dell'eroe | 5 | **5** |
+| 8 Telecronaca | 6 | **6** |
+| 9 Interazioni | 7 | **7** |
+| 10 Coerenza fra i sistemi | 6 | **6** (AF) |
+| 11 Immersione | 6 | **6** |
+| 12 Carriera | 6 | **6** |
+
+**Media: 5,9** (n° 11: 5,7). Rituali del 7.836 v2 in corso.
