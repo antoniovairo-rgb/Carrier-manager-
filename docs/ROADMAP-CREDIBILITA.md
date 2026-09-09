@@ -231,3 +231,10 @@ da telefono n°2; il tiro di piano emesso con l'attesa scaduta e il pallone lont
 «Incornata» col pallone a centrocampo, residuo #71); «tutto solo davanti alla porta» col difensore
 a 2u (il testo deve leggere la geometria); l'elezione d'arrivo (chi riceve entro 2,5u); la banda
 60 % del padrone (oggi 19-40 %). `main` resta 7.807. Nessun «puoi collaudare».
+
+**Aggiunta, 10/09 notte:** 7.853 v3 sul branch (il portiere rientra sulla linea dalla trequarti:
+2,2 / 3,0 / 2,0 / 3,5u alla riga del gol contro 9-10u; v1 revocata). Telefono n°3: 5,6, portiere in
+quadro in 3 gol su 4 ma in piedi mentre il pallone passa (il tuffo parte al tiro e finisce prima).
+CI rossa una volta sul guardiano (1 gol mangiato), verde alla ripetizione: dichiarato. Prossimi:
+7.854 il tuffo che arriva sul pallone (e una foto a +0,5 s nella sonda, perché a +1,2 s il portiere
+si è già rialzato); l'attesa 847 scaduta; il testo che legge la geometria; la banda 60 del padrone.
