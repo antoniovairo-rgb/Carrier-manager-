@@ -14,7 +14,7 @@ const srv=await startServer();const port=srv.address().port;
 const b=await launchBrowser();
 const ctx=await b.newContext({viewport:{width:412,height:915}});
 const page=await ctx.newPage();await installCdnRoutes(page);
-await page.addInitScript((o)=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_CRO802=[];window.__CPM_SCMS681=3500;if(o.dtreal)window.__CPM_DTREAL=true;if(o.away)window.__CPM_AWAY_TEST=true;},{away:!!process.env.CPM_AWAY,dtreal:!!process.env.CPM_DTREAL});/* [playtest n°4] CPM_AWAY=1 apre il provino in TRASFERTA (7.726) — il metro chiede 2 in casa e 2 fuori */
+await page.addInitScript((o)=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_CRO802=[];window.__CPM_SCMS681=3500;if(o.dtreal)window.__CPM_DTREAL=true;if(o.away)window.__CPM_AWAY_TEST=true;(o.rosso||[]).forEach(k=>{window[k]=true;});},{away:!!process.env.CPM_AWAY,dtreal:!!process.env.CPM_DTREAL,rosso:String(process.env.CPM_ROSSO||'').split(',').filter(Boolean)});/* CPM_ROSSO=__CPM_NO839,__CPM_NO840: la passata col rimedio spento, stessi semi *//* [playtest n°4] CPM_AWAY=1 apre il provino in TRASFERTA (7.726) — il metro chiede 2 in casa e 2 fuori */
 await openMatch(page,port,{skipLoadAll:true,name:NOME});
 await page.evaluate((s)=>window.__CPM_AUTOPLAY(true,{seed:s,policy:'seeded',tickMs:300}),SEME);
 const SCATTI=[3,23,45,58,74,88];const fatti={};
@@ -44,7 +44,7 @@ console.log('║  Quello che il giocatore vede sullo schermo, minuto per minuto.
 console.log('╚══════════════════════════════════════════════════════════════════════════════');
 for(let m=1;m<=Math.max(min,89);m++){
   const r=(d.cro||[]).filter(c=>c.t===m);
-  righe+=r.length;
+  righe+=r.filter(c=>!c.intro).length;/* [7.838 AC] il titolo/intro della scena e' quello che il player legge, ma non e' una riga di cronaca: si stampa e non si conta */
   if(!r.length&&!scene[m]&&!golM[m]){vuoti++;run++;if(run>maxRun){maxRun=run;maxB=m;maxA=m-run+1;}continue;}
   run=0;
   const p=punt[m]||'';

@@ -2200,6 +2200,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(phase==="hl_intro"){
       const tid=setTimeout(()=>chantFor("home",1500),200);
       chantTimersRef.current.push(tid);
+      if(typeof window!=='undefined'&&window.__CPM_REC){try{const _s838=situations[hlIdx];const _sc838=scoreRef.current||{};const _sd838=isMatchHome?((_sc838.home||0)-(_sc838.away||0)):((_sc838.away||0)-(_sc838.home||0));const _ti838=intentTitle((_s838&&_s838.text)||"",_s838&&_s838.intent,_sd838);const _in838=intentIntro(_s838&&_s838.intro,_sd838);(window.__CPM_CRO802=window.__CPM_CRO802||[]).push({t:clockRef.current|0,txt:"▶ "+_ti838+(_in838?" — "+_in838:""),intro:1,tipo:(_s838&&_s838.type)||"off"});}catch(_e838){}}/* [7.838 strumento, AC] il diario del playtest registra quello che il player legge nell'intro della scena (titolo + introduzione): senza, il gol dell'eroe sembrava nascere dal nulla. Sola lettura sotto __CPM_REC. */
     }
     if(phase==="hl_choose"){
       setSelectedActionIdx(0);
@@ -3120,7 +3121,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _indietro803=(hlIdx<_attesi803);
         const _apertoDa803=Math.min(_prog803|0,12);
         const _apre803=_no803?(nx>=_prog803)
-          :(nx>=_apertoDa803&&_att803>=_PASSO803&&(_picco803||_indietro803)&&((typeof window!=='undefined'&&window.__CPM_NO834)||!pendingGoalRef.current));/* [7.834.0 — LA SCENA DELL'EROE NON SI APRE SOPRA UN'OCCASIONE. Rosso __CPM_NO834] Playtest n°9 (AD): Galli 11'-13' «Pecoraro serve Colombo» → scena «Murato dalla difesa» → «Colombo prova da lontanissimo»; Conti 17'-18' il tiro di Scotti resta senza esito perche' la scena dell'eroe entra e segna. Con un piano aperto (occasione o costruzione del gol) la scena aspetta il tick dopo la chiusura. */
+          :(nx>=_apertoDa803&&_att803>=_PASSO803&&(_picco803||_indietro803)&&((typeof window!=='undefined'&&window.__CPM_NO834)||!pendingGoalRef.current)&&((typeof window!=='undefined'&&window.__CPM_NO839)||!(counterRef.current&&!counterRef.current.chiuso839)));/* [7.839.0] ne' sopra un contropiede in corsa (Moretti 30' «De Santis riparte» → 31' scena, gol dell'eroe) *//* [7.834.0 — LA SCENA DELL'EROE NON SI APRE SOPRA UN'OCCASIONE. Rosso __CPM_NO834] Playtest n°9 (AD): Galli 11'-13' «Pecoraro serve Colombo» → scena «Murato dalla difesa» → «Colombo prova da lontanissimo»; Conti 17'-18' il tiro di Scotti resta senza esito perche' la scena dell'eroe entra e segna. Con un piano aperto (occasione o costruzione del gol) la scena aspetta il tick dopo la chiusura. */
         if(typeof window!=='undefined'&&window.__CPM_REC&&!_subDue38&&hlIdx<hlTimesRef.current.length&&_apre803){
           try{(window.__CPM_HL803=window.__CPM_HL803||[]).push({min:nx,prog:_prog803|0,sp:_sp803,
             perche:_no803?'orologio':(_picco803?'andamento':'tabella')});}catch(_e803){}
@@ -4011,14 +4012,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            recita. Un highlight mette in pausa, come per l'azione pendente. */
         if(!(typeof window!=='undefined'&&window.__CPM_NO542)&&counterRef.current&&!pendingGoalRef.current&&!_inHL77){
           const _ct542=counterRef.current;
+          if(_ct542.chiuso839){counterRef.current=null;}else{
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _T=(window.__CPM_CT839T=window.__CPM_CT839T||[]);const _rq=(_ct542.runner!=null)?(matchPlayersRef.current||[])[_ct542.runner]:null;if(_T.length<200)_T.push({ev:'tick',min:nx,tk:_ct542.ticks|0,fin:!!_ct542.fin,det:_ct542.detto839|0,bx:+(((ballPosRef.current||{}).x)||0).toFixed(1),rx:_rq?+((_rq.x||0).toFixed(1)):null,out:!!outRef.current,sp:!!spRef.current,fermo:!!fermoRef.current,pg:!!pendingGoalRef.current,ko:kickoffRef.current|0,kick:kickRef.current|0,ph:phaseRef.current});}catch(_e){}}/* [7.839 traccia] */
           if(!_ct542.fin){_ct542.ticks++;
             const _t542=ballTargetRef.current;
             const _run750=(!(typeof window!=='undefined'&&window.__CPM_NO750)&&_ct542.runner!=null)?(matchPlayersRef.current||[])[_ct542.runner]:null;
             if(_run750){/* [7.750] il corridore ha la palla: il bersaglio sono i suoi piedi (7.642), qui non si muove il punto */}
             else if(!ballLagRef.current){_t542.x=clamp(_t542.x+_ct542.dir*5,4,96);_t542.y=clamp(_t542.y+(50-_t542.y)*0.20,6,94);}/* [7.642 v5] il bersaglio aspetta la palla */
             const _b542=_run750?{x:_run750.x||50,y:_run750.y||50}:(ballPosRef.current||{x:50,y:50});
-            if((_ct542.dir>0&&_b542.x>=76)||(_ct542.dir<0&&_b542.x<=24)||_ct542.ticks>=9){_ct542.fin=true;if(_run750&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT750=window.__CPM_CT750||{eletti:0,fin:0});_w.fin++;}catch(_e){}}}}
-        }
+            if((_ct542.dir>0&&_b542.x>=76)||(_ct542.dir<0&&_b542.x<=24)||_ct542.ticks>=((typeof window!=='undefined'&&window.__CPM_NO839)?9:3)){_ct542.fin=true;/*v4-chiude-else-sotto*//* [7.839 v3] traccia ct839: il corridore si ferma a x=44 (il blocco non sale oltre) e non arriva mai a 24: il contropiede durava 9 minuti (annuncio 16', volo 18', chiusura 25'). Una ripartenza vera dura tre battute. */if(_run750&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT750=window.__CPM_CT750||{eletti:0,fin:0});_w.fin++;}catch(_e){}}}}
+        }}
         /* [7.532.0 NO544 — IL PONTE] due minuti prima dell'highlight in calendario, la cronaca scorta la
            palla verso il punto di nascita della scena: l'highlight si apre DOVE il racconto ha portato il
            gioco, non dal nulla. Il turno passa alla squadra della scena (attacco=nostro, difesa=loro). */
@@ -4201,8 +4204,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            sorteggiare righe di fondo e recite. Due regole: (a) finche' l'azione della libreria e' in recita il tick non sorteggia
            righe ordinarie (restano gol del microsim, battute di piano, palla morta); (b) se nel frattempo nasce qualcosa di vero
            — costruzione di un gol, contropiede, palla morta, scena — l'azione della libreria si tronca (vedi il timer). */
+        const _forzaCt839=(!(typeof window!=='undefined'&&window.__CPM_NO839)&&!!counterRef.current&&!_inHL77&&kickoffRef.current<=0&&!pendingGoalRef.current&&!outRef.current&&!spRef.current&&!fermoRef.current&&(!!counterRef.current.fin||((counterRef.current.ticks|0)>=2&&!counterRef.current.detto839)));/* [7.839.0] come la palla morta del 7.818 v6: il contropiede annunciato deve dire dove va (una riga in volo) e come finisce (la risoluzione), senza passare dal dado della cronaca */if(_forzaCt839&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT839=window.__CPM_CT839||{arm:0,volo:0,fin:0,foul:0,forzati:0});_w.forzati++;}catch(_e){}}
         const _libRec833=(!(typeof window!=='undefined'&&window.__CPM_NO833)&&!!(libAzRef666.current&&libAzRef666.current.auto&&(libAzRef666.current.i|0)<(libAzRef666.current.righe||[]).length));
-        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485&&!_libRec833)||_forza541||_forzaOut818||_annScena653||_forzaLib666||_forzaIntx669){if(_simEv77){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['entrato_nel_cancello_riga']=(_L['entrato_nel_cancello_riga']|0)+1;}}catch(_e785){}}/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
+        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485&&!_libRec833)||_forza541||_forzaOut818||_forzaCt839||_annScena653||_forzaLib666||_forzaIntx669){if(_simEv77){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['entrato_nel_cancello_riga']=(_L['entrato_nel_cancello_riga']|0)+1;}}catch(_e785){}}/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
              laterale, e in un feed di testo il respiro E' l'enfasi — non c'e' altro modo di dire «questo
@@ -4369,6 +4373,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                :_o.kind==="goal_kick"?{txt:"🧤 Pallone sul fondo: rinvio dal fondo per "+_NGK+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},pd:_dec499}
                :_o.pen629?(_o.nostra?{txt:"📢 RIGORE! Fallo in piena area su di noi: l'arbitro indica il dischetto.",ef:null,w:1,bpos:{x:94,y:50},ms:{fouls:1},sp:"pen_for",pd:_dec499}
                                     :{txt:"😨 Rigore per {A}: fallo in area nostra, il fischio non lascia dubbi.",ef:null,w:1,bpos:{x:6,y:50},ms:{fouls:1},sp:"pen_against",pd:_dec499})
+               :(_o.ct839&&_o.nome839&&!(typeof window!=='undefined'&&window.__CPM_NO839))?{txt:"🟡 Fallo tattico su "+_o.nome839+": la ripartenza muore li'. Punizione per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},ms:{fouls:1},pd:_dec499}/* [7.839 v2] il seguito del contropiede annunciato */
                :{txt:"🟡 Fischia l'arbitro: fallo, punizione per "+_N+".",ef:null,w:1,bpos:{x:_o.x,y:_o.y},ms:{fouls:1},pd:_dec499};
               /* [7.629.0 — IL RIGORE NASCE DAL FALLO, NON DAL SORTEGGIO. Rosso __CPM_NO629 (a monte).
                  Collaudo PO 7.627: «ZERO schemi, punizioni, rigori». Il fallo in area E' un rigore — regola
@@ -4534,7 +4539,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(!_no542&&_ct&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current){if(typeof window!=='undefined'&&window.__CPM_REC&&ev&&ev._out818){try{const _Q=(window.__CPM_J818E=window.__CPM_J818E||{p1:0,p2:0,p3:0,arc:0,dir:0});_Q.ct=(_Q.ct|0)+1;}catch(_e){}}}
           if(!_no542&&_ct&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current&&!(ev&&ev._out818)){/* [7.818 v4] la riga della palla morta dell'occasione non si sostituisce: e' il seguito promesso */
             _recHij545=true;_recKind546="counter";_recSide546=_ct.dir>0?"home":"away";const _rc542=(Math.abs(hashStr(String(ev.txt||"")+"|"+nx+"|ct"))%100)/100;
-            if(_ct.fin){counterRef.current=null;
+            if(_ct.fin){if((typeof window!=='undefined'&&window.__CPM_NO839))counterRef.current=null;else _ct.chiuso839=1;/* [7.839 v4] la chiusura resta «viva» fino al tick dopo: catena (r.4595) e ponte guardano !counterRef e sovrascrivevano la risoluzione nello stesso tick (Galli 71'-74' «Giro palla» al posto della chiusura) */if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_CT839T=window.__CPM_CT839T||[]).push({ev:'fin-riga',min:nx,txt:String((ev&&ev.txt)||"").slice(0,60)});}catch(_e){}}
               ev=_ct.dir>0?(_rc542<0.4?{txt:"💥 La ripartenza si chiude col tiro di {H}: {GKA} devia in tuffo!",ef:null,w:1,bpos:{x:88,y:52},ms:{shots:1},at:"shot",pd:_dec499,tn617:-1}
                  :_rc542<0.7?{txt:"↗ Contropiede: cross basso di {H} — la difesa di {A} spazza in extremis.",ef:null,w:1,bpos:{x:82,y:60},at:"cross",pd:_dec499,tn617:-1}
                  :{txt:"⚡ La ripartenza sfuma: {A} raddoppia su {H} e chiude al limite.",ef:null,w:1,bpos:(function(){const _r=(!(typeof window!=='undefined'&&window.__CPM_NO750)&&_ct.runner!=null)?(matchPlayersRef.current||[])[_ct.runner]:null;return _r?{x:_r.x||74,y:_r.y||48}:{x:74,y:48};})(),pd:_dec499,tn617:-1})
@@ -4544,10 +4549,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             else{const _cv542=(recVarRef.current=(recVarRef.current+1)|0)%4;
             const _CF=_ct.dir>0?["🏃 {H} brucia il centrocampo in conduzione — campo aperto!","⚡ Ripartiamo in verticale: {H} lancia {H2} oltre la linea!","💨 Tre tocchi e via: {H} porta il contropiede oltre la meta' campo.","🎯 {H2} accompagna la ripartenza: due contro due, che occasione!"]
               :["⚠️ {A} attraversa il centrocampo a tutta velocita'!","😰 Ripartenza fulminea di {A} — la difesa rincula!","🚨 Campo aperto per {A}: rincorsa disperata dei nostri.","⛔ {A} galoppa in transizione: serve un fallo tattico o una diagonale."];
-            ev={txt:_CF[_cv542],ef:null,w:1,bpos:null,pd:_dec499};}}
+            ev={txt:_CF[_cv542],ef:null,w:1,bpos:null,pd:_dec499};_ct.detto839=1;}}
           else if(!_no542&&!_ct&&!_koHij536&&counterArmRef.current&&!ev.ef&&!spRef.current&&kickoffRef.current<=0&&!pendingGoalRef.current&&(!outRef.current||(typeof window!=='undefined'&&window.__CPM_NO632))){/* [7.632.0 v4] niente ripartenza recitata sopra un fischio vivo: la palla e' ferma */
             const _arm542=counterArmRef.current;counterArmRef.current=null;
-            counterRef.current={dir:_arm542.dir,ticks:0,fin:false};_recHij545=true;_recKind546="counter";_recSide546=_arm542.dir>0?"home":"away";
+            counterRef.current={dir:_arm542.dir,ticks:0,fin:false};_recHij545=true;_recKind546="counter";if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_CT839T=window.__CPM_CT839T||[]).push({ev:'arm',min:nx,dir:_arm542.dir});}catch(_e){}}_recSide546=_arm542.dir>0?"home":"away";
             /* [7.750.0 — IL CONTROPIEDE E' UN UOMO CHE CORRE. Rosso __CPM_NO750] CENSITO (fondate-558 sulla 7.749): le 13 smentite
                sono tutte destinazioni a PUNTO delle recite, che dal 7.738/7.743 perdono contro l'uomo che ha la palla. Il contropiede
                muoveva il bersaglio del pallone di 5u/tick come un punto, e il portatore-uomo (7.642) lo riportava ai suoi piedi:
@@ -4557,17 +4562,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(!(typeof window!=='undefined'&&window.__CPM_NO750)){try{const _mpC=matchPlayersRef.current||[];const _bC=ballPosRef.current||{x:50,y:50};const _sideC=_arm542.dir>0?"home":"away";let _ri=-1,_rd=1e9;
               for(let _i=0;_i<_mpC.length;_i++){const _q=_mpC[_i];if(!_q||_q.gk||_q.team!==_sideC)continue;const _d=Math.hypot((_q.x||50)-_bC.x,(_q.y||50)-_bC.y);if(_d<_rd){_rd=_d;_ri=_i;}}
               if(_ri>=0){counterRef.current.runner=_ri;if(!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_ri};if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT750=window.__CPM_CT750||{eletti:0,fin:0});_w.eletti++;}catch(_e){}}}
+              if(_ri>=0&&!(typeof window!=='undefined'&&window.__CPM_NO839)){try{const _qN=_mpC[_ri];const _u=_surnBG((_qN&&_qN.name)||"");const _R=(_arm542.dir<0)?((isMatchHome?awayRoster:homeRoster)||awayRoster):((isMatchHome?homeRoster:awayRoster)||homeRoster);const _m=(_R||[]).find(r=>r&&r.name&&_surnBG(r.name).toUpperCase()===String(_u).toUpperCase());const _n=_m?_surnBG(_m.name):(_u?(_u.charAt(0)+_u.slice(1).toLowerCase()):"");const _abOf=(c)=>(c&&c.a)||(c&&c.id?String(c.id).slice(0,3).toUpperCase():"");const _ab=(_arm542.dir>0)===!!isMatchHome?_abOf(_homeClubObj):_abOf(_awayClubObj);if(_n)counterRef.current.nome839=_n+" ("+_ab+")";}catch(_e839){}}/* [7.839.0 — IL CONTROPIEDE E' UN'AZIONE PROMESSA (P). Rosso __CPM_NO839] Playtest n°13: «Palla persa alta! Colombo riparte» al 16', «Campo aperto per Bianchi» al 21', mai una chiusura. Il corridore eletto dal 7.750 e' UNO: il suo nome, con le maiuscole della rosa, firma tutte le righe del contropiede. */
             }catch(_e750){}}
             ev=_arm542.dir<0?{txt:"⚡ Palla persa alta! {A} riparte in campo aperto — che pericolo!",ef:null,w:1,bpos:null,pd:_dec499}
                :{txt:"⚡ Recupero altissimo di {H}! Si ribalta il fronte in un lampo!",ef:null,w:1,bpos:null,pd:_dec499};}
-          else if(counterArmRef.current&&(_no542||ev.ef))counterArmRef.current=null;/* armato ma il momento e' passato (gol in mezzo / rosso): si disarma senza recitare */}
+          else if(counterArmRef.current&&(_no542||ev.ef))counterArmRef.current=null;/* armato ma il momento e' passato (gol in mezzo / rosso): si disarma senza recitare */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO839)&&_recKind546==="counter"&&ev&&ev.txt){const _cN839=(_ct||counterRef.current);if(_cN839&&_cN839.nome839){ev={...ev,txt:String(ev.txt).replace(_cN839.dir>0?/\{H\}/g:/\{A\}/g,_cN839.nome839)};if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT839=window.__CPM_CT839||{arm:0,volo:0,fin:0,foul:0,forzati:0});if(!_ct)_w.arm++;else if(_ct.fin)_w.fin++;else _w.volo++;}catch(_e){}}}}/* [7.839.0] chi riparte e' sempre lui */}
           /* [7.653.0 - LA SCENA DECISA SI DICHIARA (FASE 5a roadmap). Rosso __CPM_NO653]
              Direttiva PO: la cronaca deve far percepire ritmo, possesso, costruzione, pressione -
              E le fasi tranquille. Il direttore (7.648) decide le scene libere ma erano INVISIBILI:
              nessuna riga le nominava. Ora la PRIMA riga libera di ogni scena decisa la dichiara
              (pattern kickoff: sorteggio consumato, ordine dei sorteggi intatto), col lato giusto.
              Un annuncio per scena (2-4 a partita): il repertorio non si affama. */
-          if(!(typeof window!=='undefined'&&window.__CPM_NO653)&&!_koHij536&&!/goal$/.test(String(ev.ef||""))&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!ponteRef.current&&!outRef.current&&!azioneRef.current){
+          if(!(typeof window!=='undefined'&&window.__CPM_NO653)&&!_koHij536&&!/goal$/.test(String(ev.ef||""))&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!ponteRef.current&&!outRef.current&&!azioneRef.current&&((typeof window!=='undefined'&&window.__CPM_NO839)||_recKind546!=="counter")/* [7.839 v3] */){
             const _sc653=direttoreRef.current;
             if(_sc653&&_sc653.lib&&!_sc653.ann){_sc653.ann=1;
               const _n653=_sc653.l>=0;
@@ -4644,7 +4651,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           /* [7.532.0 NO544] LE RIGHE DEL PONTE: durante la scorta verso la scena imminente, la battuta
              sorteggiata racconta l'avvicinamento (pattern kickoff: sorteggio consumato, si scarta la riga). */
           if(!(typeof window!=='undefined'&&window.__CPM_NO544)&&ponteRef.current&&!ponteRef.current.arrived&&ev&&ev._out818){if(typeof window!=='undefined'&&window.__CPM_REC&&ev&&ev._out818){try{const _Q=(window.__CPM_J818E=window.__CPM_J818E||{p1:0,p2:0,p3:0,arc:0,dir:0});_Q.pon=(_Q.pon|0)+1;}catch(_e){}}}
-          if(!(typeof window!=='undefined'&&window.__CPM_NO544)&&ponteRef.current&&!ponteRef.current.arrived&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!(ev&&ev._out818)/* [7.818 v4] */){
+          if(!(typeof window!=='undefined'&&window.__CPM_NO544)&&ponteRef.current&&!ponteRef.current.arrived&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!(ev&&ev._out818)/* [7.818 v4] */&&((typeof window!=='undefined'&&window.__CPM_NO839)||_recKind546!=="counter")/* [7.839 v3] la chiusura del contropiede azzera counterRef nello stesso tick: il ponte la sovrascriveva («Gli avversari guadagnano metri» al posto della risoluzione) */){
             {const _pv544=(recVarRef.current=(recVarRef.current+1)|0)%4;/* varieta': il guardiano bg-decision ha misurato l'accordo comprato con le ripetizioni (54,5%<55 di righe distinte) — 4 varianti per verso, scelte dal minuto */
             const _pp544=ponteRef.current.def
               ?["⚠️ Gli avversari guadagnano metri: il nostro blocco si abbassa.","😤 {A} muove il pallone con pazienza verso la nostra trequarti.","🛑 {A} cambia lato e accelera: la nostra linea scala all'indietro.","📢 Il capitano richiama tutti dietro la linea della palla: {A} spinge."]
@@ -4667,7 +4674,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              non muovono niente in campo — raccontano quello che succede attorno al gioco. Percio' non
              possono mentire sul pallone, ed e' anche la ragione per cui posso spedirle mentre la
              libreria delle azioni resta ferma. */
-          if(_intxK669){try{
+          if(_intxK669&&((typeof window!=='undefined'&&window.__CPM_NO839)||_recKind546!=="counter")/* [7.839 v5] la scheda si sceglie prima dell'armamento del contropiede e ne sostituiva l'annuncio (Moretti 25' «Gol della squadra…» al posto di «Palla persa alta»): la scheda aspetta il tick dopo */){try{
             const _N=narrRef669.current;
             const _sc=scoreRef.current||{home:0,away:0};
             const _mio=_sc.home|0,_suo=_sc.away|0;/* [7.725.0 — IL FRAME E' EROE-CENTRICO] `score.home` e' SEMPRE la squadra dell'eroe (gol nostro → home+1, gol subito → away+1; il tabellone scambia solo la visualizzazione): il vecchio `isMatchHome?home:away` invertiva la differenza reti IN TRASFERTA — le schede «sotto di un gol» uscivano quando si era in vantaggio. Trovato leggendo, non misurato: tutti i banchi sono provini in casa. */
@@ -5578,14 +5585,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            contropiede si chiude, il fallo arma punizione+fermo, il turno passa a chi l'ha subito. */
         if(!(typeof window!=='undefined'&&window.__CPM_NO628)&&!(typeof window!=='undefined'&&window.__CPM_NO566)&&counterRef.current&&!counterRef.current.fin&&!outRef.current&&!fermoRef.current&&!spRef.current&&!pendingGoalRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&phaseRef.current==="playing"){
           const _rT=(Math.abs(hashStr("tackfoul|"+nx))%1000)/1000;
-          if(_rT<0.30){const _dirC=counterRef.current.dir;counterRef.current=null;
+          if(_rT<0.30){const _dirC=counterRef.current.dir;const _ctN839v2=counterRef.current.nome839||null;counterRef.current=null;if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_CT839T=window.__CPM_CT839T||[]).push({ev:'foul',min:nx});}catch(_e){}}
             const _bpT=ballPosRef.current||{x:50,y:50};
             const _oxT=clamp(_bpT.x,8,92),_oyT=clamp(_bpT.y,6,94);
             /* [7.629.0] il fallo tattico che arriva TARDI — contropiede gia' in area — e' rigore: il caso
                da manuale (chi rincorre stende chi ripartiva davanti al portiere). Stesso rosso __CPM_NO629. */
             const _penT629=!(typeof window!=='undefined'&&window.__CPM_NO629)&&_oyT>=30&&_oyT<=70&&((_dirC>0&&_oxT>=84)||(_dirC<0&&_oxT<=16));
             const _muteT632=!(typeof window!=='undefined'&&window.__CPM_NO632)&&!_penT629&&outStoryRef.current>=(1+Math.floor(nx/12));/* [7.632 v7] stesso tetto di racconto */
-            outRef.current={kind:"foul",nostra:_dirC>0,x:_oxT,y:_oyT,step:0,ttl:4,t0:Date.now(),pen629:_penT629,mute632:_muteT632};/* il fallo tattico lo commette chi rincorre: la punizione e' di chi RIPARTIVA (dir del counter) */
+            outRef.current={kind:"foul",nostra:_dirC>0,x:_oxT,y:_oyT,step:0,ttl:4,t0:Date.now(),pen629:_penT629,mute632:(_muteT632&&(typeof window!=='undefined'&&window.__CPM_NO839)),occ818:(!(typeof window!=='undefined'&&window.__CPM_NO839)&&!_penT629),ct839:1,nome839:_ctN839v2};/* [7.839 v2] playtest n°15: le righe in volo escono (3/3, nome coerente) ma la risoluzione mai (0/4) — il 96% dei contropiedi muore per fallo tattico (p 0,30 al tick) e la riga del fischio aspettava il dado con ttl 4. Il fischio che spegne una ripartenza annunciata e' la palla morta promessa dal testo: passa dal cancello del 7.818 v6 (occ818) e nomina il corridore. *//* [7.839.0] la punizione che spegne una ripartenza annunciata e' il suo seguito: non nasce muta */if(!(typeof window!=='undefined'&&window.__CPM_NO839)&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT839=window.__CPM_CT839||{arm:0,volo:0,fin:0,foul:0,forzati:0});_w.foul++;}catch(_e){}}/* il fallo tattico lo commette chi rincorre: la punizione e' di chi RIPARTIVA (dir del counter) */
             fermoRef.current={x:_oxT,y:_oyT,t:4,kind:"foul"};
             ballTargetRef.current={x:_oxT,y:_oyT};
             if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_dirC>0?1:-1,"interruzione-foul-tattico");
@@ -6942,7 +6949,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const _seedOvl=Math.abs(hashStr((action.label||"")+key+hlIdx+score.home+score.away));
     const _nkTx=(key==="miss"||(!ok&&!_isDefHL76&&(key==="intercept"||key==="through"||key==="miss_easy")))?_missKindNorm(_outKind):null;// [6.76.0 LMV-S1] cronaca coerente con l'esito del motore anche sui fail non-"miss" (HL difensivi esclusi: lì parla _defTraj)
     const _woodTx=(_nkTx==="post"&&_wood==="bar")?_BAR_TX:null;/* [7.217.0] la cronaca nomina il legno che il 3D colpisce davvero */
-    const txt=_woodTx?_woodTx[_seedOvl%_woodTx.length]:(_nkTx&&_MISS_TX[_nkTx])?_MISS_TX[_nkTx][_seedOvl%_MISS_TX[_nkTx].length]:(_chanceDrb?OUTCOME_TX.chance_dribble[_seedOvl%OUTCOME_TX.chance_dribble.length]:pick(OUTCOME_TX[key]||["Azione completata."]));// [5.90.0] cronaca dedicata all'uomo saltato
+    const _reb840=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO840)return null;if(key!=="goal"||!ok)return null;const _sC=situations[hlIdx];if(!_sC||!_sC._chainDepth)return null;if(!/mischia|rimbalzo|sponda|secondo palo/i.test(String(_sC.text||"")))return null;return ["🔥 Sulla respinta! Non perdona: palla in rete!","⚡ Il pallone torna lì e lui la mette dentro!","💥 Secondo tempo dell'azione: conclusione secca, gol!","🎯 Palla vagante in area, e lui la spinge dentro!"];}catch(_e){return null;}})();/* [7.840.0 — IL GOL SULLA RESPINTA SI DICE (E). Rosso __CPM_NO840] Playtest n°10-13: «La conclusione è respinta — c'è ancora da giocare!» e poi «Destro perfetto — nessuna speranza!»: il secondo tempo (mischia/rimbalzo/sponda) segnava con una frase da primo tiro, e il player leggeva una contraddizione. Ora il gol di catena nomina la respinta. */
+    const txt=_woodTx?_woodTx[_seedOvl%_woodTx.length]:(_nkTx&&_MISS_TX[_nkTx])?_MISS_TX[_nkTx][_seedOvl%_MISS_TX[_nkTx].length]:(_reb840?_reb840[_seedOvl%_reb840.length]:(_chanceDrb?OUTCOME_TX.chance_dribble[_seedOvl%OUTCOME_TX.chance_dribble.length]:pick(OUTCOME_TX[key]||["Azione completata."])));// [5.90.0] cronaca dedicata all'uomo saltato
+    if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_CRO802=window.__CPM_CRO802||[]).push({t:clockRef.current|0,txt:"▶ scelta: "+String((action&&action.label)||"")+" → "+String(key||"")+(ok?" riuscito":" fallito"),intro:1});}catch(_e838){}}/* [7.838 strumento, AC] anche la SCELTA del player entra nel diario: e' l'azione che lui ha fatto prima dell'esito */
     const _ovl=hlOverlay(key,ok,action.label,(player.name||"").split(" ")[0],_seedOvl,_isDefHL76?null:_outKind,_isDefHL76?null:_wood);/* [7.113.0 audit massivo · fix D1] HL DIFENSIVO fallito: l'overlay NON usa più l'esito OFFENSIVO del motore (_outKind da decideExecution('intercept') → mappato a «parata/fuori») ma il pool def_fail coerente («L'avversario passa») — allineato al gate del `!_isDefHL76` che già escludeva cronaca/memoria/CoherenceCheck. Prima l'overlay diceva «Grande parata del portiere» su un contrasto perso, senza portiere in scena */
     // [7.137.0 collaudo PO «la squalifica per espulsione deve essere REALE, dalla partita, non randomica»] CARTELLINO REALE:
     //   un fallo COMMESSO dall'eroe (key "foul") può portare un giallo SEEDATO; alla 2ª ammonizione o (raro) rosso diretto →
