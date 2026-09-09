@@ -1182,3 +1182,24 @@ minuti muti (il seme cambia le partite: 4-0 di Conti, 0-0 di Vairo). Rituali in 
 | 12 Carriera | 6 | **6** |
 
 **Media: 6,4** (somma 77). Metro 8,0.
+
+
+---
+
+# Rapporto n° 31 — 7.849 (S3 v2: l'atteggiamento governa la frequenza delle occasioni) — 09/09 sera
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| tiri di piano / da dentro l'area | 4 / 3 | 5 / 1 | 1 / 0 | 3 / 0 |
+| tiratore sul pallone (≤ 5u) | 3/4 | 2/5 | 0/1 | 1/3 |
+| tiri dal 75' (nostri · loro) | 1 · 0 | 0 · 1 | 0 · 0 | 1 · 0 |
+| minuti muti | 32 | 33 | 43 | 32 |
+| finale | 0-0 | 1-1 | 1-1 | 4-0 |
+
+Tiri dal 75': da 0 in tre partite su quattro (n° 30) a 3 in totale. La misura «il lato sotto tira più
+del lato sopra negli ultimi 15'» non è giudicabile: 0-0, 1-1, 1-1 e nessuno sotto. **Parziale, non
+revocata**: prima di una v2 serve il censimento delle finestre libere dal 75' (quante e cosa le occupa).
+
+## Scorecard n° 31
+
+Uguale al n° 30 in tutte le aree: **media 6,4** (somma 77).
