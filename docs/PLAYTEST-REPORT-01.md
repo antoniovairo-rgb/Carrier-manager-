@@ -789,3 +789,31 @@ risoluzioni entro 3' **0/2**; Galli 16' «Colombo riparte» → 21' «Campo aper
 diverso). **E**: gol di catena dopo respinta 2 (Galli 87', Conti 10'), righe che nominano la respinta 0/2.
 
 **Media: 5,9** (non cambia: stesso gioco del n° 12).
+
+
+---
+
+# Rapporto n° 15 — build 7.840 (7.839 P + 7.840 E + la scelta nel diario) — 09/09 notte
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 73 / 38 | 59 / 48 | 77 / 38 | 71 / 42 |
+| finale | 1-0 | 2-0 | 2-2 | 4-1 |
+
+**E (gol di catena che nomina la respinta)**: 2/2 (Galli 35', Conti 10': «Mischia in area!» → «Secondo
+tempo dell'azione: conclusione secca, gol!»); rosso n° 14: 0/2. Conti 77' la catena fallisce e resta
+onesta («La conclusione è respinta» → «Mischia» → «miss»).
+
+**P (contropiede)**: annunci 4 (Moretti 30' Luca, 44' Lombardi nostro, 82' Colombo; Galli 16' Colombo).
+Riga in volo entro 2': 3/4 col NOME COERENTE (n° 14: Colombo → Bianchi). **Risoluzione: 0/4** — la
+causa è nel codice: il fallo tattico chiude il contropiede con p 0,30 al tick (0,7⁹ = 4% arriva in
+fondo) e la riga del fischio aspettava il dado con ttl 4 → il contropiede muore muto. → 7.839 v2: il
+fischio che spegne una ripartenza annunciata passa dal cancello della palla morta promessa (7.818 v6) e
+nomina il corridore.
+
+**AC con la scelta nel diario**: i due «no» del n° 14 ora si leggono: Galli 45' «Tentativo di
+inserimento in area» → «scelta: Testa piazzata all'angolo → goal» → «Galli segna!» (ci credo);
+Moretti 30' «Luca riparte in campo aperto» → 32' «Campo aperto per Luca» → 40' scena (la 7.839 non
+apre la scena sopra il contropiede: la scena slitta di 9').
+
+**Media: 5,9** — nessuna area cambia di un punto intero finché P non chiude (Ritmo/Causalità).
