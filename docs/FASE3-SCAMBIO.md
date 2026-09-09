@@ -3453,3 +3453,19 @@ a 4 righe. 7.844 v2: prima scena 13/13/13/13 → 21/24/25/14. Career PASS, CI ex
 
 Tredicesima lezione: una macchina «in recita» deve avere un orologio suo; se dipende da timer che
 altri possono cancellare, chi la interroga deve poterla dichiarare morta.
+
+
+### 7.847 (S5: il filtrante in area) misurata, e la causa vera sotto: il nominato non corre
+
+Rosso (n° 27): tiri di piano da dentro l'area 3/13. 7.847: una volta su due, se il ricevente sta oltre
+avanzamento 64, l'apertura è un filtrante con punto d'arrivo in area e la battuta del tiro aspetta il
+tiratore sul pallone (≤ 5u, tre tick). n° 28: filtranti 3 (testo e zona giusti), da dentro l'area
+3/12 — non sposta il conto perché Galli e Conti non hanno mai un ricevente oltre 64. La misura nuova
+dice la cosa che conta: **alla battuta del tiro il tiratore non è mai sul pallone, 0/12, a 10-26u**,
+filtrante o no. Traccia `att847` su Vairo: al filtrante del 9' il nominato corre 25u ma verso y=23
+mentre il pallone va a (84,44); nell'occasione avversaria il nominato sta a x=44 per tre battute.
+Causa nel movimento (r.5845): l'eletto è il più vicino al pallone a ogni tick e solo lui ha il passo
+0,55 — il nominato dal piano perde la corsa al primo tick. È il 7.797 letto dall'altra parte
+(«l'uomo non si era mosso»). → **7.848**: finché la custodia del piano è viva, il portatore è il
+nominato e il suo bersaglio è il punto d'arrivo della battuta. Misura: tiratore sul pallone alla
+battuta del tiro (rosso 0/12). Rosso `__CPM_NO848`.
