@@ -839,3 +839,44 @@ della chiusura (stesso difetto del ponte: `!counterRef` nello stesso tick). → 
 viva fino al tick dopo.
 
 Nomi coerenti in tutte le righe di contropiede: 7/7 (rosso n° 14: Colombo → Bianchi).
+
+
+---
+
+# Rapporto n° 18 e n° 19 — 7.839 v4 e v5 (P) — 09/09 mattina
+
+**n° 18 (v4: la chiusura resta viva fino al tick dopo)**: contropiedi 2, chiusure entro 3' **2/2**
+(Moretti 27' volo → 28' «sciupa la ripartenza»; Galli 16' → 18' → 19'). Un annuncio (Moretti 25')
+sostituito dalla scheda d'interazione «Gol della squadra: Spada esce dal mucchio…» → v5.
+
+**n° 19 (v5: la scheda non sovrascrive l'annuncio)**: contropiedi 2, chiusure **2/2** con annuncio,
+volo e chiusura tutti presenti e con lo stesso nome: Galli 29' «Santoro riparte» → 31' «Ripartenza
+fulminea di Santoro» → 32' «Ripartenza di Santoro: tiro dal limite, il portiere respinge coi pugni»;
+Conti 44' «Recupero altissimo di Bruno» → 47' «La ripartenza sfuma: Marchetti raddoppia su Bruno».
+Somma v3-v5: chiusure **8/11**, nomi coerenti 11/11; rosso 0/2.
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti (n° 19) | 74 / 37 | 67 / 42 | 66 / 44 | 79 / 35 |
+| finale | 1-0 | 3-0 | 2-1 | 4-0 |
+
+## Scorecard n° 19
+
+| # | Area | n°12 | **n°19** |
+|---|------|:---:|:---:|
+| 1 Realismo | 6 | **6** |
+| 2 Credibilità da attaccante | 5 | **6** (titolo, scelta ed esito si leggono in fila; il gol sulla respinta si dice) |
+| 3 Causalità | 6 | **7** (il contropiede annunciato si chiude 8/11; la scena non si apre sopra) |
+| 4 Varietà | 6 | **6** |
+| 5 Ritmo | 5 | **5** (37 / 42 / 44 / 35) |
+| 6 Azioni extra-eroe | 7 | **7** |
+| 7 Highlight dell'eroe | 5 | **6** (AC letta: 3/5 → 5/5 con la scelta nel diario) |
+| 8 Telecronaca | 6 | **6** |
+| 9 Interazioni | 7 | **7** |
+| 10 Coerenza fra i sistemi | 6 | **6** (AF resta) |
+| 11 Immersione | 6 | **6** |
+| 12 Carriera | 6 | **6** |
+
+**Media: 6,2** (n° 12-13: 5,9). Metro 8,0. Aperte: ritmo (35-44 minuti muti), AF, U, S1, S5 seconda
+metà, e la scena che segna dal titolo generico («Tentativo di cross» → gol di testa: la scelta lo
+spiega, il titolo no).
