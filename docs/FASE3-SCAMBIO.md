@@ -3294,3 +3294,38 @@ righe rispetto al 7.836 (10). La banda è 10 e non si tocca di nascosto. Sorgent
 prosegue oltre il duplice fischio in una partita su quattro. La strada giusta non è un altro
 cancello: è dare alla libreria uno slot suo (S5, la libreria come corpo dell'occasione) così che la
 banda non dipenda dai cancelli.
+
+
+### 7.838 (strumento, AC): il diario legge quello che il player legge
+
+Il gol dell'eroe «senza un'azione prima» era in parte un artefatto del diario: la scena mostra
+titolo, introduzione e poi la SCELTA del player, e il diario registrava solo l'esito. Ora sotto
+`__CPM_REC` entrano nel diario `▶ titolo — intro` (hl_intro) e `▶ scelta: … → esito` (risoluzione),
+non contate come righe di cronaca. Censimento n° 14: 3 gol su 5 con un'azione prima leggibile; i due
+«no» sono la scena aperta sopra un contropiede loro (→ 7.839) e il titolo d'intento generico
+(«Tentativo di cross») che si legge solo con la scelta.
+
+### 7.840 (E): il gol sulla respinta si dice
+
+«La conclusione è respinta — c'è ancora da giocare!» → «Destro perfetto — nessuna speranza!» era la
+catena chance→gol raccontata con una frase da primo tiro. Se la scena è un secondo tempo
+(mischia/rimbalzo/sponda) il gol nomina la respinta. Misura: gol di catena che nominano la respinta
+**2/2** (n° 15) contro **0/2** (n° 14, rosso `__CPM_NO840`).
+
+### 7.839 (P): il contropiede è un'azione promessa — cinque versioni, tutte misurate
+
+Rosso (n° 14): annunci 2, chiusure entro 3' 0/2, nome del corridore diverso fra annuncio e volo.
+- **v1** (riga in volo e chiusura scavalcano il dado; nome cotto; scena non sopra il contropiede;
+  fallo tattico non muto): volo 3/4 col nome coerente, chiusure **0/4**.
+- **v2** (il fallo tattico è la palla morta promessa, passa dal cancello del 7.818 v6): chiusure
+  ancora **0/4**. Traccia `ct839`: il corridore si ferma a x=44 e non arriva mai a 24 → il contropiede
+  durava 9 minuti e la chiusura veniva sovrascritta dal ponte verso la scena.
+- **v3** (tre battute; ponte e annuncio-scena non sovrascrivono): chiusure **4/7**, nomi 7/7. Restano
+  la catena (r.4595) che sovrascrive nello stesso tick e l'annuncio sotto il piano del gol.
+- **v4** (la chiusura resta viva fino al tick dopo; si spegne in testa al tick successivo): n° 18
+  chiusure 2/2 ma un annuncio sostituito dalla scheda d'interazione (7.669).
+- **v5** (la scheda non sovrascrive l'annuncio): rituali e playtest n° 19 in corso.
+
+Lezione dodicesima: nel tick ci sono nove registi in fila e ognuno guarda solo le macchine
+«vive» all'inizio; una macchina che si chiude nel tick lascia la sua riga scoperta ai registi dopo.
+La chiusura differita di un tick è il rimedio minimo; la strada di fondo resta «il regista è uno».
