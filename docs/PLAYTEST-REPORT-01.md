@@ -1124,3 +1124,24 @@ l'hanno mai. La misura nuova dice di più: **alla battuta del tiro il tiratore n
 il 7.797 aveva trovato («l'uomo non si era mosso»): non è il piano, è il sistema di movimento che non
 porta il nominato sul pallone. Prima di un'altra versione, si legge la traccia dell'attesa
 (`__CPM_ATT847`: la distanza tick per tick).
+
+
+---
+
+# Rapporto n° 29 — 7.848 v5 (il nominato dal piano corre sul punto d'arrivo) — 09/09 pomeriggio
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| tiri di piano | 4 | 5 | 4 | 1 |
+| da dentro l'area (≥ 82) | 1 | 1 | 0 | 0 |
+| tiratore sul pallone alla battuta (≤ 5u) | 2/4 (2,4 · 6,7 · 3,3 · 7,6) | 2/5 (9,5 · 8,2 · 2,7 · 4,2 · 19,2) | 2/4 (24,8 · 0,3 · 5,8 · 3,8) | 0/1 (18,6) |
+| minuti muti | 28 | 30 | 31 | 35 |
+| finale | 0-0 | 2-0 | 3-1 | 4-2 |
+
+Tiratore sul pallone **6/14** (rosso n° 28: 0/12), entro 8u 10/14. Cause lette con la traccia, in
+ordine: (1) il portatore dal piano si perdeva nell'elezione per vicinanza a ogni tick → letto dal
+piano; (2) il blocco del movimento gira un tick su tre → a ogni tick sotto custodia; (3) le corsie
+(`velRef`) tiravano il nominato a y=5 mentre il pallone andava a y=20 → le corsie cedono il nominato;
+(4) l'attesa misurava la distanza dal pallone in volo → uomo e pallone sul punto d'arrivo. Restano i
+tiri senza attesa (solo il filtrante la aveva) a 19-25u e l'area 2/14: → v6, ogni tiro aspetta,
+filtrante da avanzamento 58.
