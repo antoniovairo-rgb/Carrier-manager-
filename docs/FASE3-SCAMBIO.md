@@ -3274,3 +3274,13 @@ Playtest n° 12: Vairo in casa **0 → 3 tiri nostri**, minuti muti 53 → 38, 1
 il gol dell'eroe subito dopo un corner nostro; media 5,7 → **5,9**. Nuova AF (l'azione della
 libreria continua oltre il duplice fischio) → **7.837** nel sorgente (il fischio tronca anche la
 libreria), non nel build committato.
+
+### 7.837 v1 — CI rossa (manovra-viva 6 su banda 10), AF ancora 1 → v2 in misura
+
+Rituali del 7.837 v1: career PASS, **CI exit 1**: `manovra-viva` **6 righe su 2 partite (catena 2 +
+libreria 4)**, banda 10. Il playtest n° 13 dice anche che v1 non chiudeva AF: l'azione della
+libreria nasceva **sul tick stesso del 45'**, dopo il troncamento. **v2**: la libreria non si apre
+sul 45' né durante la ripresa (`kickRef`, `kickoffRef`). Nota di banda: la libreria oggi compete
+con le occasioni a cinque battute (7.829) per gli stessi slot di riga — 17, 10, 6 righe nelle ultime
+tre corse del guardiano. Se la v2 resta sotto 10, la scelta è fra tenere AF aperta (una riga su
+quattro partite) e rivedere la banda a verbale; non si tocca la banda di nascosto.
