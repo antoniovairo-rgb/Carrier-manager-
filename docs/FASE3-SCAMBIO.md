@@ -3415,3 +3415,11 @@ Quattro versioni sullo stesso seme (minuti di palla morta su Moretti, rosso **41
   (step 2) passa dal cancello forzato come il fischio: **14** minuti di palla morta, 7 interruzioni.
 Rosso `__CPM_NO843`. Playtest n° 23 + career + CI in corso. Banda del guardiano `arbitro-esiste`
 (≥ 6 interruzioni su 2 partite) da leggere.
+
+
+### 7.843 v4 sul branch (a87db65): Ritmo 5 → 6
+
+Playtest n° 23: minuti muti 41/45/45/33 → **34/31/28/31**, palla morta 4-7 a partita (era 24), righe
+lette 76-91. Career PASS, CI exit 0 (manovra-viva 50, arbitro-esiste 22 su 2 partite). Media **6,4**.
+Quello che resta muto è per progetto (pausa di lettura dopo ogni riga, ripresa dopo ogni gol) più
+dieci minuti di «fermo» senza palla morta a Vairo, da leggere.

@@ -135,3 +135,13 @@ Chiuse con misura in questo giro: **P** (chiusure 0/2 → 8/11), **E** (2/2 vs 0
 7.836 v2 sostituiva la libreria con le occasioni, non era una perdita. Aperte: **ritmo** (33-45 minuti
 muti nel diario: da verificare con lo schermo), U, R ridimensionata, S1, S5 seconda metà, il titolo
 d'intento generico.
+
+
+## Stato al 09/09 mezzogiorno (build 7.843 sul branch, a87db65)
+
+Playtest: n°19 6,2 → n°22 6,3 → **n°23 6,4**. Metro 8,0. Aree: Causalità 7, Azioni extra-eroe 7,
+Interazioni 7, Coerenza 7; Realismo, Credibilità, Varietà, Ritmo, Highlight, Telecronaca, Immersione,
+Carriera a 6. Chiuse in questo giro con misura: P, E, AC (censita), AF, Ritmo-palla morta (24 → 4-7
+minuti). Strumenti: titolo e scelta della scena nel diario; il guardiano conta le battute di piano;
+il diario classifica i minuti muti dallo schermo. Aperte: «fermo» 10' a Vairo, U, S1, S5 seconda
+metà, il titolo d'intento generico, e le aree a 6.
