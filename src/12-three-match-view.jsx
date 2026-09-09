@@ -1515,6 +1515,8 @@ function ThreeMatchView(props){
          c'e' la stessa informazione, ma istantanea e a costo zero: il pallone RESO, il pallone
          LOGICO (cio' che telecronaca e piani affermano) e la firma dello scrittore che ha vinto
          il fotogramma. Nessun calcolo per fotogramma: legge campi gia' esistenti. */
+      window.__CPM_PLPOS=function(i){try{const _P=propsRef.current||{};const _q=(_P.allPlayers||[])[i];const _pp=sr.current.players&&sr.current.players[i];const m=_pp&&_pp.mesh;if(!_q||!m)return null;
+        return{lx:+(+_q.x).toFixed(2),ly:+(+_q.y).toFixed(2),mx:+(m.position.x+50).toFixed(2),my:+(m.position.z/0.68+50).toFixed(2),sp:+((m._sp||0)).toFixed(2),vmax:+((m._vmax||0)).toFixed(2),tx:(m._ctx==null?null:+(m._ctx+50).toFixed(2)),ty:(m._ctz==null?null:+(m._ctz/0.68+50).toFixed(2)),port:!!m._port850,vx:+((m._vx||0)).toFixed(2),vz:+((m._vz||0)).toFixed(2)};}catch(_e){return null;}};/* [censimento telefono n°1] un giocatore: punto logico e corpo, per la serie temporale del ritardo */
       window.__CPM_WS=function(){try{
         const _P=propsRef.current||{};
         return{rx:+(ball.position.x+50).toFixed(2),ry:+(ball.position.z/0.68+50).toFixed(2),
@@ -1524,6 +1526,9 @@ function ThreeMatchView(props){
                pad:(sr.current&&sr.current._pad555)||null,
                car:(function(){try{const _cr=_P.carrierRef&&_P.carrierRef.current;if(!_cr||_cr.i==null)return null;const _pp=sr.current.players&&sr.current.players[_cr.i];const m=_pp&&_pp.mesh;return m?{i:_cr.i,x:+(m.position.x+50).toFixed(1),y:+(m.position.z/0.68+50).toFixed(1)}:null;}catch(_e){return null;}})(),/* [misura S2] il corpo del portatore che dice la SIMULAZIONE */
                por:(function(){try{const m=sr.current&&sr.current._por526&&sr.current._por526.mesh;return m?+(m.position.x+50).toFixed(1):null;}catch(_e){return null;}})(),
+               carL:(function(){try{const _cr=_P.carrierRef&&_P.carrierRef.current;if(!_cr||_cr.i==null)return null;const _q=(_P.allPlayers||[])[_cr.i];return _q&&_q.x!=null?{x:+(+_q.x).toFixed(1),y:+(+_q.y).toFixed(1)}:null;}catch(_e){return null;}})(),/* [censimento telefono n°1] il portatore della simulazione nelle sue coordinate LOGICHE */
+               chi:(function(){try{const _c=_P.chaserRef850&&_P.chaserRef850.current;return (_c&&_c.i!=null)?_c.i:null;}catch(_e){return null;}})(),/* [7.850 v3] l'inseguitore dichiarato dalla simulazione */
+               pori:(function(){try{const m=sr.current&&sr.current._por526&&sr.current._por526.mesh;if(!m)return null;const _ps=sr.current.players||[];for(let i=0;i<_ps.length;i++){if(_ps[i]&&_ps[i].mesh===m)return i;}return m===hero?-2:-1;}catch(_e){return null;}})(),/* [censimento telefono n°1] chi e' il portatore DEL RENDERER (indice), per confrontarlo con carrierRef */
                arc:{on:ballArcActive?1:0,bg:ballArcIsBG?1:0,
                     tx:+(ballArcTgtX+50).toFixed(1),ty:+(ballArcTgtZ/0.68+50).toFixed(1),
                     t:+(+ballArcT||0).toFixed(2),dur:+(+ballArcDur||0).toFixed(2)}};
@@ -1766,9 +1771,9 @@ function ThreeMatchView(props){
            LEZIONE: quando un numero descrive «quanto e' grave X», il campione non puo' essere selezionato
            su X. Vale anche per i 3,5 m «a gioco vivo» dello stesso censimento — stessa tautologia, stessa
            inaffidabilita'. */
-        const _tsm=Math.min(dt*(1.25+mesh._react*0.95),1);mesh._ctx+=(tx-mesh._ctx)*_tsm;mesh._ctz+=(tz-mesh._ctz)*_tsm;// bersaglio commesso smussato, con prontezza PER GIOCATORE
+        const _tsm=mesh._port850?1:Math.min(dt*(1.25+mesh._react*0.95),1);mesh._ctx+=(tx-mesh._ctx)*_tsm;mesh._ctz+=(tz-mesh._ctz)*_tsm;// bersaglio commesso smussato, con prontezza PER GIOCATORE · [7.850] il portatore non ha bersaglio commesso: e' sul pallone
         const cdx=mesh._ctx-mesh.position.x,cdz=mesh._ctz-mesh.position.z,cd=Math.hypot(cdx,cdz);
-        const _dn=cd>1e-3?1/cd:0,_ds=Math.min(cd*3,mesh._vmax);
+        const _dn=cd>1e-3?1/cd:0,_ds=Math.min(cd*3,mesh._port850?(cd>3?13.0:mesh._vmax):mesh._vmax);/* [7.850] il portatore in ritardo di piu' di 3u scatta a 13 u/s */
         /* RAMPA D'ARRIVO CONTINUA invece della soglia secca. Con una deadzone netta la velocità-obiettivo
            saltava fra 0 e piena a ogni oscillazione attorno alla soglia: misurato, faceva triplicare gli strappi
            (jerk 9.9 → 40.9) e quasi raddoppiare gli arresti secchi. Ora la velocità sfuma dentro l'ultimo metro:
@@ -1780,7 +1785,10 @@ function ThreeMatchView(props){
            velocità — a passo d'uomo si gira quasi sul posto, in corsa serve una curva. Prima il vettore velocità
            poteva ruotare di 180° in mezzo secondo: è la firma del movimento robotico. */
         const _cs=Math.hypot(mesh._vx||0,mesh._vz||0);
-        if(_cs>0.7&&(_tvx||_tvz)){
+        /* [7.850 v4] Traccia per fotogramma (tr850): per il portatore la velocita' voluta scendeva a 2-4 u/s con 13 disponibili — il freno
+           per girarsi (7.241, x0,18) e il limite di sterzata scattano a ogni spostamento del bersaglio, e il bersaglio dell'uomo sul
+           pallone si sposta di continuo. Chi porta o insegue il pallone sterza senza freno: e' l'unico corpo che deve STARE su un punto. */
+        if(!mesh._port850&&_cs>0.7&&(_tvx||_tvz)){
           const _cur=Math.atan2(mesh._vz,mesh._vx),_wnt=Math.atan2(_tvz,_tvx);
           let _da=((_wnt-_cur+Math.PI*3)%(Math.PI*2))-Math.PI;
           /* [7.241.0 batch PO gi28/29/37 «Non si vede il compagno che conclude» — attribuito con AR53/54: il
@@ -1800,12 +1808,13 @@ function ThreeMatchView(props){
            lo strappo al 90° percentile arrivava a 35-40 u/s² (baseline 9.9), cioè un'accelerazione da cartone
            animato. Ora la variazione di velocità per frame è limitata da un'accelerazione massima PER GIOCATORE:
            lo strappo è vincolato per costruzione e chi è più pesante ci mette di più a lanciarsi e a fermarsi. */
-        const _amax=5.3+mesh._acc*1.5;/* 7.6-9.2 u/s²: un calciatore vero accelera 4-8 m/s², e il tetto è ciò che rende la partenza «pesante» invece che a scatto */
+        const _amax=(5.3+mesh._acc*1.5)*(mesh._port850?2.5:1);/* [7.850] il portatore si lancia · 7.6-9.2 u/s²: un calciatore vero accelera 4-8 m/s², e il tetto è ciò che rende la partenza «pesante» invece che a scatto */
         const _dvx=_tvx-(mesh._vx||0),_dvz=_tvz-(mesh._vz||0),_dv=Math.hypot(_dvx,_dvz),_lim=_amax*dt;
         if(_dv>_lim&&_dv>1e-4){mesh._vx=(mesh._vx||0)+_dvx/_dv*_lim;mesh._vz=(mesh._vz||0)+_dvz/_dv*_lim;}
         else{mesh._vx=_tvx;mesh._vz=_tvz;}
         if(typeof window!=='undefined'&&window.__CPM_D592)window.__CPM_DT592=dt;/* [7.592.0 collaudo] il dt vero del passo di integrazione */
         mesh.position.x+=mesh._vx*dt;mesh.position.z+=mesh._vz*dt;
+        if(mesh._port850&&typeof window!=='undefined'&&window.__CPM_REC){try{const _T=(window.__CPM_TR850=window.__CPM_TR850||[]);if(_T.length<800)_T.push({dt:+dt.toFixed(3),cd:+cd.toFixed(1),ds:+_ds.toFixed(1),ar:+_arS.toFixed(2),tv:+Math.hypot(_tvx,_tvz).toFixed(1),v:+Math.hypot(mesh._vx,mesh._vz).toFixed(1),bf:+(_cs>0.7?1:0),x:+mesh.position.x.toFixed(2),z:+mesh.position.z.toFixed(2),i:mesh._mIdx});}catch(_e){}}/* [7.850 traccia] */
         if(mesh._isGk&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_GKV705=window.__CPM_GKV705||{});_w[mesh.position.x<0?'home':'away']={vz:+(mesh._vz||0).toFixed(1),z:+mesh.position.z.toFixed(1)};}catch(_e){}}/* [7.705 strumentazione] velocita' residua del portiere: se dopo il tuffo _vz resta carica, il nuoto e' inerzia dell'integratore */
         /* IL CAMPO È UN VINCOLO. Col vecchio lerp la velocità decadeva da sola avvicinandosi al bersaglio, quindi
            nessuno usciva mai; con l'accelerazione limitata un giocatore lanciato ha bisogno di spazio per frenare
@@ -2273,7 +2282,7 @@ function ThreeMatchView(props){
              se il pallone reso e' gia' entro 3,2u da quel corpo — e il pallone reso NON ci sta, che e' il difetto. Il
              renderer deve PORTARE il pallone ai piedi del portatore logico, non solo sapere chi e'. Resta a richiesta
              (__CPM_SI813); il taglio vero e' S1+S2 nel blocco del pallone. */
-          if((typeof window!=='undefined'&&window.__CPM_SI813)&&P.matchPhase==='playing'&&P.carrierRef){try{
+          if((typeof window!=='undefined'&&(window.__CPM_SI813||!window.__CPM_NO850))&&P.matchPhase==='playing'&&P.carrierRef){try{/* [7.850.0] acceso di default: col corpo del portatore sul punto logico (7.850) la colla 7.523 lo trova. Rosso __CPM_NO850 */
             const _cr=P.carrierRef.current;
             if(_cr&&_cr.i!=null){const _pp=sr.current.players&&sr.current.players[_cr.i];const _src=(P.allPlayers||[])[_cr.i];
               if(_pp&&_pp.mesh&&_pp.mesh!==hero)sr.current._por526={mesh:_pp.mesh,lato:(_src&&_src.team)||'home'};}
@@ -4763,6 +4772,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             D.n=(D.n||0)+1;}
         }catch(_e){}}
         const _readFreeze=(_asIfPlay&&_inRead&&_chooseT>=0),_doSnap=(_hlSnap&&_asIfPlay);
+        /* ⚠️ [7.850.0 — IL PORTATORE E' DOVE LA SIMULAZIONE LO METTE (S2 v3). Rosso __CPM_NO850]
+           Collaudo da telefono n°1 (09/09): pallone ai piedi del padrone della simulazione 6-17% (banda 60), «da due
+           passi» col pallone lontano da tutti 3/3. Censimento (padroni/ritardo, Vairo casa): il corpo del portatore
+           dista 11,8u dal suo punto logico = 8,2u di OFFSET VISIVO di questo blocco (forma del reparto, pressing,
+           richiamo) + 6,3u di inseguimento a 5,2 u/s; il pallone reso invece segue il logico entro 1-2u. La nota
+           7.592 qui sotto lo aveva misurato e lasciato come «decisione di prodotto»: la decisione e' presa dalla
+           direttiva PO («la simulazione e' la source of truth») e dal metro del telefono. Per l'uomo che la
+           simulazione dice avere il pallone (carrierRef.i) il bersaglio della mesh e' il suo punto LOGICO, senza
+           offset ne' repulsione; in animOne quel corpo non passa dal bersaglio commesso e corre fino a 13 u/s
+           (come l'eroe che rincorre la sua giocata). Gli altri venti tengono la forma. Misura: pallone reso ai piedi
+           del portatore (<= 3u) 9-11% → >= 60%; salti > 8u in calo; nella sonda da telefono, 4 partite. */
+        const _ci850=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO850)return -1;if(P.matchPhase!=='playing'||!P.carrierRef)return -1;const _c=P.carrierRef.current;return (_c&&_c.i!=null)?_c.i:-1;}catch(_e){return -1;}})();
+        /* [7.850 v3] ANCHE L'INSEGUITORE. Traccia ritardo (v1/v2): il corpo del portatore chiude da 17 a 4u in 2-3 s, ma il portatore cambia
+           11 volte al minuto (ogni passaggio elegge un ricevente) e il nuovo eletto parte da 10u di offset: il ritardo mediano resta 8u
+           per costruzione. Chi sta per ricevere deve gia' essere dove la simulazione lo mette: la simulazione dichiara chi insegue il
+           pallone (chaserRef850 = `_cI553`), e anche quel corpo va sul punto logico. */
+        const _ch850=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO850)return -1;if(P.matchPhase!=='playing'||!P.chaserRef850)return -1;const _c=P.chaserRef850.current;return (_c&&_c.i!=null)?_c.i:-1;}catch(_e){return -1;}})();
         for(let i=0;i<_players.length&&!P.ceremony&&!P.shootout;i++){const t=_tg[i],pp=_players[i];if(!t||!pp)continue;/* [7.2.0] durante la premiazione il movimento off-ball è guidato dal blocco ceremony (giro/curva/podio) */
           // FIX passaggio: il compagno destinatario/ricevente NON si sposta — resta fermo ad accogliere la palla (ricezione leggibile)
           if(pp.mesh===passTargetMesh||(pp.mesh._rcvT!=null&&pp.mesh._rcvT>=0)||(pp.mesh._failRunT!=null&&pp.mesh._failRunT>=0)||pp.mesh._celT371===1||pp.mesh._carry526!=null||(sr.current._pkCol415&&pp.mesh===sr.current._pkCol415.m))continue;/* [7.618.0] anche il RACCOGLITORE e' fuori dal driver di formazione: senza questo, il driver lo tirava allo slot ogni frame e il pallone vagante restava solo (misurato: driver del raccoglitore vivo 28 frame, avversario piu' vicino fermo a 7-8u) — decima istanza di «piu' autorita' sulla stessa grandezza» *//* [7.523.0 PORTATORE] chi conduce/riceve e' fuori dal driver di formazione *//* [7.371.0] chi sta correndo a festeggiare non viene riportato in posizione dall'AI off-ball: due driver sullo stesso mesh = il difetto del 5.43.13 */
@@ -4832,7 +4858,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             }
             continue;}// FREEZE #2: off-ball fermi (ma rivolti alla palla) durante la fase di lettura
           if(pp.mesh._frz685)pp.mesh._frz685=null;/* [7.685.0] fuori dalla lettura la base del respiro si butta: tenerla vorrebbe dire far ripartire la prossima attesa da un punto vecchio */
-          animOne(pp.mesh,G2X(clamp(t.x+(t.rx||0),2,98)),G2Z(clamp(t.y+(t.ry||0),2,98)),aDt,ak,bx,bz);}
+          {const _q850=(_ci850===i||_ch850===i)?(P.allPlayers||[])[i]:null;
+           if(_q850&&_q850.x!=null&&!_q850.gk){pp.mesh._port850=true;animOne(pp.mesh,G2X(clamp(+_q850.x,2,98)),G2Z(clamp(+_q850.y,2,98)),aDt,ak,bx,bz);}/* [7.850.0] il portatore: punto logico, niente offset */
+           else{pp.mesh._port850=false;animOne(pp.mesh,G2X(clamp(t.x+(t.rx||0),2,98)),G2Z(clamp(t.y+(t.ry||0),2,98)),aDt,ak,bx,bz);}}}
         // item 2 (5.49.6): INGRESSO DEL SUBENTRANTE — l'eroe parte dalla LINEA LATERALE (area tecnica), riceve le ultime indicazioni
         //   (si gira verso la panchina), poi cammina IN CAMPO fino alla sua posizione. Override del target eroe durante la sequenza.
         if(subEntryT>=0){

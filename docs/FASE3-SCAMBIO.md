@@ -3499,3 +3499,62 @@ area da avanzamento 58. n° 30: tiri da dentro l'area **6/12 = 50 %** (rosso 3/1
 tiratore sul pallone **6/12 ≤ 5u, 9/12 ≤ 9u** (rosso 0/12). Career PASS, CI exit 0. Scorecard 6,4,
 Realismo 6 → 7. Residuo dichiarato: tre tiri con il tiratore a 11-16u, l'attesa scade dopo tre tick
 col pallone non ancora arrivato.
+
+## 7.850 — il portatore è dove la simulazione lo mette (S2 v3), dal collaudo da telefono
+
+Il collaudo da telefono n°1 (5,3) ha misurato il pallone reso ai piedi del padrone della simulazione
+al 6-17 % (banda ≥ 60). Censimento sul campo (sonde `padroni`/`ritardo`, Vairo casa, 150 s):
+
+| termine | mediana |
+|---|---|
+| pallone reso ↔ corpo del portatore della simulazione | 11,8u (≤ 3u nel 9 %) |
+| pallone reso ↔ corpo PIÙ VICINO di chiunque | 1,5u (≤ 3u nel 66 %) |
+| pallone reso ↔ pallone logico | 1-2u |
+| corpo del portatore ↔ suo punto logico | **11,8u** = offset visivo 8,2u + inseguimento 6,3u |
+| colla `portatore` del renderer su un corpo diverso da `carrierRef` | 274 campioni contro 41 |
+
+Cioè: il pallone reso sta ai piedi di *qualcuno* due volte su tre, ma non dell'uomo che la simulazione
+nomina, perché il corpo di quell'uomo è disegnato a 12u dal suo punto logico: 8u di offset voluto del
+blocco «forma del reparto / pressing» (la nota 7.592 lo aveva misurato e lasciato come decisione di
+prodotto) e 6u di inseguimento a 5 u/s. La decisione la prende la direttiva («la simulazione è la
+source of truth»): per l'uomo sul pallone l'occhio deve vedere ciò che la simulazione decide.
+
+Quattro tagli, uno per volta, ciascuno con la sua traccia:
+- **v1** (src/12): il portatore (`carrierRef.i`) ha per bersaglio il suo punto logico, senza offset;
+  in `animOne` niente bersaglio commesso, punta 13 u/s, accelerazione ×2,5; `_por526` segue
+  `carrierRef` (la 7.813 v1, che da sola non bastava). Coppia ≤ 3u: Vairo 7 % → 25 %, Moretti
+  24 % → 39 %. La traccia della tenuta: il corpo chiude da 17 a 8,6u, poi il punto logico salta di
+  13-20u (il passo k 0,55 una volta ogni tre tick).
+- **v2** (src/14): l'inseguitore del pallone fa il suo passo a ogni tick, gli altri venti al passo di
+  prima. Vairo 28 %, Moretti 18 %: non si muove.
+- **v3**: la simulazione dichiara l'inseguitore (`chaserRef850` = `_cI553`) e anche quel corpo va sul
+  punto logico (chi sta per ricevere deve già esserci: il portatore cambia 9-11 volte al minuto).
+  Vairo 33 %, Moretti 17 %.
+- **v4**: la traccia per fotogramma (`__CPM_TR850`) mostra la velocità voluta a 2-4 u/s con 13
+  disponibili: il freno per girarsi (7.241) e il limite di sterzata scattano a ogni spostamento del
+  bersaglio. Per il portatore e l'inseguitore, niente freno. **Vairo 48 %, Moretti 34 %**; corpo del
+  portatore ↔ suo punto logico 11,8 → 6,7u; inseguimento 8,2 → 4,5u.
+- **v5 — REVOCATA**: passo lineare min(d, 15u) per l'inseguitore nella simulazione: Vairo 42 %,
+  Moretti 41 %, pallone logico ↔ portatore logico 5,9/5,2 → 6,8/8,7u. Non batte la misura.
+
+Residuo, misurato: il pallone LOGICO sta a 5-6u dal portatore LOGICO (≤ 3u nel 25 %). Non è la
+corsa: è l'etichetta. `carrierRef` resta sull'uomo finché il pallone non è oltre 12u (7.642), quindi
+un passaggio corto lascia «portatore» chi non ce l'ha più, e l'elezione cambia solo se il pallone
+arriva entro 2,5u da qualcuno. È lo stato «in volo» della roadmap S1+S2: il prossimo taglio (7.851),
+sul lato simulazione, con i consumatori del portatore (righe, custodia, coda delle proposte) da
+censire prima.
+
+Misura finale sulla sonda da telefono (pallone reso ai piedi del padrone della simulazione, ≤ 3u):
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| rosso `NO850` (stessa build) | 13 % | — | 5 % | — |
+| n°1 (7.849) | 15 % | 17 % | 7 % | 6 % |
+| **7.850** | **32 %** | **34 %** | **23 %** | **14 %** |
+| a palla a terra, 7.850 | 37 % | 44 % | 31 % | 21 % |
+| distanza reso↔padrone, mediana (rosso → 7.850) | 11,3 → 8,4u | 11,1 → 7,5u | 11,6 → 8,4u | 10,3 → 8,2u |
+| salti > 8u (rosso → 7.850) | 54 → 43 | 52 → 64 | 49 → 44 | 49 → 54 |
+
+Ogni partita batte il suo rosso; la banda (≥ 60 %) resta lontana e i salti non si muovono. Career
+PASS, CI exit 0 (manovra-viva 59, gol del simulatore 7/7). **Sul branch, parziale**: il residuo è
+l'etichetta del portatore (7.851). fps del banco 14-17: dichiarato, non è il telefono.

@@ -195,3 +195,15 @@ una bugia dello strumento. Sonda v2: cattura continua via CDP screencast, età d
 ≤ 0,5 s, misurata e scritta nella scheda; i fotogrammi al secondo si misurano nei primi 8 s prima di
 accendere lo screencast («senza sonda») e, a parte, con la sonda accesa; `CPM_FOTO=0` ripete la partita
 senza foto per verificare che i numeri del campo non dipendano dalla sonda.
+
+
+## Stato al 09/09 notte (build 7.850 sul branch)
+
+Dal telefono n°1 (5,3) la prima causa strutturale misurata sul campo: il corpo dell'uomo nominato
+stava a 12u dal suo punto logico (8u di offset visivo «forma del reparto», 6u di inseguimento
+frenato). 7.850: portatore e inseguitore dichiarati dalla simulazione (`carrierRef`, `chaserRef850`)
+sono disegnati sul loro punto logico, corrono a 13 u/s senza freno di sterzata, `_por526` legge
+`carrierRef`. Telefono: pallone ai piedi del padrone 13/5 % (rosso) → 32/34/23/14 %; banda 60.
+v5 revocata. Prossimo: 7.851, lo stato «in volo» — l'etichetta `carrierRef` cade quando il pallone
+lascia l'uomo, non a 12u (7.642); prima il censimento dei consumatori dell'etichetta (righe,
+custodia, coda delle proposte). Poi #74 (regia: il gol del compagno in quadro).

@@ -16,12 +16,13 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, __dirna
 import fs from 'node:fs'; import path from 'node:path';
 const NOME=process.env.CPM_NOME||'Vairo';const SEME=+(process.env.CPM_SEME||4242);const AWAY=!!process.env.CPM_AWAY;
 const FOTO=process.env.CPM_FOTO!=='0';
-const OUT=path.join(__dirname,'..','out','collaudo-telefono',NOME+(AWAY?'-fuori':'-casa')+(FOTO?'':'-misure'));/* senza foto: cartella a parte, non cancella i fotogrammi */
+const ROSSO=(process.env.CPM_ROSSO||'').split(',').filter(Boolean);/* CPM_ROSSO=__CPM_NOxxx,... : la coppia rosso/verde */
+const OUT=path.join(__dirname,'..','out','collaudo-telefono',NOME+(AWAY?'-fuori':'-casa')+(FOTO?'':'-misure')+(ROSSO.length?'-rosso':''));/* senza foto: cartella a parte, non cancella i fotogrammi */
 fs.rmSync(OUT,{recursive:true,force:true});fs.mkdirSync(OUT,{recursive:true});
 const srv=await startServer();const port=srv.address().port;const b=await launchBrowser();
 const ctx=await b.newContext({viewport:{width:412,height:915},deviceScaleFactor:2,isMobile:true,hasTouch:true});
 const page=await ctx.newPage();await installCdnRoutes(page);
-await page.addInitScript((o)=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_CRO802=[];window.__CPM_SCMS681=3500;window.__CPM_DTREAL=true;if(o.away)window.__CPM_AWAY_TEST=true;},{away:AWAY});
+await page.addInitScript((o)=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_CRO802=[];window.__CPM_SCMS681=3500;window.__CPM_DTREAL=true;if(o.away)window.__CPM_AWAY_TEST=true;o.rosso.forEach(k=>{window[k]=true;});},{away:AWAY,rosso:ROSSO});
 await openMatch(page,port,{skipLoadAll:true,name:NOME});
 await page.evaluate((s)=>window.__CPM_AUTOPLAY(true,{seed:s,policy:'seeded',tickMs:300}),SEME);
 await sleep(8000);const fpsPulito=await page.evaluate(()=>Math.round(window.__CPM_FPS708||0));
