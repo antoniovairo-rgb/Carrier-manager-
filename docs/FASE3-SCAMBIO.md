@@ -3423,3 +3423,20 @@ Playtest n° 23: minuti muti 41/45/45/33 → **34/31/28/31**, palla morta 4-7 a 
 lette 76-91. Career PASS, CI exit 0 (manovra-viva 50, arbitro-esiste 22 su 2 partite). Media **6,4**.
 Quello che resta muto è per progetto (pausa di lettura dopo ogni riga, ripresa dopo ogni gol) più
 dieci minuti di «fermo» senza palla morta a Vairo, da leggere.
+
+
+### 7.845 (RITMO, «fermo») e 7.844 (R, la prima scena al 13'): cause lette con lo schermo
+
+**Fermo**: a Vairo (n° 23) dieci minuti classificati «fermo» senza palla morta. Sonda per minuto:
+47'-53', una punizione armata al 47' con il calcio d'inizio della ripresa a 2 e il dado in pausa — il
+piazzato e il calcio d'inizio avanzano solo su una riga sorteggiata (tetto reale del piazzato 30 s =
+17 minuti di gioco). Stessa malattia del corner dell'occasione (7.818 v6), del contropiede (7.839) e
+della palla morta: la macchina promessa non deve aspettare il dado. 7.845: piazzato (senza calcio
+d'inizio e senza piano aperto) e calcio d'inizio passano dal cancello forzato. Vairo: fermo 10 → 4
+minuti, tutti con la loro riga (33'-34' e 53'-54'). Rosso `__CPM_NO845`.
+
+**Prima scena al 13'**: n° 23, tutte e quattro le partite (n° 19: 19/10/30/10). Il calendario delle
+scene parte all'8' per tutti (7.500: 8 + passo×i, non seminato) e il «picco» dell'andamento (7.803) si
+misurava su una storia lunga un minuto: al primo minuto utile era già vero. 7.844: il picco vuole
+almeno sei minuti di storia e l'apertura della finestra è seminata per partita (0-5 minuti in più).
+Vairo 13' → 14'. Rosso `__CPM_NO844`. Playtest n° 24 + career + CI in corso.
