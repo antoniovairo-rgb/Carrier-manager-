@@ -1145,3 +1145,21 @@ piano; (2) il blocco del movimento gira un tick su tre → a ogni tick sotto cus
 (4) l'attesa misurava la distanza dal pallone in volo → uomo e pallone sul punto d'arrivo. Restano i
 tiri senza attesa (solo il filtrante la aveva) a 19-25u e l'area 2/14: → v6, ogni tiro aspetta,
 filtrante da avanzamento 58.
+
+
+---
+
+# Rapporto n° 30 — 7.848 v6 (ogni tiro aspetta uomo e pallone sul punto; filtrante da 58) — 09/09
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| tiri di piano | 4 | 4 | 1 | 3 |
+| da dentro l'area (≥ 82) | 2 | 3 | 0 | 1 |
+| tiratore sul pallone (≤ 5u) | 3/4 (4,6 · 8,6 · 2,0 · 4,5) | 2/4 (1,2 · 6,0 · 4,7 · 11,0) | 0/1 (16,3) | 1/3 (13,9 · 8,2 · 2,0) |
+| minuti muti | 33 | 28 | 43 | 29 |
+| finale | 0-0 | 1-0 | 2-1 | 4-0 |
+
+Da dentro l'area **6/12 = 50 %** (rosso n° 27: 3/13 = 23 %; roadmap S5: ≥ 50 %). Tiratore sul pallone
+**6/12 ≤ 5u, 9/12 ≤ 9u** (rosso: 0/12, 10-26u). Restano tre tiri con il tiratore a 11-16u: l'attesa
+scade dopo tre tick e il pallone non è ancora arrivato sul punto. Galli: un solo tiro di piano e 43
+minuti muti (il seme cambia le partite: 4-0 di Conti, 0-0 di Vairo). Rituali in corso.
