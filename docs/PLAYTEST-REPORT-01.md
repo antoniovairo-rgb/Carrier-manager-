@@ -1020,3 +1020,24 @@ Il seme cambia le partite (Vairo 0-0, Conti 4-2): non è la 7.843, è il mondo c
 minuti ora si batte al minuto dopo). Vairo passa a 14 minuti muti e 113 righe (22 sono del secondo
 commentatore, nessuna ripetizione anomala). **7.844**: prima scena 13/13/13/13 → **14/13/25/13**: due
 partite restano al 13' — l'offset seminato vale 0 per due semi su quattro. Non chiuso: si misura ancora.
+
+
+---
+
+# Rapporto n° 25 — 7.845 v2 (7.844 v2: finestra della prima scena seminata 0-9') — 09/09
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti muti | 110 / 14 | 92 / 28 | 93 / 32 | 89 / 33 |
+| prima scena dell'eroe | 21' | 24' | 21' | 13' |
+| finale | 2-0 | 1-0 | 4-2 | 4-2 |
+
+**7.844 v2**: prima scena 13/13/13/13 (n° 23) → 14/13/25/13 (v1) → **21/24/21/13**: non è più un
+copione, ma due partite cadono allo stesso minuto e Conti resta al 13'. La finestra seminata sposta
+l'apertura, il picco dell'andamento decide il minuto: si dichiara parziale e si misura ancora.
+
+**Nuova, dallo strumento schermo**: Moretti 36'-44', **nove minuti senza una riga** con la libreria
+«in recita». L'azione si era aperta a ridosso della scena del 32'; il cambio di fase ha cancellato i
+suoi timer, l'indice non è mai avanzato e la regola (a) del 7.833 ha taciuto il tick fino al duplice
+fischio. → **7.846**: oltre 9 s reali l'azione è morta e lascia il microfono (un'azione vive 1,3 s ×
+5 righe). Galli: «vuoto» 3 minuti, da guardare.
