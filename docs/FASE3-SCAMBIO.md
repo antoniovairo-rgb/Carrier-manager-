@@ -3256,3 +3256,13 @@ nei tick quieti sposta poco perché i tick quieti sono pochi e le scritture caus
 turno da loro. **v2**: storia del turno negli ultimi 15', nei tick quieti se la quota nostra sta
 sotto il possesso del microsim di più di 10 punti il turno passa a noi, se sta sopra di più di 10
 passa a loro. Stessa misura, in corso.
+
+### 7.836 v2 misurata: il turno si avvicina alla simulazione, non ancora dentro i ±10 ovunque
+
+Minuti col turno nostro su 89 (rosso → v1 → **v2**; possesso microsim in coda): Vairo 22 → 23 →
+**34** (51-62%), Moretti 42 → 47 → **39** (49-69%), Galli 27 → 42 → **42** (44-48%), Conti 37 → 38
+→ **45** (49-72%). Dentro i ±10 punti: Galli e Conti (2/4); Vairo e Moretti restano sotto di 15-20.
+Finestre libere di Vairo: turno nostro 1/10 → **4/10**, con adv ≥ 48 **0 → 3**, occasioni armate
+2 → **4**. Il controllo agisce solo nei tick quieti, che sono pochi: il resto lo scrivono gli
+eventi. Misura che conta per il player: tiri nostri in casa nel diario (playtest n° 12), poi i
+rituali. Si dichiara quello che c'è, non quello che manca.
