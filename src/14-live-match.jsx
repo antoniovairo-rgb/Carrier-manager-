@@ -3527,7 +3527,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           /* IL PUNTO DEL PASSAGGIO: davanti al ricevente, nello spazio, mai piu' di sei passi — cosi' ci
              arriva davvero e resta lui il padrone del pallone. */
           const _avB=_avO(_b);
-          const _filtr847=(!(typeof window!=='undefined'&&window.__CPM_NO847)&&_avB>=64&&(_hpO("f847")%2)===0);/* [7.847.0 — S5, SECONDA META': IL FILTRANTE IN AREA (Rosso __CPM_NO847). Playtest n°26: 18 tiri di piano su 26 «da fuori / dal limite / da lontanissimo», perche' il punto d'arrivo sta 4-8 passi davanti al ricevente e il piu' avanzato del lato sta ad avanzamento 56-70 (censimento 7.792/7.796). La salita del blocco e' stata provata due volte e revocata (7.793, 7.797: le aperture atterravano dove l'uomo non c'era). Qui non si sposta il blocco: una volta su due, se il ricevente sta oltre avanzamento 64, l'apertura e' un FILTRANTE nello spazio (punto d'arrivo in area, 84-88) e la battuta del tiro ASPETTA che il ricevente sia sul pallone (fino a 3 tick): la corsa e' sua, il tiro parte da dove sta lui. */
+          const _filtr847=(!(typeof window!=='undefined'&&window.__CPM_NO847)&&_avB>=58&&(_hpO("f847")%2)===0);/* [7.848 v6] soglia 64 → 58: nel n°29 i riceventi stanno a 56-70 e il filtrante scattava 1 volta su 4 partite in due; la corsa di 26-30u si copre in tre tick a passo 0,55 *//* [7.847.0 — S5, SECONDA META': IL FILTRANTE IN AREA (Rosso __CPM_NO847). Playtest n°26: 18 tiri di piano su 26 «da fuori / dal limite / da lontanissimo», perche' il punto d'arrivo sta 4-8 passi davanti al ricevente e il piu' avanzato del lato sta ad avanzamento 56-70 (censimento 7.792/7.796). La salita del blocco e' stata provata due volte e revocata (7.793, 7.797: le aperture atterravano dove l'uomo non c'era). Qui non si sposta il blocco: una volta su due, se il ricevente sta oltre avanzamento 64, l'apertura e' un FILTRANTE nello spazio (punto d'arrivo in area, 84-88) e la battuta del tiro ASPETTA che il ricevente sia sul pallone (fino a 3 tick): la corsa e' sua, il tiro parte da dove sta lui. */
           const _pxB=_filtr847?clamp(84+((_hpO("s1")%5)),4,95):clamp(_avB+4+((_hpO("s1")%5)),4,95);/* avanzamento del punto d'arrivo */
           const _pyB=clamp((_b.q.y||50)+_JO(2,7),8,92);
           /* LA ZONA DEL TIRO decide le parole, non il contrario */
@@ -3562,7 +3562,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _no829=(typeof window!=='undefined'&&window.__CPM_NO829);
           const _tre=[
             {t:_apri[_hpO("ta")%_apri.length],x:_XO(_pxB),y:_pyB,chi:_b.i},
-            {t:_tiro[_hpO("tt")%_tiro.length],x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1,tiroDa792:_pxB,attendi847:_filtr847?1:0},
+            {t:_tiro[_hpO("tt")%_tiro.length],x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1,tiroDa792:_pxB,attendi847:1/* [7.848 v6] ogni tiro aspetta uomo e pallone sul punto d'arrivo, non solo il filtrante: n°29 i tiri senza attesa avevano il tiratore a 19-25u */},
             {t:_par.t,x:_XO(96),y:50+_JO(5,6),gk:1,esito:_par.esito},
           ];
           if(_no829||_ordO.length<5)return _tre;
