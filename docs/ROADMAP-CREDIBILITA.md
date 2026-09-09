@@ -213,3 +213,21 @@ telefono senza regressione (38/34/19/40 %). I «gol dell'eroe a centrocampo» er
 ritardo di 140 ms sulla scena, non un gol: rettificato. Prossimo: fotogrammi dei gol letti a occhio
 sul telefono; l'elezione d'arrivo (chi riceve entro 2,5u); il tiro «da due passi» con la porta fuori
 quadro.
+
+## Stato al 09/09 tarda sera (build 7.852 sul branch, f23b67a)
+
+Dal collaudo da telefono n°1 (5,3) a stasera, tre tagli sul campo, tutti misurati sul metro del
+telefono: **7.850** (il portatore e l'inseguitore sono dove la simulazione li mette: pallone ai piedi
+del padrone 13/5 % → 32/34/23/14 %), **7.851 revocata** (l'etichetta che cade: rumore ±6, nessun
+guadagno), **7.852** (il gol è un tiro che entra: pallone reso in rete alla riga 0/3 → 4/4). Sonde
+nuove: `collaudo-telefono` v3 (screencast, età per fotogramma, seconda foto a +1,2 s sui gol,
+quota di padrone dichiarato), `padroni`/`ritardo`/`tr850` (censimento del corpo del portatore),
+`gol74` (porta e pallone in quadro dopo la riga del gol). Lezioni: (15ª) uno scatto costava fino a
+4,7 s e il fotogramma mentiva di 1-3 minuti; (16ª) una coppia su 150 s di due partite non regge
+quando il rumore fra passate è ±6, decide il telefono su quattro partite.
+
+Aperto, in ordine: la lettura a occhio dei fotogrammi dei gol (+1,2 s) sul telefono e il playtest
+da telefono n°2; il tiro di piano emesso con l'attesa scaduta e il pallone lontano (Conti 21'
+«Incornata» col pallone a centrocampo, residuo #71); «tutto solo davanti alla porta» col difensore
+a 2u (il testo deve leggere la geometria); l'elezione d'arrivo (chi riceve entro 2,5u); la banda
+60 % del padrone (oggi 19-40 %). `main` resta 7.807. Nessun «puoi collaudare».
