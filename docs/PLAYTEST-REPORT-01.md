@@ -956,3 +956,46 @@ l'occasione armata al 40' arriva al tiro sul minuto del fischio e resta senza es
 
 **Media: 6,3** (n° 19: 6,2). Metro 8,0. La prossima area è il **Ritmo** (5): 33-45 minuti senza
 niente nel diario, con le pause lunghe nei primi minuti e dopo i gol del microsim.
+
+
+---
+
+# Rapporto n° 23 — 7.843 v4 (la palla morta dura quanto dura) — 09/09 mattina
+
+Strumento 7.843: ogni minuto muto del diario è classificato da quello che c'era sullo schermo.
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti muti (n° 22) | 71 / 41 | 62 / 45 | 59 / 45 | 81 / 33 |
+| righe / minuti muti (**n° 23**) | 83 / **34** | 76 / **31** | 85 / **28** | 91 / **31** |
+| di cui palla morta | 4 | 7 | 6 | 5 |
+| di cui pausa di lettura dopo una riga | 18 | 15 | 9 | 7 |
+| di cui ripresa dopo un gol / calcio d'inizio | 2 | 8 | 10 | 19 |
+| di cui fermo | 10 | 0 | 3 | 0 |
+| vuoto vero | 0 | 1 | 0 | 0 |
+| finale | 0-0 | 1-0 | 2-1 | 4-2 |
+
+Palla morta: da 24 minuti (Moretti, n° 22) a 4-7. Le righe lette salgono (71-91 contro 59-81). Quello
+che resta muto è **per progetto**: la pausa di lettura dopo ogni riga (2-5 tick, 7 dopo un gol o una
+scheda: una riga ogni ~3,5 s nelle fasi quiete) e la ripresa dopo ogni gol (3 tick; Conti con sei gol
+ne ha 19). «Fermo» 10 a Vairo: il gioco fermo senza palla morta (piazzato o scena), da guardare.
+Il seme cambia le partite (Vairo 0-0, Conti 4-2): non è la 7.843, è il mondo che diverge.
+
+## Scorecard n° 23
+
+| # | Area | n°22 | **n°23** |
+|---|------|:---:|:---:|
+| 1 Realismo | 6 | **6** |
+| 2 Credibilità da attaccante | 6 | **6** |
+| 3 Causalità | 7 | **7** |
+| 4 Varietà | 6 | **6** |
+| 5 Ritmo | 5 | **6** (34 / 31 / 28 / 31; palla morta 4-7; nessun fallo ogni 4') |
+| 6 Azioni extra-eroe | 7 | **7** |
+| 7 Highlight dell'eroe | 6 | **6** |
+| 8 Telecronaca | 6 | **6** |
+| 9 Interazioni | 7 | **7** |
+| 10 Coerenza fra i sistemi | 7 | **7** |
+| 11 Immersione | 6 | **6** |
+| 12 Carriera | 6 | **6** |
+
+**Media: 6,4** (n° 22: 6,3). Metro 8,0. Rituali in corso.
