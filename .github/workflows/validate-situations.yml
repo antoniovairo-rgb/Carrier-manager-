@@ -59,8 +59,8 @@ jobs:
         working-directory: .
         run: node tools/check-src.mjs
 
-      - name: Unit tests — AI Vision engine (test:vision, 28)
-        run: npm run test:vision
+      # test:vision (AI Vision engine, Ollama) TOLTO dal rituale su decisione del PO (09/09): mai usato in una
+      # decisione di questa missione, Ollama irraggiungibile da qui; il codice resta dormiente, si lancia a mano.
 
       # ⚠️ Se questo passo fallisce con «BACKBONE REGRESSION», la prima domanda NON e' «rigenero la
       #    baseline?»: e' «gli scostamenti sono corretti?». La baseline e' rimasta ferma dal 7.368.0 al
