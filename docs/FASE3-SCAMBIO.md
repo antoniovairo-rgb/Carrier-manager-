@@ -3490,3 +3490,12 @@ v6 in misura: ogni tiro aspetta (non solo il filtrante), filtrante da avanzament
 Quattordicesima lezione: sulle posizioni ci sono due autorità (il blocco a passo `k` e le corsie a
 velocità) e una terza che elegge il portatore a ogni tick; un nominato dal testo corre solo se tutte
 e tre glielo lasciano fare. Le revoche 7.793 e 7.797 avevano incontrato lo stesso muro senza vederlo.
+
+
+### 7.848 v6 sul branch (7f06d46): S5 al metro
+
+Ogni tiro di piano aspetta uomo e pallone sul punto d'arrivo (prima solo il filtrante); filtrante in
+area da avanzamento 58. n° 30: tiri da dentro l'area **6/12 = 50 %** (rosso 3/13; roadmap S5 ≥ 50 %),
+tiratore sul pallone **6/12 ≤ 5u, 9/12 ≤ 9u** (rosso 0/12). Career PASS, CI exit 0. Scorecard 6,4,
+Realismo 6 → 7. Residuo dichiarato: tre tiri con il tiratore a 11-16u, l'attesa scade dopo tre tick
+col pallone non ancora arrivato.

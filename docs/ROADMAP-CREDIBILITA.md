@@ -155,3 +155,13 @@ confermata quattro volte (corner, contropiede, palla morta, piazzato/calcio d'in
 promessa dal testo non deve aspettare il dado**. Aperte: R (prima scena: 14/13/25/13, v2 in misura),
 U, S1, S5 seconda metà, il titolo d'intento generico; aree a 6: Realismo, Credibilità, Varietà,
 Highlight, Telecronaca, Immersione, Carriera.
+
+
+## Stato al 09/09 sera (build 7.848 v6 sul branch, 7f06d46)
+
+Playtest: n°23 6,3 → n°30 **6,4**. Metro 8,0. Aree a 7: Realismo, Causalità, Azioni extra-eroe,
+Interazioni, Coerenza; a 6: Credibilità, Varietà, Ritmo, Highlight, Telecronaca, Immersione, Carriera.
+S5 chiusa al metro (tiri da dentro l'area 50 %, il nominato corre sul punto d'arrivo). S2 sul campo:
+il nominato dal piano è un solo padrone finché la custodia è viva (7.848). Aperte: S1 (un solo
+pallone), S3 v2 (l'atteggiamento governa la frequenza delle occasioni: Galli 1 tiro di piano in 89'),
+U, il titolo d'intento generico, la telecronaca ripetitiva nelle pause.
