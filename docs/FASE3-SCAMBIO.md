@@ -3246,3 +3246,13 @@ palla morta, scena) il turno si riallinea al possesso del microsim con un sorteg
 volta ogni 5 minuti, `_rndTick`). Rosso `__CPM_NO836`. Misura appaiata in corso: minuti col turno
 nostro contro possesso del microsim (bersaglio ±10 punti), occasioni nostre alle finestre libere
 (Vairo 1/10 → ≥ 3/10), poi playtest n° 12 (tiri nostri in casa: Vairo 0 in 89' per tre volte).
+
+### 7.836 v1 misurata: poco effetto → v2 (controllo, non dado)
+
+Minuti col turno nostro su 89, rosso → verde v1: Vairo **22 → 23** (possesso microsim 51-75%),
+Moretti 42 → 47, Galli 27 → 42, Conti 37 → 38 (possesso 49-66%). Finestre libere nostre: Vairo
+1/10 → 3/7 (adv ≥ 48: 0 → 2). Due partite su quattro dentro i ±10 punti: non basta. Il dado al 20%
+nei tick quieti sposta poco perché i tick quieti sono pochi e le scritture causali riportano il
+turno da loro. **v2**: storia del turno negli ultimi 15', nei tick quieti se la quota nostra sta
+sotto il possesso del microsim di più di 10 punti il turno passa a noi, se sta sopra di più di 10
+passa a loro. Stessa misura, in corso.
