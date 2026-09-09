@@ -817,3 +817,25 @@ Moretti 30' «Luca riparte in campo aperto» → 32' «Campo aperto per Luca» �
 apre la scena sopra il contropiede: la scena slitta di 9').
 
 **Media: 5,9** — nessuna area cambia di un punto intero finché P non chiude (Ritmo/Causalità).
+
+
+---
+
+# Rapporto n° 16 e n° 17 — 7.839 v2 e v3 (P) — 09/09 notte
+
+**n° 16 (v2: il fallo tattico è la palla morta promessa)**: chiusure ancora **0/4**. Traccia
+`ct839` su Galli: il corridore si ferma a x=44 (il blocco non sale oltre, #44) e non arriva mai al
+fondo; il contropiede durava **9 minuti** (16' annuncio, 18' volo, 23' secondo volo, 25' chiusura) e
+al nono tick la riga di chiusura veniva **sovrascritta dal ponte** verso la scena, che vede
+`counterRef` già nullo nello stesso tick («Gli avversari guadagnano metri» al posto della chiusura).
+
+**n° 17 (v3: tre battute, ponte e annuncio non sovrascrivono)**: annunci 7, chiusure entro 3'
+**4/7** — Moretti 30' Luca → 32' volo → 33' «sciupa la ripartenza: rimessa dal fondo»; Moretti 82' Luca
+→ 83' «Fallo tattico su Luca: la ripartenza muore lì»; Galli 16' Colombo → 18' → 19' «tiro dal
+limite, il portiere respinge coi pugni»; Conti nessun contropiede. Aperti: Moretti 46' «Recupero
+altissimo» sul tick dell'intervallo; Galli 66' una chiusura nostra subito dopo il gol di Spada senza
+annuncio (armata sotto il piano del gol); Galli 71' Luca → 74' «Giro palla» della **catena** al posto
+della chiusura (stesso difetto del ponte: `!counterRef` nello stesso tick). → v4: la chiusura resta
+viva fino al tick dopo.
+
+Nomi coerenti in tutte le righe di contropiede: 7/7 (rosso n° 14: Colombo → Bianchi).
