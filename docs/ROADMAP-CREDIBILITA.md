@@ -145,3 +145,13 @@ Carriera a 6. Chiuse in questo giro con misura: P, E, AC (censita), AF, Ritmo-pa
 minuti). Strumenti: titolo e scelta della scena nel diario; il guardiano conta le battute di piano;
 il diario classifica i minuti muti dallo schermo. Aperte: «fermo» 10' a Vairo, U, S1, S5 seconda
 metà, il titolo d'intento generico, e le aree a 6.
+
+
+## Stato al 09/09 pomeriggio (build 7.845 sul branch, ee6cf1d)
+
+Ritmo: minuti muti 41/45/45/33 (n° 22) → 14/30/30/31 (n° 24); palla morta 24 → 4-9; «fermo» 10 → 0.
+Quello che resta muto è per progetto (pausa di lettura, ripresa dopo i gol). Lezione dodicesima
+confermata quattro volte (corner, contropiede, palla morta, piazzato/calcio d'inizio): **una macchina
+promessa dal testo non deve aspettare il dado**. Aperte: R (prima scena: 14/13/25/13, v2 in misura),
+U, S1, S5 seconda metà, il titolo d'intento generico; aree a 6: Realismo, Credibilità, Varietà,
+Highlight, Telecronaca, Immersione, Carriera.
