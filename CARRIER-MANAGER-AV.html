@@ -13000,6 +13000,7 @@ function ThreeMatchView(props){
          stabili» voleva dire 3,2 secondi ininterrotti e un singolo sussulto azzerava il conteggio. Risultato:
          6 item su 10 esaurivano il limite di 9 secondi. Qui c'è solo quello che serve a capire se la palla si
          muove ancora. Test-only, come tutto il resto del blocco. */
+      window.__CPM_INQ74=function(gx,gy){try{const v=new THREE.Vector3(G2X(gx),0.5,G2Z(gy)).project(camera);return{x:+v.x.toFixed(2),y:+v.y.toFixed(2),on:Math.abs(v.x)<=1&&Math.abs(v.y)<=1&&v.z<1};}catch(_e){return null;}};/* [sonda #74] un punto del campo e' in quadro? (test-only) */
       window.__CPM_BALL=function(){try{return{x:+(ball.position.x+50).toFixed(2),y:+(ball.position.z/0.68+50).toFixed(2),worldY:+ball.position.y.toFixed(2)};}catch(_e){return null;}};
       /* [7.538.0 missione «partita vera»] IL PADRONE DEL PALLONE, DA UNA SOLA SORGENTE. La misura del
          possesso ambientale (7.537) leggeva la palla dalle MESH e i giocatori da `matchPlayers` (l'array
@@ -27308,7 +27309,23 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              «campione condizionato» (7.594). Qui si campiona ogni tick di gioco vivo, ~150 campioni/run. */
           if(!(typeof window!=='undefined'&&window.__CPM_NO642)&&carrierRef.current&&carrierRef.current.i!=null){try{
             const _qd642=(matchPlayersRef.current||[])[carrierRef.current.i];const _bt642=ballTargetRef.current;
-            if(_qd642&&_bt642&&Math.hypot((_qd642.x||50)-(_bt642.x||50),(_qd642.y||50)-(_bt642.y||50))>12)carrierRef.current=null;/* [7.642.0 v2] DECADENZA: la palla mandata oltre 12u dal portatore lo scavalca — non e' piu' suo, finche' un arrivo non elegge il prossimo */
+            if(_qd642&&_bt642&&Math.hypot((_qd642.x||50)-(_bt642.x||50),(_qd642.y||50)-(_bt642.y||50))>12)carrierRef.current=null;
+            /* ⚠️ [7.851.0 — L'ETICHETTA CADE QUANDO IL PALLONE LASCIA L'UOMO (stato «in volo», S1+S2). Rosso __CPM_NO851]
+               Censimento padroni sulla 7.850: col corpo ormai sul punto logico, il pallone LOGICO sta a 5-6u dal portatore LOGICO
+               (<= 3u nel 25%). La decadenza qui sopra guarda il BERSAGLIO (> 12u): un passaggio corto lascia «portatore» chi non
+               ce l'ha piu', finche' l'arrivo non elegge un altro entro 2,5u — e se il pallone atterra dove non c'e' nessuno,
+               l'etichetta resta sul vecchio per tick. Qui l'etichetta cade quando il pallone e' a piu' di 6u dall'uomo (oltre un
+               tocco di conduzione) E il bersaglio non e' ai suoi piedi: il pallone e' in volo, non e' di nessuno, e il renderer lo
+               insegue (vagante) mentre l'inseguitore dichiarato (chaserRef850) corre sul punto d'arrivo. */
+            /* ⚠️ [7.851 — REVOCATA con la coppia sulla sonda da telefono (4 verde, 2 rosso): Vairo 31 % (rosso) → 25 %, Galli 19 % → 28 %,
+               Moretti 29 %, Conti 22 %; la coppia sul censimento (Vairo 41 → 48, Moretti 39 → 44) non regge sul metro del telefono:
+               due partite su due col rosso vanno in direzioni opposte, dentro il rumore fra passate (±6). Resta a richiesta
+               (__CPM_SI851). La diagnosi (etichetta stantia dopo un passaggio corto) resta scritta; il rimedio va cercato nella
+               ELEZIONE d'arrivo (chi riceve entro 2,5u), non nella caduta dell'etichetta. */
+            else if(_qd642&&_bt642&&(typeof window!=='undefined'&&window.__CPM_SI851)){const _bp851=ballPosRef.current||{x:50,y:50};
+              const _dBall851=Math.hypot((_qd642.x||50)-(_bp851.x||50),(_qd642.y||50)-(_bp851.y||50));
+              const _dTgt851=Math.hypot((_qd642.x||50)-(_bt642.x||50),(_qd642.y||50)-(_bt642.y||50));
+              if(_dBall851>6&&_dTgt851>4){carrierRef.current=null;if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_VOLO851=(window.__CPM_VOLO851|0)+1;}catch(_e){}}}}/* [7.642.0 v2] DECADENZA: la palla mandata oltre 12u dal portatore lo scavalca — non e' piu' suo, finche' un arrivo non elegge il prossimo */
           }catch(_e){}}
           if(typeof window!=='undefined'&&window.__CPM_CARRIER641!==undefined&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current){try{
             const _c641=carrierRef.current;const _b641=ballPosRef.current;let _d641=null;

@@ -3558,3 +3558,45 @@ Misura finale sulla sonda da telefono (pallone reso ai piedi del padrone della s
 Ogni partita batte il suo rosso; la banda (≥ 60 %) resta lontana e i salti non si muovono. Career
 PASS, CI exit 0 (manovra-viva 59, gol del simulatore 7/7). **Sul branch, parziale**: il residuo è
 l'etichetta del portatore (7.851). fps del banco 14-17: dichiarato, non è il telefono.
+
+## 7.851 — l'etichetta del portatore cade quando il pallone lascia l'uomo (stato «in volo»)
+
+Censimento sulla 7.850: il pallone LOGICO sta a 5-6u dal portatore LOGICO (≤ 3u nel 25 %). Non è la
+corsa: è l'etichetta. La decadenza 7.642 guarda il BERSAGLIO (> 12u), quindi un passaggio corto
+lascia «portatore» chi non ce l'ha più, finché l'arrivo non elegge un altro entro 2,5u; se il
+pallone atterra dove non c'è nessuno, l'etichetta resta sul vecchio per tick — e il renderer, che
+ora la legge (7.850), incolla il pallone a un corpo che non lo ha.
+
+Lettori dell'etichetta censiti in `src/14` (11): il passatore 7.738 (r.2759-2810, che al passaggio
+la sposta già sul ricevente), la decadenza 7.642, la scelta dell'inseguitore 7.848, il moto col
+waypoint della trama (r.5971, entro 8u dal bersaglio), la sosta d'arrivo `holdArr` (r.6037), il
+corridoio 7.642 (r.6396), tre testimoni. Tutti tollerano il nullo (guardie `carrierRef.current&&`).
+
+7.851: nel blocco del movimento, subito dopo la decadenza a 12u, l'etichetta cade quando il pallone
+logico è a più di 6u dall'uomo (oltre un tocco di conduzione) E il bersaglio non è ai suoi piedi
+(> 4u). Rosso `__CPM_NO851`. Coppia (`padroni`, 150 s):
+
+| | Vairo rosso | Vairo 7.851 | Moretti rosso | Moretti 7.851 |
+|---|---|---|---|---|
+| pallone reso ai piedi del portatore (≤ 3u) | 41 % | **48 %** | 39 % | **44 %** |
+| distanza reso ↔ corpo del portatore, mediana | 5,0u | 3,7u | 7,7u | 4,0u |
+| corpo più vicino di chiunque ≤ 3u (non condizionato all'etichetta) | 61 % | 61 % | 56 % | 55 % |
+
+Il numero non condizionato non cambia: l'etichetta non sparisce per far bella figura, la sonda da
+telefono ora stampa anche la quota di campioni con un padrone dichiarato.
+
+### 7.851 — **REVOCATA** sulla sonda da telefono
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| rosso `NO851` | 31 % | — | 19 % | — |
+| 7.851 | 25 % | 29 % | 28 % | 22 % |
+| 7.850 (passata precedente) | 32 % | 34 % | 23 % | 14 % |
+
+Le due partite col rosso vanno in direzioni opposte (−6 e +9) e le altre due stanno dentro il
+rumore fra passate (±6, misurato oggi sulla stessa build). Il guadagno del censimento (+7/+5) non
+regge sul metro. Resta a richiesta (`__CPM_SI851`), sorgente a 7.850. La diagnosi resta: dopo un
+passaggio corto l'etichetta è stantia; il rimedio da provare è nell'ELEZIONE d'arrivo (chi riceve
+entro 2,5u — oggi se il pallone atterra dove non c'è nessuno l'etichetta non passa), non nella
+caduta dell'etichetta. Lezione: una coppia su 150 s di due partite non basta quando il rumore fra
+passate è ±6; il metro è la sonda da telefono su quattro partite, e quella decide.

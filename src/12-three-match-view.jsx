@@ -1493,6 +1493,7 @@ function ThreeMatchView(props){
          stabili» voleva dire 3,2 secondi ininterrotti e un singolo sussulto azzerava il conteggio. Risultato:
          6 item su 10 esaurivano il limite di 9 secondi. Qui c'è solo quello che serve a capire se la palla si
          muove ancora. Test-only, come tutto il resto del blocco. */
+      window.__CPM_INQ74=function(gx,gy){try{const v=new THREE.Vector3(G2X(gx),0.5,G2Z(gy)).project(camera);return{x:+v.x.toFixed(2),y:+v.y.toFixed(2),on:Math.abs(v.x)<=1&&Math.abs(v.y)<=1&&v.z<1};}catch(_e){return null;}};/* [sonda #74] un punto del campo e' in quadro? (test-only) */
       window.__CPM_BALL=function(){try{return{x:+(ball.position.x+50).toFixed(2),y:+(ball.position.z/0.68+50).toFixed(2),worldY:+ball.position.y.toFixed(2)};}catch(_e){return null;}};
       /* [7.538.0 missione «partita vera»] IL PADRONE DEL PALLONE, DA UNA SOLA SORGENTE. La misura del
          possesso ambientale (7.537) leggeva la palla dalle MESH e i giocatori da `matchPlayers` (l'array

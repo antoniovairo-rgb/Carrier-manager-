@@ -204,6 +204,6 @@ stava a 12u dal suo punto logico (8u di offset visivo «forma del reparto», 6u 
 frenato). 7.850: portatore e inseguitore dichiarati dalla simulazione (`carrierRef`, `chaserRef850`)
 sono disegnati sul loro punto logico, corrono a 13 u/s senza freno di sterzata, `_por526` legge
 `carrierRef`. Telefono: pallone ai piedi del padrone 13/5 % (rosso) → 32/34/23/14 %; banda 60.
-v5 revocata. Prossimo: 7.851, lo stato «in volo» — l'etichetta `carrierRef` cade quando il pallone
-lascia l'uomo, non a 12u (7.642); prima il censimento dei consumatori dell'etichetta (righe,
-custodia, coda delle proposte). Poi #74 (regia: il gol del compagno in quadro).
+v5 revocata. 7.851 (l'etichetta cade quando il pallone lascia l'uomo) **revocata** sul telefono: 31 → 25 % e
+19 → 28 % col rosso, rumore ±6. Prossimo: l'elezione d'arrivo (chi riceve entro 2,5u) e #74
+(regia: il gol del compagno in quadro), con la sonda `gol74` (porta in quadro nei 5 s dopo la riga).

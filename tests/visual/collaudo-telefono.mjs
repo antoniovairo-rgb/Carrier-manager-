@@ -65,6 +65,7 @@ R.push('Chromium 412×915 portrait, campo 3D acceso, tick reale. NON e\' un Andr
 R.push('| misura | valore | banda |');R.push('|---|---|---|');
 const pct=(a,b)=>b?Math.round(100*a/b)+'%':'n/d';
 R.push(`| pallone reso ai piedi del padrone logico (≤3u) | ${pct(c.carOk,c.carN)} su ${c.carN} campioni | ≥ 60% verde · < 40% rosso |`);
+R.push(`| campioni con un padrone dichiarato dalla simulazione | ${pct(c.carN,c.n)} del gioco vivo | (informativo: l'etichetta non deve sparire per alzare il numero sopra) |`);
 R.push(`| …di cui a palla A TERRA (arco spento) | ${pct(c.terraOk,c.terraN)} su ${c.terraN} campioni · in volo ${pct(c.voloN,c.n)} del tempo | ≥ 75% a terra |`);
 R.push(`| chi scrive il pallone quando e' a terra e lontano dal padrone | ${Object.entries(c.pad).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v])=>k+' '+v).join(' · ')||'-'} | (diagnostica S1) |`);
 R.push(`| distanza reso↔padrone, mediana / p90 | ${q(c.dCar,0.5)} / ${q(c.dCar,0.9)} u | mediana ≤ 3u |`);
