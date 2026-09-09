@@ -3349,3 +3349,16 @@ mai misurata al playtest): AF è aperta e la 7.837 v2 torna candidata, da misura
 **Strumento da rifare (prossimo passo)**: il guardiano confronta un numero assoluto con una banda
 fissa in un mondo che cambia a ogni testo modificato; deve diventare **comparativo**: stesso mondo,
 build corrente contro baseline committata, con il rosso appaiato, e giudicare la differenza.
+
+
+### 7.841 (strumento): il guardiano conta tutte le macchine che raccontano una manovra
+
+Lo strumento non deriva: la 0c956f9 misura **17** anche oggi (identico al 08/09). Il calo è reale e
+nasce con la **7.836 v2**: 69640c1 → catena 2 + libreria 4; build 7.840 con `__CPM_NO836` → libreria
+**10** (con 7.836 accesa: 4). Il turno che segue il possesso dà più finestre alle occasioni a cinque
+battute (7.695/7.829) e la libreria perde i suoi slot: è una **sostituzione**, la stessa letta dal 7.684
+quando la libreria sostituì la catena — e verso l'alto, perché le battute del piano hanno protagonisti
+dalle posizioni reali e un esito. Il guardiano ora conta anche le battute di piano (`rk manovra-gol`),
+banda invariata (5 a partita): build 7.840 → **37** (catena 1 + libreria 4 + battute 32), verde.
+La 7.837 era stata revocata attribuendo alla 7.837 un calo che era della 7.836 v2: rettificato; AF
+resta aperta e la 7.837 v2 candidata.
