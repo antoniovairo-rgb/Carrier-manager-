@@ -3362,3 +3362,15 @@ dalle posizioni reali e un esito. Il guardiano ora conta anche le battute di pia
 banda invariata (5 a partita): build 7.840 → **37** (catena 1 + libreria 4 + battute 32), verde.
 La 7.837 era stata revocata attribuendo alla 7.837 un calo che era della 7.836 v2: rettificato; AF
 resta aperta e la 7.837 v2 candidata.
+
+
+### CI verde sul build 7.840 (dfc2361) col guardiano 7.841; 7.842 (AF) in misura
+
+`ci exit=0`, career PASS. `manovra-viva` **42** (catena 2 + libreria 8 + battute di piano 32) su banda
+10. Nota onesta: la libreria in due passate sullo stesso build ha dato 4 e 8 righe — il conteggio delle
+righe da timer (1,3 s) oscilla fra una passata e l'altra; le battute di piano (32 e 32) no.
+
+**7.842 (AF)**: il duplice fischio tronca anche l'azione della libreria (i timer trovano `libAzRef`
+nullo) e il cancello non apre dal 44' al 46'. Rosso `__CPM_NO842`. Misura: azioni di libreria oltre
+il 45' nelle 4 partite (rosso n° 12-19: 1 su 4, Vairo 45'-47'); playtest n° 20 in corso, poi
+career e CI.
