@@ -1163,3 +1163,22 @@ Da dentro l'area **6/12 = 50 %** (rosso n° 27: 3/13 = 23 %; roadmap S5: ≥ 50 
 **6/12 ≤ 5u, 9/12 ≤ 9u** (rosso: 0/12, 10-26u). Restano tre tiri con il tiratore a 11-16u: l'attesa
 scade dopo tre tick e il pallone non è ancora arrivato sul punto. Galli: un solo tiro di piano e 43
 minuti muti (il seme cambia le partite: 4-0 di Conti, 0-0 di Vairo). Rituali in corso.
+
+## Scorecard n° 30
+
+| # | Area | n°25 | **n°30** |
+|---|------|:---:|:---:|
+| 1 Realismo | 6 | **7** (tiri da dentro l'area 6/12; tiratore sul pallone 6/12, entro 9u 9/12) |
+| 2 Credibilità da attaccante | 6 | **6** |
+| 3 Causalità | 7 | **7** |
+| 4 Varietà | 6 | **6** (Galli: un solo tiro di piano) |
+| 5 Ritmo | 6 | **6** (33 / 28 / 43 / 29) |
+| 6 Azioni extra-eroe | 7 | **7** |
+| 7 Highlight dell'eroe | 6 | **6** |
+| 8 Telecronaca | 6 | **6** |
+| 9 Interazioni | 7 | **7** |
+| 10 Coerenza fra i sistemi | 7 | **7** |
+| 11 Immersione | 6 | **6** |
+| 12 Carriera | 6 | **6** |
+
+**Media: 6,4** (somma 77). Metro 8,0.
