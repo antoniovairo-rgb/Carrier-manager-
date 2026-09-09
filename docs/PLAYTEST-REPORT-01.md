@@ -1102,3 +1102,25 @@ ricevente), il campo no: il più avanzato sta ad avanzamento 56-70 e il punto d'
 passi davanti. La salita del blocco è stata provata due volte e revocata (7.793, 7.797). → 7.847: il
 filtrante in area, una volta su due quando il ricevente sta oltre 64; la battuta del tiro aspetta
 che il tiratore sia sul pallone (≤ 5u, fino a tre tick). Rosso `__CPM_NO847`.
+
+
+---
+
+# Rapporto n° 28 — 7.847 (il filtrante in area) — 09/09 pomeriggio
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| tiri di piano | 3 | 4 | 4 | 1 |
+| da dentro l'area (≥ 82) | 2 | 1 | 0 | 0 |
+| filtranti in area | 2 (9', 36') | 1 (9') | 0 | 0 |
+| tiratore sul pallone alla battuta (≤ 5u) | **0/3** (15,2 · 14,9 · 15,0) | **0/4** (11,9 · 14,7 · 26,3 · 16,7) | **0/4** (13,5 · 15,8 · 10,5 · 22,1) | **0/1** (19,2) |
+| minuti muti | 34 | 29 | 34 | 34 |
+| finale | 1-0 | 2-0 | 3-1 | 3-2 |
+
+Da dentro l'area **3/12** (rosso 3/13): il filtrante esce (3 volte, testo e zona giusti) ma non
+sposta il conto, perché scatta solo con un ricevente oltre avanzamento 64, e Galli e Conti non ce
+l'hanno mai. La misura nuova dice di più: **alla battuta del tiro il tiratore non è mai sul pallone**
+(0/12, distanza 10-26u), filtrante o no, e i tre tick d'attesa non lo avvicinano. È la stessa cosa che
+il 7.797 aveva trovato («l'uomo non si era mosso»): non è il piano, è il sistema di movimento che non
+porta il nominato sul pallone. Prima di un'altra versione, si legge la traccia dell'attesa
+(`__CPM_ATT847`: la distanza tick per tick).
