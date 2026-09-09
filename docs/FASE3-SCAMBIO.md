@@ -3440,3 +3440,16 @@ scene parte all'8' per tutti (7.500: 8 + passo×i, non seminato) e il «picco» 
 misurava su una storia lunga un minuto: al primo minuto utile era già vero. 7.844: il picco vuole
 almeno sei minuti di storia e l'apertura della finestra è seminata per partita (0-5 minuti in più).
 Vairo 13' → 14'. Rosso `__CPM_NO844`. Playtest n° 24 + career + CI in corso.
+
+
+### 7.846 sul branch (9f1ed5d): la libreria senza timer lascia il microfono; 7.844 v2 chiude R
+
+Moretti n° 25, 36'-44': nove minuti senza una riga con la libreria «in recita». Causa: l'azione si era
+aperta a ridosso della scena del 32'; il cambio di fase ha cancellato i suoi timer, l'indice non è
+mai avanzato, la regola (a) del 7.833 ha taciuto il tick fino al fischio. Rimedio: oltre 9 s reali
+l'azione è morta e si chiude (una vive 1,3 s × 5 righe). n° 26: Moretti 28 → 16 minuti muti, silenzio
+più lungo 9' → 4', «libreria muta» 7 → 0 nelle quattro partite. Nel guardiano la libreria torna da 0
+a 4 righe. 7.844 v2: prima scena 13/13/13/13 → 21/24/25/14. Career PASS, CI exit 0.
+
+Tredicesima lezione: una macchina «in recita» deve avere un orologio suo; se dipende da timer che
+altri possono cancellare, chi la interroga deve poterla dichiarare morta.
