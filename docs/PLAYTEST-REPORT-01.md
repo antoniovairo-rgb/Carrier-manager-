@@ -1327,3 +1327,22 @@ pallone a `_por526`, la simulazione lo dà a `carrierRef` (S1+S2, verbale 7.813)
 dove va la palla** quando l'azione non è dell'eroe (regia). Nessuna delle due si cura con una frase o un
 cancello. Prossima misura: la stessa sonda, stesse quattro partite, «gol sul campo» ≥ 8/9 e «pallone ai
 piedi del padrone» ≥ 60 %.
+
+
+---
+
+# Rapporto n° 32 — 7.852 (diario di appoggio, 09/09 tarda sera)
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| tiri di piano / da dentro l'area | 2 / 1 | 5 / 2 | 3 / 2 | 3 / 2 |
+| tiratore sul pallone (≤ 5u) | 1/2 [15,7] | 4/5 | 2/3 [14,2] | 2/3 [8,7] |
+| tiri dal 75' (nostri · loro) | 1 · 1 | 0 · 0 | 0 · 1 | 0 · 1 |
+| minuti muti | 37 (pausa-dado 30) | 28 | 32 | 28 |
+| finale | 0-0 | 2-0 | 3-1 | 4-0 |
+
+Tiratore sul pallone **9/13** (n° 30: 6/12), da dentro l'area **7/13** (6/12). Restano due tiri con
+il tiratore a 14-16u: l'attesa 847 scade dopo tre tick col pallone non arrivato (Conti 21'
+«Incornata di Ferrari» col pallone a centrocampo, letto anche sul telefono). Vairo: 30 minuti di
+«pausa-dado» su 37 muti. Il voto resta quello del telefono (n°1 5,3; n°2 da fare sui fotogrammi
+della 7.852, con la seconda foto a +1,2 s sui gol).
