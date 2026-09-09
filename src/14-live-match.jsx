@@ -2586,8 +2586,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           _fan735={side:_side,F:[_pt(16,-22),_pt(18,0),_pt(16,22)],M:[_pt(7,-11),_pt(-6,0),_pt(7,11)]};
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_FAN735=window.__CPM_FAN735||{tick:0});_w.tick++;}catch(_e){}}
         }catch(_e735){}}
+        const _cust848=(!(typeof window!=='undefined'&&window.__CPM_NO848)&&!!pendingGoalRef.current&&!!pendingGoalRef.current.piano&&(pianoLock693.current|0)>0)?pendingGoalRef.current.lastChi814:null;/* [7.848 v4] la seconda autorita' sulle posizioni (le corsie, velRef) lascia il nominato al piano: traccia run848, il nominato saliva in x ma la corsia lo tirava a y=5 mentre il pallone andava a y=20 */
         return prev.map((pl,idx)=>{
         if(pl.team==="ref")return pl;
+        if(_cust848!=null&&idx===_cust848&&!pl.gk){velRef.current[idx]={vx:0,vy:0};return pl;}/* [7.848 v4] il nominato corre col piano, non con la corsia */
         if(pl.team==="away"){
           const ai=idx-10;
           let tx,ty;
@@ -3525,7 +3527,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           /* IL PUNTO DEL PASSAGGIO: davanti al ricevente, nello spazio, mai piu' di sei passi — cosi' ci
              arriva davvero e resta lui il padrone del pallone. */
           const _avB=_avO(_b);
-          const _pxB=clamp(_avB+4+((_hpO("s1")%5)),4,95);/* avanzamento del punto d'arrivo */
+          const _filtr847=(!(typeof window!=='undefined'&&window.__CPM_NO847)&&_avB>=64&&(_hpO("f847")%2)===0);/* [7.847.0 — S5, SECONDA META': IL FILTRANTE IN AREA (Rosso __CPM_NO847). Playtest n°26: 18 tiri di piano su 26 «da fuori / dal limite / da lontanissimo», perche' il punto d'arrivo sta 4-8 passi davanti al ricevente e il piu' avanzato del lato sta ad avanzamento 56-70 (censimento 7.792/7.796). La salita del blocco e' stata provata due volte e revocata (7.793, 7.797: le aperture atterravano dove l'uomo non c'era). Qui non si sposta il blocco: una volta su due, se il ricevente sta oltre avanzamento 64, l'apertura e' un FILTRANTE nello spazio (punto d'arrivo in area, 84-88) e la battuta del tiro ASPETTA che il ricevente sia sul pallone (fino a 3 tick): la corsa e' sua, il tiro parte da dove sta lui. */
+          const _pxB=_filtr847?clamp(84+((_hpO("s1")%5)),4,95):clamp(_avB+4+((_hpO("s1")%5)),4,95);/* avanzamento del punto d'arrivo */
           const _pyB=clamp((_b.q.y||50)+_JO(2,7),8,92);
           /* LA ZONA DEL TIRO decide le parole, non il contrario */
           const _zonaO=_pxB>=82?"area":_pxB>=70?"limite":"lontano";
@@ -3537,7 +3540,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             /* ⚠️ nessun numero di metri nelle frasi: MISURATO che da qui si tira ad avanzamento mediano 63,
                cioe' molto piu' lontano dei «venticinque metri» che la prima stesura annunciava. Una cifra
                sbagliata e' una bugia in piu', e il punto di questa release e' togliere le bugie. */
-          const _apri=(_zonaO==="area")
+          const _apri=_filtr847
+            ?["🎯 Filtrante di "+_na+": "+_nb+" attacca lo spazio e arriva sul pallone in area!","⚡ "+_na+" la mette in profondita': "+_nb+" brucia il difensore e la prende in area!"]
+            :(_zonaO==="area")
             ?["🎯 "+_na+" la mette dentro per "+_nb+": e' solo in area!","📈 "+_na+" verticalizza per "+_nb+": dentro l'area senza opposizione!"]
             :(_zonaO==="limite")
             ?["📈 "+_na+" scarica su "+_nb+" al limite dell'area.","🎯 "+_na+" apre per "+_nb+", che si accentra dal vertice."]
@@ -3557,7 +3562,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _no829=(typeof window!=='undefined'&&window.__CPM_NO829);
           const _tre=[
             {t:_apri[_hpO("ta")%_apri.length],x:_XO(_pxB),y:_pyB,chi:_b.i},
-            {t:_tiro[_hpO("tt")%_tiro.length],x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1,tiroDa792:_pxB},
+            {t:_tiro[_hpO("tt")%_tiro.length],x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1,tiroDa792:_pxB,attendi847:_filtr847?1:0},
             {t:_par.t,x:_XO(96),y:50+_JO(5,6),gk:1,esito:_par.esito},
           ];
           if(_no829||_ordO.length<5)return _tre;
@@ -4106,7 +4111,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            nella propria meta', si accende quando l'azione ARRIVA. Da qui la forzatura vale solo fuori
            dalla costruzione — la rete continua ad arrivare in fondo alla sua azione, ma l'attesa prima
            resta. */
-        const _forza541=(_cat559&&!!pendingGoalRef.current&&!_inHL77&&((pendingGoalRef.current.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(pendingGoalRef.current.step|0)<pendingGoalRef.current.piano.length)||_advT501>=45||(!(typeof window!=='undefined'&&window.__CPM_NO644)&&(pendingGoalRef.current.righeLato|0)===0&&(pendingGoalRef.current.ticks|0)>=4)));/* [7.644.0] LA COSTRUZIONE MUTA NON RESTA MUTA: da 4 tick senza una riga del suo lato, la riga esce comunque (con la catena aperta dall'armamento e' un passo nominato). Il caso fotografato: armamento profondo + tetto-14 = gol senza NESSUNA riga del lato. *//* [7.542.0 v3] LA FINESTRA DEL RACCONTO COMINCIA A META' CAMPO, NON AL LIMITE DELL'AREA. La v2 apriva la forzatura solo fuori dalla costruzione, cioe' da avanzamento 58: ma il gol si scrive a 72, quindi l'attacco aveva solo la striscia 58-72 per farsi raccontare — due o tre tick, proprio sul filo della soglia «tre righe nei quattro minuti prima», e la misura infatti restava a 4/7. Ora la finestra si apre quando l'azione supera la meta' campo (45), che e' anche quando una telecronaca vera alza la voce. Resta fuori il palleggio nella propria meta', che e' il respiro che bg-rhythm difende. */
+        const _attendi847=(function(){try{if((typeof window!=='undefined'&&window.__CPM_NO847))return false;const _pg=pendingGoalRef.current;if(!_pg||!_pg.piano)return false;const _be=_pg.piano[_pg.step|0];if(!_be||!_be.attendi847||_be.chi==null)return false;const _q=(matchPlayersRef.current||[])[_be.chi];const _bp=ballPosRef.current||{x:50,y:50};if(!_q)return false;const _tg=_pg.lastTg||_bp;const _d=Math.max(Math.hypot((_q.x||50)-_tg.x,(_q.y||50)-_tg.y),Math.hypot(_bp.x-_tg.x,_bp.y-_tg.y));/* [7.848 v5] uomo E pallone sul punto d'arrivo (traccia: a d<=5 dal pallone in volo il tiro partiva a x 76 con «da due passi») */_pg.att847=(_pg.att847|0)+1;if(_d<=5||_pg.att847>3){if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_ATT847=window.__CPM_ATT847||[]).push({min:nx,d:+_d.toFixed(1),tick:_pg.att847});}catch(_e){}}return false;}return true;}catch(_e){return false;}})();/* [7.847.0] la battuta del tiro aspetta che il ricevente sia sul pallone (5u), al massimo tre tick */
+        const _forza541=(_cat559&&!_attendi847&&!!pendingGoalRef.current&&!_inHL77&&((pendingGoalRef.current.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(pendingGoalRef.current.step|0)<pendingGoalRef.current.piano.length)||_advT501>=45||(!(typeof window!=='undefined'&&window.__CPM_NO644)&&(pendingGoalRef.current.righeLato|0)===0&&(pendingGoalRef.current.ticks|0)>=4)));/* [7.644.0] LA COSTRUZIONE MUTA NON RESTA MUTA: da 4 tick senza una riga del suo lato, la riga esce comunque (con la catena aperta dall'armamento e' un passo nominato). Il caso fotografato: armamento profondo + tetto-14 = gol senza NESSUNA riga del lato. *//* [7.542.0 v3] LA FINESTRA DEL RACCONTO COMINCIA A META' CAMPO, NON AL LIMITE DELL'AREA. La v2 apriva la forzatura solo fuori dalla costruzione, cioe' da avanzamento 58: ma il gol si scrive a 72, quindi l'attacco aveva solo la striscia 58-72 per farsi raccontare — due o tre tick, proprio sul filo della soglia «tre righe nei quattro minuti prima», e la misura infatti restava a 4/7. Ora la finestra si apre quando l'azione supera la meta' campo (45), che e' anche quando una telecronaca vera alza la voce. Resta fuori il palleggio nella propria meta', che e' il respiro che bg-rhythm difende. */
         const _annScena653=(!(typeof window!=='undefined'&&window.__CPM_NO653)&&!_inHL77&&direttoreRef.current&&direttoreRef.current.lib&&!direttoreRef.current.ann&&!pendingGoalRef.current&&!counterRef.current&&!outRef.current&&!spRef.current&&!ponteRef.current&&!azioneRef.current&&kickoffRef.current<=0);/* [7.653 v3: +azioneRef — le guardie della forzatura DEVONO essere le stesse del hijack, o la riga si forza e l annuncio non la prende (misurato: 1 annuncio su 5 scene) */ /* [7.653 v2] MISURATO 0 annunci su 10 scene decise: l'annuncio aspettava la lotteria delle righe con tutte le macchine libere (3-8 tick a partita). La riga della dichiarazione di scena si FORZA al primo tick buono (pattern forza541): il sorteggio resta consumato nell'ordine. */
         /* [7.666.0 — IL RITMO DELL'AZIONE. Misurato con la libreria appena innestata: l'azione
            ESCE (corner corto → la difesa si schiaccia → palla dietro → tiro dal limite → deviazione
@@ -4511,7 +4517,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              all'arrivo la risoluzione NON SEGNA MAI (i gol restano al microsim). Gate deterministico al 45%
              dei recuperi profondi (hash su testo+minuto), mai sopra un'altra macchina. */
           {const _pgH649=pendingGoalRef.current;/* [7.649.0] LA RIGA RENDE L'EVENTO DEL PIANO: precedenza sotto kickoff e fischi vivi, sopra contropiede e catena */
-          if(_pgH649&&_pgH649.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(_pgH649.step|0)<_pgH649.piano.length&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!outRef.current&&!spRef.current&&!fermoRef.current){
+          if(_pgH649&&_pgH649.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(_pgH649.step|0)<_pgH649.piano.length&&!_attendi847/* [7.848 v2] la battuta del tiro aspetta il tiratore anche sulla via del dado */&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!outRef.current&&!spRef.current&&!fermoRef.current){
             const _pe649=_pgH649.piano[_pgH649.step|0];_pgH649.step=(_pgH649.step|0)+1;
             _recHij545=true;_recKind546="manovra-gol";_recSide546=_pgH649.dir>0?"home":"away";
             ev={txt:_pe649.t,_beatTxt812:_pe649.t,ef:null,w:1,bpos:{x:clamp(_pe649.x,4,96),y:clamp(_pe649.y,6,94)},pd:_dec499,at:((typeof window!=='undefined'&&window.__CPM_NO808)?"pass":(_pe649.gk?"save":(_pe649.ms?"shot":"pass"))),/* [7.808.0 — LA BATTUTA DICHIARA IL PROPRIO TIPO. Rosso __CPM_NO808] Tutte e tre le battute uscivano con at:"pass": l'arco di cronaca (BALL_ARC_BY_TYPE, src/12) faceva volare il TIRO con altezza 0,9 e 0,48 s invece di 2,8 e 0,52 (shot), e il sito ATE-2 — che arma il tuffo del portiere solo su shot/save con bersaglio in area — dalle battute non partiva mai (misurato: tuffi T8 durante le occasioni, vedi quota-821). Ora la battuta col tiro (ms) vola da tiro, quella col portiere (gk) da parata, l'apertura resta un passaggio. Il segnale 7.695 resta a valle. */_piano649:1,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
@@ -4530,7 +4536,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               const _B=(window.__CPM_BEAT792=window.__CPM_BEAT792||[]);
               if(_B.length<120)_B.push({min:nx,occ:_pgH649.occ?1:0,step:(_pgH649.step|0)-1,chi:(_pe649.chi!=null?_pe649.chi:null),txt:String(_pe649.t||"").slice(0,80),/* [7.809 misura] il testo della battuta: serve a contare le sigle */
                 px:_q792?+(_q792.x||0).toFixed(1):null,py:_q792?+(_q792.y||0).toFixed(1):null,tx:+_tx792.toFixed(1),ty:+_ty792.toFixed(1),
-                d:_q792?+Math.hypot((_q792.x||0)-_tx792,(_q792.y||0)-_ty792).toFixed(1):null,gk:_pe649.gk?1:0,
+                d:_q792?+Math.hypot((_q792.x||0)-_tx792,(_q792.y||0)-_ty792).toFixed(1):null,db:(_q792&&ballPosRef.current)?+Math.hypot((_q792.x||0)-(ballPosRef.current.x||50),(_q792.y||0)-(ballPosRef.current.y||50)).toFixed(1):null,/* [7.847 strumento] il tiratore e' sul pallone? */gk:_pe649.gk?1:0,
                 tiro:_pe649.ms?1:0,tiroDa:(_pe649.tiroDa792!=null?+(_pe649.tiroDa792).toFixed(1):null)});}catch(_e792){}}
             if(_pe649.chi!=null)_pgH649.lastChi814=_pe649.chi;/* [7.814.0] l'ultimo protagonista nominato dal piano */if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_J818T=window.__CPM_J818T||[]).push({ev:'beat',min:nx,step:(_pgH649.step|0),occ:_pgH649.occ?1:0,tk:_pgH649.ticks|0});}catch(_e){}}
             if(_pe649.chi!=null&&!(typeof window!=='undefined'&&window.__CPM_NO641))carrierRef.current={i:_pe649.chi};/* il protagonista dell'evento e' il portatore */
@@ -5793,7 +5799,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            arrivava a 46,4 s con mediana 19,1 s, cioe' era aperta per meta' partita. Qui si CHIUDE soltanto. */
         if(!_koNow590)ripT0Ref.current=0;
         const _breve590=_koNow590&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)<=4500):true);
-        const _ognitick588=!(typeof window!=='undefined'&&window.__CPM_NO588)&&_breve590;
+        const _ognitick588=(!(typeof window!=='undefined'&&window.__CPM_NO588)&&_breve590)||(!(typeof window!=='undefined'&&window.__CPM_NO848)&&!!pendingGoalRef.current&&!!pendingGoalRef.current.piano&&(pianoLock693.current|0)>0);/* [7.848 v3] durante la custodia del piano il blocco gira a OGNI tick: a un tick su tre il nominato faceva un passo di 0,55 ogni tre minuti e in quattro tick guadagnava 7u (traccia att847: db 11 alla battuta del tiro) */
         /* ⚠️ [7.702.0 — IL TESTIMONE DELLA CUSTODIA TRADIVA LA PROPRIA DICHIARAZIONE, DAL 7.625.]
            Il suo commento promette «si campiona ogni tick di gioco vivo, ~150 campioni/run», ma il
            blocco stava DENTRO il cancello dello schieramento (un tick su tre) e dopo le esclusioni
@@ -5866,6 +5872,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                ogni sei minuti, e la strada e' farne il motore del possesso invece di un ornamento. */
             if(_bb553){let _cD=1e9;const _lt=(possTurnRef.current>0)?"home":"away";
               prev.forEach((pl,i)=>{if(!pl||pl.team!==_lt||pl.gk)return;const d=Math.hypot((pl.x||50)-_bb553.x,(pl.y||50)-_bb553.y);if(d<_cD){_cD=d;_cI553=i;}});}
+            let _tg848=null;/* [7.848.0 — IL NOMINATO DAL PIANO CORRE DOVE IL TESTO MANDA IL PALLONE (S2/S5). Rosso __CPM_NO848] Traccia att847 (Vairo n°28): al filtrante del 9' il nominato corre 25u ma verso y=23 mentre il pallone va a y=44; nell'occasione avversaria il nominato sta fermo a x=44 per tre battute; alla battuta del tiro il tiratore non e' mai sul pallone (0/12, 10-26u). Qui l'eletto e' il piu' vicino al pallone a ogni tick, e solo lui ha il passo 0,55: il nominato dal piano perde la corsa al primo tick. Finche' la custodia del piano e' viva (pianoLock693) il portatore e' il NOMINATO (carrierRef scritto dalla battuta) e il suo bersaglio e' il punto d'arrivo della battuta, non la palla in viaggio. */
+            if(!(typeof window!=='undefined'&&window.__CPM_NO848)){try{const _pg848=pendingGoalRef.current;const _cr848=carrierRef.current;const _ci848=(_pg848&&_pg848.lastChi814!=null)?_pg848.lastChi814:((_cr848&&_cr848.i!=null)?_cr848.i:null);/* [7.848 v2] carrierRef viene riscritto a ogni tick dall'elezione d'arrivo (r.6014): il nominato si legge dal piano (lastChi814) */if(_pg848&&_pg848.piano&&(pianoLock693.current|0)>0&&_ci848!=null){const _q848=prev[_ci848];const _lt848=(_pg848.dir>0)?"home":"away";if(_q848&&_q848.team===_lt848&&!_q848.gk){_cI553=_ci848;_tg848=_pg848.lastTg||null;}}}catch(_e848){}}
             return prev.map((pl,idx)=>{
             if(pl.team==="ref")return pl;
             let sx,sy,k;
@@ -5967,7 +5975,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  difensore (il testimone __CPM_SCH703 qui sotto), o si ricomincia a girare manopole a caso. */
               if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_SCH703=window.__CPM_SCH703||{ball:0,avSum:0,avN:0});_w.ball++;_w.avSum+=Math.abs(_av553);_w.avN++;}catch(_e){}}
               sx=clamp(sx+_av553*0.62,4,96);
-              if(idx===_cI553){sx=_bb553.x;sy=_bb553.y;k=0.55;}/* [7.625.0] k 0,85 RIGIUDICATO anche sul metro qualificato (custodia per-tick): 6,1/6,8/6,1/4,2 contro banda rossa 6,0-6,4 — in banda, revoca DEFINITIVA. Idem l'inversione del verso (6,2/6,4/6,0/4,2). La lettura strutturale: con le righe che ricollocano il pallone ogni 2-3 tick l'ambientale e' quasi sempre IN VOLO — la custodia non si vince inseguendo, si vince alla RICEZIONE (lo stato mancante A4 dell'audit: l'arrivo ai piedi di un uomo). *//* ⚠️ [7.625.0] PROVATO E REVOCATO CON LA SUA MISURA: k 0,55->0,85 sul portatore logico per «tenere il passo» — npd mediana 6,8-10,3 contro banda rossa 6,4-10,3: IN BANDA, nessun effetto. Il modello d'equilibrio era sbagliato: il sistema non e' mai a equilibrio, perche' le righe di cronaca ricollocano il bersaglio (fino a 30u) piu' in fretta di quanto qualsiasi inseguitore converga — npd misura transitori perpetui. Il guadagno del correttore non puo' nulla contro i salti del comando: la pista giusta e' misurare npd con l'inversione del verso (INV579), mai giudicata su QUESTO metro. */
+              if(idx===_cI553){if(_tg848){sx=clamp(_tg848.x,4,96);sy=clamp(_tg848.y,6,94);k=0.55;}else{sx=_bb553.x;sy=_bb553.y;k=0.55;}}/* [7.848] il nominato corre sul punto d'arrivo *//* [7.625.0] k 0,85 RIGIUDICATO anche sul metro qualificato (custodia per-tick): 6,1/6,8/6,1/4,2 contro banda rossa 6,0-6,4 — in banda, revoca DEFINITIVA. Idem l'inversione del verso (6,2/6,4/6,0/4,2). La lettura strutturale: con le righe che ricollocano il pallone ogni 2-3 tick l'ambientale e' quasi sempre IN VOLO — la custodia non si vince inseguendo, si vince alla RICEZIONE (lo stato mancante A4 dell'audit: l'arrivo ai piedi di un uomo). *//* ⚠️ [7.625.0] PROVATO E REVOCATO CON LA SUA MISURA: k 0,55->0,85 sul portatore logico per «tenere il passo» — npd mediana 6,8-10,3 contro banda rossa 6,4-10,3: IN BANDA, nessun effetto. Il modello d'equilibrio era sbagliato: il sistema non e' mai a equilibrio, perche' le righe di cronaca ricollocano il bersaglio (fino a 30u) piu' in fretta di quanto qualsiasi inseguitore converga — npd misura transitori perpetui. Il guadagno del correttore non puo' nulla contro i salti del comando: la pista giusta e' misurare npd con l'inversione del verso (INV579), mai giudicata su QUESTO metro. */
             }
             /* [7.796 censimento] QUALE RAMO DECIDE DAVVERO, e con che passo. Il 7.703 aveva provato ad
                alzare il termine che tira gli slot verso il pallone (0,62 → 0,85, +37%) e NON aveva mosso
@@ -5981,6 +5989,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               _K.n++;const _kk=(+k).toFixed(2);_K.perK[_kk]=(_K.perK[_kk]|0)+1;
               const _dd=Math.hypot(sx-pl.x,sy-pl.y);_K.dSum+=_dd;_K.dN++;
               if(_K.dV.length<600)_K.dV.push(+_dd.toFixed(1));}catch(_e796){}}
+            if(typeof window!=='undefined'&&window.__CPM_REC&&_tg848&&idx===_cI553){try{const _R=(window.__CPM_RUN848=window.__CPM_RUN848||[]);if(_R.length<200)_R.push({min:nx,i:idx,x:+(pl.x||0).toFixed(1),y:+(pl.y||0).toFixed(1),sx:+(sx||0).toFixed(1),sy:+(sy||0).toFixed(1),k:+(k||0).toFixed(2),bx:+((ballPosRef.current||{}).x||0).toFixed(1),by:+((ballPosRef.current||{}).y||0).toFixed(1),tx:+_tg848.x.toFixed(1),ty:+_tg848.y.toFixed(1)});}catch(_e){}}/* [7.848 traccia] */
             return{...pl,x:clamp(pl.x+(sx-pl.x)*k+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(sy-pl.y)*k+(Math.random()-0.5)*0.2,2,98)};
           });});
         }
