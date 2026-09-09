@@ -920,3 +920,39 @@ con annuncio, volo e chiusura); nessun «Lombardi lancia Lombardi». Restano att
 la riga ordinaria si è spostata dal 45' al **46'** («Vallone sfiora il pari» sul calcio d'inizio della
 ripresa: la pausa di due tick ne copriva uno), e Conti 44' «Recupero altissimo di Bruno» seguito dal
 fischio. → v3: pausa di tre tick e nessun contropiede armato al 44'-45'.
+
+
+---
+
+# Rapporto n° 22 — 7.842 v3 — 09/09 mattina
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 71 / 41 | 62 / 45 | 59 / 45 | 81 / 33 |
+| finale | 1-0 | 1-0 | 2-1 | 4-0 |
+
+**AF 0/4** (rosso 1/4). Attorno al 45' tutto fermo: Vairo riparte al 47' con l'uscita dal basso
+del portiere («Fontana rifiuta il rilancio lungo e apre corto»), Galli 46' il discorso del mister,
+Moretti e Conti il fischio e basta. Contropiedi 2/2 chiusi (Moretti 30'→33', Galli 16'→19'), nessuno
+armato al 44'. Residuo dichiarato: Conti 44' «Ferrari lascia partire il destro!» e al 45' il fischio —
+l'occasione armata al 40' arriva al tiro sul minuto del fischio e resta senza esito (1 caso).
+
+## Scorecard n° 22
+
+| # | Area | n°19 | **n°22** |
+|---|------|:---:|:---:|
+| 1 Realismo | 6 | **6** |
+| 2 Credibilità da attaccante | 6 | **6** |
+| 3 Causalità | 7 | **7** |
+| 4 Varietà | 6 | **6** |
+| 5 Ritmo | 5 | **5** (41 / 45 / 45 / 33) |
+| 6 Azioni extra-eroe | 7 | **7** |
+| 7 Highlight dell'eroe | 6 | **6** |
+| 8 Telecronaca | 6 | **6** |
+| 9 Interazioni | 7 | **7** |
+| 10 Coerenza fra i sistemi | 6 | **7** (AF 0/4; il fischio ferma libreria, contropiede e dado) |
+| 11 Immersione | 6 | **6** |
+| 12 Carriera | 6 | **6** |
+
+**Media: 6,3** (n° 19: 6,2). Metro 8,0. La prossima area è il **Ritmo** (5): 33-45 minuti senza
+niente nel diario, con le pause lunghe nei primi minuti e dopo i gol del microsim.
