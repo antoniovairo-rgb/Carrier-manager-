@@ -1404,3 +1404,48 @@ difetto dello strumento, non del gioco.
 sotto 7**. Nessun «puoi collaudare». Prossimi, in ordine: il portiere sul gol (assente o fermo in
 2 su 5); l'attesa 847 scaduta (l'incornata parte col pallone a centrocampo); il testo «tutto solo /
 da due passi» che deve leggere la geometria; la banda 60 del padrone.
+
+
+---
+
+# Playtest DA TELEFONO n° 3 — 7.853 v3 — 10/09 notte
+
+Sonda v3. Fotogrammi in `docs/collaudo-telefono/n03/`. Dichiarato: Chromium 412×915, GL software.
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori | banda |
+|---|---|---|---|---|---|
+| pallone ai piedi del padrone (≤ 3u) | 32 % | 29 % | 11 % | 20 % | ≥ 60 % |
+| salti > 8u | 43 | 58 | 56 | 47 | 0 |
+| finale | 0-0 | 3-0 | 2-2 | 4-0 | |
+
+**I gol a +1,2 s.** Il portiere è in quadro, sulla linea, in 3 gol su 4 (Conti 55' conti-f25,
+Conti 75' conti-f35, Moretti 55' moretti-f28) — nel n° 2 era assente o a 10u in 3 su 5 — ma in
+tutti e tre è **in piedi** e il pallone gli passa accanto: il tuffo parte al tiro e finisce prima
+che il pallone arrivi. Conti 23' (conti-f12): a +1,2 s il pallone è ancora fuori dall'area, porta
+fuori quadro (incornata con l'attesa scaduta). Credibili: 0 su 4 pieni, 3 a metà, 1 no. Nel n° 2:
+2 pieni, 2 a metà, 1 no. Il portiere in quadro è un passo avanti; il portiere fermo è il prossimo.
+
+**Testo contro geometria**, ancora: «Scotti da due passi, tutto solo davanti alla porta» con quattro
+uomini attorno e porta fuori quadro (Vairo 57', vairo-f21); «Ferrari a tu per tu col portiere» con
+tre difensori a 2u e il portiere fuori quadro (Conti 66', conti-f28).
+
+## Scorecard DA TELEFONO n° 3
+
+| # | Area | n°2 | **n°3** | motivo |
+|---|------|:---:|:---:|---|
+| 1 Realismo | 5 | **5** | padrone 11-32 %, salti 43-58 |
+| 2 Credibilità da attaccante | 5 | **5** | gol: 3 a metà (portiere in quadro ma fermo), 1 no; testo falso 2/2 |
+| 3 Causalità | 6 | **6** | il piano finisce in rete; l'incornata con l'attesa scaduta no |
+| 4 Varietà | 5 | **5** | «da due passi» al 10'-11' in 4 partite su 4 |
+| 5 Ritmo | 5 | **5** | ripresa 14' a Conti; palla morta 8-17 |
+| 6 Azioni extra-eroe | 6 | **6** | il tiro entra, il portiere c'è (fermo) |
+| 7 Highlight dell'eroe | 5 | **5** | non rigiudicato |
+| 8 Telecronaca | 5 | **5** | «tutto solo», «a tu per tu» smentiti dal campo |
+| 9 Interazioni | 7 | **7** | nessuna contro il punteggio |
+| 10 Coerenza fra i sistemi | 7 | **7** | nessuna frase contro il tabellone |
+| 11 Immersione | 5 | **5** | 13-16 fps, un salto ogni 3 s |
+| 12 Carriera | 6 | **6** | barra viva |
+
+**Media DA TELEFONO: 5,6** (somma 67, come il n° 2). Nove aree sotto 7. Nessun «puoi collaudare».
+Prossimi: 7.854 il tuffo che arriva sul pallone (tempo di reazione, non al tiro); l'attesa 847
+scaduta; il testo che legge la geometria («tutto solo» solo se nessun avversario entro 4u).

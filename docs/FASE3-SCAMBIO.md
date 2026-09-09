@@ -3692,3 +3692,25 @@ la regola d'uscita del portiere (src/12 r.4405: bersaglio 94 meno un passo fino 
 x 90-93, e la 7.853 col bersaglio 97,5 meno lo stesso passo lo portava a 93 (misurato 9,1-8,1u: dentro
 il rumore). v2 da provare: col pallone in area bersaglio 99 e passo zero; metro «x dalla linea alla
 riga ≤ 4u» sui gol del microsim (oggi 9-10,5u), tuffi dal tiro invariati (2).
+
+## 7.853 v2/v3 — il portiere sta sulla linea quando il pallone avanza
+
+v2: col pallone in area (x ≥ 84) il bersaglio del portiere è 99 e il passo d'uscita è zero. Coppia
+(gol del microsim, x dalla linea alla riga): verde 9,3 · 2,4 · 3,7 · 8,4u, rosso 9,6 · 10,1 · 9,9u —
+sulla linea in 2 gol su 4, negli altri due ci arriva 5 s dopo (il piano ci mette 1-2 s dall'area
+alla rete, il portiere a 7-10 u/s no). **v3**: il rientro parte dalla trequarti (x ≥ 72).
+
+| gol del microsim | rosso `NO853` | 7.853 v3 |
+|---|---|---|
+| portiere alla riga, x dalla linea | 9,0 · 10,1 · 9,2u | **2,2 · 3,0 · 2,0 · 3,5u** |
+| tuffi dal tiro | 2 · 2 · 4 | 2 · 2 · 0 · 2 |
+
+4/4 entro 4u contro 0/3; il tuffo resta quello del tiro (T8). Rosso `__CPM_NO853`. Telefono
+(4 partite): padrone 32 / 29 / 11 / 20 % (Galli 11 % è fuori dalla banda delle passate, 19-34 %:
+dichiarato come oscillazione da verificare, la 7.853 non tocca il pallone). Career PASS. CI: **rossa
+una volta** sul guardiano `gol-del-simulatore` (7 nati, 6 accreditati, 1 mangiato prima del
+tabellone), **verde alla ripetizione** del solo guardiano (7/7, manovra-viva 46): dichiarato, non
+spiegato — il «mangiato» è una sostituzione di riga, non una parata, e la 7.853 non tocca le righe.
+**Sul branch.** Ai fotogrammi (+1,2 s): il portiere è in quadro sulla linea in 3 gol su 4 (n° 2: 2 su
+5) ma **in piedi** mentre il pallone gli passa accanto in 3 su 3: il tuffo T8 parte al tiro e finisce
+prima che il pallone arrivi. Prossimo (7.854): il tuffo con tempo di reazione e arrivo sul pallone.
