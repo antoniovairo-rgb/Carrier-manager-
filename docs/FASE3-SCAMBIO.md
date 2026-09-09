@@ -3230,3 +3230,19 @@ entrata nel sorgente prima della ricostruzione: committata con la sua misura in 
 n° 11, «chi conclude è chi segna» sui gol subiti). Nota di metodo: lo script di commit che toglie
 un'eccedenza dal sorgente si è fermato sul primo controllo (l'HTML CONTENEVA l'eccedenza) e non
 ha committato nulla: verificato con `git log` prima di rimettere e committare a mano.
+
+## Censimento 836 — «in casa la squadra non tira»: il turno non segue la simulazione
+
+`finestre-836` (finestre libere del cancello dell'occasione, 4 partite): Vairo **turno nostro 1 su
+10** (adv mediano 20), turno loro 9 (4 con adv ≥ 48); Moretti 5/8 nostro; Galli 3/7; Conti 3/6.
+`poss-836` (stato della partita minuto per minuto): il microsim dà possesso **50%** (Vairo) e
+**62-74%** (Conti), ma il turno del racconto è loro per **60 e 62 minuti su 89**. Il turno si scrive
+solo in modo causale (interruzioni, esiti, costruzioni): i loro eventi lo portano da loro, i nostri
+non nascono perché alle finestre libere la palla è in mano loro — un cerchio. La simulazione dice
+una cosa e il racconto un'altra: è S2/S3.
+
+**7.836 — il turno segue il possesso della simulazione**: nei tick quieti (nessun piano, recita,
+palla morta, scena) il turno si riallinea al possesso del microsim con un sorteggio seminato (~una
+volta ogni 5 minuti, `_rndTick`). Rosso `__CPM_NO836`. Misura appaiata in corso: minuti col turno
+nostro contro possesso del microsim (bersaglio ±10 punti), occasioni nostre alle finestre libere
+(Vairo 1/10 → ≥ 3/10), poi playtest n° 12 (tiri nostri in casa: Vairo 0 in 89' per tre volte).
