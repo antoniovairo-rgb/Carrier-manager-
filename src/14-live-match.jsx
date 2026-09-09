@@ -1607,6 +1607,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      evento o il gioco si ferma. In questa release e' PASSIVO (anagrafe + testimone __CPM_CARRIER641):
      la baseline di copertura si misura PRIMA che il motore lo usi. Rosso __CPM_NO641. */
   const outStoryRef=useRef(0);/* [7.632.0 v7 — IL RACCONTO CAMPIONA I FISCHI] righe d'arbitro emesse in questa partita: col fischio sempre-raccontato le ~30 righe/90' andavano sature (8 d'arbitro) e la catena e' crollata a 1 riga (guardiano rosso). In TV non ogni rimessa ha la sua riga: oltre il tetto (~1 ogni 12 minuti) il fischio nasce muto — ferma il gioco, scrive registro e turno, si risolve in silenzio (7.572) — e la telecronaca resta alle altre voci. */
+  const outCool843Ref=useRef(0);/* [7.843 v2] minuto fino al quale l'arbitro non fischia un'altra interruzione ambientale: due palle morte di fila erano la regola (Moretti 19'-23', 35'-39', 68'-72') */
   const outRef=useRef(null);/* [7.559.0 missione, blocco 4 — LE INTERRUZIONI ESISTONO]
      Il guardiano `fermo-559` non riusciva nemmeno a MISURARE il rimedio del fermo: in cinque minuti di
      partita accelerata si annunciavano UNO o DUE piazzati, sempre dello stesso tipo (`foul_for`). La causa
@@ -3796,6 +3797,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              contro un possesso del microsim del 50-60%: i tick quieti sono pochi e le scritture causali lo riportano da loro. v2 e'
              un controllo, non un dado: si tiene la storia del turno negli ultimi 15 minuti; nei tick quieti, se la quota nostra
              sta sotto il possesso del microsim di piu' di 10 punti il turno passa a noi, se sta sopra di piu' di 10 passa a loro. */
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCHERMO843=window.__CPM_SCHERMO843||[]);if(_S.length<400)_S.push({min:nx,ko:kickoffRef.current|0,kick:kickRef.current|0,out:outRef.current?1:0,fermo:fermoRef.current?1:0,sp:spRef.current?1:0,pg:pendingGoalRef.current?1:0,ct:counterRef.current?1:0,lib:libAzRef666.current?1:0,hl:_inHL77?1:0,cool:bgCoolRef.current|0,ph:String(phaseRef.current||"")});}catch(_e){}}/* [7.843 strumento — RITMO] che cosa c'e' sullo schermo in ogni minuto: il diario contava «minuti senza niente» anche quando c'era il calcio d'inizio, una palla morta o la festa. Sola lettura. */
           try{const _h836=(turnHist836Ref.current=turnHist836Ref.current||[]);if(!_h836.length||_h836[_h836.length-1].min!==nx)_h836.push({min:nx,t:possTurnRef.current>0?1:0});while(_h836.length>15)_h836.shift();}catch(_e){}
           if(!(typeof window!=='undefined'&&window.__CPM_NO836)&&!_simEv77&&!pendingGoalRef.current&&!counterRef.current&&!_inHL77&&!outRef.current&&!spRef.current&&!fermoRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&nx>4&&nx<89){try{
             const _h=turnHist836Ref.current||[];const _quota=_h.length?Math.round(100*_h.reduce((s,x)=>s+x.t,0)/_h.length):50;
@@ -4199,7 +4201,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            Fra l'armamento e la riga non c'era ne' ttl, ne' budget, ne' recita, ne' ladro: c'era il DADO della cronaca
            (`_draw541`, `_bgProb`), che decide se in questo tick esce una riga. Le battute di piano lo scavalcano da
            sempre (`_forza541`); la palla morta promessa dal testo no. Ora lo scavalca anche lei, al primo tick. */
-        const _forzaOut818=(!(typeof window!=='undefined'&&window.__CPM_NO818)&&!!(outRef.current&&outRef.current.occ818&&(outRef.current.step|0)===0)&&!_inHL77);
+        const _forzaOut818=(!(typeof window!=='undefined'&&window.__CPM_NO818)&&!!(outRef.current&&outRef.current.occ818&&(outRef.current.step|0)<=((typeof window!=='undefined'&&window.__CPM_NO843)?0:1))&&!_inHL77);/* [7.843 v4] anche la BATTUTA del corner dell'occasione (step 2) non aspetta il dado: la palla morta dell'occasione durava fino a 8 minuti (Moretti 17'-24') */
         /* [7.833.0 — LA LIBRERIA HA IL MICROFONO, O NON CE L'HA. Rosso __CPM_NO833] Playtest n°9 (AE): Galli 37'-44' tre narratori
            intrecciati (libreria, contropiede, libreria), Moretti 13'-15' righe di libreria alternate a fallo, rimessa, giro palla.
            Le righe programmate dal 7.687 escono dai timer a 1,3 s l'una per dieci secondi; nel frattempo il tick continuava a
@@ -4435,7 +4437,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                righe che l'hijack poteva davvero prendere; il cap 20s resta la rete di sicurezza. */
             const _nega632=(typeof window!=='undefined'&&window.__CPM_NO632)?false:(pendingGoalRef.current||kickoffRef.current>0||_koHij536||/goal$/.test(String(ev.ef||"")));
             if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_OUTDIE632=window.__CPM_OUTDIE632||{righe:0,negate:0,ttl:0});_w.righe++;if(_nega632)_w.negate++;}catch(_e){}}
-            if(!_nega632&&(--outRef.current.ttl<=0)){if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_OUTDIE632.ttl++;}catch(_e){}}outRef.current=null;fermoRef.current=null;}}
+            if(!_nega632&&(--outRef.current.ttl<=0)){if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_OUTDIE632.ttl++;}catch(_e){}}outRef.current=null;fermoRef.current=null;if(!(typeof window!=='undefined'&&window.__CPM_NO843))outCool843Ref.current=nx+3;}}
           /* [7.559.0 strumento] PERCHE' IL FISCHIO NON ARRIVA. Il primo giro del guardiano `fermo-559` ha
              dato «fermi armati: 0» con quattro righe che dichiaravano un piazzato: il ramo di armamento non
              e' mai scattato, e i cancelli sono cinque. Qui si conta QUALE lo ferma, invece di indovinare. */
@@ -5212,12 +5214,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               if(_k559==="goal_kick")_no559b=(_bx559<50);/* il rinvio lo batte chi difende quella porta */
               if(_k559==="corner")_no559b=(_bx559>=50);
             }
-            if(_k559){
+            if(_k559&&((typeof window!=='undefined'&&window.__CPM_NO843)||nx>=(outCool843Ref.current|0))/* [7.843 v4] anche l'interruzione dichiarata dalla riga rispetta i tre minuti di gioco */){
               const _ox559=_k559==="throw"?clamp(_bx559,8,92):_k559==="corner"?(_no559b?98:2):_k559==="goal_kick"?(_no559b?6:94):clamp(_bx559,8,92);
               const _oy559=_k559==="throw"?(_by559>=50?98:2):_k559==="corner"?(_by559>=50?96:4):_k559==="goal_kick"?50:clamp(_by559,6,94);
-              outRef.current={kind:_k559,nostra:_no559b,x:_ox559,y:_oy559,step:0,ttl:4};
+              const _tk559=((typeof window!=='undefined'&&window.__CPM_NO843))?4:(_k559==="corner"?4:2);outRef.current={kind:_k559,nostra:_no559b,x:_ox559,y:_oy559,step:0,ttl:4,tk843:_tk559};/* [7.843 v4] durata per tipo anche qui */
               if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_no559b?1:-1,"interruzione-"+_k559);/* [7.616.0] l'interruzione SA di chi e' la palla (lo scrive in outRef.nostra da sempre) e finora lo buttava via: da qui il fatto diventa il turno */
-              fermoRef.current={x:_ox559,y:_oy559,t:4,kind:_k559};
+              fermoRef.current={x:_ox559,y:_oy559,t:_tk559,kind:_k559};
             /* [7.608.0 — IL PALLONE VIAGGIA VERSO LA BATTUTA, NON SI TELETRASPORTA. Rosso __CPM_NO608]
                COLLAUDO PO, due appunti con la stessa causa: «il pallone si muove come calamitato ma non ci
                sono portatori» e «il portiere fa giro giro tondo». MISURATO (teleball-607/giro-gk-607):
@@ -5594,15 +5596,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                da manuale (chi rincorre stende chi ripartiva davanti al portiere). Stesso rosso __CPM_NO629. */
             const _penT629=!(typeof window!=='undefined'&&window.__CPM_NO629)&&_oyT>=30&&_oyT<=70&&((_dirC>0&&_oxT>=84)||(_dirC<0&&_oxT<=16));
             const _muteT632=!(typeof window!=='undefined'&&window.__CPM_NO632)&&!_penT629&&outStoryRef.current>=(1+Math.floor(nx/12));/* [7.632 v7] stesso tetto di racconto */
-            outRef.current={kind:"foul",nostra:_dirC>0,x:_oxT,y:_oyT,step:0,ttl:4,t0:Date.now(),pen629:_penT629,mute632:(_muteT632&&(typeof window!=='undefined'&&window.__CPM_NO839)),occ818:(!(typeof window!=='undefined'&&window.__CPM_NO839)&&!_penT629),ct839:1,nome839:_ctN839v2};/* [7.839 v2] playtest n°15: le righe in volo escono (3/3, nome coerente) ma la risoluzione mai (0/4) — il 96% dei contropiedi muore per fallo tattico (p 0,30 al tick) e la riga del fischio aspettava il dado con ttl 4. Il fischio che spegne una ripartenza annunciata e' la palla morta promessa dal testo: passa dal cancello del 7.818 v6 (occ818) e nomina il corridore. *//* [7.839.0] la punizione che spegne una ripartenza annunciata e' il suo seguito: non nasce muta */if(!(typeof window!=='undefined'&&window.__CPM_NO839)&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT839=window.__CPM_CT839||{arm:0,volo:0,fin:0,foul:0,forzati:0});_w.foul++;}catch(_e){}}/* il fallo tattico lo commette chi rincorre: la punizione e' di chi RIPARTIVA (dir del counter) */
-            fermoRef.current={x:_oxT,y:_oyT,t:4,kind:"foul"};
+            outRef.current={kind:"foul",nostra:_dirC>0,x:_oxT,y:_oyT,step:0,ttl:((typeof window!=='undefined'&&window.__CPM_NO843)||_penT629)?4:2,tk843:((typeof window!=='undefined'&&window.__CPM_NO843)||_penT629)?4:2,t0:Date.now(),pen629:_penT629,mute632:(_muteT632&&(typeof window!=='undefined'&&window.__CPM_NO839)),occ818:(!(typeof window!=='undefined'&&window.__CPM_NO839)&&!_penT629),ct839:1,nome839:_ctN839v2};/* [7.839 v2] playtest n°15: le righe in volo escono (3/3, nome coerente) ma la risoluzione mai (0/4) — il 96% dei contropiedi muore per fallo tattico (p 0,30 al tick) e la riga del fischio aspettava il dado con ttl 4. Il fischio che spegne una ripartenza annunciata e' la palla morta promessa dal testo: passa dal cancello del 7.818 v6 (occ818) e nomina il corridore. *//* [7.839.0] la punizione che spegne una ripartenza annunciata e' il suo seguito: non nasce muta */if(!(typeof window!=='undefined'&&window.__CPM_NO839)&&typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_CT839=window.__CPM_CT839||{arm:0,volo:0,fin:0,foul:0,forzati:0});_w.foul++;}catch(_e){}}/* il fallo tattico lo commette chi rincorre: la punizione e' di chi RIPARTIVA (dir del counter) */
+            fermoRef.current={x:_oxT,y:_oyT,t:((typeof window!=='undefined'&&window.__CPM_NO843)||_penT629)?4:2,kind:"foul"};/* [7.843] */
             ballTargetRef.current={x:_oxT,y:_oyT};
             if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_dirC>0?1:-1,"interruzione-foul-tattico");
             if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_INT559=window.__CPM_INT559||{n:0,tipi:{},min:[]});_w.n++;const _ktT629=_penT629?"pen_tattico":"foul_tattico";_w.tipi[_ktT629]=(_w.tipi[_ktT629]||0)+1;}catch(_e){}}
           }
         }
         if(!(typeof window!=='undefined'&&window.__CPM_NO566)&&!outRef.current&&!fermoRef.current&&!spRef.current
-           &&!pendingGoalRef.current&&!counterRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&phaseRef.current==="playing"){
+           &&!pendingGoalRef.current&&!counterRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&phaseRef.current==="playing"&&((typeof window!=='undefined'&&window.__CPM_NO843)||nx>=(outCool843Ref.current|0))/* [7.843 v2] tre minuti di gioco fra un fischio e l'altro */){
           const _bp=ballPosRef.current||{x:50,y:50};
           const _bx=_bp.x==null?50:_bp.x,_by=_bp.y==null?50:_bp.y;
           const _r1=(Math.abs(hashStr("tick|"+nx))%1000)/1000,_r2=(Math.abs(hashStr("tick2|"+nx))%1000)/1000;
@@ -5617,7 +5619,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              (74/26), corner ambientale da x>=80 (prob 0,10), fallo 0,20->0,35 sui tick centrali.
              Atteso ~10-15 fischi/90' (banda reale minima), misurato sotto. */
           const _no628=(typeof window!=='undefined'&&window.__CPM_NO628);
-          const _thF628=_no628?84:74,_thF628b=_no628?16:26,_cx628=_no628?88:80,_foul628=_no628?0.20:0.55;/* [7.628 v2] 0,35 non bastava: sui ~16 minuti superstiti il sorteggio per-minuto a seed fisso e' una lotteria a estrazioni bloccate, e ogni fischio congela 4 tick (tetto strutturale ~3-4). A 0,55 l'atteso sui superstiti e' ~8, auto-limitato dal fermo a ~5 */
+          const _thF628=_no628?84:74,_thF628b=_no628?16:26,_cx628=_no628?88:80,_foul628=_no628?0.20:((typeof window!=='undefined'&&window.__CPM_NO843)?0.55:0.30);/* [7.843] col fermo piu' corto i tick liberi raddoppiano: la probabilita' scende perche' i falli restino 8-11 a partita, non 20 *//* [7.628 v2] 0,35 non bastava: sui ~16 minuti superstiti il sorteggio per-minuto a seed fisso e' una lotteria a estrazioni bloccate, e ogni fischio congela 4 tick (tetto strutturale ~3-4). A 0,55 l'atteso sui superstiti e' ~8, auto-limitato dal fermo a ~5 */
           if(_bx>=88){_k=_r2<0.38?"corner":"goal_kick";_no=(_k==="corner");}
           else if(_bx<=12){_k=_r2<0.38?"corner":"goal_kick";_no=(_k==="goal_kick");}
           else if(!_no628&&_bx>=_cx628&&_r1<0.10){_k=_r2<0.55?"corner":"goal_kick";_no=(_k==="corner");}
@@ -5634,9 +5636,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                macchina sp. Atteso raro per costruzione (~86% dei tick liberi sta al centro): giusto cosi'. */
             const _pen629=!(typeof window!=='undefined'&&window.__CPM_NO629)&&_k==="foul"&&_oy>=30&&_oy<=70&&((_no&&_ox>=84)||(!_no&&_ox<=16));
             const _mute632=!(typeof window!=='undefined'&&window.__CPM_NO632)&&!_pen629&&outStoryRef.current>=(1+Math.floor(nx/12));/* [7.632 v7] oltre il tetto di racconto il fischio nasce muto (il rigore mai) */
-            outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:4,t0:Date.now(),pen629:_pen629,mute632:_mute632};
+            const _ttl843=(typeof window!=='undefined'&&window.__CPM_NO843)?4:(_pen629?4:_k==="corner"?4:2);/* [v2] rimessa e rinvio 2 come il fallo *//* [7.843.0 — LA PALLA MORTA DURA QUANTO DURA (RITMO). Rosso __CPM_NO843] Testimone schermo (Moretti, n° 22): 44 minuti muti, di cui 24 di palla morta e 9 di pausa; 15 interruzioni, 11 falli a 5', 9', 14', 18', 22', 26'…, ognuno 3-4 tick (5-7 s reali) e quasi sempre muto (tetto 7.632 v7). Il fermo a 4 (7.566) serviva alla mesh per ARRIVARE sul punto: su un fallo la palla e' gia' li'. Fallo 2 tick, rimessa e rinvio 3, corner 4 (e' un'occasione), rigore 4. */
+            outRef.current={kind:_k,nostra:_no,x:_ox,y:_oy,step:0,ttl:_ttl843,tk843:_ttl843,t0:Date.now(),pen629:_pen629,mute632:_mute632};
             if(!(typeof window!=='undefined'&&window.__CPM_NO616))setTurn616(_no?1:-1,"interruzione-"+_k);/* [7.616.0] vedi il sito gemello della riga *//* [7.602.0] anche l'ora: vedi la scadenza in tempo vero nel clock tick */
-            fermoRef.current={x:_ox,y:_oy,t:4,kind:_k};/* [7.566] DUE TICK NON BASTAVANO, e la misura lo ha detto: col fermo a 2 il pallone stava davvero fermo solo 5 volte su 10 (a 4 era 6 su 6). Il motivo non e' il tempo di GIOCO ma quello REALE: la mesh deve arrivare sul punto, e il conto scorre ora nel tick — che passa quando passa. */
+            fermoRef.current={x:_ox,y:_oy,t:_ttl843,kind:_k};/* [7.843] stessa durata della palla morta *//* [7.566] DUE TICK NON BASTAVANO, e la misura lo ha detto: col fermo a 2 il pallone stava davvero fermo solo 5 volte su 10 (a 4 era 6 su 6). Il motivo non e' il tempo di GIOCO ma quello REALE: la mesh deve arrivare sul punto, e il conto scorre ora nel tick — che passa quando passa. */
             /* [7.608.0] stessa regola del sito 559: da lontano il pallone VIAGGIA verso la battuta. */
             ballTargetRef.current={x:_ox,y:_oy};
             {const _b608b=ballPosRef.current||{x:50,y:50};const _lont608b=Math.hypot(_ox-_b608b.x,_oy-_b608b.y)>8;
@@ -5659,7 +5662,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              contratto 7.572). Rosso __CPM_NO632: torna il ttl condiviso a 4 tick. */
           const _no632t=(typeof window!=='undefined'&&window.__CPM_NO632);
           const _mor632=_no632t?(--outRef.current.ttl<=0)
-            :((outRef.current.tk632=(outRef.current.tk632|0)+1)>=((outRef.current.occ818&&!(typeof window!=='undefined'&&window.__CPM_NO818))?10:4)||(outRef.current.t0&&(Date.now()-outRef.current.t0)>20000)||(!!pendingGoalRef.current&&!outRef.current.pen629));/* [7.818.0 v2 — LA CAUSA VERA DI J STAVA QUI, NON NEL TTL A RIGHE. Il testimone J818 e' rimasto VUOTO su 1 corner armato: nessuna riga sorteggiata ha mai trovato viva la palla morta dell'occasione. Questo sito la spegne dopo QUATTRO tick (il commento sopra dice «budget dedicato di 10», il codice diceva 4), e nei cinque secondi della scena saliente (7.692) passano tre tick senza righe: il corner muore muto prima che una riga possa batterlo. La palla morta dell'occasione ha dieci tick, come il contratto scritto qui sopra. Rosso __CPM_NO818 */
+            :((outRef.current.tk632=(outRef.current.tk632|0)+1)>=((outRef.current.occ818&&!(typeof window!=='undefined'&&window.__CPM_NO818))?10:(((typeof window!=='undefined'&&window.__CPM_NO843)||!outRef.current.tk843)?4:outRef.current.tk843))/* [7.843 v3] il budget per tick e' la durata vera della palla morta: fallo, rimessa e rinvio 2, corner 4 */||(outRef.current.t0&&(Date.now()-outRef.current.t0)>20000)||(!!pendingGoalRef.current&&!outRef.current.pen629));/* [7.818.0 v2 — LA CAUSA VERA DI J STAVA QUI, NON NEL TTL A RIGHE. Il testimone J818 e' rimasto VUOTO su 1 corner armato: nessuna riga sorteggiata ha mai trovato viva la palla morta dell'occasione. Questo sito la spegne dopo QUATTRO tick (il commento sopra dice «budget dedicato di 10», il codice diceva 4), e nei cinque secondi della scena saliente (7.692) passano tre tick senza righe: il corner muore muto prima che una riga possa batterlo. La palla morta dell'occasione ha dieci tick, come il contratto scritto qui sopra. Rosso __CPM_NO818 */
           if(_mor632&&typeof window!=='undefined'&&window.__CPM_REC&&outRef.current&&outRef.current.occ818){try{const _w=(window.__CPM_OUTDIE632=window.__CPM_OUTDIE632||{righe:0,negate:0,ttl:0});_w.tickOcc=(_w.tickOcc|0)+1;_w.tkOcc=(_w.tkOcc||[]).concat([outRef.current.tk632|0,outRef.current.step|0]);}catch(_e){}}/* [7.632 v8 — IL VANTAGGIO] se la costruzione del gol parte, l'arbitro lascia correre: il fischio minore (mai il rigore) si risolve subito in silenzio — tenerlo vivo sopra il pendingGoal bloccava la catena col suo gate proprio nei minuti del gol (guardiano: gol-con-manovra 0/4) *//* [7.632 v6] budget 10->6->4: TARATO DAL GUARDIANO — a 6 tick il fermo mangiava i tick del sorteggio e arbitro-esiste e' andato rosso (5<6 fischi). A 4 tick il costo per fischio torna quello storico ma con i conti separati, la catena che cede e la palla tenuta: ~1,5 occasioni di riga per fischio, racconto ~50% — la coperta corta fra fischi e racconto e' il tetto dei tick ambientali (18 li mangia il gol-in-costruzione, voce in coda), non questa vite */
           if(_mor632){
           /* [7.572.0] LA RIMESSA SILENZIOSA. La battuta dell'interruzione si prende solo una riga libera:
@@ -5670,7 +5673,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              `defend_goal` con la x giusta e la y inchiodata a 98, cioe' sulla linea laterale.
              Il gioco riprende comunque: il pallone torna DENTRO il campo anche quando il telecronista non
              ha avuto modo di dirlo. Un arbitro non aspetta che qualcuno commenti. */
-          const _o572=outRef.current;outRef.current=null;fermoRef.current=null;
+          const _o572=outRef.current;outRef.current=null;fermoRef.current=null;if(!(typeof window!=='undefined'&&window.__CPM_NO843))outCool843Ref.current=nx+3;/* [7.843 v2] */
           if(!(typeof window!=='undefined'&&window.__CPM_NO572)){
             const _q572=(Math.abs(hashStr("rip|"+nx))%100)/100;
             const _rx572=clamp(_o572.x+(_o572.nostra?14:-14),8,92);

@@ -32,7 +32,7 @@ for(let k=0;k<2000;k++){
 const d=await page.evaluate(()=>({
   cro:window.__CPM_CRO802||[],
   esiti:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='esito'),
-  gol:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='goal'),nome:window.__CPM_NOME814||null}));
+  gol:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='goal'),nome:window.__CPM_NOME814||null,schermo:window.__CPM_SCHERMO843||[]}));
 await ctx.close();await b.close();srv.close();
 const punt={};storia.forEach(s=>{punt[s.min]=s.h+'-'+s.a;});
 const scene={};(d.esiti||[]).forEach(e=>{(scene[e.min|0]=scene[e.min|0]||[]).push((e.key||'?')+(e.ok?' RIUSCITO':' fallito'));});
@@ -52,7 +52,11 @@ for(let m=1;m<=Math.max(min,89);m++){
   if(scene[m])console.log(String(m).padStart(3)+"'  "+''.padStart(5)+'  ▶ SCENA DELL\'EROE: '+scene[m].join(' · '));
   if(golM[m])console.log(String(m).padStart(3)+"'  "+''.padStart(5)+'  ⚽ GOL ['+golM[m].join(' · ')+']');
 }
+/* [7.843 strumento] i minuti muti, classificati da quello che c'era sullo schermo in quel minuto */
+const cls={};(d.schermo||[]).forEach(x=>{const k=x.min|0;const c=x.ko>0?'calcio-inizio':x.kick>0?'ripresa':x.hl?'scena':x.out?'palla-morta':x.fermo?'fermo':x.sp?'piazzato':x.cool>0?'pausa-dado':x.pg?'piano':x.ct?'contropiede':x.lib?'libreria':'vuoto';if(!cls[k]||c!=='vuoto')cls[k]=cls[k]&&cls[k]!=='vuoto'?cls[k]:c;});
+const muti={};for(let m=1;m<=Math.max(min,89);m++){const r=(d.cro||[]).filter(c=>c.t===m);if(!r.length&&!scene[m]&&!golM[m]){const c=cls[m]||'?';muti[c]=(muti[c]||0)+1;}}
 console.log('\n══ COSA HA VISSUTO IL PLAYER ══');
+console.log('  minuti muti per cosa c\'era sullo schermo: '+JSON.stringify(muti));
 console.log('  righe lette: '+righe+'  ·  minuti senza NIENTE: '+vuoti+'/'+min
   +'  ·  silenzio piu\' lungo: '+maxRun+"' (dal "+maxA+"' al "+maxB+"')");
 if(d.nome)console.log('  [H] gol nostri al rigo '+(d.nome.gol|0)+' · con piano '+(d.nome.conPiano|0)+' · firmati dall\'ultima battuta '+(d.nome.firmati|0)+' · dettaglio '+JSON.stringify(d.nome.det||[]));
