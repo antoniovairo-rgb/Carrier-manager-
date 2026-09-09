@@ -115,3 +115,21 @@ scene reattive a `ck+2` che cadono nello stesso minuto di un'altra), **AC** (gol
 azione prima), **P** («filtrante… attacca lo spazio» senza esito), **ritmo in casa** (>50 minuti
 vuoti). Strumenti: `analisi-diario.py` sul testo del playtest; sonde con rosso appaiato; il
 diario si legge prima di chiudere il browser (decima lezione).
+
+
+## Stato al 09/09 mattina (build 7.840 sul branch, dfc2361)
+
+Playtest da player: n°5 4,6 → n°8 5,6 → n°12 5,9 → **n°19 6,2**. Metro: 8,0.
+
+| causa | stato |
+|---|---|
+| S1 un solo pallone | aperta |
+| S2 un solo padrone | racconto: marcatore (7.830/7.835), libreria esclusiva (7.833), **il contropiede è uno solo** (7.839: nome unico, chiusura protetta dai registi successivi); campo: aperta |
+| S3 la squadra sa il punteggio | v1 + margine + «dominando»; il turno segue il possesso (7.836 v2); aperta la parte «a 1-0 la squadra smette» |
+| S4 le righe non si perdono | chiusa; il corner (7.818 v6) e il contropiede (7.839) non aspettano il dado |
+| S5 l'occasione è un'azione | cinque battute (7.829); il gol sulla respinta si dice (7.840); aperte zona di tiro e famiglie |
+
+Chiuse con misura in questo giro: **P** (chiusure 0/2 → 8/11), **E** (2/2 vs 0/2), **AC** (censita:
+3/5 → 5/5 leggibili con titolo e scelta nel diario). Aperte: ritmo (35-44 minuti muti), **AF** (7.837
+v2 candidata), U, R ridimensionata, S1, S5 seconda metà. Strumento: il guardiano `partita-vera` deve
+diventare comparativo (baseline 69640c1 misura 6 sulla banda 10).

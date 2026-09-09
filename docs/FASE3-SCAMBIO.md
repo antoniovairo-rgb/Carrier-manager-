@@ -3329,3 +3329,23 @@ Rosso (n° 14): annunci 2, chiusure entro 3' 0/2, nome del corridore diverso fra
 Lezione dodicesima: nel tick ci sono nove registi in fila e ognuno guarda solo le macchine
 «vive» all'inizio; una macchina che si chiude nel tick lascia la sua riga scoperta ai registi dopo.
 La chiusura differita di un tick è il rimedio minimo; la strada di fondo resta «il regista è uno».
+
+
+### 7.840 sul branch (dfc2361) — e una rettifica sul guardiano
+
+Playtest n° 19: chiusure del contropiede 2/2 (somma v3-v5: **8/11**, rosso 0/2), nomi 11/11, media
+**6,2**. Career PASS. **CI exit=1** su `manovra-viva`: 5 righe su 2 partite, banda 10. Misura pulita,
+mondo seminato, stesse condizioni, ognuna ripetuta: build 7.840 v5 **5/5**, rosso `__CPM_NO839` **5**,
+rosso `__CPM_NO839,__CPM_NO840` **6**, e la **baseline committata 69640c1 (7.836 v2) 6/6**. La banda
+è rossa sulla baseline stessa: la modifica non la muove. Il build è sul branch con questo stato
+dichiarato nel messaggio di commit, non come «rituali verdi».
+
+**Rettifica**: la 7.837 era stata revocata per «manovra-viva 6 contro 10 del 7.836 v2». Oggi il
+7.836 v2 misura 6 nelle stesse condizioni: quel 10 era un campione preso in condizioni diverse
+(le righe della libreria escono da timer a 1,3 s e il conteggio dipende dal carico della macchina),
+e il confronto non valeva. La revoca della 7.837 resta per l'altra ragione (v1 non chiudeva AF; v2
+mai misurata al playtest): AF è aperta e la 7.837 v2 torna candidata, da misurare al playtest.
+
+**Strumento da rifare (prossimo passo)**: il guardiano confronta un numero assoluto con una banda
+fissa in un mondo che cambia a ogni testo modificato; deve diventare **comparativo**: stesso mondo,
+build corrente contro baseline committata, con il rosso appaiato, e giudicare la differenza.
