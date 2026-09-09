@@ -32,7 +32,7 @@ for(let k=0;k<2000;k++){
 const d=await page.evaluate(()=>({
   cro:window.__CPM_CRO802||[],
   esiti:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='esito'),
-  gol:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='goal'),nome:window.__CPM_NOME814||null,schermo:window.__CPM_SCHERMO843||[]}));
+  gol:((window.__CPM_EV&&window.__CPM_EV())||[]).filter(e=>e.ev==='goal'),nome:window.__CPM_NOME814||null,schermo:window.__CPM_SCHERMO843||[],beat:window.__CPM_BEAT792||[]}));
 await ctx.close();await b.close();srv.close();
 const punt={};storia.forEach(s=>{punt[s.min]=s.h+'-'+s.a;});
 const scene={};(d.esiti||[]).forEach(e=>{(scene[e.min|0]=scene[e.min|0]||[]).push((e.key||'?')+(e.ok?' RIUSCITO':' fallito'));});
@@ -55,6 +55,9 @@ for(let m=1;m<=Math.max(min,89);m++){
 /* [7.843 strumento] i minuti muti, classificati da quello che c'era sullo schermo in quel minuto */
 const cls={};(d.schermo||[]).forEach(x=>{const k=x.min|0;const c=x.ko>0?'calcio-inizio':x.kick>0?'ripresa':x.hl?'scena':x.out?'palla-morta':x.fermo?'fermo':x.sp?'piazzato':x.cool>0?'pausa-dado':x.pg?'piano':x.ct?'contropiede':x.lib?'libreria':'vuoto';if(!cls[k]||c!=='vuoto')cls[k]=cls[k]&&cls[k]!=='vuoto'?cls[k]:c;});
 const muti={};for(let m=1;m<=Math.max(min,89);m++){const r=(d.cro||[]).filter(c=>c.t===m);if(!r.length&&!scene[m]&&!golM[m]){const c=cls[m]||'?';muti[c]=(muti[c]||0)+1;}}
+/* [S5 misura] da dove si tira davvero (tiroDa = avanzamento del tiratore alla battuta del tiro) e le aperture oltre soglia (d > 12u fra il nominato e il punto d'arrivo) */
+{const _b=d.beat||[];const _t=_b.filter(x=>x.tiro&&x.tiroDa!=null);const _z={area:0,limite:0,lontano:0};_t.forEach(x=>{const v=+x.tiroDa;if(v>=82)_z.area++;else if(v>=70)_z.limite++;else _z.lontano++;});const _ap=[];_b.forEach((x,i)=>{if(x.tiro&&i>0&&_b[i-1]&&!_b[i-1].tiro&&!_b[i-1].gk&&_b[i-1].d!=null)_ap.push(_b[i-1]);});const _oltre=_ap.filter(x=>+x.d>12).length;/* l'apertura e' la battuta subito prima del tiro (7.792) */
+const _db=_t.filter(x=>x.db!=null).map(x=>+x.db);const _sul=_db.filter(v=>v<=5).length;console.log('  [S5] tiri di piano '+_t.length+' per zona '+JSON.stringify(_z)+' · tiroDa '+_t.map(x=>Math.round(x.tiroDa)).join(',')+' · aperture oltre 12u '+_oltre+'/'+_ap.length+' · tiratore sul pallone (<=5u) '+_sul+'/'+_db.length+' [db '+_db.join(',')+']');}
 console.log('\n══ COSA HA VISSUTO IL PLAYER ══');
 console.log('  minuti muti per cosa c\'era sullo schermo: '+JSON.stringify(muti));
 console.log('  righe lette: '+righe+'  ·  minuti senza NIENTE: '+vuoti+'/'+min

@@ -1079,3 +1079,26 @@ fischio. → **7.846**: oltre 9 s reali l'azione è morta e lascia il microfono 
 lungo 4', nessun minuto «libreria» muto nelle quattro partite. Career PASS; CI in corso.
 **7.844 v2**: prima scena **21/24/25/14**, quattro minuti diversi (n° 23: 13/13/13/13). Il mondo
 diverge (Vairo 1-0 con la scena del 59', Moretti 112 righe): non è la 7.846, è il seme.
+
+
+---
+
+# Rapporto n° 27 — build 7.846, rosso di S5 (la zona di tiro) — 09/09 pomeriggio
+
+Misura nuova nel diario: da dove partono i tiri di piano (avanzamento del tiratore alla battuta) e
+quanto dista il nominato dal punto d'arrivo dell'apertura (la battuta prima del tiro).
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| tiri di piano | 5 | 4 | 3 | 1 |
+| da dentro l'area (≥ 82) | 2 | 1 | 0 | 0 |
+| dal limite (70-82) | 1 | 1 | 0 | 1 |
+| da fuori (< 70) | 2 | 2 | 3 | 0 |
+| minuti muti | 24 | 25 | 35 | 34 |
+| finale | 2-0 | 1-0 | 3-1 | 3-2 |
+
+**Da dentro l'area 3/13 (23 %)**, roadmap S5: ≥ 50 %. Il testo è onesto (la zona segue dove sta il
+ricevente), il campo no: il più avanzato sta ad avanzamento 56-70 e il punto d'arrivo gli sta 4-8
+passi davanti. La salita del blocco è stata provata due volte e revocata (7.793, 7.797). → 7.847: il
+filtrante in area, una volta su due quando il ricevente sta oltre 64; la battuta del tiro aspetta
+che il tiratore sia sul pallone (≤ 5u, fino a tre tick). Rosso `__CPM_NO847`.
