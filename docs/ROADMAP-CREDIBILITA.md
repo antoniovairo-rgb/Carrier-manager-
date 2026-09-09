@@ -165,3 +165,21 @@ S5 chiusa al metro (tiri da dentro l'area 50 %, il nominato corre sul punto d'ar
 il nominato dal piano è un solo padrone finché la custodia è viva (7.848). Aperte: S1 (un solo
 pallone), S3 v2 (l'atteggiamento governa la frequenza delle occasioni: Galli 1 tiro di piano in 89'),
 U, il titolo d'intento generico, la telecronaca ripetitiva nelle pause.
+
+
+## Direttiva PO 09/09 sera: il test player collauda DA TELEFONO, con grande sguardo critico
+
+Il metro cambia strumento, non soglia. Il playtest da player non è più il diario del testo: è la
+partita vista come la vede il PO sul telefono — 412×915 portrait, campo 3D acceso, tick reale —
+fotografata a ogni evento (gol, scena dell'eroe, tiro, palla morta, duplice fischio) e a cadenza
+fissa, con le misure del campo accanto (pallone ai piedi del padrone, salti, scarto reso↔logico,
+gioco fermo, fotogrammi al secondo). Il diario resta come strumento di appoggio (righe, minuti muti).
+
+Il giudizio si dà GUARDANDO i fotogrammi, area per area, con la domanda «ci credo?» e l'occhio di chi
+cerca il difetto, non di chi vuole promuovere: ogni voto sotto 7 deve citare il fotogramma (file e
+minuto) che lo motiva; ogni voto 7 o più deve dire cosa si è cercato e non trovato. Quattro partite
+(due in casa, due fuori), media ≥ 8,0 e nessuna area < 7, come prima. Dichiarato: è Chromium alla
+taglia del telefono, non l'Android del PO — GPU, tocco e prestazioni reali restano fuori dal metro
+automatico, e sul telefono vero l'ultima parola resta sua.
+
+Strumento: `tests/visual/collaudo-telefono.mjs` (fotogrammi + scheda con bande + foglio di contatto).
