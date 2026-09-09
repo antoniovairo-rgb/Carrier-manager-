@@ -1674,7 +1674,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      tempo prima del momento libero il pericolo era passato di li'. */
   const thrPicco789=useRef({min:-99,val:0});
   const occCool695=useRef(-99);
-  const libGol822Ref=useRef(null);const lastTiro827Ref=useRef(-99);/* [7.827.0] minuto dell'ultimo tiro nostro in cronaca: l'enfasi «dominando» lo pretende */const libWant822Ref=useRef(null);/* [7.822 v3] la prenotazione della libreria: minuto in cui la porta del gol l'ha rimandata *//* [7.822.0] totale gol e minuto dell'ultimo: la libreria non apre nei tre minuti dopo un gol *//* [7.695.0] minuto dell'ultima occasione: una ogni undici minuti al massimo, o la partita diventa un tiro al bersaglio */
+  const libGol822Ref=useRef(null);const turnHist836Ref=useRef([]);/* [7.836 v2] storia del turno negli ultimi 15 minuti */const lastTiro827Ref=useRef(-99);/* [7.827.0] minuto dell'ultimo tiro nostro in cronaca: l'enfasi «dominando» lo pretende */const libWant822Ref=useRef(null);/* [7.822 v3] la prenotazione della libreria: minuto in cui la porta del gol l'ha rimandata *//* [7.822.0] totale gol e minuto dell'ultimo: la libreria non apre nei tre minuti dopo un gol *//* [7.695.0] minuto dell'ultima occasione: una ogni undici minuti al massimo, o la partita diventa un tiro al bersaglio */
   const pianoLock693=useRef(0);/* [7.693.0 — IL PIANO DEL GOL POSSIEDE IL PALLONE. Rosso __CPM_NO693]
      MISURATO (traccia-693, tre costruzioni in una partita): il piano ESCE tutto (3/3, 2/2, 3/3) e le sue
      righe propongono davvero il limite dell'area (bx 84, e il freno non le tocca: bex 84). Ma il pallone
@@ -3782,9 +3782,27 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              una ogni otto minuti — un'azione pericolosa e' un evento, non il ritmo della partita. */
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _g=(window.__CPM_OCC695G=window.__CPM_OCC695G||{giri:0,ev:0,pg:0,ct:0,hl:0,out:0,sp:0,fermo:0,ko:0,min:0,cool:0,adv:0,dado:0,piano:0,ok:0});_g.giri++;
             if(_simEv77)_g.ev++;else if(pendingGoalRef.current)_g.pg++;else if(counterRef.current)_g.ct++;else if(_inHL77)_g.hl++;else if(outRef.current)_g.out++;else if(spRef.current)_g.sp++;else if(fermoRef.current)_g.fermo++;else if(kickoffRef.current>0||kickRef.current>0)_g.ko++;else if(!(nx>6&&nx<86))_g.min++;else if((nx-(occCool695.current|0))<8)_g.cool++;else{const _b=ballPosRef.current||{x:50,y:50};const _d=(possTurnRef.current>0)?1:-1;const _a=_d>0?(_b.x||50):100-(_b.x||50);if(_a<48)_g.adv++;else if((Math.abs(hashStr("occ695|"+nx+"|"+((bgSimSeedRef.current|0))))%100)>=72)_g.dado++;else _g.ok++;}}catch(_e){}}/* [7.695 strumento] QUALE cancello ferma l'occasione, tick per tick: senza, «zero occasioni armate» non si spiega */
+          /* [7.836.0 — IL TURNO SEGUE IL POSSESSO DELLA SIMULAZIONE. Rosso __CPM_NO836] Censimento 836 (playtest n° 9-11, «in casa
+             la squadra non tira»): il microsim dava possesso 50% (Vairo) e 62-74% (Conti), e il TURNO del racconto era loro
+             per 60 e 62 minuti su 89. Il turno si scrive solo in modo causale (interruzioni, esiti, costruzioni): i loro eventi
+             lo portano da loro, i nostri non nascono perche' alle finestre libere la palla e' sempre in mano loro — un cerchio.
+             La simulazione e' la source of truth: nei tick quieti (nessun piano, nessuna recita, nessuna palla morta) il turno si
+             riallinea al possesso del microsim con un sorteggio seminato (una volta ogni ~5 minuti). Misura: minuti col turno
+             nostro contro possesso del microsim (bersaglio ±10 punti), occasioni nostre in casa (0 → ≥1). */
+          /* [7.836 v2] La v1 (dado al 20% nei tick quieti) spostava poco: minuti col turno nostro 22→23 (Vairo), 27→42, 42→47, 37→38
+             contro un possesso del microsim del 50-60%: i tick quieti sono pochi e le scritture causali lo riportano da loro. v2 e'
+             un controllo, non un dado: si tiene la storia del turno negli ultimi 15 minuti; nei tick quieti, se la quota nostra
+             sta sotto il possesso del microsim di piu' di 10 punti il turno passa a noi, se sta sopra di piu' di 10 passa a loro. */
+          try{const _h836=(turnHist836Ref.current=turnHist836Ref.current||[]);if(!_h836.length||_h836[_h836.length-1].min!==nx)_h836.push({min:nx,t:possTurnRef.current>0?1:0});while(_h836.length>15)_h836.shift();}catch(_e){}
+          if(!(typeof window!=='undefined'&&window.__CPM_NO836)&&!_simEv77&&!pendingGoalRef.current&&!counterRef.current&&!_inHL77&&!outRef.current&&!spRef.current&&!fermoRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&nx>4&&nx<89){try{
+            const _h=turnHist836Ref.current||[];const _quota=_h.length?Math.round(100*_h.reduce((s,x)=>s+x.t,0)/_h.length):50;
+            const _p836=clamp(possessionRef.current|0,20,80);const _want836=(_quota<_p836-10)?1:(_quota>_p836+10)?-1:0;
+            if(_want836&&_want836!==possTurnRef.current){setTurn616(_want836,"possesso-sim");if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_TURN836=(window.__CPM_TURN836|0)+1;}catch(_e){}}}
+          }catch(_e836){}}
           if(!(typeof window!=='undefined'&&window.__CPM_NO695)&&!_simEv77&&!pendingGoalRef.current&&!counterRef.current&&!_inHL77&&!outRef.current&&!spRef.current&&!fermoRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&nx>6&&nx<86&&((typeof window!=='undefined'&&window.__CPM_NO828)||nx<42||nx>46)&&((typeof window!=='undefined'&&window.__CPM_NO829)||!(libAzRef666.current&&(libAzRef666.current.i|0)<(libAzRef666.current.righe||[]).length))&&(nx-(occCool695.current|0))>=8){try{/* [7.829] un regista solo: l'occasione non si arma sopra un'azione della libreria ancora in recita (n°7 Galli 12'-17', Conti 12'-17': due manovre intrecciate) *//* [7.828.0] niente occasioni a cavallo dell'intervallo (Z) */
             const _bO695=ballPosRef.current||{x:50,y:50};const _dO695=(possTurnRef.current>0)?1:-1;
             const _advO695=_dO695>0?(_bO695.x||50):100-(_bO695.x||50);
+            if(typeof window!=='undefined'&&window.__CPM_REC){try{const _G=(window.__CPM_OCCG836=window.__CPM_OCCG836||[]);if(_G.length<400)_G.push({min:nx,turno:_dO695,adv:Math.round(_advO695),x:Math.round(_bO695.x||50)});}catch(_e){}}/* [censimento 836 — «in casa la squadra non tira»] a ogni finestra libera del cancello dell'occasione: di chi e' il turno e quanto e' avanzata la palla per quel lato */
             /* [7.714.0 — LO SCAMBIO: IL TRIGGER DELLE OCCASIONI PASSA DAL DADO ALLO STATO. Rosso __CPM_NO714]
                §9 della missione: «SE NON E' REALMENTE PERICOLOSO, NON DIVENTA EXTRA 3D». MISURATO in ombra
                su 5 partite (3 percorsi + 2 mondi): le finestre aperte dal dado hanno threat mediano 21-27,
