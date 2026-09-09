@@ -3374,3 +3374,19 @@ righe da timer (1,3 s) oscilla fra una passata e l'altra; le battute di piano (3
 nullo) e il cancello non apre dal 44' al 46'. Rosso `__CPM_NO842`. Misura: azioni di libreria oltre
 il 45' nelle 4 partite (rosso n° 12-19: 1 su 4, Vairo 45'-47'); playtest n° 20 in corso, poi
 career e CI.
+
+
+### 7.842 v3 sul branch (04953b6): AF chiusa
+
+Tre versioni sugli stessi semi. v1: AF 0/4 (rosso 1/4) ma attorno al fischio una riga ordinaria dopo
+il fischio e un contropiede che attraversa l'intervallo con «Lombardi lancia Lombardi». v2: il fischio
+spegne anche il contropiede, pausa del dado di due tick, nome del corridore dal risolutore ({H2} lo
+esclude): AF 0/4, ma la riga ordinaria slitta al 46' e un contropiede si arma al 44'. v3: pausa di tre
+tick, nessun contropiede armato al 44'-45': **fischio pulito 4/4**, contropiedi 2/2, AF 0/4. Career
+PASS, CI exit 0 (manovra-viva 37). Playtest n° 22: media **6,3**. Residuo: un tiro di battuta al 44'
+senza esito per il fischio (1 caso su 4 partite), dichiarato.
+
+Prossima area: **Ritmo** (5). Nel diario 33-45 minuti senza righe; le pause lunghe (≥ 4') sono nei
+primi minuti (2'-7' in 3 partite su 4) e nei 4-5' dopo un gol del microsim. Prima di rimediare, si
+guarda lo SCHERMO in quei minuti: se c'è la festa del gol o il calcio d'inizio, il diario sovrastima il
+silenzio e lo strumento va corretto; se non c'è niente, è ritmo.

@@ -130,6 +130,8 @@ Playtest da player: n°5 4,6 → n°8 5,6 → n°12 5,9 → **n°19 6,2**. Metro
 | S5 l'occasione è un'azione | cinque battute (7.829); il gol sulla respinta si dice (7.840); aperte zona di tiro e famiglie |
 
 Chiuse con misura in questo giro: **P** (chiusure 0/2 → 8/11), **E** (2/2 vs 0/2), **AC** (censita:
-3/5 → 5/5 leggibili con titolo e scelta nel diario). Aperte: ritmo (35-44 minuti muti), **AF** (7.837
-v2 candidata), U, R ridimensionata, S1, S5 seconda metà. Strumento: il guardiano `partita-vera` deve
-diventare comparativo (baseline 69640c1 misura 6 sulla banda 10).
+3/5 → 5/5 leggibili con titolo e scelta nel diario), **AF** (7.842 v3, 04953b6: 1/4 → 0/4, fischio pulito
+4/4; playtest n° 22 **6,3**). Strumento: il guardiano conta anche le battute di piano (7.841); la
+7.836 v2 sostituiva la libreria con le occasioni, non era una perdita. Aperte: **ritmo** (33-45 minuti
+muti nel diario: da verificare con lo schermo), U, R ridimensionata, S1, S5 seconda metà, il titolo
+d'intento generico.
