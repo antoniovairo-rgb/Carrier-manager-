@@ -45,7 +45,8 @@ for(let k=0;k<6000;k++){await sleep(70);
   if(s.pg&&!c.pgPrev){await scatta(min,'occasione-apre','');}
   c.pgPrev=s.pg;
   if(s.cro>c.croVisti){const nuove=await page.evaluate((da)=>(window.__CPM_CRO802||[]).slice(da).filter(x=>!x.intro).map(x=>x.txt),c.croVisti);c.croVisti=s.cro;
-    for(const t of nuove){if(/\bsegna\b|⚽|😨 Gol di|\bGol di\b|in rete/.test(t)&&!/GOL \[/.test(t))/* \b: «consegna», «disegna» non sono gol; «😨 Gol di» e «palla in rete» (7.840) si' */await scatta(min,'gol',t);else if(/^💥/.test(t))await scatta(min,'tiro',t);else if(/^🚩|^⏸️|^🟡|^⏸/.test(t))await scatta(min,'fermo',t);else if(/^🧤/.test(t))await scatta(min,'portiere',t);}}
+    for(const t of nuove){if(/\bsegna\b|⚽|😨 Gol di|\bGol di\b|in rete/.test(t)&&!/GOL \[/.test(t))/* \b: «consegna», «disegna» non sono gol; «😨 Gol di» e «palla in rete» (7.840) si' */{await scatta(min,'gol',t);c.golDopo=Date.now()+1200;c.golTxt=t;}/* [v3] col 7.852 il tiro entra 0,5-1,5 s DOPO la riga: seconda foto a +1,2 s */else if(/^💥/.test(t))await scatta(min,'tiro',t);else if(/^🚩|^⏸️|^🟡|^⏸/.test(t))await scatta(min,'fermo',t);else if(/^🧤/.test(t))await scatta(min,'portiere',t);}}
+  if(c.golDopo&&Date.now()>=c.golDopo){c.golDopo=null;await scatta(min,'gol+1s',c.golTxt||'');}
   if(Date.now()-c.ultimaFoto>20000){c.ultimaFoto=Date.now();await scatta(min,'gioco','');}
   if(s.ph==='playing'&&s.w){c.n++;
     if(s.w.lx!=null)c.scarto.push(Math.hypot(s.w.rx-s.w.lx,s.w.ry-s.w.ly));
