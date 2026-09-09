@@ -1060,3 +1060,22 @@ fischio. → **7.846**: oltre 9 s reali l'azione è morta e lascia il microfono 
 | 12 Carriera | 6 | **6** |
 
 **Media: 6,3.** Metro 8,0.
+
+
+---
+
+# Rapporto n° 26 — 7.846 (l'azione della libreria senza timer lascia il microfono) — 09/09
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti muti (n° 25) | 110 / 14 | 92 / 28 | 93 / 32 | 89 / 33 |
+| righe / minuti muti (**n° 26**) | 88 / 27 | 112 / **16** | 92 / 27 | 93 / 26 |
+| silenzio più lungo | 6' | 4' (era **9'**) | 5' | 6' |
+| minuti con la libreria «in recita» e muta | 0 | 0 (era 7) | 0 | 0 |
+| prima scena dell'eroe | 21' | 24' | 25' | 14' |
+| finale | 1-0 | 2-0 | 2-1 | 4-0 |
+
+**7.846**: i nove minuti muti di Moretti (36'-44', libreria senza timer) spariscono: silenzio più
+lungo 4', nessun minuto «libreria» muto nelle quattro partite. Career PASS; CI in corso.
+**7.844 v2**: prima scena **21/24/25/14**, quattro minuti diversi (n° 23: 13/13/13/13). Il mondo
+diverge (Vairo 1-0 con la scena del 59', Moretti 112 righe): non è la 7.846, è il seme.
