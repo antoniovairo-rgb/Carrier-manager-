@@ -3600,3 +3600,36 @@ passaggio corto l'etichetta è stantia; il rimedio da provare è nell'ELEZIONE d
 entro 2,5u — oggi se il pallone atterra dove non c'è nessuno l'etichetta non passa), non nella
 caduta dell'etichetta. Lezione: una coppia su 150 s di due partite non basta quando il rumore fra
 passate è ±6; il metro è la sonda da telefono su quattro partite, e quella decide.
+
+## #74 — il gol del compagno: misura con la sonda `gol74` (09/09 notte)
+
+Per ogni riga di gol, 5 s a 100 ms: pallone reso e logico, porta e pallone in quadro (`__CPM_INQ74`
+proietta un punto del campo nella camera). Conti fuori (4-0) e Moretti casa (3-0), build 7.850:
+
+| gol | fase | pallone reso x alla riga → +5 s | logico x | porta in quadro | pallone in quadro |
+|---|---|---|---|---|---|
+| Conti 23' Ferrari | playing | 100,6 → 81 | 95 → 78 | 66 % (da 0,0 s) | 78 % |
+| Conti 23' Conti (scena) | hl_result | 99 → 43 | 78 → 47 | 38 % | 100 % |
+| Conti 54' Scotti | playing | 85 → 97,8 | 93 → 97,8 | 78 % (da 0,6 s) | 82 % |
+| Conti 75' Bruno | playing | 90 → 88,5 | 95 → 83 | 10 % (da 0,8 s) | 88 % |
+| Moretti 26' Moretti | playing | 100,6 → 34 | 50 → 31 | 20 % | 78 % |
+| Moretti 36' (scena) | hl_result | 99 → 49 | 72 → 55 | 38 % | 84 % |
+| Moretti 40' Moretti (assist Neri) | playing | 54 → 38 | 55 → 38 | **0 % (mai)** | 88 % |
+| Moretti 54' Neri | playing | 100,6 → 84 | 93 → 80 | 34 % (da 0,5 s) | 78 % |
+
+Letture. (a) La camera NON è il difetto: segue il pallone reso (`bx` = mesh del pallone) e il
+pallone è in quadro nel 78-100 % dei 5 s. (b) Il piano del gol porta il pallone LOGICO a x 93-95
+prima della riga (Ferrari, Scotti, Bruno, Neri): l'azione c'è nei numeri. (c) Il pallone RESO alla
+riga sta o già in rete (100,6: l'affermazione 7.811 lo ha portato lì in 1,4 s dal bordo dell'area,
+il «tiro da centrocampo» del #48) o al bordo dell'area (85-90) e in un caso non entra mai (Bruno:
+90 → 88). Nei fotogrammi la palla è sull'arco dell'area con gli uomini attorno (7.850), ma **non c'è
+il tiro**: nessun corpo calcia, il portiere non si muove, la rete arriva per affermazione. (d) Due
+gol dell'eroe in fase ambientale col pallone a centrocampo: Moretti 26' (logico 50 → 31) e 40'
+(54 → 38, porta mai in quadro) — il «rigo ambientale» del gol dell'eroe (H) non passa dal piano
+né dall'affermazione.
+
+Strada (7.852, domani): il gol del microsim è l'ULTIMA BATTUTA di un'occasione — un tiro da un corpo
+sul pallone (attesa 847: uomo e pallone sul punto), arco fino alla rete, portiere che si muove —
+e l'affermazione 7.811 diventa il caso di riserva, non la regola; il gol ambientale dell'eroe
+passa dallo stesso piano. Misura: `gol74` su 4 partite, «porta in quadro alla riga» ≥ 8/9 e
+«pallone reso in rete entro 1,5 s da un corpo entro 3u» ≥ 8/9.

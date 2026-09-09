@@ -31,7 +31,7 @@ if(cdp){cdp.on('Page.screencastFrame',e=>{ultimo={data:e.data,ts:Date.now()};nFr
   await cdp.send('Page.startScreencast',{format:'jpeg',quality:80,maxWidth:824,maxHeight:1830,everyNthFrame:2});}
 const foto=[];let nFoto=0;const MAXF=70;const eta=[];
 async function scatta(min,tag,txt){if(!FOTO||!ultimo||nFoto>=MAXF)return;nFoto++;const f=`f${String(nFoto).padStart(2,'0')}-min${String(min).padStart(2,'0')}-${tag}.jpg`;
-  try{fs.writeFileSync(path.join(OUT,f),Buffer.from(ultimo.data,'base64'));eta.push(Date.now()-ultimo.ts);foto.push({f,min,tag,txt:String(txt||'').slice(0,90)});}catch(_e){}}
+  try{const _age=Date.now()-ultimo.ts;const _hud=await page.evaluate(()=>{try{const ms=window.__CPM_MS&&window.__CPM_MS();return ms?(ms.min|0):null;}catch(e){return null;}});fs.writeFileSync(path.join(OUT,f),Buffer.from(ultimo.data,'base64'));eta.push(_age);foto.push({f,min,tag,txt:String(txt||'').slice(0,90),age:_age,hud:_hud});}catch(_e){}}
 const c={n:0,dCar:[],scarto:[],salti:0,carN:0,carOk:0,terraN:0,terraOk:0,voloN:0,pad:{},fasi:{},ultimaFoto:Date.now(),ultimoMin:-1,croVisti:0,hlPrev:false,pgPrev:false};
 let prev=null,min=0;
 for(let k=0;k<6000;k++){await sleep(70);
@@ -78,8 +78,8 @@ R.push(`| tagli di camera registrati | ${fine.cam} | (informativo) |`);
 R.push(`| minuti per stato dello schermo | ${JSON.stringify(cls)} | palla morta + fermo ≤ 15 |`);
 R.push(`| righe di cronaca | ${fine.cro} | 70-110 |`);
 R.push(`| risultato | ${fine.ms&&fine.ms.score?(fine.ms.score.h+'-'+fine.ms.score.a):'?'} | |`);
-R.push('');R.push('## Fotogrammi');R.push('');R.push('| # | minuto | evento | riga |');R.push('|---|---|---|---|');
-foto.forEach((f,i)=>R.push(`| ${f.f} | ${f.min}' | ${f.tag} | ${f.txt} |`));
+R.push('');R.push('## Fotogrammi');R.push('');R.push('| # | minuto | evento | riga | eta\' del fotogramma (ms) |');R.push('|---|---|---|---|---|');
+foto.forEach((f,i)=>R.push(`| ${f.f} | ${f.min}' | ${f.tag} | ${f.txt} | ${f.age==null?'':f.age} |`));
 fs.writeFileSync(path.join(OUT,'report.md'),R.join('\n')+'\n');
 fs.writeFileSync(path.join(OUT,'cronaca.txt'),fine.croTxt.join('\n')+'\n');
 console.log(R.slice(0,14).join('\n'));console.log(`fotogrammi: ${foto.length} → ${OUT}`);
