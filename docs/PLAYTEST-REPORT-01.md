@@ -754,3 +754,38 @@ tick stesso del 45'**, dopo il troncamento. → 7.837 v2 (sorgente): la libreria
 né durante la ripresa. In casa la squadra continua a tirare (Vairo 3, Moretti 2).
 
 **Media: 5,9** (uguale al n° 12: nessuna area cambia di un punto intero).
+
+
+---
+
+# Rapporto n° 14 — build 7.838 (strumento: il titolo della scena nel diario) — 09/09 notte
+
+Stesso gioco del 7.836 v2; cambia lo strumento: il diario stampa il titolo e l'introduzione della
+scena dell'eroe (quello che il player legge nell'intro, `▶ …`). Serve a rispondere ad AC («il gol
+dell'eroe senza un'azione prima»): era in parte un artefatto del diario.
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori |
+|---|---|---|---|---|
+| righe / minuti vuoti | 73 / 38 | 63 / 47 | 54 / 50 | 81 / 33 |
+| finale | 1-0 | 2-0 | 3-1 | 4-0 |
+
+## Che cosa legge il player prima di ogni gol dell'eroe (5 gol)
+
+| gol | prima | titolo della scena | giudizio |
+|---|---|---|---|
+| Vairo 32' | 31' «Calcio d'angolo per Scotti» | «⚽ Portiere fuori posizione! L'area piccola è scoperta.» | ci credo |
+| Moretti 31' | 30' «Palla persa alta! De Santis (POL) riparte in campo aperto» | «⚡ Tentativo di tiro» | **no**: loro ripartono e un attimo dopo segno io, con un titolo generico |
+| Galli 69' | 65' gol di Spada, poi niente | «↗️ Tentativo di cross» → «Galli segna! 2-1» | **no**: un cross che diventa gol dell'eroe, senza catena |
+| Galli 87' | «Cambio di gioco lungo 50 metri!» → chance → «Mischia in area!» | catena a due tempi | ci credo |
+| Conti 10' | «Bordata da centrocampo!» → chance → «Mischia in area!» | catena a due tempi | ci credo (il titolo «bordata» promette un tiro e invece è una chance: da vedere) |
+
+AC si ridimensiona: 3 gol su 5 hanno un'azione prima leggibile. Restano due difetti veri: (a) la
+scena che si apre sopra un contropiede avversario in corsa (Moretti 30'-31') → 7.839; (b) il
+titolo d'intento generico («Tentativo di cross» → gol) che non dice che cosa ha fatto l'eroe: il
+diario non registrava la SCELTA del player → strumento (7.838 v2: «▶ scelta: … → esito»).
+
+**P misurato sul n° 14 (rosso della 7.839)**: annunci di contropiede 2 (Moretti 30', Galli 16'),
+risoluzioni entro 3' **0/2**; Galli 16' «Colombo riparte» → 21' «Campo aperto per Bianchi» (nome
+diverso). **E**: gol di catena dopo respinta 2 (Galli 87', Conti 10'), righe che nominano la respinta 0/2.
+
+**Media: 5,9** (non cambia: stesso gioco del n° 12).
