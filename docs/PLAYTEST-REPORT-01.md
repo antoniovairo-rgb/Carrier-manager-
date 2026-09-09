@@ -1346,3 +1346,61 @@ il tiratore a 14-16u: l'attesa 847 scade dopo tre tick col pallone non arrivato 
 «Incornata di Ferrari» col pallone a centrocampo, letto anche sul telefono). Vairo: 30 minuti di
 «pausa-dado» su 37 muti. Il voto resta quello del telefono (n°1 5,3; n°2 da fare sui fotogrammi
 della 7.852, con la seconda foto a +1,2 s sui gol).
+
+
+---
+
+# Playtest DA TELEFONO n° 2 — 7.852 — 09/09 notte
+
+Sonda v3 (screencast, età per fotogramma, seconda foto a +1,2 s sui gol). Fotogrammi citati in
+`docs/collaudo-telefono/n02/`. Dichiarato: Chromium a 412×915 con GL software (13-16 fps), non
+l'Android del PO.
+
+| | Vairo casa | Moretti casa | Galli fuori | Conti fuori | banda |
+|---|---|---|---|---|---|
+| pallone reso ai piedi del padrone (≤ 3u) | 33 % | 31 % | 34 % | 31 % | ≥ 60 % |
+| campioni con un padrone dichiarato | 45 % | 39 % | 21 % | 40 % | informativo |
+| salti > 8u | 46 | 59 | 47 | 48 | 0 |
+| minuti: palla morta · ripresa | 17 · 3 | 15 · 7 | 14 · 12 | 10 · 13 | ≤ 15 |
+| finale | 0-0 | 3-0 | 2-1 | 4-0 | |
+
+**I gol, a +1,2 s dalla riga (la novità della 7.852).** Conti 23' Ferrari: porta in quadro, pallone
+sul palo, portiere a terra dopo il tuffo, due difensori (conti-f12) — **ci credo**. Galli 68'
+Pecoraro: pallone dentro la porta in alto a sinistra, portiere a terra (galli-f29) — **ci credo**.
+Conti 55' Lombardi: pallone oltre la linea, tre difensori dietro, **portiere assente** (conti-f26).
+Moretti 55' Neri: pallone sul palo, portiere in piedi a 8u che guarda (moretti-f28). Conti 75'
+Bruno: ancora il cross, pallone sulla fascia, porta fuori quadro (conti-f32): è l'attesa 847
+scaduta col pallone non arrivato (Conti 21' «Incornata» col pallone a centrocampo, come nel diario
+n° 32). Su 5 gol del microsim: 2 credibili, 2 a metà (rete sì, portiere no), 1 no. Nel n° 1 erano
+0 su 5.
+
+**«Da due passi, tutto solo davanti alla porta!»** ancora falso 3/3: Conti 43' (conti-f20) tre uomini
+attorno al pallone sul bordo dell'area e porta fuori quadro; Galli 33' (galli-f10) idem; Vairo 10'.
+Il tiratore adesso è SUL pallone (7.850), ma il testo dice una cosa che la geometria smentisce.
+
+**Campo.** I corpi stanno attorno al pallone (7.850): niente più campo vuoto alla riga del gol
+(nel n° 1: Vairo 27', Galli 49' e 64'). Il pallone ai piedi del padrone resta a un terzo (banda 60).
+La riga «⚽ Palla al centro e arbitro pronto» è entrata nel filtro dei gol della sonda (Vairo 48'):
+difetto dello strumento, non del gioco.
+
+## Scorecard DA TELEFONO n° 2
+
+| # | Area | n°1 | **n°2** | motivo (< 7) · cosa si è cercato (≥ 7) |
+|---|------|:---:|:---:|---|
+| 1 Realismo | 4 | **5** | padrone 31-34 % (banda 60), 46-59 salti; i corpi ora stanno attorno al pallone |
+| 2 Credibilità da attaccante | 4 | **5** | gol credibili 2/5, a metà 2/5 (portiere assente o fermo), 1 no; «da due passi» falso 3/3 |
+| 3 Causalità | 6 | **6** | il piano finisce in rete (conti-f12, galli-f29); l'incornata con l'attesa scaduta no (conti-f32) |
+| 4 Varietà | 5 | **5** | «da due passi» al 10'-11' in 4 partite su 4, stessa frase |
+| 5 Ritmo | 5 | **5** | ripresa 12-13' fuori casa; palla morta 17' Vairo; pausa-dado 30' (diario) |
+| 6 Azioni extra-eroe | 5 | **6** | 4 gol su 5 con il tiro che entra a +1,2 s; il portiere c'è in 2 su 5 |
+| 7 Highlight dell'eroe | 5 | **5** | non rigiudicato: stesse scene del n° 1 (una credibile su sei) |
+| 8 Telecronaca | 5 | **5** | «tutto solo davanti alla porta» con tre uomini attorno |
+| 9 Interazioni | 7 | **7** | cercata una scelta contro il punteggio: nessuna |
+| 10 Coerenza fra i sistemi | 7 | **7** | cercata una frase contro il tabellone in 10 gol: nessuna |
+| 11 Immersione | 5 | **5** | 13-16 fps sul banco, un salto ogni 3 s |
+| 12 Carriera | 6 | **6** | barra viva; nomi dei club troncati |
+
+**Media DA TELEFONO: 5,6** (somma 67; n° 1: 5,3). Metro 8,0, nessuna area sotto 7: **nove aree
+sotto 7**. Nessun «puoi collaudare». Prossimi, in ordine: il portiere sul gol (assente o fermo in
+2 su 5); l'attesa 847 scaduta (l'incornata parte col pallone a centrocampo); il testo «tutto solo /
+da due passi» che deve leggere la geometria; la banda 60 del padrone.
