@@ -3714,3 +3714,10 @@ spiegato — il «mangiato» è una sostituzione di riga, non una parata, e la 7
 **Sul branch.** Ai fotogrammi (+1,2 s): il portiere è in quadro sulla linea in 3 gol su 4 (n° 2: 2 su
 5) ma **in piedi** mentre il pallone gli passa accanto in 3 su 3: il tuffo T8 parte al tiro e finisce
 prima che il pallone arrivi. Prossimo (7.854): il tuffo con tempo di reazione e arrivo sul pallone.
+
+Sonda v4 (foto a +0,5 s), Conti fuori sulla 7.853 v3: al 55' (Lombardi) a +0,5 s il portiere è in
+piedi sulla linea col pallone già dentro la porta ai suoi piedi, nessun tuffo (conti-f29-54-gol+0.5s);
+al 23' e al 75' a +0,5 s il pallone è ancora fuori dall'area (incornate con l'attesa scaduta). Quindi
+il «tuffo dal tiro 2» contato da `gol74` non è il tuffo su QUESTO tiro: il testimone conta tutti i
+tag. 7.854, prima la misura: al lancio dell'arco della battuta `rete` registrare se il sito T8 arma il
+tuffo e, se no, quale cancello lo ferma (`oppActType` occupato, `_t8At808`, tipo d'arco).
