@@ -3390,3 +3390,28 @@ Prossima area: **Ritmo** (5). Nel diario 33-45 minuti senza righe; le pause lung
 primi minuti (2'-7' in 3 partite su 4) e nei 4-5' dopo un gol del microsim. Prima di rimediare, si
 guarda lo SCHERMO in quei minuti: se c'è la festa del gol o il calcio d'inizio, il diario sovrastima il
 silenzio e lo strumento va corretto; se non c'è niente, è ritmo.
+
+
+### 7.843 (RITMO): la palla morta dura quanto dura — causa letta con lo schermo
+
+Strumento 7.843: un testimone per tick dice che cosa c'è sullo schermo (calcio d'inizio, ripresa,
+scena, palla morta, fermo, piazzato, pausa del dado, piano, contropiede, libreria) e il diario
+classifica ogni minuto muto. Moretti in casa (build 7.842): 44 minuti muti = **24 di palla morta** + 9 di
+pausa del dado dopo i gol + 11 di calcio d'inizio/ripresa + **0 di vuoto vero**. Interruzioni 15, di
+cui 11 falli a 5', 9', 14', 18', 22', 26'…, ognuna 3-4 tick (5-7 s reali) e per lo più muta (tetto
+7.632 v7). Il fermo a 4 tick (7.566) serviva a far ARRIVARE la mesh sul punto: su un fallo la palla è
+già lì.
+
+Quattro versioni sullo stesso seme (minuti di palla morta su Moretti, rosso **41**):
+- v1: durata per tipo nel `ttl` (fallo 2, rimessa/rinvio 3, corner 4), p fallo 0,55 → 0,30: **39** —
+  il `ttl` non era la durata: le rimesse si prendevano i tick liberati (falli 10 → 3, rimesse 2 → 7).
+- v2: raffreddamento di tre minuti fra un fischio e l'altro, rimessa/rinvio 2: ancora run di 3-9
+  minuti — la durata vera è il **budget per tick `tk632`** (4, 10 per il corner dell'occasione), non il
+  ttl per riga.
+- v3: il budget per tick legge la durata per tipo: **27**; restano i run lunghi delle palle morte
+  armate dagli altri due siti (la riga che dichiara l'interruzione, 7.559; il corner dell'occasione
+  con budget 10 la cui battuta aspettava il dado: Moretti 17'-24').
+- v4: durata per tipo e raffreddamento anche nel sito 7.559; la battuta del corner dell'occasione
+  (step 2) passa dal cancello forzato come il fischio: **14** minuti di palla morta, 7 interruzioni.
+Rosso `__CPM_NO843`. Playtest n° 23 + career + CI in corso. Banda del guardiano `arbitro-esiste`
+(≥ 6 interruzioni su 2 partite) da leggere.
