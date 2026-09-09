@@ -3682,3 +3682,13 @@ dalla finestra che conto); la posizione non si muove perché la distanza che mis
 Resta a richiesta (`__CPM_SI853`), sorgente a 7.852. Prima di riprovare: misura la sola x dalla
 linea e conta i tuffi da 1 s prima della riga; poi decidi se il difetto è la posa (portiere fuori
 quadro) o il tuffo (che nei fotogrammi c'è in 2 gol su 5).
+
+Misura rifatta sulla 7.852 (x dalla linea, tuffi contati dal TIRO), Conti fuori e Moretti casa, gol
+del microsim: portiere a **9,0 · 10,1 · 9,3 · 10,5u dalla linea** (y entro 3u dal centro), tuffi dal
+tiro **2 · 2 · 2 · 2** (T8, al tiro). Quindi il tuffo C'È — il portiere si tuffa a 9-10u davanti alla
+sua linea mentre il pallone vola a 100,6, dieci unità dietro di lui: nei fotogrammi è «a terra» quando
+la camera lo tiene, «assente» quando resta fuori dal quadro largo. Il difetto è la POSA, non il tuffo:
+la regola d'uscita del portiere (src/12 r.4405: bersaglio 94 meno un passo fino a 4,5) lo tiene a
+x 90-93, e la 7.853 col bersaglio 97,5 meno lo stesso passo lo portava a 93 (misurato 9,1-8,1u: dentro
+il rumore). v2 da provare: col pallone in area bersaglio 99 e passo zero; metro «x dalla linea alla
+riga ≤ 4u» sui gol del microsim (oggi 9-10,5u), tuffi dal tiro invariati (2).
