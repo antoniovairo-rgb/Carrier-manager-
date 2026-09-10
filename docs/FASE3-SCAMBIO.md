@@ -3983,3 +3983,40 @@ dichiarati dal tetto col pallone a 88-95, verde 0/10. Rituali sulla 7.864.0: car
 costo fisso: da misurare cosa cresce (mixer, clip, testimoni non c'entrano: senza REC scende uguale).
 Se succede anche sull'Android del PO, il secondo tempo diventa una sequenza di diapositive. Non
 verificato sul suo telefono.
+
+## 7.865 — il pallone torna in campo fuori dalle azioni salienti (direttiva PO 10/09)
+
+PO: «solo il pallone, ma la posizione deve essere realmente credibile in base alla telecronaca».
+Metro nuovo, sonda `geo865`: per ogni riga di cronaca con un LUOGO dichiarato (area / limite, fuori
+area, trequarti, centrocampo, fondo, portiere, corner; il lato si legge dalla sigla «(GRA)/(POL)» e dal
+lato dell'eroe nel Match State) il pallone RESO deve stare nella banda di campo promessa. Base (4
+partite, 7.864, pallone ancora nascosto ma posizionato):
+
+| partita | righe con luogo | nella banda alla riga | a +1 s | a +2,5 s |
+|---|---|---|---|---|
+| Vairo casa | 23 | 13 | 21 | 16 |
+| Moretti casa | 23 | 15 | 17 | 16 |
+| Conti fuori | 7 | 2 | 2 | 4 |
+| Galli fuori | 16 | 10 | 9 | 12 |
+| **totale** | **69** | **40 (58 %)** | **49 (71 %)** | **48 (70 %)** |
+
+Due classi di «no»: (a) il RESO arriva un secondo dopo la riga (8', 33', 51', 62': 52-61 → 69-75 → 81-90
+mentre la riga dice «in area / al limite»); (b) il LOGICO non sta dove la frase dice («Scotti riceve a
+centrocampo» con la palla a 84,7; «Bianchi muove verso la nostra trequarti» a 93,6; «Toti ci arriva in
+tuffo» a 83,6; «arriva sul pallone in area» a 63,6). La (b) è la stessa radice della 7.792 (coordinate
+del piano in scatola). 7.865 riaccende il pallone (rosso `__CPM_NO865`) e dichiara questi numeri; la
+credibilità si alza con la misura successiva sulla classe (b).
+
+**Censimento fps chiuso (11:20).** Sonda `fpsdecay` (Vairo, GLB, partita intera, ogni 15 s: fps, chiamate,
+triangoli, texture, geometrie, programmi, heap): non è una deriva. I fps stanno a 2-6 quando i triangoli
+sono **1,09 milioni** (i ventidue GLB in quadro: scene e occasioni) e a 10-13 quando sono 5-13 mila (campo
+senza corpi, telecronaca testuale). Heap stabile 155-180 MB, programmi 23 fissi; le geometrie salgono
+404 → 598 in una partita (qualcosa alloca ~200 geometrie, non pesa sui fps: aperto minore). Il «calo nel
+tempo» della sonda `fps` era la frazione di tempo con i corpi in quadro. Costo vero da dichiarare al PO:
+i ventidue GLB pesano 1,09 M triangoli, ~50 mila a testa; sul suo Android è il carico delle scene.
+
+**7.865 dal telefono (11:55, sonda v7, Vairo casa + Galli fuori).** Fotogrammi «gioco» in fase playing: 14,
+con il pallone in quadro **14/14** e campo vuoto **0/16** (n° 7: 6/24). Nei fotogrammi di telecronaca
+testuale (47' cambio campo, 58' e 50' consegna del mister, 61' ripresa) si vede solo il pallone sul prato,
+come chiesto. Padrone ≤3u 23 / 24 % (n° 7: 25-44, metrica rumorosa), salti 45 / 55, fps 12 / 11 senza
+sonda. Career **PASS**, CI **exit 0** (manovra-viva 68, gol del simulatore 7/7).

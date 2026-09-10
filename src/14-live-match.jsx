@@ -2693,7 +2693,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           let _md711=1e9;for(let _j711=0;_j711<_pl711.length;_j711++){const _o=_pl711[_j711];if(!_o||_o.gk||_o.team!==_defT711)continue;
             const _dd=Math.hypot((_q.x||50)-(_o.x||50),(_q.y||50)-(_o.y||50));if(_dd<_md711)_md711=_dd;}
           if(_md711<6)_marc711++;else if(_md711>10)_lib711++;}
-        matchStateRef.current={v:1,min:clockRef.current|0,score:{h:scoreRef.current.home|0,a:scoreRef.current.away|0},
+        matchStateRef.current={v:1,min:clockRef.current|0,score:{h:scoreRef.current.home|0,a:scoreRef.current.away|0},home:isMatchHome!==false,sig:(function(){const _ab=(c)=>{try{return (c&&c.a)||(c&&c.id?String(c.id).slice(0,3).toUpperCase():'');}catch(_e){return '';}};return {h:_ab(_homeClubObj),a:_ab(_awayClubObj)};})(),/* [sonda geo865] sigle e lato dell'eroe, per leggere «(GRA)» nelle righe */
           turn:_turn711,poss:poss|0,momentum:momentumRef.current|0,
           ball:{x:+_bx711.toFixed(1),y:+_by711.toFixed(1)},carrier:(carrierRef.current&&carrierRef.current.i!=null)?carrierRef.current.i:null,
           fermo:!!fermoRef.current,out:!!outRef.current,costruzione:!!pendingGoalRef.current,

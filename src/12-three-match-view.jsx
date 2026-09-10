@@ -1520,7 +1520,7 @@ function ThreeMatchView(props){
         return{lx:+(+_q.x).toFixed(2),ly:+(+_q.y).toFixed(2),mx:+(m.position.x+50).toFixed(2),my:+(m.position.z/0.68+50).toFixed(2),sp:+((m._sp||0)).toFixed(2),vmax:+((m._vmax||0)).toFixed(2),tx:(m._ctx==null?null:+(m._ctx+50).toFixed(2)),ty:(m._ctz==null?null:+(m._ctz/0.68+50).toFixed(2)),port:!!m._port850,vx:+((m._vx||0)).toFixed(2),vz:+((m._vz||0)).toFixed(2)};}catch(_e){return null;}};/* [censimento telefono n°1] un giocatore: punto logico e corpo, per la serie temporale del ritardo */
       window.__CPM_WS=function(){try{
         const _P=propsRef.current||{};
-        return{rx:+(ball.position.x+50).toFixed(2),ry:+(ball.position.z/0.68+50).toFixed(2),
+        return{rx:+(ball.position.x+50).toFixed(2),ry:+(ball.position.z/0.68+50).toFixed(2),vis:ball.visible?1:0,
                lx:(_P.ballX==null?null:+(+_P.ballX).toFixed(2)),ly:(_P.ballY==null?null:+(+_P.ballY).toFixed(2)),
                ws:(sr.current&&sr.current._ws524)|0,
                src:(sr.current&&sr.current._bj0&&sr.current._bj0.src)||null,
@@ -7559,7 +7559,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               dell'eroe rotta per nascondere una palla. E' il terzo criterio che avevo dichiarato
               prima di guardare i numeri, ed e' l'unico motivo per cui non l'ho spedito. */
            {const _nasc814=!(typeof window!=='undefined'&&window.__CPM_NO814);
-            const _viaBall=_off660&&_nasc814;
+            /* [7.865.0 — IL PALLONE TORNA IN CAMPO FUORI DALLE AZIONI SALIENTI. Rosso __CPM_NO865]
+               Direttiva PO 10/09 («solo il pallone, ma la posizione deve essere realmente credibile in base
+               alla telecronaca»), sopra la 7.805 che lo nascondeva: nel telefono n° 7 sei fotogrammi di gioco
+               su ventiquattro erano prato vuoto. I ventidue restano spenti (7.665); il pallone, la sua ombra e
+               l'alone (7.808) restano accesi. La credibilita' e' misurata dalla sonda «geografia della riga»
+               (geo865): per ogni riga con un luogo dichiarato, il pallone reso sta nella banda promessa. */
+            const _viaBall=_off660&&_nasc814&&(typeof window!=='undefined'&&!!window.__CPM_NO865);
             if(ball)ball.visible=!_viaBall;
             if(typeof _bShadow534!=='undefined'&&_bShadow534)_bShadow534.visible=!_viaBall;
             /* ⚠️ [7.808.0 — REGRESSIONE DELLA 7.805 CORRETTA: L'ALONE SI RIACCENDE. Nota PO sulla 7.807: «il
