@@ -274,3 +274,8 @@ primo tiro esce al 10'-12'. Non è il seme: il cancello (r.~3900, `_advO695 ≥ 
 minaccia `_thr714 ≥ 58`) si raggiunge sempre a 6'-7' dal via, perché la minaccia parte da zero al
 fischio e cresce allo stesso passo in ogni partita. Da misurare: la curva di `_thr714` nei primi 15'
 e quanto varia con l'avversario; poi decidere se è il passo o la partenza a dover cambiare. Aperto.
+*Misura (04:45, sonda `thr714`, 2 eroi, primi 22'):* la minaccia arriva a 58 solo all'11' (Vairo) e al
+16' (Conti), ma l'occasione si apre al 6' e al 10': ad aprirla non è la soglia di minaccia, è il
+ramo del potenziale (`_pot790`, 7.790). E fra le corse il minuto varia (Conti 7' nelle tre schede,
+10' qui): non è una costante di produzione, è la dinamica dei primi minuti sul provino. Chiuso come
+censimento; resta un'osservazione da telefono: l'apertura è sempre PRIMA del 10' in 16/17 corse.
