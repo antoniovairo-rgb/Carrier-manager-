@@ -338,3 +338,21 @@ righe scende da 97 a 85 % e sul telefono il reso non si sposta. Revocata. Tre fa
 (posizioni dei ventidue vecchie di un tick; waypoint = uomo = passaggio a ogni tick; il mover governa un
 terzo del gioco vivo, 29 scrittori). Prossimo passo, con il via del PO: stato di possesso unico da cui
 passano tutti gli scrittori (righe, piano, scene), misurato su banco e geografia insieme; 1-2 giorni.
+
+## 10/09 sera — CARTA BIANCA: la ristrutturazione (7.870, branch `claude/motore-possesso`)
+
+Il PO: «hai carta bianca, puoi anche ricominciare da zero ed eseguire una vera ristrutturazione» ·
+«l'obiettivo e' rilasciare un gioco CREDIBILE, DIVERTENTE, IMMERSIVO, REALISTICO».
+
+Cambio di paradigma vero: **prima la simulazione, poi le parole.** Il motore del possesso
+(`src/14-motore-possesso.jsx`) e' l'unico scrittore del pallone e dei ventidue nel gioco vivo; la
+telecronaca nasce dai suoi fatti (narratore `narra870`); il microsim resta il giudice del punteggio
+(il gol decretato e' una richiesta che il motore costruisce). Le cause S1 (pallone senza padrone) e
+S5 (azioni matematiche) cadono per costruzione: in tenuta il pallone STA ai piedi di un uomo nominato,
+i tiri partono da dove sta il tiratore, i passaggi arrivano a un uomo scelto per avanzamento, marcatura
+e corsia. Le vecchie macchine restano nel sorgente SPENTE sotto il rosso `__CPM_NO870` finche' il motore
+non batte la scheda da telefono; poi si tolgono.
+
+Metro invariato: scheda da telefono su 4 partite, media >= 8, nessuna area < 7, zero bugie P0/P1.
+Produzione (`main`) resta sul branch QA (7.866) finche' il branch del motore non vince al metro.
+Verbale: `docs/FASE3-SCAMBIO.md`, sezione 7.870.

@@ -1703,10 +1703,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const _nm=(c)=>{if(!c)return "un giocatore";if(c.eroe)return "{P}";if(c.gk)return c.team==='home'?"{GKH}":"{GKA}";return (_cap(c.nome)||"un compagno")+_sig(c.team);};
     const _raw=(c)=>c?(c.eroe?(_surnBG(player.name||"")||String(player.name||"").split(/\s+/).pop()||""):String(c.nome||"")):null;
     const _adv=(x,l)=>l==='home'?x:100-x;
-    const _dove=(pt,l)=>{if(!pt)return "";const a=_adv(pt.x,l);const largo=Math.abs(pt.y-50)>=24;if(a>=84&&Math.abs(pt.y-50)<=22)return "in area";if(a>=70)return largo?"sul vertice dell'area":"al limite dell'area";if(a>=56)return largo?"sulla fascia, nella trequarti":"sulla trequarti";if(a>=34)return largo?"sulla fascia a centrocampo":"a centrocampo";return "nella propria meta' campo";};
+    /* il lessico dei luoghi e' quello che il metro della geografia (geo865) sa leggere: «in area» (76-100), «dal limite» (fuori area 50-86), «trequarti» (58-82), «centrocampo» (32-68); le retrovie non hanno banda e non si contano */
+    const _dove=(pt,l)=>{if(!pt)return "";const a=_adv(pt.x,l);const largo=Math.abs(pt.y-50)>=24;if(a>=84&&Math.abs(pt.y-50)<=22)return "in area";if(a>=70)return largo?"dal limite, sulla fascia":"dal limite";if(a>=56)return largo?"sulla fascia, nella trequarti":"sulla trequarti";if(a>=34)return largo?"sulla fascia a centrocampo":"a centrocampo";return "dalle retrovie";};
     const _h=(k)=>Math.abs(hashStr("n870|"+nx+"|"+k+"|"+_sm819()));
     const _pk=(arr,k)=>arr[_h(k)%arr.length];
-    const PRIO={gol:10,rigore:9,tiro:8,parata:8,palo:8,murato:7,fuori:6,fallo:6,cross:6,contrasto:5,intercetto:5,spazzata:5,presa:5,corner:4,rimessa:4,rinvio:4,battuta:4,centro:4,calcio_inizio:3,recupero:3,palla_persa:3,passaggio:3,conduzione:2,ricezione:1};
+    const PRIO={gol:10,rigore:9,tiro:8,parata:8,palo:8,murato:7,fuori:6,fallo:6,cross:6,contrasto:5,intercetto:5,spazzata:5,presa:5,corner:4,rimessa:4,rinvio:4,battuta:4,centro:4,calcio_inizio:3,recupero:3,palla_persa:3,passaggio:3,conduzione:2,ricezione:1,controllo:1};
     /* [7.870 geografia] il passaggio rasoterra si racconta ALL'ARRIVO (il pallone e' gia' li'): al lancio parlano solo lanci, cambi di gioco e palloni usciti, che hanno l'arco */
     let best=null,bp=-1;for(const e of eventi){let pr=PRIO[e.t]!=null?PRIO[e.t]:1;if(e.t==='passaggio')pr=(e.fuori||e.kind==='lancio'||e.kind==='cambio')?4:0;if(e.t==='ricezione')pr=(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross')?3:1;if(pr>bp){bp=pr;best=e;}}
     if(!best||bp<=0)return null;
@@ -1759,6 +1760,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         else if(e.kind==='filtrante')txt=_pk(["🎯 Filtrante di "+da+": "+c+" la raccoglie "+d+"!","⚡ "+da+" la mette in profondita': "+c+" ci arriva "+d+"!"],"rc");
         else txt=_pk(["↩️ "+da+" scarica all'indietro su "+c+": si ricomincia con calma "+d+".","🔙 "+da+" torna su "+c+", "+d+", per far respirare la manovra."],"rc");}
       else txt=_pk(["🎯 "+c+" riceve e controlla "+d+".","⚙️ "+c+" si sistema il pallone "+d+" e alza la testa.","🔎 "+c+" addomestica il pallone "+d+": cerca l'uomo libero."],"rc");}
+    else if(e.t==='controllo'){const c=_nm(e.chi);const d=_dove(e.chi,l);txt=(e.press!=null&&e.press<3)?_pk(["🛡️ "+c+" protegge il pallone "+d+" con un avversario addosso.","⚙️ "+c+" tiene palla "+d+" sotto pressione e cerca lo scarico."],"ct"):_pk(["👀 "+c+" alza la testa "+d+": ha tempo per scegliere.","⚙️ "+c+" fa girare il pallone "+d+" e detta i tempi.","🧭 "+c+" controlla "+d+" e aspetta il movimento giusto."],"ct");}
     else if(e.t==='presa'){txt=_pk(["🧤 "+_nm(e.gk)+" esce e fa sua la palla alta.","🧤 Uscita sicura di "+_nm(e.gk)+"."],"pr");at="save";}
     else return null;
     if(!txt)return null;
@@ -4898,7 +4900,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  hanno mai avuto effetto — la consegna del mister non arrivava nemmeno alla memoria. Ora le cinque voci si applicano
                  come nella scelta (scegli681). */
               if(!(typeof window!=='undefined'&&window.__CPM_NO748)){if(_c.coinv)_N.coinv=(_N.coinv|0)+_c.coinv;if(_c.fiducia)_N.fiducia=(_N.fiducia|0)+_c.fiducia;if(_c.zona)_N.zona=(_N.zona|0)+_c.zona;}
-              ev={...ev,txt:_t,ef:null,ms:null,bpos:null,pd:null,_intx669:_intxK669.fam,_intxSc681:(_intxK669.sc||null),_intxId681:_intxK669.id};/* [7.812 v1 REVOCATA, vedi la libreria] */
+              ev={...ev,txt:_t,ef:null,ms:null,bpos:null,pd:null,_motore870:null,_az551:null,at:null,_intx669:_intxK669.fam,_intxSc681:(_intxK669.sc||null),_intxId681:_intxK669.id};/* [7.812 v1 REVOCATA, vedi la libreria] */
               if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_INTX669=window.__CPM_INTX669||[]).push({min:nx,id:_intxK669.id,fam:_intxK669.fam,txt:_t});}catch(_e){}}
             }
           }catch(_e670){}}

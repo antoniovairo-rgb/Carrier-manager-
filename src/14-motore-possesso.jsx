@@ -73,7 +73,7 @@ function creaMotorePossesso(cfg){
     quota:{home:0,away:0},
     inseguitore:null,
   };
-  const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];S.eventi.push(e);return e;};
+  const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}S.eventi.push(e);return e;};
   const nome=(p)=>p?(p.eroe?"{P}":(p.name||(p.gk?"il portiere":"un giocatore"))):"";
   const chi=(p)=>p?{i:p.i,nome:nome(p),eroe:!!p.eroe,gk:!!p.gk,team:p.team,x:+p.x.toFixed(1),y:+p.y.toFixed(1)}:null;
 
@@ -184,7 +184,7 @@ function creaMotorePossesso(cfg){
     if(S.poss.t===1&&!golReq&&!(press>=4&&adv>=56&&rnd()<0.6)){ramo("controllo");
       if(zona==="area"&&press>=2.2&&rnd()<0.55){ramo("tiro1");tira(P);return;}
       if(press<1.8&&rnd()<0.12){ramo("persa1");perdi(P);return;}
-      return;/* controllo: il pallone sta ai piedi un tick */
+      ev("controllo",{chi:chi(P),press:+press.toFixed(1),zona});return;/* controllo: il pallone sta ai piedi un tick */
     }
     if(!golReq){const r=rnd();const pF=(press<3?0.06:0.025)+(adv>=56?0.02:0);if(r<pF){ramo("fallo");fallo(P);return;}if(press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return;}}
     const verso=S.richieste.verso;
