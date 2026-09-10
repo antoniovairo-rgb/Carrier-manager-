@@ -298,3 +298,27 @@ già 7.860 revocata sul telefono): sul banco S1 il pallone logico ai piedi del p
 18-38 % (cinque ripetizioni, media 28) a 36-49 % (tre, media 42). Non è ancora la banda 60. Nota PO
 07:45 «il pallone è troppo piccolo»: misurato 5,9 px di diametro alla mediana su 915 (91 % sotto 7),
 7.862 mette un minimo di 11 px in campo largo (foto: 12 px contro 8). Da confermare sul suo Android.
+
+**Censimento, 10/09 09:05 — il campo vuoto durante il gioco.** Nei fotogrammi «gioco» delle quattro
+partite del telefono n° 7 (24 in fase playing) 6 mostrano il campo senza nessun giocatore e senza
+pallone (Galli 46', Moretti 67' e 78', Vairo 18', 35' e 86'), altri 5 un solo uomo. Non è un difetto
+del renderer: è la somma di due direttive del PO — 7.660/7.665 «durante la telecronaca si deve vedere
+SOLO il pallone con la sua ombra» (i ventidue spenti fuori dalle azioni salienti) e 7.805 «nascondi il
+pallone durante la telecronaca testuale». Fuori dalle azioni salienti lo schermo mostra quindi solo
+prato e tribuna. Con l'occhio del player è un quarto del tempo di gioco a campo vuoto; ma è una
+decisione di design del PO, non la tocco: la porto a lui come domanda (rimettere i ventidue senza
+pallone? o solo il pallone, ora che 7.861/7.863 lo tengono ai piedi di un uomo nel 36-49 %?).
+
+**Aggiunta, 10/09 10:05 — il banco a 2 fps e il tetto del gol (7.864).** I gol di scena con assist
+dichiarati col pallone a 94 (3/12) erano il tetto di parete dei 9 s che mordeva su un banco a 1-7 fps
+(scena a 0,4× del reale), non una scena rotta. 7.864: tetto sui secondi di scena. Lezione 20ª in
+FASE3. Nuovo aperto: con i GLB il banco scende da 12 a 2 fps in 40' (senza GLB resta a 10-13):
+qualcosa cresce durante la partita. Da censire, e da chiedere al PO se il suo telefono rallenta nel
+secondo tempo.
+
+**Direttiva PO, 10/09 10:15 — produzione allineata ogni notte.** «Una volta al giorno, magari di notte,
+allinea anche produzione; come già definito non farò collaudi finché non si raggiunge una media almeno di
+voto 8.» Da stanotte `main` viene allineato in fast-forward al branch alle 03:00 (ora di Roma) solo se
+l'HEAD ha career PASS e CI exit 0 verificati; mai force-push; ogni allineamento lascia una riga in
+FASE3-SCAMBIO.md. Il cancello del collaudo resta la media ≥ 8,0 della scheda da telefono (ultima: n° 7,
+5,8).

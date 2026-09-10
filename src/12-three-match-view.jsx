@@ -2126,7 +2126,7 @@ function ThreeMatchView(props){
           if(Math.abs(ball.position.x-_gx)>3.2)_rete573=true;}
       }
       if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST||_SIT_TEST)&&_rete573){try{const _w=(window.__CPM_RETE573=window.__CPM_RETE573||{f:0});_w.f++;}catch(_e){}}
-      if(P.cineBusy){try{P.cineBusy.current={on:isResult,tl:!!tlOn,arc:!!ballArcActive,pa:hlPostArcT>=0,rete:_rete573};}catch(_e461){}}
+      if(P.cineBusy){try{sr.current._ck864=(sr.current._ck864||0)+dt;P.cineBusy.current={on:isResult,tl:!!tlOn,arc:!!ballArcActive,pa:hlPostArcT>=0,rete:_rete573,ck:sr.current._ck864,/* [7.864.0] orologio di scena: somma dei dt del renderer, per un tetto che non morde a frame-rate basso */pat:hlPostArcType,pt:+(+hlPostArcT).toFixed(2),sl:+(+slow).toFixed(2),bx:+ball.position.x.toFixed(1),at:+(+ballArcT).toFixed(2)};}catch(_e461){}}
       /* [7.457.0 — MISURA, «esito dichiarato ≠ 3D»] PERCHE' IL BUILD-UP E' ANCORA VIVO? Il post-arco
          che porta la palla in rete aspetta la fine del build-up (guardia 5.43.9, r.~12542). Le prove
          del PO dicono «arco/post-arco vivi 30 · 17 · 118 · 144 fotogrammi» con la palla ferma: qui si

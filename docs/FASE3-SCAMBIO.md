@@ -3956,3 +3956,30 @@ largo. Foto dal telefono (Vairo casa, sonda v7, 7.862 in pagina): f32-min74 pall
 ## 7.863 — il passaggio segue il ricevente (era la 7.860, promossa sul banco S1)
 
 Le due ripetizioni in più della base 7.861 (padroni, Vairo, 400 s): logico ≤3u **33 / 24 %** (base a cinque ripetizioni 18 / 38 / 28 / 33 / 24, media 28,2, max 38) contro **36 / 40 / 49 %** con la 7.860 accesa (media 41,7, min 36). Il minimo del rimedio sta sotto il massimo di base in 1 ripetizione su 5 (38): non è «3/3 sopra la banda» in senso stretto, ma la media sale di +13,5 (quattro volte e mezzo il rumore ±3) e il reso non peggiora (43 / 47 / 40 contro 32-48). Promossa come 7.863: il bersaglio del pallone logico in volo è la posizione ATTUALE del ricevente eletto dalla trama (stessa condizione della 7.860: playing, nessun gol pendente, 0,8 < distanza < 12u). Rosso `__CPM_NO863`; `__CPM_SI860` rimosso. Rituali sulla 7.863.0: career **PASS** (exit 0), CI **exit 0** (validate 0 failure; manovra-viva 61 su banda 10; gol del simulatore 7/7).
+
+## 7.864 — il tetto del gol di scena corre sull'orologio di scena (lezione 20ª)
+
+Residuo dichiarato nella 7.858: i gol di scena con ASSIST annunciati col pallone a 88-93. Testimone
+nuovo `__CPM_TICK858` (ogni 180 ms del tetto: flag occupato tl/arc/pa, fase post-arco, `hlPostArcT`,
+pallone reso) su tre corse × 4 eroi, 12 gol di scena: **3 dichiarati dal tetto** con il pallone a
+94-95 (Moretti 16', Conti 11' e 61', tutti `assist_recv`), 9 dalla rete a 99,15. Nei tre casi il tetto
+dei 9 s è scattato con la scena ANCORA occupata: `hlPostArcT` avanzava di 0,30 s ogni ~0,75 s di parete,
+cioè il renderer girava a ~1,3 fps e il dt (cap 0,3 s sotto `__CPM_DTREAL`) faceva correre la scena a
+0,4× del reale. Nove secondi di parete erano quattro di scena: meno di arco (1,2 s) + controllo (0,55)
++ tiro (0,8) + rete (0,5) sommati al rallentatore d'apertura.
+**Lezione 20ª — il banco dichiara i suoi fps, e non sono quelli del PO.** Sonda `fps` (Vairo, 90 s
+reali per configurazione): con i GLB 11,8 fps al 7' che scendono a 2,0 al 40' (con o senza testimoni,
+con o senza screencast: 11→2 in tutte e tre); senza GLB 10-13 stabili. Le schede del telefono n° 6-7
+dichiaravano 11-18 fps «senza sonda» e 2-9 «con la sonda». Il PO gioca con i GLB a ~30 fps: sul suo
+telefono parete e scena coincidono, sul banco no. Ogni tetto di parete dentro una scena va letto come
+un tetto di SCENA: il metro sbagliato fa vedere «palla congelata» dove c'è un banco lento.
+7.864: il tetto conta i secondi di scena (`ck` nel flag occupato = somma dei dt del renderer) dalla
+programmazione, con una guardia dura di parete a 30 s. A 30 fps identico a oggi. Rosso `__CPM_NO864`.
+Misura appaiata (tetto858b, 4 eroi verde + 4 rosso `__CPM_NO864`, stesso banco): gol di scena dichiarati
+dal tetto col pallone sotto 99 — rosso **2/5** (Galli 30' a 90, 44' a 88,8: 3/12 nelle tre corse di prima,
+5/17 in tutto), verde **0/4** (4/4 dalla rete a 99,15); altre 4 partite verdi: **0/6** (6/6 dalla rete). In tutto: rosso 5/17
+dichiarati dal tetto col pallone a 88-95, verde 0/10. Rituali sulla 7.864.0: career **PASS**, CI **exit 0**.
+**Aperto (censimento fps):** il calo 11 → 2 fps in 40' con i GLB è una crescita nel tempo, non un
+costo fisso: da misurare cosa cresce (mixer, clip, testimoni non c'entrano: senza REC scende uguale).
+Se succede anche sull'Android del PO, il secondo tempo diventa una sequenza di diapositive. Non
+verificato sul suo telefono.
