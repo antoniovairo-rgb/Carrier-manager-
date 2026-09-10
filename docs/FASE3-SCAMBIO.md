@@ -3743,3 +3743,87 @@ Padrone 16/28/34/33 %, finali 1-0, 3-0, 1-2, 5-2; scheda 5,3 (due aree rigiudica
 il gol dell'eroe annunciato prima del pallone 3/5, il testo smentito 5/5). Career PASS; CI exit 0 (validate 0 failure, guardiano manovra-viva 63 su banda 10, gol del simulatore 7/7).
 Verdetto: si tiene — batte la sua misura (traccia in avanti 2/2 contro 2/3 indietro) e non peggiora
 il telefono. Prossimo: il tuffo che si vede.
+
+## 7.855 — il tuffo si vede: il volo porta il portiere a terra, non già rialzato
+
+Telefono n° 4: nei 5 gol del piano il pallone è sulla linea e il portiere è in quadro, ma IN PIEDI 5/5.
+La traccia procedurale (rz 0,01) non diceva niente: in GLB il corpo lo muove la clip, e il testimone
+giusto è `__CPM_GKTL` (nome della clip, peso, tempo). Letto sui tuffi delle reti (Conti fuori):
+la clip `dive` è montata (peso 1) e il suo tempo all'ultimo fotogramma dell'arco è **3,31 s su 3,38**.
+Poi la clip stessa, decodificata dal GLB (`anim-gk-dive.glb`, canale Hips, 82 chiavi): in piedi fino
+a 0,8 s, in volo 0,8-1,25, A TERRA da 1,25 a 2,3 s (y 0,16, asse del busto rovesciato), si rialza
+2,3-2,9, di nuovo in piedi da 2,9 s. Lo scrub 7.709 mappava il volo del pallone [0,1] sull'intera
+clip: quando la palla è sulla linea il portiere si è già rialzato. La distesa passava a metà volo
+(0,25 s) — invisibile a 15 fps, figurarsi a 2-8 con la sonda.
+
+7.855: il volo scrubba [0 → 1,5 s] (disteso all'arrivo); all'arrivo la clip riparte in tempo reale
+da 1,5 s e fa da sola la terra (fino a 2,3) e il rialzarsi (fino a 2,9); `_diveDur` si allunga di
+conseguenza e la clip finita non si rimonta (`_fin855`). Rosso `__CPM_NO855`. Testimone `__CPM_HOLD855`.
+Prima misura con dt reale e due sonde in parallelo (2-3 fps, 1-2 fotogrammi per arco): tempo della
+clip all'ultimo fotogramma d'arco 0,92 (verde) contro 2,07 (rosso) — coerente, ma troppo pochi
+fotogrammi per contare la tenuta. Misura a dt fisso (v1, Conti fuori, tre tenute registrate): la prima tenuta arriva con la clip a
+1,5 s e resta a terra (1,5 → 2,15 in 0,65 s), ma nella seconda la clip TORNA INDIETRO (2,2 → 0,87):
+al gol cambia la chiave della scena, il latch dell'estensione riparte da 0 e lo scrub riportava il
+portiere in piedi a metà tenuta. v2: i marcatori dell'arrivo si azzerano solo al tuffo nuovo e, una
+volta arrivato, lo scrub non si riprende più il corpo. Misura v2 (dt fisso, Conti): 4 tenute, 4 con la clip a terra, ma 2 con la clip che TORNA INDIETRO
+(3,3 → 0,2): la clip finita veniva rilasciata (r.8252) e rimontata da zero il fotogramma dopo. v3: il
+marcatore di fine (`_fin855`) scatta a 0,35 s dalla fine, prima del rilascio naturale.
+Misura v3 (dt fisso, Conti fuori + Vairo casa): **10 tenute, 9 con la clip a terra (1,5-2,3 s), 0
+fotogrammi con la clip che torna indietro**; la clip corre da 1,5 a 3,05 s in ~1,55 s di tenuta, e il
+portiere si rialza da solo. Rosso (GKTL prima della 7.855): clip a 3,31 s all'ultimo fotogramma
+dell'arco in 4 tuffi su 4, tenuta 0. v4: sulla battuta della RETE l'arco muore alla chiusura del gol (7.854: pallone entro 2u) PRIMA
+dell'arrivo, e il tuffo a metà distesa si spegneva lì (u≥1 con `_diveDur` corto): il portiere tornava
+in piedi in 0,2 s — telefono n° 5 (v3): Galli 69' e Moretti 55' ancora in piedi a +0,5 s. Ora il tuffo
+GLB resta vivo finché il blocco GLB non registra l'arrivo (arco morto con estensione ≥0,5 = arrivato)
+e allunga `_diveDur`. Misura v4 (dt fisso, Conti): 5 tenute, 5 a terra, 0 rewind — ma senza archi
+della rete in quel mondo: la verifica sul gol è affidata alle foto del telefono n° 5 bis.
+
+## 7.856 — le parole del tiro le decide il campo all'emissione, non il piano alla nascita
+
+Telefono n° 4: «da due passi, tutto solo davanti alla porta!» smentito 4/4 (pallone al limite o
+fuori area, quattro-cinque maglie intorno; in `conti-f02` l'HUD stesso dice «Trequarti»), «a tu per
+tu col portiere» 1/1. Causa (src/14 r.~3545): la frase nasceva col piano dal punto d'arrivo
+PROGETTATO (`_pxB` 84-88 → zona «area»), mentre la battuta esce quando l'attesa 847 è soddisfatta o
+SCADUTA — anche col tiratore a 60-70 e la difesa addosso. E «tutto solo» non era mai verificato.
+
+7.856: all'emissione della battuta del tiro (r.~4537) si rilegge la geometria vera: avanzamento del
+tiratore (≥84 area, ≥70 limite, altrimenti lontano), avversario di movimento più vicino (≥4u = «tutto
+solo», altrimenti «si avventa sul pallone in area» / «fra le maglie della difesa»), portiere entro 12u
+(«a tu per tu»). Rosso `__CPM_NO856`. Testimone `__CPM_GEO856` in entrambi i bracci (la frase del
+piano e quella emessa, con la geometria): Vairo casa frasi smentite **2/5 (piano) → 0/5 (campo)**,
+Conti fuori 0/1 → 0/1. **Telefono n° 5 (4 partite, sonda v6):** frasi del tiro di piano smentite
+dal campo — come le voleva il piano **5/13**, emesse **0/13** (Vairo 2/5 → 0/5, Moretti 1/4 → 0/4,
+Galli 1/3 → 0/3, Conti 1/1 → 0/1). Tutte e cinque erano «da due passi, tutto solo» con avanzamento
+80,7-83,1 e un avversario a 3,3-5,1u: ora «si gira sul limite» / «dal vertice dell'area».
+Nota: le occasioni non sono riproducibili fra due corse (stesso seme, mondi diversi per i tempi reali),
+per questo il testimone registra entrambe le frasi nella stessa corsa.
+
+## 7.857 — **REVOCATA**: l'auto-avanzamento aspetta il pallone in rete (il gol dell'eroe annunciato prima del pallone)
+
+Telefono n° 4: la riga «segna … 5-2» con la scena ancora aperta e il pallone ai piedi di un
+difensore (`conti-f51`), «1-0» col pallone sulla linea ai piedi del portiere (`vairo-f18`): 3/5 gol
+dell'eroe. Sonda `rigagol` (righe di gol contro punteggio logico, HUD e pallone reso, 50 ms) su Conti
+fuori: i gol del PIANO entrano col pallone a 98-100 alla riga (3/3, rete a −0,2…+0,6 s); i gol di
+SCENA hanno il pallone a 92-96 alla riga e la rete arriva **+1,4 / +1,8 s** dopo (2/2 in due corse).
+Testimone `__CPM_INNET857` (chi chiama `fireGoalCeleb`, e dov'è il pallone reso): non il renderer
+(`net`), non il tetto (`timer`), ma `handleContinue` — l'auto-avanzamento 7.461, che aspetta il
+renderer «occupato» (linea, arco, parata) ma non il gol pendente: con l'arco finito e il pallone in
+inseguimento dell'affermazione 7.811 (che lo porta a 100,6 in ~1,4 s) il renderer si dichiara libero
+e la scena avanza: riga, tabellone e HUD escono col pallone a 92-96.
+7.857: l'auto-avanzamento aspetta anche il gol pendente (`goalCelebRef` non ancora sparato), con lo
+stesso tetto di 6 s; il tocco manuale resta libero. Rosso `__CPM_NO857`.
+**Misura con `__CPM_REALWAIT` (lezione 17ª), Conti fuori, coppia:** verde — gol di scena 2/2 dichiarati
+dal renderer (`net`) col pallone a 99,15, riga col pallone a 99,2, HUD −0,17 s; rosso NO857 — gol di
+scena 1/1 dichiarato dal renderer col pallone a 99,15, riga a 99,2, HUD −0,11 s. Identici: la 7.857
+non batte la misura. **Revocata**, sorgente riportato al 7.856.0 (resta il testimone `__CPM_INNET857`).
+Il difetto vero era il banco: senza REALWAIT l'auto-avanzamento non aspetta e il gol viene dichiarato
+col pallone a 80-96. La scheda n° 4 va letta con questa riserva sull'area 7 e sull'area 10.
+
+**Lezione 17ª (strumenti), 10/09 01:25.** Il banco apre il gioco con `?cpmtest=1`, e sotto quel
+cancello l'auto-avanzamento delle scene (7.461) NON aspetta il renderer (`_on` falso): la scena avanza
+appena scaduto il respiro, e `handleContinue` dichiara il gol col pallone dov'è (misurato: 79,9 / 92,5
+/ 96,3). Sul telefono vero `_on` è vero. Il flag `__CPM_REALWAIT` (7.460) esiste apposta e la sonda
+telefono non lo accendeva: la «riga prima del pallone» del n° 4 è in parte un artefatto del banco.
+Sonda v6: `__CPM_REALWAIT` acceso; la 7.857 (l'attesa del gol pendente nell'auto-avanzamento) si
+misura con REALWAIT in entrambi i bracci (`__CPM_NO857` rosso) — se il rosso non mostra la riga prima
+del pallone, la 7.857 si revoca.

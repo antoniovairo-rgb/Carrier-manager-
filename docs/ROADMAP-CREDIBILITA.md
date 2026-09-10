@@ -246,3 +246,13 @@ pallone sulla linea 5/5, portiere in quadro 5/5 ma in piedi 5/5 (il tuffo non si
 la riga del gol dell'EROE precede il pallone in rete e il tabellone in 3/5 (`docs/collaudo-telefono/n04/`);
 «da due passi, tutto solo» smentito 5/5 al 10'-12'. Prossimi: il tuffo che si vede; la riga del gol
 dell'eroe dopo il pallone in rete; il testo che legge la geometria; la banda 60 del padrone.
+
+**Aggiunta, 10/09 notte (3):** 7.855 v4 e 7.856 sul branch, 7.857 revocata. Il tuffo si vede: la clip
+`anim-gk-dive.glb` (3,38 s, a terra 1,25-2,3 s) era scrubbata per intero sul volo e all'arrivo il
+portiere era già rialzato; ora il volo la porta a 1,5 s e poi corre in tempo reale (dt fisso: 10 tenute,
+9 a terra, 0 rewind; telefono n° 5 bis: portiere a terra 3/3 gol del piano). Le parole del tiro lette
+dal campo all'emissione: smentite 5/13 → 0/13. 7.857 (attesa del gol pendente nell'auto-avanzamento)
+revocata: la coppia con `__CPM_REALWAIT` è identica (gol di scena dichiarato dal renderer a 99,15 in
+entrambi i bracci); il difetto era il banco senza REALWAIT (lezione 17ª, sonda v6). Telefono n° 5: 5,7.
+Prossimi: la scena dell'eroe che non porta il pallone in porta (#31, tetto dei 5,2 s col pallone a 72);
+la banda 60 del padrone; la prima occasione al 10'-12'.

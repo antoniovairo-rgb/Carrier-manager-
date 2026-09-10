@@ -1179,7 +1179,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(typeof window!=="undefined"&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_CELEB={ctx:_ctx,pick:_pick.id,dur:_dur};}catch(_e){}}
     }catch(_e){}
   },[]);// eslint-disable-line
-  const fireGoalCeleb=useCallback(()=>{
+  const fireGoalCeleb=useCallback((_via857)=>{
+    if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=window.__CPM_WS&&window.__CPM_WS();(window.__CPM_INNET857=window.__CPM_INNET857||[]).push({t:Date.now(),via:String(_via857||'?'),rx:_w?_w.rx:null,min:clockRef.current|0,fired:!!(goalCelebRef.current&&goalCelebRef.current.fired)});}catch(_e){}}/* [misura 857] chi dichiara il pallone in rete, e dove sta il pallone reso in quel momento */
     const g=goalCelebRef.current; if(!g||g.fired)return; g.fired=true;
     /* [7.371.0 direttiva PO «esultanze dopo i gol»] QUI, E SOLO QUI, IL GOL E' CONFERMATO.
        `fireGoalCeleb` e' gia' l'unico punto in cui il gioco dichiara la palla in rete (lo chiama il
@@ -3571,7 +3572,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _no829=(typeof window!=='undefined'&&window.__CPM_NO829);
           const _tre=[
             {t:_apri[_hpO("ta")%_apri.length],x:_XO(_pxB),y:_pyB,chi:_b.i},
-            {t:_tiro[_hpO("tt")%_tiro.length],x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1,tiroDa792:_pxB,attendi847:1/* [7.848 v6] ogni tiro aspetta uomo e pallone sul punto d'arrivo, non solo il filtrante: n°29 i tiri senza attesa avevano il tiratore a 19-25u */},
+            {t:_tiro[_hpO("tt")%_tiro.length],geo856:1,nb856:_nb,x:_XO(93+_JO(3,3)),y:50+_JO(4,8),chi:_b.i,ms:1,tiroDa792:_pxB,attendi847:1/* [7.848 v6] ogni tiro aspetta uomo e pallone sul punto d'arrivo, non solo il filtrante: n°29 i tiri senza attesa avevano il tiratore a 19-25u */},
             {t:_par.t,x:_XO(96),y:50+_JO(5,6),gk:1,esito:_par.esito},
           ];
           if(_no829||_ordO.length<5)return _tre;
@@ -4534,7 +4535,27 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(_pgH649&&_pgH649.piano&&!(typeof window!=='undefined'&&window.__CPM_NO649)&&(_pgH649.step|0)<_pgH649.piano.length&&!_attendi847/* [7.848 v2] la battuta del tiro aspetta il tiratore anche sulla via del dado */&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!outRef.current&&!spRef.current&&!fermoRef.current){
             const _pe649=_pgH649.piano[_pgH649.step|0];_pgH649.step=(_pgH649.step|0)+1;
             _recHij545=true;_recKind546="manovra-gol";_recSide546=_pgH649.dir>0?"home":"away";
-            ev={txt:_pe649.t,_beatTxt812:_pe649.t,ef:null,w:1,bpos:{x:_pe649.rete?clamp(_pe649.x,-1,101):clamp(_pe649.x,4,96),y:_pe649.rete?clamp(_pe649.y,44,56):clamp(_pe649.y,6,94)},/* [7.852] la battuta della rete passa la linea */pd:_dec499,at:((typeof window!=='undefined'&&window.__CPM_NO808)?"pass":(_pe649.gk?"save":(_pe649.ms?"shot":"pass"))),/* [7.808.0 — LA BATTUTA DICHIARA IL PROPRIO TIPO. Rosso __CPM_NO808] Tutte e tre le battute uscivano con at:"pass": l'arco di cronaca (BALL_ARC_BY_TYPE, src/12) faceva volare il TIRO con altezza 0,9 e 0,48 s invece di 2,8 e 0,52 (shot), e il sito ATE-2 — che arma il tuffo del portiere solo su shot/save con bersaglio in area — dalle battute non partiva mai (misurato: tuffi T8 durante le occasioni, vedi quota-821). Ora la battuta col tiro (ms) vola da tiro, quella col portiere (gk) da parata, l'apertura resta un passaggio. Il segnale 7.695 resta a valle. */_piano649:1,_rete852:_pe649.rete?1:0,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
+            /* [7.856.0 — LE PAROLE DEL TIRO LE DECIDE IL CAMPO ALL'EMISSIONE, NON IL PIANO ALLA NASCITA. Rosso __CPM_NO856]
+               Telefono n° 4: «da due passi, tutto solo davanti alla porta!» smentito 4/4 (pallone al limite o fuori
+               area, quattro-cinque maglie intorno, l'HUD stesso che dice «Trequarti»), «a tu per tu» 1/1. La frase
+               nasceva col piano dal punto d'arrivo PROGETTATO (_pxB 84-88 → «area»); la battuta esce quando l'attesa
+               847 e' soddisfatta O SCADUTA, cioe' anche col tiratore a 60-70 e la difesa addosso. Qui, al momento
+               dell'emissione, si rilegge la geometria vera: avanzamento del tiratore (zona), avversario di movimento
+               piu' vicino (≥4u = «tutto solo»), portiere entro 12u («a tu per tu»). Testimone __CPM_GEO856 in
+               entrambi i bracci. */
+            let _txt856=_pe649.t;
+            if(_pe649.geo856&&_pe649.ms){try{const _ps856=matchPlayersRef.current||[];const _sh856=_ps856[_pe649.chi];const _dir856=_pgH649.dir>0?1:-1;
+              if(_sh856&&_sh856.x!=null){const _av856=_dir856>0?+_sh856.x:100-(+_sh856.x);let _dOpp856=99,_dGk856=99;
+                for(let _qi=0;_qi<_ps856.length;_qi++){const q=_ps856[_qi];if(!q||q.team===_sh856.team||q.x==null)continue;const d=Math.hypot((+q.x)-(+_sh856.x),(+q.y)-(+_sh856.y));if(q.gk)_dGk856=Math.min(_dGk856,d);else _dOpp856=Math.min(_dOpp856,d);}
+                const _nb=String(_pe649.nb856||"");const _solo856=_dOpp856>=4;const _z856=_av856>=84?"area":_av856>=70?"limite":"lontano";
+                const _pick856=(arr)=>arr[Math.abs(hashStr("g856|"+nx+"|"+_pe649.chi))%arr.length];
+                const _t1=_z856==="area"?(_solo856?_pick856(_dGk856<=12?["💥 "+_nb+" a tu per tu col portiere, calcia di prima!","💥 "+_nb+" da due passi, tutto solo davanti alla porta!"]:["💥 "+_nb+" da due passi, tutto solo davanti alla porta!"]):_pick856(["💥 "+_nb+" si avventa sul pallone in area e calcia!","💥 "+_nb+" calcia di prima in area, fra le maglie della difesa!"]))
+                  :_z856==="limite"?_pick856(["💥 "+_nb+" si gira sul limite e lascia partire il destro!","💥 Conclusione secca di "+_nb+" dal vertice dell'area!"])
+                  :_pick856(["💥 "+_nb+" non ci pensa due volte: bordata da fuori!","💥 "+_nb+" prova a sorprendere il portiere da lontanissimo!"]);
+                if(!(typeof window!=='undefined'&&window.__CPM_NO856))_txt856=_t1;
+                if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_GEO856=window.__CPM_GEO856||[]).push({min:nx,av:+_av856.toFixed(1),dOpp:+_dOpp856.toFixed(1),dGk:+_dGk856.toFixed(1),zona:_z856,solo:_solo856?1:0,t0:String(_pe649.t).slice(0,70),t1:String(_txt856).slice(0,70)});}catch(_e){}}
+              }}catch(_e856){}}
+            ev={txt:_txt856,_beatTxt812:_txt856,ef:null,w:1,bpos:{x:_pe649.rete?clamp(_pe649.x,-1,101):clamp(_pe649.x,4,96),y:_pe649.rete?clamp(_pe649.y,44,56):clamp(_pe649.y,6,94)},/* [7.852] la battuta della rete passa la linea */pd:_dec499,at:((typeof window!=='undefined'&&window.__CPM_NO808)?"pass":(_pe649.gk?"save":(_pe649.ms?"shot":"pass"))),/* [7.808.0 — LA BATTUTA DICHIARA IL PROPRIO TIPO. Rosso __CPM_NO808] Tutte e tre le battute uscivano con at:"pass": l'arco di cronaca (BALL_ARC_BY_TYPE, src/12) faceva volare il TIRO con altezza 0,9 e 0,48 s invece di 2,8 e 0,52 (shot), e il sito ATE-2 — che arma il tuffo del portiere solo su shot/save con bersaglio in area — dalle battute non partiva mai (misurato: tuffi T8 durante le occasioni, vedi quota-821). Ora la battuta col tiro (ms) vola da tiro, quella col portiere (gk) da parata, l'apertura resta un passaggio. Il segnale 7.695 resta a valle. */_piano649:1,_rete852:_pe649.rete?1:0,ms:_pe649.ms?(_pgH649.dir>0?{shots:1}:{oppShots:1}):null};
             /* ⚠️ [7.853.0 — IL PORTIERE C'E', SUL GOL. Rosso __CPM_NO853] Sonda gol74 sulla 7.852 (Conti, Moretti): sui gol del microsim il
                portiere avversario sta a 8,8-10,2u dalla porta alla riga e i tuffi nella finestra sono 0 in 3 gol su 4; sul telefono
                «rete si', portiere assente o fermo» in 2 gol su 5. La battuta della rete (7.852) arma il tuffo con lo stesso segnale
@@ -7126,7 +7147,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(/freekick|punizione/i.test(String(_t)+" "+String(_s.text||"")))return "freekick";return null;}catch(_e){return null;}})();
       const _heroSurn=((typeof _surnBG==="function"&&_surnBG(player.name||""))||(player.name||"L'eroe").trim().split(/\s+/).pop())||(player.name||"L'eroe");/* [7.304.0] particella inclusa *//* [7.112.0] nomi marcatore/assist-man anche nell'overlay LIVE */
       goalCelebRef.current={/* [7.371.0] il TIPO di gol serve al Celebration System: rigore e punizione hanno una sequenza propria (direttiva §14/§15) e la celebrazione parte comunque solo dalla conferma */setPiece:_sp371,bigMatch:false,/* [7.371.0] l'importanza della partita entrera' col prossimo giro: qui non e' in ambito e non si inventa un riferimento */gk:_gk,clubCol:player.club?.c||"#f59e0b",assist:(key==="assist"),scorerName:(key==="assist"?(_assistTo||null):_heroSurn),assisterName:(key==="assist"?_heroSurn:(_assistBy||null)),domino:false,fired:false,scoreHome:true,com:_comFn15};// [6.5.1 Polish A] scoreHome → il tabellone si aggiorna all'ingresso in rete · [7.54.0 BL-15] com → cronaca all'ingresso · [7.112.0] scorer/assister per l'overlay
-      fxTimeout(()=>fireGoalCeleb(),5200);// [6.5.1 Polish B] fallback più generoso (3200→5200): con il build-up R5 su cross/testa il tempo palla→rete è cresciuto; così l'esultanza non parte PRIMA dell'ingresso (onGoalInNet vince sempre nel caso normale)
+      fxTimeout(()=>fireGoalCeleb('timer'),5200);// [6.5.1 Polish B] fallback più generoso (3200→5200): con il build-up R5 su cross/testa il tempo palla→rete è cresciuto; così l'esultanza non parte PRIMA dell'ingresso (onGoalInNet vince sempre nel caso normale)
     } else if(ok&&key==="recovery"){
       outcomeRevealRef.current={fired:false,minAt:Date.now()+_rd92,cb:()=>{setFloatGoal({text:(_ovl.icon?_ovl.icon+" ":"")+_ovl.text,col:"#60a5fa",key:Date.now()});setResultReveal(true);_comFn15();}};// [7.54.0 BL-15] bottom + sovraimpressione + cronaca all'ASSESTAMENTO reale della palla (onOutcomeShown), non più a 1800 fisso
       fxTimeout(()=>fireOutcomeReveal(),2600);
@@ -7610,6 +7631,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         const _c=cineBusyRef.current;
         const _on=(typeof window!=='undefined')&&!window.__CPM_NO461&&((!_CPM_TEST&&!_SIT_TEST)||!!window.__CPM_CINE||!!window.__CPM_REALWAIT);/* sotto il gate (`?cpmtest=1` senza opt-in cine) la finestra resta quella di sempre: il check post-highlight misura durate fisse e il percorso del gate va lasciato bit-identico */
         if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _w=(window.__CPM_WAIT461=window.__CPM_WAIT461||[]);if(_w.length<80)_w.push({on:_on,c:_c?{on:_c.on,tl:_c.tl,arc:_c.arc,pa:_c.pa}:null,att:_att461});}catch(_e){}}
+        /* [7.857 REVOCATA, 10/09] l'attesa del gol pendente qui non cambiava nulla: sotto REALWAIT il gol di scena e' dichiarato dal renderer col pallone a 99,15 in entrambi i bracci; il difetto misurato era il banco senza REALWAIT (lezione 17ª). */
         if(_on&&_c&&_c.on&&(_c.tl||_c.arc||_c.pa)&&_att461<6000){_att461+=180;t2=setTimeout(_avanza461,180);return;}
       }catch(_e461){}
       handleContinue();
@@ -8175,7 +8197,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     ?["🏆 È LA FINALE. Novanta minuti per la storia — lo stadio è una bolgia.","🏆 Notte da leggenda: le due squadre si giocano tutto. Che finale sia!","🏆 L'attesa è finita: la finale comincia ORA. Brividi sugli spalti."]
                     :["🔥 Big match! L'atmosfera è elettrica, lo stadio spinge dal primo secondo.","🔥 Partita da dentro o fuori: intensità altissima già dal fischio d'inizio.","🔥 Sfida al vertice: ogni pallone peserà come un macigno."];
                     addCom(_bmPool[Math.abs(hashStr("bm88|"+(player.season||1)+"|"+(player.week||1)))%_bmPool.length],"#f59e0b",0);}
-                  setPhase("playing");}} celebPlan={celebPlan} onGoalInNet={fireGoalCeleb} onOutcomeShown={fireOutcomeReveal} onCutNeeded={()=>{try{setCutFx({key:Date.now(),dur:340});}catch(_e){}}}/* [7.471.0 codice 007] IL RENDERER PUO' CHIEDERE LO STACCO. Il taglio nero e' uno stato React di LiveMatch, ma chi SA che la camera sta per teletrasportarsi e' il render-loop: senza questo filo poteva solo subirlo. */ />
+                  setPhase("playing");}} celebPlan={celebPlan} onGoalInNet={()=>fireGoalCeleb('net')} onOutcomeShown={fireOutcomeReveal} onCutNeeded={()=>{try{setCutFx({key:Date.now(),dur:340});}catch(_e){}}}/* [7.471.0 codice 007] IL RENDERER PUO' CHIEDERE LO STACCO. Il taglio nero e' uno stato React di LiveMatch, ma chi SA che la camera sta per teletrasportarsi e' il render-loop: senza questo filo poteva solo subirlo. */ />
               {/* [7.65.0 Phase 4 · POST-PROCESSING] VIGNETTE cinematografica sul 3D — bordi scuri morbidi (look da broadcast) + micro-grana ai bordi. Overlay DOM (pointer-events off) → zero recolor del 3D, zero costo GPU, invisibile al gate (che cattura il canvas). */}
               <div style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:3,background:"radial-gradient(ellipse 118% 96% at 50% 44%, rgba(0,0,0,0) 56%, rgba(0,0,0,0.14) 82%, rgba(0,0,0,0.30) 100%)"}}/>
                {/* [7.661.0 - LA CRONACA IN PRIMO PIANO, GRANDE E CENTRALE. Richiesta PO in collaudo: «il testo della cronaca quando non ci sono azioni deve essere piu grande e centrale e carino, deve emozionare». Con la cronaca visuale spenta (7.660) lo stadio e il palcoscenico e il TESTO e lo spettacolo: l ultima riga appare grande al centro, col suo colore, ombra da broadcast e ingresso morbido (remount su key). Il feed sotto resta la storia completa. Rosso __CPM_NO661. */}

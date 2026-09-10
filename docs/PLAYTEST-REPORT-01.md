@@ -1522,3 +1522,60 @@ fa il piano (7.852/7.854) — oggi «segna … 5-2» esce con la scena aperta e 
 (c) il testo che legge la geometria: «da due passi» solo entro 8u dalla porta, «tutto solo» solo
 senza avversari entro 4u, «a tu per tu» solo col portiere come unico uomo davanti; (d) la banda 60
 del padrone.
+
+## Scorecard DA TELEFONO n° 5 — build 7.856 (branch: 7.855 v4 + 7.856; 7.857 revocata)
+
+Chromium 412×915 portrait, campo 3D acceso, tick reale, seme 4242, screencast CDP, **sonda v6**
+(`__CPM_REALWAIT` acceso: senza, il banco avanzava le scene senza aspettare il renderer — lezione 17ª;
+nuova riga «frasi del tiro di piano smentite dal campo»). Età mediana dei fotogrammi 173 / 247 / 395 /
+373 ms, max 1,0-1,3 s. NON è l'Android del PO. Schede e fotogrammi in `docs/collaudo-telefono/n05/`
+(Moretti e Conti: la prima corsa sulla 7.855 v3 è conservata come `-v3.md`; le foto dei gol sono della
+corsa bis sulla v4, stesso mondo per Conti: 5-2 con gli stessi marcatori).
+
+| partita | padrone ≤3u | salti | fps | stati (min) | frasi del tiro smentite (piano → emesse) | finale |
+|---|:---:|:---:|:---:|---|:---:|:---:|
+| Vairo casa | 36 % | 39 | 15 | gioco 67 · morta 15 · ripresa 3 | 2/5 → 0/5 | 0-0 |
+| Moretti casa | 23 % | 63 | 17 | gioco 60 · morta 14 · fermo 2 · ripresa 7 | 1/4 → 0/4 | 3-0 |
+| Galli fuori | 19 % | 53 | 16 | gioco 57 · morta 12 · ripresa 11 · inizio 6 | 1/3 → 0/3 | 2-1 |
+| Conti fuori | 21 % | 48 | 13 | gioco 56 · morta 8 · ripresa 15 · inizio 4 | 1/1 → 0/1 | 5-2 |
+
+Quello che i fotogrammi mostrano:
+
+- **Gol del piano, il tuffo si vede (7.855 v4).** Conti 24' (`conti-f13`, età 108 ms): portiere A TERRA
+  sul palo, pallone accanto. Spada 61' (`conti-f31`, età 11 ms): portiere disteso in area, pallone sul
+  palo; a +1 s (`conti-f32`, età 17 ms) si sta rialzando col badge «GOL — SPADA». Bruno 76' (`conti-f44`):
+  carponi sul palo col pallone. **3/3 a terra** contro 5/5 in piedi del n° 4. Sulla v3 (prima corsa) erano
+  ancora in piedi (`galli-f34`, `moretti-f31`): l'arco della rete muore alla chiusura del gol e spegneva
+  il tuffo a metà — corretto in v4.
+- **Le parole del tiro (7.856).** «Da due passi, tutto solo davanti alla porta!» voluto dal piano 5 volte
+  su 13 tiri, sempre con avanzamento 80,7-83,1 e un avversario a 3,3-5,1u; emesso 0/13: al suo posto
+  «si gira sul limite» / «dal vertice dell'area» (`vairo-f02`). Nessuna frase smentita dal campo nelle
+  quattro partite.
+- **Gol dell'eroe: la riga precede ancora il pallone, per un'altra causa.** Galli 20' (`galli-f09`, età
+  137 ms): «Galli segna 1-0», portiere a terra, HUD e tabellone 0-0, pallone a metà area. Conti 62'
+  (`conti-f36`): «3-2», HUD 2-2, pallone non in rete. Conti 86' (`conti-f51`): «5-2», HUD 4-2, pallone a
+  centrocampo con la scena ancora aperta. Con la sonda della riga del gol: su Galli il gol è dichiarato
+  dal TETTO dei 5,2 s col pallone reso a 72 (la scena «Controllo e tira» non porta il pallone in porta:
+  codice 011, palla congelata, #31), mentre su Conti/Moretti «assist»/«testa» lo dichiara il renderer col
+  pallone a 99,15. Non è più l'auto-avanzamento (7.857 revocata): è la coreografia di alcune scene.
+
+| # | Area | n°4 | **n°5** | motivo (fotogramma e minuto) |
+|---|------|:---:|:---:|---|
+| 1 Realismo | 5 | **5** | padrone 19-36 %, un salto ogni 2-3 s |
+| 2 Credibilità da attaccante | 5 | **6** | gol del piano: portiere a terra 3/3 (`conti-f13/f31/f44`); frasi false 0/13 |
+| 3 Causalità | 6 | **6** | il piano finisce in rete col tuffo; l'eroe segna prima del pallone 3/4 |
+| 4 Varietà | 5 | **5** | prima occasione al 10'-12' in 4/4 (ora «si gira sul limite», stesso minuto) |
+| 5 Ritmo | 5 | **5** | Vairo 0-0 con palla morta 15; ripresa 11'-15' fuori casa |
+| 6 Azioni extra-eroe | 6 | **7** | tiro, tuffo, terra, rialzata: si legge (`conti-f31` → `conti-f32`) |
+| 7 Highlight dell'eroe | 4 | **4** | `galli-f09`, `conti-f36`, `conti-f51`: riga e HUD prima del pallone, pallone fermo a 72 |
+| 8 Telecronaca | 4 | **6** | 0/13 smentite sul tiro; restano le righe del gol dell'eroe |
+| 9 Interazioni | 7 | **7** | nessuna contro il punteggio |
+| 10 Coerenza fra i sistemi | 6 | **6** | HUD 0-0 col portiere già a terra (`galli-f09`) |
+| 11 Immersione | 5 | **5** | 13-17 fps, età dei fotogrammi fino a 1,3 s |
+| 12 Carriera | 6 | **6** | barra viva |
+
+**Media DA TELEFONO: 5,7** (somma 68; n° 4 era 5,3). Otto aree sotto 7. Nessun «puoi collaudare».
+
+Prossimi, in ordine: (a) la scena dell'eroe che non porta il pallone in porta (codice 011, #31: il
+tetto dei 5,2 s dichiara il gol col pallone a 72 — misurare quali scene, poi far volare il pallone
+prima di dichiarare); (b) la banda 60 del padrone (19-36 %); (c) la prima occasione sempre al 10'-12'.

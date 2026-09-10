@@ -22,7 +22,7 @@ fs.rmSync(OUT,{recursive:true,force:true});fs.mkdirSync(OUT,{recursive:true});
 const srv=await startServer();const port=srv.address().port;const b=await launchBrowser();
 const ctx=await b.newContext({viewport:{width:412,height:915},deviceScaleFactor:2,isMobile:true,hasTouch:true});
 const page=await ctx.newPage();await installCdnRoutes(page);
-await page.addInitScript((o)=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_CRO802=[];window.__CPM_SCMS681=3500;window.__CPM_DTREAL=true;if(o.away)window.__CPM_AWAY_TEST=true;o.rosso.forEach(k=>{window[k]=true;});},{away:AWAY,rosso:ROSSO});
+await page.addInitScript((o)=>{window.__CPM_GLB=true;window.__CPM_REC=true;window.__CPM_REALWAIT=true;/* [sonda v6] sotto ?cpmtest=1 l'auto-avanzamento delle scene NON aspetta il renderer (7.461: _on falso): il telefono vero aspetta. Senza questo flag la riga del gol usciva col pallone a 80-96 (n° 4) */window.__CPM_CRO802=[];window.__CPM_SCMS681=3500;window.__CPM_DTREAL=true;if(o.away)window.__CPM_AWAY_TEST=true;o.rosso.forEach(k=>{window[k]=true;});},{away:AWAY,rosso:ROSSO});
 await openMatch(page,port,{skipLoadAll:true,name:NOME});
 await page.evaluate((s)=>window.__CPM_AUTOPLAY(true,{seed:s,policy:'seeded',tickMs:300}),SEME);
 await sleep(8000);const fpsPulito=await page.evaluate(()=>Math.round(window.__CPM_FPS708||0));
@@ -57,7 +57,7 @@ for(let k=0;k<6000;k++){await sleep(70);
     if(prev){const dd=Math.hypot(s.w.rx-prev.rx,s.w.ry-prev.ry);const dt=s.t-prev.t;if(dt<=110&&dd>8)c.salti++;}
     prev={rx:s.w.rx,ry:s.w.ry,t:s.t};}else prev=null;
   if(min>=89)break;}
-const fine=await page.evaluate(()=>({sch:window.__CPM_SCHERMO843||[],fps:Math.round(window.__CPM_FPS708||0),cam:(window.__CPM_CAM471||[]).length,pad:window.__CPM_PADRONE||null,ms:(window.__CPM_MS&&window.__CPM_MS())||null,cro:(window.__CPM_CRO802||[]).filter(x=>!x.intro).length,croTxt:(window.__CPM_CRO802||[]).map(x=>(x.t|0)+"' "+x.txt)}));
+const fine=await page.evaluate(()=>({geo:window.__CPM_GEO856||[],sch:window.__CPM_SCHERMO843||[],fps:Math.round(window.__CPM_FPS708||0),cam:(window.__CPM_CAM471||[]).length,pad:window.__CPM_PADRONE||null,ms:(window.__CPM_MS&&window.__CPM_MS())||null,cro:(window.__CPM_CRO802||[]).filter(x=>!x.intro).length,croTxt:(window.__CPM_CRO802||[]).map(x=>(x.t|0)+"' "+x.txt)}));
 const t0Fine=Date.now();if(cdp){try{await cdp.send('Page.stopScreencast');}catch(_e){}}
 await ctx.close();await b.close();srv.close();
 const q=(a,p)=>{if(!a.length)return null;const s2=a.slice().sort((u,v)=>u-v);return +s2[Math.min(s2.length-1,Math.floor(p*(s2.length-1)))].toFixed(1);};
@@ -79,7 +79,12 @@ R.push(`| eta' del fotogramma salvato, mediana / max | ${FOTO?(q(eta,0.5)+' / '+
 R.push(`| tagli di camera registrati | ${fine.cam} | (informativo) |`);
 R.push(`| minuti per stato dello schermo | ${JSON.stringify(cls)} | palla morta + fermo ≤ 15 |`);
 R.push(`| righe di cronaca | ${fine.cro} | 70-110 |`);
+{const G=fine.geo||[];const bug=(t,g)=>{const dp=/due passi|tutto solo|tu per tu/.test(t);if(dp&&(g.av<84||g.dOpp<4))return 'FALSA';if(/limite|vertice/.test(t)&&(g.av<70||g.av>=84))return 'FALSA';if(/da fuori|lontanissimo/.test(t)&&g.av>=70)return 'FALSA';return 'ok';};
+ const f0=G.filter(g=>bug(g.t0,g)!=='ok').length,f1=G.filter(g=>bug(g.t1,g)!=='ok').length;
+ R.push(`| frasi del tiro di piano smentite dal campo (zona, avversario <4u) | emesse ${f1}/${G.length} · come le voleva il piano ${f0}/${G.length} | 0 |`);
+ fine.geoRows=G.map(g=>`| ${g.min}' | av ${g.av} · avv. ${g.dOpp}u · gk ${g.dGk}u | ${g.t0.replace(/\|/g,'/')} → ${bug(g.t0,g)} | ${g.t1.replace(/\|/g,'/')} → ${bug(g.t1,g)} |`);}
 R.push(`| risultato | ${fine.ms&&fine.ms.score?(fine.ms.score.h+'-'+fine.ms.score.a):'?'} | |`);
+if(fine.geoRows&&fine.geoRows.length){R.push('');R.push('## Le parole del tiro e il campo (7.856)');R.push('');R.push('| minuto | geometria al tiro | frase del piano | frase emessa |');R.push('|---|---|---|---|');fine.geoRows.forEach(r=>R.push(r));}
 R.push('');R.push('## Fotogrammi');R.push('');R.push('| # | minuto | evento | riga | eta\' del fotogramma (ms) |');R.push('|---|---|---|---|---|');
 foto.forEach((f,i)=>R.push(`| ${f.f} | ${f.min}' | ${f.tag} | ${f.txt} | ${f.age==null?'':f.age} |`));
 fs.writeFileSync(path.join(OUT,'report.md'),R.join('\n')+'\n');
