@@ -3892,3 +3892,9 @@ nessuna direzione. Prima di un altro rimedio S1 serve un banco RIPRODUCIBILE per
 fisso, una partita per volta, e la metrica calcolata sulla SIMULAZIONE (pallone logico ↔ padrone
 logico) e non sul reso, che dipende dai fotogrammi. La diagnosi (corpo più vicino a 2,9u dal pallone
 atterrato, scrittore «nessuno») resta l'unica cosa misurata con margine.
+
+**Banco S1 riproducibile (05:45).** Sonda `padroni` (simulazione: pallone LOGICO ↔ portatore LOGICO),
+una partita per volta, 400 s, Vairo casa, tre ripetizioni identiche: ≤3u **19 / 24 / 19 %**, mediana
+6,3 / 5,3 / 6,5u, reso↔corpo del portatore ≤3u 24 / 24 / 27 %. Rumore ±3 punti, contro i ±10-20 del
+telefono. È il metro per S1: un rimedio deve portare la banda sopra il rumore in tre ripetizioni. La
+7.860 resta a richiesta (`__CPM_SI860`) e viene rimisurata qui.
