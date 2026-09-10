@@ -1703,3 +1703,60 @@ ritardo d'arrivo, dichiarato in 7.865.
 
 **Media DA TELEFONO: 5,9** (somma 71; n° 7: 69). Sette aree sotto 7. Nessun «puoi collaudare».
 È il punto di partenza dichiarato per la 7.868 (struttura S1: un pallone, un padrone).
+
+# Collaudo DA TELEFONO n° 10 — build 7.870 (10/09 sera, branch `claude/motore-possesso`) — IL MOTORE DEL POSSESSO
+
+Sonda v7, Chromium 412×915 (non l'Android del PO), quattro partite: Vairo e Moretti in casa, Galli e Conti
+fuori; Galli fuori ripetuta anche SENZA modelli GLB per isolare l'artefatto degli fps (lezione 20ª).
+Schede in `docs/collaudo-telefono/n10/`. Fra la n° 9 e questa: la ristrutturazione (carta bianca del PO):
+il motore del possesso e' l'unico scrittore del pallone e dei ventidue, la telecronaca nasce dai suoi
+fatti, le vecchie macchine narrative sono spente (rosso `__CPM_NO870`).
+
+| partita | padrone ≤3u | mediana reso↔padrone | scarto reso↔logico p90 | salti | righe | fps | finale |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Vairo casa | **58 %** | 1,2u | 12,5u | 21 | 51 | 7 | 0-0 |
+| Moretti casa | **69 %** | 1,0u | 16,2u | 16 | 62 | 12 | 3-0 |
+| Conti fuori | **42 %** | 5,3u | 24,5u | 39 | 63 | 5 | 4-1 |
+| Galli fuori | **41 % / 44 %** (due corse) | 6,3u | 20,9u | 21 | 54 / 69 | 6 | 2-1 |
+| Galli fuori SENZA GLB | **57 %** | 1,4u | 13,6u | 18 | 70 | 15 | 3-0 |
+
+n° 9 (7.868): 35 / 24 / 33 / 27 %. n° 8 (7.866): 36 / 34 / 41 / 34 %.
+
+**L'artefatto degli fps, misurato:** la stessa partita in trasferta passa da 41-44 % (6 fps, GLB) a 57 %
+(15 fps, senza GLB). Il motore muove i ventidue a 4,5-6u al minuto e i corpi 3D li seguono con un
+orologio di scena che a 5-6 fps corre a un quarto del reale: la distanza reso↔padrone e' del banco,
+non del gioco. Sull'Android del PO (~30 fps) il numero e' atteso sopra il braccio senza GLB. Dichiarato,
+non verificato.
+
+**Quello che il campo e la cronaca dicono insieme (fatti, non impressioni):** contrasto → cambia il
+possesso (turni causali 100 %); tiro → esito (parata / murato / palo / fuori) con lo stesso nome; il gol
+decretato dal microsim si costruisce con passaggi nominati e finisce a 100,6 (Galli 63': «Colombo la
+mette dentro su assist di Galli», pallone in rete alla riga); i gol dell'eroe restano scene giocate;
+frasi del tiro smentite dal campo 0/0 (il piano non esiste piu'); righe-fatto con un cognome della
+rosa 43/45 (le due senza sono l'eroe «Pv» del mondo del guardiano). Geografia della riga (geo865):
+14/17 in una delle tre finestre (7.866: 97 %; la 7.868 revocata: 85 %) — i passaggi rasoterra ora si
+raccontano all'arrivo.
+
+**Quello che manca (dichiarato):** righe 51-70 contro 70-110 (0,9 fatti al minuto: un tick e' un
+minuto); tiri 2-5 a partita; il decreto impiega ~6 minuti a entrare (tetto duro a 9); scarto
+reso↔logico p90 12-25u per costruzione (il volo logico dura un tick, il corpo lo insegue); salti del
+pallone 16-39 (archi 3D); fotogrammi a campo vuoto quando i corpi inseguono la logica a 5-6 fps.
+
+| # | Area | n°9 | **n°10** | motivo |
+|---|------|:---:|:---:|---|
+| 1 Realismo | 5 | **6** | padrone 42-69 % (57 senza GLB); in tenuta il pallone STA ai piedi (100 % logico); i battitori camminano al punto |
+| 2 Credibilità da attaccante | 6 | **6** | frasi smentite 0/0; i tiri partono da dove sta chi tira |
+| 3 Causalità | 6 | **7** | contrasto→possesso, tiro→esito, decreto→azione nominata→rete; turni causali 100 % |
+| 4 Varietà | 5 | **6** | conduzioni, lanci, cambi di gioco, cross, punizioni; tiri 2-5 (pochi) |
+| 5 Ritmo | 5 | **5** | righe 51-70; palle morte 3-4; un fatto ogni ~1,3 minuti |
+| 6 Azioni extra-eroe | 7 | **7** | gol del simulatore 6/6 accreditati (ci:live), costruiti con passaggi nominati |
+| 7 Highlight dell'eroe | 6 | **6** | scene invariate |
+| 8 Telecronaca | 6 | **7** | nomi veri 43/45, luoghi dal punto vero, geografia 14/17 |
+| 9 Interazioni | 7 | **7** | |
+| 10 Coerenza fra i sistemi | 6 | **7** | un solo scrittore; tabellone 5-2 = 5-2; HUD coerente |
+| 11 Immersione | 5 | **5** | 5-15 fps headless, corpi in ritardo, campo vuoto a tratti |
+| 12 Carriera | 6 | **6** | `ci:carriera` non ancora rieseguito su questa build (dichiarato) |
+
+**Media DA TELEFONO: 6,3** (somma 75; n° 9: 5,5; n° 8: 5,9). Sei aree sotto 7. Nessun «puoi collaudare».
+Il metro (8,0) e' a 1,7 punti: la struttura e' quella giusta (le aree 3, 8 e 10 salgono per costruzione,
+non per taratura); da qui si lavora su ritmo, tiri e resa del volo, con il banco in node in secondi.

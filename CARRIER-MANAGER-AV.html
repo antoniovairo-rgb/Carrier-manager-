@@ -21863,6 +21863,8 @@ function creaMotorePossesso(cfg){
     if(S.scena){S.conta.scena++;return[];}
     if(S.richieste.gol&&S.richieste.gol.lato!==S.poss.lato){const gr=S.richieste.gol;gr.t=(gr.t|0)+1;if(!S.richieste.turno)S.richieste.turno=gr.lato;
       if(S.poss.stato==="tenuta"&&S.poss.padrone!=null&&S.poss.t>=1){const P=g[S.poss.padrone];if(P&&!P.gk){perdi(P);}}}
+    /* tetto duro del decreto: al nono tick il gol entra da dove sta la palla (a fine partita non puo' restare appeso) */
+    if(S.richieste.gol&&(S.richieste.gol.t|0)>=9&&S.poss.stato!=="rete"&&S.poss.stato!=="kickoff"&&!S.scena){const gr=S.richieste.gol;const W=piuVicino(S.palla.x,S.palla.y,gr.lato,{noGk:true});if(W){if(S.poss.padrone!==W.p.i){W.p.x=clamp(S.palla.x-dirDi(gr.lato)*0.4,2,98);W.p.y=S.palla.y;S.fermo=null;tenuta(W.p,null);}S.poss.t=2;gr.t=Math.max(gr.t,9);tira(W.p);muoviTutti();const out=S.eventi;S.eventi=[];return out;}}
     const st=S.poss.stato;
     if(st==="rete")tickRete();
     else if(st==="kickoff")tickKickoff();
@@ -21875,6 +21877,7 @@ function creaMotorePossesso(cfg){
     const out=S.eventi;S.eventi=[];return out;}
   const chiedi={
     gol(lato){S.richieste.gol={lato:lato===AWAY?AWAY:HOME,t:0};S.richieste.verso=null;},
+    urgenza(){if(S.richieste.gol)S.richieste.gol.t=Math.max(S.richieste.gol.t|0,9);},
     turno(lato){const l=lato===AWAY?AWAY:HOME;if(S.poss.lato!==l)S.richieste.turno=l;},
     verso(o){S.richieste.verso=o?{x:clamp(+o.x||50,2,98),y:clamp(+o.y||50,3,97)}:null;if(o&&o.lato)chiedi.turno(o.lato);},
     atteggiamento(lato,v){S.richieste.att[lato===AWAY?AWAY:HOME]=clamp(+v||0,-1,1);},
@@ -25778,7 +25781,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:possTurnRef.current>0?"home":"away",gioc:matchPlayersRef.current||[],eroe:pPosRef.current,centro:((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
           /* il gol del microsim diventa una richiesta: il motore lo costruisce */
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
-          if(pendingGoalRef.current&&pendingGoalRef.current.motore870)pendingGoalRef.current.ticks++;
+          if(pendingGoalRef.current&&pendingGoalRef.current.motore870){pendingGoalRef.current.ticks++;if(nx>=90)_M.chiedi.urgenza();/* al 90' il decreto non puo' restare appeso: entra da dove sta la palla */}
           /* il ponte verso la scena: due minuti prima il gioco si sposta dove l'highlight nascera' */
           {const _nt=(hlTimesRef.current||[])[hlIdx];if(_nt!=null&&nx>=_nt-2&&nx<_nt&&ponteIdxRef.current!==hlIdx){ponteIdxRef.current=hlIdx;const _s=situations[hlIdx];if(_s){try{const _spb=hlBallSpot(_s,(pPosRef.current&&pPosRef.current.x)||60,(pPosRef.current&&pPosRef.current.y)||50);_M.chiedi.verso({x:_spb.x,y:_spb.y,lato:_s.type==="def"?"away":"home"});if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_s.type==="def"?-1:1,"ponte-scena");}catch(_e){}}}}
           /* la quota di possesso della simulazione e' una richiesta di turno, mai un ordine sul pallone */

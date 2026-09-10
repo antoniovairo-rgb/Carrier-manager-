@@ -331,6 +331,8 @@ function creaMotorePossesso(cfg){
     if(S.scena){S.conta.scena++;return[];}
     if(S.richieste.gol&&S.richieste.gol.lato!==S.poss.lato){const gr=S.richieste.gol;gr.t=(gr.t|0)+1;if(!S.richieste.turno)S.richieste.turno=gr.lato;
       if(S.poss.stato==="tenuta"&&S.poss.padrone!=null&&S.poss.t>=1){const P=g[S.poss.padrone];if(P&&!P.gk){perdi(P);}}}
+    /* tetto duro del decreto: al nono tick il gol entra da dove sta la palla (a fine partita non puo' restare appeso) */
+    if(S.richieste.gol&&(S.richieste.gol.t|0)>=9&&S.poss.stato!=="rete"&&S.poss.stato!=="kickoff"&&!S.scena){const gr=S.richieste.gol;const W=piuVicino(S.palla.x,S.palla.y,gr.lato,{noGk:true});if(W){if(S.poss.padrone!==W.p.i){W.p.x=clamp(S.palla.x-dirDi(gr.lato)*0.4,2,98);W.p.y=S.palla.y;S.fermo=null;tenuta(W.p,null);}S.poss.t=2;gr.t=Math.max(gr.t,9);tira(W.p);muoviTutti();const out=S.eventi;S.eventi=[];return out;}}
     const st=S.poss.stato;
     if(st==="rete")tickRete();
     else if(st==="kickoff")tickKickoff();
@@ -343,6 +345,7 @@ function creaMotorePossesso(cfg){
     const out=S.eventi;S.eventi=[];return out;}
   const chiedi={
     gol(lato){S.richieste.gol={lato:lato===AWAY?AWAY:HOME,t:0};S.richieste.verso=null;},
+    urgenza(){if(S.richieste.gol)S.richieste.gol.t=Math.max(S.richieste.gol.t|0,9);},
     turno(lato){const l=lato===AWAY?AWAY:HOME;if(S.poss.lato!==l)S.richieste.turno=l;},
     verso(o){S.richieste.verso=o?{x:clamp(+o.x||50,2,98),y:clamp(+o.y||50,3,97)}:null;if(o&&o.lato)chiedi.turno(o.lato);},
     atteggiamento(lato,v){S.richieste.att[lato===AWAY?AWAY:HOME]=clamp(+v||0,-1,1);},

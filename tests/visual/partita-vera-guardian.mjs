@@ -78,8 +78,9 @@ const fattoRows = motoreOn ? rows.filter(r => r.rk === 'motore' && /^(ricezione|
    riga-fatto sia vuota. Prova del rosso: CPM_ROSSO=__CPM_NO739 azzera le righe-fatto e la banda diventa non giudicabile. */
 const _cog = (t) => String(t || '').replace(/[^A-Za-zÀ-ÿ' ]/g, ' ').split(/\s+/).filter(w => /^[A-ZÀ-Ý][a-zà-ÿ']{2,}$/.test(w));
 const _rosaSet = new Set(ROSA.map(n => n.charAt(0).toUpperCase() + n.slice(1).toLowerCase()));
-const nomiOk = fattoRows.filter(r => _cog(r.txt).some(w => _rosaSet.has(w))).length;
-try { for (const r of fattoRows.filter(r => !_cog(r.txt).some(w => _rosaSet.has(w))).slice(0, 5)) console.log(`  · riga-fatto senza cognome della rosa: ${r.min}' [${r.mk || r.rk}] «${String(r.txt || '').slice(0, 100)}»`); } catch (_e) {}/* [7.870] la riga colpevole si stampa: un rosso senza il testo non si ripara */
+const _haNome = (t) => _cog(t).some(w => _rosaSet.has(w)) || ROSA.some(n => n && n.length >= 2 && new RegExp('(^|[^A-Za-z])' + n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^A-Za-z]|$)', 'i').test(String(t || '')));/* [7.870] l'eroe si chiama come lo chiama il mondo del guardiano (anche due lettere): e' un cognome della rosa */
+const nomiOk = fattoRows.filter(r => _haNome(r.txt)).length;
+try { for (const r of fattoRows.filter(r => !_haNome(r.txt)).slice(0, 5)) console.log(`  · riga-fatto senza cognome della rosa: ${r.min}' [${r.mk || r.rk}] «${String(r.txt || '').slice(0, 100)}»`); } catch (_e) {}/* [7.870] la riga colpevole si stampa: un rosso senza il testo non si ripara */
 /* [7.756.0] TABELLONE COERENTE: i gol del libro mastro (ev 'goal', per lato) devono essere esattamente i gol del punteggio finale. */
 const esiti = all.filter(e => e.ev === 'esito');/* [7.762.0] ogni azione risolta dell'eroe lascia un evento «esito» (7.761): senza, i guardiani della storia sono ciechi sulle scene */
 const _golH = goals.filter(g => g.side === 'home').length, _golA = goals.filter(g => g.side !== 'home').length;
