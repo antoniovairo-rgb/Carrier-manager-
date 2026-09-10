@@ -3903,3 +3903,32 @@ telefono. È il metro per S1: un rimedio deve portare la banda sopra il rumore i
 ≤3u **32 / 30 / 32 %** contro **24 / 24 / 27** (+6 in 3/3, sopra il rumore). Il passaggio sull'uomo
 avvicina il pallone RESO al corpo, non il pallone LOGICO al padrone: il metro dichiarato non lo batte.
 Resta a richiesta (`__CPM_SI860`, non spedito). Il fatto nuovo è il banco: tre ripetizioni a ±3.
+
+## 7.861 — la giocata è un uomo, non un punto (S1, la trama)
+
+Misurato con `giri861` (Vairo, 120 s reali = 61 minuti di gioco): il mover del pallone logico gira
+UNA volta per minuto (61 giri); la trama ha prodotto 4 waypoint, **0 agganci** a un compagno entro
+8u e **0 passaggi**; le righe di cronaca hanno consegnato il pallone 6 volte (11 senza uomo). Il
+pallone ambientale va su erba vuota per costruzione e i corpi lo inseguono: è la radice del «pallone
+logico a più di 3u dal padrone nel 74-76 %». Con `arrivo861` (400 s): 88 tick registrati, ricevente
+della trama dichiarato in 0.
+7.861: se il waypoint geometrico non ha nessun compagno entro 8u, la giocata sceglie l'uomo (il
+compagno di movimento più vicino al waypoint fra quelli davanti al pallone, o il più vicino entro
+25u) e il waypoint diventa la sua posizione; l'aggancio (8u) e la sosta di ricezione (7.639) fanno il
+resto. Rosso `__CPM_NO861`. Misura sul banco S1 (padroni, Vairo, 400 s, tre ripetizioni; base
+19 / 24 / 19 % logico, 24 / 24 / 27 reso):
+- trama: waypoint **12 / 10 / 11**, agganci a un uomo **12 / 10 / 11** (100 %, contro 0/4), passaggi
+  **7 / 8 / 8** (contro 0), di cui «sull'uomo» 7 / 8 / 10;
+- pallone logico ↔ padrone logico ≤3u **18 / 38 / 28 %** (media 28 contro 20,7: +7, ma la prima
+  ripetizione sta dentro la banda di base — non è 3/3);
+- pallone reso ↔ corpo del padrone ≤3u **32 / 40 / 48 %** (contro 24 / 24 / 27: 3/3 sopra il massimo
+  di base, +15 in media); mediana 6,5 / 4,9 / 3,4u contro 7,1 / 7,2 / 7,7.
+Si tiene: il meccanismo è misurato senza ambiguità (0 → 100 % di giocate su un uomo) e il reso batte
+la base in tutte e tre le ripetizioni; il logico migliora in media ma non in 3/3, dichiarato.
+CI exit 0 (validate 0 failure; guardiano manovra-viva 64 su banda 10, con la libreria tornata a 8;
+gol del simulatore 7/7). Career: la prima corsa è caduta per timeout di navigazione (6 guardiani
+verdi, il settimo non ha caricato la pagina), ripetuta da sola: **PASS** (exit 0). Telefono n° 7
+(4 partite, sonda v7): padrone ≤3u 25 / 22 / 44 / 30 % (n° 6: 33 / 35 / 11 / 27; metrica rumorosa,
+lezione 19ª — il numero che regge è il banco S1), frasi del tiro smentite 5/9 → 0/9, finali 2-0, 3-0,
+1-1, 4-0. Gol di scena: pallone alla riga 99,15 / 99,02 / 99,15 (3), ma sugli ASSIST 88,1 e 93,5 (2):
+il residuo dichiarato in 7.858 resta.

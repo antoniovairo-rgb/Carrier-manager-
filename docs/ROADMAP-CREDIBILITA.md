@@ -286,3 +286,9 @@ opposte (7/17, 20/12; 5/26, 11/5). La metrica del padrone oscilla 5-26 % fra cor
 può giudicare S1. Prossimo passo per S1: un banco riproducibile (dt fisso, una partita per volta,
 metrica sulla simulazione), poi ripartire dalla diagnosi ferma (corpo più vicino a 2,9u dal pallone
 atterrato, nessuno lo scrive).
+
+**Aggiunta, 10/09 06:40 — S1, il primo rimedio che regge sul banco.** Il mover del pallone logico
+gira una volta per minuto e la trama non agganciava mai un uomo (0 agganci su 4 waypoint, 0
+passaggi in 61'): il pallone ambientale andava su erba vuota per costruzione. 7.861: la giocata
+sceglie l'uomo. Banco S1 (tre ripetizioni): agganci 0 → 100 %, passaggi 0 → 7-8, pallone reso ai piedi
+del padrone 24-27 → 32-48 %, logico 19-24 → 18-38 %. In rituali; telefono n° 7 a seguire.

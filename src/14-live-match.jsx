@@ -6228,6 +6228,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _q860=(matchPlayersRef.current||[])[_tr860.rcv];
             if(_q860&&_q860.x!=null){const _dq860=Math.hypot((+_q860.x)-_t.x,(+_q860.y)-_t.y);
               if(_dq860>0.8&&_dq860<12){_t.x=clamp(+_q860.x,4,96);_t.y=clamp(+_q860.y,6,94);if(window.__CPM_REC){try{window.__CPM_TRK860=(window.__CPM_TRK860|0)+1;}catch(_e){}}}}}}catch(_e860){}}
+        if(typeof window!=='undefined'&&window.__CPM_REC){try{const _A=(window.__CPM_ARR861=window.__CPM_ARR861||[]);if(_A.length<4000){const _trW=tramaRef.current;const _crW=carrierRef.current;const _rW=(_trW&&_trW.rcv!=null)?(matchPlayersRef.current||[])[_trW.rcv]:null;const _cW=(_crW&&_crW.i!=null)?(matchPlayersRef.current||[])[_crW.i]:null;_A.push({t:Date.now(),nx:clockRef.current|0,ph:String(phaseRef.current||''),bx:+(+b.x).toFixed(1),by:+(+b.y).toFixed(1),tx:+(+_t.x).toFixed(1),ty:+(+_t.y).toFixed(1),rcv:_trW?_trW.rcv:null,rx:_rW&&_rW.x!=null?+(+_rW.x).toFixed(1):null,ry:_rW&&_rW.y!=null?+(+_rW.y).toFixed(1):null,car:_crW?_crW.i:null,cx:_cW&&_cW.x!=null?+(+_cW.x).toFixed(1):null,cy:_cW&&_cW.y!=null?+(+_cW.y).toFixed(1):null,hold:_trW?(_trW.hold639|0):0,pg:pendingGoalRef.current?1:0,lag:ballLagRef.current?1:0});}}catch(_e861){}}/* [misura 861] il pallone logico, il suo bersaglio, il ricevente della trama e il padrone, tick per tick */
         let dx=_t.x-b.x,dy=_t.y-b.y;
         /* [7.525.0 — OGNI FASE HA UN PADRONE DELLA PALLA, principio 7.523] Il drift di possesso gira SOLO
            in `playing`: dentro una scena la palla e' della scena. Il motore vecchio derivava anche negli
@@ -6417,6 +6418,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                    il piu' vicino qualunque» il possesso tornava a posto (33%) ma il guadagno di rettilineita'
                    spariva del tutto (0,26, giro in tondo 40%): il vincolo funzionava solo finche' faceva danno
                    altrove. Revocato tutto invece di tenere un pezzo che non misura niente. */
+                /* [7.861.0 — LA GIOCATA E' UN UOMO, NON UN PUNTO. Rosso __CPM_NO861] Misurato (giri861, Vairo, 61 minuti):
+                   4 waypoint, 0 agganci a un compagno entro 8u, 0 passaggi: il pallone ambientale va su erba vuota e i corpi
+                   lo inseguono — il pallone LOGICO sta a piu' di 3u dal suo padrone nel 74-76 % dei campioni. Qui, se il
+                   waypoint geometrico non ha nessun compagno entro 8u, la giocata sceglie l'UOMO: il compagno di movimento
+                   piu' vicino al waypoint fra quelli davanti al pallone (o, se nessuno e' davanti, il piu' vicino qualunque
+                   entro 25u), e il waypoint diventa la sua posizione. L'aggancio (8u) e la sosta di ricezione (7.639) fanno il resto. */
+                if(!(typeof window!=='undefined'&&window.__CPM_NO861)){try{let _hasNear=false;for(let _i6=0;_i6<_mp555.length;_i6++){const _pl=_mp555[_i6];if(!_pl||_pl.team!==_lt555||_pl.gk)continue;if(Math.hypot((_pl.x||50)-_wx,(_pl.y||50)-_wy)<8){_hasNear=true;break;}}
+                  if(!_hasNear){let _bj=-1,_bdj=1e9,_bk=-1,_bdk=25;for(let _i6=0;_i6<_mp555.length;_i6++){const _pl=_mp555[_i6];if(!_pl||_pl.team!==_lt555||_pl.gk)continue;const _dw=Math.hypot((_pl.x||50)-_wx,(_pl.y||50)-_wy);const _avanti=_dir>0?((_pl.x||50)>_t.x+1):((_pl.x||50)<_t.x-1);const _db=Math.hypot((_pl.x||50)-_t.x,(_pl.y||50)-_t.y);if(_avanti&&_db<=25&&_dw<_bdj){_bdj=_dw;_bj=_i6;}if(_db<_bdk&&_db>1.5){_bdk=_db;_bk=_i6;}}
+                    const _pick=_bj>=0?_bj:_bk;if(_pick>=0){_wx=_mp555[_pick].x||50;_wy=_mp555[_pick].y||50;if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_A4=window.__CPM_A4||{pass:0,agg:0,wp:0});_w.uomo861=(_w.uomo861|0)+1;}catch(_e){}}}}}catch(_e861){}}
                 let _bi555=-1,_bd555=8;/* [7.544.0] RAGGIO 18→8. Con il cancello del movimento aperto (vedi la nota
                    sopra) i ventidue seguono davvero il pallone, e l'aggancio del waypoint al compagno piu'
                    vicino e' diventato un ANELLO: i giocatori si stringono attorno alla palla, la palla si

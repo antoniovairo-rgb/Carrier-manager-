@@ -1628,3 +1628,40 @@ Quello che i fotogrammi mostrano:
 **Media DA TELEFONO: 5,8** (somma 69; n° 5 era 5,7). Otto aree sotto 7. Nessun «puoi collaudare».
 Prossimi: la scena a catena che apre la sua anteprima sopra l'esultanza; la banda 60 del padrone
 (11-35 %); la prima occasione al 10'-12'.
+
+## Scorecard DA TELEFONO n° 7 — build 7.861 (branch)
+
+Chromium 412×915 portrait, sonda v7 (pallone, fase, punteggio e HUD nello stesso istante della foto).
+Età mediana dei fotogrammi 782 / 351 / 230 / 526 ms (Vairo casa: la CI chiudeva mentre la partita
+partiva, 201 campioni soli — dichiarato). Schede in `docs/collaudo-telefono/n07/`.
+
+| partita | padrone ≤3u | frasi del tiro (piano → emesse) | finale |
+|---|:---:|:---:|:---:|
+| Vairo casa | 25 % (201 campioni) | 1/1 → 0/1 | 2-0 |
+| Moretti casa | 22 % | 1/4 → 0/4 | 3-0 |
+| Galli fuori | 44 % | 2/2 → 0/2 | 1-1 |
+| Conti fuori | 30 % | 1/2 → 0/2 | 4-0 |
+
+Quello che cambia con la 7.861 non si legge qui (metrica del telefono rumorosa, lezione 19ª) ma sul
+banco S1: giocate su un uomo 0 → 100 %, passaggi 0 → 7-8 per 400 s, pallone reso ai piedi del padrone
+24-27 → 32-48 % in tre ripetizioni. Sul telefono: gol di scena col pallone alla riga a 99,15 / 99,02 /
+99,15 (Vairo 28' bis, Moretti 16', Conti 15'), sugli assist a 88,1 e 93,5 (Vairo 28', Moretti 24' —
+`Moretti-casa/f14`: tabellone 1-0 già scritto, HUD 2-0, pallone ancora a 93,5 con la scena aperta).
+
+| # | Area | n°6 | **n°7** | motivo |
+|---|------|:---:|:---:|---|
+| 1 Realismo | 5 | **5** | padrone 22-44 %; sul banco S1 il pallone ha finalmente un uomo (giocate sull'uomo 100 %) |
+| 2 Credibilità da attaccante | 6 | **6** | frasi false 0/9; tuffo a terra sui gol del piano (n° 6) |
+| 3 Causalità | 6 | **6** | i passaggi ambientali ora hanno un ricevente; gli assist dell'eroe annunciati a 88-93 |
+| 4 Varietà | 5 | **5** | prima occasione 6'-10' |
+| 5 Ritmo | 5 | **5** | invariato |
+| 6 Azioni extra-eroe | 7 | **7** | invariato |
+| 7 Highlight dell'eroe | 5 | **5** | pallone alla riga 3/5, assist 2/5 in anticipo |
+| 8 Telecronaca | 6 | **6** | 0/9 smentite |
+| 9 Interazioni | 7 | **7** | |
+| 10 Coerenza fra i sistemi | 6 | **6** | HUD nel DOM coerente alla riga 9/9 |
+| 11 Immersione | 5 | **5** | 13-17 fps |
+| 12 Carriera | 6 | **6** | career PASS |
+
+**Media DA TELEFONO: 5,8** (somma 69, come il n° 6). Otto aree sotto 7. Nessun «puoi collaudare».
+Il telefono non vede la 7.861 perché la sua metrica è più rumorosa dell'effetto; il banco S1 sì.
