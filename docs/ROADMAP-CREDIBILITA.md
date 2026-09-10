@@ -256,3 +256,9 @@ revocata: la coppia con `__CPM_REALWAIT` è identica (gol di scena dichiarato da
 entrambi i bracci); il difetto era il banco senza REALWAIT (lezione 17ª, sonda v6). Telefono n° 5: 5,7.
 Prossimi: la scena dell'eroe che non porta il pallone in porta (#31, tetto dei 5,2 s col pallone a 72);
 la banda 60 del padrone; la prima occasione al 10'-12'.
+
+**Aggiunta, 10/09 notte (4):** 7.858 sul branch — il tetto dei 5,2 s del gol di scena dichiarava il
+gol col pallone a 59-96 in 4 gol su 5 (costruzione R5 più arco durano di più); ora il tetto aspetta
+finché il renderer è occupato (tetto duro 9 s). Otto partite: gol di scena dichiarati col pallone alla
+linea 7/8 contro 2/6. Resta: le scene di assist (tetto a 87, 1/2); la banda 60 del padrone (19-36 %);
+la prima occasione al 10'-12'. Telefono n° 6 da fare sulla 7.858.

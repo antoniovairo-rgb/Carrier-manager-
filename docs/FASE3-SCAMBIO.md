@@ -3827,3 +3827,23 @@ telefono non lo accendeva: la «riga prima del pallone» del n° 4 è in parte u
 Sonda v6: `__CPM_REALWAIT` acceso; la 7.857 (l'attesa del gol pendente nell'auto-avanzamento) si
 misura con REALWAIT in entrambi i bracci (`__CPM_NO857` rosso) — se il rosso non mostra la riga prima
 del pallone, la 7.857 si revoca.
+
+## 7.858 — il tetto del gol di scena aspetta che il renderer abbia finito
+
+Telefono n° 5: «Galli segna 1-0» con HUD 0-0, portiere già a terra e pallone a metà area
+(`galli-f09`); «3-2» con HUD 2-2 (`conti-f36`); «5-2» col pallone a centrocampo (`conti-f51`). La
+7.857 era stata revocata perché non era l'auto-avanzamento. Testimone `__CPM_INNET857` con scena e
+scelta, quattro eroi (sonda v6, REALWAIT): **4 gol di scena su 5 li dichiara il TETTO dei 5,2 s**
+(`fxTimeout(fireGoalCeleb, 5200)`, 6.5.1) col pallone reso a **59 / 68 / 87 / 96** — «Tiro interno
+piede classico», «Spingila dentro!», «Tiro al volo», «Testa preciso al centro» — e la rete vera arriva
+0,5 / 2,7 / 0,5 / 1,1 s DOPO, o mai (Conti 27': pallone a 79 a +1 s, scena tagliata dalla ripresa).
+Un solo gol (Conti 82', «Tiro di prima sul rimbalzo») lo dichiara il renderer col pallone a 99,15.
+Il tetto era stato alzato da 3,2 a 5,2 s per la costruzione R5; oggi costruzione più arco durano di più.
+7.858: il tetto aspetta finché il renderer si dichiara occupato (timeline, arco, parata — lo stesso
+segnale dell'auto-avanzamento 7.461), con un tetto duro a 9 s. Rosso `__CPM_NO858`. Misura: gol di
+scena dichiarati col pallone alla linea (reso ≥98,5) — **verde 7/8** su 8 partite (Vairo, Galli ×3,
+Conti, Moretti: `net` a 99,15 in 6, tetto a 103 in 1; l'unico fuori è un ASSIST «Avanza in profondità
+e servi», tetto a 87) contro **rosso 2/6** (7.856 e NO858: tetto a 59 / 68 / 87 / 96 in 4). Si tiene.
+Residuo dichiarato: sulle scene di assist il tiro del compagno non tiene occupato il renderer (1/2).
+Nota di strumento: la sonda a scene forzate (`__CPM_FORCE_SIT`) non misura questa cosa — in forced
+mode la fase non è `hl_result` e il flag «occupato» è spento: verde = rosso per costruzione.
