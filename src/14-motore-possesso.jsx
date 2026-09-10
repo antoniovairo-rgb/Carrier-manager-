@@ -186,7 +186,7 @@ function creaMotorePossesso(cfg){
       if(press<1.8&&rnd()<0.12){ramo("persa1");perdi(P);return;}
       ev("controllo",{chi:chi(P),press:+press.toFixed(1),zona});return;/* controllo: il pallone sta ai piedi un tick */
     }
-    if(!golReq){const r=rnd();const pF=(press<3?0.06:0.025)+(adv>=56?0.02:0);if(r<pF){ramo("fallo");fallo(P);return;}if(press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return;}}
+    if(!golReq){const r=rnd();const pF=(press<3?0.09:0.04)+(adv>=56?0.02:0);/* ~3 falli a partita: la palla morta e' il respiro della partita (7.843: 4-7 fermi) */if(r<pF){ramo("fallo");fallo(P);return;}if(press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return;}}
     const verso=S.richieste.verso;
     let pTiro=zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0;
     pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
@@ -219,7 +219,7 @@ function creaMotorePossesso(cfg){
     if(!arrivato){if(p.t>=4){libero(S.palla.x,S.palla.y);}return;}
     /* arrivo */
     if(p.tipo==="tiro"){arrivoTiro();return;}
-    if(p.tipo==="fuori"){ev("fuori",{x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)});fuoriCampo(S.palla.x,S.palla.y,altro(p.lato),"throw");return;}
+    if(p.tipo==="fuori"){ev("fuori",{x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1),da:chi(p.ultimoPassatore!=null?g[p.ultimoPassatore]:null)});fuoriCampo(S.palla.x,S.palla.y,altro(p.lato),"throw");return;}
     if(p.tipo==="cross"){arrivoCross();return;}
     if(R&&attivo(R)&&hyp(R.x,R.y,S.palla.x,S.palla.y)<=4.5){R.x=clamp(S.palla.x-dirDi(R.team)*0.4,2,98);R.y=S.palla.y;if(R.eroe)S.conta.ricezioniHero++;ev("ricezione",{chi:chi(R),kind:p.kind||null,da:chi(p.ultimoPassatore!=null?g[p.ultimoPassatore]:null),from:p.da?{x:+p.da.x.toFixed(1),y:+p.da.y.toFixed(1)}:null,to:{x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)}});tenuta(R,null);return;}
     libero(S.palla.x,S.palla.y);

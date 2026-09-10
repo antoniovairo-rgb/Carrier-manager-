@@ -1700,14 +1700,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const _cap=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"";};
     const _sig=(lato)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO809)return "";const c=(lato==='home')?_heroSideClub:opponent;const ab=(c&&c.a)||(c&&c.id?String(c.id).slice(0,3).toUpperCase():"");return ab?" ("+ab+")":"";}catch(_e){return "";}};
     const _club=(l)=>{try{const c=(l==='home')?_heroSideClub:opponent;return (c&&(c.n||c.name))||(l==='home'?"i nostri":"gli avversari");}catch(_e){return l==='home'?"i nostri":"gli avversari";}};
-    const _nm=(c)=>{if(!c)return "un giocatore";if(c.eroe)return "{P}";if(c.gk)return c.team==='home'?"{GKH}":"{GKA}";return (_cap(c.nome)||"un compagno")+_sig(c.team);};
+    const _nm=(c)=>{if(!c)return "un giocatore";if(c.eroe)return "{P}";return (_cap(c.nome)||(c.gk?"il portiere":"un compagno"))+_sig(c.team);};/* anche il portiere col cognome che porta sulla maglia in campo (matchPlayers), non quello del roster: una sola realta' */
     const _raw=(c)=>c?(c.eroe?(_surnBG(player.name||"")||String(player.name||"").split(/\s+/).pop()||""):String(c.nome||"")):null;
     const _adv=(x,l)=>l==='home'?x:100-x;
     /* il lessico dei luoghi e' quello che il metro della geografia (geo865) sa leggere: «in area» (76-100), «dal limite» (fuori area 50-86), «trequarti» (58-82), «centrocampo» (32-68); le retrovie non hanno banda e non si contano */
     const _dove=(pt,l)=>{if(!pt)return "";const a=_adv(pt.x,l);const largo=Math.abs(pt.y-50)>=24;if(a>=84&&Math.abs(pt.y-50)<=22)return "in area";if(a>=70)return largo?"dal limite, sulla fascia":"dal limite";if(a>=56)return largo?"sulla fascia, nella trequarti":"sulla trequarti";if(a>=34)return largo?"sulla fascia a centrocampo":"a centrocampo";return "dalle retrovie";};
     const _h=(k)=>Math.abs(hashStr("n870|"+nx+"|"+k+"|"+_sm819()));
     const _pk=(arr,k)=>arr[_h(k)%arr.length];
-    const PRIO={gol:10,rigore:9,tiro:8,parata:8,palo:8,murato:7,fuori:6,fallo:6,cross:6,contrasto:5,intercetto:5,spazzata:5,presa:5,corner:4,rimessa:4,rinvio:4,battuta:4,centro:4,calcio_inizio:3,recupero:3,palla_persa:3,passaggio:3,conduzione:2,ricezione:1,controllo:1};
+    const PRIO={gol:10,rigore:9,tiro:8,parata:8,palo:8,murato:7,fuori:6,fallo:6,cross:6,contrasto:5,intercetto:5,spazzata:5,presa:5,corner:5,rimessa:5,rinvio:5,battuta:4,centro:4,calcio_inizio:3,recupero:3,palla_persa:3,passaggio:3,conduzione:2,ricezione:1,controllo:1};
     /* [7.870 geografia] il passaggio rasoterra si racconta ALL'ARRIVO (il pallone e' gia' li'): al lancio parlano solo lanci, cambi di gioco e palloni usciti, che hanno l'arco */
     let best=null,bp=-1;for(const e of eventi){let pr=PRIO[e.t]!=null?PRIO[e.t]:1;if(e.t==='passaggio')pr=(e.fuori||e.kind==='lancio'||e.kind==='cambio')?4:0;if(e.t==='ricezione')pr=(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross')?3:1;if(pr>bp){bp=pr;best=e;}}
     if(!best||bp<=0)return null;
@@ -1739,7 +1739,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     else if(e.t==='parata'){const gk=_nm(e.gk),c=_nm(e.chi);at="save";txt=e.corner?_pk(["🧤 "+gk+" ci arriva in tuffo e devia in angolo: che parata!","🧤 "+gk+" respinge coi pugni sul tiro di "+c+": corner."],"s"):_pk(["🧤 "+gk+" ci arriva in tuffo e respinge!","🧤 Presa sicura di "+gk+": blocca a terra il tiro di "+c+".","🧤 "+gk+" si distende e para!"],"s");}
     else if(e.t==='palo'){txt=_pk(["🔩 PALO! Il tiro di "+_nm(e.chi)+" si stampa sul legno!","🔩 TRAVERSA! "+_nm(e.chi)+" a un soffio dal gol!"],"l");ms=nostro?{shots:1}:{oppShots:1};}
     else if(e.t==='murato'){txt=_pk(["🛡️ "+_nm(e.chi)+" mura la conclusione di "+_nm(e.su)+"!","🛡️ Muro di "+_nm(e.chi)+": il tiro di "+_nm(e.su)+" non passa."],"m");at="tackle";}
-    else if(e.t==='fuori'){txt=e.chi?_pk(["💨 "+_nm(e.chi)+" calcia alto: rinvio dal fondo.","💨 Tiro di "+_nm(e.chi)+" a lato: niente da fare."],"f"):_pk(["⏸️ Pallone fuori: rimessa laterale.","⏸️ La palla esce sulla fascia."],"f");}
+    else if(e.t==='fuori'){txt=e.chi?_pk(["💨 "+_nm(e.chi)+" calcia alto: rinvio dal fondo.","💨 Tiro di "+_nm(e.chi)+" a lato: niente da fare."],"f"):e.da?_pk(["⏸️ Pallone di "+_nm(e.da)+" troppo lungo: esce sulla fascia, rimessa laterale.","↔️ "+_nm(e.da)+" allarga troppo: la palla esce."],"f"):_pk(["⏸️ Pallone fuori: rimessa laterale.","⏸️ La palla esce sulla fascia."],"f");}
     else if(e.t==='contrasto'){const w=_nm(e.chi),su=_nm(e.su);at="tackle";txt=e.fuori?_pk(["⚔️ "+w+" e "+su+" a contatto sulla fascia: la palla esce, rimessa laterale."],"x"):_pk(["🛡️ "+w+" ruba palla a "+su+" "+_dove(e,l)+"!","⚔️ Contrasto vinto da "+w+" su "+su+": cambia il possesso.","🛡️ "+w+" chiude in scivolata su "+su+" e riparte."],"x");}
     else if(e.t==='intercetto'){txt=_pk(["✋ "+_nm(e.chi)+" legge il passaggio di "+_nm(e.da)+" e intercetta!","✋ Intercetto di "+_nm(e.chi)+": la palla cambia squadra."],"i");at="tackle";}
     else if(e.t==='recupero'){txt=_pk(["🔄 "+_nm(e.chi)+" raccoglie il pallone vagante "+_dove(e,l)+".","🔄 Palla recuperata da "+_nm(e.chi)+"."],"r");}
@@ -3924,6 +3924,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if((kickRef.current|0)>0||(kickoffRef.current|0)>0){if(!ripT0Ref.current)ripT0Ref.current=Date.now();}
           {const _gc=_stM870.gioc;setMatchPlayers(prev=>{const _nx2=prev.map((pl,i2)=>{const q=_gc[i2];return (q&&pl&&pl.team!=="ref")?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=_nx2;return _nx2;});}
           if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current)setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCHERMO843=window.__CPM_SCHERMO843||[]);if(_S.length<400)_S.push({min:nx,ko:kickoffRef.current|0,kick:kickRef.current|0,out:0,fermo:fermoRef.current?1:0,sp:0,pg:pendingGoalRef.current?1:0,ct:0,lib:0,hl:_inHL77?1:0,cool:bgCoolRef.current|0,ph:String(phaseRef.current),motore:1,stato:_stM870.poss.stato});}catch(_e){}}
           _narr870=narra870(_evM870,_stM870,nx,{cool:bgCoolRef.current|0});
           if(_narr870&&_narr870.ef){/* il gol e' entrato: la riga porta l'evento del microsim (accredito, festa, ripresa) */const _g=golMotoreRef.current;if(_g&&_g.ev){_narr870.ms=_g.ev.ms||_narr870.ms;_narr870.w=_g.ev.w||1;}golMotoreRef.current=null;pendingGoalRef.current=null;}
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NARR870=window.__CPM_NARR870||{tick:0,eventi:0,righe:0,per:{}});_W.tick++;_W.eventi+=_evM870.length;if(_narr870){_W.righe++;_W.per[_narr870._motore870.kind]=(_W.per[_narr870._motore870.kind]|0)+1;}}catch(_e){}}
@@ -5739,7 +5740,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               corso il respiro scende al minimo: le sue righe si incalzano come l'azione che raccontano,
               e l'azione finisce prima che ne cominci un'altra. */
            const _libVivo687=!!(libAzRef666.current&&libAzRef666.current.i<(libAzRef666.current.righe||[]).length);
-           bgCoolRef.current=(ev&&ev._motore870)?(_sc681?4:(_imp?2:1)):((typeof window!=='undefined'&&window.__CPM_NO490)?3:((_libVivo687&&!(typeof window!=='undefined'&&window.__CPM_NO687))?1:(_sc681?7:(_imp?7:_cool501))));/* [7.870] il narratore ha il suo respiro: un tick fra due righe minori, due dopo un fatto importante */
+           bgCoolRef.current=(ev&&ev._motore870)?(_sc681?4:(_imp?1:0)):((typeof window!=='undefined'&&window.__CPM_NO490)?3:((_libVivo687&&!(typeof window!=='undefined'&&window.__CPM_NO687))?1:(_sc681?7:(_imp?7:_cool501))));/* [7.870] il narratore ha il suo respiro: un tick fra due righe minori, due dopo un fatto importante */
            if(typeof window!=='undefined'&&window.__CPM_IMP490!==undefined){try{const _w=(window.__CPM_IMP490=window.__CPM_IMP490||[]);if(_w.length<200)_w.push({m:nx,imp:!!_imp,t:Math.round(performance.now())});}catch(_e){}}}
           tcCountRef.current++;
           /* ⚠️ RITARDO E FREQUENZA CORRETTI DOPO LA MISURA: la prima stesura usava 950 ms e una riga su

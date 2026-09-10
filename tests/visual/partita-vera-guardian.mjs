@@ -59,7 +59,7 @@ const occRows = rows.filter(r => r.rk === 'manovra-gol');/* [7.841 strumento] le
 const motRows = rows.filter(r => r.rk === 'motore' && /^(passaggio|cross|conduzione|tiro)$/.test(String(r.mk || '')));/* [7.870] le righe del narratore sui FATTI del motore del possesso: passaggi, cross, conduzioni e tiri sono manovra per costruzione */
 const manovraRows = rows.filter(r => r.rk === 'catena' || r.lib === 1 || r.rk === 'manovra-gol' || (r.rk === 'motore' && /^(passaggio|cross|conduzione|tiro)$/.test(String(r.mk || ''))));/* [7.841 strumento — LA BANDA CONTA TUTTE LE MACCHINE CHE RACCONTANO UNA MANOVRA] Misurato il 09/09 nello stesso mondo: 0c956f9 → catena 1 + libreria 16; 69640c1 (7.836 v2) → catena 2 + libreria 4; build 7.840 con __CPM_NO836 → libreria 10. La 7.836 v2 (il turno segue il possesso) da' piu' finestre alle OCCASIONI (7.695/7.829) e la libreria perde i suoi slot: e' una sostituzione, come quella del 7.683 letta nel 7.684 — non una perdita. Le battute del piano contano qui; la banda (5 a partita) NON cambia. Prova del rosso: CPM_ROSSO=__CPM_NO836 riporta la libreria su. */
 const motoreOn = rows.some(r => r.rk === 'motore');/* [7.870] col motore del possesso acceso le quattro bande della Fase 3 (mente/riga-fatto/raccoglitore/interruzioni da riga) si giudicano sui FATTI EQUIVALENTI del motore: le vecchie macchine sono spente per costruzione, la soglia non cambia */
-const fischi = turni.filter(t => /^interruzione-/.test(t.causa || '') || /^motore-(fallo|rigore|rimessa|corner|rinvio)/.test(t.causa || '')).length;
+const fischi = motoreOn ? rows.filter(r => r.rk === 'motore' && /^(fallo|rigore|rimessa|corner|rinvio)$/.test(String(r.mk || ''))).length : turni.filter(t => /^interruzione-/.test(t.causa || '')).length;/* [7.870] col motore le interruzioni sono fatti raccontati (fallo/rigore/rimessa/corner/rinvio), non cause di turno: una punizione non cambia il possesso */
 const orologio = (T.per && T.per['orologio']) | 0; const totT = T.n | 0;
 const causali = totT ? Math.round((totT - orologio) / totT * 100) : null;
 const npds = NPD.slice().sort((a, c) => a - c);
@@ -79,6 +79,7 @@ const fattoRows = motoreOn ? rows.filter(r => r.rk === 'motore' && /^(ricezione|
 const _cog = (t) => String(t || '').replace(/[^A-Za-zÀ-ÿ' ]/g, ' ').split(/\s+/).filter(w => /^[A-ZÀ-Ý][a-zà-ÿ']{2,}$/.test(w));
 const _rosaSet = new Set(ROSA.map(n => n.charAt(0).toUpperCase() + n.slice(1).toLowerCase()));
 const nomiOk = fattoRows.filter(r => _cog(r.txt).some(w => _rosaSet.has(w))).length;
+try { for (const r of fattoRows.filter(r => !_cog(r.txt).some(w => _rosaSet.has(w))).slice(0, 5)) console.log(`  · riga-fatto senza cognome della rosa: ${r.min}' [${r.mk || r.rk}] «${String(r.txt || '').slice(0, 100)}»`); } catch (_e) {}/* [7.870] la riga colpevole si stampa: un rosso senza il testo non si ripara */
 /* [7.756.0] TABELLONE COERENTE: i gol del libro mastro (ev 'goal', per lato) devono essere esattamente i gol del punteggio finale. */
 const esiti = all.filter(e => e.ev === 'esito');/* [7.762.0] ogni azione risolta dell'eroe lascia un evento «esito» (7.761): senza, i guardiani della storia sono ciechi sulle scene */
 const _golH = goals.filter(g => g.side === 'home').length, _golA = goals.filter(g => g.side !== 'home').length;
