@@ -4172,7 +4172,7 @@ banco e telefono. Da ora il rituale si sceglie in base a COSA tocca il rilascio 
 
 | rilascio tocca | rituale | cosa gira | stima |
 |---|---|---|---|
-| partita live / renderer (src/12, src/14, src/05 cronaca) | `npm run ci:live` | test:logic + validate-situations (scene e guardiani) + partita-vera (manovra-viva, gol del simulatore) | ~15 min |
+| partita live / renderer (src/12, src/14, src/05 cronaca) | `npm run ci:live` | test:logic + validate-situations (scene e guardiani) + partita-vera (manovra-viva, gol del simulatore) | ~20 min (misurato: validate-situations 745 s, di cui situations 364 s e final-state 212 s) |
 | il mover del pallone o i flussi seedati | `npm run ci:live:mover` | come sopra + replay (determinismo) | ~18 min |
 | carriera, salvataggi, calendario, coppe (src/07-11) | `npm run ci:carriera` | test:logic + save-compat + career-critical | ~14 min |
 | allineamento notturno di produzione | `npm run career-critical` + `npm run ci` | tutto, una volta al giorno | ~34 min |
@@ -4188,3 +4188,24 @@ non il giorno stesso.
 base 18-29); senza padrone 350 / 274 su ~860 a terra (41 / 32 %). Career **PASS**, CI **exit 0** (validate 0 failure,
 ball-motion OK, manovra-viva 55 su banda 10, gol del simulatore 7/7). Spedita con il divario dichiarato:
 +10-15 punti sul metro, non i 60. Geografia ×4 e telefono n° 9 in corsa.
+
+**7.868 (v6) su geografia e telefono n° 9 (20:40).** Geografia ×4: righe con luogo 73, nella banda alla riga
+44 (60 %), a +1 s 53 (73 %), in uno dei tre istanti **62 (85 %)** — sulla 7.866 era 97 %: in tenuta il pallone
+ignorava il bersaglio proposto dalla riga e restava sui piedi del portatore, quindi «X apre per Y al
+limite» non si vedeva più. Telefono n° 9: pallone reso ai piedi del padrone 35 / 24 / 33 / 27 % (n° 8:
+36 / 34 / 41 / 34), salti 43-54, scarto p90 15-22u. Sul telefono la struttura non si vede (metrica
+rumorosa ±10 e reso governato da altri scrittori), e la geografia peggiora. Non regge il patto «nessuna
+regressione su un metro spedito»: v8 = v6 + il solo ramo (a) della v7 (la proposta della riga diventa
+un passaggio all'uomo più vicino al bersaglio). Banco ×3 e geografia ×4 in corsa; se non regge su
+entrambi, la 7.868 va revocata PRIMA dell'allineamento notturno (01:00 UTC).
+
+**7.868 REVOCATA (20:30).** v8 (proposta di riga = passaggio, senza «presa»): banco ≤3u **29 / 25 / 34 %** (v6
+33-41, base 18-29), geografia in uno dei tre istanti 54/59 = **92 %** (v6 85, base 97). Nessuna delle otto
+versioni regge su entrambi i metri: la v6 alza il banco e abbassa la geografia, la v8 fa il contrario.
+Sorgente riportato alla 7.866 (src/14 e src/07 di f6e6a6d), build IDENTICO, `ci:live` in corsa; stanotte in
+produzione va la 7.866. Restano a verbale, per il passo successivo: (1) il pallone leggeva le posizioni dei
+ventidue del render precedente (un tick di ritardo per costruzione) — rimedio isolabile, da misurare da
+solo; (2) ogni waypoint della trama è un uomo e diventa subito portatore: passaggio a ogni tick, mai
+conduzione; (3) i tick governati dal mover sono un terzo del gioco vivo, il resto lo scrivono piano, righe
+e scene. Lezione 22ª: un cambio strutturale su UN solo scrittore sposta il pallone da un metro all'altro;
+serve lo stato di possesso unico per tutti gli scrittori, e va misurato su banco E geografia insieme.

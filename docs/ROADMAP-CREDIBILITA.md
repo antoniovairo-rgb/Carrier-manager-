@@ -330,3 +330,11 @@ mai nella banda 10 %. Con la 7.866 (le frasi col luogo scelte dal pallone vero):
 +1 s 80 %. Il resto del divario è il ritardo d'arrivo (la riga esce alla partenza, il pallone reso
 arriva 1-3 s dopo): dichiarato, è il moto del racconto. Fatto nuovo: alla ripresa dopo un gol il
 pallone reso può restare in rete (1/5): in misura.
+
+**Aggiunta, 10/09 20:30 — S1, il cambio strutturale e la sua revoca.** Direttiva PO 14:20 («rivedi la
+struttura»): 7.868 «un pallone, un padrone» nel mover del pallone logico, otto versioni misurate sul banco
+S1 in sei ore. Meglio: 33-41 % di pallone ai piedi del padrone contro 18-29 di base; ma la geografia delle
+righe scende da 97 a 85 % e sul telefono il reso non si sposta. Revocata. Tre fatti strutturali trovati
+(posizioni dei ventidue vecchie di un tick; waypoint = uomo = passaggio a ogni tick; il mover governa un
+terzo del gioco vivo, 29 scrittori). Prossimo passo, con il via del PO: stato di possesso unico da cui
+passano tutti gli scrittori (righe, piano, scene), misurato su banco e geografia insieme; 1-2 giorni.
