@@ -279,3 +279,10 @@ e quanto varia con l'avversario; poi decidere se è il passo o la partenza a dov
 ramo del potenziale (`_pot790`, 7.790). E fra le corse il minuto varia (Conti 7' nelle tre schede,
 10' qui): non è una costante di produzione, è la dinamica dei primi minuti sul provino. Chiuso come
 censimento; resta un'osservazione da telefono: l'apertura è sempre PRIMA del 10' in 16/17 corse.
+
+**Aggiunta, 10/09 05:20 — S1, due revoche e una lezione.** 7.859 (raggio d'elezione 5u a pallone
+arrivato) e 7.860 (il passaggio segue il ricevente) revocate: coppie sul telefono in direzioni
+opposte (7/17, 20/12; 5/26, 11/5). La metrica del padrone oscilla 5-26 % fra corse identiche: non
+può giudicare S1. Prossimo passo per S1: un banco riproducibile (dt fisso, una partita per volta,
+metrica sulla simulazione), poi ripartire dalla diagnosi ferma (corpo più vicino a 2,9u dal pallone
+atterrato, nessuno lo scrive).

@@ -27727,6 +27727,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           return{x:clamp(b.x+dx0*0.25,0,100),y:clamp(b.y+dy0*0.25,0,100)};
         }
         const _t=ballTargetRef.current;
+        /* [7.860 REVOCATA, 10/09] il bersaglio del passaggio che segue il ricevente: coppia sul telefono Vairo 5 % (rosso 26), Galli 11 % (rosso 5) — direzioni opposte; la metrica «padrone ≤3u» oscilla 5-26 % fra corse identiche (lezione 19ª). */
         let dx=_t.x-b.x,dy=_t.y-b.y;
         /* [7.525.0 — OGNI FASE HA UN PADRONE DELLA PALLA, principio 7.523] Il drift di possesso gira SOLO
            in `playing`: dentro una scena la palla e' della scena. Il motore vecchio derivava anche negli

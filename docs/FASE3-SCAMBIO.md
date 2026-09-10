@@ -3876,3 +3876,19 @@ reso↔padrone 15,8u a Vairo contro 9,2. **Revocata**, sorgente riportato al 7.8
 (corpo più vicino a mediana 2,9u dal pallone atterrato, scrittore «nessuno»); il rimedio non è
 l'elezione né la caduta dell'etichetta: è il punto d'arrivo del passaggio, che per progetto sta
 «davanti al ricevente fino a sei passi» — va misurato quanto davanti, e portato ai piedi.
+
+## 7.860 — **REVOCATA**: il passaggio ambientale segue il ricevente
+
+Idea: il waypoint della trama si aggancia al compagno più vicino (8u) ma scrive la sua posizione di
+quel tick; il pallone arriva dove lui STAVA. Qui il bersaglio si aggiornava a ogni tick sulla posizione
+attuale del ricevente (entro 12u). Coppia sul telefono, stesso carico (due partite in parallelo):
+**verde Vairo 5 % (rosso 26), Galli 11 % (rosso 5)**. Direzioni opposte. Revocata, sorgente al 7.858.0.
+
+**Lezione 19ª (strumenti), 10/09 05:20.** La metrica «pallone reso ai piedi del padrone ≤3u» NON è
+riproducibile fra corse identiche: stesso build, stesso seme, stesso carico → 5 / 17 / 26 % a Vairo,
+5 / 11 / 12 / 20 % a Galli; e con due partite in parallelo il tempo «in volo» sale dal 36 % al 43-54 %,
+abbassando tutto. Con questo rumore nessun rimedio S1 (7.851, 7.859, 7.860) può essere giudicato, in
+nessuna direzione. Prima di un altro rimedio S1 serve un banco RIPRODUCIBILE per il possesso: dt
+fisso, una partita per volta, e la metrica calcolata sulla SIMULAZIONE (pallone logico ↔ padrone
+logico) e non sul reso, che dipende dai fotogrammi. La diagnosi (corpo più vicino a 2,9u dal pallone
+atterrato, scrittore «nessuno») resta l'unica cosa misurata con margine.
