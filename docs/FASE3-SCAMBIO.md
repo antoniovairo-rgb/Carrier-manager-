@@ -3847,3 +3847,11 @@ e servi», tetto a 87) contro **rosso 2/6** (7.856 e NO858: tetto a 59 / 68 / 87
 Residuo dichiarato: sulle scene di assist il tiro del compagno non tiene occupato il renderer (1/2).
 Nota di strumento: la sonda a scene forzate (`__CPM_FORCE_SIT`) non misura questa cosa — in forced
 mode la fase non è `hl_result` e il flag «occupato» è spento: verde = rosso per costruzione.
+
+**Lezione 18ª (strumenti), 10/09 04:20.** Le foto del telefono a +0,5/+1 s dal gol dell'eroe mostravano
+«il pallone a metà area» e «l'HUD non aggiornato»; la sonda della riga del gol diceva il contrario.
+Misurato nello stesso istante della foto (sonda v7: pallone reso, fase, punteggio, cifre dell'HUD nel
+DOM): pallone a 99,15 → 100,6, HUD nel DOM già 3-2 / 5-2. Il «pallone a metà area» era il marcatore
+d'anteprima della scena successiva (pallina con linea di traiettoria, il pallone vero è nascosto in
+cronaca testuale, 7.805); l'HUD «vecchio» era il compositor del banco a 2-8 fps che dipinge il DOM con
+0,3-0,5 s di ritardo. Regola: una foto del banco vale solo con il numero letto nello stesso istante.

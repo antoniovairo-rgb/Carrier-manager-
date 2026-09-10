@@ -1599,16 +1599,15 @@ Quello che i fotogrammi mostrano:
   (`moretti-f27`, età 308 ms) e in ginocchio a +1 s (`moretti-f28`, età 38 ms); Galli 69' carponi col
   pallone sulla linea a +1 s (`galli-f37`); Bruno 76' accovacciato sulla linea (`conti-f44`, età 125
   ms). Il tuffo, la terra e la rialzata si leggono.
-- **Gol dell'eroe: la riga precede ancora il pallone in 3 su 4, nonostante la 7.858.** Vairo 51'
-  (assist «Filtrante tra i centrali»): riga «1-0», HUD e tabellone 0-0, pallone sulla linea ai piedi
-  del portiere in piedi, scena aperta (`vairo-f20`, età 296 ms). Galli 29' (dribbling): a +1 s HUD 0-0,
-  portiere a terra, pallone a metà area (`galli-f14`, età 311 ms). Conti 86' («Tiro controllato»): a
-  +1 s HUD 4-2 col pallone a metà area (`conti-f52`, età 210 ms). Conti 62' (testa): HUD 2-2 con eroe
-  e pallone dentro la porta (`conti-f36`, età 98 ms). La sonda della riga del gol dice 7/8 col pallone
-  alla linea dopo la 7.858; i fotogrammi dicono 1/4. **La discrepanza non è risolta**: la sonda legge
-  il pallone reso nell'istante della riga «segna», la foto arriva 0,5-1 s dopo e mostra il pallone
-  lontano dalla porta. Prossima misura: nella stessa corsa, foto e posizione del pallone nello stesso
-  istante, per scena (dribbling, assist, tiro controllato, testa).
+- **Gol dell'eroe: RETTIFICA dopo la misura nello stesso istante (sonda v7, `Conti-fuori-v7.md`).**
+  Alla riga «Conti segna… 3-2» / «5-2» il pallone reso sta a **99,15** (sulla linea) e a +0,5 s a
+  **100,6** (in rete), fase `hl_result`, e le cifre dell'HUD nel DOM dicono già 3-2 / 5-2. Quello che
+  nei fotogrammi avevo letto come «pallone a metà area» (`galli-f14`, `conti-f52`) è il MARCATORE
+  D'ANTEPRIMA della scena successiva (pallina con la linea di traiettoria), aperta a catena subito
+  dopo il gol; l'HUD ancora a 2-2 nel fotogramma a +0,5 s (età 49 ms) è il compositor del banco che
+  dipinge il DOM con 0,3-0,5 s di ritardo a 2-8 fps. Il vero residuo che il player vede: la scena
+  seguente si apre con la sua anteprima sopra l'esultanza del gol. `vairo-f20` (assist «Filtrante tra i
+  centrali»): pallone sulla linea ai piedi del portiere — coerente col residuo dichiarato in 7.858.
 - **Le parole del tiro (7.856 confermata):** smentite 5/11 come le voleva il piano, 0/11 emesse.
 
 | # | Area | n°5 | **n°6** | motivo (fotogramma e minuto) |
@@ -1619,13 +1618,13 @@ Quello che i fotogrammi mostrano:
 | 4 Varietà | 5 | **5** | prima occasione al 10'-12' in 4/4 |
 | 5 Ritmo | 5 | **5** | ripresa 11'-15' fuori casa; due 1-0 in casa con pochi tiri |
 | 6 Azioni extra-eroe | 7 | **7** | tiro, tuffo, terra, rialzata |
-| 7 Highlight dell'eroe | 4 | **4** | `vairo-f20`, `galli-f14`, `conti-f52`: riga e HUD prima del pallone |
+| 7 Highlight dell'eroe | 4 | **5** | rigiudicata con la sonda v7: pallone alla linea alla riga 2/2; resta l'anteprima della scena a catena sopra l'esultanza (`conti-f52`) |
 | 8 Telecronaca | 6 | **6** | 0/11 smentite sul tiro; le righe del gol dell'eroe restano in anticipo |
 | 9 Interazioni | 7 | **7** | nessuna contro il punteggio |
-| 10 Coerenza fra i sistemi | 6 | **6** | HUD 0-0 col portiere a terra (`galli-f14`) |
+| 10 Coerenza fra i sistemi | 6 | **6** | HUD nel DOM coerente alla riga; sullo schermo del banco dipinto 0,3-0,5 s dopo |
 | 11 Immersione | 5 | **5** | 15-17 fps, età dei fotogrammi fino a 1,1 s |
 | 12 Carriera | 6 | **6** | barra viva |
 
-**Media DA TELEFONO: 5,7** (somma 68, come il n° 5). Otto aree sotto 7. Nessun «puoi collaudare».
-Prossimi: la discrepanza sonda/foto sul gol dell'eroe (misura nello stesso istante, per scena); la
-banda 60 del padrone (11-35 %); la prima occasione al 10'-12'.
+**Media DA TELEFONO: 5,8** (somma 69; n° 5 era 5,7). Otto aree sotto 7. Nessun «puoi collaudare».
+Prossimi: la scena a catena che apre la sua anteprima sopra l'esultanza; la banda 60 del padrone
+(11-35 %); la prima occasione al 10'-12'.
