@@ -4020,3 +4020,28 @@ con il pallone in quadro **14/14** e campo vuoto **0/16** (n° 7: 6/24). Nei fot
 testuale (47' cambio campo, 58' e 50' consegna del mister, 61' ripresa) si vede solo il pallone sul prato,
 come chiesto. Padrone ≤3u 23 / 24 % (n° 7: 25-44, metrica rumorosa), salti 45 / 55, fps 12 / 11 senza
 sonda. Career **PASS**, CI **exit 0** (manovra-viva 68, gol del simulatore 7/7).
+
+## 7.866 — la frase che nomina un luogo si sceglie dal pallone (classe b della geografia)
+
+Le 7 righe su 69 mai nella banda in 2,5 s (base 7.865) hanno due sorgenti scritte: l'apertura del piano
+avversario «riceve / imposta dal centrocampo» porta la coordinata dell'UOMO (avanzamento +3, misurato
+84,7), e la frase di ponte «muove il pallone verso la nostra trequarti» esce anche con la palla a 93,6.
+7.866: le due battute di centrocampo restano ammesse solo se la coordinata sta a 32-68 (altrimenti
+frasi senza luogo), la frase del ponte solo con la palla non oltre x 58. Rosso `__CPM_NO866`. Metro:
+righe con luogo mai nella banda (base 7/69), pallone nella banda a +1 s (49/69) — appaiato 4 verde + 4
+rosso (stesso banco, mondi diversi):
+
+| | righe con luogo | mai nella banda | alla riga | a +1 s |
+|---|---|---|---|---|
+| base 7.865 | 69 | 7 (10 %) | 40 (58 %) | 49 (71 %) |
+| rosso `__CPM_NO866` | 56 | 5 (9 %) | 31 (55 %) | 41 (73 %) |
+| **verde 7.866** | 70 | **2 (3 %)** | 42 (60 %) | **56 (80 %)** |
+
+Delle 2 «mai» del verde una è un errore della sonda (corner avversario letto col lato del nostro
+difensore nominato) e una è al bordo della banda (44,9 contro 42). Nel rosso ricompare «verso la nostra
+trequarti» con la palla a 62. Campioni piccoli e mondi diversi: lo dichiaro; il meccanismo è diretto
+(le due frasi non possono più uscire nel posto sbagliato). Fatto nuovo dal rosso: al 48' «palla sul
+cerchio, si ricomincia» col pallone RESO a 92-98 e il logico a 50 — dopo il gol il pallone reso resta
+in rete mentre la cronaca riparte dal centro. Con la 7.865 questo ora si vede: prossima misura.
+Rituali sulla 7.866.0: career **PASS**, CI **exit 0** (manovra-viva 67, gol del simulatore 6/6). Le altre «no» della base (parata a 83,6, «arriva sul pallone in area» a 63 → 81, corner
+in rimbalzo) sono il ritardo di arrivo (classe a), dichiarato e non toccato.

@@ -3582,7 +3582,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _nc=_cgO(_c.q.name);
           const _pxC=clamp(_avO(_c)+3,4,92),_pyC=clamp((_c.q.y||50)+_JO(6,5),8,92);
           const _pxA=clamp(_avO(_a)+3,4,94),_pyA=clamp((_a.q.y||50)+_JO(7,5),8,92);
-          const _c1=["⚙️ "+_nc+" riceve a centrocampo e alza la testa: la squadra sale in blocco.","🔁 "+_nc+" fa girare il pallone e detta i tempi: si guadagna campo senza fretta.","⚙️ "+_nc+" imposta dal centrocampo, la linea avversaria arretra di qualche metro."];
+          /* [7.866.0 — LA FRASE CHE NOMINA UN LUOGO SI SCEGLIE DAL PALLONE. Rosso __CPM_NO866] Misurato con la
+             sonda geo865 (4 partite, 69 righe con un luogo dichiarato): 7 righe col pallone MAI nella banda
+             promessa in 2,5 s, fra cui «riceve a centrocampo» con la palla a 84,7 — la coordinata di questa
+             battuta e' l'avanzamento dell'uomo, non il centrocampo. Le due frasi che nominano il centrocampo
+             restano ammesse solo se la coordinata sta a 32-68; altrimenti si parla senza luogo. */
+          const _c1all=["⚙️ "+_nc+" riceve a centrocampo e alza la testa: la squadra sale in blocco.","🔁 "+_nc+" fa girare il pallone e detta i tempi: si guadagna campo senza fretta.","⚙️ "+_nc+" imposta dal centrocampo, la linea avversaria arretra di qualche metro."];
+          const _c1=(!(typeof window!=='undefined'&&window.__CPM_NO866)&&!(_pxC>=32&&_pxC<=68))?[_c1all[1],"🔁 "+_nc+" tiene palla e aspetta il movimento giusto: la manovra respira.","⚙️ "+_nc+" alza la testa e cerca l'uomo libero: la squadra sale in blocco."]:_c1all;
           const _c2=["📈 "+_nc+" verticalizza per "+_na+", che riceve fronte alla porta.","➡️ "+_nc+" cambia lato per "+_na+": c'e' campo davanti.","🧭 Palla di "+_nc+" per "+_na+" fra le linee: la manovra si accende."];
           return[
             {t:_c1[_hpO("c1")%_c1.length],x:_XO(_pxC),y:_pyC,chi:_c.i},
@@ -4711,7 +4717,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(!(typeof window!=='undefined'&&window.__CPM_NO544)&&ponteRef.current&&!ponteRef.current.arrived&&!/goal$/.test(String(ev.ef||""))&&!_koHij536&&kickoffRef.current<=0&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!(ev&&ev._out818)/* [7.818 v4] */&&((typeof window!=='undefined'&&window.__CPM_NO839)||_recKind546!=="counter")/* [7.839 v3] la chiusura del contropiede azzera counterRef nello stesso tick: il ponte la sovrascriveva («Gli avversari guadagnano metri» al posto della risoluzione) */){
             {const _pv544=(recVarRef.current=(recVarRef.current+1)|0)%4;/* varieta': il guardiano bg-decision ha misurato l'accordo comprato con le ripetizioni (54,5%<55 di righe distinte) — 4 varianti per verso, scelte dal minuto */
             const _pp544=ponteRef.current.def
-              ?["⚠️ Gli avversari guadagnano metri: il nostro blocco si abbassa.","😤 {A} muove il pallone con pazienza verso la nostra trequarti.","🛑 {A} cambia lato e accelera: la nostra linea scala all'indietro.","📢 Il capitano richiama tutti dietro la linea della palla: {A} spinge."]
+              ?((!(typeof window!=='undefined'&&window.__CPM_NO866)&&((ballPosRef.current||{x:50}).x||50)>58)/* [7.866.0] con la palla oltre il centrocampo AVVERSARIO «verso la nostra trequarti» e' una bugia (misurato: palla a 93,6) */
+                ?["⚠️ Gli avversari guadagnano metri: il nostro blocco si abbassa.","😤 {A} muove il pallone con pazienza e cerca il varco.","🛑 {A} cambia lato e accelera: la nostra linea scala all'indietro.","📢 Il capitano richiama tutti dietro la linea della palla: {A} spinge."]
+                :["⚠️ Gli avversari guadagnano metri: il nostro blocco si abbassa.","😤 {A} muove il pallone con pazienza verso la nostra trequarti.","🛑 {A} cambia lato e accelera: la nostra linea scala all'indietro.","📢 Il capitano richiama tutti dietro la linea della palla: {A} spinge."])
               :["⚙️ La squadra accompagna l'azione: si sale verso l'area di {A}.","🏃 {H} detta i tempi: la manovra si sposta nell'ultimo terzo.","🧭 {H} e {H2} scambiano corto e guadagnano campo, metro dopo metro.","📈 Baricentro alto: {H} orchestra e la squadra lo segue in blocco."];
             ev={txt:_pp544[_pv544],ef:null,w:1,bpos:null,pd:_dec499};_recHij545=true;_recKind546="ponte";_recSide546=ponteRef.current.def?"away":"home";}}/* [7.532.0] pd=_dec499: la riga di scorta DESCRIVE il momento (palla ancora in viaggio), non la destinazione — con pd:"attack" fisso l'accordo bg-decision crollava (famiglia attack 0/4, esatto 59,4%<60) */
           /* [7.669.0 — LE INTERAZIONI DELL'EROE ENTRANO IN CRONACA (rosso __CPM_NO670).
