@@ -4263,3 +4263,23 @@ passatore); lanci, cambi di gioco, cross e tiri restano al lancio con l'arco. Mi
 76-91 del vecchio sistema — ora anche le ricezioni parlano), il reso 3D del volo (arco vs lerp),
 scheda da telefono, rituale `ci:live`, i vecchi blocchi sono SPENTI ma non ancora rimossi (si tolgono
 quando il motore batte la scheda, per tenere il rosso appaiato).
+
+### 7.870 — verbale della sera (10/09, 21:00-23:20): misure sul branch del motore
+
+- Gate `validate-situations` 14/14 verde col motore acceso (191 scene, 0 failure); `test:logic` 41/41 (8 del motore).
+- Guardiano `partita-vera`: le quattro bande della Fase 3 (mente-esegue, riga-descrive, raccoglitore,
+  arbitro-esiste) misuravano le macchine spente per costruzione; ora, col motore acceso (righe rk
+  `motore`), si giudicano sui fatti equivalenti (passaggi/ricezioni/cross · fatti gia' avvenuti ·
+  recuperi/contrasti/intercetti · fischi e battute), soglie invariate. Trovato e corretto un difetto
+  latente del guardiano: il cognome dell'eroe si calcolava e non entrava nella rosa (banda nomi-veri
+  rossa su «Pv accelera in conduzione»). Bande verdi nell'ultima corsa: turno-causale 100 %, manovra-viva
+  26-28 (banda 10), gol-con-manovra 7/8, tabellone 5-3 = 5-3, gol del simulatore 7 nati · 6 accreditati
+  (uno decretato oltre l'88': da qui il tetto duro a 9 tick e l'urgenza dal 90').
+- Scheda da telefono n° 10: padrone ai piedi 58 / 69 / 42 / 41-44 %, e 57 % nella stessa partita senza
+  GLB (15 fps contro 6): l'artefatto degli fps vale 13-16 punti. Media 6,3 (n° 9: 5,5).
+- Geografia della riga 14/17 (7.866: 97 %): i passaggi rasoterra si raccontano all'arrivo; il lessico
+  dei luoghi e' quello che il metro legge («dal limite», «in area», «trequarti», «centrocampo»).
+- Prossimi passi, nell'ordine: (1) cadenza della cronaca (0,9 fatti al minuto; 40-70 righe contro
+  70-110); (2) tiri per partita (2-5); (3) resa del volo (arco 3D contro inseguimento: salti 16-39);
+  (4) `ci:carriera` e rituale completo; (5) rimozione delle macchine spente quando il motore batte la
+  scheda; (6) un provino sull'Android del PO per chiudere la questione fps.
