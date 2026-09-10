@@ -4045,3 +4045,32 @@ cerchio, si ricomincia» col pallone RESO a 92-98 e il logico a 50 — dopo il g
 in rete mentre la cronaca riparte dal centro. Con la 7.865 questo ora si vede: prossima misura.
 Rituali sulla 7.866.0: career **PASS**, CI **exit 0** (manovra-viva 67, gol del simulatore 6/6). Le altre «no» della base (parata a 83,6, «arriva sul pallone in area» a 63 → 81, corner
 in rimbalzo) sono il ritardo di arrivo (classe a), dichiarato e non toccato.
+
+## 7.867 — quando nessuno scrive il pallone reso, insegue il logico (S1, il reso)
+
+Misura delle riprese dal centro sulla 7.866 (geo865 v2, 4 partite): 4/4 in banda alla riga; sommando la
+corsa rossa di prima, 8/9 (il caso fuori: pallone reso in rete a 92-98 per 2,5 s dopo un gol, logico a 50).
+La stessa corsa mostra la famiglia intera: «rinvio dal fondo per Toti» reso 84 e logico 92, corner reso
+80 e logico 95, «rinvio per Fontana» reso 20,7 e logico 7 — fuori da un piano il pallone reso resta dove
+l'ultimo scrittore l'ha lasciato (censimento del telefono: scrittore «nessuno» in 294 campioni). 7.867
+v2: fuori dalle scene, senza arco in volo e senza azione saliente, se il reso dista più di 12u dal logico
+lo insegue (95 % in 0,37 s, isteresi a 3u), e sempre durante la ripartenza recitata del calcio d'inizio
+(`kickoff` passato al renderer). Rosso `__CPM_NO867`. Metro: banco S1 `padroni` (Vairo, 400 s, ×3 verde
+e ×3 rosso): pallone reso ai piedi del padrone logico ≤3u e reso↔logico; poi geografia su 4 partite e
+telefono n° 8. In corsa.
+
+**7.867 REVOCATA (14:05).** Banco S1 (padroni, Vairo, 400 s, tre coppie verde/rosso `__CPM_NO867`):
+
+| | reso ai piedi del padrone logico ≤3u | reso vicino a chiunque ≤3u | logico ↔ padrone logico ≤3u |
+|---|---|---|---|
+| verde 7.867 | 29 / 35 / 34 % | 49 / 60 / 57 % | 27 / 29 / 25 % |
+| rosso | 45 / 48 / 41 % | 52 / 61 / 53 % | 24 / 25 / 27 % |
+
+Peggio in 3/3 sul metro dichiarato. Geografia su 4 partite invariata (mai nella banda 3/62, +1 s 79 %).
+Lettura: il pallone logico sta a più di 3u dal suo padrone nel 71-75 % dei campioni; inseguirlo toglie il
+reso dai piedi dell'uomo a cui il renderer l'aveva incollato e lo porta sull'erba vuota dove sta il
+logico. Il rimedio va sul logico (S1), non sul reso. Sorgente riportato alla 7.866 (blocco 7.807 intatto,
+`kickoff` non passato al renderer), commento di revoca nel codice.
+**Fatto da verificare subito:** il logico ≤3u dal padrone qui è 24-29 % in sei corse, contro 36 / 40 / 49
+misurati per la 7.863 (allora a richiesta `__CPM_SI860` sulla 7.861). Se la promozione della 7.863 non
+fosse attiva nel build, sarebbe una regressione silenziosa: controllo del codice e rimisura sul banco.

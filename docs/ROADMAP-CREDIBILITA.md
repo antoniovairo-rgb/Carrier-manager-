@@ -322,3 +322,11 @@ voto 8.» Da stanotte `main` viene allineato in fast-forward al branch alle 03:0
 l'HEAD ha career PASS e CI exit 0 verificati; mai force-push; ogni allineamento lascia una riga in
 FASE3-SCAMBIO.md. Il cancello del collaudo resta la media ≥ 8,0 della scheda da telefono (ultima: n° 7,
 5,8).
+
+**Aggiunta, 10/09 13:05 — la geografia della riga (7.865 + 7.866).** Il pallone è tornato in campo
+fuori dalle azioni salienti (campo vuoto 6/24 → 0/16 fotogrammi) e la sua posizione ha un metro:
+righe con un luogo dichiarato → pallone reso nella banda promessa. Base: alla riga 58 %, +1 s 71 %,
+mai nella banda 10 %. Con la 7.866 (le frasi col luogo scelte dal pallone vero): mai nella banda 3 %,
++1 s 80 %. Il resto del divario è il ritardo d'arrivo (la riga esce alla partenza, il pallone reso
+arriva 1-3 s dopo): dichiarato, è il moto del racconto. Fatto nuovo: alla ripresa dopo un gol il
+pallone reso può restare in rete (1/5): in misura.
