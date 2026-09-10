@@ -3898,3 +3898,8 @@ una partita per volta, 400 s, Vairo casa, tre ripetizioni identiche: ≤3u **19 
 6,3 / 5,3 / 6,5u, reso↔corpo del portatore ≤3u 24 / 24 / 27 %. Rumore ±3 punti, contro i ±10-20 del
 telefono. È il metro per S1: un rimedio deve portare la banda sopra il rumore in tre ripetizioni. La
 7.860 resta a richiesta (`__CPM_SI860`) e viene rimisurata qui.
+**7.860 sul banco S1 (06:05), tre ripetizioni con `__CPM_SI860`:** pallone logico ↔ portatore logico
+≤3u **21 / 25 / 22 %** contro **19 / 24 / 19** di base (+2, dentro il rumore); reso ↔ corpo del portatore
+≤3u **32 / 30 / 32 %** contro **24 / 24 / 27** (+6 in 3/3, sopra il rumore). Il passaggio sull'uomo
+avvicina il pallone RESO al corpo, non il pallone LOGICO al padrone: il metro dichiarato non lo batte.
+Resta a richiesta (`__CPM_SI860`, non spedito). Il fatto nuovo è il banco: tre ripetizioni a ±3.
