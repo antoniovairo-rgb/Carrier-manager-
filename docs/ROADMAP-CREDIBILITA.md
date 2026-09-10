@@ -267,3 +267,10 @@ la prima occasione al 10'-12'. Telefono n° 6 da fare sulla 7.858.
 sui gol del piano regge (3 fotogrammi freschi in 3 partite); le frasi del tiro 5/11 → 0/11. Il gol
 dell'eroe: la sonda dice 7/8 col pallone alla linea, i fotogrammi 1/4 — discrepanza aperta, da
 misurare nello stesso istante per scena (dribbling, assist, tiro controllato, testa).
+
+**Censimento, 10/09 04:35 — la prima occasione.** In 15 corse su 15 (telefono n° 4, 5, 6, quattro
+eroi, seme di banco 4242 ma seme del microsim diverso per eroe) l'occasione si apre al 6'-7' e il
+primo tiro esce al 10'-12'. Non è il seme: il cancello (r.~3900, `_advO695 ≥ 48` e soglia di
+minaccia `_thr714 ≥ 58`) si raggiunge sempre a 6'-7' dal via, perché la minaccia parte da zero al
+fischio e cresce allo stesso passo in ogni partita. Da misurare: la curva di `_thr714` nei primi 15'
+e quanto varia con l'avversario; poi decidere se è il passo o la partenza a dover cambiare. Aperto.
