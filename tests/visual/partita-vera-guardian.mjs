@@ -58,7 +58,8 @@ const libRows = rows.filter(r => r.lib === 1);
 const occRows = rows.filter(r => r.rk === 'manovra-gol');/* [7.841 strumento] le battute del piano (occasione a cinque battute 7.829 / costruzione del gol 7.649): sono manovra raccontata da una macchina, come la catena e la libreria */
 const motRows = rows.filter(r => r.rk === 'motore' && /^(passaggio|cross|conduzione|tiro)$/.test(String(r.mk || '')));/* [7.870] le righe del narratore sui FATTI del motore del possesso: passaggi, cross, conduzioni e tiri sono manovra per costruzione */
 const manovraRows = rows.filter(r => r.rk === 'catena' || r.lib === 1 || r.rk === 'manovra-gol' || (r.rk === 'motore' && /^(passaggio|cross|conduzione|tiro)$/.test(String(r.mk || ''))));/* [7.841 strumento — LA BANDA CONTA TUTTE LE MACCHINE CHE RACCONTANO UNA MANOVRA] Misurato il 09/09 nello stesso mondo: 0c956f9 → catena 1 + libreria 16; 69640c1 (7.836 v2) → catena 2 + libreria 4; build 7.840 con __CPM_NO836 → libreria 10. La 7.836 v2 (il turno segue il possesso) da' piu' finestre alle OCCASIONI (7.695/7.829) e la libreria perde i suoi slot: e' una sostituzione, come quella del 7.683 letta nel 7.684 — non una perdita. Le battute del piano contano qui; la banda (5 a partita) NON cambia. Prova del rosso: CPM_ROSSO=__CPM_NO836 riporta la libreria su. */
-const fischi = turni.filter(t => /^interruzione-/.test(t.causa || '')).length;
+const motoreOn = rows.some(r => r.rk === 'motore');/* [7.870] col motore del possesso acceso le quattro bande della Fase 3 (mente/riga-fatto/raccoglitore/interruzioni da riga) si giudicano sui FATTI EQUIVALENTI del motore: le vecchie macchine sono spente per costruzione, la soglia non cambia */
+const fischi = turni.filter(t => /^interruzione-/.test(t.causa || '') || /^motore-(fallo|rigore|rimessa|corner|rinvio)/.test(t.causa || '')).length;
 const orologio = (T.per && T.per['orologio']) | 0; const totT = T.n | 0;
 const causali = totT ? Math.round((totT - orologio) / totT * 100) : null;
 const npds = NPD.slice().sort((a, c) => a - c);
@@ -67,9 +68,9 @@ let golCoperti = 0;
 for (const g of goals) { const lato = g.side === 'home' ? 1 : -1;
   if (rows.some(r => r.rk && r.min != null && r.min >= g.min - 4 && r.min <= g.min && (r.tn | 0) === lato)) golCoperti++; }
 
-const mEseg = MENTE.reduce((a, w) => a + ((w.p && w.p.eseguiti) | 0), 0);
-const mRacc = MENTE.reduce((a, w) => a + ((w.r && w.r.eletti) | 0), 0);
-const fattoRows = rows.filter(r => r.rk === 'fatto739');
+const mEseg = motoreOn ? rows.filter(r => r.rk === 'motore' && /^(passaggio|ricezione|cross)$/.test(String(r.mk || ''))).length : MENTE.reduce((a, w) => a + ((w.p && w.p.eseguiti) | 0), 0);
+const mRacc = motoreOn ? rows.filter(r => r.rk === 'motore' && /^(recupero|contrasto|intercetto|spazzata|presa)$/.test(String(r.mk || ''))).length : MENTE.reduce((a, w) => a + ((w.r && w.r.eletti) | 0), 0);
+const fattoRows = motoreOn ? rows.filter(r => r.rk === 'motore' && /^(ricezione|controllo|contrasto|intercetto|recupero|parata|murato|palo|fuori|spazzata|presa|conduzione)$/.test(String(r.mk || ''))) : rows.filter(r => r.rk === 'fatto739');
 /* [7.755.0] OGNI RIGA-FATTO NOMINA UOMINI VERI (§12: la telecronaca non inventa il calcio). Si estraggono le parole con
    l'iniziale maiuscola dal testo e si chiede che almeno due appartengano alla rosa (passatore e ricevente); l'eroe non
    sta in __CPM_MP ma il suo cognome si accetta se compare in una riga-fatto di un passaggio verso di lui — per non
@@ -116,9 +117,9 @@ const checks = [
      margine largo sotto il misurato: eseguiti 4-8 a partita (banda: >=1 per partita sul totale), righe-fatto 4-8 (>=1 per
      partita), raccoglitori eletti 8-16 (>=2 per partita). Prova del rosso: CPM_ROSSO=__CPM_NO738 spegne la mente e la banda
      «mente-esegue» va rossa (e con lei «riga-descrive», che vive del fatto). */
-  ['mente-esegue', `${mEseg} passaggi eseguiti dalla mente su ${PARTITE_G} partite · banda ${PARTITE_G}`, mEseg >= PARTITE_G],
-  ['riga-descrive', `${fattoRows.length} righe-fatto (rk fatto739) su ${PARTITE_G} partite · banda ${PARTITE_G}`, fattoRows.length >= PARTITE_G],
-  ['raccoglitore', `${mRacc} raccoglitori eletti su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, mRacc >= 2 * PARTITE_G],
+  ['mente-esegue', `${mEseg} passaggi eseguiti ${motoreOn ? 'dal motore (righe passaggio/ricezione/cross)' : 'dalla mente'} su ${PARTITE_G} partite · banda ${PARTITE_G}`, mEseg >= PARTITE_G],
+  ['riga-descrive', `${fattoRows.length} righe-fatto (${motoreOn ? 'fatti del motore gia\' avvenuti' : 'rk fatto739'}) su ${PARTITE_G} partite · banda ${PARTITE_G}`, fattoRows.length >= PARTITE_G],
+  ['raccoglitore', `${mRacc} ${motoreOn ? 'recuperi/contrasti/intercetti del motore' : 'raccoglitori eletti'} su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, mRacc >= 2 * PARTITE_G],
   ['esiti-registrati', `${esiti.length} esiti di scena nel libro mastro su ${PARTITE_G} partite · banda ${2 * PARTITE_G}`, esiti.length >= 2 * PARTITE_G],
   ['tabellone', `gol raccontati ${_golH}-${_golA} · punteggio finale ${_scH}-${_scA} su ${SCORE.length} partite`, SCORE.length === PARTITE_G ? (_golH === _scH && _golA === _scA) : null],
   ['gol-del-simulatore', (() => { const n = GOL785.reduce((x, g) => x + ((g.nato | 0)), 0), m = GOL785.reduce((x, g) => x + ((g.mangiato | 0)), 0), a = GOL785.reduce((x, g) => x + ((g.accreditato_casa | 0) + (g.accreditato_ospite | 0)), 0); return `${n} gol del microsim nati · ${a} accreditati · ${m} mangiati prima del tabellone`; })(), GOL785.length === PARTITE_G ? GOL785.reduce((x, g) => x + ((g.mangiato | 0)), 0) === 0 : null],
