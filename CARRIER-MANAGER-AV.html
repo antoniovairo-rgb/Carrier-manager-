@@ -23269,6 +23269,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // (salta hl_intro, cinematico). Replica la transizione reale: mm===0 (e non lock) → hl_choose, altrimenti hl_move.
     window.__CPM_SITCTX=()=>{try{const s=situationsRef.current[hlIdxRef.current];return s?{ctx:s.ctx||null,tactic:s.tactic||null,text:String(s.text||'').slice(0,24)}:null;}catch(e){return {err:String(e)};}};/* [7.775 strumentazione test-only] il contesto DICHIARATO della scena corrente: serve a capire perche' il supporto arriva a zero al costruttore */
     window.__CPM_PPOS=()=>pPosRef.current;/* [7.399.0 codice 002] sonda test-only: lo stato LOGICO vivo dell'eroe, senza passare dai props del renderer (che possono essere stantii — ed e' esattamente cio' che si sta misurando) */
+    window.__CPM_HERO_NAME=()=>{try{return _surnBG(player.name||"")||String(player.name||"").trim().split(/\s+/).pop()||"";}catch(_e){return "";}};/* [7.870] il cognome dell'eroe come lo scrive la cronaca ({P}): serve al guardiano nomi-veri */
     window.__CPM_NARR669=()=>narrRef669.current;/* [7.720.0] sonda test-only: lo stato narrativo delle interazioni (marcatura, intesa, coinv...) — serve al banco ombra-720 per pilotare la marcatura senza aspettare la pesca delle schede. Ritorna il ref vivo: il banco lo puo' mutare, il gioco non lo legge mai da qui. */
     /* [7.580.0] LO STATO DI TRATTENUTA DEL PALLONE, per le sonde. Dal 7.559 il gioco ha le interruzioni:
        durante una rimessa, un angolo o un rinvio il pallone STA FERMO, ed e' giusto che stia fermo — e'
