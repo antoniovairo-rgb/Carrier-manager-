@@ -292,3 +292,9 @@ gira una volta per minuto e la trama non agganciava mai un uomo (0 agganci su 4 
 passaggi in 61'): il pallone ambientale andava su erba vuota per costruzione. 7.861: la giocata
 sceglie l'uomo. Banco S1 (tre ripetizioni): agganci 0 → 100 %, passaggi 0 → 7-8, pallone reso ai piedi
 del padrone 24-27 → 32-48 %, logico 19-24 → 18-38 %. In rituali; telefono n° 7 a seguire.
+
+**Aggiunta, 10/09 08:30 — S1 secondo rimedio, e il pallone.** 7.863 (il passaggio segue il ricevente,
+già 7.860 revocata sul telefono): sul banco S1 il pallone logico ai piedi del padrone passa da
+18-38 % (cinque ripetizioni, media 28) a 36-49 % (tre, media 42). Non è ancora la banda 60. Nota PO
+07:45 «il pallone è troppo piccolo»: misurato 5,9 px di diametro alla mediana su 915 (91 % sotto 7),
+7.862 mette un minimo di 11 px in campo largo (foto: 12 px contro 8). Da confermare sul suo Android.

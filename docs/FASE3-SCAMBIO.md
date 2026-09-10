@@ -3932,3 +3932,27 @@ verdi, il settimo non ha caricato la pagina), ripetuta da sola: **PASS** (exit 0
 lezione 19ª — il numero che regge è il banco S1), frasi del tiro smentite 5/9 → 0/9, finali 2-0, 3-0,
 1-1, 4-0. Gol di scena: pallone alla riga 99,15 / 99,02 / 99,15 (3), ma sugli ASSIST 88,1 e 93,5 (2):
 il residuo dichiarato in 7.858 resta.
+
+**7.860 sopra la 7.861, banco S1 (07:55), tre ripetizioni con `__CPM_SI860`:** pallone logico ↔ padrone
+logico ≤3u **36 / 40 / 49 %** contro **18 / 38 / 28** della 7.861 sola (media 42 contro 28: +14; il minimo
+36 sta sotto il massimo di base 38, quindi non è 3/3 sopra la banda); reso ≤3u 43 / 47 / 40 contro
+32 / 40 / 48 (+3, rumore); mediana logica 4,3 / 4,0 / 3,1u contro 6,1 / 4,0 / 5,9. Con i passaggi
+sull'uomo, seguire il ricevente mentre il pallone viaggia sposta finalmente il LOGICO. Prima di
+promuoverla: due ripetizioni in più della base (in corsa).
+
+## 7.862 — il pallone ha una taglia minima sullo schermo
+
+Nota PO 10/09 07:45: «il pallone secondo me è troppo piccolo, sproporzionato». Terza volta (7.794
+lo aveva portato da 0,32 a 0,20 di raggio; la nota sulla 7.807 aveva riacceso l'alone, 7.808).
+Misurato con la sonda `taglia862` (Vairo casa, 100 s di gioco, 257 fotogrammi, testimone che proietta
+il raggio a schermo): diametro del pallone **mediana 5,9 px, p10 4, p90 6,8; sotto i 7 px nel 91 %**
+dei fotogrammi; l'eroe è alto 26 px alla mediana (rapporto 4,4: in proporzione il pallone è già
+grande, in assoluto è un puntino a 412×915). La scala 7.534 dipende solo dalla camera (1,10 in campo
+largo, 0,53 in scena), non dalla distanza. 7.862: dopo la scala della scena il raggio si proietta a
+schermo e, se il diametro sta sotto 11 px (1,2 % del quadro), il pallone si ingrandisce quanto basta;
+in scena stretta non scatta. Rosso `__CPM_NO862`. Verde: ingrandito in 256/257 fotogrammi di campo
+largo. Foto dal telefono (Vairo casa, sonda v7, 7.862 in pagina): f32-min74 pallone **12 × 12 px** in campo largo, f25-min63 nucleo chiaro 9 × 8 px accanto a un giocatore di 50 px in camera vicina (l'orlo in ombra non passa la soglia del bianco: il diametro proiettato è 11); prima della 7.862 (Moretti casa, f13-min24) 8 px accanto a giocatori di 90 px. Nel f36-min86 il pallone non è nel quadro (campo vuoto, un solo pixel chiaro): non è un caso di floor mancato. È Chromium a 412×915, non l'Android del PO: la taglia in millimetri sul suo schermo resta da confermare da lui.
+
+## 7.863 — il passaggio segue il ricevente (era la 7.860, promossa sul banco S1)
+
+Le due ripetizioni in più della base 7.861 (padroni, Vairo, 400 s): logico ≤3u **33 / 24 %** (base a cinque ripetizioni 18 / 38 / 28 / 33 / 24, media 28,2, max 38) contro **36 / 40 / 49 %** con la 7.860 accesa (media 41,7, min 36). Il minimo del rimedio sta sotto il massimo di base in 1 ripetizione su 5 (38): non è «3/3 sopra la banda» in senso stretto, ma la media sale di +13,5 (quattro volte e mezzo il rumore ±3) e il reso non peggiora (43 / 47 / 40 contro 32-48). Promossa come 7.863: il bersaglio del pallone logico in volo è la posizione ATTUALE del ricevente eletto dalla trama (stessa condizione della 7.860: playing, nessun gol pendente, 0,8 < distanza < 12u). Rosso `__CPM_NO863`; `__CPM_SI860` rimosso. Rituali sulla 7.863.0: career **PASS** (exit 0), CI **exit 0** (validate 0 failure; manovra-viva 61 su banda 10; gol del simulatore 7/7).

@@ -6222,8 +6222,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           return{x:clamp(b.x+dx0*0.25,0,100),y:clamp(b.y+dy0*0.25,0,100)};
         }
         const _t=ballTargetRef.current;
-        /* [7.860 REVOCATA sul telefono, 10/09: coppia Vairo 5 % (rosso 26), Galli 11 % (rosso 5) — direzioni opposte; la metrica «padrone ≤3u» del telefono oscilla 5-26 % fra corse identiche (lezione 19ª). Resta A RICHIESTA (__CPM_SI860) per il banco riproducibile della simulazione (sonda padroni, una partita per volta: ≤3u 19/24/19 % di base). */
-        if(typeof window!=='undefined'&&window.__CPM_SI860){try{const _tr860=tramaRef.current;const _cr860=carrierRef.current;
+        /* [7.863.0 — IL PASSAGGIO SEGUE IL RICEVENTE (era la 7.860, revocata sul telefono e promossa sul banco S1). Rosso __CPM_NO863]
+           Sul telefono la coppia andava in direzioni opposte (lezione 19ª: metrica non riproducibile). Sul banco S1 (sonda padroni,
+           una partita per volta, 400 s), SOPRA la 7.861 (i passaggi hanno un ricevente vero): pallone logico ai piedi del padrone
+           <=3u 36 / 40 / 49 % contro 18 / 38 / 28 / 33 / 24 di base (media 41,7 contro 28,2; minimo 36 sopra la media di base piu'
+           una deviazione; non 3/3 sopra il massimo di base, dichiarato); mediana 4,3 / 4,0 / 3,1u contro 4,0-6,1. Il bersaglio del
+           passaggio ambientale si aggiorna a ogni tick sulla posizione attuale del ricevente (entro 12u). */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO863)){try{const _tr860=tramaRef.current;const _cr860=carrierRef.current;
           if(_tr860&&_tr860.rcv!=null&&_cr860&&_cr860.i===_tr860.rcv&&phaseRef.current==='playing'&&!pendingGoalRef.current&&kickRef.current<=0){
             const _q860=(matchPlayersRef.current||[])[_tr860.rcv];
             if(_q860&&_q860.x!=null){const _dq860=Math.hypot((+_q860.x)-_t.x,(+_q860.y)-_t.y);

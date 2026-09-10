@@ -3135,6 +3135,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         ctFlash.position.x=ball.position.x;ctFlash.position.z=ball.position.z;ctFlash.scale.setScalar(1+(1-_cf)*2.8);ctFlash.material.opacity=_cf*0.60;
         if(contactFlashT>0.20)contactFlashT=-1;}
       else{ball.scale.setScalar(_bBase534);ctFlash.material.opacity=0;}
+      /* [7.862.0 — IL PALLONE HA UNA TAGLIA MINIMA SULLO SCHERMO. Rosso __CPM_NO862] Nota PO 10/09: «il pallone
+         secondo me e' troppo piccolo, sproporzionato» (terza volta: 7.794 lo aveva portato da 0,32 a 0,20 di
+         raggio, la 7.807 aveva riacceso l'alone). Misurato con la sonda «taglia862»: 5,9 px di diametro alla mediana sul
+         telefono in campo largo — a 412×915 e' un puntino. La scala 7.534 dipende solo dalla camera
+         (1,10 in campo largo, 0,53 in scena), non da quanto e' LONTANO il pallone: quando la camera e' a
+         60-80u il pallone scende sotto i 7 px mentre un uomo resta a 30-40. Qui, dopo la scala della
+         scena, si proietta il raggio a schermo e, se il diametro sta sotto la taglia minima (11 px su
+         915 di altezza, cioe' 1,2 % del quadro), il pallone si ingrandisce quanto basta. In scena stretta
+         non scatta mai (il pallone e' gia' grande); non tocca il pallone logico ne' l'arco. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO862)){try{const _T=sr.current._tg862||(sr.current._tg862={a:new THREE.Vector3(),b:new THREE.Vector3(),n:0,px:[],hpx:[],up:0});
+        const _r0=(typeof window!=='undefined'&&window.__CPM_NO794)?0.32:0.20;const _hh=(renderer&&renderer.domElement&&renderer.domElement.clientHeight)||H||915;
+        _T.a.copy(ball.position).project(camera);_T.b.set(ball.position.x,ball.position.y+_r0*ball.scale.y*2,ball.position.z).project(camera);
+        const _px=Math.abs(_T.b.y-_T.a.y)/2*_hh;/* diametro in pixel */
+        if(typeof window!=='undefined'&&window.__CPM_REC){_T.n++;if(_T.px.length<3000)_T.px.push(+_px.toFixed(1));if(hero&&(_T.n%5===0)){_T.a.set(hero.position.x,hero.position.y,hero.position.z).project(camera);_T.b.set(hero.position.x,hero.position.y+1.75,hero.position.z).project(camera);if(_T.hpx.length<3000)_T.hpx.push(+(Math.abs(_T.b.y-_T.a.y)/2*_hh).toFixed(1));}window.__CPM_TAGLIA862=_T;}
+        const _MIN=11;if(_px>0.5&&_px<_MIN&&_T.a.z<1){ball.scale.multiplyScalar(_MIN/_px);_T.up++;}
+      }catch(_e862){}}
       /* [7.794.0] IL ROSSO RIDA' AL PALLONE ANCHE LA SUA VECCHIA LEVITAZIONE. La quota di terra e' un
          letterale in una ventina di formule (vedi la nota in testa al file: le guardie analitiche la
          controllano alla lettera), quindi il rosso non puo' passare di li' senza rompere lo specchio.
