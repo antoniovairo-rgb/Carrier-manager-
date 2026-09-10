@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 04  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 04  (dei 21, numerati da 00 a 20)
  * src/04-situazioni-zone-piazzati.jsx
  *
  * SITUATIONS · ZONE · PIAZZATI · TELECRONACA

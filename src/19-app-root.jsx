@@ -1,6 +1,6 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 18  (dei 20, numerati da 00 a 19)
- * src/18-app-root.jsx
+ * KORWARD ELITE — frammento n° 19  (dei 21, numerati da 00 a 20)
+ * src/19-app-root.jsx
  *
  * APP ROOT · STRUMENTI DI REVISIONE · IMPOSTAZIONI · MOUNT
  *

@@ -56,7 +56,8 @@ const catRows = rows.filter(r => r.rk === 'catena');
 /* [7.684.0] LE RIGHE CHE RACCONTANO UNA MANOVRA, da qualunque sistema vengano. */
 const libRows = rows.filter(r => r.lib === 1);
 const occRows = rows.filter(r => r.rk === 'manovra-gol');/* [7.841 strumento] le battute del piano (occasione a cinque battute 7.829 / costruzione del gol 7.649): sono manovra raccontata da una macchina, come la catena e la libreria */
-const manovraRows = rows.filter(r => r.rk === 'catena' || r.lib === 1 || r.rk === 'manovra-gol');/* [7.841 strumento — LA BANDA CONTA TUTTE LE MACCHINE CHE RACCONTANO UNA MANOVRA] Misurato il 09/09 nello stesso mondo: 0c956f9 → catena 1 + libreria 16; 69640c1 (7.836 v2) → catena 2 + libreria 4; build 7.840 con __CPM_NO836 → libreria 10. La 7.836 v2 (il turno segue il possesso) da' piu' finestre alle OCCASIONI (7.695/7.829) e la libreria perde i suoi slot: e' una sostituzione, come quella del 7.683 letta nel 7.684 — non una perdita. Le battute del piano contano qui; la banda (5 a partita) NON cambia. Prova del rosso: CPM_ROSSO=__CPM_NO836 riporta la libreria su. */
+const motRows = rows.filter(r => r.rk === 'motore' && /^(passaggio|cross|conduzione|tiro)$/.test(String(r.mk || '')));/* [7.870] le righe del narratore sui FATTI del motore del possesso: passaggi, cross, conduzioni e tiri sono manovra per costruzione */
+const manovraRows = rows.filter(r => r.rk === 'catena' || r.lib === 1 || r.rk === 'manovra-gol' || (r.rk === 'motore' && /^(passaggio|cross|conduzione|tiro)$/.test(String(r.mk || ''))));/* [7.841 strumento — LA BANDA CONTA TUTTE LE MACCHINE CHE RACCONTANO UNA MANOVRA] Misurato il 09/09 nello stesso mondo: 0c956f9 → catena 1 + libreria 16; 69640c1 (7.836 v2) → catena 2 + libreria 4; build 7.840 con __CPM_NO836 → libreria 10. La 7.836 v2 (il turno segue il possesso) da' piu' finestre alle OCCASIONI (7.695/7.829) e la libreria perde i suoi slot: e' una sostituzione, come quella del 7.683 letta nel 7.684 — non una perdita. Le battute del piano contano qui; la banda (5 a partita) NON cambia. Prova del rosso: CPM_ROSSO=__CPM_NO836 riporta la libreria su. */
 const fischi = turni.filter(t => /^interruzione-/.test(t.causa || '')).length;
 const orologio = (T.per && T.per['orologio']) | 0; const totT = T.n | 0;
 const causali = totT ? Math.round((totT - orologio) / totT * 100) : null;
@@ -107,7 +108,7 @@ const checks = [
      catena resta stampato: se un giorno la libreria si spegne senza che nessuno se ne accorga, quel
      numero lo dice. Il campione resta raddoppiato per il motivo dell'altra nota: su una partita sola
      questo conteggio oscillava di tre righe con la soglia a cinque. */
-  ['manovra-viva', `${manovraRows.length} righe di manovra su ${PARTITE_G} partite (catena ${catRows.length} + libreria ${libRows.length} + battute di piano ${occRows.length}) · banda ${5 * PARTITE_G}`, manovraRows.length >= 5 * PARTITE_G],
+  ['manovra-viva', `${manovraRows.length} righe di manovra su ${PARTITE_G} partite (motore ${motRows.length} + catena ${catRows.length} + libreria ${libRows.length} + battute di piano ${occRows.length}) · banda ${5 * PARTITE_G}`, manovraRows.length >= 5 * PARTITE_G],
   ['arbitro-esiste', `${fischi} interruzioni ambientali`, fischi >= 6],
   ['custodia', `mediana ${npdMed}u su ${npds.length} campioni (ogni tick vivo)`, npds.length >= 6 ? npdMed <= 12 : null],
   ['gol-con-manovra', `${golCoperti}/${goals.length} gol con riga di macchina nei 4' prima`, goals.length >= 3 ? golCoperti >= 1 : null],

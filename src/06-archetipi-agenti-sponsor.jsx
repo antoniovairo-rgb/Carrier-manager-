@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 06  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 06  (dei 21, numerati da 00 a 20)
  * src/06-archetipi-agenti-sponsor.jsx
  *
  * ARCHETIPI · ALLENAMENTO · PROCURATORE · SPONSOR

@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 09  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 09  (dei 21, numerati da 00 a 20)
  * src/09-audio-scout-anagrafiche.jsx
  *
  * AUDIO · SCOUTING · ANAGRAFICHE · CALENDARIO

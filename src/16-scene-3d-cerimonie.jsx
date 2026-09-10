@@ -1,6 +1,6 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 15  (dei 20, numerati da 00 a 19)
- * src/15-scene-3d-cerimonie.jsx
+ * KORWARD ELITE — frammento n° 16  (dei 21, numerati da 00 a 20)
+ * src/16-scene-3d-cerimonie.jsx
  *
  * SCENE 3D · CERIMONIE · FINE STAGIONE
  *

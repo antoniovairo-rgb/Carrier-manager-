@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 08  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 08  (dei 21, numerati da 00 a 20)
  * src/08-panchina-derby-meteo-cori.jsx
  *
  * ALLENATORI · DERBY · METEO · CORI · SLOT · SAFELS

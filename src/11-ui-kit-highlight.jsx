@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 11  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 11  (dei 21, numerati da 00 a 20)
  * src/11-ui-kit-highlight.jsx
  *
  * UI KIT · COSTANTI HIGHLIGHT 3D · BUFFER DI PARTITA

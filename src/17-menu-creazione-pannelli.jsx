@@ -1,6 +1,6 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 16  (dei 20, numerati da 00 a 19)
- * src/16-menu-creazione-pannelli.jsx
+ * KORWARD ELITE — frammento n° 17  (dei 21, numerati da 00 a 20)
+ * src/17-menu-creazione-pannelli.jsx
  *
  * MENU · CREAZIONE · PROVINO · NAZIONALE · TUTORIAL · ALLENAMENTO
  *

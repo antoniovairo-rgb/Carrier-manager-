@@ -1,6 +1,6 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 14  (dei 20, numerati da 00 a 19)
- * src/14-live-match.jsx
+ * KORWARD ELITE — frammento n° 15  (dei 21, numerati da 00 a 20)
+ * src/15-live-match.jsx
  *
  * LiveMatch — IL MOTORE DELLA PARTITA
  *
@@ -1602,6 +1602,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const pendingBtRef=useRef(null);/* [7.643.0] la proposta di bersaglio in coda: parte quando la consegna corrente si completa */
   const ballLagRef=useRef(false);/* [7.642.0 v5 — IL BERSAGLIO ASPETTA LA PALLA] misurato in v4: la palla e' entro 2,5u di un uomo solo 3 tick su 36 — le marce delle macchine avanzano il bersaglio anche con la palla lontana e il viaggio non si completa mai. Con la palla a >6u dal bersaglio, le quattro marce (gol-in-costruzione, contropiede, catena, trama) NON avanzano quel tick: prima si arriva, poi si riparte. */
   const carrierRef=useRef(null);
+  const motoreRef=useRef(null),golMotoreRef=useRef(null),quotaMotoreRef=useRef([]);/* [7.870] IL MOTORE DEL POSSESSO (src/14-motore-possesso.jsx): unico scrittore del pallone e dei ventidue nel gioco vivo */
   const chaserRef850=useRef(null);/* [7.850 v3] chi INSEGUE il pallone secondo la simulazione (`_cI553` del blocco del movimento): il renderer lo disegna sul suo punto logico come il portatore */
   const lastGoalChiRef814=useRef(null);/* [7.814.0 — H del playtest n°4] chi ha fatto l'ultima battuta del piano del gol: e' lui il marcatore, non un nome a caso dalla rosa *//* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
      il portatore persistente {i} (indice in matchPlayers) scritto SOLO agli EVENTI — passaggio della
@@ -1690,6 +1691,82 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const pendingGoalRef=useRef(null);/* [7.528.0 IL GOL SI COSTRUISCE] {ev,dir,ticks}: il gol del microsim aspetta che la palla arrivi nell'ultimo terzo *//* [7.525.0] tick al CALCIO D'INIZIO dopo un gol ambientale: col pallone che ora vola DENTRO lo specchio (bpos 98/2), senza ripresa dal centro restava parcheggiato in rete dove l'unico uomo e' il portiere (non-portatore per regola) — ball-attended misurato 45,8% < 52 al primo giro */
   const direttoreRef=useRef({f:null,l:0,dal:0});/* [7.647.0 F1a] la scena narrativa corrente {f,l,dal}: il direttore di partita della roadmap narrativa */
   const golCoda645=useRef([]);/* [7.645.0] LA CODA DEI GOL SOVRAPPOSTI: il microsim e' un budget, le costruzioni escono una alla volta */
+  /* [7.870 — IL NARRATORE] Le frasi nascono dai FATTI del motore: nomi veri, luogo vero, esito vero.
+     Sceglie l'evento piu' importante del tick e decide se dirlo (gli eventi minori aspettano il respiro
+     della cronaca). Restituisce una riga nello stesso formato di BG_MATCH, cosi' il resto del flusso
+     (nomi, arco 3D, registro, tabellino, momentum) non cambia. */
+  const narra870=(eventi,st,nx,ctx)=>{try{
+    if(!eventi||!eventi.length)return null;
+    const _cap=(n)=>{const t=String(n||"").trim();return t?t.charAt(0)+t.slice(1).toLowerCase():"";};
+    const _sig=(lato)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO809)return "";const c=(lato==='home')?_heroSideClub:opponent;const ab=(c&&c.a)||(c&&c.id?String(c.id).slice(0,3).toUpperCase():"");return ab?" ("+ab+")":"";}catch(_e){return "";}};
+    const _club=(l)=>{try{const c=(l==='home')?_heroSideClub:opponent;return (c&&(c.n||c.name))||(l==='home'?"i nostri":"gli avversari");}catch(_e){return l==='home'?"i nostri":"gli avversari";}};
+    const _nm=(c)=>{if(!c)return "un giocatore";if(c.eroe)return "{P}";if(c.gk)return c.team==='home'?"{GKH}":"{GKA}";return (_cap(c.nome)||"un compagno")+_sig(c.team);};
+    const _raw=(c)=>c?(c.eroe?(_surnBG(player.name||"")||String(player.name||"").split(/\s+/).pop()||""):String(c.nome||"")):null;
+    const _adv=(x,l)=>l==='home'?x:100-x;
+    const _dove=(pt,l)=>{if(!pt)return "";const a=_adv(pt.x,l);const largo=Math.abs(pt.y-50)>=24;if(a>=84&&Math.abs(pt.y-50)<=22)return "in area";if(a>=70)return largo?"sul vertice dell'area":"al limite dell'area";if(a>=56)return largo?"sulla fascia, nella trequarti":"sulla trequarti";if(a>=34)return largo?"sulla fascia a centrocampo":"a centrocampo";return "nella propria meta' campo";};
+    const _h=(k)=>Math.abs(hashStr("n870|"+nx+"|"+k+"|"+_sm819()));
+    const _pk=(arr,k)=>arr[_h(k)%arr.length];
+    const PRIO={gol:10,rigore:9,tiro:8,parata:8,palo:8,murato:7,fuori:6,fallo:6,cross:6,contrasto:5,intercetto:5,spazzata:5,presa:5,corner:4,rimessa:4,rinvio:4,battuta:4,centro:4,calcio_inizio:3,recupero:3,palla_persa:3,passaggio:3,conduzione:2,ricezione:1};
+    /* [7.870 geografia] il passaggio rasoterra si racconta ALL'ARRIVO (il pallone e' gia' li'): al lancio parlano solo lanci, cambi di gioco e palloni usciti, che hanno l'arco */
+    let best=null,bp=-1;for(const e of eventi){let pr=PRIO[e.t]!=null?PRIO[e.t]:1;if(e.t==='passaggio')pr=(e.fuori||e.kind==='lancio'||e.kind==='cambio')?4:0;if(e.t==='ricezione')pr=(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross')?3:1;if(pr>bp){bp=pr;best=e;}}
+    if(!best||bp<=0)return null;
+    const cool=(ctx&&ctx.cool)|0;
+    if(bp<5&&cool>0)return null;
+    if(bp<=2&&(_h("dice")%100)>=60)return null;
+    const e=best;const l=e.lato||st.poss.lato;const nostro=(l==='home');const arc=st.arco||null;
+    let txt="",at=null,ms=null,ef=null,bpos=null,poss=0;
+    const to=(e.to||(arc&&arc.to)||null);const from=(e.from||(arc&&arc.from)||null);
+    if(e.t==='passaggio'){const da=_nm(e.da),a=_nm(e.a),d=_dove(to,l);at="pass";
+      if(e.fuori)txt=_pk(["😬 Lancio di "+da+" troppo lungo: pallone fuori, rimessa laterale.","↔️ "+da+" allarga troppo per "+a+": la palla esce sulla fascia."],"p");
+      else if(e.kind==='corto')txt=_pk(["⚙️ "+da+" appoggia su "+a+" "+d+".","🔁 Giro palla: "+da+" per "+a+", "+d+".","⚪ "+da+" e "+a+" scambiano corto "+d+"."],"p");
+      else if(e.kind==='verticale')txt=_pk(["📈 "+da+" verticalizza per "+a+": la manovra sale "+d+".","➡️ "+da+" trova "+a+" fra le linee, "+d+".","⚙️ "+da+" appoggia in avanti per "+a+", "+d+"."],"p");
+      else if(e.kind==='filtrante')txt=_pk(["🎯 Filtrante di "+da+": "+a+" attacca lo spazio "+d+"!","⚡ "+da+" la mette in profondita' per "+a+"!"],"p");
+      else if(e.kind==='cambio')txt=_pk(["↔️ "+da+" cambia gioco: la palla vola dall'altra parte per "+a+".","🧭 Apertura di "+da+" a scavalcare il campo: la riceve "+a+" "+d+"."],"p");
+      else if(e.kind==='lancio')txt=_pk(["🚀 Lancio lungo di "+da+" per "+a+", "+d+".","🎯 "+da+" alza la testa e pesca "+a+" "+d+"."],"p");
+      else txt=_pk(["↩️ "+da+" scarica all'indietro su "+a+": si ricomincia con calma.","🔙 "+da+" torna su "+a+" per far respirare la manovra."],"p");}
+    else if(e.t==='cross'){const da=_nm(e.da),a=_nm(e.a);at="cross";txt=e.corner?_pk(["⚪ "+da+" batte l'angolo: pallone teso in mezzo, mischia in area!","🚩 Dalla bandierina "+da+" mette in area: "+a+" attacca il pallone!"],"c"):_pk(["↗ Cross di "+da+" dalla fascia: "+a+" attacca il primo palo!","🎯 Traversone teso di "+da+" in area: "+a+" stacca!"],"c");}
+    else if(e.t==='conduzione'){const c=_nm(e.chi);txt=_pk(["🏃 "+c+" porta palla e guadagna metri "+_dove(to,l)+".","➡️ "+c+" avanza palla al piede: la linea avversaria arretra.","💨 "+c+" accelera in conduzione "+_dove(to,l)+"."],"k");}
+    else if(e.t==='tiro'){const c=_nm(e.chi);at="shot";ms=nostro?{shots:1}:{oppShots:1};
+      if(e.intent==='header')txt=_pk(["💥 Incornata di "+c+"!","💥 "+c+" stacca di testa e colpisce!"],"t");
+      else if(e.intent==='penalty')txt=_pk(["😶 "+c+" dal dischetto: rincorsa e tiro…","😶 "+c+" calcia il rigore!"],"t");
+      else if(e.intent==='freekick')txt=_pk(["🎯 Punizione di "+c+": calcia forte sopra la barriera!","🎯 "+c+" batte la punizione a giro!"],"t");
+      else if(e.zona==='area')txt=_pk(["💥 "+c+" calcia da due passi!","💥 "+c+" a tu per tu col portiere, conclude di prima!","💥 "+c+" da dentro l'area, tutto solo davanti alla porta!"],"t");
+      else if(e.zona==='limite')txt=_pk(["💥 Conclusione secca di "+c+" dal limite!","💥 "+c+" si gira e lascia partire il destro dal vertice!","💥 "+c+" calcia dal limite dell'area!"],"t");
+      else txt=_pk(["💥 "+c+" prova la bordata da fuori!","💥 "+c+" ci prova da lontanissimo!","💥 "+c+" non ci pensa due volte: tiro da lontano!"],"t");}
+    else if(e.t==='gol'){const c=_nm(e.chi);const as=e.assist?(" su assist di "+_nm(e.assist)):"";ef=nostro?"team_goal":"opp_goal";at="shot";ms=nostro?{shots:1}:{oppShots:1};bpos={x:nostro?98:2,y:50};
+      txt=nostro?_pk(["⚽ GOOOL! "+c+" insacca"+as+" e fa esplodere lo stadio!","⚽ GOL! "+c+" la mette dentro"+as+"!","⚽ RETE! "+c+" non sbaglia"+as+"!"],"g"):_pk(["😱 Gol subito: "+c+" batte il nostro portiere"+as+".","😨 Rete di "+c+": la difesa non ha chiuso in tempo.","😞 "+c+" segna"+as+": gol degli avversari."],"g");}
+    else if(e.t==='parata'){const gk=_nm(e.gk),c=_nm(e.chi);at="save";txt=e.corner?_pk(["🧤 "+gk+" ci arriva in tuffo e devia in angolo: che parata!","🧤 "+gk+" respinge coi pugni sul tiro di "+c+": corner."],"s"):_pk(["🧤 "+gk+" ci arriva in tuffo e respinge!","🧤 Presa sicura di "+gk+": blocca a terra il tiro di "+c+".","🧤 "+gk+" si distende e para!"],"s");}
+    else if(e.t==='palo'){txt=_pk(["🔩 PALO! Il tiro di "+_nm(e.chi)+" si stampa sul legno!","🔩 TRAVERSA! "+_nm(e.chi)+" a un soffio dal gol!"],"l");ms=nostro?{shots:1}:{oppShots:1};}
+    else if(e.t==='murato'){txt=_pk(["🛡️ "+_nm(e.chi)+" mura la conclusione di "+_nm(e.su)+"!","🛡️ Muro di "+_nm(e.chi)+": il tiro di "+_nm(e.su)+" non passa."],"m");at="tackle";}
+    else if(e.t==='fuori'){txt=e.chi?_pk(["💨 "+_nm(e.chi)+" calcia alto: rinvio dal fondo.","💨 Tiro di "+_nm(e.chi)+" a lato: niente da fare."],"f"):_pk(["⏸️ Pallone fuori: rimessa laterale.","⏸️ La palla esce sulla fascia."],"f");}
+    else if(e.t==='contrasto'){const w=_nm(e.chi),su=_nm(e.su);at="tackle";txt=e.fuori?_pk(["⚔️ "+w+" e "+su+" a contatto sulla fascia: la palla esce, rimessa laterale."],"x"):_pk(["🛡️ "+w+" ruba palla a "+su+" "+_dove(e,l)+"!","⚔️ Contrasto vinto da "+w+" su "+su+": cambia il possesso.","🛡️ "+w+" chiude in scivolata su "+su+" e riparte."],"x");}
+    else if(e.t==='intercetto'){txt=_pk(["✋ "+_nm(e.chi)+" legge il passaggio di "+_nm(e.da)+" e intercetta!","✋ Intercetto di "+_nm(e.chi)+": la palla cambia squadra."],"i");at="tackle";}
+    else if(e.t==='recupero'){txt=_pk(["🔄 "+_nm(e.chi)+" raccoglie il pallone vagante "+_dove(e,l)+".","🔄 Palla recuperata da "+_nm(e.chi)+"."],"r");}
+    else if(e.t==='palla_persa'){txt=_pk(["😬 "+_nm(e.chi)+" perde il controllo: palla vagante.","😬 Controllo sbagliato di "+_nm(e.chi)+"."],"pp");}
+    else if(e.t==='fallo'){const c=_nm(e.chi),su=_nm(e.su);ms={fouls:1};txt=_pk(["🟡 Fischia l'arbitro: fallo di "+c+" su "+su+", punizione "+_dove(e,e.per||l)+".","🟡 "+c+" stende "+su+": punizione per "+_club(e.per||l)+"."],"fl");}
+    else if(e.t==='rigore'){const c=_nm(e.chi),su=_nm(e.su);ms={fouls:1};txt=_pk(["📢 RIGORE! Fallo di "+c+" su "+su+" in piena area: l'arbitro indica il dischetto.","📢 RIGORE per "+_club(e.per||l)+": "+su+" atterrato in area da "+c+"!"],"rg");}
+    else if(e.t==='rimessa'){txt=_pk(["⏸️ Palla sul fondo della fascia: rimessa laterale per "+_club(e.per||l)+".","↔️ Rimessa laterale per "+_club(e.per||l)+"."],"rm");}
+    else if(e.t==='corner'){ms={corners:1};txt=_pk(["🚩 Angolo per "+_club(e.per||l)+": la difesa ha spazzato oltre la linea.","🚩 Calcio d'angolo per "+_club(e.per||l)+"."],"cr");}
+    else if(e.t==='rinvio'){txt=_pk(["🦶 Rinvio dal fondo per "+_club(e.per||l)+".","🧤 Palla sul fondo: rinvio per "+_club(e.per||l)+"."],"rv");}
+    else if(e.t==='battuta'){const c=_nm(e.chi);txt=e.kind==='throw'?_pk(["↩️ Rimessa in gioco: "+c+" riparte dalla linea laterale.","↩️ "+c+" rimette in gioco."],"b"):e.kind==='goal_kick'?_pk(["🦶 Rinvio lungo di "+c+": si torna a giocare.","🦶 "+c+" rinvia dal fondo."],"b"):e.kind==='corner'?_pk(["⚪ "+c+" si incarica dell'angolo: palla sistemata al vertice.","⚪ "+c+" sulla bandierina."],"b"):e.kind==='pen'?_pk(["😶 "+c+" sul dischetto. Lo stadio trattiene il fiato…"],"b"):_pk(["⚪ Punizione battuta da "+c+": il gioco riprende.","⚪ "+c+" batte la punizione."],"b");}
+    else if(e.t==='centro'){txt=_pk(["🔁 La palla torna al centro: si riparte dal calcio d'inizio.","⭕ Tutto fermo un istante: palla sul cerchio, si ricomincia."],"ce");}
+    else if(e.t==='calcio_inizio'){txt=_pk(["⚪ "+_club(e.lato||l)+" rimette in gioco dal centro.","⚪ Riparte "+_club(e.lato||l)+" dal calcio d'inizio."],"ci");}
+    else if(e.t==='spazzata'){txt=_pk(["🛡️ Testa di "+_nm(e.chi)+": spazzata lunga fuori area.","🛡️ "+_nm(e.chi)+" libera l'area di testa."],"sp");at="tackle";}
+    else if(e.t==='ricezione'){const c=_nm(e.chi);const d=_dove(e.chi,l);
+      if(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross'){const da=_nm(e.da);
+        if(e.kind==='corto')txt=_pk(["⚙️ "+da+" appoggia su "+c+", che riceve "+d+".","🔁 Giro palla: "+da+" per "+c+", "+d+".","⚪ "+da+" e "+c+" scambiano corto "+d+"."],"rc");
+        else if(e.kind==='verticale')txt=_pk(["📈 "+da+" verticalizza per "+c+": la manovra sale "+d+".","➡️ "+da+" trova "+c+" fra le linee, "+d+".","⚙️ "+da+" appoggia in avanti per "+c+", "+d+"."],"rc");
+        else if(e.kind==='filtrante')txt=_pk(["🎯 Filtrante di "+da+": "+c+" la raccoglie "+d+"!","⚡ "+da+" la mette in profondita': "+c+" ci arriva "+d+"!"],"rc");
+        else txt=_pk(["↩️ "+da+" scarica all'indietro su "+c+": si ricomincia con calma "+d+".","🔙 "+da+" torna su "+c+", "+d+", per far respirare la manovra."],"rc");}
+      else txt=_pk(["🎯 "+c+" riceve e controlla "+d+".","⚙️ "+c+" si sistema il pallone "+d+" e alza la testa.","🔎 "+c+" addomestica il pallone "+d+": cerca l'uomo libero."],"rc");}
+    else if(e.t==='presa'){txt=_pk(["🧤 "+_nm(e.gk)+" esce e fa sua la palla alta.","🧤 Uscita sicura di "+_nm(e.gk)+"."],"pr");at="save";}
+    else return null;
+    if(!txt)return null;
+    const chiN=e.chi||e.da||e.gk||null;const aN=e.a||e.su||null;
+    return{txt,ef,w:1,bpos:bpos||(to?{x:to.x,y:to.y}:null),at,ms,tn617:null,poss:0,
+      _motore870:{lato:l,kind:e.t,kindP:e.kind||e.intent||null,prio:bp,from:from?{x:+from.x.toFixed(1),y:+from.y.toFixed(1)}:null,to:to?{x:+to.x.toFixed(1),y:+to.y.toFixed(1)}:null,imp:bp>=6},
+      _az551:(chiN||aN)?{da:_raw(chiN)||"",a:_raw(aN)||""}:null};
+  }catch(_e870){return null;}};
   /* [7.485.0 direttiva PO «la cronaca deve rispecchiare ed essere sincronizzata con i movimenti sul campo»]
      PAUSA MINIMA FRA DUE RIGHE DI CRONACA. Ogni riga DICHIARA dove va il pallone (`bpos`) e come si
      dispone la squadra (`pd`): testo e movimento nascono dalla stessa sorgente, quindi la desincronia non
@@ -1938,6 +2015,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       setCrowdChant(null);
       setSubEvent(null);
       ballTargetRef.current=ballPosRef.current; // congela target durante highlight/ended
+      if(motoreRef.current){try{motoreRef.current.chiedi.scena();}catch(_e870){}}/* [7.870] la scena e' dell'highlight: il motore aspetta */
     }
     // [6.76.0 LMV-L5] a FINE PARTITA muoiono anche i timer fx pendenti (floatGoal/cronaca/celeb-fallback
     //   schedulati nell'ultimo HL): prima facevano setState sopra la schermata finale (float/cinema fantasma).
@@ -2756,7 +2834,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                dice «passa» a un compagno entro 30u, la palla PARTE verso i suoi piedi e lui e' il portatore
                (7.641) — la stessa meccanica del passo di catena, senza aspettare una riga. «Conduci», «tira»
                e i lanci lunghi non toccano niente. Testimone __CPM_PASSA738{pronti,eseguiti,lungo,conduci,tira}. */
-            if(!(typeof window!=='undefined'&&window.__CPM_NO738)&&_ms712.turn!==0&&!outRef.current&&!fermoRef.current&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!ponteRef.current&&kickoffRef.current<=0&&(kickRef.current|0)<=0&&phaseRef.current==='playing'){try{
+            if(!(typeof window!=='undefined'&&window.__CPM_NO738)&&(typeof window!=='undefined'&&!!window.__CPM_NO870)/* [7.870] la mente del portatore e' del motore: questa macchina vive solo col motore spento */&&_ms712.turn!==0&&!outRef.current&&!fermoRef.current&&!pendingGoalRef.current&&!counterRef.current&&!spRef.current&&!ponteRef.current&&kickoffRef.current<=0&&(kickRef.current|0)<=0&&phaseRef.current==='playing'){try{
               const _c8=carrierRef.current;const _pl8=matchPlayersRef.current||[];const _b8=ballPosRef.current||{x:50,y:50};
               const _side8=_ms712.turn>0?"home":"away";
               const _w8=(typeof window!=='undefined'&&window.__CPM_REC)?(window.__CPM_PASSA738=window.__CPM_PASSA738||{tick:0,eletti:0,pronti:0,eseguiti:0,lungo:0,conduci:0,tira:0}):null;if(_w8)_w8.tick++;
@@ -2908,6 +2986,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const iv=setInterval(()=>{
       // Sprint 34 — tactic moments + sub events (checked via clockRef, outside setClock)
       const ck=clockRef.current;
+      const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);/* [7.870] rosso appaiato: __CPM_NO870 rimette in moto le vecchie macchine narrative e il vecchio mover */
       /* [7.494.0 F0 — CHIUDE IL BORDO NON MISURATO DEL 7.489] Il 7.489 ha reso la cronaca funzione pura di
          (seed di partita, minuto) dentro il callback di `setClock`, dove vive `_rndM`. Ma i rami che girano
          QUI SOPRA — sostituzione (65-70') e highlight dinamici (60' e 72') — sono fuori da quella closure e
@@ -3290,6 +3369,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!(typeof window!=='undefined'&&window.__CPM_NO842)){counterRef.current=null;counterArmRef.current=null;bgCoolRef.current=Math.max(bgCoolRef.current|0,3);}/* [7.842 v3: pausa 3 tick — con 2 la riga ordinaria usciva al 46', «Vallone sfiora il pari» sul calcio d'inizio della ripresa] [7.842 v2] playtest n°20: Conti 44' contropiede → 45' fischio → 46'-47' volo e chiusura; Vairo 45' «De Santis sfiora il pari» dopo il fischio. Il fischio spegne il contropiede e mette in pausa il dado per due tick. */
           addCom("⏸️ Duplice fischio: squadre negli spogliatoi.","#93c5fd",45);
           addCoach(_htD77>0?"⏸️ «Siamo in vantaggio — testa dritta nel secondo!»":_htD77<0?"⏸️ «Reagiamo nel secondo tempo — ci crediamo!»":"⏸️ «Tutto ancora aperto — il gol cambia tutto.»",45);/* [7.532.0 NO540] l'evento resta in telecronaca, il DISCORSO e' del mister */
+          if(motoreRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO870)){try{motoreRef.current.chiedi.riprendi({centro:true,lato:(isMatchHome?"away":"home")});}catch(_e870){}}/* [7.870] secondo tempo: calcio d'inizio nel motore */
           if(!(typeof window!=='undefined'&&window.__CPM_NO536)){kickRef.current=3;ripT0Ref.current=Date.now();/* [7.590.0] anche il duplice fischio e' una ripresa */kickoffSideRef.current=(isMatchHome?"away":"home");if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(isMatchHome?-1:1,"secondo-tempo");if(!(typeof window!=='undefined'&&window.__CPM_NO732))addCom("↔️ Le squadre si scambiano il campo: nella ripresa si attacca sotto l'altra curva.","#93c5fd",45);/* [7.732.0] la riga dice cio' che lo stadio mostra: le curve si scambiano dietro le porte */}/* [7.532.0 collaudo PO «a fine primo tempo, il secondo non riparte da centrocampo»] IL SECONDO TEMPO HA IL SUO CALCIO D'INIZIO: stessa macchina della ripartenza (conto → palla al centro → 2 battute recitate); convenzione: il secondo lo batte l'altra squadra */
           if(!_inHL77)chantFor("half",2000);
           setMomentum(m=>clamp(Math.round(m+(50-m)*0.5+_htD77*5),0,100));
@@ -3801,6 +3881,53 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           else if(!_simEv77&&!_rip575&&golAttesa575.current){_simEv77=golAttesa575.current;golAttesa575.current=null;}
           if(!(typeof window!=='undefined'&&window.__CPM_NO645)&&!_simEv77&&!_rip575&&!pendingGoalRef.current&&golCoda645.current.length){_simEv77=golCoda645.current.shift();if(nx<90)_simEv77={..._simEv77,_cap645:7};/* [7.645 v2] la costruzione del gol accodato ha un tetto DIMEZZATO (7): meta' saturazione, stessa regola d'area */if(nx>=90){_simEv77={..._simEv77,_diretto645:true};if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_REC645=window.__CPM_REC645||{coda:0,codaMax:0,dir:0,rec:0,forza92:0});_w.dir++;}catch(_e){}}}}/* [7.645.0] il gol in coda entra quando il campo e' libero e si costruisce come gli altri; nel RECUPERO entra diretto (copia marcata: il template BG_MATCH e' condiviso, non si muta) perche' il recupero e' bordato */
         }
+        /* ⚠️ [7.870.0 — PRIMA LA SIMULAZIONE, POI LE PAROLE. Rosso __CPM_NO870] Carta bianca del PO (10/09):
+           il gioco ambientale nasceva dal testo (riga pescata → pallone e ventidue trascinati), con 29
+           scrittori del pallone e tredici macchine narrative in concorrenza. Da qui il motore del possesso
+           (src/14-motore-possesso.jsx) e' l'unico che muove pallone e ventidue nel gioco vivo: decide,
+           emette FATTI, e il narratore (narra870) li racconta. Il microsim resta la fonte del punteggio:
+           il gol decretato diventa una RICHIESTA al motore, che costruisce l'azione fino alla rete. */
+        let _evM870=[],_stM870=null,_narr870=null;
+        if(MOTORE870&&!_inHL77){try{
+          if(!motoreRef.current){
+            const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
+            motoreRef.current=creaMotorePossesso({seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr},forza:{home:_heroP,away:oppPrestige||65},lato:kickoffSideRef.current||"home"});
+            try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}}
+          const _M=motoreRef.current;
+          _M.chiedi.eroe(!onBenchRef.current&&!subbedOffRef.current);
+          const _st0=_M.stato();
+          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:possTurnRef.current>0?"home":"away",gioc:matchPlayersRef.current||[],eroe:pPosRef.current,centro:((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
+          /* il gol del microsim diventa una richiesta: il motore lo costruisce */
+          if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
+          if(pendingGoalRef.current&&pendingGoalRef.current.motore870)pendingGoalRef.current.ticks++;
+          /* il ponte verso la scena: due minuti prima il gioco si sposta dove l'highlight nascera' */
+          {const _nt=(hlTimesRef.current||[])[hlIdx];if(_nt!=null&&nx>=_nt-2&&nx<_nt&&ponteIdxRef.current!==hlIdx){ponteIdxRef.current=hlIdx;const _s=situations[hlIdx];if(_s){try{const _spb=hlBallSpot(_s,(pPosRef.current&&pPosRef.current.x)||60,(pPosRef.current&&pPosRef.current.y)||50);_M.chiedi.verso({x:_spb.x,y:_spb.y,lato:_s.type==="def"?"away":"home"});if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_s.type==="def"?-1:1,"ponte-scena");}catch(_e){}}}}
+          /* la quota di possesso della simulazione e' una richiesta di turno, mai un ordine sul pallone */
+          if(nx%3===0&&!golMotoreRef.current){const _q=quotaMotoreRef.current;if(_q.length>=6){const _qh=Math.round(100*_q.reduce((a2,b2)=>a2+b2,0)/_q.length);const _p=clamp(possessionRef.current|0,20,80);const _want=(_qh<_p-12)?"home":(_qh>_p+12)?"away":null;if(_want)_M.chiedi.turno(_want);}}
+          /* [7.849 nel motore] l'atteggiamento: chi e' sotto o pari dal 70' assalta, chi e' avanti di due dal 60' amministra */
+          {const _sc=scoreRef.current||{home:0,away:0};const _d=(_sc.home|0)-(_sc.away|0);const _attDi=(dd)=>(nx>=70&&dd<=0)?1:(nx>=60&&dd>=2)?-0.6:(dd<0?0.4:0);_M.chiedi.atteggiamento("home",_attDi(_d));_M.chiedi.atteggiamento("away",_attDi(-_d));}
+          _evM870=_M.tick({min:nx});
+          _stM870=_M.stato();
+          {const _q=quotaMotoreRef.current;_q.push(_stM870.poss.lato==="home"?1:0);if(_q.length>16)_q.shift();}
+          const _dM=_stM870.poss.lato==="home"?1:-1;
+          if(_dM!==possTurnRef.current){const _c=_evM870.find(e2=>/contrasto|intercetto|recupero|rinvio|rimessa|fallo|corner|centro|calcio_inizio|spazzata|presa|parata/.test(e2.t));setTurn616(_dM,"motore-"+(_c?_c.t:"turno"));}
+          /* gli specchi: chi legge i vecchi ref trova lo stato del motore */
+          const _pM=_stM870.palla;ballPosRef.current={x:clamp(_pM.x,0,100),y:clamp(_pM.y,0,100)};
+          ballTargetRef.current=(_stM870.arco&&_stM870.arco.to)?{x:clamp(_stM870.arco.to.x,0,100),y:clamp(_stM870.arco.to.y,0,100)}:{x:clamp(_pM.x,0,100),y:clamp(_pM.y,0,100)};
+          carrierRef.current=(_stM870.poss.padrone!=null&&_stM870.poss.padrone<21)?{i:_stM870.poss.padrone}:null;holdArrRef.current=0;pendingBtRef.current=null;
+          chaserRef850.current=(_stM870.inseguitore!=null)?{i:_stM870.inseguitore}:null;
+          fermoRef.current=_stM870.fermo?{x:_stM870.fermo.x,y:_stM870.fermo.y,t:Math.max(1,(_stM870.fermo.tot|0)-(_stM870.fermo.t|0)),kind:_stM870.fermo.kind}:null;
+          outRef.current=null;spRef.current=null;counterRef.current=null;counterArmRef.current=null;azioneRef.current=null;
+          kickRef.current=_stM870.rete?Math.max(1,2-(_stM870.rete.t|0)):0;kickoffRef.current=_stM870.kickoff?1:0;
+          if((kickRef.current|0)>0||(kickoffRef.current|0)>0){if(!ripT0Ref.current)ripT0Ref.current=Date.now();}
+          {const _gc=_stM870.gioc;setMatchPlayers(prev=>{const _nx2=prev.map((pl,i2)=>{const q=_gc[i2];return (q&&pl&&pl.team!=="ref")?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=_nx2;return _nx2;});}
+          if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current)setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});
+          _narr870=narra870(_evM870,_stM870,nx,{cool:bgCoolRef.current|0});
+          if(_narr870&&_narr870.ef){/* il gol e' entrato: la riga porta l'evento del microsim (accredito, festa, ripresa) */const _g=golMotoreRef.current;if(_g&&_g.ev){_narr870.ms=_g.ev.ms||_narr870.ms;_narr870.w=_g.ev.w||1;}golMotoreRef.current=null;pendingGoalRef.current=null;}
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NARR870=window.__CPM_NARR870||{tick:0,eventi:0,righe:0,per:{}});_W.tick++;_W.eventi+=_evM870.length;if(_narr870){_W.righe++;_W.per[_narr870._motore870.kind]=(_W.per[_narr870._motore870.kind]|0)+1;}}catch(_e){}}
+        }catch(_e870){try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_ERR870=window.__CPM_ERR870||[]).push(String(_e870&&_e870.stack||_e870).slice(0,300));}catch(_e2){}}}
+        const _cat559=!(typeof window!=='undefined'&&window.__CPM_NO559);
+        if(!MOTORE870||_inHL77){
         if(!(typeof window!=='undefined'&&window.__CPM_NO532)){
           /* [7.695.0] L'OCCASIONE SI ARMA QUANDO IL CAMPO E' LIBERO E LA SQUADRA E' AVANTI: nessun'altra
              macchina in corso, pallone gia' oltre meta' campo nel verso di chi ha il turno, e non piu' di
@@ -4085,7 +4212,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            batte a minuti). Ora, mentre il gol e' in costruzione, la catena PARLA — e parla a ogni tick,
            senza cedere il turno al repertorio — cosi' la rete arriva in fondo alla sua azione invece che
            dopo un silenzio. Il contropiede resta escluso: ha gia' la sua recita. */
-        const _cat559=!(typeof window!=='undefined'&&window.__CPM_NO559);
         /* ⚠️ [7.588.0] PROVATO E REVOCATO CON LA SUA MISURA: durante la ripresa togliere ai ventidue lo
            scrittore della CATENA di gioco, per lasciare campo libero al ripiegamento (l'idea del padrone
            unico, 7.556). La misura dice il contrario — giocatori nella meta' sbagliata: mediana 5 -> 6,
@@ -4114,6 +4240,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               return{...pl,x:clamp(pl.x+_dir2*1.1,2,96)};}));
           }
         }
+        }/* [7.870] fine delle macchine narrative sotto il rosso */
         if(bgCoolRef.current>0)bgCoolRef.current--;
         const _pausa485=(typeof window!=='undefined'&&window.__CPM_NO485)?false:(bgCoolRef.current>0);/* prova del rosso: `__CPM_NO485` toglie il pavimento */
         /* [7.541.0] LA PAUSA D'ENFASI NON PUO' COPRIRE L'AZIONE DEL GOL. `bgCoolRef` vale 7 tick dopo
@@ -4239,7 +4366,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _forzaSp845=(!(typeof window!=='undefined'&&window.__CPM_NO845)&&!_inHL77&&((!!spRef.current&&kickoffRef.current<=0&&!pendingGoalRef.current)||(kickoffRef.current>0)));/* [7.845.0 — IL PIAZZATO E IL CALCIO D'INIZIO NON ASPETTANO IL DADO (RITMO, «fermo»). Rosso __CPM_NO845] Testimone schermo, Vairo n°23: punizione armata al 47', calcio d'inizio a 2, dado in pausa → sette minuti di gioco fermo senza una riga (tetto reale 30 s = 17 minuti di gioco). Stessa malattia del corner (7.818 v6) e del contropiede (7.839): la macchina promessa dal testo passa dal cancello senza il dado. */
         if(!(typeof window!=='undefined'&&window.__CPM_NO846)&&libAzRef666.current&&libAzRef666.current.auto&&libAzRef666.current.t0&&(Date.now()-libAzRef666.current.t0)>9000){if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_LIBMORTA846=(window.__CPM_LIBMORTA846|0)+1;}catch(_e){}}libAzRef666.current=null;}/* [7.846.0 — L'AZIONE DELLA LIBRERIA CHE HA PERSO I SUOI TIMER NON TIENE IL MICROFONO (RITMO). Rosso __CPM_NO846] Playtest n°25, Moretti 36'-44': nove minuti senza una riga con la libreria «in recita»: l'azione si era aperta a ridosso della scena del 32', i suoi timer (chantTimersRef) sono stati cancellati dal cambio di fase, l'indice non e' mai avanzato e la regola (a) del 7.833 ha taciuto il tick fino al duplice fischio. Un'azione vive 1,3 s x 5 righe: oltre 9 s reali e' morta e si chiude. */
         const _libRec833=(!(typeof window!=='undefined'&&window.__CPM_NO833)&&!!(libAzRef666.current&&libAzRef666.current.auto&&(libAzRef666.current.i|0)<(libAzRef666.current.righe||[]).length));
-        if(_simEv77||(_draw541&&!_inHL77&&!_pausa485&&!_libRec833)||_forza541||_forzaOut818||_forzaCt839||_forzaSp845||_annScena653||_forzaLib666||_forzaIntx669){if(_simEv77){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['entrato_nel_cancello_riga']=(_L['entrato_nel_cancello_riga']|0)+1;}}catch(_e785){}}/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
+        if((MOTORE870&&!_inHL77)?(!!_narr870||_forzaIntx669):(_simEv77||(_draw541&&!_inHL77&&!_pausa485&&!_libRec833)||_forza541||_forzaOut818||_forzaCt839||_forzaSp845||_annScena653||_forzaLib666||_forzaIntx669)){if(_simEv77){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['entrato_nel_cancello_riga']=(_L['entrato_nel_cancello_riga']|0)+1;}}catch(_e785){}}/* [7.528.0 v2] durante l'azione pendente le righe ESCONO e raccontano l'avanzata (la decisione F3b segue la palla che sale: sviluppo/pericolo emergono da soli — la prima stesura le sopprimeva e il guardiano bg-rhythm e' diventato CIECO: sviluppo 6 coppie, pericolo 2, contro 14/13 storici); a non muovere il pallone ci pensa il blocco _bt498 qui sotto */
           /* [7.490.0 direttiva PO §9 «eventi importanti: piu' enfasi e tempo di lettura»] LA PAUSA SI ARMA
              DOPO, E PESA L'EVENTO. Fino a qui era uniforme: un gol aveva lo stesso respiro di una rimessa
              laterale, e in un feed di testo il respiro E' l'enfasi — non c'e' altro modo di dire «questo
@@ -4365,13 +4492,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           }
           if(typeof window!=='undefined'&&window.__CPM_SPBOOST)eligible=eligible.map(e=>e.sp?{...e,w:e.w*30}:e);/* [7.530.0 SOLO COLLAUDO] gonfia le righe `sp` per testare le recite in volo senza aspettare la pesca: flag spento = mappa identica */
           if(_simEv77){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['scelto_come_riga']=(_L['scelto_come_riga']|0)+1;}}catch(_e785){}}
-          let ev=_simEv77||wPick(eligible.length>0?eligible:BG_MATCH.filter(e=>_noGoal77(e)&&(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!onBenchRef.current||!e.txt.includes("{P}"))),_rndM);
+          let ev;if(MOTORE870&&!_inHL77){ev=_narr870||{txt:"",ef:null,w:1,bpos:null,pd:_dec499,at:null,ms:null,_vuota870:1};if(ev.pd==null)ev.pd=_dec499;}else{
+          ev=_simEv77||wPick(eligible.length>0?eligible:BG_MATCH.filter(e=>_noGoal77(e)&&(!e.minClock||nx>=e.minClock)&&(!e.maxClock||nx<=e.maxClock)&&(!onBenchRef.current||!e.txt.includes("{P}"))),_rndM);
+          }
           /* [7.530.0 collaudo PO «Non si riparte dal centro dopo un gol!» — rosso __CPM_NO536] LA RIPARTENZA
              SI RECITA: durante la finestra kickoff la riga GIA' SORTEGGIATA (il sorteggio e' consumato: ordine
              intatto, lezione 7.511) viene dirottata su una battuta di calcio d'inizio con palla al centro.
              La riga pescata si scarta: niente sue statistiche/formazione in una fase in cui il gioco e' fermo.
              I gol del microsim restano esenti (come nel gol costruito 7.528). */
           var _koHij536=false;var _recHij545=false;var _recKind546=null,_recSide546=null;/* [7.533.0 MP-0a] la macchina che dirotta DICHIARA chi e' (kind) e per chi gioca (side): il lato non si indovina piu' a valle con una regex su ef *//* [7.532.0] riga DIROTTATA da una macchina questo tick: nel registro va marcata (rec:1) — le recite hanno pd=dec per costruzione e pool finiti: dentro le metriche gonfiavano l'accordo (88,6%) e affamavano la varieta' (54,3%<55) del repertorio PESCATO */
+          if(!MOTORE870||_inHL77){/* [7.870] i dirottatori delle righe: sotto il motore e' il narratore a parlare */
           if(kickoffRef.current>0&&!/goal$/.test(String(ev.ef||""))&&!(typeof window!=='undefined'&&window.__CPM_NO536)){
             const _ko536=kickoffRef.current;kickoffRef.current=_ko536-1;_koHij536=true;_recHij545=true;_recKind546="kickoff";_recSide546=kickoffSideRef.current;
             {const _rv536=(recVarRef.current=(recVarRef.current+1)|0);/* pool 4: il guardiano varieta' mette in fila PIU' partite e i pool da 2 si ripetevano fra match (54,5%<55) */
@@ -4739,6 +4869,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              non muovono niente in campo — raccontano quello che succede attorno al gioco. Percio' non
              possono mentire sul pallone, ed e' anche la ragione per cui posso spedirle mentre la
              libreria delle azioni resta ferma. */
+          }else if(ev&&ev._motore870){_recHij545=true;_recKind546="motore";_recSide546=ev._motore870.lato;}
           if(_intxK669&&((typeof window!=='undefined'&&window.__CPM_NO839)||_recKind546!=="counter")/* [7.839 v5] la scheda si sceglie prima dell'armamento del contropiede e ne sostituiva l'annuncio (Moretti 25' «Gol della squadra…» al posto di «Palla persa alta»): la scheda aspetta il tick dopo */){try{
             const _N=narrRef669.current;
             const _sc=scoreRef.current||{home:0,away:0};
@@ -4839,6 +4970,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              timer armati 4, scattati 1, cancellati 4, righe sopra la scelta 0. Al giocatore vero il clock
              si ferma e questo non accade. Il cancello resta come protezione a costo zero, senza
              vantarsi di numeri che non ha. */
+          if(!MOTORE870||_inHL77){
           if(!(typeof window!=='undefined'&&window.__CPM_NO683)&&typeof libCompose662==='function'&&!(_intxK669&&!(typeof window!=='undefined'&&window.__CPM_NO721L))){try{
             if(typeof window!=='undefined'&&window.__CPM_REC&&ev&&ev._beatTxt812){try{const _E=(window.__CPM_EMIT812=window.__CPM_EMIT812||{piano:0,cambiata:0,es:[]});_E.p2=(_E.p2|0)+1;}catch(_e){}}if(typeof window!=='undefined'&&window.__CPM_REC&&ev&&ev._out818){try{const _Q=(window.__CPM_J818E=window.__CPM_J818E||{p1:0,p2:0,p3:0,arc:0,dir:0});_Q.p2++;}catch(_e){}}/* [bisezione 812] la battuta e' ancora viva qui? */const _LR=libRegRef666.current;const _LA=libAzRef666.current;
             /* i NOMI: due segnaposto distinti, e i ruoli che compaiono INSIEME in uno stesso beat
@@ -5025,6 +5157,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               }
             }
           }catch(_e666){}}
+          }/* [7.870] fine libreria */
           /* [7.617.0 — SPRINT A3: LE RISOLUZIONI NARRATE PASSANO IL TURNO. Rosso __CPM_NO617]
              L'audit (punto D): le risoluzioni di contropiede e piazzati raccontano passaggi di possesso
              espliciti («il portiere fa sua la palla», «la difesa spazza», «{A} sciupa: rimessa dal
@@ -5148,7 +5281,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              dichiarava (25,5 · 51,0), spostata di 23,5u. E' l'origine dei `bpos` bugiardi che `gol-573`
              contava come «il pallone non entra mai».
              IL RIMEDIO E' UNA COPIA, e vale per ogni riga: il repertorio torna a essere una costante. */
-          var _bt498=(typeof window!=='undefined'&&window.__CPM_NO574)?(ev.bpos||null):(ev.bpos?{x:ev.bpos.x,y:ev.bpos.y}:null);
+          var _bt498=(MOTORE870&&!_inHL77)?null:((typeof window!=='undefined'&&window.__CPM_NO574)?(ev.bpos||null):(ev.bpos?{x:ev.bpos.x,y:ev.bpos.y}:null));/* [7.870] sotto il motore la riga non comanda il pallone: lo descrive */
           if(pendingGoalRef.current&&!/goal$/.test(String(ev.ef||""))&&!ev._piano649)_bt498=null;/* [7.649.0] la riga del piano MUOVE il pallone: la causa dello spostamento e' dichiarata nel testo *//* [7.528.0 v2] azione pendente: guida la pendenza (4u/tick verso l'area), la riga DESCRIVE senza strattonare il pallone altrove */
           /* [7.578.0 — UN PALLONE FERMO SI PIAZZA, NON SI PASSA, rosso __CPM_NO578]
              Il tetto di spostamento del 7.498 esiste per una ragione giusta: impedire che una riga di
@@ -5248,6 +5381,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _y=(window.__CPM_INTBLK559=window.__CPM_INTBLK559||{righe:0,out:0,fermo:0,sp:0,hij:0,ef:0,gol:0,counter:0,ko:0,kick:0,ok:0});
             _y.righe++;
             if(outRef.current)_y.out++;else if(fermoRef.current)_y.fermo++;else if(spRef.current)_y.sp++;else if(_recHij545)_y.hij++;else if(ev.ef)_y.ef++;else if(pendingGoalRef.current)_y.gol++;else if(counterRef.current)_y.counter++;else if(kickoffRef.current>0)_y.ko++;else if(kickRef.current>0)_y.kick++;else _y.ok++;}catch(_e){}}
+          if(!MOTORE870||_inHL77){
           if(!outRef.current&&!fermoRef.current&&!spRef.current&&!ev.ef&&!pendingGoalRef.current&&!counterRef.current&&kickoffRef.current<=0&&kickRef.current<=0
              &&!(typeof window!=='undefined'&&window.__CPM_NO559)){
             /* ⚠️ IL CANCELLO NON CHIEDE PIU' UNA RIGA LIBERA, ED E' LA CORREZIONE CHE IL CENSIMENTO HA
@@ -5302,6 +5436,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _f559=fermoRef.current;_bt498={x:_f559.x,y:_f559.y};
             _f559.t--;if(_f559.t<=0)fermoRef.current=null;}
           if(kickRef.current>0||kickoffRef.current>0)fermoRef.current=null;/* la ripartenza dal centro ha la precedenza */
+          }/* [7.870] fine interruzioni da riga */
           /* [7.579.0 — L'INVERSIONE DEL VERSO, IN PROVA: opt-in `__CPM_INV579`]
              MP-4/6 della roadmap, ed e' l'unico pezzo strutturale rimasto della missione «partita vera».
              Oggi la riga di cronaca COMANDA il pallone: `ballTargetRef = ev.bpos`. Per questo puo' mentire —
@@ -5532,7 +5667,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _az551=ev._az551||null;
             const _act511=_az551?String(_az551.da||"").trim():(String((_side546==="away"?aN:hN)||"").replace(/\s*\(.*$/,"")||null);
             setBgAction({type:_arcType,t:Date.now(),ballEnd:_end546,
-              from:{x:+(ballPosRef.current.x||50).toFixed(1),y:+(ballPosRef.current.y||50).toFixed(1)},
+              from:(ev._motore870&&ev._motore870.from)?ev._motore870.from:{x:+(ballPosRef.current.x||50).toFixed(1),y:+(ballPosRef.current.y||50).toFixed(1)},
               side:_side546,actor:_act511,rcv:_az551?String(_az551.a||"").trim():null,ef:ev.ef||null,pd:ev.pd||null,rete:ev._rete852?1:0});/* [7.854 misura] la battuta della rete si riconosce al lancio dell'arco */
           }
           if(typeof window!=='undefined'&&window.__CPM_TXT487!==undefined){try{const _t=(window.__CPM_TXT487=window.__CPM_TXT487||[]);if(_t.length<300)_t.push({m:nx,txt:evTxt,pd:ev.pd||null,ef:ev.ef||null});}catch(_e){}}
@@ -5541,7 +5676,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              che l'audit ha misurato — il testo che comanda il campo e il box-score — e serve poterlo
              contare prima di raddrizzarlo in F3. Registrato alla SORGENTE, non dal DOM (nota 7.487). */
           if(pendingGoalRef.current&&!(typeof window!=='undefined'&&window.__CPM_NO644)){try{const _pgL644=pendingGoalRef.current;const _ltN644=_pgL644.dir>0?"home":"away";if((_recHij545&&_recSide546===_ltN644)||(!_recHij545&&possTurnRef.current===_pgL644.dir))_pgL644.righeLato=(_pgL644.righeLato|0)+1;}catch(_e644){}}/* [7.644.0] LA RIGA CONTA PER LA RETE SOLO SE E' DEL LATO CHE SEGNA: macchina che dichiara il lato giusto, o repertorio emesso col turno del lato. FOTOGRAFATO (golback644b): `righe` contava righe di CHIUNQUE — costruzioni chiuse regolari (righe>=3) con ZERO racconto del lato che poi segnava. */
-          cpmEv("chronicle",{min:nx,lib:(ev._lib666?1:0),/* [7.684.0] la riga viene dalla LIBRERIA delle azioni salienti: senza questo campo il guardiano non poteva distinguere «la catena e' morta» da «la catena e' stata sostituita da un altro sistema che racconta la stessa cosa meglio» */dec:_dec499,fase:_fase501,tn:possTurnRef.current,rec:_recHij545?1:0,poss:(ev.poss||0),muta:(!ev.ef&&!ev.ms&&!ev.poss&&!ev.sp)?1:0,/* [7.554.0 MISSIONE — IL REGISTRO DICE TUTTO QUELLO CHE LA RIGA FA] Il registro portava esito, tabellino, palla ferma e zona, ma NON il possesso: due famiglie di verdetti della sonda `fatti-546` leggevano campi inesistenti e stampavano ZERO in silenzio a ogni passata, perche' una famiglia assente non fa rumore. Con 31 righe su 223 che spostano il possesso, oggi NESSUNA sonda puo' dire quante righe lo muovono. E `muta` dichiara in chiaro cio' che finora si deduceva per esclusione: la riga non afferma NIENTE — ne' un esito, ne' una statistica, ne' un possesso, ne' una palla ferma. Sono 107 su 223, e muovono comunque pallone, schieramento e gesto. Sola strumentazione: `cpmEv` non tocca stato ne' render. */pd:ev.pd||null,rk:_recKind546||null,/* [7.578.0] QUALE macchina ha scritto la riga (kickoff · out_* · sp_* · counter · catena · ponte). Senza, `rec:1` mette nello stesso mucchio il pallone fermo e il gioco aperto, che hanno regole opposte: il primo RICOLLOCA il pallone per natura, il secondo no. Una sonda che li somma non puo' dire se il tetto del 7.498 stia proteggendo o smentendo. */concorda:(ev.pd===_dec499),ef:ev.ef||null,bx:ev.bpos?ev.bpos.x:null,by:ev.bpos?ev.bpos.y:null,bex:_bt498?+_bt498.x.toFixed(1):null,bey:_bt498?+_bt498.y.toFixed(1):null,bax:+ballPosRef.current.x.toFixed(1),bay:+ballPosRef.current.y.toFixed(1),npd:(function(){try{const _b=ballPosRef.current;const _lt=(possTurnRef.current>0)?"home":"away";let _d=null;(matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_lt||q.gk)return;const _dd=Math.hypot((q.x||50)-_b.x,(q.y||50)-_b.y);if(_d==null||_dd<_d)_d=_dd;});return _d==null?null:+_d.toFixed(1);}catch(_e){return null;}})(),/* [7.624.0 strumentazione] CUSTODIA LOGICA alla riga: distanza del piu' vicino uomo del lato in possesso dalla palla logica. Serve il metro per il redesign A2: due metri a fotogrammi (POR526 e l'anello ws) sono stati SQUALIFICATI con lo studio di ripetibilita' (±10-15 punti fra run a codice identico — campionamento a orologio su renderer col jitter); questo campiona un EVENTO del tick logico, quasi-seedato. cpmEv e' inerte per costruzione. *//* [7.576.0 — IL REGISTRO SEPARA CIO' CHE LA RIGA DICE DA CIO' CHE IL MOTORE FA] Finora il registro portava solo `bx/by`, cioe' la destinazione PROPOSTA dalla riga. Ma fra la proposta e il pallone ci sono due passaggi: il FRENO del 7.498 (tetto 30u per riga, piu' il richiamo verso il corridoio del 7.528) puo' accorciare la proposta, e poi il motore del possesso puo' portare il pallone altrove. Con un solo numero le tre cose sono indistinguibili, e il giudice della cronaca non puo' dire di CHI e' la colpa: se la riga ha mentito, se il freno l'ha smentita, o se qualcun altro ha spostato il pallone dopo. `bex/bey` = dove il motore manda DAVVERO il pallone (dopo il freno); `bax/bay` = dov'era il pallone quando la riga e' uscita. Sola strumentazione: `cpmEv` non tocca stato ne' render. */shots:(ev.ms&&ev.ms.shots)||0,oppShots:(ev.ms&&ev.ms.oppShots)||0,sp:ev.sp||null,at:ev.at||null}/* [7.545.0] `sp` e `at` nel registro: senza, una riga che ANNUNCIA una palla ferma non e' distinguibile da una che non lo fa, e il pezzo «gli eventi fermi esistono» non ha come misurarsi */);/* [7.532.0] tn: il turno al momento della riga — strumentazione permanente per il ritmo side-aware */
+          cpmEv("chronicle",{min:nx,mk:(ev._motore870?ev._motore870.kind:null),txt:String(evTxt||"").slice(0,140),lib:(ev._lib666?1:0),/* [7.684.0] la riga viene dalla LIBRERIA delle azioni salienti: senza questo campo il guardiano non poteva distinguere «la catena e' morta» da «la catena e' stata sostituita da un altro sistema che racconta la stessa cosa meglio» */dec:_dec499,fase:_fase501,tn:possTurnRef.current,rec:_recHij545?1:0,poss:(ev.poss||0),muta:(!ev.ef&&!ev.ms&&!ev.poss&&!ev.sp)?1:0,/* [7.554.0 MISSIONE — IL REGISTRO DICE TUTTO QUELLO CHE LA RIGA FA] Il registro portava esito, tabellino, palla ferma e zona, ma NON il possesso: due famiglie di verdetti della sonda `fatti-546` leggevano campi inesistenti e stampavano ZERO in silenzio a ogni passata, perche' una famiglia assente non fa rumore. Con 31 righe su 223 che spostano il possesso, oggi NESSUNA sonda puo' dire quante righe lo muovono. E `muta` dichiara in chiaro cio' che finora si deduceva per esclusione: la riga non afferma NIENTE — ne' un esito, ne' una statistica, ne' un possesso, ne' una palla ferma. Sono 107 su 223, e muovono comunque pallone, schieramento e gesto. Sola strumentazione: `cpmEv` non tocca stato ne' render. */pd:ev.pd||null,rk:_recKind546||null,/* [7.578.0] QUALE macchina ha scritto la riga (kickoff · out_* · sp_* · counter · catena · ponte). Senza, `rec:1` mette nello stesso mucchio il pallone fermo e il gioco aperto, che hanno regole opposte: il primo RICOLLOCA il pallone per natura, il secondo no. Una sonda che li somma non puo' dire se il tetto del 7.498 stia proteggendo o smentendo. */concorda:(ev.pd===_dec499),ef:ev.ef||null,bx:ev.bpos?ev.bpos.x:null,by:ev.bpos?ev.bpos.y:null,bex:_bt498?+_bt498.x.toFixed(1):null,bey:_bt498?+_bt498.y.toFixed(1):null,bax:+ballPosRef.current.x.toFixed(1),bay:+ballPosRef.current.y.toFixed(1),npd:(function(){try{const _b=ballPosRef.current;const _lt=(possTurnRef.current>0)?"home":"away";let _d=null;(matchPlayersRef.current||[]).forEach(q=>{if(!q||q.team!==_lt||q.gk)return;const _dd=Math.hypot((q.x||50)-_b.x,(q.y||50)-_b.y);if(_d==null||_dd<_d)_d=_dd;});return _d==null?null:+_d.toFixed(1);}catch(_e){return null;}})(),/* [7.624.0 strumentazione] CUSTODIA LOGICA alla riga: distanza del piu' vicino uomo del lato in possesso dalla palla logica. Serve il metro per il redesign A2: due metri a fotogrammi (POR526 e l'anello ws) sono stati SQUALIFICATI con lo studio di ripetibilita' (±10-15 punti fra run a codice identico — campionamento a orologio su renderer col jitter); questo campiona un EVENTO del tick logico, quasi-seedato. cpmEv e' inerte per costruzione. *//* [7.576.0 — IL REGISTRO SEPARA CIO' CHE LA RIGA DICE DA CIO' CHE IL MOTORE FA] Finora il registro portava solo `bx/by`, cioe' la destinazione PROPOSTA dalla riga. Ma fra la proposta e il pallone ci sono due passaggi: il FRENO del 7.498 (tetto 30u per riga, piu' il richiamo verso il corridoio del 7.528) puo' accorciare la proposta, e poi il motore del possesso puo' portare il pallone altrove. Con un solo numero le tre cose sono indistinguibili, e il giudice della cronaca non puo' dire di CHI e' la colpa: se la riga ha mentito, se il freno l'ha smentita, o se qualcun altro ha spostato il pallone dopo. `bex/bey` = dove il motore manda DAVVERO il pallone (dopo il freno); `bax/bay` = dov'era il pallone quando la riga e' uscita. Sola strumentazione: `cpmEv` non tocca stato ne' render. */shots:(ev.ms&&ev.ms.shots)||0,oppShots:(ev.ms&&ev.ms.oppShots)||0,sp:ev.sp||null,at:ev.at||null}/* [7.545.0] `sp` e `at` nel registro: senza, una riga che ANNUNCIA una palla ferma non e' distinguibile da una che non lo fa, e il pezzo «gli eventi fermi esistono» non ha come misurarsi */);/* [7.532.0] tn: il turno al momento della riga — strumentazione permanente per il ritmo side-aware */
           let cColor=ev._intx669?(ev._intx669==="MISTER"?"#f0b33a":ev._intx669==="AVVERSARI"?"#f87171":ev._intx669==="EROE"?"#93c5fd":"#86efac"):ev.ef==="team_goal"?"#16a34a":ev.ef==="opp_goal"?"#dc2626":ev.ef==="opp_red"?"#16a34a":ev.ef==="opp_injury"?"#f59e0b":ATE3_ARCCOL[_arcType]||TH.faint;
           if(pendingGoalRef.current&&!ev.ef)cColor="#fbbf24";/* [7.530.0 collaudo PO «quando c'è un'azione offensiva che può portare al gol ci deve essere maggiore enfasi/suspance»] durante l'azione pendente il banner scala sull'ambra calda: si VEDE che sta montando qualcosa (la densita' 1,30 del 7.528 gia' incalza il ritmo) */
           else if(counterRef.current&&!ev.ef)cColor=counterRef.current.dir>0?"#fbbf24":"#f87171";/* [7.532.0 NO542] il ribaltamento ha il suo colore: ambra il nostro, rosso il loro */
@@ -5550,7 +5685,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           if(typeof window!=='undefined'&&window.__CPM_REC&&ev&&ev._out818){try{const _Q=(window.__CPM_J818E=window.__CPM_J818E||{p1:0,p2:0,p3:0,arc:0,dir:0});if(_arcType&&ATE3_TYPEMS[_arcType])_Q.arc++;else _Q.dir++;}catch(_e){}}
           if(_arcType&&ATE3_TYPEMS[_arcType]&&!(ev&&(ev._piano649||ev._out818)&&!(typeof window!=='undefined'&&window.__CPM_NO812))){chantTimersRef.current.push(setTimeout(()=>addCom(evTxt,cColor,nx,_sc681),Math.round(ATE3_TYPEMS[_arcType]/2)));}/* [7.818.0 v3] la riga della palla morta dell'occasione e' il seguito promesso dal testo: come la battuta di piano (7.812 v3) non passa dal timer dell'arco e con una scheda aperta si accoda (7.816) invece di sparire. Il testimone J818 aveva scagionato tutte le condizioni del fischio (rec 0, ko 0, pg 0, sp 0, ttl 8): la riga NASCEVA (righe di corner uscite 1-3 a partita) e si perdeva dopo *//* [7.812 v3] la battuta di piano NON passa dal timer dell'arco: 240-340 ms dopo, una scheda aperta la rifiutava e nessun contatore lo vedeva (il testimone REF_PIANO sta sul ramo sincrono). Esce subito, come il gol. */
           else {if(ev._piano649&&intxPendRef681.current&&!_sc681&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_REF_PIANO=(window.__CPM_REF_PIANO||0)+1;}catch(_e){}}/* [censimento 823 · playtest n°3 C] una riga di PIANO (apertura/tiro/parata dell'occasione, o della costruzione del gol) che addCom sta per rifiutare perche' c'e' una scheda aperta: e' cosi' che nel diario l'occasione compare come una parata senza il tiro? Sola lettura, per riga. */
-          addCom(evTxt,cColor,nx,_sc681,(ev&&(ev._piano649||ev._out818))?{piano:1}:undefined);}
+          if(String(evTxt||"").trim())addCom(evTxt,cColor,nx,_sc681,(ev&&(ev._piano649||ev._out818))?{piano:1}:undefined);}
           /* [7.681.0] il contesto della scheda serve anche DOPO, per scrivere l'esito della scelta:
              lo si mette da parte insieme all'id, cosi' il ramo che applica la scelta non deve
              ricostruirlo (e non puo' divergere da quello con cui la frase e' stata scritta). */
@@ -5602,7 +5737,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               corso il respiro scende al minimo: le sue righe si incalzano come l'azione che raccontano,
               e l'azione finisce prima che ne cominci un'altra. */
            const _libVivo687=!!(libAzRef666.current&&libAzRef666.current.i<(libAzRef666.current.righe||[]).length);
-           bgCoolRef.current=(typeof window!=='undefined'&&window.__CPM_NO490)?3:((_libVivo687&&!(typeof window!=='undefined'&&window.__CPM_NO687))?1:(_sc681?7:(_imp?7:_cool501)));
+           bgCoolRef.current=(ev&&ev._motore870)?(_sc681?4:(_imp?2:1)):((typeof window!=='undefined'&&window.__CPM_NO490)?3:((_libVivo687&&!(typeof window!=='undefined'&&window.__CPM_NO687))?1:(_sc681?7:(_imp?7:_cool501))));/* [7.870] il narratore ha il suo respiro: un tick fra due righe minori, due dopo un fatto importante */
            if(typeof window!=='undefined'&&window.__CPM_IMP490!==undefined){try{const _w=(window.__CPM_IMP490=window.__CPM_IMP490||[]);if(_w.length<200)_w.push({m:nx,imp:!!_imp,t:Math.round(performance.now())});}catch(_e){}}}
           tcCountRef.current++;
           /* ⚠️ RITARDO E FREQUENZA CORRETTI DOPO LA MISURA: la prima stesura usava 950 ms e una riga su
@@ -5648,6 +5783,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            Il censimento dei tick: il contropiede tiene 6 minuti a partita intoccabili dall'arbitro — ma
            nel calcio la ripartenza che muore per fallo (tattico) e' un classico. p 0,30 sul minuto: il
            contropiede si chiude, il fallo arma punizione+fermo, il turno passa a chi l'ha subito. */
+        if(!MOTORE870||_inHL77){/* [7.870] palla morta: la decide il motore */
         if(!(typeof window!=='undefined'&&window.__CPM_NO628)&&!(typeof window!=='undefined'&&window.__CPM_NO566)&&counterRef.current&&!counterRef.current.fin&&!outRef.current&&!fermoRef.current&&!spRef.current&&!pendingGoalRef.current&&kickoffRef.current<=0&&kickRef.current<=0&&phaseRef.current==="playing"){
           const _rT=(Math.abs(hashStr("tackfoul|"+nx))%1000)/1000;
           if(_rT<0.30){const _dirC=counterRef.current.dir;const _ctN839v2=counterRef.current.nome839||null;counterRef.current=null;if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_CT839T=window.__CPM_CT839T||[]).push({ev:'foul',min:nx});}catch(_e){}}
@@ -5745,9 +5881,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_RIP572=window.__CPM_RIP572||{n:0});_w.n++;}catch(_e){}}
           }
         }}
+        }/* [7.870] fine palla morta da tick */
         // Possession drift + momentum drift every ~8 ticks
         if(nx%8===0){
-          setPossession(p=>clamp(p+(Math.floor(_rndM()*5)-2),20,80));/* [7.489.0] seedato: alimenta la lambda del micro-sim, quindi il RISULTATO */
+          if(MOTORE870&&_stM870){const _q=quotaMotoreRef.current;if(_q.length){const _qh=Math.round(100*_q.reduce((a2,b2)=>a2+b2,0)/_q.length);setPossession(p=>clamp(Math.round(p*0.75+_qh*0.25),20,80));}}/* [7.870] il possesso e' quello giocato */
+          else setPossession(p=>clamp(p+(Math.floor(_rndM()*5)-2),20,80));/* [7.489.0] seedato: alimenta la lambda del micro-sim, quindi il RISULTATO */
           setMomentum(m=>clamp(Math.round(m+(50-m)*0.08),0,100));
         }
         // Formation micro-drift — ogni 3 tick i giocatori si avvicinano lentamente al preset corrente
@@ -5874,6 +6012,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            umana non puo' stare su un punto che si muove a balzi. Qui il piu' vicino al pallone (`_cI553`) fa il suo
            passo a OGNI tick (0,55 della distanza in 1,7 s: ~10 u/s su 30u, meno su distanze corte), gli altri venti
            restano al passo di prima (un tick su tre, k 0,03-0,04): la forma del reparto non cambia cadenza. */
+        if(!MOTORE870||_inHL77){/* [7.870] i ventidue li muove il motore */
         const _solo850=!(nx%3===0||_ognitick588)&&!(typeof window!=='undefined'&&window.__CPM_NO850);
         if(nx%3===0||_ognitick588||_solo850){
           const dt=driftTargetsRef.current||DRIFT_PRESETS.midfield;
@@ -6080,6 +6219,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             return{...pl,x:clamp(pl.x+(sx-pl.x)*k+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(sy-pl.y)*k+(Math.random()-0.5)*0.2,2,98)};
           });});
         }
+        }/* [7.870] fine schieramento */
         // Heat map: sample player position every 4 ticks
         if(nx%4===0){
           heatPointsRef.current.push({x:pPosRef.current.x,y:pPosRef.current.y});
@@ -6096,7 +6236,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          costruzione del gol, che ha il suo tetto) — il ciclo controllo->passaggio del calcio. */
       if((pianoLock693.current|0)>0)pianoLock693.current--;/* [7.693.0] la custodia del piano dura in tick, e scade qui: a valle delle righe (che la accendono) e a monte del moto della palla */
       if(typeof window!=='undefined'&&window.__CPM_REC){try{const _z=(window.__CPM_ELEZ642=window.__CPM_ELEZ642||{giri:0,liberi:0,elez:0,md:[]});_z.giri++;if(phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickoffRef.current<=0&&kickRef.current<=0)_z.liberi++;}catch(_e){}}
-      if(!(typeof window!=='undefined'&&window.__CPM_NO642)&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickoffRef.current<=0&&kickRef.current<=0){try{
+      if(!MOTORE870&&!(typeof window!=='undefined'&&window.__CPM_NO642)&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickoffRef.current<=0&&kickRef.current<=0){try{
         const _bA=ballPosRef.current;const _ltA=possTurnRef.current>0?"home":"away";
         /* [7.859 REVOCATA, 10/09] raggio d'elezione 5u a pallone arrivato: coppia sul telefono Vairo 7 % (rosso 17), Galli 20 % (rosso 12) — direzioni opposte, dentro il rumore, e in volo 50 % contro 36-42: la sosta d'arrivo con l'eletto a 5u fa viaggiare il pallone di piu'. Resta la diagnosi: il corpo piu' vicino a mediana 2,9u dal pallone atterrato. */
         let _biA=-1,_bdA=2.5;
@@ -6126,6 +6266,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          cioe' zero palloni dentro la porta. Era il criterio del guardiano a chiamare «rete» qualunque
          pallone oltre una x, senza guardare i pali (e con la x sbagliata per giunta). */
       setBallPos(b=>{
+        if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){try{const _s=motoreRef.current.stato();if(!_s.scena)return{x:clamp(_s.palla.x,0,100),y:clamp(_s.palla.y,0,100)};}catch(_e870){}}/* [7.870] un solo scrittore */
         /* [7.525.0] CALCIO D'INIZIO ambientale: allo scadere del conto il pallone RIPARTE dal centro
            (riposizionamento voluto, come lo snap di scena) e la trama rinasce col possesso nuovo. */
         /* [7.573.0 — LA RIPARTENZA DAL CENTRO ASPETTA CHE IL GOL SI SIA VISTO]

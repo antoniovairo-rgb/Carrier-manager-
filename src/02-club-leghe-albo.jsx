@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 02  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 02  (dei 21, numerati da 00 a 20)
  * src/02-club-leghe-albo.jsx
  *
  * CLUB · LEGHE · ALBO D’ORO

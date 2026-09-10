@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 12  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 12  (dei 21, numerati da 00 a 20)
  * src/12-three-match-view.jsx
  *
  * ThreeMatchView — IL RENDERER 3D DELL’HIGHLIGHT

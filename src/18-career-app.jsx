@@ -1,6 +1,6 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 17  (dei 20, numerati da 00 a 19)
- * src/17-career-app.jsx
+ * KORWARD ELITE — frammento n° 18  (dei 21, numerati da 00 a 20)
+ * src/18-career-app.jsx
  *
  * CareerApp — IL GUSCIO DELLA CARRIERA
  *

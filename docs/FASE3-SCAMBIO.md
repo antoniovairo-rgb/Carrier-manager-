@@ -4209,3 +4209,57 @@ solo; (2) ogni waypoint della trama è un uomo e diventa subito portatore: passa
 conduzione; (3) i tick governati dal mover sono un terzo del gioco vivo, il resto lo scrivono piano, righe
 e scene. Lezione 22ª: un cambio strutturale su UN solo scrittore sposta il pallone da un metro all'altro;
 serve lo stato di possesso unico per tutti gli scrittori, e va misurato su banco E geografia insieme.
+
+## 7.870 — IL MOTORE DEL POSSESSO (carta bianca del PO, 10/09 sera) — CANTIERE APERTO, branch `claude/motore-possesso`
+
+**Direttiva.** «Hai carta bianca, puoi anche ricominciare da zero ed eseguire una vera ristrutturazione!» ·
+«L'obiettivo e' rilasciare un gioco CREDIBILE, DIVERTENTE, IMMERSIVO, REALISTICO».
+
+**Diagnosi dopo la lettura completa del tick vivo (3.600 righe).** Il gioco ambientale nasceva dal TESTO:
+prima si pescava una riga di telecronaca, poi pallone e ventidue venivano trascinati verso cio' che la riga
+diceva. Ventinove scrittori del pallone logico, tredici macchine narrative in concorrenza (piano del gol,
+occasione, catena, libreria, ponte, contropiede, interruzioni, calcio d'inizio, scene, mente del portatore,
+righe-fatto, mister, interazioni). La 7.868 (stato di possesso ambientale) ha vinto il banco e perso la
+geografia perche' era la trentesima mano sullo stesso pallone.
+
+**La ristrutturazione: prima la simulazione, poi le parole.**
+1. `src/14-motore-possesso.jsx` — il motore: JavaScript puro, deterministico (seme), senza React. Uno
+   stato solo (tenuta · volo · libero · fermo · rete · kickoff · scena), i ventidue con un posto di modulo
+   e un compito rispetto alla palla (inseguitore, copertura, appoggi, ricevente, battitore), decisioni
+   del portatore (controllo, conduzione, passaggio con ricevente scelto per avanzamento/marcatura/corsia,
+   cross, tiro con esito da `decideExecution`, perdita, fallo), palla morta con battitore che cammina al
+   punto, calcio d'inizio, rete. EMETTE FATTI con nomi e luoghi (passaggio, ricezione, conduzione, cross,
+   tiro, parata, palo, murato, fuori, gol, contrasto, intercetto, recupero, fallo, rigore, rimessa,
+   corner, rinvio, battuta, centro, calcio d'inizio, spazzata, presa). Il microsim resta la fonte del
+   punteggio: il gol decretato e' una RICHIESTA (`chiedi.gol`) e il motore costruisce l'azione fino alla
+   rete; senza decreto non si segna mai. Richieste: `turno` (quota di possesso della simulazione),
+   `verso` (ponte alla scena), `atteggiamento` (7.849), `eroe` (panchina), `scena`/`riprendi`.
+   Test node `tests/visual/test/logic/motore-possesso.test.mjs` (8): determinismo, palla ai piedi in
+   tenuta 100 %, passi umani, decreto sempre segnato entro 16 tick, mai gol senza decreto, misure
+   credibili, nomi e luoghi, scena/ripresa, eroe in panchina.
+2. `src/15-live-match.jsx` (rinumerato: 14→15 … 19→20). Sotto `MOTORE870` (rosso `__CPM_NO870`): un solo
+   passo del motore per tick, specchi dei vecchi ref (ballPos/ballTarget/carrier/chaser/fermo/kick/
+   kickoff/turno/pendingGoal) perche' scene, guardiani e sonde continuino a leggere; il NARRATORE
+   `narra870` sceglie il fatto piu' importante del tick e lo racconta nello stesso formato delle righe
+   BG_MATCH (nomi, sigle, luogo dal punto vero, arco 3D dal volo vero, tabellino, momentum). Spente sotto
+   il motore: piano/occasione/catena/contropiede/ponte, dirottatori delle righe, libreria, interruzioni
+   da riga e da tick, schieramento a preset, elezione d'arrivo, vecchio mover, mente del portatore
+   (7.738/7.739). Restano: scene dell'eroe, interazioni 7.669, mister, meteo, cori, sostituzioni,
+   microsim, duplice fischio.
+3. Guardiano `partita-vera` (manovra-viva): le righe del narratore con fatto passaggio/cross/conduzione/
+   tiro contano come manovra.
+
+**Banco in node (16 partite da 92 tick):** tenuta 53 %, volo 27 %, fermo 7 %, rete 4 %, kickoff 5 %;
+padrone<=3u in tenuta 100 %; per partita passaggi 18,9 · conduzioni 9,3 · tiri 5,1 · falli 1,7 ·
+palle morte ~3; decreti 36/36 segnati (attesa media 6,3 tick).
+
+**Prima partita headless (7.870, Chromium 412×915):** 0 errori, tick fino all'89', 32 righe del narratore,
+turni causali (contrasto/intercetto), pallone reso ai piedi del padrone 55 % (scheda n°9: 24-35), reso
+sul corpo piu' vicino 72 %. Geografia 12/17 (7.866: 97 %): la riga del passaggio usciva al lancio e il
+pallone arrivava un tick dopo → i passaggi rasoterra ora si raccontano all'arrivo (fatto «ricezione» col
+passatore); lanci, cambi di gioco, cross e tiri restano al lancio con l'arco. Misura in corso.
+
+**Cosa NON e' ancora fatto (dichiarato):** cadenza della cronaca (0,7 fatti al minuto: righe ~35 contro
+76-91 del vecchio sistema — ora anche le ricezioni parlano), il reso 3D del volo (arco vs lerp),
+scheda da telefono, rituale `ci:live`, i vecchi blocchi sono SPENTI ma non ancora rimossi (si tolgono
+quando il motore batte la scheda, per tenere il rosso appaiato).

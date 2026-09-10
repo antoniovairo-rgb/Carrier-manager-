@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 01  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 01  (dei 21, numerati da 00 a 20)
  * src/01-bootstrap-tema-avatar.jsx
  *
  * BOOTSTRAP · TEMA · AVATAR

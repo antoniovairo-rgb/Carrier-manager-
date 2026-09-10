@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 03  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 03  (dei 21, numerati da 00 a 20)
  * src/03-eventi-narrativi.jsx
  *
  * EVENTI NARRATIVI · SPOGLIATOIO · ACHIEVEMENT

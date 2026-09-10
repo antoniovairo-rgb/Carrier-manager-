@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 13  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 13  (dei 21, numerati da 00 a 20)
  * src/13-prepartita-formazioni.jsx
  *
  * PRE-PARTITA · D-PAD · SCOUT · STAMPA · FORMAZIONI · MAGLIE

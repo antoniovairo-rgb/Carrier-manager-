@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 10  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 10  (dei 21, numerati da 00 a 20)
  * src/10-folla-stadi-ritiro.jsx
  *
  * FOLLA 2.0 · IDENTITÀ CLUB · TEMPLATE STADIO · RITIRO

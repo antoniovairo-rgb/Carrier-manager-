@@ -1,5 +1,5 @@
 /* ========================================================================
- * KORWARD ELITE — frammento n° 05  (dei 20, numerati da 00 a 19)
+ * KORWARD ELITE — frammento n° 05  (dei 21, numerati da 00 a 20)
  * src/05-cronaca-stadi-formazioni.jsx
  *
  * CRONACA DI SFONDO · OVERLAY · STADI · FORMAZIONI
