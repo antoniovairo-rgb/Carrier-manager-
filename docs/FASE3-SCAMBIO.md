@@ -3721,3 +3721,25 @@ al 23' e al 75' a +0,5 s il pallone è ancora fuori dall'area (incornate con l'a
 il «tuffo dal tiro 2» contato da `gol74` non è il tuffo su QUESTO tiro: il testimone conta tutti i
 tag. 7.854, prima la misura: al lancio dell'arco della battuta `rete` registrare se il sito T8 arma il
 tuffo e, se no, quale cancello lo ferma (`oppActType` occupato, `_t8At808`, tipo d'arco).
+
+## 7.854 — il gol aspetta che il pallone sia in rete
+
+Misura al lancio dell'arco della rete (testimone `__CPM_RETE854`, Conti fuori): il sito T8 arma il
+tuffo **3/3** (`oppActType` libero, ultimo T8 14-21 s prima). Ma la traccia del tuffo (`__CPM_DIVE854`)
+mostra il pallone reso che torna INDIETRO durante il tuffo: 90,7 → 85,4 e 85,3 → 78,8 in 1 s. Causa:
+il piano si chiudeva appena emessa la battuta della rete — il pallone a 93 stava già entro gli 8u
+dell'arrivo (7.693) — quindi gol, riga e ripresa partivano nello stesso tick e il pallone veniva
+richiamato al centro mentre l'arco volava. Il portiere «fermo col pallone ai piedi» del n° 3 era
+questo: il pallone tornava dal tuffo.
+
+7.854: per la battuta della rete l'arrivo vale entro 2u (v1) e l'attesa d'arrivo riparte da zero
+(v2: `att693` era del piano intero, e una battuta precedente già attesa chiudeva il gol al lancio —
+traccia v1: ancora 90,6 → 85,1 in un caso su tre). Traccia v2 (Conti): pallone durante il tuffo
+**90,4 → 97,5 e 90,6 → 97,7** (in avanti, 2/2; prima 2/3 all'indietro). Rosso `__CPM_NO854`.
+Telefono n° 4 (4 partite, foto a +0,5 s): il pallone è sulla linea o sul palo in **5/5** gol del
+piano (n° 3: 3/4 «già in rete ai piedi»), il portiere in quadro 5/5 ma in PIEDI 5/5 — la 7.854 ha
+tolto il richiamo del pallone, non ha reso visibile il tuffo (rz 0,01: il corpo non si piega in GLB).
+Padrone 16/28/34/33 %, finali 1-0, 3-0, 1-2, 5-2; scheda 5,3 (due aree rigiudicate dai fotogrammi:
+il gol dell'eroe annunciato prima del pallone 3/5, il testo smentito 5/5). Career PASS; CI exit 0 (validate 0 failure, guardiano manovra-viva 63 su banda 10, gol del simulatore 7/7).
+Verdetto: si tiene — batte la sua misura (traccia in avanti 2/2 contro 2/3 indietro) e non peggiora
+il telefono. Prossimo: il tuffo che si vede.

@@ -1449,3 +1449,76 @@ tre difensori a 2u e il portiere fuori quadro (Conti 66', conti-f28).
 **Media DA TELEFONO: 5,6** (somma 67, come il n° 2). Nove aree sotto 7. Nessun «puoi collaudare».
 Prossimi: 7.854 il tuffo che arriva sul pallone (tempo di reazione, non al tiro); l'attesa 847
 scaduta; il testo che legge la geometria («tutto solo» solo se nessun avversario entro 4u).
+
+## Scorecard DA TELEFONO n° 4 — build 7.854 (branch)
+
+Chromium 412×915 portrait, campo 3D acceso, tick reale, seme 4242, screencast CDP (età mediana del
+fotogramma 188 / 456 / 231 / 429 ms, max 1,0-1,6 s — dichiarato: ogni foto è al più un secondo
+indietro). NON è l'Android del PO. Schede e fotogrammi citati in `docs/collaudo-telefono/n04/`.
+
+Le misure del campo (le stesse del n° 3, stessa sonda v4):
+
+| partita | padrone ≤3u | a terra | mediana / p90 | salti | fps | stati (min) | finale |
+|---|:---:|:---:|:---:|:---:|:---:|---|:---:|
+| Vairo casa | 16 % | 25 % | 10,0 / 24,8 | 56 | 15 | gioco 68 · morta 14 · ripresa 3 | 1-0 |
+| Moretti casa | 28 % | 37 % | 8,9 / 22,9 | 57 | 18 | gioco 58 · morta 17 · fermo 2 · ripresa 8 | 3-0 |
+| Galli fuori | 34 % | 45 % | 5,5 / 25,8 | 43 | 16 | gioco 57 · morta 12 · ripresa 12 | 1-2 |
+| Conti fuori | 33 % | 43 % | 7,6 / 22,0 | 48 | 14 | gioco 56 · morta 8 · ripresa 15 | 5-2 |
+
+Quello che i fotogrammi mostrano, gol per gol (foto a +0,5 s dalla riga):
+
+- **Gol del piano (5):** il pallone è SULLA LINEA o sul palo in 5/5 — Conti 24' (`conti-f12`), Spada
+  61' (`conti-f31`), Bruno 76' (`conti-f42`), Neri 55' (`moretti-f30`), Pecoraro 68' (`galli-f29`).
+  Il portiere è in quadro 5/5 e in PIEDI 5/5: 4 volte sulla linea col pallone ai piedi, 1 volta
+  (Spada 61') a ~10u fuori dalla porta mentre il pallone è sul palo. La 7.854 ha fermato il richiamo
+  del pallone durante il tuffo (traccia in avanti 2/2), ma sul telefono il tuffo NON SI VEDE: il corpo
+  del portiere non si piega (rz 0,01 nella traccia — il tuffo procedurale non gira il GLB).
+- **Gol dell'eroe (5):** la riga «segna … 1-0» PRECEDE il pallone in rete e il tabellone in 3/5.
+  Vairo 42' (`vairo-f18`, età 15 ms): riga «1-0», HUD e tabellone 0-0, pallone sulla linea ai piedi
+  del portiere in piedi. Conti 62' (`conti-f35`): «Testa preciso al centro → 3-2», l'eroe sta DENTRO
+  la porta sotto la traversa col pallone ai piedi, il portiere sdraiato, HUD 2-2 anche a +1 s.
+  Ferrari 86' (`conti-f51`, età 5 ms): «Ferrari segna su assist di Conti! 5-2» mentre la scena
+  «Sterzata fulminea» è ancora aperta, il pallone è ai piedi di un DIFENSORE e l'HUD dice 4-2.
+  Moretti 25' (`moretti-f14`): pallone a centrocampo, HUD 0-0 a +1 s. Moretti 33' (`moretti-f20`):
+  la camera inquadra l'area vuota e le tribune, pallone fuori quadro.
+- **Gol subiti (2):** Galli 85' (`galli-f37`) campo vuoto e «Non ci si crede»; Conti 40' pallone a
+  centrocampo. Nessun pallone nella nostra rete (7.805, §20): coerente con la regola, ma non si vede.
+
+Il testo contro il campo (P1, «lo schermo smentisce il testo»):
+
+| minuto | riga | fotogramma | cosa si vede |
+|---|---|---|---|
+| Vairo 12' | «Ferrari da due passi, tutto solo davanti alla porta!» | `vairo-f02` (787 ms) | pallone al limite dell'area, cinque maglie gialle intorno, HUD «Trequarti» |
+| Moretti 10' | «Pecoraro da due passi, tutto solo…» | `moretti-f02` (851 ms) | pallone FUORI area, un difensore a 2u |
+| Galli 11' | «Pecoraro da due passi, tutto solo…» | `galli-f03` (604 ms) | pallone sull'arco dell'area, difensore addosso |
+| Conti 11' | «Pecoraro da due passi, tutto solo…» | `conti-f02` (29 ms) | porta fuori quadro, cinque uomini, l'HUD in basso dice «Trequarti» |
+| Vairo 86' | «Scotti a tu per tu col portiere, calcia di prima!» | `vairo-f37` (77 ms) | bordo area, porta fuori quadro, tre compagni e un avversario a 3u |
+
+Cinque su cinque. È la stessa riga, allo stesso minuto (10'-12'), per la quinta scheda di fila.
+
+| # | Area | n°3 | **n°4** | motivo (fotogramma e minuto) |
+|---|------|:---:|:---:|---|
+| 1 Realismo | 5 | **5** | padrone 16-34 %, un salto ogni 3 s |
+| 2 Credibilità da attaccante | 5 | **5** | pallone sulla linea 5/5 ma portiere in piedi 5/5; «da due passi» falso 4/4 |
+| 3 Causalità | 6 | **6** | il piano finisce in rete col pallone che arriva (7.854); l'eroe segna prima del pallone 3/5 |
+| 4 Varietà | 5 | **5** | «da due passi» al 10'-12' in 4/4, quinta volta |
+| 5 Ritmo | 5 | **5** | ripresa 12'/15' fuori casa; Moretti palla morta+fermo 19 > 15 |
+| 6 Azioni extra-eroe | 6 | **6** | il tiro entra, il portiere c'è, non si tuffa |
+| 7 Highlight dell'eroe | 5 | **4** | rigiudicato: `vairo-f18`, `conti-f35`, `conti-f51` — riga prima del pallone, eroe dentro la porta |
+| 8 Telecronaca | 5 | **4** | 5/5 smentiti dal campo, e in `conti-f02` dall'HUD stesso («Trequarti») |
+| 9 Interazioni | 7 | **7** | nessuna contro il punteggio |
+| 10 Coerenza fra i sistemi | 7 | **6** | riga «1-0» con HUD 0-0 per >1 s (`vairo-f18` 15 ms, `conti-f35`, `conti-f51`) |
+| 11 Immersione | 5 | **5** | 14-18 fps, età dei fotogrammi fino a 1,6 s |
+| 12 Carriera | 6 | **6** | barra viva |
+
+**Media DA TELEFONO: 5,3** (somma 64; n° 3 era 5,6). Il calo non è una regressione della 7.854
+(i gol del piano stanno in rete 5/5 come nel n° 3): sono due aree giudicate per la prima volta dai
+fotogrammi (7 e 10) e una scesa perché il conteggio è 5/5 (8). Dieci aree sotto 7. Nessun «puoi
+collaudare».
+
+Prossimi, in ordine: (a) il tuffo che si vede — il corpo del portiere non si piega (clip GLB o
+rotazione procedurale, rz 0,01); (b) la riga del gol dell'eroe DOPO il pallone in rete, come già
+fa il piano (7.852/7.854) — oggi «segna … 5-2» esce con la scena aperta e il pallone al difensore;
+(c) il testo che legge la geometria: «da due passi» solo entro 8u dalla porta, «tutto solo» solo
+senza avversari entro 4u, «a tu per tu» solo col portiere come unico uomo davanti; (d) la banda 60
+del padrone.

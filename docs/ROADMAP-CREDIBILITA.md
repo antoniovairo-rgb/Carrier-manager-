@@ -238,3 +238,11 @@ quadro in 3 gol su 4 ma in piedi mentre il pallone passa (il tuffo parte al tiro
 CI rossa una volta sul guardiano (1 gol mangiato), verde alla ripetizione: dichiarato. Prossimi:
 7.854 il tuffo che arriva sul pallone (e una foto a +0,5 s nella sonda, perché a +1,2 s il portiere
 si è già rialzato); l'attesa 847 scaduta; il testo che legge la geometria; la banda 60 del padrone.
+
+**Aggiunta, 10/09 notte (2):** 7.854 sul branch — il gol del piano chiude quando il pallone è entro
+2u dalla rete e l'attesa d'arrivo riparte per la battuta della rete: il pallone non torna più al
+centro durante il tuffo (traccia 90,4 → 97,5 e 90,6 → 97,7 in avanti, 2/2). Telefono n° 4: 5,3 —
+pallone sulla linea 5/5, portiere in quadro 5/5 ma in piedi 5/5 (il tuffo non si vede: rz 0,01);
+la riga del gol dell'EROE precede il pallone in rete e il tabellone in 3/5 (`docs/collaudo-telefono/n04/`);
+«da due passi, tutto solo» smentito 5/5 al 10'-12'. Prossimi: il tuffo che si vede; la riga del gol
+dell'eroe dopo il pallone in rete; il testo che legge la geometria; la banda 60 del padrone.
