@@ -5952,7 +5952,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             let _tg848=null;/* [7.848.0 — IL NOMINATO DAL PIANO CORRE DOVE IL TESTO MANDA IL PALLONE (S2/S5). Rosso __CPM_NO848] Traccia att847 (Vairo n°28): al filtrante del 9' il nominato corre 25u ma verso y=23 mentre il pallone va a y=44; nell'occasione avversaria il nominato sta fermo a x=44 per tre battute; alla battuta del tiro il tiratore non e' mai sul pallone (0/12, 10-26u). Qui l'eletto e' il piu' vicino al pallone a ogni tick, e solo lui ha il passo 0,55: il nominato dal piano perde la corsa al primo tick. Finche' la custodia del piano e' viva (pianoLock693) il portatore e' il NOMINATO (carrierRef scritto dalla battuta) e il suo bersaglio e' il punto d'arrivo della battuta, non la palla in viaggio. */
             if(!(typeof window!=='undefined'&&window.__CPM_NO848)){try{const _pg848=pendingGoalRef.current;const _cr848=carrierRef.current;const _ci848=(_pg848&&_pg848.lastChi814!=null)?_pg848.lastChi814:((_cr848&&_cr848.i!=null)?_cr848.i:null);/* [7.848 v2] carrierRef viene riscritto a ogni tick dall'elezione d'arrivo (r.6014): il nominato si legge dal piano (lastChi814) */if(_pg848&&_pg848.piano&&(pianoLock693.current|0)>0&&_ci848!=null){const _q848=prev[_ci848];const _lt848=(_pg848.dir>0)?"home":"away";if(_q848&&_q848.team===_lt848&&!_q848.gk){_cI553=_ci848;_tg848=_pg848.lastTg||null;}}}catch(_e848){}}
             chaserRef850.current=(_cI553>=0)?{i:_cI553}:null;/* [7.850 v3] la simulazione dichiara l'inseguitore; il renderer legge */
-            return prev.map((pl,idx)=>{
+            const _next868=prev.map((pl,idx)=>{
             if(pl.team==="ref")return pl;
             if(_solo850&&idx!==_cI553)return pl;/* [7.850 v2] nei tick intermedi si muove solo l'inseguitore del pallone */
             let sx,sy,k;
@@ -6078,7 +6078,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               if(_K.dV.length<600)_K.dV.push(+_dd.toFixed(1));}catch(_e796){}}
             if(typeof window!=='undefined'&&window.__CPM_REC&&_tg848&&idx===_cI553){try{const _R=(window.__CPM_RUN848=window.__CPM_RUN848||[]);if(_R.length<200)_R.push({min:nx,i:idx,x:+(pl.x||0).toFixed(1),y:+(pl.y||0).toFixed(1),sx:+(sx||0).toFixed(1),sy:+(sy||0).toFixed(1),k:+(k||0).toFixed(2),bx:+((ballPosRef.current||{}).x||0).toFixed(1),by:+((ballPosRef.current||{}).y||0).toFixed(1),tx:+_tg848.x.toFixed(1),ty:+_tg848.y.toFixed(1)});}catch(_e){}}/* [7.848 traccia] */
             return{...pl,x:clamp(pl.x+(sx-pl.x)*k+(Math.random()-0.5)*0.2,2,98),y:clamp(pl.y+(sy-pl.y)*k+(Math.random()-0.5)*0.2,2,98)};
-          });});
+          });matchPlayersRef.current=_next868;/* [7.868 v3] POSIZIONI FRESCHE PER IL PALLONE: gli updater di React girano al render in ordine di coda, e quello del pallone (setBallPos, piu' in basso nel tick) leggeva lo specchio del render PRECEDENTE — un tick di ritardo per costruzione, cioe' 2-5u dietro l'uomo che cammina. Lo specchio si scrive qui, nell'updater dei ventidue, e l'effetto r.831 lo riscrive uguale dopo. */return _next868;});
         }
         // Heat map: sample player position every 4 ticks
         if(nx%4===0){
@@ -6102,6 +6102,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         let _biA=-1,_bdA=2.5;
         ballLagRef.current=Math.hypot((_bA.x||50)-(ballTargetRef.current.x||50),(_bA.y||50)-(ballTargetRef.current.y||50))>6;/* [v5] la palla e' in ritardo sul bersaglio: le marce aspettano */
         (matchPlayersRef.current||[]).forEach((q,i)=>{if(!q||q.team!==_ltA||q.gk)return;const _d=Math.hypot((q.x||50)-_bA.x,(q.y||50)-_bA.y);if(_d<_bdA){_bdA=_d;_biA=i;}});
+        /* [7.868 v6 — CHI HA LA PALLA LA TIENE. Traccia classificata (banco, 48 tick ambientali): tenuta 15, volo per
+           passaggio di trama 7, per passo del piano 9, per «altro cambio di portatore» 12. Quei 12 sono questa
+           elezione: a ogni tick elegge l'uomo PIU' VICINO al pallone, e con i compagni che si stringono attorno
+           al portatore (7.544) un vicino a 2u soffia la palla a chi ce l'ha sui piedi — un tocco laterale a ogni
+           tick. Se il portatore attuale e' del lato e sta entro 3,5u, resta lui: la palla cambia uomo solo con
+           un passaggio (trama, piano) o un cambio di possesso. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO868)&&carrierRef.current&&carrierRef.current.i!=null){const _qc8=(matchPlayersRef.current||[])[carrierRef.current.i];if(_qc8&&_qc8.team===_ltA&&!_qc8.gk&&Math.hypot((_qc8.x||50)-_bA.x,(_qc8.y||50)-_bA.y)<=3.5)_biA=carrierRef.current.i;}
         if(typeof window!=='undefined'&&window.__CPM_ELEZ642){try{const _z=window.__CPM_ELEZ642;if(_z.md.length<300)_z.md.push(+_bdA.toFixed(1));}catch(_e){}}
         if(_biA>=0&&(!carrierRef.current||carrierRef.current.i!==_biA)){carrierRef.current={i:_biA};holdArrRef.current=pendingGoalRef.current?1:2;if(typeof window!=='undefined'&&window.__CPM_ELEZ642){try{window.__CPM_ELEZ642.elez++;}catch(_e){}}}
         if((holdArrRef.current|0)>0&&carrierRef.current&&carrierRef.current.i!=null){
@@ -6330,7 +6337,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               if(_sc.f==='costruzione')return "costruzione";
               if(_sc.f==='sviluppo')return _adv<72?"sviluppo":"rifinitura";
               return _f0;})();
-            if(!_tr.wp||(Math.abs(_tr.wp.x-_t.x)<1.2&&Math.abs(_tr.wp.y-_t.y)<1.2)){
+            /* [7.868 v4 — LA SOSTA DI RICEZIONE TIENE ANCHE LA GIOCATA. Traccia tick per tick (banco 868 v3): il
+               portatore cambiava QUASI A OGNI TICK (16, 11, 11, 8, 2, 8, 7, 17, 20, 17...) perche' ogni waypoint e' la
+               posizione di un uomo (7.861), quell'uomo diventa subito portatore (7.641) e il bersaglio i suoi piedi
+               (7.642): il waypoint risulta «raggiunto» nello stesso tick e la trama ne sorteggia un altro — un
+               passaggio a ogni tick, volo 28-31 contro tenuta 8-16, e la sosta 7.639 frenava solo la marcia, non
+               la scelta. Finche' la sosta e' viva la giocata resta la stessa: il pallone STA sui piedi del
+               ricevente per due tick, poi si passa. */
+            if((!_tr.wp||(Math.abs(_tr.wp.x-_t.x)<1.2&&Math.abs(_tr.wp.y-_t.y)<1.2))&&!(!(typeof window!=='undefined'&&window.__CPM_NO868)&&(_tr.hold639|0)>0)){
               const _cy=corY528(_tr.cor);/* [7.630.0] helper unico dei centri di corridoio */
               let _wx,_wy;
               if(_fase==="quiete648"){_wx=_t.x+_dir*(-7+_r511()*10);_wy=_cy+(_r511()-0.5)*30;}/* [7.648.0] QUIETE: giro palla, anche all'indietro - la scena tranquilla della direttiva PO */
@@ -6466,7 +6480,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                          ripartiva il tick DOPO: mai un istante di controllo, ed e' il «rimbalza senza
                          portatore e ricevente» del PO. Due tick di sosta: la palla ARRIVA, sta ai piedi,
                          poi la giocata successiva parte. */
-                      if(!(typeof window!=='undefined'&&window.__CPM_NO639))_tr.hold639=2;
+                      if(!(typeof window!=='undefined'&&window.__CPM_NO639))_tr.hold639=(typeof window!=='undefined'&&window.__CPM_NO868)?2:3;/* [7.868 v5] la sosta conta anche il tick del volo: con 2 restava UN solo tick di tenuta per passaggio (banco v4: ≤3u 36-41 %, tenuta 11-18 contro volo 28-32); con 3 ne restano due */
                       if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_A4=window.__CPM_A4||{pass:0,agg:0,wp:0});_w.pass++;}catch(_e){}}}
                     else{_wx=_rx;_wy=_ry;}
                   }
@@ -6518,6 +6532,46 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           const _ltT=possTurnRef.current>0?"home":"away";let _dT=null,_iT=-1;
           (matchPlayersRef.current||[]).forEach((q,i)=>{if(!q||q.team!==_ltT||q.gk)return;const _dd=Math.hypot((q.x||50)-b.x,(q.y||50)-b.y);if(_dT==null||_dd<_dT){_dT=_dd;_iT=i;}});
           if(_dT!=null&&window.__CPM_NPDT.length<3000)window.__CPM_NPDT.push({c:clockRef.current|0,ph:(clockRef.current|0)%3,d:+_dT.toFixed(1),i:_iT,bx:+b.x.toFixed(1),tx:+(ballTargetRef.current?ballTargetRef.current.x:0).toFixed(1)});}catch(_e){}}
+        /* ⚠️ [7.868.0 — UN PALLONE, UN PADRONE: IL POSSESSO AMBIENTALE E' UNA SEQUENZA DI PASSAGGI DISCRETI.
+           Rosso __CPM_NO868. Direttiva PO 10/09 («rivedi la struttura se lo ritieni opportuno») sopra la
+           diagnosi scritta nel 7.850 v2: «questo numero si sposta solo rendendo il possesso una sequenza di
+           passaggi discreti — la palla lascia i piedi di un uomo NOMINATO e arriva ai piedi di un altro
+           uomo NOMINATO — invece di un bersaglio che scivola». Banco S1 sulla 7.866: pallone logico ai
+           piedi del padrone <=3u 18-29 % (sei corse), campioni a terra SENZA padrone 43 %; sul telefono
+           il reso ai piedi 22-44 %. Il passo 0,65 verso un punto era la radice: fra due uomini il pallone
+           stava sull'erba per 2-3 tick, e dopo una riga o un cambio di possesso restava senza nessuno.
+           Fuori dalle scene e dalle macchine (piano, contropiede, palla morta, calcio d'inizio) valgono
+           tre stati e basta:
+             TENUTA  — il padrone (7.641) e' del lato in possesso e sta entro 3,5u: il pallone STA sui suoi
+                       piedi (non lo insegue col passo), e cammina con lui (7.642 marcia l'uomo);
+             VOLO    — il padrone e' lontano (e' il ricevente eletto dal passaggio, 7.641/7.861): il pallone
+                       gli va incontro a 7u per tick (~17 u/s, un passaggio vero), sulla sua posizione
+                       ATTUALE (7.863), e all'arrivo la tenuta riparte;
+             LIBERO  — nessun padrone del lato (dopo una riga, un cambio di possesso, una scena): se un
+                       uomo del lato e' entro 3,5u e' suo; altrimenti il pallone vola all'uomo del lato
+                       piu' vicino al BERSAGLIO (la proposta della riga diventa un passaggio a un uomo, mai
+                       un punto), e quello diventa il padrone.
+           Il passo 0,65 resta per tutto il resto (piano, contropiede, scene, palla morta, rosso). */
+        const _pg8=pendingGoalRef.current;const _pianoUomo8=!!(_pg8&&carrierRef.current&&carrierRef.current.i!=null&&!(_pg8.lastTg&&_pg8.lastTg.rete));/* [7.868 v3] nel piano il passo nomina un uomo (chi = portatore, 7.586/7.693): il pallone gli vola e gli sta ai piedi; la battuta della rete e i passi senza uomo restano al passo 0,65 */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO868)&&phaseRef.current==='playing'&&(!_pg8||_pianoUomo8)&&!counterRef.current&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickRef.current<=0&&kickoffRef.current<=0){try{
+          const _side8=possTurnRef.current>0?"home":"away";const _mp8=matchPlayersRef.current||[];const _dir8=possTurnRef.current>0?1:-1;
+          let _ci8=(carrierRef.current&&carrierRef.current.i!=null)?carrierRef.current.i:-1;let _cq8=_ci8>=0?_mp8[_ci8]:null;
+          const _W8=(typeof window!=='undefined'&&window.__CPM_REC)?(window.__CPM_POSS868=window.__CPM_POSS868||{tenuta:0,volo:0,libero:0,elez:0,voloUomo:0}):null;
+          if(!_cq8||_cq8.team!==_side8||_cq8.gk){/* LIBERO */
+            let _bi8=-1,_bd8=1e9;for(let _i=0;_i<_mp8.length;_i++){const _q=_mp8[_i];if(!_q||_q.team!==_side8||_q.gk)continue;const _d=Math.hypot((_q.x||50)-b.x,(_q.y||50)-b.y);if(_d<_bd8){_bd8=_d;_bi8=_i;}}
+            if(_bi8>=0&&_bd8<=3.5){carrierRef.current={i:_bi8};holdArrRef.current=2;_ci8=_bi8;_cq8=_mp8[_bi8];if(_W8)_W8.elez++;}
+            else{let _ti8=-1,_td8=1e9;for(let _i=0;_i<_mp8.length;_i++){const _q=_mp8[_i];if(!_q||_q.team!==_side8||_q.gk)continue;const _d=Math.hypot((_q.x||50)-_t.x,(_q.y||50)-_t.y);if(_d<_td8){_td8=_d;_ti8=_i;}}
+              if(_ti8>=0){carrierRef.current={i:_ti8};_ci8=_ti8;_cq8=_mp8[_ti8];if(_W8)_W8.voloUomo++;}}
+            if(_W8)_W8.libero++;}
+          if(_W8){try{const _L=(_W8.trace=_W8.trace||[]);if(_L.length<600){const _tr8=tramaRef.current;const _dq0=_cq8?+Math.hypot((_cq8.x||50)-b.x,(_cq8.y||50)-b.y).toFixed(1):null;const _pc=_W8._prevCi;_W8._prevCi=_ci8;_L.push({m:clockRef.current|0,side:_side8,ci:_ci8,pc:(_pc==null?null:_pc),dq:_dq0,pg:_pg8?1:0,bx:+b.x.toFixed(1),by:+b.y.toFixed(1),cx:_cq8?+(_cq8.x||50).toFixed(1):null,cy:_cq8?+(_cq8.y||50).toFixed(1):null,tx:+_t.x.toFixed(1),ty:+_t.y.toFixed(1),rcv:_tr8?_tr8.rcv:null,wp:_tr8&&_tr8.wp?+_tr8.wp.x.toFixed(0)+'/'+(+_tr8.wp.y.toFixed(0)):null,h639:_tr8?(_tr8.hold639|0):null,hArr:holdArrRef.current|0});}}catch(_e){}}
+          if(_cq8){const _dq8=Math.hypot((_cq8.x||50)-b.x,(_cq8.y||50)-b.y);
+            /* [7.868 v7 REVOCATA] due rami provati e caduti sul banco: (a) proposta di riga oltre 6u = passaggio all'uomo piu'
+               vicino al bersaglio, (b) pallone messo oltre 12u = di chi ce l'ha ai piedi. Tre corse: ≤3u 24 / 24 / 23 % contro
+               36-41 della v4/v6. Restano i contatori nel testimone come promemoria. */
+            if(_dq8<=3.5){if(_W8)_W8.tenuta++;return{x:clamp((_cq8.x||50)+_dir8*0.4,0,100),y:clamp(_cq8.y||50,0,100)};}
+            const _st8=Math.min(_dq8,24);/* [7.868 v2] il tick di palla e' 1,7 s (MATCH_TICK_MS): 24u per tick = 14 u/s, un passaggio vero; a 7u per tick (v1) il volo durava 3 tick e la tenuta era il 26 % dei tick ambientali */if(_W8)_W8.volo++;
+            return{x:clamp(b.x+((_cq8.x||50)-b.x)/_dq8*_st8,0,100),y:clamp(b.y+((_cq8.y||50)-b.y)/_dq8*_st8,0,100)};}
+        }catch(_e868){}}
         const _nx=b.x+dx*0.65,_ny=b.y+dy*0.65;
         if(typeof window!=='undefined'&&window.__CPM_NO478D)return{x:_nx,y:_ny};/* prova del rosso 7.478 */
         return{x:clamp(_nx,0,100),y:clamp(_ny,0,100)};

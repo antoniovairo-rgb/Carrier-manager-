@@ -146,7 +146,10 @@
     "fondate": "node fondate-554.mjs",
     "camera-osc": "node camera-544.mjs",
     "intorno": "node intorno-556.mjs",
-    "coppa-intera": "node coppa-intera-700.mjs"
+    "coppa-intera": "node coppa-intera-700.mjs",
+    "ci:live": "npm run test:logic && npm run validate-situations && npm run partita-vera",
+    "ci:live:mover": "npm run test:logic && npm run validate-situations && npm run replay && npm run partita-vera",
+    "ci:carriera": "npm run test:logic && npm run save-compat && npm run career-critical"
   },
   "dependencies": {
     "playwright": "^1.48.0",

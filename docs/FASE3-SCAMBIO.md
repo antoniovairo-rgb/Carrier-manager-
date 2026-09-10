@@ -4097,3 +4097,94 @@ del piano (7.847 attende l'uomo e il pallone), salti del reso sul telefono.
 ricevente» vale solo nel volo di un passaggio agganciato, e i passaggi sono 3-6 per corsa). Le 36 / 40 / 49
 di ieri erano tre mondi fortunati: il rumore del banco è ±8, non ±3 come avevo scritto (lezione 21ª: la
 banda di rumore si stima su sei corse, non su tre). La 7.863 resta (non nuoce), ma è superata dalla 7.868.
+
+**7.868 v1 sul banco (15:40), tre coppie verde/rosso `__CPM_NO868`:** logico ≤3u verde 32 / 18 / 29 % contro
+rosso 32 / 23 / 17; campioni a terra senza padrone verde 32 / 31 / 25 % contro rosso 48 / 40 / 52. Il
+testimone dice perché la tenuta non domina: sui ~50 tick ambientali di una corsa, tenuta 11-16, volo
+20-27, libero 12-20. Il tick di palla è 1,7 s (MATCH_TICK_MS, non i 420 ms di un commento vecchio): a 7u
+per tick un passaggio da 20u vola tre tick, e la tenuta resta un quarto del tempo. v2: 24u per tick
+(14 u/s, un passaggio vero) — il volo dura un tick, la tenuta dovrebbe salire a due terzi. Tre corse verdi
+in corsa.
+
+**7.868 v2 sul banco (16:05), tre corse verdi:** logico ≤3u 25 / 32 / 33 %, senza padrone 39 / 35 / 21 %,
+stati tenuta 7 / 12 / 11, volo 26 / 19 / 22, libero 17 / 13 / 15. La velocità del volo non era la causa.
+La traccia tick per tick (testimone `trace`) mostra due cose strutturali: (1) i tick ambientali sono
+~26 su 130 in 220 s — il resto è piano, scene, palla morta: il metro campiona soprattutto il PIANO, che
+la v1/v2 escludevano; (2) in tenuta il pallone sta sui piedi del padrone del render PRECEDENTE: gli
+updater di React girano al render in ordine di coda e il pallone leggeva lo specchio vecchio dei
+ventidue — un tick di ritardo per costruzione, 2-5u dietro l'uomo che cammina (m 50-53 della traccia:
+pallone 36 → 33,4 → 30,1 con l'uomo a 33 → 30,1 → 29,2). v3: lo specchio dei ventidue si scrive nel loro
+updater (fresco per il pallone nello stesso render) e la 7.868 vale anche nel piano quando il passo
+nomina un uomo (portatore = chi, non la battuta della rete). Tre corse verdi in corsa.
+
+**7.868 v3 sul banco (16:35), tre corse verdi:** logico ≤3u 39 / 38 / 22 %, senza padrone 38 / 50 / 38 %,
+tenuta 12 / 8 / 16, volo 31 / 28 / 28. Le posizioni fresche alzano il ≤3u di ~8 punti ma il volo resta
+il doppio della tenuta. La traccia dice perché: il portatore cambia quasi a ogni tick (16, 11, 11, 8, 2,
+8, 7, 17, 20, 17…). Ogni waypoint è la posizione di un uomo (7.861), quell'uomo diventa portatore (7.641)
+e il bersaglio i suoi piedi (7.642): il waypoint è «raggiunto» nello stesso tick e la trama ne sorteggia
+un altro — un passaggio a ogni tick. La sosta di ricezione (7.639, 2 tick) frenava la marcia, non la
+scelta della giocata. v4: finché la sosta è viva la giocata resta la stessa (tenuta 2 tick, poi il
+passaggio). Atteso: tenuta ≈ 2/3 dei tick ambientali. Tre corse verdi in corsa.
+
+**7.868 v4 sul banco (17:00), tre corse verdi:** logico ≤3u **41 / 36 / 40 %** (base 18-29), senza padrone
+40 / 33 / 46 %, tenuta 14 / 18 / 11, volo 28 / 31 / 32. La traccia conferma che a fine tick il pallone sta
+sempre sul padrone fresco; il «volo» è il tick in cui il passaggio è dichiarato (portatore = ricevente,
+pallone ancora sul passatore). La sosta a 2 conta anche quel tick: resta UN tick di tenuta per passaggio,
+da cui il 40 %. v5: sosta a 3 tick (due di tenuta vera). Tre corse in corsa.
+
+**7.868 v5 sul banco (17:25):** ≤3u 40 / 39 / 27 %, tenuta 13-14 contro volo 30-35: la sosta a 3 non sposta
+nulla. Traccia classificata (v2 del testimone: portatore precedente, distanza al tick, piano): su 48 tick
+ambientali tenuta 15, volo per passaggio di trama 7, per passo del piano 9, per stesso uomo mosso oltre
+3,5u 5, per **altro cambio di portatore 12**. Il colpevole dei 12 è l'elezione d'arrivo (7.642 v4): a ogni
+tick elegge l'uomo più vicino al pallone, e coi compagni stretti attorno al portatore (7.544) un vicino a
+2u gli soffia la palla dai piedi — un tocco laterale a ogni tick, contato come volo. v6: se il portatore
+attuale è del lato e sta entro 3,5u, resta lui; la palla cambia uomo solo con un passaggio o un cambio di
+possesso. Atteso: tenuta 27/48 ≈ 56 %. Tre corse in corsa.
+
+**7.868 v6 sul banco (17:50, container riavviato a metà catena):** ≤3u 38 % (corsa 1), 64 % su una corsa corta
+(447 campioni); tenuta 12, volo 32, libero 13. Tenere il portatore nell'elezione non basta: la traccia
+classificata della v6 dice tenuta 12, «altro cambio» 12, «stesso uomo lontano» 6, e gli esempi mostrano
+le RIGHE: al 60'-61' il pallone va a 17,7 (proposta di una riga) mentre il portatore resta a 44, e il tick
+dopo torna in volo verso di lui (ping-pong 44 → 17,7 → 44); al 2' e al 51' la riga cambia portatore e
+mette il pallone altrove. v7: (a) in tenuta, una proposta a più di 6u dal portatore diventa un passaggio
+all'uomo del lato più vicino al bersaglio (entro 14u), che diventa il ricevente; (b) un pallone messo a
+più di 12u dal portatore, con un altro uomo del lato già ai piedi (≤3,5u), è di quell'uomo. Contatori
+`passoRiga` e `presa`. Tre corse in coda dopo la v6.
+
+**7.868 v6 (terza corsa) e v7 (18:20).** v6 corsa 3: ≤3u 33 %, tenuta 21, volo 33, libero 17. v7 (proposta di
+riga = passaggio all'uomo; pallone lontano = di chi ce l'ha ai piedi): **24 / 24 / 23 %** — peggio in 3/3 della
+v4/v6 (36-41). REVOCATA nel codice (commento), contatori lasciati nel testimone.
+**Decisione (18:25).** Dopo sette versioni il banco dice: la struttura tenuta/volo/libero + posizioni fresche
++ sosta che tiene la giocata + elezione che tiene il portatore vale **+10-15 punti** (36-41 contro base
+18-29, 3/3 sopra il massimo di base nella v4) e non arriva ai 60 dichiarati. La traccia dice perché: i tick
+ambientali governati dal mover sono un terzo del gioco vivo; il resto sono passi del piano (un uomo
+nuovo a ogni passo), righe che mettono il pallone in un punto e cambiano portatore, scene. Il pallone ha
+29 scrittori (audit FASE 1) e la struttura ne governa uno. Spedisco la 7.868 nella versione migliore
+(v6 senza v7) se rituali, geografia e telefono reggono, e dichiaro al PO che il 60 chiede il passo
+successivo: TUTTI gli scrittori del pallone passano dallo stato di possesso (era la «macchina a stati»
+archiviata il 28/08). Catena: banco ×2 di conferma, career, CI, geografia ×4, telefono n° 9.
+
+## Rituale mirato (direttiva PO 10/09 18:40: «ottimizza il rituale, altrimenti sono ore sprecate»)
+
+Misurato sulle corse di oggi: `career-critical` 11-12 min, `ci` completa 22 min — 34 min a rilascio, più
+banco e telefono. Da ora il rituale si sceglie in base a COSA tocca il rilascio (tabella in
+`tests/visual/package.json`):
+
+| rilascio tocca | rituale | cosa gira | stima |
+|---|---|---|---|
+| partita live / renderer (src/12, src/14, src/05 cronaca) | `npm run ci:live` | test:logic + validate-situations (scene e guardiani) + partita-vera (manovra-viva, gol del simulatore) | ~15 min |
+| il mover del pallone o i flussi seedati | `npm run ci:live:mover` | come sopra + replay (determinismo) | ~18 min |
+| carriera, salvataggi, calendario, coppe (src/07-11) | `npm run ci:carriera` | test:logic + save-compat + career-critical | ~14 min |
+| allineamento notturno di produzione | `npm run career-critical` + `npm run ci` | tutto, una volta al giorno | ~34 min |
+
+Saltati nel rituale live: impulsi-contesto, typing-shortcuts, save-compat, replay (se non c'entra il
+mover), career-critical. Il banco S1 (padroni, 400 s) resta la misura di S1; la geografia e il telefono
+si lanciano solo quando il rilascio tocca ciò che misurano (telefono: solo per la scheda, 4 partite).
+La routine notturna fa il rituale completo prima di allineare `main`: se lì esce rosso, non allinea e
+lo verbalizza. Rischio dichiarato: un rosso di carriera causato da un rilascio live si vede la notte,
+non il giorno stesso.
+
+**7.868 finale sul banco e rituali (19:05).** Due corse di conferma: ≤3u **33 / 32 %** (le sette versioni: 23-41;
+base 18-29); senza padrone 350 / 274 su ~860 a terra (41 / 32 %). Career **PASS**, CI **exit 0** (validate 0 failure,
+ball-motion OK, manovra-viva 55 su banda 10, gol del simulatore 7/7). Spedita con il divario dichiarato:
++10-15 punti sul metro, non i 60. Geografia ×4 e telefono n° 9 in corsa.
