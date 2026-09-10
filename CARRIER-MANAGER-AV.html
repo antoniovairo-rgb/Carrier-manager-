@@ -27594,7 +27594,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if((pianoLock693.current|0)>0)pianoLock693.current--;/* [7.693.0] la custodia del piano dura in tick, e scade qui: a valle delle righe (che la accendono) e a monte del moto della palla */
       if(typeof window!=='undefined'&&window.__CPM_REC){try{const _z=(window.__CPM_ELEZ642=window.__CPM_ELEZ642||{giri:0,liberi:0,elez:0,md:[]});_z.giri++;if(phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickoffRef.current<=0&&kickRef.current<=0)_z.liberi++;}catch(_e){}}
       if(!(typeof window!=='undefined'&&window.__CPM_NO642)&&phaseRef.current==='playing'&&!fermoRef.current&&!outRef.current&&!spRef.current&&kickoffRef.current<=0&&kickRef.current<=0){try{
-        const _bA=ballPosRef.current;const _ltA=possTurnRef.current>0?"home":"away";let _biA=-1,_bdA=2.5;
+        const _bA=ballPosRef.current;const _ltA=possTurnRef.current>0?"home":"away";
+        /* [7.859 REVOCATA, 10/09] raggio d'elezione 5u a pallone arrivato: coppia sul telefono Vairo 7 % (rosso 17), Galli 20 % (rosso 12) — direzioni opposte, dentro il rumore, e in volo 50 % contro 36-42: la sosta d'arrivo con l'eletto a 5u fa viaggiare il pallone di piu'. Resta la diagnosi: il corpo piu' vicino a mediana 2,9u dal pallone atterrato. */
+        let _biA=-1,_bdA=2.5;
         ballLagRef.current=Math.hypot((_bA.x||50)-(ballTargetRef.current.x||50),(_bA.y||50)-(ballTargetRef.current.y||50))>6;/* [v5] la palla e' in ritardo sul bersaglio: le marce aspettano */
         (matchPlayersRef.current||[]).forEach((q,i)=>{if(!q||q.team!==_ltA||q.gk)return;const _d=Math.hypot((q.x||50)-_bA.x,(q.y||50)-_bA.y);if(_d<_bdA){_bdA=_d;_biA=i;}});
         if(typeof window!=='undefined'&&window.__CPM_ELEZ642){try{const _z=window.__CPM_ELEZ642;if(_z.md.length<300)_z.md.push(+_bdA.toFixed(1));}catch(_e){}}

@@ -3855,3 +3855,24 @@ DOM): pallone a 99,15 → 100,6, HUD nel DOM già 3-2 / 5-2. Il «pallone a met�
 d'anteprima della scena successiva (pallina con linea di traiettoria, il pallone vero è nascosto in
 cronaca testuale, 7.805); l'HUD «vecchio» era il compositor del banco a 2-8 fps che dipinge il DOM con
 0,3-0,5 s di ritardo. Regola: una foto del banco vale solo con il numero letto nello stesso istante.
+
+## 7.859 — **REVOCATA**: il pallone atterrato lo raccoglie chi gli sta vicino (S1, l'elezione d'arrivo)
+
+Censimento padroni (sonda `padroni`, Vairo casa e Galli fuori, 150 s ciascuna): il pallone LOGICO sta
+a più di 3u dal suo padrone dichiarato nel **74-76 %** dei campioni (mediana 5,2-6,8u); quando il reso
+è lontano dal padrone, il corpo più vicino sta a **mediana 2,9u**, cioè appena fuori dal raggio
+d'elezione di 2,5u; scrittore del pallone in quei campioni: «nessuno» 189/215 e 125/139. Per progetto
+il passaggio atterra «davanti al ricevente, nello spazio, mai più di sei passi»: il ricevente c'è, ma
+finché non entra nei 2,5u l'etichetta resta al vecchio portatore (fino a 12u, 7.642) o a nessuno. La
+7.851 (caduta dell'etichetta) era già stata revocata e il suo verbale indicava la strada: l'ELEZIONE.
+7.859: quando il pallone è arrivato al bersaglio (entro 2u), l'elezione allarga il raggio a 5u e la
+sosta d'arrivo (7.642 v4) porta il pallone sui piedi dell'eletto; in volo il raggio resta 2,5u.
+Rosso `__CPM_NO859`. Misura (telefono, padrone ≤3u e campioni con padrone, Vairo casa e Galli fuori
+in coppia; baseline n° 6: 33 / 35 / 11 / 27 %): **verde Vairo 7 % (rosso 17), Galli 20 % (rosso 12)** —
+direzioni opposte, dentro il rumore fra passate (lezione 16ª), e un segnale in più contro: in volo
+50-51 % del tempo contro 42-48 (rosso, stesse condizioni di carico) e 36 (n° 6): con l'eletto a 5u la
+sosta d'arrivo manda il pallone sui suoi piedi e il pallone viaggia di più, non di meno. Mediana
+reso↔padrone 15,8u a Vairo contro 9,2. **Revocata**, sorgente riportato al 7.858.0. La diagnosi resta
+(corpo più vicino a mediana 2,9u dal pallone atterrato, scrittore «nessuno»); il rimedio non è
+l'elezione né la caduta dell'etichetta: è il punto d'arrivo del passaggio, che per progetto sta
+«davanti al ricevente fino a sei passi» — va misurato quanto davanti, e portato ai piedi.
