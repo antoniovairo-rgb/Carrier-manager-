@@ -1579,3 +1579,53 @@ Quello che i fotogrammi mostrano:
 Prossimi, in ordine: (a) la scena dell'eroe che non porta il pallone in porta (codice 011, #31: il
 tetto dei 5,2 s dichiara il gol col pallone a 72 — misurare quali scene, poi far volare il pallone
 prima di dichiarare); (b) la banda 60 del padrone (19-36 %); (c) la prima occasione sempre al 10'-12'.
+
+## Scorecard DA TELEFONO n° 6 — build 7.858 (branch)
+
+Chromium 412×915 portrait, campo 3D acceso, tick reale, seme 4242, screencast CDP, sonda v6. Età
+mediana dei fotogrammi 336 / 203 / 266 / 346 ms, max 0,9-1,1 s. NON è l'Android del PO. Schede e
+fotogrammi in `docs/collaudo-telefono/n06/`.
+
+| partita | padrone ≤3u | salti | fps | stati (min) | frasi del tiro smentite (piano → emesse) | finale |
+|---|:---:|:---:|:---:|---|:---:|:---:|
+| Vairo casa | 33 % | — | — | — | 1/4 → 0/4 | 1-0 |
+| Moretti casa | 35 % | — | — | — | 1/3 → 0/3 | 1-0 |
+| Galli fuori | 11 % | 54 | 17 | gioco 56 · morta 13 · ripresa 11 · inizio 6 | 2/3 → 0/3 | 2-1 |
+| Conti fuori | 27 % | 51 | 15 | gioco 56 · morta 8 · ripresa 15 · inizio 4 | 1/1 → 0/1 | 5-2 |
+
+Quello che i fotogrammi mostrano:
+
+- **Gol del piano (7.855 v4 confermata):** Moretti 57' portiere a terra sul palo a +0,5 s
+  (`moretti-f27`, età 308 ms) e in ginocchio a +1 s (`moretti-f28`, età 38 ms); Galli 69' carponi col
+  pallone sulla linea a +1 s (`galli-f37`); Bruno 76' accovacciato sulla linea (`conti-f44`, età 125
+  ms). Il tuffo, la terra e la rialzata si leggono.
+- **Gol dell'eroe: la riga precede ancora il pallone in 3 su 4, nonostante la 7.858.** Vairo 51'
+  (assist «Filtrante tra i centrali»): riga «1-0», HUD e tabellone 0-0, pallone sulla linea ai piedi
+  del portiere in piedi, scena aperta (`vairo-f20`, età 296 ms). Galli 29' (dribbling): a +1 s HUD 0-0,
+  portiere a terra, pallone a metà area (`galli-f14`, età 311 ms). Conti 86' («Tiro controllato»): a
+  +1 s HUD 4-2 col pallone a metà area (`conti-f52`, età 210 ms). Conti 62' (testa): HUD 2-2 con eroe
+  e pallone dentro la porta (`conti-f36`, età 98 ms). La sonda della riga del gol dice 7/8 col pallone
+  alla linea dopo la 7.858; i fotogrammi dicono 1/4. **La discrepanza non è risolta**: la sonda legge
+  il pallone reso nell'istante della riga «segna», la foto arriva 0,5-1 s dopo e mostra il pallone
+  lontano dalla porta. Prossima misura: nella stessa corsa, foto e posizione del pallone nello stesso
+  istante, per scena (dribbling, assist, tiro controllato, testa).
+- **Le parole del tiro (7.856 confermata):** smentite 5/11 come le voleva il piano, 0/11 emesse.
+
+| # | Area | n°5 | **n°6** | motivo (fotogramma e minuto) |
+|---|------|:---:|:---:|---|
+| 1 Realismo | 5 | **5** | padrone 11-35 %, un salto ogni 2-3 s |
+| 2 Credibilità da attaccante | 6 | **6** | portiere a terra sui gol del piano (`moretti-f27`, `galli-f37`, `conti-f44`); frasi false 0/11 |
+| 3 Causalità | 6 | **6** | il piano finisce in rete col tuffo; l'eroe «segna» prima del pallone 3/4 |
+| 4 Varietà | 5 | **5** | prima occasione al 10'-12' in 4/4 |
+| 5 Ritmo | 5 | **5** | ripresa 11'-15' fuori casa; due 1-0 in casa con pochi tiri |
+| 6 Azioni extra-eroe | 7 | **7** | tiro, tuffo, terra, rialzata |
+| 7 Highlight dell'eroe | 4 | **4** | `vairo-f20`, `galli-f14`, `conti-f52`: riga e HUD prima del pallone |
+| 8 Telecronaca | 6 | **6** | 0/11 smentite sul tiro; le righe del gol dell'eroe restano in anticipo |
+| 9 Interazioni | 7 | **7** | nessuna contro il punteggio |
+| 10 Coerenza fra i sistemi | 6 | **6** | HUD 0-0 col portiere a terra (`galli-f14`) |
+| 11 Immersione | 5 | **5** | 15-17 fps, età dei fotogrammi fino a 1,1 s |
+| 12 Carriera | 6 | **6** | barra viva |
+
+**Media DA TELEFONO: 5,7** (somma 68, come il n° 5). Otto aree sotto 7. Nessun «puoi collaudare».
+Prossimi: la discrepanza sonda/foto sul gol dell'eroe (misura nello stesso istante, per scena); la
+banda 60 del padrone (11-35 %); la prima occasione al 10'-12'.

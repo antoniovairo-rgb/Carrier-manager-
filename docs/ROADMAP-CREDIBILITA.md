@@ -262,3 +262,8 @@ gol col pallone a 59-96 in 4 gol su 5 (costruzione R5 più arco durano di più);
 finché il renderer è occupato (tetto duro 9 s). Otto partite: gol di scena dichiarati col pallone alla
 linea 7/8 contro 2/6. Resta: le scene di assist (tetto a 87, 1/2); la banda 60 del padrone (19-36 %);
 la prima occasione al 10'-12'. Telefono n° 6 da fare sulla 7.858.
+
+**Aggiunta, 10/09 mattina presto:** telefono n° 6 sulla 7.858: 5,7 (come il n° 5). Il tuffo a terra
+sui gol del piano regge (3 fotogrammi freschi in 3 partite); le frasi del tiro 5/11 → 0/11. Il gol
+dell'eroe: la sonda dice 7/8 col pallone alla linea, i fotogrammi 1/4 — discrepanza aperta, da
+misurare nello stesso istante per scena (dribbling, assist, tiro controllato, testa).
