@@ -1665,3 +1665,41 @@ banco S1: giocate su un uomo 0 → 100 %, passaggi 0 → 7-8 per 400 s, pallone 
 
 **Media DA TELEFONO: 5,8** (somma 69, come il n° 6). Otto aree sotto 7. Nessun «puoi collaudare».
 Il telefono non vede la 7.861 perché la sua metrica è più rumorosa dell'effetto; il banco S1 sì.
+
+# Collaudo DA TELEFONO n° 8 — build 7.866 (10/09, 15:00) — punto di partenza prima della struttura S1
+
+Sonda v7, Chromium 412×915 (non l'Android del PO), quattro partite: Vairo e Moretti in casa, Galli e Conti
+fuori. Schede in `docs/collaudo-telefono/n08/`. Fra la n° 7 e questa: 7.862 (pallone ≥ 11 px), 7.863,
+7.864 (tetto del gol di scena in secondi di scena), 7.865 (solo il pallone fuori dalle scene), 7.866
+(frasi col luogo scelte dal pallone).
+
+| partita | padrone ≤3u | scarto reso↔logico p90 | salti | frasi del tiro smentite | prima occasione | finale |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Vairo casa | 36 % | 14,6u | 46 | 0/4 | 6' | 1-0 |
+| Moretti casa | 34 % | 15,7u | 42 | 0/1 | 7' | 2-0 |
+| Galli fuori | 41 % | 23,3u | 43 | 0/2 | 19' | 1-1 |
+| Conti fuori | 34 % | 16,4u | 55 | 0/1 | 6' | 4-0 |
+
+Gol di scena dell'eroe col pallone alla riga: **3/3** a 99,15 (Vairo 32', Moretti 16', Conti 15'; n° 7: 3/5).
+Gol del simulatore alla riga a 97,0-100,6, tutti a 100,6 entro mezzo secondo. Fotogrammi di gioco a
+campo vuoto: **0/33** (n° 7: 6/24); nei fotogrammi di telecronaca testuale si vede il pallone da solo,
+come chiesto. Parate «ci arriva in tuffo» con il pallone ancora al punto del tiro (84-89) in 4 casi:
+ritardo d'arrivo, dichiarato in 7.865.
+
+| # | Area | n°7 | **n°8** | motivo |
+|---|------|:---:|:---:|---|
+| 1 Realismo | 5 | **5** | padrone 34-41 % (n° 7: 22-44); campo mai vuoto; il pallone logico sta lontano dal padrone nel 71-75 % (banco) |
+| 2 Credibilità da attaccante | 6 | **6** | frasi smentite 0/8 |
+| 3 Causalità | 6 | **6** | i gol di scena arrivano alla linea 3/3; le parate lette col pallone al punto del tiro |
+| 4 Varietà | 5 | **5** | prima occasione 6'-7' in 3/4 (Galli 19') |
+| 5 Ritmo | 5 | **5** | righe 83-90, gioco 55-66' |
+| 6 Azioni extra-eroe | 7 | **7** | 6 gol del simulatore accreditati, alla linea entro mezzo secondo |
+| 7 Highlight dell'eroe | 5 | **6** | pallone alla riga 3/3 (era 3/5), esultanza dopo la rete |
+| 8 Telecronaca | 6 | **6** | geografia della riga 80 % a +1 s, 3 % mai; parate in anticipo sul pallone |
+| 9 Interazioni | 7 | **7** | |
+| 10 Coerenza fra i sistemi | 6 | **6** | HUD e riga coerenti; punteggio logico un tick dopo |
+| 11 Immersione | 5 | **6** | pallone 11 px e sempre in campo; 11-12 fps sul banco |
+| 12 Carriera | 6 | **6** | career PASS |
+
+**Media DA TELEFONO: 5,9** (somma 71; n° 7: 69). Sette aree sotto 7. Nessun «puoi collaudare».
+È il punto di partenza dichiarato per la 7.868 (struttura S1: un pallone, un padrone).

@@ -4074,3 +4074,26 @@ logico. Il rimedio va sul logico (S1), non sul reso. Sorgente riportato alla 7.8
 **Fatto da verificare subito:** il logico ≤3u dal padrone qui è 24-29 % in sei corse, contro 36 / 40 / 49
 misurati per la 7.863 (allora a richiesta `__CPM_SI860` sulla 7.861). Se la promozione della 7.863 non
 fosse attiva nel build, sarebbe una regressione silenziosa: controllo del codice e rimisura sul banco.
+
+## 7.868 — un pallone, un padrone: il possesso ambientale come sequenza di passaggi (S1, la struttura)
+
+Direttiva PO 10/09 14:20: «rivedi la struttura se lo ritieni opportuno», dopo la mia lettura («netto
+miglioramento no: 5,3 → 5,8 in un giorno e mezzo; S1 non si sposta con le pezze»). La diagnosi era già
+a verbale nella 7.850 v2: «il possesso deve diventare una sequenza di passaggi discreti fra uomini
+nominati, invece di un bersaglio che scivola». Punto di partenza misurato sulla 7.866 (banco S1, sei
+corse): pallone logico ai piedi del padrone ≤3u 18-29 %, campioni a terra senza padrone 43 %.
+Tre stati nel mover del pallone logico, fuori da scene e macchine (piano, contropiede, palla morta,
+calcio d'inizio): **tenuta** (padrone del lato entro 3,5u: il pallone sta sui suoi piedi e cammina con
+lui), **volo** (padrone lontano = ricevente eletto: il pallone gli va incontro a 7u per tick, ~17 u/s,
+sulla posizione attuale), **libero** (nessun padrone del lato: un uomo entro 3,5u lo prende, altrimenti
+vola all'uomo del lato più vicino al bersaglio — la proposta di una riga diventa un passaggio a un uomo).
+Rosso `__CPM_NO868`. Testimone `__CPM_POSS868` (tenuta/volo/libero/elezioni/voli-a-uomo).
+Metro: banco S1 ×3 verde/rosso (≤3u ≥ 60 %, senza padrone ≤ 15 %), poi geografia, guardiani CI
+(manovra-viva, ball-motion), telefono n° 9. Rischi dichiarati: ritmo delle righe di manovra, arrivi
+del piano (7.847 attende l'uomo e il pallone), salti del reso sul telefono.
+
+**Dubbio 7.863 chiuso (14:45).** Coppia sul banco S1 (padroni, Vairo, 400 s): verde 25 / 20 % contro rosso
+`__CPM_NO863` 18 / 37 %; il contatore dice che la 7.863 scatta **4 volte in 400 s** (la condizione «portatore =
+ricevente» vale solo nel volo di un passaggio agganciato, e i passaggi sono 3-6 per corsa). Le 36 / 40 / 49
+di ieri erano tre mondi fortunati: il rumore del banco è ±8, non ±3 come avevo scritto (lezione 21ª: la
+banda di rumore si stima su sei corse, non su tre). La 7.863 resta (non nuoce), ma è superata dalla 7.868.
