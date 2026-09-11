@@ -4309,3 +4309,23 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
   rete (~2): sono le pause del calcio, non del narratore.
 - Rituali: `test:logic` 41/41, JSX ok, IDENTICO 1. Browser (smoke870 / partita-vera / scheda): in coda,
   dopo il rituale notturno di produzione (non si sovrappongono due Chromium).
+
+## 7.872 — il gol decretato si costruisce fino all'area (passo 2 delle consegne: i tiri; e «tiro da lontanissimo» #45/#48)
+
+- Trovato col banco `tiri-zona.mjs` (32 partite in node, un decreto ogni ~38 tick): dei tiri nati da un
+  decreto del microsim, 68 su 130 partivano da «dietro» (propria meta' campo) e 13 da centrocampo — cioe'
+  81 su 130 erano il «tiro da lontanissimo, non e' calcio» che il PO segnala dal 7.792. Causa: dopo cinque
+  tick di decreto il padrone tirava da dove stava, e al tetto (nove tick) il piu' vicino al pallone tirava
+  da qualunque punto del campo.
+- Rimedio nel motore: col decreto pendente chi ha la palla fuori dalla trequarti LANCIA il compagno piu'
+  avanzato (sicuro dal terzo tick) o porta palla; il tiro parte dal limite o dall'area, dalla trequarti
+  solo dopo cinque tick. Al tetto, se il pallone e' dietro, prima il lancio in avanti e il tiro al tick
+  dopo da dove arriva (il tetto aspetta il volo). Le punte del lato decretato salgono al limite
+  (adv 80-84) cosi' il lancio ha un bersaglio.
+- Misura appaiata (stesso banco, stessi semi): tiri col decreto da dietro/centrocampo 81/130 → 0/63;
+  zone dei tiri decretati ora limite 41 · trequarti 20 · area 2. Decreti segnati 26/29 (prima 31/34: i
+  tre mancanti sono decreti nati oltre l'88' in entrambi i casi), attesa media 5,3 tick (prima 6,4),
+  massima 11 (tetto del test 16). Tiri a partita 4,9 (prima 6,6: erano gonfiati dai tiri da dietro).
+- Rituali: `test:logic` 41/41, IDENTICO 1. Browser (smoke870 / partita-vera / scheda) in coda insieme
+  alla 7.871, dopo il rituale notturno di produzione. Residuo dichiarato: l'area resta rara in tenuta
+  (28 tick su 1230 nel banco): i tiri liberi partono per lo piu' dal limite (59) e dalla trequarti (23).

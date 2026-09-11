@@ -114,6 +114,7 @@ function creaMotorePossesso(cfg){
       if(sc>bs){bs=sc;best=q;}}
     if(!best&&opt.conGk!==true){const gk=portiereDi(l);if(gk&&hyp(gk.x,gk.y,P.x,P.y)<=40&&!P.gk)best=gk;}
     return best;};
+  const piuAvanzato=(l,escl)=>{let best=null,ba=-1;for(const q of g){if(!mio(q,l)||q.gk||q.i===escl||!attivo(q))continue;const a=advDi(q.x,l)+(q.eroe?2:0);if(a>ba){ba=a;best=q;}}return best;};
   const tipoPassaggio=(P,R)=>{const d=dirDi(P.team);const fw=(R.x-P.x)*d,dd=hyp(P.x,P.y,R.x,R.y);
     if(dd>30)return"lancio";if(fw<-4)return"appoggio";if(Math.abs(R.y-P.y)>24)return"cambio";if(fw>13&&advDi(R.x,P.team)>=68)return"filtrante";if(fw>6)return"verticale";return"corto";};
   const passa=(P,R,opt)=>{opt=opt||{};const l=P.team;const kind=opt.kind||tipoPassaggio(P,R);
@@ -190,7 +191,11 @@ function creaMotorePossesso(cfg){
     const verso=S.richieste.verso;
     let pTiro=zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0;
     pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
-    if(golReq){if(zona==="area"||zona==="limite"||golReq.t>=5){ramo("tiroGol");tira(P);return;}}
+    if(golReq){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
+      /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
+      const M=piuAvanzato(l,P.i);
+      if(M&&advDi(M.x,l)>=adv+6&&hyp(M.x,M.y,P.x,P.y)>=5){ramo("lancioGol");passa(P,M,{kind:hyp(M.x,M.y,P.x,P.y)>26?"lancio":"verticale",sicuro:golReq.t>=2});return;}
+      if(adv<86){ramo("conduciGol");conduci(P);return;}}
     else if(rnd()<pTiro){ramo("tiro");tira(P);return;}
     const spazio=spazioAvanti(P);
     const largo=Math.abs(P.y-50)>=22;
@@ -298,6 +303,8 @@ function creaMotorePossesso(cfg){
         tx=sl.x+dp*spinta+(bx-50)*0.35;
         ty=sl.y+(by-sl.y)*0.22;
         if(p.rl==="DF"&&!inPoss){tx=sl.x+dp*Math.min(spinta,0)+(bx-50)*0.25;}
+        /* [7.872] col gol decretato le punte di quel lato salgono al limite dell'area: il lancio ha un bersaglio */
+        {const gr=S.richieste.gol;if(gr&&p.team===gr.lato&&p.rl==="AT"&&st!=="fermo"&&advDi(tx,p.team)<80){tx=xDa(80+(p.i%3)*2,p.team);ty=sl.y+(by-sl.y)*0.35;v=6;}}
       }
       if(st==="fermo"&&S.fermo&&S.fermo.batt===p.i){const f=S.fermo;tx=f.x-dp*(f.kind==="pen"?1.5:0.8);ty=f.kind==="corner"?f.y:f.y;v=8;}
       else if(st==="fermo"&&S.fermo){const f=S.fermo;
@@ -332,7 +339,10 @@ function creaMotorePossesso(cfg){
     if(S.richieste.gol&&S.richieste.gol.lato!==S.poss.lato){const gr=S.richieste.gol;gr.t=(gr.t|0)+1;if(!S.richieste.turno)S.richieste.turno=gr.lato;
       if(S.poss.stato==="tenuta"&&S.poss.padrone!=null&&S.poss.t>=1){const P=g[S.poss.padrone];if(P&&!P.gk){perdi(P);}}}
     /* tetto duro del decreto: al nono tick il gol entra da dove sta la palla (a fine partita non puo' restare appeso) */
-    if(S.richieste.gol&&(S.richieste.gol.t|0)>=9&&S.poss.stato!=="rete"&&S.poss.stato!=="kickoff"&&!S.scena){const gr=S.richieste.gol;const W=piuVicino(S.palla.x,S.palla.y,gr.lato,{noGk:true});if(W){if(S.poss.padrone!==W.p.i){W.p.x=clamp(S.palla.x-dirDi(gr.lato)*0.4,2,98);W.p.y=S.palla.y;S.fermo=null;tenuta(W.p,null);}S.poss.t=2;gr.t=Math.max(gr.t,9);tira(W.p);muoviTutti();const out=S.eventi;S.eventi=[];return out;}}
+    if(S.richieste.gol&&(S.richieste.gol.t|0)>=9&&S.poss.stato!=="rete"&&S.poss.stato!=="kickoff"&&!S.scena){const gr=S.richieste.gol;const W=piuVicino(S.palla.x,S.palla.y,gr.lato,{noGk:true});if(W&&S.poss.stato!=="volo"){if(S.poss.padrone!==W.p.i){W.p.x=clamp(S.palla.x-dirDi(gr.lato)*0.4,2,98);W.p.y=S.palla.y;S.fermo=null;tenuta(W.p,null);}S.poss.t=2;gr.t=Math.max(gr.t,9);
+      const zW=zonaDi(advDi(W.p.x,gr.lato),W.p.y);const M=(zW==="area"||zW==="limite"||zW==="trequarti")?null:piuAvanzato(gr.lato,W.p.i);
+      if(M&&advDi(M.x,gr.lato)>=advDi(W.p.x,gr.lato)+6&&hyp(M.x,M.y,W.p.x,W.p.y)>=5){S.conta.rami.lancioTetto=(S.conta.rami.lancioTetto|0)+1;passa(W.p,M,{kind:"lancio",sicuro:true});}/* [7.872] anche al tetto: prima il lancio in avanti, il tiro al tick dopo da dove arriva */
+      else tira(W.p);muoviTutti();const out=S.eventi;S.eventi=[];return out;}}
     const st=S.poss.stato;
     if(st==="rete")tickRete();
     else if(st==="kickoff")tickKickoff();
