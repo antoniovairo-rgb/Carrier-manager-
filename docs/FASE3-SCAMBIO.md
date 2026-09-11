@@ -4329,3 +4329,16 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
 - Rituali: `test:logic` 41/41, IDENTICO 1. Browser (smoke870 / partita-vera / scheda) in coda insieme
   alla 7.871, dopo il rituale notturno di produzione. Residuo dichiarato: l'area resta rara in tenuta
   (28 tick su 1230 nel banco): i tiri liberi partono per lo piu' dal limite (59) e dalla trequarti (23).
+
+## 7.873 — le punte salgono al limite quando la squadra ha il pallone (l'area come luogo del gioco)
+
+- Misura (banco `tiri-zona.mjs`, 32 partite): in tenuta il pallone stava in area 28 tick su 1230 e i
+  tiri dall'area erano 13 su 136; i cross in gioco aperto 2 in 32 partite. Causa: la spinta in avanti
+  dei ventidue in possesso e' tagliata a 14 u dallo slot, e le punte partono da 55: non arrivano mai a
+  78, dove il cross e il filtrante trovano un bersaglio.
+- Rimedio (solo il coefficiente delle punte in `muoviTutti`): spinta 0,55 con tetto 26 u per gli AT in
+  possesso (gli altri restano 0,35 / 14).
+- Misura appaiata: area in tenuta 28 → 39 tick, tiri dall'area 13 → 20 su 136, cross in gioco aperto
+  2 → 9 (32 partite), passo massimo 11,3 → 9,0 u. Effetto modesto e dichiarato tale: il prossimo
+  gradino e' la scelta del ricevente vicino all'area (filtrante 1 su 16 partite).
+- Rituali: `test:logic` 41/41, IDENTICO 1. Browser in coda con 7.871-7.872.

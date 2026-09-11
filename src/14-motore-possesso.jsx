@@ -299,7 +299,7 @@ function creaMotorePossesso(cfg){
       const dp=dirDi(p.team);
       if(p.gk){tx=sl.x+dp*(inPoss?1.5:0);ty=50+(by-50)*0.18;v=2.5;}
       else{
-        const spinta=inPoss?clamp((advB-40)*0.35,-4,14):clamp((advDi(bx,p.team)-50)*0.30,-10,4);
+        const spinta=inPoss?clamp((advB-40)*(p.rl==="AT"?0.55:0.35),-4,(p.rl==="AT"?26:14)):clamp((advDi(bx,p.team)-50)*0.30,-10,4);
         tx=sl.x+dp*spinta+(bx-50)*0.35;
         ty=sl.y+(by-sl.y)*0.22;
         if(p.rl==="DF"&&!inPoss){tx=sl.x+dp*Math.min(spinta,0)+(bx-50)*0.25;}
