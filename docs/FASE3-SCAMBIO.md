@@ -4902,3 +4902,40 @@ DENSO quanto il verde prima di poter votare l'area 11 con questo numero.
 Vale anche la nota di metodo della serata: il container di questa sessione si e' riavviato due volte
 (19:24 e 22:52) uccidendo due catene lunghe. Da qui in avanti le misure si lanciano **una corsa alla
 volta**, mai in catena da mezz'ora.
+
+#### RITRATTAZIONE (23:55): anche la v2 e' confusa dalla densita'. Lo strumento non separa.
+
+Mezz'ora fa ho scritto qui sopra «il primo metro dell'area 11 che separa una build buona da una cattiva»,
+dichiarando come non provato il solo residuo di densita' (rosso a 3 fotogrammi per punto contro 30-52 del
+verde). **Quel residuo non era un dettaglio: era tutta la separazione.**
+
+Controllo, sugli STESSI fotogrammi grezzi del verde, tenendone 1 su N (i punti logici restano tutti; cambia
+solo quanti fotogrammi resi li testimoniano):
+
+| 1 fotogramma su | fotogr./punto | punti | <= 3u | p90 | max |
+|---|---|---|---|---|---|
+| 1 | 53 | 44 | **98 %** | 0,4u | 3,4u |
+| 2 | 27 | 44 | 98 % | 0,6u | 3,4u |
+| 4 | 14 | 44 | 95 % | 0,6u | 11,0u |
+| 8 | 7 | 44 | 93 % | 0,6u | 11,0u |
+| 16 | 4 | 44 | 91 % | 0,7u | 31,6u |
+| 24 | **3** | 44 | **86 %** | 3,6u | 31,6u |
+| 32 | 3 | 44 | **77 %** | 5,8u | 31,6u |
+
+Il VERDE, diradato alla densita' del rosso, fa 86 % e 77 %: l'81 % del rosso ci sta in mezzo. **A densita'
+pari verde e rosso non si distinguono.** La separazione 98/81 che avevo verbalizzato era la differenza fra
+53 fotogrammi per punto e 3, non fra motore acceso e motore spento. Il controllo sul carico (verde a 8 fps
+al 98 %) non bastava, perche' quel verde aveva comunque 30 fotogrammi per punto.
+
+**La misura e' quindi revocata come discriminante.** Non entra nel voto dell'area 11 e non ci si tara
+niente sopra. Quello che resta vero e' solo il numero del verde a piena densita', che e' comunque un fatto:
+la traiettoria resa passa dai punti dichiarati con p90 0,4u e max 3,4u su 44 punti — ma senza un rosso
+altrettanto denso non so dire se sia merito della build.
+
+**Il vincolo strutturale, adesso chiaro.** Il rosso `__CPM_NO870` non PUO' essere denso: col motore spento
+il gioco scrive il pallone logico il doppio delle volte (90 punti contro 44) e gira a 6 fps invece di 15,
+quindi 3 fotogrammi per finestra sono il suo massimo. Un confronto verde/rosso su questa grandezza e'
+impossibile per costruzione. Serve un rosso che tenga il motore acceso (stessa cadenza dei punti, stessi
+fps) e rompa solo l'inseguimento del pallone reso: finche' non esiste, l'area 11 resta senza voto.
+
+Sesta ipotesi della giornata sull'area 11, sesta caduta. Zero tarature scritte.
