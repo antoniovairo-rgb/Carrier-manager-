@@ -4699,3 +4699,15 @@ comincia dove la partita l'aveva lasciata. Guardiano `partita-vera` exit 0, tutt
 `career-critical` exit 0 in 531 s · `npm run ci` exit 0 in 1226 s. Gate stabile (4 run pulite di fila),
 replay completi e coerenti, guardiano `partita-vera` verde. Il branch del motore regge il rituale
 completo anche con la scena dell'eroe nata dal fatto. Scheda n° 12 (quattro partite) in corsa.
+
+## 7.881 — la rimessa si batte subito (il prezzo della 7.878, dalla scheda n° 12)
+
+- Rosso dalla scheda n° 12: minuti a gioco fermo **19-21 contro un tetto di 15**, in 3 partite su 4. E'
+  il prezzo della 7.878 (rimesse laterali 0,02 → 0,85): piu' interruzioni, piu' minuti a palla ferma.
+  L'errore e' mio: il margine sottile era gia' scritto nel verbale della 7.878 e l'ho spedita lo stesso.
+- Rimedio: non si tolgono le rimesse — il pallone DEVE uscire, e' calcio — si accorcia la pausa. Rimessa
+  laterale e rinvio dal fondo si battono in **un tick** invece di due; angolo e rigore restano a tre,
+  perche' li' la squadra si schiera davvero.
+- Misura nel banco (48 partite): fermo 15 % → 14 % dei tick, interruzioni 5,29 → 5,27 a partita (le
+  rimesse NON si perdono), decreti segnati **89 % → 94 %**, attesa massima 15 tick. `test:logic` 43/43,
+  IDENTICO 1. Due partite in browser in corsa per il minutaggio vero.

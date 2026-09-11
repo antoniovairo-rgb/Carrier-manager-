@@ -96,7 +96,11 @@ function creaMotorePossesso(cfg){
   const volo=(o)=>{S.poss.stato="volo";S.poss.tipo=o.tipo;S.poss.da={x:S.palla.x,y:S.palla.y};S.poss.a={x:o.x,y:o.y};S.poss.ricevente=o.ricevente!=null?o.ricevente:null;S.poss.esito=o.esito||null;S.poss.v=o.v||22;S.poss.t=0;S.poss.icpt=o.icpt!=null?o.icpt:null;S.poss.icptA=o.icptA||0;S.poss.tiratore=o.tiratore!=null?o.tiratore:null;S.poss.kind=o.kind||null;
     S.arco={type:o.arco||"pass",from:{x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)},to:{x:+o.x.toFixed(1),y:+o.y.toFixed(1)},actor:o.actor||null,rcv:o.rcv||null,lato:S.poss.lato};
     S.poss.padrone=null;};
-  const fermoSet=(kind,lato,x,y,opt)=>{opt=opt||{};const tot=kind==="corner"?3:kind==="pen"?3:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};
+  /* [7.881] LA RIMESSA SI BATTE SUBITO. Scheda n° 12: le interruzioni della 7.878 hanno portato i minuti
+     a gioco fermo a 19-21 contro un tetto di 15, in 3 partite su 4. Il rimedio non e' togliere le rimesse
+     (il pallone DEVE uscire: e' calcio) ma accorciare la pausa: una rimessa laterale e un rinvio si
+     battono in un tick, angolo e rigore restano a 3 perche' la squadra si deve schierare. */
+  const fermoSet=(kind,lato,x,y,opt)=>{opt=opt||{};const tot=kind==="corner"?3:kind==="pen"?3:(kind==="throw"||kind==="goal_kick")?1:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};
     {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;for(const q of g){if(!mio(q,lato)||q.gk)continue;const sc=(q.rl==="AT"?10:0)+(q.eroe?6:0)+rnd()*4;if(sc>bs){bs=sc;B=q;}}}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;}S.fermo.batt=B?B.i:null;}S.poss.stato="fermo";S.poss.lato=lato;S.poss.padrone=null;S.poss.ricevente=null;S.poss.t=0;S.palla.x=S.fermo.x;S.palla.y=S.fermo.y;
     if(S.richieste.turno===lato)S.richieste.turno=null;S.conta.fermo++;
     ev(kind==="foul"?"fallo":kind==="pen"?"rigore":kind==="corner"?"corner":kind==="throw"?"rimessa":"rinvio",Object.assign({x:+S.fermo.x.toFixed(1),y:+S.fermo.y.toFixed(1),per:lato},opt));};
