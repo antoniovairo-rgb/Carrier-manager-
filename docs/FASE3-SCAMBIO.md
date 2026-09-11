@@ -4826,3 +4826,39 @@ sono cadute. Quello che ho guadagnato e' che so dove guardare: prima di tornare 
 stabilito QUALE punto-palla logico e' la verita' (la prop React, o lo stato del motore letto da
 `stato()`), e la sonda va ancorata a quello. Finche' non e' fatto, la riga «scarto» della scheda resta
 nei numeri ma **non deve entrare nel voto**, esattamente come i salti.
+
+#### Verifica della nota qui sopra (21:30) — e una rettifica alla nota stessa
+
+La nota precedente diceva «una prop logica che per secondi interi non e' stata riscritta», che suona come
+un difetto. **Ho verificato prima di lasciarla in piedi, e la formulazione era sbagliata.**
+
+Sospetto legittimo: nella sonda `__CPM_MS()` non restituiva il minuto, quindi potevo aver misurato una
+partita che non stava girando — e allora le «30 posizioni logiche» sarebbero state un artefatto mio.
+Sonda di controllo (`rf-ck.mjs`, 120 s, un campione ogni 10 s):
+
+| t | fase | righe di cronaca | pallone logico | pallone reso |
+|---|---|---|---|---|
+| +10 s | playing | 7 | 41,44 · 79,93 | 41,44 |
+| +40 s | playing | 25 | 37,96 · 77,63 | 38,06 |
+| +70 s | playing | 31 | 60,80 · 47,62 | 62,30 |
+| +100 s | playing | 41 | 50,00 · 50,00 | 50,05 |
+| +120 s | playing | 52 | 32,71 · 59,26 | 32,71 |
+
+La partita gira (righe 7 -> 52 in 120 s) e il pallone logico si sposta in lungo e in largo. `__CPM_MS()`
+esiste ed e' una funzione: e' il campo `min` che in questa sonda non c'e', un dettaglio dello strumento,
+non della partita.
+
+**La rettifica.** Le 30-37 posizioni logiche distinte in 120-150 s NON sono una prop stantia: sono
+**una posizione per minuto simulato**, che e' esattamente la cadenza del motore (un tick = un minuto).
+Fra due punti logici il pallone reso percorre un'intera azione, e lo fa a ogni fotogramma.
+
+**Conseguenza, che e' piu' forte di quella di prima.** La riga «scarto reso<->logico, p90 <= 8u» confronta
+un pallone disegnato con continuita' contro un punto logico che esiste una volta al minuto: il p90 di
+12-28u non e' un ritardo di rendering ne' un difetto, e' **la distanza che il pallone copre dentro un
+minuto simulato**. La banda «<= 8u» non ha mai avuto un fondamento. La riga resta nei numeri come
+diagnostica, **non entra nel voto**, e la banda va riscritta o tolta.
+
+Restano quindi da rifondare, prima di poter rivotare l'area 11, tutte e tre le sue colonne: lo scarto
+(questa nota), i salti (misurano velocita' x intervallo di campionamento) e il ritardo del corpo (misura
+il carico della macchina). Nessun rimedio scritto: quattro ipotesi in un giorno, quattro cadute, zero
+tarature contro numeri non fondati.
