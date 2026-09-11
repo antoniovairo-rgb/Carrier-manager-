@@ -4788,3 +4788,41 @@ dichiara i propri fotogrammi al secondo: sotto ~12 fps il numero e' dello strume
 E' cosi' che e' caduta la 7.879 «ritardo del portatore», approvata dal PO e **revocata prima di
 scriverla**: 0,9u a macchina libera contro 2,4u sotto carico.
 
+
+### Area 11, seconda correzione della sera (11/09, 21:05): la riga «scarto reso<->logico» non misura un ritardo
+
+Dopo aver scartato l'ipotesi del tappo del dt, ho costruito la sonda `ritardo-frame.mjs`: campiona DENTRO
+la pagina a ogni fotogramma renderizzato (da Node il giro costa ~60 ms e a 16 fps se ne perde meta') e
+voleva esprimere il ritardo in FOTOGRAMMI, un numero che non dipende dalla macchina.
+
+La prima stesura ha dato «ritardo mediano 1,00 fotogrammi», che sembrava il numero cercato. **Era falso**:
+il denominatore era la velocita' logica calcolata fra due fotogrammi consecutivi, e il pallone logico non
+si muove a ogni fotogramma. Corretto il denominatore (velocita' fra due posizioni logiche DISTINTE), la
+velocita' e' risultata 0,08 u/s — cioe' assurda. A quel punto invece di aggiustare ancora la formula ho
+stampato i campioni grezzi.
+
+**Quello che si vede (Vairo, seme 4242, 120 s di gioco, 1.452 fotogrammi in `playing`):**
+
+| t (ms) | pallone RESO | pallone LOGICO |
+|---|---|---|
+| 59.707 → 60.253 | 52,86 · 54,03 (fermo) | 52,63 · 54,41 (fermo) |
+| 60.315 | 52,86 · 54,02 | **54,43 · 54,41** (salta) |
+| 60.808 | 59,26 · 65,40 | 54,43 · 54,41 |
+| 61.501 | 57,35 · 56,54 | 54,43 · 54,41 |
+| 62.365 | 55,47 · 55,29 | 54,43 · 54,41 |
+
+**Posizioni logiche DISTINTE: 30 in 1.452 fotogrammi** (una ogni ~4 secondi), con un salto singolo massimo
+di 36,28u. Il pallone reso intanto percorre continuamente escursioni di 5-11u.
+
+**Conseguenza sullo strumento, non sul gioco.** `lx/ly` di `__CPM_WS` e' `props.ballX/ballY`, e quella
+prop si aggiorna 30 volte in due minuti mentre il pallone reso si muove a ogni fotogramma. La distanza
+fra i due NON e' quindi «di quanto il rendering e' indietro»: e' la somma di due cose diverse — il
+rendering che insegue, e una prop logica che per secondi interi non e' stata riscritta. **La riga
+«scarto reso<->logico, p90 <= 8u» della scheda da telefono sta misurando anche la seconda, e per questo
+p90 12-28u convive con una mediana di 0,7-2,0u.**
+
+Non scrivo nessun rimedio contro questo: e' la terza ipotesi della giornata sull'area 11 e le prime due
+sono cadute. Quello che ho guadagnato e' che so dove guardare: prima di tornare a votare l'area 11 va
+stabilito QUALE punto-palla logico e' la verita' (la prop React, o lo stato del motore letto da
+`stato()`), e la sonda va ancorata a quello. Finche' non e' fatto, la riga «scarto» della scheda resta
+nei numeri ma **non deve entrare nel voto**, esattamente come i salti.
