@@ -4559,3 +4559,35 @@ non spiegate. Vanno riguardate alla prossima scheda a quattro partite.
 ⚠️ Intoppo di metodo, a verbale: la prima catena di misura della 7.878 e' MORTA a meta' (nessun processo,
 nessun marcatore) perche' lanciata senza staccarla dalla sessione. Rilanciata con `setsid`. Una misura
 che non finisce non e' un rosso: e' una misura che non c'e'.
+
+## REVOCATA PRIMA DI SCRIVERLA: la 7.879 (ritardo del portatore). Era il mio strumento, non il gioco
+
+Il PO aveva scelto la strada 2 («dimezzare lo stadio 2 solo per chi ha la palla»). Prima di toccare le
+costanti ho rifatto la misura e ho trovato numeri quattro volte migliori senza aver cambiato niente del
+movimento. Prova decisiva: **la stessa sonda, sulla stessa build, due volte — a macchina libera e con sei
+processi a mangiare la CPU**, registrando i fotogrammi al secondo:
+
+| misura | senza carico (15,1 fps) | con carico (9,4 fps) |
+|---|---|---|
+| pallone reso <-> pallone del motore | **1,8u** | 6,2u |
+| corpo del portatore <-> suo logico | **3,1u** | 5,9u |
+| corpo <-> suo bersaglio (stadio 2) | **0,9u** | 2,4u |
+| portatore marcato dal motore | 69 % | 50 % |
+
+Il ritardo segue il CARICO, non il codice. I 4,0u di stamattina erano stati misurati mentre girava la
+catena della scheda: strumento sotto carico, non gioco lento. E il trattamento speciale del portatore
+(bersaglio non smussato, accelerazione x2,5, scatto a 13 u/s) esiste gia', ARRIVA (marcato nel 69 % dei
+campioni) e funziona: lo stadio 2 col flag e' 0,9u.
+**Non implemento la 7.879**: sarebbe una taratura contro un numero gonfiato dalle mie condizioni di
+misura, cioe' esattamente la classe di errori che questo repo ha gia' pagato tre volte (7.483 «una pagina
+stanca non e' il gioco», 7.594 «il campione condizionato», 7.502 «velocita' x intervallo»).
+
+**Regola nuova per ogni sonda percettiva**: una misura sul RESO (pallone, corpi, camera) vale solo se la
+sonda gira DA SOLA e dichiara i propri fotogrammi al secondo; sotto i ~12 fps il numero e' dello
+strumento. Le quattro partite della scheda n° 11 girarono in catena, una alla volta, a 15-17 fps — gli
+stessi fps della corsa libera qui sopra: quella scheda RESTA VALIDA.
+
+Cosa resta davvero dell'area 11, con i numeri buoni: non il ritardo a regime (0,9-1,8u), ma le ESCURSIONI
+— scarto reso<->logico p90 12-22u contro una banda di 8 — e i salti del pallone (7-39 a partita). Sono
+eventi rari e grossi, quasi certamente negli archi e nei cambi di scena, non nel passo normale. Il
+prossimo cantiere dell'area 11 parte da li'.
