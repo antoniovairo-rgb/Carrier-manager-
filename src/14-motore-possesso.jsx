@@ -116,7 +116,7 @@ function creaMotorePossesso(cfg){
          e' la giocata che il calcio fa quando il centro e' chiuso. */
       if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0);
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
-      if(q.eroe)sc+=(cfg.eroe&&cfg.eroe.bonus)||2;
+      if(q.eroe)sc+=((cfg.eroe&&cfg.eroe.bonus)||2)+(S.richieste.scenaEroe?26:0);/* [7.879] chiesta la scena, l'eroe diventa la prima scelta */
       if(fw<-12)sc-=6;
       if(sc>bs){bs=sc;best=q;}}
     if(!best&&opt.conGk!==true){const gk=portiereDi(l);if(gk&&hyp(gk.x,gk.y,P.x,P.y)<=40&&!P.gk)best=gk;}
@@ -195,6 +195,13 @@ function creaMotorePossesso(cfg){
     const att=S.richieste.att[l]||0;
     if(P.gk){ramo("gk");if(S.poss.t<2&&rnd()<0.5)return;const R=scegliRicevente(P,{});if(R)passa(P,R,{kind:hyp(R.x,R.y,P.x,P.y)>26?"lancio":"corto",sicuro:true});else{const R2=piuVicino(P.x,P.y,l,{noGk:true,escl:P.i});if(R2)passa(P,R2.p,{sicuro:true});}return;}
     if(S.richieste.turno&&S.richieste.turno!==l&&!golReq&&S.poss.t>=1){ramo("turno");if(rnd()<0.6)perdi(P,"contrasto");else{const R=scegliRicevente(P,{});if(R){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});passa(P,R,{sicuro:true});if(m){S.poss.icpt=m.p.i;S.poss.icptA=0.5;}}else perdi(P,"contrasto");}return;}
+    /* [7.879] l'eroe ha il pallone e la scena e' stata chiesta: si dichiara l'occasione e si TIENE il
+       pallone per questo tick, cosi' il live match puo' aprire la scena sul fatto invece che sul minuto */
+    if(S.richieste.scenaEroe&&P.eroe&&adv>=52){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
+      ev("occasione_eroe",{chi:chi(P),zona:_z,press:_pr,x:+P.x.toFixed(1),y:+P.y.toFixed(1),
+        tipo:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
+        liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length});
+      ev("controllo",{chi:chi(P),press:_pr,zona:_z});return;}
     if(S.poss.t===1&&!golReq&&!(press>=4&&adv>=56&&rnd()<0.6)){ramo("controllo");
       if(zona==="area"&&press>=2.2&&rnd()<0.55){ramo("tiro1");tira(P);return;}
       if(press<1.8&&rnd()<0.12){ramo("persa1");perdi(P);return;}
@@ -381,6 +388,10 @@ function creaMotorePossesso(cfg){
     const out=S.eventi;S.eventi=[];return out;}
   const chiedi={
     gol(lato){S.richieste.gol={lato:lato===AWAY?AWAY:HOME,t:0};S.richieste.verso=null;},
+    /* [7.879] LA SCENA DELL'EROE SI CHIEDE, NON SI IMPONE. Il live match dice «fra poco tocca a lui»:
+       il motore porta il pallone all'eroe con le sue regole (il compagno lo sceglie come ricevente) e
+       quando ce l'ha davvero emette `occasione_eroe`. La scena si apre SU QUEL FATTO, non su un minuto. */
+    scenaEroe(on){S.richieste.scenaEroe=!!on;if(!on)S.conta.occEroe=0;},
     urgenza(){if(S.richieste.gol)S.richieste.gol.t=Math.max(S.richieste.gol.t|0,9);},
     turno(lato){const l=lato===AWAY?AWAY:HOME;if(S.poss.lato!==l)S.richieste.turno=l;},
     verso(o){S.richieste.verso=o?{x:clamp(+o.x||50,2,98),y:clamp(+o.y||50,3,97)}:null;if(o&&o.lato)chiedi.turno(o.lato);},

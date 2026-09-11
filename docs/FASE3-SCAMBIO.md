@@ -4624,3 +4624,21 @@ esiste. Lo faccio prima della prossima scheda.
 
 Il lavoro si sposta dove le misure NON dipendono dagli fps: area 4 (conteggi di eventi) e area 7 (gli
 highlight dell'eroe dal motore).
+
+## 7.879 — la scena dell'eroe nasce da un FATTO del motore, non da un minuto (area 7 della scheda)
+
+- Rosso misurato in browser (sonda nuova `scena-salto.mjs`, due corse): **0 scene su 4 si aprivano con
+  l'eroe che aveva il pallone**; all'apertura il mondo saltava — l'eroe fino a 10,1u, il pallone fino a
+  23,7u in una delle quattro. La scena veniva appiccicata sopra la partita invece di nascerne.
+- Rimedio, la prima fetta della seconda fase delle consegne: quando si apre la finestra della scena il
+  live match CHIEDE al motore di servire l'eroe (`chiedi.scenaEroe`); il motore lo sceglie come ricevente
+  con le sue regole (premio 26 nella scelta del ricevente) e, quando l'eroe ha il pallone oltre meta'
+  campo, emette `occasione_eroe {tipo, zona, pressione, compagni liberi}`. La scena si apre SU QUEL
+  FATTO. Rete di sicurezza: se dopo 14 minuti il pallone all'eroe non e' arrivato, la scena si apre
+  comunque col vecchio cancello — un highlight non si perde mai. Rosso `__CPM_NO879`.
+- Misura nel banco node (40 partite, richieste ogni 18 minuti): **110 richieste servite su 157 (70 %)**,
+  attesa mediana 7 tick, p90 19, tetto 25. Tipi: fra-le-linee 78 · costruzione 18 · conclusione 11 ·
+  spalle 3. Guardrail invariati: interruzioni 5,29 a partita, decreti segnati 89 %, attesa del decreto
+  massima 15. `test:logic` 43/43, IDENTICO 1, JSX ok.
+- In corsa: la coppia in browser sulla stessa sonda (scene aperte con l'eroe che ha il pallone) e il
+  guardiano `partita-vera`.

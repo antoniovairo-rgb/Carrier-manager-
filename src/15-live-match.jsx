@@ -1783,6 +1783,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      ogni movimento dichiarato e' percorso almeno per ~58% (1-0,75^3) prima che qualcuno lo contraddica.
      ⚠️ Il gol del micro-simulatore e' ESENTE: un gol si racconta quando accade, non quando la pausa lo
      consente. */
+  /* [7.879] la richiesta di scena al motore e il fatto che ne e' nato */
+  const chiestaScena879Ref=useRef(null);const occEroe879Ref=useRef(null);
   const bgCoolRef=useRef(0);
   /* [7.486.0] LA COPPIA DI QUESTA PARTITA, seedata su avversario+stagione+settimana: stessa gara, stesse
      voci, come un palinsesto — e nessun campo nuovo da salvare. */
@@ -3217,8 +3219,26 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _attesi803=Math.floor(_budget803*Math.max(0,Math.min(1,(nx-12)/76)));
         const _indietro803=(hlIdx<_attesi803);
         const _apertoDa803=Math.min(_prog803|0,12)+((typeof window!=='undefined'&&window.__CPM_NO844)?0:((hashStr("apre844|"+_sm819())>>>0)%10));/* [7.844.0] e l'apertura della finestra e' seminata per partita (0-9 minuti in piu', finestra 8'-17'): la stessa ora in ogni gara e' un copione. v1 con 0-5: n°24 14/13/25/13, due semi su quattro allo stesso minuto */
+        /* [7.879 LA SCENA NASCE DA UN FATTO, NON DA UN MINUTO. Rosso __CPM_NO879]
+           Misurato in browser: 0 scene su 4 si aprivano con l'eroe che aveva il pallone, e il mondo
+           saltava all'apertura (eroe fino a 10u, pallone fino a 24u). La scena veniva appiccicata sopra
+           la partita invece di nascerne. Ora, quando la finestra della scena si apre, il live match
+           CHIEDE al motore di servire l'eroe (`chiedi.scenaEroe`): il motore gli porta il pallone con le
+           sue regole e, quando ce l'ha davvero oltre meta' campo, emette `occasione_eroe`. La scena si
+           apre SU QUEL FATTO. Il vecchio cancello resta come rete: se dopo 14 minuti il pallone all'eroe
+           non e' arrivato, la scena si apre lo stesso — un highlight non si perde mai. */
+        const _NO879=(typeof window!=='undefined'&&window.__CPM_NO879);
+        const _finestra879=!_no803&&nx>=_apertoDa803&&hlIdx<hlTimesRef.current.length&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current;
+        if(!_NO879&&MOTORE870&&motoreRef.current){try{
+          if(_finestra879&&!chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(true);chiestaScena879Ref.current={t0:nx};}
+          else if(!_finestra879&&chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(false);chiestaScena879Ref.current=null;}
+        }catch(_e879){}}
+        const _fatto879=!_NO879&&!!occEroe879Ref.current;
+        const _scaduta879=!!(chiestaScena879Ref.current&&(nx-(chiestaScena879Ref.current.t0|0))>=14);
         const _apre803=_no803?(nx>=_prog803)
-          :(nx>=_apertoDa803&&_att803>=_PASSO803&&(_picco803||_indietro803)&&((typeof window!=='undefined'&&window.__CPM_NO834)||!pendingGoalRef.current)&&((typeof window!=='undefined'&&window.__CPM_NO839)||!(counterRef.current&&!counterRef.current.chiuso839)));/* [7.839.0] ne' sopra un contropiede in corsa (Moretti 30' «De Santis riparte» → 31' scena, gol dell'eroe) *//* [7.834.0 — LA SCENA DELL'EROE NON SI APRE SOPRA UN'OCCASIONE. Rosso __CPM_NO834] Playtest n°9 (AD): Galli 11'-13' «Pecoraro serve Colombo» → scena «Murato dalla difesa» → «Colombo prova da lontanissimo»; Conti 17'-18' il tiro di Scotti resta senza esito perche' la scena dell'eroe entra e segna. Con un piano aperto (occasione o costruzione del gol) la scena aspetta il tick dopo la chiusura. */
+          :(_fatto879?_finestra879
+          :(!_NO879&&_finestra879&&!_scaduta879?false
+          :(nx>=_apertoDa803&&_att803>=_PASSO803&&(_picco803||_indietro803)&&((typeof window!=='undefined'&&window.__CPM_NO834)||!pendingGoalRef.current)&&((typeof window!=='undefined'&&window.__CPM_NO839)||!(counterRef.current&&!counterRef.current.chiuso839)))));/* [7.839.0] ne' sopra un contropiede in corsa (Moretti 30' «De Santis riparte» → 31' scena, gol dell'eroe) *//* [7.834.0 — LA SCENA DELL'EROE NON SI APRE SOPRA UN'OCCASIONE. Rosso __CPM_NO834] Playtest n°9 (AD): Galli 11'-13' «Pecoraro serve Colombo» → scena «Murato dalla difesa» → «Colombo prova da lontanissimo»; Conti 17'-18' il tiro di Scotti resta senza esito perche' la scena dell'eroe entra e segna. Con un piano aperto (occasione o costruzione del gol) la scena aspetta il tick dopo la chiusura. */
         if(typeof window!=='undefined'&&window.__CPM_REC&&!_subDue38&&hlIdx<hlTimesRef.current.length&&_apre803){
           try{(window.__CPM_HL803=window.__CPM_HL803||[]).push({min:nx,prog:_prog803|0,sp:_sp803,
             perche:_no803?'orologio':(_picco803?'andamento':'tabella')});}catch(_e803){}
@@ -3239,7 +3259,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               const _fresh79=selectContextualSituations([...SITUATIONS],1,player,_lzSeed,{scoreCtx:_realCtx,clock:nx,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,ballX:((ballTargetRef.current||ballPosRef.current||{}).x),/* [7.204.0] continuità territoriale: la prossima azione nasce vicino a dove il gioco si è fermato */exclude:_used79});
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_fresh79[0];return c;});
             }
-            setBgAction(null);try{cpmEv("scena",{min:nx|0,src:"calendario-tick"});}catch(_e){}setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
+            setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null});}catch(_e){}
+            try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occEroe879Ref.current=null;
+            setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
           return nx;
         }
@@ -3936,6 +3958,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           {const _gc=_stM870.gioc;setMatchPlayers(prev=>{const _nx2=prev.map((pl,i2)=>{const q=_gc[i2];return (q&&pl&&pl.team!=="ref")?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=_nx2;return _nx2;});}
           if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current)setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCHERMO843=window.__CPM_SCHERMO843||[]);if(_S.length<400)_S.push({min:nx,ko:kickoffRef.current|0,kick:kickRef.current|0,out:0,fermo:fermoRef.current?1:0,sp:0,pg:pendingGoalRef.current?1:0,ct:0,lib:0,hl:_inHL77?1:0,cool:bgCoolRef.current|0,ph:String(phaseRef.current),motore:1,stato:_stM870.poss.stato});}catch(_e){}}
+          /* [7.879] il fatto che apre la scena: lo si prende qui, dove i fatti del motore arrivano */
+          {const _oc=_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0};}
           _narr870=narra870(_evM870,_stM870,nx,{cool:bgCoolRef.current|0});
           if(_narr870&&_narr870.ef){/* il gol e' entrato: la riga porta l'evento del microsim (accredito, festa, ripresa) */const _g=golMotoreRef.current;if(_g&&_g.ev){_narr870.ms=_g.ev.ms||_narr870.ms;_narr870.w=_g.ev.w||1;}golMotoreRef.current=null;pendingGoalRef.current=null;}
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NARR870=window.__CPM_NARR870||{tick:0,eventi:0,righe:0,per:{}});_W.tick++;_W.eventi+=_evM870.length;if(_narr870){_W.righe++;_W.per[_narr870._motore870.kind]=(_W.per[_narr870._motore870.kind]|0)+1;}}catch(_e){}}
