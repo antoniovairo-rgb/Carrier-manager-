@@ -4424,3 +4424,25 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
   · mesh 3D↔pallone del motore: mediana 5,4 → 2,4u, <=3u dal 32 % al 54 %;
   · `ballPos`↔pallone del motore: 0 prima e dopo (quello strato era gia' sano).
 - IDENTICO 1, JSX ok. Guardiano e scheda da telefono in corsa.
+
+### 7.877 — le misure in browser (11/09 07:05)
+
+- Guardiano `partita-vera`, exit 0: `custodia` mediana 0,5u su 50 campioni (era 6-7u: e' la stessa
+  causa, un solo scrittore), `arbitro-esiste` 7, tutte le altre bande verdi.
+- Scheda da telefono (Chromium 412×915, GLB acceso, tick reale — NON un Android vero), coppia
+  rosso/verde 7.874 → 7.877 sulle stesse due partite:
+
+  | misura | Vairo casa | Galli fuori | banda |
+  |---|---|---|---|
+  | pallone ai piedi del padrone (<=3u) | 45 % → **68 %** | 54 % → **77 %** | >= 60 % |
+  | …di cui a palla a terra | 50 % → **76 %** | 59 % → **85 %** | >= 75 % |
+  | distanza reso<->padrone, mediana | 5,3 → **1,1** u | 5,6 → **1,0** u | <= 3u |
+  | scarto reso<->logico, mediana / p90 | 1,2/13,8 → 2,2/15,1 u | 1,3/18,1 → 0,7/11,9 u | p90 <= 8u |
+  | salti del pallone | 8 → 7 su ~1900 | 21 → 13 su ~1900 | 0 |
+
+  Le due bande che erano rosse da quattro schede (padrone ai piedi, palla a terra) sono verdi in
+  entrambe le partite. Restano rossi il p90 dello scarto reso<->logico (15,1 e 11,9 contro 8) e i salti
+  del pallone: sono lo strato 3D, non la simulazione.
+- Non verificato: i fotogrammi al secondo sono 15 (le sonde girano in coda: il telefono del PO sta
+  intorno ai 30) e l'Android vero resta fuori. Lo smoke di questa tornata e' uscito con un solo
+  campione (partita non avviata dopo due sonde da 15 minuti): va ripetuto, non conta come misura.
