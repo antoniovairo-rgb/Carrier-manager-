@@ -4537,3 +4537,25 @@ del gate (che giudica proprio il movimento).
   Quaranta rimesse vorrebbero dire meta' partita a palla ferma. Il bersaglio giusto qui e' «ogni tanto il
   pallone esce e si vede», non la statistica reale.
 - `test:logic` 43/43, IDENTICO 1. Guardiano in corsa.
+
+### 7.878 — la conferma in browser (11/09 11:10)
+
+Guardiano `partita-vera`: exit 0, tutte le bande verdi, `arbitro-esiste` 9. Scheda da telefono su Galli
+fuori (la partita che sulla 7.877 aveva il margine peggiore sulla palla morta):
+
+| misura | 7.877 | 7.878 | banda |
+|---|---|---|---|
+| palla morta + fermo | 20' | **13'** | <= 15' |
+| righe di cronaca | 81 | 76 | 70-110 |
+| pallone ai piedi del padrone | 77 % | 70 % | >= 60 % |
+| …di cui a palla a terra | 85 % | 74 % | >= 75 % |
+
+Il timore era che le interruzioni in piu' sfondassero la banda della palla morta: e' successo il
+contrario (20' → 13'), perche' una rimessa dura un tick mentre il possesso che girava a vuoto ne durava
+molti. Le due misure in calo (padrone 77 → 70, a terra 85 → 74, quest'ultima appena sotto banda) sono
+di UNA partita e stanno dentro lo scarto fra partite gia' visto nella scheda n° 11 (63-77 %): dichiarate,
+non spiegate. Vanno riguardate alla prossima scheda a quattro partite.
+
+⚠️ Intoppo di metodo, a verbale: la prima catena di misura della 7.878 e' MORTA a meta' (nessun processo,
+nessun marcatore) perche' lanciata senza staccarla dalla sessione. Rilanciata con `setsid`. Una misura
+che non finisce non e' un rosso: e' una misura che non c'e'.
