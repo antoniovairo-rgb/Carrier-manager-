@@ -109,7 +109,12 @@ function creaMotorePossesso(cfg){
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;
       const blk=corsiaLibera(P.x,P.y,q.x,q.y,l);
       let sc=fw*1.2-Math.abs(dd-24)*0.2-(marc<3?14:marc<5?6:0)-blk*9+(rnd()-0.5)*6;
-      if(advDi(P.x,l)>=50&&advDi(P.x,l)<80&&Math.abs(q.y-50)>=24&&fw>0)sc+=4;/* la fascia come sbocco nella trequarti */
+      /* [7.878] LA FASCIA E' UNO SBOCCO VERO. Misurato: rimesse laterali 0,02 a partita contro le ~40 di
+         una partita vera, perche' il pallone sta sulla fascia solo il 10 % del tempo e il premio all'uomo
+         largo valeva 4 punti su un punteggio dove la marcatura ne toglie 14. Il premio ora conta davvero,
+         vale su tutto il campo in avanti, e cresce quando chi ha la palla e' pressato: lo scarico sull'ala
+         e' la giocata che il calcio fa quando il centro e' chiuso. */
+      if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0);
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
       if(q.eroe)sc+=(cfg.eroe&&cfg.eroe.bonus)||2;
       if(fw<-12)sc-=6;
@@ -123,7 +128,10 @@ function creaMotorePossesso(cfg){
     const pIcpt=(kind==="lancio"?0.11:kind==="filtrante"?0.12:kind==="cambio"?0.07:0.04)+(pressioneSu(P)<2?0.05:0)+corsiaLibera(P.x,P.y,R.x,R.y,l)*0.10;
     let icpt=null,icptA=0;
     if(!opt.sicuro&&rnd()<pIcpt){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});if(m&&m.d<9){icpt=m.p.i;icptA=0.45+rnd()*0.35;}}
-    if(!opt.sicuro&&Math.abs(R.y-50)>=34&&rnd()<((kind==="lancio"||kind==="cambio")?0.26:0.15)){S.poss.ultimoPassatore=P.i;S.conta.passaggi++;ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+R.x.toFixed(1),y:+R.y.toFixed(1)},fuori:true});volo({tipo:"fuori",kind,x:clamp(R.x,2,98),y:R.y>=50?100:0,ricevente:null,v:20,arco:"pass",actor:nome(P),rcv:nome(R)});return;}
+    /* [7.878] IL PALLONE PUO' USCIRE, e piu' spesso quanto piu' il bersaglio e' vicino alla linea: nel
+       calcio vero la rimessa laterale e' l'interruzione piu' comune (~40 a partita), qui ne usciva 0,02
+       perche' la probabilita' scattava solo oltre |y-50|>=34, dove il gioco non arriva quasi mai. */
+    if(!opt.sicuro&&rnd()<Math.min(0.42,Math.max(0,(Math.abs(R.y-50)-14)/26)*((kind==="lancio"||kind==="cambio")?0.34:0.22))){S.poss.ultimoPassatore=P.i;S.conta.passaggi++;ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+R.x.toFixed(1),y:+R.y.toFixed(1)},fuori:true});volo({tipo:"fuori",kind,x:clamp(R.x,2,98),y:R.y>=50?100:0,ricevente:null,v:20,arco:"pass",actor:nome(P),rcv:nome(R)});return;}
     const lead=Math.min(4,hyp(P.x,P.y,R.x,R.y)*0.12);const tx=clamp(R.x+dirDi(l)*lead*(kind==="appoggio"?0:1),2,98),ty=clamp(R.y,3,97);
     S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
     ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)}});
@@ -254,7 +262,7 @@ function creaMotorePossesso(cfg){
     const A=piuVicino(S.palla.x,S.palla.y,l,{noGk:true});const D=piuVicino(S.palla.x,S.palla.y,altro(l),{noGk:true});
     const att=(R&&attivo(R)&&hyp(R.x,R.y,S.palla.x,S.palla.y)<6)?R:(A&&A.d<6?A.p:null);
     const dif=(D&&D.d<4)?D.p:null;
-    if(dif&&(!att||rnd()<0.5)){dif.x=S.palla.x;dif.y=S.palla.y;const corner=rnd()<0.35;ev("spazzata",{chi:chi(dif),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else libero(clamp(S.palla.x-dirDi(l)*(14+rnd()*10),4,96),clamp(S.palla.y+(rnd()-0.5)*30,6,94));return;}
+    if(dif&&(!att||rnd()<0.5)){dif.x=S.palla.x;dif.y=S.palla.y;const corner=rnd()<0.30;const _lat=!corner&&rnd()<0.20;ev("spazzata",{chi:chi(dif),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else if(_lat){/* [7.878] la spazzata finisce spesso in rimessa laterale */fuoriCampo(clamp(S.palla.x-dirDi(l)*(6+rnd()*10),6,94),S.palla.y,l,"throw");return;}else libero(clamp(S.palla.x-dirDi(l)*(14+rnd()*10),4,96),clamp(S.palla.y+(rnd()-0.5)*30,6,94));return;}
     if(att){att.x=S.palla.x;att.y=S.palla.y;if(rnd()<0.62){tira(att,{intent:"header"});return;}tenuta(att,null);ev("ricezione",{chi:chi(att),kind:"cross"});return;}
     const gk=portiereDi(altro(l));if(hyp(gk.x,gk.y,S.palla.x,S.palla.y)<9){ev("presa",{gk:chi(gk)});gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);return;}
     libero(S.palla.x,S.palla.y);

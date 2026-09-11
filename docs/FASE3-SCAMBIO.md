@@ -4515,3 +4515,25 @@ di nascosto. Tre strade, con il loro prezzo:
    cio' che le note del 7.518-7.594 avevano tolto apposta.
 Raccomando la 2, misurata con la coppia rosso/verde su F, sulla scheda da telefono e sul check `motion`
 del gate (che giudica proprio il movimento).
+
+## 7.878 — la fascia e' uno sbocco e il pallone puo' uscire (area 4 «Varieta'» della scheda)
+
+- Rosso misurato: **rimesse laterali 0,02 a partita** (nel calcio vero ~40), cross in gioco aperto 0,3.
+  Due cause: (a) il premio all'uomo largo in `scegliRicevente` valeva 4 punti su un punteggio dove una
+  marcatura ne toglie 14 — non decideva niente; (b) l'uscita del pallone scattava solo con il bersaglio
+  oltre |y-50|>=34, dove il gioco non arriva quasi mai.
+- Rimedio, tre pezzi nella simulazione: il premio alla fascia conta (6-9 punti, +5 se chi ha la palla e'
+  pressato: lo scarico sull'ala e' la giocata del calcio quando il centro e' chiuso); la probabilita' che
+  un passaggio finisca fuori CRESCE con la vicinanza del bersaglio alla linea invece di essere una soglia;
+  la spazzata difensiva finisce in rimessa laterale una volta su cinque.
+- Misura appaiata (banco deterministico, 48 partite, regime del browser):
+  rimesse laterali **0,02 → 0,85** a partita · palloni fuori 0,35 → 0,81 · interruzioni totali 4,71 → 5,29.
+  Guardrail: tenuta 50 % → 48 %, fermo 14 % → 15 % (la banda della scheda e' «palla morta + fermo <= 15
+  minuti»: qui si resta dentro, ma il margine e' sottile e va riguardato sulla scheda), passo massimo 9,1u,
+  padrone ai piedi 100 %, attesa del decreto massima 15 tick (tetto del test 16), decreti segnati 89 %
+  contro 91-93 % — differenza dentro il rumore fra due catene di sorteggi diverse, DICHIARATA non risolta.
+- ⚠️ Onesta' sul numero: 0,85 rimesse a partita restano lontanissime dalle ~40 vere, e non e' un difetto
+  da tarare via. In questo motore **un tick e' un minuto**: la partita ha ~85 decisioni, non 1300 eventi.
+  Quaranta rimesse vorrebbero dire meta' partita a palla ferma. Il bersaglio giusto qui e' «ogni tanto il
+  pallone esce e si vede», non la statistica reale.
+- `test:logic` 43/43, IDENTICO 1. Guardiano in corsa.
