@@ -4735,3 +4735,8 @@ tick di rete piu' due di ripartenza sono ~90 secondi reali: sono giusti, non son
 di Conti quindi si dichiara e non si tara.
 Guardiano `partita-vera` exit 0, tutte le bande verdi. Righe di cronaca 73 e 88 (banda 70-110), pallone
 ai piedi 77 % e 61 %.
+
+- 11/09 01:31 UTC (routine notturna): Produzione allineata a 0df1e49 (7.866.0) il 11/09, rituale completo verde
+  (`career-critical` exit 0 in 512 s, `npm run ci` exit 0 in 1176 s sull'HEAD del branch QA, working tree pulito,
+  IDENTICO 1). Fast-forward 75092dc → 0df1e49. Non verificato: l'Android del PO (Chromium 412×915 in
+  headless); la CI di GitHub su main non e' leggibile da questa sessione.
