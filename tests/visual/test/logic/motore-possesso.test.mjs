@@ -115,3 +115,12 @@ test('[7.872] nessun tiro da centrocampo o dalla propria meta\' campo, nemmeno c
   assert.ok(tot >= 12, `troppi pochi tiri per giudicare (${tot})`);
   assert.strictEqual((zone.dietro | 0) + (zone.centro | 0), 0, `tiri da dietro/centrocampo: ${JSON.stringify(zone)}`);
 });
+
+test('[7.875] la partita si ferma: almeno 3 interruzioni (fallo/rimessa/corner/rinvio) a partita', () => {
+  let inter = 0, n = 0;
+  for (const seed of [11, 22, 33, 44, 55, 66, 77, 88]) {
+    n++;
+    partita(seed, 92).evs.forEach(e => { if (/^(fallo|rigore|rimessa|corner|rinvio)$/.test(e.t)) inter++; });
+  }
+  assert.ok(inter / n >= 3, `interruzioni per partita ${(inter / n).toFixed(2)} (<3)`);
+});

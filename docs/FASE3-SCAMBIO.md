@@ -4360,3 +4360,26 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
   Con la 7.872 senza ruolo comparivano ancora 3 tiri decretati da centrocampo su 215; con 7.874: 0.
 - Rituali: `test:logic` 42/42, IDENTICO 1. Browser in coda (guardiano + scheda) dopo il bisect
   dell'arbitro-esiste.
+
+## 7.875 — l'arbitro esiste: la partita si ferma (banda arbitro-esiste rossa dalla 7.872)
+
+- Diagnosi, non taratura. Il guardiano segnava `arbitro-esiste` rosso sulla 7.872/7.873/7.874 (1-4
+  interruzioni su banda 6 in due partite) e verde sulla 7.870/7.871 (6-7). Bisect in browser su quattro
+  build + contatori nuovi nel motore (tick con decreto/turno/verso pendenti, stampati dal guardiano per
+  partita): la causa NON era la 7.872. Il motore fischiava 3,1 volte a partita (una ogni 28 minuti di
+  gioco) e la banda cadeva a caso da una parte o dall'altra del confine. In browser il microsim decreta
+  3-4 gol a partita e il decreto occupa 24 tick su 85: in quel quarto di partita non si fischiava per
+  costruzione (7.870: la punizione allungava l'attesa oltre il tetto).
+- Rimedio nella simulazione: (a) il fallo c'e' anche col gol decretato, a meta' probabilita' e solo
+  finche' il tetto ha margine (t<=3): la punizione fa parte della costruzione, non la sospende;
+  (b) probabilita' di fallo 0,17/0,06 → 0,26/0,10 (una partita vera ne ha ~25, qui restano ~5);
+  (c) il contrasto vicino alla linea manda il pallone fuori piu' spesso.
+- Misura appaiata (banco deterministico, 48 partite, regime del browser DEC 0,06):
+  interruzioni a partita 3,13 → 5,02; falli 2,46 → 4,60; battute raccontabili 3,00 → 4,94.
+  Guardrail: gol decretati segnati 101/108 (94 %), attesa media 6,7 tick, MASSIMA 14 (tetto del test 16,
+  prima 16: il margine e' migliorato, non peggiorato); fermo 15 % dei tick; padrone ai piedi 100 %.
+- Test nuovo: «almeno 3 interruzioni a partita» su 8 semi. `test:logic` 43/43, IDENTICO 1.
+- APERTO, trovato qui e non ancora affrontato: IL CAMPO E' STRETTO. Il pallone sta nel corridoio
+  y 27-74 per il 95 % del tempo, oltre |y-50|>=30 solo il 3 %, oltre 38 mai; i ventidue p5-p95 = 22-79.
+  Percio' le rimesse laterali sono ZERO in 48 partite (nel calcio vero sono ~40 a partita) e i cross in
+  gioco aperto 0,33. Prossimo passo del cantiere.

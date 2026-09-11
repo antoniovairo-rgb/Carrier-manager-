@@ -123,7 +123,7 @@ function creaMotorePossesso(cfg){
     const pIcpt=(kind==="lancio"?0.11:kind==="filtrante"?0.12:kind==="cambio"?0.07:0.04)+(pressioneSu(P)<2?0.05:0)+corsiaLibera(P.x,P.y,R.x,R.y,l)*0.10;
     let icpt=null,icptA=0;
     if(!opt.sicuro&&rnd()<pIcpt){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});if(m&&m.d<9){icpt=m.p.i;icptA=0.45+rnd()*0.35;}}
-    if(!opt.sicuro&&Math.abs(R.y-50)>=36&&rnd()<((kind==="lancio"||kind==="cambio")?0.18:0.10)){S.poss.ultimoPassatore=P.i;S.conta.passaggi++;ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+R.x.toFixed(1),y:+R.y.toFixed(1)},fuori:true});volo({tipo:"fuori",kind,x:clamp(R.x,2,98),y:R.y>=50?100:0,ricevente:null,v:20,arco:"pass",actor:nome(P),rcv:nome(R)});return;}
+    if(!opt.sicuro&&Math.abs(R.y-50)>=34&&rnd()<((kind==="lancio"||kind==="cambio")?0.26:0.15)){S.poss.ultimoPassatore=P.i;S.conta.passaggi++;ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+R.x.toFixed(1),y:+R.y.toFixed(1)},fuori:true});volo({tipo:"fuori",kind,x:clamp(R.x,2,98),y:R.y>=50?100:0,ricevente:null,v:20,arco:"pass",actor:nome(P),rcv:nome(R)});return;}
     const lead=Math.min(4,hyp(P.x,P.y,R.x,R.y)*0.12);const tx=clamp(R.x+dirDi(l)*lead*(kind==="appoggio"?0:1),2,98),ty=clamp(R.y,3,97);
     S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
     ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)}});
@@ -161,7 +161,8 @@ function creaMotorePossesso(cfg){
       if(T&&T.d<=9){libero(clamp(P.x+(T.p.x-P.x)*0.7,2,98),clamp(P.y+(T.p.y-P.y)*0.7,3,97));return;}
       libero(clamp(P.x+dirDi(l)*(2+rnd()*4),2,98),clamp(P.y+(rnd()-0.5)*6,3,97));return;}
     const W=m.p;S.conta.contrasti++;
-    if(Math.abs(P.y-50)>=42&&rnd()<0.45){ev("contrasto",{chi:chi(W),su:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1),fuori:true});fuoriCampo(P.x,P.y,rnd()<0.5?l:altro(l),"throw");return;}
+    /* [7.875] il contrasto vicino alla linea manda spesso il pallone fuori: la rimessa laterale e' l'interruzione piu' comune del calcio vero (~40 a partita), qui ne mancava quasi del tutto */
+    if(Math.abs(P.y-50)>=30&&rnd()<(Math.abs(P.y-50)>=40?0.55:0.30)){ev("contrasto",{chi:chi(W),su:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1),fuori:true});fuoriCampo(P.x,P.y,rnd()<0.5?l:altro(l),"throw");return;}
     ev("contrasto",{chi:chi(W),su:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});
     W.x=clamp(P.x+dirDi(W.team)*0.8,2,98);W.y=P.y;tenuta(W,null);};
   const fallo=(P)=>{const l=P.team;const m=piuVicino(P.x,P.y,altro(l),{noGk:true});const adv=advDi(P.x,l);
@@ -189,7 +190,15 @@ function creaMotorePossesso(cfg){
       if(press<1.8&&rnd()<0.12){ramo("persa1");perdi(P);return;}
       ev("controllo",{chi:chi(P),press:+press.toFixed(1),zona});return;/* controllo: il pallone sta ai piedi un tick */
     }
-    if(!golReq){const r=rnd();const pF=(press<3?0.17:0.06)+(adv>=56?0.03:0);/* ~3-4 falli a partita: la palla morta e' il respiro della partita (7.843: 4-7 fermi). Non durante il gol decretato: la punizione allungava l'attesa oltre il tetto (test node rosso, 10/09) */if(r<pF){ramo("fallo");fallo(P);return;}if(press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return;}}
+    /* [7.875 l'arbitro esiste] In una partita vera il gioco si ferma di continuo: ~25 falli, ~40 rimesse,
+       ~10 angoli. Il motore ne faceva 3,5 a partita (un'interruzione ogni 24 minuti di gioco) e la banda
+       del guardiano (>=3 per partita) usciva rossa o verde a caso. Il fischio ora c'e' anche mentre il
+       gol e' decretato, a meta' probabilita' e solo finche' il tetto ha margine (t<=4): la punizione fa
+       parte della costruzione, non la sospende. */
+    {const r=rnd();const pFb=(press<3?0.26:0.10)+(adv>=56?0.04:0);
+      const pF=golReq?((golReq.t|0)<=3?pFb*0.5:0):pFb;
+      if(pF>0&&r<pF){ramo(golReq?"falloGol":"fallo");fallo(P);return;}
+      if(!golReq&&press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return;}}
     const verso=S.richieste.verso;
     let pTiro=zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0;
     pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
@@ -205,7 +214,7 @@ function creaMotorePossesso(cfg){
     if(verso&&!golReq){const dv=hyp(P.x,P.y,verso.x,verso.y);if(dv>10){let R=null,bs=1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const dq=hyp(q.x,q.y,verso.x,verso.y);const dd=hyp(q.x,q.y,P.x,P.y);if(dd<5||dd>40)continue;if(dq<bs){bs=dq;R=q;}}if(R&&bs<dv-4){passa(P,R,{sicuro:true});return;}}}
     const pCond=(S.poss.t<=3&&adv<86)?((spazio>=2?(S.poss.t===2?0.55:0.32):(S.poss.t===2?0.40:0.20))+(golReq?0.10:0)+(P.eroe?0.08:0)):0;
     if(rnd()<pCond){if(press<3&&spazio<2&&rnd()<0.22){if(rnd()<0.35){ramo("dribblingFallo");fallo(P);return;}ramo("dribblingPerso");perdi(P);return;}
-      if(Math.abs(P.y-50)>=40&&rnd()<0.30){ramo("conduzioneFuori");ev("fuori",{chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});fuoriCampo(P.x,P.y,altro(l),"throw");return;}
+      if(Math.abs(P.y-50)>=38&&rnd()<0.42){ramo("conduzioneFuori");ev("fuori",{chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});fuoriCampo(P.x,P.y,altro(l),"throw");return;}
       ramo("conduci");conduci(P);return;}
     const R=scegliRicevente(P,{golReq});
     if(R){ramo("passa");passa(P,R);return;}
