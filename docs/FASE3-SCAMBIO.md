@@ -4740,3 +4740,51 @@ ai piedi 77 % e 61 %.
   (`career-critical` exit 0 in 512 s, `npm run ci` exit 0 in 1176 s sull'HEAD del branch QA, working tree pulito,
   IDENTICO 1). Fast-forward 75092dc → 0df1e49. Non verificato: l'Android del PO (Chromium 412×915 in
   headless); la CI di GitHub su main non e' leggibile da questa sessione.
+
+## RILASCIO IN PRODUZIONE 11/09 sera — 7.866.0 → 7.881.0 (il motore del possesso)
+
+**Richiesta del PO:** «rilascia in prod appena puoi».
+
+**Che cosa va in produzione.** 41 commit, dalla 7.866.0 alla **7.881.0**: la ristrutturazione avviata con
+la carta bianca del 10/09 sera. Il gioco ambientale non nasce piu' dal testo: `src/14-motore-possesso.jsx`
+simula il possesso (uno stato solo: tenuta · volo · libero · fermo · rete · kickoff · scena) e il narratore
+`narra870` racconta i fatti che la simulazione emette. Il microsim resta la fonte del punteggio: il gol
+decretato e' una richiesta e il motore costruisce l'azione fino alla rete.
+
+**Misure con cui e' stata verificata** (Chromium headless 412x915, quattro partite per voce):
+- 7.872 tiri da dietro/centrocampo col decreto 81/130 -> 0/63 · 7.873/7.874 tiri dall'area 13 -> 33
+- 7.875 interruzioni 3,13 -> 5,02 a partita (l'arbitro esiste) · 7.876 ventidue oltre |y-50|>=30 dal 6 al 22 %
+- 7.877 padrone col pallone ai piedi 45/54 % -> 68/77 %, palla a terra 50/59 % -> 76/85 %
+- 7.878 rimesse laterali 0,02 -> 0,85 a partita (area 4, Varieta')
+- 7.879/7.880 v2 scene aperte con l'eroe che ha il pallone 0/2 -> 6/6, salto dell'eroe 21,5u -> 4,5u
+  mediana, salto del pallone 23,7u -> 0 (area 7, Highlight: 6 -> 8 nella scheda n° 12)
+- 7.881 v2 palla morta su Vairo 20' -> 7' contro un tetto di 15' (area 5, Ritmo)
+
+**Rituali sull'HEAD rilasciato** (build IDENTICO 1, working tree pulito, HEAD 549d172):
+`npm run career-critical` **exit 0 in 514 s** · `npm run ci` **exit 0 in 1192 s** (gate
+`validate-situations` 14/14, `test:logic` 43/43, guardiano `partita-vera` tutte le bande verdi).
+Il rituale era stato lanciato una prima volta alle 18:37 ed e' morto alle 19:24 col riavvio del
+container, non per un rosso: rilanciato alle 19:28 e portato a termine. La fusione col branch QA
+(549d172, ed454fe) e' stata committata a rituale gia' partito ma tocca **solo questo documento**:
+zero righe su `src/` e su `CARRIER-MANAGER-AV.html`, quindi non cambia cio' che i test hanno letto.
+
+**Perche' e' servita una fusione e non un fast-forward.** Il branch QA portava un commit che il branch
+del motore non aveva (la riga dell'allineamento notturno delle 01:31); la base comune era 0df1e49.
+Fusione con conflitto in coda al documento, risolto tenendo entrambi i testi in ordine cronologico.
+
+**Cosa NON e' verificato, e va detto:**
+- **L'Android del PO.** Tutto quanto sopra e' Chromium headless 412x915 a 9-25 fps, non il telefono
+  del PO a ~30 fps. Nessuna di queste misure e' una promessa su come si vede li'.
+- **La CI di GitHub su main**: non e' leggibile da questa sessione.
+- **Il metro del PO non e' raggiunto.** La scheda da telefono n° 12 (build 7.880) fa **media 6,9**
+  su 12 aree, con il Ritmo a 6. Il metro per dire «puoi collaudare» e' media >= 8 con nessuna area
+  sotto 7: **non ci siamo**. Questo rilascio mette in produzione un gioco migliore di quello di
+  stamattina, non un gioco pronto al collaudo.
+- La 7.881 v2 ha rimesso il Ritmo in banda **nel browser**, ma la scheda n° 13 che lo conferma
+  ancora non esiste.
+
+**Regola nuova a verbale (lezione 23ª).** Una misura sul reso vale solo se la sonda gira DA SOLA e
+dichiara i propri fotogrammi al secondo: sotto ~12 fps il numero e' dello strumento, non del gioco.
+E' cosi' che e' caduta la 7.879 «ritardo del portatore», approvata dal PO e **revocata prima di
+scriverla**: 0,9u a macchina libera contro 2,4u sotto carico.
+
