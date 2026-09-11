@@ -4446,3 +4446,14 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
 - Non verificato: i fotogrammi al secondo sono 15 (le sonde girano in coda: il telefono del PO sta
   intorno ai 30) e l'Android vero resta fuori. Lo smoke di questa tornata e' uscito con un solo
   campione (partita non avviata dopo due sonde da 15 minuti): va ripetuto, non conta come misura.
+
+### 7.877 — RITUALE COMPLETO VERDE sul branch del motore (11/09 07:39)
+
+Primo rituale completo sul branch `claude/motore-possesso` (passo 5 delle consegne):
+`career-critical` exit 0 in 524 s · `npm run ci` exit 0 in 1191 s. Dentro: gate 14/14 (3 run pulite
+di fila), `test:logic` 43/43, live-smoke OK, e il guardiano `partita-vera` con TUTTE le bande verdi —
+turno-causale 100 %, manovra-viva 24 (banda 10), arbitro-esiste 12 (banda 6), custodia 0,8u,
+gol-del-simulatore 7 nati · 5 accreditati · 0 mangiati, nomi-veri 51/51, tabellone coerente.
+Il branch e' tecnicamente proponibile per la produzione. Non lo propongo: il cancello scritto dal PO
+e' la SCHEDA da telefono (media 8 su 12 aree, nessuna area sotto 7), e su questa build non e' ancora
+stata rifatta. E' la prossima misura.
