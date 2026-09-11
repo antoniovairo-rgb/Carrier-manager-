@@ -4693,3 +4693,9 @@ Tre partite (Vairo casa, Moretti casa, Conti fuori), sei scene osservate, contro
 
 I sei salti dell'eroe: 0,5 · 0,5 · 4,0 · 5,0 · 7,1 · 7,5. Sono passi, non teletrasporti: la scena ora
 comincia dove la partita l'aveva lasciata. Guardiano `partita-vera` exit 0, tutte le bande verdi.
+
+### 7.880 — RITUALE COMPLETO VERDE (11/09 15:05)
+
+`career-critical` exit 0 in 531 s · `npm run ci` exit 0 in 1226 s. Gate stabile (4 run pulite di fila),
+replay completi e coerenti, guardiano `partita-vera` verde. Il branch del motore regge il rituale
+completo anche con la scena dell'eroe nata dal fatto. Scheda n° 12 (quattro partite) in corsa.
