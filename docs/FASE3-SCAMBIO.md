@@ -4591,3 +4591,36 @@ Cosa resta davvero dell'area 11, con i numeri buoni: non il ritardo a regime (0,
 — scarto reso<->logico p90 12-22u contro una banda di 8 — e i salti del pallone (7-39 a partita). Sono
 eventi rari e grossi, quasi certamente negli archi e nei cambi di scena, non nel passo normale. Il
 prossimo cantiere dell'area 11 parte da li'.
+
+## Area 11 «Immersione»: il laboratorio non la sa misurare. Tre ipotesi cadute in fila
+
+Tre colonne reggevano il voto 5. Tutte e tre sono cadute sotto misura, e nessuna era il gioco:
+
+1. **Il ritardo del corpo** — 4,0u a macchina carica (9,4 fps), **0,9u a macchina libera** (15,1 fps).
+   Era il mio strumento. Il rimedio approvato dal PO e' stato REVOCATO prima di scriverlo.
+2. **La durata dell'arco** — misurata: 640 ms per 14,5u, cioe' **22,8 u/s**, che per un passaggio e' la
+   velocita' giusta (un pallone rasoterra fa 20-25 m/s). Non c'e' niente da rallentare.
+3. **I salti del pallone** (7-39 a partita nella scheda) — con la sonda che campiona a 60 ms dentro la
+   pagina: **ZERO salti in 200 s di gioco fluido**. La soglia della scheda («>8u in <=110 ms») corrisponde
+   a 72 u/s: e' velocita' x intervallo, la stessa trappola del 7.360 e del 7.502. Il censimento degli
+   stacchi lo conferma dall'altro lato: i 3 salti che trova stanno TUTTI dentro uno stacco nero, cioe'
+   non si vedono.
+
+E il numero che resta, lo scarto reso<->logico, **scala con i fotogrammi al secondo**:
+
+| fps della corsa | mediana | p90 |
+|---|---|---|
+| 9,4 (macchina carica) | 6,2u | 16,1u |
+| 14,8 | 2,3u | 21,9u |
+| 24,9 (macchina libera) | **0,7u** | 18,6u |
+
+Il telefono del PO sta a ~30 fps. **Conclusione: da questo laboratorio l'area 11 non e' misurabile in
+modo onesto**, perche' ogni sua grandezza dipende da quanto e' carica la macchina che misura. Non la
+taro, non la spedisco e non la conto come difetto del gioco: resta APERTA e dichiarata, e il suo voto
+va dato sull'Android del PO o con un protocollo che fissi gli fps.
+⚠️ Conseguenza sulla scheda: la voce «salti del pallone» va tolta o ridefinita (contare solo i salti
+SENZA stacco nero e a passo di campionamento fisso), altrimenti continua a produrre un rosso che non
+esiste. Lo faccio prima della prossima scheda.
+
+Il lavoro si sposta dove le misure NON dipendono dagli fps: area 4 (conteggi di eventi) e area 7 (gli
+highlight dell'eroe dal motore).
