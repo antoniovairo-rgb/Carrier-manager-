@@ -186,7 +186,7 @@ function creaMotorePossesso(cfg){
       if(press<1.8&&rnd()<0.12){ramo("persa1");perdi(P);return;}
       ev("controllo",{chi:chi(P),press:+press.toFixed(1),zona});return;/* controllo: il pallone sta ai piedi un tick */
     }
-    if(!golReq){const r=rnd();const pF=(press<3?0.12:0.05)+(adv>=56?0.03:0);/* ~3-4 falli a partita *//* ~3 falli a partita: la palla morta e' il respiro della partita (7.843: 4-7 fermi) */if(r<pF){ramo("fallo");fallo(P);return;}if(press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return;}}
+    if(!golReq){const r=rnd();const pF=(press<3?0.17:0.06)+(adv>=56?0.03:0);/* ~3-4 falli a partita: la palla morta e' il respiro della partita (7.843: 4-7 fermi). Non durante il gol decretato: la punizione allungava l'attesa oltre il tetto (test node rosso, 10/09) */if(r<pF){ramo("fallo");fallo(P);return;}if(press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return;}}
     const verso=S.richieste.verso;
     let pTiro=zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0;
     pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
@@ -198,7 +198,7 @@ function creaMotorePossesso(cfg){
     if(verso&&!golReq){const dv=hyp(P.x,P.y,verso.x,verso.y);if(dv>10){let R=null,bs=1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const dq=hyp(q.x,q.y,verso.x,verso.y);const dd=hyp(q.x,q.y,P.x,P.y);if(dd<5||dd>40)continue;if(dq<bs){bs=dq;R=q;}}if(R&&bs<dv-4){passa(P,R,{sicuro:true});return;}}}
     const pCond=(S.poss.t<=3&&adv<86)?((spazio>=2?(S.poss.t===2?0.55:0.32):(S.poss.t===2?0.40:0.20))+(golReq?0.10:0)+(P.eroe?0.08:0)):0;
     if(rnd()<pCond){if(press<3&&spazio<2&&rnd()<0.22){if(rnd()<0.35){ramo("dribblingFallo");fallo(P);return;}ramo("dribblingPerso");perdi(P);return;}
-      if(Math.abs(P.y-50)>=40&&rnd()<0.26){ramo("conduzioneFuori");ev("fuori",{chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});fuoriCampo(P.x,P.y,altro(l),"throw");return;}
+      if(Math.abs(P.y-50)>=40&&rnd()<0.30){ramo("conduzioneFuori");ev("fuori",{chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});fuoriCampo(P.x,P.y,altro(l),"throw");return;}
       ramo("conduci");conduci(P);return;}
     const R=scegliRicevente(P,{golReq});
     if(R){ramo("passa");passa(P,R);return;}
