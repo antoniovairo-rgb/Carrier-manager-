@@ -1852,3 +1852,65 @@ su 4** (20/21/19 contro un tetto di 15): e' il prezzo della 7.878, che ha portat
 
 **Media 6,9** (n° 11: 6,8; n° 10: 6,3). Cancello non raggiunto: sotto 7 restano il **ritmo (6)** e
 l'**immersione (5, non votabile da qui)**. Il ritmo ha un rimedio chiaro e immediato: tarare la 7.878.
+
+---
+
+## Scorecard n° 13 — build 7.881 in produzione (11/09, 20:33)
+
+Quattro partite, una alla volta, **macchina libera** (nessun rituale in parallelo). fps 16-17, contro i
+11-13 della n° 12: per la lezione del giorno le grandezze sul RESO (scarto, salti) sono aiutate dallo
+strumento e il confronto con la n° 12 su quelle righe **non e' pulito**. Le grandezze sulla LOGICA
+(palla morta, righe, piedi del padrone) sono confrontabili.
+
+| misura | Vairo | Galli | Moretti | Conti | banda |
+|---|---|---|---|---|---|
+| pallone ai piedi del padrone | 76 % | 69 % | 79 % | 67 % | >= 60 % |
+| …di cui a palla a terra | 86 % | 82 % | 87 % | **70 %** | >= 75 % |
+| distanza reso<->padrone, mediana | 1,0u | 1,2u | 1,0u | 1,3u | <= 3u |
+| **palla morta + fermo** | **11'** | **6'** | **5'** | **8'** | <= 15' |
+| righe di cronaca | 78 | 81 | 81 | 87 | 70-110 |
+| frasi del tiro smentite dal campo | 0/0 | 0/0 | 0/0 | 0/0 | 0 |
+| scarto reso<->logico, p90 | 9,9u | 13,6u | 15,1u | 27,7u | <= 8u |
+| salti del pallone | 4 | 28 | 25 | 43 | 0 |
+| fotogrammi al secondo | 16 | 17 | 16 | 17 | >= 30 |
+
+**Il ritmo e' rientrato su 4 partite su 4**: palla morta + fermo 5-11' contro 20/21/14/19 della n° 12,
+con un tetto di 15. E' la 7.881 (rimessa, rinvio e punizione lontana battute in un tick) che paga il
+prezzo della 7.878 senza restituire le rimesse. Righe di cronaca 78-87, tutte in banda per la prima
+volta su quattro partite.
+
+| area | n° 12 | **n° 13** | perche' |
+|---|---|---|---|
+| 1 Realismo | 7 | **7** | piedi 4/4 in banda, ma palla a terra 70 % su Conti (banda 75) |
+| 2 Credibilita' da attaccante | 7 | **7** | frasi smentite 0/0 su quattro partite, invariata |
+| 3 Causalita' | 7 | **7** | invariata |
+| 4 Varieta' | 7 | **7** | invariata (rimesse 0,85; il cross in gioco aperto resta ~0,3) |
+| 5 Ritmo | 6 | **8** | palla morta + fermo 4/4 in banda (era 1/4) e righe 4/4 in banda (era 3/4) |
+| 6 Azioni extra-eroe | 7 | **7** | invariata |
+| 7 Highlight dell'eroe | 8 | **8** | invariata |
+| 8 Telecronaca | 7 | **7** | invariata; resta la seconda voce che si ripete |
+| 9 Interazioni | 7 | **7** | invariate |
+| 10 Coerenza fra i sistemi | 8 | **8** | rituale completo verde sull'HEAD rilasciato (career 514 s, ci 1192 s) |
+| 11 Immersione | 5 | **5** | ancora NON votabile da qui; vedi sotto la correzione di stasera |
+| 12 Carriera | 7 | **7** | `career-critical` exit 0 su questa build |
+
+**Media 7,1** (n° 12: 6,9 · n° 11: 6,8 · n° 10: 6,3). Cancello del PO non raggiunto: serve 8 con
+nessuna area sotto 7, e sotto 7 resta **soltanto l'area 11**.
+
+### Area 11 — un'ipotesi mia, nata e caduta nella stessa ora (11/09 sera)
+
+Leggendo `src/12-three-match-view.jsx:1936` ho visto `let _rdt=Math.min(_raw708,0.05)`: il dt che il
+gioco riceve e' tappato a 0,05 s, quindi sotto i 20 fps il mondo reso avanzerebbe piu' lentamente
+dell'orologio mentre i tick logici vanno a tempo reale. Sembrava la spiegazione esatta dello scarto che
+scala con gli fps, e il gancio appaiato per provarla (`__CPM_DTREAL`) esisteva gia'.
+
+**L'ipotesi e' falsa e l'ho verificata prima di scrivere una riga di rimedio:** la sonda del collaudo da
+telefono accende `window.__CPM_DTREAL=true` alla riga 25, da sempre. Il tappo nelle schede **non c'e'
+mai stato**. Lo scarto nasce altrove.
+
+Quello che resta in piedi come strumento: lo scarto in UNITA' non e' confrontabile fra macchine, ma lo
+scarto diviso la velocita' del pallone e' un **ritardo in secondi**, e quel ritardo diviso l'intervallo
+fra due fotogrammi e' un **ritardo in FOTOGRAMMI** — un numero che non dipende dagli fps. Se il pallone
+reso e' indietro di N fotogrammi a 9, 16 e 25 fps allo stesso modo, allora sul telefono del PO lo
+scarto vale N x 33 ms x velocita', e l'area 11 torna votabile da questo laboratorio. E' la prossima
+misura.
