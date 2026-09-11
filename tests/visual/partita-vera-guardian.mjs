@@ -41,6 +41,7 @@ for (let g = 0; g < PARTITE_G; g++) {
      la sequenza di libreria e nessuna banda se ne accorgeva, perche' tutte guardavano cio' che si vedeva e
      nessuna cio' che non arrivava. Ora se un gol viene mangiato il rituale va rosso. */
   try { const gl = await page.evaluate(() => window.__CPM_GOL785 || null); if (gl) GOL785.push(gl); } catch (_e) {}
+  try { const mo = await page.evaluate(() => { const m = window.__CPM_MOTORE && window.__CPM_MOTORE(); return m ? { tick: m.tick, conta: m.conta, quota: m.quota } : null; }); console.log('  · [diag] motore partita ' + g + ': ' + JSON.stringify(mo)); } catch (_e) {}
   try { const ros = await page.evaluate(() => { const mp = (window.__CPM_MP && window.__CPM_MP()) || []; const n = mp.filter(Boolean).map(q => String(q.n || '').trim()).filter(Boolean); const h = (window.__CPM_HERO_NAME && window.__CPM_HERO_NAME()) || null; return h ? n.concat([String(h)]) : n; });/* [7.870] l'eroe fa parte della rosa: prima `h` si calcolava e non si restituiva */ ROSA.push(...ros); } catch (_e) {}
 }
 const T = await page.evaluate(() => window.__CPM_TURN616 || {});

@@ -21868,7 +21868,7 @@ function creaMotorePossesso(cfg){
   }
 
   /* ---------- API ---------- */
-  function tick(ctx){ctx=ctx||{};S.tick++;if(ctx.min!=null)S.min=ctx.min|0;S.arco=null;
+  function tick(ctx){ctx=ctx||{};S.tick++;if(ctx.min!=null)S.min=ctx.min|0;S.arco=null;/* [diag] quanti tick con una richiesta pendente: per leggere in browser cio' che il banco non vede */if(S.richieste.gol)S.conta.golReqTick=(S.conta.golReqTick|0)+1;if(S.richieste.turno)S.conta.turnoReqTick=(S.conta.turnoReqTick|0)+1;if(S.richieste.verso)S.conta.versoTick=(S.conta.versoTick|0)+1;if(S.scena)S.conta.scenaTick=(S.conta.scenaTick|0)+1;
     if(S.scena){S.conta.scena++;return[];}
     if(S.richieste.gol&&S.richieste.gol.lato!==S.poss.lato){const gr=S.richieste.gol;gr.t=(gr.t|0)+1;if(!S.richieste.turno)S.richieste.turno=gr.lato;
       if(S.poss.stato==="tenuta"&&S.poss.padrone!=null&&S.poss.t>=1){const P=g[S.poss.padrone];if(P&&!P.gk){perdi(P);}}}
