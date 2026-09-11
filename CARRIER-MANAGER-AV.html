@@ -21632,7 +21632,12 @@ function creaMotorePossesso(cfg){
      a gioco fermo a 19-21 contro un tetto di 15, in 3 partite su 4. Il rimedio non e' togliere le rimesse
      (il pallone DEVE uscire: e' calcio) ma accorciare la pausa: una rimessa laterale e un rinvio si
      battono in un tick, angolo e rigore restano a 3 perche' la squadra si deve schierare. */
-  const fermoSet=(kind,lato,x,y,opt)=>{opt=opt||{};const tot=kind==="corner"?3:kind==="pen"?3:(kind==="throw"||kind==="goal_kick")?1:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};
+  const fermoSet=(kind,lato,x,y,opt)=>{opt=opt||{};
+    /* [7.881 v2] e anche la PUNIZIONE lontana dalla porta si batte in fretta: nel calcio vero si riparte
+       subito, la barriera si forma solo vicino all'area. Misurato sulla scheda n° 12: a Vairo i 20 minuti
+       di palla ferma non erano rimesse ma punizioni. Vicino all'area (avanzamento >= 70) restano due tick. */
+    const _advF=(kind==="foul")?(lato===HOME?clamp(x,0,100):100-clamp(x,0,100)):0;
+    const tot=kind==="corner"?3:kind==="pen"?3:(kind==="throw"||kind==="goal_kick")?1:(kind==="foul"&&_advF<70)?1:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};
     {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;for(const q of g){if(!mio(q,lato)||q.gk)continue;const sc=(q.rl==="AT"?10:0)+(q.eroe?6:0)+rnd()*4;if(sc>bs){bs=sc;B=q;}}}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;}S.fermo.batt=B?B.i:null;}S.poss.stato="fermo";S.poss.lato=lato;S.poss.padrone=null;S.poss.ricevente=null;S.poss.t=0;S.palla.x=S.fermo.x;S.palla.y=S.fermo.y;
     if(S.richieste.turno===lato)S.richieste.turno=null;S.conta.fermo++;
     ev(kind==="foul"?"fallo":kind==="pen"?"rigore":kind==="corner"?"corner":kind==="throw"?"rimessa":"rinvio",Object.assign({x:+S.fermo.x.toFixed(1),y:+S.fermo.y.toFixed(1),per:lato},opt));};

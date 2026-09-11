@@ -4711,3 +4711,12 @@ completo anche con la scena dell'eroe nata dal fatto. Scheda n° 12 (quattro par
 - Misura nel banco (48 partite): fermo 15 % → 14 % dei tick, interruzioni 5,29 → 5,27 a partita (le
   rimesse NON si perdono), decreti segnati **89 % → 94 %**, attesa massima 15 tick. `test:logic` 43/43,
   IDENTICO 1. Due partite in browser in corsa per il minutaggio vero.
+
+### 7.881 v2 — anche la punizione lontana si batte in fretta
+
+Prima misura in browser della v1: Galli **21' → 14'** di palla ferma (in banda), ma **Vairo resta a 20'**
+— identico. Letto il perche': a Vairo la palla ferma non e' fatta di rimesse ma di PUNIZIONI, che
+costavano due tick ciascuna. Nel calcio vero si riparte subito e la barriera si forma solo vicino
+all'area: ora la punizione oltre i 30 metri dalla porta si batte in un tick, sotto restano due.
+Banco (48 partite): fermo **14 % → 12 %** dei tick, interruzioni 5,27 → 5,40 (non se ne perde nessuna),
+decreti segnati 92 %, attesa massima 15. `test:logic` 43/43, IDENTICO 1. Vairo e Conti in misura.
