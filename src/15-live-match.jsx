@@ -1710,7 +1710,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const _pk=(arr,k)=>arr[_h(k)%arr.length];
     const PRIO={gol:10,rigore:9,tiro:8,parata:8,palo:8,murato:7,fuori:6,fallo:6,cross:6,contrasto:5,intercetto:5,spazzata:5,presa:5,corner:5,rimessa:5,rinvio:5,battuta:4,centro:4,calcio_inizio:3,recupero:3,palla_persa:3,passaggio:3,conduzione:2,ricezione:1,controllo:1};
     /* [7.870 geografia] il passaggio rasoterra si racconta ALL'ARRIVO (il pallone e' gia' li'): al lancio parlano solo lanci, cambi di gioco e palloni usciti, che hanno l'arco */
-    let best=null,bp=-1;for(const e of eventi){let pr=PRIO[e.t]!=null?PRIO[e.t]:1;if(e.t==='passaggio')pr=(e.fuori||e.kind==='lancio'||e.kind==='cambio')?4:0;if(e.t==='ricezione')pr=(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross')?3:1;if(pr>bp){bp=pr;best=e;}}
+    let best=null,bp=-1;for(const e of eventi){let pr=PRIO[e.t]!=null?PRIO[e.t]:1;if(e.t==='passaggio')pr=(e.fuori||e.kind==='lancio'||e.kind==='cambio')?4:3;if(e.t==='ricezione')pr=(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross')?3:1;if(pr>bp){bp=pr;best=e;}}
     if(!best||bp<=0)return null;
     const cool=(ctx&&ctx.cool)|0;
     if(bp<5&&cool>0)return null;
@@ -1720,9 +1720,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const to=(e.to||(arc&&arc.to)||null);const from=(e.from||(arc&&arc.from)||null);
     if(e.t==='passaggio'){const da=_nm(e.da),a=_nm(e.a),d=_dove(to,l);at="pass";
       if(e.fuori)txt=_pk(["😬 Lancio di "+da+" troppo lungo: pallone fuori, rimessa laterale.","↔️ "+da+" allarga troppo per "+a+": la palla esce sulla fascia."],"p");
-      else if(e.kind==='corto')txt=_pk(["⚙️ "+da+" appoggia su "+a+" "+d+".","🔁 Giro palla: "+da+" per "+a+", "+d+".","⚪ "+da+" e "+a+" scambiano corto "+d+"."],"p");
-      else if(e.kind==='verticale')txt=_pk(["📈 "+da+" verticalizza per "+a+": la manovra sale "+d+".","➡️ "+da+" trova "+a+" fra le linee, "+d+".","⚙️ "+da+" appoggia in avanti per "+a+", "+d+"."],"p");
-      else if(e.kind==='filtrante')txt=_pk(["🎯 Filtrante di "+da+": "+a+" attacca lo spazio "+d+"!","⚡ "+da+" la mette in profondita' per "+a+"!"],"p");
+      /* [7.871 ritmo] il passaggio rasoterra si dice AL LANCIO senza luogo (il pallone e' in volo: il luogo lo dice l'arrivo) */
+      else if(e.kind==='corto')txt=_pk(["⚙️ "+da+" appoggia su "+a+".","🔁 Giro palla: "+da+" per "+a+".","⚪ "+da+" e "+a+" scambiano corto."],"p");
+      else if(e.kind==='verticale')txt=_pk(["📈 "+da+" verticalizza per "+a+".","➡️ "+da+" cerca "+a+" fra le linee.","⚙️ "+da+" appoggia in avanti per "+a+"."],"p");
+      else if(e.kind==='filtrante')txt=_pk(["🎯 Filtrante di "+da+" per "+a+"!","⚡ "+da+" la mette in profondita' per "+a+"!"],"p");
       else if(e.kind==='cambio')txt=_pk(["↔️ "+da+" cambia gioco: la palla vola dall'altra parte per "+a+".","🧭 Apertura di "+da+" a scavalcare il campo: la riceve "+a+" "+d+"."],"p");
       else if(e.kind==='lancio')txt=_pk(["🚀 Lancio lungo di "+da+" per "+a+", "+d+".","🎯 "+da+" alza la testa e pesca "+a+" "+d+"."],"p");
       else txt=_pk(["↩️ "+da+" scarica all'indietro su "+a+": si ricomincia con calma.","🔙 "+da+" torna su "+a+" per far respirare la manovra."],"p");}
@@ -1756,10 +1757,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     else if(e.t==='spazzata'){txt=_pk(["🛡️ Testa di "+_nm(e.chi)+": spazzata lunga fuori area.","🛡️ "+_nm(e.chi)+" libera l'area di testa."],"sp");at="tackle";}
     else if(e.t==='ricezione'){const c=_nm(e.chi);const d=_dove(e.chi,l);
       if(e.da&&e.kind&&e.kind!=='lancio'&&e.kind!=='cambio'&&e.kind!=='cross'){const da=_nm(e.da);
-        if(e.kind==='corto')txt=_pk(["⚙️ "+da+" appoggia su "+c+", che riceve "+d+".","🔁 Giro palla: "+da+" per "+c+", "+d+".","⚪ "+da+" e "+c+" scambiano corto "+d+"."],"rc");
-        else if(e.kind==='verticale')txt=_pk(["📈 "+da+" verticalizza per "+c+": la manovra sale "+d+".","➡️ "+da+" trova "+c+" fra le linee, "+d+".","⚙️ "+da+" appoggia in avanti per "+c+", "+d+"."],"rc");
-        else if(e.kind==='filtrante')txt=_pk(["🎯 Filtrante di "+da+": "+c+" la raccoglie "+d+"!","⚡ "+da+" la mette in profondita': "+c+" ci arriva "+d+"!"],"rc");
-        else txt=_pk(["↩️ "+da+" scarica all'indietro su "+c+": si ricomincia con calma "+d+".","🔙 "+da+" torna su "+c+", "+d+", per far respirare la manovra."],"rc");}
+        /* [7.871 ritmo] il lancio e' gia' stato detto: all'arrivo parla chi riceve, col luogo (il pallone e' li') */
+        if(e.kind==='corto')txt=_pk(["⚙️ "+c+" riceve "+d+" e la tiene.","🔁 "+c+" la prende "+d+" e fa girare.","⚪ "+c+" riceve "+d+"."],"rc");
+        else if(e.kind==='verticale')txt=_pk(["📈 "+c+" la riceve "+d+": la manovra sale.","➡️ "+c+" riceve fra le linee, "+d+".","⚙️ "+c+" la addomestica "+d+" e guarda avanti."],"rc");
+        else if(e.kind==='filtrante')txt=_pk(["🎯 "+c+" ci arriva "+d+"!","⚡ "+c+" raccoglie il filtrante "+d+"!"],"rc");
+        else txt=_pk(["↩️ "+c+" riceve "+d+": si ricomincia con calma.","🔙 "+c+" la prende "+d+" e rialza la testa."],"rc");}
       else txt=_pk(["🎯 "+c+" riceve e controlla "+d+".","⚙️ "+c+" si sistema il pallone "+d+" e alza la testa.","🔎 "+c+" addomestica il pallone "+d+": cerca l'uomo libero."],"rc");}
     else if(e.t==='controllo'){const c=_nm(e.chi);const d=_dove(e.chi,l);txt=(e.press!=null&&e.press<3)?_pk(["🛡️ "+c+" protegge il pallone "+d+" con un avversario addosso.","⚙️ "+c+" tiene palla "+d+" sotto pressione e cerca lo scarico."],"ct"):_pk(["👀 "+c+" alza la testa "+d+": ha tempo per scegliere.","⚙️ "+c+" fa girare il pallone "+d+" e detta i tempi.","🧭 "+c+" controlla "+d+" e aspetta il movimento giusto."],"ct");}
     else if(e.t==='presa'){txt=_pk(["🧤 "+_nm(e.gk)+" esce e fa sua la palla alta.","🧤 Uscita sicura di "+_nm(e.gk)+"."],"pr");at="save";}

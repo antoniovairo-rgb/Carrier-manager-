@@ -4288,3 +4288,24 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
   interruzioni 7, gol del simulatore 7 nati · 6 accreditati · 0 mangiati, nomi veri 45/45, tabellone
   coerente). Il branch e' verde ai rituali mirati; restano `ci:carriera` e il rituale completo prima
   di proporlo per `main`, e la scheda da telefono e' a 6,3 contro il metro 8.
+
+## 7.871 — il passaggio rasoterra si dice al lancio E all'arrivo (cadenza della cronaca, passo 1 delle consegne)
+
+- Metro: righe per partita e minuti muti (banco node `banco-narr.mjs`: il narratore `narra870` estratto
+  da src/15 e fatto girare sui fatti del motore, 16 partite; poi la scheda da telefono).
+- Rosso appaiato (7.870, stesso banco, stessi semi): 62 righe a partita (57-67), minuti muti 32 %,
+  0,95 fatti per tick. Dove tace: 85 tick di palla ferma senza fatto, 68 «controllo» e 41 conduzioni
+  scartati dal dado dei fatti minori (40 %), 115 tick di volo dei passaggi rasoterra (raccontati solo
+  all'arrivo dalla 7.870, per la geografia), 51 di calcio d'inizio e 37 di rete senza fatto.
+- Prova del dado (solo misura, non spedita): dado 60→80: 67 righe / 28 %; dado tolto: 71 / 22 %, ma
+  a prezzo di «alza la testa» un minuto si' e uno no. Scartata: righe di riempimento, non fatti.
+- Rimedio: il passaggio rasoterra (corto, verticale, filtrante, appoggio) torna a dirsi AL LANCIO ma
+  senza luogo («Rossi verticalizza per Bianchi»: il pallone e' in volo, un luogo sarebbe una bugia per
+  il metro geo865) e all'arrivo parla chi riceve, col luogo («Bianchi la riceve sulla trequarti»). Due
+  righe per un passaggio, come in una telecronaca vera; priorita' del lancio 3 (non entra col respiro
+  dopo un fatto importante), dado dei minori invariato al 40 %.
+- Misura (banco node, 16 partite): 71 righe a partita (66-78), minuti muti 23 %, silenzio massimo 4'.
+  Residuo strutturale: palla ferma in attesa della battuta (~5 tick a partita), calcio d'inizio (~3),
+  rete (~2): sono le pause del calcio, non del narratore.
+- Rituali: `test:logic` 41/41, JSX ok, IDENTICO 1. Browser (smoke870 / partita-vera / scheda): in coda,
+  dopo il rituale notturno di produzione (non si sovrappongono due Chromium).
