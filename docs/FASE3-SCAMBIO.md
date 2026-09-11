@@ -4679,3 +4679,17 @@ v2: fra i candidati (16 invece di 8) si preferisce quello la cui `startZone` CON
 il motore ha messo l'eroe — nessun clamp, lui resta dov'e'. La zona resta il ripiego.
 ⚠️ Il gancio di misura `__CPM_SET_NUMHL` non ha alzato le scene osservate (restano 2 per corsa): il
 numero si decide al fischio d'inizio e la chiamata arriva dopo. Da sistemare se servira' piu' campione.
+
+### 7.880 v2 — la misura (11/09 14:35): l'area 7 e' chiusa al metro
+
+Tre partite (Vairo casa, Moretti casa, Conti fuori), sei scene osservate, contro il rosso appaiato
+(`__CPM_NO879`+`__CPM_NO880`) nello stesso mondo:
+
+| misura | rosso | **verde 7.880 v2** |
+|---|---|---|
+| scene aperte con l'eroe che HA il pallone | 0/2 | **6/6** |
+| salto dell'EROE all'apertura, mediana | 21,5u | **4,5u** (max 7,5) |
+| salto del PALLONE all'apertura | fino a 23,7u | **0,0u** |
+
+I sei salti dell'eroe: 0,5 · 0,5 · 4,0 · 5,0 · 7,1 · 7,5. Sono passi, non teletrasporti: la scena ora
+comincia dove la partita l'aveva lasciata. Guardiano `partita-vera` exit 0, tutte le bande verdi.
