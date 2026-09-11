@@ -4642,3 +4642,17 @@ highlight dell'eroe dal motore).
   massima 15. `test:logic` 43/43, IDENTICO 1, JSX ok.
 - In corsa: la coppia in browser sulla stessa sonda (scene aperte con l'eroe che ha il pallone) e il
   guardiano `partita-vera`.
+
+### 7.879 — la misura in browser (11/09 13:20)
+
+| misura (sonda `scena-salto.mjs`, stesso mondo) | 7.878 | **7.879** |
+|---|---|---|
+| scene aperte con l'eroe che HA il pallone | 0/4 | **2/2** |
+| salto del PALLONE all'apertura | fino a 23,7u | **0,0u** |
+| salto dell'EROE all'apertura | 1,1-10,1u | 6,3-21,7u |
+
+Guardiano `partita-vera`: exit 0, tutte le bande verdi.
+La scena ora NASCE dal fatto: l'eroe ha il pallone davvero, e il pallone non si sposta piu' di un
+centimetro all'apertura. **Resta il salto dell'EROE**, ed e' la seconda meta' del lavoro: la scena lo
+mette ancora dove dice la `startZone` pre-autorata della situazione, invece di partire da dove il motore
+lo ha portato. E' il prossimo passo (7.880).
