@@ -4476,3 +4476,42 @@ dove la palla logica sta incollata ai piedi del padrone per costruzione (0,5u se
 il colpevole non e' la durata dell'arco ma l'INSEGUIMENTO della mesh: il pallone reso non tiene il passo
 di una palla che si muove col portatore. Il prossimo cantiere parte da qui, non dall'arco; il primo passo
 e' attribuire chi scrive la mesh sotto il motore (testimone `_ws524`, `npm run ball-owner`).
+
+## Area 11 «Immersione»: la catena e' attribuita per intero (misura, nessuna release)
+
+Sonda nuova `corpo-lag.mjs` (160 s, 350 campioni in tenuta, GLB acceso). Quattro distanze sullo stesso
+istante, dal motore fino ai pixel:
+
+| anello | mediana | p90 |
+|---|---|---|
+| D — logico React <-> motore | **0,0u** | 0,1u |
+| E — bersaglio commesso del corpo <-> logico | **0,9u** | 16,6u |
+| F — corpo <-> il suo stesso bersaglio | **4,0u** | 13,3u |
+| C — pallone reso <-> corpo del portatore | **1,2u** | 15,1u |
+| A — pallone reso <-> pallone del motore | **3,7u** | 18,7u |
+
+Si legge cosi': la simulazione e' esatta (D=0), il corpo e' PUNTATO nel posto giusto (E≈1u), il pallone
+e' incollato al corpo (C≈1u) — e tutto lo scostamento sta in F, il corpo che non raggiunge il proprio
+bersaglio. Velocita' del corpo: mediana 0,5 u/s con un tetto di 8 u/s.
+
+⚠️ Questo filo era gia' stato aperto e chiuso una volta (nota lunga in `src/12-three-match-view.jsx`,
+~riga 1744): allora il ritardo si divideva in **stadio 1 = 2,27 m** (bersaglio commesso indietro) e
+**stadio 2 = 3,96 m** (corpo indietro sul bersaglio), e la conclusione fu che l'integrazione e' esatta e
+che quei due stadi sono VOLUTI — sono la rampa d'arrivo, il limitatore di sterzata, il freno per girarsi:
+«la resa e' fatta per discostarsi dal modello; non e' deriva… se si vuole che l'occhio veda cio' che la
+simulazione decide, quel numero va SCELTO, non corretto di nascosto».
+La novita' di oggi: col motore lo **stadio 1 e' sparito** (2,27 m → 0,9u), perche' il bersaglio ora e'
+la posizione della simulazione e non piu' il risultato di quattro macchine che si contendevano i corpi.
+Resta solo lo stadio 2, ~4u, e con esso l'area 11 a 5.
+
+**Non lo taro di mia iniziativa**: e' la decisione di prodotto che quella nota chiedeva di non prendere
+di nascosto. Tre strade, con il loro prezzo:
+1. lasciare com'e': il movimento resta morbido, l'area 11 resta a 5 e la media della scheda si ferma
+   intorno a 6,8-7;
+2. dimezzare lo stadio 2 solo per il PORTATORE (chi ha la palla arriva dove dice la simulazione, gli
+   altri restano morbidi): l'occhio segue il pallone, quindi e' li' che il ritardo si vede — costo
+   atteso, un portatore leggermente piu' «scattante» degli altri;
+3. dimezzarlo per tutti: massima fedelta' alla simulazione, rischio di movimento robotico — e' esattamente
+   cio' che le note del 7.518-7.594 avevano tolto apposta.
+Raccomando la 2, misurata con la coppia rosso/verde su F, sulla scheda da telefono e sul check `motion`
+del gate (che giudica proprio il movimento).
