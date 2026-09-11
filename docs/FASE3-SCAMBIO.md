@@ -4209,3 +4209,8 @@ solo; (2) ogni waypoint della trama è un uomo e diventa subito portatore: passa
 conduzione; (3) i tick governati dal mover sono un terzo del gioco vivo, il resto lo scrivono piano, righe
 e scene. Lezione 22ª: un cambio strutturale su UN solo scrittore sposta il pallone da un metro all'altro;
 serve lo stato di possesso unico per tutti gli scrittori, e va misurato su banco E geografia insieme.
+
+- 11/09 01:31 UTC (routine notturna): Produzione allineata a 0df1e49 (7.866.0) il 11/09, rituale completo verde
+  (`career-critical` exit 0 in 512 s, `npm run ci` exit 0 in 1176 s sull'HEAD del branch QA, working tree pulito,
+  IDENTICO 1). Fast-forward 75092dc → 0df1e49. Non verificato: l'Android del PO (Chromium 412×915 in
+  headless); la CI di GitHub su main non e' leggibile da questa sessione.
