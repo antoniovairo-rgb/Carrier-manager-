@@ -4457,3 +4457,22 @@ gol-del-simulatore 7 nati · 5 accreditati · 0 mangiati, nomi-veri 51/51, tabel
 Il branch e' tecnicamente proponibile per la produzione. Non lo propongo: il cancello scritto dal PO
 e' la SCHEDA da telefono (media 8 su 12 aree, nessuna area sotto 7), e su questa build non e' ancora
 stata rifatta. E' la prossima misura.
+
+## Misura (non una release): l'ipotesi «e' il volo» sull'area 11 e' SMENTITA
+
+Le consegne indicavano come causa dello scarto reso<->logico la durata dell'arco 3D (80 u/s contro un
+volo vero di 1,2-1,6 s). La misura dice altro. Sonda `volo-scarto.mjs` (170 s, 833 campioni), scarto fra
+la MESH del pallone e la palla del motore, spezzato per stato del motore:
+
+| stato | campioni | mediana | p90 | max | <= 3u |
+|---|---|---|---|---|---|
+| tenuta | 420 | 4,0u | 16,3u | 35,8u | 40 % |
+| volo | 154 | 3,3u | 17,6u | 31,0u | 49 % |
+| fermo | 242 | 0,4u | 26,6u | 49,8u | 67 % |
+| kickoff | 8 | 8,8u | 26,4u | — | 38 % |
+
+Lo scarto NON e' concentrato nel volo: e' distribuito su tutti gli stati, ed e' peggiore in TENUTA —
+dove la palla logica sta incollata ai piedi del padrone per costruzione (0,5u sempre, misurato). Quindi
+il colpevole non e' la durata dell'arco ma l'INSEGUIMENTO della mesh: il pallone reso non tiene il passo
+di una palla che si muove col portatore. Il prossimo cantiere parte da qui, non dall'arco; il primo passo
+e' attribuire chi scrive la mesh sotto il motore (testimone `_ws524`, `npm run ball-owner`).

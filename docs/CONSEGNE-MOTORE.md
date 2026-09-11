@@ -86,3 +86,25 @@ di scena, pallone e camera pre-autorati e l'esito da `decideExecution`; il motor
 - il calendario (8-84', 2-7 scene) diventa un vincolo di frequenza sul motore (bonus al pallone
   verso l'eroe quando e' ora di una scena), non un orologio che spezza il gioco.
 Ordine: dopo i punti 1-4, perche' la scena dal motore ha senso solo se il gioco ambientale regge.
+
+---
+
+## Aggiornamento 11/09 (dopo la notte 7.871-7.877)
+
+Fatto: (1) ritmo — righe 81-92 a partita, in banda 70-110 su 4/4; (2) tiri — il gol decretato si
+costruisce fino all'area, tiri da dietro 81/130 -> 0/63; (4) interruzioni — arbitro-esiste verde con
+misura ripetuta (8, 7, 12); (5) rituale completo verde sul branch (career 524 s, ci 1191 s). In piu',
+due cose non previste e piu' grosse di tutte le altre: i RUOLI non arrivavano al motore in browser
+(7.874) e le CORSIE erano rimaste accese sotto il motore, cioe' c'erano ancora due scrittori dei
+ventidue (7.877: pallone ai piedi in React dal 18 % al 90 %).
+
+Scheda n° 11 sulla 7.877: media 6,8 (era 6,3). Cancello del PO non raggiunto (serve 8, nessuna area
+sotto 7). Le tre aree che la tengono ferma, in ordine di peso:
+
+1. **11 Immersione (5)** — lo strato 3D. ⚠️ L'ipotesi scritta qui sopra al punto (3) — «e' la durata
+   dell'arco» — e' SMENTITA dalla misura: lo scarto mesh<->motore e' 4,0u di mediana in TENUTA (dove la
+   palla logica e' incollata ai piedi) contro 3,3u in volo. Non e' l'arco, e' l'inseguimento. Primo
+   passo: attribuire chi scrive la mesh del pallone sotto il motore (`_ws524`, `npm run ball-owner`).
+2. **4 Varieta' (6)** — rimesse laterali ~0 contro le ~40 vere, cross in gioco aperto 0,4 a partita.
+   Il campo ora si usa piu' largo (7.876) ma il pallone non varca quasi mai la linea.
+3. **7 Highlight dell'eroe (6)** — la seconda fase, il piano e' quello scritto qui sotto.
