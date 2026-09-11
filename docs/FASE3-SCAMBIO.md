@@ -4720,3 +4720,18 @@ costavano due tick ciascuna. Nel calcio vero si riparte subito e la barriera si 
 all'area: ora la punizione oltre i 30 metri dalla porta si batte in un tick, sotto restano due.
 Banco (48 partite): fermo **14 % → 12 %** dei tick, interruzioni 5,27 → 5,40 (non se ne perde nessuna),
 decreti segnati 92 %, attesa massima 15. `test:logic` 43/43, IDENTICO 1. Vairo e Conti in misura.
+
+### 7.881 v2 — la misura in browser (11/09 18:36)
+
+| minuti per stato | scheda n° 12 (7.880) | **7.881 v2** |
+|---|---|---|
+| Vairo casa: fermo + calcio d'inizio | 18 + 2 = **20'** | 5 + 2 = **7'** |
+| Conti fuori: fermo + calcio d'inizio | 10 + 9 = **19'** | 8 + 10 = **18'** |
+
+Vairo rientra largamente in banda (7' contro un tetto di 15). Conti resta a 18, ma leggendo la
+ripartizione il suo tempo fermo NON e' palla morta: e' **calcio d'inizio 10' + ripresa 6'**, cioe' i
+riavvii dopo i gol — quella partita ne ha tanti. Un gol ferma il gioco anche nel calcio vero, e i due
+tick di rete piu' due di ripartenza sono ~90 secondi reali: sono giusti, non sono un difetto. Il residuo
+di Conti quindi si dichiara e non si tara.
+Guardiano `partita-vera` exit 0, tutte le bande verdi. Righe di cronaca 73 e 88 (banda 70-110), pallone
+ai piedi 77 % e 61 %.
