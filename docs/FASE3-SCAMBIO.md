@@ -4383,3 +4383,24 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
   y 27-74 per il 95 % del tempo, oltre |y-50|>=30 solo il 3 %, oltre 38 mai; i ventidue p5-p95 = 22-79.
   Percio' le rimesse laterali sono ZERO in 48 partite (nel calcio vero sono ~40 a partita) e i cross in
   gioco aperto 0,33. Prossimo passo del cantiere.
+
+## 7.876 — il campo e' largo quanto il campo (la squadra trasla, non collassa sul pallone)
+
+- Misura del rosso (banco deterministico, 24 partite, regime del browser): il pallone stava nel
+  corridoio y 27-74 per il 95 % del tempo, oltre |y-50|>=30 solo il 3 %, oltre 38 MAI; i ventidue
+  p5-p95 = 22-79. Rimesse laterali: 0 in 48 partite (nel calcio vero ~40 a partita). Causa: in
+  `muoviTutti` ogni giocatore puntava `sl.y+(by-sl.y)*0,22`, cioe' era tirato verso la y DEL PALLONE —
+  che parte da 50 e non esce mai: un ciclo che stringe il gioco su se stesso. La conduzione aggiungeva
+  un rientro verso il centro a ogni tocco.
+- Rimedio: il blocco TRASLA verso il pallone mantenendo la forma (`sl.y+(by-50)*0,30`), le corsie
+  restano; chi conduce sulla fascia dal 60 di avanzamento non rientra per abitudine e punta il fondo
+  (rientra solo dall'86 in poi).
+- Misura appaiata: pallone oltre |y-50|>=30 dal 3 % al 10 % (p5-p95 20-80), ventidue dal 6 % al 22 %
+  (p5-p95 15-86). Guardrail: zero salti sopra 12u in 48 partite (nel rosso ce n'era uno da 26,9u, un
+  difetto raro e preesistente della sistemazione del corner: dichiarato, non affrontato qui);
+  gol decretati segnati 192/206 (93 %) contro 190/208 (91 %), attesa media 7,0 e massima 16 contro
+  6,8 e 15 (tetto del test 16); interruzioni 5,02 → 4,83 a partita; `test:logic` 43/43, IDENTICO 1.
+- APERTO e dichiarato: le rimesse laterali restano ~0,02 a partita. Il campo ora si usa piu' largo ma
+  il pallone non esce quasi mai: il prossimo gradino e' il pallone che varca davvero la linea.
+- Guardiano sulla 7.875 (due corse, stesso mondo): `arbitro-esiste` 8 e 7 interruzioni su banda 6,
+  exit 0 entrambe — la banda rossa da tre release e' chiusa con misura ripetuta.

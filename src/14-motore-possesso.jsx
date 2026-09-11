@@ -151,7 +151,9 @@ function creaMotorePossesso(cfg){
     ev("tiro",{chi:chi(P),zona,intent,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});
     volo({tipo:"tiro",kind:intent,x:tx,y:ty,ricevente:null,v:44,esito:out,tiratore:P.i,arco:"shot",actor:nome(P)});};
   const conduci=(P)=>{const d=dirDi(P.team);const passo=5+rnd()*3;const adv=advDi(P.x,P.team);
-    let ty=P.y+(50-P.y)*0.12+(rnd()-0.5)*2;if(adv>=74&&Math.abs(P.y-50)>18)ty=P.y+(50-P.y)*0.3;
+    /* [7.876] chi conduce sulla fascia non rientra per abitudine: punta il fondo e rientra solo in area */
+    let ty=P.y+(50-P.y)*0.06+(rnd()-0.5)*2;if(adv>=86&&Math.abs(P.y-50)>18)ty=P.y+(50-P.y)*0.35;
+    else if(adv>=60&&Math.abs(P.y-50)>=20)ty=P.y+(P.y-50)*0.05+(rnd()-0.5)*2;
     const nx=clamp(P.x+d*passo,3,97),ny=clamp(ty,4,96);
     ev("conduzione",{chi:chi(P),from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+nx.toFixed(1),y:+ny.toFixed(1)}});
     P.x=nx;P.y=ny;S.palla.x=clamp(P.x+d*0.5,0,100);S.palla.y=P.y;S.conta.conduzioni++;};
@@ -312,7 +314,12 @@ function creaMotorePossesso(cfg){
       else{
         const spinta=inPoss?clamp((advB-40)*(p.rl==="AT"?0.55:0.35),-4,(p.rl==="AT"?26:14)):clamp((advDi(bx,p.team)-50)*0.30,-10,4);
         tx=sl.x+dp*spinta+(bx-50)*0.35;
-        ty=sl.y+(by-sl.y)*0.22;
+        /* [7.876 il campo e' largo quanto il campo] La squadra si SPOSTA verso il pallone mantenendo la
+           forma, non COLLASSA sul pallone: con `sl.y+(by-sl.y)*0.22` ogni giocatore veniva tirato verso
+           la y della palla, che parte da 50 e non esce mai — risultato misurato: pallone nel corridoio
+           27-74 per il 95 % del tempo, rimesse laterali ZERO in 48 partite. Ora il blocco trasla
+           (`(by-50)*0.30`) e le corsie restano: chi parte largo resta largo. */
+        ty=sl.y+(by-50)*0.30;
         if(p.rl==="DF"&&!inPoss){tx=sl.x+dp*Math.min(spinta,0)+(bx-50)*0.25;}
         /* [7.872] col gol decretato le punte di quel lato salgono al limite dell'area: il lancio ha un bersaglio */
         {const gr=S.richieste.gol;if(gr&&p.team===gr.lato&&p.rl==="AT"&&st!=="fermo"&&advDi(tx,p.team)<80){tx=xDa(80+(p.i%3)*2,p.team);ty=sl.y+(by-sl.y)*0.35;v=6;}}
