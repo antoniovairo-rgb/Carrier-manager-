@@ -1760,3 +1760,52 @@ pallone 16-39 (archi 3D); fotogrammi a campo vuoto quando i corpi inseguono la l
 **Media DA TELEFONO: 6,3** (somma 75; n° 9: 5,5; n° 8: 5,9). Sei aree sotto 7. Nessun «puoi collaudare».
 Il metro (8,0) e' a 1,7 punti: la struttura e' quella giusta (le aree 3, 8 e 10 salgono per costruzione,
 non per taratura); da qui si lavora su ritmo, tiri e resa del volo, con il banco in node in secondi.
+
+---
+
+## Scorecard n° 11 — build 7.877 del motore del possesso (11/09, 08:10)
+
+Quattro partite sulla sonda da telefono (Chromium 412×915 portrait, GLB acceso, tick reale). **NON e'
+l'Android del PO**: fotogrammi al secondo 15-17 contro i ~30 del telefono vero, e la lezione 20ª resta —
+a questi fps i corpi 3D restano indietro e i numeri sul RESO sono penalizzati.
+
+| misura | Vairo casa | Galli fuori | Moretti casa | Conti fuori | banda |
+|---|---|---|---|---|---|
+| pallone ai piedi del padrone (<=3u) | 68 % | 77 % | 64 % | 63 % | >= 60 % |
+| …di cui a palla a terra | 76 % | 85 % | 69 % | 64 % | >= 75 % |
+| distanza reso<->padrone, mediana | 1,1u | 1,0u | 1,2u | 1,4u | <= 3u |
+| scarto reso<->logico, p90 | 15,1u | 11,9u | 16,4u | 21,9u | <= 8u |
+| salti del pallone | 7 | 13 | 11 | 39 | 0 |
+| righe di cronaca | 84 | 81 | 92 | 81 | 70-110 |
+| palla morta + fermo | 10' | 20' | 12' | 12' | <= 15' |
+| frasi del tiro smentite dal campo | 0/0 | 0/0 | 0/0 | 0/0 | 0 |
+
+Confronto con la n° 10 (7.870): padrone ai piedi era **58 / 69 / 42 / 41-44 %** — ora nessuna partita
+sotto 63 %, tutte e quattro in banda per la prima volta. Le righe di cronaca erano 51-70 (sotto banda):
+ora 81-92, tutte in banda.
+
+| area | n° 10 | **n° 11** | perche' |
+|---|---|---|---|
+| 1 Realismo | 6 | **7** | padrone ai piedi 63-77 % (era 41-69), un solo scrittore dei ventidue, campo usato piu' largo |
+| 2 Credibilita' da attaccante | 6 | **7** | col gol decretato i tiri partono dal limite o dall'area, mai dalla propria meta' (81/130 → 0/63); frasi smentite 0/0 su quattro partite |
+| 3 Causalita' | 7 | **7** | turni causali 100 %, contrasto→possesso, decreto→azione nominata→rete |
+| 4 Varieta' | 6 | **6** | tiri 4-5 a partita, ma cross 0,4 e **rimesse laterali ~0**: manca il repertorio della fascia |
+| 5 Ritmo | 5 | **7** | righe 81-92 in banda su 4/4; palla morta 10-12' su tre partite, 20' su Galli (fuori banda) |
+| 6 Azioni extra-eroe | 7 | **7** | gol del simulatore 7 nati · 0 mangiati (rituale completo) |
+| 7 Highlight dell'eroe | 6 | **6** | invariati: la reingegnerizzazione dal motore e' la seconda fase, non ancora fatta |
+| 8 Telecronaca | 7 | **7** | nomi veri 51/51, luoghi dal punto vero; **difetto visto**: la seconda voce ripete la stessa frase a tre minuti di distanza |
+| 9 Interazioni | 7 | **7** | invariate |
+| 10 Coerenza fra i sistemi | 7 | **8** | un solo scrittore DIMOSTRATO coi numeri (scarto React<->motore 11,5u → 0,0u), tabellone coerente, rituale completo verde |
+| 11 Immersione | 5 | **5** | 15-17 fps headless, scarto reso<->logico p90 12-22 su banda 8, salti 7-39, e un fotogramma di gioco con la camera sugli spalti e nessun giocatore in quadro |
+| 12 Carriera | 6 | **7** | `career-critical` exit 0 su QUESTA build (la n° 10 lo dichiarava non rieseguito) |
+
+**Media 6,8** (n° 10: 6,3). **Il cancello del PO non e' raggiunto**: serve media 8 e nessuna area sotto
+7, e restano sotto la 4 (6), la 7 (6) e la 11 (5). Il PO non collauda.
+
+Le tre aree che tengono ferma la media dicono anche cosa fare, nell'ordine:
+1. **11 Immersione** — e' lo strato 3D, non la simulazione: il pallone reso insegue il logico con p90
+   12-22u e salta 7-39 volte a partita. E' il prossimo cantiere.
+2. **4 Varieta'** — il pallone non esce quasi mai dal campo (rimesse ~0 contro le ~40 vere) e il cross
+   in gioco aperto e' 0,4 a partita.
+3. **7 Highlight dell'eroe** — la scena nasce ancora da una tabella a calendario, non da un fatto del
+   motore: e' la seconda fase scritta in `docs/CONSEGNE-MOTORE.md`.
