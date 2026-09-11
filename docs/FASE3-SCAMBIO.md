@@ -4862,3 +4862,43 @@ Restano quindi da rifondare, prima di poter rivotare l'area 11, tutte e tre le s
 (questa nota), i salti (misurano velocita' x intervallo di campionamento) e il ritardo del corpo (misura
 il carico della macchina). Nessun rimedio scritto: quattro ipotesi in un giorno, quattro cadute, zero
 tarature contro numeri non fondati.
+
+### Area 11 — il primo strumento che regge (11/09, 23:35): «il pallone reso passa dal punto dichiarato?»
+
+Smontate le tre colonne vecchie (scarto, salti, ritardo del corpo), la domanda che resta e' quella che
+l'occhio del PO fa davvero: **il pallone che vedo passa dal punto in cui la simulazione dice che sta?**
+Per ogni punto logico (uno per minuto simulato) si prende la distanza MINIMA della traiettoria resa in
+quella finestra. Sonda `passa-dal-punto.mjs`, campionamento dentro la pagina a ogni fotogramma.
+
+**v1 (minimo sui VERTICI campionati) — bocciata, e il rosso l'ha bocciata:**
+
+| corsa | fps | fotogr./punto | punti | <= 3u | p90 | max |
+|---|---|---|---|---|---|---|
+| verde Vairo | 16 | 50 | 48 | 98 % | 0,4u | 9,4u |
+| verde Galli | 12 | 29 | 50 | 82 % | 7,7u | 39,2u |
+| **ROSSO `__CPM_NO870`** | 9 | **3** | 87 | **82 %** | 4,4u | 23,4u |
+
+Rosso 82 % = verde Galli 82 %: **non discriminava**. L'ordine dei risultati seguiva i fotogrammi per
+punto (50 -> 98 %, 29 -> 82 %, 3 -> 82 %), cioe' lo strumento, non la build.
+
+**v2: la distanza si prende dalla SPEZZATA della traiettoria, non dai vertici** (punto-segmento). Due
+corse a densita' diversa vedono allora lo stesso percorso.
+
+| corsa | fps | fotogr./punto | punti | <= 3u | p90 | max |
+|---|---|---|---|---|---|---|
+| verde Vairo, macchina libera | 15 | 52 | 44 | **100 %** (44/44) | 0,0u | 1,5u |
+| **verde Vairo SOTTO CARICO** (6 processi) | **8** | 30 | 45 | **98 %** (44/45) | 0,1u | 12,7u |
+| **ROSSO `__CPM_NO870`** (motore spento) | 6 | 3 | 90 | **81 %** (73/90) | 5,2u | 25,7u |
+
+**Verde 98-100 % contro rosso 81 %, e il verde regge il dimezzamento degli fps** (15 -> 8 fps: 100 % ->
+98 %, p90 0,0 -> 0,1u). E' il primo metro dell'area 11 che separa una build buona da una cattiva senza
+misurare la macchina.
+
+**Quello che NON e' ancora provato, e va detto.** Il rosso gira a 3 fotogrammi per punto contro i 30-52
+del verde: il controllo sul carico copre un fattore 2 di fps, non un fattore 10 di densita'. La
+separazione 98/81 e' credibile ma non e' ancora al riparo da quel residuo. Serve un rosso che giri
+DENSO quanto il verde prima di poter votare l'area 11 con questo numero.
+
+Vale anche la nota di metodo della serata: il container di questa sessione si e' riavviato due volte
+(19:24 e 22:52) uccidendo due catene lunghe. Da qui in avanti le misure si lanciano **una corsa alla
+volta**, mai in catena da mezz'ora.
