@@ -4656,3 +4656,15 @@ La scena ora NASCE dal fatto: l'eroe ha il pallone davvero, e il pallone non si 
 centimetro all'apertura. **Resta il salto dell'EROE**, ed e' la seconda meta' del lavoro: la scena lo
 mette ancora dove dice la `startZone` pre-autorata della situazione, invece di partire da dove il motore
 lo ha portato. E' il prossimo passo (7.880).
+
+## 7.880 — la situazione si sceglie DOVE STA L'EROE (seconda meta' dell'area 7)
+
+- Rosso misurato sulla 7.879: il pallone non salta piu' all'apertura della scena (0u), ma l'EROE si',
+  fino a 21,7u. Causa: la scena lo CLAMPA dentro la `startZone` pre-autorata della situazione pescata dal
+  calendario e, se quella zona sta dietro di lui, lui torna indietro.
+- Rimedio: il fatto del motore (`occasione_eroe`) porta con se' la sua ZONA, e fra i candidati si sceglie
+  la situazione che si gioca dove l'eroe e' gia' (area→area/bordo, limite→bordo/area,
+  trequarti→trequarti/fascia, centro→centro/trequarti), escludendo le difensive quando lui ha il pallone.
+  Il repertorio autorato resta intatto: cambia soltanto QUALE si sceglie. Rosso `__CPM_NO880`.
+- Misura attesa: salto dell'eroe all'apertura 6,3-21,7u → pochi passi. In corsa su due partite piu' il
+  guardiano. `test:logic` 43/43, IDENTICO 1, JSX ok.
