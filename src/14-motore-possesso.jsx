@@ -44,6 +44,8 @@ function creaMotorePossesso(cfg){
   /* ---------- i ventidue ---------- */
   const g=(cfg.giocatori||[]).map((p,i)=>({i,team:p.team===AWAY?AWAY:HOME,gk:!!p.gk,name:String(p.name||""),rl:String(p.rl||""),x:clamp(+p.x||50,2,98),y:clamp(+p.y||50,3,97),eroe:false}));
   while(g.length<21){const i=g.length;g.push({i,team:i<10?HOME:AWAY,gk:(i===0||i===10),name:"",rl:"",x:i<10?30:70,y:50,eroe:false});}
+  /* [7.874] i ruoli dal campo: il live match passa i ventidue senza `rl` (matchPlayers non lo porta), e tutte le regole per ruolo (punte al limite, difensori che restano, battitore del rigore) erano lettera morta in browser. Se manca, il ruolo si legge dalla posizione di partenza: i quattro piu' arretrati DF, i tre seguenti MF, gli altri AT */
+  for(const l of [HOME,AWAY]){const c=g.filter(q=>q.team===l&&!q.gk);if(c.some(q=>q.rl))continue;c.sort((a,b)=>advDi(a.x,l)-advDi(b.x,l));c.forEach((q,k)=>{q.rl=k<4?"DF":k<7?"MF":"AT";});}
   const HERO=21;
   g[HERO]={i:HERO,team:HOME,gk:false,name:String((cfg.eroe&&cfg.eroe.name)||"EROE"),rl:"AT",x:clamp(+(cfg.eroe&&cfg.eroe.x)||58,2,98),y:clamp(+(cfg.eroe&&cfg.eroe.y)||50,3,97),eroe:true};
   let eroeAttivo=!(cfg.eroe&&cfg.eroe.attivo===false);

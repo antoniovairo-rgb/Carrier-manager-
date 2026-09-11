@@ -4342,3 +4342,21 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
   2 → 9 (32 partite), passo massimo 11,3 → 9,0 u. Effetto modesto e dichiarato tale: il prossimo
   gradino e' la scelta del ricevente vicino all'area (filtrante 1 su 16 partite).
 - Rituali: `test:logic` 41/41, IDENTICO 1. Browser in coda con 7.871-7.872.
+
+## 7.874 — i ruoli dal campo (le regole per ruolo del motore erano lettera morta in browser)
+
+- Trovato cercando il rosso appaiato della 7.873: il live match passa al motore i ventidue di
+  `matchPlayers`, che non portano `rl`; nel banco node invece i ruoli ci sono. Quindi ogni regola per
+  ruolo (punte al limite 7.873, punte del lato decretato in area 7.872, difensori che non salgono,
+  battitore del rigore) valeva nel banco e non nel gioco. Anche il banco `tiri-zona` usava
+  `Math.random` per i decreti: reso deterministico (LCG) prima di rimisurare, perche' 28 → 39 della
+  7.873 era in parte rumore.
+- Rimedio: se i giocatori arrivano senza ruolo, il motore lo legge dalla posizione di partenza (per
+  squadra: i quattro piu' arretrati DF, i tre seguenti MF, gli altri AT).
+- Misura appaiata, banco deterministico, 48 partite, ventidue SENZA ruolo come in browser:
+  7.873 → area in tenuta 54 tick, tiri dall'area 16 su 220, tiri decretati dall'area 8;
+  7.874 → area 70, tiri dall'area 33 su 216, decretati dall'area 16. Identico al banco con i ruoli
+  (7.873 con ruoli: 70 / 33 / 16): la 7.874 fa in browser cio' che la 7.873 prometteva.
+  Con la 7.872 senza ruolo comparivano ancora 3 tiri decretati da centrocampo su 215; con 7.874: 0.
+- Rituali: `test:logic` 42/42, IDENTICO 1. Browser in coda (guardiano + scheda) dopo il bisect
+  dell'arbitro-esiste.
