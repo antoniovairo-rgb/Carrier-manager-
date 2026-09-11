@@ -3260,7 +3260,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             if(!(_cur79&&_cur79._chainDepth)){
               const _lzSeed=(((bgSimSeedRef.current^(hlIdx*2654435761))>>>0)+nx*97)>>>0;
               const _used79=situationsRef.current.slice(0,hlIdx).map(s2=>s2&&s2.text).filter(Boolean);
-              const _fresh79=selectContextualSituations([...SITUATIONS],((typeof window!=='undefined'&&window.__CPM_NO880)||!occEroe879Ref.current)?1:8,player,_lzSeed,{scoreCtx:_realCtx,clock:nx,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,ballX:((ballTargetRef.current||ballPosRef.current||{}).x),/* [7.204.0] continuità territoriale: la prossima azione nasce vicino a dove il gioco si è fermato */exclude:_used79});
+              const _fresh79=selectContextualSituations([...SITUATIONS],((typeof window!=='undefined'&&window.__CPM_NO880)||!occEroe879Ref.current)?1:16,player,_lzSeed,{scoreCtx:_realCtx,clock:nx,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,ballX:((ballTargetRef.current||ballPosRef.current||{}).x),/* [7.204.0] continuità territoriale: la prossima azione nasce vicino a dove il gioco si è fermato */exclude:_used79});
               /* [7.880] LA SITUAZIONE SI SCEGLIE DOVE STA L'EROE. Rosso __CPM_NO880.
                  Misurato sulla 7.879: il pallone non salta piu' all'apertura (0u) ma l'EROE si' (fino a
                  21,7u), perche' la scena lo CLAMPA dentro la `startZone` pre-autorata della situazione
@@ -3270,7 +3270,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               let _pick880=_fresh79[0];
               if(!(typeof window!=='undefined'&&window.__CPM_NO880)&&occEroe879Ref.current&&_fresh79.length>1){
                 const _zm={area:['area','bordo'],limite:['bordo','area'],trequarti:['trequarti','fascia'],centro:['centro','trequarti']}[occEroe879Ref.current.zona]||null;
-                if(_zm){const _c=_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])===0&&s2.type!=='def')
+                /* [7.880 v2] non basta la ZONA: nel caso peggiore misurato la x non si muoveva (59,7→60,2)
+                   e la y portava l'eroe da 45,6 a 30 — quindici unita' di corsia. Si preferisce quindi la
+                   situazione la cui `startZone` CONTIENE gia' il punto dove il motore ha messo l'eroe:
+                   cosi' non c'e' nessun clamp e lui resta dov'e'. La zona resta il ripiego. */
+                const _hx=occEroe879Ref.current.x,_hy=occEroe879Ref.current.y;
+                const _dentro=(s2)=>{try{const z=s2&&s2.startZone;return !!(z&&_hx>=z.x[0]&&_hx<=z.x[1]&&_hy>=z.y[0]&&_hy<=z.y[1]);}catch(_e){return false;}};
+                if(_zm){const _c=_fresh79.find(s2=>s2&&s2.type!=='def'&&_dentro(s2))
+                        ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])===0&&s2.type!=='def')
                         ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])>=0&&s2.type!=='def');
                   if(_c){_pick880=_c;try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SIT880=window.__CPM_SIT880||[]).push({min:nx,zona:occEroe879Ref.current.zona,sit:_c.zones[0],tipo:occEroe879Ref.current.tipo});}catch(_e880){}}}
               }

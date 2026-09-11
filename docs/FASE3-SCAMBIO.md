@@ -4668,3 +4668,14 @@ lo ha portato. E' il prossimo passo (7.880).
   Il repertorio autorato resta intatto: cambia soltanto QUALE si sceglie. Rosso `__CPM_NO880`.
 - Misura attesa: salto dell'eroe all'apertura 6,3-21,7u → pochi passi. In corsa su due partite piu' il
   guardiano. `test:logic` 43/43, IDENTICO 1, JSX ok.
+
+### 7.880 v2 — non basta la zona, serve la corsia
+
+Coppia rosso/verde sulla 7.880 v1 (stesso mondo, stesso seme): scene aperte con l'eroe che ha il
+pallone **0/2 (rosso) contro 2/2 (verde)** — il trigger della 7.879 e' confermato in modo appaiato. Ma il
+salto dell'EROE resta: mediana 21,5u nel rosso contro 15,6u nel verde, e nel caso peggiore la x non si
+muoveva (59,7 → 60,2) mentre la y lo portava da 45,6 a 30: e' la CORSIA, non la zona.
+v2: fra i candidati (16 invece di 8) si preferisce quello la cui `startZone` CONTIENE gia' il punto dove
+il motore ha messo l'eroe — nessun clamp, lui resta dov'e'. La zona resta il ripiego.
+⚠️ Il gancio di misura `__CPM_SET_NUMHL` non ha alzato le scene osservate (restano 2 per corsa): il
+numero si decide al fischio d'inizio e la chiamata arriva dopo. Da sistemare se servira' piu' campione.
