@@ -1451,6 +1451,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   `playing` dove viveva il soft-lock BLK-1, che nessun check eseguiva) + sonda numHL. Test-only.
     window.__CPM_QUEUE_REACTIVE=(m)=>{try{reactiveHLQueueRef.current.push(m!=null?m:((clockRef.current||0)+1));return true;}catch(e){return false;}};
     window.__CPM_NUMHL=()=>{try{return numHLRef.current;}catch(e){return null;}};
+    /* [7.880 strumento, SOLO COLLAUDO] alza il numero di scene della partita in corso: il provino ne
+       concede al massimo 3, e due sole osservazioni non separano nulla (lezione del 7.880: quattro
+       campioni, due dei quali la stessa scena seminata). Sola scrittura di un contatore di test. */
+    window.__CPM_SET_NUMHL=(n)=>{try{const v=Math.max(1,Math.min(9,n|0));numHLRef.current=v;setNumHL(v);return v;}catch(e){return null;}};
     // [7.2.0] hook di collaudo della PREMIAZIONE 3D: salta direttamente alla fase ceremony (test-only). Il runner
     //   ceremony-visual.mjs monta LiveMatch (?sit=) e chiama questo per catturare i 4 beat senza dover vincere un titolo.
     window.__CPM_FORCE_CEREMONY=(o)=>{try{setCeremony({name:(o&&o.name)||"CAMPIONI D'ITALIA",kind:(o&&o.kind)||"league"});setPhase("ceremony");return true;}catch(e){return false;}};
