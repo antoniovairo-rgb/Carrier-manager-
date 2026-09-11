@@ -2553,6 +2553,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Formation drift during playing phase — ball-reactive + patrol oscillation
   useEffect(()=>{
     if(phase!=="playing"||paused||kickoffHold)return;/* [7.9.3] kickoff trattenuto finché CH38 non è pronto */
+    /* [7.877 UN SOLO SCRITTORE DEI VENTIDUE. Rosso __CPM_NO877]
+       La ristrutturazione 7.870 aveva spento la macchina dei movimenti dentro il tick (blocco sotto
+       `if(!MOTORE870||_inHL77)`), ma QUESTA — le corsie, un effetto suo a 550 ms — era rimasta accesa e
+       riscriveva le posizioni fra un tick e l'altro. Misurato in browser (sonda chi-lagga, 358 campioni
+       in tenuta): il motore tiene il pallone ai piedi del padrone nel 100 % dei casi, mentre lo STESSO
+       uomo in `matchPlayers` stava a 10,5u di mediana (p90 20,2, max 32,2) da dove il motore lo mette,
+       e il pallone risultava ai suoi piedi solo nel 17 %. Due scrittori, due verita'. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO870)&&!(typeof window!=='undefined'&&window.__CPM_NO877))return;
     let tick=0;
     const iv=setInterval(()=>{
       tick++;

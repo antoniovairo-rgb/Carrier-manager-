@@ -4404,3 +4404,23 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
   il pallone non esce quasi mai: il prossimo gradino e' il pallone che varca davvero la linea.
 - Guardiano sulla 7.875 (due corse, stesso mondo): `arbitro-esiste` 8 e 7 interruzioni su banda 6,
   exit 0 entrambe — la banda rossa da tre release e' chiusa con misura ripetuta.
+
+## 7.877 — un solo scrittore dei ventidue (la macchina delle corsie era rimasta accesa sotto il motore)
+
+- Strumento nuovo: `chi-lagga.mjs` (sonda browser, 170 s, ~830 campioni) che separa TRE verita' sullo
+  stesso istante: dove il MOTORE mette padrone e pallone, dove li ha React (`matchPlayers`, `ballPos`),
+  dove sta la MESH 3D. Serviva perche' la scheda da telefono diceva «pallone ai piedi del padrone
+  45-54 %» mentre il motore lo garantisce per costruzione, e nessuno sapeva quale strato mentiva.
+- Diagnosi: il motore tiene il pallone ai piedi del padrone nel 100 % dei campioni in tenuta (0,5u
+  sempre), ma lo STESSO uomo dentro `matchPlayers` stava a 10,5u di mediana (p90 20,2, max 32,2) da
+  dove il motore lo mette. Causa: la 7.870 aveva spento la macchina dei movimenti dentro il tick, ma
+  le CORSIE — un `useEffect` a parte, a 550 ms, attivo in `phase==='playing'` — erano rimaste accese e
+  riscrivevano le posizioni fra un tick e l'altro. Due scrittori, due verita': esattamente cio' che la
+  ristrutturazione doveva togliere.
+- Rimedio: quell'effetto si ferma quando guida il motore (rosso `__CPM_NO877` per la coppia).
+- Misura appaiata, stessa sonda, stesso mondo (seme 4242, GLB spento):
+  · React `matchPlayers`↔pallone del motore: mediana 11,5 → 0,5u, <=3u dal 18 % al 90 %;
+  · scarto React↔motore sullo stesso uomo: mediana 11,5 → 0,0u (p90 24,0 → 0,1);
+  · mesh 3D↔pallone del motore: mediana 5,4 → 2,4u, <=3u dal 32 % al 54 %;
+  · `ballPos`↔pallone del motore: 0 prima e dopo (quello strato era gia' sano).
+- IDENTICO 1, JSX ok. Guardiano e scheda da telefono in corsa.
