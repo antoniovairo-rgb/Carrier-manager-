@@ -1809,3 +1809,46 @@ Le tre aree che tengono ferma la media dicono anche cosa fare, nell'ordine:
    in gioco aperto e' 0,4 a partita.
 3. **7 Highlight dell'eroe** — la scena nasce ancora da una tabella a calendario, non da un fatto del
    motore: e' la seconda fase scritta in `docs/CONSEGNE-MOTORE.md`.
+
+---
+
+## Scorecard n° 12 — build 7.880 (11/09, 17:25)
+
+Quattro partite, una alla volta (regola nuova sugli fps). ⚠️ **Questa tornata e' girata a 11-13 fps
+contro i 15-17 della n° 11**: per la lezione di oggi, tutte le grandezze sul RESO (scarto, salti) sono
+penalizzate dallo strumento e NON sono confrontabili con la scheda precedente. ⚠️ La partita di Moretti
+si e' interrotta a meta' (33 minuti di gioco, 955 campioni contro ~1900): le sue righe di cronaca (42)
+non contano come rosso.
+
+| misura | Vairo | Galli | Moretti | Conti | banda |
+|---|---|---|---|---|---|
+| pallone ai piedi del padrone | **79 %** | **71 %** | 67 % | 66 % | >= 60 % |
+| …di cui a palla a terra | **88 %** | **80 %** | 74 % | 78 % | >= 75 % |
+| distanza reso<->padrone, mediana | 1,0u | 1,0u | 1,2u | 1,3u | <= 3u |
+| righe di cronaca | 80 | 74 | (42) | 80 | 70-110 |
+| palla morta + fermo | **20'** | **21'** | 14' | **19'** | <= 15' |
+| frasi del tiro smentite | 0/0 | 0/0 | 0/0 | 0/0 | 0 |
+| fotogrammi al secondo | 12 | 11 | 11 | 13 | >= 30 |
+
+Contro la n° 11: pallone ai piedi 63-77 → **66-79 %** (4/4 in banda, il minimo sale di tre punti), palla
+a terra 64-85 → **74-88 %** (3/4 in banda contro 2/4). **Ma la palla morta sfonda la banda in 3 partite
+su 4** (20/21/19 contro un tetto di 15): e' il prezzo della 7.878, che ha portato le rimesse laterali da
+0,02 a 0,85 — piu' interruzioni, piu' minuti a gioco fermo. Va tarata.
+
+| area | n° 11 | **n° 12** | perche' |
+|---|---|---|---|
+| 1 Realismo | 7 | **7** | padrone ai piedi 4/4 in banda, distanza mediana 1,0-1,3u su banda 3 |
+| 2 Credibilita' da attaccante | 7 | **7** | frasi smentite 0/0 su quattro partite |
+| 3 Causalita' | 7 | **7** | invariata |
+| 4 Varieta' | 6 | **7** | rimesse laterali 0,02 → 0,85 a partita, il pallone esce e si vede |
+| 5 Ritmo | 7 | **6** | righe in banda su 3/4 ma **palla morta fuori banda su 3/4** (20/21/19 contro 15) |
+| 6 Azioni extra-eroe | 7 | **7** | invariata |
+| 7 Highlight dell'eroe | 6 | **8** | la scena NASCE dal fatto: 6/6 con l'eroe che ha il pallone (era 0/2), salto dell'eroe 21,5 → 4,5u, del pallone → 0 |
+| 8 Telecronaca | 7 | **7** | invariata; resta la seconda voce che si ripete |
+| 9 Interazioni | 7 | **7** | invariate |
+| 10 Coerenza fra i sistemi | 8 | **8** | rituale completo verde due volte, gate stabile su 4 corse |
+| 11 Immersione | 5 | **5** | ⚠️ NON VOTABILE da questo laboratorio: ogni sua grandezza scala con gli fps (misurato: scarto mediano 6,2u a 9 fps, 2,3 a 15, 0,7 a 25). Il voto resta quello vecchio per non gonfiare la media |
+| 12 Carriera | 7 | **7** | `career-critical` exit 0 su questa build |
+
+**Media 6,9** (n° 11: 6,8; n° 10: 6,3). Cancello non raggiunto: sotto 7 restano il **ritmo (6)** e
+l'**immersione (5, non votabile da qui)**. Il ritmo ha un rimedio chiaro e immediato: tarare la 7.878.
