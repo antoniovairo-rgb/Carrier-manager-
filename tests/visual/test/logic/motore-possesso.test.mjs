@@ -103,3 +103,15 @@ test('l\'eroe in panchina non tocca mai il pallone', () => {
   const m = nuovo(64, { eroe: { name: 'EROE', x: 58, y: 50, attivo: false } });
   for (let t = 1; t <= 92; t++) { for (const e of m.tick({ min: t })) { assert.ok(!(e.chi && e.chi.eroe) && !(e.a && e.a.eroe) && !(e.da && e.da.eroe), 'eroe in panchina nominato: ' + e.t); } const st = m.stato(); assert.notStrictEqual(st.poss.padrone, 21); }
 });
+
+test('[7.872] nessun tiro da centrocampo o dalla propria meta\' campo, nemmeno col gol decretato', () => {
+  const zone = {};
+  for (const seed of [101, 202, 303, 404, 505, 606]) {
+    let pend = null; let n = 0;
+    partita(seed, 92, (m, t) => { if (!pend && t % 12 === 3) { pend = { lato: (n++ % 2) ? 'away' : 'home' }; m.chiedi.gol(pend.lato); } })
+      .evs.forEach(e => { if (e.t === 'tiro') zone[e.zona] = (zone[e.zona] | 0) + 1; if (e.t === 'gol') pend = null; });
+  }
+  const tot = Object.values(zone).reduce((a, b) => a + b, 0);
+  assert.ok(tot >= 12, `troppi pochi tiri per giudicare (${tot})`);
+  assert.strictEqual((zone.dietro | 0) + (zone.centro | 0), 0, `tiri da dietro/centrocampo: ${JSON.stringify(zone)}`);
+});
