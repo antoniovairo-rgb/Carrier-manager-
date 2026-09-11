@@ -4283,3 +4283,8 @@ quando il motore batte la scheda, per tenere il rosso appaiato).
   70-110); (2) tiri per partita (2-5); (3) resa del volo (arco 3D contro inseguimento: salti 16-39);
   (4) `ci:carriera` e rituale completo; (5) rimozione delle macchine spente quando il motore batte la
   scheda; (6) un provino sull'Android del PO per chiudere la questione fps.
+- 00:24 (11/09): `ci:live` completo sulla build af8b51a del motore: exit 0 in 1238 s — `test:logic` 41/41,
+  gate 14/14 (191 scene, 0 failure), guardiano `partita-vera` tutte le bande verdi (manovra 25,
+  interruzioni 7, gol del simulatore 7 nati · 6 accreditati · 0 mangiati, nomi veri 45/45, tabellone
+  coerente). Il branch e' verde ai rituali mirati; restano `ci:carriera` e il rituale completo prima
+  di proporlo per `main`, e la scheda da telefono e' a 6,3 contro il metro 8.
