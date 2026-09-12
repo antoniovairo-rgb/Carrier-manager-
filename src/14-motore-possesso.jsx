@@ -228,6 +228,20 @@ function creaMotorePossesso(cfg){
     const verso=S.richieste.verso;
     let pTiro=zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0;
     pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
+    /* [7.884.0 — IL TIRO GUARDA L'ANGOLO. MISURATO al banco (48 partite, che cosa fa il portatore banda
+       per banda): sotto 70 il portatore controlla, passa e conduce; appena supera 70 il 35 % delle sue
+       decisioni e' un TIRO (tiroGol 20 % + tiro 15 %) e la conduzione crolla dal 16 al 10 %. Oltre
+       avanzamento 90 ci arriva 11 volte in 48 partite. La squadra non e' che non sale: SMETTE DI SALIRE
+       perche' tira. E la ragione e' nella formula qui sopra — pTiro e' un sorteggio piatto per zona
+       (area 0,85 · limite 0,45 · trequarti 0,12) che non guarda DOVE si e': un esterno a y=20, con la
+       porta di taglio, tira comunque 45 volte su 100. E' lo stesso difetto che il PO chiama «tiro da
+       distanza enorme» e «6 conclusioni su 9 da fuori area».
+       Qui non si abbassa una costante: si aggiunge la grandezza che mancava. Dal fondo non si tira —
+       si mette in mezzo o si rientra — e piu' si e' larghi meno la porta e' un bersaglio. Dentro il
+       corridoio centrale (|y-50| <= 12) nulla cambia. Rosso appaiato: __CPM_NO884. */
+    {const _no884=(typeof window!=='undefined'&&window&&window.__CPM_NO884);
+     if(!_no884&&zona!=="area"){const _lar=Math.abs(P.y-50);
+       if(_lar>12)pTiro*=Math.max(0.12,1-(_lar-12)/26);}}
     if(golReq){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
       /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
       const M=piuAvanzato(l,P.i);

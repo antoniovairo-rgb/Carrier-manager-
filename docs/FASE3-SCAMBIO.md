@@ -5029,3 +5029,49 @@ movimento in area. `test:logic` verde, build IDENTICO 1; guardiano e rituali anc
   e la correzione della revoca sbagliata della v1, che poggiava su una sonda non ripetibile.
   NON verificato: l'Android del PO; la CI di GitHub su main. Metro del PO non raggiunto (scheda n° 13
   media 7,1 contro 8); la 7.883 non e' ancora passata da una scheda da telefono.
+
+## 7.884 SUL BRANCH — il tiro guarda l'angolo (e la squadra arriva sul fondo)
+
+**La nota aperta «la squadra non sale» chiusa con i numeri, e la causa non e' la posizione: e' la
+decisione.** Sonda `sale-banco.mjs` (48 partite, ripetibile): che cosa fa il portatore, banda per banda
+di avanzamento.
+
+| banda | decisioni | i rami |
+|---|---|---|
+| 60-69 | 542 | controllo 35 % · passa 18 % · **conduci 16 %** · tiro 5 % |
+| 70-79 | 304 | controllo 25 % · **tiroGol 20 % + tiro 15 % = 35 % TIRI** · conduci 10 % |
+| 80-89 | 102 | controllo 28 % · tiroGol 19 % · tiro 13 % · conduci 7 % |
+| 90+ | **11** | fallo 36 % · tiro 18 % · controllo 18 % |
+
+Appena il portatore supera avanzamento 70, **un terzo delle sue decisioni e' un tiro** e la conduzione
+crolla. Oltre 90 ci arriva **11 volte in 48 partite**. La squadra non e' che non sale: SMETTE DI SALIRE
+perche' tira.
+
+**E la ragione sta in una riga:** `pTiro = area 0,85 · limite 0,45 · trequarti 0,12` e' un sorteggio
+piatto per zona che **non guarda dove si e'**. Un esterno a y=20, con la porta di taglio, tira comunque
+45 volte su 100. E' lo stesso difetto che il PO chiama «tiro da distanza enorme» e «6 conclusioni su 9
+da fuori area».
+
+**Il rimedio: si aggiunge la grandezza che mancava, non si abbassa una costante.** Fuori dall'area, la
+probabilita' di tirare scende con la larghezza: dentro il corridoio centrale (|y-50| <= 12) nulla cambia,
+poi cala fino a un dodicesimo sul fondo. Dal fondo non si tira: si mette in mezzo o si rientra.
+
+**Misure appaiate (rosso `__CPM_NO884`, 48 partite, sonde ripetibili):**
+
+| | rosso | verde 7.884 |
+|---|---|---|
+| decisioni a 70-79 che sono tiri | **35 %** | **23 %** |
+| decisioni a 90+ (in 48 partite) | **11** | **22** |
+| cross in gioco aperto | 0,48 a partita | **0,81** |
+| la condizione del cross ricorre | 3,19 a partita | **4,08** |
+| decreti segnati | 92 % | **94 %** (attesa mediana 7 tick in entrambi) |
+
+Il decreto non regredisce: il tabellone resta della simulazione.
+
+**Due errori dello strumento, intercettati stanotte e a verbale.** (1) `banco-motore.mjs` IGNORA la
+variabile del rosso (passa `window` come `undefined`): i «rossi» che avevo letto da li' erano verdi.
+(2) Anche quella sonda usa `Math.random()` e non e' ripetibile (16, 10, 18, 14 decreti fra corse
+identiche): l'allarme «decreti all'82 %» che ne avevo tratto non valeva nulla. Le misure qui sopra
+vengono tutte da sonde con seme fisso, verificate ripetibili.
+
+**Non ancora verificato:** guardiano, rituali e scheda da telefono sulla 7.884.
