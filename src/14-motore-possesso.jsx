@@ -242,6 +242,17 @@ function creaMotorePossesso(cfg){
     {const _no884=(typeof window!=='undefined'&&window&&window.__CPM_NO884);
      if(!_no884&&zona!=="area"){const _lar=Math.abs(P.y-50);
        if(_lar>12)pTiro*=Math.max(0.12,1-(_lar-12)/26);}}
+    /* [7.888.0 — DAL LIMITE SI TIRA QUANDO NON SI PUO' ENTRARE.
+       MISURATO al banco (48 partite, 188 conclusioni): trequarti 22 % · **limite 61 %** · area 17 %.
+       In una partita vera dall'area parte circa la meta' dei tiri; qui ne parte un sesto, ed e' la
+       nota del PO «6 conclusioni su 9 partono da fuori area». La causa e' nell'ORDINE delle decisioni:
+       `spazioAvanti` si calcola alla riga 251, ma il tiro si decide alla 236 — il portatore spara
+       PRIMA di sapere se ha strada per entrare in area. Non si abbassa la probabilita' del limite:
+       le si da' l'informazione che le mancava. Con la strada libera davanti si entra; murati, si
+       calcia. Rosso appaiato: __CPM_NO888. */
+    {const _no888=(typeof window!=='undefined'&&window&&window.__CPM_NO888);
+     if(!_no888&&zona==="limite"&&!golReq){const _sp888=spazioAvanti(P);
+       if(_sp888>=4)pTiro*=0.35;else if(_sp888>=2)pTiro*=0.6;}}
     if(golReq){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
       /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
       const M=piuAvanzato(l,P.i);
@@ -252,7 +263,18 @@ function creaMotorePossesso(cfg){
     const largo=Math.abs(P.y-50)>=22;
     if(!golReq&&adv>=72&&largo&&rnd()<0.55){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<78||Math.abs(q.y-50)>20)continue;const sc=aq+(q.eroe?4:0)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}}
     if(verso&&!golReq){const dv=hyp(P.x,P.y,verso.x,verso.y);if(dv>10){let R=null,bs=1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const dq=hyp(q.x,q.y,verso.x,verso.y);const dd=hyp(q.x,q.y,P.x,P.y);if(dd<5||dd>40)continue;if(dq<bs){bs=dq;R=q;}}if(R&&bs<dv-4){passa(P,R,{sicuro:true});return;}}}
-    const pCond=(S.poss.t<=3&&adv<86)?((spazio>=2?(S.poss.t===2?0.55:0.32):(S.poss.t===2?0.40:0.20))+(golReq?0.10:0)+(P.eroe?0.08:0)):0;
+    /* [7.888 v2 — CHI ARRIVA AL LIMITE CON LA STRADA LIBERA PUO' ENTRARE.
+       MISURATO al banco (48 partite, 188 conclusioni): trequarti 22 % · limite 61 % · area 17 %, cioe'
+       la nota del PO «6 conclusioni su 9 partono da fuori area». La v1 abbassava il tiro dal limite con
+       la strada libera e ha FALLITO la sua stessa misura (limite 115→106 ma area 32→28): toglieva tiri
+       senza che nessuno entrasse. La causa vera e' qui: `pCond` vale ZERO oltre il terzo tick di
+       possesso e oltre avanzamento 86, quindi chi arriva al limite dopo tre tocchi non puo' condurre —
+       puo' solo passare o calciare — e nell'area non ci entra mai nessuno palla al piede.
+       Qui la conduzione resta come prima, MA chi e' al limite con la strada davvero libera (spazio >= 4)
+       puo' portarla dentro anche oltre il terzo tick, fino ad avanzamento 90. Rosso: __CPM_NO888. */
+    const _no888b=(typeof window!=='undefined'&&window&&window.__CPM_NO888);
+    const _entra888=!_no888b&&zona==="limite"&&spazio>=4&&adv<90;
+    const pCond=(_entra888||(S.poss.t<=3&&adv<86))?((spazio>=2?(S.poss.t===2?0.55:0.32):(S.poss.t===2?0.40:0.20))+(golReq?0.10:0)+(P.eroe?0.08:0)+(_entra888?0.30:0)):0;
     if(rnd()<pCond){if(press<3&&spazio<2&&rnd()<0.22){if(rnd()<0.35){ramo("dribblingFallo");fallo(P);return;}ramo("dribblingPerso");perdi(P);return;}
       if(Math.abs(P.y-50)>=38&&rnd()<0.42){ramo("conduzioneFuori");ev("fuori",{chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});fuoriCampo(P.x,P.y,altro(l),"throw");return;}
       ramo("conduci");conduci(P);return;}

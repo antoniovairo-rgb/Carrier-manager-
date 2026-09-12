@@ -5218,3 +5218,44 @@ guarda da dove viene il valore che la decide — qui bastava risalire di una rig
   assente: rosso 1/15, verde 0/14 e 0/15.
   NON verificato: l'Android del PO; la CI di GitHub su main. Metro non raggiunto: scheda n° 15 media 7,17
   contro 8. La 7.887 non e' ancora passata da una scheda.
+
+## 7.888 v2 SUL BRANCH — chi arriva al limite con la strada libera puo' entrare
+
+**Il difetto e' una nota del PO: «6 conclusioni su 9 partono da fuori area».** Censito al banco (48
+partite, 188 conclusioni): **trequarti 22 % · limite 61 % · area 17 %**. In una partita vera dall'area
+parte circa la meta' dei tiri.
+
+**La v1 ha fallito la sua stessa misura.** Avevo abbassato il tiro dal limite quando c'era strada libera,
+avendo visto che `spazioAvanti` si calcola alla riga 251 mentre il tiro si decide alla 236 — cioe' il
+portatore spara prima di sapere se puo' entrare. Risultato: limite 115 → 106 ma **area 32 → 28**.
+Toglievo tiri senza che nessuno entrasse: il rimedio era sul sintomo.
+
+**La causa vera, riga 266:**
+
+```js
+const pCond = (S.poss.t<=3 && adv<86) ? ... : 0;
+```
+
+La conduzione vale ZERO oltre il terzo tick di possesso e oltre avanzamento 86. Chi arriva al limite
+dopo tre tocchi **non puo' condurre**: puo' solo passare o calciare, e nell'area non ci entra mai nessuno
+palla al piede. Non e' il tiro a essere troppo facile: e' l'ingresso a essere vietato.
+
+**7.888 v2:** la conduzione resta com'era, ma chi e' al limite con la strada davvero libera
+(`spazio >= 4`) puo' portarla dentro anche oltre il terzo tick, fino ad avanzamento 90.
+
+**Misure appaiate (rosso `__CPM_NO888`, 48 partite, sonda ripetibile):**
+
+| | rosso | verde v2 |
+|---|---|---|
+| tiri dalla **trequarti** | 41 | 38 |
+| tiri dal **limite** | **115** | **91** |
+| tiri dall'**area** | **32 (17 %)** | **50 (28 %)** |
+| tiri dall'area, a partita | 0,67 | **1,04** |
+| tiri totali a partita | 3,92 | 3,75 |
+| gol a partita | 1,92 | **1,90** |
+| decreti segnati | 94 % | 93 % |
+
+Il tabellone non si muove (gol 1,92 → 1,90, decreti 93 %): cambia DA DOVE si tira, non quanto si segna.
+
+**Dichiarato:** 28 % resta sotto la meta' di una partita vera, quindi la nota del PO e' ridotta, non
+chiusa. E un tiro su 180 parte ora dalla zona «centro»: un caso, lo tengo d'occhio.
