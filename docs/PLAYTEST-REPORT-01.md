@@ -1914,3 +1914,51 @@ fra due fotogrammi e' un **ritardo in FOTOGRAMMI** — un numero che non dipende
 reso e' indietro di N fotogrammi a 9, 16 e 25 fps allo stesso modo, allora sul telefono del PO lo
 scarto vale N x 33 ms x velocita', e l'area 11 torna votabile da questo laboratorio. E' la prossima
 misura.
+
+---
+
+## Scorecard n° 14 — build 7.884.0 in produzione (12/09, 07:50)
+
+Quattro partite, una alla volta, macchina libera. fps 15-16. Prima scheda che misura insieme la 7.882
+(la seconda voce ricorda), la 7.883 v2 (l'area la riempie il lato cieco) e la 7.884 (il tiro guarda
+l'angolo).
+
+| misura | Vairo | Galli | Moretti | Conti | banda |
+|---|---|---|---|---|---|
+| pallone ai piedi del padrone | 78 % | 74 % | 70 % | 71 % | >= 60 % |
+| …di cui a palla a terra | 87 % | 87 % | **77 %** | **81 %** | >= 75 % |
+| distanza reso<->padrone, mediana | 1,0u | 1,1u | 1,1u | 1,2u | <= 3u |
+| palla morta + fermo | 8' | 9' | 3' | 8' | <= 15' |
+| righe di cronaca | 76 | 89 | 81 | 85 | 70-110 |
+| frasi del tiro smentite dal campo | 0/0 | 0/0 | 0/0 | 0/0 | 0 |
+| **2ª voce: battute diverse** | **100 %** | 83 % | 80 % | **100 %** | (nuova) |
+| **2ª voce: la piu' ripetuta** | **1×** | 2× | 2× | **1×** | (nuova) |
+| fotogrammi al secondo | 16 | 16 | 15 | 16 | >= 30 |
+| (diagnostico, fuori voto) salti | 13 | 30 | 16 | 39 | — |
+| (diagnostico, fuori voto) scarto p90 | 11,4u | 17,1u | 19,6u | 21,1u | — |
+
+**Palla a terra in banda su 4 partite su 4** (n° 13: 3/4, Conti a 70 %). **Palla morta 3-9'** contro un
+tetto di 15, 4/4 come nella n° 13. **La 7.882 regge nel gioco reso**: la seconda voce dice 15-18 battute
+e ne ripete al massimo due, contro le 3-4 della n° 13 su 8-11 frasi diverse.
+
+| area | n° 13 | **n° 14** | perche' |
+|---|---|---|---|
+| 1 Realismo | 7 | **8** | piedi 4/4 E palla a terra 4/4 in banda (era 3/4), distanza mediana 1,0-1,2u |
+| 2 Credibilita' da attaccante | 7 | **7** | ⚠️ «frasi smentite 0/0» e' un test VUOTO: zero casi da giudicare, non zero errori. Non alza niente |
+| 3 Causalita' | 7 | **7** | invariata |
+| 4 Varieta' | 7 | **7** | il cross in gioco aperto sale 0,31 → 0,81 a partita, ma **al banco**: nel gioco reso non l'ho misurato, e non voto su un numero che non ho visto qui |
+| 5 Ritmo | 8 | **8** | palla morta 3-9' e righe 76-89, 4/4 in banda entrambe |
+| 6 Azioni extra-eroe | 7 | **7** | invariata |
+| 7 Highlight dell'eroe | 8 | **8** | invariata |
+| 8 Telecronaca | 7 | **8** | 2ª voce: frasi diverse 57-69 % → 80-100 %, la piu' ripetuta 3-4× → 1-2× |
+| 9 Interazioni | 7 | **7** | invariate |
+| 10 Coerenza fra i sistemi | 8 | **8** | rituale completo verde su tre versioni consecutive (7.882, 7.883, 7.884) |
+| 11 Immersione | 5 | **5** | non votabile da qui: tutte e tre le sue colonne sono state smontate l'11/09. Il 5 resta quello vecchio per non gonfiare la media |
+| 12 Carriera | 7 | **7** | `career-critical` exit 0 su questa build |
+
+**Media 7,25** (n° 13: 7,1 · n° 12: 6,9 · n° 11: 6,8 · n° 10: 6,3). **Cancello del PO non raggiunto:**
+serve 8 con nessuna area sotto 7, e sotto 7 resta soltanto l'area 11, che non ha uno strumento valido.
+
+**Due cose che NON mi prendo.** (1) L'area 2 resta 7: «frasi smentite 0/0» significa zero casi, cioe' un
+test vuoto, non una promozione. (2) L'area 4 resta 7: il guadagno sul cross e' vero ma misurato al banco;
+finche' non lo vedo nella partita resa non lo voto.
