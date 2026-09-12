@@ -790,11 +790,20 @@ const TELECRONISTI=[
    il repertorio era di TRE frasi per situazione, e la scelta era un hash senza memoria di cio' che la
    voce aveva appena detto. Qui il repertorio raddoppia (3 -> 6); la memoria e' in 15-live-match. */
 const COMMENTO_TECNICO={
-  attack:["Bella l'ampiezza, la squadra si allarga bene.","Qui la differenza la fa il tempo dell'inserimento.","Attenzione al terzo uomo, e' li' che si apre.","Il difensore e' girato: basta attaccargli la spalla.","Stanno uno contro uno dietro, e' un rischio che si prendono.","Quando entri cosi' devi chiedere palla subito, non dopo."],
-  attack_goal:["Su questa palla bisogna crederci sempre.","Il movimento e' giusto, manca solo il tocco.","In area serve freddezza, non forza.","Dentro l'area il primo tocco decide tutto.","Il portiere ha coperto il palo, restava l'altro.","Un metro prima e quella palla e' in fondo al sacco."],
-  wide_right:["La corsia e' libera, e loro non scalano.","Cross col contagiri, difficile fare meglio.","Il quinto sta salendo ogni volta: e' una scelta.","Il terzino e' rimasto solo: prima o poi la paghi.","Palla messa dietro il difensore, e' quella giusta.","Da li' serve la testa alzata, non il cross e via."],
-  midfield:["Si gioca tutto qui in mezzo, e' una partita di reparti.","Il palleggio serve a far muovere loro, non la palla.","Ritmo basso, ma non e' un male: si ordina la squadra.","Chi vince il secondo pallone qui, vince la partita.","Manca l'uomo fra le linee: cosi' si gira e basta.","Due tocchi in meno e si esce dalla pressione."],
-  retreat:["Squadra corta, cosi' si concede poco.","Bene la scalata, nessuno si fa saltare.","Meglio rischiare la rimessa che la giocata.","Linea alta e tempi giusti: e' lavoro di settimane.","Qui si riparte da dietro solo se sei sicuro.","Il reparto scivola insieme, non c'e' un buco."],
-  defend_goal:["Qui conta solo spazzare, niente fronzoli.","Il portiere comanda la linea, si sente.","Momento da soffrire, capita in ogni partita.","Primo palo coperto, e' l'unica cosa che conta adesso.","Serve un fallo tattico, non un eroismo.","Se esci male su questa, e' gol: meglio restare."]
+  /* [7.885.0 — LA SECONDA VOCE NON PUO' ELOGIARE CIO' CHE NON E' SUCCESSO.
+     VISTO nella scheda n° 14 (Moretti, 15'): «💥 Colombo ci prova da lontanissimo!» e subito sotto
+     «🎧 Bruno Cascioli: Cross col contagiri, difficile fare meglio.» L'azione era un TIRO DA FUORI e la
+     seconda voce ha elogiato un CROSS che non esisteva. La causa: la frase si pesca per ZONA (ev.pd),
+     non per cio' che e' accaduto, quindi il repertorio di `wide_right` nomina il cross anche dopo un
+     tiro. E' una bugia del gioco, del tipo che il PO riconosce a colpo d'occhio.
+     Rimedio: le frasi che PRESUPPONGONO un gesto lo dichiarano in `se`, e la scelta le scarta quando
+     quel gesto non c'e' stato. Le frasi neutre (stringhe semplici) restano sempre disponibili, cosi'
+     la voce non ammutolisce mai. */
+  attack:["Bella l'ampiezza, la squadra si allarga bene.","Qui la differenza la fa il tempo dell'inserimento.","Attenzione al terzo uomo, e' li' che si apre.","Il difensore e' girato: basta attaccargli la spalla.","Stanno uno contro uno dietro, e' un rischio che si prendono.",{t:"Quel movimento chiede palla subito, non dopo.",se:"pass"}],
+  attack_goal:["Su questa palla bisogna crederci sempre.",{t:"Il movimento e' giusto, manca solo il tocco.",se:"shot"},"In area serve freddezza, non forza.","Dentro l'area il primo tocco decide tutto.",{t:"Il portiere ha coperto il palo, restava l'altro.",se:"save"},{t:"Un metro prima e quella palla e' in fondo al sacco.",se:"shot"}],
+  wide_right:["La corsia e' libera, e loro non scalano.",{t:"Cross col contagiri, difficile fare meglio.",se:"cross"},"Il quinto sta salendo ogni volta: e' una scelta.","Il terzino e' rimasto solo: prima o poi la paghi.",{t:"Palla messa dietro il difensore, e' quella giusta.",se:"cross"},"Da li' serve la testa alzata, non il cross e via."],
+  midfield:["Si gioca tutto qui in mezzo, e' una partita di reparti.","Il palleggio serve a far muovere loro, non la palla.","Ritmo basso, ma non e' un male: si ordina la squadra.",{t:"Chi vince il secondo pallone qui, vince la partita.",se:"tackle"},"Manca l'uomo fra le linee: cosi' si gira e basta.",{t:"Due tocchi in meno e si esce dalla pressione.",se:"pass"}],
+  retreat:["Squadra corta, cosi' si concede poco.",{t:"Bene la scalata, nessuno si fa saltare.",se:"tackle"},"Meglio rischiare la rimessa che la giocata.","Linea alta e tempi giusti: e' lavoro di settimane.","Qui si riparte da dietro solo se sei sicuro.","Il reparto scivola insieme, non c'e' un buco."],
+  defend_goal:["Qui conta solo spazzare, niente fronzoli.",{t:"Il portiere comanda la linea, si sente.",se:"save"},"Momento da soffrire, capita in ogni partita.","Primo palo coperto, e' l'unica cosa che conta adesso.",{t:"Serve un fallo tattico, non un eroismo.",se:"tackle"},{t:"Se esci male su questa, e' gol: meglio restare.",se:"save"}]
 };
 function pickTelecronisti(seed){const i=Math.abs(hashStr(String(seed||"x")))%TELECRONISTI.length;return TELECRONISTI[i];}

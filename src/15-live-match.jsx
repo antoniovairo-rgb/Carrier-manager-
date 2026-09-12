@@ -5816,9 +5816,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                la stessa frase 3-4 volte a partita (misurato sulla scheda n° 13). */
             const _no882=(typeof window!=='undefined'&&window.__CPM_NO882);
             const _dette=(tcUsateRef.current[ev.pd]=tcUsateRef.current[ev.pd]||[]);
-            let _cand=_no882?_poolT:_poolT.filter(f=>_dette.indexOf(f)<0);
-            if(!_cand.length){_dette.length=0;_cand=_poolT;}
-            const _fr=_cand[Math.abs(hashStr(String(ev.txt)+nx))%_cand.length];
+            /* [7.885.0] LA VOCE NON ELOGIA CIO' CHE NON E' SUCCESSO. Una frase che presuppone un gesto
+               (`se`) entra nel sorteggio solo se QUESTA riga racconta quel gesto; le neutre valgono
+               sempre, cosi' la seconda voce non resta mai senza niente da dire. Rosso: __CPM_NO885. */
+            const _no885=(typeof window!=='undefined'&&window.__CPM_NO885);
+            const _txt885=(f)=>(f&&typeof f==='object')?f.t:f;
+            const _ok885=(f)=>_no885||!(f&&typeof f==='object'&&f.se)||f.se===_arcType;
+            const _poolOk=_poolT.filter(_ok885);
+            const _base=_poolOk.length?_poolOk:_poolT.filter(f=>!(f&&typeof f==='object'&&f.se));
+            let _cand=_no882?_base:_base.filter(f=>_dette.indexOf(_txt885(f))<0);
+            if(!_cand.length){_dette.length=0;_cand=_base.length?_base:_poolT;}
+            const _fr=_txt885(_cand[Math.abs(hashStr(String(ev.txt)+nx))%_cand.length]);
             if(!_no882)_dette.push(_fr);
             const _dlyT=(_arcType&&ATE3_TYPEMS[_arcType]?Math.round(ATE3_TYPEMS[_arcType]/2):0)+260;
             /* testimone test-only: distingue «mai programmato» da «programmato e cancellato», che

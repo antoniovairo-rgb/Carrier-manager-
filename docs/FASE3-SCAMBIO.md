@@ -5087,3 +5087,39 @@ vengono tutte da sonde con seme fisso, verificate ripetibili.
   girati sullo STESSO sorgente (working tree pulito e IDENTICO 1 verificati prima di entrambe).
   NON verificato: l'Android del PO; la CI di GitHub su main. Metro non raggiunto: scheda n° 13 media 7,1
   contro 8. Le versioni 7.882, 7.883 e 7.884 NON sono ancora passate da una scheda da telefono.
+
+## 7.885 SUL BRANCH — la seconda voce non elogia cio' che non e' successo
+
+**VISTO nella scheda n° 14** (Moretti, 15'), due righe consecutive della cronaca:
+
+```
+15' 💥 Colombo (GRA) ci prova da lontanissimo!
+15' 🎧 Bruno Cascioli: «Cross col contagiri, difficile fare meglio.»
+```
+
+La seconda voce **elogia un cross che non e' avvenuto**, e l'azione vera era un tiro da fuori. Non e'
+un'imperfezione di stile: e' una bugia del gioco, del tipo che il PO riconosce a colpo d'occhio.
+
+**La causa e' strutturale.** La battuta si pesca da `COMMENTO_TECNICO[ev.pd]`, cioe' per ZONA DEL CAMPO,
+non per cio' che e' accaduto: il repertorio di `wide_right` nomina il cross anche quando la riga racconta
+un tiro. Vale per tutte le frasi che presuppongono un gesto («manca solo il tocco», «il portiere ha
+coperto il palo», «palla messa dietro il difensore»).
+
+**Nota di onesta' sulla scheda n° 14:** quella riga ha contribuito all'8 in Telecronaca. Il voto era in
+parte immeritato, e lo scrivo qui perche' resti agli atti insieme al numero.
+
+**Il rimedio (7.885).** Le frasi che presuppongono un gesto lo dichiarano (`se:"cross"`, `se:"shot"`,
+`se:"save"`, `se:"tackle"`, `se:"pass"`) e la scelta le scarta quando quel gesto non e' quello della
+riga; le frasi neutre restano sempre disponibili, cosi' la seconda voce non ammutolisce mai. Rosso
+appaiato `__CPM_NO885`. Build IDENTICO 1, sintassi verde.
+
+**MISURA IN CORSO, non ancora letta:** conteggio appaiato delle battute che nominano un gesto assente,
+sulla stessa partita (Moretti) con e senza il rosso. **Finche' non la leggo, la 7.885 non si promuove.**
+
+### E una misura che mi da' torto a meta': i cross nella partita RESA
+
+Contati nelle quattro cronache della scheda n° 14: **cross in gioco aperto ZERO su quattro partite**,
+contro gli 0,81 a partita misurati al banco per la 7.883 v2 + 7.884. Avevo fatto bene a lasciare l'area 4
+a 7 invece di votarla su un numero di banco. Ma quattro partite sono troppo poche per misurare un evento
+cosi' raro: prima di dire «il guadagno non arriva a schermo» serve un campione piu' grande. Per ora resta
+**dichiarato e non concluso**.
