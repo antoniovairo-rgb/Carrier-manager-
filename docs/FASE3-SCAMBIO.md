@@ -5208,3 +5208,13 @@ il container di questa sessione si e' riavviato CINQUE volte nella notte (19:24,
 **Lezione 26ª: un cancello vale quanto il dato che interroga.** Prima di fidarsi di una condizione, si
 guarda da dove viene il valore che la decide — qui bastava risalire di una riga per vedere che era un
 `||` con un default di zona.
+
+- 12/09 10:56 UTC: **Produzione allineata a 7be2dde (7.887.0)**, rituale completo verde sull'HEAD promosso
+  (`career-critical` exit 0 in 518 s, `npm run ci` exit 0 in 1206 s, IDENTICO 1, albero pulito).
+  Fast-forward 8b66a8c → 7be2dde su `main` e sul branch QA, mai force. Porta la **7.886** (le interazioni
+  non promettono piu' un cross: esiti che lo nominano 2 → 0 su 150) e la **7.887** (il cancello guarda
+  `ev.at`, il gesto vero, invece di `_arcType` che ripiegava sul default della zona; e le due frasi che
+  presupponevano un esito FALLITO sono neutre sull'esito). Battute della 2ª voce che nominano un gesto
+  assente: rosso 1/15, verde 0/14 e 0/15.
+  NON verificato: l'Android del PO; la CI di GitHub su main. Metro non raggiunto: scheda n° 15 media 7,17
+  contro 8. La 7.887 non e' ancora passata da una scheda.
