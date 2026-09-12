@@ -5075,3 +5075,15 @@ identiche): l'allarme «decreti all'82 %» che ne avevo tratto non valeva nulla.
 vengono tutte da sonde con seme fisso, verificate ripetibili.
 
 **Non ancora verificato:** guardiano, rituali e scheda da telefono sulla 7.884.
+
+- 12/09 07:15 UTC: **Produzione allineata a 3acd3a0 (7.884.0)**, rituale completo verde sull'HEAD promosso
+  (`career-critical` exit 0 in 694 s, `npm run ci` exit 0 in 1174 s, IDENTICO 1, working tree pulito).
+  Fast-forward 8fdb8b6 → 3acd3a0, mai force. Porta la 7.884 (il tiro guarda l'angolo: tiri a 70-79
+  35 → 23 %, decisioni oltre avanzamento 90 da 11 a 22 in 48 partite, cross in gioco aperto 0,48 → 0,81,
+  decreti segnati 92 → 94 %).
+  ⚠️ Il container di questa sessione si e' riavviato QUATTRO volte nella notte (19:24, 22:52, 05:53,
+  06:53) uccidendo altrettante catene; la CI della 7.884 e' stata rilanciata da sola dopo che
+  `career-critical` era gia' verde, e il career di quella corsa (694 s) e la ci di questa (1174 s) sono
+  girati sullo STESSO sorgente (working tree pulito e IDENTICO 1 verificati prima di entrambe).
+  NON verificato: l'Android del PO; la CI di GitHub su main. Metro non raggiunto: scheda n° 13 media 7,1
+  contro 8. Le versioni 7.882, 7.883 e 7.884 NON sono ancora passate da una scheda da telefono.
