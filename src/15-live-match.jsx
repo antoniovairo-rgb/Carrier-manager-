@@ -5821,7 +5821,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                sempre, cosi' la seconda voce non resta mai senza niente da dire. Rosso: __CPM_NO885. */
             const _no885=(typeof window!=='undefined'&&window.__CPM_NO885);
             const _txt885=(f)=>(f&&typeof f==='object')?f.t:f;
-            const _ok885=(f)=>_no885||!(f&&typeof f==='object'&&f.se)||f.se===_arcType;
+            /* [7.887.0 — IL CANCELLO DELLA 7.885 GUARDAVA UN VALORE CHE INDOVINA.
+               VISTO nella scheda n° 15 (Vairo 19'): sotto «Fischia l'arbitro: fallo ... punizione» la
+               seconda voce diceva «Palla messa dietro il difensore, e' quella giusta», che ha se:"cross".
+               La causa sta a monte: `_arcType = ev.at || BG_ARC_MAP[ev.pd]`, cioe' quando la riga NON ha
+               un gesto vero l'arco ripiega sul default DELLA ZONA — e per la fascia quel default e'
+               "cross". Il cancello della 7.885 confrontava quindi la frase con una supposizione, non con
+               un fatto. Qui si confronta con `ev.at`, il gesto che la riga racconta davvero: niente
+               gesto, niente frase che lo nomina. */
+            const _gesto887=(ev&&ev.at)||null;
+            const _ok885=(f)=>_no885||!(f&&typeof f==='object'&&f.se)||f.se===_gesto887;
             const _poolOk=_poolT.filter(_ok885);
             const _base=_poolOk.length?_poolOk:_poolT.filter(f=>!(f&&typeof f==='object'&&f.se));
             let _cand=_no882?_base:_base.filter(f=>_dette.indexOf(_txt885(f))<0);

@@ -5162,3 +5162,35 @@ non e' incoraggiante: la spiegazione piu' probabile e' che nel match reso i minu
 meno (le scene ne consumano una parte), quindi il tasso per partita resa e' molto sotto quello del banco.
 Finche' non lo misuro su un campione grande, **l'area 4 resta 7 e il guadagno sul cross resta un numero
 di banco**, non una promessa al PO.
+
+## 7.887 SUL BRANCH — il cancello della 7.885 guardava un valore che indovina
+
+**VISTO nella scheda n° 15** (Vairo 19'): sotto la riga «🟡 Fischia l'arbitro: fallo di Colombo su
+Vallone, punizione sulla fascia a centrocampo» la seconda voce diceva «Palla messa dietro il difensore,
+e' quella giusta» — una frase marcata `se:"cross"`, cioe' proprio quelle che la 7.885 doveva fermare.
+
+**La causa sta a monte del mio cancello**, riga 5590 di `15-live-match.jsx`:
+
+```js
+const _arcType = ev.at || BG_ARC_MAP[ev.pd] || null;
+```
+
+Quando la riga NON ha un gesto vero (`ev.at` assente), l'arco **ripiega sul default DELLA ZONA**, e
+`BG_ARC_MAP.wide_right` vale `"cross"`. Il cancello della 7.885 confrontava quindi la frase con **una
+supposizione, non con un fatto**: sulla fascia qualunque riga "diventava" un cross. Avevo chiuso la porta
+e lasciato aperta la finestra.
+
+**7.887, due cose:**
+1. il cancello guarda `ev.at`, il gesto che la riga racconta davvero — niente gesto, niente frase che lo
+   nomina (il default di zona non entra piu' nel giudizio);
+2. riscritte le due frasi che presupponevano un ESITO FALLITO, non solo un gesto: «Un metro prima e
+   quella palla e' in fondo al sacco» era uscita dopo un GOL (Conti 79'). Ora sono neutre sull'esito.
+
+Build IDENTICO 1, sintassi verde. **MISURA IN CORSO su Vairo e Conti** (le due partite dove il difetto
+compariva): finche' non la leggo, la 7.887 non si promuove. Rituali su 7.886 e 7.887 non ancora girati —
+il container di questa sessione si e' riavviato CINQUE volte nella notte (19:24, 22:52, 05:53, 06:53,
+09:00) uccidendo altrettante catene.
+
+**Lezione 26ª: un cancello vale quanto il dato che interroga.** Prima di fidarsi di una condizione, si
+guarda da dove viene il valore che la decide — qui bastava risalire di una riga per vedere che era un
+`||` con un default di zona.
