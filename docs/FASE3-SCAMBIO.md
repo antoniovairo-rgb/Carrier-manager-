@@ -5113,8 +5113,17 @@ parte immeritato, e lo scrivo qui perche' resti agli atti insieme al numero.
 riga; le frasi neutre restano sempre disponibili, cosi' la seconda voce non ammutolisce mai. Rosso
 appaiato `__CPM_NO885`. Build IDENTICO 1, sintassi verde.
 
-**MISURA IN CORSO, non ancora letta:** conteggio appaiato delle battute che nominano un gesto assente,
-sulla stessa partita (Moretti) con e senza il rosso. **Finche' non la leggo, la 7.885 non si promuove.**
+**MISURA APPAIATA LETTA** (Moretti, stessa partita, cambia solo il flag):
+
+| | battute della 2ª voce | che nominano un gesto ASSENTE |
+|---|---|---|
+| rosso `__CPM_NO885` | 18 | **2** (il cross dopo il tiro al 15'; «palla messa dietro il difensore» dopo una tenuta all'86') |
+| verde 7.885 | 18 | **0** |
+
+Le battute restano **18 in entrambi**: la voce non ammutolisce, dice solo cose vere.
+
+**IN PRODUZIONE il 12/09 alle 08:40** (main 8b66a8c → fast-forward), rituale completo verde sull'HEAD
+promosso: `career-critical` exit 0 in 526 s, `npm run ci` exit 0 in 1203 s, IDENTICO 1, albero pulito.
 
 ### E una misura che mi da' torto a meta': i cross nella partita RESA
 
