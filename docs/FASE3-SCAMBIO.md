@@ -5259,3 +5259,16 @@ Il tabellone non si muove (gol 1,92 → 1,90, decreti 93 %): cambia DA DOVE si t
 
 **Dichiarato:** 28 % resta sotto la meta' di una partita vera, quindi la nota del PO e' ridotta, non
 chiusa. E un tiro su 180 parte ora dalla zona «centro»: un caso, lo tengo d'occhio.
+
+- 12/09 13:30 UTC: **Produzione allineata a 539efe6 (7.888.0)**, rituale completo verde sull'HEAD promosso
+  (`career-critical` exit 0 in 519 s, `npm run ci` exit 0 in 1262 s, IDENTICO 1, albero pulito).
+  Fast-forward 7be2dde → 539efe6, mai force. Porta la **7.888 v2** (chi arriva al limite con la strada
+  libera puo' entrare: tiri dall'area 17 % → 28 %, cioe' 0,67 → 1,04 a partita, col tabellone fermo —
+  gol 1,92 → 1,90, decreti segnati 93 %) e la **ROADMAP-VERSO-8** completa su tutte le dodici aree.
+  ⚠️ **Nota di strumento:** la CI e' morta TRE volte al gate «160/191» e avevo sospettato che la 7.888
+  la facesse rallentare o bloccare. **Smentito misurando:** il gate da solo gira in **705 s exit 0** su
+  gameVersion 7.888.0. Il «160/191» era semplicemente l'ultima riga scritta prima che il container
+  morisse. Anche il disco e' stato escluso (25 GB liberi, 35 % usato). La causa resta il riavvio del
+  container, che in questa sessione e' avvenuto OTTO volte in diciotto ore: le catene lunghe vanno
+  lanciate SUBITO dopo un riavvio, quando la finestra e' piu' ampia. E' cosi' che questa e' passata.
+  NON verificato: l'Android del PO; la CI di GitHub su main. Metro non raggiunto: 7,17 contro 8.
