@@ -5186,8 +5186,22 @@ e lasciato aperta la finestra.
 2. riscritte le due frasi che presupponevano un ESITO FALLITO, non solo un gesto: «Un metro prima e
    quella palla e' in fondo al sacco» era uscita dopo un GOL (Conti 79'). Ora sono neutre sull'esito.
 
-Build IDENTICO 1, sintassi verde. **MISURA IN CORSO su Vairo e Conti** (le due partite dove il difetto
-compariva): finche' non la leggo, la 7.887 non si promuove. Rituali su 7.886 e 7.887 non ancora girati —
+Build IDENTICO 1, sintassi verde.
+
+**MISURA APPAIATA LETTA**, stesso modo di sonda (senza foto) per rosso e verde — perche' confrontare due
+modi diversi e' l'errore che stanotte mi e' gia' costato una revoca sbagliata:
+
+| | battute della 2ª voce | che nominano un gesto ASSENTE |
+|---|---|---|
+| rosso `__CPM_NO885` (cancello spento) | Vairo 15 · Conti 15 | **1** · 0 |
+| verde 7.887 | Vairo 14 · Conti 15 | **0** · 0 |
+
+**Il limite della misura, dichiarato:** un solo caso nel rosso su due partite e' un conteggio sottile.
+Cio' che regge non e' il numero ma il MECCANISMO: il caso che il rosso produce e' esattamente quello che
+la causa prevede — la riga del fallo al 19' con la frase del cross, cioe' l'arco che ripiega sul default
+della fascia. **E un secondo limite mio:** `__CPM_NO885` spegne TUTTO il cancello, quindi il confronto e'
+«nessun controllo» contro «controllo sul gesto vero»; non ho un flag che isoli la sola 7.887 dalla 7.885,
+e avrei dovuto aggiungerlo. Rituali su 7.886 e 7.887 non ancora girati —
 il container di questa sessione si e' riavviato CINQUE volte nella notte (19:24, 22:52, 05:53, 06:53,
 09:00) uccidendo altrettante catene.
 
