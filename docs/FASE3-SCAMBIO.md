@@ -4939,3 +4939,13 @@ impossibile per costruzione. Serve un rosso che tenga il motore acceso (stessa c
 fps) e rompa solo l'inseguimento del pallone reso: finche' non esiste, l'area 11 resta senza voto.
 
 Sesta ipotesi della giornata sull'area 11, sesta caduta. Zero tarature scritte.
+
+- 12/09 01:45 UTC (routine notturna): **Produzione allineata a 5f3313e (7.882.0)**, rituale completo verde
+  sull'HEAD promosso (`career-critical` exit 0 in 561 s, `npm run ci` exit 0 in 1264 s, working tree
+  pulito, IDENTICO 1, gate 191 Situations su gameVersion 7.882.0, guardiano `partita-vera` verde).
+  Fast-forward 179c3db → 5f3313e su `main` e sul branch QA. Porta in produzione la 7.882 (la seconda voce
+  ricorda cosa ha detto: frasi diverse 69 → 94 %, la piu' ripetuta 4x → 2x, misura appaiata `__CPM_NO882`)
+  e i verbali di misura della notte, fra cui la ritrattazione dello strumento dell'area 11.
+  NON verificato: l'Android del PO (tutto e' Chromium 412x915 headless a 12-23 fps); la CI di GitHub su
+  main non e' leggibile da questa sessione. Il metro del PO NON e' raggiunto: scheda n° 13 media 7,1
+  contro un cancello di 8 con nessuna area sotto 7 (l'area 11 resta a 5 e senza strumento valido).
