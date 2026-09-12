@@ -108,3 +108,39 @@ sotto 7). Le tre aree che la tengono ferma, in ordine di peso:
 2. **4 Varieta' (6)** — rimesse laterali ~0 contro le ~40 vere, cross in gioco aperto 0,4 a partita.
    Il campo ora si usa piu' largo (7.876) ma il pallone non varca quasi mai la linea.
 3. **7 Highlight dell'eroe (6)** — la seconda fase, il piano e' quello scritto qui sotto.
+
+## Decisione del PO — 12/09 mattina: gli highlight dell'eroe sono il cuore del gioco
+
+Alla domanda «quando inizia la riprogettazione degli highlight dell'eroe» ho risposto con lo stato
+esatto: **e' gia' cominciata** l'11/09 notte e due dei quattro punti del piano sono IN PRODUZIONE —
+
+1. la scena nasce da un FATTO del motore (`occasione_eroe {tipo, pressione, liberi}`) e non da un
+   orologio: scene aperte con l'eroe che ha davvero il pallone **0/2 -> 6/6**, salto dell'eroe
+   all'apertura **21,5u -> 4,5u**, salto del pallone **23,7u -> 0** (7.879 + 7.880 v2);
+2. la situazione si sceglie DOVE STA l'eroe: fra 16 candidate si preferisce quella la cui zona di
+   partenza contiene gia' l'eroe (7.880 v2).
+
+E' cio' che ha portato l'**area 7 da 6 a 8**, l'unica area salita di due punti nella ristrutturazione.
+
+**Restano i due punti piu' difficili:**
+
+3. **l'esito scelto si esegue DENTRO il motore**, con ripresa continua: niente snap, niente ponte.
+   Oggi il motore ancora si FERMA (`scena()`) e riprende dal punto d'uscita;
+4. **il calendario (8'-84', 2-7 scene) diventa un vincolo di frequenza sul motore** — un bonus che
+   porta il pallone verso l'eroe quando e' ora di una scena — invece di un orologio che spezza il gioco.
+
+La condizione posta dal piano («dopo i punti 1-4, perche' la scena dal motore ha senso solo se il gioco
+ambientale regge») **e' ora soddisfatta**: ritmo in banda 4/4, arbitro che esiste, un solo scrittore dei
+ventidue, tiri che non partono piu' da dietro.
+
+**Gli ho dichiarato il costo-beneficio contro il suo metro:** l'area 7 e' gia' a 8, quindi non e' lei a
+tenere ferma la media; le dodici aree sommano 87 punti e il cancello ne chiede 96 con nessuna area sotto
+7. Portare la 7 da 8 a 9 vale UN punto su 12: e' il lavoro piu' grosso per il guadagno piu' piccolo
+disponibile oggi.
+
+**RISPOSTA DEL PO (12/09):** «E' il cuore del gioco, al momento non cambiamo priorita'. Riprendiamo
+questo discorso lunedi' pomeriggio a disponibilita' token di utilizzo riazzerati.»
+
+**Quindi:** la riprogettazione resta il prossimo cantiere STRUTTURALE, non il prossimo lavoro. Si
+continua sulle otto aree ferme a 7, dove i punti si prendono piu' in fretta. Promemoria fissato per
+lunedi' 14/09 pomeriggio.
