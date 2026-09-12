@@ -1962,3 +1962,57 @@ serve 8 con nessuna area sotto 7, e sotto 7 resta soltanto l'area 11, che non ha
 **Due cose che NON mi prendo.** (1) L'area 2 resta 7: «frasi smentite 0/0» significa zero casi, cioe' un
 test vuoto, non una promozione. (2) L'area 4 resta 7: il guadagno sul cross e' vero ma misurato al banco;
 finche' non lo vedo nella partita resa non lo voto.
+
+---
+
+## Scorecard n° 15 — build 7.886.0 (12/09, 09:30) — la media SCENDE, e il motivo e' una correzione mia
+
+Quattro partite, una alla volta, fps 15-16. Misura 7.885 (la 2ª voce non elogia un gesto assente) e
+7.886 (le interazioni non promettono un cross).
+
+| misura | Vairo | Galli | Moretti | Conti | banda |
+|---|---|---|---|---|---|
+| pallone ai piedi del padrone | 75 % | 66 % | 78 % | 64 % | >= 60 % |
+| …di cui a palla a terra | 84 % | 76 % | 84 % | 77 % | >= 75 % |
+| distanza reso<->padrone, mediana | 1,0u | 1,1u | 1,0u | 1,3u | <= 3u |
+| palla morta + fermo | 8' | 6' | 2' | 8' | <= 15' |
+| righe di cronaca | 83 | 81 | 86 | 88 | 70-110 |
+| 2ª voce: battute diverse | 88 % | 88 % | 81 % | 88 % | — |
+| **2ª voce: che nominano un gesto ASSENTE** | **1** | 0 | 0 | **1** | **0** |
+| fotogrammi al secondo | 15 | 16 | 16 | 16 | >= 30 |
+
+**I due casi residui, guardati uno per uno:**
+
+- **Vairo 19'** — riga: «🟡 Fischia l'arbitro: fallo di Colombo su Vallone, punizione»; commento: «Palla
+  messa dietro il difensore, e' quella giusta» (frase con `se:"cross"`). Il commento e' programmato con
+  un ritardo e viene stampato DOPO la riga che lo ha generato: puo' finire sotto una riga diversa. Quindi
+  o e' un'attribuzione sbagliata della mia sonda, **o il cancello non ha visto l'arco**. Da chiarire.
+- **Conti 79'** — riga: «⭕ Tutto fermo un istante: palla sul cerchio, si ricomincia» (ripresa dopo un
+  gol); commento: «Un metro prima e quella palla e' in fondo al sacco» (frase con `se:"shot"`). Qui il
+  cancello ha fatto il suo lavoro — un tiro c'era davvero — **ma la frase presuppone che il tiro sia
+  FALLITO, e quel tiro era un gol**. Il gesto e' giusto, l'ESITO no.
+
+**Lezione 25ª: non basta che la voce nomini il gesto giusto, deve rispettarne anche l'esito.** La 7.885
+chiude la meta' grossa del difetto (il cross dopo un tiro), non tutta.
+
+| area | n° 14 | **n° 15** | perche' |
+|---|---|---|---|
+| 1 Realismo | 8 | **8** | piedi 4/4 e palla a terra 4/4 in banda; margine piu' sottile (minimi 64 % e 76 %) |
+| 2 Credibilita' da attaccante | 7 | **7** | «frasi smentite 0/0» resta un test vuoto |
+| 3 Causalita' | 7 | **7** | invariata |
+| 4 Varieta' | 7 | **7** | cross in gioco aperto misurati nel RESO: ancora zero su quattro partite |
+| 5 Ritmo | 8 | **8** | palla morta 2-8' e righe 81-88, 4/4 in banda entrambe |
+| 6 Azioni extra-eroe | 7 | **7** | invariata |
+| 7 Highlight dell'eroe | 8 | **8** | invariata |
+| 8 Telecronaca | 8 | **7** | ⬇️ **l'8 della n° 14 era gonfiato**: l'avevo dato senza sapere che la 2ª voce elogiava gesti mai avvenuti. Ora il difetto e' misurato e vale 2 casi su 4 partite: 7 finche' non sono 0 |
+| 9 Interazioni | 7 | **7** | la 7.886 toglie le due promesse di cross, ma non ho una misura che alzi l'area |
+| 10 Coerenza fra i sistemi | 8 | **8** | rituale completo verde sulla 7.885; sulla 7.886 NON e' girato (container riavviato), e la 7.886 cambia due sole stringhe |
+| 11 Immersione | 5 | **5** | senza strumento valido: le tre colonne sono state smontate l'11/09 |
+| 12 Carriera | 7 | **7** | ultimo `career-critical` verde: 7.885 |
+
+**Media 7,17** (n° 14: 7,25 · n° 13: 7,1 · n° 12: 6,9). **La media scende di 0,08 e la ragione non e' una
+regressione del gioco: e' che ho tolto un voto che mi ero preso senza averlo guadagnato.** Il gioco
+misurato oggi e' migliore di quello di ieri; la scheda e' solo piu' onesta.
+
+**NON verificato:** l'Android del PO (Chromium 412x915 a 15-16 fps); la CI di GitHub; i rituali sulla
+7.886. In produzione c'e' la **7.885.0** (main 8b66a8c).
