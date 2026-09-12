@@ -5020,3 +5020,12 @@ Risultato: **cross in gioco aperto 0,31 -> 0,48 a partita (+55 %)** con la condi
 collo di bottiglia che resta e' a monte — la condizione stessa ricorre solo 3,2 volte a partita, cioe'
 il portatore arriva di rado sul fondo. E' la nota aperta «la squadra non sale», e non si chiude con il
 movimento in area. `test:logic` verde, build IDENTICO 1; guardiano e rituali ancora da girare.
+
+- 12/09 04:25 UTC: **Produzione allineata a 8fdb8b6 (7.883.0)**, rituale completo verde sull'HEAD promosso
+  (`career-critical` exit 0 in 556 s, `npm run ci` exit 0 in 1253 s, gate 191 Situations su gameVersion
+  7.883.0, guardiano `partita-vera` verde, working tree pulito, IDENTICO 1). Fast-forward 5f3313e →
+  8fdb8b6 su `main` e sul branch QA, mai force. Porta la 7.883 v2 (l'area la riempie chi sta dal lato
+  opposto al pallone: cross in gioco aperto 0,31 → 0,48 a partita, occasioni senza ricevente 58 → 43 %)
+  e la correzione della revoca sbagliata della v1, che poggiava su una sonda non ripetibile.
+  NON verificato: l'Android del PO; la CI di GitHub su main. Metro del PO non raggiunto (scheda n° 13
+  media 7,1 contro 8); la 7.883 non e' ancora passata da una scheda da telefono.
