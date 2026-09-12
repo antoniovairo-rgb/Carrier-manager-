@@ -1796,6 +1796,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   if(!telecronistiRef.current)telecronistiRef.current=pickTelecronisti((opponent&&(opponent.id||opponent.n))+"_"+(player.season||1)+"_"+(player.week||1));
   const tcPresRef=useRef(false);/* la presentazione esce una volta sola */
   const tcCountRef=useRef(0);/* ogni quante righe la seconda voce interviene */
+  const tcUsateRef=useRef({});/* [7.882.0] cio' che la seconda voce ha gia' detto, per situazione: non si ripesca finche' restano frasi non dette (rosso __CPM_NO882) */
   const bgSubjRef=useRef(null);/* [7.487.0] il protagonista corrente della cronaca: e' il filo dell'azione */
   const chantTimersRef=useRef([]);
   // [5.75.0 BUG-3] fxTimersRef+fxTimeout: timer effimeri (cinema gol/pressione, float label, celebrazioni)
@@ -5810,7 +5811,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              numeri. Ora 1 riga su 3 e mezzo secondo dopo: il commento sta attaccato alla sua azione. */
           if(tcCountRef.current%3===0&&ev.pd&&COMMENTO_TECNICO[ev.pd]&&!/goal/.test(String(ev.ef||""))){
             const _tcv=telecronistiRef.current,_poolT=COMMENTO_TECNICO[ev.pd];
-            const _fr=_poolT[Math.abs(hashStr(String(ev.txt)+nx))%_poolT.length];
+            /* [7.882.0] LA VOCE RICORDA. Si sceglie fra le frasi NON ancora dette in questa partita
+               per questa situazione; esaurite, il giro riparte. Senza questa memoria l'hash ripescava
+               la stessa frase 3-4 volte a partita (misurato sulla scheda n° 13). */
+            const _no882=(typeof window!=='undefined'&&window.__CPM_NO882);
+            const _dette=(tcUsateRef.current[ev.pd]=tcUsateRef.current[ev.pd]||[]);
+            let _cand=_no882?_poolT:_poolT.filter(f=>_dette.indexOf(f)<0);
+            if(!_cand.length){_dette.length=0;_cand=_poolT;}
+            const _fr=_cand[Math.abs(hashStr(String(ev.txt)+nx))%_cand.length];
+            if(!_no882)_dette.push(_fr);
             const _dlyT=(_arcType&&ATE3_TYPEMS[_arcType]?Math.round(ATE3_TYPEMS[_arcType]/2):0)+260;
             /* testimone test-only: distingue «mai programmato» da «programmato e cancellato», che
                vogliono rimedi opposti — la prima volta ho corretto la frequenza quando il problema era

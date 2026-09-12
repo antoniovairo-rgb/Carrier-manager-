@@ -784,12 +784,17 @@ const TELECRONISTI=[
 ];
 /* Il commento tecnico non racconta l'azione — la LEGGE. Esce di rado, e solo dopo che la voce principale
    ha parlato: e' la seconda voce di una telecronaca, non una riga di cronaca in piu'. */
+/* [7.882.0 — LA SECONDA VOCE SI RIPETE. MISURATO sulle quattro partite della scheda n° 13: 61 battute
+   del commento tecnico e 13 frasi diverse in tutto; dentro UNA partita 14-16 battute per 8-11 frasi
+   (57-69 % diverse) e la piu' ripetuta detta 3-4 volte. Due cause, ed entrambe qui sotto o accanto:
+   il repertorio era di TRE frasi per situazione, e la scelta era un hash senza memoria di cio' che la
+   voce aveva appena detto. Qui il repertorio raddoppia (3 -> 6); la memoria e' in 15-live-match. */
 const COMMENTO_TECNICO={
-  attack:["Bella l'ampiezza, la squadra si allarga bene.","Qui la differenza la fa il tempo dell'inserimento.","Attenzione al terzo uomo, e' li' che si apre."],
-  attack_goal:["Su questa palla bisogna crederci sempre.","Il movimento e' giusto, manca solo il tocco.","In area serve freddezza, non forza."],
-  wide_right:["La corsia e' libera, e loro non scalano.","Cross col contagiri, difficile fare meglio.","Il quinto sta salendo ogni volta: e' una scelta."],
-  midfield:["Si gioca tutto qui in mezzo, e' una partita di reparti.","Il palleggio serve a far muovere loro, non la palla.","Ritmo basso, ma non e' un male: si ordina la squadra."],
-  retreat:["Squadra corta, cosi' si concede poco.","Bene la scalata, nessuno si fa saltare.","Meglio rischiare la rimessa che la giocata."],
-  defend_goal:["Qui conta solo spazzare, niente fronzoli.","Il portiere comanda la linea, si sente.","Momento da soffrire, capita in ogni partita."]
+  attack:["Bella l'ampiezza, la squadra si allarga bene.","Qui la differenza la fa il tempo dell'inserimento.","Attenzione al terzo uomo, e' li' che si apre.","Il difensore e' girato: basta attaccargli la spalla.","Stanno uno contro uno dietro, e' un rischio che si prendono.","Quando entri cosi' devi chiedere palla subito, non dopo."],
+  attack_goal:["Su questa palla bisogna crederci sempre.","Il movimento e' giusto, manca solo il tocco.","In area serve freddezza, non forza.","Dentro l'area il primo tocco decide tutto.","Il portiere ha coperto il palo, restava l'altro.","Un metro prima e quella palla e' in fondo al sacco."],
+  wide_right:["La corsia e' libera, e loro non scalano.","Cross col contagiri, difficile fare meglio.","Il quinto sta salendo ogni volta: e' una scelta.","Il terzino e' rimasto solo: prima o poi la paghi.","Palla messa dietro il difensore, e' quella giusta.","Da li' serve la testa alzata, non il cross e via."],
+  midfield:["Si gioca tutto qui in mezzo, e' una partita di reparti.","Il palleggio serve a far muovere loro, non la palla.","Ritmo basso, ma non e' un male: si ordina la squadra.","Chi vince il secondo pallone qui, vince la partita.","Manca l'uomo fra le linee: cosi' si gira e basta.","Due tocchi in meno e si esce dalla pressione."],
+  retreat:["Squadra corta, cosi' si concede poco.","Bene la scalata, nessuno si fa saltare.","Meglio rischiare la rimessa che la giocata.","Linea alta e tempi giusti: e' lavoro di settimane.","Qui si riparte da dietro solo se sei sicuro.","Il reparto scivola insieme, non c'e' un buco."],
+  defend_goal:["Qui conta solo spazzare, niente fronzoli.","Il portiere comanda la linea, si sente.","Momento da soffrire, capita in ogni partita.","Primo palo coperto, e' l'unica cosa che conta adesso.","Serve un fallo tattico, non un eroismo.","Se esci male su questa, e' gol: meglio restare."]
 };
 function pickTelecronisti(seed){const i=Math.abs(hashStr(String(seed||"x")))%TELECRONISTI.length;return TELECRONISTI[i];}
