@@ -4981,3 +4981,42 @@ proprio gli uomini che avrebbero crossato. Sorgente riportato allo stato della 7
 fascia. Il riempimento deve venire dal LATO OPPOSTO (il quinto e la punta lontana dal pallone) e dalle
 mezzali, lasciando intatto chi sta sul lato della palla. E la misura giusta e' la coppia «quante volte la
 condizione ricorre» + «quante volte c'e' un ricevente», non il solo conteggio dei cross.
+
+## 7.883 v2 SUL BRANCH — l'area la riempie chi sta dal lato opposto al pallone
+
+### Prima: la revoca della v1 era sbagliata, e lo era per colpa del mio strumento
+
+Un'ora fa ho revocato la 7.883 v1 scrivendo che «riempire l'area toglie gli uomini dalla fascia», con
+tanto di tabella (rosso 0,50 · verde 0,19). **Quei numeri erano rumore.** La sonda `cross-banco.mjs`
+sorteggiava i gol decretati con `Math.random()`: due corse **dello stesso identico codice** davano 0,50
+e 0,19 cross in gioco aperto. Me ne sono accorto perche' il ROSSO — che e' la build di base — e' passato
+da 0,50 a 0,19 fra due misure.
+
+Sonda resa ripetibile (generatore con seme fisso; verificato: due corse, numeri identici) e portata a 48
+partite. **Rimisurato tutto:**
+
+| build | cross in gioco aperto | la condizione ricorre | occasioni SENZA ricevente |
+|---|---|---|---|
+| rosso `__CPM_NO883` (base) | 0,31 a partita | 3,15 a partita | 88/151 = **58 %** |
+| v1 (area riempita da entrambi i lati) | 0,35 | 3,21 | 75/154 = **49 %** |
+| **v2 (solo dal lato opposto)** | **0,48** | 3,19 | 66/153 = **43 %** |
+
+La v1 **non svuotava un bel niente** (la condizione resta 3,21 contro 3,15) e non peggiorava i cross.
+La revoca era sbagliata e la sua spiegazione — quella della fascia svuotata — era un racconto costruito
+su due cifre casuali. A verbale come lezione 24ª: **una misura appaiata non vale nulla se il rosso e il
+verde non vedono lo stesso mondo**; prima di leggere due colonne, si fa girare la stessa colonna due
+volte.
+
+### Il rimedio spedito (v2)
+
+Palla avanzata (avanzamento >= 70) e larga (|y-50| >= 20): le punte e le mezzali che partono **dal lato
+opposto al pallone** attaccano il secondo palo e il dischetto; chi sta sul lato della palla non si muove.
+Nessuna probabilita' toccata: e' solo movimento, e il lato del cross resta popolato.
+
+Risultato: **cross in gioco aperto 0,31 -> 0,48 a partita (+55 %)** con la condizione del cross intatta
+(3,15 -> 3,19) e le occasioni senza nessuno in area **58 % -> 43 %**.
+
+**Dichiarato, non risolto:** 0,48 a partita resta lontanissimo da una partita vera (una quindicina). Il
+collo di bottiglia che resta e' a monte — la condizione stessa ricorre solo 3,2 volte a partita, cioe'
+il portatore arriva di rado sul fondo. E' la nota aperta «la squadra non sale», e non si chiude con il
+movimento in area. `test:logic` verde, build IDENTICO 1; guardiano e rituali ancora da girare.

@@ -347,6 +347,26 @@ function creaMotorePossesso(cfg){
         if(p.rl==="DF"&&!inPoss){tx=sl.x+dp*Math.min(spinta,0)+(bx-50)*0.25;}
         /* [7.872] col gol decretato le punte di quel lato salgono al limite dell'area: il lancio ha un bersaglio */
         {const gr=S.richieste.gol;if(gr&&p.team===gr.lato&&p.rl==="AT"&&st!=="fermo"&&advDi(tx,p.team)<80){tx=xDa(80+(p.i%3)*2,p.team);ty=sl.y+(by-sl.y)*0.35;v=6;}}
+        /* [7.883 v2 — L'AREA LA RIEMPIE CHI STA DAL LATO OPPOSTO AL PALLONE.
+           MISURATO al banco (16 partite): cross in gioco aperto 0,38 a partita. La condizione che il
+           motore richiede (portatore avanzato e largo) ricorre 2,81 volte a partita, ma in 27 casi su
+           45 (60 %) non c'e' un compagno dentro il corridoio centrale a >= 78. La causa e' la
+           traslazione della 7.876: con la palla larga il blocco SEGUE la fascia invece di attaccare i
+           pali. Qui si muove SOLO chi parte dal lato opposto al pallone: il lato della palla resta
+           intatto e l'area si riempie dal lato cieco, come nel calcio vero.
+           ⚠️ LEZIONE DELLO STRUMENTO, prima delle cifre: la prima tornata di misure sorteggiava i gol
+           decretati con Math.random(), e due corse DELLO STESSO codice davano 0,50 e 0,19 cross in
+           gioco aperto. Su quel rumore avevo revocato la v1 (area riempita da entrambi i lati)
+           attribuendole di svuotare la fascia: con la sonda resa ripetibile (seme fisso) e 48 partite
+           la v1 NON svuota niente (la condizione resta 3,21 contro 3,15) e non peggiora i cross
+           (0,35 contro 0,31). Quella revoca era sbagliata, e la sua spiegazione pure.
+           MISURE APPAIATE, 48 partite, sonda ripetibile — cross in gioco aperto · condizione · occasioni
+           senza ricevente:  rosso 0,31 · 3,15 · 58 %   |   v1 0,35 · 3,21 · 49 %   |   v2 0,48 · 3,19 · 43 %. */
+        {const _no883=(typeof window!=='undefined'&&window&&window.__CPM_NO883);
+         const _oppo=(by>50)?(sl.y<=50):(sl.y>=50);
+         if(!_no883&&inPoss&&st!=="fermo"&&advB>=70&&Math.abs(by-50)>=20&&_oppo&&(p.rl==="AT"||p.rl==="MF")){
+           const _po=(p.rl==="AT")?{a:85,y:(by>50?44:56)}:{a:80,y:50};
+           if(advDi(tx,p.team)<_po.a-2){tx=xDa(_po.a,p.team);ty=_po.y;v=6;}}}
       }
       if(st==="fermo"&&S.fermo&&S.fermo.batt===p.i){const f=S.fermo;tx=f.x-dp*(f.kind==="pen"?1.5:0.8);ty=f.kind==="corner"?f.y:f.y;v=8;}
       else if(st==="fermo"&&S.fermo){const f=S.fermo;
