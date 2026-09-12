@@ -5132,3 +5132,33 @@ contro gli 0,81 a partita misurati al banco per la 7.883 v2 + 7.884. Avevo fatto
 a 7 invece di votarla su un numero di banco. Ma quattro partite sono troppo poche per misurare un evento
 cosi' raro: prima di dire «il guadagno non arriva a schermo» serve un campione piu' grande. Per ora resta
 **dichiarato e non concluso**.
+
+## 7.886 SUL BRANCH — anche le interazioni smettono di promettere un cross
+
+Chiusa la 7.885 (la seconda voce non elogia cio' che non e' successo), ho cercato la stessa bugia nelle
+ALTRE voci. Trovata: nella scheda n° 14, Conti 60', «Conti torna nella stessa posizione **al cross
+successivo**» — in una partita con **zero cross**. L'interazione scatta su `occFallite>=1`, che col cross
+non c'entra nulla: promette un gesto futuro che il gioco non produce.
+
+**Censimento** dei 150 esiti di interazione: **4 promettono un gesto specifico**, e due promettono il
+cross («si va a nozze con i cross», «al cross successivo»). Gli altri due («nuovo angolo, nuova
+occasione», «porta il pallone all'angolo») descrivono una posizione, non una promessa: restano.
+
+**Rimedio:** le due frasi dicono ora cio' che accade davvero senza nominare un gesto futuro
+(«palla lunga e dentro l'area, e vinca il migliore», «torna a mettersi nella stessa posizione»).
+
+| | esiti che promettono un cross |
+|---|---|
+| prima | **2** su 150 |
+| 7.886 | **0** su 150 |
+
+Build IDENTICO 1, sintassi verde. Rituali da girare.
+
+### Il dato che resta scomodo, e che non nascondo
+
+**Cross in gioco aperto nelle quattro partite RESE della scheda n° 14: ZERO su quattro**, mentre al banco
+la 7.883 v2 + 7.884 ne danno 0,81 a partita. Quattro partite restano poche per un evento raro, ma 0 su 4
+non e' incoraggiante: la spiegazione piu' probabile e' che nel match reso i minuti ambientali siano molti
+meno (le scene ne consumano una parte), quindi il tasso per partita resa e' molto sotto quello del banco.
+Finche' non lo misuro su un campione grande, **l'area 4 resta 7 e il guadagno sul cross resta un numero
+di banco**, non una promessa al PO.
