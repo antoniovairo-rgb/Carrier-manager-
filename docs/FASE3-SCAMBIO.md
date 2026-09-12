@@ -4949,3 +4949,35 @@ Sesta ipotesi della giornata sull'area 11, sesta caduta. Zero tarature scritte.
   NON verificato: l'Android del PO (tutto e' Chromium 412x915 headless a 12-23 fps); la CI di GitHub su
   main non e' leggibile da questa sessione. Il metro del PO NON e' raggiunto: scheda n° 13 media 7,1
   contro un cancello di 8 con nessuna area sotto 7 (l'area 11 resta a 5 e senza strumento valido).
+
+## 7.883 REVOCATA (12/09 02:15) — riempire l'area toglie gli uomini dalla fascia
+
+**Il difetto, misurato al banco (16 partite da 92 tick, `cross-banco.mjs`):** il cross in gioco aperto
+esce **0,38 volte a partita** (10 cross totali, 4 da corner). La causa NON e' la probabilita' del cross:
+la condizione che il motore richiede (portatore ad avanzamento >= 72 e largo) ricorre **2,81 volte a
+partita**, ma in **27 casi su 45 (60 %)** non c'e' un solo compagno che soddisfi la condizione di
+ricevente (avanzamento >= 78 dentro il corridoio centrale) — e questo benche' il compagno piu' avanzato
+stia in media ad avanzamento **82,6**. 45 x 40 % x 0,55 = 10 cross su 16 partite: l'aritmetica del
+difetto chiude esattamente sulla misura, quindi il censimento e' giusto.
+
+La causa e' la traslazione della 7.876: il blocco si sposta verso la y della palla, quindi quando il
+pallone va largo la squadra lo SEGUE sulla fascia invece di attaccare i pali.
+
+**Il rimedio scritto (7.883):** palla avanzata e larga -> le punte e le mezzali attaccano primo palo,
+secondo palo e dischetto. Nessuna probabilita' toccata: solo il movimento.
+
+**Il rimedio peggiora la sua stessa misura, misura appaiata al banco:**
+
+| | cross in gioco aperto | la condizione ricorre | riceventi 0 |
+|---|---|---|---|
+| rosso `__CPM_NO883` | **0,50** a partita | 3,31 a partita | 24/53 (45 %) |
+| verde 7.883 | **0,19** a partita | **1,88** a partita | 14/30 (47 %) |
+
+Mandando punte e mezzali dentro l'area si **svuota la fascia**: il portatore si trova largo e avanzato
+molto meno spesso (la condizione del cross scende da 3,31 a 1,88) e i cross calano. Ho spostato in area
+proprio gli uomini che avrebbero crossato. Sorgente riportato allo stato della 7.882.
+
+**Quello che resta, e vale per il prossimo tentativo:** chi attacca l'area non puo' essere chi tiene la
+fascia. Il riempimento deve venire dal LATO OPPOSTO (il quinto e la punta lontana dal pallone) e dalle
+mezzali, lasciando intatto chi sta sul lato della palla. E la misura giusta e' la coppia «quante volte la
+condizione ricorre» + «quante volte c'e' un ricevente», non il solo conteggio dei cross.
