@@ -94,7 +94,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 | C4 | post-partita, tema scuro fotografato, altre schermate (gerarchia, una cosa alla volta) | griglia: nessuna regressione; pieni ≤ 1 per vista | da fare |
 | C5 | performance mobile: 22 GLB per 90' (LOD/instancing, texture) — misura sull'Android del PO | fps ≥ 30 sul telefono del PO (da lui misurato); banco: triangoli in quadro −50 % | da misurare prima |
 | C6 | report finale in 16 sezioni della direttiva | consegnato | da scrivere |
-| C7 | **tabelloni luminosi degli stadi: altezza misurata stadio per stadio** (nota PO 14/09: nello stadio del provino il tabellone vola nel cielo) | per ogni stadio: base del tabellone entro 2u sopra la gradinata di fondo, foto per stadio, provino incluso | da misurare (sonda per stadio) |
+| C7 | **tabelloni luminosi: altezza misurata stadio per stadio** (nota PO 14/09) — 7.895 v2: dentro la sagoma della Curva Sud | primo cielo sopra il bordo alto: rosso 1 px in 9/9 impianti → verde 12-28 px (0,9-1,9u); provino piccolo 22 px | sul ramo (3beb674), rituali in corsa |
 
 ### D · COLLAUDO, STRUMENTI, SKILL
 | # | attività | metro | stato |

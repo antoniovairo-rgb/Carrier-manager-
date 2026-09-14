@@ -5528,3 +5528,55 @@ senza live match; il costo in fps e la resa del pallone a cadenza tripla non son
   exit=0, ci exit=0, `IDENTICO 1`); f6a65d6 aggiunge solo il macro piano, build byte-identico. Fast-forward
   5504b6e → f6a65d6, mai force. A1 del macro piano → fatto. Non verificato sull'Android del PO. Prossimo: C7 (tabelloni
   per stadio), strumento in sola lettura prima del rimedio.
+
+## 7.895 SUL BRANCH — il tabellone sta dentro la sagoma della Curva Sud, misurato stadio per stadio (C7)
+
+Nota PO 14/09: «occhio ai tabelloni luminosi degli stadi, l'altezza deve essere misurata stadio per stadio; nello
+stadio del provino e' un tabellone volante nel cielo».
+
+**Causa (misurata, non supposta).** Il 7.455 appoggiava il maxischermo a `endH`, l'altezza delle tribune di FONDO
+(Est/Ovest, a z=±endZ). Ma il tabellone sta a x=55, davanti alla CURVA SUD, che in ogni taglia e' piu' bassa
+(sideH < endH). Il guardiano 7.455 era verde perche' misurava la tribuna sbagliata.
+
+**Strumento** (`tests/visual/tabellone-stadi.mjs`, 7ba989b → f3ff05e → 3beb674): per ogni impianto apre una
+partita vera, aspetta che la regia inquadri il tabellone, CONGELA la scena (dt=0), proietta i quattro spigoli con
+la camera vera (`__CPM_PROJ767`, sul rettangolo del canvas) e legge il fotogramma dallo screencast CDP
+(`page.screenshot` restituisce il canvas WebGL nero). Gancio `__CPM_JUMBO455` esteso in sola lettura con la sagoma
+della Curva Sud (`_sudGeo` in src/11), cielo, taglia, template e capienza; `__CPM_STADIUM_CAP_FORCE` (test-only)
+per gli impianti piccoli: senza, il provino del banco e' uno storico_it da 26.000 e i template forzati restavano
+grandi. Metro principale: **distanza dal bordo alto del tabellone al primo pixel di cielo** (colonne centrali).
+Tre sonde ritirate prima di quella valida: proiezione sulla pagina anziche' sul canvas (~135 px di scarto),
+foto non congelata (la regia cambiava la taglia del 34 % fra campione e fotogramma), striscia 3-12 px che non
+distingueva «cielo sul bordo» da «cielo sopra la gradinata».
+
+**Misura appaiata** (Chromium 412x915, GLB spento, dpr 1; rosso `__CPM_NO895` = regola 7.455):
+
+| impianto | rosso: bordo alto − cima Sud | rosso: primo cielo | v1 (margine 0,3) | **v2** (0,3 a un anello · 0,9 a due) |
+|---|---|---|---|---|
+| provino del banco (storico_it 26.000, coperto) | +1,18u | 1 px | 5 px (0,38u) | **23 px (1,48u)** |
+| provincia 3.000 (il provino del PO, traliccio) | +2,00u | 1 px | 18 px (1,40u) | 22 px (1,70u) |
+| provincia 9.000 | +2,03u | 1 px | 18 px | — (un anello, invariata) |
+| comunale 9.000 / 18.000 | +2,13u / +1,74u | 1 px / 1 px | 25 px / 13 px | — |
+| storico_it 18.000 (due anelli, scoperto) | +1,46u | 1 px | **3 px (0,21u)** | **12 px (0,87u)** |
+| moderno_it 30.000 | +1,14u | 1 px | 22 px | 28 px |
+| inglese 30.000 | +1,59u | (mai inquadrato) | 17 px | 28 px |
+| francese 30.000 | +1,14u | 1 px | 8 px (0,57u) | 19 px (1,31u) |
+| olandese 30.000 | +1,30u | 1 px | 20 px | 23 px |
+| tedesco / spagnolo 50.000 | −6,52u / +0,61u | mai inquadrati in 150 s | geometria: −0,9u | solo geometria |
+| sudamericano 30.000 (curva alta: controllo) | −8,04u | 78 px | 78 px | invariato |
+
+Rosso: nei 9 impianti fotografati il cielo comincia a 1 px dal bordo alto (0,06-0,08u) — il «volante». Nel
+3.000 il traliccio del 7.455 era sepolto nei gradoni (gambe da terra a y 3,6 dentro una gradinata alta 3,57 a
+x=55): invisibile. **v1 → v2**: la cima geometrica del gradone alto NON e' la sagoma visibile sulle curve a due
+anelli (il tifo finisce sotto il bordo del piano): margine 0,9u a due anelli, 0,3 a un anello.
+
+**Costo dichiarato.** Negli impianti piccoli il tabellone si rimpicciolisce per stare nella sagoma: provincia
+3.000 da 10,5x4,8u a 5,5x2,5u (68 px di larghezza a 412 px contro 151). Il PO giudica sul telefono se e'
+leggibile; l'alternativa (tabellone sopra la curva su un traliccio VISIBILE dal bordo dei gradoni) resta a
+disposizione se il piccolo non gli piace.
+
+**Guardiano** `jumbotron-anchor` esteso (sagoma Sud, capienze piccole, rosso `__CPM_NO895`) e messo nel rituale
+`ci`. Prima corsa verde (sporge −0,3/−0,31 su 6 impianti, entrambi i rossi riprodotti). Rituali della v2 in corsa.
+NON verificato: l'Android del PO; inglese/tedesco/spagnolo mai inquadrati dalla regia in 150 s (solo geometria).
+Errore dichiarato: la 7.894 era uscita con `GAME_VERSION` 7.893.0 (bump mancato); la 7.895 lo corregge.
+
