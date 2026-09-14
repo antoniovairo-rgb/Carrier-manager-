@@ -171,7 +171,11 @@ function creaMotorePossesso(cfg){
     /* [7.876] chi conduce sulla fascia non rientra per abitudine: punta il fondo e rientra solo in area */
     let ty=P.y+(50-P.y)*0.06+(rnd()-0.5)*2;if(adv>=86&&Math.abs(P.y-50)>18)ty=P.y+(50-P.y)*0.35;
     else if(adv>=60&&Math.abs(P.y-50)>=20)ty=P.y+(P.y-50)*0.05+(rnd()-0.5)*2;
-    const nx=clamp(P.x+d*passo,3,97),ny=clamp(ty,4,96);
+    let nx=clamp(P.x+d*passo,3,97),ny=clamp(ty,4,96);
+    /* [7.891 v2] IL PASSO DELLA CONDUZIONE E' UMANO ANCHE QUANDO RIENTRA: il rientro in area del 7.876 sommava
+       al passo in avanti (5-8u) fino a 16u di taglio verso il centro — misurato 13,0u in un tick (test «passi
+       umani», seme 11, t43, i18: da 11,3/20,2 a 3,6/30,6). Il vettore intero resta entro il passo. */
+    {const _ddx=nx-P.x,_ddy=ny-P.y,_dl=Math.hypot(_ddx,_ddy);if(_dl>passo){nx=clamp(P.x+_ddx/_dl*passo,3,97);ny=clamp(P.y+_ddy/_dl*passo,4,96);}}
     ev("conduzione",{chi:chi(P),from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+nx.toFixed(1),y:+ny.toFixed(1)}});
     P.x=nx;P.y=ny;S.palla.x=clamp(P.x+d*0.5,0,100);S.palla.y=P.y;S.conta.conduzioni++;};
   const perdi=(P,come)=>{const l=P.team;const m=piuVicino(P.x,P.y,altro(l),{noGk:true});
