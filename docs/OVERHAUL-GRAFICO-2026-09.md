@@ -171,4 +171,10 @@ assist, record. Regola: **mai rallentare**.
 - Nessun «puoi collaudare» finche' la scheda dal telefono non batte il metro concordato.
 
 ## 5. STATO
-- 13/09 — FASE 1 chiusa (questo documento). In corso: **G0, lo strumento**.
+- 13/09 — FASE 1 chiusa (questo documento).
+- 14/09 — **G0 chiuso**: `tests/visual/griglia-mobile.mjs`, tarata 13/13, ripetibile (due corse byte-identiche), tema chiaro e scuro (`CPM_TEMA=scuro`), cinque colonne (overflow, fuori schermo, testo <10 px, contrasto WCAG, bottoni pieni di marca). Base 7.888: overflow 0, testo <10 px 463/2760, contrasto 917/2291 (chiaro) e 1000/2291 (scuro).
+- 14/09 — **G1 chiuso a metro** (ramo `grafica/overhaul-2026-09`): chiaro contrasto **917 → 61**, testo <10 px **463 → 29**; scuro contrasto **1000 → 61**; overflow 0 → 0 a 360/375/390/412/430. Sette passi misurati uno alla volta: G1.1 grigi del testo (917 → 174) · G1.2 semantici pieni non piu' usati come testo (→ 63) · G1.4 pavimento 10 px (463 → 29) · G1.5 fondi tinti sui token (scuro 1000 → 981) · G1.6 color-scheme + brandText/accentText (→ 658) · G1.7 faint del tema scuro (→ 61).
+- 14/09 — **G3.1**: la Home ha una card principale, «Prossima partita» (f0c3f4c), nessuna regressione. **G3.2**: una sola azione primaria per vista — tre primari di navigazione a `outline`; bottoni pieni di marca in Home 8 → 7 (piccolo, dichiarato: i restanti sono le decisioni dei «momenti» che si accumulano).
+- 14/09 — **Palette A** scelta dal PO («la A», verde «assolutamente no»): base avorio `#f5f3ef` al posto dell'azzurrino, granata invariato, testi invariati, tema scuro invariato. Misura in corso con la G3.2.
+- Direttiva PO 14/09: «spingi ancora di piu' sulla qualita' grafica». Prossimo: **G3.3 «un momento alla volta»** — la Home ha 52 blocchi condizionali di primo livello; i «momenti» con decisione (sponsor, vita privata, procuratore, patto col mister...) si accumulano tutti aperti, ognuno col suo bottone pieno. Proposta: il primo momento aperto, gli altri in una riga «altri N momenti» che si apre al tocco; metro = bottoni pieni di marca in Home → 2 (CTA + un momento), senza nascondere nessuna decisione (restano raggiungibili).
+- Non ancora nel metro: post-partita, partita (HUD/telecronaca), schermate cinematiche, il telefono vero del PO.
