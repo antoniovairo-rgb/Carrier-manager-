@@ -99,5 +99,8 @@
    ],
    "fonte": "docs/archivio/PLAYTEST-REPORT-01.md · Scorecard n° 15 (media 7,17)"
   }
- ]
+ ],
+ "regole": {
+  "glb": "direttiva PO 15/09: i voti del player si danno SEMPRE con i GLB accesi (campo 3D con i modelli CH38); una scheda a GLB spenti non vale come voto"
+ }
 }

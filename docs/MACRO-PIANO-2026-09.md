@@ -6,7 +6,7 @@
 
 ## Avanzamento (una riga per spedizione, la più recente in alto)
 
-**Regola (direttiva PO 15/09):** ogni rilascio in produzione porta la scheda da telefono successiva (4 partite, scala 9) e aggiorna la sezione «Voti del player da cellulare» qui sotto: voti delle 12 aree, differenza dalla scheda precedente, istogramma. Registro: `docs/voti/voti-telefono.json`, generatore `node tools/voti-piano.mjs`.
+**Regola (direttiva PO 15/09):** ogni rilascio in produzione porta la scheda da telefono successiva (4 partite, scala 9) e aggiorna la sezione «Voti del player da cellulare» qui sotto: voti delle 12 aree, differenza dalla scheda precedente, istogramma. **I voti si danno sempre con i GLB accesi** (direttiva PO 15/09: la sonda `collaudo-telefono` forza `__CPM_GLB=true`; una scheda a GLB spenti non vale come voto). Registro: `docs/voti/voti-telefono.json`, generatore `node tools/voti-piano.mjs`.
 
 | quando (UTC) | cosa | cantiere → stato | numeri |
 |---|---|---|---|
