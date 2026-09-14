@@ -42,10 +42,11 @@ async function misura(caso){
   while(Date.now()-t0<ATTESA_S*1000){await sleep(250);n++;
     const s=await page.evaluate(()=>{try{const j=window.__CPM_JUMBO455,P=window.__CPM_PROJ767;if(!j||!P)return null;
       const c=[[55,j.y+j.h/2,-j.w/2],[55,j.y+j.h/2,j.w/2],[55,j.y-j.h/2,j.w/2],[55,j.y-j.h/2,-j.w/2]].map(v=>P(v[0],v[1],v[2]));
-      return {j,c,ph:(window.__CPM_PHASE&&window.__CPM_PHASE())||'?',cam:window.__CPM_CAMT767||null,min:(window.__CPM_CLOCK&&window.__CPM_CLOCK())|0};}catch(e){return {err:String(e)};}});
+      const cv=document.querySelector('canvas'),r=cv?cv.getBoundingClientRect():null;/* la proiezione NDC vale sul CANVAS, non sulla pagina: il 3D sta sotto la barra superiore (misurato: ~135 px di scarto senza questo) */
+      return {j,c,rect:r?{x:r.left,y:r.top,w:r.width,h:r.height}:null,ph:(window.__CPM_PHASE&&window.__CPM_PHASE())||'?',cam:window.__CPM_CAMT767||null,min:(window.__CPM_CLOCK&&window.__CPM_CLOCK())|0};}catch(e){return {err:String(e)};}});
     if(!s||s.err){ultimo=s;continue;}j=s.j;ultimo=s;
     const dentro=s.c.every(p=>p.z<1&&Math.abs(p.x)<0.97&&Math.abs(p.y)<0.97);
-    const px=s.c.map(p=>ndc2px(p,412,915));const larg=Math.hypot(px[1].x-px[0].x,px[1].y-px[0].y);
+    if(!s.rect)continue;const px=s.c.map(p=>{const q=ndc2px(p,s.rect.w,s.rect.h);return {x:q.x+s.rect.x,y:q.y+s.rect.y};});const larg=Math.hypot(px[1].x-px[0].x,px[1].y-px[0].y);
     if(dentro&&larg>=28&&s.ph==='playing'){colpo={px,larg,ph:s.ph,cam:s.cam,min:s.min,t:+((Date.now()-t0)/1000).toFixed(1)};break;}
   }
   let pix=null;

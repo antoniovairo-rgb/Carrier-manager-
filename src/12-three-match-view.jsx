@@ -810,9 +810,27 @@ function ThreeMatchView(props){
     {const _sc455=(sr.current&&sr.current.crowdMats)||null;/* buildStadium ritorna dentro un try: l'oggetto sopravvive qui */
      const _endH455=(_sc455&&_sc455.endH)||10, _lvS455=(_sc455&&_sc455.lvl!=null)?_sc455.lvl:1;
      const _bScale=Math.max(0.62,Math.min(1,_endH455/20));
-     const _bW=17*_bScale,_bH=7.7*_bScale;
+     let _bW=17*_bScale,_bH=7.7*_bScale;
      const _fissa455=(typeof window!=="undefined"&&window.__CPM_NO455);/* interruttore test-only: ripristina la quota fissa — serve al guardiano per provare il rosso */
-     const _bY=_fissa455?15.5:Math.max(_bH/2+2.2, _endH455*0.86);/* il bordo basso resta dentro la tribuna, mai contro il cielo */
+     let _bY=_fissa455?15.5:Math.max(_bH/2+2.2, _endH455*0.86);/* il bordo basso resta dentro la tribuna, mai contro il cielo */
+     /* [7.895.0 C7 — nota PO 14/09 «occhio ai tabelloni luminosi degli stadi, l'altezza deve essere misurata stadio per stadio;
+        nello stadio del provino e' un tabellone volante nel cielo»] IL 7.455 SI APPOGGIAVA ALLA TRIBUNA SBAGLIATA. La quota
+        nasceva da endH, l'altezza delle tribune di fondo (Est/Ovest, a z=±endZ) — ma il tabellone sta a x=55, davanti alla
+        CURVA SUD, che e' sempre piu' bassa (sideH < endH in ogni taglia). Misurato stadio per stadio (sonda tabellone-stadi):
+        il bordo alto sporgeva sopra la cima della curva in TUTTI gli impianti (+1,2u con la copertura del 26.000, +2,0/+2,1u
+        nei 3.000/9.000 senza tetto), e nel piccolo il traliccio era sepolto dentro la gradinata: 41 colonne su 41 di cielo
+        sopra il bordo alto — il «volante» del PO. Ora il tabellone sta DENTRO la sagoma di cio' che ha davvero dietro: bordo
+        alto sotto la cima della curva (gradoni o copertura) con 0,3u di margine, bordo basso sopra il gradone su cui si
+        appoggia (o sopra la base); dove l'intervallo non basta si rimpicciolisce (scala minima 0,30). Rosso __CPM_NO895 =
+        la quota del 7.455. */
+     const _sud895=(_sc455&&_sc455.curve&&_sc455.curve.sud)||null;
+     if(_sud895&&!_fissa455&&!(typeof window!=="undefined"&&window.__CPM_NO895)){try{
+       const _dietro=Math.max(_sud895.top,_sud895.roofTop||0)-0.3;
+       const _sup=(55>_sud895.frontX&&_sud895.topX>_sud895.frontX)?3+(55-_sud895.frontX)/(_sud895.topX-_sud895.frontX)*(_sud895.top-3):null;
+       const _piede=_sup!=null?_sup+0.15:(55>_sud895.baseX?3.15:2.2);
+       if(_dietro-_piede<_bH){const _h=Math.max(7.7*0.30,_dietro-_piede),_k=_h/_bH;_bH=_h;_bW*=_k;}
+       _bY=Math.min(_bY,_dietro-_bH/2);_bY=Math.max(_bY,_piede+_bH/2);
+     }catch(_e895){}}
      try{if(typeof window!=="undefined")window.__CPM_JUMBO455={y:+_bY.toFixed(2),h:+_bH.toFixed(2),endH:+_endH455.toFixed(2),lvl:_lvS455,x:55,w:+_bW.toFixed(2),sky:skyCol,tpl:(sr.current._stad455||{}).tpl||null,cap:(sr.current._stad455||{}).cap||null,traliccio:_lvS455<=0,sud:(_sc455&&_sc455.curve&&_sc455.curve.sud)||null};}catch(_e455){}/* [C7] + larghezza, cielo, traliccio e la sagoma della Curva Sud che sta DAVVERO dietro (sola lettura) *//* sonda: il guardiano confronta il bordo basso dello schermo con la sommita' della tribuna */
      const _board=new THREE.Mesh(new THREE.PlaneGeometry(_bW,_bH),new THREE.MeshBasicMaterial({map:_sbTex,transparent:true,opacity:0.98,side:THREE.DoubleSide}));
      _board.position.set(55,_bY,0);_board.rotation.y=-Math.PI/2;scene.add(_board);
