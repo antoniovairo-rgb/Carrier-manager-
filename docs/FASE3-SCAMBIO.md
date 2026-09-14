@@ -5397,3 +5397,11 @@ visibile — prossimo passo, dal motore stesso, che a `fermo` conosce gia' `kind
 verificato: un seme, 150 s di autoplay a tickMs 300, GLB spento nella sonda (i corpi logici non
 dipendono dal GLB); l'effetto sulle scene viste dal PO (attori scelti dai corpi del motore invece che
 dalla formazione di cartone) non e' fotografato in questa misura.
+
+- 14/09 18:20 UTC: **Produzione allineata a f8cb0b3 (7.890.0 + overhaul grafico G0-G4.1) — rituale completo verde**
+  sull'HEAD del merge (career-critical exit=0, ci exit=0, `IDENTICO 1`). Fast-forward 43c31e1 → f8cb0b3 (10 commit),
+  mai force; il ramo `grafica/overhaul-2026-09` e' stato portato allo stesso commit. Decisione PO 14/09: «rilascia la
+  grafica con la release in corso». Dichiarato: i rituali erano partiti prima sulla 7.890 da sola (f30f207) e sono
+  stati interrotti (career-critical non finito) per rifarli sul candidato vero; sulla 7.889 (a52e3dd) erano verdi 0/0.
+  Non verificato: l'Android del PO (fps con i ventidue GLB in campo per tutta la partita; grafica solo in Chromium
+  412×915; G4.1 non misurata in partita).
