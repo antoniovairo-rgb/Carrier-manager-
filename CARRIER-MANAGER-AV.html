@@ -25973,6 +25973,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           /* [7.849 nel motore] l'atteggiamento: chi e' sotto o pari dal 70' assalta, chi e' avanti di due dal 60' amministra */
           {const _sc=scoreRef.current||{home:0,away:0};const _d=(_sc.home|0)-(_sc.away|0);const _attDi=(dd)=>(nx>=70&&dd<=0)?1:(nx>=60&&dd>=2)?-0.6:(dd<0?0.4:0);_M.chiedi.atteggiamento("home",_attDi(_d));_M.chiedi.atteggiamento("away",_attDi(-_d));}
           _evM870=_M.tick({min:nx});
+          try{if(typeof window!=='undefined'&&window.__CPM_REC){const _acc=(window.__CPM_EVM870=window.__CPM_EVM870||[]);for(const _e of _evM870){if(_e&&_e.t==='tiro')_acc.push({tick:_e.tick,chi:(_e.chi&&_e.chi.i!=null)?_e.chi.i:String(_e.chi&&_e.chi.nome||'?'),zona:_e.zona||'?',min:_e.min});}window.__CPM_MOTORE_EV=()=>window.__CPM_EVM870||[];}}catch(_e870ev){}/* [A2 strumento] gancio di SOLA LETTURA, solo con __CPM_REC (sonde): accumula i tiri del motore, che vivono un tick solo, per contarli contro le righe raccontate */
           _stM870=_M.stato();
           {const _q=quotaMotoreRef.current;_q.push(_stM870.poss.lato==="home"?1:0);if(_q.length>16)_q.shift();}
           const _dM=_stM870.poss.lato==="home"?1:-1;
