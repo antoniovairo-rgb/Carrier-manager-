@@ -5293,3 +5293,11 @@ chiusa. E un tiro su 180 parte ora dalla zona «centro»: un caso, lo tengo d'oc
   buttate. Nessun numero rosso comunicato prima delle 13:00 UTC del 14/09 era valido.
   Non verificato: Chromium a 21 fps con un'altra sonda in parallelo sulla stessa macchina; il testo della
   cronaca dipende dal seme e non dall'orologio, ma la contesa non e' stata esclusa con una corsa a macchina vuota.
+
+- 14/09 14:05 UTC: **Produzione allineata a 43c31e1 (7.888.0) il 14/09, rituale completo verde** (career-critical
+  exit=0, ci exit=0, `IDENTICO 1`). Fast-forward 539efe6 → 43c31e1, mai force. Il build del gioco e' BYTE-IDENTICO a
+  quello gia' in produzione (5.718.892 byte): i cinque commit portano documenti (piano grafico, verbale area 2) e lo
+  strumento (tolto da git il symlink circolare di tests/visual/node_modules che uccideva ogni sonda su un clone
+  fresco). Dichiarato: il rituale e' partito sull'HEAD 16e3d6b e l'HEAD e' avanzato di commit solo-documenti prima
+  del push; il file di gioco non e' cambiato fra i due. Le due notti precedenti (13 e 14/09) l'allineamento non e'
+  partito perche' la sessione era giu'. Il PO, per sua decisione, non collauda finche' la media da telefono non arriva a 8.
