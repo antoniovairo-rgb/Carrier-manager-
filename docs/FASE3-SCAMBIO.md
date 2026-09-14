@@ -5358,3 +5358,20 @@ girano gia' oggi sul suo telefono; il 7.889 estende quel carico a tutta la parti
 (`telefono-889p`): stessa partita con i corpi PROCEDURALI (GLB spento) per sapere quanto costerebbe una
 versione leggera del gioco aperto, se il telefono del PO non regge i GLB per novanta minuti.
 Rituali (career-critical + ci) in corsa sul ramo.
+
+**Censimento degli scrittori dei ventidue (14/09 15:20, build 7.889, sonda `chi-588`, 150 s di autoplay,
+soglia 1,5u).** Domanda del PO: «lo scrittore non dovrebbe essere solo il nuovo motore JS?».
+
+| indice sorvegliato | scritture | dal MOTORE (`_gc[i2]`) | dai coreografi di SCENA | salto piu' grande dei coreografi |
+|---|---|---|---|---|
+| i5 (casa, movimento) | 60 | **51** | 9 (pressing «ingaggiati» 6, formazione d'area 2, calcio piazzato 1) | **+30,3u** in una scrittura |
+| i15 (ospite, movimento) | 57 | **50** | 7 (ingaggiati 5, area 1, piazzato 1) | **+16,7u** |
+
+Risposta: nel gioco aperto SI', il motore e' l'unico scrittore (i vecchi scrittori sono chiusi da
+`if(!MOTORE870||_inHL77)`). Nelle SCENE no: quando si apre un highlight tre coreografi del 2024-25
+(formazione d'area, calcio piazzato, pressing sugli «ingaggiati») riscrivono i ventidue con salti di
+13-30 unita' in un colpo, cioe' il teletrasporto che si vede all'apertura della scena. E' il prossimo
+rimedio (7.890): la scena prende i corpi dov'e' li ha messi il motore (il ponte dei due minuti prima
+li porta gia' li') e i tre coreografi si chiudono sotto lo stesso cancello. Metro: salti > 8u dei
+ventidue all'apertura delle scene (oggi 1-2 a scena) → 0, e distanza degli attori della scena dai punti
+richiesti dalla situazione. Non verificato: 150 s di autoplay a tickMs 300, un solo seme (7300).
