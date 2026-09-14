@@ -4,11 +4,19 @@
 > misurabile, un rosso appaiato e uno stato dichiarato. Il piano si aggiorna a verbale (`docs/FASE3-SCAMBIO.md`)
 > a ogni spedizione o revoca.
 
+## Avanzamento (una riga per spedizione, la più recente in alto)
+
+| quando (UTC) | cosa | cantiere → stato | numeri |
+|---|---|---|---|
+| 14/09 20:10 | **main = 5504b6e**: 7.892 + 7.893 in produzione (rituali verdi su 7940f26, build identico) | C1 → fatto | riga di telecronaca sopra la metà del campo 67,4 % → 0 %; blocco scelte 36,7 % → 21,5 %; barra specchiata dal 46' (casa x 13 → 297); frecce via |
+| 14/09 19:40 | main = e62db88: 7.891 v2 | B1 → fatto | piazzato di cartone 32,8u → 0; passo conduzione ≤ 8u |
+| 14/09 18:20 | main = f8cb0b3: 7.889 + 7.890 + overhaul grafico G0-G4.1 | A/B1/C1 → fatto | corpi in campo 0,3 → 45; regie di gioco vivo 5 → 0; contrasto 917 → 62 |
+
 ## 0. Dove siamo (misurato, 14/09 sera)
 
 | cosa | numero | fonte |
 |---|---|---|
-| produzione (`main`) | **e62db88 = 7.891 v2**; 7.892/7.893 in rituale | verbale 19:40 |
+| produzione (`main`) | **5504b6e = 7.893.0** (7.889 → 7.893 tutte in produzione) | verbale 20:10 |
 | gioco vivo con un padrone dichiarato (telefono, 4 partite) | **37 %** | sonda telefono 14/09 |
 | tiri del motore a partita (4 partite) | **1,75** (0/2/2/3), 1 dall'area | area 2, misura B |
 | azioni ≥ 3 passaggi poi tiro (banco) | **0,25**/partita (7.893) → 0,88 (7.894, non spedita) | banco `stati-motore` |
@@ -53,7 +61,7 @@
 ### C · GRAFICA & UX — «wow, professionale»
 | # | attività | metro | stato |
 |---|---|---|---|
-| C1 | fondamenta (G0-G3) e correzioni in partita (7.892/7.893) | vedi §0 | **in produzione / in rituale** |
+| C1 | fondamenta (G0-G3) e correzioni in partita (7.892/7.893) | vedi §0 | **in produzione** |
 | C2 | **G4 anteprima di design del HUD di partita** (barra broadcast, banda bassa unica, interazione come scheda dal basso, transizioni) → sì del PO sul disegno | approvazione del PO | domani mattina |
 | C3 | G4 implementazione: HUD, telecronaca, interazioni, scena SETUP→AZIONE→CONCLUSIONE→CONSEGUENZA | copertura del campo ≤ 25 %, griglia partita: <10 px 0, contrasto 0; scheda area «HUD» ≥ 8 | dopo C2 |
 | C4 | post-partita, tema scuro fotografato, altre schermate (gerarchia, una cosa alla volta) | griglia: nessuna regressione; pieni ≤ 1 per vista | da fare |

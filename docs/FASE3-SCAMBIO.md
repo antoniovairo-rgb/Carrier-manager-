@@ -5513,3 +5513,7 @@ progettare prima di toccare: il live match chiama `tick` una volta al minuto e i
 (3 righe ogni 1,7 s sarebbero illeggibili): serve il narratore che sceglie l'evento piu' saliente del minuto,
 e le sonde che assumono tick = minuto vanno rilette. Proposta al PO per domani (7.895). Non verificato: banco
 senza live match; il costo in fps e la resa del pallone a cadenza tripla non sono misurati.
+
+- 14/09 20:10 UTC: **Produzione allineata a 5504b6e (7.893.0: 7.892 + 7.893) — rituale completo verde su 7940f26**
+  (career-critical exit=0, ci exit=0, `IDENTICO 1`); i commit successivi (9ad4b38, 0102b31, 5504b6e) sono solo documenti,
+  build byte-identico. Fast-forward e62db88 → 5504b6e, mai force. Non verificato sull'Android del PO.
