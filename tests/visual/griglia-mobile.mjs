@@ -59,11 +59,12 @@ if (!process.env.CPM_CHROME) {
   } catch (_e) {}
 }
 
-const { startServer, launchBrowser, installCdnRoutes, sleep, ROOT } = await import('./lib/harness.mjs');
+const { startServer, launchBrowser, installCdnRoutes, sleep, ROOT, openMatch } = await import('./lib/harness.mjs');
 
 const SEME = +(process.env.CPM_SEME || 4242);
 const FOTO = process.env.CPM_FOTO !== '0';
-const TEMA = process.env.CPM_TEMA === 'scuro' ? 'scuro' : 'chiaro';   /* CPM_TEMA=scuro misura il tema scuro (cpm-dark=1); default chiaro */
+const TEMA = process.env.CPM_TEMA === 'scuro' ? 'scuro' : 'chiaro';
+const PARTITA = process.env.CPM_PARTITA === '1';   /* CPM_PARTITA=1 misura anche la PARTITA (HUD in gioco e HUD con la scelta), opt-in: i totali cambiano, si confronta solo con corse uguali */   /* CPM_TEMA=scuro misura il tema scuro (cpm-dark=1); default chiaro */
 const TAGLIE_TUTTE = [
   { w: 360, h: 800 },   // Android piccolo diffuso
   { w: 375, h: 667 },   // iPhone SE / 8
@@ -114,6 +115,8 @@ const SCHERMATE = [
   { id: 'carriera-nazionale',   ctx: 'carriera', nome: 'Carriera · Nazionale',  tab: 'nazionale' },
   { id: 'agente',               ctx: 'carriera', nome: 'Agente',                tab: 'agente' },
   { id: 'prepartita',           ctx: 'carriera', nome: 'Prepartita' },
+  { id: 'partita-gioco',        ctx: 'partita',  nome: 'Partita · HUD in gioco' },
+  { id: 'partita-scelta',       ctx: 'partita',  nome: 'Partita · HUD con la scelta' },
 ];
 
 /* ── LA MISURA (gira DENTRO la pagina) ─────────────────────────────────────────────────────── */
@@ -462,6 +465,27 @@ const SC = id => SCHERMATE.find(s => s.id === id);
       if (ok) await misuraTutte(page, SC('prepartita'));
       else saltate.push("prepartita: la schermata non si e' aperta");
     } else saltate.push('prepartita: playMatch → ' + pm);
+  }
+  await page.close();
+}
+
+/* ctx PARTITA (opt-in, CPM_PARTITA=1) — la strada delle sonde di gioco: nuova carriera -> provino -> partita viva,
+   autoplay a seme fisso; si misura l'HUD in gioco (minuto >= 8) e, se arriva entro 150 s, l'HUD con la scelta dell'eroe. */
+if (PARTITA) {
+  const page = await browser.newPage({ viewport: { width: TAGLIE[0].w, height: TAGLIE[0].h }, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
+  page.on('pageerror', e => errori.push(`partita · ${String(e.message).slice(0, 120)}`));
+  await installCdnRoutes(page);
+  await page.addInitScript(INIT, { seme: SEME, tema: TEMA });
+  let ok = false;
+  try { await openMatch(page, port, { skipLoadAll: true, name: 'Grafica Probe' }); ok = true; } catch (e) { saltate.push('partita: apertura fallita — ' + String(e.message).slice(0, 80)); }
+  if (ok) {
+    try { await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), SEME); } catch (_e) {}
+    const minOk = await page.waitForFunction(() => { try { const ms = window.__CPM_MS && window.__CPM_MS(); return ms && (ms.min | 0) >= 8; } catch (e) { return false; } }, null, { timeout: 240000 }).then(() => true).catch(() => false);
+    if (minOk) { await sleep(300); await misuraTutte(page, SC('partita-gioco')); }
+    else saltate.push("partita-gioco: il minuto 8 non e' arrivato entro 240 s");
+    const sceltaOk = await page.waitForFunction(() => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); return ph === 'hl_choose'; } catch (e) { return false; } }, null, { timeout: 150000 }).then(() => true).catch(() => false);
+    if (sceltaOk) { await sleep(300); await misuraTutte(page, SC('partita-scelta')); }
+    else saltate.push("partita-scelta: nessuna fase hl_choose entro 150 s");
   }
   await page.close();
 }
