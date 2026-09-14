@@ -51,7 +51,14 @@ async function misura(caso){
   }
   let pix=null;
   if(colpo){
-    await sleep(150);const buf=ultimoFrame;if(!buf)throw new Error('nessun fotogramma dallo screencast');const img=PNG.sync.read(buf);const W=img.width,H=img.height;
+    /* FOTO E PROIEZIONE NELLO STESSO ISTANTE: la regia stringe sull'eroe e fra il campione e il fotogramma il tabellone
+       cambiava taglia del 34 % (misurato: 132 px proiettati contro 177 in foto). Si congela la scena (dt=0, come fa
+       forceSituation), si lascia consegnare un fotogramma fermo, poi si riproietta sul fotogramma fermo. */
+    await page.evaluate(()=>{window.__CPM_FROZEN=true;});await sleep(900);
+    const s2=await page.evaluate(()=>{const j=window.__CPM_JUMBO455,P=window.__CPM_PROJ767;const c=[[55,j.y+j.h/2,-j.w/2],[55,j.y+j.h/2,j.w/2],[55,j.y-j.h/2,j.w/2],[55,j.y-j.h/2,-j.w/2]].map(v=>P(v[0],v[1],v[2]));
+      const cv=document.querySelector('canvas'),r=cv.getBoundingClientRect();return {c,rect:{x:r.left,y:r.top,w:r.width,h:r.height},cam:window.__CPM_CAMT767||null};});
+    colpo.px=s2.c.map(p=>{const q=ndc2px(p,s2.rect.w,s2.rect.h);return {x:q.x+s2.rect.x,y:q.y+s2.rect.y};});colpo.cam=s2.cam;colpo.larg=Math.hypot(colpo.px[1].x-colpo.px[0].x,colpo.px[1].y-colpo.px[0].y);
+    const buf=ultimoFrame;if(!buf)throw new Error('nessun fotogramma dallo screencast');const img=PNG.sync.read(buf);const W=img.width,H=img.height;
     fs.writeFileSync(path.join(OUT,caso.replace(':','-')+'.png'),buf);
     {let lum=0,n=0;for(let i=0;i<img.data.length;i+=4*97){lum+=img.data[i]+img.data[i+1]+img.data[i+2];n++;}if(lum/n<12)throw new Error('fotogramma nero: la foto non vale');}
     const sky=j.sky>>>0,sr=(sky>>16)&255,sg=(sky>>8)&255,sb=sky&255;
