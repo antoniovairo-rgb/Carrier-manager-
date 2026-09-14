@@ -5326,3 +5326,35 @@ dall'area in quattro partite, contro le 20-25 conclusioni di una partita vera; i
 problema di racconto ma di motore (`pTiro`, e la strada per entrare in area: #44), e va misurata sul motore.
 Dichiarato: Chromium 412×915, quattro partite, un seme; i tick del motore (66-87) sono meno dei minuti
 perche' il motore tace nelle scene.
+
+## 7.889 SUL BRANCH — i ventidue tornano in campo fuori dalle azioni salienti (direttiva PO 14/09)
+
+PO: «durante la partita vorrei far rivedere i giocatori e non solo il pallone». Rovescia la 7.665 (04/09,
+«solo il pallone con la sua ombra») e la 7.865: allora i ventidue erano una formazione di cartone, dal
+7.870 le posizioni le scrive il motore del possesso. Il blocco 7.665 resta intatto sotto `__CPM_NO889`.
+Misura appaiata: Vairo casa, seme 4242, sonda `telefono-889` (testimone `__CPM_VIS665` a ogni giro, fps
+`__CPM_FPS708`), screencast acceso in tutte e due le gambe, GLB acceso (il modo in cui gioca il PO).
+
+| misura (gioco aperto = playing, non saliente) | rosso `__CPM_NO889` (= 7.888) | verde 7.889 |
+|---|---|---|
+| corpi visibili, media per campione | 0,3 | **45** (22 GLB + 23 radici procedurali) |
+| campioni con ≥ 20 corpi | 1 % | **100 %** (1884/1884) |
+| campioni a campo vuoto | 99 % | **0 %** |
+| fps mediana in gioco / in scena (banco Chromium) | 11 / 8 | **2 / 3** |
+| pallone reso ai piedi del padrone (≤ 3u) | 77 % | 41 % |
+| scarto reso↔logico mediana / p90 | 1,1 / 11,4 u | 4,8 / 21,1 u |
+| salti del pallone (> 8u in ≤ 110 ms) | 13 | 51 |
+
+Lettura. La richiesta del PO e' soddisfatta al metro: i ventidue ci sono in tutto il gioco aperto (foto
+`c889-verde-cron/f19` all'84': intercetto di Pecoraro, corpi attorno al pallone, l'eroe in basso). Il costo
+e' quello dichiarato prima della misura: sul banco i fps in gioco aperto cadono da 11 a 2 (i 22 GLB sono
+1,09 M triangoli, censimento 11/09), e a 2 fps il pallone reso non sta piu' dietro al logico — il metro del
+pallone (77 → 41 %, p90 11 → 21 u, salti 13 → 51) e' una CONSEGUENZA dei fps del banco, non dei corpi:
+e' lo stesso banco della lezione 20a (1-7 fps qui, ~30 sul telefono del PO). Con fps diversi anche la
+partita diverge (86 righe di cronaca su 87 diverse, 💥 1 contro 4): il confronto del pallone non e' a
+parita' di partita, dichiarato.
+NON verificato: i fps sull'Android del PO — l'unico numero che decide. Le scene con i 22 GLB in quadro
+girano gia' oggi sul suo telefono; il 7.889 estende quel carico a tutta la partita. Terza gamba in coda
+(`telefono-889p`): stessa partita con i corpi PROCEDURALI (GLB spento) per sapere quanto costerebbe una
+versione leggera del gioco aperto, se il telefono del PO non regge i GLB per novanta minuti.
+Rituali (career-critical + ci) in corsa sul ramo.
