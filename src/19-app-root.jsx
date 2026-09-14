@@ -645,18 +645,18 @@ function AudioSettings(){
       <div style={{borderTop:`1px dashed ${TH.cardBorder}`,marginTop:6,paddingTop:8}}>
         {TOG.map(r=>(
           <div key={r.k} style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8,opacity:r.dis?0.55:1}}>
-            <span style={{fontSize:12,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:9,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
+            <span style={{fontSize:12,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:10,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
             <Toggle on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
           </div>
         ))}
       </div>
-      <div style={{fontSize:9,color:TH.faint,marginTop:2,lineHeight:1.4}}>Audio sintetizzato in tempo reale (nessun download, funziona offline). Le impostazioni si salvano da sole.</div>
+      <div style={{fontSize:10,color:TH.faint,marginTop:2,lineHeight:1.4}}>Audio sintetizzato in tempo reale (nessun download, funziona offline). Le impostazioni si salvano da sole.</div>
       <button onClick={()=>setDbg(d=>!d)} style={{marginTop:8,padding:'5px 10px',borderRadius:8,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit',fontSize:10}}>🐞 Debug audio {dbg?'▲':'▼'}</button>
       {dbg&&(()=>{let D;try{D=AudioMgr.debug();}catch(_e){D=null;}if(!D)return null;return(
         <div style={{marginTop:8,padding:8,background:TH.surface2||'rgba(0,0,0,.05)',borderRadius:8,fontSize:10}}>
           <div style={{color:TH.muted,marginBottom:6,lineHeight:1.5}}>ctx: <b>{D.ctx}</b> · scena: <b>{D.scene||'—'}</b> · folla: <b>{D.bed?'ON':'off'}</b> · sfx suonati: <b>{D.played}</b> · voci in catalogo: <b>{D.catalog.length}</b>{D.silent?' · (muto sotto test)':''}</div>
           <div style={{display:'flex',flexWrap:'wrap',gap:4,maxHeight:150,overflowY:'auto'}}>
-            {D.catalog.map(n=><button key={n} onClick={()=>{try{AudioMgr.unlock();AudioMgr.play(n);setDbg(d=>d);}catch(_e){}}} style={{fontSize:9,padding:'3px 6px',borderRadius:6,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit'}}>{n}</button>)}
+            {D.catalog.map(n=><button key={n} onClick={()=>{try{AudioMgr.unlock();AudioMgr.play(n);setDbg(d=>d);}catch(_e){}}} style={{fontSize:10,padding:'3px 6px',borderRadius:6,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit'}}>{n}</button>)}
           </div>
         </div>);})()}
     </Card>

@@ -356,7 +356,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                 <button key={c.id} onClick={()=>setDreamClub(sel?null:c)} title={c.n} style={{padding:"6px 9px",borderRadius:9,border:`2px solid ${sel?c.c||TH.primary:"transparent"}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",display:"flex",alignItems:"center",gap:9,textAlign:"left"}}>
                   <TeamBadge team={c} size={24}/>
                   <span style={{flex:1,minWidth:0,fontSize:12,fontWeight:700,color:sel?c.c||TH.primary:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.n}</span>
-                  <span style={{fontSize:9,color:TH.faint,flexShrink:0,whiteSpace:"nowrap"}}>{c.lg}</span>
+                  <span style={{fontSize:10,color:TH.faint,flexShrink:0,whiteSpace:"nowrap"}}>{c.lg}</span>
                 </button>
                 );
               })}
@@ -540,9 +540,9 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     <Card style={{padding:0,overflow:"hidden",marginBottom:12}} shadow>
       <div style={{background:"linear-gradient(135deg,#7a1f2b 0%,#4a1119 100%)",padding:"18px 12px",display:"flex",alignItems:"center",justifyContent:"space-around",position:"relative"}}>
         <div style={{position:"absolute",inset:0,background:"radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,0.10),transparent 60%)",pointerEvents:"none"}}/>
-        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:12,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:9,color:"#e8c98f"}}>La squadra dei provinanti</div></div>
+        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:12,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:10,color:"#e8c98f"}}>La squadra dei provinanti</div></div>
         <div style={{fontSize:22,fontWeight:900,color:"rgba(255,255,255,0.55)",padding:"0 8px",zIndex:1}}>VS</div>
-        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:12,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:9,color:"rgba(255,255,255,0.6)"}}>Avversario del provino</div></div>
+        <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:12,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:10,color:"rgba(255,255,255,0.6)"}}>Avversario del provino</div></div>
       </div>
     </Card>
     {/* scout guidance */}
@@ -1002,13 +1002,13 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
               <div style={{background:"rgba(0,0,0,0.3)",borderRadius:10,padding:"10px 6px"}}>
                 <div style={{fontSize:10,color:"rgba(74,222,128,0.7)",marginBottom:2}}>TU</div>
                 <div style={{fontSize:26,fontWeight:900,color:isAhead?"#4ade80":"#f87171"}}>{p.totalGoals||0}</div>
-                <div style={{fontSize:8,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
+                <div style={{fontSize:10,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
               </div>
               <div style={{fontSize:18,color:"rgba(165,180,252,0.4)"}}>⚔️</div>
               <div style={{background:"rgba(0,0,0,0.3)",borderRadius:10,padding:"10px 6px"}}>
                 <div style={{fontSize:10,color:"rgba(99,102,241,0.7)",marginBottom:2}}>{r.name.split(" ")[0].toUpperCase()}</div>
                 <div style={{fontSize:26,fontWeight:900,color:isTie?"#fbbf24":(!isAhead?"#4ade80":"#f87171")}}>{r.totalGoals||0}</div>
-                <div style={{fontSize:8,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
+                <div style={{fontSize:10,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
               </div>
             </div>
             <div style={{marginTop:10,textAlign:"center",fontSize:12,fontWeight:800,color:isTie?"#fbbf24":(isAhead?"#4ade80":"#f87171")}}>

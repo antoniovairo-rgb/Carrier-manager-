@@ -64,7 +64,7 @@ const StatBar=({label,value,tone,track,height=4,mb=8})=>{
 /* OvrRing — refactor Ondata 1: track → TH.track (light == #e2e8f0, pinnato) · label default 'OVR' (era 'LVL': errato per un calciatore). */
 const OvrRing=({value,size=60,label="OVR"})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
-  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:size*.27,fontWeight:900,color:c,lineHeight:1}}>{value}</div><div style={{fontSize:8,color:TH.faint}}>{label}</div></div></div>;
+  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:size*.27,fontWeight:900,color:c,lineHeight:1}}>{value}</div><div style={{fontSize:10,color:TH.faint}}>{label}</div></div></div>;
 };
 const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:13,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
 /* Sprint 33 C4 — SVG Sparkline */
