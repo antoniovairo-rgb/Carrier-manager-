@@ -105,6 +105,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 | D4 | subagent `regressione-pre-release` in `.claude/agents/` (isolato, torna pass/fail) | usato a ogni release | da fare |
 | D5 | skill custom: `build-frammenti`, `misura-appaiata`, `rituale-produzione` (subito), poi `motore-possesso`, `sonda-telefono`, `griglia-mobile`, `verbale` | esistono e sono vere | da fare |
 | D6 | `CLAUDE.md` e `ARCHITECTURE_MAP.md` allineati a `src/`, motore, rituale, rami | 5 patch proposte | da confermare |
+| D7 | **librerie migliori, carta bianca (PO 15/09)** — registro npm raggiungibile: three 0.186 (in gioco r128), @gltf-transform/cli 4.5, meshoptimizer 1.2. Ordine: (1) GLB semplificati offline (gltf-transform: simplify/quantize/texture) per C5, misura fps banco e triangoli in quadro; (2) meshopt/draco decoder nel loader; (3) aggiornamento three r128 → recente solo se (1)+(2) non bastano (migrazione grande, gate golden) | ogni cambio con misura appaiata: fps banco con 22 GLB (oggi 2) e sul telefono del PO; build store offline intatta | da valutare, una alla volta |
 
 ### E · PRODUZIONE E RILASCIO
 | # | attività | metro | stato |
