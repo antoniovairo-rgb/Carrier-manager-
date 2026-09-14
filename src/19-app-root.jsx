@@ -146,8 +146,8 @@ function ReviewWizard({onExit}){
         scena 3D: sfondo 0.94→0.50 + blur leggero (leggibile) + text-shadow, cosi l'azione si vede ANCHE
         sotto la barra. Solo wizard di sviluppo, mai in build store. */}
     <div style={{position:"fixed",left:0,right:0,bottom:0,zIndex:99999,background:"rgba(2,6,16,0.50)",backdropFilter:"blur(2px)",WebkitBackdropFilter:"blur(2px)",borderTop:"1px solid rgba(30,41,59,0.6)",padding:"9px 10px 12px",fontFamily:"inherit",color:"#e2e8f0",textShadow:"0 1px 2px rgba(0,0,0,0.85)"}}>
-      {!cur?<div style={{textAlign:"center",padding:"14px 0",fontWeight:800,color:"#22c55e"}}>✅ Nessuna combinazione in questo filtro — hai finito!</div>:<>
-        <div style={{display:"flex",gap:8,alignItems:"center",fontSize:11,color:"#94a3b8",marginBottom:4}}>
+      {!cur?<div style={{textAlign:"center",padding:"14px 0",fontWeight:800,color:TH.txGreen}}>✅ Nessuna combinazione in questo filtro — hai finito!</div>:<>
+        <div style={{display:"flex",gap:8,alignItems:"center",fontSize:11,color:TH.faint,marginBottom:4}}>
           <span>gi{cur.gi} · azione {cur.ai+1}</span>
           <span style={{background:cur.ok?"#14532d":"#7f1d1d",color:"#fff",padding:"2px 7px",borderRadius:20,fontWeight:800}}>{cur.ok?"ESITO RIUSCITO":"ESITO FALLITO"}</span>
           {busy&&<span style={{color:"#fbbf24"}}>▶ in corso…</span>}
@@ -571,7 +571,7 @@ function IntroCinematic({onDone}){
    arbitro, muto totale, VIBRAZIONE, debug). Un unico posto per tutte le preferenze. */
 function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu}){
   const Seg=({active,label,onClick})=>(
-    <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.primary:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:12.5,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
+    <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:12.5,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
   );
   return(
     <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
@@ -645,18 +645,18 @@ function AudioSettings(){
       <div style={{borderTop:`1px dashed ${TH.cardBorder}`,marginTop:6,paddingTop:8}}>
         {TOG.map(r=>(
           <div key={r.k} style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8,opacity:r.dis?0.55:1}}>
-            <span style={{fontSize:12,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:9,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
+            <span style={{fontSize:12,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:10,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
             <Toggle on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
           </div>
         ))}
       </div>
-      <div style={{fontSize:9,color:TH.faint,marginTop:2,lineHeight:1.4}}>Audio sintetizzato in tempo reale (nessun download, funziona offline). Le impostazioni si salvano da sole.</div>
+      <div style={{fontSize:10,color:TH.faint,marginTop:2,lineHeight:1.4}}>Audio sintetizzato in tempo reale (nessun download, funziona offline). Le impostazioni si salvano da sole.</div>
       <button onClick={()=>setDbg(d=>!d)} style={{marginTop:8,padding:'5px 10px',borderRadius:8,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit',fontSize:10}}>🐞 Debug audio {dbg?'▲':'▼'}</button>
       {dbg&&(()=>{let D;try{D=AudioMgr.debug();}catch(_e){D=null;}if(!D)return null;return(
         <div style={{marginTop:8,padding:8,background:TH.surface2||'rgba(0,0,0,.05)',borderRadius:8,fontSize:10}}>
           <div style={{color:TH.muted,marginBottom:6,lineHeight:1.5}}>ctx: <b>{D.ctx}</b> · scena: <b>{D.scene||'—'}</b> · folla: <b>{D.bed?'ON':'off'}</b> · sfx suonati: <b>{D.played}</b> · voci in catalogo: <b>{D.catalog.length}</b>{D.silent?' · (muto sotto test)':''}</div>
           <div style={{display:'flex',flexWrap:'wrap',gap:4,maxHeight:150,overflowY:'auto'}}>
-            {D.catalog.map(n=><button key={n} onClick={()=>{try{AudioMgr.unlock();AudioMgr.play(n);setDbg(d=>d);}catch(_e){}}} style={{fontSize:9,padding:'3px 6px',borderRadius:6,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit'}}>{n}</button>)}
+            {D.catalog.map(n=><button key={n} onClick={()=>{try{AudioMgr.unlock();AudioMgr.play(n);setDbg(d=>d);}catch(_e){}}} style={{fontSize:10,padding:'3px 6px',borderRadius:6,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit'}}>{n}</button>)}
           </div>
         </div>);})()}
     </Card>
@@ -686,7 +686,7 @@ function HomeNavBar({onImport,onSettings}){
   return(
     <div className="cpm-nav-bar" style={{zIndex:100}}>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
-        <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.primary,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:17}}>🏠</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>Home</div></button>
+        <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:17}}>🏠</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>Home</div></button>
         <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:17}}>🎬</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>Intro</div></button>
         <button title="Importa salvataggio (.json)" onClick={()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:17}}>📂</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>Importa</div></button>
         <button title="Impostazioni" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:17}}>⚙️</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
@@ -840,7 +840,7 @@ function App(){
     refreshSlots();
   };
   const wrap=ch=>(
-    <div className="cpm-root" style={{background:TH.bgGrad,color:TH.text,fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
+    <div className="cpm-root" style={{background:TH.bgGrad,color:TH.text,colorScheme:TH.dk?"dark":"light",/* [G1.6 grafica] i controlli nativi (select/option, scrollbar) seguono il tema: senza color-scheme le <option> restano nere sul fondo scuro (541 nodi a 1,29:1 nella Creazione, tema scuro) */fontFamily:"'Barlow','Segoe UI',sans-serif"}}>
       {showIntro&&<IntroCinematic onDone={()=>setShowIntro(false)}/>}{/* [7.32.0] replay on-demand sopra ogni fase */}
       {/* [7.331.0 direttiva PO «questo pulsante opzioni deve essere visibile solo nella home e a carriera avviata»]
           il bottone fisso ⚙️ (7.104/7.134) è RIMOSSO da creazione/provini/offerte: Opzioni vive solo nella nav

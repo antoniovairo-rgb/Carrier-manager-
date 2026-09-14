@@ -45,7 +45,8 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
     green:{background:TH.success,color:"#fff",fontWeight:700},
     secondary:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},
     success:{background:TH.bgGreen,color:TH.txGreen,border:"1px solid "+TH.bdGreen,fontWeight:700},/* [7.103.0] token semantici (theme-aware) al posto degli hex light hardcoded */
-    danger:{background:TH.bgRed,color:TH.danger,border:"1px solid "+TH.bdRed,fontWeight:700},
+    danger:{background:TH.bgRed,color:TH.txRed,border:"1px solid "+TH.bdRed,fontWeight:700},
+    outline:{background:"transparent",color:TH.brandText,border:"1px solid "+TH.primaryBorder,fontWeight:700},/* [G3.2 grafica] azione di marca ma NON primaria: una sola piena per vista */
     ghost:{background:"transparent",color:TH.faint,border:"1px solid "+TH.cardBorder},
     gold:{background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",fontWeight:800},
   };
@@ -64,7 +65,7 @@ const StatBar=({label,value,tone,track,height=4,mb=8})=>{
 /* OvrRing — refactor Ondata 1: track → TH.track (light == #e2e8f0, pinnato) · label default 'OVR' (era 'LVL': errato per un calciatore). */
 const OvrRing=({value,size=60,label="OVR"})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
-  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:size*.27,fontWeight:900,color:c,lineHeight:1}}>{value}</div><div style={{fontSize:8,color:TH.faint}}>{label}</div></div></div>;
+  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:size*.27,fontWeight:900,color:c,lineHeight:1}}>{value}</div><div style={{fontSize:10,color:TH.faint}}>{label}</div></div></div>;
 };
 const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:13,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
 /* Sprint 33 C4 — SVG Sparkline */
@@ -205,7 +206,7 @@ function Tabs({items=[],value,onChange,style={},size="md"}){
   const sm=size==="sm";
   return(<div style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
     {items.map(it=>{const act=it.id===value;return(
-      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.primary:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
+      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
   </div>);
 }
 
@@ -221,7 +222,7 @@ function DataTable({cols=[],rows=[],highlightRow,keyOf,compact=false,stickyFirst
       <thead><tr>{cols.map((c,ci)=>(<th key={c.key} style={{textAlign:c.align||"left",padding:compact?"6px 8px":"9px 10px",fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint,textTransform:"uppercase",letterSpacing:.6,borderBottom:`2px solid ${TH.divider}`,width:c.w,position:stickyFirst&&ci===0?"sticky":undefined,left:stickyFirst&&ci===0?0:undefined,background:stickyFirst&&ci===0?TH.card:undefined,whiteSpace:"nowrap"}}>{c.label}</th>))}</tr></thead>
       <tbody>{rows.map((row,ri)=>{const hi=highlightRow&&highlightRow(row,ri);return(
         <tr key={keyOf?keyOf(row,ri):ri} style={{background:hi?TH.primaryTint:(ri%2?TH.surface2:"transparent")}}>
-          {cols.map((c,ci)=>(<td key={c.key} className={typeof(row[c.key])==="number"?"cpm-num":undefined} style={{textAlign:c.align||"left",padding:compact?"6px 8px":"9px 10px",color:hi?TH.primary:TH.text,fontWeight:hi?FW.bold:FW.regular,borderBottom:`1px solid ${TH.divider}`,position:stickyFirst&&ci===0?"sticky":undefined,left:stickyFirst&&ci===0?0:undefined,background:stickyFirst&&ci===0?(hi?TH.primaryTint:(ri%2?TH.surface2:TH.card)):undefined,whiteSpace:"nowrap"}}>{c.render?c.render(row,ri):row[c.key]}</td>))}
+          {cols.map((c,ci)=>(<td key={c.key} className={typeof(row[c.key])==="number"?"cpm-num":undefined} style={{textAlign:c.align||"left",padding:compact?"6px 8px":"9px 10px",color:hi?TH.brandText:TH.text,fontWeight:hi?FW.bold:FW.regular,borderBottom:`1px solid ${TH.divider}`,position:stickyFirst&&ci===0?"sticky":undefined,left:stickyFirst&&ci===0?0:undefined,background:stickyFirst&&ci===0?(hi?TH.primaryTint:(ri%2?TH.surface2:TH.card)):undefined,whiteSpace:"nowrap"}}>{c.render?c.render(row,ri):row[c.key]}</td>))}
         </tr>);})}</tbody>
     </table>
   </div>);
