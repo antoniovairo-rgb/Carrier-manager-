@@ -5438,3 +5438,20 @@ incontrato scene a palla ferma nei 150 s (0/0 in tutte e quattro le gambe): il v
   Il PO ha giocato sul suo Android con i ventidue in campo (screenshot 21:21 ora locale, FC Cra–FC Mer 0-2, 34'):
   il gioco gira; fps non misurati. Nota PO dallo stesso screenshot: «la telecronaca va visualizzata in basso e la
   grafica delle interazioni va rivista (troppo invasive)» → G4.2.
+
+## Direttiva PO 14/09 sera — «la partita ancora non e' credibile»: la soglia sale a 9
+
+PO (dopo aver giocato sul suo Android con la 7.891 in produzione): «il pallone spesso non ha un proprietario e
+non ci sono azioni. Continua a non essere calcio: prima di collaudare la media deve arrivare almeno a voto 9
+e non piu' 8, con voto da player cellulare. Siamo ancora lontani da un gioco realistico».
+
+I numeri gia' misurati oggi che dicono la stessa cosa:
+- gioco vivo con un **padrone dichiarato dalla simulazione: 37 %** (sonda da telefono, 4 partite, 7.888/7.889);
+  il «pallone ai piedi del padrone 72-77 %» vale solo dentro quel 37 %;
+- **tiri del motore 1,75 a partita** (0/2/2/3), **1 dall'area in 4 partite**; la squadra in possesso non sale (#44);
+- nessuna «azione» (sequenza passaggi → trequarti/area → conclusione) e' oggi contata: manca lo strumento.
+
+Soglia nuova: media ≥ 9 su 12 aree dalla scheda da telefono, nessuna area < 7. Prossimi cantieri sul motore,
+in ordine, con metro appaiato: (1) `tenuta` nel gioco vivo 37 % → ≥ 70 %; (2) strumento «azioni» e poi
+azioni ≥ 6 a partita, tiri ≥ 8 (≥ 3 dall'area); (3) scheda da telefono sulle 4 partite con la scala nuova.
+Il passo 3 degli highlight (tickScena) scala dietro: prima il calcio, poi la regia.
