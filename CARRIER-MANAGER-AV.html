@@ -43138,6 +43138,60 @@ const getThisWeekMatchday=()=>{
           </div>
         );
       })()}
+      {/* [G3.1 grafica · direttiva PO 13/09 «la Home deve essere il vero HUB: il prossimo match deve avere grande rilevanza»]
+          LA CARD PRINCIPALE: la prossima partita, subito sotto «cosa fare». Solo presentazione: legge getThisWeekMatchday()
+          e player.standings/goals/assists/matchHistory come gia' fanno le card sotto; il bottone chiama handleContinua(),
+          la stessa strada del CTA. Nessuna logica nuova. Se non c'e' una partita servita, la card non compare. */}
+      {tab==="dashboard"&&(()=>{
+        let md=null;try{md=getThisWeekMatchday();}catch(_e){md=null;}
+        if(!md)return null;
+        const lc=(()=>{try{return getLeagueClubs(player)||[];}catch(_e){return [];}})();
+        const opp=md.opponentData||lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName||"Avversario",a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#64748b",c2:"#ffffff"};
+        const me=player.club||{n:"La tua squadra",a:"TU",c:TH.primary,c2:"#ffffff"};
+        const home=md.isHome!==false;
+        const comp=md.type==="euro_group"||md.type==="euro"?"Coppa Europea":md.type==="cup"?"Coppa Nazionale":(player.club?.lg||"Campionato");
+        const st=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+        const myPos=st.findIndex(t=>t.id===me.id||(t.n||t.name)===me.n);
+        const oppPos=st.findIndex(t=>t.id===opp.id||(t.n||t.name)===opp.n);
+        const rated=(player.matchHistory||[]).filter(m=>m&&!m.simulated&&m.rating>0).slice(-10);
+        const avg=rated.length>=3?Math.round(rated.reduce((a,m)=>a+m.rating,0)/rated.length*10)/10:null;
+        const cs=getContinuaState();
+        const lab=(t)=><div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:1.5,textTransform:"uppercase",color:TH.muted}}>{t}</div>;
+        const lab2=(t)=><div style={{fontSize:FS.caption,fontWeight:FW.semibold,color:TH.muted,whiteSpace:"nowrap"}}>{t}</div>;
+        const team=(t,pos)=>(
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,flex:1,minWidth:0}}>
+            <TeamBadge team={t} size={44}/>
+            <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textAlign:"center",maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.n||t.name}</div>
+            {pos>=0&&<div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{pos+1}ª in classifica</div>}
+          </div>);
+        return(
+          <Card style={{marginBottom:12,padding:16,borderRadius:RAD.lg,boxShadow:TH.el2}}>
+            <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted,marginBottom:2}}>{comp}{md.matchday?` · ${md.matchday}ª giornata`:""}</div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+              {lab("Prossima partita")}
+              <button onClick={()=>goTab("calendar")} className="cpm-press" style={{background:"transparent",border:"none",padding:0,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold,color:TH.brandText,cursor:"pointer"}}>Calendario ›</button>
+            </div>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,marginBottom:14}}>
+              {team(home?me:opp,home?myPos:oppPos)}
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,flexShrink:0}}>
+                <div style={{fontSize:FS.title,fontWeight:FW.black,letterSpacing:2,color:TH.text}}>VS</div>
+                <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{home?"In casa":"In trasferta"} · W.{md.week||player.week||1}</div>
+              </div>
+              {team(home?opp:me,home?oppPos:myPos)}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:8}}>
+              {[{l:"Gol e assist",v:`${player.goals||0} · ${player.assists||0}`,sub:`in ${player.matches||0} partite`},
+                {l:"Voto medio",v:avg!=null?String(avg).replace(".",","):"—",sub:avg!=null?"ultime 10":"dopo 3 partite"},
+                {l:"Forma",v:String(player.form||0),sub:(player.form||0)>=72?"in crescita":(player.form||0)>=55?"stabile":"in calo"}].map((k,i)=>(
+                <div key={i} style={{background:TH.surface2,border:"1px solid "+TH.divider,borderRadius:RAD.md,padding:"10px 12px",display:"flex",flexDirection:"column",gap:3}}>
+                  {lab2(k.l)}
+                  <div className="cpm-num" style={{fontSize:FS.h,fontWeight:FW.black,lineHeight:1.05,color:TH.text}}>{k.v}</div>
+                  <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{k.sub}</div>
+                </div>))}
+            </div>
+          </Card>
+        );
+      })()}
       {/* [7.31.1 collaudo PO «storia/momenti eccitanti più in alto, sotto il CTA»] i blocchi SORTEGGI/DEADLINE/SAGA/STORIA vivono QUI, subito dopo «La tua settimana» (prima stavano in fondo al dashboard) */}
       {/* [7.12.0 Sprint «Sorteggi & Deadline»] LA NOTTE DEI SORTEGGI — il girone europeo si RIVELA dall'urna
           una avversaria alla volta (i groupOpponents esistono già dalla qualificazione: prima apparivano e
