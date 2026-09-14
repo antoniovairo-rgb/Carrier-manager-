@@ -5455,3 +5455,17 @@ Soglia nuova: media ≥ 9 su 12 aree dalla scheda da telefono, nessuna area < 7.
 in ordine, con metro appaiato: (1) `tenuta` nel gioco vivo 37 % → ≥ 70 %; (2) strumento «azioni» e poi
 azioni ≥ 6 a partita, tiri ≥ 8 (≥ 3 dall'area); (3) scheda da telefono sulle 4 partite con la scala nuova.
 Il passo 3 degli highlight (tickScena) scala dietro: prima il calcio, poi la regia.
+
+## 7.892 SUL BRANCH — la telecronaca sta in basso sempre, scelte compatte (nota PO 14/09 dallo screenshot Android)
+
+Sonda nuova `tests/visual/copertura.mjs` (150 s di autoplay, seme 7300, campione ogni 150 ms: rettangoli di
+`data-cpm="com661"` e `data-cpm="sc681"` rispetto al canvas). Rosso `__CPM_NO892`:
+
+| misura | rosso (com'era) | verde 7.892 |
+|---|---|---|
+| campioni con la riga di telecronaca SOPRA la meta' del campo | **67,4 %** | **0 %** |
+| posizione della riga (mediana, % altezza del canvas) | 38 % | 67,5 % |
+| area della riga (mediana / p90, % del canvas) | 28,6 % / 38,5 % | 19,8 % / 22,0 % |
+| blocco con le scelte dell'interazione: altezza (mediana / max, % del canvas) | 36,7 % / 48,2 % | 21,5 % / 23,9 % |
+
+Non verificato: Chromium 412×915 con GLB spento nella sonda; un seme; l'effetto sull'Android del PO.

@@ -8269,6 +8269,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     return(_tvComp&&_tvComp.phase&&_tvComp.phase!==_compLabel)?_tvComp.phase:null;
   }catch(_e){return null;}})();
 
+  const _swap893=!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45);/* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
   return(
     <div style={{width:"100%",maxWidth:isNarrow?undefined:1100,marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
       {phase==="matchday"&&!showScout&&(()=>{
@@ -8304,13 +8305,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       {(show3D||phase==="walkout")&&(
         <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{flex:1,minHeight:0}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
           {/* ── Scoreboard Premium ── */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto"}}>
+          {/* [7.893.0 — NEL SECONDO TEMPO LA BARRA SI SPECCHIA. PO 14/09: «nella barra superiore la posizione degli scudetti e delle relative statistiche devono essere invertite tra il primo ed il secondo tempo». Le squadre cambiano campo al 45': scudetti, nomi, punteggio, barra del possesso e momentum si specchiano dal 46'. Rosso __CPM_NO893 = barra fissa. */}
+          <div data-cpm="barra893" data-specchio={_swap893?1:0} style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexDirection:_swap893?"row-reverse":"row",padding:"7px 12px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto"}}>
             {/* Home team */}
-            <div style={{display:"flex",alignItems:"center",gap:7,minWidth:0,flex:1}}>
+            <div data-cpm="scudo-casa" style={{display:"flex",alignItems:"center",gap:7,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start"}}>
               <TeamBadge team={homeTeamObj} size={28}/>
-              <div style={{minWidth:0}}>
-                <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
-                <div style={{fontSize:32,fontWeight:900,color:(isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9",lineHeight:1}}>{isMatchHome?score.home:score.away}</div>
+              <div style={{minWidth:0,textAlign:_swap893?"right":"left"}}>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?"auto":0}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
+                <div style={{fontSize:32,fontWeight:900,color:(isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9",lineHeight:1,textAlign:_swap893?"right":"left"}}>{isMatchHome?score.home:score.away}</div>
               </div>
             </div>
             {/* Centre — clock, possession, context */}
@@ -8369,14 +8371,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   return _lbl;
                 })()}
               </div>
-              <div style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden",display:"flex",width:80,margin:"0 auto"}}>
+              <div style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden",display:"flex",flexDirection:_swap893?"row-reverse":"row",width:80,margin:"0 auto"}}>
                 <div style={{width:`${possession}%`,background:scoreHomeCol,transition:"width .8s",borderRadius:"3px 0 0 3px"}}/>
                 <div style={{flex:1,background:scoreAwayCol,borderRadius:"0 3px 3px 0"}}/>
               </div>
               <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"rgba(255,255,255,0.28)",width:80,margin:"2px auto 0"}}>
-                <span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{possession}%</span><span>poss.</span><span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{100-possession}%</span>
+                <span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{_swap893?100-possession:possession}%</span><span>poss.</span><span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{_swap893?possession:100-possession}%</span>
               </div>
-              <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:3,overflow:"hidden",display:"flex",width:80,margin:"4px auto 0"}}>
+              <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:3,overflow:"hidden",display:"flex",flexDirection:_swap893?"row-reverse":"row",width:80,margin:"4px auto 0"}}>
                 <div style={{width:`${momentum}%`,background:scoreHomeCol,transition:"width .7s ease",borderRadius:"3px 0 0 3px"}}/>
                 <div style={{flex:1,background:scoreAwayCol,borderRadius:"0 3px 3px 0"}}/>
               </div>
@@ -8385,11 +8387,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
             </div>
             {/* Away team */}
-            <div style={{display:"flex",alignItems:"center",gap:7,flexDirection:"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start"}}>
+            <div data-cpm="scudo-ospiti" style={{display:"flex",alignItems:"center",gap:7,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start"}}>
               <TeamBadge team={awayTeamObj} size={28}/>
-              <div style={{minWidth:0,textAlign:"right"}}>
-                <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:"auto"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
-                <div style={{fontSize:32,fontWeight:900,color:(isMatchHome?losing:winning)?"#f87171":(isMatchHome?winning:losing)?"#4ade80":"#f1f5f9",lineHeight:1,textAlign:"right"}}>{isMatchHome?score.away:score.home}</div>
+              <div style={{minWidth:0,textAlign:_swap893?"left":"right"}}>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?0:"auto"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
+                <div style={{fontSize:32,fontWeight:900,color:(isMatchHome?losing:winning)?"#f87171":(isMatchHome?winning:losing)?"#4ade80":"#f1f5f9",lineHeight:1,textAlign:_swap893?"left":"right"}}>{isMatchHome?score.away:score.home}</div>
               </div>
             </div>
           </div>
@@ -8550,6 +8552,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  const _sg={fontSize:9.5,fontWeight:800,letterSpacing:1.4,color:"rgba(241,245,249,0.92)"};
                  const _ch={fontSize:11,lineHeight:1,fontWeight:700,color:"rgba(241,245,249,0.42)"};
                  const _acc=(c)=>({width:3,height:11,borderRadius:2,background:c,display:"inline-block",flex:"0 0 auto"});
+                 if(!(typeof window!=='undefined'&&window.__CPM_NO893))return null;/* [7.893] PO 14/09: «l'indicazione con le relative frecce puo' essere eliminata» — con i ventidue in campo il verso si legge dai corpi; resta sotto il rosso */
                  return(
                  <div data-cpm="verso697" style={{position:"absolute",left:0,right:0,top:"1.8%",zIndex:5,pointerEvents:"none",display:"flex",justifyContent:"center"}}>
                    <div style={{display:"flex",alignItems:"center",gap:9,padding:"3px 11px",borderRadius:999,background:"rgba(9,13,22,0.44)",backdropFilter:"blur(6px)",WebkitBackdropFilter:"blur(6px)",border:"1px solid rgba(255,255,255,0.10)",boxShadow:"0 1px 8px rgba(0,0,0,0.32)"}}>
