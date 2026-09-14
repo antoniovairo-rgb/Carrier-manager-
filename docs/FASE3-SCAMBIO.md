@@ -5482,3 +5482,34 @@ seme 7300, rosso `__CPM_NO893`):
 
 Con la barra si specchiano nomi, punteggio, barra del possesso (percentuali comprese) e momentum; l'indicatore
 `verso697` non si rende piu'. Non verificato: Chromium 412×915, un seme; la resa sull'Android del PO. Rituali in corsa.
+
+## 7.894 SUL BRANCH — il primo tocco non e' sempre una sosta (verso «padrone e azioni»), e l'esperimento dei tick
+
+Banco `stati-motore` (8 semi × 92 tick, motore puro in node, senza live match): il «controllo» del primo tick di
+ogni possesso (7.870) fermava il pallone ai piedi un minuto intero in un possesso su due (rami.controllo 19/92).
+
+| banco, per partita | rosso `__CPM_NO894` (= 7.893) | verde 7.894 |
+|---|---|---|
+| passaggi + cross + lanci | 21,3 | **24,5** |
+| tiri | 2,88 | **3,13** |
+| AZIONI (≥ 3 passaggi poi tiro) | 0,25 | **0,88** |
+| catene ≥ 3 passaggi | 2,3 | 1,9 |
+| stati: tenuta / volo / fermo / libero | 54,1 / 28,3 / 15,8 / 0,8 % | 48,8 / 32,9 / 15,8 / 1,5 % |
+| palloni fuori (volo «fuori», 8 partite) | 13 | 24 |
+
+Lettura: guadagno vero ma piccolo. Il tetto e' strutturale: il motore fa **un evento per minuto di gioco**
+(92 a partita, contro le ~1000 di una partita vera) e un'azione da tre passaggi costa tre minuti.
+**Esperimento** (stesso motore 7.894, il banco chiama `tick` 2 o 3 volte per minuto, nessuna riga cambiata):
+
+| tick al minuto | tiri | passaggi | azioni (≥3 → tiro) | catene ≥ 3 | tenuta |
+|---|---|---|---|---|---|
+| 1 (oggi) | 3,1 | 24,5 | 0,9 | 1,9 | 48,8 % |
+| 2 | 6,3 | 48,9 | 1,9 | 4,8 | 50,0 % |
+| **3** | **9,4** | **73,3** | **2,6** | **7,8** | 51,1 % |
+
+La leva delle «azioni» e' la cadenza del motore, non un'altra regola: con 3 tick al minuto i tiri arrivano a
+9,4 (soglia ≥ 8) e le catene da tre passaggi a 7,8 a partita, con la quota di possesso invariata. Costo da
+progettare prima di toccare: il live match chiama `tick` una volta al minuto e il narratore parla a ogni tick
+(3 righe ogni 1,7 s sarebbero illeggibili): serve il narratore che sceglie l'evento piu' saliente del minuto,
+e le sonde che assumono tick = minuto vanno rilette. Proposta al PO per domani (7.895). Non verificato: banco
+senza live match; il costo in fps e la resa del pallone a cadenza tripla non sono misurati.
