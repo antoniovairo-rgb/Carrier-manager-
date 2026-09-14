@@ -63,6 +63,7 @@ const { startServer, launchBrowser, installCdnRoutes, sleep, ROOT } = await impo
 
 const SEME = +(process.env.CPM_SEME || 4242);
 const FOTO = process.env.CPM_FOTO !== '0';
+const TEMA = process.env.CPM_TEMA === 'scuro' ? 'scuro' : 'chiaro';   /* CPM_TEMA=scuro misura il tema scuro (cpm-dark=1); default chiaro */
 const TAGLIE_TUTTE = [
   { w: 360, h: 800 },   // Android piccolo diffuso
   { w: 375, h: 667 },   // iPhone SE / 8
@@ -306,7 +307,7 @@ const INIT = (o) => {
   Math.random = function () { s |= 0; s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   window.__CPM_GLB = false;                       /* niente modelli 3D: qui si misura la presentazione 2D */
   try { localStorage.setItem('cpm-intro-seen', '1'); } catch (_e) {}
-  try { localStorage.setItem('cpm-dark', '0'); } catch (_e) {}   /* tema CHIARO: il metro di partenza e' uno solo */
+  try { localStorage.setItem('cpm-dark', o.tema === 'scuro' ? '1' : '0'); } catch (_e) {}   /* tema: chiaro di default, scuro con CPM_TEMA=scuro */
   if (o.save) { try { localStorage.setItem('cpm-v3', JSON.stringify(o.save)); } catch (_e) {} }
   if (o.trial) { try { localStorage.setItem('cpm-trial-prog', JSON.stringify(o.trial)); } catch (_e) {} }
 };
@@ -406,7 +407,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 
 /* ctx MENU — home · impostazioni · creazione (una sola apertura) */
 {
-  const page = await apri(browser, port, TAGLIE[0], { seme: SEME }, '?cpmtest=1', errori);
+  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA }, '?cpmtest=1', errori);
   await misuraTutte(page, SC('home'));
   if (await premi(page, 'Opzioni')) { await misuraTutte(page, SC('impostazioni')); await premi(page, '^✕$'); await sleep(500); }
   else saltate.push('impostazioni: bottone Opzioni non trovato');
@@ -417,7 +418,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 
 /* ctx OFFERTE — senza ?cpmtest=1: e' l'auto-ripresa dei provini conclusi che porta a questa schermata */
 {
-  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, trial: TRIALPROG }, '', errori);
+  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, trial: TRIALPROG }, '', errori);
   const ok = await page.waitForFunction(() => /Offerte ricevute/.test(document.body.innerText || ''), null, { timeout: 30000 }).then(() => true).catch(() => false);
   if (ok) await misuraTutte(page, SC('offerte'));
   else saltate.push("offerte: la schermata non si e' aperta");
@@ -426,7 +427,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 
 /* ctx CARRIERA — i tab + la prepartita (una sola apertura) */
 {
-  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, save: SAVE }, '?cpmtest=1', errori);
+  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, save: SAVE }, '?cpmtest=1', errori);
   await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 8000 }); } catch (_e) { saltate.push('carriera: "Continua" non trovato'); }
   const vivo = await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 40000 }).then(() => true).catch(() => false);
@@ -465,7 +466,7 @@ const somma = (w, k) => righe.reduce((a, s) => a + ((DATI[s.id][w] || {})[k] || 
 const R = [];
 R.push('# G0 — Griglia mobile: la misura di partenza');
 R.push('');
-R.push(`Build **${VER}** · sonda \`tests/visual/griglia-mobile.mjs\` · seme \`${SEME}\` · tema chiaro.`);
+R.push(`Build **${VER}** · sonda \`tests/visual/griglia-mobile.mjs\` · seme \`${SEME}\` · tema ${TEMA}.`);
 R.push('');
 R.push('**Dichiarato:** e\' **Chromium headless** alla taglia del telefono (la 412×915 e\' quella del PO), **non un Android vero**.');
 R.push('Restano fuori dalla misura: il rendering dei font di sistema Android, il tocco, la GPU, le prestazioni, la barra di sistema e il ritaglio del notch.');
@@ -562,7 +563,7 @@ if (errori.length) { R.push('## Errori di pagina raccolti durante la corsa'); R.
 R.push('## Fuori portata di questa sonda (dichiarato, non misurato)');
 R.push('');
 R.push('- Il **telefono vero** del PO: font di sistema, sub-pixel, tocco, GPU, fps, barra di sistema, notch.');
-R.push('- Il **tema scuro**: qui si misura solo il tema chiaro (`cpm-dark=0`).');
+if (TEMA !== 'scuro') R.push('- Il **tema scuro**: questa corsa misura il tema chiaro (`cpm-dark=0`); si misura a parte con `CPM_TEMA=scuro`.');
 R.push('- Tutto cio\' che si vede **giocando**: HUD di partita, telecronaca, highlight, scena 3D, fine partita, cerimonie.');
 R.push('- Gli **stati** (premuto, attivo, disabilitato, focus) e le transizioni: le animazioni sono portate al termine prima di misurare.');
 R.push('- I **fondi a gradiente/immagine**: il contrasto su quei nodi e\' escluso, non stimato.');
@@ -570,7 +571,7 @@ R.push('- L\'**altezza**: niente e\' misurato sull\'overflow verticale o sulla l
 R.push('');
 
 fs.writeFileSync(path.join(OUT, 'REPORT.md'), R.join('\n') + '\n');
-fs.writeFileSync(path.join(OUT, 'dati.json'), JSON.stringify({ versione: VER, seme: SEME, taglie: W, schermate: righe.map(s => s.id), dati: DATI, saltate, errori: [...new Set(errori)] }, null, 1) + '\n');
+fs.writeFileSync(path.join(OUT, 'dati.json'), JSON.stringify({ versione: VER, seme: SEME, tema: TEMA, taglie: W, schermate: righe.map(s => s.id), dati: DATI, saltate, errori: [...new Set(errori)] }, null, 1) + '\n');
 
 console.log('');
 console.log(R.slice(R.indexOf('### 0 · Larghezza del riquadro letta DALLA PAGINA (prova che le cinque corse sono cinque larghezze)') - 0).join('\n').split('## Dettaglio')[0]);
