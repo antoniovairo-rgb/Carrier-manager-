@@ -5301,3 +5301,28 @@ chiusa. E un tiro su 180 parte ora dalla zona «centro»: un caso, lo tengo d'oc
   fresco). Dichiarato: il rituale e' partito sull'HEAD 16e3d6b e l'HEAD e' avanzato di commit solo-documenti prima
   del push; il file di gioco non e' cambiato fra i due. Le due notti precedenti (13 e 14/09) l'allineamento non e'
   partito perche' la sessione era giu'. Il PO, per sua decisione, non collauda finche' la media da telefono non arriva a 8.
+
+## Area 2, misura B — quanti tiri fa il MOTORE e quanti ne racconta la cronaca (14/09, 7.888 + gancio)
+
+Domanda del verbale precedente: «la cronaca racconta 0-4 conclusioni a partita contro 10-15 del motore».
+Il «10-15 del motore» NON era misurato: era un'impressione, e lo ritiro. Strumento: gancio di sola lettura
+`__CPM_MOTORE_EV` (c01a5e1, solo sotto `__CPM_REC`) perche' gli eventi del motore vivono un tick e `stato()`
+non li espone; la sonda `telefono-m` campiona a ogni giro `conta.tiri` e gli eventi «tiro» (tick, chi, zona).
+Stesse quattro partite, seme 4242, build 7.888 (c01a5e1 non tocca il gioco: build IDENTICO).
+
+| partita | tick del motore | tiri del MOTORE (zone) | righe 💥 in cronaca | di cui scena dell'eroe |
+|---|---|---|---|---|
+| Vairo casa | 87 | **0** | 1 | 1 (33', scelta «tiro dal limite») |
+| Galli fuori | 66 | **2** (limite 2) | 2 | 1 (36', scelta «tiro di prima») |
+| Moretti casa | 87 | **2** (trequarti 1, limite 1) | 2 | 0 |
+| Conti fuori | 86 | **3** (trequarti 1, area 1, limite 1) | 4 | 1 (29', «conclusione secca, gol») |
+| **totale** | | **7 (1,75 a partita; dall'area 1)** | **9** | 3 |
+
+Lettura. La cronaca NON nasconde i tiri del motore: le righe 💥 fuori dalle scene sono 6 contro 7 tiri del
+motore (Moretti 2 = 2, Conti 3 = 3, Galli 1 di 2 — il secondo tiro dal limite del 59' e' subito seguito dal gol
+del 60' e la riga lo assorbe). Il difetto sta A MONTE: il motore tira 1,75 volte a partita e una volta sola
+dall'area in quattro partite, contro le 20-25 conclusioni di una partita vera; il banco (7.888 v2) diceva
+3,75 a partita perche' conta anche i tiri del decreto di gol. Quindi l'area 2 «conclusioni rare» non e' un
+problema di racconto ma di motore (`pTiro`, e la strada per entrare in area: #44), e va misurata sul motore.
+Dichiarato: Chromium 412×915, quattro partite, un seme; i tick del motore (66-87) sono meno dei minuti
+perche' il motore tace nelle scene.
