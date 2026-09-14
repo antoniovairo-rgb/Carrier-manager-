@@ -5869,9 +5869,9 @@ const getThisWeekMatchday=()=>{
               <>
                 {Object.keys(weekLiveModal.changes||{}).length>0&&(
                   <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
-                    {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.morale>0?"#dcfce7":"#fee2e2",color:weekLiveModal.changes.morale>0?TH.txGreen:TH.txRed,fontSize:11,fontWeight:700}}>😄 Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}</div>}
-                    {weekLiveModal.changes.form!==undefined&&weekLiveModal.changes.form!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.form>0?"#dcfce7":"#fee2e2",color:weekLiveModal.changes.form>0?TH.txGreen:TH.txRed,fontSize:11,fontWeight:700}}>💪 Forma {weekLiveModal.changes.form>0?"+":""}{weekLiveModal.changes.form}</div>}
-                    {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.fatigue<0?"#dcfce7":"#fef9c3",color:weekLiveModal.changes.fatigue<0?TH.txGreen:TH.txAmber,fontSize:11,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
+                    {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.morale>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.morale>0?TH.txGreen:TH.txRed,fontSize:11,fontWeight:700}}>😄 Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}</div>}
+                    {weekLiveModal.changes.form!==undefined&&weekLiveModal.changes.form!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.form>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.form>0?TH.txGreen:TH.txRed,fontSize:11,fontWeight:700}}>💪 Forma {weekLiveModal.changes.form>0?"+":""}{weekLiveModal.changes.form}</div>}
+                    {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:20,background:weekLiveModal.changes.fatigue<0?TH.bgGreen:TH.bgAmber,color:weekLiveModal.changes.fatigue<0?TH.txGreen:TH.txAmber,fontSize:11,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
                   </div>
                 )}
                 <div style={{fontSize:11,color:TH.faint,marginBottom:14}}>{weekLiveModal.isRehab?L.rehabCompletedNote:L.weekLivedNote}</div>
@@ -5978,7 +5978,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:13,fontWeight:800,color:interviewModal.paper?.color||TH.primary}}>{interviewModal.paper?.name||"Giornalista"}</div>
               </div>
               <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
-                {interviewModal.matchCtx&&<div style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:interviewModal.matchCtx==="win"?"#dcfce7":interviewModal.matchCtx==="loss"?"#fee2e2":interviewModal.matchCtx==="prematch"?"#dbeafe":"#fef9c3",color:interviewModal.matchCtx==="win"?TH.txGreen:interviewModal.matchCtx==="loss"?TH.txRed:interviewModal.matchCtx==="prematch"?"#2563eb":TH.txAmber,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":interviewModal.matchCtx==="prematch"?"PRE-PARTITA":"SETTIMANALE"}</div>}
+                {interviewModal.matchCtx&&<div style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:interviewModal.matchCtx==="win"?TH.bgGreen:interviewModal.matchCtx==="loss"?TH.bgRed:interviewModal.matchCtx==="prematch"?TH.bgBlue:TH.bgAmber,color:interviewModal.matchCtx==="win"?TH.txGreen:interviewModal.matchCtx==="loss"?TH.txRed:interviewModal.matchCtx==="prematch"?"#2563eb":TH.txAmber,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":interviewModal.matchCtx==="prematch"?"PRE-PARTITA":"SETTIMANALE"}</div>}
                 {interviewModal.notable&&<div style={{fontSize:10,padding:"2px 7px",borderRadius:20,background:TH.bgAmber,color:TH.txAmber,fontWeight:700}}>{interviewModal.notable==="hattrick"?"⚽ HAT-TRICK":interviewModal.notable==="bigwin"?"🏆 BIG WIN":"💢 BIG LOSS"}</div>}
               </div>
             </div>
@@ -6212,7 +6212,7 @@ const getThisWeekMatchday=()=>{
             </Card>
             {/* Sprint 29 — MW7: agent counter-offer */}
             {player.hasAgent&&!transferOffer.isRenewal&&!transferOffer._counter&&(
-              <div style={{background:TH.bgBlue,borderRadius:10,padding:"9px 12px",marginBottom:10,border:"1px solid #bfdbfe"}}>
+              <div style={{background:TH.bgBlue,borderRadius:10,padding:"9px 12px",marginBottom:10,border:"1px solid "+TH.bdBlue}}>
                 <div style={{fontSize:10,color:TH.primary,fontWeight:700,marginBottom:4}}>🤵 Il tuo agente propone un counter:</div>
                 <div style={{fontSize:11,color:TH.text}}>Stipendio: <strong>{_fmtWageY133(Math.round((transferOffer.wage||577)*1.20))}/anno</strong> · Durata: <strong>{(transferOffer.duration||2)+1} stagioni</strong></div>
                 <button onClick={()=>setTransferOffer(o=>{const _okC=seededRng((Math.abs(hashStr((o.club?.id||"x")+"|counter|"+(player.season||1)))>>>0)||1)()<0.62;/* [5.98.0 EC-7] il club può DIRE NO */return _okC?{...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}:{...o,_counter:"rejected"};})} style={{marginTop:6,padding:"5px 12px",borderRadius:8,border:"1px solid "+TH.primary,background:"#fff",color:TH.primary,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Proponi counter →</button>
@@ -6273,7 +6273,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:11,color:TH.muted,marginTop:2}}>{player.club?.n||"–"} · S.{player.season||1}</div>
               </div>
               {/* Offer summary */}
-              <div style={{background:TH.bgGreen,borderRadius:10,padding:"10px 14px",marginBottom:16,border:"1px solid #bbf7d0"}}>
+              <div style={{background:TH.bgGreen,borderRadius:10,padding:"10px 14px",marginBottom:16,border:"1px solid "+TH.bdGreen}}>
                 <div style={{fontSize:10,color:TH.muted,marginBottom:4}}>Proposta del club</div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <div>
@@ -6322,7 +6322,7 @@ const getThisWeekMatchday=()=>{
 
               {step==="rejected"&&(
                 <div>
-                  <div style={{background:TH.lossBg,borderRadius:10,padding:"12px",marginBottom:14,border:"1px solid #fecaca",textAlign:"center"}}>
+                  <div style={{background:TH.lossBg,borderRadius:10,padding:"12px",marginBottom:14,border:"1px solid "+TH.bdRed,textAlign:"center"}}>
                     <div style={{fontSize:16,marginBottom:4}}>❌</div>
                     <div style={{fontSize:12,fontWeight:700,color:TH.lossFg,marginBottom:4}}>Il club rifiuta la tua richiesta</div>
                     <div style={{fontSize:10,color:"#9f1239"}}>La direzione sportiva ritiene la tua richiesta eccessiva.</div>
@@ -6335,7 +6335,7 @@ const getThisWeekMatchday=()=>{
               )}
               {step==="refused"&&(/* [5.82.0 BIL-8] il club NON intende rinnovare: svincolo reale */
                 <div>
-                  <div style={{background:TH.lossBg,borderRadius:10,padding:"14px",marginBottom:14,border:"1px solid #fecaca",textAlign:"center"}}>
+                  <div style={{background:TH.lossBg,borderRadius:10,padding:"14px",marginBottom:14,border:"1px solid "+TH.bdRed,textAlign:"center"}}>
                     <div style={{fontSize:18,marginBottom:4}}>🚪</div>
                     <div style={{fontSize:12,fontWeight:800,color:TH.lossFg,marginBottom:4}}>Il club non intende rinnovare</div>
                     <div style={{fontSize:10,color:"#9f1239",lineHeight:1.6}}>«Abbiamo deciso di puntare su altri profili.» La fiducia dell'allenatore è troppo bassa: guadagnatela sul campo, o trova una nuova squadra prima dell'inizio della prossima stagione (tab Agente → richieste e offerte di mercato).</div>
@@ -6505,7 +6505,7 @@ const getThisWeekMatchday=()=>{
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:12}}>
               {(euroGroupModal.groupResults||[]).map((r,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 10px",borderRadius:8,background:r.won?"#dcfce7":r.drew?"#f1f5f9":"#fee2e2",border:"1px solid "+(r.won?"#86efac":r.drew?"#cbd5e1":"#fca5a5")}}>
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 10px",borderRadius:8,background:r.won?TH.bgGreen:r.drew?TH.surface2:TH.bgRed,border:"1px solid "+(r.won?"#86efac":r.drew?"#cbd5e1":"#fca5a5")}}>
                   <span style={{fontSize:10,color:TH.faint,minWidth:34,textAlign:"center"}}>{r.home?"Casa":"Trasf."}</span>
                   <span style={{fontSize:11,flex:1,fontWeight:600,color:TH.text}}>vs {r.opp}</span>
                   <span style={{fontSize:12,fontWeight:800,color:r.won?TH.txGreen:r.drew?"#64748b":"#dc2626"}}>{r.hs}–{r.as}</span>
@@ -6513,7 +6513,7 @@ const getThisWeekMatchday=()=>{
                 </div>
               ))}
             </div>
-            <div style={{textAlign:"center",padding:"10px",borderRadius:10,background:euroGroupModal.qualified?"#eff6ff":"#f1f5f9",marginBottom:14}}>
+            <div style={{textAlign:"center",padding:"10px",borderRadius:10,background:euroGroupModal.qualified?TH.bgBlue:TH.surface2,marginBottom:14}}>
               <div style={{fontSize:14,fontWeight:900,color:euroGroupModal.qualified?"#1e40af":"#64748b"}}>
                 {euroGroupModal.qualified?"✅ Qualificato agli Ottavi!":"❌ Eliminato dalla fase a gironi"}
               </div>
@@ -6545,14 +6545,14 @@ const getThisWeekMatchday=()=>{
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:14}}>
               {nationsCupModal.matches.map((m,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 10px",borderRadius:8,background:m.won?thPastel("#dcfce7","rgba(34,197,94,0.15)"):m.drew?thPastel("#f1f5f9",TH.surface2):thPastel("#fee2e2","rgba(239,68,68,0.15)"),border:"1px solid "+(m.won?thPastel("#86efac","rgba(34,197,94,0.45)"):m.drew?TH.cardBorder:thPastel("#fca5a5","rgba(239,68,68,0.45)"))}}>
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 10px",borderRadius:8,background:m.won?thPastel(TH.bgGreen,"rgba(34,197,94,0.15)"):m.drew?thPastel("#f1f5f9",TH.surface2):thPastel("#fee2e2","rgba(239,68,68,0.15)"),border:"1px solid "+(m.won?thPastel("#86efac","rgba(34,197,94,0.45)"):m.drew?TH.cardBorder:thPastel("#fca5a5","rgba(239,68,68,0.45)"))}}>
                   <span style={{fontSize:12,flex:1,fontWeight:600,color:TH.text}}>{nationsCupModal.myNat} vs {m.opp}</span>
                   <span style={{fontSize:12,fontWeight:800,color:m.won?TH.txGreen:m.drew?"#64748b":"#dc2626"}}>{m.homeScore}–{m.awayScore}</span>
                   <span style={{fontSize:10,color:m.won?TH.txGreen:m.drew?"#64748b":"#dc2626",fontWeight:700}}>{m.won?"V":m.drew?"P":"S"}</span>
                 </div>
               ))}
             </div>
-            <div style={{textAlign:"center",padding:"10px",borderRadius:10,background:nationsCupModal.trophyWon?"#fef3c7":nationsCupModal.qualified?"#eff6ff":"#f1f5f9",marginBottom:14}}>
+            <div style={{textAlign:"center",padding:"10px",borderRadius:10,background:nationsCupModal.trophyWon?TH.bgAmber:nationsCupModal.qualified?TH.bgBlue:TH.surface2,marginBottom:14}}>
               <div style={{fontSize:14,fontWeight:900,color:nationsCupModal.trophyWon?"#92400e":nationsCupModal.qualified?"#1e40af":"#64748b"}}>
                 {nationsCupModal.trophyWon?(nationsCupModal.final?.pen?"🏆 CAMPIONI! Finale vinta AI RIGORI — Coppa delle Nazioni!":"🏆 CAMPIONI! Finale vinta — Coppa delle Nazioni!"):nationsCupModal.final?`🥈 Sconfitti in FINALE${nationsCupModal.final.pen?" AI RIGORI":""} da ${nationsCupModal.final.opp}`:nationsCupModal.qualified?"✅ Qualificati alla fase finale!":"❌ Eliminati dalla fase a gironi"}
               </div>
@@ -7956,7 +7956,7 @@ const getThisWeekMatchday=()=>{
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:12,fontWeight:isCur?700:500,color:_compColor,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                           {isCur&&"▶ "}{md.isHome?"🏟️":"✈️"} vs {md.opponentName}
-                          {md.type==="cup"&&<span style={{fontSize:10,marginLeft:5,background:TH.bgAmber,color:TH.txAmber,border:"1px solid #fde68a",borderRadius:4,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}{md.type==="national"&&<span style={{fontSize:10,marginLeft:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid #bfdbfe",borderRadius:4,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}
+                          {md.type==="cup"&&<span style={{fontSize:10,marginLeft:5,background:TH.bgAmber,color:TH.txAmber,border:"1px solid #fde68a",borderRadius:4,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}{md.type==="national"&&<span style={{fontSize:10,marginLeft:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:4,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}
                           {_isEuro&&<span style={{fontSize:10,marginLeft:5,background:"#ede9fe",color:"#7c3aed",border:"1px solid #ddd6fe",borderRadius:4,padding:"1px 5px",fontWeight:700}}>{_euroComp}</span>}
                         </div>
                         <div style={{fontSize:10,color:TH.muted}}>{_compLabel} · W.{md.week}</div>
@@ -8110,7 +8110,7 @@ const getThisWeekMatchday=()=>{
                       <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Risultati</div>
                       {gr.map((r,i)=>(
                         <div key={i} style={{display:"flex",gap:6,alignItems:"center",padding:"3px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:10}}>
-                          <span style={{fontSize:10,background:r.won?"#dcfce7":r.drew?"#fef9c3":"#fee2e2",color:r.won?TH.txGreen:r.drew?"#854d0e":"#dc2626",borderRadius:3,padding:"1px 4px",fontWeight:700,minWidth:14,textAlign:"center"}}>{r.won?"V":r.drew?"P":"S"}</span>
+                          <span style={{fontSize:10,background:r.won?TH.bgGreen:r.drew?TH.bgAmber:TH.bgRed,color:r.won?TH.txGreen:r.drew?"#854d0e":"#dc2626",borderRadius:3,padding:"1px 4px",fontWeight:700,minWidth:14,textAlign:"center"}}>{r.won?"V":r.drew?"P":"S"}</span>
                           <span style={{fontSize:10,color:TH.faint,minWidth:30}}>{r.home?"🏟️":"✈️"}</span>
                           <span style={{flex:1,color:TH.text}}>vs {r.opp}</span>
                           <span style={{fontWeight:700,color:TH.text}}>{r.hs}–{r.as}</span>
@@ -8156,7 +8156,7 @@ const getThisWeekMatchday=()=>{
                 return<div key={w}
                   title={mh?`vs ${mh.opponent}: ${mh.homeScore}-${mh.awayScore}`:(calEntry?`vs ${calEntry.opponentName}${calEntry.isHome?" 🏟️":" ✈️"}`:"–")}
                   style={{borderRadius:6,padding:"5px 3px",textAlign:"center",fontSize:10,
-                    background:cur?"#eff6ff":mh?mh.won?"#f0fdf4":mh.drew?"#fefce8":"#fff1f2":past?"#f8fafc":"transparent",
+                    background:cur?TH.bgBlue:mh?mh.won?TH.bgGreen:mh.drew?"#fefce8":TH.bgRed:past?TH.surface2:"transparent",
                     border:`1px solid ${cur?TH.primary:mh?mh.won?TH.success:mh.drew?TH.warning:TH.danger:past?TH.cardBorder:TH.cardBorder}`,
                     color:cur?TH.primary:mh?mh.won?TH.txGreen:mh.drew?TH.txAmber:TH.txRed:past?TH.faint:TH.faint,
                     fontWeight:cur||mh?700:400}}>
@@ -8252,7 +8252,7 @@ const getThisWeekMatchday=()=>{
                     const isMe=s.isPlayer;
                     const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":null;
                     return(
-                      <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 4px",borderRadius:6,background:isMe?"#eff6ff":"transparent",border:isMe?"1px solid #bfdbfe":"1px solid transparent",marginBottom:2}}>
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 4px",borderRadius:6,background:isMe?TH.bgBlue:"transparent",border:isMe?"1px solid #bfdbfe":"1px solid transparent",marginBottom:2}}>
                         <div style={{width:18,textAlign:"center",fontSize:11,flexShrink:0,color:i<3?[TH.goldText,"#9ca3af","#b45309"][i]:TH.faint,fontWeight:700}}>{medal||i+1}</div>
                         <div style={{flex:1,minWidth:0}}>
                           <span style={{fontSize:11,fontWeight:isMe?800:400,color:isMe?TH.primary:TH.text}}>{s.name}</span>
@@ -8314,15 +8314,15 @@ const getThisWeekMatchday=()=>{
             <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10}}>
               {leagueTitles>0&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:10,background:TH.bgAmber,color:TH.txAmber,fontWeight:700,border:"1px solid #fde68a"}}>🏆 {leagueTitles} campionat{leagueTitles===1?"o":"i"}</span>}
               {cupTitles>0&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:10,background:TH.bgAmber,color:TH.txAmber,fontWeight:700,border:"1px solid #fed7aa"}}>🥇 {cupTitles} copp{cupTitles===1?"a":"e"}</span>}
-              {euroTitles>0&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:10,background:TH.bgBlue,color:TH.txBlue,fontWeight:700,border:"1px solid #bfdbfe"}}>⭐ {euroTitles} copp{euroTitles===1?"a":"e"} europe{euroTitles===1?"a":"e"}</span>}{/* [7.184.0 collaudo PO «che significa 5 euro mondiale?»] conta i trionfi EUROPEI DI CLUB (isPlayerEuroChamp) → etichetta esplicita */}
-              {natTitles>0&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:10,background:TH.bgBlue,color:TH.txBlue,fontWeight:700,border:"1px solid #bfdbfe"}}>🌍 {natTitles} con la Nazionale</span>}
+              {euroTitles>0&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:10,background:TH.bgBlue,color:TH.txBlue,fontWeight:700,border:"1px solid "+TH.bdBlue}}>⭐ {euroTitles} copp{euroTitles===1?"a":"e"} europe{euroTitles===1?"a":"e"}</span>}{/* [7.184.0 collaudo PO «che significa 5 euro mondiale?»] conta i trionfi EUROPEI DI CLUB (isPlayerEuroChamp) → etichetta esplicita */}
+              {natTitles>0&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:10,background:TH.bgBlue,color:TH.txBlue,fontWeight:700,border:"1px solid "+TH.bdBlue}}>🌍 {natTitles} con la Nazionale</span>}
               {leagueTitles===0&&cupTitles===0&&euroTitles===0&&natTitles===0&&<span style={{fontSize:10,color:TH.faint,fontStyle:"italic"}}>Nessun trofeo ancora</span>}
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
               {recs.topSeasonGoals>0&&<div style={{background:TH.bgAmber,borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:10,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1}}>⚽ Record gol/stag.</div><div style={{fontSize:15,fontWeight:900,color:TH.txAmber}}>{recs.topSeasonGoals}</div></div>}
               {recs.topSeasonAssists>0&&<div style={{background:TH.bgBlue,borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:10,color:TH.txBlue,textTransform:"uppercase",letterSpacing:1}}>🎯 Record assist/stag.</div><div style={{fontSize:15,fontWeight:900,color:TH.txBlue}}>{recs.topSeasonAssists}</div></div>}
               {recs.topOvr>60&&<div style={{background:TH.bgGreen,borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:10,color:TH.txGreen,textTransform:"uppercase",letterSpacing:1}}>📈 Miglior livello</div><div style={{fontSize:15,fontWeight:900,color:TH.txGreen}}>{recs.topOvr}</div></div>}
-              {bestPos>0&&<div style={{background:bestPos===1?thPastel("#fef9c3","rgba(245,158,11,0.14)"):thPastel("#f8fafc",TH.surface2),borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:10,color:bestPos===1?TH.txAmber:TH.muted,textTransform:"uppercase",letterSpacing:1}}>🏅 Miglior piazz. in lega</div>{/* [7.184.0 collaudo PO «miglior piazzamento di cosa?»] */}<div style={{fontSize:15,fontWeight:900,color:bestPos===1?"#92400e":TH.text}}>{bestPos}°{bestPos===1?" 👑":""}</div></div>}
+              {bestPos>0&&<div style={{background:bestPos===1?thPastel(TH.bgAmber,"rgba(245,158,11,0.14)"):thPastel("#f8fafc",TH.surface2),borderRadius:8,padding:"6px 10px"}}><div style={{fontSize:10,color:bestPos===1?TH.txAmber:TH.muted,textTransform:"uppercase",letterSpacing:1}}>🏅 Miglior piazz. in lega</div>{/* [7.184.0 collaudo PO «miglior piazzamento di cosa?»] */}<div style={{fontSize:15,fontWeight:900,color:bestPos===1?"#92400e":TH.text}}>{bestPos}°{bestPos===1?" 👑":""}</div></div>}
             </div>
             {top3Streak>=2&&<div style={{marginTop:8,fontSize:10,color:TH.muted,borderTop:"1px solid "+TH.cardBorder,paddingTop:6}}>⚡ {top3Streak} stagioni consecutive nei top 3</div>}
           </Card>
@@ -8441,7 +8441,7 @@ const getThisWeekMatchday=()=>{
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:3}}>
               {allScorers.slice(0,6).map((s,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:8,background:s.isPlayer?"#fef9c3":"transparent",border:s.isPlayer?"1px solid #fde68a":"none"}}>
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:8,background:s.isPlayer?TH.bgAmber:"transparent",border:s.isPlayer?"1px solid #fde68a":"none"}}>
                   <div style={{minWidth:20,fontSize:10,fontWeight:700,color:i===0?TH.goldText:TH.faint}}>#{i+1}</div>
                   <div style={{flex:1,fontSize:10,color:s.isPlayer?TH.primary:TH.text,fontWeight:s.isPlayer?700:400}}>{s.name}{s.isPlayer?" ⭐":""}</div>
                   <div style={{fontSize:11,fontWeight:700,color:s.isPlayer?TH.goldText:TH.muted}}>{s.goals}</div>
@@ -8688,7 +8688,7 @@ const getThisWeekMatchday=()=>{
                     <div style={{fontSize:10,color:TH.muted}}>Rapporto attuale</div>
                     <div style={{fontSize:10,fontWeight:700,color:_ctColor}}>{_ctLabel}</div>
                   </div>
-                  <div style={{height:4,background:"#e2e8f0",borderRadius:2,overflow:"hidden"}}>
+                  <div style={{height:4,background:TH.track,borderRadius:2,overflow:"hidden"}}>
                     <div style={{height:"100%",width:`${_ct}%`,background:_ctColor,borderRadius:2,transition:"width .4s"}}/>
                   </div>
                 </Card>
@@ -9277,7 +9277,7 @@ const getThisWeekMatchday=()=>{
             const _palPct=Math.min(100,Math.round(_g/22*100));
             const _scarpaEuPct=Math.min(100,Math.round(_g/28*100));
             const _bar=(pct,col)=>(
-              <div style={{background:"#e5e7eb",borderRadius:4,height:5,overflow:"hidden",marginBottom:2}}>
+              <div style={{background:TH.track,borderRadius:4,height:5,overflow:"hidden",marginBottom:2}}>
                 <div style={{width:pct+"%",height:"100%",background:col,borderRadius:4,transition:"width .4s"}}/>
               </div>
             );
@@ -9437,12 +9437,12 @@ const getThisWeekMatchday=()=>{
                   <div style={{fontSize:10,color:TH.faint}}>STAGIONI U18</div>
                   <div style={{fontSize:20,fontWeight:900,color:TH.primary}}>{player.u18Seasons||0}<span style={{fontSize:12,color:TH.faint}}>/2</span></div>
                 </div>
-                <div style={{background:(player.u18Seasons||0)>=1?"#fee2e2":"#dcfce7",borderRadius:8,padding:"8px 10px"}}>
+                <div style={{background:(player.u18Seasons||0)>=1?TH.bgRed:TH.bgGreen,borderRadius:8,padding:"8px 10px"}}>
                   <div style={{fontSize:10,color:TH.faint}}>OBIETTIVO</div>
                   <div style={{fontSize:11,fontWeight:700,color:(player.u18Seasons||0)>=1?TH.txRed:TH.txGreen}}>{(player.u18Seasons||0)>=1?"⚠️ Transizione obbligatoria":"🎯 Valutazione fine stagione"}</div>
                 </div>
               </div>
-              <div style={{height:5,background:"#e2e8f0",borderRadius:3,overflow:"hidden",marginBottom:4}}>
+              <div style={{height:5,background:TH.track,borderRadius:3,overflow:"hidden",marginBottom:4}}>
                 <div style={{height:"100%",width:`${(player.u18Seasons||0)*50}%`,background:(player.u18Seasons||0)>=1?"#ef4444":TH.warning,borderRadius:3}}/>
               </div>
               <div style={{fontSize:10,color:TH.muted}}>
@@ -9725,7 +9725,7 @@ const getThisWeekMatchday=()=>{
                   <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:TH.muted,marginBottom:3}}>
                     <span>Progresso</span><span style={{fontWeight:700,color:pct>=100?TH.txGreen:TH.text}}>{prog.cur}/{prog.max} {prog.label}</span>
                   </div>
-                  <div style={{height:5,background:"#e2e8f0",borderRadius:3,overflow:"hidden"}}>
+                  <div style={{height:5,background:TH.track,borderRadius:3,overflow:"hidden"}}>
                     <div style={{height:"100%",width:`${pct}%`,background:pct>=100?TH.success:"#f59e0b",borderRadius:3,transition:"width .4s"}}/>
                   </div>
                 </div>}
@@ -10406,7 +10406,7 @@ const getThisWeekMatchday=()=>{
               </Card>
             )}
             {q&&q.done&&(
-              <Card style={{padding:"12px 14px",border:"1px solid "+(q.trophyWon?"#fde68a":"#e2e8f0")}}>
+              <Card style={{padding:"12px 14px",border:"1px solid "+(q.trophyWon?"#fde68a":TH.track)}}>
                 <div style={{fontSize:10,color:q.trophyWon?"#92400e":"#64748b",textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:6}}>🌍 Coppa delle Nazioni S.{q.season}</div>
                 <div style={{fontSize:12,fontWeight:700,color:q.trophyWon?TH.goldText:q.qualified?TH.txGreen:"#64748b"}}>
                   {q.trophyWon?"🏆 Campioni!":q.qualified?"✅ Fase finale":q.pts>=3?"Eliminati (fase a gironi)":"❌ Eliminati"}
@@ -10730,7 +10730,7 @@ const getThisWeekMatchday=()=>{
                           {allRows.map((row,ri)=>{
                             const isQual=ri<=1;
                             return(
-                              <div key={ri} style={{display:"grid",gridTemplateColumns:"18px 1fr 26px 54px 28px",gap:"0 3px",padding:"5px 8px",background:row.isPlayer?(isQual?_ecBorder+"44":"#fff7ed"):isQual?"#f0fdf4":"transparent",borderTop:"1px solid "+TH.cardBorder}}>
+                              <div key={ri} style={{display:"grid",gridTemplateColumns:"18px 1fr 26px 54px 28px",gap:"0 3px",padding:"5px 8px",background:row.isPlayer?(isQual?_ecBorder+"44":"#fff7ed"):isQual?TH.bgGreen:"transparent",borderTop:"1px solid "+TH.cardBorder}}>
                                 {/* [7.79.0 UI Kit] posizione a MEDAGLIA per i 2 qualificati (coerente con la Classifica) */}
                                 <span style={{display:"flex",alignItems:"center",justifyContent:"center"}}>{(()=>{const mBg=ri===0?"#f59e0b":ri===1?"#9ca3af":null;if(mBg)return<span className="cpm-num" style={{display:"inline-flex",width:16,height:16,borderRadius:RAD.pill,background:mBg,color:TH_DARK.bg,alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:FW.black}}>{ri+1}</span>;return<span style={{fontSize:10,color:"#94a3b8",fontWeight:700}}>{ri+1}</span>;})()}</span>
                                 <div style={{overflow:"hidden"}}>
@@ -10845,7 +10845,7 @@ const getThisWeekMatchday=()=>{
       <div className="cpm-nav-hint" style={{borderTop:"1px solid "+TH.cardBorder}}>
         {[{k:"Enter",l:"Gioca"},{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(
           <span key={h.k} style={{fontSize:10,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
-            <span style={{background:"#e2e8f0",borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:10,color:"#334155"}}>{h.k}</span>{/* [7.120.0 audit UI] chip chiaro FISSO → testo slate scuro FISSO (era TH.text = chiaro in dark mode → illeggibile) */}
+            <span style={{background:TH.track,borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:10,color:"#334155"}}>{h.k}</span>{/* [7.120.0 audit UI] chip chiaro FISSO → testo slate scuro FISSO (era TH.text = chiaro in dark mode → illeggibile) */}
             {h.l}
           </span>
         ))}

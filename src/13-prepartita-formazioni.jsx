@@ -135,7 +135,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
         </div>
       </Card>
       {/* Recommendation */}
-      <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#eff6ff,#f0fdf4)",border:"1px solid #bfdbfe"}}>
+      <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#eff6ff,#f0fdf4)",border:"1px solid "+TH.bdBlue}}>
         <div style={{fontSize:10,fontWeight:700,color:TH.primary,letterSpacing:1.5,marginBottom:5}}>🎙️ CONSIGLIO DEL MISTER</div>
         <div style={{fontSize:12,color:TH.text,lineHeight:1.65,fontStyle:"italic"}}>"{report.recommendation}"</div>
       </Card>
@@ -455,15 +455,15 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
             <TeamBadge team={homeTeam} size={52}/>
             <div style={{fontSize:12,fontWeight:700,color:TH.text,marginTop:4}}>{homeTeam?.name||homeTeam?.n}</div>
             <div style={{fontSize:10,color:TH.muted}}>CASA</div>
-            {exClub&&exClub.side==="home"&&<div style={{fontSize:10,fontWeight:900,letterSpacing:1,color:"#b45309",background:"#fef3c7",border:"1px solid #fcd34d",borderRadius:6,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
+            {exClub&&exClub.side==="home"&&<div style={{fontSize:10,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:6,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
           </div>
           <div style={{fontSize:28,color:TH.faint,fontWeight:900,marginTop:15}}>VS</div>
           <div style={{textAlign:"center",flex:"0 0 96px"}}>
             <TeamBadge team={awayTeam} size={52}/>
             <div style={{fontSize:12,fontWeight:700,color:TH.text,marginTop:4}}>{awayTeam?.name||awayTeam?.n}</div>
             <div style={{fontSize:10,color:TH.muted}}>OSPITE</div>
-            {exClub&&exClub.side==="away"&&<div style={{fontSize:10,fontWeight:900,letterSpacing:1,color:"#b45309",background:"#fef3c7",border:"1px solid #fcd34d",borderRadius:6,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
-            {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:10,color:"#64748b",background:"#f1f5f9",borderRadius:6,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
+            {exClub&&exClub.side==="away"&&<div style={{fontSize:10,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:6,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
+            {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:10,color:"#64748b",background:TH.surface2,borderRadius:6,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
           </div>
         </div>
       </div>

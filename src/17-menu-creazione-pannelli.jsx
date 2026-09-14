@@ -35,7 +35,7 @@ function PwaInstallBanner(){
   },[]);
   if(window.matchMedia('(display-mode: standalone)').matches)return null;
   if(installable)return(
-    <div onClick={()=>window._cpmInstall?.()} style={{display:'flex',alignItems:'center',gap:10,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:12,padding:'10px 14px',marginBottom:12,cursor:'pointer'}}>
+    <div onClick={()=>window._cpmInstall?.()} style={{display:'flex',alignItems:'center',gap:10,background:TH.bgBlue,border:'1px solid #bfdbfe',borderRadius:12,padding:'10px 14px',marginBottom:12,cursor:'pointer'}}>
       <div style={{fontSize:20,lineHeight:1}}>📲</div>
       <div style={{flex:1}}>
         <div style={{fontSize:11,fontWeight:700,color:'#1d4ed8'}}>Installa Korward Elite come app</div>
@@ -45,7 +45,7 @@ function PwaInstallBanner(){
     </div>
   );
   if(/iphone|ipad|ipod/i.test(navigator.userAgent))return(
-    <div style={{display:'flex',alignItems:'center',gap:10,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:12,padding:'10px 14px',marginBottom:12}}>
+    <div style={{display:'flex',alignItems:'center',gap:10,background:TH.bgBlue,border:'1px solid #bfdbfe',borderRadius:12,padding:'10px 14px',marginBottom:12}}>
       <div style={{fontSize:20,lineHeight:1}}>📲</div>
       <div style={{flex:1}}>
         <div style={{fontSize:11,fontWeight:700,color:'#1d4ed8'}}>Installa su iPhone / iPad</div>
@@ -220,7 +220,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             <div style={{display:"flex",gap:6}}>
               {slots.map((s,i)=>(
                 <button key={i} onClick={()=>onNew(i)} title={s&&s.corrupted?`Sovrascrive S${i+1} (corrotto)`:s?`Sovrascrive: ${s.name}`:`Slot ${i+1} vuoto`}
-                  style={{padding:"6px 10px",borderRadius:8,border:`1px solid ${s?"#fecaca":"#bfdbfe"}`,background:s?"#fee2e2":"#dbeafe",cursor:"pointer",fontSize:11,fontWeight:700,color:s?TH.txRed:TH.primary}}>
+                  style={{padding:"6px 10px",borderRadius:8,border:`1px solid ${s?TH.bdRed:TH.bdBlue}`,background:s?TH.bgRed:TH.bgBlue,cursor:"pointer",fontSize:11,fontWeight:700,color:s?TH.txRed:TH.primary}}>
                   {s?`⚠️S${i+1}`:`+S${i+1}`}
                 </button>
               ))}
@@ -335,7 +335,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
               })}
             </div>
             {(()=>{const arc=ARCHETYPES.find(a=>a.id===archetypeId);return arc?(
-              <div style={{marginTop:6,padding:"7px 10px",background:TH.bgGreen,borderRadius:8,border:"1px solid #bbf7d0",fontSize:10,color:TH.txGreen}}>{/* [7.120.0 audit UI] bg verde chiaro FISSO → testo verde scuro FISSO (era TH.muted = chiaro in dark mode → illeggibile) */}
+              <div style={{marginTop:6,padding:"7px 10px",background:TH.bgGreen,borderRadius:8,border:"1px solid "+TH.bdGreen,fontSize:10,color:TH.txGreen}}>{/* [7.120.0 audit UI] bg verde chiaro FISSO → testo verde scuro FISSO (era TH.muted = chiaro in dark mode → illeggibile) */}
                 {Object.entries(arc.bonus).map(([k,v])=><span key={k} style={{marginRight:6,color:v>0?TH.txGreen:TH.txRed,fontWeight:700}}>{k} {v>0?"+":""}{v}</span>)}
               </div>
             ):null;})()}
@@ -361,13 +361,13 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                 );
               })}
             </div>
-            {dreamClub&&<div style={{fontSize:10,color:TH.txGreen,background:TH.bgGreen,borderRadius:8,padding:"6px 10px",border:"1px solid #bbf7d0",display:"flex",alignItems:"center",gap:8}}><TeamBadge team={dreamClub} size={20}/> Il tuo sogno: <strong>{dreamClub.n}</strong> ({dreamClub.lg}). Ce la farai?</div>}
+            {dreamClub&&<div style={{fontSize:10,color:TH.txGreen,background:TH.bgGreen,borderRadius:8,padding:"6px 10px",border:"1px solid "+TH.bdGreen,display:"flex",alignItems:"center",gap:8}}><TeamBadge team={dreamClub} size={20}/> Il tuo sogno: <strong>{dreamClub.n}</strong> ({dreamClub.lg}). Ce la farai?</div>}
           </div>
           {legacyBonus&&<div style={{padding:"10px 12px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed22,#4f46e522)",border:"1px solid #7c3aed44",marginBottom:6,fontSize:11,color:"#7c3aed",fontWeight:700}}>🌟 Nuova Partita+ attiva — Bonus {legacyBonus.label}: +{legacyBonus.statBoost} a tutti gli attributi</div>}
           <details style={{marginBottom:6}}>
             <summary style={{fontSize:11,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida <span style={{color:challengeId?TH.txAmber:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
             <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
-              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?"#fef9c3":"#f8fafc",cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:11}}>{ch.name}</span></div><div style={{fontSize:10,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:10,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
+              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?TH.bgAmber:TH.surface2,cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:11}}>{ch.name}</span></div><div style={{fontSize:10,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:10,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
             </div>
           </details>
           <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:15}}>⚡ INIZIA I PROVINI</Btn>
@@ -926,7 +926,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
             {pAwards.scarpaOros.map(s=><div key={"so"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:TH.lossBg,borderRadius:8,border:"1px solid #fca5a5"}}><span style={{fontSize:20}}>👟</span><div><div style={{fontSize:12,fontWeight:800,color:TH.lossFg}}>Re dei Bomber</div><div style={{fontSize:10,color:TH.lossFg}}>Stagione {s} — capocannoniere d'Europa</div></div></div>)}
             {/* Premi di Lega (Sprint 134) */}
             {(pAwards.leagueMvpYears||[]).map(s=><div key={"lm"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#eef2ff",borderRadius:8,border:"1px solid #c7d2fe"}}><span style={{fontSize:20}}>🏅</span><div><div style={{fontSize:12,fontWeight:800,color:"#4338ca"}}>MVP della Stagione</div><div style={{fontSize:10,color:"#3730a3"}}>Stagione {s} — miglior calciatore del campionato</div></div></div>)}
-            {(pAwards.leagueTopScorerYears||[]).map(s=><div key={"lt"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:TH.bgGreen,borderRadius:8,border:"1px solid #bbf7d0"}}><span style={{fontSize:20}}>⚽</span><div><div style={{fontSize:12,fontWeight:800,color:TH.txGreen}}>Capocannoniere del Campionato</div><div style={{fontSize:10,color:TH.txGreen}}>Stagione {s} — bomber dell'anno</div></div></div>)}
+            {(pAwards.leagueTopScorerYears||[]).map(s=><div key={"lt"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:TH.bgGreen,borderRadius:8,border:"1px solid "+TH.bdGreen}}><span style={{fontSize:20}}>⚽</span><div><div style={{fontSize:12,fontWeight:800,color:TH.txGreen}}>Capocannoniere del Campionato</div><div style={{fontSize:10,color:TH.txGreen}}>Stagione {s} — bomber dell'anno</div></div></div>)}
             {pAwards.youngYears.map(s=><div key={"yy"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#ede9fe",borderRadius:8,border:"1px solid #c4b5fd"}}><span style={{fontSize:20}}>💎</span><div><div style={{fontSize:12,fontWeight:800,color:"#5b21b6"}}>Giovane dell'Anno</div><div style={{fontSize:10,color:"#4c1d95"}}>Stagione {s} — miglior Under 23 del campionato</div></div></div>)}
             {(pAwards.teamOfYearYears||[]).map(s=><div key={"ty"+s} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:TH.bgBlue,borderRadius:8,border:"1px solid #bae6fd"}}><span style={{fontSize:20}}>📋</span><div><div style={{fontSize:12,fontWeight:800,color:TH.txBlue}}>Squadra dell'Anno</div><div style={{fontSize:10,color:TH.txBlue}}>Stagione {s} — selezionato nell'XI ideale della lega</div></div></div>)}
           </div>
@@ -1823,10 +1823,10 @@ const TrainPanel=({player,setPlayer,notify})=>{
         })}
       </div>
       <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap"}}>
-        <div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:fat>70?"#fee2e2":fat>45?"#fef3c7":"#f0fdf4",color:fat>70?TH.txRed:fat>45?"#92400e":"#166534"}}>💧 {fat}/100</div>
+        <div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:fat>70?TH.bgRed:fat>45?TH.bgAmber:TH.bgGreen,color:fat>70?TH.txRed:fat>45?"#92400e":"#166534"}}>💧 {fat}/100</div>
         <div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:TH.bgBlue,color:TH.txBlue}}>⭐ Forma {player.form||60}</div>
-        {_recent.length>0&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:_avgRating>=7?"#f0fdf4":_avgRating<=5.5?"#fee2e2":"#f8fafc",color:_avgRating>=7?TH.txGreen:_avgRating<=5.5?TH.txRed:TH.faint}}>📊 Voto {_avgRating.toFixed(1)}</div>}
-        {_mult!==1.0&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:_mult>1?"#f0fdf4":"#fff7ed",color:_mult>1?"#166534":"#92400e"}}>{_mult>1?`↑ ${Math.round((_mult-1)*100)}% efficacia`:`↓ ${Math.round((1-_mult)*100)}% efficacia`}</div>}
+        {_recent.length>0&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:_avgRating>=7?TH.bgGreen:_avgRating<=5.5?TH.bgRed:TH.surface2,color:_avgRating>=7?TH.txGreen:_avgRating<=5.5?TH.txRed:TH.faint}}>📊 Voto {_avgRating.toFixed(1)}</div>}
+        {_mult!==1.0&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:_mult>1?TH.bgGreen:"#fff7ed",color:_mult>1?"#166534":"#92400e"}}>{_mult>1?`↑ ${Math.round((_mult-1)*100)}% efficacia`:`↓ ${Math.round((1-_mult)*100)}% efficacia`}</div>}
         {streak>=3&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:TH.bgAmber,color:TH.txAmber}}>🔥 {streak} sett.</div>}
       </div>
       {allDone?(
