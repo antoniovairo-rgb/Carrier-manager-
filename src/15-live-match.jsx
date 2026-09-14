@@ -8082,7 +8082,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       window.__CPM_SAL689_WHY=_on?(_rig691?"rigore":(_ist691?"cartellino":(pendingGoalRef.current?(pendingGoalRef.current.occ?"occasione":"gol"):"contropiede"))):null;}
     return _on;
   }catch(_e){return false;}})();
-  const _sot695=_sal689&&!(typeof window!=='undefined'&&window.__CPM_NO695);/* [7.695.0] la cronaca in sottopancia: acceso solo dentro la scena saliente */
+  /* [7.892.0 — LA TELECRONACA STA IN BASSO, SEMPRE. Rosso __CPM_NO892] Nota PO 14/09 dallo screenshot Android
+     (FC Cra-FC Mer, 34'): «dal momento che abbiamo rimesso i 22 in campo la telecronaca va visualizzata in
+     basso e la grafica delle interazioni va rivista (troppo invasive)». Il sottopancia del 7.695 (banda in
+     basso, corpo 14, tre righe al massimo) era acceso solo dentro la scena saliente; fuori, la riga stava al
+     38 % dell'altezza, sopra i corpi: con i ventidue visibili (7.889) copriva la partita. Ora il sottopancia
+     e' la regola; il centro-campo resta il rosso. */
+  const _sot695=(_sal689||!(typeof window!=='undefined'&&window.__CPM_NO892))&&!(typeof window!=='undefined'&&window.__CPM_NO695);/* [7.695.0] la cronaca in sottopancia: era acceso solo dentro la scena saliente; [7.892] sempre */
   const _isFinalKO=(context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final")||(context==="euro_ko"&&player.euro?.phase==="final")||(context==="cup"&&(player.cup?.round||0)>=4)||(context==="nationsCup"&&_isNeutralFinal);/* [7.72.2] finale Coppa delle Nazioni → festa big-win */
   const pct=Math.round((clock/90)*100);
   const show3D=["playing","hl_move","hl_choose","hl_result","hl_intro","ceremony","shootout"].includes(phase);/* [7.2.0] ceremony: il 3D resta montato per la premiazione · [7.31.0] shootout: rigori 3D dal dischetto */
@@ -8586,10 +8592,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                          gioca sul telefono, a volte guardando altro, e un gioco che si blocca in attesa di
                          un tocco e' un gioco rotto. */}
                      {coms[0].sc&&coms[0].sci==null&&(/* [7.695.0] i bottoni NON si nascondono durante la scena: una scelta gia' aperta deve restare rispondibile, o resterebbe appesa. A non farne nascere di nuove ci pensa il cancello qui sopra. */
-                       <div style={{marginTop:9,display:"flex",flexDirection:"column",gap:6,pointerEvents:"auto"}}>
+                       <div data-cpm="sc681" style={_sot695?{marginTop:6,display:"flex",flexDirection:"column",gap:4,pointerEvents:"auto"}:{marginTop:9,display:"flex",flexDirection:"column",gap:6,pointerEvents:"auto"}}>{/* [7.892] nel sottopancia le scelte sono compatte: 36 px l'una, non un pannello sopra il campo */}
                          {coms[0].sc.map((o,oi)=>(
                            <button key={oi} onClick={()=>scegli681(oi,false)}
-                             style={{padding:"9px 12px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:14,fontWeight:800,lineHeight:1.25,textAlign:"left",cursor:"pointer"}}>{o.et}</button>
+                             style={_sot695?{padding:"7px 10px",borderRadius:9,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:13,fontWeight:800,lineHeight:1.2,textAlign:"left",cursor:"pointer"}:{padding:"9px 12px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:14,fontWeight:800,lineHeight:1.25,textAlign:"left",cursor:"pointer"}}>{o.et}</button>
                          ))}
                        </div>
                      )}
