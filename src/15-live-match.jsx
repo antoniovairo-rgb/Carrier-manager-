@@ -2063,6 +2063,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        (muro, barriera, rigore: palla ferma, la regia e' legittima) e lo spot della palla (7.402: un solo
        uomo, solo se nessuno e' entro 3u). */
     const _motore890=!(typeof window!=='undefined'&&window.__CPM_NO890)&&!(typeof window!=='undefined'&&window.__CPM_NO870);
+    const _motore891=_motore890&&!(typeof window!=='undefined'&&window.__CPM_NO891);/* [7.891] anche il piazzato fermo: lo schiera il motore dal ponte (chiedi.piazzato) */
     /* [7.456.0] il bump sta QUI, non ai punti di chiamata: React 18 accorpa questo `set` con i
        `setMatchPlayers` che seguono, quindi numero nuovo e posizioni nuove arrivano insieme. */
     setStageStamp(s=>s+1);
@@ -2082,7 +2083,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const isPenalty=isPenaltySit(sit);/* [6.3.2 R1a] intent, non testo (equivalenza verificata) */
         const isFlankFK=!isPenalty&&(szY<22||szY>78);
         const isAreaPlay=!isPenalty&&!isFlankFK&&sit.zones?.[0]==="area";
-        setMatchPlayers(prev=>prev.map((pl,idx)=>{
+        if(!_motore891)setMatchPlayers(prev=>prev.map((pl,idx)=>{
           if(pl.team==="ref")return pl;
           if(pl.team==="away"){
             const ai=idx-10;
@@ -3970,7 +3971,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
           if(pendingGoalRef.current&&pendingGoalRef.current.motore870){pendingGoalRef.current.ticks++;if(nx>=90)_M.chiedi.urgenza();/* al 90' il decreto non puo' restare appeso: entra da dove sta la palla */}
           /* il ponte verso la scena: due minuti prima il gioco si sposta dove l'highlight nascera' */
-          {const _nt=(hlTimesRef.current||[])[hlIdx];if(_nt!=null&&nx>=_nt-2&&nx<_nt&&ponteIdxRef.current!==hlIdx){ponteIdxRef.current=hlIdx;const _s=situations[hlIdx];if(_s){try{const _spb=hlBallSpot(_s,(pPosRef.current&&pPosRef.current.x)||60,(pPosRef.current&&pPosRef.current.y)||50);_M.chiedi.verso({x:_spb.x,y:_spb.y,lato:_s.type==="def"?"away":"home"});if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_s.type==="def"?-1:1,"ponte-scena");}catch(_e){}}}}
+          {const _nt=(hlTimesRef.current||[])[hlIdx];if(_nt!=null&&nx>=_nt-2&&nx<_nt&&ponteIdxRef.current!==hlIdx){ponteIdxRef.current=hlIdx;const _s=situations[hlIdx];if(_s){try{const _spb=hlBallSpot(_s,(pPosRef.current&&pPosRef.current.x)||60,(pPosRef.current&&pPosRef.current.y)||50);/* [7.891] SE LA SCENA E' A PALLA FERMA (rigore, corner, punizione dell'eroe) il ponte chiede al motore il PIAZZATO, non la direzione: e' il motore a fermare il pallone, nominare l'eroe battitore e schierare i ventidue con le sue regole nei due minuti che restano. Rosso __CPM_NO891 (= ponte «verso» + regia di cartone all'apertura). */
+           const _pz891=!(typeof window!=='undefined'&&window.__CPM_NO891)&&_s.type!=="def"&&isSetPieceSit(_s);
+           if(_pz891){const _pen891=(typeof isPenaltySit==="function"&&isPenaltySit(_s));const _kind891=_pen891?"pen":(_s.ballAt==="corner"?"corner":"foul");
+             _M.chiedi.piazzato({kind:_kind891,x:_pen891?89:_spb.x,y:_pen891?50:_spb.y,lato:"home",batt:_M.HERO,hold:6});}
+           else _M.chiedi.verso({x:_spb.x,y:_spb.y,lato:_s.type==="def"?"away":"home"});if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_s.type==="def"?-1:1,"ponte-scena");}catch(_e){}}}}
           /* la quota di possesso della simulazione e' una richiesta di turno, mai un ordine sul pallone */
           if(nx%3===0&&!golMotoreRef.current){const _q=quotaMotoreRef.current;if(_q.length>=6){const _qh=Math.round(100*_q.reduce((a2,b2)=>a2+b2,0)/_q.length);const _p=clamp(possessionRef.current|0,20,80);const _want=(_qh<_p-12)?"home":(_qh>_p+12)?"away":null;if(_want)_M.chiedi.turno(_want);}}
           /* [7.849 nel motore] l'atteggiamento: chi e' sotto o pari dal 70' assalta, chi e' avanti di due dal 60' amministra */

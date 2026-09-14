@@ -410,6 +410,18 @@ function creaMotorePossesso(cfg){
           if(f.kind==="pen"){if(p.gk){tx=xDa(3,altro(f.lato))===p.x?p.x:(p.team===f.lato?slotDi(p).x:xDa(2,altro(f.lato)));ty=50;}else{tx=xDa(80,f.lato)+(k%2)*dirDi(f.lato)*-2;ty=18+(k%10)*6.4;}}
           else if(!p.gk){if(atk){if(k<=5){tx=gx-dirDi(f.lato)*(2+(k%4)*2);ty=36+(k%4)*9;}else{tx=xDa(66,f.lato);ty=30+(k%4)*12;}}else{if(k<=6){tx=gx+dirDi(f.lato)*(1+(k%6)*1.2);ty=32+(k%6)*7;}else{tx=xDa(70,f.lato);ty=34+(k%3)*12;}}}
           v=6;}
+        /* [7.891] LA PUNIZIONE VICINO ALLA PORTA HA IL SUO SCHIERAMENTO (prima solo corner e rigore): muro
+           di quattro a 9,15u sulla linea palla-porta, linea difensiva davanti all'area, tre attaccanti al
+           limite, i compagni del battitore dietro la palla. Deterministico (k = indice mod 11). */
+        else if(f.kind==="foul"&&!p.gk&&advDi(f.x,f.lato)>=62){const atk=(p.team===f.lato);const gx=xDa(100,f.lato);
+          const ddx=gx-f.x,ddy=50-f.y,dd=Math.hypot(ddx,ddy)||1,ux=ddx/dd,uy=ddy/dd;const k=p.i%11;const advF=advDi(f.x,f.lato);
+          if(atk){if(k<=2){tx=f.x-dirDi(f.lato)*(3+k*2);ty=f.y+(k-1)*6;}
+            else if(k<=6){tx=xDa(Math.min(advF+10,92),f.lato);ty=30+(k-3)*13;}
+            else{tx=xDa(Math.max(advF-14,45),f.lato);ty=30+(k-7)*13;}}
+          else{if(k<=3){const wx=f.x+ux*9.15,wy=f.y+uy*9.15,px=-uy,py=ux;tx=wx+px*(k-1.5)*1.6;ty=wy+py*(k-1.5)*1.6;}
+            else if(k<=7){tx=xDa(Math.min(advF+14,94),f.lato);ty=34+(k-4)*8;}
+            else{tx=xDa(Math.min(advF+6,90),f.lato);ty=25+(k-8)*25;}}
+          tx=clamp(tx,2,98);ty=clamp(ty,3,97);v=6;}
       }
       if(st==="volo"&&ric&&p.i===ric.i){tx=S.poss.a.x-dp*0.4;ty=S.poss.a.y;v=6;}
       else if((st==="tenuta"||st==="libero")&&ins&&p.i===ins.i){if(st==="tenuta"){tx=bx-d*3;ty=by;}else{tx=bx;ty=by;}v=5.5;}
@@ -470,6 +482,16 @@ function creaMotorePossesso(cfg){
       if(o.centro){S.kickoff={lato:l,t:0};S.poss.stato="kickoff";S.poss.lato=l;S.poss.padrone=null;S.palla.x=50;S.palla.y=50;return;}
       const W=piuVicino(x,y,l,{noGk:true});if(W){W.p.x=x-dirDi(l)*0.4;W.p.y=y;S.palla.x=x;S.palla.y=y;tenuta(W.p,null);S.poss.t=1;}else libero(x,y);},
     posiziona(x,y){S.palla.x=clamp(+x,0,100);S.palla.y=clamp(+y,0,100);},
+    /* [7.891] IL CALCIO PIAZZATO DELLA SCENA LO SCHIERA IL MOTORE. Il live match, due minuti prima di una
+       scena a palla ferma (rigore, corner, punizione dell'eroe), non chiede piu' «vai verso quel punto»
+       ma «fischia un piazzato li', con questo battitore»: il motore ferma il pallone, nomina il battitore
+       (l'eroe) e porta i ventidue nella formazione da palla ferma con le sue regole (tick dopo tick,
+       corsa vera, niente teletrasporto). Tiene la palla ferma per `hold` tick (6): se la scena non si
+       apre, il piazzato lo batte lui e il gioco continua. */
+    piazzato(o){o=o||{};const l=o.lato===AWAY?AWAY:HOME;const kind=(o.kind==="pen"||o.kind==="corner")?o.kind:"foul";
+      S.richieste.verso=null;fermoSet(kind,l,+o.x||50,+o.y||50,{scena:1});
+      if(S.fermo){S.fermo.tot=Math.max(S.fermo.tot|0,o.hold?clamp(o.hold|0,1,12):6);
+        if(o.batt!=null&&g[o.batt]&&!g[o.batt].gk&&mio(g[o.batt],l)&&(o.batt!==HERO||eroeAttivo))S.fermo.batt=o.batt;}},
   };
   function stato(){const p=S.poss;const pad=p.padrone!=null?g[p.padrone]:null;
     return{tick:S.tick,palla:{x:+S.palla.x.toFixed(2),y:+S.palla.y.toFixed(2)},
