@@ -38,3 +38,7 @@ credentials*
 .DS_Store
 .idea/
 .vscode/
+
+# [pulizia 14/09] archivio delle vecchie versioni (42 MB) e artefatti di sonde: mai piu nel repo
+versions/
+out/

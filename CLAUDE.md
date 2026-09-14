@@ -66,11 +66,11 @@ Carrier-manager-/
 ├── ROADMAP.md               ← product roadmap LMQP (v1.0 COMPLETO: vision, pillar, SO/KPI, Phase 1–5, M1–M5, sez. 1–13)
 ├── DEVELOPMENT_RULES.md     ← regole di sviluppo (v1.0, cap. 1–20) + mappatura sul repo
 ├── ACCEPTANCE_CRITERIA.md   ← checklist di accettazione (v1.0, AC-001..200; target 600–1000 controlli)
-├── AI_VISION_REVIEW.md      ← spec AI Vision Review (v1.0, cap. 1–23 COMPLETO; dettaglio del cap. 3.9 della spec)
+├── docs/archivio/AI_VISION_REVIEW.md  ← (archiviato 14/09) spec AI Vision Review (v1.0, cap. 1–23 COMPLETO; dettaglio del cap. 3.9 della spec)
 ├── CLAUDE.md
 ├── CHANGELOG.md
 ├── LIVE-MATCH-ENGINE.md      ← architettura del motore di partita (pipeline Intent→Decision→Simulation→Animation)
-├── MATCH_ENGINE_REDESIGN.md  ← ⭐ RIPROGETTAZIONE motore+situations (direttiva PO priorità assoluta): analisi W1-W5, blueprint 9 moduli, roadmap R0-R5 (R0 = Live Match Validator PRIMA di toccare il motore)
+├── docs/archivio/MATCH_ENGINE_REDESIGN.md ← (archiviato 14/09, superato dal motore del possesso 7.870) riprogettazione motore+situations (direttiva PO priorità assoluta): analisi W1-W5, blueprint 9 moduli, roadmap R0-R5 (R0 = Live Match Validator PRIMA di toccare il motore)
 ├── docs/                      ← report/roadmap storici del live match
 └── tests/
     ├── situations-3d-validation.js   ← regole di validazione SITUATIONS (coerenza HL↔3D) + suite analitica (537 combo)
