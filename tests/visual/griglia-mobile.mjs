@@ -470,7 +470,24 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 }
 
 /* ctx PARTITA (opt-in, CPM_PARTITA=1) — la strada delle sonde di gioco: nuova carriera -> provino -> partita viva,
-   autoplay a seme fisso; si misura l'HUD in gioco (minuto >= 8) e, se arriva entro 150 s, l'HUD con la scelta dell'eroe. */
+   autoplay a seme fisso; si misura l'HUD in gioco (minuto >= 8) e, se arriva entro 150 s, l'HUD con la scelta dell'eroe.
+   [G6] DUE CORREZIONI, misurate a monte da un'altra squadra e verificate qui in lettura su src/15-live-match.jsx:
+     - `__CPM_MS().min` resta null per tutta la partita sotto autoplay 'seeded': si legge il minuto da
+       `__CPM_CLOCK()` (il ref del live match, r.1465, sempre popolato), con `__CPM_MS().min` come ripiego
+       se `__CPM_CLOCK` non esistesse. Raggiunto il minuto, l'autoplay si spegne PRIMA di misurare (se lo
+       strumento espone `__CPM_AUTOPLAY`) cosi' la schermata non cambia sotto la misura.
+     - la fase `hl_choose` sotto autoplay dura un solo tick (`handleActionRef` scatta al giro
+       dell'intervallo SUBITO dopo, r.1517-1526): si polla la fase ogni 50 ms (non ogni frame ne' a
+       tempo fisso) e, al primo `hl_choose`, si spegne l'autoplay e si misura SUBITO, senza l'attesa
+       normale di testo fermo — anche da spento resta un secondo timer INDIPENDENTE dall'autoplay
+       (l'"auto-contrasto" del difensore, r.7946-7963: 4-9 s secondo la distanza) che chiude comunque
+       la scelta, quindi ogni larghezza viene ricontrollata al volo e, se la fase e' gia' scaduta, ci si
+       ferma li' invece di riportare una larghezza sbagliata come se fosse quella giusta.
+       Cercato `__CPM_HOLD` (o simile) per fermare la scelta: NON esiste — l'unica leva e' `paused`
+       (tasto P), ma mette un velo scuro sopra la scena (r.7830, r.8927) e misurerebbe la PAUSA, non la
+       scelta: scartata.
+       Se `hl_choose` non arriva entro 150 s, si accetta la fase piu' vicina raggiunta fra `hl_move` e
+       `hl_intro` (dichiarato nel report quale delle tre e' stata davvero misurata). */
 if (PARTITA) {
   const page = await browser.newPage({ viewport: { width: TAGLIE[0].w, height: TAGLIE[0].h }, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
   page.on('pageerror', e => errori.push(`partita · ${String(e.message).slice(0, 120)}`));
@@ -479,13 +496,57 @@ if (PARTITA) {
   let ok = false;
   try { await openMatch(page, port, { skipLoadAll: true, name: 'Grafica Probe' }); ok = true; } catch (e) { saltate.push('partita: apertura fallita — ' + String(e.message).slice(0, 80)); }
   if (ok) {
-    try { await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), SEME); } catch (_e) {}
-    const minOk = await page.waitForFunction(() => { try { const ms = window.__CPM_MS && window.__CPM_MS(); return ms && (ms.min | 0) >= 8; } catch (e) { return false; } }, null, { timeout: 240000 }).then(() => true).catch(() => false);
-    if (minOk) { await sleep(300); await misuraTutte(page, SC('partita-gioco')); }
-    else saltate.push("partita-gioco: il minuto 8 non e' arrivato entro 240 s");
-    const sceltaOk = await page.waitForFunction(() => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); return ph === 'hl_choose'; } catch (e) { return false; } }, null, { timeout: 150000 }).then(() => true).catch(() => false);
-    if (sceltaOk) { await sleep(300); await misuraTutte(page, SC('partita-scelta')); }
-    else saltate.push("partita-scelta: nessuna fase hl_choose entro 150 s");
+    const autoplayOn = () => page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), SEME).catch(() => {});
+    const autoplayOff = () => page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(false)).catch(() => {});
+    const faseOra = () => page.evaluate(() => { try { return (window.__CPM_PHASE && window.__CPM_PHASE()) || null; } catch (e) { return null; } }).catch(() => null);
+    await autoplayOn();
+
+    /* ── partita-gioco: minuto >= 8 letto da CLOCK (ripiego: MS.min) ──────────────────────────── */
+    const minOk = await page.waitForFunction(() => {
+      try {
+        const c = window.__CPM_CLOCK && window.__CPM_CLOCK();
+        if (c != null) return (c | 0) >= 8;
+        const ms = window.__CPM_MS && window.__CPM_MS();
+        return !!(ms && (ms.min | 0) >= 8);
+      } catch (e) { return false; }
+    }, null, { timeout: 240000, polling: 250 }).then(() => true).catch(() => false);
+    if (minOk) {
+      await autoplayOff();   /* la schermata resta ferma per la misura, come da G6.2 */
+      await sleep(300);
+      await misuraTutte(page, SC('partita-gioco'));
+      await autoplayOn();    /* si riaccende: serve ancora a portare la partita fino a hl_choose */
+    } else saltate.push("partita-gioco: il minuto 8 non e' arrivato entro 240 s (CLOCK, ripiego MS.min)");
+
+    /* ── partita-scelta: poll ogni 50 ms, spegni l'autoplay al primo hl_choose, misura SUBITO ───── */
+    const FASI_RIPIEGO = ['hl_move', 'hl_intro'];
+    const sceltaOk = await page.waitForFunction(() => {
+      try { return (window.__CPM_PHASE && window.__CPM_PHASE()) === 'hl_choose'; } catch (e) { return false; }
+    }, null, { timeout: 150000, polling: 50 }).then(() => true).catch(() => false);
+    let faseMisurata = null;
+    if (sceltaOk) { await autoplayOff(); faseMisurata = 'hl_choose'; }
+    else {
+      const f = await faseOra();
+      if (FASI_RIPIEGO.includes(f)) { await autoplayOff(); faseMisurata = f; }
+    }
+    if (faseMisurata) {
+      if (faseMisurata !== 'hl_choose') saltate.push(`partita-scelta: hl_choose non raggiunta entro 150 s, misurata al suo posto la fase ${faseMisurata}`);
+      /* niente attendiFermo qui: sotto hl_choose un conto alla rovescia visibile non si ferma mai, e i
+         4-9 s dell'auto-contrasto (indipendenti dall'autoplay spento) sono piu' stretti dei 7 s che
+         attendiFermo puo' consumare da solo. Si controlla la fase a ogni larghezza e ci si ferma alla
+         prima in cui non e' piu' quella misurata, invece di riportare una larghezza scaduta. */
+      const scId = 'partita-scelta';
+      for (const t of TAGLIE) {
+        const f = await faseOra();
+        if (f !== faseMisurata) { saltate.push(`partita-scelta@${t.w}px: la fase e' scaduta (ora ${f}) prima di questa larghezza — non misurata`); break; }
+        await page.setViewportSize({ width: t.w, height: t.h });
+        await sleep(120);
+        await congela(page);
+        const m = await page.evaluate(MISURA, t.w);
+        (DATI[scId] = DATI[scId] || {})[t.w] = m;
+        if (FOTO) { try { await page.screenshot({ path: path.join(dirDi(t.w), scId + '.png'), animations: 'disabled', caret: 'hide', timeout: 40000 }); } catch (e) { saltate.push(`foto ${scId}@${t.w}: ${String(e.message).slice(0, 60)}`); } }
+        process.stdout.write(`  ${String(t.w).padStart(3)}px ${scId.padEnd(22)} overflow ${String(m.overflowPx).padStart(3)}px · fuori ${String(m.nFuori).padStart(2)} (${m.nContenuti}) · <10px ${String(m.nPiccoli).padStart(3)}/${String(m.nTesto).padStart(3)} (min ${m.minFs}) · contrasto ${String(m.nSotto).padStart(3)}/${m.nMisurati} · fase ${faseMisurata}\n`);
+      }
+    } else saltate.push("partita-scelta: nessuna fase hl_choose/hl_move/hl_intro raggiunta entro 150 s");
   }
   await page.close();
 }
