@@ -6735,7 +6735,7 @@ const getThisWeekMatchday=()=>{
           {/* [7.106.1 collaudo PO «questo box è fuori standard»] allineato al pattern degli altri box-evento del dashboard (eyebrow colorato · corpo leggibile normale · CTA piena granata come i sorteggi), niente più corpo tutto-grassetto-ambra + bottone ghost slavato sul giallo */}
           <div style={{fontSize:10,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5,fontWeight:800}}>🔥 Deadline Day — finestra invernale aperta</div>
           <div style={{fontSize:11.5,color:TH.text,marginBottom:10,lineHeight:1.55}}>{_listed?"Sei sulla lista di mercato: le prossime ore possono cambiare la tua carriera. Tieni d'occhio le offerte.":"I telefoni degli agenti bollono in tutta Europa. Se vuoi muoverti, questa è la settimana: parla col tuo procuratore."}</div>
-          <Btn v="primary" fw onClick={()=>goTab("agente")}>💼 Vai dal procuratore</Btn>
+          <Btn v="outline" fw onClick={()=>goTab("agente")}>💼 Vai dal procuratore</Btn>
         </Card>);})()}
       {/* [7.17.0 SAGA DEL MERCATO — backlog favola] la trattativa a puntate: episodio derivato da
           p.transferSaga e dalla distanza in settimane (d0 indiscrezione · d1 pressing con SCELTA di tono ·
@@ -6953,7 +6953,7 @@ const getThisWeekMatchday=()=>{
               <div style={{fontSize:11,color:pj.tone!=="neutral"?"rgba(255,255,255,0.78)":TH.muted,lineHeight:1.5}}>{pj.d}</div>
             </div>
           </div>
-          <Btn v="primary" fw onClick={()=>setPlayer(p=>({...p,clubProjSeen:{k:pj.k,cid:p.club?.id||p.club?.n,season:p.season||1},morale:clamp((p.morale||70)+(pj.tone==="good"?2:pj.tone==="bad"?-2:0),0,100),log:[`${pj.e} ${pj.t} — la direzione del club è chiara.`,...(p.log||[])].slice(0,60)}))}>Si vede in campo →</Btn>
+          <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,clubProjSeen:{k:pj.k,cid:p.club?.id||p.club?.n,season:p.season||1},morale:clamp((p.morale||70)+(pj.tone==="good"?2:pj.tone==="bad"?-2:0),0,100),log:[`${pj.e} ${pj.t} — la direzione del club è chiara.`,...(p.log||[])].slice(0,60)}))}>Si vede in campo →</Btn>
         </Card>);})()}
       {/* [7.55.0 ONDA 7 — §S6b] CAMBIO DI CLIMA — la TRANSIZIONE di stance di uno stakeholder (presidente/mister/
           curva) come EVENTO una-tantum (pattern clubProjSeen): fira solo verso stati FORTI, baseline seedato in
@@ -7576,7 +7576,7 @@ const getThisWeekMatchday=()=>{
             {transferOffer&&!transferOffer.isRenewal&&(
               <div style={{marginTop:6,paddingTop:6,borderTop:`1px solid ${_listed?TH.bdAmber:TH.bdBlue}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{fontSize:10,color:TH.text}}>📩 <strong>{transferOffer.club?.n}</strong> ha fatto un'offerta</div>
-                <Btn v="primary" style={{fontSize:10,padding:"4px 10px",flexShrink:0}} onClick={()=>setTab("dashboard")}>Vedi →</Btn>
+                <Btn v="outline" style={{fontSize:10,padding:"4px 10px",flexShrink:0}} onClick={()=>setTab("dashboard")}>Vedi →</Btn>
               </div>
             )}
           </Card>

@@ -46,6 +46,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
     secondary:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},
     success:{background:TH.bgGreen,color:TH.txGreen,border:"1px solid "+TH.bdGreen,fontWeight:700},/* [7.103.0] token semantici (theme-aware) al posto degli hex light hardcoded */
     danger:{background:TH.bgRed,color:TH.txRed,border:"1px solid "+TH.bdRed,fontWeight:700},
+    outline:{background:"transparent",color:TH.brandText,border:"1px solid "+TH.primaryBorder,fontWeight:700},/* [G3.2 grafica] azione di marca ma NON primaria: una sola piena per vista */
     ghost:{background:"transparent",color:TH.faint,border:"1px solid "+TH.cardBorder},
     gold:{background:"linear-gradient(135deg,#f59e0b,#d97706)",color:"#fff",fontWeight:800},
   };

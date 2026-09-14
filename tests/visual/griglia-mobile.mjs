@@ -122,7 +122,8 @@ function MISURA(W) {
   const R = { W, radice: 'body', scrollWidth: 0, clientWidth: 0, overflowPx: 0,
     nFuori: 0, fuori: [], nContenuti: 0, contenuti: [],
     nTesto: 0, nPiccoli: 0, minFs: null,
-    nMisurati: 0, nSotto: 0, nGradiente: 0, peggiori: [] };
+    nMisurati: 0, nSotto: 0, nGradiente: 0, peggiori: [],
+    nMarca: 0, marca: [] };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
 
   const de = document.documentElement;
 
@@ -266,6 +267,16 @@ function MISURA(W) {
   }
   R.peggiori = [...agg.values()].sort((a, b) => a.rap - b.rap || b.n - a.n).slice(0, 5);
   if (R.minFs != null) R.minFs = Math.round(R.minFs * 10) / 10;
+  /* [G3.2] bottoni pieni di marca: <button> e [role=button] visibili il cui fondo calcolato e' il bordeaux di marca */
+  try {
+    const BR = 'rgb(142, 31, 51)';
+    document.querySelectorAll('button,[role="button"]').forEach(b => {
+      const r = b.getBoundingClientRect(); if (r.width < 8 || r.height < 8 || r.bottom < 0 || r.top > window.innerHeight * 4) return;
+      const cs = getComputedStyle(b); if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity < 0.1) return;
+      const pieno = cs.backgroundColor === BR || (cs.backgroundImage || '').indexOf('142, 31, 51') >= 0;
+      if (pieno) { R.nMarca++; if (R.marca.length < 6) R.marca.push((b.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 40)); }
+    });
+  } catch (_e) {}
   return R;
 }
 
@@ -515,6 +526,7 @@ tab('1 · Overflow orizzontale (px di pagina che escono dallo schermo)', m => m.
 tab('2 · Elementi fuori dallo schermo a destra (fra parentesi: contenuti da un antenato che li ritaglia/fa scorrere)', m => `${m.nFuori} (${m.nContenuti})`, w => somma(w, 'nFuori'));
 tab('3 · Testo reso sotto i 10 px — sotto/totale (minimo)', m => `${m.nPiccoli}/${m.nTesto} (${m.minFs})`, w => somma(w, 'nPiccoli') + '/' + somma(w, 'nTesto'));
 tab('4 · Contrasto sotto soglia WCAG — sotto/misurati (esclusi per gradiente)', m => `${m.nSotto}/${m.nMisurati} (${m.nGradiente})`, w => somma(w, 'nSotto') + '/' + somma(w, 'nMisurati'));
+tab('5 · Bottoni pieni di marca (una sola azione primaria per vista)', m => `${m.nMarca}`, w => String(somma(w, 'nMarca')));
 
 R.push('## Dettaglio · gli elementi che sporgono (i 5 peggiori per schermata, alla larghezza in cui sporgono di piu\')');
 R.push('');

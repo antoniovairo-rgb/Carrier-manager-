@@ -63,8 +63,8 @@ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.tes
    LIGHT THEME  (req #1)
 ======================================== */
 let TH = {
-  bg:"#f0f7ff", bgGrad:"linear-gradient(160deg,#e8f4fd 0%,#f0faf4 100%)",
-  card:"#ffffff", cardBorder:"#dde6f0", shadow:"0 2px 12px rgba(0,0,0,0.07)",
+  bg:"#f5f3ef", bgGrad:"linear-gradient(160deg,#f7f5f1 0%,#f1efe9 100%)",/* [PALETTE A · scelta PO 14/09 «la A»] base avorio neutra al posto dell'azzurrino: il granata resta la marca, la base smette di contraddirlo */
+  card:"#ffffff", cardBorder:"#e7e3dc", shadow:"0 2px 12px rgba(0,0,0,0.07)",
   text:"#1e293b", muted:"#526279", faint:"#596a80",/* [G1.1 grafica] i due grigi del testo secondario sul tema chiaro: erano 4,76:1 e 2,56:1 su bianco (2,4:1 e 4,0-4,4:1 sui fondi tinti): 917 nodi su 2291 sotto la soglia WCAG nella griglia G0, il piu' delle volte proprio questi due. Ora >=5,27:1 e >=4,69:1 su tutti e cinque i fondi chiari del gioco. La gerarchia resta (faint piu' chiaro di muted). Il tema scuro ha i suoi valori in TH_DARK e non cambia. */
   primary:"#8e1f33", primaryDk:"#6a1326",
   success:"#16a34a", danger:"#dc2626", warning:"#d97706",
@@ -81,16 +81,16 @@ let TH = {
      Valori LIGHT pinnati all'output attuale → zero regressione visiva il giorno 1.
      Le schermate delle ondate successive consumeranno questi token invece di inventare hex. */
   // Superfici / elevazione / overlay (il backbone dark-theme mancante)
-  surface2:"#f4f7fb", surface3:"#ffffff", divider:"#e6edf5", track:"#e2e8f0", scrim:"rgba(15,23,42,0.45)",
+  surface2:"#f1eee8", surface3:"#ffffff", divider:"#e9e5de", track:"#e4e0d8", scrim:"rgba(15,23,42,0.45)",
   cardBg:"#f4f7fb",  // FIX: TH.cardBg usato (Club tab) ma mai definito → alias di surface2
   border:"#e6edf5",  // FIX: TH.border usato (ProTransition) ma mai definito → alias di divider
   el1:"0 2px 12px rgba(0,0,0,0.07)", el2:"0 4px 16px rgba(0,0,0,0.10)", el3:"0 12px 40px rgba(0,0,0,0.18)",
   // Scala brand (sostituisce il "granata-su-blu" accidentale delle selezioni)
   primaryTint:"#f7e9ec", primaryBorder:"#e3c3cb",
   // Oro metallico trofei (disambiguato da warning)
-  goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#b45309",
+  goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#a34a08"/* [PALETTE A] oro e vittoria come testo stavano a 4,3:1 sulla superficie avorio #f1eee8 (erano 4,7 sull'azzurrino): ora 5,1 e 5,3 */,
   // Token semantici di dominio (fg/bg/bd)
-  winFg:"#15803d", winBg:"#e7f6ec", winBd:"#b7e4c4",
+  winFg:"#137036", winBg:"#e7f6ec", winBd:"#b7e4c4",
   drawFg:"#a16207", drawBg:"#fbf3dd", drawBd:"#f0dca6",
   lossFg:"#b91c1c", lossBg:"#fbe9e9", lossBd:"#f3c9c9",
   growth:"#16a34a", regression:"#dc2626", energy:"#0284c7",
