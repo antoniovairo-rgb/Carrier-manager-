@@ -5523,3 +5523,8 @@ senza live match; il costo in fps e la resa del pallone a cadenza tripla non son
   stadio: base del tabellone vs cima della gradinata di fondo, foto per stadio, provino incluso). Da misurare.
 - 14/09 20:20 UTC — pulizia del repository (836755e): versions/ (42 MB), out/, test.html tolti; 309 sonde di agosto e
   23 documenti storici in archivio; radice da 32 a 17 .md. Build non toccato.
+
+- 14/09 22:05 UTC: **Produzione allineata a f6a65d6 (7.894.0) — rituale completo verde su 6519780** (career-critical
+  exit=0, ci exit=0, `IDENTICO 1`); f6a65d6 aggiunge solo il macro piano, build byte-identico. Fast-forward
+  5504b6e → f6a65d6, mai force. A1 del macro piano → fatto. Non verificato sull'Android del PO. Prossimo: C7 (tabelloni
+  per stadio), strumento in sola lettura prima del rimedio.

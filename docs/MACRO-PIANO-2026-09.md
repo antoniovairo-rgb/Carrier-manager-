@@ -8,6 +8,7 @@
 
 | quando (UTC) | cosa | cantiere → stato | numeri |
 |---|---|---|---|
+| 14/09 22:05 | **main = f6a65d6**: 7.894 in produzione (rituali verdi su 6519780, build identico; f6a65d6 solo docs) | A1 → fatto | banco: azioni ≥ 3 passaggi 0,25 → 0,88/partita; tiri 2,88 → 3,13; passaggi 21 → 24,5 (rosso `__CPM_NO894`) |
 | 14/09 20:10 | **main = 5504b6e**: 7.892 + 7.893 in produzione (rituali verdi su 7940f26, build identico) | C1 → fatto | riga di telecronaca sopra la metà del campo 67,4 % → 0 %; blocco scelte 36,7 % → 21,5 %; barra specchiata dal 46' (casa x 13 → 297); frecce via |
 | 14/09 19:40 | main = e62db88: 7.891 v2 | B1 → fatto | piazzato di cartone 32,8u → 0; passo conduzione ≤ 8u |
 | 14/09 18:20 | main = f8cb0b3: 7.889 + 7.890 + overhaul grafico G0-G4.1 | A/B1/C1 → fatto | corpi in campo 0,3 → 45; regie di gioco vivo 5 → 0; contrasto 917 → 62 |
@@ -16,10 +17,10 @@
 
 | cosa | numero | fonte |
 |---|---|---|
-| produzione (`main`) | **5504b6e = 7.893.0** (7.889 → 7.893 tutte in produzione) | verbale 20:10 |
+| produzione (`main`) | **f6a65d6 = 7.894.0** (7.889 → 7.894 tutte in produzione) | verbale 22:05 |
 | gioco vivo con un padrone dichiarato (telefono, 4 partite) | **37 %** | sonda telefono 14/09 |
 | tiri del motore a partita (4 partite) | **1,75** (0/2/2/3), 1 dall'area | area 2, misura B |
-| azioni ≥ 3 passaggi poi tiro (banco) | **0,25**/partita (7.893) → 0,88 (7.894, non spedita) | banco `stati-motore` |
+| azioni ≥ 3 passaggi poi tiro (banco) | 0,25 (7.893) → **0,88**/partita (7.894, in produzione) | banco `stati-motore` |
 | eventi del motore a partita | **92** (un tick per minuto) | banco |
 | teletrasporti dei ventidue all'apertura delle scene | 50 → **0** (7.890); piazzato 32,8u → **0** (7.891) | `salti-scena`, `chi-588` |
 | telecronaca sopra la metà del campo | 67 % → **0 %** (7.892) | `copertura` |
@@ -41,7 +42,7 @@
 ### A · MOTORE — «è calcio» (source of truth)
 | # | attività | metro (rosso → verde atteso) | stato |
 |---|---|---|---|
-| A1 | 7.894 primo tocco non sempre sosta | banco: azioni 0,25 → 0,88, tiri 2,88 → 3,13, passaggi 21 → 24,5 | sul ramo (6519780), rituali in corsa |
+| A1 | 7.894 primo tocco non sempre sosta | banco: azioni 0,25 → 0,88, tiri 2,88 → 3,13, passaggi 21 → 24,5 | **fatto** — in produzione (main f6a65d6, 22:05) |
 | A2 | **7.895 cadenza: 3 tick del motore per minuto** + narratore che sceglie l'evento saliente del minuto | banco a 3 tick: tiri 9,4, catene ≥ 3 passaggi 7,8/partita, possesso 51 %; nel live: righe di cronaca ≤ 1/minuto, fps invariati | proposta (esperimento fatto) |
 | A3 | il padrone del pallone nel live: ponte motore → `carrierRef` (oggi esclude l'eroe), volo/libero resi | gioco vivo con padrone 37 % → ≥ 70 %; pallone reso ai piedi ≥ 75 % | da fare |
 | A4 | la squadra sale e tira dall'area (#44): posizioni d'attacco, pTiro, strada libera | tiri ≥ 8/partita, ≥ 3 dall'area; avanzato più alto ≥ 70 | da fare |
