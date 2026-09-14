@@ -5469,3 +5469,16 @@ Sonda nuova `tests/visual/copertura.mjs` (150 s di autoplay, seme 7300, campione
 | blocco con le scelte dell'interazione: altezza (mediana / max, % del canvas) | 36,7 % / 48,2 % | 21,5 % / 23,9 % |
 
 Non verificato: Chromium 412×915 con GLB spento nella sonda; un seme; l'effetto sull'Android del PO.
+
+## 7.893 SUL BRANCH — via l'indicatore con le frecce; la barra superiore si specchia nel secondo tempo (PO 14/09)
+
+Sonda `tests/visual/scudetti-893.mjs` (posizione a schermo dei blocchi `scudo-casa`/`scudo-ospiti` al 20' e al 50',
+seme 7300, rosso `__CPM_NO893`):
+
+| | primo tempo (20') | secondo tempo (50') | invertito |
+|---|---|---|---|
+| rosso (barra fissa) | casa x=13, ospiti x=297 | casa x=13, ospiti x=297 | no |
+| verde 7.893 | casa x=13, ospiti x=297 | **casa x=297, ospiti x=13** (`data-specchio=1`) | **si'** |
+
+Con la barra si specchiano nomi, punteggio, barra del possesso (percentuali comprese) e momentum; l'indicatore
+`verso697` non si rende piu'. Non verificato: Chromium 412×915, un seme; la resa sull'Android del PO. Rituali in corsa.
