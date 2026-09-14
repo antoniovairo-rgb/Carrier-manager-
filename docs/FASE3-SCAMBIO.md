@@ -5405,3 +5405,29 @@ dalla formazione di cartone) non e' fotografato in questa misura.
   stati interrotti (career-critical non finito) per rifarli sul candidato vero; sulla 7.889 (a52e3dd) erano verdi 0/0.
   Non verificato: l'Android del PO (fps con i ventidue GLB in campo per tutta la partita; grafica solo in Chromium
   412×915; G4.1 non misurata in partita).
+
+## 7.891 SUL BRANCH — il calcio piazzato della scena lo schiera il motore (ristrutturazione highlight, passo 1)
+
+Il ponte dei due minuti prima, se la scena e' a palla ferma (rigore, corner, punizione dell'eroe), chiede al
+motore `chiedi.piazzato` (pallone fermo, eroe battitore, i ventidue in formazione tick dopo tick; palla tenuta
+6 tick, poi il motore batte da solo). Il motore ha ora anche la formazione della PUNIZIONE vicino alla porta
+(muro di quattro a 9,15u sulla linea palla-porta). La regia di cartone del piazzato e' chiusa. Rosso `__CPM_NO891`.
+
+Strumento nuovo `tests/visual/salti-scena.mjs` (v2): un teletrasporto e' un salto > 8u fra due campioni
+consecutivi (≤ 250 ms); soglia 12u per il dato logico (un tick del motore non sposta mai piu' di 8-10u).
+La v1 (salto fra il «prima» e tutta la finestra di 1,5 s) era sbagliata: con l'autoplay a tickMs 300 contava
+il gioco stesso (verde 53 / rosso 55, uguali) — ritirata.
+
+| misura (seme 7300, 150 s, GLB spento nella sonda) | rosso | verde |
+|---|---|---|
+| salti-scena v2 sul 7.890: giocatori teletrasportati (logico) alle aperture | **50** (`__CPM_NO890`, 3 aperture, max 54,6u) | **0** |
+| salti-scena v2 sulla 7.891 | 0 (`__CPM_NO891`, 4 aperture) | 0 (3 aperture) |
+| chi-588 i5 sulla 7.891: scrittura del piazzato fermo | 1 × 32,8u (base 7.890) | **0** |
+| chi-588 i5: scrittori non-motore | motore 45, pressing 8 (3,6u), piazzato 1 (32,8u) | motore 46, pressing 9 (3,5u) |
+
+Lettura. (1) La 7.890 e' confermata dal metro nuovo: 50 → 0 teletrasporti d'apertura nelle scene di gioco
+vivo. (2) Con la 7.891 su i5 sparisce anche la scrittura del piazzato (32,8u → nessuna): gli unici scrittori
+oltre al motore sono le 8-9 scritture del pressing in scena, 3,5u l'una, continue. (3) `salti-scena` non ha
+incontrato scene a palla ferma nei 150 s (0/0 in tutte e quattro le gambe): il verdetto sul piazzato viene da
+`chi-588`, non da questa sonda. Non verificato: un seme, 150 s di autoplay; la formazione della punizione
+(muro) non e' fotografata; `__CPM_MS().min` e' nullo sotto autoplay (colonna minuto vuota); rituali in corsa.
