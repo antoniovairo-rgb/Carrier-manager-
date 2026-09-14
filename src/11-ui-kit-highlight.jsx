@@ -205,7 +205,7 @@ function Tabs({items=[],value,onChange,style={},size="md"}){
   const sm=size==="sm";
   return(<div style={{display:"flex",gap:4,background:TH.surface2,borderRadius:RAD.md,padding:3,...style}}>
     {items.map(it=>{const act=it.id===value;return(
-      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.primary:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
+      <button key={it.id} onClick={()=>onChange&&onChange(it.id)} className="cpm-focus" style={{flex:1,minWidth:0,padding:sm?"5px 8px":"7px 10px",borderRadius:RAD.sm,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:sm?FS.caption:FS.small,fontWeight:FW.bold,background:act?TH.card:"transparent",color:act?TH.brandText:TH.muted,boxShadow:act?TH.el1:"none",transition:`all ${MO.fast}ms ${MO.easeOut}`,display:"flex",alignItems:"center",justifyContent:"center",gap:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{it.icon&&<span>{it.icon}</span>}{it.label}</button>);})}
   </div>);
 }
 
@@ -221,7 +221,7 @@ function DataTable({cols=[],rows=[],highlightRow,keyOf,compact=false,stickyFirst
       <thead><tr>{cols.map((c,ci)=>(<th key={c.key} style={{textAlign:c.align||"left",padding:compact?"6px 8px":"9px 10px",fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint,textTransform:"uppercase",letterSpacing:.6,borderBottom:`2px solid ${TH.divider}`,width:c.w,position:stickyFirst&&ci===0?"sticky":undefined,left:stickyFirst&&ci===0?0:undefined,background:stickyFirst&&ci===0?TH.card:undefined,whiteSpace:"nowrap"}}>{c.label}</th>))}</tr></thead>
       <tbody>{rows.map((row,ri)=>{const hi=highlightRow&&highlightRow(row,ri);return(
         <tr key={keyOf?keyOf(row,ri):ri} style={{background:hi?TH.primaryTint:(ri%2?TH.surface2:"transparent")}}>
-          {cols.map((c,ci)=>(<td key={c.key} className={typeof(row[c.key])==="number"?"cpm-num":undefined} style={{textAlign:c.align||"left",padding:compact?"6px 8px":"9px 10px",color:hi?TH.primary:TH.text,fontWeight:hi?FW.bold:FW.regular,borderBottom:`1px solid ${TH.divider}`,position:stickyFirst&&ci===0?"sticky":undefined,left:stickyFirst&&ci===0?0:undefined,background:stickyFirst&&ci===0?(hi?TH.primaryTint:(ri%2?TH.surface2:TH.card)):undefined,whiteSpace:"nowrap"}}>{c.render?c.render(row,ri):row[c.key]}</td>))}
+          {cols.map((c,ci)=>(<td key={c.key} className={typeof(row[c.key])==="number"?"cpm-num":undefined} style={{textAlign:c.align||"left",padding:compact?"6px 8px":"9px 10px",color:hi?TH.brandText:TH.text,fontWeight:hi?FW.bold:FW.regular,borderBottom:`1px solid ${TH.divider}`,position:stickyFirst&&ci===0?"sticky":undefined,left:stickyFirst&&ci===0?0:undefined,background:stickyFirst&&ci===0?(hi?TH.primaryTint:(ri%2?TH.surface2:TH.card)):undefined,whiteSpace:"nowrap"}}>{c.render?c.render(row,ri):row[c.key]}</td>))}
         </tr>);})}</tbody>
     </table>
   </div>);

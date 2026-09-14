@@ -69,6 +69,7 @@ let TH = {
   primary:"#8e1f33", primaryDk:"#6a1326",
   success:"#16a34a", danger:"#dc2626", warning:"#d97706",
   gold:"#b45309", accent:"#7c3aed",
+  brandText:"#8e1f33", accentText:"#7c3aed",/* [G1.6 grafica] marca e accento COME TESTO: sul chiaro coincidono coi pieni; TH_DARK li schiarisce (#ee9aaa 6,9:1 e #a78bfa 5,4:1 su #1e293b) perche' i pieni su card scura stanno a 1,7:1 e 2,6:1 */
   navBg:"rgba(255,255,255,0.96)",
   // Sprint D: token semantici per card (light = valori attuali → zero regressione di giorno)
   bgBlue:"#eff6ff", bdBlue:"#bfdbfe", txBlue:"#1e40af",
@@ -97,7 +98,7 @@ let TH = {
 };
 const TH_LIGHT_ORIG=Object.freeze({...TH,dk:false}); // snapshot for restoring light theme · [7.178.0] +dk flag
 const TH_LIGHT=TH; // alias used for dark-mode shadowing
-const TH_DARK={...TH,dk:true,bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#64748b",navBg:"rgba(15,23,42,0.97)",
+const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_nota:"[G1.7 grafica] faint scuro #64748b -> #8a97ab: era 3,0-3,8:1 sui fondi scuri (376 nodi: Creazione 259, Club 47, Profilo 36, Nazionale 17); ora 4,9-6,0:1 (4,5 su #21304a)",bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#8a97ab",navBg:"rgba(15,23,42,0.97)",
   // Sprint D: varianti scure dei token semantici (bg scuro + testo chiaro leggibile)
   bgBlue:"#16233b", bdBlue:"#1e3a5f", txBlue:"#93c5fd",
   bgGreen:"#102b1d", bdGreen:"#1d4d33", txGreen:"#86efac",

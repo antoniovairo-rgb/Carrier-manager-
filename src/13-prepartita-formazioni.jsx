@@ -136,7 +136,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
       </Card>
       {/* Recommendation */}
       <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#eff6ff,#f0fdf4)",border:"1px solid "+TH.bdBlue}}>
-        <div style={{fontSize:10,fontWeight:700,color:TH.primary,letterSpacing:1.5,marginBottom:5}}>🎙️ CONSIGLIO DEL MISTER</div>
+        <div style={{fontSize:10,fontWeight:700,color:TH.brandText,letterSpacing:1.5,marginBottom:5}}>🎙️ CONSIGLIO DEL MISTER</div>
         <div style={{fontSize:12,color:TH.text,lineHeight:1.65,fontStyle:"italic"}}>"{report.recommendation}"</div>
       </Card>
       {onClose&&<Btn onClick={onClose} v="primary" fw style={{padding:"12px",fontSize:13}}>⚡ Capito — Entriamo in campo!</Btn>}
@@ -243,7 +243,7 @@ function PostMatchPress({match,report,player,L,onClose}){
             </div>
           )):<div style={{fontSize:11,color:TH.faint,fontStyle:"italic",padding:"4px 0"}}>Nessun altro titolo.</div>):([0,1].map(i=><div key={i} style={{height:26,borderRadius:6,marginBottom:6,...(_shim)}}/>))}
         </div>
-        {rep.trending&&<div style={{padding:"4px 18px 0"}}><span style={{display:"inline-block",fontSize:10,fontWeight:800,color:TH.primary,background:TH.primary+"18",padding:"3px 10px",borderRadius:20}}>#{String(rep.trending).replace(/^#/,"")}</span></div>}
+        {rep.trending&&<div style={{padding:"4px 18px 0"}}><span style={{display:"inline-block",fontSize:10,fontWeight:800,color:TH.brandText,background:TH.primary+"18",padding:"3px 10px",borderRadius:20}}>#{String(rep.trending).replace(/^#/,"")}</span></div>}
         <div style={{padding:"12px 18px 16px"}}>
           <button onClick={onClose} style={{width:"100%",padding:"14px",borderRadius:12,border:"none",background:`linear-gradient(135deg,${TH.primary},${TH.primary}cc)`,color:"#fff",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit",boxShadow:`0 6px 18px ${TH.primary}44`}}>{(L&&L.backToDashboard)||"Torna alla dashboard"} →</button>
         </div>
@@ -263,9 +263,9 @@ function PressScreen({report,matchResult,onClose}){
       <Card style={{padding:"12px 16px"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <div>
-            <div style={{fontSize:10,color:TH.primary,fontWeight:700,letterSpacing:2}}>RASSEGNA STAMPA</div>
+            <div style={{fontSize:10,color:TH.brandText,fontWeight:700,letterSpacing:2}}>RASSEGNA STAMPA</div>
             <div style={{fontSize:15,fontWeight:900,color:TH.text}}>Post-Partita</div>
-            {report.memoriaTag&&<div style={{fontSize:10,color:TH.accent,marginTop:2}}>{report.memoriaTag}</div>}
+            {report.memoriaTag&&<div style={{fontSize:10,color:TH.accentText,marginTop:2}}>{report.memoriaTag}</div>}
           </div>
           <div style={{textAlign:"center"}}>
             <div style={{fontSize:28}}>{won?"🏆":drew?"🤝":"📉"}</div>
@@ -281,7 +281,7 @@ function PressScreen({report,matchResult,onClose}){
         <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PRIME PAGINE</div>
         {(report.headlines||[]).map((h,i)=>(
           <div key={i} style={{padding:"8px 10px",background:TH.surface2,borderRadius:6,marginBottom:5,borderLeft:`3px solid ${paperColors[i]||TH.primary}`}}>
-            <div style={{fontSize:10,color:paperColors[i]||TH.primary,fontWeight:700,letterSpacing:1,marginBottom:2}}>{papers[i]||"—"}</div>
+            <div style={{fontSize:10,color:paperColors[i]||TH.brandText,fontWeight:700,letterSpacing:1,marginBottom:2}}>{papers[i]||"—"}</div>
             <div style={{fontSize:12,fontWeight:i===0?800:600,color:TH.text,lineHeight:1.3}}>{h}</div>
           </div>
         ))}
@@ -323,7 +323,7 @@ function PressScreen({report,matchResult,onClose}){
       {/* Tactical note */}
       {report.tacticalNote&&(
         <Card style={{padding:"10px 14px"}}>
-          <div style={{fontSize:10,color:TH.accent,fontWeight:700,letterSpacing:1,marginBottom:4}}>🎯 ANALISI TATTICA</div>
+          <div style={{fontSize:10,color:TH.accentText,fontWeight:700,letterSpacing:1,marginBottom:4}}>🎯 ANALISI TATTICA</div>
           <div style={{fontSize:11,color:TH.muted,lineHeight:1.5}}>{report.tacticalNote}</div>
         </Card>
       )}
@@ -346,7 +346,7 @@ function PressScreen({report,matchResult,onClose}){
 
       {/* Trending */}
       <Card style={{padding:"8px 14px",background:TH.bgBlue}}>
-        <span style={{fontSize:11,color:TH.primary,fontWeight:700}}>📈 Trending: </span>
+        <span style={{fontSize:11,color:TH.brandText,fontWeight:700}}>📈 Trending: </span>
         <span style={{fontSize:11,color:TH.text}}>{report.trending}</span>
       </Card>
 
@@ -463,7 +463,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
             <div style={{fontSize:12,fontWeight:700,color:TH.text,marginTop:4}}>{awayTeam?.name||awayTeam?.n}</div>
             <div style={{fontSize:10,color:TH.muted}}>OSPITE</div>
             {exClub&&exClub.side==="away"&&<div style={{fontSize:10,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:6,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
-            {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:10,color:"#64748b",background:TH.surface2,borderRadius:6,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
+            {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:10,color:TH.muted,background:TH.surface2,borderRadius:6,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
           </div>
         </div>
       </div>
@@ -482,7 +482,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
           le stesse famiglie d'azione che handleAction premia in campo → seguire il consiglio aumenta la riuscita. */}
       {scoutReport&&scoutReport.exploits&&(
         <Card style={{padding:"12px 14px",marginBottom:10,borderLeft:"3px solid "+TH.primary}}>
-          <div style={{fontSize:10,fontWeight:800,color:TH.primary,letterSpacing:1.5,marginBottom:8}}>🎙️ ANALISI DEL MISTER — COME VINCERLA</div>
+          <div style={{fontSize:10,fontWeight:800,color:TH.brandText,letterSpacing:1.5,marginBottom:8}}>🎙️ ANALISI DEL MISTER — COME VINCERLA</div>
           {scoutReport.exploits.map((e,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"6px 0",borderBottom:i<scoutReport.exploits.length-1?"1px solid "+TH.divider:"none"}}>
               <span style={{fontSize:14,flexShrink:0,marginTop:1}}>{e.cat==="gk"?"🧤":"🛡️"}</span>

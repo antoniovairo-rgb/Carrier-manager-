@@ -214,13 +214,13 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         <Card style={{marginBottom:10,padding:"12px 14px",background:TH.bgBlue,border:"1px solid #bfdbfe"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <div>
-              <div style={{fontSize:12,fontWeight:700,color:TH.primary}}>⚡ Nuova Carriera</div>
+              <div style={{fontSize:12,fontWeight:700,color:TH.brandText}}>⚡ Nuova Carriera</div>
               <div style={{fontSize:10,color:TH.muted,marginTop:2}}>Tutti gli slot sono pieni — sovrascrivine uno per iniziare</div>
             </div>
             <div style={{display:"flex",gap:6}}>
               {slots.map((s,i)=>(
                 <button key={i} onClick={()=>onNew(i)} title={s&&s.corrupted?`Sovrascrive S${i+1} (corrotto)`:s?`Sovrascrive: ${s.name}`:`Slot ${i+1} vuoto`}
-                  style={{padding:"6px 10px",borderRadius:8,border:`1px solid ${s?TH.bdRed:TH.bdBlue}`,background:s?TH.bgRed:TH.bgBlue,cursor:"pointer",fontSize:11,fontWeight:700,color:s?TH.txRed:TH.primary}}>
+                  style={{padding:"6px 10px",borderRadius:8,border:`1px solid ${s?TH.bdRed:TH.bdBlue}`,background:s?TH.bgRed:TH.bgBlue,cursor:"pointer",fontSize:11,fontWeight:700,color:s?TH.txRed:TH.brandText}}>
                   {s?`⚠️S${i+1}`:`+S${i+1}`}
                 </button>
               ))}
@@ -281,7 +281,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={46}/></div>
         <h1 style={{fontSize:20,fontWeight:900,margin:0,color:TH.text}}>Crea il tuo calciatore</h1>
-        <p style={{color:TH.muted,fontSize:12,margin:"6px 0 0"}}>Ruolo fisso: <strong style={{color:TH.primary}}>Attaccante</strong></p>
+        <p style={{color:TH.muted,fontSize:12,margin:"6px 0 0"}}>Ruolo fisso: <strong style={{color:TH.brandText}}>Attaccante</strong></p>
       </div>
       <Card style={{maxWidth:900,margin:"0 auto",padding:"16px 16px 18px"}}>
       <div className="cpm-create">
@@ -316,7 +316,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
           <div style={{fontSize:10,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>🎯 Stile & percorso</div>
           <Card style={{padding:"12px 14px",background:TH.bgBlue,border:"1px solid #bfdbfe"}} shadow={false}>
-            <div style={{fontSize:12,color:TH.primary,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
+            <div style={{fontSize:12,color:TH.brandText,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
             <div style={{fontSize:11,color:TH.muted,lineHeight:1.6}}>3 provini → offerte U18 → Lega A Primavera → campionati europei</div>
           </Card>
           {/* S12.2: Archetype selection */}
@@ -328,7 +328,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                 return(
                   <button key={arc.id} onClick={()=>setArchetypeId(arc.id)} style={{padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?TH.primary:TH.cardBorder}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",textAlign:"left",transition:"border .15s"}}>
                     <div style={{fontSize:16,marginBottom:2}}>{arc.e}</div>
-                    <div style={{fontSize:11,fontWeight:700,color:sel?TH.primary:TH.text}}>{arc.name}</div>
+                    <div style={{fontSize:11,fontWeight:700,color:sel?TH.brandText:TH.text}}>{arc.name}</div>
                     <div style={{fontSize:10,color:TH.faint,lineHeight:1.4}}>{arc.desc}</div>
                   </button>
                 );
@@ -355,7 +355,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                 return(
                 <button key={c.id} onClick={()=>setDreamClub(sel?null:c)} title={c.n} style={{padding:"6px 9px",borderRadius:9,border:`2px solid ${sel?c.c||TH.primary:"transparent"}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",display:"flex",alignItems:"center",gap:9,textAlign:"left"}}>
                   <TeamBadge team={c} size={24}/>
-                  <span style={{flex:1,minWidth:0,fontSize:12,fontWeight:700,color:sel?c.c||TH.primary:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.n}</span>
+                  <span style={{flex:1,minWidth:0,fontSize:12,fontWeight:700,color:sel?c.c||TH.brandText:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.n}</span>
                   <span style={{fontSize:10,color:TH.faint,flexShrink:0,whiteSpace:"nowrap"}}>{c.lg}</span>
                 </button>
                 );
@@ -363,7 +363,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
             </div>
             {dreamClub&&<div style={{fontSize:10,color:TH.txGreen,background:TH.bgGreen,borderRadius:8,padding:"6px 10px",border:"1px solid "+TH.bdGreen,display:"flex",alignItems:"center",gap:8}}><TeamBadge team={dreamClub} size={20}/> Il tuo sogno: <strong>{dreamClub.n}</strong> ({dreamClub.lg}). Ce la farai?</div>}
           </div>
-          {legacyBonus&&<div style={{padding:"10px 12px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed22,#4f46e522)",border:"1px solid #7c3aed44",marginBottom:6,fontSize:11,color:"#7c3aed",fontWeight:700}}>🌟 Nuova Partita+ attiva — Bonus {legacyBonus.label}: +{legacyBonus.statBoost} a tutti gli attributi</div>}
+          {legacyBonus&&<div style={{padding:"10px 12px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed22,#4f46e522)",border:"1px solid #7c3aed44",marginBottom:6,fontSize:11,color:TH.accentText,fontWeight:700}}>🌟 Nuova Partita+ attiva — Bonus {legacyBonus.label}: +{legacyBonus.statBoost} a tutti gli attributi</div>}
           <details style={{marginBottom:6}}>
             <summary style={{fontSize:11,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida <span style={{color:challengeId?TH.txAmber:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
             <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
@@ -416,7 +416,7 @@ function OffersScreen({player,trialStats,onChoose}){
                   <div><div style={{fontWeight:700,fontSize:14,color:TH.text}}>{club.name}</div><div style={{fontSize:11,color:TH.muted,marginTop:1}}>{club.nat} · Prestigio {club.p}</div></div>
                 </div>
                 <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
-                  {i===0&&<div style={{fontSize:10,color:TH.primary,fontWeight:700}}>⭐ TOP</div>}
+                  {i===0&&<div style={{fontSize:10,color:TH.brandText,fontWeight:700}}>⭐ TOP</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
                     {_dk&&<span className="kbd">{i+1}</span>}
                     <Btn onClick={()=>onChoose(club)} v={isSel?"primary":"secondary"}>Scegli →</Btn>
@@ -498,7 +498,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
   },[phase]);
   // 5.70.0 — contenitore match a ALTEZZA PIENA (come la carriera: height:100% + flex:1 attorno a LiveMatch),
   //   così il campo 3D riceve un'altezza reale invece di collassare.
-  if(phase==="match")return<div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}><div style={{textAlign:"center",padding:"6px 0",flexShrink:0}}><div style={{display:"inline-block",padding:"4px 16px",borderRadius:20,background:TH.bgBlue,border:"1px solid #bfdbfe",fontSize:11,color:TH.primary,fontWeight:700}}>🎯 PROVINO {trialNum+1}/3</div></div><div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}><MatchErrorBoundary><LiveMatch player={player} opponent={opp} context="trial" onMatchEnd={onMatchEnd}/></MatchErrorBoundary></div></div>;
+  if(phase==="match")return<div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column"}}><div style={{textAlign:"center",padding:"6px 0",flexShrink:0}}><div style={{display:"inline-block",padding:"4px 16px",borderRadius:20,background:TH.bgBlue,border:"1px solid #bfdbfe",fontSize:11,color:TH.brandText,fontWeight:700}}>🎯 PROVINO {trialNum+1}/3</div></div><div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}><MatchErrorBoundary><LiveMatch player={player} opponent={opp} context="trial" onMatchEnd={onMatchEnd}/></MatchErrorBoundary></div></div>;
   if(phase==="post"){const last=results[results.length-1],done=trialNum>=2;
     const _r=+(last.rating||6),_g=last.goals||0,_a=last.assists||0;
     const _emoji=_r>=7.5?"🌟":_r>=6.5?"👏":_r>=5.5?"🙂":"😕";
@@ -598,7 +598,7 @@ function AISettingsCard({player}){
       </div>
       {player&&player.aiData?.lastOpponentTactic&&(
         <div style={{marginTop:8,padding:"8px 10px",background:TH.surface2,borderRadius:8,border:"1px solid "+TH.cardBorder}}>
-          <div style={{fontSize:10,color:TH.primary,fontWeight:700,marginBottom:2}}>ULTIMA TATTICA AVVERSARIA</div>
+          <div style={{fontSize:10,color:TH.brandText,fontWeight:700,marginBottom:2}}>ULTIMA TATTICA AVVERSARIA</div>
           <div style={{fontSize:11,color:TH.text}}>{player.aiData.lastOpponentTactic.formation} · Pressing {player.aiData.lastOpponentTactic.pressure}%</div>
           <div style={{fontSize:10,color:TH.muted}}>{player.aiData.lastOpponentTactic.reasoning}</div>
         </div>
@@ -644,7 +644,7 @@ function NationalCallupScreen({data,onPlay}){
   React.useEffect(()=>{const t=setTimeout(()=>setShown(true),60);return()=>clearTimeout(t);},[]);
   return(
     <div style={{width:"100%",background:`linear-gradient(160deg,${col}30 0%,#050810 55%)`,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 16px 32px",boxSizing:"border-box",opacity:shown?1:0,transition:"opacity 0.45s",overflowY:"auto"}}>
-      {isFirst&&<div style={{background:`${TH.accent}20`,border:`1px solid ${TH.accent}55`,borderRadius:8,padding:"7px 18px",marginBottom:18,fontSize:10,color:TH.accent,letterSpacing:2,textTransform:"uppercase",fontWeight:800,textAlign:"center"}}>★ Traguardo di Carriera — Prima Convocazione ★</div>}
+      {isFirst&&<div style={{background:`${TH.accent}20`,border:`1px solid ${TH.accent}55`,borderRadius:8,padding:"7px 18px",marginBottom:18,fontSize:10,color:TH.accentText,letterSpacing:2,textTransform:"uppercase",fontWeight:800,textAlign:"center"}}>★ Traguardo di Carriera — Prima Convocazione ★</div>}
       <div style={{fontSize:54,marginBottom:4,lineHeight:1}}>{flag}</div>
       <div style={{fontSize:10,color:TH.muted,letterSpacing:2.5,textTransform:"uppercase",marginBottom:4}}>Convocazione Nazionale</div>
       <div style={{fontSize:26,fontWeight:900,color:"#fff",marginBottom:2}}>Nazionale {nation}</div>
@@ -721,7 +721,7 @@ function calcLegacyScore(p){
   return Math.round(clamp(score,0,1000));
 }
 function getLegacyGrade(score){
-  if(score>=900)return{label:"Leggenda Assoluta",e:"👑",color:"#7c3aed"};
+  if(score>=900)return{label:"Leggenda Assoluta",e:"👑",color:TH.accentText};
   if(score>=750)return{label:"Campione",e:"🏆",color:TH.txAmber};
   if(score>=600)return{label:"Professionista Eccellente",e:"⭐",color:TH.txBlue};
   if(score>=400)return{label:"Onesta Carriera",e:"✅",color:TH.txGreen};
@@ -1231,19 +1231,19 @@ const CAREER_MILESTONES=[
   {id:"g10",check:p=>(p.totalGoals||0)>=10,txt:"⚽ 10 gol in carriera raggiunti!",color:TH.txGreen},
   {id:"g25",check:p=>(p.totalGoals||0)>=25,txt:"🔥 25 gol in carriera! Bomber in ascesa.",color:TH.goldText},
   {id:"g50",big:true,check:p=>(p.totalGoals||0)>=50,txt:"💥 CINQUANTA GOL! Leggenda nascente.",color:"#ef4444",sub:"Traguardo straordinario — sei entrato nella storia del club."},
-  {id:"g100",big:true,check:p=>(p.totalGoals||0)>=100,txt:"👑 CENTO GOL! Sei nella storia del calcio.",color:"#7c3aed",sub:"Pochi calciatori raggiungono questa vetta. Sei uno di loro."},
+  {id:"g100",big:true,check:p=>(p.totalGoals||0)>=100,txt:"👑 CENTO GOL! Sei nella storia del calcio.",color:TH.accentText,sub:"Pochi calciatori raggiungono questa vetta. Sei uno di loro."},
   {id:"m25",check:p=>(p.totalMatches||0)>=25,txt:"👟 25 presenze in carriera!",color:"#0891b2"},
   {id:"m50",check:p=>proCareerOf(p).matches>=50/* [7.272.0] pro-only: la Primavera non conta */,txt:"⚡ 50 partite da professionista!",color:"#0891b2"},
-  {id:"m100",big:true,check:p=>(p.totalMatches||0)>=100,txt:"💎 100 PRESENZE! Una carriera vera.",color:"#7c3aed",sub:"Cento battaglie. Cento storie. Una carriera che merita rispetto."},
+  {id:"m100",big:true,check:p=>(p.totalMatches||0)>=100,txt:"💎 100 PRESENZE! Una carriera vera.",color:TH.accentText,sub:"Cento battaglie. Cento storie. Una carriera che merita rispetto."},
   {id:"ovr75",check:p=>(p.ovr||60)>=75,txt:"📈 Livello 75 — Giocatore solido e affidabile!",color:"#059669"},
   {id:"ovr80",check:p=>(p.ovr||60)>=80,txt:"🌟 Livello 80 — TOP PLAYER!",color:TH.txAmber},
-  {id:"ovr90",big:true,check:p=>(p.ovr||60)>=90,txt:"✨ Livello 90 — FUORICLASSE assoluto!",color:"#7c3aed",sub:"Hai raggiunto la vetta del calcio mondiale. Rispettato da tutti."},
+  {id:"ovr90",big:true,check:p=>(p.ovr||60)>=90,txt:"✨ Livello 90 — FUORICLASSE assoluto!",color:TH.accentText,sub:"Hai raggiunto la vetta del calcio mondiale. Rispettato da tutti."},
   // [7.8.21 collaudo tester «crea nuove milestone»] tier superiori + assist
   {id:"g150",big:true,check:p=>(p.totalGoals||0)>=150,txt:"🔱 CENTOCINQUANTA GOL! Bomber leggendario.",color:"#be123c",sub:"Un totale che ti mette tra i più grandi realizzatori di sempre."},
-  {id:"m200",big:true,check:p=>(p.totalMatches||0)>=200,txt:"🏛️ 200 PRESENZE! Una carriera monumentale.",color:"#7c3aed",sub:"Duecento partite di dedizione. Una bandiera vivente."},
+  {id:"m200",big:true,check:p=>(p.totalMatches||0)>=200,txt:"🏛️ 200 PRESENZE! Una carriera monumentale.",color:TH.accentText,sub:"Duecento partite di dedizione. Una bandiera vivente."},
   {id:"a10",check:p=>(p.totalAssists||0)>=10,txt:"🎯 10 assist in carriera — sai far giocare la squadra!",color:"#0891b2"},
   {id:"a25",check:p=>(p.totalAssists||0)>=25,txt:"🎨 25 assist in carriera! Rifinitore di classe.",color:TH.goldText},
-  {id:"a50",big:true,check:p=>(p.totalAssists||0)>=50,txt:"🖌️ CINQUANTA ASSIST! Un regista offensivo raro.",color:"#7c3aed",sub:"Non solo gol: illumini il gioco per i tuoi compagni."},
+  {id:"a50",big:true,check:p=>(p.totalAssists||0)>=50,txt:"🖌️ CINQUANTA ASSIST! Un regista offensivo raro.",color:TH.accentText,sub:"Non solo gol: illumini il gioco per i tuoi compagni."},
   {id:"ovr95",big:true,check:p=>(p.ovr||60)>=95,txt:"🚀 Livello 95 — TRA I MIGLIORI DI SEMPRE!",color:"#be123c",sub:"Pochissimi hanno mai toccato questa vetta. Sei tra loro."},
 ];
 /* Sprint 59 — Classifica Marcatori Live (Sprint 81: fix week guard + name dedup) */
