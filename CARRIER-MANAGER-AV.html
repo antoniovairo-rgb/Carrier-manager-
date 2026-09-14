@@ -43291,7 +43291,7 @@ const getThisWeekMatchday=()=>{
           <div style={{fontSize:13,fontWeight:900,color:"#fff",marginBottom:4}}>{_title}</div>
           <div style={{fontSize:11.5,color:"rgba(255,255,255,0.82)",lineHeight:1.5,marginBottom:10}}>{_body}</div>
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
-            {(_chs||[]).map((c,i)=>(<Btn key={c.k} v={i===0?"primary":"ghost"} fw onClick={()=>advance(c)}>{c.l}</Btn>))}
+            {(_chs||[]).map((c,i)=>(<Btn key={c.k} v={i===0?"outline":"ghost"} fw onClick={()=>advance(c)}>{c.l}</Btn>))}
           </div>
         </Card>);})()}
       {/* [7.14.0] LA TUA STORIA — capitolo narrativo della settimana (motore derivato, mai casuale) */}
@@ -43427,7 +43427,7 @@ const getThisWeekMatchday=()=>{
             </div>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
-            {PRES_TONI.map((t,i)=>(<Btn key={t.k} v={i===0?"primary":"ghost"} fw onClick={()=>doPresentazione(t)}>{t.e} {t.l}</Btn>))}
+            {PRES_TONI.map((t,i)=>(<Btn key={t.k} v={i===0?"outline":"ghost"} fw onClick={()=>doPresentazione(t)}>{t.e} {t.l}</Btn>))}
           </div>
         </Card>);})()}
       {/* [7.28.0 ONDA 3 — §S6] IL PROGETTO CLUB — l'annuncio della transizione di stato */}
@@ -43657,7 +43657,7 @@ const getThisWeekMatchday=()=>{
           </div>
           <div style={{display:"flex",gap:8}}>
             {ov.choices.map((c,i)=>(
-              <Btn key={i} v={i===0?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),onceSeen:{...(p.onceSeen||{}),[ov.k]:true},onceSeenSeason:p.season||1,diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ov.e,headline:ov.t,body:(ov.d||"").slice(0,110),color:"#d4a017"}].slice(-80),log:[`${ov.e} ${ov.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
+              <Btn key={i} v={i===0?"outline":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),onceSeen:{...(p.onceSeen||{}),[ov.k]:true},onceSeenSeason:p.season||1,diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ov.e,headline:ov.t,body:(ov.d||"").slice(0,110),color:"#d4a017"}].slice(-80),log:[`${ov.e} ${ov.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
             ))}
           </div>
         </Card>);})()}
@@ -43731,7 +43731,7 @@ const getThisWeekMatchday=()=>{
           </div>
           <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
             {sv.choices.map((c,i)=>(
-              <Btn key={i} v={i===0?"primary":"ghost"} style={{flex:"1 1 46%"}} onClick={()=>setPlayer(p=>{
+              <Btn key={i} v={i===0?"outline":"ghost"} style={{flex:"1 1 46%"}} onClick={()=>setPlayer(p=>{
                 const _ch=[...((p.serial&&p.serial.ch)||[]),c.c];
                 const _fin=sv.last;
                 return{...p,...c.fx(p),
@@ -43770,7 +43770,7 @@ const getThisWeekMatchday=()=>{
           <div style={{fontSize:11,color:TH.muted,lineHeight:1.5,marginBottom:10}}>{tv.d}</div>
           <div style={{display:"flex",gap:8}}>
             {tv.choices.map((c,i)=>(
-              <Btn key={i} v={i===0?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),trainEv:{s:p.season||1,w:p.week||1},log:[`${tv.e} ${tv.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
+              <Btn key={i} v={i===0?"outline":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),trainEv:{s:p.season||1,w:p.week||1},log:[`${tv.e} ${tv.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
             ))}
           </div>
         </Card>);})()}
