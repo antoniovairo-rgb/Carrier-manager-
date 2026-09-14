@@ -10,6 +10,7 @@
 
 | quando (UTC) | cosa | cantiere → stato | numeri |
 |---|---|---|---|
+| 15/09 00:40 | **main = 9188df9**: 7.895 v2 in produzione (rituali verdi su 3beb674: guardiano tabellone, career-critical, ci; build identico) | C7 → fatto | primo cielo sopra il bordo alto del tabellone: rosso 1 px in 9/9 impianti → 12-28 px (0,9-1,9u); provino piccolo 22 px, tabellone 151 → 68 px di larghezza (costo dichiarato) |
 | 14/09 22:05 | **main = f6a65d6**: 7.894 in produzione (rituali verdi su 6519780, build identico; f6a65d6 solo docs) | A1 → fatto | banco: azioni ≥ 3 passaggi 0,25 → 0,88/partita; tiri 2,88 → 3,13; passaggi 21 → 24,5 (rosso `__CPM_NO894`) |
 | 14/09 20:10 | **main = 5504b6e**: 7.892 + 7.893 in produzione (rituali verdi su 7940f26, build identico) | C1 → fatto | riga di telecronaca sopra la metà del campo 67,4 % → 0 %; blocco scelte 36,7 % → 21,5 %; barra specchiata dal 46' (casa x 13 → 297); frecce via |
 | 14/09 19:40 | main = e62db88: 7.891 v2 | B1 → fatto | piazzato di cartone 32,8u → 0; passo conduzione ≤ 8u |
@@ -43,7 +44,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 
 | cosa | numero | fonte |
 |---|---|---|
-| produzione (`main`) | **f6a65d6 = 7.894.0** (7.889 → 7.894 tutte in produzione) | verbale 22:05 |
+| produzione (`main`) | **9188df9 = 7.895.0** (7.889 → 7.895 tutte in produzione) | verbale 00:40 |
 | gioco vivo con un padrone dichiarato (telefono, 4 partite) | **37 %** | sonda telefono 14/09 |
 | tiri del motore a partita (4 partite) | **1,75** (0/2/2/3), 1 dall'area | area 2, misura B |
 | azioni ≥ 3 passaggi poi tiro (banco) | 0,25 (7.893) → **0,88**/partita (7.894, in produzione) | banco `stati-motore` |
@@ -94,7 +95,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 | C4 | post-partita, tema scuro fotografato, altre schermate (gerarchia, una cosa alla volta) | griglia: nessuna regressione; pieni ≤ 1 per vista | da fare |
 | C5 | performance mobile: 22 GLB per 90' (LOD/instancing, texture) — misura sull'Android del PO | fps ≥ 30 sul telefono del PO (da lui misurato); banco: triangoli in quadro −50 % | da misurare prima |
 | C6 | report finale in 16 sezioni della direttiva | consegnato | da scrivere |
-| C7 | **tabelloni luminosi: altezza misurata stadio per stadio** (nota PO 14/09) — 7.895 v2: dentro la sagoma della Curva Sud | primo cielo sopra il bordo alto: rosso 1 px in 9/9 impianti → verde 12-28 px (0,9-1,9u); provino piccolo 22 px | sul ramo (3beb674), rituali in corsa |
+| C7 | **tabelloni luminosi: altezza misurata stadio per stadio** (nota PO 14/09) — 7.895 v2: dentro la sagoma della Curva Sud | primo cielo sopra il bordo alto: rosso 1 px in 9/9 impianti → verde 12-28 px (0,9-1,9u); provino piccolo 22 px | **fatto** — in produzione (main 9188df9, 00:40); giudizio del PO sul telefono sulla taglia nel provino |
 
 ### D · COLLAUDO, STRUMENTI, SKILL
 | # | attività | metro | stato |

@@ -5580,3 +5580,9 @@ disposizione se il piccolo non gli piace.
 NON verificato: l'Android del PO; inglese/tedesco/spagnolo mai inquadrati dalla regia in 150 s (solo geometria).
 Errore dichiarato: la 7.894 era uscita con `GAME_VERSION` 7.893.0 (bump mancato); la 7.895 lo corregge.
 
+- 15/09 00:40 UTC: **Produzione allineata a 9188df9 (7.895.0 v2) — rituale completo verde su 3beb674** (guardiano
+  jumbotron-anchor exit=0, career-critical exit=0, ci exit=0, `IDENTICO 1`); i commit successivi sono solo documenti,
+  build byte-identico. Fast-forward f6a65d6 → 9188df9, mai force. C7 del macro piano → fatto. Non verificato
+  sull'Android del PO (la taglia del tabellone nel provino piccolo e' il punto da guardare). Scheda da telefono n° 16
+  (4 partite, GLB accesi) in corsa per la sezione voti.
+
