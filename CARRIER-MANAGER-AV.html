@@ -10558,7 +10558,15 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     const _t=Math.max(_e?_e.top:0,_o?_o.top:0);
     return {frontZ:_f,top:_t};
   }catch(_e){return null;}})();
-  const _curveGeo={sideX,sideW,depthHome:(_sudH>sideH?sideD*1.15:sideD),depthAway:sideD,hHome:_sudH,hAway:sideH,tiers:_tiers,endZ,depthEnd:endD,hEnd:endH,roofEnd:_roofEnd};/* [7.189.0] + tribune Est/Ovest: servono per appoggiare gli striscioni al loro MURO */
+  /* [C7 misura «tabelloni stadio per stadio» — nota PO 14/09] la SAGOMA della Curva Sud vista dal tabellone (x=55): fronte
+     della base, fronte e cima dei gradoni, copertura se c'e'. Solo dati: nessuna mesh cambia. La stessa aritmetica di addStand
+     (local z → world x per rotY=π/2: world x = sideX + z). */
+  const _sudGeo=(function(){try{const D=(_sudH>sideH?sideD*1.15:sideD),nt=(T&&T.megaCurva)?1:_tiers;
+    const top=nt===1?_sudH+0.8:nt===2?_sudH+1.4:_sudH*1.34+2.2, topX=sideX+D*(nt===1?0.44:nt===2?0.32:0.52);
+    const on=_roofFor("sud"),lv=_lvl437;let roofTop=null,roofFrontX=null;
+    if(on){roofTop=(nt>=3)?_sudH*1.34+2.4:_sudH+1.8;const zb=D*((nt>=3)?0.52:(lv<=0?0.34:0.36)),dp=(lv<=0)?D*0.20:D*(lv>=3?0.62:lv>=2?0.52:0.40);roofFrontX=sideX+((lv<=0)?(zb-dp/2):(zb-dp));}
+    return {h:+_sudH.toFixed(2),tiers:nt,baseX:+(sideX-(D+3)/2).toFixed(2),frontX:+(sideX-D/2+0.6).toFixed(2),top:+top.toFixed(2),topX:+topX.toFixed(2),roofTop:roofTop==null?null:+roofTop.toFixed(2),roofFrontX:roofFrontX==null?null:+roofFrontX.toFixed(2)};}catch(_e){return null;}})();
+  const _curveGeo={sideX,sideW,depthHome:(_sudH>sideH?sideD*1.15:sideD),depthAway:sideD,hHome:_sudH,hAway:sideH,tiers:_tiers,endZ,depthEnd:endD,hEnd:endH,roofEnd:_roofEnd,sud:_sudGeo};/* [7.189.0] + tribune Est/Ovest: servono per appoggiare gli striscioni al loro MURO */
   return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
 }
 
@@ -11832,6 +11840,10 @@ function ThreeMatchView(props){
         const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
         _c={..._c,template:window.__CPM_STADIUM_TPL_FORCE,rings:_ft.rings,corner:_ft.corner,roof:_ft.roof,tower:_ft.tower,fence:_ft.fence,standH:_ft.standH,dist:_ft.dist,megaCurva:!!_ft.megaCurva,asym:!!_ft.asym,modernity:_ft.mod,ledBoards:_ft.mod>0.55,screens:2};
       }
+      /* [C7] hook di COLLAUDO capienza (test-only): la taglia (sm/md/lg/xl) e il livello architettonico nascono dalla capienza —
+         senza questo il template forzato sul provino del banco restava sempre un impianto grande, e gli stadi piccoli non si misuravano */
+      if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&(+window.__CPM_STADIUM_CAP_FORCE>0))_c={..._c,capacity:+window.__CPM_STADIUM_CAP_FORCE};
+      try{if(_c)sr.current._stad455={tpl:_c.template||null,cap:_c.capacity||null};}catch(_e){}
       return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
     catch(e){/* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL CATCH
        CHE NASCONDEVA LO STADIO ROTTO] Questo catch era VUOTO: se `buildStadium` si interrompe a metà, la
@@ -12332,7 +12344,7 @@ function ThreeMatchView(props){
      const _bW=17*_bScale,_bH=7.7*_bScale;
      const _fissa455=(typeof window!=="undefined"&&window.__CPM_NO455);/* interruttore test-only: ripristina la quota fissa — serve al guardiano per provare il rosso */
      const _bY=_fissa455?15.5:Math.max(_bH/2+2.2, _endH455*0.86);/* il bordo basso resta dentro la tribuna, mai contro il cielo */
-     try{if(typeof window!=="undefined")window.__CPM_JUMBO455={y:+_bY.toFixed(2),h:+_bH.toFixed(2),endH:+_endH455.toFixed(2),lvl:_lvS455};}catch(_e455){}/* sonda: il guardiano confronta il bordo basso dello schermo con la sommita' della tribuna */
+     try{if(typeof window!=="undefined")window.__CPM_JUMBO455={y:+_bY.toFixed(2),h:+_bH.toFixed(2),endH:+_endH455.toFixed(2),lvl:_lvS455,x:55,w:+_bW.toFixed(2),sky:skyCol,tpl:(sr.current._stad455||{}).tpl||null,cap:(sr.current._stad455||{}).cap||null,traliccio:_lvS455<=0,sud:(_sc455&&_sc455.curve&&_sc455.curve.sud)||null};}catch(_e455){}/* [C7] + larghezza, cielo, traliccio e la sagoma della Curva Sud che sta DAVVERO dietro (sola lettura) *//* sonda: il guardiano confronta il bordo basso dello schermo con la sommita' della tribuna */
      const _board=new THREE.Mesh(new THREE.PlaneGeometry(_bW,_bH),new THREE.MeshBasicMaterial({map:_sbTex,transparent:true,opacity:0.98,side:THREE.DoubleSide}));
      _board.position.set(55,_bY,0);_board.rotation.y=-Math.PI/2;scene.add(_board);
      const _frame=new THREE.Mesh(new THREE.BoxGeometry(0.5,_bH*0.96,_bW*1.06),new THREE.MeshLambertMaterial({color:0x0a0f1c}));_frame.position.set(55.3,_bY,0);scene.add(_frame);

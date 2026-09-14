@@ -1226,7 +1226,15 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
     const _t=Math.max(_e?_e.top:0,_o?_o.top:0);
     return {frontZ:_f,top:_t};
   }catch(_e){return null;}})();
-  const _curveGeo={sideX,sideW,depthHome:(_sudH>sideH?sideD*1.15:sideD),depthAway:sideD,hHome:_sudH,hAway:sideH,tiers:_tiers,endZ,depthEnd:endD,hEnd:endH,roofEnd:_roofEnd};/* [7.189.0] + tribune Est/Ovest: servono per appoggiare gli striscioni al loro MURO */
+  /* [C7 misura «tabelloni stadio per stadio» — nota PO 14/09] la SAGOMA della Curva Sud vista dal tabellone (x=55): fronte
+     della base, fronte e cima dei gradoni, copertura se c'e'. Solo dati: nessuna mesh cambia. La stessa aritmetica di addStand
+     (local z → world x per rotY=π/2: world x = sideX + z). */
+  const _sudGeo=(function(){try{const D=(_sudH>sideH?sideD*1.15:sideD),nt=(T&&T.megaCurva)?1:_tiers;
+    const top=nt===1?_sudH+0.8:nt===2?_sudH+1.4:_sudH*1.34+2.2, topX=sideX+D*(nt===1?0.44:nt===2?0.32:0.52);
+    const on=_roofFor("sud"),lv=_lvl437;let roofTop=null,roofFrontX=null;
+    if(on){roofTop=(nt>=3)?_sudH*1.34+2.4:_sudH+1.8;const zb=D*((nt>=3)?0.52:(lv<=0?0.34:0.36)),dp=(lv<=0)?D*0.20:D*(lv>=3?0.62:lv>=2?0.52:0.40);roofFrontX=sideX+((lv<=0)?(zb-dp/2):(zb-dp));}
+    return {h:+_sudH.toFixed(2),tiers:nt,baseX:+(sideX-(D+3)/2).toFixed(2),frontX:+(sideX-D/2+0.6).toFixed(2),top:+top.toFixed(2),topX:+topX.toFixed(2),roofTop:roofTop==null?null:+roofTop.toFixed(2),roofFrontX:roofFrontX==null?null:+roofFrontX.toFixed(2)};}catch(_e){return null;}})();
+  const _curveGeo={sideX,sideW,depthHome:(_sudH>sideH?sideD*1.15:sideD),depthAway:sideD,hHome:_sudH,hAway:sideH,tiers:_tiers,endZ,depthEnd:endD,hEnd:endH,roofEnd:_roofEnd,sud:_sudGeo};/* [7.189.0] + tribune Est/Ovest: servono per appoggiare gli striscioni al loro MURO */
   return {homeMats,awayMats,goalNet:awayGoalNet,crowdAnims,frontRows,idleMs,burstMs,curve:_curveGeo,endH,lvl:_lvl437};// materiali per il goal pulse · redraw animati · prime file 3D (LOD1) · geometria curve per il tifo · [7.455.0] +endH/lvl: l'altezza REALE della tribuna di fondo e il livello architettonico, perche' il maxischermo si appoggi a cio' che c'e' davvero dietro invece che a una quota fissa
 }
 

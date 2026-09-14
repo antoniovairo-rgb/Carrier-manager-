@@ -309,6 +309,10 @@ function ThreeMatchView(props){
         const _ft=STADIUM_TEMPLATES[window.__CPM_STADIUM_TPL_FORCE];
         _c={..._c,template:window.__CPM_STADIUM_TPL_FORCE,rings:_ft.rings,corner:_ft.corner,roof:_ft.roof,tower:_ft.tower,fence:_ft.fence,standH:_ft.standH,dist:_ft.dist,megaCurva:!!_ft.megaCurva,asym:!!_ft.asym,modernity:_ft.mod,ledBoards:_ft.mod>0.55,screens:2};
       }
+      /* [C7] hook di COLLAUDO capienza (test-only): la taglia (sm/md/lg/xl) e il livello architettonico nascono dalla capienza —
+         senza questo il template forzato sul provino del banco restava sempre un impianto grande, e gli stadi piccoli non si misuravano */
+      if(_c&&typeof window!=="undefined"&&!window.__CPM_STORE_BUILD&&(+window.__CPM_STADIUM_CAP_FORCE>0))_c={..._c,capacity:+window.__CPM_STADIUM_CAP_FORCE};
+      try{if(_c)sr.current._stad455={tpl:_c.template||null,cap:_c.capacity||null};}catch(_e){}
       return _c;})()});if(_sc){sr.current.crowdMats=_sc;sr.current.goalNet=_sc.goalNet;sr.current._curveGeo=_sc.curve||null;/* [7.185.0] geometria REALE delle curve per la scenografia tifo */}}
     catch(e){/* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più» — IL CATCH
        CHE NASCONDEVA LO STADIO ROTTO] Questo catch era VUOTO: se `buildStadium` si interrompe a metà, la
@@ -809,7 +813,7 @@ function ThreeMatchView(props){
      const _bW=17*_bScale,_bH=7.7*_bScale;
      const _fissa455=(typeof window!=="undefined"&&window.__CPM_NO455);/* interruttore test-only: ripristina la quota fissa — serve al guardiano per provare il rosso */
      const _bY=_fissa455?15.5:Math.max(_bH/2+2.2, _endH455*0.86);/* il bordo basso resta dentro la tribuna, mai contro il cielo */
-     try{if(typeof window!=="undefined")window.__CPM_JUMBO455={y:+_bY.toFixed(2),h:+_bH.toFixed(2),endH:+_endH455.toFixed(2),lvl:_lvS455};}catch(_e455){}/* sonda: il guardiano confronta il bordo basso dello schermo con la sommita' della tribuna */
+     try{if(typeof window!=="undefined")window.__CPM_JUMBO455={y:+_bY.toFixed(2),h:+_bH.toFixed(2),endH:+_endH455.toFixed(2),lvl:_lvS455,x:55,w:+_bW.toFixed(2),sky:skyCol,tpl:(sr.current._stad455||{}).tpl||null,cap:(sr.current._stad455||{}).cap||null,traliccio:_lvS455<=0,sud:(_sc455&&_sc455.curve&&_sc455.curve.sud)||null};}catch(_e455){}/* [C7] + larghezza, cielo, traliccio e la sagoma della Curva Sud che sta DAVVERO dietro (sola lettura) *//* sonda: il guardiano confronta il bordo basso dello schermo con la sommita' della tribuna */
      const _board=new THREE.Mesh(new THREE.PlaneGeometry(_bW,_bH),new THREE.MeshBasicMaterial({map:_sbTex,transparent:true,opacity:0.98,side:THREE.DoubleSide}));
      _board.position.set(55,_bY,0);_board.rotation.y=-Math.PI/2;scene.add(_board);
      const _frame=new THREE.Mesh(new THREE.BoxGeometry(0.5,_bH*0.96,_bW*1.06),new THREE.MeshLambertMaterial({color:0x0a0f1c}));_frame.position.set(55.3,_bY,0);scene.add(_frame);
