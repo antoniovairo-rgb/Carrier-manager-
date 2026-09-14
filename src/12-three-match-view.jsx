@@ -7495,7 +7495,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          nascosto qualcuno per suo conto lo ritrova com'era). */
       /* [7.689.0] durante una SCENA SALIENTE i corpi tornano in campo: e' il punto della scena. Fuori
          di li' la telecronaca resta com'e' — solo pallone e ombra, come il PO ha chiesto nel 7.660. */
-      {const _off660=!(typeof window!=='undefined'&&window.__CPM_NO660)&&P.matchPhase==="playing"&&!P.ceremony&&!P.shootout&&!replaying&&!P.salienteOn;
+      /* [7.889.0 — I VENTIDUE TORNANO IN CAMPO ANCHE FUORI DALLE AZIONI SALIENTI. Rosso __CPM_NO889]
+         Direttiva PO 14/09: «durante la partita vorrei far rivedere i giocatori e non solo il pallone».
+         Rovescia la 7.665 (PO 04/09 «si deve vedere SOLO il pallone con la sua ombra») e la 7.865 (solo
+         il pallone riacceso): allora i ventidue erano fermi in una formazione di cartone; dal 7.870 le
+         loro posizioni le scrive il motore del possesso a ogni minuto (15-live-match: setMatchPlayers
+         dal motore), quindi hanno qualcosa da raccontare. Il blocco 7.665 resta INTATTO sotto il rosso:
+         con __CPM_NO889 il campo torna «solo pallone» com'era. Costo dichiarato prima della misura
+         (censimento fps 11/09): i ventidue GLB in quadro pesano 1,09 M triangoli, sul banco 2-6 fps
+         contro 10-13 a campo vuoto; sull'Android del PO il carico e' quello delle scene. */
+      {const _off660=!(typeof window!=='undefined'&&window.__CPM_NO660)&&(typeof window!=='undefined'&&!!window.__CPM_NO889)&&P.matchPhase==="playing"&&!P.ceremony&&!P.shootout&&!replaying&&!P.salienteOn;
        /* [7.665.0 v2 — LA MISURA HA BOCCIATO LA v1: 45 corpi ancora in campo con GLB acceso.
           Causa vera: lo spegnimento agiva SOLO alla transizione di fase, ma i personaggi GLB si
           agganciano in modo ASINCRONO qualche secondo dopo il fischio, e l'aggancio RIACCENDE il
