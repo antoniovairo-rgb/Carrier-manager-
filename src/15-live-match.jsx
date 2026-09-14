@@ -2054,6 +2054,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      correzione (snap sugli attori DENTRO quella regia) falliva proprio perché correggeva lo strato sbagliato
      al momento sbagliato. Ora il setup è un chokepoint unico (pattern STAB) e il force-sit lo chiama. */
   const stageSitPositions=(sit0,hp)=>{if(!sit0)return;
+    /* [7.890.0 — LA SCENA PRENDE I CORPI DOVE LI HA MESSI IL MOTORE. Rosso __CPM_NO890]
+       Censimento chi-588 sul 7.889 (PO 14/09 «lo scrittore non dovrebbe essere solo il motore?»): nel gioco
+       aperto il motore scrive 51/60 e 50/57 delle mosse; le altre sono i coreografi di scena, con salti di
+       13-30u in una scrittura all'apertura dell'highlight. Sotto il motore le due regie di gioco vivo
+       (formazione d'area, formazione generica per zona) NON riscrivono piu' i ventidue: il ponte dei due
+       minuti prima (7.870) ha gia' portato il gioco dove nasce la scena. Restano i calci piazzati fermi
+       (muro, barriera, rigore: palla ferma, la regia e' legittima) e lo spot della palla (7.402: un solo
+       uomo, solo se nessuno e' entro 3u). */
+    const _motore890=!(typeof window!=='undefined'&&window.__CPM_NO890)&&!(typeof window!=='undefined'&&window.__CPM_NO870);
     /* [7.456.0] il bump sta QUI, non ai punti di chiamata: React 18 accorpa questo `set` con i
        `setMatchPlayers` che seguono, quindi numero nuovo e posizioni nuove arrivano insieme. */
     setStageStamp(s=>s+1);
@@ -2125,7 +2134,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const sit=sit0;
         const szX=(hp&&hp.x!=null)?hp.x:(sit.startZone.x[0]+sit.startZone.x[1])/2;
         const szY=(hp&&hp.y!=null)?hp.y:(sit.startZone.y[0]+sit.startZone.y[1])/2;
-        setMatchPlayers(prev=>prev.map((pl,idx)=>{
+        if(!_motore890)setMatchPlayers(prev=>prev.map((pl,idx)=>{
           if(pl.team==="ref")return pl;
           if(pl.team==="away"){
             const ai=idx-10;
@@ -2152,7 +2161,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const szY=(hp&&hp.y!=null)?hp.y:((sit.startZone?.y[0]+sit.startZone?.y[1])/2||50);
           const isDef=sit.type==="def";
           const isWide=z0==="fascia"||(sit.startZone?.y&&((sit.startZone.y[0]+sit.startZone.y[1])/2<28||(sit.startZone.y[0]+sit.startZone.y[1])/2>72));
-          setMatchPlayers(prev=>prev.map((pl,idx)=>{
+          if(!_motore890)setMatchPlayers(prev=>prev.map((pl,idx)=>{
             if(pl.team==="ref")return pl;
             if(pl.team==="away"){
               const ai=idx-10;
