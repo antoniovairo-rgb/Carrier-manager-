@@ -5272,3 +5272,24 @@ chiusa. E un tiro su 180 parte ora dalla zona «centro»: un caso, lo tengo d'oc
   container, che in questa sessione e' avvenuto OTTO volte in diciotto ore: le catene lunghe vanno
   lanciate SUBITO dopo un riavvio, quando la finestra e' piu' ampia. E' cosi' che questa e' passata.
   NON verificato: l'Android del PO; la CI di GitHub su main. Metro non raggiunto: 7,17 contro 8.
+
+- 14/09 13:20 UTC: **AREA 2 — la zona delle conclusioni nella partita RESA, coppia appaiata sulla 7.888**.
+  Quattro partite (Vairo/Moretti in casa, Galli/Conti fuori), seme 4242, stessa sonda del telefono,
+  verde = 7.888 · rosso = stessa build con `__CPM_NO888`. Il classificatore legge le righe `💥` della
+  cronaca (escluse le scelte interattive) e le assegna a AREA/FUORI per le parole del luogo — e le parole
+  vengono davvero dalla zona del motore (`e.zona==='area'|'limite'|altro`, 15-live-match riga 1739-1742).
+  **Verde: 7 conclusioni, dall'area 0 (0 %), da fuori 6, non classificata 1. Rosso: 9, 0 (0 %), 8, 1.**
+  Il guadagno del banco (tiri dall'area 17 % → 28 %) NON arriva alla cronaca resa: 0 su 16 in totale.
+  Il dato piu' grosso e' un altro: **la cronaca racconta 0-4 conclusioni a partita** (7 in quattro partite),
+  contro le 10-15 che il motore produce al banco. Le conclusioni del motore passano quasi tutte dentro le
+  scene (occasioni/libreria), che hanno testi propri — e almeno una scena (riga 3570) scrive «dal limite»
+  a prescindere dalla zona. Prossimo passo dell'area 2: contare per partita i `tiro` del motore contro
+  le righe `💥` stampate, e leggere la zona nelle scene, non solo nelle righe libere.
+  **Due errori di strumento dichiarati e corretti prima di questo numero**: (a) la catena scriveva «done»
+  anche quando la sonda moriva in tre secondi per il symlink circolare di node_modules (lezione 27a);
+  (b) con il rosso acceso la sonda scrive in `<nome>-<lato>-rosso` e lo script copiava la cartella verde
+  spacciandola per rossa — «Vairo verde e rosso identici» era un falso; la rossa vera differisce in 131
+  righe. Le tre «rosse» di Galli/Moretti/Conti della prima corsa erano le cronache del 12/09 (7.886):
+  buttate. Nessun numero rosso comunicato prima delle 13:00 UTC del 14/09 era valido.
+  Non verificato: Chromium a 21 fps con un'altra sonda in parallelo sulla stessa macchina; il testo della
+  cronaca dipende dal seme e non dall'orologio, ma la contesa non e' stata esclusa con una corsa a macchina vuota.
