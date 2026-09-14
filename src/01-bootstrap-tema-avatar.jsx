@@ -65,7 +65,7 @@ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.tes
 let TH = {
   bg:"#f0f7ff", bgGrad:"linear-gradient(160deg,#e8f4fd 0%,#f0faf4 100%)",
   card:"#ffffff", cardBorder:"#dde6f0", shadow:"0 2px 12px rgba(0,0,0,0.07)",
-  text:"#1e293b", muted:"#64748b", faint:"#94a3b8",
+  text:"#1e293b", muted:"#526279", faint:"#596a80",/* [G1.1 grafica] i due grigi del testo secondario sul tema chiaro: erano 4,76:1 e 2,56:1 su bianco (2,4:1 e 4,0-4,4:1 sui fondi tinti): 917 nodi su 2291 sotto la soglia WCAG nella griglia G0, il piu' delle volte proprio questi due. Ora >=5,27:1 e >=4,69:1 su tutti e cinque i fondi chiari del gioco. La gerarchia resta (faint piu' chiaro di muted). Il tema scuro ha i suoi valori in TH_DARK e non cambia. */
   primary:"#8e1f33", primaryDk:"#6a1326",
   success:"#16a34a", danger:"#dc2626", warning:"#d97706",
   gold:"#b45309", accent:"#7c3aed",
