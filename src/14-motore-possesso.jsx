@@ -215,7 +215,13 @@ function creaMotorePossesso(cfg){
         tipo:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
         liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length});
       ev("controllo",{chi:chi(P),press:_pr,zona:_z});return;}
-    if(S.poss.t===1&&!golReq&&!(press>=4&&adv>=56&&rnd()<0.6)){ramo("controllo");
+    /* [7.894] IL PRIMO TOCCO NON E' SEMPRE UNA SOSTA. Il «controllo» al primo tick di ogni possesso (7.870) fermava
+       il pallone ai piedi per un minuto intero in un possesso su due: banco 8 partite, rami.controllo 19 su 92
+       tick, 21 passaggi e 2,9 tiri a partita, 0 azioni da tre passaggi — e sul telefono il PO vede «un pallone
+       senza proprietario e nessuna azione». Nel calcio vero il primo tocco e il passaggio stanno nello stesso
+       secondo: la sosta resta solo sotto pressione o quando non c'e' nessuno a cui dare la palla. Rosso __CPM_NO894. */
+    const _sosta894=(typeof window!=='undefined'&&window&&window.__CPM_NO894)?true:(press>=2.6||rnd()<0.22||!scegliRicevente(P,{}));
+    if(S.poss.t===1&&!golReq&&_sosta894&&!(press>=4&&adv>=56&&rnd()<0.6)){ramo("controllo");
       if(zona==="area"&&press>=2.2&&rnd()<0.55){ramo("tiro1");tira(P);return;}
       if(press<1.8&&rnd()<0.12){ramo("persa1");perdi(P);return;}
       ev("controllo",{chi:chi(P),press:+press.toFixed(1),zona});return;/* controllo: il pallone sta ai piedi un tick */

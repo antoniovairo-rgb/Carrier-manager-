@@ -5517,3 +5517,9 @@ senza live match; il costo in fps e la resa del pallone a cadenza tripla non son
 - 14/09 20:10 UTC: **Produzione allineata a 5504b6e (7.893.0: 7.892 + 7.893) — rituale completo verde su 7940f26**
   (career-critical exit=0, ci exit=0, `IDENTICO 1`); i commit successivi (9ad4b38, 0102b31, 5504b6e) sono solo documenti,
   build byte-identico. Fast-forward e62db88 → 5504b6e, mai force. Non verificato sull'Android del PO.
+
+- 14/09 20:20 UTC — nota PO: «occhio ai tabelloni luminosi degli stadi, l'altezza deve essere misurata stadio per
+  stadio; nello stadio del provino e' un tabellone volante nel cielo» → cantiere C7 nel macro piano (sonda per
+  stadio: base del tabellone vs cima della gradinata di fondo, foto per stadio, provino incluso). Da misurare.
+- 14/09 20:20 UTC — pulizia del repository (836755e): versions/ (42 MB), out/, test.html tolti; 309 sonde di agosto e
+  23 documenti storici in archivio; radice da 32 a 17 .md. Build non toccato.
