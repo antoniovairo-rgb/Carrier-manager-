@@ -146,7 +146,7 @@ function ReviewWizard({onExit}){
         scena 3D: sfondo 0.94→0.50 + blur leggero (leggibile) + text-shadow, cosi l'azione si vede ANCHE
         sotto la barra. Solo wizard di sviluppo, mai in build store. */}
     <div style={{position:"fixed",left:0,right:0,bottom:0,zIndex:99999,background:"rgba(2,6,16,0.50)",backdropFilter:"blur(2px)",WebkitBackdropFilter:"blur(2px)",borderTop:"1px solid rgba(30,41,59,0.6)",padding:"9px 10px 12px",fontFamily:"inherit",color:"#e2e8f0",textShadow:"0 1px 2px rgba(0,0,0,0.85)"}}>
-      {!cur?<div style={{textAlign:"center",padding:"14px 0",fontWeight:800,color:"#22c55e"}}>✅ Nessuna combinazione in questo filtro — hai finito!</div>:<>
+      {!cur?<div style={{textAlign:"center",padding:"14px 0",fontWeight:800,color:TH.txGreen}}>✅ Nessuna combinazione in questo filtro — hai finito!</div>:<>
         <div style={{display:"flex",gap:8,alignItems:"center",fontSize:11,color:"#94a3b8",marginBottom:4}}>
           <span>gi{cur.gi} · azione {cur.ai+1}</span>
           <span style={{background:cur.ok?"#14532d":"#7f1d1d",color:"#fff",padding:"2px 7px",borderRadius:20,fontWeight:800}}>{cur.ok?"ESITO RIUSCITO":"ESITO FALLITO"}</span>

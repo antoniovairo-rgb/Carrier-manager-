@@ -156,7 +156,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </div>
           <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",lineHeight:1}}>
             <span style={{fontFamily:"'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif",fontWeight:900,fontSize:40,letterSpacing:.5,color:"#fff",textShadow:"0 2px 8px rgba(0,0,0,0.3)",lineHeight:1}}>K<span style={{fontSize:31,verticalAlign:"baseline"}}>⚽</span>rward</span>
-            <span style={{fontFamily:"'KWScript','Segoe Script','Snell Roundhand','Apple Chancery',cursive",fontWeight:400,fontSize:30,letterSpacing:1,color:"#f59e0b",textShadow:"0 2px 8px rgba(0,0,0,0.3)",marginTop:0,lineHeight:1}}>Elite</span>
+            <span style={{fontFamily:"'KWScript','Segoe Script','Snell Roundhand','Apple Chancery',cursive",fontWeight:400,fontSize:30,letterSpacing:1,color:TH.goldText,textShadow:"0 2px 8px rgba(0,0,0,0.3)",marginTop:0,lineHeight:1}}>Elite</span>
           </div>
           <p style={{color:"rgba(255,255,255,0.86)",fontSize:11,margin:"8px 0 3px",letterSpacing:2,textTransform:"uppercase",fontWeight:FW.black}}>Football Career Simulator</p>
           <p style={{color:"rgba(255,255,255,0.64)",fontSize:12,margin:0,fontStyle:"italic"}}>From prospect to legend</p>
@@ -168,10 +168,10 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         {slots.map((s,i)=>s&&s.corrupted?(
           <div key={i} style={{border:`2px solid #fca5a5`,borderRadius:14,padding:"14px 18px",display:"flex",alignItems:"center",justifyContent:"space-between",background:TH.lossBg}}>
             <div>
-              <div style={{fontSize:12,fontWeight:700,color:TH.danger}}>⚠️ Slot {i+1} — dati corrotti</div>
+              <div style={{fontSize:12,fontWeight:700,color:TH.txRed}}>⚠️ Slot {i+1} — dati corrotti</div>
               <div style={{fontSize:11,color:TH.muted,marginTop:2}}>Il salvataggio non è leggibile. Elimina e ricomincia.</div>
             </div>
-            <button onClick={()=>setConfirmDel(i)} style={{padding:"6px 12px",borderRadius:8,border:"1px solid #fca5a5",background:TH.lossBg,cursor:"pointer",color:TH.danger,fontSize:12,fontWeight:700}}>🗑️ Elimina</button>
+            <button onClick={()=>setConfirmDel(i)} style={{padding:"6px 12px",borderRadius:8,border:"1px solid #fca5a5",background:TH.lossBg,cursor:"pointer",color:TH.txRed,fontSize:12,fontWeight:700}}>🗑️ Elimina</button>
           </div>
         ):s?(
           <Card key={i} border={TH.cardBorder} style={{padding:"12px 14px"}}>
@@ -220,7 +220,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             <div style={{display:"flex",gap:6}}>
               {slots.map((s,i)=>(
                 <button key={i} onClick={()=>onNew(i)} title={s&&s.corrupted?`Sovrascrive S${i+1} (corrotto)`:s?`Sovrascrive: ${s.name}`:`Slot ${i+1} vuoto`}
-                  style={{padding:"6px 10px",borderRadius:8,border:`1px solid ${s?"#fecaca":"#bfdbfe"}`,background:s?"#fee2e2":"#dbeafe",cursor:"pointer",fontSize:11,fontWeight:700,color:s?TH.danger:TH.primary}}>
+                  style={{padding:"6px 10px",borderRadius:8,border:`1px solid ${s?"#fecaca":"#bfdbfe"}`,background:s?"#fee2e2":"#dbeafe",cursor:"pointer",fontSize:11,fontWeight:700,color:s?TH.txRed:TH.primary}}>
                   {s?`⚠️S${i+1}`:`+S${i+1}`}
                 </button>
               ))}
@@ -336,7 +336,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
             </div>
             {(()=>{const arc=ARCHETYPES.find(a=>a.id===archetypeId);return arc?(
               <div style={{marginTop:6,padding:"7px 10px",background:TH.bgGreen,borderRadius:8,border:"1px solid #bbf7d0",fontSize:10,color:TH.txGreen}}>{/* [7.120.0 audit UI] bg verde chiaro FISSO → testo verde scuro FISSO (era TH.muted = chiaro in dark mode → illeggibile) */}
-                {Object.entries(arc.bonus).map(([k,v])=><span key={k} style={{marginRight:6,color:v>0?TH.success:TH.danger,fontWeight:700}}>{k} {v>0?"+":""}{v}</span>)}
+                {Object.entries(arc.bonus).map(([k,v])=><span key={k} style={{marginRight:6,color:v>0?TH.txGreen:TH.txRed,fontWeight:700}}>{k} {v>0?"+":""}{v}</span>)}
               </div>
             ):null;})()}
           </div>
@@ -361,13 +361,13 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                 );
               })}
             </div>
-            {dreamClub&&<div style={{fontSize:10,color:TH.success,background:TH.bgGreen,borderRadius:8,padding:"6px 10px",border:"1px solid #bbf7d0",display:"flex",alignItems:"center",gap:8}}><TeamBadge team={dreamClub} size={20}/> Il tuo sogno: <strong>{dreamClub.n}</strong> ({dreamClub.lg}). Ce la farai?</div>}
+            {dreamClub&&<div style={{fontSize:10,color:TH.txGreen,background:TH.bgGreen,borderRadius:8,padding:"6px 10px",border:"1px solid #bbf7d0",display:"flex",alignItems:"center",gap:8}}><TeamBadge team={dreamClub} size={20}/> Il tuo sogno: <strong>{dreamClub.n}</strong> ({dreamClub.lg}). Ce la farai?</div>}
           </div>
           {legacyBonus&&<div style={{padding:"10px 12px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed22,#4f46e522)",border:"1px solid #7c3aed44",marginBottom:6,fontSize:11,color:"#7c3aed",fontWeight:700}}>🌟 Nuova Partita+ attiva — Bonus {legacyBonus.label}: +{legacyBonus.statBoost} a tutti gli attributi</div>}
           <details style={{marginBottom:6}}>
-            <summary style={{fontSize:11,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida <span style={{color:challengeId?TH.warning:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
+            <summary style={{fontSize:11,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida <span style={{color:challengeId?TH.txAmber:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
             <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
-              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?"#fef9c3":"#f8fafc",cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:11}}>{ch.name}</span></div><div style={{fontSize:10,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:10,color:"#f59e0b",marginTop:2}}>{ch.reward}</div></button>);})}
+              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?"#fef9c3":"#f8fafc",cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:11}}>{ch.name}</span></div><div style={{fontSize:10,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:10,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
             </div>
           </details>
           <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:15}}>⚡ INIZIA I PROVINI</Btn>
@@ -402,7 +402,7 @@ function OffersScreen({player,trialStats,onChoose}){
       <div style={{textAlign:"center",marginBottom:14}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:18,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:12,margin:"6px 0 0"}}>3 provini · {total} gol · Rating medio {avg}</p></div>
       <Card style={{marginBottom:12,padding:"12px 14px"}}>
         <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Riepilogo provini</div>
-        <div style={{display:"flex",gap:6}}>{trialStats.map((t,i)=><div key={i} className="cpm-num" style={{flex:1,background:TH.surface2,borderRadius:RAD.sm,padding:"7px",textAlign:"center",border:"1px solid "+TH.divider}}><div style={{fontSize:10,color:TH.faint,marginBottom:2}}>Provino {i+1}</div><div style={{fontSize:12,fontWeight:FW.bold,color:TH.text}}>⚽{t.goals} 🎯{t.assists}</div><div style={{fontSize:11,color:TH.warning,fontWeight:FW.bold}}>{t.rating}</div></div>)}</div>
+        <div style={{display:"flex",gap:6}}>{trialStats.map((t,i)=><div key={i} className="cpm-num" style={{flex:1,background:TH.surface2,borderRadius:RAD.sm,padding:"7px",textAlign:"center",border:"1px solid "+TH.divider}}><div style={{fontSize:10,color:TH.faint,marginBottom:2}}>Provino {i+1}</div><div style={{fontSize:12,fontWeight:FW.bold,color:TH.text}}>⚽{t.goals} 🎯{t.assists}</div><div style={{fontSize:11,color:TH.txAmber,fontWeight:FW.bold}}>{t.rating}</div></div>)}</div>
       </Card>
       {_dk&&<div style={{fontSize:10,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>}
       <div className="cpm-offers" style={{marginBottom:12}}>
@@ -507,7 +507,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
       <div style={{textAlign:"center",marginBottom:14}}>
         <div style={{fontSize:46,marginBottom:4,animation:"pulse87 1.4s ease-in-out infinite"}}>{_emoji}</div>
-        <div style={{fontSize:10,color:TH.warning,letterSpacing:2,fontWeight:800}}>PROVINO {trialNum+1} DI 3 · COMPLETATO</div>
+        <div style={{fontSize:10,color:TH.txAmber,letterSpacing:2,fontWeight:800}}>PROVINO {trialNum+1} DI 3 · COMPLETATO</div>
         <div style={{fontSize:16,fontWeight:900,color:TH.text,marginTop:6}}>{_title}</div>
       </div>
       <style>{`@keyframes pulse87{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}`}</style>
@@ -527,13 +527,13 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       </Card>
       {/* progress dots */}
       <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:14}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:2}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
-      {done?<div style={{textAlign:"center",color:TH.success,fontSize:12.5,fontWeight:700,marginBottom:12}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:12,marginBottom:12}}>Manca ancora {2-trialNum} {2-trialNum===1?"provino":"provini"} per convincere i club.{_kbHint?<span style={{color:TH.faint}}> [Enter]</span>:null}</div>}
+      {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:12.5,fontWeight:700,marginBottom:12}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:12,marginBottom:12}}>Manca ancora {2-trialNum} {2-trialNum===1?"provino":"provini"} per convincere i club.{_kbHint?<span style={{color:TH.faint}}> [Enter]</span>:null}</div>}
       <Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:15}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>
     </div>;}
   return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
     {/* header + progress dots */}
     <div style={{textAlign:"center",marginBottom:14}}>
-      <div style={{fontSize:10,color:TH.warning,letterSpacing:2,fontWeight:800,marginBottom:10}}>IL PROVINO · PASSO {trialNum+1} DI 3</div>
+      <div style={{fontSize:10,color:TH.txAmber,letterSpacing:2,fontWeight:800,marginBottom:10}}>IL PROVINO · PASSO {trialNum+1} DI 3</div>
       <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.warning:TH.cardBorder,borderRadius:2}}/>}<div style={{width:30,height:30,borderRadius:"50%",background:i<trialNum?TH.success:i===trialNum?TH.warning:"transparent",border:`2px solid ${i<trialNum?TH.success:i===trialNum?TH.warning:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<trialNum?"✓":i+1}</div></React.Fragment>)}</div>
     </div>
     {/* VS hero */}
@@ -594,7 +594,7 @@ function AISettingsCard({player}){
           <div style={{fontSize:11,color:TH.text,fontWeight:600}}>Mock Mode</div>
           <div style={{fontSize:10,color:TH.faint}}>Risposte simulate (test senza API)</div>
         </div>
-        <button onClick={toggleMock} style={{padding:"5px 14px",borderRadius:20,border:"none",background:mock?"#dcfce7":TH.cardBorder,color:mock?TH.success:TH.muted,fontWeight:700,cursor:"pointer",fontSize:11,fontFamily:"inherit"}}>{mock?"ON":"OFF"}</button>
+        <button onClick={toggleMock} style={{padding:"5px 14px",borderRadius:20,border:"none",background:mock?"#dcfce7":TH.cardBorder,color:mock?TH.txGreen:TH.muted,fontWeight:700,cursor:"pointer",fontSize:11,fontFamily:"inherit"}}>{mock?"ON":"OFF"}</button>
       </div>
       {player&&player.aiData?.lastOpponentTactic&&(
         <div style={{marginTop:8,padding:"8px 10px",background:TH.surface2,borderRadius:8,border:"1px solid "+TH.cardBorder}}>
@@ -724,7 +724,7 @@ function getLegacyGrade(score){
   if(score>=900)return{label:"Leggenda Assoluta",e:"👑",color:"#7c3aed"};
   if(score>=750)return{label:"Campione",e:"🏆",color:TH.txAmber};
   if(score>=600)return{label:"Professionista Eccellente",e:"⭐",color:TH.txBlue};
-  if(score>=400)return{label:"Onesta Carriera",e:"✅",color:"#16a34a"};
+  if(score>=400)return{label:"Onesta Carriera",e:"✅",color:TH.txGreen};
   if(score>=200)return{label:"Carriera Solida",e:"💪",color:"#4b5563"};
   return{label:"Inizio Promettente",e:"🌱",color:"#6b7280"};
 }
@@ -795,7 +795,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
   const diaryMoments=(()=>{try{const out=[];
     const _wT=t=>t&&t.type==="int"?5:(t&&t.type==="euro"?4:(t&&t.type==="cup"?2:3));
     const _tr=[...(p.trophies||[])].sort((a,b)=>_wT(b)-_wT(a)||(a.season||0)-(b.season||0));
-    _tr.slice(0,3).forEach(t=>out.push({e:"🏆",color:"#f59e0b",headline:`${t.league||"Titolo"}${t.isNational?" con la Nazionale":""}`,body:`${t.club||""} · S.${t.season||"?"}`}));
+    _tr.slice(0,3).forEach(t=>out.push({e:"🏆",color:TH.goldText,headline:`${t.league||"Titolo"}${t.isNational?" con la Nazionale":""}`,body:`${t.club||""} · S.${t.season||"?"}`}));
     const _dS=(p.diary||[]).filter(d=>["pallone_oro","scarpa_oro","cup_trophy","euro_mondiale_trophy","first_national","first_goal","hattrick"].includes(d.type)).slice(-5).reverse();
     for(const d of _dS){if(out.length>=5)break;out.push(d);}
     return out.slice(0,5);}catch(_e){return (p.diary||[]).slice(-5).reverse();}})();
@@ -816,7 +816,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
        sotto la media) — la fiducia bassa può raffreddare il tono, non riscrivere i fatti. */
     const t=Math.max(j.trust||50,legacyScore>=600?68:legacyScore>=400?48:0);
     const _vi=(Math.abs(hashStr("jv|"+(p.name||"")))+(ji||0))%3;const B=(a,b,c)=>[a,b,c][_vi];
-    if(t>=80)return{txt:B(`"${p.name} è stato un privilegio da raccontare. Una carriera straordinaria."`,`"Uno di quelli che segnano un'epoca. Le sue notti resteranno negli archivi."`,`"Ho consumato la penna a scrivere di lui. Un fuoriclasse vero."`),color:"#16a34a"};
+    if(t>=80)return{txt:B(`"${p.name} è stato un privilegio da raccontare. Una carriera straordinaria."`,`"Uno di quelli che segnano un'epoca. Le sue notti resteranno negli archivi."`,`"Ho consumato la penna a scrivere di lui. Un fuoriclasse vero."`),color:TH.txGreen};
     if(t>=65)return{txt:B(`"Carriera solida, tanti momenti memorabili. Un giocatore che ha onorato la maglia."`,`"Professionista esemplare: quando contava, c'era quasi sempre."`,`"Il pubblico si fidava di lui. Una firma affidabile del nostro calcio."`),color:TH.txBlue};
     if(t>=45)return{txt:B(`"Nel complesso una carriera di buon livello. Non sempre costante, ma con picchi notevoli."`,`"Alti e bassi, come tutte le storie vere. I picchi però erano da grande."`,`"Un buon giocatore che a tratti è sembrato un campione."`),color:"#ca8a04"};
     if(t>=30)return{txt:B(`"Poteva dare di più. Il talento c'era, la continuità meno."`,`"Il potenziale era superiore ai numeri. Resta un po' di rammarico."`,`"Le premesse erano da top: il rendimento, non sempre."`),color:TH.txAmber};
@@ -1055,7 +1055,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         📋 Copia Riepilogo Carriera
       </Btn>
       {onNewGamePlus&&(()=>{const bonus=legacyScore>=600?{statBoost:3,label:"Leggenda",moraleBoost:15}:legacyScore>=400?{statBoost:2,label:"Veterano",moraleBoost:10}:legacyScore>=200?{statBoost:1,label:"Esperienza",moraleBoost:5}:null;return bonus?(<Btn onClick={()=>onNewGamePlus(bonus)} fw style={{padding:"13px",fontSize:14,marginBottom:10,background:"linear-gradient(135deg,#7c3aed,#4f46e5)",color:"#fff",border:"none"}}>🌟 Nuova Partita+ — Bonus {bonus.label} (+{bonus.statBoost} stats)</Btn>):null;})()}
-      {onNewGamePlus&&legacyScore>=100&&(<Btn onClick={()=>onNewGamePlus({statBoost:1,label:"Eredità Familiare",moraleBoost:8,generation:true,parentName:p.name,parentTotalGoals:p.totalGoals||0})} v="ghost" fw style={{padding:"12px",fontSize:13,marginBottom:8,border:`1.5px solid #16a34a`,color:"#16a34a"}}>👨‍👦 Gioca come figlio/a di {p.name}</Btn>)}
+      {onNewGamePlus&&legacyScore>=100&&(<Btn onClick={()=>onNewGamePlus({statBoost:1,label:"Eredità Familiare",moraleBoost:8,generation:true,parentName:p.name,parentTotalGoals:p.totalGoals||0})} v="ghost" fw style={{padding:"12px",fontSize:13,marginBottom:8,border:`1.5px solid #16a34a`,color:TH.txGreen}}>👨‍👦 Gioca come figlio/a di {p.name}</Btn>)}
       <Btn onClick={onNewGame} v="primary" fw style={{padding:"16px",fontSize:15}}>
         🏠 Torna al Menu Principale
       </Btn>
@@ -1228,8 +1228,8 @@ const _simCupRemainder=(cup)=>{
 };
 
 const CAREER_MILESTONES=[
-  {id:"g10",check:p=>(p.totalGoals||0)>=10,txt:"⚽ 10 gol in carriera raggiunti!",color:"#16a34a"},
-  {id:"g25",check:p=>(p.totalGoals||0)>=25,txt:"🔥 25 gol in carriera! Bomber in ascesa.",color:"#f59e0b"},
+  {id:"g10",check:p=>(p.totalGoals||0)>=10,txt:"⚽ 10 gol in carriera raggiunti!",color:TH.txGreen},
+  {id:"g25",check:p=>(p.totalGoals||0)>=25,txt:"🔥 25 gol in carriera! Bomber in ascesa.",color:TH.goldText},
   {id:"g50",big:true,check:p=>(p.totalGoals||0)>=50,txt:"💥 CINQUANTA GOL! Leggenda nascente.",color:"#ef4444",sub:"Traguardo straordinario — sei entrato nella storia del club."},
   {id:"g100",big:true,check:p=>(p.totalGoals||0)>=100,txt:"👑 CENTO GOL! Sei nella storia del calcio.",color:"#7c3aed",sub:"Pochi calciatori raggiungono questa vetta. Sei uno di loro."},
   {id:"m25",check:p=>(p.totalMatches||0)>=25,txt:"👟 25 presenze in carriera!",color:"#0891b2"},
@@ -1242,7 +1242,7 @@ const CAREER_MILESTONES=[
   {id:"g150",big:true,check:p=>(p.totalGoals||0)>=150,txt:"🔱 CENTOCINQUANTA GOL! Bomber leggendario.",color:"#be123c",sub:"Un totale che ti mette tra i più grandi realizzatori di sempre."},
   {id:"m200",big:true,check:p=>(p.totalMatches||0)>=200,txt:"🏛️ 200 PRESENZE! Una carriera monumentale.",color:"#7c3aed",sub:"Duecento partite di dedizione. Una bandiera vivente."},
   {id:"a10",check:p=>(p.totalAssists||0)>=10,txt:"🎯 10 assist in carriera — sai far giocare la squadra!",color:"#0891b2"},
-  {id:"a25",check:p=>(p.totalAssists||0)>=25,txt:"🎨 25 assist in carriera! Rifinitore di classe.",color:"#f59e0b"},
+  {id:"a25",check:p=>(p.totalAssists||0)>=25,txt:"🎨 25 assist in carriera! Rifinitore di classe.",color:TH.goldText},
   {id:"a50",big:true,check:p=>(p.totalAssists||0)>=50,txt:"🖌️ CINQUANTA ASSIST! Un regista offensivo raro.",color:"#7c3aed",sub:"Non solo gol: illumini il gioco per i tuoi compagni."},
   {id:"ovr95",big:true,check:p=>(p.ovr||60)>=95,txt:"🚀 Livello 95 — TRA I MIGLIORI DI SEMPRE!",color:"#be123c",sub:"Pochissimi hanno mai toccato questa vetta. Sei tra loro."},
 ];
@@ -1823,14 +1823,14 @@ const TrainPanel=({player,setPlayer,notify})=>{
         })}
       </div>
       <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap"}}>
-        <div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:fat>70?"#fee2e2":fat>45?"#fef3c7":"#f0fdf4",color:fat>70?TH.danger:fat>45?"#92400e":"#166534"}}>💧 {fat}/100</div>
+        <div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:fat>70?"#fee2e2":fat>45?"#fef3c7":"#f0fdf4",color:fat>70?TH.txRed:fat>45?"#92400e":"#166534"}}>💧 {fat}/100</div>
         <div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:TH.bgBlue,color:TH.txBlue}}>⭐ Forma {player.form||60}</div>
-        {_recent.length>0&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:_avgRating>=7?"#f0fdf4":_avgRating<=5.5?"#fee2e2":"#f8fafc",color:_avgRating>=7?TH.success:_avgRating<=5.5?TH.danger:TH.faint}}>📊 Voto {_avgRating.toFixed(1)}</div>}
+        {_recent.length>0&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:_avgRating>=7?"#f0fdf4":_avgRating<=5.5?"#fee2e2":"#f8fafc",color:_avgRating>=7?TH.txGreen:_avgRating<=5.5?TH.txRed:TH.faint}}>📊 Voto {_avgRating.toFixed(1)}</div>}
         {_mult!==1.0&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:_mult>1?"#f0fdf4":"#fff7ed",color:_mult>1?"#166534":"#92400e"}}>{_mult>1?`↑ ${Math.round((_mult-1)*100)}% efficacia`:`↓ ${Math.round((1-_mult)*100)}% efficacia`}</div>}
         {streak>=3&&<div style={{fontSize:10,padding:"3px 8px",borderRadius:6,fontWeight:700,background:TH.bgAmber,color:TH.txAmber}}>🔥 {streak} sett.</div>}
       </div>
       {allDone?(
-        <div style={{textAlign:"center",padding:"10px 0",color:TH.success,fontSize:12,fontWeight:700}}>
+        <div style={{textAlign:"center",padding:"10px 0",color:TH.txGreen,fontSize:12,fontWeight:700}}>
           ✅ Allenamento completato
           <div style={{fontSize:10,color:TH.muted,fontWeight:400,marginTop:3}}>
             {(()=>{const g=(slog||[]).filter(s=>s.gainA||s.gainB);return g.length?g.map(s=>[s.gainA?`+1 ${s.statA}`:null,s.gainB?`+1 ${s.statB}`:null].filter(Boolean).join(" · ")).join(" · "):"Nessuna crescita questa settimana.";})()}

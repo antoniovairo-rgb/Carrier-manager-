@@ -99,15 +99,15 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
           <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:6}}>⚔️ PRECEDENTI</div>
           <div style={{display:"flex",gap:8,alignItems:"center"}}>
             <div style={{textAlign:"center",flex:1,background:TH.bgGreen,borderRadius:8,padding:"6px 0"}}>
-              <div style={{fontSize:20,fontWeight:900,color:TH.success}}>{report.h2h.w}</div>
+              <div style={{fontSize:20,fontWeight:900,color:TH.txGreen}}>{report.h2h.w}</div>
               <div style={{fontSize:10,color:TH.muted}}>VINTE</div>
             </div>
             <div style={{textAlign:"center",flex:1,background:TH.bgAmber,borderRadius:8,padding:"6px 0"}}>
-              <div style={{fontSize:20,fontWeight:900,color:TH.warning}}>{report.h2h.d}</div>
+              <div style={{fontSize:20,fontWeight:900,color:TH.txAmber}}>{report.h2h.d}</div>
               <div style={{fontSize:10,color:TH.muted}}>PAREGGIATE</div>
             </div>
             <div style={{textAlign:"center",flex:1,background:TH.lossBg,borderRadius:8,padding:"6px 0"}}>
-              <div style={{fontSize:20,fontWeight:900,color:TH.danger}}>{report.h2h.l}</div>
+              <div style={{fontSize:20,fontWeight:900,color:TH.txRed}}>{report.h2h.l}</div>
               <div style={{fontSize:10,color:TH.muted}}>PERSE</div>
             </div>
           </div>
@@ -116,7 +116,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
       {/* Strengths & weaknesses */}
       <Card style={{padding:"12px 14px"}}>
         <div style={{marginBottom:10}}>
-          <div style={{fontSize:10,fontWeight:700,color:TH.danger,letterSpacing:1.5,marginBottom:5}}>⚠️ PUNTI DEBOLI — DA SFRUTTARE</div>
+          <div style={{fontSize:10,fontWeight:700,color:TH.txRed,letterSpacing:1.5,marginBottom:5}}>⚠️ PUNTI DEBOLI — DA SFRUTTARE</div>
           {(report.weaknesses||[]).map((w,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"5px 0",borderBottom:i<(report.weaknesses.length-1)?"1px solid "+TH.cardBorder:"none"}}>
               <span style={{fontSize:12,marginTop:1,flexShrink:0}}>🎯</span>
@@ -125,7 +125,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
           ))}
         </div>
         <div>
-          <div style={{fontSize:10,fontWeight:700,color:TH.success,letterSpacing:1.5,marginBottom:5}}>💪 PUNTI FORTI — DA NEUTRALIZZARE</div>
+          <div style={{fontSize:10,fontWeight:700,color:TH.txGreen,letterSpacing:1.5,marginBottom:5}}>💪 PUNTI FORTI — DA NEUTRALIZZARE</div>
           {(report.strengths||[]).map((str,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"5px 0",borderBottom:i<(report.strengths.length-1)?"1px solid "+TH.cardBorder:"none"}}>
               <span style={{fontSize:12,marginTop:1,flexShrink:0}}>⚡</span>
@@ -229,8 +229,8 @@ function PostMatchPress({match,report,player,L,onClose}){
         {/* MVP + tifosi */}
         {(rep.motm||(rep.fanReactions||[]).length>0)&&(
           <div style={{display:"flex",gap:10,padding:"0 18px 12px",flexWrap:"wrap"}}>
-            {rep.motm&&<div style={{flex:"1 1 42%",minWidth:130,background:TH.surface2,borderRadius:12,padding:"9px 12px",border:`1px solid ${TH.cardBorder}`}}><div style={{fontSize:8,letterSpacing:1,color:TH.success,fontWeight:800,marginBottom:3}}>⭐ MIGLIORE IN CAMPO</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{rep.motm}</div></div>}
-            {(rep.fanReactions||[]).length>0&&<div style={{flex:"1 1 42%",minWidth:130,background:TH.surface2,borderRadius:12,padding:"9px 12px",border:`1px solid ${TH.cardBorder}`}}><div style={{fontSize:8,letterSpacing:1,color:TH.warning,fontWeight:800,marginBottom:3}}>📣 VOCI DAI TIFOSI</div><div style={{fontSize:11,color:TH.muted,fontStyle:"italic",lineHeight:1.35}}>«{rep.fanReactions[0]}»</div></div>}
+            {rep.motm&&<div style={{flex:"1 1 42%",minWidth:130,background:TH.surface2,borderRadius:12,padding:"9px 12px",border:`1px solid ${TH.cardBorder}`}}><div style={{fontSize:8,letterSpacing:1,color:TH.txGreen,fontWeight:800,marginBottom:3}}>⭐ MIGLIORE IN CAMPO</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{rep.motm}</div></div>}
+            {(rep.fanReactions||[]).length>0&&<div style={{flex:"1 1 42%",minWidth:130,background:TH.surface2,borderRadius:12,padding:"9px 12px",border:`1px solid ${TH.cardBorder}`}}><div style={{fontSize:8,letterSpacing:1,color:TH.txAmber,fontWeight:800,marginBottom:3}}>📣 VOCI DAI TIFOSI</div><div style={{fontSize:11,color:TH.muted,fontStyle:"italic",lineHeight:1.35}}>«{rep.fanReactions[0]}»</div></div>}
           </div>
         )}
         {/* ALTRE TESTATE */}
@@ -269,7 +269,7 @@ function PressScreen({report,matchResult,onClose}){
           </div>
           <div style={{textAlign:"center"}}>
             <div style={{fontSize:28}}>{won?"🏆":drew?"🤝":"📉"}</div>
-            <div style={{fontSize:10,color:won?TH.success:drew?TH.warning:TH.danger,fontWeight:700}}>
+            <div style={{fontSize:10,color:won?TH.txGreen:drew?TH.txAmber:TH.txRed,fontWeight:700}}>
               {won?"VITTORIA":drew?"PAREGGIO":"SCONFITTA"}
             </div>
           </div>
@@ -311,11 +311,11 @@ function PressScreen({report,matchResult,onClose}){
       {/* MOTM + Flop */}
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
         <Card style={{padding:"10px 12px"}}>
-          <div style={{fontSize:8,color:TH.success,fontWeight:700,letterSpacing:1,marginBottom:4}}>⭐ MVP</div>
+          <div style={{fontSize:8,color:TH.txGreen,fontWeight:700,letterSpacing:1,marginBottom:4}}>⭐ MVP</div>
           <div style={{fontSize:11,fontWeight:700,color:TH.text}}>{report.motm||"—"}</div>
         </Card>
         <Card style={{padding:"10px 12px"}}>
-          <div style={{fontSize:8,color:TH.danger,fontWeight:700,letterSpacing:1,marginBottom:4}}>👎 FLOP</div>
+          <div style={{fontSize:8,color:TH.txRed,fontWeight:700,letterSpacing:1,marginBottom:4}}>👎 FLOP</div>
           <div style={{fontSize:11,color:TH.muted,lineHeight:1.3}}>{(report.flop||"—").slice(0,60)}</div>
         </Card>
       </div>
@@ -331,7 +331,7 @@ function PressScreen({report,matchResult,onClose}){
       {/* Fan reactions */}
       {(report.fanReactions||[]).length>0&&(
         <Card style={{padding:"10px 14px"}}>
-          <div style={{fontSize:8,color:TH.warning,fontWeight:700,letterSpacing:1,marginBottom:6}}>📣 TIFOSI</div>
+          <div style={{fontSize:8,color:TH.txAmber,fontWeight:700,letterSpacing:1,marginBottom:6}}>📣 TIFOSI</div>
           {report.fanReactions.map((r,i)=><div key={i} style={{fontSize:11,color:TH.muted,padding:"3px 0",borderBottom:i<report.fanReactions.length-1?"1px solid "+TH.cardBorder:"none"}}>"{r}"</div>)}
         </Card>
       )}
@@ -359,7 +359,7 @@ function AIDecisionOverlay({tactic,loading}){
   if(!tactic&&!loading)return null;
   return(
     <div style={{background:"rgba(239,68,68,0.07)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:8,padding:"9px 12px",marginBottom:8}}>
-      <div style={{fontSize:10,fontWeight:700,color:TH.danger,marginBottom:3}}>🤖 TATTICA AVVERSARIA (AI)</div>
+      <div style={{fontSize:10,fontWeight:700,color:TH.txRed,marginBottom:3}}>🤖 TATTICA AVVERSARIA (AI)</div>
       {loading?<div style={{fontSize:11,color:TH.muted}}>Analisi in corso…</div>:(
         <>
           <div style={{fontSize:14,fontWeight:900,color:"#f1f5f9",marginBottom:1}}>{tactic.formation}</div>
@@ -486,7 +486,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
           {scoutReport.exploits.map((e,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"6px 0",borderBottom:i<scoutReport.exploits.length-1?"1px solid "+TH.divider:"none"}}>
               <span style={{fontSize:14,flexShrink:0,marginTop:1}}>{e.cat==="gk"?"🧤":"🛡️"}</span>
-              <div style={{fontSize:11.5,color:TH.text,lineHeight:1.5}}><b style={{color:TH.success}}>{e.fam}:</b> {e.tip}</div>
+              <div style={{fontSize:11.5,color:TH.text,lineHeight:1.5}}><b style={{color:TH.txGreen}}>{e.fam}:</b> {e.tip}</div>
             </div>
           ))}
           {scoutReport.solid&&<div style={{marginTop:7,fontSize:10.5,color:TH.muted,lineHeight:1.45}}>{scoutReport.solid.tip[0].toUpperCase()+scoutReport.solid.tip.slice(1)}</div>}
@@ -651,7 +651,7 @@ function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=
         <text x="26.5" y="37.4" textAnchor="middle" dominantBaseline="central" fill="rgba(0,0,0,0.30)" fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif">{number}</text>
         <text x="26" y="36.4" textAnchor="middle" dominantBaseline="central" fill={txtCol} fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif" letterSpacing="-0.6">{number}</text>
       </svg>
-      <div style={{fontSize:7,color:isPlayer?"#f59e0b":"rgba(255,255,255,0.82)",fontWeight:isPlayer?800:600,textAlign:"center",width:S+8,lineHeight:1.1,letterSpacing:"0.3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
+      <div style={{fontSize:7,color:isPlayer?TH.goldText:"rgba(255,255,255,0.82)",fontWeight:isPlayer?800:600,textAlign:"center",width:S+8,lineHeight:1.1,letterSpacing:"0.3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
         {lastName}
       </div>
     </div>
