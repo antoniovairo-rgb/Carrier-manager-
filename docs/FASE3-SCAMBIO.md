@@ -5375,3 +5375,25 @@ rimedio (7.890): la scena prende i corpi dov'e' li ha messi il motore (il ponte 
 li porta gia' li') e i tre coreografi si chiudono sotto lo stesso cancello. Metro: salti > 8u dei
 ventidue all'apertura delle scene (oggi 1-2 a scena) → 0, e distanza degli attori della scena dai punti
 richiesti dalla situazione. Non verificato: 150 s di autoplay a tickMs 300, un solo seme (7300).
+
+## 7.890 SUL BRANCH — la scena prende i corpi dove li ha messi il motore (PO 14/09)
+
+Rimedio al censimento qui sopra: sotto il motore le due regie di gioco vivo di `stageSitPositions`
+(formazione d'area, formazione generica per zona) non riscrivono piu' i ventidue all'apertura
+dell'highlight; restano i calci piazzati fermi (palla ferma: muro, barriera, rigore) e lo spot della
+palla (7.402). Rosso `__CPM_NO890`. Misura appaiata, stesso strumento (`chi-588`, seme 7300, 150 s):
+
+| indice | scritture dal motore | regie di gioco vivo (salti) | piazzato fermo (salto) | pressing in scena (spost. medio) |
+|---|---|---|---|---|
+| i5 rosso | 46/55 | 2 (10,3u) | 1 (30,5u) | 6 (−2,8u) |
+| i5 verde | 45/54 | **0** | 1 (32,8u) | 8 (+3,6u) |
+| i15 rosso | 46/56 | 3 (7,5u · 3,3u) | 0 | 7 (+2,1u) |
+| i15 verde | 51/63 | **0** | 0 | 12 (+3,8u) |
+
+Lettura: le regie di gioco vivo spariscono (5 scritture → 0 sui due indici); il salto massimo dei
+non-motore su i15 scende da 16,7u a 3,8u (pressing, continuo). Su i5 resta UN teletrasporto di ~31u
+in 150 s: e' il calcio piazzato fermo, tenuto per scelta (a palla ferma la regia e' legittima) ma
+visibile — prossimo passo, dal motore stesso, che a `fermo` conosce gia' `kind` e battitore. Non
+verificato: un seme, 150 s di autoplay a tickMs 300, GLB spento nella sonda (i corpi logici non
+dipendono dal GLB); l'effetto sulle scene viste dal PO (attori scelti dai corpi del motore invece che
+dalla formazione di cartone) non e' fotografato in questa misura.
