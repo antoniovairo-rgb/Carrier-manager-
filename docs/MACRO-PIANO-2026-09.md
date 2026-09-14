@@ -6,12 +6,38 @@
 
 ## Avanzamento (una riga per spedizione, la più recente in alto)
 
+**Regola (direttiva PO 15/09):** ogni rilascio in produzione porta la scheda da telefono successiva (4 partite, scala 9) e aggiorna la sezione «Voti del player da cellulare» qui sotto: voti delle 12 aree, differenza dalla scheda precedente, istogramma. Registro: `docs/voti/voti-telefono.json`, generatore `node tools/voti-piano.mjs`.
+
 | quando (UTC) | cosa | cantiere → stato | numeri |
 |---|---|---|---|
 | 14/09 22:05 | **main = f6a65d6**: 7.894 in produzione (rituali verdi su 6519780, build identico; f6a65d6 solo docs) | A1 → fatto | banco: azioni ≥ 3 passaggi 0,25 → 0,88/partita; tiri 2,88 → 3,13; passaggi 21 → 24,5 (rosso `__CPM_NO894`) |
 | 14/09 20:10 | **main = 5504b6e**: 7.892 + 7.893 in produzione (rituali verdi su 7940f26, build identico) | C1 → fatto | riga di telecronaca sopra la metà del campo 67,4 % → 0 %; blocco scelte 36,7 % → 21,5 %; barra specchiata dal 46' (casa x 13 → 297); frecce via |
 | 14/09 19:40 | main = e62db88: 7.891 v2 | B1 → fatto | piazzato di cartone 32,8u → 0; passo conduzione ≤ 8u |
 | 14/09 18:20 | main = f8cb0b3: 7.889 + 7.890 + overhaul grafico G0-G4.1 | A/B1/C1 → fatto | corpi in campo 0,3 → 45; regie di gioco vivo 5 → 0; contrasto 917 → 62 |
+
+<!-- VOTI-INIZIO -->
+## Voti del player da cellulare (scheda n° 15, build 7.886.0, 12/09 09:30)
+
+Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7). Media **7,17** (n° 14, 7.884.0: 7,25 → **−0,08**); area minima **5**. Fonte: docs/archivio/PLAYTEST-REPORT-01.md · Scorecard n° 15 (media 7,17).
+
+| # | area | n° 14 | **n° 15** | Δ | istogramma (voto) | crescita / decrescita |
+|---|---|---|---|---|---|---|
+| 1 | Realismo | 8 | **8** | ±0 | `████████░░` 8 | · |
+| 2 | Credibilita' da attaccante | 7 | **7** | ±0 | `███████░░░` 7 | · |
+| 3 | Causalita' | 7 | **7** | ±0 | `███████░░░` 7 | · |
+| 4 | Varieta' | 7 | **7** | ±0 | `███████░░░` 7 | · |
+| 5 | Ritmo | 8 | **8** | ±0 | `████████░░` 8 | · |
+| 6 | Azioni extra-eroe | 7 | **7** | ±0 | `███████░░░` 7 | · |
+| 7 | Highlight dell'eroe | 8 | **8** | ±0 | `████████░░` 8 | · |
+| 8 | Telecronaca | 8 | **7** | −1 | `███████░░░` 7 | ▼ |
+| 9 | Interazioni | 7 | **7** | ±0 | `███████░░░` 7 | · |
+| 10 | Coerenza fra i sistemi | 8 | **8** | ±0 | `████████░░` 8 | · |
+| 11 | Immersione | 5 | **5** | ±0 | `█████░░░░░` 5 | · |
+| 12 | Carriera | 7 | **7** | ±0 | `███████░░░` 7 | · |
+
+Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n° 14 (7.884.0) **7,25** · n° 15 (7.886.0) **7,17**.
+
+<!-- VOTI-FINE -->
 
 ## 0. Dove siamo (misurato, 14/09 sera)
 
@@ -26,7 +52,7 @@
 | telecronaca sopra la metà del campo | 67 % → **0 %** (7.892) | `copertura` |
 | metro grafico (5 larghezze) | contrasto 917 → 62 (chiaro) / 1000 → 61 (scuro), testo < 10 px 463 → 29, overflow 0 | griglia G0→G6 |
 | fps banco con i 22 GLB in campo | 11 → **2** (Chromium); Android del PO: gioca, fps non misurati | c889 |
-| scheda da telefono (ultima) | media **5,3** (n°1, 11/09); soglia di collaudo **≥ 9** (PO 14/09) | #73, #56 |
+| scheda da telefono (ultima) | media **7,17** (scheda n° 15, 7.886, 12/09; la 7.887 → 7.895 non ha ancora una scheda); soglia di collaudo **≥ 9** (PO 14/09) | #73, #56 |
 
 ## 1. Obiettivo e metro finale
 

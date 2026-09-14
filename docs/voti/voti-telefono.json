@@ -1,0 +1,103 @@
+{
+ "aree": [
+  "Realismo",
+  "Credibilita' da attaccante",
+  "Causalita'",
+  "Varieta'",
+  "Ritmo",
+  "Azioni extra-eroe",
+  "Highlight dell'eroe",
+  "Telecronaca",
+  "Interazioni",
+  "Coerenza fra i sistemi",
+  "Immersione",
+  "Carriera"
+ ],
+ "soglia": {
+  "media": 9,
+  "minima": 7,
+  "nota": "direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7"
+ },
+ "schede": [
+  {
+   "n": 12,
+   "build": "7.880.0",
+   "quando": "11/09 17:25",
+   "voti": [
+    7,
+    7,
+    7,
+    7,
+    6,
+    7,
+    8,
+    7,
+    7,
+    8,
+    5,
+    7
+   ],
+   "fonte": "docs/archivio/PLAYTEST-REPORT-01.md · Scorecard n° 12"
+  },
+  {
+   "n": 13,
+   "build": "7.881.0",
+   "quando": "11/09 20:33",
+   "voti": [
+    7,
+    7,
+    7,
+    7,
+    8,
+    7,
+    8,
+    7,
+    7,
+    8,
+    5,
+    7
+   ],
+   "fonte": "docs/archivio/PLAYTEST-REPORT-01.md · Scorecard n° 13"
+  },
+  {
+   "n": 14,
+   "build": "7.884.0",
+   "quando": "12/09 07:50",
+   "voti": [
+    8,
+    7,
+    7,
+    7,
+    8,
+    7,
+    8,
+    8,
+    7,
+    8,
+    5,
+    7
+   ],
+   "fonte": "docs/archivio/PLAYTEST-REPORT-01.md · Scorecard n° 14"
+  },
+  {
+   "n": 15,
+   "build": "7.886.0",
+   "quando": "12/09 09:30",
+   "voti": [
+    8,
+    7,
+    7,
+    7,
+    8,
+    7,
+    8,
+    7,
+    7,
+    8,
+    5,
+    7
+   ],
+   "fonte": "docs/archivio/PLAYTEST-REPORT-01.md · Scorecard n° 15 (media 7,17)"
+  }
+ ]
+}
