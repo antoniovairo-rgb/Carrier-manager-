@@ -825,7 +825,10 @@ function ThreeMatchView(props){
         la quota del 7.455. */
      const _sud895=(_sc455&&_sc455.curve&&_sc455.curve.sud)||null;
      if(_sud895&&!_fissa455&&!(typeof window!=="undefined"&&window.__CPM_NO895)){try{
-       const _dietro=Math.max(_sud895.top,_sud895.roofTop||0)-0.3;
+       /* v2: la CIMA geometrica del gradone alto non e' la sagoma VISIBILE — sulle curve a due anelli il tifo finisce sotto il bordo
+          del piano (misurato in foto: col margine 0,3 restavano 3 px di gradinata sopra il bordo alto su storico_it 18000, 5 px sul
+          provino); a un anello il margine 0,3 lascia 13-25 px. Margine 0,9 sopra i due anelli, 0,3 sull'anello unico. */
+       const _dietro=Math.max(_sud895.top,_sud895.roofTop||0)-((_sud895.tiers|0)>=2?0.9:0.3);
        const _sup=(55>_sud895.frontX&&_sud895.topX>_sud895.frontX)?3+(55-_sud895.frontX)/(_sud895.topX-_sud895.frontX)*(_sud895.top-3):null;
        const _piede=_sup!=null?_sup+0.15:(55>_sud895.baseX?3.15:2.2);
        if(_dietro-_piede<_bH){const _h=Math.max(7.7*0.30,_dietro-_piede),_k=_h/_bH;_bH=_h;_bW*=_k;}

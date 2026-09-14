@@ -68,7 +68,12 @@ async function misura(caso){
       if(m){tot++;if(c/m>=0.5)cielo++;}const inn=isSky(x,y-signo(segno)*3);if(inn===false)dentroTab++;}
       return {colonne:tot,cielo,quota:tot?+(cielo/tot).toFixed(2):null,tabellonePresente:dentroTab};};
     const signo=s=>s;
-    pix={sopra:striscia(colpo.px[0],colpo.px[1],-1),sotto:striscia(colpo.px[3],colpo.px[2],+1),W,H};
+    /* v2: IL METRO PRINCIPALE e' la distanza dal bordo alto al PRIMO pixel di cielo (colonne centrali 25-75 %): rosso = 1 px
+       (il cielo comincia sul bordo), verde = quanti pixel di gradinata/copertura restano sopra il tabellone. */
+    const hpx=((colpo.px[2].y-colpo.px[1].y)+(colpo.px[3].y-colpo.px[0].y))/2,upx=j.h/Math.max(1,hpx);const ss=[];
+    for(let k=10;k<=30;k++){const t=k/40,x=colpo.px[0].x+(colpo.px[1].x-colpo.px[0].x)*t,y=colpo.px[0].y+(colpo.px[1].y-colpo.px[0].y)*t;let sv=999;for(let g=1;g<=160;g++){if(isSky(x,y-g)){sv=g;break;}}ss.push(sv);}
+    ss.sort((p,q)=>p-q);
+    pix={sopra:striscia(colpo.px[0],colpo.px[1],-1),sotto:striscia(colpo.px[3],colpo.px[2],+1),W,H,primoCielo:{minPx:ss[0],medPx:ss[10],medU:+(ss[10]*upx).toFixed(2),uPerPx:+upx.toFixed(3)}};
   }
   await ctx.close();
   const sud=j&&j.sud;const bTop=j?+(j.y+j.h/2).toFixed(2):null,bBot=j?+(j.y-j.h/2).toFixed(2):null;
@@ -77,7 +82,7 @@ async function misura(caso){
     staccoFondo:j?+(bBot-j.endH).toFixed(2):null,colpo,pix,errs:errs.slice(0,3),campioni:n,ultimo:colpo?null:ultimo};
   righe.push(r);
   const g=j?`[${j.tpl||'?'} ${j.cap||'?'}] tab y ${j.y} h ${j.h} w ${j.w} [${bBot}..${bTop}] liv.${j.lvl} traliccio ${j.traliccio?'si':'no'} · Sud h ${sud?sud.h:'?'} anelli ${sud?sud.tiers:'?'} fronte x ${sud?sud.frontX:'?'} cima ${sud?sud.top:'?'}@x${sud?sud.topX:'?'} tetto ${sud&&sud.roofTop!=null?sud.roofTop+'@x'+sud.roofFrontX:'no'} · stacco cima-Sud ${r.staccoSud>0?'+':''}${r.staccoSud} · fondo(7.455) ${r.staccoFondo}`:'sonda cieca';
-  const f=colpo?`foto ${colpo.min}' a ${colpo.t}s larg ${colpo.larg.toFixed(0)}px · cielo sopra ${pix.sopra.cielo}/${pix.sopra.colonne} (${pix.sopra.quota}) sotto ${pix.sotto.cielo}/${pix.sotto.colonne} · tab presente ${pix.sopra.tabellonePresente}/41 · cam (${colpo.cam?[colpo.cam.tPx,colpo.cam.tPy,colpo.cam.tPz].join(','):'?'})`:`MAI INQUADRATO in ${ATTESA_S}s (${n} campioni, fase ${ultimo&&ultimo.ph})`;
+  const f=colpo?`foto ${colpo.min}' a ${colpo.t}s larg ${colpo.larg.toFixed(0)}px · PRIMO CIELO sopra il bordo alto ${pix.primoCielo.medPx>=999?'mai':pix.primoCielo.medPx+' px = '+pix.primoCielo.medU+'u'} (min ${pix.primoCielo.minPx}) · cielo sopra ${pix.sopra.cielo}/${pix.sopra.colonne} (${pix.sopra.quota}) sotto ${pix.sotto.cielo}/${pix.sotto.colonne} · tab presente ${pix.sopra.tabellonePresente}/41 · cam (${colpo.cam?[colpo.cam.tPx,colpo.cam.tPy,colpo.cam.tPz].join(','):'?'})`:`MAI INQUADRATO in ${ATTESA_S}s (${n} campioni, fase ${ultimo&&ultimo.ph})`;
   console.log(`${caso.padEnd(13)} ${g}\n${' '.repeat(14)}${f}${errs.length?'  pageerror: '+errs[0]:''}`);
 }
 for(const c of casi){try{await misura(c);}catch(e){console.log(`${c.padEnd(13)} ERRORE ${String(e.message||e).slice(0,140)}`);righe.push({caso:c,errore:String(e.message||e)});}}
