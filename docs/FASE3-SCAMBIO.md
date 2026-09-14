@@ -5431,3 +5431,10 @@ oltre al motore sono le 8-9 scritture del pressing in scena, 3,5u l'una, continu
 incontrato scene a palla ferma nei 150 s (0/0 in tutte e quattro le gambe): il verdetto sul piazzato viene da
 `chi-588`, non da questa sonda. Non verificato: un seme, 150 s di autoplay; la formazione della punizione
 (muro) non e' fotografata; `__CPM_MS().min` e' nullo sotto autoplay (colonna minuto vuota); rituali in corsa.
+
+- 14/09 19:40 UTC: **Produzione allineata a e62db88 (7.891 v2) — rituale completo verde** (career-critical exit=0, ci
+  exit=0, `IDENTICO 1`), fast-forward f8cb0b3 → e62db88, mai force. Dichiarato: la v1 (7cb3779) aveva il ci rosso 42/43
+  sul test «passi umani» (13,0u: rientro della conduzione, 7.876, preesistente) — corretta nella v2, non spedita la v1.
+  Il PO ha giocato sul suo Android con i ventidue in campo (screenshot 21:21 ora locale, FC Cra–FC Mer 0-2, 34'):
+  il gioco gira; fps non misurati. Nota PO dallo stesso screenshot: «la telecronaca va visualizzata in basso e la
+  grafica delle interazioni va rivista (troppo invasive)» → G4.2.
