@@ -6051,6 +6051,18 @@ Voti [7,7,7,7,8,7,8,7,7,8,7,7], **media 7,25 = n° 18**: il salto di «ai piedi�
   su due); rifarla su piu' partite o con una soglia tarata sulla distribuzione e' una decisione del PO, non una
   correzione da prendersi da soli — un metro spedito non si tocca per farlo passare.
 
+- 15/09 20:22 UTC: **Produzione allineata a a81a8b5 (7.907.0: D7 corpi alleggeriti, contatore dei fotogrammi,
+  interruttore temporaneo) — rituale completo verde sul build esatto** (career-critical exit=0 alle 19:59, ci exit=0
+  alle 20:22, arbitro-esiste 7, partita-vera OK, `IDENTICO 1`). Fast-forward e42d71a → a81a8b5, mai force. Verificato
+  nel file di produzione: il contatore `data-cpm="fps907"` c'e'. **Ora tocca al PO**: stessa partita, menu di pausa,
+  «Corpi: leggeri» poi «Corpi: pieni», due numeri dal contatore — il banco non ha GPU e non puo' rispondere.
+  **NON ottenuto:** il primo piano del corpo PIENO per il confronto a occhio. Due tentativi: la sonda d7-corpi lo ha
+  inquadrato in campo largo (leggeva la posizione dell'eroe una volta sola); lo script dedicato ha trovato l'eroe
+  (x 34, y 48) ma lo ha ripreso in piano medio, perche' l'eroe si sposta prima che la camera si fermi. Resta vero il
+  fatto misurato: **le due varianti leggere (14.622 e 24.066 triangoli) sono indistinguibili da vicino**, quindi la
+  scelta fra loro e' fondata; il confronto col corpo pieno no. Se serve, lo strumento giusto e' una posa congelata
+  (`__CPM_FROZEN`) invece di una partita in corsa.
+
 ### 15/09 19:25 — D7 v2 misurata: i 22 in campo con il corpo alleggerito, il contatore dei fotogrammi e l'interruttore per il PO (ramo `claude/d7-corpi`, 7.907.0, rosso `__CPM_NO907`)
 
 Il lavoro della squadra grafica era scritto ma **mai committato** quando l'agente si e' fermato sul limite di spesa
