@@ -5680,3 +5680,10 @@ src/14), e prima si misura al banco se, a passo scalato, tiri e catene salgono d
 (revert 4cdb24c e c333063); il guardiano non e' arrivato ai rituali. Prossimo A2 v3: `tick({min,dt:1/3})` nel motore
 con passo e voli scalati, banco `stati-sub` con dt, poi il live.
 
+- 15/09 01:20 UTC — **C2, anteprima di design del HUD di partita** pubblicata come canvas
+  (https://claude.ai/artifact/UUnLJLHaADyJSzVvmzAHwj): tre tavole 412x915 (gioco vivo · interazione come scheda dal
+  basso · esito) piu' due schizzi alternativi (testo in alto; campo a tutto schermo). Vocabolario preso dal gioco
+  (barra #060d1e→#0f1e3a, scelte rgba(24,20,48,.86) con bordo lilla, verde/rosso/rosa del mister), campo = fotogramma
+  vero del provino. Quattro domande per il PO nel canvas (altezza della barra, altezza della scheda, percentuali sulle
+  scelte, tasto Continua). Nessun codice del gioco toccato: la C3 parte dal si' del PO.
+
