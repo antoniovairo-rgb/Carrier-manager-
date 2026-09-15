@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './lib/harness.mjs';
-function loadMotore(){const src=fs.readFileSync(path.join(ROOT,'src','14-motore-possesso.jsx'),'utf8');const i=src.indexOf('/* CMAV-SRC-HEADER-END */');const code=src.slice(i+'/* CMAV-SRC-HEADER-END */'.length);return Function('decideExecution','window',code+'\nreturn creaMotorePossesso;')(undefined,undefined);}
+function loadMotore(){const src=fs.readFileSync(path.join(ROOT,'src','14-motore-possesso.jsx'),'utf8');const i=src.indexOf('/* CMAV-SRC-HEADER-END */');const code=src.slice(i+'/* CMAV-SRC-HEADER-END */'.length);const W=(process.env.CPM_ROSSO||'').split(',').filter(Boolean).reduce((o,k)=>(o[k]=true,o),{});/* CPM_ROSSO=__CPM_NOxxx: il braccio rosso al banco */return Function('decideExecution','window',code+'\nreturn creaMotorePossesso;')(undefined,Object.keys(W).length?W:undefined);}
 const crea=loadMotore();
 const giocatori=()=>{const h=[[8,50,1],[18,12],[18,38],[18,62],[18,88],[38,25],[38,50],[38,75],[55,22],[55,78]].map((p,i)=>({team:'home',gk:!!p[2],name:'CASA'+i,rl:i===0?'GK':i<=4?'DF':i<=7?'MF':'AT',x:p[0],y:p[1]}));const a=[[95,50,1],[82,12],[82,38],[82,62],[82,88],[62,25],[62,50],[62,75],[48,20],[48,50],[48,80]].map((p,i)=>({team:'away',gk:!!p[2],name:'OSP'+i,rl:i===0?'GK':i<=4?'DF':i<=7?'MF':'AT',x:p[0],y:p[1]}));return h.concat(a);};
 const N=+(process.env.CPM_PARTITE||16),MIN=92;

@@ -174,9 +174,9 @@ function creaMotorePossesso(cfg){
     S.conta.tiri++;
     ev("tiro",{chi:chi(P),zona,intent,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});
     volo({tipo:"tiro",kind:intent,x:tx,y:ty,ricevente:null,v:44,esito:out,tiratore:P.i,arco:"shot",actor:nome(P)});};
-  const conduci=(P)=>{const d=dirDi(P.team);const passo=5+rnd()*3;const adv=advDi(P.x,P.team);
+  const conduci=(P,opt)=>{opt=opt||{};const d=dirDi(P.team);const _sp900=!!opt.spinta;const passo=(5+rnd()*3)+(_sp900?3:0);/* tetto 11u: il passo umano resta sotto i 12u del guardiano */const adv=advDi(P.x,P.team);/* [7.900 A4] spinta: al limite con la strada libera il portatore PUNTA LA PORTA (passo +4u, rientro deciso verso il centro) */
     /* [7.876] chi conduce sulla fascia non rientra per abitudine: punta il fondo e rientra solo in area */
-    let ty=P.y+(50-P.y)*0.06+(rnd()-0.5)*2;if(adv>=86&&Math.abs(P.y-50)>18)ty=P.y+(50-P.y)*0.35;
+    let ty=P.y+(50-P.y)*0.06+(rnd()-0.5)*2;if(_sp900)ty=P.y+(50-P.y)*0.5;else if(adv>=86&&Math.abs(P.y-50)>18)ty=P.y+(50-P.y)*0.35;
     else if(adv>=60&&Math.abs(P.y-50)>=20)ty=P.y+(P.y-50)*0.05+(rnd()-0.5)*2;
     let nx=clamp(P.x+d*passo,3,97),ny=clamp(ty,4,96);
     /* [7.891 v2] IL PASSO DELLA CONDUZIONE E' UMANO ANCHE QUANDO RIENTRA: il rientro in area del 7.876 sommava
@@ -240,10 +240,20 @@ function creaMotorePossesso(cfg){
        del guardiano (>=3 per partita) usciva rossa o verde a caso. Il fischio ora c'e' anche mentre il
        gol e' decretato, a meta' probabilita' e solo finche' il tetto ha margine (t<=4): la punizione fa
        parte della costruzione, non la sospende. */
-    {const r=rnd();const pFb=(press<3?0.26:0.10)+(adv>=56?0.04:0);
+    /* [7.900.0 — A4: LA SQUADRA TIRA. Rosso __CPM_NO900] Diagnosi al banco (16 partite, dt=1/3, 57 decisioni di tenuta a partita):
+       tiri 3,5 a partita (area 1,3, quasi tutti di testa su cross); il portatore decide in area l'1-2 % delle volte e al limite
+       tira nel 3 % dei casi. Il FALLO e' il primo modo in cui muore un attacco: 17 % di tutte le decisioni (23 % al limite,
+       21 % in trequarti, 9,5 a partita), perche' la 7.875 lo sorteggia PRIMA del tiro con 0,26 sotto pressione e 0,14 anche
+       senza nessuno vicino. Qui: (a) il fallo pesa 0,18 sotto pressione (un avversario entro 3u) e 0,05 altrimenti;
+       (b) al limite e in area il fallo si sorteggia DOPO il tiro; (c) al limite con la strada libera la conduzione punta la
+       porta (passo +4u, rientro al centro). Metro al banco: tiri, tiri dall'area, falli, decisioni in area. */
+    const _no900=(typeof window!=='undefined'&&window&&window.__CPM_NO900);
+    const _dopo900=!_no900&&(zona==="limite"||zona==="area")&&!golReq;
+    const _fallo900=()=>{const r=rnd();const pFb=_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):((press<3?0.18:0.05)+(adv>=56?0.03:0));
       const pF=golReq?((golReq.t|0)<=3?pFb*0.5:0):pFb;
-      if(pF>0&&r<pF){ramo(golReq?"falloGol":"fallo");fallo(P);return;}
-      if(!golReq&&press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return;}}
+      if(pF>0&&r<pF){ramo(golReq?"falloGol":"fallo");fallo(P);return true;}
+      if(!golReq&&press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return true;}return false;};
+    if(!_dopo900&&_fallo900())return;
     const verso=S.richieste.verso;
     let pTiro=zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0;
     pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
@@ -278,6 +288,7 @@ function creaMotorePossesso(cfg){
       if(M&&advDi(M.x,l)>=adv+6&&hyp(M.x,M.y,P.x,P.y)>=5){ramo("lancioGol");passa(P,M,{kind:hyp(M.x,M.y,P.x,P.y)>26?"lancio":"verticale",sicuro:golReq.t>=2});return;}
       if(adv<86){ramo("conduciGol");conduci(P);return;}}
     else if(rnd()<pTiro){ramo("tiro");tira(P);return;}
+    if(_dopo900&&_fallo900())return;/* [7.900] il fallo, dopo il tiro */
     const spazio=spazioAvanti(P);
     const largo=Math.abs(P.y-50)>=22;
     if(!golReq&&adv>=72&&largo&&rnd()<0.55){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<78||Math.abs(q.y-50)>20)continue;const sc=aq+(q.eroe?4:0)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}}
@@ -296,7 +307,7 @@ function creaMotorePossesso(cfg){
     const pCond=(_entra888||(S.poss.t<=3&&adv<86))?((spazio>=2?(S.poss.t===2?0.55:0.32):(S.poss.t===2?0.40:0.20))+(golReq?0.10:0)+(P.eroe?0.08:0)+(_entra888?0.30:0)):0;
     if(rnd()<pCond){if(press<3&&spazio<2&&rnd()<0.22){if(rnd()<0.35){ramo("dribblingFallo");fallo(P);return;}ramo("dribblingPerso");perdi(P);return;}
       if(Math.abs(P.y-50)>=38&&rnd()<0.42){ramo("conduzioneFuori");ev("fuori",{chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});fuoriCampo(P.x,P.y,altro(l),"throw");return;}
-      ramo("conduci");conduci(P);return;}
+      ramo("conduci");conduci(P,{spinta:_entra888});return;}
     const R=scegliRicevente(P,{golReq});
     if(R){ramo("passa");passa(P,R);return;}
     if(spazio>=3&&adv<90){ramo("conduci2");conduci(P);return;}

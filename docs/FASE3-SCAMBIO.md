@@ -5966,3 +5966,31 @@ Lettura onesta: la 7.899 non tocca il motore, e le quattro partite si muovono di
 entrambi i versi (Vairo 68 → 58, Moretti 62 → 69): e' la varianza da corsa a corsa dello strumento, non un
 cambiamento. Voti (n° 17 → n° 18): Telecronaca 6 → 7 (sovrapposizione della panchina 100 % → 0 %), Immersione 6 → 7
 (pallone/uomo 0,52 → 0,35; non verificato sull'Android del PO), le altre invariate. Media **7,25** (n° 17: 7,08).
+
+### 15/09 08:20 — 7.900.0, A4 v1: la squadra tira (rosso `__CPM_NO900`)
+
+**Diagnosi al banco** (`scratchpad/a4/diag-attacco.mjs`, 16 partite, dt=1/3, senza gol decretati): 57 decisioni di
+tenuta a partita — centro 36 %, trequarti 33 %, limite 18 %, dietro 11 %, **area 2 %**. Tiri 3,5 a partita (area 1,3,
+quasi tutti di testa su cross). Al limite il portatore conduce 37 %, e' fermato da un FALLO 23 %, passa 17 %, controlla
+14 %, tira **3 %**. Il fallo e' il primo modo in cui muore un attacco: 17 % di tutte le decisioni (9,5 a partita;
+fallo@trequarti 3,8, fallo@limite 2,4), perche' la 7.875 lo sorteggia PRIMA del tiro con 0,26 sotto pressione e 0,14
+anche senza nessuno vicino. Il piu' avanzato del lato in possesso sta a 64 (mediana), i possessi arrivano oltre 80 nel
+61 % dei casi ma il portatore non entra in area palla al piede.
+
+**Rimedio v1** (tre righe in `decidiTenuta`/`conduci`): (a) fallo 0,26/0,14 → 0,18 sotto pressione (avversario entro
+3u) e 0,05 altrimenti; (b) al limite e in area il fallo si sorteggia DOPO il tiro; (c) al limite con la strada libera la
+conduzione punta la porta (passo +3u, tetto 11u, rientro deciso al centro).
+
+| banco `stati-sub`, 48 partite, dt=1/3, con gol decretati | rosso | **verde** |
+|---|---|---|
+| tiri a partita (dall'area) | 4,1 (1,3) | **5,2 (1,8)** |
+| catene ≥ 3 passaggi → tiro | 0,6 | **1,0** |
+| interruzioni (falli, rimesse, corner) | 8,6 | 6,8 |
+| passaggi · conduzioni | 24,7 · 8,5 | 23,1 · 10,1 |
+| decisioni in area (diagnosi, 16 partite) | 2 % (17) | **6 % (58)**; tiro@area 1,3 → 2,8 senza decreti |
+| invarianti · gol decretati | 0 · 0 · 96/96 | 0 · 0 · 96/96 |
+
+Letto onestamente: +27 % di tiri e +38 % dall'area, ma 5,2 contro gli 8 chiesti dal PO. Il resto sta nel tiro dal
+limite (8 % delle decisioni anche ora: il 45 % di base e' scontato da pressione ×0,6, strada libera ×0,35 e larghezza)
+e nel «controllo» al limite (18 %, la sosta 7.894). Prossimo passo v2: il tiro di prima al limite. Rituali in corsa
+(il guardiano partita-vera misura i tiri nel live).
