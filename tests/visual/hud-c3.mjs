@@ -242,6 +242,50 @@ async function misuraBraccio(arm) {
     if (manySample) { await shotReady(page, path.join(OUT, `${arm.name}-${H}-hl_choose_molte.png`), () => { const el = document.querySelector('[data-cpm="scelte"]'); return el ? el.getBoundingClientRect() : null; }, { waitFirst: 800 }); res.photos.molte = `${arm.name}-${H}-hl_choose_molte.png`; }
     res.many = manySample;
 
+    /* [7.905.0 — C3 v4] IL PASSO DI MOVIMENTO (hl_move) E LA SCHEDA SENZA D-PAD. Si cerca la prima situation
+       con budget di mosse (forzata con choose=false → hl_move: __CPM_FORCE_SIT riempie il budget, 7.388) e si
+       misura l'overlay: altezza ≤ 44vh, barra «Pressione» presente, altezza del tasto del D-pad (atteso 44 px
+       verde / 40 rosso), tasto «Scegli» ≥ 52 px, riga di aiuto. Poi la STESSA situation in hl_choose: D-pad
+       atteso rosso SI / verde NO (terza nota del PO: «secondo cursore inutile»), barra e riga di aiuto presenti. */
+    const readMossa = () => {
+      const press = document.querySelector('[data-cpm="pressione"]');
+      const dp = document.querySelector('[data-cpm="dpad"] button');
+      const aiuto = document.querySelector('[data-cpm="aiuto"]');
+      let ov = document.querySelector('[data-cpm="mossa"]');
+      if (!ov) { let e = dp || press; while (e && e !== document.body) { if (getComputedStyle(e).position === 'absolute') { ov = e; break; } e = e.parentElement; } }
+      const btns = ov ? [...ov.querySelectorAll('button')].filter(b => !b.closest('[data-cpm="dpad"]')) : [];
+      const scegli = document.querySelector('[data-cpm="scegli"]') || btns.find(b => /Scegli|✅/.test(b.textContent || '')) || null;
+      const r = ov ? ov.getBoundingClientRect() : null;
+      return { fase: window.__CPM_PHASE ? window.__CPM_PHASE() : null, h: r ? r.height : null, pct: r ? r.height / window.innerHeight : null, pressione: !!press, dpadH: dp ? dp.getBoundingClientRect().height : null, scegliH: scegli ? scegli.getBoundingClientRect().height : null, aiuto: !!aiuto, aiutoTxt: aiuto ? aiuto.textContent : null, hasPct: ov ? /%/.test(ov.textContent || '') : null };
+    };
+    let giMove = -1, mossa = null, chooseDpad = null;
+    for (let gi = 0; gi < 191 && giMove < 0; gi++) {
+      const ok = await page.evaluate((i) => { const S = window.__CPM_SITS || []; const s = S[i]; if (!s || s.lockMovement) return false; window.__CPM_FORCE_SIT(i, false); return true; }, gi);
+      if (!ok) continue;
+      await sleep(450);
+      const m = await page.evaluate(readMossa);
+      if (m && m.fase === 'hl_move' && m.dpadH) { giMove = gi; mossa = m; }
+    }
+    res.giMove = giMove;
+    if (giMove >= 0) {
+      await shotReady(page, path.join(OUT, `${arm.name}-${H}-hl_move.png`), () => { const el = document.querySelector('[data-cpm="mossa"]') || document.querySelector('[data-cpm="dpad"]'); return el ? el.getBoundingClientRect() : null; }, { waitFirst: 300, maxTries: 3 });
+      res.photos.mossa = `${arm.name}-${H}-hl_move.png`;
+      await page.evaluate((gi) => window.__CPM_FORCE_SIT(gi, true), giMove);
+      await sleep(900);
+      chooseDpad = await page.evaluate(() => {
+        const sc = document.querySelector('[data-cpm="scelte"]');
+        const dp = sc ? sc.querySelector('[data-cpm="dpad"] button') : null;
+        const press = sc ? sc.querySelector('[data-cpm="pressione"]') : null;
+        const aiuto = sc ? sc.querySelector('[data-cpm="aiuto"]') : null;
+        const r = sc ? sc.getBoundingClientRect() : null;
+        const rows = sc ? [...sc.querySelectorAll('[data-cpm="scelte-righe"] button, button')].filter(b => !b.closest('[data-cpm="dpad"]')) : [];
+        return { fase: window.__CPM_PHASE ? window.__CPM_PHASE() : null, h: r ? r.height : null, pct: r ? r.height / window.innerHeight : null, dpad: !!dp, dpadH: dp ? dp.getBoundingClientRect().height : null, pressione: !!press, aiuto: !!aiuto, aiutoTxt: aiuto ? aiuto.textContent : null, nRows: rows.length, minRow: rows.length ? Math.min(...rows.map(b => b.getBoundingClientRect().height)) : null, hasPct: sc ? /%/.test(sc.textContent || '') : null };
+      });
+      await shotReady(page, path.join(OUT, `${arm.name}-${H}-hl_choose_mosse.png`), () => { const el = document.querySelector('[data-cpm="scelte"]'); return el ? el.getBoundingClientRect() : null; }, { waitFirst: 800 });
+      res.photos.choose_mosse = `${arm.name}-${H}-hl_choose_mosse.png`;
+    }
+    res.mossa = mossa; res.chooseDpad = chooseDpad;
+
     if (playingSamples.length) {
       const avgPct = playingSamples.reduce((a, s) => a + s.pct, 0) / playingSamples.length;
       const maxPct = Math.max(...playingSamples.map(s => s.pct));
@@ -279,6 +323,17 @@ async function misuraBraccio(arm) {
   rows.push(['2b', 'scelte (7 opz.): righe intere visibili senza scorrere', '≥ 3', rosso.many ? String(rosso.many.visibiliIntere) : '—', verde.many ? String(verde.many.visibiliIntere) : '—']);
   rows.push(['3', 'esito: altezza banda', `≤ 40 % (${(0.40 * H).toFixed(0)} px)`, rosso.result ? pct(rosso.result.pct) + ' (' + fmt(rosso.result.h, 0) + ' px)' : '—', verde.result ? pct(verde.result.pct) + ' (' + fmt(verde.result.h, 0) + ' px)' : '—']);
   rows.push(['3', 'esito: tasti grandi (≥200px) / piccoli (<80px)', '1 bottone: 1 grande / 0 piccoli', rosso.result ? `${rosso.result.big} grandi / ${rosso.result.small} piccoli (bottoni tot. ${rosso.result.nBtns})` : '—', verde.result ? `${verde.result.big} grandi / ${verde.result.small} piccoli (bottoni tot. ${verde.result.nBtns})` : '—']);
+  const siNo = (v) => (v == null ? '—' : (v ? 'sì' : 'no'));
+  rows.push(['4', `hl_move (sit #${verde.giMove}): altezza overlay`, `≤ 44 % (${(0.44 * H).toFixed(0)} px)`, rosso.mossa ? pct(rosso.mossa.pct) + ' (' + fmt(rosso.mossa.h, 0) + ' px)' : '—', verde.mossa ? pct(verde.mossa.pct) + ' (' + fmt(verde.mossa.h, 0) + ' px)' : '—']);
+  rows.push(['4', 'hl_move: barra pressione presente', 'sì', rosso.mossa ? siNo(rosso.mossa.pressione) : '—', verde.mossa ? siNo(verde.mossa.pressione) : '—']);
+  rows.push(['4', 'hl_move: altezza tasto D-pad', '44 px (tocco minimo)', rosso.mossa ? fmt(rosso.mossa.dpadH, 0) + ' px' : '—', verde.mossa ? fmt(verde.mossa.dpadH, 0) + ' px' : '—']);
+  rows.push(['4', 'hl_move: tasto «Scegli» (altezza)', '≥ 52 px', rosso.mossa ? fmt(rosso.mossa.scegliH, 0) + ' px' : '—', verde.mossa ? fmt(verde.mossa.scegliH, 0) + ' px' : '—']);
+  rows.push(['4', 'hl_move: riga di aiuto presente', 'sì (verde)', rosso.mossa ? siNo(rosso.mossa.aiuto) : '—', verde.mossa ? siNo(verde.mossa.aiuto) : '—']);
+  rows.push(['5', 'hl_choose (stessa sit): D-pad presente', 'rosso sì / verde NO', rosso.chooseDpad ? siNo(rosso.chooseDpad.dpad) + (rosso.chooseDpad.dpad ? ' (' + fmt(rosso.chooseDpad.dpadH, 0) + ' px)' : '') : '—', verde.chooseDpad ? siNo(verde.chooseDpad.dpad) : '—']);
+  rows.push(['5', 'hl_choose: barra pressione presente', 'sì (verde)', rosso.chooseDpad ? siNo(rosso.chooseDpad.pressione) : '—', verde.chooseDpad ? siNo(verde.chooseDpad.pressione) : '—']);
+  rows.push(['5', 'hl_choose: riga di aiuto presente', 'sì (verde)', rosso.chooseDpad ? siNo(rosso.chooseDpad.aiuto) : '—', verde.chooseDpad ? siNo(verde.chooseDpad.aiuto) : '—']);
+  rows.push(['5', 'hl_choose (stessa sit): altezza scheda, righe', `≤ 44 %, righe ≥52 px`, rosso.chooseDpad ? pct(rosso.chooseDpad.pct) + ', ' + rosso.chooseDpad.nRows + ' righe min ' + fmt(rosso.chooseDpad.minRow, 0) + ' px' : '—', verde.chooseDpad ? pct(verde.chooseDpad.pct) + ', ' + verde.chooseDpad.nRows + ' righe min ' + fmt(verde.chooseDpad.minRow, 0) + ' px' : '—']);
+  rows.push(['5', 'hl_choose: caratteri "%" nella scheda', 'NESSUNO', rosso.chooseDpad ? (rosso.chooseDpad.hasPct ? 'SÌ (presente)' : 'no') : '—', verde.chooseDpad ? (verde.chooseDpad.hasPct ? 'SÌ (presente)' : 'no') : '—']);
 
   const widths = rows[0].map((_, ci) => Math.max(...rows.map(r => String(r[ci]).length)));
   const line = r => r.map((c, ci) => String(c).padEnd(widths[ci])).join('  |  ');
@@ -295,7 +350,8 @@ async function misuraBraccio(arm) {
     'verde.choose=' + !!(verde.choose && verde.choose.forzata), 'verde.result=' + !!(verde.result && verde.result.forzata));
 
   console.log('\nfoto salvate in', OUT + ':');
-  for (const arm of [verde, rosso]) for (const k of ['playing', 'choose', 'result', 'molte']) if (arm.photos[k]) console.log(' -', arm.photos[k]);
+  for (const arm of [verde, rosso]) for (const k of ['playing', 'choose', 'result', 'molte', 'mossa', 'choose_mosse']) if (arm.photos[k]) console.log(' -', arm.photos[k]);
+  if (verde.mossa && verde.mossa.aiutoTxt) console.log('\nriga di aiuto (verde, hl_move):', JSON.stringify(verde.mossa.aiutoTxt), '· hl_choose:', JSON.stringify(verde.chooseDpad && verde.chooseDpad.aiutoTxt));
 
   const failHard = (verde.errs > 0) || (rosso.errs > 0);
   process.exit(failHard ? 1 : 0);
