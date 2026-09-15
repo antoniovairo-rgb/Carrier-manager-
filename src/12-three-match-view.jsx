@@ -2348,6 +2348,12 @@ function ThreeMatchView(props){
               const _cbx5=_noS2?(ball.position.x-hero.position.x):(G2X(P.ballX==null?50:P.ballX)-G2X(P.playerX==null?50:P.playerX));
               const _cbz5=_noS2?(ball.position.z-hero.position.z):(G2Z(P.ballY==null?50:P.ballY)-G2Z(P.playerY==null?50:P.playerY));
               if(Math.hypot(_cbx5,_cbz5)<3.2&&(_cbx5*(_cvx5/_csp5)+_cbz5*(_cvz5/_csp5))<0.28){_colla515=true;if(typeof window!=='undefined')window.__CPM_COLLA=1;}}}
+          /* [7.898 v3d] L'EROE NON RUBA IL PALLONE DI UN COMPAGNO. Senza l'arco di cronaca (v3c) il pallone reso passa
+             raso terra vicino all'eroe e la colla qui sopra (3,2u dalla mesh, eroe in corsa) se lo prendeva: diagnosi
+             Moretti, scrittore «eroe» col padrone «altro» 227 campioni (16 %) e in volo 202 (14 %), distanza dal
+             padrone 3,6 → 7,2u. Quando la simulazione dichiara il portatore, l'eroe scrive solo se il portatore e' lui
+             (indice 21); in volo o a palla libera non scrive. Rosso __CPM_NO898 (arco di cronaca e regola di prima). */
+          if(_colla515&&P.matchPhase==='playing'&&P.carrierRef&&!(typeof window!=='undefined'&&window.__CPM_NO898)){try{const _c8=P.carrierRef.current;if(!(_c8&&_c8.i===21)){_colla515=false;if(typeof window!=='undefined')window.__CPM_COLLA=0;}}catch(_e898c){}}
           /* [7.555.0 P1 — IL PADRONE DEL PALLONE E' UNO SOLO, E SI ELEGGE PRIMA DI SCRIVERE]
              Il censimento per fase (sonda scrittori-555, 1908 fotogrammi) ha smentito la stima «77% di
              scritture anonime»: gli scrittori senza nome sono lo 0,8%. Il difetto vero e' un altro ed e'

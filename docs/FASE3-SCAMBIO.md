@@ -5837,3 +5837,38 @@ volare su un arco, e sui lanci lunghi resta indietro. Il costo visibile e' che i
 alza piu' sull'arco di cronaca (passa raso terra): dichiarato, da giudicare sull'Android del PO. Si spedisce come
 7.898.0; rituali in corsa (diagnosi, career-critical, ci). Prossimo sul reso: il volo logico porta gia' `dur` e
 `poss.a`, un arco reso che parta e atterri sui punti del motore (non della riga narrata) ridarebbe la parabola.
+
+**Diagnosi della v3c (04:50, 1.405 campioni)** smentisce in parte il telefono: con il padrone «altro» la distanza
+reso↔padrone e' 7,2u mediana / 37 % ≤3u (7.897: 3,6u / 44 %), e lo scrittore del pallone e' l'EROE in 227 campioni
+di tenuta altrui (16 %) e in 202 di volo (14 %). Senza l'arco di cronaca il pallone passa raso terra vicino all'eroe
+e la colla 7.515 (3,2u dalla mesh, eroe in corsa) se lo prende: con gli archi il difetto era mascherato perche' in
+volo scriveva l'arco. La 8bea3c5 (v3c) e' sul ramo ma NON va in produzione cosi'.
+
+**v3d (04:51):** quando la simulazione dichiara il portatore, l'eroe scrive il pallone solo se il portatore e' lui
+(indice 21); in volo o a palla libera non scrive. Rosso `__CPM_NO898`. Misura in corsa: telefono, diagnosi, rituali.
+
+**v3d al telefono (04:59) e diagnosi (05:02):**
+
+| misura | rosso `__CPM_NO898` | v3c | **v3d** |
+|---|---|---|---|
+| pallone reso ai piedi del padrone logico (≤3u) | 53 % | 55 % | **58 %** (756) |
+| padrone dichiarato dalla simulazione | 39 % | 48 % | 41 % |
+| …a palla a terra | 54 % | 55 % | **58 %** |
+| chi scrive a terra e lontano: nessuno · eroe · portatore | 198 · — · 16 | 194 · 137 · 68 | 287 · **0** · 27 |
+| distanza reso↔padrone mediana / p90 | 2,8 / 13 u | 2,2 / 15,8 | **2,4** / 17,4 u |
+| scarto reso↔logico mediana / p90 | 1,2 / 15,7 u | 2,4 / 24,6 | **1,0** / 19,5 u |
+| salti del pallone | 66 | 46 | **55** |
+| fps senza sonda | 36 | 31 | 30 |
+| diagnosi, padrone «altro»: distanza / ≤3u | 3,6u / 44 % (7.897) | 7,2u / 37 % | **1,7u / 62 %** |
+| diagnosi, padrone «eroe»: distanza / ≤3u | 2,5u / 53 % (7.897) | 3,0u / 50 % | 5,2u / 41 % |
+| diagnosi, scrittore «eroe» col padrone «altro» o in volo | — | 429 (30 %) | **0** |
+
+Verdetto onesto: la v3d batte il rosso sulle mediane (ai piedi 53 → 58 %, distanza 2,8 → 2,4u, scarto 1,2 → 1,0u,
+salti 66 → 55) e la diagnosi conferma il rimedio dove era il difetto (padrone «altro»: 3,6 → 1,7u, ≤3u 44 → 62 %;
+l'eroe non scrive piu' il pallone altrui: 429 → 0). Paga sulle code (p90 13 → 17,4u e 15,7 → 19,5u: i lanci lunghi
+inseguiti a velocita' limitata) e sul padrone-eroe (2,5 → 5,2u: la colla dell'eroe chiede l'eroe in corsa e il pallone
+gia' entro 3,2u dalla sua mesh, e senza arco il pallone arriva sul suo punto LOGICO mentre il corpo reso e' indietro).
+Il padrone dichiarato al telefono torna a 41 % (v3c 48 %): e' lo stesso build del motore, la differenza e' la corsa
+(il seme fissa il motore, non il tempo reale della sonda). Si spedisce come 7.898.0 v3d; rituali in corsa.
+Prossimo sul reso: arco reso sui punti del motore (`dur`, `poss.a`) per ridare la parabola e accorciare le code, e la
+colla dell'eroe che legga il portatore dichiarato invece della distanza dalla mesh.
