@@ -8532,7 +8532,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               SOLO se il contatore esiste (rosso __CPM_NO907 lo spegne). Riga di flusso propria: non tocca i due
               blocchi «barra» sopra (di un altro agente). */}
           {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&fps907!=null&&(
-            <div data-cpm="fps907" style={{flex:"0 0 auto",textAlign:"center",fontSize:11,fontVariantNumeric:"tabular-nums",color:"rgba(255,255,255,0.38)",letterSpacing:.4,padding:"1px 0",background:"rgba(255,255,255,0.02)"}}>{fps907+" fps"}</div>
+            <div data-cpm="fps907" style={{flex:"0 0 auto",textAlign:"center",fontSize:13,fontWeight:800,fontVariantNumeric:"tabular-nums",color:"#fbbf24",letterSpacing:.6,padding:"3px 0",background:"rgba(5,8,16,0.82)",borderBottom:"1px solid rgba(251,191,36,0.35)"}}>{fps907+" fps · corpi "+(corpiPref907==="pieni"?"pieni":"leggeri")}</div>
           )}
 
           {/* ── Field + Panel: responsive layout ── */}
