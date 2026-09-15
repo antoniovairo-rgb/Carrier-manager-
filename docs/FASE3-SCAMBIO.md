@@ -6042,6 +6042,15 @@ Voti [7,7,7,7,8,7,8,7,7,8,7,7], **media 7,25 = n° 18**: il salto di «ai piedi�
 (coppia rosso 70/58 vs verde 64/62), quindi Realismo resta 7; la 7.900 muove i tiri solo al banco (4,1 → 5,2, obiettivo
 8) e le Azioni extra-eroe restano 7. Registro `docs/voti/voti-telefono.json`, sezione voti rigenerata con `voti-piano`.
 
+- 15/09 19:48 UTC: **Produzione allineata a e42d71a (7.905.0: C8 panchina + C3 v4 HUD) — rituale completo verde
+  sul build esatto 69a6ac5** (career-critical exit=0 alle 19:02; il primo ci cade sulla banda «arbitro-esiste» a 5
+  su soglia 6 — la moneta gia' misurata: con lo stesso motore le corse danno 3 · 4 · 4 · 5 · 5 · 6 · 6 · 7 · 11 —
+  e il secondo ci, ripetuto come da protocollo dei rossi stocastici, chiude a **8, exit=0**, tutto il resto verde
+  in entrambi). Fast-forward f4f82d2 → e42d71a, mai force. Non verificato: l'Android del PO; la CI di GitHub.
+  **Aperto e dichiarato:** la banda «arbitro-esiste» su 2 partite non e' un metro stabile (passa meno di una volta
+  su due); rifarla su piu' partite o con una soglia tarata sulla distribuzione e' una decisione del PO, non una
+  correzione da prendersi da soli — un metro spedito non si tocca per farlo passare.
+
 ### 15/09 19:25 — D7 v2 misurata: i 22 in campo con il corpo alleggerito, il contatore dei fotogrammi e l'interruttore per il PO (ramo `claude/d7-corpi`, 7.907.0, rosso `__CPM_NO907`)
 
 Il lavoro della squadra grafica era scritto ma **mai committato** quando l'agente si e' fermato sul limite di spesa
