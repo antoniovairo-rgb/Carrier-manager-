@@ -104,7 +104,27 @@ su un campo 2D con il tabellino a fianco, ogni numero è in vetrina. Misura di a
 (riferimenti di campionato arrotondati, di memoria, da ancorare a una fonte se il PO la vuole; il gol al banco è 0
 perché al banco lo decreta la carriera, non il motore.)
 
-**La diagnosi è una sola ed è aritmetica**: il motore fa **una decisione al minuto**, cioè ~92 eventi a partita;
+**Seconda misura (20:58, stesso banco): accelerare il tempo da solo non basta — i tetti sono due.**
+Il motore accetta già `ctx.dec` su ogni sotto-tick, quindi la frequenza si misura senza toccare `src/14`:
+
+| | 1 decisione/min (oggi) | 11 decisioni/min | 11 decisioni + **volo ×4** | 22 dec. + volo ×4 | vero |
+|---|---|---|---|---|---|
+| pallone **in volo** quando si chiama il motore | 33,3 % | **74,9 %** | 53,8 % | 69,2 % | — |
+| chiamate che producono un evento | 89,9 % | 31,4 % | **55,3 %** | 34,9 % | — |
+| tiri | 1,8 | 3,5 | **7,3** | 9,2 | 12,8 |
+| tiri in porta | 1,1 | 2,2 | **4,2** | 5,3 | 4,3 |
+| falli | 3,0 | 12,5 | **16,4** | 19,4 | 13 |
+| rimesse laterali | 0,6 | 2,2 | **4,7** | 7,1 | 22 |
+| passaggi | 12,2 | 46,1 | **78,4** | 100 | 450 |
+| voci in banda (su 24) | **2** | 5 | **5** | 5 | 24 |
+
+Due tetti, non uno: (a) **la durata del volo** — a 11 decisioni il pallone è in aria in 3 chiamate su 4 e il motore
+non può decidere; col volo quattro volte più rapido torna in tenuta e i tiri in porta centrano il vero (4,2 contro
+4,3); oltre il quadruplo i tiri non crescono più (7,30 → 7,28 a ×8). (b) **la catena dei passaggi** — oltre le 11
+decisioni i passaggi si fermano a ~110 per squadra (22 e 33 decisioni danno 100 e 110 contro 450): per il pareggio
+servirebbe quasi un passaggio per decisione, quindi va aperto il gioco corto, non solo il cronometro.
+
+**La diagnosi di partenza era aritmetica**: il motore fa **una decisione al minuto**, cioè ~92 eventi a partita;
 una partita vera ne ha **~1.100** (≈ 11 al minuto solo di passaggi). Nessuna regolazione di probabilità colma un
 fattore 12: **serve il tempo del mondo (A9)**. Da qui l'ordine di questo cantiere: prima la frequenza, poi le voci
 che non esistono, poi la vetrina che le mostra.
@@ -137,7 +157,7 @@ che non esistono, poi la vetrina che le mostra.
 ### A · MOTORE — «è calcio» (source of truth)
 | # | attività | metro (rosso → verde atteso) | stato |
 |---|---|---|---|
-| A9 | **il tempo del mondo — ora il prerequisito n° 1**: il motore decide più volte al minuto con le grandezze scalate a dt (passo di conduzione, falli, palla persa, snap) e un pavimento del volo | eventi a partita 92 → **≥ 600** · passaggi per squadra 12 → **≥ 200** · salti > 5u per chiamata 0 · corsa per uomo e minuto invariata ±20 % · invarianti a zero | **v1 misurata e scartata** (tiri 6,9 ma area 0,7, interruzioni 21, 16 teletrasporti); v2 da scrivere |
+| A9 | **il tempo del mondo — ora il prerequisito n° 1**: (a) il motore decide ~11 volte al minuto con le grandezze per decisione scalate a dt (passo di conduzione, falli, palla persa, snap); (b) **il volo del pallone quattro volte più rapido** (oggi un passaggio resta in aria mezzo minuto: a 11 decisioni il motore trova la palla in volo nel 74,9 % delle chiamate); (c) il gioco corto per aprire il secondo tetto dei passaggi | banco 20:58, misurato a copie di `src/14` fuori dal ramo: chiamate con un evento 31,4 → **55,3 %** · tiri 3,5 → **7,3** · tiri in porta 2,2 → **4,2** (vero 4,3) · falli 12,5 → **16,4** (vero 13) · passaggi 46 → **78** (vero 450, tetto a ~110) · voci in banda 2 → 5 su 24 · da tenere: salti > 5u per chiamata 0, corsa per uomo e minuto ±20 %, invarianti a zero | **v1 scartata** (tiri 6,9 ma area 0,7, interruzioni 21, 16 teletrasporti); **v2 progettata sui numeri del 15/09 20:58**, da scrivere |
 | A8 | **l'arbitro esiste**: falli 3 → 13, rimesse laterali 0,7 → 22, corner 0,5 → 4,9, rinvii dal fondo 0,4 → 7 | banco F0: le quattro voci entro metà/doppio del vero · banda ci «arbitro-esiste» stabile ≥ 6 | 7.903 (0,22/0,08) in produzione tiene la banda; il passo vero apre dopo A9 |
 | A10 | **le voci che non esistono**: ammonizioni, espulsioni, fuorigioco, assist — eventi veri del motore, non decorazioni della UI | ammonizioni 0 → 2,4 · espulsioni 0 → 0,11 · fuorigioco 0 → 1,7 · assist 0 → 1,0 (per squadra, banco F0) · ogni cartellino nasce da un fallo esistente | **nuovo**, da progettare |
 | A11 | **expected goal onesti**: xG derivato da zona, pressione e piede, sommato per squadra | xG per squadra 0,15 → 1,0-1,6 · xG della squadra che segna > xG dell'altra nel 60 % delle partite | **nuovo**, dopo A9 |
