@@ -5651,4 +5651,8 @@ ravvicinata dice che pelle e kit reggono e (b) esiste una misura sul telefono de
 non semplificabili (9.528 → 8.704). Prossimi passi di D7, in ordine: profilare dove va il tempo del fotogramma
 (skinning/JS o fill), poi decoder meshopt nel loader (peso di scarico, non fps), e three recente solo con una
 misura che lo giustifichi.
+Foto (fase di esito di un highlight, 412x915 a dpr 2): alla distanza di regia i corpi sono alti ~40 px e il corpo al
+30 % e' indistinguibile da quello di oggi; il primo piano vero (ritratto) NON e' stato ottenuto (la sonda coglie le
+fasi sfocate della scelta o la regia larga): dichiarato. I due candidati restano nello scratchpad, fuori
+dall'albero. Chiusura del passo 1: **nessun rimedio spedito**, strumento e gancio restano (9909a33).
 
