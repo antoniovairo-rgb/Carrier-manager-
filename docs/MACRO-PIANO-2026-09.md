@@ -6,6 +6,7 @@
 
 ## Avanzamento (una riga per spedizione, la più recente in alto)
 
+- **15/09 14:30** — **7.903.0 + C3 in produzione** (main ed0ecd2, ff da 6324c4b; career-critical 14:03 e ci 14:27 verdi sul build esatto, dopo il riavvio del container delle 13:50). C3 HUD della partita dalle tavole del PO (rosso `__CPM_NO901`): barra 98 → 60 px, righe delle scelte 40 → 52 px senza percentuali, con 7 opzioni 53 → 44 % con lista che scorre, esito con un solo «Continua»; testo sopra il campo 12-17 %. 7.903 l'arbitro esiste (decisione PO, rosso `__CPM_NO903`): falli 0,18/0,05 → 0,22/0,08; banco 48 partite interruzioni 6,8 → 7,8, tiri 5,2 → 4,9 (costo dichiarato); banda ci «arbitro-esiste» da 4-6 (moneta: 7.900 11/4/3, C3 6/4/4) a 7. Scheda n° 20 in corsa. Non verificato sull’Android del PO.
 - **15/09 08:40** — **7.900.0 in produzione** (main 5553514, ff da 018e96b; career-critical e ci verdi sul build esatto 65cc427). A4 v1: il fallo pesa meno (0,26/0,14 → 0,18 sotto pressione / 0,05), al limite e in area si sorteggia DOPO il tiro, la conduzione con la strada libera punta la porta. Banco 48 partite: tiri 4,1 → 5,2 (dall’area 1,3 → 1,8), catene ≥ 3 passaggi → tiro 0,6 → 1,0, interruzioni 8,6 → 6,8. v2-v5 scartate al banco (tetto ~5 tiri: 7-8 attacchi nel terzo finale a partita, un tocco al minuto); per 8 tiri serve una decisione del PO sul tempo del mondo. Scheda n° 19 (09:44, GLB accesi): media 7,25 = n° 18; ai piedi 64/59/62/61 %, coppia rosso/verde Vairo 70/64 e Moretti 58/62 (nessuna regressione al telefono). Lezione: un secondo Chromium in parallelo dimezza «ai piedi» (64 → 29 %), da oggi una sola sonda nel browser alla volta. Non verificato sull’Android del PO.
 - **15/09 07:25** — **7.899.0 in produzione** (main 018e96b, ff da 96f9903; career-critical e ci verdi sul build esatto). Dalle due foto del PO: pallone «troppo grande» → il pavimento (7.862, 11 px fissi) guarda l’uomo alla stessa profondità (un quarto, 8-11 px): rapporto pallone/uomo 0,52 → 0,35; panchina «invasiva» → riprodotta a 412×700 da sostituito (sovrapposizione al racconto 100 % → 0 %), riquadro 30 px → riga 16 px, il sottopancia sale col tasto «Salta». Scheda n° 18 in corsa. Non verificato sull’Android del PO.
 - **15/09 05:40** — **7.898.0 in produzione** (main 96f9903, ff da 0a1746c; career-critical e ci verdi sul build esatto). A2 v3: il minuto del motore ha tre fasi (dt=1/3: una decide, due muovono la fisica); il pallone reso segue portatore o logico, l’eroe non ruba il pallone altrui. Banco: padrone dichiarato 58,6 → 66,2 %, salti > 5u per chiamata 342 → 0. Telefono Moretti rosso → verde: ai piedi 53 → 58 %, distanza dal padrone 2,8 → 2,4u, scarto 1,2 → 1,0u, salti 66 → 55; diagnosi padrone «altro» 3,6 → 1,7u. Costo dichiarato: code p90 più lunghe, padrone-eroe 2,5 → 5,2u, niente parabola dell’arco di cronaca in gioco ambientale. Scheda n° 17 (GLB accesi) in corsa.
@@ -48,7 +49,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 
 | cosa | numero | fonte |
 |---|---|---|
-| produzione (`main`) | **5553514 = 7.900.0** (7.889 → 7.900 in produzione; 7.896 revocata) | verbale 08:40 |
+| produzione (`main`) | **ed0ecd2 = 7.903.0 + C3** (7.889 → 7.903 in produzione; 7.896 revocata) | verbale 14:30 |
 | gioco vivo con un padrone dichiarato (telefono, 4 partite) | **37 %** | sonda telefono 14/09 |
 | tiri del motore a partita (4 partite) | **1,75** (0/2/2/3), 1 dall'area | area 2, misura B |
 | azioni ≥ 3 passaggi poi tiro (banco) | 0,25 (7.893) → **0,88**/partita (7.894, in produzione) | banco `stati-motore` |
@@ -80,6 +81,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 | A5 | cross e ricezioni (#38): il cross atterra su qualcuno | cross ricevuti ≥ 60 %, mediana ≤ 2u | aperto |
 | A6 | portiere e gesti (codici 000/111, #46, #49) | doppio gesto 0; portiere in tempo ≥ 90 % delle parate | aperto |
 | A7 | azioni: strumento nel live (sonda `azioni`) e soglia | azioni (≥ 3 passaggi → area) ≥ 6/partita | strumento da scrivere |
+| A8 | l'arbitro esiste: 7.903 alza i falli (0,22/0,08) per tenere la banda del ci; passo vero: falli 2 → 8-12 a partita, rimesse laterali, corner (oggi 0 nel motore) | banda ci arbitro-esiste 20-30 (7.72x) → 4-6 (7.900) → 7 (7.903); interruzioni al banco 6,8 → 7,8 | **7.903 in produzione**; passo vero da progettare dopo C4 e D7 |
 
 ### B · HIGHLIGHT — «la scena è un istante del motore»
 | # | attività | metro | stato |
@@ -95,7 +97,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 |---|---|---|---|
 | C1 | fondamenta (G0-G3) e correzioni in partita (7.892/7.893) | vedi §0 | **in produzione** |
 | C2 | **G4 anteprima di design del HUD**: barra broadcast 60 px, filo del possesso, banda bassa unica (telecronaca + mister), interazione come scheda dal basso, esito nella banda con un solo tasto; due schizzi alternativi | sì del PO sul disegno (4 domande nel canvas) | **fatto** — sì del PO (08:15): barra 60 px · scheda dal basso 44 % · niente percentuali · esito con un solo Continua |
-| C3 | 7.901 il HUD della partita dalle tavole del PO: barra 60 px una riga, scheda delle scelte dal basso ≤ 44 % senza percentuali, esito a banda con un solo «Continua» (rosso `__CPM_NO901`) | 412×915 e 700: barra 98 → 60 px; righe delle scelte 40 → 52 px; con 7 opzioni 53 % (sfonda) → 44 % con lista che scorre; esito 0 → 1 tasto; testo sopra il campo 12-17 % (≤ 25 %) | **misurata** — ramo claude/hud-c3 e128111, rituali in corsa, poi merge e main; non verificato sull'Android del PO |
+| C3 | 7.901 il HUD della partita dalle tavole del PO: barra 60 px una riga, scheda delle scelte dal basso ≤ 44 % senza percentuali, esito a banda con un solo «Continua» (rosso `__CPM_NO901`) | 412×915 e 700: barra 98 → 60 px; righe delle scelte 40 → 52 px; con 7 opzioni 53 % (sfonda) → 44 % con lista che scorre; esito 0 → 1 tasto; testo sopra il campo 12-17 % (≤ 25 %) | **in produzione** (main ed0ecd2, 14:30) — fusa con la 7.903; non verificato sull'Android del PO |
 | C4 | post-partita, tema scuro fotografato, altre schermate (gerarchia, una cosa alla volta) | griglia: nessuna regressione; pieni ≤ 1 per vista | da fare |
 | C5 | performance mobile: 22 GLB per 90' (LOD/instancing, texture) — misura sull'Android del PO | fps ≥ 30 sul telefono del PO (da lui misurato); banco: triangoli in quadro −50 % | da misurare prima |
 | C6 | report finale in 16 sezioni della direttiva | consegnato | da scrivere |
