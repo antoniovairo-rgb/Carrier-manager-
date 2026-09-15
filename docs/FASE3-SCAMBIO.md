@@ -5656,3 +5656,27 @@ Foto (fase di esito di un highlight, 412x915 a dpr 2): alla distanza di regia i 
 fasi sfocate della scelta o la regia larga): dichiarato. I due candidati restano nello scratchpad, fuori
 dall'albero. Chiusura del passo 1: **nessun rimedio spedito**, strumento e gancio restano (9909a33).
 
+## 7.896 REVOCATA (A2 v1 e v2) — tre passi del motore al minuto: il mondo va tre volte piu' veloce e il reso non lo segue
+
+Rimedio: metronomo a tre battiti per minuto (due sotto-tick che muovono solo motore e specchi, il terzo battito narra
+l'evento saliente accumulato), tempo reale per minuto invariato; rosso `__CPM_NO896`. Misura al telefono (Vairo casa,
+GLB accesi, senza foto), contro la scheda n° 16 sulla 7.895:
+
+| misura | 7.895 (n° 16) | 7.896 v1 | 7.896 v2 (pallone reso specchiato anche nel sotto-tick) |
+|---|---|---|---|
+| pallone reso ai piedi del padrone | **63 %** | 4 % | **8 %** |
+| distanza reso↔padrone mediana / p90 | 1,8 / 10 u | 17,4 / 33,8 u | 14,2 / 32,4 u |
+| scarto reso↔logico mediana / p90 | 1,7 / 14,4 u | 10 / 28 u | 11,8 / 33,1 u |
+| salti del pallone (>8u in ≤110 ms) | 67 | 143 | 150 |
+| righe di cronaca / minuti fermo | 96 / 9 | 106 / 11 | 106 / 11 |
+
+**Perche' fallisce, letto nei numeri.** Il motore muove i corpi fino a 8u per tick e fa volare i passaggi in un tick:
+a tre tick per minuto il mondo logico va TRE VOLTE piu' veloce nello stesso tempo reale (1,7 s), e i corpi resi hanno
+un tetto di 15 u/s (5.47.9): non arrivano dove il motore li ha gia' messi, il pallone reso (incollato al portatore
+reso) resta a 14u dal padrone logico e salta a ogni cambio di portatore. Il banco 7.894 a 3 tick (tiri 9,4, passaggi
+73) misurava un motore tre volte piu' veloce, non un motore che decide piu' spesso. **Lezione**: la cadenza del motore
+non si puo' triplicare senza ridurre di pari passo il passo dei corpi e la durata dei voli (un `dt` frazionario in
+src/14), e prima si misura al banco se, a passo scalato, tiri e catene salgono davvero. Sorgente riportato alla 7.895
+(revert 4cdb24c e c333063); il guardiano non e' arrivato ai rituali. Prossimo A2 v3: `tick({min,dt:1/3})` nel motore
+con passo e voli scalati, banco `stati-sub` con dt, poi il live.
+

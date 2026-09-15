@@ -70,7 +70,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 | # | attività | metro (rosso → verde atteso) | stato |
 |---|---|---|---|
 | A1 | 7.894 primo tocco non sempre sosta | banco: azioni 0,25 → 0,88, tiri 2,88 → 3,13, passaggi 21 → 24,5 | **fatto** — in produzione (main f6a65d6, 22:05) |
-| A2 | **7.895 cadenza: 3 tick del motore per minuto** + narratore che sceglie l'evento saliente del minuto | banco a 3 tick: tiri 9,4, catene ≥ 3 passaggi 7,8/partita, possesso 51 %; nel live: righe di cronaca ≤ 1/minuto, fps invariati | proposta (esperimento fatto) |
+| A2 | 7.896 cadenza: 3 tick del motore al minuto + narratore che sceglie l'evento saliente | **v1/v2 REVOCATE** al telefono: ai piedi del padrone 63 % → 4/8 %, salti 67 → 143/150 (il mondo va 3× piu' veloce, i corpi resi al tetto 15 u/s non seguono) | v3 da progettare: dt frazionario nel motore (passo e voli scalati), prima al banco |
 | A3 | il padrone del pallone nel live: ponte motore → `carrierRef` (oggi esclude l'eroe), volo/libero resi | gioco vivo con padrone 37 % → ≥ 70 %; pallone reso ai piedi ≥ 75 % | da fare |
 | A4 | la squadra sale e tira dall'area (#44): posizioni d'attacco, pTiro, strada libera | tiri ≥ 8/partita, ≥ 3 dall'area; avanzato più alto ≥ 70 | da fare |
 | A5 | cross e ricezioni (#38): il cross atterra su qualcuno | cross ricevuti ≥ 60 %, mediana ≤ 2u | aperto |
