@@ -6042,6 +6042,31 @@ Voti [7,7,7,7,8,7,8,7,7,8,7,7], **media 7,25 = n° 18**: il salto di «ai piedi�
 (coppia rosso 70/58 vs verde 64/62), quindi Realismo resta 7; la 7.900 muove i tiri solo al banco (4,1 → 5,2, obiettivo
 8) e le Azioni extra-eroe restano 7. Registro `docs/voti/voti-telefono.json`, sezione voti rigenerata con `voti-piano`.
 
+### 15/09 19:25 — D7 v2 misurata: i 22 in campo con il corpo alleggerito, il contatore dei fotogrammi e l'interruttore per il PO (ramo `claude/d7-corpi`, 7.907.0, rosso `__CPM_NO907`)
+
+Il lavoro della squadra grafica era scritto ma **mai committato** quando l'agente si e' fermato sul limite di spesa
+mensile (16:00-18:50, insieme a quello di C3 v4 che invece aveva gia' spedito tutto). Recuperato dal worktree,
+versione e changelog aggiunti qui, build `IDENTICO 1`, spedito (1757ebe). I 22 in campo, i due portieri e l'arbitro
+usano `assets/footballer-lite.glb` (14.622 triangoli contro 48.140, **lo stesso file della panchina C8**: un asset
+solo, rinominato da footballer-panchina); il corpo pieno resta caricabile.
+
+| misura (412×915, GLB accesi) | rosso `__CPM_NO907` | **verde (leggero)** |
+|---|---|---|
+| triangoli disegnati in scena | — (corpo pieno) | **559.834** |
+| … dopo il tocco dell'interruttore | — | **1.317.654** (corpo pieno, 2,35×) |
+| avatar in scena (eroe + 21 + arbitro) | 23 | 23 (invariati dopo lo scambio) |
+| contatore dei fotogrammi | assente | **presente** |
+| interruttore nel menu di pausa | assente | **presente, scambio a caldo in 2,2 s** |
+| errori di pagina | 0 | 0 |
+
+**Il corpo leggero da vicino regge**: le foto ravvicinate del 14.622 e del 24.066 (variante piu' ricca) sono
+indistinguibili — viso, kit, capelli, calzettoni tutti interi — quindi vince il piu' leggero. **NON verificato:** il
+primo piano del corpo PIENO non e' riuscito (la sonda leggeva la posizione dell'eroe una volta sola e l'ha inquadrato
+in campo largo), quindi la perdita di dettaglio rispetto a oggi non e' misurata in foto: scatto rifatto in coda.
+E soprattutto **i fotogrammi al secondo veri li misura il PO sul suo telefono**: il banco e' un GL software senza GPU
+(fps5s = 1 nella sonda), per questo la 7.907 porta il contatore e l'interruttore temporaneo — due numeri, stessa
+partita, corpi leggeri contro corpi pieni. L'interruttore si toglie a collaudo finito (marcato `[D7 TEMP]`).
+
 ### 15/09 15:45 — C3 v4 misurata: la pressione torna visibile, il cursore resta nel movimento, il cambio campo si vede (ramo `claude/hud-c3-v4`, 7.905.0)
 
 Nasce dai collaudi del PO sul telefono (16:42-16:49). Cinque rimedi, solo src/15:
