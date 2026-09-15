@@ -8438,7 +8438,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 _swap893 i due blocchi degli stemmi vengono RIMONTATI (key) e scorrono per 0,6 s dal lato da cui
                 arrivano; sotto il minuto compare per 3 s l'etichetta «cambio campo». Con prefers-reduced-motion lo
                 scorrimento sparisce (l'etichetta resta: e' informazione, non moto). Solo CSS, nessuno stato in piu'. */}
-            <style>{"@keyframes cpmSwapCasa905{from{transform:translateX(-60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmSwapOsp905{from{transform:translateX(60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmCambio905{0%,70%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}@media (prefers-reduced-motion:reduce){[data-cpm=\"scudo-casa\"],[data-cpm=\"scudo-ospiti\"]{animation:none!important}}"}</style>
+            <style>{"@keyframes cpmSwapCasa905{from{transform:translateX(-60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmSwapOsp905{from{transform:translateX(60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmCambio905{0%,70%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}@keyframes cpmPress905{from{width:0%}to{width:100%}}@media (prefers-reduced-motion:reduce){[data-cpm=\"scudo-casa\"],[data-cpm=\"scudo-ospiti\"]{animation:none!important}}"}</style>
             <div data-cpm="barra" data-specchio={_swap893?1:0} style={{height:60,boxSizing:"border-box",display:"flex",alignItems:"center",justifyContent:"space-between",flexDirection:_swap893?"row-reverse":"row",padding:"0 10px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto",gap:6}}>
               {/* Home team — solo scudetto e nome: il risultato ora sta al centro, unico */}
               <div data-cpm="scudo-casa" key={"scudo-casa-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start",animation:_swap893?"cpmSwapCasa905 .6s ease-out":"none"}}>
@@ -9249,7 +9249,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     </div>
                     {!curSit.lockMovement&&<div data-cpm="aiuto" style={{fontSize:11,lineHeight:1.3,fontWeight:600,color:"#c4b5fd",flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
                     {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
-                      <style>{"@keyframes cpmPress905{from{width:0%}to{width:100%}}"}</style>
+                      {/* il @keyframes cpmPress905 sta nello <style> della barra superiore (sempre montata qui): uno <style> DENTRO la scheda finiva nel textContent e la sonda leggeva un «%» che il giocatore non vede */}
                       <div style={{fontSize:10,fontWeight:700,letterSpacing:.4,color:"rgba(255,255,255,0.5)"}}>Pressione</div>
                       <div style={{position:"relative",height:3,borderRadius:2,overflow:"hidden",background:"linear-gradient(90deg,#ef4444 0%,#f97316 45%,#f59e0b 100%)"}}>
                         <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:"#10122a",animation:`cpmPress905 ${_dl905}ms linear forwards`,animationPlayState:paused?"paused":"running"}}/>
