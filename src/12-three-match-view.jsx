@@ -430,6 +430,68 @@ function ThreeMatchView(props){
     heroMark.rotation.x=Math.PI;scene.add(heroMark);
     // ===== 1.0b-CH38 — CALCIATORE GLB reale (CH38 Mixamo) per TUTTI (eroe + 21). ORA DEFAULT. Fallback automatico al procedurale se il GLB non carica. =====
     let glbAvatars=null; // [{root,mx,idle,run,proc,lx,lz}]
+    let benchGlbAvatars=null; // [7.904.0] panchina CH38 alleggerita: {root,mx,idle,proc,isCoach,home,legL,legR,armL,armR} — array SEPARATO da glbAvatars (niente locomozione/gesti/gk: sono comparse ferme), popolato SOLO dopo che il corpo principale ha agganciato
+    // [7.904.0] rotazione DELTA in spazio MONDO composta DOPO il bind — usata sia per costruire la posa
+    //   seduta (una volta, all'aggancio) sia per il gesto di esultanza (ogni fotogramma, in piu' sul risultato
+    //   del mixer). L'asse LOCALE del bind non è l'asse anatomico (misurato: UpLeg è dominato da ~175° attorno
+    //   a Z, non è quasi-X) — ruotare l'orientamento MONDO e riportarlo in locale funziona qualunque sia il bind.
+    const _rw904=(bone,axis,ang)=>{if(!bone||!bone.parent)return;bone.parent.updateMatrixWorld(true);
+      const pw=new THREE.Quaternion();bone.parent.getWorldQuaternion(pw);
+      const rq=new THREE.Quaternion().setFromAxisAngle(axis,ang);
+      bone.quaternion.copy(pw.clone().invert().multiply(rq).multiply(pw).multiply(bone.quaternion.clone()));};
+    const _AX904=new THREE.Vector3(1,0,0),_AZ904=new THREE.Vector3(0,0,1);
+    const _findBone904=(root,re)=>{let b=null;root.traverse(o=>{if(!b&&o.isBone&&re.test(o.name||""))b=o;});return b;};
+    /* [7.904.0 gancio test-only, direttiva PO «non devono volare»] __CPM_PANCHINA904(): {glb,tot,seduti,coach,
+       tri,appoggio:[{piedi,bacino}...]}. INTERPRETAZIONE dichiarata (la specifica dice "la seduta" per
+       entrambi, il che non torna dimensionalmente per i piedi — un piede sulla SEDUTA a 0,77u sarebbe un
+       piede sospeso a mezz'aria, l'esatto contrario della direttiva): `piedi` = distanza dal PAVIMENTO del
+       dugout (y=0, dove i piedi appoggiano davvero, seduti O in piedi — coerente con "per mister e vice:
+       piedi = y dei piedi rispetto al SUOLO"); `bacino` (solo seduti) = distanza dei fianchi dalla SEDUTA
+       (y=0,77, bSeat). Rosso (GLB spento/fallito): stesso metro sulle comparse procedurali (bounding box
+       dei modelli bassa-poli) — numeri comparabili, non impressioni. */
+    if(typeof window!=='undefined')window.__CPM_PANCHINA904=()=>{try{
+      const _floorY=0,_seatY904=0.77;
+      const _glbList=(typeof benchGlbAvatars!=='undefined'&&benchGlbAvatars)||[];
+      const _tot=(typeof benchFigs!=='undefined'&&benchFigs&&benchFigs.length)||0;
+      const _tri=(renderer&&renderer.info&&renderer.info.render&&renderer.info.render.triangles)||0;
+      const _appoggio=[];
+      if(_glbList.length){
+        _glbList.forEach(av=>{
+          const fb=av._footBones904||{};const _v=new THREE.Vector3();let _toeY=0,_n=0;
+          if(fb.toeL){fb.toeL.getWorldPosition(_v);_toeY+=_v.y;_n++;}
+          if(fb.toeR){fb.toeR.getWorldPosition(_v);_toeY+=_v.y;_n++;}
+          _toeY=_n?_toeY/_n:null;
+          const piedi=_toeY==null?null:+Math.abs(_toeY-_floorY).toFixed(4);
+          let bacino=null;
+          if(av._seated904&&fb.hips){fb.hips.getWorldPosition(_v);bacino=+Math.abs(_v.y-_seatY904).toFixed(4);}
+          _appoggio.push({piedi,bacino,seated:!!av._seated904,coach:!!av._isCoach904,home:!!av._home904});
+        });
+      } else if(_tot){
+        // ROSSO: stesso metro sulle comparse procedurali (bounding box: min.y = piedi; il cilindro
+        // "pantaloncini" locale a y=0.74 approssima il bacino — mkFig non ha uno scheletro da interrogare).
+        (typeof benchFigs!=='undefined'?benchFigs:[]).forEach(f=>{
+          const _bb=new THREE.Box3().setFromObject(f);
+          const piedi=+Math.abs(_bb.min.y-_floorY).toFixed(4);
+          const _scl=(f.scale&&f.scale.x)||1;
+          let bacino=null;if(!f._isCoach)bacino=+Math.abs((f.position.y+0.74*_scl)-_seatY904).toFixed(4);
+          _appoggio.push({piedi,bacino,seated:!f._isCoach,coach:!!f._isCoach,home:!!f._home});
+        });
+      }
+      return {glb:_glbList.length,tot:_tot,seduti:_appoggio.filter(a=>a.seated).length,coach:_appoggio.filter(a=>a.coach).length,tri:_tri,appoggio:_appoggio};
+    }catch(_e){return {err:String(_e&&_e.message||_e)};}};
+    /* [7.904.0 gancio test-only] inquadratura fissa sul dugout, per fotografare la panchina da vicino coi
+       piedi visibili (side: 'home'|'away'). Applicata a valle di ogni calcolo della regia (vedi il punto
+       d'innesto dopo camera.lookAt piu' sotto) — NON sostituisce la regia, la sovrascrive frame per frame
+       finche' resta attiva. */
+    if(typeof window!=='undefined'){
+      window.__CPM_CAM_DUGOUT904=(side)=>{const bx=side==='away'?14:-14,_s=side==='away'?1:-1;
+        // [7.904.0] misurato: un'inquadratura frontale (dal campo verso il dugout) guarda DRITTO
+        // contro la balaustra LED del perimetro (z=-34.4, alta 0,77u — la stessa quota della seduta)
+        // e i piedi restano coperti. Di LATO, lungo la fila (camera e bersaglio alla STESSA z del
+        // dugout), la balaustra non e' mai sulla linea di vista: piedi liberi.
+        window.__CPM_CAM904={x:bx+_s*12,y:1.4,z:-38.3,lx:bx,ly:0.5,lz:-38.3};};
+      window.__CPM_CAM_RESET904=()=>{try{delete window.__CPM_CAM904;}catch(_e){window.__CPM_CAM904=null;}};
+    }
     // GLB = DEFAULT ON. Disattivabile: ?glb=0 (persiste), localStorage 'cpm-glb'='0', window.__CPM_GLB===false. (?glb=1 lo riattiva.)
     const _glbUrl=(typeof location!=='undefined')&&/[?&]glb=([01])\b/.exec(location.search||"");
     if(_glbUrl){try{localStorage.setItem('cpm-glb',_glbUrl[1]);}catch(e){}}
@@ -488,9 +550,10 @@ function ThreeMatchView(props){
         _blobMat533=new THREE.MeshBasicMaterial({map:_bt,transparent:true,depthWrite:false});
       }
       const _blobGeo533=_blobMat533?new THREE.PlaneGeometry(1.7,1.15):null;
-      const _mkA=(proc,kit,appr)=>{
+      const _mkA=(proc,kit,appr,_srcScene)=>{/* [7.904.0] +_srcScene: la panchina alleggerita clona un GLB diverso (footballer-panchina.glb) senza duplicare la fabbrica — default invariato per i 22+arbitro */
         appr=appr||{};
-        const root=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(_cg.scene):_cg.scene;
+        const _srcSc=_srcScene||_cg.scene;
+        const root=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(_srcSc):_srcSc;
         if(_blobMat533){const _bl533=new THREE.Mesh(_blobGeo533,_blobMat533);_bl533.rotation.x=-Math.PI/2;_bl533.position.y=0.035;_bl533.renderOrder=1;root.add(_bl533);}/* [7.529.0 R5] il disco d'ombra viaggia col corpo (figlio del root: rotazione ininfluente su un radiale) */
         root.traverse(o=>{if(!o.isMesh)return;const _nm=(o.name||'').toLowerCase();if(_nm.includes('joint')){o.visible=false;return;}o.castShadow=isDesktop;o.frustumCulled=false;
           let _kc=null;if(_nm.includes('shirt'))_kc=kit.shirt;else if(_nm.includes('shorts'))_kc=kit.shorts;else if(_nm.includes('socks'))_kc=kit.socks;else if(_nm.includes('shoes'))_kc=kit.shoes;
@@ -583,6 +646,81 @@ function ThreeMatchView(props){
       // [6.74.0 3D-13] anche il portiere di CASA ha le clip di tuffo: sul gol subito (toOwnGoal) riceveva il
       //   gk_dive procedurale ma il suo GLB restava in locomozione → "scivolava" lateralmente senza tuffarsi.
       {const _hgkP=players.find(p=>p.gk&&p.team==='home');const _hgkAv=_hgkP&&glbAvatars.find(a=>a.proc===_hgkP.mesh);if(_hgkAv){_hgkAv._isGk=true;_hgkAv.gestures=null;_mkGestures(_hgkAv,{dive:_dg,catch:_cag,block:_bg});}}
+      /* [7.904.0 — C4 grafica «panchinari CH38, corpo alleggerito, non devono volare»] LA PANCHINA. Caricata
+         QUI, DOPO che footballer.glb (corpo principale) + tutte le clip sono gia' agganciati — MAI prima:
+         un ritardo qui non deve allungare il backstop dei 9s del CH38 principale (la richiesta parte solo a
+         .then() gia' risolto, in fondo alla coda). Fallback: se il fetch fallisce, e' spento (?glb=0/rosso
+         __CPM_NO904), o benchFigs non esiste ancora, le 16 comparse procedurali (gia' in scena, _mkBench
+         piu' sotto) restano semplicemente VISIBILI — non c'e' nulla da ripristinare, l'hide avviene SOLO
+         dentro _mkA quando una comparsa viene davvero convertita. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO904)){
+        loadGLB('./assets/footballer-panchina.glb').then(_lg=>{try{
+          if(!_lg||!_lg.scene||typeof benchFigs==='undefined'||!benchFigs||!benchFigs.length)return;
+          const _srcSc=_lg.scene;
+          const _suitKit={shirt:'#232a35',shorts:'#171b22',socks:'#12141a',shoes:'#0b0b0d'};// [7.904.0] abito scuro per mister/vice — stessa fabbrica "tinta unita" dei 22, non un vero sartoriale
+          const _mkBenchOne=(fig,kit,appr,seated)=>{
+            const av=_mkA(fig,kit,appr,_srcSc);if(!av)return null;
+            av.root.updateMatrixWorld(true);// [7.904.0] il clone e' appena entrato in scena: nessun renderer.render() lo ha ancora attraversato, matrixWorld va inizializzato PRIMA di _rw904 (che si fida del world del genitore)
+            if(av.idle)av.idle.setEffectiveWeight(seated?0.22:1);// seduti: peso basso (un filo di vita, la posa sotto è fissa) · in piedi: idle piena come i 22, nessuna correzione a mano
+            const armL=_findBone904(av.root,/LeftArm$/i),armR=_findBone904(av.root,/RightArm$/i);
+            av._armBindQ904=armL&&armR?{L:armL.quaternion.clone(),R:armR.quaternion.clone()}:null;// [celebrazione] reset-poi-ruota dal bind originale: niente accumulo fra un fotogramma e l'altro
+            av._armBones904={armL,armR};
+            if(seated){
+              const legL=_findBone904(av.root,/LeftUpLeg$/i),legR=_findBone904(av.root,/RightUpLeg$/i);
+              const kneeL=_findBone904(av.root,/LeftLeg$/i),kneeR=_findBone904(av.root,/RightLeg$/i);
+              const toeL=_findBone904(av.root,/LeftToeBase$/i),toeR=_findBone904(av.root,/RightToeBase$/i);
+              const hips=_findBone904(av.root,/Hips$/i);
+              // ANCA: Rx(-90°) mondo porta la coscia dal bind (quasi verticale, -Y mondo) all'orizzontale in
+              // avanti (+Z, verso il campo) — misurato coi quaternioni del bind PRIMA del browser: il bind di
+              // UpLeg è dominato da ~175° attorno a Z (non quasi-X), una correzione "a occhio" in locale
+              // spezzava la gamba all'indietro. GINOCCHIO: Rx(+90°) mondo, segno OPPOSTO — le due si annullano
+              // in orientamento mondo (Rx(+90)·Rx(-90)=identità) e riportano lo stinco a puntare a terra come
+              // da fermo: la piega resta tutta nel ginocchio, il piede (bind invariato) torna piatto.
+              _rw904(legL,_AX904,-Math.PI/2);_rw904(legR,_AX904,-Math.PI/2);
+              _rw904(kneeL,_AX904,Math.PI/2);_rw904(kneeR,_AX904,Math.PI/2);
+              // BRACCIA a riposo lungo i fianchi: il bind è quasi un T-pose orizzontale (LeftArm→+X mondo,
+              // RightArm→-X mondo) — senza correzione restano aperte a T. Rz(∓90°) le porta giù (misurato:
+              // direzione risultante (-0.04,-1.0,-0.05) e (0.04,-1.0,-0.05) mondo — quasi verticale).
+              if(armL)_rw904(armL,_AZ904,-Math.PI/2);if(armR)_rw904(armR,_AZ904,Math.PI/2);
+              av.root.updateMatrixWorld(true);
+              // APPOGGIO: non esiste una clip «seduto» e lo scheletro ha proporzioni fisse — la seduta del
+              // dugout (0,77u) e il pavimento (0u) non possono combaciare ENTRAMBI in modo esatto con
+              // un'unica traslazione del root. Si MISURA (non si indovina): offset che porta i piedi a terra
+              // vs offset che porta il bacino sulla seduta, poi si riparte il divario a metà — resta dentro
+              // le tolleranze dichiarate su entrambi i lati (misurato in Node prima del browser: scarto totale
+              // ~0,21u ripartito a metà → ~0,11u per lato, contro budget 0,15u piedi / 0,25u bacino).
+              const _tv=new THREE.Vector3();let _toeY=0,_toeN=0;
+              if(toeL){toeL.getWorldPosition(_tv);_toeY+=_tv.y;_toeN++;}
+              if(toeR){toeR.getWorldPosition(_tv);_toeY+=_tv.y;_toeN++;}
+              _toeY=_toeN?_toeY/_toeN:0;
+              let _hipY=0;if(hips){const _hv=new THREE.Vector3();hips.getWorldPosition(_hv);_hipY=_hv.y;}
+              const _seatTopY=0.77;// bSeat: position.y 0.68 + height 0.18/2 (vedi _mkBench qui sotto)
+              av._seatY904=(-_toeY+(_seatTopY-_hipY))/2;
+              av._legBones904={legL,legR,kneeL,kneeR};
+              av._legQuats904={legL:legL&&legL.quaternion.clone(),kneeL:kneeL&&kneeL.quaternion.clone(),legR:legR&&legR.quaternion.clone(),kneeR:kneeR&&kneeR.quaternion.clone()};// [ancorati ogni fotogramma: l'idle a peso basso non deve smuovere anca/ginocchio]
+              av._footBones904={toeL,toeR,hips};// per la sonda __CPM_PANCHINA904
+            } else {
+              av._footBones904={toeL:_findBone904(av.root,/LeftToeBase$/i),toeR:_findBone904(av.root,/RightToeBase$/i),hips:_findBone904(av.root,/Hips$/i)};// mister/vice: stessa coppia di ossa, per misurare "piedi rispetto al suolo" con lo stesso metro
+            }
+            av._isCoach904=!!fig._isCoach;av._home904=!!fig._home;av._seated904=!!seated;av._ph904=fig._ph||0;
+            return av;
+          };
+          const _bg904=[];
+          benchFigs.forEach((fig,fi)=>{
+            const _seated=!fig._isCoach;
+            const _kit=fig._isCoach?_suitKit:(fig._home?_homeKit:_awayKit);
+            const _appr=appearanceFromSeed(hashStr((fig._home?'benchH':'benchA')+'_'+fi));
+            const av=_mkBenchOne(fig,_kit,_appr,_seated);
+            if(!av)return;
+            av.root.position.set(fig.position.x,_seated?(av._seatY904||0):0,fig.position.z);
+            // facing: yaw=0 → +Z (verso il campo) per questo rig, stessa convenzione dei 22 (vedi il loop
+            // principale, _fx=sin(yaw),_fz=cos(yaw)) — nessuna rotazione da applicare, la panchina guarda già il campo.
+            _bg904.push(av);
+          });
+          if(_bg904.length){benchGlbAvatars=_bg904;try{if(sr.current)sr.current._benchGlbOn904=true;}catch(_e){}}
+        }catch(_e904){try{console.warn('[CPM-904] panchina fail',_e904&&_e904.message);}catch(_ee){}}
+        }).catch(()=>{/* [7.904.0] fetch fallito o spento: i benchFigs procedurali restano visibili (nessun hide e' avvenuto) */});
+      }
     }).catch(e=>{try{console.warn('[CPM-GLB] load fail',e&&e.message);}catch(_){}try{window.__CPM_GLB_FAIL="error";}catch(_2){}/* [7.264.0 direttiva PO] niente piu' ripristino dei procedurali sul fallimento: il campo NON mostra burattini, LiveMatch alza l'avviso. __CPM_GLB_READY resta false → il fischio non parte con i modelli sbagliati */});}
 
     // Slot di walkout: due file (home+protagonista / away) lungo la larghezza, rivolte alla camera
@@ -5717,6 +5855,40 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         linRef1.rotation.y=Math.sin(now*0.0022+0.8)*0.055;linRef1.rotation.z=Math.sin(now*0.0018+0.5)*0.025;
         linRef2.rotation.y=Math.PI+Math.sin(now*0.0022+2.3)*0.055;linRef2.rotation.z=Math.sin(now*0.0018+1.9)*0.025;
         {const _gsB=goalBurstT>=0?(goalBurstHome?1:-1):0;/* [7.52.2 collaudo PO «a volte festeggiano i tifosi sbagliati»] la PANCHINA è taggata per lato-MESH (bx<0 = kit dell'eroe) ma esultava sul lato-TRIBUNA (goalBurstStadHome): in TRASFERTA il gol dell'eroe faceva saltare la panchina AVVERSARIA (e viceversa sul gol subìto). La panchina usa goalBurstHome (lato-mesh, come i giocatori); spalti/bandiere/sciarpe restano su goalBurstStadHome (sono TRIBUNE). */benchFigs.forEach((f,i)=>{f._ph+=dt*1.1;const _bBase=f._isCoach?0:0.72;const mine=_gsB===0?0:((f._home&&_gsB>0)||(!f._home&&_gsB<0)?1:-1);const _ex=mine>0?_goalExcite:0;f.position.y=_bBase+Math.sin(f._ph)*0.03+_ex*Math.abs(Math.sin(f._ph*2+i))*0.34;});}// 5.45.2: solo la panchina del marcatore esulta
+        /* [7.904.0] PANCHINA CH38 — mixer (nessun altro punto del file aggiorna questi mixer: non sono in
+           glbAvatars) + gesto d'esultanza. Direttiva PO «non devono volare»: i SEDUTI non lasciano MAI la
+           seduta (l'anca/il ginocchio sono ANCORATI ogni fotogramma sui quaternioni misurati all'aggancio —
+           l'idle a peso basso anima braccia/busto/testa, mai le gambe) — l'esultanza dei seduti è SOLO
+           braccia in aria, scelta deliberata contro il rischio "sospesi a mezz'aria con le ginocchia piegate"
+           che un salto da seduti comporterebbe. Mister/vice (in piedi) invece saltano come le comparse
+           procedurali di prima (stesso hop, stesso range) più le braccia. */
+        if(benchGlbAvatars){const _gsB2=goalBurstT>=0?(goalBurstHome?1:-1):0;
+          for(let _bi=0;_bi<benchGlbAvatars.length;_bi++){const av=benchGlbAvatars[_bi];if(!av||!av.root)continue;
+            if(av.mx)av.mx.update(dt);
+            const mine=_gsB2===0?0:((av._home904&&_gsB2>0)||(!av._home904&&_gsB2<0)?1:-1);
+            const _ex2=mine>0?_goalExcite:0;
+            av._ph904+=dt*1.1;const _bounce=_ex2>0?Math.abs(Math.sin(av._ph904*2+_bi)):0;
+            if(av._seated904){
+              const lb=av._legBones904,lq=av._legQuats904;// ancoraggio: il mixer (idle a peso basso) non tocca anca/ginocchio dopo questa riga
+              if(lb&&lq){if(lb.legL&&lq.legL)lb.legL.quaternion.copy(lq.legL);if(lb.kneeL&&lq.kneeL)lb.kneeL.quaternion.copy(lq.kneeL);
+                if(lb.legR&&lq.legR)lb.legR.quaternion.copy(lq.legR);if(lb.kneeR&&lq.kneeR)lb.kneeR.quaternion.copy(lq.kneeR);}
+              if(_bounce>0.02&&av._armBones904&&av._armBindQ904){const{armL,armR}=av._armBones904,bq=av._armBindQ904;
+                // braccia in aria: dal bind reset, poi Rz(-90°+180°·bounce)/Rz(90°-180°·bounce) — a riposo=-90/+90 (giù), a bounce=1 → +90/-90 (su)
+                if(armL){armL.quaternion.copy(bq.L);_rw904(armL,_AZ904,-Math.PI/2+Math.PI*_bounce);}
+                if(armR){armR.quaternion.copy(bq.R);_rw904(armR,_AZ904,Math.PI/2-Math.PI*_bounce);}
+              } else if(av._armBones904&&av._armBindQ904){const{armL,armR}=av._armBones904,bq=av._armBindQ904;
+                if(armL){armL.quaternion.copy(bq.L);_rw904(armL,_AZ904,-Math.PI/2);}
+                if(armR){armR.quaternion.copy(bq.R);_rw904(armR,_AZ904,Math.PI/2);}
+              }
+              // niente traslazione verticale per i seduti: la seduta resta la seduta (vedi nota sopra)
+            } else {
+              // mister/vice: stesso hop delle comparse procedurali (fidget continuo + salto sul gol) + braccia extra sull'idle
+              av.root.position.y=Math.sin(av._ph904)*0.03+_ex2*_bounce*0.34;
+              if(_bounce>0.02&&av._armBones904){const{armL,armR}=av._armBones904;
+                if(armL)_rw904(armL,_AZ904,-1.3*_bounce);if(armR)_rw904(armR,_AZ904,1.3*_bounce);}
+            }
+          }
+        }
         // CINE-VAR: animazione eroe per tipo + variante cinematografica (Sprint 4.73.0)
         // Ogni variant ha gesti fisicamente distinti: sw=sin(u*π) → auto-reset a 0 al termine
         /* [7.319.0 collaudo PO «sulle punizioni e rigori ci deve essere la rincorsa, non possono tirare da
@@ -8130,6 +8302,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       camera.lookAt(camLook.x,camLook.y,camLook.z);
+      /* [7.904.0 gancio test-only per la sonda C4] __CPM_CAM_DUGOUT904({x,y,z,lx,ly,lz}) forza la camera
+         a un'inquadratura fissa (es. il dugout, per fotografare la panchina da vicino) — SOVRASCRIVE il
+         risultato della regia normale qui, DOPO ogni altro calcolo di questo fotogramma: non tocca tPx/
+         tLx/camLook (la regia riprende da dove aveva lasciato, con uno scatto, non appena l'override viene
+         tolto). __CPM_CAM_RESET904() lo disattiva. Fuori dal collaudo (nessuno lo chiama mai) costa un
+         controllo booleano a fotogramma. */
+      if(typeof window!=='undefined'&&window.__CPM_CAM904){const _c9=window.__CPM_CAM904;
+        camera.position.set(_c9.x,_c9.y,_c9.z);camera.lookAt(_c9.lx,_c9.ly,_c9.lz);camera.updateMatrixWorld(true);}
 
       // ---- Meteo: caduta particelle + flash temporale ----
       if(wParticles){
