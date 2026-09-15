@@ -8408,9 +8408,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>
                 {_compTag901}
               </div>
-              <div style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden",display:"flex",flexDirection:_swap893?"row-reverse":"row",width:80,margin:"0 auto"}}>
-                <div style={{width:`${possession}%`,background:scoreHomeCol,transition:"width .8s",borderRadius:"3px 0 0 3px"}}/>
-                <div style={{flex:1,background:scoreAwayCol,borderRadius:"0 3px 3px 0"}}/>
+              <div data-cpm="filo" style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden",display:"flex",flexDirection:_swap893?"row-reverse":"row",width:80,margin:"0 auto"}}>{/* [7.905.0] etichette data-cpm="filo"/"filo-casa" anche nel vecchio markup: la sonda scudetti-893 misura il lato del segmento casa in entrambi i bracci, nessun cambio di stile */}
+                <div data-cpm="filo-casa" style={{width:`${possession}%`,background:scoreHomeCol,transition:"width .8s",borderRadius:"3px 0 0 3px"}}/>
+                <div data-cpm="filo-ospiti" style={{flex:1,background:scoreAwayCol,borderRadius:"0 3px 3px 0"}}/>
               </div>
               <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"rgba(255,255,255,0.28)",width:80,margin:"2px auto 0"}}>
                 <span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{_swap893?100-possession:possession}%</span><span>poss.</span><span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{_swap893?possession:100-possession}%</span>
@@ -8434,9 +8434,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           </div>
           ):(
           <React.Fragment>
+            {/* [7.905.0 — C3 v4, nota PO: «non ho notato l'inversione degli stemmi al cambio campo»] al passaggio a
+                _swap893 i due blocchi degli stemmi vengono RIMONTATI (key) e scorrono per 0,6 s dal lato da cui
+                arrivano; sotto il minuto compare per 3 s l'etichetta «cambio campo». Con prefers-reduced-motion lo
+                scorrimento sparisce (l'etichetta resta: e' informazione, non moto). Solo CSS, nessuno stato in piu'. */}
+            <style>{"@keyframes cpmSwapCasa905{from{transform:translateX(-60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmSwapOsp905{from{transform:translateX(60%);opacity:.25}to{transform:none;opacity:1}}@keyframes cpmCambio905{0%,70%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}@keyframes cpmPress905{from{width:0%}to{width:100%}}@media (prefers-reduced-motion:reduce){[data-cpm=\"scudo-casa\"],[data-cpm=\"scudo-ospiti\"]{animation:none!important}}"}</style>
             <div data-cpm="barra" data-specchio={_swap893?1:0} style={{height:60,boxSizing:"border-box",display:"flex",alignItems:"center",justifyContent:"space-between",flexDirection:_swap893?"row-reverse":"row",padding:"0 10px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto",gap:6}}>
               {/* Home team — solo scudetto e nome: il risultato ora sta al centro, unico */}
-              <div data-cpm="scudo-casa" style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start"}}>
+              <div data-cpm="scudo-casa" key={"scudo-casa-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start",animation:_swap893?"cpmSwapCasa905 .6s ease-out":"none"}}>
                 <TeamBadge team={homeTeamObj} size={26}/>
                 <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left"}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
               </div>
@@ -8468,18 +8473,22 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:10,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.38)",lineHeight:1}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
                   )}
                 </div>
-                <div style={{fontSize:9,color:"rgba(255,255,255,0.42)",letterSpacing:.5,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:118,marginTop:1}}>{_compTag901}</div>
+                <div style={{position:"relative",marginTop:1}}>
+                  <div style={{fontSize:9,color:"rgba(255,255,255,0.42)",letterSpacing:.5,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:118}}>{_compTag901}</div>
+                  {_swap893&&(clock|0)<=50&&<div data-cpm="cambio-campo" style={{position:"absolute",inset:0,textAlign:"center",fontSize:9,fontWeight:800,letterSpacing:.6,textTransform:"uppercase",color:"#fbbf24",background:"#0d1a33",borderRadius:4,whiteSpace:"nowrap",animation:"cpmCambio905 3s ease forwards"}}>cambio campo</div>}
+                </div>
               </div>
               {/* Away team */}
-              <div data-cpm="scudo-ospiti" style={{display:"flex",alignItems:"center",gap:6,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start"}}>
+              <div data-cpm="scudo-ospiti" key={"scudo-ospiti-"+(_swap893?1:0)} style={{display:"flex",alignItems:"center",gap:6,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start",animation:_swap893?"cpmSwapOsp905 .6s ease-out":"none"}}>
                 <TeamBadge team={awayTeamObj} size={26}/>
                 <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"left":"right"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
               </div>
             </div>
             {/* [7.901.0] il possesso resta, ma come filo di 3 px sotto la barra (non piu' due barre a corsia con le percentuali e il momentum) */}
-            <div style={{height:3,flex:"0 0 auto",display:"flex",background:"rgba(255,255,255,0.06)"}}>
-              <div style={{width:`${possession}%`,background:scoreHomeCol,transition:"width .8s"}}/>
-              <div style={{flex:1,background:scoreAwayCol}}/>
+            {/* [7.905.0 — C3 v4, nota PO «non ho capito se i colori della barra sono coerenti con le maglie»] il filo si SPECCHIA con la barra dal 46' (stessa condizione _swap893): nel 7.901 gli stemmi si invertivano e il filo restava con la casa a sinistra. I colori restano quelli delle MAGLIE INDOSSATE (scoreHomeCol = _mkits.homeShirt), come il 3D; gli stemmi portano i colori del club. */}
+            <div data-cpm="filo" style={{height:3,flex:"0 0 auto",display:"flex",flexDirection:_swap893?"row-reverse":"row",background:"rgba(255,255,255,0.06)"}}>
+              <div data-cpm="filo-casa" style={{width:`${possession}%`,background:scoreHomeCol,transition:"width .8s"}}/>
+              <div data-cpm="filo-ospiti" style={{flex:1,background:scoreAwayCol}}/>
             </div>
           </React.Fragment>
           )}
@@ -9119,18 +9128,49 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
 
               {/* Mobile HL overlay — DPad + actions on canvas, narrow only */}
               {isNarrow&&phase==="hl_move"&&curSit&&(
+                /* [7.905.0 — C3 v4, due note del PO dal telefono («Step-over e via!»): «a cosa serve il doppio cursore?» e
+                   «mentre mi muovo parte a volte l'azione da sola»] L'OVERLAY DEL PASSO DI MOVIMENTO, nello stesso vestito
+                   della scheda delle scelte: titolo su una riga, riga di aiuto («Frecce: sposta l'eroe (N mosse) · scegli
+                   prima che il marcatore arrivi»), barra «Pressione» sottile (3 px) legata a `pressureBar` col colore che
+                   passa da ambra a rosso come prima, D-pad a 44 px (tocco minimo). Niente numeri con «%»: la barra basta.
+                   Rosso __CPM_NO901 = l'overlay di prima (pad da 40, «⏱ 84%», puntini delle mosse). */
+                _no901?(
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
                   <div style={{color:"#f59e0b",fontSize:10,fontWeight:800,textShadow:"0 1px 4px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
                   <div style={{display:"flex",alignItems:"center",gap:10}}>
-                    {showDPad(curSit)&&<DPad onMove={handleDPad} dark size={40}/>}
+                    {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={40}/></div>}
                     <div style={{flex:1}}>
                       {curSit.maxMoves>0&&<div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"rgba(255,255,255,0.7)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginBottom:3}}><span>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</span><span>⏱ {Math.round(pressureBar*100)}%</span></div>}
-                      {curSit.maxMoves>0&&<div style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:2}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>}
+                      {curSit.maxMoves>0&&<div data-cpm="pressione" style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:2}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>}
                       <div style={{fontSize:10,color:"rgba(255,255,255,0.6)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginTop:3}}>📍 {ZONES[zone]?.label}</div>
                     </div>
                     <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:8,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
                   </div>
                 </div>
+                ):(
+                <div data-cpm="mossa" style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,maxHeight:"44vh",boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"linear-gradient(180deg,rgba(24,20,48,0.94) 0%,rgba(10,12,26,0.98) 100%)",borderTop:"1px solid rgba(196,181,253,0.35)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
+                  {/* [7.905.0 — C3 v4, terza nota del PO (foto 16:48) «primo cursore con grafica non coerente»] lo stesso
+                      vestito della scheda delle scelte: fondo, bordi e tipografia identici; titolo su una riga, riga di
+                      aiuto, barra «Pressione» da 3 px (ambra → rosso, legata a pressureBar), pallini delle mosse e zona;
+                      in fondo il D-pad a 44 px allineato a sinistra e il tasto «Scegli» a destra, alto 52 px. Tutto ≤ 44vh. */}
+                  <div style={{width:36,height:4,borderRadius:2,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
+                  <div style={{fontSize:17,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flexShrink:0}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
+                  {movesLeft>0&&<div data-cpm="aiuto" style={{fontSize:11,lineHeight:1.3,fontWeight:600,color:"#c4b5fd",flexShrink:0}}>Frecce: sposta l'eroe ({movesLeft} {movesLeft===1?"mossa":"mosse"}) · scegli prima che il marcatore arrivi</div>}
+                  {curSit.maxMoves>0&&<div data-cpm="pressione" style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
+                    <div style={{fontSize:10,fontWeight:700,letterSpacing:.4,color:"rgba(255,255,255,0.5)"}}>Pressione</div>
+                    <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>
+                  </div>}
+                  <div style={{display:"flex",alignItems:"center",gap:8,fontSize:11,fontWeight:700,color:"#94a3b8",flexShrink:0,overflow:"hidden",whiteSpace:"nowrap"}}>
+                    {curSit.maxMoves>0&&<span style={{color:"#c4b5fd",letterSpacing:1}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))}</span>}
+                    {curSit.maxMoves>0&&<span>{movesLeft} {movesLeft===1?"mossa":"mosse"}</span>}
+                    <span style={{marginLeft:"auto",overflow:"hidden",textOverflow:"ellipsis"}}>📍 {ZONES[zone]?.label}</span>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexShrink:0}}>
+                    {showDPad(curSit)?<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44}/></div>:<div/>}
+                    <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:11,border:"none",background:"#2563eb",color:"#fff",fontWeight:900,fontSize:15,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
+                  </div>
+                </div>
+                )
               )}
               {isNarrow&&phase==="hl_choose"&&curSit&&(
                 /* [7.901.0 — C3: L'INTERAZIONE DELL'EROE E' UNA SCHEDA CHE SALE DAL BASSO, MAX 44% DELLO
@@ -9143,7 +9183,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent,_scoreDiff)} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span>&nbsp;·&nbsp;<span style={{color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡{energy}</span></div>
                   {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:10,color:"rgba(255,255,255,0.75)",background:"rgba(37,99,235,0.35)",borderRadius:6,padding:"5px 8px",marginBottom:6}}>💡 Muoviti col pad per cambiare le opzioni d'azione.</div>}{/* [5.84.0 UX-2c] micro-onboarding one-shot (primi 5 HL del device) */}
                   <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
-                    {!curSit.lockMovement&&!hideDirCursor(curSit)&&<div style={{flexShrink:0,opacity:movesLeft>0?1:0.35,filter:movesLeft>0?"none":"grayscale(1)"}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={40}/></div>}{/* [5.90.0 FIX PO] a mosse esaurite il pad resta come SCUDO disabilitato: smontarlo faceva slittare i bottoni azione sotto il dito → l'azione partiva "da sola" */}
+                    {!curSit.lockMovement&&!hideDirCursor(curSit)&&<div data-cpm="dpad" style={{flexShrink:0,opacity:movesLeft>0?1:0.35,filter:movesLeft>0?"none":"grayscale(1)"}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={40}/></div>}{/* [5.90.0 FIX PO] a mosse esaurite il pad resta come SCUDO disabilitato: smontarlo faceva slittare i bottoni azione sotto il dito → l'azione partiva "da sola" */}
                     {isAimSit(curSit)?(
                       <div style={{flex:1,display:"flex",flexDirection:"column",gap:5}}>{/* [7.51.0 SET-PIECE 2.0] scelte di STILE al posto della griglia di mira */}
                         {setPieceOptions(curSit,player,pPos.x).map((o)=>(
@@ -9177,18 +9217,44 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   const _CAT901={tecnica:"TECNICA",tiro:"TIRO",passaggio:"PASSAGGIO",dribbling:"DRIBBLING","velocità":"VELOCITÀ",fisico:"FISICO","mentalità":"MENTALITÀ",posizionamento:"POSIZIONAMENTO",difesa:"DIFESA"};
                   const _split901=(s)=>{const str=String(s||"");const sp=str.indexOf(" ");return sp<=0?{icon:"⚽",txt:str}:{icon:str.slice(0,sp),txt:str.slice(sp+1)};};
                   const _sub901=intentIntro(curSit.intro,_scoreDiff);
+                  const _dl905=defDist>60?9000:defDist>35?6000:4000;/* [7.905.0] la STESSA formula del timer dell esitazione (auto-tackle, effetto su phase hl_choose): la barra dura quanto il timer */
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
                   <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"44vh",boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"linear-gradient(180deg,rgba(24,20,48,0.94) 0%,rgba(10,12,26,0.98) 100%)",borderTop:"1px solid rgba(196,181,253,0.35)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
                     <div style={{width:36,height:4,borderRadius:2,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
                     {/* [7.902.0 — C3 v2, nota PO 15/09: «la scheda non regge le situazioni con molte opzioni» — misurato: 7 opzioni schiacciate a 34 px] header e riga di stato SEMPRE alla loro dimensione (flexShrink:0): a schiacciarsi, se qualcosa deve, e' la lista sotto, mai queste due righe. */}
-                    <div style={{display:"flex",alignItems:"flex-start",gap:8,flexShrink:0}}>
+                    {/* [7.905.0 — C3 v4, due note del PO dal telefono («Step-over e via!»)] (a) «a cosa serve il doppio
+                        cursore?»: il D-pad non era spiegato — sopra la barra, quando restano mosse, una riga di aiuto
+                        da 11 px «Frecce: sposta l'eroe (N mosse) · scegli prima che il marcatore arrivi»; e i tasti del
+                        pad passano da 34 a 44 px (tocco minimo). Con il pad in riga il titolo sta su UNA riga (clamp 1,
+                        non 2), cosi' la scheda resta sotto il 44vh con le tre righe da 52 px intere anche a 412×700.
+                        (b) «mentre mi muovo parte a volte l'azione da sola»: e' il timer dell'esitazione (auto-anticipo
+                        del marcatore, 4/6/9 s secondo defDist, effetto piu' sopra) — il vecchio HUD mostrava una barra
+                        «⏱ Pressione», la scheda 7.901 non la mostrava: il conto alla rovescia era diventato invisibile.
+                        Qui torna come barra sottile (3 px) «Pressione» sotto il titolo. In hl_choose `pressureBar` e'
+                        FERMO (quello stato conta solo il passo di movimento, e arriva qui a 0 o a 1): la barra e' quindi
+                        un conto alla rovescia CSS della STESSA durata del timer (stessa formula su defDist), rimontato
+                        (key) a ogni scena e a ogni ripresa dalla pausa esattamente come si riarma il timer, e in pausa si
+                        ferma. Il colore passa da ambra a rosso man mano che scende (il velo scuro copre da destra un
+                        fondo rosso → ambra: il bordo che resta scorre verso il rosso). Nessuno stato in piu', nessun
+                        timer in piu': solo CSS su valori che esistono gia'. Niente «%» nella scheda (decisione PO). */}
+                    {/* [7.905.0 — C3 v4, terza nota del PO (foto 16:49): «secondo cursore inutile»] il D-pad NON sta piu'
+                        nella scheda delle scelte: le mosse si fanno nel passo di movimento (hl_move) e basta. Qui restano
+                        la riga di aiuto e la barra della pressione. (Nel rosso __CPM_NO901 il pad c'e' ancora, come prima.) */}
+                    <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
                       <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
                         <div style={{fontSize:17,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
                         {_sub901&&<div style={{fontSize:11.5,lineHeight:1.3,fontWeight:600,color:"#94a3b8",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_sub901}</div>}
                       </div>
-                      {!curSit.lockMovement&&!hideDirCursor(curSit)&&<div style={{flexShrink:0,opacity:movesLeft>0?1:0.35,filter:movesLeft>0?"none":"grayscale(1)"}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={34}/></div>}
                     </div>
+                    {!curSit.lockMovement&&<div data-cpm="aiuto" style={{fontSize:11,lineHeight:1.3,fontWeight:600,color:"#c4b5fd",flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
+                    {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
+                      {/* il @keyframes cpmPress905 sta nello <style> della barra superiore (sempre montata qui): uno <style> DENTRO la scheda finiva nel textContent e la sonda leggeva un «%» che il giocatore non vede */}
+                      <div style={{fontSize:10,fontWeight:700,letterSpacing:.4,color:"rgba(255,255,255,0.5)"}}>Pressione</div>
+                      <div style={{position:"relative",height:3,borderRadius:2,overflow:"hidden",background:"linear-gradient(90deg,#ef4444 0%,#f97316 45%,#f59e0b 100%)"}}>
+                        <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:"#10122a",animation:`cpmPress905 ${_dl905}ms linear forwards`,animationPlayState:paused?"paused":"running"}}/>
+                      </div>
+                    </div>}
                     {/* [7.902.0] LA LISTA SCORRE, LE RIGHE NO: `flex:"1 1 auto"` + `minHeight:0` sono quello che permette
                         a QUESTO contenitore (non alle righe) di farsi piccolo dentro la scheda ≤44vh — senza `minHeight:0`
                         un figlio flex non si restringe mai sotto la sua dimensione naturale (il gotcha classico del
