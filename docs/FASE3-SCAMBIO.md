@@ -6042,6 +6042,37 @@ Voti [7,7,7,7,8,7,8,7,7,8,7,7], **media 7,25 = n° 18**: il salto di «ai piedi�
 (coppia rosso 70/58 vs verde 64/62), quindi Realismo resta 7; la 7.900 muove i tiri solo al banco (4,1 → 5,2, obiettivo
 8) e le Azioni extra-eroe restano 7. Registro `docs/voti/voti-telefono.json`, sezione voti rigenerata con `voti-piano`.
 
+### 15/09 15:45 — C3 v4 misurata: la pressione torna visibile, il cursore resta nel movimento, il cambio campo si vede (ramo `claude/hud-c3-v4`, 7.905.0)
+
+Nasce dai collaudi del PO sul telefono (16:42-16:49). Cinque rimedi, solo src/15:
+
+| misura (412×915) | banda | rosso `__CPM_NO901` | **verde** |
+|---|---|---|---|
+| hl_move: altezza overlay | ≤ 44 % | 17,7 % | 28,0 % |
+| hl_move: barra della pressione | presente | sì (vecchio stile) | **sì, col vestito della scheda** |
+| hl_move: tasto del cursore | 44 px | 40 px | **44 px** |
+| hl_move: tasto «Scegli» | ≥ 52 px | 36 px | **52 px** |
+| hl_move / hl_choose: riga di aiuto | presente | no | **sì** |
+| hl_choose: cursore presente | rosso sì, verde no | sì (40 px) | **no** |
+| hl_choose: barra della pressione | presente | **no** (la regressione del PO) | **sì** |
+| hl_choose: altezza scheda, righe | ≤ 44 %, ≥ 52 px | 20,9 %, 40 px | 28,9 %, **52 px** |
+| 7 opzioni sintetiche: scheda, righe intere | ≤ 44 % | 40,5 %, 7 schiacciate | 44,0 %, **5 intere, lista che scorre** |
+| esito: tasti | uno | 0 (banda tutta cliccabile) | **1** |
+
+**Cambio campo** (sonda `scudetti-893` estesa): stemma di casa a 44' x 11 px (sinistra) → a 46' x 184 px (destra);
+il **filo del possesso si specchia con gli stemmi** (prima restava a sinistra: «stemmi e filo cambiano insieme» ora vero
+in entrambi i bracci dopo il rimedio); transizione degli stemmi al 46' `none, 0 s` → **0,6 s**; etichetta «cambio campo»
+assente → **presente e smontata entro 4 s**. **Colori**: filo e 3D usano la maglia indossata (casa rgb(122,31,43),
+ospiti rgb(145,190,21)), gli stemmi il colore del club (casa #7a1f2b = stessa tinta, ospiti #ea580c ≠ verde della
+maglia): nella partita di prova la squadra ospite gioca con una maglia di colore diverso dallo stemma. Nessun colore
+cambiato: e' un fatto dichiarato, non un difetto. 0 errori di pagina in tutti i bracci, foto verificate (24).
+Un difetto trovato dalla sonda e corretto: un `@keyframes` dentro il blocco delle scelte finiva nel testo letto dalla
+misura («%» invisibile al giocatore) — lo `<style>` e' uscito dalla scheda.
+
+Merge sulla linea motore con C8 (69a6ac5, versione 7.905.0: panchina CH38 alleggerita + HUD v4). Rituali in coda.
+NON verificato: l'Android del PO. **L'agente della squadra grafica si e' fermato sul limite di spesa mensile del modello
+dopo aver spedito tutto** (tre commit e le foto): il lavoro era al sicuro perche' la regola «push subito» era attiva.
+
 ### 15/09 15:40 — C8 misurata: panchinari, mister e vice con il corpo CH38 alleggerito, e non volano (ramo `claude/panchina-glb`, 7.904.0, rosso `__CPM_NO904`)
 
 Squadra grafica (agente), solo src/12 e la versione; nuovo asset `assets/footballer-panchina.glb` (1,99 MB, 14.622 triangoli,
