@@ -5995,6 +5995,18 @@ limite (8 % delle decisioni anche ora: il 45 % di base e' scontato da pressione 
 e nel «controllo» al limite (18 %, la sosta 7.894). Prossimo passo v2: il tiro di prima al limite. Rituali in corsa
 (il guardiano partita-vera misura i tiri nel live).
 
+**Rituali e produzione (08:40).** career-critical exit=0 alle 08:14, ci exit=0 alle 08:40, sul build 65cc427 (`IDENTICO 1`;
+5553514 e 73d6523 sopra sono solo docs e banco, html identico). Nel ci il guardiano partita-vera legge dal motore della
+partita del live 3 tiri e 24 passaggi (una partita, un seme: non e' una misura del tiro, e' il fumo del live). v2-v5
+misurate al banco e scartate (5,1 · 5,2 · 4,2 · 5,2 tiri): il tetto sta nel numero di attacchi che arrivano nel terzo
+finale (7-8 a partita, 0,6 tiri ciascuno) e nel tempo del mondo (un tocco al minuto). Arrivare a 8 chiede al PO una
+decisione sul tempo del mondo (attacco dal centrocampo all'area in 3 minuti invece di 5-6). A4 chiusa alla v1.
+
+- 15/09 08:40 UTC: **Produzione allineata a 5553514 (7.900.0) — rituale completo verde sul build esatto 65cc427**
+  (career-critical exit=0 alle 08:14, ci exit=0 alle 08:40, `IDENTICO 1`; i due commit sopra 65cc427 non toccano
+  l'html). Fast-forward 018e96b → 5553514, mai force. Non verificato: l'Android del PO; la CI di GitHub su main.
+  Scheda da telefono n° 19 in corsa.
+
 ### 15/09 08:15 — C2 chiusa: il PO ha risposto al wizard sull'anteprima del HUD
 
 Risposte (AskUserQuestion, 4 domande): **barra del risultato 60 px su una riga** (era 92) · **interazione come scheda
