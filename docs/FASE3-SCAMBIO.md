@@ -6076,6 +6076,11 @@ Hair 3.042) contro 48.140, 1,99 MB — piu' leggero del 22.768 di D7 passo 1; e'
 = +234 k triangoli, +21 % sul 1,09 M dei 22 in campo). Qualita' del corpo da fotografare (C4).
 
 
+- 15/09 14:30 UTC: **Produzione allineata a ed0ecd2 (7.903.0 + C3) — rituale completo verde sul build esatto**
+  (career-critical exit=0 alle 14:03, ci exit=0 alle 14:27: motion 20-21/21, arbitro-esiste 7, partita-vera OK;
+  `IDENTICO 1`). Fast-forward 6324c4b → ed0ecd2, mai force. Non verificato: l'Android del PO; la CI di GitHub su main.
+  Scheda da telefono n° 20 in corsa; artefatto del piano alla v13.
+
 ### 15/09 10:55 — C3 misurata: il HUD della partita secondo le tavole del PO (ramo `claude/hud-c3`, 7.901.2, rosso `__CPM_NO901`)
 
 Squadra grafica (agente, worktree separato), solo src/15 e la versione; motore, telecronaca 7.892 e voce della panchina
