@@ -5947,3 +5947,22 @@ una riga (corpo 12,5, senza fondo) anche nella colonna delle voci. Guardiano: `n
 - 15/09 07:25 UTC: **Produzione allineata a 018e96b (7.899.0) — rituale completo verde sull'HEAD esatto**
   (career-critical exit=0 alle 06:59, ci exit=0 alle 07:25, `IDENTICO 1`). Fast-forward 96f9903 → 018e96b, mai
   force. Non verificato: l'Android del PO; la CI di GitHub su main. Scheda da telefono n° 18 in corsa.
+
+## Scheda da telefono n° 18 — build 7.899.0 (15/09 07:56), GLB accesi, 4 partite
+
+Sonda `collaudo-telefono` senza foto. Vairo casa / Galli fuori / Moretti casa / Conti fuori, fra parentesi la n° 17 (7.898,
+stesso motore):
+
+| misura | valori | banda |
+|---|---|---|
+| pallone reso ai piedi del padrone (≤3u) | 58 / 51 / **69** / **41** % (68 / 57 / 62 / 45) | ≥ 60 % (1/4; era 2/4) |
+| padrone dichiarato dalla simulazione | 49 / 32 / 48 / 37 % (46 / 36 / 41 / 42) | (informativo; A3: → ≥ 70 %) |
+| distanza reso↔padrone mediana / p90 | 2,2/19,6 · 2,4/19,9 · 1,7/14,1 · **4,7**/24,2 u | mediana ≤ 3u (3/4) |
+| scarto reso↔logico mediana / p90 | 1,3/19,2 · 0,7/20 · 1,4/15,9 · 0,7/26,8 u | p90 ≤ 8u (0/4) |
+| salti del pallone (>8u in ≤110 ms) | 49 / 55 / 55 / 69 (49 / 57 / 55 / 63) | 0 fuori dagli stacchi |
+| fps senza sonda (primi 8 s) | 37 / 36 / 35 / **28** (28 / 31 / 30 / 31) | ≥ 30 (3/4) |
+
+Lettura onesta: la 7.899 non tocca il motore, e le quattro partite si muovono di ±10 punti rispetto alla n° 17 in
+entrambi i versi (Vairo 68 → 58, Moretti 62 → 69): e' la varianza da corsa a corsa dello strumento, non un
+cambiamento. Voti (n° 17 → n° 18): Telecronaca 6 → 7 (sovrapposizione della panchina 100 % → 0 %), Immersione 6 → 7
+(pallone/uomo 0,52 → 0,35; non verificato sull'Android del PO), le altre invariate. Media **7,25** (n° 17: 7,08).

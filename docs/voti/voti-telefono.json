@@ -157,6 +157,34 @@
     "11": "fps senza sonda 28/31/30/31 (≥30: 3/4, era 0/4); foto del PO: pallone 10,5 px accanto a uomini di 32 px, «troppo grande» → resta 6",
     "12": "career-critical exit 0 sulla 7.898 → 7"
    }
+  },
+  {
+   "n": 18,
+   "build": "7.899.0",
+   "quando": "15/09 07:56",
+   "glb": true,
+   "voti": [
+    7,
+    7,
+    7,
+    7,
+    8,
+    7,
+    8,
+    7,
+    7,
+    8,
+    7,
+    7
+   ],
+   "fonte": "tests/visual/collaudo-telefono (4 partite: Vairo casa / Galli fuori / Moretti casa / Conti fuori, GLB accesi, senza foto) + sonde taglia-pallone e panchina-riga — verbale FASE3-SCAMBIO 15/09 07:56",
+   "perche": {
+    "1": "stesso motore della 7.898: ai piedi 58/51/69/41 % (n° 17: 68/57/62/45; ≥60: 1/4, era 2/4), distanza mediana 2,2/2,4/1,7/4,7u (≤3u: 3/4 come prima), salti 49/55/55/69 (49/57/55/63): differenze da corsa a corsa (±10 punti sulla stessa partita), nessuna misura nuova sul realismo → resta 7",
+    "8": "panchina: sovrapposizione al racconto 100 % → 0 % (412×700, eroe sostituito, 370 campioni), riquadro 30 px → riga 16 px → 6 → 7",
+    "10": "career-critical e ci verdi sulla 7.899 (06:59, 07:25) → 8",
+    "11": "pallone reso a centrocampo 11 → 8 px, rapporto pallone/uomo 0,52 → 0,35 (foto congelate a 13/25/41); fps senza sonda 37/36/35/28 (≥30: 3/4) → 6 → 7; NON verificato sull’Android del PO",
+    "12": "career-critical exit 0 sulla 7.899 → 7"
+   }
   }
  ],
  "regole": {
