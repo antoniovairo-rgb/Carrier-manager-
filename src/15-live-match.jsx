@@ -1125,7 +1125,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     let c=cfg&&cfg.col;try{if(c){const _m=c.match(/rgba?\(([^)]+)\)/);if(_m){const _p=_m[1].split(",").map(s=>s.trim());if(_p.length>=4){const _a=Math.min(parseFloat(_p[3])||0,0.42);c=`rgba(${_p[0]},${_p[1]},${_p[2]},${_a})`;}}}}catch(_e){}
     setScreenFlash({...cfg,col:c});};
   const [cutFx,setCutFx]=useState(null);// stacco nero di transizione sull'esito positivo
-  const [_esitoReplay901,setEsitoReplay901]=useState(0);/* [7.901.0 — C3] il tastino piccolo a fianco di «Continua» nella banda dell'esito: NON tocca fasi/handler/logica, rimonta (via key) la banda per ripetere SOLO l'animazione di comparsa — un replay grafico, non un nuovo esito. */
   const [floatGoal,setFloatGoal]=useState(null);
   const [goalCinema,setGoalCinema]=useState(null); // Sprint 95: {text,col,key,shakeKey}
   // 5.43.4 — REGOLA GENERALE: l'esultanza ("GOL"+grafica+coriandoli+boato) parte SOLO quando la palla ENTRA in
@@ -9238,7 +9237,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   const _titCol901=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
                   const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(chosenAct?.label?(" · "+chosenAct.label):"");
                   return(
-                  <div data-cpm="esito" key={"esito901-"+_esitoReplay901} style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"40vh",boxSizing:"border-box",overflow:"hidden",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.88) 22%,rgba(5,8,16,0.95) 100%)",padding:"14px 14px 12px",display:"flex",flexDirection:"column",gap:8,animation:"cpmEsitoIn901 .32s ease-out"}}>
+                  <div data-cpm="esito" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"40vh",boxSizing:"border-box",overflow:"hidden",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.88) 22%,rgba(5,8,16,0.95) 100%)",padding:"14px 14px 12px",display:"flex",flexDirection:"column",gap:8,animation:"cpmEsitoIn901 .32s ease-out"}}>
                     <style>{"@keyframes cpmEsitoIn901{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}"}</style>
                     <div style={{display:"flex",alignItems:"center",gap:7}}>
                       <div style={{width:20,height:20,borderRadius:6,background:outcome.ok?"rgba(74,222,128,0.16)":"rgba(248,113,113,0.16)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
@@ -9253,11 +9252,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       {mStats.goals>0&&<div style={{padding:"3px 9px",borderRadius:999,background:"rgba(74,222,128,0.14)",border:"1px solid rgba(74,222,128,0.35)",fontSize:11,fontWeight:800,color:"#4ade80"}}>⚽ gol {mStats.goals}</div>}
                       {mStats.assists>0&&<div style={{padding:"3px 9px",borderRadius:999,background:"rgba(96,165,250,0.14)",border:"1px solid rgba(96,165,250,0.35)",fontSize:11,fontWeight:800,color:"#60a5fa"}}>🎯 assist {mStats.assists}</div>}
                     </div>
-                    <div style={{display:"flex",alignItems:"center",gap:8,marginTop:2}}>
+                    {/* [7.901.2 — C3 v3, nota PO: «banda bassa, un solo Continua»] il tastino piccolo di replay
+                        e' stato tolto: non toccava fase/handler/logica (rimontava solo l'animazione di
+                        comparsa), ma un tasto che non fa niente di vero non va in produzione. Resta il solo
+                        «Continua» a tutta larghezza. */}
+                    <div style={{display:"flex",alignItems:"center",marginTop:2}}>
                       <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{flex:1,height:46,border:"none",borderRadius:11,background:"#2563eb",color:"#fff",fontSize:14,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
-                      <button onClick={(e)=>{e.stopPropagation();setEsitoReplay901(v=>v+1);}} title="Rivedi l'animazione dell'esito" style={{width:46,height:46,flexShrink:0,borderRadius:11,border:"1px solid rgba(255,255,255,0.22)",background:"rgba(255,255,255,0.06)",color:"#f1f5f9",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f1f5f9" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path></svg>
-                      </button>
                     </div>
                   </div>
                   );

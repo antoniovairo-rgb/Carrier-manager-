@@ -278,7 +278,7 @@ async function misuraBraccio(arm) {
   rows.push(['2b', 'scelte (7 opz.): altezza min. riga (di 7)', 'PO: 52 px fissi', rosso.many ? `${rosso.many.nRows} righe, min ${fmt(minOf(rosso.many.rowHeights), 0)} px` : '—', verde.many ? `${verde.many.nRows} righe, min ${fmt(minOf(verde.many.rowHeights), 0)} px` : '—']);
   rows.push(['2b', 'scelte (7 opz.): righe intere visibili senza scorrere', '≥ 3', rosso.many ? String(rosso.many.visibiliIntere) : '—', verde.many ? String(verde.many.visibiliIntere) : '—']);
   rows.push(['3', 'esito: altezza banda', `≤ 40 % (${(0.40 * H).toFixed(0)} px)`, rosso.result ? pct(rosso.result.pct) + ' (' + fmt(rosso.result.h, 0) + ' px)' : '—', verde.result ? pct(verde.result.pct) + ' (' + fmt(verde.result.h, 0) + ' px)' : '—']);
-  rows.push(['3', 'esito: tasti grandi (≥200px) / piccoli (<80px)', '1 grande + 1 piccolo', rosso.result ? `${rosso.result.big} grandi / ${rosso.result.small} piccoli (bottoni tot. ${rosso.result.nBtns})` : '—', verde.result ? `${verde.result.big} grandi / ${verde.result.small} piccoli (bottoni tot. ${verde.result.nBtns})` : '—']);
+  rows.push(['3', 'esito: tasti grandi (≥200px) / piccoli (<80px)', '1 bottone: 1 grande / 0 piccoli', rosso.result ? `${rosso.result.big} grandi / ${rosso.result.small} piccoli (bottoni tot. ${rosso.result.nBtns})` : '—', verde.result ? `${verde.result.big} grandi / ${verde.result.small} piccoli (bottoni tot. ${verde.result.nBtns})` : '—']);
 
   const widths = rows[0].map((_, ci) => Math.max(...rows.map(r => String(r[ci]).length)));
   const line = r => r.map((c, ci) => String(c).padEnd(widths[ci])).join('  |  ');
