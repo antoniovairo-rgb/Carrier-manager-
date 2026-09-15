@@ -3181,7 +3181,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         _T.a.copy(ball.position).project(camera);_T.b.set(ball.position.x,ball.position.y+_r0*ball.scale.y*2,ball.position.z).project(camera);
         const _px=Math.abs(_T.b.y-_T.a.y)/2*_hh;/* diametro in pixel */
         if(typeof window!=='undefined'&&window.__CPM_REC){_T.n++;if(_T.px.length<3000)_T.px.push(+_px.toFixed(1));if(hero&&(_T.n%5===0)){_T.a.set(hero.position.x,hero.position.y,hero.position.z).project(camera);_T.b.set(hero.position.x,hero.position.y+1.75,hero.position.z).project(camera);if(_T.hpx.length<3000)_T.hpx.push(+(Math.abs(_T.b.y-_T.a.y)/2*_hh).toFixed(1));}window.__CPM_TAGLIA862=_T;}
-        const _MIN=11;if(_px>0.5&&_px<_MIN&&_T.a.z<1){ball.scale.multiplyScalar(_MIN/_px);_T.up++;}
+        /* [7.899.0 — LA TAGLIA MINIMA E' RELATIVA ALL'UOMO ALLA STESSA PROFONDITA'. Rosso __CPM_NO899] Nota PO 15/09
+           (foto a centrocampo, campo largo, 1,5×): «pallone troppo grande e sproporzionato». Misurato sulla foto: pallone
+           10,5 px su 412 di larghezza — e' il pavimento fisso di 11 px della 7.862 — accanto a uomini alti ~32 px: un
+           terzo dell'uomo, contro il quarto della proporzione di base (0,44u su 1,75u) e l'ottavo del calcio vero. Le due
+           note del PO (10/09 «troppo piccolo» a 5,9 px; oggi «troppo grande» a 11) si tengono insieme solo con un
+           pavimento che guarda gli uomini: qui si proietta un uomo di 1,75u fermo SUL pallone (stessa profondita') e il
+           pavimento e' un quarto della sua altezza, mai sotto 8 px, mai sopra 11. A camera vicina non cambia nulla. */
+        let _MIN=11;
+        {_T.b.set(ball.position.x,ball.position.y+1.75,ball.position.z).project(camera);const _hb=Math.abs(_T.b.y-_T.a.y)/2*_hh;/* altezza a schermo di un uomo fermo sul pallone: misurata sempre (anche col rosso), applicata solo col verde */
+         if(!(typeof window!=='undefined'&&window.__CPM_NO899)&&_hb>0.5)_MIN=Math.max(8,Math.min(11,0.25*_hb));
+         _T.hb=+_hb.toFixed(1);_T.min=+_MIN.toFixed(1);_T.ndc=[+_T.a.x.toFixed(4),+_T.a.y.toFixed(4)];}
+        if(_px>0.5&&_px<_MIN&&_T.a.z<1){ball.scale.multiplyScalar(_MIN/_px);_T.up++;}_T.out=+((_px>0.5&&_px<_MIN&&_T.a.z<1)?_MIN:_px).toFixed(1);/* diametro reso dopo il pavimento */
       }catch(_e862){}}
       /* [7.794.0] IL ROSSO RIDA' AL PALLONE ANCHE LA SUA VECCHIA LEVITAZIONE. La quota di terra e' un
          letterale in una ventina di formule (vedi la nota in testa al file: le guardie analitiche la

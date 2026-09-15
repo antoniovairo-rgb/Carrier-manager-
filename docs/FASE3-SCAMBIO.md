@@ -5896,3 +5896,50 @@ Moretti casa / Conti fuori, fra parentesi la n° 16 (7.895):
 Voti (n° 16 → n° 17): Realismo 6 → 7 (mediane e salti migliorano in 4/4, Moretti 40 → 62 %; la banda ≥60 resta 2/4 e
 le code p90 si allungano); Telecronaca 7 → 6 (foto del PO: il riquadro della panchina copre il racconto); le altre
 invariate. Media **7,08** (n° 16: 7,08). Palla morta e righe non rimisurate (sonda senza foto).
+
+### 15/09 06:30 — 7.899.0: il pallone e la panchina dalle due foto del PO (rossi `__CPM_NO899` / `__CPM_NO899B`)
+
+**Pallone «troppo grande e sproporzionato»** (foto al 39', campo largo, 1,5×). Misurato sulla foto: pallone 10,5 px
+su 412 di larghezza — il pavimento fisso di 11 px della 7.862 (messo il 10/09 per la nota opposta, «troppo piccolo»,
+quando era 5,9 px) — accanto a uomini alti ~32 px. Sonda nuova `npm run taglia-pallone` (foto congelata a 13'/25'/41',
+GLB accesi, gancio `__CPM_TAGLIA862` esteso: diametro reso dopo il pavimento, altezza a schermo di un uomo di 1,75u
+fermo SUL pallone, posizione a schermo):
+
+| | rosso (7.862) | **verde 7.899** |
+|---|---|---|
+| pallone reso (13' / 25' / 41') | 11 / 11 / 11 px | **8 / 8 / 8 px** |
+| pallone naturale, senza pavimento | 5,3 / 6,4 / 4-5,5 px | idem |
+| uomo alla stessa profondita' | 21 / 26 / 17 px | 21 / 26 / 23 px |
+| rapporto pallone/uomo, mediana | **0,52** | **0,35** |
+
+Rimedio: il pavimento e' un quarto dell'altezza dell'uomo alla stessa profondita', mai sotto 8 px ne' sopra 11 (a
+camera vicina non scatta). Da mezzo uomo a un terzo; la proporzione di base del gioco e' un quarto e quella del calcio
+vero un ottavo, ma a centrocampo gli uomini stessi sono alti 17-26 px su 915: sotto gli 8 px il pallone sparisce (nota
+del 10/09). La leva vera e' la distanza della camera larga (cantiere C), non il pallone. La misura «in foto» della sonda
+(macchia bianca attorno al punto proiettato) prende anche le righe del campo ed e' inservibile (4/47/42 px): dichiarato,
+si usa il gancio; le foto restano per l'occhio (`tests/visual/lib/out/taglia-pallone/`).
+
+**Panchina «invasiva»** (foto all'80': il riquadro copre la seconda riga della telecronaca). Sonda nuova
+`npm run panchina-riga` (voci accese col gancio `__CPM_HUD_FORCE` ogni 4 s: racconto a due righe + ordine del
+mister; una partita in autoplay ne mostra zero, misurato 477 campioni). Rosso (riquadro 7.788): 268 campioni con la
+panchina in pagina, **sovrapposizione al testo 0 %**, riquadro alto 30 px e largo 272. La sovrapposizione della foto
+del PO NON si riproduce in Chromium 412×915: dichiarato (metrica del carattere o larghezza diversa sul suo Android).
+Il rimedio risponde comunque alla richiesta «ridurla»: la voce del mister e' una riga sotto il racconto (corpo 12,5,
+senza fondo ne' bordo, stessa dissolvenza), non un riquadro. Verde in corsa; poi rituali e main.
+
+**Panchina, la foto del PO riprodotta (06:45).** La prima sonda misurava 0 per costruzione: il testo del racconto sta
+in `div`, non in `span`; ora misura i nodi di testo con un Range. E la condizione della foto e' doppia: eroe
+SOSTITUITO (tasto «Salta al fischio finale», che dal 7.543 alza la colonna delle voci di 46 px) e viewport BASSA
+(su Android con barra degli indirizzi il gioco e' alto ~685-700 px CSS: il sottopancia all'11 % dal fondo scende
+dentro la colonna). Coppia a 412×700 con la leva `__CPM_FORCE_SUBOFF`, voci accese ogni 4 s:
+
+| | rosso `__CPM_NO899B` (riquadro 7.788, sottopancia all'11 %) | **verde 7.899** |
+|---|---|---|
+| campioni con la panchina in pagina | 370 | 370 |
+| panchina SOVRAPPOSTA al testo del racconto | **370 (100 %)**, area media 2.999 px² | **0** |
+| altezza / larghezza della panchina | 30 / 272 px | 16 / 244 px |
+| a 412×915 (stessa leva) | 0 % | 0 % |
+
+Rimedio in due righe: il sottopancia sale di 46 px insieme alla colonna quando c'e' il tasto, e la voce del mister e'
+una riga (corpo 12,5, senza fondo) anche nella colonna delle voci. Guardiano: `npm run panchina-riga` con
+`CPM_H=700` (rosso 100 % → verde 0 %). Si spedisce come 7.899.0; rituali in corsa.
