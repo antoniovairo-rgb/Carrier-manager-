@@ -5943,3 +5943,7 @@ dentro la colonna). Coppia a 412×700 con la leva `__CPM_FORCE_SUBOFF`, voci acc
 Rimedio in due righe: il sottopancia sale di 46 px insieme alla colonna quando c'e' il tasto, e la voce del mister e'
 una riga (corpo 12,5, senza fondo) anche nella colonna delle voci. Guardiano: `npm run panchina-riga` con
 `CPM_H=700` (rosso 100 % → verde 0 %). Si spedisce come 7.899.0; rituali in corsa.
+
+- 15/09 07:25 UTC: **Produzione allineata a 018e96b (7.899.0) — rituale completo verde sull'HEAD esatto**
+  (career-critical exit=0 alle 06:59, ci exit=0 alle 07:25, `IDENTICO 1`). Fast-forward 96f9903 → 018e96b, mai
+  force. Non verificato: l'Android del PO; la CI di GitHub su main. Scheda da telefono n° 18 in corsa.
