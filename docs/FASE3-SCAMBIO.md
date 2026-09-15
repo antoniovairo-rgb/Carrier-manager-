@@ -5872,3 +5872,8 @@ Il padrone dichiarato al telefono torna a 41 % (v3c 48 %): e' lo stesso build de
 (il seme fissa il motore, non il tempo reale della sonda). Si spedisce come 7.898.0 v3d; rituali in corsa.
 Prossimo sul reso: arco reso sui punti del motore (`dur`, `poss.a`) per ridare la parabola e accorciare le code, e la
 colla dell'eroe che legga il portatore dichiarato invece della distanza dalla mesh.
+
+- 15/09 05:40 UTC: **Produzione allineata a 96f9903 (7.898.0 v3d) — rituale completo verde sull'HEAD esatto**
+  (career-critical exit=0 alle 05:13, ci exit=0 alle 05:38, `IDENTICO 1`). Fast-forward 0a1746c → 96f9903, mai
+  force. Non verificato: l'Android del PO; la CI di GitHub su main. Scheda da telefono n° 17 (4 partite, GLB accesi)
+  in corsa dalle 05:38; `npm run stati-sub` aggiunto agli script (banco del motore, fuori dal ci).

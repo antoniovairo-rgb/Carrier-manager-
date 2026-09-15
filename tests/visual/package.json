@@ -149,7 +149,8 @@
     "coppa-intera": "node coppa-intera-700.mjs",
     "ci:live": "npm run test:logic && npm run validate-situations && npm run partita-vera",
     "ci:live:mover": "npm run test:logic && npm run validate-situations && npm run replay && npm run partita-vera",
-    "ci:carriera": "npm run test:logic && npm run save-compat && npm run career-critical"
+    "ci:carriera": "npm run test:logic && npm run save-compat && npm run career-critical",
+    "stati-sub": "node stati-sub.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
