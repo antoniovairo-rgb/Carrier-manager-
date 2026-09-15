@@ -2,13 +2,27 @@
    Misura di partenza (sonda tests/visual/costo-corpo.mjs, 15/09 21:40): 153 chiamate di disegno per fotogramma
    con 23 corpi in campo, perche' ogni corpo e' fatto di 7 mesh skinnate. Le 7 mesh usano pero' soli 2 materiali
    (Ch38_body, Ch38_hair): unite per materiale diventano 2 primitive, cioe' ~46 chiamate invece di ~161.
-   L'ostacolo e' che i 7 skin hanno liste di ossa DIVERSE (7 · 30 · 10 · 61 · 8 · 6 · 6): l'unione si fa qui,
-   offline, rimappando JOINTS_0 su uno skin unico. Non tocca i triangoli, le texture, le animazioni.
+   Due ostacoli, tutti e due risolti qui:
+   1) i 7 skin hanno liste di ossa DIVERSE (7 · 30 · 10 · 61 · 8 · 6 · 6) -> si rimappa JOINTS_0 su uno skin unico;
+   2) il KIT viene tinto PER NOME DI MESH nel renderer (shirt/shorts/socks/shoes/hair/body): unendo le mesh quei
+      nomi spariscono e le maglie perderebbero i colori del club. Per questo ogni vertice porta con se' un
+      attributo _PARTE (0=pelle 1=maglia 2=calzoncini 3=calzettoni 4=scarpe 5=capelli): il renderer tinge
+      guardando l'attributo invece del nome, e il kit resta quello di prima.
+   Non tocca i triangoli, le texture, le animazioni.
    Uso: node tools/unisci-corpo.mjs assets/footballer.glb assets/footballer-uno.glb */
-import { NodeIO } from '@gltf-transform/core';
 import path from 'node:path';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+/* gltf-transform e' installato sotto tests/visual (come per le altre sonde), non nella radice: lo si risolve
+   da li' invece di duplicare le dipendenze. */
+const _qui = path.dirname(fileURLToPath(import.meta.url));
+const _req = createRequire(path.join(_qui, '..', 'tests', 'visual', 'package.json'));
+const { NodeIO } = _req('@gltf-transform/core');
 
 const [,, inPath = 'assets/footballer.glb', outPath = 'assets/footballer-uno.glb'] = process.argv;
+const PARTE = (nome) => { const n = (nome || '').toLowerCase();
+  if (n.includes('shirt')) return 1; if (n.includes('shorts')) return 2; if (n.includes('socks')) return 3;
+  if (n.includes('shoes')) return 4; if (n.includes('hair') || n.includes('eyelash')) return 5; return 0; };
 const io = new NodeIO();
 const doc = await io.read(inPath);
 const root = doc.getRoot();
@@ -45,6 +59,7 @@ for (const nodo of nodiSkinnati) {
     }
     const mat = prim.getMaterial();
     if (!perMateriale.has(mat)) perMateriale.set(mat, []);
+    prim.__parte = PARTE(nodo.getMesh().getName() || nodo.getName());
     perMateriale.get(mat).push(prim);
   }
 }
@@ -59,12 +74,13 @@ for (const [mat, prims] of perMateriale) {
   const fuori = ATTRS.filter((a) => prims.some((p) => p.getAttribute(a)) && !nomi.includes(a));
   if (fuori.length) console.log(`  nota: attributi non presenti su tutte le primitive, scartati: ${fuori.join(', ')}`);
   const nuova = doc.createPrimitive().setMaterial(mat);
-  let base = 0; const indici = [];
+  let base = 0; const indici = []; const parti = [];
   const buf = {}; for (const a of nomi) buf[a] = [];
   for (const p of prims) {
     const pos = p.getAttribute('POSITION');
     const n = pos.getCount();
     for (const a of nomi) { const acc = p.getAttribute(a); const arr = acc.getArray(); for (let i = 0; i < arr.length; i++) buf[a].push(arr[i]); }
+    for (let i = 0; i < n; i++) parti.push(p.__parte | 0);
     const idx = p.getIndices();
     if (idx) { const ia = idx.getArray(); for (let i = 0; i < ia.length; i++) indici.push(ia[i] + base); }
     else { for (let i = 0; i < n; i++) indici.push(i + base); }
@@ -78,12 +94,16 @@ for (const [mat, prims] of perMateriale) {
     if (campione.getNormalized && campione.getNormalized()) acc.setNormalized(true);
     nuova.setAttribute(a, acc);
   }
+  /* _PARTE: quale pezzo del kit e' questo vertice — il renderer tinge da qui, non dal nome della mesh */
+  nuova.setAttribute('_PARTE', doc.createAccessor().setType('SCALAR').setBuffer(root.listBuffers()[0]).setArray(new Uint8Array(parti)).setNormalized(false));
   const accI = doc.createAccessor().setType('SCALAR').setBuffer(root.listBuffers()[0])
     .setArray(base > 65535 ? new Uint32Array(indici) : new Uint16Array(indici));
   nuova.setIndices(accI);
   meshUnita.addPrimitive(nuova);
   triTot += indici.length / 3;
-  console.log(`  materiale ${mat.getName() || '?'}: ${prims.length} primitive → 1 · vertici ${base} · triangoli ${indici.length / 3}`);
+  const conta = {}; for (const v of parti) conta[v] = (conta[v] || 0) + 1;
+  const nomiParte = ['pelle', 'maglia', 'calzoncini', 'calzettoni', 'scarpe', 'capelli'];
+  console.log(`  materiale ${mat.getName() || '?'}: ${prims.length} primitive → 1 · vertici ${base} · triangoli ${indici.length / 3} · parti: ${Object.keys(conta).map((k) => nomiParte[k] + ' ' + conta[k]).join(', ')}`);
 }
 
 /* 4) uno skin unico e un solo nodo skinnato; via i vecchi */
