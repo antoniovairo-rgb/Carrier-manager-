@@ -6042,6 +6042,29 @@ Voti [7,7,7,7,8,7,8,7,7,8,7,7], **media 7,25 = n° 18**: il salto di «ai piedi�
 (coppia rosso 70/58 vs verde 64/62), quindi Realismo resta 7; la 7.900 muove i tiri solo al banco (4,1 → 5,2, obiettivo
 8) e le Azioni extra-eroe restano 7. Registro `docs/voti/voti-telefono.json`, sezione voti rigenerata con `voti-piano`.
 
+### 15/09 12:20 — 7.903.0, l'arbitro esiste (rosso `__CPM_NO903`): la banda del ci che la 7.900 aveva portato sul filo
+
+**Come e' emerso.** Il ci del build C3 (solo HUD) e' rosso sul guardiano partita-vera, banda «arbitro-esiste» (≥ 6
+interruzioni ambientali in 2 partite): 5. Corse ripetute a macchina scarica, stesso motore della 7.900: build C3 6 · 4 · 5,
+build 7.900 11 · 6 (le altre corse a verbale sotto). Storia della banda nei ci: 20-30 (7.72x), 23 (7.73x-7.74x), 12 (7.898),
+10 (7.895), 6 (7.899), 6 (7.900). Il motore restaurato fischia poco: falli 0-6 a partita nel live, un fuori a partita,
+corner sempre 0; la 7.900 (falli 0,26/0,14 → 0,18/0,05, la leva dei tiri) l'ha portato sul filo della banda, e la banda
+era passata al pelo per caso. Il primo ci del build C3 era rosso anche su «motion» (11-16/21 in 9 campioni): era il
+secondo Chromium della sonda C4 (lock che si era data da sola), ripetuto a macchina scarica 17-21/21.
+
+**Banco (24 partite, dt = 1/3), quattro tarature del fallo (sotto pressione / libero):** 0,26/0,10 (prima della 7.900)
+tiri 4,2 · interruzioni 8,6 — 0,18/0,05 (7.900) 5,3 · 6,7 — 0,22/0,08 5,0 · 7,6 — 0,26/0,05 4,7 · 8,3 — 0,18/0,10
+5,2 · 6,8 (il fallo libero pesa poco: e' quello sotto pressione a contare).
+
+**Decisione del PO (wizard, 12:15): falli a 0,22 / 0,08** (scartate: banda a ≥ 4; A5 «l'arbitro esiste» prima di C3;
+tornare a 0,26/0,10). Coppia al banco su 48 partite, rosso `__CPM_NO903` (= 7.900) → verde 7.903: tiri 5,2 → **4,9**
+(area 1,8 → 1,6), catene 1,0 → 0,8, **interruzioni 6,8 → 7,8**, padrone dichiarato 65,2 → 65,0 %, invarianti 0, gol
+decretati 96/96. Costo dichiarato: 0,3 tiri a partita. Resta aperto A5 (falli 2 → 8-12 a partita, rimesse e corner:
+oggi corner 0) come passo vero sul realismo dell'arbitro.
+
+**Merge C3 sulla linea motore** (ecc9500: 7.903 + `claude/hud-c3` e128111, versione 7.903.0). Rituali in coda dopo
+le corse del guardiano; poi main in fast-forward.
+
 ### 15/09 10:55 — C3 misurata: il HUD della partita secondo le tavole del PO (ramo `claude/hud-c3`, 7.901.2, rosso `__CPM_NO901`)
 
 Squadra grafica (agente, worktree separato), solo src/15 e la versione; motore, telecronaca 7.892 e voce della panchina
