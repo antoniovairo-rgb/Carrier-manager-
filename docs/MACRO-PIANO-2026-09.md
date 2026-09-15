@@ -22,11 +22,11 @@
 | 14/09 18:20 | main = f8cb0b3: 7.889 + 7.890 + overhaul grafico G0-G4.1 | A/B1/C1 → fatto | corpi in campo 0,3 → 45; regie di gioco vivo 5 → 0; contrasto 917 → 62 |
 
 <!-- VOTI-INIZIO -->
-## Voti del player da cellulare (scheda n° 19, build 7.900.0, 15/09 09:44)
+## Voti del player da cellulare (scheda n° 20, build 7.903.0 + C3, 15/09 14:59)
 
-Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7). Media **7,25** (n° 18, 7.899.0: 7,25 → **±0**); area minima **7**. Fonte: tests/visual/collaudo-telefono (4 partite: Vairo casa / Galli fuori / Moretti casa / Conti fuori, GLB accesi, senza foto; Vairo e Galli ricorse a macchina scarica dopo la lezione del secondo Chromium) + coppia rosso/verde __CPM_NO900 su Vairo e Moretti — verbale FASE3-SCAMBIO 15/09 09:44.
+Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7). Media **7,25** (n° 19, 7.900.0: 7,25 → **±0**); area minima **7**. Fonte: tests/visual/collaudo-telefono (4 partite: Vairo casa / Galli fuori / Moretti casa / Conti fuori, GLB accesi, senza foto, una sola sonda nel browser) + sonda hud-c3 (915 e 700) + due collaudi del PO sull'Android (16:42 e 16:48) — verbale FASE3-SCAMBIO 15/09 15:10.
 
-| # | area | n° 18 | **n° 19** | Δ | istogramma (voto) | crescita / decrescita |
+| # | area | n° 19 | **n° 20** | Δ | istogramma (voto) | crescita / decrescita |
 |---|---|---|---|---|---|---|
 | 1 | Realismo | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 2 | Credibilita' da attaccante | 7 | **7** | ±0 | `███████░░░` 7 | · |
@@ -41,7 +41,7 @@ Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO
 | 11 | Immersione | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 12 | Carriera | 7 | **7** | ±0 | `███████░░░` 7 | · |
 
-Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n° 14 (7.884.0) **7,25** · n° 15 (7.886.0) **7,17** · n° 16 (7.895.0) **7,08** · n° 17 (7.898.0) **7,08** · n° 18 (7.899.0) **7,25** · n° 19 (7.900.0) **7,25**.
+Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n° 14 (7.884.0) **7,25** · n° 15 (7.886.0) **7,17** · n° 16 (7.895.0) **7,08** · n° 17 (7.898.0) **7,08** · n° 18 (7.899.0) **7,25** · n° 19 (7.900.0) **7,25** · n° 20 (7.903.0 + C3) **7,25**.
 
 <!-- VOTI-FINE -->
 

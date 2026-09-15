@@ -213,6 +213,35 @@
     "11": "fps senza sonda 33/29/31/29 (≥30: 2/4, era 3/4; 28-37 nelle ultime tre schede, stessa banda); pallone 8 px invariato → resta 7; NON verificato sull'Android del PO",
     "12": "career-critical exit 0 sulla 7.900 → 7"
    }
+  },
+  {
+   "n": 20,
+   "build": "7.903.0 + C3",
+   "quando": "15/09 14:59",
+   "glb": true,
+   "voti": [
+    7,
+    7,
+    7,
+    7,
+    8,
+    7,
+    8,
+    7,
+    7,
+    8,
+    7,
+    7
+   ],
+   "fonte": "tests/visual/collaudo-telefono (4 partite: Vairo casa / Galli fuori / Moretti casa / Conti fuori, GLB accesi, senza foto, una sola sonda nel browser) + sonda hud-c3 (915 e 700) + due collaudi del PO sull'Android (16:42 e 16:48) — verbale FASE3-SCAMBIO 15/09 15:10",
+   "perche": {
+    "1": "ai piedi 70/70/57/50 % (n° 19: 64/59/62/61; media 62 vs 62), distanza mediana 1,3/1,3/2,4/2,9u (≤3u: 4/4), scarto reso↔logico 0,9/0,9/0,9/1,2u, salti 53/47/56/74; padrone dichiarato 40-44 % del vivo (obiettivo 70): il PO sul telefono: «poco possesso, le azioni sono una chimera» → resta 7; A9 (tempo del mondo) autorizzata e misurata al banco (v1 non spedita)",
+    "6": "7.903 al banco: tiri 4,9 (5,2 nella 7.900), interruzioni 7,8; A9 v1 al banco tiri 6,9 ma dall'area 0,7 e invarianti rotte → resta 7",
+    "9": "HUD C3 misurato: barra 98 → 60 px, righe delle scelte 40 → 52 px, senza percentuali, 7 opzioni 53 → 44 %, un solo Continua; MA il PO sul telefono trova la barra della pressione sparita (il timer dell'esitazione 4/6/9 s invisibile), il D-pad nella scheda inutile e l'overlay di hl_move con la grafica vecchia → resta 7 fino alla v4",
+    "10": "career-critical (14:03) e ci (14:27) verdi sulla 7.903 + C3, banda arbitro-esiste 7 dopo la decisione del PO sui falli → 8",
+    "11": "fps senza sonda 28/28/29/29 (≥30: 0/4; n° 19: 2/4; ultime schede 28-37, rumore ±3); pallone 8 px invariato; insegna LED dello stadio che vola (foto PO, C9 aperta) → resta 7; NON verificato sull'Android del PO oltre le sue foto",
+    "12": "career-critical exit 0 sulla 7.903 → 7"
+   }
   }
  ],
  "regole": {

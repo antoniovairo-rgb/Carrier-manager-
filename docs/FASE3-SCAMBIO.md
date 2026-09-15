@@ -6042,6 +6042,34 @@ Voti [7,7,7,7,8,7,8,7,7,8,7,7], **media 7,25 = n° 18**: il salto di «ai piedi�
 (coppia rosso 70/58 vs verde 64/62), quindi Realismo resta 7; la 7.900 muove i tiri solo al banco (4,1 → 5,2, obiettivo
 8) e le Azioni extra-eroe restano 7. Registro `docs/voti/voti-telefono.json`, sezione voti rigenerata con `voti-piano`.
 
+### 15/09 15:10 — Scheda n° 20 (7.903.0 + C3), i collaudi del PO sul telefono, A9 v1 misurata al banco e parcheggiata
+
+**Scheda n° 20** (GLB accesi, corse pulite): ai piedi Vairo 70 / Galli 70 / Moretti 57 / Conti 50 % (n° 19: 64/59/62/61),
+distanza mediana 1,3/1,3/2,4/2,9u (≤ 3u 4/4), scarto reso↔logico 0,9/0,9/0,9/1,2u, salti 53/47/56/74, padrone dichiarato
+40-44 % del vivo, fps senza sonda 28/28/29/29 (≥ 30: 0/4, era 2/4; rumore ±3, da osservare). Voti [7,7,7,7,8,7,8,7,7,8,7,7],
+**media 7,25 = n° 19**: il HUD misurato meglio non alza «Interazioni» perche' il PO sul telefono ha trovato tre difetti.
+
+**Collaudi del PO sull'Android (16:42-16:49, prime osservazioni reali di C3):** (1) «a cosa serve il doppio cursore»: il
+D-pad nella scheda delle scelte (34 px, senza spiegazione) e' inutile, le mosse si fanno in hl_move; (2) «mentre mi muovo
+parte l'azione da sola»: e' il timer dell'esitazione (baseDelay 4/6/9 s secondo la distanza dal marcatore, riga ~7982:
+scaduto, il marcatore anticipa e fallisce l'opzione peggiore) — il vecchio HUD mostrava la barra «⏱ Pressione», la
+scheda nuova no: regressione di C3; (3) l'overlay di hl_move e' rimasto il HUD vecchio (grafica non coerente);
+(4) il filo del possesso non si specchia con gli stemmi dal 46' (riga ~8480 senza row-reverse) e nessun segnale al cambio
+campo; gli stemmi portano i colori del club, il filo e il 3D la maglia indossata; (5) l'insegna LED col nome dello
+stadio vola nel cielo allo Swans Stadium (7.658/7.668: appesa a curve.roofEnd.top, valore di riserva 23,5u sopra una
+tribuna bassa) → C9, come C7 per i tabelloni; (6) «poco possesso, le azioni sono una chimera»: coincide con i numeri
+(padrone dichiarato 40-50 %, catene 0,8-1,0/partita, tiri 4,9, un tocco al minuto). C3 v4 (squadra grafica, ramo
+`claude/hud-c3-v4`, 7.905.0) copre 1-4 con misure a 915 e 700; C9 dopo C8.
+
+**A9 — il tempo del mondo (decisione PO 15:05, wizard: «volo 2× + 3 decisioni al minuto»).** v1 al banco
+(ramo `claude/a9-tempo-mondo`, rosso `__CPM_NO906`; decisione a ogni sotto-tick, voli 48-50 → 96-100 u/min, decreto del
+gol in minuti), 24 partite, dt = 1/3, rosso → verde: padrone dichiarato 64,6 → **55,7 %**, volo 33,8 → **42,4 %**,
+passaggi 23 → 54, tiri 5,0 → 6,9 ma dall'area 1,7 → **0,7**, conduzioni 10 → 32, catene 0,7 → 1,5, interruzioni 7,6 →
+**21**, cambi di lato 7,8 → 13,5, uomini > 12u in un minuto 0 → **16**. NON spedita: le grandezze «per decisione» (passo
+della conduzione, probabilita' di fallo e di palla persa, posizionamenti a scatto sugli eventi) vanno scalate al terzo di
+minuto, e il volo ha un pavimento di un sotto-tick (20 s) per passaggio che con 54 passaggi mangia il possesso. Prossimo
+passo A9 v2, al banco, dopo la grafica che il PO aspetta (C8, C3 v4, D7).
+
 ### 15/09 12:20 — 7.903.0, l'arbitro esiste (rosso `__CPM_NO903`): la banda del ci che la 7.900 aveva portato sul filo
 
 **Come e' emerso.** Il ci del build C3 (solo HUD) e' rosso sul guardiano partita-vera, banda «arbitro-esiste» (≥ 6
