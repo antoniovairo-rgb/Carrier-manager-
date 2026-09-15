@@ -5687,3 +5687,10 @@ con passo e voli scalati, banco `stati-sub` con dt, poi il live.
   vero del provino. Quattro domande per il PO nel canvas (altezza della barra, altezza della scheda, percentuali sulle
   scelte, tasto Continua). Nessun codice del gioco toccato: la C3 parte dal si' del PO.
 
+- 15/09 01:15 UTC: **Produzione allineata a dbd0d38 (7.895.0) — allineamento notturno.** Fast-forward 9188df9 → dbd0d38,
+  mai force. ERRORE DI PROCEDURA dichiarato: il fast-forward e' stato spinto PRIMA del rituale sull'HEAD, credendo il
+  build identico a 3beb674; invece dbd0d38 porta anche il gancio di collaudo del loader GLB (9909a33, una riga,
+  `__CPM_GLB_URL`, spento nella build store). Rituale completo eseguito subito dopo su dbd0d38: career-critical exit=0,
+  ci exit=0 (compreso il guardiano tabellone). Verdetto: verde, nessun revert necessario. Non verificato: l'Android del
+  PO; la CI di GitHub su main. Regola ribadita: prima il rituale sull'HEAD esatto, poi il push.
+
