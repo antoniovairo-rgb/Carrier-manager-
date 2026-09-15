@@ -7,6 +7,7 @@
   "scripts": {
     "validate-situations": "node validate-situations.mjs",
     "panchina-glb": "node panchina-glb.mjs",
+    "d7-corpi": "node d7-corpi.mjs",
     "ci": "npm run impulsi-contesto && npm run test:logic && npm run typing-shortcuts && npm run validate-situations && npm run save-compat && npm run replay && npm run partita-vera && npm run jumbotron-anchor",
     "partita-vera": "node partita-vera-guardian.mjs",
     "quick-gate": "node quick-gate.mjs",

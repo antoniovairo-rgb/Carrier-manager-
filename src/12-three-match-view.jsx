@@ -492,11 +492,27 @@ function ThreeMatchView(props){
         window.__CPM_CAM904={x:bx+_s*12,y:1.4,z:-38.3,lx:bx,ly:0.5,lz:-38.3};};
       window.__CPM_CAM_RESET904=()=>{try{delete window.__CPM_CAM904;}catch(_e){window.__CPM_CAM904=null;}};
     }
+    /* [7.907.0 — D7] triangoli disegnati in scena, per il contatore fps del PO (window.__CPM_FPS907 in
+       src/15-live-match.jsx la legge da qui: la barra/HUD non ha un riferimento diretto al renderer three.js).
+       Se il 3D e' spento questa funzione non esiste nemmeno → il chiamante ricade su tri:0. */
+    if(typeof window!=='undefined')window.__CPM_TRI907=()=>{try{return (renderer&&renderer.info&&renderer.info.render&&renderer.info.render.triangles)||0;}catch(_e){return 0;}};
     // GLB = DEFAULT ON. Disattivabile: ?glb=0 (persiste), localStorage 'cpm-glb'='0', window.__CPM_GLB===false. (?glb=1 lo riattiva.)
     const _glbUrl=(typeof location!=='undefined')&&/[?&]glb=([01])\b/.exec(location.search||"");
     if(_glbUrl){try{localStorage.setItem('cpm-glb',_glbUrl[1]);}catch(e){}}
     let _glbPref=null;try{_glbPref=localStorage.getItem('cpm-glb');}catch(e){}
     const _useGLB=(typeof window!=='undefined')&&window.__CPM_GLB!==false&&_glbPref!=='0';
+    /* [7.907.0 — D7 grafica «corpi CH38 alleggeriti per i 22 in campo»] corpo PREDEFINITO dei 22 + portieri +
+       arbitro = LEGGERO (assets/footballer-lite.glb, 14.622 triangoli — stesso file gia' usato per la panchina
+       C8, misurato identico da vicino nella sonda d7-corpi: vedi rapporto). Il corpo PIENO (footballer.glb,
+       48.140 triangoli) resta caricabile: preferenza in localStorage 'cpm-corpi' ('leggeri'|'pieni'), letta qui
+       per la PRIMA partita e ribaltabile A CALDO dal menu di pausa (vedi window.__CPM_SETBODY907 piu' sotto).
+       Rosso __CPM_NO907: corpo pieno fisso, niente contatore fps ne' interruttore (torna al comportamento
+       7.904.0). Il gancio test-only __CPM_GLB_URL (D7 passo 1, gia' esistente) ha SEMPRE la precedenza — usato
+       dal banco per confrontare corpi offline senza toccare questa preferenza. */
+    const _no907=(typeof window!=='undefined')&&!!window.__CPM_NO907;
+    const _corpiPrefRaw907=(function(){try{return localStorage.getItem('cpm-corpi');}catch(_e){return null;}})();
+    const _corpiPref907=_no907?'pieni':(_corpiPrefRaw907==='pieni'?'pieni':'leggeri');
+    const _bodyUrl907=(u=>u==='pieni'?'./assets/footballer.glb':'./assets/footballer-lite.glb')(_corpiPref907);
     try{window.__CPM_GLB_READY=_useGLB?false:true;window.__CPM_GLB_FAIL=null;}catch(_e){}/* [7.264.0] il flag di fallimento si azzera a ogni mount: una partita non eredita l'errore della precedente *//* [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto non si gioca»] readiness esposta a LiveMatch: false=GLB atteso ma non ancora agganciato → il kickoff viene TRATTENUTO (overlay pre-fischio); diventa true all'aggancio del primo CH38 o su fallimento duro (ultima risorsa) */
     // [6.95.0 · 7.8.1 collaudo PO «iniziano la partita i soldatini — va assolutamente evitato / mai burattini»]
     //   GRACE PERIOD: finché il CH38 non è agganciato i mesh procedurali (giocatori + EROE) restano NASCOSTI
@@ -530,7 +546,7 @@ function ThreeMatchView(props){
       // [7.8.19] RETRY del corpo footballer.glb (obbligatorio): un fallimento TRANSITORIO di rete mobile non deve
       //   mandare in campo i burattini → 3 tentativi con backoff (loadGLB evince i fallimenti dalla cache → riscarica).
       const _loadBody=(u,n)=>loadGLB(u).catch(e=>{if(n<=0)throw e;return new Promise(r=>setTimeout(r,1800)).then(()=>_loadBody(u,n-1));});
-      Promise.all([_loadBody((typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&window.__CPM_GLB_URL)||'./assets/footballer.glb',3),/* [D7] gancio test-only: il banco confronta corpi semplificati offline (gltf-transform) senza toccare l'asset */_optGLB('./assets/anim-idle.glb'),_optGLB('./assets/anim-jog.glb'),_optGLB('./assets/anim-kick.glb'),_optGLB('./assets/anim-penalty.glb'),_optGLB('./assets/anim-header.glb'),_optGLB('./assets/anim-tackle.glb'),_optGLB('./assets/anim-volley.glb'),_optGLB('./assets/anim-gk-dive.glb'),_optGLB('./assets/anim-gk-catch.glb'),_optGLB('./assets/anim-gk-block.glb'),_optGLB('./assets/anim-receive.glb'),_optGLB('./assets/anim-throwin.glb'),_optGLB('./assets/anim-jog-back.glb'),_optGLB('./assets/anim-strafe-left.glb'),_optGLB('./assets/anim-strafe-right.glb')]).then(([_cg,_ig,_jg,_kg,_pg,_hg,_tg,_vg,_dg,_cag,_bg,_rcg,_twg,_jbg,_slg,_srg])=>{/* [7.518.0 R3/3] le tre clip di locomozione erano SU DISCO e mai caricate (audit: zero riferimenti) *//* [7.24.1] +anim-throwin: la rimessa (mani sopra la testa) è la POSA dell'alzata di coppa nella cerimonia *//* [6.40.0] +anim-receive per il gesto DRIBBLE (prima dribble/pass = solo locomozione → la sterzata «restava ferma» col GLB) */
+      Promise.all([_loadBody((typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&window.__CPM_GLB_URL)||_bodyUrl907,3),/* [D7] gancio test-only: il banco confronta corpi semplificati offline (gltf-transform) senza toccare l'asset · [7.907.0] default = _bodyUrl907 (leggero, salvo __CPM_NO907/preferenza «pieni») */_optGLB('./assets/anim-idle.glb'),_optGLB('./assets/anim-jog.glb'),_optGLB('./assets/anim-kick.glb'),_optGLB('./assets/anim-penalty.glb'),_optGLB('./assets/anim-header.glb'),_optGLB('./assets/anim-tackle.glb'),_optGLB('./assets/anim-volley.glb'),_optGLB('./assets/anim-gk-dive.glb'),_optGLB('./assets/anim-gk-catch.glb'),_optGLB('./assets/anim-gk-block.glb'),_optGLB('./assets/anim-receive.glb'),_optGLB('./assets/anim-throwin.glb'),_optGLB('./assets/anim-jog-back.glb'),_optGLB('./assets/anim-strafe-left.glb'),_optGLB('./assets/anim-strafe-right.glb')]).then(([_cg,_ig,_jg,_kg,_pg,_hg,_tg,_vg,_dg,_cag,_bg,_rcg,_twg,_jbg,_slg,_srg])=>{/* [7.518.0 R3/3] le tre clip di locomozione erano SU DISCO e mai caricate (audit: zero riferimenti) *//* [7.24.1] +anim-throwin: la rimessa (mani sopra la testa) è la POSA dell'alzata di coppa nella cerimonia *//* [6.40.0] +anim-receive per il gesto DRIBBLE (prima dribble/pass = solo locomozione → la sterzata «restava ferma» col GLB) */
       // clip da file separati (Mixamo "without skin") applicate per NOME al rig del personaggio (stesso scheletro mixamorig)
       const _clip1=g=>(g&&g.animations&&g.animations[0])||null;
       const _ci=_clip1(_ig),_cr=_clip1(_jg);
@@ -616,36 +632,74 @@ function ThreeMatchView(props){
       const _av=(typeof AVATARS!=='undefined'&&AVATARS[avatarId])||null;
       const _heroAppr=_av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:_av.skin,hair:_av.hair,bald:_av.style==='bald'}:appearanceFromSeed(hashStr('hero_'+avatarId));
       const _homeKey=(homeClub&&(homeClub.id||homeClub.n))||homeCol||'H',_awayKey=oppCol||'A';
-      glbAvatars=[_mkA(hero,_homeKit,_heroAppr)];
-      players.forEach((p,pi)=>{const _kit=p.gk?(p.team==='home'?_gkHomeKit:_gkAwayKit):(p.team==='home'?_homeKit:_awayKit);
-        const _appr=appearanceFromSeed(hashStr((p.team==='home'?_homeKey:_awayKey)+'_'+pi));
-        glbAvatars.push(_mkA(p.mesh,_kit,_appr));});
-      // #5 UNIFORMITÀ: l'ARBITRO usa lo stesso modello CH38 dei calciatori (kit nero arbitro, aspetto neutro deterministico) → niente più
-      //   figura procedurale "diversa" dai giocatori. refMesh (dichiarato più sotto) è disponibile qui perché il .then è async. Costo: +1 skeleton (trascurabile).
-      try{if(refMesh){const _refAv=_mkA(refMesh,{shirt:'#17171b',shorts:'#17171b',socks:'#17171b',shoes:'#0b0b0d'},appearanceFromSeed(hashStr('referee')));if(_refAv){_refAv._isRef=true;glbAvatars.push(_refAv);}}}catch(_re){}
-      /* [7.518.0 R3/3 — LA LOCOMOZIONE HA DIREZIONI: audit «movimenti laterali e all'indietro sembrano
-         pattinate»] Le clip jog-back/strafe-L/strafe-R erano negli asset e mai montate. Qui si RENDONO
-         DISPONIBILI (clip condivise); le AnimationAction si creano PIGRE al primo uso per avatar — niente
-         66 azioni preventive sui mixer (budget mobile). Esclusi GK (animazioni proprie) e arbitro. */
-      {const _cbk=_clip1(_jbg),_csl=_clip1(_slg),_csr=_clip1(_srg);
-       glbAvatars.forEach(av=>{if(av&&!av._isGk&&!av._isRef)av._locoClips={back:_cbk,strL:_csl,strR:_csr};});}
       // gesti one-shot: EROE (offensivi: kick/penalty/header/tackle/volley) + PORTIERE avversario (parata: dive/catch/block).
       // helper riusabile: monta una mappa di clipAction one-shot (peso 0 a riposo) su un qualunque avatar.
       const _mkGestures=(av,map)=>{if(!av)return;const out={};for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;};
-      _mkGestures(glbAvatars[0],{kick:_kg,penalty:_pg,header:_hg,tackle:_tg,volley:_vg,dribble:_rcg,lift:_twg});// [6.40.0] gesto dribble (fallback locomozione se la clip manca) · [7.24.1] lift = rimessa CONGELATA all'apice (alzata di coppa)
-      // [7.24.1 collaudo PO «la coppa gli vola in testa, non la alza con le mani»] ossa delle MANI dell'eroe
-      //   (mixamorig) per agganciare il trofeo alla posa vera durante la cerimonia.
-      try{const _hAv=glbAvatars[0];if(_hAv&&_hAv.root){let _hl=null,_hr=null,_la=null,_lf=null,_ra=null,_rf=null;_hAv.root.traverse(o=>{if(!o.isBone)return;const n=o.name||"";if(!_hl&&/LeftHand$/i.test(n))_hl=o;if(!_hr&&/RightHand$/i.test(n))_hr=o;if(!_la&&/LeftArm$/i.test(n))_la=o;if(!_lf&&/LeftForeArm$/i.test(n))_lf=o;if(!_ra&&/RightArm$/i.test(n))_ra=o;if(!_rf&&/RightForeArm$/i.test(n))_rf=o;});_hAv._handL=_hl;_hAv._handR=_hr;_hAv._armB={la:_la,lf:_lf,ra:_ra,rf:_rf,hl:_hl,hr:_hr};}}catch(_e){}/* [7.24.2] + ossa BRACCIA: nel giro di campo i quaternioni della posa d'alzata (campionati in B1) vengono riapplicati DOPO il mixer → gambe che corrono, coppa in mano */
-      /* [7.209.0 collaudo PO «la conclusione del compagno non è nitida, il pallone non sembrava calciato ma
-         partiva e volava su traiettorie predefinite»] i gesti erano registrati SOLO su eroe e portieri: i 19
-         compagni/avversari non avevano nessuna clip di calcio, quindi quando il compagno finalizzava l'assist
-         il pallone se ne andava da solo mentre lui restava in corsa. Ora ogni giocatore di movimento ha `kick`
-         e `header` (due clip GIÀ caricate e condivise: costa solo un AnimationAction a testa). */
-      for(let _gi=1;_gi<glbAvatars.length;_gi++){const _av=glbAvatars[_gi];if(_av&&!_av._isGk&&_av.proc!==awayGkMesh)_mkGestures(_av,{kick:_kg,header:_hg,tackle:_tg,receive:_rcg,volley:_vg,lift:_twg});}/* [7.534.0 MP-1] +volley (la girata del compagno che finalizza non suona piu' `kick` generico) e +lift: il canale d'esultanza dei compagni (r.15872) chiedeva `lift` da 7.384 e la mappa non l'aveva — _want risolveva null e il ramo era MORTO (audit MP 1.§reazioni). Due AnimationAction in piu' a testa, clip gia' caricate. *//* [7.250.0 gi38] +tackle: la scivolata del difensore era solo procedurale = invisibile GLB-ON · [7.251.0 gi30/57] +receive: il CONTROLLO del ricevente durante il beat *//* [7.250.0 gi38 «non si vede l'intervento avversario»] la clip TACKLE anche ai non-eroi: la scivolata del difensore che porta via il pallone era solo procedurale = invisibile GLB-ON (stessa classe dei gesti eroe 7.245) */
-      const _gkAv=glbAvatars.find(a=>a.proc===awayGkMesh);if(_gkAv){_gkAv._isGk=true;_gkAv.gestures=null;_mkGestures(_gkAv,{dive:_dg,catch:_cag,block:_bg});}
-      // [6.74.0 3D-13] anche il portiere di CASA ha le clip di tuffo: sul gol subito (toOwnGoal) riceveva il
-      //   gk_dive procedurale ma il suo GLB restava in locomozione → "scivolava" lateralmente senza tuffarsi.
-      {const _hgkP=players.find(p=>p.gk&&p.team==='home');const _hgkAv=_hgkP&&glbAvatars.find(a=>a.proc===_hgkP.mesh);if(_hgkAv){_hgkAv._isGk=true;_hgkAv.gestures=null;_mkGestures(_hgkAv,{dive:_dg,catch:_cag,block:_bg});}}
+      /* [7.907.0 — D7] costruzione dei 23 CH38 (eroe + 21 + arbitro) estratta in funzione RIUSABILE, parametrica
+         sulla SCENA SORGENTE del corpo: la richiama sia il mount iniziale (sotto) sia lo scambio A CALDO dal menu
+         di pausa (window.__CPM_SETBODY907, poco piu' sotto) — stessa identica sequenza (kit, aspetto, animazioni
+         di locomozione, gesti one-shot, clip portiere), cambia solo quale GLB presta il corpo. Motore (14) non
+         toccato: qui si ricostruiscono solo i MESH, posizioni/logica restano di `proc` (players[].mesh/hero/refMesh),
+         mai smesso di esistere durante lo scambio. */
+      const _buildAvatars907=(_srcScene)=>{
+        const _list=[_mkA(hero,_homeKit,_heroAppr,_srcScene)];
+        players.forEach((p,pi)=>{const _kit=p.gk?(p.team==='home'?_gkHomeKit:_gkAwayKit):(p.team==='home'?_homeKit:_awayKit);
+          const _appr=appearanceFromSeed(hashStr((p.team==='home'?_homeKey:_awayKey)+'_'+pi));
+          _list.push(_mkA(p.mesh,_kit,_appr,_srcScene));});
+        // #5 UNIFORMITÀ: l'ARBITRO usa lo stesso modello CH38 dei calciatori (kit nero arbitro, aspetto neutro deterministico) → niente più
+        //   figura procedurale "diversa" dai giocatori. refMesh (dichiarato più sotto) è disponibile qui perché il .then è async. Costo: +1 skeleton (trascurabile).
+        try{if(refMesh){const _refAv=_mkA(refMesh,{shirt:'#17171b',shorts:'#17171b',socks:'#17171b',shoes:'#0b0b0d'},appearanceFromSeed(hashStr('referee')),_srcScene);if(_refAv){_refAv._isRef=true;_list.push(_refAv);}}}catch(_re){}
+        /* [7.518.0 R3/3 — LA LOCOMOZIONE HA DIREZIONI: audit «movimenti laterali e all'indietro sembrano
+           pattinate»] Le clip jog-back/strafe-L/strafe-R erano negli asset e mai montate. Qui si RENDONO
+           DISPONIBILI (clip condivise); le AnimationAction si creano PIGRE al primo uso per avatar — niente
+           66 azioni preventive sui mixer (budget mobile). Esclusi GK (animazioni proprie) e arbitro. */
+        {const _cbk=_clip1(_jbg),_csl=_clip1(_slg),_csr=_clip1(_srg);
+         _list.forEach(av=>{if(av&&!av._isGk&&!av._isRef)av._locoClips={back:_cbk,strL:_csl,strR:_csr};});}
+        _mkGestures(_list[0],{kick:_kg,penalty:_pg,header:_hg,tackle:_tg,volley:_vg,dribble:_rcg,lift:_twg});// [6.40.0] gesto dribble (fallback locomozione se la clip manca) · [7.24.1] lift = rimessa CONGELATA all'apice (alzata di coppa)
+        // [7.24.1 collaudo PO «la coppa gli vola in testa, non la alza con le mani»] ossa delle MANI dell'eroe
+        //   (mixamorig) per agganciare il trofeo alla posa vera durante la cerimonia.
+        try{const _hAv=_list[0];if(_hAv&&_hAv.root){let _hl=null,_hr=null,_la=null,_lf=null,_ra=null,_rf=null;_hAv.root.traverse(o=>{if(!o.isBone)return;const n=o.name||"";if(!_hl&&/LeftHand$/i.test(n))_hl=o;if(!_hr&&/RightHand$/i.test(n))_hr=o;if(!_la&&/LeftArm$/i.test(n))_la=o;if(!_lf&&/LeftForeArm$/i.test(n))_lf=o;if(!_ra&&/RightArm$/i.test(n))_ra=o;if(!_rf&&/RightForeArm$/i.test(n))_rf=o;});_hAv._handL=_hl;_hAv._handR=_hr;_hAv._armB={la:_la,lf:_lf,ra:_ra,rf:_rf,hl:_hl,hr:_hr};}}catch(_e){}/* [7.24.2] + ossa BRACCIA: nel giro di campo i quaternioni della posa d'alzata (campionati in B1) vengono riapplicati DOPO il mixer → gambe che corrono, coppa in mano */
+        /* [7.209.0 collaudo PO «la conclusione del compagno non è nitida, il pallone non sembrava calciato ma
+           partiva e volava su traiettorie predefinite»] i gesti erano registrati SOLO su eroe e portieri: i 19
+           compagni/avversari non avevano nessuna clip di calcio, quindi quando il compagno finalizzava l'assist
+           il pallone se ne andava da solo mentre lui restava in corsa. Ora ogni giocatore di movimento ha `kick`
+           e `header` (due clip GIÀ caricate e condivise: costa solo un AnimationAction a testa). */
+        for(let _gi=1;_gi<_list.length;_gi++){const _av=_list[_gi];if(_av&&!_av._isGk&&_av.proc!==awayGkMesh)_mkGestures(_av,{kick:_kg,header:_hg,tackle:_tg,receive:_rcg,volley:_vg,lift:_twg});}/* [7.534.0 MP-1] +volley (la girata del compagno che finalizza non suona piu' `kick` generico) e +lift: il canale d'esultanza dei compagni (r.15872) chiedeva `lift` da 7.384 e la mappa non l'aveva — _want risolveva null e il ramo era MORTO (audit MP 1.§reazioni). Due AnimationAction in piu' a testa, clip gia' caricate. *//* [7.250.0 gi38] +tackle: la scivolata del difensore era solo procedurale = invisibile GLB-ON · [7.251.0 gi30/57] +receive: il CONTROLLO del ricevente durante il beat *//* [7.250.0 gi38 «non si vede l'intervento avversario»] la clip TACKLE anche ai non-eroi: la scivolata del difensore che porta via il pallone era solo procedurale = invisibile GLB-ON (stessa classe dei gesti eroe 7.245) */
+        const _gkAv=_list.find(a=>a.proc===awayGkMesh);if(_gkAv){_gkAv._isGk=true;_gkAv.gestures=null;_mkGestures(_gkAv,{dive:_dg,catch:_cag,block:_bg});}
+        // [6.74.0 3D-13] anche il portiere di CASA ha le clip di tuffo: sul gol subito (toOwnGoal) riceveva il
+        //   gk_dive procedurale ma il suo GLB restava in locomozione → "scivolava" lateralmente senza tuffarsi.
+        {const _hgkP=players.find(p=>p.gk&&p.team==='home');const _hgkAv=_hgkP&&_list.find(a=>a.proc===_hgkP.mesh);if(_hgkAv){_hgkAv._isGk=true;_hgkAv.gestures=null;_mkGestures(_hgkAv,{dive:_dg,catch:_cag,block:_bg});}}
+        return _list;
+      };
+      glbAvatars=_buildAvatars907(_cg.scene);
+      /* [7.907.0 — D7, TEMPORANEO: interruttore «Corpi: leggeri/pieni» del menu di pausa] scambio A CALDO del
+         corpo dei 23 CH38 (eroe+21+arbitro — la panchina C8 non e' toccata, e' un asset/percorso separato).
+         Chiamata da src/15-live-match.jsx quando il PO tocca l'interruttore in pausa. Ricostruisce gli avatar
+         con `_buildAvatars907` sulla scena del GLB alternativo (gia' in cache dopo il primo uso, vedi loadGLB/
+         _glbCache in 11-ui-kit-highlight.jsx) mantenendo posizione/kit/aspetto/numero (letti da `proc`, mai
+         toccato) — si perde solo la fase di idle/eventuale gesto in corso (resta per un fotogramma, cosmetico).
+         Con __CPM_NO907 e' un no-op dichiarato (torna false): il rosso blocca anche lo scambio a caldo, non
+         solo il default — la preferenza resta scritta in localStorage e si applichera' dalla prossima partita
+         in cui il rosso e' spento. Marcato TEMP: va tolto in blocco a fine collaudo insieme al bottone in 15. */
+      let _altScene907=null,_altUrl907=null,_swapBusy907=false;
+      window.__CPM_SETBODY907=/* [D7 TEMP] */(pref)=>{
+        try{
+          const _want=pref==='pieni'?'pieni':'leggeri';
+          try{localStorage.setItem('cpm-corpi',_want);}catch(_e){}
+          if(typeof window!=='undefined'&&window.__CPM_NO907)return false;// rosso: preferenza scritta, corpo NON cambia in questa partita
+          if(_swapBusy907)return false;
+          const _url=_want==='pieni'?'./assets/footballer.glb':'./assets/footballer-lite.glb';
+          const _apply=(srcScene)=>{try{
+            const _old=glbAvatars;
+            glbAvatars=_buildAvatars907(srcScene);
+            if(_old)_old.forEach(av=>{try{if(av&&av.root&&av.root.parent)av.root.parent.remove(av.root);}catch(_e){}});
+          }catch(_e){}_swapBusy907=false;};
+          _swapBusy907=true;
+          if(_url===_altUrl907&&_altScene907){_apply(_altScene907);return true;}
+          loadGLB(_url).then(_g=>{if(_g&&_g.scene){_altScene907=_g.scene;_altUrl907=_url;_apply(_g.scene);}else{_swapBusy907=false;}}).catch(()=>{_swapBusy907=false;});
+          return true;
+        }catch(_e){_swapBusy907=false;return false;}
+      };
       /* [7.904.0 — C4 grafica «panchinari CH38, corpo alleggerito, non devono volare»] LA PANCHINA. Caricata
          QUI, DOPO che footballer.glb (corpo principale) + tutte le clip sono gia' agganciati — MAI prima:
          un ritardo qui non deve allungare il backstop dei 9s del CH38 principale (la richiesta parte solo a
@@ -654,7 +708,7 @@ function ThreeMatchView(props){
          piu' sotto) restano semplicemente VISIBILI — non c'e' nulla da ripristinare, l'hide avviene SOLO
          dentro _mkA quando una comparsa viene davvero convertita. */
       if(!(typeof window!=='undefined'&&window.__CPM_NO904)){
-        loadGLB('./assets/footballer-panchina.glb').then(_lg=>{try{
+        loadGLB('./assets/footballer-lite.glb').then(_lg=>{try{/* [7.907.0] file rinominato: e' lo STESSO corpo alleggerito (14.622 triangoli) ora condiviso anche dai 22 in campo — un solo asset, due chiamate */
           if(!_lg||!_lg.scene||typeof benchFigs==='undefined'||!benchFigs||!benchFigs.length)return;
           const _srcSc=_lg.scene;
           const _suitKit={shirt:'#232a35',shorts:'#171b22',socks:'#12141a',shoes:'#0b0b0d'};// [7.904.0] abito scuro per mister/vice — stessa fabbrica "tinta unita" dei 22, non un vero sartoriale

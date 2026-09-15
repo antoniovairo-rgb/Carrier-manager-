@@ -1227,6 +1227,12 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&/[?&]cpmtest=1\b/.test(window.location.search||"")){window.__CPM_OUTCOME=outcome;window.__CPM_MOVES=movesLeft;window.__CPM_DEFDIST=()=>defDistRef.current;window.__CPM_MOVEGAIN=(dx,dy)=>_moveGain317(dx,dy);window.__CPM_MARKER=()=>_marker317();/* [7.317.0] la probe misura il guadagno per direzione */} });/* [7.317.0] SENZA dep array: con `[outcome,movesLeft]` i gancetti restavano appesi a una closure VECCHIA — `__CPM_MOVEGAIN` misurava la posizione dell'eroe di parecchi render prima (32,53 invece di 90,59) e la direzione usciva INVERTITA. Il gioco usava la closure fresca ed era corretto: era la probe a leggere il passato. */// eslint-disable-line
   const [pressureBar,setPressureBar]=useState(1);
   const [paused,setPaused]=useState(false);
+  /* [D7 TEMP] preferenza corpi CH38 per l'interruttore del menu di pausa — SOLO per etichettare il bottone
+     (leggeri/pieni); la logica vera (default, scambio a caldo) vive in src/12-three-match-view.jsx dietro
+     window.__CPM_SETBODY907 e localStorage 'cpm-corpi'. Da togliere in blocco a fine collaudo D7. */
+  const [corpiPref907,setCorpiPref907]=useState(()=>{try{return (typeof window!=='undefined'&&window.__CPM_NO907)?'pieni':(localStorage.getItem('cpm-corpi')==='pieni'?'pieni':'leggeri');}catch(_e){return 'leggeri';}});
+  const [corpiMsg907,setCorpiMsg907]=useState(null);/* [D7 TEMP] */
+  const _corpiMsgTRef907=useRef(null);/* [D7 TEMP] */
   /* [7.682.0 direttiva PO «le scelte interattive devono freezare la partita per almeno qualche secondo
      (almeno 20 secondi) cosi' ho modo di leggere e scegliere»] LA PARTITA SI FERMA DAVVERO.
      Nel 7.681 avevo messo il paletto opposto — «la partita non aspetta mai» — e il collaudo l'ha
@@ -1241,6 +1247,35 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      prossimo difetto. Qui un contatore INDIPENDENTE dal loop 3D: un requestAnimationFrame di LiveMatch, media mobile,
      una moltiplicazione a fotogramma. La nota usa il primo dei due che esiste. */
   useEffect(()=>{if(typeof window==='undefined'||typeof requestAnimationFrame!=='function')return;let raf=0,last=0;const f=(t)=>{if(last){const d=(t-last)/1000;if(d>0.001&&d<1)window.__CPM_FPS771=(window.__CPM_FPS771||60)*0.95+(1/d)*0.05;}last=t;raf=requestAnimationFrame(f);};raf=requestAnimationFrame(f);return()=>{try{cancelAnimationFrame(raf);}catch(_e){}};},[]);
+  /* [7.907.0 — D7 grafica «un contatore di fotogrammi al secondo a schermo»] chip fps per il collaudo PO
+     (misura corpi leggeri/pieni SUL TELEFONO — la macchina di produzione non ha GPU, i fps del banco non
+     valgono). MEDIA MOBILE sugli ultimi 5s dei timestamp requestAnimationFrame (non l'EMA del 7.771, che
+     serve alla nota KE e non è quello che il PO deve leggere qui), aggiornata ogni 1s (il numero a schermo
+     non deve tremare a ogni frame). Un rAF indipendente da three.js: misura anche a 3D spento (fps del DOM).
+     Rosso __CPM_NO907: il contatore NON esiste (torna al comportamento 7.904.0, nessun costo). */
+  const _fps907Ref=useRef([]);
+  const [fps907,setFps907]=useState(null);
+  useEffect(()=>{
+    if(typeof window==='undefined'||window.__CPM_NO907||typeof requestAnimationFrame!=='function')return;
+    let raf=0,alive=true;
+    const _tick=(t)=>{if(!alive)return;const a=_fps907Ref.current;a.push(t);const cut=t-5000;while(a.length&&a[0]<cut)a.shift();raf=requestAnimationFrame(_tick);};
+    raf=requestAnimationFrame(_tick);
+    const iv=setInterval(()=>{const a=_fps907Ref.current;if(a.length<2){setFps907(null);return;}const dt=(a[a.length-1]-a[0])/1000;setFps907(dt>0?Math.round((a.length-1)/dt):null);},1000);
+    return()=>{alive=false;try{cancelAnimationFrame(raf);}catch(_e){}clearInterval(iv);};
+  },[]);
+  /* window.__CPM_FPS907(): {fps5s, corpi:'leggeri'|'pieni', tri} — la sonda tests/visual/d7-corpi.mjs legge
+     da qui. `tri` arriva da src/12-three-match-view.jsx (window.__CPM_TRI907, renderer.info.render.triangles):
+     0 se il 3D non è montato. Con __CPM_NO907 il gancio non esiste proprio (niente contatore da leggere). */
+  useEffect(()=>{
+    if(typeof window==='undefined')return;
+    if(window.__CPM_NO907){try{delete window.__CPM_FPS907;}catch(_e){window.__CPM_FPS907=undefined;}return;}
+    window.__CPM_FPS907=()=>{
+      let corpi='leggeri';try{corpi=localStorage.getItem('cpm-corpi')==='pieni'?'pieni':'leggeri';}catch(_e){}
+      let tri=0;try{tri=(typeof window.__CPM_TRI907==='function')?(window.__CPM_TRI907()||0):0;}catch(_e){}
+      const a=_fps907Ref.current;let fps5s=null;if(a&&a.length>=2){const dt=(a[a.length-1]-a[0])/1000;fps5s=dt>0?Math.round((a.length-1)/dt):null;}
+      return {fps5s,corpi,tri};
+    };
+  },[]);
   const [matchSpeed,setMatchSpeed]=useState(readMatchSpeed);/* [7.484.0] ritmo scelto dal giocatore */
   /* [7.338.0 direttiva PO «prevedere un pulsante di warning per niente invasivo durante il live match che
      permetta di prendere appunti sull'azione sbagliata … la partita deve essere messa in PAUSA finché non mi
@@ -8484,6 +8519,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           </React.Fragment>
           )}
 
+          {/* [7.907.0 — D7] chip fps, subito sotto la barra del risultato — SOLO durante la partita (playing/hl_*),
+              SOLO se il contatore esiste (rosso __CPM_NO907 lo spegne). Riga di flusso propria: non tocca i due
+              blocchi «barra» sopra (di un altro agente). */}
+          {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&fps907!=null&&(
+            <div data-cpm="fps907" style={{flex:"0 0 auto",textAlign:"center",fontSize:11,fontVariantNumeric:"tabular-nums",color:"rgba(255,255,255,0.38)",letterSpacing:.4,padding:"1px 0",background:"rgba(255,255,255,0.02)"}}>{fps907+" fps"}</div>
+          )}
+
           {/* ── Field + Panel: responsive layout ── */}
           {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
           // CINE-1: contesto cinematografico centralizzato — type (legacy) + pattern + variant
@@ -9037,6 +9079,25 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
                   <div style={{fontSize:18,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
                   <div style={{fontSize:11,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>Premi P o tocca per riprendere</div>
+                  {/* [D7 TEMP — interruttore «Corpi: leggeri/pieni», SOLO per il collaudo del PO sul telefono:
+                      va tolto in blocco a fine D7 insieme a window.__CPM_SETBODY907 in 12-three-match-view.jsx
+                      e al ramo __CPM_NO907 di questo file. Spento dal rosso __CPM_NO907 (corpo pieno fisso). */}
+                  {typeof window!=='undefined'&&!window.__CPM_NO907&&(
+                    <div style={{marginTop:16,display:"flex",flexDirection:"column",alignItems:"center",gap:5}} onClick={(e)=>e.stopPropagation()}>
+                      <button onClick={()=>{
+                        const _nxt=corpiPref907==='pieni'?'leggeri':'pieni';
+                        try{localStorage.setItem('cpm-corpi',_nxt);}catch(_e){}
+                        let _ok=false;try{_ok=typeof window.__CPM_SETBODY907==='function'&&!!window.__CPM_SETBODY907(_nxt);}catch(_e){}
+                        setCorpiPref907(_nxt);
+                        setCorpiMsg907(_ok?"applicato subito":"vale dalla prossima partita");
+                        try{clearTimeout(_corpiMsgTRef907.current);}catch(_e){}
+                        _corpiMsgTRef907.current=setTimeout(()=>setCorpiMsg907(null),3000);
+                      }} style={{padding:"7px 14px",borderRadius:8,border:"1px solid rgba(255,255,255,0.25)",background:"rgba(255,255,255,0.08)",color:"#e2e8f0",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}} title="[D7 TEMP] scambia il corpo CH38 dei 22+portieri+arbitro — misura provvisoria per il collaudo">
+                        Corpi: {corpiPref907==='pieni'?"pieni":"leggeri"}
+                      </button>
+                      {corpiMsg907&&<div style={{fontSize:10,color:"rgba(255,255,255,0.4)"}}>{corpiMsg907}</div>}
+                    </div>
+                  )}
                 </div>
               )}
               {/* HL intro stays on field as cinematic overlay */}
