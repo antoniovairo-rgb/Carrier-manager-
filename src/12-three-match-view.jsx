@@ -509,10 +509,21 @@ function ThreeMatchView(props){
        Rosso __CPM_NO907: corpo pieno fisso, niente contatore fps ne' interruttore (torna al comportamento
        7.904.0). Il gancio test-only __CPM_GLB_URL (D7 passo 1, gia' esistente) ha SEMPRE la precedenza — usato
        dal banco per confrontare corpi offline senza toccare questa preferenza. */
-    const _no907=(typeof window!=='undefined')&&!!window.__CPM_NO907;
-    const _corpiPrefRaw907=(function(){try{return localStorage.getItem('cpm-corpi');}catch(_e){return null;}})();
-    const _corpiPref907=_no907?'pieni':(_corpiPrefRaw907==='pieni'?'pieni':'leggeri');
+    /* [7.909.0 — D7 REVOCATA] La misura appaiata del PO sul suo telefono, stessa partita e stesso impianto, ha
+       detto il contrario di quello che la 7.907 dava per scontato: corpi PIENI media 31-32 fps (picco 38), corpi
+       LEGGERI media 29-30 (picco 34). Il 58 % di triangoli in meno (1.317.654 -> 559.283 in scena) non regala un
+       fotogramma: ne toglie qualcuno. La sonda tests/visual/costo-corpo.mjs dice perche': le CHIAMATE DI DISEGNO
+       per fotogramma restano 153 -> 145 (-4,8 %), perche' i due GLB hanno le stesse 7 mesh, 7 skin, 73 nodi e 2
+       materiali. Sul telefono il collo di bottiglia e' la CPU (~150 chiamate, 23 scheletri animati), non i
+       triangoli; al banco, dove Chromium disegna in software, il verdetto e' opposto (5,6 -> 10,9 fps) ed e' per
+       questo che non bastava. Regola del PO: revoca a verbale se non batte la misura -> il campo torna al corpo
+       PIENO e l'interruttore del menu di pausa sparisce. Rosso __CPM_NO909 = il comportamento della 7.907
+       (leggeri), per la misura appaiata. Il corpo alleggerito resta in panchina (C8), dove il metro erano i
+       triangoli e non i fotogrammi. Prossima leva vera: unire le mesh di ogni corpo (D12, 153 -> <= 40). */
+    const _no909=(typeof window!=='undefined')&&!!window.__CPM_NO909;
+    const _corpiPref907=_no909?'leggeri':'pieni';
     const _bodyUrl907=(u=>u==='pieni'?'./assets/footballer.glb':'./assets/footballer-lite.glb')(_corpiPref907);
+    try{if(typeof window!=='undefined')window.__CPM_BODY909=()=>_corpiPref907;}catch(_e){}/* [7.909] quale corpo e' in uso: lo leggono il contatore dei fotogrammi e le sonde */
     try{window.__CPM_GLB_READY=_useGLB?false:true;window.__CPM_GLB_FAIL=null;}catch(_e){}/* [7.264.0] il flag di fallimento si azzera a ogni mount: una partita non eredita l'errore della precedente *//* [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto non si gioca»] readiness esposta a LiveMatch: false=GLB atteso ma non ancora agganciato → il kickoff viene TRATTENUTO (overlay pre-fischio); diventa true all'aggancio del primo CH38 o su fallimento duro (ultima risorsa) */
     // [6.95.0 · 7.8.1 collaudo PO «iniziano la partita i soldatini — va assolutamente evitato / mai burattini»]
     //   GRACE PERIOD: finché il CH38 non è agganciato i mesh procedurali (giocatori + EROE) restano NASCOSTI
@@ -682,11 +693,11 @@ function ThreeMatchView(props){
          solo il default — la preferenza resta scritta in localStorage e si applichera' dalla prossima partita
          in cui il rosso e' spento. Marcato TEMP: va tolto in blocco a fine collaudo insieme al bottone in 15. */
       let _altScene907=null,_altUrl907=null,_swapBusy907=false;
-      window.__CPM_SETBODY907=/* [D7 TEMP] */(pref)=>{
+      window.__CPM_SETBODY907=/* [7.909] non piu' esposto nella UI: resta come gancio di misura per le sonde (D12) */(pref)=>{
         try{
           const _want=pref==='pieni'?'pieni':'leggeri';
           try{localStorage.setItem('cpm-corpi',_want);}catch(_e){}
-          if(typeof window!=='undefined'&&window.__CPM_NO907)return false;// rosso: preferenza scritta, corpo NON cambia in questa partita
+          if(typeof window!=='undefined'&&window.__CPM_NO909)return false;// rosso: preferenza scritta, corpo NON cambia in questa partita
           if(_swapBusy907)return false;
           const _url=_want==='pieni'?'./assets/footballer.glb':'./assets/footballer-lite.glb';
           const _apply=(srcScene)=>{try{

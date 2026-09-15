@@ -1,15 +1,20 @@
 #!/usr/bin/env node
-/* ============================================================================
+/* [SUPERATA dalla 7.909 — D7 REVOCATA] Questa sonda misurava il metro della 7.907 (default leggero +
+   interruttore nel menu di pausa). La misura appaiata del PO sul telefono ha revocato quel metro: il campo torna
+   al corpo pieno e l'interruttore non esiste piu'. Il verdetto qui sotto pretende ancora l'interruttore, quindi
+   dara' rosso per costruzione: si usa solo per leggere i triangoli dei due bracci. Il metro vivo della revoca sta
+   in tests/visual/revoca-909.mjs. Fuori dal ci.
+   ============================================================================
    d7-corpi.mjs — D7 v2 grafica: CORPI CH38 ALLEGGERITI PER I 22 (+ portieri, arbitro)
    ----------------------------------------------------------------------------
-   Direttiva PO: default leggero per i 22+GK+arbitro (rosso __CPM_NO907 = pieno,
+   [7.909] D7 REVOCATA: il default dei 22+GK+arbitro torna PIENO (rosso __CPM_NO909 = leggeri, com'era nella 7.907),
    niente contatore/interruttore), interruttore TEMPORANEO «Corpi: leggeri/pieni»
    nel menu di pausa (localStorage 'cpm-corpi'), contatore fps a schermo.
 
    Chromium 412×915, GLB accesi. Misura:
      1) FOTO ravvicinate pieno / s0.5 (24.066 tri) / s0.3=lite (14.622 tri) sulla
         STESSA inquadratura (vicino all'eroe) — per la scelta del corpo leggero
-     2) rosso (__CPM_NO907) vs verde: corpo in uso (triangoli in scena via
+     2) rosso (__CPM_NO909) vs verde: corpo in uso (triangoli in scena via
         window.__CPM_FPS907().tri — pieno atteso ~1,3M, leggero molto meno)
      3) contatore fps presente in verde con un numero, ASSENTE in rosso
      4) interruttore presente nel menu di pausa in verde, ASSENTE in rosso;
@@ -121,7 +126,7 @@ async function misuraBraccio(arm) {
   await page.addInitScript((o) => {
     window.__CPM_GLB = true;
     try { localStorage.removeItem('cpm-corpi'); } catch (_e) {}
-    if (o.rosso) window.__CPM_NO907 = true;
+    if (o.rosso) window.__CPM_NO909 = true;
   }, { rosso: arm.rosso });
 
   let cdp = null, lastFrame = null;
@@ -234,7 +239,7 @@ async function main() {
   }
 
   // --- PARTE 2: rosso/verde ---
-  console.log('braccio ROSSO (__CPM_NO907=true — corpo pieno, niente contatore/interruttore)…');
+  console.log('braccio ROSSO (__CPM_NO909=true — corpo alleggerito, com\'era nella 7.907)…');
   const rosso = await misuraBraccio({ name: 'rosso', rosso: true });
   console.log('braccio VERDE (default leggero + contatore + interruttore)…');
   const verde = await misuraBraccio({ name: 'verde', rosso: false });
@@ -255,7 +260,7 @@ async function main() {
     if (r.photoBar) console.log(`  foto barra+contatore: ${OUT}/${r.photoBar}`);
     console.log(`  pageerror: ${r.errs.length}${r.errs.length ? '\n    ' + r.errs.slice(0, 6).join('\n    ') : ''}`);
   };
-  line('ROSSO — __CPM_NO907=true', rosso);
+  line('ROSSO — __CPM_NO909=true (corpo alleggerito 7.907)', rosso);
   line('VERDE — default leggero', verde);
 
   console.log(`\nFoto salvate in: ${OUT}`);
