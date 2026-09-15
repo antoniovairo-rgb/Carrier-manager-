@@ -3044,7 +3044,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);/* [7.870] rosso appaiato: __CPM_NO870 rimette in moto le vecchie macchine narrative e il vecchio mover */
       k896Ref.current=(k896Ref.current+1)%_SUB896;
       if(k896Ref.current!==0){/* [7.896] sotto-tick: solo il motore e i suoi specchi, nessuna riga, nessun minuto */
-        try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;const _ev=_M.tick({min:(clockRef.current|0)+1});for(const _e of _ev)evAcc896Ref.current.push(_e);const _st=_M.stato();_specchi896(_st,_ev);/* v2: anche il pallone RESO segue il sotto-tick (come nel minuto, 6388): senza, ai piedi del padrone 63 % → 4 %, salti 67 → 143 */if(!_st.scena)setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e896){}
+        try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;const _ev=_M.tick({min:(clockRef.current|0)+1});for(const _e of _ev)evAcc896Ref.current.push(_e);_specchi896(_M.stato(),_ev);}}catch(_e896){}
         return;}
       /* [7.494.0 F0 — CHIUDE IL BORDO NON MISURATO DEL 7.489] Il 7.489 ha reso la cronaca funzione pura di
          (seed di partita, minuto) dentro il callback di `setClock`, dove vive `_rndM`. Ma i rami che girano
