@@ -126,3 +126,14 @@ const dopo = await io.read(outPath);
 const r2 = dopo.getRoot();
 console.log(`\nscritto ${path.basename(outPath)} · mesh ${r2.listMeshes().length} · primitive ${r2.listMeshes().reduce((s, m) => s + m.listPrimitives().length, 0)} · skin ${r2.listSkins().length} · ossa ${r2.listSkins()[0]?.listJoints().length} · animazioni ${r2.listAnimations().length} · triangoli ${triTot}`);
 console.log('atteso: 1 mesh, 2 primitive → per 23 corpi ≈ 46 chiamate di disegno invece di ~161.');
+
+/* [D12] POTATURA — gli accessor e i buffer rimasti orfani dopo l'unione gonfiano il file: si potano.
+   La quantizzazione (KHR_mesh_quantization) NON si usa: con questo NodeIO l'estensione non viene dichiarata
+   nel file e il risultato sarebbe non conforme — misurato, e per giunta piu' pesante (4,38 MB). */
+try {
+  const { prune, dedup } = _req('@gltf-transform/functions');
+  await doc.transform(dedup(), prune());
+  await io.write(outPath, doc);
+  const fs = await import('node:fs');
+  console.log(`dopo dedup+prune: ${(fs.statSync(outPath).size / 1048576).toFixed(2)} MB`);
+} catch (e) { console.log('potatura non riuscita:', String(e.message || e)); }
