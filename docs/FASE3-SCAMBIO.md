@@ -5627,3 +5627,28 @@ campo e il pallone reso li insegue peggio (il ponte esclude l'eroe, A3). Il metr
 lontano: due aree a 6. Prossimo sul motore: A2 (3 tick al minuto) e A3 (padrone nel live). NON verificato:
 l'Android del PO.
 
+## D7 — librerie (carta bianca PO 15/09): primo passo misurato, corpi GLB semplificati offline
+
+Inventario: three r128 nel gioco (registro npm: 0.186), 20 GLB per 15,8 MB; `footballer.glb` 3,09 MB = **48.140
+triangoli** per corpo (Body 18.595 quasi tutto nascosto sotto maglia e pantaloncini, Hair 9.528, Shirt 7.554,
+Shorts 7.023), 4 texture 512x512 (~2 MB di VRAM per modello). Ventidue corpi = ~1,06 M triangoli con skinning.
+
+Strumento: `@gltf-transform/cli` 4.5.0 (installato in tests/visual senza toccare package.json), `simplify`
+(meshoptimizer) sul corpo; gancio test-only `__CPM_GLB_URL` nel loader (src/12, spento nella build store);
+banco `tests/visual/fps-glb.mjs` (fps EMA `__CPM_FPS708` in `playing` per 60 s, 22 corpi accesi).
+
+| corpo | triangoli | fps mediana (giro 1 · 2) | fps p10 |
+|---|---|---|---|
+| oggi | 48.140 | 4,7 · 3,9 | 2,4 · 2,3 |
+| semplificato 50 % | 28.974 (−40 %) | 4,0 · 3,9 | 3,3 · 3,3 |
+| semplificato 30 % | 22.768 (−53 %) | 4,3 · 4,6 | 3,9 · 4,1 |
+
+**Verdetto del banco: la mediana non si muove** (le differenze stanno nel rumore fra i due giri); migliora solo il
+decimo percentile (2,3 → 4,0). Sul GL software del banco i triangoli non sono il collo di bottiglia. Dichiarato:
+sul telefono del PO la GPU e' vera e i triangoli pesano di piu', ma da qui non si misura. Il candidato al 50 % e'
+scartato (stesso numero, meno dettaglio); il 30 % NON viene spedito: resta fuori dall'albero finche' (a) la foto
+ravvicinata dice che pelle e kit reggono e (b) esiste una misura sul telefono del PO. Capelli quasi
+non semplificabili (9.528 → 8.704). Prossimi passi di D7, in ordine: profilare dove va il tempo del fotogramma
+(skinning/JS o fill), poi decoder meshopt nel loader (peso di scarico, non fps), e three recente solo con una
+misura che lo giustifichi.
+
