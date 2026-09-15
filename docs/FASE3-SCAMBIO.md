@@ -6042,6 +6042,28 @@ Voti [7,7,7,7,8,7,8,7,7,8,7,7], **media 7,25 = n° 18**: il salto di «ai piedi�
 (coppia rosso 70/58 vs verde 64/62), quindi Realismo resta 7; la 7.900 muove i tiri solo al banco (4,1 → 5,2, obiettivo
 8) e le Azioni extra-eroe restano 7. Registro `docs/voti/voti-telefono.json`, sezione voti rigenerata con `voti-piano`.
 
+### 15/09 15:40 — C8 misurata: panchinari, mister e vice con il corpo CH38 alleggerito, e non volano (ramo `claude/panchina-glb`, 7.904.0, rosso `__CPM_NO904`)
+
+Squadra grafica (agente), solo src/12 e la versione; nuovo asset `assets/footballer-panchina.glb` (1,99 MB, 14.622 triangoli,
+stesso scheletro del footballer.glb da 48.140) caricato DOPO che il corpo principale ha agganciato, con le figure procedurali
+come fallback e rosso. Posa seduta sulle ossa (anca −90°, ginocchio +90° attorno all'asse mondo, braccia lungo i fianchi,
+offset del root calcolato a runtime), idle a peso basso, esultanza al gol (braccia in aria; mister e vice saltano).
+Sonda `tests/visual/panchina-glb.mjs` (fuori dal ci), Chromium 412×915, GLB accesi, camera di prova sul dugout:
+
+| misura | rosso (procedurali) | **verde (CH38 leggero)** | banda |
+|---|---|---|---|
+| corpi CH38 in panchina | 0/16 | **16/16** | 16/16 |
+| piedi dal pavimento, min-max (16) | 0,001-**0,772u** (sospesi) | **0,011-0,123u** | ≤ 0,15u |
+| bacino dalla seduta, min-max (12 seduti) | 0,475-0,535u | **0,096-0,127u** | ≤ 0,25u |
+| triangoli in scena (dugout in quadro) | 1.102.023 | 1.316.897 (**+19,5 %**) | ≤ +25 % |
+| fps 8 s sul dugout (GL software) | 33,7-38,5 | 36,0-39,1 | informativo |
+| errori di pagina | 0 | 0 | 0 |
+
+Foto verificate (`tests/visual/out/panchina-glb/`): verde = corpo seduto, gambe piegate, piedi a terra; rosso = comparsa
+procedurale con le gambe che non toccano il pavimento (il «volano» del PO, misurato: piedi fino a 0,77u). NON verificato:
+l'Android del PO (fps e triangoli sono del banco), il gesto delle braccia nell'esultanza (per lettura del codice, non
+nitido in foto), altre risoluzioni. Commit c10c78c spinto. Prossimo: merge con C3 v4 sulla linea motore, rituali, main.
+
 ### 15/09 15:10 — Scheda n° 20 (7.903.0 + C3), i collaudi del PO sul telefono, A9 v1 misurata al banco e parcheggiata
 
 **Scheda n° 20** (GLB accesi, corse pulite): ai piedi Vairo 70 / Galli 70 / Moretti 57 / Conti 50 % (n° 19: 64/59/62/61),
