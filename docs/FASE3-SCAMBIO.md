@@ -5994,3 +5994,13 @@ Letto onestamente: +27 % di tiri e +38 % dall'area, ma 5,2 contro gli 8 chiesti 
 limite (8 % delle decisioni anche ora: il 45 % di base e' scontato da pressione ×0,6, strada libera ×0,35 e larghezza)
 e nel «controllo» al limite (18 %, la sosta 7.894). Prossimo passo v2: il tiro di prima al limite. Rituali in corsa
 (il guardiano partita-vera misura i tiri nel live).
+
+### 15/09 08:15 — C2 chiusa: il PO ha risposto al wizard sull'anteprima del HUD
+
+Risposte (AskUserQuestion, 4 domande): **barra del risultato 60 px su una riga** (era 92) · **interazione come scheda
+dal basso al 44 % dello schermo** (era pannello al centro) · **percentuali di riuscita: NO, rischio cieco** (solo nome
+della giocata e attributo) · **esito come banda bassa con un solo «Continua»** e replay piccolo (erano due tasti).
+Le due tavole alternative (testo in alto; campo a tutto schermo) restano schizzi. Da qui parte **C3** (squadra grafica,
+ramo `claude/hud-c3` da 65cc427, worktree `scratchpad/wt-c3`): solo HUD in src/15, mai il motore; rosso `__CPM_NO901`;
+metro: altezza della barra 60 ± 2 px, scheda dell'interazione ≤ 44 % del viewport in `hl_choose`, nessuna
+percentuale nelle scelte, un solo tasto nell'esito, campo coperto dalla telecronaca 0 % (griglia-mobile senza regressioni).

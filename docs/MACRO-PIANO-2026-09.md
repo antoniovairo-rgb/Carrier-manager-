@@ -93,8 +93,8 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 | # | attività | metro | stato |
 |---|---|---|---|
 | C1 | fondamenta (G0-G3) e correzioni in partita (7.892/7.893) | vedi §0 | **in produzione** |
-| C2 | **G4 anteprima di design del HUD**: barra broadcast 60 px, filo del possesso, banda bassa unica (telecronaca + mister), interazione come scheda dal basso, esito nella banda con un solo tasto; due schizzi alternativi | sì del PO sul disegno (4 domande nel canvas) | **anteprima pubblicata** 15/09 01:20 — https://claude.ai/artifact/UUnLJLHaADyJSzVvmzAHwj — attende il PO |
-| C3 | G4 implementazione: HUD, telecronaca, interazioni, scena SETUP→AZIONE→CONCLUSIONE→CONSEGUENZA | copertura del campo ≤ 25 %, griglia partita: <10 px 0, contrasto 0; scheda area «HUD» ≥ 8 | dopo C2 |
+| C2 | **G4 anteprima di design del HUD**: barra broadcast 60 px, filo del possesso, banda bassa unica (telecronaca + mister), interazione come scheda dal basso, esito nella banda con un solo tasto; due schizzi alternativi | sì del PO sul disegno (4 domande nel canvas) | **fatto** — sì del PO (08:15): barra 60 px · scheda dal basso 44 % · niente percentuali · esito con un solo Continua |
+| C3 | G4 implementazione: HUD, telecronaca, interazioni, scena SETUP→AZIONE→CONCLUSIONE→CONSEGUENZA | copertura del campo ≤ 25 %, griglia partita: <10 px 0, contrasto 0; scheda area «HUD» ≥ 8 | **in corso** — ramo claude/hud-c3, squadra grafica, rosso __CPM_NO901 |
 | C4 | post-partita, tema scuro fotografato, altre schermate (gerarchia, una cosa alla volta) | griglia: nessuna regressione; pieni ≤ 1 per vista | da fare |
 | C5 | performance mobile: 22 GLB per 90' (LOD/instancing, texture) — misura sull'Android del PO | fps ≥ 30 sul telefono del PO (da lui misurato); banco: triangoli in quadro −50 % | da misurare prima |
 | C6 | report finale in 16 sezioni della direttiva | consegnato | da scrivere |
