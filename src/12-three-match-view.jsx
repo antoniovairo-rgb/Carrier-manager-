@@ -479,6 +479,19 @@ function ThreeMatchView(props){
       }
       return {glb:_glbList.length,tot:_tot,seduti:_appoggio.filter(a=>a.seated).length,coach:_appoggio.filter(a=>a.coach).length,tri:_tri,appoggio:_appoggio};
     }catch(_e){return {err:String(_e&&_e.message||_e)};}};
+    /* [7.904.0 gancio test-only] inquadratura fissa sul dugout, per fotografare la panchina da vicino coi
+       piedi visibili (side: 'home'|'away'). Applicata a valle di ogni calcolo della regia (vedi il punto
+       d'innesto dopo camera.lookAt piu' sotto) — NON sostituisce la regia, la sovrascrive frame per frame
+       finche' resta attiva. */
+    if(typeof window!=='undefined'){
+      window.__CPM_CAM_DUGOUT904=(side)=>{const bx=side==='away'?14:-14,_s=side==='away'?1:-1;
+        // [7.904.0] misurato: un'inquadratura frontale (dal campo verso il dugout) guarda DRITTO
+        // contro la balaustra LED del perimetro (z=-34.4, alta 0,77u — la stessa quota della seduta)
+        // e i piedi restano coperti. Di LATO, lungo la fila (camera e bersaglio alla STESSA z del
+        // dugout), la balaustra non e' mai sulla linea di vista: piedi liberi.
+        window.__CPM_CAM904={x:bx+_s*12,y:1.4,z:-38.3,lx:bx,ly:0.5,lz:-38.3};};
+      window.__CPM_CAM_RESET904=()=>{try{delete window.__CPM_CAM904;}catch(_e){window.__CPM_CAM904=null;}};
+    }
     // GLB = DEFAULT ON. Disattivabile: ?glb=0 (persiste), localStorage 'cpm-glb'='0', window.__CPM_GLB===false. (?glb=1 lo riattiva.)
     const _glbUrl=(typeof location!=='undefined')&&/[?&]glb=([01])\b/.exec(location.search||"");
     if(_glbUrl){try{localStorage.setItem('cpm-glb',_glbUrl[1]);}catch(e){}}
@@ -647,6 +660,7 @@ function ThreeMatchView(props){
           const _suitKit={shirt:'#232a35',shorts:'#171b22',socks:'#12141a',shoes:'#0b0b0d'};// [7.904.0] abito scuro per mister/vice — stessa fabbrica "tinta unita" dei 22, non un vero sartoriale
           const _mkBenchOne=(fig,kit,appr,seated)=>{
             const av=_mkA(fig,kit,appr,_srcSc);if(!av)return null;
+            av.root.updateMatrixWorld(true);// [7.904.0] il clone e' appena entrato in scena: nessun renderer.render() lo ha ancora attraversato, matrixWorld va inizializzato PRIMA di _rw904 (che si fida del world del genitore)
             if(av.idle)av.idle.setEffectiveWeight(seated?0.22:1);// seduti: peso basso (un filo di vita, la posa sotto è fissa) · in piedi: idle piena come i 22, nessuna correzione a mano
             const armL=_findBone904(av.root,/LeftArm$/i),armR=_findBone904(av.root,/RightArm$/i);
             av._armBindQ904=armL&&armR?{L:armL.quaternion.clone(),R:armR.quaternion.clone()}:null;// [celebrazione] reset-poi-ruota dal bind originale: niente accumulo fra un fotogramma e l'altro
@@ -8288,6 +8302,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
        _cs671._ax671=Math.atan2(camLook.x-camera.position.x,camLook.z-camera.position.z);
        _cs671._ay671=Math.atan2(camLook.y-camera.position.y,Math.hypot(camLook.x-camera.position.x,camLook.z-camera.position.z));}
       camera.lookAt(camLook.x,camLook.y,camLook.z);
+      /* [7.904.0 gancio test-only per la sonda C4] __CPM_CAM_DUGOUT904({x,y,z,lx,ly,lz}) forza la camera
+         a un'inquadratura fissa (es. il dugout, per fotografare la panchina da vicino) — SOVRASCRIVE il
+         risultato della regia normale qui, DOPO ogni altro calcolo di questo fotogramma: non tocca tPx/
+         tLx/camLook (la regia riprende da dove aveva lasciato, con uno scatto, non appena l'override viene
+         tolto). __CPM_CAM_RESET904() lo disattiva. Fuori dal collaudo (nessuno lo chiama mai) costa un
+         controllo booleano a fotogramma. */
+      if(typeof window!=='undefined'&&window.__CPM_CAM904){const _c9=window.__CPM_CAM904;
+        camera.position.set(_c9.x,_c9.y,_c9.z);camera.lookAt(_c9.lx,_c9.ly,_c9.lz);camera.updateMatrixWorld(true);}
 
       // ---- Meteo: caduta particelle + flash temporale ----
       if(wParticles){
