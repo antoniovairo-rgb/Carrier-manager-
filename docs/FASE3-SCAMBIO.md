@@ -6004,3 +6004,29 @@ Le due tavole alternative (testo in alto; campo a tutto schermo) restano schizzi
 ramo `claude/hud-c3` da 65cc427, worktree `scratchpad/wt-c3`): solo HUD in src/15, mai il motore; rosso `__CPM_NO901`;
 metro: altezza della barra 60 ± 2 px, scheda dell'interazione ≤ 44 % del viewport in `hl_choose`, nessuna
 percentuale nelle scelte, un solo tasto nell'esito, campo coperto dalla telecronaca 0 % (griglia-mobile senza regressioni).
+
+**A4 v2 e v3 misurate al banco e scartate (08:10).** v2, il tiro di prima dal limite (40 % al primo tocco con
+|y-50| ≤ 16 e pressione < 2,8; sconto della strada libera 0,35 → 0,5): tiri a partita 5,2 → 5,1 (48 partite), ma
+al banco senza decreti i tiri dal limite salgono 1,06 → 1,88 e quelli dall'area SCENDONO 2,81 → 1,50 — si calcia da
+fuori invece di entrare, il contrario di cio' che il PO chiede («≥ 3 dall'area»). v3, la ricezione al limite o in
+area che decide subito nella stessa chiamata (due tocchi in un minuto nel terzo finale): tiri 5,2 → 5,2, perche' le
+ricezioni al limite/area sono **3,9 a partita** su 28,4 (misurato): il terzo finale si raggiunge in conduzione, non
+di passaggio, e una decisione in piu' li' produce le stesse scelte (conduci 47 %, tiro 19 %).
+Il numero che spiega il tetto: i possessi arrivano oltre 80 di avanzamento **4 volte a partita** (66 su 16 partite),
+e un attacco ne cava circa un tiro. Con 57 decisioni a partita e possessi che durano 13-17 minuti (recuperi 0,6 e
+palle perse 0,2 a partita: la palla cambia lato 5-7 volte in 90') gli 8 tiri non stanno nel modello a un tocco per
+minuto. La leva vera e' il RITMO DEI POSSESSI: piu' recuperi e intercetti (oggi quasi assenti: contrasti 3 in 16
+partite), attacchi piu' corti e piu' numerosi. E' il prossimo passo (A4 v4), da progettare con il metro «possessi a
+partita» e «attacchi oltre 80». Sorgente riportato alla 7.900 v1 (65cc427).
+
+**A4 v4 e v5, misurate e scartate (08:15).** v4, il ritmo dei possessi (passaggi che falliscono ~20 % come nel calcio
+vero: intercetti 0,4 → 0,9 a partita, contrasto sotto pressione stretta 18 %: contrasti 2,6 → 3,1): cambi di lato
+8,2 → 8,8 ma **tiri 5,2 → 4,2** (area 1,8 → 1,3) — i recuperi in piu' uccidono attacchi senza crearne. v5, tre tocchi
+al minuto nel terzo finale (anche i sotto-tick decidono al limite e in area): tiri 5,2 → 5,2, salti > 5u 0. Con e
+senza decreti, con una o tre decisioni al minuto, con piu' o meno recuperi, il motore produce **5 tiri a partita**:
+il tetto non sta nelle probabilita' di tiro ne' nel numero di decisioni, sta nel numero di attacchi che arrivano nel
+terzo finale (7-8 a partita, ognuno ne cava 0,6) e quel numero dipende dal tempo del mondo — un tocco al minuto e
+5-8u di avanzamento per tocco (invariante 7.538). **A4 si chiude alla v1 (5,2, +27 %).** Portare i tiri a 8 richiede
+una decisione di progetto del PO sul tempo: un attacco che dal centrocampo arrivi in area in 3 minuti invece di 5-6,
+cioe' passi di conduzione e passaggi verticali piu' lunghi (mondo piu' veloce in avanti, gia' respinto nella forma
+«tutto 3× piu' veloce» della 7.896). Prototipi in `scratchpad/a4/14-v4.jsx`, `14-v5.jsx`; banco con `CPM_SRC14`.

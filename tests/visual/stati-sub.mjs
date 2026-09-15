@@ -9,29 +9,29 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './lib/harness.mjs';
-function loadMotore(){const src=fs.readFileSync(path.join(ROOT,'src','14-motore-possesso.jsx'),'utf8');const i=src.indexOf('/* CMAV-SRC-HEADER-END */');const code=src.slice(i+'/* CMAV-SRC-HEADER-END */'.length);const W=(process.env.CPM_ROSSO||'').split(',').filter(Boolean).reduce((o,k)=>(o[k]=true,o),{});/* CPM_ROSSO=__CPM_NOxxx: il braccio rosso al banco */return Function('decideExecution','window',code+'\nreturn creaMotorePossesso;')(undefined,Object.keys(W).length?W:undefined);}
+function loadMotore(){const src=fs.readFileSync(process.env.CPM_SRC14||path.join(ROOT,'src','14-motore-possesso.jsx'),'utf8');const i=src.indexOf('/* CMAV-SRC-HEADER-END */');const code=src.slice(i+'/* CMAV-SRC-HEADER-END */'.length);const W=(process.env.CPM_ROSSO||'').split(',').filter(Boolean).reduce((o,k)=>(o[k]=true,o),{});/* CPM_ROSSO=__CPM_NOxxx: il braccio rosso al banco */return Function('decideExecution','window',code+'\nreturn creaMotorePossesso;')(undefined,Object.keys(W).length?W:undefined);}
 const crea=loadMotore();
 const giocatori=()=>{const h=[[8,50,1],[18,12],[18,38],[18,62],[18,88],[38,25],[38,50],[38,75],[55,22],[55,78]].map((p,i)=>({team:'home',gk:!!p[2],name:'CASA'+i,rl:i===0?'GK':i<=4?'DF':i<=7?'MF':'AT',x:p[0],y:p[1]}));const a=[[95,50,1],[82,12],[82,38],[82,62],[82,88],[62,25],[62,50],[62,75],[48,20],[48,50],[48,80]].map((p,i)=>({team:'away',gk:!!p[2],name:'OSP'+i,rl:i===0?'GK':i<=4?'DF':i<=7?'MF':'AT',x:p[0],y:p[1]}));return h.concat(a);};
 const N=+(process.env.CPM_PARTITE||16),MIN=92;
 const DTS=(process.env.CPM_DT||'1,0.333333').split(',').map(Number);
 function partita(seed,dt){
   const m=crea({seed,giocatori:giocatori(),eroe:{name:'EROE',x:58,y:50,attivo:true,ovr:74},forza:{home:70,away:66}});
-  const acc={min:{},passaggi:0,tiri:0,tiriArea:0,gol:0,cond:0,catene:0,voli:0,voloMin:0,maxG:0,maxB:0,salti5:0,corsa:0,viol3:0,viol12:0,golReq:[],calls:0,fermi:0,padrEroe:0,arrivi:0};
-  let prev=m.stato(),chain=0,chainLato=null,voloDa=null,golReqAt=null;const minMove=new Array(22).fill(0);
+  const acc={min:{},cambi:0,intercetti:0,contrasti:0,passaggi:0,tiri:0,tiriArea:0,gol:0,cond:0,catene:0,voli:0,voloMin:0,maxG:0,maxB:0,salti5:0,corsa:0,viol3:0,viol12:0,golReq:[],calls:0,fermi:0,padrEroe:0,arrivi:0};
+  let prev=m.stato(),chain=0,chainLato=null,voloDa=null,golReqAt=null,latoPrev=null;const minMove=new Array(22).fill(0);
   const subN=dt>=1?1:Math.round(1/dt);
   for(let t=1;t<=MIN;t++){
     if(t===23||t===61){m.chiedi.gol(t===23?'home':'away');golReqAt=t;}
     if(t===40)m.chiedi.scenaEroe(true);if(t===46)m.chiedi.scenaEroe(false);
     for(let k=0;k<subN;k++){
       const evs=m.tick(dt>=1?{min:t}:{min:t,dt});const st=m.stato();acc.calls++;
-      const s=st.poss.stato;acc.min[s]=(acc.min[s]||0)+dt;if(s==='tenuta'&&st.poss.padrone===21)acc.padrEroe+=dt;
+      const s=st.poss.stato;acc.min[s]=(acc.min[s]||0)+dt;if(latoPrev&&st.poss.lato!==latoPrev)acc.cambi++;latoPrev=st.poss.lato;if(s==='tenuta'&&st.poss.padrone===21)acc.padrEroe+=dt;
       for(const e of evs){
         if(e.t==='passaggio'&&!e.fuori){acc.passaggi++;if(chainLato===e.lato)chain++;else{chain=1;chainLato=e.lato;}}
         else if(e.t==='cross'){acc.passaggi++;if(chainLato===e.lato)chain++;else{chain=1;chainLato=e.lato;}}
         else if(e.t==='tiro'){acc.tiri++;if(e.zona==='area')acc.tiriArea++;if(chain>=3&&chainLato===e.lato)acc.catene++;chain=0;}
         else if(e.t==='gol'){acc.gol++;if(golReqAt!=null){acc.golReq.push(t-golReqAt);golReqAt=null;}}
         else if(e.t==='conduzione')acc.cond++;
-        else if(e.t==='ricezione')acc.arrivi++;
+        else if(e.t==='ricezione')acc.arrivi++;else if(e.t==='intercetto')acc.intercetti++;else if(e.t==='contrasto'||e.t==='recupero')acc.contrasti++;
         else if(/^(contrasto|intercetto|recupero|palla_persa|fallo|rimessa|rinvio|corner|fuori|centro|spazzata|presa|parata)$/.test(e.t)){chain=0;chainLato=null;if(/^(fallo|rimessa|rinvio|corner)$/.test(e.t))acc.fermi++;}
       }
       if(s==="volo"&&prev.poss.stato!=="volo")voloDa=acc.calls;
@@ -55,13 +55,13 @@ for(const dt of DTS){
   const vivo=(minTot.tenuta||0)+(minTot.volo||0)+(minTot.libero||0),tot=Object.values(minTot).reduce((s,x)=>s+x,0);
   const gr=A.flatMap(a=>a.golReq);
   const r={dt,padrone:100*(minTot.tenuta||0)/vivo,volo:100*(minTot.volo||0)/vivo,libero:100*(minTot.libero||0)/vivo,fermo:100*((minTot.fermo||0)+(minTot.rete||0)+(minTot.kickoff||0))/tot,eroe:100*(A.reduce((s,a)=>s+a.padrEroe,0))/vivo,
-    passaggi:sum('passaggi')/N,tiri:sum('tiri')/N,tiriArea:sum('tiriArea')/N,gol:sum('gol')/N,cond:sum('cond')/N,catene:sum('catene')/N,voloPer:sum('voloMin')/Math.max(1,sum('voli')),fermi:sum('fermi')/N,
+    passaggi:sum('passaggi')/N,cambi:sum('cambi')/N,intercetti:sum('intercetti')/N,contrasti:sum('contrasti')/N,tiri:sum('tiri')/N,tiriArea:sum('tiriArea')/N,gol:sum('gol')/N,cond:sum('cond')/N,catene:sum('catene')/N,voloPer:sum('voloMin')/Math.max(1,sum('voli')),fermi:sum('fermi')/N,
     maxG:Math.max(...A.map(a=>a.maxG)),medMaxG:med('maxG'),maxB:Math.max(...A.map(a=>a.maxB)),salti5:sum('salti5')/N,corsaMin:sum('corsa')/(N*MIN*22),viol3:sum('viol3'),viol12:sum('viol12'),
     golOk:gr.filter(x=>x<999).length,golN:gr.length,golMed:gr.filter(x=>x<999).sort((a,b)=>a-b)[gr.filter(x=>x<999).length>>1]};
   RIS[dt]=r;
   console.log(`\n=== dt=${dt} (${dt>=1?'un tick al minuto':Math.round(1/dt)+' chiamate al minuto'}), ${N} partite ===`);
   console.log(`  gioco vivo: padrone dichiarato ${f1(r.padrone)} %  · volo ${f1(r.volo)} %  · libero ${f1(r.libero)} %   | palla ferma+rete+centro ${f1(r.fermo)} % del totale · eroe padrone ${f1(r.eroe)} % del vivo`);
-  console.log(`  a partita: passaggi ${f1(r.passaggi)} · tiri ${f1(r.tiri)} (in area ${f1(r.tiriArea)}) · gol ${f1(r.gol)} · conduzioni ${f1(r.cond)} · catene>=3->tiro ${f1(r.catene)} · interruzioni ${f1(r.fermi)} · minuti di volo per passaggio ${r.voloPer.toFixed(2)}`);
+  console.log(`  a partita: passaggi ${f1(r.passaggi)} · tiri ${f1(r.tiri)} (in area ${f1(r.tiriArea)}) · gol ${f1(r.gol)} · conduzioni ${f1(r.cond)} · catene>=3->tiro ${f1(r.catene)} · interruzioni ${f1(r.fermi)} · cambi di lato ${f1(r.cambi)} · intercetti ${f1(r.intercetti)} · contrasti/recuperi ${f1(r.contrasti)} · minuti di volo per passaggio ${r.voloPer.toFixed(2)}`);
   console.log(`  spostamenti per chiamata: uomo max ${f1(r.maxG)}u (mediana dei massimi ${f1(r.medMaxG)}) · pallone max ${f1(r.maxB)}u · uomini >5u ${f0(r.salti5)}/partita · corsa media ${r.corsaMin.toFixed(2)}u per uomo e minuto`);
   console.log(`  invarianti: palla >3u dal padrone ${r.viol3} · uomo >12u in un minuto ${r.viol12} · gol decretati entrati ${r.golOk}/${r.golN} (mediana ${r.golMed} minuti)`);
 }
