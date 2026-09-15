@@ -6,7 +6,7 @@
 
 ## Avanzamento (una riga per spedizione, la più recente in alto)
 
-- **15/09 08:40** — **7.900.0 in produzione** (main 5553514, ff da 018e96b; career-critical e ci verdi sul build esatto 65cc427). A4 v1: il fallo pesa meno (0,26/0,14 → 0,18 sotto pressione / 0,05), al limite e in area si sorteggia DOPO il tiro, la conduzione con la strada libera punta la porta. Banco 48 partite: tiri 4,1 → 5,2 (dall’area 1,3 → 1,8), catene ≥ 3 passaggi → tiro 0,6 → 1,0, interruzioni 8,6 → 6,8. v2-v5 scartate al banco (tetto ~5 tiri: 7-8 attacchi nel terzo finale a partita, un tocco al minuto); per 8 tiri serve una decisione del PO sul tempo del mondo. Scheda n° 19 in corsa. Non verificato sull’Android del PO.
+- **15/09 08:40** — **7.900.0 in produzione** (main 5553514, ff da 018e96b; career-critical e ci verdi sul build esatto 65cc427). A4 v1: il fallo pesa meno (0,26/0,14 → 0,18 sotto pressione / 0,05), al limite e in area si sorteggia DOPO il tiro, la conduzione con la strada libera punta la porta. Banco 48 partite: tiri 4,1 → 5,2 (dall’area 1,3 → 1,8), catene ≥ 3 passaggi → tiro 0,6 → 1,0, interruzioni 8,6 → 6,8. v2-v5 scartate al banco (tetto ~5 tiri: 7-8 attacchi nel terzo finale a partita, un tocco al minuto); per 8 tiri serve una decisione del PO sul tempo del mondo. Scheda n° 19 (09:44, GLB accesi): media 7,25 = n° 18; ai piedi 64/59/62/61 %, coppia rosso/verde Vairo 70/64 e Moretti 58/62 (nessuna regressione al telefono). Lezione: un secondo Chromium in parallelo dimezza «ai piedi» (64 → 29 %), da oggi una sola sonda nel browser alla volta. Non verificato sull’Android del PO.
 - **15/09 07:25** — **7.899.0 in produzione** (main 018e96b, ff da 96f9903; career-critical e ci verdi sul build esatto). Dalle due foto del PO: pallone «troppo grande» → il pavimento (7.862, 11 px fissi) guarda l’uomo alla stessa profondità (un quarto, 8-11 px): rapporto pallone/uomo 0,52 → 0,35; panchina «invasiva» → riprodotta a 412×700 da sostituito (sovrapposizione al racconto 100 % → 0 %), riquadro 30 px → riga 16 px, il sottopancia sale col tasto «Salta». Scheda n° 18 in corsa. Non verificato sull’Android del PO.
 - **15/09 05:40** — **7.898.0 in produzione** (main 96f9903, ff da 0a1746c; career-critical e ci verdi sul build esatto). A2 v3: il minuto del motore ha tre fasi (dt=1/3: una decide, due muovono la fisica); il pallone reso segue portatore o logico, l’eroe non ruba il pallone altrui. Banco: padrone dichiarato 58,6 → 66,2 %, salti > 5u per chiamata 342 → 0. Telefono Moretti rosso → verde: ai piedi 53 → 58 %, distanza dal padrone 2,8 → 2,4u, scarto 1,2 → 1,0u, salti 66 → 55; diagnosi padrone «altro» 3,6 → 1,7u. Costo dichiarato: code p90 più lunghe, padrone-eroe 2,5 → 5,2u, niente parabola dell’arco di cronaca in gioco ambientale. Scheda n° 17 (GLB accesi) in corsa.
 **Regola (direttiva PO 15/09):** ogni rilascio in produzione porta la scheda da telefono successiva (4 partite, scala 9) e aggiorna la sezione «Voti del player da cellulare» qui sotto: voti delle 12 aree, differenza dalla scheda precedente, istogramma. **I voti si danno sempre con i GLB accesi** (direttiva PO 15/09: la sonda `collaudo-telefono` forza `__CPM_GLB=true`; una scheda a GLB spenti non vale come voto). Registro: `docs/voti/voti-telefono.json`, generatore `node tools/voti-piano.mjs`.
@@ -21,11 +21,11 @@
 | 14/09 18:20 | main = f8cb0b3: 7.889 + 7.890 + overhaul grafico G0-G4.1 | A/B1/C1 → fatto | corpi in campo 0,3 → 45; regie di gioco vivo 5 → 0; contrasto 917 → 62 |
 
 <!-- VOTI-INIZIO -->
-## Voti del player da cellulare (scheda n° 18, build 7.899.0, 15/09 07:56)
+## Voti del player da cellulare (scheda n° 19, build 7.900.0, 15/09 09:44)
 
-Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7). Media **7,25** (n° 17, 7.898.0: 7,08 → **+0,17**); area minima **7**. Fonte: tests/visual/collaudo-telefono (4 partite: Vairo casa / Galli fuori / Moretti casa / Conti fuori, GLB accesi, senza foto) + sonde taglia-pallone e panchina-riga — verbale FASE3-SCAMBIO 15/09 07:56.
+Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7). Media **7,25** (n° 18, 7.899.0: 7,25 → **±0**); area minima **7**. Fonte: tests/visual/collaudo-telefono (4 partite: Vairo casa / Galli fuori / Moretti casa / Conti fuori, GLB accesi, senza foto; Vairo e Galli ricorse a macchina scarica dopo la lezione del secondo Chromium) + coppia rosso/verde __CPM_NO900 su Vairo e Moretti — verbale FASE3-SCAMBIO 15/09 09:44.
 
-| # | area | n° 17 | **n° 18** | Δ | istogramma (voto) | crescita / decrescita |
+| # | area | n° 18 | **n° 19** | Δ | istogramma (voto) | crescita / decrescita |
 |---|---|---|---|---|---|---|
 | 1 | Realismo | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 2 | Credibilita' da attaccante | 7 | **7** | ±0 | `███████░░░` 7 | · |
@@ -34,13 +34,13 @@ Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO
 | 5 | Ritmo | 8 | **8** | ±0 | `████████░░` 8 | · |
 | 6 | Azioni extra-eroe | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 7 | Highlight dell'eroe | 8 | **8** | ±0 | `████████░░` 8 | · |
-| 8 | Telecronaca | 6 | **7** | +1 | `███████░░░` 7 | ▲ |
+| 8 | Telecronaca | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 9 | Interazioni | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 10 | Coerenza fra i sistemi | 8 | **8** | ±0 | `████████░░` 8 | · |
-| 11 | Immersione | 6 | **7** | +1 | `███████░░░` 7 | ▲ |
+| 11 | Immersione | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 12 | Carriera | 7 | **7** | ±0 | `███████░░░` 7 | · |
 
-Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n° 14 (7.884.0) **7,25** · n° 15 (7.886.0) **7,17** · n° 16 (7.895.0) **7,08** · n° 17 (7.898.0) **7,08** · n° 18 (7.899.0) **7,25**.
+Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n° 14 (7.884.0) **7,25** · n° 15 (7.886.0) **7,17** · n° 16 (7.895.0) **7,08** · n° 17 (7.898.0) **7,08** · n° 18 (7.899.0) **7,25** · n° 19 (7.900.0) **7,25**.
 
 <!-- VOTI-FINE -->
 

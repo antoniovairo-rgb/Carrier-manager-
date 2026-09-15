@@ -185,6 +185,34 @@
     "11": "pallone reso a centrocampo 11 → 8 px, rapporto pallone/uomo 0,52 → 0,35 (foto congelate a 13/25/41); fps senza sonda 37/36/35/28 (≥30: 3/4) → 6 → 7; NON verificato sull’Android del PO",
     "12": "career-critical exit 0 sulla 7.899 → 7"
    }
+  },
+  {
+   "n": 19,
+   "build": "7.900.0",
+   "quando": "15/09 09:44",
+   "glb": true,
+   "voti": [
+    7,
+    7,
+    7,
+    7,
+    8,
+    7,
+    8,
+    7,
+    7,
+    8,
+    7,
+    7
+   ],
+   "fonte": "tests/visual/collaudo-telefono (4 partite: Vairo casa / Galli fuori / Moretti casa / Conti fuori, GLB accesi, senza foto; Vairo e Galli ricorse a macchina scarica dopo la lezione del secondo Chromium) + coppia rosso/verde __CPM_NO900 su Vairo e Moretti — verbale FASE3-SCAMBIO 15/09 09:44",
+   "perche": {
+    "1": "ai piedi 64/59/62/61 % (n° 18: 58/51/69/41; ≥60: 3/4, era 1/4), distanza mediana 2,1/2,5/1,8/2,3u (≤3u: 4/4, era 3/4), salti 55/55/65/57 (49/55/55/69). La coppia appaiata dice che il salto viene dalla macchina scarica e non dal build (rosso 70/58 vs verde 64/62, dentro ±10): nessuna misura nuova sul realismo → resta 7. Prima corsa sotto carico (Vairo 29 %, Galli 37 %) a verbale come rossa per il carico",
+    "6": "7.900 al banco: tiri 4,1 → 5,2 (dall'area 1,3 → 1,8), catene ≥ 3 passaggi → tiro 0,6 → 1,0, interruzioni 8,6 → 6,8 su 48 partite; nel live del ci 3 tiri e 24 passaggi in una partita. Obiettivo 8 tiri non raggiunto (5 su 8) → resta 7",
+    "10": "career-critical (08:14) e ci (08:40) verdi sulla 7.900; coppia rosso/verde senza regressione al telefono → 8",
+    "11": "fps senza sonda 33/29/31/29 (≥30: 2/4, era 3/4; 28-37 nelle ultime tre schede, stessa banda); pallone 8 px invariato → resta 7; NON verificato sull'Android del PO",
+    "12": "career-critical exit 0 sulla 7.900 → 7"
+   }
   }
  ],
  "regole": {

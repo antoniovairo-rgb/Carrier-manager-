@@ -6036,6 +6036,12 @@ Da oggi le sonde della squadra grafica e le schede da telefono si accodano con i
 parallelo. Le partite Vairo e Galli della n° 19 vengono ricorse a macchina scarica (Galli in coda) e i voti si danno
 sulle corse pulite; la prima corsa resta a verbale come rossa per il carico.
 
+**Scheda n° 19 chiusa (09:44), corse pulite:** ai piedi Vairo 64 / Galli 59 / Moretti 62 / Conti 61 % (n° 18: 58/51/69/41;
+≥ 60: 3/4, era 1/4), distanza mediana 2,1/2,5/1,8/2,3u (≤ 3u: 4/4), salti 55/55/65/57, fps senza sonda 33/29/31/29.
+Voti [7,7,7,7,8,7,8,7,7,8,7,7], **media 7,25 = n° 18**: il salto di «ai piedi» e' della macchina scarica e non del build
+(coppia rosso 70/58 vs verde 64/62), quindi Realismo resta 7; la 7.900 muove i tiri solo al banco (4,1 → 5,2, obiettivo
+8) e le Azioni extra-eroe restano 7. Registro `docs/voti/voti-telefono.json`, sezione voti rigenerata con `voti-piano`.
+
 ### 15/09 08:15 — C2 chiusa: il PO ha risposto al wizard sull'anteprima del HUD
 
 Risposte (AskUserQuestion, 4 domande): **barra del risultato 60 px su una riga** (era 92) · **interazione come scheda
