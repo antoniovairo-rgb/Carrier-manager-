@@ -6007,6 +6007,33 @@ decisione sul tempo del mondo (attacco dal centrocampo all'area in 3 minuti inve
   l'html). Fast-forward 018e96b → 5553514, mai force. Non verificato: l'Android del PO; la CI di GitHub su main.
   Scheda da telefono n° 19 in corsa.
 
+## Scheda da telefono n° 19 — build 7.900.0 (15/09 08:40-09:12), GLB accesi, 4 partite — e la lezione del secondo Chromium
+
+Prima corsa (scheda19.sh, in coda al ci): Vairo casa ai piedi **29 %** (n° 18: 58), Galli fuori **37 %** (51), Moretti
+casa 62 % (69), Conti fuori 61 % (41). Le due partite crollate sono le uniche corse mentre la squadra grafica teneva
+acceso un secondo Chromium per la sonda del HUD (load 6,9 su 4 core; fps «senza sonda» 47/51, cioe' il contatore
+non vede il carico). Al banco senza browser rosso e verde della 7.900 sono uguali sul mondo logico (padrone
+dichiarato 66,0 vs 65,5 %, spostamento massimo dell'uomo 8,1 vs 6,6u, salti 0, invarianti 0): la 7.900 non fa
+muovere di piu' il pallone logico. Fra 7.899 e 7.900 cambiano solo il motore e la versione; la sonda e' invariata.
+
+**Coppia appaiata sullo stesso build, macchina scarica (load < 1), stesso seme 4242:**
+
+| Vairo casa | ai piedi | padrone dichiarato | distanza mediana / p90 | scarto reso↔logico | salti | fps |
+|---|---|---|---|---|---|---|
+| rosso `__CPM_NO900` | **70 %** | 41 % | 1,3 / 23,2u | 0,9 / 21,1u | 54 | 36 |
+| verde 7.900 (bis) | **64 %** | 50 % | 2,1 / 19,4u | 1,3 / 17,6u | 55 | 33 |
+| verde 7.900 sotto carico (prima corsa) | 29 % | 51 % | 6,1 / 27,2u | 3,4 / 23,5u | 40 | 47 |
+
+Letto onestamente: rosso e verde stanno dentro la variabilita' da corsa a corsa gia' dichiarata (±10 punti sulla
+stessa partita); il 29 % era il carico, non la 7.900. **La 7.900 resta in produzione.**
+
+**Regola nuova (lezione 21ª): una sola sonda nel browser alla volta sulla macchina.** Un secondo Chromium in
+parallelo dimezza «ai piedi» (64 → 29 %) e triplica la distanza dal padrone (2,1 → 6,1u) senza toccare i fps
+misurati nei primi 8 s: il carico cade sul tick reale del live (i sotto-tick del motore e i corpi resi scivolano).
+Da oggi le sonde della squadra grafica e le schede da telefono si accodano con i marcatori `.done`, mai in
+parallelo. Le partite Vairo e Galli della n° 19 vengono ricorse a macchina scarica (Galli in coda) e i voti si danno
+sulle corse pulite; la prima corsa resta a verbale come rossa per il carico.
+
 ### 15/09 08:15 — C2 chiusa: il PO ha risposto al wizard sull'anteprima del HUD
 
 Risposte (AskUserQuestion, 4 domande): **barra del risultato 60 px su una riga** (era 92) · **interazione come scheda
