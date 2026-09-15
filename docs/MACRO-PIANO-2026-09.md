@@ -129,6 +129,29 @@ una partita vera ne ha **~1.100** (≈ 11 al minuto solo di passaggi). Nessuna r
 fattore 12: **serve il tempo del mondo (A9)**. Da qui l'ordine di questo cantiere: prima la frequenza, poi le voci
 che non esistono, poi la vetrina che le mostra.
 
+## 1-bis. Vincolo di architettura: **UN SOLO MOTORE DEGLI EVENTI** (direttiva PO 15/09 21:05)
+
+Testuale: «il motore degli eventi deve essere unico, mi raccomando e devi guidare anche gli highlights dell'eroe».
+
+**Oggi non è così, e si misura.** In partita convivono due sorgenti di verità:
+
+| | oggi | deve diventare |
+|---|---|---|
+| chi decide la partita | il motore del possesso (`src/14`) | **il motore** |
+| chi decide gli highlight dell'eroe | il **catalogo delle situazioni**: 191 schede scritte a mano (`src/04`), scelte da `selectContextualSituations` in **6 punti** di `src/15` con punteggio, minuto, momentum, meteo | **il motore**: l'highlight nasce da un evento del motore (il tiro, il cross, il contrasto che stava per accadere) e il catalogo resta solo come **vestito narrativo** di quell'evento |
+| chi muove il pallone in scena | **33 scritture dirette** di `ballPosRef` / `ballTargetRef` in `src/15`, fuori dal motore | il motore: 0 scritture dirette |
+| chi muove i 22 in scena | il loop della scena (il motore non ha un `tickScena`) | il motore, anche durante la scena |
+| cosa torna nel tabellino dopo la scena | niente: `conta.scena` è **0** nella diagnosi del guardiano, e le statistiche non vedono l'highlight | tutto: il tiro dell'highlight è un tiro del tabellino, il gol è un gol, il passaggio decisivo è un assist |
+
+**Perché non è un dettaglio.** Se l'highlight lo genera un catalogo, l'eroe può segnare mentre il tabellino dice
+che la squadra ha tirato zero volte: le statistiche in sovrimpressione (F2) e le pagelle (F3) mentirebbero proprio
+nel momento che conta. **Un solo motore** è la condizione perché il tabellino sia onesto.
+
+**Metro del vincolo** (guardiano nuovo, D9): highlight nati da un evento del motore **0/N → N/N** (ogni scena porta
+l'id dell'evento che l'ha generata) · scritture del pallone fuori dal motore **33 → 0** · uomini mossi dal motore
+durante la scena **0 % → 100 %** · eventi di tabellino prodotti dentro la scena **0 → tutti** (`conta.scena` > 0) ·
+continuità: salto del pallone alla chiusura della scena **0u**.
+
 ## 2. Obiettivo e metro finale
 
 - **Metro di uscita**: scheda da telefono su 4 partite (Vairo casa, Galli fuori, Moretti casa, Conti fuori) con
@@ -166,9 +189,10 @@ che non esistono, poi la vetrina che le mostra.
 | A7 | azioni: strumento nel live (sonda `azioni`) e soglia | azioni (≥ 3 passaggi → area) ≥ 6/partita | strumento da scrivere |
 | A1-A4 | primo tocco, cadenza a tre fasi, padrone del pallone, la squadra tira | vedi avanzamento | **in produzione** (7.894 · 7.898 · 7.897 · 7.900) |
 
-### B · HIGHLIGHT DELL'EROE — «l'unico 3D, quindi perfetto»
+### B · HIGHLIGHT DELL'EROE — «l'unico 3D, quindi perfetto» e **guidato dal motore unico** (§1-bis)
 | # | attività | metro | stato |
 |---|---|---|---|
+| **B0** | **l'highlight nasce dal motore**: il motore dichiara «qui sta per succedere qualcosa dell'eroe» (tiro, cross, contrasto, occasione) e la scena 3D veste quell'evento; le 191 schede del catalogo diventano il testo di un evento del motore, non la sua causa | scene nate da un evento del motore 0/N → **N/N** (id dell'evento nella scena) · call-site del catalogo che generano una scena da soli **6 → 0** | **nuovo, il primo passo di B** |
 | B2 | l'esito torna nel motore: chiusura continua (`riprendi` completo) | salti alla chiusura 0; pallone continuo fra 3D e 2D | da fare |
 | B3 | `tickScena`: il motore muove i ventidue anche in scena (via il loop del pressing 2025) | scritture non-motore in scena 8-12 → 0; corpi in movimento in scena ≥ 60 % | da progettare |
 | B4 | attori della scena dai ruoli del motore (portatore, difensore, portiere) | distanza attore-ruolo mediana ≤ 3u | da fare |
@@ -203,6 +227,7 @@ schermate; C4 le percorre una per una, una alla volta, con misura appaiata prima
 | D6 | `CLAUDE.md` e `ARCHITECTURE_MAP.md` allineati a `src/`, motore, rituale, rami | 5 patch proposte | da confermare |
 | D7 | librerie migliori: corpo CH38 alleggerito per i 22, i portieri, l'arbitro e la panchina | triangoli in scena 1.317.654 → 559.834 (−58 %) | **in produzione**; interruttore `[D7 TEMP]` da togliere quando arrivano i due numeri dal telefono |
 | D8 | **guardiano del tabellino nel `ci`** (nuovo): le 24 voci di F0 non possono peggiorare | banda per voce, rosso se una voce esce dal metà/doppio | dopo A9 |
+| D9 | **guardiano del motore unico** (nuovo, §1-bis): nessuna seconda sorgente di verità | scritture del pallone fuori dal motore 33 → 0 · scene senza id di evento del motore 0 · `conta.scena` > 0 a fine partita | con B0 |
 
 ### E · PRODUZIONE E RILASCIO
 | # | attività | metro | stato |
