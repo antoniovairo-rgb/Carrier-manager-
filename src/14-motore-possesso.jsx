@@ -99,6 +99,7 @@ function creaMotorePossesso(cfg){
     if(S.richieste.turno===p.team)S.richieste.turno=null;
     if(perche)ev(perche,{chi:chi(p)});};
   const libero=(x,y)=>{S.poss.stato="libero";S.cond=null;S.poss.padrone=null;S.poss.ricevente=null;S.poss.t=0;S.poss.tipo=null;S.palla.x=clamp(x,0,100);S.palla.y=clamp(y,0,100);};
+  const _vA9=()=>(typeof window!=='undefined'&&window&&window.__CPM_NO906)?1:2;/* [7.906 A9] i voli vanno al doppio (un passaggio di 15u: 20 s invece di 41) */
   const volo=(o)=>{S.poss.stato="volo";S.cond=null;S.poss.tipo=o.tipo;S.poss.da={x:S.palla.x,y:S.palla.y};S.poss.a={x:o.x,y:o.y};S.poss.ricevente=o.ricevente!=null?o.ricevente:null;S.poss.esito=o.esito||null;S.poss.v=o.v||22;S.poss.t=0;S.poss.icpt=o.icpt!=null?o.icpt:null;S.poss.icptA=o.icptA||0;S.poss.tiratore=o.tiratore!=null?o.tiratore:null;S.poss.kind=o.kind||null;
     S.arco={type:o.arco||"pass",from:{x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)},to:{x:+o.x.toFixed(1),y:+o.y.toFixed(1)},actor:o.actor||null,rcv:o.rcv||null,lato:S.poss.lato,dur:+(Math.ceil(hyp(S.palla.x,S.palla.y,o.x,o.y)/((o.v||22)*(S.dt||1))-1e-9)*(S.dt||1)).toFixed(3)};/* [7.898] dur: minuti di volo attesi */
     {const _le=S.eventi[S.eventi.length-1];if(_le&&/^(passaggio|cross|tiro)$/.test(_le.t)&&_le.dur==null)_le.dur=S.arco.dur;}/* [7.898] il fatto che ha lanciato il pallone porta la durata del volo: il renderer fa durare l'arco quanto il volo logico */
@@ -151,11 +152,11 @@ function creaMotorePossesso(cfg){
     const lead=Math.min(4,hyp(P.x,P.y,R.x,R.y)*0.12);const tx=clamp(R.x+dirDi(l)*lead*(kind==="appoggio"?0:1),2,98),ty=clamp(R.y,3,97);
     S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
     ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)}});
-    volo({tipo:"passaggio",kind,x:tx,y:ty,ricevente:R.i,v:kind==="lancio"?48:kind==="cambio"?48:50,icpt,icptA,arco:"pass",actor:nome(P),rcv:nome(R)});};
+    volo({tipo:"passaggio",kind,x:tx,y:ty,ricevente:R.i,v:(kind==="lancio"?48:kind==="cambio"?48:50)*_vA9(),icpt,icptA,arco:"pass",actor:nome(P),rcv:nome(R)});};
   const cross=(P,R,opt)=>{opt=opt||{};const l=P.team;S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
     const tx=clamp(xDa(88+rnd()*6,l),2,98),ty=clamp(50+(rnd()-0.5)*16,3,97);
     ev("cross",{da:chi(P),a:chi(R),from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},corner:!!opt.corner});
-    volo({tipo:"cross",kind:"cross",x:tx,y:ty,ricevente:R?R.i:null,v:48,arco:"cross",actor:nome(P),rcv:R?nome(R):null});};
+    volo({tipo:"cross",kind:"cross",x:tx,y:ty,ricevente:R?R.i:null,v:48*_vA9(),arco:"cross",actor:nome(P),rcv:R?nome(R):null});};
   const esitoTiro=(P,intent,ctx)=>{const golReq=S.richieste.gol&&S.richieste.gol.lato===P.team?S.richieste.gol:null;
     let out=null;
     if(decidi){try{out=decidi(intent,Object.assign({attrs:attrsDi(P),seed:seme32(),x:advDi(P.x,P.team)},ctx||{})).outcome;}catch(_e){out=null;}}
@@ -173,7 +174,7 @@ function creaMotorePossesso(cfg){
     else if(out==="blocked"){const m=piuVicino(P.x+dirDi(l)*3,P.y,altro(l),{noGk:true});if(m&&m.d<7){tx=m.p.x;ty=m.p.y;}else{tx=clamp(P.x+dirDi(l)*6,2,98);}}
     S.conta.tiri++;
     ev("tiro",{chi:chi(P),zona,intent,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});
-    volo({tipo:"tiro",kind:intent,x:tx,y:ty,ricevente:null,v:44,esito:out,tiratore:P.i,arco:"shot",actor:nome(P)});};
+    volo({tipo:"tiro",kind:intent,x:tx,y:ty,ricevente:null,v:44*_vA9(),esito:out,tiratore:P.i,arco:"shot",actor:nome(P)});};
   const conduci=(P,opt)=>{opt=opt||{};const d=dirDi(P.team);const _sp900=!!opt.spinta;const passo=(5+rnd()*3)+(_sp900?3:0);/* tetto 11u: il passo umano resta sotto i 12u del guardiano */const adv=advDi(P.x,P.team);/* [7.900 A4] spinta: al limite con la strada libera il portatore PUNTA LA PORTA (passo +4u, rientro deciso verso il centro) */
     /* [7.876] chi conduce sulla fascia non rientra per abitudine: punta il fondo e rientra solo in area */
     let ty=P.y+(50-P.y)*0.06+(rnd()-0.5)*2;if(_sp900)ty=P.y+(50-P.y)*0.5;else if(adv>=86&&Math.abs(P.y-50)>18)ty=P.y+(50-P.y)*0.35;
@@ -213,7 +214,7 @@ function creaMotorePossesso(cfg){
     const l=P.team,d=dirDi(l);S.poss.t++;S.conta.tenuta++;S.quota[l]++;
     const press=pressioneSu(P),adv=advDi(P.x,l),zona=zonaDi(adv,P.y);
     const golReq=(S.richieste.gol&&S.richieste.gol.lato===l)?S.richieste.gol:null;
-    if(golReq)golReq.t++;
+    if(golReq)golReq.t=(golReq.t||0)+((typeof window!=='undefined'&&window&&window.__CPM_NO906)?1:(S.dt||1));/* [7.906 A9] minuti, non decisioni */
     const att=S.richieste.att[l]||0;
     if(P.gk){ramo("gk");if(S.poss.t<2&&rnd()<0.5)return;const R=scegliRicevente(P,{});if(R)passa(P,R,{kind:hyp(R.x,R.y,P.x,P.y)>26?"lancio":"corto",sicuro:true});else{const R2=piuVicino(P.x,P.y,l,{noGk:true,escl:P.i});if(R2)passa(P,R2.p,{sicuro:true});}return;}
     if(S.richieste.turno&&S.richieste.turno!==l&&!golReq&&S.poss.t>=1){ramo("turno");if(rnd()<0.6)perdi(P,"contrasto");else{const R=scegliRicevente(P,{});if(R){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});passa(P,R,{sicuro:true});if(m){S.poss.icpt=m.p.i;S.poss.icptA=0.5;}}else perdi(P,"contrasto");}return;}
@@ -481,7 +482,7 @@ function creaMotorePossesso(cfg){
     if(st>=dl-1e-6)S.cond=null;S.palla.x=clamp(P.x+dirDi(P.team)*0.5,0,100);S.palla.y=P.y;}
 
   /* ---------- API ---------- */
-  function tick(ctx){ctx=ctx||{};const _dt=(ctx.dt>0&&ctx.dt<1)?+ctx.dt:1;S.dt=_dt;/* dec: il chiamante puo' dire quale chiamata decide (il live: il battito del minuto); senza, decide la fase */const _dec=(ctx.dec!=null)?!!ctx.dec:!(S.fase>1e-9);if(ctx.dec)S.fase=0;
+  function tick(ctx){ctx=ctx||{};const _dt=(ctx.dt>0&&ctx.dt<1)?+ctx.dt:1;S.dt=_dt;/* dec: il chiamante puo' dire quale chiamata decide (il live: il battito del minuto); senza, decide la fase */const _a9=!(typeof window!=='undefined'&&window&&window.__CPM_NO906);/* [7.906 A9 — IL TEMPO DEL MONDO, decisione PO 15/09 15:05] tre decisioni al minuto (una per sotto-tick) e voli al doppio: un tocco ogni 20 s di partita invece di uno al minuto; rosso __CPM_NO906 = 7.903 */const _dec=_a9?true:((ctx.dec!=null)?!!ctx.dec:!(S.fase>1e-9));if(ctx.dec)S.fase=0;
     const _fine=()=>{S.fase+=_dt;if(S.fase>=1-1e-9)S.fase=0;const out=S.eventi;S.eventi=[];return out;};
     /* [7.898 A2 v3] SOTTO-TICK (fase>0): nessuna decisione, nessun contatore; solo la fisica del minuto in corso */
     if(!_dec){if(ctx.min!=null)S.min=ctx.min|0;S.arco=null;if(S.scena)return[];
@@ -492,7 +493,7 @@ function creaMotorePossesso(cfg){
       return _fine();}
     S.tick++;S.cond=null;if(ctx.min!=null)S.min=ctx.min|0;S.arco=null;/* [diag] quanti tick con una richiesta pendente: per leggere in browser cio' che il banco non vede */if(S.richieste.gol)S.conta.golReqTick=(S.conta.golReqTick|0)+1;if(S.richieste.turno)S.conta.turnoReqTick=(S.conta.turnoReqTick|0)+1;if(S.richieste.verso)S.conta.versoTick=(S.conta.versoTick|0)+1;if(S.scena)S.conta.scenaTick=(S.conta.scenaTick|0)+1;
     if(S.scena){S.conta.scena++;return[];}
-    if(S.richieste.gol&&S.richieste.gol.lato!==S.poss.lato){const gr=S.richieste.gol;gr.t=(gr.t|0)+1;if(!S.richieste.turno)S.richieste.turno=gr.lato;
+    if(S.richieste.gol&&S.richieste.gol.lato!==S.poss.lato){const gr=S.richieste.gol;gr.t=(gr.t||0)+(_a9?_dt:1);if(!S.richieste.turno)S.richieste.turno=gr.lato;/* [7.906 A9] il decreto conta MINUTI: con tre decisioni al minuto avanza di dt */
       if(S.poss.stato==="tenuta"&&S.poss.padrone!=null&&S.poss.t>=1){const P=g[S.poss.padrone];if(P&&!P.gk){perdi(P);}}}
     /* tetto duro del decreto: al nono tick il gol entra da dove sta la palla (a fine partita non puo' restare appeso) */
     if(S.richieste.gol&&(S.richieste.gol.t|0)>=9&&S.poss.stato!=="rete"&&S.poss.stato!=="kickoff"&&!S.scena){const gr=S.richieste.gol;const W=piuVicino(S.palla.x,S.palla.y,gr.lato,{noGk:true});if(W&&S.poss.stato!=="volo"){if(S.poss.padrone!==W.p.i){W.p.x=clamp(S.palla.x-dirDi(gr.lato)*0.4,2,98);W.p.y=S.palla.y;S.fermo=null;tenuta(W.p,null);}S.poss.t=2;gr.t=Math.max(gr.t,9);
