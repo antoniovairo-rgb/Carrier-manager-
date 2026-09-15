@@ -5740,3 +5740,100 @@ pesano di piu'. Si spedisce come passo piccolo e vero, senza dichiararlo di piu'
   exit=0, ci exit=0 con 32 guardiani, `IDENTICO 1`); 0a1746c aggiunge solo il verbale, build byte-identico.
   Fast-forward dbd0d38 → 0a1746c, mai force. Non verificato sull'Android del PO.
 
+
+### 15/09 04:10 — 7.898.0, A2 v3: il minuto del motore ha tre fasi (una decide, due muovono). Rosso `__CPM_NO898`
+
+La 7.896 batteva tre TICK INTERI al minuto: tre decisioni, tre passi, tre voli per minuto — il mondo andava tre volte
+piu' veloce e i corpi resi (tetto 15 u/s) non seguivano (revocata al telefono: ai piedi 63 % → 4/8 %, salti 67 → 143).
+La v3 separa la decisione dal movimento. `tick({min,dt,dec})` in src/14: con `dt=1/3` il battito del minuto DECIDE
+(stesse probabilita', stessi contatori `poss.t`/`fermo.t`/`rete.t`, stessa cronaca) e compie UN TERZO del movimento;
+i due sotto-tick muovono soltanto la fisica: il pallone in volo avanza di `v·dt`, i ventidue corrono `v·dt`, il
+portatore avanza sul suo piano di conduzione (`S.cond`: bersaglio e passo decisi al battito), la palla libera si
+raccoglie se un uomo la raggiunge. Con `dt=1` il motore e' identico a prima: 12 semi × 92 minuti (1.104 minuti, con
+gol decretati e scena dell'eroe) confrontati fatto per fatto e posizione per posizione contro il sorgente di HEAD,
+**0 differenze**; test node del motore 10/10. Nel live (src/15) torna l'impianto della 7.896 (metronomo a
+MATCH_TICK_MS/3, specchi ad ogni sotto-tick, pallone reso che segue il sotto-tick) ma il battito del minuto passa
+`dec:true` e i sotto-tick `dec:false`: e' il live a dire quale chiamata decide, cosi' una chiamata saltata (scena,
+highlight) non sposta mai la decisione fuori dal minuto. I fatti dei sotto-tick (ricezioni, intercetti, arrivi dei
+tiri, gol) si narrano al battito seguente, al piu' 1,1 s dopo.
+
+**Banco `tests/visual/stati-sub.mjs`** (nuovo, senza browser: 16 partite × 92 minuti, gol decretati al 23' e al 61',
+scena dell'eroe 40'-46'; quote di stato pesate nel tempo, spostamenti per CHIAMATA — cio' che il renderer deve seguire):
+
+| misura | dt=1 (com'era) | **dt=1/3** | dt=1/4 (prova) |
+|---|---|---|---|
+| padrone dichiarato (tenuta / gioco vivo) | 58,6 % | **66,2 %** | 64,4 % |
+| in volo / gioco vivo | 39,6 % | **32,8 %** | 34,8 % |
+| minuti di volo per passaggio | 1,09 | **0,75** | 0,72 |
+| passaggi · tiri (in area) · catene ≥3 → tiro, a partita | 20,5 · 4,5 (1,1) · 0,3 | 23,4 · 4,3 (1,4) · 0,3 | 28,0 · 4,8 (1,3) · 0,8 |
+| uomini con salto > 5u in una chiamata, a partita | 342 | **0** | 0 |
+| salto massimo per chiamata: uomo / pallone | 8,2 / 62,1 u | 8,1 / 55,7 u | 8,2 / 50,8 u |
+| corsa media per uomo e minuto (il mondo non deve accelerare) | 3,56 u | 3,76 u | 3,88 u |
+| invarianti: palla > 3u dal padrone · uomo > 12u/minuto · gol decretati entrati | 0 · 0 · 32/32 | 0 · 0 · 32/32 | 0 · 0 · 32/32 |
+
+Letto onestamente: il padrone dichiarato sale di 7,6 punti, non ai 70 richiesti. Il volo resta il 33 % del vivo
+perche' un passaggio di 24u a 50u/minuto dura mezzo minuto per fisica del modello (0,8 s reali), non per il tick:
+oltre questo si va solo alzando la velocita' del pallone o accorciando i passaggi, che e' un'altra misura. Quello che
+cambia davvero per il telefono e' l'ultima riga: nessun uomo salta piu' di 5u fra due chiamate (prima 342 volte a
+partita), e il renderer a 15 u/s ha 567 ms per 4u. Scelto dt=1/3 (dt=1/4 rende meno padrone e costa una chiamata in
+piu'). Misura nel live in corsa: coppia telefono Moretti (verde / rosso `__CPM_NO898`), diagnosi padrone, rituali.
+
+**7.898 v3 al telefono (15/09 04:24), Moretti casa, seme 4242, GLB accesi, senza foto — la coppia sullo stesso build:**
+
+| misura | rosso `__CPM_NO898` | **verde v3** |
+|---|---|---|
+| pallone reso ai piedi del padrone logico (≤3u) | 53 % (747) | **38 %** (891) |
+| padrone dichiarato dalla simulazione | 39 % del vivo | **49 %** |
+| …a palla a terra · tempo con l'arco acceso | 54 % · 40 % | 49 % · 54 % |
+| chi scrive il pallone a terra e lontano | nessuno 198 · portatore 16 | nessuno 172 · portatore 7 |
+| distanza reso↔padrone mediana / p90 | 2,8 / 13 u | 5,1 / 14,5 u |
+| scarto reso↔logico mediana / p90 | **1,2** / 15,7 u | **7,4** / 18,7 u |
+| salti del pallone | 66 | 68 |
+| fps senza sonda | 36 | 31 |
+
+Il motore fa quel che dichiara (padrone dichiarato 39 → 49 %), ma il pallone RESO si stacca dal logico: scarto mediano
+1,2 → 7,4u, e la colla del portatore scrive 7 volte invece di 16. La causa sta nel renderer, non nel motore: l'arco di
+cronaca vola alla destinazione in 0,48 s (`BALL_ARC_BY_TYPE.pass.dur`), poi il pallone reso, «vagante» finche' nessuno
+lo possiede, torna indietro sul logico che sta a meta' volo (16,7u per sotto-tick), poi di nuovo avanti all'arrivo:
+uno zigzag per ogni passaggio, che il metro legge come scarto e come «lontano dal padrone» al primo tocco. Con un
+tick al minuto lo zigzag non esiste perche' il logico salta alla destinazione in un colpo solo. Non spedita cosi'.
+
+**v3b (stesso motore, tre righe nel live e una nel renderer):** il fatto che lancia il pallone porta `dur` (minuti di
+volo attesi, calcolati dal motore: distanza / velocita' / dt); la riga narrata lo consegna all'arco reso, che dura
+quanto il volo logico (dur × millisecondi del minuto / velocita' scelta) invece di 0,48 s fissi; durante il volo il
+bersaglio del live resta la destinazione (`poss.a`), non il punto a meta' volo; il sotto-tick non riscrive il pallone
+reso mentre e' in volo. Col rosso `__CPM_NO898` la durata resta quella di sempre. Misura in corsa: telefono verde v3b
+contro il rosso qui sopra, diagnosi, rituali.
+
+**v3b al telefono (04:37): peggio.** Ai piedi **29 %** (751), padrone dichiarato 41 %, arco acceso 56 % del tempo,
+distanza reso↔padrone 8,6 / 22,3 u, scarto reso↔logico **9,6** / 25,6 u, salti 48, fps 29. Un arco piu' lungo tiene il
+pallone reso piu' a lungo su un bersaglio che NON e' la destinazione del motore: `_end546` e' il bersaglio della riga
+narrata passato dal freno 7.498 (tetto 30u, richiamo di corridoio), e le righe dei sotto-tick si narrano al battito
+dopo. L'arco di cronaca e' fatto per un mondo che salta una volta al minuto; con il logico che avanza 16,7u ogni
+567 ms qualunque arco atterra altrove o in un altro momento.
+
+**v3c (04:38):** con i sotto-tick la riga narrata dal motore porta `noArc` e il renderer non arma l'arco di cronaca
+(`BALL_ARC_BY_TYPE`) in fase ambientale: il pallone reso segue il portatore (colla 7.523) in tenuta e il pallone
+logico in volo (moto a velocita' limitata 7.194, che il logico a 29 u/s non supera). Il gesto del passatore resta
+(bgAction invariato). Col rosso `__CPM_NO898` l'arco resta. Misura in corsa: telefono, diagnosi, rituali.
+
+**v3c al telefono (04:46) — la coppia sullo stesso motore (rosso = 04:24):**
+
+| misura | rosso `__CPM_NO898` | v3 | v3b | **v3c** |
+|---|---|---|---|---|
+| pallone reso ai piedi del padrone logico (≤3u) | 53 % | 38 % | 29 % | **55 %** (880) |
+| padrone dichiarato dalla simulazione | 39 % | 49 % | 41 % | **48 %** |
+| …a palla a terra · arco acceso | 54 % · 40 % | 49 % · 54 % | 29 % · 56 % | 55 % · **0 %** |
+| chi scrive a terra e lontano: nessuno · eroe · portatore | 198 · — · 16 | 172 · 6 · 7 | 156 · 67 · 26 | 194 · 137 · 68 |
+| distanza reso↔padrone mediana / p90 | 2,8 / 13 u | 5,1 / 14,5 | 8,6 / 22,3 | **2,2** / 15,8 u |
+| scarto reso↔logico mediana / p90 | **1,2** / 15,7 u | 7,4 / 18,7 | 9,6 / 25,6 | 2,4 / 24,6 u |
+| salti del pallone (> 8u in ≤ 110 ms) | 66 | 68 | 48 | **46** |
+| fps senza sonda | 36 | 31 | 29 | 31 |
+
+Verdetto onesto: la v3c batte il rosso dove conta per il PO — padrone dichiarato 39 → 48 %, salti 66 → 46, distanza
+dal padrone 2,8 → 2,2u, ai piedi 53 → 55 % (dentro il rumore da corsa a corsa) — e paga sullo scarto reso↔logico
+(mediana 1,2 → 2,4u, p90 15,7 → 24,6u): in volo il pallone reso INSEGUE il logico a velocita' limitata invece di
+volare su un arco, e sui lanci lunghi resta indietro. Il costo visibile e' che in gioco ambientale il pallone non si
+alza piu' sull'arco di cronaca (passa raso terra): dichiarato, da giudicare sull'Android del PO. Si spedisce come
+7.898.0; rituali in corsa (diagnosi, career-critical, ci). Prossimo sul reso: il volo logico porta gia' `dur` e
+`poss.a`, un arco reso che parta e atterri sui punti del motore (non della riga narrata) ridarebbe la parabola.

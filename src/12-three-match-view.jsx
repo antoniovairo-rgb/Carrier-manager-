@@ -4102,7 +4102,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             richiesta (__CPM_SI806) per dispositivi che scendono davvero sotto i 10 fps. */
 
          if(_arc&&ballArcActive&&_sost806&&typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_SOST806=(window.__CPM_SOST806||0)+1;}catch(_e){}}
-         if(_arc&&(!ballArcActive||_sost806)){ballArcH=_arc.h;ballArcDur=_arc.dur;ballArcT=0;ballArcActive=true;ballArcTgtY=0.22;ballArcProf=null;/* [7.534.0 MP-1] gli archi di cronaca restano sul seno base: i profili per kind arrivano con MP-2 (beat) */
+         if(_arc&&!_ba.noArc&&(!ballArcActive||_sost806)){ballArcH=_arc.h;ballArcDur=(_ba.dur>0)?+_ba.dur:_arc.dur;/* [7.898 v3c] noArc: il motore a sotto-tick guida il pallone reso senza arco di cronaca *//* [7.898] la cronaca del motore porta la durata del volo logico */ballArcT=0;ballArcActive=true;ballArcTgtY=0.22;ballArcProf=null;/* [7.534.0 MP-1] gli archi di cronaca restano sul seno base: i profili per kind arrivano con MP-2 (beat) */
            ballArcIsBG=true;ballArcTgtX=G2X(_ba.ballEnd.x);ballArcTgtZ=G2Z(_ba.ballEnd.y); // ATE-2
            contactFlashT=0;
            /* [collaudo PO «il portiere non accenna e tenta la parata/tuffo in nessun highlights, sembra
