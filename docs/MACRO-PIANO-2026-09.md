@@ -19,26 +19,26 @@
 | 14/09 18:20 | main = f8cb0b3: 7.889 + 7.890 + overhaul grafico G0-G4.1 | A/B1/C1 → fatto | corpi in campo 0,3 → 45; regie di gioco vivo 5 → 0; contrasto 917 → 62 |
 
 <!-- VOTI-INIZIO -->
-## Voti del player da cellulare (scheda n° 16, build 7.895.0, 15/09 01:35)
+## Voti del player da cellulare (scheda n° 17, build 7.898.0, 15/09 06:10)
 
-Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7). Media **7,08** (n° 15, 7.886.0: 7,17 → **−0,09**); area minima **6**. Fonte: tests/visual/collaudo-telefono (4 partite, GLB accesi) — verbale FASE3-SCAMBIO 15/09 01:35.
+Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7). Media **7,08** (n° 16, 7.895.0: 7,08 → **±0**); area minima **6**. Fonte: tests/visual/collaudo-telefono (4 partite: Vairo casa / Galli fuori / Moretti casa / Conti fuori, GLB accesi, senza foto) — verbale FASE3-SCAMBIO 15/09 06:10.
 
-| # | area | n° 15 | **n° 16** | Δ | istogramma (voto) | crescita / decrescita |
+| # | area | n° 16 | **n° 17** | Δ | istogramma (voto) | crescita / decrescita |
 |---|---|---|---|---|---|---|
-| 1 | Realismo | 8 | **6** | −2 | `██████░░░░` 6 | ▼▼ |
+| 1 | Realismo | 6 | **7** | +1 | `███████░░░` 7 | ▲ |
 | 2 | Credibilita' da attaccante | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 3 | Causalita' | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 4 | Varieta' | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 5 | Ritmo | 8 | **8** | ±0 | `████████░░` 8 | · |
 | 6 | Azioni extra-eroe | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 7 | Highlight dell'eroe | 8 | **8** | ±0 | `████████░░` 8 | · |
-| 8 | Telecronaca | 7 | **7** | ±0 | `███████░░░` 7 | · |
+| 8 | Telecronaca | 7 | **6** | −1 | `██████░░░░` 6 | ▼ |
 | 9 | Interazioni | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 10 | Coerenza fra i sistemi | 8 | **8** | ±0 | `████████░░` 8 | · |
-| 11 | Immersione | 5 | **6** | +1 | `██████░░░░` 6 | ▲ |
+| 11 | Immersione | 6 | **6** | ±0 | `██████░░░░` 6 | · |
 | 12 | Carriera | 7 | **7** | ±0 | `███████░░░` 7 | · |
 
-Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n° 14 (7.884.0) **7,25** · n° 15 (7.886.0) **7,17** · n° 16 (7.895.0) **7,08**.
+Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n° 14 (7.884.0) **7,25** · n° 15 (7.886.0) **7,17** · n° 16 (7.895.0) **7,08** · n° 17 (7.898.0) **7,08**.
 
 <!-- VOTI-FINE -->
 

@@ -128,6 +128,35 @@
     "11": "corpi visibili in gioco aperto 0,3 → 45 % (7.889), tabellone nella sagoma della curva 13/13 impianti (7.895), fps banco senza sonda 25-27 (era 11): due misure vere ma ancora nessuno strumento per l'immersione intera → 5 → 6",
     "12": "career-critical exit 0 sulla 7.895 → 7"
    }
+  },
+  {
+   "n": 17,
+   "build": "7.898.0",
+   "quando": "15/09 06:10",
+   "glb": true,
+   "voti": [
+    7,
+    7,
+    7,
+    7,
+    8,
+    7,
+    8,
+    6,
+    7,
+    8,
+    6,
+    7
+   ],
+   "fonte": "tests/visual/collaudo-telefono (4 partite: Vairo casa / Galli fuori / Moretti casa / Conti fuori, GLB accesi, senza foto) — verbale FASE3-SCAMBIO 15/09 06:10",
+   "perche": {
+    "1": "ai piedi del padrone 68/57/62/45 % (n° 16: 63/61/40/44; banda ≥60: 2/4 come prima, ma Moretti 40 → 62) · distanza reso↔padrone mediana 1,6/2,1/2,4/3,5u (≤3u: 3/4, era 2/4) · salti 49/57/55/63 (era 67/77/67/73) · padrone dichiarato 46/36/41/42 % (era 42/38/40/39) · costo: niente parabola dell’arco in gioco ambientale → 6 → 7",
+    "5": "palla morta e righe di cronaca non rimisurate in questa scheda (sonda senza foto) → resta 8",
+    "8": "foto del PO all’80’ (Merseyside): il riquadro della panchina copre la seconda riga della telecronaca → 7 → 6 (rimedio 7.899 in misura)",
+    "10": "career-critical e ci verdi sulla 7.898 (05:13, 05:38); l’eroe non scrive piu’ il pallone altrui (429 → 0 campioni) → 8",
+    "11": "fps senza sonda 28/31/30/31 (≥30: 3/4, era 0/4); foto del PO: pallone 10,5 px accanto a uomini di 32 px, «troppo grande» → resta 6",
+    "12": "career-critical exit 0 sulla 7.898 → 7"
+   }
   }
  ],
  "regole": {

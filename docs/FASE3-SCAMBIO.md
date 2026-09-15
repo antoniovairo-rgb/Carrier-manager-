@@ -5877,3 +5877,22 @@ colla dell'eroe che legga il portatore dichiarato invece della distanza dalla me
   (career-critical exit=0 alle 05:13, ci exit=0 alle 05:38, `IDENTICO 1`). Fast-forward 0a1746c → 96f9903, mai
   force. Non verificato: l'Android del PO; la CI di GitHub su main. Scheda da telefono n° 17 (4 partite, GLB accesi)
   in corsa dalle 05:38; `npm run stati-sub` aggiunto agli script (banco del motore, fuori dal ci).
+
+## Scheda da telefono n° 17 — build 7.898.0 (15/09 06:10), GLB accesi, 4 partite
+
+Sonda `collaudo-telefono` senza foto (Chromium 412x915, campo 3D con CH38). Numeri per Vairo casa / Galli fuori /
+Moretti casa / Conti fuori, fra parentesi la n° 16 (7.895):
+
+| misura | valori | banda |
+|---|---|---|
+| pallone reso ai piedi del padrone (≤3u) | 68 / 57 / 62 / **45** % (63 / 61 / 40 / 44) | ≥ 60 % (2/4, come la n° 16) |
+| padrone dichiarato dalla simulazione | 46 / 36 / 41 / 42 % (42 / 38 / 40 / 39) | (informativo; A3: → ≥ 70 %) |
+| distanza reso↔padrone mediana / p90 | 1,6/14,7 · 2,1/20 · 2,4/17,4 · **3,5**/19,6 u (1,8/10 · 2/12,3 · 4,5/11,8 · 3,5/19,1) | mediana ≤ 3u (3/4, era 2/4) |
+| scarto reso↔logico mediana / p90 | 1,1/14 · 0,8/20,5 · 1,1/19,5 · 1,8/22,2 u | p90 ≤ 8u (0/4) |
+| salti del pallone (>8u in ≤110 ms) | 49 / 57 / 55 / 63 (67 / 77 / 67 / 73) | 0 fuori dagli stacchi |
+| arco di cronaca acceso | 0 % del tempo in tutte e quattro (7.898: il pallone reso segue portatore o logico) | — |
+| fps senza sonda (primi 8 s) | 28 / 31 / 30 / 31 (26 / 26 / 27 / 25) | ≥ 30 (3/4, era 0/4) |
+
+Voti (n° 16 → n° 17): Realismo 6 → 7 (mediane e salti migliorano in 4/4, Moretti 40 → 62 %; la banda ≥60 resta 2/4 e
+le code p90 si allungano); Telecronaca 7 → 6 (foto del PO: il riquadro della panchina copre il racconto); le altre
+invariate. Media **7,08** (n° 16: 7,08). Palla morta e righe non rimisurate (sonda senza foto).
