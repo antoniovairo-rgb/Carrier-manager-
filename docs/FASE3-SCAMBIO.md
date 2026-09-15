@@ -6042,6 +6042,31 @@ Voti [7,7,7,7,8,7,8,7,7,8,7,7], **media 7,25 = n° 18**: il salto di «ai piedi�
 (coppia rosso 70/58 vs verde 64/62), quindi Realismo resta 7; la 7.900 muove i tiri solo al banco (4,1 → 5,2, obiettivo
 8) e le Azioni extra-eroe restano 7. Registro `docs/voti/voti-telefono.json`, sezione voti rigenerata con `voti-piano`.
 
+### 15/09 10:55 — C3 misurata: il HUD della partita secondo le tavole del PO (ramo `claude/hud-c3`, 7.901.2, rosso `__CPM_NO901`)
+
+Squadra grafica (agente, worktree separato), solo src/15 e la versione; motore, telecronaca 7.892 e voce della panchina
+7.899 intatti. Tre commit: 9e84a20 (v1), 6f3499d/31209c7 (v2: la scheda delle scelte regge molte opzioni), e128111
+(v3: via il tastino accanto a «Continua», che rimontava solo l'animazione — un tasto senza effetto vero non va in
+produzione). Sonda `tests/visual/hud-c3.mjs` (script `hud-c3`, fuori dal ci): Chromium 412×915 e 412×700, GLB accesi,
+autoplay seme 4242, misure dal DOM e foto dallo screencast con verifica del pixel (le prime foto erano di un fotogramma
+piu' vecchio della misura: un gol vero innescava la cerimonia e l'auto-avanzamento). 0 errori di pagina in tutti i bracci.
+
+| misura | banda del PO | rosso 700 | verde 700 | rosso 915 | verde 915 |
+|---|---|---|---|---|---|
+| barra in gioco | ≤ 62 px | 98 px | **60 px** | 98 px | **60 px** |
+| testo sopra il campo (media) | ≤ 25 % | 17,4 % | 16,3 % | 12,7 % | 12,0 % |
+| scheda delle scelte (3 opzioni reali) | ≤ 44 % | 27,3 % | 34,2 % | 20,9 % | 26,2 % |
+| righe, altezza minima | ≥ 52 px | 40 px | **52 px** | 40 px | **52 px** |
+| «%» nelle scelte | nessuno | no | no | no | no |
+| 7 opzioni (sintetiche, solo nella pagina di prova) | ≤ 44 % | **53 %** (sfonda) | 44 %, lista che scorre, 4 righe intere | 40,5 % | 44 %, 5 righe intere |
+| banda dell'esito | ≤ 40 % | 14,9 % | 25,4 % | 11,4 % | 19,4 % |
+| tasti nell'esito | uno | 0 (tutta la banda e' un tocco) | **1** | 0 | **1** |
+
+Verificato da me sulle foto: barra, scheda a 3 e a 7 righe, banda dell'esito con il solo «Continua». Nei dati di gioco
+nessuna situazione supera le 4 opzioni (191 su 191 ne hanno 3, i piazzati 4): il caso a 7 e' una prova di tenuta.
+NON verificato: l'Android del PO, il layout largo (fuori dal C3), il giudizio del PO sull'estetica (le tavole erano sue).
+Rituali (career-critical, ci) in corsa sul build e128111; poi merge sulla linea motore e main in fast-forward.
+
 ### 15/09 08:15 — C2 chiusa: il PO ha risposto al wizard sull'anteprima del HUD
 
 Risposte (AskUserQuestion, 4 domande): **barra del risultato 60 px su una riga** (era 92) · **interazione come scheda
