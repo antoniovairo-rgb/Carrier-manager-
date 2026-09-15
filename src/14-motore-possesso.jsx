@@ -249,7 +249,8 @@ function creaMotorePossesso(cfg){
        porta (passo +4u, rientro al centro). Metro al banco: tiri, tiri dall'area, falli, decisioni in area. */
     const _no900=(typeof window!=='undefined'&&window&&window.__CPM_NO900);
     const _dopo900=!_no900&&(zona==="limite"||zona==="area")&&!golReq;
-    const _fallo900=()=>{const r=rnd();const pFb=_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):((press<3?0.18:0.05)+(adv>=56?0.03:0));
+    const _no903=(typeof window!=='undefined'&&window&&window.__CPM_NO903);/* [7.903] l'arbitro esiste: la 7.900 aveva portato la banda «arbitro-esiste» del ci sul filo (6 → 4-6 interruzioni in 2 partite); sotto pressione 0,18 → 0,22, libero 0,05 → 0,08 (decisione PO 15/09: costa 0,3 tiri a partita al banco) */
+    const _fallo900=()=>{const r=rnd();const pFb=_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):(_no903?((press<3?0.18:0.05)+(adv>=56?0.03:0)):((press<3?0.22:0.08)+(adv>=56?0.03:0)));
       const pF=golReq?((golReq.t|0)<=3?pFb*0.5:0):pFb;
       if(pF>0&&r<pF){ramo(golReq?"falloGol":"fallo");fallo(P);return true;}
       if(!golReq&&press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return true;}return false;};
