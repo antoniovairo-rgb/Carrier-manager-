@@ -5719,3 +5719,20 @@ scrive: e' il ritardo del corpo reso rispetto al logico, il pallone sta ai piedi
 `<21`; in src/12 `_por526` prende la mesh dell'eroe quando l'indice e' 21). Attesa: la riga tenuta|eroe|nessuno
 (10 %) passa a «portatore». Misura in corsa: diagnosi verde + telefono Moretti verde/rosso.
 
+**7.897 misurata (15/09 02:45).** Coppia al telefono, Moretti casa, seme 4242, GLB accesi, senza foto:
+
+| misura | rosso `__CPM_NO897` | **verde 7.897** | (scheda n° 16, 7.895, altra corsa) |
+|---|---|---|---|
+| pallone reso ai piedi del padrone (≤3u) | 50 % | **53 %** | 40 % |
+| …a palla a terra | 66 % | 60 % | 43 % |
+| distanza reso↔padrone mediana / p90 | 3,0 / 11,9 u | **2,8 / 11,4 u** | 4,5 / 11,8 |
+| scarto reso↔logico mediana / p90 | 2,7 / 15 u | **1,7 / 16,4 u** | 3,5 / 17 |
+| salti del pallone | 74 | **64** | 67 |
+| diagnosi, padrone = eroe: distanza mediana / ≤3u | 3,9u / 49 % (7.895) | **2,5u / 53 %** | — |
+
+Verdetto onesto: il rimedio fa cio' che dichiara (il pallone sta ai piedi dell'eroe: 3,9u → 2,5u sul 10 % del gioco
+vivo in cui l'eroe e' il padrone; scarto reso↔logico 2,7 → 1,7u; salti 74 → 64), ma il metro di testa si muove di
+tre punti (50 → 53 %) e «a terra» va nell'altro verso di sei: differenze da corsa a corsa (la n° 16 sulla stessa
+partita dava 40 %). Non e' il rimedio che porta il Realismo a 8: il 30 % in volo e il ritardo dei corpi resi
+pesano di piu'. Si spedisce come passo piccolo e vero, senza dichiararlo di piu'. Rituali in corsa.
+
