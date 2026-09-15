@@ -102,6 +102,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 | C5 | performance mobile: 22 GLB per 90' (LOD/instancing, texture) — misura sull'Android del PO | fps ≥ 30 sul telefono del PO (da lui misurato); banco: triangoli in quadro −50 % | da misurare prima |
 | C6 | report finale in 16 sezioni della direttiva | consegnato | da scrivere |
 | C7 | **tabelloni luminosi: altezza misurata stadio per stadio** (nota PO 14/09) — 7.895 v2: dentro la sagoma della Curva Sud | primo cielo sopra il bordo alto: rosso 1 px in 9/9 impianti → verde 12-28 px (0,9-1,9u); provino piccolo 22 px | **fatto** — in produzione (main 9188df9, 00:40); giudizio del PO sul telefono sulla taglia nel provino |
+| C8 | **panchinari, mister e vice con il corpo CH38 alleggerito** (PO 15/09: «renderei GLB anche i panchinari ed il mister», «non devono volare») — v1 a corpo pieno misurata: 16/16 corpi ma triangoli 1,09 → 1,84 M (+68,6 %), figure a T sospese; persa nel riavvio; v2 in corso sul corpo a 14.622 triangoli (rosso `__CPM_NO904`) | corpi CH38 in panchina 0/16 → 16/16 · piedi entro 0,15u dalla seduta 16/16 · triangoli ≤ +25 % · fps banco rosso/verde · foto ravvicinate | **in corso** (squadra grafica, ramo claude/panchina-glb) |
 
 ### D · COLLAUDO, STRUMENTI, SKILL
 | # | attività | metro | stato |
@@ -112,7 +113,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 | D4 | subagent `regressione-pre-release` in `.claude/agents/` (isolato, torna pass/fail) | usato a ogni release | da fare |
 | D5 | skill custom: `build-frammenti`, `misura-appaiata`, `rituale-produzione` (subito), poi `motore-possesso`, `sonda-telefono`, `griglia-mobile`, `verbale` | esistono e sono vere | da fare |
 | D6 | `CLAUDE.md` e `ARCHITECTURE_MAP.md` allineati a `src/`, motore, rituale, rami | 5 patch proposte | da confermare |
-| D7 | **librerie migliori, carta bianca (PO 15/09)** — passo 1 misurato: corpi GLB semplificati offline con gltf-transform (48.140 → 22.768 triangoli) | banco fps con 22 corpi: mediana 4,7/3,9 → 4,3/4,6 (rumore), p10 2,3 → 4,0; sul GL software i triangoli non sono il collo di bottiglia | passo 1 non spedito (serve la misura sul telefono del PO); prossimo: profilo del fotogramma |
+| D7 | **librerie migliori, carta bianca (PO 15/09)** — passo 1 misurato: corpi GLB semplificati offline con gltf-transform (48.140 → 22.768 triangoli) | banco fps con 22 corpi: mediana 4,7/3,9 → 4,3/4,6 (rumore), p10 2,3 → 4,0; sul GL software i triangoli non sono il collo di bottiglia | **v2 decisa con il PO (14:20)**: corpi alleggeriti per i 22 (candidati 14.622 e 24.066 triangoli), contatore fps a schermo e interruttore TEMPORANEO «Corpi: leggeri / pieni» nel menu di pausa: due numeri dal telefono del PO, poi l'interruttore si toglie; dopo C8 · passo 1 non spedito (serve la misura sul telefono del PO) |
 
 ### E · PRODUZIONE E RILASCIO
 | # | attività | metro | stato |
