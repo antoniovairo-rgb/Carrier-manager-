@@ -152,6 +152,45 @@ l'id dell'evento che l'ha generata) · scritture del pallone fuori dal motore **
 durante la scena **0 % → 100 %** · eventi di tabellino prodotti dentro la scena **0 → tutti** (`conta.scena` > 0) ·
 continuità: salto del pallone alla chiusura della scena **0u**.
 
+## 1-ter. Reingegnerizzazione degli highlight: **12 archetipi guidati dal motore, non 185 schede**
+
+Richiesta del PO (15/09 21:10): «la qualità e credibilità degli highlights eroe deve essere altissima, valuta tu la
+reingegnerizzazione, riduzione situations, ecc». Questa è la mia proposta, con la misura che la giustifica.
+
+**Il catalogo di oggi, misurato** (`src/04`): **185 schede** scritte a mano (191 con le catene), 185 testi distinti,
+**3,10 opzioni a scheda** (una ne ha **21**), concentrate nel terzo offensivo (trequarti/bordo/area 118 su 185, 64 %).
+Ogni scheda porta la propria geometria (due rettangoli di zona), le proprie opzioni e il proprio esito: sono **185
+verità che possono contraddire il motore**, ed è per questo che la scena può segnare mentre il tabellino dice zero tiri.
+
+**Perché la riduzione non è un risparmio ma la condizione della qualità.** «Altissima» significa, per ogni scena:
+pallone ai piedi, nessun corpo a T, nessun teletrasporto, inquadratura che tiene l'eroe nel riquadro, durata giusta,
+esito che rientra nel tabellino. Sono ~8 misure a scena: su 185 scene fanno **1.480 numeri da tenere verdi** a ogni
+rilascio — non è governabile, e infatti il banco misura ancora «pallone ai piedi 64 %». Su **12 archetipi** fanno
+**96 numeri**: quella sì è una soglia che si può portare a 9.
+
+**La proposta.**
+1. **Il motore causa, l'archetipo mette in scena, il catalogo veste.** L'highlight nasce da un evento del motore
+   (tiro, cross, contrasto, occasione dell'eroe); l'archetipo dice come si inquadra e quali sono le tre scelte; le
+   185 schede di oggi diventano **testo** (riga di telecronaca + etichette delle opzioni), scelto col contesto che
+   già esiste (minuto, punteggio, momentum, avversario, meteo). **Nessun testo viene buttato: perde solo il potere
+   di causare l'azione.**
+2. **I 12 archetipi**, presi dalle zone misurate e dagli eventi che il motore già produce: tiro dall'area · tiro dal
+   limite · uno contro uno col portiere · colpo di testa su cross · cross dalla fascia · dribbling in area ·
+   filtrante per il compagno · tap-in o ribattuta · punizione dal limite · rigore · contropiede in campo aperto ·
+   recupero alto senza palla.
+3. **Tre opzioni, mai di più** (media di oggi 3,10, massimo 21): la scheda del PO regge tre righe da 52 px.
+4. **I testi si potano per qualità, non per numero**: ogni testo deve combaciare con il gesto del suo archetipo;
+   i doppioni e quelli che promettono un gesto che il motore non sa fare si tagliano. Stima: 185 → **60-80 testi**,
+   con la varietà che torna dal contesto e non dal numero di schede.
+
+**Metro della qualità «altissima»** (per ciascuno dei 12 archetipi, banco + foto): pallone ai piedi **64 % → ≥ 90 %**
+· corpi a T **0** · teletrasporti all'apertura e alla chiusura **0** · eroe dentro il riquadro **100 %** dei
+fotogrammi · durata **8-15 s** · opzioni **3** · l'evento della scena **rientra nel tabellino** (`conta.scena` > 0) ·
+0 errori di pagina. Soglia: **12/12 archetipi verdi** prima di dichiarare chiuso il cantiere B.
+
+**Costo dichiarato**: la varietà percepita nel primo periodo può scendere (meno testi in circolo); si recupera con il
+contesto e aggiungendo testi, che ora costano una riga e non una scena nuova.
+
 ## 2. Obiettivo e metro finale
 
 - **Metro di uscita**: scheda da telefono su 4 partite (Vairo casa, Galli fuori, Moretti casa, Conti fuori) con
@@ -197,6 +236,7 @@ continuità: salto del pallone alla chiusura della scena **0u**.
 | B3 | `tickScena`: il motore muove i ventidue anche in scena (via il loop del pressing 2025) | scritture non-motore in scena 8-12 → 0; corpi in movimento in scena ≥ 60 % | da progettare |
 | B4 | attori della scena dai ruoli del motore (portatore, difensore, portiere) | distanza attore-ruolo mediana ≤ 3u | da fare |
 | B5 | muro/rigore/corner fotografati e valutati | scheda: area «scene» ≥ 8 | da fare |
+| B7 | **12 archetipi al posto delle 185 schede** (§1-ter): geometria, opzioni ed esito dall'archetipo + motore; le schede diventano testo | archetipi verdi 0/12 → **12/12** sulle 8 misure di §1-ter · opzioni per scena ≤ 3 (oggi max 21) · testi potati 185 → 60-80, nessuno che prometta un gesto che il motore non sa fare | **nuovo, dopo B0** |
 | B6 | **regia dell'highlight** (nuovo, con F5): ingresso, inquadratura, uscita — il 3D si vede per 8-15 s e deve essere impeccabile | ogni highlight: 0 teletrasporti · 0 corpi a T · pallone ai piedi ≥ 75 % · foto da 412×915 | dopo F5 |
 | B1 | scena senza teletrasporto (7.890, 7.891) | apertura 50 → 0; piazzato 32,8u → 0 | **fatto** |
 
