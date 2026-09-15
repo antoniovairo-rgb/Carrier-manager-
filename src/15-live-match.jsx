@@ -1125,6 +1125,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     let c=cfg&&cfg.col;try{if(c){const _m=c.match(/rgba?\(([^)]+)\)/);if(_m){const _p=_m[1].split(",").map(s=>s.trim());if(_p.length>=4){const _a=Math.min(parseFloat(_p[3])||0,0.42);c=`rgba(${_p[0]},${_p[1]},${_p[2]},${_a})`;}}}}catch(_e){}
     setScreenFlash({...cfg,col:c});};
   const [cutFx,setCutFx]=useState(null);// stacco nero di transizione sull'esito positivo
+  const [_esitoReplay901,setEsitoReplay901]=useState(0);/* [7.901.0 — C3] il tastino piccolo a fianco di «Continua» nella banda dell'esito: NON tocca fasi/handler/logica, rimonta (via key) la banda per ripetere SOLO l'animazione di comparsa — un replay grafico, non un nuovo esito. */
   const [floatGoal,setFloatGoal]=useState(null);
   const [goalCinema,setGoalCinema]=useState(null); // Sprint 95: {text,col,key,shakeKey}
   // 5.43.4 — REGOLA GENERALE: l'esultanza ("GOL"+grafica+coriandoli+boato) parte SOLO quando la palla ENTRA in
@@ -8294,6 +8295,24 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   }catch(_e){return null;}})();
 
   const _swap893=!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45);/* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
+  /* [7.901.0 — C3: LA BARRA DEL RISULTATO STA IN 60 PX, UNA RIGA SOLA. Decisione del PO sulle tavole
+     approvate (scratchpad/hud/Main.dc.html, Interazione.dc.html, Esito.dc.html): scudetti, sigle,
+     risultato UNICO al centro (non piu' un punteggio per squadra), minuto col puntino, etichetta di
+     competizione piccola sotto il minuto; il possesso resta ma diventa un filo di 3 px sotto la barra
+     (via la seconda barra a corsia con le due percentuali e via il momentum, che nella tavola del PO
+     non c'e' piu' spazio per mostrare). Pausa/velocita'/taccuino restano (sono comandi, non i tre dati
+     che il PO ha chiesto di togliere) ma diventano piccoli, incassati nella riga del minuto. Rosso
+     __CPM_NO901 = la barra di prima (due righe, ~92 px, «PREMIER DIVISION»/poss./momentum per squadra). */
+  const _no901=!!(typeof window!=='undefined'&&window.__CPM_NO901);
+  const _compTag901=(()=>{
+    if(phase==="walkout")return"Ingresso in campo";
+    if(phase==="ceremony")return"Premiazione";
+    if(phase==="ended")return"Fine partita";
+    const _lbl=isNatCtx?((context||"").indexOf("euroMondiale")>=0?("🌍 "+((player.euroMondiale?.type)||"Mondiale")):"🌍 Nazionale"):(context==="euro_group"||context==="euro_ko"||context==="euro")?{UCL:"⭐ "+EURO_SIGLA.UCL,UEL:"🌍 "+EURO_SIGLA.UEL,UECL:"🌍 "+EURO_SIGLA.UECL}[player.euro?.competition||"UCL"]||"🌍 Europa":context==="cup"?"🏆 Coppa":(((player.leagueOverrides||{})[player.club?.id])||player.club?.lg||homeTeamObj?.lg||"Campionato");
+    return _lbl;
+  })();/* stessa IIFE di prima (7.170.0), solo spostata qui per essere condivisa dai due markup della barra (vecchio e nuovo) */
+  const _hVal901=isMatchHome?score.home:score.away,_hCol901=(isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9";
+  const _aVal901=isMatchHome?score.away:score.home,_aCol901=(isMatchHome?losing:winning)?"#4ade80":(isMatchHome?winning:losing)?"#f87171":"#f1f5f9";
   return(
     <div style={{width:"100%",maxWidth:isNarrow?undefined:1100,marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
       {phase==="matchday"&&!showScout&&(()=>{
@@ -8330,13 +8349,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         <Card style={{padding:0,overflow:"hidden",display:"flex",flexDirection:"column",...isNarrow?{flex:1,minHeight:0}:{height:"calc(100vh - 80px)",minHeight:500}}} shadow>
           {/* ── Scoreboard Premium ── */}
           {/* [7.893.0 — NEL SECONDO TEMPO LA BARRA SI SPECCHIA. PO 14/09: «nella barra superiore la posizione degli scudetti e delle relative statistiche devono essere invertite tra il primo ed il secondo tempo». Le squadre cambiano campo al 45': scudetti, nomi, punteggio, barra del possesso e momentum si specchiano dal 46'. Rosso __CPM_NO893 = barra fissa. */}
-          <div data-cpm="barra893" data-specchio={_swap893?1:0} style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexDirection:_swap893?"row-reverse":"row",padding:"7px 12px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto"}}>
+          {_no901?(
+          <div data-cpm="barra" data-specchio={_swap893?1:0} style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexDirection:_swap893?"row-reverse":"row",padding:"7px 12px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto"}}>
             {/* Home team */}
             <div data-cpm="scudo-casa" style={{display:"flex",alignItems:"center",gap:7,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start"}}>
               <TeamBadge team={homeTeamObj} size={28}/>
               <div style={{minWidth:0,textAlign:_swap893?"right":"left"}}>
                 <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?"auto":0}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
-                <div style={{fontSize:32,fontWeight:900,color:(isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9",lineHeight:1,textAlign:_swap893?"right":"left"}}>{isMatchHome?score.home:score.away}</div>
+                <div style={{fontSize:32,fontWeight:900,color:_hCol901,lineHeight:1,textAlign:_swap893?"right":"left"}}>{_hVal901}</div>
               </div>
             </div>
             {/* Centre — clock, possession, context */}
@@ -8387,13 +8407,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 )}
               </div>
               <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>
-{(()=>{
-                  if(phase==="walkout")return"Ingresso in campo";
-                  if(phase==="ceremony")return"Premiazione";
-                  if(phase==="ended")return"Fine partita";
-                  const _lbl=isNatCtx?((context||"").indexOf("euroMondiale")>=0?("🌍 "+((player.euroMondiale?.type)||"Mondiale")):"🌍 Nazionale"):(context==="euro_group"||context==="euro_ko"||context==="euro")?{UCL:"⭐ "+EURO_SIGLA.UCL,UEL:"🌍 "+EURO_SIGLA.UEL,UECL:"🌍 "+EURO_SIGLA.UECL}[player.euro?.competition||"UCL"]||"🌍 Europa":context==="cup"?"🏆 Coppa":(((player.leagueOverrides||{})[player.club?.id])||player.club?.lg||homeTeamObj?.lg||"Campionato");/* [7.170.0 collaudo PO «era una partita di serie A, il Venezia è neopromossa»] in campionato l'etichetta è la lega DEL GIOCATORE (override-aware): prima era homeTeamObj.lg → in trasferta da una NEOPROMOSSA usciva la lega del DB (Lega B) perché la promozione vive solo in leagueOverrides */
-                  return _lbl;
-                })()}
+                {_compTag901}
               </div>
               <div style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden",display:"flex",flexDirection:_swap893?"row-reverse":"row",width:80,margin:"0 auto"}}>
                 <div style={{width:`${possession}%`,background:scoreHomeCol,transition:"width .8s",borderRadius:"3px 0 0 3px"}}/>
@@ -8415,10 +8429,61 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <TeamBadge team={awayTeamObj} size={28}/>
               <div style={{minWidth:0,textAlign:_swap893?"left":"right"}}>
                 <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?0:"auto"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
-                <div style={{fontSize:32,fontWeight:900,color:(isMatchHome?losing:winning)?"#f87171":(isMatchHome?winning:losing)?"#4ade80":"#f1f5f9",lineHeight:1,textAlign:_swap893?"left":"right"}}>{isMatchHome?score.away:score.home}</div>
+                <div style={{fontSize:32,fontWeight:900,color:_aCol901,lineHeight:1,textAlign:_swap893?"left":"right"}}>{_aVal901}</div>
               </div>
             </div>
           </div>
+          ):(
+          <React.Fragment>
+            <div data-cpm="barra" data-specchio={_swap893?1:0} style={{height:60,boxSizing:"border-box",display:"flex",alignItems:"center",justifyContent:"space-between",flexDirection:_swap893?"row-reverse":"row",padding:"0 10px",borderBottom:"1px solid rgba(255,255,255,0.08)",background:"linear-gradient(135deg,#060d1e 0%,#0f1e3a 100%)",flex:"0 0 auto",gap:6}}>
+              {/* Home team — solo scudetto e nome: il risultato ora sta al centro, unico */}
+              <div data-cpm="scudo-casa" style={{display:"flex",alignItems:"center",gap:6,minWidth:0,flex:1,flexDirection:_swap893?"row-reverse":"row",justifyContent:"flex-start"}}>
+                <TeamBadge team={homeTeamObj} size={26}/>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"right":"left"}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
+              </div>
+              {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:"0 0 auto",padding:"0 6px",minWidth:0}}>
+                <div style={{fontSize:23,fontWeight:900,lineHeight:1,letterSpacing:.4,fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>
+                  <span style={{color:_swap893?_aCol901:_hCol901}}>{_swap893?_aVal901:_hVal901}</span>
+                  <span style={{color:"rgba(255,255,255,0.35)",padding:"0 5px"}}>–</span>
+                  <span style={{color:_swap893?_hCol901:_aCol901}}>{_swap893?_hVal901:_aVal901}</span>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:3,marginTop:2}}>
+                  {phase==="playing"&&!paused&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
+                  {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&<div style={{width:6,height:6,borderRadius:"50%",background:"#f59e0b",flexShrink:0}}/>}
+                  <div style={{fontSize:12,fontWeight:800,color:"#f1f5f9",letterSpacing:.3,fontVariantNumeric:"tabular-nums"}}>{phase==="walkout"?"🏃":phase==="ceremony"?"🏆":phase==="ended"?"FT":`${clock}'`}</div>
+                  <div style={{fontSize:10}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
+                  {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+                    <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:11,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
+                  )}
+                  {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
+                    <button
+                      onClick={()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];setMatchSpeed(_n);try{localStorage.setItem("cpm-match-speed",String(_n));}catch(_e){}}}
+                      title={"Velocità della partita — tocca per passare a "+((()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];return _n===1.5?"1,5×":_n+"×";})())}
+                      aria-label={"Velocità della partita: "+(matchSpeed===1.5?"1,5×":matchSpeed+"×")+". Tocca per cambiare."}
+                      style={{background:"rgba(255,255,255,0.16)",border:"none",borderRadius:6,cursor:"pointer",fontSize:8.5,fontWeight:900,letterSpacing:.2,padding:"4px 4px",minWidth:22,lineHeight:1,fontFamily:"inherit",color:"#f1f5f9",fontVariantNumeric:"tabular-nums"}}>
+                      {matchSpeed===1.5?"1,5×":matchSpeed+"×"}
+                    </button>
+                  )}
+                  {devToolsOn()&&["playing","hl_intro","hl_move","hl_choose","hl_result","ended","ceremony"].includes(phase)&&(
+                    <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:10,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.38)",lineHeight:1}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
+                  )}
+                </div>
+                <div style={{fontSize:9,color:"rgba(255,255,255,0.42)",letterSpacing:.5,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:118,marginTop:1}}>{_compTag901}</div>
+              </div>
+              {/* Away team */}
+              <div data-cpm="scudo-ospiti" style={{display:"flex",alignItems:"center",gap:6,flexDirection:_swap893?"row":"row-reverse",minWidth:0,flex:1,justifyContent:"flex-start"}}>
+                <TeamBadge team={awayTeamObj} size={26}/>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.7,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",minWidth:0,textAlign:_swap893?"left":"right"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
+              </div>
+            </div>
+            {/* [7.901.0] il possesso resta, ma come filo di 3 px sotto la barra (non piu' due barre a corsia con le percentuali e il momentum) */}
+            <div style={{height:3,flex:"0 0 auto",display:"flex",background:"rgba(255,255,255,0.06)"}}>
+              <div style={{width:`${possession}%`,background:scoreHomeCol,transition:"width .8s"}}/>
+              <div style={{flex:1,background:scoreAwayCol}}/>
+            </div>
+          </React.Fragment>
+          )}
 
           {/* ── Field + Panel: responsive layout ── */}
           {(()=>{const _isHL=["hl_move","hl_choose","hl_result","hl_intro"].includes(phase);
@@ -9069,7 +9134,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
               )}
               {isNarrow&&phase==="hl_choose"&&curSit&&(
-                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
+                /* [7.901.0 — C3: L'INTERAZIONE DELL'EROE E' UNA SCHEDA CHE SALE DAL BASSO, MAX 44% DELLO
+                   SCHERMO, CAMPO LIBERO SOPRA. Decisione del PO sulla tavola approvata (Interazione.dc.html):
+                   titolo, sottotitolo, tre scelte a righe ≥52 px con icona e attributo («PASSAGGIO · 71»),
+                   NIENTE percentuali di riuscita — il PO ha scelto il rischio cieco. Rosso __CPM_NO901 =
+                   la fascia bassa sottile di prima, con le percentuali colorate sul bordo dei bottoni. */
+                _no901?(
+                <div data-cpm="scelte" style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.28)",padding:"8px 10px 10px"}}>
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.75)",fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,0.9)",marginBottom:5}}>{clock}' — {intentTitle(curSit.text,curSit.intent,_scoreDiff)} &nbsp;·&nbsp; <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Libero"}</span>&nbsp;·&nbsp;<span style={{color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡{energy}</span></div>
                   {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:10,color:"rgba(255,255,255,0.75)",background:"rgba(37,99,235,0.35)",borderRadius:6,padding:"5px 8px",marginBottom:6}}>💡 Muoviti col pad per cambiare le opzioni d'azione.</div>}{/* [5.84.0 UX-2c] micro-onboarding one-shot (primi 5 HL del device) */}
                   <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
@@ -9103,6 +9174,35 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     )}
                   </div>
                 </div>
+                ):(()=>{
+                  const _CAT901={tecnica:"TECNICA",tiro:"TIRO",passaggio:"PASSAGGIO",dribbling:"DRIBBLING","velocità":"VELOCITÀ",fisico:"FISICO","mentalità":"MENTALITÀ",posizionamento:"POSIZIONAMENTO",difesa:"DIFESA"};
+                  const _split901=(s)=>{const str=String(s||"");const sp=str.indexOf(" ");return sp<=0?{icon:"⚽",txt:str}:{icon:str.slice(0,sp),txt:str.slice(sp+1)};};
+                  const _sub901=intentIntro(curSit.intro,_scoreDiff);
+                  const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
+                  return(
+                  <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"44vh",boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"linear-gradient(180deg,rgba(24,20,48,0.94) 0%,rgba(10,12,26,0.98) 100%)",borderTop:"1px solid rgba(196,181,253,0.35)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
+                    <div style={{width:36,height:4,borderRadius:2,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
+                    <div style={{display:"flex",alignItems:"flex-start",gap:8}}>
+                      <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
+                        <div style={{fontSize:17,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
+                        {_sub901&&<div style={{fontSize:11.5,lineHeight:1.3,fontWeight:600,color:"#94a3b8",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_sub901}</div>}
+                      </div>
+                      {!curSit.lockMovement&&!hideDirCursor(curSit)&&<div style={{flexShrink:0,opacity:movesLeft>0?1:0.35,filter:movesLeft>0?"none":"grayscale(1)"}}><DPad onMove={movesLeft>0?handleDPad:()=>{}} dark size={34}/></div>}
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column",gap:6,overflow:"hidden"}}>
+                      {_rows901.map(r=>(
+                        <button key={r.rk} onClick={r.go} style={{minHeight:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
+                          <div style={{width:30,height:30,borderRadius:8,background:"rgba(196,181,253,0.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0}}>{r.icon}</div>
+                          <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:1}}>
+                            <div style={{fontSize:14,fontWeight:800,color:"#e9e4ff",lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>
+                            <div style={{fontSize:10.5,fontWeight:700,color:"#94a3b8",letterSpacing:.3,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.attr}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  );
+                })()
               )}
               {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.45)",padding:"12px 12px 14px"}}>
@@ -9110,7 +9210,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
               )}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
               {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
-                <div onClick={()=>{if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.outKey==="foul"?"rgba(40,20,0,0.72)":outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px",cursor:"pointer"}}>{/* [5.84.0 UX-3] tap per continuare (prima solo attesa forzata 2-3.4s ×8 HL) */}
+                /* [7.901.0 — C3: L'ESITO E' UNA BANDA BASSA, ≤40% DELLO SCHERMO. Decisione del PO sulla
+                   tavola approvata (Esito.dc.html): titolo dell'esito (verde se positivo), riga di cronaca,
+                   chip delle conseguenze (voto, gol), UN SOLO tasto «Continua» piu' un tasto piccolo di
+                   replay a fianco — non piu' due tasti grandi. Il tasto piccolo NON tocca fase/handler: rimonta
+                   (via key) solo l'animazione di comparsa della banda, un replay grafico. Rosso __CPM_NO901 =
+                   il banner pieno-schermo di prima con l'intera banda cliccabile per continuare. */
+                _no901?(
+                <div data-cpm="esito" onClick={()=>{if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.outKey==="foul"?"rgba(40,20,0,0.72)":outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px",cursor:"pointer"}}>{/* [5.84.0 UX-3] tap per continuare (prima solo attesa forzata 2-3.4s ×8 HL) */}
                   {outcome.outKey==="foul"&&<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}><div style={{width:10,height:14,background:"#fb923c",borderRadius:2,boxShadow:"0 0 8px rgba(251,146,60,0.9)",animation:"goalDrop 0.3s ease-out"}}/><span style={{fontSize:11,fontWeight:900,color:"#fb923c",letterSpacing:1,textTransform:"uppercase"}}>FALLO</span></div>}
                   {outcome.overlay&&<div style={{fontSize:16,fontWeight:900,letterSpacing:0.3,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#fca5a5",marginBottom:2,textShadow:"0 1px 5px rgba(0,0,0,0.85)"}}><EmoText>{(outcome.outKey!=="foul"&&outcome.overlayIcon?outcome.overlayIcon+" ":"")+outcome.overlay}</EmoText></div>}{/* [7.136.0] iconcina d'esito prima del titolo (foul ha già il badge FALLO) · [7.170.0] emoji senza box-shadow Android */}
                   <div style={{fontSize:12,fontWeight:700,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":"#f87171",marginBottom:3,opacity:0.92,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}><EmoText>{(outcome.ok?"✅ ":"❌ ")+(chosenAct?.label||"")}</EmoText></div>
@@ -9118,6 +9225,35 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {outcome.cause&&<div style={{fontSize:10,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",marginBottom:3,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}><EmoText>{outcome.cause}</EmoText></div>}{/* [5.84.0 UX-2b] */}
                   {aiCommentary&&<div style={{fontSize:10,color:"rgba(255,255,255,0.8)",fontStyle:"italic",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}><EmoText>{(aiCommentary.reaction||"")+" "+(aiCommentary.commentary||"")}</EmoText></div>}
                 </div>
+                ):(()=>{
+                  const _rb901=Math.min(mStats.rb,30);const _raw901=clamp(5.8+_rb901*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _voto901=Math.round(_raw901*10)/10;
+                  const _titCol901=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
+                  const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(chosenAct?.label?(" · "+chosenAct.label):"");
+                  return(
+                  <div data-cpm="esito" key={"esito901-"+_esitoReplay901} style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"40vh",boxSizing:"border-box",overflow:"hidden",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.88) 22%,rgba(5,8,16,0.95) 100%)",padding:"14px 14px 12px",display:"flex",flexDirection:"column",gap:8,animation:"cpmEsitoIn901 .32s ease-out"}}>
+                    <style>{"@keyframes cpmEsitoIn901{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}"}</style>
+                    <div style={{display:"flex",alignItems:"center",gap:7}}>
+                      <div style={{width:20,height:20,borderRadius:6,background:outcome.ok?"rgba(74,222,128,0.16)":"rgba(248,113,113,0.16)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                        {outcome.ok?<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12l5 5L20 6"></path></svg>:<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>}
+                      </div>
+                      <div style={{fontSize:16,fontWeight:900,color:_titCol901,letterSpacing:.2,lineHeight:1.15,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1,minWidth:0}}><EmoText>{_titTxt901}</EmoText></div>
+                    </div>
+                    <div style={{fontSize:13.5,lineHeight:1.3,fontWeight:700,color:"#e8edf6",textShadow:"0 1px 6px rgba(0,0,0,0.7)",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.text}</EmoText></div>
+                    {outcome.cause&&<div style={{fontSize:11,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.cause}</EmoText></div>}
+                    <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                      <div style={{padding:"3px 9px",borderRadius:999,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.16)",fontSize:11,fontWeight:800,color:_voto901>=8?"#4ade80":_voto901>=6.5?"#f59e0b":"#f87171",fontVariantNumeric:"tabular-nums"}}>voto {_voto901}</div>
+                      {mStats.goals>0&&<div style={{padding:"3px 9px",borderRadius:999,background:"rgba(74,222,128,0.14)",border:"1px solid rgba(74,222,128,0.35)",fontSize:11,fontWeight:800,color:"#4ade80"}}>⚽ gol {mStats.goals}</div>}
+                      {mStats.assists>0&&<div style={{padding:"3px 9px",borderRadius:999,background:"rgba(96,165,250,0.14)",border:"1px solid rgba(96,165,250,0.35)",fontSize:11,fontWeight:800,color:"#60a5fa"}}>🎯 assist {mStats.assists}</div>}
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginTop:2}}>
+                      <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{flex:1,height:46,border:"none",borderRadius:11,background:"#2563eb",color:"#fff",fontSize:14,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
+                      <button onClick={(e)=>{e.stopPropagation();setEsitoReplay901(v=>v+1);}} title="Rivedi l'animazione dell'esito" style={{width:46,height:46,flexShrink:0,borderRadius:11,border:"1px solid rgba(255,255,255,0.22)",background:"rgba(255,255,255,0.06)",color:"#f1f5f9",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f1f5f9" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path></svg>
+                      </button>
+                    </div>
+                  </div>
+                  );
+                })()
               )}
 
             </div>
@@ -9282,7 +9418,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
 
       {/* Mobile cronaca + compact stats — below the card, hidden during HL to free space for DPad */}
       {isNarrow&&!["hl_move","hl_choose","hl_result","hl_intro","ceremony"].includes(phase)&&(show3D||phase==="walkout")&&(
-        <div style={{flexShrink:0,background:"#050810",padding:"5px 10px 8px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
+        <div data-cpm="striscia"/* [7.901.0] etichetta stabile: la sonda hud-c3 la usa come fondo della zona di campo (dal fondo della barra a qui), nessun cambio di stile */ style={{flexShrink:0,background:"#050810",padding:"5px 10px 8px",borderTop:"1px solid rgba(255,255,255,0.07)"}}>
           {/* Compact stats bar */}
           {(()=>{const _rb_cs=Math.min(mStats.rb,30);const _raw_cs=clamp(5.8+_rb_cs*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _r_cs=Math.round(_raw_cs*10)/10;const _rc_cs=_r_cs>=8?"#4ade80":_r_cs>=6.5?"#f59e0b":"#f87171";return(
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:5,paddingBottom:4,borderBottom:"1px solid rgba(255,255,255,0.07)"}}>

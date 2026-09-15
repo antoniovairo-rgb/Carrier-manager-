@@ -152,7 +152,8 @@
     "ci:carriera": "npm run test:logic && npm run save-compat && npm run career-critical",
     "stati-sub": "node stati-sub.mjs",
     "taglia-pallone": "node taglia-pallone.mjs",
-    "panchina-riga": "node panchina-riga.mjs"
+    "panchina-riga": "node panchina-riga.mjs",
+    "hud-c3": "node hud-c3.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
