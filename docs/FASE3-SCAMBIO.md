@@ -6062,8 +6062,19 @@ tornare a 0,26/0,10). Coppia al banco su 48 partite, rosso `__CPM_NO903` (= 7.90
 decretati 96/96. Costo dichiarato: 0,3 tiri a partita. Resta aperto A5 (falli 2 → 8-12 a partita, rimesse e corner:
 oggi corner 0) come passo vero sul realismo dell'arbitro.
 
-**Merge C3 sulla linea motore** (ecc9500: 7.903 + `claude/hud-c3` e128111, versione 7.903.0). Rituali in coda dopo
-le corse del guardiano; poi main in fast-forward.
+**Le sei corse del guardiano** (partita-vera, a macchina scarica, un solo Chromium): build 7.900 → 11 · 4 · 3
+(piu' il 6 del suo ci); build C3 → 6 · 4 · 4 (piu' il 5 del suo ci). Stesso motore, stessa moneta: il HUD e' innocente.
+
+**Merge C3 sulla linea motore** (ecc9500: 7.903 + `claude/hud-c3` e128111, versione 7.903.0).
+
+**Riavvio della macchina (13:50).** Il container e' ripartito durante il ci della 7.903: clone, worktree e scratchpad
+persi (il ci in corsa, il build html non ancora committato, il lavoro C4 v1/v2 mai spedito). Sui remoti niente e' andato
+perso: ramo motore 4574dfd, `claude/hud-c3` e128111, main 6324c4b. Ricostruito clone, worktree e dipendenze, html
+ricomposto (`IDENTICO 1`), rituali ripartiti alle 14:03. Lezione 22ª: PUSH subito dopo ogni commit, anche di un agente.
+Il corpo alleggerito di D7 e' stato rigenerato (weld + simplify 0,3, errore 0,01): **14.622 triangoli** (Body 5.578,
+Hair 3.042) contro 48.140, 1,99 MB — piu' leggero del 22.768 di D7 passo 1; e' il corpo della panchina per C4 (16 corpi
+= +234 k triangoli, +21 % sul 1,09 M dei 22 in campo). Qualita' del corpo da fotografare (C4).
+
 
 ### 15/09 10:55 — C3 misurata: il HUD della partita secondo le tavole del PO (ramo `claude/hud-c3`, 7.901.2, rosso `__CPM_NO901`)
 
