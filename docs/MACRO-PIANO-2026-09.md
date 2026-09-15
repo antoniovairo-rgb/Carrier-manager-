@@ -17,26 +17,26 @@
 | 14/09 18:20 | main = f8cb0b3: 7.889 + 7.890 + overhaul grafico G0-G4.1 | A/B1/C1 → fatto | corpi in campo 0,3 → 45; regie di gioco vivo 5 → 0; contrasto 917 → 62 |
 
 <!-- VOTI-INIZIO -->
-## Voti del player da cellulare (scheda n° 15, build 7.886.0, 12/09 09:30)
+## Voti del player da cellulare (scheda n° 16, build 7.895.0, 15/09 01:35)
 
-Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7). Media **7,17** (n° 14, 7.884.0: 7,25 → **−0,08**); area minima **5**. Fonte: docs/archivio/PLAYTEST-REPORT-01.md · Scorecard n° 15 (media 7,17).
+Soglia di collaudo: **media ≥ 9, nessuna area < 7** (direttiva PO 14/09: il PO collauda solo con media >= 9 su 12 aree e nessuna area < 7). Media **7,08** (n° 15, 7.886.0: 7,17 → **−0,09**); area minima **6**. Fonte: tests/visual/collaudo-telefono (4 partite, GLB accesi) — verbale FASE3-SCAMBIO 15/09 01:35.
 
-| # | area | n° 14 | **n° 15** | Δ | istogramma (voto) | crescita / decrescita |
+| # | area | n° 15 | **n° 16** | Δ | istogramma (voto) | crescita / decrescita |
 |---|---|---|---|---|---|---|
-| 1 | Realismo | 8 | **8** | ±0 | `████████░░` 8 | · |
+| 1 | Realismo | 8 | **6** | −2 | `██████░░░░` 6 | ▼▼ |
 | 2 | Credibilita' da attaccante | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 3 | Causalita' | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 4 | Varieta' | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 5 | Ritmo | 8 | **8** | ±0 | `████████░░` 8 | · |
 | 6 | Azioni extra-eroe | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 7 | Highlight dell'eroe | 8 | **8** | ±0 | `████████░░` 8 | · |
-| 8 | Telecronaca | 8 | **7** | −1 | `███████░░░` 7 | ▼ |
+| 8 | Telecronaca | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 9 | Interazioni | 7 | **7** | ±0 | `███████░░░` 7 | · |
 | 10 | Coerenza fra i sistemi | 8 | **8** | ±0 | `████████░░` 8 | · |
-| 11 | Immersione | 5 | **5** | ±0 | `█████░░░░░` 5 | · |
+| 11 | Immersione | 5 | **6** | +1 | `██████░░░░` 6 | ▲ |
 | 12 | Carriera | 7 | **7** | ±0 | `███████░░░` 7 | · |
 
-Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n° 14 (7.884.0) **7,25** · n° 15 (7.886.0) **7,17**.
+Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n° 14 (7.884.0) **7,25** · n° 15 (7.886.0) **7,17** · n° 16 (7.895.0) **7,08**.
 
 <!-- VOTI-FINE -->
 
@@ -53,7 +53,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 | telecronaca sopra la metà del campo | 67 % → **0 %** (7.892) | `copertura` |
 | metro grafico (5 larghezze) | contrasto 917 → 62 (chiaro) / 1000 → 61 (scuro), testo < 10 px 463 → 29, overflow 0 | griglia G0→G6 |
 | fps banco con i 22 GLB in campo | 11 → **2** (Chromium); Android del PO: gioca, fps non misurati | c889 |
-| scheda da telefono (ultima) | media **7,17** (scheda n° 15, 7.886, 12/09; la 7.887 → 7.895 non ha ancora una scheda); soglia di collaudo **≥ 9** (PO 14/09) | #73, #56 |
+| scheda da telefono (ultima) | media **7,08** (scheda n° 16, 7.895, 15/09, GLB accesi; n° 15: 7,17); area minima 6 (Realismo, Immersione); soglia di collaudo **≥ 9** (PO 14/09) | sezione voti, #81 |
 
 ## 1. Obiettivo e metro finale
 

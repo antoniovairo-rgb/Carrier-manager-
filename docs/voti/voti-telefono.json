@@ -98,6 +98,36 @@
     7
    ],
    "fonte": "docs/archivio/PLAYTEST-REPORT-01.md · Scorecard n° 15 (media 7,17)"
+  },
+  {
+   "n": 16,
+   "build": "7.895.0",
+   "quando": "15/09 01:35",
+   "glb": true,
+   "voti": [
+    6,
+    7,
+    7,
+    7,
+    8,
+    7,
+    8,
+    7,
+    7,
+    8,
+    6,
+    7
+   ],
+   "fonte": "tests/visual/collaudo-telefono (4 partite, GLB accesi) — verbale FASE3-SCAMBIO 15/09 01:35",
+   "perche": {
+    "1": "ai piedi del padrone 63/61/40/44 % (banda ≥60: 2/4, era 4/4) · a terra 67/69/43/42 % (banda ≥75: 0/4) · salti 67-77 per partita: con i 22 corpi in campo (7.889) il pallone reso segue meno il padrone → 8 → 6",
+    "5": "palla morta+fermo 9/7/7/4 (≤15: 4/4) · righe 96/77/108/87 (70-110: 4/4)",
+    "8": "telecronaca in basso, copertura del campo 67 % → 0 % (7.892); la seconda voce (n° 15) non e' stata rimisurata → resta 7",
+    "9": "scelte compatte 36,7 % → 21,5 %, barra specchiata dal 46' (7.893): nessuna misura di qualita' → 7",
+    "10": "rituali verdi su ogni rilascio del 14/09 (career-critical + ci x5), guardiano tabellone nel ci → 8",
+    "11": "corpi visibili in gioco aperto 0,3 → 45 % (7.889), tabellone nella sagoma della curva 13/13 impianti (7.895), fps banco senza sonda 25-27 (era 11): due misure vere ma ancora nessuno strumento per l'immersione intera → 5 → 6",
+    "12": "career-critical exit 0 sulla 7.895 → 7"
+   }
   }
  ],
  "regole": {

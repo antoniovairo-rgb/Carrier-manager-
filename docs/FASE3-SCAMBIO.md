@@ -5586,3 +5586,44 @@ Errore dichiarato: la 7.894 era uscita con `GAME_VERSION` 7.893.0 (bump mancato)
   sull'Android del PO (la taglia del tabellone nel provino piccolo e' il punto da guardare). Scheda da telefono n° 16
   (4 partite, GLB accesi) in corsa per la sezione voti.
 
+## Scheda da telefono n° 16 — build 7.895.0 (15/09 01:35), GLB accesi, 4 partite
+
+Sonda `collaudo-telefono` (Chromium 412x915, campo 3D con CH38, screencast CDP). Numeri per Vairo casa / Galli
+fuori / Moretti casa / Conti fuori:
+
+| misura | valori | banda |
+|---|---|---|
+| pallone reso ai piedi del padrone (≤3u) | 63 / 61 / **40** / **44** % | ≥ 60 % (2/4; n° 15: 4/4) |
+| …a palla a terra | 67 / 69 / **43** / **42** % | ≥ 75 % (0/4) |
+| padrone dichiarato dalla simulazione | 42 / 38 / 40 / 39 % del gioco vivo | (informativo; A3 del piano: → ≥ 70 %) |
+| distanza reso↔padrone mediana / p90 | 1,8/10 · 2/12,3 · 4,5/11,8 · 3,5/19,1 u | mediana ≤ 3u (2/4) |
+| salti del pallone (>8u in ≤110 ms) | 67 / 77 / 67 / 73 su ~1950 campioni | 0 fuori dagli stacchi |
+| palla morta + fermo (minuti) | 9 / 7 / 7 / 4 | ≤ 15 (4/4) |
+| righe di cronaca | 96 / 77 / 108 / 87 | 70-110 (4/4) |
+| gol / tiri in cronaca | 0/1 · 1/1 · 3/7 · 3/4 | cross in gioco aperto 0/4, corner 1 |
+| fps senza sonda (primi 8 s) | 26 / 26 / 27 / 25 | ≥ 30 (era 11 il 14/09 sulla 7.889) |
+
+Strumento: con la sonda accesa il banco scende a 2-4 fps e l'eta' massima del fotogramma salvato arriva a 250 s
+(screencast in stallo): le FOTO di questa scheda non sono giudicabili, i numeri (campionati dentro la pagina) si'.
+Il risultato non viene letto (`?`): difetto della sonda, da sistemare.
+
+| area | n° 15 | **n° 16** | perche' |
+|---|---|---|---|
+| 1 Realismo | 8 | **6** | ⬇️ ai piedi del padrone in banda 2/4 (era 4/4), a terra 0/4, ~70 salti a partita: con i 22 corpi in campo il pallone reso segue meno il padrone |
+| 2 Credibilita' da attaccante | 7 | **7** | frasi smentite 0/0: test ancora vuoto |
+| 3 Causalita' | 7 | **7** | invariata, nessuna misura |
+| 4 Varieta' | 7 | **7** | cross in gioco aperto 0/4, un corner; azioni sul banco 0,25 → 0,88 (7.894) |
+| 5 Ritmo | 8 | **8** | palla morta+fermo 4/4 e righe 4/4 in banda |
+| 6 Azioni extra-eroe | 7 | **7** | gol 0/1/3/3; nessuna misura nuova nel reso |
+| 7 Highlight dell'eroe | 8 | **8** | apertura senza teletrasporti 50 → 0, piazzato 32,8u → 0 (7.890/7.891) |
+| 8 Telecronaca | 7 | **7** | in basso, copertura del campo 67 % → 0 % (7.892); la seconda voce del n° 15 non rimisurata |
+| 9 Interazioni | 7 | **7** | scelte compatte 36,7 % → 21,5 %, barra specchiata: nessuna misura di qualita' |
+| 10 Coerenza fra i sistemi | 8 | **8** | rituali verdi su ogni rilascio del 14/09, guardiano tabellone nel ci |
+| 11 Immersione | 5 | **6** | ⬆️ corpi visibili 0,3 → 45 %, tabellone nella sagoma 13/13, fps 11 → 25-27: due misure vere, ancora nessuno strumento per l'immersione intera |
+| 12 Carriera | 7 | **7** | career-critical exit 0 sulla 7.895 |
+
+**Media 7,08** (n° 15: 7,17 → −0,08). Il calo e' del Realismo, ed e' vero: la 7.889 ha rimesso i ventidue in
+campo e il pallone reso li insegue peggio (il ponte esclude l'eroe, A3). Il metro (≥ 9, nessuna area < 7) e'
+lontano: due aree a 6. Prossimo sul motore: A2 (3 tick al minuto) e A3 (padrone nel live). NON verificato:
+l'Android del PO.
+
