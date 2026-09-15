@@ -3989,7 +3989,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           /* gli specchi: chi legge i vecchi ref trova lo stato del motore */
           const _pM=_stM870.palla;ballPosRef.current={x:clamp(_pM.x,0,100),y:clamp(_pM.y,0,100)};
           ballTargetRef.current=(_stM870.arco&&_stM870.arco.to)?{x:clamp(_stM870.arco.to.x,0,100),y:clamp(_stM870.arco.to.y,0,100)}:{x:clamp(_pM.x,0,100),y:clamp(_pM.y,0,100)};
-          carrierRef.current=(_stM870.poss.padrone!=null&&_stM870.poss.padrone<21)?{i:_stM870.poss.padrone}:null;holdArrRef.current=0;pendingBtRef.current=null;
+          carrierRef.current=(_stM870.poss.padrone!=null&&(_stM870.poss.padrone<21||!(typeof window!=='undefined'&&window.__CPM_NO897)))?{i:_stM870.poss.padrone}:null;/* [7.897 A3] anche l'EROE (21) e' un portatore per la colla del pallone reso: escluso, il pallone restava senza scrittore nel 10 % del gioco vivo (tenuta|eroe|nessuno 145 campioni su 1449, Moretti casa). Rosso __CPM_NO897 */holdArrRef.current=0;pendingBtRef.current=null;
           chaserRef850.current=(_stM870.inseguitore!=null)?{i:_stM870.inseguitore}:null;
           fermoRef.current=_stM870.fermo?{x:_stM870.fermo.x,y:_stM870.fermo.y,t:Math.max(1,(_stM870.fermo.tot|0)-(_stM870.fermo.t|0)),kind:_stM870.fermo.kind}:null;
           outRef.current=null;spRef.current=null;counterRef.current=null;counterArmRef.current=null;azioneRef.current=null;

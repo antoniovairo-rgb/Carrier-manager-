@@ -5694,3 +5694,28 @@ con passo e voli scalati, banco `stati-sub` con dt, poi il live.
   ci exit=0 (compreso il guardiano tabellone). Verdetto: verde, nessun revert necessario. Non verificato: l'Android del
   PO; la CI di GitHub su main. Regola ribadita: prima il rituale sull'HEAD esatto, poi il push.
 
+## A3 — diagnosi del «pallone senza padrone» nel live (15/09 02:10) e 7.897 sul ramo
+
+Sonda `diag-padrone` (Moretti casa, GLB accesi, 1.449 campioni di gioco vivo a 100 ms): stato del motore × padrone ×
+scrittore del pallone reso, con la distanza reso↔padrone logico.
+
+| stato | padrone | scrittore reso | campioni | distanza mediana / quota ≤3u |
+|---|---|---|---|---|
+| volo | nessuno | nessuno | 386 (26,6 %) | — |
+| tenuta | altro | **nessuno** | 347 (23,9 %) | 3,6u / 44 % |
+| tenuta | altro | portatore | 236 (16,3 %) | 3,6u / 44 % |
+| tenuta | **eroe** | **nessuno** | 145 (10,0 %) | 3,9u / 49 % |
+| fermo / kickoff / rete | nessuno | fermo o nessuno | 231 (16 %) | — |
+
+Tre fatti. (1) **Il 30 % del gioco vivo il pallone e' in volo** per costruzione del motore: un passaggio dura un tick
+intero, cioe' un minuto di gioco. «Padrone dichiarato ≥ 70 %» non si raggiunge con la colla: serve un tick piu'
+fine (A2 v3 con dt frazionario), e A2 e A3 convergono. (2) Quando il padrone e' l'eroe (10 % del vivo) il pallone reso
+non ha scrittore: `carrierRef` escludeva l'indice 21 e la colla 7.523 scartava la mesh dell'eroe. (3) Quando il padrone
+e' un compagno, la colla scrive solo nel 40 % dei campioni e la distanza dal padrone LOGICO resta 3,6u anche quando
+scrive: e' il ritardo del corpo reso rispetto al logico, il pallone sta ai piedi del corpo che si vede. Il metro
+«ai piedi del padrone logico ≤3u» misura anche questo ritardo: da rivedere (distanza dal corpo RESO del padrone).
+
+**7.897.0 (A3 v1, rosso `__CPM_NO897`)**: l'eroe e' un portatore per la colla (specchio in src/15 senza l'esclusione
+`<21`; in src/12 `_por526` prende la mesh dell'eroe quando l'indice e' 21). Attesa: la riga tenuta|eroe|nessuno
+(10 %) passa a «portatore». Misura in corsa: diagnosi verde + telefono Moretti verde/rosso.
+

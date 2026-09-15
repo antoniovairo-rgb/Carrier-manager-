@@ -2311,7 +2311,8 @@ function ThreeMatchView(props){
           if((typeof window!=='undefined'&&(window.__CPM_SI813||!window.__CPM_NO850))&&P.matchPhase==='playing'&&P.carrierRef){try{/* [7.850.0] acceso di default: col corpo del portatore sul punto logico (7.850) la colla 7.523 lo trova. Rosso __CPM_NO850 */
             const _cr=P.carrierRef.current;
             if(_cr&&_cr.i!=null){const _pp=sr.current.players&&sr.current.players[_cr.i];const _src=(P.allPlayers||[])[_cr.i];
-              if(_pp&&_pp.mesh&&_pp.mesh!==hero)sr.current._por526={mesh:_pp.mesh,lato:(_src&&_src.team)||'home'};}
+              if(_cr.i===21&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO897))sr.current._por526={mesh:hero,lato:'home'};/* [7.897 A3] il padrone e' l'eroe: la colla 7.523 lo segue come un compagno */
+              else if(_pp&&_pp.mesh&&_pp.mesh!==hero)sr.current._por526={mesh:_pp.mesh,lato:(_src&&_src.team)||'home'};}
             else if(!ballArcActive){sr.current._por526=null;}
           }catch(_e813){}}
           {const _pr6=sr.current._por526;
