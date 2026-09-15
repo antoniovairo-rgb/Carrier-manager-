@@ -6023,9 +6023,11 @@ muovere di piu' il pallone logico. Fra 7.899 e 7.900 cambiano solo il motore e l
 | rosso `__CPM_NO900` | **70 %** | 41 % | 1,3 / 23,2u | 0,9 / 21,1u | 54 | 36 |
 | verde 7.900 (bis) | **64 %** | 50 % | 2,1 / 19,4u | 1,3 / 17,6u | 55 | 33 |
 | verde 7.900 sotto carico (prima corsa) | 29 % | 51 % | 6,1 / 27,2u | 3,4 / 23,5u | 40 | 47 |
+| **Moretti casa** rosso `__CPM_NO900` | **58 %** | 39 % | 1,9 / 15,0u | 1,1 / 16,1u | 54 | 28 |
+| Moretti casa verde 7.900 (scheda, macchina scarica) | **62 %** | 46 % | 1,8 / 19,6u | 1,8 / 22,2u | 65 | 31 |
 
-Letto onestamente: rosso e verde stanno dentro la variabilita' da corsa a corsa gia' dichiarata (±10 punti sulla
-stessa partita); il 29 % era il carico, non la 7.900. **La 7.900 resta in produzione.**
+Letto onestamente: su due partite rosso e verde stanno dentro la variabilita' da corsa a corsa gia' dichiarata (±10
+punti sulla stessa partita: Vairo 70/64, Moretti 58/62); il 29 % era il carico, non la 7.900. **La 7.900 resta in produzione.**
 
 **Regola nuova (lezione 21ª): una sola sonda nel browser alla volta sulla macchina.** Un secondo Chromium in
 parallelo dimezza «ai piedi» (64 → 29 %) e triplica la distanza dal padrone (2,1 → 6,1u) senza toccare i fps
