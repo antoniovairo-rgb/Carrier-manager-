@@ -10,6 +10,7 @@
 
 | quando (UTC) | cosa | cantiere → stato | numeri |
 |---|---|---|---|
+| 15/09 03:30 | **main = 0a1746c**: 7.897 in produzione (rituali verdi su c1d8303, build identico) | A3 → passo 1 fatto | telefono Moretti, coppia rosso/verde: ai piedi del padrone 50 → 53 %, scarto reso↔logico 2,7 → 1,7u, salti 74 → 64; padrone-eroe 3,9 → 2,5u |
 | 15/09 00:40 | **main = 9188df9**: 7.895 v2 in produzione (rituali verdi su 3beb674: guardiano tabellone, career-critical, ci; build identico) | C7 → fatto | primo cielo sopra il bordo alto del tabellone: rosso 1 px in 9/9 impianti → 12-28 px (0,9-1,9u); provino piccolo 22 px, tabellone 151 → 68 px di larghezza (costo dichiarato) |
 | 14/09 22:05 | **main = f6a65d6**: 7.894 in produzione (rituali verdi su 6519780, build identico; f6a65d6 solo docs) | A1 → fatto | banco: azioni ≥ 3 passaggi 0,25 → 0,88/partita; tiri 2,88 → 3,13; passaggi 21 → 24,5 (rosso `__CPM_NO894`) |
 | 14/09 20:10 | **main = 5504b6e**: 7.892 + 7.893 in produzione (rituali verdi su 7940f26, build identico) | C1 → fatto | riga di telecronaca sopra la metà del campo 67,4 % → 0 %; blocco scelte 36,7 % → 21,5 %; barra specchiata dal 46' (casa x 13 → 297); frecce via |
@@ -44,7 +45,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 
 | cosa | numero | fonte |
 |---|---|---|
-| produzione (`main`) | **9188df9 = 7.895.0** (7.889 → 7.895 tutte in produzione) | verbale 00:40 |
+| produzione (`main`) | **0a1746c = 7.897.0** (7.889 → 7.897 in produzione; 7.896 revocata) | verbale 03:30 |
 | gioco vivo con un padrone dichiarato (telefono, 4 partite) | **37 %** | sonda telefono 14/09 |
 | tiri del motore a partita (4 partite) | **1,75** (0/2/2/3), 1 dall'area | area 2, misura B |
 | azioni ≥ 3 passaggi poi tiro (banco) | 0,25 (7.893) → **0,88**/partita (7.894, in produzione) | banco `stati-motore` |
@@ -71,7 +72,7 @@ Storico delle medie: n° 12 (7.880.0) **6,92** · n° 13 (7.881.0) **7,08** · n
 |---|---|---|---|
 | A1 | 7.894 primo tocco non sempre sosta | banco: azioni 0,25 → 0,88, tiri 2,88 → 3,13, passaggi 21 → 24,5 | **fatto** — in produzione (main f6a65d6, 22:05) |
 | A2 | 7.896 cadenza: 3 tick del motore al minuto + narratore che sceglie l'evento saliente | **v1/v2 REVOCATE** al telefono: ai piedi del padrone 63 % → 4/8 %, salti 67 → 143/150 (il mondo va 3× piu' veloce, i corpi resi al tetto 15 u/s non seguono) | v3 da progettare: dt frazionario nel motore (passo e voli scalati), prima al banco |
-| A3 | il padrone del pallone nel live: ponte motore → `carrierRef` (oggi esclude l'eroe), volo/libero resi | gioco vivo con padrone 37 % → ≥ 70 %; pallone reso ai piedi ≥ 75 % | da fare |
+| A3 | il padrone del pallone nel live — 7.897 (l'eroe è un portatore per la colla) in produzione; diagnosi: 30 % del vivo in volo per costruzione (un passaggio = un tick), colla sul compagno 40 %, ritardo dei corpi resi 3,6u | padrone dichiarato 44 % → ≥ 70 % (serve A2 v3) · ai piedi 53 % → ≥ 75 % · metro da rivedere sul corpo RESO | passo 1 fatto; prossimo: A2 v3 (dt) e metro sul corpo reso |
 | A4 | la squadra sale e tira dall'area (#44): posizioni d'attacco, pTiro, strada libera | tiri ≥ 8/partita, ≥ 3 dall'area; avanzato più alto ≥ 70 | da fare |
 | A5 | cross e ricezioni (#38): il cross atterra su qualcuno | cross ricevuti ≥ 60 %, mediana ≤ 2u | aperto |
 | A6 | portiere e gesti (codici 000/111, #46, #49) | doppio gesto 0; portiere in tempo ≥ 90 % delle parate | aperto |

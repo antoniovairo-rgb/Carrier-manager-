@@ -5736,3 +5736,7 @@ tre punti (50 → 53 %) e «a terra» va nell'altro verso di sei: differenze da 
 partita dava 40 %). Non e' il rimedio che porta il Realismo a 8: il 30 % in volo e il ritardo dei corpi resi
 pesano di piu'. Si spedisce come passo piccolo e vero, senza dichiararlo di piu'. Rituali in corsa.
 
+- 15/09 03:30 UTC: **Produzione allineata a 0a1746c (7.897.0) — rituale completo verde su c1d8303** (career-critical
+  exit=0, ci exit=0 con 32 guardiani, `IDENTICO 1`); 0a1746c aggiunge solo il verbale, build byte-identico.
+  Fast-forward dbd0d38 → 0a1746c, mai force. Non verificato sull'Android del PO.
+
