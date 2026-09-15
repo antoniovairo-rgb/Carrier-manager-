@@ -1608,7 +1608,6 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const ballLagRef=useRef(false);/* [7.642.0 v5 — IL BERSAGLIO ASPETTA LA PALLA] misurato in v4: la palla e' entro 2,5u di un uomo solo 3 tick su 36 — le marce delle macchine avanzano il bersaglio anche con la palla lontana e il viaggio non si completa mai. Con la palla a >6u dal bersaglio, le quattro marce (gol-in-costruzione, contropiede, catena, trama) NON avanzano quel tick: prima si arriva, poi si riparte. */
   const carrierRef=useRef(null);
   const motoreRef=useRef(null),golMotoreRef=useRef(null),quotaMotoreRef=useRef([]);/* [7.870] IL MOTORE DEL POSSESSO (src/14-motore-possesso.jsx): unico scrittore del pallone e dei ventidue nel gioco vivo */
-  const evAcc896Ref=useRef([]),k896Ref=useRef(0);/* [7.896 A2] i fatti dei sotto-tick del motore, narrati al minuto come evento saliente; contatore dei sotto-tick */
   const chaserRef850=useRef(null);/* [7.850 v3] chi INSEGUE il pallone secondo la simulazione (`_cI553` del blocco del movimento): il renderer lo disegna sul suo punto logico come il portatore */
   const lastGoalChiRef814=useRef(null);/* [7.814.0 — H del playtest n°4] chi ha fatto l'ultima battuta del piano del gol: e' lui il marcatore, non un nome a caso dalla rosa *//* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
      il portatore persistente {i} (indice in matchPlayers) scritto SOLO agli EVENTI — passaggio della
@@ -3014,38 +3013,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(phase!=="playing"||paused||kickoffHold)return;/* [7.9.3] kickoff trattenuto finché CH38 non è pronto */
     if(scFreeze681&&!(typeof window!=='undefined'&&window.__CPM_NO682F)
        &&!(typeof window!=='undefined'&&window.__CPM_AUTOPLAY_ON&&!window.__CPM_SCFREEZE_TEST))return;/* [7.682.0] c'e' una scelta aperta: il tempo di gioco si ferma finche' non e' presa (o finche' non scadono i venti secondi) */
-    /* [7.896.0 A2 — TRE PASSI DEL MOTORE PER MINUTO DI GIOCO. Rosso __CPM_NO896] Il motore del possesso girava una volta
-       per minuto: 92 fatti a partita, 1,75-3 tiri, azioni (≥3 passaggi poi tiro) 0,25-0,88. Il banco a tre tick per minuto
-       (stesso motore, 7.894) dava tiri 9,4, passaggi 73, catene ≥3 7,8, possesso 51 %. Qui il metronomo batte tre volte per
-       minuto: i due sotto-tick muovono SOLO motore e specchi (pallone, ventidue, eroe, turno), il terzo battito e' il minuto
-       di sempre (cronaca, microsim, scene) e narra l'evento SALIENTE fra i fatti accumulati (narra870 sceglie gia' per
-       priorita'): al massimo una riga al minuto, come prima. Tempo reale per minuto invariato (MATCH_TICK_MS / velocita').
-       Il rosso rimette un tick al minuto. */
-    const _SUB896=(typeof window!=='undefined'&&window.__CPM_NO896)?1:3;k896Ref.current=0;evAcc896Ref.current=[];
-    const _specchi896=(_stM870,_evM870)=>{
-          {const _q=quotaMotoreRef.current;_q.push(_stM870.poss.lato==="home"?1:0);if(_q.length>16)_q.shift();}
-          const _dM=_stM870.poss.lato==="home"?1:-1;
-          if(_dM!==possTurnRef.current){const _c=_evM870.find(e2=>/contrasto|intercetto|recupero|rinvio|rimessa|fallo|corner|centro|calcio_inizio|spazzata|presa|parata/.test(e2.t));setTurn616(_dM,"motore-"+(_c?_c.t:"turno"));}
-          /* gli specchi: chi legge i vecchi ref trova lo stato del motore */
-          const _pM=_stM870.palla;ballPosRef.current={x:clamp(_pM.x,0,100),y:clamp(_pM.y,0,100)};
-          ballTargetRef.current=(_stM870.arco&&_stM870.arco.to)?{x:clamp(_stM870.arco.to.x,0,100),y:clamp(_stM870.arco.to.y,0,100)}:{x:clamp(_pM.x,0,100),y:clamp(_pM.y,0,100)};
-          carrierRef.current=(_stM870.poss.padrone!=null&&_stM870.poss.padrone<21)?{i:_stM870.poss.padrone}:null;holdArrRef.current=0;pendingBtRef.current=null;
-          chaserRef850.current=(_stM870.inseguitore!=null)?{i:_stM870.inseguitore}:null;
-          fermoRef.current=_stM870.fermo?{x:_stM870.fermo.x,y:_stM870.fermo.y,t:Math.max(1,(_stM870.fermo.tot|0)-(_stM870.fermo.t|0)),kind:_stM870.fermo.kind}:null;
-          outRef.current=null;spRef.current=null;counterRef.current=null;counterArmRef.current=null;azioneRef.current=null;
-          kickRef.current=_stM870.rete?Math.max(1,2-(_stM870.rete.t|0)):0;kickoffRef.current=_stM870.kickoff?1:0;
-          if((kickRef.current|0)>0||(kickoffRef.current|0)>0){if(!ripT0Ref.current)ripT0Ref.current=Date.now();}
-          {const _gc=_stM870.gioc;setMatchPlayers(prev=>{const _nx2=prev.map((pl,i2)=>{const q=_gc[i2];return (q&&pl&&pl.team!=="ref")?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=_nx2;return _nx2;});}
-          if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current)setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});
-    };
     const iv=setInterval(()=>{
       // Sprint 34 — tactic moments + sub events (checked via clockRef, outside setClock)
       const ck=clockRef.current;
       const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);/* [7.870] rosso appaiato: __CPM_NO870 rimette in moto le vecchie macchine narrative e il vecchio mover */
-      k896Ref.current=(k896Ref.current+1)%_SUB896;
-      if(k896Ref.current!==0){/* [7.896] sotto-tick: solo il motore e i suoi specchi, nessuna riga, nessun minuto */
-        try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;const _ev=_M.tick({min:(clockRef.current|0)+1});for(const _e of _ev)evAcc896Ref.current.push(_e);_specchi896(_M.stato(),_ev);}}catch(_e896){}
-        return;}
       /* [7.494.0 F0 — CHIUDE IL BORDO NON MISURATO DEL 7.489] Il 7.489 ha reso la cronaca funzione pura di
          (seed di partita, minuto) dentro il callback di `setClock`, dove vive `_rndM`. Ma i rami che girano
          QUI SOPRA — sostituzione (65-70') e highlight dinamici (60' e 72') — sono fuori da quella closure e
@@ -4009,10 +3980,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(nx%3===0&&!golMotoreRef.current){const _q=quotaMotoreRef.current;if(_q.length>=6){const _qh=Math.round(100*_q.reduce((a2,b2)=>a2+b2,0)/_q.length);const _p=clamp(possessionRef.current|0,20,80);const _want=(_qh<_p-12)?"home":(_qh>_p+12)?"away":null;if(_want)_M.chiedi.turno(_want);}}
           /* [7.849 nel motore] l'atteggiamento: chi e' sotto o pari dal 70' assalta, chi e' avanti di due dal 60' amministra */
           {const _sc=scoreRef.current||{home:0,away:0};const _d=(_sc.home|0)-(_sc.away|0);const _attDi=(dd)=>(nx>=70&&dd<=0)?1:(nx>=60&&dd>=2)?-0.6:(dd<0?0.4:0);_M.chiedi.atteggiamento("home",_attDi(_d));_M.chiedi.atteggiamento("away",_attDi(-_d));}
-          _evM870=evAcc896Ref.current.concat(_M.tick({min:nx}));evAcc896Ref.current=[];/* [7.896] i fatti dei due sotto-tick + questo: il narratore sceglie il saliente */
+          _evM870=_M.tick({min:nx});
           try{if(typeof window!=='undefined'&&window.__CPM_REC){const _acc=(window.__CPM_EVM870=window.__CPM_EVM870||[]);for(const _e of _evM870){if(_e&&_e.t==='tiro')_acc.push({tick:_e.tick,chi:(_e.chi&&_e.chi.i!=null)?_e.chi.i:String(_e.chi&&_e.chi.nome||'?'),zona:_e.zona||'?',min:_e.min});}window.__CPM_MOTORE_EV=()=>window.__CPM_EVM870||[];}}catch(_e870ev){}/* [A2 strumento] gancio di SOLA LETTURA, solo con __CPM_REC (sonde): accumula i tiri del motore, che vivono un tick solo, per contarli contro le righe raccontate */
           _stM870=_M.stato();
-          _specchi896(_stM870,_evM870);/* [7.896] gli specchi del motore: la stessa funzione dei sotto-tick */
+          {const _q=quotaMotoreRef.current;_q.push(_stM870.poss.lato==="home"?1:0);if(_q.length>16)_q.shift();}
+          const _dM=_stM870.poss.lato==="home"?1:-1;
+          if(_dM!==possTurnRef.current){const _c=_evM870.find(e2=>/contrasto|intercetto|recupero|rinvio|rimessa|fallo|corner|centro|calcio_inizio|spazzata|presa|parata/.test(e2.t));setTurn616(_dM,"motore-"+(_c?_c.t:"turno"));}
+          /* gli specchi: chi legge i vecchi ref trova lo stato del motore */
+          const _pM=_stM870.palla;ballPosRef.current={x:clamp(_pM.x,0,100),y:clamp(_pM.y,0,100)};
+          ballTargetRef.current=(_stM870.arco&&_stM870.arco.to)?{x:clamp(_stM870.arco.to.x,0,100),y:clamp(_stM870.arco.to.y,0,100)}:{x:clamp(_pM.x,0,100),y:clamp(_pM.y,0,100)};
+          carrierRef.current=(_stM870.poss.padrone!=null&&_stM870.poss.padrone<21)?{i:_stM870.poss.padrone}:null;holdArrRef.current=0;pendingBtRef.current=null;
+          chaserRef850.current=(_stM870.inseguitore!=null)?{i:_stM870.inseguitore}:null;
+          fermoRef.current=_stM870.fermo?{x:_stM870.fermo.x,y:_stM870.fermo.y,t:Math.max(1,(_stM870.fermo.tot|0)-(_stM870.fermo.t|0)),kind:_stM870.fermo.kind}:null;
+          outRef.current=null;spRef.current=null;counterRef.current=null;counterArmRef.current=null;azioneRef.current=null;
+          kickRef.current=_stM870.rete?Math.max(1,2-(_stM870.rete.t|0)):0;kickoffRef.current=_stM870.kickoff?1:0;
+          if((kickRef.current|0)>0||(kickoffRef.current|0)>0){if(!ripT0Ref.current)ripT0Ref.current=Date.now();}
+          {const _gc=_stM870.gioc;setMatchPlayers(prev=>{const _nx2=prev.map((pl,i2)=>{const q=_gc[i2];return (q&&pl&&pl.team!=="ref")?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=_nx2;return _nx2;});}
+          if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current)setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCHERMO843=window.__CPM_SCHERMO843||[]);if(_S.length<400)_S.push({min:nx,ko:kickoffRef.current|0,kick:kickRef.current|0,out:0,fermo:fermoRef.current?1:0,sp:0,pg:pendingGoalRef.current?1:0,ct:0,lib:0,hl:_inHL77?1:0,cool:bgCoolRef.current|0,ph:String(phaseRef.current),motore:1,stato:_stM870.poss.stato});}catch(_e){}}
           /* [7.879] il fatto che apre la scena: lo si prende qui, dove i fatti del motore arrivano */
           {const _oc=_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0};}
@@ -6782,7 +6766,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(typeof window!=='undefined'&&window.__CPM_NO478D)return{x:_nx,y:_ny};/* prova del rosso 7.478 */
         return{x:clamp(_nx,0,100),y:clamp(_ny,0,100)};
       });
-    },Math.max(40,Math.round(MATCH_TICK_MS/_SUB896/((typeof window!=='undefined'&&window.__CPM_NO484)?1:(matchSpeed||1)))));/* [7.896] /_SUB896: tre battiti per minuto, minuto reale invariato *//* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
+    },Math.max(120,Math.round(MATCH_TICK_MS/((typeof window!=='undefined'&&window.__CPM_NO484)?1:(matchSpeed||1)))));/* `__CPM_NO484` ignora la scelta (prova del rosso: le tre velocita' collassano su una) *//* [7.484.0] il metronomo della partita: base 420 ms, diviso per la velocita' scelta (fondo di 120 ms perche' un tick piu' corto del fotogramma non accelera piu' nulla, accumula solo lavoro) */
     return()=>clearInterval(iv);
   },[phase,hlIdx,oppPrestige,player.ovr,paused,kickoffHold,matchSpeed,scFreeze681]); // [7.682.0] +scFreeze681: senza, il gate del freeze verrebbe valutato una volta sola e la partita non si fermerebbe mai // addCom rimosso: ora stabile (clockRef) · [7.484.0] matchSpeed in deps: senza, cambiare velocita' non rifonda l'intervallo e la scelta non ha effetto fino al cambio di fase
 
