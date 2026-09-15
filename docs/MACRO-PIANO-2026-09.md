@@ -192,6 +192,37 @@ fotogrammi · durata **8-15 s** · opzioni **3** · l'evento della scena **rient
 **Costo dichiarato**: la varietà percepita nel primo periodo può scendere (meno testi in circolo); si recupera con il
 contesto e aggiungendo testi, che ora costano una riga e non una scena nuova.
 
+## 1-quater. La libreria dei corpi: **CH38 si tiene, mancano i GESTI** (valutazione, 15/09 21:20)
+
+Domanda del PO: «il GLB CH38 è la strada giusta? Vuoi trovare ed installare una nuova libreria che si confà al
+motore?». Inventario misurato di `assets/`:
+
+| | misurato |
+|---|---|
+| corpo | `footballer.glb` **48.140 triangoli** (3,09 MB) · `footballer-lite.glb` **14.622** (1,90 MB) · 7 mesh, 73 nodi, 2 materiali, 4 texture |
+| gesti | **16 clip** a disco su scheletro Mixamo a 66 nodi: idle, jog, jog-back, strafe L/R, kick, header, volley, receive, tackle, throwin, penalty + portiere (idle, catch, dive, block) |
+| gesti davvero caricati dal renderer | **15 su 16** — `anim-gk-idle.glb` (0,12 MB) sta a disco e **non viene mai caricata** (stessa svista delle tre locomozioni, sanata dalla 7.518) |
+
+**Il corpo non è il problema; il repertorio sì.** I difetti che le sonde continuano a misurare non sono di
+geometria ma di gesto: «pallone ai piedi 64 %», corpi a T, posa seduta della panchina costruita a mano sulle ossa.
+Per i 12 archetipi di §1-ter mancano **8 clip**: sprint (c'è solo il jog), cross, passaggio corto, finta/cambio di
+direzione, **esultanza** e delusione (l'highlight dell'eroe finisce con un gol: oggi non c'è un gesto per
+festeggiarlo), caduta su fallo subito, rincorsa della punizione.
+
+**La svolta 2D ribalta il vincolo dei triangoli.** Con il 3D acceso solo in highlight, ingresso e fischio finale,
+in quadro ci sono 4-8 attori, non 23: **8 corpi pieni = 385.000 triangoli, meno dei 559.834 di oggi** con i corpi
+leggeri e i ventitré in campo. Quindi negli highlight si può **tornare al corpo pieno** (e il leggero resta per
+ingresso in campo e fischio finale, dove i corpi sono tanti).
+
+**Raccomandazione: non cambiare libreria adesso.** Si aggiungono le 8 clip mancanti, retargetate sullo **stesso
+scheletro** — costo basso e, soprattutto, **nessuna regressione su ciò che è già verde** (piedi a terra 0,12u,
+panchina 16/16, triangoli −58 %, kit e texture calibrati). Cambiare libreria oggi significherebbe rifare il
+retarget di 16 clip, la posa seduta, i materiali delle maglie e tutte le calibrazioni misurate.
+
+**Quando cambiarla, invece**: se dopo le 8 clip il banco dei 12 archetipi resta sotto le soglie (pallone ai piedi
+< 90 %, gesti che leggono come generici), allora si valuta un pacchetto mocap calcistico dedicato — con audit di
+licenza, che la pipeline già prevede. Questa è una decisione da prendere **su una misura**, non prima.
+
 ## 2. Obiettivo e metro finale
 
 - **Metro di uscita**: scheda da telefono su 4 partite (Vairo casa, Galli fuori, Moretti casa, Conti fuori) con
@@ -268,6 +299,8 @@ schermate; C4 le percorre una per una, una alla volta, con misura appaiata prima
 | D6 | `CLAUDE.md` e `ARCHITECTURE_MAP.md` allineati a `src/`, motore, rituale, rami | 5 patch proposte | da confermare |
 | D7 | librerie migliori: corpo CH38 alleggerito per i 22, i portieri, l'arbitro e la panchina | triangoli in scena 1.317.654 → 559.834 (−58 %) | **in produzione**; interruttore `[D7 TEMP]` da togliere quando arrivano i due numeri dal telefono |
 | D8 | **guardiano del tabellino nel `ci`** (nuovo): le 24 voci di F0 non possono peggiorare | banda per voce, rosso se una voce esce dal metà/doppio | dopo A9 |
+| D10 | **8 gesti mancanti** (§1-quater): sprint, cross, passaggio corto, finta, esultanza, delusione, caduta su fallo, rincorsa punizione — retarget sullo stesso scheletro; più `anim-gk-idle` che sta a disco e non è caricata | clip caricate 15 → 24 · i 12 archetipi coperti da un gesto proprio 4/12 → 12/12 · nessuna regressione su piedi a terra (0,12u) e triangoli | **nuovo, prima di valutare una libreria diversa** |
+| D11 | **corpo pieno negli highlight** (§1-quater): con 4-8 attori in quadro il pieno costa meno dei 23 leggeri di oggi | triangoli in un highlight ≤ 559.834 (oggi in campo) · corpo pieno negli highlight, leggero in ingresso e fischio finale · fps del PO | **nuovo, con F5** |
 | D9 | **guardiano del motore unico** (nuovo, §1-bis): nessuna seconda sorgente di verità | scritture del pallone fuori dal motore 33 → 0 · scene senza id di evento del motore 0 · `conta.scena` > 0 a fine partita | con B0 |
 
 ### E · PRODUZIONE E RILASCIO
