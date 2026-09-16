@@ -97,6 +97,14 @@ function creaMotorePossesso(cfg){
      Serve al post-partita e servira' alla partita 2D, che le mostrera' in sovrimpressione. */
   const _TAB0=()=>({tiri:0,inPorta:0,legni:0,murati:0,fuori:0,gol:0,xg:0,corner:0,falli:0,ammonizioni:0,espulsioni:0,rigori:0,parate:0,passaggi:0,passOk:0,cross:0,rimesse:0,contrasti:0,intercetti:0,spazzate:0,assist:0,possesso:0});
   S.tab={home:_TAB0(),away:_TAB0()};
+  /* [7.918.0 — F3 · LE PAGELLE NASCONO DAGLI EVENTI] Richiesta del PO (16/09): «le statistiche della partita,
+     pagelle, ecc durante la partita 2D devono essere ben visibili». Una pagella inventata sarebbe una seconda
+     verita': qui il voto si costruisce SOLO da cio' che il giocatore ha fatto, perche' ogni evento del motore
+     porta gia' il suo autore (`e.chi.i`). Il conto e' incrementale — un tick, un evento, nessuna passata sui
+     ventimila eventi della partita. */
+  const _PAG0=()=>({passaggi:0,passOk:0,tiri:0,inPorta:0,gol:0,assist:0,contrasti:0,intercetti:0,spazzate:0,parate:0,falli:0,amm:0,esp:0,subiti:0,tocchi:0});
+  S.pag={};
+  const _pag=(i)=>{if(i==null||i<0||i>=g.length)return null;if(!S.pag[i])S.pag[i]=_PAG0();return S.pag[i];};
   const _XG914=(e)=>{const z=e.zona||'fuori';const b=z==='areaPiccola'?0.34:z==='area'?0.14:z==='limite'?0.06:0.03;const pr=typeof e.press==='number'?e.press:4;return Math.min(0.9,b*(pr<2?1.35:pr<4?1.0:0.72));};
   const _conta914=(e)=>{try{
     const l=(e.chi&&e.chi.team)||e.per||e.lato;const A=S.tab[l];if(!A)return;const B=S.tab[l==='home'?'away':'home'];
@@ -117,6 +125,28 @@ function creaMotorePossesso(cfg){
       case 'intercetto': A.intercetti++;break;
       case 'contrasto': case 'recupero': A.contrasti++;break;
     }
+    /* la stessa riga, ma intestata all'uomo che l'ha fatta */
+    const P=_pag((e.chi&&e.chi.i!=null)?e.chi.i:null);
+    if(P){P.tocchi++;
+      switch(e.t){
+        case 'passaggio': P.passaggi++;if(!e.fuori)P.passOk++;break;
+        case 'cross': P.passaggi++;P.passOk++;break;
+        case 'tiro': P.tiri++;if(e.esito==='goal'||e.esito==='saved')P.inPorta++;break;
+        case 'gol': P.gol++;break;
+        case 'fallo': P.falli++;break;
+        case 'ammonizione': P.amm++;break;
+        case 'espulsione': P.esp++;break;
+        case 'spazzata': P.spazzate++;break;
+        case 'intercetto': P.intercetti++;break;
+        case 'contrasto': case 'recupero': P.contrasti++;break;
+      }
+    }
+    if(e.t==='gol'){
+      if(e.assist&&e.assist.i!=null){const Q=_pag(e.assist.i);if(Q)Q.assist++;}
+      /* il portiere che lo subisce: e' l'unica voce che non nasce da un suo gesto */
+      const _gkSub=_pag(l==='home'?10:0);if(_gkSub)_gkSub.subiti++;
+    }
+    if(e.t==='parata'){const K=_pag((e.gk&&e.gk.i!=null)?e.gk.i:((e.chi&&e.chi.i!=null)?e.chi.i:null));if(K)K.parate++;}
   }catch(_e){}};
   const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}S.eventi.push(e);_conta914(e);return e;};
   const nome=(p)=>p?(p.eroe?"{P}":(p.name||(p.gk?"il portiere":"un giocatore"))):"";
@@ -614,7 +644,7 @@ function creaMotorePossesso(cfg){
       poss:{stato:p.stato,lato:p.lato,padrone:p.padrone,ricevente:p.ricevente,tipo:p.tipo,t:p.t,eroe:pad?!!pad.eroe:false,a:(p.stato==="volo"&&p.a)?{x:+p.a.x.toFixed(2),y:+p.a.y.toFixed(2)}:null},
       fermo:S.fermo?{kind:S.fermo.kind,lato:S.fermo.lato,x:S.fermo.x,y:S.fermo.y,t:S.fermo.t,tot:S.fermo.tot}:null,
       rete:S.rete?{lato:S.rete.lato,t:S.rete.t}:null,kickoff:p.stato==="kickoff"?{lato:S.kickoff.lato,t:S.kickoff.t}:null,
-      scena:S.scena,fase:+S.fase.toFixed(3),dt:S.dt,cond:!!S.cond,gioc:g.slice(0,21).map(q=>({x:+q.x.toFixed(2),y:+q.y.toFixed(2)})),eroe:{x:+g[HERO].x.toFixed(2),y:+g[HERO].y.toFixed(2),attivo:eroeAttivo},
+      scena:S.scena,fase:+S.fase.toFixed(3),dt:S.dt,cond:!!S.cond,gioc:g.slice(0,21).map(q=>({x:+q.x.toFixed(2),y:+q.y.toFixed(2),t:(q.team===AWAY?1:0),gk:q.gk?1:0,rl:q.rl||""}))/* [7.917.1] il campo dall'alto deve sapere DI CHI e' il pallino: fino a qui `stato()` dava solo x/y e la vista 2D leggeva `p.team`, che qui dentro non esiste — i ventidue uscivano tutti dello stesso colore (fotografato). Squadra, portiere e ruolo vengono dal motore, che e' l'unico a saperli. */,eroe:{x:+g[HERO].x.toFixed(2),y:+g[HERO].y.toFixed(2),attivo:eroeAttivo},
       arco:S.arco,inseguitore:S.inseguitore,richieste:{gol:S.richieste.gol?{lato:S.richieste.gol.lato,t:S.richieste.gol.t}:null,turno:S.richieste.turno,verso:S.richieste.verso},
       conta:JSON.parse(JSON.stringify(S.conta)),quota:{home:S.quota.home,away:S.quota.away}};}
   /* [7.914.0] il tabellino di gara, per entrambe le squadre. Il possesso si ricava dai minuti in cui ciascun
@@ -632,6 +662,19 @@ function creaMotorePossesso(cfg){
   const registra=(tipo,lato,dati)=>{try{
     const A=S.tab[lato==='away'?'away':'home'];if(!A)return false;const B=S.tab[lato==='away'?'home':'away'];
     const d=dati||{};
+    /* [7.918.0] IL PONTE PORTA ANCHE IL NOME. Le scene dell'highlight sono dell'EROE (il live chiama
+       `registra` dal suo esito): senza questa riga i suoi gol finivano nel tabellino della squadra ma non
+       nella sua pagella, e il PO avrebbe visto l'attaccante che segna tre gol con 6,0 in pagella. */
+    const _P=_pag(d.chi!=null?d.chi:HERO);
+    if(_P){switch(tipo){
+      case 'tiro': _P.tiri++;if(d.esito==='gol'){_P.inPorta++;_P.gol++;}else if(d.esito==='parato')_P.inPorta++;break;
+      case 'gol': _P.gol++;break;
+      case 'assist': _P.assist++;break;
+      case 'passaggio': _P.passaggi++;if(d.ok!==false)_P.passOk++;break;
+      case 'fallo': _P.falli++;break;
+      case 'ammonizione': _P.amm++;break;
+      case 'parata': _P.parate++;break;
+    }}
     switch(tipo){
       case 'tiro': A.tiri++;if(d.xg)A.xg=Math.round((A.xg+(+d.xg||0))*100)/100;
         if(d.esito==='gol'){A.inPorta++;A.gol++;}else if(d.esito==='parato'){A.inPorta++;if(B)B.parate++;}
@@ -648,7 +691,23 @@ function creaMotorePossesso(cfg){
     }
     return true;
   }catch(_e){return false;}};
-  return{tick,chiedi,stato,tabellino,registra,HERO,_g:g,_S:S};
+  /* [7.918.0] IL VOTO. Base 6, e da li' solo fatti: un gol pesa 1,15, un assist 0,75, un contrasto 0,075,
+     una palla persa 0,045, un cartellino 0,30, il gol subito dal portiere 0,32. Nessun numero casuale:
+     ricaricando la stessa partita si riottiene la stessa pagella. Fra 4,0 e 9,5, come sui giornali. */
+  const pagelle=()=>{const out=[];
+    for(let i=0;i<g.length;i++){const p=g[i];if(!p)continue;const q=S.pag[i]||_PAG0();
+      let v=6;
+      v+=q.gol*1.15+q.assist*0.75+q.inPorta*0.12-Math.max(0,q.tiri-q.inPorta)*0.05;
+      v+=q.passOk*0.012-Math.max(0,q.passaggi-q.passOk)*0.045;
+      v+=(q.contrasti+q.intercetti)*0.075+q.spazzate*0.035+q.parate*0.18;
+      v-=q.falli*0.10+q.amm*0.30+q.esp*1.50+(p.gk?q.subiti*0.32:0);
+      v=Math.max(4,Math.min(9.5,Math.round(v*10)/10));
+      out.push({i:i,team:p.team,gk:!!p.gk,eroe:!!p.eroe,rl:p.rl||"",nome:p.name||"",voto:v,
+        gol:q.gol,assist:q.assist,tiri:q.tiri,inPorta:q.inPorta,passaggi:q.passaggi,passOk:q.passOk,
+        contrasti:q.contrasti,intercetti:q.intercetti,spazzate:q.spazzate,parate:q.parate,
+        falli:q.falli,amm:q.amm,esp:q.esp,subiti:q.subiti,tocchi:q.tocchi});}
+    return out;};
+  return{tick,chiedi,stato,tabellino,pagelle,registra,HERO,_g:g,_S:S};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* CMAV-MOTORE-END */

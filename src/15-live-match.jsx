@@ -456,76 +456,420 @@ function readMatchSpeed(){try{const raw=localStorage.getItem("cpm-match-speed");
   if(MATCH_SPEEDS.indexOf(v)>=0)return v;
   if(raw!=null){try{localStorage.setItem("cpm-match-speed","1");}catch(_e2){}}
   return 1;}catch(_e){return 1;}}
-/* ===== [7.917.0 — F1: IL CAMPO DALL'ALTO, decisione del PO 15/09] ==========================================
+/* ===== [7.917 — F1: IL CAMPO DALL'ALTO, decisione del PO 15/09] ===================================== */
+/* ——— tinte: il campo dall'alto deve dire A COLPO D'OCCHIO di chi e' il pallino ——— */
+function _rgb917(c){try{let h=String(c||"").trim().replace("#","");if(h.length===3)h=h.split("").map(q=>q+q).join("");const n=parseInt(h,16);if(!isFinite(n))return[120,120,120];return[(n>>16)&255,(n>>8)&255,n&255];}catch(_e){return[120,120,120];}}
+function _lum917(r){return(0.2126*r[0]+0.7152*r[1]+0.0722*r[2])/255;}
+function _sca917(r,k){return"rgb("+r.map(q=>Math.round(Math.max(0,Math.min(255,q*k)))).join(",")+")";}
+function _rgba917(r,a){return"rgba("+r[0]+","+r[1]+","+r[2]+","+a+")";}
+function _dist917(a,b){return Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1])+Math.abs(a[2]-b[2]);}
+/* [7.917.1] LE DUE MAGLIE DEVONO ESSERE DISTINGUIBILI. Nella realta' e' l'arbitro a imporre il cambio
+   divisa; qui lo fa la vista: se i due kit sono troppo vicini (somma degli scarti RGB < 150, come
+   granata contro rosso mattone) gli ospiti passano al bianco o al blu notte, scegliendo quello che
+   stacca di piu' dal padrone di casa. Nessun dato del motore cambia: e' solo il colore del pallino. */
+function _kit917(casa,osp){let A=_rgb917(casa),B=_rgb917(osp);
+  /* [7.918 difetto fotografato] una divisa VERDE LIME su un prato verde e' un pallino che sparisce: gli
+     ospiti della prova avevano il lime e i loro undici si confondevano con l'erba. Prima si stacca dal
+     prato, poi si stacca dall'altra squadra. */
+  const chiaro=[241,245,249],scuro=[15,23,42];
+  /* «verde come l'erba» non e' una distanza: e' una tinta verde con la STESSA chiarezza del prato (0,36).
+     Un lime accecante e' verde ma chiarissimo e si legge benissimo; un verde bottiglia sparisce. */
+  const erbaCome=(c)=>(c[1]>c[0]+12&&c[1]>c[2]+12&&Math.abs(_lum917(c)-0.36)<0.20);
+  if(erbaCome(A))A=chiaro;
+  if(erbaCome(B))B=_dist917(chiaro,A)<150?scuro:chiaro;
+  if(_dist917(A,B)<150)B=_dist917(A,chiaro)>=_dist917(A,scuro)?chiaro:scuro;
+  return{casa:A,osp:B};}
+/* i portieri: un colore che stacca da ENTRAMBE le divise (come nella realta') */
+function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[163,230,53],[249,115,22]];
+  for(let i=0;i<cand.length;i++){const c=cand[i];if(_dist917(c,a)>170&&_dist917(c,b)>170&&usati.every(u=>_dist917(c,u)>170))return c;}
+  return[250,204,21];}
+
+/* [7.917.0 — F1 · IL CAMPO DALL'ALTO] Richiesta del PO (15/09):
    «tra un highlights ed un altro dell'eroe, mostrare solo la partita 2d, mostrare in sovraimpressione le
    statistiche della partita». Fra un highlight e l'altro il 3D si spegne e resta il campo visto dall'alto con
    i ventidue e il pallone: gli stessi che muove il motore, letti da `stato()` — nessuna seconda sorgente.
-   Perche' non e' un ripiego: il 3D continuo costava 153 chiamate di disegno per fotogramma e teneva il
+   Perche' non e' un ripiego: il 3D continuo costava 116 chiamate di disegno per fotogramma e teneva il
    telefono del PO a 32 fps, e in quei minuti non racconta niente che questi pallini non raccontino meglio.
    Il 3D torna dove serve davvero: l'highlight dell'eroe, l'ingresso in campo, il fischio finale.
-   Il campo e' disegnato su canvas (un solo nodo, nessun DOM per ventitre pallini) alla cadenza del gioco.
-   Rosso __CPM_NO917: torna il 3D continuo. */
-function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,altezza}){
+
+   [7.917.1 — «la grafica 2D deve essere figa, spingila al massimo» (PO, 16/09)] La prima versione era una
+   bozza: campo coricato dentro uno schermo verticale (le porte a destra e a sinistra, proporzioni sbagliate),
+   ventidue pallini tutti dello stesso colore (stato() non diceva la squadra), nessuna area di rigore vera,
+   salti da un tick all'altro. Questa e' la versione da trasmissione:
+     · il campo E' un campo: 105×68 metri VERI, in scala, ruotato in verticale sul telefono e coricato sul
+       desktop, con area, area piccola, dischetto, ARCO del rigore, archi di bandierina, porte con la rete;
+     · il prato ha le fasce del taglio, la luce dei riflettori e la vignettatura del bordo campo, disegnati
+       UNA VOLTA su una tela di servizio e poi ricopiati (un solo `drawImage` per fotogramma);
+     · i pallini si MUOVONO: il motore decide undici volte al minuto, la vista interpola fra una decisione e
+       l'altra (richiamo esponenziale, indipendente dai fotogrammi) — niente piu' teletrasporti;
+     · le due squadre sono distinguibili per forza (vedi _kit917), i portieri hanno la loro tinta, ogni
+       pallino porta il numero, l'eroe il nome e il cerchio bianco, il portatore l'anello d'oro;
+     · il passaggio in volo si VEDE: linea tratteggiata dal pallone al bersaglio dichiarato dal motore;
+     · scia del pallone, ombre, e la bandierina del fermo di gioco sul punto dove si riprende.
+   Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
+function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,altezza}){
   const cRef=React.useRef(null);
   const rafRef=React.useRef(0);
+  const memRef=React.useRef({sfondo:null,W:0,H:0,dpr:1,g:[],e:null,b:null,scia:[],t:0});
   React.useEffect(()=>{
     let vivo=true;
+    const KIT=_kit917(kitCasa,kitOspiti);
+    const GKC=_gk917(KIT.casa,KIT.osp,[]),GKO=_gk917(KIT.casa,KIT.osp,[GKC]);
+    const LC=_lum917(KIT.casa),LO=_lum917(KIT.osp);
+    const bordoC=LC>0.55?"rgba(15,23,42,0.70)":"rgba(255,255,255,0.72)";
+    const bordoO=LO>0.55?"rgba(15,23,42,0.70)":"rgba(255,255,255,0.72)";
+    const testoC=LC>0.55?"#0f172a":"#ffffff",testoO=LO>0.55?"#0f172a":"#ffffff";
+    /* il campo vero: 105 × 68 metri. Tutte le misure qui sotto sono quelle del regolamento. */
+    const LUN=105,LAR=68;
     const disegna=()=>{
       if(!vivo)return;
-      const cv=cRef.current;
-      if(cv){
-        const dpr=Math.min(2,(typeof window!=='undefined'&&window.devicePixelRatio)||1);
-        const W=cv.clientWidth||320,H=cv.clientHeight||200;
-        if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);}
-        const g=cv.getContext('2d');
-        if(g){
-          g.setTransform(dpr,0,0,dpr,0,0);
-          /* il prato: due verdi alternati come le fasce di taglio, poi le linee */
-          g.fillStyle='#1f6b32';g.fillRect(0,0,W,H);
-          g.fillStyle='rgba(255,255,255,0.035)';
-          for(let i=0;i<8;i+=2)g.fillRect(i*W/8,0,W/8,H);
-          const mx=W*0.045,my=H*0.09,cw=W-mx*2,ch=H-my*2;
-          g.strokeStyle='rgba(255,255,255,0.55)';g.lineWidth=1.2;
-          g.strokeRect(mx,my,cw,ch);
-          g.beginPath();g.moveTo(mx+cw/2,my);g.lineTo(mx+cw/2,my+ch);g.stroke();
-          g.beginPath();g.arc(mx+cw/2,my+ch/2,Math.min(cw,ch)*0.12,0,Math.PI*2);g.stroke();
-          const ah=ch*0.62,aw=cw*0.145;
-          g.strokeRect(mx,my+(ch-ah)/2,aw,ah);
-          g.strokeRect(mx+cw-aw,my+(ch-ah)/2,aw,ah);
-          const ph=ch*0.28,pw=cw*0.05;
-          g.strokeRect(mx,my+(ch-ph)/2,pw,ph);
-          g.strokeRect(mx+cw-pw,my+(ch-ph)/2,pw,ph);
-          /* i ventidue e il pallone, dalle posizioni del motore */
-          let st=null;try{st=motore&&motore.stato?motore.stato():null;}catch(_e){}
-          if(st){
-            const px=(x)=>mx+(x/100)*cw, py=(y)=>my+(y/100)*ch;
-            const r=Math.max(3.2,Math.min(6,cw*0.014));
-            const uomo=(p,col,bordo,grande,etichetta)=>{
-              if(!p)return;
-              const X=px(p.x),Y=py(p.y),R=grande?r*1.35:r;
-              g.beginPath();g.arc(X,Y+R*0.55,R*0.95,0,Math.PI*2);g.fillStyle='rgba(0,0,0,0.22)';g.fill();
-              g.beginPath();g.arc(X,Y,R,0,Math.PI*2);g.fillStyle=col;g.fill();
-              g.lineWidth=grande?2:1;g.strokeStyle=bordo;g.stroke();
-              if(etichetta){g.fillStyle='#fff';g.font='700 '+Math.round(R*1.5)+'px system-ui,sans-serif';g.textAlign='center';g.fillText(etichetta,X,Y-R*1.5);}
-            };
-            const g1=st.gioc||[];
-            for(let i=0;i<g1.length;i++){const p=g1[i];if(!p)continue;
-              const casa=p.team==='home';
-              uomo(p,casa?kitCasa:kitOspiti,p.gk?'#fde68a':'rgba(0,0,0,0.45)',false,null);}
-            if(st.eroe)uomo(st.eroe,eroeLato==='home'?kitCasa:kitOspiti,'#ffffff',true,nomeEroe||null);
-            if(st.palla){const X=px(st.palla.x),Y=py(st.palla.y);
-              g.beginPath();g.arc(X,Y+2,r*0.62,0,Math.PI*2);g.fillStyle='rgba(0,0,0,0.3)';g.fill();
-              g.beginPath();g.arc(X,Y,r*0.58,0,Math.PI*2);g.fillStyle='#ffffff';g.fill();
-              g.lineWidth=1;g.strokeStyle='rgba(0,0,0,0.5)';g.stroke();}
-          }
+      rafRef.current=requestAnimationFrame(disegna);
+      const cv=cRef.current;if(!cv)return;
+      const dpr=Math.min(2,(typeof window!=='undefined'&&window.devicePixelRatio)||1);
+      const W=cv.clientWidth||320,H=cv.clientHeight||200;
+      if(W<8||H<8)return;
+      if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);}
+      const g=cv.getContext('2d');if(!g)return;
+      const M=memRef.current;
+      const ora=(typeof performance!=='undefined'&&performance.now)?performance.now():Date.now();
+      const dt=M.t?Math.min(0.1,(ora-M.t)/1000):0.016;M.t=ora;
+      /* verticale sul telefono (porte in alto e in basso), coricato se lo spazio e' largo */
+      const vert=H>=W*0.92;
+      const padx=vert?W*0.035:W*0.02,pady=vert?H*0.02:H*0.035;
+      const s=Math.min((W-padx*2)/(vert?LAR:LUN),(H-pady*2)/(vert?LUN:LAR));
+      const pw=(vert?LAR:LUN)*s,ph=(vert?LUN:LAR)*s;
+      const ox=(W-pw)/2,oy=(H-ph)/2;
+      /* metri del campo → pixel dello schermo. In verticale la casa attacca verso l'ALTO. */
+      const PX=(mx,my)=>vert?(ox+my*s):(ox+mx*s);
+      const PY=(mx,my)=>vert?(oy+(LUN-mx)*s):(oy+my*s);
+
+      if(!M.sfondo||M.W!==W||M.H!==H||M.dpr!==dpr){
+        /* ——— LO SFONDO: prato, fasce del taglio, righe, porte. Disegnato una volta sola. ——— */
+        const off=(typeof document!=='undefined')?document.createElement('canvas'):null;
+        if(!off)return;
+        off.width=Math.round(W*dpr);off.height=Math.round(H*dpr);
+        const o=off.getContext('2d');
+        o.setTransform(dpr,0,0,dpr,0,0);
+        /* fuori campo: il buio dello stadio */
+        const fondo=o.createLinearGradient(0,0,0,H);fondo.addColorStop(0,"#0a1220");fondo.addColorStop(1,"#050a14");
+        o.fillStyle=fondo;o.fillRect(0,0,W,H);
+        /* il prato */
+        const pr=o.createLinearGradient(0,oy,0,oy+ph);pr.addColorStop(0,"#25753a");pr.addColorStop(0.5,"#1f6b33");pr.addColorStop(1,"#1a5c2c");
+        o.fillStyle=pr;o.fillRect(ox,oy,pw,ph);
+        /* le fasce del taglio, sempre nel senso della larghezza del campo */
+        const FASCE=10;
+        for(let i=0;i<FASCE;i++){
+          const a=(i/FASCE)*LUN,b=((i+1)/FASCE)*LUN;
+          const x1=PX(a,0),y1=PY(a,0),x2=PX(b,LAR),y2=PY(b,LAR);
+          o.fillStyle=(i%2===0)?"rgba(255,255,255,0.045)":"rgba(0,0,0,0.035)";
+          o.fillRect(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x2-x1),Math.abs(y2-y1));
+        }
+        /* la grana dell'erba: mille fili, una volta sola */
+        o.save();o.beginPath();o.rect(ox,oy,pw,ph);o.clip();
+        for(let i=0;i<1400;i++){const rx=ox+Math.random()*pw,ry=oy+Math.random()*ph;
+          o.fillStyle=Math.random()<0.5?"rgba(255,255,255,0.028)":"rgba(0,0,0,0.030)";
+          o.fillRect(rx,ry,1.2,1.2);}
+        o.restore();
+        /* i riflettori: luce al centro, bordi in ombra */
+        const luce=o.createRadialGradient(W/2,H*0.42,Math.min(W,H)*0.10,W/2,H*0.5,Math.max(W,H)*0.78);
+        luce.addColorStop(0,"rgba(255,255,255,0.07)");luce.addColorStop(0.55,"rgba(255,255,255,0)");luce.addColorStop(1,"rgba(0,0,0,0.34)");
+        o.fillStyle=luce;o.fillRect(0,0,W,H);
+        /* ——— LA SEGNATURA ——— */
+        const L=(x1,y1,x2,y2)=>{o.beginPath();o.moveTo(PX(x1,y1),PY(x1,y1));o.lineTo(PX(x2,y2),PY(x2,y2));o.stroke();};
+        const R=(x1,y1,x2,y2)=>{o.beginPath();o.moveTo(PX(x1,y1),PY(x1,y1));o.lineTo(PX(x2,y1),PY(x2,y1));o.lineTo(PX(x2,y2),PY(x2,y2));o.lineTo(PX(x1,y2),PY(x1,y2));o.closePath();o.stroke();};
+        const ARC=(cx,cy,r,a0,a1)=>{o.beginPath();const n=26;for(let i=0;i<=n;i++){const a=a0+(a1-a0)*i/n,mx=cx+Math.cos(a)*r,my=cy+Math.sin(a)*r;const X=PX(mx,my),Y=PY(mx,my);if(i===0)o.moveTo(X,Y);else o.lineTo(X,Y);}o.stroke();};
+        const PUNTO=(mx,my,r)=>{o.beginPath();o.arc(PX(mx,my),PY(mx,my),r,0,Math.PI*2);o.fill();};
+        o.strokeStyle="rgba(255,255,255,0.62)";o.lineWidth=Math.max(1,s*0.13);o.lineJoin="round";
+        R(0,0,LUN,LAR);                                   /* le linee laterali e di fondo */
+        L(LUN/2,0,LUN/2,LAR);                             /* la linea di meta' campo */
+        ARC(LUN/2,LAR/2,9.15,0,Math.PI*2);                /* il cerchio di centrocampo */
+        o.fillStyle="rgba(255,255,255,0.72)";
+        PUNTO(LUN/2,LAR/2,Math.max(1.4,s*0.17));          /* il dischetto del centro */
+        for(const lato of [0,1]){
+          const seg=lato?LUN:0,dir=lato?-1:1;
+          R(seg,(LAR-40.32)/2,seg+dir*16.5,(LAR+40.32)/2);/* l'area di rigore */
+          R(seg,(LAR-18.32)/2,seg+dir*5.5,(LAR+18.32)/2); /* l'area piccola */
+          PUNTO(seg+dir*11,LAR/2,Math.max(1.4,s*0.17));   /* il dischetto del rigore */
+          /* l'arco del rigore: solo il pezzo FUORI dall'area, come sul campo vero */
+          const cx=seg+dir*11,cy=LAR/2,rr=9.15,dx=Math.abs(16.5-11);
+          const ap=Math.acos(dx/rr);
+          if(lato)ARC(cx,cy,rr,Math.PI-ap,Math.PI+ap);else ARC(cx,cy,rr,-ap,ap);
+          /* la porta: 7,32 metri, con la rete */
+          const gx=seg,gy0=(LAR-7.32)/2,gy1=(LAR+7.32)/2,prof=2.1;
+          o.strokeStyle="rgba(255,255,255,0.90)";o.lineWidth=Math.max(1.4,s*0.19);
+          R(gx,gy0,gx-dir*prof,gy1);
+          o.strokeStyle="rgba(255,255,255,0.30)";o.lineWidth=Math.max(0.6,s*0.055);
+          for(let i=1;i<7;i++){const q=gy0+(gy1-gy0)*i/7;L(gx,q,gx-dir*prof,q);}
+          for(let i=1;i<3;i++){const q=gx-dir*prof*i/3;L(q,gy0,q,gy1);}
+          o.strokeStyle="rgba(255,255,255,0.62)";o.lineWidth=Math.max(1,s*0.13);
+        }
+        /* gli archi delle bandierine */
+        ARC(0,0,1,0,Math.PI/2);ARC(0,LAR,1,-Math.PI/2,0);
+        ARC(LUN,0,1,Math.PI/2,Math.PI);ARC(LUN,LAR,1,Math.PI,Math.PI*1.5);
+        M.sfondo=off;M.W=W;M.H=H;M.dpr=dpr;
+      }
+      g.setTransform(1,0,0,1,0,0);
+      g.clearRect(0,0,cv.width,cv.height);
+      g.drawImage(M.sfondo,0,0);
+      g.setTransform(dpr,0,0,dpr,0,0);
+
+      /* ——— I VENTIDUE E IL PALLONE, dalle posizioni del motore ——— */
+      let st=null;try{st=motore&&motore.stato?motore.stato():null;}catch(_e){}
+      if(!st)return;
+      /* il motore decide undici volte al minuto: fra una decisione e l'altra la vista INSEGUE la
+         posizione dichiarata con un richiamo esponenziale, cosi' i pallini camminano invece di saltare.
+         Sopra i 22 punti di scarto (intervallo, ripresa del gioco, scena) si riaggancia di colpo. */
+      const segui=(mem,obj,k)=>{const f=1-Math.exp(-dt*k);
+        if(!mem)return{x:obj.x,y:obj.y};
+        if(Math.abs(mem.x-obj.x)+Math.abs(mem.y-obj.y)>22)return{x:obj.x,y:obj.y};
+        return{x:mem.x+(obj.x-mem.x)*f,y:mem.y+(obj.y-mem.y)*f};};
+      const G=st.gioc||[];
+      for(let i=0;i<G.length;i++){if(G[i])M.g[i]=segui(M.g[i],G[i],7.5);}
+      if(st.eroe)M.e=segui(M.e,st.eroe,7.5);
+      if(st.palla)M.b=segui(M.b,st.palla,16);
+      /* dalle coordinate del motore (0..100 × 0..100) ai metri del campo */
+      const CX=(q)=>PX((q.x/100)*LUN,(q.y/100)*LAR),CY=(q)=>PY((q.x/100)*LUN,(q.y/100)*LAR);
+      const r=Math.max(5,Math.min(12,s*1.16));/* [7.918] i pallini portano il NUMERO: sotto i 6 px di raggio il numero non entra e la fotografia del 16/09 mostrava ventidue dischi muti */
+      const padrone=(st.poss&&st.poss.padrone!=null)?st.poss.padrone:-1;
+      const puls=0.5+0.5*Math.sin(ora/260);
+
+      /* la scia del pallone: dove e' passato negli ultimi istanti */
+      if(M.b){M.scia.push({x:M.b.x,y:M.b.y});if(M.scia.length>18)M.scia.shift();}
+      if(M.scia.length>2){
+        g.lineCap="round";
+        for(let i=1;i<M.scia.length;i++){
+          const a=i/M.scia.length;
+          g.strokeStyle="rgba(255,255,255,"+(a*0.30).toFixed(3)+")";
+          g.lineWidth=Math.max(0.6,r*0.52*a);
+          g.beginPath();g.moveTo(CX(M.scia[i-1]),CY(M.scia[i-1]));g.lineTo(CX(M.scia[i]),CY(M.scia[i]));g.stroke();
         }
       }
-      rafRef.current=requestAnimationFrame(disegna);
+      /* il passaggio in volo: la linea tratteggiata fino al bersaglio dichiarato dal motore */
+      if(st.poss&&st.poss.stato==="volo"&&st.poss.a&&M.b){
+        g.save();g.setLineDash([4,5]);g.strokeStyle="rgba(255,255,255,0.40)";g.lineWidth=1.2;
+        g.beginPath();g.moveTo(CX(M.b),CY(M.b));g.lineTo(CX(st.poss.a),CY(st.poss.a));g.stroke();
+        g.setLineDash([]);g.strokeStyle="rgba(255,255,255,0.55)";
+        g.beginPath();g.arc(CX(st.poss.a),CY(st.poss.a),r*0.55,0,Math.PI*2);g.stroke();g.restore();
+      }
+      /* il fermo di gioco: la bandierina sul punto dove si riprende */
+      if(st.fermo){
+        const q={x:st.fermo.x,y:st.fermo.y};
+        g.save();g.setLineDash([3,4]);g.strokeStyle="rgba(253,224,71,"+(0.35+0.35*puls).toFixed(3)+")";g.lineWidth=1.4;
+        g.beginPath();g.arc(CX(q),CY(q),r*1.5,0,Math.PI*2);g.stroke();g.restore();
+      }
+
+      const uomo=(q,kit,bordo,testo,num,grande,nome)=>{
+        if(!q)return;
+        const X=CX(q),Y=CY(q),R=grande?r*1.22:r;
+        /* l'ombra sul prato */
+        g.beginPath();g.ellipse(X+R*0.16,Y+R*0.46,R*0.98,R*0.72,0,0,Math.PI*2);
+        g.fillStyle="rgba(0,0,0,0.30)";g.fill();
+        /* la maglia, con la luce che prende da sopra */
+        const gr=g.createRadialGradient(X-R*0.36,Y-R*0.42,R*0.12,X,Y,R*1.06);
+        gr.addColorStop(0,_sca917(kit,1.34));gr.addColorStop(0.62,_rgba917(kit,1));gr.addColorStop(1,_sca917(kit,0.78));
+        g.beginPath();g.arc(X,Y,R,0,Math.PI*2);g.fillStyle=gr;g.fill();
+        g.lineWidth=grande?2:1.1;g.strokeStyle=grande?"#ffffff":bordo;g.stroke();
+        if(num&&R>=5.9){g.fillStyle=testo;g.font="700 "+Math.round(R*1.02)+"px system-ui,-apple-system,sans-serif";
+          g.textAlign="center";g.textBaseline="middle";g.fillText(String(num),X,Y+R*0.04);g.textBaseline="alphabetic";}
+        if(nome){
+          const et=nome+(numeroEroe?" "+numeroEroe:"");
+          g.font="700 "+Math.max(9,Math.round(r*1.05))+"px system-ui,-apple-system,sans-serif";g.textAlign="center";
+          const lw=g.measureText(et).width,hh=Math.max(13,r*1.7),yy=Y-R-hh-3;
+          g.fillStyle="rgba(2,6,23,0.76)";
+          if(g.roundRect){g.beginPath();g.roundRect(X-lw/2-6,yy,lw+12,hh,hh/2);g.fill();}
+          else g.fillRect(X-lw/2-6,yy,lw+12,hh);
+          g.fillStyle="#ffffff";g.textBaseline="middle";g.fillText(et,X,yy+hh/2);g.textBaseline="alphabetic";
+        }
+      };
+      /* i ventuno del motore: numero di maglia progressivo nella propria squadra, portiere numero uno */
+      let nC=1,nO=1;
+      for(let i=0;i<G.length;i++){
+        const q=M.g[i],d=G[i];if(!q||!d)continue;
+        const casa=!d.t;
+        const num=d.gk?1:(casa?++nC:++nO);
+        uomo(q,d.gk?(casa?GKC:GKO):(casa?KIT.casa:KIT.osp),casa?bordoC:bordoO,d.gk?"#0f172a":(casa?testoC:testoO),num,false,null);
+        if(i===padrone){g.beginPath();g.arc(CX(q),CY(q),r+3.4,0,Math.PI*2);
+          g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();}
+      }
+      /* l'eroe: cerchio bianco, nome e numero veri */
+      if(M.e){
+        const casaE=eroeLato!=='away';
+        if(padrone===21||(st.poss&&st.poss.eroe)){g.beginPath();g.arc(CX(M.e),CY(M.e),r*1.22+4.2,0,Math.PI*2);
+          g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();}
+        uomo(M.e,casaE?KIT.casa:KIT.osp,"#ffffff",casaE?testoC:testoO,null,true,nomeEroe||null);
+      }
+      /* il pallone */
+      if(M.b){
+        const X=CX(M.b),Y=CY(M.b),RB=Math.max(2.6,r*0.52);
+        g.beginPath();g.ellipse(X+RB*0.5,Y+RB*0.8,RB*1.05,RB*0.7,0,0,Math.PI*2);g.fillStyle="rgba(0,0,0,0.34)";g.fill();
+        const gb=g.createRadialGradient(X-RB*0.4,Y-RB*0.4,RB*0.1,X,Y,RB*1.2);
+        gb.addColorStop(0,"#ffffff");gb.addColorStop(1,"#cbd5e1");
+        g.beginPath();g.arc(X,Y,RB,0,Math.PI*2);g.fillStyle=gb;g.fill();
+        g.lineWidth=0.9;g.strokeStyle="rgba(15,23,42,0.55)";g.stroke();
+      }
+      /* le due porte hanno un nome: la sigla della squadra che le difende */
+      if(s>0&&(vert?oy:ox)>10){
+        g.font="800 "+Math.max(9,Math.round(s*0.95))+"px system-ui,-apple-system,sans-serif";
+        g.textAlign="center";g.textBaseline="middle";
+        const eti=(sig,kit,mx)=>{if(!sig)return;const X=PX(mx,LAR/2),Y=PY(mx,LAR/2);
+          const lw=g.measureText(sig).width,hh=Math.max(14,s*1.5);
+          g.fillStyle=_rgba917(kit,0.92);
+          if(g.roundRect){g.beginPath();g.roundRect(X-lw/2-7,Y-hh/2,lw+14,hh,4);g.fill();}else g.fillRect(X-lw/2-7,Y-hh/2,lw+14,hh);
+          g.fillStyle=_lum917(kit)>0.55?"#0f172a":"#ffffff";g.fillText(sig,X,Y+0.5);};
+        eti(siglaCasa,KIT.casa,vert?-3.6:-3.6);
+        eti(siglaOspiti,KIT.osp,vert?LUN+3.6:LUN+3.6);
+        g.textBaseline="alphabetic";
+      }
     };
     rafRef.current=requestAnimationFrame(disegna);
     return()=>{vivo=false;try{cancelAnimationFrame(rafRef.current);}catch(_e){}};
-  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe]);
-  return <canvas ref={cRef} data-cpm="campo2d" style={{width:"100%",height:altezza||"100%",display:"block",background:"#1f6b32"}} />;
+  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti]);
+  return <canvas ref={cRef} data-cpm="campo2d" style={{width:"100%",height:altezza||"100%",display:"block",background:"#071019"}} />;
+}
+
+/* ===== [7.918 — F2+F3: LE STATISTICHE E LE PAGELLE SOPRA IL CAMPO] ======================================
+   Richiesta del PO (16/09): «le statistiche della partita, pagelle, ecc durante la partita 2D devono essere
+   ben visibili», che chiude quella del 15/09 «statistiche e pagelle in primo piano, partita 2D nello sfondo».
+   Il pannello sta DAVANTI al campo, il campo resta leggibile dietro il vetro. Tutto quello che c'e' scritto
+   qui dentro viene da `motore.tabellino()` e `motore.pagelle()`: una sola sorgente, quella che muove i
+   ventidue pallini un centimetro piu' in basso. Costruito sui token del design system (FS/FW/SP/RAD), che e'
+   il modo in cui C4 entrera' nelle altre cinquanta superfici. Rosso __CPM_NO918: torna il campo nudo. */
+const _COL918={vetro:"rgba(4,10,20,0.88)",vetro2:"rgba(8,16,30,0.74)",bordo:"rgba(148,163,184,0.22)",
+  testo:"#e8eef7",fioco:"#93a4bd",riga:"rgba(148,163,184,0.12)"};
+const _voto918=(v)=>v>=7.5?"#22c55e":v>=6.9?"#84cc16":v>=6.2?"#cbd5e1":v>=5.6?"#f59e0b":"#ef4444";
+const _num918=(v)=>(v==null||isNaN(v))?"0":String(v);
+const _dec918=(v)=>(Math.round((+v||0)*100)/100).toFixed(2).replace(".",",");
+/* dall'indice del motore al numero di maglia e al cognome della rosa: il portiere e' l'uno, gli altri
+   seguono l'ordine dell'undici. Nessun nome inventato — se la rosa non ce l'ha, resta il numero. */
+function _uomo918(i,rosaCasa,rosaOsp,nomeEroe,numEroe){
+  const R=(a,k)=>{const q=(a||[])[k];return q&&q.name?(_surnBG(q.name)||q.name):"";};
+  if(i===21)return{num:numEroe||11,nome:nomeEroe||R(rosaCasa,10)||"",eroe:true};
+  if(i<10)return{num:i===0?1:i+1,nome:R(rosaCasa,i),eroe:false};
+  return{num:i===10?1:(i-9),nome:R(rosaOsp,i-10),eroe:false};
+}
+function Riga918({et,sx,dx,colSx,colDx,fmt}){
+  const a=+sx||0,b=+dx||0,tot=a+b;
+  const qa=tot>0?Math.round(100*a/tot):50;
+  const F=fmt||_num918;
+  return(
+    <div style={{padding:"3px 0"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,lineHeight:1.1}}>
+        <span style={{fontSize:FS.small,fontWeight:FW.bold,color:_COL918.testo,minWidth:38,textAlign:"left",fontVariantNumeric:"tabular-nums"}}>{F(sx)}</span>
+        <span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:_COL918.fioco,letterSpacing:.4,textTransform:"uppercase"}}>{et}</span>
+        <span style={{fontSize:FS.small,fontWeight:FW.bold,color:_COL918.testo,minWidth:38,textAlign:"right",fontVariantNumeric:"tabular-nums"}}>{F(dx)}</span>
+      </div>
+      <div style={{display:"flex",height:4,marginTop:3,borderRadius:RAD.pill,overflow:"hidden",background:"rgba(148,163,184,0.16)"}}>
+        <div style={{width:qa+"%",background:colSx,transition:"width .4s ease"}}/>
+        <div style={{width:(100-qa)+"%",background:colDx,transition:"width .4s ease"}}/>
+      </div>
+    </div>);
+}
+function Pagella918({r,u,colTeam}){
+  return(
+    <div style={{display:"flex",alignItems:"center",gap:6,padding:"2px 4px",borderRadius:RAD.xs,
+      background:r.eroe?"rgba(142,31,51,0.38)":"transparent"}}>
+      <span style={{width:15,textAlign:"center",fontSize:FS.caption,fontWeight:FW.bold,color:colTeam,fontVariantNumeric:"tabular-nums"}}>{u.num}</span>
+      <span style={{flex:1,minWidth:0,fontSize:FS.caption,fontWeight:r.eroe?FW.bold:FW.medium,color:_COL918.testo,
+        overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{u.nome||("n. "+u.num)}</span>
+      {r.gol>0&&<span style={{fontSize:9}}>{"⚽".repeat(Math.min(3,r.gol))}</span>}
+      {r.assist>0&&<span style={{fontSize:9,color:"#7dd3fc",fontWeight:FW.bold}}>A{r.assist>1?r.assist:""}</span>}
+      {r.amm>0&&<span style={{width:5,height:8,borderRadius:1,background:"#facc15"}}/>}
+      {r.esp>0&&<span style={{width:5,height:8,borderRadius:1,background:"#ef4444"}}/>}
+      <span style={{minWidth:26,textAlign:"center",fontSize:FS.caption,fontWeight:FW.black,color:"#07101d",
+        background:_voto918(r.voto),borderRadius:RAD.xs,padding:"1px 3px",fontVariantNumeric:"tabular-nums"}}>{r.voto.toFixed(1).replace(".",",")}</span>
+    </div>);
+}
+function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosaOsp,nomeEroe,numEroe}){
+  const [dati,setDati]=React.useState(null);
+  const [vista,setVista]=React.useState("stat");
+  const [aperto,setAperto]=React.useState(true);
+  React.useEffect(()=>{
+    let vivo=true;
+    const leggi=()=>{if(!vivo)return;
+      try{const t=motore&&motore.tabellino?motore.tabellino():null;
+        const p=motore&&motore.pagelle?motore.pagelle():null;
+        if(t)setDati({t:t,p:p||[]});}catch(_e){}};
+    leggi();const id=setInterval(leggi,900);
+    return()=>{vivo=false;clearInterval(id);};
+  },[motore]);
+  if(!dati)return null;
+  const A=dati.t[latoSx==="away"?"away":"home"]||{},B=dati.t[latoSx==="away"?"home":"away"]||{};
+  const prec=(q)=>q.passaggi>0?Math.round(100*(q.passOk||0)/q.passaggi):0;
+  /* le pagelle in colonna: a sinistra la squadra di casa dello STADIO, come nel punteggio in alto */
+  const lS=latoSx==="away"?"away":"home",lD=lS==="home"?"away":"home";
+  /* nel motore «casa» e' SEMPRE la squadra dell'eroe (e' il verso del campo, non lo stadio): l'eroe sta
+     gia' dentro il suo lato, e la colonna di sinistra segue il punteggio in alto. */
+  const perLato=(l)=>(dati.p||[]).filter(r=>r.team===l).sort((a,b)=>b.voto-a.voto||a.i-b.i).slice(0,11);
+  const colonna=(l,col)=>perLato(l).map(r=><Pagella918 key={"pg"+r.i} r={r} u={_uomo918(r.i,rosaCasa,rosaOsp,nomeEroe,numEroe)} colTeam={col}/>);
+  const tasto=(id,et)=>(
+    <button onClick={()=>setVista(id)} style={{flex:1,padding:"6px 4px",border:"none",cursor:"pointer",
+      background:vista===id?"rgba(148,163,184,0.20)":"transparent",color:vista===id?_COL918.testo:_COL918.fioco,
+      fontFamily:"inherit",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",
+      borderRadius:RAD.xs}}>{et}</button>);
+  return(
+    <div data-cpm="pannello918" style={{position:"absolute",inset:0,zIndex:6,pointerEvents:"none",
+      display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+      {/* LA STRISCIA ALTA: il possesso e le quattro voci che dicono l'andamento in un colpo d'occhio */}
+      <div style={{margin:SP.sm,padding:"7px "+SP.md+"px",borderRadius:RAD.md,background:_COL918.vetro,
+        border:"1px solid "+_COL918.bordo,pointerEvents:"auto"}}>
+        <div style={{display:"flex",alignItems:"center",gap:SP.sm}}>
+          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:colSx,letterSpacing:.6}}>{siglaSx}</span>
+          <div style={{flex:1,display:"flex",height:7,borderRadius:RAD.pill,overflow:"hidden",background:"rgba(148,163,184,0.16)"}}>
+            <div style={{width:(A.possesso||50)+"%",background:colSx,transition:"width .5s ease"}}/>
+            <div style={{width:(100-(A.possesso||50))+"%",background:colDx,transition:"width .5s ease"}}/>
+          </div>
+          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:colDx,letterSpacing:.6}}>{siglaDx}</span>
+        </div>
+        <div style={{display:"flex",justifyContent:"space-between",marginTop:5,gap:SP.xs}}>
+          {[["possesso",(A.possesso||50)+"%",(100-(A.possesso||50))+"%"],
+            ["tiri",_num918(A.tiri),_num918(B.tiri)],
+            ["in porta",_num918(A.inPorta),_num918(B.inPorta)],
+            ["xG",_dec918(A.xg),_dec918(B.xg)]].map(c=>(
+            <div key={c[0]} style={{flex:1,textAlign:"center"}}>
+              <div style={{fontSize:9,color:_COL918.fioco,textTransform:"uppercase",letterSpacing:.5,fontWeight:FW.semibold}}>{c[0]}</div>
+              <div style={{fontSize:FS.small,fontWeight:FW.bold,color:_COL918.testo,fontVariantNumeric:"tabular-nums"}}>
+                <span>{c[1]}</span><span style={{color:_COL918.fioco,fontWeight:FW.medium}}> · </span><span>{c[2]}</span></div>
+            </div>))}
+        </div>
+      </div>
+      {/* IL PANNELLO: statistiche o pagelle, col campo che si vede dietro */}
+      <div style={{margin:SP.sm,marginBottom:152,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
+        border:"1px solid "+_COL918.bordo,
+        pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%"}}>
+        <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
+          {tasto("stat","Statistiche")}
+          {tasto("pag","Pagelle")}
+          <button onClick={()=>setAperto(a=>!a)} aria-label={aperto?"Nascondi":"Mostra"} style={{width:34,padding:"6px 0",border:"none",cursor:"pointer",
+            background:"transparent",color:_COL918.fioco,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold}}>{aperto?"▾":"▴"}</button>
+        </div>
+        {aperto&&vista==="stat"&&(
+          <div style={{padding:"6px "+SP.md+"px 9px",overflowY:"auto"}}>
+            <Riga918 et="possesso" sx={A.possesso} dx={100-(A.possesso||50)} colSx={colSx} colDx={colDx} fmt={(v)=>_num918(v)+"%"}/>
+            <Riga918 et="tiri totali" sx={A.tiri} dx={B.tiri} colSx={colSx} colDx={colDx}/>
+            <Riga918 et="tiri in porta" sx={A.inPorta} dx={B.inPorta} colSx={colSx} colDx={colDx}/>
+            <Riga918 et="gol attesi (xG)" sx={A.xg} dx={B.xg} colSx={colSx} colDx={colDx} fmt={_dec918}/>
+            <Riga918 et="passaggi" sx={A.passaggi} dx={B.passaggi} colSx={colSx} colDx={colDx}/>
+            <Riga918 et="precisione" sx={prec(A)} dx={prec(B)} colSx={colSx} colDx={colDx} fmt={(v)=>_num918(v)+"%"}/>
+            <Riga918 et="recuperi" sx={(A.contrasti||0)+(A.intercetti||0)} dx={(B.contrasti||0)+(B.intercetti||0)} colSx={colSx} colDx={colDx}/>
+            <Riga918 et="parate" sx={A.parate} dx={B.parate} colSx={colSx} colDx={colDx}/>
+            <Riga918 et="calci d'angolo" sx={A.corner} dx={B.corner} colSx={colSx} colDx={colDx}/>
+            <Riga918 et="falli" sx={A.falli} dx={B.falli} colSx={colSx} colDx={colDx}/>
+            <Riga918 et="ammonizioni" sx={A.ammonizioni} dx={B.ammonizioni} colSx={colSx} colDx={colDx}/>
+          </div>)}
+        {aperto&&vista==="pag"&&(
+          <div style={{display:"flex",gap:SP.sm,padding:"6px "+SP.sm+"px 9px",overflowY:"auto"}}>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:9,fontWeight:FW.black,color:colSx,letterSpacing:.8,textTransform:"uppercase",padding:"0 4px 3px"}}>{siglaSx}</div>
+              {colonna(lS,colSx)}
+            </div>
+            <div style={{width:1,background:_COL918.riga}}/>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:9,fontWeight:FW.black,color:colDx,letterSpacing:.8,textTransform:"uppercase",padding:"0 4px 3px"}}>{siglaDx}</div>
+              {colonna(lD,colDx)}
+            </div>
+          </div>)}
+      </div>
+    </div>);
 }
 
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
@@ -4115,7 +4459,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             motoreRef.current=creaMotorePossesso({seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr},forza:{home:_heroP,away:oppPrestige||65},lato:kickoffSideRef.current||"home"});
-            try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}}
+            try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}
+            try{window.__CPM_MOTORE_OBJ=()=>motoreRef.current;}catch(_e){}/* [7.918] il motore INTERO per le sonde: tabellino e pagelle devono poter essere confrontati con quello che il pannello scrive a schermo */}
           const _M=motoreRef.current;
           _M.chiedi.eroe(!onBenchRef.current&&!subbedOffRef.current);
           const _st0=_M.stato();
@@ -8638,7 +8983,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           {/* [7.907.0 — D7] chip fps, subito sotto la barra del risultato — SOLO durante la partita (playing/hl_*),
               SOLO se il contatore esiste (rosso __CPM_NO907 lo spegne). Riga di flusso propria: non tocca i due
               blocchi «barra» sopra (di un altro agente). */}
-          {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&fps907!=null&&(
+          {/* [7.918] durante il campo 2D il giro del 3D e' FERMO (7.917): il contatore mostrava i suoi
+              fotogrammi sospesi — «19 fps» sopra un campo che ne faceva settanta. Resta dov'e' nato: negli
+              highlight, dove il 3D disegna davvero (e col rosso __CPM_NO917, che rimette il 3D continuo). */}
+          {(["hl_intro","hl_move","hl_choose","hl_result"].includes(phase)||(phase==="playing"&&typeof window!=='undefined'&&window.__CPM_NO917))&&fps907!=null&&(
             <div data-cpm="fps907" style={{flex:"0 0 auto",textAlign:"center",fontSize:13,fontWeight:800,fontVariantNumeric:"tabular-nums",color:"#fbbf24",letterSpacing:.6,padding:"3px 0",background:"rgba(5,8,16,0.82)",borderBottom:"1px solid rgba(251,191,36,0.35)"}}>{fps907+" fps · corpi "+corpiInUso909}</div>
           )}
 
@@ -8724,15 +9072,32 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           <div style={isNarrow?{display:"flex",flexDirection:"column",flex:1,minHeight:0}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
-            {/* [7.917.0 — F1] IL CAMPO DALL'ALTO fra un highlight e l'altro (decisione del PO 15/09). Il 3D non
-                si smonta — resta caldo, sospeso — e qui sopra si mostra il campo coi ventidue del motore. */}
-            {(()=>{const _c2d=!(typeof window!=='undefined'&&window.__CPM_NO917)&&phase==="playing";
-              try{if(typeof window!=='undefined')window.__CPM_SOSP917=_c2d;}catch(_e){}
-              if(!_c2d)return null;
-              return(<div data-cpm="vista2d" style={isNarrow?{position:"relative",overflow:"hidden",flex:1,minHeight:0}:{position:"relative",overflow:"hidden",height:"100%"}}>
-                <Campo2D motore={motoreRef.current} kitCasa={(homeTeamObj&&homeTeamObj.c)||"#8e1f33"} kitOspiti={(awayTeamObj&&awayTeamObj.c)||"#e2e8f0"} eroeLato={isMatchHome?"home":"away"} nomeEroe={(player&&player.name)?String(player.name).split(" ").pop().slice(0,10):null} />
-              </div>);})()}
             <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",flex:1,minHeight:0,display:"flex",flexDirection:"column"}:{flex:"0 0 62%",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
+              {/* [7.917.0 — F1] IL CAMPO DALL'ALTO fra un highlight e l'altro (decisione del PO 15/09). Il 3D non
+                  si smonta — resta caldo, sospeso — e il campo gli si posa SOPRA, dentro lo stesso riquadro.
+                  [7.917.1 difetto fotografato] da fratello in colonna il campo si prendeva meta' schermo (410x379 su
+                  915) e sotto restava una grande area NERA: il riquadro del 3D, sospeso, non disegnava piu' nulla ma
+                  continuava a occupare il suo flex. Ora e' una sovrapposizione (inset 0, zIndex 1): il campo prende
+                  ESATTAMENTE lo spazio che era del 3D, e cronaca, sottopancia e cartelli (zIndex 2+) restano sopra. */}
+              {(()=>{const _c2d=!(typeof window!=='undefined'&&window.__CPM_NO917)&&phase==="playing";
+                try{if(typeof window!=='undefined')window.__CPM_SOSP917=_c2d;}catch(_e){}
+                if(!_c2d)return null;
+                return(<div data-cpm="vista2d" style={{position:"absolute",inset:0,zIndex:1,overflow:"hidden"}}>
+                  {/* [7.918.0 — LA MAGLIA GIUSTA AL PALLINO GIUSTO] Nel motore «casa» non e' la squadra di casa
+                      dello stadio: e' il verso del campo, cioe' SEMPRE la squadra dell'eroe (per questo
+                      `homeKitCol` e' `heroKitCol`). La prima stesura passava i colori e le sigle dello
+                      stadio: in trasferta i ventidue pallini uscivano con le divise scambiate. */}
+                  <Campo2D motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} />
+                  {!(typeof window!=='undefined'&&window.__CPM_NO918)&&<PannelloLive2D motore={motoreRef.current}
+                    latoSx={isMatchHome?"home":"away"}
+                    siglaSx={((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"CASA").slice(0,3).toUpperCase()}
+                    siglaDx={((awayTeamObj&&(awayTeamObj.a||awayTeamObj.n))||"OSP").slice(0,3).toUpperCase()}
+                    colSx={isMatchHome?(heroKitCol||"#8e1f33"):(awayKitCol||"#e2e8f0")}
+                    colDx={isMatchHome?(awayKitCol||"#e2e8f0"):(heroKitCol||"#8e1f33")}
+                    rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster}
+                    nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()):null}
+                    numEroe={player&&player.jerseyNum?player.jerseyNum:null} />}
+                </div>);})()}
               <ThreeMatchView key={"tmv"+glbTry}/* [7.264.0] «Riprova» rimonta la scena 3D → il caricatore del CH38 riparte da zero senza perdere la partita */ playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} matchClock={clock} avatarId={player.avatarId||0}
