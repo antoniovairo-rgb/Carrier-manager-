@@ -124,7 +124,7 @@ const SCHERMATE = [
 function MISURA(W) {
   const R = { W, radice: 'body', scrollWidth: 0, clientWidth: 0, overflowPx: 0,
     nFuori: 0, fuori: [], nContenuti: 0, contenuti: [],
-    nTesto: 0, nPiccoli: 0, minFs: null,
+    nTesto: 0, nSottoPav: 0, nPiccoli: 0, minFs: null,
     nMisurati: 0, nSotto: 0, nGradiente: 0, peggiori: [],
     nMarca: 0, marca: [] };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
 
@@ -252,6 +252,7 @@ function MISURA(W) {
     const fw = parseInt(cs.fontWeight, 10) || (/(bold|bolder)/.test(cs.fontWeight) ? 700 : 400);
     R.nTesto++;
     if (fs < 10) R.nPiccoli++;
+    if (fs < 11) R.nSottoPav++;/* [C4 · 16/09] IL PAVIMENTO DICHIARATO E' 11 px (FS.caption), non 10: la colonna <10px non vedeva gli 810 `fontSize:10` scritti a mano, che sono il corpo piu' diffuso dell'intero gioco. Questa colonna misura il pavimento vero. */
     if (R.minFs == null || fs < R.minFs) R.minFs = fs;
 
     const f = fondo(p);
@@ -374,6 +375,7 @@ if (process.env.CPM_TARATURA === '1') {
     ['elementi contenuti da un antenato', a.nContenuti, 1],
     ['nodi di testo visibili', a.nTesto, 5],
     ['nodi sotto i 10 px', a.nPiccoli, 1],
+    ['nodi sotto il pavimento 11 px', a.nSottoPav, 1],
     ['font-size minimo', a.minFs, 8],
     ['nodi esclusi per gradiente', a.nGradiente, 1],
     ['nodi misurabili per il contrasto', a.nMisurati, 4],
@@ -414,7 +416,7 @@ const misuraTutte = async (page, sc) => {
     const m = await page.evaluate(MISURA, t.w);
     (DATI[sc.id] = DATI[sc.id] || {})[t.w] = m;
     if (FOTO) { try { await page.screenshot({ path: path.join(dirDi(t.w), sc.id + '.png'), animations: 'disabled', caret: 'hide', timeout: 40000 }); } catch (e) { saltate.push(`foto ${sc.id}@${t.w}: ${String(e.message).slice(0, 60)}`); } }
-    process.stdout.write(`  ${String(t.w).padStart(3)}px ${sc.id.padEnd(22)} overflow ${String(m.overflowPx).padStart(3)}px · fuori ${String(m.nFuori).padStart(2)} (${m.nContenuti}) · <10px ${String(m.nPiccoli).padStart(3)}/${String(m.nTesto).padStart(3)} (min ${m.minFs}) · contrasto ${String(m.nSotto).padStart(3)}/${m.nMisurati}\n`);
+    process.stdout.write(`  ${String(t.w).padStart(3)}px ${sc.id.padEnd(22)} overflow ${String(m.overflowPx).padStart(3)}px · fuori ${String(m.nFuori).padStart(2)} (${m.nContenuti}) · <10px ${String(m.nPiccoli).padStart(3)} · <11px ${String(m.nSottoPav).padStart(3)}/${String(m.nTesto).padStart(3)} (min ${m.minFs}) · contrasto ${String(m.nSotto).padStart(3)}/${m.nMisurati}\n`);
   }
 };
 const SC = id => SCHERMATE.find(s => s.id === id);
@@ -549,6 +551,7 @@ tab('0 · Larghezza del riquadro letta DALLA PAGINA (prova che le cinque corse s
 tab('1 · Overflow orizzontale (px di pagina che escono dallo schermo)', m => m.overflowPx, w => somma(w, 'overflowPx'));
 tab('2 · Elementi fuori dallo schermo a destra (fra parentesi: contenuti da un antenato che li ritaglia/fa scorrere)', m => `${m.nFuori} (${m.nContenuti})`, w => somma(w, 'nFuori'));
 tab('3 · Testo reso sotto i 10 px — sotto/totale (minimo)', m => `${m.nPiccoli}/${m.nTesto} (${m.minFs})`, w => somma(w, 'nPiccoli') + '/' + somma(w, 'nTesto'));
+tab('3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale', m => `${m.nSottoPav}/${m.nTesto}`, w => somma(w, 'nSottoPav') + '/' + somma(w, 'nTesto'));
 tab('4 · Contrasto sotto soglia WCAG — sotto/misurati (esclusi per gradiente)', m => `${m.nSotto}/${m.nMisurati} (${m.nGradiente})`, w => somma(w, 'nSotto') + '/' + somma(w, 'nMisurati'));
 tab('5 · Bottoni pieni di marca (una sola azione primaria per vista)', m => `${m.nMarca}`, w => String(somma(w, 'nMarca')));
 

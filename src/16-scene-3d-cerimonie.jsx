@@ -56,7 +56,7 @@ function ProTransitionScreen({player,onChoose}){
           </div>
           <div style={{textAlign:"right",flexShrink:0}}>
             <div style={{fontSize:26,fontWeight:900,color:forced?TH.danger:TH.primary,lineHeight:1}}>{u18S+1}<span style={{fontSize:11,color:TH.faint,fontWeight:400}}>/2</span></div>
-            <div style={{fontSize:10,color:TH.faint}}>stagioni U18</div>
+            <div style={{fontSize:FS.caption,color:TH.faint}}>stagioni U18</div>
           </div>
         </div>
         {forced&&<div style={{marginTop:10,padding:"8px 10px",background:TH.lossBg,borderRadius:8,fontSize:11,color:TH.danger,fontWeight:600}}>⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo.</div>}
@@ -64,7 +64,7 @@ function ProTransitionScreen({player,onChoose}){
       </Card>
       {/* Progress bar U18 */}
       <div style={{marginBottom:14}}>
-        <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:TH.muted,marginBottom:3}}>
+        <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:3}}>
           <span>Stagioni Under 18: {u18S+1}/2</span>
           <span style={{color:forced?TH.danger:TH.primary}}>{forced?"Limite raggiunto":"Ancora disponibile"}</span>
         </div>
@@ -74,7 +74,7 @@ function ProTransitionScreen({player,onChoose}){
       </div>
       {/* Offers */}
       <div style={{fontSize:11,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Le tue opzioni</div>
-      {_dk&&<div style={{fontSize:10,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>}
+      {_dk&&<div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>}
       <div className="cpm-proto">
         {offers.map((o,oi)=>{const isSel=oi===selIdx;return(
           <Card key={o.id} style={{marginBottom:8,padding:"12px 14px",outline:isSel?"2px solid "+TH.primary:"none",transition:"outline .1s"}}
@@ -85,17 +85,17 @@ function ProTransitionScreen({player,onChoose}){
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontWeight:700,fontSize:13,color:TH.text}}>{o.club?.n||o.club?.name}</div>
               <div style={{fontSize:11,color:o.isMain?TH.primary:o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
-              <div style={{fontSize:10,color:TH.muted,marginTop:1}}>
+              <div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>
                 {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno":"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
               </div>
               <div style={{display:"flex",gap:5,marginTop:4,flexWrap:"wrap"}}>
-                <span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
                   😄{o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
-                <span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:"#f3e8ff",color:TH.accent}}>📈+{o.growthBonus}</span>
-                {o.isLastChance&&<span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
-                {o.isMain&&<span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:TH.bgBlue,color:TH.primary}}>⭐ Consigliato</span>}
-                {o.isNonConfirmed&&<span style={{fontSize:10,padding:"2px 6px",borderRadius:10,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:"#f3e8ff",color:TH.accent}}>📈+{o.growthBonus}</span>
+                {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
+                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.bgBlue,color:TH.primary}}>⭐ Consigliato</span>}
+                {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
               </div>
             </div>
             <Btn onClick={()=>onChoose(o)} v={o.isMain?"primary":o.isStayU18?"secondary":"ghost"} style={{flexShrink:0,padding:"9px 12px",fontSize:12}}>
@@ -104,7 +104,7 @@ function ProTransitionScreen({player,onChoose}){
           </div>
         </Card>
       );})}
-      <div style={{fontSize:10,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>
+      <div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginTop:10}}>Scegli con cura — questa decisione definirà la tua carriera professionale.</div>
       </div>{/* end cpm-proto */}
     </div>
   );
@@ -1655,7 +1655,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   const anyRecord=seasonRecord.beaten||allTime.beaten;
 
   const SectionLabel=({children})=>(
-    <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>{children}</div>
+    <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>{children}</div>
   );
   const ScoreRow=({rank,name,val,label,isPlayer,extra})=>(
     <div style={{display:"flex",alignItems:"center",gap:10,padding:"7px 8px",borderRadius:8,
@@ -1663,8 +1663,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       borderLeft:isPlayer?"3px solid "+TH.primary:"3px solid transparent",marginBottom:3}}>
       <div style={{fontSize:13,fontWeight:900,color:rank===0?TH.warning:rank===1?"#94a3b8":"#b0b8c1",minWidth:18}}>{rank===0?"🥇":rank===1?"🥈":"🥉"}</div>
       <div style={{flex:1,fontSize:12,fontWeight:isPlayer?800:400,color:isPlayer?TH.primary:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{name}{isPlayer?" 👈":""}</div>
-      <div style={{fontSize:13,fontWeight:700,color:isPlayer?TH.primary:TH.text}}>{val} <span style={{fontSize:10,color:TH.muted}}>{label}</span></div>
-      {extra&&<div style={{fontSize:10,color:TH.muted}}>{extra}</div>}
+      <div style={{fontSize:13,fontWeight:700,color:isPlayer?TH.primary:TH.text}}>{val} <span style={{fontSize:FS.caption,color:TH.muted}}>{label}</span></div>
+      {extra&&<div style={{fontSize:FS.caption,color:TH.muted}}>{extra}</div>}
     </div>
   );
 
@@ -1694,7 +1694,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       <span style={{fontSize:big?26:18}}>{medal}</span>
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
-        <div style={{fontSize:10,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}</div>
+        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}</div>
       </div>
     </div>);};
   return(
@@ -1705,7 +1705,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
           <GalaStage3D beat={galaN} act={galaAct} heroWins={!!(_galaTop3[0]&&_galaTop3[0].isPlayer)} avatarId={player.avatarId||0} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|gala|"+(season||1)):7}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(7,6,12,0.30) 0%,rgba(7,6,12,0.06) 34%,rgba(7,6,12,0.62) 78%,rgba(7,6,12,0.82) 100%)",pointerEvents:"none"}}/>
           <div style={{maxWidth:420,width:"100%",textAlign:"center",position:"relative"}}>
-            <div style={{fontSize:10,color:"#d4a017",textTransform:"uppercase",letterSpacing:3,marginBottom:6}}>🎩 La notte del Gala · Stagione {season}</div>
+            <div style={{fontSize:FS.caption,color:"#d4a017",textTransform:"uppercase",letterSpacing:3,marginBottom:6}}>🎩 La notte del Gala · Stagione {season}</div>
             <div style={{display:"flex",justifyContent:"center",gap:5,marginBottom:8}}>
               {_galaSeq.map((a,i)=>(<span key={a.key} style={{width:i===galaAct?18:7,height:7,borderRadius:4,background:i<galaAct?"#d4a017":i===galaAct?"#fde68a":"rgba(255,255,255,0.18)",transition:"all .3s"}}/>))}
             </div>
@@ -1726,7 +1726,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
                 {galaN>=3&&<Btn v="primary" fw onClick={_galaNext}>{_galaLast?"Vai alla cerimonia dei premi →":"Il prossimo premio →"}</Btn>}
               </div>
             </div>)}
-            <button onClick={()=>setGalaOff(true)} style={{display:"block",margin:"14px auto 0",background:"none",border:"none",color:"rgba(255,255,255,0.35)",fontSize:10.5,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>Salta il gala</button>
+            <button onClick={()=>setGalaOff(true)} style={{display:"block",margin:"14px auto 0",background:"none",border:"none",color:"rgba(255,255,255,0.35)",fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>Salta il gala</button>
           </div>
         </div>
       )}
@@ -1750,7 +1750,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
             <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="gol" isPlayer={!!c.isPlayer} extra={c.club}/>
           ))}
           {leagueTopScorer?.playerWins&&<div style={{marginTop:4,padding:"6px 10px",background:TH.winBg,borderRadius:8,fontSize:11,fontWeight:800,color:TH.txGreen}}>🥇 Sei il capocannoniere della {lg}!</div>}
-          {!leagueTopScorer?.playerWins&&(leagueTopScorer?.playerPos||0)>2&&<div style={{fontSize:10,color:TH.muted,marginTop:3,textAlign:"right"}}>La tua posizione: {(leagueTopScorer?.playerPos||0)+1}ª · {(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))} gol</div>}{/* [7.9.2] gol di LEGA (player.goals somma tutte le competizioni) */}
+          {!leagueTopScorer?.playerWins&&(leagueTopScorer?.playerPos||0)>2&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:3,textAlign:"right"}}>La tua posizione: {(leagueTopScorer?.playerPos||0)+1}ª · {(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))} gol</div>}{/* [7.9.2] gol di LEGA (player.goals somma tutte le competizioni) */}
         </div>
 
         {/* MVP della Stagione */}
@@ -1766,16 +1766,16 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         <div style={{display:"flex",gap:8,borderTop:"1px solid "+TH.cardBorder,paddingTop:10}}>
           {(leagueYoung||youngPlayer)?.isYoungEligible&&(
             <div style={{flex:1,background:(leagueYoung||youngPlayer)?.playerWins?"#ede9fe":"#f8fafc",borderRadius:8,padding:"8px 10px",border:"1px solid "+((leagueYoung||youngPlayer)?.playerWins?"#c4b5fd":TH.cardBorder)}}>
-              <div style={{fontSize:10,color:TH.muted,marginBottom:2}}>💎 GIOVANE DELL'ANNO</div>
+              <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:2}}>💎 GIOVANE DELL'ANNO</div>
               <div style={{fontSize:11,fontWeight:700,color:(leagueYoung||youngPlayer)?.playerWins?"#5b21b6":TH.text}}>{(leagueYoung||youngPlayer)?.winner?.name||"–"}</div>
-              <div style={{fontSize:10,color:TH.muted}}>{(leagueYoung||youngPlayer)?.winner?.goals||0}⚽ {(leagueYoung||youngPlayer)?.winner?.assists||0}🎯</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{(leagueYoung||youngPlayer)?.winner?.goals||0}⚽ {(leagueYoung||youngPlayer)?.winner?.assists||0}🎯</div>
             </div>
           )}
           {leagueTeamOfYear&&(
             <div style={{flex:1,background:TH.bgBlue,borderRadius:8,padding:"8px 10px",border:"1px solid #bae6fd"}}>
-              <div style={{fontSize:10,color:TH.muted,marginBottom:2}}>📋 SQUADRA DELL'ANNO</div>
+              <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:2}}>📋 SQUADRA DELL'ANNO</div>
               <div style={{fontSize:11,fontWeight:700,color:TH.txBlue}}>Selezionato!</div>
-              <div style={{fontSize:10,color:TH.muted}}>{player.name} nell'XI ideale</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{player.name} nell'XI ideale</div>
             </div>
           )}
           {!leagueTeamOfYear&&!(leagueYoung||youngPlayer)?.isYoungEligible&&(
@@ -1787,14 +1787,14 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {/* PREMI EUROPEI */}
       <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?thPastel("#fefce8","rgba(245,158,11,0.13)"):TH.card,border:palloneOro.playerWins?("1.5px solid "+thPastel("#fde68a","rgba(245,158,11,0.5)")):"1px solid "+TH.cardBorder}}>
         <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
-        <div style={{fontSize:10,color:TH.muted,marginBottom:6}}>Migliori calciatori d'Europa</div>
+        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Migliori calciatori d'Europa</div>
         {palloneOro.top3.map((c,i)=>(
           /* [7.289.0] la bacheca accanto al nome: senza, un campione con 30 gol che batte un bomber da 39
              sembra un errore del gioco invece che il verdetto (giusto) di un premio che non è la classifica
              marcatori — quella è il Re dei Bomber, qui sotto. */
           <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="⚽" isPlayer={!!c.isPlayer} extra={c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club)}/>
         ))}
-        <div style={{fontSize:9.5,color:TH.muted,marginTop:4,fontStyle:"italic"}}>Non è la classifica marcatori: pesano gol, assist, rendimento e trofei vinti.</div>
+        <div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,fontStyle:"italic"}}>Non è la classifica marcatori: pesano gol, assist, rendimento e trofei vinti.</div>
         {palloneOro.playerWins&&(
           <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:10,textAlign:"center"}}>
             <div style={{fontSize:14,fontWeight:900,color:TH.txAmber}}>🏆 Hai vinto il Trofeo d'Oro!</div>
@@ -1808,7 +1808,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
 
       <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?thPastel("#f0fdf4","rgba(34,197,94,0.12)"):TH.card,border:scarpaOro.playerWins?("1.5px solid "+thPastel("#bbf7d0","rgba(34,197,94,0.45)")):"1px solid "+TH.cardBorder}}>
         <SectionLabel>👟 RE DEI BOMBER {season}</SectionLabel>
-        <div style={{fontSize:10,color:TH.muted,marginBottom:6}}>Top scorer nei campionati europei</div>
+        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Top scorer nei campionati europei</div>
         {scarpaOro.top3.map((c,i)=>(
           <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="gol" isPlayer={!!c.isPlayer} extra={c.league||c.club}/>
         ))}
@@ -1846,7 +1846,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {!allTime.beaten&&allTime.position<3&&(allTime.playerCareerGoals>0)&&(
         <Card style={{marginBottom:10,padding:"10px 14px"}}>
           <div style={{fontSize:11,fontWeight:700,color:TH.text}}>📊 Marcatori storici della {lg}: sei {allTime.position===0?"vicino al record all-time":allTime.position+1+"° di tutti i tempi"}</div>
-          <div style={{fontSize:10,color:TH.muted,marginTop:2}}>Gol in carriera: {allTime.playerCareerGoals} · Record all-time: {allTime.record.name} ({allTime.record.goals})</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Gol in carriera: {allTime.playerCareerGoals} · Record all-time: {allTime.record.name} ({allTime.record.goals})</div>
         </Card>
       )}
 
@@ -1855,18 +1855,18 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {/* Rival */}
       {rival&&(
         <Card style={{marginBottom:10,padding:"14px 16px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)"}}>
-          <div style={{fontSize:10,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🆚 TU VS {rival.name.toUpperCase()} — {rival.relLabel}</div>
+          <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🆚 TU VS {rival.name.toUpperCase()} — {rival.relLabel}</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",marginBottom:8}}>
             <div style={{textAlign:"center"}}>
               <div style={{fontSize:26,fontWeight:900,color:rival.tie?"#fbbf24":(rival.playerWins?"#4ade80":"#f87171")}}>{rival.playerGoals}</div>
-              <div style={{fontSize:10,color:"rgba(165,180,252,0.7)",marginTop:2}}>{player.name}</div>
-              <div style={{fontSize:10,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
+              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",marginTop:2}}>{player.name}</div>
+              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
             </div>
             <div style={{textAlign:"center",fontSize:18,color:"rgba(165,180,252,0.5)"}}>⚽</div>
             <div style={{textAlign:"center"}}>
               <div style={{fontSize:26,fontWeight:900,color:rival.tie?"#fbbf24":(!rival.playerWins?"#4ade80":"#f87171")}}>{rival.goals}</div>
-              <div style={{fontSize:10,color:"rgba(165,180,252,0.7)",marginTop:2}}>{rival.name}</div>
-              <div style={{fontSize:10,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
+              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",marginTop:2}}>{rival.name}</div>
+              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
             </div>
           </div>
           <div style={{textAlign:"center",fontSize:12,fontWeight:700,color:rival.tie?"#fbbf24":(rival.playerWins?"#4ade80":"#f87171"),padding:"6px",background:"rgba(0,0,0,0.2)",borderRadius:8}}>
@@ -1978,7 +1978,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       <div style={{flex:1,fontSize:11,fontWeight:isPlayerRow(t)?700:400,color:isPlayerRow(t)?TH.primary:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
         {t.n||t.name}{isPlayerRow(t)?" 👈":""}
       </div>
-      <div style={{fontSize:10,color:TH.muted,minWidth:60,textAlign:"right"}}>{t.played}G {t.gf}-{t.ga}</div>
+      <div style={{fontSize:FS.caption,color:TH.muted,minWidth:60,textAlign:"right"}}>{t.played}G {t.gf}-{t.ga}</div>
       <div style={{fontSize:12,fontWeight:900,color:TH.text,minWidth:28,textAlign:"right"}}>{t.pts}</div>
     </div>
   );
@@ -1992,14 +1992,14 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
     const playerInBot=playerPos>=sorted.length-3;
     rows=[...topN.map((t,i)=>renderRow(t,i))];
     if(!playerInTop&&!playerInBot){
-      rows.push(<div key="sep1" style={{textAlign:"center",fontSize:10,color:TH.faint,padding:"2px 0"}}>…</div>);
+      rows.push(<div key="sep1" style={{textAlign:"center",fontSize:FS.caption,color:TH.faint,padding:"2px 0"}}>…</div>);
       rows.push(renderRow(sorted[playerPos],playerPos));
     }
     if(!playerInBot||(sorted.length<=6)){
-      if(!playerInTop&&!playerInBot)rows.push(<div key="sep2" style={{textAlign:"center",fontSize:10,color:TH.faint,padding:"2px 0"}}>…</div>);
+      if(!playerInTop&&!playerInBot)rows.push(<div key="sep2" style={{textAlign:"center",fontSize:FS.caption,color:TH.faint,padding:"2px 0"}}>…</div>);
       botN.forEach((t,i)=>{ const ri=sorted.length-3+i; if(ri>2&&ri!==playerPos)rows.push(renderRow(t,ri)); });
     }else if(sorted.length>3){
-      rows.push(<div key="sep2" style={{textAlign:"center",fontSize:10,color:TH.faint,padding:"2px 0"}}>…</div>);
+      rows.push(<div key="sep2" style={{textAlign:"center",fontSize:FS.caption,color:TH.faint,padding:"2px 0"}}>…</div>);
       botN.forEach((t,i)=>{ const ri=sorted.length-3+i; if(ri>2)rows.push(renderRow(t,ri)); });
     }
   }
@@ -2057,7 +2057,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         return(
         <div style={{marginTop:4,marginBottom:12,borderRadius:18,padding:"22px 14px 20px",textAlign:"center",background:_isNat?"linear-gradient(150deg,#3b2a07,#d4a017 45%,#3b2a07)":_cfg.bg,boxShadow:"0 10px 34px rgba(0,0,0,0.35)"}}>
           <div style={{fontSize:56,lineHeight:1,animation:"pulse87 1.2s ease-in-out infinite"}}>🏆</div>
-          <div style={{fontSize:10.5,letterSpacing:4,fontWeight:800,color:"rgba(255,255,255,0.72)",marginTop:8,textTransform:"uppercase"}}>{_isNat?((player.nation||"Nazionale")+" · Nazionale"):(euro?.competition==="UCL"?"Korward Champions Cup":euro?.competition==="UEL"?"Korward Europa Cup":"Korward Conference Cup")}</div>
+          <div style={{fontSize:FS.caption,letterSpacing:4,fontWeight:800,color:"rgba(255,255,255,0.72)",marginTop:8,textTransform:"uppercase"}}>{_isNat?((player.nation||"Nazionale")+" · Nazionale"):(euro?.competition==="UCL"?"Korward Champions Cup":euro?.competition==="UEL"?"Korward Europa Cup":"Korward Conference Cup")}</div>
           <div style={{fontSize:24,fontWeight:900,color:"#fff",marginTop:3,letterSpacing:0.5,textShadow:"0 2px 12px rgba(0,0,0,0.4)"}}>{_isNat?_natTitle:_cfg.title}</div>
           <div style={{fontSize:12.5,color:_isNat?"#fde68a":_cfg.fg,marginTop:6,fontStyle:"italic",lineHeight:1.5}}>{_isNat?"Con la maglia della tua nazione sul tetto del torneo: da oggi sei leggenda.":_cfg.sub}</div>
           {!_isNat&&<div style={{marginTop:8,fontSize:11.5,fontWeight:800,color:"rgba(255,255,255,0.88)"}}>{(club?.n||club?.name||"Il club")} entra nella storia — nessun campionato vale una notte così.</div>}
@@ -2096,7 +2096,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
             <NpcFaceCoach coachName={player.coach?.name||"Mister"} size={38}/>
             <div style={{flex:1}}>
-              <div style={{fontSize:10,color:TH.muted,marginBottom:4}}>{player.coach?.name||"Il Mister"} · fine stagione</div>
+              <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:4}}>{player.coach?.name||"Il Mister"} · fine stagione</div>
               <div style={{fontSize:12,color:TH.text,fontStyle:"italic",lineHeight:1.5}}>{_coachLine100.txt}</div>
             </div>
           </div>
@@ -2107,7 +2107,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
           <div style={{fontSize:26,lineHeight:1}}>🏛️</div>
           <div style={{flex:1}}>
-            <div style={{fontSize:10,color:"#fde68a",marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>Il Presidente — fine stagione</div>
+            <div style={{fontSize:FS.caption,color:"#fde68a",marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>Il Presidente — fine stagione</div>
             <div style={{fontSize:12,color:"#fef3c7",fontStyle:"italic",lineHeight:1.5}}>{_presLine100.txt}</div>
           </div>
         </div>
@@ -2118,14 +2118,14 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       <Card style={{marginBottom:12,padding:"12px 16px"}} bg={bgColor} border={borderColor}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
           <div style={{fontSize:13,fontWeight:900,color:TH.text}}>{statusEmoji} {statusLabel}</div>
-          <div style={{fontSize:10,color:TH.muted}}>Pos. {playerPos+1}/{numTeams}</div>
+          <div style={{fontSize:FS.caption,color:TH.muted}}>Pos. {playerPos+1}/{numTeams}</div>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,textAlign:"center"}}>
           {[{l:"Partite",v:playerStats.matches,e:"📅"},{l:"Gol",v:playerStats.goals,e:"⚽"},{l:"Assist",v:playerStats.assists,e:"🎯"},{l:"Livello",v:playerStats.ovr,e:"⭐"}].map(s=>(
             <div key={s.l}>
               <div style={{fontSize:20}}>{s.e}</div>
               <div style={{fontSize:22,fontWeight:900,color:TH.text}}>{s.v}</div>
-              <div style={{fontSize:10,color:TH.muted}}>{s.l}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
             </div>
           ))}
         </div>
@@ -2140,28 +2140,28 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         if(_mo.length===0&&!_best)return null;
         return(
         <Card style={{marginBottom:12,padding:"14px 16px"}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎬 Il film della stagione</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎬 Il film della stagione</div>
           {_best&&<div style={{fontSize:11,color:TH.text,padding:"6px 0",borderBottom:`1px dashed ${TH.cardBorder}`}}><strong>⭐ La partita dell'anno:</strong> {_best.homeScore}-{_best.awayScore} vs {_best.opponent} — voto {_best.rating}{(_best.goals||0)>0?` · ${_best.goals}⚽`:""}{(_best.assists||0)>0?` · ${_best.assists}🎯`:""}</div>}
           {_mo.map((d,i)=>(<div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"6px 0",borderBottom:i<_mo.length-1?`1px dashed ${TH.cardBorder}`:"none"}}>
             <span style={{fontSize:14}}>{d.e||"📌"}</span>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontSize:11,fontWeight:800,color:d.color||TH.text}}>{d.headline}</div>
-              {d.body&&<div style={{fontSize:10,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{String(d.body).slice(0,90)}</div>}
+              {d.body&&<div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{String(d.body).slice(0,90)}</div>}
             </div>
-            <span style={{fontSize:9,color:TH.faint,flexShrink:0}}>W{d.week||"–"}</span>
+            <span style={{fontSize:FS.caption,color:TH.faint,flexShrink:0}}>W{d.week||"–"}</span>
           </div>))}
         </Card>);})()}
 
       {/* Sprint 87: Premiazioni */}
       {awardRows.length>0&&(
         <Card style={{marginBottom:12,padding:"12px 14px",background:TH.bgAmber,border:"1px solid #fde68a"}}>
-          <div style={{fontSize:10,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>🎖 Premiazioni stagione {season}</div>
+          <div style={{fontSize:FS.caption,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>🎖 Premiazioni stagione {season}</div>
           {awardRows.map((a,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<awardRows.length-1?"1px solid #fde68a":"none"}}>
               <span style={{fontSize:22}}>{a.e}</span>
               <div style={{flex:1}}>
                 <div style={{fontSize:12,fontWeight:800,color:TH.txAmber}}>{a.label}</div>
-                <div style={{fontSize:10,color:TH.txAmber}}>{a.sub}</div>
+                <div style={{fontSize:FS.caption,color:TH.txAmber}}>{a.sub}</div>
               </div>
             </div>
           ))}
@@ -2171,7 +2171,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       {/* Sprint 87: Obiettivi stagione */}
       {objs.length>0&&(
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Obiettivi stagione</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Obiettivi stagione</div>
           {objs.map((obj,i)=>(
             <div key={i} style={{marginBottom:i<objs.length-1?10:0}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
@@ -2179,7 +2179,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                   <span style={{fontSize:15}}>{obj.done?"✅":"❌"}</span>
                   <span style={{fontSize:11,fontWeight:obj.done?700:400,color:obj.done?TH.text:TH.muted}}>{obj.label}</span>
                 </div>
-                <span style={{fontSize:10,color:obj.done?"#16a34a":"#dc2626",fontWeight:700}}>
+                <span style={{fontSize:FS.caption,color:obj.done?"#16a34a":"#dc2626",fontWeight:700}}>
                   {obj.type==="standing"?`${obj.cur}°/${obj.target}°`:`${obj.cur}/${obj.target}`}
                 </span>
               </div>
@@ -2187,7 +2187,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                 <div style={{height:"100%",width:obj.pct+"%",background:obj.done?"#22c55e":"#f97316",borderRadius:3,transition:"width 0.6s ease"}}/>
               </div>
               {obj.done&&obj.bonus&&(
-                <div style={{fontSize:10,color:"#16a34a",marginTop:2}}>
+                <div style={{fontSize:FS.caption,color:"#16a34a",marginTop:2}}>
                   +{[obj.bonus.morale&&`${obj.bonus.morale} morale`,obj.bonus.coachTrust&&`${obj.bonus.coachTrust} fiducia`,obj.bonus.popularity&&`${obj.bonus.popularity} popolarità`].filter(Boolean).join(" · ")}
                 </div>
               )}
@@ -2202,7 +2202,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           <span style={{fontSize:22}}>{phase.e}</span>
           <div>
             <div style={{fontSize:12,fontWeight:800,color:phase.col}}>{phase.label} · {player.age} anni</div>
-            <div style={{fontSize:10,color:TH.muted}}>{phase.desc}</div>
+            <div style={{fontSize:FS.caption,color:TH.muted}}>{phase.desc}</div>
           </div>
         </div>
         <div style={{fontSize:11,color:TH.text,lineHeight:1.55,fontStyle:"italic",borderTop:"1px solid "+phase.border,paddingTop:8,marginTop:2}}>"{narrative}"</div>
@@ -2211,12 +2211,12 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       {/* Momento della stagione */}
       {bestMatch&&(bestMatch.goals>0||bestMatch.assists>0||(bestMatch.rating||0)>=8)&&(
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>⚡ Momento della stagione</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>⚡ Momento della stagione</div>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
             <div style={{fontSize:26,lineHeight:1}}>{bestMatch.goals>=2?"🔥":bestMatch.goals>=1?"⚽":bestMatch.assists>=1?"🎯":"⭐"}</div>
             <div style={{flex:1}}>
               <div style={{fontSize:12,fontWeight:700,color:TH.text}}>vs {bestMatch.opponent||bestMatch.oppAbbr||"?"} · {bestMatch.homeScore}-{bestMatch.awayScore}</div>
-              <div style={{fontSize:10,color:TH.muted}}>{bestMatch.goals>0?bestMatch.goals+"⚽ ":""}{bestMatch.assists>0?bestMatch.assists+"🎯 ":""}{bestMatch.rating?"★ "+bestMatch.rating:""} · {bestMatch.won?"Vittoria":bestMatch.drew?"Pareggio":"Sconfitta"}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{bestMatch.goals>0?bestMatch.goals+"⚽ ":""}{bestMatch.assists>0?bestMatch.assists+"🎯 ":""}{bestMatch.rating?"★ "+bestMatch.rating:""} · {bestMatch.won?"Vittoria":bestMatch.drew?"Pareggio":"Sconfitta"}</div>
             </div>
           </div>
         </Card>
@@ -2225,7 +2225,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       {/* Sprint 87: Europa recap */}
       {euroActive&&(
         <Card style={{marginBottom:12,padding:"12px 14px",background:euro.competition==="UCL"?"#eff6ff":euro.competition==="UEL"?"#fff7ed":"#f5f3ff",border:"1px solid "+(euro.competition==="UCL"?"#bfdbfe":euro.competition==="UEL"?"#fed7aa":"#ddd6fe")}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>
             {euro.competition==="UCL"?"⭐ Korward Champions Cup":euro.competition==="UEL"?"🟡 Korward Europa Cup":"🟣 Korward Conference Cup"}
           </div>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
@@ -2233,7 +2233,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
             <span style={{fontSize:11,color:TH.muted}}>{euro.pts||0} pt nel girone</span>
           </div>
           {(euro.groupResults||[]).length>0&&(
-            <div style={{fontSize:10,color:TH.muted,marginBottom:6}}>
+            <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>
               {(euro.groupResults||[]).map((r,i)=>{
                 const opp=r.opp||r.opponent||"?";
                 const hs=r.hs??r.homeScore??"-"; const as=r.as??r.awayScore??"-";
@@ -2265,23 +2265,23 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       {/* Sprint 87: Rivale */}
       {rival&&(
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>⚔️ Il tuo rivale — {rival.name}</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>⚔️ Il tuo rivale — {rival.name}</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:4,alignItems:"center",textAlign:"center"}}>
             <div>
               <div style={{fontSize:11,fontWeight:700,color:TH.primary}}>{player.name}</div>
-              <div style={{fontSize:10,color:TH.muted}}>{club?.n||"–"}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{club?.n||"–"}</div>
               <div style={{fontSize:20,fontWeight:900,color:TH.text,margin:"4px 0"}}>{playerStats.goals}<span style={{fontSize:11}}>⚽</span></div>
-              <div style={{fontSize:10,color:TH.muted}}>OVR {playerStats.ovr}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>OVR {playerStats.ovr}</div>
             </div>
             <div style={{fontSize:13,fontWeight:900,color:TH.muted}}>VS</div>
             <div>
               <div style={{fontSize:11,fontWeight:700,color:"#dc2626"}}>{rival.name}</div>
-              <div style={{fontSize:10,color:TH.muted}}>{rival.club?.n||"–"}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{rival.club?.n||"–"}</div>
               <div style={{fontSize:20,fontWeight:900,color:TH.text,margin:"4px 0"}}>{rival.goals||0}<span style={{fontSize:11}}>⚽</span></div>
-              <div style={{fontSize:10,color:TH.muted}}>OVR {rival.ovr||"–"}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>OVR {rival.ovr||"–"}</div>
             </div>
           </div>
-          <div style={{textAlign:"center",marginTop:6,fontSize:10,color:TH.muted,fontStyle:"italic"}}>
+          <div style={{textAlign:"center",marginTop:6,fontSize:FS.caption,color:TH.muted,fontStyle:"italic"}}>
             {rival.relationship==="amico"?"🤝 Siete diventati amici nel tempo":rival.relationship==="rispettato"?"🫡 Si rispettano a vicenda":"⚡ La rivalità continua"}
           </div>
         </Card>
@@ -2297,12 +2297,12 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       {/* Standings */}
       {sorted.length>0&&(
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📊 Classifica finale</div>
-          <div style={{display:"flex",justifyContent:"flex-end",gap:12,fontSize:10,color:TH.faint,marginBottom:4,paddingRight:4}}>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📊 Classifica finale</div>
+          <div style={{display:"flex",justifyContent:"flex-end",gap:12,fontSize:FS.caption,color:TH.faint,marginBottom:4,paddingRight:4}}>
             <span>PG GF-GA</span><span style={{minWidth:28,textAlign:"right"}}>PT</span>
           </div>
           {rows}
-          <div style={{display:"flex",gap:10,marginTop:8,fontSize:10,flexWrap:"wrap"}}>
+          <div style={{display:"flex",gap:10,marginTop:8,fontSize:FS.caption,flexWrap:"wrap"}}>
             {_isYouth99?<span style={{color:"#f59e0b"}}>🏆 Campione Primavera</span>:_isTopFlight132?(
               <>
                 <span style={{color:"#f59e0b"}}>🏆 Campione</span>
@@ -2321,15 +2321,15 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
           {_isTopFlight132?(
             <>
-              <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 Qualificazioni Europee</div>
+              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🌍 Qualificazioni Europee</div>
               {[{label:`🏆/🌍 Champions Cup`,color:"#3b82f6",teams:sorted.slice(0,4)},{label:"🟠 Europa Cup",color:"#f97316",teams:sorted.slice(4,6)},{label:"🟢 Conference Cup",color:"#22c55e",teams:sorted.slice(6,7)}].map(({label,color,teams})=>(
                 <div key={label} style={{marginBottom:8}}>
-                  <div style={{fontSize:10,fontWeight:700,color,marginBottom:3}}>{label}</div>
+                  <div style={{fontSize:FS.caption,fontWeight:700,color,marginBottom:3}}>{label}</div>
                   {teams.map((t,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"2px 0",fontSize:11}}>
                       <span style={{color,fontWeight:700,width:20,textAlign:"right"}}>{sorted.indexOf(t)+1}°</span>
                       <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
-                      <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
+                      <span style={{color:TH.muted,fontSize:FS.caption}}>{t.pts}pt</span>
                     </div>
                   ))}
                 </div>
@@ -2340,7 +2340,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                   <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"2px 0",fontSize:11}}>
                     <span style={{color:"#dc2626",fontWeight:700,width:20,textAlign:"right"}}>{sorted.length-2+i}°</span>
                     <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
-                    <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
+                    <span style={{color:TH.muted,fontSize:FS.caption}}>{t.pts}pt</span>
                   </div>
                 ))}
               </div>
@@ -2348,14 +2348,14 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           ):(
             promoTeams.length>0&&(
               <>
-                <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🔀 Movimenti di lega</div>
+                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🔀 Movimenti di lega</div>
                 <div style={{marginBottom:6}}>
                   <div style={{fontSize:12,fontWeight:700,color:"#16a34a",marginBottom:4}}>⬆️ {_promoDestLg99?`Promosse in ${_promoDestLg99}`:"Promosse alla lega superiore"}</div>
                   {promoTeams.map((t,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:11}}>
                       <span style={{color:"#16a34a",fontWeight:700,width:16,textAlign:"right"}}>{i+1}°</span>
                       <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
-                      <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
+                      <span style={{color:TH.muted,fontSize:FS.caption}}>{t.pts}pt</span>
                     </div>
                   ))}
                 </div>
@@ -2365,7 +2365,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                     <div key={i} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 0",fontSize:11}}>
                       <span style={{color:"#dc2626",fontWeight:700,width:16,textAlign:"right"}}>{sorted.length-2+i}°</span>
                       <span style={{flex:1,color:isPlayerRow(t)?TH.primary:TH.text,fontWeight:isPlayerRow(t)?700:400}}>{t.n||t.name}{isPlayerRow(t)?" 👈":""}</span>
-                      <span style={{color:TH.muted,fontSize:10}}>{t.pts}pt</span>
+                      <span style={{color:TH.muted,fontSize:FS.caption}}>{t.pts}pt</span>
                     </div>
                   ))}
                 </div>
@@ -2378,13 +2378,13 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       {/* Albo d'oro */}
       {trophies.length>0&&(
         <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Albo d'oro</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Albo d'oro</div>
           {trophies.map((t,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<trophies.length-1?"1px solid "+TH.cardBorder:"none"}}>
               <span style={{fontSize:16}}>🏆</span>
               <div style={{flex:1}}>
                 <div style={{fontSize:12,fontWeight:700,color:TH.text}}>Stagione {t.season}</div>
-                <div style={{fontSize:10,color:TH.muted}}>{t.club} · {compLbl(t.league)}</div>
+                <div style={{fontSize:FS.caption,color:TH.muted}}>{t.club} · {compLbl(t.league)}</div>
               </div>
             </div>
           ))}
@@ -2398,7 +2398,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           <div style={{fontSize:11,fontWeight:700,color:contractExpiredNow?"#dc2626":contractYearsLeft===1?"#d97706":"#16a34a"}}>
             {contractExpiredNow?"Contratto scaduto — tratta il rinnovo o trova una squadra":contractYearsLeft===1?"Ultimo anno di contratto — occhio alle offerte":"Contratto attivo · "+contractYearsLeft+" ann"+(contractYearsLeft===1?"o":"i") + " rimanent"+(contractYearsLeft===1?"e":"i")}
           </div>
-          {(player.contract?.wage||0)>0&&<div style={{fontSize:10,color:TH.muted}}>{_fmtWageY133(player.contract.wage||0)} / anno</div>}
+          {(player.contract?.wage||0)>0&&<div style={{fontSize:FS.caption,color:TH.muted}}>{_fmtWageY133(player.contract.wage||0)} / anno</div>}
         </div>
       </div>
 
@@ -2461,7 +2461,7 @@ function ClubPresentationScreen({club,contractType,playerName,onContinue}){
     <div style={{width:"100%"}}>
       {/* Club hero banner */}
       <div style={{width:"100%",background:`linear-gradient(135deg,${col}28,${col}0a)`,border:`1px solid ${col}55`,borderRadius:16,padding:"18px 16px",textAlign:"center",marginBottom:12}}>
-        <div style={{fontSize:10,color:TH.muted,letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>🎉 Ufficiale</div>
+        <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>🎉 Ufficiale</div>
         <TeamBadge team={club} size={64}/>
         <h1 style={{fontSize:20,fontWeight:900,margin:"10px 0 2px",color:TH.text}}>{club?.n||club?.name}</h1>
         <div style={{fontSize:11,color:TH.muted,marginBottom:6}}>{club?.lg||club?.nat||"Professionismo"}</div>
@@ -2469,23 +2469,23 @@ function ClubPresentationScreen({club,contractType,playerName,onContinue}){
       </div>
       {/* Headline */}
       <Card bg={TH.bgGreen} border="#bbf7d0" style={{marginBottom:10,padding:"10px 14px"}}>
-        <div style={{fontSize:10,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>📰 Manchette</div>
+        <div style={{fontSize:FS.caption,color:TH.success,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>📰 Manchette</div>
         <div style={{fontSize:13,fontWeight:700,color:TH.text,lineHeight:1.4}}>{headline}</div>
       </Card>
       {/* Stadium + prestige */}
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
         <Card style={{padding:"10px 12px"}}>
-          <div style={{fontSize:10,color:TH.muted,marginBottom:3}}>🏟️ Stadio</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:3}}>🏟️ Stadio</div>
           <div style={{fontSize:11,fontWeight:700,color:TH.text,lineHeight:1.3}}>{stadiumName}</div>
         </Card>
         <Card style={{padding:"10px 12px",textAlign:"center"}}>
-          <div style={{fontSize:10,color:TH.muted,marginBottom:3}}>Prestigio</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:3}}>Prestigio</div>
           <div style={{fontSize:22,fontWeight:900,color:col,lineHeight:1}}>{club?.p||60}</div>
         </Card>
       </div>
       {/* Coach quote */}
       <Card style={{marginBottom:10,padding:"12px 14px"}}>
-        <div style={{fontSize:10,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>💬 Il mister dice</div>
+        <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>💬 Il mister dice</div>
         <div style={{fontSize:12,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>"{COACH_QUOTES[qIdx]}"</div>
       </Card>
       {/* Atmosphere */}

@@ -93,39 +93,77 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
-| Home fuori carriera | 0/28 (10) | 0/28 (10) | 0/28 (10) | 0/28 (10) | 0/28 (10) |
-| Impostazioni | 4/32 (9) | 4/32 (9) | 4/32 (9) | 4/32 (9) | 4/32 (9) |
-| Creazione | 252/841 (9) | 252/841 (9) | 252/841 (9) | 252/841 (9) | 252/841 (9) |
-| Offerte | 0/43 (10) | 0/43 (10) | 0/43 (10) | 0/43 (10) | 0/43 (10) |
-| Dashboard | 22/176 (8) | 22/176 (8) | 22/176 (8) | 22/176 (8) | 22/176 (8) |
-| Stagione · Classifica | 9/396 (8) | 9/396 (8) | 9/396 (8) | 9/397 (8) | 9/397 (8) |
-| Stagione · Calendario | 64/324 (7) | 64/324 (7) | 64/324 (7) | 64/324 (7) | 64/324 (7) |
-| Stagione · Coppe | 9/50 (8) | 9/50 (8) | 9/50 (8) | 9/50 (8) | 9/50 (8) |
-| Club | 60/280 (8) | 60/280 (8) | 60/280 (8) | 60/280 (8) | 60/280 (8) |
-| Carriera · Profilo | 12/314 (7) | 12/314 (7) | 12/314 (7) | 12/314 (7) | 12/314 (7) |
-| Carriera · Nazionale | 12/116 (8) | 12/116 (8) | 12/116 (8) | 12/116 (8) | 12/116 (8) |
-| Agente | 19/125 (8) | 19/125 (8) | 19/125 (8) | 19/125 (8) | 19/125 (8) |
-| Prepartita | 0/35 (10) | 0/35 (10) | 0/35 (10) | 0/35 (10) | 0/35 (10) |
-| **TOTALE** | **463/2760** | **463/2760** | **463/2760** | **463/2761** | **463/2761** |
+| Home fuori carriera | 0/28 (11) | 0/28 (11) | 0/28 (11) | 0/28 (11) | 0/28 (11) |
+| Impostazioni | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) |
+| Creazione | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) |
+| Offerte | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) |
+| Dashboard | 1/197 (9) | 1/197 (9) | 1/197 (9) | 1/197 (9) | 1/197 (9) |
+| Stagione · Classifica | 1/396 (9) | 1/396 (9) | 1/396 (9) | 1/397 (9) | 1/397 (9) |
+| Stagione · Calendario | 1/324 (9) | 1/324 (9) | 1/324 (9) | 1/324 (9) | 1/324 (9) |
+| Stagione · Coppe | 1/50 (9) | 1/50 (9) | 1/50 (9) | 1/50 (9) | 1/50 (9) |
+| Club | 1/280 (9) | 1/280 (9) | 1/280 (9) | 1/280 (9) | 1/280 (9) |
+| Carriera · Profilo | 1/314 (9) | 1/314 (9) | 1/314 (9) | 1/314 (9) | 1/314 (9) |
+| Carriera · Nazionale | 1/116 (9) | 1/116 (9) | 1/116 (9) | 1/116 (9) | 1/116 (9) |
+| Agente | 1/125 (9) | 1/125 (9) | 1/125 (9) | 1/125 (9) | 1/125 (9) |
+| Prepartita | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) |
+| **TOTALE** | **8/2781** | **8/2781** | **8/2781** | **8/2782** | **8/2782** |
+
+### 3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale
+
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 0/28 | 0/28 | 0/28 | 0/28 | 0/28 |
+| Impostazioni | 0/32 | 0/32 | 0/32 | 0/32 | 0/32 |
+| Creazione | 0/841 | 0/841 | 0/841 | 0/841 | 0/841 |
+| Offerte | 0/43 | 0/43 | 0/43 | 0/43 | 0/43 |
+| Dashboard | 1/197 | 1/197 | 1/197 | 1/197 | 1/197 |
+| Stagione · Classifica | 1/396 | 1/396 | 1/396 | 1/397 | 1/397 |
+| Stagione · Calendario | 1/324 | 1/324 | 1/324 | 1/324 | 1/324 |
+| Stagione · Coppe | 1/50 | 1/50 | 1/50 | 1/50 | 1/50 |
+| Club | 1/280 | 1/280 | 1/280 | 1/280 | 1/280 |
+| Carriera · Profilo | 1/314 | 1/314 | 1/314 | 1/314 | 1/314 |
+| Carriera · Nazionale | 1/116 | 1/116 | 1/116 | 1/116 | 1/116 |
+| Agente | 1/125 | 1/125 | 1/125 | 1/125 | 1/125 |
+| Prepartita | 0/35 | 0/35 | 0/35 | 0/35 | 0/35 |
+| **TOTALE** | **8/2781** | **8/2781** | **8/2781** | **8/2782** | **8/2782** |
 
 ### 4 · Contrasto sotto soglia WCAG — sotto/misurati (esclusi per gradiente)
 
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
 | Home fuori carriera | 0/4 (24) | 0/4 (24) | 0/4 (24) | 0/4 (24) | 0/4 (24) |
-| Impostazioni | 17/32 (0) | 17/32 (0) | 17/32 (0) | 17/32 (0) | 17/32 (0) |
-| Creazione | 281/838 (3) | 281/838 (3) | 281/838 (3) | 281/838 (3) | 281/838 (3) |
-| Offerte | 12/38 (5) | 12/38 (5) | 12/38 (5) | 12/38 (5) | 12/38 (5) |
-| Dashboard | 23/104 (72) | 23/104 (72) | 23/104 (72) | 23/104 (72) | 23/104 (72) |
-| Stagione · Classifica | 118/356 (40) | 118/356 (40) | 118/356 (40) | 118/357 (40) | 118/357 (40) |
-| Stagione · Calendario | 166/284 (40) | 166/284 (40) | 166/284 (40) | 166/284 (40) | 166/284 (40) |
-| Stagione · Coppe | 1/10 (40) | 1/10 (40) | 1/10 (40) | 1/10 (40) | 1/10 (40) |
-| Club | 124/215 (65) | 124/215 (65) | 124/215 (65) | 124/215 (65) | 124/215 (65) |
-| Carriera · Profilo | 123/236 (78) | 123/236 (78) | 123/236 (78) | 123/236 (78) | 123/236 (78) |
-| Carriera · Nazionale | 19/61 (55) | 19/61 (55) | 19/61 (55) | 19/61 (55) | 19/61 (55) |
-| Agente | 23/91 (34) | 23/91 (34) | 23/91 (34) | 23/91 (34) | 23/91 (34) |
-| Prepartita | 10/22 (13) | 10/22 (13) | 10/22 (13) | 10/22 (13) | 10/22 (13) |
-| **TOTALE** | **917/2291** | **917/2291** | **917/2291** | **917/2292** | **917/2292** |
+| Impostazioni | 0/32 (0) | 0/32 (0) | 0/32 (0) | 0/32 (0) | 0/32 (0) |
+| Creazione | 0/838 (3) | 0/838 (3) | 0/838 (3) | 0/838 (3) | 0/838 (3) |
+| Offerte | 0/38 (5) | 0/38 (5) | 0/38 (5) | 0/38 (5) | 0/38 (5) |
+| Dashboard | 3/122 (75) | 3/122 (75) | 3/122 (75) | 3/122 (75) | 3/122 (75) |
+| Stagione · Classifica | 4/356 (40) | 4/356 (40) | 4/356 (40) | 4/357 (40) | 4/357 (40) |
+| Stagione · Calendario | 1/284 (40) | 1/284 (40) | 1/284 (40) | 1/284 (40) | 1/284 (40) |
+| Stagione · Coppe | 0/10 (40) | 0/10 (40) | 0/10 (40) | 0/10 (40) | 0/10 (40) |
+| Club | 34/215 (65) | 34/215 (65) | 34/215 (65) | 34/215 (65) | 34/215 (65) |
+| Carriera · Profilo | 20/236 (78) | 20/236 (78) | 20/236 (78) | 20/236 (78) | 20/236 (78) |
+| Carriera · Nazionale | 0/61 (55) | 0/61 (55) | 0/61 (55) | 0/61 (55) | 0/61 (55) |
+| Agente | 0/91 (34) | 0/91 (34) | 0/91 (34) | 0/91 (34) | 0/91 (34) |
+| Prepartita | 0/22 (13) | 0/22 (13) | 0/22 (13) | 0/22 (13) | 0/22 (13) |
+| **TOTALE** | **62/2309** | **62/2309** | **62/2309** | **62/2310** | **62/2310** |
+
+### 5 · Bottoni pieni di marca (una sola azione primaria per vista)
+
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 0 | 0 | 0 | 0 | 0 |
+| Impostazioni | 0 | 0 | 0 | 0 | 0 |
+| Creazione | 1 | 1 | 1 | 1 | 1 |
+| Offerte | 1 | 1 | 1 | 1 | 1 |
+| Dashboard | 1 | 1 | 1 | 1 | 1 |
+| Stagione · Classifica | 1 | 1 | 1 | 1 | 1 |
+| Stagione · Calendario | 0 | 0 | 0 | 0 | 0 |
+| Stagione · Coppe | 0 | 0 | 0 | 0 | 0 |
+| Club | 0 | 0 | 0 | 0 | 0 |
+| Carriera · Profilo | 0 | 0 | 0 | 0 | 0 |
+| Carriera · Nazionale | 0 | 0 | 0 | 0 | 0 |
+| Agente | 0 | 0 | 0 | 0 | 0 |
+| Prepartita | 1 | 1 | 1 | 1 | 1 |
+| **TOTALE** | **5** | **5** | **5** | **5** | **5** |
 
 ## Dettaglio · gli elementi che sporgono (i 5 peggiori per schermata, alla larghezza in cui sporgono di piu')
 
@@ -149,73 +187,73 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 
 | schermata | rapporto | soglia | testo su fondo | px / peso | occorrenze | esempio |
 |---|---:|---:|---|---|---:|---|
-| Home fuori carriera | 4.76:1 | 4.5:1 | `#64748b` su `#ffffff` | 13 / 400 | 3 | ⚡ Nuova carriera |
-| Home fuori carriera | 4.76:1 | 4.5:1 | `#64748b` su `#ffffff` | 12 / 400 | 1 | Crea il tuo calciatore, su |
-| Impostazioni | 2.38:1 | 4.5:1 | `#94a3b8` su `#f0f7ff` | 10 / 400 | 1 | Le impostazioni si salvano |
-| Impostazioni | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 10 / 400 | 12 | 30 |
-| Impostazioni | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 9 / 600 | 3 | ( |
-| Impostazioni | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 9 / 400 | 1 | Audio sintetizzato in temp |
-| Impostazioni | 4.76:1 | 4.5:1 | `#64748b` su `#ffffff` | 11 / 700 | 2 | 🎨 Grafica |
-| Creazione | 2.05:1 | 4.5:1 | `#f59e0b` su `#f8fafc` | 10 / 400 | 8 | 🏆 Scalatore Nato |
-| Creazione | 2.18:1 | 4.5:1 | `#94a3b8` su `#f7e9ec` | 10 / 400 | 1 | Potenza e istinto del gol |
-| Creazione | 2.39:1 | 4.5:1 | `#94a3b8` su `#f4f7fb` | 9 / 400 | 252 | Liga Ibérica |
-| Creazione | 2.39:1 | 4.5:1 | `#94a3b8` su `#f4f7fb` | 10 / 400 | 7 | Tecnica sopraffina e impre |
-| Creazione | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 10 / 700 | 2 | 👤 Identità |
-| Offerte | 2.39:1 | 4.5:1 | `#94a3b8` su `#f4f7fb` | 10 / 400 | 6 | Provino |
-| Offerte | 2.96:1 | 4.5:1 | `#d97706` su `#f4f7fb` | 11 / 700 | 3 | 7.4 |
-| Offerte | 4.04:1 | 4.5:1 | `#64748b` su `#f7e9ec` | 11 / 400 | 3 | 🇮🇹 |
-| Offerte | 4.76:1 | 4.5:1 | `#64748b` su `#ffffff` | 11 / 400 | 6 | 🇮🇹 |
-| Offerte | 4.76:1 | 4.5:1 | `#64748b` su `#ffffff` | 13 / 400 | 2 | Scegli → |
-| Dashboard | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 10 / 400 | 6 | 4 |
-| Dashboard | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 11 / 700 | 6 | Stagione |
-| Dashboard | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 9 / 400 | 3 | ( |
-| Dashboard | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 11 / 400 | 3 | 26 |
-| Dashboard | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 8 / 400 | 1 | OVR |
-| Stagione · Classifica | 2.00:1 | 4.5:1 | `#f59e0b` su `#fef9c3` | 11 / 700 | 1 | 80 |
-| Stagione · Classifica | 2.15:1 | 4.5:1 | `#f59e0b` su `#ffffff` | 10 / 700 | 2 | # |
-| Stagione · Classifica | 2.15:1 | 4.5:1 | `#f59e0b` su `#ffffff` | 11 / 700 | 1 | 🥇 |
-| Stagione · Classifica | 2.39:1 | 4.5:1 | `#94a3b8` su `#fef9c3` | 10 / 700 | 2 | # |
+| Home fuori carriera | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 13 / 400 | 3 | ⚡ Nuova carriera |
+| Home fuori carriera | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 12 / 400 | 1 | Crea il tuo calciatore, su |
+| Impostazioni | 4.99:1 | 4.5:1 | `#596a80` su `#f5f3ef` | 11 / 400 | 1 | Le impostazioni si salvano |
+| Impostazioni | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 13 | 30 |
+| Impostazioni | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 600 | 3 | ( |
+| Impostazioni | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 11 / 700 | 2 | 🎨 Grafica |
+| Impostazioni | 7.44:1 | 4.5:1 | `#8e1f33` su `#f7e9ec` | 12.5 / 700 | 1 | ☀️ Chiaro |
+| Creazione | 4.69:1 | 4.5:1 | `#596a80` su `#f7e9ec` | 11 / 400 | 1 | Potenza e istinto del gol |
+| Creazione | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 400 | 259 | Tecnica sopraffina e impre |
+| Creazione | 5.12:1 | 4.5:1 | `#a34a08` su `#f1eee8` | 11 / 400 | 8 | 🏆 Scalatore Nato |
+| Creazione | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 400 | 8 | Vinci il campionato entro  |
+| Creazione | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 700 | 2 | 👤 Identità |
+| Offerte | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 400 | 6 | Provino |
+| Offerte | 5.27:1 | 4.5:1 | `#526279` su `#f7e9ec` | 11 / 400 | 3 | 🇮🇹 |
+| Offerte | 6.12:1 | 4.5:1 | `#92400e` su `#f1eee8` | 11 / 700 | 3 | 7.4 |
+| Offerte | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 11 / 400 | 7 | Riepilogo provini |
+| Offerte | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 13 / 400 | 2 | Scegli → |
+| Dashboard | 3.19:1 | 3:1 | `#d97706` su `#ffffff` | 32 / 800 | 1 | 7.2 |
+| Dashboard | 3.30:1 | 4.5:1 | `#16a34a` su `#ffffff` | 11 / 700 | 2 | Force |
+| Dashboard | 3.30:1 | 3:1 | `#16a34a` su `#ffffff` | 17.3 / 900 | 1 | 82 |
+| Dashboard | 3.30:1 | 3:1 | `#16a34a` su `#ffffff` | 32 / 800 | 1 | 14 |
+| Dashboard | 3.68:1 | 4.5:1 | `#0891b2` su `#ffffff` | 11 / 700 | 1 | Nello spogliatoio |
 | Stagione · Classifica | 2.54:1 | 4.5:1 | `#9ca3af` su `#ffffff` | 11 / 700 | 1 | 🥈 |
-| Stagione · Calendario | 2.39:1 | 3:1 | `#94a3b8` su `#f4f7fb` | 15 / 800 | 10 | – |
-| Stagione · Calendario | 2.39:1 | 4.5:1 | `#94a3b8` su `#f4f7fb` | 9 / 400 | 10 | voto |
-| Stagione · Calendario | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 10 / 400 | 26 | 13 |
-| Stagione · Calendario | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 7 / 400 | 23 | ⚽ |
-| Stagione · Calendario | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 8 / 400 | 1 | OVR |
-| Stagione · Coppe | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 8 / 400 | 1 | OVR |
+| Stagione · Classifica | 3.25:1 | 4.5:1 | `#ef4444` su `#f1eee8` | 12 / 700 | 2 | 16 |
+| Stagione · Classifica | 3.30:1 | 3:1 | `#16a34a` su `#ffffff` | 17.3 / 900 | 1 | 82 |
+| Stagione · Classifica | 3.76:1 | 4.5:1 | `#ef4444` su `#ffffff` | 12 / 700 | 1 | 17 |
+| Stagione · Classifica | 4.97:1 | 4.5:1 | `#596a80` su `#fef3c7` | 11 / 700 | 2 | # |
+| Stagione · Calendario | 3.30:1 | 3:1 | `#16a34a` su `#ffffff` | 17.3 / 900 | 1 | 82 |
+| Stagione · Calendario | 3.30:1 | 4.5:1 | `#ffffff` su `#16a34a` | 11 / 700 | 1 | Gioca → |
+| Stagione · Calendario | 4.77:1 | 3:1 | `#596a80` su `#f1eee8` | 15 / 800 | 10 | – |
+| Stagione · Calendario | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 400 | 10 | voto |
+| Stagione · Calendario | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 400 | 60 | W. |
 | Stagione · Coppe | 3.30:1 | 3:1 | `#16a34a` su `#ffffff` | 17.3 / 900 | 1 | 82 |
-| Stagione · Coppe | 4.76:1 | 4.5:1 | `#64748b` su `#ffffff` | 11 / 400 | 1 | Coppa Nazionale: dal tuo s |
-| Stagione · Coppe | 8.77:1 | 4.5:1 | `#ffffff` su `#8e1f33` | 13 / 900 | 2 | K |
-| Stagione · Coppe | 8.77:1 | 4.5:1 | `#ffffff` su `#8e1f33` | 12 / 800 | 1 | ☕ Sostieni lo sviluppo di |
-| Club | 2.18:1 | 4.5:1 | `#94a3b8` su `#f7e9ec` | 10 / 700 | 1 | 9 |
-| Club | 2.18:1 | 4.5:1 | `#94a3b8` su `#f7e9ec` | 9 / 400 | 1 | Centravanti |
-| Club | 2.38:1 | 4.5:1 | `#94a3b8` su `#f0f7ff` | 8 / 400 | 1 | fiducia |
-| Club | 2.39:1 | 4.5:1 | `#94a3b8` su `#f4f7fb` | 9 / 400 | 14 | — |
-| Club | 2.39:1 | 4.5:1 | `#94a3b8` su `#f4f7fb` | 10 / 700 | 11 | 2 |
-| Carriera · Profilo | 2.35:1 | 4.5:1 | `#94a3b8` su `#f5f5f5` | 12 / 600 | 14 | 🏛️ |
-| Carriera · Profilo | 2.35:1 | 4.5:1 | `#94a3b8` su `#f5f5f5` | 10 / 600 | 14 | 200 partite |
-| Carriera · Profilo | 2.39:1 | 4.5:1 | `#94a3b8` su `#f4f7fb` | 10 / 400 | 10 | Stipendio |
-| Carriera · Profilo | 2.54:1 | 4.5:1 | `#10b981` su `#ffffff` | 10 / 400 | 3 | Cifre del Calcio |
-| Carriera · Profilo | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 10 / 400 | 18 | S.4 · FC Salernum |
-| Carriera · Nazionale | 2.16:1 | 4.5:1 | `#94a3b8` su `#e7ecf5` | 10 / 400 | 2 | 0 |
-| Carriera · Nazionale | 2.38:1 | 4.5:1 | `#94a3b8` su `#f0f7ff` | 11 / 900 | 6 | 2 |
-| Carriera · Nazionale | 2.38:1 | 4.5:1 | `#94a3b8` su `#f0f7ff` | 10 / 400 | 6 | 31 |
-| Carriera · Nazionale | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 9 / 400 | 2 | Prossimi tornei |
-| Carriera · Nazionale | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 8 / 400 | 1 | OVR |
-| Agente | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 11 / 400 | 3 | « |
-| Agente | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 8 / 400 | 1 | OVR |
-| Agente | 2.56:1 | 4.5:1 | `#94a3b8` su `#ffffff` | 11.5 / 400 | 1 | Cambia procuratore |
-| Agente | 3.07:1 | 4.5:1 | `#16a34a` su `#f4f7fb` | 13 / 800 | 2 | €4.9M |
+| Stagione · Coppe | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 1 | OVR |
+| Stagione · Coppe | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 11 / 400 | 1 | Coppa Nazionale: dal tuo s |
+| Stagione · Coppe | 7.58:1 | 4.5:1 | `#8e1f33` su `#f1eee8` | 13 / 900 | 2 | K |
+| Stagione · Coppe | 7.58:1 | 4.5:1 | `#8e1f33` su `#f1eee8` | 12 / 800 | 1 | ☕ Sostieni lo sviluppo di |
+| Club | 2.75:1 | 4.5:1 | `#d97706` su `#f1eee8` | 13 / 800 | 11 | 76 |
+| Club | 2.80:1 | 4.5:1 | `#16a34a` su `#f7e9ec` | 13 / 800 | 1 | 82 |
+| Club | 2.97:1 | 3:1 | `#16a34a` su `#f5f3ef` | 14 / 900 | 1 | 78 |
+| Club | 3.19:1 | 4.5:1 | `#d97706` su `#ffffff` | 13 / 800 | 11 | 79 |
+| Club | 3.30:1 | 4.5:1 | `#ffffff` su `#16a34a` | 11 / 800 | 5 | C |
+| Carriera · Profilo | 2.54:1 | 4.5:1 | `#10b981` su `#ffffff` | 11 / 400 | 3 | Cifre del Calcio |
+| Carriera · Profilo | 2.75:1 | 3:1 | `#d97706` su `#f1eee8` | 17 / 800 | 2 | 14 |
+| Carriera · Profilo | 2.85:1 | 3:1 | `#16a34a` su `#f1eee8` | 17 / 800 | 1 | 45M€ |
+| Carriera · Profilo | 3.30:1 | 4.5:1 | `#16a34a` su `#ffffff` | 11 / 700 | 8 | 82 |
+| Carriera · Profilo | 3.30:1 | 3:1 | `#16a34a` su `#ffffff` | 17.3 / 900 | 1 | 82 |
+| Carriera · Nazionale | 3.30:1 | 3:1 | `#16a34a` su `#ffffff` | 17.3 / 900 | 1 | 82 |
+| Carriera · Nazionale | 4.66:1 | 4.5:1 | `#596a80` su `#e7ecf5` | 11 / 400 | 2 | 0 |
+| Carriera · Nazionale | 4.99:1 | 4.5:1 | `#596a80` su `#f5f3ef` | 11 / 900 | 6 | 2 |
+| Carriera · Nazionale | 4.99:1 | 4.5:1 | `#596a80` su `#f5f3ef` | 11 / 400 | 6 | 31 |
+| Carriera · Nazionale | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 3 | OVR |
 | Agente | 3.30:1 | 3:1 | `#16a34a` su `#ffffff` | 17.3 / 900 | 1 | 82 |
-| Prepartita | 2.39:1 | 4.5:1 | `#94a3b8` su `#f4f7fb` | 10 / 400 | 4 | Stadio |
-| Prepartita | 3.30:1 | 4.5:1 | `#16a34a` su `#ffffff` | 11.5 / 700 | 4 | Gioco aereo |
-| Prepartita | 4.34:1 | 4.5:1 | `#64748b` su `#f1f5f9` | 10 / 400 | 2 | 🗡️ |
-| Prepartita | 4.76:1 | 4.5:1 | `#64748b` su `#ffffff` | 10.5 / 400 | 1 | Attenzione: centrocampo fi |
-| Prepartita | 4.76:1 | 4.5:1 | `#64748b` su `#ffffff` | 12 / 400 | 1 | 🔍 Analisi completa |
+| Agente | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 400 | 12 | Mercato |
+| Agente | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 500 | 2 | Ambiziosa |
+| Agente | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 700 | 1 | 🔴 Chiuso |
+| Agente | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 4 | OVR |
+| Prepartita | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 400 | 4 | Stadio |
+| Prepartita | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 400 | 2 | 🗡️ |
+| Prepartita | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 11 / 400 | 1 | Attenzione: centrocampo fi |
+| Prepartita | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 12 / 400 | 1 | 🔍 Analisi completa |
+| Prepartita | 7.13:1 | 4.5:1 | `#166534` su `#ffffff` | 11.5 / 700 | 4 | Gioco aereo |
 
 ## Fuori portata di questa sonda (dichiarato, non misurato)
 
 - Il **telefono vero** del PO: font di sistema, sub-pixel, tocco, GPU, fps, barra di sistema, notch.
-- Il **tema scuro**: qui si misura solo il tema chiaro (`cpm-dark=0`).
+- Il **tema scuro**: questa corsa misura il tema chiaro (`cpm-dark=0`); si misura a parte con `CPM_TEMA=scuro`.
 - Tutto cio' che si vede **giocando**: HUD di partita, telecronaca, highlight, scena 3D, fine partita, cerimonie.
 - Gli **stati** (premuto, attivo, disabilitato, focus) e le transizioni: le animazioni sono portate al termine prima di misurare.
 - I **fondi a gradiente/immagine**: il contrasto su quei nodi e' escluso, non stimato.

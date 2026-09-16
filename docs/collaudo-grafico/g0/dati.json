@@ -1,6 +1,7 @@
 {
  "versione": "?",
  "seme": 4242,
+ "tema": "chiaro",
  "taglie": [
   360,
   375,
@@ -36,35 +37,38 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 28,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 4,
     "nSotto": 0,
     "nGradiente": 24,
     "peggiori": [
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "375": {
     "W": 375,
@@ -77,35 +81,38 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 28,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 4,
     "nSotto": 0,
     "nGradiente": 24,
     "peggiori": [
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "390": {
     "W": 390,
@@ -118,35 +125,38 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 28,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 4,
     "nSotto": 0,
     "nGradiente": 24,
     "peggiori": [
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "412": {
     "W": 412,
@@ -159,35 +169,38 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 28,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 4,
     "nSotto": 0,
     "nGradiente": 24,
     "peggiori": [
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "430": {
     "W": 430,
@@ -200,35 +213,38 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 28,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 4,
     "nSotto": 0,
     "nGradiente": 24,
     "peggiori": [
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    }
   },
   "impostazioni": {
@@ -243,68 +259,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 32,
-    "nPiccoli": 4,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 32,
-    "nSotto": 17,
+    "nSotto": 0,
     "nGradiente": 0,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 600,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "("
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(8)",
-      "esempio": "Audio sintetizzato in temp"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f7e9ec",
+      "fs": 12.5,
+      "fw": 700,
+      "rap": 7.44,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
+      "esempio": "☀️ Chiaro"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "375": {
     "W": 375,
@@ -317,68 +336,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 32,
-    "nPiccoli": 4,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 32,
-    "nSotto": 17,
+    "nSotto": 0,
     "nGradiente": 0,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 600,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "("
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(8)",
-      "esempio": "Audio sintetizzato in temp"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f7e9ec",
+      "fs": 12.5,
+      "fw": 700,
+      "rap": 7.44,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
+      "esempio": "☀️ Chiaro"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "390": {
     "W": 390,
@@ -391,68 +413,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 32,
-    "nPiccoli": 4,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 32,
-    "nSotto": 17,
+    "nSotto": 0,
     "nGradiente": 0,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 600,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "("
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(8)",
-      "esempio": "Audio sintetizzato in temp"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f7e9ec",
+      "fs": 12.5,
+      "fw": 700,
+      "rap": 7.44,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
+      "esempio": "☀️ Chiaro"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "412": {
     "W": 412,
@@ -465,68 +490,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 32,
-    "nPiccoli": 4,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 32,
-    "nSotto": 17,
+    "nSotto": 0,
     "nGradiente": 0,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 600,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "("
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(8)",
-      "esempio": "Audio sintetizzato in temp"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f7e9ec",
+      "fs": 12.5,
+      "fw": 700,
+      "rap": 7.44,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
+      "esempio": "☀️ Chiaro"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "430": {
     "W": 430,
@@ -539,68 +567,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 32,
-    "nPiccoli": 4,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 32,
-    "nSotto": 17,
+    "nSotto": 0,
     "nGradiente": 0,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 12,
+      "n": 13,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 600,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "("
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(8)",
-      "esempio": "Audio sintetizzato in temp"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f7e9ec",
+      "fs": 12.5,
+      "fw": 700,
+      "rap": 7.44,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
+      "esempio": "☀️ Chiaro"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    }
   },
   "creazione": {
@@ -626,67 +657,72 @@
      }
     ],
     "nTesto": 841,
-    "nPiccoli": 252,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 838,
-    "nSotto": 281,
+    "nSotto": 0,
     "nGradiente": 3,
     "peggiori": [
      {
-      "testo": "#f59e0b",
-      "fondo": "#f8fafc",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.05,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
-      "esempio": "🏆 Scalatore Nato"
-     },
-     {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#f7e9ec",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.18,
+      "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 252,
-      "sel": "div:nth-child(3)>button:nth-child(1)>span:nth-child(3)",
-      "esempio": "Liga Ibérica"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 7,
+      "n": 259,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#a34a08",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.12,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
+      "esempio": "🏆 Scalatore Nato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
+      "esempio": "Vinci il campionato entro "
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ INIZIA I PROVINI"
     ]
    },
    "375": {
@@ -700,67 +736,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 841,
-    "nPiccoli": 252,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 838,
-    "nSotto": 281,
+    "nSotto": 0,
     "nGradiente": 3,
     "peggiori": [
      {
-      "testo": "#f59e0b",
-      "fondo": "#f8fafc",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.05,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
-      "esempio": "🏆 Scalatore Nato"
-     },
-     {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#f7e9ec",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.18,
+      "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 252,
-      "sel": "div:nth-child(3)>button:nth-child(1)>span:nth-child(3)",
-      "esempio": "Liga Ibérica"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 7,
+      "n": 259,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#a34a08",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.12,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
+      "esempio": "🏆 Scalatore Nato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
+      "esempio": "Vinci il campionato entro "
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ INIZIA I PROVINI"
     ]
    },
    "390": {
@@ -774,67 +815,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 841,
-    "nPiccoli": 252,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 838,
-    "nSotto": 281,
+    "nSotto": 0,
     "nGradiente": 3,
     "peggiori": [
      {
-      "testo": "#f59e0b",
-      "fondo": "#f8fafc",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.05,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
-      "esempio": "🏆 Scalatore Nato"
-     },
-     {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#f7e9ec",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.18,
+      "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 252,
-      "sel": "div:nth-child(3)>button:nth-child(1)>span:nth-child(3)",
-      "esempio": "Liga Ibérica"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 7,
+      "n": 259,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#a34a08",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.12,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
+      "esempio": "🏆 Scalatore Nato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
+      "esempio": "Vinci il campionato entro "
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ INIZIA I PROVINI"
     ]
    },
    "412": {
@@ -848,67 +894,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 841,
-    "nPiccoli": 252,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 838,
-    "nSotto": 281,
+    "nSotto": 0,
     "nGradiente": 3,
     "peggiori": [
      {
-      "testo": "#f59e0b",
-      "fondo": "#f8fafc",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.05,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
-      "esempio": "🏆 Scalatore Nato"
-     },
-     {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#f7e9ec",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.18,
+      "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 252,
-      "sel": "div:nth-child(3)>button:nth-child(1)>span:nth-child(3)",
-      "esempio": "Liga Ibérica"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 7,
+      "n": 259,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#a34a08",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.12,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
+      "esempio": "🏆 Scalatore Nato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
+      "esempio": "Vinci il campionato entro "
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ INIZIA I PROVINI"
     ]
    },
    "430": {
@@ -922,67 +973,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 841,
-    "nPiccoli": 252,
-    "minFs": 9,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
     "nMisurati": 838,
-    "nSotto": 281,
+    "nSotto": 0,
     "nGradiente": 3,
     "peggiori": [
      {
-      "testo": "#f59e0b",
-      "fondo": "#f8fafc",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.05,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
-      "esempio": "🏆 Scalatore Nato"
-     },
-     {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#f7e9ec",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.18,
+      "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 252,
-      "sel": "div:nth-child(3)>button:nth-child(1)>span:nth-child(3)",
-      "esempio": "Liga Ibérica"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 7,
+      "n": 259,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#a34a08",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.12,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
+      "esempio": "🏆 Scalatore Nato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
+      "esempio": "Vinci il campionato entro "
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ INIZIA I PROVINI"
     ]
    }
   },
@@ -998,67 +1054,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 43,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 38,
-    "nSotto": 12,
+    "nSotto": 0,
     "nGradiente": 5,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
      {
-      "testo": "#d97706",
-      "fondo": "#f4f7fb",
+      "testo": "#526279",
+      "fondo": "#f7e9ec",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.27,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "🇮🇹"
+     },
+     {
+      "testo": "#92400e",
+      "fondo": "#f1eee8",
       "fs": 11,
       "fw": 700,
-      "rap": 2.96,
+      "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
      {
-      "testo": "#64748b",
-      "fondo": "#f7e9ec",
-      "fs": 11,
-      "fw": 400,
-      "rap": 4.04,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "n": 7,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Riepilogo provini"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Scegli →"
     ]
    },
    "375": {
@@ -1072,67 +1133,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 43,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 38,
-    "nSotto": 12,
+    "nSotto": 0,
     "nGradiente": 5,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
      {
-      "testo": "#d97706",
-      "fondo": "#f4f7fb",
+      "testo": "#526279",
+      "fondo": "#f7e9ec",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.27,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "🇮🇹"
+     },
+     {
+      "testo": "#92400e",
+      "fondo": "#f1eee8",
       "fs": 11,
       "fw": 700,
-      "rap": 2.96,
+      "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
      {
-      "testo": "#64748b",
-      "fondo": "#f7e9ec",
-      "fs": 11,
-      "fw": 400,
-      "rap": 4.04,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "n": 7,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Riepilogo provini"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Scegli →"
     ]
    },
    "390": {
@@ -1146,67 +1212,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 43,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 38,
-    "nSotto": 12,
+    "nSotto": 0,
     "nGradiente": 5,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
      {
-      "testo": "#d97706",
-      "fondo": "#f4f7fb",
+      "testo": "#526279",
+      "fondo": "#f7e9ec",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.27,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "🇮🇹"
+     },
+     {
+      "testo": "#92400e",
+      "fondo": "#f1eee8",
       "fs": 11,
       "fw": 700,
-      "rap": 2.96,
+      "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
      {
-      "testo": "#64748b",
-      "fondo": "#f7e9ec",
-      "fs": 11,
-      "fw": 400,
-      "rap": 4.04,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "n": 7,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Riepilogo provini"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Scegli →"
     ]
    },
    "412": {
@@ -1220,67 +1291,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 43,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 38,
-    "nSotto": 12,
+    "nSotto": 0,
     "nGradiente": 5,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
      {
-      "testo": "#d97706",
-      "fondo": "#f4f7fb",
+      "testo": "#526279",
+      "fondo": "#f7e9ec",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.27,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "🇮🇹"
+     },
+     {
+      "testo": "#92400e",
+      "fondo": "#f1eee8",
       "fs": 11,
       "fw": 700,
-      "rap": 2.96,
+      "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
      {
-      "testo": "#64748b",
-      "fondo": "#f7e9ec",
-      "fs": 11,
-      "fw": 400,
-      "rap": 4.04,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "n": 7,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Riepilogo provini"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Scegli →"
     ]
    },
    "430": {
@@ -1294,67 +1370,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 43,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 38,
-    "nSotto": 12,
+    "nSotto": 0,
     "nGradiente": 5,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
      {
-      "testo": "#d97706",
-      "fondo": "#f4f7fb",
+      "testo": "#526279",
+      "fondo": "#f7e9ec",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.27,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "🇮🇹"
+     },
+     {
+      "testo": "#92400e",
+      "fondo": "#f1eee8",
       "fs": 11,
       "fw": 700,
-      "rap": 2.96,
+      "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
      {
-      "testo": "#64748b",
-      "fondo": "#f7e9ec",
-      "fs": 11,
-      "fw": 400,
-      "rap": 4.04,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
-     },
-     {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "n": 7,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Riepilogo provini"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 13,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Scegli →"
     ]
    }
   },
@@ -1369,68 +1450,73 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 176,
-    "nPiccoli": 22,
-    "minFs": 8,
-    "nMisurati": 104,
-    "nSotto": 23,
-    "nGradiente": 72,
+    "nTesto": 197,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
+    "nMisurati": 122,
+    "nSotto": 3,
+    "nGradiente": 75,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
+      "esempio": "7.2"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(12)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stagione"
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Force"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(6)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "("
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#0891b2",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
-      "esempio": "26"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
+      "fw": 700,
+      "rap": 3.68,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "Nello spogliatoio"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ Vivi la Settimanaallenamento, eventi e"
     ]
    },
    "375": {
@@ -1443,68 +1529,73 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 176,
-    "nPiccoli": 22,
-    "minFs": 8,
-    "nMisurati": 104,
-    "nSotto": 23,
-    "nGradiente": 72,
+    "nTesto": 197,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
+    "nMisurati": 122,
+    "nSotto": 3,
+    "nGradiente": 75,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
+      "esempio": "7.2"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(12)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stagione"
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Force"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(6)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "("
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#0891b2",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
-      "esempio": "26"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
+      "fw": 700,
+      "rap": 3.68,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "Nello spogliatoio"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ Vivi la Settimanaallenamento, eventi e"
     ]
    },
    "390": {
@@ -1517,68 +1608,73 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 176,
-    "nPiccoli": 22,
-    "minFs": 8,
-    "nMisurati": 104,
-    "nSotto": 23,
-    "nGradiente": 72,
+    "nTesto": 197,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
+    "nMisurati": 122,
+    "nSotto": 3,
+    "nGradiente": 75,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
+      "esempio": "7.2"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(12)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stagione"
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Force"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(6)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "("
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#0891b2",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
-      "esempio": "26"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
+      "fw": 700,
+      "rap": 3.68,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "Nello spogliatoio"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ Vivi la Settimanaallenamento, eventi e"
     ]
    },
    "412": {
@@ -1591,68 +1687,73 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 176,
-    "nPiccoli": 22,
-    "minFs": 8,
-    "nMisurati": 104,
-    "nSotto": 23,
-    "nGradiente": 72,
+    "nTesto": 197,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
+    "nMisurati": 122,
+    "nSotto": 3,
+    "nGradiente": 75,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
+      "esempio": "7.2"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(12)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stagione"
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Force"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(6)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "("
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#0891b2",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
-      "esempio": "26"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
+      "fw": 700,
+      "rap": 3.68,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "Nello spogliatoio"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ Vivi la Settimanaallenamento, eventi e"
     ]
    },
    "430": {
@@ -1665,68 +1766,73 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 176,
-    "nPiccoli": 22,
-    "minFs": 8,
-    "nMisurati": 104,
-    "nSotto": 23,
-    "nGradiente": 72,
+    "nTesto": 197,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
+    "nMisurati": 122,
+    "nSotto": 3,
+    "nGradiente": 75,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
+      "esempio": "7.2"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 2.56,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 6,
-      "sel": "div:nth-child(12)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stagione"
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
+      "esempio": "Force"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(6)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "("
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 32,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#0891b2",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
-      "esempio": "26"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
+      "fw": 700,
+      "rap": 3.68,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
+      "esempio": "Nello spogliatoio"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "⚡ Vivi la Settimanaallenamento, eventi e"
     ]
    }
   },
@@ -1768,56 +1874,13 @@
      }
     ],
     "nTesto": 396,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 356,
-    "nSotto": 118,
+    "nSotto": 4,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#f59e0b",
-      "fondo": "#fef9c3",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
-      "esempio": "80"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "#"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "🥇"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#fef9c3",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
-     },
      {
       "testo": "#9ca3af",
       "fondo": "#ffffff",
@@ -1828,7 +1891,55 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "🥈"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.25,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
+      "esempio": "16"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.76,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
+      "esempio": "17"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 4.97,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
+      "esempio": "#"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Lega B ★"
     ]
    },
    "375": {
@@ -1868,56 +1979,13 @@
      }
     ],
     "nTesto": 396,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 356,
-    "nSotto": 118,
+    "nSotto": 4,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#f59e0b",
-      "fondo": "#fef9c3",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
-      "esempio": "80"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "#"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "🥇"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#fef9c3",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
-     },
      {
       "testo": "#9ca3af",
       "fondo": "#ffffff",
@@ -1928,7 +1996,55 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "🥈"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.25,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
+      "esempio": "16"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.76,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
+      "esempio": "17"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 4.97,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
+      "esempio": "#"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Lega B ★"
     ]
    },
    "390": {
@@ -1968,56 +2084,13 @@
      }
     ],
     "nTesto": 396,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 356,
-    "nSotto": 118,
+    "nSotto": 4,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#f59e0b",
-      "fondo": "#fef9c3",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
-      "esempio": "80"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "#"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "🥇"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#fef9c3",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
-     },
      {
       "testo": "#9ca3af",
       "fondo": "#ffffff",
@@ -2028,7 +2101,55 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "🥈"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.25,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
+      "esempio": "16"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.76,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
+      "esempio": "17"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 4.97,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
+      "esempio": "#"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Lega B ★"
     ]
    },
    "412": {
@@ -2068,56 +2189,13 @@
      }
     ],
     "nTesto": 397,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 357,
-    "nSotto": 118,
+    "nSotto": 4,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#f59e0b",
-      "fondo": "#fef9c3",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
-      "esempio": "80"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "#"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "🥇"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#fef9c3",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
-     },
      {
       "testo": "#9ca3af",
       "fondo": "#ffffff",
@@ -2128,7 +2206,55 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "🥈"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.25,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
+      "esempio": "16"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.76,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
+      "esempio": "17"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 4.97,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
+      "esempio": "#"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Lega B ★"
     ]
    },
    "430": {
@@ -2168,56 +2294,13 @@
      }
     ],
     "nTesto": 397,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 357,
-    "nSotto": 118,
+    "nSotto": 4,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#f59e0b",
-      "fondo": "#fef9c3",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
-      "esempio": "80"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "#"
-     },
-     {
-      "testo": "#f59e0b",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.15,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "🥇"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#fef9c3",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
-     },
      {
       "testo": "#9ca3af",
       "fondo": "#ffffff",
@@ -2228,7 +2311,55 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "🥈"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.25,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
+      "esempio": "16"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ef4444",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 3.76,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
+      "esempio": "17"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 4.97,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
+      "esempio": "#"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Lega B ★"
     ]
    }
   },
@@ -2244,68 +2375,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 324,
-    "nPiccoli": 64,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 284,
-    "nSotto": 166,
+    "nSotto": 1,
     "nGradiente": 40,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
       "fs": 15,
       "fw": 800,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 3,
       "n": 10,
       "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
       "esempio": "–"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.36,
       "soglia": 4.5,
-      "n": 26,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
-      "esempio": "13"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 7,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 23,
-      "sel": "div:nth-child(2)>div:nth-child(13)>div:nth-child(1)",
-      "esempio": "⚽"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 60,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "W."
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "375": {
     "W": 375,
@@ -2318,68 +2452,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 324,
-    "nPiccoli": 64,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 284,
-    "nSotto": 166,
+    "nSotto": 1,
     "nGradiente": 40,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
       "fs": 15,
       "fw": 800,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 3,
       "n": 10,
       "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
       "esempio": "–"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.36,
       "soglia": 4.5,
-      "n": 26,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
-      "esempio": "13"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 7,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 23,
-      "sel": "div:nth-child(2)>div:nth-child(13)>div:nth-child(1)",
-      "esempio": "⚽"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 60,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "W."
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "390": {
     "W": 390,
@@ -2392,68 +2529,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 324,
-    "nPiccoli": 64,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 284,
-    "nSotto": 166,
+    "nSotto": 1,
     "nGradiente": 40,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
       "fs": 15,
       "fw": 800,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 3,
       "n": 10,
       "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
       "esempio": "–"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.36,
       "soglia": 4.5,
-      "n": 26,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
-      "esempio": "13"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 7,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 23,
-      "sel": "div:nth-child(2)>div:nth-child(13)>div:nth-child(1)",
-      "esempio": "⚽"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 60,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "W."
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "412": {
     "W": 412,
@@ -2466,68 +2606,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 324,
-    "nPiccoli": 64,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 284,
-    "nSotto": 166,
+    "nSotto": 1,
     "nGradiente": 40,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
       "fs": 15,
       "fw": 800,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 3,
       "n": 10,
       "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
       "esempio": "–"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.36,
       "soglia": 4.5,
-      "n": 26,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
-      "esempio": "13"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 7,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 23,
-      "sel": "div:nth-child(2)>div:nth-child(13)>div:nth-child(1)",
-      "esempio": "⚽"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 60,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "W."
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "430": {
     "W": 430,
@@ -2540,68 +2683,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 324,
-    "nPiccoli": 64,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 284,
-    "nSotto": 166,
+    "nSotto": 1,
     "nGradiente": 40,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
       "fs": 15,
       "fw": 800,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 3,
       "n": 10,
       "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
       "esempio": "–"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.36,
       "soglia": 4.5,
-      "n": 26,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
-      "esempio": "13"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 7,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 23,
-      "sel": "div:nth-child(2)>div:nth-child(13)>div:nth-child(1)",
-      "esempio": "⚽"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 60,
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "W."
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    }
   },
   "stagione-coppe": {
@@ -2616,23 +2762,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 50,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 10,
-    "nSotto": 1,
+    "nSotto": 0,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -2645,39 +2781,52 @@
       "esempio": "82"
      },
      {
-      "testo": "#64748b",
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 13,
       "fw": 900,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 12,
       "fw": 800,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "375": {
     "W": 375,
@@ -2690,23 +2839,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 50,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 10,
-    "nSotto": 1,
+    "nSotto": 0,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -2719,39 +2858,52 @@
       "esempio": "82"
      },
      {
-      "testo": "#64748b",
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 13,
       "fw": 900,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 12,
       "fw": 800,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "390": {
     "W": 390,
@@ -2764,23 +2916,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 50,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 10,
-    "nSotto": 1,
+    "nSotto": 0,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -2793,39 +2935,52 @@
       "esempio": "82"
      },
      {
-      "testo": "#64748b",
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 13,
       "fw": 900,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 12,
       "fw": 800,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "412": {
     "W": 412,
@@ -2838,23 +2993,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 50,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 10,
-    "nSotto": 1,
+    "nSotto": 0,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -2867,39 +3012,52 @@
       "esempio": "82"
      },
      {
-      "testo": "#64748b",
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 13,
       "fw": 900,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 12,
       "fw": 800,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "430": {
     "W": 430,
@@ -2912,23 +3070,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 50,
-    "nPiccoli": 9,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 10,
-    "nSotto": 1,
+    "nSotto": 0,
     "nGradiente": 40,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -2941,39 +3089,52 @@
       "esempio": "82"
      },
      {
-      "testo": "#64748b",
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 13,
       "fw": 900,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
      {
-      "testo": "#ffffff",
-      "fondo": "#8e1f33",
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
       "fs": 12,
       "fw": 800,
-      "rap": 8.77,
+      "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    }
   },
   "club": {
@@ -2988,68 +3149,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 280,
-    "nPiccoli": 60,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 215,
-    "nSotto": 124,
+    "nSotto": 34,
     "nGradiente": 65,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "9"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span:nth-child(4)",
-      "esempio": "Centravanti"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.38,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(2)",
-      "esempio": "fiducia"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(4)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "—"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.75,
       "soglia": 4.5,
       "n": 11,
       "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "2"
+      "esempio": "76"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f7e9ec",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.8,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f5f3ef",
+      "fs": 14,
+      "fw": 900,
+      "rap": 2.97,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "78"
+     },
+     {
+      "testo": "#d97706",
+      "fondo": "#ffffff",
+      "fs": 13,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 4.5,
+      "n": 11,
+      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
+      "esempio": "79"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 5,
+      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
+      "esempio": "C"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "375": {
     "W": 375,
@@ -3062,68 +3226,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 280,
-    "nPiccoli": 60,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 215,
-    "nSotto": 124,
+    "nSotto": 34,
     "nGradiente": 65,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "9"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span:nth-child(4)",
-      "esempio": "Centravanti"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.38,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(2)",
-      "esempio": "fiducia"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(4)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "—"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.75,
       "soglia": 4.5,
       "n": 11,
       "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "2"
+      "esempio": "76"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f7e9ec",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.8,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f5f3ef",
+      "fs": 14,
+      "fw": 900,
+      "rap": 2.97,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "78"
+     },
+     {
+      "testo": "#d97706",
+      "fondo": "#ffffff",
+      "fs": 13,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 4.5,
+      "n": 11,
+      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
+      "esempio": "79"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 5,
+      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
+      "esempio": "C"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "390": {
     "W": 390,
@@ -3136,68 +3303,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 280,
-    "nPiccoli": 60,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 215,
-    "nSotto": 124,
+    "nSotto": 34,
     "nGradiente": 65,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "9"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span:nth-child(4)",
-      "esempio": "Centravanti"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.38,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(2)",
-      "esempio": "fiducia"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(4)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "—"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.75,
       "soglia": 4.5,
       "n": 11,
       "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "2"
+      "esempio": "76"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f7e9ec",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.8,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f5f3ef",
+      "fs": 14,
+      "fw": 900,
+      "rap": 2.97,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "78"
+     },
+     {
+      "testo": "#d97706",
+      "fondo": "#ffffff",
+      "fs": 13,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 4.5,
+      "n": 11,
+      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
+      "esempio": "79"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 5,
+      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
+      "esempio": "C"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "412": {
     "W": 412,
@@ -3210,68 +3380,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 280,
-    "nPiccoli": 60,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 215,
-    "nSotto": 124,
+    "nSotto": 34,
     "nGradiente": 65,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "9"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span:nth-child(4)",
-      "esempio": "Centravanti"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.38,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(2)",
-      "esempio": "fiducia"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(4)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "—"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.75,
       "soglia": 4.5,
       "n": 11,
       "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "2"
+      "esempio": "76"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f7e9ec",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.8,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f5f3ef",
+      "fs": 14,
+      "fw": 900,
+      "rap": 2.97,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "78"
+     },
+     {
+      "testo": "#d97706",
+      "fondo": "#ffffff",
+      "fs": 13,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 4.5,
+      "n": 11,
+      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
+      "esempio": "79"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 5,
+      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
+      "esempio": "C"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "430": {
     "W": 430,
@@ -3284,68 +3457,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 280,
-    "nPiccoli": 60,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 215,
-    "nSotto": 124,
+    "nSotto": 34,
     "nGradiente": 65,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "9"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f7e9ec",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.18,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span:nth-child(4)",
-      "esempio": "Centravanti"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.38,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(2)",
-      "esempio": "fiducia"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 9,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(4)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "—"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 700,
-      "rap": 2.39,
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.75,
       "soglia": 4.5,
       "n": 11,
       "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "2"
+      "esempio": "76"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f7e9ec",
+      "fs": 13,
+      "fw": 800,
+      "rap": 2.8,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f5f3ef",
+      "fs": 14,
+      "fw": 900,
+      "rap": 2.97,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "78"
+     },
+     {
+      "testo": "#d97706",
+      "fondo": "#ffffff",
+      "fs": 13,
+      "fw": 800,
+      "rap": 3.19,
+      "soglia": 4.5,
+      "n": 11,
+      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
+      "esempio": "79"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.3,
+      "soglia": 4.5,
+      "n": 5,
+      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
+      "esempio": "C"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    }
   },
   "carriera-profilo": {
@@ -3360,49 +3536,17 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 314,
-    "nPiccoli": 12,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 236,
-    "nSotto": 123,
+    "nSotto": 20,
     "nGradiente": 78,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 12,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(1)",
-      "esempio": "🏛️"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 10,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 10,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
-     },
-     {
       "testo": "#10b981",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
       "rap": 2.54,
       "soglia": 4.5,
@@ -3411,17 +3555,52 @@
       "esempio": "Cifre del Calcio"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.75,
+      "soglia": 3,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.85,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
+      "esempio": "45M€"
+     },
+     {
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 18,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "S.4 · FC Salernum"
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "375": {
     "W": 375,
@@ -3434,49 +3613,17 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 314,
-    "nPiccoli": 12,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 236,
-    "nSotto": 123,
+    "nSotto": 20,
     "nGradiente": 78,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 12,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(1)",
-      "esempio": "🏛️"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 10,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 10,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
-     },
-     {
       "testo": "#10b981",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
       "rap": 2.54,
       "soglia": 4.5,
@@ -3485,17 +3632,52 @@
       "esempio": "Cifre del Calcio"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.75,
+      "soglia": 3,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.85,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
+      "esempio": "45M€"
+     },
+     {
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 18,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "S.4 · FC Salernum"
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "390": {
     "W": 390,
@@ -3508,49 +3690,17 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 314,
-    "nPiccoli": 12,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 236,
-    "nSotto": 123,
+    "nSotto": 20,
     "nGradiente": 78,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 12,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(1)",
-      "esempio": "🏛️"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 10,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 10,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
-     },
-     {
       "testo": "#10b981",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
       "rap": 2.54,
       "soglia": 4.5,
@@ -3559,17 +3709,52 @@
       "esempio": "Cifre del Calcio"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.75,
+      "soglia": 3,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.85,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
+      "esempio": "45M€"
+     },
+     {
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 18,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "S.4 · FC Salernum"
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "412": {
     "W": 412,
@@ -3582,49 +3767,17 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 314,
-    "nPiccoli": 12,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 236,
-    "nSotto": 123,
+    "nSotto": 20,
     "nGradiente": 78,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 12,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(1)",
-      "esempio": "🏛️"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 10,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 10,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
-     },
-     {
       "testo": "#10b981",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
       "rap": 2.54,
       "soglia": 4.5,
@@ -3633,17 +3786,52 @@
       "esempio": "Cifre del Calcio"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.75,
+      "soglia": 3,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.85,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
+      "esempio": "45M€"
+     },
+     {
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 18,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "S.4 · FC Salernum"
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "430": {
     "W": 430,
@@ -3656,49 +3844,17 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 314,
-    "nPiccoli": 12,
-    "minFs": 7,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 236,
-    "nSotto": 123,
+    "nSotto": 20,
     "nGradiente": 78,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 12,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(1)",
-      "esempio": "🏛️"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f5f5f5",
-      "fs": 10,
-      "fw": 600,
-      "rap": 2.35,
-      "soglia": 4.5,
-      "n": 14,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.39,
-      "soglia": 4.5,
-      "n": 10,
-      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
-     },
-     {
       "testo": "#10b981",
       "fondo": "#ffffff",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
       "rap": 2.54,
       "soglia": 4.5,
@@ -3707,17 +3863,52 @@
       "esempio": "Cifre del Calcio"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#d97706",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.75,
+      "soglia": 3,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
+      "esempio": "14"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 2.85,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
+      "esempio": "45M€"
+     },
+     {
+      "testo": "#16a34a",
       "fondo": "#ffffff",
-      "fs": 10,
-      "fw": 400,
-      "rap": 2.56,
+      "fs": 11,
+      "fw": 700,
+      "rap": 3.3,
       "soglia": 4.5,
-      "n": 18,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span:nth-child(4)",
-      "esempio": "S.4 · FC Salernum"
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    }
   },
   "carriera-nazionale": {
@@ -3732,68 +3923,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 116,
-    "nPiccoli": 12,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 61,
-    "nSotto": 19,
+    "nSotto": 0,
     "nGradiente": 55,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#e7ecf5",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.16,
+      "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
       "fs": 11,
       "fw": 900,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "Prossimi tornei"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
+      "n": 3,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "375": {
     "W": 375,
@@ -3806,68 +4000,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 116,
-    "nPiccoli": 12,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 61,
-    "nSotto": 19,
+    "nSotto": 0,
     "nGradiente": 55,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#e7ecf5",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.16,
+      "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
       "fs": 11,
       "fw": 900,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "Prossimi tornei"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
+      "n": 3,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "390": {
     "W": 390,
@@ -3880,68 +4077,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 116,
-    "nPiccoli": 12,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 61,
-    "nSotto": 19,
+    "nSotto": 0,
     "nGradiente": 55,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#e7ecf5",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.16,
+      "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
       "fs": 11,
       "fw": 900,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "Prossimi tornei"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
+      "n": 3,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "412": {
     "W": 412,
@@ -3954,68 +4154,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 116,
-    "nPiccoli": 12,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 61,
-    "nSotto": 19,
+    "nSotto": 0,
     "nGradiente": 55,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#e7ecf5",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.16,
+      "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
       "fs": 11,
       "fw": 900,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "Prossimi tornei"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
+      "n": 3,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "430": {
     "W": 430,
@@ -4028,68 +4231,71 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 116,
-    "nPiccoli": 12,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 61,
-    "nSotto": 19,
+    "nSotto": 0,
     "nGradiente": 55,
     "peggiori": [
      {
-      "testo": "#94a3b8",
+      "testo": "#16a34a",
+      "fondo": "#ffffff",
+      "fs": 17.3,
+      "fw": 900,
+      "rap": 3.3,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
+      "esempio": "82"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#e7ecf5",
-      "fs": 10,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.16,
+      "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
       "fs": 11,
       "fw": 900,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
      {
-      "testo": "#94a3b8",
-      "fondo": "#f0f7ff",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f5f3ef",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.38,
+      "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
      {
-      "testo": "#94a3b8",
+      "testo": "#596a80",
       "fondo": "#ffffff",
-      "fs": 9,
+      "fs": 11,
       "fw": 400,
-      "rap": 2.56,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "Prossimi tornei"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
+      "n": 3,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    }
   },
   "agente": {
@@ -4104,56 +4310,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 125,
-    "nPiccoli": 19,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 91,
-    "nSotto": 23,
+    "nSotto": 0,
     "nGradiente": 34,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(2)>div:nth-child(6)>div:nth-child(2)",
-      "esempio": "«"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
-      "esempio": "Cambia procuratore"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f4f7fb",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.07,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "€4.9M"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -4164,8 +4327,54 @@
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
       "esempio": "82"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "Mercato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 500,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
+      "esempio": "Ambiziosa"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
+      "esempio": "🔴 Chiuso"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "375": {
     "W": 375,
@@ -4178,56 +4387,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 125,
-    "nPiccoli": 19,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 91,
-    "nSotto": 23,
+    "nSotto": 0,
     "nGradiente": 34,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(2)>div:nth-child(6)>div:nth-child(2)",
-      "esempio": "«"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
-      "esempio": "Cambia procuratore"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f4f7fb",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.07,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "€4.9M"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -4238,8 +4404,54 @@
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
       "esempio": "82"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "Mercato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 500,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
+      "esempio": "Ambiziosa"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
+      "esempio": "🔴 Chiuso"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "390": {
     "W": 390,
@@ -4252,56 +4464,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 125,
-    "nPiccoli": 19,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 91,
-    "nSotto": 23,
+    "nSotto": 0,
     "nGradiente": 34,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(2)>div:nth-child(6)>div:nth-child(2)",
-      "esempio": "«"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
-      "esempio": "Cambia procuratore"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f4f7fb",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.07,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "€4.9M"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -4312,8 +4481,54 @@
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
       "esempio": "82"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "Mercato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 500,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
+      "esempio": "Ambiziosa"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
+      "esempio": "🔴 Chiuso"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "412": {
     "W": 412,
@@ -4326,56 +4541,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 125,
-    "nPiccoli": 19,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 91,
-    "nSotto": 23,
+    "nSotto": 0,
     "nGradiente": 34,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(2)>div:nth-child(6)>div:nth-child(2)",
-      "esempio": "«"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
-      "esempio": "Cambia procuratore"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f4f7fb",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.07,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "€4.9M"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -4386,8 +4558,54 @@
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
       "esempio": "82"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "Mercato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 500,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
+      "esempio": "Ambiziosa"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
+      "esempio": "🔴 Chiuso"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    },
    "430": {
     "W": 430,
@@ -4400,56 +4618,13 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 125,
-    "nPiccoli": 19,
-    "minFs": 8,
+    "nSottoPav": 1,
+    "nPiccoli": 1,
+    "minFs": 9,
     "nMisurati": 91,
-    "nSotto": 23,
+    "nSotto": 0,
     "nGradiente": 34,
     "peggiori": [
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(2)>div:nth-child(6)>div:nth-child(2)",
-      "esempio": "«"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 8,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
-     },
-     {
-      "testo": "#94a3b8",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 400,
-      "rap": 2.56,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
-      "esempio": "Cambia procuratore"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f4f7fb",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.07,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "€4.9M"
-     },
      {
       "testo": "#16a34a",
       "fondo": "#ffffff",
@@ -4460,8 +4635,54 @@
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
       "esempio": "82"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
+      "esempio": "Mercato"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 500,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
+      "esempio": "Ambiziosa"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
+      "esempio": "🔴 Chiuso"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "OVR"
      }
-    ]
+    ],
+    "nMarca": 0,
+    "marca": []
    }
   },
   "prepartita": {
@@ -4476,67 +4697,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 35,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 22,
-    "nSotto": 10,
+    "nSotto": 0,
     "nGradiente": 13,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
      {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
-     },
-     {
-      "testo": "#64748b",
-      "fondo": "#f1f5f9",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 4.34,
+      "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "🗡️"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
-      "fs": 10.5,
+      "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
+     },
+     {
+      "testo": "#166534",
+      "fondo": "#ffffff",
+      "fs": 11.5,
+      "fw": 700,
+      "rap": 7.13,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
+      "esempio": "Gioco aereo"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "📋 Formazioni →"
     ]
    },
    "375": {
@@ -4550,67 +4776,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 35,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 22,
-    "nSotto": 10,
+    "nSotto": 0,
     "nGradiente": 13,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
      {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
-     },
-     {
-      "testo": "#64748b",
-      "fondo": "#f1f5f9",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 4.34,
+      "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "🗡️"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
-      "fs": 10.5,
+      "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
+     },
+     {
+      "testo": "#166534",
+      "fondo": "#ffffff",
+      "fs": 11.5,
+      "fw": 700,
+      "rap": 7.13,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
+      "esempio": "Gioco aereo"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "📋 Formazioni →"
     ]
    },
    "390": {
@@ -4624,67 +4855,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 35,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 22,
-    "nSotto": 10,
+    "nSotto": 0,
     "nGradiente": 13,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
      {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
-     },
-     {
-      "testo": "#64748b",
-      "fondo": "#f1f5f9",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 4.34,
+      "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "🗡️"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
-      "fs": 10.5,
+      "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
+     },
+     {
+      "testo": "#166534",
+      "fondo": "#ffffff",
+      "fs": 11.5,
+      "fw": 700,
+      "rap": 7.13,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
+      "esempio": "Gioco aereo"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "📋 Formazioni →"
     ]
    },
    "412": {
@@ -4698,67 +4934,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 35,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 22,
-    "nSotto": 10,
+    "nSotto": 0,
     "nGradiente": 13,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
      {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
-     },
-     {
-      "testo": "#64748b",
-      "fondo": "#f1f5f9",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 4.34,
+      "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "🗡️"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
-      "fs": 10.5,
+      "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
+     },
+     {
+      "testo": "#166534",
+      "fondo": "#ffffff",
+      "fs": 11.5,
+      "fw": 700,
+      "rap": 7.13,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
+      "esempio": "Gioco aereo"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "📋 Formazioni →"
     ]
    },
    "430": {
@@ -4772,67 +5013,72 @@
     "nContenuti": 0,
     "contenuti": [],
     "nTesto": 35,
+    "nSottoPav": 0,
     "nPiccoli": 0,
-    "minFs": 10,
+    "minFs": 11,
     "nMisurati": 22,
-    "nSotto": 10,
+    "nSotto": 0,
     "nGradiente": 13,
     "peggiori": [
      {
-      "testo": "#94a3b8",
-      "fondo": "#f4f7fb",
-      "fs": 10,
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 2.39,
+      "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
      {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11.5,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
-     },
-     {
-      "testo": "#64748b",
-      "fondo": "#f1f5f9",
-      "fs": 10,
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
       "fw": 400,
-      "rap": 4.34,
+      "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "🗡️"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
-      "fs": 10.5,
+      "fs": 11,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
      {
-      "testo": "#64748b",
+      "testo": "#526279",
       "fondo": "#ffffff",
       "fs": 12,
       "fw": 400,
-      "rap": 4.76,
+      "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
+     },
+     {
+      "testo": "#166534",
+      "fondo": "#ffffff",
+      "fs": 11.5,
+      "fw": 700,
+      "rap": 7.13,
+      "soglia": 4.5,
+      "n": 4,
+      "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
+      "esempio": "Gioco aereo"
      }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "📋 Formazioni →"
     ]
    }
   }

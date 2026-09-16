@@ -598,7 +598,7 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu}){
             <Btn v="ghost" fw onClick={()=>{onClose&&onClose();onExitToMenu();}} style={{padding:'12px',fontSize:13}}>🏠 Torna al Menu Principale</Btn>
           </Card>
         )}{/* [7.149.0] uscita al menu (azzera l'auto-ripresa); presente SOLO durante la carriera, non nelle schermate pre-carriera */}
-        <div style={{fontSize:10,color:TH.faint,textAlign:'center',padding:'2px 0 8px'}}>Le impostazioni si salvano automaticamente.</div>
+        <div style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'2px 0 8px'}}>Le impostazioni si salvano automaticamente.</div>
       </div>
     </div>
   );
@@ -632,12 +632,12 @@ function AudioSettings(){
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
               <span style={{fontSize:12,color:TH.text,fontWeight:600}}>{r.label}</span>
               <div style={{display:'flex',alignItems:'center',gap:8}}>
-                <span className="cpm-num" style={{fontSize:10,color:TH.faint,minWidth:30,textAlign:'right'}}>{vol}%</span>
+                <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:30,textAlign:'right'}}>{vol}%</span>
                 {!r.master&&<Toggle on={cfg.on[r.k]} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(!was)AudioMgr.preview(r.k);}catch(_e){}}}/>}
               </div>
             </div>
             {/* [7.96.1 collaudo PO «volume generale cosa guida?»] è il MASTER: scala TUTTI i suoni insieme (le voci qui sotto sono relative a questo). */}
-            {r.master&&<div style={{fontSize:9.5,color:TH.faint,marginTop:-2,marginBottom:4,lineHeight:1.35}}>Regola tutti i suoni insieme — musica, partite, effetti, pubblico, arbitro (le voci sotto sono relative a questo).</div>}
+            {r.master&&<div style={{fontSize:FS.caption,color:TH.faint,marginTop:-2,marginBottom:4,lineHeight:1.35}}>Regola tutti i suoni insieme — musica, partite, effetti, pubblico, arbitro (le voci sotto sono relative a questo).</div>}
             <input type="range" min="0" max="100" value={vol} onChange={e=>{const v=(+e.target.value)/100;try{if(r.master)AudioMgr.setMaster(v);else AudioMgr.setVol(r.k,v);refresh();}catch(_x){}}} onMouseUp={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} onTouchEnd={()=>{try{AudioMgr.preview(r.master?'sfx':r.k);}catch(_x){}}} style={{width:'100%',accentColor:TH.primary,cursor:'pointer'}}/>
           </div>
         );
@@ -645,18 +645,18 @@ function AudioSettings(){
       <div style={{borderTop:`1px dashed ${TH.cardBorder}`,marginTop:6,paddingTop:8}}>
         {TOG.map(r=>(
           <div key={r.k} style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8,opacity:r.dis?0.55:1}}>
-            <span style={{fontSize:12,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:10,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
+            <span style={{fontSize:12,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:FS.caption,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
             <Toggle on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
           </div>
         ))}
       </div>
-      <div style={{fontSize:10,color:TH.faint,marginTop:2,lineHeight:1.4}}>Audio sintetizzato in tempo reale (nessun download, funziona offline). Le impostazioni si salvano da sole.</div>
-      <button onClick={()=>setDbg(d=>!d)} style={{marginTop:8,padding:'5px 10px',borderRadius:8,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit',fontSize:10}}>🐞 Debug audio {dbg?'▲':'▼'}</button>
+      <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2,lineHeight:1.4}}>Audio sintetizzato in tempo reale (nessun download, funziona offline). Le impostazioni si salvano da sole.</div>
+      <button onClick={()=>setDbg(d=>!d)} style={{marginTop:8,padding:'5px 10px',borderRadius:8,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit',fontSize:FS.caption}}>🐞 Debug audio {dbg?'▲':'▼'}</button>
       {dbg&&(()=>{let D;try{D=AudioMgr.debug();}catch(_e){D=null;}if(!D)return null;return(
-        <div style={{marginTop:8,padding:8,background:TH.surface2||'rgba(0,0,0,.05)',borderRadius:8,fontSize:10}}>
+        <div style={{marginTop:8,padding:8,background:TH.surface2||'rgba(0,0,0,.05)',borderRadius:8,fontSize:FS.caption}}>
           <div style={{color:TH.muted,marginBottom:6,lineHeight:1.5}}>ctx: <b>{D.ctx}</b> · scena: <b>{D.scene||'—'}</b> · folla: <b>{D.bed?'ON':'off'}</b> · sfx suonati: <b>{D.played}</b> · voci in catalogo: <b>{D.catalog.length}</b>{D.silent?' · (muto sotto test)':''}</div>
           <div style={{display:'flex',flexWrap:'wrap',gap:4,maxHeight:150,overflowY:'auto'}}>
-            {D.catalog.map(n=><button key={n} onClick={()=>{try{AudioMgr.unlock();AudioMgr.play(n);setDbg(d=>d);}catch(_e){}}} style={{fontSize:10,padding:'3px 6px',borderRadius:6,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit'}}>{n}</button>)}
+            {D.catalog.map(n=><button key={n} onClick={()=>{try{AudioMgr.unlock();AudioMgr.play(n);setDbg(d=>d);}catch(_e){}}} style={{fontSize:FS.caption,padding:'3px 6px',borderRadius:6,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit'}}>{n}</button>)}
           </div>
         </div>);})()}
     </Card>
@@ -672,7 +672,7 @@ function SettingsQuickBtn({onOpen}){
       title="Impostazioni"
       style={{position:"fixed",bottom:"calc(env(safe-area-inset-bottom,0px) + 44px)",right:12,zIndex:99999,padding:"8px 14px 6px",minWidth:60,borderRadius:14,border:`1px solid ${TH.cardBorder}`,background:TH.card,color:TH.faint,cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:1,boxShadow:"0 4px 14px rgba(0,0,0,0.12)"}}>
       <div style={{fontSize:17}}>⚙️</div>
-      <div style={{fontSize:10,marginTop:1,letterSpacing:.3,fontWeight:FW.bold}}>Opzioni</div>
+      <div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3,fontWeight:FW.bold}}>Opzioni</div>
     </button>
   );
 }
@@ -686,10 +686,10 @@ function HomeNavBar({onImport,onSettings}){
   return(
     <div className="cpm-nav-bar" style={{zIndex:100}}>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
-        <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:17}}>🏠</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>Home</div></button>
-        <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:17}}>🎬</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>Intro</div></button>
-        <button title="Importa salvataggio (.json)" onClick={()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:17}}>📂</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>Importa</div></button>
-        <button title="Impostazioni" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:17}}>⚙️</div><div style={{fontSize:10,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
+        <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:17}}>🏠</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Home</div></button>
+        <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:17}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Intro</div></button>
+        <button title="Importa salvataggio (.json)" onClick={()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:17}}>📂</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Importa</div></button>
+        <button title="Impostazioni" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:17}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
       </div>
       <input ref={fileRef} type="file" accept=".json" style={{display:"none"}} onChange={e=>{if(e.target.files[0]&&onImport)onImport(e.target.files[0]);e.target.value="";}}/>
     </div>
@@ -883,7 +883,7 @@ function App(){
         input:focus,select:focus{border-color:${TH.primary}!important;box-shadow:0 0 0 3px ${TH.primary}22!important;}
         :focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
         button:focus-visible{outline:2px solid ${TH.primary}!important;outline-offset:2px!important;}
-        .kbd{display:inline-block;padding:1px 5px;border-radius:4px;background:#e2e8f0;color:#475569;font-size:9px;font-family:monospace;font-weight:700;letter-spacing:0.3px;border:1px solid #cbd5e1;}
+        .kbd{display:inline-block;padding:1px 5px;border-radius:4px;background:#e2e8f0;color:#475569;font-size:11px;font-family:monospace;font-weight:700;letter-spacing:0.3px;border:1px solid #cbd5e1;}
         @keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
         .cpm-nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;z-index:100;}
         .cpm-nav-hint{display:none;}
