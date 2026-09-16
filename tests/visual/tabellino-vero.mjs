@@ -47,7 +47,13 @@ function partita(seed){
         case 'rinvio': A.rinvii++;break;
         case 'parata': if(B)B.parate++;else A.parate++;break;
         case 'spazzata': A.spazzate++;break;
-        case 'intercetto': A.intercetti++;break;
+        case 'intercetto': A.intercetti++;
+          /* [7.923] un passaggio INTERCETTATO non e un passaggio riuscito: il banco contava riuscito ogni
+             passaggio che non finiva fuori dal campo, ed e da li che veniva la precisione al 95 per cento.
+             Il motore ora scala il punto a chi lo ha giocato: il banco deve contare allo stesso modo, o i
+             due numeri divergono e non si sa piu quale dei due mente. */
+          if(e.da&&e.da.team&&T[e.da.team])T[e.da.team].passOk=Math.max(0,(T[e.da.team].passOk|0)-1);
+          break;
         case 'contrasto': case 'recupero': A.contrasti++;break;
         case 'conduzione': A.conduzioni++;break;
         case 'palla_persa': A.pallePerse++;break;

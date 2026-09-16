@@ -122,7 +122,13 @@ function creaMotorePossesso(cfg){
       case 'espulsione': A.espulsioni++;break;
       case 'parata': if(B)B.parate++;break;
       case 'spazzata': A.spazzate++;break;
-      case 'intercetto': A.intercetti++;break;
+      case 'intercetto': A.intercetti++;
+        /* [7.923] UN PASSAGGIO INTERCETTATO NON E UN PASSAGGIO RIUSCITO. Il conto contava riuscito ogni
+           passaggio che non finiva FUORI dal campo: e da li che veniva la precisione al 95-98 per cento
+           che il PO ha fotografato. Lintercetto toglie il punto a chi lo ha giocato, squadra e uomo. */
+        if(e.da&&e.da.team&&S.tab[e.da.team])S.tab[e.da.team].passOk=Math.max(0,(S.tab[e.da.team].passOk|0)-1);
+        if(e.da&&e.da.i!=null){const _Q=_pag(e.da.i);if(_Q)_Q.passOk=Math.max(0,(_Q.passOk|0)-1);}
+        break;
       case 'contrasto': case 'recupero': A.contrasti++;break;
     }
     /* [7.922 — IL DIFETTO CHE RENDEVA PIATTE LE PAGELLE. Collaudo PO 16/09: «i voti sono assolutamente
@@ -215,9 +221,19 @@ function creaMotorePossesso(cfg){
   const tipoPassaggio=(P,R)=>{const d=dirDi(P.team);const fw=(R.x-P.x)*d,dd=hyp(P.x,P.y,R.x,R.y);
     if(dd>30)return"lancio";if(fw<-4)return"appoggio";if(Math.abs(R.y-P.y)>24)return"cambio";if(fw>13&&advDi(R.x,P.team)>=68)return"filtrante";if(fw>6)return"verticale";return"corto";};
   const passa=(P,R,opt)=>{opt=opt||{};const l=P.team;const kind=opt.kind||tipoPassaggio(P,R);
-    const pIcpt=(kind==="lancio"?0.11:kind==="filtrante"?0.12:kind==="cambio"?0.07:0.04)+(pressioneSu(P)<2?0.05:0)+corsiaLibera(P.x,P.y,R.x,R.y,l)*0.10;
+    /* [7.923 - A12 v1: LA DIFESA DIFENDE. Collaudo PO 16/09: i difensori non toccano mai il pallone.]
+       Il banco a 11 decisioni al minuto dice dove sta il buco, e non e il retropassaggio (quel rimedio e
+       stato misurato e revocato): sono le TRE VOCI DIFENSIVE - spazzate 0,53 contro 17, intercetti 0,55
+       contro 8,5, contrasti 2,52 contro 16,5. I difensori non toccano il pallone perche nel motore non
+       esiste il gesto con cui un difensore entra in partita. Lintercetto aveva due cancelli in serie: una
+       probabilita base di 0,04 sul passaggio corto, e poi la pretesa che luomo fosse gia entro 4,5 unita
+       dal punto dintercetto quando la palla ci passa - ma nel frattempo tutti si sono mossi. Risultato:
+       0,7 per cento dei passaggi contro il 10 per cento di una partita vera. Si allargano tutti e tre i
+       numeri insieme, perche allargarne uno solo lascia laltro a fare da tappo. Rosso __CPM_NO923. */
+    const _no923i=(typeof window!=='undefined'&&window.__CPM_NO923);
+    const pIcpt=(_no923i?(kind==="lancio"?0.11:kind==="filtrante"?0.12:kind==="cambio"?0.07:0.04):(kind==="lancio"?0.22:kind==="filtrante"?0.24:kind==="cambio"?0.15:0.11))+(pressioneSu(P)<2?0.05:0)+corsiaLibera(P.x,P.y,R.x,R.y,l)*0.10;
     let icpt=null,icptA=0;
-    if(!opt.sicuro&&rnd()<pIcpt){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});if(m&&m.d<9){icpt=m.p.i;icptA=0.45+rnd()*0.35;}}
+    if(!opt.sicuro&&rnd()<pIcpt){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});if(m&&m.d<(_no923i?9:12)){icpt=m.p.i;icptA=0.45+rnd()*0.35;}}/* [7.923] il candidato si cerca piu largo: a 9 unita dal mezzo della linea di passaggio restava fuori mezzo reparto */
     /* [7.878] IL PALLONE PUO' USCIRE, e piu' spesso quanto piu' il bersaglio e' vicino alla linea: nel
        calcio vero la rimessa laterale e' l'interruzione piu' comune (~40 a partita), qui ne usciva 0,02
        perche' la probabilita' scattava solo oltre |y-50|>=34, dove il gioco non arriva quasi mai. */
@@ -420,7 +436,7 @@ function creaMotorePossesso(cfg){
     const passo=Math.min(dd,p.v*_dt);
     let arrivato=false;
     if(p.icpt!=null){const tot=hyp(p.da.x,p.da.y,p.a.x,p.a.y)||1;const fatto=hyp(p.da.x,p.da.y,S.palla.x,S.palla.y);const frazDopo=(fatto+passo)/tot;
-      if(frazDopo>=p.icptA){const W=g[p.icpt];const ix=p.da.x+(p.a.x-p.da.x)*p.icptA,iy=p.da.y+(p.a.y-p.da.y)*p.icptA;if(W&&attivo(W)&&hyp(W.x,W.y,ix,iy)<=4.5){W.x=clamp(ix,2,98);W.y=clamp(iy,3,97);S.conta.intercetti++;ev("intercetto",{chi:chi(W),da:chi(g[p.ultimoPassatore]),x:+ix.toFixed(1),y:+iy.toFixed(1)});tenuta(W,null);return;}}}
+      if(frazDopo>=p.icptA){const W=g[p.icpt];const ix=p.da.x+(p.a.x-p.da.x)*p.icptA,iy=p.da.y+(p.a.y-p.da.y)*p.icptA;if(W&&attivo(W)&&hyp(W.x,W.y,ix,iy)<=((typeof window!=='undefined'&&window.__CPM_NO923)?4.5:7)){/* [7.923] da 4,5 a 7: il difensore ALLUNGA la gamba, non aspetta che il pallone gli arrivi addosso */W.x=clamp(ix,2,98);W.y=clamp(iy,3,97);S.conta.intercetti++;ev("intercetto",{chi:chi(W),da:chi(g[p.ultimoPassatore]),x:+ix.toFixed(1),y:+iy.toFixed(1)});tenuta(W,null);return;}}}
     if(dd<=p.v*_dt+0.01){S.palla.x=p.a.x;S.palla.y=p.a.y;arrivato=true;}
     else{S.palla.x+=dx/dd*passo;S.palla.y+=dy/dd*passo;}
     if(!arrivato){if(p.t>=4-1e-9){libero(S.palla.x,S.palla.y);}return;}

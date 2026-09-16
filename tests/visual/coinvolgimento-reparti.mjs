@@ -30,6 +30,13 @@ const r = await page.evaluate(() => {
     pa: q.passaggi, ok: q.passOk, ti: q.tiri, gol: q.gol, as: q.assist, co: q.contrasti, ic: q.intercetti, sp: q.spazzate, pr: q.parate, fa: q.falli, am: q.amm, tocchi: q.tocchi })) };
 });
 if (r) {
+  const _rep = (i) => { const k = i >= 21 ? 8 : (i < 10 ? i : i - 10); return k === 0 ? 'P' : (k <= 4 ? 'D' : (k <= 7 ? 'C' : 'A')); };
+  const _som = (f, c) => r.pag.filter(q => _rep(q.i) === f).reduce((a, q) => a + c(q), 0);
+  ['P', 'D', 'C', 'A'].forEach(f => {
+    const n = r.pag.filter(q => _rep(q.i) === f);
+    const vivi = n.filter(q => q.tocchi > 0).length;
+    console.log(`REPARTO ${f}: ${n.length} uomini · tocchi ${_som(f, q => q.tocchi)} · passaggi ${_som(f, q => q.pa)} · contrasti ${_som(f, q => q.co)} · intercetti ${_som(f, q => q.ic)} · con almeno un tocco ${vivi}/${n.length}`);
+  });
   console.log('tipi di evento:', JSON.stringify(r.tipi));
   console.log('ultimi passaggi:', JSON.stringify(r.pass));
   console.log(`minuto ${r.min} · tabellino casa passaggi ${r.tab.home.passaggi} contrasti ${r.tab.home.contrasti} intercetti ${r.tab.home.intercetti} spazzate ${r.tab.home.spazzate} parate ${r.tab.home.parate}`);
