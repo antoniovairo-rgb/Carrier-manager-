@@ -8044,7 +8044,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     if(!sit)return;
     if(sit.lockMovement)return; // no auto-tackle for set pieces (penalty/free kick)
     // Delay scales with defDist: far defender = more time (6-10s), close = less (3-5s)
-    const baseDelay=defDistRef.current>60?9000:defDistRef.current>35?6000:4000;
+    /* [7.916.0 — collaudo PO: «allungherei il tempo di timeout di scelta dell'azione / movimento (mette fretta
+       e ansia)»] I tempi erano 9/6/4 secondi secondo quanto e' lontano il difensore. Su un telefono, con tre
+       righe da leggere e una scelta da fare col pollice, quattro secondi sono un'ansia, non una decisione — ed
+       e' lo stesso difetto che la 7.682 aveva gia' corretto una volta («una domanda che scorre via mentre la
+       leggi non e' una scelta»). Ora 16/12/9: il difensore arriva ancora, ma dopo che hai letto. */
+    const baseDelay=defDistRef.current>60?16000:defDistRef.current>35?12000:9000;
     const t=setTimeout(()=>{
       // Find worst action (lowest success) and fail it — defender tackles
       const actions=sit.actions||[];
@@ -9216,7 +9221,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       {curSit.maxMoves>0&&<div data-cpm="pressione" style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:2}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>}
                       <div style={{fontSize:10,color:"rgba(255,255,255,0.6)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginTop:3}}>📍 {ZONES[zone]?.label}</div>
                     </div>
-                    <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:8,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
+                    <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:8,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
                   </div>
                 </div>
                 ):(
@@ -9239,7 +9244,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexShrink:0}}>
                     {showDPad(curSit)?<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44}/></div>:<div/>}
-                    <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:11,border:"none",background:"#2563eb",color:"#fff",fontWeight:900,fontSize:15,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
+                    <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:11,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:15,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
                   </div>
                 </div>
                 )
@@ -9395,7 +9400,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         comparsa), ma un tasto che non fa niente di vero non va in produzione. Resta il solo
                         «Continua» a tutta larghezza. */}
                     <div style={{display:"flex",alignItems:"center",marginTop:2}}>
-                      <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{flex:1,height:46,border:"none",borderRadius:11,background:"#2563eb",color:"#fff",fontSize:14,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
+                      <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{flex:1,height:46,border:"none",borderRadius:11,background:TH.primary,color:"#fff",fontSize:14,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
                     </div>
                   </div>
                   );
@@ -9437,7 +9442,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       )}
                     </div>
                   </div>
-                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:"7px",borderRadius:7,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto [0]</button>}
+                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:"7px",borderRadius:7,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto [0]</button>}
                 </div>
               )}
 
