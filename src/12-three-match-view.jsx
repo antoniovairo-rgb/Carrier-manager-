@@ -522,7 +522,10 @@ function ThreeMatchView(props){
        triangoli e non i fotogrammi. Prossima leva vera: unire le mesh di ogni corpo (D12, 153 -> <= 40). */
     const _no909=(typeof window!=='undefined')&&!!window.__CPM_NO909;
     const _corpiPref907=_no909?'leggeri':'pieni';
-    const _bodyUrl907=(u=>u==='pieni'?'./assets/footballer.glb':'./assets/footballer-lite.glb')(_corpiPref907);
+    /* [7.910.0 — D12] il corpo pieno arriva UNITO: una mesh in due primitive invece di sette (stessi 48.140
+       triangoli, stesso peso: 3,20 MB contro 3,09). Rosso __CPM_NO910 = il corpo a sette mesh di prima. */
+    const _uno910=!(typeof window!=='undefined'&&window.__CPM_NO910);
+    const _bodyUrl907=_corpiPref907==='leggeri'?'./assets/footballer-lite.glb':(_uno910?'./assets/footballer-uno.glb':'./assets/footballer.glb');
     try{if(typeof window!=='undefined')window.__CPM_BODY909=()=>_corpiPref907;}catch(_e){}/* [7.909] quale corpo e' in uso: lo leggono il contatore dei fotogrammi e le sonde */
     try{window.__CPM_GLB_READY=_useGLB?false:true;window.__CPM_GLB_FAIL=null;}catch(_e){}/* [7.264.0] il flag di fallimento si azzera a ogni mount: una partita non eredita l'errore della precedente *//* [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto non si gioca»] readiness esposta a LiveMatch: false=GLB atteso ma non ancora agganciato → il kickoff viene TRATTENUTO (overlay pre-fischio); diventa true all'aggancio del primo CH38 o su fallimento duro (ultima risorsa) */
     // [6.95.0 · 7.8.1 collaudo PO «iniziano la partita i soldatini — va assolutamente evitato / mai burattini»]
@@ -582,7 +585,48 @@ function ThreeMatchView(props){
         const _srcSc=_srcScene||_cg.scene;
         const root=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(_srcSc):_srcSc;
         if(_blobMat533){const _bl533=new THREE.Mesh(_blobGeo533,_blobMat533);_bl533.rotation.x=-Math.PI/2;_bl533.position.y=0.035;_bl533.renderOrder=1;root.add(_bl533);}/* [7.529.0 R5] il disco d'ombra viaggia col corpo (figlio del root: rotazione ininfluente su un radiale) */
+        /* [7.910.0 — D12] KIT TINTO DALL'ATTRIBUTO, NON DAL NOME DELLA MESH. Il corpo unito (assets/footballer-uno.glb,
+           prodotto da tools/unisci-corpo.mjs) ha UNA mesh in due primitive invece di sette: e' la strada per scendere
+           dalle ~153 chiamate di disegno per fotogramma misurate con 23 corpi (sonda costo-corpo, 15/09 21:40) a ~46,
+           che e' il vero collo di bottiglia sul telefono del PO — i triangoli non lo erano (D7 revocata: -58 % di
+           triangoli, zero fotogrammi guadagnati). Unendo le mesh spariscono pero' i NOMI su cui si regge la tintura
+           qui sotto, quindi ogni vertice porta `_parte` (0 pelle, 1 maglia, 2 calzoncini, 3 calzettoni, 4 scarpe,
+           5 capelli) e il colore lo sceglie lo shader. Tutte le tarature del kit restano quelle misurate con le foto
+           del PO (pre-boost +0,30 contro la desaturazione ACES, darkening aware della saturazione, floor emissivo
+           0,06, pattern e numero dipinti da kitPatternTex). Il ramo per NOME resta intatto per il corpo a sette mesh:
+           i due file convivono. */
+        const _tingi910=(o,kit,appr,proc)=>{
+          const _at=o.geometry&&o.geometry.attributes&&(o.geometry.attributes._parte||o.geometry.attributes._PARTE);
+          if(!_at)return false;
+          const _no533k=(typeof window!=='undefined'&&window.__CPM_NO533);
+          const _prep=(hex)=>{const _c=new THREE.Color(hex);if(!_no533k)_c.offsetHSL(0,0.30,-0.02);const _hsl={};_c.getHSL(_hsl);const _dim=1-_hsl.s*0.60*(0.45+0.55*(1-_hsl.l));return _c.multiplyScalar(_dim);};
+          const _ef=_no533k?0.14:0.06;
+          const _capelli=new THREE.Color(appr.hair||'#2d1800');
+          const _kitC=[_prep(kit.shirt),_prep(kit.shorts),_prep(kit.socks),_prep(kit.shoes),_capelli];
+          /* la maglia tiene la sua texture (disegno del club + numero sul dorso): entra come secondo campionatore */
+          let _shirtTex=null;try{if(typeof kitPatternTex==='function')_shirtTex=kitPatternTex(kit.shirt,kit.c2||'#f0f0f0',kit.pattern||'solid',proc._num!=null?proc._num:undefined);}catch(_e){}
+          const _base=o.material&&o.material.map?o.material.clone():new THREE.MeshLambertMaterial({color:0xb0b0b0,skinning:true});
+          if(_base.map){const _sk=new THREE.Color(appr.skin||0xffffff);_base.color=_sk;if('emissive'in _base)_base.emissive=_sk.clone().multiplyScalar(_CPM_FACESOFT?0.34:0.22);
+            if(_CPM_FACESOFT){if(_base.normalScale&&_base.normalScale.set)_base.normalScale.set(0.38,0.38);if('roughness'in _base)_base.roughness=Math.min(1,(_base.roughness!=null?_base.roughness:0.7)+0.15);}}
+          _base.onBeforeCompile=(sh)=>{
+            sh.uniforms.uKit910={value:_kitC};
+            sh.uniforms.uKitEm910={value:_kitC.map((c,i)=>i===4?c.clone().multiplyScalar(0):c.clone().multiplyScalar(_ef))};
+            sh.uniforms.uShirt910={value:_shirtTex};
+            sh.uniforms.uHaShirt910={value:_shirtTex?1:0};
+            sh.vertexShader='attribute float _parte;\nvarying float vParte910;\n'+sh.vertexShader.replace('void main() {','void main() {\n\tvParte910=_parte;');
+            sh.fragmentShader='uniform vec3 uKit910[5];\nuniform vec3 uKitEm910[5];\nuniform sampler2D uShirt910;\nuniform float uHaShirt910;\nvarying float vParte910;\n'+sh.fragmentShader
+              .replace('#include <map_fragment>','#include <map_fragment>\n\tint _p910=int(vParte910+0.5);\n\tif(_p910==1&&uHaShirt910>0.5){diffuseColor=vec4(texture2D(uShirt910,vMapUv).rgb,diffuseColor.a);}\n\telse if(_p910>=1){diffuseColor=vec4(uKit910[_p910-1],diffuseColor.a);}')
+              .replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\n\tif(int(vParte910+0.5)>=1){totalEmissiveRadiance=uKitEm910[int(vParte910+0.5)-1];}');
+          };
+          _base.customProgramCacheKey=()=>'cpm910';
+          o.material=_base;o.material.needsUpdate=true;
+          if(appr.bald&&_at&&o.geometry.attributes.position){/* i capelli stanno nella loro primitiva: si nasconde quella */
+            let _soloCapelli=true;const _a=_at.array;for(let i=0;i<_a.length;i++){if(_a[i]!==5){_soloCapelli=false;break;}}
+            if(_soloCapelli)o.visible=false;}
+          return true;
+        };
         root.traverse(o=>{if(!o.isMesh)return;const _nm=(o.name||'').toLowerCase();if(_nm.includes('joint')){o.visible=false;return;}o.castShadow=isDesktop;o.frustumCulled=false;
+          if(!(typeof window!=='undefined'&&window.__CPM_NO910)&&_tingi910(o,kit,appr,proc))return;/* [7.910 D12] rosso __CPM_NO910: si torna alla tintura per nome */
           let _kc=null;if(_nm.includes('shirt'))_kc=kit.shirt;else if(_nm.includes('shorts'))_kc=kit.shorts;else if(_nm.includes('socks'))_kc=kit.socks;else if(_nm.includes('shoes'))_kc=kit.shoes;
           if(_kc!=null){const _c=new THREE.Color(_kc);const _no533k=(typeof window!=='undefined'&&window.__CPM_NO533);if(!_no533k)_c.offsetHSL(0,0.30,-0.02);/* [7.529.0 R5] ACES desatura i colori pieni (foto: bordeaux→rosa, giallo→crema). Il pre-boost sta QUI, a monte, cosi' difende ANCHE la texture kitPatternTex (che dipinge con _kc): il primo tentativo (+0,12 solo sul ramo tinta unita) lasciava le maglie texturizzate slavate */let _tex=null;if(_nm.includes('shirt')&&typeof kitPatternTex==='function')_tex=kitPatternTex(_kc,kit.c2||'#f0f0f0',kit.pattern||'solid',proc._num!=null?proc._num:undefined);/* [7.168.0] anche le tinta unita: shading tessuto (darkening 7.8.2 bakato in texture) · [7.260.0] +numero dipinto sul dorso */
             if(_tex){o.material=new THREE.MeshLambertMaterial({map:_tex,emissive:_c.clone().multiplyScalar(0.12),skinning:true});}

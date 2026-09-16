@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 
 const OUT = path.join(path.dirname(fileURLToPath(import.meta.url)), 'out', 'costo-corpo');
 fs.mkdirSync(OUT, { recursive: true });
-const BRACCI = (process.env.CPM_CORPO ? [process.env.CPM_CORPO] : ['pieno', 'leggero']);
+const BRACCI = (process.env.CPM_CORPO ? process.env.CPM_CORPO.split(',') : ['pieno', 'leggero']);
 const server = await startServer();
 const port = server.address().port;
 
@@ -21,7 +21,7 @@ for (const braccio of BRACCI) {
   await installCdnRoutes(ctx);
   const page = await ctx.newPage();
   let errori = 0; page.on('pageerror', () => { errori++; });
-  const url = braccio === 'pieno' ? './assets/footballer.glb' : './assets/footballer-lite.glb';
+  const url = braccio === 'pieno' ? './assets/footballer.glb' : braccio === 'unito' ? './assets/footballer-uno.glb' : './assets/footballer-lite.glb';
   await page.addInitScript((u) => {
     window.__CPM_GLB = true; window.__CPM_GLB_URL = u;
     /* conta le chiamate di disegno per fotogramma, avvolgendo il contesto WebGL */
