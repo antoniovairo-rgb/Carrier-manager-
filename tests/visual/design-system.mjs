@@ -17,7 +17,15 @@ const RAD = { xs: 6, sm: 8, md: 12, lg: 16, xl: 20 };
 const file = fs.readdirSync(SRC).filter(f => f.endsWith('.jsx')).sort();
 let sottoPavimento = [], raggiToken = [], corpi = 0, corpiToken = 0, raggi = 0, raggiTok = 0, colori = 0, coloriToken = 0;
 for (const f of file) {
-  const righe = fs.readFileSync(path.join(SRC, f), 'utf8').split('\n');
+  /* [16/09] I COMMENTI NON SONO CODICE. Il primo giro del guardiano si e' bocciato da solo: la nota di
+     versione della 7.920 CITA «fontSize:10» per spiegare cosa e' stato tolto, e il guardiano leggeva la
+     spiegazione come se fosse una violazione. Si spengono i commenti a blocco e la coda di riga (mai dopo
+     i due punti, o si mangerebbe un indirizzo http). Una stringa che contenga due barre e' un falso
+     negativo dichiarato: al massimo si conta di meno, mai di piu'.
+     E la lezione dentro la lezione: questo commento non puo' contenere la sequenza di chiusura di un
+     commento a blocco, perche' la chiuderebbe davvero — il secondo giro e' morto cosi'. */
+  const grezzo = fs.readFileSync(path.join(SRC, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '));
+  const righe = grezzo.split('\n').map(r => { const i = r.search(/(^|[^:])\/\//); return i >= 0 ? r.slice(0, i + (r[i] === '/' ? 0 : 1)) : r; });
   righe.forEach((r, i) => {
     for (const m of r.matchAll(/fontSize:\s*(\d+(?:\.\d+)?)(?![0-9.])/g)) {
       corpi++; if (+m[1] < PAVIMENTO) sottoPavimento.push(`${f}:${i + 1} → fontSize:${m[1]}`);
