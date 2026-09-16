@@ -41,7 +41,30 @@ try {
 } catch (_e) {}
 const foto = path.join(OUT, 'post-partita.png');
 await page.screenshot({ path: foto }).catch(() => {});
+/* [7.915] IL METRO DEL PONTE: i gol e i tiri che il giocatore vede nel SUO tabellino devono comparire anche
+   in quello della gara. Il PO ha fotografato 3 gol con «4 tiri, 2 in porta» per la sua squadra: due verita'
+   diverse sulla stessa partita. Qui si confrontano. */
+const coerenza = await page.evaluate(() => {
+  const T = (document.body.innerText || '');
+  const num = (dopo, etichetta) => { const i = T.indexOf(dopo); if (i < 0) return null; const j = T.indexOf(etichetta, i); if (j < 0) return null;
+    const prima = T.slice(Math.max(0, j - 14), j).trim().split(/\s+/).pop(); const dopoN = T.slice(j + etichetta.length, j + etichetta.length + 14).trim().split(/\s+/)[0];
+    return { casa: parseFloat(prima), ospiti: parseFloat(dopoN) }; };
+  const mio = (etichetta) => { const i = T.indexOf('IL TUO TABELLINO'); if (i < 0) return null; const j = T.indexOf(etichetta, i); if (j < 0) return null;
+    const prima = T.slice(Math.max(0, j - 12), j).trim().split(/\s+/).pop(); return parseFloat(prima); };
+  return { garaGol: num('TABELLINO DELLA GARA', 'Gol'), garaTiri: num('TABELLINO DELLA GARA', 'Tiri'),
+           mieiGol: mio('Gol'), mieiTiri: mio('Tiri') };
+});
 console.log(`fase finale: ${r.fase} · tabellino a schermo: ${r.presente ? 'SÌ' : 'NO'} · errori di pagina: ${errori}${messaggi.length ? ' → ' + messaggi[0] : ''}`);
+if (coerenza) {
+  const g = coerenza.garaGol, t = coerenza.garaTiri;
+  console.log(`\n--- coerenza fra i due tabellini ---`);
+  console.log(`  i tuoi gol: ${coerenza.mieiGol} · gol della tua squadra nel tabellino: ${g ? g.casa : '?'}`);
+  console.log(`  i tuoi tiri: ${coerenza.mieiTiri} · tiri della tua squadra nel tabellino: ${t ? t.casa : '?'}`);
+  const okGol = g && coerenza.mieiGol != null && g.casa >= coerenza.mieiGol;
+  const okTiri = t && coerenza.mieiTiri != null && t.casa >= coerenza.mieiTiri;
+  console.log(`  ${okGol ? '✅' : '❌'} i tuoi gol sono dentro quelli della squadra`);
+  console.log(`  ${okTiri ? '✅' : '❌'} i tuoi tiri sono dentro quelli della squadra`);
+}
 if (r.blocco) console.log('\n--- quello che si legge ---\n' + r.blocco.split('\n').slice(0, 30).join('\n'));
 console.log('\nfoto:', foto);
 await browser.close(); server.close();
