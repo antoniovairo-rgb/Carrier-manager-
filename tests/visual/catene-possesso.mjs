@@ -26,7 +26,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const QUI = path.dirname(fileURLToPath(import.meta.url));
 const SRC = fs.readFileSync(path.join(QUI, '..', '..', 'src', '14-motore-possesso.jsx'), 'utf8');
-const crea = new Function(SRC + '\n;return creaMotorePossesso;')();
+/* [16/09] I ROSSI AL BANCO. Il motore riconosce i suoi rossi da `window.__CPM_NO…`, ma qui gira dentro una
+   Function senza `window`: senza questo ponte nessun rosso e' riproducibile fuori dal browser, e un rimedio
+   senza il suo rosso appaiato vale la meta'. Stessa forma di tabellino-vero: CPM_ROSSO="__CPM_NO928". */
+const W928 = (process.env.CPM_ROSSO || '').split(',').filter(Boolean).reduce((o, k) => (o[k.trim()] = true, o), {});
+const crea = new Function('window', SRC + '\n;return creaMotorePossesso;')(Object.keys(W928).length ? W928 : undefined);
 const N = +(process.env.CPM_N || 30), MIN = 90, DEC = +(process.env.CPM_DEC || 11);
 const j = (x, y) => ({ x, y });
 const XI = [
@@ -73,6 +77,21 @@ console.log(`  passaggi per catena             media ${med(cat).toFixed(2)} · m
 console.log(`  catene da 4 o piu' passaggi     ${(cat.filter(c => c >= 4).length / N).toFixed(1)} a partita · da 6 o piu': ${(cat.filter(c => c >= 6).length / N).toFixed(1)}`);
 console.log(`  lunghezza del passaggio         media ${med(dist).toFixed(1)}u · mediana ${q(dist, 0.5)}u · 90° percentile ${q(dist, 0.9)}u`);
 console.log(`  battiti passati in volo         media ${med(volo).toFixed(2)} per volo · 90° percentile ${q(volo, 0.9)}`);
+/* [16/09] DOVE FINISCE IL TEMPO. Il tabellino dice che il motore e' in volo nel 50,3 % delle chiamate:
+   con 11 battiti al minuto un passaggio medio resta in aria ~15 s di tempo di gioco, mentre nel calcio
+   vero venti metri si coprono in poco piu' di un secondo. Ogni battito speso a guardare il pallone
+   volare e' un battito NON speso in un contrasto, una spazzata, un altro passaggio: e' il primo
+   sospetto per le voci difensive a un centesimo del vero. Qui si stampa il conto, non l'impressione. */
+{
+  const battiti = 11, secBattito = 60 / battiti;
+  const vMedia = med(volo), dMedia = med(dist);
+  const secVolo = vMedia * secBattito;
+  const metri = dMedia * 1.05; /* 1 unita' di campo = 1,05 m sui 105 m di lunghezza */
+  console.log(`  quanto dura un passaggio        ${secVolo.toFixed(1)} s di gioco per ${metri.toFixed(0)} m` +
+    ` → ${(metri / Math.max(0.01, secVolo)).toFixed(1)} m/s · nel vero un passaggio rasoterra viaggia a 15-20 m/s`);
+  console.log(`  strada fatta per battito        ${(dMedia / Math.max(0.01, vMedia)).toFixed(1)}u` +
+    ` · quota del tempo passata in volo ${(100 * vMedia / (vMedia + 1)).toFixed(0)} % (un volo ogni passaggio)`);
+}
 const tt = terzi.basso + terzi.medio + terzi.alto || 1;
 console.log(`  da dove parte il passaggio      terzo BASSO ${(100 * terzi.basso / tt).toFixed(1)}% · medio ${(100 * terzi.medio / tt).toFixed(1)}% · alto ${(100 * terzi.alto / tt).toFixed(1)}%   · nel vero il basso vale ~30%`);
 console.log(`  chi chiude il possesso:         ${Object.entries(chiuso).sort((a, b) => b[1] - a[1]).map(([k, v]) => k + ' ' + (v / N).toFixed(1)).join(' · ')}`);

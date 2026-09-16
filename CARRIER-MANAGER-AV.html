@@ -22128,7 +22128,21 @@ function creaMotorePossesso(cfg){
     if(S.richieste.turno===p.team)S.richieste.turno=null;
     if(perche)ev(perche,{chi:chi(p)});};
   const libero=(x,y)=>{S.poss.stato="libero";S.cond=null;S.poss.padrone=null;S.poss.ricevente=null;S.poss.t=0;S.poss.tipo=null;S.palla.x=clamp(x,0,100);S.palla.y=clamp(y,0,100);};
-  const volo=(o)=>{S.poss.stato="volo";S.cond=null;S.poss.tipo=o.tipo;S.poss.da={x:S.palla.x,y:S.palla.y};S.poss.a={x:o.x,y:o.y};S.poss.ricevente=o.ricevente!=null?o.ricevente:null;S.poss.esito=o.esito||null;S.poss.v=o.v||22;S.poss.t=0;S.poss.icpt=o.icpt!=null?o.icpt:null;S.poss.icptA=o.icptA||0;S.poss.tiratore=o.tiratore!=null?o.tiratore:null;S.poss.kind=o.kind||null;
+  const volo=(o)=>{S.poss.stato="volo";S.cond=null;S.poss.tipo=o.tipo;S.poss.da={x:S.palla.x,y:S.palla.y};S.poss.a={x:o.x,y:o.y};S.poss.ricevente=o.ricevente!=null?o.ricevente:null;S.poss.esito=o.esito||null;
+    /* [7.928 M1a — IL PALLONE ARRIVA DENTRO IL BATTITO]
+       MISURATO (banco catene, 30 partite, 11 battiti al minuto): un passaggio di 23 metri restava in aria
+       15,5 s di tempo di gioco, cioe' 1,5 m/s — piu' lento di un uomo che cammina, contro i 15-20 m/s di un
+       passaggio rasoterra vero. E la palla faceva 7,9u per battito invece dei 18,2 nominali, perche' il
+       bersaglio insegue il ricevente che si muove. Conseguenza: il motore stava in volo nel 50,3 % delle
+       chiamate, e ogni battito speso a guardare il pallone fluttuare e' un battito NON speso in un
+       contrasto, una spazzata, un altro passaggio — le voci che stanno a un centesimo del vero.
+       Il vincolo vero non e' la velocita' nominale: e' che un battito VALE 5,45 s di partita, quindi un
+       passaggio da un secondo non si puo' rappresentare in piu' di un battito senza rallentare il gioco.
+       Qui si impone quello: la velocita' e' ALMENO quella che copre la distanza in un battito. */
+    {const _dd=hyp(S.palla.x,S.palla.y,o.x,o.y),_dt=S.dt||1;
+      const _min=(_dd/Math.max(1e-6,_dt))*1.04;/* 4 % di margine: la soglia d'arrivo e' un confronto, non un'uguaglianza */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO928)&&(o.tipo==="passaggio"||o.tipo==="cross"||o.tipo==="fuori"))o.v=Math.max(+o.v||22,_min);}
+    S.poss.v=o.v||22;S.poss.t=0;S.poss.icpt=o.icpt!=null?o.icpt:null;S.poss.icptA=o.icptA||0;S.poss.tiratore=o.tiratore!=null?o.tiratore:null;S.poss.kind=o.kind||null;
     S.arco={type:o.arco||"pass",from:{x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)},to:{x:+o.x.toFixed(1),y:+o.y.toFixed(1)},actor:o.actor||null,rcv:o.rcv||null,lato:S.poss.lato,dur:+(Math.ceil(hyp(S.palla.x,S.palla.y,o.x,o.y)/((o.v||22)*(S.dt||1))-1e-9)*(S.dt||1)).toFixed(3)};/* [7.898] dur: minuti di volo attesi */
     {const _le=S.eventi[S.eventi.length-1];if(_le&&/^(passaggio|cross|tiro)$/.test(_le.t)&&_le.dur==null)_le.dur=S.arco.dur;}/* [7.898] il fatto che ha lanciato il pallone porta la durata del volo: il renderer fa durare l'arco quanto il volo logico */
     S.poss.padrone=null;};
