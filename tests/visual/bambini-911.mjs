@@ -43,10 +43,22 @@ for (const braccio of ['verde', 'rosso']) {
   await openMatch(page, port, { skipLoadAll: true, name: 'Vairo' }).catch(() => null);
   try { await page.waitForFunction(() => window.__CPM_GLB_READY === true, { timeout: 90000 }); } catch (_e) {}
   await page.evaluate(() => { try { return window.__CPM_FORCE_WALKOUT && window.__CPM_FORCE_WALKOUT(); } catch (_e) { return false; } });
-  for (let i = 0; i < 26 && !foto; i++) {
+  /* [lezione] il primo scatto usciva NERO: la cerimonia si apre con uno stacco, e fotografare appena i
+     bambini diventano attivi coglie proprio quello. Si prendono piu' scatti lungo i 10,5 s e si tiene il
+     piu' LUMINOSO — cioe' quello in cui la scena c'e' davvero. */
+  const scatti911 = [];
+  for (let i = 0; i < 40 && scatti911.length < 6; i++) {
     await sleep(400);
     const m = await page.evaluate(() => { try { return window.__CPM_MASCOT911 ? window.__CPM_MASCOT911() : null; } catch (_e) { return null; } }).catch(() => null);
-    if (m && m.attivi > 0) { await sleep(600); scatta(); }
+    if (m && m.attivi > 0 && lastFrame) scatti911.push(lastFrame);
+  }
+  if (scatti911.length) {
+    /* «piu' luminoso» senza decodificare il PNG: il file piu' PESANTE e' quello con piu' dettaglio —
+       un fotogramma nero si comprime in pochi kB, una scena piena no. */
+    const migliore = scatti911.reduce((a, b) => (b.length > a.length ? b : a));
+    foto = path.join(OUT, `${braccio}.png`);
+    fs.writeFileSync(foto, migliore);
+    console.log(`  ${braccio}: ${scatti911.length} scatti, tenuto il piu' ricco (${Math.round(migliore.length / 1024)} kB su ${scatti911.map((x) => Math.round(x.length / 1024)).join('/')} kB)`);
   }
   const max = await page.evaluate(() => window.__CPM_M911MAX || null).catch(() => null);
   const fasi = await page.evaluate(() => window.__CPM_FASI911 || []).catch(() => []);
