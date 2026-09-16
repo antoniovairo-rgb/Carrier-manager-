@@ -98,15 +98,15 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
         <Card style={{padding:"10px 14px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:6}}>⚔️ PRECEDENTI</div>
           <div style={{display:"flex",gap:8,alignItems:"center"}}>
-            <div style={{textAlign:"center",flex:1,background:TH.bgGreen,borderRadius:8,padding:"6px 0"}}>
+            <div style={{textAlign:"center",flex:1,background:TH.bgGreen,borderRadius:RAD.sm,padding:"6px 0"}}>
               <div style={{fontSize:20,fontWeight:900,color:TH.txGreen}}>{report.h2h.w}</div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>VINTE</div>
             </div>
-            <div style={{textAlign:"center",flex:1,background:TH.bgAmber,borderRadius:8,padding:"6px 0"}}>
+            <div style={{textAlign:"center",flex:1,background:TH.bgAmber,borderRadius:RAD.sm,padding:"6px 0"}}>
               <div style={{fontSize:20,fontWeight:900,color:TH.txAmber}}>{report.h2h.d}</div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>PAREGGIATE</div>
             </div>
-            <div style={{textAlign:"center",flex:1,background:TH.lossBg,borderRadius:8,padding:"6px 0"}}>
+            <div style={{textAlign:"center",flex:1,background:TH.lossBg,borderRadius:RAD.sm,padding:"6px 0"}}>
               <div style={{fontSize:20,fontWeight:900,color:TH.txRed}}>{report.h2h.l}</div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>PERSE</div>
             </div>
@@ -200,7 +200,7 @@ function PostMatchPress({match,report,player,L,onClose}){
         )}
         {/* TITOLONE */}
         <div style={{padding:"15px 18px 8px"}}>
-          {lead?(<div style={{fontSize:21,fontWeight:900,color:TH.text,lineHeight:1.2,letterSpacing:-0.2}}>{lead}</div>):(<div style={{height:50,borderRadius:8,...(_shim)}}/>)}
+          {lead?(<div style={{fontSize:21,fontWeight:900,color:TH.text,lineHeight:1.2,letterSpacing:-0.2}}>{lead}</div>):(<div style={{height:50,borderRadius:RAD.sm,...(_shim)}}/>)}
         </div>
         {/* PAGELLA + STATISTICHE */}
         <div style={{display:"flex",gap:12,padding:"6px 18px 12px",alignItems:"stretch"}}>
@@ -229,8 +229,8 @@ function PostMatchPress({match,report,player,L,onClose}){
         {/* MVP + tifosi */}
         {(rep.motm||(rep.fanReactions||[]).length>0)&&(
           <div style={{display:"flex",gap:10,padding:"0 18px 12px",flexWrap:"wrap"}}>
-            {rep.motm&&<div style={{flex:"1 1 42%",minWidth:130,background:TH.surface2,borderRadius:12,padding:"9px 12px",border:`1px solid ${TH.cardBorder}`}}><div style={{fontSize:FS.caption,letterSpacing:1,color:TH.txGreen,fontWeight:800,marginBottom:3}}>⭐ MIGLIORE IN CAMPO</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{rep.motm}</div></div>}
-            {(rep.fanReactions||[]).length>0&&<div style={{flex:"1 1 42%",minWidth:130,background:TH.surface2,borderRadius:12,padding:"9px 12px",border:`1px solid ${TH.cardBorder}`}}><div style={{fontSize:FS.caption,letterSpacing:1,color:TH.txAmber,fontWeight:800,marginBottom:3}}>📣 VOCI DAI TIFOSI</div><div style={{fontSize:11,color:TH.muted,fontStyle:"italic",lineHeight:1.35}}>«{rep.fanReactions[0]}»</div></div>}
+            {rep.motm&&<div style={{flex:"1 1 42%",minWidth:130,background:TH.surface2,borderRadius:RAD.md,padding:"9px 12px",border:`1px solid ${TH.cardBorder}`}}><div style={{fontSize:FS.caption,letterSpacing:1,color:TH.txGreen,fontWeight:800,marginBottom:3}}>⭐ MIGLIORE IN CAMPO</div><div style={{fontSize:12,fontWeight:700,color:TH.text}}>{rep.motm}</div></div>}
+            {(rep.fanReactions||[]).length>0&&<div style={{flex:"1 1 42%",minWidth:130,background:TH.surface2,borderRadius:RAD.md,padding:"9px 12px",border:`1px solid ${TH.cardBorder}`}}><div style={{fontSize:FS.caption,letterSpacing:1,color:TH.txAmber,fontWeight:800,marginBottom:3}}>📣 VOCI DAI TIFOSI</div><div style={{fontSize:11,color:TH.muted,fontStyle:"italic",lineHeight:1.35}}>«{rep.fanReactions[0]}»</div></div>}
           </div>
         )}
         {/* ALTRE TESTATE */}
@@ -241,11 +241,11 @@ function PostMatchPress({match,report,player,L,onClose}){
               <div style={{width:8,height:8,borderRadius:"50%",background:paperCols[i+1]||TH.primary,flexShrink:0,marginTop:4}}/>
               <div style={{minWidth:0}}><div style={{fontSize:FS.caption,letterSpacing:1,color:paperCols[i+1]||TH.faint,fontWeight:800,textTransform:"uppercase"}}>{papers[i+1]||"Cronaca"}</div><div style={{fontSize:12,color:TH.text,lineHeight:1.35,fontWeight:600}}>{h}</div></div>
             </div>
-          )):<div style={{fontSize:11,color:TH.faint,fontStyle:"italic",padding:"4px 0"}}>Nessun altro titolo.</div>):([0,1].map(i=><div key={i} style={{height:26,borderRadius:6,marginBottom:6,...(_shim)}}/>))}
+          )):<div style={{fontSize:11,color:TH.faint,fontStyle:"italic",padding:"4px 0"}}>Nessun altro titolo.</div>):([0,1].map(i=><div key={i} style={{height:26,borderRadius:RAD.xs,marginBottom:6,...(_shim)}}/>))}
         </div>
-        {rep.trending&&<div style={{padding:"4px 18px 0"}}><span style={{display:"inline-block",fontSize:FS.caption,fontWeight:800,color:TH.brandText,background:TH.primary+"18",padding:"3px 10px",borderRadius:20}}>#{String(rep.trending).replace(/^#/,"")}</span></div>}
+        {rep.trending&&<div style={{padding:"4px 18px 0"}}><span style={{display:"inline-block",fontSize:FS.caption,fontWeight:800,color:TH.brandText,background:TH.primary+"18",padding:"3px 10px",borderRadius:RAD.xl}}>#{String(rep.trending).replace(/^#/,"")}</span></div>}
         <div style={{padding:"12px 18px 16px"}}>
-          <button onClick={onClose} style={{width:"100%",padding:"14px",borderRadius:12,border:"none",background:`linear-gradient(135deg,${TH.primary},${TH.primary}cc)`,color:"#fff",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit",boxShadow:`0 6px 18px ${TH.primary}44`}}>{(L&&L.backToDashboard)||"Torna alla dashboard"} →</button>
+          <button onClick={onClose} style={{width:"100%",padding:"14px",borderRadius:RAD.md,border:"none",background:`linear-gradient(135deg,${TH.primary},${TH.primary}cc)`,color:"#fff",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit",boxShadow:`0 6px 18px ${TH.primary}44`}}>{(L&&L.backToDashboard)||"Torna alla dashboard"} →</button>
         </div>
       </div>
     </div>
@@ -280,7 +280,7 @@ function PressScreen({report,matchResult,onClose}){
       <Card style={{padding:"12px 16px"}}>
         <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PRIME PAGINE</div>
         {(report.headlines||[]).map((h,i)=>(
-          <div key={i} style={{padding:"8px 10px",background:TH.surface2,borderRadius:6,marginBottom:5,borderLeft:`3px solid ${paperColors[i]||TH.primary}`}}>
+          <div key={i} style={{padding:"8px 10px",background:TH.surface2,borderRadius:RAD.xs,marginBottom:5,borderLeft:`3px solid ${paperColors[i]||TH.primary}`}}>
             <div style={{fontSize:FS.caption,color:paperColors[i]||TH.brandText,fontWeight:700,letterSpacing:1,marginBottom:2}}>{papers[i]||"—"}</div>
             <div style={{fontSize:12,fontWeight:i===0?800:600,color:TH.text,lineHeight:1.3}}>{h}</div>
           </div>
@@ -358,7 +358,7 @@ function PressScreen({report,matchResult,onClose}){
 function AIDecisionOverlay({tactic,loading}){
   if(!tactic&&!loading)return null;
   return(
-    <div style={{background:"rgba(239,68,68,0.07)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:8,padding:"9px 12px",marginBottom:8}}>
+    <div style={{background:"rgba(239,68,68,0.07)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:RAD.sm,padding:"9px 12px",marginBottom:8}}>
       <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txRed,marginBottom:3}}>🤖 TATTICA AVVERSARIA (AI)</div>
       {loading?<div style={{fontSize:11,color:TH.muted}}>Analisi in corso…</div>:(
         <>
@@ -425,13 +425,13 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
   return(
     <div style={{width:"100%"}}>
       {/* Sprint 99: competition banner */}
-      <div style={{marginBottom:12,padding:_cs99.flag?"8px 14px":"8px 14px",borderRadius:12,background:_cs99.flag?`linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0) 46%,rgba(0,0,0,0.12)), ${_cs99.bg}`:_cs99.bg,textAlign:"center",boxShadow:"0 2px 14px rgba(0,0,0,0.18)"}}>{/* [7.151.0] sheen moderno sopra la bandiera sfumata */}
+      <div style={{marginBottom:12,padding:_cs99.flag?"8px 14px":"8px 14px",borderRadius:RAD.md,background:_cs99.flag?`linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0) 46%,rgba(0,0,0,0.12)), ${_cs99.bg}`:_cs99.bg,textAlign:"center",boxShadow:"0 2px 14px rgba(0,0,0,0.18)"}}>{/* [7.151.0] sheen moderno sopra la bandiera sfumata */}
         {_cs99.flag
-          ?<span style={{display:"inline-block",background:"rgba(0,0,0,0.5)",padding:"3px 16px",borderRadius:999,fontSize:11,fontWeight:900,color:"#fff",letterSpacing:2,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.55)"}}>{_cs99.e} {_cs99.label}</span>
+          ?<span style={{display:"inline-block",background:"rgba(0,0,0,0.5)",padding:"3px 16px",borderRadius:RAD.pill,fontSize:11,fontWeight:900,color:"#fff",letterSpacing:2,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.55)"}}>{_cs99.e} {_cs99.label}</span>
           :<div style={{fontSize:11,fontWeight:900,color:_cs99.col,letterSpacing:2,textTransform:"uppercase"}}>{_cs99.e} {_cs99.label}</div>}
       </div>
       {isBigMatch&&(
-        <div style={{marginBottom:12,padding:"10px 14px",borderRadius:12,background:isEpic?"linear-gradient(135deg,#7c3aed,#2563eb)":"linear-gradient(135deg,#dc2626,#ea580c)",border:"none",textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,0.25)"}}>
+        <div style={{marginBottom:12,padding:"10px 14px",borderRadius:RAD.md,background:isEpic?"linear-gradient(135deg,#7c3aed,#2563eb)":"linear-gradient(135deg,#dc2626,#ea580c)",border:"none",textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,0.25)"}}>
           <div style={{fontSize:isEpic?15:13,fontWeight:900,color:"#fff",letterSpacing:1}}>{isEpic?"🔥 PARTITA EPICA":"⚡ BIG MATCH"}</div>
           {matchContext&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",marginTop:3}}>{matchContext}</div>}
         </div>
@@ -443,7 +443,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
           Qui la fascia dichiara di chi si tratta e con quanto passato alle spalle, per qualunque competizione
           (lo screenshot del proprietario era un girone di Coppa dei Campioni). */}
       {exClub&&(
-        <div style={{marginBottom:12,padding:"10px 14px",borderRadius:12,background:"linear-gradient(135deg,#78350f,#b45309)",textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,0.22)"}}>
+        <div style={{marginBottom:12,padding:"10px 14px",borderRadius:RAD.md,background:"linear-gradient(135deg,#78350f,#b45309)",textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,0.22)"}}>
           <div style={{fontSize:13,fontWeight:900,color:"#fff",letterSpacing:1}}>🏟️ IL RITORNO DA EX</div>
           <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.92)",marginTop:3}}>{exClub.line}</div>
         </div>
@@ -455,22 +455,22 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
             <TeamBadge team={homeTeam} size={52}/>
             <div style={{fontSize:12,fontWeight:700,color:TH.text,marginTop:4}}>{homeTeam?.name||homeTeam?.n}</div>
             <div style={{fontSize:FS.caption,color:TH.muted}}>CASA</div>
-            {exClub&&exClub.side==="home"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:6,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
+            {exClub&&exClub.side==="home"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
           </div>
           <div style={{fontSize:28,color:TH.faint,fontWeight:900,marginTop:15}}>VS</div>
           <div style={{textAlign:"center",flex:"0 0 96px"}}>
             <TeamBadge team={awayTeam} size={52}/>
             <div style={{fontSize:12,fontWeight:700,color:TH.text,marginTop:4}}>{awayTeam?.name||awayTeam?.n}</div>
             <div style={{fontSize:FS.caption,color:TH.muted}}>OSPITE</div>
-            {exClub&&exClub.side==="away"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:6,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
-            {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:6,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
+            {exClub&&exClub.side==="away"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
+            {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.xs,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
           </div>
         </div>
       </div>
       <Card style={{padding:"12px 16px",marginBottom:12}}>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
           {[{l:"Stadio",v:(stadium||"–").split(" ").slice(0,2).join(" ")},{l:"Spettatori",v:(attendance||0).toLocaleString("it-IT")},{l:"Meteo",v:weather},{l:"Orario",v:time}].map(s=>(
-            <div key={s.l} style={{background:TH.surface2,borderRadius:8,padding:"8px 10px",border:"1px solid "+TH.cardBorder}}>
+            <div key={s.l} style={{background:TH.surface2,borderRadius:RAD.sm,padding:"8px 10px",border:"1px solid "+TH.cardBorder}}>
               <div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2,textTransform:"uppercase",letterSpacing:1}}>{s.l}</div>
               <div style={{fontSize:12,fontWeight:600,color:TH.text}}>{s.v}</div>
             </div>
@@ -751,13 +751,13 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     <div style={{flex:1,minWidth:0,borderRadius:10,overflow:"hidden",background:"rgba(255,255,255,0.02)",border:"1px solid "+_rgba(kit,0.25),boxShadow:"inset 0 0 24px rgba(0,0,0,0.25)"}}>
       <div style={{display:"flex",alignItems:"center",gap:6,padding:"6px 8px",borderBottom:"1px solid rgba(255,255,255,0.06)",borderLeft:"4px solid "+kit,boxShadow:"inset 6px 0 8px "+_rgba(kit,0.25)}}>
         <span style={{fontSize:13,fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase",color:"#f1f5f9",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{team?.a||team?.abbr||"—"}</span>
-        <span style={{marginLeft:"auto",padding:"2px 7px",borderRadius:6,background:"rgba(255,255,255,0.06)",fontSize:FS.caption,fontWeight:700,color:"rgba(255,255,255,0.75)",whiteSpace:"nowrap"}}>{_fmtOf(rr)}</span>
+        <span style={{marginLeft:"auto",padding:"2px 7px",borderRadius:RAD.xs,background:"rgba(255,255,255,0.06)",fontSize:FS.caption,fontWeight:700,color:"rgba(255,255,255,0.75)",whiteSpace:"nowrap"}}>{_fmtOf(rr)}</span>
       </div>
       <div style={{padding:"8px 4px 10px"}}>
         {rosterRows(rr).map((row,ri)=>(
           <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:2}}>
             {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;return isP?(
-              <div key={pi} style={{boxShadow:"0 0 0 2px "+ACC+",0 0 10px rgba(245,158,11,0.55)",borderRadius:8,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={30}/></div>
+              <div key={pi} style={{boxShadow:"0 0 0 2px "+ACC+",0 0 10px rgba(245,158,11,0.55)",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={30}/></div>
             ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={30} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
           </div>
         ))}
@@ -765,7 +765,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
     </div>
   );
   return(
-    <div style={{position:"relative",overflow:"hidden",width:"100%",maxWidth:640,margin:"0 auto",background:"linear-gradient(180deg,#0a0e1a 0%,#0d1528 100%)",borderRadius:12,padding:"0 0 12px"}}>
+    <div style={{position:"relative",overflow:"hidden",width:"100%",maxWidth:640,margin:"0 auto",background:"linear-gradient(180deg,#0a0e1a 0%,#0d1528 100%)",borderRadius:RAD.md,padding:"0 0 12px"}}>
       <style>{"@keyframes cpmLtSlide{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}@keyframes cpmLtMeter{from{transform:scaleX(0)}to{transform:scaleX(1)}}@keyframes cpmLtShine{from{transform:translateX(-140%) skewX(-18deg)}to{transform:translateX(240%) skewX(-18deg)}}"}</style>
       <div style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:3,background:"repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 3px)"}}>
         <div style={{position:"absolute",inset:0,background:"radial-gradient(120% 80% at 50% 40%, transparent 55%, rgba(0,0,0,0.45) 100%)"}}/>
@@ -1328,11 +1328,11 @@ class MatchErrorBoundary extends React.Component{
     if(this.state.err){
       const msg=this.state.err?.message||String(this.state.err);
       const stack=(this.state.info?.componentStack||"").slice(0,600);
-      return<div style={{padding:20,background:"#1e0a0a",color:"#fca5a5",fontFamily:"monospace",fontSize:12,borderRadius:12,margin:12,border:"1px solid #dc2626"}}>
+      return<div style={{padding:20,background:"#1e0a0a",color:"#fca5a5",fontFamily:"monospace",fontSize:12,borderRadius:RAD.md,margin:12,border:"1px solid #dc2626"}}>
         <div style={{fontWeight:900,fontSize:16,marginBottom:8}}>💥 ERRORE LiveMatch</div>
-        <div style={{background:"#0f0707",padding:10,borderRadius:8,marginBottom:8,wordBreak:"break-all",color:"#f87171"}}>{msg}</div>
-        {stack&&<div style={{background:"#0f0707",padding:10,borderRadius:8,fontSize:FS.caption,color:"#9ca3af",whiteSpace:"pre-wrap"}}>{stack}</div>}
-        <button onClick={()=>this.setState({err:null,info:null})} style={{marginTop:12,padding:"6px 16px",background:"#dc2626",color:"#fff",border:"none",borderRadius:8,cursor:"pointer",fontWeight:700}}>↩ Riprova</button>
+        <div style={{background:"#0f0707",padding:10,borderRadius:RAD.sm,marginBottom:8,wordBreak:"break-all",color:"#f87171"}}>{msg}</div>
+        {stack&&<div style={{background:"#0f0707",padding:10,borderRadius:RAD.sm,fontSize:FS.caption,color:"#9ca3af",whiteSpace:"pre-wrap"}}>{stack}</div>}
+        <button onClick={()=>this.setState({err:null,info:null})} style={{marginTop:12,padding:"6px 16px",background:"#dc2626",color:"#fff",border:"none",borderRadius:RAD.sm,cursor:"pointer",fontWeight:700}}>↩ Riprova</button>
       </div>;
     }
     return this.props.children;

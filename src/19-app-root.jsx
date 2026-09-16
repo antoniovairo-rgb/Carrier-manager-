@@ -114,7 +114,7 @@ function ReviewWizard({onExit}){
   const done=combos.filter(c=>verd[kOf(c)]).length,ko=combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0).length;
   const stale=combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0&&(verd[kOf(c)].b||null)!==GAME_VERSION).length;/* [7.219.0] bocciate su build precedenti */
   const sit=cur?ALL[cur.gi]:null,act=sit&&sit.actions?sit.actions[cur.ai]:null;
-  const bs={background:"#334155",color:"#fff",border:"none",borderRadius:8,padding:"9px 12px",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};
+  const bs={background:"#334155",color:"#fff",border:"none",borderRadius:RAD.sm,padding:"9px 12px",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};
   const doExport=()=>{
     /* [7.219.0] i verdetti restano salvati fra una sessione e l'altra: senza dire su QUALE build sono stati
        dati, un export mescola le bocciature di oggi con quelle gia corrette in una release precedente — ed e
@@ -149,14 +149,14 @@ function ReviewWizard({onExit}){
       {!cur?<div style={{textAlign:"center",padding:"14px 0",fontWeight:800,color:TH.txGreen}}>✅ Nessuna combinazione in questo filtro — hai finito!</div>:<>
         <div style={{display:"flex",gap:8,alignItems:"center",fontSize:11,color:TH.faint,marginBottom:4}}>
           <span>gi{cur.gi} · azione {cur.ai+1}</span>
-          <span style={{background:cur.ok?"#14532d":"#7f1d1d",color:"#fff",padding:"2px 7px",borderRadius:20,fontWeight:800}}>{cur.ok?"ESITO RIUSCITO":"ESITO FALLITO"}</span>
+          <span style={{background:cur.ok?"#14532d":"#7f1d1d",color:"#fff",padding:"2px 7px",borderRadius:RAD.xl,fontWeight:800}}>{cur.ok?"ESITO RIUSCITO":"ESITO FALLITO"}</span>
           {busy&&<span style={{color:"#fbbf24"}}>▶ in corso…</span>}
           <span style={{flex:1}}/>
           <span>{Math.min(i+1,list.length)}/{list.length} nel filtro</span>
         </div>
         <div style={{fontSize:13,fontWeight:700,marginBottom:2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{sit?sit.text:"…"}</div>
         <div style={{fontSize:12,color:"#cbd5e1",marginBottom:7,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>▸ {act?act.label:"…"}</div>
-        <input value={note} onChange={e=>setNote(e.target.value)} placeholder="Nota (facoltativa): cosa non va?" style={{width:"100%",boxSizing:"border-box",background:"rgba(15,23,42,0.7)",border:"1px solid rgba(30,41,59,0.7)",borderRadius:8,color:"#e2e8f0",padding:"8px 10px",fontSize:13,fontFamily:"inherit",marginBottom:7}}/>
+        <input value={note} onChange={e=>setNote(e.target.value)} placeholder="Nota (facoltativa): cosa non va?" style={{width:"100%",boxSizing:"border-box",background:"rgba(15,23,42,0.7)",border:"1px solid rgba(30,41,59,0.7)",borderRadius:RAD.sm,color:"#e2e8f0",padding:"8px 10px",fontSize:13,fontFamily:"inherit",marginBottom:7}}/>
         <div style={{display:"flex",gap:7,flexWrap:"wrap"}}>
           <button onClick={()=>mark(1)} style={{...bs,background:"#16a34a",flex:"1 1 90px"}}>👍 OK</button>
           <button onClick={()=>mark(0)} style={{...bs,background:"#dc2626",flex:"1 1 90px"}}>👎 Da correggere</button>
@@ -172,7 +172,7 @@ function ReviewWizard({onExit}){
         <button onClick={doExport} style={{...bs,padding:"5px 10px",fontSize:11,background:"#b45309"}}>📤 Esporta bocciate</button>
       </div>
       {exp!=null&&<div style={{marginTop:7}}>
-        <textarea readOnly value={exp} onFocus={e=>e.target.select()} style={{width:"100%",boxSizing:"border-box",height:90,background:"#0f172a",border:"1px solid #1e293b",borderRadius:8,color:"#e2e8f0",padding:8,fontSize:11,fontFamily:"monospace"}}/>
+        <textarea readOnly value={exp} onFocus={e=>e.target.select()} style={{width:"100%",boxSizing:"border-box",height:90,background:"#0f172a",border:"1px solid #1e293b",borderRadius:RAD.sm,color:"#e2e8f0",padding:8,fontSize:11,fontFamily:"monospace"}}/>
         <button onClick={()=>setExp(null)} style={{...bs,padding:"4px 9px",fontSize:11,marginTop:4}}>chiudi</button>
       </div>}
     </div>
@@ -193,7 +193,7 @@ function SitTest({sitN}){
   // 5.43.8: Ripeti SUCCESS / Ripeti FAIL — riforza la situation e risolve l'ULTIMA azione scelta con esito forzato
   const repeat=(outcome)=>{const k=(window.__CPM_LAST_K==null?0:window.__CPM_LAST_K);force(n);setTimeout(()=>{try{window.__CPM_FORCE_OUTCOME=outcome;window.__CPM_RESOLVE&&window.__CPM_RESOLVE(k);}catch(e){}},460);};
   const sit=(typeof SITUATIONS!=='undefined')?SITUATIONS[n]:null;
-  const bs={background:"#334155",color:"#fff",border:"none",borderRadius:6,padding:"4px 10px",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};
+  const bs={background:"#334155",color:"#fff",border:"none",borderRadius:RAD.xs,padding:"4px 10px",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};
   return <div style={{width:"100%",height:"100vh",position:"relative",background:"#050810",display:"flex",flexDirection:"column"}}>
     {/* 5.43.6: catena flex di altezza (come la match-screen reale) → su mobile il canvas 3D NON collassa più a 0 (campo nero) */}
     <div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}>
@@ -561,7 +561,7 @@ function IntroCinematic({onDone}){
       {cap.cta&&<div style={{position:"absolute",left:0,right:0,bottom:"12%",display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both"}}>
         <button onClick={onDone} style={{padding:"15px 34px",borderRadius:14,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:17,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>🎬 Comincia dal provino →</button>
       </div>}
-      <button onClick={onDone} style={{position:"absolute",top:14,right:14,padding:"8px 15px",borderRadius:20,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
+      <button onClick={onDone} style={{position:"absolute",top:14,right:14,padding:"8px 15px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
     </div>
   );
 }
@@ -614,7 +614,7 @@ function AudioSettings(){
   const VOL=[{k:'music',label:'🎵 Musica menu'},{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
   const TOG=[{k:'tel',label:'🎙️ Telecronaca',note:'in arrivo',dis:true},{k:'vibr',label:'📳 Vibrazione (mobile)'}];
   const Toggle=({on,onClick,dis})=>(
-    <button onClick={dis?undefined:onClick} disabled={dis} style={{width:42,height:24,borderRadius:12,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
+    <button onClick={dis?undefined:onClick} disabled={dis} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
       <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
     </button>
   );
@@ -651,12 +651,12 @@ function AudioSettings(){
         ))}
       </div>
       <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2,lineHeight:1.4}}>Audio sintetizzato in tempo reale (nessun download, funziona offline). Le impostazioni si salvano da sole.</div>
-      <button onClick={()=>setDbg(d=>!d)} style={{marginTop:8,padding:'5px 10px',borderRadius:8,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit',fontSize:FS.caption}}>🐞 Debug audio {dbg?'▲':'▼'}</button>
+      <button onClick={()=>setDbg(d=>!d)} style={{marginTop:8,padding:'5px 10px',borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit',fontSize:FS.caption}}>🐞 Debug audio {dbg?'▲':'▼'}</button>
       {dbg&&(()=>{let D;try{D=AudioMgr.debug();}catch(_e){D=null;}if(!D)return null;return(
-        <div style={{marginTop:8,padding:8,background:TH.surface2||'rgba(0,0,0,.05)',borderRadius:8,fontSize:FS.caption}}>
+        <div style={{marginTop:8,padding:8,background:TH.surface2||'rgba(0,0,0,.05)',borderRadius:RAD.sm,fontSize:FS.caption}}>
           <div style={{color:TH.muted,marginBottom:6,lineHeight:1.5}}>ctx: <b>{D.ctx}</b> · scena: <b>{D.scene||'—'}</b> · folla: <b>{D.bed?'ON':'off'}</b> · sfx suonati: <b>{D.played}</b> · voci in catalogo: <b>{D.catalog.length}</b>{D.silent?' · (muto sotto test)':''}</div>
           <div style={{display:'flex',flexWrap:'wrap',gap:4,maxHeight:150,overflowY:'auto'}}>
-            {D.catalog.map(n=><button key={n} onClick={()=>{try{AudioMgr.unlock();AudioMgr.play(n);setDbg(d=>d);}catch(_e){}}} style={{fontSize:FS.caption,padding:'3px 6px',borderRadius:6,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit'}}>{n}</button>)}
+            {D.catalog.map(n=><button key={n} onClick={()=>{try{AudioMgr.unlock();AudioMgr.play(n);setDbg(d=>d);}catch(_e){}}} style={{fontSize:FS.caption,padding:'3px 6px',borderRadius:RAD.xs,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit'}}>{n}</button>)}
           </div>
         </div>);})()}
     </Card>
@@ -847,8 +847,8 @@ function App(){
           della Home e nella nav della carriera. SettingsQuickBtn resta definito ma non montato. */}
       {showSettings&&<SettingsScreen darkMode={dark} onTheme={nd=>{try{safeLS.set("cpm-dark",nd?"1":"0");}catch(_e){}setDark(nd);}} onClose={()=>setShowSettings(false)}/>}
       <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:11,letterSpacing:"0.05em",animation:"cpmBadgeFade 9s ease forwards"}}>{/* [5.95.0 QW] auto-fade: visibile al boot per verificare la versione, poi sparisce (su mobile copriva tab-bar/azioni) */}
-        <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:6,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
-        <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:6}}>KE {GAME_VERSION}</span>
+        <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:RAD.xs,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
+        <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:RAD.xs}}>KE {GAME_VERSION}</span>
       </div>
       <style>{`
         *{box-sizing:border-box;}
@@ -917,7 +917,7 @@ function App(){
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<><HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>
     {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD)&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>
-      <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:8,padding:"7px 14px",fontSize:11.5,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
+      <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:11.5,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
   if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)}/>);
   if(phase==="cinematic"&&player)return wrap(<IntroCinematic onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
