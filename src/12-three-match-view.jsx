@@ -614,8 +614,13 @@ function ThreeMatchView(props){
             sh.uniforms.uShirt910={value:_shirtTex};
             sh.uniforms.uHaShirt910={value:_shirtTex?1:0};
             sh.vertexShader='attribute float _parte;\nvarying float vParte910;\n'+sh.vertexShader.replace('void main() {','void main() {\n\tvParte910=_parte;');
+            /* [7.910.1] la varying delle UV si chiama `vUv` su three r128 (che e' quello che il gioco monta da
+               CDN) e `vMapUv` dalla r152 in poi: si legge dal sorgente vero dello shader invece di indovinare.
+               Sbagliarla non produce un errore di pagina — lo shader non compila e i ventidue spariscono dal
+               campo con i triangoli ancora contati: e' successo, e l'hanno detto le foto, non il conteggio. */
+            const _uv910=/varying\s+vec2\s+vMapUv/.test(sh.fragmentShader)?'vMapUv':'vUv';
             sh.fragmentShader='uniform vec3 uKit910[5];\nuniform vec3 uKitEm910[5];\nuniform sampler2D uShirt910;\nuniform float uHaShirt910;\nvarying float vParte910;\n'+sh.fragmentShader
-              .replace('#include <map_fragment>','#include <map_fragment>\n\tint _p910=int(vParte910+0.5);\n\tif(_p910==1&&uHaShirt910>0.5){diffuseColor=vec4(texture2D(uShirt910,vMapUv).rgb,diffuseColor.a);}\n\telse if(_p910>=1){diffuseColor=vec4(uKit910[_p910-1],diffuseColor.a);}')
+              .replace('#include <map_fragment>','#include <map_fragment>\n\tint _p910=int(vParte910+0.5);\n\tif(_p910==1&&uHaShirt910>0.5){diffuseColor=vec4(texture2D(uShirt910,'+_uv910+').rgb,diffuseColor.a);}\n\telse if(_p910>=1){diffuseColor=vec4(uKit910[_p910-1],diffuseColor.a);}')
               .replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\n\tif(int(vParte910+0.5)>=1){totalEmissiveRadiance=uKitEm910[int(vParte910+0.5)-1];}');
           };
           _base.customProgramCacheKey=()=>'cpm910';
