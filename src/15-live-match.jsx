@@ -456,6 +456,78 @@ function readMatchSpeed(){try{const raw=localStorage.getItem("cpm-match-speed");
   if(MATCH_SPEEDS.indexOf(v)>=0)return v;
   if(raw!=null){try{localStorage.setItem("cpm-match-speed","1");}catch(_e2){}}
   return 1;}catch(_e){return 1;}}
+/* ===== [7.917.0 — F1: IL CAMPO DALL'ALTO, decisione del PO 15/09] ==========================================
+   «tra un highlights ed un altro dell'eroe, mostrare solo la partita 2d, mostrare in sovraimpressione le
+   statistiche della partita». Fra un highlight e l'altro il 3D si spegne e resta il campo visto dall'alto con
+   i ventidue e il pallone: gli stessi che muove il motore, letti da `stato()` — nessuna seconda sorgente.
+   Perche' non e' un ripiego: il 3D continuo costava 153 chiamate di disegno per fotogramma e teneva il
+   telefono del PO a 32 fps, e in quei minuti non racconta niente che questi pallini non raccontino meglio.
+   Il 3D torna dove serve davvero: l'highlight dell'eroe, l'ingresso in campo, il fischio finale.
+   Il campo e' disegnato su canvas (un solo nodo, nessun DOM per ventitre pallini) alla cadenza del gioco.
+   Rosso __CPM_NO917: torna il 3D continuo. */
+function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,altezza}){
+  const cRef=React.useRef(null);
+  const rafRef=React.useRef(0);
+  React.useEffect(()=>{
+    let vivo=true;
+    const disegna=()=>{
+      if(!vivo)return;
+      const cv=cRef.current;
+      if(cv){
+        const dpr=Math.min(2,(typeof window!=='undefined'&&window.devicePixelRatio)||1);
+        const W=cv.clientWidth||320,H=cv.clientHeight||200;
+        if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);}
+        const g=cv.getContext('2d');
+        if(g){
+          g.setTransform(dpr,0,0,dpr,0,0);
+          /* il prato: due verdi alternati come le fasce di taglio, poi le linee */
+          g.fillStyle='#1f6b32';g.fillRect(0,0,W,H);
+          g.fillStyle='rgba(255,255,255,0.035)';
+          for(let i=0;i<8;i+=2)g.fillRect(i*W/8,0,W/8,H);
+          const mx=W*0.045,my=H*0.09,cw=W-mx*2,ch=H-my*2;
+          g.strokeStyle='rgba(255,255,255,0.55)';g.lineWidth=1.2;
+          g.strokeRect(mx,my,cw,ch);
+          g.beginPath();g.moveTo(mx+cw/2,my);g.lineTo(mx+cw/2,my+ch);g.stroke();
+          g.beginPath();g.arc(mx+cw/2,my+ch/2,Math.min(cw,ch)*0.12,0,Math.PI*2);g.stroke();
+          const ah=ch*0.62,aw=cw*0.145;
+          g.strokeRect(mx,my+(ch-ah)/2,aw,ah);
+          g.strokeRect(mx+cw-aw,my+(ch-ah)/2,aw,ah);
+          const ph=ch*0.28,pw=cw*0.05;
+          g.strokeRect(mx,my+(ch-ph)/2,pw,ph);
+          g.strokeRect(mx+cw-pw,my+(ch-ph)/2,pw,ph);
+          /* i ventidue e il pallone, dalle posizioni del motore */
+          let st=null;try{st=motore&&motore.stato?motore.stato():null;}catch(_e){}
+          if(st){
+            const px=(x)=>mx+(x/100)*cw, py=(y)=>my+(y/100)*ch;
+            const r=Math.max(3.2,Math.min(6,cw*0.014));
+            const uomo=(p,col,bordo,grande,etichetta)=>{
+              if(!p)return;
+              const X=px(p.x),Y=py(p.y),R=grande?r*1.35:r;
+              g.beginPath();g.arc(X,Y+R*0.55,R*0.95,0,Math.PI*2);g.fillStyle='rgba(0,0,0,0.22)';g.fill();
+              g.beginPath();g.arc(X,Y,R,0,Math.PI*2);g.fillStyle=col;g.fill();
+              g.lineWidth=grande?2:1;g.strokeStyle=bordo;g.stroke();
+              if(etichetta){g.fillStyle='#fff';g.font='700 '+Math.round(R*1.5)+'px system-ui,sans-serif';g.textAlign='center';g.fillText(etichetta,X,Y-R*1.5);}
+            };
+            const g1=st.gioc||[];
+            for(let i=0;i<g1.length;i++){const p=g1[i];if(!p)continue;
+              const casa=p.team==='home';
+              uomo(p,casa?kitCasa:kitOspiti,p.gk?'#fde68a':'rgba(0,0,0,0.45)',false,null);}
+            if(st.eroe)uomo(st.eroe,eroeLato==='home'?kitCasa:kitOspiti,'#ffffff',true,nomeEroe||null);
+            if(st.palla){const X=px(st.palla.x),Y=py(st.palla.y);
+              g.beginPath();g.arc(X,Y+2,r*0.62,0,Math.PI*2);g.fillStyle='rgba(0,0,0,0.3)';g.fill();
+              g.beginPath();g.arc(X,Y,r*0.58,0,Math.PI*2);g.fillStyle='#ffffff';g.fill();
+              g.lineWidth=1;g.strokeStyle='rgba(0,0,0,0.5)';g.stroke();}
+          }
+        }
+      }
+      rafRef.current=requestAnimationFrame(disegna);
+    };
+    rafRef.current=requestAnimationFrame(disegna);
+    return()=>{vivo=false;try{cancelAnimationFrame(rafRef.current);}catch(_e){}};
+  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe]);
+  return <canvas ref={cRef} data-cpm="campo2d" style={{width:"100%",height:altezza||"100%",display:"block",background:"#1f6b32"}} />;
+}
+
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
@@ -8652,6 +8724,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           <div style={isNarrow?{display:"flex",flexDirection:"column",flex:1,minHeight:0}:{display:"flex",flexDirection:"row",alignItems:"stretch",flex:1,minHeight:0,overflow:"hidden"}}>
 
             {/* FIELD — height-constrained on desktop, full width on narrow */}
+            {/* [7.917.0 — F1] IL CAMPO DALL'ALTO fra un highlight e l'altro (decisione del PO 15/09). Il 3D non
+                si smonta — resta caldo, sospeso — e qui sopra si mostra il campo coi ventidue del motore. */}
+            {(()=>{const _c2d=!(typeof window!=='undefined'&&window.__CPM_NO917)&&phase==="playing";
+              try{if(typeof window!=='undefined')window.__CPM_SOSP917=_c2d;}catch(_e){}
+              if(!_c2d)return null;
+              return(<div data-cpm="vista2d" style={isNarrow?{position:"relative",overflow:"hidden",flex:1,minHeight:0}:{position:"relative",overflow:"hidden",height:"100%"}}>
+                <Campo2D motore={motoreRef.current} kitCasa={(homeTeamObj&&homeTeamObj.c)||"#8e1f33"} kitOspiti={(awayTeamObj&&awayTeamObj.c)||"#e2e8f0"} eroeLato={isMatchHome?"home":"away"} nomeEroe={(player&&player.name)?String(player.name).split(" ").pop().slice(0,10):null} />
+              </div>);})()}
             <div style={isNarrow?{position:"relative",overflow:"hidden",cursor:"default",flex:1,minHeight:0,display:"flex",flexDirection:"column"}:{flex:"0 0 62%",position:"relative",overflow:"hidden",alignSelf:"stretch",cursor:"default"}}>
               <ThreeMatchView key={"tmv"+glbTry}/* [7.264.0] «Riprova» rimonta la scena 3D → il caricatore del CH38 riparte da zero senza perdere la partita */ playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}

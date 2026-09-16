@@ -2237,6 +2237,12 @@ function ThreeMatchView(props){
     const _DEVT344=(typeof devToolsOn==="function")?devToolsOn():false;
     const loop=()=>{
       sr.current.raf=requestAnimationFrame(loop);
+      /* [7.917.0 — F1] SOSPENSIONE PER IL CAMPO 2D. Fra un highlight e l'altro la scena 3D non si vede: il
+         PO guarda il campo dall'alto. Smontarla sarebbe l'errore: rimontarla costa 2,6 s di compilazione
+         shader (lezione 7.769), e il pallone «salterebbe» a ogni rientro. Quindi resta montata e CALDA, ma
+         il giro si ferma qui — altrimenti continuerebbe a disegnare ventitre corpi che nessuno guarda, che
+         e' il costo che questa versione vuole togliere. Il rientro nell'highlight e' istantaneo. */
+      try{if(typeof window!=='undefined'&&window.__CPM_SOSP917===true)return;}catch(_e917){}
       /* ⚠️ [7.696.0 — STRUMENTO PROVATO E REVOCATO CON LA MISURA CONTRARIA, PRIMA DI SPEDIRLO]
          Avevo messo qui un flag per far avanzare il tempo di scena di 1/60 per fotogramma, convinto che
          il laboratorio non potesse vedere il codice 007 perche' gira a 7 fps (era la mia nota del 7.598).
