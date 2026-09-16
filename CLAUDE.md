@@ -22,7 +22,13 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
 5. **Misura, non indovinare.** *No Blind Fix*: misura la causa → correggi → ri-misura → lascia un guardiano
    permanente. Un difetto che si ripresenta due volte merita sempre una probe nuova. → skill `game-qa`
 6. **Non chiudere senza il rituale.** Gate 14/14 · guardiani se l'area li richiede · bump versione · commit ·
-   push · promozione su `main`. → skill `production-ready`
+   push · promozione su `main` · **aggiornamento della roadmap**. → skill `production-ready`
+   📌 **DIRETTIVA PO 16/09: «aggiorna sempre ad ogni rilascio la roadmap».** Ogni versione spedita scrive la
+   sua riga in `docs/MACRO-PIANO-2026-09.md` — sezione «Avanzamento», la più recente in alto, coi numeri
+   misurati — e aggiorna lo **stato delle attività** dei cantieri toccati (da scrivere → in corsa → fatto,
+   oppure revocata col perché). La riga si scrive quando la versione **parte** (dichiarando «sul ramo,
+   rituali in corsa») e si chiude quando `main` è allineato. Una versione spedita senza riga di roadmap è
+   un rilascio non dichiarato.
    ⚠️ **IL GATE NON E' LA CI.** Il workflow `validate-situations.yml` esegue **sette** passi in due job, e
    `npm run validate-situations` e' **uno solo**. Verificare quello e dichiarare «verde» ha prodotto nove
    release consecutive promosse su `main` con la CI rossa, scoperte solo perche' il PO ha mostrato la
