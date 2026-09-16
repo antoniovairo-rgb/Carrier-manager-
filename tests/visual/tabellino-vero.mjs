@@ -19,6 +19,11 @@ function partita(seed){
   const m=crea({seed,giocatori:giocatori(),eroe:{name:'EROE',x:58,y:50,attivo:true,ovr:74},forza:{home:70,away:66}});
   const T={home:VUOTA(),away:VUOTA()};let vivo=0;const STA={};let chiamate=0,conEv=0;
   for(let t=1;t<=MIN;t++){
+   /* [correzione dello strumento] i gol li decreta la CARRIERA, non il motore: senza decreti il banco misurava
+      zero gol e zero assist e li dichiarava «mancanti», mentre il motore li produce eccome. Qui se ne chiedono
+      quattro (due per lato) come fa il banco stati-sub, cosi' gol e assist diventano misurabili. */
+   if(t===18||t===64)m.chiedi.gol('home');
+   if(t===36||t===78)m.chiedi.gol('away');
    for(let k=0;k<DEC;k++){
     const evs=DEC>1?m.tick({min:t,dt:1/DEC,dec:true}):m.tick({min:t});const st=m.stato();
     chiamate++;if(evs&&evs.length)conEv++;STA[st.poss.stato]=(STA[st.poss.stato]||0)+1;
@@ -30,7 +35,11 @@ function partita(seed){
         case 'passaggio': A.passaggi++;if(!e.fuori)A.passOk++;break;
         case 'cross': A.passaggi++;A.cross++;A.passOk++;break;
         case 'tiro': {A.tiri++;A.xg+=XG(e);if(e.esito==='goal'||e.esito==='saved')A.inPorta++;else if(e.esito==='post')A.legno++;else if(e.esito==='blocked')A.murati++;else A.fuori++;break;}
-        case 'gol': A.gol++;break;
+        case 'gol': {A.gol++;
+          /* [correzione dello strumento] l'assist NON e' un evento a se': e' un campo dentro l'evento del gol
+             (`assist`), e cercandolo come evento il banco dichiarava zero su una voce che il motore produce da
+             sempre. Dichiarare zero su qualcosa che esiste porta a implementarlo due volte. */
+          if(e.assist&&e.assist.team&&T[e.assist.team])T[e.assist.team].assist++;break;}
         case 'corner': A.corner++;break;
         case 'fallo': A.falli++;break;
         case 'rigore': A.rigori++;break;
@@ -45,7 +54,6 @@ function partita(seed){
         case 'ammonizione': A.ammoniti++;break;
         case 'espulsione': A.espulsi++;break;
         case 'fuorigioco': A.fuorigioco++;break;
-        case 'assist': A.assist++;break;
       }
     }
    }
