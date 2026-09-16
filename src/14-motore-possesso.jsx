@@ -102,7 +102,7 @@ function creaMotorePossesso(cfg){
      verita': qui il voto si costruisce SOLO da cio' che il giocatore ha fatto, perche' ogni evento del motore
      porta gia' il suo autore (`e.chi.i`). Il conto e' incrementale — un tick, un evento, nessuna passata sui
      ventimila eventi della partita. */
-  const _PAG0=()=>({passaggi:0,passOk:0,tiri:0,inPorta:0,gol:0,assist:0,contrasti:0,intercetti:0,spazzate:0,parate:0,falli:0,amm:0,esp:0,subiti:0,tocchi:0});
+  const _PAG0=()=>({passaggi:0,passOk:0,ricezioni:0,tiri:0,inPorta:0,gol:0,assist:0,contrasti:0,intercetti:0,spazzate:0,parate:0,falli:0,amm:0,esp:0,subiti:0,tocchi:0});
   S.pag={};
   const _pag=(i)=>{if(i==null||i<0||i>=g.length)return null;if(!S.pag[i])S.pag[i]=_PAG0();return S.pag[i];};
   const _XG914=(e)=>{const z=e.zona||'fuori';const b=z==='areaPiccola'?0.34:z==='area'?0.14:z==='limite'?0.06:0.03;const pr=typeof e.press==='number'?e.press:4;return Math.min(0.9,b*(pr<2?1.35:pr<4?1.0:0.72));};
@@ -125,8 +125,14 @@ function creaMotorePossesso(cfg){
       case 'intercetto': A.intercetti++;break;
       case 'contrasto': case 'recupero': A.contrasti++;break;
     }
-    /* la stessa riga, ma intestata all'uomo che l'ha fatta */
-    const P=_pag((e.chi&&e.chi.i!=null)?e.chi.i:null);
+    /* [7.922 — IL DIFETTO CHE RENDEVA PIATTE LE PAGELLE. Collaudo PO 16/09: «i voti sono assolutamente
+       sballati, completamente sbilanciati».] MISURATO prima di toccare: su 22 giocatori, SEDICI avevano
+       esattamente 6,0 e zero eventi intestati, mentre il tabellino di squadra contava 27 passaggi. La causa
+       non era la formula del voto: era che l'evento `passaggio` (e `cross`) porta l'autore in `da`, non in
+       `chi` — e questo contatore guardava solo `chi`. Quindi NESSUN passaggio finiva nella pagella di
+       nessuno. Qui l'autore si legge da dove sta davvero, e chi riceve si prende la sua ricezione. */
+    const _aut=(e.chi&&e.chi.i!=null)?e.chi.i:(((e.t==='passaggio'||e.t==='cross')&&e.da&&e.da.i!=null)?e.da.i:null);
+    const P=_pag(_aut);
     if(P){P.tocchi++;
       switch(e.t){
         case 'passaggio': P.passaggi++;if(!e.fuori)P.passOk++;break;
@@ -147,6 +153,7 @@ function creaMotorePossesso(cfg){
       const _gkSub=_pag(l==='home'?10:0);if(_gkSub)_gkSub.subiti++;
     }
     if(e.t==='parata'){const K=_pag((e.gk&&e.gk.i!=null)?e.gk.i:((e.chi&&e.chi.i!=null)?e.chi.i:null));if(K)K.parate++;}
+    if((e.t==='passaggio'||e.t==='cross')&&e.a&&e.a.i!=null){const R=_pag(e.a.i);if(R){R.ricezioni++;R.tocchi++;}}
   }catch(_e){}};
   const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}S.eventi.push(e);_conta914(e);return e;};
   const nome=(p)=>p?(p.eroe?"{P}":(p.name||(p.gk?"il portiere":"un giocatore"))):"";
@@ -691,20 +698,43 @@ function creaMotorePossesso(cfg){
     }
     return true;
   }catch(_e){return false;}};
-  /* [7.918.0] IL VOTO. Base 6, e da li' solo fatti: un gol pesa 1,15, un assist 0,75, un contrasto 0,075,
-     una palla persa 0,045, un cartellino 0,30, il gol subito dal portiere 0,32. Nessun numero casuale:
-     ricaricando la stessa partita si riottiene la stessa pagella. Fra 4,0 e 9,5, come sui giornali. */
+  /* [7.922 — IL VOTO HA UN REPARTO E UN RISULTATO] Collaudo del PO: «i voti sono assolutamente sballati,
+     completamente sbilanciati». Misurato: 16 giocatori su 22 a 6,0 esatto. La prima causa era il difetto qui
+     sopra (i passaggi non arrivavano a nessuno); la seconda e' che il voto guardava SOLO i gesti, e in una
+     partita il centrale che non sbaglia niente non fa quasi gesti — sui giornali prende 6,5 lo stesso, perche'
+     la sua squadra non ha subito gol. Quindi il voto nasce da tre cose che il motore sa davvero:
+       · il RISULTATO della sua squadra (vinta, pari, persa);
+       · il REPARTO, dedotto dallo schieramento iniziale (0 portiere · 1-4 difesa · 5-7 centrocampo · 8+ attacco),
+         con la porta inviolata che pesa sul portiere e sulla difesa, e il digiuno che pesa sull'attacco;
+       · i GESTI intestati a lui, che ora arrivano davvero.
+     Nessun numero casuale: la stessa partita da' la stessa pagella. Cosa NON c'e' e va detto: i minuti giocati
+     (il motore non li tiene), i duelli vinti e la distanza percorsa. */
+  const _rep=(i)=>{const k=(i>=21)?8:(i<10?i:i-10);return k===0?'P':(k<=4?'D':(k<=7?'C':'A'));};
   const pagelle=()=>{const out=[];
+    const _T={home:S.tab.home,away:S.tab.away};
+    const _pt=(_T.home.possesso||0)+(_T.away.possesso||0);
     for(let i=0;i<g.length;i++){const p=g[i];if(!p)continue;const q=S.pag[i]||_PAG0();
+      const mio=p.team===AWAY?'away':'home',suo=mio==='home'?'away':'home';
+      const gf=_T[mio].gol|0,gs=_T[suo].gol|0;
+      const poss=_pt>0?Math.round(100*(_T[mio].possesso||0)/_pt):50;
+      const r=_rep(i);
       let v=6;
-      v+=q.gol*1.15+q.assist*0.75+q.inPorta*0.12-Math.max(0,q.tiri-q.inPorta)*0.05;
-      v+=q.passOk*0.012-Math.max(0,q.passaggi-q.passOk)*0.045;
-      v+=(q.contrasti+q.intercetti)*0.075+q.spazzate*0.035+q.parate*0.18;
-      v-=q.falli*0.10+q.amm*0.30+q.esp*1.50+(p.gk?q.subiti*0.32:0);
+      /* il risultato della squadra */
+      v+=gf>gs?0.25:(gf<gs?-0.25:0);
+      /* il reparto */
+      if(r==='P'){v+=gs===0?0.50:-0.30*gs;v+=0.15*q.parate;}
+      else if(r==='D'){v+=gs===0?0.35:-0.18*gs;v+=0.10*(q.contrasti+q.intercetti+q.spazzate);}
+      else if(r==='C'){v+=0.08*(q.contrasti+q.intercetti);v+=(poss>=56?0.15:(poss<=44?-0.15:0));}
+      else{v+=(gf===0?-0.25:0);}
+      /* i suoi gesti */
+      v+=q.gol*0.95+q.assist*0.65+q.inPorta*0.10-Math.max(0,q.tiri-q.inPorta)*0.04;
+      v+=q.passOk*0.03-Math.max(0,q.passaggi-q.passOk)*0.05+q.ricezioni*0.012;
+      v+=(q.contrasti+q.intercetti)*0.07+q.spazzate*0.04;
+      v-=q.falli*0.08+q.amm*0.25+q.esp*1.40;
       v=Math.max(4,Math.min(9.5,Math.round(v*10)/10));
-      out.push({i:i,team:p.team,gk:!!p.gk,eroe:!!p.eroe,rl:p.rl||"",nome:p.name||"",voto:v,
+      out.push({i:i,team:p.team,gk:!!p.gk,eroe:!!p.eroe,rl:p.rl||"",rep:r,nome:p.name||"",voto:v,
         gol:q.gol,assist:q.assist,tiri:q.tiri,inPorta:q.inPorta,passaggi:q.passaggi,passOk:q.passOk,
-        contrasti:q.contrasti,intercetti:q.intercetti,spazzate:q.spazzate,parate:q.parate,
+        ricezioni:q.ricezioni,contrasti:q.contrasti,intercetti:q.intercetti,spazzate:q.spazzate,parate:q.parate,
         falli:q.falli,amm:q.amm,esp:q.esp,subiti:q.subiti,tocchi:q.tocchi});}
     return out;};
   return{tick,chiedi,stato,tabellino,pagelle,registra,HERO,_g:g,_S:S};

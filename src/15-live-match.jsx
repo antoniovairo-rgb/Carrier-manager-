@@ -734,7 +734,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
    qui dentro viene da `motore.tabellino()` e `motore.pagelle()`: una sola sorgente, quella che muove i
    ventidue pallini un centimetro piu' in basso. Costruito sui token del design system (FS/FW/SP/RAD), che e'
    il modo in cui C4 entrera' nelle altre cinquanta superfici. Rosso __CPM_NO918: torna il campo nudo. */
-const _COL918={vetro:"rgba(21,31,50,0.90)"/* [7.919 collaudo PO] «renderei un po' piu' chiari gli sfondi delle statistiche»: era 4,10,20 — praticamente nero sul prato scuro */,vetro2:"rgba(28,40,62,0.78)",bordo:"rgba(148,163,184,0.22)",
+const _COL918={vetro:"rgba(24,35,56,0.74)"/* [7.922 collaudo PO: il fondo delle statistiche e' troppo scuro, deve essere semi trasparente] da 0,90 a 0,74: il campo si vede DAVVERO dietro il vetro, che era il senso di «partita 2D nello sfondo» *//* [7.919 collaudo PO] «renderei un po' piu' chiari gli sfondi delle statistiche»: era 4,10,20 — praticamente nero sul prato scuro */,vetro2:"rgba(28,40,62,0.78)",bordo:"rgba(148,163,184,0.22)",
   testo:"#e8eef7",fioco:"#93a4bd",riga:"rgba(148,163,184,0.12)"};
 const _voto918=(v)=>v>=7.5?"#22c55e":v>=6.9?"#84cc16":v>=6.2?"#cbd5e1":v>=5.6?"#f59e0b":"#ef4444";
 const _num918=(v)=>(v==null||isNaN(v))?"0":String(v);
@@ -867,8 +867,34 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
 }
 function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosaOsp,nomeEroe,numEroe}){
   const [dati,setDati]=React.useState(null);
-  const [vista,setVista]=React.useState("stat");
+  const [vista,setVista]=React.useState("pag");/* [7.922 collaudo PO: la tabella pagelle deve essere il default, un po' di statistiche sono gia' sopra] la striscia alta porta gia' possesso, tiri, in porta e xG: il pannello si apre su cio' che li' non c'e'. */
   const [aperto,setAperto]=React.useState(true);
+  /* [7.922 collaudo PO: la telecronaca si accavalla alla tabella quando il testo va su tre righe] Lo spazio
+     riservato in fondo era un NUMERO FISSO (152 px), misurato su una voce da due righe: con tre righe la voce
+     saliva sopra le ultime pagelle. Ora il pannello CHIEDE alla cronaca quanto e' alta e si ferma sopra di lei. */
+  const [spazio,setSpazio]=React.useState(152);
+  React.useEffect(()=>{
+    if(typeof document==='undefined')return;
+    const misura=()=>{try{
+      let h=0;
+      ['com661','voci'].forEach(function(k){
+        const n=document.querySelector('[data-cpm="'+k+'"]');
+        if(!n)return;
+        const b=n.getBoundingClientRect();
+        const c=n.closest('[data-cpm="vista2d"]')||n.parentElement;
+        const cb=c?c.getBoundingClientRect():null;
+        if(!cb||!b.height)return;
+        const daSotto=cb.bottom-b.top;
+        if(daSotto>h)h=daSotto;
+      });
+      setSpazio(Math.max(96,Math.min(320,Math.round(h)+14)));
+    }catch(_e){}};
+    misura();
+    let ro=null;
+    try{ro=new ResizeObserver(misura);['com661','voci'].forEach(function(k){const n=document.querySelector('[data-cpm="'+k+'"]');if(n)ro.observe(n);});}catch(_e){}
+    const id=setInterval(misura,700);/* la voce cambia NODO a ogni riga (chiave nuova): il solo osservatore perderebbe il nodo successivo */
+    return function(){clearInterval(id);try{if(ro)ro.disconnect();}catch(_e){}};
+  },[]);
   React.useEffect(()=>{
     let vivo=true;
     const leggi=()=>{if(!vivo)return;
@@ -919,7 +945,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
         </div>
       </div>
       {/* IL PANNELLO: statistiche o pagelle, col campo che si vede dietro */}
-      <div style={{margin:SP.sm,marginBottom:152,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
+      <div style={{margin:SP.sm,marginBottom:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,
         pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%"}}>
         <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
@@ -8765,6 +8791,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   //   è inutile e sembra rotta → una riga di esordio al posto delle sei righe di zeri.
   const _tvOpener81=(_tvHome.w+_tvHome.d+_tvHome.l+_tvAway.w+_tvAway.d+_tvAway.l)===0;
   const _formCol=r=>r==="W"?"#22c55e":r==="D"?"#f59e0b":"#ef4444";
+  const _formIt=r=>r==="W"?"V":r==="D"?"N":"P";/* [7.922 · uniformita'] La striscia della forma della pre-partita scriveva W/D/L in inglese mentre il cruscotto (7.921) scrive V/N/P: due lingue per la stessa cosa, nello stesso gioco. La lettera si traduce qui, al disegno — il dato resta W/D/L per tutto il codice che lo usa. */
   // [6.88.0 collaudo PO «per ogni competizione, colore diverso anziché tutto verde»] identità COLORE per
   //   competizione — consumata da tappeto 3D a centrocampo (anello+tagline), pannello walkout e post-partita.
   const _compCol=context==="cup"?"#f59e0b"
@@ -9424,9 +9451,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       </div>
                     ))}
                     <div style={{display:"flex",alignItems:"center",padding:"7px 12px",borderTop:"1px solid rgba(255,255,255,0.08)"}}>
-                      <div style={{flex:1,display:"flex",gap:3}}>{_tvHome.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>— esordio stagionale</span>}{_tvHome.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{r}</span>)}</div>
+                      <div style={{flex:1,display:"flex",gap:3}}>{_tvHome.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>— esordio stagionale</span>}{_tvHome.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
                       <div style={{flex:1.4,fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",textAlign:"center",textTransform:"uppercase",letterSpacing:0.5}}>Forma · ultime 5</div>
-                      <div style={{flex:1,display:"flex",gap:3,justifyContent:"flex-end"}}>{_tvAway.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>—</span>}{_tvAway.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{r}</span>)}</div>
+                      <div style={{flex:1,display:"flex",gap:3,justifyContent:"flex-end"}}>{_tvAway.form.length===0&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>—</span>}{_tvAway.form.map((r,i)=><span key={i} style={{width:11,height:11,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
                     </div>
                     </React.Fragment>):(
                     /* COMPETIZIONE (coppa/europa/nazionale): fase/turno + il cammino dell'eroe IN questa competizione */
@@ -9438,7 +9465,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       {_tvComp&&_tvComp.form&&_tvComp.form.length>0&&(
                         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,borderTop:"1px solid rgba(255,255,255,0.08)",paddingTop:8}}>
                           <div style={{fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:0.5}}>Cammino</div>
-                          <div style={{display:"flex",gap:3}}>{_tvComp.form.map((r,i)=><span key={i} style={{width:13,height:13,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{r}</span>)}</div>
+                          <div style={{display:"flex",gap:3}}>{_tvComp.form.map((r,i)=><span key={i} style={{width:13,height:13,borderRadius:3,background:_formCol(r),fontSize:FS.caption,color:"#0b1020",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{_formIt(r)}</span>)}</div>
                         </div>
                       )}
                       {(!_tvComp||!_tvComp.played)&&<div style={{textAlign:"center",fontSize:FS.caption,color:"rgba(255,255,255,0.45)",fontStyle:"italic"}}>Esordio in questa competizione</div>}
@@ -9714,9 +9741,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 //   + tasto Salta in basso a destra IDENTICO a quello della premiazione → il finale si vede in 3D.
                 if(subbedOff)return(
                   <React.Fragment>
-                    <div style={{position:"absolute",top:0,left:0,right:0,zIndex:9,pointerEvents:"none",padding:"12px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(8,12,24,0.82),rgba(8,12,24,0))"}}>
-                      <div style={{fontSize:isNarrow?13:15,letterSpacing:2.5,color:sentOffRef.current?"#fca5a5":"#e2e8f0",fontWeight:900,textTransform:"uppercase",textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{sentOffRef.current?"🟥 ESPULSO AL":"🔁 SOSTITUITO AL"} {subOffMinRef.current}'</div>{/* [7.137.0] espulsione reale → ESPULSO · [7.145.0] via la riga punteggio (ridondante + invertita in trasferta) */}
-                      <div style={{fontSize:11,color:"rgba(255,255,255,0.72)",fontStyle:"italic",marginTop:3}}>{sentOffRef.current?"Lasci il campo — la squadra chiude in dieci. Squalifica in arrivo.":"Segui il finale dalla panchina — la squadra chiude la partita per te."}</div>
+                    {/* [7.922 collaudo PO: la grafica delle sostituzioni non e' coerente col resto, e' rimasta
+                        quella vecchia] Nella foto dell'80' il cartello stava a filo del bordo alto, SOPRA la
+                        striscia delle statistiche, con maiuscole spaziate e sottotitolo in corsivo su un velo
+                        nero: la lingua della 7.8, non quella del pannello. Ora e' una pillola di vetro come il
+                        coro e le statistiche, con la barra di colore a sinistra, e SCENDE sotto la striscia
+                        quando la striscia c'e'. */}
+                    <div style={{position:"absolute",top:(!(typeof window!=='undefined'&&window.__CPM_NO918)&&phase==="playing")?78:SP.sm,left:SP.sm,right:SP.sm,zIndex:9,pointerEvents:"none",display:"flex",justifyContent:"center"}}>
+                      <div style={{display:"inline-flex",alignItems:"center",gap:SP.sm,maxWidth:"100%",padding:"7px 13px",borderRadius:RAD.md,background:_COL918.vetro,border:"1px solid "+_COL918.bordo,borderLeft:"3px solid "+(sentOffRef.current?"#ef4444":"#f0b33a"),boxShadow:"0 6px 20px rgba(0,0,0,0.45)"}}>
+                        <span style={{fontSize:FS.bodyLg,lineHeight:1}}>{sentOffRef.current?"\uD83D\uDFE5":"\uD83D\uDD01"}</span>
+                        <span style={{minWidth:0}}>
+                          <span style={{display:"block",fontSize:FS.small,fontWeight:FW.black,letterSpacing:.8,textTransform:"uppercase",color:sentOffRef.current?"#fca5a5":"#f1f5f9"}}>{(sentOffRef.current?"Espulso al ":"Sostituito al ")+(subOffMinRef.current||clockRef.current|0)+"'"}</span>
+                          <span style={{display:"block",fontSize:FS.caption,fontWeight:FW.medium,color:"#9fb0c8",lineHeight:1.3}}>{sentOffRef.current?"Lasci il campo — la squadra chiude in dieci":"Segui il finale dalla panchina"}</span>
+                        </span>
+                      </div>
                     </div>
                     <button onClick={()=>{clockRef.current=Math.max(clockRef.current,89);setClock(c=>Math.max(c,89));}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:22,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta al fischio finale →</button>
                   </React.Fragment>
