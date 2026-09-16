@@ -1493,6 +1493,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   ceremony-visual.mjs monta LiveMatch (?sit=) e chiama questo per catturare i 4 beat senza dover vincere un titolo.
     window.__CPM_FORCE_CEREMONY=(o)=>{try{setCeremony({name:(o&&o.name)||"CAMPIONI D'ITALIA",kind:(o&&o.kind)||"league"});setPhase("ceremony");return true;}catch(e){return false;}};
     window.__CPM_PHASE=()=>{try{return phaseRef.current;}catch(e){return null;}};// [7.2.0] fase corrente per il collaudo cerimonia
+    /* [7.911.1 — C11] LA CERIMONIA D'INGRESSO NON ERA RAGGIUNGIBILE DA UNA SONDA. Il percorso del provino entra
+       dritto in `playing` (misurato: unica fase attraversata, `playing@12393`), quindi tutto cio' che vive nei
+       dieci secondi e mezzo della walkout — tappeto, bambini per mano, ingresso delle squadre — non e' mai stato
+       misurato da nessuno. Questo gancio ci porta, come __CPM_FORCE_CEREMONY fa con la premiazione: test-only. */
+    window.__CPM_FORCE_WALKOUT=()=>{try{setPhase("walkout");return true;}catch(e){return false;}};
     window.__CPM_RIPBREVE=()=>{try{const _e0=+ripT0Ref.current||0;const _ms=_e0?(Date.now()-_e0):-1;return{tick:(ripTickRef.current|0),ms:_ms,breve:(_e0>0&&_ms<=4500)};}catch(e){return null;}};/* [7.590.0] la finestra BREVE, per le sonde */
     window.__CPM_KO544=()=>{try{return (kickRef.current>0)||(kickoffRef.current>0);}catch(e){return false;}};/* [7.544.0] la FINESTRA vera della ripartenza: la prima sonda filtrava su «palla vicino al centro» e contava 35 riprese in due partite (i gol sono 3-4) — misurava il gioco normale che passa dal cerchio, non i calci d'inizio */
     window.__CPM_HLTIMES=()=>{try{return (hlTimesRef.current||[]).slice();}catch(e){return[];}};/* [7.500.0 F4] il CALENDARIO degli highlight: e' la parte deterministica del rimedio, quindi e' quella su cui una prova del rosso puo' davvero separare */

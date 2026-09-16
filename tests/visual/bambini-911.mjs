@@ -38,14 +38,16 @@ for (const braccio of ['verde', 'rosso']) {
   await cdp.send('Page.startScreencast', { format: 'png', quality: 92, everyNthFrame: 1 });
   let foto = null;
   const scatta = () => { if (lastFrame) { foto = path.join(OUT, `${braccio}.png`); fs.writeFileSync(foto, lastFrame); } };
-  /* openMatch attraversa il flusso vero, cerimonia compresa: si guarda mentre passa */
-  const corsa = openMatch(page, port, { skipLoadAll: true, name: 'Vairo' }).catch(() => null);
-  for (let i = 0; i < 90 && !foto; i++) {
+  /* il percorso del provino entra dritto in `playing` (misurato: unica fase attraversata): la cerimonia si
+     raggiunge col gancio di collaudo, come si fa da sempre con la premiazione. */
+  await openMatch(page, port, { skipLoadAll: true, name: 'Vairo' }).catch(() => null);
+  try { await page.waitForFunction(() => window.__CPM_GLB_READY === true, { timeout: 90000 }); } catch (_e) {}
+  await page.evaluate(() => { try { return window.__CPM_FORCE_WALKOUT && window.__CPM_FORCE_WALKOUT(); } catch (_e) { return false; } });
+  for (let i = 0; i < 26 && !foto; i++) {
     await sleep(400);
     const m = await page.evaluate(() => { try { return window.__CPM_MASCOT911 ? window.__CPM_MASCOT911() : null; } catch (_e) { return null; } }).catch(() => null);
-    if (m && m.attivi > 0) { await sleep(500); scatta(); }
+    if (m && m.attivi > 0) { await sleep(600); scatta(); }
   }
-  await corsa;
   const max = await page.evaluate(() => window.__CPM_M911MAX || null).catch(() => null);
   const fasi = await page.evaluate(() => window.__CPM_FASI911 || []).catch(() => []);
   const pronti = await page.evaluate(() => window.__CPM_PRONTI911 || null).catch(() => null);

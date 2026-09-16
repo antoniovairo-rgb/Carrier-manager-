@@ -820,19 +820,6 @@ function ThreeMatchView(props){
             av._isCoach904=!!fig._isCoach;av._home904=!!fig._home;av._seated904=!!seated;av._ph904=fig._ph||0;
             return av;
           };
-          const _bg904=[];
-          benchFigs.forEach((fig,fi)=>{
-            const _seated=!fig._isCoach;
-            const _kit=fig._isCoach?_suitKit:(fig._home?_homeKit:_awayKit);
-            const _appr=appearanceFromSeed(hashStr((fig._home?'benchH':'benchA')+'_'+fi));
-            const av=_mkBenchOne(fig,_kit,_appr,_seated);
-            if(!av)return;
-            av.root.position.set(fig.position.x,_seated?(av._seatY904||0):0,fig.position.z);
-            // facing: yaw=0 → +Z (verso il campo) per questo rig, stessa convenzione dei 22 (vedi il loop
-            // principale, _fx=sin(yaw),_fz=cos(yaw)) — nessuna rotazione da applicare, la panchina guarda già il campo.
-            _bg904.push(av);
-          });
-          if(_bg904.length){benchGlbAvatars=_bg904;try{if(sr.current)sr.current._benchGlbOn904=true;}catch(_e){}}
           /* [7.911.0 — C11, richiesta PO 15/09 «nell'ingresso in campo anche i bambini devono essere in GLB CH38»]
              I ventidue bambini che entrano per mano ai calciatori erano figure procedurali `mkFig(kit,1.04)`:
              ora sono corpi CH38 come i giocatori e la panchina, con la stessa fabbrica `_mkA`. Due cose che un
@@ -858,6 +845,24 @@ function ThreeMatchView(props){
                 try{if(typeof window!=='undefined')window.__CPM_MASCOT911=()=>({corpi:_mg911.length,totale:_mascots.length,attivi:_mg911.filter(a=>a.root&&a.root.visible).length,y:_mg911.map(a=>+(a.root?a.root.position.y:0).toFixed(3))});}catch(_e){}}
             }
           }catch(_e911){try{console.warn('[CPM-911] bambini fail',_e911&&_e911.message);}catch(_ee){}}
+          /* [7.911.1] I BAMBINI PRIMA DELLA PANCHINA. Misurato: diventavano pronti 2,2 s dopo che la partita
+             poteva gia' iniziare, perche' si costruivano in coda alla panchina — e la cerimonia dura 10,5 s,
+             quindi su un telefono lento i ventidue corpi sarebbero stati pronti a festa finita. La panchina puo'
+             aspettare: resta in scena tutta la partita, i bambini hanno dieci secondi e mezzo. */
+          const _bg904=[];
+          benchFigs.forEach((fig,fi)=>{
+            const _seated=!fig._isCoach;
+            const _kit=fig._isCoach?_suitKit:(fig._home?_homeKit:_awayKit);
+            const _appr=appearanceFromSeed(hashStr((fig._home?'benchH':'benchA')+'_'+fi));
+            const av=_mkBenchOne(fig,_kit,_appr,_seated);
+            if(!av)return;
+            av.root.position.set(fig.position.x,_seated?(av._seatY904||0):0,fig.position.z);
+            // facing: yaw=0 → +Z (verso il campo) per questo rig, stessa convenzione dei 22 (vedi il loop
+            // principale, _fx=sin(yaw),_fz=cos(yaw)) — nessuna rotazione da applicare, la panchina guarda già il campo.
+            _bg904.push(av);
+          });
+          if(_bg904.length){benchGlbAvatars=_bg904;try{if(sr.current)sr.current._benchGlbOn904=true;}catch(_e){}}
+
         }catch(_e904){try{console.warn('[CPM-904] panchina fail',_e904&&_e904.message);}catch(_ee){}}
         }).catch(()=>{/* [7.904.0] fetch fallito o spento: i benchFigs procedurali restano visibili (nessun hide e' avvenuto) */});
       }

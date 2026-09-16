@@ -12351,19 +12351,6 @@ function ThreeMatchView(props){
             av._isCoach904=!!fig._isCoach;av._home904=!!fig._home;av._seated904=!!seated;av._ph904=fig._ph||0;
             return av;
           };
-          const _bg904=[];
-          benchFigs.forEach((fig,fi)=>{
-            const _seated=!fig._isCoach;
-            const _kit=fig._isCoach?_suitKit:(fig._home?_homeKit:_awayKit);
-            const _appr=appearanceFromSeed(hashStr((fig._home?'benchH':'benchA')+'_'+fi));
-            const av=_mkBenchOne(fig,_kit,_appr,_seated);
-            if(!av)return;
-            av.root.position.set(fig.position.x,_seated?(av._seatY904||0):0,fig.position.z);
-            // facing: yaw=0 → +Z (verso il campo) per questo rig, stessa convenzione dei 22 (vedi il loop
-            // principale, _fx=sin(yaw),_fz=cos(yaw)) — nessuna rotazione da applicare, la panchina guarda già il campo.
-            _bg904.push(av);
-          });
-          if(_bg904.length){benchGlbAvatars=_bg904;try{if(sr.current)sr.current._benchGlbOn904=true;}catch(_e){}}
           /* [7.911.0 — C11, richiesta PO 15/09 «nell'ingresso in campo anche i bambini devono essere in GLB CH38»]
              I ventidue bambini che entrano per mano ai calciatori erano figure procedurali `mkFig(kit,1.04)`:
              ora sono corpi CH38 come i giocatori e la panchina, con la stessa fabbrica `_mkA`. Due cose che un
@@ -12389,6 +12376,24 @@ function ThreeMatchView(props){
                 try{if(typeof window!=='undefined')window.__CPM_MASCOT911=()=>({corpi:_mg911.length,totale:_mascots.length,attivi:_mg911.filter(a=>a.root&&a.root.visible).length,y:_mg911.map(a=>+(a.root?a.root.position.y:0).toFixed(3))});}catch(_e){}}
             }
           }catch(_e911){try{console.warn('[CPM-911] bambini fail',_e911&&_e911.message);}catch(_ee){}}
+          /* [7.911.1] I BAMBINI PRIMA DELLA PANCHINA. Misurato: diventavano pronti 2,2 s dopo che la partita
+             poteva gia' iniziare, perche' si costruivano in coda alla panchina — e la cerimonia dura 10,5 s,
+             quindi su un telefono lento i ventidue corpi sarebbero stati pronti a festa finita. La panchina puo'
+             aspettare: resta in scena tutta la partita, i bambini hanno dieci secondi e mezzo. */
+          const _bg904=[];
+          benchFigs.forEach((fig,fi)=>{
+            const _seated=!fig._isCoach;
+            const _kit=fig._isCoach?_suitKit:(fig._home?_homeKit:_awayKit);
+            const _appr=appearanceFromSeed(hashStr((fig._home?'benchH':'benchA')+'_'+fi));
+            const av=_mkBenchOne(fig,_kit,_appr,_seated);
+            if(!av)return;
+            av.root.position.set(fig.position.x,_seated?(av._seatY904||0):0,fig.position.z);
+            // facing: yaw=0 → +Z (verso il campo) per questo rig, stessa convenzione dei 22 (vedi il loop
+            // principale, _fx=sin(yaw),_fz=cos(yaw)) — nessuna rotazione da applicare, la panchina guarda già il campo.
+            _bg904.push(av);
+          });
+          if(_bg904.length){benchGlbAvatars=_bg904;try{if(sr.current)sr.current._benchGlbOn904=true;}catch(_e){}}
+
         }catch(_e904){try{console.warn('[CPM-904] panchina fail',_e904&&_e904.message);}catch(_ee){}}
         }).catch(()=>{/* [7.904.0] fetch fallito o spento: i benchFigs procedurali restano visibili (nessun hide e' avvenuto) */});
       }
@@ -23954,6 +23959,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   ceremony-visual.mjs monta LiveMatch (?sit=) e chiama questo per catturare i 4 beat senza dover vincere un titolo.
     window.__CPM_FORCE_CEREMONY=(o)=>{try{setCeremony({name:(o&&o.name)||"CAMPIONI D'ITALIA",kind:(o&&o.kind)||"league"});setPhase("ceremony");return true;}catch(e){return false;}};
     window.__CPM_PHASE=()=>{try{return phaseRef.current;}catch(e){return null;}};// [7.2.0] fase corrente per il collaudo cerimonia
+    /* [7.911.1 — C11] LA CERIMONIA D'INGRESSO NON ERA RAGGIUNGIBILE DA UNA SONDA. Il percorso del provino entra
+       dritto in `playing` (misurato: unica fase attraversata, `playing@12393`), quindi tutto cio' che vive nei
+       dieci secondi e mezzo della walkout — tappeto, bambini per mano, ingresso delle squadre — non e' mai stato
+       misurato da nessuno. Questo gancio ci porta, come __CPM_FORCE_CEREMONY fa con la premiazione: test-only. */
+    window.__CPM_FORCE_WALKOUT=()=>{try{setPhase("walkout");return true;}catch(e){return false;}};
     window.__CPM_RIPBREVE=()=>{try{const _e0=+ripT0Ref.current||0;const _ms=_e0?(Date.now()-_e0):-1;return{tick:(ripTickRef.current|0),ms:_ms,breve:(_e0>0&&_ms<=4500)};}catch(e){return null;}};/* [7.590.0] la finestra BREVE, per le sonde */
     window.__CPM_KO544=()=>{try{return (kickRef.current>0)||(kickoffRef.current>0);}catch(e){return false;}};/* [7.544.0] la FINESTRA vera della ripartenza: la prima sonda filtrava su «palla vicino al centro» e contava 35 riprese in due partite (i gol sono 3-4) — misurava il gioco normale che passa dal cerchio, non i calci d'inizio */
     window.__CPM_HLTIMES=()=>{try{return (hlTimesRef.current||[]).slice();}catch(e){return[];}};/* [7.500.0 F4] il CALENDARIO degli highlight: e' la parte deterministica del rimedio, quindi e' quella su cui una prova del rosso puo' davvero separare */
