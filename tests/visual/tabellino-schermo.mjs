@@ -16,11 +16,14 @@ page.on('pageerror', (e) => { errori++; if (messaggi.length < 5) messaggi.push(S
 await page.addInitScript(() => { window.__CPM_GLB = false; });
 await openMatch(page, port, { skipLoadAll: true, name: 'Vairo' });
 await page.evaluate(() => { if (window.__CPM_AUTOPLAY) window.__CPM_AUTOPLAY(true, { seed: 4242, policy: 'seeded', tickMs: 60 }); }).catch(() => {});
+/* velocita' doppia: il fischio finale arriva prima e la sonda non scade */
+try { await page.evaluate(() => { try { localStorage.setItem('cpm-match-speed', '2'); } catch (_e) {} const b = [...document.querySelectorAll('button')].find((x) => /^1x$|^1×$/.test((x.textContent || '').trim())); if (b) { b.click(); b.click(); } }); } catch (_e) {}
 /* si aspetta il fischio finale: la fase diventa `ended` */
 let fase = null;
-for (let i = 0; i < 240; i++) {
+for (let i = 0; i < 520; i++) {
   fase = await page.evaluate(() => { try { return window.__CPM_PHASE ? window.__CPM_PHASE() : null; } catch (_e) { return null; } }).catch(() => null);
   if (fase === 'ended') break;
+  if (i % 60 === 59) { try { const c = await page.evaluate(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s ? s.clock : null; } catch (_e) { return null; } }); console.log(`  ...${Math.round(i * 0.5)}s reali, minuto di gioco ${c}, fase ${fase}`); } catch (_e) {} }
   await sleep(500);
 }
 await sleep(2500);
