@@ -3064,7 +3064,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        passaggio 1,09 → 0,75 minuti, invarianti a zero, gol decretati 32/32; a dt=1 il motore e' identico (1104 minuti
        confrontati, 0 differenze). I fatti dei sotto-tick (ricezioni, intercetti, arrivi dei tiri) si narrano al battito
        del minuto seguente. Il rosso rimette un tick intero al minuto. */
-    const _SUB898=(typeof window!=='undefined'&&window.__CPM_NO898)?1:3;k898Ref.current=_SUB898-1;/* il primo battito e' il minuto (decide), poi i sotto-tick */evAcc898Ref.current=[];
+    /* [7.912.0 — A9 v2] UNDICI BATTITI AL MINUTO, TUTTI DECISORI. Il motore decideva una volta al minuto e
+       muoveva la fisica altre due (7.898): 92 decisioni a partita, contro le ~1.100 di una partita vera. Il
+       banco del tabellino (tests/visual/tabellino-vero.mjs) misura cosa cambia a undici, col volo x4 della
+       7.912: tiri in porta 1,1 -> 4,2 (vero 4,3), tiri 1,8 -> 7,3, falli 3,0 -> 16,4, passaggi 12 -> 78 e le
+       chiamate che producono un evento dal 31 al 55 %. Il costo e' misurato e trascurabile: il motore passa da
+       81 a 141 microsecondi per minuto di gioco, cioe' lo 0,008 % di un tick da 1,7 s — il carico del telefono
+       sta nel renderer (153 chiamate di disegno per fotogramma, D12), non qui. Rosso __CPM_NO912: si torna a
+       tre battiti con un solo decisore. */
+    const _a912=!(typeof window!=='undefined'&&window.__CPM_NO912);
+    const _SUB898=(typeof window!=='undefined'&&window.__CPM_NO898)?1:(_a912?11:3);k898Ref.current=_SUB898-1;/* il primo battito e' il minuto (decide), poi i sotto-tick */evAcc898Ref.current=[];
     const _specchi898=(_stM870,_evM870)=>{
           {const _q=quotaMotoreRef.current;_q.push(_stM870.poss.lato==="home"?1:0);if(_q.length>16)_q.shift();}
           const _dM=_stM870.poss.lato==="home"?1:-1;
@@ -3087,7 +3096,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);/* [7.870] rosso appaiato: __CPM_NO870 rimette in moto le vecchie macchine narrative e il vecchio mover */
       k898Ref.current=(k898Ref.current+1)%_SUB898;
       if(k898Ref.current!==0){/* [7.898] sotto-tick: solo la fisica del motore e i suoi specchi, nessuna riga, nessun minuto */
-        try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:false});for(const _e of _ev)evAcc898Ref.current.push(_e);const _st=_M.stato();_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
+        try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);const _st=_M.stato();_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
         return;}
       /* [7.494.0 F0 — CHIUDE IL BORDO NON MISURATO DEL 7.489] Il 7.489 ha reso la cronaca funzione pura di
          (seed di partita, minuto) dentro il callback di `setClock`, dove vive `_rndM`. Ma i rami che girano

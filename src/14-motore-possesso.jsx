@@ -81,6 +81,14 @@ function creaMotorePossesso(cfg){
        motore e' IDENTICO a prima (un tick = un minuto = un tocco). */
     fase:0,dt:1,cond:null,
   };
+  /* [7.912.0 — A9 v2, IL TEMPO DEL MONDO] Il pallone vola quattro volte piu' rapido. Misurato al banco il
+     15/09 alle 21:58: portando il motore da 1 a 11 decisioni al minuto i passaggi salivano solo da 12,2 a 46,1
+     (3,8 volte, non 11) perche' il pallone era IN VOLO nel 74,9 % delle chiamate — il motore trovava la palla in
+     aria e non poteva decidere nulla. Col volo x4 le chiamate che producono un evento passano dal 31,4 al 55,3 %
+     e il tabellino si avvicina al vero: tiri 3,5 -> 7,3 (vero 12,8), tiri in porta 2,2 -> 4,2 (vero 4,3), falli
+     12,5 -> 16,4 (vero 13). Oltre il quadruplo i tiri non crescono piu' (7,30 -> 7,28 a x8), quindi quattro e'
+     il punto. Un passaggio di 15 unita' smette di durare mezzo minuto di gioco. Rosso __CPM_NO912. */
+  const _v912=()=>(typeof window!=='undefined'&&window&&window.__CPM_NO912)?1:4;
   const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}S.eventi.push(e);return e;};
   const nome=(p)=>p?(p.eroe?"{P}":(p.name||(p.gk?"il portiere":"un giocatore"))):"";
   const chi=(p)=>p?{i:p.i,nome:nome(p),eroe:!!p.eroe,gk:!!p.gk,team:p.team,x:+p.x.toFixed(1),y:+p.y.toFixed(1)}:null;
@@ -151,11 +159,11 @@ function creaMotorePossesso(cfg){
     const lead=Math.min(4,hyp(P.x,P.y,R.x,R.y)*0.12);const tx=clamp(R.x+dirDi(l)*lead*(kind==="appoggio"?0:1),2,98),ty=clamp(R.y,3,97);
     S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
     ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)}});
-    volo({tipo:"passaggio",kind,x:tx,y:ty,ricevente:R.i,v:kind==="lancio"?48:kind==="cambio"?48:50,icpt,icptA,arco:"pass",actor:nome(P),rcv:nome(R)});};
+    volo({tipo:"passaggio",kind,x:tx,y:ty,ricevente:R.i,v:(kind==="lancio"?48:kind==="cambio"?48:50)*_v912(),icpt,icptA,arco:"pass",actor:nome(P),rcv:nome(R)});};
   const cross=(P,R,opt)=>{opt=opt||{};const l=P.team;S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
     const tx=clamp(xDa(88+rnd()*6,l),2,98),ty=clamp(50+(rnd()-0.5)*16,3,97);
     ev("cross",{da:chi(P),a:chi(R),from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},corner:!!opt.corner});
-    volo({tipo:"cross",kind:"cross",x:tx,y:ty,ricevente:R?R.i:null,v:48,arco:"cross",actor:nome(P),rcv:R?nome(R):null});};
+    volo({tipo:"cross",kind:"cross",x:tx,y:ty,ricevente:R?R.i:null,v:48*_v912(),arco:"cross",actor:nome(P),rcv:R?nome(R):null});};
   const esitoTiro=(P,intent,ctx)=>{const golReq=S.richieste.gol&&S.richieste.gol.lato===P.team?S.richieste.gol:null;
     let out=null;
     if(decidi){try{out=decidi(intent,Object.assign({attrs:attrsDi(P),seed:seme32(),x:advDi(P.x,P.team)},ctx||{})).outcome;}catch(_e){out=null;}}
@@ -173,7 +181,7 @@ function creaMotorePossesso(cfg){
     else if(out==="blocked"){const m=piuVicino(P.x+dirDi(l)*3,P.y,altro(l),{noGk:true});if(m&&m.d<7){tx=m.p.x;ty=m.p.y;}else{tx=clamp(P.x+dirDi(l)*6,2,98);}}
     S.conta.tiri++;
     ev("tiro",{chi:chi(P),zona,intent,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});
-    volo({tipo:"tiro",kind:intent,x:tx,y:ty,ricevente:null,v:44,esito:out,tiratore:P.i,arco:"shot",actor:nome(P)});};
+    volo({tipo:"tiro",kind:intent,x:tx,y:ty,ricevente:null,v:44*_v912(),esito:out,tiratore:P.i,arco:"shot",actor:nome(P)});};
   const conduci=(P,opt)=>{opt=opt||{};const d=dirDi(P.team);const _sp900=!!opt.spinta;const passo=(5+rnd()*3)+(_sp900?3:0);/* tetto 11u: il passo umano resta sotto i 12u del guardiano */const adv=advDi(P.x,P.team);/* [7.900 A4] spinta: al limite con la strada libera il portatore PUNTA LA PORTA (passo +4u, rientro deciso verso il centro) */
     /* [7.876] chi conduce sulla fascia non rientra per abitudine: punta il fondo e rientra solo in area */
     let ty=P.y+(50-P.y)*0.06+(rnd()-0.5)*2;if(_sp900)ty=P.y+(50-P.y)*0.5;else if(adv>=86&&Math.abs(P.y-50)>18)ty=P.y+(50-P.y)*0.35;
