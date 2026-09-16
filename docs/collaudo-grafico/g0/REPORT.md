@@ -97,7 +97,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) |
 | Creazione | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) |
 | Offerte | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) |
-| Dashboard | 1/197 (9) | 1/197 (9) | 1/197 (9) | 1/197 (9) | 1/197 (9) |
+| Dashboard | 1/203 (9) | 1/203 (9) | 1/203 (9) | 1/203 (9) | 1/203 (9) |
 | Stagione · Classifica | 1/396 (9) | 1/396 (9) | 1/396 (9) | 1/397 (9) | 1/397 (9) |
 | Stagione · Calendario | 1/324 (9) | 1/324 (9) | 1/324 (9) | 1/324 (9) | 1/324 (9) |
 | Stagione · Coppe | 1/50 (9) | 1/50 (9) | 1/50 (9) | 1/50 (9) | 1/50 (9) |
@@ -106,7 +106,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 1/116 (9) | 1/116 (9) | 1/116 (9) | 1/116 (9) | 1/116 (9) |
 | Agente | 1/125 (9) | 1/125 (9) | 1/125 (9) | 1/125 (9) | 1/125 (9) |
 | Prepartita | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) |
-| **TOTALE** | **8/2781** | **8/2781** | **8/2781** | **8/2782** | **8/2782** |
+| **TOTALE** | **8/2787** | **8/2787** | **8/2787** | **8/2788** | **8/2788** |
 
 ### 3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale
 
@@ -116,7 +116,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/32 | 0/32 | 0/32 | 0/32 | 0/32 |
 | Creazione | 0/841 | 0/841 | 0/841 | 0/841 | 0/841 |
 | Offerte | 0/43 | 0/43 | 0/43 | 0/43 | 0/43 |
-| Dashboard | 1/197 | 1/197 | 1/197 | 1/197 | 1/197 |
+| Dashboard | 1/203 | 1/203 | 1/203 | 1/203 | 1/203 |
 | Stagione · Classifica | 1/396 | 1/396 | 1/396 | 1/397 | 1/397 |
 | Stagione · Calendario | 1/324 | 1/324 | 1/324 | 1/324 | 1/324 |
 | Stagione · Coppe | 1/50 | 1/50 | 1/50 | 1/50 | 1/50 |
@@ -125,7 +125,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 1/116 | 1/116 | 1/116 | 1/116 | 1/116 |
 | Agente | 1/125 | 1/125 | 1/125 | 1/125 | 1/125 |
 | Prepartita | 0/35 | 0/35 | 0/35 | 0/35 | 0/35 |
-| **TOTALE** | **8/2781** | **8/2781** | **8/2781** | **8/2782** | **8/2782** |
+| **TOTALE** | **8/2787** | **8/2787** | **8/2787** | **8/2788** | **8/2788** |
 
 ### 4 · Contrasto sotto soglia WCAG — sotto/misurati (esclusi per gradiente)
 
@@ -135,7 +135,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/32 (0) | 0/32 (0) | 0/32 (0) | 0/32 (0) | 0/32 (0) |
 | Creazione | 0/838 (3) | 0/838 (3) | 0/838 (3) | 0/838 (3) | 0/838 (3) |
 | Offerte | 0/38 (5) | 0/38 (5) | 0/38 (5) | 0/38 (5) | 0/38 (5) |
-| Dashboard | 3/122 (75) | 3/122 (75) | 3/122 (75) | 3/122 (75) | 3/122 (75) |
+| Dashboard | 3/128 (75) | 3/128 (75) | 3/128 (75) | 3/128 (75) | 3/128 (75) |
 | Stagione · Classifica | 4/356 (40) | 4/356 (40) | 4/356 (40) | 4/357 (40) | 4/357 (40) |
 | Stagione · Calendario | 1/284 (40) | 1/284 (40) | 1/284 (40) | 1/284 (40) | 1/284 (40) |
 | Stagione · Coppe | 0/10 (40) | 0/10 (40) | 0/10 (40) | 0/10 (40) | 0/10 (40) |
@@ -144,7 +144,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0/61 (55) | 0/61 (55) | 0/61 (55) | 0/61 (55) | 0/61 (55) |
 | Agente | 0/91 (34) | 0/91 (34) | 0/91 (34) | 0/91 (34) | 0/91 (34) |
 | Prepartita | 0/22 (13) | 0/22 (13) | 0/22 (13) | 0/22 (13) | 0/22 (13) |
-| **TOTALE** | **62/2309** | **62/2309** | **62/2309** | **62/2310** | **62/2310** |
+| **TOTALE** | **62/2315** | **62/2315** | **62/2315** | **62/2316** | **62/2316** |
 
 ### 5 · Bottoni pieni di marca (una sola azione primaria per vista)
 

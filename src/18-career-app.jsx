@@ -6680,6 +6680,24 @@ const getThisWeekMatchday=()=>{
               {lab("Prossima partita")}
               <button onClick={()=>goTab("calendar")} className="cpm-press" style={{background:"transparent",border:"none",padding:0,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold,color:TH.brandText,cursor:"pointer"}}>Calendario ›</button>
             </div>
+            {/* [7.921 — C4 · «densa e sportiva in stile Football Manager», direzione del PO 15/09] LA STRISCIA
+                DELLA FORMA. Il cruscotto diceva la posizione in classifica a parole e nient'altro: qui ci sono
+                le ULTIME CINQUE, come su ogni tabellone sportivo — vittoria, pareggio, sconfitta, col loro
+                risultato leggibile al tocco. Non è decorazione: è l'unica cosa in quella scheda che risponde
+                alla domanda «come ci arrivo a questa partita». I dati sono quelli già salvati in
+                `matchHistory` (`won`/`drew` e il punteggio), nessun campo nuovo, nessun bump di salvataggio. */}
+            {(()=>{const _ult=(player.matchHistory||[]).slice(-5);
+              if(!_ult.length)return null;
+              const _es=(m)=>m.won?{t:"V",fg:TH.winFg,bg:TH.winBg,bd:TH.winBd}:m.drew?{t:"N",fg:TH.drawFg,bg:TH.drawBg,bd:TH.drawBd}:{t:"P",fg:TH.lossFg,bg:TH.lossBg,bd:TH.lossBd};
+              return(<div style={{display:"flex",alignItems:"center",gap:SP.sm,marginBottom:12}}>
+                {lab2("Ultime "+_ult.length)}
+                <div style={{display:"flex",gap:4}}>
+                  {_ult.map((m,i)=>{const e=_es(m);const _ris=(m.homeScore!=null&&m.awayScore!=null)?(m.homeScore+"-"+m.awayScore):"";
+                    return <span key={i} title={(m.opponent||"")+(_ris?" "+_ris:"")} className="cpm-num" style={{width:20,height:20,borderRadius:RAD.xs,background:e.bg,border:"1px solid "+e.bd,color:e.fg,fontSize:FS.caption,fontWeight:FW.black,display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{e.t}</span>;})}
+                </div>
+                <div style={{flex:1}}/>
+                {myPos>=0&&<span className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{(myPos+1)+"ª"}</span>}
+              </div>);})()}
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,marginBottom:14}}>
               {team(home?me:opp,home?myPos:oppPos)}
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,flexShrink:0}}>
