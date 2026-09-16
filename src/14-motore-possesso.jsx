@@ -623,7 +623,32 @@ function creaMotorePossesso(cfg){
     const _pt=(h.possesso||0)+(a.possesso||0);
     const _p=(q)=>_pt>0?Math.round(100*q/_pt):50;
     return{home:Object.assign({},h,{possesso:_p(h.possesso||0)}),away:Object.assign({},a,{possesso:_p(a.possesso||0)})};};
-  return{tick,chiedi,stato,tabellino,HERO,_g:g,_S:S};
+  /* [7.915.0 — IL TABELLINO VEDE ANCHE GLI HIGHLIGHT] Il PO ha fotografato una partita vinta 3-0 con il
+     tabellino che dichiarava 4 tiri e 2 in porta per la sua squadra: i suoi tre gol non erano contati. Non era
+     un errore di conteggio — era la seconda sorgente di verita' che la direttiva del motore unico vuole
+     togliere: i gol e i tiri dell'eroe nascono negli HIGHLIGHT, che il motore non vede. Finche' B0 non fara'
+     nascere l'highlight DAL motore, questo e' il ponte: il live dichiara al motore cosa e' successo nella
+     scena, e il tabellino torna a essere uno solo. Un ponte dichiarato e' meglio di due verita' silenziose. */
+  const registra=(tipo,lato,dati)=>{try{
+    const A=S.tab[lato==='away'?'away':'home'];if(!A)return false;const B=S.tab[lato==='away'?'home':'away'];
+    const d=dati||{};
+    switch(tipo){
+      case 'tiro': A.tiri++;if(d.xg)A.xg=Math.round((A.xg+(+d.xg||0))*100)/100;
+        if(d.esito==='gol'){A.inPorta++;A.gol++;}else if(d.esito==='parato'){A.inPorta++;if(B)B.parate++;}
+        else if(d.esito==='legno')A.legni++;else if(d.esito==='murato')A.murati++;else A.fuori++;break;
+      case 'gol': A.gol++;break;
+      case 'assist': A.assist++;break;
+      case 'passaggio': A.passaggi++;if(d.ok!==false)A.passOk++;break;
+      case 'fallo': A.falli++;break;
+      case 'falloSubito': if(B)B.falli++;break;
+      case 'corner': A.corner++;break;
+      case 'ammonizione': A.ammonizioni++;break;
+      case 'parata': A.parate++;break;
+      default: return false;
+    }
+    return true;
+  }catch(_e){return false;}};
+  return{tick,chiedi,stato,tabellino,registra,HERO,_g:g,_S:S};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* CMAV-MOTORE-END */

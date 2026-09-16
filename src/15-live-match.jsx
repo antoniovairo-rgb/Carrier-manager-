@@ -7426,6 +7426,23 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         else if(key==="goal"){const _assisted=(Math.abs(hashStr("ga|"+(player.season||1)+"|"+(player.week||1)+"|"+_ckC))%100)<66;if(_assisted){const r=_pk("by");_assistBy=r.name;assistLinksRef.current.received.push({min:_ckC,name:r.name,full:r.full,archetype:r.archetype});}}
       }}
     try{cpmEv("esito",{min:clockRef.current|0,key:String(key||""),ok:!!ok,at:String((action&&action.stat)||"")});}catch(_e761){}/* [7.761.0] OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO: il metro delle righe fondate (7.760) ha trovato «smentite» che erano tiri dell'eroe finiti alla linea di porta nella finestra della riga — senza l'evento, il giudice non poteva saperlo. Qui, prima delle statistiche, per OGNI esito. */
+    /* [7.915.0 — L'HIGHLIGHT ENTRA NEL TABELLINO] Il PO ha fotografato una partita vinta 3-0 col tabellino che
+       dichiarava 4 tiri e 2 in porta per la sua squadra: i suoi tre gol non erano contati, perche' nascono qui
+       e il motore non li vede. Ogni azione risolta viene ora DICHIARATA al motore, che tiene il tabellino
+       unico. Il ponte resta finche' B0 non fara' nascere l'highlight dal motore stesso. */
+    try{ const _M=motoreRef.current; if(_M&&_M.registra){
+      const _lato=isMatchHome?'home':'away';
+      const _rew=(action&&action.rew)||'';
+      const _xgQ=calcXG(action,pPos.x);
+      if(key==="goal")_M.registra('tiro',_lato,{esito:'gol',xg:_xgQ});
+      else if(key==="assist"){_M.registra('assist',_lato,{});_M.registra('passaggio',_lato,{ok:true});}
+      else if(_rew==="goal"||key==="save"||key==="miss"||key==="miss_easy"||key==="post"){
+        _M.registra('tiro',_lato,{esito:key==="save"?'parato':key==="post"?'legno':'fuori',xg:_xgQ});}
+      else if(_rew==="assist")_M.registra('passaggio',_lato,{ok:!!ok});
+      else if(key==="fouled"||key==="win_freekick")_M.registra('falloSubito',_lato,{});
+      else if(key==="foul")_M.registra('fallo',_lato,{});
+      if(_outKind==="corner")_M.registra('corner',_lato,{});
+    } }catch(_e915){}
     setMStats(s=>{let{goals,assists,rb,xg}={...s};const _xgAdd=calcXG(action,pPos.x);xg=Math.round((xg+_xgAdd)*100)/100;const _ck=clockRef.current;if(ok){if(key==="goal"){goals++;rb+=5;pushMatchEvent(_ck,"player_goal",em=>"⚽ Tuo gol al "+em+"'"+(_assistBy?" (assist di "+_assistBy+")":""));}if(key==="assist"){assists++;rb+=3;pushMatchEvent(_ck,"player_assist",em=>"🎯 Assist"+(_assistTo?" per "+_assistTo:"")+" al "+em+"'");}/* [6.5.1 Polish A] score differito a fireGoalCeleb (palla in rete) */if(!["goal","assist"].includes(key))rb+=1;}else{if(key==="goal_against"){rb-=3;setScore(sc=>({...sc,away:sc.away+1}));try{cpmEv("goal",{min:clockRef.current,side:"away",src:"scena-difensiva"});}catch(_e759){}/* [7.759.0] TROVATO DAL GUARDIANO A 4 PARTITE (banda tabellone 7.756: raccontati 2-4, punteggio 2-5): il gol subito nella scena difensiva entrava nel punteggio senza l'evento «goal» del libro mastro — l'unico dei cinque scrittori del punteggio senza la sua riga di verita'. */setMxStats(x=>({...x,oppShots:(x.oppShots||0)+1}));/* [7.163.0 LIVE-F8] il gol subito È un tiro avversario: il box-score non può avere più gol che tiri */pushMatchEvent(_ck,"opp_goal",em=>"😨 Gol subito al "+em+"'");}if(key==="miss_easy"){rb-=2;pushMatchEvent(_ck,"miss",em=>"😱 Gol clamorosamente sprecato al "+em+"'");}}return{goals,assists,rb,xg};});
     // [6.41.0 collaudo PO «hanno festeggiato i tifosi ospiti anziché quelli di casa»] GOL SUBITO via highlight
     //   DIFENSIVO (goal_against): segna l'AVVERSARIO → devono esultare i SUOI tifosi. Prima questo path
@@ -9684,6 +9701,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             if(!_T||!_T.home||!_T.away)return null;
             const _mine=isMatchHome?_T.home:_T.away, _loro=isMatchHome?_T.away:_T.home;
             const _righe=[
+              /* [7.915.0] il GOL mancava dal tabellino: la voce piu' importante della gara non c'era */
+              ["Gol",_mine.gol,_loro.gol,_mine.gol,_loro.gol],
               ["Possesso",_mine.possesso+"%",_loro.possesso+"%",_mine.possesso,_loro.possesso],
               ["Tiri",_mine.tiri,_loro.tiri,_mine.tiri,_loro.tiri],
               ["Tiri in porta",_mine.inPorta,_loro.inPorta,_mine.inPorta,_loro.inPorta],
