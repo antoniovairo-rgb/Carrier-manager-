@@ -507,7 +507,7 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
      · il passaggio in volo si VEDE: linea tratteggiata dal pallone al bersaglio dichiarato dal motore;
      · scia del pallone, ombre, e la bandierina del fermo di gioco sul punto dove si riprende.
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
-function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,altezza}){
+function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza}){
   const cRef=React.useRef(null);
   const rafRef=React.useRef(0);
   const memRef=React.useRef({sfondo:null,W:0,H:0,dpr:1,g:[],e:null,b:null,scia:[],t:0});
@@ -629,7 +629,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       if(st.palla)M.b=segui(M.b,st.palla,16);
       /* dalle coordinate del motore (0..100 × 0..100) ai metri del campo */
       const CX=(q)=>PX((q.x/100)*LUN,(q.y/100)*LAR),CY=(q)=>PY((q.x/100)*LUN,(q.y/100)*LAR);
-      const r=Math.max(5,Math.min(12,s*1.16));/* [7.918] i pallini portano il NUMERO: sotto i 6 px di raggio il numero non entra e la fotografia del 16/09 mostrava ventidue dischi muti */
+      const r=Math.max(7,Math.min(12,s*1.16));/* [7.926 collaudo PO: nella partita 2D si devono vedere i numeri degli altri giocatori] col pannello delle statistiche davanti il campo si schiaccia, la scala scende e i pallini restavano a 5 px di raggio: il numero non ci entrava e sparivano tutti. Pavimento a 7. *//* [7.918] i pallini portano il NUMERO: sotto i 6 px di raggio il numero non entra e la fotografia del 16/09 mostrava ventidue dischi muti */
       const padrone=(st.poss&&st.poss.padrone!=null)?st.poss.padrone:-1;
       const puls=0.5+0.5*Math.sin(ora/260);
 
@@ -669,7 +669,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         gr.addColorStop(0,_sca917(kit,1.34));gr.addColorStop(0.62,_rgba917(kit,1));gr.addColorStop(1,_sca917(kit,0.78));
         g.beginPath();g.arc(X,Y,R,0,Math.PI*2);g.fillStyle=gr;g.fill();
         g.lineWidth=grande?2:1.1;g.strokeStyle=grande?"#ffffff":bordo;g.stroke();
-        if(num&&R>=5.9){g.fillStyle=testo;g.font="700 "+Math.round(R*1.02)+"px system-ui,-apple-system,sans-serif";
+        if(num&&R>=5.2){g.fillStyle=testo;g.font="700 "+Math.max(9,Math.round(R*0.98))+"px system-ui,-apple-system,sans-serif";
           g.textAlign="center";g.textBaseline="middle";g.fillText(String(num),X,Y+R*0.04);g.textBaseline="alphabetic";}
         if(nome){
           const et=nome+(numeroEroe?" "+numeroEroe:"");
@@ -689,7 +689,18 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         const num=d.gk?1:(casa?++nC:++nO);
         uomo(q,d.gk?(casa?GKC:GKO):(casa?KIT.casa:KIT.osp),casa?bordoC:bordoO,d.gk?"#0f172a":(casa?testoC:testoO),num,false,null);
         if(i===padrone){g.beginPath();g.arc(CX(q),CY(q),r+3.4,0,Math.PI*2);
-          g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();}
+          g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();
+          /* [7.926 collaudo PO: si deve vedere il cognome di chi ha il possesso di palla, oltre all eroe]
+             Il campo dall alto diceva solo «Vairo»: chi tocca il pallone era un pallino anonimo, e senza un
+             nome non si capisce chi sta giocando. Il cognome viene dalla stessa rosa che scrive le pagelle. */
+          try{const _u=_uomo918(i,rosaCasa,rosaOsp,null,null);
+            if(_u&&_u.nome){const X=CX(q),Y=CY(q);
+              g.font="700 "+Math.max(10,Math.round(r*1.0))+"px system-ui,-apple-system,sans-serif";g.textAlign="center";
+              const lw=g.measureText(_u.nome).width,hh=Math.max(13,r*1.55),yy=Y-r-hh-4;
+              g.fillStyle="rgba(2,6,23,0.72)";
+              if(g.roundRect){g.beginPath();g.roundRect(X-lw/2-5,yy,lw+10,hh,hh/2);g.fill();}else g.fillRect(X-lw/2-5,yy,lw+10,hh);
+              g.fillStyle="#fde68a";g.textBaseline="middle";g.fillText(_u.nome,X,yy+hh/2);g.textBaseline="alphabetic";}
+          }catch(_e){}}
       }
       /* l'eroe: cerchio bianco, nome e numero veri */
       if(M.e){
@@ -808,7 +819,7 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
   React.useEffect(()=>{setArmato(false);
     /* [difetto del PO] il dito che ha appena premuto una freccia del D-pad ricade sul primo bottone:
        le opzioni nascono disarmate e si armano dopo 450 ms, il tempo di staccare il pollice. */
-    const h=setTimeout(()=>setArmato(true),450);return()=>clearTimeout(h);},[chiave]);
+    const h=setTimeout(()=>setArmato(true),1200);/* [7.926] da 450 ms a 1,2 s: il PO ha chiesto «un secondo o due» prima che le scelte diventino cliccabili, ed e lo stesso tempo della scheda dell azione */return()=>clearTimeout(h);},[chiave]);
   if(!com||!com.sc||com.sci!=null)return null;
   const F=_FAM919[com.fam]||_FAM919.EROE;
   const eroe=com.fam==="EROE"||!com.fam;
@@ -887,7 +898,8 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
         const daSotto=cb.bottom-b.top;
         if(daSotto>h)h=daSotto;
       });
-      setSpazio(Math.max(96,Math.min(320,Math.round(h)+14)));
+      const _n=Math.max(96,Math.min(320,Math.round(h)+14));
+      setSpazio(function(v){return _n>v?_n:v;});/* [7.926 collaudo PO: la tabella delle statistiche deve essere FERMA, ora sale e scende con l altezza della telecronaca] Lo spazio riservato ora puo solo CRESCERE: la prima voce da tre righe lo alza e li resta. Una tabella che si muove mentre la leggi e peggio di una tabella un po piu corta. */
     }catch(_e){}};
     misura();
     let ro=null;
@@ -2483,6 +2495,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   },[_affermaPallone811]);
 
   const codaPiano816Ref=useRef([]);/* [7.816.0] le battute di piano rifiutate dalla scheda aperta, in attesa della chiusura */
+  /* [7.926 collaudo PO: prima che escano le scelte ci deve essere un secondo o due, altrimenti si clicca una
+     scelta non voluta] Il dito che ha appena premuto una freccia del D-pad ricade dove compare la prima
+     opzione. Le opzioni della scheda nascono quindi DISARMATE per 1,2 s e lo dicono, invece di essere
+     cliccabili subito: il tempo non e perso, e il tempo di leggere la situazione. Rosso __CPM_NO926. */
+  const [sceltePronte,setSceltePronte]=useState(false);
+  useEffect(()=>{
+    if(typeof window!=='undefined'&&window.__CPM_NO926){setSceltePronte(true);return;}
+    if(phase!=="hl_choose"){setSceltePronte(false);return;}
+    setSceltePronte(false);
+    const h=setTimeout(()=>setSceltePronte(true),1200);
+    return()=>clearTimeout(h);
+  },[phase,hlIdx]);
   const addCom=useCallback((text,color,t,sc,opts)=>{lastComWallRef.current=Date.now();
     /* ⚠️ [7.686.0 collaudo PO: «le interazioni in cronaca devono freezare piu' a lungo, a volte non ho
        il tempo nemmeno di leggere»] LA RIGA NUOVA ASPETTA, LA DOMANDA NO.
@@ -9200,7 +9224,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       dello stadio: e' il verso del campo, cioe' SEMPRE la squadra dell'eroe (per questo
                       `homeKitCol` e' `heroKitCol`). La prima stesura passava i colori e le sigle dello
                       stadio: in trasferta i ventidue pallini uscivano con le divise scambiate. */}
-                  <Campo2D motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} />
+                  <Campo2D motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
                   {!(typeof window!=='undefined'&&window.__CPM_NO918)&&<PannelloLive2D motore={motoreRef.current}
                     latoSx={isMatchHome?"home":"away"}
                     siglaSx={((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"CASA").slice(0,3).toUpperCase()}
@@ -9927,7 +9951,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         quante righe restano INTERE e visibili senza scorrere (il PO ne vuole almeno tre). */}
                     <div data-cpm="scelte-righe" style={{display:"flex",flexDirection:"column",gap:6,flex:"1 1 auto",minHeight:0,overflowY:"auto",overflowX:"hidden"}}>
                       {_rows901.map(r=>(
-                        <button key={r.rk} onClick={r.go} style={{flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
+                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:0.45,transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
                           <div style={{width:30,height:30,borderRadius:RAD.sm,background:"rgba(196,181,253,0.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0}}>{r.icon}</div>
                           <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:1}}>
                             <div style={{fontSize:14,fontWeight:800,color:"#e9e4ff",lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>
