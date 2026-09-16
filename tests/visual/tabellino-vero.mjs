@@ -9,9 +9,13 @@ function loadMotore(){const src=fs.readFileSync(process.env.CPM_SRC14||path.join
 const crea=loadMotore();
 const giocatori=()=>{const h=[[8,50,1],[18,12],[18,38],[18,62],[18,88],[38,25],[38,50],[38,75],[55,22],[55,78]].map((p,i)=>({team:'home',gk:!!p[2],name:'CASA'+i,rl:i===0?'GK':i<=4?'DF':i<=7?'MF':'AT',x:p[0],y:p[1]}));const a=[[95,50,1],[82,12],[82,38],[82,62],[82,88],[62,25],[62,50],[62,75],[48,20],[48,50],[48,80]].map((p,i)=>({team:'away',gk:!!p[2],name:'OSP'+i,rl:i===0?'GK':i<=4?'DF':i<=7?'MF':'AT',x:p[0],y:p[1]}));return h.concat(a);};
 const N=+(process.env.CPM_PARTITE||30),MIN=92;
-/* CPM_DEC: quante DECISIONI al minuto (1 = com'e' in produzione). Il motore accetta gia' ctx.dec su ogni
-   sotto-tick, quindi la frequenza si misura senza toccare src/14. */
-const DEC=Math.max(1,Math.round(+(process.env.CPM_DEC||1)));
+/* CPM_DEC: quante DECISIONI al minuto. Il motore accetta gia' ctx.dec su ogni sotto-tick, quindi la
+   frequenza si misura senza toccare src/14.
+   [16/09] IL DEFAULT ERA 1 E DICEVA «com'e' in produzione»: non e' piu' vero dalla 7.912, che ha portato
+   il live match a `_SUB898=11` con OGNI battito che decide. Un banco a 1 decisione al minuto misurava una
+   partita che nessuno gioca — e le sue voci (passaggi 10,1) non erano quelle del telefono del PO. Il
+   default ora e' la cadenza VERA della produzione; per rivedere i vecchi numeri, CPM_DEC=1. */
+const DEC=Math.max(1,Math.round(+(process.env.CPM_DEC||11)));
 const VUOTA=()=>({gol:0,tiri:0,inPorta:0,legno:0,fuori:0,murati:0,xg:0,passaggi:0,passOk:0,cross:0,corner:0,falli:0,rimesse:0,rinvii:0,rigori:0,parate:0,spazzate:0,intercetti:0,contrasti:0,conduzioni:0,pallePerse:0,possesso:0,ammoniti:0,espulsi:0,fuorigioco:0,assist:0});
 /* expected goal derivati dalla zona e dalla pressione, come li deriveremmo a schermo */
 const XG=(e)=>{const z=e.zona||'fuori';const base=z==='area'?0.14:z==='areaPiccola'?0.34:z==='limite'?0.06:0.03;const pr=typeof e.press==='number'?e.press:4;const k=pr<2?1.35:pr<4?1.0:0.72;return Math.min(0.9,base*k);};
