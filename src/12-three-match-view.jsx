@@ -430,6 +430,7 @@ function ThreeMatchView(props){
     heroMark.rotation.x=Math.PI;scene.add(heroMark);
     // ===== 1.0b-CH38 — CALCIATORE GLB reale (CH38 Mixamo) per TUTTI (eroe + 21). ORA DEFAULT. Fallback automatico al procedurale se il GLB non carica. =====
     let glbAvatars=null; // [{root,mx,idle,run,proc,lx,lz}]
+    let mascotGlbAvatars=null;/* [7.911.0 — C11] i bambini dell'ingresso, corpi CH38: terza lista accanto a quella del campo e della panchina */
     let benchGlbAvatars=null; // [7.904.0] panchina CH38 alleggerita: {root,mx,idle,proc,isCoach,home,legL,legR,armL,armR} — array SEPARATO da glbAvatars (niente locomozione/gesti/gk: sono comparse ferme), popolato SOLO dopo che il corpo principale ha agganciato
     // [7.904.0] rotazione DELTA in spazio MONDO composta DOPO il bind — usata sia per costruire la posa
     //   seduta (una volta, all'aggancio) sia per il gesto di esultanza (ogni fotogramma, in piu' sul risultato
@@ -832,6 +833,31 @@ function ThreeMatchView(props){
             _bg904.push(av);
           });
           if(_bg904.length){benchGlbAvatars=_bg904;try{if(sr.current)sr.current._benchGlbOn904=true;}catch(_e){}}
+          /* [7.911.0 — C11, richiesta PO 15/09 «nell'ingresso in campo anche i bambini devono essere in GLB CH38»]
+             I ventidue bambini che entrano per mano ai calciatori erano figure procedurali `mkFig(kit,1.04)`:
+             ora sono corpi CH38 come i giocatori e la panchina, con la stessa fabbrica `_mkA`. Due cose che un
+             adulto rimpicciolito non da' da solo: la TESTA (in un bambino e' proporzionalmente piu' grande —
+             qui +18 % sull'osso della testa) e il fatto che si vedano CAMMINARE invece di scivolare (la clip di
+             corsa a peso pieno e velocita' dimezzata). Costo: 2 chiamate di disegno a bambino invece di 7 grazie
+             al corpo unito della 7.910 — 44 invece di 154, ed e' il motivo per cui questo passo viene dopo D12.
+             Rosso __CPM_NO911: tornano le figure procedurali. Vivono SOLO nella cerimonia, come prima. */
+          try{
+            if(!(typeof window!=='undefined'&&window.__CPM_NO911)&&_mascots&&_mascots.length){
+              const _mg911=[];
+              _mascots.forEach((m,mi)=>{
+                const _kit=m.casa?_awayKit:_homeKit;/* divisa avversaria, com'e' sempre stato */
+                const _appr=appearanceFromSeed(hashStr('mascotte911_'+mi));
+                _appr.height=1.04;_appr.girth=0.92;/* taglia da bambino: la stessa altezza della figura che sostituisce */
+                const av=_mkA(m.c,_kit,_appr,_cg.scene);
+                if(!av||!av.root)return;
+                const _head911=_findBone904(av.root,/Head$/i);
+                if(_head911)_head911.scale.setScalar(1.18);
+                av.root.visible=false;m.glb911=av;_mg911.push(av);
+              });
+              if(_mg911.length){mascotGlbAvatars=_mg911;try{if(sr.current)sr.current._mascotGlbOn911=true;}catch(_e){}
+                try{if(typeof window!=='undefined')window.__CPM_MASCOT911=()=>({corpi:_mg911.length,totale:_mascots.length,attivi:_mg911.filter(a=>a.root&&a.root.visible).length,y:_mg911.map(a=>+(a.root?a.root.position.y:0).toFixed(3))});}catch(_e){}}
+            }
+          }catch(_e911){try{console.warn('[CPM-911] bambini fail',_e911&&_e911.message);}catch(_ee){}}
         }catch(_e904){try{console.warn('[CPM-904] panchina fail',_e904&&_e904.message);}catch(_ee){}}
         }).catch(()=>{/* [7.904.0] fetch fallito o spento: i benchFigs procedurali restano visibili (nessun hide e' avvenuto) */});
       }
@@ -1179,8 +1205,10 @@ function ThreeMatchView(props){
     // item 9 (5.49.2): MASCOTTE — un bambino per ogni calciatore, in DIVISA AVVERSARIA, tenuto per mano durante l'ingresso.
     //   Visibili SOLO nella cerimonia (walkout) → fuori dalla walkout sono nascosti (zero impatto su gioco/gate/perf in partita).
     const _mascots=[];
-    const _mkMascot=(pmesh,kitInt)=>{const c=mkFig(kitInt,1.04);c.visible=false;scene.add(c);_mascots.push({c,p:pmesh});};
-    _homeMeshes.forEach(m=>_mkMascot(m,_aColInt));_awayMeshes.forEach(m=>_mkMascot(m,_hColInt));
+    /* [7.911.0 — C11] `casa` dice di quale squadra e' il CALCIATORE accompagnato: il bambino indossa la divisa
+       AVVERSARIA (com'e' sempre stato), e serve saperlo per vestirlo col kit giusto quando diventa un corpo CH38. */
+    const _mkMascot=(pmesh,kitInt,casa)=>{const c=mkFig(kitInt,1.04);c.visible=false;scene.add(c);_mascots.push({c,p:pmesh,casa:!!casa});};
+    _homeMeshes.forEach(m=>_mkMascot(m,_aColInt,true));_awayMeshes.forEach(m=>_mkMascot(m,_hColInt,false));
 
     // Sprint 3D-G3A / 3DV-8 / 3DV-11: bandiere bicolore animate + striscioni sulle curve
     // 3DV-11: _fez = faccia frontale della tribuna (endZ - endD/2) — era calcolato dentro la geometria!
@@ -4513,7 +4541,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           else if(_cm._frDirty){for(const fr of _frs){for(let i=0;i<fr.n;i++){fr.body.setMatrixAt(i,fr.bases[i]);fr.head.setMatrixAt(i,fr.headBases[i]);}
             fr.body.instanceMatrix.needsUpdate=true;fr.head.instanceMatrix.needsUpdate=true;}_cm._frDirty=false;}}}
       // item 9: la cerimonia (tappeto-logo + mascotte) vive SOLO nella walkout → nascondi appena si esce (guard sul flag → lavoro una sola volta)
-      if(!isWalk&&_ceremonyCarpet&&_ceremonyCarpet.visible){_ceremonyCarpet.visible=false;for(const m of _mascots)m.c.visible=false;}
+      if(!isWalk&&_ceremonyCarpet&&_ceremonyCarpet.visible){_ceremonyCarpet.visible=false;for(const m of _mascots){m.c.visible=false;if(m.glb911&&m.glb911.root)m.glb911.root.visible=false;}}
       // [6.28.0] INIZIO fase walkout (transizione matchday/formations → walkout): riporta TUTTI i mesh alla
       //   bocca del tunnel e riavvia il timer d'ingresso → l'ingresso scaglionato in due file si vede SEMPRE,
       //   non solo se il componente montava già in walkout. Escluso sotto ?cpmtest=1 (il gate salta la walkout).
@@ -4529,8 +4557,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         walkT+=dt;
         // item 9: cerimonia — tappeto-logo a centrocampo + mascotte che camminano TENENDO PER MANO il giocatore (al fianco, stessa direzione)
         if(_ceremonyCarpet)_ceremonyCarpet.visible=true;
-        for(const m of _mascots){const p=m.p;if(!p){continue;}m.c.visible=true;const _hx=Math.sin(p.rotation.y),_hz=Math.cos(p.rotation.y);// "mano nella mano": di lato rispetto al verso di marcia
-          m.c.position.set(p.position.x+_hz*0.72,0,p.position.z-_hx*0.72);m.c.rotation.y=p.rotation.y;}
+        for(const m of _mascots){const p=m.p;if(!p){continue;}const _hx=Math.sin(p.rotation.y),_hz=Math.cos(p.rotation.y);// "mano nella mano": di lato rispetto al verso di marcia
+          const _av911=m.glb911;const _t911=(_av911&&_av911.root)?_av911.root:m.c;/* [7.911.0 C11] il corpo CH38 al posto della figura */
+          m.c.visible=!_av911;if(_av911&&_av911.root)_av911.root.visible=true;
+          _t911.position.set(p.position.x+_hz*0.72,0,p.position.z-_hx*0.72);_t911.rotation.y=p.rotation.y;
+          if(_av911){if(_av911.run){_av911.run.weight=1;_av911.run.timeScale=0.5;}if(_av911.idle)_av911.idle.weight=0.25;if(_av911.mx)_av911.mx.update(dt);}}
         if(walkT>=WALK_DUR&&!walkDone){walkDone=true;const cb=propsRef.current.onWalkoutDone;if(cb)cb();}
       } else if(replaying){
         // Sprint 3D-8b: riproduzione dal ring buffer (tutti i mesh guidati dai frame registrati)
