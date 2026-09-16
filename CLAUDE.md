@@ -38,6 +38,12 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
      && npm run validate-situations && npm run save-compat && npm run replay \
      && npm run career-critical
    ```
+   ⚠️ **I RITUALI SI ESEGUONO DENTRO IL TURNO, MAI IN SOTTOFONDO.** Misurato due volte il 16/09: una catena
+   lanciata con `setsid nohup` viene uccisa **~2 minuti dopo la fine del turno** (container ripreso: `uptime`
+   a 0 min, nessun processo superstite) — corsa delle 10:21 morta alle 10:26, corsa delle 10:53 morta alle
+   11:02. Si spezza la catena in gruppi da meno di dieci minuti (il tetto di una chiamata) e si incatenano le
+   chiamate; se un gruppo sfora e finisce in sottofondo, si aspetta il suo esito con un'attesa in primo piano.
+   Una corsa interrotta a meta' NON VALE e si rifa' dall'inizio sul build esatto.
    ⚠️ E la CI gira su runner **piu' lenti e piu' contesi** di una sessione cloud: un check che qui e'
    marginale li' e' rosso stabile. E' successo con `post-highlight`, che misurava velocita' x intervallo
    (7.502.0): in locale falliva 1 volta su 2, in CI quasi sempre.
