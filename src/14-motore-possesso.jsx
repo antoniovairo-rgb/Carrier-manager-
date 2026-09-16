@@ -515,7 +515,10 @@ function creaMotorePossesso(cfg){
     if(st==="tenuta"||st==="volo"||st==="libero"){for(const q of g){if(!attivo(q)||q.gk)continue;if(st!=="libero"&&q.team===l)continue;if(st==="libero"&&S.richieste.turno&&q.team!==S.richieste.turno)continue;const dd=hyp(q.x,q.y,bx,by);if(dd<di){dc=di;cop=ins;di=dd;ins=q;}else if(dd<dc){dc=dd;cop=q;}}}
     S.inseguitore=ins?ins.i:null;
     /* appoggi: i due compagni piu' vicini al padrone, davanti a lui */
-    const app=[];if(padrone&&st==="tenuta"){const c=[];for(const q of g){if(!mio(q,l)||q.gk||q.i===padrone.i)continue;c.push({q,d:hyp(q.x,q.y,padrone.x,padrone.y)});}c.sort((a,b)=>a.d-b.d);for(let i=0;i<Math.min(2,c.length);i++)app.push(c[i].q);}
+    /* [7.924 M1] IL SOSTEGNO SI FORMA MENTRE LA PALLA VIAGGIA, non dopo. Misurato: il sostegno esisteva solo con qualcuno che teneva il pallone (33 per cento del tempo) e il passaggio partiva subito dopo, quindi i compagni non facevano in tempo ad avvicinarsi — a 5 unita al minuto si spostano di mezza unita per battito. Ora il riferimento e il RICEVENTE quando la palla e in volo: i compagni si mettono a posto mentre arriva. */
+    const _m924=!(typeof window!=='undefined'&&window.__CPM_NO924);
+    const _rif924=padrone||((_m924&&st==="volo"&&S.poss.ricevente!=null)?g[S.poss.ricevente]:null);
+    const app=[];if(_rif924&&(st==="tenuta"||(_m924&&st==="volo"))){const c=[];for(const q of g){if(!mio(q,l)||q.gk||q.i===_rif924.i)continue;c.push({q,d:hyp(q.x,q.y,_rif924.x,_rif924.y)});}c.sort((a,b)=>a.d-b.d);for(let i=0;i<Math.min(_m924?3:2,c.length);i++)app.push(c[i].q);}
     const advB=advDi(bx,l);
     for(const p of g){if(!attivo(p))continue;
       if(p.i===S.poss.padrone&&st==="tenuta")continue;/* il padrone si muove solo con la conduzione */
@@ -580,7 +583,7 @@ function creaMotorePossesso(cfg){
       else if(st==="volo"&&S.poss.icpt!=null&&p.i===S.poss.icpt){tx=S.poss.da.x+(S.poss.a.x-S.poss.da.x)*S.poss.icptA;ty=S.poss.da.y+(S.poss.a.y-S.poss.da.y)*S.poss.icptA;v=6;}
       else if(st==="volo"&&ins&&p.i===ins.i&&S.poss.tipo!=="tiro"){tx=S.poss.a.x;ty=S.poss.a.y;v=5;}
       else if((st==="tenuta"||st==="volo")&&cop&&p.i===cop.i){const gx=xDa(6,p.team);tx=bx+(gx-bx)*0.35;ty=by+(50-by)*0.4;v=5;}
-      else if(app.indexOf(p)>=0&&padrone){const k=app.indexOf(p);tx=padrone.x+d*(12+k*6);ty=padrone.y+(k===0?-1:1)*(12+rnd()*6)*(padrone.y>50?1:-1)*(k===0?-1:1);v=5;}
+      else if(app.indexOf(p)>=0&&_rif924){const k=app.indexOf(p);const R=_rif924;/* [7.924 M1] tre uomini a sostegno invece di due, a 7-17 unita invece di 12-24, e con le GAMBE per arrivarci: 22 unita al minuto sono ~23 metri, un allungo, non i 5 di prima. */tx=R.x+d*(_m924?(7+k*5):(12+k*6));ty=R.y+(k===0?-1:1)*((_m924?7:12)+rnd()*(_m924?4:6))*(R.y>50?1:-1)*(k===0?-1:1);v=_m924?22:5;}
       if(st==="kickoff"){const k=S.kickoff;if(p.gk){tx=sl.x;ty=50;}else{const casa=p.team===HOME;tx=casa?Math.min(sl.x,46):Math.max(sl.x,54);ty=sl.y;if(p.team===k.lato){const c=[];for(const q of g){if(!mio(q,k.lato)||q.gk)continue;c.push({q,d:hyp(q.x,q.y,50,50)});}c.sort((a,b)=>a.d-b.d);if(c[0]&&c[0].q.i===p.i){tx=50-dp*0.8;ty=50;}else if(c[1]&&c[1].q.i===p.i){tx=50-dp*3;ty=53;}}}v=8;}
       if(st==="rete"){v=1.2;}
       tx=clamp(tx,2,98);ty=clamp(ty,3,97);
