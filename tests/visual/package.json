@@ -158,7 +158,9 @@
     "hud-c3": "node hud-c3.mjs",
     "design-system": "node design-system.mjs",
     "coinvolgimento": "node coinvolgimento-reparti.mjs",
-    "catene": "node catene-possesso.mjs"
+    "catene": "node catene-possesso.mjs",
+    "memoria": "node memoria-927.mjs",
+    "memoria:rosso": "node memoria-927.mjs --rosso"
   },
   "dependencies": {
     "playwright": "^1.48.0",

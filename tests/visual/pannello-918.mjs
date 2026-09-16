@@ -29,6 +29,12 @@ for (const braccio of ['verde', 'rosso']) {
   await sleep(14000); /* si lascia giocare: senza tiri il pannello direbbe zero a zero e non proverebbe niente */
   await page.evaluate(() => { window.__CPM_DRAW.calls = 0; window.__CPM_DRAW.frames = 0; });
   const t0 = Date.now(); await sleep(6000); const dt = (Date.now() - t0) / 1000;
+  /* [7.927] il pannello ora nasce CHIUSO (richiesta del PO): per misurare cosa mostra va aperto.
+     Il terzo bottone della testata e' la freccia; le prime due sono le linguette. */
+  {
+    const bb = await page.$$('[data-cpm="pannello918"] button');
+    if (bb && bb[2]) { await bb[2].click().catch(() => {}); await sleep(600); }
+  }
   const r = await page.evaluate(() => {
     const el = document.querySelector('[data-cpm="pannello918"]');
     const vis = (n) => { if (!n) return null; const b = n.getBoundingClientRect(); return { w: Math.round(b.width), h: Math.round(b.height) }; };

@@ -23372,7 +23372,11 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         if(num&&R>=5.2){g.fillStyle=testo;g.font="700 "+Math.max(9,Math.round(R*0.98))+"px system-ui,-apple-system,sans-serif";
           g.textAlign="center";g.textBaseline="middle";g.fillText(String(num),X,Y+R*0.04);g.textBaseline="alphabetic";}
         if(nome){
-          const et=nome+(numeroEroe?" "+numeroEroe:"");
+          /* [7.927 collaudo PO: «in partita 2D il numero dell'eroe deve stare NEL PALLINO come gli altri»]
+             L'etichetta portava «Vairo 77» e il pallino restava vuoto: l'eroe era l'unico dei ventidue
+             senza numero addosso. Ora il numero e' dentro il cerchio come per tutti, e sopra resta il
+             solo cognome — che e' l'informazione che l'etichetta deve dare. */
+          const et=nome;
           g.font="700 "+Math.max(9,Math.round(r*1.05))+"px system-ui,-apple-system,sans-serif";g.textAlign="center";
           const lw=g.measureText(et).width,hh=Math.max(13,r*1.7),yy=Y-R-hh-3;
           g.fillStyle="rgba(2,6,23,0.76)";
@@ -23407,7 +23411,9 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         const casaE=eroeLato!=='away';
         if(padrone===21||(st.poss&&st.poss.eroe)){g.beginPath();g.arc(CX(M.e),CY(M.e),r*1.22+4.2,0,Math.PI*2);
           g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();}
-        uomo(M.e,casaE?KIT.casa:KIT.osp,"#ffffff",casaE?testoC:testoO,null,true,nomeEroe||null);
+        /* il ripiego 11 e' lo STESSO di _uomo918: nei provini e nelle amichevoli l'eroe non ha ancora un
+           numero di maglia, e senza ripiego il suo era l'unico dei ventidue cerchi vuoti — fotografato. */
+        uomo(M.e,casaE?KIT.casa:KIT.osp,"#ffffff",casaE?testoC:testoO,numeroEroe||11,true,nomeEroe||null);
       }
       /* il pallone */
       if(M.b){
@@ -23576,10 +23582,20 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
       </div>
     </div>);
 }
+/* [7.927 collaudo PO: «di default pagelle e statistiche devono apparire CHIUSE e durante la partita deve
+   MEMORIZZARE la scelta, non riaprire ad ogni fine highlight»] Il pannello vive dentro il ramo montato solo
+   con phase==="playing": a ogni highlight veniva SMONTATO, e al ritorno in campo lo useState ripartiva dal
+   suo valore iniziale — per questo si riapriva da solo. La memoria non puo' stare nel componente: sta QUI,
+   fuori, dove lo smontaggio non la tocca. Chiuso all'inizio (il campo si vede tutto), e la linguetta resta
+   quella che il PO ha scelto l'ultima volta. */
+var _MEM927={aperto:false,vista:"pag"};
+try{if(typeof window!=='undefined')window.__CPM_MEM927=_MEM927;}catch(_e){}/* sola lettura per il collaudo: la memoria si puo' misurare anche a pannello smontato */
 function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosaOsp,nomeEroe,numEroe}){
   const [dati,setDati]=React.useState(null);
-  const [vista,setVista]=React.useState("pag");/* [7.922 collaudo PO: la tabella pagelle deve essere il default, un po' di statistiche sono gia' sopra] la striscia alta porta gia' possesso, tiri, in porta e xG: il pannello si apre su cio' che li' non c'e'. */
-  const [aperto,setAperto]=React.useState(true);
+  const _no927=(typeof window!=='undefined'&&window.__CPM_NO927);/* ROSSO di collaudo: la stesura di prima, senza memoria e aperta d'ufficio */
+  const [vista,setVista]=React.useState(_no927?"pag":_MEM927.vista);/* [7.922 collaudo PO: la tabella pagelle deve essere il default, un po' di statistiche sono gia' sopra] la striscia alta porta gia' possesso, tiri, in porta e xG: il pannello si apre su cio' che li' non c'e'. */
+  const [aperto,setAperto]=React.useState(_no927?true:_MEM927.aperto);
+  React.useEffect(function(){if(_no927)return;_MEM927.aperto=aperto;_MEM927.vista=vista;},[aperto,vista,_no927]);/* la scelta sopravvive allo smontaggio: e' l'unico punto che scrive la memoria */
   /* [7.922 collaudo PO: la telecronaca si accavalla alla tabella quando il testo va su tre righe] Lo spazio
      riservato in fondo era un NUMERO FISSO (152 px), misurato su una voce da due righe: con tre righe la voce
      saliva sopra le ultime pagelle. Ora il pannello CHIEDE alla cronaca quanto e' alta e si ferma sopra di lei. */
