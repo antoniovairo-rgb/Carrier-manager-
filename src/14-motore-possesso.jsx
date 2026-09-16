@@ -251,6 +251,20 @@ function creaMotorePossesso(cfg){
     if(decidi){try{out=decidi(intent,Object.assign({attrs:attrsDi(P),seed:seme32(),x:advDi(P.x,P.team)},ctx||{})).outcome;}catch(_e){out=null;}}
     if(!out){const r=rnd();out=r<0.28?"goal":r<0.58?"saved":r<0.70?"blocked":r<0.78?"post":"wide";}
     if(out==="wall_blocked")out="blocked";
+    /* [7.925 - LA MIRA DIPENDE DA DOVE SI TIRA. Direttiva REAL MATCH ENGINE §9.] MISURATO: 5,57 tiri in
+       porta su 8,18, cioe il 68 per cento, contro il 34 per cento di una partita vera — il motore tira il
+       doppio piu preciso di un professionista, e da fuori area come da dentro. Da qui anche i rinvii dal
+       fondo a 1,35 contro 7: se non si tira mai fuori, il pallone non esce mai sul fondo, il portiere non
+       rilancia e la difesa non tocca palla. Ora lo specchio si guadagna: dall area piccola si centra il 62
+       per cento delle volte, dall area il 45, dal limite il 30, da fuori il 18 — e sotto pressione si
+       sbaglia di piu. Non e un dado nuovo: e il dado di prima corretto dal CONTESTO, che e quello che la
+       direttiva chiede. Rosso __CPM_NO925. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO925)&&(out==='goal'||out==='saved')){
+      const _advT=advDi(P.x,P.team);const _zT=zonaDi(_advT,P.y);const _prT=(ctx&&ctx.pressure)||2;
+      let _pOn=(_zT==='areaPiccola')?0.70:(_zT==='area')?0.56:(_zT==='limite')?0.40:0.31;/* [7.925 taratura] la prima prova (0,62/0,45/0,30/0,18) portava i tiri fuori a 3,25 ma faceva crollare le PARATE da 3,93 a 0,73 contro 3,2 vere: il 34 per cento vero e la MEDIA su tutte le zone, e questo motore tira quasi solo da fuori, quindi il valore di fuori deve stare vicino a quella media. */
+      _pOn*=(_prT===1?0.80:_prT===2?0.92:1);
+      if(rnd()>_pOn)out=(rnd()<0.72)?'wide':'blocked';
+    }
     if(golReq){if(golReq.t>=3||rnd()<0.62){out="goal";}else if(out==="saved"||out==="wide"||out==="goal"){out=rnd()<0.5?"post":"blocked";}}
     else if(out==="goal"){out="saved";S.conta.golNegati++;}
     return out;};
@@ -583,7 +597,7 @@ function creaMotorePossesso(cfg){
       else if(st==="volo"&&S.poss.icpt!=null&&p.i===S.poss.icpt){tx=S.poss.da.x+(S.poss.a.x-S.poss.da.x)*S.poss.icptA;ty=S.poss.da.y+(S.poss.a.y-S.poss.da.y)*S.poss.icptA;v=6;}
       else if(st==="volo"&&ins&&p.i===ins.i&&S.poss.tipo!=="tiro"){tx=S.poss.a.x;ty=S.poss.a.y;v=5;}
       else if((st==="tenuta"||st==="volo")&&cop&&p.i===cop.i){const gx=xDa(6,p.team);tx=bx+(gx-bx)*0.35;ty=by+(50-by)*0.4;v=5;}
-      else if(app.indexOf(p)>=0&&_rif924){const k=app.indexOf(p);const R=_rif924;/* [7.924 M1] tre uomini a sostegno invece di due, a 7-17 unita invece di 12-24, e con le GAMBE per arrivarci: 11 unita al minuto restano sotto il tetto di 12 del guardiano `un pallone, un padrone`, che a 22 si e acceso: il tetto e spedito, non lo si alza per far passare una modifica. */tx=R.x+d*(_m924?(7+k*5):(12+k*6));ty=R.y+(k===0?-1:1)*((_m924?7:12)+rnd()*(_m924?4:6))*(R.y>50?1:-1)*(k===0?-1:1);v=_m924?11:5;}
+      else if(app.indexOf(p)>=0&&_rif924){const k=app.indexOf(p);const R=_rif924;/* [7.924 M1] tre uomini a sostegno invece di due, a 7-17 unita invece di 12-24, e con le GAMBE per arrivarci: 9 unita al minuto restano sotto il tetto di 12 del guardiano, con margine: a 11 il guardiano si accendeva a volte si e a volte no (14,3u), perche il passo dipende anche dal jitter e dalla sequenza dei dadi, e un guardiano che passa a seconda del seme non e un guardiano `un pallone, un padrone`, che a 22 si e acceso: il tetto e spedito, non lo si alza per far passare una modifica. */tx=R.x+d*(_m924?(7+k*5):(12+k*6));ty=R.y+(k===0?-1:1)*((_m924?7:12)+rnd()*(_m924?4:6))*(R.y>50?1:-1)*(k===0?-1:1);v=_m924?9:5;}
       if(st==="kickoff"){const k=S.kickoff;if(p.gk){tx=sl.x;ty=50;}else{const casa=p.team===HOME;tx=casa?Math.min(sl.x,46):Math.max(sl.x,54);ty=sl.y;if(p.team===k.lato){const c=[];for(const q of g){if(!mio(q,k.lato)||q.gk)continue;c.push({q,d:hyp(q.x,q.y,50,50)});}c.sort((a,b)=>a.d-b.d);if(c[0]&&c[0].q.i===p.i){tx=50-dp*0.8;ty=50;}else if(c[1]&&c[1].q.i===p.i){tx=50-dp*3;ty=53;}}}v=8;}
       if(st==="rete"){v=1.2;}
       tx=clamp(tx,2,98);ty=clamp(ty,3,97);
