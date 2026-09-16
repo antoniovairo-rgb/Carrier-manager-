@@ -1,4 +1,14 @@
-/* [7.922] Perché le pagelle sono piatte: cosa sa DAVVERO il motore di ciascuno dei ventidue. */
+#!/usr/bin/env node
+/* [A12 · STRUMENTO] CHI TOCCA IL PALLONE, REPARTO PER REPARTO.
+   Nasce dal collaudo del PO del 16/09: «brutta sta cosa dei difensori, il motore deve simulare una partita
+   estremamente credibile». La pagella era piatta perche' il motore non fa MAI passare la palla dalla difesa,
+   e senza un numero questo resta un'impressione. Qui si gioca una partita e si conta, per ciascuno dei
+   ventidue, quante volte il motore gli intesta qualcosa — con il riepilogo per reparto, dedotto dallo
+   schieramento iniziale (0 portiere · 1-4 difesa · 5-7 centrocampo · 8+ attacco).
+   BASELINE 16/09 (7.922): difensori 8 su 8 con ZERO passaggi, 0-4 tocchi in tutto il reparto; portieri 0-1.
+   Rosso `CPM_ROSSO=1` -> arma __CPM_NO923 (usato da un rimedio poi REVOCATO: vedi la nota della 7.922).
+   ⚠️ Il campione e' magro per costruzione (una partita, e il motore produce ~25 passaggi per squadra):
+   serve a dire SE un reparto esiste, non a tarare decimali. Sola lettura. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const server = await startServer(); const port = server.address().port;
 const browser = await launchBrowser();

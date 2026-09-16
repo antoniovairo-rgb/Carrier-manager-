@@ -156,7 +156,8 @@
     "taglia-pallone": "node taglia-pallone.mjs",
     "panchina-riga": "node panchina-riga.mjs",
     "hud-c3": "node hud-c3.mjs",
-    "design-system": "node design-system.mjs"
+    "design-system": "node design-system.mjs",
+    "coinvolgimento": "node coinvolgimento-reparti.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
