@@ -842,7 +842,12 @@ function ThreeMatchView(props){
                 av.root.visible=false;m.glb911=av;_mg911.push(av);
               });
               if(_mg911.length){mascotGlbAvatars=_mg911;try{if(sr.current)sr.current._mascotGlbOn911=true;}catch(_e){}
-                try{if(typeof window!=='undefined')window.__CPM_MASCOT911=()=>({corpi:_mg911.length,totale:_mascots.length,attivi:_mg911.filter(a=>a.root&&a.root.visible).length,y:_mg911.map(a=>+(a.root?a.root.position.y:0).toFixed(3))});}catch(_e){}}
+                try{if(typeof window!=='undefined')window.__CPM_MASCOT911=()=>{
+                  /* `dist`: quanto dista ogni bambino dal SUO calciatore. La mano nella mano e' 0,72u di fianco:
+                     se tutti e ventidue stanno li', sono per mano — e questo si misura anche quando la foto non
+                     riesce a mostrare le coppie (la cerimonia forzata da `playing` non rischiera le squadre). */
+                  const _d=[];try{for(const m of _mascots){const _r=m.glb911&&m.glb911.root;const _p=m.p;if(!_r||!_p)continue;_d.push(+Math.hypot(_r.position.x-_p.position.x,_r.position.z-_p.position.z).toFixed(3));}}catch(_e){}
+                  return{corpi:_mg911.length,totale:_mascots.length,attivi:_mg911.filter(a=>a.root&&a.root.visible).length,y:_mg911.map(a=>+(a.root?a.root.position.y:0).toFixed(3)),dist:_d};};}catch(_e){}}
             }
           }catch(_e911){try{console.warn('[CPM-911] bambini fail',_e911&&_e911.message);}catch(_ee){}}
           /* [7.911.1] I BAMBINI PRIMA DELLA PANCHINA. Misurato: diventavano pronti 2,2 s dopo che la partita

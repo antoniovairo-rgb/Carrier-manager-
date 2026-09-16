@@ -76,6 +76,7 @@ const esiti = [
   ['sono corpi CH38, tutti e ventidue', !!(v && v.corpi >= 20 && v.corpi === v.totale)],
   ['se ne vedono in scena durante la cerimonia', !!(v && v.attivi > 0)],
   ['nessun bambino sospeso: piedi entro 0,15u dal prato', !!(v && v.y && v.y.length && v.y.every((q) => Math.abs(q) <= 0.15))],
+  ['ogni bambino e\' per mano al suo calciatore (0,72u di fianco)', !!(v && v.dist && v.dist.length >= 20 && v.dist.every((d) => Math.abs(d - 0.72) <= 0.08))],
   ['nessun errore di pagina', ris.verde.errori === 0 && ris.rosso.errori === 0],
 ];
 for (const [t, ok] of esiti) console.log(`  ${ok ? '✅' : '❌'} ${t}`);
