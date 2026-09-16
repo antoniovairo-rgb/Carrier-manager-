@@ -2,6 +2,13 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **⭐⭐ DIRETTIVA DEL MOTORE (PO, 16/09/2026): `docs/REAL-MATCH-ENGINE.md`.** Venti punti, parole del PO,
+> su come deve essere fatta la simulazione: ventidue giocatori davvero attivi, il possesso come **sequenza**
+> e non come sorteggio per-tick, gli eventi come **conseguenze** (il corner da una deviazione, il fallo da un
+> duello), l'xG dal contesto, i voti costruiti evento per evento, e **l'highlight 3D che rappresenta cio' che
+> il motore ha gia' deciso** — mai il contrario. Il documento porta anche la mia risposta onesta con i numeri
+> del banco: cosa il motore gia' rispetta e cosa no. **Ogni lavoro sul motore parte da li'.**
+>
 > **⭐ Charter di governo:** `MASTER_PROMPT.md` definisce la **Live Match Quality Platform (LMQP)** — i principi vincolanti (QA First · No Blind Fix · Zero Regression · Determinism First · «Every Highlight Must Tell a Story») e i 4 livelli di qualità. Ogni lavoro sul Live Match Engine vi si conforma. Il *quality gate* (sezione dedicata) è l'attuale implementazione di LMQP.
 
 ## Protocollo operativo (sempre attivo)
