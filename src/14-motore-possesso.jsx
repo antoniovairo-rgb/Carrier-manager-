@@ -89,7 +89,36 @@ function creaMotorePossesso(cfg){
      12,5 -> 16,4 (vero 13). Oltre il quadruplo i tiri non crescono piu' (7,30 -> 7,28 a x8), quindi quattro e'
      il punto. Un passaggio di 15 unita' smette di durare mezzo minuto di gioco. Rosso __CPM_NO912. */
   const _v912=()=>(typeof window!=='undefined'&&window&&window.__CPM_NO912)?1:4;
-  const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}S.eventi.push(e);return e;};
+  /* [7.914.0 — IL TABELLINO LO TIENE IL MOTORE] Le statistiche di gara vivevano nel live e venivano da due
+     sorgenti diverse (le righe di cronaca e le azioni dell'eroe): quattro voci, nessuna delle quali contava
+     davvero cio' che succedeva in campo. Il PO, guardando il post-partita: «ci deve essere il tabellino delle
+     statistiche completo altrimenti non riesco a capirne l'andamento». Qui il conto si tiene dove passano TUTTI
+     gli eventi — una funzione sola, per entrambe le squadre — e chi vuole le statistiche le chiede al motore.
+     Serve al post-partita e servira' alla partita 2D, che le mostrera' in sovrimpressione. */
+  const _TAB0=()=>({tiri:0,inPorta:0,legni:0,murati:0,fuori:0,gol:0,xg:0,corner:0,falli:0,ammonizioni:0,espulsioni:0,rigori:0,parate:0,passaggi:0,passOk:0,cross:0,rimesse:0,contrasti:0,intercetti:0,spazzate:0,assist:0,possesso:0});
+  S.tab={home:_TAB0(),away:_TAB0()};
+  const _XG914=(e)=>{const z=e.zona||'fuori';const b=z==='areaPiccola'?0.34:z==='area'?0.14:z==='limite'?0.06:0.03;const pr=typeof e.press==='number'?e.press:4;return Math.min(0.9,b*(pr<2?1.35:pr<4?1.0:0.72));};
+  const _conta914=(e)=>{try{
+    const l=(e.chi&&e.chi.team)||e.per||e.lato;const A=S.tab[l];if(!A)return;const B=S.tab[l==='home'?'away':'home'];
+    switch(e.t){
+      case 'passaggio': A.passaggi++;if(!e.fuori)A.passOk++;break;
+      case 'cross': A.passaggi++;A.passOk++;A.cross++;break;
+      case 'tiro': A.tiri++;A.xg=Math.round((A.xg+_XG914(e))*100)/100;
+        if(e.esito==='goal'||e.esito==='saved')A.inPorta++;else if(e.esito==='post')A.legni++;else if(e.esito==='blocked')A.murati++;else A.fuori++;break;
+      case 'gol': A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;break;
+      case 'corner': A.corner++;break;
+      case 'fallo': A.falli++;break;
+      case 'rigore': A.rigori++;break;
+      case 'rimessa': A.rimesse++;break;
+      case 'ammonizione': A.ammonizioni++;break;
+      case 'espulsione': A.espulsioni++;break;
+      case 'parata': if(B)B.parate++;break;
+      case 'spazzata': A.spazzate++;break;
+      case 'intercetto': A.intercetti++;break;
+      case 'contrasto': case 'recupero': A.contrasti++;break;
+    }
+  }catch(_e){}};
+  const ev=(t,o)=>{const e={t,tick:S.tick,min:S.min,lato:S.poss.lato};if(o)for(const k in o)e[k]=o[k];if(!o||o.lato==null){const w=e.chi||e.gk;if(w&&w.team&&/^(contrasto|intercetto|recupero|spazzata|parata|presa|murato)$/.test(t))e.lato=w.team;}S.eventi.push(e);_conta914(e);return e;};
   const nome=(p)=>p?(p.eroe?"{P}":(p.name||(p.gk?"il portiere":"un giocatore"))):"";
   const chi=(p)=>p?{i:p.i,nome:nome(p),eroe:!!p.eroe,gk:!!p.gk,team:p.team,x:+p.x.toFixed(1),y:+p.y.toFixed(1)}:null;
 
@@ -520,7 +549,9 @@ function creaMotorePossesso(cfg){
     if(st>=dl-1e-6)S.cond=null;S.palla.x=clamp(P.x+dirDi(P.team)*0.5,0,100);S.palla.y=P.y;}
 
   /* ---------- API ---------- */
-  function tick(ctx){ctx=ctx||{};const _dt=(ctx.dt>0&&ctx.dt<1)?+ctx.dt:1;S.dt=_dt;/* dec: il chiamante puo' dire quale chiamata decide (il live: il battito del minuto); senza, decide la fase */const _dec=(ctx.dec!=null)?!!ctx.dec:!(S.fase>1e-9);if(ctx.dec)S.fase=0;
+  function tick(ctx){ctx=ctx||{};const _dt=(ctx.dt>0&&ctx.dt<1)?+ctx.dt:1;S.dt=_dt;
+    /* [7.914.0] il possesso e' tempo, non eventi: si accumula qui, dove si sa chi ha la palla */
+    try{const _s=S.poss.stato;if((_s==='tenuta'||_s==='volo')&&S.tab[S.poss.lato])S.tab[S.poss.lato].possesso+=_dt;}catch(_e){}/* dec: il chiamante puo' dire quale chiamata decide (il live: il battito del minuto); senza, decide la fase */const _dec=(ctx.dec!=null)?!!ctx.dec:!(S.fase>1e-9);if(ctx.dec)S.fase=0;
     const _fine=()=>{S.fase+=_dt;if(S.fase>=1-1e-9)S.fase=0;const out=S.eventi;S.eventi=[];return out;};
     /* [7.898 A2 v3] SOTTO-TICK (fase>0): nessuna decisione, nessun contatore; solo la fisica del minuto in corso */
     if(!_dec){if(ctx.min!=null)S.min=ctx.min|0;S.arco=null;if(S.scena)return[];
@@ -586,7 +617,13 @@ function creaMotorePossesso(cfg){
       scena:S.scena,fase:+S.fase.toFixed(3),dt:S.dt,cond:!!S.cond,gioc:g.slice(0,21).map(q=>({x:+q.x.toFixed(2),y:+q.y.toFixed(2)})),eroe:{x:+g[HERO].x.toFixed(2),y:+g[HERO].y.toFixed(2),attivo:eroeAttivo},
       arco:S.arco,inseguitore:S.inseguitore,richieste:{gol:S.richieste.gol?{lato:S.richieste.gol.lato,t:S.richieste.gol.t}:null,turno:S.richieste.turno,verso:S.richieste.verso},
       conta:JSON.parse(JSON.stringify(S.conta)),quota:{home:S.quota.home,away:S.quota.away}};}
-  return{tick,chiedi,stato,HERO,_g:g,_S:S};
+  /* [7.914.0] il tabellino di gara, per entrambe le squadre. Il possesso si ricava dai minuti in cui ciascun
+     lato ha avuto il pallone, non da una stima: e' l'unica voce che non nasce da un evento. */
+  const tabellino=()=>{const h=S.tab.home,a=S.tab.away;
+    const _pt=(h.possesso||0)+(a.possesso||0);
+    const _p=(q)=>_pt>0?Math.round(100*q/_pt):50;
+    return{home:Object.assign({},h,{possesso:_p(h.possesso||0)}),away:Object.assign({},a,{possesso:_p(a.possesso||0)})};};
+  return{tick,chiedi,stato,tabellino,HERO,_g:g,_S:S};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* CMAV-MOTORE-END */

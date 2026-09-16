@@ -9673,7 +9673,55 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {_row("⚽","Gol su assist di",_rc,TH.warning)}
             </div>);
           })()}
-          <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>STATISTICHE GARA</div>
+          {/* [7.914.0 — IL TABELLINO DELLA GARA, richiesta del PO: «ci deve essere il tabellino delle statistiche
+              completo altrimenti non riesco a capirne l'andamento»] Le quattro voci qui sotto sono le TUE
+              (falli subiti, angoli guadagnati, tiri avversari): raccontano la tua partita, non la gara. Questo
+              blocco mostra le due squadre affiancate e le prende dal MOTORE (`tabellino()`), che le conta dove
+              passano tutti gli eventi — non dalla cronaca e non dalle tue azioni, che erano due sorgenti
+              diverse. Si mostrano solo le voci che il motore produce davvero: una riga vuota e' peggio di una
+              riga assente. */}
+          {(()=>{ let _T=null; try{ _T=motoreRef.current&&motoreRef.current.tabellino?motoreRef.current.tabellino():null; }catch(_e){}
+            if(!_T||!_T.home||!_T.away)return null;
+            const _mine=isMatchHome?_T.home:_T.away, _loro=isMatchHome?_T.away:_T.home;
+            const _righe=[
+              ["Possesso",_mine.possesso+"%",_loro.possesso+"%",_mine.possesso,_loro.possesso],
+              ["Tiri",_mine.tiri,_loro.tiri,_mine.tiri,_loro.tiri],
+              ["Tiri in porta",_mine.inPorta,_loro.inPorta,_mine.inPorta,_loro.inPorta],
+              ["Expected goal",(_mine.xg||0).toFixed(2),(_loro.xg||0).toFixed(2),_mine.xg,_loro.xg],
+              ["Calci d'angolo",_mine.corner,_loro.corner,_mine.corner,_loro.corner],
+              ["Falli",_mine.falli,_loro.falli,_mine.falli,_loro.falli],
+              ["Ammonizioni",_mine.ammonizioni,_loro.ammonizioni,_mine.ammonizioni,_loro.ammonizioni],
+              ["Espulsioni",_mine.espulsioni,_loro.espulsioni,_mine.espulsioni,_loro.espulsioni],
+              ["Parate",_mine.parate,_loro.parate,_mine.parate,_loro.parate],
+              ["Passaggi",_mine.passaggi,_loro.passaggi,_mine.passaggi,_loro.passaggi],
+              ["Precisione",(_mine.passaggi?Math.round(100*_mine.passOk/_mine.passaggi):0)+"%",(_loro.passaggi?Math.round(100*_loro.passOk/_loro.passaggi):0)+"%",_mine.passOk,_loro.passOk],
+              ["Rimesse laterali",_mine.rimesse,_loro.rimesse,_mine.rimesse,_loro.rimesse],
+            ].filter(r=>(+r[3]||0)+(+r[4]||0)>0);
+            if(!_righe.length)return null;
+            return(<div style={{marginBottom:14}}>
+              <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>TABELLINO DELLA GARA</div>
+              <div style={{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,padding:"8px 10px"}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6,fontSize:10,fontWeight:800,color:TH.muted,letterSpacing:.5}}>
+                  <span style={{flex:"1 1 0",textAlign:"left",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{(isMatchHome?homeTeamObj:awayTeamObj)?.n||"La tua squadra"}</span>
+                  <span style={{flex:"0 0 auto",padding:"0 8px"}}>—</span>
+                  <span style={{flex:"1 1 0",textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{(isMatchHome?awayTeamObj:homeTeamObj)?.n||"Avversari"}</span>
+                </div>
+                {_righe.map((r,i)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
+                  return(<div key={r[0]} style={{marginBottom:i===_righe.length-1?0:7}}>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:12,fontVariantNumeric:"tabular-nums"}}>
+                      <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:a>=b?TH.text:TH.muted,minWidth:34,textAlign:"left"}}>{r[1]}</span>
+                      <span style={{flex:"1 1 0",textAlign:"center",fontSize:10,color:TH.muted,fontWeight:700}}>{r[0]}</span>
+                      <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:b>=a?TH.text:TH.muted,minWidth:34,textAlign:"right"}}>{r[2]}</span>
+                    </div>
+                    <div style={{display:"flex",height:4,borderRadius:2,overflow:"hidden",background:TH.divider,marginTop:3}}>
+                      <div style={{width:qa+"%",background:TH.primary}} />
+                      <div style={{width:(100-qa)+"%",background:TH.warning}} />
+                    </div>
+                  </div>);})}
+              </div>
+            </div>);
+          })()}
+          <div style={{fontSize:10,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>IL TUO TABELLINO IN NUMERI</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:14}}>
             {[{l:"Falli avversari",v:mxStats.fouls,e:"🟡"},{l:"Calci d'angolo",v:mxStats.corners,e:"🏳️"},{l:"Tiri avversari",v:mxStats.oppShots,e:"🔴"},{l:"Tiro medio",v:mxStats.shots>0?`${mStats.goals}/${mxStats.shots}`:"0/0",e:"🎯"}].map(s=>(
               <div key={s.l} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 8px",background:TH.surface2,borderRadius:RAD.sm,border:`1px solid ${TH.divider}`}}>
