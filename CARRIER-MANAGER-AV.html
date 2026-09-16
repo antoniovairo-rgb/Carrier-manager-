@@ -22396,7 +22396,12 @@ function creaMotorePossesso(cfg){
     if(_dopo900&&_fallo900())return;/* [7.900] il fallo, dopo il tiro */
     const spazio=spazioAvanti(P);
     const largo=Math.abs(P.y-50)>=22;
-    if(!golReq&&adv>=72&&largo&&rnd()<0.55){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<78||Math.abs(q.y-50)>20)continue;const sc=aq+(q.eroe?4:0)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}}
+    /* [diag 7.930] il cross chiede TRE cose insieme: portatore avanzato (adv>=72), portatore largo
+       (|y-50|>=22) e un compagno GIA' in area (adv>=78, |y-50|<=20). Al banco i cross sono 2,12 contro 15:
+       questi tre contatori dicono quale delle tre manca, invece di farlo indovinare. */
+    if(!golReq&&adv>=72)ramo("cross_avanti");
+    if(!golReq&&adv>=72&&largo)ramo("cross_largo");
+    if(!golReq&&adv>=72&&largo&&rnd()<0.55){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<78||Math.abs(q.y-50)>20)continue;const sc=aq+(q.eroe?4:0)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}ramo("cross_senzaRicevente");}
     if(verso&&!golReq){const dv=hyp(P.x,P.y,verso.x,verso.y);if(dv>10){let R=null,bs=1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const dq=hyp(q.x,q.y,verso.x,verso.y);const dd=hyp(q.x,q.y,P.x,P.y);if(dd<5||dd>40)continue;if(dq<bs){bs=dq;R=q;}}if(R&&bs<dv-4){passa(P,R,{sicuro:true});return;}}}
     /* [7.888 v2 — CHI ARRIVA AL LIMITE CON LA STRADA LIBERA PUO' ENTRARE.
        MISURATO al banco (48 partite, 188 conclusioni): trequarti 22 % · limite 61 % · area 17 %, cioe'
@@ -22547,7 +22552,17 @@ function creaMotorePossesso(cfg){
          const _oppo=(by>50)?(sl.y<=50):(sl.y>=50);
          if(!_no883&&inPoss&&st!=="fermo"&&advB>=70&&Math.abs(by-50)>=20&&_oppo&&(p.rl==="AT"||p.rl==="MF")){
            const _po=(p.rl==="AT")?{a:85,y:(by>50?44:56)}:{a:80,y:50};
-           if(advDi(tx,p.team)<_po.a-2){tx=xDa(_po.a,p.team);ty=_po.y;v=6;}}}
+           /* [7.931 — CHI ATTACCA L'AREA CI DEVE ARRIVARE PRIMA CHE FINISCA L'AZIONE]
+              MISURATO (30 partite, 11 battiti/min): il portatore e' avanzato E largo 33,5 volte a partita,
+              ma in 17,9 casi su 18,1 il cross muore perche' NESSUNO e' dentro l'area — i cross riusciti
+              sono 0,20 contro 15 veri. La regola della 7.883 gia' manda in area chi sta dal lato cieco:
+              il difetto e' che ci va a `v=6`, cioe' 6 unita' al MINUTO, che con 11 battiti fanno 0,55
+              unita' per battito. Per coprire le 25 unita' che separano un trequartista dal secondo palo
+              servirebbero 45 battiti; un'azione ne dura due o tre. Un battito vale 5,45 s di partita, e
+              110 u/min sono 10 unita' per battito, cioe' 10,5 metri in 5,45 s: 1,9 m/s, un trotto, non
+              uno scatto. La lumaca era il numero di prima, non questo. Rosso __CPM_NO931. */
+           const _v931=(typeof window!=='undefined'&&window&&window.__CPM_NO931)?6:110;
+           if(advDi(tx,p.team)<_po.a-2){tx=xDa(_po.a,p.team);ty=_po.y;v=_v931;}}}
       }
       if(st==="fermo"&&S.fermo&&S.fermo.batt===p.i){const f=S.fermo;tx=f.x-dp*(f.kind==="pen"?1.5:0.8);ty=f.kind==="corner"?f.y:f.y;v=8;}
       else if(st==="fermo"&&S.fermo){const f=S.fermo;
