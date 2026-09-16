@@ -263,7 +263,13 @@ function creaMotorePossesso(cfg){
   const esitoTiro=(P,intent,ctx)=>{const golReq=S.richieste.gol&&S.richieste.gol.lato===P.team?S.richieste.gol:null;
     let out=null;
     if(decidi){try{out=decidi(intent,Object.assign({attrs:attrsDi(P),seed:seme32(),x:advDi(P.x,P.team)},ctx||{})).outcome;}catch(_e){out=null;}}
-    if(!out){const r=rnd();out=r<0.28?"goal":r<0.58?"saved":r<0.70?"blocked":r<0.78?"post":"wide";}
+    /* [7.929 — IL LEGNO E' UN TASSO SUI TIRI, e i tiri ora sono giusti] Il sorteggio base dava «post» all'8 %
+       dei tiri. Nel calcio vero i legni sono 0,30 su 12,8 tiri, cioe' il 2,3 %. Il difetto c'era da sempre,
+       ma con 7,9 tiri a partita restava mascherato (0,43 legni, 1,44x); portati i tiri a 12,6 con la 7.928
+       e' venuto fuori intero: 0,97 contro 0,30, TRE VOLTE E MEZZO il vero. La soglia scende da 0,78 a
+       0,7225 (2,25 % dei tiri); la quota tolta va a «wide», che e' dove finisce davvero un tiro sbagliato. */
+    if(!out){const r=rnd();const _sPost=(typeof window!=='undefined'&&window&&window.__CPM_NO929B)?0.78:0.7225;
+      out=r<0.28?"goal":r<0.58?"saved":r<0.70?"blocked":r<_sPost?"post":"wide";}
     if(out==="wall_blocked")out="blocked";
     /* [7.925 - LA MIRA DIPENDE DA DOVE SI TIRA. Direttiva REAL MATCH ENGINE §9.] MISURATO: 5,57 tiri in
        porta su 8,18, cioe il 68 per cento, contro il 34 per cento di una partita vera — il motore tira il
@@ -392,7 +398,14 @@ function creaMotorePossesso(cfg){
     const _no900=(typeof window!=='undefined'&&window&&window.__CPM_NO900);
     const _dopo900=!_no900&&(zona==="limite"||zona==="area")&&!golReq;
     const _no903=(typeof window!=='undefined'&&window&&window.__CPM_NO903);/* [7.903] l'arbitro esiste: la 7.900 aveva portato la banda «arbitro-esiste» del ci sul filo (6 → 4-6 interruzioni in 2 partite); sotto pressione 0,18 → 0,22, libero 0,05 → 0,08 (decisione PO 15/09: costa 0,3 tiri a partita al banco) */
-    const _fallo900=()=>{const r=rnd();const pFb=_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):(_no903?((press<3?0.18:0.05)+(adv>=56?0.03:0)):((press<3?0.22:0.08)+(adv>=56?0.03:0)));
+    /* [7.929 — IL CONTO DEI FALLI DOPO M1a] Il fallo si sorteggia a OGNI decisione di tenuta. La 7.928 ha
+       portato le decisioni di tenuta dal 34,9 % al 50,1 % delle chiamate (×1,436) e i falli sono saliti da
+       13,3 a 19,1 per squadra: 13,3 × 1,436 = 19,1, il conto torna alla virgola. Non e' cambiato niente
+       nell'arbitro — sono cambiate le occasioni di fischiare. La probabilita' per singola decisione va
+       quindi riportata indietro dello stesso fattore: 13,0 / 19,1 = 0,68. I rami dei rossi storici
+       (__CPM_NO900, __CPM_NO903) restano com'erano, altrimenti non riprodurrebbero piu' il loro difetto. */
+    const _k929=(typeof window!=='undefined'&&window&&window.__CPM_NO929)?1:0.68;
+    const _fallo900=()=>{const r=rnd();const pFb=_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):(_no903?((press<3?0.18:0.05)+(adv>=56?0.03:0)):((press<3?0.22:0.08)+(adv>=56?0.03:0))*_k929);
       const pF=golReq?((golReq.t|0)<=3?pFb*0.5:0):pFb;
       if(pF>0&&r<pF){ramo(golReq?"falloGol":"fallo");fallo(P);return true;}
       if(!golReq&&press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return true;}return false;};
