@@ -205,8 +205,32 @@ function creaMotorePossesso(cfg){
     if(Math.abs(P.y-50)>=30&&rnd()<(Math.abs(P.y-50)>=40?0.55:0.30)){ev("contrasto",{chi:chi(W),su:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1),fuori:true});fuoriCampo(P.x,P.y,rnd()<0.5?l:altro(l),"throw");return;}
     ev("contrasto",{chi:chi(W),su:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});
     W.x=clamp(P.x+dirDi(W.team)*0.8,2,98);W.y=P.y;tenuta(W,null);};
+  /* [7.913.0 — A10] L'ARBITRO TIRA FUORI I CARTELLINI, E NON SOLO PER L'EROE. I gialli esistevano gia', ma
+     vivevano nel live e SOLO per il protagonista (heroYellowsRef): gli altri ventuno potevano falciare per
+     novanta minuti senza che l'arbitro battesse ciglio, e il tabellino del PO segnava «ammonizioni 0» dopo
+     quindici falli subiti. Qui il cartellino nasce dove nasce il fallo, per chiunque lo commetta. Tarature dal
+     calcio vero: 2,4 ammonizioni per squadra su ~13 falli, cioe' un giallo ogni 5-6 falli; il fallo che ferma
+     un'azione promettente (avversario gia' avanzato) pesa di piu'; alla SECONDA ammonizione e' rosso, e i rossi
+     veri sono 0,11 a squadra. Chi e' gia' espulso non puo' prendere altri cartellini. Rosso __CPM_NO913. */
+  const _cart913=(W,P,adv)=>{try{
+    if(typeof window!=='undefined'&&window&&window.__CPM_NO913)return;
+    if(!W||W.gk)return;/* il portiere prende cartellini troppo di rado perche' valga la pena */
+    S.cartellini=S.cartellini||{};const _k=W.i;const _st=S.cartellini[_k]||(S.cartellini[_k]={g:0,r:false});
+    if(_st.r)return;
+    /* La prima misura dava gialli 1,45 (vero 2,4) e rossi 0,38 (vero 0,11): troppi pochi cartellini e troppe
+       espulsioni, perche' i falli si concentrano sugli stessi difensori e il secondo giallo arrivava subito.
+       Nel calcio vero un ammonito gioca piu' attento e l'arbitro e' piu' tollerante. Il fattore e' stato TARATO in
+       due passate: a 0,22 i gialli tornavano giusti (2,08 su 2,4) ma i rossi restavano al doppio del vero
+       (0,25 su 0,11); a 0,09 rientrano entrambi. Il secondo giallo costa undici volte il primo. */
+    const _p=(0.16+(adv>=60?0.05:0)+(adv>=78?0.05:0))*(_st.g>=1?0.09:1);
+    if(rnd()>=_p)return;
+    _st.g++;
+    if(_st.g>=2){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"seconda ammonizione",lato:W.team});}
+    else ev("ammonizione",{chi:chi(W),su:chi(P),lato:W.team});
+  }catch(_e){}};
   const fallo=(P)=>{const l=P.team;const m=piuVicino(P.x,P.y,altro(l),{noGk:true});const adv=advDi(P.x,l);
     const rig=adv>=84&&Math.abs(P.y-50)<=20;S.conta.falli++;
+    _cart913(m?m.p:null,P,adv);
     if(rig)fermoSet("pen",l,xDa(89,l),50,{chi:chi(m?m.p:null),su:chi(P)});
     else fermoSet("foul",l,P.x,P.y,{chi:chi(m?m.p:null),su:chi(P),adv:+adv.toFixed(0)});};
   const fuoriCampo=(x,y,lPer,kind)=>{S.conta.fuori++;
@@ -345,8 +369,15 @@ function creaMotorePossesso(cfg){
     if(out==="goal"){S.rete={lato:l,t:0};S.poss.stato="rete";S.conta.gol[l]++;const gr=S.richieste.gol;if(gr&&gr.lato===l){if(gr.t>=5)S.conta.golForzati++;S.richieste.gol=null;}
       ev("gol",{chi:chi(P),assist:chi(p.ultimoPassatore!=null&&p.ultimoPassatore!==p.tiratore?g[p.ultimoPassatore]:null),lato:l,x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)});return;}
     if(out==="saved"){const corner=rnd()<0.35;ev("parata",{gk:chi(gk),chi:chi(P),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else{gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);S.poss.t=0;}return;}
-    if(out==="post"){ev("palo",{chi:chi(P)});libero(xDa(93,l),clamp(S.palla.y+(rnd()-0.5)*14,30,70));return;}
-    if(out==="blocked"){const m=piuVicino(S.palla.x,S.palla.y,altro(l),{noGk:true});ev("murato",{chi:chi(m?m.p:null),su:chi(P)});libero(clamp(S.palla.x-dirDi(l)*(3+rnd()*6),2,98),clamp(S.palla.y+(rnd()-0.5)*10,4,96));return;}
+    /* [7.913.0 — A8] I CORNER. Il tabellino del PO segnava «calci d'angolo 0» a fine partita, e il banco dava
+       1,45 per squadra contro i 4,9 veri. Nel calcio vero il corner nasce quasi sempre da una deviazione: un
+       tiro murato che sbatte sul difensore e finisce sul fondo, un palo che rimbalza fuori, una spazzata di
+       testa in angolo. Qui il tiro MURATO e il PALO possono finire in angolo, come succede in campo. */
+    const _no913c=(typeof window!=='undefined'&&window&&window.__CPM_NO913);
+    if(out==="post"){ev("palo",{chi:chi(P)});if(!_no913c&&rnd()<0.34){fuoriCampo(S.palla.x,S.palla.y,l,"corner");return;}libero(xDa(93,l),clamp(S.palla.y+(rnd()-0.5)*14,30,70));return;}
+    if(out==="blocked"){const m=piuVicino(S.palla.x,S.palla.y,altro(l),{noGk:true});ev("murato",{chi:chi(m?m.p:null),su:chi(P)});
+      if(!_no913c&&rnd()<0.40){fuoriCampo(S.palla.x,S.palla.y,l,"corner");return;}/* [7.913 A8] la deviazione in angolo */
+      libero(clamp(S.palla.x-dirDi(l)*(3+rnd()*6),2,98),clamp(S.palla.y+(rnd()-0.5)*10,4,96));return;}
     ev("fuori",{chi:chi(P),x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)});fuoriCampo(S.palla.x,S.palla.y,altro(l),"goal_kick");
   }
   function arrivoCross(){const p=S.poss;const l=p.lato;const R=p.ricevente!=null?g[p.ricevente]:null;
