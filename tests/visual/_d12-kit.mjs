@@ -37,13 +37,14 @@ for (const braccio of ['verde', 'rosso']) {
   await sleep(4000);
   await page.evaluate(() => { window.__CPM_DRAW.calls = 0; window.__CPM_DRAW.frames = 0; });
   await sleep(8000);
-  /* la foto di campo largo non mostra i corpi: si porta la camera addosso all'eroe, come la sonda dei corpi */
+  /* [confronto onesto dei colori] i due bracci sono deterministici sullo stesso seme: le posizioni allo stesso
+     minuto coincidono, quindi si aspetta un minuto FISSO e si mette la camera in una posizione FISSA. Cosi' le
+     due foto differiscono solo per come sono tinti i corpi, che e' l'unica cosa che questa misura deve giudicare. */
   try {
-    const eroe = await page.evaluate(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.hero ? { x: s.hero.x, y: s.hero.y } : null; } catch (_e) { return null; } });
-    if (eroe) { const wx = (eroe.y - 50) * 1.05, wz = (50 - eroe.x) * 1.6;
-      await page.evaluate((c) => { window.__CPM_CAM904 = c; }, { x: wx + 1.9, y: 1.6, z: wz + 2.6, lx: wx, ly: 1.2, lz: wz });
-      await sleep(2500); }
+    await page.waitForFunction(() => { try { const s = window.__CPM_STATE && window.__CPM_STATE(); return s && s.clock >= 12; } catch (_e) { return false; } }, { timeout: 60000 });
   } catch (_e) {}
+  try { await page.evaluate(() => { window.__CPM_CAM904 = { x: 0, y: 2.0, z: 14, lx: 0, ly: 1.1, lz: 0 }; }); } catch (_e) {}
+  await sleep(2500);
   const r = await page.evaluate(() => {
     let tri = 0, corpo = null, mesh = 0, materiali = 0;
     try { tri = window.__CPM_TRI907 ? window.__CPM_TRI907() : 0; } catch (_e) {}
