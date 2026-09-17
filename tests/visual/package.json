@@ -48,6 +48,8 @@
     "outcome-not-goal": "node outcome-not-goal-test.mjs",
     "ball-jump-census": "node ball-jump-census.mjs",
     "gala": "node gala-2d.mjs",
+    "intervista": "node intervista-2d.mjs",
+    "presentazione": "node presentazione-2d.mjs",
     "terza-volta": "node terza-volta.mjs",
     "contrasto-scuro": "node contrasto-scuro.mjs",
     "tabellino-banda": "node tabellino-banda.mjs",

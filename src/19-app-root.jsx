@@ -582,11 +582,15 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu}){
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14}}>
         <Card style={{padding:'12px 14px'}}>
           <div style={{fontSize:11,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>🎨 Grafica</div>
-          <div style={{fontSize:12,color:TH.text,fontWeight:600,marginBottom:6}}>Tema</div>
-          <div style={{display:'flex',gap:8}}>
-            <Seg active={!darkMode} label="☀️ Chiaro" onClick={()=>onTheme(false)}/>
-            <Seg active={darkMode} label="🌙 Scuro" onClick={()=>onTheme(true)}/>
-          </div>
+          {/* [7.947 — IL TEMA E' UNO SOLO, ED E' CHIARO. Direttiva PO: «non perdere tempo con grafica chiara
+              o scura della grafica extra partita. La grafica deve essere UNA e fatta benissimo. Secondo me la
+              base di partenza deve essere quella chiara. Togli anche interruttore nelle impostazioni».]
+              L'interruttore sparisce e il tema scuro non si raggiunge piu'. Chi ce l'aveva acceso viene
+              riportato al chiaro all'avvio, altrimenti resterebbe in un tema senza piu' la leva per uscirne.
+              CONSEGUENZA A VERBALE: il lavoro sul contrasto notturno della 7.944 diventa in buona parte
+              SENZA BERSAGLIO. Resta valido cio' che era giusto in ogni caso — i fondi chiari scritti a mano
+              sostituiti col loro token e i colori dei club resi leggibili — e il guardiano contrasto-scuro
+              perde il suo oggetto: lo dichiaro invece di lasciarlo girare a vuoto. */}
           {/* [7.97.0 collaudo PO «togli ovunque l'opzione Giocatori 3D realistici: non è più un'opzione, è solo 3D»]
               toggle GLB rimosso — il 3D reale è sempre attivo (il fallback resta solo come rete di sicurezza interna). */}
         </Card>
@@ -704,9 +708,9 @@ function App(){
   // [7.104.0 collaudo PO «elimina il pulsante muto e metti il tasto impostazioni come nelle altre schermate»]
   //   SettingsScreen raggiungibile anche dalle schermate PRE-carriera (home/provini), dove non c'è la nav bar.
   const[showSettings,setShowSettings]=useState(false);
-  const[dark,setDark]=useState(()=>{try{return safeLS.get("cpm-dark")==="1";}catch(_e){return false;}});
+  const[dark,setDark]=useState(()=>{try{if(safeLS.get("cpm-dark")==="1")safeLS.set("cpm-dark","0");}catch(_e){}return false;});/* [7.947] il tema e' UNO, chiaro: chi aveva acceso lo scuro va riportato indietro all'avvio, altrimenti resterebbe in un tema di cui ho appena tolto l'interruttore. */
   Object.assign(TH,dark?TH_DARK:TH_LIGHT_ORIG);// tema applicato anche fuori dalla carriera
-  useEffect(()=>{try{setDark(safeLS.get("cpm-dark")==="1");}catch(_e){}},[phase]);// re-sync col tema scelto in carriera al ritorno in home
+  useEffect(()=>{setDark(false);},[phase]);/* [7.947] niente ri-sincronizzazione col tema scelto: di temi ce n'e' uno */// re-sync col tema scelto in carriera al ritorno in home
   /* [7.179.0 collaudo PO «il font doveva essere ingrandito in TUTTE le schermate!»] ZOOM tipografico +12% BASE su
      ogni schermata (home, creazione, provini, prepartita, carriera): retry rAF perché al primo commit .cpm-scroll
      può non essere ancora nel DOM. LiveMatch lo azzera SOLO nelle fasi col canvas 3D vivo (pixel-perfect). */

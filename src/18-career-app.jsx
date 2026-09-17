@@ -171,7 +171,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   useEffect(()=>{ try{ setPlayer(p=>{ if((p.proStatus||"u18")!=="pro"||!p.club)return p; if(typeof p.presentedClub==="string")return p;
     const _sn=p.season||1, _fresco=!!p.loan||((p.history||[]).some(h=>h&&(h.season||0)>=_sn));
     return _fresco?{...p,presentedClub:"__nuovo__"}:{...p,presentedClub:(p.club.id||p.club.n||"")}; }); }catch(_e){} },[]);
-  const[darkMode,setDarkMode]=useState(()=>safeLS.get("cpm-dark")==="1");
+  const[darkMode,setDarkMode]=useState(()=>{try{if(safeLS.get("cpm-dark")==="1")safeLS.set("cpm-dark","0");}catch(_e){}return false;});/* [7.947] il tema e' UNO, chiaro: chi aveva acceso lo scuro va riportato indietro all'avvio, altrimenti resterebbe in un tema di cui ho appena tolto l'interruttore. */
   const[showSettings,setShowSettings]=useState(false);/* [7.92.0] menu Impostazioni dedicato */
   // Mutate global TH in-place so module-scope components (Card, Btn, StatBar) pick up the theme
   Object.assign(TH,darkMode?TH_DARK:TH_LIGHT_ORIG);
@@ -1146,6 +1146,9 @@ const getThisWeekMatchday=()=>{
       /* [7.946] VARCO DI SOLO COLLAUDO: apre il gala' con dei premi finti. Il gala' vive a fine stagione,
          quindi per GUARDARLO servirebbe giocare una stagione intera — ed e' il motivo per cui le cerimonie
          non erano mai state fotografate. Stessa famiglia di __CPM_HUD_FORCE e __CPM_FESTA942_FORCE. */
+      /* [7.947] varco di solo collaudo: apre la serata di presentazione al battito chiesto. Senza,
+         per fotografarla servirebbe arrivare alla settimana di apertura di una stagione. */
+      apriPresentazione:(beat)=>{try{setPresEvent({beat:Math.max(0,beat|0)});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriGala:(aw)=>{try{setSeasonAwardsData(aw||{
         palloneOro:{playerWins:true,top3:[{name:"TU",isPlayer:true,club:"FC Merseyside",goals:34},{name:"L. Moreno",club:"CF Madrid",goals:31},{name:"K. Adeyemi",club:"Deutsche Elf",goals:29}]},
         scarpaOro:{playerWins:false,top3:[{name:"L. Moreno",club:"CF Madrid",goals:31},{name:"TU",isPlayer:true,club:"FC Merseyside",goals:34}]},
@@ -5555,7 +5558,8 @@ const getThisWeekMatchday=()=>{
     const _cl=player.club||{};
     return(
     <div style={{position:"fixed",inset:0,zIndex:9997,background:"#050810"}}>
-      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={_bs.map((b,k)=>(b&&b.gk)?k-2:-1).filter(k=>k>=0)}/* il beat b inquadra il clone b-2 (0=stadio · 1=la squadra) *//>
+      <PresentationStage3D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={[]} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO947)}/>
+      <PresentazioneScena2D club={_cl} beat={_i} total={_n} seed={Math.abs(hashStr((_cl.id||"x")+"pres"+(player.season||1)))} youth={(player.proStatus||"u18")!=="pro"} avatarId={player.avatarId||0} heroNum={player.jerseyNum||0} gkIdx={_bs.map((b,k)=>(b&&b.gk)?k-2:-1).filter(k=>k>=0)}/* il beat b inquadra il clone b-2 (0=stadio · 1=la squadra) *//>
       <div style={{position:"absolute",left:0,right:0,top:"9%",display:"flex",justifyContent:"center",padding:"0 14px",pointerEvents:"none"}}>
         <div key={_i} style={{textAlign:"center",animation:"logoIn 0.45s ease-out"}}>
           <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:_last?"#fde68a":"rgba(255,255,255,0.75)",textShadow:"0 2px 10px rgba(0,0,0,0.85)"}}>{_b.t}</div>
@@ -5978,7 +5982,7 @@ const getThisWeekMatchday=()=>{
        via PORTALE su `document.body`: `fixed` torna relativo al viewport e lo z-index compete alla radice. */
     return ReactDOM.createPortal((
         <div style={_iv3d?{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}:{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
-          {_iv3d&&<InterviewStage3D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
+          {_iv3d&&((typeof window!=='undefined'&&window.__CPM_NO947)?<InterviewStage3D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>:null)}{_iv3d&&<InterviewScena2D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
           <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"16px 18px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:"58vh",overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)"}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1}}>
             {/* Header */}
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>

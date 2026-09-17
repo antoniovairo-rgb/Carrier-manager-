@@ -6,6 +6,21 @@
    invisibile sulla riga piu' importante del calendario — e un conteggio non lo distingue da 61
    nodi appena sotto la soglia.
    Rosso: CPM_ROSSO=__CPM_NO944 spegne l'alzata dei colori dei club. */
+/* GUARDIANO RITIRATO — 7.947, decisione del PO: «non perdere tempo con grafica chiara o scura della
+   grafica extra partita. La grafica deve essere UNA e fatta benissimo», con la base CHIARA, e
+   l'interruttore del tema tolto dalle impostazioni.
+   Il tema scuro non e' piu' raggiungibile, quindi questo guardiano non ha piu' un oggetto. Non lo
+   cancello e non lo lascio girare: forzando `cpm-dark=1` dalla sonda misurerebbe il tema CHIARO e
+   direbbe di aver misurato lo scuro — un guardiano che mente e' peggio di un guardiano ritirato.
+   Cosa resta VALIDO della 7.944, ed e' il motivo per cui quel lavoro non e' buttato: i fondi chiari
+   scritti a mano sostituiti col loro token e i colori dei club resi leggibili erano giusti in ogni caso.
+   Cosa decade: la misura del contrasto notturno (61 -> 46 nodi) non ha piu' un bersaglio. */
+console.log('\n=== CONTRASTO NEL TEMA SCURO — GUARDIANO RITIRATO ===');
+console.log('  Il tema scuro e\' stato rimosso alla 7.947 per decisione del PO: la grafica e\' UNA, chiara,');
+console.log('  e l\'interruttore non c\'e\' piu\'. Questo guardiano non ha piu\' un oggetto da misurare.');
+console.log('\n✅ RITIRATO — dichiarato, non cancellato');
+process.exit(0);
+/* --- il corpo originale resta qui sotto, inerte, come verbale di cosa misurava --- */
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
 const QUI = path.dirname(fileURLToPath(import.meta.url));

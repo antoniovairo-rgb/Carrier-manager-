@@ -208,6 +208,98 @@ function getBestSeasonMatch(matchHistory){
    costruzione. Se il nome non e' nel pool si torna al seed, come prima. */
 const journalistIsFemale=(nm)=>{try{const j=(JOURNALIST_POOL||[]).find(x=>x&&x.name===nm);return j?!!j.f:null;}catch(_e){return null;}};
 if(_CPM_TEST&&typeof window!=="undefined"){window.journalistIsFemale=journalistIsFemale;window.JOURNALIST_POOL=JOURNALIST_POOL;}/* [7.299.0] hook test-only per la probe intervista (spento in store build) */
+/* [7.947 — LA MIXED ZONE E' IN 2D, SENZA CH38. Stessa direttiva del gala' (7.946): il PO ha chiesto di
+   togliere i CH38 da interviste, premiazioni, cerimonie e pullman, lasciandoli SOLO in partita.]
+   La scena 3D dell'intervista era un fondale con due corpi CH38 in piedi davanti a un muro. Qui il muro
+   e' disegnato — pannello stampa col nome del club ripetuto, luci dei flash che scattano, due microfoni —
+   e le due persone sono i VISI della libreria SVG: il tuo e quello del giornalista, seminato sul suo nome,
+   cosi' lo stesso giornalista ha sempre la stessa faccia. Nessun WebGL, nessun modello, nessun asset.
+   Stessa firma di InterviewStage3D: lo scambio e' una riga sola. */
+/* [7.947 v2 — IL PANNELLO STAMPA, RIFATTO SU INDICAZIONE DEL PO.]
+   «Il pannello stampa se decidi di lasciarlo deve essere con nome e logo del gioco (principalmente),
+   stemma e nome per intero squadra, sponsor della squadra» — e «non deve essere una copia ma un
+   restyling in 2D». Quindi non si imita la scena 3D: si disegna un backdrop da conferenza stampa vero,
+   che nel calcio e' CHIARO e coperto di marchi. Coerente anche con «la grafica deve essere UNA» e con
+   la base chiara scelta dal PO.
+   Lo sponsor non esiste nei dati del gioco: si inventa, deterministico sull'id del club (stesso club =
+   stesso sponsor per sempre, nessun campo nuovo nel salvataggio) e con nomi di fantasia — il gate del
+   copyright (`node tools/audit-copyright.mjs`) deve restare a zero. */
+const _SPONSOR947=["Marelluce","Vesta Assicura","Caff\u00e8 Orvino","Banca Pontebianco","Terranova Energia",
+  "Selvamare","Ferrogrigio","Lampara Mobile","Cordamarina","Nivalis","Ottobrenove","Vetrarossa"];
+function sponsorDi947(club){try{const k=String((club&&(club.id||club.n))||"x");
+  let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;
+  return _SPONSOR947[Math.abs(h)%_SPONSOR947.length];}catch(_e){return _SPONSOR947[0];}}
+function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
+  const c1=(club&&club.c)||"#8e1f33", c2=(club&&club.c2)||"#f0b33a";
+  const nome=(club&&(club.n||club.name))||"Il club";
+  const spon=sponsorDi947(club);
+  const tono = ctx==="win"?"#16a34a":ctx==="loss"?"#b91c1c":"#64748b";
+  /* le caselle del backdrop: il gioco fa da padrone di casa, poi sponsor e club a rotazione */
+  const _tasselli=React.useMemo(()=>{const a=[];
+    /* [difetto visto in foto] con 18 caselle il pannello restava scoperto in basso e le due persone
+       finivano su una fascia grigia vuota invece che DAVANTI ai marchi: il pannello si riempie tutto. */
+    for(let i=0;i<24;i++)a.push(i%3===0?{t:"gioco"}:(i%3===1?{t:"sponsor"}:{t:"club"}));
+    return a;},[]);
+  const _flash=React.useMemo(()=>{const a=[];const s0=(seed|0);
+    for(let i=0;i<6;i++)a.push({x:4+((s0+i*61)%90),y:4+((s0+i*37)%30),d:(1.7+((s0+i*11)%13)/10).toFixed(2),r:(-((s0+i*29)%20)/10).toFixed(2)});
+    return a;},[seed]);
+  const Logo=({small})=>(
+    <span style={{display:"inline-flex",alignItems:"center",gap:3,fontWeight:900,
+      fontSize:small?10:12,letterSpacing:.2,color:"#7a1526",whiteSpace:"nowrap"}}>
+      K<span style={{display:"inline-block",width:small?7:9,height:small?7:9,borderRadius:"50%",
+        border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
+      <span style={{fontWeight:700,fontStyle:"italic",color:"#b45309"}}>Elite</span>
+    </span>);
+  return(
+    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",
+      background:"linear-gradient(180deg,#eef1f6 0%,#e4e8f0 62%,#d7dce6 100%)"}}>
+      <style>{"@keyframes cpmFlash947{0%,93%{opacity:0}95%{opacity:.9}100%{opacity:0}}"}</style>
+      {/* IL BACKDROP: caselle di marchi, come i pannelli veri delle conferenze */}
+      <div style={{position:"absolute",left:"5%",right:"5%",top:"4%",height:"42%",borderRadius:RAD.sm,
+        overflow:"hidden",background:"#ffffff",border:"1px solid rgba(15,23,42,0.12)",
+        boxShadow:"0 10px 30px rgba(15,23,42,0.18)"}}>
+        <div style={{position:"absolute",inset:0,display:"grid",gridTemplateColumns:"repeat(3,1fr)",
+          alignContent:"stretch",gap:1,background:"rgba(15,23,42,0.06)"}}>
+          {_tasselli.map((t,i)=>(
+            <div key={i} style={{background:"#fff",minHeight:30,display:"flex",alignItems:"center",
+              justifyContent:"center",padding:"3px 3px",overflow:"hidden"}}>
+              {t.t==="gioco"?<Logo small/>
+               :t.t==="sponsor"?<span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:.3,color:"#475569",whiteSpace:"nowrap"}}>{spon}</span>
+               :<span style={{display:"inline-flex",alignItems:"center",gap:3}}>
+                  <span style={{width:9,height:11,borderRadius:"2px 2px 5px 5px",background:c1,border:"1px solid "+c2,display:"inline-block"}}/>
+                  <span style={{fontSize:FS.caption,fontWeight:800,color:c1,whiteSpace:"nowrap",maxWidth:74,overflow:"hidden",textOverflow:"ellipsis"}}>{nome}</span>
+                </span>}
+            </div>))}
+        </div>
+        {/* la fascia in basso: il gioco, grande, e il nome per intero della squadra */}
+        <div style={{position:"absolute",left:0,right:0,bottom:0,display:"flex",alignItems:"center",
+          justifyContent:"space-between",gap:8,padding:"5px 9px",background:"linear-gradient(90deg,#f8fafc,#eef2f7)",
+          borderTop:"1px solid rgba(15,23,42,0.10)"}}>
+          <Logo/>
+          <span style={{display:"inline-flex",alignItems:"center",gap:5,minWidth:0}}>
+            {(()=>{try{return <TeamBadge team={club} size={18}/>;}catch(_e){return null;}})()}
+            <span style={{fontSize:FS.caption,fontWeight:800,color:"#0f172a",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{nome}</span>
+          </span>
+        </div>
+        <div style={{position:"absolute",left:0,right:0,bottom:0,height:3,background:tono,opacity:0.85}}/>
+      </div>
+      {/* i flash dei fotografi */}
+      {_flash.map((f,i)=>(<span key={"fl"+i} style={{position:"absolute",left:f.x+"%",top:f.y+"%",width:7,height:7,
+        borderRadius:"50%",background:"#fff",boxShadow:"0 0 16px 5px rgba(255,255,255,0.9)",
+        animation:"cpmFlash947 "+f.d+"s linear infinite",animationDelay:f.r+"s"}}/>))}
+      {/* le due persone, a mezzo busto davanti al pannello: visi della libreria, non modelli */}
+      <div style={{position:"absolute",left:0,right:0,top:"27%",display:"flex",alignItems:"flex-end",
+        justifyContent:"center",gap:26}}>
+        <div style={{textAlign:"center"}}>
+          {(()=>{try{return <AvatarSVG seed={jName||"cronista"} size={56} avStyle="micah"/>;}catch(_e){return null;}})()}
+          <div style={{width:4,height:20,margin:"2px auto 0",borderRadius:2,background:"#475569"}}/>
+        </div>
+        <div style={{textAlign:"center"}}>
+          {(()=>{try{return <AvatarSVG id={avatarId} size={84} border/>;}catch(_e){return null;}})()}
+        </div>
+      </div>
+    </div>);
+}
 function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
   const ref=React.useRef(null);
   React.useEffect(()=>{
@@ -712,7 +804,47 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
    schierata a centrocampo, fari, fuochi d'artificio sul finale, camera che gira attorno alla fila.
    I calciatori sono i CH38 clonati (SkeletonUtils) e restano INVISIBILI finche' il modello non e' agganciato
    — regola «mai burattini in campo» (7.9.3/7.8.19); senza GLB la scena mostra lo stadio e basta. */
-function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[]}){
+/* [7.947 — ANCHE LA PRESENTAZIONE E' IN 2D. Direttiva PO: «anche la presentazione della squadra deve
+   essere in 2D, anche se nello stadio ma senza CH38. Il CH38 deve essere usato - al momento - solo
+   negli highlights dell'eroe».]
+   Lo stadio resta, ma disegnato: due anelli di tribuna con la folla a puntini nei colori del club,
+   quattro torri faro, il prato con cerchio di centrocampo. La squadra sono i VISI della libreria SVG
+   schierati davanti alla curva; nei battiti successivi sale in primo piano un giocatore per volta, col
+   numero sulla maglia. Nessun WebGL, nessun modello, nessun asset: DOM e CSS.
+   Stessa firma di PresentationStage3D — lo scambio e' una riga sola. */
+function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[]}){
+  /* [7.947 v3 — SOLO SOVRAPPOSIZIONE. Direttiva PO: «come scenografia puoi usare lo stadio cosi' com'e'
+     nell'as is con sovrapposizione delle schermate 2D».
+     La v2 ridisegnava lo stadio in CSS: sbagliato, perche' lo stadio 3D non era il problema — lo erano i
+     CH38. Qui resta SOLO cio' che prima non si poteva avere: i visi della libreria, schierati sul prato
+     vero, col numero di maglia. Fondo trasparente: sotto c'e' lo stadio, quello dell'as is. */
+  const b=beat|0;
+  const _squadra=React.useMemo(()=>{const a=[];
+    for(let i=0;i<11;i++)a.push({n:i===0?1:(i+1),gk:i===0,seme:"pres-"+((club&&club.id)||"x")+"-"+i});
+    return a;},[club]);
+  const inPrimo = b>=2 ? ((b-2)%11) : -1;
+  if(b===0)return null;/* il primo battito e' lo stadio che si mostra: nessuno in campo */
+  return(
+    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
+      <div style={{position:"absolute",left:0,right:0,top:"56%",display:"flex",flexWrap:"wrap",
+        alignItems:"flex-end",justifyContent:"center",gap:"10px 4px",padding:"0 8px"}}>
+        {_squadra.map((q,i)=>{const big=(i===inPrimo);
+          return(<div key={i} style={{textAlign:"center",opacity:(inPrimo<0||big)?1:0.45,
+            transform:big?"scale(1.2)":"none",transition:"opacity .45s ease-out, transform .45s ease-out",
+            filter:big?"drop-shadow(0 0 16px rgba(255,255,255,0.45))":"drop-shadow(0 3px 8px rgba(0,0,0,0.55))"}}>
+            {(()=>{try{return big
+              ? <AvatarSVG id={avatarId} size={62} border/>
+              : <AvatarSVG seed={q.seme} size={38} avStyle="micah"/>;}catch(_e){return null;}})()}
+            <div style={{marginTop:2,fontSize:big?12:9,fontWeight:900,color:"#fff",
+              textShadow:"0 1px 4px rgba(0,0,0,0.85)"}}>{big&&heroNum?heroNum:q.n}</div>
+          </div>);})}
+      </div>
+    </div>);
+}
+function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[],senzaCorpi=false}){
+  /* [7.947 v3 — direttiva PO: «come scenografia puoi usare lo stadio cosi' com'e' nell'as is con
+     sovrapposizione delle schermate 2D». Lo stadio non era il problema: lo erano i CH38. Con senzaCorpi
+     la scena costruisce lo STADIO VERO e salta i corpi, e le facce arrivano dal 2D sopra. */
   const ref=React.useRef(null);const st=React.useRef({beat:0,total:6});
   st.current.beat=beat|0;st.current.total=Math.max(1,total|0);
   React.useEffect(()=>{
@@ -773,7 +905,7 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
     /* l'eroe e' il SUO avatar di carriera, con la stessa formula del match (9405): incarnato/capelli da AVATARS */
     const heroAppr=(function(){try{const av=(typeof AVATARS!=="undefined")&&AVATARS[((avatarId|0)%AVATARS.length+AVATARS.length)%AVATARS.length];
       return av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:av.skin,hair:av.hair,bald:av.style==='bald'}:null;}catch(_e){return null;}})();
-    if(window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
+    if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/footballer.glb'),loadGLB('./assets/anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
         if(!glb||!glb.scene)return;
         for(let i=0;i<N;i++){
