@@ -11662,6 +11662,19 @@ function ThreeMatchView(props){
       const t=new THREE.MeshToonMaterial({color:m.color?m.color.clone():0xffffff,map:m.map||null,
         gradientMap:_toonGradiente941(),skinning:!!m.skinning,side:m.side,
         transparent:!!m.transparent,opacity:m.opacity!=null?m.opacity:1,alphaTest:m.alphaTest||0});
+      /* [7.941 v3 — LE MAGLIE PERDEVANO IL COLORE, e il motivo non era un colore perso.]
+         La divisa non usa la proprieta' `color`: usa uno SHADER SCRITTO A MANO (onBeforeCompile) con un
+         attributo per vertice che colora CINQUE parti — maglia, pantaloncini, calzettoni, e cosi' via.
+         Un materiale nuovo senza quello nasce bianco, ed e' esattamente cio' che si vedeva nella foto.
+         Qui lo shader si trapianta sul toon. Se i punti d'innesto che quello shader cerca non esistono nel
+         fragment del toon, Three.js lascia la stringa com'e' e il risultato resta bianco: allora la strada
+         non e' questa, e' riscrivere quello shader in stile toon. Il banco lo dira'. */
+      if(typeof m.onBeforeCompile==='function'&&m.onBeforeCompile!==THREE.Material.prototype.onBeforeCompile){
+        t.onBeforeCompile=m.onBeforeCompile;
+        t.customProgramCacheKey=(typeof m.customProgramCacheKey==='function')?m.customProgramCacheKey:t.customProgramCacheKey;
+        if(m.defines)t.defines=Object.assign({},m.defines);
+        t.needsUpdate=true;
+      }
       _toonCache941.set(k,t);return t;};
     /* [7.941 v2 — MISURATO: convertire TUTTO costa il 67 % dei fotogrammi, 18 → 6.]
        Avevo previsto il contrario (il toon calcola meno di un materiale fisico) e mi sbagliavo: il costo non
