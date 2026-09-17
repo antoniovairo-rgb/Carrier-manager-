@@ -654,18 +654,18 @@ function creaMotorePossesso(cfg){
          const _oppo=(by>50)?(sl.y<=50):(sl.y>=50);
          if(!_no883&&inPoss&&st!=="fermo"&&advB>=70&&Math.abs(by-50)>=20&&_oppo&&(p.rl==="AT"||p.rl==="MF")){
            const _po=(p.rl==="AT")?{a:85,y:(by>50?44:56)}:{a:80,y:50};
-           /* [7.931 REVOCATA 17/09 — il metro non la lascia passare, e il metro non si alza]
-              MISURATO e riportato al PO: il portatore e' avanzato E largo 33,5 volte a partita, ma in 17,9
-              casi su 18,1 il cross muore perche' in area non c'e' nessuno; i cross riusciti sono 0,20 su 15
-              veri. La regola della 7.883 manda gia' in area chi sta dal lato cieco, ma ci va a `v=6`, cioe'
-              6 unita' al MINUTO: con 11 battiti sono 0,55 unita' per battito, e per le 25 unita' che
-              separano un trequartista dal secondo palo servirebbero 45 battiti mentre un'azione ne dura due
-              o tre. A 110 u/min (la media di corsa di un calciatore vero, 10-11 km in 90') i cross salivano
-              a 6,53, xG 0,43 → 0,92, parate 1,57 → 2,70, corner 1,60 → 2,75, voci fuori banda 10 → 8.
-              MA il guardiano «un pallone, un padrone» (test/logic) impone stepMax <= 12 e si accendeva.
-              Provato il massimo che il tetto consente, v=12: i cross vanno 0,20 → 0,40 su 15. Irrilevante.
-              Quindi si resta a 6 e la decisione sul tetto e' del PO, non mia: e' un metro spedito. */
-           if(advDi(tx,p.team)<_po.a-2){tx=xDa(_po.a,p.team);ty=_po.y;v=6;}}}
+           /* [7.939 — CHI ATTACCA L'AREA CI ARRIVA PRIMA CHE FINISCA L'AZIONE. Sbloccata dal PO il 17/09]
+              MISURATO: il portatore e' avanzato E largo 33,5 volte a partita, ma in 17,9 casi su 18,1 il cross
+              muore perche' in area non c'e' nessuno; i cross riusciti sono 0,20 contro 15 veri. La regola
+              della 7.883 manda gia' in area chi sta dal lato cieco, ma ci andava a `v=6`, cioe' 6 unita' al
+              MINUTO: 0,55 per battito, e per le 25 unita' che separano un trequartista dal secondo palo
+              servirebbero 45 battiti mentre un'azione ne dura due o tre.
+              Era ferma dal 17/09 perche' accendeva il guardiano «un pallone, un padrone». Il guardiano aveva
+              ragione, ma per un altro motivo: misurava a una decisione al minuto una partita che se ne gioca
+              undici. Sistemato quello (7.938) e tolto il teletrasporto del battitore, il tetto vero e' 12
+              unita' PER BATTITO — 2,2 m/s — e la corsa in area ci sta sotto: 11 u/battito, 2,0 m/s. */
+           const _v939=(typeof window!=='undefined'&&window&&window.__CPM_NO939)?6:Math.min(60,12/(S.dt||1));/* [7.939 v2] META' della corsa massima: a 121 il pallone restava senza padrone il 57 % del tempo e la banda del guardiano ne chiede almeno il 60 — quella soglia non e' fra quelle che il PO ha autorizzato a toccare */
+           if(advDi(tx,p.team)<_po.a-2){tx=xDa(_po.a,p.team);ty=_po.y;v=_v939;}}}
       }
       if(st==="fermo"&&S.fermo&&S.fermo.batt===p.i){const f=S.fermo;tx=f.x-dp*(f.kind==="pen"?1.5:0.8);ty=f.kind==="corner"?f.y:f.y;
         /* [7.938 — CHI VA A BATTERE CI VA COI PIEDI] MISURATO alla cadenza vera (5 partite, 11 battiti al
