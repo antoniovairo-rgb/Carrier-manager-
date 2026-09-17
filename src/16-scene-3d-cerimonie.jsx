@@ -230,77 +230,28 @@ function sponsorDi947(club){try{const k=String((club&&(club.id||club.n))||"x");
   let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;
   return _SPONSOR947[Math.abs(h)%_SPONSOR947.length];}catch(_e){return _SPONSOR947[0];}}
 function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
-  const c1=(club&&club.c)||"#8e1f33", c2=(club&&club.c2)||"#f0b33a";
-  const nome=(club&&(club.n||club.name))||"Il club";
-  const spon=sponsorDi947(club);
+  /* [7.948 — sola SOVRAPPOSIZIONE, per la regola di coerenza in StrisciaScena948.]
+     La v2 disegnava un muro stampa in CSS. Era buona come idea (il PO aveva chiesto logo del gioco,
+     stemma, nome per intero e sponsor) ma era un TERZO linguaggio accanto al teatro del gala' e allo
+     stadio della presentazione. Ora quel contenuto vive nella striscia comune, la scenografia e' la
+     mixed zone 3D che c'era gia' (senza CH38) e qui restano solo le due persone. */
   const tono = ctx==="win"?"#16a34a":ctx==="loss"?"#b91c1c":"#64748b";
-  /* le caselle del backdrop: il gioco fa da padrone di casa, poi sponsor e club a rotazione */
-  const _tasselli=React.useMemo(()=>{const a=[];
-    /* [difetto visto in foto] con 18 caselle il pannello restava scoperto in basso e le due persone
-       finivano su una fascia grigia vuota invece che DAVANTI ai marchi: il pannello si riempie tutto. */
-    for(let i=0;i<24;i++)a.push(i%3===0?{t:"gioco"}:(i%3===1?{t:"sponsor"}:{t:"club"}));
-    return a;},[]);
-  const _flash=React.useMemo(()=>{const a=[];const s0=(seed|0);
-    for(let i=0;i<6;i++)a.push({x:4+((s0+i*61)%90),y:4+((s0+i*37)%30),d:(1.7+((s0+i*11)%13)/10).toFixed(2),r:(-((s0+i*29)%20)/10).toFixed(2)});
-    return a;},[seed]);
-  const Logo=({small})=>(
-    <span style={{display:"inline-flex",alignItems:"center",gap:3,fontWeight:900,
-      fontSize:small?10:12,letterSpacing:.2,color:"#7a1526",whiteSpace:"nowrap"}}>
-      K<span style={{display:"inline-block",width:small?7:9,height:small?7:9,borderRadius:"50%",
-        border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
-      <span style={{fontWeight:700,fontStyle:"italic",color:"#b45309"}}>Elite</span>
-    </span>);
   return(
-    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",
-      background:"linear-gradient(180deg,#eef1f6 0%,#e4e8f0 62%,#d7dce6 100%)"}}>
-      <style>{"@keyframes cpmFlash947{0%,93%{opacity:0}95%{opacity:.9}100%{opacity:0}}"}</style>
-      {/* IL BACKDROP: caselle di marchi, come i pannelli veri delle conferenze */}
-      <div style={{position:"absolute",left:"5%",right:"5%",top:"4%",height:"42%",borderRadius:RAD.sm,
-        overflow:"hidden",background:"#ffffff",border:"1px solid rgba(15,23,42,0.12)",
-        boxShadow:"0 10px 30px rgba(15,23,42,0.18)"}}>
-        <div style={{position:"absolute",inset:0,display:"grid",gridTemplateColumns:"repeat(3,1fr)",
-          alignContent:"stretch",gap:1,background:"rgba(15,23,42,0.06)"}}>
-          {_tasselli.map((t,i)=>(
-            <div key={i} style={{background:"#fff",minHeight:30,display:"flex",alignItems:"center",
-              justifyContent:"center",padding:"3px 3px",overflow:"hidden"}}>
-              {t.t==="gioco"?<Logo small/>
-               :t.t==="sponsor"?<span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:.3,color:"#475569",whiteSpace:"nowrap"}}>{spon}</span>
-               :<span style={{display:"inline-flex",alignItems:"center",gap:3}}>
-                  <span style={{width:9,height:11,borderRadius:"2px 2px 5px 5px",background:c1,border:"1px solid "+c2,display:"inline-block"}}/>
-                  <span style={{fontSize:FS.caption,fontWeight:800,color:c1,whiteSpace:"nowrap",maxWidth:74,overflow:"hidden",textOverflow:"ellipsis"}}>{nome}</span>
-                </span>}
-            </div>))}
-        </div>
-        {/* la fascia in basso: il gioco, grande, e il nome per intero della squadra */}
-        <div style={{position:"absolute",left:0,right:0,bottom:0,display:"flex",alignItems:"center",
-          justifyContent:"space-between",gap:8,padding:"5px 9px",background:"linear-gradient(90deg,#f8fafc,#eef2f7)",
-          borderTop:"1px solid rgba(15,23,42,0.10)"}}>
-          <Logo/>
-          <span style={{display:"inline-flex",alignItems:"center",gap:5,minWidth:0}}>
-            {(()=>{try{return <TeamBadge team={club} size={18}/>;}catch(_e){return null;}})()}
-            <span style={{fontSize:FS.caption,fontWeight:800,color:"#0f172a",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{nome}</span>
-          </span>
-        </div>
-        <div style={{position:"absolute",left:0,right:0,bottom:0,height:3,background:tono,opacity:0.85}}/>
-      </div>
-      {/* i flash dei fotografi */}
-      {_flash.map((f,i)=>(<span key={"fl"+i} style={{position:"absolute",left:f.x+"%",top:f.y+"%",width:7,height:7,
-        borderRadius:"50%",background:"#fff",boxShadow:"0 0 16px 5px rgba(255,255,255,0.9)",
-        animation:"cpmFlash947 "+f.d+"s linear infinite",animationDelay:f.r+"s"}}/>))}
-      {/* le due persone, a mezzo busto davanti al pannello: visi della libreria, non modelli */}
-      <div style={{position:"absolute",left:0,right:0,top:"27%",display:"flex",alignItems:"flex-end",
+    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
+      <div style={{position:"absolute",left:0,right:0,top:"22%",display:"flex",alignItems:"flex-end",
         justifyContent:"center",gap:26}}>
-        <div style={{textAlign:"center"}}>
+        <div style={{textAlign:"center",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.55))"}}>
           {(()=>{try{return <AvatarSVG seed={jName||"cronista"} size={56} avStyle="micah"/>;}catch(_e){return null;}})()}
-          <div style={{width:4,height:20,margin:"2px auto 0",borderRadius:2,background:"#475569"}}/>
+          <div style={{width:4,height:20,margin:"2px auto 0",borderRadius:2,background:"#cbd5e1"}}/>
         </div>
-        <div style={{textAlign:"center"}}>
+        <div style={{textAlign:"center",filter:"drop-shadow(0 6px 16px rgba(0,0,0,0.6))"}}>
           {(()=>{try{return <AvatarSVG id={avatarId} size={84} border/>;}catch(_e){return null;}})()}
         </div>
       </div>
+      <StrisciaScena948 club={club} tono={tono}/>
     </div>);
 }
-function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
+function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null,senzaCorpi=false}){
   const ref=React.useRef(null);
   React.useEffect(()=>{
     const host=ref.current;if(!host)return;
@@ -410,7 +361,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
     const _qPar=new THREE.Quaternion(),_qDes=new THREE.Quaternion();// [7.128.0] mic parentato all'osso mano
     const _pV=new THREE.Vector3(),_pV2=new THREE.Vector3(),_pFing=new THREE.Vector3(),_pAway=new THREE.Vector3(),_pN=new THREE.Vector3(),_pRt=new THREE.Vector3(),_pOff=new THREE.Vector3(),_pCam=new THREE.Vector3();
     const _qP2=new THREE.Quaternion(),_qD2=new THREE.Quaternion(),_m4=new THREE.Matrix4();/* [7.338.0] taccuino orientato in world (mai di taglio) */
-    if(typeof loadGLB==="function"&&window.__CPM_GLB!==false){
+    if(!senzaCorpi&&typeof loadGLB==="function"&&window.__CPM_GLB!==false){
       /* [7.302.0 collaudo PO «Davide Ricci ma e' un'intervistatrice, occhio gia' te lo avevo segnalato»]
          il fix 7.299.0 (genere dal NOME mostrato) governava SOLO il fallback procedurale CH38: l'actor GLB
          era `actor-journalist.glb` — un modello FEMMINILE — caricato incondizionatamente, quindi ogni
@@ -427,7 +378,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
         //   Stesso pattern drop-in dell'audio (7.70.0): quando il PO carica l'asset non si tocca una riga di codice.
         //   Filiera verificata in sessione: FBX Mixamo → FBX2glTF (npm) → GLB con rig mixamorig completo.
         const mkActor=(g,o)=>{try{
-          const av=THREE.SkeletonUtils.clone(g.scene);
+          _corpo948();const av=THREE.SkeletonUtils.clone(g.scene);
           /* [7.141.0] ALTEZZA DALLE OSSA, non dalla geometria: sui SkinnedMesh il bbox di setFromObject misura la
              geometria in BIND-SPACE (per Michelle ~0 → modello di 6cm, invisibile). Le world-position delle ossa
              (HeadTop→piedi) danno l'altezza vera in ogni unità di export. */
@@ -547,7 +498,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
           return rec;
         }catch(_e){return null;}};
         const mkAv=(o)=>{
-          const av=THREE.SkeletonUtils.clone(body.scene);
+          _corpo948();const av=THREE.SkeletonUtils.clone(body.scene);
           const bb=new THREE.Box3().setFromObject(av);const hh=Math.max(0.1,bb.max.y-bb.min.y);const sc=(o.height||1.8)/hh;av.scale.set(sc*(o.girth||1),sc,sc*(o.girth||1));
           av.traverse(m=>{if(!m.isMesh)return;m.frustumCulled=false;const n=(m.name||"").toLowerCase();
             const setStd=(hex,rough)=>{m.material=new THREE.MeshStandardMaterial({color:new THREE.Color(hex),roughness:(rough!=null?rough:0.88),metalness:0.03,skinning:true});m.material.emissive=new THREE.Color(hex).multiplyScalar(0.055);};
@@ -812,6 +763,45 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
    schierati davanti alla curva; nei battiti successivi sale in primo piano un giocatore per volta, col
    numero sulla maglia. Nessun WebGL, nessun modello, nessun asset: DOM e CSS.
    Stessa firma di PresentationStage3D — lo scambio e' una riga sola. */
+/* [7.948 — LE SCHERMATE DEVONO ESSERE COERENTI FRA LORO. Direttiva PO, insieme a «anche le altre
+   scenografie, se lo ritieni opportuno, puoi riusarle senza CH38».]
+   Da qui in avanti le cerimonie parlano tutte la stessa lingua, e sono TRE regole sole:
+     (a) la SCENOGRAFIA e' quella 3D che c'e' gia', costruita senza i corpi CH38 (`senzaCorpi`);
+     (b) le PERSONE sono i visi della libreria SVG, sovrapposti in 2D;
+     (c) il MARCHIO e' questa striscia, identica ovunque: logo e nome del gioco, stemma e nome per
+         intero della squadra, sponsor. E' cio' che il PO ha chiesto per il pannello stampa, e messo
+         in una striscia sola vale per tutte le scene senza doverlo ridisegnare ogni volta.
+   Prima di questa regola ogni scena aveva un fondale suo: il gala' un teatro in CSS, l'intervista un
+   muro in CSS, la presentazione lo stadio vero. Tre linguaggi per lo stesso gioco. */
+/* [7.948 testimone inerte] conta i CORPI CH38 davvero aggiunti a una scena di cerimonia. La rete non
+   basta: dopo il ritratto dell'avatar il modello e' in CACHE e non viene piu' richiesto, quindi un
+   guardiano che guarda le richieste non distingue «non c'e'» da «c'era gia'». */
+function _corpo948(){try{if(typeof window!=='undefined')window.__CPM_CORPI948=(window.__CPM_CORPI948|0)+1;}catch(_e){}}
+function StrisciaScena948({club,tono}){
+  const c1=(club&&club.c)||"#8e1f33", c2=(club&&club.c2)||"#f0b33a";
+  const nome=(club&&(club.n||club.name))||"Il club";
+  const spon=sponsorDi947(club);
+  return(
+    <div style={{position:"absolute",left:0,right:0,bottom:0,display:"flex",alignItems:"center",
+      justifyContent:"space-between",gap:8,padding:"6px 10px",pointerEvents:"none",
+      background:"linear-gradient(180deg,rgba(248,250,252,0.94),rgba(238,242,247,0.97))",
+      borderTop:"1px solid rgba(15,23,42,0.12)"}}>
+      <span style={{display:"inline-flex",alignItems:"center",gap:3,fontWeight:900,fontSize:FS.caption,
+        letterSpacing:.2,color:"#7a1526",whiteSpace:"nowrap"}}>
+        K<span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",
+          border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
+        <span style={{fontWeight:700,fontStyle:"italic",color:"#b45309"}}>Elite</span>
+      </span>
+      <span style={{fontSize:FS.caption,fontWeight:800,color:"#475569",whiteSpace:"nowrap",
+        overflow:"hidden",textOverflow:"ellipsis",flex:1,textAlign:"center"}}>{spon}</span>
+      <span style={{display:"inline-flex",alignItems:"center",gap:5,minWidth:0}}>
+        {(()=>{try{return <TeamBadge team={club} size={16}/>;}catch(_e){return null;}})()}
+        <span style={{fontSize:FS.caption,fontWeight:800,color:"#0f172a",whiteSpace:"nowrap",
+          overflow:"hidden",textOverflow:"ellipsis",maxWidth:130}}>{nome}</span>
+      </span>
+      {tono?<span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.9}}/>:null}
+    </div>);
+}
 function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[]}){
   /* [7.947 v3 — SOLO SOVRAPPOSIZIONE. Direttiva PO: «come scenografia puoi usare lo stadio cosi' com'e'
      nell'as is con sovrapposizione delle schermate 2D».
@@ -835,10 +825,11 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
             {(()=>{try{return big
               ? <AvatarSVG id={avatarId} size={62} border/>
               : <AvatarSVG seed={q.seme} size={38} avStyle="micah"/>;}catch(_e){return null;}})()}
-            <div style={{marginTop:2,fontSize:big?12:9,fontWeight:900,color:"#fff",
+            <div style={{marginTop:2,fontSize:FS.caption,fontWeight:900,color:"#fff",
               textShadow:"0 1px 4px rgba(0,0,0,0.85)"}}>{big&&heroNum?heroNum:q.n}</div>
           </div>);})}
       </div>
+      <StrisciaScena948 club={club} tono={null}/>
     </div>);
 }
 function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[],senzaCorpi=false}){
@@ -1366,7 +1357,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10}){/* [7.469.0] esposto 
       return g;};
     const placeMen=(mk)=>{for(let i=0;i<NM;i++){const m=mk(i);m.position.set(slots[i].x,5.35,slots[i].z);m.rotation.y=(slots[i].x<0?-1:1)*Math.PI/2;bus.add(m);men.push(m);}
       cup.position.set(0,5.75,7.0);bus.add(cup);};
-    if(window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
+    if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/footballer.glb'),loadGLB('./assets/anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
         if(!glb||!glb.scene){placeMen(mkFallback);return;}
         try{if(typeof window!=="undefined"&&window.__CPM_PARATA)window.__CPM_PARATA.glb=true;}catch(_e){}
@@ -1493,40 +1484,24 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10}){/* [7.469.0] esposto 
    libreria SVG, lo stesso che il giocatore vede fuori partita e nel festeggiamento di fine gara. Stessa
    firma di GalaStage3D, cosi' lo scambio e' una riga sola e la 3D resta nel file finche' non e' chiaro
    che nessuno la rimpiange. Nessun WebGL, nessun modello, nessun asset: solo DOM e CSS. */
-function GalaScena2D({beat,heroWins,avatarId=0,seed=7,act=0}){
-  const b=beat|0, vinto=!!heroWins&&b>=3;
-  /* i fasci di luce si spostano a ogni atto: il palco non e' una fotografia */
-  const _fasci=React.useMemo(()=>{const a=[];const s0=(seed|0)+(act|0)*37;
-    for(let i=0;i<3;i++){const h=((s0+i*97)%40)-20;a.push({x:22+i*28+h*0.25,d:(3.4+((s0+i*13)%9)/10).toFixed(2),o:i===1?0.30:0.20});}
-    return a;},[seed,act]);
+function GalaScena2D({beat,heroWins,avatarId=0,seed=7,act=0,club=null}){
+  /* [7.948 — sola SOVRAPPOSIZIONE, regola di coerenza in StrisciaScena948.]
+     La v1 disegnava un teatro in CSS: era il terzo fondale inventato, e le tre cerimonie sembravano
+     tre giochi diversi. La scenografia torna a essere quella 3D del gala' (senza CH38); qui restano
+     i coriandoli della vittoria e la striscia comune. I visi stanno sul PODIO, dove si leggono. */
+  const vinto=!!heroWins&&(beat|0)>=3;
   const _cor=React.useMemo(()=>{const c=["#d4a017","#fde68a","#ffffff","#b45309"];const a=[];
     for(let i=0;i<22;i++)a.push({x:(i*41)%100,d:(2.4+((i*17)%14)/10).toFixed(2),r:(-((i*23)%36)/10).toFixed(2),c:c[i%c.length],w:4+((i*5)%4)});
     return a;},[]);
   return(
-    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",
-      background:"radial-gradient(120% 80% at 50% 8%, #2a1d09 0%, #140e06 42%, #07060c 78%)"}}>
-      <style>{"@keyframes cpmGala946Luce{0%{transform:translateX(-6%) scaleY(1)}50%{transform:translateX(6%) scaleY(1.04)}100%{transform:translateX(-6%) scaleY(1)}}@keyframes cpmGala946Cor{0%{transform:translateY(-12vh) rotate(0deg)}100%{transform:translateY(118vh) rotate(400deg)}}"}</style>
-      {/* i tre occhi di bue */}
-      {_fasci.map((f,i)=>(<div key={"f"+i} style={{position:"absolute",top:"-8%",left:f.x+"%",width:"26%",height:"78%",
-        background:"linear-gradient(180deg,rgba(255,228,150,"+f.o+") 0%,rgba(255,228,150,0) 82%)",
-        clipPath:"polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%)",filter:"blur(2px)",
-        animation:"cpmGala946Luce "+f.d+"s ease-in-out infinite",animationDelay:(-i*0.7)+"s"}}/>))}
-      {/* il sipario, due ali */}
-      <div style={{position:"absolute",top:0,bottom:0,left:0,width:"17%",background:"linear-gradient(90deg,#4a0d18 0%,#7a1526 62%,rgba(122,21,38,0) 100%)",opacity:0.88}}/>
-      <div style={{position:"absolute",top:0,bottom:0,right:0,width:"17%",background:"linear-gradient(270deg,#4a0d18 0%,#7a1526 62%,rgba(122,21,38,0) 100%)",opacity:0.88}}/>
-      {/* il palco */}
-      <div style={{position:"absolute",left:0,right:0,bottom:0,height:"26%",
-        background:"linear-gradient(180deg,#23180a 0%,#120c05 100%)",boxShadow:"0 -18px 48px rgba(0,0,0,0.6)"}}/>
-      <div style={{position:"absolute",left:"8%",right:"8%",bottom:"25%",height:2,
-        background:"linear-gradient(90deg,rgba(212,160,23,0) 0%,rgba(212,160,23,0.75) 50%,rgba(212,160,23,0) 100%)"}}/>
-      {/* [difetto della prima stesura, visto nella foto] qui c'era la figura sul palco: finiva DIETRO
-          i bottoni e mezza tagliata. E stava nel posto sbagliato — il viso va accanto al NOME di chi
-          vince, non sul fondale. Ora il palco resta vuoto e i visi stanno sul podio, dove si leggono. */}
+    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
+      <style>{"@keyframes cpmGala946Cor{0%{transform:translateY(-12vh) rotate(0deg)}100%{transform:translateY(118vh) rotate(400deg)}}"}</style>
       {vinto&&_cor.map((k,i)=>(<span key={"c"+i} style={{position:"absolute",left:k.x+"%",top:"-6%",width:k.w,height:k.w*1.7,
         background:k.c,borderRadius:1,animation:"cpmGala946Cor "+k.d+"s linear infinite",animationDelay:k.r+"s"}}/>))}
+      <StrisciaScena948 club={club} tono={vinto?"#d4a017":null}/>
     </div>);
 }
-function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0}){
+function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
   const ref=React.useRef(null);const st=React.useRef({beat:0,heroWins:false,act:0});
   st.current.beat=beat;st.current.heroWins=!!heroWins;st.current.act=act|0;/* [7.144.0] atto corrente → alternanza presentatori */
   React.useEffect(()=>{
@@ -1682,7 +1657,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0}){
        Biped+mixamo, posa world-space, curl delle 5 dita, tick su base-quaternion. La BUSTA torna visibile e
        viene tenuta al petto nella mano sinistra (tracking world-space già esistente). */
     const mkActorG=(g,o)=>{try{
-      const av=THREE.SkeletonUtils.clone(g.scene);
+      _corpo948();const av=THREE.SkeletonUtils.clone(g.scene);
       av.updateMatrixWorld(true);
       let _yMin=Infinity,_yMax=-Infinity;const _bv=new THREE.Vector3();
       av.traverse(bb=>{if(!bb.isBone)return;bb.getWorldPosition(_bv);if(_bv.y<_yMin)_yMin=_bv.y;if(_bv.y>_yMax)_yMax=_bv.y;});
@@ -1724,7 +1699,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0}){
       if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST){try{(window.__CPM_ACTOR_G=window.__CPM_ACTOR_G||[]).push({hh:hh,sc:sc,bones:Object.keys(rec.bones)});}catch(_e){}}/* [7.144.0] array: uomo+donna */
       return rec;
     }catch(_e){return null;}};
-    if(typeof loadGLB==="function"&&window.__CPM_GLB!==false){
+    if(!senzaCorpi&&typeof loadGLB==="function"&&window.__CPM_GLB!==false){
       /* [7.144.0 collaudo PO «la cerimonia sia con DONNA che UOMO che si alternano all'apertura delle buste»]
          DUE presentatori Rocketbox ai lati del podio: uomo (Male_Adult_03, giacca) a destra + donna
          (Female_Adult_11, abito da cerimonia) a sinistra. L'atto PARI apre la donna, il dispari l'uomo;
@@ -1876,8 +1851,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {_galaOn&&(
         <div style={{position:"fixed",inset:0,zIndex:9997,background:"radial-gradient(circle at 50% 18%, #1c1408 0%, #07060c 62%)",display:"flex",alignItems:"center",justifyContent:"center",padding:18}}>
           {/* [7.24.0] PALCO 3D dietro il gala (fallback = il gradiente qui sopra se WebGL non parte) — [7.33.0] beat/heroWins per ATTO: luci e coriandoli si riaccendono a ogni premio */}
-          {(typeof window!=='undefined'&&window.__CPM_NO946)?<GalaStage3D beat={galaN} act={galaAct} heroWins={!!(_galaTop3[0]&&_galaTop3[0].isPlayer)} avatarId={player.avatarId||0} seed={7}/>:null}
-          <GalaScena2D beat={galaN} act={galaAct} heroWins={!!(_galaTop3[0]&&_galaTop3[0].isPlayer)} avatarId={player.avatarId||0} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|gala|"+(season||1)):7}/>
+          <GalaStage3D beat={galaN} act={galaAct} heroWins={!!(_galaTop3[0]&&_galaTop3[0].isPlayer)} avatarId={player.avatarId||0} seed={7} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO946)}/>
+          <GalaScena2D club={player.club||null} beat={galaN} act={galaAct} heroWins={!!(_galaTop3[0]&&_galaTop3[0].isPlayer)} avatarId={player.avatarId||0} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|gala|"+(season||1)):7}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(7,6,12,0.30) 0%,rgba(7,6,12,0.06) 34%,rgba(7,6,12,0.62) 78%,rgba(7,6,12,0.82) 100%)",pointerEvents:"none"}}/>
           <div style={{maxWidth:420,width:"100%",textAlign:"center",position:"relative"}}>
             <div style={{fontSize:FS.caption,color:"#d4a017",textTransform:"uppercase",letterSpacing:3,marginBottom:6}}>🎩 La notte del Gala · Stagione {season}</div>
