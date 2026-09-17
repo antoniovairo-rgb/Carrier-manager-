@@ -687,7 +687,7 @@ function NationalCallupScreen({data,onPlay}){
           {[{l:"Popolarità",v:"+8",e:"📈",c:TH.success},{l:"Valore",v:"+€0.15M",e:"💶",c:TH.warning},{l:"Morale",v:"+12",e:"😊",c:TH.accent}].map(b=>(
             <div key={b.l} style={{textAlign:"center"}}>
               <div style={{fontSize:16,marginBottom:2}}>{b.e}</div>
-              <div style={{fontSize:15,fontWeight:800,color:b.c}}>{b.v}</div>
+              <div style={{fontSize:15,fontWeight:800,color:legCol944(b.c)}}>{b.v}</div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>{b.l}</div>
             </div>
           ))}

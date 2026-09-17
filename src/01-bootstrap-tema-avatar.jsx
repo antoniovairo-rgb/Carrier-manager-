@@ -96,6 +96,34 @@ let TH = {
   growth:"#16a34a", regression:"#dc2626", energy:"#0284c7",
   injury:"#dc2626", suspension:"#ea580c", record:"#0891b2",
 };
+
+/* [7.944 C4.1 — I COLORI DEI CLUB SONO DATI, E I DATI NON SANNO CHE E' NOTTE.]
+   Misurato con la griglia mobile a 412 px sul tema SCURO: i peggiori contrasti della schermata non
+   vengono dal tema ma dai colori di SQUADRA disegnati come testo — #8e1f33 su #1e293b = 1,67,
+   #003399 su #1b2a44 = 1,32, cioe' sotto il terzo della soglia WCAG di 4,5. Un token non puo'
+   risolverli: la tinta arriva dal database dei club, non dalla palette.
+   Qui la tinta viene ALZATA finche' non e' leggibile sul fondo scuro, conservando la TONALITA'
+   (il granata resta granata, il blu resta blu): e' la squadra che si riconosce, non il valore esatto.
+   Nel tema chiaro non tocca niente e restituisce il colore ricevuto — nessun cambiamento possibile. */
+function _lum944(h){h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
+  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  if(h.length<6)return null;const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255);
+  if(v.some(isNaN))return null;
+  const f=(c)=>c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4);
+  return 0.2126*f(v[0])+0.7152*f(v[1])+0.0722*f(v[2]);}
+function _rap944(a,b){const x=_lum944(a),y=_lum944(b);if(x==null||y==null)return 99;
+  return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);}
+function _mix944(h,q){h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
+  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(v.some(isNaN))return '#'+h;
+  return '#'+v.map(c=>Math.round(c+(255-c)*q).toString(16).padStart(2,'0')).join('');}
+function legCol944(col,fondo){
+  try{ if(!col||typeof col!=='string'||col[0]!=='#')return col;
+    if(typeof window!=='undefined'&&window.__CPM_NO944)return col;/* prova del rosso */
+    if(!(typeof TH!=='undefined'&&TH&&TH.dk))return col;/* solo nel tema scuro */
+    const bg=fondo||TH.card||'#1e293b';
+    let c=col; for(let i=0;i<7&&_rap944(c,bg)<4.5;i++)c=_mix944(c,0.22);
+    return c; }catch(_e){ return col; }}
 const TH_LIGHT_ORIG=Object.freeze({...TH,dk:false}); // snapshot for restoring light theme · [7.178.0] +dk flag
 const TH_LIGHT=TH; // alias used for dark-mode shadowing
 const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_nota:"[G1.7 grafica] faint scuro #64748b -> #8a97ab: era 3,0-3,8:1 sui fondi scuri (376 nodi: Creazione 259, Club 47, Profilo 36, Nazionale 17); ora 4,9-6,0:1 (4,5 su #21304a)",bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#8a97ab",navBg:"rgba(15,23,42,0.97)",

@@ -60,17 +60,17 @@ const StatBar=({label,value,tone,track,height=4,mb=8})=>{
   const c=tone==="attribute"?(value>=75?TH.success:value>=55?TH.energy:value>=40?TH.warning:TH.danger)
         :(tone&&TH[tone+"Fg"])?TH[tone+"Fg"]
         :(value>=80?TH.success:value>=65?TH.warning:TH.danger);
-  return<div style={{marginBottom:mb}}><div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span className="cpm-num" style={{color:c,fontWeight:700}}>{value}</span></div><div style={{height,background:track||TH.cardBorder,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:3,transition:"width .5s"}}/></div></div>;
+  return<div style={{marginBottom:mb}}><div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span className="cpm-num" style={{color:legCol944(c),fontWeight:700}}>{value}</span></div><div style={{height,background:track||TH.cardBorder,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:3,transition:"width .5s"}}/></div></div>;
 };
 /* OvrRing — refactor Ondata 1: track → TH.track (light == #e2e8f0, pinnato) · label default 'OVR' (era 'LVL': errato per un calciatore). */
 const OvrRing=({value,size=60,label="OVR"})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
-  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:Math.max(FS.caption,size*.27)/* [C4] pavimento 11 px */,fontWeight:900,color:c,lineHeight:1}}>{value}</div><div style={{fontSize:FS.caption,color:TH.faint}}>{label}</div></div></div>;
+  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:Math.max(FS.caption,size*.27)/* [C4] pavimento 11 px */,fontWeight:900,color:legCol944(c),lineHeight:1}}>{value}</div><div style={{fontSize:FS.caption,color:TH.faint}}>{label}</div></div></div>;
 };
 const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:13,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
-  var w=width||100;var h=height||30;var c=color||TH.primary;
+  var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
   if(!data||data.length<2)return <svg width={w} height={h}></svg>;
   var mn=data[0];var mx=data[0];
   for(var i=1;i<data.length;i++){if(data[i]<mn)mn=data[i];if(data[i]>mx)mx=data[i];}
@@ -130,11 +130,11 @@ function MatchBadge({r,size=22,title}){
 /* Meter — barra 0-100 generica con tone semantica (base per attributi/indicatori, ramp non allarmante). */
 function Meter({value,max=100,tone,color,height=6,track,label,right,mb=0,showValue=false}){
   const pct=Math.max(0,Math.min(100,(value/max)*100));
-  const c=color||(tone==="attribute"?(value>=75?TH.success:value>=55?TH.energy:value>=40?TH.warning:TH.danger):(tone&&TH[tone+"Fg"])?TH[tone+"Fg"]:TH.primary);
+  const c=legCol944(color||(tone==="attribute"?(value>=75?TH.success:value>=55?TH.energy:value>=40?TH.warning:TH.danger):(tone&&TH[tone+"Fg"])?TH[tone+"Fg"]:TH.primary));/* [7.944] idem */
   return(<div style={{marginBottom:mb}}>
     {(label!=null||right!=null||showValue)&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:4}}>
       {label!=null&&<span style={{fontSize:FS.caption,color:TH.muted,fontWeight:FW.medium}}>{label}</span>}
-      {(right!=null||showValue)&&<span className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.bold,color:c}}>{right!=null?right:Math.round(value)}</span>}
+      {(right!=null||showValue)&&<span className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.bold,color:legCol944(c)}}>{right!=null?right:Math.round(value)}</span>}
     </div>}
     <div style={{height,background:track||TH.track,borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:pct+"%",background:c,borderRadius:RAD.pill,transition:`width ${MO.slow}ms ${MO.easeOut}`}}/></div>
   </div>);
@@ -151,7 +151,7 @@ function KpiTile({label,value,unit,icon,tone,delta,spark,sparkColor,sub,onClick,
       {delta!=null&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:dc}}>{dUp?"▲":dDn?"▼":"■"} {Math.abs(delta)}</span>}
     </div>
     <div style={{display:"flex",alignItems:"baseline",gap:3}}>
-      <span className="cpm-num" style={{fontSize:FS.display,fontWeight:FW.black,color:c,lineHeight:1.05}}>{value}</span>
+      <span className="cpm-num" style={{fontSize:FS.display,fontWeight:FW.black,color:legCol944(c),lineHeight:1.05}}>{value}</span>
       {unit&&<span style={{fontSize:FS.small,color:TH.faint,fontWeight:FW.semibold}}>{unit}</span>}
     </div>
     {sub&&<span style={{fontSize:FS.caption,color:TH.faint}}>{sub}</span>}

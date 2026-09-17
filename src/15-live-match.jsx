@@ -10433,7 +10433,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginBottom:12}}>
             {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},{l:"Tiri",v:mxStats.shots,e:"💥",c:TH.accent},{l:"Poss.",v:(Math.round(possession))+'%',e:"🔵",c:TH.success}].map(s=>(
               <Card key={s.l} style={{padding:"8px 4px",textAlign:"center"}}>
-                <div style={{fontSize:13,marginBottom:1}}>{s.e}</div><div className="cpm-num" style={{fontSize:20,fontWeight:900,color:s.c,lineHeight:1}}>{s.v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
+                <div style={{fontSize:13,marginBottom:1}}>{s.e}</div><div className="cpm-num" style={{fontSize:20,fontWeight:900,color:legCol944(s.c),lineHeight:1}}>{s.v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
               </Card>
             ))}
           </div>
@@ -10443,7 +10443,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _row=(icon,lbl,arr,col)=>arr.length?(<div style={{display:"flex",alignItems:"flex-start",gap:8,padding:"7px 9px",background:TH.surface2,borderRadius:RAD.sm,border:`1px solid ${TH.divider}`,marginBottom:6}}>
               <span style={{fontSize:14,flexShrink:0}}>{icon}</span>
               <div style={{minWidth:0}}><div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.5}}>{lbl}</div>
-                <div style={{fontSize:12,color:TH.text,fontWeight:700,lineHeight:1.5}}>{arr.map((x,i)=>(<span key={i}><span style={{color:col}}>{x.name}</span> <span className="cpm-num" style={{color:TH.muted,fontWeight:600}}>{x.min}'</span>{i<arr.length-1?"   ·   ":""}</span>))}</div></div>
+                <div style={{fontSize:12,color:TH.text,fontWeight:700,lineHeight:1.5}}>{arr.map((x,i)=>(<span key={i}><span style={{color:legCol944(col)}}>{x.name}</span> <span className="cpm-num" style={{color:TH.muted,fontWeight:600}}>{x.min}'</span>{i<arr.length-1?"   ·   ":""}</span>))}</div></div>
             </div>):null;
             return(<div style={{marginBottom:14}}>
               <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>🔗 LE CONNESSIONI</div>
@@ -10575,7 +10575,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>}
               {/* Le parole del protagonista (commento dell'eroe) */}
               {_hero&&<div style={{marginTop:14,borderLeft:`3px solid ${TH.primary}`,paddingLeft:11}}>
-                <div style={{fontSize:FS.caption,letterSpacing:1,color:TH.primary,fontWeight:800,marginBottom:3,textTransform:"uppercase"}}>Le parole del protagonista</div>
+                <div style={{fontSize:FS.caption,letterSpacing:1,color:TH.brandText,fontWeight:800,marginBottom:3,textTransform:"uppercase"}}>Le parole del protagonista</div>
                 <div style={{fontFamily:_serif,fontSize:13,fontStyle:"italic",color:TH.text,lineHeight:1.5}}>{_hero.replace(/\s*—\s*[^—]+$/,"")}</div>
               </div>}
               {/* MIGLIORE IN CAMPO + LA CURVA (tifosi) */}
@@ -10590,8 +10590,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
               </div>
               {(_press.memoriaTag||_press.trending)&&<div style={{marginTop:12,display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
-                {_press.memoriaTag&&<span style={{fontSize:FS.caption,color:TH.accent,fontWeight:700}}>{_press.memoriaTag}</span>}
-                {_press.trending&&<span style={{fontSize:FS.caption,fontWeight:800,color:TH.primary,background:TH.primary+"18",padding:"3px 10px",borderRadius:RAD.xl}}>#{String(_press.trending).replace(/^#/,"")}</span>}
+                {_press.memoriaTag&&<span style={{fontSize:FS.caption,color:TH.accentText,fontWeight:700}}>{_press.memoriaTag}</span>}
+                {_press.trending&&<span style={{fontSize:FS.caption,fontWeight:800,color:TH.brandText,background:TH.primary+"18",padding:"3px 10px",borderRadius:RAD.xl}}>#{String(_press.trending).replace(/^#/,"")}</span>}
               </div>}
             </div>);
           })()}

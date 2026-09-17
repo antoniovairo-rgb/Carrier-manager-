@@ -92,9 +92,9 @@ function ProTransitionScreen({player,onChoose}){
                 <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
                   😄{o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
-                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:"#f3e8ff",color:TH.accent}}>📈+{o.growthBonus}</span>
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:"#f3e8ff",color:TH.accentText}}>📈+{o.growthBonus}</span>
                 {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
-                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.bgBlue,color:TH.primary}}>⭐ Consigliato</span>}
+                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.bgBlue,color:TH.brandText}}>⭐ Consigliato</span>}
                 {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
               </div>
             </div>
@@ -2268,7 +2268,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>⚔️ Il tuo rivale — {rival.name}</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:4,alignItems:"center",textAlign:"center"}}>
             <div>
-              <div style={{fontSize:11,fontWeight:700,color:TH.primary}}>{player.name}</div>
+              <div style={{fontSize:11,fontWeight:700,color:TH.brandText}}>{player.name}</div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>{club?.n||"–"}</div>
               <div style={{fontSize:20,fontWeight:900,color:TH.text,margin:"4px 0"}}>{playerStats.goals}<span style={{fontSize:11}}>⚽</span></div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>OVR {playerStats.ovr}</div>

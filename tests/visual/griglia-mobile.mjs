@@ -64,6 +64,7 @@ const { startServer, launchBrowser, installCdnRoutes, sleep, ROOT, openMatch } =
 const SEME = +(process.env.CPM_SEME || 4242);
 const FOTO = process.env.CPM_FOTO !== '0';
 const TEMA = process.env.CPM_TEMA === 'scuro' ? 'scuro' : 'chiaro';
+const ROSSI = (process.env.CPM_ROSSO || '').split(',').map(x => x.trim()).filter(Boolean);/* [7.944] prova del rosso dentro la pagina: i flag si accendono prima del caricamento */
 const PARTITA = process.env.CPM_PARTITA === '1';   /* CPM_PARTITA=1 misura anche la PARTITA (HUD in gioco e HUD con la scelta), opt-in: i totali cambiano, si confronta solo con corse uguali */   /* CPM_TEMA=scuro misura il tema scuro (cpm-dark=1); default chiaro */
 const TAGLIE_TUTTE = [
   { w: 360, h: 800 },   // Android piccolo diffuso
@@ -321,6 +322,9 @@ const INIT = (o) => {
   let s = o.seme >>> 0;
   Math.random = function () { s |= 0; s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   window.__CPM_GLB = false;                       /* niente modelli 3D: qui si misura la presentazione 2D */
+  /* [7.944] i rossi arrivano dalla sonda: CPM_ROSSO=__CPM_NO944 riporta i colori dei club a com'erano,
+     cosi' il guardiano puo' dimostrare che il rimedio serve e non solo che il numero e' basso. */
+  for (const k of (o.rossi || [])) { try { window[k] = true; } catch (_e) {} }
   try { localStorage.setItem('cpm-intro-seen', '1'); } catch (_e) {}
   try { localStorage.setItem('cpm-dark', o.tema === 'scuro' ? '1' : '0'); } catch (_e) {}   /* tema: chiaro di default, scuro con CPM_TEMA=scuro */
   if (o.save) { try { localStorage.setItem('cpm-v3', JSON.stringify(o.save)); } catch (_e) {} }
@@ -423,7 +427,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 
 /* ctx MENU — home · impostazioni · creazione (una sola apertura) */
 {
-  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA }, '?cpmtest=1', errori);
+  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI }, '?cpmtest=1', errori);
   await misuraTutte(page, SC('home'));
   if (await premi(page, 'Opzioni')) { await misuraTutte(page, SC('impostazioni')); await premi(page, '^✕$'); await sleep(500); }
   else saltate.push('impostazioni: bottone Opzioni non trovato');
@@ -434,7 +438,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 
 /* ctx OFFERTE — senza ?cpmtest=1: e' l'auto-ripresa dei provini conclusi che porta a questa schermata */
 {
-  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, trial: TRIALPROG }, '', errori);
+  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI, trial: TRIALPROG }, '', errori);
   const ok = await page.waitForFunction(() => /Offerte ricevute/.test(document.body.innerText || ''), null, { timeout: 30000 }).then(() => true).catch(() => false);
   if (ok) await misuraTutte(page, SC('offerte'));
   else saltate.push("offerte: la schermata non si e' aperta");
@@ -443,7 +447,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 
 /* ctx CARRIERA — i tab + la prepartita (una sola apertura) */
 {
-  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, save: SAVE }, '?cpmtest=1', errori);
+  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI, save: SAVE }, '?cpmtest=1', errori);
   await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 8000 }); } catch (_e) { saltate.push('carriera: "Continua" non trovato'); }
   const vivo = await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 40000 }).then(() => true).catch(() => false);
@@ -477,7 +481,7 @@ if (PARTITA) {
   const page = await browser.newPage({ viewport: { width: TAGLIE[0].w, height: TAGLIE[0].h }, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
   page.on('pageerror', e => errori.push(`partita · ${String(e.message).slice(0, 120)}`));
   await installCdnRoutes(page);
-  await page.addInitScript(INIT, { seme: SEME, tema: TEMA });
+  await page.addInitScript(INIT, { seme: SEME, tema: TEMA, rossi: ROSSI });
   let ok = false;
   try { await openMatch(page, port, { skipLoadAll: true, name: 'Grafica Probe' }); ok = true; } catch (e) { saltate.push('partita: apertura fallita — ' + String(e.message).slice(0, 80)); }
   if (ok) {
