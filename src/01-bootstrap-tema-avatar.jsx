@@ -124,6 +124,22 @@ function legCol944(col,fondo){
     const bg=fondo||TH.card||'#1e293b';
     let c=col; for(let i=0;i<7&&_rap944(c,bg)<4.5;i++)c=_mix944(c,0.22);
     return c; }catch(_e){ return col; }}
+/* [G8.2 — L'INCHIOSTRO SU UN COLORE DI SQUADRA NON PUO' ESSERE SEMPRE IL BIANCO.]
+   La testata dell'eroe scrive in bianco sul colore del club. Finche' il fondo era una SFUMATURA
+   che finiva in #0b1220 il difetto era invisibile al metro: la griglia mobile ESCLUDE dal conto
+   del contrasto ogni nodo il cui fondo e' un gradiente, perche' non si puo' leggere un rapporto
+   da un fondo che cambia sotto la riga. MISURATO su tutti e 252 i club del gioco
+   (tests/visual/inchiostro-club.mjs): con il bianco sempre, 82 CLUB SU 252 stanno sotto 4,5:1,
+   e il peggiore e' 1,09:1 — Torino Athletic #f5f5f5, cioe' bianco su bianco.
+   Qui l'inchiostro lo sceglie il CONTRASTO, non l'abitudine: bianco o #0f172a, quello che vince.
+   Con questa regola i club sotto soglia diventano 0 e il peggiore e' 4,83:1 (AC Rossoneri #dc2626).
+   Riusa _rap944, gia' in casa: nessuna matematica nuova. */
+function inkSu945(col){
+  try{ if(!col||typeof col!=='string'||col[0]!=='#')return '#ffffff';
+    if(typeof window!=='undefined'&&window.__CPM_NO945I)return '#ffffff';/* prova del rosso */
+    return _rap944('#ffffff',col)>=_rap944('#0f172a',col)?'#ffffff':'#0f172a'; }catch(_e){ return '#ffffff'; }}
+/* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
+function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):('rgba(15,23,42,'+q+')');}
 const TH_LIGHT_ORIG=Object.freeze({...TH,dk:false}); // snapshot for restoring light theme · [7.178.0] +dk flag
 const TH_LIGHT=TH; // alias used for dark-mode shadowing
 const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_nota:"[G1.7 grafica] faint scuro #64748b -> #8a97ab: era 3,0-3,8:1 sui fondi scuri (376 nodi: Creazione 259, Club 47, Profilo 36, Nazionale 17); ora 4,9-6,0:1 (4,5 su #21304a)",bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#8a97ab",navBg:"rgba(15,23,42,0.97)",
