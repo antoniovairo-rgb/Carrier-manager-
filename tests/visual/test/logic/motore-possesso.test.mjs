@@ -29,6 +29,19 @@ const giocatori = () => {
 };
 const nuovo = (seed, extra) => crea(Object.assign({ seed, giocatori: giocatori(), eroe: { name: 'EROE', x: 58, y: 50, attivo: true, ovr: 74 }, forza: { home: 70, away: 66 } }, extra || {}));
 const partita = (seed, ticks = 92, onTick) => { const m = nuovo(seed); const evs = []; for (let t = 1; t <= ticks; t++) { if (onTick) onTick(m, t); for (const e of m.tick({ min: t })) evs.push(e); } return { m, evs }; };
+/* [7.950] LA PARTITA VERA SI GIOCA A 22 DECISIONI AL MINUTO, non a una.
+   Il driver qui sopra chiama il motore UNA volta per minuto: e' il regime con cui questo file e' nato e
+   che gli altri test usano per misurare la MECCANICA (determinismo, nomi, scene), dove la cadenza non
+   conta. Ma il test delle QUANTITA' — quanti passaggi, quante conduzioni, quanti tiri — misurava cosi'
+   una partita che in produzione non esiste, ed e' lo stesso difetto gia' a verbale per il banco del
+   tabellino («misurava una partita a 1 decisione al minuto contro le 11 di produzione»).
+   Con la 7.950 il tiro scende da 0,85 a 0,55 in area e a UNA decisione al minuto i tiri passavano sotto
+   il vecchio pavimento di 2,5. Quel pavimento NON si abbassa: si fa misurare al guardiano la cadenza
+   vera, e i pavimenti si rialzano sui numeri misurati li' (437 passaggi, 366 conduzioni, 33 tiri, 88
+   palle morte per partita) con circa il 40 % di margine. */
+const partitaCad = (seed, dec = 22, ticks = 92) => { const m = nuovo(seed); const evs = [];
+  for (let t = 1; t <= ticks; t++) for (let k = 0; k < dec; k++) for (const e of m.tick({ min: t, dt: 1 / dec, dec: true })) evs.push(e);
+  return { m, evs }; };
 
 test('determinismo: stesso seme, stessa sequenza di fatti', () => {
   const a = partita(4242).evs.map(e => e.t + ':' + (e.chi && e.chi.i) + ':' + (e.a && e.a.i)).join('|');
@@ -88,11 +101,11 @@ test('senza decreto non si segna mai: il punteggio e\' del microsim', () => {
 test('una partita ha passaggi, conduzioni, tiri e palle morte in misura credibile', () => {
   const tot = { passaggio: 0, conduzione: 0, tiro: 0, fermi: 0 };
   const N = 8;
-  for (let s = 0; s < N; s++) { const { evs } = partita(900 + s); for (const e of evs) { if (tot[e.t] != null) tot[e.t]++; if (/^(fallo|rigore|rimessa|corner|rinvio)$/.test(e.t)) tot.fermi++; } }
-  assert.ok(tot.passaggio / N >= 12, `passaggi a partita ${(tot.passaggio / N).toFixed(1)} (<12)`);
-  assert.ok(tot.conduzione / N >= 3, `conduzioni a partita ${(tot.conduzione / N).toFixed(1)} (<3)`);
-  assert.ok(tot.tiro / N >= 2.5, `tiri a partita ${(tot.tiro / N).toFixed(1)} (<2,5)`);
-  assert.ok(tot.fermi / N >= 1.5, `palle morte a partita ${(tot.fermi / N).toFixed(1)} (<1,5)`);
+  for (let s = 0; s < N; s++) { const { evs } = partitaCad(900 + s); for (const e of evs) { if (tot[e.t] != null) tot[e.t]++; if (/^(fallo|rigore|rimessa|corner|rinvio)$/.test(e.t)) tot.fermi++; } }
+  assert.ok(tot.passaggio / N >= 260, `passaggi a partita ${(tot.passaggio / N).toFixed(1)} (<260)`);
+  assert.ok(tot.conduzione / N >= 220, `conduzioni a partita ${(tot.conduzione / N).toFixed(1)} (<220)`);
+  assert.ok(tot.tiro / N >= 20, `tiri a partita ${(tot.tiro / N).toFixed(1)} (<20)`);
+  assert.ok(tot.fermi / N >= 50, `palle morte a partita ${(tot.fermi / N).toFixed(1)} (<50)`);
 });
 
 test('i fatti portano nomi veri e luoghi veri', () => {

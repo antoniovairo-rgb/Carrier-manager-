@@ -483,7 +483,14 @@ function creaMotorePossesso(cfg){
       if(!golReq&&press<(_no933?2.2:3)&&r<pF+_pT933){ramo("contrasto");perdi(P);return true;}return false;};
     if(!_dopo900&&_fallo900())return;
     const verso=S.richieste.verso;
-    let pTiro=(zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0)*_cad936();
+    /* [7.950 — IL TIRO E' UNA DECISIONE, NON UN RIFLESSO. Rosso __CPM_NO950]
+       In area si calciava l'85 % delle volte. Misurato alla cadenza spedita: 22,5 tiri contro 12,8 veri
+       (1,76x) e 11,3 tiri FUORI contro 4,5 (2,51x), la voce peggiore rimasta — mentre i passaggi stanno
+       ancora a 0,50x. Nel calcio vero da dentro l'area si passa eccome, e la direttiva del motore dice
+       che gli eventi sono CONSEGUENZE di una scelta, non l'esito ordinario dell'essere in una zona.
+       Le quote scendono e cio' che si toglie al tiro torna al passaggio, che e' la voce affamata. */
+    const _t950=(typeof window!=='undefined'&&window&&window.__CPM_NO950);
+    let pTiro=(zona==="area"?(_t950?0.85:0.55):zona==="limite"?(_t950?0.45:0.30):zona==="trequarti"?(_t950?0.12:0.08):0)*_cad936();
     pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
     /* [7.884.0 — IL TIRO GUARDA L'ANGOLO. MISURATO al banco (48 partite, che cosa fa il portatore banda
        per banda): sotto 70 il portatore controlla, passa e conduce; appena supera 70 il 35 % delle sue
