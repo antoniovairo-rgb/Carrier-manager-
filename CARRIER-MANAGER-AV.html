@@ -11633,6 +11633,54 @@ function ThreeMatchView(props){
     else if(wfx==="storm"){fogNear=Math.max(fogNear*0.65,60);fogFar*=0.62;ambInt*=0.65;sunInt*=0.45;if(tod==="day")skyCol=0x3c4756;}// FOG-1: fogNear era *0.55 (→52) → campo invisibile; ora min 60
     else if(wfx==="snow"){fogNear*=0.90;fogFar*=0.97;ambInt*=1.05;if(tod==="day")skyCol=0xa8b6c4;}/* [7.0.0] nebbia neve meno aggressiva · [7.6.1 collaudo PO «sparite le porte con la neve»] fog ancora più lontano (0.85/0.92→0.90/0.97) + cielo overcast più SCURO (0xc8d8e8→0xa8b6c4) → i pali bianchi non affogano più nel fondo biancastro */
     const scene=new THREE.Scene();
+    /* [7.941 — IL CAMPO IN STILE CARTONE ANIMATO. Richiesta del PO: «una libreria cartoon anche per la
+       partita 3D, per la massima coerenza» coi visi piatti fuori partita.]
+       Non serve un'altra libreria: Three.js ha gia' MeshToonMaterial, che al posto della luce sfumata usa
+       una SCALETTA di pochi gradini — e' esattamente cio' che fa sembrare disegnato un modello 3D.
+       MISURATO PRIMA di scrivere questo: il corpo dei giocatori NON e' un modello, e' geometria costruita
+       dal codice (footballer-uno.glb ha 2 mesh sole, testa e colletto). Quindi il cartoon non si ottiene
+       cambiando un file: si ottiene cambiando il MATERIALE, e allora vale per tutto insieme.
+       Due regole imparate sbagliando, quando l'ho provato da fuori: (1) un materiale NUOVO per ogni mesh
+       distrugge il raggruppamento delle chiamate di disegno — 18 fps diventano 2; qui c'e' una cache e i
+       materiali si condividono; (2) le superfici gia' piatte (MeshBasic: scritte, LED, tabelloni) non si
+       toccano, il toon le spegnerebbe e basta.
+       SPENTO di default: si accende con window.__CPM_TOON. Il costo o il guadagno in fotogrammi va
+       misurato prima di proporlo al PO. */
+    const _toonCache941=new Map(); let _toonGrad941=null;
+    const _toonOn941=()=>(typeof window!=='undefined'&&!!window.__CPM_TOON);
+    const _toonGradiente941=()=>{if(_toonGrad941)return _toonGrad941;
+      const c=document.createElement('canvas');c.width=3;c.height=1;
+      const g=c.getContext('2d');const d=g.createImageData(3,1);const liv=[95,180,255];
+      for(let i=0;i<3;i++){d.data[i*4]=d.data[i*4+1]=d.data[i*4+2]=liv[i];d.data[i*4+3]=255;}
+      g.putImageData(d,0,0);
+      _toonGrad941=new THREE.CanvasTexture(c);_toonGrad941.minFilter=THREE.NearestFilter;_toonGrad941.magFilter=THREE.NearestFilter;
+      return _toonGrad941;};
+    const _toon941=(m)=>{
+      if(!m||m.isMeshToonMaterial||m.isMeshBasicMaterial||m.isSpriteMaterial||m.isPointsMaterial||m.isLineBasicMaterial)return m;
+      const k=(m.color?m.color.getHexString():'x')+'|'+(m.map?m.map.uuid:'-')+'|'+(m.skinning?1:0)+'|'+(m.transparent?1:0)+'|'+(m.side||0)+'|'+(m.opacity!=null?m.opacity.toFixed(2):'1');
+      if(_toonCache941.has(k))return _toonCache941.get(k);
+      const t=new THREE.MeshToonMaterial({color:m.color?m.color.clone():0xffffff,map:m.map||null,
+        gradientMap:_toonGradiente941(),skinning:!!m.skinning,side:m.side,
+        transparent:!!m.transparent,opacity:m.opacity!=null?m.opacity:1,alphaTest:m.alphaTest||0});
+      _toonCache941.set(k,t);return t;};
+    /* [7.941 v2 — MISURATO: convertire TUTTO costa il 67 % dei fotogrammi, 18 → 6.]
+       Avevo previsto il contrario (il toon calcola meno di un materiale fisico) e mi sbagliavo: il costo non
+       e' nel calcolo della luce, e' che ogni materiale nuovo spezza il raggruppamento delle chiamate di
+       disegno — e le tribune sono fatte di MIGLIAIA di sagome. Il pubblico non ha bisogno di diventare un
+       cartone: e' gia' stilizzato, e sta lontano. Qui si convertono solo i CORPI ANIMATI, che sono i
+       ventidue in campo e sono cio' che si guarda. Il livello si sceglie con window.__CPM_TOON:
+         'corpi' (o true) = solo i giocatori   ·   'tutto' = anche stadio e pubblico (il costo di cui sopra) */
+    const _toonTutto941=()=>{try{return typeof window!=='undefined'&&window.__CPM_TOON==='tutto';}catch(_e){return false;}};
+    const _toonPassa941=(root)=>{if(!_toonOn941()||!root)return 0;let n=0;const _tutto=_toonTutto941();
+      root.traverse((o)=>{if(!o.isMesh||!o.material)return;
+        if(!_tutto&&!o.isSkinnedMesh)return;/* solo i ventidue: il resto resta com'e' */
+        if(o.userData&&o.userData._toon941)return;/* gia' fatto: non si ripassa a ogni fotogramma */
+        const mats=Array.isArray(o.material)?o.material:[o.material];
+        const nuovi=mats.map(_toon941);
+        o.material=Array.isArray(o.material)?nuovi:nuovi[0];
+        (o.userData||(o.userData={}))._toon941=1;n++;});
+      try{if(typeof window!=='undefined'){window.__CPM_TOON_N=(window.__CPM_TOON_N|0)+n;window.__CPM_TOON_MAT=_toonCache941.size;}}catch(_e){}/* [diag] quanti materiali UNICI: distingue «lo shader toon costa» da «la mia cache ne crea troppi» */
+      return n;};
     /* [7.535.0 collaudo PO «cartelloni, striscioni, bandiere, sciarpe non ci sono più»] CENSIMENTO
        DELL'ARREDO (solo collaudo): l'occhio non distingue «la mesh non c'è» da «la mesh c'è ma la sua
        texture è vuota» — e sono due difetti diversi con due rimedi diversi. Questo hook percorre la scena,
@@ -20604,6 +20652,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           }
         }
       }catch(_e811r){}}
+      if(_toonOn941())_toonPassa941(scene);/* [7.941] i corpi entrano in scena a partita in corso: si converte cio' che e' nuovo, una volta sola per mesh */
       renderer.render(scene,camera);
     };
     loop();
