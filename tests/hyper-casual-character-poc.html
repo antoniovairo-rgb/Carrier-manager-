@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Korward — Hyper Casual Character POC</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0b1020; color: #eef2ff; font: 14px/1.45 system-ui, -apple-system, Segoe UI, sans-serif; overflow: hidden; }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; width: 100%; height: 100%; }
+  #panel { position: fixed; top: 12px; left: 12px; width: min(390px, calc(100vw - 24px)); max-height: calc(100vh - 24px); overflow: auto; padding: 14px; border: 1px solid #26314d; border-radius: 12px; background: rgba(10,15,30,.92); backdrop-filter: blur(8px); box-shadow: 0 12px 40px rgba(0,0,0,.35); }
+  h1 { margin: 0 0 6px; font-size: 18px; }
+  .muted { color: #aeb8d0; }
+  .row { display:flex; gap:8px; align-items:center; margin:8px 0; }
+  button, input[type=file] { width:100%; }
+  button { border:1px solid #34415f; background:#17213a; color:#fff; border-radius:8px; padding:9px 10px; cursor:pointer; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  label { display:block; margin:8px 0; }
+  input[type=checkbox] { margin-right:8px; }
+  #drop { border:1px dashed #506083; border-radius:8px; padding:12px; text-align:center; color:#b9c4dd; margin:8px 0; }
+  #drop.over { border-color:#fff; background:#16213b; }
+  pre { white-space:pre-wrap; margin:8px 0 0; color:#dce5ff; font-size:12px; }
+  .ok { color:#9fe6b2; } .warn { color:#ffd98a; } .bad { color:#ff9c9c; }
+  #hud { position:fixed; right:12px; top:12px; padding:10px 12px; border:1px solid #26314d; border-radius:10px; background:rgba(10,15,30,.82); font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; min-width:190px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="panel">
+  <h1>Korward — Character POC</h1>
+  <div class="muted">Standalone test. No match engine/gameplay code is touched.</div>
+  <input id="file" type="file" accept=".glb,.gltf">
+  <div id="drop">Drop the purchased GLB here</div>
+  <div class="row"><button id="spawn" disabled>Spawn 1 Hero + 21 Players</button></div>
+  <label><input id="uniqueMaterials" type="checkbox">Unique material per player (performance comparison)</label>
+  <label><input id="showBones" type="checkbox">Show core bone markers</label>
+  <button id="reset" disabled>Reset scene</button>
+  <pre id="report">Waiting for GLB…</pre>
+</div>
+<div id="hud">FPS: —<br>Draw calls: —<br>Triangles: —<br>Skinned meshes: —</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  const app = document.getElementById('app');
+  const fileInput = document.getElementById('file');
+  const drop = document.getElementById('drop');
+  const spawnBtn = document.getElementById('spawn');
+  const resetBtn = document.getElementById('reset');
+  const uniqueMaterials = document.getElementById('uniqueMaterials');
+  const showBones = document.getElementById('showBones');
+  const report = document.getElementById('report');
+  const hud = document.getElementById('hud');
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  app.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0d1626);
+
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+  camera.position.set(0, 9, 20);
+  camera.lookAt(0, 1.2, 0);
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x24304a, 1.25));
+  const key = new THREE.DirectionalLight(0xffffff, 1.8);
+  key.position.set(5, 12, 8);
+  scene.add(key);
+
+  const pitch = new THREE.Mesh(
+    new THREE.PlaneGeometry(42, 28),
+    new THREE.MeshStandardMaterial({ color: 0x1b4b2a, roughness: 1 })
+  );
+  pitch.rotation.x = -Math.PI / 2;
+  scene.add(pitch);
+
+  const grid = new THREE.GridHelper(42, 21, 0x5f8b68, 0x315d3d);
+  grid.position.y = 0.01;
+  scene.add(grid);
+
+  let source = null;
+  let sourceUrl = null;
+  let players = [];
+  let boneMarkers = [];
+  let loadedInfo = null;
+  let lastTime = performance.now();
+  let frames = 0;
+  let fps = 0;
+
+  const CORE_BONES = [
+    'root.x_00','spine_01.x_013','spine_02.x_014','spine_03.x_015','neck.x_016','head.x_017',
+    'shoulder.l_039','arm_stretch.l_040','forearm_stretch.l_041','hand.l_042',
+    'shoulder.r_018','arm_stretch.r_019','forearm_stretch.r_020','hand.r_021',
+    'thigh_stretch.l_01','leg_stretch.l_02','foot.l_03','toes_01.l_04',
+    'thigh_stretch.r_07','leg_stretch.r_08','foot.r_09','toes_01.r_010'
+  ];
+
+  function disposeObject(obj) {
+    obj.traverse(o => {
+      if (!o.isMesh) return;
+      if (o.geometry) o.geometry.dispose();
+      if (o.material && o.material.dispose) o.material.dispose();
+    });
+  }
+
+  function clearPlayers() {
+    for (const p of players) {
+      scene.remove(p.root);
+      if (p.ownsMaterials) {
+        p.root.traverse(o => {
+          if (o.isMesh && o.material && o.material.dispose) o.material.dispose();
+        });
+      }
+    }
+    players = [];
+    for (const m of boneMarkers) scene.remove(m);
+    boneMarkers = [];
+  }
+
+  function collectMetrics(root) {
+    let meshes = 0, skinned = 0, tris = 0, materials = 0;
+    const mats = new Set();
+    root.traverse(o => {
+      if (!o.isMesh) return;
+      meshes++;
+      if (o.isSkinnedMesh) skinned++;
+      if (o.geometry && o.geometry.index) tris += o.geometry.index.count / 3;
+      else if (o.geometry && o.geometry.attributes.position) tris += o.geometry.attributes.position.count / 3;
+      const list = Array.isArray(o.material) ? o.material : [o.material];
+      for (const m of list) if (m) mats.add(m.uuid);
+    });
+    materials = mats.size;
+    return { meshes, skinned, tris, materials };
+  }
+
+  function findBone(root, name) {
+    let found = null;
+    root.traverse(o => { if (!found && o.isBone && o.name === name) found = o; });
+    return found;
+  }
+
+  function makeBoneMarkers(root) {
+    for (const name of CORE_BONES) {
+      const b = findBone(root, name);
+      if (!b) continue;
+      const marker = new THREE.Mesh(
+        new THREE.SphereGeometry(0.045, 6, 6),
+        new THREE.MeshBasicMaterial({ color: 0xffdd55 })
+      );
+      marker.position.setFromMatrixPosition(b.matrixWorld);
+      scene.add(marker);
+      boneMarkers.push({ marker, bone: b });
+    }
+  }
+
+  function cloneMaterialSafe(mat) {
+    if (!mat || !mat.clone) return mat;
+    return mat.clone();
+  }
+
+  function setPlayerMaterialVariant(root, index) {
+    const palette = [0x1976d2,0xd32f2f,0x2e7d32,0x6a1b9a,0xef6c00,0x00838f];
+    const tint = new THREE.Color(palette[index % palette.length]);
+    root.traverse(o => {
+      if (!o.isMesh || !o.material) return;
+      const mats = Array.isArray(o.material) ? o.material : [o.material];
+      const cloned = mats.map(m => cloneMaterialSafe(m));
+      cloned.forEach(m => {
+        if (m && m.color) m.color.multiply(tint);
+      });
+      o.material = Array.isArray(o.material) ? cloned : cloned[0];
+    });
+  }
+
+  function spawnPlayers() {
+    if (!source) return;
+    clearPlayers();
+    const positions = [];
+    positions.push([0,0.01,4.8,1.04]); // Hero
+    const rows = [
+      { z: 2.9, xs: [-7,-5.6,-4.2,-2.8,-1.4,1.4,2.8,4.2,5.6,7] },
+      { z: 1.0, xs: [-6.3,-4.2,-2.1,0,2.1,4.2,6.3] },
+      { z: -1.0, xs: [-3.2,0,3.2] },
+      { z: -2.8, xs: [0] }
+    ];
+    for (const r of rows) for (const x of r.xs) positions.push([x,0,r.z,1]);
+    // Ensure exactly 22 entries.
+    positions.length = 22;
+
+    for (let i = 0; i < positions.length; i++) {
+      const clone = THREE.SkeletonUtils.clone(source);
+      clone.position.set(positions[i][0], positions[i][1], positions[i][2]);
+      clone.scale.setScalar(positions[i][3]);
+      clone.rotation.y = i === 0 ? Math.PI : 0;
+      const ownsMaterials = uniqueMaterials.checked;
+      if (ownsMaterials) setPlayerMaterialVariant(clone, i);
+      scene.add(clone);
+      players.push({ root: clone, ownsMaterials });
+    }
+
+    if (showBones.checked && players[0]) makeBoneMarkers(players[0].root);
+    updateReport();
+  }
+
+  function updateReport() {
+    if (!source || !loadedInfo) return;
+    const m = collectMetrics(source);
+    const bones = [];
+    source.traverse(o => { if (o.isBone) bones.push(o.name); });
+    const coreFound = CORE_BONES.filter(n => bones.includes(n));
+    const missingCore = CORE_BONES.filter(n => !bones.includes(n));
+    const total = players.length ? collectMetrics(players[0].root) : m;
+    const expectedTris22 = Math.round(total.tris * 22);
+    const lines = [
+      `FILE: ${loadedInfo.name}`,
+      `SIZE: ${(loadedInfo.size / 1048576).toFixed(2)} MB`,
+      `SOURCE MESHES: ${m.meshes}`,
+      `SOURCE SKINNED MESHES: ${m.skinned}`,
+      `SOURCE TRIANGLES: ${Math.round(m.tris).toLocaleString()}`,
+      `SOURCE MATERIALS: ${m.materials}`,
+      `BONES: ${bones.length}`,
+      `CORE BONES FOUND: ${coreFound.length}/${CORE_BONES.length}`,
+      `EMBEDDED ANIMATION CLIPS: ${loadedInfo.animations}`,
+      `PLAYERS SPAWNED: ${players.length}/22`,
+      `EST. GEOMETRY TRIANGLES @22: ${expectedTris22.toLocaleString()}`,
+      `MATERIAL MODE: ${uniqueMaterials.checked ? 'UNIQUE / PLAYER' : 'SHARED'}`,
+      missingCore.length ? `MISSING CORE BONES: ${missingCore.join(', ')}` : 'CORE BONE MAPPING: READY FOR ADAPTER',
+      '',
+      `Mixamo target mapping is intentionally not hard-wired into gameplay.`
+    ];
+    report.innerHTML = missingCore.length
+      ? lines.map((x,i) => i === 13 ? `<span class="warn">${escapeHtml(x)}</span>` : escapeHtml(x)).join('\n')
+      : lines.map(escapeHtml).join('\n');
+  }
+
+  function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
+
+  function loadFile(file) {
+    if (!file || !/\.glb$/i.test(file.name)) {
+      report.textContent = 'Please select the GLB file purchased from Fab.';
+      return;
+    }
+    if (sourceUrl) URL.revokeObjectURL(sourceUrl);
+    sourceUrl = URL.createObjectURL(file);
+    const loader = new THREE.GLTFLoader();
+    report.textContent = 'Loading GLB…';
+    loader.load(sourceUrl, gltf => {
+      clearPlayers();
+      source = gltf.scene;
+      loadedInfo = { name: file.name, size: file.size, animations: gltf.animations ? gltf.animations.length : 0 };
+      source.visible = false;
+      scene.add(source);
+      spawnBtn.disabled = false;
+      resetBtn.disabled = false;
+      updateReport();
+      spawnPlayers();
+    }, undefined, err => {
+      console.error(err);
+      report.textContent = 'GLB load failed. See browser console for details.';
+    });
+  }
+
+  fileInput.addEventListener('change', () => loadFile(fileInput.files[0]));
+  ['dragenter','dragover'].forEach(type => drop.addEventListener(type, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(type => drop.addEventListener(type, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => loadFile(e.dataTransfer.files[0]));
+  spawnBtn.addEventListener('click', spawnPlayers);
+  resetBtn.addEventListener('click', () => { clearPlayers(); updateReport(); });
+  uniqueMaterials.addEventListener('change', () => { if (source) spawnPlayers(); });
+  showBones.addEventListener('change', () => { if (source) spawnPlayers(); });
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  function animate(now) {
+    requestAnimationFrame(animate);
+    frames++;
+    if (now - lastTime >= 1000) {
+      fps = frames * 1000 / (now - lastTime);
+      frames = 0;
+      lastTime = now;
+    }
+    for (const bm of boneMarkers) bm.marker.position.setFromMatrixPosition(bm.bone.matrixWorld);
+    renderer.render(scene, camera);
+    const info = renderer.info.render;
+    const skinned = players.reduce((n,p) => {
+      let c=0; p.root.traverse(o => { if (o.isSkinnedMesh) c++; }); return n+c;
+    },0);
+    hud.innerHTML = `FPS: ${fps.toFixed(1)}<br>Draw calls: ${info.calls}<br>Triangles: ${info.triangles.toLocaleString()}<br>Skinned meshes: ${skinned}`;
+  }
+  requestAnimationFrame(animate);
+})();
+</script>
+</body>
+</html>
