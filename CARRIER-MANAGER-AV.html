@@ -391,6 +391,22 @@ function legCol944(col,fondo){
     const bg=fondo||TH.card||'#1e293b';
     let c=col; for(let i=0;i<7&&_rap944(c,bg)<4.5;i++)c=_mix944(c,0.22);
     return c; }catch(_e){ return col; }}
+/* [G8.2 — L'INCHIOSTRO SU UN COLORE DI SQUADRA NON PUO' ESSERE SEMPRE IL BIANCO.]
+   La testata dell'eroe scrive in bianco sul colore del club. Finche' il fondo era una SFUMATURA
+   che finiva in #0b1220 il difetto era invisibile al metro: la griglia mobile ESCLUDE dal conto
+   del contrasto ogni nodo il cui fondo e' un gradiente, perche' non si puo' leggere un rapporto
+   da un fondo che cambia sotto la riga. MISURATO su tutti e 252 i club del gioco
+   (tests/visual/inchiostro-club.mjs): con il bianco sempre, 82 CLUB SU 252 stanno sotto 4,5:1,
+   e il peggiore e' 1,09:1 — Torino Athletic #f5f5f5, cioe' bianco su bianco.
+   Qui l'inchiostro lo sceglie il CONTRASTO, non l'abitudine: bianco o #0f172a, quello che vince.
+   Con questa regola i club sotto soglia diventano 0 e il peggiore e' 4,83:1 (AC Rossoneri #dc2626).
+   Riusa _rap944, gia' in casa: nessuna matematica nuova. */
+function inkSu945(col){
+  try{ if(!col||typeof col!=='string'||col[0]!=='#')return '#ffffff';
+    if(typeof window!=='undefined'&&window.__CPM_NO945I)return '#ffffff';/* prova del rosso */
+    return _rap944('#ffffff',col)>=_rap944('#0f172a',col)?'#ffffff':'#0f172a'; }catch(_e){ return '#ffffff'; }}
+/* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
+function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):('rgba(15,23,42,'+q+')');}
 const TH_LIGHT_ORIG=Object.freeze({...TH,dk:false}); // snapshot for restoring light theme · [7.178.0] +dk flag
 const TH_LIGHT=TH; // alias used for dark-mode shadowing
 const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_nota:"[G1.7 grafica] faint scuro #64748b -> #8a97ab: era 3,0-3,8:1 sui fondi scuri (376 nodi: Creazione 259, Club 47, Profilo 36, Nazionale 17); ora 4,9-6,0:1 (4,5 su #21304a)",bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#8a97ab",navBg:"rgba(15,23,42,0.97)",
@@ -45351,44 +45367,77 @@ const getThisWeekMatchday=()=>{
         </div>
       )}
 
-      {/* HERO header — banner broadcast coi colori del club (Ondata 8: modernizzazione visiva) */}
+      {/* TESTATA DELL'EROE — G8.2, direzione grafica approvata dal PO 17/09.
+          Tre cose cambiano, e nessuna toglie un'informazione:
+          1. IL FONDO E' PIATTO, non piu' una sfumatura che finisce in #0b1220. La sfumatura
+             nascondeva un difetto vero: la griglia mobile ESCLUDE dal conto del contrasto ogni
+             nodo su fondo a gradiente, e sotto quel velo 82 club su 252 avevano il bianco sotto
+             4,5:1 (il peggiore 1,09:1, Torino Athletic #f5f5f5: bianco su bianco).
+             Ora l'inchiostro lo sceglie inkSu945 per contrasto, club per club: 0 sotto soglia.
+             E NON C'E' VELO SUL TESTO: misurato, l'unica opacita' che regge 4,5:1 su tutti e 252
+             i club e' 1,00 — con un velo all'80% scendono sotto soglia 96 club. La gerarchia del
+             testo secondario viene da CORPO e PESO, non dall'opacita'. I veli restano solo sulle
+             superfici SENZA testo sopra (l'alone dell'avatar, il filo di ripiego).
+             Nemmeno il FONDO di un chip regge: misurato, su ogni velo da 0,06 a 0,30 ci sono club
+             sotto soglia (il peggiore FC Empolese #1e6fd0). Percio' il bottone «Salva» e' INVERTITO
+             — pieno d'inchiostro, testo nel colore del club: lo stesso rapporto, 4,83:1 nel peggiore
+             dei casi, e si legge come una scelta invece che come un ripiego.
+          2. IL SECONDO COLORE DEL CLUB esiste nel gioco (mkT(...,c,c2)) e non si vedeva mai:
+             diventa il filo da 3 px sotto la fascia, come una riga della maglia.
+          3. LE TRE MISURE (forma, morale, fatica) escono dalla fascia colorata e vanno su una
+             striscia chiara.
+          QUELLO CHE QUESTO PASSO **NON** FA, e che avevo scritto qui prima di misurarlo:
+          NON accorcia la schermata. La Dashboard a 412 px passa da 2.704 a 2.700 px: quattro
+          pixel. Le tre misure non sono sparite, si sono spostate — occupano lo stesso spazio
+          un centimetro piu' in basso. Per accorciare davvero servono le sezioni richiudibili
+          (direttiva PO 17/09), ed e' un altro passo.
+          QUELLO CHE FA, misurato sulla griglia mobile a 360/412/430:
+          i nodi MISURABILI per contrasto passano da 2.313 a 2.473 (+160). Quei 160 erano
+          esclusi dal conto perche' stavano su un fondo a GRADIENTE: sparita la sfumatura, sono
+          entrati nella misura — e i nodi sotto soglia restano 62, cioe' TUTTI E 160 PASSANO.
+          E' questa la prova che l'inchiostro scelto per contrasto funziona: non un numero che
+          cala, ma 160 nodi che prima nessuno poteva controllare e adesso reggono. */}
       {(()=>{
         const cc=player.club?.c||player.club?.col||TH.primary;
-        const _mor=player.morale||70, _frm=player.form||70;
-        /* [7.74.0 UI Kit] mini-meter da hero broadcast (prototipo PlayerHeader): label + valore + barra sottile */
-        const _sc=(v)=>v>=70?"#4ade80":v>=45?"#fbbf24":"#f87171";
-        const _fc=(v)=>v<=35?"#4ade80":v<=65?"#fbbf24":"#f87171";/* FATICA: bassa = buona (colore invertito) */
-        const _meter=(lb,v,col)=>(
-          <div key={lb}>
-            <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:"rgba(255,255,255,0.82)",marginBottom:3}}><span style={{textTransform:"uppercase",letterSpacing:1,fontWeight:FW.bold}}>{lb}</span><b className="cpm-num" style={{color:legCol944(col),fontWeight:FW.bold}}>{v}</b></div>
-            <div style={{height:4,borderRadius:RAD.pill,background:"rgba(255,255,255,0.20)",overflow:"hidden"}}><div style={{height:"100%",width:clamp(v,0,100)+"%",background:col,borderRadius:RAD.pill}}/></div>
+        const c2=player.club?.c2||null;
+        const ink=inkSu945(cc);
+        const _mor=player.morale||70, _frm=player.form||70, _fat=player.fatigue||0;
+        const _sc=(v)=>v>=70?TH.winFg:v>=45?TH.drawFg:TH.lossFg;
+        const _fc=(v)=>v<=35?TH.winFg:v<=65?TH.drawFg:TH.lossFg;
+        const _meter=(lb,v,col,prima)=>(
+          <div key={lb} style={{padding:"8px 12px 9px",borderLeft:prima?"none":"1px solid "+TH.divider}}>
+            <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.2,fontWeight:FW.bold}}>{lb}</div>
+            <div className="cpm-num" style={{fontSize:FS.subhead,fontWeight:FW.black,color:TH.text,lineHeight:1.05,marginTop:1}}>{v}</div>
+            <div style={{height:3,borderRadius:RAD.pill,background:TH.track,overflow:"hidden",marginTop:5}}><div style={{height:"100%",width:clamp(v,0,100)+"%",background:col,borderRadius:RAD.pill}}/></div>
           </div>);
         return(
-        <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:14,boxShadow:TH.el2,background:`linear-gradient(135deg, ${cc} 0%, ${cc}dd 42%, #0b1220 135%)`}}>
-          <div aria-hidden style={{position:"absolute",inset:0,background:"radial-gradient(120% 90% at 88% -10%, rgba(255,255,255,0.20), transparent 55%)",pointerEvents:"none"}}/>
-          <div style={{position:"relative",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"9px 13px 0"}}>
-            <div style={{display:"flex",alignItems:"center",gap:7}}><LogoMark size={20}/><span style={{display:"inline-flex",flexDirection:"column",lineHeight:1}}><span style={{fontWeight:900,fontSize:14,color:"#fff",letterSpacing:.2,lineHeight:1}}>K<span style={{fontStyle:"normal"}}>⚽</span>rward</span><span style={{fontStyle:"italic",fontWeight:700,fontSize:FS.caption,color:TH.goldText,letterSpacing:1.6,lineHeight:1,marginTop:2}}>Elite</span></span></div>
-            <button onClick={doSave} className="cpm-press" title="Salva carriera" style={{fontSize:FS.caption,color:"#fff",background:"rgba(255,255,255,0.16)",border:"1px solid rgba(255,255,255,0.22)",borderRadius:RAD.pill,padding:"3px 10px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.semibold}}>
-              💾 Salva{lastSaved?<span style={{opacity:.7}}> · {new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}</span>:null}
-            </button>
-          </div>
-          <div style={{position:"relative",display:"flex",alignItems:"center",gap:13,padding:"8px 15px 14px"}}>
-            <div style={{borderRadius:"50%",padding:3,background:"rgba(255,255,255,0.20)",flexShrink:0,boxShadow:"0 4px 14px rgba(0,0,0,0.25)"}}><AvatarSVG id={player.avatarId||0} size={58}/></div>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.72)",textTransform:"uppercase",letterSpacing:2,fontWeight:FW.bold}}>{player.nation} · {player.position||"Attaccante"}</div>
-              <h1 style={{margin:"1px 0 3px",fontSize:FS.h,fontWeight:FW.black,letterSpacing:-.5,color:"#fff",lineHeight:1.05,textShadow:"0 1px 6px rgba(0,0,0,0.3)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{player.name}</h1>
-              <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:6,marginTop:2}}>
-                <span style={{fontSize:FS.caption,color:"#fff",fontWeight:FW.bold,background:"rgba(255,255,255,0.16)",borderRadius:RAD.pill,padding:"2px 9px"}}>{player.club?.n||player.club?.name||"–"}</span>
-                <span className="cpm-num" style={{fontSize:FS.caption,color:"rgba(255,255,255,0.7)"}}>{player.club?.lg?player.club.lg:player.proStatus==="u18"?"U18":""} · S.{season} {week>38?"· Fine stagione":`W.${week}/38`}</span>{/* [7.257.0] a W.39 il contatore diceva «W.39/38» */}
-                {/* [7.106.2 collaudo PO «aggiungi nell'header anche la posizione in classifica»] posizione REALE dalla classifica di lega (sort pts/gd/gf) accanto ai dati anagrafici */}
-                {(()=>{const st=player.standings||[];if(!st.length||!player.club?.id)return null;const sorted=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));const idx=sorted.findIndex(s=>s.id===player.club.id);if(idx<0)return null;const pos=idx+1;const _pc=pos<=3?"#4ade80":pos>=st.length-2?"#f87171":"rgba(255,255,255,0.9)";return<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:800,color:_pc,background:"rgba(255,255,255,0.14)",borderRadius:RAD.pill,padding:"2px 8px"}}>{pos}° in classifica</span>;})()}
+        <div style={{position:"relative",borderRadius:RAD.xs,overflow:"hidden",marginBottom:14,boxShadow:TH.el1,background:TH.card}}>
+          <div style={{background:cc,color:ink,borderBottom:c2?("3px solid "+c2):("3px solid "+inkVelo945(ink,0.28))}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px 0"}}>
+              <div style={{display:"flex",alignItems:"center",gap:7}}><LogoMark size={20}/><span style={{display:"inline-flex",flexDirection:"column",lineHeight:1}}><span style={{fontWeight:900,fontSize:14,color:ink,letterSpacing:.2,lineHeight:1}}>K<span style={{fontStyle:"normal"}}>&#9917;</span>rward</span><span style={{fontStyle:"italic",fontWeight:700,fontSize:FS.caption,color:ink,letterSpacing:1.6,lineHeight:1,marginTop:2}}>Elite</span></span></div>
+              <button onClick={doSave} className="cpm-press" title="Salva carriera" style={{fontSize:FS.caption,color:cc,background:ink,border:"none",borderRadius:RAD.pill,padding:"4px 11px",cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontWeight:FW.bold,fontFamily:"inherit"}}>
+                Salva{lastSaved?<span> &middot; {new Date(lastSaved).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}</span>:null}
+              </button>
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:11,padding:"7px 12px 11px"}}>
+              <div style={{borderRadius:"50%",padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}><AvatarSVG id={player.avatarId||0} size={44}/></div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:FS.caption,color:ink,textTransform:"uppercase",letterSpacing:1.6,fontWeight:FW.bold}}>{player.nation} &middot; {player.position||"Attaccante"}</div>
+                <h1 style={{margin:"2px 0 3px",fontSize:FS.title,fontWeight:FW.black,letterSpacing:.2,color:ink,lineHeight:1.05,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{player.name}</h1>
+                <div className="cpm-num" style={{fontSize:FS.caption,color:ink,fontWeight:FW.semibold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
+                  {player.club?.n||player.club?.name||"\u2013"}
+                  {(()=>{const lg=player.club?.lg?player.club.lg:player.proStatus==="u18"?"U18":"";return lg?" \u00b7 "+lg:"";})()}
+                  {" \u00b7 S."+season+(week>38?" \u00b7 Fine stagione":" W."+week+"/38")}
+                  {(()=>{const st=player.standings||[];if(!st.length||!player.club?.id)return "";const sorted=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));const idx=sorted.findIndex(x=>x.id===player.club.id);return idx<0?"":" \u00b7 "+(idx+1)+"\u00b0 in classifica";})()}
+                </div>
+              </div>
+              <div style={{flexShrink:0,textAlign:"center",lineHeight:1}}>
+                <div className="cpm-num" style={{fontSize:FS.h,fontWeight:FW.black,color:ink}}>{ovr}</div>
+                <div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:2,color:ink,marginTop:2}}>OVR</div>
               </div>
             </div>
-            <div style={{flexShrink:0}}><OvrRing value={ovr} size={64}/></div>
           </div>
-          {/* [7.74.0 UI Kit] riga mini-meter a tutta larghezza (Forma · Morale · Fatica) — look hero del prototipo */}
-          <div style={{position:"relative",display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,padding:"0 15px 13px"}}>{_meter("Forma",_frm,_sc(_frm))}{_meter("Morale",_mor,_sc(_mor))}{_meter("Fatica",player.fatigue||0,_fc(player.fatigue||0))}</div>
-          <div style={{position:"absolute",left:0,right:0,bottom:0,height:3,background:"rgba(255,255,255,0.28)"}}/>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr"}}>{_meter("Forma",_frm,_sc(_frm),true)}{_meter("Morale",_mor,_sc(_mor))}{_meter("Fatica",_fat,_fc(_fat))}</div>
         </div>);
       })()}
 

@@ -140,7 +140,13 @@ function MISURA(W) {
        della direzione, schermata per schermata. Nessuna soglia: e' un CENSIMENTO, non un
        guardiano — un numero che sale o scende, non un rosso che si puo' abbassare. */
     nColTesto: 0, nFondi: 0, nCorpi: 0, nRaggi: 0, nPesi: 0,
-    corpi: [], raggi: [] };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
+    corpi: [], raggi: [],
+    /* [G8.3 · direttiva PO 17/09 «se una schermata e' troppo lunga valuta se mettere degli
+       accordion»] QUANTO E' LUNGA. Prima di aprire e chiudere sezioni serve sapere quali
+       schermate lo meritano davvero: `schermate` e' l'altezza del documento diviso l'altezza
+       dello schermo del PO (915 px). 1,0 = tutto sopra la piega. 3,0 = tre schermate di
+       scorrimento. Non e' un guardiano: e' il numero che dice DOVE serve un accordion. */
+    altezzaPx: 0, schermate: 0, scorritore: '' };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
 
   const de = document.documentElement;
 
@@ -205,6 +211,37 @@ function MISURA(W) {
   R.scrollWidth = overlay ? overlay.scrollWidth : de.scrollWidth;
   R.clientWidth = overlay ? overlay.clientWidth : de.clientWidth;
   R.overflowPx = Math.max(0, Math.round(R.scrollWidth - R.clientWidth));
+  /* [G8.3 · correzione dello stesso giorno] La prima stesura leggeva `document.scrollHeight` e
+     rispondeva 915 px su TUTTE E TREDICI le schermate, cioe' esattamente l'altezza dello schermo:
+     un numero impossibile, e infatti falso. Il gioco NON scorre sul documento — `#root` e' alto
+     100% e lo scorrimento vive in un contenitore interno. Qui si cerca lo SCORRITORE VERO: fra
+     tutti gli elementi visibili, quello con `scrollHeight` maggiore del proprio `clientHeight`
+     e un `overflow-y` che scorre. Si tiene il piu' alto, e si dichiara QUALE e', perche' un
+     numero senza il suo colpevole non si puo' controllare. */
+  {
+    let best = null, bh = 0;
+    const cand2 = radice === document.body ? document.body.querySelectorAll('*') : radice.querySelectorAll('*');
+    const guarda = (el) => {
+      const cs = gcs(el);
+      if (cs.display === 'none' || cs.visibility === 'hidden') return;
+      const oy = cs.overflowY;
+      if (!(oy === 'auto' || oy === 'scroll' || oy === 'overlay')) return;
+      const r = el.getBoundingClientRect();
+      /* [G8.3 · seconda correzione] Solo lo scorritore DELLA PAGINA, non una lista dentro una
+         scatola. Senza questo filtro la Creazione rispondeva 11.576 px (12,65 schermate): era
+         la lista dei 200 club dei sogni dentro un riquadro alto 220 px, cioe' uno scorrimento
+         VOLUTO, non una schermata lunga. Il filtro: lo scorritore deve occupare almeno meta'
+         dello schermo. */
+      if (r.width < 40 || r.height < de.clientHeight * 0.5) return;
+      if (el.scrollHeight <= el.clientHeight + 4) return;
+      if (el.scrollHeight > bh) { bh = el.scrollHeight; best = el; }
+    };
+    for (let i = 0; i < cand2.length; i++) guarda(cand2[i]);
+    const docH = Math.max(de.scrollHeight, document.body.scrollHeight);
+    if (bh > docH) { R.altezzaPx = Math.round(bh); R.scorritore = sel(best); }
+    else { R.altezzaPx = Math.round(docH); R.scorritore = best ? sel(best) : 'documento'; }
+    R.schermate = Math.round(R.altezzaPx / 915 * 100) / 100;
+  }
 
   /* ── M5 · elementi che sporgono a destra ─────────────────────────────────────────────────── */
   const cand = [];
@@ -590,6 +627,10 @@ tab('5 · Bottoni pieni di marca (una sola azione primaria per vista)', m => `${
    una collezione. Un valore che scende qui e' un valore in meno che l'occhio deve incassare.
    Il conto degli esadecimali nel sorgente (tavolozza.mjs) e' cieco: un colore scritto dieci volte
    e mai reso vale zero, e un colore calcolato a runtime non compare. Questo conta cio' che si vede. */
+tab('5-bis · QUANTO E\' LUNGA — altezza dello scorritore in px (fra parentesi: schermate da 915 px del PO)', m => `${m.altezzaPx} (${m.schermate})`);
+R.push('> Lo scorritore misurato a 412 px, schermata per schermata: ' + righe.map(s2 => { const m = DATI[s2.id][412]; return m ? s2.nome + ' `' + (m.scorritore || '?') + '`' : null; }).filter(Boolean).join(' · '));
+R.push('');
+
 tab('6 · Censimento del reso — TINTE DI TESTO diverse', m => `${m.nColTesto}`);
 tab('7 · Censimento del reso — FONDI diversi', m => `${m.nFondi}`);
 tab('8 · Censimento del reso — CORPI diversi', m => `${m.nCorpi}`);

@@ -6597,7 +6597,18 @@ const getThisWeekMatchday=()=>{
           2. IL SECONDO COLORE DEL CLUB esiste nel gioco (mkT(...,c,c2)) e non si vedeva mai:
              diventa il filo da 3 px sotto la fascia, come una riga della maglia.
           3. LE TRE MISURE (forma, morale, fatica) escono dalla fascia colorata e vanno su una
-             striscia chiara: la fascia passa da ~195 px a ~135 px su uno schermo da 915. */}
+             striscia chiara.
+          QUELLO CHE QUESTO PASSO **NON** FA, e che avevo scritto qui prima di misurarlo:
+          NON accorcia la schermata. La Dashboard a 412 px passa da 2.704 a 2.700 px: quattro
+          pixel. Le tre misure non sono sparite, si sono spostate — occupano lo stesso spazio
+          un centimetro piu' in basso. Per accorciare davvero servono le sezioni richiudibili
+          (direttiva PO 17/09), ed e' un altro passo.
+          QUELLO CHE FA, misurato sulla griglia mobile a 360/412/430:
+          i nodi MISURABILI per contrasto passano da 2.313 a 2.473 (+160). Quei 160 erano
+          esclusi dal conto perche' stavano su un fondo a GRADIENTE: sparita la sfumatura, sono
+          entrati nella misura — e i nodi sotto soglia restano 62, cioe' TUTTI E 160 PASSANO.
+          E' questa la prova che l'inchiostro scelto per contrasto funziona: non un numero che
+          cala, ma 160 nodi che prima nessuno poteva controllare e adesso reggono. */}
       {(()=>{
         const cc=player.club?.c||player.club?.col||TH.primary;
         const c2=player.club?.c2||null;
