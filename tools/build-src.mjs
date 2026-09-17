@@ -46,6 +46,11 @@ const TARGET = path.join(ROOT, 'CARRIER-MANAGER-AV.html');
    --------------------------------------------------------------------------- */
 function rituali_in_corsa(){
   if(process.env.CPM_FORZA_BUILD==='1')return [];
+  /* [difetto della prima stesura, trovato usandola] la guardia serve a non CAMBIARE il file sotto i piedi
+     di un rituale. `--check` e check-src.mjs non scrivono niente: bloccarli impediva di VERIFICARE, che e'
+     l'opposto di cio' che serve — e mi ha impedito di controllare un build appena fatto. */
+  if(process.argv.includes('--check'))return [];
+  if(String(process.argv[1]||'').includes('check-src'))return [];
   try{
     /* MISURATO: npm lancia i rituali con il comando NUDO (`node run-replay.mjs`), senza percorso —
        cercare «tests/visual» dentro la riga di ps non trova niente, ed e' il motivo per cui la prima

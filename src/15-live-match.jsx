@@ -3641,7 +3641,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        sta nel renderer (153 chiamate di disegno per fotogramma, D12), non qui. Rosso __CPM_NO912: si torna a
        tre battiti con un solo decisore. */
     const _a912=!(typeof window!=='undefined'&&window.__CPM_NO912);
-    const _SUB898=(typeof window!=='undefined'&&window.__CPM_NO898)?1:(_a912?11:3);k898Ref.current=_SUB898-1;/* il primo battito e' il minuto (decide), poi i sotto-tick */evAcc898Ref.current=[];
+    /* [7.940 — LA CADENZA DEL MOTORE, da 11 a 22 battiti al minuto. Decisione del PO 17/09: «procedi»]
+       MISURATO al banco (30 partite) con la normalizzazione della 7.936, che rende il motore indipendente
+       dalla frequenza con cui lo si chiama: rimesse 7,43 → 19,7 su 22 · intercetti 3,55 → 9,90 su 8,50 ·
+       ammonizioni 2,42 su 2,40 · espulsioni 0,12 su 0,11 · rinvii 7,97 su 7,00 · parate 2,70 su 3,20 ·
+       passaggi 115 → 226 su 450 · VOCI FUORI BANDA 10 → 5 · voci a ZERO 1 → 0.
+       IL COSTO, ed e' il motivo per cui questa leva e' SPENTA. Il PO l'aveva autorizzata sapendo che il costo
+       in fotogrammi non era verificato. Provando a misurarlo e' venuto fuori un segnale troppo forte per
+       spedire lo stesso: nelle fotografie delle sonde, stesso provino e stessi parametri di rendering,
+       18 fps a 11 battiti contro 7 a 22. Non e' un confronto pulito — momenti diversi della partita — e la
+       misura appaiata NON E' RIUSCITA in quattro tentativi (il contatore del gioco non si lascia leggere
+       dall'esterno, e le sonde lunghe muoiono prima di stampare). Ma dimezzare i fotogrammi sul telefono per
+       guadagnare cinque voci al banco non e' uno scambio da fare al buio.
+       Quindi la cadenza doppia resta PRONTA E SPENTA: si accende con window.__CPM_C22, e il motore — dopo la
+       7.936 — risponde come deve a qualunque valore. Si spedisce quando la misura c'e', o quando il PO la
+       prova sul suo telefono. */
+    const _c940=(typeof window!=='undefined'&&window.__CPM_C22)?22:11;
+    const _SUB898=(typeof window!=='undefined'&&window.__CPM_NO898)?1:(_a912?_c940:3);k898Ref.current=_SUB898-1;/* il primo battito e' il minuto (decide), poi i sotto-tick */evAcc898Ref.current=[];
     const _specchi898=(_stM870,_evM870)=>{
           {const _q=quotaMotoreRef.current;_q.push(_stM870.poss.lato==="home"?1:0);if(_q.length>16)_q.shift();}
           const _dM=_stM870.poss.lato==="home"?1:-1;

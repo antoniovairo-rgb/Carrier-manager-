@@ -22157,7 +22157,11 @@ function creaMotorePossesso(cfg){
        di palla ferma non erano rimesse ma punizioni. Vicino all'area (avanzamento >= 70) restano due tick. */
     const _advF=(kind==="foul")?(lato===HOME?clamp(x,0,100):100-clamp(x,0,100)):0;
     const tot=kind==="corner"?3:kind==="pen"?3:(kind==="throw"||kind==="goal_kick")?1:(kind==="foul"&&_advF<70)?1:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};S.cond=null;
-    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;for(const q of g){if(!mio(q,lato)||q.gk)continue;const sc=(q.rl==="AT"?10:0)+(q.eroe?6:0)+rnd()*4;if(sc>bs){bs=sc;B=q;}}}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;}S.fermo.batt=B?B.i:null;}S.poss.stato="fermo";S.poss.lato=lato;S.poss.padrone=null;S.poss.ricevente=null;S.poss.t=0;S.palla.x=S.fermo.x;S.palla.y=S.fermo.y;
+    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;for(const q of g){if(!mio(q,lato)||q.gk)continue;const sc=(q.rl==="AT"?10:0)+(q.eroe?6:0)+rnd()*4;if(sc>bs){bs=sc;B=q;}}}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;}S.fermo.batt=B?B.i:null;
+      /* [7.938] e se il battitore e' lontano, gli si da' il TEMPO di arrivarci invece di teletrasportarlo:
+         un battito copre al massimo 11 unita'. Nel calcio vero e' cosi' — una punizione a meta' campo si
+         batte piu' tardi di una sulla trequarti, perche' qualcuno ci deve andare. */
+      if(B){const _dB=hyp(B.x,B.y,S.fermo.x,S.fermo.y);const _need=Math.ceil(_dB/11);if(_need>S.fermo.tot)S.fermo.tot=Math.min(12,_need);}}S.poss.stato="fermo";S.poss.lato=lato;S.poss.padrone=null;S.poss.ricevente=null;S.poss.t=0;S.palla.x=S.fermo.x;S.palla.y=S.fermo.y;
     if(S.richieste.turno===lato)S.richieste.turno=null;S.conta.fermo++;
     ev(kind==="foul"?"fallo":kind==="pen"?"rigore":kind==="corner"?"corner":kind==="throw"?"rimessa":"rinvio",Object.assign({x:+S.fermo.x.toFixed(1),y:+S.fermo.y.toFixed(1),per:lato},opt));};
 
@@ -22599,20 +22603,29 @@ function creaMotorePossesso(cfg){
          const _oppo=(by>50)?(sl.y<=50):(sl.y>=50);
          if(!_no883&&inPoss&&st!=="fermo"&&advB>=70&&Math.abs(by-50)>=20&&_oppo&&(p.rl==="AT"||p.rl==="MF")){
            const _po=(p.rl==="AT")?{a:85,y:(by>50?44:56)}:{a:80,y:50};
-           /* [7.931 REVOCATA 17/09 — il metro non la lascia passare, e il metro non si alza]
-              MISURATO e riportato al PO: il portatore e' avanzato E largo 33,5 volte a partita, ma in 17,9
-              casi su 18,1 il cross muore perche' in area non c'e' nessuno; i cross riusciti sono 0,20 su 15
-              veri. La regola della 7.883 manda gia' in area chi sta dal lato cieco, ma ci va a `v=6`, cioe'
-              6 unita' al MINUTO: con 11 battiti sono 0,55 unita' per battito, e per le 25 unita' che
-              separano un trequartista dal secondo palo servirebbero 45 battiti mentre un'azione ne dura due
-              o tre. A 110 u/min (la media di corsa di un calciatore vero, 10-11 km in 90') i cross salivano
-              a 6,53, xG 0,43 → 0,92, parate 1,57 → 2,70, corner 1,60 → 2,75, voci fuori banda 10 → 8.
-              MA il guardiano «un pallone, un padrone» (test/logic) impone stepMax <= 12 e si accendeva.
-              Provato il massimo che il tetto consente, v=12: i cross vanno 0,20 → 0,40 su 15. Irrilevante.
-              Quindi si resta a 6 e la decisione sul tetto e' del PO, non mia: e' un metro spedito. */
-           if(advDi(tx,p.team)<_po.a-2){tx=xDa(_po.a,p.team);ty=_po.y;v=6;}}}
+           /* [7.939 — CHI ATTACCA L'AREA CI ARRIVA PRIMA CHE FINISCA L'AZIONE. Sbloccata dal PO il 17/09]
+              MISURATO: il portatore e' avanzato E largo 33,5 volte a partita, ma in 17,9 casi su 18,1 il cross
+              muore perche' in area non c'e' nessuno; i cross riusciti sono 0,20 contro 15 veri. La regola
+              della 7.883 manda gia' in area chi sta dal lato cieco, ma ci andava a `v=6`, cioe' 6 unita' al
+              MINUTO: 0,55 per battito, e per le 25 unita' che separano un trequartista dal secondo palo
+              servirebbero 45 battiti mentre un'azione ne dura due o tre.
+              Era ferma dal 17/09 perche' accendeva il guardiano «un pallone, un padrone». Il guardiano aveva
+              ragione, ma per un altro motivo: misurava a una decisione al minuto una partita che se ne gioca
+              undici. Sistemato quello (7.938) e tolto il teletrasporto del battitore, il tetto vero e' 12
+              unita' PER BATTITO — 2,2 m/s — e la corsa in area ci sta sotto: 11 u/battito, 2,0 m/s. */
+           const _v939=(typeof window!=='undefined'&&window&&window.__CPM_NO939)?6:Math.min(60,12/(S.dt||1));/* [7.939 v2] META' della corsa massima: a 121 il pallone restava senza padrone il 57 % del tempo e la banda del guardiano ne chiede almeno il 60 — quella soglia non e' fra quelle che il PO ha autorizzato a toccare */
+           if(advDi(tx,p.team)<_po.a-2){tx=xDa(_po.a,p.team);ty=_po.y;v=_v939;}}}
       }
-      if(st==="fermo"&&S.fermo&&S.fermo.batt===p.i){const f=S.fermo;tx=f.x-dp*(f.kind==="pen"?1.5:0.8);ty=f.kind==="corner"?f.y:f.y;v=8;}
+      if(st==="fermo"&&S.fermo&&S.fermo.batt===p.i){const f=S.fermo;tx=f.x-dp*(f.kind==="pen"?1.5:0.8);ty=f.kind==="corner"?f.y:f.y;
+        /* [7.938 — CHI VA A BATTERE CI VA COI PIEDI] MISURATO alla cadenza vera (5 partite, 11 battiti al
+           minuto): 54 salti oltre 12 unita' per battito, il piu' lungo 53,8u — mezzo campo — e TUTTI nel
+           battito in cui si batte un piazzato. La causa non e' il possesso: e' che il battitore designato si
+           avvicinava alla palla a 8 unita' al MINUTO, cioe' 0,73 per battito, e con uno o tre battiti di
+           attesa ne copriva due; il resto glielo faceva fare `T.p.x=f.x` alla battuta, di colpo. Nel campo
+           2D il PO lo vede come un teletrasporto. Ora corre: il passo resta sotto le 12 unita' per battito
+           in ogni regime (a dt=1, il banco di test/logic, vale esattamente 12), quindi il metro «i passi
+           sono umani» non si tocca — si rispetta. */
+        v=Math.min(121,12/(S.dt||1));}
       else if(st==="fermo"&&S.fermo){const f=S.fermo;
         if(f.kind==="corner"||f.kind==="pen"){const atk=(p.team===f.lato);const gx=xDa(f.kind==="pen"?89:92,f.lato);const k=p.i%11;
           if(f.kind==="pen"){if(p.gk){tx=xDa(3,altro(f.lato))===p.x?p.x:(p.team===f.lato?slotDi(p).x:xDa(2,altro(f.lato)));ty=50;}else{tx=xDa(80,f.lato)+(k%2)*dirDi(f.lato)*-2;ty=18+(k%10)*6.4;}}
@@ -26431,7 +26444,23 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        sta nel renderer (153 chiamate di disegno per fotogramma, D12), non qui. Rosso __CPM_NO912: si torna a
        tre battiti con un solo decisore. */
     const _a912=!(typeof window!=='undefined'&&window.__CPM_NO912);
-    const _SUB898=(typeof window!=='undefined'&&window.__CPM_NO898)?1:(_a912?11:3);k898Ref.current=_SUB898-1;/* il primo battito e' il minuto (decide), poi i sotto-tick */evAcc898Ref.current=[];
+    /* [7.940 — LA CADENZA DEL MOTORE, da 11 a 22 battiti al minuto. Decisione del PO 17/09: «procedi»]
+       MISURATO al banco (30 partite) con la normalizzazione della 7.936, che rende il motore indipendente
+       dalla frequenza con cui lo si chiama: rimesse 7,43 → 19,7 su 22 · intercetti 3,55 → 9,90 su 8,50 ·
+       ammonizioni 2,42 su 2,40 · espulsioni 0,12 su 0,11 · rinvii 7,97 su 7,00 · parate 2,70 su 3,20 ·
+       passaggi 115 → 226 su 450 · VOCI FUORI BANDA 10 → 5 · voci a ZERO 1 → 0.
+       IL COSTO, ed e' il motivo per cui questa leva e' SPENTA. Il PO l'aveva autorizzata sapendo che il costo
+       in fotogrammi non era verificato. Provando a misurarlo e' venuto fuori un segnale troppo forte per
+       spedire lo stesso: nelle fotografie delle sonde, stesso provino e stessi parametri di rendering,
+       18 fps a 11 battiti contro 7 a 22. Non e' un confronto pulito — momenti diversi della partita — e la
+       misura appaiata NON E' RIUSCITA in quattro tentativi (il contatore del gioco non si lascia leggere
+       dall'esterno, e le sonde lunghe muoiono prima di stampare). Ma dimezzare i fotogrammi sul telefono per
+       guadagnare cinque voci al banco non e' uno scambio da fare al buio.
+       Quindi la cadenza doppia resta PRONTA E SPENTA: si accende con window.__CPM_C22, e il motore — dopo la
+       7.936 — risponde come deve a qualunque valore. Si spedisce quando la misura c'e', o quando il PO la
+       prova sul suo telefono. */
+    const _c940=(typeof window!=='undefined'&&window.__CPM_C22)?22:11;
+    const _SUB898=(typeof window!=='undefined'&&window.__CPM_NO898)?1:(_a912?_c940:3);k898Ref.current=_SUB898-1;/* il primo battito e' il minuto (decide), poi i sotto-tick */evAcc898Ref.current=[];
     const _specchi898=(_stM870,_evM870)=>{
           {const _q=quotaMotoreRef.current;_q.push(_stM870.poss.lato==="home"?1:0);if(_q.length>16)_q.shift();}
           const _dM=_stM870.poss.lato==="home"?1:-1;
