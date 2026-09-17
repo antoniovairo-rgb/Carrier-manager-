@@ -20,10 +20,63 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 
 const ROOT   = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC    = path.join(ROOT, 'src');
 const TARGET = path.join(ROOT, 'CARRIER-MANAGER-AV.html');
+
+/* ---------------------------------------------------------------------------
+   IL BUILD SI RIFIUTA DI PARTIRE MENTRE UN RITUALE LO STA USANDO.
+
+   La notte del 17/09 ho ricostruito il build DUE VOLTE mentre una catena di
+   rituali girava sopra il file vecchio. La prima volta ho buttato gli esiti e
+   rifatto la catena. La seconda no: ho creduto ai due rossi che ne sono usciti,
+   ho REVOCATO una modifica buona e ho scritto al PO una spiegazione falsa,
+   costruita sopra il rumore. Rimisurata pulita — un rituale alla volta, build
+   fermo — la stessa modifica era verde: replay 1.439 ms con 4 eventi invece di
+   13.796 con 1, validate-situations 0 failure con l'impronta della corsa pulita.
+
+   La regola c'era gia', scritta in CLAUDE.md da me. Una regola che si puo'
+   dimenticare non e' un metro: e' un promemoria. Qui diventa un metro.
+
+   Chi ha davvero bisogno di forzare (per esempio per ricostruire dopo un
+   container riavviato, con processi fantasma nella lista) passa CPM_FORZA_BUILD=1
+   e se ne assume il verbale.
+   --------------------------------------------------------------------------- */
+function rituali_in_corsa(){
+  if(process.env.CPM_FORZA_BUILD==='1')return [];
+  try{
+    /* MISURATO: npm lancia i rituali con il comando NUDO (`node run-replay.mjs`), senza percorso —
+       cercare «tests/visual» dentro la riga di ps non trova niente, ed e' il motivo per cui la prima
+       stesura di questa guardia non e' scattata quando l'ho provata. Quello che li identifica e' il
+       CWD: un rituale gira sempre dentro tests/visual. */
+    const out = execSync('ps -eo pid,args', {encoding:'utf8', stdio:['ignore','pipe','ignore']});
+    const miei = [];
+    for(const r of out.split('\n')){
+      const m = r.trim().match(/^(\d+)\s+(.*)$/); if(!m) continue;
+      const [ , pid, cmd ] = m;
+      if(!/(^|\/)node\b/.test(cmd)) continue;
+      if(/build-src|check-src/.test(cmd)) continue;
+      let cwd = ''; try{ cwd = fs.readlinkSync('/proc/' + pid + '/cwd'); }catch(_e){ continue; }
+      if(cwd.endsWith(path.join('tests','visual')) || cwd.includes(path.join('tests','visual') + path.sep))
+        miei.push(pid + '  ' + cmd.slice(0, 120));
+    }
+    return miei;
+  }catch(_e){ return []; }/* senza `ps` (ambiente minimo) non si blocca niente: meglio un build in piu' che un build impossibile */
+}
+
+{
+  const vivi = rituali_in_corsa();
+  if(vivi.length){
+    console.error('\n⛔ BUILD RIFIUTATO — ci sono ' + vivi.length + ' rituali che stanno usando il build:');
+    for(const v of vivi.slice(0,6)) console.error('   ' + v);
+    console.error('\n   Ricostruire adesso significa cambiare il file sotto i loro piedi: i loro esiti');
+    console.error('   non varrebbero niente, e un rosso finto costa piu\' di un rosso vero.');
+    console.error('   Aspetta che finiscano, oppure fermali. Per forzare: CPM_FORZA_BUILD=1\n');
+    process.exit(2);
+  }
+}
 
 const SENTINEL = 'CMAV-SRC-HEADER-END';
 const NAME_RE  = /^(\d{2})-[A-Za-z0-9._-]+\.(jsx|html)$/;
