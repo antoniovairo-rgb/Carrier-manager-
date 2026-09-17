@@ -132,7 +132,15 @@ function MISURA(W) {
     nFuori: 0, fuori: [], nContenuti: 0, contenuti: [],
     nTesto: 0, nSottoPav: 0, nPiccoli: 0, minFs: null,
     nMisurati: 0, nSotto: 0, nGradiente: 0, peggiori: [],
-    nMarca: 0, marca: [] };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
+    nMarca: 0, marca: [],
+    /* [G1 · il censimento del reso] Quante tinte, quanti corpi e quanti raggi DIVERSI vengono
+       dipinti davvero su questa schermata. Non e' il conto degli esadecimali nel sorgente
+       (quello lo fa tavolozza.mjs, ed e' cieco: un colore scritto dieci volte e mai reso vale
+       zero): e' quello che l'occhio riceve. E' il tabellone su cui si misura l'applicazione
+       della direzione, schermata per schermata. Nessuna soglia: e' un CENSIMENTO, non un
+       guardiano — un numero che sale o scende, non un rosso che si puo' abbassare. */
+    nColTesto: 0, nFondi: 0, nCorpi: 0, nRaggi: 0, nPesi: 0,
+    corpi: [], raggi: [] };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
 
   const de = document.documentElement;
 
@@ -237,6 +245,7 @@ function MISURA(W) {
   };
 
   /* ── M3 + M6 · i nodi di testo visibili ──────────────────────────────────────────────────── */
+  const _colT = new Set(), _fon = new Set(), _cor = new Set(), _pes = new Set(), _rag = new Set();
   const agg = new Map(); /* coppie colore/fondo raggruppate: 400 righe uguali sono UN difetto */
   const tw = document.createTreeWalker(radice, NodeFilter.SHOW_TEXT, null);
   let nodo;
@@ -270,11 +279,23 @@ function MISURA(W) {
     const soglia = (fs >= 18 || (fs >= 14 && fw >= 700)) ? 3 : 4.5;
     R.nMisurati++;
     if (rap < soglia) R.nSotto++;
+    _colT.add(hex(tc)); _fon.add(hex(f.col)); _cor.add(Math.round(fs * 10) / 10); _pes.add(fw);
     const k = hex(tc) + '|' + hex(f.col) + '|' + Math.round(fs * 10) / 10 + '|' + fw;
     const e = agg.get(k);
     if (e) e.n++;
     else agg.set(k, { testo: hex(tc), fondo: hex(f.col), fs: Math.round(fs * 10) / 10, fw, rap: Math.round(rap * 100) / 100, soglia, n: 1, sel: sel(p), esempio: (nodo.nodeValue || '').replace(/\s+/g, ' ').trim().slice(0, 26) });
   }
+  /* i raggi: si guardano TUTTI gli elementi visibili con un angolo arrotondato, non solo il testo */
+  for (let i = 0; i < tutti.length; i++) {
+    const el = tutti[i], cs = gcs(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+    const r = el.getBoundingClientRect(); if (r.width < 2 || r.height < 2) continue;
+    const br = parseFloat(cs.borderTopLeftRadius) || 0;
+    if (br > 0.4 && br < 900) _rag.add(Math.round(br * 10) / 10);
+  }
+  R.nColTesto = _colT.size; R.nFondi = _fon.size; R.nCorpi = _cor.size; R.nPesi = _pes.size; R.nRaggi = _rag.size;
+  R.corpi = [..._cor].sort((a, b) => a - b);
+  R.raggi = [..._rag].sort((a, b) => a - b);
   R.peggiori = [...agg.values()].sort((a, b) => a.rap - b.rap || b.n - a.n).slice(0, 5);
   if (R.minFs != null) R.minFs = Math.round(R.minFs * 10) / 10;
   /* [G3.2] bottoni pieni di marca: <button> e [role=button] visibili il cui fondo calcolato e' il bordeaux di marca */
@@ -563,6 +584,22 @@ tab('3 · Testo reso sotto i 10 px — sotto/totale (minimo)', m => `${m.nPiccol
 tab('3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale', m => `${m.nSottoPav}/${m.nTesto}`, w => somma(w, 'nSottoPav') + '/' + somma(w, 'nTesto'));
 tab('4 · Contrasto sotto soglia WCAG — sotto/misurati (esclusi per gradiente)', m => `${m.nSotto}/${m.nMisurati} (${m.nGradiente})`, w => somma(w, 'nSotto') + '/' + somma(w, 'nMisurati'));
 tab('5 · Bottoni pieni di marca (una sola azione primaria per vista)', m => `${m.nMarca}`, w => String(somma(w, 'nMarca')));
+
+/* [G1 · il censimento del reso] Non e' un guardiano e non ha una soglia: e' il TABELLONE su cui si
+   misura, schermata per schermata, se la direzione grafica e' diventata un sistema o e' rimasta
+   una collezione. Un valore che scende qui e' un valore in meno che l'occhio deve incassare.
+   Il conto degli esadecimali nel sorgente (tavolozza.mjs) e' cieco: un colore scritto dieci volte
+   e mai reso vale zero, e un colore calcolato a runtime non compare. Questo conta cio' che si vede. */
+tab('6 · Censimento del reso — TINTE DI TESTO diverse', m => `${m.nColTesto}`);
+tab('7 · Censimento del reso — FONDI diversi', m => `${m.nFondi}`);
+tab('8 · Censimento del reso — CORPI diversi', m => `${m.nCorpi}`);
+tab('9 · Censimento del reso — RAGGI diversi', m => `${m.nRaggi}`);
+
+R.push('> **Metro di paragone.** Il provino della direzione (`docs/collaudo-grafico/proposta-schermate/`,');
+R.push('> misurato da `tests/visual/provino-schermate.mjs`) rende, su tutte e tre le schermate:');
+R.push('> **5 tinte di testo · 6 corpi (11 · 12,5 · 14 · 16 · 19 · 26) · 3 raggi (3 · 6 · 50%)**, identici fra loro.');
+R.push('> La coerenza fra schermate chiesta dal PO li' + "'" + ' e' + "'" + ' un fatto misurato, non una dichiarazione.');
+R.push('');
 
 R.push('## Dettaglio · gli elementi che sporgono (i 5 peggiori per schermata, alla larghezza in cui sporgono di piu\')');
 R.push('');

@@ -66,6 +66,17 @@ for (const r of righe) {
 console.log('-'.repeat(83));
 console.log(col('TOTALE', 24) + num(tot.of + ' px', 9) + num(tot.fu, 7) + num(tot.p10, 7) + num(tot.p11, 7) + num('', 7) + num(tot.te, 7) + num(tot.co, 9) + num(tot.gr, 6));
 
+/* IL CENSIMENTO DEL RESO: quante tinte, corpi, pesi e raggi DIVERSI vengono dipinti.
+   E' il tabellone su cui si misura l'applicazione della direzione alle schermate vere. */
+console.log('\nCENSIMENTO DEL RESO — quanti valori DIVERSI arrivano all\'occhio\n');
+console.log(col('SCHERMATA', 24) + num('tinte testo', 12) + num('fondi', 8) + num('corpi', 8) + num('pesi', 7) + num('raggi', 8));
+console.log('-'.repeat(67));
+for (const r of righe) {
+  const m = r.m;
+  console.log(col(r.nome, 24) + num(m.nColTesto, 12) + num(m.nFondi, 8) + num(m.nCorpi, 8) + num(m.nPesi, 7) + num(m.nRaggi, 8));
+}
+for (const r of righe) console.log('  ' + col(r.nome, 24) + 'corpi ' + r.m.corpi.join(' · ') + '   raggi ' + r.m.raggi.join(' · '));
+
 for (const r of righe) {
   if (!r.m.peggiori.length) continue;
   const so = r.m.peggiori.filter(x => x.rap < x.soglia);

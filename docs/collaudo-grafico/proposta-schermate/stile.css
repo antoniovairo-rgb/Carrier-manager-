@@ -36,7 +36,7 @@ body{background:var(--sfondo);color:var(--inchiostro);
 .id{background:var(--carta);border-bottom:1px solid var(--filo);padding:12px 14px;display:flex;align-items:center;gap:12px}
 .id .nome{font-size:16px;font-weight:800;line-height:1.15}
 .av{width:44px;height:44px;border-radius:50%;background:#dfe4ec;flex:none;
-    display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--secondo);font-size:15px}
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--secondo);font-size:16px}
 .ovr{margin-left:auto;text-align:right}
 .ovr .v{font-size:26px;font-weight:800;line-height:1}
 
@@ -44,13 +44,13 @@ body{background:var(--sfondo);color:var(--inchiostro);
 .cond{display:grid;grid-template-columns:repeat(3,1fr);background:var(--carta);border-bottom:1px solid var(--filo)}
 .cond > div{padding:9px 14px;border-left:1px solid var(--filo)}
 .cond > div:first-child{border-left:none}
-.cond .v{font-size:17px;font-weight:800;line-height:1.1}
-.barra{height:3px;background:#e7ebf1;border-radius:2px;margin-top:5px;overflow:hidden}
+.cond .v{font-size:19px;font-weight:800;line-height:1.1}
+.barra{height:3px;background:#e7ebf1;border-radius:3px;margin-top:5px;overflow:hidden}
 .barra i{display:block;height:100%}
 
 /* ---- navigazione di sezione: sottolineatura, non tre pillole ---- */
 .tabs{display:flex;background:var(--carta);border-bottom:1px solid var(--filo)}
-.tabs div{flex:1;text-align:center;padding:11px 0 10px;font-size:13px;font-weight:700;color:var(--terzo)}
+.tabs div{flex:1;text-align:center;padding:11px 0 10px;font-size:14px;font-weight:700;color:var(--terzo)}
 .tabs div.on{color:var(--inchiostro);box-shadow:inset 0 -2px 0 var(--accento)}
 .filtri{display:flex;gap:16px;padding:9px 14px;background:var(--carta);border-bottom:1px solid var(--filo);
   overflow-x:auto;white-space:nowrap;scrollbar-width:none}
@@ -61,12 +61,12 @@ body{background:var(--sfondo);color:var(--inchiostro);
 /* ---- carta e righe ---- */
 .sez{margin:12px 12px 0}
 .cap{display:flex;align-items:baseline;justify-content:space-between;padding:0 2px 6px}
-.cap a{color:var(--accento);font-size:12px;font-weight:700;text-decoration:none}
+.cap a{color:var(--accento);font-size:12.5px;font-weight:700;text-decoration:none}
 .carta{background:var(--carta);border:1px solid var(--filo);border-radius:6px;overflow:hidden}
 .riga{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--filo)}
 .riga:first-child{border-top:none}
 .riga .k{font-size:12.5px;font-weight:700;color:var(--secondo)}
-.riga .v{margin-left:auto;font-size:13px;font-weight:700;text-align:right}
+.riga .v{margin-left:auto;font-size:14px;font-weight:700;text-align:right}
 .riga .v small{display:block;font-size:11px;font-weight:600;color:var(--terzo);margin-top:1px}
 
 /* ---- riga di dati a tre ---- */
@@ -80,22 +80,27 @@ body{background:var(--sfondo);color:var(--inchiostro);
 /* LO SCUDO non impone il bianco: i colori dei club sono quelli del gioco e su un giallo
    il bianco fa 2,95:1. L'inchiostro della sigla e' scelto per contrasto, scudo per scudo
    (bianco o #0f172a, quello che vince): sui nove club del provino il minimo e' 4,63:1. */
-.scudo{width:34px;height:40px;border-radius:4px 4px 12px 12px;display:flex;align-items:center;justify-content:center;
+.scudo{width:34px;height:40px;border-radius:3px 3px 12px 12px;display:flex;align-items:center;justify-content:center;
        color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em;flex:none;
        box-shadow:inset 0 0 0 1px rgba(15,23,42,.14)}
 .scudo.p{width:29px;height:34px;border-radius:3px 3px 10px 10px;font-size:11px;letter-spacing:0}
 
 /* ---- forma: cinque quadratini ---- */
 .forma{display:flex;gap:3px}
-.forma i{width:13px;height:13px;border-radius:2px;display:block}
-.forma.p i{width:10px;height:10px;border-radius:2px}
+.forma i{width:13px;height:13px;border-radius:3px;display:block}
+.forma.p i{width:10px;height:10px;border-radius:3px}
 
 /* ---- azione ---- */
 .cta{margin:12px;display:flex;gap:8px}
+/* [G1 · difetto mio, trovato dal censimento] `font:800 14px/1 inherit` NON E' CSS VALIDO:
+   nella scorciatoia `font` l'ultimo valore e' la FAMIGLIA, e `inherit` li' dentro non vale —
+   il browser buttava via TUTTA la dichiarazione e i due bottoni finivano al corpo di
+   fabbrica del browser, 13,3 px. Il censimento dei corpi resi l'ha visto: sette gradini
+   sulla Home invece di sei, e il settimo era un valore che non avevo scelto io. */
 .cta button{flex:1;border:none;border-radius:6px;background:var(--accento);color:#fff;
-  font:800 14px/1 inherit;padding:14px 12px;letter-spacing:.01em}
+  font-family:inherit;font-size:14px;font-weight:800;line-height:1;padding:14px 12px;letter-spacing:.01em}
 .cta .sec{flex:0 0 auto;background:var(--carta);color:var(--secondo);border:1px solid var(--filo);
-  font-weight:700;padding:14px 16px;border-radius:6px}
+  font-family:inherit;font-size:14px;font-weight:700;line-height:1;padding:14px 16px;border-radius:6px}
 .tag{display:inline-block;padding:2px 7px;border-radius:3px;background:var(--accento-tenue);
      color:var(--accento);font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
 
