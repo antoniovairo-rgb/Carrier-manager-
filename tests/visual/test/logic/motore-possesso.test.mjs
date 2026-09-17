@@ -38,12 +38,24 @@ test('determinismo: stesso seme, stessa sequenza di fatti', () => {
   assert.notStrictEqual(a, c, 'semi diversi devono dare partite diverse');
 });
 
+/* [17/09 — decisione del PO «procedi»] IL GUARDIANO MISURAVA UNA PARTITA CHE NESSUNO GIOCA.
+   Girava a UNA decisione al minuto (`m.tick({min:t})` senza dt) mentre la produzione ne fa UNDICI dalla
+   7.912, e il suo tetto — 12 unita' di passo — valeva quindi per un minuto intero: 12 metri al minuto,
+   0,2 m/s, cinque volte piu' lento di un uomo che cammina, contro i ~120 metri al minuto di un calciatore
+   vero (10-11 km in 90'). Con quel tetto nessuno faceva in tempo ad attaccare l'area e il 99 % dei cross
+   moriva senza destinatario: misurato, 17,90 occasioni sprecate contro 0,20 riuscite.
+   Ora il guardiano gira alla cadenza VERA e il tetto vale PER BATTITO: 12 unita' in 5,45 s sono 2,2 m/s,
+   un trotto. Non e' la stessa soglia alzata: e' la stessa soglia, misurata dove la partita succede. */
 test('un pallone, un padrone: in tenuta la palla sta ai piedi (<=3u) e i passi sono umani', () => {
+  const BATTITI = 11;/* la cadenza della produzione (_SUB898) */
   let tenuta = 0, vicino = 0, stepMax = 0, ticks = 0, conPadrone = 0;
   for (const seed of [11, 22, 33, 44, 55]) {
     const m = nuovo(seed); let prev = m.stato().gioc;
     for (let t = 1; t <= 92; t++) {
-      m.tick({ min: t }); const st = m.stato(); ticks++;
+      for (let k = 0; k < BATTITI - 1; k++) { m.tick({ min: t, dt: 1 / BATTITI, dec: true });
+        const s2 = m.stato();
+        s2.gioc.forEach((q, i) => { const d = Math.hypot(q.x - prev[i].x, q.y - prev[i].y); if (d > stepMax) stepMax = d; }); prev = s2.gioc; }
+      m.tick({ min: t, dt: 1 / BATTITI, dec: true }); const st = m.stato(); ticks++;
       if (st.poss.stato === 'tenuta') { tenuta++; const q = st.poss.padrone === 21 ? st.eroe : st.gioc[st.poss.padrone]; if (Math.hypot(q.x - st.palla.x, q.y - st.palla.y) <= 3) vicino++; }
       if (st.poss.stato === 'tenuta' || st.poss.stato === 'fermo' || st.poss.stato === 'kickoff' || st.poss.stato === 'rete') conPadrone++;
       st.gioc.forEach((q, i) => { const d = Math.hypot(q.x - prev[i].x, q.y - prev[i].y); if (d > stepMax) stepMax = d; }); prev = st.gioc;
@@ -52,7 +64,7 @@ test('un pallone, un padrone: in tenuta la palla sta ai piedi (<=3u) e i passi s
   assert.strictEqual(vicino, tenuta, 'in tenuta il pallone e\' SEMPRE ai piedi del padrone');
   assert.ok(tenuta / ticks >= 0.42, `tenuta ${Math.round(100 * tenuta / ticks)}% (<42)`);
   assert.ok(conPadrone / ticks >= 0.60, `pallone con un padrone o fermo su un punto: ${Math.round(100 * conPadrone / ticks)}% (<60)`);
-  assert.ok(stepMax <= 12, `passo massimo dei ventidue ${stepMax.toFixed(1)}u (>12)`);
+  assert.ok(stepMax <= 12, `passo massimo dei ventidue ${stepMax.toFixed(1)}u per battito (>12) — 12u in 5,45 s sono 2,2 m/s`);
 });
 
 test('il gol decretato viene costruito e segnato entro 16 tick', () => {

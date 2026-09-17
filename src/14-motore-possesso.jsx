@@ -208,7 +208,11 @@ function creaMotorePossesso(cfg){
        di palla ferma non erano rimesse ma punizioni. Vicino all'area (avanzamento >= 70) restano due tick. */
     const _advF=(kind==="foul")?(lato===HOME?clamp(x,0,100):100-clamp(x,0,100)):0;
     const tot=kind==="corner"?3:kind==="pen"?3:(kind==="throw"||kind==="goal_kick")?1:(kind==="foul"&&_advF<70)?1:2;S.fermo={kind,lato,x:clamp(x,0,100),y:clamp(y,0,100),t:0,tot,batt:null};S.cond=null;
-    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;for(const q of g){if(!mio(q,lato)||q.gk)continue;const sc=(q.rl==="AT"?10:0)+(q.eroe?6:0)+rnd()*4;if(sc>bs){bs=sc;B=q;}}}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;}S.fermo.batt=B?B.i:null;}S.poss.stato="fermo";S.poss.lato=lato;S.poss.padrone=null;S.poss.ricevente=null;S.poss.t=0;S.palla.x=S.fermo.x;S.palla.y=S.fermo.y;
+    {let B=null;if(kind==="goal_kick")B=portiereDi(lato);else if(kind==="pen"){let bs=-1e9;for(const q of g){if(!mio(q,lato)||q.gk)continue;const sc=(q.rl==="AT"?10:0)+(q.eroe?6:0)+rnd()*4;if(sc>bs){bs=sc;B=q;}}}else{const T=piuVicino(S.fermo.x,S.fermo.y,lato,{noGk:true});B=T?T.p:null;}S.fermo.batt=B?B.i:null;
+      /* [7.938] e se il battitore e' lontano, gli si da' il TEMPO di arrivarci invece di teletrasportarlo:
+         un battito copre al massimo 11 unita'. Nel calcio vero e' cosi' — una punizione a meta' campo si
+         batte piu' tardi di una sulla trequarti, perche' qualcuno ci deve andare. */
+      if(B){const _dB=hyp(B.x,B.y,S.fermo.x,S.fermo.y);const _need=Math.ceil(_dB/11);if(_need>S.fermo.tot)S.fermo.tot=Math.min(12,_need);}}S.poss.stato="fermo";S.poss.lato=lato;S.poss.padrone=null;S.poss.ricevente=null;S.poss.t=0;S.palla.x=S.fermo.x;S.palla.y=S.fermo.y;
     if(S.richieste.turno===lato)S.richieste.turno=null;S.conta.fermo++;
     ev(kind==="foul"?"fallo":kind==="pen"?"rigore":kind==="corner"?"corner":kind==="throw"?"rimessa":"rinvio",Object.assign({x:+S.fermo.x.toFixed(1),y:+S.fermo.y.toFixed(1),per:lato},opt));};
 
@@ -663,7 +667,16 @@ function creaMotorePossesso(cfg){
               Quindi si resta a 6 e la decisione sul tetto e' del PO, non mia: e' un metro spedito. */
            if(advDi(tx,p.team)<_po.a-2){tx=xDa(_po.a,p.team);ty=_po.y;v=6;}}}
       }
-      if(st==="fermo"&&S.fermo&&S.fermo.batt===p.i){const f=S.fermo;tx=f.x-dp*(f.kind==="pen"?1.5:0.8);ty=f.kind==="corner"?f.y:f.y;v=8;}
+      if(st==="fermo"&&S.fermo&&S.fermo.batt===p.i){const f=S.fermo;tx=f.x-dp*(f.kind==="pen"?1.5:0.8);ty=f.kind==="corner"?f.y:f.y;
+        /* [7.938 — CHI VA A BATTERE CI VA COI PIEDI] MISURATO alla cadenza vera (5 partite, 11 battiti al
+           minuto): 54 salti oltre 12 unita' per battito, il piu' lungo 53,8u — mezzo campo — e TUTTI nel
+           battito in cui si batte un piazzato. La causa non e' il possesso: e' che il battitore designato si
+           avvicinava alla palla a 8 unita' al MINUTO, cioe' 0,73 per battito, e con uno o tre battiti di
+           attesa ne copriva due; il resto glielo faceva fare `T.p.x=f.x` alla battuta, di colpo. Nel campo
+           2D il PO lo vede come un teletrasporto. Ora corre: il passo resta sotto le 12 unita' per battito
+           in ogni regime (a dt=1, il banco di test/logic, vale esattamente 12), quindi il metro «i passi
+           sono umani» non si tocca — si rispetta. */
+        v=Math.min(121,12/(S.dt||1));}
       else if(st==="fermo"&&S.fermo){const f=S.fermo;
         if(f.kind==="corner"||f.kind==="pen"){const atk=(p.team===f.lato);const gx=xDa(f.kind==="pen"?89:92,f.lato);const k=p.i%11;
           if(f.kind==="pen"){if(p.gk){tx=xDa(3,altro(f.lato))===p.x?p.x:(p.team===f.lato?slotDi(p).x:xDa(2,altro(f.lato)));ty=50;}else{tx=xDa(80,f.lato)+(k%2)*dirDi(f.lato)*-2;ty=18+(k%10)*6.4;}}
