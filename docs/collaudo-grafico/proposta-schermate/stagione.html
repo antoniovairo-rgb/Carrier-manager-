@@ -1,0 +1,121 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=412,initial-scale=1">
+<title>Korward Elite — Stagione · Classifica (provino)</title>
+<link rel="stylesheet" href="stile.css">
+<style>
+  /* LA RIGA DI CLASSIFICA SU DUE LINEE.
+     Motivo, misurato: a 412 px le otto colonne numeriche (G V P S GF GS DIFF PT) piu' il
+     nome lasciano al club 70 px — cioe' la sigla e basta. Su due linee NON si toglie
+     nessun numero e il nome del club torna per intero. */
+  .cls{margin:0 12px}
+  .rg{display:flex;align-items:center;gap:9px;padding:9px 10px 9px 0;border-top:1px solid var(--filo);position:relative}
+  .rg:first-child{border-top:none}
+  .rg .rail{width:3px;align-self:stretch;border-radius:0 2px 2px 0;background:transparent;flex:none}
+  .rg .pos{width:20px;text-align:center;font-size:12.5px;font-weight:800;color:var(--secondo);flex:none}
+  .rg .cor{min-width:0;flex:1}
+  .rg .nm{font-size:13.5px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rg .sub{font-size:11px;color:var(--terzo);font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
+  .rg .dr{width:34px;text-align:right;font-size:12.5px;font-weight:700;color:var(--secondo);flex:none}
+  .rg .pt{width:30px;text-align:right;font-size:17px;font-weight:800;flex:none}
+  .rg.io{background:var(--accento-tenue)}
+  .rg.io .nm{color:var(--accento)}
+  .legenda{display:flex;gap:14px;padding:9px 12px;flex-wrap:wrap}
+  .legenda span{font-size:11px;font-weight:600;color:var(--terzo);display:flex;align-items:center;gap:5px}
+  .legenda i{width:8px;height:8px;border-radius:2px;display:block}
+  .testa{display:flex;align-items:baseline;justify-content:space-between;padding:10px 12px 8px}
+  .testa .t{font-size:13px;font-weight:800;letter-spacing:.02em}
+  .testa .g{font-size:11px;font-weight:700;color:var(--terzo)}
+</style></head><body>
+
+<div class="id">
+  <div class="av">GP</div>
+  <div>
+    <div class="nome">Grafica Probe</div>
+    <div class="et" style="margin-top:3px">Attaccante · Italia · FC Salernum</div>
+  </div>
+  <div class="ovr"><div class="et">OVR</div><div class="v n">82</div></div>
+</div>
+
+<div class="tabs"><div class="on">Classifica</div><div>Calendario</div><div>Coppe</div></div>
+<div class="filtri">
+  <span class="on">Lega B</span><span>Lega A</span><span>Premier Division</span><span>Championship</span><span>Liga Ibérica</span>
+</div>
+
+<div class="sez">
+  <div class="carta">
+    <div class="testa"><span class="t">Lega B · Stagione 4</span><span class="g">12ª di 34</span></div>
+    <div class="cls">
+
+      <div class="rg"><i class="rail" style="background:var(--promo)"></i><span class="pos n">1</span>
+        <span class="scudo p" style="background:#1e6fd0;color:#ffffff">EMP</span>
+        <div class="cor"><div class="nm">FC Empolese</div><div class="sub">11 G · 7 V · 2 N · 2 P · 19-10</div></div>
+        <span class="dr n">+9</span><span class="pt n">23</span></div>
+
+      <div class="rg"><i class="rail" style="background:var(--promo)"></i><span class="pos n">2</span>
+        <span class="scudo p" style="background:#f59e0b;color:#0f172a">PAR</span>
+        <div class="cor"><div class="nm">FC Parmense</div><div class="sub">11 G · 6 V · 4 N · 1 P · 17-9</div></div>
+        <span class="dr n">+8</span><span class="pt n">22</span></div>
+
+      <div class="rg"><i class="rail" style="background:var(--spareggio)"></i><span class="pos n">3</span>
+        <span class="scudo p" style="background:#0f0f0f;color:#ffffff">LAG</span>
+        <div class="cor"><div class="nm">FC Laguna</div><div class="sub">11 G · 6 V · 3 N · 2 P · 16-11</div></div>
+        <span class="dr n">+5</span><span class="pt n">21</span></div>
+
+      <div class="rg io"><i class="rail" style="background:var(--spareggio)"></i><span class="pos n">4</span>
+        <span class="scudo p" style="background:#6c1f2e;color:#ffffff">SAL</span>
+        <div class="cor"><div class="nm">FC Salernum</div><div class="sub">11 G · 5 V · 3 N · 3 P · 15-12</div></div>
+        <span class="dr n">+3</span><span class="pt n">18</span></div>
+
+      <div class="rg"><i class="rail" style="background:var(--spareggio)"></i><span class="pos n">5</span>
+        <span class="scudo p" style="background:#60a5fa;color:#0f172a">LNS</span>
+        <div class="cor"><div class="nm">FC Leonessa</div><div class="sub">11 G · 5 V · 3 N · 3 P · 14-12</div></div>
+        <span class="dr n">+2</span><span class="pt n">18</span></div>
+
+      <div class="rg"><i class="rail" style="background:var(--spareggio)"></i><span class="pos n">6</span>
+        <span class="scudo p" style="background:#f472b6;color:#0f172a">SIC</span>
+        <div class="cor"><div class="nm">FC Sicania</div><div class="sub">11 G · 4 V · 5 N · 2 P · 13-11</div></div>
+        <span class="dr n">+2</span><span class="pt n">17</span></div>
+
+      <div class="rg"><span class="rail"></span><span class="pos n">7</span>
+        <span class="scudo p" style="background:#f5f5f5;color:#0f172a">SPE</span>
+        <div class="cor"><div class="nm">FC Spezzino</div><div class="sub">11 G · 4 V · 4 N · 3 P · 12-11</div></div>
+        <span class="dr n">+1</span><span class="pt n">16</span></div>
+
+      <div class="rg"><span class="rail"></span><span class="pos n">8</span>
+        <span class="scudo p" style="background:#f5f5f5;color:#0f172a">PUG</span>
+        <div class="cor"><div class="nm">FC Pugliese</div><div class="sub">11 G · 4 V · 3 N · 4 P · 13-13</div></div>
+        <span class="dr n">0</span><span class="pt n">15</span></div>
+
+      <div class="rg"><span class="rail"></span><span class="pos n">9</span>
+        <span class="scudo p" style="background:#f59e0b;color:#0f172a">MOD</span>
+        <div class="cor"><div class="nm">FC Modenese</div><div class="sub">11 G · 3 V · 5 N · 3 P · 11-12</div></div>
+        <span class="dr n">−1</span><span class="pt n">14</span></div>
+
+      <div class="rg"><span class="rail"></span><span class="pos n">10</span>
+        <span class="scudo p" style="background:#dc2626;color:#ffffff">CRE</span>
+        <div class="cor"><div class="nm">FC Cremona</div><div class="sub">11 G · 3 V · 3 N · 5 P · 12-15</div></div>
+        <span class="dr n">−3</span><span class="pt n">12</span></div>
+
+      <div class="rg"><i class="rail" style="background:var(--retro)"></i><span class="pos n">11</span>
+        <span class="scudo p" style="background:#f59e0b;color:#0f172a">CIO</span>
+        <div class="cor"><div class="nm">FC Ciociaro</div><div class="sub">11 G · 2 V · 5 N · 4 P · 9-13</div></div>
+        <span class="dr n">−4</span><span class="pt n">11</span></div>
+
+      <div class="rg"><i class="rail" style="background:var(--retro)"></i><span class="pos n">12</span>
+        <span class="scudo p" style="background:#0f0f0f;color:#ffffff">PIS</span>
+        <div class="cor"><div class="nm">FC Pisano</div><div class="sub">11 G · 2 V · 4 N · 5 P · 10-15</div></div>
+        <span class="dr n">−5</span><span class="pt n">10</span></div>
+
+    </div>
+    <div class="legenda" style="border-top:1px solid var(--filo)">
+      <span><i style="background:var(--promo)"></i>Promozione diretta</span>
+      <span><i style="background:var(--spareggio)"></i>Spareggi</span>
+      <span><i style="background:var(--retro)"></i>Retrocessione</span>
+    </div>
+  </div>
+</div>
+
+<div class="nav">
+  <div>Home</div><div class="on">Stagione</div><div>Club</div><div>Carriera</div><div>Agente</div><div>Opzioni</div>
+</div>
+</body></html>

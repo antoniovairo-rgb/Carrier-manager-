@@ -1,0 +1,106 @@
+/* [G1 — LA DIREZIONE, PROVINO STATICO] Un solo sistema per tutte le schermate.
+   NON e' codice di gioco: e' la direzione da giudicare PRIMA di toccare src/.
+   Regole che questo foglio applica, e che si possono contare:
+     · un solo accento, speso in tre punti per schermata (azione, voce attiva, legame);
+     · nessuna scatola dentro una scatola: una carta, dentro solo righe separate da un filo da 1 px;
+     · numeri tabellari ovunque, mai un numero che balla di larghezza fra due righe;
+     · zero emoji come segnale: le sezioni si riconoscono dal cappello, non da un pittogramma;
+     · corpo minimo 11 px (il pavimento della griglia mobile e' 10);
+     · tema UNICO chiaro, come chiesto dal PO: nessun interruttore, nessun secondo fondo. */
+:root{
+  /* I COLORI SONO STATI SCELTI COL CALCOLATORE, NON A OCCHIO.
+     Ogni tinta di testo tiene almeno 4,5:1 su TUTTI E TRE i fondi in cui puo' capitare
+     (carta #ffffff, sfondo #f1f3f7, riga evidenziata #faf0f2). I numeri, misurati:
+       inchiostro #0f172a  17,85 · 16,07 · 15,99
+       secondo    #49525f   7,91 ·  7,12 ·  7,08
+       terzo      #646e7d   5,16 ·  4,65 ·  4,62
+       accento    #8e1f33   8,77 ·  7,90 ·  7,86
+       vinta      #146c35   6,51 · pari #8a6005 5,59 · persa #a81d28 7,31
+     Il primo provino aveva --terzo #8b95a5: 3,03:1 su bianco, 86 nodi sotto soglia.
+     Il metro l'ha bocciato prima del PO. */
+  --sfondo:#f1f3f7; --carta:#ffffff; --filo:#dfe4ec; --filo-forte:#cdd5e0;
+  --inchiostro:#0f172a; --secondo:#49525f; --terzo:#646e7d;
+  --accento:#8e1f33; --accento-tenue:#faf0f2;
+  --vinta:#146c35; --pari:#8a6005; --persa:#a81d28;
+  --promo:#146c35; --spareggio:#8a6005; --retro:#a81d28;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--sfondo);color:var(--inchiostro);
+  font:400 14px/1.35 -apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;
+  padding-bottom:76px}
+.n{font-variant-numeric:tabular-nums;font-weight:800}
+.et{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--terzo)}
+
+/* ---- identita' (in cima a OGNI schermata, sempre la stessa) ---- */
+.id{background:var(--carta);border-bottom:1px solid var(--filo);padding:12px 14px;display:flex;align-items:center;gap:12px}
+.id .nome{font-size:16px;font-weight:800;line-height:1.15}
+.av{width:44px;height:44px;border-radius:50%;background:#dfe4ec;flex:none;
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--secondo);font-size:15px}
+.ovr{margin-left:auto;text-align:right}
+.ovr .v{font-size:26px;font-weight:800;line-height:1}
+
+/* ---- barre condizione ---- */
+.cond{display:grid;grid-template-columns:repeat(3,1fr);background:var(--carta);border-bottom:1px solid var(--filo)}
+.cond > div{padding:9px 14px;border-left:1px solid var(--filo)}
+.cond > div:first-child{border-left:none}
+.cond .v{font-size:17px;font-weight:800;line-height:1.1}
+.barra{height:3px;background:#e7ebf1;border-radius:2px;margin-top:5px;overflow:hidden}
+.barra i{display:block;height:100%}
+
+/* ---- navigazione di sezione: sottolineatura, non tre pillole ---- */
+.tabs{display:flex;background:var(--carta);border-bottom:1px solid var(--filo)}
+.tabs div{flex:1;text-align:center;padding:11px 0 10px;font-size:13px;font-weight:700;color:var(--terzo)}
+.tabs div.on{color:var(--inchiostro);box-shadow:inset 0 -2px 0 var(--accento)}
+.filtri{display:flex;gap:16px;padding:9px 14px;background:var(--carta);border-bottom:1px solid var(--filo);
+  overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.filtri::-webkit-scrollbar{display:none}
+.filtri span{font-size:12.5px;font-weight:700;color:var(--terzo);flex:none}
+.filtri span.on{color:var(--accento)}
+
+/* ---- carta e righe ---- */
+.sez{margin:12px 12px 0}
+.cap{display:flex;align-items:baseline;justify-content:space-between;padding:0 2px 6px}
+.cap a{color:var(--accento);font-size:12px;font-weight:700;text-decoration:none}
+.carta{background:var(--carta);border:1px solid var(--filo);border-radius:6px;overflow:hidden}
+.riga{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--filo)}
+.riga:first-child{border-top:none}
+.riga .k{font-size:12.5px;font-weight:700;color:var(--secondo)}
+.riga .v{margin-left:auto;font-size:13px;font-weight:700;text-align:right}
+.riga .v small{display:block;font-size:11px;font-weight:600;color:var(--terzo);margin-top:1px}
+
+/* ---- riga di dati a tre ---- */
+.dati{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--filo)}
+.dati > div{padding:10px 12px;border-left:1px solid var(--filo)}
+.dati > div:first-child{border-left:none}
+.dati .v{font-size:19px;font-weight:800;line-height:1.1;margin-top:3px}
+.dati .s{font-size:11px;color:var(--terzo);font-weight:600;margin-top:1px}
+
+/* ---- scudo: una forma sola in tutto il gioco ---- */
+/* LO SCUDO non impone il bianco: i colori dei club sono quelli del gioco e su un giallo
+   il bianco fa 2,95:1. L'inchiostro della sigla e' scelto per contrasto, scudo per scudo
+   (bianco o #0f172a, quello che vince): sui nove club del provino il minimo e' 4,63:1. */
+.scudo{width:34px;height:40px;border-radius:4px 4px 12px 12px;display:flex;align-items:center;justify-content:center;
+       color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em;flex:none;
+       box-shadow:inset 0 0 0 1px rgba(15,23,42,.14)}
+.scudo.p{width:29px;height:34px;border-radius:3px 3px 10px 10px;font-size:11px;letter-spacing:0}
+
+/* ---- forma: cinque quadratini ---- */
+.forma{display:flex;gap:3px}
+.forma i{width:13px;height:13px;border-radius:2px;display:block}
+.forma.p i{width:10px;height:10px;border-radius:2px}
+
+/* ---- azione ---- */
+.cta{margin:12px;display:flex;gap:8px}
+.cta button{flex:1;border:none;border-radius:6px;background:var(--accento);color:#fff;
+  font:800 14px/1 inherit;padding:14px 12px;letter-spacing:.01em}
+.cta .sec{flex:0 0 auto;background:var(--carta);color:var(--secondo);border:1px solid var(--filo);
+  font-weight:700;padding:14px 16px;border-radius:6px}
+.tag{display:inline-block;padding:2px 7px;border-radius:3px;background:var(--accento-tenue);
+     color:var(--accento);font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+
+/* ---- barra in basso ---- */
+.nav{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(6,1fr);
+  background:var(--carta);border-top:1px solid var(--filo)}
+.nav div{padding:9px 0 10px;text-align:center;font-size:11px;font-weight:700;color:var(--terzo)}
+.nav div.on{color:var(--accento);box-shadow:inset 0 2px 0 var(--accento)}
