@@ -3757,7 +3757,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        Quindi la cadenza doppia resta PRONTA E SPENTA: si accende con window.__CPM_C22, e il motore — dopo la
        7.936 — risponde come deve a qualunque valore. Si spedisce quando la misura c'e', o quando il PO la
        prova sul suo telefono. */
-    const _c940=(typeof window!=='undefined'&&window.__CPM_C22)?22:11;
+    /* [7.943 — LA CADENZA PASSA A 22 DECISIONI AL MINUTO. Rosso __CPM_NO943, che riporta anche la
+       scelta del ricevente a com'era: cadenza e fuorigioco sono stati misurati insieme e si spediscono
+       insieme, quindi un interruttore solo riporta la partita di ieri.]
+       MISURA APPAIATA al banco del tabellino, 200 partite per braccio contro la partita vera:
+       voci fuori dal doppio/meta' 10 su 24 (produzione, 11 decisioni) contro 3 su 24 (22 decisioni),
+       voci a zero 0 e 0. Le voci che rientrano: cross 0,42x -> 1,11x, intercetti 0,38x -> 0,94x,
+       rimesse 0,31x -> 0,55x, expected goal 0,51x -> 0,85x, rigori da MANCANTE a 0,56x, passaggi
+       0,27x -> 0,50x. Restano fuori spazzate, contrasti vinti e tiri fuori.
+       COSTO MISURATO, perche' sul toon avevo promesso un risparmio che non c'era: il solo motore passa
+       da 18 a 34 ms per una partita intera di 92 minuti (1,87x), cioe' dallo 0,022 % allo 0,041 % del
+       tempo di un tick. La cadenza non tocca il rendering, che e' dove stanno i fotogrammi.
+       NON VERIFICATO: l'Android del PO. */
+    const _c940=(typeof window!=='undefined'&&(window.__CPM_NO943||window.__CPM_NOC22))?11:22;
     const _SUB898=(typeof window!=='undefined'&&window.__CPM_NO898)?1:(_a912?_c940:3);k898Ref.current=_SUB898-1;/* il primo battito e' il minuto (decide), poi i sotto-tick */evAcc898Ref.current=[];
     const _specchi898=(_stM870,_evM870)=>{
           {const _q=quotaMotoreRef.current;_q.push(_stM870.poss.lato==="home"?1:0);if(_q.length>16)_q.shift();}

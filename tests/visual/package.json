@@ -47,6 +47,7 @@
     "pass-forward": "node pass-forward-test.mjs",
     "outcome-not-goal": "node outcome-not-goal-test.mjs",
     "ball-jump-census": "node ball-jump-census.mjs",
+    "tabellino-banda": "node tabellino-banda.mjs",
     "festa": "node festa-942.mjs",
     "ball-alive": "node ball-alive-test.mjs",
     "trama": "node trama-test.mjs",

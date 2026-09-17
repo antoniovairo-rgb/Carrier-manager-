@@ -218,6 +218,7 @@ function creaMotorePossesso(cfg){
 
   /* ---------- scelte ---------- */
   const scegliRicevente=(P,opt)=>{opt=opt||{};const l=P.team,d=dirDi(l);const golReq=opt.golReq;let best=null,bs=-1e9;
+    let _pen943=null;/* la linea si calcola una volta sola per chiamata, e solo se serve */
     for(const q of g){if(!mio(q,l)||q.i===P.i)continue;if(q.gk&&!opt.conGk)continue;
       const dd=hyp(q.x,q.y,P.x,P.y);if(dd<5||dd>46)continue;
       const fw=(q.x-P.x)*d;const advQ=advDi(q.x,l);
@@ -233,6 +234,26 @@ function creaMotorePossesso(cfg){
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
       if(q.eroe)sc+=((cfg.eroe&&cfg.eroe.bonus)||2)+(S.richieste.scenaEroe?26:0);/* [7.879] chiesta la scena, l'eroe diventa la prima scelta */
       if(fw<-12)sc-=6;
+      /* [7.943 — CHI PASSA GUARDA LA LINEA. Rosso __CPM_NO943]
+         La scelta del ricevente pesava avanzamento, marcatura e corsia, ma MAI il fuorigioco: il motore
+         sceglieva il compagno oltre l'ultimo difensore e poi `passa()` lo puniva. Cioe' il fuorigioco era
+         una lotteria a valle, mentre la direttiva del motore dice che gli eventi sono CONSEGUENZE.
+         Un giocatore vero la linea la vede, e infatti nel calcio vero i fuorigioco sono 1,70: il residuo
+         dei tempi sbagliati, non l'esito ordinario del passaggio in avanti.
+         MISURATO che serviva: alzando la cadenza da 11 a 22 decisioni al minuto i passaggi fanno 1,93x
+         ma il fuorigioco 5,08x — superlineare, perche' l'attaccante piu' avanti passa da 8 unita' dietro
+         la linea a 1,9 e quindi vive sul filo. Prima avevo accusato la spinta anti-ammucchiata non scalata
+         da dt: REVOCATA, non batteva la misura (5,08x -> 4,80x, cioe' il 5 % dell'effetto). */
+      if(!(typeof window!=='undefined'&&window&&window.__CPM_NO943)&&!q.gk&&advQ>50){
+        if(_pen943==null){const _av=[];for(const z of g){if(mio(z,l)||!attivo(z))continue;_av.push(advDi(z.x,l));}
+          _av.sort((a,b)=>b-a);_pen943=_av.length>=2?_av[1]:999;}
+        /* due casi diversi, e vanno trattati diversamente: chi e' NETTAMENTE oltre la linea non
+           riceve il pallone (nessuno lo serve, e infatti nel calcio vero quel passaggio non parte),
+           chi e' SUL FILO lo riceve ancora spesso — ed e' li' che il fuorigioco nasce davvero, dai
+           tempi sbagliati. Un veto secco su tutt'e due porterebbe la voce a zero, che e' il difetto
+           opposto e altrettanto falso. */
+        if(advQ>_pen943+1.5)sc-=40; else if(advQ>_pen943)sc-=18;
+      }
       if(sc>bs){bs=sc;best=q;}}
     if(!best&&opt.conGk!==true){const gk=portiereDi(l);if(gk&&hyp(gk.x,gk.y,P.x,P.y)<=40&&!P.gk)best=gk;}
     return best;};
@@ -712,7 +733,7 @@ function creaMotorePossesso(cfg){
       else{p.x=clamp(p.x+dx/dd*v+jx,2,98);p.y=clamp(p.y+dy/dd*v+jy,3,97);}
     }
     /* anti-ammucchiata: due compagni mai a meno di 2,2u */
-    for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=a+1;b<g.length;b++){const q=g[b];if(!attivo(q)||q.gk||q.team!==p.team)continue;const dd=hyp(p.x,p.y,q.x,q.y);if(dd<2.2&&dd>0.001){const push=(2.2-dd)/2;const ux=(q.x-p.x)/dd,uy=(q.y-p.y)/dd;if(q.i!==S.poss.padrone){q.x=clamp(q.x+ux*push,2,98);q.y=clamp(q.y+uy*push,3,97);}if(p.i!==S.poss.padrone){p.x=clamp(p.x-ux*push,2,98);p.y=clamp(p.y-uy*push,3,97);}}}}
+for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=a+1;b<g.length;b++){const q=g[b];if(!attivo(q)||q.gk||q.team!==p.team)continue;const dd=hyp(p.x,p.y,q.x,q.y);if(dd<2.2&&dd>0.001){const push=(2.2-dd)/2;const ux=(q.x-p.x)/dd,uy=(q.y-p.y)/dd;if(q.i!==S.poss.padrone){q.x=clamp(q.x+ux*push,2,98);q.y=clamp(q.y+uy*push,3,97);}if(p.i!==S.poss.padrone){p.x=clamp(p.x-ux*push,2,98);p.y=clamp(p.y-uy*push,3,97);}}}}
     if(padrone&&st==="tenuta"){S.palla.x=clamp(padrone.x+d*0.5,0,100);S.palla.y=padrone.y;}
   }
 
