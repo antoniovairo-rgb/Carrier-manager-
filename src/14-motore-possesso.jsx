@@ -387,7 +387,12 @@ function creaMotorePossesso(cfg){
      minuto (la cadenza della produzione di oggi). A 11 battiti il fattore vale 1 e NIENTE cambia — la
      7.933.1 in produzione resta numero per numero; a 22 ogni decisione pesa meta'. Rosso __CPM_NO936. */
   const _cad936=()=>{if(typeof window!=='undefined'&&window&&window.__CPM_NO936)return 1;
-    const _dt=S.dt||1;return clamp(_dt*11,0.25,4);};
+    /* Il fattore non sale MAI sopra 1: normalizza chi chiama piu' spesso di 11 volte al minuto, non
+       amplifica chi chiama di meno. Cosi' i due regimi gia' spediti — il banco di test/logic a una
+       decisione al minuto e la produzione a undici — restano identici al numero, e un metro spedito non
+       si tocca per far passare una modifica. Che il motore non sia invariante anche SOTTO gli 11 battiti
+       resta vero ed e' dichiarato: non serve a nessuno oggi, perche' la produzione sta a 11. */
+    const _dt=S.dt||1;return Math.min(1,clamp(_dt*11,0.25,4));};
   const ramo=(k)=>{S.conta.rami[k]=(S.conta.rami[k]|0)+1;};
   function decidiTenuta(){
     const P=g[S.poss.padrone];if(!P){libero(S.palla.x,S.palla.y);return;}
