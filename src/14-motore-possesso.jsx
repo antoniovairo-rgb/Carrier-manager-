@@ -358,7 +358,7 @@ function creaMotorePossesso(cfg){
        Nel calcio vero un ammonito gioca piu' attento e l'arbitro e' piu' tollerante. Il fattore e' stato TARATO in
        due passate: a 0,22 i gialli tornavano giusti (2,08 su 2,4) ma i rossi restavano al doppio del vero
        (0,25 su 0,11); a 0,09 rientrano entrambi. Il secondo giallo costa undici volte il primo. */
-    const _p=(0.16+(adv>=60?0.05:0)+(adv>=78?0.05:0))*(_st.g>=1?0.09:1);
+    const _p=(0.16+(adv>=60?0.05:0)+(adv>=78?0.05:0))*(_st.g>=1?0.09:1);/* NON si normalizza: si sorteggia una volta per FALLO, e i falli sono gia' normalizzati */
     if(rnd()>=_p)return;
     _st.g++;
     if(_st.g>=2){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"seconda ammonizione",lato:W.team});}
@@ -375,6 +375,24 @@ function creaMotorePossesso(cfg){
     else fermoSet("throw",lPer,clamp(x,6,94),y>=50?99:1);};
 
   /* ---------- il tick ---------- */
+  /* [7.936 — IL MOTORE NON DEVE DIPENDERE DA QUANTO SPESSO LO SI CHIAMA]
+     MISURATO: portando il banco da 11 a 22 decisioni al minuto, tiri 12,1 → 27,5 e falli 14,3 → 28,8 —
+     esattamente il doppio. Non e' un caso: fallo e tiro si sorteggiano UNA VOLTA PER DECISIONE, quindi il
+     loro numero a partita dipende da quante volte il chiamante interroga il motore, non da cosa succede in
+     campo. E' lo stesso difetto che stanotte ho trovato nel banco (`tabellino-vero` misurava a 1 decisione
+     al minuto una partita che se ne gioca 11) e che ho gia' dovuto rattoppare a mano nella 7.929, quando
+     M1a aveva cambiato la frequenza delle decisioni di tenuta e i falli erano saliti a 19,1.
+     Un fallo non e' «il 15 per cento per decisione»: e' un tot al minuto. Qui si normalizza: le probabilita'
+     per decisione si moltiplicano per il tempo che quella decisione rappresenta, preso a 11 battiti al
+     minuto (la cadenza della produzione di oggi). A 11 battiti il fattore vale 1 e NIENTE cambia — la
+     7.933.1 in produzione resta numero per numero; a 22 ogni decisione pesa meta'. Rosso __CPM_NO936. */
+  const _cad936=()=>{if(typeof window!=='undefined'&&window&&window.__CPM_NO936)return 1;
+    /* Il fattore non sale MAI sopra 1: normalizza chi chiama piu' spesso di 11 volte al minuto, non
+       amplifica chi chiama di meno. Cosi' i due regimi gia' spediti — il banco di test/logic a una
+       decisione al minuto e la produzione a undici — restano identici al numero, e un metro spedito non
+       si tocca per far passare una modifica. Che il motore non sia invariante anche SOTTO gli 11 battiti
+       resta vero ed e' dichiarato: non serve a nessuno oggi, perche' la produzione sta a 11. */
+    const _dt=S.dt||1;return Math.min(1,clamp(_dt*11,0.25,4));};
   const ramo=(k)=>{S.conta.rami[k]=(S.conta.rami[k]|0)+1;};
   function decidiTenuta(){
     const P=g[S.poss.padrone];if(!P){libero(S.palla.x,S.palla.y);return;}
@@ -425,7 +443,7 @@ function creaMotorePossesso(cfg){
        quindi riportata indietro dello stesso fattore: 13,0 / 19,1 = 0,68. I rami dei rossi storici
        (__CPM_NO900, __CPM_NO903) restano com'erano, altrimenti non riprodurrebbero piu' il loro difetto. */
     const _k929=(typeof window!=='undefined'&&window&&window.__CPM_NO929)?1:0.68;
-    const _fallo900=()=>{const r=rnd();const pFb=_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):(_no903?((press<3?0.18:0.05)+(adv>=56?0.03:0)):((press<3?0.22:0.08)+(adv>=56?0.03:0))*_k929);
+    const _fallo900=()=>{const r=rnd();const pFb=(_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):(_no903?((press<3?0.18:0.05)+(adv>=56?0.03:0)):((press<3?0.22:0.08)+(adv>=56?0.03:0))*_k929))*_cad936();
       const pF=golReq?((golReq.t|0)<=3?pFb*0.5:0):pFb;
       if(pF>0&&r<pF){ramo(golReq?"falloGol":"fallo");fallo(P);return true;}
       /* [7.933 — L'INTERVENTO PULITO ESISTE, non solo il fallo]
@@ -440,7 +458,7 @@ function creaMotorePossesso(cfg){
       if(!golReq&&press<(_no933?2.2:3)&&r<pF+_pT933){ramo("contrasto");perdi(P);return true;}return false;};
     if(!_dopo900&&_fallo900())return;
     const verso=S.richieste.verso;
-    let pTiro=zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0;
+    let pTiro=(zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0)*_cad936();
     pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
     /* [7.884.0 — IL TIRO GUARDA L'ANGOLO. MISURATO al banco (48 partite, che cosa fa il portatore banda
        per banda): sotto 70 il portatore controlla, passa e conduce; appena supera 70 il 35 % delle sue
