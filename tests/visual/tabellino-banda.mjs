@@ -16,18 +16,23 @@ function braccio(nome, env){
     { encoding:'utf8', env:{...process.env, CPM_PARTITE:String(N), ...env}, maxBuffer:8*1024*1024 });
   const m = out.match(/voci a zero[^:]*:\s*(\d+)\s*·\s*voci fuori dal doppio\/meta':\s*(\d+)/);
   if(!m) throw new Error(`il banco non ha stampato il verdetto per il braccio ${nome}`);
-  return { zero:+m[1], fuori:+m[2] };
+  const d = out.match(/distanza totale dal vero:\s*([\d.]+)/);
+  if(!d) throw new Error(`il banco non ha stampato la distanza totale per il braccio ${nome}`);
+  return { zero:+m[1], fuori:+m[2], dist:+d[1] };
 }
 const verde = braccio('verde', { CPM_DEC:'22' });
 const rosso = braccio('rosso', { CPM_DEC:'11', CPM_ROSSO:'__CPM_NO943' });
 console.log(`\n=== BANDA DEL TABELLINO === ${N} partite per braccio`);
-console.log(`  verde (22 dec/min + linea nella scelta): ${verde.fuori} voci fuori banda · ${verde.zero} a zero`);
-console.log(`  rosso (11 dec/min, come ieri):           ${rosso.fuori} voci fuori banda · ${rosso.zero} a zero`);
+console.log(`  verde (22 dec/min + linea nella scelta): ${verde.fuori} voci fuori banda · ${verde.zero} a zero · distanza ${verde.dist.toFixed(3)}`);
+console.log(`  rosso (11 dec/min, come ieri):           ${rosso.fuori} voci fuori banda · ${rosso.zero} a zero · distanza ${rosso.dist.toFixed(3)}`);
 const okTetto = verde.fuori <= TETTO;
-const okMeglio = verde.fuori < rosso.fuori;
+/* [7.945] «meglio» non e' piu' solo il CONTEGGIO: una voce che passa da 0,01x a 0,06x migliora la
+   partita e il conteggio non se ne accorge. Basta vincere su uno dei due, ma non si puo' perdere
+   sull'altro — altrimenti si comprerebbe una voce rientrata pagandola con tutte le altre. */
+const okMeglio = (verde.fuori < rosso.fuori || verde.dist < rosso.dist) && verde.fuori <= rosso.fuori && verde.dist <= rosso.dist;
 const okZero = verde.zero <= rosso.zero;
 if(!okTetto) console.log(`  ✗ il verde sfora il tetto (${verde.fuori} > ${TETTO})`);
-if(!okMeglio) console.log(`  ✗ il verde non batte il rosso (${verde.fuori} contro ${rosso.fuori})`);
+if(!okMeglio) console.log(`  ✗ il verde non batte il rosso (voci ${verde.fuori} contro ${rosso.fuori} · distanza ${verde.dist.toFixed(3)} contro ${rosso.dist.toFixed(3)})`);
 if(!okZero) console.log(`  ✗ il verde ha piu' voci a zero del rosso (${verde.zero} contro ${rosso.zero})`);
 const ok = okTetto && okMeglio && okZero;
 console.log(ok ? '\n✅ PASS — il tabellino del motore sta nella banda e batte la partita di ieri'

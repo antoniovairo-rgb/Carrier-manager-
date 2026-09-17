@@ -584,6 +584,13 @@ function creaMotorePossesso(cfg){
     const A=piuVicino(S.palla.x,S.palla.y,l,{noGk:true});const D=piuVicino(S.palla.x,S.palla.y,altro(l),{noGk:true});
     const att=(R&&attivo(R)&&hyp(R.x,R.y,S.palla.x,S.palla.y)<6)?R:(A&&A.d<6?A.p:null);
     const dif=(D&&D.d<4)?D.p:null;
+    /* [diag] le spazzate stanno a 0,17 contro 17 vere, e l'unico punto che ne produce e' questo.
+       Tre contatori per sapere QUALE dei tre pezzi manca, invece di tarare al buio: quante volte
+       un cross arriva, quanto e' lontano il difensore piu' vicino, quante volte entra nel raggio. */
+    ramo("spazz_arrivo");
+    if(D){S.conta.spazzDist=(S.conta.spazzDist||0)+D.d;S.conta.spazzN=(S.conta.spazzN||0)+1;
+      if(D.d<4)ramo("spazz_difVicino"); else if(D.d<8)ramo("spazz_dif4_8"); else ramo("spazz_difLontano");}
+    else ramo("spazz_nessunDif");
     if(dif&&(!att||rnd()<0.5)){dif.x=S.palla.x;dif.y=S.palla.y;const corner=rnd()<0.30;const _lat=!corner&&rnd()<0.20;ev("spazzata",{chi:chi(dif),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else if(_lat){/* [7.878] la spazzata finisce spesso in rimessa laterale */fuoriCampo(clamp(S.palla.x-dirDi(l)*(6+rnd()*10),6,94),S.palla.y,l,"throw");return;}else libero(clamp(S.palla.x-dirDi(l)*(14+rnd()*10),4,96),clamp(S.palla.y+(rnd()-0.5)*30,6,94));return;}
     if(att){att.x=S.palla.x;att.y=S.palla.y;if(rnd()<0.62){tira(att,{intent:"header"});return;}tenuta(att,null);ev("ricezione",{chi:chi(att),kind:"cross"});return;}
     const gk=portiereDi(altro(l));if(hyp(gk.x,gk.y,S.palla.x,S.palla.y)<9){ev("presa",{gk:chi(gk)});gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);return;}
@@ -687,6 +694,23 @@ function creaMotorePossesso(cfg){
               unita' PER BATTITO — 2,2 m/s — e la corsa in area ci sta sotto: 11 u/battito, 2,0 m/s. */
            const _v939=(typeof window!=='undefined'&&window&&window.__CPM_NO939)?6:Math.min(60,12/(S.dt||1));/* [7.939 v2] META' della corsa massima: a 121 il pallone restava senza padrone il 57 % del tempo e la banda del guardiano ne chiede almeno il 60 — quella soglia non e' fra quelle che il PO ha autorizzato a toccare */
            if(advDi(tx,p.team)<_po.a-2){tx=xDa(_po.a,p.team);ty=_po.y;v=_v939;}}}
+        /* [7.945 — SUL CROSS I DIFENSORI ATTACCANO IL PALLONE. Rosso __CPM_NO945]
+           Le spazzate stavano a 0,17 contro 17 vere, e non per una taratura: l'unico punto che ne produce
+           chiede un difensore entro 4 unita' dal pallone, e MISURATO (30 partite) su 12,40 cross che
+           arrivano in 10,77 — l'87 % — il difensore piu' vicino sta oltre 8 unita'. Cioe' in area non
+           difendeva nessuno: la 7.883 e la 7.939 mandano in area gli ATTACCANTI, la squadra che difende no.
+           Nel calcio vero, quando il cross parte, i centrali attaccano il punto dove cade il pallone.
+           Qui i DUE difensori piu' vicini al punto d'arrivo ci vanno, con lo stesso passo concesso alla
+           corsa in area (meta' del tetto del guardiano «un pallone, un padrone»), e solo mentre un cross
+           e' davvero in volo verso la nostra meta' campo. */
+        if(!(typeof window!=='undefined'&&window&&window.__CPM_NO945)&&st==="volo"&&S.poss.tipo==="cross"
+                &&p.team!==l&&!p.gk&&S.poss.a&&advDi(S.poss.a.x,p.team)<=30){
+          const _bx=S.poss.a.x,_by=S.poss.a.y;
+          let _rango=0;for(const q of g){if(q.team!==p.team||q.gk||!attivo(q)||q.i===p.i)continue;
+            if(hyp(q.x,q.y,_bx,_by)<hyp(p.x,p.y,_bx,_by))_rango++;}
+          if(_rango<2){const _v945=(typeof window!=='undefined'&&window&&window.__CPM_NO945)?4.5:Math.min(60,12/(S.dt||1));
+            tx=_bx;ty=_by;v=_v945;}
+        }
       }
       if(st==="fermo"&&S.fermo&&S.fermo.batt===p.i){const f=S.fermo;tx=f.x-dp*(f.kind==="pen"?1.5:0.8);ty=f.kind==="corner"?f.y:f.y;
         /* [7.938 — CHI VA A BATTERE CI VA COI PIEDI] MISURATO alla cadenza vera (5 partite, 11 battiti al

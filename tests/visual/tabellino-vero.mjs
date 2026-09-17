@@ -79,8 +79,14 @@ const VERO={gol:[1.3,'gol'],tiri:[12.8,'tiri'],inPorta:[4.3,'tiri in porta'],leg
 const f=(x)=>x>=100?Math.round(x).toString():x>=10?x.toFixed(1):x.toFixed(2);
 console.log(`\n=== TABELLINO per squadra, media su ${N} partite (${2*N} tabellini) — ${DEC} decision${DEC===1?'e':'i'} al minuto — contro la partita vera ===`);
 console.log('  voce                    oggi        vero      rapporto');
-let buchi=0,lontani=0;
+let buchi=0,lontani=0,dist=0;
 for(const k in VERO){const [rif,nome]=VERO[k];const o=med(k);const r=rif>0?o/rif:0;
+  /* [7.945] LA DISTANZA TOTALE DAL VERO, perche' il CONTEGGIO delle voci fuori banda e' cieco.
+     Misurato: facendo attaccare il pallone ai difensori sul cross, le spazzate fanno x6 e altre tre voci
+     si avvicinano, ma nessuna ATTRAVERSA la banda — il conteggio resta identico e non vede un
+     miglioramento del 15 %. Qui si somma |log(rapporto)| su tutte le voci: zero e' la partita vera,
+     e una voce che passa da 0,01x a 0,06x conta, anche se resta lontana. */
+  if(rif>0)dist+=Math.abs(Math.log(Math.max(r,1e-3)));
   const stato=o===0&&rif>0.05?'  ← MANCA':(r<0.5||r>2)?'  ← lontano':'';
   if(o===0&&rif>0.05)buchi++;else if(r<0.5||r>2)lontani++;
   console.log(`  ${nome.padEnd(22)} ${f(o).padStart(7)} ${f(rif).padStart(11)} ${(rif>0?r.toFixed(2)+'x':'-').padStart(10)}${stato}`);}
@@ -89,3 +95,4 @@ for(const k in VERO){const [rif,nome]=VERO[k];const o=med(k);const r=rif>0?o/rif
  console.log(`\n  dove sta il motore quando lo si chiama: ${righe}`);
  console.log(`  chiamate che producono almeno un evento: ${(100*ce/ch).toFixed(1)} % (${Math.round(ch/(N*MIN)*10)/10} chiamate al minuto)`);}
 console.log(`\n  voci a zero che nel calcio vero esistono: ${buchi} · voci fuori dal doppio/meta': ${lontani} · voci su ${Object.keys(VERO).length}`);
+console.log(`  distanza totale dal vero: ${dist.toFixed(3)} (somma di |log rapporto|; 0 = partita vera)`);
