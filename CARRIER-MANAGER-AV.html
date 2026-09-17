@@ -22377,7 +22377,16 @@ function creaMotorePossesso(cfg){
     const _fallo900=()=>{const r=rnd();const pFb=_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):(_no903?((press<3?0.18:0.05)+(adv>=56?0.03:0)):((press<3?0.22:0.08)+(adv>=56?0.03:0))*_k929);
       const pF=golReq?((golReq.t|0)<=3?pFb*0.5:0):pFb;
       if(pF>0&&r<pF){ramo(golReq?"falloGol":"fallo");fallo(P);return true;}
-      if(!golReq&&press<2.2&&r<pF+0.06){ramo("persa");perdi(P);return true;}return false;};
+      /* [7.933 — L'INTERVENTO PULITO ESISTE, non solo il fallo]
+         MISURATO: contrasti vinti 1,38 contro 16,5 veri, mentre i falli stanno a 14,5 su 13. Il difensore
+         interviene eccome — «fallo» e' il ramo difensivo piu' battuto della partita — ma l'esito e' quasi
+         sempre il fischio: 9 % di interventi puliti contro il 56 % del calcio vero (16,5 contrasti vinti
+         contro 13 falli). La fascia che porta al contrasto era larga 0,06 fisso e chiedeva un avversario
+         entro 2,2 unita'; ora e' proporzionale a quella del fallo (x1,27, il rapporto vero fra le due voci)
+         e usa la stessa soglia di pressione del fallo. Rosso __CPM_NO933. */
+      const _no933=(typeof window!=='undefined'&&window&&window.__CPM_NO933);
+      const _pT933=_no933?0.06:pFb*1.27;/* 1,27 e il rapporto vero fra contrasti vinti (16,5) e falli (13); provato anche 0,85, peggiore su tutti i fronti */
+      if(!golReq&&press<(_no933?2.2:3)&&r<pF+_pT933){ramo("contrasto");perdi(P);return true;}return false;};
     if(!_dopo900&&_fallo900())return;
     const verso=S.richieste.verso;
     let pTiro=zona==="area"?0.85:zona==="limite"?0.45:zona==="trequarti"?0.12:0;
