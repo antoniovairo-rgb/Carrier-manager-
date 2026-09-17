@@ -42,3 +42,7 @@ credentials*
 # [pulizia 14/09] archivio delle vecchie versioni (42 MB) e artefatti di sonde: mai piu nel repo
 versions/
 out/
+
+# sonde di anteprima: pagine generate a ogni corsa, mai contenuto
+_prop.html
+_misura.html

@@ -819,6 +819,62 @@ const _FAM919={
 /* la frase arriva dalla cronaca con l'emoji della famiglia in testa: nel pop-up l'emoji è già
    nell'intestazione, quindi si toglie dal testo invece di stamparla due volte. */
 function _testo919(t){return String(t||"").replace(/^\s*(?:[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}️‍]+)\s*/u,"").trim();}
+/* [7.942 — LA FESTA DI FINE PARTITA. Scelta del PO 17/09: «momento pieno, 3-4 secondi».]
+   PERCHE' ESISTE. Misurato sul codice: oggi la festa 3D scatta in due casi soli — titolo vinto, oppure
+   finale o big match con mw>=9. Tutto il resto finisce dritto nella card di fine gara, SENZA UN MOMENTO:
+   una tripletta, un gol al 90°, una vittoria in trasferta contro la prima in classifica.
+   PERCHE' IN CARTOON E NON IN 3D. Il 3D costa caricamento e fotogrammi, e per un momento da tre secondi
+   che si vede venti volte a stagione sarebbe sproporzionato; per il trofeo alzato, che si vede una volta
+   l'anno, il 3D vale. I visi sono gli stessi che il gioco usa gia' nelle scelte in partita: un solo stile,
+   non due. Si passa con un tocco, ovunque. */
+const _FESTA942={velo:"rgba(3,7,16,0.82)",card:"linear-gradient(180deg,#1b2740 0%,#131d31 62%,#101827 100%)",
+  bordo:"rgba(148,163,184,0.30)",oro:"#fde68a",testo:"#e8edf6",fioco:"#9fb0c9"};
+function FestaFine942({dati,onChiudi}){
+  const [n,setN]=React.useState(0);
+  React.useEffect(()=>{if(!dati)return;const h=setTimeout(()=>{try{onChiudi&&onChiudi();}catch(_e){}},3400);
+    const t=setInterval(()=>setN(v=>v+1),90);return()=>{clearTimeout(h);clearInterval(t);};},[dati]);
+  /* [difetto mio, trovato rileggendo prima di committare] `useMemo` stava SOTTO il `return null`:
+     con dati vuoto React vedeva due hook, con dati pieno tre, e al primo festeggiamento lanciava
+     «Rendered more hooks than during the previous render» — cioe' la schermata di fine partita
+     saltava proprio quando doveva festeggiare. Le uscite anticipate stanno DOPO tutti gli hook. */
+  const cor=React.useMemo(()=>{const c=["#e2c044","#f8fafc","#b8293f","#7c3aed","#16a34a","#38bdf8"];const a=[];
+    for(let i=0;i<26;i++)a.push({x:(i*37%100),d:(2.2+((i*13)%16)/10).toFixed(2),r:(-((i*29)%40)/10).toFixed(2),c:c[i%c.length],w:5+((i*7)%4)});
+    return a;},[]);
+  if(!dati)return null;
+  return(
+    <div data-cpm="festa942" onClick={onChiudi} style={{position:"fixed",inset:0,zIndex:9997,background:_FESTA942.velo,
+      display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg,cursor:"pointer",overflow:"hidden",
+      animation:"cpmPop919Velo .2s ease-out"}}>
+      {cor.map((k,i)=>(<span key={"c"+i} style={{position:"absolute",left:k.x+"%",top:"-6%",width:k.w,height:k.w*1.6,
+        background:k.c,borderRadius:1,animation:"cpmFesta942 "+k.d+"s linear infinite",animationDelay:k.r+"s",pointerEvents:"none"}}/>))}
+      <div style={{width:"100%",maxWidth:380,borderRadius:RAD.lg,overflow:"hidden",background:_FESTA942.card,
+        border:"1px solid "+_FESTA942.bordo,boxShadow:"0 24px 64px rgba(0,0,0,0.62)",position:"relative",
+        animation:"cpmPop919 .3s cubic-bezier(.2,0,0,1)"}}>
+        <div style={{padding:SP.lg+"px "+SP.lg+"px "+SP.md+"px",textAlign:"center"}}>
+          <div style={{fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,color:_FESTA942.oro,textTransform:"uppercase"}}>{dati.titolo}</div>
+          <div style={{fontSize:34,fontWeight:FW.black,color:_FESTA942.testo,letterSpacing:-.5,marginTop:4,fontVariantNumeric:"tabular-nums"}}>{dati.punteggio}</div>
+          <div style={{fontSize:FS.small,color:_FESTA942.fioco,marginTop:2}}>{dati.avversario}</div>
+        </div>
+        {/* i compagni che esultano: gli stessi visi delle scelte in partita */}
+        <div style={{display:"flex",justifyContent:"center",gap:SP.sm,padding:"0 "+SP.lg+"px "+SP.md+"px"}}>
+          {(dati.facce||[]).map((f,i)=>(
+            <div key={"f"+i} style={{borderRadius:"50%",padding:2,background:i===0?_FESTA942.oro:"rgba(148,163,184,0.34)",lineHeight:0,
+              transform:"translateY("+(Math.sin((n+i*3)/2.4)*2.6).toFixed(1)+"px)"}}>
+              {(()=>{try{return f.eroe?<AvatarSVG id={f.id||0} size={i===0?58:44}/>:<AvatarSVG seed={f.nome} size={i===0?58:44} avStyle="micah"/>;}catch(_e){return null;}})()}
+            </div>))}
+        </div>
+        <div style={{padding:SP.md+"px "+SP.lg+"px",borderTop:"1px solid rgba(148,163,184,0.16)",
+          display:"flex",justifyContent:"space-around",textAlign:"center"}}>
+          {(dati.voci||[]).map((v,i)=>(
+            <div key={"v"+i}>
+              <div style={{fontSize:20,fontWeight:FW.black,color:v.oro?_FESTA942.oro:_FESTA942.testo,fontVariantNumeric:"tabular-nums"}}>{v.n}</div>
+              <div style={{fontSize:FS.caption,color:_FESTA942.fioco,textTransform:"uppercase",letterSpacing:.6}}>{v.et}</div>
+            </div>))}
+        </div>
+        <div style={{padding:"9px "+SP.lg+"px "+SP.md+"px",textAlign:"center",fontSize:FS.caption,color:_FESTA942.fioco}}>tocca per continuare</div>
+      </div>
+    </div>);
+}
 function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
   const [armato,setArmato]=React.useState(false);
   const chiave=(com&&com.t)+"|"+String((com&&com.text)||"").slice(0,24);
@@ -1537,6 +1593,50 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         setCeremony({name:_isFinalKO?"Trionfo in finale":"Notte da grandi",kind:"bigwin",light:true});
         setPhase("ceremony");return;
       }
+      /* [7.942] LA FESTA CHE PRIMA NON C'ERA. Quando non c'e' un titolo ne' un big match, la partita
+         finiva dritta nella card — anche dopo una tripletta. Qui il momento c'e', dura tre secondi e
+         mezzo, si passa con un tocco, e scatta solo quando c'e' davvero qualcosa da festeggiare:
+         l'eroe ha segnato, oppure ha fatto una gara da 7,5, oppure la squadra ha vinto FUORI casa
+         contro una piu' forte. Mai nei provini. Rosso __CPM_NO942. */
+      /* [tolta la guardia sul provino, e non per far passare una sonda.] L'avevo scritta pensando
+         «il provino non e' una partita vera». E' il contrario: il provino e' la partita che DECIDE
+         la carriera, il momento piu' carico del gioco — se c'e' una gara che merita il festeggiamento
+         e' quella. Il difetto collaterale che me l'ha fatta vedere: openMatch passa SEMPRE dai provini,
+         quindi con quella guardia la funzione era esclusa per costruzione da qualunque misura. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO942)){
+        /* [varco di SOLO COLLAUDO, stessa famiglia di __CPM_HUD_FORCE] Il festeggiamento scatta su una
+           gara MERITATA, quindi una partita qualunque non lo mostra: misurato su un provino vero —
+           gol 0, voto 6,28, vittoria in casa — nessuna delle tre soglie e' toccata, e la sonda non
+           poteva distinguere «non scatta perche' e' rotto» da «non scatta perche' non se lo merita».
+           Il varco inietta le statistiche, quindi prova la SCENA; l'innesco resta provato dal
+           testimone qui sotto, che annota i numeri veri della partita. */
+        const _forza942=(typeof window!=='undefined'&&window.__CPM_FESTA942_FORCE)||null;
+        const _ms=_forza942||mStatsSnapRef.current||{goals:0,assists:0,rb:0};
+        const _rbC=Math.min(_ms.rb||0,30);
+        const _voto=clamp(5.8+_rbC*0.13+(_sc.home>_sc.away?0.35:(_sc.home<_sc.away?-0.30:0)),4.0,10);
+        const _vinta=_sc.home>_sc.away;
+        const _fuoriCasaSuPiuForte=_vinta&&!isMatchHome&&mw>=6;
+        /* [testimone inerte] la festa non compariva e la sonda poteva dire solo «no».
+           Qui si annota COSA ha deciso: senza questi numeri «non scatta» copre tre cause
+           diverse (blocco mai raggiunto · snapshot vuoto · soglie non toccate). */
+        try{if(typeof window!=='undefined')window.__CPM_FESTA942={gol:_ms.goals|0,assist:_ms.assists|0,rb:_ms.rb|0,voto:+_voto.toFixed(2),vinta:_vinta,casa:!!isMatchHome,mw,fuoriCasa:_fuoriCasaSuPiuForte,snap:!!mStatsSnapRef.current};}catch(_e){}
+        if((_ms.goals|0)>0||_voto>=7.5||_fuoriCasaSuPiuForte){
+          const _nomi=[];
+          try{const _r=(isMatchHome?homeRoster:awayRoster)||[];
+            for(const q of _r){if(_nomi.length>=2)break;const _n=q&&(q.name||q.n);if(_n&&_n!==(player&&player.name))_nomi.push(String(_n));}}catch(_e){}
+          const _voci=[];
+          if((_ms.goals|0)>0)_voci.push({n:_ms.goals,et:(_ms.goals>1?"gol":"gol"),oro:true});
+          if((_ms.assists|0)>0)_voci.push({n:_ms.assists,et:"assist"});
+          _voci.push({n:_voto.toFixed(1).replace('.',','),et:"voto",oro:_voto>=7.5});
+          setFesta942({
+            titolo:(_ms.goals|0)>=3?"Tripletta":((_ms.goals|0)>0?"Gara da ricordare":(_fuoriCasaSuPiuForte?"Colpo fuori casa":"Che partita")),
+            punteggio:(isMatchHome?_sc.home:_sc.away)+" – "+(isMatchHome?_sc.away:_sc.home),
+            avversario:((_oppClubObj&&(_oppClubObj.n||_oppClubObj.a))||"l'avversario"),
+            facce:[{eroe:true,id:(player&&player.avatarId)||0}].concat(_nomi.map(x=>({nome:x}))),
+            voci:_voci.slice(0,3)});
+          return;/* la card di fine gara arriva quando la festa si chiude */
+        }
+      }
     }catch(_e){}
     setPhase("ended");
   }
@@ -1626,6 +1726,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const meshDefRef=useRef(null);/* [7.322.0] ponte verso le posizioni VERE dei difensori nella scena 3D (lettura a richiesta, nessun costo per frame) — il marcatore dev'essere quello che l'utente vede */
   useEffect(()=>{pPosRef.current=pPos;},[pPos]);
   const [mStats,setMStats]=useState((resumeState&&resumeState.ms&&typeof resumeState.ms.goals==="number")?{goals:resumeState.ms.goals||0,assists:resumeState.ms.assists||0,rb:resumeState.ms.rb||0,xg:resumeState.ms.xg||0}:{goals:0,assists:0,rb:0,xg:0});
+  const [festa942,setFesta942]=useState(null);/* [7.942] la festa cartoon di fine partita: null = niente da festeggiare */
   const mStatsSnapRef=useRef(mStats);useEffect(()=>{mStatsSnapRef.current=mStats;},[mStats]);/* [7.178.0 RC-1] lo snapshot di ripresa leggeva mStats dalla CLOSURE del mount (deps []) → doppietta salvata come 0 gol: specchio in ref, sempre fresco *//* [7.163.0 LIVE-F3] ripresa: tabellino personale ripristinato */
   const assistLinksRef=useRef({given:[],received:[]});/* [7.110.0 collaudo PO «memorizza a chi ho fatto l'assist e chi mi ha fatto l'assist»] connessioni coi compagni VERI, seedate, persistite in matchHistory per gli sbocchi narrativi */
   const [energy,setEnergy]=useState(100);
@@ -9351,7 +9452,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  </div>);})()}
                {phase==="playing"&&coms[0]&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&(
                  <div data-cpm="com661"/* [7.681.0] etichetta stabile: senza, per misurare il banner servivano selettori sullo STILE, che si rompono al primo ritocco grafico */ key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={_sot695?{position:"absolute",left:"4%",right:"4%",bottom:(((subbedOff||(benchStart&&onBench))&&!(typeof window!=='undefined'&&(window.__CPM_NO565||window.__CPM_NO899B)))?"calc(11% + 46px)":"11%")/* [7.899] col tasto «Salta al fischio finale» la colonna delle voci sale di 46 px (7.543) e il riquadro della panchina entrava nel sottopancia: foto del PO all'80', da sostituito. Il sottopancia sale con lei. */,zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}:{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>
-                   <style>{"@keyframes cpmComIn661{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}@keyframes cpmPop919{from{opacity:0;transform:translateY(22px) scale(.94)}to{opacity:1;transform:none}}@keyframes cpmPop919Velo{from{opacity:0}to{opacity:1}}@keyframes cpmPop919Tempo{from{transform:scaleX(1)}to{transform:scaleX(0)}}"}</style>
+                   <style>{"@keyframes cpmComIn661{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}@keyframes cpmPop919{from{opacity:0;transform:translateY(22px) scale(.94)}to{opacity:1;transform:none}}@keyframes cpmPop919Velo{from{opacity:0}to{opacity:1}}@keyframes cpmFesta942{0%{transform:translateY(-10vh) rotate(0deg)}100%{transform:translateY(112vh) rotate(420deg)}}@keyframes cpmPop919Tempo{from{transform:scaleX(1)}to{transform:scaleX(0)}}"}</style>
                    <div /* [7.695.0] sottopancia: il contenitore prende tutta la larghezza e la riga si taglia con i puntini, invece di uscire dallo schermo come faceva la prima stesura (fotografata) */ style={_sot695?{display:"block",width:"100%",boxSizing:"border-box",padding:"7px 12px",borderRadius:10,background:"linear-gradient(90deg, rgba(5,8,16,0) 0%, rgba(5,8,16,0.78) 12%, rgba(5,8,16,0.78) 88%, rgba(5,8,16,0) 100%)"}:{display:"inline-block",padding:"10px 16px",borderRadius:14,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
                      <div /* ⚠️ [7.697.0 collaudo PO: «la telecronaca durante le azioni pericolose e' tagliata, deve leggersi per intera»] IL DIFETTO ERA MIO E DI MEZZA GIORNATA FA: per tenere il sottopancia su una riga avevo messo `nowrap` piu' i puntini, e una riga di telecronaca sta in una riga sola quasi mai. Il sottopancia serve a NON coprire l'azione, non a nascondere il testo: ora va a capo fino a tre righe, resta in basso e il testo si legge tutto. */ style={_sot695?{fontSize:14,lineHeight:1.32,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.9)",letterSpacing:0.1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden",maxWidth:"100%"}:{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
                      {!_sot695&&(<div style={{marginTop:5,fontSize:11,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>)}
@@ -9410,6 +9511,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* [7.919 — C12] LA SCELTA E' UNA SCENA. Velo a schermo intero (quindi anche sopra il D-pad:
                   e' la seconda difesa contro il tocco involontario segnalato dal PO), faccia di chi parla,
                   frase, tempo visibile, opzioni larghe. La partita era gia' ferma dal 7.682. */}
+                {festa942&&<FestaFine942 dati={festa942} onChiudi={()=>{setFesta942(null);setPhase("ended");}}/>}
               {!(typeof window!=='undefined'&&window.__CPM_NO919)&&coms&&coms[0]&&coms[0].sc&&coms[0].sci==null&&(
                 <PopScelta919 com={coms[0]} onScegli={scegli681} player={player}
                   coachName={(player&&player.coach&&player.coach.name)||(player&&player.club&&player.club.n)||"Mister"}
