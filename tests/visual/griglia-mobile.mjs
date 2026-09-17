@@ -63,6 +63,11 @@ const { startServer, launchBrowser, installCdnRoutes, sleep, ROOT, openMatch } =
 
 const SEME = +(process.env.CPM_SEME || 4242);
 const FOTO = process.env.CPM_FOTO !== '0';
+/* [7.944 — difetto mio, e l'ho gia' pagato] Girando con CPM_FOTO=0 nella cartella PREDEFINITA la sonda
+   riscrive REPORT.md e dati.json senza le foto, e i 65 scatti gia' versionati restano orfani: me ne sono
+   accorto solo vedendoli cancellati dentro un commit gia' spinto. Senza foto si scrive altrove, a meno che
+   non sia stata chiesta una cartella esplicita. */
+if (!FOTO && !process.env.CPM_OUT) { process.env.CPM_OUT = '/tmp/cpm-griglia-senza-foto'; }
 const TEMA = process.env.CPM_TEMA === 'scuro' ? 'scuro' : 'chiaro';
 const ROSSI = (process.env.CPM_ROSSO || '').split(',').map(x => x.trim()).filter(Boolean);/* [7.944] prova del rosso dentro la pagina: i flag si accendono prima del caricamento */
 const PARTITA = process.env.CPM_PARTITA === '1';   /* CPM_PARTITA=1 misura anche la PARTITA (HUD in gioco e HUD con la scelta), opt-in: i totali cambiano, si confronta solo con corse uguali */   /* CPM_TEMA=scuro misura il tema scuro (cpm-dark=1); default chiaro */

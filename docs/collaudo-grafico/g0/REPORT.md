@@ -35,135 +35,135 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 
 ### 0 · Larghezza del riquadro letta DALLA PAGINA (prova che le cinque corse sono cinque larghezze)
 
-| schermata | 412px |
-|---|---:|
-| Home fuori carriera | 412 |
-| Impostazioni | 412 |
-| Creazione | 412 |
-| Offerte | 412 |
-| Dashboard | 412 |
-| Stagione · Classifica | 412 |
-| Stagione · Calendario | 412 |
-| Stagione · Coppe | 412 |
-| Club | 412 |
-| Carriera · Profilo | 412 |
-| Carriera · Nazionale | 412 |
-| Agente | 412 |
-| Prepartita | 412 |
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 360 | 375 | 390 | 412 | 430 |
+| Impostazioni | 360 | 375 | 390 | 412 | 430 |
+| Creazione | 360 | 375 | 390 | 412 | 430 |
+| Offerte | 360 | 375 | 390 | 412 | 430 |
+| Dashboard | 360 | 375 | 390 | 412 | 430 |
+| Stagione · Classifica | 360 | 375 | 390 | 412 | 430 |
+| Stagione · Calendario | 360 | 375 | 390 | 412 | 430 |
+| Stagione · Coppe | 360 | 375 | 390 | 412 | 430 |
+| Club | 360 | 375 | 390 | 412 | 430 |
+| Carriera · Profilo | 360 | 375 | 390 | 412 | 430 |
+| Carriera · Nazionale | 360 | 375 | 390 | 412 | 430 |
+| Agente | 360 | 375 | 390 | 412 | 430 |
+| Prepartita | 360 | 375 | 390 | 412 | 430 |
 
 ### 1 · Overflow orizzontale (px di pagina che escono dallo schermo)
 
-| schermata | 412px |
-|---|---:|
-| Home fuori carriera | 0 |
-| Impostazioni | 0 |
-| Creazione | 0 |
-| Offerte | 0 |
-| Dashboard | 0 |
-| Stagione · Classifica | 0 |
-| Stagione · Calendario | 0 |
-| Stagione · Coppe | 0 |
-| Club | 0 |
-| Carriera · Profilo | 0 |
-| Carriera · Nazionale | 0 |
-| Agente | 0 |
-| Prepartita | 0 |
-| **TOTALE** | **0** |
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 0 | 0 | 0 | 0 | 0 |
+| Impostazioni | 0 | 0 | 0 | 0 | 0 |
+| Creazione | 0 | 0 | 0 | 0 | 0 |
+| Offerte | 0 | 0 | 0 | 0 | 0 |
+| Dashboard | 0 | 0 | 0 | 0 | 0 |
+| Stagione · Classifica | 0 | 0 | 0 | 0 | 0 |
+| Stagione · Calendario | 0 | 0 | 0 | 0 | 0 |
+| Stagione · Coppe | 0 | 0 | 0 | 0 | 0 |
+| Club | 0 | 0 | 0 | 0 | 0 |
+| Carriera · Profilo | 0 | 0 | 0 | 0 | 0 |
+| Carriera · Nazionale | 0 | 0 | 0 | 0 | 0 |
+| Agente | 0 | 0 | 0 | 0 | 0 |
+| Prepartita | 0 | 0 | 0 | 0 | 0 |
+| **TOTALE** | **0** | **0** | **0** | **0** | **0** |
 
 ### 2 · Elementi fuori dallo schermo a destra (fra parentesi: contenuti da un antenato che li ritaglia/fa scorrere)
 
-| schermata | 412px |
-|---|---:|
-| Home fuori carriera | 0 (0) |
-| Impostazioni | 0 (0) |
-| Creazione | 0 (0) |
-| Offerte | 0 (0) |
-| Dashboard | 0 (0) |
-| Stagione · Classifica | 0 (10) |
-| Stagione · Calendario | 0 (0) |
-| Stagione · Coppe | 0 (0) |
-| Club | 0 (0) |
-| Carriera · Profilo | 0 (0) |
-| Carriera · Nazionale | 0 (0) |
-| Agente | 0 (0) |
-| Prepartita | 0 (0) |
-| **TOTALE** | **0** |
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Impostazioni | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Creazione | 0 (2) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Offerte | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Dashboard | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Stagione · Classifica | 0 (11) | 0 (11) | 0 (11) | 0 (10) | 0 (10) |
+| Stagione · Calendario | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Stagione · Coppe | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Club | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Carriera · Profilo | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Carriera · Nazionale | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Agente | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| Prepartita | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
+| **TOTALE** | **0** | **0** | **0** | **0** | **0** |
 
 ### 3 · Testo reso sotto i 10 px — sotto/totale (minimo)
 
-| schermata | 412px |
-|---|---:|
-| Home fuori carriera | 0/28 (11) |
-| Impostazioni | 0/32 (11) |
-| Creazione | 0/841 (11) |
-| Offerte | 0/43 (11) |
-| Dashboard | 1/203 (9) |
-| Stagione · Classifica | 1/397 (9) |
-| Stagione · Calendario | 1/324 (9) |
-| Stagione · Coppe | 1/50 (9) |
-| Club | 1/280 (9) |
-| Carriera · Profilo | 1/314 (9) |
-| Carriera · Nazionale | 1/116 (9) |
-| Agente | 1/125 (9) |
-| Prepartita | 0/35 (11) |
-| **TOTALE** | **8/2788** |
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 0/28 (11) | 0/28 (11) | 0/28 (11) | 0/28 (11) | 0/28 (11) |
+| Impostazioni | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) | 0/32 (11) |
+| Creazione | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) |
+| Offerte | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) |
+| Dashboard | 1/203 (9) | 1/203 (9) | 1/203 (9) | 1/203 (9) | 1/203 (9) |
+| Stagione · Classifica | 1/396 (9) | 1/396 (9) | 1/396 (9) | 1/397 (9) | 1/397 (9) |
+| Stagione · Calendario | 1/324 (9) | 1/324 (9) | 1/324 (9) | 1/324 (9) | 1/324 (9) |
+| Stagione · Coppe | 1/50 (9) | 1/50 (9) | 1/50 (9) | 1/50 (9) | 1/50 (9) |
+| Club | 1/280 (9) | 1/280 (9) | 1/280 (9) | 1/280 (9) | 1/280 (9) |
+| Carriera · Profilo | 1/314 (9) | 1/314 (9) | 1/314 (9) | 1/314 (9) | 1/314 (9) |
+| Carriera · Nazionale | 1/116 (9) | 1/116 (9) | 1/116 (9) | 1/116 (9) | 1/116 (9) |
+| Agente | 1/125 (9) | 1/125 (9) | 1/125 (9) | 1/125 (9) | 1/125 (9) |
+| Prepartita | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) |
+| **TOTALE** | **8/2787** | **8/2787** | **8/2787** | **8/2788** | **8/2788** |
 
 ### 3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale
 
-| schermata | 412px |
-|---|---:|
-| Home fuori carriera | 0/28 |
-| Impostazioni | 0/32 |
-| Creazione | 0/841 |
-| Offerte | 0/43 |
-| Dashboard | 1/203 |
-| Stagione · Classifica | 1/397 |
-| Stagione · Calendario | 1/324 |
-| Stagione · Coppe | 1/50 |
-| Club | 1/280 |
-| Carriera · Profilo | 1/314 |
-| Carriera · Nazionale | 1/116 |
-| Agente | 1/125 |
-| Prepartita | 0/35 |
-| **TOTALE** | **8/2788** |
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 0/28 | 0/28 | 0/28 | 0/28 | 0/28 |
+| Impostazioni | 0/32 | 0/32 | 0/32 | 0/32 | 0/32 |
+| Creazione | 0/841 | 0/841 | 0/841 | 0/841 | 0/841 |
+| Offerte | 0/43 | 0/43 | 0/43 | 0/43 | 0/43 |
+| Dashboard | 1/203 | 1/203 | 1/203 | 1/203 | 1/203 |
+| Stagione · Classifica | 1/396 | 1/396 | 1/396 | 1/397 | 1/397 |
+| Stagione · Calendario | 1/324 | 1/324 | 1/324 | 1/324 | 1/324 |
+| Stagione · Coppe | 1/50 | 1/50 | 1/50 | 1/50 | 1/50 |
+| Club | 1/280 | 1/280 | 1/280 | 1/280 | 1/280 |
+| Carriera · Profilo | 1/314 | 1/314 | 1/314 | 1/314 | 1/314 |
+| Carriera · Nazionale | 1/116 | 1/116 | 1/116 | 1/116 | 1/116 |
+| Agente | 1/125 | 1/125 | 1/125 | 1/125 | 1/125 |
+| Prepartita | 0/35 | 0/35 | 0/35 | 0/35 | 0/35 |
+| **TOTALE** | **8/2787** | **8/2787** | **8/2787** | **8/2788** | **8/2788** |
 
 ### 4 · Contrasto sotto soglia WCAG — sotto/misurati (esclusi per gradiente)
 
-| schermata | 412px |
-|---|---:|
-| Home fuori carriera | 0/4 (24) |
-| Impostazioni | 0/32 (0) |
-| Creazione | 0/838 (3) |
-| Offerte | 0/38 (5) |
-| Dashboard | 3/128 (75) |
-| Stagione · Classifica | 4/357 (40) |
-| Stagione · Calendario | 1/284 (40) |
-| Stagione · Coppe | 0/10 (40) |
-| Club | 34/215 (65) |
-| Carriera · Profilo | 20/236 (78) |
-| Carriera · Nazionale | 0/61 (55) |
-| Agente | 0/91 (34) |
-| Prepartita | 0/22 (13) |
-| **TOTALE** | **62/2316** |
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 0/4 (24) | 0/4 (24) | 0/4 (24) | 0/4 (24) | 0/4 (24) |
+| Impostazioni | 0/32 (0) | 0/32 (0) | 0/32 (0) | 0/32 (0) | 0/32 (0) |
+| Creazione | 0/838 (3) | 0/838 (3) | 0/838 (3) | 0/838 (3) | 0/838 (3) |
+| Offerte | 0/38 (5) | 0/38 (5) | 0/38 (5) | 0/38 (5) | 0/38 (5) |
+| Dashboard | 3/128 (75) | 3/128 (75) | 3/128 (75) | 3/128 (75) | 3/128 (75) |
+| Stagione · Classifica | 4/356 (40) | 4/356 (40) | 4/356 (40) | 4/357 (40) | 4/357 (40) |
+| Stagione · Calendario | 1/284 (40) | 1/284 (40) | 1/284 (40) | 1/284 (40) | 1/284 (40) |
+| Stagione · Coppe | 0/10 (40) | 0/10 (40) | 0/10 (40) | 0/10 (40) | 0/10 (40) |
+| Club | 34/215 (65) | 34/215 (65) | 34/215 (65) | 34/215 (65) | 34/215 (65) |
+| Carriera · Profilo | 20/236 (78) | 20/236 (78) | 20/236 (78) | 20/236 (78) | 20/236 (78) |
+| Carriera · Nazionale | 0/61 (55) | 0/61 (55) | 0/61 (55) | 0/61 (55) | 0/61 (55) |
+| Agente | 0/91 (34) | 0/91 (34) | 0/91 (34) | 0/91 (34) | 0/91 (34) |
+| Prepartita | 0/22 (13) | 0/22 (13) | 0/22 (13) | 0/22 (13) | 0/22 (13) |
+| **TOTALE** | **62/2315** | **62/2315** | **62/2315** | **62/2316** | **62/2316** |
 
 ### 5 · Bottoni pieni di marca (una sola azione primaria per vista)
 
-| schermata | 412px |
-|---|---:|
-| Home fuori carriera | 0 |
-| Impostazioni | 0 |
-| Creazione | 1 |
-| Offerte | 1 |
-| Dashboard | 1 |
-| Stagione · Classifica | 1 |
-| Stagione · Calendario | 0 |
-| Stagione · Coppe | 0 |
-| Club | 0 |
-| Carriera · Profilo | 0 |
-| Carriera · Nazionale | 0 |
-| Agente | 0 |
-| Prepartita | 1 |
-| **TOTALE** | **5** |
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 0 | 0 | 0 | 0 | 0 |
+| Impostazioni | 0 | 0 | 0 | 0 | 0 |
+| Creazione | 1 | 1 | 1 | 1 | 1 |
+| Offerte | 1 | 1 | 1 | 1 | 1 |
+| Dashboard | 1 | 1 | 1 | 1 | 1 |
+| Stagione · Classifica | 1 | 1 | 1 | 1 | 1 |
+| Stagione · Calendario | 0 | 0 | 0 | 0 | 0 |
+| Stagione · Coppe | 0 | 0 | 0 | 0 | 0 |
+| Club | 0 | 0 | 0 | 0 | 0 |
+| Carriera · Profilo | 0 | 0 | 0 | 0 | 0 |
+| Carriera · Nazionale | 0 | 0 | 0 | 0 | 0 |
+| Agente | 0 | 0 | 0 | 0 | 0 |
+| Prepartita | 1 | 1 | 1 | 1 | 1 |
+| **TOTALE** | **5** | **5** | **5** | **5** | **5** |
 
 ## Dettaglio · gli elementi che sporgono (i 5 peggiori per schermata, alla larghezza in cui sporgono di piu')
 
@@ -177,9 +177,11 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 
 | schermata | larghezza | selettore | px oltre il bordo | testo |
 |---|---:|---|---:|---|
-| Stagione · Classifica | 412 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 1109.3 | Liga Ibérica 2 |
-| Stagione · Classifica | 412 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 999.8 | Ligue Nationale 2 |
-| Stagione · Classifica | 412 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 868.3 | Deutsche Liga 2 |
+| Creazione | 360 | `div:nth-child(3)>div:nth-child(2)>button:nth-child(5)` | 3.5 | AvataaarsPablo Stanleyhttps://avat |
+| Creazione | 360 | `div:nth-child(3)>div:nth-child(2)>button:nth-child(10)` | 3.5 | AvataaarsPablo Stanleyhttps://avat |
+| Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 1159.1 | Liga Ibérica 2 |
+| Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 1049.5 | Ligue Nationale 2 |
+| Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 918.1 | Deutsche Liga 2 |
 
 ## Dettaglio · le 5 coppie testo/fondo peggiori per schermata (a 412 px, la taglia del PO)
 
