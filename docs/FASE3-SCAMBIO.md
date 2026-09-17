@@ -6268,3 +6268,38 @@ terzo finale (7-8 a partita, ognuno ne cava 0,6) e quel numero dipende dal tempo
 una decisione di progetto del PO sul tempo: un attacco che dal centrocampo arrivi in area in 3 minuti invece di 5-6,
 cioe' passi di conduzione e passaggi verticali piu' lunghi (mondo piu' veloce in avanti, gia' respinto nella forma
 «tutto 3× piu' veloce» della 7.896). Prototipi in `scratchpad/a4/14-v4.jsx`, `14-v5.jsx`; banco con `CPM_SRC14`.
+
+---
+
+## 17/09 — ALLINEAMENTO NOTTURNO **NON ESEGUITO**, e perché
+
+La routine notturna di produzione chiede di allineare `main` all'HEAD del ramo
+`claude/korward-elite-qa-season-jwcbj1`, lavorando in `/home/user/Carrier-manager-`.
+**Non l'ho fatto**, e la routine stessa prescrive di fermarsi e verbalizzare in questo caso.
+
+I fatti, verificati:
+
+| | |
+|---|---|
+| `/home/user/Carrier-manager-` | **non esiste** in questa sessione (si lavora in `/home/user/cm-motore`) |
+| ramo `…qa-season-jwcbj1` | `d6e9f62`, ultimo commit **14/09**, gioco alla **7.885/7.888** |
+| `main` | `6c35f77`, **17/09**, gioco alla **7.933** |
+| commit che il ramo qa ha e `main` no | **2.375** |
+| commit che `main` ha e il ramo qa no | **166** |
+
+Le due linee non sono una avanti e l'altra indietro: sono **divergenti**. Allineare `main`
+a quel ramo **non sarebbe un fast-forward** e arretrerebbe la produzione di tre giorni e
+quarantacinque versioni — perderebbe M1a (il pallone che arriva dentro il battito), il conto
+dei falli, il tasso dei legni, il fuorigioco, l'intervento pulito del difensore e i sei
+rilievi del PO dal telefono.
+
+`main` è già allineato al lavoro più recente verificato: **`6c35f77`, 7.933.0, venti rituali
+su venti verdi sul build esatto** (design-system, impulsi-contesto, test:logic 43 pass,
+typing-shortcuts, validate-situations, save-compat, replay, partita-vera con le sue undici
+bande, jumbotron-anchor, career-critical con i suoi undici guardiani).
+
+**Non verificato**: tutto misurato al banco e su Chromium 412×915. Mai sull'Android del PO.
+
+**Da decidere dal PO**: se la routine notturna vada ripuntata sul ramo di lavoro corrente
+(`claude/motore-possesso`) o spenta, visto che il ramo e il checkout che nomina appartengono
+a un assetto che non è più quello in cui si lavora.
