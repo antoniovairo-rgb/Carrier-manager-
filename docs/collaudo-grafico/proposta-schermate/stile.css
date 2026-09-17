@@ -1,111 +1,133 @@
-/* [G1 — LA DIREZIONE, PROVINO STATICO] Un solo sistema per tutte le schermate.
-   NON e' codice di gioco: e' la direzione da giudicare PRIMA di toccare src/.
-   Regole che questo foglio applica, e che si possono contare:
-     · un solo accento, speso in tre punti per schermata (azione, voce attiva, legame);
-     · nessuna scatola dentro una scatola: una carta, dentro solo righe separate da un filo da 1 px;
-     · numeri tabellari ovunque, mai un numero che balla di larghezza fra due righe;
-     · zero emoji come segnale: le sezioni si riconoscono dal cappello, non da un pittogramma;
-     · corpo minimo 11 px (il pavimento della griglia mobile e' 10);
-     · tema UNICO chiaro, come chiesto dal PO: nessun interruttore, nessun secondo fondo. */
+/* [G1 v2 — LA DIREZIONE] Un solo sistema per tutte le schermate. NON e' codice di gioco.
+   v1 era corretta e piatta: leggeva come un foglio di calcolo ben impaginato. Il PO ha detto
+   «buona base, ma puoi fare ancora meglio». Le tre leve di v2:
+     1. UN CARATTERE VERO. Barlow + Barlow Condensed: il condensato porta i numeri e le
+        etichette (e' il carattere della grafica da trasmissione), il tondo porta il testo.
+        Il gioco incorpora GIA' un webfont in base64 (KWScript in src/00-head.html): in
+        produzione si incorpora il sottoinsieme latino, non si linka niente.
+     2. IL COLORE DEL CLUB GUIDA LA PAGINA. Il club ha DUE colori nel gioco (mkT(...,c1,c2)):
+        la fascia di testata prende il primo, un filo da 3 px porta il secondo. Non e'
+        decorazione: e' l'identita' della squadra, ed e' la cosa che distingue un gioco di
+        calcio da una lista qualunque.
+     3. DENSITA'. Con i numerali condensati la classifica sta su UNA riga con tutte e otto le
+        colonne E il nome del club per intero: oggi nel gioco si vede solo la sigla.
+   Resta tutto quello che v1 ha guadagnato: tema unico chiaro, niente scatole dentro scatole,
+   zero emoji, pavimento 11 px, e ogni tinta di testo >= 4,5:1 sul fondo su cui cade davvero. */
+@import url('caratteri.css');   /* i sei tagli incorporati in base64: il gioco gira senza rete */
 :root{
-  /* I COLORI SONO STATI SCELTI COL CALCOLATORE, NON A OCCHIO.
-     Ogni tinta di testo tiene almeno 4,5:1 su TUTTI E TRE i fondi in cui puo' capitare
-     (carta #ffffff, sfondo #f1f3f7, riga evidenziata #faf0f2). I numeri, misurati:
-       inchiostro #0f172a  17,85 · 16,07 · 15,99
-       secondo    #49525f   7,91 ·  7,12 ·  7,08
-       terzo      #646e7d   5,16 ·  4,65 ·  4,62
-       accento    #8e1f33   8,77 ·  7,90 ·  7,86
-       vinta      #146c35   6,51 · pari #8a6005 5,59 · persa #a81d28 7,31
-     Il primo provino aveva --terzo #8b95a5: 3,03:1 su bianco, 86 nodi sotto soglia.
-     Il metro l'ha bocciato prima del PO. */
-  --sfondo:#f1f3f7; --carta:#ffffff; --filo:#dfe4ec; --filo-forte:#cdd5e0;
+  /* I COLORI SONO SCELTI COL CALCOLATORE. Ogni tinta di testo tiene >= 4,5:1 su TUTTI i fondi
+     in cui puo' capitare (carta #ffffff, sfondo #f1f3f7, riga evidenziata #faf0f2):
+       inchiostro #0f172a 17,85 · 16,07 · 15,99
+       secondo    #49525f  7,91 ·  7,12 ·  7,08
+       terzo      #646e7d  5,16 ·  4,65 ·  4,62
+       accento    #8e1f33  8,77 ·  7,90 ·  7,86
+       vinta #146c35 6,51 · pari #8a6005 5,59 · persa #a81d28 7,31 */
+  --sfondo:#f1f3f7; --carta:#ffffff; --filo:#e2e7ef; --filo-forte:#cdd5e0;
   --inchiostro:#0f172a; --secondo:#49525f; --terzo:#646e7d;
   --accento:#8e1f33; --accento-tenue:#faf0f2;
   --vinta:#146c35; --pari:#8a6005; --persa:#a81d28;
   --promo:#146c35; --spareggio:#8a6005; --retro:#a81d28;
+  /* il club della partita in corso: in gioco arrivano da mkT(), qui sono FC Salernum */
+  --club:#6c1f2e; --club-2:#f5f5f5; --club-ink:#ffffff;
+  --ombra:0 1px 2px rgba(15,23,42,.07), 0 1px 1px rgba(15,23,42,.04);
+  /* LA SCALA: sei gradini, nessun altro — 11 · 12,5 · 14 · 16 · 19 · 26 */
+  --c1:11px; --c2:12.5px; --c3:14px; --c4:16px; --c5:19px; --c6:26px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--sfondo);color:var(--inchiostro);
-  font:400 14px/1.35 -apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
-  -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;
-  padding-bottom:76px}
-.n{font-variant-numeric:tabular-nums;font-weight:800}
-.et{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--terzo)}
+  font:400 var(--c3)/1.35 "Barlow",-apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;padding-bottom:78px}
+/* IL CONDENSATO porta i numeri e le etichette: e' il carattere della grafica da trasmissione. */
+.n{font-family:"Barlow Condensed","Barlow",sans-serif;font-variant-numeric:tabular-nums;
+   font-weight:700;letter-spacing:.01em}
+.et{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);font-weight:600;
+    letter-spacing:.11em;text-transform:uppercase;color:var(--terzo)}
 
-/* ---- identita' (in cima a OGNI schermata, sempre la stessa) ---- */
-.id{background:var(--carta);border-bottom:1px solid var(--filo);padding:12px 14px;display:flex;align-items:center;gap:12px}
-.id .nome{font-size:16px;font-weight:800;line-height:1.15}
-.av{width:44px;height:44px;border-radius:50%;background:#dfe4ec;flex:none;
-    display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--secondo);font-size:16px}
-.ovr{margin-left:auto;text-align:right}
-.ovr .v{font-size:26px;font-weight:800;line-height:1}
+/* ---- TESTATA COL COLORE DEL CLUB (in cima a OGNI schermata, sempre la stessa) ---- */
+.id{background:var(--club);color:var(--club-ink);padding:11px 14px 12px;display:flex;align-items:center;gap:11px;
+    border-bottom:3px solid var(--club-2)}
+.id .av{width:40px;height:40px;border-radius:50%;flex:none;background:rgba(255,255,255,.16);
+        display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--c3);color:var(--club-ink)}
+.id .nome{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c5);font-weight:700;
+          line-height:1.05;letter-spacing:.01em;text-transform:uppercase}
+.id .sotto{font-size:var(--c1);font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+           color:var(--club-ink);opacity:.82;margin-top:2px}
+.id .ovr{margin-left:auto;text-align:center;line-height:1}
+.id .ovr .v{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c6);font-weight:700}
+.id .ovr .k{font-size:var(--c1);font-weight:600;letter-spacing:.12em;opacity:.82;margin-top:1px}
 
-/* ---- barre condizione ---- */
+/* ---- condizione: tre misure sotto la testata ---- */
 .cond{display:grid;grid-template-columns:repeat(3,1fr);background:var(--carta);border-bottom:1px solid var(--filo)}
-.cond > div{padding:9px 14px;border-left:1px solid var(--filo)}
+.cond > div{padding:8px 14px 9px;border-left:1px solid var(--filo)}
 .cond > div:first-child{border-left:none}
-.cond .v{font-size:19px;font-weight:800;line-height:1.1}
+.cond .v{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c5);font-weight:700;line-height:1.05;margin-top:1px}
 .barra{height:3px;background:#e7ebf1;border-radius:3px;margin-top:5px;overflow:hidden}
 .barra i{display:block;height:100%}
 
-/* ---- navigazione di sezione: sottolineatura, non tre pillole ---- */
+/* ---- navigazione di sezione ---- */
 .tabs{display:flex;background:var(--carta);border-bottom:1px solid var(--filo)}
-.tabs div{flex:1;text-align:center;padding:11px 0 10px;font-size:14px;font-weight:700;color:var(--terzo)}
-.tabs div.on{color:var(--inchiostro);box-shadow:inset 0 -2px 0 var(--accento)}
+.tabs div{flex:1;text-align:center;padding:11px 0 10px;font-size:var(--c3);font-weight:600;color:var(--terzo)}
+.tabs div.on{color:var(--inchiostro);box-shadow:inset 0 -3px 0 var(--accento)}
 .filtri{display:flex;gap:16px;padding:9px 14px;background:var(--carta);border-bottom:1px solid var(--filo);
   overflow-x:auto;white-space:nowrap;scrollbar-width:none}
 .filtri::-webkit-scrollbar{display:none}
-.filtri span{font-size:12.5px;font-weight:700;color:var(--terzo);flex:none}
-.filtri span.on{color:var(--accento)}
+.filtri span{font-size:var(--c2);font-weight:600;color:var(--terzo);flex:none;
+  font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.filtri span.on{color:var(--accento);font-weight:700}
 
 /* ---- carta e righe ---- */
 .sez{margin:12px 12px 0}
-.cap{display:flex;align-items:baseline;justify-content:space-between;padding:0 2px 6px}
-.cap a{color:var(--accento);font-size:12.5px;font-weight:700;text-decoration:none}
-.carta{background:var(--carta);border:1px solid var(--filo);border-radius:6px;overflow:hidden}
+.cap{display:flex;align-items:center;justify-content:space-between;padding:0 2px 6px;gap:10px}
+.cap .et{flex:none}
+.cap .rig{flex:1;height:1px;background:var(--filo-forte)}
+.cap a{color:var(--accento);font-size:var(--c2);font-weight:700;text-decoration:none;flex:none;
+  font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.carta{background:var(--carta);border:1px solid var(--filo);border-radius:6px;overflow:hidden;box-shadow:var(--ombra)}
 .riga{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--filo)}
 .riga:first-child{border-top:none}
-.riga .k{font-size:12.5px;font-weight:700;color:var(--secondo)}
-.riga .v{margin-left:auto;font-size:14px;font-weight:700;text-align:right}
-.riga .v small{display:block;font-size:11px;font-weight:600;color:var(--terzo);margin-top:1px}
+.riga .k{font-size:var(--c3);font-weight:500;color:var(--secondo)}
+.riga .v{margin-left:auto;font-size:var(--c3);font-weight:600;text-align:right}
+.riga .v small{display:block;font-size:var(--c1);font-weight:500;color:var(--terzo);margin-top:1px}
 
 /* ---- riga di dati a tre ---- */
 .dati{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--filo)}
-.dati > div{padding:10px 12px;border-left:1px solid var(--filo)}
+.dati > div{padding:9px 12px 10px;border-left:1px solid var(--filo)}
 .dati > div:first-child{border-left:none}
-.dati .v{font-size:19px;font-weight:800;line-height:1.1;margin-top:3px}
-.dati .s{font-size:11px;color:var(--terzo);font-weight:600;margin-top:1px}
+.dati .v{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c5);font-weight:700;line-height:1.05;margin-top:2px}
+.dati .s{font-size:var(--c1);color:var(--terzo);font-weight:500;margin-top:1px}
 
-/* ---- scudo: una forma sola in tutto il gioco ---- */
-/* LO SCUDO non impone il bianco: i colori dei club sono quelli del gioco e su un giallo
-   il bianco fa 2,95:1. L'inchiostro della sigla e' scelto per contrasto, scudo per scudo
-   (bianco o #0f172a, quello che vince): sui nove club del provino il minimo e' 4,63:1. */
-.scudo{width:34px;height:40px;border-radius:3px 3px 12px 12px;display:flex;align-items:center;justify-content:center;
-       color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em;flex:none;
-       box-shadow:inset 0 0 0 1px rgba(15,23,42,.14)}
-.scudo.p{width:29px;height:34px;border-radius:3px 3px 10px 10px;font-size:11px;letter-spacing:0}
+/* ---- LO SCUDO: una forma sola in tutto il gioco, e due colori come nel gioco ----
+   L'inchiostro della sigla NON e' il bianco per principio: sui colori dei club il bianco
+   arriva a 2,15:1 (giallo #f59e0b). E' scelto per contrasto, scudo per scudo. Il filo interno
+   tiene visibili gli scudi bianchi (FC Spezzino, FC Pugliese) sulla carta bianca. */
+.scudo{width:32px;height:38px;border-radius:3px 3px 12px 12px;display:flex;align-items:center;justify-content:center;
+       font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);font-weight:700;letter-spacing:.03em;
+       flex:none;box-shadow:inset 0 0 0 1px rgba(15,23,42,.16);position:relative;overflow:hidden}
+/* IL SECONDO COLORE DEL CLUB come banda VERTICALE: messo in basso tagliava la punta dello
+   scudo e sembrava un errore di disegno. Di lato legge come una riga della maglia. */
+.scudo em{position:absolute;left:0;top:0;bottom:0;width:5px;display:block}
+.scudo.p{width:26px;height:30px;border-radius:3px 3px 8px 8px;font-size:var(--c1);letter-spacing:0}
+.scudo.p em{width:4px}
+.scudo.g{width:56px;height:66px;border-radius:3px 3px 20px 20px;font-size:var(--c4)}
+.scudo.g em{width:8px}
 
 /* ---- forma: cinque quadratini ---- */
 .forma{display:flex;gap:3px}
-.forma i{width:13px;height:13px;border-radius:3px;display:block}
-.forma.p i{width:10px;height:10px;border-radius:3px}
+.forma i{width:14px;height:14px;border-radius:3px;display:block}
 
 /* ---- azione ---- */
-.cta{margin:12px;display:flex;gap:8px}
-/* [G1 · difetto mio, trovato dal censimento] `font:800 14px/1 inherit` NON E' CSS VALIDO:
-   nella scorciatoia `font` l'ultimo valore e' la FAMIGLIA, e `inherit` li' dentro non vale —
-   il browser buttava via TUTTA la dichiarazione e i due bottoni finivano al corpo di
-   fabbrica del browser, 13,3 px. Il censimento dei corpi resi l'ha visto: sette gradini
-   sulla Home invece di sei, e il settimo era un valore che non avevo scelto io. */
-.cta button{flex:1;border:none;border-radius:6px;background:var(--accento);color:#fff;
-  font-family:inherit;font-size:14px;font-weight:800;line-height:1;padding:14px 12px;letter-spacing:.01em}
-.cta .sec{flex:0 0 auto;background:var(--carta);color:var(--secondo);border:1px solid var(--filo);
-  font-family:inherit;font-size:14px;font-weight:700;line-height:1;padding:14px 16px;border-radius:6px}
+.cta{display:flex;gap:1px;border-top:1px solid var(--filo);background:var(--filo)}
+.cta button{flex:1;border:none;background:var(--accento);color:#fff;
+  font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c4);font-weight:700;line-height:1;
+  letter-spacing:.06em;text-transform:uppercase;padding:15px 12px}
+.cta .sec{flex:0 0 108px;background:var(--carta);color:var(--secondo)}
 .tag{display:inline-block;padding:2px 7px;border-radius:3px;background:var(--accento-tenue);
-     color:var(--accento);font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+     color:var(--accento);font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);
+     font-weight:700;letter-spacing:.07em;text-transform:uppercase}
 
 /* ---- barra in basso ---- */
 .nav{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(6,1fr);
   background:var(--carta);border-top:1px solid var(--filo)}
-.nav div{padding:9px 0 10px;text-align:center;font-size:11px;font-weight:700;color:var(--terzo)}
-.nav div.on{color:var(--accento);box-shadow:inset 0 2px 0 var(--accento)}
+.nav div{padding:10px 0 11px;text-align:center;font-size:var(--c1);font-weight:600;color:var(--terzo);
+  font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.nav div.on{color:var(--accento);font-weight:700;box-shadow:inset 0 3px 0 var(--accento)}

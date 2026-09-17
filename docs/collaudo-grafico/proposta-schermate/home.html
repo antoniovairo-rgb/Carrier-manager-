@@ -1,82 +1,87 @@
 <!doctype html><html lang="it"><head><meta charset="utf-8">
 <meta name="viewport" content="width=412,initial-scale=1">
-<title>Korward Elite — Home (provino)</title>
+<title>Korward Elite — Home (provino v2)</title>
 <link rel="stylesheet" href="stile.css">
 <style>
-  .vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:12px}
-  .sq{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
-  .sq .nm{font-size:12.5px;font-weight:700;line-height:1.2}
-  .sq .ps{font-size:11px;color:var(--terzo);font-weight:600}
-  .mid{text-align:center}
-  .mid .k{font-size:12.5px;font-weight:800;color:var(--secondo);letter-spacing:.08em}
-  .mid .s{font-size:11px;color:var(--terzo);margin-top:2px}
-  .prog{padding:11px 12px;border-top:1px solid var(--filo)}
-  .prog .pt{font-size:12.5px;line-height:1.45;color:var(--secondo)}
-  .marchio{font-size:14px;font-weight:800;letter-spacing:.02em;color:var(--accento)}
-  .marchio b{font-weight:800;font-style:italic;color:var(--secondo)}
+  .vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;padding:14px 10px 12px}
+  .sq{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+  .sq .nm{font-size:var(--c3);font-weight:600;line-height:1.15}
+  .sq .ps{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);color:var(--terzo);
+          font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+  .mid{text-align:center;padding:0 2px}
+  .mid .g{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c5);font-weight:700;line-height:1;letter-spacing:.02em}
+  .mid .d{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);font-weight:600;
+          letter-spacing:.09em;text-transform:uppercase;color:var(--terzo);margin-top:3px}
+  .testa{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#f7f9fc;border-bottom:1px solid var(--filo)}
+  .prog{padding:10px 12px 12px;border-top:1px solid var(--filo);font-size:var(--c3);line-height:1.45;color:var(--secondo)}
+  .marchio{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c4);font-weight:700;
+           letter-spacing:.04em;color:var(--accento);text-transform:uppercase}
+  .marchio b{font-weight:600;font-style:italic;color:var(--secondo)}
 </style></head><body>
 
 <div class="id">
   <div class="av">GP</div>
   <div>
     <div class="nome">Grafica Probe</div>
-    <div class="et" style="margin-top:3px">Attaccante · Italia · FC Salernum</div>
+    <div class="sotto">Attaccante · FC Salernum</div>
   </div>
-  <div class="ovr"><div class="et">OVR</div><div class="v n">82</div></div>
+  <div class="ovr"><div class="v">82</div><div class="k">OVR</div></div>
 </div>
 
 <div class="cond">
-  <div><div class="et">Forma</div><div class="v n">78</div><div class="barra"><i style="width:78%;background:var(--vinta)"></i></div></div>
-  <div><div class="et">Morale</div><div class="v n">70</div><div class="barra"><i style="width:70%;background:var(--vinta)"></i></div></div>
-  <div><div class="et">Fatica</div><div class="v n">18</div><div class="barra"><i style="width:18%;background:var(--pari)"></i></div></div>
+  <div><div class="et">Forma</div><div class="v">78</div><div class="barra"><i style="width:78%;background:var(--vinta)"></i></div></div>
+  <div><div class="et">Morale</div><div class="v">70</div><div class="barra"><i style="width:70%;background:var(--vinta)"></i></div></div>
+  <div><div class="et">Fatica</div><div class="v">18</div><div class="barra"><i style="width:18%;background:var(--pari)"></i></div></div>
 </div>
 
 <div class="sez">
-  <div class="cap"><span class="et">Prossima partita · 12ª giornata</span><a href="#">Calendario</a></div>
+  <div class="cap"><span class="et">Prossima partita</span><span class="rig"></span><a href="#">Calendario</a></div>
   <div class="carta">
+    <div class="testa"><span class="et">Lega B · 12ª giornata</span><span class="et" style="color:var(--secondo)">Stadio Salernum</span></div>
     <div class="vs">
-      <div class="sq"><div class="scudo" style="background:#6c1f2e;color:#ffffff">SAL</div><div class="nm">FC Salernum</div><div class="ps">4º · 18 pt</div></div>
-      <div class="mid"><div class="k">IN CASA</div><div class="s">sab · W.12</div></div>
-      <div class="sq"><div class="scudo" style="background:#dc2626;color:#ffffff">CRE</div><div class="nm">FC Cremona</div><div class="ps">10º · 12 pt</div></div>
+      <div class="sq"><div class="scudo" style="background:#6c1f2e;color:#ffffff">SAL<em style="background:#f5f5f5"></em></div>
+        <div class="nm">FC Salernum</div><div class="ps">4º · 18 pt</div></div>
+      <div class="mid"><div class="g">SAB 20:45</div><div class="d">in casa · W.12</div></div>
+      <div class="sq"><div class="scudo" style="background:#dc2626;color:#ffffff">CRE<em style="background:#9ca3af"></em></div>
+        <div class="nm">FC Cremona</div><div class="ps">10º · 12 pt</div></div>
     </div>
-    <div class="riga" style="justify-content:space-between">
+    <div class="riga" style="justify-content:space-between;background:#f7f9fc">
       <span class="et">Ultime cinque</span>
       <span class="forma">
         <i style="background:var(--persa)"></i><i style="background:var(--vinta)"></i><i style="background:var(--persa)"></i><i style="background:var(--vinta)"></i><i style="background:var(--persa)"></i>
       </span>
     </div>
     <div class="dati">
-      <div><div class="et">Gol · assist</div><div class="v n">14 · 6</div><div class="s">in 11 partite</div></div>
-      <div><div class="et">Voto medio</div><div class="v n">7,2</div><div class="s">ultime 10</div></div>
-      <div><div class="et">Forma</div><div class="v n">78</div><div class="s">in crescita</div></div>
+      <div><div class="et">Gol · assist</div><div class="v">14 · 6</div><div class="s">in 11 partite</div></div>
+      <div><div class="et">Voto medio</div><div class="v">7,2</div><div class="s">ultime 10</div></div>
+      <div><div class="et">Minuti</div><div class="v">932</div><div class="s">94% dei possibili</div></div>
+    </div>
+    <div class="cta">
+      <button>Vivi la settimana</button>
+      <button class="sec">Salta</button>
     </div>
   </div>
 </div>
 
-<div class="cta">
-  <button>Vivi la settimana</button>
-  <button class="sec">Salta</button>
-</div>
-
 <div class="sez">
-  <div class="cap"><span class="et">Il club</span><a href="#">Apri</a></div>
+  <div class="cap"><span class="et">Il club</span><span class="rig"></span><a href="#">Apri</a></div>
   <div class="carta">
-    <div class="riga" style="justify-content:space-between">
-      <span style="font-weight:700;font-size:14px">Progetto societario</span>
-      <span class="tag">Solido</span>
+    <div class="riga">
+      <span style="font-weight:600;font-size:var(--c3)">Progetto societario</span>
+      <span style="margin-left:auto"><span class="tag">Solido</span></span>
     </div>
-    <div class="prog"><div class="pt">Bilancio in ordine, mercato mirato, obiettivi realistici. Un club che non promette e non tradisce.</div></div>
+    <div class="prog">Bilancio in ordine, mercato mirato, obiettivi realistici. Un club che non promette e non tradisce.</div>
   </div>
 </div>
 
 <div class="sez">
   <div class="carta">
-    <div class="riga" style="justify-content:center;gap:8px">
-      <span style="font-size:12.5px;font-weight:700;color:var(--secondo)">Sostieni lo sviluppo di</span>
+    <div class="riga" style="justify-content:center;gap:9px">
+      <span style="font-size:var(--c3);font-weight:500;color:var(--secondo)">Sostieni lo sviluppo di</span>
       <span class="marchio">Korward <b>Elite</b></span>
     </div>
     <div class="riga" style="justify-content:center">
-      <a href="#" style="color:var(--accento);font-size:12.5px;font-weight:700;text-decoration:none">Idee e segnalazioni — scrivici</a>
+      <a href="#" style="color:var(--accento);font-size:var(--c3);font-weight:600;text-decoration:none">Idee e segnalazioni — scrivici</a>
     </div>
   </div>
 </div>
