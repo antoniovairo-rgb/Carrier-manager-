@@ -1143,6 +1143,16 @@ const getThisWeekMatchday=()=>{
         doAdvanceWeek();return "advanced";
       }catch(e){return "error:"+(e&&e.message);}},
       openingPending:()=>{try{return openingPending();}catch(e){return "error:"+(e&&e.message);}}, // [7.16.0] per la probe opening-gate
+      /* [7.946] VARCO DI SOLO COLLAUDO: apre il gala' con dei premi finti. Il gala' vive a fine stagione,
+         quindi per GUARDARLO servirebbe giocare una stagione intera — ed e' il motivo per cui le cerimonie
+         non erano mai state fotografate. Stessa famiglia di __CPM_HUD_FORCE e __CPM_FESTA942_FORCE. */
+      apriGala:(aw)=>{try{setSeasonAwardsData(aw||{
+        palloneOro:{playerWins:true,top3:[{name:"TU",isPlayer:true,club:"FC Merseyside",goals:34},{name:"L. Moreno",club:"CF Madrid",goals:31},{name:"K. Adeyemi",club:"Deutsche Elf",goals:29}]},
+        scarpaOro:{playerWins:false,top3:[{name:"L. Moreno",club:"CF Madrid",goals:31},{name:"TU",isPlayer:true,club:"FC Merseyside",goals:34}]},
+        leagueMvp:{playerWins:true,top3:[{name:"TU",isPlayer:true,club:"FC Merseyside"}]},
+        leagueTopScorer:{playerWins:true,top3:[{name:"TU",isPlayer:true,club:"FC Merseyside",goals:34}]},
+        seasonRecord:{beaten:false},allTime:{beaten:false}});
+        setScreen("seasonAwards");return true;}catch(e){return "error:"+(e&&e.message);}},
       staleMd:(p2,md)=>{try{return _isStaleMd(p2||player,md);}catch(e){return "error:"+(e&&e.message);}}, /* [7.418.0] il rilevatore UNICO delle voci stantie, esposto per il guardiano della partita-gia'-giocata */
       mdRef:()=>{try{const r=_playingMdRef.current;return r?{matchday:r.matchday,type:r.type||null,oppId:r.oppId||null,isHome:!!r.isHome}:null;}catch(e){return "error:"+(e&&e.message);}}, /* [P0 #3] la gara di CLUB attualmente aperta: senza questa sonda il guardiano del ciclo di vita misurerebbe solo gli effetti, non la causa */
       resolveOpening:()=>{try{setPlayer(p=>{const sn=p.season||1;return{...p,campDone:true,presidentModalSeason:sn,jerseyNumSeason:sn,drawSeen:sn,mercatoSeen:sn,presentSeason:sn,...(((p.proStatus||"u18")==="pro"&&sn>=2&&(!p.seasonPledge||p.seasonPledge.season!==sn))?{seasonPledge:{season:sn,tone:"equilibrato"}}:{})};});return true;}catch(e){return "error:"+(e&&e.message);}}, // [7.16.0] risoluzione minima (flag, +drawSeen per i sorteggi) delle interazioni d'apertura per l'harness · [7.147.0] +mercatoSeen

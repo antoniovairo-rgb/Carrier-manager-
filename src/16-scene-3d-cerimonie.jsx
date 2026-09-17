@@ -1355,6 +1355,45 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10}){/* [7.469.0] esposto 
   },[]);
   return <div ref={ref} style={{position:"absolute",inset:0,overflow:"hidden",background:"#070a16"}}/>;
 }
+/* [7.946 — IL GALA' E' IN 2D, SENZA CH38. Richiesta del PO: «anche il gala' deve essere in 2D senza CH38».]
+   Il palco 3D del gala' era solo un FONDALE: la busta, il podio e i bottoni sono gia' DOM. Qui il fondale
+   diventa un teatro disegnato — sipario, occhi di bue, palco — e chi sale sul palco e' il viso della
+   libreria SVG, lo stesso che il giocatore vede fuori partita e nel festeggiamento di fine gara. Stessa
+   firma di GalaStage3D, cosi' lo scambio e' una riga sola e la 3D resta nel file finche' non e' chiaro
+   che nessuno la rimpiange. Nessun WebGL, nessun modello, nessun asset: solo DOM e CSS. */
+function GalaScena2D({beat,heroWins,avatarId=0,seed=7,act=0}){
+  const b=beat|0, vinto=!!heroWins&&b>=3;
+  /* i fasci di luce si spostano a ogni atto: il palco non e' una fotografia */
+  const _fasci=React.useMemo(()=>{const a=[];const s0=(seed|0)+(act|0)*37;
+    for(let i=0;i<3;i++){const h=((s0+i*97)%40)-20;a.push({x:22+i*28+h*0.25,d:(3.4+((s0+i*13)%9)/10).toFixed(2),o:i===1?0.30:0.20});}
+    return a;},[seed,act]);
+  const _cor=React.useMemo(()=>{const c=["#d4a017","#fde68a","#ffffff","#b45309"];const a=[];
+    for(let i=0;i<22;i++)a.push({x:(i*41)%100,d:(2.4+((i*17)%14)/10).toFixed(2),r:(-((i*23)%36)/10).toFixed(2),c:c[i%c.length],w:4+((i*5)%4)});
+    return a;},[]);
+  return(
+    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",
+      background:"radial-gradient(120% 80% at 50% 8%, #2a1d09 0%, #140e06 42%, #07060c 78%)"}}>
+      <style>{"@keyframes cpmGala946Luce{0%{transform:translateX(-6%) scaleY(1)}50%{transform:translateX(6%) scaleY(1.04)}100%{transform:translateX(-6%) scaleY(1)}}@keyframes cpmGala946Cor{0%{transform:translateY(-12vh) rotate(0deg)}100%{transform:translateY(118vh) rotate(400deg)}}"}</style>
+      {/* i tre occhi di bue */}
+      {_fasci.map((f,i)=>(<div key={"f"+i} style={{position:"absolute",top:"-8%",left:f.x+"%",width:"26%",height:"78%",
+        background:"linear-gradient(180deg,rgba(255,228,150,"+f.o+") 0%,rgba(255,228,150,0) 82%)",
+        clipPath:"polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%)",filter:"blur(2px)",
+        animation:"cpmGala946Luce "+f.d+"s ease-in-out infinite",animationDelay:(-i*0.7)+"s"}}/>))}
+      {/* il sipario, due ali */}
+      <div style={{position:"absolute",top:0,bottom:0,left:0,width:"17%",background:"linear-gradient(90deg,#4a0d18 0%,#7a1526 62%,rgba(122,21,38,0) 100%)",opacity:0.88}}/>
+      <div style={{position:"absolute",top:0,bottom:0,right:0,width:"17%",background:"linear-gradient(270deg,#4a0d18 0%,#7a1526 62%,rgba(122,21,38,0) 100%)",opacity:0.88}}/>
+      {/* il palco */}
+      <div style={{position:"absolute",left:0,right:0,bottom:0,height:"26%",
+        background:"linear-gradient(180deg,#23180a 0%,#120c05 100%)",boxShadow:"0 -18px 48px rgba(0,0,0,0.6)"}}/>
+      <div style={{position:"absolute",left:"8%",right:"8%",bottom:"25%",height:2,
+        background:"linear-gradient(90deg,rgba(212,160,23,0) 0%,rgba(212,160,23,0.75) 50%,rgba(212,160,23,0) 100%)"}}/>
+      {/* [difetto della prima stesura, visto nella foto] qui c'era la figura sul palco: finiva DIETRO
+          i bottoni e mezza tagliata. E stava nel posto sbagliato — il viso va accanto al NOME di chi
+          vince, non sul fondale. Ora il palco resta vuoto e i visi stanno sul podio, dove si leggono. */}
+      {vinto&&_cor.map((k,i)=>(<span key={"c"+i} style={{position:"absolute",left:k.x+"%",top:"-6%",width:k.w,height:k.w*1.7,
+        background:k.c,borderRadius:1,animation:"cpmGala946Cor "+k.d+"s linear infinite",animationDelay:k.r+"s"}}/>))}
+    </div>);
+}
 function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0}){
   const ref=React.useRef(null);const st=React.useRef({beat:0,heroWins:false,act:0});
   st.current.beat=beat;st.current.heroWins=!!heroWins;st.current.act=act|0;/* [7.144.0] atto corrente → alternanza presentatori */
@@ -1692,6 +1731,9 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   const _galaRow=(idx,medal,big)=>{const c=_galaTop3[idx];if(!c)return null;const _me=!!c.isPlayer;return(
     <div key={idx} style={{display:"flex",alignItems:"center",gap:10,padding:big?"12px 14px":"9px 12px",borderRadius:RAD.md,marginBottom:6,background:_me?"linear-gradient(135deg,#3b2a07,#5b420c)":"rgba(255,255,255,0.06)",border:`1px solid ${_me?"#d4a017":"rgba(255,255,255,0.12)"}`,animation:"logoIn 0.5s ease-out"}}>
       <span style={{fontSize:big?26:18}}>{medal}</span>
+      {/* [7.946] il viso della libreria SVG accanto al nome: niente CH38, e si riconosce chi e' */}
+      {(()=>{try{return _me?<AvatarSVG id={(player&&player.avatarId)||0} size={big?42:32} border={big}/>
+        :<AvatarSVG seed={c.name||"npc"} size={big?42:32} avStyle="micah"/>;}catch(_e){return null;}})()}
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}</div>
@@ -1702,7 +1744,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {_galaOn&&(
         <div style={{position:"fixed",inset:0,zIndex:9997,background:"radial-gradient(circle at 50% 18%, #1c1408 0%, #07060c 62%)",display:"flex",alignItems:"center",justifyContent:"center",padding:18}}>
           {/* [7.24.0] PALCO 3D dietro il gala (fallback = il gradiente qui sopra se WebGL non parte) — [7.33.0] beat/heroWins per ATTO: luci e coriandoli si riaccendono a ogni premio */}
-          <GalaStage3D beat={galaN} act={galaAct} heroWins={!!(_galaTop3[0]&&_galaTop3[0].isPlayer)} avatarId={player.avatarId||0} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|gala|"+(season||1)):7}/>
+          {(typeof window!=='undefined'&&window.__CPM_NO946)?<GalaStage3D beat={galaN} act={galaAct} heroWins={!!(_galaTop3[0]&&_galaTop3[0].isPlayer)} avatarId={player.avatarId||0} seed={7}/>:null}
+          <GalaScena2D beat={galaN} act={galaAct} heroWins={!!(_galaTop3[0]&&_galaTop3[0].isPlayer)} avatarId={player.avatarId||0} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|gala|"+(season||1)):7}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(7,6,12,0.30) 0%,rgba(7,6,12,0.06) 34%,rgba(7,6,12,0.62) 78%,rgba(7,6,12,0.82) 100%)",pointerEvents:"none"}}/>
           <div style={{maxWidth:420,width:"100%",textAlign:"center",position:"relative"}}>
             <div style={{fontSize:FS.caption,color:"#d4a017",textTransform:"uppercase",letterSpacing:3,marginBottom:6}}>🎩 La notte del Gala · Stagione {season}</div>
