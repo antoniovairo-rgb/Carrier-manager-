@@ -777,6 +777,30 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null,senz
    basta: dopo il ritratto dell'avatar il modello e' in CACHE e non viene piu' richiesto, quindi un
    guardiano che guarda le richieste non distingue «non c'e'» da «c'era gia'». */
 function _corpo948(){try{if(typeof window!=='undefined')window.__CPM_CORPI948=(window.__CPM_CORPI948|0)+1;}catch(_e){}}
+/* [7.949 — IL PULLMAN E' L'ULTIMA CERIMONIA SENZA CH38, e chiude la famiglia che il PO aveva elencato:
+   interviste, premiazioni, cerimonie, pullman scoperto. Stessa regola delle altre tre: scenografia 3D
+   che c'era gia' (bus, strada, folla) senza i corpi, visi della libreria sopra, striscia comune. */
+function ParataScena2D({club,avatarId=0,heroNum=10}){
+  const _squadra=React.useMemo(()=>{const a=[];
+    for(let i=0;i<7;i++)a.push({n:i+2,seme:"parata-"+((club&&club.id)||"x")+"-"+i});
+    return a;},[club]);
+  return(
+    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
+      <div style={{position:"absolute",left:0,right:0,top:"34%",display:"flex",alignItems:"flex-end",
+        justifyContent:"center",gap:6,padding:"0 10px"}}>
+        <div style={{textAlign:"center",filter:"drop-shadow(0 6px 16px rgba(0,0,0,0.6))"}}>
+          {(()=>{try{return <AvatarSVG id={avatarId} size={64} border/>;}catch(_e){return null;}})()}
+          <div style={{marginTop:2,fontSize:FS.caption,fontWeight:900,color:"#fff",
+            textShadow:"0 1px 4px rgba(0,0,0,0.85)"}}>{heroNum||10}</div>
+        </div>
+        {_squadra.map((q,i)=>(<div key={i} style={{textAlign:"center",opacity:0.9,
+          filter:"drop-shadow(0 3px 9px rgba(0,0,0,0.55))"}}>
+          {(()=>{try{return <AvatarSVG seed={q.seme} size={38} avStyle="micah"/>;}catch(_e){return null;}})()}
+        </div>))}
+      </div>
+      <StrisciaScena948 club={club} tono={"#d4a017"}/>
+    </div>);
+}
 function StrisciaScena948({club,tono}){
   const c1=(club&&club.c)||"#8e1f33", c2=(club&&club.c2)||"#f0b33a";
   const nome=(club&&(club.n||club.name))||"Il club";
@@ -1178,7 +1202,13 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
    (cloni footballer, posa ferma + saluto additivo, pattern 7.419); GLB-OFF: omini low-poly.
    Si apre da Fine Stagione quando c'e' scudetto o coppa europea; «Continua» la chiude.
    ════════════════════════════════════════════════════════════════════════ */
-function ParataBus3D({club,euroWin,avatarId=0,heroNum=10}){/* [7.469.0] esposto come `__CPM_PARATA` (test-only, riga sotto la dichiarazione): la parata vive dentro SeasonEndScreen dietro un titolo vinto, quindi per GUARDARLA servirebbe una carriera intera — e «migliora la grafica» non si fa a occhio chiuso. */
+function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
+  /* [7.949 — DIFETTO MIO DELLA 7.948, GIA' SPEDITO E QUI CORRETTO.] La sostituzione che ha aggiunto
+     `!senzaCorpi` alle tre cerimonie ha toccato ANCHE questa, che pero' non aveva quel parametro: alla
+     partenza della parata `senzaCorpi` era una variabile non dichiarata e la scena LANCIAVA. Il guardiano
+     non se n'e' accorto perche' la parata non ne ha uno — vive dietro un titolo vinto, e per vederla
+     servirebbe una carriera intera. Ora il parametro c'e', e serve anche alla richiesta del PO: il
+     pullman e' l'ultima cerimonia che aveva i CH38. *//* [7.469.0] esposto come `__CPM_PARATA` (test-only, riga sotto la dichiarazione): la parata vive dentro SeasonEndScreen dietro un titolo vinto, quindi per GUARDARLA servirebbe una carriera intera — e «migliora la grafica» non si fa a occhio chiuso. */
   /* [7.424.0 direttiva PO «migliorala e consolidala»] SECONDA STESURA. (1) CONSOLIDATA: il bus non
      viaggia piu' nel mondo (il loop da 80u tagliava la scena ogni ~19s con uno scatto visibile dei
      palazzi) — ora il bus resta in scena e IL MONDO GLI SCORRE INCONTRO con periodo modulare 96
@@ -2042,7 +2072,8 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   const[parata423,setParata423]=React.useState(()=>!!(isChampion||euro?.champion));
   if(parata423)return(
     <div style={{position:"fixed",inset:0,zIndex:400}}>
-      <ParataBus3D club={club} euroWin={!!euro?.champion} avatarId={player?.avatarId||0} heroNum={player?.jerseyNum||10}/>
+      <ParataBus3D club={club} euroWin={!!euro?.champion} avatarId={player?.avatarId||0} heroNum={player?.jerseyNum||10} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO949)}/>
+      <ParataScena2D club={club} avatarId={player?.avatarId||0} heroNum={player?.jerseyNum||10}/>
       <div style={{position:"absolute",top:26,left:0,right:0,textAlign:"center",pointerEvents:"none"}}>
         <div style={{fontSize:11,fontWeight:800,letterSpacing:3,color:"#ffd34d",textShadow:"0 2px 10px rgba(0,0,0,0.8)"}}>🚌 LA PARATA</div>
         <div style={{fontSize:22,fontWeight:900,color:"#fff",textShadow:"0 2px 12px rgba(0,0,0,0.85)",marginTop:4}}>{euro?.champion?"CAMPIONI D'EUROPA!":"CAMPIONI!"}</div>
