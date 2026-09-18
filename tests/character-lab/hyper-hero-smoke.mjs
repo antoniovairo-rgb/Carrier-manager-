@@ -28,7 +28,7 @@ try {
     status: window.__CPM_HYPER_CASUAL_STATUS,
     glbReady: window.__CPM_GLB_READY,
     glbFailure: window.__CPM_GLB_FAIL || null,
-    hyperAssetRequested: performance.getEntriesByType('resource').some(r => /hyper-casual-korward-animated\.glb/.test(r.name)),
+    hyperAssetRequested: performance.getEntriesByType('resource').some(r => /hyper-casual-korward-football\.glb/.test(r.name)),
     heroVisible: (() => { const s = window.__CPM_STATE && window.__CPM_STATE(); return !!(s && s.ok && s.players && s.players.length); })()
   }));
   await forceSituation(page, 0, { settle: 700, choose: true });
