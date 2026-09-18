@@ -12384,7 +12384,7 @@ function ThreeMatchView(props){
         visual.scale.setScalar(_targetHeight/_rawHeight);visual.updateMatrixWorld(true);
         const _groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=_groundBounds.min.y;visual.updateMatrixWorld(true);
         visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-        _fitHyperProportions(visual,.70,_heroAppr);_applyHyperKit(visual,_homeKit,_heroAppr);
+        _fitHyperProportions(visual,.58,_heroAppr);_applyHyperKit(visual,_homeKit,_heroAppr);
         const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
         idle.play();run.play();run.weight=0;mx.setTime(((hero._sd||0)%1)*0.8);
         const _findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
@@ -12405,7 +12405,7 @@ function ThreeMatchView(props){
       /* Mantiene una silhouette adulta: il modello sorgente ha una testa molto
          marcata, quindi riduciamo soltanto il bone della testa senza alterare
          statura, animazioni o il rig. */
-      const _fitHyperProportions=(visual,headRatio=.70,appearance)=>{const build=appearance||{};let head=null;visual.traverse(o=>{if(!head&&o.isBone&&/^head\.x_/i.test(o.name||''))head=o;});if(head){head.scale.multiplyScalar(headRatio);if(!build.bald){const cap=new THREE.Mesh(new THREE.SphereGeometry(38,16,8,0,Math.PI*2,0,1.10),new THREE.MeshLambertMaterial({color:build.hair||'#2e2018'}));cap.name='KorwardHairVariant';cap.position.set(0,20,0);head.add(cap);}}const girth=Math.max(.90,Math.min(1.08,build.girth||1));visual.scale.x*=girth;visual.scale.z*=girth;};
+      const _fitHyperProportions=(visual,headRatio=.58,appearance)=>{const build=appearance||{};let head=null;visual.traverse(o=>{if(!head&&o.isBone&&/^head\.x_/i.test(o.name||''))head=o;});if(head){head.scale.multiplyScalar(headRatio);if(!build.bald){const cap=new THREE.Mesh(new THREE.SphereGeometry(38,16,8,0,Math.PI*2,0,1.10),new THREE.MeshLambertMaterial({color:build.hair||'#2e2018'}));cap.name='KorwardHairVariant';cap.position.set(0,40,0);head.add(cap);}}const girth=Math.max(.90,Math.min(1.08,build.girth||1));visual.scale.x*=girth;visual.scale.z*=girth;};
       const _applyHyperKit=(visual,kit,appearance)=>{const k=kit||{},a=appearance||{},shirt=k.shirt||'#2368d9',shorts=k.shorts||'#f4f6fb',socks=k.socks||shirt,shoes=k.shoes||'#111827',skin=a.skin||'#f7dcc4',hair=a.hair||'#2e2018',hairMix=a.bald?0:.88;
         visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material||Array.isArray(mesh.material))return;const base=mesh.material,key=[base.uuid,shirt,shorts,socks,shoes,skin,hair,hairMix].join('|');let mat=_hyperKitMaterialCache.get(key);
           if(!mat){mat=base.clone();mat.onBeforeCompile=shader=>{shader.uniforms.korwardShirt={value:new THREE.Color(shirt)};shader.uniforms.korwardShorts={value:new THREE.Color(shorts)};shader.uniforms.korwardSocks={value:new THREE.Color(socks)};shader.uniforms.korwardShoes={value:new THREE.Color(shoes)};
@@ -12434,7 +12434,7 @@ function ThreeMatchView(props){
           visual.scale.setScalar(targetHeight/rawHeight);visual.updateMatrixWorld(true);
           const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          _fitHyperProportions(visual,.70,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_applyHyperKit(visual,old._kit||_homeKit,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));
+          _fitHyperProportions(visual,.58,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_applyHyperKit(visual,old._kit||_homeKit,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
           idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
           const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
@@ -12467,7 +12467,7 @@ function ThreeMatchView(props){
           visual.scale.setScalar(targetHeight/height);visual.updateMatrixWorld(true);
           const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          const kit=fig._isCoach?{shirt:'#1f2937',shorts:'#111827',socks:'#111827',shoes:'#111827'}:(fig._home?_homeKit:_awayKit),appr=appearanceFromSeed(hashStr('hyper-bench-'+index));_fitHyperProportions(visual,.76,appr);_applyHyperKit(visual,kit,appr);
+          const kit=fig._isCoach?{shirt:'#1f2937',shorts:'#111827',socks:'#111827',shoes:'#111827'}:(fig._home?_homeKit:_awayKit),appr=appearanceFromSeed(hashStr('hyper-bench-'+index));_fitHyperProportions(visual,.66,appr);_applyHyperKit(visual,kit,appr);
           const mx=new THREE.AnimationMixer(visual),pose=mx.clipAction(seated?_sit:_idle);pose.play();pose.timeScale=seated?0.42:1;
           const findBone=pattern=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
           const armL=findBone(/^arm_stretch\.l_/i),armR=findBone(/^arm_stretch\.r_/i);
@@ -12488,7 +12488,7 @@ function ThreeMatchView(props){
           const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y);visual.scale.setScalar(1.04/height);visual.updateMatrixWorld(true);
           const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          const appr=appearanceFromSeed(hashStr('hyper-child-'+index));_fitHyperProportions(visual,.88,appr);_applyHyperKit(visual,mascot.casa?_awayKit:_homeKit,appr);
+          const appr=appearanceFromSeed(hashStr('hyper-child-'+index));_fitHyperProportions(visual,.80,appr);_applyHyperKit(visual,mascot.casa?_awayKit:_homeKit,appr);
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(idleClip),run=mx.clipAction(runClip);idle.play();run.play();run.weight=0;run.timeScale=0.5;mx.setTime((index%7)*0.12);
           root.visible=false;scene.add(root);mascot.c.visible=false;
           const avatar={root,visualRoot:visual,mx,idle,run,proc:mascot.c,_hyper:true,_hyperChild:true};mascot.glb911=avatar;made.push(avatar);
@@ -12510,7 +12510,7 @@ function ThreeMatchView(props){
           const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y);visual.scale.setScalar(1.72/height);visual.updateMatrixWorld(true);
           const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          const appr=appearanceFromSeed(hashStr('hyper-assistant-'+index));_fitHyperProportions(visual,.70,appr);_applyHyperKit(visual,{shirt:'#f4d43c',shorts:'#1b2638',socks:'#1b2638',shoes:'#111827'},appr);
+          const appr=appearanceFromSeed(hashStr('hyper-assistant-'+index));_fitHyperProportions(visual,.58,appr);_applyHyperKit(visual,{shirt:'#f4d43c',shorts:'#1b2638',socks:'#1b2638',shoes:'#111827'},appr);
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(idleClip);idle.play();mx.setTime(index*.18);
           const flag=new THREE.Group(),pole=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.52,5),new THREE.MeshLambertMaterial({color:0x303845}));
           pole.position.y=.26;flag.add(pole);const cloth=new THREE.Mesh(new THREE.PlaneGeometry(.28,.18),new THREE.MeshBasicMaterial({color:0xffb020,side:THREE.DoubleSide}));cloth.position.set(.14,.43,0);flag.add(cloth);flag.position.set(index?-.34:.34,1.02,.05);root.add(flag);
