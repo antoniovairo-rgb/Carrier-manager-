@@ -12370,6 +12370,14 @@ function ThreeMatchView(props){
       const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull;
       const _hyperHero=_hyperMode==='hero'||_hyperIntro;
       try{window.__CPM_HYPER_CASUAL_STATUS=_hyperHero?'loading':'off';window.__CPM_HYPER_INTRO_POLICY=_hyperIntro?{field:'hyper',offFieldCH38:false}:null;}catch(_e){}
+      /* Le proporzioni del volto e della testa sono integrate nei GLB corretti.
+         Qui scegliamo una variante reale dell'asset, lasciando invariati rig e clip. */
+      const _cloneHyperVisual=(pkg,variantKey)=>{
+        const variants=(pkg&&Array.isArray(pkg._variants)&&pkg._variants.length?pkg._variants:[pkg]).filter(candidate=>candidate&&candidate.scene);
+        const seed=Number.isFinite(variantKey)?variantKey:hashStr(String(variantKey||'hyper'));
+        const source=variants[Math.abs(seed|0)%variants.length]||pkg;
+        return (THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(source.scene):source.scene.clone(true);
+      };
       const _replaceHeroWithHyper=(pkg)=>{
         const _clip=(name)=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
         const _tackleClip=_clip('slide-tackle')||_clip('tackle'),_catchClip=_clip('gk-high-catch')||_clip('gk-catch');
@@ -12377,7 +12385,7 @@ function ThreeMatchView(props){
         const _legacyIndex=glbAvatars.findIndex(a=>a&&a.proc===hero),_legacy=glbAvatars[_legacyIndex];
         if(_legacyIndex<0||!_legacy)throw new Error('Legacy Hero visual is unavailable');
         const root=new THREE.Group();
-        const visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+        const visual=_cloneHyperVisual(pkg,hashStr('hyper-hero'));
         root.add(visual);visual.updateMatrixWorld(true);
         const _rawBounds=new THREE.Box3().setFromObject(visual),_rawHeight=Math.max(0.1,_rawBounds.max.y-_rawBounds.min.y);
         const _targetHeight=_heroAppr.height||1.9;
@@ -12402,9 +12410,8 @@ function ThreeMatchView(props){
          has one baked texture; this masks only torso, shorts, socks and boots
          from bind-space coordinates, preserving face and hair details. */
       const _hyperKitMaterialCache=new Map();
-      /* Mantiene una silhouette adulta: il modello sorgente ha una testa molto
-         marcata, quindi riduciamo soltanto il bone della testa senza alterare
-         statura, animazioni o il rig. */
+      /* Le proporzioni della testa appartengono al GLB corretto. Qui restano
+         soltanto piccole variazioni di corporatura per i diversi giocatori. */
       const _applyHyperBuild=(visual,appearance)=>{const build=appearance||{};const girth=Math.max(.90,Math.min(1.08,build.girth||1));visual.scale.x*=girth;visual.scale.z*=girth;};
       const _applyHyperKit=(visual,kit,appearance)=>{const k=kit||{},a=appearance||{},shirt=k.shirt||'#2368d9',shorts=k.shorts||'#f4f6fb',socks=k.socks||shirt,shoes=k.shoes||'#111827',skin=a.skin||'#f7dcc4',hair=a.hair||'#2e2018',hairMix=a.bald?0:.88;
         visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material||Array.isArray(mesh.material))return;const base=mesh.material,key=[base.uuid,shirt,shorts,socks,shoes,skin,hair,hairMix].join('|');let mat=_hyperKitMaterialCache.get(key);
@@ -12427,7 +12434,7 @@ function ThreeMatchView(props){
         const _next=_legacy.map((old,index)=>{
           if(!old||!old.root||!old.proc)throw new Error('Legacy intro avatar is incomplete');
           const root=new THREE.Group();
-          const visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+          const visual=_cloneHyperVisual(pkg,hashStr('hyper-lineup-'+(old.proc._sd||index)));
           root.add(visual);visual.updateMatrixWorld(true);
           const rawBounds=new THREE.Box3().setFromObject(visual),rawHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y);
           const targetHeight=old._h||(index===0?_heroAppr.height:1.8)||1.8;
@@ -12461,7 +12468,7 @@ function ThreeMatchView(props){
         const made=[];
         benchFigs.forEach((fig,index)=>{if(!fig)return;
           const seated=!fig._isCoach,root=new THREE.Group();
-          const visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+          const visual=_cloneHyperVisual(pkg,hashStr('hyper-bench-'+index));
           root.add(visual);visual.updateMatrixWorld(true);
           const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y),targetHeight=seated?1.62:(fig._isCoach?1.78:1.70);
           visual.scale.setScalar(targetHeight/height);visual.updateMatrixWorld(true);
@@ -12483,7 +12490,7 @@ function ThreeMatchView(props){
         const idleClip=_clip('idle'),runClip=_clip('jog');if(!idleClip||!runClip)throw new Error('Hyper Casual child clips are unavailable');
         const made=[];
         mascots.forEach((mascot,index)=>{if(!mascot||!mascot.c)return;
-          const root=new THREE.Group(),visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+          const root=new THREE.Group(),visual=_cloneHyperVisual(pkg,hashStr('hyper-child-'+index));
           root.add(visual);visual.updateMatrixWorld(true);
           const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y);visual.scale.setScalar(1.04/height);visual.updateMatrixWorld(true);
           const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
@@ -12505,7 +12512,7 @@ function ThreeMatchView(props){
         const made=[];
         assistants.forEach((marker,index)=>{if(!marker)return;
           marker.traverse(o=>{if(o.isMesh)o.visible=false;});
-          const root=new THREE.Group(),visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+          const root=new THREE.Group(),visual=_cloneHyperVisual(pkg,hashStr('hyper-assistant-'+index));
           root.add(visual);visual.updateMatrixWorld(true);
           const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y);visual.scale.setScalar(1.72/height);visual.updateMatrixWorld(true);
           const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
@@ -12520,7 +12527,11 @@ function ThreeMatchView(props){
         try{window.__CPM_HYPER_ASSISTANTS={avatars:made.length,legacyVisible:0};}catch(_e){}
         return made;
       };      if(_hyperHero){
-        loadGLB('./assets/hyper-casual-korward-football.glb').then(pkg=>{
+        const _hyperAssetUrls=['./assets/hyper-casual-korward-football.glb','./assets/hyper-casual-korward-football-brown.glb','./assets/hyper-casual-korward-football-black.glb','./assets/hyper-casual-korward-football-red.glb'];
+        Promise.allSettled(_hyperAssetUrls.map(url=>loadGLB(url))).then(results=>{
+          const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
+          if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');
+          pkg._variants=packages;
           try{window.__CPM_HYPER_ANIMATIONS=(pkg.animations||[]).map(c=>c&&c.name).filter(Boolean);}catch(_e){}
           if(_hyperIntro)_replaceIntroLineupWithHyper(pkg);else _replaceHeroWithHyper(pkg);
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
