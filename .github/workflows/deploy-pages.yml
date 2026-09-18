@@ -2,11 +2,12 @@ name: Deploy to GitHub Pages
 
 # Deploy DURABILE di GitHub Pages via Actions (sostituisce il deploy "legacy da branch",
 # che aveva smesso di auto-buildare i push su main → produzione bloccata su una versione vecchia).
-# Pubblica il contenuto statico (CARRIER-MANAGER-AV.html + asset di root) ad ogni push su main.
+# Pubblica il contenuto statico (CARRIER-MANAGER-AV.html + asset di root) ad ogni push su main
+# e sul branch POC, per consentire il collaudo da telefono via Internet.
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'poc/marioprada-character-system']
   workflow_dispatch: {}
 
 permissions:
