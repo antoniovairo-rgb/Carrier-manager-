@@ -1,0 +1,219 @@
+{
+  "format": "FBX Binary",
+  "options": [
+    "Without Skin",
+    "In Place when offered"
+  ],
+  "outfield": [
+    {
+      "asset": "dribble",
+      "search": "Forward Jog Dribbling Soccer Ball",
+      "aliases": [
+        "Dribble",
+        "Soccer Dribble"
+      ]
+    },
+    {
+      "asset": "pass",
+      "search": "Soccer Pass"
+    },
+    {
+      "asset": "cross",
+      "search": "Soccer Cross"
+    },
+    {
+      "asset": "running",
+      "search": "Running"
+    },
+    {
+      "asset": "running-to-turn",
+      "search": "Running To Turn",
+      "aliases": [
+        "Running To Turn"
+      ]
+    },
+    {
+      "asset": "change-direction",
+      "search": "Change Direction"
+    },
+    {
+      "asset": "run-look-back",
+      "search": "Run Look Back"
+    },
+    {
+      "asset": "look-over-shoulder",
+      "search": "Look Over Shoulder"
+    },
+    {
+      "asset": "jogging",
+      "search": "Jogging",
+      "aliases": [
+        "Jog Forward"
+      ]
+    },
+    {
+      "asset": "walk",
+      "search": "Standard Walk"
+    },
+    {
+      "asset": "crouch-to-stand",
+      "search": "Crouch To Stand"
+    },
+    {
+      "asset": "opening",
+      "search": "Opening",
+      "aliases": [
+        "Opening"
+      ]
+    }
+  ],
+  "defence": [
+    {
+      "asset": "slide-tackle",
+      "search": "Soccer Sliding Tackle",
+      "aliases": [
+        "Soccer Tackle"
+      ]
+    },
+    {
+      "asset": "standing-tackle",
+      "search": "Standing Melee Attack"
+    },
+    {
+      "asset": "shoulder-challenge",
+      "search": "Body Check"
+    },
+    {
+      "asset": "marking-shuffle",
+      "search": "Defensive Shuffle"
+    },
+    {
+      "asset": "intercept",
+      "search": "Soccer Interception"
+    },
+    {
+      "asset": "shot-block",
+      "search": "Block"
+    },
+    {
+      "asset": "recovery-run",
+      "search": "Sprint"
+    }
+  ],
+  "reactions": [
+    {
+      "asset": "missed-chance",
+      "search": "Disappointed"
+    },
+    {
+      "asset": "celebrate",
+      "search": "Soccer Celebration"
+    },
+    {
+      "asset": "capoeira-celebration",
+      "search": "Capoeira"
+    }
+  ],
+  "bench": [
+    {
+      "asset": "sit-idle",
+      "search": "Sitting Idle"
+    },
+    {
+      "asset": "sit-talking",
+      "search": "Sitting Talking"
+    },
+    {
+      "asset": "sit-pointing",
+      "search": "Sitting And Pointing"
+    },
+    {
+      "asset": "sit-clap",
+      "search": "Sitting Clap",
+      "aliases": [
+        "Cheering While Sitting"
+      ]
+    },
+    {
+      "asset": "sit-to-stand",
+      "search": "Sit To Stand"
+    },
+    {
+      "asset": "coach-point",
+      "search": "Pointing",
+      "aliases": [
+        "Pointing Gesture"
+      ]
+    },
+    {
+      "asset": "coach-yell",
+      "search": "Yelling"
+    },
+    {
+      "asset": "coach-talk",
+      "search": "Standing Talking"
+    },
+    {
+      "asset": "coach-clap",
+      "search": "Clapping"
+    }
+  ],
+  "goalkeeper": [
+    {
+      "asset": "gk-ready",
+      "search": "Goalkeeper Idle",
+      "aliases": [
+        "Goalkeeper Idle"
+      ]
+    },
+    {
+      "asset": "gk-high-catch",
+      "search": "Goalkeeper Catch",
+      "aliases": [
+        "Football Catch"
+      ]
+    },
+    {
+      "asset": "gk-low-catch",
+      "search": "Goalkeeper Catch Low"
+    },
+    {
+      "asset": "gk-dive-left",
+      "search": "Goalkeeper Dive Left"
+    },
+    {
+      "asset": "gk-dive-right",
+      "search": "Goalkeeper Dive Right"
+    },
+    {
+      "asset": "gk-parry-left",
+      "search": "Goalkeeper Parry Left"
+    },
+    {
+      "asset": "gk-parry-right",
+      "search": "Goalkeeper Parry Right"
+    },
+    {
+      "asset": "gk-rush-out",
+      "search": "Goalkeeper Rush Out"
+    },
+    {
+      "asset": "gk-get-up",
+      "search": "Get Up"
+    },
+    {
+      "asset": "gk-goal-kick",
+      "search": "Goalkeeper Goal Kick",
+      "aliases": [
+        "Goalkeeper Drop Kick"
+      ]
+    },
+    {
+      "asset": "gk-throw",
+      "search": "Goalkeeper Throw",
+      "aliases": [
+        "Goalkeeper Overhand Throw"
+      ]
+    }
+  ]
+}

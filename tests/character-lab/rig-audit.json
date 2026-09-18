@@ -1,0 +1,2088 @@
+[
+  {
+    "source": "C:\\Users\\a.vairo\\Downloads\\hyper_casual_cartoon_character_soccer_player.glb",
+    "sha256": "2a7c60b6a5c9465e085fdfcc8d1a10a7a738968164e266200f60eb19826f8908",
+    "animations": 0,
+    "meshCount": 1,
+    "skinCount": 1,
+    "materialCount": 1,
+    "materials": [
+      {
+        "name": "Footballer",
+        "alphaMode": "OPAQUE",
+        "doubleSided": true,
+        "pbr": {
+          "baseColorTexture": {
+            "index": 0
+          },
+          "metallicFactor": 0.0
+        },
+        "normalTexture": null,
+        "emissiveTexture": null
+      }
+    ],
+    "textureCount": 1,
+    "images": [
+      {
+        "name": null,
+        "mimeType": "image/png",
+        "width": 2048,
+        "height": 2048,
+        "mode": "RGB",
+        "encodedBytes": 1758473,
+        "estimatedRGBABytes": 16777216,
+        "alphaExtrema": null
+      }
+    ],
+    "primitives": [
+      {
+        "meshNode": 6,
+        "vertexCount": 3514,
+        "triangles": 5072,
+        "jointCount": 60,
+        "jointNames": [
+          "thigh_twist.l_06",
+          "root.x_00",
+          "spine_01.x_013",
+          "thigh_stretch.l_01",
+          "thigh_twist.r_012",
+          "spine_03.x_015",
+          "neck.x_016",
+          "shoulder.l_039",
+          "head.x_017",
+          "arm_twist.l_059",
+          "spine_02.x_014",
+          "arm_stretch.l_040",
+          "c_thumb1.l_043",
+          "hand.l_042",
+          "forearm_twist.l_058",
+          "c_pinky1.l_046",
+          "c_ring1.l_049",
+          "c_pinky3.l_048",
+          "c_pinky2.l_047",
+          "c_ring2.l_050",
+          "c_middle1.l_052",
+          "c_index1.l_055",
+          "c_index3.l_057",
+          "c_index2.l_056",
+          "c_thumb2.l_044",
+          "c_thumb3.l_045",
+          "c_middle2.l_053",
+          "c_middle3.l_054",
+          "c_ring3.l_051",
+          "toes_01.l_04",
+          "foot.l_03",
+          "leg_twist.l_05",
+          "leg_stretch.l_02",
+          "thigh_stretch.r_07",
+          "shoulder.r_018",
+          "arm_twist.r_038",
+          "arm_stretch.r_019",
+          "c_thumb1.r_022",
+          "hand.r_021",
+          "forearm_twist.r_037",
+          "c_pinky1.r_025",
+          "c_ring1.r_028",
+          "c_ring2.r_029",
+          "c_pinky2.r_026",
+          "c_pinky3.r_027",
+          "c_middle1.r_031",
+          "c_index1.r_034",
+          "c_index3.r_036",
+          "c_index2.r_035",
+          "c_thumb2.r_023",
+          "c_thumb3.r_024",
+          "c_middle2.r_032",
+          "c_middle3.r_033",
+          "c_ring3.r_030",
+          "toes_01.r_010",
+          "foot.r_09",
+          "leg_twist.r_011",
+          "leg_stretch.r_08",
+          "forearm_stretch.l_041",
+          "forearm_stretch.r_020"
+        ],
+        "maxBindIdentityError": 1.3745415975581203,
+        "maxBindRelativeToMeshError": 1.3745415975581203,
+        "weightSumMaxError": 1.7881393432617188e-07,
+        "zeroWeightVertices": 0,
+        "negativeWeights": 0,
+        "outOfRangeJoints": 0,
+        "localPositionBounds": {
+          "min": [
+            -84.6847152709961,
+            -1.1209641570530948e-06,
+            -49.55656051635742
+          ],
+          "max": [
+            84.68470764160156,
+            210.39051818847656,
+            40.952823638916016
+          ],
+          "size": [
+            169.36941528320312,
+            210.39051818847656,
+            90.50938415527344
+          ]
+        },
+        "unskinnedWorldBounds": {
+          "min": [
+            -84.6847152709961,
+            -49.556560516357386,
+            -210.39051818847656
+          ],
+          "max": [
+            84.68470764160156,
+            40.95282363891606,
+            1.1209641599690422e-06
+          ],
+          "size": [
+            169.36942291259766,
+            90.50938415527344,
+            210.39051930944072
+          ]
+        },
+        "skinnedWorldBounds": {
+          "min": [
+            -0.4773499120884532,
+            -0.16159668814091144,
+            -0.45944245343547035
+          ],
+          "max": [
+            0.47734325110402515,
+            0.7298542947555828,
+            0.4427301802136438
+          ],
+          "size": [
+            0.9546931631924783,
+            0.8914509828964943,
+            0.9021726336491142
+          ]
+        },
+        "maxSkinDisplacement": 210.9777686566951,
+        "anatomicalGroups": {
+          "torso": {
+            "joints": [
+              "root.x_00",
+              "spine_01.x_013",
+              "spine_03.x_015",
+              "spine_02.x_014"
+            ],
+            "dominantVertexCount": 228,
+            "totalInfluence": 241.3121337890625,
+            "weightedCenter": [
+              5.4420171699639306e-05,
+              0.04329696663051169,
+              -0.017189769888437317
+            ],
+            "dominantBounds": {
+              "min": [
+                -0.2474343309655314,
+                -0.01882869851860923,
+                -0.21761187365675386
+              ],
+              "max": [
+                0.24709373271804916,
+                0.14097622688698913,
+                0.2111903078856031
+              ],
+              "size": [
+                0.4945280636835806,
+                0.15980492540559837,
+                0.42880218154235694
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                -28.292781829833984,
+                -24.035594940185533,
+                -113.74132537841797
+              ],
+              "max": [
+                28.292781829833984,
+                20.48901748657228,
+                -50.167579650878906
+              ],
+              "size": [
+                56.58556365966797,
+                44.52461242675781,
+                63.57374572753906
+              ]
+            }
+          },
+          "head": {
+            "joints": [
+              "neck.x_016",
+              "head.x_017"
+            ],
+            "dominantVertexCount": 1045,
+            "totalInfluence": 1056.35595703125,
+            "weightedCenter": [
+              0.00020485877764768568,
+              0.2662864332401838,
+              0.06673049680068456
+            ],
+            "dominantBounds": {
+              "min": [
+                -0.4773499120884532,
+                -0.16159668814091144,
+                -0.45944245343547035
+              ],
+              "max": [
+                0.47734325110402515,
+                0.7298542947555828,
+                0.4427301802136438
+              ],
+              "size": [
+                0.9546931631924783,
+                0.8914509828964943,
+                0.9021726336491142
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                -47.73466491699219,
+                -49.556560516357386,
+                -210.39051818847656
+              ],
+              "max": [
+                47.73466491699219,
+                40.95282363891606,
+                -113.6818618774414
+              ],
+              "size": [
+                95.46932983398438,
+                90.50938415527344,
+                96.70865631103516
+              ]
+            }
+          },
+          "leftHand": {
+            "joints": [
+              "c_thumb1.l_043",
+              "hand.l_042",
+              "c_pinky1.l_046",
+              "c_ring1.l_049",
+              "c_pinky3.l_048",
+              "c_pinky2.l_047",
+              "c_ring2.l_050",
+              "c_middle1.l_052",
+              "c_index1.l_055",
+              "c_index3.l_057",
+              "c_index2.l_056",
+              "c_thumb2.l_044",
+              "c_thumb3.l_045",
+              "c_middle2.l_053",
+              "c_middle3.l_054",
+              "c_ring3.l_051"
+            ],
+            "dominantVertexCount": 437,
+            "totalInfluence": 437.3249816894531,
+            "weightedCenter": [
+              -0.015107670442946189,
+              0.053735013727620774,
+              -0.001304990678654743
+            ],
+            "dominantBounds": {
+              "min": [
+                -0.11589102003563514,
+                0.008785966379783112,
+                -0.06328128947490823
+              ],
+              "max": [
+                0.07512588364343287,
+                0.15166430346727883,
+                0.0728515699045777
+              ],
+              "size": [
+                0.191016903679068,
+                0.14287833708749573,
+                0.13613285937948594
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                60.513423919677734,
+                -8.704223632812484,
+                -79.9893798828125
+              ],
+              "max": [
+                84.68470764160156,
+                21.128196716308608,
+                -49.79926681518555
+              ],
+              "size": [
+                24.171283721923828,
+                29.832420349121094,
+                30.190113067626953
+              ]
+            }
+          },
+          "rightHand": {
+            "joints": [
+              "c_thumb1.r_022",
+              "hand.r_021",
+              "c_pinky1.r_025",
+              "c_ring1.r_028",
+              "c_ring2.r_029",
+              "c_pinky2.r_026",
+              "c_pinky3.r_027",
+              "c_middle1.r_031",
+              "c_index1.r_034",
+              "c_index3.r_036",
+              "c_index2.r_035",
+              "c_thumb2.r_023",
+              "c_thumb3.r_024",
+              "c_middle2.r_032",
+              "c_middle3.r_033",
+              "c_ring3.r_030"
+            ],
+            "dominantVertexCount": 436,
+            "totalInfluence": 436.96026611328125,
+            "weightedCenter": [
+              0.015090984529025096,
+              0.054929380937106316,
+              -0.0012274269765591523
+            ],
+            "dominantBounds": {
+              "min": [
+                -0.07561778762031787,
+                0.008066804856671297,
+                -0.06329625078712629
+              ],
+              "max": [
+                0.11589100057425716,
+                0.1500571005136408,
+                0.0728812198871105
+              ],
+              "size": [
+                0.19150878819457504,
+                0.1419902956569695,
+                0.1361774706742368
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                -84.6847152709961,
+                -8.704222679138168,
+                -79.98937225341797
+              ],
+              "max": [
+                -60.5134162902832,
+                21.128202438354506,
+                -49.79927062988281
+              ],
+              "size": [
+                24.17129898071289,
+                29.832425117492676,
+                30.190101623535156
+              ]
+            }
+          },
+          "leftFoot": {
+            "joints": [
+              "toes_01.l_04",
+              "foot.l_03"
+            ],
+            "dominantVertexCount": 176,
+            "totalInfluence": 169.93386840820312,
+            "weightedCenter": [
+              0.008532801398860939,
+              0.07448280288164609,
+              0.00032466581375158177
+            ],
+            "dominantBounds": {
+              "min": [
+                -0.07140352291007145,
+                -0.07240768445345762,
+                -0.06769874711965201
+              ],
+              "max": [
+                0.08423707141261497,
+                0.12819724223545392,
+                0.057617724021538204
+              ],
+              "size": [
+                0.1556405943226864,
+                0.20060492668891156,
+                0.1253164711411902
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                5.009850025177002,
+                -17.733675003051754,
+                -13.556214332580565
+              ],
+              "max": [
+                23.61067771911621,
+                13.221266746520996,
+                4.041839958573455e-07
+              ],
+              "size": [
+                18.60082769393921,
+                30.95494174957275,
+                13.556214736764561
+              ]
+            }
+          },
+          "rightFoot": {
+            "joints": [
+              "toes_01.r_010",
+              "foot.r_09"
+            ],
+            "dominantVertexCount": 180,
+            "totalInfluence": 171.4386444091797,
+            "weightedCenter": [
+              -0.008651695426163187,
+              0.07401205542157635,
+              0.0005847965343258286
+            ],
+            "dominantBounds": {
+              "min": [
+                -0.08445224408930212,
+                -0.07240766297341078,
+                -0.06769871340202888
+              ],
+              "max": [
+                0.0723062952478082,
+                0.12789559676265455,
+                0.05666265784389726
+              ],
+              "size": [
+                0.15675853933711031,
+                0.20030325973606533,
+                0.12436137124592614
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                -23.61067771911621,
+                -17.73367309570312,
+                -13.556214332580565
+              ],
+              "max": [
+                -5.0098490715026855,
+                13.221266746520996,
+                1.1209641599690422e-06
+              ],
+              "size": [
+                18.600828647613525,
+                30.954939842224118,
+                13.556215453544725
+              ]
+            }
+          }
+        },
+        "anatomicalHeuristics": {
+          "allRequiredGroupsHaveDominantVertices": true,
+          "headAboveTorsoAboveFeet": false,
+          "handsOnOppositeSides": true,
+          "feetOnOppositeSides": true,
+          "footMinimumHeightDifferenceFraction": 2.409560060009964e-08,
+          "finiteSkinnedPositions": true,
+          "limitation": "Heuristics from authored skin weights; these detect gross collapse/order errors, not visual quality, topology correctness or animation deformation."
+        },
+        "jointPositionBounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "size": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "jointNodesWithoutTRSOrMatrix": 60,
+        "nodes": [
+          {
+            "index": 0,
+            "name": "Sketchfab_model",
+            "parent": null,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 1,
+            "name": "cc2c9a631b40444aab3457a880231022.fbx",
+            "parent": 0,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 2,
+            "name": "RootNode",
+            "parent": 1,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 3,
+            "name": "root",
+            "parent": 2,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 4,
+            "name": "Object_4",
+            "parent": 3,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 5,
+            "name": "Object_5",
+            "parent": 4,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 6,
+            "name": "Object_6",
+            "parent": 0,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 7,
+            "name": "root.x_00",
+            "parent": 4,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 8,
+            "name": "spine_01.x_013",
+            "parent": 7,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 9,
+            "name": "spine_02.x_014",
+            "parent": 8,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 10,
+            "name": "spine_03.x_015",
+            "parent": 9,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 11,
+            "name": "neck.x_016",
+            "parent": 10,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 12,
+            "name": "head.x_017",
+            "parent": 11,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 13,
+            "name": "shoulder.l_039",
+            "parent": 10,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 14,
+            "name": "arm_stretch.l_040",
+            "parent": 13,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 15,
+            "name": "arm_twist.l_059",
+            "parent": 14,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 16,
+            "name": "forearm_stretch.l_041",
+            "parent": 14,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 17,
+            "name": "forearm_twist.l_058",
+            "parent": 16,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 18,
+            "name": "hand.l_042",
+            "parent": 16,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 19,
+            "name": "c_index1.l_055",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 20,
+            "name": "c_index2.l_056",
+            "parent": 19,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 21,
+            "name": "c_index3.l_057",
+            "parent": 20,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 22,
+            "name": "c_middle1.l_052",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 23,
+            "name": "c_middle2.l_053",
+            "parent": 22,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 24,
+            "name": "c_middle3.l_054",
+            "parent": 23,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 25,
+            "name": "c_pinky1.l_046",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 26,
+            "name": "c_pinky2.l_047",
+            "parent": 25,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 27,
+            "name": "c_pinky3.l_048",
+            "parent": 26,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 28,
+            "name": "c_ring1.l_049",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 29,
+            "name": "c_ring2.l_050",
+            "parent": 28,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 30,
+            "name": "c_ring3.l_051",
+            "parent": 29,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 31,
+            "name": "c_thumb1.l_043",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 32,
+            "name": "c_thumb2.l_044",
+            "parent": 31,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 33,
+            "name": "c_thumb3.l_045",
+            "parent": 32,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 34,
+            "name": "shoulder.r_018",
+            "parent": 10,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 35,
+            "name": "arm_stretch.r_019",
+            "parent": 34,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 36,
+            "name": "arm_twist.r_038",
+            "parent": 35,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 37,
+            "name": "forearm_stretch.r_020",
+            "parent": 35,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 38,
+            "name": "forearm_twist.r_037",
+            "parent": 37,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 39,
+            "name": "hand.r_021",
+            "parent": 37,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 40,
+            "name": "c_index1.r_034",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 41,
+            "name": "c_index2.r_035",
+            "parent": 40,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 42,
+            "name": "c_index3.r_036",
+            "parent": 41,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 43,
+            "name": "c_middle1.r_031",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 44,
+            "name": "c_middle2.r_032",
+            "parent": 43,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 45,
+            "name": "c_middle3.r_033",
+            "parent": 44,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 46,
+            "name": "c_pinky1.r_025",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 47,
+            "name": "c_pinky2.r_026",
+            "parent": 46,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 48,
+            "name": "c_pinky3.r_027",
+            "parent": 47,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 49,
+            "name": "c_ring1.r_028",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 50,
+            "name": "c_ring2.r_029",
+            "parent": 49,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 51,
+            "name": "c_ring3.r_030",
+            "parent": 50,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 52,
+            "name": "c_thumb1.r_022",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 53,
+            "name": "c_thumb2.r_023",
+            "parent": 52,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 54,
+            "name": "c_thumb3.r_024",
+            "parent": 53,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 55,
+            "name": "thigh_stretch.l_01",
+            "parent": 7,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 56,
+            "name": "leg_stretch.l_02",
+            "parent": 55,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 57,
+            "name": "foot.l_03",
+            "parent": 56,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 58,
+            "name": "toes_01.l_04",
+            "parent": 57,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 59,
+            "name": "leg_twist.l_05",
+            "parent": 56,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 60,
+            "name": "thigh_twist.l_06",
+            "parent": 55,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 61,
+            "name": "thigh_stretch.r_07",
+            "parent": 7,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 62,
+            "name": "leg_stretch.r_08",
+            "parent": 61,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 63,
+            "name": "foot.r_09",
+            "parent": 62,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 64,
+            "name": "toes_01.r_010",
+            "parent": 63,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 65,
+            "name": "leg_twist.r_011",
+            "parent": 62,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 66,
+            "name": "thigh_twist.r_012",
+            "parent": 61,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "C:\\Users\\a.vairo\\Downloads\\Korward_HyperCasual_Mobile_Character_Lab_V22.html",
+    "sha256": "5af6f8ea775ab999a7b5457c40a15daa95c31e137f3e437714dc4f0391d6daa3",
+    "animations": 0,
+    "meshCount": 1,
+    "skinCount": 1,
+    "materialCount": 1,
+    "materials": [
+      {
+        "name": "Footballer",
+        "alphaMode": "OPAQUE",
+        "doubleSided": true,
+        "pbr": {
+          "baseColorTexture": {
+            "index": 0
+          },
+          "metallicFactor": 0.0
+        },
+        "normalTexture": null,
+        "emissiveTexture": null
+      }
+    ],
+    "textureCount": 1,
+    "images": [
+      {
+        "name": null,
+        "mimeType": "image/png",
+        "width": 2048,
+        "height": 2048,
+        "mode": "RGB",
+        "encodedBytes": 1758473,
+        "estimatedRGBABytes": 16777216,
+        "alphaExtrema": null
+      }
+    ],
+    "primitives": [
+      {
+        "meshNode": 6,
+        "vertexCount": 3514,
+        "triangles": 5072,
+        "jointCount": 60,
+        "jointNames": [
+          "thigh_twist.l_06",
+          "root.x_00",
+          "spine_01.x_013",
+          "thigh_stretch.l_01",
+          "thigh_twist.r_012",
+          "spine_03.x_015",
+          "neck.x_016",
+          "shoulder.l_039",
+          "head.x_017",
+          "arm_twist.l_059",
+          "spine_02.x_014",
+          "arm_stretch.l_040",
+          "c_thumb1.l_043",
+          "hand.l_042",
+          "forearm_twist.l_058",
+          "c_pinky1.l_046",
+          "c_ring1.l_049",
+          "c_pinky3.l_048",
+          "c_pinky2.l_047",
+          "c_ring2.l_050",
+          "c_middle1.l_052",
+          "c_index1.l_055",
+          "c_index3.l_057",
+          "c_index2.l_056",
+          "c_thumb2.l_044",
+          "c_thumb3.l_045",
+          "c_middle2.l_053",
+          "c_middle3.l_054",
+          "c_ring3.l_051",
+          "toes_01.l_04",
+          "foot.l_03",
+          "leg_twist.l_05",
+          "leg_stretch.l_02",
+          "thigh_stretch.r_07",
+          "shoulder.r_018",
+          "arm_twist.r_038",
+          "arm_stretch.r_019",
+          "c_thumb1.r_022",
+          "hand.r_021",
+          "forearm_twist.r_037",
+          "c_pinky1.r_025",
+          "c_ring1.r_028",
+          "c_ring2.r_029",
+          "c_pinky2.r_026",
+          "c_pinky3.r_027",
+          "c_middle1.r_031",
+          "c_index1.r_034",
+          "c_index3.r_036",
+          "c_index2.r_035",
+          "c_thumb2.r_023",
+          "c_thumb3.r_024",
+          "c_middle2.r_032",
+          "c_middle3.r_033",
+          "c_ring3.r_030",
+          "toes_01.r_010",
+          "foot.r_09",
+          "leg_twist.r_011",
+          "leg_stretch.r_08",
+          "forearm_stretch.l_041",
+          "forearm_stretch.r_020"
+        ],
+        "maxBindIdentityError": 8.526512829121202e-14,
+        "maxBindRelativeToMeshError": 8.526512829121202e-14,
+        "weightSumMaxError": 1.7881393432617188e-07,
+        "zeroWeightVertices": 0,
+        "negativeWeights": 0,
+        "outOfRangeJoints": 0,
+        "localPositionBounds": {
+          "min": [
+            -84.6847152709961,
+            -1.1209641570530948e-06,
+            -49.55656051635742
+          ],
+          "max": [
+            84.68470764160156,
+            210.39051818847656,
+            40.952823638916016
+          ],
+          "size": [
+            169.36941528320312,
+            210.39051818847656,
+            90.50938415527344
+          ]
+        },
+        "unskinnedWorldBounds": {
+          "min": [
+            -84.6847152709961,
+            -1.1209641570530948e-06,
+            -49.55656051635742
+          ],
+          "max": [
+            84.68470764160156,
+            210.39051818847656,
+            40.952823638916016
+          ],
+          "size": [
+            169.36942291259766,
+            210.39051930944072,
+            90.50938415527344
+          ]
+        },
+        "skinnedWorldBounds": {
+          "min": [
+            -84.68471779479727,
+            -1.1209641855123153e-06,
+            -49.556560516357436
+          ],
+          "max": [
+            84.68470858802691,
+            210.39051818847656,
+            40.95282363891602
+          ],
+          "size": [
+            169.36942638282417,
+            210.39051930944075,
+            90.50938415527347
+          ]
+        },
+        "maxSkinDisplacement": 1.0237004764350054e-05,
+        "anatomicalGroups": {
+          "torso": {
+            "joints": [
+              "root.x_00",
+              "spine_01.x_013",
+              "spine_03.x_015",
+              "spine_02.x_014"
+            ],
+            "dominantVertexCount": 228,
+            "totalInfluence": 241.3121337890625,
+            "weightedCenter": [
+              -0.04863474229483924,
+              72.02274500720067,
+              -4.091538347316171
+            ],
+            "dominantBounds": {
+              "min": [
+                -28.292783094619892,
+                50.16757647376935,
+                -24.035593597092017
+              ],
+              "max": [
+                28.292781619036333,
+                113.74132707329579,
+                20.489017181262113
+              ],
+              "size": [
+                56.585564713656225,
+                63.57375059952644,
+                44.52461077835413
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                -28.292781829833984,
+                50.167579650878906,
+                -24.035594940185547
+              ],
+              "max": [
+                28.292781829833984,
+                113.74132537841797,
+                20.489017486572266
+              ],
+              "size": [
+                56.58556365966797,
+                63.57374572753906,
+                44.52461242675781
+              ]
+            }
+          },
+          "head": {
+            "joints": [
+              "neck.x_016",
+              "head.x_017"
+            ],
+            "dominantVertexCount": 1045,
+            "totalInfluence": 1056.35595703125,
+            "weightedCenter": [
+              0.004052471490755244,
+              162.74966638385348,
+              2.9823739654110675
+            ],
+            "dominantBounds": {
+              "min": [
+                -47.73466491699218,
+                113.68186357143315,
+                -49.556560516357436
+              ],
+              "max": [
+                47.73466491699218,
+                210.39051818847656,
+                40.95282363891602
+              ],
+              "size": [
+                95.46932983398436,
+                96.70865461704341,
+                90.50938415527347
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                -47.73466491699219,
+                113.6818618774414,
+                -49.55656051635742
+              ],
+              "max": [
+                47.73466491699219,
+                210.39051818847656,
+                40.952823638916016
+              ],
+              "size": [
+                95.46932983398438,
+                96.70865631103516,
+                90.50938415527344
+              ]
+            }
+          },
+          "leftHand": {
+            "joints": [
+              "c_thumb1.l_043",
+              "hand.l_042",
+              "c_pinky1.l_046",
+              "c_ring1.l_049",
+              "c_pinky3.l_048",
+              "c_pinky2.l_047",
+              "c_ring2.l_050",
+              "c_middle1.l_052",
+              "c_index1.l_055",
+              "c_index3.l_057",
+              "c_index2.l_056",
+              "c_thumb2.l_044",
+              "c_thumb3.l_045",
+              "c_middle2.l_053",
+              "c_middle3.l_054",
+              "c_ring3.l_051"
+            ],
+            "dominantVertexCount": 437,
+            "totalInfluence": 437.3249816894531,
+            "weightedCenter": [
+              75.17895966841182,
+              61.33243138949678,
+              5.279631913202664
+            ],
+            "dominantBounds": {
+              "min": [
+                60.513423919677734,
+                49.79926867035276,
+                -8.704224021921624
+              ],
+              "max": [
+                84.68470858802691,
+                79.98937749894318,
+                21.128196716308597
+              ],
+              "size": [
+                24.171284668349173,
+                30.190108828590425,
+                29.83242073823022
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                60.513423919677734,
+                49.79926681518555,
+                -8.7042236328125
+              ],
+              "max": [
+                84.68470764160156,
+                79.9893798828125,
+                21.128196716308594
+              ],
+              "size": [
+                24.171283721923828,
+                30.190113067626953,
+                29.832420349121094
+              ]
+            }
+          },
+          "rightHand": {
+            "joints": [
+              "c_thumb1.r_022",
+              "hand.r_021",
+              "c_pinky1.r_025",
+              "c_ring1.r_028",
+              "c_ring2.r_029",
+              "c_pinky2.r_026",
+              "c_pinky3.r_027",
+              "c_middle1.r_031",
+              "c_index1.r_034",
+              "c_index3.r_036",
+              "c_index2.r_035",
+              "c_thumb2.r_023",
+              "c_thumb3.r_024",
+              "c_middle2.r_032",
+              "c_middle3.r_033",
+              "c_ring3.r_030"
+            ],
+            "dominantVertexCount": 436,
+            "totalInfluence": 436.96026611328125,
+            "weightedCenter": [
+              -75.19254007187534,
+              61.32608024457975,
+              5.290456350739284
+            ],
+            "dominantBounds": {
+              "min": [
+                -84.68471779479727,
+                49.79927248505015,
+                -8.704222808841216
+              ],
+              "max": [
+                -60.51341629028321,
+                79.98937225341794,
+                21.12820243835448
+              ],
+              "size": [
+                24.171301504514055,
+                30.190099768367787,
+                29.832425247195697
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                -84.6847152709961,
+                49.79927062988281,
+                -8.704222679138184
+              ],
+              "max": [
+                -60.5134162902832,
+                79.98937225341797,
+                21.128202438354492
+              ],
+              "size": [
+                24.17129898071289,
+                30.190101623535156,
+                29.832425117492676
+              ]
+            }
+          },
+          "leftFoot": {
+            "joints": [
+              "toes_01.l_04",
+              "foot.l_03"
+            ],
+            "dominantVertexCount": 176,
+            "totalInfluence": 169.93386840820312,
+            "weightedCenter": [
+              14.33106474254723,
+              6.3695662500871,
+              0.3648891757715149
+            ],
+            "dominantBounds": {
+              "min": [
+                5.009850137155878,
+                -4.041840185040419e-07,
+                -17.73367599399807
+              ],
+              "max": [
+                23.610676663636667,
+                13.55621443358223,
+                13.221266746520994
+              ],
+              "size": [
+                18.600826526480787,
+                13.556214837766248,
+                30.954942740519066
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                5.009850025177002,
+                -4.041839929413982e-07,
+                -17.733675003051758
+              ],
+              "max": [
+                23.61067771911621,
+                13.556214332580566,
+                13.221266746520996
+              ],
+              "size": [
+                18.60082769393921,
+                13.55621473676456,
+                30.954941749572754
+              ]
+            }
+          },
+          "rightFoot": {
+            "joints": [
+              "toes_01.r_010",
+              "foot.r_09"
+            ],
+            "dominantVertexCount": 180,
+            "totalInfluence": 171.4386444091797,
+            "weightedCenter": [
+              -14.335211018283943,
+              6.373623729094363,
+              0.24735753459597992
+            ],
+            "dominantBounds": {
+              "min": [
+                -23.61067833481261,
+                -1.1209641855123153e-06,
+                -17.733672649777333
+              ],
+              "max": [
+                -5.009849146155252,
+                13.556214130577228,
+                13.221266746521001
+              ],
+              "size": [
+                18.600829188657357,
+                13.556215251541413,
+                30.954939396298336
+              ]
+            },
+            "sourceDominantBounds": {
+              "min": [
+                -23.61067771911621,
+                -1.1209641570530948e-06,
+                -17.733673095703125
+              ],
+              "max": [
+                -5.0098490715026855,
+                13.556214332580566,
+                13.221266746520996
+              ],
+              "size": [
+                18.600828647613525,
+                13.556215453544723,
+                30.95493984222412
+              ]
+            }
+          }
+        },
+        "anatomicalHeuristics": {
+          "allRequiredGroupsHaveDominantVertices": true,
+          "headAboveTorsoAboveFeet": true,
+          "handsOnOppositeSides": true,
+          "feetOnOppositeSides": true,
+          "footMinimumHeightDifferenceFraction": 3.4069033593383485e-09,
+          "finiteSkinnedPositions": true,
+          "limitation": "Heuristics from authored skin weights; these detect gross collapse/order errors, not visual quality, topology correctness or animation deformation."
+        },
+        "jointPositionBounds": {
+          "min": [
+            -82.17380915486335,
+            5.853112616042919,
+            -9.599380582555074
+          ],
+          "max": [
+            82.17381474935586,
+            137.50221199478358,
+            16.900045201124595
+          ],
+          "size": [
+            164.3476239042192,
+            131.64909937874066,
+            26.49942578367967
+          ]
+        },
+        "jointNodesWithoutTRSOrMatrix": 0,
+        "nodes": [
+          {
+            "index": 0,
+            "name": "Sketchfab_model",
+            "parent": null,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 1,
+            "name": "cc2c9a631b40444aab3457a880231022.fbx",
+            "parent": 0,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 2,
+            "name": "RootNode",
+            "parent": 1,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 3,
+            "name": "root",
+            "parent": 2,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 4,
+            "name": "Object_4",
+            "parent": 3,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 5,
+            "name": "Object_5",
+            "parent": 4,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 6,
+            "name": "Object_6",
+            "parent": 0,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 7,
+            "name": "root.x_00",
+            "parent": 4,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 8,
+            "name": "spine_01.x_013",
+            "parent": 7,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 9,
+            "name": "spine_02.x_014",
+            "parent": 8,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 10,
+            "name": "spine_03.x_015",
+            "parent": 9,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 11,
+            "name": "neck.x_016",
+            "parent": 10,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 12,
+            "name": "head.x_017",
+            "parent": 11,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 13,
+            "name": "shoulder.l_039",
+            "parent": 10,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 14,
+            "name": "arm_stretch.l_040",
+            "parent": 13,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 15,
+            "name": "arm_twist.l_059",
+            "parent": 14,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 16,
+            "name": "forearm_stretch.l_041",
+            "parent": 14,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 17,
+            "name": "forearm_twist.l_058",
+            "parent": 16,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 18,
+            "name": "hand.l_042",
+            "parent": 16,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 19,
+            "name": "c_index1.l_055",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 20,
+            "name": "c_index2.l_056",
+            "parent": 19,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 21,
+            "name": "c_index3.l_057",
+            "parent": 20,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 22,
+            "name": "c_middle1.l_052",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 23,
+            "name": "c_middle2.l_053",
+            "parent": 22,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 24,
+            "name": "c_middle3.l_054",
+            "parent": 23,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 25,
+            "name": "c_pinky1.l_046",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 26,
+            "name": "c_pinky2.l_047",
+            "parent": 25,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 27,
+            "name": "c_pinky3.l_048",
+            "parent": 26,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 28,
+            "name": "c_ring1.l_049",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 29,
+            "name": "c_ring2.l_050",
+            "parent": 28,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 30,
+            "name": "c_ring3.l_051",
+            "parent": 29,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 31,
+            "name": "c_thumb1.l_043",
+            "parent": 18,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 32,
+            "name": "c_thumb2.l_044",
+            "parent": 31,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 33,
+            "name": "c_thumb3.l_045",
+            "parent": 32,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 34,
+            "name": "shoulder.r_018",
+            "parent": 10,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 35,
+            "name": "arm_stretch.r_019",
+            "parent": 34,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 36,
+            "name": "arm_twist.r_038",
+            "parent": 35,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 37,
+            "name": "forearm_stretch.r_020",
+            "parent": 35,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 38,
+            "name": "forearm_twist.r_037",
+            "parent": 37,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 39,
+            "name": "hand.r_021",
+            "parent": 37,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 40,
+            "name": "c_index1.r_034",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 41,
+            "name": "c_index2.r_035",
+            "parent": 40,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 42,
+            "name": "c_index3.r_036",
+            "parent": 41,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 43,
+            "name": "c_middle1.r_031",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 44,
+            "name": "c_middle2.r_032",
+            "parent": 43,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 45,
+            "name": "c_middle3.r_033",
+            "parent": 44,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 46,
+            "name": "c_pinky1.r_025",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 47,
+            "name": "c_pinky2.r_026",
+            "parent": 46,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 48,
+            "name": "c_pinky3.r_027",
+            "parent": 47,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 49,
+            "name": "c_ring1.r_028",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 50,
+            "name": "c_ring2.r_029",
+            "parent": 49,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 51,
+            "name": "c_ring3.r_030",
+            "parent": 50,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 52,
+            "name": "c_thumb1.r_022",
+            "parent": 39,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 53,
+            "name": "c_thumb2.r_023",
+            "parent": 52,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 54,
+            "name": "c_thumb3.r_024",
+            "parent": 53,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 55,
+            "name": "thigh_stretch.l_01",
+            "parent": 7,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 56,
+            "name": "leg_stretch.l_02",
+            "parent": 55,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 57,
+            "name": "foot.l_03",
+            "parent": 56,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 58,
+            "name": "toes_01.l_04",
+            "parent": 57,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 59,
+            "name": "leg_twist.l_05",
+            "parent": 56,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 60,
+            "name": "thigh_twist.l_06",
+            "parent": 55,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 61,
+            "name": "thigh_stretch.r_07",
+            "parent": 7,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 62,
+            "name": "leg_stretch.r_08",
+            "parent": 61,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 63,
+            "name": "foot.r_09",
+            "parent": 62,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 64,
+            "name": "toes_01.r_010",
+            "parent": 63,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 65,
+            "name": "leg_twist.r_011",
+            "parent": 62,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          },
+          {
+            "index": 66,
+            "name": "thigh_twist.r_012",
+            "parent": 61,
+            "translation": null,
+            "rotation": null,
+            "scale": null
+          }
+        ]
+      }
+    ]
+  }
+]

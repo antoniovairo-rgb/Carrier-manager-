@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "playwright": "1.58.2",
+    "three": "0.128.0"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node serve.cjs",
+    "start:game": "node serve-game.cjs",
+    "start:lan": "node serve-game.cjs --lan",
+    "retarget": "node retarget.cjs",
+    "test": "node baseline.cjs index.html validation && node gates.cjs",
+    "test:hero": "node hyper-hero-smoke.mjs",
+    "import:mixamo": "node import-mixamo.cjs",
+    "test:lineup": "node hyper-lineup-smoke.mjs",
+    "test:full": "node hyper-full-smoke.mjs"
+  },
+  "devDependencies": {
+    "fbx2gltf": "^0.9.7-p1"
+  }
+}

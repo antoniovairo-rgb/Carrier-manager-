@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Korward — Mobile Character Lab V22 • RIG REBUILT</title>
+<style>
+*{box-sizing:border-box}
+html,body,#app{margin:0;width:100%;height:100%;overflow:hidden;background:#06101f}
+body{font-family:Arial,sans-serif;color:#eef4ff}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#hud{position:fixed;top:max(10px,env(safe-area-inset-top));left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
+.box{background:rgba(5,16,33,.90);border:1px solid #3d5d8c;border-radius:18px;padding:11px 13px;box-shadow:0 8px 25px #0005}
+#brand{font-size:16px;font-weight:800;letter-spacing:.06em}
+#sub{font-size:12px;color:#9eabc0;margin-top:3px}
+#stats{font:12px/1.45 monospace;min-width:130px}
+#empty{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;color:#9eabc0;pointer-events:none}
+#empty b{display:block;color:#fff;font-size:18px;margin-bottom:7px}
+#controls{position:fixed;left:50%;bottom:max(64px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(94vw,520px);max-height:55vh;overflow:auto;background:rgba(5,16,33,.95);border:1px solid #3d5d8c;border-radius:20px;padding:11px;box-shadow:0 10px 35px #0007}
+#controls.hidden{display:none}
+#filePick{width:100%;min-height:48px;border:1px dashed #6684b0;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+#file{display:none}
+#filename{font:11px monospace;color:#9eabc0;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+button{min-height:45px;border-radius:13px;border:1px solid #49699a;background:#172c4f;color:#fff;font-weight:700;font-size:14px}
+button:active{background:#274978;transform:scale(.98)}
+#toggle{position:fixed;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:10;border-radius:999px;padding:8px 22px;min-height:42px}
+#toggle.hidden{display:none}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="hud">
+  <div class="box"><div id="brand">KORWARD</div><div id="sub">Character Lab · POC</div></div>
+  <div class="box" id="stats">FPS: —<br>Players: 0<br>Triangles: 0<br>Skinned: 0</div>
+</div>
+<div id="empty"><b>HERO NON CARICATO</b>Premi “CARICA GLB” per selezionare il personaggio</div>
+
+<div id="controls">
+  <label id="filePick" for="file">GLB HYPER CASUAL • RIG RICOSTRUITO</label>
+  <input id="file" type="file" accept=".glb,.gltf,model/gltf-binary,model/gltf+json">
+  <div id="filename">Nessun file selezionato</div>
+  <div class="row">
+    <button id="hero">SOLO HERO</button>
+    <button id="team">HERO + 21</button>
+  </div>
+  <div class="row">
+    <button id="frame">INQUADRA HERO</button>
+    <button id="reset">RESET</button>
+  </div>
+  <div class="row">
+    <button id="minus">ZOOM −</button>
+    <button id="plus">ZOOM +</button>
+  </div>
+  <div class="row"><select id="animation" aria-label="Animazione" style="min-height:45px;font-size:16px"><option value="rest">Bind pose</option><option value="idle">Idle</option><option value="jog">Corsa</option><option value="jog-back">Corsa indietro</option><option value="strafe-left">Cambio direzione sin.</option><option value="strafe-right">Cambio direzione des.</option><option value="receive">Stop / controllo</option><option value="kick">Tiro</option><option value="penalty">Rigore</option><option value="header">Colpo di testa</option><option value="volley">Rovesciata / sforbiciata</option><option value="tackle">Tackle</option><option value="throwin">Rimessa</option></select><button id="pause">PAUSA</button></div>
+</div>
+<button id="toggle">NASCONDI CONTROLLI</button>
+
+<script src="./node_modules/three/build/three.min.js"></script>
+<script src="./node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+<script src="./node_modules/three/examples/js/utils/SkeletonUtils.js"></script>
+<script>
+const EMBEDDED = "";
+</script>
+<script>
+(()=> {
+const app=document.getElementById('app'), stats=document.getElementById('stats'), controls=document.getElementById('controls');
+const toggle=document.getElementById('toggle'), empty=document.getElementById('empty'), file=document.getElementById('file');
+const filename=document.getElementById('filename');
+
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x06101f);
+const camera=new THREE.PerspectiveCamera(32,1,.01,100);
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5)); renderer.setSize(innerWidth,innerHeight,false); renderer.outputEncoding=THREE.sRGBEncoding; app.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xe8f1ff,0x24384f,1));
+const key=new THREE.DirectionalLight(0xffffff,1); key.position.set(3,6,5); scene.add(key);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(60,60),new THREE.MeshStandardMaterial({color:0x19334a,roughness:.95}));
+floor.rotation.x=-Math.PI/2; floor.position.y=-.01; scene.add(floor);
+
+const frameMetrics=[];
+let clips=[],mixers=[],activeAnimation="rest",paused=false,previousTime=null;
+let source=null, players=[], center=new THREE.Vector3(), distance=2, yaw=0, pitch=.04;
+let baseDistance=2, fingerDist=0, fingerStart=2, dragging=false,lastX=0,lastY=0;
+let fpsFrames=0,fpsTime=performance.now();
+
+function clear(){mixers.forEach(m=>{m.stopAllAction();m.uncacheRoot(m.getRoot())});mixers=[];players.forEach(p=>{scene.remove(p);p.traverse(o=>{if(o.isSkinnedMesh)o.skeleton.boneTexture?.dispose()})});players=[]}
+function clone(){return THREE.SkeletonUtils.clone(source)}
+function boneBounds(root){
+  root.updateMatrixWorld(true);
+  let minY=Infinity,maxY=-Infinity,minX=Infinity,maxX=-Infinity,minZ=Infinity,maxZ=-Infinity;
+  const v=new THREE.Vector3();
+  root.traverse(o=>{
+    if(!o.isBone)return;
+    o.getWorldPosition(v);
+    minY=Math.min(minY,v.y); maxY=Math.max(maxY,v.y);
+    minX=Math.min(minX,v.x); maxX=Math.max(maxX,v.x);
+    minZ=Math.min(minZ,v.z); maxZ=Math.max(maxZ,v.z);
+  });
+  if(!isFinite(minY)||maxY-minY<.01){
+    const b=new THREE.Box3().setFromObject(root); return {b,h:Math.max(.1,b.max.y-b.min.y)};
+  }
+  const b=new THREE.Box3(new THREE.Vector3(minX,minY,minZ),new THREE.Vector3(maxX,maxY,maxZ));
+  return {b,h:maxY-minY};
+}
+function normalizeHero(p){
+  p.updateMatrixWorld(true);
+  const b=new THREE.Box3().setFromObject(p);
+  const h=Math.max(.1,b.max.y-b.min.y);
+  p.scale.multiplyScalar(1.80/h);
+  p.updateMatrixWorld(true);
+
+  // Put the actual feet/body minimum on the pitch plane.
+  const g=new THREE.Box3().setFromObject(p);
+  if(isFinite(g.min.y)) p.position.y -= g.min.y;
+  p.updateMatrixWorld(true);
+
+  // Avoid stale skinned-mesh bounds causing accidental disappearance.
+  p.traverse(o=>{ if(o.isMesh) o.frustumCulled=false; });
+}
+function frameHero(){
+  pitch=.04; yaw=0;
+  fitPlayers(players.slice(0,1));
+}
+function fitPlayers(targets){
+  if(!targets.length)return;
+  const b=new THREE.Box3();targets.forEach(p=>b.expandByObject(p));
+  center.copy(b.getCenter(new THREE.Vector3()));
+  camera.aspect=innerWidth/innerHeight;camera.fov=35;camera.updateProjectionMatrix();
+  distance=1;updateCamera();camera.updateMatrixWorld(true);
+  const rotation=new THREE.Matrix4().extractRotation(camera.matrixWorld).invert();
+  const tanV=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+  // Reserve HUD and touch-toggle space. Solve every box corner in camera space;
+  // real aspect and depth matter, especially for a portrait roster.
+  const usableY=.70,usableX=.90;
+  let required=0;
+  for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z]){
+    const v=new THREE.Vector3(x,y,z).sub(center).applyMatrix4(rotation);
+    required=Math.max(required,v.z+Math.abs(v.x)/(tanV*camera.aspect*usableX),v.z+Math.abs(v.y)/(tanV*usableY));
+  }
+  baseDistance=distance=required;updateCamera();
+}
+function updateCamera(){
+  if(!players.length)return;
+  const cp=Math.cos(pitch),sp=Math.sin(pitch);
+  camera.position.set(center.x+Math.sin(yaw)*cp*distance,center.y+sp*distance,center.z+Math.cos(yaw)*cp*distance);
+  camera.lookAt(center); camera.updateProjectionMatrix();
+}
+function setPlayers(n){
+  if(!source)return;
+  clear();
+
+  const hero=clone();
+  hero.visible=true;
+  normalizeHero(hero);
+  hero.position.x=0;
+  hero.position.z=0;
+  hero.updateMatrixWorld(true);
+  scene.add(hero);
+  players.push(hero);
+
+  if(n===22){
+    for(let i=1;i<22;i++){
+      const p=clone();
+      p.visible=true;
+      p.scale.copy(hero.scale);
+      p.traverse(o=>{ if(o.isMesh) o.frustumCulled=false; });
+
+      const col=(i-1)%3;
+      const row=Math.floor((i-1)/3);
+      const size=new THREE.Box3().setFromObject(hero).getSize(new THREE.Vector3());
+      p.position.set((col-1)*size.x*1.15,hero.position.y,-(row+1)*size.y*1.55);
+      p.updateMatrixWorld(true);
+      scene.add(p);
+      players.push(p);
+    }
+
+    const bodySize=new THREE.Box3().setFromObject(hero).getSize(new THREE.Vector3());
+    pitch=Math.atan((bodySize.y+bodySize.z)/(bodySize.y*1.55));yaw=0;
+    fitPlayers(players);
+
+  }else{
+    frameHero();
+  }
+
+  mixers=players.map(p=>new THREE.AnimationMixer(p));
+  setAnimation(activeAnimation);
+  empty.style.display='none';
+  updateStats();
+}
+function setAnimation(name){
+  activeAnimation=name;
+  mixers.forEach(m=>{m.stopAllAction();m.getRoot().traverse(o=>{if(o.isSkinnedMesh)o.skeleton.pose()});
+    const clip=clips.find(c=>c.name===name);if(clip){const action=m.clipAction(clip);if(['kick','header'].includes(name)){action.setLoop(THREE.LoopOnce,1);action.clampWhenFinished=true}action.play()}m.update(0);
+  });
+}
+document.getElementById('animation').onchange=e=>setAnimation(e.target.value);
+document.getElementById('pause').onclick=()=>{paused=!paused;document.getElementById('pause').textContent=paused?'RIPRENDI':'PAUSA'};
+function updateStats(){
+  let tri=0,sk=0,bones=0;
+  players.forEach(p=>p.traverse(o=>{
+    if(o.isSkinnedMesh){sk++;bones=o.skeleton.bones.length}
+    if(o.isMesh&&o.geometry)tri+=o.geometry.index?o.geometry.index.count/3:(o.geometry.attributes.position?.count||0)/3;
+  }));
+  stats.innerHTML=`FPS: <span id="fps">—</span><br>Draw calls: <span id="calls">?</span><br>Players: ${players.length}<br>Triangles: ${Math.round(tri).toLocaleString('it-IT')}<br>Skinned: ${sk}<br>Bones/player: ${bones}`;
+}
+async function loadEmbedded(){
+  filename.textContent='hyper_casual_cartoon_character_soccer_player.glb';
+  empty.innerHTML='<b>CARICAMENTO HERO…</b>Modello Hyper Casual incorporato';
+  try{
+    const response=await fetch('./assets/animated.glb');
+    if(!response.ok)throw new Error('Asset non disponibile');
+    const bin=await response.arrayBuffer();
+    new THREE.GLTFLoader().parse(bin,"",g=>{
+      clear();
+      source=g.scene;clips=g.animations;
+      source.visible=false;
+      setPlayers(1);
+      controls.classList.add('hidden');
+      toggle.textContent='MOSTRA CONTROLLI';
+      filename.textContent='hyper_casual_cartoon_character_soccer_player.glb';
+    },e=>{
+      filename.textContent='ERRORE GLB';
+      empty.innerHTML='<b>ERRORE GLB</b>'+((e&&e.message)||'Impossibile leggere il modello');
+      console.error(e);
+    });
+  }catch(e){
+    filename.textContent='ERRORE GLB';
+    empty.innerHTML='<b>ERRORE GLB</b>'+e.message;
+    console.error(e);
+  }
+}
+hero.onclick= ()=>setPlayers(1); team.onclick=()=>setPlayers(22); frame.onclick=frameHero; reset.onclick=frameHero;
+minus.onclick=()=>{distance=Math.min(distance*1.2,baseDistance*4);updateCamera()};
+plus.onclick=()=>{distance=Math.max(distance/1.35,baseDistance*.15);updateCamera()};
+toggle.onclick=()=>{controls.classList.toggle('hidden');toggle.textContent=controls.classList.contains('hidden')?'MOSTRA CONTROLLI':'NASCONDI CONTROLLI'};
+
+renderer.domElement.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId)});
+renderer.domElement.addEventListener('pointermove',e=>{
+ if(!dragging||fingerDist>0)return; yaw-=(e.clientX-lastX)*.008; pitch+=(e.clientY-lastY)*.006; pitch=THREE.MathUtils.clamp(pitch,-1.1,1.1); lastX=e.clientX;lastY=e.clientY;updateCamera();
+});
+renderer.domElement.addEventListener('pointerup',()=>dragging=false);
+renderer.domElement.addEventListener('pointercancel',()=>dragging=false);
+renderer.domElement.addEventListener('touchstart',e=>{
+ if(e.touches.length===2){fingerDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);fingerStart=distance}
+},{passive:true});
+renderer.domElement.addEventListener('touchmove',e=>{
+ if(e.touches.length===2){e.preventDefault();const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(d>0){distance=THREE.MathUtils.clamp(fingerStart*(fingerDist/d),baseDistance*.15,baseDistance*4);updateCamera()}}
+},{passive:false});
+renderer.domElement.addEventListener('touchend',()=>{fingerDist=0;dragging=false},{passive:true});
+addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight,false);if(players.length)fitPlayers(players)});
+
+function loop(t){
+ requestAnimationFrame(loop); const cpuStart=performance.now(); const dt=previousTime===null?0:Math.min((t-previousTime)/1000,.1);previousTime=t;if(!paused)mixers.forEach(m=>m.update(dt));renderer.render(scene,camera);frameMetrics.push(performance.now()-cpuStart);if(frameMetrics.length>240)frameMetrics.shift(); fpsFrames++;
+ if(t-fpsTime>600){const calls=document.getElementById('calls');if(calls)calls.textContent=renderer.info.render.calls;const el=document.getElementById('fps');if(el)el.textContent=Math.round(fpsFrames*1000/(t-fpsTime));fpsFrames=0;fpsTime=t}
+}
+window.lab={scene,camera,renderer,frameMetrics,get players(){return players},get clips(){return clips},get mixers(){return mixers},setPlayers,frameHero,setAnimation,sample(name,time){paused=true;setAnimation(name);mixers.forEach(m=>m.setTime(time));scene.updateMatrixWorld(true);renderer.render(scene,camera)}};
+requestAnimationFrame(loop); updateStats(); loadEmbedded();
+})();
+</script>
+</body>
+</html>

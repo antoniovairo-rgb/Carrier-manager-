@@ -11,6 +11,7 @@ node_modules
 package-lock.json
 dist/
 tests/visual/out/
+tests/character-lab/evidence/
 # Capacitor: il progetto nativo android/ è build-output riproducibile (nessun codice
 # nativo custom: tutta la config sta in capacitor.config.json). Si rigenera con `npx cap add android`.
 android/
@@ -47,3 +48,7 @@ out/
 _prop.html
 _misura.html
 _visi.html
+
+tests/character-lab/assets/mixamo/import-report.json
+# Clip convertite ma scartate dai controlli di rig: sono solo materiale locale di verifica.
+assets/rejected/

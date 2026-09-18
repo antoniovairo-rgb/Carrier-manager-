@@ -12052,6 +12052,7 @@ function ThreeMatchView(props){
     let glbAvatars=null; // [{root,mx,idle,run,proc,lx,lz}]
     let mascotGlbAvatars=null;/* [7.911.0 — C11] i bambini dell'ingresso, corpi CH38: terza lista accanto a quella del campo e della panchina */
     let benchGlbAvatars=null; // [7.904.0] panchina CH38 alleggerita: {root,mx,idle,proc,isCoach,home,legL,legR,armL,armR} — array SEPARATO da glbAvatars (niente locomozione/gesti/gk: sono comparse ferme), popolato SOLO dopo che il corpo principale ha agganciato
+    let assistantRefGlbAvatars=null; // corpi Hyper degli assistenti: restano figli dei loro marker, che continuano a seguire il gioco.
     // [7.904.0] rotazione DELTA in spazio MONDO composta DOPO il bind — usata sia per costruire la posa
     //   seduta (una volta, all'aggancio) sia per il gesto di esultanza (ogni fotogramma, in piu' sul risultato
     //   del mixer). L'asse LOCALE del bind non è l'asse anatomico (misurato: UpLeg è dominato da ~175° attorno
@@ -12183,7 +12184,7 @@ function ThreeMatchView(props){
       const _loadBody=(u,n)=>loadGLB(u).catch(e=>{if(n<=0)throw e;return new Promise(r=>setTimeout(r,1800)).then(()=>_loadBody(u,n-1));});
       Promise.all([_loadBody((typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&window.__CPM_GLB_URL)||_bodyUrl907,3),/* [D7] gancio test-only: il banco confronta corpi semplificati offline (gltf-transform) senza toccare l'asset · [7.907.0] default = _bodyUrl907 (leggero, salvo __CPM_NO907/preferenza «pieni») */_optGLB('./assets/anim-idle.glb'),_optGLB('./assets/anim-jog.glb'),_optGLB('./assets/anim-kick.glb'),_optGLB('./assets/anim-penalty.glb'),_optGLB('./assets/anim-header.glb'),_optGLB('./assets/anim-tackle.glb'),_optGLB('./assets/anim-volley.glb'),_optGLB('./assets/anim-gk-dive.glb'),_optGLB('./assets/anim-gk-catch.glb'),_optGLB('./assets/anim-gk-block.glb'),_optGLB('./assets/anim-receive.glb'),_optGLB('./assets/anim-throwin.glb'),_optGLB('./assets/anim-jog-back.glb'),_optGLB('./assets/anim-strafe-left.glb'),_optGLB('./assets/anim-strafe-right.glb')]).then(([_cg,_ig,_jg,_kg,_pg,_hg,_tg,_vg,_dg,_cag,_bg,_rcg,_twg,_jbg,_slg,_srg])=>{/* [7.518.0 R3/3] le tre clip di locomozione erano SU DISCO e mai caricate (audit: zero riferimenti) *//* [7.24.1] +anim-throwin: la rimessa (mani sopra la testa) è la POSA dell'alzata di coppa nella cerimonia *//* [6.40.0] +anim-receive per il gesto DRIBBLE (prima dribble/pass = solo locomozione → la sterzata «restava ferma» col GLB) */
       // clip da file separati (Mixamo "without skin") applicate per NOME al rig del personaggio (stesso scheletro mixamorig)
-      const _clip1=g=>(g&&g.animations&&g.animations[0])||null;
+      const _clip1=g=>(g&&g.isAnimationClip&&g)||(g&&g.animations&&g.animations[0])||null;
       const _ci=_clip1(_ig),_cr=_clip1(_jg);
       // 3D-KIT (Step A): kit a tinta unita PER MESH (le mesh Ch38_Shirt/Shorts/Socks/Shoes sono separate nel modello).
       // Maglia/pantaloncini/calzettoni/scarpe = MeshLambert piatto (leggibile a distanza) con floor emissivo (~14% → mai nero pieno di notte).
@@ -12323,13 +12324,13 @@ function ThreeMatchView(props){
          toccato: qui si ricostruiscono solo i MESH, posizioni/logica restano di `proc` (players[].mesh/hero/refMesh),
          mai smesso di esistere durante lo scambio. */
       const _buildAvatars907=(_srcScene)=>{
-        const _list=[_mkA(hero,_homeKit,_heroAppr,_srcScene)];
+        const _list=[_mkA(hero,_homeKit,_heroAppr,_srcScene)];if(_list[0]){_list[0]._team='home';_list[0]._kit=_homeKit;}
         players.forEach((p,pi)=>{const _kit=p.gk?(p.team==='home'?_gkHomeKit:_gkAwayKit):(p.team==='home'?_homeKit:_awayKit);
           const _appr=appearanceFromSeed(hashStr((p.team==='home'?_homeKey:_awayKey)+'_'+pi));
-          _list.push(_mkA(p.mesh,_kit,_appr,_srcScene));});
+          const _playerAv=_mkA(p.mesh,_kit,_appr,_srcScene);if(_playerAv){_playerAv._team=p.team;_playerAv._kit=_kit;_playerAv._isGk=!!p.gk;_list.push(_playerAv);}});
         // #5 UNIFORMITÀ: l'ARBITRO usa lo stesso modello CH38 dei calciatori (kit nero arbitro, aspetto neutro deterministico) → niente più
         //   figura procedurale "diversa" dai giocatori. refMesh (dichiarato più sotto) è disponibile qui perché il .then è async. Costo: +1 skeleton (trascurabile).
-        try{if(refMesh){const _refAv=_mkA(refMesh,{shirt:'#17171b',shorts:'#17171b',socks:'#17171b',shoes:'#0b0b0d'},appearanceFromSeed(hashStr('referee')),_srcScene);if(_refAv){_refAv._isRef=true;_list.push(_refAv);}}}catch(_re){}
+        try{if(refMesh){const _refAv=_mkA(refMesh,{shirt:'#17171b',shorts:'#17171b',socks:'#17171b',shoes:'#0b0b0d'},appearanceFromSeed(hashStr('referee')),_srcScene);if(_refAv){_refAv._isRef=true;_refAv._team='ref';_refAv._kit={shirt:'#17171b',shorts:'#17171b',socks:'#17171b',shoes:'#0b0b0d'};_list.push(_refAv);}}}catch(_re){}
         /* [7.518.0 R3/3 — LA LOCOMOZIONE HA DIREZIONI: audit «movimenti laterali e all'indietro sembrano
            pattinate»] Le clip jog-back/strafe-L/strafe-R erano negli asset e mai montate. Qui si RENDONO
            DISPONIBILI (clip condivise); le AnimationAction si creano PIGRE al primo uso per avatar — niente
@@ -12353,6 +12354,174 @@ function ThreeMatchView(props){
         return _list;
       };
       glbAvatars=_buildAvatars907(_cg.scene);
+      /* [Hyper Casual character POC — Hero phase]
+         The character package is opt-in and replaces only the Hero visual. The
+         procedural Hero continues to own position, facing, ball timeline and
+         all match events; CH38 stays live as fallback until the package and its
+         required locomotion clips have loaded and validated. No match-engine,
+         commentary, career or general UI code is involved.
+         Enable before mounting the match with:
+           window.__CPM_HYPER_CASUAL='hero'
+         Supported values: 'off' (default), 'hero'. Squad replacement is
+         deliberately deferred until kit/number UV masks and GK clips exist. */
+      const _hyperQuery=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
+      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full')?_hyperQuery:'off');
+      const _hyperFull=_hyperMode==='full';
+      const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull;
+      const _hyperHero=_hyperMode==='hero'||_hyperIntro;
+      try{window.__CPM_HYPER_CASUAL_STATUS=_hyperHero?'loading':'off';window.__CPM_HYPER_INTRO_POLICY=_hyperIntro?{field:'hyper',offFieldCH38:false}:null;}catch(_e){}
+      const _replaceHeroWithHyper=(pkg)=>{
+        const _clip=(name)=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
+        const _tackleClip=_clip('slide-tackle')||_clip('tackle'),_catchClip=_clip('gk-high-catch')||_clip('gk-catch');
+        if(!pkg||!pkg.scene||!_clip('idle')||!_clip('jog'))throw new Error('Hyper Casual package is incomplete');
+        const _legacyIndex=glbAvatars.findIndex(a=>a&&a.proc===hero),_legacy=glbAvatars[_legacyIndex];
+        if(_legacyIndex<0||!_legacy)throw new Error('Legacy Hero visual is unavailable');
+        const root=new THREE.Group();
+        const visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+        root.add(visual);visual.updateMatrixWorld(true);
+        const _rawBounds=new THREE.Box3().setFromObject(visual),_rawHeight=Math.max(0.1,_rawBounds.max.y-_rawBounds.min.y);
+        const _targetHeight=_heroAppr.height||1.9;
+        visual.scale.setScalar(_targetHeight/_rawHeight);visual.updateMatrixWorld(true);
+        const _groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=_groundBounds.min.y;visual.updateMatrixWorld(true);
+        visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
+        _applyHyperKit(visual,_homeKit);
+        const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
+        idle.play();run.play();run.weight=0;mx.setTime(((hero._sd||0)%1)*0.8);
+        const _findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
+        const avatar={root,visualRoot:visual,mx,idle,run,proc:hero,lx:hero.position.x,lz:hero.position.z,_h:_targetHeight,_hyper:true,
+          spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^hand\.l_/i),_handR:_findBone(/^hand\.r_/i)};
+        avatar._armB={la:_findBone(/^arm_stretch\.l_/i),lf:_findBone(/^forearm_stretch\.l_/i),ra:_findBone(/^arm_stretch\.r_/i),rf:_findBone(/^forearm_stretch\.r_/i),hl:avatar._handL,hr:avatar._handR};
+        avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
+        _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),catch:_catchClip});
+        root.position.copy(_legacy.root.position);root.rotation.copy(_legacy.root.rotation);scene.add(root);
+        if(_legacy.root.parent)_legacy.root.parent.remove(_legacy.root);glbAvatars[_legacyIndex]=avatar;
+        hero._glbDriven=true;hero.visible=true;hero._procHidden95=false;
+        return avatar;
+      };
+      /* Runtime kit material swap for the Hyper Casual atlas. The original GLB
+         has one baked texture; this masks only torso, shorts, socks and boots
+         from bind-space coordinates, preserving face and hair details. */
+      const _hyperKitMaterialCache=new Map();
+      const _applyHyperKit=(visual,kit)=>{const k=kit||{},shirt=k.shirt||'#2368d9',shorts=k.shorts||'#f4f6fb',socks=k.socks||shirt,shoes=k.shoes||'#111827';
+        visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material||Array.isArray(mesh.material))return;const base=mesh.material,key=[base.uuid,shirt,shorts,socks,shoes].join('|');let mat=_hyperKitMaterialCache.get(key);
+          if(!mat){mat=base.clone();mat.onBeforeCompile=shader=>{shader.uniforms.korwardShirt={value:new THREE.Color(shirt)};shader.uniforms.korwardShorts={value:new THREE.Color(shorts)};shader.uniforms.korwardSocks={value:new THREE.Color(socks)};shader.uniforms.korwardShoes={value:new THREE.Color(shoes)};
+            shader.vertexShader='varying vec3 korwardBindPosition;\n'+shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nkorwardBindPosition=transformed;');
+            shader.fragmentShader='varying vec3 korwardBindPosition;\nuniform vec3 korwardShirt;uniform vec3 korwardShorts;uniform vec3 korwardSocks;uniform vec3 korwardShoes;\n'+shader.fragmentShader.replace('#include <map_fragment>','#include <map_fragment>\nfloat korwardX=abs(korwardBindPosition.x);float korwardY=korwardBindPosition.y;float korwardTorso=smoothstep(74.0,82.0,korwardY)*(1.0-smoothstep(136.0,144.0,korwardY))*(1.0-smoothstep(37.0,47.0,korwardX));float korwardShort=smoothstep(48.0,55.0,korwardY)*(1.0-smoothstep(78.0,86.0,korwardY))*(1.0-smoothstep(34.0,43.0,korwardX));float korwardSock=smoothstep(19.0,25.0,korwardY)*(1.0-smoothstep(51.0,58.0,korwardY))*(1.0-smoothstep(31.0,42.0,korwardX));float korwardBoot=1.0-smoothstep(17.0,24.0,korwardY);diffuseColor.rgb=mix(diffuseColor.rgb,korwardShirt,korwardTorso*0.88);diffuseColor.rgb=mix(diffuseColor.rgb,korwardShorts,korwardShort*0.88);diffuseColor.rgb=mix(diffuseColor.rgb,korwardSocks,korwardSock*0.88);diffuseColor.rgb=mix(diffuseColor.rgb,korwardShoes,korwardBoot*0.82);');};mat.needsUpdate=true;_hyperKitMaterialCache.set(key,mat);}mesh.material=mat;});};      /* Lineup/intro phase.  This deliberately replaces complete avatar roots
+         before the walkout begins instead of toggling bodies during a camera
+         cut: no CH38 root can flash into the entrance shot.  Geometry and
+         materials remain shared by SkeletonUtils clones; only skeletons and
+         AnimationMixers are per-person.  Kit-material variants are the next
+         phase, so this POC mode is explicitly opt-in. */
+      const _replaceIntroLineupWithHyper=(pkg)=>{
+        const _clip=(name)=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
+        const _tackleClip=_clip('slide-tackle')||_clip('tackle'),_catchClip=_clip('gk-high-catch')||_clip('gk-catch');
+        if(!pkg||!pkg.scene||!_clip('idle')||!_clip('jog'))throw new Error('Hyper Casual lineup package is incomplete');
+        const _legacy=glbAvatars&&glbAvatars.slice();
+        if(!_legacy||_legacy.length<22)throw new Error('Legacy intro lineup is unavailable');
+        const _next=_legacy.map((old,index)=>{
+          if(!old||!old.root||!old.proc)throw new Error('Legacy intro avatar is incomplete');
+          const root=new THREE.Group();
+          const visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+          root.add(visual);visual.updateMatrixWorld(true);
+          const rawBounds=new THREE.Box3().setFromObject(visual),rawHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y);
+          const targetHeight=old._h||(index===0?_heroAppr.height:1.8)||1.8;
+          visual.scale.setScalar(targetHeight/rawHeight);visual.updateMatrixWorld(true);
+          const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
+          visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
+          _applyHyperKit(visual,old._kit||_homeKit);
+          const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
+          idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
+          const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
+          const avatar={root,visualRoot:visual,mx,idle,run,proc:old.proc,lx:old.proc.position.x,lz:old.proc.position.z,_h:targetHeight,_hyper:true,_team:old._team||'home',_kit:old._kit||_homeKit,_isGk:!!old._isGk,_isRef:!!old._isRef,
+            spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^hand\.l_/i),_handR:findBone(/^hand\.r_/i)};
+          avatar._armB={la:findBone(/^arm_stretch\.l_/i),lf:findBone(/^forearm_stretch\.l_/i),ra:findBone(/^arm_stretch\.r_/i),rf:findBone(/^forearm_stretch\.r_/i),hl:avatar._handL,hr:avatar._handR};
+          avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
+          _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),dive:_clip('gk-dive'),catch:_catchClip,block:_clip('gk-block')});
+          root.position.copy(old.root.position);root.rotation.copy(old.root.rotation);return avatar;
+        });
+        _legacy.forEach(old=>{if(old&&old.root&&old.root.parent)old.root.parent.remove(old.root);});
+        _next.forEach(avatar=>scene.add(avatar.root));glbAvatars=_next;
+        try{window.__CPM_HYPER_LINEUP={avatars:_next.length,hyper:_next.filter(a=>a&&a._hyper).length,legacyRoots:_legacy.filter(a=>a&&a.root&&a.root.parent).length,home:_next.filter(a=>a&&a._team==='home').length,away:_next.filter(a=>a&&a._team==='away').length,goalkeepers:_next.filter(a=>a&&a._isGk).length,officials:_next.filter(a=>a&&a._isRef).length,kitVariants:new Set(_next.map(a=>{const k=a&&a._kit||{};return [k.shirt,k.shorts,k.socks,k.shoes].join('|');})).size};}catch(_e){}
+        hero._glbDriven=true;hero.visible=true;hero._procHidden95=false;
+        return _next;
+      };
+      /* Full POC: bench and technical area use the Hyper family only when
+         explicitly enabled. Seated people play the verified sit-clap source;
+         no procedural knee rotation is used as a substitute for a real pose. */
+      const _replaceBenchWithHyper=(pkg)=>{
+        if(!_hyperFull||typeof benchFigs==='undefined'||!benchFigs||!benchFigs.length)return [];
+        const _clip=name=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
+        const _sit=_clip('sit-clap'),_idle=_clip('idle');if(!_sit||!_idle)throw new Error('Hyper Casual bench clips are unavailable');
+        const made=[];
+        benchFigs.forEach((fig,index)=>{if(!fig)return;
+          const seated=!fig._isCoach,root=new THREE.Group();
+          const visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+          root.add(visual);visual.updateMatrixWorld(true);
+          const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y),targetHeight=seated?1.62:(fig._isCoach?1.78:1.70);
+          visual.scale.setScalar(targetHeight/height);visual.updateMatrixWorld(true);
+          const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
+          visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
+          const kit=fig._isCoach?{shirt:'#1f2937',shorts:'#111827',socks:'#111827',shoes:'#111827'}:(fig._home?_homeKit:_awayKit);_applyHyperKit(visual,kit);
+          const mx=new THREE.AnimationMixer(visual),pose=mx.clipAction(seated?_sit:_idle);pose.play();pose.timeScale=seated?0.42:1;
+          const findBone=pattern=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
+          const armL=findBone(/^arm_stretch\.l_/i),armR=findBone(/^arm_stretch\.r_/i);
+          root.position.set(fig.position.x,seated?0:0,fig.position.z);root.rotation.y=fig.rotation.y||0;scene.add(root);fig.visible=false;
+          made.push({root,visualRoot:visual,mx,idle:pose,run:null,proc:fig,_hyper:true,_hyperBench:true,_seated904:seated,_isCoach904:!!fig._isCoach,_home904:!!fig._home,_ph904:fig._ph||index,_armBones904:{armL,armR},_armBindQ904:{L:armL&&armL.quaternion.clone(),R:armR&&armR.quaternion.clone()}});
+        });
+        benchGlbAvatars=made;
+        try{window.__CPM_HYPER_BENCH={avatars:made.length,seated:made.filter(a=>a._seated904).length,coaches:made.filter(a=>a._isCoach904).length,legacyVisible:benchFigs.filter(f=>f&&f.visible).length};}catch(_e){}
+        return made;
+      };      const _replaceMascotsWithHyper=(pkg,mascots)=>{
+        if(!_hyperFull||!mascots||!mascots.length)return [];
+        const _clip=name=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
+        const idleClip=_clip('idle'),runClip=_clip('jog');if(!idleClip||!runClip)throw new Error('Hyper Casual child clips are unavailable');
+        const made=[];
+        mascots.forEach((mascot,index)=>{if(!mascot||!mascot.c)return;
+          const root=new THREE.Group(),visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+          root.add(visual);visual.updateMatrixWorld(true);
+          const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y);visual.scale.setScalar(1.04/height);visual.updateMatrixWorld(true);
+          const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
+          visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
+          _applyHyperKit(visual,mascot.casa?_awayKit:_homeKit);
+          let head=null;visual.traverse(o=>{if(!head&&o.isBone&&/^head\.x_/i.test(o.name||''))head=o;});if(head)head.scale.setScalar(1.18);
+          const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(idleClip),run=mx.clipAction(runClip);idle.play();run.play();run.weight=0;run.timeScale=0.5;mx.setTime((index%7)*0.12);
+          root.visible=false;scene.add(root);mascot.c.visible=false;
+          const avatar={root,visualRoot:visual,mx,idle,run,proc:mascot.c,_hyper:true,_hyperChild:true};mascot.glb911=avatar;made.push(avatar);
+        });
+        mascotGlbAvatars=made;
+        try{window.__CPM_HYPER_MASCOTS={avatars:made.length,legacyVisible:mascots.filter(m=>m&&m.c&&m.c.visible).length};}catch(_e){}
+        return made;
+      };
+      /* Gli assistenti restano agganciati ai marker di bordo esistenti: la loro
+         logica di posizione non cambia, sostituiamo esclusivamente la figura. */
+      const _replaceAssistantsWithHyper=(pkg,assistants)=>{
+        if(!_hyperFull||!assistants||assistants.length!==2)return [];
+        const idleClip=(pkg.animations||[]).find(c=>c&&c.name==='idle')||null;if(!pkg||!pkg.scene||!idleClip)throw new Error('Hyper Casual assistant-referee clip is unavailable');
+        const made=[];
+        assistants.forEach((marker,index)=>{if(!marker)return;
+          marker.traverse(o=>{if(o.isMesh)o.visible=false;});
+          const root=new THREE.Group(),visual=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(pkg.scene):pkg.scene.clone(true);
+          root.add(visual);visual.updateMatrixWorld(true);
+          const raw=new THREE.Box3().setFromObject(visual),height=Math.max(0.1,raw.max.y-raw.min.y);visual.scale.setScalar(1.72/height);visual.updateMatrixWorld(true);
+          const grounded=new THREE.Box3().setFromObject(visual);visual.position.y-=grounded.min.y;visual.updateMatrixWorld(true);
+          visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
+          _applyHyperKit(visual,{shirt:'#f4d43c',shorts:'#1b2638',socks:'#1b2638',shoes:'#111827'});
+          const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(idleClip);idle.play();mx.setTime(index*.18);
+          const flag=new THREE.Group(),pole=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.52,5),new THREE.MeshLambertMaterial({color:0x303845}));
+          pole.position.y=.26;flag.add(pole);const cloth=new THREE.Mesh(new THREE.PlaneGeometry(.28,.18),new THREE.MeshBasicMaterial({color:0xffb020,side:THREE.DoubleSide}));cloth.position.set(.14,.43,0);flag.add(cloth);flag.position.set(index?-.34:.34,1.02,.05);root.add(flag);
+          marker.add(root);made.push({root,visualRoot:visual,mx,idle,proc:marker,_hyper:true,_hyperAssistant:true});
+        });
+        assistantRefGlbAvatars=made;
+        try{window.__CPM_HYPER_ASSISTANTS={avatars:made.length,legacyVisible:0};}catch(_e){}
+        return made;
+      };      if(_hyperHero){
+        loadGLB('./assets/hyper-casual-korward-animated.glb').then(pkg=>{
+          try{window.__CPM_HYPER_ANIMATIONS=(pkg.animations||[]).map(c=>c&&c.name).filter(Boolean);}catch(_e){}
+          if(_hyperIntro)_replaceIntroLineupWithHyper(pkg);else _replaceHeroWithHyper(pkg);
+          if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
+          try{window.__CPM_HYPER_CASUAL_STATUS=_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready');}catch(_e){}
+        }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});
+      }
       /* [7.907.0 — D7, TEMPORANEO: interruttore «Corpi: leggeri/pieni» del menu di pausa] scambio A CALDO del
          corpo dei 23 CH38 (eroe+21+arbitro — la panchina C8 non e' toccata, e' un asset/percorso separato).
          Chiamata da src/15-live-match.jsx quando il PO tocca l'interruttore in pausa. Ricostruisce gli avatar
@@ -12388,7 +12557,7 @@ function ThreeMatchView(props){
          __CPM_NO904), o benchFigs non esiste ancora, le 16 comparse procedurali (gia' in scena, _mkBench
          piu' sotto) restano semplicemente VISIBILI — non c'e' nulla da ripristinare, l'hide avviene SOLO
          dentro _mkA quando una comparsa viene davvero convertita. */
-      if(!(typeof window!=='undefined'&&window.__CPM_NO904)){
+      if(!(typeof window!=='undefined'&&window.__CPM_NO904)&&!_hyperIntro){
         loadGLB('./assets/footballer-lite.glb').then(_lg=>{try{/* [7.907.0] file rinominato: e' lo STESSO corpo alleggerito (14.622 triangoli) ora condiviso anche dai 22 in campo — un solo asset, due chiamate */
           if(!_lg||!_lg.scene||typeof benchFigs==='undefined'||!benchFigs||!benchFigs.length)return;
           const _srcSc=_lg.scene;
@@ -12449,7 +12618,7 @@ function ThreeMatchView(props){
              al corpo unito della 7.910 — 44 invece di 154, ed e' il motivo per cui questo passo viene dopo D12.
              Rosso __CPM_NO911: tornano le figure procedurali. Vivono SOLO nella cerimonia, come prima. */
           try{
-            if(!(typeof window!=='undefined'&&window.__CPM_NO911)&&_mascots&&_mascots.length){
+            if(!(typeof window!=='undefined'&&window.__CPM_NO911)&&!_hyperIntro&&_mascots&&_mascots.length){
               const _mg911=[];
               _mascots.forEach((m,mi)=>{
                 const _kit=m.casa?_awayKit:_homeKit;/* divisa avversaria, com'e' sempre stato */
@@ -12809,6 +12978,7 @@ function ThreeMatchView(props){
     // C) Guardalinee — divisa giallo-verde, ai margini del campo
     const linRef1=mkFig(0x9acd32);linRef1.position.set(0,0,-35.5);scene.add(linRef1);
     const linRef2=mkFig(0x9acd32);linRef2.position.set(0,0,35.5);scene.add(linRef2);
+    try{window.__CPM_HYPER_ASSISTANT_LIST=[linRef1,linRef2];if(window.__CPM_HYPER_ASSISTANT_BUILDER)window.__CPM_HYPER_ASSISTANT_BUILDER(window.__CPM_HYPER_ASSISTANT_LIST);}catch(_e){}
     // B) Panchine — 3DV-11: lato TRIBUNA (z=-38, nord) — struttura dugout realistica
     const _hColInt=new THREE.Color(_hCol).getHex(),_aColInt=new THREE.Color(_aCol).getHex();
     const benchFigs=[];
@@ -12839,6 +13009,7 @@ function ThreeMatchView(props){
        AVVERSARIA (com'e' sempre stato), e serve saperlo per vestirlo col kit giusto quando diventa un corpo CH38. */
     const _mkMascot=(pmesh,kitInt,casa)=>{const c=mkFig(kitInt,1.04);c.visible=false;scene.add(c);_mascots.push({c,p:pmesh,casa:!!casa});};
     _homeMeshes.forEach(m=>_mkMascot(m,_aColInt,true));_awayMeshes.forEach(m=>_mkMascot(m,_hColInt,false));
+    try{window.__CPM_HYPER_MASCOT_LIST=_mascots;if(window.__CPM_HYPER_MASCOT_BUILDER)window.__CPM_HYPER_MASCOT_BUILDER(_mascots);}catch(_e){}
 
     // Sprint 3D-G3A / 3DV-8 / 3DV-11: bandiere bicolore animate + striscioni sulle curve
     // 3DV-11: _fez = faccia frontale della tribuna (endZ - endD/2) — era calcolato dentro la geometria!
@@ -17635,6 +17806,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         refMesh.rotation.z=Math.sin(now*0.0040)*0.032;refMesh.position.y=Math.abs(Math.sin(now*0.0032))*0.07;
         linRef1.rotation.y=Math.sin(now*0.0022+0.8)*0.055;linRef1.rotation.z=Math.sin(now*0.0018+0.5)*0.025;
         linRef2.rotation.y=Math.PI+Math.sin(now*0.0022+2.3)*0.055;linRef2.rotation.z=Math.sin(now*0.0018+1.9)*0.025;
+        if(assistantRefGlbAvatars)assistantRefGlbAvatars.forEach(av=>{if(av&&av.mx)av.mx.update(dt);});
         {const _gsB=goalBurstT>=0?(goalBurstHome?1:-1):0;/* [7.52.2 collaudo PO «a volte festeggiano i tifosi sbagliati»] la PANCHINA è taggata per lato-MESH (bx<0 = kit dell'eroe) ma esultava sul lato-TRIBUNA (goalBurstStadHome): in TRASFERTA il gol dell'eroe faceva saltare la panchina AVVERSARIA (e viceversa sul gol subìto). La panchina usa goalBurstHome (lato-mesh, come i giocatori); spalti/bandiere/sciarpe restano su goalBurstStadHome (sono TRIBUNE). */benchFigs.forEach((f,i)=>{f._ph+=dt*1.1;const _bBase=f._isCoach?0:0.72;const mine=_gsB===0?0:((f._home&&_gsB>0)||(!f._home&&_gsB<0)?1:-1);const _ex=mine>0?_goalExcite:0;f.position.y=_bBase+Math.sin(f._ph)*0.03+_ex*Math.abs(Math.sin(f._ph*2+i))*0.34;});}// 5.45.2: solo la panchina del marcatore esulta
         /* [7.904.0] PANCHINA CH38 — mixer (nessun altro punto del file aggiorna questi mixer: non sono in
            glbAvatars) + gesto d'esultanza. Direttiva PO «non devono volare»: i SEDUTI non lasciano MAI la

@@ -1,0 +1,2688 @@
+{
+  "source": "C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-poc\\tests\\character-lab\\assets\\rebuilt.glb",
+  "sourceGLBSha256": "5af6f8ea775ab999a7b5457c40a15daa95c31e137f3e437714dc4f0391d6daa3",
+  "method": "Offline calibrated global bind-space delta: inverse(targetAnimatedParentWorld) * sourceAnimatedWorld * inverse(sourceBindWorld) * shortestArc(targetPrimaryDirection,sourcePrimaryDirection) * targetBindWorld",
+  "calibrationReason": "Visual failure of v1: A-pose target plus T-pose source delta placed hands through torso. Geometric swing calibration aligns anatomical primary directions; shortest arc preserves roll, uses positive-determinant rotations only. Terminal bones use preceding anatomical segment proxy.",
+  "calibration": [
+    {
+      "bone": "root.x_00",
+      "source": "Hips",
+      "anatomicalSegment": [
+        "Hips",
+        "Spine"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        5.193271297254562e-11,
+        0.9992232006540593,
+        -0.03940806103651263
+      ],
+      "sourceBindDirection": [
+        0,
+        0.9996492847452743,
+        0.02648221116638779
+      ],
+      "shortestArcDegrees": 3.7759967462177197,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.03294582491995419,
+        -6.880200349621311e-13,
+        2.5971348522183347e-11,
+        0.9994571389611181
+      ]
+    },
+    {
+      "bone": "spine_01.x_013",
+      "source": "Spine",
+      "anatomicalSegment": [
+        "Spine",
+        "Spine1"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -3.526988191873733e-11,
+        0.999223200194476,
+        -0.03940807268962089
+      ],
+      "sourceBindDirection": [
+        0,
+        0.9999714545891072,
+        -0.007555792939546401
+      ],
+      "shortestArcDegrees": 1.825581909611141,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.0159305336533031,
+        -1.332628733158652e-13,
+        -1.7636675639286323e-11,
+        0.9998731009970822
+      ]
+    },
+    {
+      "bone": "spine_02.x_014",
+      "source": "Spine1",
+      "anatomicalSegment": [
+        "Spine1",
+        "Spine2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -3.6475885735974744e-11,
+        0.9992231997503318,
+        -0.03940808395124854
+      ],
+      "sourceBindDirection": [
+        0,
+        0.9835070234966161,
+        -0.18086993872069204
+      ],
+      "shortestArcDegrees": 8.161933645664076,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.0711660989356045,
+        -3.3070807825334236e-12,
+        -1.7982740525583023e-11,
+        0.9974644787471322
+      ]
+    },
+    {
+      "bone": "spine_03.x_015",
+      "source": "Spine2",
+      "anatomicalSegment": [
+        "Spine2",
+        "Neck"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -3.303216102263634e-11,
+        0.9992232011574387,
+        -0.039408048272919785
+      ],
+      "sourceBindDirection": [
+        0,
+        0.9785302277086926,
+        -0.20610335625693763
+      ],
+      "shortestArcDegrees": 9.635596422549238,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.08398738722873376,
+        -3.416089291797487e-12,
+        -1.6218787958060248e-11,
+        0.9964668177046795
+      ]
+    },
+    {
+      "bone": "neck.x_016",
+      "source": "Neck",
+      "anatomicalSegment": [
+        "Neck",
+        "Head"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -3.924098977342237e-11,
+        0.9999842041534245,
+        -0.005620626623611895
+      ],
+      "sourceBindDirection": [
+        0,
+        0.9743672575364303,
+        0.22496321352820264
+      ],
+      "shortestArcDegrees": 13.322754875640513,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.11600122336977259,
+        4.443889968324682e-12,
+        -1.9247506351465523e-11,
+        0.9932490705642348
+      ]
+    },
+    {
+      "bone": "head.x_017",
+      "source": "Head",
+      "anatomicalSegment": [
+        "Neck",
+        "Head"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        -3.924098977342237e-11,
+        0.9999842041534245,
+        -0.005620626623611895
+      ],
+      "sourceBindDirection": [
+        0,
+        0.9743672575364303,
+        0.22496321352820264
+      ],
+      "shortestArcDegrees": 13.322754875640513,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.11600122336977259,
+        4.443889968324682e-12,
+        -1.9247506351465523e-11,
+        0.9932490705642348
+      ]
+    },
+    {
+      "bone": "shoulder.l_039",
+      "source": "LeftShoulder",
+      "anatomicalSegment": [
+        "LeftShoulder",
+        "LeftArm"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.9311297673268468,
+        -6.374630862120803e-7,
+        -0.3646880261229393
+      ],
+      "sourceBindDirection": [
+        0.9568300392554605,
+        -0.2906467455376808,
+        -0.00086329991800418
+      ],
+      "shortestArcDegrees": 26.969514702560577,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.05450015446625092,
+        -0.17900512195473348,
+        -0.1391507217217295,
+        0.9724319904864545
+      ]
+    },
+    {
+      "bone": "arm_stretch.l_040",
+      "source": "LeftArm",
+      "anatomicalSegment": [
+        "LeftArm",
+        "LeftForeArm"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.8467811147350724,
+        -0.5310324096643099,
+        -0.03108574615711313
+      ],
+      "sourceBindDirection": [
+        0.9978806380756075,
+        -0.04095081057658839,
+        -0.050569390612688885
+      ],
+      "shortestArcDegrees": 29.737774626295327,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.01323361970663724,
+        0.006105096065785731,
+        0.256193798014968,
+        0.9665155647842169
+      ]
+    },
+    {
+      "bone": "forearm_stretch.l_041",
+      "source": "LeftForeArm",
+      "anatomicalSegment": [
+        "LeftForeArm",
+        "LeftHand"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.8276081476326796,
+        -0.5190076198034177,
+        0.2137658638744638
+      ],
+      "sourceBindDirection": [
+        0.9988540079700715,
+        0.039471707278578946,
+        0.027067602159012855
+      ],
+      "shortestArcDegrees": 35.71215358617715,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.011811983964594227,
+        0.10039585481146487,
+        0.28948451680280163,
+        0.9518297452291267
+      ]
+    },
+    {
+      "bone": "hand.l_042",
+      "source": "LeftHand",
+      "anatomicalSegment": [
+        "LeftHand",
+        "LeftHandMiddle1"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.7541994537656853,
+        -0.5826619952689225,
+        0.3028005667246674
+      ],
+      "sourceBindDirection": [
+        0.9777993687357716,
+        -0.0769005234027336,
+        0.1949223024702724
+      ],
+      "shortestArcDegrees": 32.723901107552784,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.04704959708316303,
+        0.07767989202165416,
+        0.2666636399364794,
+        0.9595012625972119
+      ]
+    },
+    {
+      "bone": "shoulder.r_018",
+      "source": "RightShoulder",
+      "anatomicalSegment": [
+        "RightShoulder",
+        "RightArm"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.9311297672700174,
+        -6.374728522286771e-7,
+        -0.36468802626803754
+      ],
+      "sourceBindDirection": [
+        -0.9568303676564928,
+        -0.29064566504038786,
+        0.0008630895499726527
+      ],
+      "shortestArcDegrees": 27.048908802439236,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.05450902177995301,
+        0.17986164154908393,
+        0.13917336038301029,
+        0.9722701950607981
+      ]
+    },
+    {
+      "bone": "arm_stretch.r_019",
+      "source": "RightArm",
+      "anatomicalSegment": [
+        "RightArm",
+        "RightForeArm"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.8467811095789868,
+        -0.5310324173145758,
+        -0.031085755921616456
+      ],
+      "sourceBindDirection": [
+        -0.9976329097005997,
+        -0.04094069103614645,
+        -0.05524886695487993
+      ],
+      "shortestArcDegrees": 29.745822816165553,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.014519575004767084,
+        -0.008159112197446614,
+        -0.25613495711276385,
+        0.9664975398699539
+      ]
+    },
+    {
+      "bone": "forearm_stretch.r_020",
+      "source": "RightForeArm",
+      "anatomicalSegment": [
+        "RightForeArm",
+        "RightHand"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.8276080007959767,
+        -0.5190078790736714,
+        0.21376580287299426
+      ],
+      "sourceBindDirection": [
+        -0.9985738095744108,
+        0.03946150238603505,
+        0.035960209419380405
+      ],
+      "shortestArcDegrees": 35.54749123811457,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.014228721731475569,
+        -0.09645378758801808,
+        -0.2892702145978298,
+        0.9522693701281899
+      ]
+    },
+    {
+      "bone": "hand.r_021",
+      "source": "RightHand",
+      "anatomicalSegment": [
+        "RightHand",
+        "RightHandMiddle1"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.7541996234161316,
+        -0.5826617194139052,
+        0.3028006749804184
+      ],
+      "sourceBindDirection": [
+        -0.9815086569395763,
+        -0.06713973951846422,
+        0.1792568317528278
+      ],
+      "shortestArcDegrees": 33.524233309981724,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.043924398096423574,
+        -0.08459754067048489,
+        -0.2721906515356524,
+        0.9575103929362697
+      ]
+    },
+    {
+      "bone": "thigh_stretch.l_01",
+      "source": "LeftUpLeg",
+      "anatomicalSegment": [
+        "LeftUpLeg",
+        "LeftLeg"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.01972165169102732,
+        -0.9993959461835612,
+        -0.028614667680098398
+      ],
+      "sourceBindDirection": [
+        0.09397373902724852,
+        -0.9938059703063846,
+        -0.05931803904904466
+      ],
+      "shortestArcDegrees": 4.616072963800933,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.015434911566300584,
+        -0.0007602055158533302,
+        0.037188908587000954,
+        0.999188756277122
+      ]
+    },
+    {
+      "bone": "leg_stretch.l_02",
+      "source": "LeftLeg",
+      "anatomicalSegment": [
+        "LeftLeg",
+        "LeftFoot"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.030826071479283342,
+        -0.9593998717614313,
+        -0.2803598391020077
+      ],
+      "sourceBindDirection": [
+        0.05226827628679573,
+        -0.9949013064336697,
+        -0.08625205939909077
+      ],
+      "shortestArcDegrees": 11.391343922221244,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.09857674426018745,
+        -0.006027313116230505,
+        0.009786956915108022,
+        0.995063069590065
+      ]
+    },
+    {
+      "bone": "foot.l_03",
+      "source": "LeftFoot",
+      "anatomicalSegment": [
+        "LeftFoot",
+        "LeftToeBase"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.013002288015557986,
+        -0.03973451203278835,
+        0.9991256723054797
+      ],
+      "sourceBindDirection": [
+        0.14782962536770758,
+        -0.5117349783919087,
+        0.8463295538700489
+      ],
+      "shortestArcDegrees": 30.231172367879818,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.247388754139727,
+        0.08219614151632296,
+        0.00648831632191496,
+        0.9654017300566274
+      ]
+    },
+    {
+      "bone": "toes_01.l_04",
+      "source": "LeftToeBase",
+      "anatomicalSegment": [
+        "LeftFoot",
+        "LeftToeBase"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        -0.013002288015557986,
+        -0.03973451203278835,
+        0.9991256723054797
+      ],
+      "sourceBindDirection": [
+        0.14782962536770758,
+        -0.5117349783919087,
+        0.8463295538700489
+      ],
+      "shortestArcDegrees": 30.231172367879818,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.247388754139727,
+        0.08219614151632296,
+        0.00648831632191496,
+        0.9654017300566274
+      ]
+    },
+    {
+      "bone": "thigh_stretch.r_07",
+      "source": "RightUpLeg",
+      "anatomicalSegment": [
+        "RightUpLeg",
+        "RightLeg"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.019721574972083888,
+        -0.9993959476336938,
+        -0.028614669908482746
+      ],
+      "sourceBindDirection": [
+        -0.09402025979459273,
+        -0.9942986466766086,
+        -0.05030300155280858
+      ],
+      "shortestArcDegrees": 4.4453844977132775,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.010918759069269434,
+        0.0008497914950518789,
+        -0.03720515754611386,
+        0.9992476343763699
+      ]
+    },
+    {
+      "bone": "leg_stretch.r_08",
+      "source": "RightLeg",
+      "anatomicalSegment": [
+        "RightLeg",
+        "RightFoot"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.030826119004385172,
+        -0.9593998817094207,
+        -0.2803597998342079
+      ],
+      "sourceBindDirection": [
+        -0.05223259027697751,
+        -0.9942157140946155,
+        -0.09384492719530038
+      ],
+      "shortestArcDegrees": 10.956757634847788,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.09478460128215445,
+        0.005902482624530386,
+        -0.009776721678644277,
+        0.9954322959256791
+      ]
+    },
+    {
+      "bone": "foot.r_09",
+      "source": "RightFoot",
+      "anatomicalSegment": [
+        "RightFoot",
+        "RightToeBase"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.013002272764490641,
+        -0.0397341885134488,
+        0.9991256853700317
+      ],
+      "sourceBindDirection": [
+        -0.1450031065405859,
+        -0.5019875301327233,
+        0.8526327572201456
+      ],
+      "shortestArcDegrees": 29.547404399088077,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.24182974488594364,
+        -0.08064740628146316,
+        -0.006354351252146287,
+        0.9669405320745617
+      ]
+    },
+    {
+      "bone": "toes_01.r_010",
+      "source": "RightToeBase",
+      "anatomicalSegment": [
+        "RightFoot",
+        "RightToeBase"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        0.013002272764490641,
+        -0.0397341885134488,
+        0.9991256853700317
+      ],
+      "sourceBindDirection": [
+        -0.1450031065405859,
+        -0.5019875301327233,
+        0.8526327572201456
+      ],
+      "shortestArcDegrees": 29.547404399088077,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.24182974488594364,
+        -0.08064740628146316,
+        -0.006354351252146287,
+        0.9669405320745617
+      ]
+    },
+    {
+      "bone": "c_thumb1.l_043",
+      "source": "LeftHandThumb1",
+      "anatomicalSegment": [
+        "LeftHandThumb1",
+        "LeftHandThumb2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.19023910201593866,
+        -0.5992310378985368,
+        0.7776446793254691
+      ],
+      "sourceBindDirection": [
+        0.6805342568621848,
+        -0.3674822653500101,
+        0.6339005520507602
+      ],
+      "shortestArcDegrees": 32.58212965059026,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.049008881842302884,
+        0.21285699676059305,
+        0.1760108805528321,
+        0.9598490497769142
+      ]
+    },
+    {
+      "bone": "c_thumb2.l_044",
+      "source": "LeftHandThumb2",
+      "anatomicalSegment": [
+        "LeftHandThumb2",
+        "LeftHandThumb3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.14576678774404456,
+        -0.8015509157905816,
+        0.5798863448867053
+      ],
+      "sourceBindDirection": [
+        0.6979930231598345,
+        -0.514649935057605,
+        0.4979369276980748
+      ],
+      "shortestArcDegrees": 36.58157627244984,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.053020474532047855,
+        0.17492489257906138,
+        0.2551186683442613,
+        0.9494759482466374
+      ]
+    },
+    {
+      "bone": "c_thumb3.l_045",
+      "source": "LeftHandThumb3",
+      "anatomicalSegment": [
+        "LeftHandThumb2",
+        "LeftHandThumb3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        0.14576678774404456,
+        -0.8015509157905816,
+        0.5798863448867053
+      ],
+      "sourceBindDirection": [
+        0.6979930231598345,
+        -0.514649935057605,
+        0.4979369276980748
+      ],
+      "shortestArcDegrees": 36.58157627244984,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.053020474532047855,
+        0.17492489257906138,
+        0.2551186683442613,
+        0.9494759482466374
+      ]
+    },
+    {
+      "bone": "c_index1.l_055",
+      "source": "LeftHandIndex1",
+      "anatomicalSegment": [
+        "LeftHandIndex1",
+        "LeftHandIndex2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.6365758220982035,
+        -0.6434857775086731,
+        0.42508502310014973
+      ],
+      "sourceBindDirection": [
+        0.9815735753678854,
+        -0.1051176861319673,
+        0.15957314373592946
+      ],
+      "shortestArcDegrees": 40.50759273937056,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.03091081217483126,
+        0.16823835712913268,
+        0.30096582745470307,
+        0.9381684004408211
+      ]
+    },
+    {
+      "bone": "c_index2.l_056",
+      "source": "LeftHandIndex2",
+      "anatomicalSegment": [
+        "LeftHandIndex2",
+        "LeftHandIndex3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.25275465102181194,
+        -0.8850356652820257,
+        0.3909308859192943
+      ],
+      "sourceBindDirection": [
+        0.961540907015776,
+        -0.2290148655653845,
+        0.15162874227977827
+      ],
+      "shortestArcDegrees": 59.66887208462943,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.02574615570117295,
+        0.19457300554733467,
+        0.4571434912073073,
+        0.8674666042134894
+      ]
+    },
+    {
+      "bone": "c_index3.l_057",
+      "source": "LeftHandIndex3",
+      "anatomicalSegment": [
+        "LeftHandIndex2",
+        "LeftHandIndex3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        0.25275465102181194,
+        -0.8850356652820257,
+        0.3909308859192943
+      ],
+      "sourceBindDirection": [
+        0.961540907015776,
+        -0.2290148655653845,
+        0.15162874227977827
+      ],
+      "shortestArcDegrees": 59.66887208462943,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.02574615570117295,
+        0.19457300554733467,
+        0.4571434912073073,
+        0.8674666042134894
+      ]
+    },
+    {
+      "bone": "c_middle1.l_052",
+      "source": "LeftHandMiddle1",
+      "anatomicalSegment": [
+        "LeftHandMiddle1",
+        "LeftHandMiddle2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.5817585069286136,
+        -0.7754329891670817,
+        0.24548058767974845
+      ],
+      "sourceBindDirection": [
+        0.9946102534268947,
+        -0.09194189579787981,
+        0.047928400507215745
+      ],
+      "shortestArcDegrees": 48.57162653430983,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.008006160135193834,
+        0.11863605858556198,
+        0.3937254925614579,
+        0.9115051417904401
+      ]
+    },
+    {
+      "bone": "c_middle2.l_053",
+      "source": "LeftHandMiddle2",
+      "anatomicalSegment": [
+        "LeftHandMiddle2",
+        "LeftHandMiddle3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.24501293918679676,
+        -0.952466841965937,
+        0.18104025681179875
+      ],
+      "sourceBindDirection": [
+        0.9629824726311976,
+        -0.267218760226406,
+        0.035480862280491035
+      ],
+      "shortestArcDegrees": 60.205963491088546,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.008428263391626514,
+        0.09573487212904398,
+        0.4922621040555902,
+        0.8651253201388804
+      ]
+    },
+    {
+      "bone": "c_middle3.l_054",
+      "source": "LeftHandMiddle3",
+      "anatomicalSegment": [
+        "LeftHandMiddle2",
+        "LeftHandMiddle3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        0.24501293918679676,
+        -0.952466841965937,
+        0.18104025681179875
+      ],
+      "sourceBindDirection": [
+        0.9629824726311976,
+        -0.267218760226406,
+        0.035480862280491035
+      ],
+      "shortestArcDegrees": 60.205963491088546,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.008428263391626514,
+        0.09573487212904398,
+        0.4922621040555902,
+        0.8651253201388804
+      ]
+    },
+    {
+      "bone": "c_ring1.l_049",
+      "source": "LeftHandRing1",
+      "anatomicalSegment": [
+        "LeftHandRing1",
+        "LeftHandRing2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.5676666929939109,
+        -0.8219157253211088,
+        0.047000703561037464
+      ],
+      "sourceBindDirection": [
+        0.9730066723422798,
+        -0.23072298507481553,
+        -0.004991967104223633
+      ],
+      "shortestArcDegrees": 42.11983504800697,
+      "alignmentResidualDegrees": 8.537736462515939e-7,
+      "quaternion": [
+        0.008008484999802026,
+        0.026020951359049083,
+        0.3583112089421971,
+        0.9332051499026134
+      ]
+    },
+    {
+      "bone": "c_ring2.l_050",
+      "source": "LeftHandRing2",
+      "anatomicalSegment": [
+        "LeftHandRing2",
+        "LeftHandRing3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.31004231855484643,
+        -0.9501044382074695,
+        0.03428289957987592
+      ],
+      "sourceBindDirection": [
+        0.9638195478804507,
+        -0.2664472330602097,
+        -0.007599415640810118
+      ],
+      "shortestArcDegrees": 56.51511263862338,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.009283774213383077,
+        0.020093966611240948,
+        0.472918107136795,
+        0.8808283078922546
+      ]
+    },
+    {
+      "bone": "c_ring3.l_051",
+      "source": "LeftHandRing3",
+      "anatomicalSegment": [
+        "LeftHandRing2",
+        "LeftHandRing3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        0.31004231855484643,
+        -0.9501044382074695,
+        0.03428289957987592
+      ],
+      "sourceBindDirection": [
+        0.9638195478804507,
+        -0.2664472330602097,
+        -0.007599415640810118
+      ],
+      "shortestArcDegrees": 56.51511263862338,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.009283774213383077,
+        0.020093966611240948,
+        0.472918107136795,
+        0.8808283078922546
+      ]
+    },
+    {
+      "bone": "c_pinky1.l_046",
+      "source": "LeftHandPinky1",
+      "anatomicalSegment": [
+        "LeftHandPinky1",
+        "LeftHandPinky2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.4370148211698109,
+        -0.8935777188529346,
+        -0.10264943471594846
+      ],
+      "sourceBindDirection": [
+        0.9813260389660005,
+        -0.1912440275403294,
+        -0.020613761846238476
+      ],
+      "shortestArcDegrees": 52.9966715856282,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.0006766281116574367,
+        -0.05124549877277591,
+        0.44321860619632675,
+        0.8949473214392639
+      ]
+    },
+    {
+      "bone": "c_pinky2.l_047",
+      "source": "LeftHandPinky2",
+      "anatomicalSegment": [
+        "LeftHandPinky2",
+        "LeftHandPinky3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        0.1589984363313396,
+        -0.9823979901838265,
+        -0.09804940656101617
+      ],
+      "sourceBindDirection": [
+        0.9450058336408941,
+        -0.32573173768824876,
+        -0.029373618218951153
+      ],
+      "shortestArcDegrees": 61.762158903428094,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.0017950922961054207,
+        -0.051260411698350404,
+        0.5106885428127858,
+        0.8582344435385459
+      ]
+    },
+    {
+      "bone": "c_pinky3.l_048",
+      "source": "LeftHandPinky3",
+      "anatomicalSegment": [
+        "LeftHandPinky2",
+        "LeftHandPinky3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        0.1589984363313396,
+        -0.9823979901838265,
+        -0.09804940656101617
+      ],
+      "sourceBindDirection": [
+        0.9450058336408941,
+        -0.32573173768824876,
+        -0.029373618218951153
+      ],
+      "shortestArcDegrees": 61.762158903428094,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.0017950922961054207,
+        -0.051260411698350404,
+        0.5106885428127858,
+        0.8582344435385459
+      ]
+    },
+    {
+      "bone": "c_thumb1.r_022",
+      "source": "RightHandThumb1",
+      "anatomicalSegment": [
+        "RightHandThumb1",
+        "RightHandThumb2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.19023917584426003,
+        -0.5992311962321799,
+        0.77764453925701
+      ],
+      "sourceBindDirection": [
+        -0.6736634751723921,
+        -0.37382409682905393,
+        0.6375210324754766
+      ],
+      "shortestArcDegrees": 32.01287514928149,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.04750171912957255,
+        -0.2094134314148782,
+        -0.17298873986917893,
+        0.9612307201193971
+      ]
+    },
+    {
+      "bone": "c_thumb2.r_023",
+      "source": "RightHandThumb2",
+      "anatomicalSegment": [
+        "RightHandThumb2",
+        "RightHandThumb3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.14576396370994646,
+        -0.8015505845225668,
+        0.5798875126566333
+      ],
+      "sourceBindDirection": [
+        -0.7237909622901488,
+        -0.5003166339089178,
+        0.47519460091750876
+      ],
+      "shortestArcDegrees": 38.54756056520171,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.0480771966459396,
+        -0.1856297004755336,
+        -0.2686719652822403,
+        0.9439521028820319
+      ]
+    },
+    {
+      "bone": "c_thumb3.r_024",
+      "source": "RightHandThumb3",
+      "anatomicalSegment": [
+        "RightHandThumb2",
+        "RightHandThumb3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        -0.14576396370994646,
+        -0.8015505845225668,
+        0.5798875126566333
+      ],
+      "sourceBindDirection": [
+        -0.7237909622901488,
+        -0.5003166339089178,
+        0.47519460091750876
+      ],
+      "shortestArcDegrees": 38.54756056520171,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.0480771966459396,
+        -0.1856297004755336,
+        -0.2686719652822403,
+        0.9439521028820319
+      ]
+    },
+    {
+      "bone": "c_index1.r_034",
+      "source": "RightHandIndex1",
+      "anatomicalSegment": [
+        "RightHandIndex1",
+        "RightHandIndex2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.6365754052363392,
+        -0.6434862414466067,
+        0.4250849450605254
+      ],
+      "sourceBindDirection": [
+        -0.9809873525174474,
+        -0.12893715940392178,
+        0.14504834754542129
+      ],
+      "shortestArcDegrees": 39.72689950540889,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.02048227693981347,
+        -0.17260339902961427,
+        -0.29195676696555145,
+        0.9405050713301908
+      ]
+    },
+    {
+      "bone": "c_index2.r_035",
+      "source": "RightHandIndex2",
+      "anatomicalSegment": [
+        "RightHandIndex2",
+        "RightHandIndex3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.25275343482897256,
+        -0.885035861568989,
+        0.39093122786366646
+      ],
+      "sourceBindDirection": [
+        -0.9585365859536091,
+        -0.2497946523230947,
+        0.13715044680635716
+      ],
+      "shortestArcDegrees": 58.870974965822334,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.01362399377881279,
+        -0.19523073426902213,
+        -0.4507946660983355,
+        0.8709095912938287
+      ]
+    },
+    {
+      "bone": "c_index3.r_036",
+      "source": "RightHandIndex3",
+      "anatomicalSegment": [
+        "RightHandIndex2",
+        "RightHandIndex3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        -0.25275343482897256,
+        -0.885035861568989,
+        0.39093122786366646
+      ],
+      "sourceBindDirection": [
+        -0.9585365859536091,
+        -0.2497946523230947,
+        0.13715044680635716
+      ],
+      "shortestArcDegrees": 58.870974965822334,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.01362399377881279,
+        -0.19523073426902213,
+        -0.4507946660983355,
+        0.8709095912938287
+      ]
+    },
+    {
+      "bone": "c_middle1.r_031",
+      "source": "RightHandMiddle1",
+      "anatomicalSegment": [
+        "RightHandMiddle1",
+        "RightHandMiddle2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.5817568044420152,
+        -0.7754341501300075,
+        0.24548095506081088
+      ],
+      "sourceBindDirection": [
+        -0.9886477414340892,
+        -0.11285490806298268,
+        0.09919381575163834
+      ],
+      "shortestArcDegrees": 46.605773479829246,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.026792859421633283,
+        -0.1007089431273806,
+        -0.38161853321883393,
+        0.9184264513623749
+      ]
+    },
+    {
+      "bone": "c_middle2.r_032",
+      "source": "RightHandMiddle2",
+      "anatomicalSegment": [
+        "RightHandMiddle2",
+        "RightHandMiddle3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.24501388152372872,
+        -0.9524666616405689,
+        0.1810399301920609
+      ],
+      "sourceBindDirection": [
+        -0.9558958322158531,
+        -0.2802609825669719,
+        0.08784611319208697
+      ],
+      "shortestArcDegrees": 58.86537829467181,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.018906186267827817,
+        -0.0869938872968071,
+        -0.48326938375528383,
+        0.8709335924274508
+      ]
+    },
+    {
+      "bone": "c_middle3.r_033",
+      "source": "RightHandMiddle3",
+      "anatomicalSegment": [
+        "RightHandMiddle2",
+        "RightHandMiddle3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        -0.24501388152372872,
+        -0.9524666616405689,
+        0.1810399301920609
+      ],
+      "sourceBindDirection": [
+        -0.9558958322158531,
+        -0.2802609825669719,
+        0.08784611319208697
+      ],
+      "shortestArcDegrees": 58.86537829467181,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.018906186267827817,
+        -0.0869938872968071,
+        -0.48326938375528383,
+        0.8709335924274508
+      ]
+    },
+    {
+      "bone": "c_ring1.r_028",
+      "source": "RightHandRing1",
+      "anatomicalSegment": [
+        "RightHandRing1",
+        "RightHandRing2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.5676665452274882,
+        -0.8219158347335688,
+        0.04700057492955648
+      ],
+      "sourceBindDirection": [
+        -0.9754197336015799,
+        -0.22010200630962093,
+        0.010556993847808867
+      ],
+      "shortestArcDegrees": 42.683094442947265,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.0008953784876328399,
+        -0.021393201720905402,
+        -0.36329629718163886,
+        0.9314275761816392
+      ]
+    },
+    {
+      "bone": "c_ring2.r_029",
+      "source": "RightHandRing2",
+      "anatomicalSegment": [
+        "RightHandRing2",
+        "RightHandRing3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.310042256602233,
+        -0.9501044651406887,
+        0.03428271343871746
+      ],
+      "sourceBindDirection": [
+        -0.9587748247478278,
+        -0.2841014952812161,
+        0.006097196794386595
+      ],
+      "shortestArcDegrees": 55.43117147571555,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.0022291554989807014,
+        -0.017496986120201702,
+        -0.46474828390022266,
+        0.8852671455296809
+      ]
+    },
+    {
+      "bone": "c_ring3.r_030",
+      "source": "RightHandRing3",
+      "anatomicalSegment": [
+        "RightHandRing2",
+        "RightHandRing3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        -0.310042256602233,
+        -0.9501044651406887,
+        0.03428271343871746
+      ],
+      "sourceBindDirection": [
+        -0.9587748247478278,
+        -0.2841014952812161,
+        0.006097196794386595
+      ],
+      "shortestArcDegrees": 55.43117147571555,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        0.0022291554989807014,
+        -0.017496986120201702,
+        -0.46474828390022266,
+        0.8852671455296809
+      ]
+    },
+    {
+      "bone": "c_pinky1.r_025",
+      "source": "RightHandPinky1",
+      "anatomicalSegment": [
+        "RightHandPinky1",
+        "RightHandPinky2"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.43701206810645843,
+        -0.8935791069667093,
+        -0.10264907170498086
+      ],
+      "sourceBindDirection": [
+        -0.986900067935961,
+        -0.1611238684218376,
+        -0.008207005104062465
+      ],
+      "shortestArcDegrees": 54.822834790218714,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.005184950911638562,
+        0.05503841997304034,
+        -0.4570454975207143,
+        0.8877236629756797
+      ]
+    },
+    {
+      "bone": "c_pinky2.r_026",
+      "source": "RightHandPinky2",
+      "anatomicalSegment": [
+        "RightHandPinky2",
+        "RightHandPinky3"
+      ],
+      "terminalProxy": false,
+      "targetBindDirection": [
+        -0.15899377337150408,
+        -0.9823989240748839,
+        -0.09804761091225575
+      ],
+      "sourceBindDirection": [
+        -0.9484379482043659,
+        -0.3165350961762174,
+        -0.016461813223499627
+      ],
+      "shortestArcDegrees": 62.39499105420103,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.008688140009598631,
+        0.052826825384252075,
+        -0.5152155752298971,
+        0.8553869029763792
+      ]
+    },
+    {
+      "bone": "c_pinky3.r_027",
+      "source": "RightHandPinky3",
+      "anatomicalSegment": [
+        "RightHandPinky2",
+        "RightHandPinky3"
+      ],
+      "terminalProxy": true,
+      "targetBindDirection": [
+        -0.15899377337150408,
+        -0.9823989240748839,
+        -0.09804761091225575
+      ],
+      "sourceBindDirection": [
+        -0.9484379482043659,
+        -0.3165350961762174,
+        -0.016461813223499627
+      ],
+      "shortestArcDegrees": 62.39499105420103,
+      "alignmentResidualDegrees": 0,
+      "quaternion": [
+        -0.008688140009598631,
+        0.052826825384252075,
+        -0.5152155752298971,
+        0.8553869029763792
+      ]
+    }
+  ],
+  "sourceRest": "Recovered from footballer.glb inverseBindMatrices and mesh world transforms",
+  "targetBindMatrixMaxError": 0.000004322776234744197,
+  "sourceDuplicateBindAngleMax": 0.0002982541354781979,
+  "rootHeightScale": 58.0869160110323,
+  "rootMotion": "XZ fixed at target bind; Y source offset from IBM bind scaled by hips height ratio; no arbitrary floor offset",
+  "mappedBones": [
+    {
+      "source": "Hips",
+      "target": "root.x_00",
+      "index": 7
+    },
+    {
+      "source": "Spine",
+      "target": "spine_01.x_013",
+      "index": 8
+    },
+    {
+      "source": "Spine1",
+      "target": "spine_02.x_014",
+      "index": 9
+    },
+    {
+      "source": "Spine2",
+      "target": "spine_03.x_015",
+      "index": 10
+    },
+    {
+      "source": "Neck",
+      "target": "neck.x_016",
+      "index": 11
+    },
+    {
+      "source": "Head",
+      "target": "head.x_017",
+      "index": 12
+    },
+    {
+      "source": "LeftShoulder",
+      "target": "shoulder.l_039",
+      "index": 13
+    },
+    {
+      "source": "LeftArm",
+      "target": "arm_stretch.l_040",
+      "index": 14
+    },
+    {
+      "source": "LeftForeArm",
+      "target": "forearm_stretch.l_041",
+      "index": 16
+    },
+    {
+      "source": "LeftHand",
+      "target": "hand.l_042",
+      "index": 18
+    },
+    {
+      "source": "RightShoulder",
+      "target": "shoulder.r_018",
+      "index": 34
+    },
+    {
+      "source": "RightArm",
+      "target": "arm_stretch.r_019",
+      "index": 35
+    },
+    {
+      "source": "RightForeArm",
+      "target": "forearm_stretch.r_020",
+      "index": 37
+    },
+    {
+      "source": "RightHand",
+      "target": "hand.r_021",
+      "index": 39
+    },
+    {
+      "source": "LeftUpLeg",
+      "target": "thigh_stretch.l_01",
+      "index": 55
+    },
+    {
+      "source": "LeftLeg",
+      "target": "leg_stretch.l_02",
+      "index": 56
+    },
+    {
+      "source": "LeftFoot",
+      "target": "foot.l_03",
+      "index": 57
+    },
+    {
+      "source": "LeftToeBase",
+      "target": "toes_01.l_04",
+      "index": 58
+    },
+    {
+      "source": "RightUpLeg",
+      "target": "thigh_stretch.r_07",
+      "index": 61
+    },
+    {
+      "source": "RightLeg",
+      "target": "leg_stretch.r_08",
+      "index": 62
+    },
+    {
+      "source": "RightFoot",
+      "target": "foot.r_09",
+      "index": 63
+    },
+    {
+      "source": "RightToeBase",
+      "target": "toes_01.r_010",
+      "index": 64
+    },
+    {
+      "source": "LeftHandThumb1",
+      "target": "c_thumb1.l_043",
+      "index": 31
+    },
+    {
+      "source": "LeftHandThumb2",
+      "target": "c_thumb2.l_044",
+      "index": 32
+    },
+    {
+      "source": "LeftHandThumb3",
+      "target": "c_thumb3.l_045",
+      "index": 33
+    },
+    {
+      "source": "LeftHandIndex1",
+      "target": "c_index1.l_055",
+      "index": 19
+    },
+    {
+      "source": "LeftHandIndex2",
+      "target": "c_index2.l_056",
+      "index": 20
+    },
+    {
+      "source": "LeftHandIndex3",
+      "target": "c_index3.l_057",
+      "index": 21
+    },
+    {
+      "source": "LeftHandMiddle1",
+      "target": "c_middle1.l_052",
+      "index": 22
+    },
+    {
+      "source": "LeftHandMiddle2",
+      "target": "c_middle2.l_053",
+      "index": 23
+    },
+    {
+      "source": "LeftHandMiddle3",
+      "target": "c_middle3.l_054",
+      "index": 24
+    },
+    {
+      "source": "LeftHandRing1",
+      "target": "c_ring1.l_049",
+      "index": 28
+    },
+    {
+      "source": "LeftHandRing2",
+      "target": "c_ring2.l_050",
+      "index": 29
+    },
+    {
+      "source": "LeftHandRing3",
+      "target": "c_ring3.l_051",
+      "index": 30
+    },
+    {
+      "source": "LeftHandPinky1",
+      "target": "c_pinky1.l_046",
+      "index": 25
+    },
+    {
+      "source": "LeftHandPinky2",
+      "target": "c_pinky2.l_047",
+      "index": 26
+    },
+    {
+      "source": "LeftHandPinky3",
+      "target": "c_pinky3.l_048",
+      "index": 27
+    },
+    {
+      "source": "RightHandThumb1",
+      "target": "c_thumb1.r_022",
+      "index": 52
+    },
+    {
+      "source": "RightHandThumb2",
+      "target": "c_thumb2.r_023",
+      "index": 53
+    },
+    {
+      "source": "RightHandThumb3",
+      "target": "c_thumb3.r_024",
+      "index": 54
+    },
+    {
+      "source": "RightHandIndex1",
+      "target": "c_index1.r_034",
+      "index": 40
+    },
+    {
+      "source": "RightHandIndex2",
+      "target": "c_index2.r_035",
+      "index": 41
+    },
+    {
+      "source": "RightHandIndex3",
+      "target": "c_index3.r_036",
+      "index": 42
+    },
+    {
+      "source": "RightHandMiddle1",
+      "target": "c_middle1.r_031",
+      "index": 43
+    },
+    {
+      "source": "RightHandMiddle2",
+      "target": "c_middle2.r_032",
+      "index": 44
+    },
+    {
+      "source": "RightHandMiddle3",
+      "target": "c_middle3.r_033",
+      "index": 45
+    },
+    {
+      "source": "RightHandRing1",
+      "target": "c_ring1.r_028",
+      "index": 49
+    },
+    {
+      "source": "RightHandRing2",
+      "target": "c_ring2.r_029",
+      "index": 50
+    },
+    {
+      "source": "RightHandRing3",
+      "target": "c_ring3.r_030",
+      "index": 51
+    },
+    {
+      "source": "RightHandPinky1",
+      "target": "c_pinky1.r_025",
+      "index": 46
+    },
+    {
+      "source": "RightHandPinky2",
+      "target": "c_pinky2.r_026",
+      "index": 47
+    },
+    {
+      "source": "RightHandPinky3",
+      "target": "c_pinky3.r_027",
+      "index": 48
+    }
+  ],
+  "retainedRestTwistBones": [
+    "arm_twist.l_059",
+    "forearm_twist.l_058",
+    "arm_twist.r_038",
+    "forearm_twist.r_037",
+    "leg_twist.l_05",
+    "thigh_twist.l_06",
+    "leg_twist.r_011",
+    "thigh_twist.r_012"
+  ],
+  "clips": [
+    {
+      "name": "idle",
+      "duration": 10.208333015441895,
+      "frames": 614,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008989835139576697,
+      "maxFrameStepDegreesBeforeLoopCorrection": 20.566434916428147,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -12.581628637509931,
+        "maximumLift": 12.71406194121066,
+        "minimumAfterLift": 0
+      },
+      "cyclic": true,
+      "loopCorrection": "Smoothstep-distributed endpoint quaternion and vertical drift removal; C0 only, no foot IK",
+      "rawLoopSeam": {
+        "worstBone": "c_thumb3.l_045",
+        "angleDegrees": 7.894480128456434,
+        "rootDistanceModelUnits": 0.39333080603202575
+      },
+      "bakedLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 0,
+        "rootDistanceModelUnits": 0
+      },
+      "loopSeamPass": true
+    },
+    {
+      "name": "jog",
+      "duration": 0.8333333134651184,
+      "frames": 51,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008941981888882487,
+      "maxFrameStepDegreesBeforeLoopCorrection": 11.76694554889655,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -13.67246078728987,
+        "maximumLift": 13.67269570906892,
+        "minimumAfterLift": 0
+      },
+      "cyclic": true,
+      "loopCorrection": "Smoothstep-distributed endpoint quaternion and vertical drift removal; C0 only, no foot IK",
+      "rawLoopSeam": {
+        "worstBone": "c_pinky1.l_046",
+        "angleDegrees": 0.02282775281536286,
+        "rootDistanceModelUnits": 0.00012444264704214447
+      },
+      "bakedLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 0,
+        "rootDistanceModelUnits": 0
+      },
+      "loopSeamPass": true
+    },
+    {
+      "name": "jog-back",
+      "duration": 0.7916666865348816,
+      "frames": 49,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008955466969308541,
+      "maxFrameStepDegreesBeforeLoopCorrection": 17.11237169990234,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -13.502120667817712,
+        "maximumLift": 14.828041846384098,
+        "minimumAfterLift": 0
+      },
+      "cyclic": true,
+      "loopCorrection": "Smoothstep-distributed endpoint quaternion and vertical drift removal; C0 only, no foot IK",
+      "rawLoopSeam": {
+        "worstBone": "thigh_stretch.r_07",
+        "angleDegrees": 2.6242844623901846,
+        "rootDistanceModelUnits": 0.5262470507745078
+      },
+      "bakedLoopSeam": {
+        "worstBone": "leg_stretch.r_08",
+        "angleDegrees": 0.0000024148365394514667,
+        "rootDistanceModelUnits": 0
+      },
+      "loopSeamPass": true
+    },
+    {
+      "name": "strafe-left",
+      "duration": 0.6666666865348816,
+      "frames": 42,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008972974181108349,
+      "maxFrameStepDegreesBeforeLoopCorrection": 13.969379330125966,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -13.135594607474317,
+        "maximumLift": 16.691763910500047,
+        "minimumAfterLift": 0
+      },
+      "cyclic": true,
+      "loopCorrection": "Smoothstep-distributed endpoint quaternion and vertical drift removal; C0 only, no foot IK",
+      "rawLoopSeam": {
+        "worstBone": "thigh_stretch.l_01",
+        "angleDegrees": 7.932111613792376,
+        "rootDistanceModelUnits": 1.4688787282050342
+      },
+      "bakedLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 0,
+        "rootDistanceModelUnits": 0
+      },
+      "loopSeamPass": true
+    },
+    {
+      "name": "strafe-right",
+      "duration": 0.7083333134651184,
+      "frames": 44,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008945123842678434,
+      "maxFrameStepDegreesBeforeLoopCorrection": 9.452103740119973,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -13.430880485106464,
+        "maximumLift": 14.89559200683894,
+        "minimumAfterLift": 0
+      },
+      "cyclic": true,
+      "loopCorrection": "Smoothstep-distributed endpoint quaternion and vertical drift removal; C0 only, no foot IK",
+      "rawLoopSeam": {
+        "worstBone": "toes_01.l_04",
+        "angleDegrees": 12.004419441784544,
+        "rootDistanceModelUnits": 0.4384623067410729
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_pinky2.l_047",
+        "angleDegrees": 0.0000017075472925031877,
+        "rootDistanceModelUnits": 0
+      },
+      "loopSeamPass": true
+    },
+    {
+      "name": "receive",
+      "duration": 4.958333492279053,
+      "frames": 299,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008993325117078296,
+      "maxFrameStepDegreesBeforeLoopCorrection": 16.791022794266734,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -14.054329347101204,
+        "maximumLift": 14.054329514624706,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "leg_stretch.l_02",
+        "angleDegrees": 62.39580822438008,
+        "rootDistanceModelUnits": 1.2233599300936362
+      },
+      "bakedLoopSeam": {
+        "worstBone": "leg_stretch.l_02",
+        "angleDegrees": 62.39580822438008,
+        "rootDistanceModelUnits": 1.2233599300936362
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "kick",
+      "duration": 0.5416666865348816,
+      "frames": 34,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008961837924696788,
+      "maxFrameStepDegreesBeforeLoopCorrection": 12.010342081880298,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -12.414412342202407,
+        "maximumLift": 12.41441251113116,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "toes_01.l_04",
+        "angleDegrees": 12.111798665665749,
+        "rootDistanceModelUnits": 0.3132167825282366
+      },
+      "bakedLoopSeam": {
+        "worstBone": "toes_01.l_04",
+        "angleDegrees": 12.111798665665749,
+        "rootDistanceModelUnits": 0.3132167825282366
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "penalty",
+      "duration": 1.5,
+      "frames": 91,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008986692595456937,
+      "maxFrameStepDegreesBeforeLoopCorrection": 19.619531833843926,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -14.012238901094946,
+        "maximumLift": 14.012238977924287,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 62.91069076365553,
+        "rootDistanceModelUnits": 2.6982989154346697
+      },
+      "bakedLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 62.91069076365553,
+        "rootDistanceModelUnits": 2.6982989154346697
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "header",
+      "duration": 1.875,
+      "frames": 114,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.000898512699570199,
+      "maxFrameStepDegreesBeforeLoopCorrection": 5.7571468548117934,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -11.788077413577188,
+        "maximumLift": 11.788077501405205,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_pinky3.l_048",
+        "angleDegrees": 2.3874710056677104,
+        "rootDistanceModelUnits": 0.014806886872598568
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_pinky3.l_048",
+        "angleDegrees": 2.3874710056677104,
+        "rootDistanceModelUnits": 0.014806886872598568
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "volley",
+      "duration": 2.75,
+      "frames": 166,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008975902264808453,
+      "maxFrameStepDegreesBeforeLoopCorrection": 14.883721774291617,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -45.702222085509646,
+        "maximumLift": 45.702222879754494,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 168.69811651580582,
+        "rootDistanceModelUnits": 0.6372311188754409
+      },
+      "bakedLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 168.69811651580582,
+        "rootDistanceModelUnits": 0.6372311188754409
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "tackle",
+      "duration": 2.7083332538604736,
+      "frames": 164,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.000897948289401561,
+      "maxFrameStepDegreesBeforeLoopCorrection": 19.880962448542423,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -34.66443993727052,
+        "maximumLift": 34.66444070297916,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_index2.r_035",
+        "angleDegrees": 83.49181956072793,
+        "rootDistanceModelUnits": 1.0323223302860498
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_index2.r_035",
+        "angleDegrees": 83.49181956072793,
+        "rootDistanceModelUnits": 1.0323223302860498
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "throwin",
+      "duration": 2.75,
+      "frames": 166,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008987633446476709,
+      "maxFrameStepDegreesBeforeLoopCorrection": 41.13841312110613,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -14.282629280131081,
+        "maximumLift": 14.282629444074233,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "hand.l_042",
+        "angleDegrees": 67.38480301126185,
+        "rootDistanceModelUnits": 2.649253732668683
+      },
+      "bakedLoopSeam": {
+        "worstBone": "hand.l_042",
+        "angleDegrees": 67.38480301126185,
+        "rootDistanceModelUnits": 2.649253891270348
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "dribble",
+      "duration": 1.7083333730697632,
+      "frames": 104,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008929505058271313,
+      "maxFrameStepDegreesBeforeLoopCorrection": 18.87706623449024,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -13.560053110547223,
+        "maximumLift": 13.560053283909221,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "foot.l_03",
+        "angleDegrees": 9.915482203011559,
+        "rootDistanceModelUnits": 1.1475416099644065
+      },
+      "bakedLoopSeam": {
+        "worstBone": "foot.l_03",
+        "angleDegrees": 9.915482203011559,
+        "rootDistanceModelUnits": 1.1475416099644065
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "pass",
+      "duration": 1.5833333730697632,
+      "frames": 97,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.00090107142810961,
+      "maxFrameStepDegreesBeforeLoopCorrection": 11.68841073652468,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -11.670349310609955,
+        "maximumLift": 11.670349310609955,
+        "minimumAfterLift": 2.318031181273994e-7
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "arm_stretch.l_040",
+        "angleDegrees": 0.5262676535021913,
+        "rootDistanceModelUnits": 0.01281236279157838
+      },
+      "bakedLoopSeam": {
+        "worstBone": "arm_stretch.l_040",
+        "angleDegrees": 0.5262676535021913,
+        "rootDistanceModelUnits": 0.01281236279157838
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "running",
+      "duration": 0.625,
+      "frames": 39,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008984417113185978,
+      "maxFrameStepDegreesBeforeLoopCorrection": 27.174485603995848,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -13.176513832602105,
+        "maximumLift": 13.176513985698223,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "hand.r_021",
+        "angleDegrees": 6.063714431713187,
+        "rootDistanceModelUnits": 0.14382197343900316
+      },
+      "bakedLoopSeam": {
+        "worstBone": "hand.r_021",
+        "angleDegrees": 6.063714431713187,
+        "rootDistanceModelUnits": 0.14382197343900316
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "running-to-turn",
+      "duration": 2.25,
+      "frames": 136,
+      "channels": 53,
+      "coverage": "42/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [
+        "LeftHandThumb3",
+        "LeftHandIndex3",
+        "LeftHandMiddle3",
+        "LeftHandRing3",
+        "LeftHandPinky3",
+        "RightHandThumb3",
+        "RightHandIndex3",
+        "RightHandMiddle3",
+        "RightHandRing3",
+        "RightHandPinky3"
+      ],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0009002337666498797,
+      "maxFrameStepDegreesBeforeLoopCorrection": 25.983945883911833,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -14.215950972492331,
+        "maximumLift": 14.215951162897733,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 173.73983359171856,
+        "rootDistanceModelUnits": 5.86998034164764
+      },
+      "bakedLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 173.73983359171856,
+        "rootDistanceModelUnits": 5.86998034164764
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "change-direction",
+      "duration": 2.1666667461395264,
+      "frames": 132,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008952027373772683,
+      "maxFrameStepDegreesBeforeLoopCorrection": 18.56787046885553,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -19.79304868329107,
+        "maximumLift": 19.793048831703764,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 179.47470390274762,
+        "rootDistanceModelUnits": 0.0000343918319885006
+      },
+      "bakedLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 179.47470390274762,
+        "rootDistanceModelUnits": 0.0000343918319885006
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "run-look-back",
+      "duration": 2.2083332538604736,
+      "frames": 134,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008978102775252173,
+      "maxFrameStepDegreesBeforeLoopCorrection": 21.257233857550254,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -12.929081363502691,
+        "maximumLift": 12.929081548899074,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "hand.l_042",
+        "angleDegrees": 14.081470525873211,
+        "rootDistanceModelUnits": 0.35633039122447485
+      },
+      "bakedLoopSeam": {
+        "worstBone": "hand.l_042",
+        "angleDegrees": 14.081470525873211,
+        "rootDistanceModelUnits": 0.3563303929230628
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "walk",
+      "duration": 1.1666666269302368,
+      "frames": 71,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008962732587564635,
+      "maxFrameStepDegreesBeforeLoopCorrection": 31.752541896448243,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -13.687499990084174,
+        "maximumLift": 13.687500071940253,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_index1.r_034",
+        "angleDegrees": 0.009775610571404,
+        "rootDistanceModelUnits": 0.00006774888383631605
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_index1.r_034",
+        "angleDegrees": 0.009775610571404,
+        "rootDistanceModelUnits": 0.00006774888383631605
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "jogging",
+      "duration": 0.8333333134651184,
+      "frames": 51,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008941981888882487,
+      "maxFrameStepDegreesBeforeLoopCorrection": 11.765586022274972,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -13.67246078728987,
+        "maximumLift": 13.672460941377581,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_pinky1.l_046",
+        "angleDegrees": 0.02282775281536286,
+        "rootDistanceModelUnits": 0.00012444264704214447
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_pinky1.l_046",
+        "angleDegrees": 0.02282775281536286,
+        "rootDistanceModelUnits": 0.00012444264704214447
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "look-over-shoulder",
+      "duration": 3.75,
+      "frames": 226,
+      "channels": 53,
+      "coverage": "42/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [
+        "LeftHandThumb3",
+        "LeftHandIndex3",
+        "LeftHandMiddle3",
+        "LeftHandRing3",
+        "LeftHandPinky3",
+        "RightHandThumb3",
+        "RightHandIndex3",
+        "RightHandMiddle3",
+        "RightHandRing3",
+        "RightHandPinky3"
+      ],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008992259216527511,
+      "maxFrameStepDegreesBeforeLoopCorrection": 8.942056935133213,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -11.72895191571492,
+        "maximumLift": 11.72895191571492,
+        "minimumAfterLift": 2.3424070094181515e-7
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "arm_stretch.l_040",
+        "angleDegrees": 1.1994071333694571,
+        "rootDistanceModelUnits": 0.017292572533783357
+      },
+      "bakedLoopSeam": {
+        "worstBone": "arm_stretch.l_040",
+        "angleDegrees": 1.1994071333694571,
+        "rootDistanceModelUnits": 0.017292572533783357
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "opening",
+      "duration": 4.791666507720947,
+      "frames": 289,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0009005474751127252,
+      "maxFrameStepDegreesBeforeLoopCorrection": 3.9134241158713605,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -11.032873753001383,
+        "maximumLift": 11.032873753001383,
+        "minimumAfterLift": 4.797386231507522e-7
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_index2.l_056",
+        "angleDegrees": 0.4142718853495034,
+        "rootDistanceModelUnits": 0.003608126893098529
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_index2.l_056",
+        "angleDegrees": 0.4142718853495034,
+        "rootDistanceModelUnits": 0.003608126893098529
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "missed-chance",
+      "duration": 4.166666507720947,
+      "frames": 251,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.000898048537669673,
+      "maxFrameStepDegreesBeforeLoopCorrection": 7.40823240471172,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -11.000684045697096,
+        "maximumLift": 11.000684045697096,
+        "minimumAfterLift": 2.3833214411956086e-7
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_pinky1.l_046",
+        "angleDegrees": 0.4732058432126588,
+        "rootDistanceModelUnits": 0.0006120086860974538
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_pinky1.l_046",
+        "angleDegrees": 0.4732058432126588,
+        "rootDistanceModelUnits": 0.0006120086860974538
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "slide-tackle",
+      "duration": 1.75,
+      "frames": 106,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008979957768183322,
+      "maxFrameStepDegreesBeforeLoopCorrection": 24.464580638760946,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -29.47312447333599,
+        "maximumLift": 29.473125782049117,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_index2.r_035",
+        "angleDegrees": 85.16684412463768,
+        "rootDistanceModelUnits": 2.501165992740127
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_index2.r_035",
+        "angleDegrees": 85.16684412463768,
+        "rootDistanceModelUnits": 2.501165992740127
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "recovery-run",
+      "duration": 0.5,
+      "frames": 31,
+      "channels": 53,
+      "coverage": "42/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [
+        "LeftHandThumb3",
+        "LeftHandIndex3",
+        "LeftHandMiddle3",
+        "LeftHandRing3",
+        "LeftHandPinky3",
+        "RightHandThumb3",
+        "RightHandIndex3",
+        "RightHandMiddle3",
+        "RightHandRing3",
+        "RightHandPinky3"
+      ],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0009003062328931321,
+      "maxFrameStepDegreesBeforeLoopCorrection": 19.381519509294662,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -14.126186384283752,
+        "maximumLift": 14.12618638428376,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "thigh_stretch.r_07",
+        "angleDegrees": 20.212162269429776,
+        "rootDistanceModelUnits": 0.6539808170665324
+      },
+      "bakedLoopSeam": {
+        "worstBone": "thigh_stretch.r_07",
+        "angleDegrees": 20.212162269429776,
+        "rootDistanceModelUnits": 0.6539808170665324
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "sit-clap",
+      "duration": 4.333333492279053,
+      "frames": 262,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008992080878622705,
+      "maxFrameStepDegreesBeforeLoopCorrection": 13.099448780280074,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -11.064536374644149,
+        "maximumLift": 11.064536374644149,
+        "minimumAfterLift": 2.277206953826545e-7
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_pinky1.l_046",
+        "angleDegrees": 0.41336239967709826,
+        "rootDistanceModelUnits": 0.0038558162314785704
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_pinky1.l_046",
+        "angleDegrees": 0.41336239967709826,
+        "rootDistanceModelUnits": 0.0038558162314785704
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "sit-to-stand",
+      "duration": 2.25,
+      "frames": 136,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008969833856276125,
+      "maxFrameStepDegreesBeforeLoopCorrection": 7.562728437751223,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -11.2696883226258,
+        "maximumLift": 11.2696883226258,
+        "minimumAfterLift": 1.991838566913623e-7
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "thigh_stretch.r_07",
+        "angleDegrees": 90.82196396432944,
+        "rootDistanceModelUnits": 24.1848628795914
+      },
+      "bakedLoopSeam": {
+        "worstBone": "thigh_stretch.r_07",
+        "angleDegrees": 90.82196396432944,
+        "rootDistanceModelUnits": 24.1848628795914
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "gk-high-catch",
+      "duration": 4.166666507720947,
+      "frames": 251,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008964505382882885,
+      "maxFrameStepDegreesBeforeLoopCorrection": 21.08731454460001,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -69.5872676784597,
+        "maximumLift": 69.5872679018828,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 124.7094642287938,
+        "rootDistanceModelUnits": 21.104558077211934
+      },
+      "bakedLoopSeam": {
+        "worstBone": "root.x_00",
+        "angleDegrees": 124.7094642287938,
+        "rootDistanceModelUnits": 21.10455815834699
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "gk-goal-kick",
+      "duration": 3.875,
+      "frames": 234,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008993702002248831,
+      "maxFrameStepDegreesBeforeLoopCorrection": 29.404332009158388,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -15.005480126986862,
+        "maximumLift": 15.005480298034886,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_pinky3.l_048",
+        "angleDegrees": 41.006818236738084,
+        "rootDistanceModelUnits": 1.4391783037056882
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_pinky3.l_048",
+        "angleDegrees": 41.006818236738084,
+        "rootDistanceModelUnits": 1.4391783037056882
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "gk-throw",
+      "duration": 2.8333332538604736,
+      "frames": 171,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 2.220446049250313e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008978967403885751,
+      "maxFrameStepDegreesBeforeLoopCorrection": 21.871278380501916,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -14.282854354491818,
+        "maximumLift": 14.282854542562859,
+        "minimumAfterLift": 0
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "c_pinky3.l_048",
+        "angleDegrees": 41.60340648434693,
+        "rootDistanceModelUnits": 2.041520675199102
+      },
+      "bakedLoopSeam": {
+        "worstBone": "c_pinky3.l_048",
+        "angleDegrees": 41.60340648434693,
+        "rootDistanceModelUnits": 2.041520675199102
+      },
+      "loopSeamPass": null
+    },
+    {
+      "name": "gk-ready",
+      "duration": 3.3333332538604736,
+      "frames": 201,
+      "channels": 53,
+      "coverage": "52/52 animated rotation channels + Hips translation",
+      "missingRotationChannels": [],
+      "finite": true,
+      "maxQuaternionNormError": 3.3306690738754696e-16,
+      "maxPrimarySegmentAlignmentDegreesBeforeLoopCorrection": 0.0008901297617355539,
+      "maxFrameStepDegreesBeforeLoopCorrection": 0.8846129194127895,
+      "grounding": {
+        "method": "Per-frame deformed vertex minimum Y lift, applied only when below pitch",
+        "minimumBeforeLift": -10.950016060603954,
+        "maximumLift": 10.950016060603954,
+        "minimumAfterLift": 4.763270349621672e-7
+      },
+      "cyclic": false,
+      "loopCorrection": "None: one-shot action",
+      "rawLoopSeam": {
+        "worstBone": "shoulder.l_039",
+        "angleDegrees": 0.025808587910694007,
+        "rootDistanceModelUnits": 0.0004522824981734175
+      },
+      "bakedLoopSeam": {
+        "worstBone": "shoulder.l_039",
+        "angleDegrees": 0.025808587910694007,
+        "rootDistanceModelUnits": 0.0004522824981734175
+      },
+      "loopSeamPass": null
+    }
+  ],
+  "originalBinaryPreserved": true,
+  "outputBytes": 6447080,
+  "outputSha256": "3bae40ccebd80a27a8b931d19ea4764e5b28b78fed4fffc0ce77b21fd2b5527e"
+}
