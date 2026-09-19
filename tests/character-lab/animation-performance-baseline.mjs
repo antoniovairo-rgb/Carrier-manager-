@@ -34,15 +34,16 @@ try {
   await page.evaluate(() => window.__CPM_FORCE_SIT && window.__CPM_FORCE_SIT(0, true));
   await page.waitForFunction(() => window.__CPM_GLB_READY === true, { timeout: 90000 });
   await sleep(3500);
-  await page.evaluate(() => { window.__CPM_AUDIT_DRAW.calls = 0; window.__CPM_AUDIT_DRAW.frames = 0; });
+  await page.evaluate(() => { window.__CPM_AUDIT_DRAW.calls = 0; window.__CPM_AUDIT_DRAW.frames = 0; window.__CPM_STRIDE = []; });
   const t0 = Date.now(); await sleep(6000); const elapsed = (Date.now() - t0) / 1000;
   const report = await page.evaluate(() => {
     const draw = window.__CPM_AUDIT_DRAW || {};
     const animation = window.__CPM_ANIM_AUDIT ? window.__CPM_ANIM_AUDIT() : null;
     const render = window.__CPM_RINFO769 ? window.__CPM_RINFO769() : null;
     const fps = window.__CPM_FPS907 ? window.__CPM_FPS907() : null;
+    const stride = Array.isArray(window.__CPM_STRIDE) ? window.__CPM_STRIDE.map(([speed]) => speed) : [];
     const memory = performance.memory ? { usedJSHeapSize: performance.memory.usedJSHeapSize, totalJSHeapSize: performance.memory.totalJSHeapSize } : null;
-    return { draw, animation, render, fps, memory };
+    return { draw, animation, render, fps, speed: stride.length ? { samples: stride.length, min: Math.min(...stride), max: Math.max(...stride) } : null, memory };
   });
   report.seconds = elapsed;
   report.drawsPerFrame = report.draw.frames ? +(report.draw.calls / report.draw.frames).toFixed(1) : null;

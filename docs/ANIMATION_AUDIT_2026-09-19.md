@@ -206,7 +206,7 @@ Legenda: **P** presente ma da prova visiva; **Parz.** presente solo nominalmente
 - Gestualità richieste pienamente coperte: **0**: nessuna ha ancora superato la verifica combinata di contesto, contatto, transizione, varietà e performance.
 - Problemi P0: **10**.
 - Problemi P1: **10**.
-- Performance del banco 3D: **23 avatar/mixer, 28 action attive, 23 skeleton update per frame, 1.105.088 triangoli, ~183 draw call/frame, 597 texture e 277 geometrie**. Il browser software del banco registra **4,4 FPS**: è un dato di costo riproducibile, non una stima del telefono.
+- Performance del banco 3D: **23 avatar/mixer, 28–44 action attive, 23 skeleton update per frame, ~1,10 milioni di triangoli, ~182–183 draw call/frame, 597–604 texture e 277–294 geometrie**. Il browser software del banco registra **2,6–4,4 FPS**: è un dato di costo riproducibile, non una stima del telefono.
 - Performance prima/dopo: **non confrontabile su mobile reale**. Il benchmark mobile fisico resta obbligatorio; il baseline del banco prova però che il budget 60 FPS non è ancora certificabile.
 - Regressioni note: nessuna regressione funzionale osservata nella build/home offline; la qualità in partita e il costo mobile non sono ancora certificati.
 
