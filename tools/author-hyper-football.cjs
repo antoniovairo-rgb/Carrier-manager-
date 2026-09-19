@@ -60,30 +60,44 @@ function author(sourceName, outputName) {
     const offset = positionOffset + i * positionStride;
     data.setFloat32(offset, x, true); data.setFloat32(offset + 4, y, true); data.setFloat32(offset + 8, z, true);
   };
-  /* The source was already reduced once. Scale the head around its geometric
-     centre, equally on all axes: scaling from the world origin flattened it
-     into an oval in the match camera. */
-  const head = [];
-  let headCenter = [0, 0, 0];
-  for (let i = 0; i < position.count; i++) {
-    const point = at(i);
-    if (point[1] > 142) { head.push(i); headCenter = headCenter.map((sum, axis) => sum + point[axis]); }
+
+  // Restore pristine positions before authoring; never stack reductions.
+  const pristine = readGlb(path.join(assets, 'hyper-casual-korward-animated.glb'));
+  const originalPositions = pristine.json.accessors[0];
+  const originalView = pristine.json.bufferViews[originalPositions.bufferView];
+  const originalOffset = (originalView.byteOffset || 0) + (originalPositions.byteOffset || 0);
+  for(let i=0;i<position.count;i++) setPosition(i,...[0,1,2].map(k=>pristine.bin.readFloatLE(originalOffset+i*12+k*4)));
+  const pristinePoints=Array.from({length:position.count},(_,i)=>at(i));
+  // Weld UV seams, then identify disconnected anatomical surfaces by topology.
+  const parent=pristinePoints.map((_,i)=>i);
+  const find=i=>{while(parent[i]!==i)i=parent[i];return i;};
+  const join=(a,b)=>{parent[find(a)]=find(b);};
+  const weld=new Map();
+  pristinePoints.forEach((p,i)=>{const key=p.map(v=>v.toFixed(3)).join();if(weld.has(key))join(i,weld.get(key));else weld.set(key,i);});
+  for(let i=0;i<indices.count;i+=3){const ids=[0,1,2].map(k=>data.getUint32(indexOffset+(i+k)*4,true));join(ids[0],ids[1]);join(ids[0],ids[2]);}
+  const groups=new Map();pristinePoints.forEach((_,i)=>{const id=find(i);if(!groups.has(id))groups.set(id,[]);groups.get(id).push(i);});
+  const body=[...groups.values()].sort((a,b)=>b.length-a.length)[0];
+  const bodySet=new Set(body),headSet=new Set(pristinePoints.map((_,i)=>i).filter(i=>!bodySet.has(i)));
+  if(headSet.size!==1005)throw new Error('Unexpected source topology: inspect before authoring');
+  // One similarity transform for face, eyes, brows and hair, anchored at neck.
+  const headScale=.52, anchor=[0,118.55657196044922,0];
+  let min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
+  for(let i=0;i<position.count;i++){
+    const point=pristinePoints[i].map((v,k)=>headSet.has(i)?anchor[k]+(v-anchor[k])*headScale:v);
+    setPosition(i,...point);point.forEach((v,k)=>{min[k]=Math.min(min[k],v);max[k]=Math.max(max[k],v);});
   }
-  headCenter = headCenter.map(value => value / head.length);
-  const headSet = new Set(head);
-  let min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
-  for (let i = 0; i < position.count; i++) {
-    let [x, y, z] = at(i);
-    if (headSet.has(i)) {
-      const scale = 0.72;
-      x = headCenter[0] + (x - headCenter[0]) * scale;
-      y = headCenter[1] + (y - headCenter[1]) * scale;
-      z = headCenter[2] + (z - headCenter[2]) * scale;
-      setPosition(i, x, y, z);
-    }
-    min = min.map((value, axis) => Math.min(value, [x, y, z][axis]));
-    max = max.map((value, axis) => Math.max(value, [x, y, z][axis]));
-  }
+  // Use the original UV atlas to distinguish skin from cloth, before any scale.
+  const {PNG}=require('../tests/visual/node_modules/pngjs');
+  const imageView=pristine.json.bufferViews[pristine.json.images[0].bufferView];
+  const png=PNG.sync.read(pristine.bin.subarray(imageView.byteOffset,imageView.byteOffset+imageView.byteLength));
+  const uvAccessor=json.accessors[original.attributes.TEXCOORD_0],uvView=json.bufferViews[uvAccessor.bufferView];
+  const uvOffset=(uvView.byteOffset||0)+(uvAccessor.byteOffset||0);
+  const skinAt=(tri)=>{
+    const uv=[0,1].map(k=>tri.reduce((v,i)=>v+data.getFloat32(uvOffset+i*8+k*4,true),0)/3);
+    const x=Math.max(0,Math.min(png.width-1,Math.round(uv[0]*(png.width-1)))),y=Math.max(0,Math.min(png.height-1,Math.round(uv[1]*(png.height-1))));
+    const o=(y*png.width+x)*4,[r,g,b]=png.data.subarray(o,o+3);
+    return r>g*1.12 && g>b*1.08 && r>70;
+  };
   position.min = min; position.max = max;
   const parts = [[], [], [], [], []]; // skin+head, shirt, shorts, socks, boots
   const shirtTriangles = [];
@@ -93,14 +107,14 @@ function author(sourceName, outputName) {
       data.getUint32(indexOffset + (i + 1) * indexStride, true),
       data.getUint32(indexOffset + (i + 2) * indexStride, true)
     ];
-    const points = tri.map(at);
+    const points = tri.map(i=>pristinePoints[i]);
     const y = points.reduce((sum, point) => sum + point[1], 0) / 3;
     const x = Math.abs(points.reduce((sum, point) => sum + point[0], 0) / 3);
     let part = 0;
-    if (y >= 142) part = 0; // face and hair remain baked in the source texture
-    else if (y >= 78) part = x > 38 ? 0 : 1; // arms stay skin, torso becomes shirt
-    else if (y >= 50) part = x > 42 ? 0 : 2;
-    else if (y >= 23) part = x > 40 ? 0 : 3;
+    if (tri.every(i=>headSet.has(i)) || skinAt(tri)) part = 0;
+    else if (y >= 60) part = 1;
+    else if (y >= 30) part = 2;
+    else if (y >= 10) part = 3;
     else part = 4;
     if (part === 1) shirtTriangles.push({ tri, x: points.reduce((sum, point) => sum + point[0], 0) / 3, y });
     else parts[part].push(...tri);
