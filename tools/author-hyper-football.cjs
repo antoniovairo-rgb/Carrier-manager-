@@ -60,12 +60,27 @@ function author(sourceName, outputName) {
     const offset = positionOffset + i * positionStride;
     data.setFloat32(offset, x, true); data.setFloat32(offset + 4, y, true); data.setFloat32(offset + 8, z, true);
   };
-  /* The previous correction reduced the head once. This second, decisive pass
-     acts on the actual vertex buffer and keeps neck, skinning and clips intact. */
+  /* The source was already reduced once. Scale the head around its geometric
+     centre, equally on all axes: scaling from the world origin flattened it
+     into an oval in the match camera. */
+  const head = [];
+  let headCenter = [0, 0, 0];
+  for (let i = 0; i < position.count; i++) {
+    const point = at(i);
+    if (point[1] > 142) { head.push(i); headCenter = headCenter.map((sum, axis) => sum + point[axis]); }
+  }
+  headCenter = headCenter.map(value => value / head.length);
+  const headSet = new Set(head);
   let min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
   for (let i = 0; i < position.count; i++) {
     let [x, y, z] = at(i);
-    if (y > 142) { x *= 0.65; z *= 0.65; y = 142 + (y - 142) * 0.65; setPosition(i, x, y, z); }
+    if (headSet.has(i)) {
+      const scale = 0.72;
+      x = headCenter[0] + (x - headCenter[0]) * scale;
+      y = headCenter[1] + (y - headCenter[1]) * scale;
+      z = headCenter[2] + (z - headCenter[2]) * scale;
+      setPosition(i, x, y, z);
+    }
     min = min.map((value, axis) => Math.min(value, [x, y, z][axis]));
     max = max.map((value, axis) => Math.max(value, [x, y, z][axis]));
   }
