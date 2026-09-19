@@ -5,6 +5,7 @@
   "description": "Korward Elite — Football Career Simulator (packaging Capacitor per Google Play)",
   "scripts": {
     "audit:animation": "node tests/character-lab/animation-inventory.cjs",
+    "audit:animation-performance": "node tests/character-lab/animation-performance-baseline.mjs",
     "build:web": "node tools/build-dist.mjs",
     "validate:web": "node tools/validate-dist.mjs",
     "package": "npm run build:web && npx cap sync android",
