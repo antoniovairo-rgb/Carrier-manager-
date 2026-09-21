@@ -889,13 +889,26 @@ function FestaFine942({dati,onChiudi}){
       </div>
     </div>);
 }
+/* [7.956 · rilievo PO «il freeze dei pulsanti azioni post scegli ridicolo, troppo lungo»]
+   QUANTO RESTANO SPENTI I BOTTONI DELLA SCELTA. La storia di questo numero, per intero, perche' e'
+   la seconda volta che si muove e la direttiva e' cambiata:
+     · nasce a 450 ms per un difetto vero del PO — il dito che ha appena premuto «Scegli» o una freccia
+       del D-pad RICADE sul primo bottone e sceglie da solo (tocco di rimbalzo);
+     · la 7.926 lo porta a 1.200 ms su richiesta del PO («un secondo o due… e' il tempo di leggere»);
+     · oggi il PO lo boccia dal suo telefono: «ridicolo, troppo lungo». LA NUOVA DIRETTIVA SOSTITUISCE
+       LA PRECEDENTE, e con essa cade anche la giustificazione del «tempo di leggere»: il tempo di
+       leggere lo da' la scena, non un bottone spento.
+   Resta SOLO la protezione dal rimbalzo del tocco, che e' un fatto fisico e non un'opinione: 250 ms.
+   Rosso `__CPM_NO956` = il comportamento di ieri (1.200 ms). */
+const _ARMO956=(typeof window!=='undefined'&&window.__CPM_NO956)?1200:250;
+
 function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
   const [armato,setArmato]=React.useState(false);
   const chiave=(com&&com.t)+"|"+String((com&&com.text)||"").slice(0,24);
   React.useEffect(()=>{setArmato(false);
     /* [difetto del PO] il dito che ha appena premuto una freccia del D-pad ricade sul primo bottone:
        le opzioni nascono disarmate e si armano dopo 450 ms, il tempo di staccare il pollice. */
-    const h=setTimeout(()=>setArmato(true),1200);/* [7.926] da 450 ms a 1,2 s: il PO ha chiesto «un secondo o due» prima che le scelte diventino cliccabili, ed e lo stesso tempo della scheda dell azione */return()=>clearTimeout(h);},[chiave]);
+    const h=setTimeout(()=>setArmato(true),_ARMO956);/* [7.956] stessa costante della scheda d'azione: i due ritardi devono restare uguali, o il gioco risponde in due tempi diversi alla stessa domanda */return()=>clearTimeout(h);},[chiave]);
   if(!com||!com.sc||com.sci!=null)return null;
   const F=_FAM919[com.fam]||_FAM919.EROE;
   const eroe=com.fam==="EROE"||!com.fam;
@@ -2635,7 +2648,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(typeof window!=='undefined'&&window.__CPM_NO926){setSceltePronte(true);return;}
     if(phase!=="hl_choose"){setSceltePronte(false);return;}
     setSceltePronte(false);
-    const h=setTimeout(()=>setSceltePronte(true),1200);
+    const h=setTimeout(()=>setSceltePronte(true),_ARMO956);
     return()=>clearTimeout(h);
   },[phase,hlIdx]);
   const addCom=useCallback((text,color,t,sc,opts)=>{lastComWallRef.current=Date.now();

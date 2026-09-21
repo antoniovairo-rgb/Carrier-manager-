@@ -171,7 +171,8 @@
     "memoria": "node memoria-927.mjs",
     "memoria:rosso": "node memoria-927.mjs --rosso",
     "pallino-sostituito": "node pallino-sostituito.mjs",
-    "completamento": "node completamento.mjs"
+    "completamento": "node completamento.mjs",
+    "armo-scelte": "node armo-scelte.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

@@ -194,7 +194,7 @@ function MISURA(W) {
        schermate lo meritano davvero: `schermate` e' l'altezza del documento diviso l'altezza
        dello schermo del PO (915 px). 1,0 = tutto sopra la piega. 3,0 = tre schermate di
        scorrimento. Non e' un guardiano: e' il numero che dice DOVE serve un accordion. */
-    altezzaPx: 0, schermate: 0, scorritore: '', blocchi: [], etichette: {}, nEmojiChar: 0, doveEmoji: [] };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
+    altezzaPx: 0, schermate: 0, scorritore: '', blocchi: [], etichette: {}, nEmojiChar: 0, doveEmoji: [], hVoce: 0, hSostieni: 0, hFeedback: 0 };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
 
   const de = document.documentElement;
 
@@ -466,6 +466,18 @@ function MISURA(W) {
     }
     R.nEmojiChar = emo; R.doveEmoji = dove;
   } catch (_e) { R.etichette = {}; R.nEmojiChar = -1; R.doveEmoji = []; }
+  /* [21/09 · PO «aumenta un po' l'altezza dei pulsanti menu' e riduci in altezza il sostieni»]
+     LE STRISCE DI FONDO hanno un'altezza, e va misurata: la voce di menu' e' un bersaglio per il dito
+     (la soglia consigliata per il tocco e' 44 px), le strisce di servizio sono solo un invito. */
+  try {
+    const h = (sel2) => { const e = document.querySelector(sel2); if (!e) return 0; const r = e.getBoundingClientRect(); return Math.round(r.height); };
+    const nav = document.querySelectorAll('button[title$="[M]"], button[title="Impostazioni"]');
+    let hv = 0; nav.forEach(b => { const r = b.getBoundingClientRect(); if (r.height > hv) hv = Math.round(r.height); });
+    let hd = 0, hf = 0;
+    document.querySelectorAll('button[title^="Sostieni"]').forEach(b => { hd = Math.round(b.getBoundingClientRect().height); });
+    document.querySelectorAll('button[title^="Invia idee"]').forEach(b => { hf = Math.round(b.getBoundingClientRect().height); });
+    R.hVoce = hv; R.hSostieni = hd; R.hFeedback = hf;
+  } catch (_e) { R.hVoce = -1; R.hSostieni = -1; R.hFeedback = -1; }
   R.nColTesto = _colT.size; R.nFondi = _fon.size; R.nCorpi = _cor.size; R.nPesi = _pes.size; R.nRaggi = _rag.size;
   R.corpi = [..._cor].sort((a, b) => a - b);
   R.raggi = [..._rag].sort((a, b) => a - b);
@@ -809,6 +821,11 @@ righe.forEach(s => {
   (best.m.contenuti || []).slice(0, 3).forEach(f => { nCont++; R.push(`| ${s.nome} | ${best.w} | \`${f.sel}\` | ${f.px} | ${f.txt.replace(/\|/g, '/')} |`); });
 });
 if (!nCont) R.push('| — | — | niente | — | — |');
+R.push('');
+
+tab('9-ter · ALTEZZA delle strisce di fondo — voce di menu\' / sostieni / idee (px)', m => `${m.hVoce} / ${m.hSostieni} / ${m.hFeedback}`);
+R.push('> La voce di menu\' e\' un bersaglio per il dito: la soglia consigliata per il tocco e\' **44 px**.');
+R.push('> Le due strisce di servizio sono un invito, non un comando, e possono stare piu\' basse.');
 R.push('');
 
 tab('9-bis · EMOJI rese (il provino approvato dal PO non ne ha nessuna)', m => `${m.nEmojiChar}`, w => somma(w, 'nEmojiChar'));
