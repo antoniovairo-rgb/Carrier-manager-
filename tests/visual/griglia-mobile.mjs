@@ -99,6 +99,23 @@ const SAVE = { phase: 'career', player: {
   club: { id: 'sal', n: 'FC Salernum', a: 'SAL', p: 52, c: '#6c1f2e', c2: '#f5f5f4', nat: '🇮🇹', lg: 'Lega A' },
   stats: { 'velocità': 82, tecnica: 81, fisico: 80, 'mentalità': 82, tiro: 84, passaggio: 81, dribbling: 83, posizionamento: 82 },
   form: 78, morale: 70, fatigue: 18, contract: { duration: 2, wage: 220000, expiresAtSeason: 6 }, bankBalance: 4560000,
+  /* [G8.3 · 21/09] TROFEI e STORICO ALLENATORI, che prima NON C'ERANO.
+     Il salvataggio di prova e' fermo alla S.4 e non aveva ne' trofei ne' allenatori passati:
+     due delle sezioni piu' lunghe del Profilo NON venivano proprio rese, e il metro non poteva
+     vedere ne' il loro costo ne' il beneficio di richiuderle. Con una carriera vuota di archivio
+     una fisarmonica sembra non servire a niente — e non e' vero, e' il banco che e' cieco.
+     Tutti i numeri di altezza e di nodi di testo citati PRIMA del 21/09 sono stati misurati
+     senza queste due voci: non si confrontano con quelli di dopo. */
+  trophies: [
+    { season: 2, club: 'FC Lipsia', league: 'Deutsche Liga' },
+    { season: 3, club: 'FC Lipsia', league: 'Coppa di Germania', type: 'cup' },
+    { season: 3, club: 'Italia', league: 'Coppa delle Nazioni', type: 'int', isNational: true },
+  ],
+  coachHistory: [
+    { name: 'Rocco Marani', style: 'Catenaccio moderno', season: 2, goals: 11, assists: 4, coachTrust: 54 },
+    { name: 'Uwe Brandt', style: 'Gegenpressing', season: 3, goals: 19, assists: 7, coachTrust: 81, coachChanged: true },
+    { name: 'Nino Falcone', style: 'Possesso corto', season: 4, goals: 14, assists: 6, coachTrust: 78 },
+  ],
   history: [{ clubId: 'rbl', club: 'FC Lipsia', season: 3 }] } };
 
 /* envelope dei provini conclusi: e' la via per aprire la schermata OFFERTE senza giocare i provini */

@@ -9055,8 +9055,8 @@ const getThisWeekMatchday=()=>{
             ].filter(r=>r.v>0);
             if(!_rows.length&&_proj===null)return null;
             return(
-              <Card style={{padding:"12px 14px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏅 Record Personali</div>
+              <Fisarmonica id="profilo-record" icona="🏅" titolo="Record personali" quante={_rows.length||null}>
+              <Card style={{padding:"12px 14px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 {_rows.map((r,i)=>(
                   <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:`1px solid ${TH.cardBorder}`}}>
                     <span style={{fontSize:13,width:18,flexShrink:0}}>{r.e}</span>
@@ -9074,6 +9074,7 @@ const getThisWeekMatchday=()=>{
                   </div>
                 )}
               </Card>
+              </Fisarmonica>
             );
           })()}
           {/* Sprint 71 — Bacheca Trofei */}
@@ -9086,7 +9087,8 @@ const getThisWeekMatchday=()=>{
               {key:"int",label:"Nazionale",e:"🌍",filter:t=>t.type==="int"||t.isNational},
             ].map(g=>({...g,items:_tr.filter(g.filter)})).filter(g=>g.items.length>0);
             return(
-              <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#1c0d04,#2d1507)",border:"1px solid rgba(234,179,8,0.35)"}}>
+              <Fisarmonica id="profilo-trofei" icona="🏆" titolo="Bacheca trofei" quante={_tr.length}>
+              <Card style={{padding:"12px 14px",background:"linear-gradient(135deg,#1c0d04,#2d1507)",border:"1px solid rgba(234,179,8,0.35)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px"}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
                   <div style={{fontSize:FS.caption,color:"#fde68a",textTransform:"uppercase",letterSpacing:1.5}}>🏆 Bacheca Trofei</div>
                   <div style={{fontSize:13,fontWeight:900,color:"#fde68a"}}>{_tr.length} trofei</div>
@@ -9105,14 +9107,15 @@ const getThisWeekMatchday=()=>{
                   </div>
                 ))}
               </Card>
+              </Fisarmonica>
             );
           })()}
           {/* Sprint 70 — Storico Allenatori */}
           {(player.coachHistory||[]).length>0&&(()=>{
             const _ch70=[...(player.coachHistory||[])].reverse();
             return(
-              <Card style={{padding:"12px 14px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🧑‍💼 Storico Allenatori</div>
+              <Fisarmonica id="profilo-allenatori" icona="🧑‍💼" titolo="Storico allenatori" quante={_ch70.length}>
+              <Card style={{padding:"12px 14px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 <div style={{display:"flex",flexDirection:"column",gap:0}}>
                   {_ch70.slice(0,6).map((ch,i)=>{
                     const _cColor=(ch.coachTrust||60)>=70?TH.success:(ch.coachTrust||60)>=50?TH.primary:TH.warning;
@@ -9133,6 +9136,7 @@ const getThisWeekMatchday=()=>{
                   })}
                 </div>
               </Card>
+              </Fisarmonica>
             );
           })()}
           {/* Sprint 57 — Rivale NPC card potenziata */}

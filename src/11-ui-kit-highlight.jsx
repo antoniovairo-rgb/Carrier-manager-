@@ -104,6 +104,40 @@ function SectionHeader({children,icon,right,style={}}){
   </div>);
 }
 
+/* [G8.3 · direttiva PO 21/09 «se una schermata e' troppo lunga valuta se mettere degli accordion»]
+   FISARMONICA — una sezione che si apre e si chiude.
+   IL NUMERO CHE L'HA CHIESTA. La griglia mobile misura l'altezza dello scorritore vero
+   (div.cpm-scroll, non il documento: il documento risponde sempre 915 px ed e' falso).
+   A 412 px, in schermate da 915: Carriera · Profilo 3.394 px = 3,71 schermate ·
+   Dashboard 2.704 = 2,96 · Club 2.341 = 2,56. Le altre cinque stanno in una schermata sola.
+   REGOLE, perche' un accordion mal fatto nasconde il gioco invece di ordinarlo:
+     · si chiude quello che si CONSULTA (albo, storico, record), mai quello che si USA;
+     · il cappello dice sempre QUANTO c'e' dentro (il numero di voci), cosi' chiuso non mente;
+     · la scelta del giocatore RESTA (safeLS per id) — riaprire la stessa sezione a ogni
+       ingresso sarebbe peggio di non averla chiusa;
+     · e' un <button> vero con aria-expanded: chi naviga da tastiera o con la voce lo trova;
+     · corpo del cappello >= FS.caption (11 px, il pavimento dichiarato) e colori dai token,
+       cosi' non apre un buco nel contrasto misurato dalla griglia. */
+function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
+  const _k="cpm-fis-"+id;
+  const[apr,setApr]=useState(()=>{try{const v=safeLS.get(_k);return v==null?!!aperta:v==="1";}catch(_e){return !!aperta;}});
+  const cambia=()=>{setApr(p=>{const n=!p;try{safeLS.set(_k,n?"1":"0");}catch(_e){}return n;});};
+  return(
+    <div style={{marginBottom:SP.md,...style}}>
+      <button onClick={cambia} aria-expanded={apr} className="cpm-press"
+        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"10px 12px",cursor:"pointer",
+          background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),
+          borderBottom:apr?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
+        {icona&&<span style={{fontSize:13,flexShrink:0}}>{icona}</span>}
+        <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{titolo}</span>
+        {quante!=null&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint}}>{quante}</span>}
+        <span aria-hidden style={{marginLeft:"auto",fontSize:13,color:TH.faint,lineHeight:1,
+          transform:apr?"rotate(90deg)":"none",transition:"transform "+MO.fast+"ms"}}>&#8250;</span>
+      </button>
+      {apr&&<div>{children}</div>}
+    </div>);
+}
+
 /* Badge / Chip — pill semantica. tone: neutral|primary|win|draw|loss|info|warn|gold|record|energy. */
 const _BADGE_TONE={
   neutral:["surface2","muted","divider"],primary:["primaryTint","primary","primaryBorder"],
