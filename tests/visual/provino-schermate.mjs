@@ -36,6 +36,9 @@ const PAGINE = [
   { f: 'home.html',      nome: 'Home' },
   { f: 'stagione.html',  nome: 'Stagione · Classifica' },
   { f: 'club.html',      nome: 'Club' },
+  { f: 'profilo.html',   nome: 'Carriera · Profilo' },
+  { f: 'agente.html',    nome: 'Agente' },
+  { f: 'calendario.html',nome: 'Stagione · Calendario' },
 ];
 
 const browser = await chromium.launch({ executablePath: process.env.CPM_CHROME, args: ['--no-sandbox', '--disable-dev-shm-usage'] });

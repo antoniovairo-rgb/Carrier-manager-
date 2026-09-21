@@ -34,6 +34,11 @@
   --c1:11px; --c2:12.5px; --c3:14px; --c4:16px; --c5:19px; --c6:26px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+/* [G8.5] IL CORPO DI FABBRICA DEL BROWSER NON DEVE POTER ENTRARE. `small` senza corpo dichiarato
+   vale 0,8333em = 13,3 px, e 13,3 non e' nella scala: e' comparso due volte in questo provino
+   (una nei bottoni con la scorciatoia `font` non valida, una qui) e tutte e due le volte l'ha
+   trovato il censimento dei corpi, non l'occhio. Qui si chiude la porta una volta sola. */
+small{font-size:var(--c1)}
 body{background:var(--sfondo);color:var(--inchiostro);
   font:400 var(--c3)/1.35 "Barlow",-apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
   -webkit-font-smoothing:antialiased;padding-bottom:78px}
@@ -131,3 +136,25 @@ body{background:var(--sfondo);color:var(--inchiostro);
 .nav div{padding:10px 0 11px;text-align:center;font-size:var(--c1);font-weight:600;color:var(--terzo);
   font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .nav div.on{color:var(--accento);font-weight:700;box-shadow:inset 0 3px 0 var(--accento)}
+
+/* ---- FISARMONICA: si chiude quello che si CONSULTA, mai quello che si USA.
+   Il cappello dice sempre QUANTE voci nasconde: chiuso non deve mentire. ---- */
+.fis{background:var(--carta);border:1px solid var(--filo);border-radius:6px;box-shadow:var(--ombra);margin-bottom:8px;overflow:hidden}
+.fis > .cap2{display:flex;align-items:center;gap:9px;padding:11px 12px;width:100%;cursor:pointer}
+.fis .t{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--inchiostro)}
+.fis .q{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);font-weight:700;color:var(--terzo)}
+.fis .ch{margin-left:auto;color:var(--terzo);font-size:var(--c4);line-height:1}
+.fis.on > .cap2{border-bottom:1px solid var(--filo)}
+.fis .corpo{padding:0}
+/* ---- riga di elenco con scudo (calendario, rose, classifiche brevi) ---- */
+.el{display:flex;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid var(--filo)}
+.el:first-child{border-top:none}
+.el .nm{font-size:var(--c3);font-weight:600;line-height:1.2}
+.el .sub{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--terzo);margin-top:2px}
+.el .dx{margin-left:auto;text-align:right;flex:none}
+.el.ora{background:var(--accento-tenue)}
+.dove{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c1);font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;
+  background:var(--sfondo);color:var(--secondo);flex:none}
