@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** `poc/marioprada-character-system-local` — solo locale, non pubblicato.
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 21 settembre 2026, 22:31
-**Stato complessivo stimato:** 75% — stima, non quality gate finale.
+**Ultimo aggiornamento:** 21 settembre 2026, 23:08
+**Stato complessivo stimato:** 78% — stima, non quality gate finale.
 **Fase corrente:** 4/7 — selettore LOD locale, gesto reale e sincronismo palla sul roster CGTrader.
 
 ## Obiettivo vincolante
@@ -19,7 +19,7 @@ Il sistema deve ereditare dai dati di gioco kit e pattern del club, ruolo, numer
 | Modello | **PASS con vincoli:** Soccer Player Hisenberg/CGTrader è il candidato scelto: adulto, kit completo, licenza acquistata, sorgente Blender e rig riutilizzabile. | Non cercare un’altra base senza una comparazione che superi questi requisiti. |
 | LOD locale | **PASS tecnico locale:** 23 avatar, tre LOD animati compatibili ciascuno; Hero sempre LOD0, swap per distanza, promozione a LOD0 pre-gesto e blocco dello swap durante dribbling. | Sequenza tecnica reale, non simulata, con palla e telecamera. |
 | Scala roster | **CORRETTA localmente:** il roster non usa più il bounding box del modello deformato, ma l’altezza delle ossa; smoke locale senza errori. | Riesame visivo sul telefono: nessuna dichiarazione di pass finché non si confermano proporzioni, kit e animazioni in camera. |
-| Dribbling roster LOD | **IN CORSO:** il probe robusto conferma clip `dribble`, LOD0 e marker sinistro 0,27/destro 0,36; il terzo marker sinistro 0,79 è intermittente quando la scena passa rapidamente alla scelta. Il precedente pass tecnico è quindi ritirato. | Rendere deterministico il terzo contatto, poi rivedere in camera busto/braccia, recupero e misura mobile reale. |
+| Dribbling roster LOD | **PASS tecnico locale:** la clip completa registra sinistro 0,226, destro 0,327 e sinistro 0,732; ogni appoggio è dell’Hero in LOD0. La fase passa in `hl_result` mantenendo l’Hero a LOD0 e senza errori browser. | Riesame visivo in camera di busto/braccia, recupero e misura mobile reale. |
 | Prestazioni mobile | **FAIL aperto:** le misure utente precedenti sono 11–16 FPS; il benchmark browser locale non sostituisce Android/iOS. | Frame time, FPS, memoria e qualità nei primi piani su telefono. |
 | Pubblicazione | **NON ESEGUITA:** nessun commit nuovo è stato pushato, `main` e GitHub Pages restano invariati. | Solo dopo tutti i quality gate e una destinazione preview separata approvata. |
 ## Controllo stato — 21 settembre 2026, 21:42
@@ -235,3 +235,5 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 | 21/09/2026, 22:18 | Reso più severo il probe del dribbling a LOD misti e corretto il verdetto. | Il marker viene azzerato per ogni scena e il test aspetta la clip reale prima del campionamento. Sinistro u=0,27 e destro u=0,36 sono emessi da `dribble` dell’Hero in LOD0; il sinistro u=0,79 resta intermittente quando `hl_move` passa a `hl_choose`. Audit materiali del GLB: solo `HyperShirt` e `HyperShorts` sono nominati per l’eredità del kit; non esistono componenti capelli/calzettoni/scarpe separati. | RITIRATO il pass tecnico precedente: il gate dribbling resta IN CORSO. Serve correggere il terzo tocco e costruire adattatori asset per le parti non mappate; nessun push, main e Pages invariati. |
 
 | 21/09/2026, 22:31 | Corretta la scala del roster CGTrader nella preview locale. | Il calcolo basato sul bounding box del modello animato sottostimava l’altezza e ingrandiva i giocatori. Sostituito con la distanza reale tra le ossa, sia al caricamento sia nei tre LOD. Smoke locale: 23 avatar, 69 varianti, risorse LOD 200 e zero errori browser. Il test dribbling mantiene i primi due contatti (0,27 sinistro; 0,36 destro) a LOD0; il terzo 0,79 resta intermittente. | Scala corretta in locale, ma il quality gate visivo/mobile resta aperto: verificare sul telefono proporzioni, kit, braccia/busto e FPS prima di qualunque pubblicazione. |
+
+| 21/09/2026, 23:08 | Stabilizzato il dribbling CGTrader completo nel roster a LOD misti. | La clip retarget era molto breve (circa 0,42 s): rallentata localmente a 0,45x per rendere leggibili i tre appoggi senza alterare esito o traiettoria. Il nuovo probe osserva il clock reale della clip, non tempi iniettati: sinistro 0,226, destro 0,327, sinistro 0,732; tutti emessi da `dribble` dell’Hero in LOD0. Dopo la scelta, `hl_result` conserva Hero LOD0; zero errori browser. | PASS tecnico locale per il gesto e il sincronismo marker-palla. Restano obbligatori il collaudo visivo delle braccia/busto, le transizioni in camera e performance/memoria mobile; nessuna pubblicazione. |

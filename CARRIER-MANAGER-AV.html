@@ -12430,7 +12430,7 @@ function ThreeMatchView(props){
             visual.visible=false;return state;
           };
           _next.forEach((avatar,index)=>{const variants=avatar._cgLodVariants={};variants[avatar._cgLod]=_stateOf(avatar);lodPackages.forEach(candidate=>{const key=candidate&&candidate._cgLod;if(key&&!variants[key])variants[key]=_makeVariant(avatar,candidate,index);});});
-          try{window.__CPM_CGTRADER_LOD_AUDIT=()=>{const list=(glbAvatars||[]).filter(Boolean),counts={lod0:0,lod1:0,lod2:0};let variants=0;list.forEach(a=>{if(a&&a._cgLod&&counts[a._cgLod]!==undefined)counts[a._cgLod]++;variants+=a&&a._cgLodVariants?Object.keys(a._cgLodVariants).length:0;});const heights=list.map(a=>{try{const b=new THREE.Box3().setFromObject(a.root),s=new THREE.Vector3();b.getSize(s);return {hero:!!a._isHero,lod:a._cgLod||null,height:+s.y.toFixed(3)};}catch(_e){return null;}}).filter(Boolean);return {avatars:list.length,active:counts,variants,heights,stats:{..._cgtraderLodStats}};};window.__CPM_CGTRADER_LOD_TEST=()=>{const a=(glbAvatars||[]).find(x=>_cgtraderLodCanSwap(x)&&x._cgLod!=='lod0');if(!a)return {ok:false,reason:'no-safe-avatar'};const before=a._cgLod,promoted=_activateCgtraderLod(a,'lod0','technical'),atGestureStart=a._cgLod,saved=a._gName;a._gName='dribble';const held=!_activateCgtraderLod(a,before,'test-lock');a._gName=saved;return {ok:promoted&&atGestureStart==='lod0'&&held,before,atGestureStart,held,stats:{..._cgtraderLodStats}};};}catch(_e){}
+          try{window.__CPM_CGTRADER_LOD_AUDIT=()=>{const list=(glbAvatars||[]).filter(Boolean),counts={lod0:0,lod1:0,lod2:0};let variants=0;list.forEach(a=>{if(a&&a._cgLod&&counts[a._cgLod]!==undefined)counts[a._cgLod]++;variants+=a&&a._cgLodVariants?Object.keys(a._cgLodVariants).length:0;});const heights=list.map(a=>{try{const b=new THREE.Box3().setFromObject(a.root),s=new THREE.Vector3();b.getSize(s);return {hero:!!a._isHero,lod:a._cgLod||null,height:+s.y.toFixed(3)};}catch(_e){return null;}}).filter(Boolean);return {avatars:list.length,active:counts,heroLod:((list.find(a=>a&&a._isHero)||{})._cgLod)||null,variants,heights,stats:{..._cgtraderLodStats}};};window.__CPM_CGTRADER_LOD_TEST=()=>{const a=(glbAvatars||[]).find(x=>_cgtraderLodCanSwap(x)&&x._cgLod!=='lod0');if(!a)return {ok:false,reason:'no-safe-avatar'};const before=a._cgLod,promoted=_activateCgtraderLod(a,'lod0','technical'),atGestureStart=a._cgLod,saved=a._gName;a._gName='dribble';const held=!_activateCgtraderLod(a,before,'test-lock');a._gName=saved;return {ok:promoted&&atGestureStart==='lod0'&&held,before,atGestureStart,held,stats:{..._cgtraderLodStats}};};}catch(_e){}
         }
         _legacy.forEach(old=>{if(old&&old.root&&old.root.parent)old.root.parent.remove(old.root);});
         _next.forEach(avatar=>scene.add(avatar.root));glbAvatars=_next;try{if(_cgtraderMixedLodBenchmark){const counts={lod0:0,lod1:0,lod2:0};_next.forEach(a=>{if(a&&a._cgLod&&counts[a._cgLod]!==undefined)counts[a._cgLod]++;});window.__CPM_CGTRADER_LOD_MIX=counts;}}catch(_e){}
@@ -15211,7 +15211,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           wall-clock marker could skip a footfall while the body was still at an earlier clip frame. */
        const _cgAvatar=(typeof glbAvatars!=="undefined"&&glbAvatars&&glbAvatars[0])||null;
        const _cgAction=_cgAvatar&&_cgAvatar._gName==="dribble"&&_cgAvatar._gAct?_cgAvatar._gAct:null;
-       const _cgDribbleTouch=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&P.matchPhase==="hl_move"&&P.hlIntent==="dribble"&&!P.hlDef&&!ballArcActive&&hero&&_cgAction);
+       const _cgDribbleTouch=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble"&&!P.hlDef&&!ballArcActive&&hero&&_cgAction);
        if(_cgDribbleTouch){
          const _clipDur=(function(){try{const _c=_cgAction.getClip();return (_c&&_c.duration)||1.3333;}catch(_e){return 1.3333;}})();
          const _testU=(typeof window!=="undefined"&&window.__CPM_REC)?Number(window.__CPM_CGTRADER_DRIBBLE_TEST_TIME):NaN; const _u=Number.isFinite(_testU)?clamp(_testU,0,1):clamp((+_cgAction.time||0)/_clipDur,0,1);
@@ -15221,7 +15221,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
          const _cx=hero.position.x+_fx*0.78+_fz*_side,_cz=hero.position.z+_fz*0.78-_fx*_side;
          ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*12,1);
-         if(typeof window!=="undefined"){window.__CPM_CGTRADER_DRIBBLE_TOUCH={u:+_u.toFixed(3),side:+_side.toFixed(3),contact:_contact,gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null};if(window.__CPM_REC&&sr.current._cgDribbleLastContact!==_contact){sr.current._cgDribbleLastContact=_contact;const _log=window.__CPM_CGTRADER_DRIBBLE_CONTACTS||(window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[]);if(_log.length<16)_log.push({contact:_contact,u:+_u.toFixed(3)});}}
+         if(typeof window!=="undefined"){window.__CPM_CGTRADER_DRIBBLE_TOUCH={u:+_u.toFixed(3),side:+_side.toFixed(3),contact:_contact,gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null};if(window.__CPM_REC&&sr.current._cgDribbleLastContact!==_contact){sr.current._cgDribbleLastContact=_contact;const _log=window.__CPM_CGTRADER_DRIBBLE_CONTACTS||(window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[]);if(_log.length<16)_log.push({contact:_contact,u:+_u.toFixed(3),gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null});}}
        } else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
          const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
@@ -20337,7 +20337,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // EROE: mappa actType→gesto (volée se variante shot_volley; cross/freekick riusano 'kick'). dribble/pass/build → solo locomozione.
         let _gName=null;
         /* CGTrader review only: a dribble intent begins with the authored body-control clip while the ball is already held at the Hero feet. This is renderer choreography, not a match decision. */
-        const _cgtraderDribbleApproach=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&P.matchPhase==="hl_move"&&P.hlIntent==="dribble");
+        const _cgtraderDribbleApproach=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble");
         /* [7.534.0 MP-1 — LA CLIP DAL VOCABOLARIO, rosso __CPM_NO547] la catena if famiglia→clip diventa
            il lookup della tabella GESTI: stessa risoluzione di prima riga per riga (shot_volley→volley,
            lunge→kick, press/call→locomozione, aerial→header...), ma ora la mappa e' UN dato consultabile
@@ -20576,7 +20576,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  (1,75, collaudato) e ricezione (3,2: si vuole il solo TRAP dentro il beat, non 4,96s). */
               const _wT56=(_a._isGk&&_a.proc===oppMesh&&oppMesh&&oppMesh._diveDur&&!(typeof window!=='undefined'&&window.__CPM_NO512))?oppMesh._diveDur:gwOf(actType,"clip");/* [7.512.0 R2 — LA CLIP DEL PORTIERE SUONA SUL SUO TUFFO: audit 111/112] `_wT56` leggeva actType (variabile dell'EROE) e veniva applicata a TUTTI gli avatar: anim-gk-dive girava alla velocita' del tiro dell'eroe, non alla durata del tuffo calcolata dal 7.465. Ora il portiere che sta reagendo scala la clip su `_diveDur` — lo stesso orologio dell'estensione procedurale. __CPM_NO512 = rosso (clip di nuovo sull'orologio dell'eroe). Le altre famiglie leggono la tabella unica. */
               const _cd56=(function(){try{const c=_a._gAct.getClip();return c&&c.duration?c.duration:0;}catch(_e){return 0;}})();
-              const _fit56=_cgtraderDribbleApproach&&_want==="dribble"?1:((_cd56>_wT56+0.02)?Math.min(_cd56/_wT56,6):1);
+              /* The purchased dribble takes only ~0.42 s after retargeting. At native speed its third planted-foot contact becomes unreadable in the mobile scene; 0.45x preserves the authored pose sequence while giving all three touches a visible, measured beat. */
+              const _fit56=_cgtraderDribbleApproach&&_want==="dribble"?0.45:((_cd56>_wT56+0.02)?Math.min(_cd56/_wT56,6):1);
               /* [7.384.0 collaudo PO «le esultanze non funzionano»] UNA CLIP DI GIOIA NON E' UN GESTO
                  TECNICO. La scala temporale si ricava dalla FINESTRA del gesto in corso (7.356), e durante
                  l'esultanza `actType` viene azzerato a ogni fotogramma: la finestra vale percio' 0,55s, la
