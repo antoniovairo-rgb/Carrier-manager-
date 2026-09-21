@@ -190,9 +190,13 @@ sulle 24 voci), che e' il numero che non si puo' far salire. Ultima misura appai
 
 | voce | misurato | vero | rapporto | da dove viene il numero |
 |---|---:|---:|---:|---|
-| tiri fuori | 9,0 | 4,5 | **2,01×** | 7.950.0, 100 partite per braccio |
-| contrasti vinti | (rapporto, valore non ristampato) | 16,5 | **0,21×** | 7.945.0 — **non rimisurato dopo la 7.950** |
-| spazzate | 1,06 | 17 | **0,06×** | 7.945.0 — **non rimisurato dopo la 7.950** |
+| spazzate | 1,27 | 17 | **0,07×** | 21/09, 60 partite alla cadenza spedita |
+| contrasti vinti | 3,92 | 16,5 | **0,24×** | 21/09, 60 partite alla cadenza spedita |
+
+Erano **tre** fino al 21/09: i **tiri fuori** sono rientrati a **1,98×** (8,93 contro 4,5) — **appena dentro**
+il doppio, quindi una voce da tenere d'occhio, non una chiusa. La misura precedente (2,01× alla 7.950) e le
+due difensive citate dalla 7.945 venivano da un banco che girava a **11 decisioni al minuto** mentre il gioco
+ne fa **22**: il default del banco e' stato corretto il 21/09 e i numeri qui sopra sono di quella corsa.
 
 Sono le **tre voci rimaste fuori banda** su 24. Le prime due sono difensive e vengono dallo stesso posto:
 in area avversaria non arriva abbastanza roba da spazzare finche' i cross non atterrano su qualcuno (A5).
