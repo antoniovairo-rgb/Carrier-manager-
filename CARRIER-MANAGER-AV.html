@@ -12334,7 +12334,7 @@ function ThreeMatchView(props){
         idle.play();run.play();run.weight=0;mx.setTime(((hero._sd||0)%1)*0.8);
         const _findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
         const avatar={root,visualRoot:visual,mx,idle,run,proc:hero,lx:hero.position.x,lz:hero.position.z,_h:_targetHeight,_hyper:true,
-          spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^(?:hand\.l_|hand_l$)/i),_handR:_findBone(/^(?:hand\.r_|hand_r$)/i)};
+          spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^(?:hand\.l_|hand_l$)/i),_handR:_findBone(/^(?:hand\.r_|hand_r$)/i),_footL:_findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:_findBone(/^(?:ball\.l_|ball_l)$/i),_footR:_findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:_findBone(/^(?:ball\.r_|ball_r)$/i)};
         avatar._armB={la:_findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:_findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:_findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:_findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
         avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
         _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),catch:_catchClip});        if(_cgtraderReview)try{window.__CPM_CGTRADER_REVIEW_GESTURES=Object.fromEntries(Object.entries(avatar.gestures||{}).map(([key,action])=>[key,!!action]));}catch(_e){}
@@ -12381,7 +12381,7 @@ function ThreeMatchView(props){
         const oldIdle=av.idle,oldRun=av.run;
         for(const state of Object.values(av._cgLodVariants)){if(state&&state.visualRoot)state.visualRoot.visible=state===next;}
         av.visualRoot=next.visualRoot;av.mx=next.mx;av.idle=next.idle;av.run=next.run;av.gestures=next.gestures;av._locoClips=next._locoClips;
-        av.spine=next.spine;av._handL=next._handL;av._handR=next._handR;av._armB=next._armB;av._cgLod=key;
+        av.spine=next.spine;av._handL=next._handL;av._handR=next._handR;av._footL=next._footL;av._ballL=next._ballL;av._footR=next._footR;av._ballR=next._ballR;av._armB=next._armB;av._cgLod=key;
         if(oldIdle&&av.idle){av.idle.time=oldIdle.time||0;av.idle.weight=oldIdle.weight||0;av.idle.timeScale=oldIdle.timeScale||1;}
         if(oldRun&&av.run){av.run.time=oldRun.time||0;av.run.weight=oldRun.weight||0;av.run.timeScale=oldRun.timeScale||1;}
         _cgtraderLodStats.swaps++;if(reason==='technical')_cgtraderLodStats.technicalPromotions++;_cgtraderLodStats.last={index:glbAvatars?glbAvatars.indexOf(av):-1,to:key,reason};return true;
@@ -12416,7 +12416,7 @@ function ThreeMatchView(props){
           idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
           const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
           const avatar={root,visualRoot:visual,mx,idle,run,proc:old.proc,lx:old.proc.position.x,lz:old.proc.position.z,_h:targetHeight,_hyper:true,_team:old._team||'home',_kit:old._kit||_homeKit,_isGk:!!old._isGk,_isRef:!!old._isRef,_isHero:old.proc===hero||index===0,_cgLod:avatarPkg._cgLod||null,
-            spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i)};
+            spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
           avatar._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
           avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
           _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),dive:_clip('gk-dive'),catch:_catchClip,block:_clip('gk-block')});
@@ -12426,7 +12426,7 @@ function ThreeMatchView(props){
            avatar root. Only one visual and one mixer are active at a time;
            switching therefore preserves position, kit and logical player. */
         if(_cgtraderMixedLodBenchmark&&Array.isArray(lodPackages)&&lodPackages.length===3){
-          const _stateOf=a=>({visualRoot:a.visualRoot,mx:a.mx,idle:a.idle,run:a.run,gestures:a.gestures,_locoClips:a._locoClips,spine:a.spine,_handL:a._handL,_handR:a._handR,_armB:a._armB,_cgLod:a._cgLod});
+          const _stateOf=a=>({visualRoot:a.visualRoot,mx:a.mx,idle:a.idle,run:a.run,gestures:a.gestures,_locoClips:a._locoClips,spine:a.spine,_handL:a._handL,_handR:a._handR,_footL:a._footL,_ballL:a._ballL,_footR:a._footR,_ballR:a._ballR,_armB:a._armB,_cgLod:a._cgLod});
           const _makeVariant=(host,avatarPkg,index)=>{
             const visual=_cloneHyperVisual(avatarPkg,hashStr('hyper-lod-'+(host.proc._sd||index)+'-'+(avatarPkg._cgLod||'x')));host.root.add(visual);visual.updateMatrixWorld(true);
             const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar((host._h||1.8)/rawHeight);visual.updateMatrixWorld(true);
@@ -12435,7 +12435,7 @@ function ThreeMatchView(props){
             const appearance=host._appearance||appearanceFromSeed(hashStr('hyper_'+index));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance);_applyCgtraderNativeHair(visual,appearance);
             const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));idle.play();run.play();run.weight=0;mx.setTime(((host.proc._sd||index)%1)*0.8);
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
-            const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i)};
+            const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
             state._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:state._handL,hr:state._handR};
             state._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};_mkGestures(state,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),dive:_clip('gk-dive'),catch:_catchClip,block:_clip('gk-block')});
             visual.visible=false;return state;
@@ -12445,7 +12445,8 @@ function ThreeMatchView(props){
         }
         _legacy.forEach(old=>{if(old&&old.root&&old.root.parent)old.root.parent.remove(old.root);});
         _next.forEach(avatar=>scene.add(avatar.root));glbAvatars=_next;try{if(_cgtraderMixedLodBenchmark){const counts={lod0:0,lod1:0,lod2:0};_next.forEach(a=>{if(a&&a._cgLod&&counts[a._cgLod]!==undefined)counts[a._cgLod]++;});window.__CPM_CGTRADER_LOD_MIX=counts;}}catch(_e){}
-        try{window.__CPM_HYPER_LINEUP={avatars:_next.length,hyper:_next.filter(a=>a&&a._hyper).length,legacyRoots:_legacy.filter(a=>a&&a.root&&a.root.parent).length,home:_next.filter(a=>a&&a._team==='home').length,away:_next.filter(a=>a&&a._team==='away').length,goalkeepers:_next.filter(a=>a&&a._isGk).length,officials:_next.filter(a=>a&&a._isRef).length,kitVariants:new Set(_next.map(a=>{const k=a&&a._kit||{};return [k.shirt,k.shorts,k.socks,k.shoes].join('|');})).size};}catch(_e){}
+        /* Review-only probe: returns current ball and real foot contact points for the active Hero LOD. */
+        try{if(_cgtraderMixedLodBenchmark){window.__CPM_CGTRADER_CONTACT_AUDIT=()=>{const a=(glbAvatars||[]).find(x=>x&&x._isHero)||null;const point=b=>{if(!b)return null;try{const p=new THREE.Vector3();b.getWorldPosition(p);return {x:+p.x.toFixed(3),y:+p.y.toFixed(3),z:+p.z.toFixed(3)};}catch(_e){return null;}};return {hasHero:!!a,lod:a&&a._cgLod||null,ball:ball?{x:+ball.position.x.toFixed(3),y:+ball.position.y.toFixed(3),z:+ball.position.z.toFixed(3)}:null,left:point(a&&(a._ballL||a._footL)),right:point(a&&(a._ballR||a._footR)),touch:window.__CPM_CGTRADER_DRIBBLE_TOUCH||null};};}}catch(_e){}        try{if(_cgtraderMixedLodBenchmark){window.__CPM_CGTRADER_DRIBBLE_CONTROL=command=>{const a=(glbAvatars||[]).find(x=>x&&x._isHero),act=a&&a._gAct;if(!act)return false;if(command==="resume"){act.paused=false;return true;}if(command==="pause"){act.paused=true;return true;}return false;};}}catch(_e){}        try{window.__CPM_HYPER_LINEUP={avatars:_next.length,hyper:_next.filter(a=>a&&a._hyper).length,legacyRoots:_legacy.filter(a=>a&&a.root&&a.root.parent).length,home:_next.filter(a=>a&&a._team==='home').length,away:_next.filter(a=>a&&a._team==='away').length,goalkeepers:_next.filter(a=>a&&a._isGk).length,officials:_next.filter(a=>a&&a._isRef).length,kitVariants:new Set(_next.map(a=>{const k=a&&a._kit||{};return [k.shirt,k.shorts,k.socks,k.shoes].join('|');})).size};}catch(_e){}
         hero._glbDriven=true;hero.visible=true;hero._procHidden95=false;
         return _next;
       };
@@ -15230,9 +15231,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          const _contact=_u>=0.22&&_u<0.32?"left":_u>=0.32&&_u<0.44?"right":_u>=0.72&&_u<0.88?"left":"carry";
          const _side=_contact==="left"?-0.24:_contact==="right"?0.24:_u<0.22?-0.08:_u<0.72?0.12:_u<0.88?-0.24:0;
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
-         const _cx=hero.position.x+_fx*0.78+_fz*_side,_cz=hero.position.z+_fz*0.78-_fx*_side;
+         let _cx=hero.position.x+_fx*0.78+_fz*_side,_cz=hero.position.z+_fz*0.78-_fx*_side,_anchor="heading";
+         const _contactBone=_contact==="left"?(_cgAvatar._ballL||_cgAvatar._footL):_contact==="right"?(_cgAvatar._ballR||_cgAvatar._footR):null;
+         if(_contactBone)try{const _bp=sr.current._cgDribbleBonePoint||(sr.current._cgDribbleBonePoint=new THREE.Vector3());_contactBone.getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor="foot-bone";}}catch(_e){}
          ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*12,1);
-         if(typeof window!=="undefined"){window.__CPM_CGTRADER_DRIBBLE_TOUCH={u:+_u.toFixed(3),side:+_side.toFixed(3),contact:_contact,gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null};if(window.__CPM_REC&&sr.current._cgDribbleLastContact!==_contact){sr.current._cgDribbleLastContact=_contact;const _log=window.__CPM_CGTRADER_DRIBBLE_CONTACTS||(window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[]);if(_log.length<16)_log.push({contact:_contact,u:+_u.toFixed(3),gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null});}}
+         if(typeof window!=="undefined"){window.__CPM_CGTRADER_DRIBBLE_TOUCH={u:+_u.toFixed(3),side:+_side.toFixed(3),contact:_contact,anchor:_anchor,targetX:+_cx.toFixed(3),targetZ:+_cz.toFixed(3),gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null};if(window.__CPM_REC&&sr.current._cgDribbleLastContact!==_contact){sr.current._cgDribbleLastContact=_contact;const _log=window.__CPM_CGTRADER_DRIBBLE_CONTACTS||(window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[]);if(_log.length<16)_log.push({contact:_contact,u:+_u.toFixed(3),anchor:_anchor,gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null});}const _freezeAt=Number(window.__CPM_CGTRADER_DRIBBLE_FREEZE_AT);if(window.__CPM_REC&&_contact!=="carry"&&Number.isFinite(_freezeAt)&&Math.abs(_u-_freezeAt)<=0.025){_cgAction.paused=true;window.__CPM_CGTRADER_DRIBBLE_FROZEN={u:+_u.toFixed(3),contact:_contact,anchor:_anchor,lod:_cgAvatar._cgLod||null};}}
        } else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
          const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
