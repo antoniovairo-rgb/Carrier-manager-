@@ -147,7 +147,26 @@ const SAVE = { phase: 'career', player: {
     { name: 'Uwe Brandt', style: 'Gegenpressing', season: 3, goals: 19, assists: 7, coachTrust: 81, coachChanged: true },
     { name: 'Nino Falcone', style: 'Possesso corto', season: 4, goals: 14, assists: 6, coachTrust: 78 },
   ],
-  history: [{ clubId: 'rbl', club: 'FC Lipsia', season: 3 }] } };
+  history: [{ clubId: 'rbl', club: 'FC Lipsia', season: 3 }],
+  /* [22/09 · dopo tredici rilievi del PO in pochi minuti] IL BANCO NON VEDEVA CIO' CHE IL PO FOTOGRAFA.
+     Il PO ha segnalato «il tuo rivale» enorme, «il club dei sogni» e «il mondo fuori» fuori standard:
+     tre card che su questo salvataggio NON VENIVANO RESE, perche' i campi che le accendono non c'erano.
+     E' la stessa cecita' dei trofei (G8.3): con una carriera vuota il metro giura che va tutto bene
+     proprio dove il giocatore vede il difetto. Qui si accendono — rivale con la sua storia di gol,
+     club dei sogni mai raggiunto, giornalisti per La Stampa.
+     ⚠️ I numeri di ALTEZZA e di NODI delle schermate che ora rendono di piu' (Profilo, Dashboard)
+     non si confrontano con quelli misurati prima del 22/09: c'e' dentro contenuto nuovo. */
+  rival: { name: 'Bruno Salvatori', age: 27, ovr: 80, totalGoals: 62, trophies: 2, seasons: 3,
+    relationship: 'compagno di viaggio',
+    club: { id: 'cre', n: 'FC Cremona', a: 'CRE', p: 55, c: '#8b1a1a', c2: '#f5f5f4', nat: '🇮🇹', lg: 'Lega A' },
+    history: [{ season: 1, goals: 8 }, { season: 2, goals: 13 }, { season: 3, goals: 17 }, { season: 4, goals: 9 }],
+    awards: { palloneOros: [], scarpaOros: [] } },
+  dreamClub: { id: 'cat', n: 'FC Catalunya', a: 'CAT', p: 88, c: '#1f4ea8', c2: '#8e1f33', nat: '🇪🇸', lg: 'Liga Ibérica' },
+  journalists: [
+    { name: 'Elena Greco', outlet: 'Sport in Rete', mood: 'neutro', rel: 52 },
+    { name: 'Davide Ricci', outlet: 'Cifre del Calcio', mood: 'freddo', rel: 38 },
+    { name: 'Marco Tosi', outlet: 'Zona Mista', mood: 'caldo', rel: 71 },
+  ] } };
 
 /* envelope dei provini conclusi: e' la via per aprire la schermata OFFERTE senza giocare i provini */
 const TRIALPROG = { ph: 'offers', slot: 0, res: [{ goals: 2, assists: 1, rating: 7.4 }, { goals: 2, assists: 0, rating: 7.6 }, { goals: 3, assists: 1, rating: 8.1 }],
@@ -492,15 +511,30 @@ function MISURA(W) {
       if (cs.display === 'none' || cs.visibility === 'hidden') continue;
       const r = el.getBoundingClientRect();
       if (r.width < de.clientWidth * 0.5 || r.height < 40) continue;
+      /* [22/09 · difetto MIO dello strumento, trovato alla prima corsa utile] I GRADIENTI NON SI SALTANO.
+         La prima stesura escludeva ogni fondo a gradiente (copiando la regola del contrasto, dove
+         l'esclusione e' giusta perche' il rapporto va letto su un fondo fermo). Ma le superfici che il
+         PO ha segnalato — «il tuo rivale», «il club dei sogni», «il mondo fuori» — sono ESATTAMENTE
+         gradienti scuri: il censimento rispondeva 10 e nominava solo la testata. Per dire «questa e'
+         scura» non serve un fondo fermo: bastano le tinte dichiarate nel gradiente, e si prende la
+         PIU' CHIARA (la piu' generosa: se anche quella e' sotto soglia, la superficie e' scura). */
+      const cs2 = cs.backgroundImage || '';
+      let L = null, hexF = null;
       const f = fondo(el);
-      if (f.grad || !f.col) continue;
-      const L = lum(f.col);
-      if (L >= 0.25) continue;
+      if (f.col && !f.grad) { L = lum(f.col); hexF = hex(f.col); }
+      else if (/gradient/i.test(cs2)) {
+        const tinte = (cs2.match(/rgba?\([^)]+\)|#[0-9a-f]{3,8}/gi) || []).map(x => leggi(x)).filter(Boolean);
+        if (!tinte.length) continue;
+        let best = null;
+        for (const t of tinte) { const l = lum(t); if (best == null || l > best) { best = l; hexF = hex(t); } }
+        L = best;
+      }
+      if (L == null || L >= 0.25) continue;
       /* solo il piu' esterno: un figlio scuro dentro un padre scuro non e' un secondo difetto */
       let dentro = false;
       for (const q of scuri) { if (q.el && q.el.contains(el)) { dentro = true; break; } }
       if (dentro) continue;
-      scuri.push({ el, sel: sel(el), lum: Math.round(L * 1000) / 1000, fondo: hex(f.col),
+      scuri.push({ el, sel: sel(el), lum: Math.round(L * 1000) / 1000, fondo: hexF,
         px: Math.round(r.height), txt: (el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 34) });
     }
     R.nScuri = scuri.length;
