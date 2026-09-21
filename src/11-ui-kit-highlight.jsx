@@ -32,9 +32,16 @@ const _CARD_TONE={win:["winBg","winBd"],draw:["drawBg","drawBd"],loss:["lossBg",
 const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=false,header,footer,density,className="",...rest})=>{
   const el=elevation===3?TH.el3:elevation===2?TH.el2:elevation===1?TH.el1:(shadow?TH.shadow:"none");
   const t=tone&&_CARD_TONE[tone];
-  const pad=density==="tight"?"10px 12px":density==="loose"?"20px 22px":"16px 18px";
+  /* [21/09 · direttiva PO: «riduci lo spazio dei box da tutte le schermate, devono essere piu' compatte.
+     Non e' un sito ma un gioco manageriale»] LA DENSITA' E' UNA SCELTA DICHIARATA, NON UN'ABITUDINE.
+     Le imbottiture scendono del ~30% in VERTICALE e del ~15% in ORIZZONTALE: il respiro laterale serve
+     ancora alla leggibilita' della riga, quello verticale era aria. Stessa compressione sui ritmi fra i
+     box (marginBottom 16→12 · 14→10 · 12→9 · 10→8). Il metro sono le tredici altezze della griglia
+     mobile, e i difetti NON devono muoversi: comprimere fino a far toccare i bordi sarebbe barare
+     sull'altezza pagando in leggibilita'. */
+  const pad=density==="tight"?"7px 11px":density==="loose"?"14px 18px":"11px 15px";
   return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:14,padding:pad,boxShadow:el,...style}} {...rest}>
-    {header!=null&&<div style={{marginBottom:10}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</div>);
+    {header!=null&&<div style={{marginBottom:8}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</div>);
 };
 /* Btn — refactor Ondata 1: default 'md' == output attuale (pad "10px 18px" · minHeight 40 · fs 13).
    Nuovi prop opt-in: size(sm|md|lg) · icon · loading. .cpm-press → hover/active (nessun cambio a frame statico). */
@@ -132,7 +139,7 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   return(
     <div style={{marginBottom:SP.md,...style}}>
       <button onClick={cambia} aria-expanded={apr} className="cpm-press"
-        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"10px 12px",cursor:"pointer",
+        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",cursor:"pointer",
           background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),
           borderBottom:apr?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
         {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
@@ -288,7 +295,7 @@ function Bracket({rounds=[],style={}}){
 /* Toast — notifica transitoria (stack gestito dal chiamante). tone semantica. */
 function Toast({children,tone="info",icon,onClose,style={}}){
   const t=_BADGE_TONE[tone]||_BADGE_TONE.info;
-  return(<div className="cpm-rise" style={{display:"flex",alignItems:"center",gap:8,background:TH.surface3,border:`1px solid ${TH[t[2]]}`,borderLeft:`3px solid ${TH[t[1]]}`,borderRadius:RAD.md,padding:"10px 14px",boxShadow:TH.el2,maxWidth:360,...style}}>
+  return(<div className="cpm-rise" style={{display:"flex",alignItems:"center",gap:8,background:TH.surface3,border:`1px solid ${TH[t[2]]}`,borderLeft:`3px solid ${TH[t[1]]}`,borderRadius:RAD.md,padding:"7px 12px",boxShadow:TH.el2,maxWidth:360,...style}}>
     {icon&&<span style={{fontSize:16}}>{icon}</span>}
     <span style={{fontSize:FS.small,color:TH.text,fontWeight:FW.medium,flex:1,lineHeight:1.4}}>{children}</span>
     {onClose&&<button onClick={onClose} className="cpm-press" style={{background:"none",border:"none",color:TH.faint,fontSize:16,cursor:"pointer",lineHeight:1}}>×</button>}

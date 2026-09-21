@@ -194,7 +194,7 @@ function MISURA(W) {
        schermate lo meritano davvero: `schermate` e' l'altezza del documento diviso l'altezza
        dello schermo del PO (915 px). 1,0 = tutto sopra la piega. 3,0 = tre schermate di
        scorrimento. Non e' un guardiano: e' il numero che dice DOVE serve un accordion. */
-    altezzaPx: 0, schermate: 0, scorritore: '', blocchi: [], etichette: {}, nEmojiChar: 0, doveEmoji: [], hVoce: 0, hSostieni: 0, hFeedback: 0 };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
+    altezzaPx: 0, schermate: 0, scorritore: '', blocchi: [], etichette: {}, nEmojiChar: 0, doveEmoji: [], hVoce: 0, hSostieni: 0, hFeedback: 0, nScuri: 0, scuri: [] };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
 
   const de = document.documentElement;
 
@@ -478,6 +478,34 @@ function MISURA(W) {
     document.querySelectorAll('button[title^="Invia idee"]').forEach(b => { hf = Math.round(b.getBoundingClientRect().height); });
     R.hVoce = hv; R.hSostieni = hd; R.hFeedback = hf;
   } catch (_e) { R.hVoce = -1; R.hSostieni = -1; R.hFeedback = -1; }
+  /* [22/09 · rilievi PO in serie: «disomogenea dalle altre», «fuori standard», «terribile»]
+     LE SUPERFICI SCURE DENTRO UN GIOCO CHE HA UN TEMA SOLO, CHIARO (dalla 7.947).
+     Il PO ha segnalato sette schermate diverse in pochi minuti — formazioni, il mondo fuori,
+     l'intervista, il rivale, il club dei sogni, la prepartita — e NON sono sette difetti: sono
+     superfici rimaste scure quando il tema scuro e' stato ritirato. Qui si contano e si NOMINANO:
+     riquadri visibili, larghi almeno mezzo schermo e alti almeno 40 px, con fondo di luminanza
+     sotto 0,25. Cosi' la famiglia si chiude con una misura invece che a un rilievo per volta. */
+  try {
+    const scuri = [];
+    for (let i = 0; i < tutti.length; i++) {
+      const el = tutti[i], cs = gcs(el);
+      if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+      const r = el.getBoundingClientRect();
+      if (r.width < de.clientWidth * 0.5 || r.height < 40) continue;
+      const f = fondo(el);
+      if (f.grad || !f.col) continue;
+      const L = lum(f.col);
+      if (L >= 0.25) continue;
+      /* solo il piu' esterno: un figlio scuro dentro un padre scuro non e' un secondo difetto */
+      let dentro = false;
+      for (const q of scuri) { if (q.el && q.el.contains(el)) { dentro = true; break; } }
+      if (dentro) continue;
+      scuri.push({ el, sel: sel(el), lum: Math.round(L * 1000) / 1000, fondo: hex(f.col),
+        px: Math.round(r.height), txt: (el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 34) });
+    }
+    R.nScuri = scuri.length;
+    R.scuri = scuri.slice(0, 6).map(x => ({ sel: x.sel, lum: x.lum, fondo: x.fondo, px: x.px, txt: x.txt }));
+  } catch (_e) { R.nScuri = -1; R.scuri = []; }
   R.nColTesto = _colT.size; R.nFondi = _fon.size; R.nCorpi = _cor.size; R.nPesi = _pes.size; R.nRaggi = _rag.size;
   R.corpi = [..._cor].sort((a, b) => a - b);
   R.raggi = [..._rag].sort((a, b) => a - b);
@@ -821,6 +849,22 @@ righe.forEach(s => {
   (best.m.contenuti || []).slice(0, 3).forEach(f => { nCont++; R.push(`| ${s.nome} | ${best.w} | \`${f.sel}\` | ${f.px} | ${f.txt.replace(/\|/g, '/')} |`); });
 });
 if (!nCont) R.push('| — | — | niente | — | — |');
+R.push('');
+
+tab('9-quater · SUPERFICI SCURE in un gioco a tema unico CHIARO (riquadri larghi mezzo schermo, alti >= 40 px, luminanza < 0,25)', m => `${m.nScuri}`, w => somma(w, 'nScuri'));
+R.push('> [22/09] Il PO ha segnalato in pochi minuti sette schermate come «disomogenee» o «fuori standard».');
+R.push('> Non sono sette difetti: sono superfici rimaste SCURE quando il tema scuro e\' stato ritirato (7.947).');
+R.push('> Qui si contano e si nominano, cosi\' la famiglia si chiude con una misura invece che un rilievo per volta.');
+R.push('');
+R.push('| schermata | alt. px | luminanza | fondo | selettore | testo |');
+R.push('|---|---:|---:|---|---|---|');
+let nSc = 0;
+righe.forEach(s => {
+  const m = (DATI[s.id][412] || DATI[s.id][W[W.length - 1]]);
+  if (!m || !(m.scuri || []).length) return;
+  m.scuri.forEach((x, i) => { nSc++; R.push(`| ${i === 0 ? s.nome : ''} | ${x.px} | ${x.lum} | \`${x.fondo}\` | \`${x.sel}\` | ${x.txt.replace(/\|/g, '/')} |`); });
+});
+if (!nSc) R.push('| — | — | — | — | nessuna | — |');
 R.push('');
 
 tab('9-ter · ALTEZZA delle strisce di fondo — voce di menu\' / sostieni / idee (px)', m => `${m.hVoce} / ${m.hSostieni} / ${m.hFeedback}`);
