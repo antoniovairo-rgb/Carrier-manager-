@@ -39,13 +39,16 @@ try {
     const foot=step.contact==='left'?pose.audit&&pose.audit.left:pose.audit&&pose.audit.right; const footDistance=foot?+Math.hypot(pose.ball.x-foot.x,pose.ball.z-foot.z).toFixed(3):null;
     frames.push({contact:step.contact,u:frozen.u,lod:frozen.lod,anchor:frozen.anchor||null,pose,foot,footDistance,file:path.basename(png)});
   }
-  const report={status:await page.evaluate(()=>window.__CPM_HYPER_CASUAL_STATUS),rig,start,frames,errors};
+  const _distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z); const _hand=(frame,key)=>frame.pose.audit&&frame.pose.audit[key]; const _spine=frame=>frame.pose.audit&&frame.pose.audit.spine; const body={leftHandTravel:+_distance(_hand(frames[0],"handL"),_hand(frames[2],"handL")).toFixed(3),rightHandTravel:+_distance(_hand(frames[0],"handR"),_hand(frames[2],"handR")).toFixed(3),maxHandReach:+Math.max(...frames.flatMap(frame=>[_distance(_hand(frame,"handL"),_spine(frame)),_distance(_hand(frame,"handR"),_spine(frame))])).toFixed(3)};
+  const report={status:await page.evaluate(()=>window.__CPM_HYPER_CASUAL_STATUS),rig,start,frames,body,errors};
   fs.writeFileSync(path.join(evidence,'report.json'),JSON.stringify(report,null,2));
   assert.equal(report.status,'ready-cgtrader-mixed-lod-benchmark');
   assert.deepEqual(frames.map(f=>f.contact),['left','right','left'],'close-up did not capture the full dribble contact sequence');
   assert.ok(frames.every(f=>f.lod==='lod0'),'close-up contacts must render Hero at LOD0');
   assert.ok(frames.every(f=>f.anchor==='foot-bone'),'every captured touch must use the animated foot bone');
   assert.ok(frames.every(f=>f.footDistance!==null&&f.footDistance<=0.25),'the ball must remain within 25 cm of the active foot at each frozen contact');
+  assert.ok(body.leftHandTravel>=0.05&&body.rightHandTravel>=0.05,'both arms must move during the dribble');
+  assert.ok(body.maxHandReach<0.65,'hands must remain compact relative to the torso and never form a T-pose');
   assert.deepEqual(errors,[]);
   console.log('CGTRADER DRIBBLE CLOSEUP REVIEW PASS');
 } finally { await browser.close(); server.close(); }
