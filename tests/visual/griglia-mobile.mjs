@@ -69,6 +69,36 @@ const FOTO = process.env.CPM_FOTO !== '0';
    non sia stata chiesta una cartella esplicita. */
 if (!FOTO && !process.env.CPM_OUT) { process.env.CPM_OUT = '/tmp/cpm-griglia-senza-foto'; }
 const TEMA = process.env.CPM_TEMA === 'scuro' ? 'scuro' : 'chiaro';
+/* [G8.4 · 21/09] LA MANOPOLA DEL TEMA SCURO NON COMANDA PIU' NIENTE, e finche' non lo diceva
+   era una sonda che mente: `CPM_TEMA=scuro` scrive cpm-dark=1, ma dalla 7.947 il gioco ha UN SOLO
+   tema (chiaro) e all'avvio riporta indietro chi aveva acceso lo scuro. Due corse, una chiara e
+   una «scura», davano lo stesso identico 49/2487 — e uno che confronta quei due numeri crede di
+   aver misurato due temi. Qui si controlla il fondo VERO della radice e, se non e' scuro, lo si
+   grida invece di far finta. */
+let TEMA_TRADITO = false;
+const _controllaTema = async (page) => {
+  if (TEMA !== 'scuro' || TEMA_TRADITO) return;
+  try {
+    const l = await page.evaluate(() => {
+      const el = document.querySelector('.cpm-root') || document.body;
+      /* [correzione dello stesso giorno] NON il fondo: la radice ha una SFUMATURA, quindi
+         `backgroundColor` e' trasparente e una soglia sulla luminanza lo prendeva per scuro.
+         Si legge il COLORE DEL TESTO, che nei due temi e' opposto: #1e293b sul chiaro (scuro),
+         #f1f5f9 sullo scuro (chiaro). Testo scuro = tema chiaro. */
+      const m = /rgba?\(([^)]+)\)/.exec(getComputedStyle(el).color || '');
+      if (!m) return null;
+      const p = m[1].split(',').map(Number);
+      const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+      return 0.2126 * f(p[0]) + 0.7152 * f(p[1]) + 0.0722 * f(p[2]);
+    });
+    if (l != null && l < 0.18) {   /* testo SCURO = tema chiaro */
+      TEMA_TRADITO = true;
+      console.log('\n  ⚠  CPM_TEMA=scuro NON HA EFFETTO: il testo della radice e\' scuro, cioe\' il tema e\' CHIARO (luminanza ' + l.toFixed(3) + ').');
+      console.log('     Dalla 7.947 il gioco ha un tema solo. Questi numeri sono del tema CHIARO:');
+      console.log('     non confrontarli con una corsa «chiara» credendo di avere due temi.\n');
+    }
+  } catch (_e) {}
+};
 const ROSSI = (process.env.CPM_ROSSO || '').split(',').map(x => x.trim()).filter(Boolean);/* [7.944] prova del rosso dentro la pagina: i flag si accendono prima del caricamento */
 const PARTITA = process.env.CPM_PARTITA === '1';   /* CPM_PARTITA=1 misura anche la PARTITA (HUD in gioco e HUD con la scelta), opt-in: i totali cambiano, si confronta solo con corse uguali */   /* CPM_TEMA=scuro misura il tema scuro (cpm-dark=1); default chiaro */
 const TAGLIE_TUTTE = [
@@ -528,6 +558,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 /* ctx CARRIERA — i tab + la prepartita (una sola apertura) */
 {
   const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI, save: SAVE }, '?cpmtest=1', errori);
+  await _controllaTema(page);
   await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 8000 }); } catch (_e) { saltate.push('carriera: "Continua" non trovato'); }
   const vivo = await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 40000 }).then(() => true).catch(() => false);
@@ -587,7 +618,7 @@ const somma = (w, k) => righe.reduce((a, s) => a + ((DATI[s.id][w] || {})[k] || 
 const R = [];
 R.push('# G0 — Griglia mobile: la misura di partenza');
 R.push('');
-R.push(`Build **${VER}** · sonda \`tests/visual/griglia-mobile.mjs\` · seme \`${SEME}\` · tema ${TEMA}.`);
+R.push(`Build **${VER}** · sonda \`tests/visual/griglia-mobile.mjs\` · seme \`${SEME}\` · tema ${TEMA}${TEMA_TRADITO ? ' **(CHIESTO SCURO, RESO CHIARO: dalla 7.947 il gioco ha un tema solo)**' : ''}.`);
 R.push('');
 R.push('**Dichiarato:** e\' **Chromium headless** alla taglia del telefono (la 412×915 e\' quella del PO), **non un Android vero**.');
 R.push('Restano fuori dalla misura: il rendering dei font di sistema Android, il tocco, la GPU, le prestazioni, la barra di sistema e il ritaglio del notch.');

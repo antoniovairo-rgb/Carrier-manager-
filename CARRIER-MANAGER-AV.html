@@ -385,12 +385,15 @@ function _mix944(h,q){h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
   const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(v.some(isNaN))return '#'+h;
   return '#'+v.map(c=>Math.round(c+(255-c)*q).toString(16).padStart(2,'0')).join('');}
 function legCol944(col,fondo){
+  /* [G8.4] LA RIGA CHE DICEVA «solo nel tema scuro» E' STATA TOLTA, ed era il difetto.
+     Di giorno questa funzione restituiva il colore intatto: sul tema chiaro #16a34a su bianco
+     resta 3,30:1 e #10b981 resta 2,54:1, sotto la soglia di 4,5. Ora delega a semTesto945, che
+     sposta la tinta verso il fondo opposto in tutte e due le direzioni. Il rosso __CPM_NO944
+     resta e spegne tutto, come prima. */
   try{ if(!col||typeof col!=='string'||col[0]!=='#')return col;
     if(typeof window!=='undefined'&&window.__CPM_NO944)return col;/* prova del rosso */
-    if(!(typeof TH!=='undefined'&&TH&&TH.dk))return col;/* solo nel tema scuro */
-    const bg=fondo||TH.card||'#1e293b';
-    let c=col; for(let i=0;i<7&&_rap944(c,bg)<4.5;i++)c=_mix944(c,0.22);
-    return c; }catch(_e){ return col; }}
+    return semTesto945(col,fondo||(typeof TH!=='undefined'&&TH?TH.card:null));
+  }catch(_e){ return col; }}
 /* [G8.2 — L'INCHIOSTRO SU UN COLORE DI SQUADRA NON PUO' ESSERE SEMPRE IL BIANCO.]
    La testata dell'eroe scrive in bianco sul colore del club. Finche' il fondo era una SFUMATURA
    che finiva in #0b1220 il difetto era invisibile al metro: la griglia mobile ESCLUDE dal conto
@@ -401,6 +404,32 @@ function legCol944(col,fondo){
    Qui l'inchiostro lo sceglie il CONTRASTO, non l'abitudine: bianco o #0f172a, quello che vince.
    Con questa regola i club sotto soglia diventano 0 e il peggiore e' 4,83:1 (AC Rossoneri #dc2626).
    Riusa _rap944, gia' in casa: nessuna matematica nuova. */
+/* [G8.4 — legCol944 GUARDAVA SOLO DI NOTTE.]
+   legCol944 alza una tinta finche' non si legge, ma solo sul tema SCURO: sul chiaro restituisce
+   il colore ricevuto senza toccarlo. Misurato con la griglia mobile a 412 px sul tema CHIARO,
+   Carriera · Profilo: #16a34a su #ffffff = 3,30:1 (12 nodi), #10b981 su #ffffff = 2,54:1,
+   #d97706 su #f1eee8 = 2,75:1 e #16a34a su #f1eee8 = 2,85:1 a 17 px in nero (soglia 3).
+   Sono i colori SEMANTICI (success/warning/danger) e quelli dei DATI (i giornalisti, le leghe)
+   disegnati come TESTO: il tema ha gia' i gemelli sicuri per il testo (winFg, drawFg, lossFg,
+   goldText, brandText), ma chi scrive una card nuova pesca il pieno perche' e' quello che si
+   chiama come il concetto.
+   Qui la regola diventa una sola per tutte e due le direzioni: si sposta la tinta VERSO IL
+   FONDO OPPOSTO (piu' scura su fondo chiaro, piu' chiara su fondo scuro) finche' non arriva a
+   4,5:1, conservando la tonalita'. Il verde resta verde, l'ambra resta ambra: e' il concetto che
+   si riconosce, non il valore esatto. */
+function _mixNero945(h,q){h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
+  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(v.some(isNaN))return '#'+h;
+  return '#'+v.map(c=>Math.round(c*(1-q)).toString(16).padStart(2,'0')).join('');}
+function semTesto945(col,fondo){
+  try{ if(!col||typeof col!=='string'||col[0]!=='#')return col;
+    if(typeof window!=='undefined'&&window.__CPM_NO945S)return col;/* prova del rosso */
+    const bg=fondo||(typeof TH!=='undefined'&&TH?(TH.card||'#ffffff'):'#ffffff');
+    const lf=_lum944(bg); if(lf==null)return col;
+    const versoIlNero=lf>0.18;           /* fondo chiaro -> si scurisce; fondo scuro -> si schiarisce */
+    let c=col;
+    for(let i=0;i<9&&_rap944(c,bg)<4.5;i++)c=versoIlNero?_mixNero945(c,0.16):_mix944(c,0.20);
+    return c; }catch(_e){ return col; }}
 function inkSu945(col){
   try{ if(!col||typeof col!=='string'||col[0]!=='#')return '#ffffff';
     if(typeof window!=='undefined'&&window.__CPM_NO945I)return '#ffffff';/* prova del rosso */
