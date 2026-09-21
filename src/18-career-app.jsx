@@ -8789,8 +8789,8 @@ const getThisWeekMatchday=()=>{
               const _ctLabel=_ct>=85?"Fiducia Totale":_ct>=70?"Fiducioso":_ct>=50?"Neutro":_ct>=30?"In Dubbio":"In Crisi";
               const _ctColor=_ct>=70?TH.success:_ct>=50?TH.primary:_ct>=30?TH.warning:TH.danger;
               return(
+              <Fisarmonica id="club-allenatore" icona="🧑‍💼" titolo="Allenatore">
                 <Card style={{padding:"12px 14px"}}>
-                  <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🧑‍💼 Allenatore</div>
                   <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
                     <NpcFaceCoach coachName={player.coach?.name||"mister"} size={42}/>
                     <div style={{flex:1,minWidth:0}}>
@@ -8799,18 +8799,19 @@ const getThisWeekMatchday=()=>{
                       <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.4}}>{_cs?.desc||"Approccio equilibrato"}</div>
                     </div>
                     <div style={{textAlign:"center",flexShrink:0,background:TH.bg,borderRadius:RAD.sm,padding:"6px 10px"}}>
-                      <div style={{fontSize:14,fontWeight:900,color:_ctColor}}>{_ct}</div>
+                      <div style={{fontSize:14,fontWeight:900,color:legCol944(_ctColor)}}>{_ct}</div>
                       <div style={{fontSize:FS.caption,color:TH.faint}}>fiducia</div>
                     </div>
                   </div>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
                     <div style={{fontSize:FS.caption,color:TH.muted}}>Rapporto attuale</div>
-                    <div style={{fontSize:FS.caption,fontWeight:700,color:_ctColor}}>{_ctLabel}</div>
+                    <div style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_ctColor)}}>{_ctLabel}</div>
                   </div>
                   <div style={{height:4,background:TH.track,borderRadius:2,overflow:"hidden"}}>
                     <div style={{height:"100%",width:`${_ct}%`,background:_ctColor,borderRadius:2,transition:"width .4s"}}/>
                   </div>
                 </Card>
+              </Fisarmonica>
               );
             })()}
 
@@ -8846,16 +8847,16 @@ const getThisWeekMatchday=()=>{
                 return(
                   <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:RAD.sm,background:isMe?TH.primaryTint:(i%2?TH.surface2:"transparent"),borderLeft:"3px solid "+(isMe?TH.primary:"transparent")}}>
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
-                    <span style={{fontSize:FS.caption,fontWeight:FW.black,color:"#fff",background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
+                    <span style={{fontSize:FS.caption,fontWeight:FW.black,color:inkSu945(_rc[1]),background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
                     <span style={{flex:1,minWidth:0,fontSize:12,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>
                     <span style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap"}}>{pl.role}</span>
-                    <span className="cpm-num" style={{fontSize:13,fontWeight:FW.black,color:ovc,minWidth:22,textAlign:"right"}}>{ov}</span>
+                    <span className="cpm-num" style={{fontSize:13,fontWeight:FW.black,color:legCol944(ovc),minWidth:22,textAlign:"right"}}>{ov}</span>
                   </div>
                 );
               };
               return(
+              <Fisarmonica id="club-rosa" icona="👕" titolo="Rosa" quante={roster.length}>
                 <Card style={{padding:"10px 14px"}}>
-                  <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>👕 Rosa S.{player.season||1} <span style={{color:TH.faint,fontWeight:400}}>({roster.length} giocatori)</span></div>
                   <div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4,marginTop:2}}>Titolari</div>
                   <div style={{display:"flex",flexDirection:"column",gap:2,marginBottom:8}}>
                     {titolari.map((pl,i)=>renderRow(pl,i,0))}
@@ -8868,13 +8869,14 @@ const getThisWeekMatchday=()=>{
                     </div>
                   </>}
                 </Card>
+              </Fisarmonica>
               );
             })()}
 
             {/* Bacheca Club */}
             {(lgTrophies.length>0||cupTrophies.length>0||euTrophies.length>0)&&(
+              <Fisarmonica id="club-bacheca" icona="🏆" titolo="Bacheca del club" quante={lgTrophies.length+cupTrophies.length+euTrophies.length}>
               <Card style={{padding:"10px 14px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Bacheca — {club.n}</div>
                 {lgTrophies.length>0&&(
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
                     <span style={{fontSize:18}}>🥇</span>
@@ -8906,6 +8908,7 @@ const getThisWeekMatchday=()=>{
                   </div>
                 )}
               </Card>
+              </Fisarmonica>
             )}
             {(lgTrophies.length+cupTrophies.length+euTrophies.length===0)&&(player.proStatus||"u18")==="pro"&&(
               <Card style={{padding:"10px 14px",textAlign:"center"}}>

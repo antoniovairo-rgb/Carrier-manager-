@@ -69,6 +69,7 @@ const FOTO = process.env.CPM_FOTO !== '0';
    non sia stata chiesta una cartella esplicita. */
 if (!FOTO && !process.env.CPM_OUT) { process.env.CPM_OUT = '/tmp/cpm-griglia-senza-foto'; }
 const TEMA = process.env.CPM_TEMA === 'scuro' ? 'scuro' : 'chiaro';
+const FIS_APERTE = process.env.CPM_FIS === 'aperte';   /* CPM_FIS=aperte: misura con TUTTE le fisarmoniche aperte (vedi G8.5) */
 /* [G8.4 · 21/09] LA MANOPOLA DEL TEMA SCURO NON COMANDA PIU' NIENTE, e finche' non lo diceva
    era una sonda che mente: `CPM_TEMA=scuro` scrive cpm-dark=1, ma dalla 7.947 il gioco ha UN SOLO
    tema (chiaro) e all'avvio riporta indietro chi aveva acceso lo scuro. Due corse, una chiara e
@@ -428,6 +429,7 @@ async function congela(page) {
 
 /* ── apertura delle pagine ─────────────────────────────────────────────────────────────────── */
 const INIT = (o) => {
+  if (o.fisAperte) { try { window.__CPM_FIS_APERTE = true; } catch (_e) {} }
   /* seme fisso: senza, Offerte e i pannelli che pescano a caso cambiano a ogni corsa */
   let s = o.seme >>> 0;
   Math.random = function () { s |= 0; s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
@@ -537,7 +539,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 
 /* ctx MENU — home · impostazioni · creazione (una sola apertura) */
 {
-  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI }, '?cpmtest=1', errori);
+  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI, fisAperte: FIS_APERTE }, '?cpmtest=1', errori);
   await misuraTutte(page, SC('home'));
   if (await premi(page, 'Opzioni')) { await misuraTutte(page, SC('impostazioni')); await premi(page, '^✕$'); await sleep(500); }
   else saltate.push('impostazioni: bottone Opzioni non trovato');
@@ -548,7 +550,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 
 /* ctx OFFERTE — senza ?cpmtest=1: e' l'auto-ripresa dei provini conclusi che porta a questa schermata */
 {
-  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI, trial: TRIALPROG }, '', errori);
+  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI, trial: TRIALPROG, fisAperte: FIS_APERTE }, '', errori);
   const ok = await page.waitForFunction(() => /Offerte ricevute/.test(document.body.innerText || ''), null, { timeout: 30000 }).then(() => true).catch(() => false);
   if (ok) await misuraTutte(page, SC('offerte'));
   else saltate.push("offerte: la schermata non si e' aperta");
@@ -557,7 +559,7 @@ const SC = id => SCHERMATE.find(s => s.id === id);
 
 /* ctx CARRIERA — i tab + la prepartita (una sola apertura) */
 {
-  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI, save: SAVE }, '?cpmtest=1', errori);
+  const page = await apri(browser, port, TAGLIE[0], { seme: SEME, tema: TEMA, rossi: ROSSI, save: SAVE, fisAperte: FIS_APERTE }, '?cpmtest=1', errori);
   await _controllaTema(page);
   await sleep(1200);
   try { await page.getByText('Continua', { exact: false }).first().click({ timeout: 8000 }); } catch (_e) { saltate.push('carriera: "Continua" non trovato'); }
@@ -592,7 +594,7 @@ if (PARTITA) {
   const page = await browser.newPage({ viewport: { width: TAGLIE[0].w, height: TAGLIE[0].h }, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
   page.on('pageerror', e => errori.push(`partita · ${String(e.message).slice(0, 120)}`));
   await installCdnRoutes(page);
-  await page.addInitScript(INIT, { seme: SEME, tema: TEMA, rossi: ROSSI });
+  await page.addInitScript(INIT, { seme: SEME, tema: TEMA, rossi: ROSSI, fisAperte: FIS_APERTE });
   let ok = false;
   try { await openMatch(page, port, { skipLoadAll: true, name: 'Grafica Probe' }); ok = true; } catch (e) { saltate.push('partita: apertura fallita — ' + String(e.message).slice(0, 80)); }
   if (ok) {

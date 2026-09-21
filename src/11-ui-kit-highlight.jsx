@@ -120,7 +120,14 @@ function SectionHeader({children,icon,right,style={}}){
        cosi' non apre un buco nel contrasto misurato dalla griglia. */
 function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
   const _k="cpm-fis-"+id;
-  const[apr,setApr]=useState(()=>{try{const v=safeLS.get(_k);return v==null?!!aperta:v==="1";}catch(_e){return !!aperta;}});
+  /* [G8.5] UN METRO CHE NON GUARDA DENTRO PREMIA CHI NASCONDE. Misurato: chiudendo Rosa e
+     Bacheca del Club i nodi sotto soglia di contrasto sono scesi da 49 a 17 — ventinove di
+     quelli spariti erano difetti VERI, non risolti. Con `__CPM_FIS_APERTE` ogni fisarmonica
+     nasce aperta: la griglia mobile misura allora il contenuto che il giocatore vede quando
+     apre, e nascondere smette di far scendere il numero. Non e' una scorciatoia di collaudo:
+     e' la condizione perche' la misura resti onesta man mano che le sezioni aumentano. */
+  const _tutteAperte=(typeof window!=='undefined'&&window.__CPM_FIS_APERTE)||false;
+  const[apr,setApr]=useState(()=>{try{if(_tutteAperte)return true;const v=safeLS.get(_k);return v==null?!!aperta:v==="1";}catch(_e){return !!aperta;}});
   const cambia=()=>{setApr(p=>{const n=!p;try{safeLS.set(_k,n?"1":"0");}catch(_e){}return n;});};
   return(
     <div style={{marginBottom:SP.md,...style}}>
