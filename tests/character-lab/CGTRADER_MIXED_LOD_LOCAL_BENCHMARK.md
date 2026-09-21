@@ -21,3 +21,7 @@ Prima dell’innesco di un gesto tecnico, il giocatore viene promosso a LOD0; da
 ## Gate aperti
 
 Il risultato è un **PASS tecnico locale**, non una promozione. Restano necessari: ripresa di una sequenza tecnica reale sul telefono, controllo visivo che LOD2 non entri mai in primo piano e benchmark di frame time/memoria su dispositivo. Il test reale dell’utente, pari a 11–16 FPS nel percorso corrente, resta quindi FAIL.
+
+## Riesecuzione corretta — 21 settembre 2026, 21:20
+
+La prima esecuzione del selettore ha rilevato ` _updateCgtraderLod is not defined ` nel render loop. Quel risultato è stato annullato, quindi non viene usato come prova. Dopo la correzione di scope e del flag Hero, lo smoke ha raggiunto stato `ready-cgtrader-mixed-lod-benchmark` con zero errori browser: 23 avatar, 69 varianti, Hero sempre LOD0, 2 LOD1 e 20 LOD2 nella camera del banco. Ha registrato cinque scambi per distanza e ha verificato il rifiuto di uno scambio durante dribbling. Draw call 297; triangoli renderizzati 117.468. Queste sono misure locali, non un benchmark mobile finale.
