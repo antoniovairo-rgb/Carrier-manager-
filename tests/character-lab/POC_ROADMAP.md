@@ -1,9 +1,10 @@
 # Roadmap POC Character System — Korward Elite
 
-**Branch:** `poc/marioprada-character-system`  
-**Ultimo aggiornamento:** 21 settembre 2026, 13:49
-**Stato complessivo stimato:** 35%
-**Fase corrente:** 1A — asset mobile: LOD GLB e acquisizione motion sul rig auto-riggato Mixamo; gate parallelo libreria capelli
+**Ramo di lavoro corrente:** `poc/marioprada-character-system-local` — solo locale, non pubblicato.
+**Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
+**Ultimo aggiornamento:** 21 settembre 2026, 21:35
+**Stato complessivo stimato:** 75% — stima, non quality gate finale.
+**Fase corrente:** 4/7 — selettore LOD locale, gesto reale e sincronismo palla sul roster CGTrader.
 
 ## Obiettivo vincolante
 
@@ -11,6 +12,15 @@ Creare un solo sistema di personaggi adulti credibili, stilizzati oppure semi-re
 
 Il sistema deve ereditare dai dati di gioco kit e pattern del club, ruolo, numero, pelle, capelli, barba e varianti di corporatura. Non modifica Match Engine, telecronaca, eventi, carriera o risultati della simulazione.
 
+## Stato corrente leggibile — 21 settembre 2026, 21:35
+
+| Area | Stato effettivo | Prossimo criterio di chiusura |
+| --- | --- | --- |
+| Modello | **PASS con vincoli:** Soccer Player Hisenberg/CGTrader è il candidato scelto: adulto, kit completo, licenza acquistata, sorgente Blender e rig riutilizzabile. | Non cercare un’altra base senza una comparazione che superi questi requisiti. |
+| LOD locale | **PASS tecnico locale:** 23 avatar, tre LOD animati compatibili ciascuno; Hero sempre LOD0, swap per distanza, promozione a LOD0 pre-gesto e blocco dello swap durante dribbling. | Sequenza tecnica reale, non simulata, con palla e telecamera. |
+| Dribbling roster LOD | **IN CORSO:** il nuovo probe ha raggiunto la situazione `hl_move`/`dribble`, ma la clip non si è ancora armata nel roster misto; non è un pass. | Correggere l’innesco, poi verificare i tre marker piede-palla e l’assenza di swap durante il gesto. |
+| Prestazioni mobile | **FAIL aperto:** le misure utente precedenti sono 11–16 FPS; il benchmark browser locale non sostituisce Android/iOS. | Frame time, FPS, memoria e qualità nei primi piani su telefono. |
+| Pubblicazione | **NON ESEGUITA:** nessun commit nuovo è stato pushato, `main` e GitHub Pages restano invariati. | Solo dopo tutti i quality gate e una destinazione preview separata approvata. |
 ## Stato verificato
 
 - Il pacchetto CGTrader acquistato è archiviato localmente in tutti i suoi 19 file originali: Blender, FBX, GLB, OBJ/MTL, componenti separati, texture e rig Normal/Unreal.
