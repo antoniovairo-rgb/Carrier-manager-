@@ -12286,16 +12286,17 @@ function ThreeMatchView(props){
          Supported values: 'off' (default), 'hero'. Squad replacement is
          deliberately deferred until kit/number UV masks and GK clips exist. */
       const _hyperQuery=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
-      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review'||_hyperQuery==='cgtrader-lod2-benchmark')?_hyperQuery:'off');
+      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review'||_hyperQuery==='cgtrader-lod2-benchmark'||_hyperQuery==='cgtrader-mixed-lod-benchmark')?_hyperQuery:'off');
       /* Explicit local-review switch for the selected CGTrader candidate.
          It is Hero-only and opt-in: default `?hyperCharacter=full` keeps its
          published source until the complete mobile quality gate is passed. */
       const _cgtraderReview=_hyperMode==='cgtrader-review';
       /* POC-only squad benchmark: the animated CGTrader LOD2 replaces field avatars only on its explicit review URL. */
       const _cgtraderSquadReview=_hyperMode==='cgtrader-lod2-benchmark';
-      const _cgtraderAnyReview=_cgtraderReview||_cgtraderSquadReview;
+      const _cgtraderMixedLodBenchmark=_hyperMode==='cgtrader-mixed-lod-benchmark';
+      const _cgtraderAnyReview=_cgtraderReview||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
       const _hyperFull=_hyperMode==='full';
-      const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull||_cgtraderSquadReview;
+      const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
       const _hyperHero=_hyperMode==='hero'||_hyperIntro||_cgtraderAnyReview;
       try{window.__CPM_HYPER_CASUAL_STATUS=_hyperHero?'loading':'off';window.__CPM_HYPER_INTRO_POLICY=_hyperIntro?{field:'hyper',offFieldCH38:false}:null;}catch(_e){}
       /* Le proporzioni del volto e della testa sono integrate nei GLB corretti.
@@ -12355,7 +12356,7 @@ function ThreeMatchView(props){
          materials remain shared by SkeletonUtils clones; only skeletons and
          AnimationMixers are per-person.  Kit-material variants are the next
          phase, so this POC mode is explicitly opt-in. */
-      const _replaceIntroLineupWithHyper=(pkg)=>{
+      const _replaceIntroLineupWithHyper=(pkg,selectPackage)=>{
         const _clip=(name)=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
         const _tackleClip=_clip('slide-tackle')||_clip('tackle'),_catchClip=_clip('gk-high-catch')||_clip('gk-catch');
         if(!pkg||!pkg.scene||!_clip('idle')||!_clip('jog'))throw new Error('Hyper Casual lineup package is incomplete');
@@ -12363,8 +12364,9 @@ function ThreeMatchView(props){
         if(!_legacy||_legacy.length<22)throw new Error('Legacy intro lineup is unavailable');
         const _next=_legacy.map((old,index)=>{
           if(!old||!old.root||!old.proc)throw new Error('Legacy intro avatar is incomplete');
+          const avatarPkg=(typeof selectPackage==='function'&&selectPackage(old,index))||pkg;
           const root=new THREE.Group();
-          const visual=_cloneHyperVisual(pkg,hashStr('hyper-lineup-'+(old.proc._sd||index)));
+          const visual=_cloneHyperVisual(avatarPkg,hashStr('hyper-lineup-'+(old.proc._sd||index)));
           root.add(visual);visual.updateMatrixWorld(true);
           const rawBounds=new THREE.Box3().setFromObject(visual),rawHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y);
           const targetHeight=old._h||(index===0?_heroAppr.height:1.8)||1.8;
@@ -12375,7 +12377,7 @@ function ThreeMatchView(props){
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
           idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
           const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
-          const avatar={root,visualRoot:visual,mx,idle,run,proc:old.proc,lx:old.proc.position.x,lz:old.proc.position.z,_h:targetHeight,_hyper:true,_team:old._team||'home',_kit:old._kit||_homeKit,_isGk:!!old._isGk,_isRef:!!old._isRef,
+          const avatar={root,visualRoot:visual,mx,idle,run,proc:old.proc,lx:old.proc.position.x,lz:old.proc.position.z,_h:targetHeight,_hyper:true,_team:old._team||'home',_kit:old._kit||_homeKit,_isGk:!!old._isGk,_isRef:!!old._isRef,_cgLod:avatarPkg._cgLod||null,
             spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i)};
           avatar._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
           avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
@@ -12383,7 +12385,7 @@ function ThreeMatchView(props){
           root.position.copy(old.root.position);root.rotation.copy(old.root.rotation);return avatar;
         });
         _legacy.forEach(old=>{if(old&&old.root&&old.root.parent)old.root.parent.remove(old.root);});
-        _next.forEach(avatar=>scene.add(avatar.root));glbAvatars=_next;
+        _next.forEach(avatar=>scene.add(avatar.root));glbAvatars=_next;try{if(_cgtraderMixedLodBenchmark){const counts={lod0:0,lod1:0,lod2:0};_next.forEach(a=>{if(a&&a._cgLod&&counts[a._cgLod]!==undefined)counts[a._cgLod]++;});window.__CPM_CGTRADER_LOD_MIX=counts;}}catch(_e){}
         try{window.__CPM_HYPER_LINEUP={avatars:_next.length,hyper:_next.filter(a=>a&&a._hyper).length,legacyRoots:_legacy.filter(a=>a&&a.root&&a.root.parent).length,home:_next.filter(a=>a&&a._team==='home').length,away:_next.filter(a=>a&&a._team==='away').length,goalkeepers:_next.filter(a=>a&&a._isGk).length,officials:_next.filter(a=>a&&a._isRef).length,kitVariants:new Set(_next.map(a=>{const k=a&&a._kit||{};return [k.shirt,k.shorts,k.socks,k.shoes].join('|');})).size};}catch(_e){}
         hero._glbDriven=true;hero.visible=true;hero._procHidden95=false;
         return _next;
@@ -12457,15 +12459,15 @@ function ThreeMatchView(props){
         try{window.__CPM_HYPER_ASSISTANTS={avatars:made.length,legacyVisible:0};}catch(_e){}
         return made;
       };      if(_hyperHero){
-        const _hyperAssetUrls=_cgtraderSquadReview?['./assets/cgtrader-review-lod2.glb']:(_cgtraderReview?['./assets/cgtrader-unreal-axis-corrected-retarget-full-ground-pass-review.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']);
+        const _hyperAssetUrls=_cgtraderMixedLodBenchmark?['./assets/cgtrader-unreal-axis-corrected-retarget-full-ground-pass-review.glb','./assets/cgtrader-review-lod1.glb','./assets/cgtrader-review-lod2.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2.glb']:(_cgtraderReview?['./assets/cgtrader-unreal-axis-corrected-retarget-full-ground-pass-review.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']));
         Promise.allSettled(_hyperAssetUrls.map(url=>loadGLB(url))).then(results=>{
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
-          if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');
+          if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');if(_cgtraderMixedLodBenchmark&&packages.length!==3)throw new Error('CGTrader mixed LOD packages are incomplete');if(_cgtraderMixedLodBenchmark)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
           pkg._variants=packages;
           try{window.__CPM_HYPER_ANIMATIONS=(pkg.animations||[]).map(c=>c&&c.name).filter(Boolean);}catch(_e){}
-          if(_hyperIntro)_replaceIntroLineupWithHyper(pkg);else _replaceHeroWithHyper(pkg);
+          if(_hyperIntro){if(_cgtraderMixedLodBenchmark){const lods=packages;_replaceIntroLineupWithHyper(pkg,(old,index)=>{if(index===0||old.proc===hero)return lods[0];const dx=old.root.position.x-hero.position.x,dz=old.root.position.z-hero.position.z;return Math.hypot(dx,dz)<24?lods[1]:lods[2];});}else _replaceIntroLineupWithHyper(pkg);}else _replaceHeroWithHyper(pkg);
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
-          try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready')));}catch(_e){}
+          try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_cgtraderMixedLodBenchmark?'ready-cgtrader-mixed-lod-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready'))));}catch(_e){}
         }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});
       }
       /* [7.907.0 — D7, TEMPORANEO: interruttore «Corpi: leggeri/pieni» del menu di pausa] scambio A CALDO del
