@@ -15151,12 +15151,27 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          un pallone solo nell'erba, con l'uomo di fianco. Un dribbling riuscito e CONDUZIONE — il pallone
          accompagna chi lo porta (stesso principio del beat `carry` del build-up, 5.43.5). Solo sul dribbling
          RIUSCITO: se l'eroe lo perde, la palla deve restare all'avversario. */
-      else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
-        const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
-        const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
-        ball.position.x+=(_cx-ball.position.x)*_ck;ball.position.z+=(_cz-ball.position.z)*_ck;
-        ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}
-      else{const _aY=aerialContactY(P,isHL,isResult,sr.current._preStrike);
+      /* CGTrader review only: authored contact windows from the accepted dribble clip. This moves only the rendered ball while the scene is in possession; it does not change state, targets, or match outcomes. */
+       /* The ball follows the authored action clock, never the scene clock. Under a slow frame the old
+          wall-clock marker could skip a footfall while the body was still at an earlier clip frame. */
+       const _cgAvatar=(typeof glbAvatars!=="undefined"&&glbAvatars&&glbAvatars[0])||null;
+       const _cgAction=_cgAvatar&&_cgAvatar._gName==="dribble"&&_cgAvatar._gAct?_cgAvatar._gAct:null;
+       const _cgDribbleTouch=!!(typeof window!=="undefined"&&window.__CPM_HYPER_CASUAL_STATUS==="ready-cgtrader-review"&&P.matchPhase==="hl_move"&&P.hlIntent==="dribble"&&!P.hlDef&&!ballArcActive&&hero&&_cgAction);
+       if(_cgDribbleTouch){
+         const _clipDur=(function(){try{const _c=_cgAction.getClip();return (_c&&_c.duration)||1.3333;}catch(_e){return 1.3333;}})();
+         const _testU=(typeof window!=="undefined"&&window.__CPM_REC)?Number(window.__CPM_CGTRADER_DRIBBLE_TEST_TIME):NaN; const _u=Number.isFinite(_testU)?clamp(_testU,0,1):clamp((+_cgAction.time||0)/_clipDur,0,1);
+         /* Contact frames measured in the 33-frame source: left f.9, right f.12–13, left f.26. */
+         const _contact=_u>=0.22&&_u<0.32?"left":_u>=0.32&&_u<0.44?"right":_u>=0.72&&_u<0.88?"left":"carry";
+         const _side=_contact==="left"?-0.24:_contact==="right"?0.24:_u<0.22?-0.08:_u<0.72?0.12:_u<0.88?-0.24:0;
+         const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
+         const _cx=hero.position.x+_fx*0.78+_fz*_side,_cz=hero.position.z+_fz*0.78-_fx*_side;
+         ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*12,1);
+         if(typeof window!=="undefined"){window.__CPM_CGTRADER_DRIBBLE_TOUCH={u:+_u.toFixed(3),side:+_side.toFixed(3),contact:_contact};if(window.__CPM_REC&&sr.current._cgDribbleLastContact!==_contact){sr.current._cgDribbleLastContact=_contact;const _log=window.__CPM_CGTRADER_DRIBBLE_CONTACTS||(window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[]);if(_log.length<16)_log.push({contact:_contact,u:+_u.toFixed(3)});}}
+       } else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
+         const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
+         const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
+         ball.position.x+=(_cx-ball.position.x)*_ck;ball.position.z+=(_cz-ball.position.z)*_ck;
+         ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}      else{const _aY=aerialContactY(P,isHL,isResult,sr.current._preStrike);
         /* [7.389.0 collaudo PO #87 «il pallone deve essere a terra, tra i piedi dell'eroe, e non a mezza
            altezza all'inizio della scena»] UN PALLONE ADDOSSO A UN UOMO STA AI SUOI PIEDI.
            La riga qui sotto tiene in quota il pallone di una scena AEREA, e il suo argomento e' giusto: se
@@ -20452,7 +20467,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(_a._gName==='lift')window.__CPM_CELTS=Math.max(window.__CPM_CELTS||0,+(_a._celTs84||0));
               if(_a._gName==='lift'&&window.__CPM_CELPREV!=='lift')window.__CPM_CELARM=(window.__CPM_CELARM||0)+1;
               window.__CPM_CELPREV=_a._gName||null;}catch(_e){}}
-            if(_ai===0&&typeof window!=='undefined'&&window.__CPM_REC){try{const _bm46=sr.current.ball;window.__CPM_GST={g:_g,want:_want,has:_g?!!_a.gestures[_g]:null,cur:_a._gName,ts:(function(){try{return +_a._gAct.getEffectiveTimeScale().toFixed(2);}catch(_e){return null;}})(),cdur:(function(){try{return +_a._gAct.getClip().duration.toFixed(2);}catch(_e){return null;}})(),/* [7.356.0] scala e durata della clip: senza, «il gesto e' troncato» non e' verificabile dal vivo */w:_a._gw!=null?+_a._gw.toFixed(2):null,at:actType||null,aT:+(actT||0).toFixed(2),ry:+_a.root.position.y.toFixed(2),py:+_p.position.y.toFixed(2),db:_bm46?+Math.hypot(_p.position.x-_bm46.position.x,_p.position.z-_bm46.position.z).toFixed(1):null};}catch(_e){}}/* [7.245.0 strumentazione permanente, solo __CPM_REC] stato del gesto GLB dell'EROE: ha inchiodato la classe «il gesto tecnico finale non si vede GLB-ON» · [7.246.0] +ry/py (affondo root vs proc) e db (distanza eroe-palla) per «posizione sbagliata» */
+            if(_ai===0&&typeof window!=='undefined'&&window.__CPM_REC){try{const _bm46=sr.current.ball;window.__CPM_GST={g:_g,want:_want,has:_g?!!_a.gestures[_g]:null,cur:_a._gName,ts:(function(){try{return +_a._gAct.getEffectiveTimeScale().toFixed(2);}catch(_e){return null;}})(),cdur:(function(){try{return +_a._gAct.getClip().duration.toFixed(2);}catch(_e){return null;}})(),ct:(function(){try{return +_a._gAct.time.toFixed(3);}catch(_e){return null;}})(),/* [7.356.0] scala e durata della clip: senza, «il gesto e' troncato» non e' verificabile dal vivo */w:_a._gw!=null?+_a._gw.toFixed(2):null,at:actType||null,aT:+(actT||0).toFixed(2),ry:+_a.root.position.y.toFixed(2),py:+_p.position.y.toFixed(2),db:_bm46?+Math.hypot(_p.position.x-_bm46.position.x,_p.position.z-_bm46.position.z).toFixed(1):null};}catch(_e){}}/* [7.245.0 strumentazione permanente, solo __CPM_REC] stato del gesto GLB dell'EROE: ha inchiodato la classe «il gesto tecnico finale non si vede GLB-ON» · [7.246.0] +ry/py (affondo root vs proc) e db (distanza eroe-palla) per «posizione sbagliata» */
             if(_a._isGk&&typeof window!=='undefined'&&window.__CPM_REC){try{const _bm46b=sr.current.ball;const _tl46=window.__CPM_GKTL||(window.__CPM_GKTL=[]);if(_tl46.length<600)_tl46.push({opp:oppActType||null,oppT:oppActType?+(oppActT||0).toFixed(2):null,isOpp:_a.proc===oppMesh,want:_gkWant,cur:_a._gName||null,w:_a._gw!=null?+_a._gw.toFixed(2):null,pz:+_p.position.z.toFixed(1),tz:_p._diveToZ!=null?+_p._diveToZ.toFixed(1):null,py:+_p.position.y.toFixed(2),/* [7.465.0 codice 111/112 «il portiere non si tuffa nel tempo giusto, sincronizzato col pallone»] IL PALLONE ENTRA NEL COLLETTORE. Finora qui c'era SOLO il portiere: si poteva vedere che il tuffo partiva e dove arrivava, ma non se arrivasse IN TEMPO — e «fuori tempo rispetto alla traiettoria del pallone» e' una relazione fra due corpi, non una proprieta' di uno. Senza la palla, il difetto del PO non era nemmeno esprimibile in numeri. */t:+performance.now().toFixed(0),bx:+_bm46b.position.x.toFixed(1),bz:+_bm46b.position.z.toFixed(1),by:+_bm46b.position.y.toFixed(2),arcT:+(+ballArcT).toFixed(2),arcD:+(+ballArcDur).toFixed(2),dvD:_p._diveDur!=null?+_p._diveDur.toFixed(2):null,gx:+_p.position.x.toFixed(1),ct:(_a._gAct&&_a._gName)?+(+_a._gAct.time).toFixed(2):null,cdur:(_a._gAct&&_a._gName)?+((_a._gAct.getClip()||{}).duration||0).toFixed(2):null,ts:(_a._gAct&&_a._gName)?+(+(_a._celTs84||1)).toFixed(2):null});/* [7.709 strumentazione] +TEMPO DELLA CLIP (ct/cdur/ts): il 111 in GLB e' una relazione clip<->arco — senza il clock della clip nel collettore, «gia' disteso con la palla in volo» non e' esprimibile in numeri */}catch(_e){}}/* [collaudo PO «il portiere sembra imbabolato»] gemello di __CPM_GST per il PORTIERE: trigger logico vs gesto GLB montato vs traslazione del tuffo, fotogramma per fotogramma dentro il loop (headless GLB-ON gira a frazioni di fps: campionare da fuori misura il caso) */
             if(_want&&_a._gName!==_want){
               /* [7.675.0 — RIMEDIO TENTATO E REVOCATO, con la sua misura. La sonda GLB (nuova, qui
