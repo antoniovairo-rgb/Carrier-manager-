@@ -6300,6 +6300,22 @@ bande, jumbotron-anchor, career-critical con i suoi undici guardiani).
 
 **Non verificato**: tutto misurato al banco e su Chromium 412×915. Mai sull'Android del PO.
 
-**Da decidere dal PO**: se la routine notturna vada ripuntata sul ramo di lavoro corrente
-(`claude/motore-possesso`) o spenta, visto che il ramo e il checkout che nomina appartengono
-a un assetto che non è più quello in cui si lavora.
+**DECISO DAL PO il 21/09: ripuntata.** La routine notturna di allineamento
+(`trig_01SbJpnx39mQXWYCXpMy8HKx`) nominava `/home/user/Carrier-manager-` e il ramo
+`claude/korward-elite-qa-season-jwcbj1`: il primo qui non esiste (c'è `carrier-manager-`
+minuscolo) e il secondo non è quello su cui si lavora. È partita quattro volte — 18, 19, 20
+e 21 settembre — e **non può aver allineato niente in nessuna di quelle quattro notti**:
+il `cd` del primo passo sarebbe fallito subito. Il registro dei run dice SUCCEEDED perché
+quella riga misura la *consegna del risveglio*, non l'esito del lavoro: un successo che non
+significa quello che sembra.
+
+Riscritta sul percorso e sul ramo veri (`/home/user/cm-motore`, `claude/motore-possesso`),
+più quattro cose che erano già costate tempo altrove:
+- un passo 0 che **verifica che il checkout esista** prima di ogni altra cosa, perché il
+  contenitore viene riciclato e il 21/09 è successo davvero;
+- `PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers` accanto a `CPM_CHROME`, senza la quale il
+  rituale muore prima di partire cercando un binario che non c'è;
+- il divieto esplicito di **ricostruire il build mentre un rituale lo sta usando**;
+- la verifica del ref remoto con un `git fetch` esplicito dopo il push, perché `git push`
+  non aggiorna da solo il ref di tracciamento e lo stop-hook segnala falsi «non pushati».
+
