@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** `poc/marioprada-character-system-local` — solo locale, non pubblicato.
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 21 settembre 2026, 21:57
-**Stato complessivo stimato:** 78% — stima, non quality gate finale.
+**Ultimo aggiornamento:** 21 settembre 2026, 22:31
+**Stato complessivo stimato:** 75% — stima, non quality gate finale.
 **Fase corrente:** 4/7 — selettore LOD locale, gesto reale e sincronismo palla sul roster CGTrader.
 
 ## Obiettivo vincolante
@@ -18,13 +18,14 @@ Il sistema deve ereditare dai dati di gioco kit e pattern del club, ruolo, numer
 | --- | --- | --- |
 | Modello | **PASS con vincoli:** Soccer Player Hisenberg/CGTrader è il candidato scelto: adulto, kit completo, licenza acquistata, sorgente Blender e rig riutilizzabile. | Non cercare un’altra base senza una comparazione che superi questi requisiti. |
 | LOD locale | **PASS tecnico locale:** 23 avatar, tre LOD animati compatibili ciascuno; Hero sempre LOD0, swap per distanza, promozione a LOD0 pre-gesto e blocco dello swap durante dribbling. | Sequenza tecnica reale, non simulata, con palla e telecamera. |
-| Dribbling roster LOD | **PASS tecnico locale:** su tre scene forzate, la clip attiva dell’Hero è `dribble` e i marker sono sinistro 0,27, destro 0,36, sinistro 0,79; il marker registra LOD0 all’impatto e il browser non ha errori. | Transizione visiva completa, braccia/busto in camera e misura mobile reale. |
+| Scala roster | **CORRETTA localmente:** il roster non usa più il bounding box del modello deformato, ma l’altezza delle ossa; smoke locale senza errori. | Riesame visivo sul telefono: nessuna dichiarazione di pass finché non si confermano proporzioni, kit e animazioni in camera. |
+| Dribbling roster LOD | **IN CORSO:** il probe robusto conferma clip `dribble`, LOD0 e marker sinistro 0,27/destro 0,36; il terzo marker sinistro 0,79 è intermittente quando la scena passa rapidamente alla scelta. Il precedente pass tecnico è quindi ritirato. | Rendere deterministico il terzo contatto, poi rivedere in camera busto/braccia, recupero e misura mobile reale. |
 | Prestazioni mobile | **FAIL aperto:** le misure utente precedenti sono 11–16 FPS; il benchmark browser locale non sostituisce Android/iOS. | Frame time, FPS, memoria e qualità nei primi piani su telefono. |
 | Pubblicazione | **NON ESEGUITA:** nessun commit nuovo è stato pushato, `main` e GitHub Pages restano invariati. | Solo dopo tutti i quality gate e una destinazione preview separata approvata. |
 ## Controllo stato — 21 settembre 2026, 21:42
 
 - **Verificato ora:** il lavoro resta solo sul ramo locale poc/marioprada-character-system-local; nessun nuovo push e GitHub Pages da main non è stata modificata.
-- **Verificato ora:** il selettore LOD locale supera il test tecnico di promozione dell’eroe a LOD0 prima di un gesto; il dribbling reale del roster misto supera i tre marker piede-palla, ma non il collaudo visivo/mobile finale.
+- **Verificato ora:** il selettore LOD locale supera la promozione dell’eroe a LOD0 prima di un gesto; i primi due marker del dribbling sono verificati, il terzo è intermittente e non è un pass.
 - **Aperto:** qualità di animazione, sincronismo palla nella sequenza reale, transizioni e prestazioni mobile 11–16 FPS segnalate su telefono.
 ## Stato verificato
 
@@ -231,4 +232,6 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 | 21/09/2026, 21:20 | Corretto e rieseguito il selettore LOD locale dopo un errore di scope rilevato dalla sua stessa evidenza. | La prima esecuzione aveva errori browser `_updateCgtraderLod is not defined`: non è stata considerata valida. La funzione è stata resa disponibile al render loop e il ruolo Hero è ora marcato esplicitamente. Smoke corretto: zero errori browser, 23 avatar/69 varianti, Hero LOD0=1, LOD1=2, LOD2=20, cinque swap distanza e test di lock dribble PASS. | PASS tecnico locale corretto. Non chiude il gate: la promozione LOD0 durante un gesto reale, sincronismo palla, camera e frame time/memoria sul telefono restano da collaudare. Nessuna pubblicazione e main invariato. |
 | 21/09/2026, 21:23 | Verificata la promozione preventiva LOD0 per il gesto tecnico nel benchmark locale. | Smoke browser: stato pronto, zero errori; un avatar non-Hero LOD2 viene promosso a LOD0 prima dell’innesco simulato del dribbling e il successivo tentativo di swap viene rifiutato. Il monitor registra technicalPromotions=1, blocked=1; Hero già fisso a LOD0. | PASS tecnico locale per il contratto pre-gesto/lock. FAIL aperto solo a scala reale: occorrono gesto e palla della partita sul telefono, resa dei primi piani e frame time/memoria. |
 | 21/09/2026, 21:57 | Misurato il dribbling reale nel roster CGTrader a LOD misti. | Test locale con tre scene forzate: clip attiva `dribble`; marker piede-palla sinistro u=0,27, destro u=0,36, sinistro u=0,79. Ogni marker certifica Hero LOD0; il report registra zero errori browser. Lo smoke LOD precedente conferma 23 avatar, 69 varianti e promozione preventiva/lock tecnico. | PASS tecnico locale per innesco e contatti della palla. Restano aperti la resa visiva di busto/braccia e transizioni, più FPS/frame time/memoria e stabilità sul telefono. Nessun push; main e Pages invariati. |
+| 21/09/2026, 22:18 | Reso più severo il probe del dribbling a LOD misti e corretto il verdetto. | Il marker viene azzerato per ogni scena e il test aspetta la clip reale prima del campionamento. Sinistro u=0,27 e destro u=0,36 sono emessi da `dribble` dell’Hero in LOD0; il sinistro u=0,79 resta intermittente quando `hl_move` passa a `hl_choose`. Audit materiali del GLB: solo `HyperShirt` e `HyperShorts` sono nominati per l’eredità del kit; non esistono componenti capelli/calzettoni/scarpe separati. | RITIRATO il pass tecnico precedente: il gate dribbling resta IN CORSO. Serve correggere il terzo tocco e costruire adattatori asset per le parti non mappate; nessun push, main e Pages invariati. |
 
+| 21/09/2026, 22:31 | Corretta la scala del roster CGTrader nella preview locale. | Il calcolo basato sul bounding box del modello animato sottostimava l’altezza e ingrandiva i giocatori. Sostituito con la distanza reale tra le ossa, sia al caricamento sia nei tre LOD. Smoke locale: 23 avatar, 69 varianti, risorse LOD 200 e zero errori browser. Il test dribbling mantiene i primi due contatti (0,27 sinistro; 0,36 destro) a LOD0; il terzo 0,79 resta intermittente. | Scala corretta in locale, ma il quality gate visivo/mobile resta aperto: verificare sul telefono proporzioni, kit, braccia/busto e FPS prima di qualunque pubblicazione. |
