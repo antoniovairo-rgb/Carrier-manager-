@@ -15211,7 +15211,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           wall-clock marker could skip a footfall while the body was still at an earlier clip frame. */
        const _cgAvatar=(typeof glbAvatars!=="undefined"&&glbAvatars&&glbAvatars[0])||null;
        const _cgAction=_cgAvatar&&_cgAvatar._gName==="dribble"&&_cgAvatar._gAct?_cgAvatar._gAct:null;
-       const _cgDribbleTouch=!!(typeof window!=="undefined"&&window.__CPM_HYPER_CASUAL_STATUS==="ready-cgtrader-review"&&P.matchPhase==="hl_move"&&P.hlIntent==="dribble"&&!P.hlDef&&!ballArcActive&&hero&&_cgAction);
+       const _cgDribbleTouch=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&P.matchPhase==="hl_move"&&P.hlIntent==="dribble"&&!P.hlDef&&!ballArcActive&&hero&&_cgAction);
        if(_cgDribbleTouch){
          const _clipDur=(function(){try{const _c=_cgAction.getClip();return (_c&&_c.duration)||1.3333;}catch(_e){return 1.3333;}})();
          const _testU=(typeof window!=="undefined"&&window.__CPM_REC)?Number(window.__CPM_CGTRADER_DRIBBLE_TEST_TIME):NaN; const _u=Number.isFinite(_testU)?clamp(_testU,0,1):clamp((+_cgAction.time||0)/_clipDur,0,1);
@@ -15221,7 +15221,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
          const _cx=hero.position.x+_fx*0.78+_fz*_side,_cz=hero.position.z+_fz*0.78-_fx*_side;
          ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*12,1);
-         if(typeof window!=="undefined"){window.__CPM_CGTRADER_DRIBBLE_TOUCH={u:+_u.toFixed(3),side:+_side.toFixed(3),contact:_contact};if(window.__CPM_REC&&sr.current._cgDribbleLastContact!==_contact){sr.current._cgDribbleLastContact=_contact;const _log=window.__CPM_CGTRADER_DRIBBLE_CONTACTS||(window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[]);if(_log.length<16)_log.push({contact:_contact,u:+_u.toFixed(3)});}}
+         if(typeof window!=="undefined"){window.__CPM_CGTRADER_DRIBBLE_TOUCH={u:+_u.toFixed(3),side:+_side.toFixed(3),contact:_contact,gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null};if(window.__CPM_REC&&sr.current._cgDribbleLastContact!==_contact){sr.current._cgDribbleLastContact=_contact;const _log=window.__CPM_CGTRADER_DRIBBLE_CONTACTS||(window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[]);if(_log.length<16)_log.push({contact:_contact,u:+_u.toFixed(3)});}}
        } else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
          const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
@@ -20337,7 +20337,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // EROE: mappa actType→gesto (volée se variante shot_volley; cross/freekick riusano 'kick'). dribble/pass/build → solo locomozione.
         let _gName=null;
         /* CGTrader review only: a dribble intent begins with the authored body-control clip while the ball is already held at the Hero feet. This is renderer choreography, not a match decision. */
-        const _cgtraderDribbleApproach=!!(typeof window!=="undefined"&&window.__CPM_HYPER_CASUAL_STATUS==="ready-cgtrader-review"&&P.matchPhase==="hl_move"&&P.hlIntent==="dribble");
+        const _cgtraderDribbleApproach=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&P.matchPhase==="hl_move"&&P.hlIntent==="dribble");
         /* [7.534.0 MP-1 — LA CLIP DAL VOCABOLARIO, rosso __CPM_NO547] la catena if famiglia→clip diventa
            il lookup della tabella GESTI: stessa risoluzione di prima riga per riga (shot_volley→volley,
            lunge→kick, press/call→locomozione, aerial→header...), ma ora la mappa e' UN dato consultabile
@@ -20527,7 +20527,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_a._isGk&&typeof window!=='undefined'&&window.__CPM_REC){try{const _bm46b=sr.current.ball;const _tl46=window.__CPM_GKTL||(window.__CPM_GKTL=[]);if(_tl46.length<600)_tl46.push({opp:oppActType||null,oppT:oppActType?+(oppActT||0).toFixed(2):null,isOpp:_a.proc===oppMesh,want:_gkWant,cur:_a._gName||null,w:_a._gw!=null?+_a._gw.toFixed(2):null,pz:+_p.position.z.toFixed(1),tz:_p._diveToZ!=null?+_p._diveToZ.toFixed(1):null,py:+_p.position.y.toFixed(2),/* [7.465.0 codice 111/112 «il portiere non si tuffa nel tempo giusto, sincronizzato col pallone»] IL PALLONE ENTRA NEL COLLETTORE. Finora qui c'era SOLO il portiere: si poteva vedere che il tuffo partiva e dove arrivava, ma non se arrivasse IN TEMPO — e «fuori tempo rispetto alla traiettoria del pallone» e' una relazione fra due corpi, non una proprieta' di uno. Senza la palla, il difetto del PO non era nemmeno esprimibile in numeri. */t:+performance.now().toFixed(0),bx:+_bm46b.position.x.toFixed(1),bz:+_bm46b.position.z.toFixed(1),by:+_bm46b.position.y.toFixed(2),arcT:+(+ballArcT).toFixed(2),arcD:+(+ballArcDur).toFixed(2),dvD:_p._diveDur!=null?+_p._diveDur.toFixed(2):null,gx:+_p.position.x.toFixed(1),ct:(_a._gAct&&_a._gName)?+(+_a._gAct.time).toFixed(2):null,cdur:(_a._gAct&&_a._gName)?+((_a._gAct.getClip()||{}).duration||0).toFixed(2):null,ts:(_a._gAct&&_a._gName)?+(+(_a._celTs84||1)).toFixed(2):null});/* [7.709 strumentazione] +TEMPO DELLA CLIP (ct/cdur/ts): il 111 in GLB e' una relazione clip<->arco — senza il clock della clip nel collettore, «gia' disteso con la palla in volo» non e' esprimibile in numeri */}catch(_e){}}/* [collaudo PO «il portiere sembra imbabolato»] gemello di __CPM_GST per il PORTIERE: trigger logico vs gesto GLB montato vs traslazione del tuffo, fotogramma per fotogramma dentro il loop (headless GLB-ON gira a frazioni di fps: campionare da fuori misura il caso) */
             if(_want&&_a._gName!==_want){
               /* Promote before the new one-shot is armed. Once a gesture starts, the LOD lock holds its skeleton through recovery. */
-              if(_cgtraderMixedLodBenchmark&&_a._cgLod!=='lod0'&&typeof window!=='undefined'&&window.__CPM_CGTRADER_LOD_RUNTIME)window.__CPM_CGTRADER_LOD_RUNTIME.activate(_a,'lod0','technical');
+              if(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL_STATUS==='ready-cgtrader-mixed-lod-benchmark'&&_a._cgLod!=='lod0'&&window.__CPM_CGTRADER_LOD_RUNTIME)window.__CPM_CGTRADER_LOD_RUNTIME.activate(_a,'lod0','technical');
               /* [7.675.0 — RIMEDIO TENTATO E REVOCATO, con la sua misura. La sonda GLB (nuova, qui
                  sotto) ha trovato la causa del codice 113: su 164 campioni con un gesto attivo,
                  TREDICI hanno due clip sopra soglia sullo STESSO personaggio, e la piu' frequente e'
