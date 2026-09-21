@@ -12286,15 +12286,16 @@ function ThreeMatchView(props){
          Supported values: 'off' (default), 'hero'. Squad replacement is
          deliberately deferred until kit/number UV masks and GK clips exist. */
       const _hyperQuery=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
-      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review'||_hyperQuery==='cgtrader-lod2-benchmark'||_hyperQuery==='cgtrader-mixed-lod-benchmark')?_hyperQuery:'off');
+      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review'||_hyperQuery==='cgtrader-ajax-review'||_hyperQuery==='cgtrader-lod2-benchmark'||_hyperQuery==='cgtrader-mixed-lod-benchmark')?_hyperQuery:'off');
       /* Explicit local-review switch for the selected CGTrader candidate.
          It is Hero-only and opt-in: default `?hyperCharacter=full` keeps its
          published source until the complete mobile quality gate is passed. */
       const _cgtraderReview=_hyperMode==='cgtrader-review';
+      const _cgtraderAjaxReview=_hyperMode==='cgtrader-ajax-review';
       /* POC-only squad benchmark: the animated CGTrader LOD2 replaces field avatars only on its explicit review URL. */
       const _cgtraderSquadReview=_hyperMode==='cgtrader-lod2-benchmark';
       const _cgtraderMixedLodBenchmark=_hyperMode==='cgtrader-mixed-lod-benchmark';
-      const _cgtraderAnyReview=_cgtraderReview||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
+      const _cgtraderAnyReview=_cgtraderReview||_cgtraderAjaxReview||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
       const _hyperFull=_hyperMode==='full';
       const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
       const _hyperHero=_hyperMode==='hero'||_hyperIntro||_cgtraderAnyReview;
@@ -12323,11 +12324,11 @@ function ThreeMatchView(props){
         const root=new THREE.Group();
         const visual=_cloneHyperVisual(pkg,hashStr('hyper-hero'));
         root.add(visual);visual.updateMatrixWorld(true);
-        const _rawBounds=new THREE.Box3().setFromObject(visual),_meshHeight=Math.max(0.1,_rawBounds.max.y-_rawBounds.min.y),_skeletonMeasure=_skeletonWorldHeight(visual),_rawHeight=_cgtraderReview&&_skeletonMeasure.height>0.5?_skeletonMeasure.height:_meshHeight;
+        const _rawBounds=new THREE.Box3().setFromObject(visual),_meshHeight=Math.max(0.1,_rawBounds.max.y-_rawBounds.min.y),_skeletonMeasure=_skeletonWorldHeight(visual),_rawHeight=(_cgtraderReview||_cgtraderAjaxReview)&&_skeletonMeasure.height>0.5?_skeletonMeasure.height:_meshHeight;
         const _targetHeight=_heroAppr.height||1.9;
         visual.scale.setScalar(_targetHeight/_rawHeight);visual.updateMatrixWorld(true);
         const _groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=_groundBounds.min.y;visual.updateMatrixWorld(true);
-        if(_cgtraderReview)try{window.__CPM_CGTRADER_REVIEW_METRICS={meshHeight:+_meshHeight.toFixed(3),skeletonHeight:+_skeletonMeasure.height.toFixed(3),skeletonBones:_skeletonMeasure.bones,chosenHeight:+_rawHeight.toFixed(3),targetHeight:+_targetHeight.toFixed(3),scale:+visual.scale.x.toFixed(4)};}catch(_e){}
+        if(_cgtraderReview||_cgtraderAjaxReview)try{window.__CPM_CGTRADER_REVIEW_METRICS={meshHeight:+_meshHeight.toFixed(3),skeletonHeight:+_skeletonMeasure.height.toFixed(3),skeletonBones:_skeletonMeasure.bones,chosenHeight:+_rawHeight.toFixed(3),targetHeight:+_targetHeight.toFixed(3),scale:+visual.scale.x.toFixed(4)};}catch(_e){}
         visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
         _applyHyperBuild(visual,_heroAppr);_applyHyperKit(visual,_homeKit,_heroAppr);_applyCgtraderNativeHair(visual,_heroAppr);
         const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
@@ -12337,7 +12338,7 @@ function ThreeMatchView(props){
           spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^(?:hand\.l_|hand_l$)/i),_handR:_findBone(/^(?:hand\.r_|hand_r$)/i),_footL:_findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:_findBone(/^(?:ball\.l_|ball_l)$/i),_footR:_findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:_findBone(/^(?:ball\.r_|ball_r)$/i)};
         avatar._armB={la:_findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:_findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:_findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:_findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
         avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
-        _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),catch:_catchClip});        if(_cgtraderReview)try{window.__CPM_CGTRADER_REVIEW_GESTURES=Object.fromEntries(Object.entries(avatar.gestures||{}).map(([key,action])=>[key,!!action]));}catch(_e){}
+        _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),catch:_catchClip});        if(_cgtraderReview||_cgtraderAjaxReview)try{window.__CPM_CGTRADER_REVIEW_GESTURES=Object.fromEntries(Object.entries(avatar.gestures||{}).map(([key,action])=>[key,!!action]));}catch(_e){}
         root.position.copy(_legacy.root.position);root.rotation.copy(_legacy.root.rotation);scene.add(root);
         if(_legacy.root.parent)_legacy.root.parent.remove(_legacy.root);glbAvatars[_legacyIndex]=avatar;
         hero._glbDriven=true;hero.visible=true;hero._procHidden95=false;
@@ -12519,7 +12520,7 @@ function ThreeMatchView(props){
         try{window.__CPM_HYPER_ASSISTANTS={avatars:made.length,legacyVisible:0};}catch(_e){}
         return made;
       };      if(_hyperHero){
-        const _hyperAssetUrls=_cgtraderMixedLodBenchmark?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']));
+        const _hyperAssetUrls=_cgtraderMixedLodBenchmark?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb'])));
         Promise.allSettled(_hyperAssetUrls.map(url=>loadGLB(url))).then(results=>{
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
           if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');if(_cgtraderMixedLodBenchmark&&packages.length!==3)throw new Error('CGTrader mixed LOD packages are incomplete');if(_cgtraderMixedLodBenchmark)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
@@ -12527,7 +12528,7 @@ function ThreeMatchView(props){
           try{window.__CPM_HYPER_ANIMATIONS=(pkg.animations||[]).map(c=>c&&c.name).filter(Boolean);}catch(_e){}
           if(_hyperIntro){if(_cgtraderMixedLodBenchmark){const lods=packages;_replaceIntroLineupWithHyper(pkg,(old,index)=>{if(index===0||old.proc===hero)return lods[0];const dx=old.root.position.x-hero.position.x,dz=old.root.position.z-hero.position.z;return Math.hypot(dx,dz)<24?lods[1]:lods[2];},lods);}else _replaceIntroLineupWithHyper(pkg);}else _replaceHeroWithHyper(pkg);
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
-          try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_cgtraderMixedLodBenchmark?'ready-cgtrader-mixed-lod-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready'))));}catch(_e){}
+          try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderAjaxReview?'ready-cgtrader-ajax-review':(_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_cgtraderMixedLodBenchmark?'ready-cgtrader-mixed-lod-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready')))));}catch(_e){}
         }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});
       }
       /* [7.907.0 — D7, TEMPORANEO: interruttore «Corpi: leggeri/pieni» del menu di pausa] scambio A CALDO del
@@ -15223,7 +15224,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           wall-clock marker could skip a footfall while the body was still at an earlier clip frame. */
        const _cgAvatar=(typeof glbAvatars!=="undefined"&&glbAvatars&&glbAvatars[0])||null;
        const _cgAction=_cgAvatar&&_cgAvatar._gName==="dribble"&&_cgAvatar._gAct?_cgAvatar._gAct:null;
-       const _cgDribbleTouch=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble"&&!P.hlDef&&!ballArcActive&&hero&&_cgAction);
+       const _cgDribbleTouch=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-ajax-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble"&&!P.hlDef&&!ballArcActive&&hero&&_cgAction);
        if(_cgDribbleTouch){
          const _clipDur=(function(){try{const _c=_cgAction.getClip();return (_c&&_c.duration)||1.3333;}catch(_e){return 1.3333;}})();
          const _testU=(typeof window!=="undefined"&&window.__CPM_REC)?Number(window.__CPM_CGTRADER_DRIBBLE_TEST_TIME):NaN; const _u=Number.isFinite(_testU)?clamp(_testU,0,1):clamp((+_cgAction.time||0)/_clipDur,0,1);
@@ -20351,7 +20352,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // EROE: mappa actType→gesto (volée se variante shot_volley; cross/freekick riusano 'kick'). dribble/pass/build → solo locomozione.
         let _gName=null;
         /* CGTrader review only: a dribble intent begins with the authored body-control clip while the ball is already held at the Hero feet. This is renderer choreography, not a match decision. */
-        const _cgtraderDribbleApproach=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble");
+        const _cgtraderDribbleApproach=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-ajax-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble");
         /* [7.534.0 MP-1 — LA CLIP DAL VOCABOLARIO, rosso __CPM_NO547] la catena if famiglia→clip diventa
            il lookup della tabella GESTI: stessa risoluzione di prima riga per riga (shot_volley→volley,
            lunge→kick, press/call→locomozione, aerial→header...), ma ora la mappa e' UN dato consultabile
