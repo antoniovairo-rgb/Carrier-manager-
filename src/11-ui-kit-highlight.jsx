@@ -38,7 +38,7 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
 };
 /* Btn — refactor Ondata 1: default 'md' == output attuale (pad "10px 18px" · minHeight 40 · fs 13).
    Nuovi prop opt-in: size(sm|md|lg) · icon · loading. .cpm-press → hover/active (nessun cambio a frame statico). */
-const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:12},md:{padding:"10px 18px",minHeight:40,fontSize:13},lg:{padding:"13px 22px",minHeight:48,fontSize:15}};
+const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:FS.small},md:{padding:"10px 18px",minHeight:40,fontSize:FS.body},lg:{padding:"13px 22px",minHeight:48,fontSize:FS.bodyLg}};
 const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",...rest})=>{
   const vs={
     primary:{background:TH.primary,color:"#fff",fontWeight:700},
@@ -60,14 +60,14 @@ const StatBar=({label,value,tone,track,height=4,mb=8})=>{
   const c=tone==="attribute"?(value>=75?TH.success:value>=55?TH.energy:value>=40?TH.warning:TH.danger)
         :(tone&&TH[tone+"Fg"])?TH[tone+"Fg"]
         :(value>=80?TH.success:value>=65?TH.warning:TH.danger);
-  return<div style={{marginBottom:mb}}><div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span className="cpm-num" style={{color:legCol944(c),fontWeight:700}}>{value}</span></div><div style={{height,background:track||TH.cardBorder,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:3,transition:"width .5s"}}/></div></div>;
+  return<div style={{marginBottom:mb}}><div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span className="cpm-num" style={{color:legCol944(c),fontWeight:700}}>{value}</span></div><div style={{height,background:track||TH.cardBorder,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:3,transition:"width .5s"}}/></div></div>;
 };
 /* OvrRing — refactor Ondata 1: track → TH.track (light == #e2e8f0, pinnato) · label default 'OVR' (era 'LVL': errato per un calciatore). */
 const OvrRing=({value,size=60,label="OVR"})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
   return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:Math.max(FS.caption,size*.27)/* [C4] pavimento 11 px */,fontWeight:900,color:legCol944(c),lineHeight:1}}>{value}</div><div style={{fontSize:FS.caption,color:TH.faint}}>{label}</div></div></div>;
 };
-const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:13,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
+const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
@@ -99,7 +99,7 @@ function Sparkline({data,color,width,height}){
 /* SectionHeader — intestazione di sezione unificata (retira il pattern "fontSize:FS.caption·uppercase·letterSpacing" ripetuto ~40×). */
 function SectionHeader({children,icon,right,style={}}){
   return(<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:SP.md,...style}}>
-    <div style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint,textTransform:"uppercase",letterSpacing:1.2}}>{icon&&<span style={{fontSize:13}}>{icon}</span>}{children}</div>
+    <div style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint,textTransform:"uppercase",letterSpacing:1.2}}>{icon&&<span style={{fontSize:FS.body}}>{icon}</span>}{children}</div>
     {right!=null&&<div>{right}</div>}
   </div>);
 }
@@ -135,10 +135,10 @@ function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
         style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"10px 12px",cursor:"pointer",
           background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),
           borderBottom:apr?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
-        {icona&&<span style={{fontSize:13,flexShrink:0}}>{icona}</span>}
+        {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
         <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{titolo}</span>
         {quante!=null&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint}}>{quante}</span>}
-        <span aria-hidden style={{marginLeft:"auto",fontSize:13,color:TH.faint,lineHeight:1,
+        <span aria-hidden style={{marginLeft:"auto",fontSize:FS.body,color:TH.faint,lineHeight:1,
           transform:apr?"rotate(90deg)":"none",transition:"transform "+MO.fast+"ms"}}>&#8250;</span>
       </button>
       {apr&&<div>{children}</div>}
@@ -222,7 +222,7 @@ function Modal({open=true,onClose,children,title,footer,width=440,dismissable=tr
     <div onClick={e=>e.stopPropagation()} className="cpm-rise" style={{background:TH.surface3,borderRadius:RAD.xl,boxShadow:TH.el3,maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",border:`1px solid ${TH.divider}`,...style}}>
       {title!=null&&<div style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
-        {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus" style={{background:"none",border:"none",fontSize:20,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4}}>×</button>}
+        {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4}}>×</button>}
       </div>}
       <div style={{padding:`${SP.xl}px`}}>{children}</div>
       {footer!=null&&<div style={{padding:`${SP.md}px ${SP.xl}px`,borderTop:`1px solid ${TH.divider}`,display:"flex",gap:SP.sm,justifyContent:"flex-end"}}>{footer}</div>}
