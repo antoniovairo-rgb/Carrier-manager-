@@ -194,7 +194,7 @@ function MISURA(W) {
        schermate lo meritano davvero: `schermate` e' l'altezza del documento diviso l'altezza
        dello schermo del PO (915 px). 1,0 = tutto sopra la piega. 3,0 = tre schermate di
        scorrimento. Non e' un guardiano: e' il numero che dice DOVE serve un accordion. */
-    altezzaPx: 0, schermate: 0, scorritore: '', blocchi: [], etichette: {} };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
+    altezzaPx: 0, schermate: 0, scorritore: '', blocchi: [], etichette: {}, nEmojiChar: 0, doveEmoji: [] };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
 
   const de = document.documentElement;
 
@@ -444,7 +444,28 @@ function MISURA(W) {
       if (n) conta[e] = n;
     }
     R.etichette = conta;
-  } catch (_e) { R.etichette = {}; }
+    /* [21/09 · rilievo PO «vedo ancora emoji e non la grafica proposta per i menu'»]
+       Il provino approvato (`docs/collaudo-grafico/proposta-schermate/`) non ha UNA emoji: i cappelli
+       sono etichetta maiuscoletta + filo + azione, la barra in basso e' solo testo. Il gioco invece ne
+       e' pieno. Qui si contano i CARATTERI emoji (non i glifi isolati, che erano gia' contati a parte
+       per il contrasto): quante, e in quali testi — cosi' si sa da dove cominciare. */
+    const RE_EMO = /\p{Extended_Pictographic}/gu;
+    const emo = (testo.match(RE_EMO) || []).length;
+    const dove = [];
+    const tw2 = document.createTreeWalker(radice, NodeFilter.SHOW_TEXT, null);
+    let n2, visti = new Set();
+    while ((n2 = tw2.nextNode())) {
+      const v = (n2.nodeValue || '').trim();
+      if (!v || !RE_EMO.test(v)) { RE_EMO.lastIndex = 0; continue; }
+      RE_EMO.lastIndex = 0;
+      const pe = n2.parentElement; if (!pe) continue;
+      const cs2 = gcs(pe); if (cs2.display === 'none' || cs2.visibility === 'hidden') continue;
+      const k = v.slice(0, 30);
+      if (visti.has(k)) continue; visti.add(k);
+      if (dove.length < 10) dove.push(k);
+    }
+    R.nEmojiChar = emo; R.doveEmoji = dove;
+  } catch (_e) { R.etichette = {}; R.nEmojiChar = -1; R.doveEmoji = []; }
   R.nColTesto = _colT.size; R.nFondi = _fon.size; R.nCorpi = _cor.size; R.nPesi = _pes.size; R.nRaggi = _rag.size;
   R.corpi = [..._cor].sort((a, b) => a - b);
   R.raggi = [..._rag].sort((a, b) => a - b);
@@ -788,6 +809,20 @@ righe.forEach(s => {
   (best.m.contenuti || []).slice(0, 3).forEach(f => { nCont++; R.push(`| ${s.nome} | ${best.w} | \`${f.sel}\` | ${f.px} | ${f.txt.replace(/\|/g, '/')} |`); });
 });
 if (!nCont) R.push('| — | — | niente | — | — |');
+R.push('');
+
+tab('9-bis · EMOJI rese (il provino approvato dal PO non ne ha nessuna)', m => `${m.nEmojiChar}`, w => somma(w, 'nEmojiChar'));
+R.push('> Contati i CARATTERI emoji sul testo reso. Il provino (`docs/collaudo-grafico/proposta-schermate/`)');
+R.push('> non ne usa **nessuna**: i cappelli sono etichetta maiuscoletta + filo + azione, la barra in basso');
+R.push('> e\' solo testo. Questo numero e\' la distanza fra il gioco e la direzione approvata.');
+R.push('');
+R.push('| schermata | primi testi con emoji |');
+R.push('|---|---|');
+righe.forEach(s => {
+  const m = (DATI[s.id][412] || DATI[s.id][W[W.length - 1]]);
+  if (!m || !(m.doveEmoji || []).length) return;
+  R.push(`| ${s.nome} | ${m.doveEmoji.slice(0, 6).map(x => '`' + x.replace(/\|/g, '/') + '`').join(' · ')} |`);
+});
 R.push('');
 
 R.push('## Ridondanze · la stessa grandezza, quante volte e dove (412 px, fisarmoniche come le trova il giocatore)');

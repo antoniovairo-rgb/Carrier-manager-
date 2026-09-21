@@ -5769,6 +5769,15 @@ const getThisWeekMatchday=()=>{
     </div>
   );
 
+  /* [7.955 · rilievo PO «vedo ancora emoji e non la grafica proposta per i menu'»]
+     La barra in basso del provino approvato (`docs/collaudo-grafico/proposta-schermate/`, regola `.nav`)
+     e' SOLO TESTO: Barlow Condensed, 11 px, maiuscolo, spaziato, e la voce attiva marcata da un filo
+     interno di 3 px invece che da un'icona. Le emoji sono sparite da qui perche' nel provino non ce n'e'
+     nessuna — e quelle della barra si vedevano su OGNI schermata di carriera. La riga della scorciatoia
+     da tastiera ([M], [C]...) non e' nel provino e non serve su un telefono: il tasto continua a
+     funzionare e resta nel `title`, ma non occupa piu' una riga sotto ogni voce. */
+  const _NAV954=(att)=>({fontFamily:"'Barlow Condensed','Barlow',sans-serif",fontSize:FS.caption,
+    fontWeight:att?FW.bold:600,letterSpacing:"0.06em",textTransform:"uppercase",lineHeight:1.2});
   const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"}];
 
   return(
@@ -10981,10 +10990,10 @@ const getThisWeekMatchday=()=>{
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
       {!hideStrips&&<button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{width:"100%",padding:"7px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.card,color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:700,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>💡 Idee & Feedback — scrivici la tua</button>}
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
-        {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:_act?TH.brandText:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:FS.subhead}}>{t.e}</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>{t.l}</div><div style={{fontSize:FS.caption,color:_act?TH.brandText+"99":TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>[{t.k}]</div></button>);})}
+        {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",color:_act?TH.brandText:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(_act)}>{t.l}</div></button>);})}
         {/* [7.96.0 collaudo PO «elimina il pulsante IT (rimandiamo l'i18n) e metti Impostazioni SEMPRE visibile nel menu»]
             il vecchio bottone lingua 🌐 è sostituito da ⚙️ Opzioni, sempre presente nella barra di navigazione. */}
-        <button onClick={()=>setShowSettings(true)} title="Impostazioni" className={showSettings?"cpm-tab-act":""} style={{flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",borderLeft:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",color:showSettings?TH.brandText:TH.faint,borderTop:`2px solid ${showSettings?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={{fontSize:FS.subhead}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div><div style={{fontSize:FS.caption,color:TH.faint+"88",marginTop:1,fontFamily:"monospace"}}>&nbsp;</div></button>
+        <button onClick={()=>setShowSettings(true)} title="Impostazioni" className={showSettings?"cpm-tab-act":""} style={{flex:"1 1 0",minWidth:52,padding:"10px 6px 6px",border:"none",borderLeft:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",color:showSettings?TH.brandText:TH.faint,borderTop:`2px solid ${showSettings?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(showSettings)}>Opzioni</div></button>
       </div>
       </div>{/* end bottom nav wrapper */}
     </div>
