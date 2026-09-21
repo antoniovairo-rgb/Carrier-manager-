@@ -34,8 +34,14 @@ separate = nodes.new('ShaderNodeSeparateXYZ')
 greater = nodes.new('ShaderNodeMath')
 less = nodes.new('ShaderNodeMath')
 mask = nodes.new('ShaderNodeMath')
+geometry = nodes.new('ShaderNodeNewGeometry')
+normal = nodes.new('ShaderNodeSeparateXYZ')
+front = nodes.new('ShaderNodeMath')
+final_mask = nodes.new('ShaderNodeMath')
 mix = nodes.new('ShaderNodeMixRGB')
 greater.operation, less.operation, mask.operation = 'GREATER_THAN', 'LESS_THAN', 'MULTIPLY'
+front.operation, final_mask.operation = 'LESS_THAN', 'MULTIPLY'
+front.inputs[1].default_value = 0.0
 greater.inputs[1].default_value = .385
 less.inputs[1].default_value = .615
 mix.inputs[2].default_value = (.38, .002, .006, 1.0)
@@ -44,7 +50,11 @@ links.new(separate.outputs['X'], greater.inputs[0])
 links.new(separate.outputs['X'], less.inputs[0])
 links.new(greater.outputs[0], mask.inputs[0])
 links.new(less.outputs[0], mask.inputs[1])
-links.new(mask.outputs[0], mix.inputs[0])
+links.new(geometry.outputs['Position'], normal.inputs[0])
+links.new(normal.outputs['Y'], front.inputs[0])
+links.new(mask.outputs[0], final_mask.inputs[0])
+links.new(front.outputs[0], final_mask.inputs[1])
+links.new(final_mask.outputs[0], mix.inputs[0])
 links.new(source_texture.outputs['Color'], mix.inputs[1])
 
 output = next(node for node in nodes if node.type == 'OUTPUT_MATERIAL')
