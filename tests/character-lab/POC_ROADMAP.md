@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** `poc/marioprada-character-system-local` — solo locale, non pubblicato.
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 21 settembre 2026, 21:35
+**Ultimo aggiornamento:** 21 settembre 2026, 21:42
 **Stato complessivo stimato:** 75% — stima, non quality gate finale.
 **Fase corrente:** 4/7 — selettore LOD locale, gesto reale e sincronismo palla sul roster CGTrader.
 
@@ -21,6 +21,11 @@ Il sistema deve ereditare dai dati di gioco kit e pattern del club, ruolo, numer
 | Dribbling roster LOD | **IN CORSO:** il nuovo probe ha raggiunto la situazione `hl_move`/`dribble`, ma la clip non si è ancora armata nel roster misto; non è un pass. | Correggere l’innesco, poi verificare i tre marker piede-palla e l’assenza di swap durante il gesto. |
 | Prestazioni mobile | **FAIL aperto:** le misure utente precedenti sono 11–16 FPS; il benchmark browser locale non sostituisce Android/iOS. | Frame time, FPS, memoria e qualità nei primi piani su telefono. |
 | Pubblicazione | **NON ESEGUITA:** nessun commit nuovo è stato pushato, `main` e GitHub Pages restano invariati. | Solo dopo tutti i quality gate e una destinazione preview separata approvata. |
+## Controllo stato — 21 settembre 2026, 21:42
+
+- **Verificato ora:** il lavoro resta solo sul ramo locale poc/marioprada-character-system-local; nessun nuovo push e GitHub Pages da main non è stata modificata.
+- **Verificato ora:** il selettore LOD locale supera il test tecnico di promozione dell’eroe a LOD0 prima di un gesto; il probe del dribbling reale con roster misto è ancora in correzione e non è un pass.
+- **Aperto:** qualità di animazione, sincronismo palla nella sequenza reale, transizioni e prestazioni mobile 11–16 FPS segnalate su telefono.
 ## Stato verificato
 
 - Il pacchetto CGTrader acquistato è archiviato localmente in tutti i suoi 19 file originali: Blender, FBX, GLB, OBJ/MTL, componenti separati, texture e rig Normal/Unreal.
@@ -225,3 +230,4 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 | 21/09/2026, 21:16 | Implementato e verificato il selettore LOD dinamico nel solo benchmark locale CGTrader. | Ogni avatar predispone i tre visual compatibili (69 in totale) ma ne rende e anima uno solo; lo smoke verifica 23 avatar, 69 varianti, uno scambio sicuro e il blocco quando è in corso un dribbling. Prima di un gesto tecnico il renderer tenta la promozione a LOD0; durante gesto, fade o transizione locomozione lo scambio è rifiutato. | PASS tecnico locale per il contratto di swap. FAIL finale: serve sequenza tecnica reale su telefono, controllo visivo della camera e frame time/memoria; nessuna route è pubblicata e main resta invariato. |
 | 21/09/2026, 21:20 | Corretto e rieseguito il selettore LOD locale dopo un errore di scope rilevato dalla sua stessa evidenza. | La prima esecuzione aveva errori browser `_updateCgtraderLod is not defined`: non è stata considerata valida. La funzione è stata resa disponibile al render loop e il ruolo Hero è ora marcato esplicitamente. Smoke corretto: zero errori browser, 23 avatar/69 varianti, Hero LOD0=1, LOD1=2, LOD2=20, cinque swap distanza e test di lock dribble PASS. | PASS tecnico locale corretto. Non chiude il gate: la promozione LOD0 durante un gesto reale, sincronismo palla, camera e frame time/memoria sul telefono restano da collaudare. Nessuna pubblicazione e main invariato. |
 | 21/09/2026, 21:23 | Verificata la promozione preventiva LOD0 per il gesto tecnico nel benchmark locale. | Smoke browser: stato pronto, zero errori; un avatar non-Hero LOD2 viene promosso a LOD0 prima dell’innesco simulato del dribbling e il successivo tentativo di swap viene rifiutato. Il monitor registra technicalPromotions=1, blocked=1; Hero già fisso a LOD0. | PASS tecnico locale per il contratto pre-gesto/lock. FAIL aperto solo a scala reale: occorrono gesto e palla della partita sul telefono, resa dei primi piani e frame time/memoria. |
+
