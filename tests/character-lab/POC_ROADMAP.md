@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** `poc/marioprada-character-system-local` — solo locale, non pubblicato.
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 21 settembre 2026, 23:14
-**Stato complessivo stimato:** 80% — stima, non quality gate finale.
+**Ultimo aggiornamento:** 21 settembre 2026, 23:24
+**Stato complessivo stimato:** 81% — stima, non quality gate finale.
 **Fase corrente:** 4/7 — selettore LOD locale, gesto reale e sincronismo palla sul roster CGTrader.
 
 ## Obiettivo vincolante
@@ -12,7 +12,7 @@ Creare un solo sistema di personaggi adulti credibili, stilizzati oppure semi-re
 
 Il sistema deve ereditare dai dati di gioco kit e pattern del club, ruolo, numero, pelle, capelli, barba e varianti di corporatura. Non modifica Match Engine, telecronaca, eventi, carriera o risultati della simulazione.
 
-## Stato corrente leggibile — 21 settembre 2026, 21:35
+## Stato corrente leggibile — 21 settembre 2026, 23:24
 
 | Area | Stato effettivo | Prossimo criterio di chiusura |
 | --- | --- | --- |
@@ -20,13 +20,15 @@ Il sistema deve ereditare dai dati di gioco kit e pattern del club, ruolo, numer
 | LOD locale | **PASS tecnico locale:** 23 avatar, tre LOD animati compatibili ciascuno; Hero sempre LOD0, swap per distanza, promozione a LOD0 pre-gesto e blocco dello swap durante dribbling. | Sequenza tecnica reale, non simulata, con palla e telecamera. |
 | Scala roster | **CORRETTA localmente:** il roster non usa più il bounding box del modello deformato, ma l’altezza delle ossa; smoke locale senza errori. | Riesame visivo sul telefono: nessuna dichiarazione di pass finché non si confermano proporzioni, kit e animazioni in camera. |
 | Kit runtime | **PASS tecnico locale:** corrette le associazioni materiali del GLB: maglia -> `HyperShirt`, pantaloncini -> `HyperShorts`, gambe escluse dalla colorazione del club. Tre asset LOD adattati caricano con HTTP 200, rig e clip invariati. | Riesame visivo del kit su telefono; calzettoni/scarpe e pattern restano da adattare. |
+| Capelli nativi | **PASS tecnico locale:** la sola texture della testa CGTrader viene assegnata dai dati del giocatore; nel roster di controllo: 3 neri, 17 castani e 3 biondi, tutti HTTP 200. Pelle, occhi e geometria restano quelli sorgente. | Review su telefono; la forma resta il taglio nativo e barba/baffi sono ancora aperti. |
 | Dribbling roster LOD | **PASS tecnico locale:** la clip completa registra sinistro 0,226, destro 0,327 e sinistro 0,732; ogni appoggio è dell’Hero in LOD0. La fase passa in `hl_result` mantenendo l’Hero a LOD0 e senza errori browser. | Riesame visivo in camera di busto/braccia, recupero e misura mobile reale. |
 | Prestazioni mobile | **FAIL aperto:** le misure utente precedenti sono 11–16 FPS; il benchmark browser locale non sostituisce Android/iOS. | Frame time, FPS, memoria e qualità nei primi piani su telefono. |
 | Pubblicazione | **NON ESEGUITA:** nessun commit nuovo è stato pushato, `main` e GitHub Pages restano invariati. | Solo dopo tutti i quality gate e una destinazione preview separata approvata. |
-## Controllo stato — 21 settembre 2026, 21:42
+## Controllo stato — 21 settembre 2026, 23:24
 
 - **Verificato ora:** il lavoro resta solo sul ramo locale poc/marioprada-character-system-local; nessun nuovo push e GitHub Pages da main non è stata modificata.
 - **Verificato ora:** il roster locale usa la scala delle ossa e i tre LOD con materiali corretti: maglia e pantaloncini ereditano i rispettivi colori club; le gambe non vengono più scambiate per la maglia. Il dribbling registra tutti e tre gli appoggi a LOD0.
+- **Verificato ora:** ogni avatar attivo CGTrader riceve la texture nativa della sola testa in base al colore capelli dei dati gioco. Il controllo assegna 23/23 texture, carica le varianti richieste con HTTP 200 e non rileva errori browser.
 - **Aperto:** qualità di animazione, sincronismo palla nella sequenza reale, transizioni e prestazioni mobile 11–16 FPS segnalate su telefono.
 ## Stato verificato
 
@@ -239,3 +241,4 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 
 | 21/09/2026, 23:08 | Stabilizzato il dribbling CGTrader completo nel roster a LOD misti. | La clip retarget era molto breve (circa 0,42 s): rallentata localmente a 0,45x per rendere leggibili i tre appoggi senza alterare esito o traiettoria. Il nuovo probe osserva il clock reale della clip, non tempi iniettati: sinistro 0,226, destro 0,327, sinistro 0,732; tutti emessi da `dribble` dell’Hero in LOD0. Dopo la scelta, `hl_result` conserva Hero LOD0; zero errori browser. | PASS tecnico locale per il gesto e il sincronismo marker-palla. Restano obbligatori il collaudo visivo delle braccia/busto, le transizioni in camera e performance/memoria mobile; nessuna pubblicazione. |
 | 21/09/2026, 23:14 | Riparati i materiali del kit nei tre GLB runtime CGTrader. | L'audit Blender ha rilevato un errore di associazione: la maglia e i pantaloncini avevano nomi assegnati alle mesh delle gambe. Generati LOD0/1/2 con `HyperShirt` sulla maglia, `HyperShorts` sui pantaloncini e materiali neutri su entrambe le gambe; il benchmark richiama i tre nuovi asset, 23 avatar/69 varianti, tutte le clip e zero errori browser. Il probe del dribbling rimane PASS. | PASS tecnico locale per mapping maglia/pantaloncini. Restano aperti pattern, calzettoni, scarpe, capelli/barba e il quality gate visivo/mobile; nessuna pubblicazione. |
+| 21/09/2026, 23:24 | Integrate nel renderer locale le quattro texture native della testa CGTrader per capelli nero, castano, biondo e ramato. | La selezione deriva dal colore capelli del giocatore, modifica solo `Material.002` della testa e non tinge pelle, occhi o kit. Smoke 412×915: 23/23 avatar hanno una texture nativa valida; nel roster di controllo risultano 3 neri, 17 castani e 3 biondi. Le tre texture richieste rispondono HTTP 200; errori browser zero. | PASS tecnico locale per il colore capelli. Restano aperti forma delle acconciature, barba/baffi, calzettoni/scarpe, review visiva e performance mobile; nessuna pubblicazione. |
