@@ -179,7 +179,7 @@ function MISURA(W) {
   const R = { W, radice: 'body', scrollWidth: 0, clientWidth: 0, overflowPx: 0,
     nFuori: 0, fuori: [], nContenuti: 0, contenuti: [],
     nTesto: 0, nSottoPav: 0, nPiccoli: 0, minFs: null,
-    nMisurati: 0, nSotto: 0, nGradiente: 0, peggiori: [],
+    nMisurati: 0, nSotto: 0, nGradiente: 0, nEmoji: 0, peggiori: [],
     nMarca: 0, marca: [],
     /* [G1 · il censimento del reso] Quante tinte, quanti corpi e quanti raggi DIVERSI vengono
        dipinti davvero su questa schermata. Non e' il conto degli esadecimali nel sorgente
@@ -355,6 +355,13 @@ function MISURA(W) {
     if (fs < 11) R.nSottoPav++;/* [C4 · 16/09] IL PAVIMENTO DICHIARATO E' 11 px (FS.caption), non 10: la colonna <10px non vedeva gli 810 `fontSize:10` scritti a mano, che sono il corpo piu' diffuso dell'intero gioco. Questa colonna misura il pavimento vero. */
     if (R.minFs == null || fs < R.minFs) R.minFs = fs;
 
+    /* [G8.7] I GLIFI DI SOLE EMOJI SONO ESCLUSI, E DICHIARATI — non tolti di nascosto.
+       Un'emoji si disegna coi PROPRI colori: la `color` CSS non la tocca, quindi il rapporto
+       fra quella `color` e il fondo non dice niente sulla sua leggibilita'. Misurare li' ha
+       prodotto un rosso permanente sul glifo «🥈» della classifica (#9ca3af su #ffffff,
+       2,54:1) che nessuna correzione poteva chiudere. Stesso trattamento dei gradienti:
+       si contano a parte, cosi' l'esclusione resta visibile nel rapporto invece di sparire. */
+    if (!/[\p{L}\p{N}]/u.test(nodo.nodeValue || '')) { R.nEmoji++; continue; }
     const f = fondo(p);
     if (f.grad) { R.nGradiente++; continue; }
     let tc = leggi(cs.color); if (!tc) continue;
@@ -669,7 +676,7 @@ tab('1 · Overflow orizzontale (px di pagina che escono dallo schermo)', m => m.
 tab('2 · Elementi fuori dallo schermo a destra (fra parentesi: contenuti da un antenato che li ritaglia/fa scorrere)', m => `${m.nFuori} (${m.nContenuti})`, w => somma(w, 'nFuori'));
 tab('3 · Testo reso sotto i 10 px — sotto/totale (minimo)', m => `${m.nPiccoli}/${m.nTesto} (${m.minFs})`, w => somma(w, 'nPiccoli') + '/' + somma(w, 'nTesto'));
 tab('3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale', m => `${m.nSottoPav}/${m.nTesto}`, w => somma(w, 'nSottoPav') + '/' + somma(w, 'nTesto'));
-tab('4 · Contrasto sotto soglia WCAG — sotto/misurati (esclusi per gradiente)', m => `${m.nSotto}/${m.nMisurati} (${m.nGradiente})`, w => somma(w, 'nSotto') + '/' + somma(w, 'nMisurati'));
+tab('4 · Contrasto sotto soglia WCAG — sotto/misurati (fra parentesi: esclusi per gradiente · per glifo emoji)', m => `${m.nSotto}/${m.nMisurati} (${m.nGradiente} · ${m.nEmoji})`, w => somma(w, 'nSotto') + '/' + somma(w, 'nMisurati'));
 tab('5 · Bottoni pieni di marca (una sola azione primaria per vista)', m => `${m.nMarca}`, w => String(somma(w, 'nMarca')));
 
 /* [G1 · il censimento del reso] Non e' un guardiano e non ha una soglia: e' il TABELLONE su cui si
@@ -724,12 +731,16 @@ R.push('');
 
 R.push('## Dettaglio · le 5 coppie testo/fondo peggiori per schermata (a 412 px, la taglia del PO)');
 R.push('');
-R.push('| schermata | rapporto | soglia | testo su fondo | px / peso | occorrenze | esempio |');
-R.push('|---|---:|---:|---|---|---:|---|');
+R.push('> [G8.7] La colonna **selettore** c\'era gia\' nel dato e non veniva stampata. Senza, un nodo che riceve');
+R.push('> il colore come DATO da un componente condiviso non si trova cercando nel sorgente — e infatti un passo');
+R.push('> si e\' chiuso con «non li ho trovati». Un metro che sa dove sta il difetto deve dirlo.');
+R.push('');
+R.push('| schermata | rapporto | soglia | testo su fondo | px / peso | occorrenze | selettore | esempio |');
+R.push('|---|---:|---:|---|---|---:|---|---|');
 righe.forEach(s => {
   const m = (DATI[s.id][412] || DATI[s.id][W[W.length - 1]]);
   if (!m || !m.peggiori.length) return;
-  m.peggiori.forEach(p => R.push(`| ${s.nome} | ${p.rap.toFixed(2)}:1 | ${p.soglia}:1 | \`${p.testo}\` su \`${p.fondo}\` | ${p.fs} / ${p.fw} | ${p.n} | ${p.esempio.replace(/\|/g, '/')} |`));
+  m.peggiori.forEach(p => R.push(`| ${s.nome} | ${p.rap.toFixed(2)}:1 | ${p.soglia}:1 | \`${p.testo}\` su \`${p.fondo}\` | ${p.fs} / ${p.fw} | ${p.n} | \`${p.sel}\` | ${p.esempio.replace(/\|/g, '/')} |`));
 });
 R.push('');
 

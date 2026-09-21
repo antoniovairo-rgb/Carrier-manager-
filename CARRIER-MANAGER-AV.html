@@ -46272,7 +46272,7 @@ const getThisWeekMatchday=()=>{
             {(()=>{/* [7.55.0 ONDA 7 — §S3b] NELLO SPOGLIATOIO: un compagno REALE reagisce all'ultima gara coi fatti */
               const me=mateEcho(player);if(!me)return null;
               return(<div style={{marginTop:8,paddingTop:8,borderTop:`1px dashed ${TH.cardBorder}`}}>
-                <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:"#0891b2",textTransform:"uppercase",letterSpacing:1,marginBottom:3}}>Nello spogliatoio</div>
+                <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:legCol944("#0891b2"),textTransform:"uppercase",letterSpacing:1,marginBottom:3}}>Nello spogliatoio</div>
                 <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>{me.icon} <b style={{color:TH.text}}>{me.name}</b> <span style={{color:TH.faint,fontSize:FS.caption}}>({me.arch})</span> {me.line}</div>
               </div>);})()}
           </div>
@@ -46826,7 +46826,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:13,fontWeight:800,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_opp.n||_nmd.opponentName}</div>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginTop:2,flexWrap:"wrap"}}>
                   {_oPos>=0&&<span style={{fontSize:FS.caption,color:TH.muted}}>{_oPos+1}° classifica</span>}
-                  <span style={{fontSize:FS.caption,fontWeight:700,color:_pColor}}>Force {_opp.p||60}</span>
+                  <span style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_pColor)}}>Force {_opp.p||60}</span>
                   <span style={{fontSize:FS.caption,color:TH.faint}}>{_nmd.isHome!==false?"🏠 Casa":"✈️ Trasferta"}</span>
                 </div>
               </div>
