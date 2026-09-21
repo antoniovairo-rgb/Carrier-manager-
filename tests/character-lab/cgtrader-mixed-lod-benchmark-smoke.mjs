@@ -31,7 +31,7 @@ try {
   assert.ok(report.lodAudit&&report.lodAudit.avatars===23&&report.lodAudit.variants===69,'all three safe-swap LOD variants must be present per avatar');
   assert.equal(report.lodAudit.active.lod0+report.lodAudit.active.lod1+report.lodAudit.active.lod2,23,'active LOD inventory does not cover the roster');
   assert.equal(report.lodAudit.active.lod0,1,'the Hero must remain on LOD0 during dynamic selection');
-  assert.ok(report.lodTest&&report.lodTest.ok&&report.lodTest.held,'safe LOD swap or technical gesture lock failed');
+  assert.ok(report.lodTest&&report.lodTest.ok&&report.lodTest.atGestureStart==='lod0'&&report.lodTest.held,'technical LOD0 promotion or gesture lock failed');
   assert.ok(report.animation&&report.animation.avatars===23&&report.animation.mixers===23,'avatar mixer inventory incomplete');
   assert.equal(new Set(requests.filter(r=>r.status===200).map(r=>r.url.split('/').pop())).size,3,'not all LOD packages were fetched');
   for(const clip of ['idle','jog','pass','kick','header','dribble'])assert.ok(report.animations.includes(clip),`missing ${clip}`);
