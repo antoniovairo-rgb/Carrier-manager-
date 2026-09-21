@@ -116,7 +116,7 @@ M5 e M6 non esistono ancora: **il primo lavoro e' costruire lo strumento**, non 
 ## 3. PIANO DI INTERVENTO — ordine proposto
 
 Ogni voce e' spedibile da sola, con rituale verde e misura appaiata.
-Nessuna voce tocca il motore.
+Nessuna voce G tocca il motore — **il motore ha la sua sezione, la §5: non e' terminato**.
 
 ### G0 — Lo strumento (prima di tutto)
 Sonda che apre il gioco in Chromium a **cinque larghezze** (360/375/390/412/430),
@@ -170,7 +170,65 @@ assist, record. Regola: **mai rallentare**.
 - Nessun ridisegno «perche' bello»: se una schermata e' piena, si semplifica.
 - Nessun «puoi collaudare» finche' la scheda dal telefono non batte il metro concordato.
 
-## 5. STATO
+## 5. IL MOTORE DELLA PARTITA — **NON E' TERMINATO** (direttiva PO 21/09)
+
+> Richiesta del PO, parole sue: «ricordati di aggiungere nella nuova roadmap anche il motore di gioco
+> della partita, non e' ancora terminato». Questa roadmap e' nata come **presentazione soltanto** e al §3
+> dichiara «nessuna voce tocca il motore»: quella regola **resta** — nessuna delle voci G la viola — ma
+> l'omissione del motore da qui dava l'impressione sbagliata, cioe' che fosse una partita chiusa. Non lo e'.
+> La direttiva permanente su **come** deve essere fatta la simulazione e' `docs/REAL-MATCH-ENGINE.md`
+> (venti punti, parole del PO); i cantieri aperti col loro metro stanno in `docs/MACRO-PIANO-2026-09.md`
+> §A (motore), §B (highlight dell'eroe) e §F (partita 2D). Qui sta **lo stato dichiarato**, perche' chi
+> legge questa roadmap sappia che cosa manca ancora.
+
+### 5.1 Dove sta oggi, coi numeri
+Il metro del motore e' il **banco del tabellino** (`tests/visual/tabellino-vero.mjs`, `npm run tabellino-banda`):
+24 voci per squadra confrontate col calcio vero, piu' la **distanza totale dal vero** (somma di |log rapporto|
+sulle 24 voci), che e' il numero che non si puo' far salire. Ultima misura appaiata, **7.950.0 in produzione**
+(`main` = `ea612a6`, 100 partite per braccio contro il rosso `__CPM_NO950`): **distanza totale 13,002 → 11,030
+(−15 %)**.
+
+| voce | misurato | vero | rapporto | da dove viene il numero |
+|---|---:|---:|---:|---|
+| tiri fuori | 9,0 | 4,5 | **2,01×** | 7.950.0, 100 partite per braccio |
+| contrasti vinti | (rapporto, valore non ristampato) | 16,5 | **0,21×** | 7.945.0 — **non rimisurato dopo la 7.950** |
+| spazzate | 1,06 | 17 | **0,06×** | 7.945.0 — **non rimisurato dopo la 7.950** |
+
+Sono le **tre voci rimaste fuori banda** su 24. Le prime due sono difensive e vengono dallo stesso posto:
+in area avversaria non arriva abbastanza roba da spazzare finche' i cross non atterrano su qualcuno (A5).
+Dichiarato: **spazzate e contrasti vinti portano la misura del 17/09 17:00**, non quella del 23:20 — il
+braccio appaiato della 7.950 ha stampato le otto voci che si muovevano, non tutte e ventiquattro.
+
+### 5.2 Che cosa manca, in ordine
+Le righe sono quelle di `docs/MACRO-PIANO-2026-09.md` §A/§B/§F: qui non si duplica il metro, si dichiara
+lo stato.
+
+| # | che cosa manca | stato |
+|---|---|---|
+| **B0** | **l'highlight nasce dal motore**, non dalle 185 schede `SITUATIONS` — e' la violazione piu' grave della direttiva del PO (§1/§13 di `REAL-MATCH-ENGINE.md`) | nuovo, primo passo di §B |
+| **B7** | 12 archetipi al posto delle 185 schede; i testi diventano testo, non causa | dopo B0 |
+| **A10** | **ammonizioni, espulsioni, fuorigioco, assist come eventi veri** del motore | **fatta il 16/09** (7.913: ammonizioni 0 → 2,08 su 2,4 vere · espulsioni 0 → 0,20 su 0,11) — la riga di §A del macro-piano la dichiarava ancora «nuovo, da progettare»: **corretta il 21/09** |
+| **A11** | **expected goal onesti** dal contesto (zona, pressione, piede) | dopo A9 |
+| **A5** | **cross e ricezioni**: il cross atterra su qualcuno | aperto — e' la radice di spazzate e contrasti |
+| **A6** | **portiere e gesti** (codici 000/111) | aperto |
+| **A7** | **azioni** (≥ 3 passaggi → area): strumento nel live | strumento da scrivere |
+| **F4/F5/F7** | mister nella telecronaca · 3D acceso solo in tre momenti · interazioni **solo** dentro un highlight | da scrivere / da progettare |
+
+### 5.3 Come si lavora qui dentro
+Invariato, ed e' la ragione per cui il motore non e' entrato nelle voci G:
+- **la simulazione e' la source of truth** — la grafica veste cio' che il motore ha gia' deciso, mai il contrario;
+- **§20: mai VAR, replay, autogol**;
+- ogni passo sul motore ha **misura appaiata contro il suo rosso** (`__CPM_NOxxx`) e non puo' peggiorare la
+  distanza totale dal vero;
+- **un metro spedito non si alza per far passare una modifica** — e' gia' costato due revoche a verbale
+  (7.931, 7.935);
+- il lavoro sul motore e' **in pausa per decisione del PO** finche' la revisione grafica delle schermate
+  non e' chiusa.
+
+**NON VERIFICATO**: tutti i numeri di questa sezione vengono dal banco in Chromium headless. L'Android del
+PO non ha mai misurato il motore.
+
+## 6. STATO
 - 13/09 — FASE 1 chiusa (questo documento).
 - 14/09 — **G0 chiuso**: `tests/visual/griglia-mobile.mjs`, tarata 13/13, ripetibile (due corse byte-identiche), tema chiaro e scuro (`CPM_TEMA=scuro`), cinque colonne (overflow, fuori schermo, testo <10 px, contrasto WCAG, bottoni pieni di marca). Base 7.888: overflow 0, testo <10 px 463/2760, contrasto 917/2291 (chiaro) e 1000/2291 (scuro).
 - 14/09 — **G1 chiuso a metro** (ramo `grafica/overhaul-2026-09`): chiaro contrasto **917 → 61**, testo <10 px **463 → 29**; scuro contrasto **1000 → 61**; overflow 0 → 0 a 360/375/390/412/430. Sette passi misurati uno alla volta: G1.1 grigi del testo (917 → 174) · G1.2 semantici pieni non piu' usati come testo (→ 63) · G1.4 pavimento 10 px (463 → 29) · G1.5 fondi tinti sui token (scuro 1000 → 981) · G1.6 color-scheme + brandText/accentText (→ 658) · G1.7 faint del tema scuro (→ 61).
@@ -199,4 +257,6 @@ assist, record. Regola: **mai rallentare**.
 - 21/09 — **G8.7 · zero nodi sotto soglia, su tutte e tredici le schermate.** Da **62/2313** (18/09, prima del carattere) a **0/2251**, misurato a 412 px con le fisarmoniche aperte. Lo spacco onesto: **62 → 1 correggendo**, **1 → 0 dichiarando** (l'ultimo era il glifo «🥈»).
 - 21/09 — **Il metro sapeva dove stava il difetto e non lo diceva.** La colonna **selettore** era già nel dato (`sel(p)`, calcolata per ogni coppia peggiore) ma non veniva stampata nel rapporto: senza, un nodo che riceve il colore come **dato** da un componente condiviso non si trova cercando nel sorgente — e infatti G8.6 si era chiuso con «non li ho trovati». Stampata la colonna, i due della Dashboard sono venuti fuori in due minuti: la **forza dell'avversario** (`Force {p}`, `#16a34a` 3,30:1, r. 7966) e il cappello **«Nello spogliatoio»** (`#0891b2` 3,68:1, r. 7412), entrambi con la tinta semantica scritta a mano invece che passata da `legCol944`.
 - 21/09 — **I glifi di sole emoji sono esclusi dal contrasto, e dichiarati.** Un'emoji si disegna coi **propri** colori: la `color` CSS non la tocca, quindi il rapporto fra quella `color` e il fondo non dice niente sulla sua leggibilità. Misurare lì aveva prodotto un rosso permanente sul «🥈» della classifica che **nessuna correzione poteva chiudere**. Trattamento identico a quello già usato per i gradienti: si contano a parte (294 glifi), così l'esclusione resta **visibile nel rapporto** invece di sparire — non si abbassa una soglia, si dichiara cosa lo strumento non sa misurare.
+- 21/09 — **Il motore della partita entra in questa roadmap, dichiarato NON TERMINATO** (richiesta del PO). Questo documento nasceva «presentazione soltanto» e al §3 diceva «nessuna voce tocca il motore»: la regola resta per le voci G, ma l'omissione faceva sembrare il motore una partita chiusa. Nuova **§5**: le **tre voci rimaste fuori banda** sulle 24 del banco del tabellino (**tiri fuori 2,01×** dalla misura appaiata della 7.950 · **contrasti vinti 0,21×** e **spazzate 0,06×**, che però portano la misura della 7.945 e **non sono state rimisurate dopo la 7.950** — dichiarato), la distanza totale dal vero **13,002 → 11,030**, e che cosa manca in ordine (B0 l'highlight che nasce dal motore, B7 i 12 archetipi, A11 gli xG onesti, A5 i cross che atterrano, A6, A7, F4/F5/F7). Rinvii a `docs/REAL-MATCH-ENGINE.md` (la direttiva permanente) e a `docs/MACRO-PIANO-2026-09.md` §A/§B/§F (i cantieri col loro metro). Il lavoro sul motore resta **in pausa per decisione del PO** finché la revisione grafica delle schermate non è chiusa.
+- 21/09 — **Una riga di roadmap era rimasta indietro, corretta**: la §A del macro-piano dichiarava A10 (cartellini, fuorigioco, assist) «nuovo, da progettare» mentre l'avanzamento la dà **fatta il 16/09 con la 7.913** (ammonizioni 0 → 2,08 su 2,4 vere, espulsioni 0 → 0,20 su 0,11). Corretta nel macro-piano, non solo qui: una roadmap che si contraddice non è una roadmap.
 - Non ancora nel metro: post-partita, partita (HUD/telecronaca), schermate cinematiche, il telefono vero del PO.
