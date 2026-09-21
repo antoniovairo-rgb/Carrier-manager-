@@ -176,7 +176,9 @@ async function clickByText(page, src, timeout = 9000) {
 /* Apre il gioco con ?cpmtest=1, raggiunge un match (provino), carica tutte le SITUATIONS.
    Ritorna { total, consoleErrors } e lascia la pagina pronta per forceSituation(). */
 export async function openMatch(page, port, opts) {
-  const url = `http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
+  const _params = new URLSearchParams({ cpmtest: '1' });
+  if (opts && opts.query) Object.entries(opts.query).forEach(([key, value]) => { if (value != null) _params.set(key, String(value)); });
+  const url = `http://localhost:${port}/CARRIER-MANAGER-AV.html?${_params.toString()}`;
   /* [7.213.0] il timeout era 30s: il sorgente è cresciuto (2.9 MB) e Babel in-browser, su software-GL cloud,
      impiega 14-22s a transpilare — sotto carico (più pagine aperte dai check) sforava e faceva abortire l'INTERA
      passata del gate (FATAL su openMatch → 0 Situations e tutti i check verdi a vuoto: un falso «pass» pericoloso).

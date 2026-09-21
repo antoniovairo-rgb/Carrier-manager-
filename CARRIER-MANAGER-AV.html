@@ -12283,10 +12283,14 @@ function ThreeMatchView(props){
          Supported values: 'off' (default), 'hero'. Squad replacement is
          deliberately deferred until kit/number UV masks and GK clips exist. */
       const _hyperQuery=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
-      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full')?_hyperQuery:'off');
+      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review')?_hyperQuery:'off');
+      /* Explicit local-review switch for the selected CGTrader candidate.
+         It is Hero-only and opt-in: default `?hyperCharacter=full` keeps its
+         published source until the complete mobile quality gate is passed. */
+      const _cgtraderReview=_hyperMode==='cgtrader-review';
       const _hyperFull=_hyperMode==='full';
       const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull;
-      const _hyperHero=_hyperMode==='hero'||_hyperIntro;
+      const _hyperHero=_hyperMode==='hero'||_hyperIntro||_cgtraderReview;
       try{window.__CPM_HYPER_CASUAL_STATUS=_hyperHero?'loading':'off';window.__CPM_HYPER_INTRO_POLICY=_hyperIntro?{field:'hyper',offFieldCH38:false}:null;}catch(_e){}
       /* Le proporzioni del volto e della testa sono integrate nei GLB corretti.
          Qui scegliamo una variante reale dell'asset, lasciando invariati rig e clip. */
@@ -12296,6 +12300,10 @@ function ThreeMatchView(props){
         const source=variants[Math.abs(seed|0)%variants.length]||pkg;
         return (THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(source.scene):source.scene.clone(true);
       };
+      /* A SkinnedMesh bind-pose Box3 can omit the deformation hierarchy (and
+         did so for the CGTrader UE export). Bone world positions are stable
+         for scale selection before an animation starts. */
+      const _skeletonWorldHeight=(visual)=>{let lo=Infinity,hi=-Infinity,count=0;visual.updateMatrixWorld(true);visual.traverse(node=>{if(!node.isBone)return;const p=new THREE.Vector3();node.getWorldPosition(p);if(Number.isFinite(p.y)){lo=Math.min(lo,p.y);hi=Math.max(hi,p.y);count++;}});return {height:count>1?hi-lo:0,bones:count};};
       const _replaceHeroWithHyper=(pkg)=>{
         const _clip=(name)=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
         const _tackleClip=_clip('slide-tackle')||_clip('tackle'),_catchClip=_clip('gk-high-catch')||_clip('gk-catch');
@@ -12305,10 +12313,11 @@ function ThreeMatchView(props){
         const root=new THREE.Group();
         const visual=_cloneHyperVisual(pkg,hashStr('hyper-hero'));
         root.add(visual);visual.updateMatrixWorld(true);
-        const _rawBounds=new THREE.Box3().setFromObject(visual),_rawHeight=Math.max(0.1,_rawBounds.max.y-_rawBounds.min.y);
+        const _rawBounds=new THREE.Box3().setFromObject(visual),_meshHeight=Math.max(0.1,_rawBounds.max.y-_rawBounds.min.y),_skeletonMeasure=_skeletonWorldHeight(visual),_rawHeight=_cgtraderReview&&_skeletonMeasure.height>0.5?_skeletonMeasure.height:_meshHeight;
         const _targetHeight=_heroAppr.height||1.9;
         visual.scale.setScalar(_targetHeight/_rawHeight);visual.updateMatrixWorld(true);
         const _groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=_groundBounds.min.y;visual.updateMatrixWorld(true);
+        if(_cgtraderReview)try{window.__CPM_CGTRADER_REVIEW_METRICS={meshHeight:+_meshHeight.toFixed(3),skeletonHeight:+_skeletonMeasure.height.toFixed(3),skeletonBones:_skeletonMeasure.bones,chosenHeight:+_rawHeight.toFixed(3),targetHeight:+_targetHeight.toFixed(3),scale:+visual.scale.x.toFixed(4)};}catch(_e){}
         visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
         _applyHyperBuild(visual,_heroAppr);_applyHyperKit(visual,_homeKit,_heroAppr);
         const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
@@ -12442,7 +12451,7 @@ function ThreeMatchView(props){
         try{window.__CPM_HYPER_ASSISTANTS={avatars:made.length,legacyVisible:0};}catch(_e){}
         return made;
       };      if(_hyperHero){
-        const _hyperAssetUrls=['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb'];
+        const _hyperAssetUrls=_cgtraderReview?['./assets/cgtrader-unreal-axis-corrected-retarget-full-ground-pass-review.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb'];
         Promise.allSettled(_hyperAssetUrls.map(url=>loadGLB(url))).then(results=>{
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
           if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');
@@ -12450,7 +12459,7 @@ function ThreeMatchView(props){
           try{window.__CPM_HYPER_ANIMATIONS=(pkg.animations||[]).map(c=>c&&c.name).filter(Boolean);}catch(_e){}
           if(_hyperIntro)_replaceIntroLineupWithHyper(pkg);else _replaceHeroWithHyper(pkg);
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
-          try{window.__CPM_HYPER_CASUAL_STATUS=_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready');}catch(_e){}
+          try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderReview?'ready-cgtrader-review':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready'));}catch(_e){}
         }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});
       }
       /* [7.907.0 — D7, TEMPORANEO: interruttore «Corpi: leggeri/pieni» del menu di pausa] scambio A CALDO del
