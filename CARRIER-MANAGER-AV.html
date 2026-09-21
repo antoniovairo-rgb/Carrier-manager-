@@ -431,7 +431,9 @@ function AvatarSVG({id=0,size=60,border=false,style={},seed}){
   for(let i=0;i<raw.length;i++) hash=((hash*31)+raw.charCodeAt(i))|0;
   const portraitId=Math.abs(hash||Number(id)||0)%10;
   return <img src={"./assets/avatar-"+portraitId+".png"} width={size} height={size} alt="" style={{width:size,height:size,borderRadius:"50%",objectFit:"cover",display:"block",flexShrink:0,...(border?{border:"2px solid "+TH.primary,boxSizing:"border-box"}:{}),...style}}/>;
-}function NpcFaceCoach({coachName,size}){return <AvatarSVG seed={"coach-"+(coachName||"mister")} size={size||52} avStyle="micah" avOpts={npcCoachAvOpts(coachName||"mister")}/>;}
+}/* Bundle compatibility: AvatarSVG currently renders local PNG portraits and ignores avOpts. Keep the coach option factory defined so event modals cannot throw while source modules evolve. */
+function npcCoachAvOpts(_coachName){return null;}
+function NpcFaceCoach({coachName,size}){return <AvatarSVG seed={"coach-"+(coachName||"mister")} size={size||52} avStyle="micah" avOpts={npcCoachAvOpts(coachName||"mister")}/>;}
 
 /* ========================================
    PLAYER 3D VIEWER
