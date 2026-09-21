@@ -36,14 +36,17 @@ try {
     if(observed.filter(x=>x.contact==='left').length>=2&&observed.some(x=>x.contact==='right'))break;
   }
   await page.screenshot({path:path.join(evidence,'cgtrader-mixed-lod-dribble-sequence.png')});
-  await page.evaluate(()=>{window.__CPM_FORCE_OUTCOME='success';return window.__CPM_RESOLVE&&window.__CPM_RESOLVE(0);});
+  await page.waitForFunction(()=>window.__CPM_STATE&&window.__CPM_STATE().phase==='hl_choose',{timeout:5000});
+  const preResolve=await page.evaluate(()=>window.__CPM_STATE?window.__CPM_STATE():null);
+  const resolved=await page.evaluate(()=>{window.__CPM_FORCE_OUTCOME='success';return !!(window.__CPM_RESOLVE&&window.__CPM_RESOLVE(0));});
   const transitionSamples=[];
   for(let i=0;i<12;i++){await sleep(250);transitionSamples.push(await page.evaluate(()=>({state:window.__CPM_STATE?window.__CPM_STATE():null,lod:window.__CPM_CGTRADER_LOD_AUDIT?window.__CPM_CGTRADER_LOD_AUDIT():null})));}
-  const report={status:await page.evaluate(()=>window.__CPM_HYPER_CASUAL_STATUS),forced,contacts:observed,transitionSamples,errors};
+  const report={status:await page.evaluate(()=>window.__CPM_HYPER_CASUAL_STATUS),forced,preResolve,resolved,contacts:observed,transitionSamples,errors};
   fs.mkdirSync(evidence,{recursive:true});
   fs.writeFileSync(path.join(evidence,'cgtrader-mixed-lod-dribble-probe.json'),JSON.stringify(report,null,2));
   assert.equal(report.status,'ready-cgtrader-mixed-lod-benchmark');
   assert.deepEqual(errors,[],`browser errors: ${errors.join(' | ')}`);
+  assert.equal(resolved,true,'dribble action did not accept resolution from hl_choose');
   const touches=observed.filter(x=>x.contact==='left'||x.contact==='right');
   assert.deepEqual(touches.map(x=>x.contact),['left','right','left'],'the authored left-right-left contact order is incomplete');
   assert.ok(Math.abs(touches[0].u-0.27)<0.06&&Math.abs(touches[1].u-0.36)<0.08&&Math.abs(touches[2].u-0.79)<0.10,'contact moments do not match the authored clip');
