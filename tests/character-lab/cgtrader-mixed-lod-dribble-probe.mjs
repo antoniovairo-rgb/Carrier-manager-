@@ -21,11 +21,17 @@ try {
   await page.waitForFunction(()=>window.__CPM_HYPER_CASUAL_STATUS==='ready-cgtrader-mixed-lod-benchmark',{timeout:90000});
   await forceSituation(page,18,{settle:250,choose:false});
   await sleep(3500);
-  await page.evaluate(()=>{window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[];delete window.__CPM_CGTRADER_DRIBBLE_TOUCH;});
-  const forced=await forceSituation(page,18,{settle:80,choose:false});
+  /* Start observation and scene activation in the same browser task: the first left-foot event
+     can otherwise occur during a harness settle delay and produce a false negative. */
+  const forced=await page.evaluate(()=>{
+    window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[];
+    delete window.__CPM_CGTRADER_DRIBBLE_TOUCH;
+    window.__CPM_FORCE_SIT(18,false);
+    return window.__CPM_STATE?window.__CPM_STATE():null;
+  });
   let observed=[];
-  for(let poll=0;poll<30;poll++){
-    await sleep(100);
+  for(let poll=0;poll<120;poll++){
+    await sleep(25);
     observed=await page.evaluate(()=>window.__CPM_CGTRADER_DRIBBLE_CONTACTS||[]);
     if(observed.filter(x=>x.contact==='left').length>=2&&observed.some(x=>x.contact==='right'))break;
   }
