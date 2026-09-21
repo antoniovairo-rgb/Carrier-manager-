@@ -12284,14 +12284,17 @@ function ThreeMatchView(props){
          Supported values: 'off' (default), 'hero'. Squad replacement is
          deliberately deferred until kit/number UV masks and GK clips exist. */
       const _hyperQuery=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
-      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review')?_hyperQuery:'off');
+      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review'||_hyperQuery==='cgtrader-squad-review')?_hyperQuery:'off');
       /* Explicit local-review switch for the selected CGTrader candidate.
          It is Hero-only and opt-in: default `?hyperCharacter=full` keeps its
          published source until the complete mobile quality gate is passed. */
       const _cgtraderReview=_hyperMode==='cgtrader-review';
+      /* POC-only squad benchmark: the animated CGTrader LOD2 replaces field avatars only on its explicit review URL. */
+      const _cgtraderSquadReview=_hyperMode==='cgtrader-squad-review';
+      const _cgtraderAnyReview=_cgtraderReview||_cgtraderSquadReview;
       const _hyperFull=_hyperMode==='full';
-      const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull;
-      const _hyperHero=_hyperMode==='hero'||_hyperIntro||_cgtraderReview;
+      const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull||_cgtraderSquadReview;
+      const _hyperHero=_hyperMode==='hero'||_hyperIntro||_cgtraderAnyReview;
       try{window.__CPM_HYPER_CASUAL_STATUS=_hyperHero?'loading':'off';window.__CPM_HYPER_INTRO_POLICY=_hyperIntro?{field:'hyper',offFieldCH38:false}:null;}catch(_e){}
       /* Le proporzioni del volto e della testa sono integrate nei GLB corretti.
          Qui scegliamo una variante reale dell'asset, lasciando invariati rig e clip. */
@@ -12452,7 +12455,7 @@ function ThreeMatchView(props){
         try{window.__CPM_HYPER_ASSISTANTS={avatars:made.length,legacyVisible:0};}catch(_e){}
         return made;
       };      if(_hyperHero){
-        const _hyperAssetUrls=_cgtraderReview?['./assets/cgtrader-unreal-axis-corrected-retarget-full-ground-pass-review.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb'];
+        const _hyperAssetUrls=_cgtraderSquadReview?['./assets/cgtrader-review-lod2.glb']:(_cgtraderReview?['./assets/cgtrader-unreal-axis-corrected-retarget-full-ground-pass-review.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']);
         Promise.allSettled(_hyperAssetUrls.map(url=>loadGLB(url))).then(results=>{
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
           if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');
@@ -12460,7 +12463,7 @@ function ThreeMatchView(props){
           try{window.__CPM_HYPER_ANIMATIONS=(pkg.animations||[]).map(c=>c&&c.name).filter(Boolean);}catch(_e){}
           if(_hyperIntro)_replaceIntroLineupWithHyper(pkg);else _replaceHeroWithHyper(pkg);
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
-          try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderReview?'ready-cgtrader-review':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready'));}catch(_e){}
+          try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-squad-review':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready')));}catch(_e){}
         }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});
       }
       /* [7.907.0 — D7, TEMPORANEO: interruttore «Corpi: leggeri/pieni» del menu di pausa] scambio A CALDO del
