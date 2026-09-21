@@ -40,9 +40,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
+    "sottoPav": [],
     "nMisurati": 4,
     "nSotto": 0,
-    "nGradiente": 24,
+    "nGradiente": 19,
+    "nEmoji": 5,
     "peggiori": [
      {
       "testo": "#526279",
@@ -68,7 +70,26 @@
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 1,
+    "nFondi": 1,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 1,
+    "corpi": [
+     12,
+     13
+    ],
+    "raggi": [
+     8,
+     10,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 800,
+    "schermate": 0.87,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "375": {
     "W": 375,
@@ -84,9 +105,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
+    "sottoPav": [],
     "nMisurati": 4,
     "nSotto": 0,
-    "nGradiente": 24,
+    "nGradiente": 19,
+    "nEmoji": 5,
     "peggiori": [
      {
       "testo": "#526279",
@@ -112,7 +135,26 @@
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 1,
+    "nFondi": 1,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 1,
+    "corpi": [
+     12,
+     13
+    ],
+    "raggi": [
+     8,
+     10,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 742,
+    "schermate": 0.81,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "390": {
     "W": 390,
@@ -128,9 +170,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
+    "sottoPav": [],
     "nMisurati": 4,
     "nSotto": 0,
-    "nGradiente": 24,
+    "nGradiente": 19,
+    "nEmoji": 5,
     "peggiori": [
      {
       "testo": "#526279",
@@ -156,7 +200,26 @@
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 1,
+    "nFondi": 1,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 1,
+    "corpi": [
+     12,
+     13
+    ],
+    "raggi": [
+     8,
+     10,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 844,
+    "schermate": 0.92,
+    "scorritore": "documento"
    },
    "412": {
     "W": 412,
@@ -172,9 +235,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
+    "sottoPav": [],
     "nMisurati": 4,
     "nSotto": 0,
-    "nGradiente": 24,
+    "nGradiente": 19,
+    "nEmoji": 5,
     "peggiori": [
      {
       "testo": "#526279",
@@ -200,7 +265,26 @@
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 1,
+    "nFondi": 1,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 1,
+    "corpi": [
+     12,
+     13
+    ],
+    "raggi": [
+     8,
+     10,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 915,
+    "schermate": 1,
+    "scorritore": "documento"
    },
    "430": {
     "W": 430,
@@ -216,9 +300,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
+    "sottoPav": [],
     "nMisurati": 4,
     "nSotto": 0,
-    "nGradiente": 24,
+    "nGradiente": 19,
+    "nEmoji": 5,
     "peggiori": [
      {
       "testo": "#526279",
@@ -244,7 +330,26 @@
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 1,
+    "nFondi": 1,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 1,
+    "corpi": [
+     12,
+     13
+    ],
+    "raggi": [
+     8,
+     10,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 932,
+    "schermate": 1.02,
+    "scorritore": "documento"
    }
   },
   "impostazioni": {
@@ -258,13 +363,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 32,
+    "nTesto": 29,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 32,
+    "sottoPav": [],
+    "nMisurati": 20,
     "nSotto": 0,
     "nGradiente": 0,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -284,7 +391,7 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 13,
+      "n": 7,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -295,9 +402,9 @@
       "fw": 600,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 3,
+      "n": 1,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
-      "esempio": "("
+      "esempio": "in arrivo"
      },
      {
       "testo": "#526279",
@@ -311,19 +418,39 @@
       "esempio": "🎨 Grafica"
      },
      {
-      "testo": "#8e1f33",
-      "fondo": "#f7e9ec",
-      "fs": 12.5,
-      "fw": 700,
-      "rap": 7.44,
+      "testo": "#1e293b",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 600,
+      "rap": 14.63,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
-      "esempio": "☀️ Chiaro"
+      "n": 7,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "🎵 Musica menu"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 3,
+    "nFondi": 2,
+    "nCorpi": 3,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     16
+    ],
+    "raggi": [
+     8,
+     9,
+     12,
+     14,
+     50
+    ],
+    "altezzaPx": 800,
+    "schermate": 0.87,
+    "scorritore": "documento"
    },
    "375": {
     "W": 375,
@@ -335,13 +462,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 32,
+    "nTesto": 29,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 32,
+    "sottoPav": [],
+    "nMisurati": 20,
     "nSotto": 0,
     "nGradiente": 0,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -361,7 +490,7 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 13,
+      "n": 7,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -372,9 +501,9 @@
       "fw": 600,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 3,
+      "n": 1,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
-      "esempio": "("
+      "esempio": "in arrivo"
      },
      {
       "testo": "#526279",
@@ -388,19 +517,39 @@
       "esempio": "🎨 Grafica"
      },
      {
-      "testo": "#8e1f33",
-      "fondo": "#f7e9ec",
-      "fs": 12.5,
-      "fw": 700,
-      "rap": 7.44,
+      "testo": "#1e293b",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 600,
+      "rap": 14.63,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
-      "esempio": "☀️ Chiaro"
+      "n": 7,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "🎵 Musica menu"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 3,
+    "nFondi": 2,
+    "nCorpi": 3,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     16
+    ],
+    "raggi": [
+     8,
+     9,
+     12,
+     14,
+     50
+    ],
+    "altezzaPx": 667,
+    "schermate": 0.73,
+    "scorritore": "div.cpm-root>div:nth-child(1)>div:nth-child(2)"
    },
    "390": {
     "W": 390,
@@ -412,13 +561,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 32,
+    "nTesto": 29,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 32,
+    "sottoPav": [],
+    "nMisurati": 20,
     "nSotto": 0,
     "nGradiente": 0,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -438,7 +589,7 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 13,
+      "n": 7,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -449,9 +600,9 @@
       "fw": 600,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 3,
+      "n": 1,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
-      "esempio": "("
+      "esempio": "in arrivo"
      },
      {
       "testo": "#526279",
@@ -465,19 +616,39 @@
       "esempio": "🎨 Grafica"
      },
      {
-      "testo": "#8e1f33",
-      "fondo": "#f7e9ec",
-      "fs": 12.5,
-      "fw": 700,
-      "rap": 7.44,
+      "testo": "#1e293b",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 600,
+      "rap": 14.63,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
-      "esempio": "☀️ Chiaro"
+      "n": 7,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "🎵 Musica menu"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 3,
+    "nFondi": 2,
+    "nCorpi": 3,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     16
+    ],
+    "raggi": [
+     8,
+     9,
+     12,
+     14,
+     50
+    ],
+    "altezzaPx": 844,
+    "schermate": 0.92,
+    "scorritore": "documento"
    },
    "412": {
     "W": 412,
@@ -489,13 +660,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 32,
+    "nTesto": 29,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 32,
+    "sottoPav": [],
+    "nMisurati": 20,
     "nSotto": 0,
     "nGradiente": 0,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -515,7 +688,7 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 13,
+      "n": 7,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -526,9 +699,9 @@
       "fw": 600,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 3,
+      "n": 1,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
-      "esempio": "("
+      "esempio": "in arrivo"
      },
      {
       "testo": "#526279",
@@ -542,19 +715,39 @@
       "esempio": "🎨 Grafica"
      },
      {
-      "testo": "#8e1f33",
-      "fondo": "#f7e9ec",
-      "fs": 12.5,
-      "fw": 700,
-      "rap": 7.44,
+      "testo": "#1e293b",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 600,
+      "rap": 14.63,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
-      "esempio": "☀️ Chiaro"
+      "n": 7,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "🎵 Musica menu"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 3,
+    "nFondi": 2,
+    "nCorpi": 3,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     16
+    ],
+    "raggi": [
+     8,
+     9,
+     12,
+     14,
+     50
+    ],
+    "altezzaPx": 915,
+    "schermate": 1,
+    "scorritore": "documento"
    },
    "430": {
     "W": 430,
@@ -566,13 +759,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 32,
+    "nTesto": 29,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 32,
+    "sottoPav": [],
+    "nMisurati": 20,
     "nSotto": 0,
     "nGradiente": 0,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -592,7 +787,7 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 13,
+      "n": 7,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -603,9 +798,9 @@
       "fw": 600,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 3,
+      "n": 1,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
-      "esempio": "("
+      "esempio": "in arrivo"
      },
      {
       "testo": "#526279",
@@ -619,19 +814,39 @@
       "esempio": "🎨 Grafica"
      },
      {
-      "testo": "#8e1f33",
-      "fondo": "#f7e9ec",
-      "fs": 12.5,
-      "fw": 700,
-      "rap": 7.44,
+      "testo": "#1e293b",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 600,
+      "rap": 14.63,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(3)>button.cpm-press",
-      "esempio": "☀️ Chiaro"
+      "n": 7,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "🎵 Musica menu"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 3,
+    "nFondi": 2,
+    "nCorpi": 3,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     12,
+     16
+    ],
+    "raggi": [
+     8,
+     9,
+     12,
+     14,
+     50
+    ],
+    "altezzaPx": 932,
+    "schermate": 1.02,
+    "scorritore": "documento"
    }
   },
   "creazione": {
@@ -660,9 +875,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 838,
+    "sottoPav": [],
+    "nMisurati": 819,
     "nSotto": 0,
     "nGradiente": 3,
+    "nEmoji": 19,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -723,7 +940,28 @@
     "nMarca": 1,
     "marca": [
      "⚡ INIZIA I PROVINI"
-    ]
+    ],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     15,
+     27
+    ],
+    "raggi": [
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1749,
+    "schermate": 1.91,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "375": {
     "W": 375,
@@ -739,9 +977,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 838,
+    "sottoPav": [],
+    "nMisurati": 819,
     "nSotto": 0,
     "nGradiente": 3,
+    "nEmoji": 19,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -802,7 +1042,28 @@
     "nMarca": 1,
     "marca": [
      "⚡ INIZIA I PROVINI"
-    ]
+    ],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     15,
+     27
+    ],
+    "raggi": [
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1749,
+    "schermate": 1.91,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "390": {
     "W": 390,
@@ -818,9 +1079,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 838,
+    "sottoPav": [],
+    "nMisurati": 819,
     "nSotto": 0,
     "nGradiente": 3,
+    "nEmoji": 19,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -881,7 +1144,28 @@
     "nMarca": 1,
     "marca": [
      "⚡ INIZIA I PROVINI"
-    ]
+    ],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     15,
+     27
+    ],
+    "raggi": [
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1749,
+    "schermate": 1.91,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "412": {
     "W": 412,
@@ -897,9 +1181,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 838,
+    "sottoPav": [],
+    "nMisurati": 819,
     "nSotto": 0,
     "nGradiente": 3,
+    "nEmoji": 19,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -960,7 +1246,28 @@
     "nMarca": 1,
     "marca": [
      "⚡ INIZIA I PROVINI"
-    ]
+    ],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     15,
+     27
+    ],
+    "raggi": [
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1749,
+    "schermate": 1.91,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "430": {
     "W": 430,
@@ -976,9 +1283,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 838,
+    "sottoPav": [],
+    "nMisurati": 819,
     "nSotto": 0,
     "nGradiente": 3,
+    "nEmoji": 19,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -1039,7 +1348,28 @@
     "nMarca": 1,
     "marca": [
      "⚡ INIZIA I PROVINI"
-    ]
+    ],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     15,
+     27
+    ],
+    "raggi": [
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1721,
+    "schermate": 1.88,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    }
   },
   "offerte": {
@@ -1057,9 +1387,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 38,
+    "sottoPav": [],
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 5,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -1079,9 +1411,9 @@
       "fw": 400,
       "rap": 5.27,
       "soglia": 4.5,
-      "n": 3,
+      "n": 2,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "esempio": "· Prestigio"
      },
      {
       "testo": "#92400e",
@@ -1101,7 +1433,7 @@
       "fw": 400,
       "rap": 6.21,
       "soglia": 4.5,
-      "n": 7,
+      "n": 5,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -1120,7 +1452,26 @@
     "nMarca": 1,
     "marca": [
      "Scegli →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 4,
+    "nCorpi": 4,
+    "nRaggi": 3,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     13,
+     27
+    ],
+    "raggi": [
+     8,
+     10,
+     14
+    ],
+    "altezzaPx": 800,
+    "schermate": 0.87,
+    "scorritore": "documento"
    },
    "375": {
     "W": 375,
@@ -1136,9 +1487,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 38,
+    "sottoPav": [],
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 5,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -1158,9 +1511,9 @@
       "fw": 400,
       "rap": 5.27,
       "soglia": 4.5,
-      "n": 3,
+      "n": 2,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "esempio": "· Prestigio"
      },
      {
       "testo": "#92400e",
@@ -1180,7 +1533,7 @@
       "fw": 400,
       "rap": 6.21,
       "soglia": 4.5,
-      "n": 7,
+      "n": 5,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -1199,7 +1552,26 @@
     "nMarca": 1,
     "marca": [
      "Scegli →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 4,
+    "nCorpi": 4,
+    "nRaggi": 3,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     13,
+     27
+    ],
+    "raggi": [
+     8,
+     10,
+     14
+    ],
+    "altezzaPx": 667,
+    "schermate": 0.73,
+    "scorritore": "documento"
    },
    "390": {
     "W": 390,
@@ -1215,9 +1587,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 38,
+    "sottoPav": [],
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 5,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -1237,9 +1611,9 @@
       "fw": 400,
       "rap": 5.27,
       "soglia": 4.5,
-      "n": 3,
+      "n": 2,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "esempio": "· Prestigio"
      },
      {
       "testo": "#92400e",
@@ -1259,7 +1633,7 @@
       "fw": 400,
       "rap": 6.21,
       "soglia": 4.5,
-      "n": 7,
+      "n": 5,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -1278,7 +1652,26 @@
     "nMarca": 1,
     "marca": [
      "Scegli →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 4,
+    "nCorpi": 4,
+    "nRaggi": 3,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     13,
+     27
+    ],
+    "raggi": [
+     8,
+     10,
+     14
+    ],
+    "altezzaPx": 844,
+    "schermate": 0.92,
+    "scorritore": "documento"
    },
    "412": {
     "W": 412,
@@ -1294,9 +1687,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 38,
+    "sottoPav": [],
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 5,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -1316,9 +1711,9 @@
       "fw": 400,
       "rap": 5.27,
       "soglia": 4.5,
-      "n": 3,
+      "n": 2,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "esempio": "· Prestigio"
      },
      {
       "testo": "#92400e",
@@ -1338,7 +1733,7 @@
       "fw": 400,
       "rap": 6.21,
       "soglia": 4.5,
-      "n": 7,
+      "n": 5,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -1357,7 +1752,26 @@
     "nMarca": 1,
     "marca": [
      "Scegli →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 4,
+    "nCorpi": 4,
+    "nRaggi": 3,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     13,
+     27
+    ],
+    "raggi": [
+     8,
+     10,
+     14
+    ],
+    "altezzaPx": 915,
+    "schermate": 1,
+    "scorritore": "documento"
    },
    "430": {
     "W": 430,
@@ -1373,9 +1787,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 38,
+    "sottoPav": [],
+    "nMisurati": 29,
     "nSotto": 0,
     "nGradiente": 5,
+    "nEmoji": 9,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -1395,9 +1811,9 @@
       "fw": 400,
       "rap": 5.27,
       "soglia": 4.5,
-      "n": 3,
+      "n": 2,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "🇮🇹"
+      "esempio": "· Prestigio"
      },
      {
       "testo": "#92400e",
@@ -1417,7 +1833,7 @@
       "fw": 400,
       "rap": 6.21,
       "soglia": 4.5,
-      "n": 7,
+      "n": 5,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -1436,7 +1852,26 @@
     "nMarca": 1,
     "marca": [
      "Scegli →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 4,
+    "nCorpi": 4,
+    "nRaggi": 3,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     12,
+     13,
+     27
+    ],
+    "raggi": [
+     8,
+     10,
+     14
+    ],
+    "altezzaPx": 932,
+    "schermate": 1.02,
+    "scorritore": "documento"
    }
   },
   "dashboard": {
@@ -1450,74 +1885,106 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 203,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 128,
-    "nSotto": 3,
-    "nGradiente": 75,
+    "nTesto": 201,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 126,
+    "nSotto": 0,
+    "nGradiente": 38,
+    "nEmoji": 37,
     "peggiori": [
      {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
-      "esempio": "7.2"
-     },
-     {
-      "testo": "#16a34a",
+      "testo": "#b45309",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 3.3,
+      "rap": 5.02,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
-      "esempio": "Force"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "↓ ti pesa"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#2563eb",
       "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.3,
-      "soglia": 3,
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.17,
+      "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
-      "esempio": "14"
+      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "esempio": "Titolare Affermato"
      },
      {
-      "testo": "#0891b2",
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Gol e assist"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
+      "esempio": "in 12 partite"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 700,
-      "rap": 3.68,
+      "fw": 400,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
-      "esempio": "Nello spogliatoio"
+      "n": 10,
+      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
+      "esempio": "4"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
-    ]
+    ],
+    "nColTesto": 14,
+    "nFondi": 7,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     17,
+     20,
+     24,
+     27,
+     32
+    ],
+    "raggi": [
+     3,
+     6,
+     10,
+     12,
+     14,
+     16,
+     50
+    ],
+    "altezzaPx": 2830,
+    "schermate": 3.09,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "375": {
     "W": 375,
@@ -1529,74 +1996,106 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 203,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 128,
-    "nSotto": 3,
-    "nGradiente": 75,
+    "nTesto": 201,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 126,
+    "nSotto": 0,
+    "nGradiente": 38,
+    "nEmoji": 37,
     "peggiori": [
      {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
-      "esempio": "7.2"
-     },
-     {
-      "testo": "#16a34a",
+      "testo": "#b45309",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 3.3,
+      "rap": 5.02,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
-      "esempio": "Force"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "↓ ti pesa"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#2563eb",
       "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.3,
-      "soglia": 3,
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.17,
+      "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
-      "esempio": "14"
+      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "esempio": "Titolare Affermato"
      },
      {
-      "testo": "#0891b2",
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Gol e assist"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
+      "esempio": "in 12 partite"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 700,
-      "rap": 3.68,
+      "fw": 400,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
-      "esempio": "Nello spogliatoio"
+      "n": 10,
+      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
+      "esempio": "4"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
-    ]
+    ],
+    "nColTesto": 14,
+    "nFondi": 7,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     17,
+     20,
+     24,
+     27,
+     32
+    ],
+    "raggi": [
+     3,
+     6,
+     10,
+     12,
+     14,
+     16,
+     50
+    ],
+    "altezzaPx": 2799,
+    "schermate": 3.06,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "390": {
     "W": 390,
@@ -1608,74 +2107,106 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 203,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 128,
-    "nSotto": 3,
-    "nGradiente": 75,
+    "nTesto": 201,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 126,
+    "nSotto": 0,
+    "nGradiente": 38,
+    "nEmoji": 37,
     "peggiori": [
      {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
-      "esempio": "7.2"
-     },
-     {
-      "testo": "#16a34a",
+      "testo": "#b45309",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 3.3,
+      "rap": 5.02,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
-      "esempio": "Force"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "↓ ti pesa"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#2563eb",
       "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.3,
-      "soglia": 3,
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.17,
+      "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
-      "esempio": "14"
+      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "esempio": "Titolare Affermato"
      },
      {
-      "testo": "#0891b2",
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Gol e assist"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
+      "esempio": "in 12 partite"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 700,
-      "rap": 3.68,
+      "fw": 400,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
-      "esempio": "Nello spogliatoio"
+      "n": 10,
+      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
+      "esempio": "4"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
-    ]
+    ],
+    "nColTesto": 14,
+    "nFondi": 7,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     17,
+     20,
+     24,
+     27,
+     32
+    ],
+    "raggi": [
+     3,
+     6,
+     10,
+     12,
+     14,
+     16,
+     50
+    ],
+    "altezzaPx": 2799,
+    "schermate": 3.06,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "412": {
     "W": 412,
@@ -1687,74 +2218,106 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 203,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 128,
-    "nSotto": 3,
-    "nGradiente": 75,
+    "nTesto": 201,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 126,
+    "nSotto": 0,
+    "nGradiente": 38,
+    "nEmoji": 37,
     "peggiori": [
      {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
-      "esempio": "7.2"
-     },
-     {
-      "testo": "#16a34a",
+      "testo": "#b45309",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 3.3,
+      "rap": 5.02,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
-      "esempio": "Force"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "↓ ti pesa"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#2563eb",
       "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.3,
-      "soglia": 3,
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.17,
+      "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
-      "esempio": "14"
+      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "esempio": "Titolare Affermato"
      },
      {
-      "testo": "#0891b2",
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Gol e assist"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
+      "esempio": "in 12 partite"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 700,
-      "rap": 3.68,
+      "fw": 400,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
-      "esempio": "Nello spogliatoio"
+      "n": 10,
+      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
+      "esempio": "4"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
-    ]
+    ],
+    "nColTesto": 14,
+    "nFondi": 7,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     17,
+     20,
+     24,
+     27,
+     32
+    ],
+    "raggi": [
+     3,
+     6,
+     10,
+     12,
+     14,
+     16,
+     50
+    ],
+    "altezzaPx": 2700,
+    "schermate": 2.95,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "430": {
     "W": 430,
@@ -1766,74 +2329,106 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 203,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 128,
-    "nSotto": 3,
-    "nGradiente": 75,
+    "nTesto": 201,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 126,
+    "nSotto": 0,
+    "nGradiente": 38,
+    "nEmoji": 37,
     "peggiori": [
      {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(4)>div.cpm-num",
-      "esempio": "7.2"
-     },
-     {
-      "testo": "#16a34a",
+      "testo": "#b45309",
       "fondo": "#ffffff",
       "fs": 11,
       "fw": 700,
-      "rap": 3.3,
+      "rap": 5.02,
       "soglia": 4.5,
-      "n": 2,
-      "sel": "div:nth-child(2)>div:nth-child(2)>span:nth-child(1)",
-      "esempio": "Force"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
       "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "↓ ti pesa"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#2563eb",
       "fondo": "#ffffff",
-      "fs": 32,
-      "fw": 800,
-      "rap": 3.3,
-      "soglia": 3,
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.17,
+      "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num",
-      "esempio": "14"
+      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "esempio": "Titolare Affermato"
      },
      {
-      "testo": "#0891b2",
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Gol e assist"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 600,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
+      "esempio": "in 12 partite"
+     },
+     {
+      "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 700,
-      "rap": 3.68,
+      "fw": 400,
+      "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(11)>div:nth-child(6)>div:nth-child(1)",
-      "esempio": "Nello spogliatoio"
+      "n": 10,
+      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
+      "esempio": "4"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
-    ]
+    ],
+    "nColTesto": 14,
+    "nFondi": 7,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     17,
+     20,
+     24,
+     27,
+     32
+    ],
+    "raggi": [
+     3,
+     6,
+     10,
+     12,
+     14,
+     16,
+     50
+    ],
+    "altezzaPx": 2682,
+    "schermate": 2.93,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    }
   },
   "stagione-classifica": {
@@ -1873,58 +2468,16 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 396,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 356,
-    "nSotto": 4,
-    "nGradiente": 40,
+    "nTesto": 394,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 350,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 35,
     "peggiori": [
-     {
-      "testo": "#9ca3af",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "🥈"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#f1eee8",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.25,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
-      "esempio": "16"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.76,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
-      "esempio": "17"
-     },
      {
       "testo": "#596a80",
       "fondo": "#fef3c7",
@@ -1932,15 +2485,85 @@
       "fw": 700,
       "rap": 4.97,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
+      "esempio": "5"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#b45309",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.02,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
+      "esempio": "3"
+     },
+     {
+      "testo": "#a34a08",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.33,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
+      "esempio": "80"
+     },
+     {
+      "testo": "#137036",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.34,
+      "soglia": 4.5,
+      "n": 9,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(5)",
+      "esempio": "0"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 51,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
+      "esempio": "0"
      }
     ],
     "nMarca": 1,
     "marca": [
      "Lega B ★"
-    ]
+    ],
+    "nColTesto": 13,
+    "nFondi": 10,
+    "nCorpi": 9,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     22,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 2035,
+    "schermate": 2.22,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "375": {
     "W": 375,
@@ -1978,58 +2601,16 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 396,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 356,
-    "nSotto": 4,
-    "nGradiente": 40,
+    "nTesto": 394,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 350,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 35,
     "peggiori": [
-     {
-      "testo": "#9ca3af",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "🥈"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#f1eee8",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.25,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
-      "esempio": "16"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.76,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
-      "esempio": "17"
-     },
      {
       "testo": "#596a80",
       "fondo": "#fef3c7",
@@ -2037,15 +2618,85 @@
       "fw": 700,
       "rap": 4.97,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
+      "esempio": "5"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#b45309",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.02,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
+      "esempio": "3"
+     },
+     {
+      "testo": "#a34a08",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.33,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
+      "esempio": "80"
+     },
+     {
+      "testo": "#137036",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.34,
+      "soglia": 4.5,
+      "n": 9,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(5)",
+      "esempio": "0"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 51,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
+      "esempio": "0"
      }
     ],
     "nMarca": 1,
     "marca": [
      "Lega B ★"
-    ]
+    ],
+    "nColTesto": 13,
+    "nFondi": 10,
+    "nCorpi": 9,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     22,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 2035,
+    "schermate": 2.22,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "390": {
     "W": 390,
@@ -2083,58 +2734,16 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 396,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 356,
-    "nSotto": 4,
-    "nGradiente": 40,
+    "nTesto": 394,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 350,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 35,
     "peggiori": [
-     {
-      "testo": "#9ca3af",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "🥈"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#f1eee8",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.25,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
-      "esempio": "16"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.76,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
-      "esempio": "17"
-     },
      {
       "testo": "#596a80",
       "fondo": "#fef3c7",
@@ -2142,15 +2751,85 @@
       "fw": 700,
       "rap": 4.97,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
+      "esempio": "5"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#b45309",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.02,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
+      "esempio": "3"
+     },
+     {
+      "testo": "#a34a08",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.33,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
+      "esempio": "80"
+     },
+     {
+      "testo": "#137036",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.34,
+      "soglia": 4.5,
+      "n": 9,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(5)",
+      "esempio": "0"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 51,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
+      "esempio": "0"
      }
     ],
     "nMarca": 1,
     "marca": [
      "Lega B ★"
-    ]
+    ],
+    "nColTesto": 13,
+    "nFondi": 10,
+    "nCorpi": 9,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     22,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 2035,
+    "schermate": 2.22,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "412": {
     "W": 412,
@@ -2188,58 +2867,16 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 397,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 357,
-    "nSotto": 4,
-    "nGradiente": 40,
+    "nTesto": 395,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 351,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 35,
     "peggiori": [
-     {
-      "testo": "#9ca3af",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "🥈"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#f1eee8",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.25,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
-      "esempio": "16"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.76,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
-      "esempio": "17"
-     },
      {
       "testo": "#596a80",
       "fondo": "#fef3c7",
@@ -2247,15 +2884,85 @@
       "fw": 700,
       "rap": 4.97,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
+      "esempio": "5"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#b45309",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.02,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
+      "esempio": "3"
+     },
+     {
+      "testo": "#a34a08",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.33,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
+      "esempio": "80"
+     },
+     {
+      "testo": "#137036",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.34,
+      "soglia": 4.5,
+      "n": 9,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(5)",
+      "esempio": "0"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 51,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
+      "esempio": "0"
      }
     ],
     "nMarca": 1,
     "marca": [
      "Lega B ★"
-    ]
+    ],
+    "nColTesto": 13,
+    "nFondi": 10,
+    "nCorpi": 9,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     22,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 2035,
+    "schermate": 2.22,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "430": {
     "W": 430,
@@ -2293,58 +3000,16 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 397,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 357,
-    "nSotto": 4,
-    "nGradiente": 40,
+    "nTesto": 395,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 351,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 35,
     "peggiori": [
-     {
-      "testo": "#9ca3af",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)",
-      "esempio": "🥈"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#f1eee8",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.25,
-      "soglia": 4.5,
-      "n": 2,
-      "sel": "tr:nth-child(16)>td:nth-child(2)>span.cpm-num",
-      "esempio": "16"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ef4444",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 3.76,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "tr:nth-child(17)>td:nth-child(2)>span.cpm-num",
-      "esempio": "17"
-     },
      {
       "testo": "#596a80",
       "fondo": "#fef3c7",
@@ -2352,15 +3017,85 @@
       "fw": 700,
       "rap": 4.97,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
-      "esempio": "#"
+      "esempio": "5"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#b45309",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.02,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
+      "esempio": "3"
+     },
+     {
+      "testo": "#a34a08",
+      "fondo": "#fef3c7",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.33,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
+      "esempio": "80"
+     },
+     {
+      "testo": "#137036",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.34,
+      "soglia": 4.5,
+      "n": 9,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(5)",
+      "esempio": "0"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 12,
+      "fw": 400,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 51,
+      "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
+      "esempio": "0"
      }
     ],
     "nMarca": 1,
     "marca": [
      "Lega B ★"
-    ]
+    ],
+    "nColTesto": 13,
+    "nFondi": 10,
+    "nCorpi": 9,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     22,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 2035,
+    "schermate": 2.22,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    }
   },
   "stagione-calendario": {
@@ -2374,47 +3109,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 324,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 284,
-    "nSotto": 1,
-    "nGradiente": 40,
+    "nTesto": 322,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 239,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 74,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
-      "esempio": "Gioca →"
-     },
-     {
-      "testo": "#596a80",
-      "fondo": "#f1eee8",
-      "fs": 15,
-      "fw": 800,
-      "rap": 4.77,
-      "soglia": 3,
-      "n": 10,
-      "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
-      "esempio": "–"
-     },
      {
       "testo": "#596a80",
       "fondo": "#f1eee8",
@@ -2433,13 +3137,73 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 60,
+      "n": 40,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
+     },
+     {
+      "testo": "#0f172a",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.42,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 26,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
+      "esempio": "13"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 10,
+    "nFondi": 9,
+    "nCorpi": 10,
+    "nRaggi": 5,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1651,
+    "schermate": 1.8,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "375": {
     "W": 375,
@@ -2451,47 +3215,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 324,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 284,
-    "nSotto": 1,
-    "nGradiente": 40,
+    "nTesto": 322,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 239,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 74,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
-      "esempio": "Gioca →"
-     },
-     {
-      "testo": "#596a80",
-      "fondo": "#f1eee8",
-      "fs": 15,
-      "fw": 800,
-      "rap": 4.77,
-      "soglia": 3,
-      "n": 10,
-      "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
-      "esempio": "–"
-     },
      {
       "testo": "#596a80",
       "fondo": "#f1eee8",
@@ -2510,13 +3243,73 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 60,
+      "n": 40,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
+     },
+     {
+      "testo": "#0f172a",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.42,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 26,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
+      "esempio": "13"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 10,
+    "nFondi": 9,
+    "nCorpi": 10,
+    "nRaggi": 5,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1651,
+    "schermate": 1.8,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "390": {
     "W": 390,
@@ -2528,47 +3321,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 324,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 284,
-    "nSotto": 1,
-    "nGradiente": 40,
+    "nTesto": 322,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 239,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 74,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
-      "esempio": "Gioca →"
-     },
-     {
-      "testo": "#596a80",
-      "fondo": "#f1eee8",
-      "fs": 15,
-      "fw": 800,
-      "rap": 4.77,
-      "soglia": 3,
-      "n": 10,
-      "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
-      "esempio": "–"
-     },
      {
       "testo": "#596a80",
       "fondo": "#f1eee8",
@@ -2587,13 +3349,73 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 60,
+      "n": 40,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
+     },
+     {
+      "testo": "#0f172a",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.42,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 26,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
+      "esempio": "13"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 10,
+    "nFondi": 9,
+    "nCorpi": 10,
+    "nRaggi": 5,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1651,
+    "schermate": 1.8,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "412": {
     "W": 412,
@@ -2605,47 +3427,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 324,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 284,
-    "nSotto": 1,
-    "nGradiente": 40,
+    "nTesto": 322,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 239,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 74,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
-      "esempio": "Gioca →"
-     },
-     {
-      "testo": "#596a80",
-      "fondo": "#f1eee8",
-      "fs": 15,
-      "fw": 800,
-      "rap": 4.77,
-      "soglia": 3,
-      "n": 10,
-      "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
-      "esempio": "–"
-     },
      {
       "testo": "#596a80",
       "fondo": "#f1eee8",
@@ -2664,13 +3455,73 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 60,
+      "n": 40,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
+     },
+     {
+      "testo": "#0f172a",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.42,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 26,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
+      "esempio": "13"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 10,
+    "nFondi": 9,
+    "nCorpi": 10,
+    "nRaggi": 5,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1651,
+    "schermate": 1.8,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "430": {
     "W": 430,
@@ -2682,47 +3533,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 324,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 284,
-    "nSotto": 1,
-    "nGradiente": 40,
+    "nTesto": 322,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 239,
+    "nSotto": 0,
+    "nGradiente": 9,
+    "nEmoji": 74,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
-      "esempio": "Gioca →"
-     },
-     {
-      "testo": "#596a80",
-      "fondo": "#f1eee8",
-      "fs": 15,
-      "fw": 800,
-      "rap": 4.77,
-      "soglia": 3,
-      "n": 10,
-      "sel": "div:nth-child(2)>div.cpm-num>span:nth-child(1)",
-      "esempio": "–"
-     },
      {
       "testo": "#596a80",
       "fondo": "#f1eee8",
@@ -2741,13 +3561,73 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 60,
+      "n": 40,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
+     },
+     {
+      "testo": "#0f172a",
+      "fondo": "#16a34a",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.42,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
+      "esempio": "Gioca →"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 26,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
+      "esempio": "13"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 10,
+    "nFondi": 9,
+    "nCorpi": 10,
+    "nRaggi": 5,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1651,
+    "schermate": 1.8,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    }
   },
   "stagione-coppe": {
@@ -2761,35 +3641,26 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 50,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 10,
+    "nTesto": 48,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 26,
     "nSotto": 0,
-    "nGradiente": 40,
+    "nGradiente": 9,
+    "nEmoji": 13,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      },
      {
       "testo": "#526279",
@@ -2823,10 +3694,44 @@
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 7.58,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
+      "esempio": "Elite"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 7,
+    "nRaggi": 4,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 800,
+    "schermate": 0.87,
+    "scorritore": "documento"
    },
    "375": {
     "W": 375,
@@ -2838,35 +3743,26 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 50,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 10,
+    "nTesto": 48,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 26,
     "nSotto": 0,
-    "nGradiente": 40,
+    "nGradiente": 9,
+    "nEmoji": 13,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      },
      {
       "testo": "#526279",
@@ -2900,10 +3796,44 @@
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 7.58,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
+      "esempio": "Elite"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 7,
+    "nRaggi": 4,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 667,
+    "schermate": 0.73,
+    "scorritore": "documento"
    },
    "390": {
     "W": 390,
@@ -2915,35 +3845,26 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 50,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 10,
+    "nTesto": 48,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 26,
     "nSotto": 0,
-    "nGradiente": 40,
+    "nGradiente": 9,
+    "nEmoji": 13,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      },
      {
       "testo": "#526279",
@@ -2977,10 +3898,44 @@
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 7.58,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
+      "esempio": "Elite"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 7,
+    "nRaggi": 4,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 844,
+    "schermate": 0.92,
+    "scorritore": "documento"
    },
    "412": {
     "W": 412,
@@ -2992,35 +3947,26 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 50,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 10,
+    "nTesto": 48,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 26,
     "nSotto": 0,
-    "nGradiente": 40,
+    "nGradiente": 9,
+    "nEmoji": 13,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      },
      {
       "testo": "#526279",
@@ -3054,10 +4000,44 @@
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 7.58,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
+      "esempio": "Elite"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 7,
+    "nRaggi": 4,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 915,
+    "schermate": 1,
+    "scorritore": "documento"
    },
    "430": {
     "W": 430,
@@ -3069,35 +4049,26 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 50,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 10,
+    "nTesto": 48,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 26,
     "nSotto": 0,
-    "nGradiente": 40,
+    "nGradiente": 9,
+    "nEmoji": 13,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      },
      {
       "testo": "#526279",
@@ -3131,10 +4102,44 @@
       "n": 1,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 7.58,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
+      "esempio": "Elite"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 7,
+    "nRaggi": 4,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 932,
+    "schermate": 1.02,
+    "scorritore": "documento"
    }
   },
   "club": {
@@ -3148,72 +4153,102 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 280,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 215,
-    "nSotto": 34,
-    "nGradiente": 65,
+    "nTesto": 154,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 94,
+    "nSotto": 0,
+    "nGradiente": 25,
+    "nEmoji": 35,
     "peggiori": [
      {
-      "testo": "#d97706",
+      "testo": "#596a80",
       "fondo": "#f1eee8",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.75,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "76"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f7e9ec",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.8,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f5f3ef",
-      "fs": 14,
-      "fw": 900,
-      "rap": 2.97,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
-      "esempio": "78"
-     },
-     {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
-      "esempio": "79"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
       "fs": 11,
       "fw": 800,
-      "rap": 3.3,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 5,
-      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
-      "esempio": "C"
+      "n": 6,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "S."
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f4f7fb",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.15,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "/ anno"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "8°"
+     },
+     {
+      "testo": "#026fa7",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.48,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "esempio": "50"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 20,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
+      "esempio": "🩺 Dr."
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 11,
+    "nFondi": 4,
+    "nCorpi": 10,
+    "nRaggi": 6,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     2,
+     4,
+     6,
+     8,
+     14,
+     50
+    ],
+    "altezzaPx": 1565,
+    "schermate": 1.71,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "375": {
     "W": 375,
@@ -3225,72 +4260,102 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 280,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 215,
-    "nSotto": 34,
-    "nGradiente": 65,
+    "nTesto": 154,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 94,
+    "nSotto": 0,
+    "nGradiente": 25,
+    "nEmoji": 35,
     "peggiori": [
      {
-      "testo": "#d97706",
+      "testo": "#596a80",
       "fondo": "#f1eee8",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.75,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "76"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f7e9ec",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.8,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f5f3ef",
-      "fs": 14,
-      "fw": 900,
-      "rap": 2.97,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
-      "esempio": "78"
-     },
-     {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
-      "esempio": "79"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
       "fs": 11,
       "fw": 800,
-      "rap": 3.3,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 5,
-      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
-      "esempio": "C"
+      "n": 6,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "S."
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f4f7fb",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.15,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "/ anno"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "8°"
+     },
+     {
+      "testo": "#026fa7",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.48,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "esempio": "50"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 20,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
+      "esempio": "🩺 Dr."
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 11,
+    "nFondi": 4,
+    "nCorpi": 10,
+    "nRaggi": 6,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     2,
+     4,
+     6,
+     8,
+     14,
+     50
+    ],
+    "altezzaPx": 1540,
+    "schermate": 1.68,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "390": {
     "W": 390,
@@ -3302,72 +4367,102 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 280,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 215,
-    "nSotto": 34,
-    "nGradiente": 65,
+    "nTesto": 154,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 94,
+    "nSotto": 0,
+    "nGradiente": 25,
+    "nEmoji": 35,
     "peggiori": [
      {
-      "testo": "#d97706",
+      "testo": "#596a80",
       "fondo": "#f1eee8",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.75,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "76"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f7e9ec",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.8,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f5f3ef",
-      "fs": 14,
-      "fw": 900,
-      "rap": 2.97,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
-      "esempio": "78"
-     },
-     {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
-      "esempio": "79"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
       "fs": 11,
       "fw": 800,
-      "rap": 3.3,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 5,
-      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
-      "esempio": "C"
+      "n": 6,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "S."
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f4f7fb",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.15,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "/ anno"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "8°"
+     },
+     {
+      "testo": "#026fa7",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.48,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "esempio": "50"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 20,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
+      "esempio": "🩺 Dr."
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 11,
+    "nFondi": 4,
+    "nCorpi": 10,
+    "nRaggi": 6,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     2,
+     4,
+     6,
+     8,
+     14,
+     50
+    ],
+    "altezzaPx": 1539,
+    "schermate": 1.68,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "412": {
     "W": 412,
@@ -3379,72 +4474,102 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 280,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 215,
-    "nSotto": 34,
-    "nGradiente": 65,
+    "nTesto": 154,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 94,
+    "nSotto": 0,
+    "nGradiente": 25,
+    "nEmoji": 35,
     "peggiori": [
      {
-      "testo": "#d97706",
+      "testo": "#596a80",
       "fondo": "#f1eee8",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.75,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "76"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f7e9ec",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.8,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f5f3ef",
-      "fs": 14,
-      "fw": 900,
-      "rap": 2.97,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
-      "esempio": "78"
-     },
-     {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
-      "esempio": "79"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
       "fs": 11,
       "fw": 800,
-      "rap": 3.3,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 5,
-      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
-      "esempio": "C"
+      "n": 6,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "S."
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f4f7fb",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.15,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "/ anno"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "8°"
+     },
+     {
+      "testo": "#026fa7",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.48,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "esempio": "50"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 20,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
+      "esempio": "🩺 Dr."
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 11,
+    "nFondi": 4,
+    "nCorpi": 10,
+    "nRaggi": 6,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     2,
+     4,
+     6,
+     8,
+     14,
+     50
+    ],
+    "altezzaPx": 1527,
+    "schermate": 1.67,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "430": {
     "W": 430,
@@ -3456,72 +4581,102 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 280,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 215,
-    "nSotto": 34,
-    "nGradiente": 65,
+    "nTesto": 154,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 94,
+    "nSotto": 0,
+    "nGradiente": 25,
+    "nEmoji": 35,
     "peggiori": [
      {
-      "testo": "#d97706",
+      "testo": "#596a80",
       "fondo": "#f1eee8",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.75,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
-      "esempio": "76"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f7e9ec",
-      "fs": 13,
-      "fw": 800,
-      "rap": 2.8,
-      "soglia": 4.5,
-      "n": 1,
-      "sel": "div:nth-child(3)>div:nth-child(11)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#f5f3ef",
-      "fs": 14,
-      "fw": 900,
-      "rap": 2.97,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(1)",
-      "esempio": "78"
-     },
-     {
-      "testo": "#d97706",
-      "fondo": "#ffffff",
-      "fs": 13,
-      "fw": 800,
-      "rap": 3.19,
-      "soglia": 4.5,
-      "n": 11,
-      "sel": "div:nth-child(3)>div:nth-child(1)>span.cpm-num",
-      "esempio": "79"
-     },
-     {
-      "testo": "#ffffff",
-      "fondo": "#16a34a",
       "fs": 11,
       "fw": 800,
-      "rap": 3.3,
+      "rap": 4.77,
       "soglia": 4.5,
-      "n": 5,
-      "sel": "div:nth-child(3)>div:nth-child(6)>span:nth-child(2)",
-      "esempio": "C"
+      "n": 6,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "S."
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f4f7fb",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.15,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
+      "esempio": "/ anno"
+     },
+     {
+      "testo": "#526279",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.36,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
+      "esempio": "8°"
+     },
+     {
+      "testo": "#026fa7",
+      "fondo": "#ffffff",
+      "fs": 12,
+      "fw": 700,
+      "rap": 5.48,
+      "soglia": 4.5,
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num",
+      "esempio": "50"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 20,
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
+      "esempio": "🩺 Dr."
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 11,
+    "nFondi": 4,
+    "nCorpi": 10,
+    "nRaggi": 6,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     24,
+     27
+    ],
+    "raggi": [
+     2,
+     4,
+     6,
+     8,
+     14,
+     50
+    ],
+    "altezzaPx": 1527,
+    "schermate": 1.67,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    }
   },
   "carriera-profilo": {
@@ -3535,72 +4690,104 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 314,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 236,
-    "nSotto": 20,
-    "nGradiente": 78,
+    "nTesto": 326,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 196,
+    "nSotto": 0,
+    "nGradiente": 39,
+    "nEmoji": 91,
     "peggiori": [
      {
-      "testo": "#10b981",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Cifre del Calcio"
-     },
-     {
-      "testo": "#d97706",
+      "testo": "#026fa7",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.75,
+      "rap": 4.73,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num",
+      "esempio": "12"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 4.77,
+      "soglia": 4.5,
+      "n": 10,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Stipendio"
+     },
+     {
+      "testo": "#995404",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 5,
       "soglia": 3,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#596a80",
+      "fondo": "#f5f5f5",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.06,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
+      "esempio": "200 partite"
+     },
+     {
+      "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.85,
+      "rap": 5.15,
       "soglia": 3,
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 18,
+    "nFondi": 8,
+    "nCorpi": 7,
+    "nRaggi": 11,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     3,
+     4,
+     6,
+     8,
+     9,
+     10,
+     12,
+     13,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 3662,
+    "schermate": 4,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "375": {
     "W": 375,
@@ -3612,72 +4799,104 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 314,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 236,
-    "nSotto": 20,
-    "nGradiente": 78,
+    "nTesto": 326,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 196,
+    "nSotto": 0,
+    "nGradiente": 39,
+    "nEmoji": 91,
     "peggiori": [
      {
-      "testo": "#10b981",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Cifre del Calcio"
-     },
-     {
-      "testo": "#d97706",
+      "testo": "#026fa7",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.75,
+      "rap": 4.73,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num",
+      "esempio": "12"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 4.77,
+      "soglia": 4.5,
+      "n": 10,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Stipendio"
+     },
+     {
+      "testo": "#995404",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 5,
       "soglia": 3,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#596a80",
+      "fondo": "#f5f5f5",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.06,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
+      "esempio": "200 partite"
+     },
+     {
+      "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.85,
+      "rap": 5.15,
       "soglia": 3,
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 18,
+    "nFondi": 8,
+    "nCorpi": 7,
+    "nRaggi": 11,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     3,
+     4,
+     6,
+     8,
+     9,
+     10,
+     12,
+     13,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 3621,
+    "schermate": 3.96,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "390": {
     "W": 390,
@@ -3689,72 +4908,104 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 314,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 236,
-    "nSotto": 20,
-    "nGradiente": 78,
+    "nTesto": 326,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 196,
+    "nSotto": 0,
+    "nGradiente": 39,
+    "nEmoji": 91,
     "peggiori": [
      {
-      "testo": "#10b981",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Cifre del Calcio"
-     },
-     {
-      "testo": "#d97706",
+      "testo": "#026fa7",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.75,
+      "rap": 4.73,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num",
+      "esempio": "12"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 4.77,
+      "soglia": 4.5,
+      "n": 10,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Stipendio"
+     },
+     {
+      "testo": "#995404",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 5,
       "soglia": 3,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#596a80",
+      "fondo": "#f5f5f5",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.06,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
+      "esempio": "200 partite"
+     },
+     {
+      "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.85,
+      "rap": 5.15,
       "soglia": 3,
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 18,
+    "nFondi": 8,
+    "nCorpi": 7,
+    "nRaggi": 11,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     3,
+     4,
+     6,
+     8,
+     9,
+     10,
+     12,
+     13,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 3621,
+    "schermate": 3.96,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "412": {
     "W": 412,
@@ -3766,72 +5017,104 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 314,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 236,
-    "nSotto": 20,
-    "nGradiente": 78,
+    "nTesto": 326,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 196,
+    "nSotto": 0,
+    "nGradiente": 39,
+    "nEmoji": 91,
     "peggiori": [
      {
-      "testo": "#10b981",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Cifre del Calcio"
-     },
-     {
-      "testo": "#d97706",
+      "testo": "#026fa7",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.75,
+      "rap": 4.73,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num",
+      "esempio": "12"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 4.77,
+      "soglia": 4.5,
+      "n": 10,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Stipendio"
+     },
+     {
+      "testo": "#995404",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 5,
       "soglia": 3,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#596a80",
+      "fondo": "#f5f5f5",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.06,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
+      "esempio": "200 partite"
+     },
+     {
+      "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.85,
+      "rap": 5.15,
       "soglia": 3,
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 18,
+    "nFondi": 8,
+    "nCorpi": 7,
+    "nRaggi": 11,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     3,
+     4,
+     6,
+     8,
+     9,
+     10,
+     12,
+     13,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 3575,
+    "schermate": 3.91,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "430": {
     "W": 430,
@@ -3843,72 +5126,104 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 314,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 236,
-    "nSotto": 20,
-    "nGradiente": 78,
+    "nTesto": 326,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 196,
+    "nSotto": 0,
+    "nGradiente": 39,
+    "nEmoji": 91,
     "peggiori": [
      {
-      "testo": "#10b981",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 400,
-      "rap": 2.54,
-      "soglia": 4.5,
-      "n": 3,
-      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(2)",
-      "esempio": "Cifre del Calcio"
-     },
-     {
-      "testo": "#d97706",
+      "testo": "#026fa7",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.75,
+      "rap": 4.73,
+      "soglia": 3,
+      "n": 1,
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num",
+      "esempio": "12"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#f1eee8",
+      "fs": 11,
+      "fw": 400,
+      "rap": 4.77,
+      "soglia": 4.5,
+      "n": 10,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Stipendio"
+     },
+     {
+      "testo": "#995404",
+      "fondo": "#f1eee8",
+      "fs": 17,
+      "fw": 800,
+      "rap": 5,
       "soglia": 3,
       "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      },
      {
-      "testo": "#16a34a",
+      "testo": "#596a80",
+      "fondo": "#f5f5f5",
+      "fs": 11,
+      "fw": 600,
+      "rap": 5.06,
+      "soglia": 4.5,
+      "n": 12,
+      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
+      "esempio": "200 partite"
+     },
+     {
+      "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
       "fw": 800,
-      "rap": 2.85,
+      "rap": 5.15,
       "soglia": 3,
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 3.3,
-      "soglia": 4.5,
-      "n": 8,
-      "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
-      "esempio": "82"
-     },
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 18,
+    "nFondi": 8,
+    "nCorpi": 7,
+    "nRaggi": 11,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     3,
+     4,
+     6,
+     8,
+     9,
+     10,
+     12,
+     13,
+     14,
+     20,
+     50
+    ],
+    "altezzaPx": 3545,
+    "schermate": 3.87,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    }
   },
   "carriera-nazionale": {
@@ -3922,25 +5237,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 61,
+    "nTesto": 114,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 73,
     "nSotto": 0,
-    "nGradiente": 55,
+    "nGradiente": 19,
+    "nEmoji": 22,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#e7ecf5",
@@ -3978,16 +5284,52 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Prossimi tornei"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 8,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     16,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1195,
+    "schermate": 1.31,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "375": {
     "W": 375,
@@ -3999,25 +5341,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 61,
+    "nTesto": 114,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 73,
     "nSotto": 0,
-    "nGradiente": 55,
+    "nGradiente": 19,
+    "nEmoji": 22,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#e7ecf5",
@@ -4055,16 +5388,52 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Prossimi tornei"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 8,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     16,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1195,
+    "schermate": 1.31,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "390": {
     "W": 390,
@@ -4076,25 +5445,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 61,
+    "nTesto": 114,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 73,
     "nSotto": 0,
-    "nGradiente": 55,
+    "nGradiente": 19,
+    "nEmoji": 22,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#e7ecf5",
@@ -4132,16 +5492,52 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Prossimi tornei"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 8,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     16,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1195,
+    "schermate": 1.31,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "412": {
     "W": 412,
@@ -4153,25 +5549,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 61,
+    "nTesto": 114,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 73,
     "nSotto": 0,
-    "nGradiente": 55,
+    "nGradiente": 19,
+    "nEmoji": 22,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#e7ecf5",
@@ -4209,16 +5596,52 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Prossimi tornei"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 8,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     16,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1183,
+    "schermate": 1.29,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "430": {
     "W": 430,
@@ -4230,25 +5653,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 61,
+    "nTesto": 114,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 73,
     "nSotto": 0,
-    "nGradiente": 55,
+    "nGradiente": 19,
+    "nEmoji": 22,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#596a80",
       "fondo": "#e7ecf5",
@@ -4286,16 +5700,52 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
-      "fw": 400,
+      "fw": 700,
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 400,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 2,
+      "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Prossimi tornei"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 6,
+    "nCorpi": 8,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12,
+     13,
+     14,
+     16,
+     17,
+     20,
+     24
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1183,
+    "schermate": 1.29,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    }
   },
   "agente": {
@@ -4309,25 +5759,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 125,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 91,
+    "nTesto": 123,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 93,
     "nSotto": 0,
-    "nGradiente": 34,
+    "nGradiente": 6,
+    "nEmoji": 24,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -4365,16 +5806,57 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11.5,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Cambia procuratore"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 5,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     15,
+     17,
+     20,
+     24,
+     32
+    ],
+    "raggi": [
+     6,
+     7,
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1652,
+    "schermate": 1.81,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "375": {
     "W": 375,
@@ -4386,25 +5868,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 125,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 91,
+    "nTesto": 123,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 93,
     "nSotto": 0,
-    "nGradiente": 34,
+    "nGradiente": 6,
+    "nEmoji": 24,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -4442,16 +5915,57 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11.5,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Cambia procuratore"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 5,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     15,
+     17,
+     20,
+     24,
+     32
+    ],
+    "raggi": [
+     6,
+     7,
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1652,
+    "schermate": 1.81,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "390": {
     "W": 390,
@@ -4463,25 +5977,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 125,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 91,
+    "nTesto": 123,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 93,
     "nSotto": 0,
-    "nGradiente": 34,
+    "nGradiente": 6,
+    "nEmoji": 24,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -4519,16 +6024,57 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11.5,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Cambia procuratore"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 5,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     15,
+     17,
+     20,
+     24,
+     32
+    ],
+    "raggi": [
+     6,
+     7,
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1594,
+    "schermate": 1.74,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "412": {
     "W": 412,
@@ -4540,25 +6086,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 125,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 91,
+    "nTesto": 123,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 93,
     "nSotto": 0,
-    "nGradiente": 34,
+    "nGradiente": 6,
+    "nEmoji": 24,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -4596,16 +6133,57 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11.5,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Cambia procuratore"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 5,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     15,
+     17,
+     20,
+     24,
+     32
+    ],
+    "raggi": [
+     6,
+     7,
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1594,
+    "schermate": 1.74,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    },
    "430": {
     "W": 430,
@@ -4617,25 +6195,16 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 125,
-    "nSottoPav": 1,
-    "nPiccoli": 1,
-    "minFs": 9,
-    "nMisurati": 91,
+    "nTesto": 123,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 93,
     "nSotto": 0,
-    "nGradiente": 34,
+    "nGradiente": 6,
+    "nEmoji": 24,
     "peggiori": [
-     {
-      "testo": "#16a34a",
-      "fondo": "#ffffff",
-      "fs": 17.3,
-      "fw": 900,
-      "rap": 3.3,
-      "soglia": 3,
-      "n": 1,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num",
-      "esempio": "82"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -4673,16 +6242,57 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11.5,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 4,
-      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)",
-      "esempio": "OVR"
+      "n": 1,
+      "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
+      "esempio": "Cambia procuratore"
      }
     ],
     "nMarca": 0,
-    "marca": []
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 5,
+    "nCorpi": 11,
+    "nRaggi": 7,
+    "nPesi": 6,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     12.5,
+     13,
+     14,
+     15,
+     17,
+     20,
+     24,
+     32
+    ],
+    "raggi": [
+     6,
+     7,
+     8,
+     9,
+     10,
+     14,
+     50
+    ],
+    "altezzaPx": 1594,
+    "schermate": 1.74,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
    }
   },
   "prepartita": {
@@ -4700,9 +6310,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 22,
+    "sottoPav": [],
+    "nMisurati": 17,
     "nSotto": 0,
-    "nGradiente": 13,
+    "nGradiente": 12,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4722,9 +6334,9 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "🗡️"
+      "esempio": "Contropiede"
      },
      {
       "testo": "#526279",
@@ -4755,7 +6367,7 @@
       "fw": 700,
       "rap": 7.13,
       "soglia": 4.5,
-      "n": 4,
+      "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -4763,7 +6375,28 @@
     "nMarca": 1,
     "marca": [
      "📋 Formazioni →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     14
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     12,
+     14
+    ],
+    "altezzaPx": 800,
+    "schermate": 0.87,
+    "scorritore": "documento"
    },
    "375": {
     "W": 375,
@@ -4779,9 +6412,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 22,
+    "sottoPav": [],
+    "nMisurati": 17,
     "nSotto": 0,
-    "nGradiente": 13,
+    "nGradiente": 12,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4801,9 +6436,9 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "🗡️"
+      "esempio": "Contropiede"
      },
      {
       "testo": "#526279",
@@ -4834,7 +6469,7 @@
       "fw": 700,
       "rap": 7.13,
       "soglia": 4.5,
-      "n": 4,
+      "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -4842,7 +6477,28 @@
     "nMarca": 1,
     "marca": [
      "📋 Formazioni →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     14
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     12,
+     14
+    ],
+    "altezzaPx": 667,
+    "schermate": 0.73,
+    "scorritore": "documento"
    },
    "390": {
     "W": 390,
@@ -4858,9 +6514,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 22,
+    "sottoPav": [],
+    "nMisurati": 17,
     "nSotto": 0,
-    "nGradiente": 13,
+    "nGradiente": 12,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4880,9 +6538,9 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "🗡️"
+      "esempio": "Contropiede"
      },
      {
       "testo": "#526279",
@@ -4913,7 +6571,7 @@
       "fw": 700,
       "rap": 7.13,
       "soglia": 4.5,
-      "n": 4,
+      "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -4921,7 +6579,28 @@
     "nMarca": 1,
     "marca": [
      "📋 Formazioni →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     14
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     12,
+     14
+    ],
+    "altezzaPx": 844,
+    "schermate": 0.92,
+    "scorritore": "documento"
    },
    "412": {
     "W": 412,
@@ -4937,9 +6616,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 22,
+    "sottoPav": [],
+    "nMisurati": 17,
     "nSotto": 0,
-    "nGradiente": 13,
+    "nGradiente": 12,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4959,9 +6640,9 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "🗡️"
+      "esempio": "Contropiede"
      },
      {
       "testo": "#526279",
@@ -4992,7 +6673,7 @@
       "fw": 700,
       "rap": 7.13,
       "soglia": 4.5,
-      "n": 4,
+      "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -5000,7 +6681,28 @@
     "nMarca": 1,
     "marca": [
      "📋 Formazioni →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     14
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     12,
+     14
+    ],
+    "altezzaPx": 915,
+    "schermate": 1,
+    "scorritore": "documento"
    },
    "430": {
     "W": 430,
@@ -5016,9 +6718,11 @@
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
-    "nMisurati": 22,
+    "sottoPav": [],
+    "nMisurati": 17,
     "nSotto": 0,
-    "nGradiente": 13,
+    "nGradiente": 12,
+    "nEmoji": 6,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -5038,9 +6742,9 @@
       "fw": 400,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 2,
+      "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "🗡️"
+      "esempio": "Contropiede"
      },
      {
       "testo": "#526279",
@@ -5071,7 +6775,7 @@
       "fw": 700,
       "rap": 7.13,
       "soglia": 4.5,
-      "n": 4,
+      "n": 2,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -5079,7 +6783,28 @@
     "nMarca": 1,
     "marca": [
      "📋 Formazioni →"
-    ]
+    ],
+    "nColTesto": 6,
+    "nFondi": 3,
+    "nCorpi": 4,
+    "nRaggi": 5,
+    "nPesi": 4,
+    "corpi": [
+     11,
+     11.5,
+     12,
+     14
+    ],
+    "raggi": [
+     6,
+     8,
+     10,
+     12,
+     14
+    ],
+    "altezzaPx": 932,
+    "schermate": 1.02,
+    "scorritore": "documento"
    }
   }
  },

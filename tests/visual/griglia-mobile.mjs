@@ -178,7 +178,7 @@ const SCHERMATE = [
 function MISURA(W) {
   const R = { W, radice: 'body', scrollWidth: 0, clientWidth: 0, overflowPx: 0,
     nFuori: 0, fuori: [], nContenuti: 0, contenuti: [],
-    nTesto: 0, nSottoPav: 0, nPiccoli: 0, minFs: null,
+    nTesto: 0, nSottoPav: 0, nPiccoli: 0, minFs: null, sottoPav: [],
     nMisurati: 0, nSotto: 0, nGradiente: 0, nEmoji: 0, peggiori: [],
     nMarca: 0, marca: [],
     /* [G1 · il censimento del reso] Quante tinte, quanti corpi e quanti raggi DIVERSI vengono
@@ -332,6 +332,16 @@ function MISURA(W) {
   /* ── M3 + M6 · i nodi di testo visibili ──────────────────────────────────────────────────── */
   const _colT = new Set(), _fon = new Set(), _cor = new Set(), _pes = new Set(), _rag = new Set();
   const agg = new Map(); /* coppie colore/fondo raggruppate: 400 righe uguali sono UN difetto */
+  /* [G8.8] IL PAVIMENTO DIRA' ANCHE DOVE. Il conteggio «8 nodi sotto gli 11 px» non basta a trovarli:
+     e' la stessa cecita' della colonna selettore del contrasto (G8.7, «non li ho trovati»). Qui i nodi
+     sotto il pavimento si raggruppano per corpo+peso+selettore e finiscono in una tabella di dettaglio. */
+  const pav = new Map();
+  const _pav = (el, nd, fs, fw) => {
+    const k = Math.round(fs * 10) / 10 + '|' + fw + '|' + sel(el);
+    const e = pav.get(k);
+    if (e) e.n++;
+    else pav.set(k, { fs: Math.round(fs * 10) / 10, fw, sel: sel(el), n: 1, esempio: (nd.nodeValue || '').replace(/\s+/g, ' ').trim().slice(0, 26) });
+  };
   const tw = document.createTreeWalker(radice, NodeFilter.SHOW_TEXT, null);
   let nodo;
   while ((nodo = tw.nextNode())) {
@@ -352,7 +362,7 @@ function MISURA(W) {
     const fw = parseInt(cs.fontWeight, 10) || (/(bold|bolder)/.test(cs.fontWeight) ? 700 : 400);
     R.nTesto++;
     if (fs < 10) R.nPiccoli++;
-    if (fs < 11) R.nSottoPav++;/* [C4 · 16/09] IL PAVIMENTO DICHIARATO E' 11 px (FS.caption), non 10: la colonna <10px non vedeva gli 810 `fontSize:10` scritti a mano, che sono il corpo piu' diffuso dell'intero gioco. Questa colonna misura il pavimento vero. */
+    if (fs < 11) { R.nSottoPav++; _pav(p, nodo, fs, fw); }/* [C4 · 16/09] IL PAVIMENTO DICHIARATO E' 11 px (FS.caption), non 10: la colonna <10px non vedeva gli 810 `fontSize:10` scritti a mano, che sono il corpo piu' diffuso dell'intero gioco. Questa colonna misura il pavimento vero. */
     if (R.minFs == null || fs < R.minFs) R.minFs = fs;
 
     /* [G8.7] I GLIFI DI SOLE EMOJI SONO ESCLUSI, E DICHIARATI — non tolti di nascosto.
@@ -389,6 +399,7 @@ function MISURA(W) {
   R.corpi = [..._cor].sort((a, b) => a - b);
   R.raggi = [..._rag].sort((a, b) => a - b);
   R.peggiori = [...agg.values()].sort((a, b) => a.rap - b.rap || b.n - a.n).slice(0, 5);
+  R.sottoPav = [...pav.values()].sort((a, b) => a.fs - b.fs || b.n - a.n).slice(0, 5);
   if (R.minFs != null) R.minFs = Math.round(R.minFs * 10) / 10;
   /* [G3.2] bottoni pieni di marca: <button> e [role=button] visibili il cui fondo calcolato e' il bordeaux di marca */
   try {
@@ -727,6 +738,22 @@ righe.forEach(s => {
   (best.m.contenuti || []).slice(0, 3).forEach(f => { nCont++; R.push(`| ${s.nome} | ${best.w} | \`${f.sel}\` | ${f.px} | ${f.txt.replace(/\|/g, '/')} |`); });
 });
 if (!nCont) R.push('| — | — | niente | — | — |');
+R.push('');
+
+R.push('## Dettaglio · i nodi SOTTO IL PAVIMENTO di 11 px (a 412 px, la taglia del PO)');
+R.push('');
+R.push('> [G8.8] Stessa lezione della colonna selettore del contrasto: un conteggio non basta a trovare i nodi.');
+R.push('> Qui ogni nodo reso sotto gli 11 px porta corpo, peso, selettore e il testo che mostra.');
+R.push('');
+R.push('| schermata | px / peso | occorrenze | selettore | esempio |');
+R.push('|---|---|---:|---|---|');
+let nPav = 0;
+righe.forEach(s => {
+  const m = (DATI[s.id][412] || DATI[s.id][W[W.length - 1]]);
+  if (!m || !(m.sottoPav || []).length) return;
+  m.sottoPav.forEach(p => { nPav++; R.push(`| ${s.nome} | ${p.fs} / ${p.fw} | ${p.n} | \`${p.sel}\` | ${p.esempio.replace(/\|/g, '/')} |`); });
+});
+if (!nPav) R.push('| — | — | 0 | nessuno | — |');
 R.push('');
 
 R.push('## Dettaglio · le 5 coppie testo/fondo peggiori per schermata (a 412 px, la taglia del PO)');

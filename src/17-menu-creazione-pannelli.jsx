@@ -94,7 +94,7 @@ function Wordmark({size=30,color,elite="#f59e0b"}){
   return(
     <span style={{display:"inline-flex",flexDirection:"column",alignItems:"center",lineHeight:1,whiteSpace:"nowrap"}}>
       <span style={{fontFamily:kFont,fontWeight:900,fontSize:size,letterSpacing:size*0.01,lineHeight:1,...korStyle}}>K<BallO em={0.74} small={small} va="-0.04em"/>rward</span>
-      <span style={{fontFamily:eFont,fontStyle:"italic",fontWeight:700,fontSize:Math.max(9,Math.round(size*0.42)),color:color||elite,lineHeight:1,letterSpacing:Math.max(1,size*0.15),marginTop:Math.round(size*0.1)}}>Elite</span>
+      <span style={{fontFamily:eFont,fontStyle:"italic",fontWeight:700,fontSize:Math.max(11,Math.round(size*0.42))/* [G8.8] il pavimento del sottotitolo e' 11 px (FS.caption), non 9: a size=13 (la riga «Sostieni lo sviluppo di» in fondo a OGNI schermata di carriera) «Elite» usciva a 9 px in grassetto corsivo, ed erano gli 8 nodi sotto il pavimento rimasti nel metro */,color:color||elite,lineHeight:1,letterSpacing:Math.max(1,size*0.15),marginTop:Math.round(size*0.1)}}>Elite</span>
     </span>
   );
 }
