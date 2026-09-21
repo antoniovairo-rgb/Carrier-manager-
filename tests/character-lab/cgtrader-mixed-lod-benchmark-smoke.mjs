@@ -12,7 +12,7 @@ const browser=await launchBrowser();
 const page=await browser.newPage({viewport:{width:412,height:915}});
 const errors=[],requests=[];
 page.on('pageerror',error=>errors.push(error.message));
-page.on('response',response=>{if(/cgtrader-(?:unreal-axis-corrected-retarget-full-ground-pass-review|review-lod1|review-lod2)\.glb/.test(response.url()))requests.push({status:response.status(),url:response.url()});});
+page.on('response',response=>{if(/cgtrader-review-lod[012]-kit-adapter\.glb/.test(response.url()))requests.push({status:response.status(),url:response.url()});});
 try {
   await installCdnRoutes(page);
   await openMatch(page,server.address().port,{skipLoadAll:true,name:'CGTrader mixed LOD benchmark',query:{hyperCharacter:'cgtrader-mixed-lod-benchmark'}});
