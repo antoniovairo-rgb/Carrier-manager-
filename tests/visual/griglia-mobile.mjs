@@ -194,7 +194,7 @@ function MISURA(W) {
        schermate lo meritano davvero: `schermate` e' l'altezza del documento diviso l'altezza
        dello schermo del PO (915 px). 1,0 = tutto sopra la piega. 3,0 = tre schermate di
        scorrimento. Non e' un guardiano: e' il numero che dice DOVE serve un accordion. */
-    altezzaPx: 0, schermate: 0, scorritore: '' };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
+    altezzaPx: 0, schermate: 0, scorritore: '', blocchi: [], etichette: {} };   /* [G3.2] bottoni VISIBILI col fondo pieno di marca (#8e1f33 o gradiente che lo contiene): la gerarchia vuole UNA sola azione primaria per vista */
 
   const de = document.documentElement;
 
@@ -289,6 +289,40 @@ function MISURA(W) {
     if (bh > docH) { R.altezzaPx = Math.round(bh); R.scorritore = sel(best); }
     else { R.altezzaPx = Math.round(docH); R.scorritore = best ? sel(best) : 'documento'; }
     R.schermate = Math.round(R.altezzaPx / 915 * 100) / 100;
+
+    /* [21/09 · rilievo PO «il tab carriera e' lunghissimo»] DOVE STANNO I PIXEL.
+       Sapere che una schermata e' lunga 3.575 px non dice quale pezzo la allunga, e senza quello
+       si accorcia a caso. Qui si misurano i BLOCCHI di primo livello dello scorritore: altezza,
+       quota sul totale e la prima riga di testo che portano (il loro cappello). Solo per le
+       schermate sopra le due schermate: sotto, non c'e' niente da accorciare. */
+    if (best && R.altezzaPx > 1830) {
+      /* Si scende finche' i figli sono DAVVERO dei blocchi: un involucro con un figlio solo non lo e',
+         e nemmeno un contenitore il cui figlio piu' alto vale da solo piu' dell'80 % della schermata
+         (era il caso del Profilo: rispondeva «un blocco da 3.644 px», cioe' l'intera pagina). */
+      const figli = (el) => {
+        const out = [];
+        for (let i = 0; el && i < el.children.length; i++) {
+          const c = el.children[i], cs = gcs(c);
+          if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+          const h = c.getBoundingClientRect().height;
+          if (h < 24) continue;
+          out.push({ el: c, h });
+        }
+        return out;
+      };
+      let cont = best, liv = [];
+      for (let g = 0; g < 10 && cont; g++) {
+        liv = figli(cont);
+        if (!liv.length) break;
+        const max = liv.reduce((a, b) => b.h > a.h ? b : a, liv[0]);
+        if (liv.length === 1 || max.h > R.altezzaPx * 0.8) { cont = max.el; continue; }
+        break;
+      }
+      const dentro = liv.map(x => ({ px: Math.round(x.h), quota: Math.round(x.h / R.altezzaPx * 1000) / 10,
+        txt: (x.el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 42), sel: sel(x.el) }));
+      dentro.sort((a, b) => b.px - a.px);
+      R.blocchi = dentro.slice(0, 12);
+    }
   }
 
   /* ── M5 · elementi che sporgono a destra ─────────────────────────────────────────────────── */
@@ -395,6 +429,22 @@ function MISURA(W) {
     const br = parseFloat(cs.borderTopLeftRadius) || 0;
     if (br > 0.4 && br < 900) _rag.add(Math.round(br * 10) / 10);
   }
+  /* [21/09 · richiesta PO «verifica anche eventuali ridondanze delle informazioni»]
+     Si contano le ETICHETTE, non i numeri: un «14» si ripete per caso, un «Assist» no. Parola intera,
+     solo nodi VISIBILI. Due letture con rimedi opposti: la stessa grandezza ripetuta DENTRO una
+     schermata (da togliere) e la stessa grandezza in molte schermate (cruscotto o rumore, si decide). */
+  try {
+    const ETI = ['Gol','Assist','Presenze','Partite','Media voto','OVR','Forma','Morale','Fatica',
+      'Stipendio','Valore','Contratto','Fiducia','Trofei','Punti','Stagione','Settimana','Obiettivi'];
+    const testo = (radice.innerText || '');
+    const conta = {};
+    for (const e of ETI) {
+      const re = new RegExp('(^|[^\\p{L}])' + e.replace(/ /g, '\\s+') + '([^\\p{L}]|$)', 'giu');
+      let n = 0; while (re.exec(testo)) { n++; if (n > 99) break; }
+      if (n) conta[e] = n;
+    }
+    R.etichette = conta;
+  } catch (_e) { R.etichette = {}; }
   R.nColTesto = _colT.size; R.nFondi = _fon.size; R.nCorpi = _cor.size; R.nPesi = _pes.size; R.nRaggi = _rag.size;
   R.corpi = [..._cor].sort((a, b) => a - b);
   R.raggi = [..._rag].sort((a, b) => a - b);
@@ -738,6 +788,50 @@ righe.forEach(s => {
   (best.m.contenuti || []).slice(0, 3).forEach(f => { nCont++; R.push(`| ${s.nome} | ${best.w} | \`${f.sel}\` | ${f.px} | ${f.txt.replace(/\|/g, '/')} |`); });
 });
 if (!nCont) R.push('| — | — | niente | — | — |');
+R.push('');
+
+R.push('## Ridondanze · la stessa grandezza, quante volte e dove (412 px, fisarmoniche come le trova il giocatore)');
+R.push('');
+R.push('> [21/09 · richiesta PO] Si contano le ETICHETTE, non i numeri: un «14» si ripete per caso, un');
+R.push('> «Assist» no. Due letture con rimedi opposti: **nella colonna** una grandezza ripetuta dentro la');
+R.push('> stessa schermata (da togliere); **nella riga** la stessa grandezza in molte schermate — che non e\'');
+R.push('> per forza un difetto (lo stipendio sta bene in Contratto e dall\'Agente), ma sopra le quattro');
+R.push('> schermate o e\' un cruscotto voluto o e\' rumore. Nessuna soglia: e\' un censimento.');
+R.push('>');
+R.push('> **LIMITE DICHIARATO, e cambia la lettura**: le otto schermate di carriera condividono la TESTATA');
+R.push('> dell\'eroe (OVR, forma, morale, fatica). Una grandezza che risulta su **8 schermate** e\' quasi');
+R.push('> sempre quella — cioe\' un cruscotto VOLUTO, non una ridondanza. Finche\' lo strumento non separa');
+R.push('> testata e corpo, la riga da 8 non accusa nessuno: si legge la COLONNA.');
+R.push('');
+{
+  const eti = new Set();
+  righe.forEach(s => { const m = DATI[s.id][412]; if (m) Object.keys(m.etichette || {}).forEach(k => eti.add(k)); });
+  const cols = righe.filter(s => DATI[s.id][412]);
+  R.push('| etichetta | ' + cols.map(s => s.nome.replace('Stagione · ', '').replace('Carriera · ', '')).join(' | ') + ' | schermate |');
+  R.push('|---|' + cols.map(() => '---:').join('|') + '|---:|');
+  const ord = [...eti].map(e => {
+    const v = cols.map(s => (DATI[s.id][412].etichette || {})[e] || 0);
+    return { e, v, sch: v.filter(x => x > 0).length, tot: v.reduce((a, b) => a + b, 0) };
+  }).sort((a, b) => b.sch - a.sch || b.tot - a.tot);
+  ord.forEach(r => R.push(`| ${r.e} | ${r.v.map(x => x || '').join(' | ')} | **${r.sch}** |`));
+}
+R.push('');
+
+R.push('## Dettaglio · DOVE STANNO I PIXEL nelle schermate lunghe (a 412 px)');
+R.push('');
+R.push('> [21/09 · rilievo PO «il tab carriera e\' lunghissimo»] Sapere che una schermata e\' lunga non dice');
+R.push('> quale pezzo la allunga. Qui i blocchi di primo livello dello scorritore, dal piu\' alto, con la');
+R.push('> quota sul totale e il testo che portano. Solo sopra le due schermate: sotto non c\'e\' niente da accorciare.');
+R.push('');
+R.push('| schermata | blocco | px | quota | testo |');
+R.push('|---|---:|---:|---:|---|');
+let nBlk = 0;
+righe.forEach(s => {
+  const m = (DATI[s.id][412] || DATI[s.id][W[W.length - 1]]);
+  if (!m || !(m.blocchi || []).length) return;
+  m.blocchi.forEach((b, i) => { nBlk++; R.push(`| ${i === 0 ? s.nome + ' (' + m.altezzaPx + ' px)' : ''} | ${i + 1} | ${b.px} | ${b.quota} % | ${b.txt.replace(/\|/g, '/')} |`); });
+});
+if (!nBlk) R.push('| — | — | — | — | nessuna schermata sopra le due schermate |');
 R.push('');
 
 R.push('## Dettaglio · i nodi SOTTO IL PAVIMENTO di 11 px (a 412 px, la taglia del PO)');

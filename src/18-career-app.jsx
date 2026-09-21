@@ -9242,8 +9242,7 @@ const getThisWeekMatchday=()=>{
           {/* [6.78.0 collaudo PO] card «Lo Spogliatoio» SPOSTATA nel Tab Club (i compagni sono contenuto del club, non del profilo) */}
           {/* Sprint 24C — La Stampa card */}
           {(player.journalists||[]).length>0&&(
-            <Card style={{padding:"12px 14px"}}>
-              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>📰 La Stampa</div>
+            <Fisarmonica id="profilo-stampa" icona="📰" titolo="La Stampa" quante={(player.journalists||[]).length}><Card style={{padding:"12px 14px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 {(player.journalists||[]).map((j,i)=>{
                   const relLabel=getJournalistRelLabel(j.trust||50);
@@ -9265,6 +9264,7 @@ const getThisWeekMatchday=()=>{
                 })}
               </div>
             </Card>
+            </Fisarmonica>
           )}
           {/* Sprint 25C — Capitano badge */}
           {player.isCaptain&&(
@@ -9310,8 +9310,7 @@ const getThisWeekMatchday=()=>{
             if(!bm)return null;
             const winLabel=bm.won?"✅ Vittoria":bm.drew?"🤝 Pareggio":"❌ Sconfitta";
             return(
-              <Card style={{padding:"12px 14px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🌟 Match del Cuore</div>
+              <Fisarmonica id="profilo-match-cuore" icona="🌟" titolo="Match del Cuore"><Card style={{padding:"12px 14px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 <div style={{display:"flex",alignItems:"center",gap:12}}>
                   <div style={{fontSize:30,lineHeight:1}}>⭐</div>
                   <div style={{flex:1}}>
@@ -9326,6 +9325,7 @@ const getThisWeekMatchday=()=>{
                   <div style={{fontSize:FS.h,fontWeight:900,color:TH.txAmber}}>{bm.rating}★</div>
                 </div>
               </Card>
+              </Fisarmonica>
             );
           })()}
           {/* S12.5: Archetype card */}
@@ -9408,8 +9408,7 @@ const getThisWeekMatchday=()=>{
               </div>
             );
             return(
-              <Card style={{padding:"12px 14px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Corsa ai Premi — S.{player.season||1}</div>
+              <Fisarmonica id="profilo-corsa-premi" icona="🎯" titolo="Corsa ai Premi"><Card style={{padding:"12px 14px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 {/* Premi di lega */}
                 <div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700,marginBottom:6,textTransform:"uppercase",letterSpacing:1}}>🏅 DI LEGA</div>
                 <div style={{marginBottom:8}}>
@@ -9461,6 +9460,7 @@ const getThisWeekMatchday=()=>{
                   </>
                 )}
               </Card>
+              </Fisarmonica>
             );
           })()}
           {/* Sprint 130 — Premi del Mese */}
@@ -9585,12 +9585,12 @@ const getThisWeekMatchday=()=>{
             </Card>
           )}
           {/* Contract card */}
-          {player.contract&&<Card style={{padding:"12px 14px"}}>
-            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📄 Contratto</div>
+          {player.contract&&<Fisarmonica id="profilo-contratto" icona="📄" titolo="Contratto"><Card style={{padding:"12px 14px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
               {[{l:"Stipendio",v:player.contract.wage?`€${Math.round(player.contract.wage*52/1000*10)/10}k/anno`:"–"},{l:"Durata",v:`${player.contract.duration||"–"} stagion${player.contract.duration===1?"e":"i"}`},{l:"Scade stagione",v:`S.${player.contract.expiresAtSeason||"–"}`},{l:"Status",v:(player.proStatus||"u18")==="u18"?"Under 18":"Professionista"}].map(s=><div key={s.l} style={{background:TH.surface2,borderRadius:RAD.sm,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
-          </Card>}
+          </Card>
+          </Fisarmonica>}
           {/* Transfer listed management — profile only */}
           {(player.proStatus||"u18")==="pro"&&(
             player.transferListed
@@ -9676,8 +9676,7 @@ const getThisWeekMatchday=()=>{
           )}
           {/* Albo d'oro trofei */}
           {(player.trophies||[]).length>0&&(
-            <Card bg={TH.bgAmber} border="#fde68a">
-              <div style={{fontSize:FS.caption,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>🏆 Albo d'oro — {(player.trophies||[]).length} trofe{(player.trophies||[]).length!==1?"i":"o"}</div>
+            <Fisarmonica id="profilo-albo" icona="🏆" titolo="Albo d'oro" quante={(player.trophies||[]).length}><Card bg={TH.bgAmber} border="#fde68a" style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               {(player.trophies||[]).map((t,i)=>(
                 <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<(player.trophies||[]).length-1?"1px solid #fde68a":"none"}}>
                   <span style={{fontSize:18}}>🏆</span>
@@ -9688,6 +9687,7 @@ const getThisWeekMatchday=()=>{
                 </div>
               ))}
             </Card>
+            </Fisarmonica>
           )}
           {/* Timeline stagioni */}
           {(player.history||[]).length>0&&(
@@ -9767,8 +9767,7 @@ const getThisWeekMatchday=()=>{
               ]},
             ];
             return(
-              <Card>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>🏅 Milestone</div>
+              <Fisarmonica id="profilo-milestone" icona="🏅" titolo="Milestone"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 {mileCats.map(cat=>(
                   <div key={cat.cat} style={{marginBottom:10}}>
                     <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>{cat.cat}</div>
@@ -9784,6 +9783,7 @@ const getThisWeekMatchday=()=>{
                   </div>
                 ))}
               </Card>
+              </Fisarmonica>
             );
           })()}
           {/* S21: Achievement Gallery */}
