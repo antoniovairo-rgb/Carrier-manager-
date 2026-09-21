@@ -37,7 +37,7 @@ for (const braccio of ['verde', 'rosso']) {
   await sleep(2000);
 
   const leggi = () => page.evaluate(() => { try { return window.__CPM_E2D ? JSON.parse(JSON.stringify(window.__CPM_E2D)) : null; } catch (_e) { return null; } });
-  const azzera = () => page.evaluate(() => { try { if (window.__CPM_E2D) { window.__CPM_E2D.fotogrammi = 0; window.__CPM_E2D.disegnato = 0; } } catch (_e) {} });
+  const azzera = () => page.evaluate(() => { try { if (window.__CPM_E2D) { window.__CPM_E2D.fotogrammi = 0; window.__CPM_E2D.disegnato = 0; window.__CPM_E2D.fuori = 0; window.__CPM_E2D.violazioni = 0; } } catch (_e) {} });
 
   await azzera(); await sleep(1500);
   const prima = await leggi();
@@ -58,6 +58,7 @@ const stampa = (n, a) => {
   console.log(`\n${n.toUpperCase()}  fase ${a.fase} · sostituzione forzata: ${a.uscito ? 'si' : 'NO'} · errori di pagina ${a.errori}`);
   console.log(`  PRIMA  fotogrammi ${a.prima ? a.prima.fotogrammi : '?'} · eroe disegnato ${a.prima ? a.prima.disegnato : '?'} (${q(a.prima) == null ? '?' : (q(a.prima) * 100).toFixed(1) + ' %'}) · il motore dice attivo: ${a.prima ? a.prima.attivo : '?'}`);
   console.log(`  DOPO   fotogrammi ${a.dopo ? a.dopo.fotogrammi : '?'} · eroe disegnato ${a.dopo ? a.dopo.disegnato : '?'} (${q(a.dopo) == null ? '?' : (q(a.dopo) * 100).toFixed(1) + ' %'}) · il motore dice attivo: ${a.dopo ? a.dopo.attivo : '?'}`);
+  console.log(`         il gioco lo sa in ${a.dopo ? a.dopo.fuori : '?'}/${a.dopo ? a.dopo.fotogrammi : '?'} fotogrammi · VIOLAZIONI (lo sa e lo disegna lo stesso): ${a.dopo ? a.dopo.violazioni : '?'}`);
 };
 console.log('\n=== IL PALLINO DELL\'EROE SOSTITUITO ===');
 stampa('verde', V); stampa('rosso', R);
@@ -66,10 +67,12 @@ const guai = [];
 if (!V.uscito || !R.uscito) guai.push('la sostituzione non e\' stata forzata: la sonda non ha misurato il caso del PO');
 if (!V.prima || !V.prima.fotogrammi) guai.push('il testimone __CPM_E2D non ha contato fotogrammi nel verde: il campo 2D non era in scena');
 if (V.prima && q(V.prima) < 0.9) guai.push(`nel verde, PRIMA della sostituzione l'eroe era disegnato solo nel ${(q(V.prima) * 100).toFixed(1)} % dei fotogrammi (atteso ~100)`);
-if (V.dopo && q(V.dopo) > 0) guai.push(`VERDE: dopo la sostituzione il pallino dell'eroe e' ancora disegnato (${V.dopo.disegnato}/${V.dopo.fotogrammi} fotogrammi) — e' il difetto fotografato dal PO`);
+if (V.dopo && V.dopo.violazioni > 0) guai.push(`VERDE: ${V.dopo.violazioni} fotogrammi in cui il gioco SA che l'eroe e' fuori e disegna il pallino lo stesso — e' il difetto fotografato dal PO`);
+if (V.dopo && !V.dopo.fuori) guai.push('nel verde il motore non ha mai dichiarato l\'eroe fuori nella finestra di misura: la sonda non ha misurato il caso');
 if (V.dopo && V.dopo.attivo !== false) guai.push('il motore non dichiara l\'eroe inattivo: il difetto non e\' (solo) della vista, va guardato prima li\'');
-if (R.dopo && q(R.dopo) === 0) guai.push('il ROSSO non riproduce il difetto: senza prova del rosso il verde non dimostra niente');
+if (R.dopo && R.dopo.violazioni === 0) guai.push('il ROSSO non riproduce il difetto: senza prova del rosso il verde non dimostra niente');
 if (V.errori || R.errori) guai.push(`errori di pagina: verde ${V.errori} · rosso ${R.errori}`);
 
 if (guai.length) { console.log('\n❌ FAIL'); guai.forEach(g => console.log('  · ' + g)); process.exit(1); }
-console.log('\n✅ PASS — sostituito, il pallino esce: verde 0 fotogrammi su ' + V.dopo.fotogrammi + ', rosso ' + R.dopo.disegnato + '/' + R.dopo.fotogrammi + ' (il difetto, riprodotto).');
+console.log('\n✅ PASS — sostituito, il pallino esce: violazioni verde ' + V.dopo.violazioni + ' · rosso ' + R.dopo.violazioni + '/' + R.dopo.fuori + ' (il difetto, riprodotto).');
+console.log('   Dichiarato: fra la sostituzione e l\'uscita del pallino passa un tick del motore — nel verde ' + (V.dopo.fotogrammi - V.dopo.fuori) + ' fotogrammi su ' + V.dopo.fotogrammi + ' arrivano prima che il motore riceva `chiedi.eroe(false)`. E\' un ritardo A MONTE della vista, non il difetto.');

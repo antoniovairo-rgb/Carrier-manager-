@@ -706,8 +706,22 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
               g.fillStyle="#fde68a";g.textBaseline="middle";g.fillText(_u.nome,X,yy+hh/2);g.textBaseline="alphabetic";}
           }catch(_e){}}
       }
-      /* l'eroe: cerchio bianco, nome e numero veri */
-      if(M.e){
+      /* l'eroe: cerchio bianco, nome e numero veri.
+         [7.953 · rilievo PO dal suo telefono: «se sono sostituito il pallino 2D deve uscire»]
+         Il motore lo diceva gia': `stato().eroe.attivo` e' false da quando `chiedi.eroe(false)` lo
+         mette fuori. Era la VISTA a non leggerlo, e disegnava il pallino comunque — fotografato al 78'.
+         Il testimone `__CPM_E2D` e' inerte (solo contatori) e serve alla sonda `pallino-sostituito`. */
+      const _eroeInCampo953=!(st.eroe&&st.eroe.attivo===false)||(typeof window!=='undefined'&&!!window.__CPM_NO953);
+      try{if(typeof window!=='undefined'){const _t953=window.__CPM_E2D||(window.__CPM_E2D={fotogrammi:0,disegnato:0,attivo:null,fuori:0,violazioni:0});
+        const _fuori953=!!(st.eroe&&st.eroe.attivo===false);const _dis953=!!(M.e&&_eroeInCampo953);
+        _t953.fotogrammi++;if(_dis953)_t953.disegnato++;if(_fuori953)_t953.fuori++;
+        /* LA GRANDEZZA CHE DESCRIVE IL DIFETTO DEL PO: fotogrammi in cui il gioco SA che l'eroe e' fuori
+           e lo disegna lo stesso. Il conteggio grezzo dei fotogrammi disegnati non basta — porta dentro
+           anche il tick in cui il motore non ha ancora ricevuto `chiedi.eroe(false)`, che e' un ritardo
+           a monte della vista e si misura a parte (`fuori` contro `fotogrammi`). */
+        if(_fuori953&&_dis953)_t953.violazioni++;
+        _t953.attivo=st.eroe?(st.eroe.attivo!==false):null;}}catch(_e){}
+      if(M.e&&_eroeInCampo953){
         const casaE=eroeLato!=='away';
         if(padrone===21||(st.poss&&st.poss.eroe)){g.beginPath();g.arc(CX(M.e),CY(M.e),r*1.22+4.2,0,Math.PI*2);
           g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();}

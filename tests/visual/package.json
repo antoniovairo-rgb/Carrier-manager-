@@ -169,7 +169,9 @@
     "coinvolgimento": "node coinvolgimento-reparti.mjs",
     "catene": "node catene-possesso.mjs",
     "memoria": "node memoria-927.mjs",
-    "memoria:rosso": "node memoria-927.mjs --rosso"
+    "memoria:rosso": "node memoria-927.mjs --rosso",
+    "pallino-sostituito": "node pallino-sostituito.mjs",
+    "completamento": "node completamento.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
