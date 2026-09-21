@@ -19,7 +19,7 @@ try {
   await page.evaluate(()=>window.__CPM_LOAD_ALL&&window.__CPM_LOAD_ALL());
   await page.waitForFunction(()=>window.__CPM_HYPER_CASUAL_STATUS==='ready-cgtrader-mixed-lod-benchmark'||String(window.__CPM_HYPER_CASUAL_STATUS||'').startsWith('fallback:'),{timeout:90000});
   await sleep(2500);
-  const report=await page.evaluate(()=>({status:window.__CPM_HYPER_CASUAL_STATUS,lodMix:window.__CPM_CGTRADER_LOD_MIX||null,lodAudit:window.__CPM_CGTRADER_LOD_AUDIT?window.__CPM_CGTRADER_LOD_AUDIT():null,lodTest:window.__CPM_CGTRADER_LOD_TEST?window.__CPM_CGTRADER_LOD_TEST():null,lineup:window.__CPM_HYPER_LINEUP||null,animations:window.__CPM_HYPER_ANIMATIONS||[],animation:window.__CPM_ANIM_AUDIT?window.__CPM_ANIM_AUDIT():null,render:window.__CPM_RINFO769?window.__CPM_RINFO769():null}));
+  const report=await page.evaluate(()=>({status:window.__CPM_HYPER_CASUAL_STATUS,lodMix:window.__CPM_CGTRADER_LOD_MIX||null,lodAudit:window.__CPM_CGTRADER_LOD_AUDIT?window.__CPM_CGTRADER_LOD_AUDIT():null,scaleAudit:window.__CPM_CGTRADER_SCALE_AUDIT||null,lodTest:window.__CPM_CGTRADER_LOD_TEST?window.__CPM_CGTRADER_LOD_TEST():null,lineup:window.__CPM_HYPER_LINEUP||null,animations:window.__CPM_HYPER_ANIMATIONS||[],animation:window.__CPM_ANIM_AUDIT?window.__CPM_ANIM_AUDIT():null,render:window.__CPM_RINFO769?window.__CPM_RINFO769():null}));
   report.requests=requests;report.hairRequests=hairRequests;report.errors=errors;
   fs.mkdirSync(evidence,{recursive:true});
   fs.writeFileSync(path.join(evidence,'cgtrader-mixed-lod-benchmark-smoke.json'),JSON.stringify(report,null,2));
@@ -36,6 +36,9 @@ try {
   assert.deepEqual([...requestedHairVariants].sort(),assignedHairVariants.sort(),'every assigned native hair variant must load its matching texture');
   assert.equal(report.lodAudit.active.lod0+report.lodAudit.active.lod1+report.lodAudit.active.lod2,23,'active LOD inventory does not cover the roster');
   assert.equal(report.lodAudit.active.lod0,1,'the Hero must remain on LOD0 during dynamic selection');
+  const heroScale=report.lodAudit.heights.find(sample=>sample.hero);
+  assert.ok(heroScale&&heroScale.skeletonHeight>=1.75&&heroScale.skeletonHeight<=1.95,'Hero must remain below the 2.44-unit goal and within the adult footballer range');
+  assert.ok(report.lodAudit.heights.filter(sample=>!sample.hero).every(sample=>sample.skeletonHeight>=1.65&&sample.skeletonHeight<=1.95),'Outfield CGTrader players must remain in the adult footballer range');
   assert.ok(report.lodTest&&report.lodTest.ok&&report.lodTest.atGestureStart==='lod0'&&report.lodTest.held,'technical LOD0 promotion or gesture lock failed');
   assert.ok(report.animation&&report.animation.avatars===23&&report.animation.mixers===23,'avatar mixer inventory incomplete');
   assert.equal(new Set(requests.filter(r=>r.status===200).map(r=>r.url.split('/').pop())).size,3,'not all LOD packages were fetched');
