@@ -125,7 +125,12 @@ function legCol944(col,fondo){
      resta e spegne tutto, come prima. */
   try{ if(!col||typeof col!=='string'||col[0]!=='#')return col;
     if(typeof window!=='undefined'&&window.__CPM_NO944)return col;/* prova del rosso */
-    return semTesto945(col,fondo||(typeof TH!=='undefined'&&TH?TH.card:null));
+    /* [G8.6] IL FONDO DI RIPIEGO E' IL PIU' DIFFICILE, NON IL PIU' CHIARO.
+       Misurato: #ef4444 alzato contro TH.card (bianco) si ferma a #c93939, che sulla riga
+       alternata della classifica — fondo TH.surface2 #f1eee8 — fa 4,39:1 e resta sotto soglia.
+       Chi chiama non sa quasi mai su che fondo finira' il testo; il ripiego sicuro e' la
+       superficie tinta, perche' cio' che si legge su #f1eee8 si legge anche su bianco. */
+    return semTesto945(col,fondo||(typeof TH!=='undefined'&&TH?(TH.surface2||TH.card):null));
   }catch(_e){ return col; }}
 /* [G8.2 — L'INCHIOSTRO SU UN COLORE DI SQUADRA NON PUO' ESSERE SEMPRE IL BIANCO.]
    La testata dell'eroe scrive in bianco sul colore del club. Finche' il fondo era una SFUMATURA

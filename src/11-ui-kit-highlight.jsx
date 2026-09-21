@@ -42,7 +42,7 @@ const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:12},md:{padding:"1
 const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",...rest})=>{
   const vs={
     primary:{background:TH.primary,color:"#fff",fontWeight:700},
-    green:{background:TH.success,color:"#fff",fontWeight:700},
+    green:{background:TH.success,color:inkSu945(TH.success),fontWeight:700},/* [G8.6] il bianco su #16a34a fa 3,30:1: l'inchiostro lo sceglie il contrasto */
     secondary:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},
     success:{background:TH.bgGreen,color:TH.txGreen,border:"1px solid "+TH.bdGreen,fontWeight:700},/* [7.103.0] token semantici (theme-aware) al posto degli hex light hardcoded */
     danger:{background:TH.bgRed,color:TH.txRed,border:"1px solid "+TH.bdRed,fontWeight:700},
