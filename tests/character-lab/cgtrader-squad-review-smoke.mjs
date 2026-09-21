@@ -19,9 +19,9 @@ page.on('response', response => {
 
 try {
   await installCdnRoutes(page);
-  await openMatch(page, server.address().port, { skipLoadAll: true, name: 'CGTrader LOD2 squad review', query: { hyperCharacter: 'cgtrader-squad-review' } });
+  await openMatch(page, server.address().port, { skipLoadAll: true, name: 'CGTrader LOD2 squad review', query: { hyperCharacter: 'cgtrader-lod2-benchmark' } });
   await page.evaluate(() => window.__CPM_LOAD_ALL && window.__CPM_LOAD_ALL());
-  await page.waitForFunction(() => window.__CPM_HYPER_CASUAL_STATUS === 'ready-cgtrader-squad-review' || String(window.__CPM_HYPER_CASUAL_STATUS || '').startsWith('fallback:'), { timeout: 90000 });
+  await page.waitForFunction(() => window.__CPM_HYPER_CASUAL_STATUS === 'ready-cgtrader-lod2-benchmark' || String(window.__CPM_HYPER_CASUAL_STATUS || '').startsWith('fallback:'), { timeout: 90000 });
   await sleep(2500);
   const report = await page.evaluate(() => ({
     status: window.__CPM_HYPER_CASUAL_STATUS,
@@ -33,9 +33,9 @@ try {
   report.requests = requests;
   report.errors = errors;
   fs.mkdirSync(evidence, { recursive: true });
-  fs.writeFileSync(path.join(evidence, 'cgtrader-squad-review-smoke.json'), JSON.stringify(report, null, 2));
-  await page.screenshot({ path: path.join(evidence, 'cgtrader-squad-review-smoke.png') });
-  assert.equal(report.status, 'ready-cgtrader-squad-review');
+  fs.writeFileSync(path.join(evidence, 'cgtrader-lod2-benchmark-smoke.json'), JSON.stringify(report, null, 2));
+  await page.screenshot({ path: path.join(evidence, 'cgtrader-lod2-benchmark-smoke.png') });
+  assert.equal(report.status, 'ready-cgtrader-lod2-benchmark');
   assert.ok(report.lineup && report.lineup.avatars === 23 && report.lineup.hyper === 23, 'all field avatars were not replaced');
   assert.ok(report.animation && report.animation.avatars === 23 && report.animation.mixers === 23, 'avatar mixer inventory is incomplete');
   assert.ok(requests.some(request => request.status === 200), 'CGTrader LOD2 was not fetched');
