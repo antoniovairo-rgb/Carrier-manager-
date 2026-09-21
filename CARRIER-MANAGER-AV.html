@@ -11942,9 +11942,30 @@ function ThreeMatchView(props){
     let glbAvatars=null; // [{root,mx,idle,run,proc,lx,lz}]
     /* Animation-audit: sola osservabilità. Non legge né scrive lo stato del match;
        espone il costo istantaneo del renderer per il banco mobile. */
+    const _animLodStats={frames:0,mixerUpdates:0,fullRate:0,halfRate:0,quarterRate:0,protected:0,lastFrameUpdates:0};
+    const _animLodProbe=new THREE.Vector3(),_animLodWorld=new THREE.Vector3();
+    /* Renderer-only animation cadence.  The match position/state continues to
+       update every frame; this only decides how often an already-created
+       AnimationMixer samples its skeleton.  Hero and active technical gestures
+       are never throttled.  `window.__CPM_ANIM_LOD=false` is the A/B switch. */
+    const _updateAvatarMixerLod=(av,delta,index,technical)=>{if(!av||!av.mx)return false;
+      const enabled=!(typeof window!=='undefined'&&window.__CPM_ANIM_LOD===false);
+      let cadence=1,protectedPose=!!technical||index===0||!!av._isHero||!!av._gName||!!av._gPrev||((av._gw||0)>0.02);
+      if(enabled&&!protectedPose&&av.root&&camera){
+        av.root.getWorldPosition(_animLodWorld);_animLodProbe.copy(_animLodWorld).project(camera);
+        const inView=Math.abs(_animLodProbe.x)<=1.10&&Math.abs(_animLodProbe.y)<=1.10&&_animLodProbe.z>=-1&&_animLodProbe.z<=1;
+        const distance=camera.position.distanceTo(_animLodWorld);
+        cadence=!inView?4:(distance>46?3:(distance>26?2:1));
+      }
+      const f=(av._animLodFrame=(av._animLodFrame||0)+1),due=cadence===1||(f%cadence===0);
+      if(protectedPose)_animLodStats.protected++;if(cadence===1)_animLodStats.fullRate++;else if(cadence===2)_animLodStats.halfRate++;else _animLodStats.quarterRate++;
+      if(!due)return false;
+      av._animLodAccum=(av._animLodAccum||0)+delta;const sample=Math.min(av._animLodAccum,0.066);av._animLodAccum=0;
+      av.mx.update(sample);_animLodStats.mixerUpdates++;_animLodStats.lastFrameUpdates++;return true;
+    };
     try{window.__CPM_ANIM_AUDIT=()=>{const aa=(glbAvatars||[]).filter(a=>a&&a.root&&a.root.visible),all=[];let active=0;
       aa.forEach(a=>{const acts=[a.idle,a.run,...Object.values(a.gestures||{}),...Object.values(a._locoActs||{})].filter(Boolean);acts.forEach(x=>{if(!all.includes(x)){all.push(x);if(x.weight>0.02&&(!x.isRunning||x.isRunning()))active++;}});});
-      const hero=aa[0]||null,others=Math.max(0,aa.length-(hero?1:0));return {avatars:aa.length,heroMixers:hero&&hero.mx?1:0,otherMixers:others,mixers:aa.filter(a=>a.mx).length,skeletonUpdates:aa.filter(a=>a.mx).length,actions:all.length,activeActions:active};
+      const hero=aa[0]||null,others=Math.max(0,aa.length-(hero?1:0));return {avatars:aa.length,heroMixers:hero&&hero.mx?1:0,otherMixers:others,mixers:aa.filter(a=>a.mx).length,skeletonUpdates:aa.filter(a=>a.mx).length,actions:all.length,activeActions:active,scheduler:{enabled:!(typeof window!=='undefined'&&window.__CPM_ANIM_LOD===false),frames:_animLodStats.frames,mixerUpdates:_animLodStats.mixerUpdates,lastFrameUpdates:_animLodStats.lastFrameUpdates,fullRate:_animLodStats.fullRate,halfRate:_animLodStats.halfRate,quarterRate:_animLodStats.quarterRate,protected:_animLodStats.protected}};
     };}catch(_e){}
     let mascotGlbAvatars=null;/* [7.911.0 — C11] i bambini dell'ingresso, corpi CH38: terza lista accanto a quella del campo e della panchina */
     let benchGlbAvatars=null; // [7.904.0] panchina CH38 alleggerita: {root,mx,idle,proc,isCoach,home,legL,legR,armL,armR} — array SEPARATO da glbAvatars (niente locomozione/gesti/gk: sono comparse ferme), popolato SOLO dopo che il corpo principale ha agganciato
@@ -12294,8 +12315,8 @@ function ThreeMatchView(props){
         idle.play();run.play();run.weight=0;mx.setTime(((hero._sd||0)%1)*0.8);
         const _findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
         const avatar={root,visualRoot:visual,mx,idle,run,proc:hero,lx:hero.position.x,lz:hero.position.z,_h:_targetHeight,_hyper:true,
-          spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^hand\.l_/i),_handR:_findBone(/^hand\.r_/i)};
-        avatar._armB={la:_findBone(/^arm_stretch\.l_/i),lf:_findBone(/^forearm_stretch\.l_/i),ra:_findBone(/^arm_stretch\.r_/i),rf:_findBone(/^forearm_stretch\.r_/i),hl:avatar._handL,hr:avatar._handR};
+          spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^(?:hand\.l_|hand_l$)/i),_handR:_findBone(/^(?:hand\.r_|hand_r$)/i)};
+        avatar._armB={la:_findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:_findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:_findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:_findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
         avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
         _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),catch:_catchClip});
         root.position.copy(_legacy.root.position);root.rotation.copy(_legacy.root.rotation);scene.add(root);
@@ -12340,8 +12361,8 @@ function ThreeMatchView(props){
           idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
           const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
           const avatar={root,visualRoot:visual,mx,idle,run,proc:old.proc,lx:old.proc.position.x,lz:old.proc.position.z,_h:targetHeight,_hyper:true,_team:old._team||'home',_kit:old._kit||_homeKit,_isGk:!!old._isGk,_isRef:!!old._isRef,
-            spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^hand\.l_/i),_handR:findBone(/^hand\.r_/i)};
-          avatar._armB={la:findBone(/^arm_stretch\.l_/i),lf:findBone(/^forearm_stretch\.l_/i),ra:findBone(/^arm_stretch\.r_/i),rf:findBone(/^forearm_stretch\.r_/i),hl:avatar._handL,hr:avatar._handR};
+            spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i)};
+          avatar._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
           avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
           _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),dive:_clip('gk-dive'),catch:_catchClip,block:_clip('gk-block')});
           root.position.copy(old.root.position);root.rotation.copy(old.root.rotation);return avatar;
@@ -12371,7 +12392,7 @@ function ThreeMatchView(props){
           const kit=fig._isCoach?{shirt:'#1f2937',shorts:'#111827',socks:'#111827',shoes:'#111827'}:(fig._home?_homeKit:_awayKit),appr=appearanceFromSeed(hashStr('hyper-bench-'+index));_applyHyperBuild(visual,appr);_applyHyperKit(visual,kit,appr);
           const mx=new THREE.AnimationMixer(visual),pose=mx.clipAction(seated?_sit:_idle);pose.play();pose.timeScale=seated?0.42:1;
           const findBone=pattern=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
-          const armL=findBone(/^arm_stretch\.l_/i),armR=findBone(/^arm_stretch\.r_/i);
+          const armL=findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),armR=findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i);
           root.position.set(fig.position.x,seated?0:0,fig.position.z);root.rotation.y=fig.rotation.y||0;scene.add(root);fig.visible=false;
           made.push({root,visualRoot:visual,mx,idle:pose,run:null,proc:fig,_hyper:true,_hyperBench:true,_seated904:seated,_isCoach904:!!fig._isCoach,_home904:!!fig._home,_ph904:fig._ph||index,_armBones904:{armL,armR},_armBindQ904:{L:armL&&armL.quaternion.clone(),R:armR&&armR.quaternion.clone()}});
         });
@@ -20272,6 +20293,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // PORTIERE avversario: la parata è segnalata da oppActType==='gk_dive' (oppMesh=awayGkMesh). La traslazione laterale/verticale
         // resta guidata dalla reazione procedurale; il GLB ci sovrappone la CLIP di tuffo per gli arti.
         const _gkWant=(oppActType==='gk_dive')?'dive':(oppActType==='gk_catch')?'catch':(oppActType==='gk_block')?'block':null;// [5.83.0 IA-3] clip catch GLB finalmente usata · [7.203.0] clip BLOCK finalmente usata (era scaricata a ogni partita e mai suonata)
+        _animLodStats.frames++;_animLodStats.lastFrameUpdates=0;
         for(let _ai=0;_ai<glbAvatars.length;_ai++){const _a=glbAvatars[_ai],_p=_a.proc,_gdx=_p.position.x-_a.lx,_gdz=_p.position.z-_a.lz,_gsp=Math.hypot(_gdx,_gdz);
           _a.root.position.set(_p.position.x,(_ai===0&&_p.position.y<0)?0:_p.position.y,_p.position.z);/* [7.246.0 batch PO «l'eroe si butta a terra da posizione sbagliata»] le pose difensive procedurali AFFONDANO y (-0.18/-0.35) perché GLB-OFF il corpo è RUOTATO orizzontale (scivolata) — ma il root CH38 copia SOLO la y, non la rotazione → modello conficcato nel prato fino alle ginocchia su lunge/press. La y negativa dell'eroe non passa al GLB (le clip fanno da sole la discesa); la y POSITIVA (salto di testa, esultanza) resta */
           // facing GRADUALE verso la direzione di movimento (turn-rate cap) — NIENTE snap per-frame (era la causa principale del "twitch schizofrenico"
@@ -20532,7 +20554,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(_ai===0&&(sr.current._cerLift===1||sr.current._celLift371===1)&&_a._gName==='lift'&&_a._gAct){/* [7.384.0] il congelamento all'apice esisteva SOLO per la cerimonia: senza, la clip d'esultanza arrivava in fondo, veniva rilasciata e ri-armata al fotogramma dopo — misurato un ri-armo per esultanza anche a scala corretta. Braccia al cielo si TENGONO. */const _ld=_a._gAct.getClip().duration||1;_a._gAct.paused=true;_a._gAct.time=Math.min((_a._gAct.time||0)+aDt*1.4,_ld*0.34);}/* [7.24.1] avanza fino all'APICE della rimessa (mani sopra la testa) e CONGELA — niente lancio */
             {const _gTot=Math.min(1,_a._gw+(_a._gPw||0)),_lbW=_lb*_lb*(3-2*_lb);/* [7.49.0 BL-06] smoothstep sul blend idle↔corsa (estremi morbidi) + il totale gesto include il prev in fade → pesi sempre ≈1 */
             if(_a.run)_a.run.weight=_lbW*(1-_gTot);if(_a.idle)_a.idle.weight=(1-_lbW)*(1-_gTot);}
-            if(_a.mx)_a.mx.update(aDt);
+            _updateAvatarMixerLod(_a,aDt,_ai,true);
             // [7.24.2 collaudo PO «la coppa deve rimanere nelle mani anche quando corre!»] cerimonia:
             //   in B1/B3/B4 (posa congelata) CAMPIONA i quaternioni delle ossa delle braccia; nel giro di
             //   campo (B2, run normale) li RIAPPLICA dopo il mixer → gambe che corrono, braccia in alto
@@ -20560,7 +20582,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             }
             continue;// [6.76.0 LMV-A2] il gesto rispetta il bullet-time (aDt, non dt): prima la gamba calciava a 3.5× mentre corpo+palla andavano in slow-mo
           }
-          if(_a.mx){const _lbW=_lb*_lb*(3-2*_lb);if(_a.run)_a.run.weight=_lbW;if(_a.idle)_a.idle.weight=1-_lbW;_a.mx.update(aDt);}/* [7.49.0 BL-06] smoothstep anche sugli off-ball */
+          if(_a.mx){const _lbW=_lb*_lb*(3-2*_lb);if(_a.run)_a.run.weight=_lbW;if(_a.idle)_a.idle.weight=1-_lbW;_updateAvatarMixerLod(_a,aDt,_ai,false);}/* [7.49.0 BL-06] smoothstep anche sugli off-ball */
         }
         // 5.49.19: NUMERI DI MAGLIA sul DORSO ANIMATO — seguono l'osso della schiena (non si staccano più durante corsa/ingresso).
         const _nv=sr.current._numV||(sr.current._numV=new THREE.Vector3());
