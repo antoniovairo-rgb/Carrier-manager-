@@ -323,3 +323,49 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 | 22/09/2026, 10:00 | Audit diretto dell’archivio allegato “FREE 21 Realtime man Hairstyles collection”. | Licenza `CC-BY-4.0` verificata nel file incluso: uso commerciale consentito con attribuzione. Il GLB contiene 16 mesh capelli separate, ma nessuna armatura; i nomi interni indicano `female_basemesh` e la tavola renderizzata mostra bob, code, frange e capelli lunghi chiaramente femminili. I singoli mesh vanno da 3.947 a 31.566 triangoli (totale scena 915.392); i quattro piu` leggeri non sono tagli maschili credibili. | RIFIUTATO per Korward: licenza buona ma contenuto/fit errati e nessun rig. Non verra` adattato o forzato sulla testa CGTrader. Questo evita capelli femminili, caschi o mesh eccessivi in partita. |
 | 22/09/2026, 10:15 | Riesaminata la disponibilita` e la licenza di Realistic Male [Rigged] CatBYTE. | La pagina ufficiale conferma file Blender/FBX/textures, componenti separati (occhi, capelli corti, baffi, barba, sopracciglia e shorts), rig facciale, opzioni variante e Extended Commercial License a USD 12,20. Conferma anche 60.992 triangoli e non dichiara LOD o un kit da calcio. | RIFIUTATO come rosa mobile e non acquistato: la modularita` e` interessante, ma il corpo base e` quasi il doppio del CGTrader e non puo` essere assunto idoneo a 11–16 fps senza una prova. Potrebbe essere riesaminato soltanto come test separato se sara` autorizzato un acquisto, con decimazione, kit e dribbling tutti da rifare. |
 | 22/09/2026, 10:30 | Pre-screen della raccolta gratuita Sketchfab “FREE Male Fashion Hair collection 01 lowpoly”. | La licenza e` CC-BY 4.0 e l’autore dichiara 21 tagli, FBX/OBJ/DAE e texture 1K; ma la scheda misura 694.300 triangoli / 467.700 vertici e il viewer ufficiale avvisa che il modello e` troppo pesante per essere renderizzato correttamente. Un commento tecnico riferisce inoltre mesh unica senza UV/texture nel download, in contrasto con la descrizione. | RIFIUTATO prima del download: non e` adatto al budget mobile e non garantisce neppure separazione/importazione affidabile. Nessun asset viene acquisito. |
+
+## 2026-09-22 — verifica librerie capelli gratuite
+
+- **Candidata da testare:** CGTrader *Male Hairstyle Short01 Low Poly Game Ready Model* (Xandra3D): taglio maschile a hair-card, 575 poligoni, texture PBR, UV, FBX/OBJ, licenza Royalty Free. La qualità visiva e l'adattamento alla testa CGTrader restano da verificare sul file reale.
+- **Alternativa esclusa dal test prioritario:** *Digital Human Hair 01/04* (3d-souemonks): licenza Royalty Free e tagli maschili, ma circa 22 MB di OBJ ciascuno e conteggio poligoni non dichiarato; non adatti al test mobile prima dell'audit del file.
+- **Non disponibile senza abbonamento:** Blendkit *Male Hair Cards*, 5.429 poligoni, visualmente coerente e con licenza Royalty Free, ma accessibile soltanto con Full Plan.
+
+**Prossimo gate:** scaricare tramite account CGTrader il file Short01, importarlo in una copia locale del modello acquistato, controllare dimensioni/posizionamento/materiali e rendere un confronto del profilo.
+
+## 2026-09-22 — tentativo download reale di Male Hairstyle Short01
+
+- **Fatto verificato:** l'account CGTrader dell'utente è autenticato; la pagina ha preparato FBX (`Male_Hair_Short01.fbx`, 64,4 KB), OBJ e `Textures.zip` (7,13 MB).
+- **Blocco verificato:** al click del file, Chrome reindirizza a `secure-files.cgtrader.com` ma lo blocca con `ERR_BLOCKED_BY_CLIENT`. Anche il browser isolato di Codex riceve lo stesso blocco. Non è stato adottato alcun aggiramento del filtro.
+- **Conseguenza:** l'audit e il fit non possono iniziare finché il file non viene scaricato manualmente e reso disponibile nel workspace/Drive.
+
+## 2026-09-22 — esito dopo login browser
+
+- **Fatto verificato:** l'account CGTrader è autenticato e il link firmato a `Male_Hair_Short01.fbx` è stato rigenerato.
+- **Fatto verificato:** il download resta bloccato localmente dal browser su `secure-files.cgtrader.com` con `ERR_BLOCKED_BY_CLIENT`; non è un errore di login e non verrà aggirato.
+- **Stato:** il candidato resta valido sulla carta, ma il fit tecnico e visivo richiede che `Male_Hair_Short01.fbx` e `Textures.zip` arrivino manualmente nel workspace o come allegato.
+
+## 2026-09-22 — candidato capelli + barba separati
+
+- **Candidato esaminato:** [Game Hair — Man Real-time Hairstyle, Beard and Eyebrows](https://www.cgtrader.com/3d-models/character/man/game-hair-man-real-time-hairstyle-beard-and-eyebrows), CGTrader, licenza Royalty Free, $25.
+- **Fatti verificati:** FBX/OBJ; capelli, barba e sopracciglia sono mesh e texture separate; 12.500 triangoli capelli, 4.200 barba e 2.350 sopracciglia; quattro mappe texture da 4K; la pagina dichiara un LOD1 da 15.516 facce e controllo tecnico CGTrader.
+- **Valutazione:** risolve bene la richiesta di barba/baffi e non è cartoon, ma offre una sola acconciatura e le texture 4K sono eccessive per il target mobile. Può diventare candidato solo con riduzione a 1K/512 e audit locale su testa/animazione.
+- **Decisione:** non acquistato né adottato. Il candidato gratuito `Male Hairstyle Short01` resta prioritario appena il download non bloccato sarà disponibile.
+
+## 2026-09-22 — controllo LOD sul modello attivo
+
+- **Fatto verificato:** sono state rigenerate le anteprime materiali locali Hero e LOD1 per un confronto controllato; non implicano promozione del LOD.
+- **Fatto verificato:** `tools/validate_cgtrader_lod.py` passa su Hero, LOD1 e LOD2: un solo skin, 68 joint runtime, 7 primitive pesate per asset, nessuna animazione incorporata inattesa.
+- **Vincolo aperto:** la validazione garantisce rig e pesature, non la qualità percepita né gli FPS mobili. Rimangono obbligatori il review visivo dei LOD, il motion test con clip e il benchmark reale mobile.
+
+## 2026-09-22 — verifica della preview pubblica
+
+- **Fatto verificato:** il link pubblico con `hyperCharacter=cgtrader-squad-review` apre la revisione azioni e carica il flusso partita; il contatore desktop ha oscillato tra 48 e 60 FPS.
+- **Limite della prova:** nel browser di verifica il canvas della scena rimane vuoto durante l'azione. Non è evidenza né di corretto rendering né di difetto del modello: questa superficie non sostituisce il dispositivo mobile reale.
+- **Conseguenza:** restano obbligatori screenshot/video mobile su scena renderizzata, controllo scala dei giocatori, pose, kit, capelli e sincronismo palla prima di ogni promozione.
+
+## 2026-09-22 — dribbling CGTrader ripetibile su Chrome locale
+
+- **Fatto verificato:** il harness visuale ora individua automaticamente Chrome installato su Windows quando manca Chromium interno di Playwright; il controllo sintattico passa. Commit locale: `22df781`.
+- **Fatto verificato:** `cgtrader-dribble-closeup-review.mjs` si completa senza errori sul rig CGTrader. Le sue asserzioni congelano i contatti sinistro, destro, sinistro con Hero LOD0, ancoraggio `foot-bone` e distanza palla-piede entro 25 cm.
+- **Misure dell'evidenza:** distanza ai tre contatti `0 m`; spostamento mano sinistra `0,220 m`, mano destra `0,103 m`; estensione massima mano-corpo `0,487 m` (< `0,65 m`): entrambe le braccia partecipano e non formano una T-pose.
+- **Perimetro:** è un gate di dribbling Hero in test locale. Non prova ancora transizioni complete, folla/squadra completa o prestazioni su dispositivo mobile.
