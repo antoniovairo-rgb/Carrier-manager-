@@ -12922,7 +12922,15 @@ function ThreeMatchView(props){
           mesh. I triangoli erano crollati a 30.546 e sembrava un successo: era invece la scena vuota.
           Terza volta stasera che un numero di prestazione migliorato di colpo nascondeva un difetto. */
           if(_trioLod)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
-          pkg._variants=packages;
+          /* [23/09 — L'EROE LOD0 DISEGNAVA UNA MESH LOD2. Rosso appaiato: __CPM_NO_LODPICK]
+          Correzione della diagnosi sopra: i corpi NON erano invisibili. `boundsHeight` usa Box3.setFromObject,
+          che in r128 conta anche i figli nascosti e legge la bind-pose delle SkinnedMesh: non misura cio' che
+          si vede. Il metro giusto (sonda `corpi-disegnati.mjs`, oggetti passati da onBeforeRender) ha trovato
+          5 corpi disegnati, 75 ossa, 1,82 m — ma TUTTI a 4.190 triangoli, eroe compreso. Causa: `_variants`
+          serve alle varianti d'ASPETTO dei pacchetti Hyper Casual; qui riceveva i tre LOD, e
+          `_cloneHyperVisual` ne pescava uno a caso per hash del seed. Con il trio, i livelli si scelgono solo
+          per nome (`_cgLod`), mai per sorteggio. */
+          if(!_trioLod||(typeof window!=='undefined'&&window.__CPM_NO_LODPICK))pkg._variants=packages;
           try{window.__CPM_HYPER_ANIMATIONS=(pkg.animations||[]).map(c=>c&&c.name).filter(Boolean);}catch(_e){}
           if(_hyperIntro){if(_trioLod){const lods=packages;_replaceIntroLineupWithHyper(pkg,(old,index)=>{if(index===0||old.proc===hero)return lods[0];const dx=old.root.position.x-hero.position.x,dz=old.root.position.z-hero.position.z;return Math.hypot(dx,dz)<24?lods[1]:lods[2];},lods);}else _replaceIntroLineupWithHyper(pkg);}else _replaceHeroWithHyper(pkg);
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}

@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 01:30 (Europe/Rome)
+**Ultimo aggiornamento:** 22 settembre 2026, 23:40 (Europe/Rome, orologio del container) — vedi nota sulle date nella voce «IL METRO ERA ROTTO»
 **Stato complessivo stimato:** 70% — ridotto dopo il censimento di un debito strutturale (`src/` non allineato al file di gioco); non è un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -316,6 +316,80 @@ Capire perche' `_activateCgtraderLod` non accende mai una variante (`swaps: 0`) 
 corrispondente al `_cgLod` iniziale resta invisibile. **Chiude quando** `boundsHeight` torna coerente con
 `skeletonHeight` (~1,8), i triangoli si assestano intorno ai 60-70.000 **con i corpi visibili**, e la
 partita normale resta a 1.103.244.
+
+---
+
+## Avanzamento 22 settembre 2026, 23:40 — IL METRO ERA ROTTO: I CORPI SI VEDEVANO, L'EROE NO
+
+> **Nota sulle date.** L'orologio del container segna **22/09 23:35 Europe/Rome**; le tre voci precedenti
+> sono datate «23 settembre 00:05 / 00:45 / 01:30», cioe' in avanti rispetto all'orologio. Non posso
+> confermare quale fosse l'ora reale di quelle voci: le lascio come sono e da qui uso l'orologio.
+
+**Fase:** 4/7 · **Stato complessivo stimato: 60%** (invariato: si chiude un difetto di rendering, nessun gate
+di animazione/palla/transizioni/telefono e' superato).
+
+### 1. La diagnosi precedente era sbagliata — e lo dice un metro nuovo
+La voce delle 01:30 diceva «scheletri senza mesh» sulla base di `boundsHeight` **0,021** contro
+`skeletonHeight` **1,837**. Quel metro **non misura cio' che si vede**: in three **r128**
+`Box3.setFromObject` (1) attraversa anche i figli con `visible=false` e (2) sulle SkinnedMesh legge la
+geometria in bind-pose, non lo scheletro animato. Prova: **dopo** il rimedio qui sotto, con l'eroe LOD0
+effettivamente disegnato, `boundsHeight` e' ancora **0,021**.
+
+**Sonda nuova** `tests/character-lab/corpi-disegnati.mjs`: non tocca il gioco, aggancia
+`THREE.Object3D.prototype.onBeforeRender` (chiamato dal renderer per ogni oggetto disegnato nel passaggio
+principale) e per un fotogramma conta SkinnedMesh disegnate, triangoli e altezza dalle ossa visibili, per
+avatar. `CPM_BASE=1` = partita normale, `CPM_ROSSO=1` = rosso appaiato.
+
+### 2. Il difetto vero, misurato
+Prima del rimedio (`corpi-disegnati-prima.json`): **5 corpi disegnati, 75 ossa, 1,82-1,84 m** — i corpi
+c'erano. Ma **tutti e cinque a 4.190 triangoli**, cioe' **LOD2, eroe compreso**, mentre l'audit dichiarava
+`heroLod:"lod0"`.
+Triangoli per asset, letti dai GLB: **LOD0 34.995 · LOD1 12.244 · LOD2 4.190** (7 mesh ciascuno).
+
+**Causa:** `pkg._variants=packages`. `_variants` serve alle varianti d'**aspetto** dei pacchetti Hyper
+Casual; col trio riceveva i **tre LOD**, e `_cloneHyperVisual` ne pescava uno **a sorteggio per hash del
+seed**. L'etichetta `_cgLod` diceva «lod0», la mesh clonata poteva essere qualsiasi livello. Lo stesso
+difetto e' presente nella copia di recupero (`pkg._variants=packages` anche li'): non e' nato col merge.
+
+**Rimedio** (`src/12-three-match-view.jsx`, una riga + commento): con il trio, `_variants` non si assegna;
+i livelli si scelgono solo per nome. Rosso appaiato **`__CPM_NO_LODPICK`**.
+
+### 3. Misure (situazione 33, Chromium headless 412×915)
+
+| misura | prima | **dopo** | rosso `__CPM_NO_LODPICK` |
+| --- | ---: | ---: | ---: |
+| corpi disegnati (onBeforeRender) | 5 | **5** | 7 (*) |
+| triangoli dell'eroe | 4.190 (LOD2) | **34.995 (LOD0)** | 4.190 |
+| triangoli skin disegnati | 20.950 | **51.755** (= 34.995 + 4×4.190) | 29.330 |
+| triangoli passaggio principale | 23.785 | **54.588** | 37.231 |
+| `__CPM_TRI907` (sonda storica `roster-ottimizzato-rosso`) | 30.546 | **61.351** | — |
+| altezza dalle ossa | 1,82-1,84 m | **1,82-1,84 m** | 1,82-1,84 m |
+| **partita normale** (`CPM_BASE=1`, `__CPM_TRI907`) | 1.103.244 | **1.103.244** | — |
+| errori di pagina | 0 | **0** | 0 |
+
+(*) Nel rosso compaiono due radici in piu' con 7 mesh a 4.190 triangoli e **zero ossa visibili**: **non
+spiegato**. Non tocca il verde (5 corpi, tutti con 75 ossa), ma resta da capire.
+
+**FPS:** 4,3 nella sonda storica — **non e' una misura**: il banco e' a GPU software. Gate FPS = telefono,
+**FAIL aperto** (11-16 FPS dichiarati dal PO).
+
+### 4. Criteri di chiusura del §5
+| criterio | esito |
+| --- | --- |
+| corpi visibili con altezza coerente | ✅ 5 corpi, 1,82-1,84 m dalle ossa (il `boundsHeight` ~1,8 era un criterio sbagliato: il metro e' cieco) |
+| triangoli 60-70.000 con i corpi visibili | ✅ 61.351 (`__CPM_TRI907`) · 54.588 nel solo passaggio principale |
+| eroe davvero in LOD0 | ✅ 34.995 triangoli disegnati |
+| partita normale invariata | ✅ 1.103.244 |
+| FPS | ⏸ gate telefono, **FAIL aperto** |
+
+**Non verificato:** l'Android del PO; il cambio di LOD in corsa (`swaps` resta 0 perche' `_updateCgtraderLod`
+gira solo con `_cgtraderMixedLodBenchmark`: nella review ottimizzata il LOD e' fisso all'avvio — da
+decidere se serve); le due radici in piu' del rosso.
+
+### 5. Prossimo lavoro
+Presa alta del portiere (`gk-high-catch`) con `keeper-catch-sequence-review.mjs`: apertura, contatto,
+recupero + dati palla/attori/transizione. `boundsHeight` nell'audit andrebbe sostituito con l'altezza dalle
+ossa o tolto, perche' induce in errore: e' un intervento a parte, non fatto qui.
 
 ---
 

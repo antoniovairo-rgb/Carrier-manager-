@@ -1,0 +1,86 @@
+{
+ "modo": "cgtrader-highlight-optimized",
+ "rosso": true,
+ "sit": 33,
+ "stato": "ready-lineup",
+ "oggettiDisegnati": 270,
+ "triangoliDisegnati": 37231,
+ "skinDisegnate": 49,
+ "triangoliSkin": 29330,
+ "corpiDisegnati": 7,
+ "corpi": [
+  {
+   "mesh": 7,
+   "tri": 4190,
+   "bones": 75,
+   "altezza": 1.828
+  },
+  {
+   "mesh": 7,
+   "tri": 4190,
+   "bones": 75,
+   "altezza": 1.823
+  },
+  {
+   "mesh": 7,
+   "tri": 4190,
+   "bones": 75,
+   "altezza": 1.838
+  },
+  {
+   "mesh": 7,
+   "tri": 4190,
+   "bones": 0,
+   "altezza": null
+  },
+  {
+   "mesh": 7,
+   "tri": 4190,
+   "bones": 0,
+   "altezza": null
+  },
+  {
+   "mesh": 7,
+   "tri": 4190,
+   "bones": 75,
+   "altezza": 1.83
+  },
+  {
+   "mesh": 7,
+   "tri": 4190,
+   "bones": 75,
+   "altezza": 1.825
+  }
+ ],
+ "skinInScena": 483,
+ "skinNascoste": 448,
+ "rendererTri": 30706,
+ "roster": {
+  "visible": 5,
+  "total": 23,
+  "hero": 0,
+  "keeper": 11,
+  "lod": {
+   "lod0": 1,
+   "lod1": 0,
+   "lod2": 22
+  }
+ },
+ "audit": {
+  "active": {
+   "lod0": 1,
+   "lod1": 0,
+   "lod2": 22
+  },
+  "heroLod": "lod0",
+  "variants": 69,
+  "stats": {
+   "swaps": 0,
+   "technicalPromotions": 0,
+   "blocked": 0,
+   "last": null
+  }
+ },
+ "situazione": null,
+ "errori": []
+}

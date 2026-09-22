@@ -1,0 +1,254 @@
+{
+ "modo": null,
+ "rosso": false,
+ "sit": 33,
+ "stato": "off",
+ "oggettiDisegnati": 787,
+ "triangoliDisegnati": 1103427,
+ "skinDisegnate": 555,
+ "triangoliSkin": 1099484,
+ "corpiDisegnati": 39,
+ "corpi": [
+  {
+   "mesh": 17,
+   "tri": 28440,
+   "bones": 65,
+   "altezza": 1.794
+  },
+  {
+   "mesh": 17,
+   "tri": 28440,
+   "bones": 65,
+   "altezza": 1.788
+  },
+  {
+   "mesh": 17,
+   "tri": 28440,
+   "bones": 65,
+   "altezza": 1.623
+  },
+  {
+   "mesh": 17,
+   "tri": 28440,
+   "bones": 65,
+   "altezza": 1.763
+  },
+  {
+   "mesh": 17,
+   "tri": 28440,
+   "bones": 65,
+   "altezza": 1.729
+  },
+  {
+   "mesh": 16,
+   "tri": 28360,
+   "bones": 65,
+   "altezza": 1.774
+  },
+  {
+   "mesh": 16,
+   "tri": 28360,
+   "bones": 65,
+   "altezza": 1.745
+  },
+  {
+   "mesh": 16,
+   "tri": 28360,
+   "bones": 65,
+   "altezza": 1.677
+  },
+  {
+   "mesh": 16,
+   "tri": 28360,
+   "bones": 65,
+   "altezza": 1.664
+  },
+  {
+   "mesh": 16,
+   "tri": 28360,
+   "bones": 65,
+   "altezza": 1.941
+  },
+  {
+   "mesh": 15,
+   "tri": 28280,
+   "bones": 65,
+   "altezza": 2.195
+  },
+  {
+   "mesh": 15,
+   "tri": 28280,
+   "bones": 65,
+   "altezza": 1.756
+  },
+  {
+   "mesh": 15,
+   "tri": 28280,
+   "bones": 65,
+   "altezza": 1.615
+  },
+  {
+   "mesh": 15,
+   "tri": 28280,
+   "bones": 65,
+   "altezza": 1.643
+  },
+  {
+   "mesh": 14,
+   "tri": 28260,
+   "bones": 65,
+   "altezza": 1.866
+  },
+  {
+   "mesh": 14,
+   "tri": 28260,
+   "bones": 65,
+   "altezza": 1.738
+  },
+  {
+   "mesh": 14,
+   "tri": 28260,
+   "bones": 65,
+   "altezza": 2.401
+  },
+  {
+   "mesh": 14,
+   "tri": 28260,
+   "bones": 65,
+   "altezza": 1.623
+  },
+  {
+   "mesh": 14,
+   "tri": 28260,
+   "bones": 65,
+   "altezza": 1.789
+  },
+  {
+   "mesh": 14,
+   "tri": 28260,
+   "bones": 65,
+   "altezza": 1.593
+  },
+  {
+   "mesh": 13,
+   "tri": 28192,
+   "bones": 65,
+   "altezza": 2.574
+  },
+  {
+   "mesh": 13,
+   "tri": 28192,
+   "bones": 65,
+   "altezza": 1.646
+  },
+  {
+   "mesh": 19,
+   "tri": 28120,
+   "bones": 65,
+   "altezza": 1.883
+  },
+  {
+   "mesh": 19,
+   "tri": 28120,
+   "bones": 65,
+   "altezza": 1.761
+  },
+  {
+   "mesh": 19,
+   "tri": 28120,
+   "bones": 65,
+   "altezza": 1.816
+  },
+  {
+   "mesh": 12,
+   "tri": 28040,
+   "bones": 65,
+   "altezza": 1.674
+  },
+  {
+   "mesh": 12,
+   "tri": 28040,
+   "bones": 65,
+   "altezza": 1.689
+  },
+  {
+   "mesh": 12,
+   "tri": 28040,
+   "bones": 65,
+   "altezza": 1.625
+  },
+  {
+   "mesh": 12,
+   "tri": 28040,
+   "bones": 65,
+   "altezza": 1.695
+  },
+  {
+   "mesh": 12,
+   "tri": 28020,
+   "bones": 65,
+   "altezza": 1.897
+  },
+  {
+   "mesh": 12,
+   "tri": 28020,
+   "bones": 65,
+   "altezza": 1.685
+  },
+  {
+   "mesh": 12,
+   "tri": 28020,
+   "bones": 65,
+   "altezza": 1.695
+  },
+  {
+   "mesh": 12,
+   "tri": 28020,
+   "bones": 65,
+   "altezza": 1.987
+  },
+  {
+   "mesh": 12,
+   "tri": 28020,
+   "bones": 65,
+   "altezza": 1.757
+  },
+  {
+   "mesh": 11,
+   "tri": 27960,
+   "bones": 65,
+   "altezza": 1.639
+  },
+  {
+   "mesh": 11,
+   "tri": 27960,
+   "bones": 65,
+   "altezza": 1.786
+  },
+  {
+   "mesh": 11,
+   "tri": 27960,
+   "bones": 65,
+   "altezza": 1.671
+  },
+  {
+   "mesh": 11,
+   "tri": 27960,
+   "bones": 65,
+   "altezza": 1.774
+  },
+  {
+   "mesh": 11,
+   "tri": 27960,
+   "bones": 65,
+   "altezza": 1.601
+  }
+ ],
+ "skinInScena": 2623,
+ "skinNascoste": 2068,
+ "rendererTri": 1104170,
+ "roster": null,
+ "audit": null,
+ "situazione": null,
+ "errori": []
+}
