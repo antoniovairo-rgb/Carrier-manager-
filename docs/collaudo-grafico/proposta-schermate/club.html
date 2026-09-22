@@ -1,0 +1,98 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=412,initial-scale=1">
+<title>Korward Elite — Club (provino v2)</title>
+<link rel="stylesheet" href="stile.css">
+<style>
+  .clubid{display:flex;gap:13px;align-items:center;padding:14px 12px 13px}
+  .clubid .nm{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c6);font-weight:700;
+    line-height:1;letter-spacing:.02em;text-transform:uppercase}
+  .clubid .lg{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);font-weight:600;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--terzo);margin-top:5px}
+  /* REPUTAZIONE: cinque tacche, non cinque stelline di testo. Le stelline vuote erano un nodo
+     di TESTO a 1,35:1 — un carattere che nessuno riesce a leggere e che il metro conta. */
+  .tacche{display:flex;gap:3px;margin-top:8px}
+  .tacche i{width:17px;height:6px;border-radius:3px;background:var(--filo-forte);display:block}
+  .tacche i.on{background:var(--club)}
+  .testo{padding:10px 12px 12px;font-size:var(--c3);line-height:1.45;color:var(--secondo);border-top:1px solid var(--filo)}
+  .pall{display:flex;gap:6px;margin-left:auto}
+  .pall i{width:18px;height:18px;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(15,23,42,.16)}
+  .st{display:flex;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid var(--filo)}
+  .st .s{width:32px;font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);
+    font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--terzo)}
+  .st .p{width:28px;font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c4);font-weight:700}
+  .st .l{font-size:var(--c3);font-weight:500;color:var(--secondo)}
+  .st .e{margin-left:auto;font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c2);
+    font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--terzo)}
+  .spon{display:flex;align-items:center;padding:12px}
+  .spon .mk{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c5);font-weight:700;
+    letter-spacing:.09em;text-transform:uppercase}
+  .spon .vv{margin-left:auto;text-align:right}
+  .spon .vv b{display:block;font-family:"Barlow Condensed","Barlow",sans-serif;font-size:var(--c5);font-weight:700;line-height:1.05}
+  .spon .vv small{font-size:var(--c1);color:var(--terzo);font-weight:500}
+</style></head><body>
+
+<div class="id">
+  <div class="av">GP</div>
+  <div>
+    <div class="nome">Grafica Probe</div>
+    <div class="sotto">Attaccante · FC Salernum</div>
+  </div>
+  <div class="ovr"><div class="v">82</div><div class="k">OVR</div></div>
+</div>
+
+<div class="tabs"><div class="on">Squadra</div><div>Rosa</div><div>Storia</div></div>
+
+<div class="sez">
+  <div class="carta">
+    <div class="clubid">
+      <div class="scudo g" style="background:#6c1f2e;color:#ffffff">SAL<em style="background:#f5f5f5"></em></div>
+      <div>
+        <div class="nm">FC Salernum</div>
+        <div class="lg">Italia · Lega B · 4ª</div>
+        <div class="tacche" title="Reputazione 3 su 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+      </div>
+    </div>
+    <div class="dati">
+      <div><div class="et">Prestigio</div><div class="v">52</div><div class="s">su 100</div></div>
+      <div><div class="et">Stadio</div><div class="v">38.000</div><div class="s">Stadio Salernum</div></div>
+      <div><div class="et">Monte ingaggi</div><div class="v">11,4M€</div><div class="s">8º in Lega B</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sez">
+  <div class="cap"><span class="et">Ambiente</span><span class="rig"></span></div>
+  <div class="carta">
+    <div class="riga"><span class="k">Progetto</span><span class="v">Solido<small>mercato mirato, conti in ordine</small></span></div>
+    <div class="riga"><span class="k">Curva</span><span class="v">Uno di passaggio<small>per ora</small></span></div>
+    <div class="riga"><span class="k">Colori sociali</span>
+      <span class="pall"><i style="background:#6c1f2e"></i><i style="background:#f5f5f5"></i></span></div>
+    <div class="riga"><span class="k">Staff</span><span class="v">Dr. Ratti · Ricci (DS)<small>medico sociale · direttore sportivo</small></span></div>
+  </div>
+</div>
+
+<div class="sez">
+  <div class="cap"><span class="et">Sponsor di maglia</span><span class="rig"></span><a href="#">Dettagli</a></div>
+  <div class="carta">
+    <div class="spon">
+      <span class="mk">Meteora</span>
+      <span class="vv"><b>2,7M€</b><small>all'anno, al club</small></span>
+    </div>
+    <div class="riga"><span class="k">Contratto</span><span class="v">scade S.7<small>3 stagioni restanti</small></span></div>
+    <div class="testo">Versa nel budget mercato ogni stagione e premia i traguardi — promozione o alta classifica — con un bonus: più fondi per gli acquisti pesanti.</div>
+  </div>
+</div>
+
+<div class="sez">
+  <div class="cap"><span class="et">Storico piazzamenti</span><span class="rig"></span><a href="#">Albo</a></div>
+  <div class="carta">
+    <div class="st"><span class="s">S.3</span><span class="p">8º</span><span class="l">Lega B</span><span class="e">—</span></div>
+    <div class="st"><span class="s">S.2</span><span class="p">9º</span><span class="l">Lega B</span><span class="e">—</span></div>
+    <div class="st"><span class="s">S.1</span><span class="p">3º</span><span class="l">Lega B</span><span class="e">spareggi</span></div>
+  </div>
+</div>
+
+<div class="nav">
+  <div>Home</div><div>Stagione</div><div class="on">Club</div><div>Carriera</div><div>Agente</div><div>Opzioni</div>
+</div>
+</body></html>

@@ -6300,6 +6300,25 @@ bande, jumbotron-anchor, career-critical con i suoi undici guardiani).
 
 **Non verificato**: tutto misurato al banco e su Chromium 412×915. Mai sull'Android del PO.
 
-**Da decidere dal PO**: se la routine notturna vada ripuntata sul ramo di lavoro corrente
-(`claude/motore-possesso`) o spenta, visto che il ramo e il checkout che nomina appartengono
-a un assetto che non è più quello in cui si lavora.
+**DECISO DAL PO il 21/09: ripuntata.** La routine notturna di allineamento
+(`trig_01SbJpnx39mQXWYCXpMy8HKx`) nominava `/home/user/Carrier-manager-` e il ramo
+`claude/korward-elite-qa-season-jwcbj1`: il primo qui non esiste (c'è `carrier-manager-`
+minuscolo) e il secondo non è quello su cui si lavora. È partita quattro volte — 18, 19, 20
+e 21 settembre — e **non può aver allineato niente in nessuna di quelle quattro notti**:
+il `cd` del primo passo sarebbe fallito subito. Il registro dei run dice SUCCEEDED perché
+quella riga misura la *consegna del risveglio*, non l'esito del lavoro: un successo che non
+significa quello che sembra.
+
+Riscritta sul percorso e sul ramo veri (`/home/user/cm-motore`, `claude/motore-possesso`),
+più quattro cose che erano già costate tempo altrove:
+- un passo 0 che **verifica che il checkout esista** prima di ogni altra cosa, perché il
+  contenitore viene riciclato e il 21/09 è successo davvero;
+- `PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers` accanto a `CPM_CHROME`, senza la quale il
+  rituale muore prima di partire cercando un binario che non c'è;
+- il divieto esplicito di **ricostruire il build mentre un rituale lo sta usando**;
+- la verifica del ref remoto con un `git fetch` esplicito dopo il push, perché `git push`
+  non aggiorna da solo il ref di tracciamento e lo stop-hook segnala falsi «non pushati».
+
+- **Produzione allineata a `37428c5` (7.958.0) il 22/09/2026 03:40**, rituale completo verde: `career-critical` (una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale) e `ci` (la catena intera, compresi gate 14/14, maxischermo ancorato in 9 impianti su 9 con le due prove del rosso riuscite). Il ramo era già in pari con `main`: il push è uscito «Everything up-to-date», quindi nessun avanzamento di produzione stanotte — l'allineamento è la **certificazione** di ciò che è già online, non un rilascio.
+  ⚠️ **Rosso noto e dichiarato, che questa catena NON copre**: `match-sequence` (determinismo della cronaca) è rosso **anche su questo build** e lo era già sulla 7.957 — verificato ricostruendo. La stessa partita giocata due volte alla stessa velocità diverge al minuto 35, dove la stessa riga esce con un **protagonista diverso**. È il primo lavoro del motore, ed è la ragione per cui quel guardiano va messo nella catena obbligatoria.
+  **NON VERIFICATO**: è Chromium headless, non l'Android del PO.

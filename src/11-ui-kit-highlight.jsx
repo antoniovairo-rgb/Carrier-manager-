@@ -29,20 +29,46 @@
 /* Card — refactor Ondata 1: default pinnati (radius 14 · pad "16px 18px" · TH.shadow) → zero regressione.
    Nuovi prop opt-in: elevation(1|2|3) · tone(win|draw|loss|primary|info|warn|neutral) · interactive · header/footer · density(tight|loose). ...rest → onClick ora arriva al div (fix riga Coppe 6.8.1). */
 const _CARD_TONE={win:["winBg","winBd"],draw:["drawBg","drawBd"],loss:["lossBg","lossBd"],primary:["primaryTint","primaryBorder"],info:["bgBlue","bdBlue"],warn:["bgAmber","bdAmber"],neutral:["surface2","divider"]};
-const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=false,header,footer,density,className="",...rest})=>{
+/* [G10 · 22/09, rilievo PO «ancora tanti box molto lunghi, farei accordion o altre soluzioni a te piu'
+   congeniali» + «la schermata e' ancora lunghissima»] IL MOMENTO E' UNA FISARMONICA.
+   MISURATO (griglia mobile, tabella «dove stanno i pixel»): la Dashboard e' alta 2718 px = 2,97 schermate
+   del telefono del PO, e OTTO riquadri narrativi — storia, mondo fuori, vita privata, procuratore,
+   progetto del club, sponsor, Primavera, «adesso guardano te» — ne occupano 1399, cioe' il 51 %. Sono
+   tutti aperti insieme, uno sotto l'altro, e nessuno di loro e' l'azione della settimana.
+   Con `momento="titolo"` il riquadro si presenta CHIUSO: una riga da 40 px col suo titolo e la freccia,
+   e il contenuto (testo e bottoni) arriva al tocco. Niente e' nascosto: e' a un dito di distanza, che e'
+   esattamente quello che il PO ha chiesto. La riga chiusa resta sopra i 44 px di bersaglio tattile
+   (padding compreso) e porta `aria-expanded`, cosi' la fisarmonica esiste anche per chi non vede. */
+const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=false,header,footer,density,className="",momento,momentoAperto=false,momentoNota,momentoInk,...rest})=>{
+  const [_ap,_setAp]=React.useState(!!momentoAperto);
   const el=elevation===3?TH.el3:elevation===2?TH.el2:elevation===1?TH.el1:(shadow?TH.shadow:"none");
   const t=tone&&_CARD_TONE[tone];
-  const pad=density==="tight"?"10px 12px":density==="loose"?"20px 22px":"16px 18px";
-  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:14,padding:pad,boxShadow:el,...style}} {...rest}>
-    {header!=null&&<div style={{marginBottom:10}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</div>);
+  /* [21/09 · direttiva PO: «riduci lo spazio dei box da tutte le schermate, devono essere piu' compatte.
+     Non e' un sito ma un gioco manageriale»] LA DENSITA' E' UNA SCELTA DICHIARATA, NON UN'ABITUDINE.
+     Le imbottiture scendono del ~30% in VERTICALE e del ~15% in ORIZZONTALE: il respiro laterale serve
+     ancora alla leggibilita' della riga, quello verticale era aria. Stessa compressione sui ritmi fra i
+     box (marginBottom 16→12 · 14→10 · 12→9 · 10→8). Il metro sono le tredici altezze della griglia
+     mobile, e i difetti NON devono muoversi: comprimere fino a far toccare i bordi sarebbe barare
+     sull'altezza pagando in leggibilita'. */
+  const pad=density==="tight"?"7px 11px":density==="loose"?"14px 18px":"11px 15px";
+  const _padM=momento?(_ap?pad:"6px 12px"):pad;
+  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:RAD.md,padding:_padM,boxShadow:el,...style}} {...rest}>
+    {momento!=null&&(
+      <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus"
+        style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:32,padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
+        <span style={{flex:1,minWidth:0,fontSize:FS.body,fontWeight:800,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{momento}</span>
+        {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
+        <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"/* [G10] la freccia e' quella di casa: le fisarmoniche gia' spedite (Record, Bacheca, Storico) usano il chevron, non il triangolo pieno */}}>›</span>
+      </button>)}
+    {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
 };
 /* Btn — refactor Ondata 1: default 'md' == output attuale (pad "10px 18px" · minHeight 40 · fs 13).
    Nuovi prop opt-in: size(sm|md|lg) · icon · loading. .cpm-press → hover/active (nessun cambio a frame statico). */
-const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:12},md:{padding:"10px 18px",minHeight:40,fontSize:13},lg:{padding:"13px 22px",minHeight:48,fontSize:15}};
+const _BTN_SIZE={sm:{padding:"7px 12px",minHeight:36,fontSize:FS.small},md:{padding:"10px 18px",minHeight:40,fontSize:FS.body},lg:{padding:"13px 22px",minHeight:48,fontSize:FS.bodyLg}};
 const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="md",icon,loading=false,className="",...rest})=>{
   const vs={
     primary:{background:TH.primary,color:"#fff",fontWeight:700},
-    green:{background:TH.success,color:"#fff",fontWeight:700},
+    green:{background:TH.success,color:inkSu945(TH.success),fontWeight:700},/* [G8.6] il bianco su #16a34a fa 3,30:1: l'inchiostro lo sceglie il contrasto */
     secondary:{background:TH.card,color:TH.muted,border:"1px solid "+TH.cardBorder},
     success:{background:TH.bgGreen,color:TH.txGreen,border:"1px solid "+TH.bdGreen,fontWeight:700},/* [7.103.0] token semantici (theme-aware) al posto degli hex light hardcoded */
     danger:{background:TH.bgRed,color:TH.txRed,border:"1px solid "+TH.bdRed,fontWeight:700},
@@ -52,7 +78,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
   };
   const sz=_BTN_SIZE[size]||_BTN_SIZE.md;
   const isOff=disabled||loading;
-  return<button onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:sz.minHeight,borderRadius:10,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
+  return<button onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:sz.minHeight,borderRadius:RAD.sm,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
 };
 /* StatBar — refactor Ondata 1: default (ramp 80/65 · track TH.cardBorder · mb 8 · h 4) invariato.
    tone opt-in: 'attribute' = ramp NON allarmante · 'win'/'draw'/'loss'/... = colore semantico. */
@@ -60,14 +86,14 @@ const StatBar=({label,value,tone,track,height=4,mb=8})=>{
   const c=tone==="attribute"?(value>=75?TH.success:value>=55?TH.energy:value>=40?TH.warning:TH.danger)
         :(tone&&TH[tone+"Fg"])?TH[tone+"Fg"]
         :(value>=80?TH.success:value>=65?TH.warning:TH.danger);
-  return<div style={{marginBottom:mb}}><div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span className="cpm-num" style={{color:legCol944(c),fontWeight:700}}>{value}</span></div><div style={{height,background:track||TH.cardBorder,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:3,transition:"width .5s"}}/></div></div>;
+  return<div style={{marginBottom:mb}}><div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span className="cpm-num" style={{color:legCol944(c),fontWeight:700}}>{value}</span></div><div style={{height,background:track||TH.cardBorder,borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:RAD.pill,transition:"width .5s"}}/></div></div>;
 };
 /* OvrRing — refactor Ondata 1: track → TH.track (light == #e2e8f0, pinnato) · label default 'OVR' (era 'LVL': errato per un calciatore). */
 const OvrRing=({value,size=60,label="OVR"})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
-  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:Math.max(FS.caption,size*.27)/* [C4] pavimento 11 px */,fontWeight:900,color:legCol944(c),lineHeight:1}}>{value}</div><div style={{fontSize:FS.caption,color:TH.faint}}>{label}</div></div></div>;
+  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:fsScala(Math.max(FS.caption,size*.27))/* [C4] pavimento 11 px */,fontWeight:900,color:legCol944(c),lineHeight:1}}>{value}</div><div style={{fontSize:FS.caption,color:TH.faint}}>{label}</div></div></div>;
 };
-const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:13,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
+const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
@@ -99,9 +125,50 @@ function Sparkline({data,color,width,height}){
 /* SectionHeader — intestazione di sezione unificata (retira il pattern "fontSize:FS.caption·uppercase·letterSpacing" ripetuto ~40×). */
 function SectionHeader({children,icon,right,style={}}){
   return(<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:SP.md,...style}}>
-    <div style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint,textTransform:"uppercase",letterSpacing:1.2}}>{icon&&<span style={{fontSize:13}}>{icon}</span>}{children}</div>
+    <div style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint,textTransform:"uppercase",letterSpacing:1.2}}>{icon&&<span style={{fontSize:FS.body}}>{icon}</span>}{children}</div>
     {right!=null&&<div>{right}</div>}
   </div>);
+}
+
+/* [G8.3 · direttiva PO 21/09 «se una schermata e' troppo lunga valuta se mettere degli accordion»]
+   FISARMONICA — una sezione che si apre e si chiude.
+   IL NUMERO CHE L'HA CHIESTA. La griglia mobile misura l'altezza dello scorritore vero
+   (div.cpm-scroll, non il documento: il documento risponde sempre 915 px ed e' falso).
+   A 412 px, in schermate da 915: Carriera · Profilo 3.394 px = 3,71 schermate ·
+   Dashboard 2.704 = 2,96 · Club 2.341 = 2,56. Le altre cinque stanno in una schermata sola.
+   REGOLE, perche' un accordion mal fatto nasconde il gioco invece di ordinarlo:
+     · si chiude quello che si CONSULTA (albo, storico, record), mai quello che si USA;
+     · il cappello dice sempre QUANTO c'e' dentro (il numero di voci), cosi' chiuso non mente;
+     · la scelta del giocatore RESTA (safeLS per id) — riaprire la stessa sezione a ogni
+       ingresso sarebbe peggio di non averla chiusa;
+     · e' un <button> vero con aria-expanded: chi naviga da tastiera o con la voce lo trova;
+     · corpo del cappello >= FS.caption (11 px, il pavimento dichiarato) e colori dai token,
+       cosi' non apre un buco nel contrasto misurato dalla griglia. */
+function Fisarmonica({id,titolo,icona,quante,aperta=false,children,style={}}){
+  const _k="cpm-fis-"+id;
+  /* [G8.5] UN METRO CHE NON GUARDA DENTRO PREMIA CHI NASCONDE. Misurato: chiudendo Rosa e
+     Bacheca del Club i nodi sotto soglia di contrasto sono scesi da 49 a 17 — ventinove di
+     quelli spariti erano difetti VERI, non risolti. Con `__CPM_FIS_APERTE` ogni fisarmonica
+     nasce aperta: la griglia mobile misura allora il contenuto che il giocatore vede quando
+     apre, e nascondere smette di far scendere il numero. Non e' una scorciatoia di collaudo:
+     e' la condizione perche' la misura resti onesta man mano che le sezioni aumentano. */
+  const _tutteAperte=(typeof window!=='undefined'&&window.__CPM_FIS_APERTE)||false;
+  const[apr,setApr]=useState(()=>{try{if(_tutteAperte)return true;const v=safeLS.get(_k);return v==null?!!aperta:v==="1";}catch(_e){return !!aperta;}});
+  const cambia=()=>{setApr(p=>{const n=!p;try{safeLS.set(_k,n?"1":"0");}catch(_e){}return n;});};
+  return(
+    <div style={{marginBottom:SP.md,...style}}>
+      <button onClick={cambia} aria-expanded={apr} className="cpm-press"
+        style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"7px 11px",cursor:"pointer",
+          background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:apr?(RAD.xs+"px "+RAD.xs+"px 0 0"):(RAD.xs+"px"),
+          borderBottom:apr?"none":"1px solid "+TH.cardBorder,fontFamily:"inherit",textAlign:"left"}}>
+        {icona&&<span style={{fontSize:FS.body,flexShrink:0}}>{icona}</span>}
+        <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.text,textTransform:"uppercase",letterSpacing:1.2}}>{titolo}</span>
+        {quante!=null&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.faint}}>{quante}</span>}
+        <span aria-hidden style={{marginLeft:"auto",fontSize:FS.body,color:TH.faint,lineHeight:1,
+          transform:apr?"rotate(90deg)":"none",transition:"transform "+MO.fast+"ms"}}>&#8250;</span>
+      </button>
+      {apr&&<div>{children}</div>}
+    </div>);
 }
 
 /* Badge / Chip — pill semantica. tone: neutral|primary|win|draw|loss|info|warn|gold|record|energy. */
@@ -123,7 +190,7 @@ function MatchBadge({r,size=22,title}){
   const kind=r==="W"||r==="win"||r===true?"win":(r==="D"||r==="draw"?"draw":"loss");
   const letter=kind==="win"?"V":kind==="draw"?"P":"S"; // vocabolario di gioco V/P/S (Pareggio)
   const bg=kind==="win"?TH.winFg:kind==="draw"?TH.drawFg:TH.lossFg;
-  return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:Math.max(FS.caption,size*.45)/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:"#fff",flexShrink:0}}>{letter}</div>);
+  return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:fsScala(Math.max(FS.caption,size*.45))/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:"#fff",flexShrink:0}}>{letter}</div>);
 }
 
 
@@ -181,7 +248,7 @@ function Modal({open=true,onClose,children,title,footer,width=440,dismissable=tr
     <div onClick={e=>e.stopPropagation()} className="cpm-rise" style={{background:TH.surface3,borderRadius:RAD.xl,boxShadow:TH.el3,maxWidth:width,width:"100%",maxHeight:"90vh",overflow:"auto",border:`1px solid ${TH.divider}`,...style}}>
       {title!=null&&<div style={{padding:`${SP.lg}px ${SP.xl}px`,borderBottom:`1px solid ${TH.divider}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{title}</div>
-        {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus" style={{background:"none",border:"none",fontSize:20,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4}}>×</button>}
+        {dismissable&&onClose&&<button onClick={onClose} className="cpm-press cpm-focus" style={{background:"none",border:"none",fontSize:FS.title,color:TH.faint,cursor:"pointer",lineHeight:1,padding:4}}>×</button>}
       </div>}
       <div style={{padding:`${SP.xl}px`}}>{children}</div>
       {footer!=null&&<div style={{padding:`${SP.md}px ${SP.xl}px`,borderTop:`1px solid ${TH.divider}`,display:"flex",gap:SP.sm,justifyContent:"flex-end"}}>{footer}</div>}
@@ -247,10 +314,10 @@ function Bracket({rounds=[],style={}}){
 /* Toast — notifica transitoria (stack gestito dal chiamante). tone semantica. */
 function Toast({children,tone="info",icon,onClose,style={}}){
   const t=_BADGE_TONE[tone]||_BADGE_TONE.info;
-  return(<div className="cpm-rise" style={{display:"flex",alignItems:"center",gap:8,background:TH.surface3,border:`1px solid ${TH[t[2]]}`,borderLeft:`3px solid ${TH[t[1]]}`,borderRadius:RAD.md,padding:"10px 14px",boxShadow:TH.el2,maxWidth:360,...style}}>
-    {icon&&<span style={{fontSize:16}}>{icon}</span>}
+  return(<div className="cpm-rise" style={{display:"flex",alignItems:"center",gap:8,background:TH.surface3,border:`1px solid ${TH[t[2]]}`,borderLeft:`3px solid ${TH[t[1]]}`,borderRadius:RAD.md,padding:"7px 12px",boxShadow:TH.el2,maxWidth:360,...style}}>
+    {icon&&<span style={{fontSize:FS.bodyLg}}>{icon}</span>}
     <span style={{fontSize:FS.small,color:TH.text,fontWeight:FW.medium,flex:1,lineHeight:1.4}}>{children}</span>
-    {onClose&&<button onClick={onClose} className="cpm-press" style={{background:"none",border:"none",color:TH.faint,fontSize:16,cursor:"pointer",lineHeight:1}}>×</button>}
+    {onClose&&<button onClick={onClose} className="cpm-press" style={{background:"none",border:"none",color:TH.faint,fontSize:FS.bodyLg,cursor:"pointer",lineHeight:1}}>×</button>}
   </div>);
 }
 

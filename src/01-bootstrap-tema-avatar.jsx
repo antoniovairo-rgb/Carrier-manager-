@@ -90,7 +90,7 @@ let TH = {
   // Oro metallico trofei (disambiguato da warning)
   goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#a34a08"/* [PALETTE A] oro e vittoria come testo stavano a 4,3:1 sulla superficie avorio #f1eee8 (erano 4,7 sull'azzurrino): ora 5,1 e 5,3 */,
   // Token semantici di dominio (fg/bg/bd)
-  winFg:"#137036", winBg:"#e7f6ec", winBd:"#b7e4c4",
+  winFg:"#166534"/* [7.968] era #137036: due verdi scuri a 11 punti di distanza, indistinguibili a occhio e contati come due tinte dal censimento. Questo e' l'inchiostro verde approvato, lo stesso a cui si aggancia `semTesto945` */, winBg:"#e7f6ec", winBd:"#b7e4c4",
   drawFg:"#a16207", drawBg:"#fbf3dd", drawBd:"#f0dca6",
   lossFg:"#b91c1c", lossBg:"#fbe9e9", lossBd:"#f3c9c9",
   growth:"#16a34a", regression:"#dc2626", energy:"#0284c7",
@@ -118,12 +118,91 @@ function _mix944(h,q){h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
   const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(v.some(isNaN))return '#'+h;
   return '#'+v.map(c=>Math.round(c+(255-c)*q).toString(16).padStart(2,'0')).join('');}
 function legCol944(col,fondo){
+  /* [G8.4] LA RIGA CHE DICEVA «solo nel tema scuro» E' STATA TOLTA, ed era il difetto.
+     Di giorno questa funzione restituiva il colore intatto: sul tema chiaro #16a34a su bianco
+     resta 3,30:1 e #10b981 resta 2,54:1, sotto la soglia di 4,5. Ora delega a semTesto945, che
+     sposta la tinta verso il fondo opposto in tutte e due le direzioni. Il rosso __CPM_NO944
+     resta e spegne tutto, come prima. */
   try{ if(!col||typeof col!=='string'||col[0]!=='#')return col;
     if(typeof window!=='undefined'&&window.__CPM_NO944)return col;/* prova del rosso */
-    if(!(typeof TH!=='undefined'&&TH&&TH.dk))return col;/* solo nel tema scuro */
-    const bg=fondo||TH.card||'#1e293b';
-    let c=col; for(let i=0;i<7&&_rap944(c,bg)<4.5;i++)c=_mix944(c,0.22);
+    /* [G8.6] IL FONDO DI RIPIEGO E' IL PIU' DIFFICILE, NON IL PIU' CHIARO.
+       Misurato: #ef4444 alzato contro TH.card (bianco) si ferma a #c93939, che sulla riga
+       alternata della classifica — fondo TH.surface2 #f1eee8 — fa 4,39:1 e resta sotto soglia.
+       Chi chiama non sa quasi mai su che fondo finira' il testo; il ripiego sicuro e' la
+       superficie tinta, perche' cio' che si legge su #f1eee8 si legge anche su bianco. */
+    return semTesto945(col,fondo||(typeof TH!=='undefined'&&TH?(TH.surface2||TH.card):null));
+  }catch(_e){ return col; }}
+/* [G8.2 — L'INCHIOSTRO SU UN COLORE DI SQUADRA NON PUO' ESSERE SEMPRE IL BIANCO.]
+   La testata dell'eroe scrive in bianco sul colore del club. Finche' il fondo era una SFUMATURA
+   che finiva in #0b1220 il difetto era invisibile al metro: la griglia mobile ESCLUDE dal conto
+   del contrasto ogni nodo il cui fondo e' un gradiente, perche' non si puo' leggere un rapporto
+   da un fondo che cambia sotto la riga. MISURATO su tutti e 252 i club del gioco
+   (tests/visual/inchiostro-club.mjs): con il bianco sempre, 82 CLUB SU 252 stanno sotto 4,5:1,
+   e il peggiore e' 1,09:1 — Torino Athletic #f5f5f5, cioe' bianco su bianco.
+   Qui l'inchiostro lo sceglie il CONTRASTO, non l'abitudine: bianco o #0f172a, quello che vince.
+   Con questa regola i club sotto soglia diventano 0 e il peggiore e' 4,83:1 (AC Rossoneri #dc2626).
+   Riusa _rap944, gia' in casa: nessuna matematica nuova. */
+/* [G8.4 — legCol944 GUARDAVA SOLO DI NOTTE.]
+   legCol944 alza una tinta finche' non si legge, ma solo sul tema SCURO: sul chiaro restituisce
+   il colore ricevuto senza toccarlo. Misurato con la griglia mobile a 412 px sul tema CHIARO,
+   Carriera · Profilo: #16a34a su #ffffff = 3,30:1 (12 nodi), #10b981 su #ffffff = 2,54:1,
+   #d97706 su #f1eee8 = 2,75:1 e #16a34a su #f1eee8 = 2,85:1 a 17 px in nero (soglia 3).
+   Sono i colori SEMANTICI (success/warning/danger) e quelli dei DATI (i giornalisti, le leghe)
+   disegnati come TESTO: il tema ha gia' i gemelli sicuri per il testo (winFg, drawFg, lossFg,
+   goldText, brandText), ma chi scrive una card nuova pesca il pieno perche' e' quello che si
+   chiama come il concetto.
+   Qui la regola diventa una sola per tutte e due le direzioni: si sposta la tinta VERSO IL
+   FONDO OPPOSTO (piu' scura su fondo chiaro, piu' chiara su fondo scuro) finche' non arriva a
+   4,5:1, conservando la tonalita'. Il verde resta verde, l'ambra resta ambra: e' il concetto che
+   si riconosce, non il valore esatto. */
+function _mixNero945(h,q){h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
+  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(v.some(isNaN))return '#'+h;
+  return '#'+v.map(c=>Math.round(c*(1-q)).toString(16).padStart(2,'0')).join('');}
+/* [G14 · 7.968 — GLI INCHIOSTRI SEMANTICI SONO UN ELENCO, NON UN CALCOLO CONTINUO. Rosso __CPM_NO968]
+   MISURATO (griglia mobile, tabella nuova «9-septies · le tinte del testo, una per una»): la Dashboard
+   rende QUATTORDICI tinte contro le cinque del provino, e l'elenco dice perche'. Non sono quattordici
+   concetti: sono TRE VERDI (#0f7334, #137036, #166534), QUATTRO AMBRE (#b45309, #92400e, #995404,
+   #a34a08), TRE BLU (#2563eb, #1e40af, #026fa7) e DUE ROSSI. Quasi nessuno di quei valori sta nel
+   sorgente — li fabbrica questa funzione: schiarisce o scurisce a passi del 16 % finche' il contrasto
+   non arriva a 4,5:1, e lo stesso verde su due fondi diversi esce con due valori diversi.
+   Il contrasto e' giusto, l'esito no: l'occhio vede due verdi dove il gioco ne intende uno.
+   Qui il risultato si AGGANCIA a un elenco di inchiostri approvati, uno per famiglia — e solo se
+   l'inchiostro approvato e' DAVVERO vicino (distanza RGB sotto la soglia) e passa lui stesso il 4,5:1
+   su quel fondo. Se non lo passa, vince il valore calcolato: il contrasto non si baratta con l'ordine. */
+const INK945=["#166534","#b91c1c","#92400e","#1e40af","#6d28d9","#155e75","#0f172a","#526279","#8e1f33"];
+const _rgb945=(h)=>{h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
+  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  if(h.length<6)return null;const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));
+  return v.some(isNaN)?null:v;};
+const _SNAP945=3*62*62;/* 62 per canale: unisce i gemelli di una famiglia, mai due famiglie diverse */
+function _agganciaInk945(c,bg){
+  try{
+    if(typeof window!=='undefined'&&window.__CPM_NO968)return c;/* prova del rosso: torna ai valori calcolati */
+    const v=_rgb945(c); if(!v)return c;
+    let best=null,bd=1e9;
+    for(const k of INK945){const w=_rgb945(k); if(!w)continue;
+      const d=(v[0]-w[0])*(v[0]-w[0])+(v[1]-w[1])*(v[1]-w[1])+(v[2]-w[2])*(v[2]-w[2]);
+      if(d<bd){bd=d;best=k;}}
+    if(best&&bd<=_SNAP945&&_rap944(best,bg)>=4.5)return best;
+    return c;
+  }catch(_e){return c;}}
+function semTesto945(col,fondo){
+  try{ if(!col||typeof col!=='string'||col[0]!=='#')return col;
+    if(typeof window!=='undefined'&&window.__CPM_NO945S)return col;/* prova del rosso */
+    const bg=fondo||(typeof TH!=='undefined'&&TH?(TH.card||'#ffffff'):'#ffffff');
+    const lf=_lum944(bg); if(lf==null)return col;
+    const versoIlNero=lf>0.18;           /* fondo chiaro -> si scurisce; fondo scuro -> si schiarisce */
+    let c=col;
+    for(let i=0;i<9&&_rap944(c,bg)<4.5;i++)c=versoIlNero?_mixNero945(c,0.16):_mix944(c,0.20);
+    if(c!==col&&versoIlNero)c=_agganciaInk945(c,bg);/* [7.968] i gemelli di una famiglia diventano uno */
     return c; }catch(_e){ return col; }}
+function inkSu945(col){
+  try{ if(!col||typeof col!=='string'||col[0]!=='#')return '#ffffff';
+    if(typeof window!=='undefined'&&window.__CPM_NO945I)return '#ffffff';/* prova del rosso */
+    return _rap944('#ffffff',col)>=_rap944('#0f172a',col)?'#ffffff':'#0f172a'; }catch(_e){ return '#ffffff'; }}
+/* il velo dell'inchiostro per il testo secondario: sullo stesso fondo, mai un grigio inventato */
+function inkVelo945(ink,q){return ink==='#ffffff'?('rgba(255,255,255,'+q+')'):('rgba(15,23,42,'+q+')');}
 const TH_LIGHT_ORIG=Object.freeze({...TH,dk:false}); // snapshot for restoring light theme · [7.178.0] +dk flag
 const TH_LIGHT=TH; // alias used for dark-mode shadowing
 const TH_DARK={...TH,dk:true,brandText:"#ee9aaa",accentText:"#a78bfa",faintDk_nota:"[G1.7 grafica] faint scuro #64748b -> #8a97ab: era 3,0-3,8:1 sui fondi scuri (376 nodi: Creazione 259, Club 47, Profilo 36, Nazionale 17); ora 4,9-6,0:1 (4,5 su #21304a)",bg:"#0f172a",bgGrad:"linear-gradient(160deg,#0f172a 0%,#0c1428 100%)",card:"#1e293b",cardBorder:"#334155",shadow:"0 2px 12px rgba(0,0,0,0.4)",text:"#f1f5f9",muted:"#94a3b8",faint:"#8a97ab",navBg:"rgba(15,23,42,0.97)",
@@ -152,6 +231,14 @@ const thPastel=(light,darkTint)=>TH.dk?darkTint:light;
 const FS={caption:11,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 11px)
 const FW={regular:400,medium:500,semibold:600,bold:700,black:800};                                          // pesi
 const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32};                                                       // 4pt grid
+/* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
+   rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
+   cioe' da una proporzione, non da una scelta. Qui la proporzione resta (l'anello scala con la sua
+   taglia) ma il risultato si aggancia al gradino piu' vicino della scala FS: la tipografia del gioco
+   resta un elenco finito anche dove il numero lo calcola una formula. */
+const _FS_SCALA=[11,12,13,15,17,20,24,32,44,64];
+const fsScala=(x)=>{const v=+x||0;let b=_FS_SCALA[0],d=1e9;
+  for(const k of _FS_SCALA){const q=Math.abs(k-v);if(q<d){d=q;b=k;}}return b;};
 const RAD={xs:6,sm:8,md:12,lg:16,xl:20,pill:999};                                                            // raggi
 const MO={fast:120,base:200,slow:320,cine:550,easeStd:"cubic-bezier(.2,0,0,1)",easeOut:"cubic-bezier(0,0,.2,1)",easeIn:"cubic-bezier(.4,0,1,1)"}; // motion
 
@@ -195,9 +282,94 @@ function AvatarSVG({id=0, size=60, border=false, style={}, seed, avStyle, avOpts
     : { style:'avataaars', skinColor:[String(p.skin).replace('#','')], hairColor:[String(p.hair).replace('#','')], bald: p.style==='bald' };
   const _html = _dbAv(_seed, Math.round(size), _opts);
   const wrap = {width:size,height:size,borderRadius:"50%",overflow:"hidden",display:"block",flexShrink:0,background:"#e8eef7",border:border?"2px solid "+TH.primary:"none",...style};
-  if(_html) return <div style={wrap} dangerouslySetInnerHTML={{__html:_html}}/>;
+  /* [7.961] un VISO si deve poter contare da una sonda: la 7.961 toglie le facce dalla sala stampa e
+     senza un attributo il guardiano dovrebbe indovinarle dal bordo tondo. Additivo, zero effetto di resa. */
+  if(_html) return <div data-cpm-viso="1" style={wrap} dangerouslySetInnerHTML={{__html:_html}}/>;
   // Fallback (bundle DiceBear non caricato): disco con iniziale — mai in produzione (script locale bloccante).
-  return <div style={{...wrap,display:"flex",alignItems:"center",justifyContent:"center",color:TH.primary,fontWeight:800,fontSize:Math.round(size*0.42)}}>{(seed!=null?String(seed):(p&&p.label)||"E").slice(0,1).toUpperCase()}</div>;
+  return <div data-cpm-viso="1" style={{...wrap,display:"flex",alignItems:"center",justifyContent:"center",color:TH.primary,fontWeight:800,fontSize:Math.round(size*0.42)}}>{(seed!=null?String(seed):(p&&p.label)||"E").slice(0,1).toUpperCase()}</div>;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════════
+   LA FIGURINA — LO SPAZIO DEL VOLTO E' RETTANGOLARE E VERTICALE  [7.966 · direttiva PO 22/09]
+   «Inizia a predisporre lo spazio dei volti rettangolari in verticale, sto predisponendo con il team
+   codex delle figurine stile panini con i volti dei giocatori, mister, avversari, intervistatori,
+   giornalisti, ecc.»
+
+   QUESTA VERSIONE NON PORTA NESSUN DISEGNO: porta lo SPAZIO, e lo porta con un contratto scritto, in
+   modo che l'arte possa entrare senza toccare una sola schermata. Tre pezzi:
+
+   1) `FIG` — il formato, in un posto solo. Rapporto 5:7, quello della figurina da album (50x70 mm).
+      Cambiarlo e' una riga: tutte le figurine del gioco seguono.
+   2) `voltoUrl(tipo, chiave)` — da CHI a DOVE. Prima cerca nel manifesto `window.__CPM_VOLTI`
+      (un oggetto `{ "giocatore/rossi-mario": "assets/volti/..." }` che il team codex puo' pubblicare
+      senza toccare il codice), poi ripiega sulla convenzione `assets/volti/<tipo>/<chiave>.webp`.
+      Finche' il file non c'e', l'immagine non si chiede nemmeno: si vede il ripiego.
+   3) `Figurina` — il riquadro. Tiene il rapporto qualunque sia la larghezza, ritaglia l'immagine con
+      `object-fit:cover` (l'arte non si deforma mai), e finche' l'arte non c'e' mostra il volto tondo
+      di oggi dentro la cornice, su un fondo tinto col colore del club. Il gioco quindi NON cambia
+      aspetto oggi: cambia il CONTENITORE, che e' cio' che il PO ha chiesto di predisporre.
+
+   CONTRATTO PER CHI DISEGNA (vedi anche docs/FIGURINE-VOLTI.md):
+   · rapporto 5:7 verticale · consegnare a 320x448 px (2x di 160x224) e 640x896 (4x) · webp o png
+   · il volto sta nel terzo superiore, occhi a ~38% dall'alto, spalle tagliate dal bordo basso
+   · margine di sicurezza 6% per lato: la cornice arrotonda gli angoli e puo' coprire il bordo
+   · fondo pieno o sfumato, MAI trasparente (la cornice ci mette sopra il suo velo e il nome)
+   · nomi file: `<tipo>/<chiave>.webp` con tipo in {giocatore,mister,avversario,giornalista,arbitro,
+     procuratore,dirigente} e chiave in minuscolo, senza accenti, spazi come trattini. */
+const FIG={w:5,h:7,r:RAD.xs,minW:28};/* il rapporto della figurina da album, in un posto solo */
+const _slugVolto=(x)=>String(x==null?"":x).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+  .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,48);
+function voltoUrl(tipo,chiave){
+  try{
+    const k=(tipo||"giocatore")+"/"+_slugVolto(chiave);
+    const M=(typeof window!=='undefined'&&window.__CPM_VOLTI)||null;
+    if(M){const u=M[k]||M[_slugVolto(chiave)];return u||null;}
+    return null;/* senza manifesto non si chiede niente alla rete: il ripiego e' il volto di oggi */
+  }catch(_e){return null;}
+}
+/* `Figurina` — larghezza dichiarata, altezza derivata dal rapporto. `nome` accende la fascia in basso,
+   come sull'album. `ritratto` permette di passare un contenuto proprio al posto del ripiego. */
+/* [7.973 · direttive PO 22/09: «per il momento togli tutte le faccine della libreria SVG che eliminero'»
+   e «lo spazio rapporto 5:7 deve essere bianco neutro»]
+   LO SPAZIO E' VUOTO, E DEVE SEMBRARE VUOTO. Il ripiego con la faccia tonda dentro la cornice e il fondo
+   col colore del club sono stati tolti: il riquadro e' ora una superficie BIANCA NEUTRA col suo bordo,
+   che e' esattamente cio' che il PO ha chiesto — lo spazio che aspetta la figurina, non un segnaposto che
+   finge di essere un ritratto. Quando arriva l'arte (manifesto `window.__CPM_VOLTI`) l'immagine riempie il
+   riquadro e il bianco sparisce; finche' non arriva, si vede lo spazio. */
+function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,...rest}){
+  const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
+  const url=voltoUrl(tipo,chiave!=null?chiave:nome);
+  const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il riquadro */
+  return(
+    <div data-cpm-figurina={tipo} title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
+      borderRadius:FIG.r,overflow:"hidden",background:"#ffffff",
+      border:"1px solid rgba(15,23,42,0.16)",boxShadow:"0 1px 3px rgba(15,23,42,0.12)",...style}} {...rest}>
+      {/* [7.974 — la figurina d'esempio del PO cambia due regole del riquadro]
+          (1) `contain`, non `cover`: l'arte porta GIA' la sua cornice, il marchio KORWARD in alto e la
+              fascia col nome in basso. Ritagliare anche solo il 3 % dell'altezza taglierebbe proprio
+              quella fascia — «ATTACCANTE · 24 ANNI» sta a filo del bordo inferiore. Col fondo bianco del
+              riquadro, un eventuale margine di `contain` e' invisibile.
+          (2) [7.978.0 — CORRETTO dall'handoff del team character-lab, 22/09 sera] la fascia col nome del
+              COMPONENTE si disegna SEMPRE, arte o no. Nel 7.974 l'avevo soppressa con l'arte per non fare
+              «un secondo nome sopra il primo» — ma quel primo nome non esisteva: l'handoff dichiara che
+              nel file d'esempio «Marco Rinaldi e il suo ruolo sono soltanto testo dimostrativo», cioe'
+              avevo preso un MOCK-UP per una specifica. La regola vera: nome, cognome e ruolo li fornisce
+              IL GIOCO dai dati di carriera, e il catalogo dei volti non conserva nomi ne' ruoli. Chi
+              disegna lascia l'ultima fascia leggibile e libera. `contain` resta: serve a non tagliare la
+              cornice. Rischio oggi nullo — in produzione non e' montata nessuna arte. */}
+      {url
+        ?<img src={url} alt={nome||""} width={w} height={h} loading="lazy" decoding="async"
+           style={{width:"100%",height:"100%",objectFit:"contain",display:"block",background:"#ffffff"}}/>
+        :(ritratto!=null?<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>{ritratto}</div>:null)}
+      {conNome&&(
+        <div style={{position:"absolute",left:0,right:0,bottom:0,padding:"3px 5px",
+          background:"linear-gradient(0deg,rgba(255,255,255,0.96),rgba(255,255,255,0.78) 62%,transparent)"}}>
+          <div style={{fontSize:FS.caption,fontWeight:800,color:"#1e293b",lineHeight:1.15,
+            overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
+          {ruolo?<div style={{fontSize:FS.caption,color:"#526279",lineHeight:1.15,
+            overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ruolo}</div>:null}
+        </div>)}
+    </div>);
 }
 
 // NPC profiles: mister, giornalisti
@@ -285,7 +457,7 @@ function npcCoachAvOpts(coachName){
       facialHairColor:[_hc],eyeShadowColor:["transparent"],
       mouth:["smile","smirk"],glassesProbability:20,glassesColor:["2d3748"]}};
 }
-function NpcFaceCoach({coachName,size}){return <AvatarSVG seed={"coach-"+(coachName||"mister")} size={size||52} avStyle="micah" avOpts={npcCoachAvOpts(coachName||"mister")}/>;}
+function NpcFaceCoach({coachName,size}){return <Figurina tipo="mister" chiave={coachName||"mister"} larg={Math.round((size||52)*5/7)}/>;}
 
 /* ========================================
    PLAYER 3D VIEWER
@@ -365,7 +537,7 @@ function AvatarPhoto({id=0,size=60,border=false,style={}}){
   //   l'immagine manca. renderHeroPhoto resta definita ma NON è più usata (nessun contesto WebGL creato).
   const n=AVATARS.length,_id=((((id|0)%n)+n)%n);
   const [err,setErr]=useState(false);
-  if(err)return <AvatarSVG id={id} size={size} border={border} style={style}/>;
+  if(err)return <Figurina tipo="giocatore" chiave={"avatar-"+_id} larg={Math.round(size*5/7)} style={style}/>;/* [7.973] il ripiego del ritratto non e' piu' una faccina della libreria: e' lo spazio bianco della figurina */
   return <img src={"./assets/avatar-"+_id+".png"} width={size} height={size} alt="" onError={()=>setErr(true)} style={{width:size,height:size,borderRadius:"50%",objectFit:"cover",objectPosition:"center center",background:"#e6ecf5",display:"block",flexShrink:0,...(border?{border:"2px solid "+TH.primary,boxSizing:"border-box"}:{}),...style}}/>;
 }
 function Player3DViewer({avatarData,clubColor="#2563eb",width="100%",height="280px",animate=true}){
@@ -506,7 +678,7 @@ function Player3DViewer({avatarData,clubColor="#2563eb",width="100%",height="280
     };
   },[avatarData,clubColor,animate]);
 
-  return <div ref={containerRef} style={{width,height,overflow:"hidden",borderRadius:14,cursor:"grab"}}/>;
+  return <div ref={containerRef} style={{width,height,overflow:"hidden",borderRadius:RAD.md,cursor:"grab"}}/>;
 }
 
 /* ========================================

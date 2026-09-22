@@ -36,6 +36,17 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
    oppure revocata col perché). La riga si scrive quando la versione **parte** (dichiarando «sul ramo,
    rituali in corsa») e si chiude quando `main` è allineato. Una versione spedita senza riga di roadmap è
    un rilascio non dichiarato.
+   📌 **DIRETTIVA PO 22/09: LA CATENA SI SCEGLIE IN BASE A COSA SI E' TOCCATO.** «Ma se non cambia il motore
+   di gioco ed impatta la partita perche' fare il quality gate completo??» — domanda giusta, e il conto le
+   da' ragione: il gate forza 191 scene e `partita-vera` gioca due partite, venticinque minuti pensati per
+   il MOTORE, che su una modifica di soli pixel non ha mai trovato niente.
+   - **solo grafica** (CSS, layout, fisarmoniche, raggi, tipografia): `griglia-mobile` + `design-system` +
+     `career-critical` + `test:logic` + `save-compat`.
+   - **motore, partita o carriera**: catena completa, com'e' scritta qui sotto.
+   Nel dubbio si sceglie la completa. E il guardiano giusto paga: la prima stesura del 7.965 e' stata
+   bocciata proprio da `design-system` («164 raggi scritti a mano che HANNO GIA' un token»), che nella
+   catena grafica c'e'.
+
    ⚠️ **IL GATE NON E' LA CI.** Il workflow `validate-situations.yml` esegue **sette** passi in due job, e
    `npm run validate-situations` e' **uno solo**. Verificare quello e dichiarare «verde» ha prodotto nove
    release consecutive promosse su `main` con la CI rossa, scoperte solo perche' il PO ha mostrato la

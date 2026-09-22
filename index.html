@@ -1,17 +1,34 @@
 <!doctype html>
-<html lang="it">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noindex">
-    <title>Korward Elite — Hyper Casual POC</title>
-    <script>
-      (function () {
-        var params = new URLSearchParams(location.search);
-        if (!params.has('hyperCharacter')) params.set('hyperCharacter', 'full');
-        location.replace('./CARRIER-MANAGER-AV.html?' + params.toString() + location.hash);
-      }());
-    </script>
-  </head>
-  <body></body>
-</html>
+<html lang="it"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="refresh" content="0; url=CARRIER-MANAGER-AV.html">
+<link rel="canonical" href="CARRIER-MANAGER-AV.html">
+<title>Korward Elite</title>
+<!-- [21/09 · «si e' rotta la produzione», foto del PO: 404 alla radice del sito]
+     CAUSA MISURATA: il sito ha DUE sorgenti di pubblicazione attive insieme — il workflow
+     `deploy-pages.yml` (che costruisce `_site` e ci mette un index.html) e il deploy LEGACY
+     `pages-build-deployment`, che pubblica il branch `main` COSI' COM'E'. In `main` un
+     index.html non c'e' mai stato: quando a pubblicare per ultimo e' il legacy, la radice
+     risponde 404 e il gioco sembra sparito. Il commento in cima a deploy-pages.yml diceva
+     «sostituisce il deploy legacy» — ma il legacy non era mai stato spento.
+     Questo file e' la rete: con QUALSIASI delle due sorgenti la radice porta al gioco.
+     NON e' la correzione vera. Quella e' una sola, e la puo' fare solo il proprietario del
+     repository: Settings > Pages > Build and deployment > Source = «GitHub Actions».
+     Finche' il legacy resta acceso pubblica anche tutto il resto del branch — CLAUDE.md,
+     docs/, tests/, .github/ — che il workflow tiene apposta fuori dal sito. -->
+<style>
+  :root{color-scheme:light}
+  body{margin:0;min-height:100dvh;display:flex;align-items:center;justify-content:center;
+    background:#f5f3ef;color:#0f172a;font:400 16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    padding:24px;text-align:center}
+  a{display:inline-block;margin-top:14px;padding:11px 18px;border-radius:6px;background:#8e1f33;
+    color:#fff;text-decoration:none;font-weight:700;font-size:14px}
+  p{font-size:14px;color:#475569;margin:0}
+</style>
+</head><body>
+<div>
+  <p>Korward Elite si sta aprendo…</p>
+  <a href="CARRIER-MANAGER-AV.html">Apri il gioco</a>
+</div>
+</body></html>

@@ -51,6 +51,7 @@
     "intervista": "node intervista-2d.mjs",
     "presentazione": "node presentazione-2d.mjs",
     "parametri": "node parametri-dichiarati.mjs",
+    "tavolozza": "node tavolozza.mjs",
     "terza-volta": "node terza-volta.mjs",
     "contrasto-scuro": "node contrasto-scuro.mjs",
     "tabellino-banda": "node tabellino-banda.mjs",
@@ -168,7 +169,12 @@
     "coinvolgimento": "node coinvolgimento-reparti.mjs",
     "catene": "node catene-possesso.mjs",
     "memoria": "node memoria-927.mjs",
-    "memoria:rosso": "node memoria-927.mjs --rosso"
+    "memoria:rosso": "node memoria-927.mjs --rosso",
+    "pallino-sostituito": "node pallino-sostituito.mjs",
+    "completamento": "node completamento.mjs",
+    "armo-scelte": "node armo-scelte.mjs",
+    "varieta-scene": "node varieta-scene.mjs",
+    "rndm-conteggio": "node rndm-conteggio.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

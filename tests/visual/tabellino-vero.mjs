@@ -15,7 +15,7 @@ const N=+(process.env.CPM_PARTITE||30),MIN=92;
    il live match a `_SUB898=11` con OGNI battito che decide. Un banco a 1 decisione al minuto misurava una
    partita che nessuno gioca — e le sue voci (passaggi 10,1) non erano quelle del telefono del PO. Il
    default ora e' la cadenza VERA della produzione; per rivedere i vecchi numeri, CPM_DEC=1. */
-const DEC=Math.max(1,Math.round(+(process.env.CPM_DEC||11)));
+const DEC=Math.max(1,Math.round(+(process.env.CPM_DEC||22)));/* [21/09] il default diceva 11 mentre la produzione gira a 22 dal 7.943, e il commento qui sopra dichiarava gia' «la cadenza VERA della produzione»: chi lanciava il banco senza variabili misurava una partita che non esiste piu' (9 voci fuori banda invece di 2). Stessa famiglia del test di logica riparato nel 7.950. */
 const VUOTA=()=>({gol:0,tiri:0,inPorta:0,legno:0,fuori:0,murati:0,xg:0,passaggi:0,passOk:0,cross:0,corner:0,falli:0,rimesse:0,rinvii:0,rigori:0,parate:0,spazzate:0,intercetti:0,contrasti:0,conduzioni:0,pallePerse:0,possesso:0,ammoniti:0,espulsi:0,fuorigioco:0,assist:0});
 /* expected goal derivati dalla zona e dalla pressione, come li deriveremmo a schermo */
 const XG=(e)=>{const z=e.zona||'fuori';const base=z==='area'?0.14:z==='areaPiccola'?0.34:z==='limite'?0.06:0.03;const pr=typeof e.press==='number'?e.press:4;const k=pr<2?1.35:pr<4?1.0:0.72;return Math.min(0.9,base*k);};

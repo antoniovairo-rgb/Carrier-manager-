@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="it"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Korward Elite</title>
+<!-- [21/09 · «si è rotta la produzione», foto del PO: la pagina 404 di GitHub al posto del gioco]
+     GitHub Pages serve QUESTA pagina per ogni indirizzo che non trova: un vecchio collegamento
+     salvato, un maiuscolo sbagliato nel nome del repository, un percorso rimasto in una
+     scorciatoia della schermata iniziale. Senza questo file il giocatore finisce sulla pagina
+     bianca di GitHub e crede che il gioco non esista più. Ora finisce sul gioco.
+     Non nasconde un guasto del deploy: se il deploy fosse rotto, anche questo rimando
+     porterebbe a una pagina che non c'è — e lo dice, invece di girare a vuoto. -->
+<style>
+  :root{color-scheme:light}
+  body{margin:0;min-height:100dvh;display:flex;align-items:center;justify-content:center;
+    background:#f5f3ef;color:#0f172a;font:400 16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    padding:24px;text-align:center}
+  .b{max-width:22rem}
+  h1{font-size:19px;font-weight:800;letter-spacing:.02em;margin:0 0 8px}
+  p{font-size:14px;color:#475569;margin:0 0 18px}
+  a{display:inline-block;padding:11px 18px;border-radius:6px;background:#8e1f33;color:#fff;
+    text-decoration:none;font-weight:700;font-size:14px}
+  small{display:block;margin-top:14px;font-size:11px;color:#64748b}
+</style>
+</head><body>
+<div class="b">
+  <h1>Questo indirizzo non esiste</h1>
+  <p>Il gioco sta qui accanto. Se ci arrivi da un collegamento salvato, aggiornalo con questo.</p>
+  <a id="v" href="./">Apri Korward Elite</a>
+  <small id="d"></small>
+</div>
+<script>
+  /* il gioco sta alla radice del sito: dalla pagina d'errore si risale al primo segmento del percorso
+     (es. /Carrier-manager-/qualcosa → /Carrier-manager-/). Nessun rimando automatico: un salto
+     automatico su una pagina d'errore nasconde al giocatore DOVE stava sbagliando, e se anche la
+     radice fosse rotta lo manderebbe in un anello. */
+  try{
+    var p=location.pathname.split('/').filter(Boolean);
+    var base=(location.hostname.indexOf('github.io')>=0&&p.length)?('/'+p[0]+'/'):'/';
+    document.getElementById('v').setAttribute('href',base);
+    document.getElementById('d').textContent=location.host+base;
+  }catch(e){}
+</script>
+</body></html>

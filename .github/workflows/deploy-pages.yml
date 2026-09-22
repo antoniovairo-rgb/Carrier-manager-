@@ -50,11 +50,21 @@ jobs:
           # raggiungibile.
           mkdir -p _site
           cp CARRIER-MANAGER-AV.html privacy.html sw.js manifest.webmanifest _site/
+          # [21/09] rete per gli indirizzi sbagliati: un collegamento vecchio non deve piu' finire
+          # sulla pagina 404 di GitHub, che fa credere al giocatore che il gioco non esista piu'.
+          cp 404.html _site/
           cp icon-192.png icon-512.png icon-maskable-512.png _site/
           cp -r assets _site/
           # index.html = copia del file di gioco → l'URL nudo della Pages funziona
           cp _site/CARRIER-MANAGER-AV.html _site/index.html
           touch _site/.nojekyll
+          # [21/09] il deploy non puo' dirsi riuscito senza il file che serve la radice: se un domani
+          # la copia cambia e index.html non c'e', il passo si ferma QUI invece di pubblicare un sito
+          # che risponde 404 alla radice — il difetto che il PO ha fotografato il 21/09.
+          for f in index.html CARRIER-MANAGER-AV.html 404.html manifest.webmanifest sw.js; do
+            [ -s "_site/$f" ] || { echo "::error::manca _site/$f: il sito risponderebbe 404"; exit 1; }
+          done
+          echo "radice servita da index.html ($(wc -c < _site/index.html) byte)"
 
       - name: Guardia — nessun materiale interno nel sito
         run: |

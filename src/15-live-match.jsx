@@ -706,8 +706,22 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
               g.fillStyle="#fde68a";g.textBaseline="middle";g.fillText(_u.nome,X,yy+hh/2);g.textBaseline="alphabetic";}
           }catch(_e){}}
       }
-      /* l'eroe: cerchio bianco, nome e numero veri */
-      if(M.e){
+      /* l'eroe: cerchio bianco, nome e numero veri.
+         [7.953 · rilievo PO dal suo telefono: «se sono sostituito il pallino 2D deve uscire»]
+         Il motore lo diceva gia': `stato().eroe.attivo` e' false da quando `chiedi.eroe(false)` lo
+         mette fuori. Era la VISTA a non leggerlo, e disegnava il pallino comunque — fotografato al 78'.
+         Il testimone `__CPM_E2D` e' inerte (solo contatori) e serve alla sonda `pallino-sostituito`. */
+      const _eroeInCampo953=!(st.eroe&&st.eroe.attivo===false)||(typeof window!=='undefined'&&!!window.__CPM_NO953);
+      try{if(typeof window!=='undefined'){const _t953=window.__CPM_E2D||(window.__CPM_E2D={fotogrammi:0,disegnato:0,attivo:null,fuori:0,violazioni:0});
+        const _fuori953=!!(st.eroe&&st.eroe.attivo===false);const _dis953=!!(M.e&&_eroeInCampo953);
+        _t953.fotogrammi++;if(_dis953)_t953.disegnato++;if(_fuori953)_t953.fuori++;
+        /* LA GRANDEZZA CHE DESCRIVE IL DIFETTO DEL PO: fotogrammi in cui il gioco SA che l'eroe e' fuori
+           e lo disegna lo stesso. Il conteggio grezzo dei fotogrammi disegnati non basta — porta dentro
+           anche il tick in cui il motore non ha ancora ricevuto `chiedi.eroe(false)`, che e' un ritardo
+           a monte della vista e si misura a parte (`fuori` contro `fotogrammi`). */
+        if(_fuori953&&_dis953)_t953.violazioni++;
+        _t953.attivo=st.eroe?(st.eroe.attivo!==false):null;}}catch(_e){}
+      if(M.e&&_eroeInCampo953){
         const casaE=eroeLato!=='away';
         if(padrone===21||(st.poss&&st.poss.eroe)){g.beginPath();g.arc(CX(M.e),CY(M.e),r*1.22+4.2,0,Math.PI*2);
           g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();}
@@ -752,7 +766,19 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
    ventidue pallini un centimetro piu' in basso. Costruito sui token del design system (FS/FW/SP/RAD), che e'
    il modo in cui C4 entrera' nelle altre cinquanta superfici. Rosso __CPM_NO918: torna il campo nudo. */
 const _COL918={vetro:"rgba(24,35,56,0.74)"/* [7.922 collaudo PO: il fondo delle statistiche e' troppo scuro, deve essere semi trasparente] da 0,90 a 0,74: il campo si vede DAVVERO dietro il vetro, che era il senso di «partita 2D nello sfondo» *//* [7.919 collaudo PO] «renderei un po' piu' chiari gli sfondi delle statistiche»: era 4,10,20 — praticamente nero sul prato scuro */,vetro2:"rgba(28,40,62,0.78)",bordo:"rgba(148,163,184,0.22)",
-  testo:"#e8eef7",fioco:"#93a4bd",riga:"rgba(148,163,184,0.12)"};
+  testo:"#e8eef7",fioco:"#cbd5e1"/* [7.970 — L'HUD DI PARTITA ERA L'UNICA SCHERMATA DEL GIOCO CON NODI
+     ILLEGGIBILI. Rosso __CPM_NO970] MISURATO alla prima corsa del metro riparato (A16): 8 nodi su 24 sotto
+     la soglia di contrasto, contro ZERO su tutte e tredici le schermate di carriera. Il fioco #93a4bd sul
+     vetro composito (#545c6c) faceva 2,65:1 su «possesso», «Statistiche» e le altre etichette: #cbd5e1 fa
+     4,53:1 e resta piu' spento del testo pieno (#e8eef7, 5,76:1), quindi la gerarchia non si perde.
+     ⚠️ NON si tocca l'opacita' del vetro (0,74): e' una decisione del PO del 7.922 — «il fondo delle
+     statistiche e' troppo scuro, deve essere semi trasparente». Si alza l'inchiostro, non si abbassa il campo. */,riga:"rgba(148,163,184,0.12)"};
+/* [7.970] LA SIGLA DEL CLUB SUL VETRO: il colore sociale resta il colore sociale, ma sul vetro scuro va
+   ALZATO finche' non si legge — misurato, il granata #7a1f2b faceva 1,52:1, il peggiore di tutto il gioco.
+   `semTesto945` conserva la tonalita' e si ferma appena passa il 4,5:1: il club si riconosce ancora.
+   Rosso __CPM_NO970: torna il colore sociale nudo. */
+const _sigla970=(c)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO970)return c;
+  return (typeof semTesto945==='function')?semTesto945(c,"#545c6c"):c;}catch(_e){return c;}};
 const _voto918=(v)=>v>=7.5?"#22c55e":v>=6.9?"#84cc16":v>=6.2?"#cbd5e1":v>=5.6?"#f59e0b":"#ef4444";
 const _num918=(v)=>(v==null||isNaN(v))?"0":String(v);
 const _dec918=(v)=>(Math.round((+v||0)*100)/100).toFixed(2).replace(".",",");
@@ -790,8 +816,8 @@ function Pagella918({r,u,colTeam}){
         overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{u.nome||("n. "+u.num)}</span>
       {r.gol>0&&<span style={{fontSize:FS.caption}}>{"⚽".repeat(Math.min(3,r.gol))}</span>}
       {r.assist>0&&<span style={{fontSize:FS.caption,color:"#7dd3fc",fontWeight:FW.bold}}>A{r.assist>1?r.assist:""}</span>}
-      {r.amm>0&&<span style={{width:5,height:8,borderRadius:1,background:"#facc15"}}/>}
-      {r.esp>0&&<span style={{width:5,height:8,borderRadius:1,background:"#ef4444"}}/>}
+      {r.amm>0&&<span style={{width:5,height:8,borderRadius:3,background:"#facc15"}}/>}
+      {r.esp>0&&<span style={{width:5,height:8,borderRadius:3,background:"#ef4444"}}/>}
       <span style={{minWidth:26,textAlign:"center",fontSize:FS.caption,fontWeight:FW.black,color:"#07101d",
         background:_voto918(r.voto),borderRadius:RAD.xs,padding:"1px 3px",fontVariantNumeric:"tabular-nums"}}>{r.voto.toFixed(1).replace(".",",")}</span>
     </div>);
@@ -846,7 +872,7 @@ function FestaFine942({dati,onChiudi}){
       display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg,cursor:"pointer",overflow:"hidden",
       animation:"cpmPop919Velo .2s ease-out"}}>
       {cor.map((k,i)=>(<span key={"c"+i} style={{position:"absolute",left:k.x+"%",top:"-6%",width:k.w,height:k.w*1.6,
-        background:k.c,borderRadius:1,animation:"cpmFesta942 "+k.d+"s linear infinite",animationDelay:k.r+"s",pointerEvents:"none"}}/>))}
+        background:k.c,borderRadius:3,animation:"cpmFesta942 "+k.d+"s linear infinite",animationDelay:k.r+"s",pointerEvents:"none"}}/>))}
       <div style={{width:"100%",maxWidth:380,borderRadius:RAD.lg,overflow:"hidden",background:_FESTA942.card,
         border:"1px solid "+_FESTA942.bordo,boxShadow:"0 24px 64px rgba(0,0,0,0.62)",position:"relative",
         animation:"cpmPop919 .3s cubic-bezier(.2,0,0,1)"}}>
@@ -860,14 +886,14 @@ function FestaFine942({dati,onChiudi}){
           {(dati.facce||[]).map((f,i)=>(
             <div key={"f"+i} style={{borderRadius:"50%",padding:2,background:i===0?_FESTA942.oro:"rgba(148,163,184,0.34)",lineHeight:0,
               transform:"translateY("+(Math.sin((n+i*3)/2.4)*2.6).toFixed(1)+"px)"}}>
-              {(()=>{try{return f.eroe?<AvatarSVG id={f.id||0} size={i===0?58:44}/>:<AvatarSVG seed={f.nome} size={i===0?58:44} avStyle="micah"/>;}catch(_e){return null;}})()}
+              {(()=>{try{return f.eroe?<Figurina tipo="giocatore" chiave={f.nome||"eroe"} larg={Math.round((i===0?58:44)*5/7)}/>:<Figurina tipo="giocatore" chiave={f.nome} larg={Math.round((i===0?58:44)*5/7)}/>;}catch(_e){return null;}})()}
             </div>))}
         </div>
         <div style={{padding:SP.md+"px "+SP.lg+"px",borderTop:"1px solid rgba(148,163,184,0.16)",
           display:"flex",justifyContent:"space-around",textAlign:"center"}}>
           {(dati.voci||[]).map((v,i)=>(
             <div key={"v"+i}>
-              <div style={{fontSize:20,fontWeight:FW.black,color:v.oro?_FESTA942.oro:_FESTA942.testo,fontVariantNumeric:"tabular-nums"}}>{v.n}</div>
+              <div style={{fontSize:FS.title,fontWeight:FW.black,color:v.oro?_FESTA942.oro:_FESTA942.testo,fontVariantNumeric:"tabular-nums"}}>{v.n}</div>
               <div style={{fontSize:FS.caption,color:_FESTA942.fioco,textTransform:"uppercase",letterSpacing:.6}}>{v.et}</div>
             </div>))}
         </div>
@@ -875,13 +901,26 @@ function FestaFine942({dati,onChiudi}){
       </div>
     </div>);
 }
+/* [7.956 · rilievo PO «il freeze dei pulsanti azioni post scegli ridicolo, troppo lungo»]
+   QUANTO RESTANO SPENTI I BOTTONI DELLA SCELTA. La storia di questo numero, per intero, perche' e'
+   la seconda volta che si muove e la direttiva e' cambiata:
+     · nasce a 450 ms per un difetto vero del PO — il dito che ha appena premuto «Scegli» o una freccia
+       del D-pad RICADE sul primo bottone e sceglie da solo (tocco di rimbalzo);
+     · la 7.926 lo porta a 1.200 ms su richiesta del PO («un secondo o due… e' il tempo di leggere»);
+     · oggi il PO lo boccia dal suo telefono: «ridicolo, troppo lungo». LA NUOVA DIRETTIVA SOSTITUISCE
+       LA PRECEDENTE, e con essa cade anche la giustificazione del «tempo di leggere»: il tempo di
+       leggere lo da' la scena, non un bottone spento.
+   Resta SOLO la protezione dal rimbalzo del tocco, che e' un fatto fisico e non un'opinione: 250 ms.
+   Rosso `__CPM_NO956` = il comportamento di ieri (1.200 ms). */
+const _ARMO956=(typeof window!=='undefined'&&window.__CPM_NO956)?1200:250;
+
 function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
   const [armato,setArmato]=React.useState(false);
   const chiave=(com&&com.t)+"|"+String((com&&com.text)||"").slice(0,24);
   React.useEffect(()=>{setArmato(false);
     /* [difetto del PO] il dito che ha appena premuto una freccia del D-pad ricade sul primo bottone:
        le opzioni nascono disarmate e si armano dopo 450 ms, il tempo di staccare il pollice. */
-    const h=setTimeout(()=>setArmato(true),1200);/* [7.926] da 450 ms a 1,2 s: il PO ha chiesto «un secondo o due» prima che le scelte diventino cliccabili, ed e lo stesso tempo della scheda dell azione */return()=>clearTimeout(h);},[chiave]);
+    const h=setTimeout(()=>setArmato(true),_ARMO956);/* [7.956] stessa costante della scheda d'azione: i due ritardi devono restare uguali, o il gioco risponde in due tempi diversi alla stessa domanda */return()=>clearTimeout(h);},[chiave]);
   if(!com||!com.sc||com.sci!=null)return null;
   const F=_FAM919[com.fam]||_FAM919.EROE;
   const eroe=com.fam==="EROE"||!com.fam;
@@ -889,11 +928,11 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
   const faccia=(()=>{
     try{
       if(com.fam==="MISTER")return <NpcFaceCoach coachName={coachName||"Mister"} size={58}/>;
-      if(com.fam==="COMPAGNI"&&com.chi)return <AvatarSVG seed={com.chi} size={58} avStyle="micah"/>;
-      if(com.fam==="AVVERSARI")return <AvatarSVG seed={"avv-"+(avvNome||"rivale")} size={58} avStyle="micah"/>;
-      if(com.fam==="ARBITRO")return <AvatarSVG seed={"arbitro-"+(avvNome||"gara")} size={58} avStyle="micah"/>;
+      if(com.fam==="COMPAGNI"&&com.chi)return <Figurina tipo="giocatore" chiave={com.chi} larg={41}/>;
+      if(com.fam==="AVVERSARI")return <Figurina tipo="avversario" chiave={avvNome||"rivale"} larg={41}/>;
+      if(com.fam==="ARBITRO")return <Figurina tipo="arbitro" chiave={"arbitro-"+(avvNome||"gara")} larg={41}/>;
     }catch(_e){}
-    return <AvatarSVG id={(player&&player.avatarId)||0} size={58}/>;
+    return <Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={41}/>;
   })();
   return(
     <div data-cpm="pop919" style={{position:"fixed",inset:0,zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",
@@ -1009,12 +1048,12 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
       <div style={{margin:SP.sm,padding:"7px "+SP.md+"px",borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,pointerEvents:"auto"}}>
         <div style={{display:"flex",alignItems:"center",gap:SP.sm}}>
-          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:colSx,letterSpacing:.6}}>{siglaSx}</span>
+          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:_sigla970(colSx),letterSpacing:.6}}>{siglaSx}</span>
           <div style={{flex:1,display:"flex",height:7,borderRadius:RAD.pill,overflow:"hidden",background:"rgba(148,163,184,0.16)"}}>
             <div style={{width:(A.possesso||50)+"%",background:colSx,transition:"width .5s ease"}}/>
             <div style={{width:(100-(A.possesso||50))+"%",background:colDx,transition:"width .5s ease"}}/>
           </div>
-          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:colDx,letterSpacing:.6}}>{siglaDx}</span>
+          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:_sigla970(colDx),letterSpacing:.6}}>{siglaDx}</span>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",marginTop:5,gap:SP.xs}}>
           {[["possesso",(A.possesso||50)+"%",(100-(A.possesso||50))+"%"],
@@ -1421,9 +1460,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      setter si annota da QUALE RIGA parte ogni aggiornamento e quanto sposta l'indice sorvegliato: la
      riga colpevole si legge, non si indovina. Nessun costo a bandiera spenta. */
   const setMatchPlayers=React.useMemo(()=>{
-    if(typeof window==='undefined'||!window.__CPM_W588)return _setMPraw;
+    if(typeof window==='undefined'||(!window.__CPM_W588&&!window.__CPM_WHO959))return _setMPraw;
     return (u)=>{const st=(new Error()).stack||"";return _setMPraw(prev=>{
       const nx=(typeof u==='function')?u(prev):u;
+      /* [22/09 testimone · sola lettura] CHI SCRIVE LE POSIZIONI, MINUTO PER MINUTO. `prima-divergenza` ha
+         mostrato che in due giri identici le POSIZIONI divergono al 27' mentre sorteggi e cronaca restano
+         uguali: serve il nome dello scrittore, non l'ennesima ipotesi. L'impronta e' il testo stesso
+         dell'aggiornamento (la pila di Babel non torna al sorgente), col numero di uomini spostati. */
+      try{if(window.__CPM_WHO959){const _m=clockRef.current|0;const _t=String(u);let _h=2166136261;
+        for(let _i=0;_i<_t.length;_i++)_h=(Math.imul(_h^_t.charCodeAt(_i),16777619))>>>0;
+        let _d=0;const _pv=prev||[],_nv=nx||[];
+        for(let _i=0;_i<_pv.length;_i++){const _a=_pv[_i]||{},_b=_nv[_i]||{};if(Math.abs((_b.x||0)-(_a.x||0))>0.01||Math.abs((_b.y||0)-(_a.y||0))>0.01)_d++;}
+        if(_d)(window.__CPM_WHO959[_m]=window.__CPM_WHO959[_m]||[]).push(((_h>>>0).toString(36))+':'+_d);}}catch(_e959w){}
       try{const W=window.__CPM_W588,I=W.idx|0;
         const a=prev&&prev[I],b=nx&&nx[I];
         if(a&&b&&Math.abs((b.x||0)-(a.x||0))>1.5){
@@ -1564,7 +1612,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   },[phase]);
   // decide a fine partita: se è stato vinto un titolo → premiazione 3D, altrimenti direttamente la card di fine gara.
   //   Hoisted (function decl) → richiamabile dai callback del clock/handleContinue definiti più sopra nel corpo.
+  /* [7.976.0 — A18: LA FINE PARTITA ACCADE UNA VOLTA SOLA. Misurato, non dedotto.]
+     La griglia grafica saltava il tabellino due corse su tre con un messaggio che non diceva niente.
+     La sonda `fischio-finale.mjs` ha misurato che una partita in autoplay finisce in 163 s, contro un
+     tetto di 300: il tetto non c'entrava. Il ramo strumentato ha poi detto DOVE: «fermo al 90' in fase
+     playing, orologio fermo da 275 s». Da li' la catena e' chiusa e leggibile nel codice: al 90' il tick
+     (riga del clock) chiama questa funzione e torna 90; TUTTI i suoi rami cambiano fase — ended, ceremony,
+     shootout — TRANNE la festa di fine gara del 7.942, che fa setFesta942(...) e `return` lasciando la
+     fase a `playing`. Ma con la fase ancora `playing` il tick continua a battere e a RICHIAMARE questa
+     funzione, ogni volta con un oggetto festa NUOVO; e FestaFine942 tiene il suo timer di chiusura da
+     3,4 s in un useEffect con `[dati]` fra le dipendenze — quindi a ogni battito il timer si RIARMA
+     prima di scadere. La festa non si chiude mai e il giocatore resta sul velo.
+     NON E' UN DIFETTO DEL BANCO: succede nel gioco spedito, ogni volta che la partita merita la festa.
+     RIMEDIO: la fine partita e' un evento unico e da qui in poi lo e' anche nel codice. Il secondo
+     ingresso torna subito. Rosso appaiato __CPM_NO977 = il comportamento di prima. */
+  const fine977Ref=useRef(false);
+  useEffect(()=>{if(phase==="walkout"||phase==="matchday")fine977Ref.current=false;},[phase]);/* [7.976.0] una partita nuova ha diritto al suo fischio: la guardia si azzera all'ingresso in campo, non solo al montaggio del componente */
   function _goEndOrCeremony(){
+    if(fine977Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO977))return;
+    fine977Ref.current=true;
     try{AudioMgr.event({type:'MatchEnd'});}catch(_a){}/* [7.62.0 AUDIO] triplice fischio finale */
     try{setClock(c=>Math.max(c,90));clockRef.current=Math.max(clockRef.current||0,90);}catch(_ck){}/* [7.327.0 collaudo PO «i rigori non devono essere al 69esimo minuto!»] il fischio finale arriva all'ULTIMO highlight (7.2.0), che sul cronometro puo' essere il 69': da qui in poi (rigori, premiazione, ended) l'orologio DEVE dire 90' — header e maxischermo leggono entrambi da qui. Il hook di test __CPM_SO_FORCE lo faceva gia'; il path vero no */
     // [7.24.3 BUG GRAVE collaudo PO «di nuovo loop nelle ultime giornate, partita già giocata e vinta con
@@ -2172,7 +2238,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     window.__CPM_IDMAP538=(dir,u)=>{try{if(window.__CPM_NO538)return u<0.34?0:u<0.67?-1:1;return _corPick538(u,_prof538(dir));}catch(e){return null;}};/* [7.531.0] sweep di collaudo: percorre profilo+mappa VERI (il corridoio in volo nasce ~2,5 volte a partita — troppo raro per qualsiasi statistica: la mappa si giudica per enumerazione, il volo solo per cablaggio) *//* [7.496.0 F1b] il TABELLONE dal ref di LiveMatch: come la fase, sopravvive allo smontaggio del 3D al fischio finale — leggerlo da `__CPM_STATE` avrebbe la stessa malattia gia' pagata tre volte. `scoreRef` e' anche il punteggio LOGICO, quello che i gol incrementano SUBITO (7.113/7.120), non il `setScore` differito. */
     // [7.31.0] hook di collaudo RIGORI: forza pareggio+90' e chiama _goEndOrCeremony (il contesto KO deve
     //   essere vero: si usa da una partita di Coppa reale). Test-only, spento in store build.
-    window.__CPM_SO_FORCE=(ck)=>{try{setScore({home:1,away:1});scoreRef.current={home:1,away:1};const _c=(ck==null?90:ck);setClock(_c);clockRef.current=_c;_goEndOrCeremony();return true;}catch(e){return false;}};/* [7.327.0] clock opzionale: la probe passa 69 per provare che il fischio finale lo ALZA a 90 (il fix sta in _goEndOrCeremony, non qui) */
+    window.__CPM_SO_FORCE=(ck)=>{try{setScore({home:1,away:1});scoreRef.current={home:1,away:1};const _c=(ck==null?90:ck);setClock(_c);clockRef.current=_c;fine977Ref.current=false;/* [7.976.0] il varco chiama la fine a mano: la guardia di unicita' va azzerata o il secondo forzamento non farebbe piu' niente */_goEndOrCeremony();return true;}catch(e){return false;}};/* [7.327.0] clock opzionale: la probe passa 69 per provare che il fischio finale lo ALZA a 90 (il fix sta in _goEndOrCeremony, non qui) */
     window.__CPM_SO_STATE=()=>{try{const s=soStateRef.current;return{phase:phaseRef.current,step:s?s.step:null,hs:s?s.hs:null,as:s?s.as:null,done:s?s.done:null,won:s?s.won:null,len:s?s.seq.length:null};}catch(e){return null;}};
     /* [6.3.0 R0/LMQP-10] AUTOPLAY del Live Match Validator: gioca la partita VERA (selezione contestuale,
        catene, clock, tick playing) scegliendo le azioni con policy SEEDATA — niente force-sit, esercita
@@ -2234,7 +2300,42 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const moveCoolRef=useRef(0);
   const driftTargetsRef=useRef(null);
   const ballTargetRef=useRef({x:50,y:50});
+  const ultimaFase964Ref=useRef('');/* [7.962 A14] l'ultima fase vista: la scena si chiede una volta sola, sul PASSAGGIO */
+  const passi966Ref=useRef(0);/* [7.962 A14] quanti passi di fisica ha gia' ricevuto il minuto in corso */
+  const scenaPend964Ref=useRef(0);/* [7.962 A14] la scena chiesta, in attesa del BATTITO DEL MINUTO */
   const ballRngRef=useRef(0);/* [7.511.0 R1] flusso seedato DEDICATO al moto di possesso: usare _rndM qui avrebbe spostato tutti i sorteggi della cronaca e rotto il replay */
+  /* ⚠️ [7.960.0 A14 · LE POSIZIONI SEEDATE SONO STATE RIGIUDICATE SULLA MISURA PULITA, E REVOCATE DI
+     NUOVO — QUESTA VOLTA SENZA APPELLO.] Il 7.959 le aveva revocate due volte (flusso con stato: rosso su
+     tutti e tre i confronti; funzione pura: 29 % → 26 %). Si poteva obiettare che quella misura avesse
+     dentro un confondente — il ciclo dei sotto-tick che avanzava anche a scena aperta. Chiuso quel buco
+     (passo A14), la prova e' stata rifatta: `prima-divergenza` con le posizioni seedate dice ANCORA
+     «posizioni: primo minuto che diverge 27'», identico al giro senza seedatura, e la cronaca peggiora di
+     due minuti (34' → 32', rumore). Quindi lo scrittore che sposta i giocatori al 27' NON e' uno dei
+     cinque `Math.random()` di questo file: e' lo specchio del motore, che riceve la richiesta di scena in
+     un istante diverso a ogni giro. Il rimedio sta nel passo A14, non qui. I cinque punti restano com'erano:
+     il loro rumore e' cosmetico finche' il motore non e' ancorato, e seedarlo non ha mai mosso un numero. */
+  /* ⚠️ [7.959.0 — LE POSIZIONI SEEDATE: PROVATE E REVOCATE DALLA LORO MISURA, MA LA CAUSA VERA E' STATA
+     TROVATA.] `match-sequence` era rosso anche in produzione (1x contro 1x 29 %). Il sospetto era qui: le
+     posizioni dei ventidue avevano `Math.random()` in cinque punti, e da quando il motore del possesso
+     (7.870) legge `matchPlayers` quel rumore entra nella simulazione e cambia il pool dei nomi.
+     Due forme provate, ENTRAMBE MISURATE E REVOCATE:
+       (a) un flusso CON STATO (la forma di `ballRngRef`, 7.511) — rosso lo stesso, tutti e tre i confronti:
+           un flusso con stato e' deterministico solo se il NUMERO di estrazioni e' identico, e queste
+           chiamate stanno dentro gli updater di `setMatchPlayers`, che React puo' rieseguire;
+       (b) una funzione PURA di (seme, minuto, uomo, punto del codice) — 1x contro 1x 29 % → 26 %: dentro
+           il rumore, nessun guadagno.
+     La sonda nuova `prima-divergenza` dice PERCHE' nessuna delle due poteva bastare, e nomina il vero
+     colpevole (misura del 22/09, due giri identici a 1x):
+       posizioni    primo minuto che diverge   27'
+       motore       primo minuto in cui il conteggio dei suoi sorteggi diverge   26'  (1099 contro 1058)
+       passi fisica identici nel minuto 26     22 contro 22
+     Il motore E' deterministico (LCG seedato alla costruzione) e nel minuto 26 riceve lo STESSO numero di
+     passi nei due giri — eppure consuma 41 sorteggi in piu' in uno dei due. Quindi non e' il rumore delle
+     posizioni e non e' il numero dei passi: e' un RAMO del motore che si apre in un giro e non nell'altro,
+     e l'unico ingresso che cambia fra i due giri e' QUANDO l'interfaccia gli chiede la scena
+     (`chiedi.scena()` parte da un effetto di React sul cambio di fase, cioe' dall'orologio da polso, e
+     cade su un sotto-tick diverso a ogni giro). Il determinismo non si chiude seedando le posizioni: si
+     chiude ancorando le richieste di scena al tick della simulazione. E' la voce A14 della roadmap. */
   const tramaRef=useRef(null);/* [7.524.0 LA TRAMA] piano del possesso: {dir,cor,wp,fase} — corridoio persistente e giocata corrente del drift */
   /* [7.531.0 direttiva PO «ogni squadra deve avere in base a tattica/formazione/mentalita' il suo sviluppo:
      un 433 e' diverso da un 352» — rosso __CPM_NO538] L'IDENTITA' DELLA TRAMA: quattro pomelli per modulo
@@ -2621,7 +2722,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(typeof window!=='undefined'&&window.__CPM_NO926){setSceltePronte(true);return;}
     if(phase!=="hl_choose"){setSceltePronte(false);return;}
     setSceltePronte(false);
-    const h=setTimeout(()=>setSceltePronte(true),1200);
+    const h=setTimeout(()=>setSceltePronte(true),_ARMO956);
     return()=>clearTimeout(h);
   },[phase,hlIdx]);
   const addCom=useCallback((text,color,t,sc,opts)=>{lastComWallRef.current=Date.now();
@@ -2736,8 +2837,33 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       setCrowdChant(null);
       setSubEvent(null);
       ballTargetRef.current=ballPosRef.current; // congela target durante highlight/ended
-      if(motoreRef.current){try{motoreRef.current.chiedi.scena();}catch(_e870){}}/* [7.870] la scena e' dell'highlight: il motore aspetta */
+      /* ⚠️ [7.960.0 A14 · TERZO PASSO, PROVATO E REVOCATO DA SOLO: LA RICHIESTA DI SCENA SUL BATTITO.]
+         Questo effetto gira a orologio da polso, quindi il motore riceveva la scena in mezzo a un
+         sotto-tick diverso a ogni giro. Consumando la richiesta all'inizio del battito, INSIEME al primo
+         passo (ciclo fermo durante la scena), `prima-divergenza` dava la CRONACA IDENTICA riga per riga e
+         `match-sequence` portava 2x contro 2x a 100 %. DA SOLO, pero', non vale: 26 % / 27 % / 27 %, cioe'
+         il rosso di partenza. E il primo passo, che gli serve, costa l'orologio della partita (fischio
+         finale 4/4 → 1/4 giri). I due si reggono a vicenda e insieme sfondano un metro spedito: revocati
+         tutti e due, e la coppia e' descritta in A14 come il taglio da progettare. */
+      /* [7.962 A14 — LA FINESTRA DELLA SCENA E' UN MINUTO INTERO, NON UN PEZZO DI MINUTO. Rosso __CPM_NO964]
+         MISURATO: il motore e' seedato e riceve 22 battiti al minuto in ogni giro, eppure al 26' ne
+         consumava 1099 contro 1058. La causa e' la FINESTRA in cui resta fermo. Il motore entra in scena
+         QUI — da un effetto di React, che gira quando il browser ha tempo — e ne esce al primo battito
+         del minuto (`if(_st0.scena)_M.chiedi.riprendi(...)`). L'uscita era quindi ancorata, l'ingresso no:
+         la finestra durava un numero di sotto-tick che dipendeva dai millisecondi, e ogni sotto-tick
+         saltato e' un sorteggio non consumato. Ora l'ingresso si consuma al BATTITO come l'uscita: la
+         finestra e' sempre un minuto esatto, 22 battiti, uguale a ogni giro.
+         ⚠️ Provato prima consumandola al primo SOTTO-tick utile (7.960): non basta e la misura lo disse
+         (26/27/27 %, il rosso di partenza) — il confine giusto e' il minuto, non il sotto-tick. */
+      if(typeof window!=='undefined'&&window.__CPM_NO964){if(motoreRef.current){try{motoreRef.current.chiedi.scena();}catch(_e870){}}}
+      /* ⚠️ la bandierina si alza SOLO sul passaggio 'playing' → scena, mai a ogni giro dell'effetto.
+         MISURATO col difetto dentro: alzandola a ogni giro il battito la riconsumava subito dopo aver
+         ripreso, il motore restava in scena per TUTTO l'highlight e `ball-alive` segnava «palla in moto
+         0,0 %, striscia di fermo 13,3 s». Il contratto giusto e' quello di sempre — una finestra di un
+         minuto all'ingresso nella scena — solo ancorata al battito invece che ai millisecondi. */
+      else if(ultimaFase964Ref.current==='playing')scenaPend964Ref.current=1;/* [7.870] la scena e' dell'highlight: il motore aspetta */
     }
+    ultimaFase964Ref.current=phase;
     // [6.76.0 LMV-L5] a FINE PARTITA muoiono anche i timer fx pendenti (floatGoal/cronaca/celeb-fallback
     //   schedulati nell'ultimo HL): prima facevano setState sopra la schermata finale (float/cinema fantasma).
     if(phase==="ended"){fxTimersRef.current.forEach(clearTimeout);fxTimersRef.current=[];}
@@ -3123,6 +3249,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const isNearGoal=["area","bordo"].includes(sit?.zones?.[0]);
     const pressingMs=isNearGoal?550:isDef?700:650;
     const iv=setInterval(()=>{
+      /* [22/09 testimone · sola lettura] QUANTE VOLTE IL PRESSING SCRIVE LE POSIZIONI IN OGNI MINUTO.
+         Questo loop gira a orologio da polso (650 ms) per tutta la durata della scena: se la scena dura
+         un pelo di piu' in un giro, scrive una volta di piu' — e da quando il motore del possesso (7.870)
+         legge `matchPlayers`, quella scrittura in piu' entra nella simulazione. */
+      if(typeof window!=='undefined'&&window.__CPM_PRESS959){try{const _m=clockRef.current|0;window.__CPM_PRESS959[_m]=(window.__CPM_PRESS959[_m]|0)+1;}catch(_e959){}}
       // Rigore / punizione: area libera, avversari in fila fuori dal box
       if(isSetPieceSit(sit)){/* [7.186.0] era `sit?.lockMovement`: sulle punizioni CON movimento il loop di pressing riscriveva le posizioni ogni ~600ms e CANCELLAVA la barriera appena schierata */
         // 3DV-MOV2 (fix posizioni sballate): set piece (rigore/punizione) — i giocatori TENGONO
@@ -3345,7 +3476,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          riparta con la spinta di prima. Fuori dalla ripresa non cambia niente. */
       /* [7.590.0] la finestra e' quella BREVE (primi 14 tick): spegnere le corsie per i 20-28 secondi in
          cui il contatore resta sopra zero significava togliere il gioco per mezzo minuto dopo ogni gol. */
-      const _ripresa589=!(typeof window!=='undefined'&&window.__CPM_NO589)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)<=4500):true);
+      const _ripresa589=!(typeof window!=='undefined'&&window.__CPM_NO589)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&((Date.now()-ripT0Ref.current)<=4500)):true);
       if(_ripresa589){try{const _V=velRef.current;for(const _k in _V){const _v=_V[_k];if(_v){_v.vx=0;_v.vy=0;}}}catch(_e){}}
       else setMatchPlayers(prev=>{
         /* [7.706.0 — LA MISCHIA E' CONTESA. Rosso __CPM_NO706]
@@ -3791,9 +3922,29 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       // Sprint 34 — tactic moments + sub events (checked via clockRef, outside setClock)
       const ck=clockRef.current;
       const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);/* [7.870] rosso appaiato: __CPM_NO870 rimette in moto le vecchie macchine narrative e il vecchio mover */
+      /* ⚠️ [7.960.0 A14 · PRIMO PASSO PROVATO E REVOCATO DALLA SUA MISURA: IL CICLO DEI SOTTO-TICK FERMO
+         DURANTE LA SCENA.] L'idea era giusta e la misura l'ha confermata a meta': fermando il contatore dei
+         sotto-tick insieme alla fisica, ogni minuto riceveva esattamente i suoi 22 passi e `prima-divergenza`
+         spostava il motore dal 26' al 31' e la cronaca dal 27' al 34'. Ma fermando il contatore si ferma
+         anche il BATTITO DEL MINUTO, e quindi l'orologio della partita durante ogni scena: nel guardiano
+         `match-sequence` il fischio finale, che era raggiunto in 4 giri su 4, e' sceso a 1 su 4 dentro lo
+         stesso tetto di tempo. Un metro gia' spedito non si abbassa per far passare una modifica: revocato.
+         Il pezzo che REGGE la misura e' il terzo passo (la richiesta di scena consumata sul battito), che
+         da solo porta la cronaca a essere identica riga per riga. Il rimedio completo — ogni minuto con i
+         suoi 22 passi SENZA fermare l'orologio — vuole un budget di passi con recupero al battito del
+         minuto, e va misurato contro `ball-alive` e `trama` prima di essere creduto: e' il prossimo taglio
+         di A14. */
       k898Ref.current=(k898Ref.current+1)%_SUB898;
       if(k898Ref.current!==0){/* [7.898] sotto-tick: solo la fisica del motore e i suoi specchi, nessuna riga, nessun minuto */
-        try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);const _st=_M.stato();_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
+        /* [7.962 A14 · TERZA META' — IL BATTITO DELLA FISICA NON DIPENDE DALLA FASE DELL'INTERFACCIA. Rosso __CPM_NO966]
+           MISURATO (1x contro 2x): al 78' il giro a 1x riceve 15 passi invece di 22, quello a 2x 22 — sette
+           sotto-tick mangiati da una scena aperta a meta' minuto. Il cancello era qui: la fisica girava solo
+           con la fase 'playing', cioe' col permesso dell'INTERFACCIA, che cambia stato a orologio da polso.
+           Ora il battito arriva SEMPRE e a decidere e' il motore col suo `scena`, che dal 7.962 si apre e si
+           chiude sul confine del minuto: 22 passi ogni minuto, a qualunque velocita'. Gli SPECCHI (posizioni
+           rese, pallone a schermo) restano legati alla fase: mentre la scena e' in onda il mondo continua a
+           vivere, ma nessuno lo ridisegna sotto l'highlight. */
+          try{if(MOTORE870&&motoreRef.current&&(phaseRef.current==='playing'||!(typeof window!=='undefined'&&window.__CPM_NO966))){const _M=motoreRef.current;const _vivo966=(phaseRef.current==='playing');/* [22/09 testimone · sola lettura] QUANTI PASSI DI FISICA RICEVE OGNI MINUTO. Il motore ha un flusso di sorteggi CON STATO: se un minuto riceve un passo in piu' o in meno, tutto il seguito slitta. Il sotto-tick e' legato all'orologio da polso e salta quando c'e' una scena in corso — quindi il conto puo' cambiare da un giro all'altro. */if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{const _m=clockRef.current|0;window.__CPM_PASSI959[_m]=(window.__CPM_PASSI959[_m]|0)+1;}catch(_e959p){}}const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);passi966Ref.current=(passi966Ref.current|0)+1;const _st=_M.stato();if(_vivo966)_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(_vivo966&&!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
         return;}
       /* [7.494.0 F0 — CHIUDE IL BORDO NON MISURATO DEL 7.489] Il 7.489 ha reso la cronaca funzione pura di
          (seed di partita, minuto) dentro il callback di `setClock`, dove vive `_rndM`. Ma i rami che girano
@@ -3943,7 +4094,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            non per verifica a posteriori. La velocita' cambia solo QUANDO gli eventi vengono presentati.
            ⚠️ Il seed di partita e' lo stesso del micro-simulatore dei gol (`bgSimSeedRef`), che era gia'
            deterministico per minuto: ora tutta la catena condivide la stessa sorgente. */
-        const _rndM=(typeof window!=='undefined'&&window.__CPM_NO489)?(()=>Math.random()):seededRng(((bgSimSeedRef.current>>>0)+nx*2654435761)>>>0);/* prova del rosso: torna ai generatori non seedati */
+        const _rndM0959=(typeof window!=='undefined'&&window.__CPM_NO489)?(()=>Math.random()):seededRng(((bgSimSeedRef.current>>>0)+nx*2654435761)>>>0);/* prova del rosso: torna ai generatori non seedati */
+        /* [22/09 testimone · sola lettura] QUANTI SORTEGGI CONSUMA OGNI MINUTO. `_rndM` e' un generatore
+           CON STATO per minuto: se un ramo condizionale passa in un giro e non nell'altro, tutto il resto
+           del minuto slitta di una estrazione e la cronaca cambia protagonista a parita' di riga. La sonda
+           `rndm-conteggio` accende `window.__CPM_RNDM959` e legge questo contatore. Spento, e' `_rndM0959`. */
+        const _rndM=(typeof window!=='undefined'&&window.__CPM_RNDM959)?(()=>{try{window.__CPM_RNDM959[nx]=(window.__CPM_RNDM959[nx]|0)+1;}catch(_e959){}return _rndM0959();}):_rndM0959;
+        if(typeof window!=='undefined'&&window.__CPM_POS959){try{const _P=window.__CPM_POS959;let _h=2166136261;const _mp=matchPlayersRef.current||[];for(let _i=0;_i<_mp.length;_i++){const _q=_mp[_i]||{};_h=(Math.imul(_h^(Math.round((_q.x||0)*10)+_i*977),16777619))>>>0;_h=(Math.imul(_h^(Math.round((_q.y||0)*10)+_i*131),16777619))>>>0;}_P[nx]=_h>>>0;}catch(_e959p){}}/* [22/09 testimone] impronta delle POSIZIONI all'ingresso del minuto */
 
         if(nx>=90){const _no645=(typeof window!=='undefined'&&window.__CPM_NO645);if(!_no645&&nx<96&&(pendingGoalRef.current||golCoda645.current.length)){if(nx>=92&&pendingGoalRef.current){pendingGoalRef.current.ticks=999;if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_REC645=window.__CPM_REC645||{coda:0,codaMax:0,dir:0,rec:0,forza92:0});_w.forza92++;}catch(_e){}}}if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_REC645=window.__CPM_REC645||{coda:0,codaMax:0,dir:0,rec:0,forza92:0});_w.rec++;}catch(_e){}}/* [7.645.0 — IL FISCHIO NON AMMAZZA L'AZIONE VIVA] BUCO LATENTE censito col 7.644: qui si tornava a 90 SENZA svuotare pendingGoalRef — una costruzione viva al fischio perdeva il suo gol dal tabellone in silenzio. Ora la partita va in RECUPERO (fino al 95'): la costruzione si chiude (a 92' d'ufficio, via tetto) e i gol in coda entrano diretti, POI il fischio. Frequenza del buco: non misurata prima (caso raro); testimone __CPM_REC645.rec la conta d'ora in poi. */}else{cpmEv("fine",{min:90,causa:"clock"});/* [7.500.0 F4] */if(!_SIT_TEST)_goEndOrCeremony();return 90;}}/* [7.2.0] titolo vinto → premiazione 3D, altrimenti "ended" */
         /* [7.268.0 batteria di regressione — sub-off] LA SOSTITUZIONE HA LA PRECEDENZA SULL'HIGHLIGHT.
@@ -4065,6 +4222,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                    cosi' non c'e' nessun clamp e lui resta dov'e'. La zona resta il ripiego. */
                 const _hx=occEroe879Ref.current.x,_hy=occEroe879Ref.current.y;
                 const _dentro=(s2)=>{try{const z=s2&&s2.startZone;return !!(z&&_hx>=z.x[0]&&_hx<=z.x[1]&&_hy>=z.y[0]&&_hy<=z.y[1]);}catch(_e){return false;}};
+                /* [7.958] TENTATIVO REVOCATO, e il perche' vale piu' del tentativo: avevo sostituito i tre
+                   `find` (il primo che passa vince, sempre) con un sorteggio seedato fra le candidate.
+                   La misura non si e' mossa — 8 scene, 3 schede, le stesse due dominanti — perche' a valle
+                   NON C'E' NIENTE DA SORTEGGIARE: le candidate sono gia' una sola. Il collo di bottiglia
+                   sta A MONTE, in quante schede sopravvivono ai filtri contestuali di `_fresh79`.
+                   Questo contatore e' inerte e serve al prossimo passo, per non farlo indovinare. */
+                try{if(typeof window!=='undefined'&&_zm){
+                  cpmEv("candidate",{min:nx|0,fresche:_fresh79.length,
+                    dentro:_fresh79.filter(s2=>s2&&s2.type!=='def'&&_dentro(s2)).length,
+                    zona:_fresh79.filter(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])>=0&&s2.type!=='def').length});}}catch(_e958){}
                 if(_zm){const _c=_fresh79.find(s2=>s2&&s2.type!=='def'&&_dentro(s2))
                         ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])===0&&s2.type!=='def')
                         ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])>=0&&s2.type!=='def');
@@ -4072,7 +4239,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               }
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }
-            setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null});}catch(_e){}
+            setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,/* [7.958 · rilievo PO «le interazioni dell eroe sono molto ripetitive»] IL REGISTRO DICE ANCHE QUALE SCENA E QUANTE CANDIDATE C ERANO. Il catalogo ha 185 schede e 573 azioni: se il giocatore ne vede sempre le stesse, il difetto non e la poverta del catalogo ma la SELEZIONE, e i due vogliono rimedi opposti. MISURATO con la sonda varieta-scene, 3 partite con seed diversi: 6 scene giocate, 2 schede distinte, ognuna ripetuta 3 volte. */sk:(()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current];return _s?String(_s.text||"").slice(0,60):null;}catch(_e2){return null;}})()});}catch(_e){}
             try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occEroe879Ref.current=null;
             setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
@@ -4745,6 +4912,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _M=motoreRef.current;
           _M.chiedi.eroe(!onBenchRef.current&&!subbedOffRef.current);
           const _st0=_M.stato();
+          /* [7.962 A14] l'ingresso in scena si consuma QUI, sullo stesso confine dell'uscita: `_st0` e'
+             gia' stato letto, quindi la scena chiesta in questo minuto dura fino al battito successivo. */
+          if(scenaPend964Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO964)){scenaPend964Ref.current=0;if(!_st0.scena){try{_M.chiedi.scena();}catch(_e964){}}}
+          /* ⚠️ [7.962 A14 — PROVATO E REVOCATO DALLA SUA MISURA: il motore che riparte da SE STESSO invece
+             che dallo specchio.] `riprendi` riscrive le posizioni di tutti e ventuno leggendole da
+             `matchPlayers` (stato di React), aggiornato solo mentre la fase e' 'playing': dopo una scena e'
+             indietro di qualche passo, e sembrava il candidato naturale per l'ultimo 11 % (1x contro 2x).
+             Misurato: sorteggi del motore al 78' 1004 contro 1022 PRIMA, 1004 contro 1022 DOPO. Zero.
+             La lettura resta valida in linea di principio (la simulazione e' la source of truth) ma non
+             e' questa la causa, e una modifica che non muove il suo numero non si spedisce. */
           if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:possTurnRef.current>0?"home":"away",gioc:matchPlayersRef.current||[],eroe:pPosRef.current,centro:((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
           /* il gol del microsim diventa una richiesta: il motore lo costruisce */
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
@@ -4759,7 +4936,26 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(nx%3===0&&!golMotoreRef.current){const _q=quotaMotoreRef.current;if(_q.length>=6){const _qh=Math.round(100*_q.reduce((a2,b2)=>a2+b2,0)/_q.length);const _p=clamp(possessionRef.current|0,20,80);const _want=(_qh<_p-12)?"home":(_qh>_p+12)?"away":null;if(_want)_M.chiedi.turno(_want);}}
           /* [7.849 nel motore] l'atteggiamento: chi e' sotto o pari dal 70' assalta, chi e' avanti di due dal 60' amministra */
           {const _sc=scoreRef.current||{home:0,away:0};const _d=(_sc.home|0)-(_sc.away|0);const _attDi=(dd)=>(nx>=70&&dd<=0)?1:(nx>=60&&dd>=2)?-0.6:(dd<0?0.4:0);_M.chiedi.atteggiamento("home",_attDi(_d));_M.chiedi.atteggiamento("away",_attDi(-_d));}
-          _evM870=evAcc898Ref.current.concat(_M.tick({min:nx,dt:1/_SUB898,dec:true}));evAcc898Ref.current=[];/* [7.898] il battito del minuto DECIDE (dec) e compie un terzo del movimento; i fatti dei due sotto-tick precedenti si narrano qui */
+          /* [7.962 A14 · QUARTA META' — IL DEBITO DI PASSI SI PAGA AL BATTITO. Rosso __CPM_NO967]
+            MISURATO: al 78' un giro riceveva 15 passi invece di 22. La causa non era piu' un cancello ma il
+            METRONOMO STESSO: l'effetto che lo tiene acceso ha `phase` fra le sue dipendenze, quindi a ogni
+            cambio di fase l'intervallo viene spento e riacceso, e nel buco fra i due si perdono sotto-tick —
+            un buco che dura millisecondi veri, cioe' un numero di battiti diverso a ogni giro e a ogni
+            velocita'. Togliere `phase` dalle dipendenze avrebbe congelato closure che leggono la fase: qui
+            invece si paga il DEBITO. Il minuto deve ricevere 22 passi: quelli che mancano si compiono ora,
+            prima del battito che decide, con gli stessi argomenti dei sotto-tick. Il motore e' cieco al
+            tempo reale (riceve sempre dt=1/22), quindi per lui non c'e' differenza fra un passo in ritardo
+            e uno puntuale: cambia solo CHE arrivano tutti. */
+          {const _no967=(typeof window!=='undefined'&&window.__CPM_NO967);let _g967=0;
+           /* il debito e' del minuto che si CHIUDE, non di quello che si apre: i sotto-tick portano
+              l'etichetta del minuto in corso, il battito porta gia' quella del minuto nuovo. */
+           const _mPrec967=Math.max(0,(nx|0)-1);
+           if(!_no967&&MOTORE870&&_M){while((passi966Ref.current|0)<(_SUB898-1)&&_g967<_SUB898){
+             const _evR=_M.tick({min:_mPrec967,dt:1/_SUB898,dec:_a912});for(const _e of _evR)evAcc898Ref.current.push(_e);
+             passi966Ref.current=(passi966Ref.current|0)+1;_g967++;
+             if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{window.__CPM_PASSI959[_mPrec967]=(window.__CPM_PASSI959[_mPrec967]|0)+1;}catch(_e967){}}}}
+           if(typeof window!=='undefined'&&window.__CPM_REC967!==undefined){try{window.__CPM_REC967=(window.__CPM_REC967|0)+_g967;}catch(_e){}}}
+          if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{window.__CPM_PASSI959[nx|0]=(window.__CPM_PASSI959[nx|0]|0)+1;}catch(_e959q){}}/* [22/09 testimone] il battito del minuto e' un passo come gli altri */_evM870=evAcc898Ref.current.concat(_M.tick({min:nx,dt:1/_SUB898,dec:true}));evAcc898Ref.current=[];passi966Ref.current=0;/* [7.898] il battito del minuto DECIDE (dec) e compie un terzo del movimento; i fatti dei due sotto-tick precedenti si narrano qui */
           try{if(typeof window!=='undefined'&&window.__CPM_REC){const _acc=(window.__CPM_EVM870=window.__CPM_EVM870||[]);for(const _e of _evM870){if(_e&&_e.t==='tiro')_acc.push({tick:_e.tick,chi:(_e.chi&&_e.chi.i!=null)?_e.chi.i:String(_e.chi&&_e.chi.nome||'?'),zona:_e.zona||'?',min:_e.min});}window.__CPM_MOTORE_EV=()=>window.__CPM_EVM870||[];}}catch(_e870ev){}/* [A2 strumento] gancio di SOLA LETTURA, solo con __CPM_REC (sonde): accumula i tiri del motore, che vivono un tick solo, per contarli contro le righe raccontate */
           _stM870=_M.stato();
           _specchi898(_stM870,_evM870);/* [7.898] gli specchi del motore: la stessa funzione dei sotto-tick */
@@ -6852,7 +7048,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            MISURATO nel 7.590, la finestra utile dura 2-4,5 s. Otto secondi dall'armamento bastano a
            qualunque recita; oltre, i contatori mentono. `ripT0Ref` e' gia' armato nei tre siti giusti
            (gol, duplice fischio, calcio d'inizio recitato) dal 7.590. */
-        if(!(typeof window!=='undefined'&&window.__CPM_NO610)&&ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)>8000&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)){
+        /* ⚠️ [7.962 A14 — PROVATO E REVOCATO: le finestre della ripresa in TICK invece che in millisecondi.]
+           Queste due finestre (8000 ms e 4500 ms) si misurano in tempo REALE, mentre un minuto di partita
+           dura 420 ms a 1x e 210 a 2x: alla velocita' doppia coprono il doppio dei minuti di gioco, quindi
+           in teoria sono una sorgente di differenza fra 1x e 2x. Riscritte in tick (19 e 10, cioe' gli
+           stessi valori a 1x) la misura NON si e' mossa di un punto: 1x contro 2x 89 % prima, 89 % dopo,
+           stessa posizione 64. Non e' questa la causa, e la modifica torna indietro. Resta scritto qui
+           perche' e' un difetto vero ma DORMIENTE: il giorno in cui la causa vera sara' chiusa, queste due
+           finestre vanno rigiudicate. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO610)&&ripT0Ref.current>0&&((Date.now()-ripT0Ref.current)>8000)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)){
           kickRef.current=0;kickoffRef.current=0;ripT0Ref.current=0;
         }
         const _koNow590=((kickRef.current|0)>0||(kickoffRef.current|0)>0);
@@ -6862,7 +7066,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            sopra zero: e i contatori NON tornano quasi mai a zero — misurato, l'eta' della finestra
            arrivava a 46,4 s con mediana 19,1 s, cioe' era aperta per meta' partita. Qui si CHIUDE soltanto. */
         if(!_koNow590)ripT0Ref.current=0;
-        const _breve590=_koNow590&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)<=4500):true);
+        const _breve590=_koNow590&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&((Date.now()-ripT0Ref.current)<=4500)):true);
         const _ognitick588=(!(typeof window!=='undefined'&&window.__CPM_NO588)&&_breve590)||(!(typeof window!=='undefined'&&window.__CPM_NO848)&&!!pendingGoalRef.current&&!!pendingGoalRef.current.piano&&(pianoLock693.current|0)>0);/* [7.848 v3] durante la custodia del piano il blocco gira a OGNI tick: a un tick su tre il nominato faceva un passo di 0,55 ogni tre minuti e in quattro tick guadagnava 7u (traccia att847: db 11 alla battuta del tiro) */
         /* ⚠️ [7.702.0 — IL TESTIMONE DELLA CUSTODIA TRADIVA LA PROPRIA DICHIARAZIONE, DAL 7.625.]
            Il suo commento promette «si campiona ogni tick di gioco vivo, ~150 campioni/run», ma il
@@ -9124,7 +9328,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <TeamBadge team={homeTeamObj} size={28}/>
               <div style={{minWidth:0,textAlign:_swap893?"right":"left"}}>
                 <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?"auto":0}}>{homeTeamObj?.n||homeTeamObj?.name||"Squadra"}</div>
-                <div style={{fontSize:32,fontWeight:900,color:_hCol901,lineHeight:1,textAlign:_swap893?"right":"left"}}>{_hVal901}</div>
+                <div style={{fontSize:FS.display,fontWeight:900,color:_hCol901,lineHeight:1,textAlign:_swap893?"right":"left"}}>{_hVal901}</div>
               </div>
             </div>
             {/* Centre — clock, possession, context */}
@@ -9132,12 +9336,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:5,marginBottom:2}}>
                 {phase==="playing"&&!paused&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
                 {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&<div style={{width:6,height:6,borderRadius:"50%",background:"#f59e0b",flexShrink:0}}/>}
-                <div style={{padding:"2px 10px",borderRadius:14,fontSize:12,fontWeight:900,background:winning?"rgba(34,197,94,0.18)":losing?"rgba(239,68,68,0.18)":"rgba(255,255,255,0.09)",color:winning?"#4ade80":losing?"#f87171":"#f1f5f9",letterSpacing:.5}}>
+                <div style={{padding:"2px 10px",borderRadius:RAD.md,fontSize:FS.small,fontWeight:900,background:winning?"rgba(34,197,94,0.18)":losing?"rgba(239,68,68,0.18)":"rgba(255,255,255,0.09)",color:winning?"#4ade80":losing?"#f87171":"#f1f5f9",letterSpacing:.5}}>
                   {phase==="walkout"?"🏃":phase==="ceremony"?"🏆":phase==="ended"?"FT":`${clock}'`}
                 </div>
-                <div style={{fontSize:11}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>{/* [7.260.0] mai il sole su una notturna */}
+                <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>{/* [7.260.0] mai il sole su una notturna */}
                 {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                  <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:13,padding:"14px 12px",margin:"-12px -8px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>
+                  <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.body,padding:"14px 12px",margin:"-12px -8px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>
                     {paused?"▶":"⏸"}
                   </button>
                 )}
@@ -9159,7 +9363,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     title={"Velocità della partita — tocca per passare a "+((()=>{const _i=MATCH_SPEEDS.indexOf(matchSpeed);const _n=MATCH_SPEEDS[(_i<0?0:(_i+1)%MATCH_SPEEDS.length)];return _n===1.5?"1,5×":_n+"×";})())}
                     aria-label={"Velocità della partita: "+(matchSpeed===1.5?"1,5×":matchSpeed+"×")+". Tocca per cambiare."}
                     style={{background:"rgba(255,255,255,0.16)",border:"none",borderRadius:RAD.sm,cursor:"pointer",marginLeft:2,
-                      fontSize:11,fontWeight:900,letterSpacing:.2,padding:"9px 8px",minWidth:44,lineHeight:1,fontFamily:"inherit",
+                      fontSize:FS.caption,fontWeight:900,letterSpacing:.2,padding:"9px 8px",minWidth:44,lineHeight:1,fontFamily:"inherit",
                       color:"#f1f5f9",fontVariantNumeric:"tabular-nums"}}>
                     {matchSpeed===1.5?"1,5×":matchSpeed+"×"}
                   </button>
@@ -9171,20 +9375,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     L'intestazione esiste anche a fine partita (mostra «FT») e il testimone regge: l'anello
                     vive nel ref del componente e la closure di __CPM_WATCH_SNAP continua a leggerlo. */}
                 {devToolsOn()&&["playing","hl_intro","hl_move","hl_choose","hl_result","ended","ceremony"].includes(phase)&&(
-                  <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:12,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.38)",lineHeight:1}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
+                  <button onClick={()=>{setPaused(true);const _c=_pickDefaultScene();let _d="";try{_d=(typeof draftBugNote==="function")?draftBugNote((window.__CPM_WATCH_SNAP&&window.__CPM_WATCH_SNAP())||null,_c):"";}catch(_e){}setBugNote({ctx:_c,txt:_d,auto:!!_d});}} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.small,padding:"14px 10px",margin:"-12px -6px",color:"rgba(255,255,255,0.38)",lineHeight:1}} title="Segna un'azione sbagliata (mette in pausa)">⚠️</button>
                 )}
               </div>
               <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.25)",letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>
                 {_compTag901}
               </div>
-              <div data-cpm="filo" style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden",display:"flex",flexDirection:_swap893?"row-reverse":"row",width:80,margin:"0 auto"}}>{/* [7.905.0] etichette data-cpm="filo"/"filo-casa" anche nel vecchio markup: la sonda scudetti-893 misura il lato del segmento casa in entrambi i bracci, nessun cambio di stile */}
+              <div data-cpm="filo" style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:RAD.pill,overflow:"hidden",display:"flex",flexDirection:_swap893?"row-reverse":"row",width:80,margin:"0 auto"}}>{/* [7.905.0] etichette data-cpm="filo"/"filo-casa" anche nel vecchio markup: la sonda scudetti-893 misura il lato del segmento casa in entrambi i bracci, nessun cambio di stile */}
                 <div data-cpm="filo-casa" style={{width:`${possession}%`,background:scoreHomeCol,transition:"width .8s",borderRadius:"3px 0 0 3px"}}/>
                 <div data-cpm="filo-ospiti" style={{flex:1,background:scoreAwayCol,borderRadius:"0 3px 3px 0"}}/>
               </div>
               <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:"rgba(255,255,255,0.28)",width:80,margin:"2px auto 0"}}>
                 <span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{_swap893?100-possession:possession}%</span><span>poss.</span><span style={{fontWeight:700,color:"rgba(255,255,255,0.5)"}}>{_swap893?possession:100-possession}%</span>
               </div>
-              <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:3,overflow:"hidden",display:"flex",flexDirection:_swap893?"row-reverse":"row",width:80,margin:"4px auto 0"}}>
+              <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:RAD.pill,overflow:"hidden",display:"flex",flexDirection:_swap893?"row-reverse":"row",width:80,margin:"4px auto 0"}}>
                 <div style={{width:`${momentum}%`,background:scoreHomeCol,transition:"width .7s ease",borderRadius:"3px 0 0 3px"}}/>
                 <div style={{flex:1,background:scoreAwayCol,borderRadius:"0 3px 3px 0"}}/>
               </div>
@@ -9197,7 +9401,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <TeamBadge team={awayTeamObj} size={28}/>
               <div style={{minWidth:0,textAlign:_swap893?"left":"right"}}>
                 <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:700,letterSpacing:.8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:70,marginLeft:_swap893?0:"auto"}}>{awayTeamObj?.n||awayTeamObj?.name||"Avversario"}</div>
-                <div style={{fontSize:32,fontWeight:900,color:_aCol901,lineHeight:1,textAlign:_swap893?"left":"right"}}>{_aVal901}</div>
+                <div style={{fontSize:FS.display,fontWeight:900,color:_aCol901,lineHeight:1,textAlign:_swap893?"left":"right"}}>{_aVal901}</div>
               </div>
             </div>
           </div>
@@ -9216,7 +9420,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
               {/* Centro — risultato UNICO, minuto col puntino, etichetta di competizione piccola sotto */}
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",flex:"0 0 auto",padding:"0 6px",minWidth:0}}>
-                <div style={{fontSize:23,fontWeight:900,lineHeight:1,letterSpacing:.4,fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>
+                <div style={{fontSize:FS.h,fontWeight:900,lineHeight:1,letterSpacing:.4,fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>
                   <span style={{color:_swap893?_aCol901:_hCol901}}>{_swap893?_aVal901:_hVal901}</span>
                   <span style={{color:"rgba(255,255,255,0.35)",padding:"0 5px"}}>–</span>
                   <span style={{color:_swap893?_hCol901:_aCol901}}>{_swap893?_hVal901:_aVal901}</span>
@@ -9224,10 +9428,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"flex",alignItems:"center",gap:3,marginTop:2}}>
                   {phase==="playing"&&!paused&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
                   {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&<div style={{width:6,height:6,borderRadius:"50%",background:"#f59e0b",flexShrink:0}}/>}
-                  <div style={{fontSize:12,fontWeight:800,color:"#f1f5f9",letterSpacing:.3,fontVariantNumeric:"tabular-nums"}}>{phase==="walkout"?"🏃":phase==="ceremony"?"🏆":phase==="ended"?"FT":`${clock}'`}</div>
+                  <div style={{fontSize:FS.small,fontWeight:800,color:"#f1f5f9",letterSpacing:.3,fontVariantNumeric:"tabular-nums"}}>{phase==="walkout"?"🏃":phase==="ceremony"?"🏆":phase==="ended"?"FT":`${clock}'`}</div>
                   <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
-                    <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:11,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
+                    <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
                   )}
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                     <button
@@ -9244,7 +9448,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
                 <div style={{position:"relative",marginTop:1}}>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.42)",letterSpacing:.5,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:118}}>{_compTag901}</div>
-                  {_swap893&&(clock|0)<=50&&<div data-cpm="cambio-campo" style={{position:"absolute",inset:0,textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:.6,textTransform:"uppercase",color:"#fbbf24",background:"#0d1a33",borderRadius:4,whiteSpace:"nowrap",animation:"cpmCambio905 3s ease forwards"}}>cambio campo</div>}
+                  {_swap893&&(clock|0)<=50&&<div data-cpm="cambio-campo" style={{position:"absolute",inset:0,textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:.6,textTransform:"uppercase",color:"#fbbf24",background:"#0d1a33",borderRadius:RAD.xs,whiteSpace:"nowrap",animation:"cpmCambio905 3s ease forwards"}}>cambio campo</div>}
                 </div>
               </div>
               {/* Away team */}
@@ -9269,7 +9473,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               fotogrammi sospesi — «19 fps» sopra un campo che ne faceva settanta. Resta dov'e' nato: negli
               highlight, dove il 3D disegna davvero (e col rosso __CPM_NO917, che rimette il 3D continuo). */}
           {(["hl_intro","hl_move","hl_choose","hl_result"].includes(phase)||(phase==="playing"&&typeof window!=='undefined'&&window.__CPM_NO917))&&fps907!=null&&(
-            <div data-cpm="fps907" style={{flex:"0 0 auto",textAlign:"center",fontSize:13,fontWeight:800,fontVariantNumeric:"tabular-nums",color:"#fbbf24",letterSpacing:.6,padding:"3px 0",background:"rgba(5,8,16,0.82)",borderBottom:"1px solid rgba(251,191,36,0.35)"}}>{fps907+" fps · corpi "+corpiInUso909}</div>
+            <div data-cpm="fps907" style={{flex:"0 0 auto",textAlign:"center",fontSize:FS.body,fontWeight:800,fontVariantNumeric:"tabular-nums",color:"#fbbf24",letterSpacing:.6,padding:"3px 0",background:"rgba(5,8,16,0.82)",borderBottom:"1px solid rgba(251,191,36,0.35)"}}>{fps907+" fps · corpi "+corpiInUso909}</div>
           )}
 
           {/* ── Field + Panel: responsive layout ── */}
@@ -9451,8 +9655,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                      un decimo dell'inchiostro. */
                  const _pill={display:"flex",alignItems:"center",gap:5};
                  const _sg={fontSize:FS.caption,fontWeight:800,letterSpacing:1.4,color:"rgba(241,245,249,0.92)"};
-                 const _ch={fontSize:11,lineHeight:1,fontWeight:700,color:"rgba(241,245,249,0.42)"};
-                 const _acc=(c)=>({width:3,height:11,borderRadius:2,background:c,display:"inline-block",flex:"0 0 auto"});
+                 const _ch={fontSize:FS.caption,lineHeight:1,fontWeight:700,color:"rgba(241,245,249,0.42)"};
+                 const _acc=(c)=>({width:3,height:11,borderRadius:3,background:c,display:"inline-block",flex:"0 0 auto"});
                  if(!(typeof window!=='undefined'&&window.__CPM_NO893))return null;/* [7.893] PO 14/09: «l'indicazione con le relative frecce puo' essere eliminata» — con i ventidue in campo il verso si legge dai corpi; resta sotto il rosso */
                  return(
                  <div data-cpm="verso697" style={{position:"absolute",left:0,right:0,top:"1.8%",zIndex:5,pointerEvents:"none",display:"flex",justifyContent:"center"}}>
@@ -9465,9 +9669,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                {phase==="playing"&&coms[0]&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&(
                  <div data-cpm="com661"/* [7.681.0] etichetta stabile: senza, per misurare il banner servivano selettori sullo STILE, che si rompono al primo ritocco grafico */ key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={_sot695?{position:"absolute",left:"4%",right:"4%",bottom:(((subbedOff||(benchStart&&onBench))&&!(typeof window!=='undefined'&&(window.__CPM_NO565||window.__CPM_NO899B)))?"calc(11% + 46px)":"11%")/* [7.899] col tasto «Salta al fischio finale» la colonna delle voci sale di 46 px (7.543) e il riquadro della panchina entrava nel sottopancia: foto del PO all'80', da sostituito. Il sottopancia sale con lei. */,zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}:{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>
                    <style>{"@keyframes cpmComIn661{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}@keyframes cpmPop919{from{opacity:0;transform:translateY(22px) scale(.94)}to{opacity:1;transform:none}}@keyframes cpmPop919Velo{from{opacity:0}to{opacity:1}}@keyframes cpmFesta942{0%{transform:translateY(-10vh) rotate(0deg)}100%{transform:translateY(112vh) rotate(420deg)}}@keyframes cpmPop919Tempo{from{transform:scaleX(1)}to{transform:scaleX(0)}}"}</style>
-                   <div /* [7.695.0] sottopancia: il contenitore prende tutta la larghezza e la riga si taglia con i puntini, invece di uscire dallo schermo come faceva la prima stesura (fotografata) */ style={_sot695?{display:"block",width:"100%",boxSizing:"border-box",padding:"7px 12px",borderRadius:10,background:"linear-gradient(90deg, rgba(5,8,16,0) 0%, rgba(5,8,16,0.78) 12%, rgba(5,8,16,0.78) 88%, rgba(5,8,16,0) 100%)"}:{display:"inline-block",padding:"10px 16px",borderRadius:14,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
-                     <div /* ⚠️ [7.697.0 collaudo PO: «la telecronaca durante le azioni pericolose e' tagliata, deve leggersi per intera»] IL DIFETTO ERA MIO E DI MEZZA GIORNATA FA: per tenere il sottopancia su una riga avevo messo `nowrap` piu' i puntini, e una riga di telecronaca sta in una riga sola quasi mai. Il sottopancia serve a NON coprire l'azione, non a nascondere il testo: ora va a capo fino a tre righe, resta in basso e il testo si legge tutto. */ style={_sot695?{fontSize:14,lineHeight:1.32,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.9)",letterSpacing:0.1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden",maxWidth:"100%"}:{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
-                     {!_sot695&&(<div style={{marginTop:5,fontSize:11,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>)}
+                   <div /* [7.695.0] sottopancia: il contenitore prende tutta la larghezza e la riga si taglia con i puntini, invece di uscire dallo schermo come faceva la prima stesura (fotografata) */ style={_sot695?{display:"block",width:"100%",boxSizing:"border-box",padding:"7px 12px",borderRadius:RAD.sm,background:"linear-gradient(90deg, rgba(5,8,16,0) 0%, rgba(5,8,16,0.78) 12%, rgba(5,8,16,0.78) 88%, rgba(5,8,16,0) 100%)"}:{display:"inline-block",padding:"10px 16px",borderRadius:RAD.md,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
+                     <div /* ⚠️ [7.697.0 collaudo PO: «la telecronaca durante le azioni pericolose e' tagliata, deve leggersi per intera»] IL DIFETTO ERA MIO E DI MEZZA GIORNATA FA: per tenere il sottopancia su una riga avevo messo `nowrap` piu' i puntini, e una riga di telecronaca sta in una riga sola quasi mai. Il sottopancia serve a NON coprire l'azione, non a nascondere il testo: ora va a capo fino a tre righe, resta in basso e il testo si legge tutto. */ style={_sot695?{fontSize:FS.body,lineHeight:1.32,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.9)",letterSpacing:0.1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden",maxWidth:"100%"}:{fontSize:FS.title,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
+                     {!_sot695&&(<div style={{marginTop:5,fontSize:FS.caption,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>)}
                      {/* ⚠️ [7.788.0 — LA VOCE DEL MISTER SOTTO IL RACCONTO, E PIU' GRANDE. Richiesta PO in
                          collaudo, con fotografia al 69' di FC Mer 3-0 FC Gri: «le indicazioni del mister
                          le farei comparire subito sotto la telecronaca e più grandi».
@@ -9486,9 +9690,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                        (typeof window!=="undefined"&&window.__CPM_NO899B)?(
                        <div data-cpm="panchina" key={"panch661-"+coachMsg.key} style={{marginTop:9,display:"inline-block",background:"rgba(10,18,12,0.9)",border:"1px solid rgba(134,239,172,0.35)",borderLeft:"3px solid #4ade80",borderRadius:RAD.sm,padding:"6px 10px",pointerEvents:"none"}}>
                          <span style={{fontSize:FS.caption,fontWeight:800,color:"#86efac",letterSpacing:1.2,textTransform:"uppercase",marginRight:8}}>Panchina</span>
-                         <span style={{fontSize:15,fontWeight:600,color:"#d1fae5",lineHeight:1.35}}><EmoText>{coachMsg.text}</EmoText></span>
+                         <span style={{fontSize:FS.bodyLg,fontWeight:600,color:"#d1fae5",lineHeight:1.35}}><EmoText>{coachMsg.text}</EmoText></span>
                        </div>):(
-                       <div data-cpm="panchina" key={"panch661-"+coachMsg.key} style={{marginTop:6,display:"block",fontSize:12.5,fontWeight:600,color:"#86efac",lineHeight:1.3,textShadow:"0 1px 6px rgba(0,0,0,0.85)",pointerEvents:"none",animation:"chantPulse 6s ease-out forwards"}}>
+                       <div data-cpm="panchina" key={"panch661-"+coachMsg.key} style={{marginTop:6,display:"block",fontSize:FS.small,fontWeight:600,color:"#86efac",lineHeight:1.3,textShadow:"0 1px 6px rgba(0,0,0,0.85)",pointerEvents:"none",animation:"chantPulse 6s ease-out forwards"}}>
                          <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:1.1,textTransform:"uppercase",marginRight:6,opacity:0.8}}>Panchina</span><EmoText>{coachMsg.text}</EmoText>
                        </div>)
                      )}
@@ -9506,12 +9710,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                        <div data-cpm="sc681" style={_sot695?{marginTop:6,display:"flex",flexDirection:"column",gap:4,pointerEvents:"auto"}:{marginTop:9,display:"flex",flexDirection:"column",gap:6,pointerEvents:"auto"}}>{/* [7.892] nel sottopancia le scelte sono compatte: 36 px l'una, non un pannello sopra il campo */}
                          {coms[0].sc.map((o,oi)=>(
                            <button key={oi} onClick={()=>scegli681(oi,false)}
-                             style={_sot695?{padding:"7px 10px",borderRadius:9,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:13,fontWeight:800,lineHeight:1.2,textAlign:"left",cursor:"pointer"}:{padding:"9px 12px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:14,fontWeight:800,lineHeight:1.25,textAlign:"left",cursor:"pointer"}}>{o.et}</button>
+                             style={_sot695?{padding:"7px 10px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:FS.body,fontWeight:800,lineHeight:1.2,textAlign:"left",cursor:"pointer"}:{padding:"9px 12px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:FS.body,fontWeight:800,lineHeight:1.25,textAlign:"left",cursor:"pointer"}}>{o.et}</button>
                          ))}
                        </div>
                      )}
                      {coms[0].sc&&coms[0].sci!=null&&(
-                       <div style={{marginTop:7,fontSize:12.5,fontWeight:700,color:"rgba(196,181,253,0.9)"}}>
+                       <div style={{marginTop:7,fontSize:FS.small,fontWeight:700,color:"rgba(196,181,253,0.9)"}}>
                          {"\u2713 "+String(coms[0].sc[coms[0].sci]&&coms[0].sc[coms[0].sci].et||"")+(coms[0].scAuto?"  (scelta da sola)":"")}
                        </div>
                      )}
@@ -9533,12 +9737,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {/* [7.2.0] PREMIAZIONE — banner celebrativo + skip. Il 3D sotto mostra giro di campo/curva/podio. */}
               {phase==="ceremony"&&(<React.Fragment>
                 <div style={{position:"absolute",top:0,left:0,right:0,zIndex:24,pointerEvents:"none",padding:"14px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(94,15,29,0.72),rgba(94,15,29,0))"}}>
-                  <div style={{fontSize:11,letterSpacing:3,color:"#f0b33a",fontWeight:800}}>🏆 PREMIAZIONE</div>
+                  <div style={{fontSize:FS.caption,letterSpacing:3,color:"#f0b33a",fontWeight:800}}>🏆 PREMIAZIONE</div>
                   <div style={{fontSize:isNarrow?20:26,fontWeight:900,color:"#fff",letterSpacing:1,marginTop:2,textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{ceremony?.kind==="league"?"CAMPIONI!":ceremony?.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
                   {ceremony?.name&&<div style={{fontSize:isNarrow?12:14,color:"#ffe9b8",fontWeight:700,marginTop:1}}>{ceremony.name}</div>}
                 </div>
                 {/* [7.31.0] chiusura blocco premiazione qui sotto; l'overlay RIGORI è il Fragment successivo */}
-                <button onClick={skipCeremony} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:22,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
+                <button onClick={skipCeremony} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
               </React.Fragment>)}
               {/* [7.31.0 direttiva PO] OVERLAY CALCI DI RIGORE — tabellino broadcast ✓/✗ kick-by-kick, suspense
                   sul kicker, banner finale (passi il turno / eliminati). Il 3D sotto anima i rigori veri. */}
@@ -9554,7 +9758,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 const _finTxt=soState.won?((context==="cup"&&(player.cup?.round||0)>=4)||((context==="euro_ko"&&player.euro?.phase==="final"))||((context==="euroMondiale_ko"&&player.euroMondiale?.koPhase==="final"))||((context==="nationsCup"&&!!player.nationsCupQueue?.isFinal))?"🏆 DAL DISCHETTO ALLA GLORIA!":"✅ PASSI IL TURNO!"):"❌ ELIMINATI AI RIGORI";
                 return(<React.Fragment>
                 <div style={{position:"absolute",top:0,left:0,right:0,zIndex:24,pointerEvents:"none",padding:"12px 10px",textAlign:"center",background:"linear-gradient(180deg,rgba(5,10,22,0.86),rgba(5,10,22,0))"}}>
-                  <div style={{fontSize:11,letterSpacing:3,color:"#fbbf24",fontWeight:800}}>⚽ CALCI DI RIGORE</div>
+                  <div style={{fontSize:FS.caption,letterSpacing:3,color:"#fbbf24",fontWeight:800}}>⚽ CALCI DI RIGORE</div>
                   <div className="cpm-num" style={{fontSize:isNarrow?24:30,fontWeight:900,color:"#fff",marginTop:2,textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{soState.hs} — {soState.as}</div>
                   <div style={{display:"flex",justifyContent:"center",gap:14,marginTop:6}}>
                     {[["H",_dH],["A",_dA]].map(([sd,dd])=>(
@@ -9565,11 +9769,11 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   {soState.done
                     ?<div style={{fontSize:isNarrow?17:21,fontWeight:900,color:soState.won?"#4ade80":"#f87171",marginTop:8,textShadow:"0 2px 10px rgba(0,0,0,0.7)"}}>{_finTxt}</div>
-                    :_cur?<div style={{fontSize:12.5,color:"#fde68a",fontWeight:800,marginTop:7}}>{_cur.hero?"⭐ ":""}{_cur.kicker} sul dischetto…</div>
-                    :_lastRev?<div style={{fontSize:13,fontWeight:900,marginTop:7,color:_lastRev.scored?"#4ade80":"#f87171"}}>{_lastRev.scored?"GOOOL!":( _lastRev.wide?"FUORI!":"PARATO!")}</div>
-                    :<div style={{fontSize:12,color:"rgba(255,255,255,0.8)",fontWeight:700,marginTop:7}}>Si decide tutto dagli undici metri…</div>}
+                    :_cur?<div style={{fontSize:FS.small,color:"#fde68a",fontWeight:800,marginTop:7}}>{_cur.hero?"⭐ ":""}{_cur.kicker} sul dischetto…</div>
+                    :_lastRev?<div style={{fontSize:FS.body,fontWeight:900,marginTop:7,color:_lastRev.scored?"#4ade80":"#f87171"}}>{_lastRev.scored?"GOOOL!":( _lastRev.wide?"FUORI!":"PARATO!")}</div>
+                    :<div style={{fontSize:FS.small,color:"rgba(255,255,255,0.8)",fontWeight:700,marginTop:7}}>Si decide tutto dagli undici metri…</div>}
                 </div>
-                {!soState.done&&<button onClick={skipShootout} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:22,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta la serie ⏩</button>}
+                {!soState.done&&<button onClick={skipShootout} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta la serie ⏩</button>}
                 </React.Fragment>);})()}
               {/* item 4 (5.49.2): GRAFICA TV PRE-PARTITA — confronto classifica delle due squadre, stile broadcast. Solo durante l'ingresso (walkout). */}
               {/* [7.13.0] SERATA DI PRESENTAZIONE — lo speaker annuncia la squadra sul walkout del 1° match in casa */}
@@ -9590,34 +9794,34 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>);})()}
               {phase==="walkout"&&(
                 <div style={{position:"absolute",left:0,right:0,bottom:"6%",zIndex:14,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 10px",animation:"logoIn 0.6s ease-out"}}>
-                  <div style={{width:"100%",maxWidth:440,background:"linear-gradient(180deg,rgba(24,35,56,0.74),rgba(24,35,56,0.62))"/* [7.937 collaudo PO: «il background delle statistiche PRE PARTITA e troppo scuro, deve essere semi trasparente»] Era rgba(8,12,24) — praticamente nero — a 0,92 di opacita: lo stadio dietro non si vedeva affatto, e la scheda sembrava incollata sopra a una fotografia invece che sospesa dentro la scena. Ora e lo STESSO vetro del pannello delle statistiche in partita (rgba(24,35,56) a 0,74), che il PO ha gia approvato alla 7.922: due schermate che mostrano la stessa cosa non possono avere due vetri diversi. Il velo sale da 6 a 10 px perche il testo resti leggibile sulle tribune chiare. */,border:"1px solid rgba(148,163,184,0.22)",borderRadius:14,overflow:"hidden",boxShadow:"0 12px 40px rgba(0,0,0,0.45)",backdropFilter:"blur(10px)"}}>
+                  <div style={{width:"100%",maxWidth:440,background:"linear-gradient(180deg,rgba(24,35,56,0.74),rgba(24,35,56,0.62))"/* [7.937 collaudo PO: «il background delle statistiche PRE PARTITA e troppo scuro, deve essere semi trasparente»] Era rgba(8,12,24) — praticamente nero — a 0,92 di opacita: lo stadio dietro non si vedeva affatto, e la scheda sembrava incollata sopra a una fotografia invece che sospesa dentro la scena. Ora e lo STESSO vetro del pannello delle statistiche in partita (rgba(24,35,56) a 0,74), che il PO ha gia approvato alla 7.922: due schermate che mostrano la stessa cosa non possono avere due vetri diversi. Il velo sale da 6 a 10 px perche il testo resti leggibile sulle tribune chiare. */,border:"1px solid rgba(148,163,184,0.22)",borderRadius:RAD.md,overflow:"hidden",boxShadow:"0 12px 40px rgba(0,0,0,0.45)",backdropFilter:"blur(10px)"}}>
                     {/* barra competizione in corso */}
                     <div style={{padding:"5px 12px",textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_compCol,background:"rgba(255,255,255,0.04)",borderBottom:`1px solid ${_compCol}44`}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>{/* [6.88.0] header walkout nel colore della competizione */}
                     {/* header: nomi squadre con barra colore */}
                     <div style={{display:"flex",alignItems:"stretch"}}>
                       <div style={{flex:1,padding:"9px 12px",borderTop:`3px solid ${scoreHomeCol||"#3b82f6"}`,minWidth:0}}>
-                        <div style={{fontSize:13,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_tvHome.name}</div>
+                        <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_tvHome.name}</div>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:600}}>{_leagueCtx?(_tvHome.pos?`${_tvHome.pos}ª in classifica`:"Casa"):"Casa"}</div>
                       </div>
-                      <div style={{display:"flex",alignItems:"center",padding:"0 10px",fontSize:11,fontWeight:800,color:"rgba(255,255,255,0.5)",letterSpacing:1}}>VS</div>
+                      <div style={{display:"flex",alignItems:"center",padding:"0 10px",fontSize:FS.caption,fontWeight:800,color:"rgba(255,255,255,0.5)",letterSpacing:1}}>VS</div>
                       <div style={{flex:1,padding:"9px 12px",borderTop:`3px solid ${scoreAwayCol||"#ef4444"}`,minWidth:0,textAlign:"right"}}>
-                        <div style={{fontSize:13,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_tvAway.name}</div>
+                        <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_tvAway.name}</div>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:600}}>{_leagueCtx?(_tvAway.pos?`${_tvAway.pos}ª in classifica`:"Ospite"):"Ospite"}</div>
                       </div>
                     </div>
                     {_leagueCtx&&_tvOpener81?(
                     /* [6.81.0] PRIMA GIORNATA: niente tabella di zeri — il cammino inizia oggi */
                     <div style={{padding:"12px 14px",textAlign:"center"}}>
-                      <div style={{fontSize:12,fontWeight:900,color:"#fff",letterSpacing:1,textTransform:"uppercase"}}>1ª giornata</div>
+                      <div style={{fontSize:FS.small,fontWeight:900,color:"#fff",letterSpacing:1,textTransform:"uppercase"}}>1ª giornata</div>
                       <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontWeight:600,marginTop:3}}>Esordio stagionale — il cammino delle due squadre inizia oggi</div>
                     </div>
                     ):_leagueCtx?(<React.Fragment>
                     {/* CAMPIONATO: righe statistiche delle due squadre */}
                     {[["Punti",_tvHome.pts,_tvAway.pts],["Vittorie",_tvHome.w,_tvAway.w],["Pareggi",_tvHome.d,_tvAway.d],["Sconfitte",_tvHome.l,_tvAway.l],["Gol fatti",_tvHome.gf,_tvAway.gf],["Gol subiti",_tvHome.ga,_tvAway.ga]].map(([lab,hv,av],i)=>(
                       <div key={lab} style={{display:"flex",alignItems:"center",padding:"4px 12px",background:i%2?"rgba(255,255,255,0.03)":"transparent"}}>
-                        <div style={{flex:1,fontSize:12,fontWeight:800,color:"#fff",textAlign:"left"}}>{hv==null?"–":hv}</div>
+                        <div style={{flex:1,fontSize:FS.small,fontWeight:800,color:"#fff",textAlign:"left"}}>{hv==null?"–":hv}</div>
                         <div style={{flex:1.4,fontSize:FS.caption,fontWeight:600,color:"rgba(255,255,255,0.5)",textAlign:"center",textTransform:"uppercase",letterSpacing:0.5}}>{lab}</div>
-                        <div style={{flex:1,fontSize:12,fontWeight:800,color:"#fff",textAlign:"right"}}>{av==null?"–":av}</div>
+                        <div style={{flex:1,fontSize:FS.small,fontWeight:800,color:"#fff",textAlign:"right"}}>{av==null?"–":av}</div>
                       </div>
                     ))}
                     <div style={{display:"flex",alignItems:"center",padding:"7px 12px",borderTop:"1px solid rgba(255,255,255,0.08)"}}>
@@ -9629,8 +9833,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     /* COMPETIZIONE (coppa/europa/nazionale): fase/turno + il cammino dell'eroe IN questa competizione */
                     <div style={{padding:"10px 14px"}}>
                       <div style={{display:"flex",justifyContent:"space-around",textAlign:"center",marginBottom:_tvComp&&_tvComp.form&&_tvComp.form.length?10:0}}>
-                        {_tvComp&&_tvComp.pts!=null&&<div><div style={{fontSize:20,fontWeight:900,color:"#fff"}}>{_tvComp.pts}</div><div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:1}}>Punti nel girone</div></div>}
-                        <div><div style={{fontSize:20,fontWeight:900,color:"#fff"}}>{_tvComp?_tvComp.played:0}</div><div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:1}}>Gare disputate</div></div>
+                        {_tvComp&&_tvComp.pts!=null&&<div><div style={{fontSize:FS.title,fontWeight:900,color:"#fff"}}>{_tvComp.pts}</div><div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:1}}>Punti nel girone</div></div>}
+                        <div><div style={{fontSize:FS.title,fontWeight:900,color:"#fff"}}>{_tvComp?_tvComp.played:0}</div><div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:1}}>Gare disputate</div></div>
                       </div>
                       {_tvComp&&_tvComp.form&&_tvComp.form.length>0&&(
                         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,borderTop:"1px solid rgba(255,255,255,0.08)",paddingTop:8}}>
@@ -9658,8 +9862,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
               </div>}
               {/* Sprint 97 — pressure border */}
-              {momentum<=12&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:4,animation:"pressureBorderRed 2.6s ease-in-out infinite"}}/>}
-              {momentum>=88&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:4,animation:"pressureBorderHome 2.8s ease-in-out infinite","--ph-col":(c=>{try{const h=String(c||"#2563eb").replace("#","");const x=h.length===3?h.split("").map(q=>q+q).join(""):h;const n=parseInt(x,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},0.16)`;}catch(e){return "rgba(37,99,235,0.16)";}})(scoreHomeCol||homeKitCol)}}/>}{/* [6.74.0 3D-14] alpha 0.16 come il lato rosso: prima il colore kit PIENO → pulse casa molto più marcato di quello che il PO aveva chiesto di attenuare (6.72.0) */}
+              {momentum<=12&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderRed 2.6s ease-in-out infinite"}}/>}
+              {momentum>=88&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderHome 2.8s ease-in-out infinite","--ph-col":(c=>{try{const h=String(c||"#2563eb").replace("#","");const x=h.length===3?h.split("").map(q=>q+q).join(""):h;const n=parseInt(x,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},0.16)`;}catch(e){return "rgba(37,99,235,0.16)";}})(scoreHomeCol||homeKitCol)}}/>}{/* [6.74.0 3D-14] alpha 0.16 come il lato rosso: prima il colore kit PIENO → pulse casa molto più marcato di quello che il PO aveva chiesto di attenuare (6.72.0) */}
               {/* Sprint 97 — pressure cinema */}
               {pressureCinema&&<div key={pressureCinema.key} style={{position:"absolute",inset:0,zIndex:23,pointerEvents:"none",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <div style={{fontSize:isNarrow?28:40,fontWeight:900,color:pressureCinema.col,letterSpacing:4,animation:"pressureDrop 1.8s ease-out forwards",textShadow:`0 0 24px ${pressureCinema.col}`,fontStyle:"italic",WebkitTextStroke:"1px rgba(255,255,255,0.5)"}}>{pressureCinema.text}</div>
@@ -9710,8 +9914,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div data-cpm="panchina" key={coachMsg.key} style={{...(_no548?{position:"absolute",left:0,bottom:0}:{alignSelf:"flex-start"}),pointerEvents:"none",animation:"chantPulse 6s ease-out forwards"}}>
                     {(typeof window!=='undefined'&&window.__CPM_NO899B)?(<div style={{display:"inline-block",background:"rgba(10,18,12,0.9)",border:"1px solid rgba(134,239,172,0.35)",borderLeft:"3px solid #4ade80",borderRadius:RAD.sm,padding:"5px 11px",maxWidth:"74vw",textAlign:"left"}}>
                       <span style={{fontSize:FS.caption,fontWeight:800,color:"#86efac",letterSpacing:1.2,textTransform:"uppercase",marginRight:7}}>Panchina</span>
-                      <span style={{fontSize:12.5,fontWeight:600,color:"#d1fae5",lineHeight:1.3}}><EmoText>{coachMsg.text}</EmoText></span>
-                    </div>):(<div style={{display:"block",maxWidth:"86vw",textAlign:"left",fontSize:12.5,fontWeight:600,color:"#86efac",lineHeight:1.3,textShadow:"0 1px 6px rgba(0,0,0,0.85)"}}>{/* [7.899] la voce del mister e' una riga, non un riquadro (anche nella colonna delle voci) */}
+                      <span style={{fontSize:FS.small,fontWeight:600,color:"#d1fae5",lineHeight:1.3}}><EmoText>{coachMsg.text}</EmoText></span>
+                    </div>):(<div style={{display:"block",maxWidth:"86vw",textAlign:"left",fontSize:FS.small,fontWeight:600,color:"#86efac",lineHeight:1.3,textShadow:"0 1px 6px rgba(0,0,0,0.85)"}}>{/* [7.899] la voce del mister e' una riga, non un riquadro (anche nella colonna delle voci) */}
                       <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:1.1,textTransform:"uppercase",marginRight:6,opacity:0.8}}>Panchina</span><EmoText>{coachMsg.text}</EmoText>
                     </div>)}
                   </div>
@@ -9723,9 +9927,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                    __CPM_NO669, che la riaccende per il confronto. */}
                 {coms.length>0&&coms[0]&&!(phase==="playing"&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&!(typeof window!=="undefined"&&window.__CPM_NO669))&&(
                 <div data-cpm="fmrow" key={"fmrow"+coms[0].t+String(coms[0].text||"").slice(0,18)} style={{pointerEvents:"none",textAlign:"center",animation:"chantPulse 5s ease-out forwards"}}>
-                  <div style={{display:"inline-block",maxWidth:"100%",background:"linear-gradient(90deg,rgba(3,6,16,0),rgba(3,6,16,0.88) 12%,rgba(3,6,16,0.88) 88%,rgba(3,6,16,0))",borderRadius:10,padding:"6px 16px"}}>
+                  <div style={{display:"inline-block",maxWidth:"100%",background:"linear-gradient(90deg,rgba(3,6,16,0),rgba(3,6,16,0.88) 12%,rgba(3,6,16,0.88) 88%,rgba(3,6,16,0))",borderRadius:RAD.sm,padding:"6px 16px"}}>
                     <span style={{fontSize:FS.caption,fontWeight:800,color:"rgba(255,255,255,0.45)",marginRight:7}}>{coms[0].t}&apos;</span>
-                    <span style={{fontSize:15,fontWeight:700,color:coms[0].color||"#f8fafc",lineHeight:1.35,textShadow:"0 2px 8px rgba(0,0,0,0.9)"}}>{coms[0].text}</span>{/* [7.529.0 collaudo PO «leggermente ridotto e abbassato»] 17->15, bottom 4%->1,5% — ⚠️ il commento DEVE stare in graffe: come figlio JSX nudo Babel lo rende TESTO nel banner (visto in foto cronaca-534) */}
+                    <span style={{fontSize:FS.bodyLg,fontWeight:700,color:coms[0].color||"#f8fafc",lineHeight:1.35,textShadow:"0 2px 8px rgba(0,0,0,0.9)"}}>{coms[0].text}</span>{/* [7.529.0 collaudo PO «leggermente ridotto e abbassato»] 17->15, bottom 4%->1,5% — ⚠️ il commento DEVE stare in graffe: come figlio JSX nudo Babel lo rende TESTO nel banner (visto in foto cronaca-534) */}
                   </div>
                 </div>
                 )}
@@ -9769,35 +9973,35 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {kickoffHold&&!paused&&phase==="playing"&&glbFail&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.94)",backdropFilter:"blur(6px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:41,padding:"0 26px",textAlign:"center"}}>
                   <div style={{fontSize:38,marginBottom:10}}>⚠️</div>
-                  <div style={{fontSize:15,fontWeight:900,color:"#f59e0b",letterSpacing:1.6,textTransform:"uppercase",marginBottom:8}}>Modelli 3D non caricati</div>
-                  <div style={{fontSize:12.5,color:"rgba(255,255,255,0.82)",lineHeight:1.55,maxWidth:330,marginBottom:16}}>
+                  <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",letterSpacing:1.6,textTransform:"uppercase",marginBottom:8}}>Modelli 3D non caricati</div>
+                  <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.55,maxWidth:330,marginBottom:16}}>
                     {glbFail==="error"?"Il caricamento dei giocatori non è riuscito. Controlla la connessione e riprova: la partita non parte con i modelli di ripiego.":"I giocatori ci stanno mettendo troppo a caricare (connessione lenta). Puoi riprovare senza perdere la partita."}
                   </div>
                   <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;window.__CPM_GLB_READY=false;}catch(_e){}setGlbFail(null);setGlbTry(t=>t+1);}}
-                    style={{padding:"12px 26px",borderRadius:11,border:"none",background:"#f59e0b",color:"#1a1206",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:"inherit",marginBottom:10}}>↻ Riprova il caricamento</button>
+                    style={{padding:"12px 26px",borderRadius:RAD.sm,border:"none",background:"#f59e0b",color:"#1a1206",fontWeight:900,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",marginBottom:10}}>↻ Riprova il caricamento</button>
                   <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;}catch(_e){}setGlbFail(null);setKickoffHold(false);try{if(typeof window!=='undefined'&&window.__CPM_SHOW_PROC)window.__CPM_SHOW_PROC();}catch(_e2){}}}
-                    style={{padding:"9px 18px",borderRadius:9,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:"rgba(255,255,255,0.62)",fontWeight:700,fontSize:11.5,cursor:"pointer",fontFamily:"inherit"}}>Gioca comunque senza modelli 3D</button>
+                    style={{padding:"9px 18px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:"rgba(255,255,255,0.62)",fontWeight:700,fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>Gioca comunque senza modelli 3D</button>
                 </div>)}
               {kickoffHold&&!paused&&phase==="playing"&&!glbFail&&(()=>{
                 const _kh=["🟢 Le squadre completano il riscaldamento…","📋 Ultime indicazioni dei mister…","🤝 L'arbitro chiama i capitani per il sorteggio…","📸 Foto di rito e strette di mano…","🏟️ Il pubblico si prepara: ci siamo quasi…"];
                 return(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.88)",backdropFilter:"blur(5px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:40}}>
                   <div style={{fontSize:34,marginBottom:8,filter:"drop-shadow(0 0 14px rgba(245,158,11,0.7))"}}>⚽</div>
-                  <div style={{fontSize:15,fontWeight:900,color:"#f59e0b",letterSpacing:2.5,textTransform:"uppercase",marginBottom:10}}>Verso il fischio d'inizio</div>
-                  <div style={{fontSize:12,color:"rgba(255,255,255,0.75)",letterSpacing:0.5,minHeight:18,textAlign:"center",padding:"0 20px"}}>{_kh[holdTick%_kh.length]}</div>
-                  <div style={{marginTop:14,width:120,height:3,background:"rgba(255,255,255,0.12)",borderRadius:2,overflow:"hidden"}}>
-                    <div style={{height:"100%",width:"40%",background:"#f59e0b",borderRadius:2,animation:"pulse 1.1s ease-in-out infinite alternate"}}/>
+                  <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",letterSpacing:2.5,textTransform:"uppercase",marginBottom:10}}>Verso il fischio d'inizio</div>
+                  <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.75)",letterSpacing:0.5,minHeight:18,textAlign:"center",padding:"0 20px"}}>{_kh[holdTick%_kh.length]}</div>
+                  <div style={{marginTop:14,width:120,height:3,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:"40%",background:"#f59e0b",borderRadius:RAD.pill,animation:"pulse 1.1s ease-in-out infinite alternate"}}/>
                   </div>
                 </div>);})()}
               {/* [7.338.0] TACCUINO DI COLLAUDO — campo appunti in sovraimpressione, partita ferma finché non chiudi.
                   Sta SOPRA l'overlay di pausa (z 41) e ne blocca il tap-per-riprendere: la nota viene prima. */}
               {bugNote&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(3,6,16,0.92)",backdropFilter:"blur(6px)",zIndex:41,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:14}} onClick={e=>e.stopPropagation()}>
-                  <div style={{width:"100%",maxWidth:430,background:"#0e1524",border:"1px solid rgba(245,158,11,0.42)",borderRadius:14,padding:"14px 14px 12px",boxShadow:"0 18px 50px rgba(0,0,0,0.6)"}}>
+                  <div style={{width:"100%",maxWidth:430,background:"#0e1524",border:"1px solid rgba(245,158,11,0.42)",borderRadius:RAD.md,padding:"14px 14px 12px",boxShadow:"0 18px 50px rgba(0,0,0,0.6)"}}>
                     <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-                      <span style={{fontSize:18}}>⚠️</span>
+                      <span style={{fontSize:FS.subhead}}>⚠️</span>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:12.5,fontWeight:900,color:"#f59e0b"}}>Appunto sull'azione</div>
+                        <div style={{fontSize:FS.small,fontWeight:900,color:"#f59e0b"}}>Appunto sull'azione</div>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.5)"}}>{bugNote.auto?"Partita in pausa · ho già abbozzato cosa ho visto":"Partita in pausa · il contesto è già registrato"}</div>
                       </div>
                     </div>
@@ -9817,18 +10021,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       return(<div style={{marginBottom:8}}>
                         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:5}}>
                           <button onClick={()=>{if(_i<L.length-1)pick(L[_i+1]);}} disabled={_i>=L.length-1}
-                            style={{flexShrink:0,padding:"7px 10px",borderRadius:9,border:"1px solid rgba(255,255,255,0.18)",background:_i>=L.length-1?"rgba(255,255,255,0.03)":"rgba(245,158,11,0.14)",color:_i>=L.length-1?"rgba(255,255,255,0.22)":"#f59e0b",fontSize:11,fontWeight:800,cursor:_i>=L.length-1?"default":"pointer"}}>◀ prec.</button>
+                            style={{flexShrink:0,padding:"7px 10px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.18)",background:_i>=L.length-1?"rgba(255,255,255,0.03)":"rgba(245,158,11,0.14)",color:_i>=L.length-1?"rgba(255,255,255,0.22)":"#f59e0b",fontSize:FS.caption,fontWeight:800,cursor:_i>=L.length-1?"default":"pointer"}}>◀ prec.</button>
                           <div style={{flex:1,minWidth:0,textAlign:"center"}}>
                             <div style={{fontSize:FS.caption,color:"#e8edf7",fontWeight:700,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_lab(_sel)}</div>
                             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>{_i===0?"l'ultima":`${_i} azion${_i===1?"e":"i"} fa`}{_sel&&_sel.out?` · ${_sel.out}`:_sel&&_sel.act?" · non conclusa":""}</div>
                           </div>
                           <button onClick={()=>{if(_i>0)pick(L[_i-1]);}} disabled={_i<=0}
-                            style={{flexShrink:0,padding:"7px 10px",borderRadius:9,border:"1px solid rgba(255,255,255,0.18)",background:_i<=0?"rgba(255,255,255,0.03)":"rgba(245,158,11,0.14)",color:_i<=0?"rgba(255,255,255,0.22)":"#f59e0b",fontSize:11,fontWeight:800,cursor:_i<=0?"default":"pointer"}}>succ. ▶</button>
+                            style={{flexShrink:0,padding:"7px 10px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.18)",background:_i<=0?"rgba(255,255,255,0.03)":"rgba(245,158,11,0.14)",color:_i<=0?"rgba(255,255,255,0.22)":"#f59e0b",fontSize:FS.caption,fontWeight:800,cursor:_i<=0?"default":"pointer"}}>succ. ▶</button>
                         </div>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.42)",marginBottom:4}}>Quale azione? (la registrazione copre tutta la partita)</div>
                         <div style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:2}}>
                           {L.map((sc,i)=>(
-                            <button key={sc.key} onClick={()=>pick(sc)} style={{flexShrink:0,padding:"5px 9px",borderRadius:14,border:`1px solid ${sc.key===cur?"#f59e0b":"rgba(255,255,255,0.18)"}`,background:sc.key===cur?"rgba(245,158,11,0.16)":"transparent",color:sc.key===cur?"#fbbf24":"rgba(255,255,255,0.62)",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap",maxWidth:170,overflow:"hidden",textOverflow:"ellipsis"}}>
+                            <button key={sc.key} onClick={()=>pick(sc)} style={{flexShrink:0,padding:"5px 9px",borderRadius:RAD.md,border:`1px solid ${sc.key===cur?"#f59e0b":"rgba(255,255,255,0.18)"}`,background:sc.key===cur?"rgba(245,158,11,0.16)":"transparent",color:sc.key===cur?"#fbbf24":"rgba(255,255,255,0.62)",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap",maxWidth:170,overflow:"hidden",textOverflow:"ellipsis"}}>
                               {sc.min}&apos; {i===0?"(ora) ":""}{(sc.sit||"azione").replace(/^[^\w«]+/,"").slice(0,22)}
                             </button>))}
                         </div>
@@ -9847,17 +10051,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         <div style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:2}}>
                           {_CODES94.map(([cd,lb])=>{const _on94=(bugNote.txt||"").indexOf("codice "+cd)>=0;
                             return(<button key={cd} onClick={()=>{setBugNote(n=>{const t=n.txt||"";if(t.indexOf("codice "+cd)>=0)return n;const _r94="codice "+cd+" — "+lb;return{...n,txt:t.trim()?t.replace(/\s+$/,"")+"\n"+_r94:_r94};});}}
-                              style={{flexShrink:0,padding:"7px 10px",borderRadius:14,border:`1px solid ${_on94?"#f59e0b":"rgba(255,255,255,0.16)"}`,background:_on94?"rgba(245,158,11,0.16)":"rgba(255,255,255,0.05)",color:_on94?"#fbbf24":"rgba(255,255,255,0.72)",fontSize:FS.caption,fontWeight:800,cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit",lineHeight:1}}>
+                              style={{flexShrink:0,padding:"7px 10px",borderRadius:RAD.md,border:`1px solid ${_on94?"#f59e0b":"rgba(255,255,255,0.16)"}`,background:_on94?"rgba(245,158,11,0.16)":"rgba(255,255,255,0.05)",color:_on94?"#fbbf24":"rgba(255,255,255,0.72)",fontSize:FS.caption,fontWeight:800,cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit",lineHeight:1}}>
                               {cd} · {lb}</button>);})}
                         </div>
                       </div>);})()}
                     <textarea autoFocus value={bugNote.txt} onChange={e=>setBugNote(n=>({...n,txt:e.target.value}))} rows={3}
                       placeholder="Cosa non va in questa azione? (es. il pallone torna indietro dopo il cross)"
-                      style={{width:"100%",boxSizing:"border-box",background:"#060b16",color:"#e8edf7",border:"1px solid rgba(255,255,255,0.16)",borderRadius:9,padding:"9px 10px",fontSize:12.5,fontFamily:"inherit",resize:"vertical",lineHeight:1.45}}/>
+                      style={{width:"100%",boxSizing:"border-box",background:"#060b16",color:"#e8edf7",border:"1px solid rgba(255,255,255,0.16)",borderRadius:RAD.sm,padding:"9px 10px",fontSize:FS.small,fontFamily:"inherit",resize:"vertical",lineHeight:1.45}}/>
                     <div style={{display:"flex",gap:7,marginTop:9}}>
-                      <button onClick={()=>_bugSave(true)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:9,border:"none",background:bugNote.txt.trim()?"#f59e0b":"rgba(255,255,255,0.10)",color:bugNote.txt.trim()?"#1a1206":"rgba(255,255,255,0.35)",fontWeight:800,fontSize:12,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>📋 Salva e copia</button>
-                      <button onClick={()=>_bugSave(false)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:9,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:bugNote.txt.trim()?"#e8edf7":"rgba(255,255,255,0.35)",fontWeight:700,fontSize:12,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>Salva</button>
-                      <button onClick={()=>{setBugNote(null);setPaused(false);}} style={{padding:"10px 12px",borderRadius:9,border:"1px solid rgba(255,255,255,0.16)",background:"transparent",color:"rgba(255,255,255,0.55)",fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Annulla</button>
+                      <button onClick={()=>_bugSave(true)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:RAD.sm,border:"none",background:bugNote.txt.trim()?"#f59e0b":"rgba(255,255,255,0.10)",color:bugNote.txt.trim()?"#1a1206":"rgba(255,255,255,0.35)",fontWeight:800,fontSize:FS.small,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>📋 Salva e copia</button>
+                      <button onClick={()=>_bugSave(false)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:bugNote.txt.trim()?"#e8edf7":"rgba(255,255,255,0.35)",fontWeight:700,fontSize:FS.small,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>Salva</button>
+                      <button onClick={()=>{setBugNote(null);setPaused(false);}} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.16)",background:"transparent",color:"rgba(255,255,255,0.55)",fontWeight:700,fontSize:FS.small,cursor:"pointer",fontFamily:"inherit"}}>Annulla</button>
                     </div>
                     <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.34)",marginTop:7,textAlign:"center"}}>Li ritrovi tutti in Carriera → Profilo → 🐞 Appunti di collaudo</div>
                   </div>
@@ -9866,18 +10070,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {paused&&!bugNote&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.78)",backdropFilter:"blur(4px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:30,cursor:"pointer"}} onClick={()=>setPaused(false)}>
                   <div style={{fontSize:38,marginBottom:6,filter:"drop-shadow(0 0 16px rgba(245,158,11,0.8))"}}>⏸</div>
-                  <div style={{fontSize:18,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
-                  <div style={{fontSize:11,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>Premi P o tocca per riprendere</div>
+                  <div style={{fontSize:FS.subhead,fontWeight:900,color:"#f59e0b",letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>PAUSA</div>
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:1}}>Premi P o tocca per riprendere</div>
                 </div>
               )}
               {/* HL intro stays on field as cinematic overlay */}
               {phase==="hl_intro"&&curSit&&(
                 <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at center, rgba(5,8,20,0.42) 0%, rgba(5,8,20,0.74) 100%)",backdropFilter:"blur(2px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:8,padding:"0 14px",cursor:"pointer"}} onClick={startHL}>
-                  <div style={{fontSize:22,marginBottom:8}}>⚽</div>
-                  <div style={{fontSize:15,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
-                  {intentIntro(curSit.intro,_scoreDiff)&&<div style={{fontSize:11,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{intentIntro(curSit.intro,_scoreDiff)}</div>}
+                  <div style={{fontSize:FS.title,marginBottom:8}}>⚽</div>
+                  <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
+                  {intentIntro(curSit.intro,_scoreDiff)&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{intentIntro(curSit.intro,_scoreDiff)}</div>}
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
-                  <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
+                  <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.2)",marginTop:6}}>{isNarrow?"Tocca per iniziare":"Tocca / Enter per iniziare"}</div>
                 </div>
               )}
@@ -9901,8 +10105,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{position:"absolute",left:0,right:0,bottom:"9%",zIndex:9,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 18px",animation:"logoIn 0.5s ease-out"}}>
                     <div style={{background:"linear-gradient(180deg,rgba(8,12,24,0.78),rgba(8,12,24,0.62))",border:"1px solid rgba(245,158,11,0.35)",borderRadius:RAD.md,padding:"10px 18px",textAlign:"center",maxWidth:340,boxShadow:"0 8px 30px rgba(0,0,0,0.5)"}}>
                       <div style={{fontSize:FS.caption,fontWeight:800,color:"#f59e0b",letterSpacing:2,textTransform:"uppercase",marginBottom:3}}>⚡ Sostituzione · {clock}'</div>
-                      <div style={{fontSize:14,fontWeight:900,color:"#fff",marginBottom:2}}>Entri in campo, #{player.jerseyNum||10} {_surnBG(player.name||"")||""}</div>
-                      <div style={{fontSize:11,color:"rgba(255,255,255,0.72)",fontStyle:"italic",lineHeight:1.5}}>{entryMsg}</div>
+                      <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:2}}>Entri in campo, #{player.jerseyNum||10} {_surnBG(player.name||"")||""}</div>
+                      <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.72)",fontStyle:"italic",lineHeight:1.5}}>{entryMsg}</div>
                     </div>
                   </div>
                 );
@@ -9926,7 +10130,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         </span>
                       </div>
                     </div>
-                    <button onClick={()=>{clockRef.current=Math.max(clockRef.current,89);setClock(c=>Math.max(c,89));}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:22,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta al fischio finale →</button>
+                    <button onClick={()=>{clockRef.current=Math.max(clockRef.current,89);setClock(c=>Math.max(c,89));}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta al fischio finale →</button>
                   </React.Fragment>
                 );
                 // [7.135.0 collaudo PO «anche quando inizio dalla panchina togliere il livello nero e fare il tasto salta
@@ -9941,16 +10145,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         <div style={{width:8,height:8,borderRadius:"50%",background:isWarmup?"#f59e0b":"#94a3b8",boxShadow:isWarmup?"0 0 8px #f59e0b":undefined,animation:isWarmup?"pulse 1.2s infinite":undefined}}/>
                         <div style={{fontSize:isNarrow?12:14,letterSpacing:2.5,fontWeight:900,textTransform:"uppercase",color:isWarmup?"#f59e0b":"#e2e8f0",textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{isWarmup?"RISCALDAMENTO":"A DISPOSIZIONE"}</div>
                       </div>{/* [7.145.0] via la riga punteggio (ridondante + invertita in trasferta) */}
-                      <div style={{fontSize:11,color:"rgba(255,255,255,0.72)",fontStyle:"italic",lineHeight:1.4,maxWidth:340,margin:"3px auto 0"}}>{isWarmup?warmMsg:(benchReason||obsMsg)}</div>
+                      <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.72)",fontStyle:"italic",lineHeight:1.4,maxWidth:340,margin:"3px auto 0"}}>{isWarmup?warmMsg:(benchReason||obsMsg)}</div>
                     </div>
-                    <button onClick={()=>{clockRef.current=benchMinute;setClock(benchMinute);setBenchPhase("entering");}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:22,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta l'attesa →</button>
+                    <button onClick={()=>{clockRef.current=benchMinute;setClock(benchMinute);setBenchPhase("entering");}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta l'attesa →</button>
                   </React.Fragment>
                 );
               })()}
               {/* Sprint 34 — Sub event banner */}
               {phase==="playing"&&subEvent&&(
-                <div style={{position:"absolute",top:"12%",left:"4%",right:"4%",zIndex:7,background:"rgba(5,8,20,0.84)",backdropFilter:"blur(4px)",borderRadius:10,padding:"8px 12px",border:"1px solid rgba(255,255,255,0.10)",textAlign:"center",pointerEvents:"none"}}>
-                  <div style={{fontSize:11,color:"#e2e8f0",fontWeight:700,lineHeight:1.4}}>{subEvent}</div>
+                <div style={{position:"absolute",top:"12%",left:"4%",right:"4%",zIndex:7,background:"rgba(5,8,20,0.84)",backdropFilter:"blur(4px)",borderRadius:RAD.sm,padding:"8px 12px",border:"1px solid rgba(255,255,255,0.10)",textAlign:"center",pointerEvents:"none"}}>
+                  <div style={{fontSize:FS.caption,color:"#e2e8f0",fontWeight:700,lineHeight:1.4}}>{subEvent}</div>
                 </div>
               )}
               {/* Tactic moment: il mister decide in automatico, notifica via addCom */}
@@ -9974,10 +10178,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={40}/></div>}
                     <div style={{flex:1}}>
                       {curSit.maxMoves>0&&<div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:"rgba(255,255,255,0.7)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginBottom:3}}><span>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</span><span>⏱ {Math.round(pressureBar*100)}%</span></div>}
-                      {curSit.maxMoves>0&&<div data-cpm="pressione" style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:2}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>}
+                      {curSit.maxMoves>0&&<div data-cpm="pressione" style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:RAD.pill}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>}
                       <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginTop:3}}>📍 {ZONES[zone]?.label}</div>
                     </div>
-                    <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
+                    <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
                   </div>
                 </div>
                 ):(
@@ -9986,21 +10190,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       vestito della scheda delle scelte: fondo, bordi e tipografia identici; titolo su una riga, riga di
                       aiuto, barra «Pressione» da 3 px (ambra → rosso, legata a pressureBar), pallini delle mosse e zona;
                       in fondo il D-pad a 44 px allineato a sinistra e il tasto «Scegli» a destra, alto 52 px. Tutto ≤ 44vh. */}
-                  <div style={{width:36,height:4,borderRadius:2,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
-                  <div style={{fontSize:17,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flexShrink:0}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
-                  {movesLeft>0&&<div data-cpm="aiuto" style={{fontSize:11,lineHeight:1.3,fontWeight:600,color:"#c4b5fd",flexShrink:0}}>Frecce: sposta l'eroe ({movesLeft} {movesLeft===1?"mossa":"mosse"}) · scegli prima che il marcatore arrivi</div>}
+                  <div style={{width:36,height:4,borderRadius:RAD.pill,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
+                  <div style={{fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flexShrink:0}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
+                  {movesLeft>0&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:"#c4b5fd",flexShrink:0}}>Frecce: sposta l'eroe ({movesLeft} {movesLeft===1?"mossa":"mosse"}) · scegli prima che il marcatore arrivi</div>}
                   {curSit.maxMoves>0&&<div data-cpm="pressione" style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
                     <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:"rgba(255,255,255,0.5)"}}>Pressione</div>
-                    <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>
+                    <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>
                   </div>}
-                  <div style={{display:"flex",alignItems:"center",gap:8,fontSize:11,fontWeight:700,color:"#94a3b8",flexShrink:0,overflow:"hidden",whiteSpace:"nowrap"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,fontSize:FS.caption,fontWeight:700,color:"#94a3b8",flexShrink:0,overflow:"hidden",whiteSpace:"nowrap"}}>
                     {curSit.maxMoves>0&&<span style={{color:"#c4b5fd",letterSpacing:1}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))}</span>}
                     {curSit.maxMoves>0&&<span>{movesLeft} {movesLeft===1?"mossa":"mosse"}</span>}
                     <span style={{marginLeft:"auto",overflow:"hidden",textOverflow:"ellipsis"}}>📍 {ZONES[zone]?.label}</span>
                   </div>
                   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexShrink:0}}>
                     {showDPad(curSit)?<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44}/></div>:<div/>}
-                    <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:11,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:15,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
+                    <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
                   </div>
                 </div>
                 )
@@ -10021,7 +10225,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <div style={{flex:1,display:"flex",flexDirection:"column",gap:5}}>{/* [7.51.0 SET-PIECE 2.0] scelte di STILE al posto della griglia di mira */}
                         {setPieceOptions(curSit,player,pPos.x).map((o)=>(
                           <button key={o.id} onClick={()=>handleSetPiece(o)} style={{padding:"8px 10px",background:"rgba(0,0,0,0.55)",border:"1px solid rgba(255,255,255,0.25)",borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
-                            <div style={{fontSize:11,fontWeight:800}}>{o.icon} {o.label}</div>
+                            <div style={{fontSize:FS.caption,fontWeight:800}}>{o.icon} {o.label}</div>
                             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)",marginTop:2,lineHeight:1.35}}>{o.desc}</div>
                           </button>
                         ))}
@@ -10037,7 +10241,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                             <button key={_oi} onClick={()=>handleAction(a)}
                               style={{padding:"10px",background:_sel2?"rgba(37,99,235,0.65)":"rgba(0,0,0,0.55)",border:_sel2?`1.5px solid ${_rc2}88`:`1px solid ${_rc2}44`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:8,transition:"all .1s",boxShadow:"0 2px 6px rgba(0,0,0,0.4)"}}>
                               <div style={{width:18,height:18,borderRadius:"50%",background:_sel2?"#2563eb":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:"#fff",flexShrink:0}}>{_oi+1}</div>
-                              <div style={{fontSize:11,fontWeight:700,color:"#fff",flex:1,textAlign:"left",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{intentLabelDedup(a.label,_oi,_arr)}</div>
+                              <div style={{fontSize:FS.caption,fontWeight:700,color:"#fff",flex:1,textAlign:"left",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}>{intentLabelDedup(a.label,_oi,_arr)}</div>
                               {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO: condizionavano il player */}
                             </button>
                           );
@@ -10054,7 +10258,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
                   <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"44vh",boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"linear-gradient(180deg,rgba(38,49,76,0.96) 0%,rgba(22,30,49,0.98) 100%)",borderTop:"1px solid rgba(196,181,253,0.35)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
-                    <div style={{width:36,height:4,borderRadius:2,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
+                    <div style={{width:36,height:4,borderRadius:RAD.pill,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
                     {/* [7.902.0 — C3 v2, nota PO 15/09: «la scheda non regge le situazioni con molte opzioni» — misurato: 7 opzioni schiacciate a 34 px] header e riga di stato SEMPRE alla loro dimensione (flexShrink:0): a schiacciarsi, se qualcosa deve, e' la lista sotto, mai queste due righe. */}
                     {/* [7.905.0 — C3 v4, due note del PO dal telefono («Step-over e via!»)] (a) «a cosa serve il doppio
                         cursore?»: il D-pad non era spiegato — sopra la barra, quando restano mosse, una riga di aiuto
@@ -10076,15 +10280,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         la riga di aiuto e la barra della pressione. (Nel rosso __CPM_NO901 il pad c'e' ancora, come prima.) */}
                     <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
                       <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
-                        <div style={{fontSize:17,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
-                        {_sub901&&<div style={{fontSize:11.5,lineHeight:1.3,fontWeight:600,color:"#94a3b8",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_sub901}</div>}
+                        <div style={{fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
+                        {_sub901&&<div style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:"#94a3b8",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_sub901}</div>}
                       </div>
                     </div>
-                    {!curSit.lockMovement&&<div data-cpm="aiuto" style={{fontSize:11,lineHeight:1.3,fontWeight:600,color:"#c4b5fd",flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
+                    {!curSit.lockMovement&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:"#c4b5fd",flexShrink:0}}>Scegli prima che il marcatore arrivi</div>}
                     {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
                       {/* il @keyframes cpmPress905 sta nello <style> della barra superiore (sempre montata qui): uno <style> DENTRO la scheda finiva nel textContent e la sonda leggeva un «%» che il giocatore non vede */}
                       <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:"rgba(255,255,255,0.5)"}}>Pressione</div>
-                      <div style={{position:"relative",height:3,borderRadius:2,overflow:"hidden",background:"linear-gradient(90deg,#ef4444 0%,#f97316 45%,#f59e0b 100%)"}}>
+                      <div style={{position:"relative",height:3,borderRadius:RAD.pill,overflow:"hidden",background:"linear-gradient(90deg,#ef4444 0%,#f97316 45%,#f59e0b 100%)"}}>
                         <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:"#10122a",animation:`cpmPress905 ${_dl905}ms linear forwards`,animationPlayState:paused?"paused":"running"}}/>
                       </div>
                     </div>}
@@ -10097,10 +10301,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         quante righe restano INTERE e visibili senza scorrere (il PO ne vuole almeno tre). */}
                     <div data-cpm="scelte-righe" style={{display:"flex",flexDirection:"column",gap:6,flex:"1 1 auto",minHeight:0,overflowY:"auto",overflowX:"hidden"}}>
                       {_rows901.map(r=>(
-                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:0.45,transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
-                          <div style={{width:30,height:30,borderRadius:RAD.sm,background:"rgba(196,181,253,0.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0}}>{r.icon}</div>
+                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:0.45,transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
+                          <div style={{width:30,height:30,borderRadius:RAD.sm,background:"rgba(196,181,253,0.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.bodyLg,flexShrink:0}}>{r.icon}</div>
                           <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:1}}>
-                            <div style={{fontSize:14,fontWeight:800,color:"#e9e4ff",lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>
+                            <div style={{fontSize:FS.body,fontWeight:800,color:"#e9e4ff",lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>
                             <div style={{fontSize:FS.caption,fontWeight:700,color:"#94a3b8",letterSpacing:.3,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.attr}</div>
                           </div>
                         </button>
@@ -10111,8 +10315,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 })()
               )}
               {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
-                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.45)",padding:"12px 12px 14px"}}>
-                  <div style={{fontSize:12,fontWeight:800,color:"rgba(255,255,255,0.85)",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.82)"/* [7.976.0 A17] la banda stava a 0,45: sul prato chiaro il fondo composito misurava #8f9095 e il testo 2,76:1. A 0,82 il fondo resta scuro qualunque cosa ci sia sotto */,padding:"12px 12px 14px"}}>
+                  <div style={{fontSize:FS.small,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
                 </div>
               )}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
               {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
@@ -10124,10 +10328,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                    il banner pieno-schermo di prima con l'intera banda cliccabile per continuare. */
                 _no901?(
                 <div data-cpm="esito" onClick={()=>{if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.outKey==="foul"?"rgba(40,20,0,0.72)":outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px",cursor:"pointer"}}>{/* [5.84.0 UX-3] tap per continuare (prima solo attesa forzata 2-3.4s ×8 HL) */}
-                  {outcome.outKey==="foul"&&<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}><div style={{width:10,height:14,background:"#fb923c",borderRadius:2,boxShadow:"0 0 8px rgba(251,146,60,0.9)",animation:"goalDrop 0.3s ease-out"}}/><span style={{fontSize:11,fontWeight:900,color:"#fb923c",letterSpacing:1,textTransform:"uppercase"}}>FALLO</span></div>}
-                  {outcome.overlay&&<div style={{fontSize:16,fontWeight:900,letterSpacing:0.3,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#fca5a5",marginBottom:2,textShadow:"0 1px 5px rgba(0,0,0,0.85)"}}><EmoText>{(outcome.outKey!=="foul"&&outcome.overlayIcon?outcome.overlayIcon+" ":"")+outcome.overlay}</EmoText></div>}{/* [7.136.0] iconcina d'esito prima del titolo (foul ha già il badge FALLO) · [7.170.0] emoji senza box-shadow Android */}
-                  <div style={{fontSize:12,fontWeight:700,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":"#f87171",marginBottom:3,opacity:0.92,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}><EmoText>{(outcome.ok?"✅ ":"❌ ")+(chosenAct?.label||"")}</EmoText></div>
-                  <div style={{fontSize:11,color:"#fff",lineHeight:1.4,marginBottom:4,textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}><EmoText>{outcome.text}</EmoText></div>
+                  {outcome.outKey==="foul"&&<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}><div style={{width:10,height:14,background:"#fb923c",borderRadius:3,boxShadow:"0 0 8px rgba(251,146,60,0.9)",animation:"goalDrop 0.3s ease-out"}}/><span style={{fontSize:FS.caption,fontWeight:900,color:"#fb923c",letterSpacing:1,textTransform:"uppercase"}}>FALLO</span></div>}
+                  {outcome.overlay&&<div style={{fontSize:FS.bodyLg,fontWeight:900,letterSpacing:0.3,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#fca5a5",marginBottom:2,textShadow:"0 1px 5px rgba(0,0,0,0.85)"}}><EmoText>{(outcome.outKey!=="foul"&&outcome.overlayIcon?outcome.overlayIcon+" ":"")+outcome.overlay}</EmoText></div>}{/* [7.136.0] iconcina d'esito prima del titolo (foul ha già il badge FALLO) · [7.170.0] emoji senza box-shadow Android */}
+                  <div style={{fontSize:FS.small,fontWeight:700,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":"#f87171",marginBottom:3,opacity:0.92,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}><EmoText>{(outcome.ok?"✅ ":"❌ ")+(chosenAct?.label||"")}</EmoText></div>
+                  <div style={{fontSize:FS.caption,color:"#fff",lineHeight:1.4,marginBottom:4,textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}><EmoText>{outcome.text}</EmoText></div>
                   {outcome.cause&&<div style={{fontSize:FS.caption,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",marginBottom:3,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}><EmoText>{outcome.cause}</EmoText></div>}{/* [5.84.0 UX-2b] */}
                   {aiCommentary&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",fontStyle:"italic",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}><EmoText>{(aiCommentary.reaction||"")+" "+(aiCommentary.commentary||"")}</EmoText></div>}
                 </div>
@@ -10142,21 +10346,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <div style={{width:20,height:20,borderRadius:RAD.xs,background:outcome.ok?"rgba(74,222,128,0.16)":"rgba(248,113,113,0.16)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                         {outcome.ok?<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12l5 5L20 6"></path></svg>:<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>}
                       </div>
-                      <div style={{fontSize:16,fontWeight:900,color:_titCol901,letterSpacing:.2,lineHeight:1.15,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1,minWidth:0}}><EmoText>{_titTxt901}</EmoText></div>
+                      <div style={{fontSize:FS.bodyLg,fontWeight:900,color:_titCol901,letterSpacing:.2,lineHeight:1.15,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1,minWidth:0}}><EmoText>{_titTxt901}</EmoText></div>
                     </div>
-                    <div style={{fontSize:13.5,lineHeight:1.3,fontWeight:700,color:"#e8edf6",textShadow:"0 1px 6px rgba(0,0,0,0.7)",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.text}</EmoText></div>
-                    {outcome.cause&&<div style={{fontSize:11,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.cause}</EmoText></div>}
+                    <div style={{fontSize:FS.body,lineHeight:1.3,fontWeight:700,color:"#e8edf6",textShadow:"0 1px 6px rgba(0,0,0,0.7)",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.text}</EmoText></div>
+                    {outcome.cause&&<div style={{fontSize:FS.caption,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",display:"-webkit-box",WebkitLineClamp:1,WebkitBoxOrient:"vertical",overflow:"hidden"}}><EmoText>{outcome.cause}</EmoText></div>}
                     <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-                      <div style={{padding:"3px 9px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.16)",fontSize:11,fontWeight:800,color:_voto901>=8?"#4ade80":_voto901>=6.5?"#f59e0b":"#f87171",fontVariantNumeric:"tabular-nums"}}>voto {_voto901}</div>
-                      {mStats.goals>0&&<div style={{padding:"3px 9px",borderRadius:RAD.pill,background:"rgba(74,222,128,0.14)",border:"1px solid rgba(74,222,128,0.35)",fontSize:11,fontWeight:800,color:"#4ade80"}}>⚽ gol {mStats.goals}</div>}
-                      {mStats.assists>0&&<div style={{padding:"3px 9px",borderRadius:RAD.pill,background:"rgba(96,165,250,0.14)",border:"1px solid rgba(96,165,250,0.35)",fontSize:11,fontWeight:800,color:"#60a5fa"}}>🎯 assist {mStats.assists}</div>}
+                      <div style={{padding:"3px 9px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.16)",fontSize:FS.caption,fontWeight:800,color:_voto901>=8?"#4ade80":_voto901>=6.5?"#f59e0b":"#f87171",fontVariantNumeric:"tabular-nums"}}>voto {_voto901}</div>
+                      {mStats.goals>0&&<div style={{padding:"3px 9px",borderRadius:RAD.pill,background:"rgba(74,222,128,0.14)",border:"1px solid rgba(74,222,128,0.35)",fontSize:FS.caption,fontWeight:800,color:"#4ade80"}}>⚽ gol {mStats.goals}</div>}
+                      {mStats.assists>0&&<div style={{padding:"3px 9px",borderRadius:RAD.pill,background:"rgba(96,165,250,0.14)",border:"1px solid rgba(96,165,250,0.35)",fontSize:FS.caption,fontWeight:800,color:"#60a5fa"}}>🎯 assist {mStats.assists}</div>}
                     </div>
                     {/* [7.901.2 — C3 v3, nota PO: «banda bassa, un solo Continua»] il tastino piccolo di replay
                         e' stato tolto: non toccava fase/handler/logica (rimontava solo l'animazione di
                         comparsa), ma un tasto che non fa niente di vero non va in produzione. Resta il solo
                         «Continua» a tutta larghezza. */}
                     <div style={{display:"flex",alignItems:"center",marginTop:2}}>
-                      <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{flex:1,height:46,border:"none",borderRadius:11,background:TH.primary,color:"#fff",fontSize:14,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
+                      <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{flex:1,height:46,border:"none",borderRadius:RAD.sm,background:TH.primary,color:"#fff",fontSize:FS.body,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
                     </div>
                   </div>
                   );
@@ -10180,8 +10384,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       {curSit.maxMoves>0&&(
                         <div style={{marginBottom:4}}>
                           <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginBottom:2}}><span>⏱ Pressione</span><span>{Math.round(pressureBar*100)}%</span></div>
-                          <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:2}}>
-                            <div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/>
+                          <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill}}>
+                            <div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/>
                           </div>
                         </div>
                       )}
@@ -10191,14 +10395,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                             <span>🏃 Difensore</span>
                             <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Lontano"}</span>
                           </div>
-                          <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:2}}>
-                            <div style={{height:"100%",width:(defDist)+"%",background:defDist>50?"#4ade80":defDist>25?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/>
+                          <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill}}>
+                            <div style={{height:"100%",width:(defDist)+"%",background:defDist>50?"#4ade80":defDist>25?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/>
                           </div>
                         </div>
                       )}
                     </div>
                   </div>
-                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:"7px",borderRadius:7,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto [0]</button>}
+                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:"7px",borderRadius:RAD.xs,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto [0]</button>}
                 </div>
               )}
 
@@ -10217,7 +10421,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     </div>
                   )}
                   {/* Defender pressure badge */}
-                  <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5,padding:"3px 6px",borderRadius:5,background:defDist<25?"rgba(239,68,68,0.2)":defDist<50?"rgba(249,115,22,0.15)":"rgba(74,222,128,0.1)",border:`1px solid ${defDist<25?"rgba(239,68,68,0.4)":defDist<50?"rgba(249,115,22,0.3)":"rgba(74,222,128,0.2)"}`}}>
+                  <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5,padding:"3px 6px",borderRadius:RAD.xs,background:defDist<25?"rgba(239,68,68,0.2)":defDist<50?"rgba(249,115,22,0.15)":"rgba(74,222,128,0.1)",border:`1px solid ${defDist<25?"rgba(239,68,68,0.4)":defDist<50?"rgba(249,115,22,0.3)":"rgba(74,222,128,0.2)"}`}}>
                     <span style={{fontSize:FS.caption}}>{defDist<25?"⚠️":"🏃"}</span>
                     <span style={{fontSize:FS.caption,color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80",fontWeight:700}}>{defDist<25?"Difensore addosso!":defDist<50?"Pressione alta":"Spazio libero"}</span>
                     {defDist<50&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginLeft:"auto"}}>–{Math.round((100-defDist)*0.15)}% azioni</span>}
@@ -10234,7 +10438,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                           {setPieceOptions(curSit,player,pPos.x).map((o)=>(
                             <button key={o.id} onClick={()=>handleSetPiece(o)}
                               style={{padding:"9px 12px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
-                              <div style={{fontSize:12,fontWeight:800}}>{o.icon} {o.label}</div>
+                              <div style={{fontSize:FS.small,fontWeight:800}}>{o.icon} {o.label}</div>
                               <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",marginTop:2,lineHeight:1.35}}>{o.desc}</div>
                             </button>
                           ))}
@@ -10251,7 +10455,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                           style={{padding:isNarrow?"12px 10px":"8px 10px",background:isSel?"rgba(37,99,235,0.45)":"rgba(0,0,0,0.52)",border:isSel?`1.5px solid ${rc}66`:`1px solid ${rc}33`,borderRadius:RAD.sm,color:"#fff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between",transition:"all .1s",transform:isSel?"scale(1.02)":"scale(1)"}}>
                           <div style={{display:"flex",alignItems:"center",gap:6}}>
                             <div style={{width:18,height:18,borderRadius:"50%",background:isSel?"#2563eb":"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:900,color:isSel?"#fff":"rgba(255,255,255,0.5)",flexShrink:0}}>{i+1}</div>
-                            <div style={{fontSize:11,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{intentLabelDedup(a.label,i,_arr)}</div>
+                            <div style={{fontSize:FS.caption,fontWeight:isSel?700:400,color:"#e2e8f0",textAlign:"left"}}>{intentLabelDedup(a.label,i,_arr)}</div>
                           </div>
                           {/* [5.93.0] pallini probabilita RIMOSSI su direttiva PO */}
                         </button>
@@ -10263,12 +10467,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
 
               {/* hl_result — desktop only (mobile has overlay on canvas) */}
               {!isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
-                <div style={{padding:"12px 10px"}}><div style={{fontSize:12,fontWeight:800,color:TH.text,opacity:0.8}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div></div>
+                <div style={{padding:"12px 10px"}}><div style={{fontSize:FS.small,fontWeight:800,color:TH.text,opacity:0.8}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div></div>
               )}
               {!isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
                 <div style={{padding:"10px",background:outcome.ok?"rgba(5,50,20,0.7)":"rgba(50,5,5,0.7)",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
-                  <div style={{fontSize:14,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
-                  <div style={{fontSize:11,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
+                  <div style={{fontSize:FS.body,fontWeight:900,color:outcome.ok?"#4ade80":"#f87171",marginBottom:4}}>{outcome.ok?"✅":"❌"} {chosenAct?.label}</div>
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
                   {outcome.cause&&<div style={{fontSize:FS.caption,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",marginBottom:4}}>{outcome.cause}</div>}{/* [5.84.0 UX-2b] */}
                   {aiCommentary&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontStyle:"italic",marginBottom:4}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)"}}>{isNarrow?"auto →":"auto / Enter →"}</div>
@@ -10279,23 +10483,23 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {!isNarrow&&<div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"4px 8px"}}>
                   <div style={{textAlign:"center"}}>
-                    <div style={{fontSize:18,fontWeight:900,color:"#4ade80",lineHeight:1}}>{mStats.goals}</div>
+                    <div style={{fontSize:FS.subhead,fontWeight:900,color:"#4ade80",lineHeight:1}}>{mStats.goals}</div>
                     <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)"}}>⚽ GOL</div>
                   </div>
                   <div style={{textAlign:"center"}}>
-                    <div style={{fontSize:18,fontWeight:900,color:"#60a5fa",lineHeight:1}}>{mStats.assists}</div>
+                    <div style={{fontSize:FS.subhead,fontWeight:900,color:"#60a5fa",lineHeight:1}}>{mStats.assists}</div>
                     <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)"}}>🎯 ASSIST</div>
                   </div>
                   <div style={{textAlign:"center"}}>
-                    <div style={{fontSize:13,fontWeight:700,color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171",lineHeight:1}}>{energy}%</div>
+                    <div style={{fontSize:FS.body,fontWeight:700,color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171",lineHeight:1}}>{energy}%</div>
                     <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)"}}>⚡ ENERG.</div>
                   </div>
                   <div style={{textAlign:"center"}}>
-                    <div style={{fontSize:11,fontWeight:700,color:"#a78bfa",lineHeight:1.1}}>{mxStats.shots}–{mxStats.oppShots}</div>
+                    <div style={{fontSize:FS.caption,fontWeight:700,color:"#a78bfa",lineHeight:1.1}}>{mxStats.shots}–{mxStats.oppShots}</div>
                     <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)"}}>💥 TIRI</div>
                   </div>
                   <div style={{textAlign:"center",gridColumn:"span 2"}}>
-                    {(()=>{const _rb108=Math.min(mStats.rb,30);const _raw108=clamp(5.8+_rb108*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _r108=Math.round(_raw108*10)/10;const _rc108=_r108>=8?"#4ade80":_r108>=6.5?"#f59e0b":"#f87171";return<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><span style={{fontSize:15,fontWeight:900,color:_rc108,lineHeight:1}}>{_r108}</span><span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)"}}>⭐ RATING</span></div>;})()}
+                    {(()=>{const _rb108=Math.min(mStats.rb,30);const _raw108=clamp(5.8+_rb108*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _r108=Math.round(_raw108*10)/10;const _rc108=_r108>=8?"#4ade80":_r108>=6.5?"#f59e0b":"#f87171";return<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><span style={{fontSize:FS.bodyLg,fontWeight:900,color:_rc108,lineHeight:1}}>{_r108}</span><span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)"}}>⭐ RATING</span></div>;})()}
                   </div>
                 </div>
                 <div style={{marginTop:5,fontSize:FS.caption,color:"rgba(255,255,255,0.25)"}}>
@@ -10309,10 +10513,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     [7.525.0] 13→15. [7.528.0 PO «troppo piccolo, non protagonista»] terzo giro: 15→17 + banner in campo. */}
                 <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>📻 CRONACA</div>
                 {coms.length===0
-                  ?<div style={{fontSize:15,color:"rgba(255,255,255,0.2)",fontStyle:"italic"}}>In attesa…</div>
+                  ?<div style={{fontSize:FS.bodyLg,color:"rgba(255,255,255,0.2)",fontStyle:"italic"}}>In attesa…</div>
                   :coms.slice(0,8).map((c,i)=>(
-                    <div key={i} style={{fontSize:17,color:c.color,padding:"3px 0",borderBottom:i<7?"1px solid rgba(255,255,255,0.05)":"none",lineHeight:1.4}}>
-                      <span style={{color:"rgba(255,255,255,0.25)",marginRight:4,fontSize:12,fontWeight:700}}>{c.t}'</span>{c.text}
+                    <div key={i} style={{fontSize:FS.subhead,color:c.color,padding:"3px 0",borderBottom:i<7?"1px solid rgba(255,255,255,0.05)":"none",lineHeight:1.4}}>
+                      <span style={{color:"rgba(255,255,255,0.25)",marginRight:4,fontSize:FS.small,fontWeight:700}}>{c.t}'</span>{c.text}
                     </div>
                   ))
                 }
@@ -10333,7 +10537,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <span style={{fontSize:FS.caption,fontWeight:900,color:"#60a5fa"}}>🎯 {mStats.assists}</span>
               <span style={{fontSize:FS.caption,fontWeight:700,color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡ {energy}%</span>
               <span style={{fontSize:FS.caption,fontWeight:900,color:_rc_cs}}>⭐ {_r_cs}</span>
-              <span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginLeft:"auto"}}>📍 {ZONES[zone]?.label||zone}</span>
+              <span style={{fontSize:FS.caption,color:"#94a3b8"/* [7.976.0 A17] misurato dalla griglia: rgba(255,255,255,0.3) su #050810 = 2,57:1. #94a3b8 sullo stesso fondo = 7,81:1 */,marginLeft:"auto"}}>📍 {ZONES[zone]?.label||zone}</span>
             </div>
           );})()}
           {(()=>{/* [7.347.0] auto-chiusura col taccuino aperto. [7.529.0 collaudo PO «il box cronaca esterno
@@ -10346,15 +10550,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 title={_open?"Nascondi la cronaca":"Mostra la cronaca"}>
                 {/* [7.524.0 collaudo PO] anteprima 8→11. [7.525.0 PO «aumenterei»] 11→12, etichetta 10. */}
                 <span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.28)",fontWeight:700,letterSpacing:1,textTransform:"uppercase"}}>📻 CRONACA</span>
-                <span style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>{cronacaOpen?"▾":"▸"}</span>
-                {!_open&&_n>0&&<span style={{fontSize:13,color:"rgba(255,255,255,0.22)",overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis",flex:1,minWidth:0}}>{coms[0].t}&apos; {coms[0].text}</span>}
+                <span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)"}}>{cronacaOpen?"▾":"▸"}</span>
+                {!_open&&_n>0&&<span style={{fontSize:FS.body,color:"rgba(255,255,255,0.22)",overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis",flex:1,minWidth:0}}>{coms[0].t}&apos; {coms[0].text}</span>}
               </button>
               {_open&&coms.filter(Boolean).slice(0,4).map((c,i)=>(
-            <div key={i} style={{fontSize:17,color:c?(i===0?c.color:"rgba(255,255,255,0.45)"):"rgba(255,255,255,0.1)",lineHeight:1.4,
+            <div key={i} style={{fontSize:FS.subhead,color:c?(i===0?c.color:"rgba(255,255,255,0.45)"):"rgba(255,255,255,0.1)",lineHeight:1.4,
               padding:i<3?"0 0 3px":"0",
               borderBottom:i<3?"1px solid rgba(255,255,255,0.05)":"none",
               overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>
-              {c&&<><span style={{color:"rgba(255,255,255,0.3)",marginRight:3,fontSize:11,fontWeight:700}}>{c.t}'</span>{c.text}</>}
+              {c&&<><span style={{color:"rgba(255,255,255,0.3)",marginRight:3,fontSize:FS.caption,fontWeight:700}}>{c.t}'</span>{c.text}</>}
             </div>
           ))}</>);})()}
         </div>
@@ -10379,16 +10583,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _serif="Georgia,'Times New Roman',serif";
             return(<div style={{margin:"-22px -22px 14px",padding:"14px 18px 12px",background:TH.card,borderBottom:`3px double ${TH.text}`,textAlign:"left"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",borderBottom:`1px solid ${TH.divider}`,paddingBottom:5,marginBottom:9}}>
-                <div style={{fontFamily:_serif,fontSize:19,fontWeight:900,letterSpacing:-0.4,color:TH.text}}>📰 {_paper}</div>
+                <div style={{fontFamily:_serif,fontSize:FS.title,fontWeight:900,letterSpacing:-0.4,color:TH.text}}>📰 {_paper}</div>
                 <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:0.4,whiteSpace:"nowrap"}}>Stag. {player.season||1} · G. {player.week||1}</div>
               </div>
-              <div style={{fontFamily:_serif,fontSize:23,fontWeight:900,lineHeight:1.14,color:TH.text,letterSpacing:-0.3}}>{_hl}</div>
+              <div style={{fontFamily:_serif,fontSize:FS.h,fontWeight:900,lineHeight:1.14,color:TH.text,letterSpacing:-0.3}}>{_hl}</div>
             </div>);})()}
-          {ceremony&&!ceremony.light&&(<div style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:14,background:"linear-gradient(135deg,#7a1f30,#8e1f33 55%,#f0b33a)",boxShadow:"0 6px 28px rgba(94,15,29,0.45)",position:"relative",overflow:"hidden"}}>
+          {ceremony&&!ceremony.light&&(<div style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:RAD.md,background:"linear-gradient(135deg,#7a1f30,#8e1f33 55%,#f0b33a)",boxShadow:"0 6px 28px rgba(94,15,29,0.45)",position:"relative",overflow:"hidden"}}>
             <div style={{fontSize:46,lineHeight:1,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
-            <div style={{fontSize:20,fontWeight:900,color:"#fff",letterSpacing:1,marginTop:6,textShadow:"0 2px 8px rgba(0,0,0,0.4)"}}>{ceremony.kind==="league"?"CAMPIONI!":ceremony.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
-            <div style={{fontSize:13,fontWeight:700,color:"#ffe9b0",marginTop:3}}>{ceremony.name}</div>
-            <div style={{fontSize:11,color:"rgba(255,255,255,0.85)",marginTop:2}}>{/* [7.686.0 collaudo PO con screenshot: sotto «Coppa delle Nazioni» c'era scritto «FC Merseyside»] CHI ALZA IL TROFEO. Il sottotitolo della premiazione mostrava SEMPRE il club, anche quando il trofeo e' della NAZIONALE: in una Coppa delle Nazioni vinta con la Spagna leggere il nome del club inglese e' una cosa che non sta ne' in cielo ne' in terra. Nei contesti di nazionale si scrive la NAZIONE. */}{_natCtx686?(player.nation||"Nazionale"):(player.club?.n||player.club?.name||"")} · Stagione {player.season||1}</div>
+            <div style={{fontSize:FS.title,fontWeight:900,color:"#fff",letterSpacing:1,marginTop:6,textShadow:"0 2px 8px rgba(0,0,0,0.4)"}}>{ceremony.kind==="league"?"CAMPIONI!":ceremony.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
+            <div style={{fontSize:FS.body,fontWeight:700,color:"#ffe9b0",marginTop:3}}>{ceremony.name}</div>
+            <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.85)",marginTop:2}}>{/* [7.686.0 collaudo PO con screenshot: sotto «Coppa delle Nazioni» c'era scritto «FC Merseyside»] CHI ALZA IL TROFEO. Il sottotitolo della premiazione mostrava SEMPRE il club, anche quando il trofeo e' della NAZIONALE: in una Coppa delle Nazioni vinta con la Spagna leggere il nome del club inglese e' una cosa che non sta ne' in cielo ne' in terra. Nei contesti di nazionale si scrive la NAZIONE. */}{_natCtx686?(player.nation||"Nazionale"):(player.club?.n||player.club?.name||"")} · Stagione {player.season||1}</div>
           </div>)}
           {/* [6.88.0 collaudo PO «post-partita più moderno, in linea con prematch/rassegna»] HERO BROADCAST:
               banda scura con hairline nel colore della competizione, squadre con spina-colore, esito chiaro +
@@ -10400,40 +10604,40 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _confN=(_celebTier>=1&&!_CPM_TEST)?(_celebTier>=2?18:10):0;
             return(
             <div style={{margin:"0 -22px 16px",paddingBottom:14,background:"linear-gradient(165deg,#0b1224,#101a33 55%,#0d1526)",position:"relative",overflow:"hidden"}}>{/* [7.95.0] no top-margin: segue il masthead del giornale */}
-              {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:2,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
+              {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
               <div style={{height:3,background:`linear-gradient(90deg,transparent,${_compCol},transparent)`}}/>
               <div style={{padding:"12px 14px 0"}}>
                 <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_compCol}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>
                 <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",letterSpacing:3,marginTop:5}}>FISCHIO FINALE</div>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:10}}>
                   <div style={{flex:1,minWidth:0,textAlign:"right"}}>
-                    <div style={{fontSize:13,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{homeTeamObj?.name||homeTeamObj?.n||"Casa"}</div>
-                    <div style={{height:3,borderRadius:2,background:scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
+                    <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{homeTeamObj?.name||homeTeamObj?.n||"Casa"}</div>
+                    <div style={{height:3,borderRadius:RAD.pill,background:scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
                   </div>
-                  <div className="cpm-num" style={{fontSize:42,fontWeight:900,lineHeight:1,color:_hWon?"#4ade80":losing?"#f87171":"#e2e8f0",flexShrink:0}}>{isMatchHome?score.home:score.away}<span style={{color:"rgba(255,255,255,0.35)",fontSize:22,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
+                  <div className="cpm-num" style={{fontSize:42,fontWeight:900,lineHeight:1,color:_hWon?"#4ade80":losing?"#f87171":"#e2e8f0",flexShrink:0}}>{isMatchHome?score.home:score.away}<span style={{color:"rgba(255,255,255,0.35)",fontSize:FS.title,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
                   <div style={{flex:1,minWidth:0,textAlign:"left"}}>
-                    <div style={{fontSize:13,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{awayTeamObj?.name||awayTeamObj?.n||"Ospite"}</div>
-                    <div style={{height:3,borderRadius:2,background:scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
+                    <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{awayTeamObj?.name||awayTeamObj?.n||"Ospite"}</div>
+                    <div style={{height:3,borderRadius:RAD.pill,background:scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
                   </div>
                 </div>
-                <div style={{display:"inline-block",marginTop:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:11,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
+                <div style={{display:"inline-block",marginTop:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
                 {(subbedOff||benchStart)&&<div style={{marginTop:8,fontSize:FS.caption,fontWeight:700,color:"rgba(255,255,255,0.6)"}}>{/* [7.38.0 Sezione 8] minuti giocati quando non è un 90' pieno */}
                   ⏱ {benchStart?`Entrato al ${benchMinute}' · ${Math.max(0,90-(benchMinute||60))}' giocati`:`Sostituito al ${subOffMinRef.current}' · ${subOffMinRef.current}' giocati`}
                 </div>}
-                {_celebTier>=1&&<div style={{marginTop:10,fontSize:11,fontWeight:700,color:"#ffe9b0"}}>{_celebTier>=3?"🏆 Fuochi d'artificio: la squadra alza il trofeo sotto la curva!":_celebTier>=2?"🎆 Che notte! Tutti sotto la curva ad abbracciare i tifosi!":"🎉 La squadra festeggia sotto la curva!"}</div>}
+                {_celebTier>=1&&<div style={{marginTop:10,fontSize:FS.caption,fontWeight:700,color:"#ffe9b0"}}>{_celebTier>=3?"🏆 Fuochi d'artificio: la squadra alza il trofeo sotto la curva!":_celebTier>=2?"🎆 Che notte! Tutti sotto la curva ad abbracciare i tifosi!":"🎉 La squadra festeggia sotto la curva!"}</div>}
               </div>
             </div>);
           })()}
           {_drawShootout&&(<div style={{margin:"0 0 16px",padding:"10px 14px",borderRadius:RAD.md,background:_shootoutWon?"rgba(22,163,74,0.12)":"rgba(220,38,38,0.10)",border:`1.5px solid ${_shootoutWon?TH.success:TH.danger}`,textAlign:"center"}}>
-            <div style={{fontSize:11,color:TH.muted,letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>🎲 Si decide ai rigori</div>
-            <div style={{fontSize:16,fontWeight:900,color:_shootoutWon?TH.success:TH.danger}}>{_shootoutWon?(_isFinalKO?"🏆 VITTORIA AI RIGORI — CAMPIONE!":"✅ VITTORIA AI RIGORI — PASSI IL TURNO"):(_isFinalKO?"😔 SCONFITTA AI RIGORI — 2° POSTO":"😔 SCONFITTA AI RIGORI — ELIMINATO")}</div>
+            <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>🎲 Si decide ai rigori</div>
+            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:_shootoutWon?TH.success:TH.danger}}>{_shootoutWon?(_isFinalKO?"🏆 VITTORIA AI RIGORI — CAMPIONE!":"✅ VITTORIA AI RIGORI — PASSI IL TURNO"):(_isFinalKO?"😔 SCONFITTA AI RIGORI — 2° POSTO":"😔 SCONFITTA AI RIGORI — ELIMINATO")}</div>
           </div>)}{/* [6.48.0 RC] esito rigori chiaro (prima il pari neutro non diceva se avevi vinto/perso l'Europeo) */}
           {/* [7.86.0 collaudo PO «standardizza UX/UI»] etichette di sezione sui due blocchi statistiche (kit) */}
           <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>IL TUO TABELLINO</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginBottom:12}}>
             {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},{l:"Tiri",v:mxStats.shots,e:"💥",c:TH.accent},{l:"Poss.",v:(Math.round(possession))+'%',e:"🔵",c:TH.success}].map(s=>(
               <Card key={s.l} style={{padding:"8px 4px",textAlign:"center"}}>
-                <div style={{fontSize:13,marginBottom:1}}>{s.e}</div><div className="cpm-num" style={{fontSize:20,fontWeight:900,color:legCol944(s.c),lineHeight:1}}>{s.v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
+                <div style={{fontSize:FS.body,marginBottom:1}}>{s.e}</div><div className="cpm-num" style={{fontSize:FS.title,fontWeight:900,color:legCol944(s.c),lineHeight:1}}>{s.v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
               </Card>
             ))}
           </div>
@@ -10441,9 +10645,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _al=assistLinksRef.current||{given:[],received:[]};const _gv=_al.given||[],_rc=_al.received||[];
             if(!_gv.length&&!_rc.length)return null;
             const _row=(icon,lbl,arr,col)=>arr.length?(<div style={{display:"flex",alignItems:"flex-start",gap:8,padding:"7px 9px",background:TH.surface2,borderRadius:RAD.sm,border:`1px solid ${TH.divider}`,marginBottom:6}}>
-              <span style={{fontSize:14,flexShrink:0}}>{icon}</span>
+              <span style={{fontSize:FS.body,flexShrink:0}}>{icon}</span>
               <div style={{minWidth:0}}><div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.5}}>{lbl}</div>
-                <div style={{fontSize:12,color:TH.text,fontWeight:700,lineHeight:1.5}}>{arr.map((x,i)=>(<span key={i}><span style={{color:legCol944(col)}}>{x.name}</span> <span className="cpm-num" style={{color:TH.muted,fontWeight:600}}>{x.min}'</span>{i<arr.length-1?"   ·   ":""}</span>))}</div></div>
+                <div style={{fontSize:FS.small,color:TH.text,fontWeight:700,lineHeight:1.5}}>{arr.map((x,i)=>(<span key={i}><span style={{color:legCol944(col)}}>{x.name}</span> <span className="cpm-num" style={{color:TH.muted,fontWeight:600}}>{x.min}'</span>{i<arr.length-1?"   ·   ":""}</span>))}</div></div>
             </div>):null;
             return(<div style={{marginBottom:14}}>
               <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>🔗 LE CONNESSIONI</div>
@@ -10488,12 +10692,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
                 {_righe.map((r,i)=>{const a=+r[3]||0,b=+r[4]||0,tot=a+b||1;const qa=Math.round(100*a/tot);
                   return(<div key={r[0]} style={{marginBottom:i===_righe.length-1?0:7}}>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:12,fontVariantNumeric:"tabular-nums"}}>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:FS.small,fontVariantNumeric:"tabular-nums"}}>
                       <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:a>=b?TH.text:TH.muted,minWidth:34,textAlign:"left"}}>{r[1]}</span>
                       <span style={{flex:"1 1 0",textAlign:"center",fontSize:FS.caption,color:TH.muted,fontWeight:700}}>{r[0]}</span>
                       <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:b>=a?TH.text:TH.muted,minWidth:34,textAlign:"right"}}>{r[2]}</span>
                     </div>
-                    <div style={{display:"flex",height:4,borderRadius:2,overflow:"hidden",background:TH.divider,marginTop:3}}>
+                    <div style={{display:"flex",height:4,borderRadius:RAD.pill,overflow:"hidden",background:TH.divider,marginTop:3}}>
                       <div style={{width:qa+"%",background:TH.primary}} />
                       <div style={{width:(100-qa)+"%",background:TH.warning}} />
                     </div>
@@ -10505,19 +10709,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:14}}>
             {[{l:"Falli avversari",v:mxStats.fouls,e:"🟡"},{l:"Calci d'angolo",v:mxStats.corners,e:"🏳️"},{l:"Tiri avversari",v:mxStats.oppShots,e:"🔴"},{l:"Tiro medio",v:mxStats.shots>0?`${mStats.goals}/${mxStats.shots}`:"0/0",e:"🎯"}].map(s=>(
               <div key={s.l} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 8px",background:TH.surface2,borderRadius:RAD.sm,border:`1px solid ${TH.divider}`}}>
-                <span style={{fontSize:13}}>{s.e}</span>
-                <div><div className="cpm-num" style={{fontSize:12,fontWeight:700,color:TH.text}}>{s.v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div></div>
+                <span style={{fontSize:FS.body}}>{s.e}</span>
+                <div><div className="cpm-num" style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{s.v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div></div>
               </div>
             ))}
           </div>
-          {(()=>{const rbC=Math.min(mStats.rb,30);const raw=clamp(5.8+rbC*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0);const rating=Math.round(raw*10)/10;const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;return(<div style={{marginBottom:14}}>
+          {(()=>{const rbC=Math.min(mStats.rb,30);const raw=clamp(5.8+rbC*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0);const rating=Math.round(raw*10)/10;const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;const rcInk=semTesto945(rc,TH.surface2);/* [7.976.0 A19] misurato dalla griglia sul tabellino: TH.warning (#d97706) su TH.surface2 (#f1eee8) = 2,75:1 sia sul voto da 46 px sia sull'etichetta. Il TONO PIENO resta alla barra (e' un riempimento, non un inchiostro); il TESTO prende l'inchiostro scurito della stessa famiglia — #92400e, gia' in INK945, 6,12:1 */return(<div style={{marginBottom:14}}>
             {/* [7.86.0 collaudo PO «standardizza UX/UI»] PAGELLA: voto + meter (voto/10) in un pannello del kit */}
             <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>PAGELLA</div>
             <div style={{display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,textAlign:"left"}}>
-              <div className="cpm-num" style={{fontSize:46,fontWeight:900,color:rc,lineHeight:1,flexShrink:0}}>{rating}</div>
+              <div className="cpm-num" style={{fontSize:46,fontWeight:900,color:rcInk,lineHeight:1,flexShrink:0}}>{rating}</div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:12,fontWeight:700,color:rc,marginBottom:6}}>{rating>=9?"Prestazione storica!":rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>
-                <div style={{height:6,background:TH.track,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${Math.round(rating*10)}%`,background:rc,borderRadius:3,transition:"width .5s"}}/></div>
+                <div style={{fontSize:FS.small,fontWeight:700,color:rcInk,marginBottom:6}}>{rating>=9?"Prestazione storica!":rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>
+                <div style={{height:6,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:`${Math.round(rating*10)}%`,background:rc,borderRadius:RAD.pill,transition:"width .5s"}}/></div>
                 <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.faint,marginTop:3}}><span>4.0</span><span>10.0</span></div>
               </div>
             </div>
@@ -10526,14 +10730,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <NpcFaceCoach coachName={player.club?.n||"mister"} size={34}/>
               <div style={{flex:1}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.txBlue,letterSpacing:1,marginBottom:4}}>MISTER DOPO LA PARTITA</div>
-                <div style={{fontSize:11,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65)}</div>
+                <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65)}</div>
               </div>
             </div>}
             {/* Sprint 113 — Key match events timeline */}
             {matchEvents.length>0&&<div style={{marginTop:10,textAlign:"left"}}>
               <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:4}}>MOMENTI CHIAVE</div>
               <div style={{display:"flex",flexDirection:"column",gap:3}}>
-                {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:"center",fontSize:FS.caption,color:ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted}}>
+                {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:"center",fontSize:FS.caption,color:semTesto945(ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted,TH.surface3)/* [7.976.0 A19] TH.success (#16a34a) su bianco misurava 3,30:1: l'inchiostro scurito della stessa famiglia e' #166534, 7,13:1. L'ambra del rosso (#f59e0b, 2,15:1) non era nel campione misurato ma era rossa lo stesso */}}>
                   <span style={{fontSize:FS.caption,fontWeight:700,minWidth:22,color:TH.faint}}>{ev.min}'</span>
                   <span>{ev.txt}</span>
                 </div>)}
@@ -10563,30 +10767,30 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             return(<div style={{marginTop:14,borderTop:`3px double ${TH.text}`,paddingTop:12,textAlign:"left"}}>
               {/* Il pezzo del giornalista: occhiello (importanza/prestigio) + analisi tattica */}
               <div style={_hd}>L'analisi</div>
-              {_kick&&<div style={{fontFamily:_serif,fontSize:12.5,fontWeight:700,fontStyle:"italic",color:TH.text,marginBottom:5,lineHeight:1.4}}>{_kick}</div>}
-              <div style={{fontFamily:_serif,fontSize:12.5,color:TH.text,lineHeight:1.55}}>{_press.tacticalNote}</div>
+              {_kick&&<div style={{fontFamily:_serif,fontSize:FS.small,fontWeight:700,fontStyle:"italic",color:TH.text,marginBottom:5,lineHeight:1.4}}>{_kick}</div>}
+              <div style={{fontFamily:_serif,fontSize:FS.small,color:TH.text,lineHeight:1.55}}>{_press.tacticalNote}</div>
               {/* Dalle altre testate — headline multi-giornale = colpo d'occhio da vero quotidiano */}
               {_sub.length>0&&<div style={{marginTop:14}}>
                 <div style={_hd}>Dalle altre testate</div>
                 {_sub.map((h,i)=>(<div key={i} style={{display:"flex",gap:9,padding:"7px 0",borderTop:i>0?`1px solid ${TH.divider}`:"none"}}>
                   <span style={{width:8,height:8,borderRadius:"50%",background:(_press.paperColors||[])[i+1]||TH.primary,flexShrink:0,marginTop:5}}/>
-                  <div style={{minWidth:0}}><div style={{fontSize:FS.caption,letterSpacing:1,color:(_press.paperColors||[])[i+1]||TH.faint,fontWeight:800,textTransform:"uppercase"}}>{(_press.papers||[])[i+1]||"Cronaca"}</div><div style={{fontFamily:_serif,fontSize:13,color:TH.text,lineHeight:1.32,fontWeight:700}}>{h}</div></div>
+                  <div style={{minWidth:0}}><div style={{fontSize:FS.caption,letterSpacing:1,color:(_press.paperColors||[])[i+1]||TH.faint,fontWeight:800,textTransform:"uppercase"}}>{(_press.papers||[])[i+1]||"Cronaca"}</div><div style={{fontFamily:_serif,fontSize:FS.body,color:TH.text,lineHeight:1.32,fontWeight:700}}>{h}</div></div>
                 </div>))}
               </div>}
               {/* Le parole del protagonista (commento dell'eroe) */}
               {_hero&&<div style={{marginTop:14,borderLeft:`3px solid ${TH.primary}`,paddingLeft:11}}>
                 <div style={{fontSize:FS.caption,letterSpacing:1,color:TH.brandText,fontWeight:800,marginBottom:3,textTransform:"uppercase"}}>Le parole del protagonista</div>
-                <div style={{fontFamily:_serif,fontSize:13,fontStyle:"italic",color:TH.text,lineHeight:1.5}}>{_hero.replace(/\s*—\s*[^—]+$/,"")}</div>
+                <div style={{fontFamily:_serif,fontSize:FS.body,fontStyle:"italic",color:TH.text,lineHeight:1.5}}>{_hero.replace(/\s*—\s*[^—]+$/,"")}</div>
               </div>}
               {/* MIGLIORE IN CAMPO + LA CURVA (tifosi) */}
               <div style={{marginTop:14,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
                 <div style={{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,padding:"9px 11px"}}>
                   <div style={{fontSize:FS.caption,letterSpacing:1,color:TH.success,fontWeight:800,marginBottom:3}}>⭐ MIGLIORE IN CAMPO</div>
-                  <div style={{fontSize:12,fontWeight:800,color:TH.text}}>{_press.motm}</div>
+                  <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>{_press.motm}</div>
                 </div>
                 <div style={{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,padding:"9px 11px"}}>
                   <div style={{fontSize:FS.caption,letterSpacing:1,color:TH.warning,fontWeight:800,marginBottom:3}}>📣 LA CURVA</div>
-                  <div style={{fontSize:11,color:TH.muted,fontStyle:"italic",lineHeight:1.35}}>«{(_press.fanReactions||[])[0]||""}»</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted,fontStyle:"italic",lineHeight:1.35}}>«{(_press.fanReactions||[])[0]||""}»</div>
                 </div>
               </div>
               {(_press.memoriaTag||_press.trending)&&<div style={{marginTop:12,display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
@@ -10599,15 +10803,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         </div>
         {/* footer PINNATO — sempre visibile: SALVA il risultato e torna alla dashboard (bottone GRANATA di brand) */}
         <div style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
-          <Btn onClick={handleEnd} v="primary" fw style={{padding:"14px",fontSize:15,background:`linear-gradient(135deg,${TH.primary},${TH.primaryDk})`,color:"#fff"}}>
-            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla dashboard"} {!isNarrow&&<span className="kbd" style={{opacity:0.7,fontSize:11}}>Enter</span>}
+          <Btn onClick={handleEnd} v="primary" fw style={{padding:"14px",fontSize:FS.bodyLg,background:`linear-gradient(135deg,${TH.primary},${TH.primaryDk})`,color:"#fff"}}>
+            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla dashboard"} {!isNarrow&&<span className="kbd" style={{opacity:0.7,fontSize:FS.caption}}>Enter</span>}
           </Btn>
         </div>
         </div>
       )}
       {/* ATE-5: debug overlay — Shift+D */}
       {debugMode&&<div style={{position:"fixed",bottom:8,left:8,background:"rgba(0,0,0,0.82)",
-        color:"#a3e635",fontFamily:"monospace",fontSize:FS.caption,padding:"7px 11px",borderRadius:7,
+        color:"#a3e635",fontFamily:"monospace",fontSize:FS.caption,padding:"7px 11px",borderRadius:RAD.xs,
         zIndex:9999,lineHeight:1.8,pointerEvents:"none",border:"1px solid rgba(163,230,53,0.25)"}}>
         <div style={{color:"#f97316",fontWeight:700,marginBottom:2}}>◉ CPM DEBUG {GAME_VERSION}</div>
         <div>phase: <b style={{color:"#fff"}}>{phase}</b></div>

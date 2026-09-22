@@ -114,7 +114,7 @@ function ReviewWizard({onExit}){
   const done=combos.filter(c=>verd[kOf(c)]).length,ko=combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0).length;
   const stale=combos.filter(c=>verd[kOf(c)]&&verd[kOf(c)].v===0&&(verd[kOf(c)].b||null)!==GAME_VERSION).length;/* [7.219.0] bocciate su build precedenti */
   const sit=cur?ALL[cur.gi]:null,act=sit&&sit.actions?sit.actions[cur.ai]:null;
-  const bs={background:"#334155",color:"#fff",border:"none",borderRadius:RAD.sm,padding:"9px 12px",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};
+  const bs={background:"#334155",color:"#fff",border:"none",borderRadius:RAD.sm,padding:"9px 12px",fontSize:FS.body,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};
   const doExport=()=>{
     /* [7.219.0] i verdetti restano salvati fra una sessione e l'altra: senza dire su QUALE build sono stati
        dati, un export mescola le bocciature di oggi con quelle gia corrette in una release precedente — ed e
@@ -133,12 +133,12 @@ function ReviewWizard({onExit}){
       <MatchErrorBoundary><LiveMatch player={md.player} opponent={md.opp} context="trial" isMatchHome={!(typeof window!=='undefined'&&window.__CPM_AWAY_TEST)} onMatchEnd={()=>{}}/></MatchErrorBoundary>{/* [7.726.0 strumento] __CPM_AWAY_TEST: il provino si apre IN TRASFERTA per le sonde (la 7.725 ha corretto per lettura sei siti di frame senza poterli misurare). Default invariato. */}
     </div>
     {/* barra ALTA: avanzamento e uscita */}
-    <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.45)",backdropFilter:"blur(2px)",WebkitBackdropFilter:"blur(2px)",padding:"7px 10px",borderRadius:10,fontFamily:"inherit",fontSize:12,color:"#e2e8f0",flexWrap:"wrap",textShadow:"0 1px 2px rgba(0,0,0,0.8)"}}>
+    <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.45)",backdropFilter:"blur(2px)",WebkitBackdropFilter:"blur(2px)",padding:"7px 10px",borderRadius:RAD.sm,fontFamily:"inherit",fontSize:FS.small,color:"#e2e8f0",flexWrap:"wrap",textShadow:"0 1px 2px rgba(0,0,0,0.8)"}}>
       <b style={{color:"#fbbf24",letterSpacing:1}}>🎬 REVISIONE</b>
       <span style={{fontWeight:800}}>{done} / {combos.length}</span>
       <span style={{color:"#f87171",fontWeight:800}}>{ko} da correggere</span>
       {stale>0&&<span style={{color:"#fbbf24",fontWeight:800}}>· {stale} da riverificare (build precedenti)</span>}
-      <div style={{flex:1,minWidth:60,height:6,background:"#1e293b",borderRadius:3,overflow:"hidden"}}><div style={{width:`${combos.length?done/combos.length*100:0}%`,height:"100%",background:"#22c55e"}}/></div>
+      <div style={{flex:1,minWidth:60,height:6,background:"#1e293b",borderRadius:RAD.pill,overflow:"hidden"}}><div style={{width:`${combos.length?done/combos.length*100:0}%`,height:"100%",background:"#22c55e"}}/></div>
       <button onClick={onExit} style={{...bs,padding:"5px 10px",background:"#7f1d1d"}}>✕ Esci</button>
     </div>
     {/* barra BASSA: cosa stai guardando + verdetto. [7.235.0 collaudo PO «rendi piu trasparente lo sfondo
@@ -147,16 +147,16 @@ function ReviewWizard({onExit}){
         sotto la barra. Solo wizard di sviluppo, mai in build store. */}
     <div style={{position:"fixed",left:0,right:0,bottom:0,zIndex:99999,background:"rgba(2,6,16,0.50)",backdropFilter:"blur(2px)",WebkitBackdropFilter:"blur(2px)",borderTop:"1px solid rgba(30,41,59,0.6)",padding:"9px 10px 12px",fontFamily:"inherit",color:"#e2e8f0",textShadow:"0 1px 2px rgba(0,0,0,0.85)"}}>
       {!cur?<div style={{textAlign:"center",padding:"14px 0",fontWeight:800,color:TH.txGreen}}>✅ Nessuna combinazione in questo filtro — hai finito!</div>:<>
-        <div style={{display:"flex",gap:8,alignItems:"center",fontSize:11,color:TH.faint,marginBottom:4}}>
+        <div style={{display:"flex",gap:8,alignItems:"center",fontSize:FS.caption,color:TH.faint,marginBottom:4}}>
           <span>gi{cur.gi} · azione {cur.ai+1}</span>
           <span style={{background:cur.ok?"#14532d":"#7f1d1d",color:"#fff",padding:"2px 7px",borderRadius:RAD.xl,fontWeight:800}}>{cur.ok?"ESITO RIUSCITO":"ESITO FALLITO"}</span>
           {busy&&<span style={{color:"#fbbf24"}}>▶ in corso…</span>}
           <span style={{flex:1}}/>
           <span>{Math.min(i+1,list.length)}/{list.length} nel filtro</span>
         </div>
-        <div style={{fontSize:13,fontWeight:700,marginBottom:2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{sit?sit.text:"…"}</div>
-        <div style={{fontSize:12,color:"#cbd5e1",marginBottom:7,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>▸ {act?act.label:"…"}</div>
-        <input value={note} onChange={e=>setNote(e.target.value)} placeholder="Nota (facoltativa): cosa non va?" style={{width:"100%",boxSizing:"border-box",background:"rgba(15,23,42,0.7)",border:"1px solid rgba(30,41,59,0.7)",borderRadius:RAD.sm,color:"#e2e8f0",padding:"8px 10px",fontSize:13,fontFamily:"inherit",marginBottom:7}}/>
+        <div style={{fontSize:FS.body,fontWeight:700,marginBottom:2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{sit?sit.text:"…"}</div>
+        <div style={{fontSize:FS.small,color:"#cbd5e1",marginBottom:7,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>▸ {act?act.label:"…"}</div>
+        <input value={note} onChange={e=>setNote(e.target.value)} placeholder="Nota (facoltativa): cosa non va?" style={{width:"100%",boxSizing:"border-box",background:"rgba(15,23,42,0.7)",border:"1px solid rgba(30,41,59,0.7)",borderRadius:RAD.sm,color:"#e2e8f0",padding:"8px 10px",fontSize:FS.body,fontFamily:"inherit",marginBottom:7}}/>
         <div style={{display:"flex",gap:7,flexWrap:"wrap"}}>
           <button onClick={()=>mark(1)} style={{...bs,background:"#16a34a",flex:"1 1 90px"}}>👍 OK</button>
           <button onClick={()=>mark(0)} style={{...bs,background:"#dc2626",flex:"1 1 90px"}}>👎 Da correggere</button>
@@ -167,13 +167,13 @@ function ReviewWizard({onExit}){
       </>}
       <div style={{display:"flex",gap:7,marginTop:7,flexWrap:"wrap",alignItems:"center"}}>
         {[["todo","mai viste"],["ko","da correggere"],["stale","da riverificare"],["all","tutte"]].map(([k,l])=>
-          <button key={k} onClick={()=>{setFilter(k);setI(0);}} style={{...bs,padding:"5px 10px",fontSize:11,background:filter===k?"#2563eb":"#1e293b"}}>{l}</button>)}
+          <button key={k} onClick={()=>{setFilter(k);setI(0);}} style={{...bs,padding:"5px 10px",fontSize:FS.caption,background:filter===k?"#2563eb":"#1e293b"}}>{l}</button>)}
         <span style={{flex:1}}/>
-        <button onClick={doExport} style={{...bs,padding:"5px 10px",fontSize:11,background:"#b45309"}}>📤 Esporta bocciate</button>
+        <button onClick={doExport} style={{...bs,padding:"5px 10px",fontSize:FS.caption,background:"#b45309"}}>📤 Esporta bocciate</button>
       </div>
       {exp!=null&&<div style={{marginTop:7}}>
-        <textarea readOnly value={exp} onFocus={e=>e.target.select()} style={{width:"100%",boxSizing:"border-box",height:90,background:"#0f172a",border:"1px solid #1e293b",borderRadius:RAD.sm,color:"#e2e8f0",padding:8,fontSize:11,fontFamily:"monospace"}}/>
-        <button onClick={()=>setExp(null)} style={{...bs,padding:"4px 9px",fontSize:11,marginTop:4}}>chiudi</button>
+        <textarea readOnly value={exp} onFocus={e=>e.target.select()} style={{width:"100%",boxSizing:"border-box",height:90,background:"#0f172a",border:"1px solid #1e293b",borderRadius:RAD.sm,color:"#e2e8f0",padding:8,fontSize:FS.caption,fontFamily:"monospace"}}/>
+        <button onClick={()=>setExp(null)} style={{...bs,padding:"4px 9px",fontSize:FS.caption,marginTop:4}}>chiudi</button>
       </div>}
     </div>
   </div>;
@@ -193,13 +193,13 @@ function SitTest({sitN}){
   // 5.43.8: Ripeti SUCCESS / Ripeti FAIL — riforza la situation e risolve l'ULTIMA azione scelta con esito forzato
   const repeat=(outcome)=>{const k=(window.__CPM_LAST_K==null?0:window.__CPM_LAST_K);force(n);setTimeout(()=>{try{window.__CPM_FORCE_OUTCOME=outcome;window.__CPM_RESOLVE&&window.__CPM_RESOLVE(k);}catch(e){}},460);};
   const sit=(typeof SITUATIONS!=='undefined')?SITUATIONS[n]:null;
-  const bs={background:"#334155",color:"#fff",border:"none",borderRadius:RAD.xs,padding:"4px 10px",fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};
+  const bs={background:"#334155",color:"#fff",border:"none",borderRadius:RAD.xs,padding:"4px 10px",fontSize:FS.body,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};
   return <div style={{width:"100%",height:"100vh",position:"relative",background:"#050810",display:"flex",flexDirection:"column"}}>
     {/* 5.43.6: catena flex di altezza (come la match-screen reale) → su mobile il canvas 3D NON collassa più a 0 (campo nero) */}
     <div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}>
       <MatchErrorBoundary><LiveMatch player={md.player} opponent={md.opp} context="trial" isMatchHome={!(typeof window!=='undefined'&&window.__CPM_AWAY_TEST)} onMatchEnd={()=>force(n)}/></MatchErrorBoundary>{/* [7.726.0 strumento] idem: apertura in trasferta per le sonde */}
     </div>
-    <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.82)",padding:"7px 10px",borderRadius:9,fontFamily:"monospace",fontSize:12,color:"#fff",flexWrap:"wrap",boxShadow:"0 2px 10px rgba(0,0,0,0.5)"}}>
+    <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.82)",padding:"7px 10px",borderRadius:RAD.sm,fontFamily:"monospace",fontSize:FS.small,color:"#fff",flexWrap:"wrap",boxShadow:"0 2px 10px rgba(0,0,0,0.5)"}}>
       <b style={{color:"#fbbf24",letterSpacing:1}}>🎬 SIT TEST</b>
       <button onClick={()=>force(n-1)} style={bs}>◀</button>
       <span style={{minWidth:64,textAlign:"center"}}>gi{n} / {total-1}</span>
@@ -553,15 +553,15 @@ function IntroCinematic({onDone}){
         {cap.big&&(cap.big==="KORWARD ELITE"
           ?<div key={"b"+beat} style={{display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both",filter:"drop-shadow(0 3px 16px rgba(0,0,0,0.85)) drop-shadow(0 0 22px rgba(163,38,58,0.5))"}}><Wordmark size={44}/></div>/* [7.32.1 collaudo PO «la scritta deve essere uguale a quella del logo»] */
           :<div key={"b"+beat} style={{fontSize:cap.big.length>14?24:38,fontWeight:900,color:"#fff",letterSpacing:cap.big.length>14?1:4,textShadow:"0 3px 18px rgba(0,0,0,0.8)",animation:"celebTitle .7s ease-out both"}}>{cap.big}</div>)}
-        {cap.sub&&<div key={"s"+beat} style={{fontSize:15,color:"#ffd9a0",fontWeight:700,marginTop:8,textShadow:"0 2px 12px rgba(0,0,0,0.85)",animation:"celebTitle .8s ease-out .15s both"}}>{cap.sub}</div>}
+        {cap.sub&&<div key={"s"+beat} style={{fontSize:FS.bodyLg,color:"#ffd9a0",fontWeight:700,marginTop:8,textShadow:"0 2px 12px rgba(0,0,0,0.85)",animation:"celebTitle .8s ease-out .15s both"}}>{cap.sub}</div>}
         {cap.chips&&<div style={{display:"flex",flexDirection:"column",gap:8,alignItems:"center",marginTop:14}}>
-          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:22,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:14,fontWeight:800,animation:`celebTitle .5s ease-out ${0.3+i*0.55}s both`}}>{c}</div>))}
+          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:RAD.xl,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:FS.body,fontWeight:800,animation:`celebTitle .5s ease-out ${0.3+i*0.55}s both`}}>{c}</div>))}
         </div>}
       </div>
       {cap.cta&&<div style={{position:"absolute",left:0,right:0,bottom:"12%",display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both"}}>
-        <button onClick={onDone} style={{padding:"15px 34px",borderRadius:14,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:17,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>🎬 Comincia dal provino →</button>
+        <button onClick={onDone} style={{padding:"15px 34px",borderRadius:RAD.md,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:FS.subhead,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>🎬 Comincia dal provino →</button>
       </div>}
-      <button onClick={onDone} style={{position:"absolute",top:14,right:14,padding:"8px 15px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
+      <button onClick={onDone} style={{position:"absolute",top:14,right:14,padding:"8px 15px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
     </div>
   );
 }
@@ -571,17 +571,17 @@ function IntroCinematic({onDone}){
    arbitro, muto totale, VIBRAZIONE, debug). Un unico posto per tutte le preferenze. */
 function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu}){
   const Seg=({active,label,onClick})=>(
-    <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:12.5,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
+    <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
   );
   return(
     <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
-        <div style={{fontSize:16,fontWeight:FW.black,color:TH.text}}>⚙️ Impostazioni</div>
-        <button onClick={onClose} className="cpm-press" style={{width:34,height:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:15}}>✕</button>
+        <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Impostazioni</div>
+        <button onClick={onClose} className="cpm-press" style={{width:34,height:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14}}>
         <Card style={{padding:'12px 14px'}}>
-          <div style={{fontSize:11,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>🎨 Grafica</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>🎨 Grafica</div>
           {/* [7.947 — IL TEMA E' UNO SOLO, ED E' CHIARO. Direttiva PO: «non perdere tempo con grafica chiara
               o scura della grafica extra partita. La grafica deve essere UNA e fatta benissimo. Secondo me la
               base di partenza deve essere quella chiara. Togli anche interruttore nelle impostazioni».]
@@ -597,9 +597,9 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu}){
         <AudioSettings/>
         {onExitToMenu&&(
           <Card style={{padding:'12px 14px'}}>
-            <div style={{fontSize:11,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:8}}>🚪 Sessione</div>
-            <div style={{fontSize:11,color:TH.muted,lineHeight:1.5,marginBottom:10}}>Il gioco riprende automaticamente da qui alla riapertura. Torna al menu solo se vuoi cambiare slot o iniziare una nuova carriera — i progressi restano salvati.</div>
-            <Btn v="ghost" fw onClick={()=>{onClose&&onClose();onExitToMenu();}} style={{padding:'12px',fontSize:13}}>🏠 Torna al Menu Principale</Btn>
+            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:8}}>🚪 Sessione</div>
+            <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:10}}>Il gioco riprende automaticamente da qui alla riapertura. Torna al menu solo se vuoi cambiare slot o iniziare una nuova carriera — i progressi restano salvati.</div>
+            <Btn v="ghost" fw onClick={()=>{onClose&&onClose();onExitToMenu();}} style={{padding:'12px',fontSize:FS.body}}>🏠 Torna al Menu Principale</Btn>
           </Card>
         )}{/* [7.149.0] uscita al menu (azzera l'auto-ripresa); presente SOLO durante la carriera, non nelle schermate pre-carriera */}
         <div style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'2px 0 8px'}}>Le impostazioni si salvano automaticamente.</div>
@@ -625,8 +625,8 @@ function AudioSettings(){
   return(
     <Card style={{padding:'12px 14px'}}>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
-        <div style={{fontSize:11,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700}}>🎧 Audio</div>
-        <button onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}} style={{padding:'5px 12px',borderRadius:9,border:`1px solid ${TH.cardBorder}`,background:cfg.mute?TH.danger:'transparent',color:cfg.mute?'#fff':TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:11,fontWeight:700}}>{cfg.mute?'🔇 Muto ON':'🔇 Muto totale'}</button>
+        <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700}}>🎧 Audio</div>
+        <button onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}} style={{padding:'5px 12px',borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:cfg.mute?TH.danger:'transparent',color:cfg.mute?'#fff':TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.caption,fontWeight:700}}>{cfg.mute?'🔇 Muto ON':'🔇 Muto totale'}</button>
       </div>
       {VOL.map(r=>{
         const vol=Math.round((r.master?cfg.master:cfg.vol[r.k])*100);
@@ -634,7 +634,7 @@ function AudioSettings(){
         return(
           <div key={r.k} style={{marginBottom:9,opacity:dim?0.5:1}}>
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
-              <span style={{fontSize:12,color:TH.text,fontWeight:600}}>{r.label}</span>
+              <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{r.label}</span>
               <div style={{display:'flex',alignItems:'center',gap:8}}>
                 <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:30,textAlign:'right'}}>{vol}%</span>
                 {!r.master&&<Toggle on={cfg.on[r.k]} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(!was)AudioMgr.preview(r.k);}catch(_e){}}}/>}
@@ -649,7 +649,7 @@ function AudioSettings(){
       <div style={{borderTop:`1px dashed ${TH.cardBorder}`,marginTop:6,paddingTop:8}}>
         {TOG.map(r=>(
           <div key={r.k} style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8,opacity:r.dis?0.55:1}}>
-            <span style={{fontSize:12,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:FS.caption,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
+            <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>{r.label}{r.note&&<span style={{fontSize:FS.caption,color:TH.faint,marginLeft:6}}>({r.note})</span>}</span>
             <Toggle on={cfg.on[r.k]} dis={r.dis} onClick={()=>{const was=cfg.on[r.k];try{AudioMgr.setOn(r.k,!was);refresh();if(r.k==='vibr'&&!was)AudioMgr.vibrate(40);}catch(_e){}}}/>
           </div>
         ))}
@@ -674,8 +674,8 @@ function SettingsQuickBtn({onOpen}){
   return(
     <button onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onOpen)onOpen();}}
       title="Impostazioni"
-      style={{position:"fixed",bottom:"calc(env(safe-area-inset-bottom,0px) + 44px)",right:12,zIndex:99999,padding:"8px 14px 6px",minWidth:60,borderRadius:14,border:`1px solid ${TH.cardBorder}`,background:TH.card,color:TH.faint,cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:1,boxShadow:"0 4px 14px rgba(0,0,0,0.12)"}}>
-      <div style={{fontSize:17}}>⚙️</div>
+      style={{position:"fixed",bottom:"calc(env(safe-area-inset-bottom,0px) + 44px)",right:12,zIndex:99999,padding:"8px 14px 6px",minWidth:60,borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`,background:TH.card,color:TH.faint,cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:1,boxShadow:"0 4px 14px rgba(0,0,0,0.12)"}}>
+      <div style={{fontSize:FS.subhead}}>⚙️</div>
       <div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3,fontWeight:FW.bold}}>Opzioni</div>
     </button>
   );
@@ -690,10 +690,10 @@ function HomeNavBar({onImport,onSettings}){
   return(
     <div className="cpm-nav-bar" style={{zIndex:100}}>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
-        <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:17}}>🏠</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Home</div></button>
-        <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:17}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Intro</div></button>
-        <button title="Importa salvataggio (.json)" onClick={()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:17}}>📂</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Importa</div></button>
-        <button title="Impostazioni" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:17}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
+        <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:FS.subhead}}>🏠</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Home</div></button>
+        <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Intro</div></button>
+        <button title="Importa salvataggio (.json)" onClick={()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>📂</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Importa</div></button>
+        <button title="Impostazioni" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:FS.subhead}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
       </div>
       <input ref={fileRef} type="file" accept=".json" style={{display:"none"}} onChange={e=>{if(e.target.files[0]&&onImport)onImport(e.target.files[0]);e.target.value="";}}/>
     </div>
@@ -727,7 +727,7 @@ function App(){
   const[appMsg,setAppMsg]=useState(null);
   const[lang,setLang]=useState(()=>safeLS.get("cpm-lang")||"IT");
   const[legacyBonus,setLegacyBonus]=useState(null);
-  const toggleLang=()=>{const nl=lang==="IT"?"EN":"IT";setLang(nl);safeLS.set("cpm-lang",nl);const msg=nl==="EN"?"Language: English 🇬🇧":"Lingua: Italiano 🇮🇹";setAppMsg({msg,color:"#2563eb"});setTimeout(()=>setAppMsg(null),2200);};
+  const toggleLang=()=>{const nl=lang==="IT"?"EN":"IT";setLang(nl);safeLS.set("cpm-lang",nl);const msg=nl==="EN"?"Language: English 🇬🇧":"Lingua: Italiano 🇮🇹";setAppMsg({msg,color:"#1e40af"});setTimeout(()=>setAppMsg(null),2200);};
 
   const appNotify=(msg,color=TH.danger)=>{setAppMsg({msg,color});setTimeout(()=>setAppMsg(null),3500);};
 
@@ -850,7 +850,7 @@ function App(){
           il bottone fisso ⚙️ (7.104/7.134) è RIMOSSO da creazione/provini/offerte: Opzioni vive solo nella nav
           della Home e nella nav della carriera. SettingsQuickBtn resta definito ma non montato. */}
       {showSettings&&<SettingsScreen darkMode={dark} onTheme={nd=>{try{safeLS.set("cpm-dark",nd?"1":"0");}catch(_e){}setDark(nd);}} onClose={()=>setShowSettings(false)}/>}
-      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:11,letterSpacing:"0.05em",animation:"cpmBadgeFade 9s ease forwards"}}>{/* [5.95.0 QW] auto-fade: visibile al boot per verificare la versione, poi sparisce (su mobile copriva tab-bar/azioni) */}
+      <div style={{position:"fixed",bottom:6,right:8,zIndex:9999,display:"flex",alignItems:"center",gap:6,pointerEvents:"none",fontFamily:"monospace",fontSize:FS.caption,letterSpacing:"0.05em",animation:"cpmBadgeFade 9s ease forwards"}}>{/* [5.95.0 QW] auto-fade: visibile al boot per verificare la versione, poi sparisce (su mobile copriva tab-bar/azioni) */}
         <span title="Ambiente di esecuzione" style={{color:"#fff",fontWeight:800,padding:"2px 7px",borderRadius:RAD.xs,background:APP_ENV==="PRODUCTION"?"rgba(22,163,74,0.85)":"rgba(217,119,6,0.95)",boxShadow:APP_ENV==="PRODUCTION"?"none":"0 0 0 1px rgba(255,255,255,0.35)"}}>{APP_ENV==="PRODUCTION"?"PROD":"TEST"}</span>
         <span style={{color:"#fff",background:"rgba(0,0,0,0.55)",padding:"2px 7px",borderRadius:RAD.xs}}>KE {GAME_VERSION}</span>
       </div>
@@ -921,7 +921,7 @@ function App(){
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<><HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>
     {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD)&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>
-      <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:11.5,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
+      <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
   if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)}/>);
   if(phase==="cinematic"&&player)return wrap(<IntroCinematic onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
@@ -983,12 +983,12 @@ class RootErrorBoundary extends React.Component{
     return(
       <div style={{position:"fixed",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:16,padding:24,background:"#0f172a",color:"#e2e8f0",fontFamily:"'Barlow','Segoe UI',sans-serif",textAlign:"center",zIndex:99999}}>
         <div style={{fontSize:42}}>⚠️</div>
-        <div style={{fontSize:20,fontWeight:900}}>Qualcosa è andato storto</div>
-        <div style={{fontSize:14,maxWidth:360,opacity:0.85,lineHeight:1.5}}>La tua carriera è <b>al sicuro</b> sul dispositivo. Ricarica per riprendere da dove eri; puoi anche tornare al menu o scaricare un backup di sicurezza.</div>
+        <div style={{fontSize:FS.title,fontWeight:900}}>Qualcosa è andato storto</div>
+        <div style={{fontSize:FS.body,maxWidth:360,opacity:0.85,lineHeight:1.5}}>La tua carriera è <b>al sicuro</b> sul dispositivo. Ricarica per riprendere da dove eri; puoi anche tornare al menu o scaricare un backup di sicurezza.</div>
         <div style={{display:"flex",gap:10,flexWrap:"wrap",justifyContent:"center",marginTop:6}}>
-          <button onClick={()=>location.reload()} style={{padding:"11px 22px",borderRadius:10,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>↻ Ricarica</button>
-          <button onClick={()=>{try{localStorage.setItem("cpm-active","");localStorage.setItem("cpm-match-resume","");}catch(e){}location.reload();}} style={{padding:"11px 22px",borderRadius:10,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>🏠 Torna al menu</button>{/* [7.149.0] azzera l'auto-ripresa (carriera + partita) → il boot torna alla home: valvola anti crash-loop */}
-          <button onClick={()=>this._backup()} style={{padding:"11px 22px",borderRadius:10,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>📁 Scarica backup</button>
+          <button onClick={()=>location.reload()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>↻ Ricarica</button>
+          <button onClick={()=>{try{localStorage.setItem("cpm-active","");localStorage.setItem("cpm-match-resume","");}catch(e){}location.reload();}} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>🏠 Torna al menu</button>{/* [7.149.0] azzera l'auto-ripresa (carriera + partita) → il boot torna alla home: valvola anti crash-loop */}
+          <button onClick={()=>this._backup()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>📁 Scarica backup</button>
         </div>
       </div>
     );
