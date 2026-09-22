@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 22 settembre 2026, 22:50 (Europe/Rome)
+**Ultimo aggiornamento:** 22 settembre 2026, 23:08 (Europe/Rome)
 **Stato complessivo stimato:** 65% — ridotto dopo la verifica di una regressione nella review ottimizzata; non è un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -818,3 +818,10 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Pubblicato e verificato:** `origin/poc/marioprada-character-system` punta al commit `4c81b8e` dopo due push lineari. Il primo checkpoint (`33b654b`) include codice POC, roadmap, handoff, 40 ritratti e sorgente di recupero. Il secondo (`4c81b8e`) conserva i 19 file originali CGTrader acquistati; `BLENDER+RIG.blend` da 118 MB e' gestito da Git LFS. `npm run build:web` e `git diff --cached --check` sono passati prima del push.
 - **Produzione:** nessun push verso `main`; il ramo Pages ufficiale rimane separato. La build POC non e' stata pubblicata sul link ufficiale ne' dichiarata valida per il collaudo mobile.
 - **Gate e fase:** 4/7, 65% stimato; roster ottimizzato da ripristinare, poi cattura completa della presa, dribbling/passaggio/tiro, transizioni e benchmark telefono. La consegna operativa per Claude Code e' in `tests/character-lab/CLAUDE_CODE_CONTINUATION.md`.
+
+### 2026-09-22, 23:08 — Controllo periodico
+
+- **Fase corrente:** 4/7, 65% complessivo stimato, invariato.
+- **Attività dall'ultimo aggiornamento:** consegnato al team Claude Code il prompt di presa in carico con branch, priorità e quality gate; nessuna modifica al renderer dopo il checkpoint c4399a6.
+- **Verifica ed esito:** checkout locale pulito sui file tracciati al commit c4399a6; nessun nuovo test animazione o mobile in questo intervallo. Roster ottimizzato e sincronismo della presa restano aperti.
+- **Prossimo criterio di chiusura:** ripristino selettivo del roster LOD e nuova cattura del contatto mani-palla; poi transizioni e benchmark su telefono. Nessuna build validata pubblicata sul link ufficiale.
