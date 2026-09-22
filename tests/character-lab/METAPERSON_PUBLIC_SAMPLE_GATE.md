@@ -24,6 +24,12 @@ Tutti e tre sono stati importati senza eccezioni in Blender 4.5.14. La gerarchia
 
 **Non passano ancora** il gate Korward: 60–69 mila triangoli sono troppi per una squadra completa su mobile, gli abiti civili/logati non sono un kit da calcio, e non sono stati ancora verificati retarget del dribbling, contatto palla, transizioni o prestazioni sul telefono.
 
+## Compatibilità con le clip già disponibili
+
+Il confronto diretto del rig di `model5` con il source locale delle clip Mixamo ha trovato **65 nomi anatomici condivisi su 65**. Tutte le 22 ossa core richieste dal gesto — anche braccia, avambracci, mani, gambe, piedi e punte — sono presenti nel modello MetaPerson. Le otto ossa aggiuntive sono dettagli di collo, occhi e avambracci.
+
+Questo prova che una mappatura nominale completa è disponibile; non prova ancora la qualità del movimento. Il prossimo test deve applicare una clip al rig MetaPerson e misurare posa, braccia, piedi e palla nei fotogrammi di contatto.
+
 ## Passo successivo
 
 Usare solo `model5` come prova tecnica: rimuovere visivamente l'abbigliamento civile nel banco locale, verificare mappatura delle 73 ossa verso una clip esistente e misurare un LOD separato. Il candidato potrà avanzare solo se conserva volto e capelli leggibili, raggiunge un budget misurato e supera il gesto con palla.
