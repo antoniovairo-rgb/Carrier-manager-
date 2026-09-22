@@ -392,3 +392,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatto verificato:** il candidato gratuito CGTrader `Male Hairstyle Short01` non è stato scartato; il suo download firmato raggiunge Chrome ma viene fermato localmente con `ERR_BLOCKED_BY_CLIENT` prima del trasferimento.
 - **Conseguenza:** il blocco non dipende dalle credenziali CGTrader. Non viene aggirato e non sono stati modificati asset, ramo `main` o pubblicazione.
 - **Prossimo passo:** completare il test/esportazione dal generatore MetaPerson e sottoporre qualunque file ottenuto al gate locale di compatibilità, peso, volto e animazione prima dell'adozione.
+
+## 2026-09-22 — stato effettivo della sessione MetaPerson
+
+- **Correzione verificata:** nella finestra Chrome controllata, MetaPerson mostra ancora il pulsante `Sign In`; non risulta quindi autenticata nel servizio, anche se Chrome è aperto con una sessione utente.
+- **Decisione:** non viene creato né scaricato un avatar dalla sessione non autenticata. Il pacchetto CGTrader acquistato resta la base attiva della POC e non è stato scartato.
+- **Azione necessaria:** completare manualmente l'accesso nel servizio MetaPerson nella sua pagina; dopo l'accesso posso scegliere un campione adulto maschile e avviare il download, che sarà poi analizzato localmente.
