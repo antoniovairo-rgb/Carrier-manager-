@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 01:23 (Europe/Rome; controllo periodico)
+**Ultimo aggiornamento:** 23 settembre 2026, 01:38 (Europe/Rome; controllo periodico)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -653,6 +653,14 @@ dito non e' provato. Chromium headless, non il telefono.
 - **Attivita dall'ultimo aggiornamento:** nessun nuovo commit sul branch POC dopo 1a52da87; restano gli esiti della review di dribbling, passaggio, tiro e del provino partita con 25 schermate.
 - **Verifica ed esito:** fetch remoto invariato. I difetti visivi registrati nel provino (figurina vuota, riga gol incoerente nel tabellino, scelta/gesto non sempre allineati, Hero piccolo) restano aperti; nessuna nuova prova su telefono o sul link Pages ufficiale.
 - **Lavoro successivo e criterio di chiusura:** correggere e rieseguire il provino per le incoerenze riproducibili; verificare animazioni, palla e transizioni nella sequenza reale; misurare FPS e qualita sul dispositivo mobile prima del collaudo ufficiale.
+
+---
+## Avanzamento 23 settembre 2026, 01:38 — Controllo periodico
+
+- **Fase corrente:** 4/7, 68% complessivo stimato; quality gate finali ancora aperti.
+- **Attivita dall'ultimo aggiornamento:** nessun nuovo commit di sviluppo sul branch POC dopo il checkpoint 633bda8b.
+- **Verifica ed esito:** fetch remoto invariato. Rimangono documentati i test locali dei gesti e il vision test da 25 schermate; nessuna nuova prova del contatto, delle transizioni o delle prestazioni sul telefono. Figurina vuota, tabellino incoerente e scelta/gesto non sempre coerenti restano aperti.
+- **Lavoro successivo e criterio di chiusura:** risolvere i difetti riprodotti nel vision test, ripetere il percorso completo e validare i quattro gate (animazione, palla, transizioni, mobile) prima della build sul link ufficiale.
 
 ---
 ## Obiettivo vincolante
