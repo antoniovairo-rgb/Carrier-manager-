@@ -500,3 +500,10 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Correzione review dribbling:** la sequenza `humgen-trial-dribble-visual-review/contact-sheet.png` è stata rigenerata con le texture sorgenti correttamente risolte. I render precedenti erano validi per la struttura del rig ma non per la valutazione estetica; per l’aspetto usare la sequenza aggiornata.
 - **Decisione consolidata:** creato MODEL_SELECTION_GATE.md, che mette a confronto solo i candidati effettivamente verificati. CGTrader resta la base runtime; Human Generator resta generatore candidato, non adottato, fino a prova LOD/haircards/kit/palla/mobile.
 
+
+## Aggiornamento 22 settembre 2026 — Character Creator 5 valutato
+
+- **Fase:** ricerca di una base alternativa con varianti reali.
+- **Fatto verificato:** Character Creator 5 offre Game Base da circa 10K poligoni, rig, morph viso/corpo, sistema capelli/barba, bake materiali e LOD. Il prezzo ufficiale e' `$299` Standard / `$479` Deluxe; kit da calcio e libreria adatta non sono inclusi nella prova.
+- **Decisione:** candidato tecnicamente forte, ma non proporzionato al budget. Nessun acquisto o installazione; CGTrader resta il runtime, Human Generator trial resta il prossimo test pratico, previo consenso all'installazione isolata.
+- **Licenza:** la policy Standard dichiara uso in giochi/app degli asset esportabili; per ogni contenuto CC aggiuntivo la licenza specifica va confermata prima dell'acquisto.
