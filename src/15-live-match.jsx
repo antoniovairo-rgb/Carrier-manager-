@@ -766,7 +766,19 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
    ventidue pallini un centimetro piu' in basso. Costruito sui token del design system (FS/FW/SP/RAD), che e'
    il modo in cui C4 entrera' nelle altre cinquanta superfici. Rosso __CPM_NO918: torna il campo nudo. */
 const _COL918={vetro:"rgba(24,35,56,0.74)"/* [7.922 collaudo PO: il fondo delle statistiche e' troppo scuro, deve essere semi trasparente] da 0,90 a 0,74: il campo si vede DAVVERO dietro il vetro, che era il senso di «partita 2D nello sfondo» *//* [7.919 collaudo PO] «renderei un po' piu' chiari gli sfondi delle statistiche»: era 4,10,20 — praticamente nero sul prato scuro */,vetro2:"rgba(28,40,62,0.78)",bordo:"rgba(148,163,184,0.22)",
-  testo:"#e8eef7",fioco:"#93a4bd",riga:"rgba(148,163,184,0.12)"};
+  testo:"#e8eef7",fioco:"#cbd5e1"/* [7.970 — L'HUD DI PARTITA ERA L'UNICA SCHERMATA DEL GIOCO CON NODI
+     ILLEGGIBILI. Rosso __CPM_NO970] MISURATO alla prima corsa del metro riparato (A16): 8 nodi su 24 sotto
+     la soglia di contrasto, contro ZERO su tutte e tredici le schermate di carriera. Il fioco #93a4bd sul
+     vetro composito (#545c6c) faceva 2,65:1 su «possesso», «Statistiche» e le altre etichette: #cbd5e1 fa
+     4,53:1 e resta piu' spento del testo pieno (#e8eef7, 5,76:1), quindi la gerarchia non si perde.
+     ⚠️ NON si tocca l'opacita' del vetro (0,74): e' una decisione del PO del 7.922 — «il fondo delle
+     statistiche e' troppo scuro, deve essere semi trasparente». Si alza l'inchiostro, non si abbassa il campo. */,riga:"rgba(148,163,184,0.12)"};
+/* [7.970] LA SIGLA DEL CLUB SUL VETRO: il colore sociale resta il colore sociale, ma sul vetro scuro va
+   ALZATO finche' non si legge — misurato, il granata #7a1f2b faceva 1,52:1, il peggiore di tutto il gioco.
+   `semTesto945` conserva la tonalita' e si ferma appena passa il 4,5:1: il club si riconosce ancora.
+   Rosso __CPM_NO970: torna il colore sociale nudo. */
+const _sigla970=(c)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO970)return c;
+  return (typeof semTesto945==='function')?semTesto945(c,"#545c6c"):c;}catch(_e){return c;}};
 const _voto918=(v)=>v>=7.5?"#22c55e":v>=6.9?"#84cc16":v>=6.2?"#cbd5e1":v>=5.6?"#f59e0b":"#ef4444";
 const _num918=(v)=>(v==null||isNaN(v))?"0":String(v);
 const _dec918=(v)=>(Math.round((+v||0)*100)/100).toFixed(2).replace(".",",");
@@ -1036,12 +1048,12 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
       <div style={{margin:SP.sm,padding:"7px "+SP.md+"px",borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,pointerEvents:"auto"}}>
         <div style={{display:"flex",alignItems:"center",gap:SP.sm}}>
-          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:colSx,letterSpacing:.6}}>{siglaSx}</span>
+          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:_sigla970(colSx),letterSpacing:.6}}>{siglaSx}</span>
           <div style={{flex:1,display:"flex",height:7,borderRadius:RAD.pill,overflow:"hidden",background:"rgba(148,163,184,0.16)"}}>
             <div style={{width:(A.possesso||50)+"%",background:colSx,transition:"width .5s ease"}}/>
             <div style={{width:(100-(A.possesso||50))+"%",background:colDx,transition:"width .5s ease"}}/>
           </div>
-          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:colDx,letterSpacing:.6}}>{siglaDx}</span>
+          <span style={{fontSize:FS.caption,fontWeight:FW.black,color:_sigla970(colDx),letterSpacing:.6}}>{siglaDx}</span>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",marginTop:5,gap:SP.xs}}>
           {[["possesso",(A.possesso||50)+"%",(100-(A.possesso||50))+"%"],

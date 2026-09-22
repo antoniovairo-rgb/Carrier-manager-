@@ -6705,7 +6705,16 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const cs=getContinuaState();
         return(
-          <div style={{position:"sticky",top:0,zIndex:8,margin:"-4px -2px 12px",padding:"6px 2px 8px",background:TH.bg}}>
+          <div style={{position:"sticky",top:0,zIndex:8,margin:"-14px -12px 12px",padding:"14px 12px 10px",background:TH.bg,
+            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}}>
+            {/* [7.971 — collaudo PO dal suo Android, «la home e' ancora incasinata»] LA BARRA APPICCICATA
+                TAGLIAVA LE RIGHE A META'. La striscia opaca era alta 6 px sopra il bottone e larga quanto il
+                testo (margine -2 px): scorrendo, la riga di testo che le passava sotto restava visibile per
+                meta' sopra il bordo e per meta' ai lati — negli screenshot del PO si leggono «titolari:
+                nessuna cessione all'orizzonte», «PARTITA DI QUESTA SETTIMANA» e «Media voto > 6,7» tagliate a
+                meta'. Ora la striscia copre anche il margine laterale della pagina (-12 px) e quattordici
+                pixel sopra il bottone, e porta un'ombra bassa: il contenuto ci sparisce sotto invece di
+                affiorarne per meta'. La CTA resta dov'e' (decisione 6.5.4: sempre visibile senza scorrere). */}
             <button onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
               style={{width:"100%",padding:"11px 15px",borderRadius:RAD.lg,border:"none",background:cs.disabled?TH.track:`linear-gradient(135deg,${cs.color},${cs.color}cc)`,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":TH.el2,transition:`transform ${MO.fast}ms,box-shadow ${MO.fast}ms`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div style={{textAlign:"left"}}>
@@ -7596,7 +7605,7 @@ const getThisWeekMatchday=()=>{
         }catch(_e){}
         const _rows=_hi===0?[_tb[0],_rv]:[_rv,_tb[_hi]];
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px"}}>
+        <Card momento="Duello capocannoniere" /* [7.971] fisarmonica (rilievo PO: «ci vorrebbe un po' di organizzazione, accordion») */ style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>Duello capocannoniere</div>
             {_sorp&&<div style={{fontSize:FS.caption,background:"#16a34a",color:"#fff",borderRadius:RAD.sm,padding:"2px 8px",fontWeight:800}}>🔥 SORPASSO</div>}
@@ -7818,7 +7827,7 @@ const getThisWeekMatchday=()=>{
       })()}
       {/* Season objectives progress */}
       {tab==="dashboard"&&(player.seasonObjectives||[]).length>0&&(
-        <Card style={{marginBottom:8,padding:"7px 12px"}}>
+        <Card momento="Obiettivi della stagione" /* [7.971] fisarmonica (rilievo PO: «ci vorrebbe un po' di organizzazione, accordion») */ style={{marginBottom:8,padding:"7px 12px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Obiettivi Stagione {season}</div>
           {(player.seasonObjectives||[]).map((obj,i)=>{
             let _pos=99;
@@ -7923,7 +7932,7 @@ const getThisWeekMatchday=()=>{
         const _news=generateLeagueNews(player);
         if(!_news.length)return null;
         return(
-          <Card style={{marginBottom:8,padding:"7px 12px"}}>
+          <Card momento="Notizie della settimana" /* [7.971] fisarmonica (rilievo PO: «ci vorrebbe un po' di organizzazione, accordion») */ style={{marginBottom:8,padding:"7px 12px"}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Notizie della Settimana</div>
             {_news.map((n,i)=>(
               <div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 0",borderBottom:i<_news.length-1?`1px solid ${TH.cardBorder}`:"none"}}>
@@ -7940,7 +7949,7 @@ const getThisWeekMatchday=()=>{
         const _mn=generateMarketNews(player);
         if(!_mn.length)return null;
         return(
-          <Card style={{marginBottom:8,padding:"7px 12px"}}>
+          <Card momento="Voci di mercato" /* [7.971] fisarmonica (rilievo PO: accordion) */ style={{marginBottom:8,padding:"7px 12px"}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Voci di Mercato — W.{player.week||1}</div>
             {_mn.map((n,ni)=>(
               <div key={ni} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 0",borderTop:ni>0?"1px solid "+TH.cardBorder:"none"}}>
@@ -8024,7 +8033,7 @@ const getThisWeekMatchday=()=>{
           _rows.push({t:_st[idx],pos:idx+1,me:idx===_myPos,rel:idx>=_N-2&&_N>=8,k:`r${idx}`});
         });
         return(
-          <Card style={{marginBottom:8,padding:"7px 12px"}}>
+          <Card momento="Classifica" /* [7.971] fisarmonica (rilievo PO: «ci vorrebbe un po' di organizzazione, accordion») */ style={{marginBottom:8,padding:"7px 12px"}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Classifica · W.{player.week||1}/38</div>
             {_rows.map(r=>{
               if(r.gap)return<div key={r.k} style={{fontSize:FS.caption,color:TH.faint,padding:"1px 0 1px 20px",letterSpacing:1}}>· · ·</div>;
@@ -8055,7 +8064,7 @@ const getThisWeekMatchday=()=>{
             ))}
           </div>
           {/* [6.24.0 collaudo PO] «Staff & Spogliatoio» SPOSTATO nel Tab Club (profilo squadra) → vedi ~19300 */}
-          {(player.log||[]).length>0&&<Card style={{padding:"9px 12px"}}><div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
+          {(player.log||[]).length>0&&<Card momento="Ultime notizie" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{padding:"9px 12px"}}><div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
           {/* [7.96.0 collaudo PO «la scelta chiaro/scuro deve essere fatta SOLO nelle Impostazioni»] toggle tema
               RIMOSSO da qui (ora solo nel menu ⚙️ Impostazioni). La card resta solo su desktop per le scorciatoie. */}
           {_dk&&<Card style={{padding:"7px 12px"}} shadow={false} bg={TH.surface2}>
@@ -8502,7 +8511,7 @@ const getThisWeekMatchday=()=>{
         const leagues=[...new Set(rows.map(e=>e.league).filter(Boolean))];
         const isPlayerChamp=e=>!e.inProgress&&e.champion===e.playerClub;
         return(
-          <Card style={{marginTop:8,padding:"9px 12px"}}>
+          <Card momento="Albo d'oro — storico campioni" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{marginTop:8,padding:"9px 12px"}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Albo d'Oro — Storico Campioni</div>
             {/* Dominator summary */}
             {topClubs.length>0&&(
@@ -8574,7 +8583,7 @@ const getThisWeekMatchday=()=>{
         const nextTarget=myIdx>0?allScorers[myIdx-1]:null;
         const toNext=nextTarget?nextTarget.goals-totalG:0;
         return(
-          <Card style={{marginTop:8}}>
+          <Card momento="Marcatori storici" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{marginTop:8}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Marcatori Storici — {lg}</div>
             <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:8,background:TH.bgAmber,borderRadius:RAD.sm,padding:"8px 12px",border:"1px solid #f59e0b"}}>
               <div style={{fontSize:FS.title,fontWeight:900,color:TH.txAmber,minWidth:32}}>#{myIdx+1}</div>
