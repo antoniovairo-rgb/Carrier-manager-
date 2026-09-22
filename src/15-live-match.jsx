@@ -2270,6 +2270,9 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const moveCoolRef=useRef(0);
   const driftTargetsRef=useRef(null);
   const ballTargetRef=useRef({x:50,y:50});
+  const ultimaFase964Ref=useRef('');/* [7.962 A14] l'ultima fase vista: la scena si chiede una volta sola, sul PASSAGGIO */
+  const passi966Ref=useRef(0);/* [7.962 A14] quanti passi di fisica ha gia' ricevuto il minuto in corso */
+  const scenaPend964Ref=useRef(0);/* [7.962 A14] la scena chiesta, in attesa del BATTITO DEL MINUTO */
   const ballRngRef=useRef(0);/* [7.511.0 R1] flusso seedato DEDICATO al moto di possesso: usare _rndM qui avrebbe spostato tutti i sorteggi della cronaca e rotto il replay */
   /* ⚠️ [7.960.0 A14 · LE POSIZIONI SEEDATE SONO STATE RIGIUDICATE SULLA MISURA PULITA, E REVOCATE DI
      NUOVO — QUESTA VOLTA SENZA APPELLO.] Il 7.959 le aveva revocate due volte (flusso con stato: rosso su
@@ -2812,8 +2815,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          il rosso di partenza. E il primo passo, che gli serve, costa l'orologio della partita (fischio
          finale 4/4 → 1/4 giri). I due si reggono a vicenda e insieme sfondano un metro spedito: revocati
          tutti e due, e la coppia e' descritta in A14 come il taglio da progettare. */
-      if(motoreRef.current){try{motoreRef.current.chiedi.scena();}catch(_e870){}}/* [7.870] la scena e' dell'highlight: il motore aspetta */
+      /* [7.962 A14 — LA FINESTRA DELLA SCENA E' UN MINUTO INTERO, NON UN PEZZO DI MINUTO. Rosso __CPM_NO964]
+         MISURATO: il motore e' seedato e riceve 22 battiti al minuto in ogni giro, eppure al 26' ne
+         consumava 1099 contro 1058. La causa e' la FINESTRA in cui resta fermo. Il motore entra in scena
+         QUI — da un effetto di React, che gira quando il browser ha tempo — e ne esce al primo battito
+         del minuto (`if(_st0.scena)_M.chiedi.riprendi(...)`). L'uscita era quindi ancorata, l'ingresso no:
+         la finestra durava un numero di sotto-tick che dipendeva dai millisecondi, e ogni sotto-tick
+         saltato e' un sorteggio non consumato. Ora l'ingresso si consuma al BATTITO come l'uscita: la
+         finestra e' sempre un minuto esatto, 22 battiti, uguale a ogni giro.
+         ⚠️ Provato prima consumandola al primo SOTTO-tick utile (7.960): non basta e la misura lo disse
+         (26/27/27 %, il rosso di partenza) — il confine giusto e' il minuto, non il sotto-tick. */
+      if(typeof window!=='undefined'&&window.__CPM_NO964){if(motoreRef.current){try{motoreRef.current.chiedi.scena();}catch(_e870){}}}
+      /* ⚠️ la bandierina si alza SOLO sul passaggio 'playing' → scena, mai a ogni giro dell'effetto.
+         MISURATO col difetto dentro: alzandola a ogni giro il battito la riconsumava subito dopo aver
+         ripreso, il motore restava in scena per TUTTO l'highlight e `ball-alive` segnava «palla in moto
+         0,0 %, striscia di fermo 13,3 s». Il contratto giusto e' quello di sempre — una finestra di un
+         minuto all'ingresso nella scena — solo ancorata al battito invece che ai millisecondi. */
+      else if(ultimaFase964Ref.current==='playing')scenaPend964Ref.current=1;/* [7.870] la scena e' dell'highlight: il motore aspetta */
     }
+    ultimaFase964Ref.current=phase;
     // [6.76.0 LMV-L5] a FINE PARTITA muoiono anche i timer fx pendenti (floatGoal/cronaca/celeb-fallback
     //   schedulati nell'ultimo HL): prima facevano setState sopra la schermata finale (float/cinema fantasma).
     if(phase==="ended"){fxTimersRef.current.forEach(clearTimeout);fxTimersRef.current=[];}
@@ -3426,7 +3446,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          riparta con la spinta di prima. Fuori dalla ripresa non cambia niente. */
       /* [7.590.0] la finestra e' quella BREVE (primi 14 tick): spegnere le corsie per i 20-28 secondi in
          cui il contatore resta sopra zero significava togliere il gioco per mezzo minuto dopo ogni gol. */
-      const _ripresa589=!(typeof window!=='undefined'&&window.__CPM_NO589)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)<=4500):true);
+      const _ripresa589=!(typeof window!=='undefined'&&window.__CPM_NO589)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&((Date.now()-ripT0Ref.current)<=4500)):true);
       if(_ripresa589){try{const _V=velRef.current;for(const _k in _V){const _v=_V[_k];if(_v){_v.vx=0;_v.vy=0;}}}catch(_e){}}
       else setMatchPlayers(prev=>{
         /* [7.706.0 — LA MISCHIA E' CONTESA. Rosso __CPM_NO706]
@@ -3886,7 +3906,15 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
          di A14. */
       k898Ref.current=(k898Ref.current+1)%_SUB898;
       if(k898Ref.current!==0){/* [7.898] sotto-tick: solo la fisica del motore e i suoi specchi, nessuna riga, nessun minuto */
-        try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;/* [22/09 testimone · sola lettura] QUANTI PASSI DI FISICA RICEVE OGNI MINUTO. Il motore ha un flusso di sorteggi CON STATO: se un minuto riceve un passo in piu' o in meno, tutto il seguito slitta. Il sotto-tick e' legato all'orologio da polso e salta quando c'e' una scena in corso — quindi il conto puo' cambiare da un giro all'altro. */if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{const _m=clockRef.current|0;window.__CPM_PASSI959[_m]=(window.__CPM_PASSI959[_m]|0)+1;}catch(_e959p){}}const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);const _st=_M.stato();_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
+        /* [7.962 A14 · TERZA META' — IL BATTITO DELLA FISICA NON DIPENDE DALLA FASE DELL'INTERFACCIA. Rosso __CPM_NO966]
+           MISURATO (1x contro 2x): al 78' il giro a 1x riceve 15 passi invece di 22, quello a 2x 22 — sette
+           sotto-tick mangiati da una scena aperta a meta' minuto. Il cancello era qui: la fisica girava solo
+           con la fase 'playing', cioe' col permesso dell'INTERFACCIA, che cambia stato a orologio da polso.
+           Ora il battito arriva SEMPRE e a decidere e' il motore col suo `scena`, che dal 7.962 si apre e si
+           chiude sul confine del minuto: 22 passi ogni minuto, a qualunque velocita'. Gli SPECCHI (posizioni
+           rese, pallone a schermo) restano legati alla fase: mentre la scena e' in onda il mondo continua a
+           vivere, ma nessuno lo ridisegna sotto l'highlight. */
+          try{if(MOTORE870&&motoreRef.current&&(phaseRef.current==='playing'||!(typeof window!=='undefined'&&window.__CPM_NO966))){const _M=motoreRef.current;const _vivo966=(phaseRef.current==='playing');/* [22/09 testimone · sola lettura] QUANTI PASSI DI FISICA RICEVE OGNI MINUTO. Il motore ha un flusso di sorteggi CON STATO: se un minuto riceve un passo in piu' o in meno, tutto il seguito slitta. Il sotto-tick e' legato all'orologio da polso e salta quando c'e' una scena in corso — quindi il conto puo' cambiare da un giro all'altro. */if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{const _m=clockRef.current|0;window.__CPM_PASSI959[_m]=(window.__CPM_PASSI959[_m]|0)+1;}catch(_e959p){}}const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);passi966Ref.current=(passi966Ref.current|0)+1;const _st=_M.stato();if(_vivo966)_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(_vivo966&&!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
         return;}
       /* [7.494.0 F0 — CHIUDE IL BORDO NON MISURATO DEL 7.489] Il 7.489 ha reso la cronaca funzione pura di
          (seed di partita, minuto) dentro il callback di `setClock`, dove vive `_rndM`. Ma i rami che girano
@@ -4854,6 +4882,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _M=motoreRef.current;
           _M.chiedi.eroe(!onBenchRef.current&&!subbedOffRef.current);
           const _st0=_M.stato();
+          /* [7.962 A14] l'ingresso in scena si consuma QUI, sullo stesso confine dell'uscita: `_st0` e'
+             gia' stato letto, quindi la scena chiesta in questo minuto dura fino al battito successivo. */
+          if(scenaPend964Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO964)){scenaPend964Ref.current=0;if(!_st0.scena){try{_M.chiedi.scena();}catch(_e964){}}}
+          /* ⚠️ [7.962 A14 — PROVATO E REVOCATO DALLA SUA MISURA: il motore che riparte da SE STESSO invece
+             che dallo specchio.] `riprendi` riscrive le posizioni di tutti e ventuno leggendole da
+             `matchPlayers` (stato di React), aggiornato solo mentre la fase e' 'playing': dopo una scena e'
+             indietro di qualche passo, e sembrava il candidato naturale per l'ultimo 11 % (1x contro 2x).
+             Misurato: sorteggi del motore al 78' 1004 contro 1022 PRIMA, 1004 contro 1022 DOPO. Zero.
+             La lettura resta valida in linea di principio (la simulazione e' la source of truth) ma non
+             e' questa la causa, e una modifica che non muove il suo numero non si spedisce. */
           if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:possTurnRef.current>0?"home":"away",gioc:matchPlayersRef.current||[],eroe:pPosRef.current,centro:((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
           /* il gol del microsim diventa una richiesta: il motore lo costruisce */
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
@@ -4868,7 +4906,26 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(nx%3===0&&!golMotoreRef.current){const _q=quotaMotoreRef.current;if(_q.length>=6){const _qh=Math.round(100*_q.reduce((a2,b2)=>a2+b2,0)/_q.length);const _p=clamp(possessionRef.current|0,20,80);const _want=(_qh<_p-12)?"home":(_qh>_p+12)?"away":null;if(_want)_M.chiedi.turno(_want);}}
           /* [7.849 nel motore] l'atteggiamento: chi e' sotto o pari dal 70' assalta, chi e' avanti di due dal 60' amministra */
           {const _sc=scoreRef.current||{home:0,away:0};const _d=(_sc.home|0)-(_sc.away|0);const _attDi=(dd)=>(nx>=70&&dd<=0)?1:(nx>=60&&dd>=2)?-0.6:(dd<0?0.4:0);_M.chiedi.atteggiamento("home",_attDi(_d));_M.chiedi.atteggiamento("away",_attDi(-_d));}
-          if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{window.__CPM_PASSI959[nx|0]=(window.__CPM_PASSI959[nx|0]|0)+1;}catch(_e959q){}}/* [22/09 testimone] il battito del minuto e' un passo come gli altri */_evM870=evAcc898Ref.current.concat(_M.tick({min:nx,dt:1/_SUB898,dec:true}));evAcc898Ref.current=[];/* [7.898] il battito del minuto DECIDE (dec) e compie un terzo del movimento; i fatti dei due sotto-tick precedenti si narrano qui */
+          /* [7.962 A14 · QUARTA META' — IL DEBITO DI PASSI SI PAGA AL BATTITO. Rosso __CPM_NO967]
+            MISURATO: al 78' un giro riceveva 15 passi invece di 22. La causa non era piu' un cancello ma il
+            METRONOMO STESSO: l'effetto che lo tiene acceso ha `phase` fra le sue dipendenze, quindi a ogni
+            cambio di fase l'intervallo viene spento e riacceso, e nel buco fra i due si perdono sotto-tick —
+            un buco che dura millisecondi veri, cioe' un numero di battiti diverso a ogni giro e a ogni
+            velocita'. Togliere `phase` dalle dipendenze avrebbe congelato closure che leggono la fase: qui
+            invece si paga il DEBITO. Il minuto deve ricevere 22 passi: quelli che mancano si compiono ora,
+            prima del battito che decide, con gli stessi argomenti dei sotto-tick. Il motore e' cieco al
+            tempo reale (riceve sempre dt=1/22), quindi per lui non c'e' differenza fra un passo in ritardo
+            e uno puntuale: cambia solo CHE arrivano tutti. */
+          {const _no967=(typeof window!=='undefined'&&window.__CPM_NO967);let _g967=0;
+           /* il debito e' del minuto che si CHIUDE, non di quello che si apre: i sotto-tick portano
+              l'etichetta del minuto in corso, il battito porta gia' quella del minuto nuovo. */
+           const _mPrec967=Math.max(0,(nx|0)-1);
+           if(!_no967&&MOTORE870&&_M){while((passi966Ref.current|0)<(_SUB898-1)&&_g967<_SUB898){
+             const _evR=_M.tick({min:_mPrec967,dt:1/_SUB898,dec:_a912});for(const _e of _evR)evAcc898Ref.current.push(_e);
+             passi966Ref.current=(passi966Ref.current|0)+1;_g967++;
+             if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{window.__CPM_PASSI959[_mPrec967]=(window.__CPM_PASSI959[_mPrec967]|0)+1;}catch(_e967){}}}}
+           if(typeof window!=='undefined'&&window.__CPM_REC967!==undefined){try{window.__CPM_REC967=(window.__CPM_REC967|0)+_g967;}catch(_e){}}}
+          if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{window.__CPM_PASSI959[nx|0]=(window.__CPM_PASSI959[nx|0]|0)+1;}catch(_e959q){}}/* [22/09 testimone] il battito del minuto e' un passo come gli altri */_evM870=evAcc898Ref.current.concat(_M.tick({min:nx,dt:1/_SUB898,dec:true}));evAcc898Ref.current=[];passi966Ref.current=0;/* [7.898] il battito del minuto DECIDE (dec) e compie un terzo del movimento; i fatti dei due sotto-tick precedenti si narrano qui */
           try{if(typeof window!=='undefined'&&window.__CPM_REC){const _acc=(window.__CPM_EVM870=window.__CPM_EVM870||[]);for(const _e of _evM870){if(_e&&_e.t==='tiro')_acc.push({tick:_e.tick,chi:(_e.chi&&_e.chi.i!=null)?_e.chi.i:String(_e.chi&&_e.chi.nome||'?'),zona:_e.zona||'?',min:_e.min});}window.__CPM_MOTORE_EV=()=>window.__CPM_EVM870||[];}}catch(_e870ev){}/* [A2 strumento] gancio di SOLA LETTURA, solo con __CPM_REC (sonde): accumula i tiri del motore, che vivono un tick solo, per contarli contro le righe raccontate */
           _stM870=_M.stato();
           _specchi898(_stM870,_evM870);/* [7.898] gli specchi del motore: la stessa funzione dei sotto-tick */
@@ -6961,7 +7018,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            MISURATO nel 7.590, la finestra utile dura 2-4,5 s. Otto secondi dall'armamento bastano a
            qualunque recita; oltre, i contatori mentono. `ripT0Ref` e' gia' armato nei tre siti giusti
            (gol, duplice fischio, calcio d'inizio recitato) dal 7.590. */
-        if(!(typeof window!=='undefined'&&window.__CPM_NO610)&&ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)>8000&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)){
+        /* ⚠️ [7.962 A14 — PROVATO E REVOCATO: le finestre della ripresa in TICK invece che in millisecondi.]
+           Queste due finestre (8000 ms e 4500 ms) si misurano in tempo REALE, mentre un minuto di partita
+           dura 420 ms a 1x e 210 a 2x: alla velocita' doppia coprono il doppio dei minuti di gioco, quindi
+           in teoria sono una sorgente di differenza fra 1x e 2x. Riscritte in tick (19 e 10, cioe' gli
+           stessi valori a 1x) la misura NON si e' mossa di un punto: 1x contro 2x 89 % prima, 89 % dopo,
+           stessa posizione 64. Non e' questa la causa, e la modifica torna indietro. Resta scritto qui
+           perche' e' un difetto vero ma DORMIENTE: il giorno in cui la causa vera sara' chiusa, queste due
+           finestre vanno rigiudicate. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO610)&&ripT0Ref.current>0&&((Date.now()-ripT0Ref.current)>8000)&&((kickRef.current|0)>0||(kickoffRef.current|0)>0)){
           kickRef.current=0;kickoffRef.current=0;ripT0Ref.current=0;
         }
         const _koNow590=((kickRef.current|0)>0||(kickoffRef.current|0)>0);
@@ -6971,7 +7036,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
            sopra zero: e i contatori NON tornano quasi mai a zero — misurato, l'eta' della finestra
            arrivava a 46,4 s con mediana 19,1 s, cioe' era aperta per meta' partita. Qui si CHIUDE soltanto. */
         if(!_koNow590)ripT0Ref.current=0;
-        const _breve590=_koNow590&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&(Date.now()-ripT0Ref.current)<=4500):true);
+        const _breve590=_koNow590&&(!(typeof window!=='undefined'&&window.__CPM_NO590)?(ripT0Ref.current>0&&((Date.now()-ripT0Ref.current)<=4500)):true);
         const _ognitick588=(!(typeof window!=='undefined'&&window.__CPM_NO588)&&_breve590)||(!(typeof window!=='undefined'&&window.__CPM_NO848)&&!!pendingGoalRef.current&&!!pendingGoalRef.current.piano&&(pianoLock693.current|0)>0);/* [7.848 v3] durante la custodia del piano il blocco gira a OGNI tick: a un tick su tre il nominato faceva un passo di 0,55 ogni tre minuti e in quattro tick guadagnava 7u (traccia att847: db 11 alla battuta del tiro) */
         /* ⚠️ [7.702.0 — IL TESTIMONE DELLA CUSTODIA TRADIVA LA PROPRIA DICHIARAZIONE, DAL 7.625.]
            Il suo commento promette «si campiona ogni tick di gioco vivo, ~150 campioni/run», ma il
