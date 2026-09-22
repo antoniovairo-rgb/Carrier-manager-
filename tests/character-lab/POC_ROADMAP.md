@@ -525,3 +525,43 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Fatti verificati:** MHR LOD3 pesa 9.794 triangoli e passa il primo probe del rig sul dribbling (21/21 ossa, nessuna coordinata non finita). Il generatore completo richiede pero' GPU NVIDIA/12 GB consigliati e 36,4 GB di pesi.
 - **Preflight locale:** Intel UHD Graphics 620, 1 GB; requisito GPU non soddisfatto. Nessun download o installazione pesante viene effettuato.
 - **Decisione:** MHR non e' testabile come generatore completo qui e non sostituisce CGTrader. Potra' riaprirsi solo con un export reale prodotto su host NVIDIA; la ricerca continua su asset gia' esportabili.
+
+## Aggiornamento 22 settembre 2026 — African Football Soccer Player Male escluso
+
+- **Fatti verificati:** la scheda CGTrader dichiara un uomo adulto riggato, PBR e 15 animazioni FBX, ma riporta `1.003.976` poligoni, `3.011.928` vertici, due FBX per `875 MB` e texture per `732 MB`.
+- **Decisione:** non scaricare né adottare. Il peso supera di circa 29 volte il CGTrader attivo (34.995 triangoli) prima ancora di un audit di rig, kit, LOD e dribbling; fallisce quindi il gate mobile alla fonte.
+- **Stato:** CGTrader Hisenberg acquistato resta la base runtime attiva. Human Generator trial resta il solo candidato alternativo con potenziale concreto per volti, capelli e barba, soggetto a LOD, kit, licenza e gate completi.
+
+## Aggiornamento 22 settembre 2026 — accesso MetaPerson in attesa del browser
+
+- **Fatto verificato:** il tentativo di aprire MetaPerson nella sessione Chrome esistente viene rifiutato dal browser: un'interfaccia dell'estensione PDF e' aperta e Chrome blocca l'automazione delle nuove schede.
+- **Nessuna inferenza sull'accesso:** non e' stato possibile vedere la pagina MetaPerson ne' verificare la sessione autenticata; non e' stato scaricato alcun file.
+- **Azione necessaria:** chiudere o completare la pagina dell'estensione PDF in Chrome. A quel punto posso riaprire MetaPerson, verificare il login e scaricare un solo avatar campione per i gate locali. CGTrader resta invariato come base runtime.
+
+## Aggiornamento 22 settembre 2026 — Football Team Player Pack (Fab) non promosso
+
+- **Fatti verificati:** il pacchetto Fab dichiara 11 calciatori riggati, file Blender/GLB, animazioni e texture base 4K. La sola scena showcase dichiara `372.700` triangoli; la scheda non separa il costo dei singoli giocatori, non documenta LOD, non prova un rig comune e si dichiara generata con AI.
+- **Decisione:** non acquistare né adottare sulla sola scheda. La varietà dichiarata è interessante, ma senza costo per personaggio, texture ridotte, prova del volto/kit e test di retarget potrebbe peggiorare prestazioni e coerenza. Non costituisce un miglioramento verificato sul CGTrader attivo.
+- **Criterio per riaprire:** accesso a un sample gratuito o documentazione verificabile su triangoli per modello, risoluzione texture, LOD e scheletro. In assenza, il candidato resta fuori dalla POC.
+
+## Aggiornamento 22 settembre 2026 — conversione Hair Generator trial non disponibile senza pipeline dedicata
+
+- **Fatti verificati:** il file `Short Side Part.blend` trial contiene due sistemi particellari `HAIR`: 1.000 guide per `hair_short_fade` e 100 per `hair_parted_side`, con ciocche figlie. Non e' una mesh GLB pronta.
+- **Prova isolata:** su una copia temporanea, Blender 4.5.14 ha convertito l'oggetto mantenendo invariati i `25.286` vertici e `25.324` poligoni del solo corpo e rimuovendo entrambi i modifier particellari. La conversione standard non produce una geometria capelli esportabile.
+- **Decisione:** non aggiungere questo taglio al runtime e non simulare una libreria. Per una capigliatura Human Generator utilizzabile servono l'add-on/pipeline ufficiale che genera haircard o una nuova authoring controllata, poi gate di qualità, peso, rig e mobile.
+
+## Aggiornamento 22 settembre 2026 — ActorCore escluso dal percorso Korward
+
+- **Fatti verificati:** ActorCore dichiara adulti riggati con volto, capelli e materiali regolabili; gli ActorBUILD sono indicati intorno a `14K–20K` triangoli, ma con texture 4K e senza kit da calcio dedicato. Le loro schede precisano che la geometria non e' modificabile oltre ai materiali.
+- **Compatibilita' Blender:** la pagina ufficiale dell'Auto Setup pubblica supporto Blender 2.8; la cronologia AccuRIG segnala inoltre che personaggi A-pose esportati in Blender con motion ActorCore possono incrociare le braccia. E' incompatibile con il requisito prioritario di braccia coordinate nelle clip.
+- **Decisione:** non creare account, non installare AccuRIG e non acquistare. Non risolve kit e varianti reali, e introduce un rischio animazione gia' documentato. CGTrader rimane la base runtime; Human Generator trial resta il test alternativo sotto consenso esplicito.
+
+## Aggiornamento 22 settembre 2026 — Male Football Player Rigged (CGTrader) escluso
+
+- **Fatti verificati:** il modello dichiara 14 divise e capelli con texture dedicate, ma costa `$79`, usa texture fino a 4K e dichiara esplicitamente che i formati di scambio non sono riggati. Il rig esiste solo nella scena 3ds Max CAT/V-Ray.
+- **Decisione:** non acquistare. FBX/OBJ senza rig rendono necessaria una nuova riggatura e un retarget completo; il modello non offre LOD o varianti modulari dimostrate e fallisce l'obiettivo di una prova rapida e affidabile per Korward.
+
+## Aggiornamento 22 settembre 2026 — shortlist consolidata
+
+- Creata una sintesi verificabile dei candidati, delle esclusioni e del solo test con potenziale concreto: [MODEL_SHORTLIST_DECISION.md](MODEL_SHORTLIST_DECISION.md).
+- Decisione invariata: CGTrader Hisenberg è la base runtime attiva; Human Generator trial è l'unico esperimento da completare per capelli/barba/volti, previa installazione isolata autorizzata.
