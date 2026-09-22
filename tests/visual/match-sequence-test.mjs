@@ -95,7 +95,12 @@ const chiave = t => t.map(x => `${x.m}|${(x.txt || '').slice(0, 30)}`);
 const confronta = (x, y) => {
   const A = chiave(x), B = chiave(y), n = Math.min(A.length, B.length);
   let ug = 0; for (let i = 0; i < n; i++) if (A[i] === B[i]) ug++;
-  return { n, ug, pct: n ? 100 * ug / n : 0, la: A.length, lb: B.length, primaDiff: A.findIndex((v, i) => i < n && v !== B[i]) };
+  const pd = A.findIndex((v, i) => i < n && v !== B[i]);
+  /* [22/09] LE DUE RIGHE CHE DIVERGONO, NON SOLO LA LORO POSIZIONE. Il guardiano diceva «prima
+     differenza alla posizione 21» e li' si fermava: per capire QUALE generatore non e' seedato serve
+     vedere che cosa cambia — il minuto, il testo, o il fatto che una riga ci sia e l'altra no. */
+  const finestra = pd >= 0 ? { pd, a: A.slice(Math.max(0, pd - 1), pd + 3), b: B.slice(Math.max(0, pd - 1), pd + 3) } : null;
+  return { n, ug, pct: n ? 100 * ug / n : 0, la: A.length, lb: B.length, primaDiff: pd, finestra };
 };
 const casi = [['1x contro 1x', confronta(a1.txt, b1.txt)], ['2x contro 2x', confronta(a2.txt, b2.txt)], ['1x contro 2x', confronta(a1.txt, a2.txt)]];
 
@@ -105,6 +110,17 @@ for (const [nome, r] of casi) {
   if (r.n < MIN_RIGHE) { console.log(`  ${nome.padEnd(14)} ⚠ solo ${r.n} righe confrontabili`); ciechi++; continue; }
   const ko = r.pct < 100; if (ko) rossi++;
   console.log(`  ${nome.padEnd(14)} righe ${String(r.la).padStart(3)} vs ${String(r.lb).padStart(3)} · prefisso identico ${r.ug}/${r.n} = ${r.pct.toFixed(0)}% ${ko ? `❌ prima differenza alla posizione ${r.primaDiff}` : '✅'}`);
+}
+
+for (const [nome, r] of casi) {
+  if (!r.finestra) continue;
+  console.log(`\n  ${nome} — attorno alla posizione ${r.finestra.pd}:`);
+  const m = Math.max(r.finestra.a.length, r.finestra.b.length);
+  for (let i = 0; i < m; i++) {
+    const x = r.finestra.a[i] || '(manca)', y = r.finestra.b[i] || '(manca)';
+    console.log(`    ${x === y ? ' ' : '≠'} A: ${String(x).slice(0, 62)}`);
+    console.log(`    ${x === y ? ' ' : '≠'} B: ${String(y).slice(0, 62)}`);
+  }
 }
 
 /* COPERTURA — quanto della partita e' stato davvero guardato. Un guardiano che passa su tre righe
