@@ -448,3 +448,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatti verificati:** MB-Lab e un generatore open source per Blender `4.0+` con parametri volto/corpo e shader capelli; MakeHuman distribuisce gli asset base in CC0. Non sono state installate o eseguite nuove estensioni.
 - **Valutazione:** non e una scorciatoia per Korward: richiede costruire da zero kit da calcio, LOD, pesi e compatibilita con le clip. I suoi punti di forza (morph di corpo/volto) non risolvono i rischi oggi prioritari del modello attivo: gesto, kit, mobile e integrazione.
 - **Decisione:** non avviare un test MB-Lab. Il suo costo tecnico e superiore al beneficio rispetto al CGTrader, gia riggato e verificato nel dribbling. La ricerca resta aperta per un asset completo o per l'audit Human Generator isolato, se autorizzato.
+
+## 2026-09-22 — Avaturn supera il primo gate strutturale
+
+- **Fatti verificati:** Avaturn dichiara avatar realistici GLB, rig umanoide, capelli ricolorabili e compatibilita Mixamo. Il sito creatore e bloccato da Zscaler, ma un campione pubblico e stato ispezionato solo per audit: `31.181` triangoli, 11 mesh pesate, 55 bone deformanti e due mesh capelli separate.
+- **Prova locale:** il rig ha trovato 52/52 ossa nel trasferimento della clip Korward `dribble`, senza trasformazioni non finite. Le mani percorrono `0,6011 m` e `0,4288 m`; i piedi `0,8895 m` e `0,8610 m`. A differenza di MetaPerson, la posa non collassa nel primo test strutturale.
+- **Limiti e decisione:** il campione e dichiarato non commerciale e non viene adottato o pubblicato; manca kit da calcio, LOD e review visiva. Avaturn diventa un candidato promettente da provare con un export ufficiale, mentre il CGTrader resta attivo. Gate completo: [AVATURN_PUBLIC_SAMPLE_GATE.md](AVATURN_PUBLIC_SAMPLE_GATE.md).
