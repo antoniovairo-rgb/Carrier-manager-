@@ -1,0 +1,79 @@
+[
+  {
+    "asset": "HG_HUMAN_raw.glb",
+    "bytes": 24048528,
+    "meshes": 4,
+    "triangles": 73488,
+    "skins": 1,
+    "joints_per_skin": [
+      102
+    ],
+    "animations": 0,
+    "materials": 4,
+    "textures": 7,
+    "embedded_image_bytes": 16723687,
+    "estimated_rgba_bytes": 125829120,
+    "images": [
+      {
+        "name": ".fm_0_freckles_body",
+        "format": "PNG",
+        "size": [
+          4096,
+          4096
+        ],
+        "encoded_bytes": 2568561,
+        "estimated_rgba_bytes": 67108864
+      },
+      {
+        "name": ".HG_Eye_Normal",
+        "format": "PNG",
+        "size": [
+          1024,
+          1024
+        ],
+        "encoded_bytes": 946468,
+        "estimated_rgba_bytes": 4194304
+      },
+      {
+        "name": ".HG_Eyes_Mask",
+        "format": "JPEG",
+        "size": [
+          1024,
+          1024
+        ],
+        "encoded_bytes": 48895,
+        "estimated_rgba_bytes": 4194304
+      },
+      {
+        "name": "TeethTongueSet_N_2K",
+        "format": "PNG",
+        "size": [
+          2048,
+          2048
+        ],
+        "encoded_bytes": 6031982,
+        "estimated_rgba_bytes": 16777216
+      },
+      {
+        "name": "TeethTongueSet_C_2K",
+        "format": "PNG",
+        "size": [
+          2048,
+          2048
+        ],
+        "encoded_bytes": 4735448,
+        "estimated_rgba_bytes": 16777216
+      },
+      {
+        "name": "TeethTongueSet_ROUGH_2K",
+        "format": "PNG",
+        "size": [
+          2048,
+          2048
+        ],
+        "encoded_bytes": 2392333,
+        "estimated_rgba_bytes": 16777216
+      }
+    ]
+  }
+]
