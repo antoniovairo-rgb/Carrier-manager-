@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 22 settembre 2026, 23:53 (Europe/Rome)
+**Ultimo aggiornamento:** 23 settembre 2026, 00:08 (Europe/Rome)
 **Stato complessivo stimato:** 60% — ultimo riesame dei quality gate; non e un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -399,6 +399,14 @@ ossa o tolto, perche' induce in errore: e' un intervento a parte, non fatto qui.
 - **Attivita dall'ultimo aggiornamento:** nessun nuovo commit sul branch remoto dopo 9c6b9de9; il roster CGTrader resta a cinque corpi visibili, con l'eroe LOD0 verificato nella misura precedente.
 - **Verifica ed esito:** il fetch conferma il branch remoto invariato. I dati di rendering restano quelli documentati nel checkpoint precedente; non e stata ripetuta una prova animata o mobile in questo intervallo.
 - **Lavoro successivo e criterio di chiusura:** catturare la sequenza completa gk-high-catch e provare contatto mani-palla e possesso; poi dribbling, tiro, transizioni e misure su telefono. Quality gate finali ancora aperti; nessuna build validata pubblicata sul link ufficiale.
+
+---
+## Avanzamento 23 settembre 2026, 00:08 — Controllo periodico
+
+- **Fase corrente:** 4/7, 60% complessivo stimato; nessun quality gate finale nuovo superato.
+- **Attivita dall'ultimo aggiornamento:** nessuna modifica di sviluppo pubblicata dopo il commit documentale d692aabb.
+- **Verifica ed esito:** il fetch del branch remoto non rileva nuovi commit; resta valida la misura precedente del roster a cinque corpi con Hero realmente in LOD0. Nessun nuovo test di animazione, contatto palla, transizioni o telefono in questo intervallo.
+- **Lavoro successivo e criterio di chiusura:** catturare e giudicare la presa alta completa del portiere, inclusi contatto mani-palla e possesso; proseguire con dribbling, tiro e transizioni. Il gate prestazioni si chiude solo con misura mobile reale. La Pages ufficiale non ospita ancora una build POC validata.
 
 ---
 ## Obiettivo vincolante
