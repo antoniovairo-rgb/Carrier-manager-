@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 01:05 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 00:58 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -590,7 +590,7 @@ Partita normale `__CPM_TRI907`: **1.103.244** invariata.
 
 ---
 
-## Avanzamento 23 settembre 2026, 01:05 — FIGURINE: STATO REALE E DECISIONI CHE SPETTANO AL PO
+## Avanzamento 23 settembre 2026, 00:58 — FIGURINE: STATO REALE E DECISIONI CHE SPETTANO AL PO
 
 **Fatti (ricerca in `src/`, nessuna modifica):**
 - Dopo il merge di `main` il ramo ha gia' `Figurina` 5:7 (`01-bootstrap-tema-avatar.jsx:345`, `FIG` a :318) usata in ~25 punti
