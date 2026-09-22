@@ -460,3 +460,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatto verificato:** la pagina prezzi ufficiale Avaturn presenta il piano Pro a `$800/mese`, che include l'upload di capi personalizzati; la documentazione indica API e Web SDK come funzioni del pacchetto a pagamento.
 - **Conseguenza:** l'avatar base puo essere esportabile, ma non esiste evidenza che la nostra divisa da calcio possa entrare nel configuratore gratuito. Il requisito kit renderebbe necessaria una spesa ricorrente sproporzionata, oltre al blocco Zscaler.
 - **Decisione:** Avaturn non viene perseguito come modello Korward. Il test rig positivo resta evidenza comparativa, mentre il CGTrader rimane la base economicamente e tecnicamente piu concreta.
+
+## 2026-09-22 — ritratto neutro Hero CGTrader rigenerato
+
+- **Fatto verificato:** e stata generata una preview locale a 640×640 dal GLB CGTrader, con texture sorgente non alterata e inquadratura ravvicinata di capelli, volto, collo e spalle: `cgtrader-hero-profile-neutral-review.png`.
+- **Perimetro:** e un artefatto di review, non una modifica del modello, del kit, del runtime o del ramo `main`.
+- **Criterio successivo:** la preview consente di giudicare il volto senza l'effetto della camera partita; il verdetto estetico resta separato dai gate tecnici gia superati e dai gate ancora aperti (transizioni e mobile).
