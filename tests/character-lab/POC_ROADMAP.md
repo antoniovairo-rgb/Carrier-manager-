@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 00:53 (Europe/Rome; controllo periodico)
-**Stato complessivo stimato:** 64% — presa alta: gesto, contatto, possesso e inquadratura misurati nel banco; telefono e giudizio visivo del PO aperti. Non e' un quality gate finale.
+**Ultimo aggiornamento:** 23 settembre 2026, 02:20 (Europe/Rome, orologio del container)
+**Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
 ## Avanzamento 22 settembre 2026, 20:48
@@ -547,6 +547,46 @@ sorgente.
 - **Lavoro successivo e criterio di chiusura:** correggere il gesto di dribbling e verificare in sequenza contatto piede-palla, tiro e transizioni; ripetere il test mobile reale. Nessuna build POC validata e pubblicata sul link ufficiale.
 
 ---
+## Avanzamento 23 settembre 2026, 02:20 — DRIBBLING, PASSAGGIO, TIRO: MISURATI GESTO PER GESTO
+
+**Fase:** 4/7 · **Stato stimato: 68%**. Sonda `gesto-eroe-review.mjs` (situazione scelta con `deriveIntent`, registratore a
+ogni fotogramma in pagina, montaggi VERI dell'eroe col testimone `__CPM_CGTRADER_MOUNTS`, corpi disegnati con
+`__CPM_CGTRADER_ACTORS_AUDIT`). Evidenze in `gesto-review/<caso>/` (apertura, contatto, uscita + report).
+
+### Difetti trovati e corretti (solo review ottimizzata)
+1. **L'approccio del dribbling non girava mai** (rosso `__CPM_NO_DRIBREV`): `_cgtraderDribbleApproach` e l'aggancio
+   palla-piede accettavano solo gli stati `ready-cgtrader-review/ajax/mixed-lod`; la review ottimizzata dichiara
+   `ready-lineup`. Lo stato `ready-cgtrader-highlight-optimized` citato nelle voci del 22/09 **non esiste nel sorgente**.
+2. **Il tiro non toccava la palla** (rosso `__CPM_NO_KICKREV`): l'aggancio all'osso del piede e il caricamento a 0,375 s
+   descritti il 22/09 **non erano nel sorgente**; nella copia di recupero stavano dietro lo stesso stato mai dichiarato,
+   quindi erano codice morto anche li'. Recuperati solo quei due pezzi, attivati sul flag reale.
+
+### Misure
+| gesto (azione) | montaggi veri eroe | contatto piede-palla (clip) | angolo dalla porta | eroe nel quadro | T-pose | rosso |
+| --- | --- | --- | ---: | ---: | ---: | --- |
+| dribbling («Dribbling netto») | `dribble` → `pass` | tocchi sx u=0,278 / dx u=0,372 su `foot-bone`, 0,21-0,25 m | 21,7° | 100% | 0 | approccio mai montato |
+| passaggio («Filtrante per compagno») | `pass` | 0,226 m (clip 0,159, dx) | 3,6° | 97% | 0 | — |
+| tiro a terra («Scatto e tiro») | `kick` | **0,228 m a clip 0,361** (contatto asset 0,375) | 3,9° | 38% (*) | 0 | 0,268 m a clip **0,107**: la palla partiva prima del piede |
+| tiro di prima su palla alta | `kick` (regola PO 7.672) | **0,244 m a clip 0,362** | 13,2° | 97% | 0 | **0,739 m**: mai toccata |
+
+Riferimento: raggio della palla in scena 0,22 m (quota a terra), quindi 0,21-0,25 m dal centro = contatto.
+(*) l'eroe esce dal quadro DOPO il gesto, quando la regia segue la palla in porta (soggetto-palla): durante il gesto e' in quadro.
+Partita normale `__CPM_TRI907`: **1.103.244** invariata.
+
+### Correzioni di strumento, a verbale
+- **`__CPM_G000` conta i TENTATIVI, non i montaggi**: sta prima della guardia 7.396, quindi con le clip CGTrader corte
+  (0,417 s) registra rimontaggi che la guardia poi annulla (5 contro 2 veri). Non l'ho toccato (e' un guardiano del gioco
+  principale); per il POC vale `__CPM_CGTRADER_MOUNTS`.
+- Nella partita normale (CH38) la stessa scena di dribbling conta 1.
+
+### Aperto
+- **Taglia dell'eroe 0,07-0,12** nei gesti (la regia principale, tarata da te a 0,18, rende mediana 0,14): a questa
+  taglia il gesto si legge poco. La camera dedicata «41°/0,22» descritta il 22/09 non esiste nel sorgente. Decisione tua.
+- Un difensore esegue `tackle` sul tiro (reazione del reparto 7.519): calcio plausibile, lasciato.
+- Transizioni fra gesti: misurati rilascio a peso 0 e un gesto per azione; il giudizio del crossfade resta visivo, sul telefono.
+
+---
+
 ## Obiettivo vincolante
 
 Creare un solo sistema di personaggi adulti credibili, stilizzati oppure semi-realistici, per partita, intro, highlight e ritratti profilo. Il modello deve essere costruito e corretto nei sorgenti Blender/GLB, non tramite geometrie correttive a runtime.

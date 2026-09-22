@@ -1,0 +1,688 @@
+{
+ "scelta": {
+  "i": 1,
+  "k": 2,
+  "text": "🤸 Rovesciata spettacolare!",
+  "labels": [
+   "🤸 Rovesciata!",
+   "✈️ Stacco di testa",
+   "🦵 Tiro di prima"
+  ]
+ },
+ "sintesi": {
+  "intento": "shot",
+  "situazione": "🤸 Rovesciata spettacolare!",
+  "azione": "🦵 Tiro di prima",
+  "campioni": 34,
+  "fasi": [
+   "hl_choose",
+   "hl_result"
+  ],
+  "gestiEroePerScena": {
+   "10001": {
+    "n": 1,
+    "gesti": [
+     "volley"
+    ],
+    "tipi": [
+     "shot"
+    ]
+   }
+  },
+  "perFotogramma": {},
+  "montaggiVeriEroe": null,
+  "campioniConGesto": 0,
+  "clip": [],
+  "contatto": null,
+  "eroeNelQuadro": 0,
+  "tpose": [],
+  "tposeCampioni": 0,
+  "contestoConGesto": [],
+  "corpiDisegnati": [
+   0
+  ],
+  "errors": []
+ },
+ "frames": [
+  {
+   "i": 0,
+   "t": 4475,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": null,
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 1,
+   "t": 10473,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": null,
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 2,
+   "t": 15509,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": null,
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 3,
+   "t": 20837,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": null,
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 4,
+   "t": 25854,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 5,
+   "t": 30985,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 6,
+   "t": 36032,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 7,
+   "t": 41086,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 8,
+   "t": 46693,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 9,
+   "t": 52320,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 10,
+   "t": 57590,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 11,
+   "t": 62857,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 12,
+   "t": 67525,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 13,
+   "t": 72815,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 14,
+   "t": 78062,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 15,
+   "t": 83467,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 16,
+   "t": 88883,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 17,
+   "t": 94160,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 18,
+   "t": 99317,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 19,
+   "t": 104399,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 20,
+   "t": 109784,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 21,
+   "t": 115014,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 22,
+   "t": 120342,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 23,
+   "t": 124361,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 24,
+   "t": 129638,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 25,
+   "t": 134801,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 26,
+   "t": 140038,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 27,
+   "t": 145214,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 28,
+   "t": 150318,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 29,
+   "t": 155362,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 30,
+   "t": 160420,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 31,
+   "t": 165603,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 32,
+   "t": 169712,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 33,
+   "t": 174860,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": null
+  }
+ ]
+}

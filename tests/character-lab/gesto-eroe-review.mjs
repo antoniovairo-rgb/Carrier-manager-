@@ -17,8 +17,9 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 const here = path.dirname(fileURLToPath(import.meta.url));
 const INTENT = process.env.CPM_INTENT || 'dribble';
 const ACT = new RegExp(process.env.CPM_ACT || ({ dribble: 'dribbl', pass: 'passaggio|filtrante|servi|appoggi|lancio', shot: 'tiro|conclu' }[INTENT] || '.'), 'i');
-const ROSSO = process.env.CPM_ROSSO || ''; /* nome di un interruttore window da accendere prima del caricamento */
-const out = path.join(here, 'gesto-review', INTENT + (ROSSO ? '-rosso' : ''));
+const ROSSO = process.env.CPM_ROSSO || '';
+const BASE = process.env.CPM_BASE === '1'; /* partita normale (CH38), senza parametro: stessa scena, confronto appaiato */ /* nome di un interruttore window da accendere prima del caricamento */
+const out = path.join(here, 'gesto-review', (process.env.CPM_TAG || INTENT) + (ROSSO ? '-rosso' : '') + (BASE ? '-base' : ''));
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'gesto-'));
 const N = Number(process.env.CPM_N || 26), PASSO = Number(process.env.CPM_PASSO || 180);
 const server = await startServer();
@@ -33,9 +34,10 @@ try {
   await installCdnRoutes(page);
   await openMatch(page, server.address().port, {
     skipLoadAll: true, name: 'Gesto Review',
-    query: { hyperCharacter: 'cgtrader-highlight-optimized', cpmForce: INTENT === 'pass' ? 'shot' : INTENT },
+    query: BASE ? { cpmForce: INTENT === 'pass' ? 'shot' : INTENT } : { hyperCharacter: 'cgtrader-highlight-optimized', cpmForce: INTENT === 'pass' ? 'shot' : INTENT },
   });
-  await page.waitForFunction(() => window.__CPM_HYPER_CASUAL_STATUS === 'ready-lineup', null, { timeout: 180000 });
+  await page.waitForFunction(b => b ? true : window.__CPM_HYPER_CASUAL_STATUS === 'ready-lineup', BASE, { timeout: 180000 });
+  if (BASE) await sleep(4000);
   const scelta = await page.evaluate(({ intent, re }) => {
     const rx = new RegExp(re, 'i');
     for (let i = 0; i < SITUATIONS.length; i++) {
@@ -50,25 +52,30 @@ try {
   if (!scelta) throw new Error(`nessuna situazione con intento ${INTENT} e azione ${ACT}`);
   console.log('SCELTA', JSON.stringify(scelta));
   await page.evaluate(i => window.__CPM_FORCE_SIT(i, true), scelta.i);
-  await sleep(900);
-  await page.evaluate(k => window.__CPM_RESOLVE(k), scelta.k);
+  const PRE = Number(process.env.CPM_PRE || 8); /* campioni PRIMA della scelta: l'approccio del dribbling vive in hl_choose */
 
+  /* registratore a OGNI fotogramma (in pagina): il campionamento da fuori vede 3 punti su una clip da 0,42 s */
+  await page.evaluate(() => { window.__REC_EROE = []; const giro = () => { try { const a = window.__CPM_CGTRADER_ACTORS_AUDIT && window.__CPM_CGTRADER_ACTORS_AUDIT(); const h = a && a.actors.find(x => x.hero); if (h && h.gesture && window.__REC_EROE.length < 2000) window.__REC_EROE.push({ g: h.gesture, ct: h.clipTime, fl: h.footBallL, fr: h.footBallR, by: a.ball && a.ball.y, face: h.facingGoalDeg, kick: window.__CPM_CGTRADER_KICK_TOUCH ? { ...window.__CPM_CGTRADER_KICK_TOUCH } : null }); } catch (e) {} requestAnimationFrame(giro); }; requestAnimationFrame(giro); });
   const frames = [];
   const t0 = Date.now();
-  for (let i = 0; i < N; i++) {
+  for (let i = 0; i < N + PRE; i++) {
+    if (i === PRE) await page.evaluate(k => window.__CPM_RESOLVE(k), scelta.k);
     await sleep(PASSO);
     const s = await page.evaluate(() => ({
       phase: window.__CPM_PHASE?.() || null,
       sit: window.__CPM_CURSIT?.()?.text ?? null,
       a: window.__CPM_CGTRADER_ACTORS_AUDIT ? window.__CPM_CGTRADER_ACTORS_AUDIT() : null,
       g000: window.__CPM_G000 || null,
+      touch: window.__CPM_CGTRADER_DRIBBLE_TOUCH || null,
+      mounts: window.__CPM_CGTRADER_MOUNTS || null,
     }));
     const shot = path.join(scratch, `f${String(i).padStart(3, '0')}.png`);
     await page.screenshot({ path: shot });
     frames.push({ i, t: Date.now() - t0, shot, ...s });
-    if (s.phase && !/^hl_/.test(s.phase) && i > 6) break;
+    if (s.phase && !/^hl_/.test(s.phase) && i > PRE + 6) break;
   }
 
+  const rec = await page.evaluate(() => window.__REC_EROE || []);
   const hero = f => ((f.a && f.a.actors) || []).find(x => x.hero) || {};
   const conGesto = frames.filter(f => hero(f).gesture);
   const piede = h => Math.min(h.footBallL ?? 99, h.footBallR ?? 99);
@@ -89,6 +96,8 @@ try {
     intento: INTENT, situazione: scelta.text, azione: scelta.labels[scelta.k],
     campioni: frames.length, fasi: [...new Set(frames.map(f => f.phase))],
     gestiEroePerScena: Object.fromEntries(Object.entries(g).map(([k, v]) => [k.slice(0, 40), { n: v.n, gesti: v.gesti, tipi: v.tipi }])),
+    perFotogramma: (() => { const out = {}; for (const r of rec) { const o = out[r.g] || (out[r.g] = { fotogrammi: 0, minPiede: 99, ctAlMin: null, byAlMin: null, faceAlMin: null }); o.fotogrammi++; const m = Math.min(r.fl ?? 99, r.fr ?? 99); if (m < o.minPiede) { o.minPiede = m; o.ctAlMin = r.ct; o.byAlMin = r.by; o.faceAlMin = r.face; o.kick = r.kick; } } return out; })(),
+    montaggiVeriEroe: frames.at(-1)?.mounts || null,
     campioniConGesto: conGesto.length, clip: [...new Set(conGesto.map(f => hero(f).clip))],
     contatto: h ? { i: contatto.i, gesto: h.gesture, clipTime: h.clipTime, clipDur: h.clipDur, piedeSx: h.footBallL, piedeDx: h.footBallR, facingGoalDeg: h.facingGoalDeg, inFrame: h.inFrame, ballInFrame: h.ballInFrame, height: h.height } : null,
     eroeNelQuadro: +(frames.filter(f => hero(f).inFrame).length / Math.max(1, frames.filter(f => hero(f).i !== undefined).length)).toFixed(2),

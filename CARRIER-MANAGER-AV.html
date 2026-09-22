@@ -14109,7 +14109,7 @@ function ThreeMatchView(props){
       shot:{vita:0.55,app:0.55,clip:0.55,pre:0.24},freekick:{vita:0.55,app:0.55,clip:0.55,pre:0.24},
       pass:{vita:0.55,app:0.55,clip:0.55,pre:0.27},build:{vita:0.55,app:0.55,clip:0.55,pre:0},
       dribble:{vita:0.55,app:0.55,clip:0.55,pre:0},_d:{vita:0.55,app:0.55,clip:0.55,pre:0}};
-    const gwOf=(t,c)=>{if(t==='header'&&c!=='pre'&&typeof window!=='undefined'&&window.__CPM_NO467)return 0.75;/* il rosso 7.467 riguarda le finestre, non il caricamento */
+    const gwOf=(t,c)=>{if(t==='header'&&c!=='pre'&&typeof window!=='undefined'&&window.__CPM_NO467)return 0.75;/* [23/09 POC — recuperato, solo review ottimizzata. Rosso __CPM_NO_KICKREV] il contatto della clip `kick` CGTrader e' a f.9 = 0,375 s (misurato sull'asset): il caricamento del tiro trattiene la palla fino li'. Nella copia di recupero stava dietro uno stato mai dichiarato: codice morto. */if(t==='shot'&&c==='pre'&&typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_KICKREV)return 0.375;/* il rosso 7.467 riguarda le finestre, non il caricamento */
       return (GESTURE_WIN[t]||GESTURE_WIN._d)[c];};
     /* [7.534.0 MP-1 — IL VOCABOLARIO DEL GESTO (prima ondata), rosso __CPM_NO547] La tabella GESTI e' il
        punto unico famiglia→variante→{clip, profilo-palla}: l'audit MP ha misurato che la clip usciva da una
@@ -15655,7 +15655,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           wall-clock marker could skip a footfall while the body was still at an earlier clip frame. */
        const _cgAvatar=(typeof glbAvatars!=="undefined"&&glbAvatars&&glbAvatars[0])||null;
        const _cgAction=_cgAvatar&&_cgAvatar._gName==="dribble"&&_cgAvatar._gAct?_cgAvatar._gAct:null;
-       const _cgDribbleTouch=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-ajax-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble"&&!P.hlDef&&!ballArcActive&&hero&&_cgAction);
+       const _cgDribbleTouch=!!(typeof window!=="undefined"&&(["ready-cgtrader-review","ready-cgtrader-ajax-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)||(window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_DRIBREV))/* [23/09 POC] la review ottimizzata dichiara `ready-lineup`: per stato non entrava mai (misurato, gesto-eroe-review). Rosso __CPM_NO_DRIBREV */&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble"&&!P.hlDef&&!ballArcActive&&hero&&_cgAction);
+       /* [23/09 POC — AGGANCIO DEL TIRO, recuperato dalla copia di recupero dove stava dietro uno stato mai dichiarato. Rosso __CPM_NO_KICKREV]
+          MISURATO (gesto-eroe-review, CPM_INTENT=shot, 21 fotogrammi): distanza minima piede-palla 0,739 m — il piede non toccava mai la
+          palla. Durante il caricamento (ballArcT<0) la palla sta davanti all'eroe e nell'ultimo tratto della clip (u 0,72-0,98, contatto
+          misurato sull'asset a u=0,9) si aggancia all'osso del piede sinistro. Solo il pallone DISEGNATO: esito, arco e stato intatti. */
+       const _cgKickContact=!!(typeof window!=="undefined"&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_KICKREV&&ballArcActive&&ballArcT<0&&hero&&_cgAvatar&&_cgAvatar._gName==="kick"&&_cgAvatar._gAct);
        if(_cgDribbleTouch){
          const _clipDur=(function(){try{const _c=_cgAction.getClip();return (_c&&_c.duration)||1.3333;}catch(_e){return 1.3333;}})();
          const _testU=(typeof window!=="undefined"&&window.__CPM_REC)?Number(window.__CPM_CGTRADER_DRIBBLE_TEST_TIME):NaN; const _u=Number.isFinite(_testU)?clamp(_testU,0,1):clamp((+_cgAction.time||0)/_clipDur,0,1);
@@ -15668,6 +15673,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          if(_contactBone)try{const _bp=sr.current._cgDribbleBonePoint||(sr.current._cgDribbleBonePoint=new THREE.Vector3());_contactBone.getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor="foot-bone";}}catch(_e){}
          ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*12,1);
          if(typeof window!=="undefined"){window.__CPM_CGTRADER_DRIBBLE_TOUCH={u:+_u.toFixed(3),side:+_side.toFixed(3),contact:_contact,anchor:_anchor,targetX:+_cx.toFixed(3),targetZ:+_cz.toFixed(3),gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null};if(window.__CPM_REC&&sr.current._cgDribbleLastContact!==_contact){sr.current._cgDribbleLastContact=_contact;const _log=window.__CPM_CGTRADER_DRIBBLE_CONTACTS||(window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[]);if(_log.length<16)_log.push({contact:_contact,u:+_u.toFixed(3),anchor:_anchor,gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null});}const _freezeAt=Number(window.__CPM_CGTRADER_DRIBBLE_FREEZE_AT);if(window.__CPM_REC&&_contact!=="carry"&&Number.isFinite(_freezeAt)&&Math.abs(_u-_freezeAt)<=0.025){_cgAction.paused=true;window.__CPM_CGTRADER_DRIBBLE_FROZEN={u:+_u.toFixed(3),contact:_contact,anchor:_anchor,lod:_cgAvatar._cgLod||null};}}
+       } else if(_cgKickContact){
+         const _clipDur=(function(){try{const _c=_cgAvatar._gAct.getClip();return (_c&&_c.duration)||0.4167;}catch(_e){return 0.4167;}})();
+         const _u=clamp((+_cgAvatar._gAct.time||0)/_clipDur,0,1),_nearImpact=_u>=0.72&&_u<=0.98;
+         const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
+         let _cx=hero.position.x+_fx*0.78,_cz=hero.position.z+_fz*0.78,_anchor="heading";
+         if(_nearImpact&&(_cgAvatar._ballL||_cgAvatar._footL))try{const _bp=sr.current._cgKickBonePoint||(sr.current._cgKickBonePoint=new THREE.Vector3());(_cgAvatar._ballL||_cgAvatar._footL).getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor="left-foot-bone";}}catch(_e){}
+         ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*12,1);
+         if(typeof window!=="undefined")window.__CPM_CGTRADER_KICK_TOUCH={u:+_u.toFixed(3),anchor:_anchor,arcT:+ballArcT.toFixed(3),targetX:+_cx.toFixed(3),targetZ:+_cz.toFixed(3),gesture:"kick",lod:_cgAvatar._cgLod||null};
        } else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
          const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
@@ -20808,7 +20821,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // EROE: mappa actType→gesto (volée se variante shot_volley; cross/freekick riusano 'kick'). dribble/pass/build → solo locomozione.
         let _gName=null;
         /* CGTrader review only: a dribble intent begins with the authored body-control clip while the ball is already held at the Hero feet. This is renderer choreography, not a match decision. */
-        const _cgtraderDribbleApproach=!!(typeof window!=="undefined"&&["ready-cgtrader-review","ready-cgtrader-ajax-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble");
+        const _cgtraderDribbleApproach=!!(typeof window!=="undefined"&&(["ready-cgtrader-review","ready-cgtrader-ajax-review","ready-cgtrader-mixed-lod-benchmark"].includes(window.__CPM_HYPER_CASUAL_STATUS)||(window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_DRIBREV))/* [23/09 POC] la review ottimizzata dichiara `ready-lineup`: per stato non entrava mai (misurato, gesto-eroe-review). Rosso __CPM_NO_DRIBREV */&&["hl_move","hl_choose"].includes(P.matchPhase)&&P.hlIntent==="dribble");
         /* [7.534.0 MP-1 — LA CLIP DAL VOCABOLARIO, rosso __CPM_NO547] la catena if famiglia→clip diventa
            il lookup della tabella GESTI: stessa risoluzione di prima riga per riga (shot_volley→volley,
            lunge→kick, press/call→locomozione, aerial→header...), ma ora la mappa e' UN dato consultabile
@@ -21064,7 +21077,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  clip che il mixer sta ancora fondendo la fa ripartire al retrigger successivo con peso
                  pieno. Resta la stesura semplice — chi viene sfrattato dallo slot si spegne — che il
                  rosso conferma: 10 contro 17. */// [7.49.0 BL-06] il gesto precedente non si azzera di colpo (pop): sfuma in _gPrev
-              _a._gName=_want;_a._gAct=_a.gestures[_want];_a._gAct.reset().play();
+              _a._gName=_want;_a._gAct=_a.gestures[_want];_a._gAct.reset().play();if(_ai===0&&typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED){try{const _M=(window.__CPM_CGTRADER_MOUNTS=window.__CPM_CGTRADER_MOUNTS||{}),_k=String((propsRef.current&&propsRef.current.hlSitKey)||'?');(_M[_k]=_M[_k]||[]).length<12&&_M[_k].push(String(_want));}catch(_e){}}/* [23/09 POC] montaggi VERI dell'eroe (dopo le guardie): __CPM_G000 conta i tentativi prima della guardia 7.396 */
               /* [7.517.0 R3/2 — LA MIRA SI LATCHA AL MONTAGGIO: audit «il corpo non e' orientato verso la
                  direzione del passaggio/tiro»] Al montaggio del gesto si fissa la direzione VERSO il bersaglio
                  dell'arco (se vivo): il driver di facing la usera' al posto del moto residuo. Esclusi GK

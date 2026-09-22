@@ -1,0 +1,642 @@
+{
+ "scelta": {
+  "i": 18,
+  "k": 0,
+  "text": "🌀 Dribbling! Terzino sul lato sinistro.",
+  "labels": [
+   "🌀 Dribbling netto",
+   "⚡ Sterzata fulminea",
+   "💥 Tiro a giro"
+  ]
+ },
+ "sintesi": {
+  "intento": "dribble",
+  "situazione": "🌀 Dribbling! Terzino sul lato sinistro.",
+  "azione": "🌀 Dribbling netto",
+  "campioni": 34,
+  "fasi": [
+   "hl_choose",
+   "hl_result"
+  ],
+  "gestiEroePerScena": {
+   "10018": {
+    "n": 1,
+    "gesti": [
+     "pass"
+    ],
+    "tipi": [
+     "pass"
+    ]
+   }
+  },
+  "campioniConGesto": 0,
+  "clip": [],
+  "contatto": null,
+  "eroeNelQuadro": 0,
+  "tpose": [],
+  "tposeCampioni": 0,
+  "contestoConGesto": [],
+  "corpiDisegnati": [
+   0
+  ],
+  "errors": []
+ },
+ "frames": [
+  {
+   "i": 0,
+   "t": 3723,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": null,
+   "g000": null,
+   "touch": null
+  },
+  {
+   "i": 1,
+   "t": 6575,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": null,
+   "g000": null,
+   "touch": null
+  },
+  {
+   "i": 2,
+   "t": 11879,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": null,
+   "g000": null,
+   "touch": null
+  },
+  {
+   "i": 3,
+   "t": 17023,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": null,
+   "g000": null,
+   "touch": null
+  },
+  {
+   "i": 4,
+   "t": 20447,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": null,
+   "touch": null
+  },
+  {
+   "i": 5,
+   "t": 25471,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 6,
+   "t": 30742,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 7,
+   "t": 35737,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 8,
+   "t": 41244,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 9,
+   "t": 46250,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 10,
+   "t": 51282,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 11,
+   "t": 56206,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 12,
+   "t": 61157,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 13,
+   "t": 65607,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 14,
+   "t": 67855,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 15,
+   "t": 70266,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 16,
+   "t": 75248,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 17,
+   "t": 80211,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 18,
+   "t": 85283,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 19,
+   "t": 90331,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 20,
+   "t": 95307,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 21,
+   "t": 100246,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 22,
+   "t": 105243,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 23,
+   "t": 110261,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 24,
+   "t": 115094,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 25,
+   "t": 119974,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 26,
+   "t": 124878,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 27,
+   "t": 129823,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 28,
+   "t": 134859,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 29,
+   "t": 139858,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 30,
+   "t": 144885,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 31,
+   "t": 149922,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 32,
+   "t": 154439,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  },
+  {
+   "i": 33,
+   "t": 156620,
+   "phase": "hl_result",
+   "sit": null,
+   "a": null,
+   "g000": {
+    "10018": {
+     "n": 1,
+     "gesti": [
+      "pass"
+     ],
+     "tipi": [
+      "pass"
+     ]
+    }
+   },
+   "touch": null
+  }
+ ]
+}
