@@ -41,7 +41,7 @@ function PwaInstallBanner(){
         <div style={{fontSize:FS.caption,fontWeight:700,color:'#1d4ed8'}}>Installa Korward Elite come app</div>
         <div style={{fontSize:FS.caption,color:'#3b82f6',marginTop:1}}>Tocca per aggiungere alla schermata principale</div>
       </div>
-      <div style={{fontSize:14,color:'#3b82f6',fontWeight:700}}>›</div>
+      <div style={{fontSize:FS.body,color:'#3b82f6',fontWeight:700}}>›</div>
     </div>
   );
   if(/iphone|ipad|ipod/i.test(navigator.userAgent))return(
@@ -143,8 +143,8 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
       {confirmDel!==null&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card style={{maxWidth:340,width:"100%",padding:"22px",textAlign:"center"}}>
-            <div style={{fontSize:28,marginBottom:8}}>🗑️</div>
-            <div style={{fontSize:14,fontWeight:700,marginBottom:6,color:TH.text}}>Eliminare il salvataggio?</div>
+            <div style={{fontSize:FS.h,marginBottom:8}}>🗑️</div>
+            <div style={{fontSize:FS.body,fontWeight:700,marginBottom:6,color:TH.text}}>Eliminare il salvataggio?</div>
             <div style={{fontSize:FS.small,color:TH.muted,marginBottom:18}}>I progressi della carriera nello slot {confirmDel+1} saranno persi per sempre.</div>
             <div style={{display:"flex",gap:8}}>
               <Btn onClick={()=>setConfirmDel(null)} v="secondary" fw>Annulla</Btn>
@@ -199,7 +199,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
               <div style={{display:"flex",alignItems:"center",gap:8,flex:"1 1 210px",minWidth:0}}>
                 <AvatarSVG id={s.avatarId} size={46}/>
                 <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontWeight:800,fontSize:14,color:TH.text,marginBottom:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name}</div>
+                  <div style={{fontWeight:800,fontSize:FS.body,color:TH.text,marginBottom:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name}</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#b45309",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
                   <div style={{fontSize:FS.caption,color:TH.faint,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>💾 {fmtDate(s.savedAt)}</div>
                 </div>
@@ -274,7 +274,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const[challengeId,setChallengeId]=useState(null);
   const[dreamClub,setDreamClub]=useState(null);
   const[dreamSearch,setDreamSearch]=useState("");
-  const inp={background:TH.surface2,border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,color:TH.text,padding:"7px 12px",fontFamily:"inherit",fontSize:14,width:"100%",boxSizing:"border-box"};
+  const inp={background:TH.surface2,border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,color:TH.text,padding:"7px 12px",fontFamily:"inherit",fontSize:FS.body,width:"100%",boxSizing:"border-box"};
   const lbl={display:"block",fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
   const go=()=>{
     if(!name.trim())return;
@@ -339,7 +339,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
                 const sel=archetypeId===arc.id;
                 return(
                   <button key={arc.id} onClick={()=>setArchetypeId(arc.id)} style={{padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?TH.primary:TH.cardBorder}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",textAlign:"left",transition:"border .15s"}}>
-                    <div style={{fontSize:16,marginBottom:2}}>{arc.e}</div>
+                    <div style={{fontSize:FS.bodyLg,marginBottom:2}}>{arc.e}</div>
                     <div style={{fontSize:FS.caption,fontWeight:700,color:sel?TH.brandText:TH.text}}>{arc.name}</div>
                     <div style={{fontSize:FS.caption,color:TH.faint,lineHeight:1.4}}>{arc.desc}</div>
                   </button>
@@ -379,7 +379,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
           <details style={{marginBottom:6}}>
             <summary style={{fontSize:FS.caption,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida <span style={{color:challengeId?TH.txAmber:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
             <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
-              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?TH.bgAmber:TH.surface2,cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:FS.caption}}>{ch.name}</span></div><div style={{fontSize:FS.caption,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:FS.caption,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
+              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?TH.bgAmber:TH.surface2,cursor:"pointer"}}><div style={{fontSize:FS.body,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:FS.caption}}>{ch.name}</span></div><div style={{fontSize:FS.caption,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:FS.caption,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
             </div>
           </details>
           <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:FS.bodyLg}}>⚡ INIZIA I PROVINI</Btn>
@@ -411,7 +411,7 @@ function OffersScreen({player,trialStats,onChoose}){
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
     <div style={{width:"100%"}}>
-      <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:18,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>3 provini · {total} gol · Rating medio {avg}</p></div>
+      <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>3 provini · {total} gol · Rating medio {avg}</p></div>
       <Card style={{marginBottom:9,padding:"9px 12px"}}>
         <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Riepilogo provini</div>
         <div style={{display:"flex",gap:6}}>{trialStats.map((t,i)=><div key={i} className="cpm-num" style={{flex:1,background:TH.surface2,borderRadius:RAD.sm,padding:"7px",textAlign:"center",border:"1px solid "+TH.divider}}><div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2}}>Provino {i+1}</div><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>⚽{t.goals} 🎯{t.assists}</div><div style={{fontSize:FS.caption,color:TH.txAmber,fontWeight:FW.bold}}>{t.rating}</div></div>)}</div>
@@ -425,7 +425,7 @@ function OffersScreen({player,trialStats,onChoose}){
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{display:"flex",alignItems:"center",gap:8}}>
                   <TeamBadge team={club} size={44}/>
-                  <div><div style={{fontWeight:700,fontSize:14,color:TH.text}}>{club.name}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>{club.nat} · Prestigio {club.p}</div></div>
+                  <div><div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{club.name}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>{club.nat} · Prestigio {club.p}</div></div>
                 </div>
                 <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
                   {i===0&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>⭐ TOP</div>}
@@ -520,7 +520,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       <div style={{textAlign:"center",marginBottom:10}}>
         <div style={{fontSize:46,marginBottom:4,animation:"pulse87 1.4s ease-in-out infinite"}}>{_emoji}</div>
         <div style={{fontSize:FS.caption,color:TH.txAmber,letterSpacing:2,fontWeight:800}}>PROVINO {trialNum+1} DI 3 · COMPLETATO</div>
-        <div style={{fontSize:16,fontWeight:900,color:TH.text,marginTop:6}}>{_title}</div>
+        <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.text,marginTop:6}}>{_title}</div>
       </div>
       <style>{`@keyframes pulse87{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}`}</style>
       {/* stat tiles */}
@@ -535,11 +535,11 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       </div>
       {/* scout reaction */}
       <Card style={{padding:"14px",marginBottom:9,borderLeft:"4px solid "+(_r>=6.5?TH.success:_r>=5.5?TH.warning:TH.danger)}}>
-        <div style={{display:"flex",gap:11,alignItems:"flex-start"}}><div style={{fontSize:22,lineHeight:1}}>🔭</div><div style={{flex:1,fontSize:FS.small,color:TH.muted,lineHeight:1.5}}>{_react}</div></div>
+        <div style={{display:"flex",gap:11,alignItems:"flex-start"}}><div style={{fontSize:FS.title,lineHeight:1}}>🔭</div><div style={{flex:1,fontSize:FS.small,color:TH.muted,lineHeight:1.5}}>{_react}</div></div>
       </Card>
       {/* progress dots */}
       <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:3}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
-      {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:12.5,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>Manca ancora {2-trialNum} {2-trialNum===1?"provino":"provini"} per convincere i club.{_kbHint?<span style={{color:TH.faint}}> [Enter]</span>:null}</div>}
+      {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:FS.small,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>Manca ancora {2-trialNum} {2-trialNum===1?"provino":"provini"} per convincere i club.{_kbHint?<span style={{color:TH.faint}}> [Enter]</span>:null}</div>}
       <Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>
     </div>;}
   return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
@@ -553,7 +553,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       <div style={{background:"linear-gradient(135deg,#7a1f2b 0%,#4a1119 100%)",padding:"18px 12px",display:"flex",alignItems:"center",justifyContent:"space-around",position:"relative"}}>
         <div style={{position:"absolute",inset:0,background:"radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,0.10),transparent 60%)",pointerEvents:"none"}}/>
         <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={_granata} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>La tua Selezione</div><div style={{fontSize:FS.caption,color:"#e8c98f"}}>La squadra dei provinanti</div></div>
-        <div style={{fontSize:22,fontWeight:900,color:"rgba(255,255,255,0.55)",padding:"0 8px",zIndex:1}}>VS</div>
+        <div style={{fontSize:FS.title,fontWeight:900,color:"rgba(255,255,255,0.55)",padding:"0 8px",zIndex:1}}>VS</div>
         <div style={{textAlign:"center",flex:1,minWidth:0,zIndex:1}}><TeamBadge team={opp} size={44}/><div style={{fontSize:FS.small,fontWeight:800,color:"#fff",marginTop:5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{opp.n}</div><div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)"}}>Avversario del provino</div></div>
       </div>
     </Card>
@@ -561,13 +561,13 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     <Card style={{padding:"14px",marginBottom:9,borderLeft:"4px solid "+TH.warning}}>
       <div style={{display:"flex",gap:11,alignItems:"flex-start"}}>
         <div style={{fontSize:FS.h,lineHeight:1}}>🔭</div>
-        <div style={{flex:1}}><div style={{fontWeight:800,color:TH.text,fontSize:13.5}}>{_scoutGuide.t}</div><div style={{color:TH.muted,fontSize:FS.small,marginTop:4,lineHeight:1.5}}>{_scoutGuide.d}</div></div>
+        <div style={{flex:1}}><div style={{fontWeight:800,color:TH.text,fontSize:FS.body}}>{_scoutGuide.t}</div><div style={{color:TH.muted,fontSize:FS.small,marginTop:4,lineHeight:1.5}}>{_scoutGuide.d}</div></div>
       </div>
     </Card>
     {/* onboarding — come si gioca (full sul 1° provino, poi si nasconde) */}
     {trialNum===0&&<Card style={{padding:"14px",marginBottom:9}}>
       <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:1.5,textTransform:"uppercase",marginBottom:11,fontWeight:700}}>💡 Come si gioca — i primi passi</div>
-      {_howTips.map((t,i)=><div key={i} style={{display:"flex",gap:11,marginBottom:i<_howTips.length-1?11:0,alignItems:"flex-start"}}><div style={{fontSize:19,width:24,textAlign:"center"}}>{t.i}</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:12.5,color:TH.text}}>{t.t}</div><div style={{fontSize:11.5,color:TH.muted,marginTop:1,lineHeight:1.45}}>{t.d}</div></div></div>)}
+      {_howTips.map((t,i)=><div key={i} style={{display:"flex",gap:11,marginBottom:i<_howTips.length-1?11:0,alignItems:"flex-start"}}><div style={{fontSize:FS.title,width:24,textAlign:"center"}}>{t.i}</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:FS.small,color:TH.text}}>{t.t}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1,lineHeight:1.45}}>{t.d}</div></div></div>)}
     </Card>}
     {trialNum>0&&<div style={{textAlign:"center",fontSize:FS.small,color:TH.muted,marginBottom:9}}>Finora ai provini: <strong style={{color:TH.text}}>{_totG} gol</strong> · <strong style={{color:TH.text}}>{_totA} assist</strong></div>}
     <Btn onClick={()=>setPhase("match")} fw style={{padding:"15px",fontSize:FS.bodyLg}}>⚡ Inizia il provino{_kbHint?<span style={{opacity:0.6,fontSize:FS.small}}> [Enter]</span>:null}</Btn>
@@ -659,7 +659,7 @@ function NationalCallupScreen({data,onPlay}){
       {isFirst&&<div style={{background:`${TH.accent}20`,border:`1px solid ${TH.accent}55`,borderRadius:RAD.sm,padding:"7px 18px",marginBottom:18,fontSize:FS.caption,color:TH.accentText,letterSpacing:2,textTransform:"uppercase",fontWeight:800,textAlign:"center"}}>★ Traguardo di Carriera — Prima Convocazione ★</div>}
       <div style={{fontSize:54,marginBottom:4,lineHeight:1}}>{flag}</div>
       <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:2.5,textTransform:"uppercase",marginBottom:4}}>Convocazione Nazionale</div>
-      <div style={{fontSize:26,fontWeight:900,color:"#fff",marginBottom:2}}>Nazionale {nation}</div>
+      <div style={{fontSize:FS.h,fontWeight:900,color:"#fff",marginBottom:2}}>Nazionale {nation}</div>
       <div style={{fontSize:FS.small,color:TH.muted,marginBottom:22}}>Cap #{newCaps} · Amichevole Internazionale</div>
       {/* Jersey */}
       <div style={{marginBottom:22,filter:`drop-shadow(0 0 20px ${col}99)`}}>
@@ -680,14 +680,14 @@ function NationalCallupScreen({data,onPlay}){
         <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:2,textTransform:"uppercase",textAlign:"center",marginBottom:9}}>Prossima Partita</div>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
           <div style={{textAlign:"center",flex:1}}>
-            <div style={{fontSize:28,lineHeight:1,marginBottom:4}}>{flag}</div>
+            <div style={{fontSize:FS.h,lineHeight:1,marginBottom:4}}>{flag}</div>
             <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{nation}</div>
           </div>
           <div style={{textAlign:"center",padding:"8px 14px",background:"rgba(255,255,255,0.05)",borderRadius:RAD.sm}}>
             <div style={{fontSize:FS.h,fontWeight:900,color:TH.muted}}>VS</div>
           </div>
           <div style={{textAlign:"center",flex:1}}>
-            <div style={{fontSize:28,lineHeight:1,marginBottom:4}}>{oppNd.flag}</div>
+            <div style={{fontSize:FS.h,lineHeight:1,marginBottom:4}}>{oppNd.flag}</div>
             <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{opp}</div>
           </div>
         </div>
@@ -698,7 +698,7 @@ function NationalCallupScreen({data,onPlay}){
         <div style={{display:"flex",justifyContent:"space-around"}}>
           {[{l:"Popolarità",v:"+8",e:"📈",c:TH.success},{l:"Valore",v:"+€0.15M",e:"💶",c:TH.warning},{l:"Morale",v:"+12",e:"😊",c:TH.accent}].map(b=>(
             <div key={b.l} style={{textAlign:"center"}}>
-              <div style={{fontSize:16,marginBottom:2}}>{b.e}</div>
+              <div style={{fontSize:FS.bodyLg,marginBottom:2}}>{b.e}</div>
               <div style={{fontSize:FS.bodyLg,fontWeight:800,color:legCol944(b.c)}}>{b.v}</div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>{b.l}</div>
             </div>
@@ -850,12 +850,12 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           <div style={{fontSize:30,fontWeight:900,color:"#fff",marginTop:6,animation:"celebTitle .8s ease-out .5s both"}}>Grazie, {p.name}</div>
           <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.82)",marginTop:8,animation:"celebTitle .8s ease-out .7s both"}}>{_cSeasons} stagion{_cSeasons===1?"e":"i"} · {_cGoals} gol · {_cMatches} presenze{(p.age||0)?` · ${p.age} anni`:""}</div>
           <div style={{marginTop:12,display:"inline-flex",alignItems:"center",gap:8,padding:"8px 16px",borderRadius:RAD.pill,background:grade.color+"22",border:`1.5px solid ${grade.color}`,animation:"celebTitle .8s ease-out .9s both"}}>
-            <span style={{fontSize:22}}>{grade.e}</span>
-            <span style={{fontSize:14,fontWeight:900,color:grade.color}}>{grade.label}</span>
+            <span style={{fontSize:FS.title}}>{grade.e}</span>
+            <span style={{fontSize:FS.body,fontWeight:900,color:grade.color}}>{grade.label}</span>
             <span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)"}}>· {legacyScore}/1000</span>
           </div>
           {_tCount>0&&<div style={{marginTop:18,display:"flex",gap:7,justifyContent:"center",flexWrap:"wrap"}}>
-            {Array.from({length:_tCount}).map((_,i)=><span key={i} style={{fontSize:26,animation:`trophyRise .7s ease-out ${(1.1+i*0.12).toFixed(2)}s both`}}>🏆</span>)}
+            {Array.from({length:_tCount}).map((_,i)=><span key={i} style={{fontSize:FS.h,animation:`trophyRise .7s ease-out ${(1.1+i*0.12).toFixed(2)}s both`}}>🏆</span>)}
           </div>}
           <div style={{marginTop:_tCount>0?18:22,fontSize:FS.small,color:"rgba(255,255,255,0.7)",fontStyle:"italic",lineHeight:1.5,animation:"celebTitle .8s ease-out 1.25s both"}}>“{p.name} lascia il calcio giocato. Lo stadio è in piedi: un ultimo giro di campo, sotto una pioggia di applausi.”</div>
           <div style={{marginTop:20,animation:"celebTitle .8s ease-out 1.5s both"}}>
@@ -871,7 +871,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         <div style={{maxWidth:460,width:"100%",textAlign:"center",padding:"18px 0"}}>
           <div style={{fontSize:FS.caption,letterSpacing:5,color:"#93c5fd",fontWeight:800,marginBottom:8,animation:"celebTitle .7s ease-out both"}}>✍️ LA LETTERA D'ADDIO</div>
           <div style={{textAlign:"left",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:RAD.md,padding:"11px 15px",animation:"celebTitle .8s ease-out .2s both"}}>
-            <div style={{fontSize:12.5,color:"rgba(255,255,255,0.88)",lineHeight:1.75,fontStyle:"italic"}}>
+            <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.88)",lineHeight:1.75,fontStyle:"italic"}}>
               «Cari tifosi,<br/>
               tutto è cominciato con un pallone e un provino al {_firstClub}. Da quel giorno sono passate {_totS} stagioni, {_totM} presenze e {_totG} gol — ma i numeri non raccontano gli abbracci, i cori sotto la curva, le notti in cui non riuscivo a dormire prima di una finale.<br/>
               {(_flagClub?`Al ${_flagClub.n} lascio il pezzo più grande del mio cuore: ${_flagClub.seasons} stagioni e ${_flagClub.goals} gol insieme non si dimenticano. `:"A ogni maglia che ho vestito lascio un pezzo di cuore. ")}
@@ -883,7 +883,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           {_flagClub&&(
             <div style={{marginTop:10,background:"linear-gradient(135deg,#3b2a07,#5b420c)",border:"1px solid #d4a017",borderRadius:RAD.md,padding:"7px 12px",animation:"celebTitle .8s ease-out .55s both"}}>
               <div style={{fontSize:34,marginBottom:4}}>👕</div>
-              <div style={{fontSize:14,fontWeight:900,color:"#fde68a"}}>Il {_flagClub.n} RITIRA la maglia numero {p.jerseyNum||10}</div>
+              <div style={{fontSize:FS.body,fontWeight:900,color:"#fde68a"}}>Il {_flagClub.n} RITIRA la maglia numero {p.jerseyNum||10}</div>
               <div style={{fontSize:FS.caption,color:"rgba(253,230,138,0.75)",marginTop:4}}>Nessuno la vestirà più: il tuo numero sale nella storia del club, accanto alle bandiere di sempre.</div>
             </div>
           )}
@@ -906,7 +906,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
       {/* Legacy grade */}
       <Card style={{marginBottom:9,padding:"18px",textAlign:"center"}} bg={grade.color+"11"} border={grade.color+"44"}>
         <div style={{fontSize:36,marginBottom:4}}>{grade.e}</div>
-        <div style={{fontSize:18,fontWeight:900,color:grade.color,marginBottom:6}}>{grade.label}</div>
+        <div style={{fontSize:FS.subhead,fontWeight:900,color:grade.color,marginBottom:6}}>{grade.label}</div>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:8}}>Legacy Score: {legacyScore} / 1000</div>
         <div style={{background:TH.cardBorder,borderRadius:RAD.sm,height:8,overflow:"hidden"}}>
           <div style={{width:`${pct}%`,height:"100%",background:grade.color,borderRadius:RAD.sm}}/>
@@ -919,7 +919,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,textAlign:"center",marginBottom:bestSeason?10:0}}>
           {[{l:"Stagioni",v:Math.max(0,(p.season||1)-1),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps Naz.",v:p.nationalCaps||0,e:"🌍"}].map(s=>(
             <div key={s.l} style={{background:TH.bg,borderRadius:RAD.sm,padding:"8px 4px"}}>
-              <div style={{fontSize:18}}>{s.e}</div>
+              <div style={{fontSize:FS.subhead}}>{s.e}</div>
               <div style={{fontSize:FS.title,fontWeight:900,color:TH.text}}>{s.v}</div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
             </div>
@@ -991,7 +991,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
               const v=jVerdict(j,i);/* [7.259.0] l'indice garantisce 3 voci distinte */
               return(
                 <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                  <div style={{fontSize:22,flexShrink:0}}>{j.icon||"📰"}</div>
+                  <div style={{fontSize:FS.title,flexShrink:0}}>{j.icon||"📰"}</div>
                   <div style={{flex:1}}>
                     <div style={{fontSize:FS.caption,fontWeight:800,color:TH.text}}>{j.name} <span style={{color:j.color||TH.muted,fontWeight:400,fontSize:FS.caption}}>· {j.paper}</span></div>
                     <div style={{fontSize:FS.caption,color:v.color,fontStyle:"italic",lineHeight:1.5,marginTop:2}}>{v.txt}</div>
@@ -1013,13 +1013,13 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
             <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",textAlign:"center"}}>
               <div style={{background:"rgba(0,0,0,0.3)",borderRadius:RAD.sm,padding:"10px 6px"}}>
                 <div style={{fontSize:FS.caption,color:"rgba(74,222,128,0.7)",marginBottom:2}}>TU</div>
-                <div style={{fontSize:26,fontWeight:900,color:isAhead?"#4ade80":"#f87171"}}>{p.totalGoals||0}</div>
+                <div style={{fontSize:FS.h,fontWeight:900,color:isAhead?"#4ade80":"#f87171"}}>{p.totalGoals||0}</div>
                 <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
               </div>
-              <div style={{fontSize:18,color:"rgba(165,180,252,0.4)"}}>⚔️</div>
+              <div style={{fontSize:FS.subhead,color:"rgba(165,180,252,0.4)"}}>⚔️</div>
               <div style={{background:"rgba(0,0,0,0.3)",borderRadius:RAD.sm,padding:"10px 6px"}}>
                 <div style={{fontSize:FS.caption,color:"rgba(99,102,241,0.7)",marginBottom:2}}>{r.name.split(" ")[0].toUpperCase()}</div>
-                <div style={{fontSize:26,fontWeight:900,color:isTie?"#fbbf24":(!isAhead?"#4ade80":"#f87171")}}>{r.totalGoals||0}</div>
+                <div style={{fontSize:FS.h,fontWeight:900,color:isTie?"#fbbf24":(!isAhead?"#4ade80":"#f87171")}}>{r.totalGoals||0}</div>
                 <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
               </div>
             </div>
@@ -1049,7 +1049,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Albo d'Oro</div>
           {trophies.map((t,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<trophies.length-1?"1px solid "+TH.cardBorder:"none"}}>
-              <span style={{fontSize:16}}>🏆</span>
+              <span style={{fontSize:FS.bodyLg}}>🏆</span>
               <div><div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>S.{t.season} · {t.club}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{compLbl(t.league)}</div></div>
             </div>
           ))}
@@ -1066,7 +1066,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
       <Btn onClick={()=>{const txt=buildCareerCard(p);if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>alert("📋 Riepilogo copiato negli appunti!")).catch(()=>alert(txt));}else{alert(txt);}}}/* [6.45.0 RC] .catch: una clipboard bloccata non deve generare una promise rejection non gestita → fallback al testo */ v="ghost" fw style={{padding:"12px",fontSize:FS.body,marginBottom:8}}>
         📋 Copia Riepilogo Carriera
       </Btn>
-      {onNewGamePlus&&(()=>{const bonus=legacyScore>=600?{statBoost:3,label:"Leggenda",moraleBoost:15}:legacyScore>=400?{statBoost:2,label:"Veterano",moraleBoost:10}:legacyScore>=200?{statBoost:1,label:"Esperienza",moraleBoost:5}:null;return bonus?(<Btn onClick={()=>onNewGamePlus(bonus)} fw style={{padding:"13px",fontSize:14,marginBottom:8,background:"linear-gradient(135deg,#7c3aed,#4f46e5)",color:"#fff",border:"none"}}>🌟 Nuova Partita+ — Bonus {bonus.label} (+{bonus.statBoost} stats)</Btn>):null;})()}
+      {onNewGamePlus&&(()=>{const bonus=legacyScore>=600?{statBoost:3,label:"Leggenda",moraleBoost:15}:legacyScore>=400?{statBoost:2,label:"Veterano",moraleBoost:10}:legacyScore>=200?{statBoost:1,label:"Esperienza",moraleBoost:5}:null;return bonus?(<Btn onClick={()=>onNewGamePlus(bonus)} fw style={{padding:"13px",fontSize:FS.body,marginBottom:8,background:"linear-gradient(135deg,#7c3aed,#4f46e5)",color:"#fff",border:"none"}}>🌟 Nuova Partita+ — Bonus {bonus.label} (+{bonus.statBoost} stats)</Btn>):null;})()}
       {onNewGamePlus&&legacyScore>=100&&(<Btn onClick={()=>onNewGamePlus({statBoost:1,label:"Eredità Familiare",moraleBoost:8,generation:true,parentName:p.name,parentTotalGoals:p.totalGoals||0})} v="ghost" fw style={{padding:"12px",fontSize:FS.body,marginBottom:8,border:`1.5px solid #16a34a`,color:TH.txGreen}}>👨‍👦 Gioca come figlio/a di {p.name}</Btn>)}
       <Btn onClick={onNewGame} v="primary" fw style={{padding:"16px",fontSize:FS.bodyLg}}>
         🏠 Torna al Menu Principale
@@ -1719,8 +1719,8 @@ function TutorialOverlay({name,step,onNext,onSkip}){
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 12px 90px"}}>
       <div style={{background:TH.card,border:`2px solid ${TH.primary}`,borderRadius:RAD.xl,padding:"26px 22px 20px",maxWidth:400,width:"100%",boxShadow:"0 10px 50px rgba(0,0,0,0.6)"}}>
         <div style={{fontSize:40,textAlign:"center",marginBottom:8}}>{s.icon}</div>
-        <div style={{fontWeight:800,fontSize:18,color:TH.text,textAlign:"center",marginBottom:8}}>{ttl}</div>
-        <div style={{fontSize:14,color:TH.muted,textAlign:"center",lineHeight:1.65,marginBottom:18}}>{txt}</div>
+        <div style={{fontWeight:800,fontSize:FS.subhead,color:TH.text,textAlign:"center",marginBottom:8}}>{ttl}</div>
+        <div style={{fontSize:FS.body,color:TH.muted,textAlign:"center",lineHeight:1.65,marginBottom:18}}>{txt}</div>
         {/* step dots */}
         <div style={{display:"flex",gap:6,justifyContent:"center",marginBottom:12}}>
           {TUTORIAL_STEPS.map((_,i)=>(
@@ -1746,7 +1746,7 @@ function MilestoneCelebrationModal({milestone,onDismiss}){
     <div onClick={onDismiss} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",padding:20,cursor:"pointer"}}>
       <div style={{textAlign:"center",maxWidth:320,width:"100%"}} onClick={e=>e.stopPropagation()}>
         <div style={{fontSize:68,marginBottom:8,filter:`drop-shadow(0 0 18px ${milestone.color}aa)`}}>{icon}</div>
-        <div style={{fontSize:22,fontWeight:900,color:"#fff",marginBottom:8,lineHeight:1.25,textShadow:`0 2px 20px ${milestone.color}`}}>{title}</div>
+        <div style={{fontSize:FS.title,fontWeight:900,color:"#fff",marginBottom:8,lineHeight:1.25,textShadow:`0 2px 20px ${milestone.color}`}}>{title}</div>
         {milestone.sub&&<div style={{fontSize:FS.body,color:"rgba(255,255,255,0.72)",marginBottom:20,lineHeight:1.6,padding:"0 8px"}}>{milestone.sub}</div>}
         <div style={{width:72,height:3,background:milestone.color,borderRadius:3,margin:"0 auto 20px",boxShadow:`0 0 14px ${milestone.color}`}}/>
         <button onClick={onDismiss} style={{background:milestone.color,color:"#fff",border:"none",borderRadius:RAD.md,padding:"13px 32px",fontWeight:800,fontSize:FS.bodyLg,cursor:"pointer",letterSpacing:"0.02em",fontFamily:"inherit"}}>🎉 Fantastico!</button>
@@ -1816,7 +1816,7 @@ const TrainPanel=({player,setPlayer,notify})=>{
   return(
     <Card>
       <div style={{display:"flex",alignItems:"flex-start",gap:8,marginBottom:8,padding:"8px 10px",background:TH.surface2,borderRadius:RAD.sm,border:"1px solid "+TH.cardBorder}}>
-        <div style={{fontSize:22,flexShrink:0}}>🧑‍🏫</div>
+        <div style={{fontSize:FS.title,flexShrink:0}}>🧑‍🏫</div>
         <div style={{flex:1}}>
           <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister · Piano W.{week}</div>
           <div style={{fontSize:FS.small,color:TH.text,fontStyle:"italic"}}>"{_coachMsg}"</div>
@@ -1829,7 +1829,7 @@ const TrainPanel=({player,setPlayer,notify})=>{
           const t=isRec?{e:tid==="rec_completo"?"🛌":"🧘",l:tid==="rec_completo"?"Riposo":"Recupero",col:"#0284c7"}:_TT[tid];
           const done=slog[i];
           return(<div key={i} style={{flex:1,padding:"8px 4px",borderRadius:RAD.sm,border:`1.5px solid ${t?.col+(done?"88":"44")}`,background:t?.col+(done?"22":"0a"),textAlign:"center"}}>
-            <div style={{fontSize:18}}>{done?"✅":t?.e||"?"}</div>
+            <div style={{fontSize:FS.subhead}}>{done?"✅":t?.e||"?"}</div>
             <div style={{fontSize:FS.caption,fontWeight:700,color:t?.col,marginTop:2}}>{t?.l||tid}</div>
           </div>);
         })}

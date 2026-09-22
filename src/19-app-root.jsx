@@ -555,7 +555,7 @@ function IntroCinematic({onDone}){
           :<div key={"b"+beat} style={{fontSize:cap.big.length>14?24:38,fontWeight:900,color:"#fff",letterSpacing:cap.big.length>14?1:4,textShadow:"0 3px 18px rgba(0,0,0,0.8)",animation:"celebTitle .7s ease-out both"}}>{cap.big}</div>)}
         {cap.sub&&<div key={"s"+beat} style={{fontSize:FS.bodyLg,color:"#ffd9a0",fontWeight:700,marginTop:8,textShadow:"0 2px 12px rgba(0,0,0,0.85)",animation:"celebTitle .8s ease-out .15s both"}}>{cap.sub}</div>}
         {cap.chips&&<div style={{display:"flex",flexDirection:"column",gap:8,alignItems:"center",marginTop:14}}>
-          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:RAD.xl,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:14,fontWeight:800,animation:`celebTitle .5s ease-out ${0.3+i*0.55}s both`}}>{c}</div>))}
+          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:RAD.xl,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:FS.body,fontWeight:800,animation:`celebTitle .5s ease-out ${0.3+i*0.55}s both`}}>{c}</div>))}
         </div>}
       </div>
       {cap.cta&&<div style={{position:"absolute",left:0,right:0,bottom:"12%",display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both"}}>
@@ -571,12 +571,12 @@ function IntroCinematic({onDone}){
    arbitro, muto totale, VIBRAZIONE, debug). Un unico posto per tutte le preferenze. */
 function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu}){
   const Seg=({active,label,onClick})=>(
-    <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:12.5,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
+    <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
   );
   return(
     <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
-        <div style={{fontSize:16,fontWeight:FW.black,color:TH.text}}>⚙️ Impostazioni</div>
+        <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Impostazioni</div>
         <button onClick={onClose} className="cpm-press" style={{width:34,height:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14}}>
@@ -921,7 +921,7 @@ function App(){
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<><HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>
     {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD)&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>
-      <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:11.5,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
+      <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
   if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)}/>);
   if(phase==="cinematic"&&player)return wrap(<IntroCinematic onDone={()=>{try{safeLS.set("cpm-intro-seen","1");}catch(_e){}setPhase("trial");}}/>);/* [7.32.0] */
@@ -984,11 +984,11 @@ class RootErrorBoundary extends React.Component{
       <div style={{position:"fixed",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:16,padding:24,background:"#0f172a",color:"#e2e8f0",fontFamily:"'Barlow','Segoe UI',sans-serif",textAlign:"center",zIndex:99999}}>
         <div style={{fontSize:42}}>⚠️</div>
         <div style={{fontSize:FS.title,fontWeight:900}}>Qualcosa è andato storto</div>
-        <div style={{fontSize:14,maxWidth:360,opacity:0.85,lineHeight:1.5}}>La tua carriera è <b>al sicuro</b> sul dispositivo. Ricarica per riprendere da dove eri; puoi anche tornare al menu o scaricare un backup di sicurezza.</div>
+        <div style={{fontSize:FS.body,maxWidth:360,opacity:0.85,lineHeight:1.5}}>La tua carriera è <b>al sicuro</b> sul dispositivo. Ricarica per riprendere da dove eri; puoi anche tornare al menu o scaricare un backup di sicurezza.</div>
         <div style={{display:"flex",gap:10,flexWrap:"wrap",justifyContent:"center",marginTop:6}}>
-          <button onClick={()=>location.reload()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>↻ Ricarica</button>
-          <button onClick={()=>{try{localStorage.setItem("cpm-active","");localStorage.setItem("cpm-match-resume","");}catch(e){}location.reload();}} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>🏠 Torna al menu</button>{/* [7.149.0] azzera l'auto-ripresa (carriera + partita) → il boot torna alla home: valvola anti crash-loop */}
-          <button onClick={()=>this._backup()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>📁 Scarica backup</button>
+          <button onClick={()=>location.reload()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>↻ Ricarica</button>
+          <button onClick={()=>{try{localStorage.setItem("cpm-active","");localStorage.setItem("cpm-match-resume","");}catch(e){}location.reload();}} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>🏠 Torna al menu</button>{/* [7.149.0] azzera l'auto-ripresa (carriera + partita) → il boot torna alla home: valvola anti crash-loop */}
+          <button onClick={()=>this._backup()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit"}}>📁 Scarica backup</button>
         </div>
       </div>
     );

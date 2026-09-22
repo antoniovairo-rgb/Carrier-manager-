@@ -32,7 +32,7 @@ function DPad({onMove,dark=false,size=42}){
       style={{width:SZ,height:SZ,borderRadius:RAD.sm,
         background:dark?"linear-gradient(180deg,rgba(51,65,92,0.92),rgba(34,45,68,0.92))":"rgba(30,42,60,0.08)",/* [7.919 collaudo PO «renderei un po' piu' chiari gli sfondi delle statistiche, del dpad e delle azioni»] il tasto scuro era quasi nero (0,52 di nero su fondo scuro): si vedeva il bordo, non il tasto */
         border:dark?"1px solid rgba(203,213,225,0.30)":"1px solid "+TH.cardBorder,
-        color:dark?"#fff":TH.text,fontSize:16,cursor:"pointer",
+        color:dark?"#fff":TH.text,fontSize:FS.bodyLg,cursor:"pointer",
         display:"flex",alignItems:"center",justifyContent:"center",
         userSelect:"none",WebkitUserSelect:"none",touchAction:"none",
         fontWeight:600,
@@ -55,7 +55,7 @@ function DPad({onMove,dark=false,size=42}){
 function ScoutReportScreen({report,opponent,onClose,loading}){
   if(loading)return(
     <Card style={{padding:24,textAlign:"center",marginBottom:8}}>
-      <div style={{fontSize:28,marginBottom:6,animation:"pulse 1.2s infinite"}}>🔍</div>
+      <div style={{fontSize:FS.h,marginBottom:6,animation:"pulse 1.2s infinite"}}>🔍</div>
       <div style={{fontSize:FS.body,color:TH.muted}}>Scout in osservazione…</div>
       <div style={{fontSize:FS.caption,color:TH.faint,marginTop:4}}>Analisi tattica di {opponent?.n||"avversario"} in corso</div>
     </Card>
@@ -72,7 +72,7 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
           <TeamBadge team={opponent} size={40}/>
           <div style={{flex:1}}>
             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:2}}>Analisi Prematch</div>
-            <div style={{fontSize:16,fontWeight:900,color:"#f1f5f9"}}>{opponent?.n||"Avversario"}</div>
+            <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9"}}>{opponent?.n||"Avversario"}</div>
             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.5)"}}>{opponent?.lg||""}{opponent?.nat?` ${opponent.nat}`:""}</div>
           </div>
           <div style={{textAlign:"center"}}>
@@ -184,7 +184,7 @@ function PostMatchPress({match,report,player,L,onClose}){
             <div style={{flex:1,textAlign:"right",fontSize:FS.bodyLg,fontWeight:800,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{heroClub.a||heroClub.n||"NOI"}</div>
             <div style={{display:"flex",alignItems:"baseline",gap:8,flexShrink:0}}>
               <span style={{fontSize:40,fontWeight:900,lineHeight:1}}>{r.homeScore}</span>
-              <span style={{fontSize:22,opacity:0.7}}>–</span>
+              <span style={{fontSize:FS.title,opacity:0.7}}>–</span>
               <span style={{fontSize:40,fontWeight:900,lineHeight:1}}>{r.awayScore}</span>
             </div>
             <div style={{flex:1,textAlign:"left",fontSize:FS.bodyLg,fontWeight:800,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.oppAbbr||r.opponent||"AVV"}</div>
@@ -200,7 +200,7 @@ function PostMatchPress({match,report,player,L,onClose}){
         )}
         {/* TITOLONE */}
         <div style={{padding:"15px 18px 8px"}}>
-          {lead?(<div style={{fontSize:21,fontWeight:900,color:TH.text,lineHeight:1.2,letterSpacing:-0.2}}>{lead}</div>):(<div style={{height:50,borderRadius:RAD.sm,...(_shim)}}/>)}
+          {lead?(<div style={{fontSize:FS.title,fontWeight:900,color:TH.text,lineHeight:1.2,letterSpacing:-0.2}}>{lead}</div>):(<div style={{height:50,borderRadius:RAD.sm,...(_shim)}}/>)}
         </div>
         {/* PAGELLA + STATISTICHE */}
         <div style={{display:"flex",gap:9,padding:"6px 18px 12px",alignItems:"stretch"}}>
@@ -245,7 +245,7 @@ function PostMatchPress({match,report,player,L,onClose}){
         </div>
         {rep.trending&&<div style={{padding:"4px 18px 0"}}><span style={{display:"inline-block",fontSize:FS.caption,fontWeight:800,color:TH.brandText,background:TH.primary+"18",padding:"3px 10px",borderRadius:RAD.xl}}>#{String(rep.trending).replace(/^#/,"")}</span></div>}
         <div style={{padding:"12px 18px 16px"}}>
-          <button onClick={onClose} style={{width:"100%",padding:"14px",borderRadius:RAD.md,border:"none",background:`linear-gradient(135deg,${TH.primary},${TH.primary}cc)`,color:"#fff",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"inherit",boxShadow:`0 6px 18px ${TH.primary}44`}}>{(L&&L.backToDashboard)||"Torna alla dashboard"} →</button>
+          <button onClick={onClose} style={{width:"100%",padding:"14px",borderRadius:RAD.md,border:"none",background:`linear-gradient(135deg,${TH.primary},${TH.primary}cc)`,color:"#fff",fontSize:FS.body,fontWeight:800,cursor:"pointer",fontFamily:"inherit",boxShadow:`0 6px 18px ${TH.primary}44`}}>{(L&&L.backToDashboard)||"Torna alla dashboard"} →</button>
         </div>
       </div>
     </div>
@@ -268,7 +268,7 @@ function PressScreen({report,matchResult,onClose}){
             {report.memoriaTag&&<div style={{fontSize:FS.caption,color:TH.accentText,marginTop:2}}>{report.memoriaTag}</div>}
           </div>
           <div style={{textAlign:"center"}}>
-            <div style={{fontSize:28}}>{won?"🏆":drew?"🤝":"📉"}</div>
+            <div style={{fontSize:FS.h}}>{won?"🏆":drew?"🤝":"📉"}</div>
             <div style={{fontSize:FS.caption,color:won?TH.txGreen:drew?TH.txAmber:TH.txRed,fontWeight:700}}>
               {won?"VITTORIA":drew?"PAREGGIO":"SCONFITTA"}
             </div>
@@ -293,7 +293,7 @@ function PressScreen({report,matchResult,onClose}){
           <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PAGELLA</div>
           <div style={{display:"flex",alignItems:"center",gap:14}}>
             <div style={{width:54,height:54,borderRadius:RAD.sm,background:pr.color,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <div style={{fontSize:22,fontWeight:900,color:"#fff",lineHeight:1}}>{pr.value}</div>
+              <div style={{fontSize:FS.title,fontWeight:900,color:"#fff",lineHeight:1}}>{pr.value}</div>
               <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",letterSpacing:0.5}}>VOTO</div>
             </div>
             <div>
@@ -362,7 +362,7 @@ function AIDecisionOverlay({tactic,loading}){
       <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txRed,marginBottom:3}}>🤖 TATTICA AVVERSARIA (AI)</div>
       {loading?<div style={{fontSize:FS.caption,color:TH.muted}}>Analisi in corso…</div>:(
         <>
-          <div style={{fontSize:14,fontWeight:900,color:"#f1f5f9",marginBottom:1}}>{tactic.formation}</div>
+          <div style={{fontSize:FS.body,fontWeight:900,color:"#f1f5f9",marginBottom:1}}>{tactic.formation}</div>
           <div style={{fontSize:FS.caption,color:TH.muted}}>Pressing: {tactic.pressure}% · {tactic.reasoning}</div>
         </>
       )}
@@ -457,7 +457,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
             <div style={{fontSize:FS.caption,color:TH.muted}}>CASA</div>
             {exClub&&exClub.side==="home"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
           </div>
-          <div style={{fontSize:28,color:TH.faint,fontWeight:900,marginTop:15}}>VS</div>
+          <div style={{fontSize:FS.h,color:TH.faint,fontWeight:900,marginTop:15}}>VS</div>
           <div style={{textAlign:"center",flex:"0 0 96px"}}>
             <TeamBadge team={awayTeam} size={52}/>
             <div style={{fontSize:FS.small,fontWeight:700,color:TH.text,marginTop:4}}>{awayTeam?.name||awayTeam?.n}</div>
@@ -485,8 +485,8 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
           <div style={{fontSize:FS.caption,fontWeight:800,color:TH.brandText,letterSpacing:1.5,marginBottom:8}}>🎙️ ANALISI DEL MISTER — COME VINCERLA</div>
           {scoutReport.exploits.map((e,i)=>(
             <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"6px 0",borderBottom:i<scoutReport.exploits.length-1?"1px solid "+TH.divider:"none"}}>
-              <span style={{fontSize:14,flexShrink:0,marginTop:1}}>{e.cat==="gk"?"🧤":"🛡️"}</span>
-              <div style={{fontSize:11.5,color:TH.text,lineHeight:1.5}}><b style={{color:TH.txGreen}}>{e.fam}:</b> {e.tip}</div>
+              <span style={{fontSize:FS.body,flexShrink:0,marginTop:1}}>{e.cat==="gk"?"🧤":"🛡️"}</span>
+              <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5}}><b style={{color:TH.txGreen}}>{e.fam}:</b> {e.tip}</div>
             </div>
           ))}
           {scoutReport.solid&&<div style={{marginTop:7,fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>{scoutReport.solid.tip[0].toUpperCase()+scoutReport.solid.tip.slice(1)}</div>}
@@ -502,7 +502,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
       )}
       <div style={{display:"flex",gap:8}}>
         <Btn onClick={onSkip} v="ghost" style={{flex:0,padding:"7px 12px",fontSize:FS.small}}>Salta →</Btn>
-        <Btn onClick={onContinue} fw style={{padding:"13px",fontSize:14}}>📋 Formazioni →</Btn>
+        <Btn onClick={onContinue} fw style={{padding:"13px",fontSize:FS.body}}>📋 Formazioni →</Btn>
       </div>
       {onSimulate&&(
         <Btn onClick={onSimulate} v="ghost" fw style={{marginTop:8,padding:"10px",fontSize:FS.small}}>⏩ Simula partita</Btn>
@@ -825,7 +825,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
             </div>
           ):(
             <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-              <div style={{fontSize:19,fontWeight:800,color:"#f8fafc",textShadow:"0 0 8px rgba(245,158,11,0.25)"}}>{oppTactic.formation}</div>
+              <div style={{fontSize:FS.title,fontWeight:800,color:"#f8fafc",textShadow:"0 0 8px rgba(245,158,11,0.25)"}}>{oppTactic.formation}</div>
               {_dotMatrix(oppTactic.formation)}
               <div style={{marginLeft:"auto",minWidth:150,flex:1}}>
                 <div style={{fontSize:FS.caption,fontWeight:800,color:ACC,marginBottom:3}}>PRESSING {oppTactic.pressure}%</div>
@@ -841,7 +841,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
         {/* CTA */}
         <div style={{display:"flex",gap:8,flexWrap:"wrap",padding:"12px 8px 0"}}>
           <Btn onClick={onSkip} v="ghost" style={{flex:0,padding:"7px 12px",fontSize:FS.small}}>Salta</Btn>
-          <Btn onClick={onContinue} fw style={{flexBasis:"100%",flex:"1 1 100%",position:"relative",overflow:"hidden",padding:"13px",fontSize:14,fontWeight:800,background:"linear-gradient(135deg,#f59e0b,#d97706)",boxShadow:"0 6px 20px rgba(245,158,11,0.25)"}}>
+          <Btn onClick={onContinue} fw style={{flexBasis:"100%",flex:"1 1 100%",position:"relative",overflow:"hidden",padding:"13px",fontSize:FS.body,fontWeight:800,background:"linear-gradient(135deg,#f59e0b,#d97706)",boxShadow:"0 6px 20px rgba(245,158,11,0.25)"}}>
             <span style={{position:"relative",zIndex:1}}>⚽ Ingresso in campo →</span>
             <span style={{position:"absolute",top:0,left:0,width:"40%",height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent)",animation:"cpmLtShine 0.9s ease-out 1",pointerEvents:"none"}}/>
           </Btn>
@@ -1329,7 +1329,7 @@ class MatchErrorBoundary extends React.Component{
       const msg=this.state.err?.message||String(this.state.err);
       const stack=(this.state.info?.componentStack||"").slice(0,600);
       return<div style={{padding:20,background:"#1e0a0a",color:"#fca5a5",fontFamily:"monospace",fontSize:FS.small,borderRadius:RAD.md,margin:12,border:"1px solid #dc2626"}}>
-        <div style={{fontWeight:900,fontSize:16,marginBottom:8}}>💥 ERRORE LiveMatch</div>
+        <div style={{fontWeight:900,fontSize:FS.bodyLg,marginBottom:8}}>💥 ERRORE LiveMatch</div>
         <div style={{background:"#0f0707",padding:10,borderRadius:RAD.sm,marginBottom:8,wordBreak:"break-all",color:"#f87171"}}>{msg}</div>
         {stack&&<div style={{background:"#0f0707",padding:10,borderRadius:RAD.sm,fontSize:FS.caption,color:"#9ca3af",whiteSpace:"pre-wrap"}}>{stack}</div>}
         <button onClick={()=>this.setState({err:null,info:null})} style={{marginTop:9,padding:"6px 16px",background:"#dc2626",color:"#fff",border:"none",borderRadius:RAD.sm,cursor:"pointer",fontWeight:700}}>↩ Riprova</button>

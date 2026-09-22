@@ -315,9 +315,9 @@ function Bracket({rounds=[],style={}}){
 function Toast({children,tone="info",icon,onClose,style={}}){
   const t=_BADGE_TONE[tone]||_BADGE_TONE.info;
   return(<div className="cpm-rise" style={{display:"flex",alignItems:"center",gap:8,background:TH.surface3,border:`1px solid ${TH[t[2]]}`,borderLeft:`3px solid ${TH[t[1]]}`,borderRadius:RAD.md,padding:"7px 12px",boxShadow:TH.el2,maxWidth:360,...style}}>
-    {icon&&<span style={{fontSize:16}}>{icon}</span>}
+    {icon&&<span style={{fontSize:FS.bodyLg}}>{icon}</span>}
     <span style={{fontSize:FS.small,color:TH.text,fontWeight:FW.medium,flex:1,lineHeight:1.4}}>{children}</span>
-    {onClose&&<button onClick={onClose} className="cpm-press" style={{background:"none",border:"none",color:TH.faint,fontSize:16,cursor:"pointer",lineHeight:1}}>×</button>}
+    {onClose&&<button onClick={onClose} className="cpm-press" style={{background:"none",border:"none",color:TH.faint,fontSize:FS.bodyLg,cursor:"pointer",lineHeight:1}}>×</button>}
   </div>);
 }
 
