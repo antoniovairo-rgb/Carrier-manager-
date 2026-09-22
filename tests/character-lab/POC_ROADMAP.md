@@ -588,3 +588,9 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Fatto verificato:** la FAQ ufficiale chiarisce che software, videogiochi e siti con asset Human Generator sono consentiti con licenza commerciale. Indica come caso non consentito il rendere l'estrazione una funzione esplicita per gli utenti, ad esempio un pulsante di download.
 - **Applicazione alla POC:** una build pubblicata su GitHub Pages non e' esclusa dalla FAQ per il solo fatto di essere un sito; l'app non deve offrire esportazione o download del modello, delle texture o delle sorgenti Human Generator. La licenza completa va conservata insieme all'acquisto.
 - **Decisione:** il vincolo licenza non blocca il provino tecnico o una futura adozione commerciale. Restano da superare i gate qualitativi: kit, LOD, rig/clip, palla, transizioni e mobile.
+
+## Capacita' Human Generator da verificare nel provino isolato
+
+- **Fatti da documentazione ufficiale:** Human Generator offre generazione automatica di haircard, bake texture, esportazione tramite processing, LOD corpo `0/1/2`, decimazione separata dei vestiti, slider faccia/pelle/capelli/barba e rinomina di oggetti, materiali e ossa.
+- **Limite dell'evidenza:** la documentazione non fornisce un conteggio garantito dei triangoli o memoria texture per il nostro umano finale. LOD1 abbassa volto e LOD2 l'intero corpo; questi valori devono essere misurati dopo l'installazione isolata e l'export reale.
+- **Gate del provino:** generare il solo adulto trial, creare haircard, produrre LOD0/1/2 con bake ridotto, applicare il kit in copia, esportare GLB e rieseguire scala, rig, dribbling/palla, transizioni e benchmark mobile.
