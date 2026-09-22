@@ -53,3 +53,7 @@ La [guida LOD ufficiale](https://help.humgen3d.com/lod) dichiara tre output: cir
 ### Human Generator — compatibilità da provare, non presunta
 
 Il Blender incluso nel progetto è **4.5.14**. Il [repository pubblico](https://github.com/OliverJPost/HumGen3D) dichiara Blender 3.2 come minimo e la release V4 documenta correzioni per Blender 4.0, ma non offre una certificazione per Blender 4.5. Le issue pubbliche includono difetti su haircards e salvataggio dei gruppi vertice delle acconciature custom. Di conseguenza la prova trial deve essere isolata e non può essere sostituita da una promessa commerciale: il candidato resta non acquistabile finché non crea, processa ed esporta un asset valido nell'ambiente effettivo.
+
+### Human Generator — pacchetto trial
+
+Gli URL pubblicati nella guida ufficiale rispondono correttamente: add-on **5.059.083 byte**, contenuto trial **269.224.756 byte**, entrambi ZIP e modificati il 29 ottobre 2025. Il download completo vale dunque circa 274 MB: è sostenibile per il test, ma non è stato avviato perché l'installazione richiede autorizzazione separata.
