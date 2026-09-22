@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 01:38 (Europe/Rome; controllo periodico)
+**Ultimo aggiornamento:** 23 settembre 2026, 01:48 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -663,6 +663,24 @@ dito non e' provato. Chromium headless, non il telefono.
 - **Lavoro successivo e criterio di chiusura:** risolvere i difetti riprodotti nel vision test, ripetere il percorso completo e validare i quattro gate (animazione, palla, transizioni, mobile) prima della build sul link ufficiale.
 
 ---
+## Avanzamento 23 settembre 2026, 01:48 — DECISIONI DEL PO (wizard)
+
+| tema | decisione del PO | cosa faccio |
+| --- | --- | --- |
+| collaudo telefono | **Preview Netlify del solo ramo POC** (link pubblico separato, `main` e Pages intatti) | build del POC → deploy di anteprima → protocollo di prova per il PO |
+| 40 ritratti | «**li ha creati ChatGPT**» | li collego. Diritti d'uso: dipendono dai termini OpenAI in vigore quando sono stati generati — **non posso confermarli da qui**, a verbale prima di un rilascio store |
+| chiave dei volti | **ID veri** per compagni, rivale, mister, procuratore | id stabili nella generazione + migrazione additiva; guardiani `save-compat` e `career-critical` |
+| taglia eroe negli highlight CGTrader | **0,18** come la regia | misura con il testimone attori prima/dopo |
+| materiali in BLEND | «**valuta tu la soluzione piu' scalabile**» | correzione alla sorgente negli script di esportazione (`tools/build_cgtrader_*.py`: ritaglio invece di trasparenza) + controllo che boccia GLB con materiali BLEND + la conversione al caricamento resta come rete. Blender non e' nel container: la riesportazione la lancia il PO |
+| portiere nella presa | **LOD1** (+~8.000 triangoli, bersaglio ~69.000) | promozione solo per il portiere della presa, rimisura triangoli |
+| tabellino 2-1 contro «Gol 2—2» | **correggere sul ramo POC** (main intatto) | misura della causa, rimedio con rosso appaiato |
+| «Doppio passo» che diventa calcio | **e' voluto** (dribbling e poi tiro) | nessuna modifica |
+
+Senza bisogno di decisione: HUD di collaudo «fps · corpi pieni» nascosto al giocatore, doppia pillola «GOL!», verifica squadre
+invertite al 63'.
+
+---
+
 ## Obiettivo vincolante
 
 Creare un solo sistema di personaggi adulti credibili, stilizzati oppure semi-realistici, per partita, intro, highlight e ritratti profilo. Il modello deve essere costruito e corretto nei sorgenti Blender/GLB, non tramite geometrie correttive a runtime.
