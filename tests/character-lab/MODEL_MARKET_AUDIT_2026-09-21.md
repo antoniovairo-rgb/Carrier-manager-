@@ -80,3 +80,7 @@ Il contenuto trial non si limita alle immagini: include `hair/head/Short Side Pa
 ### Hisenberg `Soccer Player Male - Rigged` — confronto 22 settembre 2026
 
 La nuova scheda dello stesso autore del modello acquistato dichiara modello maschile adulto riggato in FBX/GLB/OBJ/BLEND, `11.816` poligoni e `11.457` vertici, texture PBR da 19,1 MB e licenza Royalty Free senza AI a `$14,27`. La preview mostra kit a righe blu/rosse; non dichiara tagli, colori capelli, barba, morph, LOD o compatibilità con le clip. È un possibile NPC a minore dettaglio, ma **non è un upgrade da acquistare**: il LOD1 derivato dal CGTrader attivo è già misurato a 12.243 triangoli con rig validato e texture 1K. Senza file da audit, un passaggio di dribbling e una review visiva, introdurrebbe un secondo stile e un secondo rig senza risolvere le varianti richieste.
+
+### `Male Soccer Player Character Fully Rigged UE project files` — rifiutato alla preview
+
+La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig facciale e licenza Royalty Free a `$40` in offerta. Tuttavia non dichiara triangoli, LOD, texture o varianti. La preview pubblica mostra un volto troppo semplificato rispetto al realismo adulto richiesto e una divisa con simboli e branding chiaramente riconoscibili; non è una base neutra da rivestire. **Rifiutato senza acquisto**: prezzo elevato, costo mobile ignoto, estetica non approvabile e nessuna prova della compatibilità delle clip.
