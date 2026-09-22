@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 00:58 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 01:04 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -615,6 +615,35 @@ foto delle schermate a 412x915.
 2. **Chiave dell'identita'**: assegnazione persistente per nome visibile + registro salvato (piano sopra), oppure introdurre id
    veri per compagni/rivale/mister/procuratore (piu' pulito, tocca generazione rosa e migrazione in piu' punti).
 3. **Ordine**: le figurine sono lavoro 2D separato dai gate 3D; il gate che chiude la missione resta il telefono.
+
+---
+
+## Avanzamento 23 settembre 2026, 01:04 — VISION TEST DA GIOCATORE (partita reale, review CGTrader)
+
+**Metodo:** sonda nuova `vision-player.mjs` — provino reale dall'inizio al fischio finale, niente situazioni forzate, teatro di
+presentazione acceso (`__CPM_PRESENT=1`, `__CPM_REALWAIT`), 412x915. Tre highlight, 25 schermate in `vision-player/`
+(scelta, esito a 0,8/2/3,5 s, dopo «Continua», gioco fluido ogni ~20 s). **Zero errori di pagina.**
+Limite dichiarato: la scelta e' passata dall'hook del gioco (`__CPM_RESOLVE`), non da un tocco sul pulsante — il tocco del
+dito non e' provato. Chromium headless, non il telefono.
+
+**Cosa vede un giocatore — funziona:**
+- Gioco fluido = lavagna tattica 2D leggibile (numeri, cronaca, statistiche); il 3D entra solo negli highlight.
+- Tiro (hl1 «Esterno a giro»): eroe rosa con la palla al piede, calcio, traiettoria verso la porta, GOL e 1-1 sul maxischermo.
+  Kit uniformi dopo la correzione BLEND→MASK, nessuna T-pose, nessun corpo gigante o sparito nel quadro.
+- Passaggio/tiro (hl2): palla al piede nel fotogramma del calcio.
+
+**Cosa disturba un giocatore — difetti visti, cause NON verificate salvo dove detto:**
+1. **Figurina vuota:** nella finestra dopo il gol («✊ TU») il ritratto e' un rettangolo bianco (08-hl1-dopo-continua.png).
+   Causa gia' misurata: `window.__CPM_VOLTI` mai popolato (voce 00:58).
+2. **Tabellino incoerente:** risultato **2-1 VITTORIA**, ma nel «Tabellino della gara» la riga Gol riporta **2 — 2**
+   (24-fischio-finale.png). Il tabellino eroe dice anche 16 tiri. Area motore/UI di `main`, fuori dal POC: da misurare.
+3. **Scelta e gesto non combaciano:** scelto «Doppio passo esplosivo», l'eroe esegue un calcio (`kick`), esito «Tiro centrale —
+   parata facile» (15/17). Da capire se e' la catena dribbling→tiro voluta o una clip sbagliata.
+4. **Eroe piccolo nei gesti:** taglia 0,06-0,11 (misura del testimone), gia' a verbale.
+5. **HUD di collaudo visibile:** «11 fps · corpi pieni» sotto il tabellone: rumore per un giocatore, e «corpi pieni» e' falso
+   (ne disegna 5).
+6. Al gol due pillole «GOL!» sovrapposte (06-hl1-esito-3_5s.png); al 63' la testata della lavagna mostra le squadre invertite
+   («Polisportiva 1-2 Selezione», 21-gioco.png): da verificare se e' il cambio di campo voluto.
 
 ---
 

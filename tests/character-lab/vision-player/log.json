@@ -1,0 +1,392 @@
+{
+ "log": [
+  {
+   "f": "01-avvio.png",
+   "t": 0,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.037,
+    "inQuadro": false,
+    "lod": "lod0"
+   },
+   "corpi": 23,
+   "hud": null
+  },
+  {
+   "f": "02-gioco.png",
+   "t": 21,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.037,
+    "inQuadro": false,
+    "lod": "lod0"
+   },
+   "corpi": 23,
+   "hud": null
+  },
+  {
+   "f": "03-hl1-scelta.png",
+   "t": 37,
+   "fase": "hl_choose",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.07,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "11 fps · corpi pieni"
+  },
+  {
+   "f": "04-hl1-esito-0_8s.png",
+   "t": 38,
+   "fase": "hl_result",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": "kick",
+    "taglia": 0.083,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "11 fps · corpi pieni",
+   "scelta": {
+    "via": "hook",
+    "azione": null
+   }
+  },
+  {
+   "f": "05-hl1-esito-2s.png",
+   "t": 40,
+   "fase": "hl_result",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.102,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "10 fps · corpi pieni"
+  },
+  {
+   "f": "06-hl1-esito-3_5s.png",
+   "t": 42,
+   "fase": "hl_result",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.063,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "10 fps · corpi pieni"
+  },
+  {
+   "f": "07-hl1-dopo-continua.png",
+   "t": 45,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.057,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "08-gioco.png",
+   "t": 65,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.057,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "09-hl2-scelta.png",
+   "t": 92,
+   "fase": "hl_choose",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.071,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "12 fps · corpi pieni"
+  },
+  {
+   "f": "10-hl2-esito-0_8s.png",
+   "t": 93,
+   "fase": "hl_result",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": "kick",
+    "taglia": 0.086,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "11 fps · corpi pieni",
+   "scelta": {
+    "via": "hook",
+    "azione": null
+   }
+  },
+  {
+   "f": "11-hl2-esito-2s.png",
+   "t": 94,
+   "fase": "hl_result",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.09,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "11 fps · corpi pieni"
+  },
+  {
+   "f": "12-hl2-esito-3_5s.png",
+   "t": 96,
+   "fase": "hl_result",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.064,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "12 fps · corpi pieni"
+  },
+  {
+   "f": "13-hl2-dopo-continua.png",
+   "t": 99,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.061,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "14-hl3-scelta.png",
+   "t": 115,
+   "fase": "hl_choose",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.071,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "11 fps · corpi pieni"
+  },
+  {
+   "f": "15-hl3-esito-0_8s.png",
+   "t": 116,
+   "fase": "hl_result",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": "kick",
+    "taglia": 0.099,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "10 fps · corpi pieni",
+   "scelta": {
+    "via": "hook",
+    "azione": null
+   }
+  },
+  {
+   "f": "16-hl3-esito-2s.png",
+   "t": 118,
+   "fase": "hl_result",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.106,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "11 fps · corpi pieni"
+  },
+  {
+   "f": "17-hl3-esito-3_5s.png",
+   "t": 119,
+   "fase": "hl_result",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.067,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": "10 fps · corpi pieni"
+  },
+  {
+   "f": "18-hl3-dopo-continua.png",
+   "t": 123,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.063,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "19-gioco.png",
+   "t": 143,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.063,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "20-gioco.png",
+   "t": 163,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.063,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "21-gioco.png",
+   "t": 184,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.063,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "22-gioco.png",
+   "t": 204,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.063,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "23-gioco.png",
+   "t": 225,
+   "fase": "playing",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.063,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "24-fischio-finale.png",
+   "t": 242,
+   "fase": "ended",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.063,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  },
+  {
+   "f": "25-fine-sonda.png",
+   "t": 242,
+   "fase": "ended",
+   "minuto": null,
+   "situazione": null,
+   "eroe": {
+    "gesto": null,
+    "taglia": 0.063,
+    "inQuadro": true,
+    "lod": "lod0"
+   },
+   "corpi": 5,
+   "hud": null
+  }
+ ],
+ "errori": []
+}
