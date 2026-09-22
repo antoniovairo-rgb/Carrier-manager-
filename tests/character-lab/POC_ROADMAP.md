@@ -418,3 +418,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatto verificato:** il contenuto mostra anteprime di numerosi tagli maschili, barbe e baffi, ma sblocca come geometria effettiva un solo taglio (`Short Side Part`) e un solo outfit maschile. Non e presente un kit da calcio pronto; la pose `football_kick` e solo una preview di posa.
 - **Valutazione:** la trial e sufficiente per verificare compatibilita Blender, rig, export, haircards e qualita di un capello, ma non puo dimostrare una libreria di varianti utilizzabile nel gioco.
 - **Prossimo gate:** installazione isolata della trial nel Blender locale, creazione del solo maschio disponibile, export e audit tecnico. Nessuna pubblicazione, acquisto o modifica al ramo `main` e prevista.
+
+## 2026-09-22 — preflight statico dell'add-on Human Generator
+
+- **Fatto verificato:** il codice della trial dichiara compatibilita Blender `3.2+`, include l'export FBX e glTF, e fornisce LOD corpo 0/1/2. Il LOD del corpo e irreversibile; il LOD dei vestiti usa decimazione separata.
+- **Rischio da misurare:** la dichiarazione minima non certifica Blender `4.5.14`, il rig esportato, i pesi, la qualita delle haircards o la resa con la clip di dribbling. Il preflight non sostituisce l'esecuzione isolata.
+- **Criterio di ingresso al test:** prima creare il solo campione trial, poi produrre un GLB/FBX LOD0 e LOD2, controllare triangoli, ossa, materiali, capelli e clip. Solo dopo potra essere confrontato con CGTrader.
