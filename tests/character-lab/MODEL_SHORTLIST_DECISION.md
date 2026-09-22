@@ -42,3 +42,9 @@ Un candidato può sostituire il CGTrader soltanto dopo aver provato sul posto: v
 - **Fatti verificati:** la trial e' personale/portfolio e usa texture 4K con watermark: puo' servire solo al provino tecnico, non al runtime Korward. La licenza commerciale ufficiale costa `$128` una tantum per utente, include tutto il contenuto e dichiara esplicitamente l'uso in software e videogiochi, a condizione che gli utenti finali non possano estrarre e riutilizzare gli asset.
 - **Compatibilita':** la pagina ufficiale Superhive dichiara Blender `3.6–5.2`; il Blender locale 4.5.14 rientra quindi nella versione dichiarata.
 - **Decisione:** nessun acquisto ora. Se il provino isolato supera i gate tecnici e visivi, Human Generator diventa una proposta di acquisto concreta: costa meno di Character Creator 5 (`$299`) e sarebbe legalmente utilizzabile nel gioco con la licenza commerciale. La trial continua a essere solo una prova.
+
+## Chiarimento licenza Human Generator per GitHub Pages
+
+- **Fatto verificato:** la FAQ ufficiale chiarisce che software, videogiochi e siti con asset Human Generator sono consentiti con licenza commerciale. Indica come caso non consentito il rendere l'estrazione una funzione esplicita per gli utenti, ad esempio un pulsante di download.
+- **Applicazione alla POC:** una build pubblicata su GitHub Pages non e' esclusa dalla FAQ per il solo fatto di essere un sito; l'app non deve offrire esportazione o download del modello, delle texture o delle sorgenti Human Generator. La licenza completa va conservata insieme all'acquisto.
+- **Decisione:** il vincolo licenza non blocca il provino tecnico o una futura adozione commerciale. Restano da superare i gate qualitativi: kit, LOD, rig/clip, palla, transizioni e mobile.
