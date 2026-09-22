@@ -245,9 +245,11 @@ function AvatarSVG({id=0, size=60, border=false, style={}, seed, avStyle, avOpts
     : { style:'avataaars', skinColor:[String(p.skin).replace('#','')], hairColor:[String(p.hair).replace('#','')], bald: p.style==='bald' };
   const _html = _dbAv(_seed, Math.round(size), _opts);
   const wrap = {width:size,height:size,borderRadius:"50%",overflow:"hidden",display:"block",flexShrink:0,background:"#e8eef7",border:border?"2px solid "+TH.primary:"none",...style};
-  if(_html) return <div style={wrap} dangerouslySetInnerHTML={{__html:_html}}/>;
+  /* [7.961] un VISO si deve poter contare da una sonda: la 7.961 toglie le facce dalla sala stampa e
+     senza un attributo il guardiano dovrebbe indovinarle dal bordo tondo. Additivo, zero effetto di resa. */
+  if(_html) return <div data-cpm-viso="1" style={wrap} dangerouslySetInnerHTML={{__html:_html}}/>;
   // Fallback (bundle DiceBear non caricato): disco con iniziale — mai in produzione (script locale bloccante).
-  return <div style={{...wrap,display:"flex",alignItems:"center",justifyContent:"center",color:TH.primary,fontWeight:800,fontSize:Math.round(size*0.42)}}>{(seed!=null?String(seed):(p&&p.label)||"E").slice(0,1).toUpperCase()}</div>;
+  return <div data-cpm-viso="1" style={{...wrap,display:"flex",alignItems:"center",justifyContent:"center",color:TH.primary,fontWeight:800,fontSize:Math.round(size*0.42)}}>{(seed!=null?String(seed):(p&&p.label)||"E").slice(0,1).toUpperCase()}</div>;
 }
 
 // NPC profiles: mister, giornalisti

@@ -512,9 +512,11 @@ function AvatarSVG({id=0, size=60, border=false, style={}, seed, avStyle, avOpts
     : { style:'avataaars', skinColor:[String(p.skin).replace('#','')], hairColor:[String(p.hair).replace('#','')], bald: p.style==='bald' };
   const _html = _dbAv(_seed, Math.round(size), _opts);
   const wrap = {width:size,height:size,borderRadius:"50%",overflow:"hidden",display:"block",flexShrink:0,background:"#e8eef7",border:border?"2px solid "+TH.primary:"none",...style};
-  if(_html) return <div style={wrap} dangerouslySetInnerHTML={{__html:_html}}/>;
+  /* [7.961] un VISO si deve poter contare da una sonda: la 7.961 toglie le facce dalla sala stampa e
+     senza un attributo il guardiano dovrebbe indovinarle dal bordo tondo. Additivo, zero effetto di resa. */
+  if(_html) return <div data-cpm-viso="1" style={wrap} dangerouslySetInnerHTML={{__html:_html}}/>;
   // Fallback (bundle DiceBear non caricato): disco con iniziale — mai in produzione (script locale bloccante).
-  return <div style={{...wrap,display:"flex",alignItems:"center",justifyContent:"center",color:TH.primary,fontWeight:800,fontSize:Math.round(size*0.42)}}>{(seed!=null?String(seed):(p&&p.label)||"E").slice(0,1).toUpperCase()}</div>;
+  return <div data-cpm-viso="1" style={{...wrap,display:"flex",alignItems:"center",justifyContent:"center",color:TH.primary,fontWeight:800,fontSize:Math.round(size*0.42)}}>{(seed!=null?String(seed):(p&&p.label)||"E").slice(0,1).toUpperCase()}</div>;
 }
 
 // NPC profiles: mister, giornalisti
@@ -4984,7 +4986,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.960.0"; // [7.960.0 - A14: LA COPPIA CHE CHIUDE IL DETERMINISMO ESISTE, ED E MISURATA - MA COSTA L OROLOGIO DELLA PARTITA, QUINDI E REVOCATA E DESCRITTA] Il 7.959 aveva nominato la causa: il motore e seedato, riceve lo stesso numero di passi, e consuma sorteggi diversi solo perche un suo ramo si apre quando arriva la scena - e la scena arriva a orologio da polso. Questa notte ho provato i tre pezzi del rimedio, uno alla volta e ognuno con la sua misura. PRIMO PASSO (il ciclo dei sotto-tick si ferma insieme alla fisica, cosi ogni minuto riceve i suoi 22 passi): prima-divergenza sposta il motore dal 26 al 31 minuto e la cronaca dal 27 al 34, e i passi di fisica diventano identici per tutta la partita. TERZO PASSO (la richiesta di scena non parte piu da un effetto di React ma si consuma all inizio del battito del metronomo): DA SOLO non vale niente, 26/27/27 per cento, cioe il rosso di partenza. LA COPPIA, invece, chiude: prima-divergenza dice CRONACA IDENTICA riga per riga, nessun minuto con un sorteggio di differenza, il motore diverge solo al 90 quando i tick residui girano a vuoto - e match-sequence porta 2x contro 2x a 100 per cento, il primo confronto verde da quando il guardiano esiste. REVOCATA LO STESSO, e il perche e il metro: fermando il contatore si ferma anche il battito del minuto, quindi l orologio della partita durante ogni scena, e il fischio finale nel guardiano scende da 4 giri su 4 a 1 su 4 dentro lo stesso tetto di tempo. Un metro spedito non si abbassa per far passare una modifica. SECONDA VOLTA PER LE POSIZIONI SEEDATE, rigiudicate sulla misura pulita (senza il confondente dei passi mancanti): posizioni ancora divergenti al 27 minuto, identico al giro senza seedatura, cronaca da 34 a 32. Revocate senza appello: lo scrittore che sposta i giocatori al 27 e lo specchio del motore, non i cinque Math.random di questo file. RESTA APERTO, con il disegno scritto in A14: i due obiettivi (ogni minuto con i suoi 22 passi, e l orologio che non si ferma) si contraddicono finche la simulazione si ferma durante la scena. Il taglio vero e far girare il mondo anche mentre la scena e in onda, presentandola da un fotogramma - la simulazione e la source of truth, anche quando l interfaccia guarda altrove.
+const GAME_VERSION="7.961.0"; // [7.961.0 - LA SALA STAMPA E DISEGNATA: ZERO CANVAS, ZERO FACCE] Collaudo PO, due rilievi sulla stessa schermata: «Questa e terribile, togli il 3d. Fai un disegno carino 2D anche senza visi» e «Cosa c e da ricordare?? Togli i visi, lascia solo una scenografia 2D molto carina». La 7.948 aveva tolto i corpi CH38 ma aveva lasciato in piedi proprio le due cose indicate: la scenografia era ANCORA la mixed zone 3D (un canvas WebGL con muro scuro, marchio fuori scala e palloni da mezzo metro) e sopra ci stavano due visi della libreria SVG. Ora la sala stampa e disegnata in CSS: pannello step-and-repeat coi due colori del club e il marchio del gioco alla taglia giusta (tre piastrelle per riga a 412 px, le cinque della prima stesura si tagliavano sul bordo - misurato sullo scatto), riga d appoggio, moquette col colore del club, due microfoni in primo piano con l asta che corre sotto il modale. Nessun volto, nessun corpo, nessun WebGL. Tema unico chiaro: la scena non e piu l unica isola scura del gioco. MISURATO, sonda intervista-2d rifatta sul contratto nuovo: canvas WebGL nella pagina 1 -> 0, visi nella scena 2 -> 0, corpi CH38 0 -> 0, errori di pagina 0. Rosso appaiato __CPM_NO963: la scenografia 3D torna in scena, difetto riprodotto. Aggiunto l attributo data-cpm-viso su AvatarSVG: un viso si deve poter CONTARE da una sonda invece di indovinarlo dal bordo tondo. Additivo, zero effetto di resa. NON VERIFICATO: lo scatto e Chromium a 412x915, non l Android del PO.
 // [nota 7.761.0] [7.761.0 — FASE 10, OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO, E IL METRO DELLE RIGHE FONDATE SMETTE DI PUNIRE I TIRI]. Il censimento fondate-558 contava «smentite» righe che dichiaravano un punto e trovavano il pallone alla linea di porta (94,50) nella stessa finestra: non era la riga a mentire, era il tiro dell'eroe (parato o fuori) che il giudice non poteva vedere perche' il libro mastro registrava solo i gol. Ora handleAction scrive cpmEv(«esito», {min,key,ok,at}) per ogni azione risolta, e il metro (7.760: gol nella finestra → conto a parte; 7.761: anche gli esiti goal/miss/save/chance/assist) mette quelle righe in un conto separato, ne' fondate ne' smentite. Il gioco non cambia: cambia cio' che il libro mastro sa, e quindi cio' che i guardiani potranno chiedere. MISURA: fondate-558 sui semi 7300/7337 prima e dopo (vedi verbale).
 // [nota 7.759.0] [7.759.0 — TROVATO DAL GUARDIANO: il gol subito nella scena difensiva non entrava nel libro mastro]. La banda «tabellone» (7.756), fatta girare su QUATTRO partite per la stabilita', ha bocciato: gol raccontati 2-4 contro punteggio finale 2-5. Censiti i cinque scrittori del punteggio: gol dell'eroe da gioco aperto (1153), gol ambientale nostro e loro (4464/4465), gol dell'eroe su palla ferma (6638) hanno tutti il loro cpmEv(«goal»); il gol AVVERSARIO da scena difensiva (esito goal_against di handleAction) incrementava il punteggio senza scriverlo nel libro mastro — quindi il feed del tabellone (7.721), la banda «tabellone» e ogni guardiano che conta i gol dagli eventi lo perdevano. Ora scrive l'evento con src «scena-difensiva». Il punteggio non cambia (il microsim e le scene restano l'autorita'): cambia solo che ogni gol e' registrato. MISURA: guardiano a 4 partite, banda tabellone da rossa a verde (vedi verbale).
 // [nota 7.758.0] [7.758.0 — COLLAUDO PO 03/09 18:01 «pannello nero dietro la porta»: il cartellone centrale dietro la porta (z=0) era un rettangolo NERO senza scritta durante la scena ASSIST/DOMINIO, Coppa, GLB ON]. DIAGNOSI dal diario 7.535, che aveva gia' fotografato la firma: «quando l'allocazione non riesce, la mesh resta ma la sua texture e' vuota — e una texture vuota su materiale opaco e' NERA»; in headless non si riproduce (nessuna texture nera su 99 piani texturizzati), sul telefono con folla GLB, kit, volti e arredo la memoria GPU finisce e il primo cartellone che non si alloca e' quello che il PO guarda. RIMEDIO: il budget scende dove costa di piu' e non si vede — cartelloni (1024x160, uno per brand e stile) e drappi (1024x110) si disegnano come prima e si consegnano alla GPU a meta' lato (512x80 / 512x55), senza mipmap e con anisotropia 4. MISURATO (hook __CPM_DECOR, provino GLB ON, ON vs rosso __CPM_NO758): arredo 25,5 MB contro 30,7 MB (−17%), 11 cartelloni da 1024x160 a 512x80, stessi 167 piani e 52 texture uniche, zero texture nere in entrambi. Restano 8 texture 1024x512 (16 MB) e 2 LED 2048x128 (2 MB), censite per la prossima tacca. NON VERIFICATO sul telefono: la scomparsa del pannello nero va confermata dal PO nella stessa scena (Coppa, GLB ON). 7.757 «il piano-gol nasce dalla mente» PROVATA E REVOCATA (fondate appaiato peggiore: 75,7/71,9 contro 81,3/82,4).
@@ -34001,23 +34003,65 @@ function sponsorDi947(club){try{const k=String((club&&(club.id||club.n))||"x");
   let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;
   return _SPONSOR947[Math.abs(h)%_SPONSOR947.length];}catch(_e){return _SPONSOR947[0];}}
 function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
-  /* [7.948 — sola SOVRAPPOSIZIONE, per la regola di coerenza in StrisciaScena948.]
-     La v2 disegnava un muro stampa in CSS. Era buona come idea (il PO aveva chiesto logo del gioco,
-     stemma, nome per intero e sponsor) ma era un TERZO linguaggio accanto al teatro del gala' e allo
-     stadio della presentazione. Ora quel contenuto vive nella striscia comune, la scenografia e' la
-     mixed zone 3D che c'era gia' (senza CH38) e qui restano solo le due persone. */
+  /* [7.961 — LA SALA STAMPA E' DISEGNATA, E NON C'E' PIU' NESSUNA FACCIA. Rosso __CPM_NO963]
+     COLLAUDO PO, due rilievi sulla stessa schermata: «Questa e' terribile, togli il 3d. Fai un disegno
+     carino 2D anche senza visi» e «Cosa c'e' da ricordare?? Togli i visi, lascia solo una scenografia 2D
+     molto carina». La 7.948 aveva tolto i corpi CH38 ma aveva lasciato in piedi le due cose che il PO
+     sta indicando: la scenografia era ANCORA la mixed zone 3D (un canvas WebGL: muro scuro, marchio
+     gigante fuori scala, palloni da mezzo metro) e sopra ci stavano due VISI della libreria SVG.
+     Qui la sala stampa e' disegnata: pannello step-and-repeat coi due colori del club e il marchio del
+     gioco alla taglia giusta, tenda e moquette, due microfoni in primo piano — nessun volto, nessun
+     corpo, nessun WebGL. Il tono del risultato entra come filo di luce, non come colore del muro.
+     Tema UNICO chiaro, come tutto il resto del gioco: la scena non e' piu' l'unica isola scura. */
+  const c1=(club&&club.c)||"#8e1f33", c2=(club&&club.c2)||"#f0b33a";
+  const nome=((club&&(club.n||club.name))||"Il club").toUpperCase();
   const tono = ctx==="win"?"#16a34a":ctx==="loss"?"#b91c1c":"#64748b";
+  /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri */
+  /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri.
+     TRE per riga a 412 px: con cinque si tagliavano sul bordo (misurato sullo scatto della v1). */
+  const _rid=React.useMemo(()=>{const a=[];for(let r=0;r<6;r++){const n=(r%2)?2:3;const q=[];
+    for(let k=0;k<n;k++)q.push(((r+k)%2)===0);a.push(q);}return a;},[]);
   return(
-    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
-      <div style={{position:"absolute",left:0,right:0,top:"22%",display:"flex",alignItems:"flex-end",
-        justifyContent:"center",gap:26}}>
-        <div style={{textAlign:"center",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.55))"}}>
-          {(()=>{try{return <AvatarSVG seed={jName||"cronista"} size={56} avStyle="micah"/>;}catch(_e){return null;}})()}
-          <div style={{width:4,height:20,margin:"2px auto 0",borderRadius:2,background:"#cbd5e1"}}/>
-        </div>
-        <div style={{textAlign:"center",filter:"drop-shadow(0 6px 16px rgba(0,0,0,0.6))"}}>
-          {(()=>{try{return <AvatarSVG id={avatarId} size={84} border/>;}catch(_e){return null;}})()}
-        </div>
+    <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",
+      background:"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
+      {/* il pannello stampa: sta nella meta' alta, l'unica che il modale lascia vedere */}
+      <div style={{position:"absolute",left:"4%",right:"4%",top:"3%",height:"41%",borderRadius:5,
+        background:"linear-gradient(180deg,#ffffff,#f1f4f9)",
+        border:"1px solid rgba(15,23,42,0.12)",boxShadow:"0 12px 30px rgba(15,23,42,0.20)",overflow:"hidden"}}>
+        {_rid.map((riga,r)=>(
+          <div key={r} style={{display:"flex",height:(100/6)+"%",alignItems:"center",
+            justifyContent:"space-evenly",gap:12,overflow:"hidden",padding:"0 8px",opacity:0.9}}>
+            {riga.map((marchio,k)=>(
+              <span key={k} style={{display:"inline-flex",alignItems:"center",gap:2,whiteSpace:"nowrap",
+                flex:"0 0 auto",fontSize:11,fontWeight:900,letterSpacing:.2,
+                color:marchio?"#7a1526":c1,opacity:marchio?0.92:0.7}}>
+                {marchio
+                  ?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
+                      border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
+                    <span style={{fontWeight:700,fontStyle:"italic",color:c2,marginLeft:2}}>Elite</span></>)
+                  :(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis"}}>{nome}</span>)}
+              </span>))}
+          </div>))}
+        {/* il filo di luce del risultato: sul bordo del pannello, mai addosso al testo */}
+        <span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.85}}/>
+      </div>
+      {/* il pavimento: la riga d'appoggio del pannello e la moquette col colore del club */}
+      <span style={{position:"absolute",left:0,right:0,top:"46%",height:1,background:"rgba(15,23,42,0.18)"}}/>
+      <div style={{position:"absolute",left:0,right:0,top:"46%",height:"54%",
+        background:"linear-gradient(180deg,rgba(255,255,255,0.62),"+c1+"1c 26%,"+c1+"3a 72%,"+c1+"55 100%)"}}/>
+      {/* due microfoni in primo piano: e' cosi' che si riconosce una sala stampa, senza disegnare nessuno */}
+      <div style={{position:"absolute",left:0,right:0,top:"44%",display:"flex",alignItems:"flex-start",
+        justifyContent:"center",gap:44,filter:"drop-shadow(0 8px 12px rgba(15,23,42,0.26))"}}>
+        {[0,1].map(m=>(
+          <div key={m} style={{display:"flex",flexDirection:"column",alignItems:"center",
+            transform:m?"rotate(4deg)":"rotate(-4deg)"}}>
+            <span style={{width:m?22:19,height:m?30:26,borderRadius:"10px 10px 6px 6px",
+              background:"linear-gradient(180deg,#aab5c5,#67748a)",
+              boxShadow:"inset 0 -4px 7px rgba(15,23,42,0.38)"}}/>
+            <span style={{width:m?25:22,height:13,marginTop:-1,borderRadius:3,
+              background:m?c1:"#7a1526"}}/>
+            <span style={{width:4,height:m?330:300,background:"linear-gradient(180deg,#929eaf,#59657a 55%,#4a5667)"}}/>{/* [7.961] l'asta corre sotto il modale: tagliata a meta' aria sembrava rotta */}
+          </div>))}
       </div>
       <StrisciaScena948 club={club} tono={tono}/>
     </div>);
@@ -44997,7 +45041,7 @@ const getThisWeekMatchday=()=>{
        via PORTALE su `document.body`: `fixed` torna relativo al viewport e lo z-index compete alla radice. */
     return ReactDOM.createPortal((
         <div style={_iv3d?{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}:{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
-          {_iv3d&&<InterviewStage3D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={7} jName={(interviewModal.paper&&interviewModal.paper.name)||null} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO947)}/>}{_iv3d&&<InterviewScena2D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
+          {_iv3d&&(typeof window!=='undefined'&&window.__CPM_NO963)&&<InterviewStage3D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={7} jName={(interviewModal.paper&&interviewModal.paper.name)||null} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO947)}/>}/* [7.961 — LA SCENOGRAFIA DELL'INTERVISTA NON E' PIU' UN CANVAS. Rosso __CPM_NO963 rimette la mixed zone 3D] */{_iv3d&&<InterviewScena2D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
           <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:"58vh",overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)"}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1}}>
             {/* Header */}
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>

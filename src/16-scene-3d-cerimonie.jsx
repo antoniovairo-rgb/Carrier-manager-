@@ -230,23 +230,65 @@ function sponsorDi947(club){try{const k=String((club&&(club.id||club.n))||"x");
   let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;
   return _SPONSOR947[Math.abs(h)%_SPONSOR947.length];}catch(_e){return _SPONSOR947[0];}}
 function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
-  /* [7.948 — sola SOVRAPPOSIZIONE, per la regola di coerenza in StrisciaScena948.]
-     La v2 disegnava un muro stampa in CSS. Era buona come idea (il PO aveva chiesto logo del gioco,
-     stemma, nome per intero e sponsor) ma era un TERZO linguaggio accanto al teatro del gala' e allo
-     stadio della presentazione. Ora quel contenuto vive nella striscia comune, la scenografia e' la
-     mixed zone 3D che c'era gia' (senza CH38) e qui restano solo le due persone. */
+  /* [7.961 — LA SALA STAMPA E' DISEGNATA, E NON C'E' PIU' NESSUNA FACCIA. Rosso __CPM_NO963]
+     COLLAUDO PO, due rilievi sulla stessa schermata: «Questa e' terribile, togli il 3d. Fai un disegno
+     carino 2D anche senza visi» e «Cosa c'e' da ricordare?? Togli i visi, lascia solo una scenografia 2D
+     molto carina». La 7.948 aveva tolto i corpi CH38 ma aveva lasciato in piedi le due cose che il PO
+     sta indicando: la scenografia era ANCORA la mixed zone 3D (un canvas WebGL: muro scuro, marchio
+     gigante fuori scala, palloni da mezzo metro) e sopra ci stavano due VISI della libreria SVG.
+     Qui la sala stampa e' disegnata: pannello step-and-repeat coi due colori del club e il marchio del
+     gioco alla taglia giusta, tenda e moquette, due microfoni in primo piano — nessun volto, nessun
+     corpo, nessun WebGL. Il tono del risultato entra come filo di luce, non come colore del muro.
+     Tema UNICO chiaro, come tutto il resto del gioco: la scena non e' piu' l'unica isola scura. */
+  const c1=(club&&club.c)||"#8e1f33", c2=(club&&club.c2)||"#f0b33a";
+  const nome=((club&&(club.n||club.name))||"Il club").toUpperCase();
   const tono = ctx==="win"?"#16a34a":ctx==="loss"?"#b91c1c":"#64748b";
+  /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri */
+  /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri.
+     TRE per riga a 412 px: con cinque si tagliavano sul bordo (misurato sullo scatto della v1). */
+  const _rid=React.useMemo(()=>{const a=[];for(let r=0;r<6;r++){const n=(r%2)?2:3;const q=[];
+    for(let k=0;k<n;k++)q.push(((r+k)%2)===0);a.push(q);}return a;},[]);
   return(
-    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
-      <div style={{position:"absolute",left:0,right:0,top:"22%",display:"flex",alignItems:"flex-end",
-        justifyContent:"center",gap:26}}>
-        <div style={{textAlign:"center",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.55))"}}>
-          {(()=>{try{return <AvatarSVG seed={jName||"cronista"} size={56} avStyle="micah"/>;}catch(_e){return null;}})()}
-          <div style={{width:4,height:20,margin:"2px auto 0",borderRadius:2,background:"#cbd5e1"}}/>
-        </div>
-        <div style={{textAlign:"center",filter:"drop-shadow(0 6px 16px rgba(0,0,0,0.6))"}}>
-          {(()=>{try{return <AvatarSVG id={avatarId} size={84} border/>;}catch(_e){return null;}})()}
-        </div>
+    <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",
+      background:"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
+      {/* il pannello stampa: sta nella meta' alta, l'unica che il modale lascia vedere */}
+      <div style={{position:"absolute",left:"4%",right:"4%",top:"3%",height:"41%",borderRadius:5,
+        background:"linear-gradient(180deg,#ffffff,#f1f4f9)",
+        border:"1px solid rgba(15,23,42,0.12)",boxShadow:"0 12px 30px rgba(15,23,42,0.20)",overflow:"hidden"}}>
+        {_rid.map((riga,r)=>(
+          <div key={r} style={{display:"flex",height:(100/6)+"%",alignItems:"center",
+            justifyContent:"space-evenly",gap:12,overflow:"hidden",padding:"0 8px",opacity:0.9}}>
+            {riga.map((marchio,k)=>(
+              <span key={k} style={{display:"inline-flex",alignItems:"center",gap:2,whiteSpace:"nowrap",
+                flex:"0 0 auto",fontSize:11,fontWeight:900,letterSpacing:.2,
+                color:marchio?"#7a1526":c1,opacity:marchio?0.92:0.7}}>
+                {marchio
+                  ?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
+                      border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
+                    <span style={{fontWeight:700,fontStyle:"italic",color:c2,marginLeft:2}}>Elite</span></>)
+                  :(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis"}}>{nome}</span>)}
+              </span>))}
+          </div>))}
+        {/* il filo di luce del risultato: sul bordo del pannello, mai addosso al testo */}
+        <span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.85}}/>
+      </div>
+      {/* il pavimento: la riga d'appoggio del pannello e la moquette col colore del club */}
+      <span style={{position:"absolute",left:0,right:0,top:"46%",height:1,background:"rgba(15,23,42,0.18)"}}/>
+      <div style={{position:"absolute",left:0,right:0,top:"46%",height:"54%",
+        background:"linear-gradient(180deg,rgba(255,255,255,0.62),"+c1+"1c 26%,"+c1+"3a 72%,"+c1+"55 100%)"}}/>
+      {/* due microfoni in primo piano: e' cosi' che si riconosce una sala stampa, senza disegnare nessuno */}
+      <div style={{position:"absolute",left:0,right:0,top:"44%",display:"flex",alignItems:"flex-start",
+        justifyContent:"center",gap:44,filter:"drop-shadow(0 8px 12px rgba(15,23,42,0.26))"}}>
+        {[0,1].map(m=>(
+          <div key={m} style={{display:"flex",flexDirection:"column",alignItems:"center",
+            transform:m?"rotate(4deg)":"rotate(-4deg)"}}>
+            <span style={{width:m?22:19,height:m?30:26,borderRadius:"10px 10px 6px 6px",
+              background:"linear-gradient(180deg,#aab5c5,#67748a)",
+              boxShadow:"inset 0 -4px 7px rgba(15,23,42,0.38)"}}/>
+            <span style={{width:m?25:22,height:13,marginTop:-1,borderRadius:3,
+              background:m?c1:"#7a1526"}}/>
+            <span style={{width:4,height:m?330:300,background:"linear-gradient(180deg,#929eaf,#59657a 55%,#4a5667)"}}/>{/* [7.961] l'asta corre sotto il modale: tagliata a meta' aria sembrava rotta */}
+          </div>))}
       </div>
       <StrisciaScena948 club={club} tono={tono}/>
     </div>);

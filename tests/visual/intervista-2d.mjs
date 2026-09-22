@@ -13,7 +13,7 @@ const err=[]; page.on('pageerror',e=>err.push(String(e).slice(0,160)));
    e' che il suo modello non venga MAI chiesto alla rete. */
 const corpi=[]; page.on('request',r=>{const u=r.url();if(/footballer[^/]*\.glb|actor-[a-z-]*\.glb/.test(u))corpi.push(u.split('/').pop());});
 await page.addInitScript((r)=>{ /* [7.948] NON si spengono i modelli: la sonda spegnendoli impediva al braccio ROSSO di caricare
-     il CH38, quindi il guardiano passava in entrambi i bracci e non provava niente. */ if(r) window.__CPM_NO947=true;
+     il CH38, quindi il guardiano passava in entrambi i bracci e non provava niente. */ if(r) window.__CPM_NO963=true;
   const save={phase:'career',player:{name:'Carrascito',nation:'Italia',avatarId:3,proStatus:'pro',
     season:11,week:39,age:28,ovr:93,
     club:{id:'mer',n:'FC Merseyside',a:'MER',p:88,c:'#8e1f33',c2:'#f0b33a',nat:'🏴',lg:'Premier Division'},
@@ -33,7 +33,7 @@ await page.waitForFunction(()=>!!(window.__CPM_CAREER&&window.__CPM_CAREER.force
 corpi.length=0;
 await page.evaluate(()=>{try{window.__CPM_CORPI948=0;}catch(_e){}});
 const apri = await page.evaluate(()=>{ try{ return window.__CPM_CAREER.forceInterview('win'); }catch(e){ return 'error:'+e; } });
-await sleep(1400);
+await sleep(2600);/* [7.961] il modale entra da destra con un'animazione: scattare a 1,4 s fotografava la transizione, non la schermata */
 const busta = await page.evaluate(()=>({ gala:document.querySelectorAll('[role="dialog"], .cpm-press, div').length>0&&/\?|\.|,/.test(document.body.innerText),
   webgl:document.querySelectorAll('canvas').length }));
 await page.screenshot({ path:'/tmp/claude-0/intervista-1.png' });
@@ -45,14 +45,23 @@ await page.screenshot({ path:'/tmp/claude-0/intervista-2.png' });
    subito dopo l'apertura dava zero anche nel braccio rosso. */
 await sleep(2500);
 const corpiScena = await page.evaluate(()=>window.__CPM_CORPI948|0);
-const visi = await page.evaluate(()=>{const n=document.querySelectorAll('[data-cpm-gala], svg');return document.body.querySelectorAll('svg').length;});
+/* [7.961] il contratto e' cambiato su collaudo del PO («togli il 3d», «togli i visi, lascia solo una
+   scenografia 2D molto carina»): la sala stampa e' DISEGNATA, quindi zero canvas e zero facce. La scena
+   si riconosce dal suo attributo, le facce dal loro (`data-cpm-viso`, messo su AvatarSVG dalla 7.961). */
+const scena = await page.evaluate(()=>{
+  const s=document.querySelector('[data-cpm-scena="intervista2d"]');
+  return { c:!!s, visiScena:s?s.querySelectorAll('[data-cpm-viso]').length:-1,
+           canvasScena:s?s.querySelectorAll('canvas').length:-1,
+           visiTot:document.querySelectorAll('[data-cpm-viso]').length };});
+const visi = scena.visiScena;
 await browser.close(); await new Promise(r=>server.close(r));
 console.log(`\n=== LA MIXED ZONE E' IN 2D === ${rosso?'[ROSSO __CPM_NO947]':'[VERDE]'}`);
-console.log(`  scena aperta: ${busta.gala?'SI':'no'} · scenografia 3D: ${busta.webgl?'SI':'no'} · visi SVG: ${visi}`);
+console.log(`  scena aperta: ${busta.gala?'SI':'no'} · sala stampa disegnata: ${scena.c?'SI':'NO'}`);
+console.log(`  canvas WebGL nella pagina: ${busta.webgl} · visi nella scena: ${scena.visiScena} · visi in tutta la pagina: ${scena.visiTot}`);
 console.log(`  corpi CH38 nella scena: ${corpiScena} · modelli chiesti alla rete: ${corpi.length}`);
 console.log(`  errori di pagina ${err.length}${err.length?' → '+err[0]:''}`);
-const ok = rosso ? (corpiScena>0||corpi.length>0) : (corpiScena===0 && busta.gala && busta.webgl>0 && visi>=3 && err.length===0);
-console.log(ok ? (rosso ? "\n\u2705 difetto riprodotto — col rosso il CH38 torna a essere caricato"
-                        : "\n\u2705 PASS — la mixed zone usa la scenografia 3D senza CH38, e i visi sono quelli della libreria")
+const ok = rosso ? (busta.webgl>0) : (corpiScena===0 && busta.gala && scena.c && busta.webgl===0 && scena.visiScena===0 && err.length===0);
+console.log(ok ? (rosso ? "\n\u2705 difetto riprodotto — col rosso __CPM_NO963 la scenografia 3D torna in scena"
+                        : "\n\u2705 PASS — sala stampa disegnata: zero canvas, zero facce, zero corpi")
               : '\n\u274c FAIL');
 process.exit(ok?0:1);
