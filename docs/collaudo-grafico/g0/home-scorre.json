@@ -1,0 +1,47 @@
+{
+ "360": {
+  "bodyOver": 0,
+  "docOver": 0,
+  "fuori": [],
+  "trascinamento": {
+   "x": 0,
+   "mossi": []
+  }
+ },
+ "375": {
+  "bodyOver": 0,
+  "docOver": 0,
+  "fuori": [],
+  "trascinamento": {
+   "x": 0,
+   "mossi": []
+  }
+ },
+ "390": {
+  "bodyOver": 0,
+  "docOver": 0,
+  "fuori": [],
+  "trascinamento": {
+   "x": 0,
+   "mossi": []
+  }
+ },
+ "412": {
+  "bodyOver": 0,
+  "docOver": 0,
+  "fuori": [],
+  "trascinamento": {
+   "x": 0,
+   "mossi": []
+  }
+ },
+ "430": {
+  "bodyOver": 0,
+  "docOver": 0,
+  "fuori": [],
+  "trascinamento": {
+   "x": 0,
+   "mossi": []
+  }
+ }
+}

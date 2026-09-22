@@ -1,0 +1,67 @@
+{
+ "360-win": {
+  "aperto": true,
+  "W": 360,
+  "cardL": 239,
+  "cardR": 360,
+  "cardW": 121,
+  "esceDx": 0,
+  "esceSx": 0,
+  "centrata": false,
+  "docOver": 0,
+  "nudo": "/* [7.961 — LA SCENOGRAFIA DELL'INTERVISTA NON E' PIU' UN CANVAS. Rosso __CPM_NO963 rimette la mixed zone 3D] */ ",
+  "figurine": 0
+ },
+ "375-win": {
+  "aperto": true,
+  "W": 375,
+  "cardL": 247,
+  "cardR": 375,
+  "cardW": 128,
+  "esceDx": 0,
+  "esceSx": 0,
+  "centrata": false,
+  "docOver": 0,
+  "nudo": "/* [7.961 — LA SCENOGRAFIA DELL'INTERVISTA NON E' PIU' UN CANVAS. Rosso __CPM_NO963 rimette la mixed zone 3D] */ ",
+  "figurine": 0
+ },
+ "390-win": {
+  "aperto": true,
+  "W": 390,
+  "cardL": 255,
+  "cardR": 390,
+  "cardW": 135,
+  "esceDx": 0,
+  "esceSx": 0,
+  "centrata": false,
+  "docOver": 0,
+  "nudo": "/* [7.961 — LA SCENOGRAFIA DELL'INTERVISTA NON E' PIU' UN CANVAS. Rosso __CPM_NO963 rimette la mixed zone 3D] */ ",
+  "figurine": 0
+ },
+ "412-win": {
+  "aperto": true,
+  "W": 412,
+  "cardL": 266,
+  "cardR": 412,
+  "cardW": 146,
+  "esceDx": 0,
+  "esceSx": 0,
+  "centrata": false,
+  "docOver": 0,
+  "nudo": "/* [7.961 — LA SCENOGRAFIA DELL'INTERVISTA NON E' PIU' UN CANVAS. Rosso __CPM_NO963 rimette la mixed zone 3D] */ ",
+  "figurine": 0
+ },
+ "430-win": {
+  "aperto": true,
+  "W": 430,
+  "cardL": 274,
+  "cardR": 430,
+  "cardW": 156,
+  "esceDx": 0,
+  "esceSx": 0,
+  "centrata": false,
+  "docOver": 0,
+  "nudo": "/* [7.961 — LA SCENOGRAFIA DELL'INTERVISTA NON E' PIU' UN CANVAS. Rosso __CPM_NO963 rimette la mixed zone 3D] */ ",
+  "figurine": 0
+ }
+}
