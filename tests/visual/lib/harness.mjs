@@ -111,7 +111,14 @@ export function startServer(root = ROOT) {
 
 export async function launchBrowser() {
   const _opts = { headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] };
-  if (process.env.CPM_CHROME) _opts.executablePath = process.env.CPM_CHROME;
+  // CI may not have Playwright's bundled Chromium. Reuse an installed Chrome
+  // on Windows so visual quality gates remain runnable without a new download.
+  const systemChrome = process.platform === 'win32' && process.env.ProgramFiles
+    ? path.join(process.env.ProgramFiles, 'Google', 'Chrome', 'Application', 'chrome.exe')
+    : null;
+  const executablePath = process.env.CPM_CHROME
+    || (systemChrome && fs.existsSync(systemChrome) ? systemChrome : null);
+  if (executablePath) _opts.executablePath = executablePath;
   return chromium.launch(_opts);
 }
 
