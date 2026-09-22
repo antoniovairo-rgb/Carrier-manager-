@@ -369,3 +369,14 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatto verificato:** `cgtrader-dribble-closeup-review.mjs` si completa senza errori sul rig CGTrader. Le sue asserzioni congelano i contatti sinistro, destro, sinistro con Hero LOD0, ancoraggio `foot-bone` e distanza palla-piede entro 25 cm.
 - **Misure dell'evidenza:** distanza ai tre contatti `0 m`; spostamento mano sinistra `0,220 m`, mano destra `0,103 m`; estensione massima mano-corpo `0,487 m` (< `0,65 m`): entrambe le braccia partecipano e non formano una T-pose.
 - **Perimetro:** è un gate di dribbling Hero in test locale. Non prova ancora transizioni complete, folla/squadra completa o prestazioni su dispositivo mobile.
+
+## 2026-09-22 — scala squadra CGTrader in partita
+
+- **Fatto verificato:** `cgtrader-closeup-review.mjs` inizializza il renderer `ready-cgtrader-mixed-lod-benchmark` senza errori e misura 23 scheletri nella scena.
+- **Esito scala:** Hero LOD0 `1,874 m`; altri giocatori LOD1/LOD2 tra `1,772 m` e `1,830 m`. Tutti rientrano nel gate tecnico `1,4–2,6 m`: nessun gigante nella scena di test.
+- **Limite:** il dato è la misura dello scheletro nel renderer locale; il collaudo mobile resta necessario per giudicare la percezione dalla camera e la qualità visiva dei LOD.
+
+## 2026-09-22 — fase del passaggio
+
+- **Fatto verificato:** `verify_ground_pass_phase.mjs` passa: contatto a `0,250 s` contro wind-up visivo a `0,270 s`, errore `20 ms`; distanza centro-palla/piede `0,104 m`, entro il raggio della palla.
+- **Esito:** PASS condizionato per tempo del gesto e contatto geometrico. Non prova da solo il mixer crossfade o la resa mobile.
