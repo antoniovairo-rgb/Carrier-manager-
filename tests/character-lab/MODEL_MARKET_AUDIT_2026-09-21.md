@@ -49,3 +49,7 @@ Il prezzo ufficiale della licenza **Commercial** è **$128 una tantum per un ute
 ### Human Generator — budget LOD verificato
 
 La [guida LOD ufficiale](https://help.humgen3d.com/lod) dichiara tre output: circa **25k facce** a risoluzione originale, **18k facce** con volto ridotto e **5k facce** a un quarto della risoluzione. La preview non processata mostra circa **73.488 triangoli**, quindi non è adottabile per tutti i calciatori. Il processing LOD è un passaggio finale: rompe modifiche successive di volto, altezza, età, espressioni e capelli. Il flusso candidabile è dunque: creare la variazione -> fare bake/haircards -> esportare Hero L0 e squadre a LOD ridotto -> testare. I conteggi effettivi dopo capelli e kit restano da misurare su un asset reale.
+
+### Human Generator — compatibilità da provare, non presunta
+
+Il Blender incluso nel progetto è **4.5.14**. Il [repository pubblico](https://github.com/OliverJPost/HumGen3D) dichiara Blender 3.2 come minimo e la release V4 documenta correzioni per Blender 4.0, ma non offre una certificazione per Blender 4.5. Le issue pubbliche includono difetti su haircards e salvataggio dei gruppi vertice delle acconciature custom. Di conseguenza la prova trial deve essere isolata e non può essere sostituita da una promessa commerciale: il candidato resta non acquistabile finché non crea, processa ed esporta un asset valido nell'ambiente effettivo.
