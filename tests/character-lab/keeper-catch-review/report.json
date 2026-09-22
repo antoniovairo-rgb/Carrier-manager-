@@ -44,7 +44,7 @@
    "screen": {
     "keeperInFrame": false,
     "ballInFrame": true,
-    "keeperHeight": 0.089
+    "keeperHeight": 0.09
    },
    "presa": null
   },
@@ -56,7 +56,7 @@
   "fasi": [
    "hl_result"
   ],
-  "campioniInPresa": 16,
+  "campioniInPresa": 15,
   "clip": [
    "gk-high-catch"
   ],
@@ -81,53 +81,53 @@
    0,
    0
   ],
-  "aperturaBracciaMax": 0.69,
-  "maniSopraBustoAlContatto": 0.776,
+  "aperturaBracciaMax": 0.675,
+  "maniSopraBustoAlContatto": 0.767,
   "portiereNelQuadroAlContatto": true,
-  "altezzaApparenteAlContatto": 0.177,
+  "altezzaApparenteAlContatto": 0.176,
   "quotaNelQuadroDopoArmo": 1,
-  "tempoClipAlContatto": 1.076,
+  "tempoClipAlContatto": 1.044,
   "fotogrammi": {
    "apertura": {
-    "i": 0,
-    "t": 2618,
+    "i": 1,
+    "t": 3188,
     "phase": "hl_result",
     "hasKeeper": true,
     "visible": true,
     "lod": "lod2",
     "gesture": "catch",
-    "gestureWeight": 0.5,
+    "gestureWeight": 0.973,
     "clip": "gk-high-catch",
-    "clipTime": 0.013,
+    "clipTime": 0.081,
     "clipDur": 3.333,
     "hands": {
-     "x": -37.962,
-     "y": 1.209,
-     "z": 1.722
+     "x": -38.124,
+     "y": 1.229,
+     "z": 1.819
     },
     "ball": {
      "x": -0.947,
      "y": 0.22,
      "z": 5.436
     },
-    "handBall": 37.214,
-    "armOpen": 0.469,
-    "handsAboveSpine": -0.046,
+    "handBall": 37.366,
+    "armOpen": 0.529,
+    "handsAboveSpine": -0.016,
     "root": {
-     "x": -38.082,
+     "x": -38.192,
      "y": 0,
-     "z": 1.37
+     "z": 1.384
     },
     "opp": {
      "type": "opp_stumble",
-     "t": 0.015,
+     "t": 0.092,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": false,
-     "keeperHeight": 0.182
+     "keeperHeight": 0.184
     },
     "presa": {
      "held": false,
@@ -135,12 +135,12 @@
      "remAt": 1.21,
      "ts": 0.882,
      "contactClipT": null,
-     "cam": 1
+     "cam": 6
     }
    },
    "contatto": {
     "i": 7,
-    "t": 6642,
+    "t": 7114,
     "phase": "hl_result",
     "hasKeeper": true,
     "visible": true,
@@ -148,49 +148,49 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 1.208,
+    "clipTime": 1.233,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.174,
-     "y": 2.016,
-     "z": 1.552
+     "x": -42.212,
+     "y": 2.005,
+     "z": 1.538
     },
     "ball": {
-     "x": -42.174,
-     "y": 2.016,
-     "z": 1.552
+     "x": -42.212,
+     "y": 2.005,
+     "z": 1.538
     },
     "handBall": 0,
-    "armOpen": 0.369,
-    "handsAboveSpine": 0.776,
+    "armOpen": 0.371,
+    "handsAboveSpine": 0.767,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": true,
-     "keeperHeight": 0.177
+     "keeperHeight": 0.176
     },
     "presa": {
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 48
+     "contactClipT": 1.044,
+     "cam": 47
     }
    },
    "recupero": {
     "i": 21,
-    "t": 14660,
+    "t": 14776,
     "phase": "hl_result",
     "hasKeeper": true,
     "visible": true,
@@ -201,26 +201,26 @@
     "clipTime": 3.333,
     "clipDur": 3.333,
     "hands": {
-     "x": -41.803,
-     "y": 1.165,
-     "z": 1.603
+     "x": -41.816,
+     "y": 1.164,
+     "z": 1.601
     },
     "ball": {
-     "x": -41.803,
-     "y": 1.165,
-     "z": 1.603
+     "x": -41.816,
+     "y": 1.164,
+     "z": 1.601
     },
     "handBall": 0,
-    "armOpen": 0.407,
-    "handsAboveSpine": -0.091,
+    "armOpen": 0.404,
+    "handsAboveSpine": -0.093,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -234,8 +234,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 149
+     "contactClipT": 1.044,
+     "cam": 144
     }
    }
   },
@@ -244,294 +244,287 @@
  "frames": [
   {
    "i": 0,
-   "t": 2618,
+   "t": 2525,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod2",
-    "gesture": "catch",
-    "gestureWeight": 0.5,
-    "clip": "gk-high-catch",
-    "clipTime": 0.013,
-    "clipDur": 3.333,
+    "gesture": null,
+    "gestureWeight": 0,
+    "clip": null,
+    "clipTime": null,
+    "clipDur": null,
     "hands": {
-     "x": -37.962,
-     "y": 1.209,
-     "z": 1.722
+     "x": -37.982,
+     "y": 1.192,
+     "z": 1.621
     },
     "ball": {
      "x": -0.947,
      "y": 0.22,
      "z": 5.436
     },
-    "handBall": 37.214,
-    "armOpen": 0.469,
-    "handsAboveSpine": -0.046,
+    "handBall": 37.244,
+    "armOpen": 0.4,
+    "handsAboveSpine": -0.067,
     "root": {
-     "x": -38.082,
+     "x": -38.066,
      "y": 0,
-     "z": 1.37
-    },
-    "opp": {
-     "type": "opp_stumble",
-     "t": 0.015,
-     "isKeeper": false,
-     "claim": true
-    },
-    "screen": {
-     "keeperInFrame": true,
-     "ballInFrame": false,
-     "keeperHeight": 0.182
-    },
-    "presa": {
-     "held": false,
-     "clipAt": 0,
-     "remAt": 1.21,
-     "ts": 0.882,
-     "contactClipT": null,
-     "cam": 1
-    }
-   },
-   "roster": {
-    "visible": 5,
-    "total": 23,
-    "hero": 0,
-    "keeper": 1,
-    "lod": {
-     "lod0": 1,
-     "lod1": 0,
-     "lod2": 22
-    }
-   },
-   "sceneT": 0.15000000000000002
-  },
-  {
-   "i": 1,
-   "t": 3232,
-   "phase": "hl_result",
-   "keeper": {
-    "hasKeeper": true,
-    "visible": true,
-    "lod": "lod2",
-    "gesture": "catch",
-    "gestureWeight": 0.992,
-    "clip": "gk-high-catch",
-    "clipTime": 0.117,
-    "clipDur": 3.333,
-    "hands": {
-     "x": -38.206,
-     "y": 1.234,
-     "z": 1.836
-    },
-    "ball": {
-     "x": -0.947,
-     "y": 0.22,
-     "z": 5.436
-    },
-    "handBall": 37.446,
-    "armOpen": 0.534,
-    "handsAboveSpine": -0.011,
-    "root": {
-     "x": -38.27,
-     "y": 0,
-     "z": 1.394
-    },
-    "opp": {
-     "type": "opp_stumble",
-     "t": 0.132,
-     "isKeeper": false,
-     "claim": true
-    },
-    "screen": {
-     "keeperInFrame": true,
-     "ballInFrame": false,
-     "keeperHeight": 0.183
-    },
-    "presa": {
-     "held": false,
-     "clipAt": 0,
-     "remAt": 1.21,
-     "ts": 0.882,
-     "contactClipT": null,
-     "cam": 9
-    }
-   },
-   "roster": {
-    "visible": 5,
-    "total": 23,
-    "hero": 0,
-    "keeper": 1,
-    "lod": {
-     "lod0": 1,
-     "lod1": 0,
-     "lod2": 22
-    }
-   },
-   "sceneT": 0.45680000000004656
-  },
-  {
-   "i": 2,
-   "t": 3710,
-   "phase": "hl_result",
-   "keeper": {
-    "hasKeeper": true,
-    "visible": true,
-    "lod": "lod2",
-    "gesture": "catch",
-    "gestureWeight": 1,
-    "clip": "gk-high-catch",
-    "clipTime": 0.233,
-    "clipDur": 3.333,
-    "hands": {
-     "x": -38.595,
-     "y": 1.228,
-     "z": 1.905
-    },
-    "ball": {
-     "x": -0.947,
-     "y": 0.22,
-     "z": 5.436
-    },
-    "handBall": 37.827,
-    "armOpen": 0.543,
-    "handsAboveSpine": -0.015,
-    "root": {
-     "x": -38.633,
-     "y": 0,
-     "z": 1.437
-    },
-    "opp": {
-     "type": "opp_stumble",
-     "t": 0.264,
-     "isKeeper": false,
-     "claim": true
-    },
-    "screen": {
-     "keeperInFrame": true,
-     "ballInFrame": false,
-     "keeperHeight": 0.18
-    },
-    "presa": {
-     "held": false,
-     "clipAt": 0,
-     "remAt": 1.21,
-     "ts": 0.882,
-     "contactClipT": null,
-     "cam": 15
-    }
-   },
-   "roster": {
-    "visible": 5,
-    "total": 23,
-    "hero": 0,
-    "keeper": 1,
-    "lod": {
-     "lod0": 1,
-     "lod1": 0,
-     "lod2": 22
-    }
-   },
-   "sceneT": 0.7163000000000467
-  },
-  {
-   "i": 3,
-   "t": 4296,
-   "phase": "hl_result",
-   "keeper": {
-    "hasKeeper": true,
-    "visible": true,
-    "lod": "lod2",
-    "gesture": "catch",
-    "gestureWeight": 1,
-    "clip": "gk-high-catch",
-    "clipTime": 0.381,
-    "clipDur": 3.333,
-    "hands": {
-     "x": -39.259,
-     "y": 1.207,
-     "z": 1.878
-    },
-    "ball": {
-     "x": -2.312,
-     "y": 0.754,
-     "z": 5.282
-    },
-    "handBall": 37.106,
-    "armOpen": 0.557,
-    "handsAboveSpine": -0.04,
-    "root": {
-     "x": -39.318,
-     "y": 0,
-     "z": 1.514
-    },
-    "opp": {
-     "type": "opp_stumble",
-     "t": 0.432,
-     "isKeeper": false,
-     "claim": true
-    },
-    "screen": {
-     "keeperInFrame": true,
-     "ballInFrame": false,
-     "keeperHeight": 0.177
-    },
-    "presa": {
-     "held": false,
-     "clipAt": 0,
-     "remAt": 1.21,
-     "ts": 0.882,
-     "contactClipT": null,
-     "cam": 21
-    }
-   },
-   "roster": {
-    "visible": 5,
-    "total": 23,
-    "hero": 0,
-    "keeper": 1,
-    "lod": {
-     "lod0": 1,
-     "lod1": 0,
-     "lod2": 22
-    }
-   },
-   "sceneT": 0.9825000000001167
-  },
-  {
-   "i": 4,
-   "t": 4785,
-   "phase": "hl_result",
-   "keeper": {
-    "hasKeeper": true,
-    "visible": true,
-    "lod": "lod2",
-    "gesture": "catch",
-    "gestureWeight": 1,
-    "clip": "gk-high-catch",
-    "clipTime": 0.527,
-    "clipDur": 3.333,
-    "hands": {
-     "x": -40.167,
-     "y": 1.455,
-     "z": 1.712
-    },
-    "ball": {
-     "x": -9.014,
-     "y": 1.848,
-     "z": 4.523
-    },
-    "handBall": 31.282,
-    "armOpen": 0.636,
-    "handsAboveSpine": 0.209,
-    "root": {
-     "x": -40.217,
-     "y": 0,
-     "z": 1.604
+     "z": 1.368
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0,
+     "isKeeper": false,
+     "claim": false
+    },
+    "screen": {
+     "keeperInFrame": false,
+     "ballInFrame": true,
+     "keeperHeight": 0.09
+    },
+    "presa": null
+   },
+   "roster": {
+    "visible": 5,
+    "total": 23,
+    "hero": 0,
+    "keeper": 1,
+    "lod": {
+     "lod0": 1,
+     "lod1": 0,
+     "lod2": 22
+    }
+   },
+   "sceneT": 0.1
+  },
+  {
+   "i": 1,
+   "t": 3188,
+   "phase": "hl_result",
+   "keeper": {
+    "hasKeeper": true,
+    "visible": true,
+    "lod": "lod2",
+    "gesture": "catch",
+    "gestureWeight": 0.973,
+    "clip": "gk-high-catch",
+    "clipTime": 0.081,
+    "clipDur": 3.333,
+    "hands": {
+     "x": -38.124,
+     "y": 1.229,
+     "z": 1.819
+    },
+    "ball": {
+     "x": -0.947,
+     "y": 0.22,
+     "z": 5.436
+    },
+    "handBall": 37.366,
+    "armOpen": 0.529,
+    "handsAboveSpine": -0.016,
+    "root": {
+     "x": -38.192,
+     "y": 0,
+     "z": 1.384
+    },
+    "opp": {
+     "type": "opp_stumble",
+     "t": 0.092,
+     "isKeeper": false,
+     "claim": true
+    },
+    "screen": {
+     "keeperInFrame": true,
+     "ballInFrame": false,
+     "keeperHeight": 0.184
+    },
+    "presa": {
+     "held": false,
+     "clipAt": 0,
+     "remAt": 1.21,
+     "ts": 0.882,
+     "contactClipT": null,
+     "cam": 6
+    }
+   },
+   "roster": {
+    "visible": 5,
+    "total": 23,
+    "hero": 0,
+    "keeper": 1,
+    "lod": {
+     "lod0": 1,
+     "lod1": 0,
+     "lod2": 22
+    }
+   },
+   "sceneT": 0.36330000000004653
+  },
+  {
+   "i": 2,
+   "t": 3727,
+   "phase": "hl_result",
+   "keeper": {
+    "hasKeeper": true,
+    "visible": true,
+    "lod": "lod2",
+    "gesture": "catch",
+    "gestureWeight": 0.999,
+    "clip": "gk-high-catch",
+    "clipTime": 0.184,
+    "clipDur": 3.333,
+    "hands": {
+     "x": -38.41,
+     "y": 1.237,
+     "z": 1.874
+    },
+    "ball": {
+     "x": -0.947,
+     "y": 0.22,
+     "z": 5.436
+    },
+    "handBall": 37.645,
+    "armOpen": 0.541,
+    "handsAboveSpine": -0.007,
+    "root": {
+     "x": -38.462,
+     "y": 0,
+     "z": 1.417
+    },
+    "opp": {
+     "type": "opp_stumble",
+     "t": 0.209,
+     "isKeeper": false,
+     "claim": true
+    },
+    "screen": {
+     "keeperInFrame": true,
+     "ballInFrame": false,
+     "keeperHeight": 0.181
+    },
+    "presa": {
+     "held": false,
+     "clipAt": 0,
+     "remAt": 1.21,
+     "ts": 0.882,
+     "contactClipT": null,
+     "cam": 11
+    }
+   },
+   "roster": {
+    "visible": 5,
+    "total": 23,
+    "hero": 0,
+    "keeper": 1,
+    "lod": {
+     "lod0": 1,
+     "lod1": 0,
+     "lod2": 22
+    }
+   },
+   "sceneT": 0.6133000000000466
+  },
+  {
+   "i": 3,
+   "t": 4298,
+   "phase": "hl_result",
+   "keeper": {
+    "hasKeeper": true,
+    "visible": true,
+    "lod": "lod2",
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 0.321,
+    "clipDur": 3.333,
+    "hands": {
+     "x": -38.981,
+     "y": 1.189,
+     "z": 1.932
+    },
+    "ball": {
+     "x": -0.947,
+     "y": 0.22,
+     "z": 5.436
+    },
+    "handBall": 38.207,
+    "armOpen": 0.532,
+    "handsAboveSpine": -0.056,
+    "root": {
+     "x": -39.011,
+     "y": 0,
+     "z": 1.48
+    },
+    "opp": {
+     "type": "opp_stumble",
+     "t": 0.364,
+     "isKeeper": false,
+     "claim": true
+    },
+    "screen": {
+     "keeperInFrame": true,
+     "ballInFrame": false,
+     "keeperHeight": 0.178
+    },
+    "presa": {
+     "held": false,
+     "clipAt": 0,
+     "remAt": 1.21,
+     "ts": 0.882,
+     "contactClipT": null,
+     "cam": 17
+    }
+   },
+   "roster": {
+    "visible": 5,
+    "total": 23,
+    "hero": 0,
+    "keeper": 1,
+    "lod": {
+     "lod0": 1,
+     "lod1": 0,
+     "lod2": 22
+    }
+   },
+   "sceneT": 0.8801000000000934
+  },
+  {
+   "i": 4,
+   "t": 4965,
+   "phase": "hl_result",
+   "keeper": {
+    "hasKeeper": true,
+    "visible": true,
+    "lod": "lod2",
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 0.496,
+    "clipDur": 3.333,
+    "hands": {
+     "x": -39.965,
+     "y": 1.416,
+     "z": 1.736
+    },
+    "ball": {
+     "x": -7.597,
+     "y": 1.655,
+     "z": 4.683
+    },
+    "handBall": 32.503,
+    "armOpen": 0.648,
+    "handsAboveSpine": 0.169,
+    "root": {
+     "x": -40.029,
+     "y": 0,
+     "z": 1.586
+    },
+    "opp": {
+     "type": null,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -546,7 +539,7 @@
      "remAt": 1.21,
      "ts": 0.882,
      "contactClipT": null,
-     "cam": 27
+     "cam": 24
     }
    },
    "roster": {
@@ -560,11 +553,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 1.2067999999999306
+   "sceneT": 1.1615000000000004
   },
   {
    "i": 5,
-   "t": 5422,
+   "t": 5854,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -573,29 +566,29 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 0.694,
+    "clipTime": 0.699,
     "clipDur": 3.333,
     "hands": {
-     "x": -41.127,
-     "y": 1.282,
-     "z": 1.7
+     "x": -41.166,
+     "y": 1.264,
+     "z": 1.71
     },
     "ball": {
-     "x": -16.724,
-     "y": 2.419,
-     "z": 3.65
+     "x": -16.966,
+     "y": 2.423,
+     "z": 3.622
     },
-    "handBall": 24.508,
-    "armOpen": 0.494,
-    "handsAboveSpine": 0.052,
+    "handBall": 24.303,
+    "armOpen": 0.491,
+    "handsAboveSpine": 0.034,
     "root": {
-     "x": -41.066,
+     "x": -41.106,
      "y": 0,
-     "z": 1.679
+     "z": 1.682
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -610,7 +603,7 @@
      "remAt": 1.21,
      "ts": 0.882,
      "contactClipT": null,
-     "cam": 33
+     "cam": 31
     }
    },
    "roster": {
@@ -624,11 +617,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 1.4327999999999308
+   "sceneT": 1.4390999999998608
   },
   {
    "i": 6,
-   "t": 6015,
+   "t": 6512,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -637,29 +630,29 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 0.968,
+    "clipTime": 0.988,
     "clipDur": 3.333,
     "hands": {
-     "x": -41.807,
-     "y": 2.072,
-     "z": 1.794
+     "x": -41.924,
+     "y": 2.073,
+     "z": 1.757
     },
     "ball": {
-     "x": -34.962,
-     "y": 1.592,
-     "z": 2.064
+     "x": -37.156,
+     "y": 1.533,
+     "z": 1.953
     },
-    "handBall": 6.867,
-    "armOpen": 0.281,
-    "handsAboveSpine": 0.816,
+    "handBall": 4.803,
+    "armOpen": 0.285,
+    "handsAboveSpine": 0.819,
     "root": {
-     "x": -41.758,
+     "x": -41.818,
      "y": 0,
-     "z": 1.739
+     "z": 1.744
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -674,7 +667,7 @@
      "remAt": 1.21,
      "ts": 0.882,
      "contactClipT": null,
-     "cam": 41
+     "cam": 40
     }
    },
    "roster": {
@@ -688,11 +681,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 1.7564999999998845
+   "sceneT": 1.7793000000000476
   },
   {
    "i": 7,
-   "t": 6642,
+   "t": 7114,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -701,44 +694,44 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 1.208,
+    "clipTime": 1.233,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.174,
-     "y": 2.016,
-     "z": 1.552
+     "x": -42.212,
+     "y": 2.005,
+     "z": 1.538
     },
     "ball": {
-     "x": -42.174,
-     "y": 2.016,
-     "z": 1.552
+     "x": -42.212,
+     "y": 2.005,
+     "z": 1.538
     },
     "handBall": 0,
-    "armOpen": 0.369,
-    "handsAboveSpine": 0.776,
+    "armOpen": 0.371,
+    "handsAboveSpine": 0.767,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": true,
-     "keeperHeight": 0.177
+     "keeperHeight": 0.176
     },
     "presa": {
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 48
+     "contactClipT": 1.044,
+     "cam": 47
     }
    },
    "roster": {
@@ -752,11 +745,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 2.0295999999998613
+   "sceneT": 2.0578000000002805
   },
   {
    "i": 8,
-   "t": 7213,
+   "t": 7711,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -765,29 +758,29 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 1.445,
+    "clipTime": 1.454,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.101,
+     "x": -42.153,
      "y": 1.824,
-     "z": 1.482
+     "z": 1.483
     },
     "ball": {
-     "x": -42.101,
+     "x": -42.153,
      "y": 1.824,
-     "z": 1.482
+     "z": 1.483
     },
     "handBall": 0,
-    "armOpen": 0.362,
-    "handsAboveSpine": 0.599,
+    "armOpen": 0.359,
+    "handsAboveSpine": 0.601,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -801,8 +794,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 55
+     "contactClipT": 1.044,
+     "cam": 53
     }
    },
    "roster": {
@@ -816,11 +809,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 2.2976999999999537
+   "sceneT": 2.30840000000014
   },
   {
    "i": 9,
-   "t": 7830,
+   "t": 8324,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -829,29 +822,29 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 1.678,
+    "clipTime": 1.719,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.185,
-     "y": 1.589,
-     "z": 1.25
+     "x": -42.276,
+     "y": 1.518,
+     "z": 1.213
     },
     "ball": {
-     "x": -42.185,
-     "y": 1.589,
-     "z": 1.25
+     "x": -42.276,
+     "y": 1.518,
+     "z": 1.213
     },
     "handBall": 0,
-    "armOpen": 0.591,
-    "handsAboveSpine": 0.426,
+    "armOpen": 0.648,
+    "handsAboveSpine": 0.368,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -865,8 +858,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 61
+     "contactClipT": 1.044,
+     "cam": 59
     }
    },
    "roster": {
@@ -880,11 +873,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 2.5621999999999527
+   "sceneT": 2.608400000000139
   },
   {
    "i": 10,
-   "t": 8466,
+   "t": 8926,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -893,29 +886,29 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 1.917,
+    "clipTime": 1.97,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.349,
-     "y": 0.992,
-     "z": 1.151
+     "x": -42.375,
+     "y": 0.908,
+     "z": 1.157
     },
     "ball": {
-     "x": -42.349,
-     "y": 0.992,
-     "z": 1.151
+     "x": -42.375,
+     "y": 0.908,
+     "z": 1.157
     },
     "handBall": 0,
-    "armOpen": 0.69,
-    "handsAboveSpine": -0.096,
+    "armOpen": 0.675,
+    "handsAboveSpine": -0.163,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -929,8 +922,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 68
+     "contactClipT": 1.044,
+     "cam": 66
     }
    },
    "roster": {
@@ -944,11 +937,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 2.8327999999999283
+   "sceneT": 2.8930000000002316
   },
   {
    "i": 11,
-   "t": 9051,
+   "t": 9541,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -957,93 +950,29 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 2.157,
+    "clipTime": 2.213,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.245,
-     "y": 0.778,
-     "z": 1.226
+     "x": -42.333,
+     "y": 0.729,
+     "z": 1.308
     },
     "ball": {
-     "x": -42.245,
-     "y": 0.778,
-     "z": 1.226
-    },
-    "handBall": 0,
-    "armOpen": 0.588,
-    "handsAboveSpine": -0.26,
-    "root": {
-     "x": -41.798,
-     "y": 0,
-     "z": 1.742
-    },
-    "opp": {
-     "type": null,
-     "t": 0.558,
-     "isKeeper": false,
-     "claim": true
-    },
-    "screen": {
-     "keeperInFrame": true,
-     "ballInFrame": true,
-     "keeperHeight": 0.181
-    },
-    "presa": {
-     "held": true,
-     "clipAt": 0,
-     "remAt": 1.21,
-     "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 75
-    }
-   },
-   "roster": {
-    "visible": 5,
-    "total": 23,
-    "hero": 0,
-    "keeper": 1,
-    "lod": {
-     "lod0": 1,
-     "lod1": 0,
-     "lod2": 22
-    }
-   },
-   "sceneT": 3.10490000000002
-  },
-  {
-   "i": 12,
-   "t": 9488,
-   "phase": "hl_result",
-   "keeper": {
-    "hasKeeper": true,
-    "visible": true,
-    "lod": "lod2",
-    "gesture": "catch",
-    "gestureWeight": 1,
-    "clip": "gk-high-catch",
-    "clipTime": 2.406,
-    "clipDur": 3.333,
-    "hands": {
-     "x": -42.445,
-     "y": 0.756,
-     "z": 1.786
-    },
-    "ball": {
-     "x": -42.445,
-     "y": 0.756,
-     "z": 1.786
+     "x": -42.333,
+     "y": 0.729,
+     "z": 1.308
     },
     "handBall": 0,
     "armOpen": 0.575,
-    "handsAboveSpine": -0.252,
+    "handsAboveSpine": -0.298,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1057,8 +986,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 82
+     "contactClipT": 1.044,
+     "cam": 72
     }
    },
    "roster": {
@@ -1072,11 +1001,75 @@
      "lod2": 22
     }
    },
-   "sceneT": 3.3874000000000195
+   "sceneT": 3.1684000000003705
+  },
+  {
+   "i": 12,
+   "t": 10042,
+   "phase": "hl_result",
+   "keeper": {
+    "hasKeeper": true,
+    "visible": true,
+    "lod": "lod2",
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 2.468,
+    "clipDur": 3.333,
+    "hands": {
+     "x": -42.46,
+     "y": 0.854,
+     "z": 1.971
+    },
+    "ball": {
+     "x": -42.46,
+     "y": 0.854,
+     "z": 1.971
+    },
+    "handBall": 0,
+    "armOpen": 0.571,
+    "handsAboveSpine": -0.172,
+    "root": {
+     "x": -41.846,
+     "y": 0,
+     "z": 1.747
+    },
+    "opp": {
+     "type": null,
+     "t": 0.562,
+     "isKeeper": false,
+     "claim": true
+    },
+    "screen": {
+     "keeperInFrame": true,
+     "ballInFrame": true,
+     "keeperHeight": 0.181
+    },
+    "presa": {
+     "held": true,
+     "clipAt": 0,
+     "remAt": 1.21,
+     "ts": 0.882,
+     "contactClipT": 1.044,
+     "cam": 80
+    }
+   },
+   "roster": {
+    "visible": 5,
+    "total": 23,
+    "hero": 0,
+    "keeper": 1,
+    "lod": {
+     "lod0": 1,
+     "lod1": 0,
+     "lod2": 22
+    }
+   },
+   "sceneT": 3.4576000000003235
   },
   {
    "i": 13,
-   "t": 10015,
+   "t": 10551,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -1085,29 +1078,29 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 2.633,
+    "clipTime": 2.743,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.235,
-     "y": 1.141,
-     "z": 2.18
+     "x": -42.299,
+     "y": 1.122,
+     "z": 2.182
     },
     "ball": {
-     "x": -42.235,
-     "y": 1.141,
-     "z": 2.18
+     "x": -42.299,
+     "y": 1.122,
+     "z": 2.182
     },
     "handBall": 0,
-    "armOpen": 0.504,
-    "handsAboveSpine": 0.018,
+    "armOpen": 0.501,
+    "handsAboveSpine": 0.001,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1121,8 +1114,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 88
+     "contactClipT": 1.044,
+     "cam": 87
     }
    },
    "roster": {
@@ -1136,11 +1129,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 3.6451000000000886
+   "sceneT": 3.769300000000509
   },
   {
    "i": 14,
-   "t": 10825,
+   "t": 11087,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -1149,29 +1142,29 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 2.927,
+    "clipTime": 3.051,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.253,
-     "y": 1.125,
-     "z": 2.177
+     "x": -42.305,
+     "y": 1.131,
+     "z": 2.185
     },
     "ball": {
-     "x": -42.253,
-     "y": 1.125,
-     "z": 2.177
+     "x": -42.305,
+     "y": 1.131,
+     "z": 2.185
     },
     "handBall": 0,
-    "armOpen": 0.515,
-    "handsAboveSpine": -0.005,
+    "armOpen": 0.514,
+    "handsAboveSpine": 0,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1185,8 +1178,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 96
+     "contactClipT": 1.044,
+     "cam": 94
     }
    },
    "roster": {
@@ -1200,11 +1193,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 3.9789999999999943
+   "sceneT": 4.119300000000508
   },
   {
    "i": 15,
-   "t": 11325,
+   "t": 11693,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -1213,29 +1206,29 @@
     "gesture": "catch",
     "gestureWeight": 1,
     "clip": "gk-high-catch",
-    "clipTime": 3.219,
+    "clipTime": 3.333,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.254,
-     "y": 1.137,
-     "z": 2.185
+     "x": -42.305,
+     "y": 1.136,
+     "z": 2.189
     },
     "ball": {
-     "x": -42.254,
-     "y": 1.137,
-     "z": 2.185
+     "x": -42.305,
+     "y": 1.136,
+     "z": 2.189
     },
     "handBall": 0,
     "armOpen": 0.511,
     "handsAboveSpine": 0.006,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1249,8 +1242,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 105
+     "contactClipT": 1.044,
+     "cam": 102
     }
    },
    "roster": {
@@ -1264,42 +1257,42 @@
      "lod2": 22
     }
    },
-   "sceneT": 4.309799999999925
+   "sceneT": 4.45500000000046
   },
   {
    "i": 16,
-   "t": 11837,
+   "t": 12288,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod2",
     "gesture": null,
-    "gestureWeight": 0.465,
+    "gestureWeight": 0.171,
     "clip": "gk-high-catch",
     "clipTime": 3.333,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.162,
-     "y": 1.211,
-     "z": 2.064
+     "x": -42.145,
+     "y": 1.196,
+     "z": 1.757
     },
     "ball": {
-     "x": -42.162,
-     "y": 1.211,
-     "z": 2.064
+     "x": -42.145,
+     "y": 1.196,
+     "z": 1.757
     },
     "handBall": 0,
-    "armOpen": 0.522,
-    "handsAboveSpine": -0.015,
+    "armOpen": 0.478,
+    "handsAboveSpine": -0.061,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1313,8 +1306,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 112
+     "contactClipT": 1.044,
+     "cam": 111
     }
    },
    "roster": {
@@ -1328,42 +1321,42 @@
      "lod2": 22
     }
    },
-   "sceneT": 4.590199999999947
+   "sceneT": 4.805100000000319
   },
   {
    "i": 17,
-   "t": 12353,
+   "t": 12772,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod2",
     "gesture": null,
-    "gestureWeight": 0.118,
+    "gestureWeight": 0.039,
     "clip": "gk-high-catch",
     "clipTime": 3.333,
     "clipDur": 3.333,
     "hands": {
-     "x": -42.055,
-     "y": 1.189,
-     "z": 1.755
+     "x": -41.992,
+     "y": 1.16,
+     "z": 1.632
     },
     "ball": {
-     "x": -42.055,
-     "y": 1.189,
-     "z": 1.755
+     "x": -41.992,
+     "y": 1.16,
+     "z": 1.632
     },
     "handBall": 0,
-    "armOpen": 0.471,
-    "handsAboveSpine": -0.069,
+    "armOpen": 0.472,
+    "handsAboveSpine": -0.098,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1377,7 +1370,7 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
+     "contactClipT": 1.044,
      "cam": 118
     }
    },
@@ -1392,42 +1385,42 @@
      "lod2": 22
     }
    },
-   "sceneT": 4.860199999999946
+   "sceneT": 5.100900000000364
   },
   {
    "i": 18,
-   "t": 12898,
+   "t": 13293,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod2",
     "gesture": null,
-    "gestureWeight": 0.023,
+    "gestureWeight": 0.01,
     "clip": "gk-high-catch",
     "clipTime": 3.333,
     "clipDur": 3.333,
     "hands": {
-     "x": -41.93,
-     "y": 1.154,
-     "z": 1.638
+     "x": -41.906,
+     "y": 1.144,
+     "z": 1.621
     },
     "ball": {
-     "x": -41.93,
-     "y": 1.154,
-     "z": 1.638
+     "x": -41.906,
+     "y": 1.144,
+     "z": 1.621
     },
     "handBall": 0,
-    "armOpen": 0.476,
-    "handsAboveSpine": -0.104,
+    "armOpen": 0.472,
+    "handsAboveSpine": -0.113,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1441,8 +1434,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 126
+     "contactClipT": 1.044,
+     "cam": 124
     }
    },
    "roster": {
@@ -1456,42 +1449,42 @@
      "lod2": 22
     }
    },
-   "sceneT": 5.1833999999998985
+   "sceneT": 5.36220000000041
   },
   {
    "i": 19,
-   "t": 13487,
+   "t": 13748,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod2",
     "gesture": null,
-    "gestureWeight": 0.006,
+    "gestureWeight": 0.002,
     "clip": "gk-high-catch",
     "clipTime": 3.333,
     "clipDur": 3.333,
     "hands": {
-     "x": -41.852,
-     "y": 1.138,
-     "z": 1.634
+     "x": -41.853,
+     "y": 1.133,
+     "z": 1.644
     },
     "ball": {
-     "x": -41.852,
-     "y": 1.138,
-     "z": 1.634
+     "x": -41.853,
+     "y": 1.133,
+     "z": 1.644
     },
     "handBall": 0,
-    "armOpen": 0.458,
-    "handsAboveSpine": -0.12,
+    "armOpen": 0.432,
+    "handsAboveSpine": -0.124,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1505,8 +1498,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 133
+     "contactClipT": 1.044,
+     "cam": 131
     }
    },
    "roster": {
@@ -1520,11 +1513,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 5.456599999999851
+   "sceneT": 5.642700000000176
   },
   {
    "i": 20,
-   "t": 14049,
+   "t": 14197,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -1536,26 +1529,26 @@
     "clipTime": 3.333,
     "clipDur": 3.333,
     "hands": {
-     "x": -41.805,
-     "y": 1.141,
-     "z": 1.63
+     "x": -41.832,
+     "y": 1.152,
+     "z": 1.624
     },
     "ball": {
-     "x": -41.805,
-     "y": 1.141,
-     "z": 1.63
+     "x": -41.832,
+     "y": 1.152,
+     "z": 1.624
     },
     "handBall": 0,
-    "armOpen": 0.414,
-    "handsAboveSpine": -0.116,
+    "armOpen": 0.408,
+    "handsAboveSpine": -0.105,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1569,8 +1562,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 141
+     "contactClipT": 1.044,
+     "cam": 137
     }
    },
    "roster": {
@@ -1584,11 +1577,11 @@
      "lod2": 22
     }
    },
-   "sceneT": 5.7856999999999426
+   "sceneT": 5.902900000000129
   },
   {
    "i": 21,
-   "t": 14660,
+   "t": 14776,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -1600,26 +1593,26 @@
     "clipTime": 3.333,
     "clipDur": 3.333,
     "hands": {
-     "x": -41.803,
-     "y": 1.165,
-     "z": 1.603
+     "x": -41.816,
+     "y": 1.164,
+     "z": 1.601
     },
     "ball": {
-     "x": -41.803,
-     "y": 1.165,
-     "z": 1.603
+     "x": -41.816,
+     "y": 1.164,
+     "z": 1.601
     },
     "handBall": 0,
-    "armOpen": 0.407,
-    "handsAboveSpine": -0.091,
+    "armOpen": 0.404,
+    "handsAboveSpine": -0.093,
     "root": {
-     "x": -41.798,
+     "x": -41.846,
      "y": 0,
-     "z": 1.742
+     "z": 1.747
     },
     "opp": {
      "type": null,
-     "t": 0.558,
+     "t": 0.562,
      "isKeeper": false,
      "claim": true
     },
@@ -1633,8 +1626,8 @@
      "clipAt": 0,
      "remAt": 1.21,
      "ts": 0.882,
-     "contactClipT": 1.076,
-     "cam": 149
+     "contactClipT": 1.044,
+     "cam": 144
     }
    },
    "roster": {
@@ -1648,7 +1641,7 @@
      "lod2": 22
     }
    },
-   "sceneT": 6.114799999999918
+   "sceneT": 6.179400000000361
   }
  ]
 }

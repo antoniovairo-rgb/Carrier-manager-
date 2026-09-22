@@ -1,0 +1,209 @@
+{
+ "lod0-completo-normals.png": {
+  "mesh": null,
+  "H": 1.58,
+  "diag": [
+   {
+    "name": "mesh_rep_0_ori_repair_quad002",
+    "mat": "HyperShirt",
+    "vtx": 4366,
+    "tri": 7164,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "part_00000001001",
+    "mat": "Material.001",
+    "vtx": 1503,
+    "tri": 2538,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "part_00000001002",
+    "mat": "Material.001",
+    "vtx": 1503,
+    "tri": 2538,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad",
+    "mat": "HyperLegLeft",
+    "vtx": 2961,
+    "tri": 4724,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad001",
+    "mat": "HyperLegRight",
+    "vtx": 2961,
+    "tri": 4724,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "part_00000001005",
+    "mat": "Material.002",
+    "vtx": 4866,
+    "tri": 9083,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad005",
+    "mat": "HyperShorts",
+    "vtx": 2387,
+    "tri": 4224,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   }
+  ]
+ },
+ "lod1-completo-normals.png": {
+  "mesh": null,
+  "H": 1.58,
+  "diag": [
+   {
+    "name": "part_00000001001",
+    "mat": "Material.001",
+    "vtx": 625,
+    "tri": 887,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "part_00000001002",
+    "mat": "Material.001",
+    "vtx": 625,
+    "tri": 888,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad002",
+    "mat": "HyperShirt",
+    "vtx": 1941,
+    "tri": 2507,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad",
+    "mat": "HyperLegLeft",
+    "vtx": 1375,
+    "tri": 1653,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad001",
+    "mat": "HyperLegRight",
+    "vtx": 1375,
+    "tri": 1653,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad005",
+    "mat": "HyperShorts",
+    "vtx": 952,
+    "tri": 1478,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "part_00000001005",
+    "mat": "Material.002",
+    "vtx": 1825,
+    "tri": 3178,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   }
+  ]
+ },
+ "lod2-completo-normals.png": {
+  "mesh": null,
+  "H": 1.58,
+  "diag": [
+   {
+    "name": "mesh_rep_0_ori_repair_quad",
+    "mat": "HyperLegLeft",
+    "vtx": 645,
+    "tri": 565,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "part_00000001001",
+    "mat": "Material.001",
+    "vtx": 261,
+    "tri": 304,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "part_00000001002",
+    "mat": "Material.001",
+    "vtx": 261,
+    "tri": 303,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad001",
+    "mat": "HyperLegRight",
+    "vtx": 643,
+    "tri": 566,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad002",
+    "mat": "HyperShirt",
+    "vtx": 796,
+    "tri": 858,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "part_00000001005",
+    "mat": "Material.002",
+    "vtx": 680,
+    "tri": 1088,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   },
+   {
+    "name": "mesh_rep_0_ori_repair_quad005",
+    "mat": "HyperShorts",
+    "vtx": 377,
+    "tri": 506,
+    "zeroN": 0,
+    "badN": 0,
+    "dupTri": 0
+   }
+  ]
+ }
+}

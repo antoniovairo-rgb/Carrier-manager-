@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 00:55 (Europe/Rome, orologio del container)
+**Ultimo aggiornamento:** 23 settembre 2026, 01:35 (Europe/Rome, orologio del container)
 **Stato complessivo stimato:** 64% — presa alta: gesto, contatto, possesso e inquadratura misurati nel banco; telefono e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -500,6 +500,42 @@ Prova visiva: `keeper-catch-review/presa-contatto.png` — braccia alzate, palla
 - apertura braccia max 0,69 durante la discesa (soglia presa dal dribbling 0,65): alla vista non e' una T-pose;
 - testo d'esito «Para in tuffo» contro gesto di presa alta (vedi voce 00:25);
 - **telefono: non misurato.**
+
+---
+
+## Avanzamento 23 settembre 2026, 01:35 — IL KIT A CHIAZZE: MATERIALI ESPORTATI IN BLEND (collaudo PO sul telefono)
+
+**Segnalazione PO (screenshot Android, scena «Chiama il portiere»):** «I giocatori non si vedono bene, il kit non si
+e' disegnato bene». Maglie e pelle a chiazze, bianco e color pelle sopra il rosa/azzurro.
+
+**Misura (sonda nuova `kit-lod-provino.mjs`, corpo isolato fuori dal gioco, `kit-lod-provino/`):**
+- LOD0 illuminato: rumore a quadratini su maglia, pantaloncini e pelle anche con la maglia a colore pieno;
+  LOD2: braccia sopra le maniche.
+- Nascondendo la maglia sotto non c'e' nessun corpo; indici sani (0 normali nulle, 0 triangoli duplicati).
+- **Con materiale opaco lo stesso corpo e' pulito** (`lod0-completo-basic.png`).
+- **Causa:** nel GLB tutti e 6 i materiali dei 3 LOD sono `alphaMode: BLEND`, `doubleSided: true`. In r128 = trasparente
+  senza scrittura di profondita': facce posteriori sopra le anteriori, braccia sopra le maniche.
+- L'alfa delle 5 texture e' binario (sotto 255 == sotto 128) ed e' un ritaglio.
+
+**Rimedio (solo review CGTrader, rosso `__CPM_NO_ALPHAFIX`):** al caricamento BLEND→MASK (opaco, depthWrite,
+alphaTest 0,5). Testimone `__CPM_CGTRADER_ALPHAFIX` (materiali convertiti).
+**Prova:** `kit-lod-provino/lod0-completo-mask.png`, `lod2-completo-mask.png` puliti; nel gioco
+`kit-lod-provino/gioco-dopo-alphafix.png` contro `telefono-PO-prima.jpg` (stessa scena).
+**Non regressione:** partita normale 1.103.244; `renderer.info` review 56.443, identico al prima.
+
+**Aperto:**
+- rimedio DEFINITIVO = riesportare l'asset con alphaMode MASK/OPAQUE dal sorgente Blender (decisione tua);
+- LOD2: due lembi dei pantaloncini bucano l'orlo della maglia (decimazione, geometria);
+- piccola macchia color pelle sul colletto (LOD0 e LOD2);
+- corpo in piu' intermittente con 0 ossa visibili nel conteggio dei corpi disegnati: non spiegato;
+- **non verificato sul tuo telefono.**
+
+### Scoperto sul dribbling (lavoro in corso, non ancora corretto)
+`gesto-eroe-review.mjs` (nuova, `CPM_INTENT=dribble|pass|shot`) su «Dribbling netto»: l'eroe suona `pass`, non `dribble`,
+e `__CPM_G000` conta **5 montaggi** nella scena. `_cgtraderDribbleApproach` e l'aggancio palla-piede accettano solo gli
+stati `ready-cgtrader-review/ajax/mixed-lod`: la review ottimizzata dichiara `ready-lineup`, quindi **l'approccio del
+dribbling non gira mai li'**. Lo stato `ready-cgtrader-highlight-optimized` citato in una voce precedente non esiste nel
+sorgente.
 
 ---
 

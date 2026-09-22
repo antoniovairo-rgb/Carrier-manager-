@@ -190,7 +190,7 @@
  "roster": "object",
  "budget": "function",
  "ottimizzato": true,
- "triangoli": 61351,
+ "triangoli": 60429,
  "disegni": null,
  "auditDefinito": "function",
  "avatarConVarianti": null,
@@ -198,6 +198,6 @@
  "assistenti": null,
  "fase": "hl_choose",
  "situazione": null,
- "fps": 4.5,
+ "fps": 5.3,
  "errori": []
 }

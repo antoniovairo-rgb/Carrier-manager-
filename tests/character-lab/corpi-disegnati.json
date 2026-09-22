@@ -3,11 +3,11 @@
  "rosso": false,
  "sit": 33,
  "stato": "ready-lineup",
- "oggettiDisegnati": 172,
- "triangoliDisegnati": 54588,
- "skinDisegnate": 35,
- "triangoliSkin": 51755,
- "corpiDisegnati": 5,
+ "oggettiDisegnati": 179,
+ "triangoliDisegnati": 58778,
+ "skinDisegnate": 42,
+ "triangoliSkin": 55945,
+ "corpiDisegnati": 6,
  "corpi": [
   {
    "mesh": 7,
@@ -19,25 +19,31 @@
    "mesh": 7,
    "tri": 4190,
    "bones": 75,
-   "altezza": 1.823
-  },
-  {
-   "mesh": 7,
-   "tri": 4190,
-   "bones": 75,
    "altezza": 1.825
   },
   {
    "mesh": 7,
    "tri": 4190,
    "bones": 75,
-   "altezza": 1.83
+   "altezza": 1.823
+  },
+  {
+   "mesh": 7,
+   "tri": 4190,
+   "bones": 0,
+   "altezza": null
   },
   {
    "mesh": 7,
    "tri": 4190,
    "bones": 75,
    "altezza": 1.828
+  },
+  {
+   "mesh": 7,
+   "tri": 4190,
+   "bones": 75,
+   "altezza": 1.83
   }
  ],
  "skinInScena": 483,
@@ -47,7 +53,7 @@
   "visible": 5,
   "total": 23,
   "hero": 0,
-  "keeper": 1,
+  "keeper": 11,
   "lod": {
    "lod0": 1,
    "lod1": 0,

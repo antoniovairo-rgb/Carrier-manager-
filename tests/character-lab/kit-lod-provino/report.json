@@ -1,0 +1,161 @@
+{
+ "lod0-completo.png": {
+  "mesh": null,
+  "H": 1.58
+ },
+ "lod0-senza0.png": {
+  "mesh": {
+   "name": "part_00000001001",
+   "mat": "Material.001"
+  },
+  "H": 1.58
+ },
+ "lod0-senza1.png": {
+  "mesh": {
+   "name": "part_00000001002",
+   "mat": "Material.001"
+  },
+  "H": 1.58
+ },
+ "lod0-senza2.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad002",
+   "mat": "HyperShirt"
+  },
+  "H": 1.58
+ },
+ "lod0-senza3.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad",
+   "mat": "HyperLegLeft"
+  },
+  "H": 1.58
+ },
+ "lod0-senza4.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad001",
+   "mat": "HyperLegRight"
+  },
+  "H": 1.58
+ },
+ "lod0-senza5.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad005",
+   "mat": "HyperShorts"
+  },
+  "H": 1.58
+ },
+ "lod0-senza6.png": {
+  "mesh": {
+   "name": "part_00000001005",
+   "mat": "Material.002"
+  },
+  "H": 1.58
+ },
+ "lod1-completo.png": {
+  "mesh": null,
+  "H": 1.58
+ },
+ "lod1-senza0.png": {
+  "mesh": {
+   "name": "part_00000001001",
+   "mat": "Material.001"
+  },
+  "H": 1.58
+ },
+ "lod1-senza1.png": {
+  "mesh": {
+   "name": "part_00000001002",
+   "mat": "Material.001"
+  },
+  "H": 1.58
+ },
+ "lod1-senza2.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad002",
+   "mat": "HyperShirt"
+  },
+  "H": 1.58
+ },
+ "lod1-senza3.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad",
+   "mat": "HyperLegLeft"
+  },
+  "H": 1.58
+ },
+ "lod1-senza4.png": {
+  "mesh": {
+   "name": "part_00000001005",
+   "mat": "Material.002"
+  },
+  "H": 1.58
+ },
+ "lod1-senza5.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad001",
+   "mat": "HyperLegRight"
+  },
+  "H": 1.58
+ },
+ "lod1-senza6.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad005",
+   "mat": "HyperShorts"
+  },
+  "H": 1.58
+ },
+ "lod2-completo.png": {
+  "mesh": null,
+  "H": 1.58
+ },
+ "lod2-senza0.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad",
+   "mat": "HyperLegLeft"
+  },
+  "H": 1.58
+ },
+ "lod2-senza1.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad001",
+   "mat": "HyperLegRight"
+  },
+  "H": 1.58
+ },
+ "lod2-senza2.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad002",
+   "mat": "HyperShirt"
+  },
+  "H": 1.58
+ },
+ "lod2-senza3.png": {
+  "mesh": {
+   "name": "part_00000001001",
+   "mat": "Material.001"
+  },
+  "H": 1.58
+ },
+ "lod2-senza4.png": {
+  "mesh": {
+   "name": "part_00000001002",
+   "mat": "Material.001"
+  },
+  "H": 1.58
+ },
+ "lod2-senza5.png": {
+  "mesh": {
+   "name": "mesh_rep_0_ori_repair_quad005",
+   "mat": "HyperShorts"
+  },
+  "H": 1.58
+ },
+ "lod2-senza6.png": {
+  "mesh": {
+   "name": "part_00000001005",
+   "mat": "Material.002"
+  },
+  "H": 1.58
+ }
+}
