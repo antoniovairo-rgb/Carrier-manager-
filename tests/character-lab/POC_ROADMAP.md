@@ -454,3 +454,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatti verificati:** Avaturn dichiara avatar realistici GLB, rig umanoide, capelli ricolorabili e compatibilita Mixamo. Il sito creatore e bloccato da Zscaler, ma un campione pubblico e stato ispezionato solo per audit: `31.181` triangoli, 11 mesh pesate, 55 bone deformanti e due mesh capelli separate.
 - **Prova locale:** il rig ha trovato 52/52 ossa nel trasferimento della clip Korward `dribble`, senza trasformazioni non finite. Le mani percorrono `0,6011 m` e `0,4288 m`; i piedi `0,8895 m` e `0,8610 m`. A differenza di MetaPerson, la posa non collassa nel primo test strutturale.
 - **Limiti e decisione:** il campione e dichiarato non commerciale e non viene adottato o pubblicato; manca kit da calcio, LOD e review visiva. Avaturn diventa un candidato promettente da provare con un export ufficiale, mentre il CGTrader resta attivo. Gate completo: [AVATURN_PUBLIC_SAMPLE_GATE.md](AVATURN_PUBLIC_SAMPLE_GATE.md).
+
+## 2026-09-22 — Avaturn non proporzionato al budget del progetto
+
+- **Fatto verificato:** la pagina prezzi ufficiale Avaturn presenta il piano Pro a `$800/mese`, che include l'upload di capi personalizzati; la documentazione indica API e Web SDK come funzioni del pacchetto a pagamento.
+- **Conseguenza:** l'avatar base puo essere esportabile, ma non esiste evidenza che la nostra divisa da calcio possa entrare nel configuratore gratuito. Il requisito kit renderebbe necessaria una spesa ricorrente sproporzionata, oltre al blocco Zscaler.
+- **Decisione:** Avaturn non viene perseguito come modello Korward. Il test rig positivo resta evidenza comparativa, mentre il CGTrader rimane la base economicamente e tecnicamente piu concreta.

@@ -38,3 +38,9 @@ MetaPerson aveva volto e capelli migliori, ma falliva lo stesso provino locale c
 ## Decisione
 
 **Candidato promettente, non adottato.** La prova commerciale richiede un export ufficiale Avaturn con licenza d'uso per il gioco, una divisa calcistica conforme e LOD verificati. Il dominio `avaturn.me` e al momento bloccato da Zscaler, quindi non e possibile creare/esportare l'avatar ufficiale da questa rete. Il CGTrader resta il modello attivo finche questi requisiti non vengono provati.
+
+## Verifica commerciale successiva
+
+La pagina prezzi ufficiale indica il piano **Pro a $800/mese** per l'upload di capi personalizzati; la documentazione colloca inoltre API e Web SDK nel pacchetto a pagamento. L'integrazione base e dichiarata gratuita, ma non consente di assumere che la nostra maglia da calcio possa essere caricata senza tale piano.
+
+**Decisione aggiornata:** non proseguire verso Avaturn come base del gioco. Resta un riferimento tecnico positivo per rig e personalizzazione, ma il costo ricorrente per il kit personalizzato e il blocco Zscaler lo rendono non proporzionato alla POC.
