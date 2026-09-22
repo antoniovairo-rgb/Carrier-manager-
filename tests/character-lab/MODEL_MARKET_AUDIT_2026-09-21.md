@@ -101,3 +101,9 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Football Player Parker (CGTrader):** dichiara rig Maya/Blender, controlli facciali e texture 1K/2K, ma 105.366 triangoli. Anche escludendo kit e possibili problemi di licenza, il solo Hero e' oltre tre volte il CGTrader sorgente e richiederebbe un nuovo rig/retarget. **Rifiutato senza acquisto.**
 - **African Football Soccer Player Male gratuito (CGTrader):** la pagina dichiara un calciatore generico riggato con 15 animazioni FBX; non pubblica triangoli, LOD, materiali PBR, morph o tagli modulari. Resta l'unico candidato gratuito da sottoporre a file-audit se sara' ottenibile con download autenticato, ma non e' un modello alternativo approvato.
 - **Esito:** dopo il confronto, nessun pacchetto pronto acquistabile soddisfa contemporaneamente volto adulto, kit neutro, varianti vere e budget mobile meglio della combinazione corrente: CGTrader come runtime e Human Generator come generatore da provare in isolamento.
+
+## 2026-09-22 — Vitruvian CC0: audit reale, non adatto al runtime
+
+- **Fatto verificato:** il repository open-source Vitruvian distribuisce asset CC0 con volto FACS, corpo Mixamo da 52 joint e haircards riggate. E' una fonte legittima da studiare, senza dipendenza da licenze commerciali.
+- **Misura reale:** volto 36.696 triangoli, corpo 106.084, capelli 242.720; la composizione minima e' 385.500 triangoli. Sedici texture fino a 2K corrispondono a circa 193 MiB RGBA decodificati.
+- **Decisione:** rifiutato come modello Korward. Manca il kit da calcio, testa/capelli sono componenti separati e il budget e' incompatibile con Hero mobile e squadra. Il gate riproducibile e' `VITRUVIAN_CC0_GATE.md`.

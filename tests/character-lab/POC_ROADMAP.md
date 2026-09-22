@@ -513,3 +513,9 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Fatti verificati:** il pacchetto con 30 capelli e' stilizzato e pesa 87.784 poligoni; il modello Parker con rig facciale pesa 105.366 triangoli. Entrambi falliscono il gate estetico o mobile prima dell'acquisto.
 - **Candidato da file-audit:** African Football Soccer Player Male gratuito dichiara rig e 15 animazioni, ma mancano dati su triangoli, LOD, morph e modularita'. Non e' ancora adottato.
 - **Decisione:** non cambiare base e non acquistare. Prosegue l'audit di fonti gratuite e il test Human Generator isolato quando autorizzato; MetaPerson verra' misurato solo quando il browser controllato potra' usare l'accesso.
+
+## Aggiornamento 22 settembre 2026 — audit Vitruvian CC0
+
+- **Fatto verificato:** il candidato open-source Vitruvian ha volto FACS e rig Mixamo, ma la sua combinazione cruda supera 385.500 triangoli e circa 193 MiB di texture decodificate.
+- **Decisione:** non adottare: manca il kit da calcio, i componenti sono separati e il budget mobile fallisce prima del retarget. Resta soltanto una fonte di riferimento per un futuro sistema volti.
+- **Prossimo criterio:** un candidato potra' sostituire il CGTrader soltanto se porta un adulto credibile con kit neutro, capelli/barba modulari e costo misurato inferiore al budget Hero/LOD.
