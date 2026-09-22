@@ -411,3 +411,10 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatto verificato:** lo stesso `model5` pesa 68.758 triangoli, non ha un kit da calcio, e fallisce due provini locali del dribbling: il trasferimento delle clip deforma busto e gambe fino a renderli non leggibili. Il rig ha 65 nomi anatomici compatibili su 65, ma assi e posa di riposo sono incompatibili con l'attuale retargeter.
 - **Decisione corretta:** MetaPerson non e un sostituto pronto per la POC corrente. Il CGTrader resta il modello attivo perche ha gia superato il gate locale del dribbling con palla e braccia coordinate. MetaPerson puo restare una fonte futura per il sistema volti, solo con un retargeter dedicato e nuovi LOD.
 - **Conferma tecnica esterna:** la documentazione ufficiale dichiara export GLB/glTF/FBX, LOD 1/2 e texture fino a 1K; queste opzioni non correggono da sole il fallimento di retarget e il kit civile.
+
+## 2026-09-22 — Human Generator trial scaricato e ispezionato
+
+- **Fatto verificato:** la trial ufficiale e presente localmente, senza installazione: add-on `5.059.083` byte e contenuto `269.224.756` byte.
+- **Fatto verificato:** il contenuto mostra anteprime di numerosi tagli maschili, barbe e baffi, ma sblocca come geometria effettiva un solo taglio (`Short Side Part`) e un solo outfit maschile. Non e presente un kit da calcio pronto; la pose `football_kick` e solo una preview di posa.
+- **Valutazione:** la trial e sufficiente per verificare compatibilita Blender, rig, export, haircards e qualita di un capello, ma non puo dimostrare una libreria di varianti utilizzabile nel gioco.
+- **Prossimo gate:** installazione isolata della trial nel Blender locale, creazione del solo maschio disponibile, export e audit tecnico. Nessuna pubblicazione, acquisto o modifica al ramo `main` e prevista.
