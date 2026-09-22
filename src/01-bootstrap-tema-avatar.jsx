@@ -349,13 +349,19 @@ function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,
               fascia col nome in basso. Ritagliare anche solo il 3 % dell'altezza taglierebbe proprio
               quella fascia — «ATTACCANTE · 24 ANNI» sta a filo del bordo inferiore. Col fondo bianco del
               riquadro, un eventuale margine di `contain` e' invisibile.
-          (2) la fascia col nome del COMPONENTE si disegna solo quando l'arte NON c'e': con l'arte
-              sarebbe un secondo nome sopra il primo. */}
+          (2) [7.978.0 — CORRETTO dall'handoff del team character-lab, 22/09 sera] la fascia col nome del
+              COMPONENTE si disegna SEMPRE, arte o no. Nel 7.974 l'avevo soppressa con l'arte per non fare
+              «un secondo nome sopra il primo» — ma quel primo nome non esisteva: l'handoff dichiara che
+              nel file d'esempio «Marco Rinaldi e il suo ruolo sono soltanto testo dimostrativo», cioe'
+              avevo preso un MOCK-UP per una specifica. La regola vera: nome, cognome e ruolo li fornisce
+              IL GIOCO dai dati di carriera, e il catalogo dei volti non conserva nomi ne' ruoli. Chi
+              disegna lascia l'ultima fascia leggibile e libera. `contain` resta: serve a non tagliare la
+              cornice. Rischio oggi nullo — in produzione non e' montata nessuna arte. */}
       {url
         ?<img src={url} alt={nome||""} width={w} height={h} loading="lazy" decoding="async"
            style={{width:"100%",height:"100%",objectFit:"contain",display:"block",background:"#ffffff"}}/>
         :(ritratto!=null?<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>{ritratto}</div>:null)}
-      {conNome&&!url&&(
+      {conNome&&(
         <div style={{position:"absolute",left:0,right:0,bottom:0,padding:"3px 5px",
           background:"linear-gradient(0deg,rgba(255,255,255,0.96),rgba(255,255,255,0.78) 62%,transparent)"}}>
           <div style={{fontSize:FS.caption,fontWeight:800,color:"#1e293b",lineHeight:1.15,
