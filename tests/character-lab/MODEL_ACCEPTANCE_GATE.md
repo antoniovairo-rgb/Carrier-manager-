@@ -45,3 +45,17 @@ La decisione resta il modello acquistato **Soccer Player di Hisenberg/CGTrader**
 - **LOD animati compatibili:** LOD1 12.244 triangoli/7,07 MB e LOD2 4.190 triangoli/4,12 MB. Il validatore conferma per tutti e tre i livelli 75 joint nello stesso ordine, 7 primitive skinned e 31 clip identiche per nome/durata.
 
 Questi sono **PASS tecnici locali**. Non sono ancora una promozione nel gioco: occorrono selettore LOD runtime, ripresa sul dispositivo mobile, frame time/FPS e conferma di licenza per distribuire i file acquistati o derivati nel repository pubblico. Il percorso ufficiale `?hyperCharacter=full` resta volutamente Hyper fino alla chiusura dei quality gate.
+
+## Separabilita` delle caratteristiche del volto — 22 settembre 2026
+
+L'ispezione del builder delle varianti e della sorgente Blender conferma che la
+mesh della testa `part_00000001.005` usa un solo materiale texture con una sola
+immagine `HEAD`: capelli, pelle, occhi e sopracciglia sono nello stesso atlante.
+Le quattro varianti approvate sostituiscono l'intera texture con versioni
+ritoccate dall'autore, lasciando invariata la mesh. Non esiste una mesh occhi o
+un materiale pelle separato da usare per tint o colori arbitrari.
+
+Per questo non vengono promosse varianti automatiche di pelle o occhi: una
+correzione per soglia/colore rischierebbe di modificare anche capelli,
+sopracciglia o dettagli del volto. Le sole varianti corrette del package restano
+il taglio nativo in nero, castano, biondo e ramato.
