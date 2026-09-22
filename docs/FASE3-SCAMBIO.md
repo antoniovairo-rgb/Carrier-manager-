@@ -6319,3 +6319,6 @@ più quattro cose che erano già costate tempo altrove:
 - la verifica del ref remoto con un `git fetch` esplicito dopo il push, perché `git push`
   non aggiorna da solo il ref di tracciamento e lo stop-hook segnala falsi «non pushati».
 
+- **Produzione allineata a `37428c5` (7.958.0) il 22/09/2026 03:40**, rituale completo verde: `career-critical` (una Coppa intera si chiude, la coda non si allunga due volte, il trofeo si alza solo in finale) e `ci` (la catena intera, compresi gate 14/14, maxischermo ancorato in 9 impianti su 9 con le due prove del rosso riuscite). Il ramo era già in pari con `main`: il push è uscito «Everything up-to-date», quindi nessun avanzamento di produzione stanotte — l'allineamento è la **certificazione** di ciò che è già online, non un rilascio.
+  ⚠️ **Rosso noto e dichiarato, che questa catena NON copre**: `match-sequence` (determinismo della cronaca) è rosso **anche su questo build** e lo era già sulla 7.957 — verificato ricostruendo. La stessa partita giocata due volte alla stessa velocità diverge al minuto 35, dove la stessa riga esce con un **protagonista diverso**. È il primo lavoro del motore, ed è la ragione per cui quel guardiano va messo nella catena obbligatoria.
+  **NON VERIFICATO**: è Chromium headless, non l'Android del PO.
