@@ -436,3 +436,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatti verificati:** la preview mostra una singola silhouette maschile adulta con riga laterale, barba e baffi. La scheda dichiara materiali con colori radice/punte regolabili, supporto Blender/FBX/GLB e prezzo `20,20 EUR` su Fab.
 - **Limite tecnico:** la scheda CGTrader dello stesso p6 dichiara `24.404` poligoni per l'asset. Per aggiungerlo al CGTrader, il solo dettaglio capelli/barba sarebbe vicino al costo di un intero giocatore LOD1 e richiederebbe decimazione e fit non ancora dimostrati.
 - **Decisione:** non acquistare p6. E una singola acconciatura credibile, non una libreria, e non porta un vantaggio verificato proporzionato al costo e al budget mobile. La ricerca continua su una base modulare completa o sulla prova Human Generator.
+
+## 2026-09-22 — confronto con Realistic Soccer Player V2 su Fab
+
+- **Fatti verificati:** la scheda [Realistic Soccer Player V2 — Rigged](https://www.fab.com/listings/914995a2-86f0-4a86-b5f1-b084e2e273d0?lang=en) dichiara uomo adulto riggato, FBX/GLB/OBJ/Blender, topologia `17.891 / 17.501`, prezzo `15,94–21,26 EUR` e un file Blender da `118,44 MB`.
+- **Review visiva:** la preview mostra un calciatore adulto con capelli corti naturali e kit bianco semplice. Non espone capelli modulari, barbe, morph facciali, LOD verificabili, animazioni comprese o prove sul rig. La qualità del volto e della divisa non dimostra un vantaggio netto sul CGTrader gia acquistato.
+- **Decisione:** non acquistare. E piu leggero sulla carta, ma non riduce i rischi rimasti (varianti, compatibilita delle clip, mobile) e richiederebbe un nuovo audit completo. Il CGTrader resta la base attiva; la ricerca continua su fonti che aggiungano varianti reali e verificabili.
