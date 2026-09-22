@@ -56,6 +56,12 @@ try {
          gate e' e resta il TELEFONO. */
       triangoli: (() => { try { return window.__CPM_TRI907 ? window.__CPM_TRI907() : null; } catch (e) { return null; } })(),
       disegni: (() => { try { const r = window.__CPM_RENDER_INFO?.(); return r ? r.calls : null; } catch (e) { return null; } })(),
+      /* [23/09] diagnosi del trio LOD: se l'audit non risponde bisogna sapere SE i pacchetti sono
+         arrivati e SE gli avatar hanno le varianti, altrimenti si tira a indovinare. */
+      auditDefinito: typeof window.__CPM_CGTRADER_LOD_AUDIT,
+      avatarConVarianti: (() => { try { const l = window.__CPM_CGTRADER_LOD_MIX?.(); return l ?? null; } catch (e) { return null; } })(),
+      animazioni: (window.__CPM_HYPER_ANIMATIONS || []).length,
+      assistenti: window.__CPM_HYPER_ASSISTANTS ?? null,
       fase: window.__CPM_PHASE?.() ?? null,
       situazione: (window.__CPM_CURSIT?.() || {}).text ?? null,
     };
@@ -71,6 +77,7 @@ try {
   console.log(`  situazione aperta : ${foto.situazione ?? '(nessuna)'}  · fase ${foto.fase}`);
   console.log(`  flag ottimizzato  : ${foto.ottimizzato}`);
   console.log(`  corpi per LOD     : ${JSON.stringify(foto.lod)}`);
+  console.log(`  LOD_AUDIT definito: ${foto.auditDefinito}   · clip caricate: ${foto.animazioni} · assistenti: ${JSON.stringify(foto.assistenti)}`);
   console.log(`  __CPM_CGTRADER_CINEMA_ROSTER  : ${foto.roster}${foto.roster === 'undefined' ? '   ← ASSENTE' : ''}`);
   console.log(`  __CPM_CGTRADER_RENDER_BUDGET  : ${foto.budget}${foto.budget === 'undefined' ? '   ← ASSENTE' : ''}`);
   console.log(`  TRIANGOLI RENDERIZZATI        : ${foto.triangoli}   ← il metro vero: non dipende dalla GPU`);

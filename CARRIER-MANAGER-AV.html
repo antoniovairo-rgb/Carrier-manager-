@@ -12802,7 +12802,13 @@ function ThreeMatchView(props){
         /* Prebuild the three compatible animated LOD visuals under the same
            avatar root. Only one visual and one mixer are active at a time;
            switching therefore preserves position, kit and logical player. */
-        if(_cgtraderMixedLodBenchmark&&Array.isArray(lodPackages)&&lodPackages.length===3){
+        /* [23/09] la guardia era `_cgtraderMixedLodBenchmark && …`: passavo i tre pacchetti dalla review
+           ottimizzata e questo ramo li IGNORAVA, quindi le varianti non nascevano e
+           `__CPM_CGTRADER_LOD_AUDIT` non veniva nemmeno definito — l'audit rispondeva `null` non perche'
+           non contasse nulla, ma perche' NON ESISTEVA. Ora la condizione guarda gli ARGOMENTI: se arrivano
+           tre pacchetti, le varianti si costruiscono. Una funzione deve reagire a cio' che riceve, non a
+           una variabile di modalita' che per giunta qui non sarebbe nemmeno in scope. */
+        if(Array.isArray(lodPackages)&&lodPackages.length===3){
           const _stateOf=a=>({visualRoot:a.visualRoot,mx:a.mx,idle:a.idle,run:a.run,gestures:a.gestures,_locoClips:a._locoClips,spine:a.spine,_handL:a._handL,_handR:a._handR,_footL:a._footL,_ballL:a._ballL,_footR:a._footR,_ballR:a._ballR,_armB:a._armB,_cgLod:a._cgLod});
           const _makeVariant=(host,avatarPkg,index)=>{
             const visual=_cloneHyperVisual(avatarPkg,hashStr('hyper-lod-'+(host.proc._sd||index)+'-'+(avatarPkg._cgLod||'x')));host.root.add(visual);visual.updateMatrixWorld(true);
@@ -12896,13 +12902,29 @@ function ThreeMatchView(props){
         try{window.__CPM_HYPER_ASSISTANTS={avatars:made.length,legacyVisible:0};}catch(_e){}
         return made;
       };      if(_hyperHero){
-        const _hyperAssetUrls=_cgtraderMixedLodBenchmark?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
+        /* [23/09 — IL TRIO LOD ANCHE PER LA REVIEW OTTIMIZZATA. Rosso appaiato: __CPM_NO_TRIO]
+          MISURATO prima: `__CPM_CGTRADER_LOD_AUDIT()` rispondeva `null`, e la causa sta proprio qui —
+          il trio lod0/lod1/lod2 veniva caricato SOLO da `cgtrader-mixed-lod-benchmark`, mentre
+          `cgtrader-highlight-optimized` riceveva il solo lod0. Senza gli altri due livelli nessun avatar
+          poteva ricevere `_cgLod`, quindi l'audit non aveva niente da contare e il roster teneva corpi
+          pieni anche per chi sta lontano. Il meccanismo di assegnazione esisteva gia' ed e' provato: si
+          riusa, non si riscrive. */
+          const _trioLod=(_cgtraderMixedLodBenchmark||(_cgtraderHighlightOptimized&&!(typeof window!=='undefined'&&window.__CPM_NO_TRIO)));
+          const _hyperAssetUrls=_trioLod?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
         Promise.allSettled(_hyperAssetUrls.map(url=>loadGLB(url))).then(results=>{
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
-          if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');if(_cgtraderMixedLodBenchmark&&packages.length!==3)throw new Error('CGTrader mixed LOD packages are incomplete');if(_cgtraderMixedLodBenchmark)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
+          if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');if(_trioLod&&packages.length!==3)throw new Error('CGTrader mixed LOD packages are incomplete');if(_cgtraderMixedLodBenchmark)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
+          /* [23/09 — IL PEZZO CHE MANCAVA, ed e' quello che rendeva invisibili i corpi.
+          Le varianti LOD nascono `visible=false` e vengono accese da `_activateCgtraderLod`, che pero' le
+          cerca per NOME (`variants['lod0']`). Senza questa etichetta i pacchetti arrivavano con `_cgLod`
+          nullo: le varianti nascevano sotto la chiave `null`, nessuna veniva mai attivata, e il risultato
+          MISURATO era un bounding box alto 0,021 contro uno scheletro di 1,837 — cioe' scheletri senza
+          mesh. I triangoli erano crollati a 30.546 e sembrava un successo: era invece la scena vuota.
+          Terza volta stasera che un numero di prestazione migliorato di colpo nascondeva un difetto. */
+          if(_trioLod)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
           pkg._variants=packages;
           try{window.__CPM_HYPER_ANIMATIONS=(pkg.animations||[]).map(c=>c&&c.name).filter(Boolean);}catch(_e){}
-          if(_hyperIntro){if(_cgtraderMixedLodBenchmark){const lods=packages;_replaceIntroLineupWithHyper(pkg,(old,index)=>{if(index===0||old.proc===hero)return lods[0];const dx=old.root.position.x-hero.position.x,dz=old.root.position.z-hero.position.z;return Math.hypot(dx,dz)<24?lods[1]:lods[2];},lods);}else _replaceIntroLineupWithHyper(pkg);}else _replaceHeroWithHyper(pkg);
+          if(_hyperIntro){if(_trioLod){const lods=packages;_replaceIntroLineupWithHyper(pkg,(old,index)=>{if(index===0||old.proc===hero)return lods[0];const dx=old.root.position.x-hero.position.x,dz=old.root.position.z-hero.position.z;return Math.hypot(dx,dz)<24?lods[1]:lods[2];},lods);}else _replaceIntroLineupWithHyper(pkg);}else _replaceHeroWithHyper(pkg);
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
           try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderAjaxReview?'ready-cgtrader-ajax-review':(_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_cgtraderMixedLodBenchmark?'ready-cgtrader-mixed-lod-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready')))));}catch(_e){}
         }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});

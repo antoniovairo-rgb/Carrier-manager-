@@ -1,14 +1,203 @@
 {
  "modo": "cgtrader-highlight-optimized",
  "sit": 33,
- "lod": null,
+ "lod": {
+  "avatars": 23,
+  "active": {
+   "lod0": 1,
+   "lod1": 0,
+   "lod2": 22
+  },
+  "heroLod": "lod0",
+  "variants": 69,
+  "heights": [
+   {
+    "hero": true,
+    "lod": "lod0",
+    "boundsHeight": 0.021,
+    "skeletonHeight": 1.837,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.817,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.819,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.812,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.829,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.823,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.814,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.83,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.825,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.817,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.83,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.817,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.819,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.812,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.829,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.823,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.814,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.83,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.825,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.817,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.83,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.827,
+    "skeletonBones": 75
+   },
+   {
+    "hero": false,
+    "lod": "lod2",
+    "boundsHeight": 0.02,
+    "skeletonHeight": 1.83,
+    "skeletonBones": 75
+   }
+  ],
+  "nativeHair": {
+   "black": 4,
+   "brown": 14,
+   "blond": 2,
+   "auburn": 3,
+   "missing": 0
+  },
+  "stats": {
+   "swaps": 0,
+   "technicalPromotions": 0,
+   "blocked": 0,
+   "last": null
+  }
+ },
  "roster": "object",
  "budget": "function",
  "ottimizzato": true,
- "triangoli": 183649,
+ "triangoli": 30546,
  "disegni": null,
+ "auditDefinito": "function",
+ "avatarConVarianti": null,
+ "animazioni": 31,
+ "assistenti": null,
  "fase": "hl_choose",
  "situazione": null,
- "fps": 3.5,
+ "fps": 7.3,
  "errori": []
 }

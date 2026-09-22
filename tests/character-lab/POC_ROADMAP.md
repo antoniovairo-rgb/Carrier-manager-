@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 00:45 (Europe/Rome)
+**Ultimo aggiornamento:** 23 settembre 2026, 01:30 (Europe/Rome)
 **Stato complessivo stimato:** 70% — ridotto dopo il censimento di un debito strutturale (`src/` non allineato al file di gioco); non è un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -262,6 +262,60 @@ Caricare il trio **LOD0/1/2** e promuovere l'Hero e il contesto attivo a LOD0, i
 `__CPM_CGTRADER_LOD_AUDIT()` smetta di rispondere `null`. **Chiude quando** l'audit riporta i tre livelli
 con Hero in LOD0, **i triangoli scendono ancora** rispetto ai 183.649 di adesso, e la partita normale resta
 a 1.103.244.
+
+---
+
+## Avanzamento 23 settembre 2026, 01:30 — IL TRIO LOD E' CARICATO E ASSEGNATO, MA LE MESH NON SI MONTANO
+
+**Lavoro aperto, non chiuso.** Tre difetti trovati e corretti in catena, un quarto **trovato e NON risolto**.
+
+### Corretti (ognuno misurato, non dedotto)
+
+1. **Il trio non veniva caricato**: gli asset lod0/lod1/lod2 erano richiesti solo da
+   `cgtrader-mixed-lod-benchmark`; a `cgtrader-highlight-optimized` arrivava il solo lod0. Esteso.
+2. **Il ramo che costruisce le varianti li ignorava**: la guardia interna era ancora
+   `_cgtraderMixedLodBenchmark && …`, quindi i tre pacchetti passati venivano scartati e
+   `__CPM_CGTRADER_LOD_AUDIT` **non veniva nemmeno definito** — rispondeva `null` non perche' contasse
+   zero, ma perche' **non esisteva**. Ora la condizione guarda gli **argomenti**: una funzione deve reagire
+   a cio' che riceve, non a una variabile di modalita' (che li' non sarebbe neppure in scope).
+3. **I pacchetti non erano etichettati**: senza `entry._cgLod=['lod0','lod1','lod2'][index]` le varianti
+   nascevano sotto la chiave `null` e nessuna poteva essere attivata per nome. Pezzo ripreso dalla copia
+   di recupero.
+
+**Risultato di questi tre:** `LOD_AUDIT` risponde, **23 avatar con 23 varianti**,
+**`active: {lod0:1, lod1:0, lod2:22}`**, **`heroLod:"lod0"`** — l'eroe a piena risoluzione, gli altri
+ventidue in LOD2, esattamente la politica richiesta.
+
+### ❌ Il difetto che resta, e il numero che NON va creduto
+
+**I corpi non sono renderizzati.** Misurato: `boundsHeight` **0,021** contro `skeletonHeight` **1,837**, e
+`stats.swaps: 0`. Sono **scheletri senza mesh**: le varianti nascono `visible=false` e nessuna viene mai
+accesa.
+
+**Quindi i 30.546 triangoli NON sono un successo**: sono una scena vuota. Il rosso era 813.559 e il
+bersaglio ragionevole e' intorno ai 60-70.000 (un LOD0 da ~35.000 piu' quattro LOD2), **non trentamila**.
+
+> **Regola che questa serata ha ribadito tre volte**: un numero di prestazione che migliora di colpo va
+> sospettato prima di essere festeggiato. Prima 60 FPS con TRIANGOLI 0 (3D mai montato), poi 30.546
+> triangoli per scheletri senza corpo. Senza un secondo metro — le altezze del bounding box — **entrambi
+> sarebbero passati per vittorie**.
+
+### Stato dei criteri di chiusura
+
+| criterio | esito |
+| --- | --- |
+| `CINEMA_ROSTER` e `RENDER_BUDGET` rispondono | ✅ |
+| `LOD_AUDIT` riporta il trio con Hero in LOD0 | ✅ `{lod0:1, lod1:0, lod2:22}`, `heroLod:"lod0"` |
+| triangoli giu' dal rosso **con i corpi visibili** | ❌ **i corpi non si vedono**: il numero non vale |
+| la partita normale non cambia | ⏸ da ri-misurare dopo il rimedio |
+| FPS | ⏸ gate telefono, **FAIL aperto** |
+
+### Prossimo lavoro
+
+Capire perche' `_activateCgtraderLod` non accende mai una variante (`swaps: 0`) e perche' la variante
+corrispondente al `_cgLod` iniziale resta invisibile. **Chiude quando** `boundsHeight` torna coerente con
+`skeletonHeight` (~1,8), i triangoli si assestano intorno ai 60-70.000 **con i corpi visibili**, e la
+partita normale resta a 1.103.244.
 
 ---
 
