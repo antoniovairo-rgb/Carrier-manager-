@@ -1,0 +1,39 @@
+# Audit candidati modello 3D — 21 settembre 2026
+
+## Requisiti
+
+- calciatore maschile adulto, credibile in una partita;
+- rig esportabile FBX/GLB e T/A-pose;
+- materiali e UV modificabili per squadre e Hero;
+- budget mobile: il modello non deve imporre texture 4K o geometria eccessiva a tutti i 22 giocatori;
+- nessun uso di CH38 o Quaternius.
+
+## Candidati verificati
+
+| Candidato | Evidenza tecnica pubblica | Valutazione per Korward |
+|---|---|---|
+| **Soccer Player — Rigged Low-poly (Hisenberg, gia acquistato)** | [CGTrader](https://www.cgtrader.com/3d-models/character/man/realistic-soccer-player-v2-rigged): 17.891 poligoni, rig, T-pose, FBX/GLB/BLEND/OBJ, UV e PBR; listing verificato CGTrader. | **Miglior base disponibile sotto budget.** E tecnicamente adatto, ma non chiude da solo le varianti viso/capelli ne il budget di 22 player: servono LOD/material batching e una review estetica del volto nel runtime. |
+| **Soccer Player Male — Rigged (Fab)** | [Fab](https://www.fab.com/listings/eb4e1807-c899-41d9-9b6e-3ce4d1e782d6): uomo, professionista, rig, T-pose, FBX/GLB/BLEND/OBJ e tag modular/PBR dichiarati. | **Candidato secondario.** La pagina non pubblica triangoli, texture o informazioni sulle varianti anatomiche; non acquistare senza preview e file tecnici. |
+| **GoE Realistic Character Creator (DanilGOE)** | [Superhive](https://superhivemarket.com/products/realistic-male--female-character-creator-bundle--rigged--280-blendshapes--arkit-52--blender-add-on): due basi riggate, 140+ shape key per personaggio (viso/corpo/espressioni), Blender source e helper GLB/FBX. La descrizione cita colori per capelli/sopracciglia; non dichiara tagli capelli diversi nel pacchetto base. | **Candidato per varianti facciali, non ancora per Korward.** La licenza commerciale indicata costa $399, non esiste un file da ispezionare e non sono pubblicati triangoli, texture o un kit da calciatore. Non comprare senza campione esportato, audit mobile e verifica della licenza. || **Argentinian Footballer (luis77)** | [CGTrader](https://www.cgtrader.com/3d-models/character/man/argentinian-footballer): $25, rig, quattro animazioni campione, FBX, PBR, 64.892 poligoni/33.093 triangoli e texture 4K. | **Escluso per mobile.** Migliore dettaglio ma texture e poligoni rendono il costo dei 22 giocatori peggiore del modello acquistato. |
+| **Lamine Yamal CC-BY** | [Sketchfab](https://sketchfab.com/3d-models/lamine-yamal-model-69084075f1d8454a90570013b00e02cd): gratuito CC-BY, rig dichiarato, 49,1k triangoli. | **Escluso.** Troppo pesante, likeness di un atleta reale e nessuna prova di modularita o rig compatibile. |
+| **TurboSquid Football Player Game Ready** | [2208226](https://www.turbosquid.com/3d-models/3d-football-player-game-ready-2208226): 20.404 poligoni dichiarati; [2208090](https://www.turbosquid.com/3d-models/football-player-game-ready-3d-model-2208090): 26.409 poligoni dichiarati. | **Solo benchmark commerciale.** Pagine non consentono di verificare qui prezzo, licenza, skeleton, varianti e dimensioni texture; nessun acquisto o promozione. |
+| **Football Soccer Players — Animated & Rigged (Studio Ochi)** | [Sketchfab](https://sketchfab.com/3d-models/football-soccer-players-animated-rigged-14a393bdace245718c8e172c1b31628b): 9,5k triangoli / 4,8k vertici, FBX/OBJ/GLB rest pose, FBX/BLEND con sei animazioni e texture. | **Escluso come modello di partita.** La preview disponibile mostra un look flat-shaded, da folla low-poly: il budget e ottimo ma non soddisfa l'obiettivo di calciatori adulti credibili. Potrebbe servire solo come pubblico, fuori scope. |
+| **Football Soccer Players Animated Rigged (3djoenish)** | [CGTrader](https://www.cgtrader.com/3d-models/sports/game/football-soccer-players-animated-rigged): $7, 26.158 poligoni, 20.137 vertici, rig/PBR/UV e 11 texture/animazioni dichiarate; download per formato 748 MB. | **Non promosso.** Il pacchetto promette varietà, ma il peso di distribuzione e il look low-poly della preview non danno un vantaggio provato rispetto alla base Hisenberg; skeleton, materiali per giocatore e texture non sono stati ispezionati nei file. |
+| **Soccer Player ROMA rigged (Imperium Design)** | [TurboSquid](https://www.turbosquid.com/3d-models/3d-rigged-soccer-player-model/842871): 6.480 poligoni player, FBX/3ds Max, 20 animazioni, texture corpo/kit 2K e testa 1K. | **Escluso.** Il budget è interessante ma costa $119 ed è dichiarato solo per uso editoriale a causa del brand Roma/Nike: non è utilizzabile per Korward commerciale. |
+| **Soccer Players 2018 Rigged Pack ROW (Imperium Design)** | [TurboSquid](https://www.turbosquid.com/3d-models/3d-model-pack-rigged-soccer-player-1293250): 5.574 poligoni, un rig con sei kit/teste/skin combinabili e FBX; texture 2K. | **Escluso.** Tecnicamente è il più vicino a un LOD con varietà, ma costa $299 ed è anch'esso editoriale per le livree federali: non può entrare nel prodotto. |
+| **Shinji Kagawa game-ready (2017)** | [3DExport](https://3dexport.com/3d-model-shinji-kagawa-football-player-game-ready-character-171314): 6.291 poligoni, 6.536 vertici, rig e texture 2K; dichiara target mobile. | **Escluso.** Likeness e kit Borussia Dortmund rendono il modello non adatto al prodotto generico; il dato mobile è interessante ma non annulla il rischio legale/estetico. |
+| **3DPassion / TurboSquid World Cup 2026** | Esempi [Harry Kane](https://www.turbosquid.com/FullPreview/Index.cfm/ID/2556153) e [Mbappé](https://www.turbosquid.com/FullPreview/2556350): FBX/GLB/Blender dichiarati ma 41–45k poligoni e uso editoriale. | **Escluso.** Sono likeness di atleti reali, fuori budget mobile e non utilizzabili come base generica. |
+
+## Decisione corrente
+
+Il modello Hisenberg acquistato non va scartato: la sua scheda fornisce le caratteristiche tecniche piu equilibrate tra i candidati verificabili. Le anomalie mostrate nelle preview precedenti non dimostrano che la base sia sbagliata: derivavano dalle prove hair/texture e dalla scena di integrazione. La priorita e correggere l'asset derivato e l'integrazione, non comprare un secondo modello senza un vantaggio tecnico provato.
+
+### Misura locale del file destinato al runtime
+
+L'ispezione diretta di `assets/cgtrader-player-runtime-base.glb` rende la decisione verificabile: **34.995 triangoli**, **7 primitive mesh**, **6 materiali/textures** e **68 joint deformanti**. La differenza rispetto ai 11.892 poligoni della scheda deriva dalla triangolazione del modello; non e un dato stimato. La stessa struttura separa busto, testa, arti e scarpe. Pertanto il modello e approvato come **LOD0 Hero / giocatore inquadrato**, mentre l'uso di ventidue copie a pieno dettaglio resta fuori budget fino alla riduzione di aggiornamenti, primitive o materiale. Il source `.blend` conserva 344 ossa totali, ma l'esportazione runtime rimuove i controlli non deformanti e mantiene i 68 joint effettivi.
+
+Un sostituto sara promosso solo se fornisce **insieme**: volto adulto migliore, almeno LOD o triangoli <= modello corrente, FBX/GLB/BLEND, rig ispezionabile, licenza idonea e kit modificabile. Nessun candidato verificato raggiunge oggi tutte queste condizioni.
+
+## Screening aggiuntivo — 21 settembre 2026
+
+Il confronto ha chiarito un punto utile: scendere fino a 9,5k triangoli con il pack Studio Ochi risolve il carico ma porta a una resa visiva incompatibile con l'Hero e con i giocatori inquadrati. Il pack 3djoenish aggiunge undici livree e animazioni, ma non e un LOD controllato della stessa base e impone un download di 748 MB per ogni formato; non e quindi una scorciatoia affidabile per il mobile. La scelta verificata rimane **Hisenberg per Hero e calciatori visibili**, mentre si continua a cercare un vero LOD/crowd adulto che non cambi stile visivo.
