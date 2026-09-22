@@ -398,3 +398,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Correzione verificata:** nella finestra Chrome controllata, MetaPerson mostra ancora il pulsante `Sign In`; non risulta quindi autenticata nel servizio, anche se Chrome è aperto con una sessione utente.
 - **Decisione:** non viene creato né scaricato un avatar dalla sessione non autenticata. Il pacchetto CGTrader acquistato resta la base attiva della POC e non è stato scartato.
 - **Azione necessaria:** completare manualmente l'accesso nel servizio MetaPerson nella sua pagina; dopo l'accesso posso scegliere un campione adulto maschile e avviare il download, che sarà poi analizzato localmente.
+
+## 2026-09-22 — prima valutazione visiva MetaPerson
+
+- **Fatto verificato:** il campione gratuito dell'editor è stato visualizzato: volto adulto credibile, proporzioni facciali naturali e capelli corti ordinati; non presenta occhi caricaturali né geometrie anomale sulla testa.
+- **Limite verificato:** la preview mostra solo un busto con abbigliamento generico a righe. Non dimostra kit calcistico, topologia, rig, LOD, licenza d'uso nel gioco o compatibilità con le clip.
+- **Decisione:** MetaPerson resta un candidato esplorativo per il volto, non sostituisce il modello CGTrader. Potrà essere valutato come base solo dopo un export autorizzato e i gate locali su rig, animazione, scala e prestazioni mobile.
