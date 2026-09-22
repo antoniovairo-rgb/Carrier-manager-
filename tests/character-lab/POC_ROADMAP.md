@@ -475,3 +475,10 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Decisione:** Human Generator resta un candidato di qualità per variare adulti, capelli e barba, ma non può sostituire ora il CGTrader. Il CGTrader resta l’unica base che ha già superato il provino locale di dribbling con braccia e palla coordinate.
 - **Prossimo gate:** con autorizzazione esplicita all’installazione isolata della trial, creare il solo maschio sbloccato, convertire una capigliatura in haircards, esportare e sottoporla ai gate rig/clip/scala/mobile.
 - **Precisazione verificata:** `Short Side Part.blend` non contiene un’armatura né shape key facciali; l’unica mesh `HG_Body` ha due gruppi vertice (`hair_scalp_full`, `hair_fade_mid`) usati come supporto ai due sistemi particellari. È materiale sorgente per l’add-on, non un personaggio esportabile da provare direttamente con le clip.
+
+## 2026-09-22 — provino dribbling del rig Human Generator trial
+
+- **Fatto verificato:** la base `HG_HUMAN.blend` inclusa nel trial contiene un rig `HG_Rig` di 102 ossa, 79 gruppi pesati sul corpo e 24 shape key correttive. Confrontata con la clip Korward `dribble`, tutte le 21 ossa centrali necessarie (spina, collo/testa, braccia/mani e gambe/piedi) trovano una corrispondenza; nessuna manca.
+- **Fatto verificato:** nel provino locale a 42 frame, mani, piedi, gambe e testa restano sempre con coordinate finite. Le mani percorrono `0,4495 m` e `0,2956 m`; i piedi `0,8387 m` e `0,8107 m`, su corpo alto `1,8004 m`. Il report riproducibile è `humgen-trial-dribble-probe.json`.
+- **Limite essenziale:** è una copia di rotazione locale su rig sorgente: non include traslazione radice, palla, kit, conversione haircards, export GLB, review visiva o benchmark mobile. La base nuda pesa già 73.488 triangoli contando corpo, occhi e denti: serve LOD reale prima di qualunque test squadra.
+- **Decisione:** Human Generator supera il primo gate strutturale del rig e resta il candidato alternativo più concreto per volti/capelli/barba. Non sostituisce il CGTrader finché non passa i gate completi e la licenza Commercial.

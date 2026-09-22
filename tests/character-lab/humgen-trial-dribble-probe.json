@@ -1,0 +1,36 @@
+{
+  "source_action": "dribble",
+  "mapping_count": 21,
+  "missing_source": [],
+  "missing_target": [],
+  "finite": {
+    "shoulder.L": true,
+    "shoulder.R": true,
+    "hand.L": true,
+    "hand.R": true,
+    "thigh.L": true,
+    "thigh.R": true,
+    "shin.L": true,
+    "shin.R": true,
+    "foot.L": true,
+    "foot.R": true,
+    "head": true
+  },
+  "height_m": 1.8004,
+  "motion_span_m": {
+    "hand.L": 0.4495,
+    "hand.R": 0.2956,
+    "foot.L": 0.8387,
+    "foot.R": 0.8107
+  },
+  "max_hand_shoulder_reach_m": {
+    "left": 0.6742,
+    "right": 0.6147
+  },
+  "limitations": [
+    "rotation-copy probe only",
+    "no root translation",
+    "no ball attachment",
+    "visual review and export gate still pending"
+  ]
+}
