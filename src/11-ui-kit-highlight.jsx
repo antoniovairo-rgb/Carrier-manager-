@@ -1747,7 +1747,9 @@ function deriveHL(sit,act){
      Misurate tre azioni che promettono «rasoterra» e alzano il pallone fino a 1,80u, fra cui gi111,
      la scena segnalata. Due varianti bastano: una promessa di palla a terra e una di palla alta. */
   if(type==="pass"){
-    if(/raso ?terra|rasoterra|raso|a terra|piatto/.test(lbl))variant="pass_ground";
+    if(/tacco|backheel/.test(lbl))variant="heel";
+    else if(/uno-?due|dai e vai|triangol/.test(lbl))variant="one_two";
+    else if(/raso ?terra|rasoterra|raso|a terra|piatto|corto|scarico/.test(lbl))variant="pass_ground";
     else if(/lanci|lungo|parabola|campanil|scavalc|alto|pallonett/.test(lbl))variant="pass_lofted";
   }
   if(type==="cross"){
@@ -1829,7 +1831,9 @@ function deriveHL(sit,act){
     else if(/cross|teso|raso|bass|filtrant|primo palo/.test(lbl))variant="freekick_cross_low";/* il primo palo si serve TESO, non pennellato */
     else variant="freekick_short";
   } else if(type==="dribble"){
-    if(/rientr|interno/.test(lbl))variant="dribble_inside";
+    if(/doppio passo|step-?over/.test(lbl))variant="double_step";
+    else if(/finta|elastico|sombrero|hocus/.test(lbl))variant="dribble_feint";
+    else if(/rientr|interno/.test(lbl))variant="dribble_inside";
     else if(/sterzat|esterno/.test(lbl))variant="dribble_outside";
     else variant="dribble_feint";
   }

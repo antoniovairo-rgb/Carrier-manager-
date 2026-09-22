@@ -1002,12 +1002,12 @@ if(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD){window.__CPM_clubKits
 // I toni pelle/capelli MOLTIPLICANO la texture reale del modello → restano plausibili.
 // toni MOLTIPLICATIVI vicini al bianco (la texture CH38 ha già un incarnato): variazione sottile, non scurire troppo (evita "tutti neri").
 const SKIN_TONES=['#fff2e8','#ffe9d8','#f7dcc4','#eccdb0','#dcb896','#c9a07c','#b08862'];
-const HAIR_COLS=['#1a1410','#2e2018','#4a3220','#6b4a28','#9a7034','#c9a86a','#2b2b2b','#9a9a9a'];
+const HAIR_COLS=['#1a1410','#2e2018','#4a3220','#6b4a28','#9a7034','#c9a86a','#2b2b2b','#a84b2d'];
 // mixer intero con avalanche (seed adiacenti → output ben distribuiti, evita i bucket collassati di DJB2+modulo).
 const _mix32=x=>{x=(x>>>0);x^=x>>>16;x=Math.imul(x,0x7feb352d);x^=x>>>15;x=Math.imul(x,0x846ca68b);x^=x>>>16;return x>>>0;};
 // da un seed intero stabile → caratteristiche fisiche immutabili (stesso seed = stesso aspetto, sempre). Ogni attributo da un mix indipendente (salt) → decorrelati.
 const appearanceFromSeed=seed=>{const s=(seed>>>0),r=salt=>_mix32(s+Math.imul(salt,0x9e3779b9))/4294967296;
-  return{height:1.82+r(1)*0.24,girth:0.93+r(2)*0.16,skin:SKIN_TONES[_mix32(s+Math.imul(3,0x9e3779b9))%SKIN_TONES.length],hair:HAIR_COLS[_mix32(s+Math.imul(4,0x9e3779b9))%HAIR_COLS.length],bald:r(5)<0.13};};
+  return{height:1.82+r(1)*0.24,girth:0.93+r(2)*0.16,skin:SKIN_TONES[_mix32(s+Math.imul(3,0x9e3779b9))%SKIN_TONES.length],hair:HAIR_COLS[_mix32(s+Math.imul(4,0x9e3779b9))%HAIR_COLS.length],hairStyle:['short','side','curly','long','buzz','crop','fade','wavy','afro','mohawk'][_mix32(s+Math.imul(5,0x9e3779b9))%10],bodyType:['slim','regular','stocky'][_mix32(s+Math.imul(6,0x9e3779b9))%3],bald:r(5)<0.13};};
 
 /* Sprint 33 C5 — contextual situation selection weighted by player stats */
 /* [7.204.0] esposto alla probe di continuità territoriale (test-only, spento nella build store) */

@@ -373,7 +373,7 @@ function IntroCinematic({onDone}){
       const bb=new THREE.Box3().setFromObject(av);const hh=Math.max(0.1,bb.max.y-bb.min.y);av.scale.setScalar(1.82/hh);
       _tintKit(av,shirt,shorts,skin,withNum);scene.add(av);return av;}catch(_e){return null;}};
     if(typeof loadGLB==="function"&&window.__CPM_GLB!==false){
-      Promise.all([loadGLB('./assets/footballer.glb'),loadGLB('./assets/anim-jog.glb').catch(()=>null),loadGLB('./assets/anim-idle.glb').catch(()=>null),loadGLB('./assets/anim-kick.glb').catch(()=>null),loadGLB('./assets/anim-gk-idle.glb').catch(()=>null),loadGLB('./assets/anim-gk-dive.glb').catch(()=>null),loadGLB('./assets/anim-throwin.glb').catch(()=>null)])
+      Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-jog.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-kick.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-gk-idle.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-gk-dive.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-throwin.glb').catch(()=>null)])
         .then(([body,jog,idle,kick,gkIdle,gkDive,lift])=>{
           if(!body||disposed)return;
           heroAv=_mkAv(body,0x8e1f33,0xf2f2f2,0xf0c8a0,true);gkAv=_mkAv(body,0xf2c11c,0x1a1a1a,null);/* eroe pelle chiara + NUMERO 9 sulla maglia (il GK resta com'è) */

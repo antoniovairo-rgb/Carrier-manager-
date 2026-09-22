@@ -412,7 +412,7 @@ function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null,senz
          una sola richiesta, e la richiesta stessa e' l'osservabile su cui la probe verifica il genere.
          Asset mancante ⇒ fallback CH38 del genere GIUSTO, mai di quello sbagliato. */
       const _actorURL=female?'./assets/actor-journalist.glb':'./assets/actor-presenter.glb';
-      Promise.all([loadGLB('./assets/footballer.glb'),loadGLB('./assets/anim-idle.glb').catch(()=>null),loadGLB(_actorURL).catch(()=>null)]).then(([body,idle,actorJ])=>{
+      Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null),loadGLB(_actorURL).catch(()=>null)]).then(([body,idle,actorJ])=>{
         if(disposed||!body||!THREE.SkeletonUtils||!THREE.SkeletonUtils.clone)return;
         // [7.141.0 task #108 — direttiva PO «il CH38 extra campo ha troppi limiti su acconciature, vestiti»] DROP-IN
         //   modello dedicato: se esiste assets/actor-journalist.glb (personaggio Mixamo "vestito" — capelli/abiti REALI
@@ -961,9 +961,9 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
     const _num=heroNum|0;
     /* l'eroe e' il SUO avatar di carriera, con la stessa formula del match (9405): incarnato/capelli da AVATARS */
     const heroAppr=(function(){try{const av=(typeof AVATARS!=="undefined")&&AVATARS[((avatarId|0)%AVATARS.length+AVATARS.length)%AVATARS.length];
-      return av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:av.skin,hair:av.hair,bald:av.style==='bald'}:null;}catch(_e){return null;}})();
+      return av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:av.skin,hair:av.hair,hairStyle:av.hairStyle||'short',bodyType:av.bodyType||'regular',bald:av.style==='bald'}:null;}catch(_e){return null;}})();
     if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
-      Promise.all([loadGLB('./assets/footballer.glb'),loadGLB('./assets/anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
+      Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
         if(!glb||!glb.scene)return;
         for(let i=0;i<N;i++){
           const root=THREE.SkeletonUtils.clone(glb.scene);
@@ -1430,7 +1430,7 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
     const placeMen=(mk)=>{for(let i=0;i<NM;i++){const m=mk(i);m.position.set(slots[i].x,5.35,slots[i].z);m.rotation.y=(slots[i].x<0?-1:1)*Math.PI/2;bus.add(m);men.push(m);}
       cup.position.set(0,5.75,7.0);bus.add(cup);};
     if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
-      Promise.all([loadGLB('./assets/footballer.glb'),loadGLB('./assets/anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
+      Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
         if(!glb||!glb.scene){placeMen(mkFallback);return;}
         try{if(typeof window!=="undefined"&&window.__CPM_PARATA)window.__CPM_PARATA.glb=true;}catch(_e){}
         for(let i=0;i<NM;i++){

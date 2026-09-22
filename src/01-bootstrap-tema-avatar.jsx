@@ -248,16 +248,16 @@ const MO={fast:120,base:200,slow:320,cine:550,easeStd:"cubic-bezier(.2,0,0,1)",e
 const AVATARS = [
   // [6.22.0] direttiva PO: SOLO 10 volti (griglia 5×2 stabile, niente shift tra pagine) e NIENTE rasati/pelati
   //   → tutti con capelli, spettro carnagione chiaro→scuro. Label = tratti realmente renderizzati (carnagione + colore capelli).
-  {id:0,label:"Carnagione chiara · capelli castani",  skin:"#f0c8a0",hair:"#3a2410",eye:"#5a3e2b",style:"short",beard:false},
-  {id:1,label:"Carnagione chiara · capelli biondi",   skin:"#f5d2b3",hair:"#dcb64c",eye:"#5b8dd9",style:"short",beard:false},
-  {id:2,label:"Carnagione chiara · capelli neri",     skin:"#e8b890",hair:"#181410",eye:"#4a3728",style:"short",beard:false},
-  {id:3,label:"Carnagione chiara · capelli ramati",   skin:"#f2cba0",hair:"#b5491f",eye:"#5b8dd9",style:"short",beard:false},
-  {id:4,label:"Carnagione chiara · capelli castano chiaro", skin:"#eec79c",hair:"#8a5a2e",eye:"#4a6b8a",style:"short",beard:false},
-  {id:5,label:"Carnagione olivastra · capelli neri",  skin:"#c8956a",hair:"#161210",eye:"#3d2800",style:"short",beard:false},
-  {id:6,label:"Carnagione olivastra · capelli castani",skin:"#bd8a5e",hair:"#4a3018",eye:"#2d1800",style:"short",beard:false},
-  {id:7,label:"Carnagione ambrata · capelli neri",    skin:"#a9743f",hair:"#120d0a",eye:"#2d1800",style:"short",beard:false},
-  {id:8,label:"Carnagione scura · capelli neri",      skin:"#7c4a1e",hair:"#100a06",eye:"#2d1800",style:"short",beard:false},
-  {id:9,label:"Carnagione scura · capelli castani",   skin:"#6b3f18",hair:"#3d2412",eye:"#1a0800",style:"short",beard:false},
+  {id:0,bodyType:"slim",hairStyle:"side",label:"Carnagione chiara · capelli castani",  skin:"#f0c8a0",hair:"#3a2410",eye:"#5a3e2b",style:"short",beard:false},
+  {id:1,bodyType:"stocky",hairStyle:"curly",label:"Carnagione chiara · capelli biondi",   skin:"#f5d2b3",hair:"#dcb64c",eye:"#5b8dd9",style:"short",beard:false},
+  {id:2,bodyType:"regular",hairStyle:"short",label:"Carnagione chiara · capelli neri",     skin:"#e8b890",hair:"#181410",eye:"#4a3728",style:"short",beard:false},
+  {id:3,bodyType:"slim",hairStyle:"long",label:"Carnagione chiara · capelli ramati",   skin:"#f2cba0",hair:"#b5491f",eye:"#5b8dd9",style:"short",beard:false},
+  {id:4,bodyType:"regular",hairStyle:"buzz",label:"Carnagione chiara · capelli castano chiaro", skin:"#eec79c",hair:"#8a5a2e",eye:"#4a6b8a",style:"short",beard:false},
+  {id:5,bodyType:"stocky",hairStyle:"crop",label:"Carnagione olivastra · capelli neri",  skin:"#c8956a",hair:"#161210",eye:"#3d2800",style:"short",beard:false},
+  {id:6,bodyType:"regular",hairStyle:"fade",label:"Carnagione olivastra · capelli castani",skin:"#bd8a5e",hair:"#4a3018",eye:"#2d1800",style:"short",beard:false},
+  {id:7,bodyType:"slim",hairStyle:"wavy",label:"Carnagione ambrata · capelli neri",    skin:"#a9743f",hair:"#120d0a",eye:"#2d1800",style:"short",beard:false},
+  {id:8,bodyType:"stocky",hairStyle:"afro",label:"Carnagione scura · capelli neri",      skin:"#7c4a1e",hair:"#100a06",eye:"#2d1800",style:"short",beard:false},
+  {id:9,bodyType:"regular",hairStyle:"mohawk",label:"Carnagione scura · capelli castani",   skin:"#6b3f18",hair:"#3d2412",eye:"#1a0800",style:"short",beard:false},
 ];
 /* [6.18.0] AVATAR = libreria DiceBear (stile 'adventurer'), bundle locale offline assets/dicebear-avatars.min.js
    → volti SVG dettagliati, deterministici da seed, scalabili/manutenibili. Cache per seed@size. */
@@ -474,7 +474,7 @@ function _disposeHeroPhotoRenderer(){if(_heroPhotoRenderer){try{_heroPhotoRender
 const _AV_KIT_COLS=["#c0392b","#1d4ed8","#15803d","#b45309","#6d28d9","#0e7490","#be185d","#334155","#c2410c","#4d7c0f","#0f766e","#7e22ce"];
 function _ensureHeroPhotoAssets(){
   if(_heroPhotoAssets)return _heroPhotoAssets;
-  _heroPhotoAssets=Promise.all([loadGLB('./assets/footballer.glb'),loadGLB('./assets/anim-idle.glb').catch(()=>null)])
+  _heroPhotoAssets=Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)])
     .then(([cg,ig])=>({glb:cg,idle:(ig&&ig.animations&&ig.animations[0])||(cg&&cg.animations&&cg.animations[0])||null}));
   return _heroPhotoAssets;
 }
@@ -488,7 +488,7 @@ async function renderHeroPhoto(avatarId){
     const {glb,idle}=await _ensureHeroPhotoAssets();
     if(!glb||!glb.scene)throw new Error('no glb');
     const av=AVATARS[id]||AVATARS[0];
-    const appr={skin:av.skin,hair:av.hair,bald:av.style==='bald',height:1.86+((id*73)%100)/100*0.18,girth:0.95+((id*131)%100)/100*0.13};
+    const appr={skin:av.skin,hair:av.hair,hairStyle:av.hairStyle||'short',bodyType:av.bodyType||'regular',bald:av.style==='bald',height:1.86+((id*73)%100)/100*0.18,girth:0.95+((id*131)%100)/100*0.13};
     const _ks=_AV_KIT_COLS[id%_AV_KIT_COLS.length];
     const kit=(typeof buildKit==='function')?buildKit(_ks):{shirt:_ks,shorts:'#181826',socks:_ks,shoes:'#141418'};
     const root=THREE.SkeletonUtils.clone(glb.scene);
