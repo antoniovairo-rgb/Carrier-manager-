@@ -380,3 +380,8 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 
 - **Fatto verificato:** `verify_ground_pass_phase.mjs` passa: contatto a `0,250 s` contro wind-up visivo a `0,270 s`, errore `20 ms`; distanza centro-palla/piede `0,104 m`, entro il raggio della palla.
 - **Esito:** PASS condizionato per tempo del gesto e contatto geometrico. Non prova da solo il mixer crossfade o la resa mobile.
+
+## 2026-09-22 — continuità passaggio → corsa
+
+- **Fatto verificato:** la posa finale `pass` e la posa iniziale `jog` hanno radice locale coincidente (`0 m`), ma non sono equivalenti: delta massimo `41,958°` sul polpaccio sinistro; braccio inferiore destro `25,441°`, braccio superiore destro `23,483°`.
+- **Esito:** il contatto del passaggio è corretto, ma il gate transizione resta **APERTO**. Uno stacco diretto sarebbe visibile; serve osservare nel renderer un crossfade effettivo e poi ripetere la prova su mobile.
