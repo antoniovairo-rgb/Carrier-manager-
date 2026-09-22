@@ -2271,6 +2271,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const driftTargetsRef=useRef(null);
   const ballTargetRef=useRef({x:50,y:50});
   const ballRngRef=useRef(0);/* [7.511.0 R1] flusso seedato DEDICATO al moto di possesso: usare _rndM qui avrebbe spostato tutti i sorteggi della cronaca e rotto il replay */
+  /* ⚠️ [7.960.0 A14 · LE POSIZIONI SEEDATE SONO STATE RIGIUDICATE SULLA MISURA PULITA, E REVOCATE DI
+     NUOVO — QUESTA VOLTA SENZA APPELLO.] Il 7.959 le aveva revocate due volte (flusso con stato: rosso su
+     tutti e tre i confronti; funzione pura: 29 % → 26 %). Si poteva obiettare che quella misura avesse
+     dentro un confondente — il ciclo dei sotto-tick che avanzava anche a scena aperta. Chiuso quel buco
+     (passo A14), la prova e' stata rifatta: `prima-divergenza` con le posizioni seedate dice ANCORA
+     «posizioni: primo minuto che diverge 27'», identico al giro senza seedatura, e la cronaca peggiora di
+     due minuti (34' → 32', rumore). Quindi lo scrittore che sposta i giocatori al 27' NON e' uno dei
+     cinque `Math.random()` di questo file: e' lo specchio del motore, che riceve la richiesta di scena in
+     un istante diverso a ogni giro. Il rimedio sta nel passo A14, non qui. I cinque punti restano com'erano:
+     il loro rumore e' cosmetico finche' il motore non e' ancorato, e seedarlo non ha mai mosso un numero. */
   /* ⚠️ [7.959.0 — LE POSIZIONI SEEDATE: PROVATE E REVOCATE DALLA LORO MISURA, MA LA CAUSA VERA E' STATA
      TROVATA.] `match-sequence` era rosso anche in produzione (1x contro 1x 29 %). Il sospetto era qui: le
      posizioni dei ventidue avevano `Math.random()` in cinque punti, e da quando il motore del possesso
@@ -2794,6 +2804,14 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       setCrowdChant(null);
       setSubEvent(null);
       ballTargetRef.current=ballPosRef.current; // congela target durante highlight/ended
+      /* ⚠️ [7.960.0 A14 · TERZO PASSO, PROVATO E REVOCATO DA SOLO: LA RICHIESTA DI SCENA SUL BATTITO.]
+         Questo effetto gira a orologio da polso, quindi il motore riceveva la scena in mezzo a un
+         sotto-tick diverso a ogni giro. Consumando la richiesta all'inizio del battito, INSIEME al primo
+         passo (ciclo fermo durante la scena), `prima-divergenza` dava la CRONACA IDENTICA riga per riga e
+         `match-sequence` portava 2x contro 2x a 100 %. DA SOLO, pero', non vale: 26 % / 27 % / 27 %, cioe'
+         il rosso di partenza. E il primo passo, che gli serve, costa l'orologio della partita (fischio
+         finale 4/4 → 1/4 giri). I due si reggono a vicenda e insieme sfondano un metro spedito: revocati
+         tutti e due, e la coppia e' descritta in A14 come il taglio da progettare. */
       if(motoreRef.current){try{motoreRef.current.chiedi.scena();}catch(_e870){}}/* [7.870] la scena e' dell'highlight: il motore aspetta */
     }
     // [6.76.0 LMV-L5] a FINE PARTITA muoiono anche i timer fx pendenti (floatGoal/cronaca/celeb-fallback
@@ -3854,6 +3872,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       // Sprint 34 — tactic moments + sub events (checked via clockRef, outside setClock)
       const ck=clockRef.current;
       const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);/* [7.870] rosso appaiato: __CPM_NO870 rimette in moto le vecchie macchine narrative e il vecchio mover */
+      /* ⚠️ [7.960.0 A14 · PRIMO PASSO PROVATO E REVOCATO DALLA SUA MISURA: IL CICLO DEI SOTTO-TICK FERMO
+         DURANTE LA SCENA.] L'idea era giusta e la misura l'ha confermata a meta': fermando il contatore dei
+         sotto-tick insieme alla fisica, ogni minuto riceveva esattamente i suoi 22 passi e `prima-divergenza`
+         spostava il motore dal 26' al 31' e la cronaca dal 27' al 34'. Ma fermando il contatore si ferma
+         anche il BATTITO DEL MINUTO, e quindi l'orologio della partita durante ogni scena: nel guardiano
+         `match-sequence` il fischio finale, che era raggiunto in 4 giri su 4, e' sceso a 1 su 4 dentro lo
+         stesso tetto di tempo. Un metro gia' spedito non si abbassa per far passare una modifica: revocato.
+         Il pezzo che REGGE la misura e' il terzo passo (la richiesta di scena consumata sul battito), che
+         da solo porta la cronaca a essere identica riga per riga. Il rimedio completo — ogni minuto con i
+         suoi 22 passi SENZA fermare l'orologio — vuole un budget di passi con recupero al battito del
+         minuto, e va misurato contro `ball-alive` e `trama` prima di essere creduto: e' il prossimo taglio
+         di A14. */
       k898Ref.current=(k898Ref.current+1)%_SUB898;
       if(k898Ref.current!==0){/* [7.898] sotto-tick: solo la fisica del motore e i suoi specchi, nessuna riga, nessun minuto */
         try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;/* [22/09 testimone · sola lettura] QUANTI PASSI DI FISICA RICEVE OGNI MINUTO. Il motore ha un flusso di sorteggi CON STATO: se un minuto riceve un passo in piu' o in meno, tutto il seguito slitta. Il sotto-tick e' legato all'orologio da polso e salta quando c'e' una scena in corso — quindi il conto puo' cambiare da un giro all'altro. */if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{const _m=clockRef.current|0;window.__CPM_PASSI959[_m]=(window.__CPM_PASSI959[_m]|0)+1;}catch(_e959p){}}const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);const _st=_M.stato();_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
@@ -6164,7 +6194,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 } // DEF: moderate press
                 else if(ai<=7){txBias*=1.0;} // MID: full press
                 else{txBias*=1.3;} // FWD: aggressive press
-                const jitter=(Math.random()-0.5)*2;/* [7.959.0] seedatura provata e revocata: vedi il verbale a ~riga 2265 */
+                const jitter=(Math.random()-0.5)*2;
                 return{...pl,x:clamp(pl.x+txBias+jitter,44,98),y:clamp(pl.y+tyBias+(Math.random()-0.5)*3,3,97)};
               }else{
                 // Home GK: lateral tracking only, stays in goal
