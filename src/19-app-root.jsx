@@ -727,7 +727,7 @@ function App(){
   const[appMsg,setAppMsg]=useState(null);
   const[lang,setLang]=useState(()=>safeLS.get("cpm-lang")||"IT");
   const[legacyBonus,setLegacyBonus]=useState(null);
-  const toggleLang=()=>{const nl=lang==="IT"?"EN":"IT";setLang(nl);safeLS.set("cpm-lang",nl);const msg=nl==="EN"?"Language: English 🇬🇧":"Lingua: Italiano 🇮🇹";setAppMsg({msg,color:"#2563eb"});setTimeout(()=>setAppMsg(null),2200);};
+  const toggleLang=()=>{const nl=lang==="IT"?"EN":"IT";setLang(nl);safeLS.set("cpm-lang",nl);const msg=nl==="EN"?"Language: English 🇬🇧":"Lingua: Italiano 🇮🇹";setAppMsg({msg,color:"#1e40af"});setTimeout(()=>setAppMsg(null),2200);};
 
   const appNotify=(msg,color=TH.danger)=>{setAppMsg({msg,color});setTimeout(()=>setAppMsg(null),3500);};
 

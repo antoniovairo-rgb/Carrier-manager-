@@ -2314,12 +2314,12 @@ const getThisWeekMatchday=()=>{
       const _rn=p.rival.name;
       out.push({k:"addioRivale",e:"🤝",t:`${_rn} rompe il silenzio`,
         d:`«Ho passato una carriera a studiarlo per fermarlo. Non ci sono mai riuscito del tutto — e ora che smette posso dirlo: giocargli contro e' stato l'onore piu' grande. Detto questo: l'ultima che ci incontriamo, vinco io.» Firmato, incorniciato, sui giornali.`,
-        fx:(q)=>({morale:clamp((q.morale||70)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🤝",headline:`L'attestato di ${_rn}`,body:`«Giocargli contro e' stato l'onore piu' grande.» — il rivale di una vita · S.${sn}`,color:"#b45309"}].slice(-80)})});
+        fx:(q)=>({morale:clamp((q.morale||70)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🤝",headline:`L'attestato di ${_rn}`,body:`«Giocargli contro e' stato l'onore piu' grande.» — il rivale di una vita · S.${sn}`,color:"#92400e"}].slice(-80)})});
     }
     if(p.retireAnnounced===sn&&seen.indexOf("addioPremio")<0&&wk>=10){
       out.push({k:"addioPremio",e:"🎖️",t:"Premio alla carriera",
         d:`La Lega lo annuncia in conferenza: alla cerimonia di fine stagione riceverai il PREMIO ALLA CARRIERA. Sarai il primo a riceverlo ancora in attivita' — di solito lo consegnano a chi ha smesso da dieci anni e non corre piu' il rischio di segnare alla squadra del presidente.`,
-        fx:(q)=>({morale:clamp((q.morale||70)+5,0,100),popularity:clamp((q.popularity||20)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🎖️",headline:"Premio alla carriera",body:`La Lega ti premia da giocatore in attivita': primo nella storia · S.${sn}`,color:"#b45309"}].slice(-80)})});
+        fx:(q)=>({morale:clamp((q.morale||70)+5,0,100),popularity:clamp((q.popularity||20)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🎖️",headline:"Premio alla carriera",body:`La Lega ti premia da giocatore in attivita': primo nella storia · S.${sn}`,color:"#92400e"}].slice(-80)})});
     }
     if(p.retireAnnounced===sn&&seen.indexOf("addioTour")<0){
       const _TA=[
@@ -3284,7 +3284,7 @@ const getThisWeekMatchday=()=>{
         }
         // Sprint 51: diary for national events
         const _nat51=[];
-        if(isNat&&nationalCallupData?.isFirst)_nat51.push({season:p.season||1,week:p.week||1,type:"first_national",e:"🏳️",headline:`Debutto in Nazionale — ${p.nation||"Italia"}!`,body:`${result.homeScore}-${result.awayScore} vs ${result.opponent||"?"} · ${result.won?"Vittoria":""}${result.drew?"Pareggio":""}${!result.won&&!result.drew?"Sconfitta":""}`,color:"#2563eb"});
+        if(isNat&&nationalCallupData?.isFirst)_nat51.push({season:p.season||1,week:p.week||1,type:"first_national",e:"🏳️",headline:`Debutto in Nazionale — ${p.nation||"Italia"}!`,body:`${result.homeScore}-${result.awayScore} vs ${result.opponent||"?"} · ${result.won?"Vittoria":""}${result.drew?"Pareggio":""}${!result.won&&!result.drew?"Sconfitta":""}`,color:"#1e40af"});
         if(result.goals>0&&(p.nationalGoals||0)===0)_nat51.push({season:p.season||1,week:p.week||1,type:"first_national_goal",e:"🌍",headline:`Primo gol con la Nazionale!`,body:`${result.goals} gol vs ${result.opponent||"?"} (${result.homeScore}-${result.awayScore}) · ${p.nation||"Italia"}`,color:TH.accentText});
         const _natCal81=isNat?(p.calendar||[]).map(m=>(m.type==="national"&&!m.played&&m.week===(p.week||1))?{...m,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew},simulated:!!result.simulated}:m):(p.calendar||[]);// [6.81.0] l'amichevole calendarizzata viene MARCATA giocata (mai ri-servita)
         return{...p,fatigue:clamp((p.fatigue||0)+(result.simulated?0:rng(6,12)),0,100),/* [7.164.0 deferito LIVE-F6b] anche le gare euro/nazionale LIVE costano fatica (prima: semifinale UCL dal vivo = 0; il sim resta senza costo come il sim di lega, design 7.9.0) */calendar:_natCal81,...natHistPush(p,{comp:isNat?"Amichevole":"Coppa delle Nazioni",opp:result.opponent,hs:result.homeScore,as:result.awayScore,won:!!result.won,drew:!!result.drew,goals:result.goals||0,assists:result.assists||0,rating:result.rating,sim:!!result.simulated}),nationalCaps:newCaps,nationalGoals:newNatGoals,lastNationalSeason:p.season||1,worldMemory:newMem,morale:clamp((p.morale||70)+moD,0,100),popularity:clamp((p.popularity||20)+8,0,100),value:Math.max(0.5,(p.value||0.8)+0.15),nationsCupQueue:newNCQ,log:[logE,...(p.log||[])].slice(0,60),diary:[...(p.diary||[]),..._nat51].slice(-80)};
@@ -5239,7 +5239,7 @@ const getThisWeekMatchday=()=>{
     const _renB95=Math.min(player.agentRenewalBonus||0,0.30);// [5.95.0 QW audit EC-3] il task «Prepara rinnovo» ORA paga (prima il bonus veniva azzerato senza mai essere applicato: il ramo consumer era dead code)
     const finalWage=Math.round(wage*agentMult*(1+_renB95));
     const annKStr=`${_fmtWageY133(finalWage)}/anno`;
-    setPlayer(p=>({...p,contract:{duration,wage:finalWage,expiresAtSeason:(p.season||1)+duration},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#2563eb"}].slice(-80),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
+    setPlayer(p=>({...p,contract:{duration,wage:finalWage,expiresAtSeason:(p.season||1)+duration},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}].slice(-80),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
     setNegoModal(null);setTransferOffer(null);
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
   };
@@ -6498,7 +6498,7 @@ const getThisWeekMatchday=()=>{
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 <Btn v="danger" fw onClick={()=>{setPlayer(p=>{const sn2=p.season||1;return{...p,retireAnnounced:sn2,retireAskedSeason:sn2,
                   morale:clamp((p.morale||70)+6,0,100),popularity:clamp((p.popularity||20)+8,0,100),
-                  diary:[...(p.diary||[]),{season:sn2,week:p.week||1,type:"addio",e:"🏁",headline:"L'annuncio: e' l'ultima stagione",body:`«Ho dato tutto a questo sport. A fine stagione appendo gli scarpini.» Il mondo del calcio si ferma ad applaudire · S.${sn2}`,color:"#b45309"}].slice(-80),
+                  diary:[...(p.diary||[]),{season:sn2,week:p.week||1,type:"addio",e:"🏁",headline:"L'annuncio: e' l'ultima stagione",body:`«Ho dato tutto a questo sport. A fine stagione appendo gli scarpini.» Il mondo del calcio si ferma ad applaudire · S.${sn2}`,color:"#92400e"}].slice(-80),
                   log:[`🏁 L'ANNUNCIO: questa e' l'ultima stagione. Da oggi ogni partita e' un addio — il tour comincia.`,...(p.log||[])].slice(0,60)};});
                   setTimeout(()=>notify("🏁 Annuncio fatto: il TOUR D'ADDIO comincia. Ogni stadio vorra' salutarti.","#b45309"),600);}}>📣 Annuncio il ritiro — questa e' l'ultima stagione</Btn>
                 <Btn v="ghost" onClick={()=>setPlayer(p=>({...p,retireAskedSeason:p.season||1}))}>🔁 Non ancora — si gioca</Btn>
@@ -7444,7 +7444,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.83.0 collaudo PO «ridondante! elimina»] griglia totali di carriera (Gol/Presenze/Trofei/Stagioni) RIMOSSA dal dashboard: è già nel Tab Carriera. Resta il badge fase-carriera (età/fase, non duplicato). */}
       {tab==="dashboard"&&(player.totalMatches||0)>0&&(
         <div style={{marginBottom:8}}>
-          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:ph.col}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni · S.{player.season||1}</span></div>);})()}
+          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni · S.{player.season||1}</span></div>);})()}
         </div>
       )}
       {/* [6.59.0 collaudo PO «questo box va messo più su, sotto il box delle presenze/gol globale»] la card STAGIONE (stats stagionali + azioni) è ora subito SOTTO i totali di carriera, non in fondo al grid */}
@@ -9546,11 +9546,11 @@ const getThisWeekMatchday=()=>{
               pallone_oro:{e:"🏆",color:TH.goldText},
               scarpa_oro:{e:"👟",color:"#ef4444"},
               record:{e:"📈",color:TH.accentText},
-              first_national:{e:"🏳️",color:"#2563eb"},
+              first_national:{e:"🏳️",color:"#1e40af"},
               first_national_goal:{e:"🌍",color:"#0ea5e9"},
               cup_trophy:{e:"🏆",color:TH.goldText},
               euro_mondiale_trophy:{e:"🌍",color:TH.accentText},
-              contract_renewal:{e:"📋",color:"#2563eb"},
+              contract_renewal:{e:"📋",color:"#1e40af"},
               mvp_mese:{e:"⭐",color:TH.goldText},
               league_top_scorer:{e:"⚽",color:TH.txGreen}, // Sprint 134
               league_mvp:{e:"🏅",color:"#6366f1"},

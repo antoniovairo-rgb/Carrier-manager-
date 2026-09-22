@@ -54,6 +54,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
@@ -65,6 +66,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
@@ -104,6 +106,21 @@
       "esempio": "⚡ Nuova carriera"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "Crea il tuo calciatore, su",
+      "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "⚡ Nuova carriera",
+      "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -162,6 +179,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
@@ -173,6 +191,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
@@ -212,6 +231,21 @@
       "esempio": "⚡ Nuova carriera"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "Crea il tuo calciatore, su",
+      "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "⚡ Nuova carriera",
+      "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 696,
     "schermate": 0.76,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -270,6 +304,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
@@ -281,6 +316,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
@@ -320,6 +356,21 @@
       "esempio": "⚡ Nuova carriera"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "Crea il tuo calciatore, su",
+      "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "⚡ Nuova carriera",
+      "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -378,6 +429,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
@@ -389,6 +441,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
@@ -428,6 +481,21 @@
       "esempio": "⚡ Nuova carriera"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "Crea il tuo calciatore, su",
+      "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "⚡ Nuova carriera",
+      "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -486,6 +554,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "⚡ Nuova carriera"
      },
@@ -497,6 +566,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)",
       "esempio": "Crea il tuo calciatore, su"
      }
@@ -536,6 +606,21 @@
       "esempio": "⚡ Nuova carriera"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "Crea il tuo calciatore, su",
+      "sel": "div:nth-child(1)>div:nth-child(3)>p:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "⚡ Nuova carriera",
+      "sel": "div.cpm-slots>div:nth-child(1)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -596,6 +681,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
@@ -607,6 +693,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -618,6 +705,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "in arrivo"
      },
@@ -629,6 +717,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
      },
@@ -640,6 +729,7 @@
       "rap": 14.63,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "🎵 Musica menu"
      }
@@ -691,6 +781,27 @@
       "esempio": "🎨 Grafica"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 12,
+      "esempio": "🎨 Grafica",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 7,
+      "esempio": "🎵 Musica menu",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚙️ Impostazioni",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -745,6 +856,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
@@ -756,6 +868,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -767,6 +880,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "in arrivo"
      },
@@ -778,6 +892,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
      },
@@ -789,6 +904,7 @@
       "rap": 14.63,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "🎵 Musica menu"
      }
@@ -840,6 +956,27 @@
       "esempio": "🎨 Grafica"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 12,
+      "esempio": "🎨 Grafica",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 7,
+      "esempio": "🎵 Musica menu",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚙️ Impostazioni",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "div.cpm-root>div:nth-child(1)>div:nth-child(2)",
@@ -894,6 +1031,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
@@ -905,6 +1043,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -916,6 +1055,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "in arrivo"
      },
@@ -927,6 +1067,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
      },
@@ -938,6 +1079,7 @@
       "rap": 14.63,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "🎵 Musica menu"
      }
@@ -989,6 +1131,27 @@
       "esempio": "🎨 Grafica"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 12,
+      "esempio": "🎨 Grafica",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 7,
+      "esempio": "🎵 Musica menu",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚙️ Impostazioni",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -1043,6 +1206,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
@@ -1054,6 +1218,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -1065,6 +1230,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "in arrivo"
      },
@@ -1076,6 +1242,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
      },
@@ -1087,6 +1254,7 @@
       "rap": 14.63,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "🎵 Musica menu"
      }
@@ -1138,6 +1306,27 @@
       "esempio": "🎨 Grafica"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 12,
+      "esempio": "🎨 Grafica",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 7,
+      "esempio": "🎵 Musica menu",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚙️ Impostazioni",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -1192,6 +1381,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(3)",
       "esempio": "Le impostazioni si salvano"
      },
@@ -1203,6 +1393,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span.cpm-num",
       "esempio": "30"
      },
@@ -1214,6 +1405,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "in arrivo"
      },
@@ -1225,6 +1417,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "🎨 Grafica"
      },
@@ -1236,6 +1429,7 @@
       "rap": 14.63,
       "soglia": 4.5,
       "n": 7,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)",
       "esempio": "🎵 Musica menu"
      }
@@ -1287,6 +1481,27 @@
       "esempio": "🎨 Grafica"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 12,
+      "esempio": "🎨 Grafica",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 7,
+      "esempio": "🎵 Musica menu",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚙️ Impostazioni",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -1336,7 +1551,7 @@
       "txt": "AvataaarsPablo Stanleyhttps://avat"
      }
     ],
-    "nTesto": 841,
+    "nTesto": 589,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -1354,6 +1569,7 @@
       "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
@@ -1365,6 +1581,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 259,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
@@ -1376,6 +1593,7 @@
       "rap": 5.12,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "🏆 Scalatore Nato"
      },
@@ -1387,6 +1605,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
       "esempio": "Vinci il campionato entro "
      },
@@ -1398,6 +1617,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
@@ -1408,14 +1628,13 @@
     ],
     "nColTesto": 9,
     "nFondi": 6,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 3,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     15,
-     27
+     15
     ],
     "raggi": [
      8,
@@ -1488,6 +1707,27 @@
       "esempio": "⚡ INIZIA I PROVINI"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 313,
+      "esempio": "👤 Identità",
+      "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 253,
+      "esempio": "📋 Percorso carriera",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚡ INIZIA I PROVINI",
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 252,
     "altezzaPx": 1726,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1533,7 +1773,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 841,
+    "nTesto": 589,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -1551,6 +1791,7 @@
       "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
@@ -1562,6 +1803,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 259,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
@@ -1573,6 +1815,7 @@
       "rap": 5.12,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "🏆 Scalatore Nato"
      },
@@ -1584,6 +1827,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
       "esempio": "Vinci il campionato entro "
      },
@@ -1595,6 +1839,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
@@ -1605,14 +1850,13 @@
     ],
     "nColTesto": 9,
     "nFondi": 6,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 3,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     15,
-     27
+     15
     ],
     "raggi": [
      8,
@@ -1685,6 +1929,27 @@
       "esempio": "⚡ INIZIA I PROVINI"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 313,
+      "esempio": "👤 Identità",
+      "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 253,
+      "esempio": "📋 Percorso carriera",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚡ INIZIA I PROVINI",
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 252,
     "altezzaPx": 1726,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1730,7 +1995,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 841,
+    "nTesto": 589,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -1748,6 +2013,7 @@
       "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
@@ -1759,6 +2025,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 259,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
@@ -1770,6 +2037,7 @@
       "rap": 5.12,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "🏆 Scalatore Nato"
      },
@@ -1781,6 +2049,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
       "esempio": "Vinci il campionato entro "
      },
@@ -1792,6 +2061,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
@@ -1802,14 +2072,13 @@
     ],
     "nColTesto": 9,
     "nFondi": 6,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 3,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     15,
-     27
+     15
     ],
     "raggi": [
      8,
@@ -1882,6 +2151,27 @@
       "esempio": "⚡ INIZIA I PROVINI"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 313,
+      "esempio": "👤 Identità",
+      "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 253,
+      "esempio": "📋 Percorso carriera",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚡ INIZIA I PROVINI",
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 252,
     "altezzaPx": 1726,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1927,7 +2217,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 841,
+    "nTesto": 589,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -1945,6 +2235,7 @@
       "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
@@ -1956,6 +2247,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 259,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
@@ -1967,6 +2259,7 @@
       "rap": 5.12,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "🏆 Scalatore Nato"
      },
@@ -1978,6 +2271,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
       "esempio": "Vinci il campionato entro "
      },
@@ -1989,6 +2283,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
@@ -1999,14 +2294,13 @@
     ],
     "nColTesto": 9,
     "nFondi": 6,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 3,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     15,
-     27
+     15
     ],
     "raggi": [
      8,
@@ -2079,6 +2373,27 @@
       "esempio": "⚡ INIZIA I PROVINI"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 313,
+      "esempio": "👤 Identità",
+      "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 253,
+      "esempio": "📋 Percorso carriera",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚡ INIZIA I PROVINI",
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 252,
     "altezzaPx": 1726,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -2124,7 +2439,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 841,
+    "nTesto": 589,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2142,6 +2457,7 @@
       "rap": 4.69,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "Potenza e istinto del gol"
      },
@@ -2153,6 +2469,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 259,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(2)>div:nth-child(3)",
       "esempio": "Tecnica sopraffina e impre"
      },
@@ -2164,6 +2481,7 @@
       "rap": 5.12,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(3)",
       "esempio": "🏆 Scalatore Nato"
      },
@@ -2175,6 +2493,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>button:nth-child(1)>div:nth-child(2)",
       "esempio": "Vinci il campionato entro "
      },
@@ -2186,6 +2505,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)",
       "esempio": "👤 Identità"
      }
@@ -2196,14 +2516,13 @@
     ],
     "nColTesto": 9,
     "nFondi": 6,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 3,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     15,
-     27
+     15
     ],
     "raggi": [
      8,
@@ -2276,6 +2595,27 @@
       "esempio": "⚡ INIZIA I PROVINI"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 313,
+      "esempio": "👤 Identità",
+      "sel": "div.cpm-create>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 253,
+      "esempio": "📋 Percorso carriera",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "⚡ INIZIA I PROVINI",
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 252,
     "altezzaPx": 1698,
     "schermate": 1.86,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -2323,7 +2663,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 43,
+    "nTesto": 40,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2341,6 +2681,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
@@ -2352,6 +2693,7 @@
       "rap": 5.27,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "· Prestigio"
      },
@@ -2363,6 +2705,7 @@
       "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
@@ -2374,6 +2717,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -2385,6 +2729,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
@@ -2395,14 +2740,13 @@
     ],
     "nColTesto": 6,
     "nFondi": 4,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 2,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     13,
-     27
+     13
     ],
     "raggi": [
      8,
@@ -2456,6 +2800,27 @@
       "esempio": "Scegli →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 17,
+      "esempio": "Riepilogo provini",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 6,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Scegli →",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -2486,7 +2851,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 43,
+    "nTesto": 40,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2504,6 +2869,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
@@ -2515,6 +2881,7 @@
       "rap": 5.27,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "· Prestigio"
      },
@@ -2526,6 +2893,7 @@
       "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
@@ -2537,6 +2905,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -2548,6 +2917,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
@@ -2558,14 +2928,13 @@
     ],
     "nColTesto": 6,
     "nFondi": 4,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 2,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     13,
-     27
+     13
     ],
     "raggi": [
      8,
@@ -2619,6 +2988,27 @@
       "esempio": "Scegli →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 17,
+      "esempio": "Riepilogo provini",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 6,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Scegli →",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "documento",
@@ -2649,7 +3039,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 43,
+    "nTesto": 40,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2667,6 +3057,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
@@ -2678,6 +3069,7 @@
       "rap": 5.27,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "· Prestigio"
      },
@@ -2689,6 +3081,7 @@
       "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
@@ -2700,6 +3093,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -2711,6 +3105,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
@@ -2721,14 +3116,13 @@
     ],
     "nColTesto": 6,
     "nFondi": 4,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 2,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     13,
-     27
+     13
     ],
     "raggi": [
      8,
@@ -2782,6 +3176,27 @@
       "esempio": "Scegli →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 17,
+      "esempio": "Riepilogo provini",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 6,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Scegli →",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -2812,7 +3227,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 43,
+    "nTesto": 40,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2830,6 +3245,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
@@ -2841,6 +3257,7 @@
       "rap": 5.27,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "· Prestigio"
      },
@@ -2852,6 +3269,7 @@
       "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
@@ -2863,6 +3281,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -2874,6 +3293,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
@@ -2884,14 +3304,13 @@
     ],
     "nColTesto": 6,
     "nFondi": 4,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 2,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     13,
-     27
+     13
     ],
     "raggi": [
      8,
@@ -2945,6 +3364,27 @@
       "esempio": "Scegli →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 17,
+      "esempio": "Riepilogo provini",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 6,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Scegli →",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -2975,7 +3415,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 43,
+    "nTesto": 40,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2993,6 +3433,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(1)",
       "esempio": "Provino"
      },
@@ -3004,6 +3445,7 @@
       "rap": 5.27,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "· Prestigio"
      },
@@ -3015,6 +3457,7 @@
       "rap": 6.12,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(3)",
       "esempio": "7.4"
      },
@@ -3026,6 +3469,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Riepilogo provini"
      },
@@ -3037,6 +3481,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus",
       "esempio": "Scegli →"
      }
@@ -3047,14 +3492,13 @@
     ],
     "nColTesto": 6,
     "nFondi": 4,
-    "nCorpi": 4,
+    "nCorpi": 3,
     "nRaggi": 2,
-    "nPesi": 3,
+    "nPesi": 2,
     "corpi": [
      11,
      12,
-     13,
-     27
+     13
     ],
     "raggi": [
      8,
@@ -3108,6 +3552,27 @@
       "esempio": "Scegli →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 17,
+      "esempio": "Riepilogo provini",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 6,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div.cpm-num>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 3,
+      "esempio": "Scegli →",
+      "sel": "div:nth-child(2)>div:nth-child(2)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -3140,7 +3605,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 160,
+    "nTesto": 157,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3158,6 +3623,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
       "esempio": "↓ ti pesa"
      },
@@ -3169,6 +3635,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
@@ -3180,6 +3647,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol e assist"
      },
@@ -3191,6 +3659,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "in 12 partite"
      },
@@ -3202,6 +3671,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
       "esempio": "4"
      }
@@ -3212,7 +3682,7 @@
     ],
     "nColTesto": 13,
     "nFondi": 7,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -3222,7 +3692,6 @@
      17,
      20,
      24,
-     27,
      32
     ],
     "raggi": [
@@ -3326,6 +3795,51 @@
       "esempio": "7.2"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 75,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 12,
+      "esempio": "Lega B",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 10,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 4,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 4,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 4,
+      "esempio": "12",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 1889,
     "schermate": 2.06,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -3345,7 +3859,7 @@
      {
       "px": 181,
       "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3438,7 +3952,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3487,7 +4001,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 160,
+    "nTesto": 157,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3505,6 +4019,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
       "esempio": "↓ ti pesa"
      },
@@ -3516,6 +4031,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
@@ -3527,6 +4043,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol e assist"
      },
@@ -3538,6 +4055,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "in 12 partite"
      },
@@ -3549,6 +4067,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
       "esempio": "4"
      }
@@ -3559,7 +4078,7 @@
     ],
     "nColTesto": 13,
     "nFondi": 7,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -3569,7 +4088,6 @@
      17,
      20,
      24,
-     27,
      32
     ],
     "raggi": [
@@ -3673,6 +4191,51 @@
       "esempio": "7.2"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 75,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 12,
+      "esempio": "Lega B",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 10,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 4,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 4,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 4,
+      "esempio": "12",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 1889,
     "schermate": 2.06,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -3692,7 +4255,7 @@
      {
       "px": 181,
       "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3785,7 +4348,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3834,7 +4397,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 160,
+    "nTesto": 157,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3852,6 +4415,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
       "esempio": "↓ ti pesa"
      },
@@ -3863,6 +4427,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
@@ -3874,6 +4439,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol e assist"
      },
@@ -3885,6 +4451,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "in 12 partite"
      },
@@ -3896,6 +4463,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
       "esempio": "4"
      }
@@ -3906,7 +4474,7 @@
     ],
     "nColTesto": 13,
     "nFondi": 7,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -3916,7 +4484,6 @@
      17,
      20,
      24,
-     27,
      32
     ],
     "raggi": [
@@ -4020,6 +4587,51 @@
       "esempio": "7.2"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 75,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 12,
+      "esempio": "Lega B",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 10,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 4,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 4,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 4,
+      "esempio": "12",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 1889,
     "schermate": 2.06,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4039,7 +4651,7 @@
      {
       "px": 181,
       "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4132,7 +4744,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4181,7 +4793,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 160,
+    "nTesto": 157,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -4199,6 +4811,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
       "esempio": "↓ ti pesa"
      },
@@ -4210,6 +4823,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
@@ -4221,6 +4835,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol e assist"
      },
@@ -4232,6 +4847,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "in 12 partite"
      },
@@ -4243,6 +4859,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
       "esempio": "4"
      }
@@ -4253,7 +4870,7 @@
     ],
     "nColTesto": 13,
     "nFondi": 7,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -4263,7 +4880,6 @@
      17,
      20,
      24,
-     27,
      32
     ],
     "raggi": [
@@ -4367,6 +4983,51 @@
       "esempio": "7.2"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 75,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 12,
+      "esempio": "Lega B",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 10,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 4,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 4,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 4,
+      "esempio": "12",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 1889,
     "schermate": 2.06,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4386,7 +5047,7 @@
      {
       "px": 181,
       "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4479,7 +5140,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4528,7 +5189,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 160,
+    "nTesto": 157,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -4546,6 +5207,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
       "esempio": "↓ ti pesa"
      },
@@ -4557,6 +5219,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
@@ -4568,6 +5231,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol e assist"
      },
@@ -4579,6 +5243,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(5)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "in 12 partite"
      },
@@ -4590,6 +5255,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
       "esempio": "4"
      }
@@ -4600,7 +5266,7 @@
     ],
     "nColTesto": 13,
     "nFondi": 7,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -4610,7 +5276,6 @@
      17,
      20,
      24,
-     27,
      32
     ],
     "raggi": [
@@ -4714,6 +5379,51 @@
       "esempio": "7.2"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 75,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 12,
+      "esempio": "Lega B",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 10,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 4,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 4,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 4,
+      "esempio": "12",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 3,
     "altezzaPx": 1873,
     "schermate": 2.05,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4733,7 +5443,7 @@
      {
       "px": 181,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4826,7 +5536,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4903,7 +5613,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 388,
+    "nTesto": 370,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -4921,6 +5631,7 @@
       "rap": 4.97,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
       "esempio": "5"
      },
@@ -4932,6 +5643,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
       "esempio": "3"
      },
@@ -4943,6 +5655,7 @@
       "rap": 5.33,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
       "esempio": "80"
      },
@@ -4954,6 +5667,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 51,
+      "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
       "esempio": "0"
      },
@@ -4965,6 +5679,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 32,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -4975,7 +5690,7 @@
     ],
     "nColTesto": 11,
     "nFondi": 10,
-    "nCorpi": 7,
+    "nCorpi": 6,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -4984,8 +5699,7 @@
      13,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -5076,6 +5790,45 @@
       "esempio": "1"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 131,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 161,
+      "esempio": "TAT",
+      "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(3)"
+     },
+     {
+      "fs": 13,
+      "n": 34,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 2,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 18,
     "altezzaPx": 1988,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5101,7 +5854,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -5148,7 +5901,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -5188,7 +5941,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 388,
+    "nTesto": 370,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5206,6 +5959,7 @@
       "rap": 4.97,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
       "esempio": "5"
      },
@@ -5217,6 +5971,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
       "esempio": "3"
      },
@@ -5228,6 +5983,7 @@
       "rap": 5.33,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
       "esempio": "80"
      },
@@ -5239,6 +5995,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 51,
+      "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
       "esempio": "0"
      },
@@ -5250,6 +6007,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 32,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -5260,7 +6018,7 @@
     ],
     "nColTesto": 11,
     "nFondi": 10,
-    "nCorpi": 7,
+    "nCorpi": 6,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -5269,8 +6027,7 @@
      13,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -5361,6 +6118,45 @@
       "esempio": "1"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 131,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 161,
+      "esempio": "TAT",
+      "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(3)"
+     },
+     {
+      "fs": 13,
+      "n": 34,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 2,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 18,
     "altezzaPx": 1988,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5386,7 +6182,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -5433,7 +6229,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -5473,7 +6269,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 388,
+    "nTesto": 370,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5491,6 +6287,7 @@
       "rap": 4.97,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
       "esempio": "5"
      },
@@ -5502,6 +6299,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
       "esempio": "3"
      },
@@ -5513,6 +6311,7 @@
       "rap": 5.33,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
       "esempio": "80"
      },
@@ -5524,6 +6323,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 51,
+      "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
       "esempio": "0"
      },
@@ -5535,6 +6335,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 32,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -5545,7 +6346,7 @@
     ],
     "nColTesto": 11,
     "nFondi": 10,
-    "nCorpi": 7,
+    "nCorpi": 6,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -5554,8 +6355,7 @@
      13,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -5646,6 +6446,45 @@
       "esempio": "1"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 131,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 161,
+      "esempio": "TAT",
+      "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(3)"
+     },
+     {
+      "fs": 13,
+      "n": 34,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 2,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 18,
     "altezzaPx": 1988,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5671,7 +6510,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -5718,7 +6557,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -5758,7 +6597,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 389,
+    "nTesto": 371,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5776,6 +6615,7 @@
       "rap": 4.97,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
       "esempio": "5"
      },
@@ -5787,6 +6627,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
       "esempio": "3"
      },
@@ -5798,6 +6639,7 @@
       "rap": 5.33,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
       "esempio": "80"
      },
@@ -5809,6 +6651,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 51,
+      "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
       "esempio": "0"
      },
@@ -5820,6 +6663,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 32,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -5830,7 +6674,7 @@
     ],
     "nColTesto": 11,
     "nFondi": 10,
-    "nCorpi": 7,
+    "nCorpi": 6,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -5839,8 +6683,7 @@
      13,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -5931,6 +6774,45 @@
       "esempio": "1"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 132,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 161,
+      "esempio": "TAT",
+      "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(3)"
+     },
+     {
+      "fs": 13,
+      "n": 34,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 2,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 18,
     "altezzaPx": 1988,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5956,7 +6838,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -6003,7 +6885,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -6043,7 +6925,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 389,
+    "nTesto": 371,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6061,6 +6943,7 @@
       "rap": 4.97,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(1)",
       "esempio": "5"
      },
@@ -6072,6 +6955,7 @@
       "rap": 5.02,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "tr:nth-child(3)>td:nth-child(2)>span.cpm-num",
       "esempio": "3"
      },
@@ -6083,6 +6967,7 @@
       "rap": 5.33,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(5)>div:nth-child(3)",
       "esempio": "80"
      },
@@ -6094,6 +6979,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 51,
+      "svg": false,
       "sel": "tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)",
       "esempio": "0"
      },
@@ -6105,6 +6991,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 32,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -6115,7 +7002,7 @@
     ],
     "nColTesto": 11,
     "nFondi": 10,
-    "nCorpi": 7,
+    "nCorpi": 6,
     "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
@@ -6124,8 +7011,7 @@
      13,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -6216,6 +7102,45 @@
       "esempio": "1"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 132,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 161,
+      "esempio": "TAT",
+      "sel": "tbody:nth-child(2)>tr:nth-child(1)>td:nth-child(3)"
+     },
+     {
+      "fs": 13,
+      "n": 34,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 2,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 18,
     "altezzaPx": 1988,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6241,7 +7166,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 14:19AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -6288,7 +7213,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    }
@@ -6304,7 +7229,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 316,
+    "nTesto": 308,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6322,6 +7247,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
@@ -6333,6 +7259,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 40,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
      },
@@ -6344,6 +7271,7 @@
       "rap": 5.42,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Gioca →"
      },
@@ -6355,6 +7283,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 26,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
       "esempio": "13"
      },
@@ -6366,6 +7295,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -6374,7 +7304,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 9,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
@@ -6384,8 +7314,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -6470,6 +7399,51 @@
       "esempio": "Gioca →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 155,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 37,
+      "esempio": "vs",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 30,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 8,
     "altezzaPx": 1593,
     "schermate": 1.74,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6505,7 +7479,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -6519,7 +7493,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 316,
+    "nTesto": 308,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6537,6 +7511,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
@@ -6548,6 +7523,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 40,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
      },
@@ -6559,6 +7535,7 @@
       "rap": 5.42,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Gioca →"
      },
@@ -6570,6 +7547,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 26,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
       "esempio": "13"
      },
@@ -6581,6 +7559,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -6589,7 +7568,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 9,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
@@ -6599,8 +7578,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -6685,6 +7663,51 @@
       "esempio": "Gioca →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 155,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 37,
+      "esempio": "vs",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 30,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 8,
     "altezzaPx": 1593,
     "schermate": 1.74,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6720,7 +7743,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -6734,7 +7757,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 316,
+    "nTesto": 308,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6752,6 +7775,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
@@ -6763,6 +7787,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 40,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
      },
@@ -6774,6 +7799,7 @@
       "rap": 5.42,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Gioca →"
      },
@@ -6785,6 +7811,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 26,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
       "esempio": "13"
      },
@@ -6796,6 +7823,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -6804,7 +7832,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 9,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
@@ -6814,8 +7842,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -6900,6 +7927,51 @@
       "esempio": "Gioca →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 155,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 37,
+      "esempio": "vs",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 30,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 8,
     "altezzaPx": 1593,
     "schermate": 1.74,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6935,7 +8007,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -6949,7 +8021,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 316,
+    "nTesto": 308,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6967,6 +8039,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
@@ -6978,6 +8051,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 40,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
      },
@@ -6989,6 +8063,7 @@
       "rap": 5.42,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Gioca →"
      },
@@ -7000,6 +8075,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 26,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
       "esempio": "13"
      },
@@ -7011,6 +8087,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -7019,7 +8096,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 9,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
@@ -7029,8 +8106,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -7115,6 +8191,51 @@
       "esempio": "Gioca →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 155,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 37,
+      "esempio": "vs",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 30,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 8,
     "altezzaPx": 1593,
     "schermate": 1.74,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7150,7 +8271,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -7164,7 +8285,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 316,
+    "nTesto": 308,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -7182,6 +8303,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 10,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(4)>div:nth-child(2)",
       "esempio": "voto"
      },
@@ -7193,6 +8315,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 40,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(2)",
       "esempio": "W."
      },
@@ -7204,6 +8327,7 @@
       "rap": 5.42,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus",
       "esempio": "Gioca →"
      },
@@ -7215,6 +8339,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 26,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(13)",
       "esempio": "13"
      },
@@ -7226,6 +8351,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -7234,7 +8360,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 9,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
@@ -7244,8 +8370,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      6,
@@ -7330,6 +8455,51 @@
       "esempio": "Gioca →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 155,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 37,
+      "esempio": "vs",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 30,
+      "esempio": "2",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 8,
     "altezzaPx": 1593,
     "schermate": 1.74,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7365,7 +8535,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    }
@@ -7399,6 +8569,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -7410,6 +8581,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
@@ -7421,6 +8593,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
@@ -7432,6 +8605,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      },
@@ -7443,6 +8617,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
       "esempio": "Elite"
      }
@@ -7521,6 +8696,45 @@
       "esempio": "Coppa Nazionale: dal tuo s"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 15,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "☕ Sostieni lo sviluppo di",
+      "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -7552,7 +8766,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -7584,6 +8798,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -7595,6 +8810,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
@@ -7606,6 +8822,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
@@ -7617,6 +8834,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      },
@@ -7628,6 +8846,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
       "esempio": "Elite"
      }
@@ -7706,6 +8925,45 @@
       "esempio": "Coppa Nazionale: dal tuo s"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 15,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "☕ Sostieni lo sviluppo di",
+      "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "documento",
@@ -7737,7 +8995,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -7769,6 +9027,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -7780,6 +9039,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
@@ -7791,6 +9051,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
@@ -7802,6 +9063,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      },
@@ -7813,6 +9075,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
       "esempio": "Elite"
      }
@@ -7891,6 +9154,45 @@
       "esempio": "Coppa Nazionale: dal tuo s"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 15,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "☕ Sostieni lo sviluppo di",
+      "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -7922,7 +9224,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -7954,6 +9256,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -7965,6 +9268,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
@@ -7976,6 +9280,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
@@ -7987,6 +9292,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      },
@@ -7998,6 +9304,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
       "esempio": "Elite"
      }
@@ -8076,6 +9383,45 @@
       "esempio": "Coppa Nazionale: dal tuo s"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 15,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "☕ Sostieni lo sviluppo di",
+      "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -8107,7 +9453,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -8139,6 +9485,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -8150,6 +9497,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(1)>div:nth-child(3)",
       "esempio": "Coppa Nazionale: dal tuo s"
      },
@@ -8161,6 +9509,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(1)",
       "esempio": "K"
      },
@@ -8172,6 +9521,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)",
       "esempio": "☕ Sostieni lo sviluppo di"
      },
@@ -8183,6 +9533,7 @@
       "rap": 7.58,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "button:nth-child(2)>span:nth-child(1)>span:nth-child(2)",
       "esempio": "Elite"
      }
@@ -8261,6 +9612,45 @@
       "esempio": "Coppa Nazionale: dal tuo s"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 15,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "☕ Sostieni lo sviluppo di",
+      "sel": "div.cpm-career>div.cpm-nav-bar>button:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -8292,7 +9682,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    }
@@ -8308,7 +9698,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 146,
+    "nTesto": 145,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -8326,6 +9716,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
      },
@@ -8337,6 +9728,7 @@
       "rap": 5.15,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "/ anno"
      },
@@ -8348,6 +9740,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "8°"
      },
@@ -8359,6 +9752,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 20,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
       "esempio": "🩺 Dr."
      },
@@ -8370,6 +9764,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -8378,7 +9773,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 4,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
@@ -8388,8 +9783,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      3,
@@ -8475,6 +9869,51 @@
       "esempio": "50"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 68,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "50",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 12,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 3,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 1,
     "altezzaPx": 1426,
     "schermate": 1.56,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8510,7 +9949,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -8531,7 +9970,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 146,
+    "nTesto": 145,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -8549,6 +9988,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
      },
@@ -8560,6 +10000,7 @@
       "rap": 5.15,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "/ anno"
      },
@@ -8571,6 +10012,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "8°"
      },
@@ -8582,6 +10024,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 20,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
       "esempio": "🩺 Dr."
      },
@@ -8593,6 +10036,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -8601,7 +10045,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 4,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
@@ -8611,8 +10055,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      3,
@@ -8698,6 +10141,51 @@
       "esempio": "50"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 68,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "50",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 12,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 3,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 1,
     "altezzaPx": 1425,
     "schermate": 1.56,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8733,7 +10221,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -8754,7 +10242,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 146,
+    "nTesto": 145,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -8772,6 +10260,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
      },
@@ -8783,6 +10272,7 @@
       "rap": 5.15,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "/ anno"
      },
@@ -8794,6 +10284,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "8°"
      },
@@ -8805,6 +10296,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 20,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
       "esempio": "🩺 Dr."
      },
@@ -8816,6 +10308,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -8824,7 +10317,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 4,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
@@ -8834,8 +10327,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      3,
@@ -8921,6 +10413,51 @@
       "esempio": "50"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 68,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "50",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 12,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 3,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 1,
     "altezzaPx": 1425,
     "schermate": 1.56,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8956,7 +10493,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -8977,7 +10514,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 146,
+    "nTesto": 145,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -8995,6 +10532,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
      },
@@ -9006,6 +10544,7 @@
       "rap": 5.15,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "/ anno"
      },
@@ -9017,6 +10556,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "8°"
      },
@@ -9028,6 +10568,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 20,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
       "esempio": "🩺 Dr."
      },
@@ -9039,6 +10580,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -9047,7 +10589,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 4,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
@@ -9057,8 +10599,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      3,
@@ -9144,6 +10685,51 @@
       "esempio": "50"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 68,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "50",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 12,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 3,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 1,
     "altezzaPx": 1413,
     "schermate": 1.54,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9179,7 +10765,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -9200,7 +10786,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 146,
+    "nTesto": 145,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -9218,6 +10804,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
      },
@@ -9229,6 +10816,7 @@
       "rap": 5.15,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)",
       "esempio": "/ anno"
      },
@@ -9240,6 +10828,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "8°"
      },
@@ -9251,6 +10840,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 20,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(6)",
       "esempio": "🩺 Dr."
      },
@@ -9262,6 +10852,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 5,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      }
@@ -9270,7 +10861,7 @@
     "marca": [],
     "nColTesto": 10,
     "nFondi": 4,
-    "nCorpi": 8,
+    "nCorpi": 7,
     "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
@@ -9280,8 +10871,7 @@
      15,
      17,
      20,
-     24,
-     27
+     24
     ],
     "raggi": [
      3,
@@ -9367,6 +10957,51 @@
       "esempio": "50"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 68,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "50",
+      "sel": "div:nth-child(1)>div:nth-child(1)>span.cpm-num"
+     },
+     {
+      "fs": 13,
+      "n": 12,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 3,
+      "esempio": "FC Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 1,
     "altezzaPx": 1400,
     "schermate": 1.53,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9402,7 +11037,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -9443,6 +11078,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol stag."
      },
@@ -9454,6 +11090,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -9465,6 +11102,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(23)>button:nth-child(1)",
       "esempio": "🎬 Rivedi l'intro"
      },
@@ -9476,6 +11114,7 @@
       "rap": 5.93,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(13)>div:nth-child(2)",
       "esempio": "Stagioni da pro:"
      },
@@ -9487,6 +11126,7 @@
       "rap": 6.12,
       "soglia": 3,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      }
@@ -9585,6 +11225,45 @@
       "esempio": "Salva"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 72,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 2,
+      "esempio": "Strumenti di collaudo",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 9,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 2083,
     "schermate": 2.28,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9700,7 +11379,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -9760,6 +11439,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol stag."
      },
@@ -9771,6 +11451,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -9782,6 +11463,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(23)>button:nth-child(1)",
       "esempio": "🎬 Rivedi l'intro"
      },
@@ -9793,6 +11475,7 @@
       "rap": 5.93,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(13)>div:nth-child(2)",
       "esempio": "Stagioni da pro:"
      },
@@ -9804,6 +11487,7 @@
       "rap": 6.12,
       "soglia": 3,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      }
@@ -9902,6 +11586,45 @@
       "esempio": "Salva"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 72,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 2,
+      "esempio": "Strumenti di collaudo",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 9,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 2068,
     "schermate": 2.26,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -10017,7 +11740,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -10077,6 +11800,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol stag."
      },
@@ -10088,6 +11812,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -10099,6 +11824,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(23)>button:nth-child(1)",
       "esempio": "🎬 Rivedi l'intro"
      },
@@ -10110,6 +11836,7 @@
       "rap": 5.93,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(13)>div:nth-child(2)",
       "esempio": "Stagioni da pro:"
      },
@@ -10121,6 +11848,7 @@
       "rap": 6.12,
       "soglia": 3,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      }
@@ -10219,6 +11947,45 @@
       "esempio": "Salva"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 72,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 2,
+      "esempio": "Strumenti di collaudo",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 9,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 2068,
     "schermate": 2.26,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -10334,7 +12101,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -10394,6 +12161,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol stag."
      },
@@ -10405,6 +12173,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -10416,6 +12185,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(23)>button:nth-child(1)",
       "esempio": "🎬 Rivedi l'intro"
      },
@@ -10427,6 +12197,7 @@
       "rap": 5.93,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(13)>div:nth-child(2)",
       "esempio": "Stagioni da pro:"
      },
@@ -10438,6 +12209,7 @@
       "rap": 6.12,
       "soglia": 3,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      }
@@ -10536,6 +12308,45 @@
       "esempio": "Salva"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 72,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 2,
+      "esempio": "Strumenti di collaudo",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 9,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 2022,
     "schermate": 2.21,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -10651,7 +12462,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -10711,6 +12522,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Gol stag."
      },
@@ -10722,6 +12534,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 8,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -10733,6 +12546,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(23)>button:nth-child(1)",
       "esempio": "🎬 Rivedi l'intro"
      },
@@ -10744,6 +12558,7 @@
       "rap": 5.93,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(13)>div:nth-child(2)",
       "esempio": "Stagioni da pro:"
      },
@@ -10755,6 +12570,7 @@
       "rap": 6.12,
       "soglia": 3,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num",
       "esempio": "14"
      }
@@ -10853,6 +12669,45 @@
       "esempio": "Salva"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 72,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 2,
+      "esempio": "Strumenti di collaudo",
+      "sel": "div:nth-child(1)>div:nth-child(2)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 4,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 9,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 2022,
     "schermate": 2.21,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -10968,7 +12823,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -11030,6 +12885,7 @@
       "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
@@ -11041,6 +12897,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
@@ -11052,6 +12909,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
@@ -11063,6 +12921,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -11074,6 +12933,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Prossimi tornei"
      }
@@ -11171,6 +13031,51 @@
       "esempio": "82"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 51,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(4)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1152,
     "schermate": 1.26,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -11208,7 +13113,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -11240,6 +13145,7 @@
       "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
@@ -11251,6 +13157,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
@@ -11262,6 +13169,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
@@ -11273,6 +13181,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -11284,6 +13193,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Prossimi tornei"
      }
@@ -11381,6 +13291,51 @@
       "esempio": "82"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 51,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(4)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1139,
     "schermate": 1.24,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -11418,7 +13373,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -11450,6 +13405,7 @@
       "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
@@ -11461,6 +13417,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
@@ -11472,6 +13429,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
@@ -11483,6 +13441,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -11494,6 +13453,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Prossimi tornei"
      }
@@ -11591,6 +13551,51 @@
       "esempio": "82"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 51,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(4)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1139,
     "schermate": 1.24,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -11628,7 +13633,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -11660,6 +13665,7 @@
       "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
@@ -11671,6 +13677,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
@@ -11682,6 +13689,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
@@ -11693,6 +13701,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -11704,6 +13713,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Prossimi tornei"
      }
@@ -11801,6 +13811,51 @@
       "esempio": "82"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 51,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(4)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1139,
     "schermate": 1.24,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -11838,7 +13893,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -11870,6 +13925,7 @@
       "rap": 4.66,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>span.cpm-num",
       "esempio": "0"
      },
@@ -11881,6 +13937,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "2"
      },
@@ -11892,6 +13949,7 @@
       "rap": 4.99,
       "soglia": 4.5,
       "n": 6,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>span.cpm-num",
       "esempio": "31"
      },
@@ -11903,6 +13961,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -11914,6 +13973,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(3)>div:nth-child(2)>div:nth-child(1)",
       "esempio": "Prossimi tornei"
      }
@@ -12011,6 +14071,51 @@
       "esempio": "82"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 51,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 10,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 5,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 2,
+      "esempio": "82",
+      "sel": "div:nth-child(4)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1139,
     "schermate": 1.24,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -12048,7 +14153,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    }
@@ -12082,6 +14187,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 12,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
       "esempio": "Mercato"
      },
@@ -12093,6 +14199,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
       "esempio": "Ambiziosa"
      },
@@ -12104,6 +14211,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
       "esempio": "🔴 Chiuso"
      },
@@ -12115,6 +14223,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -12126,6 +14235,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
       "esempio": "Cambia procuratore"
      }
@@ -12228,6 +14338,57 @@
       "esempio": "🚪 Richiedi Cessione"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 67,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "«Guarda,",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 15,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "45.0M",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 1,
+      "esempio": "4.56M€",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1576,
     "schermate": 1.72,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -12267,7 +14428,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -12299,6 +14460,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 12,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
       "esempio": "Mercato"
      },
@@ -12310,6 +14472,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
       "esempio": "Ambiziosa"
      },
@@ -12321,6 +14484,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
       "esempio": "🔴 Chiuso"
      },
@@ -12332,6 +14496,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -12343,6 +14508,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
       "esempio": "Cambia procuratore"
      }
@@ -12445,6 +14611,57 @@
       "esempio": "🚪 Richiedi Cessione"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 67,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "«Guarda,",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 15,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "45.0M",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 1,
+      "esempio": "4.56M€",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1536,
     "schermate": 1.68,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -12484,7 +14701,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -12516,6 +14733,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 12,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
       "esempio": "Mercato"
      },
@@ -12527,6 +14745,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
       "esempio": "Ambiziosa"
      },
@@ -12538,6 +14757,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
       "esempio": "🔴 Chiuso"
      },
@@ -12549,6 +14769,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -12560,6 +14781,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
       "esempio": "Cambia procuratore"
      }
@@ -12662,6 +14884,57 @@
       "esempio": "🚪 Richiedi Cessione"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 67,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "«Guarda,",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 15,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "45.0M",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 1,
+      "esempio": "4.56M€",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1518,
     "schermate": 1.66,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -12701,7 +14974,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -12733,6 +15006,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 12,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
       "esempio": "Mercato"
      },
@@ -12744,6 +15018,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
       "esempio": "Ambiziosa"
      },
@@ -12755,6 +15030,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
       "esempio": "🔴 Chiuso"
      },
@@ -12766,6 +15042,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -12777,6 +15054,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
       "esempio": "Cambia procuratore"
      }
@@ -12879,6 +15157,57 @@
       "esempio": "🚪 Richiedi Cessione"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 67,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "«Guarda,",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 15,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "45.0M",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 1,
+      "esempio": "4.56M€",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1518,
     "schermate": 1.66,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -12918,7 +15247,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    },
@@ -12950,6 +15279,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 12,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(1)",
       "esempio": "Mercato"
      },
@@ -12961,6 +15291,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>button:nth-child(2)",
       "esempio": "Ambiziosa"
      },
@@ -12972,6 +15303,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(3)>div:nth-child(2)",
       "esempio": "🔴 Chiuso"
      },
@@ -12983,6 +15315,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 3,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Forma"
      },
@@ -12994,6 +15327,7 @@
       "rap": 5.53,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>button.cpm-press.cpm-focus",
       "esempio": "Cambia procuratore"
      }
@@ -13096,6 +15430,57 @@
       "esempio": "🚪 Richiedi Cessione"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 67,
+      "esempio": "Elite",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
+     },
+     {
+      "fs": 12,
+      "n": 4,
+      "esempio": "«Guarda,",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 15,
+      "esempio": "K",
+      "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
+     },
+     {
+      "fs": 15,
+      "n": 1,
+      "esempio": "45.0M",
+      "sel": "div:nth-child(2)>div:nth-child(2)>div.cpm-num"
+     },
+     {
+      "fs": 17,
+      "n": 3,
+      "esempio": "78",
+      "sel": "div:nth-child(2)>div:nth-child(1)>div.cpm-num"
+     },
+     {
+      "fs": 20,
+      "n": 1,
+      "esempio": "Grafica Probe",
+      "sel": "div:nth-child(2)>div:nth-child(2)>h1:nth-child(2)"
+     },
+     {
+      "fs": 24,
+      "n": 1,
+      "esempio": "82",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div.cpm-num"
+     },
+     {
+      "fs": 32,
+      "n": 1,
+      "esempio": "4.56M€",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div.cpm-num"
+     }
+    ],
+    "nSvgTesto": 0,
     "altezzaPx": 1518,
     "schermate": 1.66,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -13135,7 +15520,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 14:19Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
      }
     ]
    }
@@ -13151,7 +15536,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 35,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -13169,6 +15554,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
@@ -13180,6 +15566,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "Contropiede"
      },
@@ -13191,6 +15578,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
@@ -13202,6 +15590,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
      },
@@ -13213,6 +15602,7 @@
       "rap": 7.13,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -13284,6 +15674,27 @@
       "esempio": "📋 Formazioni →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 11,
+      "esempio": "Contropiede",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
+     },
+     {
+      "fs": 12,
+      "n": 5,
+      "esempio": "Stadio Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 1,
+      "esempio": "📋 Formazioni →",
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 2,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -13326,7 +15737,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 35,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -13344,6 +15755,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
@@ -13355,6 +15767,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "Contropiede"
      },
@@ -13366,6 +15779,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
@@ -13377,6 +15791,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
      },
@@ -13388,6 +15803,7 @@
       "rap": 7.13,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -13459,6 +15875,27 @@
       "esempio": "📋 Formazioni →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 11,
+      "esempio": "Contropiede",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
+     },
+     {
+      "fs": 12,
+      "n": 5,
+      "esempio": "Stadio Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 1,
+      "esempio": "📋 Formazioni →",
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 2,
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "documento",
@@ -13501,7 +15938,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 35,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -13519,6 +15956,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
@@ -13530,6 +15968,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "Contropiede"
      },
@@ -13541,6 +15980,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
@@ -13552,6 +15992,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
      },
@@ -13563,6 +16004,7 @@
       "rap": 7.13,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -13634,6 +16076,27 @@
       "esempio": "📋 Formazioni →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 11,
+      "esempio": "Contropiede",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
+     },
+     {
+      "fs": 12,
+      "n": 5,
+      "esempio": "Stadio Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 1,
+      "esempio": "📋 Formazioni →",
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 2,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -13676,7 +16139,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 35,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -13694,6 +16157,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
@@ -13705,6 +16169,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "Contropiede"
      },
@@ -13716,6 +16181,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
@@ -13727,6 +16193,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
      },
@@ -13738,6 +16205,7 @@
       "rap": 7.13,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -13809,6 +16277,27 @@
       "esempio": "📋 Formazioni →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 11,
+      "esempio": "Contropiede",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
+     },
+     {
+      "fs": 12,
+      "n": 5,
+      "esempio": "Stadio Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 1,
+      "esempio": "📋 Formazioni →",
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 2,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -13851,7 +16340,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 35,
+    "nTesto": 33,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -13869,6 +16358,7 @@
       "rap": 4.77,
       "soglia": 4.5,
       "n": 4,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
       "esempio": "Stadio"
      },
@@ -13880,6 +16370,7 @@
       "rap": 5.36,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
       "esempio": "Contropiede"
      },
@@ -13891,6 +16382,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(4)",
       "esempio": "Attenzione: centrocampo fi"
      },
@@ -13902,6 +16394,7 @@
       "rap": 6.21,
       "soglia": 4.5,
       "n": 1,
+      "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus",
       "esempio": "🔍 Analisi completa"
      },
@@ -13913,6 +16406,7 @@
       "rap": 7.13,
       "soglia": 4.5,
       "n": 2,
+      "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
       "esempio": "Gioco aereo"
      }
@@ -13984,6 +16478,27 @@
       "esempio": "📋 Formazioni →"
      }
     ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 11,
+      "esempio": "Contropiede",
+      "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
+     },
+     {
+      "fs": 12,
+      "n": 5,
+      "esempio": "Stadio Salernum",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(2)"
+     },
+     {
+      "fs": 13,
+      "n": 1,
+      "esempio": "📋 Formazioni →",
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus"
+     }
+    ],
+    "nSvgTesto": 2,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",

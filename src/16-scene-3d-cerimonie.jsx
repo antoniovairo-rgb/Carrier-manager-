@@ -856,7 +856,7 @@ function StrisciaScena948({club,tono}){
         letterSpacing:.2,color:"#7a1526",whiteSpace:"nowrap"}}>
         K<span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",
           border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
-        <span style={{fontWeight:700,fontStyle:"italic",color:"#b45309"}}>Elite</span>
+        <span style={{fontWeight:700,fontStyle:"italic",color:"#92400e"}}>Elite</span>
       </span>
       <span style={{fontSize:FS.caption,fontWeight:800,color:"#475569",whiteSpace:"nowrap",
         overflow:"hidden",textOverflow:"ellipsis",flex:1,textAlign:"center"}}>{spon}</span>

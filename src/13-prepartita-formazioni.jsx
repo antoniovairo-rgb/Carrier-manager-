@@ -455,14 +455,14 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
             <TeamBadge team={homeTeam} size={52}/>
             <div style={{fontSize:FS.small,fontWeight:700,color:TH.text,marginTop:4}}>{homeTeam?.name||homeTeam?.n}</div>
             <div style={{fontSize:FS.caption,color:TH.muted}}>CASA</div>
-            {exClub&&exClub.side==="home"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
+            {exClub&&exClub.side==="home"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#92400e",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
           </div>
           <div style={{fontSize:FS.h,color:TH.faint,fontWeight:900,marginTop:15}}>VS</div>
           <div style={{textAlign:"center",flex:"0 0 96px"}}>
             <TeamBadge team={awayTeam} size={52}/>
             <div style={{fontSize:FS.small,fontWeight:700,color:TH.text,marginTop:4}}>{awayTeam?.name||awayTeam?.n}</div>
             <div style={{fontSize:FS.caption,color:TH.muted}}>OSPITE</div>
-            {exClub&&exClub.side==="away"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
+            {exClub&&exClub.side==="away"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#92400e",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
             {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.xs,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
           </div>
         </div>

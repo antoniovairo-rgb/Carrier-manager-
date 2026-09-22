@@ -231,6 +231,14 @@ const thPastel=(light,darkTint)=>TH.dk?darkTint:light;
 const FS={caption:11,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 11px)
 const FW={regular:400,medium:500,semibold:600,bold:700,black:800};                                          // pesi
 const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32};                                                       // 4pt grid
+/* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
+   rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
+   cioe' da una proporzione, non da una scelta. Qui la proporzione resta (l'anello scala con la sua
+   taglia) ma il risultato si aggancia al gradino piu' vicino della scala FS: la tipografia del gioco
+   resta un elenco finito anche dove il numero lo calcola una formula. */
+const _FS_SCALA=[11,12,13,15,17,20,24,32,44,64];
+const fsScala=(x)=>{const v=+x||0;let b=_FS_SCALA[0],d=1e9;
+  for(const k of _FS_SCALA){const q=Math.abs(k-v);if(q<d){d=q;b=k;}}return b;};
 const RAD={xs:6,sm:8,md:12,lg:16,xl:20,pill:999};                                                            // raggi
 const MO={fast:120,base:200,slow:320,cine:550,easeStd:"cubic-bezier(.2,0,0,1)",easeOut:"cubic-bezier(0,0,.2,1)",easeIn:"cubic-bezier(.4,0,1,1)"}; // motion
 

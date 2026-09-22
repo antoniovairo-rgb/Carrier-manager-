@@ -225,7 +225,7 @@ function MISURA(W) {
        rende quattordici contro le cinque del provino, ma non dice QUALI — e la differenza e' tutta li':
        una tinta semantica (vittoria, sconfitta, allarme) e' un'informazione e deve restare, un grigio nato
        per sbaglio e' debito. Senza l'elenco col nodo d'esempio, unificare sarebbe indovinare. */
-    tinteTesto: [],
+    tinteTesto: [], corpiDet: [], nSvgTesto: 0,/* [G13 · 22/09] e la stessa cosa per i CORPI: un elenco senza esempio non fa trovare il nodo — lezione G8.8 */
     /* [G8.3 · direttiva PO 17/09 «se una schermata e' troppo lunga valuta se mettere degli
        accordion»] QUANTO E' LUNGA. Prima di aprire e chiudere sezioni serve sapere quali
        schermate lo meritano davvero: `schermate` e' l'altezza del documento diviso l'altezza
@@ -429,11 +429,24 @@ function MISURA(W) {
     if (rr.right < -1 || rr.left > de.scrollWidth + 1) continue;  /* spinto fuori pagina a sinistra/destra: non e' letto da nessuno */
     if (opac(p) < 0.1) continue;
 
+    /* [G13 · 22/09 — UN'UNITA' SVG NON E' UN PIXEL, E IL CENSIMENTO LA CONTAVA COME TALE.]
+       Il dettaglio dei corpi (tabella 9-octies) ha nominato il colpevole del misterioso corpo «27» che
+       compariva su Club e Dashboard e non stava in nessun token: e' la SIGLA DELLO STEMMA, `<text
+       fontSize="27">` dentro un `<svg viewBox>`. Dentro un viewBox quel 27 e' un'unita' di disegno, non
+       un pixel: lo stemma e' alto 18-40 px reali, quindi quella sigla RENDE a 6-11 px. `getComputedStyle`
+       pero' restituisce 27, e il censimento la contava come un corpo tipografico in piu' su ogni
+       schermata con uno stemma. Il testo dentro SVG esce quindi dal conto dei CORPI e dal pavimento (due
+       grandezze in pixel) e viene contato a parte; resta invece nel contrasto, che e' un rapporto fra
+       colori e non dipende dalla scala. */
+    const _inSvg = !!(p && p.ownerSVGElement);
+    if (_inSvg) R.nSvgTesto = (R.nSvgTesto | 0) + 1;
     const fs = parseFloat(cs.fontSize) || 0;
     const fw = parseInt(cs.fontWeight, 10) || (/(bold|bolder)/.test(cs.fontWeight) ? 700 : 400);
-    R.nTesto++;
-    if (fs < 10) R.nPiccoli++;
-    if (fs < 11) { R.nSottoPav++; _pav(p, nodo, fs, fw); }/* [C4 · 16/09] IL PAVIMENTO DICHIARATO E' 11 px (FS.caption), non 10: la colonna <10px non vedeva gli 810 `fontSize:10` scritti a mano, che sono il corpo piu' diffuso dell'intero gioco. Questa colonna misura il pavimento vero. */
+    if (!_inSvg) {
+      R.nTesto++;
+      if (fs < 10) R.nPiccoli++;
+      if (fs < 11) { R.nSottoPav++; _pav(p, nodo, fs, fw); }
+    }/* [C4 · 16/09] IL PAVIMENTO DICHIARATO E' 11 px (FS.caption), non 10: la colonna <10px non vedeva gli 810 `fontSize:10` scritti a mano, che sono il corpo piu' diffuso dell'intero gioco. Questa colonna misura il pavimento vero. */
     if (R.minFs == null || fs < R.minFs) R.minFs = fs;
 
     /* [G8.7] I GLIFI DI SOLE EMOJI SONO ESCLUSI, E DICHIARATI — non tolti di nascosto.
@@ -452,12 +465,12 @@ function MISURA(W) {
     const soglia = (fs >= 18 || (fs >= 14 && fw >= 700)) ? 3 : 4.5;
     R.nMisurati++;
     if (rap < soglia) R.nSotto++;
-    _colT.add(hex(tc)); _fon.add(hex(f.col)); _cor.add(Math.round(fs * 10) / 10); _pes.add(fw);
+    _colT.add(hex(tc)); _fon.add(hex(f.col)); if (!_inSvg) { _cor.add(Math.round(fs * 10) / 10); _pes.add(fw); }
     { const ff = String(cs.fontFamily || '').split(',')[0].replace(/["']/g, '').trim(); if (ff) _fam.set(ff, (_fam.get(ff) | 0) + 1); }
     const k = hex(tc) + '|' + hex(f.col) + '|' + Math.round(fs * 10) / 10 + '|' + fw;
     const e = agg.get(k);
     if (e) e.n++;
-    else agg.set(k, { testo: hex(tc), fondo: hex(f.col), fs: Math.round(fs * 10) / 10, fw, rap: Math.round(rap * 100) / 100, soglia, n: 1, sel: sel(p), esempio: (nodo.nodeValue || '').replace(/\s+/g, ' ').trim().slice(0, 26) });
+    else agg.set(k, { testo: hex(tc), fondo: hex(f.col), fs: Math.round(fs * 10) / 10, fw, rap: Math.round(rap * 100) / 100, soglia, n: 1, svg: _inSvg, sel: sel(p), esempio: (nodo.nodeValue || '').replace(/\s+/g, ' ').trim().slice(0, 26) });
   }
   /* i raggi: si guardano TUTTI gli elementi visibili con un angolo arrotondato, non solo il testo */
   for (let i = 0; i < tutti.length; i++) {
@@ -580,6 +593,10 @@ function MISURA(W) {
       if (o) { o.n += e.n; if (e.fs > o.fs) { o.fs = e.fs; o.esempio = e.esempio; } }
       else per.set(k, { c: k, n: e.n, fs: e.fs, esempio: e.esempio }); }
     R.tinteTesto = [...per.values()].sort((a, b) => b.n - a.n); }
+  { const perC = new Map();
+    for (const e of agg.values()) { if (e.svg) continue; const k = e.fs; const o = perC.get(k);
+      if (o) { o.n += e.n; } else perC.set(k, { fs: k, n: e.n, esempio: e.esempio, sel: e.sel }); }
+    R.corpiDet = [...perC.values()].sort((a, b) => a.fs - b.fs); }
   R.peggiori = [...agg.values()].sort((a, b) => a.rap - b.rap || b.n - a.n).slice(0, 5);
   R.sottoPav = [...pav.values()].sort((a, b) => a.fs - b.fs || b.n - a.n).slice(0, 5);
   if (R.minFs != null) R.minFs = Math.round(R.minFs * 10) / 10;
@@ -1017,6 +1034,22 @@ righe.forEach(s2 => {
   const fam = m.famiglie || [];
   const fuori = fam.filter(x => !/^Barlow/i.test(x.f));
   R.push(`| ${s2.nome} | ${fuori.length ? '**' + (m.nFamiglie || 0) + '**' : (m.nFamiglie || 0)} | ${fam.map(x => x.f + ' x' + x.n).join(' · ') || '—'} |`);
+});
+R.push('');
+
+R.push('## 9-octies · I CORPI, UNO PER UNO, COL NODO CHE LI PORTA (a 412 px)');
+R.push('');
+R.push('> [G13 · 22/09] Stessa lezione delle tinte e del pavimento (G8.8): un elenco di numeri non fa');
+R.push('> trovare il nodo. Qui ogni corpo reso, con quanti nodi lo portano e un esempio — cosi\' un corpo');
+R.push('> fuori scala si va a prendere invece di cercarlo a mano nel sorgente.');
+R.push('');
+R.push('| schermata | corpi | dettaglio (px x nodi · esempio) |');
+R.push('|---|---:|---|');
+righe.forEach(s2 => {
+  const m = (DATI[s2.id][412] || DATI[s2.id][W[W.length - 1]]);
+  if (!m) return;
+  const t = (m.corpiDet || []).map(x => `**${x.fs}** x${x.n} (${String(x.esempio || '').replace(/\|/g, '/').slice(0, 12)})`).join(' · ');
+  R.push(`| ${s2.nome} | ${m.nCorpi || 0} | ${t || '—'} |`);
 });
 R.push('');
 

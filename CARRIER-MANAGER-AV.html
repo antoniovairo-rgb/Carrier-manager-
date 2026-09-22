@@ -498,6 +498,14 @@ const thPastel=(light,darkTint)=>TH.dk?darkTint:light;
 const FS={caption:11,small:12,body:13,bodyLg:15,subhead:17,title:20,h:24,display:32,displayLg:44,hero:64}; // type scale (floor 11px)
 const FW={regular:400,medium:500,semibold:600,bold:700,black:800};                                          // pesi
 const SP={xs:4,sm:8,md:12,lg:16,xl:20,xxl:24,xxxl:32};                                                       // 4pt grid
+/* [G13 · 7.969] UN CORPO CALCOLATO ATTERRA SULLA SCALA, NON DOVE CAPITA. MISURATO: Dashboard e Club
+   rendevano un corpo «27» che non sta nel provino ne' nei token — veniva da `size*0.27` dell'anello OVR,
+   cioe' da una proporzione, non da una scelta. Qui la proporzione resta (l'anello scala con la sua
+   taglia) ma il risultato si aggancia al gradino piu' vicino della scala FS: la tipografia del gioco
+   resta un elenco finito anche dove il numero lo calcola una formula. */
+const _FS_SCALA=[11,12,13,15,17,20,24,32,44,64];
+const fsScala=(x)=>{const v=+x||0;let b=_FS_SCALA[0],d=1e9;
+  for(const k of _FS_SCALA){const q=Math.abs(k-v);if(q<d){d=q;b=k;}}return b;};
 const RAD={xs:6,sm:8,md:12,lg:16,xl:20,pill:999};                                                            // raggi
 const MO={fast:120,base:200,slow:320,cine:550,easeStd:"cubic-bezier(.2,0,0,1)",easeOut:"cubic-bezier(0,0,.2,1)",easeIn:"cubic-bezier(.4,0,1,1)"}; // motion
 
@@ -5083,7 +5091,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.968.0"; // [7.968.0 - QUATTORDICI TINTE NON ERANO QUATTORDICI CONCETTI: ERANO TRE VERDI, QUATTRO AMBRE E TRE BLU] Censimento nuovo della griglia (tabella 9-septies: le tinte del testo UNA PER UNA, col numero di nodi e un esempio). Il conteggio diceva che la Dashboard rende quattordici tinte contro le cinque del provino, ma non diceva QUALI - e la differenza era tutta li. MISURATO: non erano quattordici concetti. Erano TRE VERDI (#0f7334, #137036, #166534), QUATTRO AMBRE (#b45309, #92400e, #995404, #a34a08), TRE BLU (#2563eb, #1e40af, #026fa7) e DUE ROSSI. E quasi nessuno di quei valori sta nel sorgente: li fabbrica semTesto945, la funzione che scurisce una tinta semantica a passi del 16 per cento finche il contrasto non arriva a 4,5:1 - lo stesso verde su due fondi diversi esce con due valori diversi. Il contrasto era giusto, l esito no: l occhio vede due verdi dove il gioco ne intende uno. RIMEDIO: il risultato si aggancia a un elenco di inchiostri approvati, uno per famiglia, e SOLO se l inchiostro approvato e davvero vicino (distanza RGB sotto soglia) e passa lui stesso il 4,5:1 su quel fondo. Se non lo passa vince il valore calcolato: il contrasto non si baratta con l ordine. Rosso appaiato __CPM_NO968. Allineato anche winFg (#137036 -> #166534: due verdi a undici punti di distanza, indistinguibili a occhio e contati come due). RI-MISURATO: Profilo 12 -> 9 tinte, Classifica 13 -> 11, Dashboard 14 -> 13, Club 11 -> 10. Media delle tredici schermate 93,2 -> 93,4 per cento. Contrasto sotto soglia 0 su tutte e tredici, come prima: zero difetti nuovi, zero errori di pagina. RESTA il residuo dichiarato: i due grigi della gerarchia (#526279 muted e #596a80 faint) sono una scelta del tema, non un doppione, e i colori dei CLUB resi come testo sono dati, non tinte di sistema. RAPPORTO DELLE FIGURINE CONFERMATO DAL PO: 5:7. Messo a verbale in docs/FIGURINE-VOLTI.md - il team codex puo disegnare. NON VERIFICATO: Chromium a 412x915, non l Android del PO.
+const GAME_VERSION="7.969.0"; // [7.969.0 - IL CORPO MISTERIOSO ERA UNO SBAGLIO DELLO STRUMENTO: UN UNITA SVG NON E UN PIXEL] Il censimento dei corpi diceva che Club e Dashboard rendono un corpo 27 che non sta in nessun token, e nessuno riusciva a trovarlo nel sorgente. Tabella nuova 9-octies (i corpi UNO PER UNO, col nodo che li porta - stessa lezione delle tinte e del pavimento: un elenco di numeri non fa trovare il nodo) e il colpevole si e nominato da solo: la SIGLA DELLO STEMMA, cioe un text fontSize 27 dentro un svg con viewBox. Dentro un viewBox quel 27 e un unita di DISEGNO, non un pixel: lo stemma e alto 18-40 px reali, quindi la sigla rende a 6-11 px. getComputedStyle pero restituisce 27, e il censimento la contava come un corpo tipografico in piu su ogni schermata con uno stemma. CORRETTO LO STRUMENTO: il testo dentro SVG esce dal conto dei CORPI e dal pavimento - due grandezze in pixel - e viene contato a parte; resta nel contrasto, che e un rapporto fra colori e non dipende dalla scala. ⚠️ Il salto della media (93,4 -> 93,8) e quindi in buona parte una MISURA PIU ONESTA, non un gioco piu bello: si dichiara, non si incassa. SPEDITO ANCHE, e questo cambia i pixel davvero: le ultime tinte gemelle agganciate (sette color b45309 -> 92400e, cinque 2563eb -> 1e40af) e la tinta della FASE DI CARRIERA fatta passare dal correttore come tutte le altre - erano un ambra e un blu in piu nel censimento; i corpi CALCOLATI (anello OVR, size*0,27 e size*0,45) ora atterrano sul gradino piu vicino della scala FS invece che dove capita: la proporzione resta, la tipografia torna un elenco finito. MISURATO: corpi resi Club 8 -> 7, Dashboard 8 -> 7, Classifica 7 -> 6, Calendario 8 -> 7, Creazione 4 -> 3, Offerte 4 -> 3. Media delle tredici 93,4 -> 93,8 per cento. Zero difetti: overflow 0, fuori schermo 0, pavimento 0, contrasto 0, zero errori di pagina. NON VERIFICATO: Chromium a 412x915, non l Android del PO.
 // [nota 7.761.0] [7.761.0 — FASE 10, OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO, E IL METRO DELLE RIGHE FONDATE SMETTE DI PUNIRE I TIRI]. Il censimento fondate-558 contava «smentite» righe che dichiaravano un punto e trovavano il pallone alla linea di porta (94,50) nella stessa finestra: non era la riga a mentire, era il tiro dell'eroe (parato o fuori) che il giudice non poteva vedere perche' il libro mastro registrava solo i gol. Ora handleAction scrive cpmEv(«esito», {min,key,ok,at}) per ogni azione risolta, e il metro (7.760: gol nella finestra → conto a parte; 7.761: anche gli esiti goal/miss/save/chance/assist) mette quelle righe in un conto separato, ne' fondate ne' smentite. Il gioco non cambia: cambia cio' che il libro mastro sa, e quindi cio' che i guardiani potranno chiedere. MISURA: fondate-558 sui semi 7300/7337 prima e dopo (vedi verbale).
 // [nota 7.759.0] [7.759.0 — TROVATO DAL GUARDIANO: il gol subito nella scena difensiva non entrava nel libro mastro]. La banda «tabellone» (7.756), fatta girare su QUATTRO partite per la stabilita', ha bocciato: gol raccontati 2-4 contro punteggio finale 2-5. Censiti i cinque scrittori del punteggio: gol dell'eroe da gioco aperto (1153), gol ambientale nostro e loro (4464/4465), gol dell'eroe su palla ferma (6638) hanno tutti il loro cpmEv(«goal»); il gol AVVERSARIO da scena difensiva (esito goal_against di handleAction) incrementava il punteggio senza scriverlo nel libro mastro — quindi il feed del tabellone (7.721), la banda «tabellone» e ogni guardiano che conta i gol dagli eventi lo perdevano. Ora scrive l'evento con src «scena-difensiva». Il punteggio non cambia (il microsim e le scene restano l'autorita'): cambia solo che ogni gol e' registrato. MISURA: guardiano a 4 partite, banda tabellone da rossa a verde (vedi verbale).
 // [nota 7.758.0] [7.758.0 — COLLAUDO PO 03/09 18:01 «pannello nero dietro la porta»: il cartellone centrale dietro la porta (z=0) era un rettangolo NERO senza scritta durante la scena ASSIST/DOMINIO, Coppa, GLB ON]. DIAGNOSI dal diario 7.535, che aveva gia' fotografato la firma: «quando l'allocazione non riesce, la mesh resta ma la sua texture e' vuota — e una texture vuota su materiale opaco e' NERA»; in headless non si riproduce (nessuna texture nera su 99 piani texturizzati), sul telefono con folla GLB, kit, volti e arredo la memoria GPU finisce e il primo cartellone che non si alloca e' quello che il PO guarda. RIMEDIO: il budget scende dove costa di piu' e non si vede — cartelloni (1024x160, uno per brand e stile) e drappi (1024x110) si disegnano come prima e si consegnano alla GPU a meta' lato (512x80 / 512x55), senza mipmap e con anisotropia 4. MISURATO (hook __CPM_DECOR, provino GLB ON, ON vs rosso __CPM_NO758): arredo 25,5 MB contro 30,7 MB (−17%), 11 cartelloni da 1024x160 a 512x80, stessi 167 piani e 52 texture uniche, zero texture nere in entrambi. Restano 8 texture 1024x512 (16 MB) e 2 LED 2048x128 (2 MB), censite per la prossima tacca. NON VERIFICATO sul telefono: la scomparsa del pannello nero va confermata dal PO nella stessa scena (Coppa, GLB ON). 7.757 «il piano-gol nasce dalla mente» PROVATA E REVOCATA (fondate appaiato peggiore: 75,7/71,9 contro 81,3/82,4).
@@ -9614,7 +9622,7 @@ const StatBar=({label,value,tone,track,height=4,mb=8})=>{
 /* OvrRing — refactor Ondata 1: track → TH.track (light == #e2e8f0, pinnato) · label default 'OVR' (era 'LVL': errato per un calciatore). */
 const OvrRing=({value,size=60,label="OVR"})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
-  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:Math.max(FS.caption,size*.27)/* [C4] pavimento 11 px */,fontWeight:900,color:legCol944(c),lineHeight:1}}>{value}</div><div style={{fontSize:FS.caption,color:TH.faint}}>{label}</div></div></div>;
+  return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:fsScala(Math.max(FS.caption,size*.27))/* [C4] pavimento 11 px */,fontWeight:900,color:legCol944(c),lineHeight:1}}>{value}</div><div style={{fontSize:FS.caption,color:TH.faint}}>{label}</div></div></div>;
 };
 const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
 /* Sprint 33 C4 — SVG Sparkline */
@@ -9713,7 +9721,7 @@ function MatchBadge({r,size=22,title}){
   const kind=r==="W"||r==="win"||r===true?"win":(r==="D"||r==="draw"?"draw":"loss");
   const letter=kind==="win"?"V":kind==="draw"?"P":"S"; // vocabolario di gioco V/P/S (Pareggio)
   const bg=kind==="win"?TH.winFg:kind==="draw"?TH.drawFg:TH.lossFg;
-  return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:Math.max(FS.caption,size*.45)/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:"#fff",flexShrink:0}}>{letter}</div>);
+  return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:fsScala(Math.max(FS.caption,size*.45))/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:"#fff",flexShrink:0}}>{letter}</div>);
 }
 
 
@@ -21411,14 +21419,14 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
             <TeamBadge team={homeTeam} size={52}/>
             <div style={{fontSize:FS.small,fontWeight:700,color:TH.text,marginTop:4}}>{homeTeam?.name||homeTeam?.n}</div>
             <div style={{fontSize:FS.caption,color:TH.muted}}>CASA</div>
-            {exClub&&exClub.side==="home"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
+            {exClub&&exClub.side==="home"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#92400e",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
           </div>
           <div style={{fontSize:FS.h,color:TH.faint,fontWeight:900,marginTop:15}}>VS</div>
           <div style={{textAlign:"center",flex:"0 0 96px"}}>
             <TeamBadge team={awayTeam} size={52}/>
             <div style={{fontSize:FS.small,fontWeight:700,color:TH.text,marginTop:4}}>{awayTeam?.name||awayTeam?.n}</div>
             <div style={{fontSize:FS.caption,color:TH.muted}}>OSPITE</div>
-            {exClub&&exClub.side==="away"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#b45309",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
+            {exClub&&exClub.side==="away"&&<div style={{fontSize:FS.caption,fontWeight:900,letterSpacing:1,color:"#92400e",background:TH.bgAmber,border:"1px solid #fcd34d",borderRadius:RAD.xs,padding:"2px 6px",marginTop:3,display:"inline-block"}}>EX SQUADRA</div>}
             {(()=>{const p=getClubPersona(awayTeam);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.xs,padding:"2px 7px",marginTop:3,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
           </div>
         </div>
@@ -34810,7 +34818,7 @@ function StrisciaScena948({club,tono}){
         letterSpacing:.2,color:"#7a1526",whiteSpace:"nowrap"}}>
         K<span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",
           border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
-        <span style={{fontWeight:700,fontStyle:"italic",color:"#b45309"}}>Elite</span>
+        <span style={{fontWeight:700,fontStyle:"italic",color:"#92400e"}}>Elite</span>
       </span>
       <span style={{fontSize:FS.caption,fontWeight:800,color:"#475569",whiteSpace:"nowrap",
         overflow:"hidden",textOverflow:"ellipsis",flex:1,textAlign:"center"}}>{spon}</span>
@@ -36857,7 +36865,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
                 <AvatarSVG id={s.avatarId} size={46}/>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontWeight:800,fontSize:FS.body,color:TH.text,marginBottom:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name}</div>
-                  <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#b45309",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
+                  <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#92400e",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
                   <div style={{fontSize:FS.caption,color:TH.faint,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>💾 {fmtDate(s.savedAt)}</div>
                 </div>
                 <OvrRing value={s.ovr} size={40}/>
@@ -41533,12 +41541,12 @@ const getThisWeekMatchday=()=>{
       const _rn=p.rival.name;
       out.push({k:"addioRivale",e:"🤝",t:`${_rn} rompe il silenzio`,
         d:`«Ho passato una carriera a studiarlo per fermarlo. Non ci sono mai riuscito del tutto — e ora che smette posso dirlo: giocargli contro e' stato l'onore piu' grande. Detto questo: l'ultima che ci incontriamo, vinco io.» Firmato, incorniciato, sui giornali.`,
-        fx:(q)=>({morale:clamp((q.morale||70)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🤝",headline:`L'attestato di ${_rn}`,body:`«Giocargli contro e' stato l'onore piu' grande.» — il rivale di una vita · S.${sn}`,color:"#b45309"}].slice(-80)})});
+        fx:(q)=>({morale:clamp((q.morale||70)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🤝",headline:`L'attestato di ${_rn}`,body:`«Giocargli contro e' stato l'onore piu' grande.» — il rivale di una vita · S.${sn}`,color:"#92400e"}].slice(-80)})});
     }
     if(p.retireAnnounced===sn&&seen.indexOf("addioPremio")<0&&wk>=10){
       out.push({k:"addioPremio",e:"🎖️",t:"Premio alla carriera",
         d:`La Lega lo annuncia in conferenza: alla cerimonia di fine stagione riceverai il PREMIO ALLA CARRIERA. Sarai il primo a riceverlo ancora in attivita' — di solito lo consegnano a chi ha smesso da dieci anni e non corre piu' il rischio di segnare alla squadra del presidente.`,
-        fx:(q)=>({morale:clamp((q.morale||70)+5,0,100),popularity:clamp((q.popularity||20)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🎖️",headline:"Premio alla carriera",body:`La Lega ti premia da giocatore in attivita': primo nella storia · S.${sn}`,color:"#b45309"}].slice(-80)})});
+        fx:(q)=>({morale:clamp((q.morale||70)+5,0,100),popularity:clamp((q.popularity||20)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🎖️",headline:"Premio alla carriera",body:`La Lega ti premia da giocatore in attivita': primo nella storia · S.${sn}`,color:"#92400e"}].slice(-80)})});
     }
     if(p.retireAnnounced===sn&&seen.indexOf("addioTour")<0){
       const _TA=[
@@ -42503,7 +42511,7 @@ const getThisWeekMatchday=()=>{
         }
         // Sprint 51: diary for national events
         const _nat51=[];
-        if(isNat&&nationalCallupData?.isFirst)_nat51.push({season:p.season||1,week:p.week||1,type:"first_national",e:"🏳️",headline:`Debutto in Nazionale — ${p.nation||"Italia"}!`,body:`${result.homeScore}-${result.awayScore} vs ${result.opponent||"?"} · ${result.won?"Vittoria":""}${result.drew?"Pareggio":""}${!result.won&&!result.drew?"Sconfitta":""}`,color:"#2563eb"});
+        if(isNat&&nationalCallupData?.isFirst)_nat51.push({season:p.season||1,week:p.week||1,type:"first_national",e:"🏳️",headline:`Debutto in Nazionale — ${p.nation||"Italia"}!`,body:`${result.homeScore}-${result.awayScore} vs ${result.opponent||"?"} · ${result.won?"Vittoria":""}${result.drew?"Pareggio":""}${!result.won&&!result.drew?"Sconfitta":""}`,color:"#1e40af"});
         if(result.goals>0&&(p.nationalGoals||0)===0)_nat51.push({season:p.season||1,week:p.week||1,type:"first_national_goal",e:"🌍",headline:`Primo gol con la Nazionale!`,body:`${result.goals} gol vs ${result.opponent||"?"} (${result.homeScore}-${result.awayScore}) · ${p.nation||"Italia"}`,color:TH.accentText});
         const _natCal81=isNat?(p.calendar||[]).map(m=>(m.type==="national"&&!m.played&&m.week===(p.week||1))?{...m,played:true,result:{homeScore:result.homeScore,awayScore:result.awayScore,won:result.won,drew:result.drew},simulated:!!result.simulated}:m):(p.calendar||[]);// [6.81.0] l'amichevole calendarizzata viene MARCATA giocata (mai ri-servita)
         return{...p,fatigue:clamp((p.fatigue||0)+(result.simulated?0:rng(6,12)),0,100),/* [7.164.0 deferito LIVE-F6b] anche le gare euro/nazionale LIVE costano fatica (prima: semifinale UCL dal vivo = 0; il sim resta senza costo come il sim di lega, design 7.9.0) */calendar:_natCal81,...natHistPush(p,{comp:isNat?"Amichevole":"Coppa delle Nazioni",opp:result.opponent,hs:result.homeScore,as:result.awayScore,won:!!result.won,drew:!!result.drew,goals:result.goals||0,assists:result.assists||0,rating:result.rating,sim:!!result.simulated}),nationalCaps:newCaps,nationalGoals:newNatGoals,lastNationalSeason:p.season||1,worldMemory:newMem,morale:clamp((p.morale||70)+moD,0,100),popularity:clamp((p.popularity||20)+8,0,100),value:Math.max(0.5,(p.value||0.8)+0.15),nationsCupQueue:newNCQ,log:[logE,...(p.log||[])].slice(0,60),diary:[...(p.diary||[]),..._nat51].slice(-80)};
@@ -44458,7 +44466,7 @@ const getThisWeekMatchday=()=>{
     const _renB95=Math.min(player.agentRenewalBonus||0,0.30);// [5.95.0 QW audit EC-3] il task «Prepara rinnovo» ORA paga (prima il bonus veniva azzerato senza mai essere applicato: il ramo consumer era dead code)
     const finalWage=Math.round(wage*agentMult*(1+_renB95));
     const annKStr=`${_fmtWageY133(finalWage)}/anno`;
-    setPlayer(p=>({...p,contract:{duration,wage:finalWage,expiresAtSeason:(p.season||1)+duration},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#2563eb"}].slice(-80),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
+    setPlayer(p=>({...p,contract:{duration,wage:finalWage,expiresAtSeason:(p.season||1)+duration},contractExpired:false,agentRenewalBonus:0,renewalSeason:(p.season||1),morale:clamp((p.morale||70)+((p.renewalSeason||0)===(p.season||1)?0:8),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"contract_renewal",e:"📋",headline:"Contratto rinnovato!",body:`${duration} ann${duration===1?"o":"i"} con ${p.club?.n||"–"} · ${annKStr}${p.hasAgent?" (+15% agente)":""}`,color:"#1e40af"}].slice(-80),log:[`📋 Rinnovo: ${duration} stag. a ${annKStr}`,...(p.log||[])].slice(0,60)}));
     setNegoModal(null);setTransferOffer(null);
     notify(`✅ Contratto rinnovato! ${duration} ann${duration===1?"o":"i"} · ${annKStr}`,TH.success);
   };
@@ -45717,7 +45725,7 @@ const getThisWeekMatchday=()=>{
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 <Btn v="danger" fw onClick={()=>{setPlayer(p=>{const sn2=p.season||1;return{...p,retireAnnounced:sn2,retireAskedSeason:sn2,
                   morale:clamp((p.morale||70)+6,0,100),popularity:clamp((p.popularity||20)+8,0,100),
-                  diary:[...(p.diary||[]),{season:sn2,week:p.week||1,type:"addio",e:"🏁",headline:"L'annuncio: e' l'ultima stagione",body:`«Ho dato tutto a questo sport. A fine stagione appendo gli scarpini.» Il mondo del calcio si ferma ad applaudire · S.${sn2}`,color:"#b45309"}].slice(-80),
+                  diary:[...(p.diary||[]),{season:sn2,week:p.week||1,type:"addio",e:"🏁",headline:"L'annuncio: e' l'ultima stagione",body:`«Ho dato tutto a questo sport. A fine stagione appendo gli scarpini.» Il mondo del calcio si ferma ad applaudire · S.${sn2}`,color:"#92400e"}].slice(-80),
                   log:[`🏁 L'ANNUNCIO: questa e' l'ultima stagione. Da oggi ogni partita e' un addio — il tour comincia.`,...(p.log||[])].slice(0,60)};});
                   setTimeout(()=>notify("🏁 Annuncio fatto: il TOUR D'ADDIO comincia. Ogni stadio vorra' salutarti.","#b45309"),600);}}>📣 Annuncio il ritiro — questa e' l'ultima stagione</Btn>
                 <Btn v="ghost" onClick={()=>setPlayer(p=>({...p,retireAskedSeason:p.season||1}))}>🔁 Non ancora — si gioca</Btn>
@@ -46663,7 +46671,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.83.0 collaudo PO «ridondante! elimina»] griglia totali di carriera (Gol/Presenze/Trofei/Stagioni) RIMOSSA dal dashboard: è già nel Tab Carriera. Resta il badge fase-carriera (età/fase, non duplicato). */}
       {tab==="dashboard"&&(player.totalMatches||0)>0&&(
         <div style={{marginBottom:8}}>
-          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:ph.col}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni · S.{player.season||1}</span></div>);})()}
+          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni · S.{player.season||1}</span></div>);})()}
         </div>
       )}
       {/* [6.59.0 collaudo PO «questo box va messo più su, sotto il box delle presenze/gol globale»] la card STAGIONE (stats stagionali + azioni) è ora subito SOTTO i totali di carriera, non in fondo al grid */}
@@ -48765,11 +48773,11 @@ const getThisWeekMatchday=()=>{
               pallone_oro:{e:"🏆",color:TH.goldText},
               scarpa_oro:{e:"👟",color:"#ef4444"},
               record:{e:"📈",color:TH.accentText},
-              first_national:{e:"🏳️",color:"#2563eb"},
+              first_national:{e:"🏳️",color:"#1e40af"},
               first_national_goal:{e:"🌍",color:"#0ea5e9"},
               cup_trophy:{e:"🏆",color:TH.goldText},
               euro_mondiale_trophy:{e:"🌍",color:TH.accentText},
-              contract_renewal:{e:"📋",color:"#2563eb"},
+              contract_renewal:{e:"📋",color:"#1e40af"},
               mvp_mese:{e:"⭐",color:TH.goldText},
               league_top_scorer:{e:"⚽",color:TH.txGreen}, // Sprint 134
               league_mvp:{e:"🏅",color:"#6366f1"},
@@ -50942,7 +50950,7 @@ function App(){
   const[appMsg,setAppMsg]=useState(null);
   const[lang,setLang]=useState(()=>safeLS.get("cpm-lang")||"IT");
   const[legacyBonus,setLegacyBonus]=useState(null);
-  const toggleLang=()=>{const nl=lang==="IT"?"EN":"IT";setLang(nl);safeLS.set("cpm-lang",nl);const msg=nl==="EN"?"Language: English 🇬🇧":"Lingua: Italiano 🇮🇹";setAppMsg({msg,color:"#2563eb"});setTimeout(()=>setAppMsg(null),2200);};
+  const toggleLang=()=>{const nl=lang==="IT"?"EN":"IT";setLang(nl);safeLS.set("cpm-lang",nl);const msg=nl==="EN"?"Language: English 🇬🇧":"Lingua: Italiano 🇮🇹";setAppMsg({msg,color:"#1e40af"});setTimeout(()=>setAppMsg(null),2200);};
 
   const appNotify=(msg,color=TH.danger)=>{setAppMsg({msg,color});setTimeout(()=>setAppMsg(null),3500);};
 
