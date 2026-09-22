@@ -442,3 +442,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatti verificati:** la scheda [Realistic Soccer Player V2 — Rigged](https://www.fab.com/listings/914995a2-86f0-4a86-b5f1-b084e2e273d0?lang=en) dichiara uomo adulto riggato, FBX/GLB/OBJ/Blender, topologia `17.891 / 17.501`, prezzo `15,94–21,26 EUR` e un file Blender da `118,44 MB`.
 - **Review visiva:** la preview mostra un calciatore adulto con capelli corti naturali e kit bianco semplice. Non espone capelli modulari, barbe, morph facciali, LOD verificabili, animazioni comprese o prove sul rig. La qualità del volto e della divisa non dimostra un vantaggio netto sul CGTrader gia acquistato.
 - **Decisione:** non acquistare. E piu leggero sulla carta, ma non riduce i rischi rimasti (varianti, compatibilita delle clip, mobile) e richiederebbe un nuovo audit completo. Il CGTrader resta la base attiva; la ricerca continua su fonti che aggiungano varianti reali e verificabili.
+
+## 2026-09-22 — screening MB-Lab come generatore open source
+
+- **Fatti verificati:** MB-Lab e un generatore open source per Blender `4.0+` con parametri volto/corpo e shader capelli; MakeHuman distribuisce gli asset base in CC0. Non sono state installate o eseguite nuove estensioni.
+- **Valutazione:** non e una scorciatoia per Korward: richiede costruire da zero kit da calcio, LOD, pesi e compatibilita con le clip. I suoi punti di forza (morph di corpo/volto) non risolvono i rischi oggi prioritari del modello attivo: gesto, kit, mobile e integrazione.
+- **Decisione:** non avviare un test MB-Lab. Il suo costo tecnico e superiore al beneficio rispetto al CGTrader, gia riggato e verificato nel dribbling. La ricerca resta aperta per un asset completo o per l'audit Human Generator isolato, se autorizzato.
