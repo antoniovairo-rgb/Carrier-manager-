@@ -404,3 +404,10 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatto verificato:** il campione gratuito dell'editor è stato visualizzato: volto adulto credibile, proporzioni facciali naturali e capelli corti ordinati; non presenta occhi caricaturali né geometrie anomale sulla testa.
 - **Limite verificato:** la preview mostra solo un busto con abbigliamento generico a righe. Non dimostra kit calcistico, topologia, rig, LOD, licenza d'uso nel gioco o compatibilità con le clip.
 - **Decisione:** MetaPerson resta un candidato esplorativo per il volto, non sostituisce il modello CGTrader. Potrà essere valutato come base solo dopo un export autorizzato e i gate locali su rig, animazione, scala e prestazioni mobile.
+
+## 2026-09-22 — correzione del candidato MetaPerson con audit locale esistente
+
+- **Fatto verificato:** sono gia presenti e analizzati tre campioni maschili ufficiali MetaPerson. Il migliore (`model5`) ha volto adulto, capelli separati da 17.249 triangoli, barba corta nativa e 129 shape key; e quindi nettamente piu flessibile del CGTrader per viso e dettagli.
+- **Fatto verificato:** lo stesso `model5` pesa 68.758 triangoli, non ha un kit da calcio, e fallisce due provini locali del dribbling: il trasferimento delle clip deforma busto e gambe fino a renderli non leggibili. Il rig ha 65 nomi anatomici compatibili su 65, ma assi e posa di riposo sono incompatibili con l'attuale retargeter.
+- **Decisione corretta:** MetaPerson non e un sostituto pronto per la POC corrente. Il CGTrader resta il modello attivo perche ha gia superato il gate locale del dribbling con palla e braccia coordinate. MetaPerson puo restare una fonte futura per il sistema volti, solo con un retargeter dedicato e nuovi LOD.
+- **Conferma tecnica esterna:** la documentazione ufficiale dichiara export GLB/glTF/FBX, LOD 1/2 e texture fino a 1K; queste opzioni non correggono da sole il fallimento di retarget e il kit civile.
