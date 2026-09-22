@@ -424,3 +424,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatto verificato:** il codice della trial dichiara compatibilita Blender `3.2+`, include l'export FBX e glTF, e fornisce LOD corpo 0/1/2. Il LOD del corpo e irreversibile; il LOD dei vestiti usa decimazione separata.
 - **Rischio da misurare:** la dichiarazione minima non certifica Blender `4.5.14`, il rig esportato, i pesi, la qualita delle haircards o la resa con la clip di dribbling. Il preflight non sostituisce l'esecuzione isolata.
 - **Criterio di ingresso al test:** prima creare il solo campione trial, poi produrre un GLB/FBX LOD0 e LOD2, controllare triangoli, ossa, materiali, capelli e clip. Solo dopo potra essere confrontato con CGTrader.
+
+## 2026-09-22 — preview Fab Soccer Player Male - Rigged
+
+- **Fatti verificati:** la scheda Fab offre FBX, GLB, OBJ e Blender, rig e kit completo; dichiara topologia pronta per animazione e scala reale. Il prezzo visualizzato e `15,94–21,26 EUR` secondo licenza.
+- **Review visiva:** la preview mostra un uomo molto generico, senza capelli o varianti visibili, in T-pose e con kit a strisce blu/rosse che richiama una livrea esistente. La pagina non dichiara poligoni, texture, LOD o numero reale di moduli.
+- **Decisione:** non acquistare. Non dimostra un vantaggio sul CGTrader per qualita del volto, personalizzazione o mobile; resta fuori dalla POC finche il venditore non fornisca dati tecnici e varianti verificabili.
