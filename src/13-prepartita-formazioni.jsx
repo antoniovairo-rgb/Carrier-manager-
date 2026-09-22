@@ -82,8 +82,8 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
         </div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <span style={{fontSize:FS.caption,fontWeight:700,color:dc}}>{diffLabel}</span>
-          <div style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden",width:120}}>
-            <div style={{height:"100%",width:`${report.difficulty}%`,background:dc,borderRadius:3,transition:"width .8s"}}/>
+          <div style={{height:5,background:"rgba(255,255,255,0.08)",borderRadius:RAD.pill,overflow:"hidden",width:120}}>
+            <div style={{height:"100%",width:`${report.difficulty}%`,background:dc,borderRadius:RAD.pill,transition:"width .8s"}}/>
           </div>
         </div>
       </Card>

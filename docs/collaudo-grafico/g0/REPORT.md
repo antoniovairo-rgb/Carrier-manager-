@@ -50,9 +50,6 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 360 | 375 | 390 | 412 | 430 |
 | Agente | 360 | 375 | 390 | 412 | 430 |
 | Prepartita | 360 | 375 | 390 | 412 | 430 |
-| Partita · HUD in gioco | 360 | 375 | 390 | 412 | 430 |
-| Partita · HUD con la scelta | 360 | 375 | 390 | 412 | 430 |
-| Post-partita · tabellino | 360 | 375 | 390 | 412 | 430 |
 
 ### 1 · Overflow orizzontale (px di pagina che escono dallo schermo)
 
@@ -71,9 +68,6 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0 | 0 | 0 | 0 | 0 |
 | Agente | 0 | 0 | 0 | 0 | 0 |
 | Prepartita | 0 | 0 | 0 | 0 | 0 |
-| Partita · HUD in gioco | 0 | 0 | 0 | 0 | 0 |
-| Partita · HUD con la scelta | 0 | 0 | 0 | 0 | 0 |
-| Post-partita · tabellino | 0 | 0 | 0 | 0 | 0 |
 | **TOTALE** | **0** | **0** | **0** | **0** | **0** |
 
 ### 2 · Elementi fuori dallo schermo a destra (fra parentesi: contenuti da un antenato che li ritaglia/fa scorrere)
@@ -93,9 +87,6 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
 | Agente | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
 | Prepartita | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
-| Partita · HUD in gioco | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
-| Partita · HUD con la scelta | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
-| Post-partita · tabellino | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
 | **TOTALE** | **0** | **0** | **0** | **0** | **0** |
 
 ### 3 · Testo reso sotto i 10 px — sotto/totale (minimo)
@@ -115,10 +106,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0/108 (11) | 0/108 (11) | 0/108 (11) | 0/108 (11) | 0/108 (11) |
 | Agente | 0/118 (11) | 0/118 (11) | 0/118 (11) | 0/118 (11) | 0/118 (11) |
 | Prepartita | 0/33 (11) | 0/33 (11) | 0/33 (11) | 0/33 (11) | 0/33 (11) |
-| Partita · HUD in gioco | 0/47 (11) | 0/27 (11) | 0/47 (11) | 0/47 (11) | 0/59 (11) |
-| Partita · HUD con la scelta | 0/57 (11) | 0/57 (11) | 0/57 (11) | 0/47 (11) | 0/47 (11) |
-| Post-partita · tabellino | 0/123 (11) | 0/123 (11) | 0/123 (11) | 0/123 (11) | 0/123 (11) |
-| **TOTALE** | **0/2287** | **0/2267** | **0/2287** | **0/2278** | **0/2290** |
+| **TOTALE** | **0/2060** | **0/2060** | **0/2060** | **0/2061** | **0/2061** |
 
 ### 3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale
 
@@ -137,10 +125,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0/108 | 0/108 | 0/108 | 0/108 | 0/108 |
 | Agente | 0/118 | 0/118 | 0/118 | 0/118 | 0/118 |
 | Prepartita | 0/33 | 0/33 | 0/33 | 0/33 | 0/33 |
-| Partita · HUD in gioco | 0/47 | 0/27 | 0/47 | 0/47 | 0/59 |
-| Partita · HUD con la scelta | 0/57 | 0/57 | 0/57 | 0/47 | 0/47 |
-| Post-partita · tabellino | 0/123 | 0/123 | 0/123 | 0/123 | 0/123 |
-| **TOTALE** | **0/2287** | **0/2267** | **0/2287** | **0/2278** | **0/2290** |
+| **TOTALE** | **0/2060** | **0/2060** | **0/2060** | **0/2061** | **0/2061** |
 
 ### 4 · Contrasto sotto soglia WCAG — sotto/misurati (fra parentesi: esclusi per gradiente · per glifo emoji)
 
@@ -159,10 +144,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0/73 (19 · 16) | 0/73 (19 · 16) | 0/73 (19 · 16) | 0/73 (19 · 16) | 0/73 (19 · 16) |
 | Agente | 0/94 (6 · 18) | 0/94 (6 · 18) | 0/94 (6 · 18) | 0/94 (6 · 18) | 0/94 (6 · 18) |
 | Prepartita | 0/17 (12 · 6) | 0/17 (12 · 6) | 0/17 (12 · 6) | 0/17 (12 · 6) | 0/17 (12 · 6) |
-| Partita · HUD in gioco | 0/24 (10 · 15) | 0/5 (16 · 8) | 0/24 (10 · 15) | 0/24 (10 · 15) | 2/26 (14 · 21) |
-| Partita · HUD con la scelta | 0/24 (20 · 15) | 0/24 (20 · 15) | 0/24 (20 · 15) | 0/24 (10 · 15) | 0/24 (10 · 15) |
-| Post-partita · tabellino | 0/94 (8 · 21) | 0/94 (8 · 21) | 0/94 (8 · 21) | 0/94 (8 · 21) | 0/94 (8 · 21) |
-| **TOTALE** | **0/2092** | **0/2073** | **0/2092** | **0/2093** | **2/2095** |
+| **TOTALE** | **0/1950** | **0/1950** | **0/1950** | **0/1951** | **0/1951** |
 
 ### 5 · Bottoni pieni di marca (una sola azione primaria per vista)
 
@@ -181,10 +163,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0 | 0 | 0 | 0 | 0 |
 | Agente | 0 | 0 | 0 | 0 | 0 |
 | Prepartita | 1 | 1 | 1 | 1 | 1 |
-| Partita · HUD in gioco | 0 | 1 | 0 | 0 | 0 |
-| Partita · HUD con la scelta | 0 | 0 | 0 | 0 | 0 |
-| Post-partita · tabellino | 1 | 1 | 1 | 1 | 1 |
-| **TOTALE** | **6** | **7** | **6** | **6** | **6** |
+| **TOTALE** | **5** | **5** | **5** | **5** | **5** |
 
 ### 5-bis · QUANTO E' LUNGA — altezza dello scorritore in px (fra parentesi: schermate da 915 px del PO)
 
@@ -203,11 +182,8 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 1152 (1.26) | 1139 (1.24) | 1139 (1.24) | 1139 (1.24) | 1139 (1.24) |
 | Agente | 1624 (1.77) | 1572 (1.72) | 1554 (1.7) | 1554 (1.7) | 1554 (1.7) |
 | Prepartita | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
-| Partita · HUD in gioco | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
-| Partita · HUD con la scelta | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
-| Post-partita · tabellino | 1334 (1.46) | 1334 (1.46) | 1306 (1.43) | 1306 (1.43) | 1306 (1.43) |
 
-> Lo scorritore misurato a 412 px, schermata per schermata: Home fuori carriera `documento` · Impostazioni `documento` · Creazione `div#root>div.cpm-root>div.cpm-scroll` · Offerte `documento` · Dashboard `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Classifica `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Calendario `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Coppe `documento` · Club `div#root>div.cpm-root>div.cpm-scroll` · Carriera · Profilo `div#root>div.cpm-root>div.cpm-scroll` · Carriera · Nazionale `div#root>div.cpm-root>div.cpm-scroll` · Agente `div#root>div.cpm-root>div.cpm-scroll` · Prepartita `documento` · Partita · HUD in gioco `documento` · Partita · HUD con la scelta `documento` · Post-partita · tabellino `div:nth-child(1)>div:nth-child(1)>div:nth-child(1)`
+> Lo scorritore misurato a 412 px, schermata per schermata: Home fuori carriera `documento` · Impostazioni `documento` · Creazione `div#root>div.cpm-root>div.cpm-scroll` · Offerte `documento` · Dashboard `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Classifica `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Calendario `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Coppe `documento` · Club `div#root>div.cpm-root>div.cpm-scroll` · Carriera · Profilo `div#root>div.cpm-root>div.cpm-scroll` · Carriera · Nazionale `div#root>div.cpm-root>div.cpm-scroll` · Agente `div#root>div.cpm-root>div.cpm-scroll` · Prepartita `documento`
 
 ### 6 · Censimento del reso — TINTE DI TESTO diverse
 
@@ -226,9 +202,6 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 9 | 9 | 9 | 9 | 9 |
 | Agente | 9 | 9 | 9 | 9 | 9 |
 | Prepartita | 6 | 6 | 6 | 6 | 6 |
-| Partita · HUD in gioco | 9 | 3 | 9 | 9 | 10 |
-| Partita · HUD con la scelta | 9 | 9 | 9 | 9 | 9 |
-| Post-partita · tabellino | 8 | 8 | 8 | 8 | 8 |
 
 ### 7 · Censimento del reso — FONDI diversi
 
@@ -247,9 +220,6 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 6 | 6 | 6 | 6 | 6 |
 | Agente | 5 | 5 | 5 | 5 | 5 |
 | Prepartita | 3 | 3 | 3 | 3 | 3 |
-| Partita · HUD in gioco | 4 | 3 | 4 | 4 | 5 |
-| Partita · HUD con la scelta | 4 | 4 | 4 | 4 | 4 |
-| Post-partita · tabellino | 3 | 3 | 3 | 3 | 3 |
 
 ### 8 · Censimento del reso — CORPI diversi
 
@@ -268,9 +238,6 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 7 | 7 | 7 | 7 | 7 |
 | Agente | 8 | 8 | 8 | 8 | 8 |
 | Prepartita | 3 | 3 | 3 | 3 | 3 |
-| Partita · HUD in gioco | 2 | 2 | 2 | 2 | 3 |
-| Partita · HUD con la scelta | 2 | 2 | 2 | 2 | 2 |
-| Post-partita · tabellino | 5 | 5 | 5 | 5 | 5 |
 
 ### 9 · Censimento del reso — RAGGI diversi
 
@@ -284,14 +251,11 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Stagione · Classifica | 3 | 3 | 3 | 3 | 3 |
 | Stagione · Calendario | 3 | 3 | 3 | 3 | 3 |
 | Stagione · Coppe | 3 | 3 | 3 | 3 | 3 |
-| Club | 5 | 5 | 5 | 5 | 5 |
-| Carriera · Profilo | 6 | 6 | 6 | 6 | 6 |
+| Club | 4 | 4 | 4 | 4 | 4 |
+| Carriera · Profilo | 5 | 5 | 5 | 5 | 5 |
 | Carriera · Nazionale | 3 | 3 | 3 | 3 | 3 |
 | Agente | 3 | 3 | 3 | 3 | 3 |
 | Prepartita | 3 | 3 | 3 | 3 | 3 |
-| Partita · HUD in gioco | 5 | 4 | 5 | 5 | 5 |
-| Partita · HUD con la scelta | 6 | 6 | 6 | 5 | 5 |
-| Post-partita · tabellino | 4 | 4 | 4 | 4 | 4 |
 
 > **Metro di paragone.** Il provino della direzione (`docs/collaudo-grafico/proposta-schermate/`,
 > misurato da `tests/visual/provino-schermate.mjs`) rende, su tutte e tre le schermate:
@@ -332,10 +296,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 1 | 1 | 1 | 1 | 1 |
 | Agente | 1 | 1 | 1 | 1 | 1 |
 | Prepartita | 1 | 1 | 1 | 1 | 1 |
-| Partita · HUD in gioco | 1 | 1 | 1 | 1 | 1 |
-| Partita · HUD con la scelta | 1 | 1 | 1 | 1 | 1 |
-| Post-partita · tabellino | 2 | 2 | 2 | 2 | 2 |
-| **TOTALE** | **25** | **25** | **25** | **25** | **25** |
+| **TOTALE** | **21** | **21** | **21** | **21** | **21** |
 
 > [22/09] Il PO ha segnalato in pochi minuti sette schermate come «disomogenee» o «fuori standard».
 > Non sono sette difetti: sono superfici rimaste SCURE quando il tema scuro e' stato ritirato (7.947).
@@ -345,29 +306,25 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---:|---|---|---|
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteFootball Career Simula |
 | Creazione | 52 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | ⚡ INIZIA I PROVINI |
-| Dashboard | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:12Italia ·  |
+| Dashboard | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:31Italia ·  |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
 |  | 58 | 0.017 | `#14243a` | `div.cpm-scroll>div.cpm-career>div:nth-child(5)` | Il tuo procuratore› |
 |  | 67 | 0.012 | `#241a12` | `div.cpm-scroll>div.cpm-career>div:nth-child(7)` | Adesso guardano teNEL PIENO› |
 |  | 67 | 0.016 | `#0f2430` | `div.cpm-scroll>div.cpm-career>div:nth-child(8)` | Il mondo fuori› |
 |  | 53 | 0.011 | `#1b1730` | `div.cpm-scroll>div.cpm-career>div:nth-child(9)` | 🌱 Il ragazzo della Primavera1/4› |
-| Stagione · Classifica | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:12Italia ·  |
-| Stagione · Calendario | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:12Italia ·  |
-| Stagione · Coppe | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:12Italia ·  |
-| Club | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:12Italia ·  |
+| Stagione · Classifica | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:31Italia ·  |
+| Stagione · Calendario | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:31Italia ·  |
+| Stagione · Coppe | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:31Italia ·  |
+| Club | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:31Italia ·  |
 |  | 207 | 0.016 | `#112240` | `div.cpm-career>div:nth-child(2)>div:nth-child(10)` | Lo Spogliatoio🧠Gabriele PirasIl M |
-| Carriera · Profilo | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:12Italia ·  |
+| Carriera · Profilo | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:31Italia ·  |
 |  | 53 | 0.014 | `#1a1f2e` | `div.cpm-career>div:nth-child(3)>div:nth-child(1)` | Biografia› |
 |  | 69 | 0.042 | `#312e81` | `div.cpm-career>div:nth-child(3)>div:nth-child(6)` | 🆚 Il tuo rivale› |
 |  | 62 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(7)` | ⭐ Club dei sogni› |
 |  | 58 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(10)` | 💪 Stile di gioco› |
-| Carriera · Nazionale | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:12Italia ·  |
-| Agente | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:12Italia ·  |
+| Carriera · Nazionale | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:31Italia ·  |
+| Agente | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 20:31Italia ·  |
 | Prepartita | 45 | 0.07 | `#8e1f33` | `div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus` | 📋 Formazioni → |
-| Partita · HUD in gioco | 915 | 0.002 | `#050810` | `div#root>div.cpm-root>div.cpm-scroll` | 🎯 PROVINO 1/3@keyframes cpmSwapCa |
-| Partita · HUD con la scelta | 915 | 0.002 | `#050810` | `div#root>div.cpm-root>div.cpm-scroll` | 🎯 PROVINO 1/3@keyframes cpmSwapCa |
-| Post-partita · tabellino | 145 | 0.011 | `#101a33` | `div:nth-child(1)>div:nth-child(1)>div:nth-child(2)` | ProviniFISCHIO FINALESelezione Gra |
-|  | 47 | 0.07 | `#8e1f33` | `div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus` | 📋 Risultati provino |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
 
@@ -386,9 +343,6 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
 | Agente | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
 | Prepartita | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
-| Partita · HUD in gioco | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
-| Partita · HUD con la scelta | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
-| Post-partita · tabellino | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
 
 > La voce di menu' e' un bersaglio per il dito: la soglia consigliata per il tocco e' **44 px**.
 > Le due strisce di servizio sono un invito, non un comando, e possono stare piu' basse.
@@ -410,10 +364,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 12 | 12 | 12 | 12 | 12 |
 | Agente | 16 | 16 | 16 | 16 | 16 |
 | Prepartita | 9 | 9 | 9 | 9 | 9 |
-| Partita · HUD in gioco | 12 | 8 | 10 | 10 | 30 |
-| Partita · HUD con la scelta | 33 | 34 | 34 | 31 | 32 |
-| Post-partita · tabellino | 20 | 20 | 20 | 20 | 20 |
-| **TOTALE** | **277** | **274** | **276** | **273** | **294** |
+| **TOTALE** | **212** | **212** | **212** | **212** | **212** |
 
 > Contati i CARATTERI emoji sul testo reso. Il provino (`docs/collaudo-grafico/proposta-schermate/`)
 > non ne usa **nessuna**: i cappelli sono etichetta maiuscoletta + filo + azione, la barra in basso
@@ -434,9 +385,6 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | `Si scende in campo! ⚽` · `⚽` · `👤` · `🌍` · `📊` · `🏆` |
 | Agente | `Si scende in campo! ⚽` · `⚽` · `🤵 Agente · −` · `🏋️` · `🥗` · `✂️ Rescindi (stop 10%)` |
 | Prepartita | `Si scende in campo! ⚽` · `⚽` · `· Giornata 10 di 34 ⚠︎ ?g` · `🎭` · `🌧️ Pioggia` · `🎙️ ANALISI DEL MISTER — COME ` |
-| Partita · HUD in gioco | `Si scende in campo! ⚽` · `🎯 PROVINO` · `☀️` · `⏸` · `⚠️` · `⚪ Marchetti (POL) batte l'ango` |
-| Partita · HUD con la scelta | `Si scende in campo! ⚽` · `🎯 PROVINO` · `☀️` · `⏸` · `⚠️` · `🎯` |
-| Post-partita · tabellino | `Si scende in campo! ⚽` · `🎯 PROVINO` · `📰` · `⚽` · `🎯` · `💥` |
 
 ## Ridondanze · la stessa grandezza, quante volte e dove (412 px, fisarmoniche come le trova il giocatore)
 
@@ -451,23 +399,23 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 > sempre quella — cioe' un cruscotto VOLUTO, non una ridondanza. Finche' lo strumento non separa
 > testata e corpo, la riga da 8 non accusa nessuno: si legge la COLONNA.
 
-| etichetta | Home fuori carriera | Impostazioni | Creazione | Offerte | Dashboard | Classifica | Calendario | Coppe | Club | Profilo | Nazionale | Agente | Prepartita | Partita · HUD in gioco | Partita · HUD con la scelta | Post-partita · tabellino | schermate |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Stagione |  |  |  |  | 2 | 1 | 2 | 1 | 3 | 1 | 5 | 2 |  |  |  |  | **8** |
-| Forma |  |  |  |  | 3 | 1 | 1 | 1 | 3 | 1 | 1 | 1 |  |  |  |  | **8** |
-| OVR |  |  |  |  | 1 | 1 | 1 | 1 | 1 | 2 | 3 | 1 |  |  |  |  | **8** |
-| Fatica |  |  |  |  | 1 | 1 | 1 | 1 | 2 | 1 | 1 | 2 |  |  |  |  | **8** |
-| Morale |  |  |  |  | 1 | 1 | 1 | 1 | 2 | 1 | 1 | 1 |  |  |  |  | **8** |
-| Gol |  |  | 1 | 1 | 2 |  |  |  |  | 3 | 2 |  |  |  |  | 8 | **6** |
-| Assist |  |  | 1 |  | 2 |  |  |  |  | 3 |  |  |  |  | 22 | 5 | **5** |
-| Partite |  | 1 |  |  | 2 |  | 2 |  |  | 1 | 1 |  |  |  |  |  | **5** |
-| Settimana |  |  |  |  | 4 |  |  |  |  |  | 4 | 3 |  |  |  |  | **3** |
-| Contratto |  |  |  |  |  |  |  |  | 2 | 1 |  | 2 |  |  |  |  | **3** |
-| Fiducia |  |  |  |  | 1 |  |  |  |  | 1 |  | 2 |  |  |  |  | **3** |
-| Presenze |  |  |  |  |  |  |  |  |  | 1 | 1 |  |  |  |  |  | **2** |
-| Valore |  |  |  |  |  |  |  |  |  | 1 |  | 1 |  |  |  |  | **2** |
-| Stipendio |  |  |  |  |  |  |  |  |  |  |  | 3 |  |  |  |  | **1** |
-| Trofei |  |  |  |  |  |  |  |  |  | 1 |  |  |  |  |  |  | **1** |
+| etichetta | Home fuori carriera | Impostazioni | Creazione | Offerte | Dashboard | Classifica | Calendario | Coppe | Club | Profilo | Nazionale | Agente | Prepartita | schermate |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Stagione |  |  |  |  | 2 | 1 | 2 | 1 | 3 | 1 | 5 | 2 |  | **8** |
+| Forma |  |  |  |  | 3 | 1 | 1 | 1 | 3 | 1 | 1 | 1 |  | **8** |
+| OVR |  |  |  |  | 1 | 1 | 1 | 1 | 1 | 2 | 3 | 1 |  | **8** |
+| Fatica |  |  |  |  | 1 | 1 | 1 | 1 | 2 | 1 | 1 | 2 |  | **8** |
+| Morale |  |  |  |  | 1 | 1 | 1 | 1 | 2 | 1 | 1 | 1 |  | **8** |
+| Gol |  |  | 1 | 1 | 2 |  |  |  |  | 3 | 2 |  |  | **5** |
+| Partite |  | 1 |  |  | 2 |  | 2 |  |  | 1 | 1 |  |  | **5** |
+| Settimana |  |  |  |  | 4 |  |  |  |  |  | 4 | 3 |  | **3** |
+| Assist |  |  | 1 |  | 2 |  |  |  |  | 3 |  |  |  | **3** |
+| Contratto |  |  |  |  |  |  |  |  | 2 | 1 |  | 2 |  | **3** |
+| Fiducia |  |  |  |  | 1 |  |  |  |  | 1 |  | 2 |  | **3** |
+| Presenze |  |  |  |  |  |  |  |  |  | 1 | 1 |  |  | **2** |
+| Valore |  |  |  |  |  |  |  |  |  | 1 |  | 1 |  | **2** |
+| Stipendio |  |  |  |  |  |  |  |  |  |  |  | 3 |  | **1** |
+| Trofei |  |  |  |  |  |  |  |  |  | 1 |  |  |  | **1** |
 
 ## Dettaglio · DOVE STANNO I PIXEL nelle schermate lunghe (a 412 px)
 
@@ -513,9 +461,6 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 1 | Barlow x73 |
 | Agente | 1 | Barlow x94 |
 | Prepartita | 1 | Barlow x17 |
-| Partita · HUD in gioco | 1 | Barlow x24 |
-| Partita · HUD con la scelta | 1 | Barlow x24 |
-| Post-partita · tabellino | **2** | Barlow x92 · Georgia x2 |
 
 ## 9-octies · I CORPI, UNO PER UNO, COL NODO CHE LI PORTA (a 412 px)
 
@@ -538,9 +483,6 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 7 | **11** x51 (Elite) · **12** x10 (Grafica Prob) · **13** x5 (K) · **15** x2 (82) · **17** x3 (78) · **20** x1 (Grafica Prob) · **24** x1 (82) |
 | Agente | 8 | **11** x68 (Elite) · **12** x4 («Guarda,) · **13** x15 (K) · **15** x1 (45.0M) · **17** x3 (78) · **20** x1 (Grafica Prob) · **24** x1 (82) · **32** x1 (4.56M€) |
 | Prepartita | 3 | **11** x11 (Fantasioso) · **12** x5 (Stadio Saler) · **13** x1 (📋 Formazion) |
-| Partita · HUD in gioco | 2 | **11** x16 (🎯 PROVINO) · **12** x8 (50%) |
-| Partita · HUD con la scelta | 2 | **11** x16 (🎯 PROVINO) · **12** x8 (52%) |
-| Post-partita · tabellino | 5 | **11** x52 (🎯 PROVINO) · **12** x35 (Pellegrini) · **20** x5 (Zona Mista) · **24** x1 (PROBE SEGNA,) · **46** x1 (6.8) |
 
 ## 9-septies · LE TINTE DEL TESTO, UNA PER UNA (a 412 px, la taglia del PO)
 
@@ -564,9 +506,6 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 9 | `#596a80` x19 (Forma) · `#526279` x18 (La maglia nume) · `#ffffff` x12 (82) · `#1e293b` x12 (78) · `#8e1f33` x4 (K) · `#6c1f2e` x2 (Salva) · `#92400e` x2 (1) · `#003399` x2 (Grafica Probe) · `#166534` x2 (82) |
 | Agente | 9 | `#526279` x36 (Patrimonio) · `#1e293b` x18 (4.56M€) · `#ffffff` x11 (82) · `#8e1f33` x10 (45.0M) · `#b91c1c` x7 (S.) · `#596a80` x5 (Forma) · `#7c3aed` x3 (🤵 Agente · −) · `#6c1f2e` x2 (Salva) · `#166534` x2 (€4.9M) |
 | Prepartita | 6 | `#1e293b` x6 (Stadio Salernu) · `#596a80` x4 (Stadio) · `#526279` x3 (🔍 Analisi com) · `#166534` x2 (Dribbling nell) · `#8e1f33` x1 (🎙️ ANALISI DE) · `#ffffff` x1 (📋 Formazioni ) |
-| Partita · HUD in gioco | 9 | `#e8eef7` x9 (50%) · `#cbd5e1` x5 (possesso) · `#8e1f33` x3 (🎯 PROVINO) · `#4ade80` x2 (0) · `#e4d1d2` x1 (GRA) · `#c7dd87` x1 (POL) · `#60a5fa` x1 (0) · `#f87171` x1 (6.1) · `#94a3b8` x1 (Trequarti) |
-| Partita · HUD con la scelta | 9 | `#e8eef7` x9 (52%) · `#cbd5e1` x5 (possesso) · `#8e1f33` x3 (🎯 PROVINO) · `#4ade80` x2 (0) · `#e4d1d2` x1 (GRA) · `#c7dd87` x1 (POL) · `#60a5fa` x1 (1) · `#f87171` x1 (5.9) · `#94a3b8` x1 (Trequarti) |
-| Post-partita · tabellino | 8 | `#526279` x48 (19) · `#1e293b` x22 (PROBE SEGNA, F) · `#596a80` x8 (4.0) · `#8e1f33` x5 (1) · `#92400e` x4 (6.8) · `#166534` x3 (52%) · `#dc2626` x3 (😨 Gol di Marc) · `#7c3aed` x1 (12) |
 
 ## 9-sexies · LO SPAZIO DELLE FIGURINE (a 412 px, la taglia del PO)
 
@@ -590,9 +529,6 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 2 | 0.9 % | giocatore x2 |
 | Agente | 3 | 0.9 % | giocatore x2 · procuratore x1 |
 | Prepartita | 0 | — | — |
-| Partita · HUD in gioco | 0 | — | — |
-| Partita · HUD con la scelta | 0 | — | — |
-| Post-partita · tabellino | 0 | — | — |
 
 ## Dettaglio · i nodi SOTTO IL PAVIMENTO di 11 px (a 412 px, la taglia del PO)
 
@@ -673,21 +609,6 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Prepartita | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 11 / 400 | 1 | `div:nth-child(1)>div:nth-child(4)>div:nth-child(4)` | Attenzione: centrocampo fi |
 | Prepartita | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 12 / 400 | 1 | `div:nth-child(1)>div:nth-child(5)>button.cpm-press.cpm-focus` | 🔍 Analisi completa |
 | Prepartita | 7.13:1 | 4.5:1 | `#166534` su `#ffffff` | 11 / 700 | 2 | `div:nth-child(2)>div:nth-child(2)>b:nth-child(1)` | Dribbling nell'1v1 |
-| Partita · HUD in gioco | 4.51:1 | 4.5:1 | `#c7dd87` su `#545c6c` | 11 / 800 | 1 | `div:nth-child(1)>div:nth-child(1)>span:nth-child(3)` | POL |
-| Partita · HUD in gioco | 4.52:1 | 4.5:1 | `#cbd5e1` su `#545c6c` | 11 / 600 | 4 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | possesso |
-| Partita · HUD in gioco | 4.52:1 | 4.5:1 | `#cbd5e1` su `#545c6c` | 11 / 700 | 1 | `div:nth-child(2)>div:nth-child(1)>button:nth-child(1)` | Statistiche |
-| Partita · HUD in gioco | 4.58:1 | 4.5:1 | `#e4d1d2` su `#545c6c` | 11 / 800 | 1 | `div:nth-child(1)>div:nth-child(1)>span:nth-child(1)` | GRA |
-| Partita · HUD in gioco | 4.65:1 | 4.5:1 | `#e8eef7` su `#616a7b` | 11 / 700 | 1 | `div:nth-child(2)>div:nth-child(1)>button:nth-child(2)` | Pagelle |
-| Partita · HUD con la scelta | 4.51:1 | 4.5:1 | `#c7dd87` su `#545c6c` | 11 / 800 | 1 | `div:nth-child(1)>div:nth-child(1)>span:nth-child(3)` | POL |
-| Partita · HUD con la scelta | 4.52:1 | 4.5:1 | `#cbd5e1` su `#545c6c` | 11 / 600 | 4 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | possesso |
-| Partita · HUD con la scelta | 4.52:1 | 4.5:1 | `#cbd5e1` su `#545c6c` | 11 / 700 | 1 | `div:nth-child(2)>div:nth-child(1)>button:nth-child(1)` | Statistiche |
-| Partita · HUD con la scelta | 4.58:1 | 4.5:1 | `#e4d1d2` su `#545c6c` | 11 / 800 | 1 | `div:nth-child(1)>div:nth-child(1)>span:nth-child(1)` | GRA |
-| Partita · HUD con la scelta | 4.65:1 | 4.5:1 | `#e8eef7` su `#616a7b` | 11 / 700 | 1 | `div:nth-child(2)>div:nth-child(1)>button:nth-child(2)` | Pagelle |
-| Post-partita · tabellino | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 400 | 2 | `div:nth-child(2)>div:nth-child(3)>span:nth-child(1)` | 4.0 |
-| Post-partita · tabellino | 4.83:1 | 4.5:1 | `#dc2626` su `#ffffff` | 11 / 400 | 3 | `div:nth-child(2)>div:nth-child(3)>span:nth-child(2)` | 😨 Gol di Marchetti |
-| Post-partita · tabellino | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 700 | 15 | `div:nth-child(2)>div:nth-child(2)>div:nth-child(1)` | Assist serviti a |
-| Post-partita · tabellino | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 12 / 800 | 10 | `div:nth-child(3)>div:nth-child(1)>span.cpm-num` | 48% |
-| Post-partita · tabellino | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 400 | 4 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(2)` | Falli avversari |
 
 ## Fuori portata di questa sonda (dichiarato, non misurato)
 

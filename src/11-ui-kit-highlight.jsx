@@ -86,7 +86,7 @@ const StatBar=({label,value,tone,track,height=4,mb=8})=>{
   const c=tone==="attribute"?(value>=75?TH.success:value>=55?TH.energy:value>=40?TH.warning:TH.danger)
         :(tone&&TH[tone+"Fg"])?TH[tone+"Fg"]
         :(value>=80?TH.success:value>=65?TH.warning:TH.danger);
-  return<div style={{marginBottom:mb}}><div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span className="cpm-num" style={{color:legCol944(c),fontWeight:700}}>{value}</span></div><div style={{height,background:track||TH.cardBorder,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:3,transition:"width .5s"}}/></div></div>;
+  return<div style={{marginBottom:mb}}><div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,marginBottom:3}}><span style={{color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>{label}</span><span className="cpm-num" style={{color:legCol944(c),fontWeight:700}}>{value}</span></div><div style={{height,background:track||TH.cardBorder,borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:`${value}%`,background:c,borderRadius:RAD.pill,transition:"width .5s"}}/></div></div>;
 };
 /* OvrRing — refactor Ondata 1: track → TH.track (light == #e2e8f0, pinnato) · label default 'OVR' (era 'LVL': errato per un calciatore). */
 const OvrRing=({value,size=60,label="OVR"})=>{

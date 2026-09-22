@@ -6948,7 +6948,7 @@ const getThisWeekMatchday=()=>{
               <span style={{fontSize:FS.bodyLg}}>🤝</span>
               <div style={{flex:1,fontSize:FS.caption,color:TH.text,fontWeight:700}}>Patto col mister: <span style={{color:TH.txGreen}}>{pv.val}/{pv.pact.target} {pv.kd.u}</span> · gara {pv.played}/{pv.pact.games}</div>
             </div>
-            <div style={{height:5,background:TH.cardBorder,borderRadius:3,overflow:"hidden",marginTop:6}}><div style={{height:"100%",width:`${clamp(Math.round(pv.val/Math.max(1,pv.pact.target)*100),4,100)}%`,background:TH.success,borderRadius:3}}/></div>
+            <div style={{height:5,background:TH.cardBorder,borderRadius:RAD.pill,overflow:"hidden",marginTop:6}}><div style={{height:"100%",width:`${clamp(Math.round(pv.val/Math.max(1,pv.pact.target)*100),4,100)}%`,background:TH.success,borderRadius:RAD.pill}}/></div>
           </Card>);
         const _kept=pv.st==="kept";
         /* [7.267.0] verdetto SEEDATO (3 formule per esito) e nell'unità del patto: «4 assist» / «5 giocate
@@ -7339,7 +7339,7 @@ const getThisWeekMatchday=()=>{
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>
             <div style={{fontSize:FS.caption,color:"#c4b5fd",textTransform:"uppercase",letterSpacing:2,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{sv.lab}</div>
             <div style={{display:"flex",gap:4,flexShrink:0}}>{Array.from({length:sv.tot}).map((_,i)=>(
-              <span key={i} style={{width:i===sv.ep?14:6,height:6,borderRadius:3,background:i<=sv.ep?"#a78bfa":"#3b3358",transition:"width .2s"}}/>))}</div>
+              <span key={i} style={{width:i===sv.ep?14:6,height:6,borderRadius:RAD.pill,background:i<=sv.ep?"#a78bfa":"#3b3358",transition:"width .2s"}}/>))}</div>
           </div>
           <div style={{fontSize:FS.caption,color:"#8b7fb8",fontWeight:700,marginBottom:6}}>PUNTATA {sv.ep+1} DI {sv.tot}</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
@@ -7649,8 +7649,8 @@ const getThisWeekMatchday=()=>{
         <Card style={{marginBottom:8,padding:"9px 12px",...(_beaten?{background:TH.bgAmber,border:`1px solid ${TH.bdAmber}`}:{})}}>
           <div style={{fontSize:FS.caption,color:_beaten?TH.txAmber:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:4}}>{_beaten?"👑 Record battuto!":"🎯 Record watch"}</div>
           <div style={{fontSize:FS.small,color:_beaten?TH.txAmber:TH.text,fontWeight:700,marginBottom:2}}>{_beaten?`Nuovo record stagionale della lega: ${_lgG} gol — sei nella storia.`:_tied?`Hai agguantato il record stagionale (${_rec.goals} gol di ${_rec.name}).`:`A ${_gap} gol dal record stagionale — ${_rec.goals} di ${_rec.name}${/^S\./.test(_rec.season||"")?` (${_rec.season})`:""}.`}</div>
-          <div style={{height:5,background:TH.cardBorder,borderRadius:3,overflow:"hidden",marginTop:6}}>
-            <div style={{height:"100%",width:`${clamp(Math.round(_lgG/Math.max(1,(_rec.goals||1))*100),4,100)}%`,background:_beaten?"#f59e0b":TH.primary,borderRadius:3}}/>
+          <div style={{height:5,background:TH.cardBorder,borderRadius:RAD.pill,overflow:"hidden",marginTop:6}}>
+            <div style={{height:"100%",width:`${clamp(Math.round(_lgG/Math.max(1,(_rec.goals||1))*100),4,100)}%`,background:_beaten?"#f59e0b":TH.primary,borderRadius:RAD.pill}}/>
           </div>
         </Card>);})()}
       {/* DASHBOARD */}
@@ -7717,8 +7717,8 @@ const getThisWeekMatchday=()=>{
               <span>⏳ {player.injuryWeeks||0} settiman{(player.injuryWeeks||0)===1?"a":"e"} rimanenti</span>
               <span style={{fontWeight:700,color:recPct>=50?TH.txGreen:TH.txRed}}>Recupero {recPct}%</span>
             </div>
-            <div style={{height:6,background:`${TH.txRed}22`,borderRadius:3,overflow:"hidden"}}>
-              <div style={{height:"100%",width:`${recPct}%`,background:recPct>=80?"#16a34a":recPct>=40?"#f97316":"#ef4444",borderRadius:3,transition:"width .4s"}}/>
+            <div style={{height:6,background:`${TH.txRed}22`,borderRadius:RAD.pill,overflow:"hidden"}}>
+              <div style={{height:"100%",width:`${recPct}%`,background:recPct>=80?"#16a34a":recPct>=40?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width .4s"}}/>
             </div>
             {(player.fitnessCoachRel||50)>=65&&<div style={{fontSize:FS.caption,color:TH.txGreen,marginTop:5}}>💪 Preparatore ({player.fitnessCoachRel}) — riabilitazione seguita: rischio ricaduta ridotto, possibile recupero anticipato.</div>}
             {(player.injuryWeeks||0)>=2&&(
@@ -7970,7 +7970,7 @@ const getThisWeekMatchday=()=>{
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Voci di Mercato — W.{player.week||1}</div>
             {_mn.map((n,ni)=>(
               <div key={ni} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"5px 0",borderTop:ni>0?"1px solid "+TH.cardBorder:"none"}}>
-                <span style={{width:3,alignSelf:"stretch",borderRadius:3,background:n.col,flexShrink:0}}/>
+                <span style={{width:3,alignSelf:"stretch",borderRadius:RAD.pill,background:n.col,flexShrink:0}}/>
                 <span style={{fontSize:FS.caption,lineHeight:1.35,color:n.personal?TH.text:TH.muted,fontWeight:n.personal?700:400}}>{n.txt}</span>
               </div>
             ))}
@@ -8859,8 +8859,8 @@ const getThisWeekMatchday=()=>{
                     <div style={{fontSize:FS.caption,color:TH.muted}}>Rapporto attuale</div>
                     <div style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_ctColor)}}>{_ctLabel}</div>
                   </div>
-                  <div style={{height:4,background:TH.track,borderRadius:3,overflow:"hidden"}}>
-                    <div style={{height:"100%",width:`${_ct}%`,background:_ctColor,borderRadius:3,transition:"width .4s"}}/>
+                  <div style={{height:4,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${_ct}%`,background:_ctColor,borderRadius:RAD.pill,transition:"width .4s"}}/>
                   </div>
                 </Card>
               </Fisarmonica>
@@ -8997,8 +8997,8 @@ const getThisWeekMatchday=()=>{
                         </div>
                       </div>
                       {/* Sprint 69 — bond progress bar */}
-                      <div style={{height:4,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden",marginLeft:46}}>
-                        <div style={{height:"100%",width:`${bond}%`,background:bond>=75?"#a78bfa":bond>=50?"#60a5fa":"#475569",borderRadius:3,transition:"width 0.4s ease"}}/>
+                      <div style={{height:4,background:"rgba(255,255,255,0.08)",borderRadius:RAD.pill,overflow:"hidden",marginLeft:46}}>
+                        <div style={{height:"100%",width:`${bond}%`,background:bond>=75?"#a78bfa":bond>=50?"#60a5fa":"#475569",borderRadius:RAD.pill,transition:"width 0.4s ease"}}/>
                       </div>
                     </div>
                   );
@@ -9262,8 +9262,8 @@ const getThisWeekMatchday=()=>{
                         })}
                       </div>
                       <div style={{display:"flex",gap:8,marginTop:4}}>
-                        <div style={{display:"flex",alignItems:"center",gap:3,fontSize:FS.caption,color:"rgba(99,102,241,0.8)"}}><div style={{width:8,height:6,background:"rgba(99,102,241,0.65)",borderRadius:3}}/>{rFirstName}</div>
-                        <div style={{display:"flex",alignItems:"center",gap:3,fontSize:FS.caption,color:"rgba(74,222,128,0.8)"}}><div style={{width:8,height:6,background:"rgba(74,222,128,0.65)",borderRadius:3}}/>Tu</div>
+                        <div style={{display:"flex",alignItems:"center",gap:3,fontSize:FS.caption,color:"rgba(99,102,241,0.8)"}}><div style={{width:8,height:6,background:"rgba(99,102,241,0.65)",borderRadius:RAD.pill}}/>{rFirstName}</div>
+                        <div style={{display:"flex",alignItems:"center",gap:3,fontSize:FS.caption,color:"rgba(74,222,128,0.8)"}}><div style={{width:8,height:6,background:"rgba(74,222,128,0.65)",borderRadius:RAD.pill}}/>Tu</div>
                       </div>
                     </div>
                   );
@@ -9587,7 +9587,7 @@ const getThisWeekMatchday=()=>{
               <Card style={{padding:"9px 12px"}}>
                 <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Diario di Carriera</div>
                 <div style={{position:"relative",paddingLeft:4}}>
-                  <div style={{position:"absolute",left:11,top:4,bottom:4,width:2,background:TH.cardBorder,borderRadius:3}}/>
+                  <div style={{position:"absolute",left:11,top:4,bottom:4,width:2,background:TH.cardBorder,borderRadius:RAD.pill}}/>
                   {dEntries.map((entry,i)=>{
                     const meta=DTYPE[entry.type]||{e:"⭐",color:TH.muted};
                     return(
@@ -9620,8 +9620,8 @@ const getThisWeekMatchday=()=>{
                   <div style={{fontSize:FS.caption,fontWeight:700,color:(player.u18Seasons||0)>=1?TH.txRed:TH.txGreen}}>{(player.u18Seasons||0)>=1?"⚠️ Transizione obbligatoria":"🎯 Valutazione fine stagione"}</div>
                 </div>
               </div>
-              <div style={{height:5,background:TH.track,borderRadius:3,overflow:"hidden",marginBottom:4}}>
-                <div style={{height:"100%",width:`${(player.u18Seasons||0)*50}%`,background:(player.u18Seasons||0)>=1?"#ef4444":TH.warning,borderRadius:3}}/>
+              <div style={{height:5,background:TH.track,borderRadius:RAD.pill,overflow:"hidden",marginBottom:4}}>
+                <div style={{height:"100%",width:`${(player.u18Seasons||0)*50}%`,background:(player.u18Seasons||0)>=1?"#ef4444":TH.warning,borderRadius:RAD.pill}}/>
               </div>
               <div style={{fontSize:FS.caption,color:TH.muted}}>
                 {(player.u18Seasons||0)===0&&"Prima stagione in Under 18. Ottieni risultati per attrarre offerte pro."}
@@ -9903,8 +9903,8 @@ const getThisWeekMatchday=()=>{
                   <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:3}}>
                     <span>Progresso</span><span style={{fontWeight:700,color:pct>=100?TH.txGreen:TH.text}}>{prog.cur}/{prog.max} {prog.label}</span>
                   </div>
-                  <div style={{height:5,background:TH.track,borderRadius:3,overflow:"hidden"}}>
-                    <div style={{height:"100%",width:`${pct}%`,background:pct>=100?TH.success:"#f59e0b",borderRadius:3,transition:"width .4s"}}/>
+                  <div style={{height:5,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${pct}%`,background:pct>=100?TH.success:"#f59e0b",borderRadius:RAD.pill,transition:"width .4s"}}/>
                   </div>
                 </div>}
                 {done&&<div style={{marginTop:8,fontSize:FS.small,color:TH.txGreen,fontWeight:700}}>{ch.reward} — SFIDA COMPLETATA!</div>}

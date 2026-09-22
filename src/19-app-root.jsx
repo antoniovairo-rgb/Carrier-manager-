@@ -138,7 +138,7 @@ function ReviewWizard({onExit}){
       <span style={{fontWeight:800}}>{done} / {combos.length}</span>
       <span style={{color:"#f87171",fontWeight:800}}>{ko} da correggere</span>
       {stale>0&&<span style={{color:"#fbbf24",fontWeight:800}}>· {stale} da riverificare (build precedenti)</span>}
-      <div style={{flex:1,minWidth:60,height:6,background:"#1e293b",borderRadius:3,overflow:"hidden"}}><div style={{width:`${combos.length?done/combos.length*100:0}%`,height:"100%",background:"#22c55e"}}/></div>
+      <div style={{flex:1,minWidth:60,height:6,background:"#1e293b",borderRadius:RAD.pill,overflow:"hidden"}}><div style={{width:`${combos.length?done/combos.length*100:0}%`,height:"100%",background:"#22c55e"}}/></div>
       <button onClick={onExit} style={{...bs,padding:"5px 10px",background:"#7f1d1d"}}>✕ Esci</button>
     </div>
     {/* barra BASSA: cosa stai guardando + verdetto. [7.235.0 collaudo PO «rendi piu trasparente lo sfondo

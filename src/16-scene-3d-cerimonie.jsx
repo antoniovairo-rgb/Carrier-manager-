@@ -68,8 +68,8 @@ function ProTransitionScreen({player,onChoose}){
           <span>Stagioni Under 18: {u18S+1}/2</span>
           <span style={{color:forced?TH.danger:TH.primary}}>{forced?"Limite raggiunto":"Ancora disponibile"}</span>
         </div>
-        <div style={{height:6,background:"#e2e8f0",borderRadius:3,overflow:"hidden"}}>
-          <div style={{height:"100%",width:`${(u18S+1)*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:3,transition:"width .5s"}}/>
+        <div style={{height:6,background:"#e2e8f0",borderRadius:RAD.pill,overflow:"hidden"}}>
+          <div style={{height:"100%",width:`${(u18S+1)*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
         </div>
       </div>
       {/* Offers */}
@@ -2406,8 +2406,8 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
                   {obj.type==="standing"?`${obj.cur}°/${obj.target}°`:`${obj.cur}/${obj.target}`}
                 </span>
               </div>
-              <div style={{height:5,borderRadius:3,background:TH.cardBorder,overflow:"hidden"}}>
-                <div style={{height:"100%",width:obj.pct+"%",background:obj.done?"#22c55e":"#f97316",borderRadius:3,transition:"width 0.6s ease"}}/>
+              <div style={{height:5,borderRadius:RAD.pill,background:TH.cardBorder,overflow:"hidden"}}>
+                <div style={{height:"100%",width:obj.pct+"%",background:obj.done?"#22c55e":"#f97316",borderRadius:RAD.pill,transition:"width 0.6s ease"}}/>
               </div>
               {obj.done&&obj.bonus&&(
                 <div style={{fontSize:FS.caption,color:"#16a34a",marginTop:2}}>
@@ -2716,7 +2716,7 @@ function ClubPresentationScreen({club,contractType,playerName,onContinue}){
         <div style={{fontSize:FS.small,color:TH.txAmber}}>{ATMOS[aIdx]}</div>
       </Card>
       {/* Progress */}
-      <div style={{height:2,background:TH.cardBorder,borderRadius:3,marginBottom:14,overflow:"hidden"}}>
+      <div style={{height:2,background:TH.cardBorder,borderRadius:RAD.pill,marginBottom:14,overflow:"hidden"}}>
         <div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${col},#f59e0b)`,transition:"width .07s"}}/>
       </div>
       <Btn onClick={onContinue} v="primary" fw style={{padding:"16px",fontSize:FS.bodyLg}}>
