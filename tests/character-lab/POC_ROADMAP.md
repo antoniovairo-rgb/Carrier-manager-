@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 02:20 (Europe/Rome, orologio del container)
+**Ultimo aggiornamento:** 23 settembre 2026, 00:57 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -470,7 +470,7 @@ Nuova sonda `presa-clip-profilo.mjs`: `gk-high-catch` dura **3,333 s**; mani uni
 
 ---
 
-## Avanzamento 23 settembre 2026, 00:55 — PRESA ALTA: ORA SI VEDE
+## Avanzamento 23 settembre 2026, 00:28 — PRESA ALTA: ORA SI VEDE
 
 **Fase:** 4/7 · **Stato stimato: 64%**.
 
@@ -503,7 +503,7 @@ Prova visiva: `keeper-catch-review/presa-contatto.png` — braccia alzate, palla
 
 ---
 
-## Avanzamento 23 settembre 2026, 01:35 — IL KIT A CHIAZZE: MATERIALI ESPORTATI IN BLEND (collaudo PO sul telefono)
+## Avanzamento 23 settembre 2026, 00:36 — IL KIT A CHIAZZE: MATERIALI ESPORTATI IN BLEND (collaudo PO sul telefono)
 
 **Segnalazione PO (screenshot Android, scena «Chiama il portiere»):** «I giocatori non si vedono bene, il kit non si
 e' disegnato bene». Maglie e pelle a chiazze, bianco e color pelle sopra il rosa/azzurro.
@@ -547,7 +547,10 @@ sorgente.
 - **Lavoro successivo e criterio di chiusura:** correggere il gesto di dribbling e verificare in sequenza contatto piede-palla, tiro e transizioni; ripetere il test mobile reale. Nessuna build POC validata e pubblicata sul link ufficiale.
 
 ---
-## Avanzamento 23 settembre 2026, 02:20 — DRIBBLING, PASSAGGIO, TIRO: MISURATI GESTO PER GESTO
+## Avanzamento 23 settembre 2026, 00:55 — DRIBBLING, PASSAGGIO, TIRO: MISURATI GESTO PER GESTO
+
+> **Correzione di date (mia).** Le voci 00:28, 00:36 e 00:55 erano state datate 00:55, 01:35 e 02:20: ore stimate e non lette
+> dall'orologio — lo stesso errore che avevo segnalato nelle voci precedenti. Corrette sugli orari dei commit.
 
 **Fase:** 4/7 · **Stato stimato: 68%**. Sonda `gesto-eroe-review.mjs` (situazione scelta con `deriveIntent`, registratore a
 ogni fotogramma in pagina, montaggi VERI dell'eroe col testimone `__CPM_CGTRADER_MOUNTS`, corpi disegnati con
