@@ -107,6 +107,27 @@ Gli altri ventidue punti in cui oggi vive un volto tondo (rosa, rivale, mister, 
 formazione, HUD di partita) si convertono **uno alla volta, con la loro misura** — la partita per
 ultima, perché lì la catena dei rituali è quella completa.
 
+## 5-bis. Il percorso è già provato (22/09)
+
+Il contratto dice «basta pubblicare il manifesto e le figurine compaiono». Finché non arriva l'arte vera
+quella è una **promessa**: ora è una **misura**. La sonda `tests/visual/figurina-percorso.mjs` accende il
+manifesto con una carta di prova 5:7 (`fixtures/figurina-prova.svg`, stessa struttura dell'esempio:
+cornice, marchio, fascia col nome a filo del bordo) e verifica quattro cose:
+
+| controllo | esito |
+|---|---|
+| il riquadro monta davvero l'immagine (non il bianco) | **1/1** |
+| il rapporto reso resta 5:7 — l'arte non si deforma | scarto **0,4 %** |
+| il riquadro non sovrappone niente sopra l'arte | **0** |
+| l'arte non viene ritagliata (`contain`, non `cover`) | **0** |
+| errori di pagina | **0** |
+
+```bash
+CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node tests/visual/figurina-percorso.mjs
+```
+
+Quando arriva il primo lotto vero, questa sonda è il collaudo: se passa, l'arte è montata bene.
+
 ## 6. Il guardiano
 
 La griglia mobile ha una tabella nuova, **9-sexies · lo spazio delle figurine**: conta le figurine per
