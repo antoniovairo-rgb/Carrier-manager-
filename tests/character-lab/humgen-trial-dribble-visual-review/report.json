@@ -1,0 +1,16 @@
+{
+  "frames": [
+    0,
+    10,
+    21,
+    32,
+    41
+  ],
+  "purpose": "visual human generator trial rig probe only",
+  "limitations": [
+    "no haircard conversion",
+    "no kit",
+    "no root translation",
+    "no ball sync"
+  ]
+}
