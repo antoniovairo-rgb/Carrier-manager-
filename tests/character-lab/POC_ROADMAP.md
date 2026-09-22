@@ -571,3 +571,8 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Fatti verificati:** fra i file inclusi ci sono componenti separati per testa, mani, gambe, maglia e pantaloncini. `HEAD.glb` e' una sola mesh da `9.083` triangoli, con una sola texture `HEAD`; non contiene teste alternative, morph o tagli separati. `HANDS.glb` contiene solo due mesh mani per `5.076` triangoli.
 - **File Earring:** l'FBX aggiuntivo e' un solo mesh da `50.000` triangoli, con mappe base/metallic/normal/roughness 4K; e' un accessorio distinto, non capelli, e supera da solo il budget Hero. Non viene integrato.
 - **Decisione:** tutti i componenti utili del pacchetto sono stati controllati. Non esistono varianti nascoste di volto, barba o capelli da promuovere; la base CGTrader resta valida per rig e kit, mentre la varietà richiede un'altra pipeline verificata.
+
+## Aggiornamento 22 settembre 2026 — nessun morph facciale nel pacchetto CGTrader
+
+- **Fatti verificati:** `HEAD.fbx` contiene una sola mesh testa da `9.083` triangoli, senza armatura, gruppi peso o shape key. `NORMAL+RIG.fbx` contiene il rig e sette mesh pesate, ma ogni mesh ha `shape_keys: []`, compresa la testa.
+- **Decisione:** non esiste un set di espressioni o volti alternativi nascosto da attivare. Le quattro varianti colore capelli restano texture sullo stesso volto/taglio; per differenziare realmente i giocatori serve una pipeline distinta, non una configurazione del pacchetto.
