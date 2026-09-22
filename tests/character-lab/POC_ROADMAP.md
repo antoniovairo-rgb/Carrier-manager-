@@ -466,3 +466,11 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatto verificato:** e stata generata una preview locale a 640×640 dal GLB CGTrader, con texture sorgente non alterata e inquadratura ravvicinata di capelli, volto, collo e spalle: `cgtrader-hero-profile-neutral-review.png`.
 - **Perimetro:** e un artefatto di review, non una modifica del modello, del kit, del runtime o del ramo `main`.
 - **Criterio successivo:** la preview consente di giudicare il volto senza l'effetto della camera partita; il verdetto estetico resta separato dai gate tecnici gia superati e dai gate ancora aperti (transizioni e mobile).
+
+## 2026-09-22 — audit statico del taglio Human Generator incluso nella trial
+
+- **Fatto verificato:** l’archivio trial contiene il file Blender effettivo `hair/head/Short Side Part.blend`, oltre alla sua configurazione: i sistemi `hair_short_fade` e `hair_parted_side` hanno rispettivamente 1.000 e 100 ciocche guida, con rendering a percorsi (`PATH`). Non è una sola anteprima.
+- **Fatto verificato:** il file apre in Blender 4.5.14 con `--factory-startup --disable-autoexec`; contiene una base `HG_Body` da 50.568 triangoli e due sistemi particellari capelli. È stata generata una preview locale neutra in `humgen-trial-short-side-part-preview.png`.
+- **Limite verificato:** questo taglio non è ancora haircards o GLB da runtime; il file non dimostra rig, kit da calcio, esportazione, retarget del dribbling, LOD finale, licenza Commercial o prestazioni mobili. Non è stato installato né attivato l’add-on.
+- **Decisione:** Human Generator resta un candidato di qualità per variare adulti, capelli e barba, ma non può sostituire ora il CGTrader. Il CGTrader resta l’unica base che ha già superato il provino locale di dribbling con braccia e palla coordinate.
+- **Prossimo gate:** con autorizzazione esplicita all’installazione isolata della trial, creare il solo maschio sbloccato, convertire una capigliatura in haircards, esportare e sottoporla ai gate rig/clip/scala/mobile.

@@ -63,3 +63,7 @@ Gli URL pubblicati nella guida ufficiale rispondono correttamente: add-on **5.05
 ### Distinzione licenza Human Generator
 
 Il [codice dell'add-on](https://github.com/OliverJPost/HumGen3D) è GPL-3.0, ma il repository dichiara esplicitamente che modelli e texture arrivano con l'acquisto e sono sottoposti a licenza royalty-free separata. La [licenza asset](https://help.humgen3d.com/license) permette software e videogiochi soltanto con la tier Commercial e soltanto quando gli asset non siano facilmente estraibili dagli utenti. Human Generator è quindi **software open source con libreria commerciale**, non una sorgente di modelli open source.
+
+### Human Generator — asset trial effettivo verificato staticamente
+
+Il contenuto trial non si limita alle immagini: include `hair/head/Short Side Part.blend`. In Blender 4.5.14, aperto con esecuzione automatica disabilitata, il file espone una base `HG_Body` di 50.568 triangoli e due sistemi di capelli a particelle: `ParticleSettings_HairShort` con 1.000 guide e `ps_ponytail_strands_thin.001` con 100 guide. È quindi un taglio maschile reale e non una finta preview, ma non è un asset runtime: manca ancora la conversione in haircards, l’export, il rig verificato, il kit, il test di dribbling e il controllo mobile. La verifica aumenta l’interesse tecnico del candidato, senza cambiarne lo stato: **non adottabile finché non supera un test isolato completo e non è coperto dalla licenza Commercial per videogiochi**.
