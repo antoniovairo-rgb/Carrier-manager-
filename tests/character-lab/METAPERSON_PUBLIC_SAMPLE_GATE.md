@@ -30,6 +30,12 @@ Il confronto diretto del rig di `model5` con il source locale delle clip Mixamo 
 
 Questo prova che una mappatura nominale completa è disponibile; non prova ancora la qualità del movimento. Il prossimo test deve applicare una clip al rig MetaPerson e misurare posa, braccia, piedi e palla nei fotogrammi di contatto.
 
+## Primo provino dribbling: metodo rifiutato
+
+È stato applicato in un banco separato il dribbling locale `regular-anim-dribble.glb` a 62 ossa corrispondenti di `model5`, con sole rotazioni locali e senza spostamento radice. L'import e la mappatura non hanno sollevato eccezioni, ma i fotogrammi 0, 10, 21, 32 e 41 mostrano una deformazione grave di busto e gambe: il personaggio ruota di profilo e la parte inferiore collassa in una superficie piatta.
+
+**FAIL del metodo di trasferimento diretto.** I due rig hanno la stessa semantica ma assi/rest pose diversi; il risultato non è una preview del dribbling e non viene promosso. Il candidato MetaPerson non è ancora rifiutato: il prossimo metodo deve usare un trasferimento calibrato nello spazio bind, come già richiesto per i rig eterogenei, prima di qualsiasi verifica palla o kit.
+
 ## Passo successivo
 
 Usare solo `model5` come prova tecnica: rimuovere visivamente l'abbigliamento civile nel banco locale, verificare mappatura delle 73 ossa verso una clip esistente e misurare un LOD separato. Il candidato potrà avanzare solo se conserva volto e capelli leggibili, raggiunge un budget misurato e supera il gesto con palla.
