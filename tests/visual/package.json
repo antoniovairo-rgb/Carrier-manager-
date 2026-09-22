@@ -173,7 +173,8 @@
     "pallino-sostituito": "node pallino-sostituito.mjs",
     "completamento": "node completamento.mjs",
     "armo-scelte": "node armo-scelte.mjs",
-    "varieta-scene": "node varieta-scene.mjs"
+    "varieta-scene": "node varieta-scene.mjs",
+    "rndm-conteggio": "node rndm-conteggio.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
