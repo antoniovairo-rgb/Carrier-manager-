@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 00:08 (Europe/Rome)
+**Ultimo aggiornamento:** 23 settembre 2026, 00:23 (Europe/Rome)
 **Stato complessivo stimato:** 60% — ultimo riesame dei quality gate; non e un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -407,6 +407,14 @@ ossa o tolto, perche' induce in errore: e' un intervento a parte, non fatto qui.
 - **Attivita dall'ultimo aggiornamento:** nessuna modifica di sviluppo pubblicata dopo il commit documentale d692aabb.
 - **Verifica ed esito:** il fetch del branch remoto non rileva nuovi commit; resta valida la misura precedente del roster a cinque corpi con Hero realmente in LOD0. Nessun nuovo test di animazione, contatto palla, transizioni o telefono in questo intervallo.
 - **Lavoro successivo e criterio di chiusura:** catturare e giudicare la presa alta completa del portiere, inclusi contatto mani-palla e possesso; proseguire con dribbling, tiro e transizioni. Il gate prestazioni si chiude solo con misura mobile reale. La Pages ufficiale non ospita ancora una build POC validata.
+
+---
+## Avanzamento 23 settembre 2026, 00:23 — Controllo periodico
+
+- **Fase corrente:** 4/7, 60% complessivo stimato; quality gate finali ancora aperti.
+- **Attivita dall'ultimo aggiornamento:** nessun nuovo commit di sviluppo pubblicato sul branch POC dopo il precedente checkpoint bb7e0c2a.
+- **Verifica ed esito:** il fetch remoto e' invariato. Restano documentati cinque corpi visibili con Hero LOD0 e partita normale invariata nella misura precedente; nessuna nuova prova di presa, dribbling, tiro, transizioni o FPS mobile.
+- **Lavoro successivo e criterio di chiusura:** verificare in sequenza presa alta, contatto e possesso della palla; poi gesto di dribbling/tiro e transizioni. Il collaudo ufficiale resta subordinato alla pubblicazione della build validata sul link Pages indicato e alla misura su telefono.
 
 ---
 ## Obiettivo vincolante
