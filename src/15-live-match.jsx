@@ -4092,6 +4092,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                    cosi' non c'e' nessun clamp e lui resta dov'e'. La zona resta il ripiego. */
                 const _hx=occEroe879Ref.current.x,_hy=occEroe879Ref.current.y;
                 const _dentro=(s2)=>{try{const z=s2&&s2.startZone;return !!(z&&_hx>=z.x[0]&&_hx<=z.x[1]&&_hy>=z.y[0]&&_hy<=z.y[1]);}catch(_e){return false;}};
+                /* [7.958] TENTATIVO REVOCATO, e il perche' vale piu' del tentativo: avevo sostituito i tre
+                   `find` (il primo che passa vince, sempre) con un sorteggio seedato fra le candidate.
+                   La misura non si e' mossa — 8 scene, 3 schede, le stesse due dominanti — perche' a valle
+                   NON C'E' NIENTE DA SORTEGGIARE: le candidate sono gia' una sola. Il collo di bottiglia
+                   sta A MONTE, in quante schede sopravvivono ai filtri contestuali di `_fresh79`.
+                   Questo contatore e' inerte e serve al prossimo passo, per non farlo indovinare. */
+                try{if(typeof window!=='undefined'&&_zm){
+                  cpmEv("candidate",{min:nx|0,fresche:_fresh79.length,
+                    dentro:_fresh79.filter(s2=>s2&&s2.type!=='def'&&_dentro(s2)).length,
+                    zona:_fresh79.filter(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])>=0&&s2.type!=='def').length});}}catch(_e958){}
                 if(_zm){const _c=_fresh79.find(s2=>s2&&s2.type!=='def'&&_dentro(s2))
                         ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])===0&&s2.type!=='def')
                         ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])>=0&&s2.type!=='def');
@@ -4099,7 +4109,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               }
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }
-            setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null});}catch(_e){}
+            setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,/* [7.958 · rilievo PO «le interazioni dell eroe sono molto ripetitive»] IL REGISTRO DICE ANCHE QUALE SCENA E QUANTE CANDIDATE C ERANO. Il catalogo ha 185 schede e 573 azioni: se il giocatore ne vede sempre le stesse, il difetto non e la poverta del catalogo ma la SELEZIONE, e i due vogliono rimedi opposti. MISURATO con la sonda varieta-scene, 3 partite con seed diversi: 6 scene giocate, 2 schede distinte, ognuna ripetuta 3 volte. */sk:(()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current];return _s?String(_s.text||"").slice(0,60):null;}catch(_e2){return null;}})()});}catch(_e){}
             try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occEroe879Ref.current=null;
             setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
