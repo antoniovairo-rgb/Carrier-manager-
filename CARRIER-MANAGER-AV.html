@@ -12286,18 +12286,19 @@ function ThreeMatchView(props){
          Supported values: 'off' (default), 'hero'. Squad replacement is
          deliberately deferred until kit/number UV masks and GK clips exist. */
       const _hyperQuery=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
-      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review'||_hyperQuery==='cgtrader-ajax-review'||_hyperQuery==='cgtrader-lod2-benchmark'||_hyperQuery==='cgtrader-mixed-lod-benchmark')?_hyperQuery:'off');
+      const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review'||_hyperQuery==='cgtrader-ajax-review'||_hyperQuery==='cgtrader-lod2-benchmark'||_hyperQuery==='cgtrader-mixed-lod-benchmark'||_hyperQuery==='cgtrader-highlight-optimized'||_hyperQuery==='cgtrader-squad-review')?_hyperQuery:'off');
       /* Explicit local-review switch for the selected CGTrader candidate.
          It is Hero-only and opt-in: default `?hyperCharacter=full` keeps its
          published source until the complete mobile quality gate is passed. */
       const _cgtraderReview=_hyperMode==='cgtrader-review';
       const _cgtraderAjaxReview=_hyperMode==='cgtrader-ajax-review';
+      const _cgtraderHighlightOptimized=_hyperMode==='cgtrader-highlight-optimized';try{window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED=_cgtraderHighlightOptimized;}catch(_e){}
       /* POC-only squad benchmark: the animated CGTrader LOD2 replaces field avatars only on its explicit review URL. */
-      const _cgtraderSquadReview=_hyperMode==='cgtrader-lod2-benchmark';
+      const _cgtraderSquadReview=_hyperMode==='cgtrader-lod2-benchmark'||_hyperMode==='cgtrader-squad-review';
       const _cgtraderMixedLodBenchmark=_hyperMode==='cgtrader-mixed-lod-benchmark';
-      const _cgtraderAnyReview=_cgtraderReview||_cgtraderAjaxReview||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
+      const _cgtraderAnyReview=_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
       const _hyperFull=_hyperMode==='full';
-      const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
+      const _hyperIntro=_hyperMode==='intro'||_hyperMode==='lineup'||_hyperFull||_cgtraderHighlightOptimized||_cgtraderSquadReview||_cgtraderMixedLodBenchmark;
       const _hyperHero=_hyperMode==='hero'||_hyperIntro||_cgtraderAnyReview;
       try{window.__CPM_HYPER_CASUAL_STATUS=_hyperHero?'loading':'off';window.__CPM_HYPER_INTRO_POLICY=_hyperIntro?{field:'hyper',offFieldCH38:false}:null;}catch(_e){}
       /* Le proporzioni del volto e della testa sono integrate nei GLB corretti.
@@ -12317,18 +12318,18 @@ function ThreeMatchView(props){
       const _footballerHeight=(declared,fallback=1.8)=>{const h=Number(declared);return h>=1.55&&h<=2.05?h:fallback;};
       const _replaceHeroWithHyper=(pkg)=>{
         const _clip=(name)=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
-        const _tackleClip=_clip('slide-tackle')||_clip('tackle'),_catchClip=_clip('gk-high-catch')||_clip('gk-catch');
+        const _tackleClip=_clip('slide-tackle')||_clip('tackle'),_catchClip=_clip('gk-high-catch');
         if(!pkg||!pkg.scene||!_clip('idle')||!_clip('jog'))throw new Error('Hyper Casual package is incomplete');
         const _legacyIndex=glbAvatars.findIndex(a=>a&&a.proc===hero),_legacy=glbAvatars[_legacyIndex];
         if(_legacyIndex<0||!_legacy)throw new Error('Legacy Hero visual is unavailable');
         const root=new THREE.Group();
         const visual=_cloneHyperVisual(pkg,hashStr('hyper-hero'));
         root.add(visual);visual.updateMatrixWorld(true);
-        const _rawBounds=new THREE.Box3().setFromObject(visual),_meshHeight=Math.max(0.1,_rawBounds.max.y-_rawBounds.min.y),_skeletonMeasure=_skeletonWorldHeight(visual),_rawHeight=(_cgtraderReview||_cgtraderAjaxReview)&&_skeletonMeasure.height>0.5?_skeletonMeasure.height:_meshHeight;
+        const _rawBounds=new THREE.Box3().setFromObject(visual),_meshHeight=Math.max(0.1,_rawBounds.max.y-_rawBounds.min.y),_skeletonMeasure=_skeletonWorldHeight(visual),_rawHeight=(_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized)&&_skeletonMeasure.height>0.5?_skeletonMeasure.height:_meshHeight;
         const _targetHeight=_heroAppr.height||1.9;
         visual.scale.setScalar(_targetHeight/_rawHeight);visual.updateMatrixWorld(true);
         const _groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=_groundBounds.min.y;visual.updateMatrixWorld(true);
-        if(_cgtraderReview||_cgtraderAjaxReview)try{window.__CPM_CGTRADER_REVIEW_METRICS={meshHeight:+_meshHeight.toFixed(3),skeletonHeight:+_skeletonMeasure.height.toFixed(3),skeletonBones:_skeletonMeasure.bones,chosenHeight:+_rawHeight.toFixed(3),targetHeight:+_targetHeight.toFixed(3),scale:+visual.scale.x.toFixed(4)};}catch(_e){}
+        if(_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized)try{window.__CPM_CGTRADER_REVIEW_METRICS={meshHeight:+_meshHeight.toFixed(3),skeletonHeight:+_skeletonMeasure.height.toFixed(3),skeletonBones:_skeletonMeasure.bones,chosenHeight:+_rawHeight.toFixed(3),targetHeight:+_targetHeight.toFixed(3),scale:+visual.scale.x.toFixed(4)};}catch(_e){}
         visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
         _applyHyperBuild(visual,_heroAppr);_applyHyperKit(visual,_homeKit,_heroAppr);_applyCgtraderNativeHair(visual,_heroAppr);
         const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
@@ -12338,7 +12339,7 @@ function ThreeMatchView(props){
           spine:_findBone(/spine_03|spine_02|spine_01/i),_handL:_findBone(/^(?:hand\.l_|hand_l$)/i),_handR:_findBone(/^(?:hand\.r_|hand_r$)/i),_footL:_findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:_findBone(/^(?:ball\.l_|ball_l)$/i),_footR:_findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:_findBone(/^(?:ball\.r_|ball_r)$/i)};
         avatar._armB={la:_findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:_findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:_findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:_findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
         avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
-        _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),catch:_catchClip});        if(_cgtraderReview||_cgtraderAjaxReview)try{window.__CPM_CGTRADER_REVIEW_GESTURES=Object.fromEntries(Object.entries(avatar.gestures||{}).map(([key,action])=>[key,!!action]));}catch(_e){}
+        _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),catch:_catchClip});        if(_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized)try{window.__CPM_CGTRADER_REVIEW_GESTURES=Object.fromEntries(Object.entries(avatar.gestures||{}).map(([key,action])=>[key,!!action]));}catch(_e){}
         root.position.copy(_legacy.root.position);root.rotation.copy(_legacy.root.rotation);scene.add(root);
         if(_legacy.root.parent)_legacy.root.parent.remove(_legacy.root);glbAvatars[_legacyIndex]=avatar;
         hero._glbDriven=true;hero.visible=true;hero._procHidden95=false;
@@ -12397,7 +12398,7 @@ function ThreeMatchView(props){
       try{window.__CPM_CGTRADER_LOD_RUNTIME={update:_updateCgtraderLod,activate:_activateCgtraderLod};}catch(_e){}
       const _replaceIntroLineupWithHyper=(pkg,selectPackage,lodPackages)=>{
         const _clip=(name)=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
-        const _tackleClip=_clip('slide-tackle')||_clip('tackle'),_catchClip=_clip('gk-high-catch')||_clip('gk-catch');
+        const _tackleClip=_clip('slide-tackle')||_clip('tackle'),_catchClip=_clip('gk-high-catch');
         if(!pkg||!pkg.scene||!_clip('idle')||!_clip('jog'))throw new Error('Hyper Casual lineup package is incomplete');
         const _legacy=glbAvatars&&glbAvatars.slice();
         if(!_legacy||_legacy.length<22)throw new Error('Legacy intro lineup is unavailable');
@@ -12420,7 +12421,7 @@ function ThreeMatchView(props){
             spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
           avatar._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:avatar._handL,hr:avatar._handR};
           avatar._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};
-          _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),dive:_clip('gk-dive'),catch:_catchClip,block:_clip('gk-block')});
+          _mkGestures(avatar,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),dive:null,catch:_catchClip,block:null});
           root.position.copy(old.root.position);root.rotation.copy(old.root.rotation);return avatar;
         });
         /* Prebuild the three compatible animated LOD visuals under the same
@@ -12438,7 +12439,7 @@ function ThreeMatchView(props){
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
             const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
             state._armB={la:findBone(/^(?:arm_stretch\.l_|upperarm_l$)/i),lf:findBone(/^(?:forearm_stretch\.l_|lowerarm_l$)/i),ra:findBone(/^(?:arm_stretch\.r_|upperarm_r$)/i),rf:findBone(/^(?:forearm_stretch\.r_|lowerarm_r$)/i),hl:state._handL,hr:state._handR};
-            state._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};_mkGestures(state,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),dive:_clip('gk-dive'),catch:_catchClip,block:_clip('gk-block')});
+            state._locoClips={back:_clip('jog-back'),strL:_clip('strafe-left'),strR:_clip('strafe-right')};_mkGestures(state,{kick:_clip('kick'),penalty:_clip('penalty'),header:_clip('header'),tackle:_tackleClip,volley:_clip('volley'),receive:_clip('receive'),dribble:_clip('dribble'),pass:_clip('pass'),cross:_clip('pass'),shortPass:_clip('pass'),longPass:_clip('pass'),heel:_clip('pass'),doubleStep:_clip('dribble'),feint:_clip('change-direction'),change:_clip('change-direction'),miss:_clip('missed-chance'),celebrate:_clip('celebrate'),lift:_clip('celebrate'),throwin:_clip('throwin'),dive:null,catch:_catchClip,block:null});
             visual.visible=false;return state;
           };
           _next.forEach((avatar,index)=>{const variants=avatar._cgLodVariants={};variants[avatar._cgLod]=_stateOf(avatar);lodPackages.forEach(candidate=>{const key=candidate&&candidate._cgLod;if(key&&!variants[key])variants[key]=_makeVariant(avatar,candidate,index);});});
@@ -12520,7 +12521,7 @@ function ThreeMatchView(props){
         try{window.__CPM_HYPER_ASSISTANTS={avatars:made.length,legacyVisible:0};}catch(_e){}
         return made;
       };      if(_hyperHero){
-        const _hyperAssetUrls=_cgtraderMixedLodBenchmark?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb'])));
+        const _hyperAssetUrls=_cgtraderMixedLodBenchmark?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
         Promise.allSettled(_hyperAssetUrls.map(url=>loadGLB(url))).then(results=>{
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
           if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');if(_cgtraderMixedLodBenchmark&&packages.length!==3)throw new Error('CGTrader mixed LOD packages are incomplete');if(_cgtraderMixedLodBenchmark)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
@@ -14596,6 +14597,10 @@ function ThreeMatchView(props){
            cambiano di un millimetro — cambia solo il viaggio. Rosso __CPM_NO547 (via gestoDi → prof base). */
         const _belly547=ballArcProf==='tesa'?Math.pow(Math.sin(u*Math.PI),0.7):ballArcProf==='campana'?Math.sin(Math.pow(u,0.72)*Math.PI):Math.sin(u*Math.PI);
         ball.position.y=0.22+_belly547*ballArcH+(ballArcY0-0.22)*(1-u)+(ballArcTgtY-0.22)*u;/* [7.215.0] la corda va dalla quota di CONTATTO a quella d'ARRIVO; il profilo e' il rigonfiamento sopra la corda */
+        /* Presa del portiere: nell'ultimo tratto il pallone converge verso il punto medio delle DUE mani
+           del rig CGTrader. Nessun braccio procedurale finto: le mani appartengono allo stesso scheletro
+           che sta eseguendo la clip gk-high-catch. Fallback solo se le ossa non sono disponibili. */
+        if(isResult&&P.hlDef&&P.hlDefTraj&&P.hlDefTraj.gkClaim&&u>=0.72){try{const _gka=(glbAvatars||[]).find(a=>a&&a.proc===sr.current._gkClaimMesh);let _hx=null,_hy=null,_hz=null;if(_gka&&_gka._handL&&_gka._handR){const _lh=sr.current._gkHandL||(sr.current._gkHandL=new THREE.Vector3()),_rh=sr.current._gkHandR||(sr.current._gkHandR=new THREE.Vector3());_gka._handL.getWorldPosition(_lh);_gka._handR.getWorldPosition(_rh);_hx=(_lh.x+_rh.x)*0.5;_hy=(_lh.y+_rh.y)*0.5;_hz=(_lh.z+_rh.z)*0.5;}else if(sr.current._gkClaimMesh){const _gm=sr.current._gkClaimMesh;_hx=_gm.position.x;_hy=_gm.position.y+1.42;_hz=_gm.position.z;}if(_hx!=null){const _gr=(u-0.72)/0.28;const _ge=_gr*_gr*(3-2*_gr);ball.position.lerp(new THREE.Vector3(_hx,_hy,_hz),_ge);}}catch(_e){}}
         // [6.74.0 3D-5] il compagno designato ATTACCA il cross correndo sul punto di caduta (prima restava fermo)
         if(isResult&&!P.hlDef&&P.hlType==="cross"&&crossRcvMesh){crossRcvMesh.position.x+=((ballArcTgtX-1.8)-crossRcvMesh.position.x)*Math.min(aDt*3.4,1);crossRcvMesh.position.z+=(ballArcTgtZ-crossRcvMesh.position.z)*Math.min(aDt*3.4,1);
           if(!(typeof window!=='undefined'&&window.__CPM_NO531)){const _tyc531=Math.atan2(48-crossRcvMesh.position.x,0-crossRcvMesh.position.z);let _dyc531=_tyc531-crossRcvMesh.rotation.y;while(_dyc531>Math.PI)_dyc531-=2*Math.PI;while(_dyc531<-Math.PI)_dyc531+=2*Math.PI;crossRcvMesh.rotation.y+=_dyc531*Math.min(1,aDt*9);}/* [7.527.0] anche chi attacca il cross incorna GUARDANDO la porta, non la propria corsa */}
@@ -15888,6 +15893,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 di casa, che esce in PRESA (stessa macchina-gesto di gk_catch usata sul cross parato) */
               let _hgk38=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&src.gk)_hgk38=pp.mesh;});
               if(_hgk38){_gx=clamp((_hgk38.position.x+50)+1.2,2,20);_gy=clamp(_hgk38.position.z/0.68+50,20,80);
+                /* La presa alta ha una quota e un tempo propri: senza questi due vincoli la palla
+                   finiva a terra mentre la clip mostrava il portiere con le mani alzate. */
+                ballArcTgtY=1.42;ballArcH=Math.max(ballArcH,1.20);ballArcDur=Math.max(ballArcDur,0.86);sr.current._gkClaimMesh=_hgk38;
                 if(!oppActType){oppActType="gk_catch";oppActT=0;oppMesh=_hgk38;_hgk38._divePz=_hgk38.position.z;_hgk38._diveYaw=_hgk38.rotation.y;_hgk38._diveToZ=clamp(G2Z(_gy),_hgk38.position.z-4,_hgk38.position.z+4);}}
               else {_gx=8;_gy=50;}
             }
@@ -24384,7 +24392,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   });
   // Sprint 159: include opponent+context in seed so consecutive national matches never share situations
   // [7.117.0] qui (dopo weather/oppRedRef) → il set iniziale gata su meteo (is_wet) e uomo in più (is_opp_red, false al fischio d'inizio)
-  const [situations,setSituations]=useState(()=>selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13+hashStr((opponent?.n||opponent?.id||context||"")),{opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current}));
+  const _forceQ=typeof window!=='undefined'?new URLSearchParams(window.location.search||''):null;
+  const _approvedForce=_forceQ&&_forceQ.get('cpmtest')==='1'&&['dribble','shot','keeper'].includes(_forceQ.get('cpmForce'))?_forceQ.get('cpmForce'):null;
+  const _forceSituations=_approvedForce?SITUATIONS.filter(s=>s&&s.actions&&s.actions.length&&(_approvedForce==='keeper'?(s.type==='def'&&s.actions.some(a=>a&&a.gkCall)):deriveIntent(s)===_approvedForce)):null;
+  const [situations,setSituations]=useState(()=>((_forceSituations&&_forceSituations.length)?[_forceSituations[0]]:selectContextualSituations([...SITUATIONS],numHLRef.current,player,(player.season||1)*1000+(player.week||1)*13+hashStr((opponent?.n||opponent?.id||context||"")),{opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current})));
   const situationsRef=useRef(situations);
   useEffect(()=>{situationsRef.current=situations;},[situations]);
   // Sprint 16 — crowd chant overlay state
@@ -27190,7 +27201,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             //   incatenate (_chainDepth) si giocano come sono. Il vecchio skip su ctx-mismatch sparisce:
             //   il filtro a monte rende il mismatch impossibile → nessun highlight più bruciato (SIT-5).
             const _cur79=situationsRef.current[hlIdx];
-            if(!(_cur79&&_cur79._chainDepth)){
+            /* La fixture di prova è fissata nel momento in cui l'highlight si apre: il calendario
+               può aver spostato l'indice o inserito una scena dopo l'inizializzazione del match. */
+            if(_approvedForce&&_forceSituations&&_forceSituations.length){setSituations(prev=>{const c=[...prev];c[hlIdx]=_forceSituations[0];return c;});}
+            if(!(_cur79&&_cur79._chainDepth)&&!_approvedForce){
               const _lzSeed=(((bgSimSeedRef.current^(hlIdx*2654435761))>>>0)+nx*97)>>>0;
               const _used79=situationsRef.current.slice(0,hlIdx).map(s2=>s2&&s2.text).filter(Boolean);
               const _fresh79=selectContextualSituations([...SITUATIONS],((typeof window!=='undefined'&&window.__CPM_NO880)||!occEroe879Ref.current)?1:16,player,_lzSeed,{scoreCtx:_realCtx,clock:nx,momentum:momentumRef.current,possession:possessionRef.current,opponentId:opponent?.id||opponent?.n||null,weatherFx:(weather&&weather.pitchFx)||null,oppRed:oppRedRef.current,ballX:((ballTargetRef.current||ballPosRef.current||{}).x),/* [7.204.0] continuità territoriale: la prossima azione nasce vicino a dove il gioco si è fermato */exclude:_used79});
@@ -31106,6 +31120,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   rng seedato con la ricetta del Decision Engine (sit+azione+indice+punteggio+minuto).
     const _okR78=seededRng((Math.abs(hashStr(((situationsRef.current[hlIdxRef.current]||{}).text||"")+"|"+(action.label||"")+"|"+hlIdxRef.current+"|"+score.home+"-"+score.away+"|"+clockRef.current))>>>0)||1);
     let ok=_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76);/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */
+    try{const _qKeeper=new URLSearchParams(window.location.search||'');if(_qKeeper.get('cpmtest')==='1'&&_qKeeper.get('cpmForce')==='keeper'&&action&&action.gkCall)ok=true;}catch(_e){}
     if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'){ if(window.__CPM_FORCE_OUTCOME){/* [7.211.0] esito forzato anche in revisione · [7.229.0 #47] +cpmtest: il CRITICO automatico gira sotto ?cpmtest=1 e credeva di forzare successo/fallimento — il flag NON veniva mai consumato (solo ?sit=N e revisione lo leggevano) → ogni coppia RIUSCITO/FALLITO del critico misurava DUE VOLTE lo stesso roll naturale seedato, e i falsi «gol senza rete» erano fallimenti naturali etichettati successo. Il GATE resta intatto per costruzione: non setta mai questo flag */ok=(window.__CPM_FORCE_OUTCOME==='success');window.__CPM_FORCE_OUTCOME=null;} try{window.__CPM_LAST_K=(situationsRef.current[hlIdxRef.current].actions||[]).indexOf(action);}catch(e){} }// 5.43.8: Situation Test Mode — Ripeti SUCCESS/FAIL forza l'esito; memorizza l'ultima azione scelta
     let key=ok?action.rew:action.fail;
     // M1 · UNIFIED OUTCOME MODEL: su un'azione FALLITA il TIPO di esito (palo/parata/murato/fuori) lo decide
@@ -31885,6 +31900,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const sit=situations[hlIdx];
     if(!sit)return;
     if(sit.lockMovement)return; // no auto-tackle for set pieces (penalty/free kick)
+    try{const _qKeeper=new URLSearchParams(window.location.search||'');if(_qKeeper.get('cpmtest')==='1'&&_qKeeper.get('cpmForce')==='keeper')return;}catch(_e){}
     // Delay scales with defDist: far defender = more time (6-10s), close = less (3-5s)
     /* [7.916.0 — collaudo PO: «allungherei il tempo di timeout di scelta dell'azione / movimento (mette fretta
        e ansia)»] I tempi erano 9/6/4 secondi secondo quanto e' lontano il difensore. Su un telefono, con tre

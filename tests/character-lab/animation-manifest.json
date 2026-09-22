@@ -1,33 +1,202 @@
 {
   "schemaVersion": 1,
   "purpose": "Baseline audit manifest. A null contactAt means the clip must not be certified for ball contact yet.",
-  "rig": { "expectedJointCount": 65 },
-  "clips": {
-    "idle": { "file": "regular-anim-idle.glb", "role": "idle", "contactAt": null },
-    "walk": { "file": "regular-anim-walk.glb", "role": "locomotion", "contactAt": null },
-    "jog": { "file": "regular-anim-jog.glb", "role": "locomotion", "contactAt": null },
-    "jogging": { "file": "regular-anim-jogging.glb", "role": "locomotion", "contactAt": null },
-    "running": { "file": "regular-anim-running.glb", "role": "locomotion", "contactAt": null },
-    "running-to-turn": { "file": "regular-anim-running-to-turn.glb", "role": "locomotion", "contactAt": null },
-    "change-direction": { "file": "regular-anim-change-direction.glb", "role": "locomotion", "contactAt": null },
-    "jog-back": { "file": "regular-anim-jog-back.glb", "role": "locomotion", "contactAt": null },
-    "strafe-left": { "file": "regular-anim-strafe-left.glb", "role": "locomotion", "contactAt": null },
-    "strafe-right": { "file": "regular-anim-strafe-right.glb", "role": "locomotion", "contactAt": null },
-    "receive": { "file": "regular-anim-receive.glb", "role": "ball-control", "contactAt": null },
-    "pass": { "file": "regular-anim-pass.glb", "role": "ball-contact", "contactAt": null },
-    "kick": { "file": "regular-anim-kick.glb", "role": "ball-contact", "contactAt": null },
-    "penalty": { "file": "regular-anim-penalty.glb", "role": "ball-contact", "contactAt": null },
-    "header": { "file": "regular-anim-header.glb", "role": "ball-contact", "contactAt": null },
-    "volley": { "file": "regular-anim-volley.glb", "role": "ball-contact", "contactAt": null },
-    "dribble": { "file": "regular-anim-dribble.glb", "role": "ball-contact", "contactAt": null },
-    "tackle": { "file": "regular-anim-tackle.glb", "role": "defence", "contactAt": null },
-    "slide-tackle": { "file": "regular-anim-slide-tackle.glb", "role": "defence", "contactAt": null },
-    "throwin": { "file": "regular-anim-throwin.glb", "role": "set-piece", "contactAt": null },
-    "gk-dive": { "file": "regular-anim-gk-dive.glb", "role": "goalkeeper", "contactAt": null },
-    "gk-catch": { "file": "regular-anim-gk-catch.glb", "role": "goalkeeper", "contactAt": null },
-    "gk-block": { "file": "regular-anim-gk-block.glb", "role": "goalkeeper", "contactAt": null }
+  "rig": {
+    "expectedJointCount": 65
   },
-  "requiredDedicatedGestures": ["cross", "heel", "double-step", "step-over", "body-feint", "long-pass", "short-pass", "first-touch", "shot-placed", "shot-power", "heading-defensive", "standing-tackle", "fall", "get-up"],
+  "clips": {
+    "idle": {
+      "file": "regular-anim-idle.glb",
+      "role": "idle",
+      "contactAt": null
+    },
+    "walk": {
+      "file": "regular-anim-walk.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "jog": {
+      "file": "regular-anim-jog.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "jogging": {
+      "file": "regular-anim-jogging.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "running": {
+      "file": "regular-anim-running.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "running-to-turn": {
+      "file": "regular-anim-running-to-turn.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "change-direction": {
+      "file": "regular-anim-change-direction.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "jog-back": {
+      "file": "regular-anim-jog-back.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "strafe-left": {
+      "file": "regular-anim-strafe-left.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "strafe-right": {
+      "file": "regular-anim-strafe-right.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "receive": {
+      "file": "regular-anim-receive.glb",
+      "role": "ball-control",
+      "contactAt": null
+    },
+    "pass": {
+      "file": "regular-anim-pass.glb",
+      "role": "ball-contact",
+      "contactAt": null
+    },
+    "kick": {
+      "file": "regular-anim-kick.glb",
+      "role": "ball-contact",
+      "contactAt": null
+    },
+    "penalty": {
+      "file": "regular-anim-penalty.glb",
+      "role": "ball-contact",
+      "contactAt": null
+    },
+    "header": {
+      "file": "regular-anim-header.glb",
+      "role": "ball-contact",
+      "contactAt": null
+    },
+    "volley": {
+      "file": "regular-anim-volley.glb",
+      "role": "ball-contact",
+      "contactAt": null
+    },
+    "dribble": {
+      "file": "regular-anim-dribble.glb",
+      "role": "ball-contact",
+      "contactAt": null
+    },
+    "tackle": {
+      "file": "regular-anim-tackle.glb",
+      "role": "defence",
+      "contactAt": null
+    },
+    "slide-tackle": {
+      "file": "regular-anim-slide-tackle.glb",
+      "role": "defence",
+      "contactAt": null
+    },
+    "throwin": {
+      "file": "regular-anim-throwin.glb",
+      "role": "set-piece",
+      "contactAt": null
+    },
+    "gk-dive": {
+      "file": "regular-anim-gk-dive.glb",
+      "role": "goalkeeper",
+      "contactAt": null
+    },
+    "gk-catch": {
+      "file": "regular-anim-gk-catch.glb",
+      "role": "goalkeeper",
+      "contactAt": null
+    },
+    "gk-block": {
+      "file": "regular-anim-gk-block.glb",
+      "role": "goalkeeper",
+      "contactAt": null
+    },
+    "gk-goal-kick": {
+      "file": "regular-anim-gk-goal-kick.glb",
+      "role": "goalkeeper",
+      "contactAt": null
+    },
+    "gk-high-catch": {
+      "file": "regular-anim-gk-high-catch.glb",
+      "role": "goalkeeper",
+      "contactAt": null
+    },
+    "gk-idle": {
+      "file": "regular-anim-gk-idle.glb",
+      "role": "goalkeeper",
+      "contactAt": null
+    },
+    "gk-ready": {
+      "file": "regular-anim-gk-ready.glb",
+      "role": "goalkeeper",
+      "contactAt": null
+    },
+    "gk-throw": {
+      "file": "regular-anim-gk-throw.glb",
+      "role": "goalkeeper",
+      "contactAt": null
+    },
+    "look-over-shoulder": {
+      "file": "regular-anim-look-over-shoulder.glb",
+      "role": "reaction",
+      "contactAt": null
+    },
+    "missed-chance": {
+      "file": "regular-anim-missed-chance.glb",
+      "role": "reaction",
+      "contactAt": null
+    },
+    "opening": {
+      "file": "regular-anim-opening.glb",
+      "role": "presentation",
+      "contactAt": null
+    },
+    "recovery-run": {
+      "file": "regular-anim-recovery-run.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "run-look-back": {
+      "file": "regular-anim-run-look-back.glb",
+      "role": "locomotion",
+      "contactAt": null
+    },
+    "sit-clap": {
+      "file": "regular-anim-sit-clap.glb",
+      "role": "bench",
+      "contactAt": null
+    },
+    "sit-to-stand": {
+      "file": "regular-anim-sit-to-stand.glb",
+      "role": "bench",
+      "contactAt": null
+    }
+  },
+  "requiredDedicatedGestures": [
+    "cross",
+    "heel",
+    "double-step",
+    "step-over",
+    "body-feint",
+    "long-pass",
+    "short-pass",
+    "first-touch",
+    "shot-placed",
+    "shot-power",
+    "heading-defensive",
+    "standing-tackle",
+    "fall",
+    "get-up"
+  ],
   "knownAliases": {
     "cross": "pass",
     "heel": "pass",

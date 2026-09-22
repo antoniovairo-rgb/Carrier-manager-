@@ -2,9 +2,30 @@
 
 **Ramo di lavoro corrente:** `poc/marioprada-character-system-local` — solo locale, non pubblicato.
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 22 settembre 2026, 00:35
-**Stato complessivo stimato:** 81% — stima, non quality gate finale.
-**Fase corrente:** 4/7 — selettore LOD locale, gesto reale e sincronismo palla sul roster CGTrader.
+**Ultimo aggiornamento:** 22 settembre 2026, 22:38 (Europe/Rome)
+**Stato complessivo stimato:** 65% — ridotto dopo la verifica di una regressione nella review ottimizzata; non è un quality gate finale.
+**Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
+
+## Avanzamento 22 settembre 2026, 20:48
+
+- **Verificato:** il sorgente principale è stato ripristinato dalla versione Git valida dopo una perdita di formattazione locale; gli asset CGTrader e le clip approvate sono ancora presenti. La build locale è stata rigenerata e il match si apre con il roster CGTrader a corpi interi.
+- **Verificato:** è stata ricostruita la selezione delle clip approvate e la modalità di anteprima `cgtrader-highlight-optimized`. Il test locale del portiere ha mostrato che una selezione successiva dell'highlight sostituiva la fixture iniziale; il percorso deterministico è stato corretto nel sorgente e la build è stata rigenerata.
+- **Modifica in attesa di verifica visiva:** la presa alta dirige la traiettoria verso la quota delle mani e, nell'ultimo tratto, verso le ossa delle due mani del portiere CGTrader. La connessione del browser di collaudo è scaduta prima di poter confermare visivamente il risultato finale.
+- **Aperto:** qualità del gesto completo (busto e braccia), sincronismo palla, transizioni e prestazioni mobile. Le precedenti misure su telefono di 11–16 FPS restano un FAIL; nessuna build validata è stata pubblicata sul link ufficiale.
+- **Prossimo criterio di chiusura:** ripetere il test deterministico del portiere, controllare fotogrammi di presa e recupero, poi dribbling/passaggio/tiro e infine misurare FPS e fluidità su telefono. `main` e la GitHub Pages ufficiale non sono stati modificati.
+
+## Avanzamento 22 settembre 2026, 21:08
+
+- **Verificato nel browser locale:** il match CGTrader si avvia e mostra il roster a corpi interi, senza errore JavaScript visibile. Durante l'highlight il contatore riportava 22 FPS; è una misura locale istantanea, non un benchmark mobile.
+- **FAIL del percorso di collaudo:** con `cpmForce=keeper`, il primo highlight giocabile era ancora «Tentativo di filtrante», quindi una scelta successiva prevale sulla fixture iniziale. La correzione precedente non è sufficiente. La presa alta resta modificata nel codice ma non è ancora verificata visivamente.
+- **Prossimo criterio di chiusura:** individuare il punto che sostituisce la fixture, far aprire davvero «Chiama il portiere», osservare presa e recupero della palla, poi riprendere i gate delle altre animazioni e della performance mobile. Nessuna pubblicazione sul link ufficiale.
+
+## Avanzamento 22 settembre 2026, 21:43
+
+- **Verificato:** la fixture `cpmForce=keeper` aveva sette situazioni candidate e la prima era «Muro in area». La situazione iniziale era corretta, ma veniva sostituita all'apertura dell'highlight. Ora la fixture è fissata in quel punto, solo con `cpmtest=1`; la sonda temporanea è stata rimossa.
+- **Verificato nel browser locale:** il primo highlight ha mostrato «Muro in area» con l'azione «Chiama il portiere» selezionabile; il click ha avviato il gesto senza errore visibile. La build `dist` è stata rigenerata con esito positivo.
+- **Non ancora verificato:** il fotogramma decisivo della presa e il possesso della palla dopo la presa. L'azione è passata rapidamente al flusso della partita, perciò la singola immagine catturata non dimostra il sincronismo completo né la coordinazione delle braccia.
+- **Prossimo criterio di chiusura:** catturare la sequenza della presa in più fotogrammi, verificare contatto mani-palla e recupero; poi testare dribbling, passaggi e tiri e infine le prestazioni su telefono. Nessuna build ufficiale pubblicata.
 
 ## Obiettivo vincolante
 
@@ -612,3 +633,182 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Nuovo Soccer Player Hisenberg, $14,27:** file GLB/FBX/BLEND, riggato e verificato dal marketplace, 17.891 poligoni. E' un potenziale NPC economico, ma non dichiara modularità capelli/barba/volto/LOD e userebbe un secondo rig dello stesso autore; non risolve il problema della varietà. **Non acquistare prima di un file-sample o di dettagli tecnici dal venditore.**
 - **Fab Football Player:** nonostante il titolo, la scheda dichiara esplicitamente assenza di rig, kit brandizzato e asset generato con AI. **Escluso.**
 - **Decisione:** la ricerca prosegue soltanto su candidati gratuiti o a basso costo che rendano verificabili prima dell'acquisto rig, peso, capelli mesh e licenza. CGTrader acquistato resta la base runtime finché nessun candidato supera questi fatti misurati.
+
+
+## Aggiornamento 22 settembre 2026 — ritratti 2D come corredo leggero degli highlight
+
+- **Decisione di prodotto:** il bersaglio non e' l'estetica da simulatore PES/FIFA. I volti servono soltanto a rendere riconoscibili profilo e momenti di racconto; la credibilita' della POC dipende da gesto completo, palla, camera, transizioni e fps mobile.
+- **Implementato sul ramo POC:** primo ritratto editoriale 2D ottimizzato in WebP (`28.660` byte) e componente `HeroHighlightPortrait`. E' usato solo nella scelta dell'eroe e nel festeggiamento post-partita; non introduce canvas, renderer o carico nel live match.
+- **Coerenza identita':** il pilota e' associato esclusivamente alla variante avatar `0`; tutte le altre varianti mantengono il loro ritratto locale finche' non avranno un equivalente, evitando di mostrare a un giocatore selezionato un volto diverso.
+- **Verifica eseguita:** `npm run build:web` passa; l inventario animazioni resta a `23/35` clip manifest e rig da `65` joint, con le calibrazioni contatto ancora aperte. `validate:web` non parte perche Playwright non trova Chromium e il download va in timeout di rete. Questa modifica non promuove alcun gate di animazione, palla, transizioni o performance: restano aperti.
+
+## Aggiornamento 22 settembre 2026 — registro ritratti Korward, pronto per i dati del gioco
+
+- **Fatti verificati:** sono stati creati e ottimizzati `40` ritratti 2D reali (`10` fogli 2×2), tutti con fondale bianco neutro. Il set attuale comprende `28` calciatori (eroi, compagni e avversari) e `12` figure di contorno (mister, assistenti, agenti, giornalisti e commentatori). Il peso complessivo viene caricato come immagini statiche e non crea contesti WebGL nel live match.
+- **Integrazione verificata:** ogni identità testuale risolve in modo deterministico lo stesso ritratto; la UI riceve nome, cognome e ruolo dal gioco. Il catalogo non li inventa né li memorizza. Per le nuove quattro scelte eroe, carnagione, colore/taglio capelli, statura e corporatura passano anche al renderer CGTrader nei contesti che usano `appearanceForAvatar`.
+- **Figurina:** il formato editoriale Korward contiene ritratto, nome e ruolo; non mostra carnagione o altri tratti. Lo sfondo del volto resta bianco neutro. La cornice è predisposta per ereditare i colori del club; per ruoli non di squadra usa la palette Korward.
+- **Verifica eseguita:** `npm run build:web` passa dopo il ripristino di una precedente corruzione locale nella scena di intervista; `git diff --check` non riporta spaziature errate. Nessuna modifica è stata inviata a `main`, a GitHub Pages o al ramo di produzione.
+- **Limite esplicito:** `40` è il catalogo visivo effettivo di questa iterazione, non mille volti unici. L'obiettivo di mille identità va costruito per pacchetti di ritratti originali, evitando duplicati mascherati; nel frattempo il set è già sufficiente a non ripetere volti in una rosa, una partita e la relativa scena narrativa.
+- **Prossimo lavoro:** riprendere i quality gate CGTrader: fps mobile, scala/proporzioni, dribbling con palla e braccia coordinate, transizioni e camera highlight.
+
+## Aggiornamento 22 settembre 2026 — highlight CGTrader: roster cinematografico mobile
+
+- **Problema verificato:** la revisione dal percorso `cgtrader-squad-review` non attivava il benchmark CGTrader e mostrava ancora corpi pieni; nell'anteprima sono stati letti `10 fps`. Il benchmark di squadra con LOD misti è stato inoltre provato nella stessa anteprima: la scena completa è rimasta a `4 fps`. Questi valori confermano che il collo di bottiglia non si risolve sostituendo tutti i 22 corpi con il solo LOD.
+- **Implementato sul ramo POC:** il vecchio alias `cgtrader-squad-review` ora porta alla nuova review `cgtrader-highlight-optimized`. In questa review l'eroe usa il GLB CGTrader LOD0; per ogni highlight vengono renderizzati e aggiornati soltanto l'eroe, il portiere più vicino e i tre giocatori di movimento più vicini al pallone. Gli altri mantengono posizione e logica partita, ma non eseguono rendering né skinning dell'highlight. Il contatore mostra `corpi cinema 5`.
+- **Coerenza del gesto:** non sono state modificate le clip, le finestre di contatto del pallone o il motore della partita. Il dribbling resta ancorato alle ossa piede del rig CGTrader; il portiere utile resta nel roster e conserva la sua clip di intervento.
+- **Verifica eseguita:** `npm run build:web` e `npm run audit:animation` passano; l'inventario riporta `23/35` clip del manifest e rig da `65` joint. Anche `npm run audit:animation-performance` termina senza errori. Nessuna modifica è stata inviata a `main`, GitHub Pages o produzione.
+- **Gate ancora aperto:** il guadagno fps del roster da cinque corpi non è ancora misurato su telefono: il prossimo test deve rilevare fps, assenza di T-pose, scala in campo, palla-piede e transizione in almeno tiro, dribbling, passaggio e parata. La soglia di chiusura mobile rimane da definire dopo la prima misura reale.
+
+## Aggiornamento 22 settembre 2026 — secondo passaggio performance highlight CGTrader
+
+- **Intervento POC:** oltre al roster cinematografico, la review `cgtrader-highlight-optimized` usa su mobile pixel ratio massimo `1,0` invece di `1,5` e disattiva le ombre WebGL. Le ombre di contatto sotto i calciatori restano quelle leggere già costruite come blob shadow; kit, illuminazione e animazioni non cambiano.
+- **Misura predisposta:** `window.__CPM_CGTRADER_RENDER_BUDGET()` espone esclusivamente nella scena i tre dati da verificare sul dispositivo: modalità cinema attiva, pixel ratio effettivo e stato delle ombre. Il roster espone inoltre `window.__CPM_CGTRADER_CINEMA_ROSTER` con il numero di corpi realmente visibili.
+- **Verifica statica:** la build completa passa (`6.156 KB` JSX estratti, `4.161 KB` transpilati); `git diff --check`, inventario animazioni e baseline performance terminano senza errori. L'inventario resta `23/35` clip e rig `65` joint; i contatti da calibrare non vengono falsamente promossi.
+- **Limite invariato:** nessun valore fps nuovo è stato dichiarato. Il test locale è servito a verificare che la build si carichi, ma il browser integrato non è un equivalente del telefono; il quality gate mobile richiede ancora una misura reale sul dispositivo.
+
+## Aggiornamento 22 settembre 2026 — controllo roster e dribbling CGTrader
+
+- **Correzione POC verificata:** il percorso storico `?hyperCharacter=cgtrader-squad-review` e il percorso esplicito `?hyperCharacter=cgtrader-highlight-optimized` mostrano entrambi `corpi cinema 5` nel contatore. I due percorsi attivano lo stesso roster cinematografico e lo stesso asset CGTrader LOD0; non esiste più un alias che mostri la modalità piena per errore.
+- **Dribbling, evidenza ripetibile già raccolta:** il close-up del renderer ha fermato i tre tocchi della clip reale a `u=0,256` sinistra, `u=0,357` destra e `u=0,721` sinistra. In tutti e tre la palla è ancorata all’osso del piede (`foot-bone`), con distanza orizzontale misurata rispettivamente `0`, `0` e `0,001 m`. Le mani percorrono `0,248 m` e `0,111 m`; la massima apertura dal busto è `0,487 m`, sotto il limite anti T-pose di `0,65 m`. L’evidenza è in `tests/character-lab/evidence/cgtrader-dribble-closeup-review/report.json`.
+- **Promozione limitata:** dribbling CGTrader passa **condizionatamente** il controllo tecnico palla-piede e corpo coordinato nella scena locale LOD0. Non promuove il gate complessivo: la misura non è telefono reale e non certifica ancora camera, transizione di entrata/uscita o performance.
+- **Verifica eseguita ora:** `npm run build:web` passa (`6.156 KB` JSX estratti, `4.161 KB` transpilati); `npm run audit:animation` passa. L’audit continua correttamente a segnalare da calibrare `pass`, `kick`, `penalty`, `header`, `volley`, `dribble`, `tackle` e `slide-tackle` perché il suo manifest copre il rig sorgente a 65 joint e non deve fingere certificazioni del rig CGTrader a 76 ossa.
+- **Prossimo criterio di chiusura:** misurare sulla nuova review lo stesso dribbling più una sequenza tiro/parata e una transizione di camera, con FPS reali su telefono e senza comparsa di corpi, T-pose, giocatori sovradimensionati o sganciamento della palla.
+
+## Aggiornamento 22 settembre 2026 — correzione dribbling nella review cinematica
+
+- **Difetto trovato e corretto:** la sincronizzazione palla-piede era già verificata nella review CGTrader LOD mista, ma la whitelist della routine non includeva ancora lo stato `ready-cgtrader-highlight-optimized`. Di conseguenza il dribbling della nuova review cinematica avrebbe usato il gesto senza il suo aggancio osseo. La whitelist ora include anche questa review.
+- **Comportamento ottenuto:** nelle finestre autorevoli della clip (`sinistra 0,22–0,32`, `destra 0,32–0,44`, `sinistra 0,72–0,88`) la palla di scena segue il punto reale dell’osso piede; fuori dai tocchi resta nella posizione di conduzione. Il motore di gara, l’esito e la traiettoria non vengono alterati. La sonda di distanza piede-palla e il controllo pausa/ripresa sono ora disponibili anche sulla review cinematica per il collaudo mirato.
+- **Verifica eseguita:** il JSX viene transpilato senza errori a `4.161 KB`; l’output `dist/index.html` è stato rigenerato e l’inventario della cartella asset completa `2,92 GB` (`967` file sorgente, `996` file nella dist inclusi i file di packaging). `npm run audit:animation` passa con `23/35` clip sorgente e `65` joint. `git diff --check` non segnala errori.
+- **Gate:** il dribbling nel percorso cinematografico è ora pronto per una misura runtime, ma non è ancora certificato su telefono. Restano aperti: tiro/parata, transizione camera, scala, niente T-pose o pop-in, FPS reale.
+
+## Aggiornamento 22 settembre 2026 — posizionamento del corpo nei gesti CGTrader
+
+- **Diagnosi verificata:** il modello CGTrader fornisce rig e posa locale (gambe, braccia, busto). Posizione sul campo, angolo verso porta/palla, distanza dal marcatore e momento in cui parte la traiettoria del pallone dipendono dal direttore degli highlight. Il difetto osservato è quindi principalmente di regia/renderer, non una prova che il modello sia inadatto.
+- **Misura sul GLB attivo:** la clip `kick` dell’asset LOD0 della review dura `0,4167 s`. Nel render di controllo del medesimo asset, con bersaglio palla di raggio `0,11 m`, il piede sinistro è a `0,090687 m` dal centro al frame `9`; ai frame `8` e `10` le distanze sono rispettivamente `0,226379 m` e `0,381074 m`. Il fotogramma 9 è quindi il solo contatto geometrico utile; è un dato di authoring, non ancora una misura del pallone runtime.
+- **Intervento POC:** nella sola `cgtrader-highlight-optimized` il caricamento del tiro tiene la palla per `0,375 s`, in corrispondenza del frame 9 misurato; nell’ultimo tratto la palla di scena si aggancia al punto dell’osso piede sinistro e poi lascia al normale arco traiettoria/esito. Il root del giocatore, per `kick`, `pass`, `header` e `volley`, converge verso il bersaglio con una correzione raddoppiata ma continua: non viene teletrasportato né ruotato a scatto.
+- **Osservabilità:** `window.__CPM_CGTRADER_KICK_TOUCH` espone fase della clip, tipo di aggancio e punto bersaglio durante il collaudo della review. Motore di partita, punteggio e logica dei risultati non sono stati modificati.
+- **Verifica eseguita:** JSX transpilato a `4.163 KB`; `dist/index.html` rigenerato con inventario asset completo (`967` file sorgente, `996` nella dist di packaging); audit animazioni passa con `23/35` clip sorgente e `65` joint; `git diff --check` senza errori.
+- **Gate ancora aperto:** la nuova sincronizzazione tiro richiede la ripresa runtime e il collaudo su telefono, insieme a portiere, camera e transizioni. Non e' una certificazione di qualità finale.
+
+### 2026-09-22 — Correzione bloccante del renderer della review cinematica
+- **Fatto verificato:** il collaudo locale della query `cgtrader-highlight-optimized` mostrava una canvas nera negli highlight. Il log ha individuato un `ReferenceError` del flag della review letto fuori dal suo ambito, dentro il ciclo di rendering. Non era un difetto del modello CGTrader.
+- **Correzione applicata localmente:** il flag della review è ora esposto dal bootstrap della scena e le tre letture nel ciclo degli avatar usano quel segnale sicuro. La calibrazione del tiro legge inoltre la query senza dipendere da una variabile locale di un’altra funzione.
+- **Verifiche eseguite:** JSX compilato; inventario animazioni passato (23 clip manifest, rig a 65 giunti); asset `cgtrader-review-lod0-kit-adapter.glb` presente nella build locale (16.97 MB); nuova sessione locale senza errori console legati a `localReview=directionFix2`; HUD osservato a 47 fps con `corpi cinema 5`.
+- **Ancora aperto:** la canvas nella sessione locale non ha ancora prodotto un’inquadratura utile del gesto. Perciò non è ancora superato il gate visivo: tiro, passaggio, dribbling e portiere devono essere verificati con corpo, palla e porta nella stessa inquadratura.
+
+### 2026-09-22 — Scala corretta e LOD graduato nella review highlight
+
+- **Scala, causa misurata e corretta:** nella review il bounding box delle mesh skinnate restituiva un'altezza utile di `0,1 m`; il renderer trasformava quindi il corpo CGTrader fino a circa `18×` la scala prevista. La nuova misura usa l'altezza effettiva dello scheletro (`1,5607558 m`, `75` ossa) quando il bounding box non è attendibile. Nel runtime il visual del protagonista è passato da circa `18×` a `1,156× / 1,192× / 1,156×`; l'inquadratura di campo locale lo mostra ora con altezza coerente.
+- **Overlay corretto:** nel solo percorso di review `cgtrader-highlight-optimized` il livello tattico 2D veniva disegnato sopra il canvas 3D e mascherava la scena. È ora nascosto solo in quel percorso locale, così la verifica vede effettivamente corpi, palla e porta. Il comportamento normale dell'app resta invariato.
+- **Scelta LOD verificata:** provare i 22 calciatori in LOD0 ha prodotto `24–29 fps` nel browser integrato; non è accettabile come base mobile. La review ora carica LOD0 per eroe, LOD1 per giocatori inizialmente vicini all'azione e LOD2 per gli altri. Il limite cinematografico di cinque corpi visibili rimane attivo, evitando aggiornamento e skinning di un'intera rosa fuori scena.
+- **Misura locale aggiornata:** nella scena ottimizzata il contatore ha riportato prima `30 fps`, poi `37 fps · corpi cinema 5`; il protagonista ha mantenuto scala root `1` e visual `1,156 / 1,192 / 1,156`. È una misura nel browser desktop integrato, non il gate mobile.
+- **Verifica eseguita:** build `dist` rigenerata; inventario animazioni passato (`23/35` clip manifest, rig sorgente `65` joint). Restano volutamente aperte le calibrazioni manifest di passaggio, tiro, rigore, testa, volée, dribbling e contrasti.
+- **Prossimo criterio di chiusura:** eseguire una scelta reale di dribbling e una di tiro/parata nella review, verificando in fotogramma corpo intero, orientamento verso palla/porta, contatto palla-piede, braccia non in T-pose e transizione camera; poi misurare gli stessi casi su telefono.
+
+### 2026-09-22 — benchmark isolato viewport mobile e budget di rendering
+
+- **Metodo corretto:** una misura iniziale a `9 fps` non era valida perché quattro schede di benchmark WebGL erano vive contemporaneamente e contendevano la GPU. Chiuse le sole schede locali di test, la misura è stata ripetuta con un'unica scena e viewport `393×852`.
+- **Intervento POC:** il protagonista resta LOD0; i ventidue altri calciatori della review usano LOD2. Durante l'highlight ne vengono resi cinque (eroe, portiere utile e tre partecipanti), mentre gli altri restano fuori rendering. L'audit runtime conferma `lod0: 1`, `lod1: 0`, `lod2: 22`, `visible: 5`, `total: 23`.
+- **Risultato isolato:** il contatore ha misurato `31 fps · corpi cinema 5` nella scena mobile-like isolata. Il renderer ha riportato `383` draw call e `476.736` triangoli; non sono emersi errori console. Una precedente conclusione reale è stata anche osservata a `32 fps`, con palla in volo verso la porta, portiere e calciatori proporzionati nella stessa inquadratura.
+- **Interpretazione corretta:** è un smoke test su viewport mobile del browser integrato, non una certificazione su telefono. Il valore consente di proseguire con il collaudo dei gesti; non chiude il quality gate mobile.
+- **Prossimo criterio di chiusura:** acquisire una sequenza runtime ravvicinata per tiro e dribbling (presa di contatto, braccia, busto, direzione porta) e ripetere il benchmark sul dispositivo reale senza T-pose, corpi sovradimensionati, pop-in o cadute sotto soglia.
+
+### 2026-09-22 — Review dribbling CGTrader: camera e soggetto in quadro
+
+- **Diagnosi verificata:** il primo provino locale deterministico `?hyperCharacter=cgtrader-highlight-optimized&cpmtest=1&cpmForce=dribble` arrivava effettivamente alla scelta `Dribbling netto`, ma il profilo generale manteneva l'eroe troppo piccolo. La causa non era la clip: dopo la regia per gesto un correttore comune manteneva il protagonista a un riferimento di circa `0,12` dello schermo e applicava anche un dolly-out agli highlight.
+- **Intervento POC, solo review:** per il dribbling nella sola route `cgtrader-highlight-optimized` la camera usa un campo visivo di `41°`, il profilo ravvicinato segue il corpo con asse piu' corto e il correttore finale porta il riferimento dell'eroe a `0,22`. Fuori da questa route, e per ogni altro gesto, restano la camera e la taratura storiche.
+- **Verifica runtime:** il caso deterministico ha mostrato nel medesimo quadro eroe con palla ai piedi, due difensori e porta/portiere; la console non ha riportato errori. La scena e' quindi utilizzabile per verificare l'orientamento e per avviare la clip corretta. I frame raccolti subito dopo reload hanno riportato `2–3 fps`: sono di warm-up e non sono una misura di performance da usare come benchmark.
+- **Esito onesto:** il corpo e' piu' leggibile, ma non ancora abbastanza grande da giudicare a vista il contatto piede-palla e il lavoro delle braccia in un singolo fermo immagine. Il gate visivo del dribbling resta aperto; non viene dichiarato promosso.
+- **Verifiche statiche:** build `dist` rigenerata; inventario passato (`23/35` clip del manifest, rig sorgente 65 joint); `git diff --check` senza errori bloccanti. Nessun file e' stato inviato a `main`, GitHub Pages o produzione.
+- **Prossimo criterio di chiusura:** acquisire la fase in movimento della clip, non solo la scelta iniziale, con palla agganciata al piede; poi collegare alle loro clip GLB dedicate le varianti che oggi sono alias (cross, corto/lungo, tacco, doppio passo, step-over, finta) e ripetere tiro/parata e mobile reale.
+
+
+### 2026-09-22 - Inventario completo delle clip e collegamento delle varianti CGTrader
+
+- **Correzione di tracciamento:** la cartella locale contiene gia 35 clip GLB, non 23. Il numero 23 indicava soltanto quelle allora registrate nel manifest; il manifest ora censisce tutte le 35.
+- **Fatto verificato sul package CGTrader:** i tre LOD della review incorporano 31 clip retargettate: locomozione, controllo palla, tiro, dribbling, difesa, reazioni e gli stati GK high-catch, ready, goal-kick e throw. Le quattro clip sorgente non ancora dentro quel package sono gk-idle, gk-dive, gk-catch e gk-block: non vengono dichiarate disponibili nella review finche non saranno retargettate e validate.
+- **Collegamento applicato, solo POC:** nel renderer CGTrader le varianti che gia condividono una clip ora risolvono davvero in una AnimationAction: cross/passaggio corto/lungo/tacco -> pass; doppio passo -> dribble; finta e cambio -> change-direction; esito negativo -> missed-chance. Prima alcune chiavi esistevano nel vocabolario logico ma non nel set di gesti CGTrader, quindi potevano degradare a locomozione.
+- **Limite esplicito:** non esistono file dedicati per cross, tacco, doppio passo, step-over o finta. Sono varianti di regia basate sulle clip gia disponibili, non nuovi gesti falsamente presentati come tali.
+- **Verifica svolta:** le 12 clip prima fuori manifest hanno canali di animazione reali; il package CGTrader LOD0 contiene 31 animazioni retargettate a 225 canali ciascuna. Resta da eseguire il provino in movimento per verificare che ogni alias produca corpo intero e braccia coerenti, palla e direzione porta.
+- **Prossimo criterio di chiusura:** provare runtime dribbling, cross/passaggio e tiro/parata nella review locale; poi preparare il retarget delle quattro clip GK mancanti e misurare il telefono reale. Nessuna modifica e stata inviata a main, GitHub Pages o produzione.
+
+
+### 2026-09-22 - Regola di approvazione delle clip CGTrader
+
+- **Vincolo confermato dal prodotto:** la review usa esclusivamente le 31 clip gia retargettate e verificate nel package CGTrader corrente.
+- Le quattro GLB sorgente GK (`gk-idle`, `gk-dive`, `gk-catch`, `gk-block`) restano fuori dalla pipeline e dal renderer finche un test dedicato non conferma retarget, corpo intero, palla, transizione e prestazioni.
+- Nessun asset precedente, non verificato o rifiutato viene usato come fallback per mascherare un gesto mancante.
+
+
+### 2026-09-22 - Review dribbling: pose degli attori secondari
+
+- **Difetto visivo osservato:** nel provino CGTrader del dribbling, pur con 32 fps e cinque corpi cinema, alcuni giocatori secondari potevano entrare nel quadro con un gesto tecnico assegnato a un compagno fuori contesto. Il risultato non e idoneo al gate di credibilita.
+- **Correzione POC:** durante un dribbling della review, l Hero e il portiere restano gli unici autorizzati a ricevere un gesto tecnico; i tre attori di contesto mantengono locomozione e orientamento verso l azione. Le loro eventuali azioni residue vengono rilasciate con il crossfade esistente.
+- **Esclusioni confermate:** nessuna clip non approvata viene reintrodotta; le quattro GK sorgente restano fuori dal renderer.
+- **Verifica:** build dist completata; inventario 35/35 passa; il nuovo fermo immagine dinamico deve ancora essere raccolto prima di promuovere il controllo visivo.
+
+### 2026-09-22 - Dribbling con soli asset approvati
+
+- Verifica locale con `cgtrader-highlight-optimized`: usa esclusivamente la clip CGTrader approvata per il dribbling; nessun asset precedente, non verificato o scartato è stato caricato come fallback.
+- Riscontro visivo: gli attori secondari non hanno più ricevuto pose tecniche fuori contesto; rimangono in locomozione mentre l'eroe esegue il gesto.
+- Campione prestazioni: 34–37 fps con cinque corpi cinema nel momento osservato.
+- Il gate non è chiuso: la successiva iterazione deve rendere più leggibili traiettoria, orientamento dei corpi e rapporto dell'azione con la porta, mantenendo questa esclusione rigorosa degli asset.
+
+### 2026-09-22 - Regia dribbling: direzione e scala dei corpi
+
+- Correzione POC locale: durante un dribbling CGTrader l'eroe ruota gradualmente verso la porta. Corpo, palla agganciata al piede e direzione dell'azione usano quindi lo stesso asse; nessun asset diverso viene introdotto.
+- Il primo riscontro fotografico ha trovato un difetto reale: un avversario troppo vicino alla camera appariva sproporzionato e copriva la scena. La regia della review ora arretra, si alza e allarga leggermente l'ottica solo per il dribbling in review.
+- Riscontro visivo successivo: il giocatore gigante non è più presente; campo e corpi restano leggibili. Prestazioni osservate: 31–33 fps con cinque corpi cinema.
+- Verifiche tecniche: build web completata; validazione offline superata con Chrome locale, senza CDN e senza errori console; inventario animazioni 35/35 superato.
+- Gate ancora aperto: il click del browser ha risolto la variante `Sterzata fulminea`, quindi non vale come prova finale del gesto `Dribbling netto`. Servono catture deterministiche in apertura, contatto piede-palla e uscita, con corpo, braccia, palla e porta coerenti.
+
+### 2026-09-22 — Dribbling netto: scelta deterministica e quadro corretto
+
+- **Verifica runtime deterministica:** nel provino locale `cgtrader-highlight-optimized` la scelta e' stata effettuata con il comando `1`, che la UI identifica come `Dribbling netto`; l'esito mostrato conferma esplicitamente `Dribbling netto`, non `Sterzata fulminea`.
+- **Riscontro visivo:** la ripresa dell'esito contiene porta, portiere, eroe e avversari nella stessa inquadratura. Non compare il giocatore gigante rilevato nel test precedente. L'eroe e la palla restano sullo stesso lato di avanzamento verso la porta.
+- **Prestazioni osservate:** `28–29 fps · corpi cinema 5` dopo il warm-up nel browser integrato. E' un dato di review desktop, non il quality gate mobile.
+- **Verifica tecnica:** `npm run validate:web` eseguito con Chrome locale: build offline funzionante, nessuna CDN tentata, nessun errore console.
+- **Gate ancora aperto:** questo fermo immagine non dimostra da solo il contatto piede-palla in tutti i frame ne' l'intera coordinazione delle braccia. Restano necessari la sequenza animata del dribbling, tiro/parata, transizioni e collaudo su telefono.
+
+### 2026-09-22 — Tiro CGTrader: scenario locale ripetibile
+
+- **Estensione POC locale:** la query di review `cpmForce` accetta ora solo `dribble` e `shot`; entrambe le opzioni selezionano una situazione reale del motore. Non abilita gesti diversi, non usa fallback e non modifica il gioco normale.
+- **Verifica runtime:** nella review `cpmForce=shot`, la UI ha proposto il tentativo di tiro; il comando `3` ha eseguito `Conclusione di prima` e l'esito ha confermato `Tiro di prima`, gol `1–0`.
+- **Prestazioni osservate:** `27 fps · corpi cinema 5` dopo il warm-up nel browser integrato. Il primo frame a 10 fps e' warm-up e non e' usato come misura.
+- **Verifica tecnica:** nuova build locale e validazione offline superate; nessuna CDN e nessun errore console.
+- **Esito onesto:** la camera dell'esito e' troppo larga per validare il singolo frame di calcio, il contatto palla-piede e la risposta del portiere. Il gate tiro/parata, transizioni e mobile resta aperto.
+
+### 2026-09-22 — Tiro: protezione delle pose degli attori di contesto
+
+- **Difetto osservato:** il primo frame del test tiro mostrava difensori a terra o con pose tecniche fuori dalla loro relazione con palla e conclusione. Era un problema di assegnazione della regia, non una ragione per usare asset diversi.
+- **Correzione POC:** nella sola review CGTrader, sia sul dribbling sia sul tiro, l'eroe e il portiere sono gli unici attori ammessi al gesto tecnico. I tre corpi di contesto ricevono locomozione e rilasciano eventuali residui con il crossfade esistente.
+- **Riscontro visivo dopo warm-up:** a `28 fps · corpi cinema 5` la scena mostra corpi in movimento, palla e porta senza il difensore disteso fuori contesto visto nel primo frame. Non e' comparsa una T-pose evidente nel fermo immagine successivo.
+- **Verifica tecnica:** build locale e validazione offline superate; nessun errore console, nessuna CDN.
+- **Limite esplicito:** la scelta si e' poi risolta automaticamente nella variante acrobatica `Rovesciata`; questo fotogramma non certifica ancora la sequenza completa di `Conclusione di prima`, il contatto, la parata o il timing del portiere.
+
+### 2026-09-22 — Portiere: whitelist esplicita delle clip CGTrader
+
+- **Fatto verificato sul package attivo:** tra le reazioni del portiere e' approvata e presente `gk-high-catch`. `gk-dive` e `gk-block` restano file sorgente non verificati e non fanno parte del package retargettato in uso.
+- **Rafforzamento applicato:** il renderer CGTrader ora dichiara esplicitamente `dive:null` e `block:null`; solo `catch` puo' risolvere nella presa alta approvata. Il movimento procedurale del portiere resta disponibile, ma nessuna clip non validata puo' essere selezionata per errore.
+- **Verifica tecnica:** build locale e validazione offline superate, senza CDN e senza errori console.
+- **Gate ancora aperto:** serve una sequenza runtime di presa alta con palla e portiere nello stesso quadro; tuffi e blocchi restano esclusi fino a retarget e test dedicati.
+
+### 2026-09-22 — Consegna figurine per preparazione merge
+
+- **Verifica stato corrente:** i 40 ritratti statici e il mock-up 5:7 sono presenti, ma `CastPortrait`, `resolveCastPersona`, `appearanceForAvatar` e `HeroHighlightPortrait` non sono piu' nel file di gioco attuale dopo il recupero della sorgente. Sono recuperabili solo dalla copia compattata in `tests/character-lab/recovery/2026-09-22-source-recovery/`; l'integrazione descritta sopra non va considerata attiva finche' non viene ripristinata e ritestata.
+- **Handoff:** `tests/character-lab/FIGURINE_MERGE_HANDOFF.md` distingue asset, dati forniti dal gioco, logica recuperabile, limiti e criteri di merge. Nessun push o merge eseguito; `main` e GitHub Pages restano intatti.
+
+### 2026-09-22, 22:12 — Avanzamento highlight CGTrader
+
+- **Fase corrente:** 4/7, animazioni e sincronismo della presa del portiere; completamento complessivo stimato 70%, invariato finche' un gate non supera la verifica.
+- **Attivita' dall'ultimo aggiornamento:** creato `tests/character-lab/keeper-catch-sequence-review.mjs` per catturare 12 fotogrammi consecutivi dell'azione approvata «Chiama il portiere», con telemetria della scena e della palla. Il primo avvio di Chrome headless e' stato impedito dal sandbox sui file temporanei; il test e' stato riavviato con permesso dedicato ed e' in esecuzione.
+- **Verifica ed esito:** non c'e' ancora un risultato della sequenza, quindi presa, contatto mani-palla e possesso successivo restano **non verificati**. L'ultimo risultato visivo valido e' l'apertura dell'azione senza errore; le precedenti misure utente 11–16 FPS mantengono il gate mobile in **FAIL**.
+- **Prossimo criterio di chiusura:** esaminare i 12 frame e i dati dell'arco della palla; correggere solo difetti riprodotti, poi ripetere dribbling, passaggio e tiro con transizioni e misurare sul telefono. Nessuna data finale affidabile prima di questi passaggi, nessuna build pubblicata sulla Pages ufficiale.
+
+### 2026-09-22, 22:38 — Regressione misurata e messa in sicurezza
+
+- **Fase corrente:** 4/7, 65% complessivo stimato. La precedente stima 70% non rifletteva una regressione del file di gioco dopo il recupero.
+- **Verificato:** il percorso `cgtrader-highlight-optimized` esiste nel file attuale ma non applica piu' il roster cinematografico a cinque corpi, il caricamento LOD misto, il budget renderer e la telemetria `__CPM_CGTRADER_CINEMA_ROSTER`. La copia `tests/character-lab/recovery/2026-09-22-source-recovery/CARRIER-MANAGER-AV.compacted-before-recovery.html` contiene quelle parti, ma non e' una sorgente da sostituire in blocco.
+- **Test locale:** `keeper-catch-sequence-review.mjs` apre deterministicamente la situation 33 «Muro in area», con «Chiama il portiere» disponibile. La review corrente mostra `corpi pieni` e 1–2 FPS nel browser headless: questo banco non puo' ancora validare la sequenza della presa. Non e' una misura sul telefono. I frame catturati sono in `tests/character-lab/keeper-catch-review/` e non provano contatto mani-palla.
+- **Lavoro successivo:** ripristinare nel solo ramo POC il roster ottimizzato e il caricamento LOD, ripetere la cattura di presa, poi dribbling/passaggio/tiro e infine benchmark mobile. Quality gate animazione, palla, transizioni e performance restano aperti.
+- **Sicurezza branch:** preparare commit e push soltanto verso `poc/marioprada-character-system`; `main` e Pages principale non vanno modificati. Consegna tecnica in `tests/character-lab/CLAUDE_CODE_CONTINUATION.md`.
