@@ -107,3 +107,9 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Fatto verificato:** il repository open-source Vitruvian distribuisce asset CC0 con volto FACS, corpo Mixamo da 52 joint e haircards riggate. E' una fonte legittima da studiare, senza dipendenza da licenze commerciali.
 - **Misura reale:** volto 36.696 triangoli, corpo 106.084, capelli 242.720; la composizione minima e' 385.500 triangoli. Sedici texture fino a 2K corrispondono a circa 193 MiB RGBA decodificati.
 - **Decisione:** rifiutato come modello Korward. Manca il kit da calcio, testa/capelli sono componenti separati e il budget e' incompatibile con Hero mobile e squadra. Il gate riproducibile e' `VITRUVIAN_CC0_GATE.md`.
+
+## 2026-09-22 — MHR / Character Factory: rig promettente, generazione non eseguibile
+
+- **Fatto verificato:** gli FBX Apache-2.0 MHR includono LOD da 147.274 a 1.186 triangoli. LOD3 ha 9.794 triangoli e 126 ossa; il provino dribbling trova 21/21 ossa e non produce coordinate non finite.
+- **Blocco tecnico verificato:** Character Factory richiede GPU NVIDIA con 12 GB VRAM raccomandati e 36,4 GB di pesi. Il PC espone Intel UHD 620 con 1 GB e nessuna GPU NVIDIA; non viene installato nulla.
+- **Decisione:** non e' una base pronta: manca un GLB generato con volto/kit/capelli, non include barba/baffi e non e' eseguibile qui. Resta possibile solo su un host GPU idoneo. Gate: `MHR_CHARACTER_FACTORY_GATE.md`.

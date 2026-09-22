@@ -519,3 +519,9 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Fatto verificato:** il candidato open-source Vitruvian ha volto FACS e rig Mixamo, ma la sua combinazione cruda supera 385.500 triangoli e circa 193 MiB di texture decodificate.
 - **Decisione:** non adottare: manca il kit da calcio, i componenti sono separati e il budget mobile fallisce prima del retarget. Resta soltanto una fonte di riferimento per un futuro sistema volti.
 - **Prossimo criterio:** un candidato potra' sostituire il CGTrader soltanto se porta un adulto credibile con kit neutro, capelli/barba modulari e costo misurato inferiore al budget Hero/LOD.
+
+## Aggiornamento 22 settembre 2026 — MHR / Character Factory chiuso sul PC locale
+
+- **Fatti verificati:** MHR LOD3 pesa 9.794 triangoli e passa il primo probe del rig sul dribbling (21/21 ossa, nessuna coordinata non finita). Il generatore completo richiede pero' GPU NVIDIA/12 GB consigliati e 36,4 GB di pesi.
+- **Preflight locale:** Intel UHD Graphics 620, 1 GB; requisito GPU non soddisfatto. Nessun download o installazione pesante viene effettuato.
+- **Decisione:** MHR non e' testabile come generatore completo qui e non sostituisce CGTrader. Potra' riaprirsi solo con un export reale prodotto su host NVIDIA; la ricerca continua su asset gia' esportabili.

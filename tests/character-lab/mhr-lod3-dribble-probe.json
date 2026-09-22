@@ -1,0 +1,37 @@
+{
+  "source_action": "dribble",
+  "target": "MHR lod3.fbx",
+  "mapping_count": 21,
+  "missing_source": [],
+  "missing_target": [],
+  "finite": {
+    "l_clavicle": true,
+    "r_clavicle": true,
+    "l_wrist": true,
+    "r_wrist": true,
+    "l_upleg": true,
+    "r_upleg": true,
+    "l_lowleg": true,
+    "r_lowleg": true,
+    "l_foot": true,
+    "r_foot": true,
+    "c_head": true
+  },
+  "height_m": 1.7367,
+  "motion_span_m": {
+    "l_wrist": 0.6601,
+    "r_wrist": 0.4047,
+    "l_foot": 0.4697,
+    "r_foot": 0.3207
+  },
+  "max_hand_shoulder_reach_m": {
+    "left": 0.6712,
+    "right": 0.6381
+  },
+  "limitations": [
+    "rotation-copy structural probe only",
+    "no root translation",
+    "no ball attachment",
+    "no texture, kit, facial-morph, visual or mobile proof"
+  ]
+}
