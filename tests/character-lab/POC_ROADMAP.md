@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 00:23 (Europe/Rome)
-**Stato complessivo stimato:** 60% — ultimo riesame dei quality gate; non e un quality gate finale.
+**Ultimo aggiornamento:** 23 settembre 2026, 00:25 (Europe/Rome, orologio del container)
+**Stato complessivo stimato:** 62% — presa alta: contatto e possesso misurati, inquadratura aperta; non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
 ## Avanzamento 22 settembre 2026, 20:48
@@ -417,6 +417,59 @@ ossa o tolto, perche' induce in errore: e' un intervento a parte, non fatto qui.
 - **Lavoro successivo e criterio di chiusura:** verificare in sequenza presa alta, contatto e possesso della palla; poi gesto di dribbling/tiro e transizioni. Il collaudo ufficiale resta subordinato alla pubblicazione della build validata sul link Pages indicato e alla misura su telefono.
 
 ---
+## Avanzamento 23 settembre 2026, 00:25 — PRESA ALTA DEL PORTIERE: IL GESTO ORA ESISTE, LA CAMERA NON LO MOSTRA
+
+**Fase:** 4/7 · **Stato stimato: 62%** · gate presa: **contatto e possesso superati in misura, inquadratura FAIL**.
+
+### Il difetto, misurato prima di toccare (sit. 33 «Muro in area» → «Chiama il portiere»)
+La sonda `keeper-catch-sequence-review.mjs` leggeva `__CPM_CGTRADER_CONTACT_AUDIT`, che esiste solo nel benchmark
+misto: nella review ottimizzata registrava `null`. Aggiunto il testimone di sola osservazione
+**`__CPM_CGTRADER_KEEPER_AUDIT`** (portiere di casa: mani, palla, distanza, gesto, tempo di clip, apertura braccia,
+slot di reazione). Prima misura: **clip `catch` mai montata (0 campioni)**, distanza palla-mani minima **0,72 m**,
+poi palla a terra a **0,22 m** con le mani a 1,2 m.
+**Causa:** all'armo dell'arco `gkClaim` lo slot unico `oppActType` e' gia' occupato da **`opp_stumble`**
+(l'attaccante che inciampa), quindi `if(!oppActType)` non arma mai la presa. Secondo difetto: finito l'arco un
+altro scrittore riporta la palla a terra.
+
+### Il gesto, misurato sull'asset
+Nuova sonda `presa-clip-profilo.mjs`: `gk-high-catch` dura **3,333 s**; mani unite sopra la testa a
+**t = 1,00-1,17 s**, picco **1,067 s**; poi il corpo scende e si rialza.
+
+### Rimedio (solo review ottimizzata, rosso appaiato `__CPM_NO_PRESA`)
+1. Canale dedicato `sr.current._presaRev`, armato insieme a `gkClaim`: il selettore dei gesti GLB monta `catch`
+   sul portiere della presa senza rubare lo slot all'attaccante.
+2. **Una sola esecuzione per scena**: la prima stesura ripartiva a ogni fine clip (campioni 15/23/31 — codice 000);
+   corretto e ri-misurato.
+3. Sincronia: la clip parte avanti di quanto manca all'arrivo; se manca piu' di 1,067 s rallenta (tetto 0,6x).
+   Misurato: all'armo mancano 1,21 s → scala 0,882.
+4. Possesso: dopo il contatto la palla segue il punto medio delle mani fino al cambio di scena.
+
+### Misure
+| misura | prima / rosso | **dopo** |
+| --- | ---: | ---: |
+| campioni con clip `gk-high-catch` | 0 | **15** (una esecuzione, poi rilascio a peso 0) |
+| tempo di clip al contatto | — | **1,079 s** (finestra di presa 1,00-1,17) |
+| distanza palla-mani minima | 0,694 m | **0** |
+| palla a fine scena | 0,22 m (a terra) | **1,16 m, in mano** |
+| apertura braccia max | 0,52 | **0,70** (atterraggio, t≈1,9 s; limite anti T-pose del dribbling 0,65 — vedi sotto) |
+| partita normale (`__CPM_TRI907`) | 1.103.244 | **1.103.244** |
+| review (`__CPM_TRI907`) | 61.351 | **61.351** |
+| errori di pagina | 0 | **0** |
+
+### Cosa NON e' superato (prova visiva: `keeper-catch-review/presa-*.png`)
+- ❌ **Al contatto il portiere e' FUORI INQUADRATURA**: la camera resta sull'eroe difensore (regola 7.482:
+  sugli highlight difensivi il soggetto e' chi interviene). Il portiere si vede solo nel recupero, palla al petto.
+  Serve una regola di regia per «Chiama il portiere»: prossimo lavoro.
+- ⚠️ Apertura braccia 0,70 m per un campione, durante la discesa: non e' una T-pose alla vista del recupero, ma
+  supera la soglia presa in prestito dal dribbling. Da giudicare sul fotogramma, non chiuso.
+- ⚠️ Il testo d'esito dice «Para in tuffo — miracoloso!» mentre il gesto e' una presa alta. Il testo viene dalla
+  simulazione (source of truth, non si tocca); `gk-dive` non e' approvata. Incoerenza dichiarata, decisione del PO.
+- ⚠️ L'HUD scrive «corpi pieni» anche nella review ottimizzata (le misure dicono 5 corpi): etichetta da verificare.
+- ⚠️ Il partita normale ha lo stesso difetto di slot (`opp_stumble` occupa `oppActType`)? **Non misurato**: il
+  rimedio e' limitato alla review.
+
+---
+
 ## Obiettivo vincolante
 
 Creare un solo sistema di personaggi adulti credibili, stilizzati oppure semi-realistici, per partita, intro, highlight e ritratti profilo. Il modello deve essere costruito e corretto nei sorgenti Blender/GLB, non tramite geometrie correttive a runtime.
