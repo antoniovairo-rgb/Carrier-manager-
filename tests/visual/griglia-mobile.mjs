@@ -190,6 +190,10 @@ const SCHERMATE = [
   { id: 'prepartita',           ctx: 'carriera', nome: 'Prepartita' },
   { id: 'partita-gioco',        ctx: 'partita',  nome: 'Partita · HUD in gioco' },
   { id: 'partita-scelta',       ctx: 'partita',  nome: 'Partita · HUD con la scelta' },
+  /* [G15 · 22/09] LA SCHERMATA DI FINE PARTITA ENTRA NEL METRO. Era fra le «non nel conto» insieme
+     alla partita e alle cinematiche — cioe' proprio dove vivono i rilievi del PO («migliora anche
+     questa»). Una schermata che nessuno misura non si puo' ne' peggiorare ne' migliorare a numeri. */
+  { id: 'post-partita',         ctx: 'partita',  nome: 'Post-partita · tabellino' },
 ];
 
 /* ── LA MISURA (gira DENTRO la pagina) ─────────────────────────────────────────────────────── */
@@ -816,12 +820,23 @@ if (PARTITA) {
   try { await openMatch(page, port, { skipLoadAll: true, name: 'Grafica Probe' }); ok = true; } catch (e) { saltate.push('partita: apertura fallita — ' + String(e.message).slice(0, 80)); }
   if (ok) {
     try { await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), SEME); } catch (_e) {}
-    const minOk = await page.waitForFunction(() => { try { const ms = window.__CPM_MS && window.__CPM_MS(); return ms && (ms.min | 0) >= 8; } catch (e) { return false; } }, null, { timeout: 240000 }).then(() => true).catch(() => false);
+    /* [G15 · 22/09 — IL RAMO PARTITA ASPETTAVA UN TESTIMONE MORTO, E NESSUNO SE N'ERA ACCORTO.]
+       `CPM_PARTITA=1` e' opt-in: non gira nella corsa normale, quindi il suo guasto e' rimasto invisibile.
+       MISURATO con una sonda di diagnosi: la partita parte e vive (le fasi girano playing -> hl_intro ->
+       hl_result), ma `__CPM_MS().min` torna SEMPRE null — il minuto non sta in quell'oggetto. Il minuto ha
+       il suo hook, `__CPM_CLOCK`. Con quello vecchio le tre schermate della partita non sono MAI state
+       misurate: il rapporto diceva «non nel conto» e sembrava una scelta, era un guasto. */
+    const minOk = await page.waitForFunction(() => { try { const c = window.__CPM_CLOCK && window.__CPM_CLOCK(); return (c | 0) >= 8; } catch (e) { return false; } }, null, { timeout: 240000 }).then(() => true).catch(() => false);
     if (minOk) { await sleep(300); await misuraTutte(page, SC('partita-gioco')); }
     else saltate.push("partita-gioco: il minuto 8 non e' arrivato entro 240 s");
     const sceltaOk = await page.waitForFunction(() => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); return ph === 'hl_choose'; } catch (e) { return false; } }, null, { timeout: 150000 }).then(() => true).catch(() => false);
     if (sceltaOk) { await sleep(300); await misuraTutte(page, SC('partita-scelta')); }
     else saltate.push("partita-scelta: nessuna fase hl_choose entro 150 s");
+    /* [G15] e poi si lascia finire la partita: l'autoplay risolve gli highlight, il fischio arriva al 90'
+       (7.500) e li' c'e' il tabellino — la schermata che il PO ha segnalato e che nessuno misurava. */
+    const fineOk = await page.waitForFunction(() => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); return ph === 'ended' || ph === 'ceremony'; } catch (e) { return false; } }, null, { timeout: 300000 }).then(() => true).catch(() => false);
+    if (fineOk) { await sleep(900); await misuraTutte(page, SC('post-partita')); }
+    else saltate.push("post-partita: il fischio finale non e' arrivato entro 300 s");
   }
   await page.close();
 }

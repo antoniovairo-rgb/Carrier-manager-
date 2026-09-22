@@ -22,7 +22,9 @@
   "carriera-profilo",
   "carriera-nazionale",
   "agente",
-  "prepartita"
+  "prepartita",
+  "partita-gioco",
+  "partita-scelta"
  ],
  "dati": {
   "home": {
@@ -3859,7 +3861,7 @@
      {
       "px": 181,
       "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3952,7 +3954,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4255,7 +4257,7 @@
      {
       "px": 181,
       "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4348,7 +4350,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4651,7 +4653,7 @@
      {
       "px": 181,
       "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4744,7 +4746,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -5047,7 +5049,7 @@
      {
       "px": 181,
       "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -5140,7 +5142,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -5443,7 +5445,7 @@
      {
       "px": 181,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -5536,7 +5538,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -5854,7 +5856,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -5901,7 +5903,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -6182,7 +6184,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -6229,7 +6231,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -6510,7 +6512,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -6557,7 +6559,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -6838,7 +6840,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -6885,7 +6887,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -7166,7 +7168,7 @@
      {
       "px": 181,
       "quota": 9.1,
-      "txt": "K⚽rwardEliteSalva · 15:16AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 15:56AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -7213,7 +7215,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    }
@@ -7479,7 +7481,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -7743,7 +7745,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -8007,7 +8009,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -8271,7 +8273,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -8535,7 +8537,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    }
@@ -8766,7 +8768,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -8995,7 +8997,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -9224,7 +9226,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -9453,7 +9455,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -9682,7 +9684,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    }
@@ -9949,7 +9951,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -10221,7 +10223,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -10493,7 +10495,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -10765,7 +10767,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -11037,7 +11039,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -11379,7 +11381,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -11740,7 +11742,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -12101,7 +12103,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -12462,7 +12464,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -12823,7 +12825,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -13113,7 +13115,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -13373,7 +13375,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -13633,7 +13635,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -13893,7 +13895,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -14153,7 +14155,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    }
@@ -14428,7 +14430,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -14701,7 +14703,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -14974,7 +14976,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -15247,7 +15249,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    },
@@ -15520,7 +15522,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 15:16Avataaars"
+      "txt": "K⚽rwardEliteSalva · 15:56Avataaars"
      }
     ]
    }
@@ -16531,8 +16533,2000 @@
      }
     ]
    }
+  },
+  "partita-gioco": {
+   "360": {
+    "W": 360,
+    "radice": "body",
+    "scrollWidth": 360,
+    "clientWidth": 360,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 47,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 24,
+    "nSotto": 8,
+    "nGradiente": 10,
+    "nEmoji": 15,
+    "peggiori": [
+     {
+      "testo": "#7a1f2b",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 1.52,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "GRA"
+     },
+     {
+      "testo": "#505258",
+      "fondo": "#050810",
+      "fs": 11,
+      "fw": 400,
+      "rap": 2.57,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(5)",
+      "esempio": "Centrocampo"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 600,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 4,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "possesso"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 700,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>button:nth-child(1)",
+      "esempio": "Statistiche"
+     },
+     {
+      "testo": "#91be15",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.06,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "POL"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 4,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12
+    ],
+    "raggi": [
+     6,
+     8,
+     12,
+     20,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 24
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#e8eef7",
+      "n": 9,
+      "fs": 12,
+      "esempio": "41%"
+     },
+     {
+      "c": "#93a4bd",
+      "n": 5,
+      "fs": 11,
+      "esempio": "possesso"
+     },
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#4ade80",
+      "n": 2,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#7a1f2b",
+      "n": 1,
+      "fs": 11,
+      "esempio": "GRA"
+     },
+     {
+      "c": "#91be15",
+      "n": 1,
+      "fs": 11,
+      "esempio": "POL"
+     },
+     {
+      "c": "#60a5fa",
+      "n": 1,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#f87171",
+      "n": 1,
+      "fs": 11,
+      "esempio": "5.8"
+     },
+     {
+      "c": "#505258",
+      "n": 1,
+      "fs": 11,
+      "esempio": "Centrocampo"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 16,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 8,
+      "esempio": "41%",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 800,
+    "schermate": 0.87,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 10,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "🛡️ Bruno (GRA) chiude in sciv",
+     "📻 CRONACA",
+     "🎧 Bruno Cascioli: «Il reparto",
+     "🎯 Luca (POL) alza la testa e ",
+     "🎯 Traversone teso di Ferrari "
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 800,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   },
+   "375": {
+    "W": 375,
+    "radice": "body",
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 18,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 5,
+    "nSotto": 1,
+    "nGradiente": 9,
+    "nEmoji": 6,
+    "peggiori": [
+     {
+      "testo": "#eeeeef",
+      "fondo": "#8f9095",
+      "fs": 12,
+      "fw": 800,
+      "rap": 2.76,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(1)",
+      "esempio": "↩️ Triangolo"
+     },
+     {
+      "testo": "#fbbf24",
+      "fondo": "#32343b",
+      "fs": 13,
+      "fw": 800,
+      "rap": 7.41,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(4)",
+      "esempio": "18 fps · corpi pieni"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#eff6ff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 8.06,
+      "soglia": 4.5,
+      "n": 3,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "🎯 PROVINO"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 3,
+    "nFondi": 3,
+    "nCorpi": 3,
+    "nRaggi": 3,
+    "nPesi": 2,
+    "corpi": [
+     11,
+     12,
+     13
+    ],
+    "raggi": [
+     6,
+     12,
+     20
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 5
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#fbbf24",
+      "n": 1,
+      "fs": 13,
+      "esempio": "18 fps · corpi pieni"
+     },
+     {
+      "c": "#eeeeef",
+      "n": 1,
+      "fs": 12,
+      "esempio": "↩️ Triangolo"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 3,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "↩️ Triangolo",
+      "sel": "div:nth-child(1)>div:nth-child(4)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 1,
+      "esempio": "18 fps · corpi pieni",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(4)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 667,
+    "schermate": 0.73,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 6,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "⏳",
+     "↩️ Triangolo",
+     "📻 CRONACA",
+     "🎧 Bruno Cascioli: «Manca l'uo",
+     "↔️ Luca (POL) allarga troppo: "
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 667,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   },
+   "390": {
+    "W": 390,
+    "radice": "body",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 47,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 24,
+    "nSotto": 8,
+    "nGradiente": 10,
+    "nEmoji": 15,
+    "peggiori": [
+     {
+      "testo": "#7a1f2b",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 1.52,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "GRA"
+     },
+     {
+      "testo": "#505258",
+      "fondo": "#050810",
+      "fs": 11,
+      "fw": 400,
+      "rap": 2.57,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(5)",
+      "esempio": "Trequarti"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 600,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 4,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "possesso"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 700,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>button:nth-child(1)",
+      "esempio": "Statistiche"
+     },
+     {
+      "testo": "#91be15",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.06,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "POL"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 4,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12
+    ],
+    "raggi": [
+     6,
+     8,
+     12,
+     20,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 24
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#e8eef7",
+      "n": 9,
+      "fs": 12,
+      "esempio": "51%"
+     },
+     {
+      "c": "#93a4bd",
+      "n": 5,
+      "fs": 11,
+      "esempio": "possesso"
+     },
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#4ade80",
+      "n": 2,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#7a1f2b",
+      "n": 1,
+      "fs": 11,
+      "esempio": "GRA"
+     },
+     {
+      "c": "#91be15",
+      "n": 1,
+      "fs": 11,
+      "esempio": "POL"
+     },
+     {
+      "c": "#60a5fa",
+      "n": 1,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#f87171",
+      "n": 1,
+      "fs": 11,
+      "esempio": "6.1"
+     },
+     {
+      "c": "#505258",
+      "n": 1,
+      "fs": 11,
+      "esempio": "Trequarti"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 16,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 8,
+      "esempio": "51%",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 844,
+    "schermate": 0.92,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 10,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "😬 Pecoraro (GRA) perde il con",
+     "📻 CRONACA",
+     "🧱 La difesa mura la conclusio",
+     "🎧 Bruno Cascioli: «Manca l'uo",
+     "↔️ Luca (POL) allarga troppo: "
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 844,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   },
+   "412": {
+    "W": 412,
+    "radice": "body",
+    "scrollWidth": 412,
+    "clientWidth": 412,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 47,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 24,
+    "nSotto": 8,
+    "nGradiente": 10,
+    "nEmoji": 15,
+    "peggiori": [
+     {
+      "testo": "#7a1f2b",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 1.52,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "GRA"
+     },
+     {
+      "testo": "#505258",
+      "fondo": "#050810",
+      "fs": 11,
+      "fw": 400,
+      "rap": 2.57,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(5)",
+      "esempio": "Trequarti"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 600,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 4,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "possesso"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 700,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>button:nth-child(1)",
+      "esempio": "Statistiche"
+     },
+     {
+      "testo": "#91be15",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.06,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "POL"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 4,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12
+    ],
+    "raggi": [
+     6,
+     8,
+     12,
+     20,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 24
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#e8eef7",
+      "n": 9,
+      "fs": 12,
+      "esempio": "50%"
+     },
+     {
+      "c": "#93a4bd",
+      "n": 5,
+      "fs": 11,
+      "esempio": "possesso"
+     },
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#4ade80",
+      "n": 2,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#7a1f2b",
+      "n": 1,
+      "fs": 11,
+      "esempio": "GRA"
+     },
+     {
+      "c": "#91be15",
+      "n": 1,
+      "fs": 11,
+      "esempio": "POL"
+     },
+     {
+      "c": "#60a5fa",
+      "n": 1,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#f87171",
+      "n": 1,
+      "fs": 11,
+      "esempio": "6.1"
+     },
+     {
+      "c": "#505258",
+      "n": 1,
+      "fs": 11,
+      "esempio": "Trequarti"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 16,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 8,
+      "esempio": "50%",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 915,
+    "schermate": 1,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 10,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "⚪ Marchetti (POL) batte l'ango",
+     "📻 CRONACA",
+     "🎧 Bruno Cascioli: «Primo palo",
+     "🎯 Punizione di Santoro (POL):",
+     "🎯 Leone (POL) alza la testa e"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 915,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   },
+   "430": {
+    "W": 430,
+    "radice": "body",
+    "scrollWidth": 430,
+    "clientWidth": 430,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 47,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 24,
+    "nSotto": 8,
+    "nGradiente": 10,
+    "nEmoji": 15,
+    "peggiori": [
+     {
+      "testo": "#7a1f2b",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 1.52,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "GRA"
+     },
+     {
+      "testo": "#505258",
+      "fondo": "#050810",
+      "fs": 11,
+      "fw": 400,
+      "rap": 2.57,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(5)",
+      "esempio": "Trequarti"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 600,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 4,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "possesso"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 700,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>button:nth-child(1)",
+      "esempio": "Statistiche"
+     },
+     {
+      "testo": "#91be15",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.06,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "POL"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 4,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12
+    ],
+    "raggi": [
+     6,
+     8,
+     12,
+     20,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 24
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#e8eef7",
+      "n": 9,
+      "fs": 12,
+      "esempio": "52%"
+     },
+     {
+      "c": "#93a4bd",
+      "n": 5,
+      "fs": 11,
+      "esempio": "possesso"
+     },
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#4ade80",
+      "n": 2,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#7a1f2b",
+      "n": 1,
+      "fs": 11,
+      "esempio": "GRA"
+     },
+     {
+      "c": "#91be15",
+      "n": 1,
+      "fs": 11,
+      "esempio": "POL"
+     },
+     {
+      "c": "#60a5fa",
+      "n": 1,
+      "fs": 11,
+      "esempio": "1"
+     },
+     {
+      "c": "#f59e0b",
+      "n": 1,
+      "fs": 11,
+      "esempio": "6.5"
+     },
+     {
+      "c": "#505258",
+      "n": 1,
+      "fs": 11,
+      "esempio": "Trequarti"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 16,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 8,
+      "esempio": "52%",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 932,
+    "schermate": 1.02,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Assist": 21
+    },
+    "nEmojiChar": 30,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "⚽ Pellegrini segna su assist d",
+     "🎯",
+     "⚽",
+     "🅰️",
+     "📻 CRONACA"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 932,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   }
+  },
+  "partita-scelta": {
+   "360": {
+    "W": 360,
+    "radice": "body",
+    "scrollWidth": 360,
+    "clientWidth": 360,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 57,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 24,
+    "nSotto": 8,
+    "nGradiente": 20,
+    "nEmoji": 15,
+    "peggiori": [
+     {
+      "testo": "#7a1f2b",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 1.52,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "GRA"
+     },
+     {
+      "testo": "#505258",
+      "fondo": "#050810",
+      "fs": 11,
+      "fw": 400,
+      "rap": 2.57,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(5)",
+      "esempio": "Trequarti"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 600,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 4,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "possesso"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 700,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>button:nth-child(1)",
+      "esempio": "Statistiche"
+     },
+     {
+      "testo": "#91be15",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.06,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "POL"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 4,
+    "nCorpi": 2,
+    "nRaggi": 6,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12
+    ],
+    "raggi": [
+     6,
+     8,
+     12,
+     16,
+     20,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 24
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#e8eef7",
+      "n": 9,
+      "fs": 12,
+      "esempio": "52%"
+     },
+     {
+      "c": "#93a4bd",
+      "n": 5,
+      "fs": 11,
+      "esempio": "possesso"
+     },
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#4ade80",
+      "n": 2,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#7a1f2b",
+      "n": 1,
+      "fs": 11,
+      "esempio": "GRA"
+     },
+     {
+      "c": "#91be15",
+      "n": 1,
+      "fs": 11,
+      "esempio": "POL"
+     },
+     {
+      "c": "#60a5fa",
+      "n": 1,
+      "fs": 11,
+      "esempio": "1"
+     },
+     {
+      "c": "#f87171",
+      "n": 1,
+      "fs": 11,
+      "esempio": "6.2"
+     },
+     {
+      "c": "#505258",
+      "n": 1,
+      "fs": 11,
+      "esempio": "Trequarti"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 16,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 8,
+      "esempio": "52%",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 800,
+    "schermate": 0.87,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Assist": 18
+    },
+    "nEmojiChar": 29,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "🎯",
+     "📣 Il mister prepara un cambio",
+     "📣 IL MISTER",
+     "📻 CRONACA",
+     "✊ Un compagno piu' giovane sba"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 800,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   },
+   "375": {
+    "W": 375,
+    "radice": "body",
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 28,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 5,
+    "nSotto": 1,
+    "nGradiente": 19,
+    "nEmoji": 6,
+    "peggiori": [
+     {
+      "testo": "#eeeeef",
+      "fondo": "#8f9095",
+      "fs": 12,
+      "fw": 800,
+      "rap": 2.76,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(24)>div:nth-child(1)",
+      "esempio": "↗️ Serve in area per il co"
+     },
+     {
+      "testo": "#fbbf24",
+      "fondo": "#32343b",
+      "fs": 13,
+      "fw": 800,
+      "rap": 7.41,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(4)",
+      "esempio": "10 fps · corpi pieni"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#eff6ff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 8.06,
+      "soglia": 4.5,
+      "n": 3,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "🎯 PROVINO"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 3,
+    "nFondi": 3,
+    "nCorpi": 3,
+    "nRaggi": 5,
+    "nPesi": 2,
+    "corpi": [
+     11,
+     12,
+     13
+    ],
+    "raggi": [
+     6,
+     12,
+     16,
+     20,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 5
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#fbbf24",
+      "n": 1,
+      "fs": 13,
+      "esempio": "10 fps · corpi pieni"
+     },
+     {
+      "c": "#eeeeef",
+      "n": 1,
+      "fs": 12,
+      "esempio": "↗️ Serve in area per il co"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 3,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 1,
+      "esempio": "↗️ Serve in area per il co",
+      "sel": "div:nth-child(1)>div:nth-child(24)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 1,
+      "esempio": "10 fps · corpi pieni",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(4)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 667,
+    "schermate": 0.73,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Assist": 18
+    },
+    "nEmojiChar": 25,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "🎯",
+     "📣 IL MISTER",
+     "⏳",
+     "↗️ Serve in area per il compag",
+     "📻 CRONACA"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 667,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   },
+   "390": {
+    "W": 390,
+    "radice": "body",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 47,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 24,
+    "nSotto": 8,
+    "nGradiente": 10,
+    "nEmoji": 15,
+    "peggiori": [
+     {
+      "testo": "#7a1f2b",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 1.52,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "GRA"
+     },
+     {
+      "testo": "#505258",
+      "fondo": "#050810",
+      "fs": 11,
+      "fw": 400,
+      "rap": 2.57,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(5)",
+      "esempio": "Trequarti"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 600,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 4,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "possesso"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 700,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>button:nth-child(1)",
+      "esempio": "Statistiche"
+     },
+     {
+      "testo": "#91be15",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.06,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "POL"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 4,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12
+    ],
+    "raggi": [
+     6,
+     8,
+     12,
+     20,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 24
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#e8eef7",
+      "n": 9,
+      "fs": 12,
+      "esempio": "53%"
+     },
+     {
+      "c": "#93a4bd",
+      "n": 5,
+      "fs": 11,
+      "esempio": "possesso"
+     },
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#4ade80",
+      "n": 2,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#7a1f2b",
+      "n": 1,
+      "fs": 11,
+      "esempio": "GRA"
+     },
+     {
+      "c": "#91be15",
+      "n": 1,
+      "fs": 11,
+      "esempio": "POL"
+     },
+     {
+      "c": "#60a5fa",
+      "n": 1,
+      "fs": 11,
+      "esempio": "1"
+     },
+     {
+      "c": "#f87171",
+      "n": 1,
+      "fs": 11,
+      "esempio": "5.9"
+     },
+     {
+      "c": "#505258",
+      "n": 1,
+      "fs": 11,
+      "esempio": "Trequarti"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 16,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 8,
+      "esempio": "53%",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 844,
+    "schermate": 0.92,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Assist": 18
+    },
+    "nEmojiChar": 30,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "🎯",
+     "🎧 Bruno Cascioli: «Il terzino",
+     "🧣",
+     "🏃",
+     "📻 CRONACA"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 844,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   },
+   "412": {
+    "W": 412,
+    "radice": "body",
+    "scrollWidth": 412,
+    "clientWidth": 412,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 47,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 24,
+    "nSotto": 8,
+    "nGradiente": 10,
+    "nEmoji": 15,
+    "peggiori": [
+     {
+      "testo": "#7a1f2b",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 1.52,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(1)",
+      "esempio": "GRA"
+     },
+     {
+      "testo": "#505258",
+      "fondo": "#050810",
+      "fs": 11,
+      "fw": 400,
+      "rap": 2.57,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>span:nth-child(5)",
+      "esempio": "Trequarti"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 600,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 4,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "possesso"
+     },
+     {
+      "testo": "#93a4bd",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 700,
+      "rap": 2.65,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>button:nth-child(1)",
+      "esempio": "Statistiche"
+     },
+     {
+      "testo": "#91be15",
+      "fondo": "#545c6c",
+      "fs": 11,
+      "fw": 800,
+      "rap": 3.06,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
+      "esempio": "POL"
+     }
+    ],
+    "nMarca": 0,
+    "marca": [],
+    "nColTesto": 9,
+    "nFondi": 4,
+    "nCorpi": 2,
+    "nRaggi": 5,
+    "nPesi": 5,
+    "corpi": [
+     11,
+     12
+    ],
+    "raggi": [
+     6,
+     8,
+     12,
+     20,
+     50
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 24
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#e8eef7",
+      "n": 9,
+      "fs": 12,
+      "esempio": "53%"
+     },
+     {
+      "c": "#93a4bd",
+      "n": 5,
+      "fs": 11,
+      "esempio": "possesso"
+     },
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#4ade80",
+      "n": 2,
+      "fs": 11,
+      "esempio": "0"
+     },
+     {
+      "c": "#7a1f2b",
+      "n": 1,
+      "fs": 11,
+      "esempio": "GRA"
+     },
+     {
+      "c": "#91be15",
+      "n": 1,
+      "fs": 11,
+      "esempio": "POL"
+     },
+     {
+      "c": "#60a5fa",
+      "n": 1,
+      "fs": 11,
+      "esempio": "1"
+     },
+     {
+      "c": "#f87171",
+      "n": 1,
+      "fs": 11,
+      "esempio": "5.9"
+     },
+     {
+      "c": "#505258",
+      "n": 1,
+      "fs": 11,
+      "esempio": "Trequarti"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 16,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 12,
+      "n": 8,
+      "esempio": "53%",
+      "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 915,
+    "schermate": 1,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Assist": 18
+    },
+    "nEmojiChar": 30,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "🎯",
+     "🟡 Fischia l'arbitro: fallo di",
+     "😠",
+     "🟨",
+     "📻 CRONACA"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 915,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   },
+   "430": {
+    "W": 430,
+    "radice": "body",
+    "scrollWidth": 430,
+    "clientWidth": 430,
+    "overflowPx": 0,
+    "nFuori": 0,
+    "fuori": [],
+    "nContenuti": 0,
+    "contenuti": [],
+    "nTesto": 21,
+    "nSottoPav": 0,
+    "nPiccoli": 0,
+    "minFs": 11,
+    "sottoPav": [],
+    "nMisurati": 6,
+    "nSotto": 2,
+    "nGradiente": 10,
+    "nEmoji": 7,
+    "peggiori": [
+     {
+      "testo": "#ffffff",
+      "fondo": "#ffffff",
+      "fs": 16,
+      "fw": 900,
+      "rap": 1,
+      "soglia": 3,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(23)>div:nth-child(2)>div:nth-child(1)",
+      "esempio": "Probe"
+     },
+     {
+      "testo": "#ffffff",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 1,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(23)>div:nth-child(2)>div:nth-child(2)",
+      "esempio": "Assist: Pecoraro"
+     },
+     {
+      "testo": "#fbbf24",
+      "fondo": "#32343b",
+      "fs": 13,
+      "fw": 800,
+      "rap": 7.41,
+      "soglia": 4.5,
+      "n": 1,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(4)",
+      "esempio": "11 fps · corpi pieni"
+     },
+     {
+      "testo": "#8e1f33",
+      "fondo": "#eff6ff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 8.06,
+      "soglia": 4.5,
+      "n": 3,
+      "svg": false,
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "🎯 PROVINO"
+     }
+    ],
+    "nMarca": 1,
+    "marca": [
+     "Continua"
+    ],
+    "nColTesto": 3,
+    "nFondi": 3,
+    "nCorpi": 3,
+    "nRaggi": 4,
+    "nPesi": 3,
+    "corpi": [
+     11,
+     13,
+     16
+    ],
+    "raggi": [
+     6,
+     8,
+     12,
+     20
+    ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 6
+     }
+    ],
+    "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
+    "tinteTesto": [
+     {
+      "c": "#8e1f33",
+      "n": 3,
+      "fs": 11,
+      "esempio": "🎯 PROVINO"
+     },
+     {
+      "c": "#ffffff",
+      "n": 2,
+      "fs": 16,
+      "esempio": "Probe"
+     },
+     {
+      "c": "#fbbf24",
+      "n": 1,
+      "fs": 13,
+      "esempio": "11 fps · corpi pieni"
+     }
+    ],
+    "corpiDet": [
+     {
+      "fs": 11,
+      "n": 4,
+      "esempio": "🎯 PROVINO",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(1)"
+     },
+     {
+      "fs": 13,
+      "n": 1,
+      "esempio": "11 fps · corpi pieni",
+      "sel": "div:nth-child(1)>div:nth-child(1)>div:nth-child(4)"
+     },
+     {
+      "fs": 16,
+      "n": 1,
+      "esempio": "Probe",
+      "sel": "div:nth-child(23)>div:nth-child(2)>div:nth-child(1)"
+     }
+    ],
+    "nSvgTesto": 2,
+    "altezzaPx": 932,
+    "schermate": 1.02,
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 3,
+     "Assist": 20
+    },
+    "nEmojiChar": 30,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "🎯 PROVINO",
+     "☀️",
+     "⏸",
+     "⚠️",
+     "🎯",
+     "⚽",
+     "🅰️",
+     "🦵",
+     "💫"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div#root>div.cpm-root>div.cpm-scroll",
+      "lum": 0.002,
+      "fondo": "#050810",
+      "px": 932,
+      "txt": "🎯 PROVINO 1/3@keyframes cpmSwapCa"
+     }
+    ]
+   }
   }
  },
- "saltate": [],
+ "saltate": [
+  "post-partita: il fischio finale non e' arrivato entro 300 s"
+ ],
  "errori": []
 }
