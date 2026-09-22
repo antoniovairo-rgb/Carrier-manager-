@@ -79,7 +79,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Creazione | 0 (2) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
 | Offerte | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
 | Dashboard | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
-| Stagione · Classifica | 0 (11) | 0 (11) | 0 (11) | 0 (10) | 0 (10) |
+| Stagione · Classifica | 0 (11) | 0 (11) | 0 (10) | 0 (10) | 0 (10) |
 | Stagione · Calendario | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
 | Stagione · Coppe | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
 | Club | 0 (0) | 0 (0) | 0 (0) | 0 (0) | 0 (0) |
@@ -174,7 +174,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Creazione | 1731 (1.89) | 1731 (1.89) | 1731 (1.89) | 1731 (1.89) | 1703 (1.86) |
 | Offerte | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
 | Dashboard | 2880 (3.15) | 2864 (3.13) | 2847 (3.11) | 2718 (2.97) | 2702 (2.95) |
-| Stagione · Classifica | 1988 (2.17) | 1988 (2.17) | 1988 (2.17) | 1988 (2.17) | 1988 (2.17) |
+| Stagione · Classifica | 1989 (2.17) | 1989 (2.17) | 1989 (2.17) | 1989 (2.17) | 1989 (2.17) |
 | Stagione · Calendario | 1602 (1.75) | 1602 (1.75) | 1602 (1.75) | 1602 (1.75) | 1602 (1.75) |
 | Stagione · Coppe | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
 | Club | 1429 (1.56) | 1428 (1.56) | 1428 (1.56) | 1416 (1.55) | 1403 (1.53) |
@@ -276,9 +276,9 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---|---:|---|
 | Creazione | 360 | `div:nth-child(3)>div:nth-child(2)>button:nth-child(5)` | 3.5 | AvataaarsPablo Stanleyhttps://avat |
 | Creazione | 360 | `div:nth-child(3)>div:nth-child(2)>button:nth-child(10)` | 3.5 | AvataaarsPablo Stanleyhttps://avat |
-| Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 1159.1 | Liga Ibérica 2 |
-| Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 1049.5 | Ligue Nationale 2 |
-| Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 918.1 | Deutsche Liga 2 |
+| Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 1123 | Liga Ibérica 2 |
+| Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 1016.2 | Ligue Nationale 2 |
+| Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 888 | Deutsche Liga 2 |
 
 ### 9-quater · SUPERFICI SCURE in un gioco a tema unico CHIARO (riquadri larghi mezzo schermo, alti >= 40 px, luminanza < 0,25)
 
@@ -307,24 +307,24 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---:|---|---|---|
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteFootball Career Simula |
 | Creazione | 52 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | ⚡ INIZIA I PROVINI |
-| Dashboard | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+| Dashboard | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
 |  | 187 | 0.012 | `#241438` | `div.cpm-scroll>div.cpm-career>div:nth-child(4)` | La tua storia🆚La sfida di sempreS |
 |  | 136 | 0.017 | `#14243a` | `div.cpm-scroll>div.cpm-career>div:nth-child(6)` | 👟 Sponsor — nuova offertaFalco No |
 |  | 173 | 0.013 | `#331426` | `div.cpm-scroll>div.cpm-career>div:nth-child(7)` | ❤️ Vita privataQualcuno in tribuna |
 |  | 184 | 0.012 | `#241a12` | `div.cpm-scroll>div.cpm-career>div:nth-child(9)` | ⏳ NEL PIENO👁️Adesso guardano teTe |
-| Stagione · Classifica | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
-| Stagione · Calendario | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
-| Stagione · Coppe | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
-| Club | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+| Stagione · Classifica | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
+| Stagione · Calendario | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
+| Stagione · Coppe | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
+| Club | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
 |  | 207 | 0.016 | `#112240` | `div.cpm-career>div:nth-child(2)>div:nth-child(10)` | Lo Spogliatoio🧠Luigi TestaIl Ment |
-| Carriera · Profilo | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+| Carriera · Profilo | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
 |  | 135 | 0.014 | `#1a1f2e` | `div.cpm-career>div:nth-child(3)>div:nth-child(1)` | Biografia"Grafica Probe, 26 anni,  |
 |  | 326 | 0.042 | `#312e81` | `div.cpm-career>div:nth-child(3)>div:nth-child(6)` | 🆚 Il tuo rivale⚽Bruno SalvatoriFC |
 |  | 77 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(7)` | CAT⭐ Club dei sogniFC CatalunyaNon |
 |  | 84 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(10)` | 💪Stile di giocoBomberPotenza e is |
-| Carriera · Nazionale | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
-| Agente | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+| Carriera · Nazionale | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
+| Agente | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
 | Prepartita | 45 | 0.07 | `#8e1f33` | `div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus` | 📋 Formazioni → |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
@@ -432,17 +432,17 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |  | 3 | 208 | 7.7 % | Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱 |
 |  | 4 | 187 | 6.9 % | La tua storia🆚La sfida di sempreSettimana |
 |  | 5 | 184 | 6.8 % | ⏳ NEL PIENO👁️Adesso guardano teTe ne acco |
-|  | 6 | 183 | 6.7 % | K⚽rwardEliteSalva · 06:39AvataaarsPablo St |
+|  | 6 | 183 | 6.7 % | K⚽rwardEliteSalva · 10:25AvataaarsPablo St |
 |  | 7 | 183 | 6.7 % | Il mondo fuori👀C'era il CT, in tribunaNes |
 |  | 8 | 175 | 6.4 % | Stagione 4 · Settimana 12/3812Partite14Gol |
 |  | 9 | 174 | 6.4 % | Il tuo procuratore — questione di filosofi |
 |  | 10 | 173 | 6.4 % | ❤️ Vita privataQualcuno in tribunaElena er |
 |  | 11 | 154 | 5.7 % | Il progetto del club🏛️Progetto solidoNess |
 |  | 12 | 136 | 5 % | 👟 Sponsor — nuova offertaFalco Nove ti pr |
-| Stagione · Classifica (1988 px) | 1 | 1303 | 65.6 % | Lega B ★Lega APremier DivisionLiga Ibérica |
+| Stagione · Classifica (1989 px) | 1 | 1304 | 65.6 % | Lega B ★Lega APremier DivisionLiga Ibérica |
 |  | 2 | 317 | 15.9 % | Marcatori Storici — Lega B#5Grafica Probe8 |
 |  | 3 | 246 | 12.4 % | Risultati Internazionali — W.12Premier Div |
-|  | 4 | 183 | 9.2 % | K⚽rwardEliteSalva · 06:39AvataaarsPablo St |
+|  | 4 | 183 | 9.2 % | K⚽rwardEliteSalva · 10:25AvataaarsPablo St |
 |  | 5 | 101 | 5.1 % | EnterGioca0AvanzaEscIndietroSpcConferma☕ S |
 |  | 6 | 45 | 2.3 % | 📊Classifica📅Calendario🏆Coppe |
 | Carriera · Profilo (2361 px) | 1 | 326 | 13.8 % | 🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona |
@@ -457,6 +457,30 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |  | 10 | 67 | 2.8 % | Record & Premi Personali⚽ 22 gol/stag.🎯 9 |
 |  | 11 | 67 | 2.8 % | 🐞Strumenti di collaudoIl tasto ⚠️ accanto |
 |  | 12 | 55 | 2.3 % | Calciatore professionistaStagioni da pro:  |
+
+## 9-quinquies · I CARATTERI RESI (a 412 px, la taglia del PO)
+
+> [G9 · 22/09, collaudo PO «la schermata iniziale e' rimasta completamente fuori standard»] Il provino
+> approvato ha UN carattere vero, **Barlow** (+ **Barlow Condensed** per i numerali incolonnati). Una
+> schermata che ne rende altri e' fuori standard per costruzione — e finora nessun numero lo diceva:
+> si guardava il contrasto, il corpo, il raggio, mai la FAMIGLIA. Qui c'e' la prima famiglia della
+> `font-family` calcolata, cioe' quella che il browser usa davvero, con quanti nodi la portano.
+
+| schermata | famiglie | dettaglio (famiglia x nodi) |
+|---|---:|---|
+| Home fuori carriera | 1 | Barlow x4 |
+| Impostazioni | 1 | Barlow x20 |
+| Creazione | 1 | Barlow x819 |
+| Offerte | 1 | Barlow x29 |
+| Dashboard | 1 | Barlow x125 |
+| Stagione · Classifica | 1 | Barlow x351 |
+| Stagione · Calendario | 1 | Barlow x239 |
+| Stagione · Coppe | 1 | Barlow x26 |
+| Club | 1 | Barlow x94 |
+| Carriera · Profilo | 1 | Barlow x89 |
+| Carriera · Nazionale | 1 | Barlow x73 |
+| Agente | 1 | Barlow x93 |
+| Prepartita | 1 | Barlow x17 |
 
 ## Dettaglio · i nodi SOTTO IL PAVIMENTO di 11 px (a 412 px, la taglia del PO)
 

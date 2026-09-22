@@ -208,6 +208,13 @@ function MISURA(W) {
        guardiano — un numero che sale o scende, non un rosso che si puo' abbassare. */
     nColTesto: 0, nFondi: 0, nCorpi: 0, nRaggi: 0, nPesi: 0,
     corpi: [], raggi: [],
+    /* [G9 · 22/09, collaudo PO «la schermata iniziale e' rimasta completamente fuori standard»]
+       QUALI CARATTERI VENGONO RESI DAVVERO. Il provino approvato dal PO ha UN carattere vero,
+       Barlow (+ Barlow Condensed per i numerali): una schermata che ne rende altri e' fuori
+       standard per costruzione, e finora nessun numero lo diceva. Si legge la PRIMA famiglia
+       della `font-family` calcolata — quella che il browser usa davvero — su ogni nodo di testo
+       visibile. Censimento, non guardiano. */
+    famiglie: [], nFamiglie: 0,
     /* [G8.3 · direttiva PO 17/09 «se una schermata e' troppo lunga valuta se mettere degli
        accordion»] QUANTO E' LUNGA. Prima di aprire e chiudere sezioni serve sapere quali
        schermate lo meritano davvero: `schermate` e' l'altezza del documento diviso l'altezza
@@ -383,7 +390,7 @@ function MISURA(W) {
   };
 
   /* ── M3 + M6 · i nodi di testo visibili ──────────────────────────────────────────────────── */
-  const _colT = new Set(), _fon = new Set(), _cor = new Set(), _pes = new Set(), _rag = new Set();
+  const _fam = new Map(); const _colT = new Set(), _fon = new Set(), _cor = new Set(), _pes = new Set(), _rag = new Set();
   const agg = new Map(); /* coppie colore/fondo raggruppate: 400 righe uguali sono UN difetto */
   /* [G8.8] IL PAVIMENTO DIRA' ANCHE DOVE. Il conteggio «8 nodi sotto gli 11 px» non basta a trovarli:
      e' la stessa cecita' della colonna selettore del contrasto (G8.7, «non li ho trovati»). Qui i nodi
@@ -435,6 +442,7 @@ function MISURA(W) {
     R.nMisurati++;
     if (rap < soglia) R.nSotto++;
     _colT.add(hex(tc)); _fon.add(hex(f.col)); _cor.add(Math.round(fs * 10) / 10); _pes.add(fw);
+    { const ff = String(cs.fontFamily || '').split(',')[0].replace(/["']/g, '').trim(); if (ff) _fam.set(ff, (_fam.get(ff) | 0) + 1); }
     const k = hex(tc) + '|' + hex(f.col) + '|' + Math.round(fs * 10) / 10 + '|' + fw;
     const e = agg.get(k);
     if (e) e.n++;
@@ -541,6 +549,7 @@ function MISURA(W) {
     R.scuri = scuri.slice(0, 6).map(x => ({ sel: x.sel, lum: x.lum, fondo: x.fondo, px: x.px, txt: x.txt }));
   } catch (_e) { R.nScuri = -1; R.scuri = []; }
   R.nColTesto = _colT.size; R.nFondi = _fon.size; R.nCorpi = _cor.size; R.nPesi = _pes.size; R.nRaggi = _rag.size;
+  R.famiglie = [..._fam.entries()].sort((a, b) => b[1] - a[1]).map(([f, n]) => ({ f, n })); R.nFamiglie = _fam.size;
   R.corpi = [..._cor].sort((a, b) => a - b);
   R.raggi = [..._rag].sort((a, b) => a - b);
   R.peggiori = [...agg.values()].sort((a, b) => a.rap - b.rap || b.n - a.n).slice(0, 5);
@@ -962,6 +971,25 @@ righe.forEach(s => {
   m.blocchi.forEach((b, i) => { nBlk++; R.push(`| ${i === 0 ? s.nome + ' (' + m.altezzaPx + ' px)' : ''} | ${i + 1} | ${b.px} | ${b.quota} % | ${b.txt.replace(/\|/g, '/')} |`); });
 });
 if (!nBlk) R.push('| — | — | — | — | nessuna schermata sopra le due schermate |');
+R.push('');
+
+R.push('## 9-quinquies · I CARATTERI RESI (a 412 px, la taglia del PO)');
+R.push('');
+R.push('> [G9 · 22/09, collaudo PO «la schermata iniziale e\' rimasta completamente fuori standard»] Il provino');
+R.push('> approvato ha UN carattere vero, **Barlow** (+ **Barlow Condensed** per i numerali incolonnati). Una');
+R.push('> schermata che ne rende altri e\' fuori standard per costruzione — e finora nessun numero lo diceva:');
+R.push('> si guardava il contrasto, il corpo, il raggio, mai la FAMIGLIA. Qui c\'e\' la prima famiglia della');
+R.push('> `font-family` calcolata, cioe\' quella che il browser usa davvero, con quanti nodi la portano.');
+R.push('');
+R.push('| schermata | famiglie | dettaglio (famiglia x nodi) |');
+R.push('|---|---:|---|');
+righe.forEach(s2 => {
+  const m = (DATI[s2.id][412] || DATI[s2.id][W[W.length - 1]]);
+  if (!m) return;
+  const fam = m.famiglie || [];
+  const fuori = fam.filter(x => !/^Barlow/i.test(x.f));
+  R.push(`| ${s2.nome} | ${fuori.length ? '**' + (m.nFamiglie || 0) + '**' : (m.nFamiglie || 0)} | ${fam.map(x => x.f + ' x' + x.n).join(' · ') || '—'} |`);
+});
 R.push('');
 
 R.push('## Dettaglio · i nodi SOTTO IL PAVIMENTO di 11 px (a 412 px, la taglia del PO)');

@@ -92,9 +92,14 @@ function Wordmark({size=30,color,elite="#f59e0b",inRiga=false}){
   const small=size<18;
   const gran=color||"#a3263a";
   const useGrad=!color&&size>=28;
-  const kFont="'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif";
+  /* [G9 · 7.963] IL MARCHIO ERA L'UNICA COSA DEL GIOCO SCRITTA IN UN CARATTERE CHE NON ABBIAMO.
+     `Segoe UI` non e' incorporato da nessuna parte: sul banco di Chromium si vede, sull'Android del PO
+     cade sul ripiego di sistema — quindi il marchio aveva un aspetto diverso a seconda del telefono.
+     Barlow e' incorporato (sei tagli, 7.951) ed e' il carattere del provino approvato: il marchio ora
+     e' uguale ovunque, e il censimento delle famiglie smette di contarlo come fuori standard. */
+  const kFont="'Barlow','Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif";
   const eSmall=size*0.42<13;
-  const eFont=eSmall?"'Segoe UI',system-ui,Arial,sans-serif":"'KWScript','Segoe Script','Brush Script MT','Snell Roundhand','Apple Chancery',cursive";
+  const eFont=eSmall?"'Barlow','Segoe UI',system-ui,Arial,sans-serif":"'KWScript','Segoe Script','Brush Script MT','Snell Roundhand','Apple Chancery',cursive";
   const korStyle=useGrad
     ?{backgroundImage:"linear-gradient(180deg,#a3263a 0%,#5e0f1d 100%)",WebkitBackgroundClip:"text",backgroundClip:"text",WebkitTextFillColor:"transparent",color:"transparent"}
     :{color:gran};
@@ -162,7 +167,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             </svg>
           </div>
           <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",lineHeight:1}}>
-            <span style={{fontFamily:"'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif",fontWeight:900,fontSize:40,letterSpacing:.5,color:"#fff",textShadow:"0 2px 8px rgba(0,0,0,0.3)",lineHeight:1}}>K<span style={{fontSize:31,verticalAlign:"baseline"}}>⚽</span>rward</span>
+            <span style={{fontFamily:"'Barlow','Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif",fontWeight:900,fontSize:40,letterSpacing:.5,color:"#fff",textShadow:"0 2px 8px rgba(0,0,0,0.3)",lineHeight:1}}>K<span style={{fontSize:31,verticalAlign:"baseline"}}>⚽</span>rward</span>
             <span style={{fontFamily:"'KWScript','Segoe Script','Snell Roundhand','Apple Chancery',cursive",fontWeight:400,fontSize:30,letterSpacing:1,color:TH.goldText,textShadow:"0 2px 8px rgba(0,0,0,0.3)",marginTop:0,lineHeight:1}}>Elite</span>
           </div>
           <p style={{color:"rgba(255,255,255,0.86)",fontSize:FS.caption,margin:"8px 0 3px",letterSpacing:2,textTransform:"uppercase",fontWeight:FW.black}}>Football Career Simulator</p>

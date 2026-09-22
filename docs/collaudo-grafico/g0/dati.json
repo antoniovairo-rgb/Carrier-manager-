@@ -87,6 +87,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 4
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -178,6 +185,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 4
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 697,
     "schermate": 0.76,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -269,6 +283,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 4
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -360,6 +381,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 4
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -451,6 +479,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 4
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -578,6 +613,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 20
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -699,6 +741,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 20
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "div.cpm-root>div:nth-child(1)>div:nth-child(2)",
@@ -820,6 +869,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 20
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -941,6 +997,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 20
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -1062,6 +1125,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 20
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -1199,6 +1269,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 819
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1731,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1332,6 +1409,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 819
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1731,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1465,6 +1549,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 819
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1731,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1598,6 +1689,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 819
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1731,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1731,6 +1829,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 819
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1703,
     "schermate": 1.86,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1864,6 +1969,13 @@
      10,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -1980,6 +2092,13 @@
      10,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "documento",
@@ -2096,6 +2215,13 @@
      10,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -2212,6 +2338,13 @@
      10,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -2328,6 +2461,13 @@
      10,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 29
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -2457,6 +2597,13 @@
      16,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 125
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2880,
     "schermate": 3.15,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -2506,7 +2653,7 @@
      {
       "px": 183,
       "quota": 6.3,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -2571,7 +2718,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -2717,6 +2864,13 @@
      16,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 125
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2864,
     "schermate": 3.13,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -2766,7 +2920,7 @@
      {
       "px": 183,
       "quota": 6.4,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -2831,7 +2985,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -2977,6 +3131,13 @@
      16,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 125
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2847,
     "schermate": 3.11,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -3026,7 +3187,7 @@
      {
       "px": 183,
       "quota": 6.4,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3091,7 +3252,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3237,6 +3398,13 @@
      16,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 125
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2718,
     "schermate": 2.97,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -3274,7 +3442,7 @@
      {
       "px": 183,
       "quota": 6.7,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3351,7 +3519,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3497,6 +3665,13 @@
      16,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 125
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2702,
     "schermate": 2.95,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -3534,7 +3709,7 @@
      {
       "px": 183,
       "quota": 6.8,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3611,7 +3786,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3664,27 +3839,27 @@
     "contenuti": [
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 1159.1,
+      "px": 1123,
       "txt": "Liga Ibérica 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 1049.5,
+      "px": 1016.2,
       "txt": "Ligue Nationale 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 918.1,
+      "px": 888,
       "txt": "Deutsche Liga 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 793.5,
+      "px": 767.1,
       "txt": "Championship"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 679.2,
+      "px": 655.2,
       "txt": "Liga Anatolica"
      }
     ],
@@ -3781,12 +3956,19 @@
      14,
      50
     ],
-    "altezzaPx": 1988,
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 350
+     }
+    ],
+    "nFamiglie": 1,
+    "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 1303,
+      "px": 1304,
       "quota": 65.6,
       "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
@@ -3806,7 +3988,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3853,7 +4035,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -3869,27 +4051,27 @@
     "contenuti": [
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 1144.1,
+      "px": 1108,
       "txt": "Liga Ibérica 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 1034.5,
+      "px": 1001.2,
       "txt": "Ligue Nationale 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 903.1,
+      "px": 873,
       "txt": "Deutsche Liga 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 778.5,
+      "px": 752.1,
       "txt": "Championship"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 664.2,
+      "px": 640.2,
       "txt": "Liga Anatolica"
      }
     ],
@@ -3986,12 +4168,19 @@
      14,
      50
     ],
-    "altezzaPx": 1988,
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 350
+     }
+    ],
+    "nFamiglie": 1,
+    "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 1303,
+      "px": 1304,
       "quota": 65.6,
       "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
@@ -4011,7 +4200,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4058,7 +4247,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -4070,31 +4259,31 @@
     "overflowPx": 0,
     "nFuori": 0,
     "fuori": [],
-    "nContenuti": 11,
+    "nContenuti": 10,
     "contenuti": [
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 1131.3,
+      "px": 1095.3,
       "txt": "Liga Ibérica 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 1021.8,
+      "px": 988.4,
       "txt": "Ligue Nationale 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 890.3,
+      "px": 860.2,
       "txt": "Deutsche Liga 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 765.8,
+      "px": 739.4,
       "txt": "Championship"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 651.4,
+      "px": 627.4,
       "txt": "Liga Anatolica"
      }
     ],
@@ -4191,12 +4380,19 @@
      14,
      50
     ],
-    "altezzaPx": 1988,
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 350
+     }
+    ],
+    "nFamiglie": 1,
+    "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 1303,
+      "px": 1304,
       "quota": 65.6,
       "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
@@ -4216,7 +4412,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4263,7 +4459,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -4279,27 +4475,27 @@
     "contenuti": [
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 1109.3,
+      "px": 1073.3,
       "txt": "Liga Ibérica 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 999.8,
+      "px": 966.4,
       "txt": "Ligue Nationale 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 868.3,
+      "px": 838.2,
       "txt": "Deutsche Liga 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 743.8,
+      "px": 717.4,
       "txt": "Championship"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 629.4,
+      "px": 605.4,
       "txt": "Liga Anatolica"
      }
     ],
@@ -4396,12 +4592,19 @@
      14,
      50
     ],
-    "altezzaPx": 1988,
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 351
+     }
+    ],
+    "nFamiglie": 1,
+    "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 1303,
+      "px": 1304,
       "quota": 65.6,
       "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
@@ -4421,7 +4624,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4468,7 +4671,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -4484,27 +4687,27 @@
     "contenuti": [
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 1091.3,
+      "px": 1055.3,
       "txt": "Liga Ibérica 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 981.8,
+      "px": 948.4,
       "txt": "Ligue Nationale 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 850.3,
+      "px": 820.2,
       "txt": "Deutsche Liga 2"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 725.8,
+      "px": 699.4,
       "txt": "Championship"
      },
      {
       "sel": "div:nth-child(3)>div:nth-child(1)>button.cpm-press",
-      "px": 611.4,
+      "px": 587.4,
       "txt": "Liga Anatolica"
      }
     ],
@@ -4601,12 +4804,19 @@
      14,
      50
     ],
-    "altezzaPx": 1988,
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 351
+     }
+    ],
+    "nFamiglie": 1,
+    "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 1303,
+      "px": 1304,
       "quota": 65.6,
       "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
@@ -4626,7 +4836,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4673,7 +4883,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    }
@@ -4781,6 +4991,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 239
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4816,7 +5033,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -4922,6 +5139,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 239
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4957,7 +5181,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -5063,6 +5287,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 239
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5098,7 +5329,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -5204,6 +5435,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 239
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5239,7 +5477,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -5345,6 +5583,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 239
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5380,7 +5625,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    }
@@ -5484,6 +5729,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 26
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -5515,7 +5767,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -5617,6 +5869,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 26
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "documento",
@@ -5648,7 +5907,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -5750,6 +6009,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 26
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -5781,7 +6047,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -5883,6 +6149,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 26
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -5914,7 +6187,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -6016,6 +6289,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 26
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -6047,7 +6327,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    }
@@ -6156,6 +6436,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 94
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1429,
     "schermate": 1.56,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6191,7 +6478,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6305,6 +6592,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 94
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1428,
     "schermate": 1.56,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6340,7 +6634,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6454,6 +6748,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 94
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1428,
     "schermate": 1.56,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6489,7 +6790,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6603,6 +6904,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 94
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1416,
     "schermate": 1.55,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6638,7 +6946,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6752,6 +7060,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 94
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1403,
     "schermate": 1.53,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6787,7 +7102,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6906,6 +7221,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 89
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2455,
     "schermate": 2.68,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7021,7 +7343,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -7159,6 +7481,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 89
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2420,
     "schermate": 2.64,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7274,7 +7603,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -7412,6 +7741,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 89
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2420,
     "schermate": 2.64,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7527,7 +7863,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -7665,6 +8001,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 89
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2361,
     "schermate": 2.58,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7780,7 +8123,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -7918,6 +8261,13 @@
      20,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 89
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 2361,
     "schermate": 2.58,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8033,7 +8383,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -8167,6 +8517,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 73
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1155,
     "schermate": 1.26,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8204,7 +8561,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -8308,6 +8665,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 73
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1142,
     "schermate": 1.25,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8345,7 +8709,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -8449,6 +8813,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 73
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1142,
     "schermate": 1.25,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8486,7 +8857,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -8590,6 +8961,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 73
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1142,
     "schermate": 1.25,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8627,7 +9005,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -8731,6 +9109,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 73
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1142,
     "schermate": 1.25,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8768,7 +9153,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    }
@@ -8879,6 +9264,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 93
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1578,
     "schermate": 1.72,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8918,7 +9310,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -9027,6 +9419,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 93
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1538,
     "schermate": 1.68,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9066,7 +9465,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -9175,6 +9574,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 93
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1521,
     "schermate": 1.66,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9214,7 +9620,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -9323,6 +9729,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 93
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1521,
     "schermate": 1.66,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9362,7 +9775,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    },
@@ -9471,6 +9884,13 @@
      14,
      50
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 93
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 1521,
     "schermate": 1.66,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9510,7 +9930,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
      }
     ]
    }
@@ -9614,6 +10034,13 @@
      12,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 17
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -9744,6 +10171,13 @@
      12,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 17
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "documento",
@@ -9874,6 +10308,13 @@
      12,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 17
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -10004,6 +10445,13 @@
      12,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 17
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -10134,6 +10582,13 @@
      12,
      14
     ],
+    "famiglie": [
+     {
+      "f": "Barlow",
+      "n": 17
+     }
+    ],
+    "nFamiglie": 1,
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
