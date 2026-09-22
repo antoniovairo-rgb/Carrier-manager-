@@ -97,16 +97,16 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/29 (11) | 0/29 (11) | 0/29 (11) | 0/29 (11) | 0/29 (11) |
 | Creazione | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) |
 | Offerte | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) |
-| Dashboard | 0/201 (11) | 0/201 (11) | 0/201 (11) | 0/201 (11) | 0/201 (11) |
-| Stagione · Classifica | 0/394 (11) | 0/394 (11) | 0/394 (11) | 0/395 (11) | 0/395 (11) |
-| Stagione · Calendario | 0/322 (11) | 0/322 (11) | 0/322 (11) | 0/322 (11) | 0/322 (11) |
-| Stagione · Coppe | 0/48 (11) | 0/48 (11) | 0/48 (11) | 0/48 (11) | 0/48 (11) |
-| Club | 0/154 (11) | 0/154 (11) | 0/154 (11) | 0/154 (11) | 0/154 (11) |
-| Carriera · Profilo | 0/326 (11) | 0/326 (11) | 0/326 (11) | 0/326 (11) | 0/326 (11) |
-| Carriera · Nazionale | 0/114 (11) | 0/114 (11) | 0/114 (11) | 0/114 (11) | 0/114 (11) |
-| Agente | 0/123 (11) | 0/123 (11) | 0/123 (11) | 0/123 (11) | 0/123 (11) |
+| Dashboard | 0/197 (11) | 0/197 (11) | 0/197 (11) | 0/197 (11) | 0/197 (11) |
+| Stagione · Classifica | 0/388 (11) | 0/388 (11) | 0/388 (11) | 0/389 (11) | 0/389 (11) |
+| Stagione · Calendario | 0/316 (11) | 0/316 (11) | 0/316 (11) | 0/316 (11) | 0/316 (11) |
+| Stagione · Coppe | 0/42 (11) | 0/42 (11) | 0/42 (11) | 0/42 (11) | 0/42 (11) |
+| Club | 0/146 (11) | 0/146 (11) | 0/146 (11) | 0/146 (11) | 0/146 (11) |
+| Carriera · Profilo | 0/168 (11) | 0/168 (11) | 0/168 (11) | 0/168 (11) | 0/168 (11) |
+| Carriera · Nazionale | 0/108 (11) | 0/108 (11) | 0/108 (11) | 0/108 (11) | 0/108 (11) |
+| Agente | 0/116 (11) | 0/116 (11) | 0/116 (11) | 0/116 (11) | 0/116 (11) |
 | Prepartita | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) |
-| **TOTALE** | **0/2658** | **0/2658** | **0/2658** | **0/2659** | **0/2659** |
+| **TOTALE** | **0/2457** | **0/2457** | **0/2457** | **0/2458** | **0/2458** |
 
 ### 3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale
 
@@ -116,16 +116,16 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/29 | 0/29 | 0/29 | 0/29 | 0/29 |
 | Creazione | 0/841 | 0/841 | 0/841 | 0/841 | 0/841 |
 | Offerte | 0/43 | 0/43 | 0/43 | 0/43 | 0/43 |
-| Dashboard | 0/201 | 0/201 | 0/201 | 0/201 | 0/201 |
-| Stagione · Classifica | 0/394 | 0/394 | 0/394 | 0/395 | 0/395 |
-| Stagione · Calendario | 0/322 | 0/322 | 0/322 | 0/322 | 0/322 |
-| Stagione · Coppe | 0/48 | 0/48 | 0/48 | 0/48 | 0/48 |
-| Club | 0/154 | 0/154 | 0/154 | 0/154 | 0/154 |
-| Carriera · Profilo | 0/326 | 0/326 | 0/326 | 0/326 | 0/326 |
-| Carriera · Nazionale | 0/114 | 0/114 | 0/114 | 0/114 | 0/114 |
-| Agente | 0/123 | 0/123 | 0/123 | 0/123 | 0/123 |
+| Dashboard | 0/197 | 0/197 | 0/197 | 0/197 | 0/197 |
+| Stagione · Classifica | 0/388 | 0/388 | 0/388 | 0/389 | 0/389 |
+| Stagione · Calendario | 0/316 | 0/316 | 0/316 | 0/316 | 0/316 |
+| Stagione · Coppe | 0/42 | 0/42 | 0/42 | 0/42 | 0/42 |
+| Club | 0/146 | 0/146 | 0/146 | 0/146 | 0/146 |
+| Carriera · Profilo | 0/168 | 0/168 | 0/168 | 0/168 | 0/168 |
+| Carriera · Nazionale | 0/108 | 0/108 | 0/108 | 0/108 | 0/108 |
+| Agente | 0/116 | 0/116 | 0/116 | 0/116 | 0/116 |
 | Prepartita | 0/35 | 0/35 | 0/35 | 0/35 | 0/35 |
-| **TOTALE** | **0/2658** | **0/2658** | **0/2658** | **0/2659** | **0/2659** |
+| **TOTALE** | **0/2457** | **0/2457** | **0/2457** | **0/2458** | **0/2458** |
 
 ### 4 · Contrasto sotto soglia WCAG — sotto/misurati (fra parentesi: esclusi per gradiente · per glifo emoji)
 
@@ -135,16 +135,16 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/20 (0 · 9) | 0/20 (0 · 9) | 0/20 (0 · 9) | 0/20 (0 · 9) | 0/20 (0 · 9) |
 | Creazione | 0/819 (3 · 19) | 0/819 (3 · 19) | 0/819 (3 · 19) | 0/819 (3 · 19) | 0/819 (3 · 19) |
 | Offerte | 0/29 (5 · 9) | 0/29 (5 · 9) | 0/29 (5 · 9) | 0/29 (5 · 9) | 0/29 (5 · 9) |
-| Dashboard | 0/126 (38 · 37) | 0/126 (38 · 37) | 0/126 (38 · 37) | 0/126 (38 · 37) | 0/126 (38 · 37) |
-| Stagione · Classifica | 0/350 (9 · 35) | 0/350 (9 · 35) | 0/350 (9 · 35) | 0/351 (9 · 35) | 0/351 (9 · 35) |
-| Stagione · Calendario | 0/239 (9 · 74) | 0/239 (9 · 74) | 0/239 (9 · 74) | 0/239 (9 · 74) | 0/239 (9 · 74) |
-| Stagione · Coppe | 0/26 (9 · 13) | 0/26 (9 · 13) | 0/26 (9 · 13) | 0/26 (9 · 13) | 0/26 (9 · 13) |
-| Club | 0/94 (25 · 35) | 0/94 (25 · 35) | 0/94 (25 · 35) | 0/94 (25 · 35) | 0/94 (25 · 35) |
-| Carriera · Profilo | 0/196 (39 · 91) | 0/196 (39 · 91) | 0/196 (39 · 91) | 0/196 (39 · 91) | 0/196 (39 · 91) |
-| Carriera · Nazionale | 0/73 (19 · 22) | 0/73 (19 · 22) | 0/73 (19 · 22) | 0/73 (19 · 22) | 0/73 (19 · 22) |
-| Agente | 0/93 (6 · 24) | 0/93 (6 · 24) | 0/93 (6 · 24) | 0/93 (6 · 24) | 0/93 (6 · 24) |
+| Dashboard | 0/125 (42 · 30) | 0/125 (42 · 30) | 0/125 (42 · 30) | 0/125 (42 · 30) | 0/125 (42 · 30) |
+| Stagione · Classifica | 0/350 (9 · 29) | 0/350 (9 · 29) | 0/350 (9 · 29) | 0/351 (9 · 29) | 0/351 (9 · 29) |
+| Stagione · Calendario | 0/239 (9 · 68) | 0/239 (9 · 68) | 0/239 (9 · 68) | 0/239 (9 · 68) | 0/239 (9 · 68) |
+| Stagione · Coppe | 0/26 (9 · 7) | 0/26 (9 · 7) | 0/26 (9 · 7) | 0/26 (9 · 7) | 0/26 (9 · 7) |
+| Club | 0/94 (25 · 27) | 0/94 (25 · 27) | 0/94 (25 · 27) | 0/94 (25 · 27) | 0/94 (25 · 27) |
+| Carriera · Profilo | 0/89 (49 · 30) | 0/89 (49 · 30) | 0/89 (49 · 30) | 0/89 (49 · 30) | 0/89 (49 · 30) |
+| Carriera · Nazionale | 0/73 (19 · 16) | 0/73 (19 · 16) | 0/73 (19 · 16) | 0/73 (19 · 16) | 0/73 (19 · 16) |
+| Agente | 0/93 (6 · 17) | 0/93 (6 · 17) | 0/93 (6 · 17) | 0/93 (6 · 17) | 0/93 (6 · 17) |
 | Prepartita | 0/17 (12 · 6) | 0/17 (12 · 6) | 0/17 (12 · 6) | 0/17 (12 · 6) | 0/17 (12 · 6) |
-| **TOTALE** | **0/2086** | **0/2086** | **0/2086** | **0/2087** | **0/2087** |
+| **TOTALE** | **0/1978** | **0/1978** | **0/1978** | **0/1979** | **0/1979** |
 
 ### 5 · Bottoni pieni di marca (una sola azione primaria per vista)
 
@@ -169,18 +169,18 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 
 | schermata | 360px | 375px | 390px | 412px | 430px |
 |---|---:|---:|---:|---:|---:|
-| Home fuori carriera | 800 (0.87) | 742 (0.81) | 844 (0.92) | 915 (1) | 932 (1.02) |
+| Home fuori carriera | 800 (0.87) | 697 (0.76) | 844 (0.92) | 915 (1) | 932 (1.02) |
 | Impostazioni | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
-| Creazione | 1749 (1.91) | 1749 (1.91) | 1749 (1.91) | 1749 (1.91) | 1721 (1.88) |
+| Creazione | 1731 (1.89) | 1731 (1.89) | 1731 (1.89) | 1731 (1.89) | 1703 (1.86) |
 | Offerte | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
-| Dashboard | 2830 (3.09) | 2799 (3.06) | 2799 (3.06) | 2700 (2.95) | 2682 (2.93) |
-| Stagione · Classifica | 2035 (2.22) | 2035 (2.22) | 2035 (2.22) | 2035 (2.22) | 2035 (2.22) |
-| Stagione · Calendario | 1651 (1.8) | 1651 (1.8) | 1651 (1.8) | 1651 (1.8) | 1651 (1.8) |
+| Dashboard | 2880 (3.15) | 2864 (3.13) | 2847 (3.11) | 2718 (2.97) | 2702 (2.95) |
+| Stagione · Classifica | 1988 (2.17) | 1988 (2.17) | 1988 (2.17) | 1988 (2.17) | 1988 (2.17) |
+| Stagione · Calendario | 1602 (1.75) | 1602 (1.75) | 1602 (1.75) | 1602 (1.75) | 1602 (1.75) |
 | Stagione · Coppe | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
-| Club | 1565 (1.71) | 1540 (1.68) | 1539 (1.68) | 1527 (1.67) | 1527 (1.67) |
-| Carriera · Profilo | 3662 (4) | 3621 (3.96) | 3621 (3.96) | 3575 (3.91) | 3545 (3.87) |
-| Carriera · Nazionale | 1195 (1.31) | 1195 (1.31) | 1195 (1.31) | 1183 (1.29) | 1183 (1.29) |
-| Agente | 1652 (1.81) | 1652 (1.81) | 1594 (1.74) | 1594 (1.74) | 1594 (1.74) |
+| Club | 1429 (1.56) | 1428 (1.56) | 1428 (1.56) | 1416 (1.55) | 1403 (1.53) |
+| Carriera · Profilo | 2455 (2.68) | 2420 (2.64) | 2420 (2.64) | 2361 (2.58) | 2361 (2.58) |
+| Carriera · Nazionale | 1155 (1.26) | 1142 (1.25) | 1142 (1.25) | 1142 (1.25) | 1142 (1.25) |
+| Agente | 1578 (1.72) | 1538 (1.68) | 1521 (1.66) | 1521 (1.66) | 1521 (1.66) |
 | Prepartita | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
 
 > Lo scorritore misurato a 412 px, schermata per schermata: Home fuori carriera `documento` · Impostazioni `documento` · Creazione `div#root>div.cpm-root>div.cpm-scroll` · Offerte `documento` · Dashboard `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Classifica `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Calendario `div#root>div.cpm-root>div.cpm-scroll` · Stagione · Coppe `documento` · Club `div#root>div.cpm-root>div.cpm-scroll` · Carriera · Profilo `div#root>div.cpm-root>div.cpm-scroll` · Carriera · Nazionale `div#root>div.cpm-root>div.cpm-scroll` · Agente `div#root>div.cpm-root>div.cpm-scroll` · Prepartita `documento`
@@ -198,7 +198,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Stagione · Calendario | 10 | 10 | 10 | 10 | 10 |
 | Stagione · Coppe | 6 | 6 | 6 | 6 | 6 |
 | Club | 11 | 11 | 11 | 11 | 11 |
-| Carriera · Profilo | 18 | 18 | 18 | 18 | 18 |
+| Carriera · Profilo | 12 | 12 | 12 | 12 | 12 |
 | Carriera · Nazionale | 9 | 9 | 9 | 9 | 9 |
 | Agente | 9 | 9 | 9 | 9 | 9 |
 | Prepartita | 6 | 6 | 6 | 6 | 6 |
@@ -216,7 +216,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Stagione · Calendario | 9 | 9 | 9 | 9 | 9 |
 | Stagione · Coppe | 3 | 3 | 3 | 3 | 3 |
 | Club | 4 | 4 | 4 | 4 | 4 |
-| Carriera · Profilo | 8 | 8 | 8 | 8 | 8 |
+| Carriera · Profilo | 6 | 6 | 6 | 6 | 6 |
 | Carriera · Nazionale | 6 | 6 | 6 | 6 | 6 |
 | Agente | 5 | 5 | 5 | 5 | 5 |
 | Prepartita | 3 | 3 | 3 | 3 | 3 |
@@ -252,7 +252,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Stagione · Calendario | 5 | 5 | 5 | 5 | 5 |
 | Stagione · Coppe | 4 | 4 | 4 | 4 | 4 |
 | Club | 6 | 6 | 6 | 6 | 6 |
-| Carriera · Profilo | 11 | 11 | 11 | 11 | 11 |
+| Carriera · Profilo | 12 | 12 | 12 | 12 | 12 |
 | Carriera · Nazionale | 5 | 5 | 5 | 5 | 5 |
 | Agente | 7 | 7 | 7 | 7 | 7 |
 | Prepartita | 5 | 5 | 5 | 5 | 5 |
@@ -279,6 +279,184 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 1159.1 | Liga Ibérica 2 |
 | Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 1049.5 | Ligue Nationale 2 |
 | Stagione · Classifica | 360 | `div:nth-child(3)>div:nth-child(1)>button.cpm-press` | 918.1 | Deutsche Liga 2 |
+
+### 9-quater · SUPERFICI SCURE in un gioco a tema unico CHIARO (riquadri larghi mezzo schermo, alti >= 40 px, luminanza < 0,25)
+
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 1 | 1 | 1 | 1 | 1 |
+| Impostazioni | 0 | 0 | 0 | 0 | 0 |
+| Creazione | 1 | 1 | 1 | 1 | 1 |
+| Offerte | 0 | 0 | 0 | 0 | 0 |
+| Dashboard | 8 | 8 | 8 | 8 | 8 |
+| Stagione · Classifica | 1 | 1 | 1 | 1 | 1 |
+| Stagione · Calendario | 1 | 1 | 1 | 1 | 1 |
+| Stagione · Coppe | 1 | 1 | 1 | 1 | 1 |
+| Club | 2 | 2 | 2 | 2 | 2 |
+| Carriera · Profilo | 5 | 5 | 5 | 5 | 5 |
+| Carriera · Nazionale | 1 | 1 | 1 | 1 | 1 |
+| Agente | 1 | 1 | 1 | 1 | 1 |
+| Prepartita | 1 | 1 | 1 | 1 | 1 |
+| **TOTALE** | **23** | **23** | **23** | **23** | **23** |
+
+> [22/09] Il PO ha segnalato in pochi minuti sette schermate come «disomogenee» o «fuori standard».
+> Non sono sette difetti: sono superfici rimaste SCURE quando il tema scuro e' stato ritirato (7.947).
+> Qui si contano e si nominano, cosi' la famiglia si chiude con una misura invece che un rilievo per volta.
+
+| schermata | alt. px | luminanza | fondo | selettore | testo |
+|---|---:|---:|---|---|---|
+| Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteFootball Career Simula |
+| Creazione | 52 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | ⚡ INIZIA I PROVINI |
+| Dashboard | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+|  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
+|  | 187 | 0.012 | `#241438` | `div.cpm-scroll>div.cpm-career>div:nth-child(4)` | La tua storia🆚La sfida di sempreS |
+|  | 136 | 0.017 | `#14243a` | `div.cpm-scroll>div.cpm-career>div:nth-child(6)` | 👟 Sponsor — nuova offertaFalco No |
+|  | 173 | 0.013 | `#331426` | `div.cpm-scroll>div.cpm-career>div:nth-child(7)` | ❤️ Vita privataQualcuno in tribuna |
+|  | 184 | 0.012 | `#241a12` | `div.cpm-scroll>div.cpm-career>div:nth-child(9)` | ⏳ NEL PIENO👁️Adesso guardano teTe |
+| Stagione · Classifica | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+| Stagione · Calendario | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+| Stagione · Coppe | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+| Club | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+|  | 207 | 0.016 | `#112240` | `div.cpm-career>div:nth-child(2)>div:nth-child(10)` | Lo Spogliatoio🧠Luigi TestaIl Ment |
+| Carriera · Profilo | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+|  | 135 | 0.014 | `#1a1f2e` | `div.cpm-career>div:nth-child(3)>div:nth-child(1)` | Biografia"Grafica Probe, 26 anni,  |
+|  | 326 | 0.042 | `#312e81` | `div.cpm-career>div:nth-child(3)>div:nth-child(6)` | 🆚 Il tuo rivale⚽Bruno SalvatoriFC |
+|  | 77 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(7)` | CAT⭐ Club dei sogniFC CatalunyaNon |
+|  | 84 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(10)` | 💪Stile di giocoBomberPotenza e is |
+| Carriera · Nazionale | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+| Agente | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 06:39Avataaars |
+| Prepartita | 45 | 0.07 | `#8e1f33` | `div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus` | 📋 Formazioni → |
+
+### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
+
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 53 / 0 / 0 | 53 / 0 / 0 | 53 / 0 / 0 | 53 / 0 / 0 | 53 / 0 / 0 |
+| Impostazioni | 53 / 0 / 0 | 53 / 0 / 0 | 53 / 0 / 0 | 53 / 0 / 0 | 53 / 0 / 0 |
+| Creazione | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
+| Offerte | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
+| Dashboard | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
+| Stagione · Classifica | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
+| Stagione · Calendario | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
+| Stagione · Coppe | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
+| Club | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
+| Carriera · Profilo | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
+| Carriera · Nazionale | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
+| Agente | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 | 49 / 26 / 25 |
+| Prepartita | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
+
+> La voce di menu' e' un bersaglio per il dito: la soglia consigliata per il tocco e' **44 px**.
+> Le due strisce di servizio sono un invito, non un comando, e possono stare piu' basse.
+
+### 9-bis · EMOJI rese (il provino approvato dal PO non ne ha nessuna)
+
+| schermata | 360px | 375px | 390px | 412px | 430px |
+|---|---:|---:|---:|---:|---:|
+| Home fuori carriera | 9 | 9 | 9 | 9 | 9 |
+| Impostazioni | 12 | 12 | 12 | 12 | 12 |
+| Creazione | 14 | 14 | 14 | 14 | 14 |
+| Offerte | 7 | 7 | 7 | 7 | 7 |
+| Dashboard | 27 | 27 | 27 | 27 | 27 |
+| Stagione · Classifica | 17 | 17 | 17 | 17 | 17 |
+| Stagione · Calendario | 58 | 58 | 58 | 58 | 58 |
+| Stagione · Coppe | 7 | 7 | 7 | 7 | 7 |
+| Club | 22 | 22 | 22 | 22 | 22 |
+| Carriera · Profilo | 24 | 24 | 24 | 24 | 24 |
+| Carriera · Nazionale | 12 | 12 | 12 | 12 | 12 |
+| Agente | 14 | 14 | 14 | 14 | 14 |
+| Prepartita | 9 | 9 | 9 | 9 | 9 |
+| **TOTALE** | **232** | **232** | **232** | **232** | **232** |
+
+> Contati i CARATTERI emoji sul testo reso. Il provino (`docs/collaudo-grafico/proposta-schermate/`)
+> non ne usa **nessuna**: i cappelli sono etichetta maiuscoletta + filo + azione, la barra in basso
+> e' solo testo. Questo numero e' la distanza fra il gioco e la direzione approvata.
+
+| schermata | primi testi con emoji |
+|---|---|
+| Home fuori carriera | `Si scende in campo! ⚽` · `⚽` · `⚡ Nuova carriera` · `🎬 Revisione azioni (sviluppo)` · `🏠` · `🎬` |
+| Impostazioni | `⚙️ Impostazioni` · `🎨 Grafica` · `🎧 Audio` · `🔇 Muto totale` · `🎵 Musica menu` · `🏟️ Audio partite` |
+| Creazione | `Si scende in campo! ⚽` · `👤 Identità` · `🎯 Stile & percorso` · `📋 Percorso carriera` · `💪` · `🪄` |
+| Offerte | `Si scende in campo! ⚽` · `⚽` · `🎯` · `⭐ TOP` |
+| Dashboard | `Si scende in campo! ⚽` · `⚽` · `⚡ Vivi la Settimana` · `🆚` · `🏛️` · `👟` |
+| Stagione · Classifica | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `★` |
+| Stagione · Calendario | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `▶` |
+| Stagione · Coppe | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `☕ Sostieni lo sviluppo di` |
+| Club | `Si scende in campo! ⚽` · `⚽` · `⭐⭐⭐` · `🏛️` · `🧣` · `🩺 Dr.` |
+| Carriera · Profilo | `Si scende in campo! ⚽` · `⚽` · `👤` · `🌍` · `🆚 Il tuo rivale` · `🏆` |
+| Carriera · Nazionale | `Si scende in campo! ⚽` · `⚽` · `👤` · `🌍` · `📊` · `🏆` |
+| Agente | `Si scende in campo! ⚽` · `⚽` · `🤵 Agente · −` · `🏋️` · `🥗` · `✂️ Rescindi (stop 10%)` |
+| Prepartita | `Si scende in campo! ⚽` · `⚽` · `· Giornata 11 di 34 ⚠︎ ?g` · `🗡️` · `⛅ Parz. nuvoloso` · `🎙️ ANALISI DEL MISTER — COME ` |
+
+## Ridondanze · la stessa grandezza, quante volte e dove (412 px, fisarmoniche come le trova il giocatore)
+
+> [21/09 · richiesta PO] Si contano le ETICHETTE, non i numeri: un «14» si ripete per caso, un
+> «Assist» no. Due letture con rimedi opposti: **nella colonna** una grandezza ripetuta dentro la
+> stessa schermata (da togliere); **nella riga** la stessa grandezza in molte schermate — che non e'
+> per forza un difetto (lo stipendio sta bene in Contratto e dall'Agente), ma sopra le quattro
+> schermate o e' un cruscotto voluto o e' rumore. Nessuna soglia: e' un censimento.
+>
+> **LIMITE DICHIARATO, e cambia la lettura**: le otto schermate di carriera condividono la TESTATA
+> dell'eroe (OVR, forma, morale, fatica). Una grandezza che risulta su **8 schermate** e' quasi
+> sempre quella — cioe' un cruscotto VOLUTO, non una ridondanza. Finche' lo strumento non separa
+> testata e corpo, la riga da 8 non accusa nessuno: si legge la COLONNA.
+
+| etichetta | Home fuori carriera | Impostazioni | Creazione | Offerte | Dashboard | Classifica | Calendario | Coppe | Club | Profilo | Nazionale | Agente | Prepartita | schermate |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Stagione |  |  |  |  | 2 | 1 | 2 | 1 | 3 | 2 | 5 | 2 |  | **8** |
+| OVR |  |  |  |  | 1 | 1 | 1 | 1 | 1 | 2 | 3 | 1 |  | **8** |
+| Forma |  |  |  |  | 2 | 1 | 1 | 1 | 3 | 1 | 1 | 1 |  | **8** |
+| Fatica |  |  |  |  | 1 | 1 | 1 | 1 | 2 | 1 | 1 | 2 |  | **8** |
+| Morale |  |  |  |  | 1 | 1 | 1 | 1 | 2 | 1 | 1 | 1 |  | **8** |
+| Gol |  |  | 1 | 1 | 3 | 2 |  |  |  | 9 | 2 |  |  | **6** |
+| Partite |  | 1 |  |  | 3 |  | 2 |  |  | 1 | 1 |  |  | **5** |
+| Contratto |  |  |  |  | 1 |  |  |  | 2 | 1 |  | 1 |  | **4** |
+| Settimana |  |  |  |  | 8 |  |  |  |  |  | 4 | 3 |  | **3** |
+| Assist |  |  | 1 |  | 2 |  |  |  |  | 4 |  |  |  | **3** |
+| Fiducia |  |  |  |  | 1 |  |  |  |  | 1 |  | 2 |  | **3** |
+| Presenze |  |  |  |  |  |  |  |  |  | 2 | 1 |  |  | **2** |
+| Valore |  |  |  |  |  |  |  |  |  | 1 |  | 1 |  | **2** |
+| Trofei |  |  |  |  |  |  |  |  |  | 3 |  |  |  | **1** |
+| Stipendio |  |  |  |  |  |  |  |  |  |  |  | 3 |  | **1** |
+| Obiettivi |  |  |  |  | 1 |  |  |  |  |  |  |  |  | **1** |
+
+## Dettaglio · DOVE STANNO I PIXEL nelle schermate lunghe (a 412 px)
+
+> [21/09 · rilievo PO «il tab carriera e' lunghissimo»] Sapere che una schermata e' lunga non dice
+> quale pezzo la allunga. Qui i blocchi di primo livello dello scorritore, dal piu' alto, con la
+> quota sul totale e il testo che portano. Solo sopra le due schermate: sotto non c'e' niente da accorciare.
+
+| schermata | blocco | px | quota | testo |
+|---|---:|---:|---:|---|
+| Dashboard (2718 px) | 1 | 473 | 17.4 % | 📅La tua settimanaSettimana di campionatoS |
+|  | 2 | 288 | 10.6 % | Lega B · 11ª giornataProssima partitaCalen |
+|  | 3 | 208 | 7.7 % | Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱 |
+|  | 4 | 187 | 6.9 % | La tua storia🆚La sfida di sempreSettimana |
+|  | 5 | 184 | 6.8 % | ⏳ NEL PIENO👁️Adesso guardano teTe ne acco |
+|  | 6 | 183 | 6.7 % | K⚽rwardEliteSalva · 06:39AvataaarsPablo St |
+|  | 7 | 183 | 6.7 % | Il mondo fuori👀C'era il CT, in tribunaNes |
+|  | 8 | 175 | 6.4 % | Stagione 4 · Settimana 12/3812Partite14Gol |
+|  | 9 | 174 | 6.4 % | Il tuo procuratore — questione di filosofi |
+|  | 10 | 173 | 6.4 % | ❤️ Vita privataQualcuno in tribunaElena er |
+|  | 11 | 154 | 5.7 % | Il progetto del club🏛️Progetto solidoNess |
+|  | 12 | 136 | 5 % | 👟 Sponsor — nuova offertaFalco Nove ti pr |
+| Stagione · Classifica (1988 px) | 1 | 1303 | 65.6 % | Lega B ★Lega APremier DivisionLiga Ibérica |
+|  | 2 | 317 | 15.9 % | Marcatori Storici — Lega B#5Grafica Probe8 |
+|  | 3 | 246 | 12.4 % | Risultati Internazionali — W.12Premier Div |
+|  | 4 | 183 | 9.2 % | K⚽rwardEliteSalva · 06:39AvataaarsPablo St |
+|  | 5 | 101 | 5.1 % | EnterGioca0AvanzaEscIndietroSpcConferma☕ S |
+|  | 6 | 45 | 2.3 % | 📊Classifica📅Calendario🏆Coppe |
+| Carriera · Profilo (2361 px) | 1 | 326 | 13.8 % | 🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona |
+|  | 2 | 314 | 13.3 % | Attributivelocità82tecnica81fisico80mental |
+|  | 3 | 176 | 7.4 % | StatisticheGol stag.14Assist stag.6Partite |
+|  | 4 | 135 | 5.7 % | Biografia"Grafica Probe, 26 anni, Italia · |
+|  | 5 | 104 | 4.4 % | Timeline StagioniS.3🥇 Coppa Nazionale🌍 C |
+|  | 6 | 90 | 3.8 % | 🎬 Rivedi l'intro📁 Esporta salvataggio JS |
+|  | 7 | 84 | 3.6 % | 💪Stile di giocoBomberPotenza e istinto de |
+|  | 8 | 77 | 3.3 % | CAT⭐ Club dei sogniFC CatalunyaNon hai anc |
+|  | 9 | 68 | 2.9 % | TitolareProssimo gradino — Leader: la fasc |
+|  | 10 | 67 | 2.8 % | Record & Premi Personali⚽ 22 gol/stag.🎯 9 |
+|  | 11 | 67 | 2.8 % | 🐞Strumenti di collaudoIl tasto ⚠️ accanto |
+|  | 12 | 55 | 2.3 % | Calciatore professionistaStagioni da pro:  |
 
 ## Dettaglio · i nodi SOTTO IL PAVIMENTO di 11 px (a 412 px, la taglia del PO)
 
@@ -315,7 +493,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Offerte | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 11 / 400 | 5 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(1)` | Riepilogo provini |
 | Offerte | 6.21:1 | 4.5:1 | `#526279` su `#ffffff` | 13 / 400 | 2 | `div:nth-child(2)>div:nth-child(1)>button.cpm-press.cpm-focus` | Scegli → |
 | Dashboard | 5.02:1 | 4.5:1 | `#b45309` su `#ffffff` | 11 / 700 | 1 | `div:nth-child(1)>div:nth-child(1)>span:nth-child(3)` | ↓ ti pesa |
-| Dashboard | 5.17:1 | 4.5:1 | `#2563eb` su `#ffffff` | 12 / 700 | 1 | `div:nth-child(12)>div:nth-child(1)>span:nth-child(2)` | Titolare Affermato |
+| Dashboard | 5.17:1 | 4.5:1 | `#2563eb` su `#ffffff` | 12 / 700 | 1 | `div:nth-child(13)>div:nth-child(1)>span:nth-child(2)` | Titolare Affermato |
 | Dashboard | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 600 | 3 | `div:nth-child(5)>div:nth-child(1)>div:nth-child(1)` | Gol e assist |
 | Dashboard | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 12 / 600 | 3 | `div:nth-child(5)>div:nth-child(1)>div:nth-child(3)` | in 12 partite |
 | Dashboard | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 10 | `div:nth-child(4)>div:nth-child(1)>span.cpm-num` | 4 |
@@ -340,10 +518,10 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Club | 5.48:1 | 4.5:1 | `#026fa7` su `#ffffff` | 12 / 700 | 1 | `div:nth-child(1)>div:nth-child(1)>span.cpm-num` | 50 |
 | Club | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 20 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(6)` | 🩺 Dr. |
 | Carriera · Profilo | 4.73:1 | 3:1 | `#026fa7` su `#f1eee8` | 17 / 800 | 1 | `div:nth-child(2)>div:nth-child(3)>div.cpm-num` | 12 |
-| Carriera · Profilo | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 400 | 10 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Stipendio |
+| Carriera · Profilo | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 400 | 6 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Gol stag. |
 | Carriera · Profilo | 5.00:1 | 3:1 | `#995404` su `#f1eee8` | 17 / 800 | 2 | `div:nth-child(2)>div:nth-child(1)>div.cpm-num` | 14 |
-| Carriera · Profilo | 5.06:1 | 4.5:1 | `#596a80` su `#f5f5f5` | 11 / 600 | 12 | `div:nth-child(2)>div:nth-child(5)>span:nth-child(2)` | 200 partite |
 | Carriera · Profilo | 5.15:1 | 3:1 | `#0f7334` su `#f1eee8` | 17 / 800 | 1 | `div:nth-child(2)>div:nth-child(6)>div.cpm-num` | 45M€ |
+| Carriera · Profilo | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 700 | 8 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Forma |
 | Carriera · Nazionale | 4.66:1 | 4.5:1 | `#596a80` su `#e7ecf5` | 11 / 400 | 2 | `div:nth-child(2)>div:nth-child(1)>span.cpm-num` | 0 |
 | Carriera · Nazionale | 4.99:1 | 4.5:1 | `#596a80` su `#f5f3ef` | 11 / 900 | 6 | `div:nth-child(2)>div:nth-child(2)>span.cpm-num` | 2 |
 | Carriera · Nazionale | 4.99:1 | 4.5:1 | `#596a80` su `#f5f3ef` | 11 / 400 | 6 | `div:nth-child(2)>div:nth-child(2)>span.cpm-num` | 31 |

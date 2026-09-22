@@ -89,7 +89,33 @@
     ],
     "altezzaPx": 800,
     "schermate": 0.87,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Nuova carriera",
+     "🎬 Revisione azioni (sviluppo)",
+     "🏠",
+     "🎬",
+     "📂",
+     "⚙️"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-scroll>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.095,
+      "fondo": "#a3263a",
+      "px": 258,
+      "txt": "K⚽rwardEliteFootball Career Simula"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -152,9 +178,35 @@
      20,
      50
     ],
-    "altezzaPx": 742,
-    "schermate": 0.81,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 697,
+    "schermate": 0.76,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Nuova carriera",
+     "🎬 Revisione azioni (sviluppo)",
+     "🏠",
+     "🎬",
+     "📂",
+     "⚙️"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-scroll>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.095,
+      "fondo": "#a3263a",
+      "px": 258,
+      "txt": "K⚽rwardEliteFootball Career Simula"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -219,7 +271,33 @@
     ],
     "altezzaPx": 844,
     "schermate": 0.92,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Nuova carriera",
+     "🎬 Revisione azioni (sviluppo)",
+     "🏠",
+     "🎬",
+     "📂",
+     "⚙️"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-scroll>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.095,
+      "fondo": "#a3263a",
+      "px": 258,
+      "txt": "K⚽rwardEliteFootball Career Simula"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -284,7 +362,33 @@
     ],
     "altezzaPx": 915,
     "schermate": 1,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Nuova carriera",
+     "🎬 Revisione azioni (sviluppo)",
+     "🏠",
+     "🎬",
+     "📂",
+     "⚙️"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-scroll>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.095,
+      "fondo": "#a3263a",
+      "px": 258,
+      "txt": "K⚽rwardEliteFootball Career Simula"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -349,7 +453,33 @@
     ],
     "altezzaPx": 932,
     "schermate": 1.02,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Nuova carriera",
+     "🎬 Revisione azioni (sviluppo)",
+     "🏠",
+     "🎬",
+     "📂",
+     "⚙️"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-scroll>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.095,
+      "fondo": "#a3263a",
+      "px": 258,
+      "txt": "K⚽rwardEliteFootball Career Simula"
+     }
+    ]
    }
   },
   "impostazioni": {
@@ -450,7 +580,29 @@
     ],
     "altezzaPx": 800,
     "schermate": 0.87,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 1
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "⚙️ Impostazioni",
+     "🎨 Grafica",
+     "🎧 Audio",
+     "🔇 Muto totale",
+     "🎵 Musica menu",
+     "🏟️ Audio partite",
+     "✨ Effetti sonori",
+     "📣 Pubblico",
+     "🟨 Arbitro",
+     "🎙️ Telecronaca"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    },
    "375": {
     "W": 375,
@@ -549,7 +701,29 @@
     ],
     "altezzaPx": 667,
     "schermate": 0.73,
-    "scorritore": "div.cpm-root>div:nth-child(1)>div:nth-child(2)"
+    "scorritore": "div.cpm-root>div:nth-child(1)>div:nth-child(2)",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 1
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "⚙️ Impostazioni",
+     "🎨 Grafica",
+     "🎧 Audio",
+     "🔇 Muto totale",
+     "🎵 Musica menu",
+     "🏟️ Audio partite",
+     "✨ Effetti sonori",
+     "📣 Pubblico",
+     "🟨 Arbitro",
+     "🎙️ Telecronaca"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    },
    "390": {
     "W": 390,
@@ -648,7 +822,29 @@
     ],
     "altezzaPx": 844,
     "schermate": 0.92,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 1
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "⚙️ Impostazioni",
+     "🎨 Grafica",
+     "🎧 Audio",
+     "🔇 Muto totale",
+     "🎵 Musica menu",
+     "🏟️ Audio partite",
+     "✨ Effetti sonori",
+     "📣 Pubblico",
+     "🟨 Arbitro",
+     "🎙️ Telecronaca"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    },
    "412": {
     "W": 412,
@@ -747,7 +943,29 @@
     ],
     "altezzaPx": 915,
     "schermate": 1,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 1
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "⚙️ Impostazioni",
+     "🎨 Grafica",
+     "🎧 Audio",
+     "🔇 Muto totale",
+     "🎵 Musica menu",
+     "🏟️ Audio partite",
+     "✨ Effetti sonori",
+     "📣 Pubblico",
+     "🟨 Arbitro",
+     "🎙️ Telecronaca"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    },
    "430": {
     "W": 430,
@@ -846,7 +1064,29 @@
     ],
     "altezzaPx": 932,
     "schermate": 1.02,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 1
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "⚙️ Impostazioni",
+     "🎨 Grafica",
+     "🎧 Audio",
+     "🔇 Muto totale",
+     "🎵 Musica menu",
+     "🏟️ Audio partite",
+     "✨ Effetti sonori",
+     "📣 Pubblico",
+     "🟨 Arbitro",
+     "🎙️ Telecronaca"
+    ],
+    "hVoce": 53,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    }
   },
   "creazione": {
@@ -959,9 +1199,40 @@
      14,
      50
     ],
-    "altezzaPx": 1749,
-    "schermate": 1.91,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1731,
+    "schermate": 1.89,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1,
+     "Assist": 1
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "👤 Identità",
+     "🎯 Stile & percorso",
+     "📋 Percorso carriera",
+     "💪",
+     "🪄",
+     "⚡",
+     "🎨",
+     "🦁",
+     "🎯"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 52,
+      "txt": "⚡ INIZIA I PROVINI"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -1061,9 +1332,40 @@
      14,
      50
     ],
-    "altezzaPx": 1749,
-    "schermate": 1.91,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1731,
+    "schermate": 1.89,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1,
+     "Assist": 1
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "👤 Identità",
+     "🎯 Stile & percorso",
+     "📋 Percorso carriera",
+     "💪",
+     "🪄",
+     "⚡",
+     "🎨",
+     "🦁",
+     "🎯"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 52,
+      "txt": "⚡ INIZIA I PROVINI"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -1163,9 +1465,40 @@
      14,
      50
     ],
-    "altezzaPx": 1749,
-    "schermate": 1.91,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1731,
+    "schermate": 1.89,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1,
+     "Assist": 1
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "👤 Identità",
+     "🎯 Stile & percorso",
+     "📋 Percorso carriera",
+     "💪",
+     "🪄",
+     "⚡",
+     "🎨",
+     "🦁",
+     "🎯"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 52,
+      "txt": "⚡ INIZIA I PROVINI"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -1265,9 +1598,40 @@
      14,
      50
     ],
-    "altezzaPx": 1749,
-    "schermate": 1.91,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1731,
+    "schermate": 1.89,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1,
+     "Assist": 1
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "👤 Identità",
+     "🎯 Stile & percorso",
+     "📋 Percorso carriera",
+     "💪",
+     "🪄",
+     "⚡",
+     "🎨",
+     "🦁",
+     "🎯"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 52,
+      "txt": "⚡ INIZIA I PROVINI"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -1367,9 +1731,40 @@
      14,
      50
     ],
-    "altezzaPx": 1721,
-    "schermate": 1.88,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1703,
+    "schermate": 1.86,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1,
+     "Assist": 1
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "👤 Identità",
+     "🎯 Stile & percorso",
+     "📋 Percorso carriera",
+     "💪",
+     "🪄",
+     "⚡",
+     "🎨",
+     "🦁",
+     "🎯"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-create>div:nth-child(2)>button.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 52,
+      "txt": "⚡ INIZIA I PROVINI"
+     }
+    ]
    }
   },
   "offerte": {
@@ -1471,7 +1866,23 @@
     ],
     "altezzaPx": 800,
     "schermate": 0.87,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🎯",
+     "⭐ TOP"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    },
    "375": {
     "W": 375,
@@ -1571,7 +1982,23 @@
     ],
     "altezzaPx": 667,
     "schermate": 0.73,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🎯",
+     "⭐ TOP"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    },
    "390": {
     "W": 390,
@@ -1671,7 +2098,23 @@
     ],
     "altezzaPx": 844,
     "schermate": 0.92,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🎯",
+     "⭐ TOP"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    },
    "412": {
     "W": 412,
@@ -1771,7 +2214,23 @@
     ],
     "altezzaPx": 915,
     "schermate": 1,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🎯",
+     "⭐ TOP"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    },
    "430": {
     "W": 430,
@@ -1871,7 +2330,23 @@
     ],
     "altezzaPx": 932,
     "schermate": 1.02,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🎯",
+     "⭐ TOP"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 0,
+    "scuri": []
    }
   },
   "dashboard": {
@@ -1885,15 +2360,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 201,
+    "nTesto": 197,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 126,
+    "nMisurati": 125,
     "nSotto": 0,
-    "nGradiente": 38,
-    "nEmoji": 37,
+    "nGradiente": 42,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -1914,7 +2389,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
      {
@@ -1982,9 +2457,158 @@
      16,
      50
     ],
-    "altezzaPx": 2830,
-    "schermate": 3.09,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2880,
+    "schermate": 3.15,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 473,
+      "quota": 16.4,
+      "txt": "📅La tua settimanaSettimana di campionatoS",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+     },
+     {
+      "px": 288,
+      "quota": 10,
+      "txt": "Lega B · 11ª giornataProssima partitaCalen",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 245,
+      "quota": 8.5,
+      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+     },
+     {
+      "px": 207,
+      "quota": 7.2,
+      "txt": "Il tuo procuratore — questione di filosofi",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+     },
+     {
+      "px": 206,
+      "quota": 7.1,
+      "txt": "La tua storia🆚La sfida di sempreSettimana",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 203,
+      "quota": 7.1,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 202,
+      "quota": 7,
+      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 183,
+      "quota": 6.3,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 175,
+      "quota": 6.1,
+      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
+     },
+     {
+      "px": 173,
+      "quota": 6,
+      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+     },
+     {
+      "px": 172,
+      "quota": 6,
+      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 172,
+      "quota": 6,
+      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
+     }
+    ],
+    "etichette": {
+     "Gol": 3,
+     "Assist": 2,
+     "Partite": 3,
+     "OVR": 1,
+     "Forma": 2,
+     "Morale": 1,
+     "Fatica": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Stagione": 2,
+     "Settimana": 8,
+     "Obiettivi": 1
+    },
+    "nEmojiChar": 27,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Vivi la Settimana",
+     "🆚",
+     "🏛️",
+     "👟",
+     "✍️ Firmo l’accordo",
+     "❤️",
+     "🏠 Boutique",
+     "🌐 Global"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 8,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 62,
+      "txt": "⚡ Vivi la Settimanaallenamento, ev"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
+      "lum": 0.012,
+      "fondo": "#241438",
+      "px": 206,
+      "txt": "La tua storia🆚La sfida di sempreS"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "lum": 0.017,
+      "fondo": "#14243a",
+      "px": 172,
+      "txt": "👟 Sponsor — nuova offertaFalco No"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
+      "lum": 0.013,
+      "fondo": "#331426",
+      "px": 173,
+      "txt": "❤️ Vita privataQualcuno in tribuna"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.012,
+      "fondo": "#241a12",
+      "px": 203,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -1996,15 +2620,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 201,
+    "nTesto": 197,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 126,
+    "nMisurati": 125,
     "nSotto": 0,
-    "nGradiente": 38,
-    "nEmoji": 37,
+    "nGradiente": 42,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -2025,7 +2649,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
      {
@@ -2093,9 +2717,158 @@
      16,
      50
     ],
-    "altezzaPx": 2799,
-    "schermate": 3.06,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2864,
+    "schermate": 3.13,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 473,
+      "quota": 16.5,
+      "txt": "📅La tua settimanaSettimana di campionatoS",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+     },
+     {
+      "px": 288,
+      "quota": 10.1,
+      "txt": "Lega B · 11ª giornataProssima partitaCalen",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 227,
+      "quota": 7.9,
+      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+     },
+     {
+      "px": 207,
+      "quota": 7.2,
+      "txt": "Il tuo procuratore — questione di filosofi",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+     },
+     {
+      "px": 206,
+      "quota": 7.2,
+      "txt": "La tua storia🆚La sfida di sempreSettimana",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 203,
+      "quota": 7.1,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 202,
+      "quota": 7.1,
+      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 183,
+      "quota": 6.4,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 175,
+      "quota": 6.1,
+      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
+     },
+     {
+      "px": 173,
+      "quota": 6.1,
+      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+     },
+     {
+      "px": 172,
+      "quota": 6,
+      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 172,
+      "quota": 6,
+      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
+     }
+    ],
+    "etichette": {
+     "Gol": 3,
+     "Assist": 2,
+     "Partite": 3,
+     "OVR": 1,
+     "Forma": 2,
+     "Morale": 1,
+     "Fatica": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Stagione": 2,
+     "Settimana": 8,
+     "Obiettivi": 1
+    },
+    "nEmojiChar": 27,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Vivi la Settimana",
+     "🆚",
+     "🏛️",
+     "👟",
+     "✍️ Firmo l’accordo",
+     "❤️",
+     "🏠 Boutique",
+     "🌐 Global"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 8,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 62,
+      "txt": "⚡ Vivi la Settimanaallenamento, ev"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
+      "lum": 0.012,
+      "fondo": "#241438",
+      "px": 206,
+      "txt": "La tua storia🆚La sfida di sempreS"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "lum": 0.017,
+      "fondo": "#14243a",
+      "px": 172,
+      "txt": "👟 Sponsor — nuova offertaFalco No"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
+      "lum": 0.013,
+      "fondo": "#331426",
+      "px": 173,
+      "txt": "❤️ Vita privataQualcuno in tribuna"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.012,
+      "fondo": "#241a12",
+      "px": 203,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -2107,15 +2880,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 201,
+    "nTesto": 197,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 126,
+    "nMisurati": 125,
     "nSotto": 0,
-    "nGradiente": 38,
-    "nEmoji": 37,
+    "nGradiente": 42,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -2136,7 +2909,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
      {
@@ -2204,9 +2977,158 @@
      16,
      50
     ],
-    "altezzaPx": 2799,
-    "schermate": 3.06,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2847,
+    "schermate": 3.11,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 473,
+      "quota": 16.6,
+      "txt": "📅La tua settimanaSettimana di campionatoS",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+     },
+     {
+      "px": 288,
+      "quota": 10.1,
+      "txt": "Lega B · 11ª giornataProssima partitaCalen",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 227,
+      "quota": 8,
+      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+     },
+     {
+      "px": 207,
+      "quota": 7.3,
+      "txt": "Il tuo procuratore — questione di filosofi",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+     },
+     {
+      "px": 203,
+      "quota": 7.1,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 202,
+      "quota": 7.1,
+      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 187,
+      "quota": 6.6,
+      "txt": "La tua storia🆚La sfida di sempreSettimana",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 183,
+      "quota": 6.4,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 175,
+      "quota": 6.1,
+      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
+     },
+     {
+      "px": 173,
+      "quota": 6.1,
+      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+     },
+     {
+      "px": 172,
+      "quota": 6.1,
+      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 172,
+      "quota": 6,
+      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
+     }
+    ],
+    "etichette": {
+     "Gol": 3,
+     "Assist": 2,
+     "Partite": 3,
+     "OVR": 1,
+     "Forma": 2,
+     "Morale": 1,
+     "Fatica": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Stagione": 2,
+     "Settimana": 8,
+     "Obiettivi": 1
+    },
+    "nEmojiChar": 27,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Vivi la Settimana",
+     "🆚",
+     "🏛️",
+     "👟",
+     "✍️ Firmo l’accordo",
+     "❤️",
+     "🏠 Boutique",
+     "🌐 Global"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 8,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 62,
+      "txt": "⚡ Vivi la Settimanaallenamento, ev"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
+      "lum": 0.012,
+      "fondo": "#241438",
+      "px": 187,
+      "txt": "La tua storia🆚La sfida di sempreS"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "lum": 0.017,
+      "fondo": "#14243a",
+      "px": 172,
+      "txt": "👟 Sponsor — nuova offertaFalco No"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
+      "lum": 0.013,
+      "fondo": "#331426",
+      "px": 173,
+      "txt": "❤️ Vita privataQualcuno in tribuna"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.012,
+      "fondo": "#241a12",
+      "px": 203,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -2218,15 +3140,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 201,
+    "nTesto": 197,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 126,
+    "nMisurati": 125,
     "nSotto": 0,
-    "nGradiente": 38,
-    "nEmoji": 37,
+    "nGradiente": 42,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -2247,7 +3169,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
      {
@@ -2315,9 +3237,158 @@
      16,
      50
     ],
-    "altezzaPx": 2700,
-    "schermate": 2.95,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2718,
+    "schermate": 2.97,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 473,
+      "quota": 17.4,
+      "txt": "📅La tua settimanaSettimana di campionatoS",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+     },
+     {
+      "px": 288,
+      "quota": 10.6,
+      "txt": "Lega B · 11ª giornataProssima partitaCalen",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 208,
+      "quota": 7.7,
+      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+     },
+     {
+      "px": 187,
+      "quota": 6.9,
+      "txt": "La tua storia🆚La sfida di sempreSettimana",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 184,
+      "quota": 6.8,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 183,
+      "quota": 6.7,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 183,
+      "quota": 6.7,
+      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 175,
+      "quota": 6.4,
+      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
+     },
+     {
+      "px": 174,
+      "quota": 6.4,
+      "txt": "Il tuo procuratore — questione di filosofi",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+     },
+     {
+      "px": 173,
+      "quota": 6.4,
+      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+     },
+     {
+      "px": 154,
+      "quota": 5.7,
+      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 136,
+      "quota": 5,
+      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
+     }
+    ],
+    "etichette": {
+     "Gol": 3,
+     "Assist": 2,
+     "Partite": 3,
+     "OVR": 1,
+     "Forma": 2,
+     "Morale": 1,
+     "Fatica": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Stagione": 2,
+     "Settimana": 8,
+     "Obiettivi": 1
+    },
+    "nEmojiChar": 27,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Vivi la Settimana",
+     "🆚",
+     "🏛️",
+     "👟",
+     "✍️ Firmo l’accordo",
+     "❤️",
+     "🏠 Boutique",
+     "🌐 Global"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 8,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 62,
+      "txt": "⚡ Vivi la Settimanaallenamento, ev"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
+      "lum": 0.012,
+      "fondo": "#241438",
+      "px": 187,
+      "txt": "La tua storia🆚La sfida di sempreS"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "lum": 0.017,
+      "fondo": "#14243a",
+      "px": 136,
+      "txt": "👟 Sponsor — nuova offertaFalco No"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
+      "lum": 0.013,
+      "fondo": "#331426",
+      "px": 173,
+      "txt": "❤️ Vita privataQualcuno in tribuna"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.012,
+      "fondo": "#241a12",
+      "px": 184,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -2329,15 +3400,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 201,
+    "nTesto": 197,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 126,
+    "nMisurati": 125,
     "nSotto": 0,
-    "nGradiente": 38,
-    "nEmoji": 37,
+    "nGradiente": 42,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -2358,7 +3429,7 @@
       "rap": 5.17,
       "soglia": 4.5,
       "n": 1,
-      "sel": "div:nth-child(12)>div:nth-child(1)>span:nth-child(2)",
+      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
       "esempio": "Titolare Affermato"
      },
      {
@@ -2426,9 +3497,158 @@
      16,
      50
     ],
-    "altezzaPx": 2682,
-    "schermate": 2.93,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2702,
+    "schermate": 2.95,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 456,
+      "quota": 16.9,
+      "txt": "📅La tua settimanaSettimana di campionatoS",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
+     },
+     {
+      "px": 288,
+      "quota": 10.7,
+      "txt": "Lega B · 11ª giornataProssima partitaCalen",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 208,
+      "quota": 7.7,
+      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
+     },
+     {
+      "px": 187,
+      "quota": 6.9,
+      "txt": "La tua storia🆚La sfida di sempreSettimana",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 184,
+      "quota": 6.8,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 183,
+      "quota": 6.8,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 183,
+      "quota": 6.8,
+      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 175,
+      "quota": 6.5,
+      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
+     },
+     {
+      "px": 174,
+      "quota": 6.4,
+      "txt": "Il tuo procuratore — questione di filosofi",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+     },
+     {
+      "px": 173,
+      "quota": 6.4,
+      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+     },
+     {
+      "px": 154,
+      "quota": 5.7,
+      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 136,
+      "quota": 5,
+      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
+     }
+    ],
+    "etichette": {
+     "Gol": 3,
+     "Assist": 2,
+     "Partite": 3,
+     "OVR": 1,
+     "Forma": 2,
+     "Morale": 1,
+     "Fatica": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Stagione": 2,
+     "Settimana": 8,
+     "Obiettivi": 1
+    },
+    "nEmojiChar": 27,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⚡ Vivi la Settimana",
+     "🆚",
+     "🏛️",
+     "👟",
+     "✍️ Firmo l’accordo",
+     "❤️",
+     "🏠 Boutique",
+     "🌐 Global"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 8,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 62,
+      "txt": "⚡ Vivi la Settimanaallenamento, ev"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
+      "lum": 0.012,
+      "fondo": "#241438",
+      "px": 187,
+      "txt": "La tua storia🆚La sfida di sempreS"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "lum": 0.017,
+      "fondo": "#14243a",
+      "px": 136,
+      "txt": "👟 Sponsor — nuova offertaFalco No"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
+      "lum": 0.013,
+      "fondo": "#331426",
+      "px": 173,
+      "txt": "❤️ Vita privataQualcuno in tribuna"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.012,
+      "fondo": "#241a12",
+      "px": 184,
+      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+     }
+    ]
    }
   },
   "stagione-classifica": {
@@ -2468,7 +3688,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 394,
+    "nTesto": 388,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2476,7 +3696,7 @@
     "nMisurati": 350,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 35,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -2561,9 +3781,81 @@
      14,
      50
     ],
-    "altezzaPx": 2035,
-    "schermate": 2.22,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1988,
+    "schermate": 2.17,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 1303,
+      "quota": 65.6,
+      "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 317,
+      "quota": 15.9,
+      "txt": "Marcatori Storici — Lega B#5Grafica Probe8",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 246,
+      "quota": 12.4,
+      "txt": "Risultati Internazionali — W.12Premier Div",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 183,
+      "quota": 9.2,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 101,
+      "quota": 5.1,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
+     },
+     {
+      "px": 45,
+      "quota": 2.3,
+      "txt": "📊Classifica📅Calendario🏆Coppe",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     }
+    ],
+    "etichette": {
+     "Gol": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 17,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "★",
+     "🏆 Campione (promossa)",
+     "⬆ Promosse (2-3)",
+     "⬇ Retrocesse (ultime 3)",
+     "⚽ Capocannonieri — S."
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -2601,7 +3893,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 394,
+    "nTesto": 388,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2609,7 +3901,7 @@
     "nMisurati": 350,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 35,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -2694,9 +3986,81 @@
      14,
      50
     ],
-    "altezzaPx": 2035,
-    "schermate": 2.22,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1988,
+    "schermate": 2.17,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 1303,
+      "quota": 65.6,
+      "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 317,
+      "quota": 15.9,
+      "txt": "Marcatori Storici — Lega B#5Grafica Probe8",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 246,
+      "quota": 12.4,
+      "txt": "Risultati Internazionali — W.12Premier Div",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 183,
+      "quota": 9.2,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 101,
+      "quota": 5.1,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
+     },
+     {
+      "px": 45,
+      "quota": 2.3,
+      "txt": "📊Classifica📅Calendario🏆Coppe",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     }
+    ],
+    "etichette": {
+     "Gol": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 17,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "★",
+     "🏆 Campione (promossa)",
+     "⬆ Promosse (2-3)",
+     "⬇ Retrocesse (ultime 3)",
+     "⚽ Capocannonieri — S."
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -2734,7 +4098,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 394,
+    "nTesto": 388,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2742,7 +4106,7 @@
     "nMisurati": 350,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 35,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -2827,9 +4191,81 @@
      14,
      50
     ],
-    "altezzaPx": 2035,
-    "schermate": 2.22,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1988,
+    "schermate": 2.17,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 1303,
+      "quota": 65.6,
+      "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 317,
+      "quota": 15.9,
+      "txt": "Marcatori Storici — Lega B#5Grafica Probe8",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 246,
+      "quota": 12.4,
+      "txt": "Risultati Internazionali — W.12Premier Div",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 183,
+      "quota": 9.2,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 101,
+      "quota": 5.1,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
+     },
+     {
+      "px": 45,
+      "quota": 2.3,
+      "txt": "📊Classifica📅Calendario🏆Coppe",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     }
+    ],
+    "etichette": {
+     "Gol": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 17,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "★",
+     "🏆 Campione (promossa)",
+     "⬆ Promosse (2-3)",
+     "⬇ Retrocesse (ultime 3)",
+     "⚽ Capocannonieri — S."
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -2867,7 +4303,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 395,
+    "nTesto": 389,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -2875,7 +4311,7 @@
     "nMisurati": 351,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 35,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -2960,9 +4396,81 @@
      14,
      50
     ],
-    "altezzaPx": 2035,
-    "schermate": 2.22,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1988,
+    "schermate": 2.17,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 1303,
+      "quota": 65.6,
+      "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 317,
+      "quota": 15.9,
+      "txt": "Marcatori Storici — Lega B#5Grafica Probe8",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 246,
+      "quota": 12.4,
+      "txt": "Risultati Internazionali — W.12Premier Div",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 183,
+      "quota": 9.2,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 101,
+      "quota": 5.1,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
+     },
+     {
+      "px": 45,
+      "quota": 2.3,
+      "txt": "📊Classifica📅Calendario🏆Coppe",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     }
+    ],
+    "etichette": {
+     "Gol": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 17,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "★",
+     "🏆 Campione (promossa)",
+     "⬆ Promosse (2-3)",
+     "⬇ Retrocesse (ultime 3)",
+     "⚽ Capocannonieri — S."
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -3000,7 +4508,7 @@
       "txt": "Liga Anatolica"
      }
     ],
-    "nTesto": 395,
+    "nTesto": 389,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3008,7 +4516,7 @@
     "nMisurati": 351,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 35,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -3093,9 +4601,81 @@
      14,
      50
     ],
-    "altezzaPx": 2035,
-    "schermate": 2.22,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1988,
+    "schermate": 2.17,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 1303,
+      "quota": 65.6,
+      "txt": "Lega B ★Lega APremier DivisionLiga Ibérica",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
+     },
+     {
+      "px": 317,
+      "quota": 15.9,
+      "txt": "Marcatori Storici — Lega B#5Grafica Probe8",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
+     },
+     {
+      "px": 246,
+      "quota": 12.4,
+      "txt": "Risultati Internazionali — W.12Premier Div",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
+     },
+     {
+      "px": 183,
+      "quota": 9.2,
+      "txt": "K⚽rwardEliteSalva · 06:39AvataaarsPablo St",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
+     },
+     {
+      "px": 101,
+      "quota": 5.1,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
+     },
+     {
+      "px": 45,
+      "quota": 2.3,
+      "txt": "📊Classifica📅Calendario🏆Coppe",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     }
+    ],
+    "etichette": {
+     "Gol": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 17,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "★",
+     "🏆 Campione (promossa)",
+     "⬆ Promosse (2-3)",
+     "⬇ Retrocesse (ultime 3)",
+     "⚽ Capocannonieri — S."
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    }
   },
   "stagione-calendario": {
@@ -3109,7 +4689,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 322,
+    "nTesto": 316,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3117,7 +4697,7 @@
     "nMisurati": 239,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 74,
+    "nEmoji": 68,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -3201,9 +4781,44 @@
      14,
      50
     ],
-    "altezzaPx": 1651,
-    "schermate": 1.8,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1602,
+    "schermate": 1.75,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 2
+    },
+    "nEmojiChar": 58,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "▶",
+     "🏟️",
+     "✈️",
+     "· ⚽",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -3215,7 +4830,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 322,
+    "nTesto": 316,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3223,7 +4838,7 @@
     "nMisurati": 239,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 74,
+    "nEmoji": 68,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -3307,9 +4922,44 @@
      14,
      50
     ],
-    "altezzaPx": 1651,
-    "schermate": 1.8,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1602,
+    "schermate": 1.75,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 2
+    },
+    "nEmojiChar": 58,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "▶",
+     "🏟️",
+     "✈️",
+     "· ⚽",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -3321,7 +4971,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 322,
+    "nTesto": 316,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3329,7 +4979,7 @@
     "nMisurati": 239,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 74,
+    "nEmoji": 68,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -3413,9 +5063,44 @@
      14,
      50
     ],
-    "altezzaPx": 1651,
-    "schermate": 1.8,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1602,
+    "schermate": 1.75,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 2
+    },
+    "nEmojiChar": 58,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "▶",
+     "🏟️",
+     "✈️",
+     "· ⚽",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -3427,7 +5112,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 322,
+    "nTesto": 316,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3435,7 +5120,7 @@
     "nMisurati": 239,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 74,
+    "nEmoji": 68,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -3519,9 +5204,44 @@
      14,
      50
     ],
-    "altezzaPx": 1651,
-    "schermate": 1.8,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1602,
+    "schermate": 1.75,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 2
+    },
+    "nEmojiChar": 58,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "▶",
+     "🏟️",
+     "✈️",
+     "· ⚽",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -3533,7 +5253,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 322,
+    "nTesto": 316,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3541,7 +5261,7 @@
     "nMisurati": 239,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 74,
+    "nEmoji": 68,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -3625,9 +5345,44 @@
      14,
      50
     ],
-    "altezzaPx": 1651,
-    "schermate": 1.8,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1602,
+    "schermate": 1.75,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Partite": 2,
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 2
+    },
+    "nEmojiChar": 58,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "▶",
+     "🏟️",
+     "✈️",
+     "· ⚽",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    }
   },
   "stagione-coppe": {
@@ -3641,7 +5396,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 48,
+    "nTesto": 42,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3649,7 +5404,7 @@
     "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 13,
+    "nEmoji": 7,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -3731,7 +5486,38 @@
     ],
     "altezzaPx": 800,
     "schermate": 0.87,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -3743,7 +5529,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 48,
+    "nTesto": 42,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3751,7 +5537,7 @@
     "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 13,
+    "nEmoji": 7,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -3833,7 +5619,38 @@
     ],
     "altezzaPx": 667,
     "schermate": 0.73,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -3845,7 +5662,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 48,
+    "nTesto": 42,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3853,7 +5670,7 @@
     "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 13,
+    "nEmoji": 7,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -3935,7 +5752,38 @@
     ],
     "altezzaPx": 844,
     "schermate": 0.92,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -3947,7 +5795,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 48,
+    "nTesto": 42,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -3955,7 +5803,7 @@
     "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 13,
+    "nEmoji": 7,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4037,7 +5885,38 @@
     ],
     "altezzaPx": 915,
     "schermate": 1,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -4049,7 +5928,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 48,
+    "nTesto": 42,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -4057,7 +5936,7 @@
     "nMisurati": 26,
     "nSotto": 0,
     "nGradiente": 9,
-    "nEmoji": 13,
+    "nEmoji": 7,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4139,7 +6018,38 @@
     ],
     "altezzaPx": 932,
     "schermate": 1.02,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 1
+    },
+    "nEmojiChar": 7,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "📊",
+     "📅",
+     "🏆",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    }
   },
   "club": {
@@ -4153,7 +6063,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 154,
+    "nTesto": 146,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -4161,7 +6071,7 @@
     "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 35,
+    "nEmoji": 27,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4246,9 +6156,51 @@
      14,
      50
     ],
-    "altezzaPx": 1565,
-    "schermate": 1.71,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1429,
+    "schermate": 1.56,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 3,
+     "Morale": 2,
+     "Fatica": 2,
+     "Contratto": 2,
+     "Stagione": 3
+    },
+    "nEmojiChar": 22,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⭐⭐⭐",
+     "🏛️",
+     "🧣",
+     "🩺 Dr.",
+     "(medico sociale) · 📋",
+     "👤 = stagioni con te in rosa ·",
+     "🧑‍🏫",
+     "💨 +recupero fatica · cresce s"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 2,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
+      "lum": 0.016,
+      "fondo": "#112240",
+      "px": 207,
+      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -4260,7 +6212,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 154,
+    "nTesto": 146,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -4268,7 +6220,7 @@
     "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 35,
+    "nEmoji": 27,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4353,9 +6305,51 @@
      14,
      50
     ],
-    "altezzaPx": 1540,
-    "schermate": 1.68,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1428,
+    "schermate": 1.56,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 3,
+     "Morale": 2,
+     "Fatica": 2,
+     "Contratto": 2,
+     "Stagione": 3
+    },
+    "nEmojiChar": 22,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⭐⭐⭐",
+     "🏛️",
+     "🧣",
+     "🩺 Dr.",
+     "(medico sociale) · 📋",
+     "👤 = stagioni con te in rosa ·",
+     "🧑‍🏫",
+     "💨 +recupero fatica · cresce s"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 2,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
+      "lum": 0.016,
+      "fondo": "#112240",
+      "px": 207,
+      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -4367,7 +6361,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 154,
+    "nTesto": 146,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -4375,7 +6369,7 @@
     "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 35,
+    "nEmoji": 27,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4460,9 +6454,51 @@
      14,
      50
     ],
-    "altezzaPx": 1539,
-    "schermate": 1.68,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1428,
+    "schermate": 1.56,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 3,
+     "Morale": 2,
+     "Fatica": 2,
+     "Contratto": 2,
+     "Stagione": 3
+    },
+    "nEmojiChar": 22,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⭐⭐⭐",
+     "🏛️",
+     "🧣",
+     "🩺 Dr.",
+     "(medico sociale) · 📋",
+     "👤 = stagioni con te in rosa ·",
+     "🧑‍🏫",
+     "💨 +recupero fatica · cresce s"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 2,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
+      "lum": 0.016,
+      "fondo": "#112240",
+      "px": 207,
+      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -4474,7 +6510,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 154,
+    "nTesto": 146,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -4482,7 +6518,7 @@
     "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 35,
+    "nEmoji": 27,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4567,9 +6603,51 @@
      14,
      50
     ],
-    "altezzaPx": 1527,
-    "schermate": 1.67,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1416,
+    "schermate": 1.55,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 3,
+     "Morale": 2,
+     "Fatica": 2,
+     "Contratto": 2,
+     "Stagione": 3
+    },
+    "nEmojiChar": 22,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⭐⭐⭐",
+     "🏛️",
+     "🧣",
+     "🩺 Dr.",
+     "(medico sociale) · 📋",
+     "👤 = stagioni con te in rosa ·",
+     "🧑‍🏫",
+     "💨 +recupero fatica · cresce s"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 2,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
+      "lum": 0.016,
+      "fondo": "#112240",
+      "px": 207,
+      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -4581,7 +6659,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 154,
+    "nTesto": 146,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -4589,7 +6667,7 @@
     "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 35,
+    "nEmoji": 27,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -4674,9 +6752,51 @@
      14,
      50
     ],
-    "altezzaPx": 1527,
-    "schermate": 1.67,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1403,
+    "schermate": 1.53,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 3,
+     "Morale": 2,
+     "Fatica": 2,
+     "Contratto": 2,
+     "Stagione": 3
+    },
+    "nEmojiChar": 22,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "⭐⭐⭐",
+     "🏛️",
+     "🧣",
+     "🩺 Dr.",
+     "(medico sociale) · 📋",
+     "👤 = stagioni con te in rosa ·",
+     "🧑‍🏫",
+     "💨 +recupero fatica · cresce s"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 2,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
+      "lum": 0.016,
+      "fondo": "#112240",
+      "px": 207,
+      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+     }
+    ]
    }
   },
   "carriera-profilo": {
@@ -4690,15 +6810,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 326,
+    "nTesto": 168,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 196,
+    "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 39,
-    "nEmoji": 91,
+    "nGradiente": 49,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -4718,9 +6838,9 @@
       "fw": 400,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 10,
+      "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
+      "esempio": "Gol stag."
      },
      {
       "testo": "#995404",
@@ -4734,17 +6854,6 @@
       "esempio": "14"
      },
      {
-      "testo": "#596a80",
-      "fondo": "#f5f5f5",
-      "fs": 11,
-      "fw": 600,
-      "rap": 5.06,
-      "soglia": 4.5,
-      "n": 12,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
       "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
@@ -4754,14 +6863,25 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 18,
-    "nFondi": 8,
+    "nColTesto": 12,
+    "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 11,
+    "nRaggi": 12,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4773,8 +6893,9 @@
      24
     ],
     "raggi": [
+     1,
+     2,
      3,
-     4,
      6,
      8,
      9,
@@ -4785,9 +6906,152 @@
      20,
      50
     ],
-    "altezzaPx": 3662,
-    "schermate": 4,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2455,
+    "schermate": 2.68,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 326,
+      "quota": 13.3,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
+     },
+     {
+      "px": 314,
+      "quota": 12.8,
+      "txt": "Attributivelocità82tecnica81fisico80mental",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
+     },
+     {
+      "px": 176,
+      "quota": 7.2,
+      "txt": "StatisticheGol stag.14Assist stag.6Partite",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
+     },
+     {
+      "px": 158,
+      "quota": 6.4,
+      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "px": 126,
+      "quota": 5.2,
+      "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
+     },
+     {
+      "px": 95,
+      "quota": 3.9,
+      "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
+     },
+     {
+      "px": 91,
+      "quota": 3.7,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 90,
+      "quota": 3.7,
+      "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
+     },
+     {
+      "px": 84,
+      "quota": 3.4,
+      "txt": "💪Stile di giocoBomberPotenza e istinto de",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
+      "px": 83,
+      "quota": 3.4,
+      "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
+     },
+     {
+      "px": 68,
+      "quota": 2.8,
+      "txt": "TitolareProssimo gradino — Leader: la fasc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
+     },
+     {
+      "px": 55,
+      "quota": 2.2,
+      "txt": "Calciatore professionistaStagioni da pro: ",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     }
+    ],
+    "etichette": {
+     "Gol": 9,
+     "Assist": 4,
+     "Presenze": 2,
+     "Partite": 1,
+     "OVR": 2,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Trofei": 3,
+     "Stagione": 2
+    },
+    "nEmojiChar": 24,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "🆚 Il tuo rivale",
+     "🏆",
+     "✅ Sei avanti di 18 gol in carr",
+     "⭐ Club dei sogni",
+     "💪",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 5,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
+      "lum": 0.014,
+      "fondo": "#1a1f2e",
+      "px": 158,
+      "txt": "Biografia\"Grafica Probe, 26 anni, "
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
+      "lum": 0.042,
+      "fondo": "#312e81",
+      "px": 326,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 91,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 84,
+      "txt": "💪Stile di giocoBomberPotenza e is"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -4799,15 +7063,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 326,
+    "nTesto": 168,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 196,
+    "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 39,
-    "nEmoji": 91,
+    "nGradiente": 49,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -4827,9 +7091,9 @@
       "fw": 400,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 10,
+      "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
+      "esempio": "Gol stag."
      },
      {
       "testo": "#995404",
@@ -4843,17 +7107,6 @@
       "esempio": "14"
      },
      {
-      "testo": "#596a80",
-      "fondo": "#f5f5f5",
-      "fs": 11,
-      "fw": 600,
-      "rap": 5.06,
-      "soglia": 4.5,
-      "n": 12,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
       "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
@@ -4863,14 +7116,25 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 18,
-    "nFondi": 8,
+    "nColTesto": 12,
+    "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 11,
+    "nRaggi": 12,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4882,8 +7146,9 @@
      24
     ],
     "raggi": [
+     1,
+     2,
      3,
-     4,
      6,
      8,
      9,
@@ -4894,9 +7159,152 @@
      20,
      50
     ],
-    "altezzaPx": 3621,
-    "schermate": 3.96,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2420,
+    "schermate": 2.64,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 326,
+      "quota": 13.5,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
+     },
+     {
+      "px": 314,
+      "quota": 13,
+      "txt": "Attributivelocità82tecnica81fisico80mental",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
+     },
+     {
+      "px": 176,
+      "quota": 7.3,
+      "txt": "StatisticheGol stag.14Assist stag.6Partite",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
+     },
+     {
+      "px": 135,
+      "quota": 5.6,
+      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "px": 126,
+      "quota": 5.2,
+      "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
+     },
+     {
+      "px": 95,
+      "quota": 3.9,
+      "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
+     },
+     {
+      "px": 91,
+      "quota": 3.8,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 90,
+      "quota": 3.7,
+      "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
+     },
+     {
+      "px": 84,
+      "quota": 3.5,
+      "txt": "💪Stile di giocoBomberPotenza e istinto de",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
+      "px": 68,
+      "quota": 2.8,
+      "txt": "TitolareProssimo gradino — Leader: la fasc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
+     },
+     {
+      "px": 67,
+      "quota": 2.8,
+      "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
+     },
+     {
+      "px": 55,
+      "quota": 2.3,
+      "txt": "Calciatore professionistaStagioni da pro: ",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     }
+    ],
+    "etichette": {
+     "Gol": 9,
+     "Assist": 4,
+     "Presenze": 2,
+     "Partite": 1,
+     "OVR": 2,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Trofei": 3,
+     "Stagione": 2
+    },
+    "nEmojiChar": 24,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "🆚 Il tuo rivale",
+     "🏆",
+     "✅ Sei avanti di 18 gol in carr",
+     "⭐ Club dei sogni",
+     "💪",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 5,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
+      "lum": 0.014,
+      "fondo": "#1a1f2e",
+      "px": 135,
+      "txt": "Biografia\"Grafica Probe, 26 anni, "
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
+      "lum": 0.042,
+      "fondo": "#312e81",
+      "px": 326,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 91,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 84,
+      "txt": "💪Stile di giocoBomberPotenza e is"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -4908,15 +7316,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 326,
+    "nTesto": 168,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 196,
+    "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 39,
-    "nEmoji": 91,
+    "nGradiente": 49,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -4936,9 +7344,9 @@
       "fw": 400,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 10,
+      "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
+      "esempio": "Gol stag."
      },
      {
       "testo": "#995404",
@@ -4952,17 +7360,6 @@
       "esempio": "14"
      },
      {
-      "testo": "#596a80",
-      "fondo": "#f5f5f5",
-      "fs": 11,
-      "fw": 600,
-      "rap": 5.06,
-      "soglia": 4.5,
-      "n": 12,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
       "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
@@ -4972,14 +7369,25 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 18,
-    "nFondi": 8,
+    "nColTesto": 12,
+    "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 11,
+    "nRaggi": 12,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4991,8 +7399,9 @@
      24
     ],
     "raggi": [
+     1,
+     2,
      3,
-     4,
      6,
      8,
      9,
@@ -5003,9 +7412,152 @@
      20,
      50
     ],
-    "altezzaPx": 3621,
-    "schermate": 3.96,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2420,
+    "schermate": 2.64,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 326,
+      "quota": 13.5,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
+     },
+     {
+      "px": 314,
+      "quota": 13,
+      "txt": "Attributivelocità82tecnica81fisico80mental",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
+     },
+     {
+      "px": 176,
+      "quota": 7.3,
+      "txt": "StatisticheGol stag.14Assist stag.6Partite",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
+     },
+     {
+      "px": 135,
+      "quota": 5.6,
+      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "px": 126,
+      "quota": 5.2,
+      "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
+     },
+     {
+      "px": 95,
+      "quota": 3.9,
+      "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
+     },
+     {
+      "px": 91,
+      "quota": 3.8,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 90,
+      "quota": 3.7,
+      "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
+     },
+     {
+      "px": 84,
+      "quota": 3.5,
+      "txt": "💪Stile di giocoBomberPotenza e istinto de",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
+      "px": 68,
+      "quota": 2.8,
+      "txt": "TitolareProssimo gradino — Leader: la fasc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
+     },
+     {
+      "px": 67,
+      "quota": 2.8,
+      "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
+     },
+     {
+      "px": 55,
+      "quota": 2.3,
+      "txt": "Calciatore professionistaStagioni da pro: ",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     }
+    ],
+    "etichette": {
+     "Gol": 9,
+     "Assist": 4,
+     "Presenze": 2,
+     "Partite": 1,
+     "OVR": 2,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Trofei": 3,
+     "Stagione": 2
+    },
+    "nEmojiChar": 24,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "🆚 Il tuo rivale",
+     "🏆",
+     "✅ Sei avanti di 18 gol in carr",
+     "⭐ Club dei sogni",
+     "💪",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 5,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
+      "lum": 0.014,
+      "fondo": "#1a1f2e",
+      "px": 135,
+      "txt": "Biografia\"Grafica Probe, 26 anni, "
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
+      "lum": 0.042,
+      "fondo": "#312e81",
+      "px": 326,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 91,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 84,
+      "txt": "💪Stile di giocoBomberPotenza e is"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -5017,15 +7569,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 326,
+    "nTesto": 168,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 196,
+    "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 39,
-    "nEmoji": 91,
+    "nGradiente": 49,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -5045,9 +7597,9 @@
       "fw": 400,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 10,
+      "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
+      "esempio": "Gol stag."
      },
      {
       "testo": "#995404",
@@ -5061,17 +7613,6 @@
       "esempio": "14"
      },
      {
-      "testo": "#596a80",
-      "fondo": "#f5f5f5",
-      "fs": 11,
-      "fw": 600,
-      "rap": 5.06,
-      "soglia": 4.5,
-      "n": 12,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
       "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
@@ -5081,14 +7622,25 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 18,
-    "nFondi": 8,
+    "nColTesto": 12,
+    "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 11,
+    "nRaggi": 12,
     "nPesi": 5,
     "corpi": [
      11,
@@ -5100,8 +7652,9 @@
      24
     ],
     "raggi": [
+     1,
+     2,
      3,
-     4,
      6,
      8,
      9,
@@ -5112,9 +7665,152 @@
      20,
      50
     ],
-    "altezzaPx": 3575,
-    "schermate": 3.91,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2361,
+    "schermate": 2.58,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 326,
+      "quota": 13.8,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
+     },
+     {
+      "px": 314,
+      "quota": 13.3,
+      "txt": "Attributivelocità82tecnica81fisico80mental",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
+     },
+     {
+      "px": 176,
+      "quota": 7.4,
+      "txt": "StatisticheGol stag.14Assist stag.6Partite",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
+     },
+     {
+      "px": 135,
+      "quota": 5.7,
+      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "px": 104,
+      "quota": 4.4,
+      "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
+     },
+     {
+      "px": 90,
+      "quota": 3.8,
+      "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
+     },
+     {
+      "px": 84,
+      "quota": 3.6,
+      "txt": "💪Stile di giocoBomberPotenza e istinto de",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
+      "px": 77,
+      "quota": 3.3,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 68,
+      "quota": 2.9,
+      "txt": "TitolareProssimo gradino — Leader: la fasc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
+     },
+     {
+      "px": 67,
+      "quota": 2.8,
+      "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
+     },
+     {
+      "px": 67,
+      "quota": 2.8,
+      "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
+     },
+     {
+      "px": 55,
+      "quota": 2.3,
+      "txt": "Calciatore professionistaStagioni da pro: ",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     }
+    ],
+    "etichette": {
+     "Gol": 9,
+     "Assist": 4,
+     "Presenze": 2,
+     "Partite": 1,
+     "OVR": 2,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Trofei": 3,
+     "Stagione": 2
+    },
+    "nEmojiChar": 24,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "🆚 Il tuo rivale",
+     "🏆",
+     "✅ Sei avanti di 18 gol in carr",
+     "⭐ Club dei sogni",
+     "💪",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 5,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
+      "lum": 0.014,
+      "fondo": "#1a1f2e",
+      "px": 135,
+      "txt": "Biografia\"Grafica Probe, 26 anni, "
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
+      "lum": 0.042,
+      "fondo": "#312e81",
+      "px": 326,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 77,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 84,
+      "txt": "💪Stile di giocoBomberPotenza e is"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -5126,15 +7822,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 326,
+    "nTesto": 168,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 196,
+    "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 39,
-    "nEmoji": 91,
+    "nGradiente": 49,
+    "nEmoji": 30,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -5154,9 +7850,9 @@
       "fw": 400,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 10,
+      "n": 6,
       "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
-      "esempio": "Stipendio"
+      "esempio": "Gol stag."
      },
      {
       "testo": "#995404",
@@ -5170,17 +7866,6 @@
       "esempio": "14"
      },
      {
-      "testo": "#596a80",
-      "fondo": "#f5f5f5",
-      "fs": 11,
-      "fw": 600,
-      "rap": 5.06,
-      "soglia": 4.5,
-      "n": 12,
-      "sel": "div:nth-child(2)>div:nth-child(5)>span:nth-child(2)",
-      "esempio": "200 partite"
-     },
-     {
       "testo": "#0f7334",
       "fondo": "#f1eee8",
       "fs": 17,
@@ -5190,14 +7875,25 @@
       "n": 1,
       "sel": "div:nth-child(2)>div:nth-child(6)>div.cpm-num",
       "esempio": "45M€"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
      }
     ],
     "nMarca": 0,
     "marca": [],
-    "nColTesto": 18,
-    "nFondi": 8,
+    "nColTesto": 12,
+    "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 11,
+    "nRaggi": 12,
     "nPesi": 5,
     "corpi": [
      11,
@@ -5209,8 +7905,9 @@
      24
     ],
     "raggi": [
+     1,
+     2,
      3,
-     4,
      6,
      8,
      9,
@@ -5221,9 +7918,152 @@
      20,
      50
     ],
-    "altezzaPx": 3545,
-    "schermate": 3.87,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 2361,
+    "schermate": 2.58,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [
+     {
+      "px": 326,
+      "quota": 13.8,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
+     },
+     {
+      "px": 314,
+      "quota": 13.3,
+      "txt": "Attributivelocità82tecnica81fisico80mental",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
+     },
+     {
+      "px": 176,
+      "quota": 7.4,
+      "txt": "StatisticheGol stag.14Assist stag.6Partite",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
+     },
+     {
+      "px": 135,
+      "quota": 5.7,
+      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
+     },
+     {
+      "px": 104,
+      "quota": 4.4,
+      "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
+     },
+     {
+      "px": 90,
+      "quota": 3.8,
+      "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
+     },
+     {
+      "px": 84,
+      "quota": 3.6,
+      "txt": "💪Stile di giocoBomberPotenza e istinto de",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
+      "px": 77,
+      "quota": 3.3,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 68,
+      "quota": 2.9,
+      "txt": "TitolareProssimo gradino — Leader: la fasc",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
+     },
+     {
+      "px": 67,
+      "quota": 2.8,
+      "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
+     },
+     {
+      "px": 67,
+      "quota": 2.8,
+      "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
+     },
+     {
+      "px": 55,
+      "quota": 2.3,
+      "txt": "Calciatore professionistaStagioni da pro: ",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     }
+    ],
+    "etichette": {
+     "Gol": 9,
+     "Assist": 4,
+     "Presenze": 2,
+     "Partite": 1,
+     "OVR": 2,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 1,
+     "Trofei": 3,
+     "Stagione": 2
+    },
+    "nEmojiChar": 24,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "🆚 Il tuo rivale",
+     "🏆",
+     "✅ Sei avanti di 18 gol in carr",
+     "⭐ Club dei sogni",
+     "💪",
+     "🎯"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 5,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
+      "lum": 0.014,
+      "fondo": "#1a1f2e",
+      "px": 135,
+      "txt": "Biografia\"Grafica Probe, 26 anni, "
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
+      "lum": 0.042,
+      "fondo": "#312e81",
+      "px": 326,
+      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 77,
+      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+     },
+     {
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
+      "lum": 0.022,
+      "fondo": "#1e293b",
+      "px": 84,
+      "txt": "💪Stile di giocoBomberPotenza e is"
+     }
+    ]
    }
   },
   "carriera-nazionale": {
@@ -5237,7 +8077,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 114,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5245,7 +8085,7 @@
     "nMisurati": 73,
     "nSotto": 0,
     "nGradiente": 19,
-    "nEmoji": 22,
+    "nEmoji": 16,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -5327,9 +8167,46 @@
      14,
      50
     ],
-    "altezzaPx": 1195,
-    "schermate": 1.31,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1155,
+    "schermate": 1.26,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 2,
+     "Presenze": 1,
+     "Partite": 1,
+     "OVR": 3,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 5,
+     "Settimana": 4
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "📊",
+     "🏆",
+     "🌐",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -5341,7 +8218,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 114,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5349,7 +8226,7 @@
     "nMisurati": 73,
     "nSotto": 0,
     "nGradiente": 19,
-    "nEmoji": 22,
+    "nEmoji": 16,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -5431,9 +8308,46 @@
      14,
      50
     ],
-    "altezzaPx": 1195,
-    "schermate": 1.31,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1142,
+    "schermate": 1.25,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 2,
+     "Presenze": 1,
+     "Partite": 1,
+     "OVR": 3,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 5,
+     "Settimana": 4
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "📊",
+     "🏆",
+     "🌐",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -5445,7 +8359,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 114,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5453,7 +8367,7 @@
     "nMisurati": 73,
     "nSotto": 0,
     "nGradiente": 19,
-    "nEmoji": 22,
+    "nEmoji": 16,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -5535,9 +8449,46 @@
      14,
      50
     ],
-    "altezzaPx": 1195,
-    "schermate": 1.31,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1142,
+    "schermate": 1.25,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 2,
+     "Presenze": 1,
+     "Partite": 1,
+     "OVR": 3,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 5,
+     "Settimana": 4
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "📊",
+     "🏆",
+     "🌐",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -5549,7 +8500,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 114,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5557,7 +8508,7 @@
     "nMisurati": 73,
     "nSotto": 0,
     "nGradiente": 19,
-    "nEmoji": 22,
+    "nEmoji": 16,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -5639,9 +8590,46 @@
      14,
      50
     ],
-    "altezzaPx": 1183,
-    "schermate": 1.29,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1142,
+    "schermate": 1.25,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 2,
+     "Presenze": 1,
+     "Partite": 1,
+     "OVR": 3,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 5,
+     "Settimana": 4
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "📊",
+     "🏆",
+     "🌐",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -5653,7 +8641,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 114,
+    "nTesto": 108,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5661,7 +8649,7 @@
     "nMisurati": 73,
     "nSotto": 0,
     "nGradiente": 19,
-    "nEmoji": 22,
+    "nEmoji": 16,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -5743,9 +8731,46 @@
      14,
      50
     ],
-    "altezzaPx": 1183,
-    "schermate": 1.29,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1142,
+    "schermate": 1.25,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "Gol": 2,
+     "Presenze": 1,
+     "Partite": 1,
+     "OVR": 3,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 1,
+     "Stagione": 5,
+     "Settimana": 4
+    },
+    "nEmojiChar": 12,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "👤",
+     "🌍",
+     "📊",
+     "🏆",
+     "🌐",
+     "☕ Sostieni lo sviluppo di",
+     "💡 Idee & Feedback — scrivici "
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    }
   },
   "agente": {
@@ -5759,7 +8784,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 123,
+    "nTesto": 116,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5767,7 +8792,7 @@
     "nMisurati": 93,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 24,
+    "nEmoji": 17,
     "peggiori": [
      {
       "testo": "#526279",
@@ -5854,9 +8879,48 @@
      14,
      50
     ],
-    "altezzaPx": 1652,
-    "schermate": 1.81,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1578,
+    "schermate": 1.72,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 2,
+     "Stipendio": 3,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 2,
+     "Stagione": 2,
+     "Settimana": 3
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🤵 Agente · −",
+     "🏋️",
+     "🥗",
+     "✂️ Rescindi (stop 10%)",
+     "🔴 Chiuso",
+     "🤵 IL PIANO DEL PROCURATORE — ",
+     "🚪 Richiedi Cessione",
+     "🔍"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -5868,7 +8932,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 123,
+    "nTesto": 116,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5876,7 +8940,7 @@
     "nMisurati": 93,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 24,
+    "nEmoji": 17,
     "peggiori": [
      {
       "testo": "#526279",
@@ -5963,9 +9027,48 @@
      14,
      50
     ],
-    "altezzaPx": 1652,
-    "schermate": 1.81,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1538,
+    "schermate": 1.68,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 2,
+     "Stipendio": 3,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 2,
+     "Stagione": 2,
+     "Settimana": 3
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🤵 Agente · −",
+     "🏋️",
+     "🥗",
+     "✂️ Rescindi (stop 10%)",
+     "🔴 Chiuso",
+     "🤵 IL PIANO DEL PROCURATORE — ",
+     "🚪 Richiedi Cessione",
+     "🔍"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -5977,7 +9080,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 123,
+    "nTesto": 116,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -5985,7 +9088,7 @@
     "nMisurati": 93,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 24,
+    "nEmoji": 17,
     "peggiori": [
      {
       "testo": "#526279",
@@ -6072,9 +9175,48 @@
      14,
      50
     ],
-    "altezzaPx": 1594,
-    "schermate": 1.74,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1521,
+    "schermate": 1.66,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 2,
+     "Stipendio": 3,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 2,
+     "Stagione": 2,
+     "Settimana": 3
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🤵 Agente · −",
+     "🏋️",
+     "🥗",
+     "✂️ Rescindi (stop 10%)",
+     "🔴 Chiuso",
+     "🤵 IL PIANO DEL PROCURATORE — ",
+     "🚪 Richiedi Cessione",
+     "🔍"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -6086,7 +9228,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 123,
+    "nTesto": 116,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6094,7 +9236,7 @@
     "nMisurati": 93,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 24,
+    "nEmoji": 17,
     "peggiori": [
      {
       "testo": "#526279",
@@ -6181,9 +9323,48 @@
      14,
      50
     ],
-    "altezzaPx": 1594,
-    "schermate": 1.74,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1521,
+    "schermate": 1.66,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 2,
+     "Stipendio": 3,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 2,
+     "Stagione": 2,
+     "Settimana": 3
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🤵 Agente · −",
+     "🏋️",
+     "🥗",
+     "✂️ Rescindi (stop 10%)",
+     "🔴 Chiuso",
+     "🤵 IL PIANO DEL PROCURATORE — ",
+     "🚪 Richiedi Cessione",
+     "🔍"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -6195,7 +9376,7 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 123,
+    "nTesto": 116,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
@@ -6203,7 +9384,7 @@
     "nMisurati": 93,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 24,
+    "nEmoji": 17,
     "peggiori": [
      {
       "testo": "#526279",
@@ -6290,9 +9471,48 @@
      14,
      50
     ],
-    "altezzaPx": 1594,
-    "schermate": 1.74,
-    "scorritore": "div#root>div.cpm-root>div.cpm-scroll"
+    "altezzaPx": 1521,
+    "schermate": 1.66,
+    "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
+    "blocchi": [],
+    "etichette": {
+     "OVR": 1,
+     "Forma": 1,
+     "Morale": 1,
+     "Fatica": 2,
+     "Stipendio": 3,
+     "Valore": 1,
+     "Contratto": 1,
+     "Fiducia": 2,
+     "Stagione": 2,
+     "Settimana": 3
+    },
+    "nEmojiChar": 14,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "🤵 Agente · −",
+     "🏋️",
+     "🥗",
+     "✂️ Rescindi (stop 10%)",
+     "🔴 Chiuso",
+     "🤵 IL PIANO DEL PROCURATORE — ",
+     "🚪 Richiedi Cessione",
+     "🔍"
+    ],
+    "hVoce": 49,
+    "hSostieni": 26,
+    "hFeedback": 25,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
+      "lum": 0.044,
+      "fondo": "#6c1f2e",
+      "px": 119,
+      "txt": "K⚽rwardEliteSalva · 06:39Avataaars"
+     }
+    ]
    }
   },
   "prepartita": {
@@ -6396,7 +9616,35 @@
     ],
     "altezzaPx": 800,
     "schermate": 0.87,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "· Giornata 11 di 34 ⚠︎ ?g",
+     "🗡️",
+     "⛅ Parz. nuvoloso",
+     "🎙️ ANALISI DEL MISTER — COME ",
+     "🛡️",
+     "🧤",
+     "🔍 Analisi completa",
+     "📋 Formazioni →"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 45,
+      "txt": "📋 Formazioni →"
+     }
+    ]
    },
    "375": {
     "W": 375,
@@ -6498,7 +9746,35 @@
     ],
     "altezzaPx": 667,
     "schermate": 0.73,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "· Giornata 11 di 34 ⚠︎ ?g",
+     "🗡️",
+     "⛅ Parz. nuvoloso",
+     "🎙️ ANALISI DEL MISTER — COME ",
+     "🛡️",
+     "🧤",
+     "🔍 Analisi completa",
+     "📋 Formazioni →"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 45,
+      "txt": "📋 Formazioni →"
+     }
+    ]
    },
    "390": {
     "W": 390,
@@ -6600,7 +9876,35 @@
     ],
     "altezzaPx": 844,
     "schermate": 0.92,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "· Giornata 11 di 34 ⚠︎ ?g",
+     "🗡️",
+     "⛅ Parz. nuvoloso",
+     "🎙️ ANALISI DEL MISTER — COME ",
+     "🛡️",
+     "🧤",
+     "🔍 Analisi completa",
+     "📋 Formazioni →"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 45,
+      "txt": "📋 Formazioni →"
+     }
+    ]
    },
    "412": {
     "W": 412,
@@ -6702,7 +10006,35 @@
     ],
     "altezzaPx": 915,
     "schermate": 1,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "· Giornata 11 di 34 ⚠︎ ?g",
+     "🗡️",
+     "⛅ Parz. nuvoloso",
+     "🎙️ ANALISI DEL MISTER — COME ",
+     "🛡️",
+     "🧤",
+     "🔍 Analisi completa",
+     "📋 Formazioni →"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 45,
+      "txt": "📋 Formazioni →"
+     }
+    ]
    },
    "430": {
     "W": 430,
@@ -6804,7 +10136,35 @@
     ],
     "altezzaPx": 932,
     "schermate": 1.02,
-    "scorritore": "documento"
+    "scorritore": "documento",
+    "blocchi": [],
+    "etichette": {},
+    "nEmojiChar": 9,
+    "doveEmoji": [
+     "Si scende in campo! ⚽",
+     "⚽",
+     "· Giornata 11 di 34 ⚠︎ ?g",
+     "🗡️",
+     "⛅ Parz. nuvoloso",
+     "🎙️ ANALISI DEL MISTER — COME ",
+     "🛡️",
+     "🧤",
+     "🔍 Analisi completa",
+     "📋 Formazioni →"
+    ],
+    "hVoce": 0,
+    "hSostieni": 0,
+    "hFeedback": 0,
+    "nScuri": 1,
+    "scuri": [
+     {
+      "sel": "div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus",
+      "lum": 0.07,
+      "fondo": "#8e1f33",
+      "px": 45,
+      "txt": "📋 Formazioni →"
+     }
+    ]
    }
   }
  },
