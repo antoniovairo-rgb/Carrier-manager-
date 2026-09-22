@@ -229,6 +229,30 @@ Invariato, ed e' la ragione per cui il motore non e' entrato nelle voci G:
 - il lavoro sul motore e' **in pausa per decisione del PO** finche' la revisione grafica delle schermate
   non e' chiusa.
 
+### 5.4 Il determinismo — causa MISURATA il 22/09 (A14 della roadmap)
+`match-sequence` e' rosso **anche in produzione**: la stessa partita, alla stessa velocita', giocata due volte,
+diverge (1x contro 1x **29 %** di prefisso comune). La sonda nuova `tests/visual/prima-divergenza.mjs` gioca due
+giri identici a 1x e stampa, per quattro testimoni, il **primo minuto che diverge**:
+
+| testimone | primo minuto che diverge |
+|---|---|
+| posizioni dei ventidue | 27' |
+| cronaca | 27' |
+| passi di fisica del motore | **nessuno nel 26'** (22 contro 22) |
+| **sorteggi del motore** | **26' — 1099 contro 1058** |
+
+Il motore **e' deterministico** (LCG seedato alla costruzione) e nel minuto 26 riceve lo **stesso** numero di
+passi: se consuma quarantuno sorteggi in piu' in un giro, e' un suo **ramo** ad aprirsi in un giro e non
+nell'altro. L'unico ingresso che cambia fra due giri identici e' **quando l'interfaccia gli chiede la scena**:
+`motoreRef.current.chiedi.scena()` parte da un **effetto di React sul cambio di fase** — cioe' dall'orologio da
+polso — e cade su un sotto-tick diverso a ogni giro (22 sotto-tick per minuto).
+
+**Il rimedio non e' seedare altro rumore**: due tentativi sulle posizioni dei giocatori sono stati provati e
+**revocati dalla loro stessa misura** (flusso con stato: rosso su tutti e tre i confronti, perche' un flusso con
+stato regge solo se il *numero* di estrazioni non cambia, e quelle chiamate stanno dentro gli updater di
+`setMatchPlayers` che React puo' rieseguire; funzione pura di seme+minuto+uomo: 29 % → **26 %**, dentro il
+rumore). Il rimedio e' **ancorare le richieste di scena al tick della simulazione**, e si progetta.
+
 **NON VERIFICATO**: tutti i numeri di questa sezione vengono dal banco in Chromium headless. L'Android del
 PO non ha mai misurato il motore.
 
@@ -274,3 +298,4 @@ PO non ha mai misurato il motore.
 - 22/09 — **IL BANCO ORA VEDE QUELLO CHE IL PO FOTOGRAFA, e la prima correzione è stata REVOCATA.** **(1) Il salvataggio di prova** ha finalmente **rivale, club dei sogni e giornalisti**: tre card che su una carriera vuota NON VENIVANO RESE — la stessa cecità dei trofei (G8.3) su un'altra famiglia. Effetto sul metro: **Profilo 2.198 → 2.361 px** e **Dashboard 2.542 → 2.718**, perché ora c'è dentro contenuto vero. ⚠️ **I numeri di altezza e di nodi da qui in poi non si confrontano con quelli di prima del 22/09.** **(2) Difetto mio dello strumento**: il censimento delle superfici scure **saltava i gradienti** (avevo copiato la regola del contrasto, dove l'esclusione è giusta). Ma le card che il PO segnala sono **esattamente** gradienti scuri: rispondeva **10** e nominava solo la testata. Ora per i gradienti si legge la tinta **più chiara** dichiarata — se anche quella è sotto soglia, la superficie è scura. **Misurato: 10 → 23**, e la lista contiene «Il tuo rivale» (`#312e81`, **326 px**, il «box enorme» del PO), «Club dei sogni», «La tua storia», «Sponsor», «Vita privata», «NEL PIENO», «Lo Spogliatoio», «Biografia», «Stile di gioco». Dieci sono superfici di **marca volute** (testata `#6c1f2e`, bottoni `#8e1f33`, hero della Home): le isole vere sono **tredici**.
 - 22/09 — **REVOCA: la conversione delle card scure, al primo tentativo, ha ROTTO il contrasto.** Convertite 10 card a fondo chiaro con filo d'accento: superfici scure **23 → 14**, ma il contrasto sotto soglia è passato da **0 a 71 nodi** — testi chiari rimasti su fondi diventati chiari. Due giri di rimappatura l'hanno portato a **36**, e lì mi sono fermato: le tinte che il metro nominava (`#eef9ff`, `#ddf3fe`, `#adb3d0`…) **non esistono nel sorgente** — sono il RISULTATO delle mie sostituzioni, non la causa. Stavo correggendo un effetto senza aver capito il meccanismo. **`src/18` ripristinato**, contrasto tornato a **0/1979**. Resta spedito solo il metro, che è la parte che vale: senza, la prossima conversione sarebbe di nuovo cieca. **Il lavoro va rifatto cambiando i colori del testo ALLA SORGENTE**, card per card e con misura appaiata a ogni passo, non avvolgendo in blocco le tinte in `legCol944`.
 - Non ancora nel metro: post-partita, partita (HUD/telecronaca), schermate cinematiche, il telefono vero del PO.
+- 22/09 — **7.959.0 · il determinismo ha un colpevole con nome e numero** (§5.4): strumento nuovo `prima-divergenza` (quattro testimoni: posizioni, sorteggi della cronaca, passi di fisica, sorteggi del motore, piu' l'impronta di **chi** muove i giocatori). Causa misurata: non e' il rumore delle posizioni, e' **quando l'interfaccia chiede la scena** al motore. Due rimedi provati e **revocati** a verbale (29 % → 26 %, dentro il rumore). Voce **A14** aperta in roadmap. Nessuna voce G toccata: questa versione non cambia un pixel.

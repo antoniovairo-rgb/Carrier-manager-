@@ -1448,9 +1448,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      setter si annota da QUALE RIGA parte ogni aggiornamento e quanto sposta l'indice sorvegliato: la
      riga colpevole si legge, non si indovina. Nessun costo a bandiera spenta. */
   const setMatchPlayers=React.useMemo(()=>{
-    if(typeof window==='undefined'||!window.__CPM_W588)return _setMPraw;
+    if(typeof window==='undefined'||(!window.__CPM_W588&&!window.__CPM_WHO959))return _setMPraw;
     return (u)=>{const st=(new Error()).stack||"";return _setMPraw(prev=>{
       const nx=(typeof u==='function')?u(prev):u;
+      /* [22/09 testimone · sola lettura] CHI SCRIVE LE POSIZIONI, MINUTO PER MINUTO. `prima-divergenza` ha
+         mostrato che in due giri identici le POSIZIONI divergono al 27' mentre sorteggi e cronaca restano
+         uguali: serve il nome dello scrittore, non l'ennesima ipotesi. L'impronta e' il testo stesso
+         dell'aggiornamento (la pila di Babel non torna al sorgente), col numero di uomini spostati. */
+      try{if(window.__CPM_WHO959){const _m=clockRef.current|0;const _t=String(u);let _h=2166136261;
+        for(let _i=0;_i<_t.length;_i++)_h=(Math.imul(_h^_t.charCodeAt(_i),16777619))>>>0;
+        let _d=0;const _pv=prev||[],_nv=nx||[];
+        for(let _i=0;_i<_pv.length;_i++){const _a=_pv[_i]||{},_b=_nv[_i]||{};if(Math.abs((_b.x||0)-(_a.x||0))>0.01||Math.abs((_b.y||0)-(_a.y||0))>0.01)_d++;}
+        if(_d)(window.__CPM_WHO959[_m]=window.__CPM_WHO959[_m]||[]).push(((_h>>>0).toString(36))+':'+_d);}}catch(_e959w){}
       try{const W=window.__CPM_W588,I=W.idx|0;
         const a=prev&&prev[I],b=nx&&nx[I];
         if(a&&b&&Math.abs((b.x||0)-(a.x||0))>1.5){
@@ -2262,6 +2271,28 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const driftTargetsRef=useRef(null);
   const ballTargetRef=useRef({x:50,y:50});
   const ballRngRef=useRef(0);/* [7.511.0 R1] flusso seedato DEDICATO al moto di possesso: usare _rndM qui avrebbe spostato tutti i sorteggi della cronaca e rotto il replay */
+  /* ⚠️ [7.959.0 — LE POSIZIONI SEEDATE: PROVATE E REVOCATE DALLA LORO MISURA, MA LA CAUSA VERA E' STATA
+     TROVATA.] `match-sequence` era rosso anche in produzione (1x contro 1x 29 %). Il sospetto era qui: le
+     posizioni dei ventidue avevano `Math.random()` in cinque punti, e da quando il motore del possesso
+     (7.870) legge `matchPlayers` quel rumore entra nella simulazione e cambia il pool dei nomi.
+     Due forme provate, ENTRAMBE MISURATE E REVOCATE:
+       (a) un flusso CON STATO (la forma di `ballRngRef`, 7.511) — rosso lo stesso, tutti e tre i confronti:
+           un flusso con stato e' deterministico solo se il NUMERO di estrazioni e' identico, e queste
+           chiamate stanno dentro gli updater di `setMatchPlayers`, che React puo' rieseguire;
+       (b) una funzione PURA di (seme, minuto, uomo, punto del codice) — 1x contro 1x 29 % → 26 %: dentro
+           il rumore, nessun guadagno.
+     La sonda nuova `prima-divergenza` dice PERCHE' nessuna delle due poteva bastare, e nomina il vero
+     colpevole (misura del 22/09, due giri identici a 1x):
+       posizioni    primo minuto che diverge   27'
+       motore       primo minuto in cui il conteggio dei suoi sorteggi diverge   26'  (1099 contro 1058)
+       passi fisica identici nel minuto 26     22 contro 22
+     Il motore E' deterministico (LCG seedato alla costruzione) e nel minuto 26 riceve lo STESSO numero di
+     passi nei due giri — eppure consuma 41 sorteggi in piu' in uno dei due. Quindi non e' il rumore delle
+     posizioni e non e' il numero dei passi: e' un RAMO del motore che si apre in un giro e non nell'altro,
+     e l'unico ingresso che cambia fra i due giri e' QUANDO l'interfaccia gli chiede la scena
+     (`chiedi.scena()` parte da un effetto di React sul cambio di fase, cioe' dall'orologio da polso, e
+     cade su un sotto-tick diverso a ogni giro). Il determinismo non si chiude seedando le posizioni: si
+     chiude ancorando le richieste di scena al tick della simulazione. E' la voce A14 della roadmap. */
   const tramaRef=useRef(null);/* [7.524.0 LA TRAMA] piano del possesso: {dir,cor,wp,fase} — corridoio persistente e giocata corrente del drift */
   /* [7.531.0 direttiva PO «ogni squadra deve avere in base a tattica/formazione/mentalita' il suo sviluppo:
      un 433 e' diverso da un 352» — rosso __CPM_NO538] L'IDENTITA' DELLA TRAMA: quattro pomelli per modulo
@@ -3150,6 +3181,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const isNearGoal=["area","bordo"].includes(sit?.zones?.[0]);
     const pressingMs=isNearGoal?550:isDef?700:650;
     const iv=setInterval(()=>{
+      /* [22/09 testimone · sola lettura] QUANTE VOLTE IL PRESSING SCRIVE LE POSIZIONI IN OGNI MINUTO.
+         Questo loop gira a orologio da polso (650 ms) per tutta la durata della scena: se la scena dura
+         un pelo di piu' in un giro, scrive una volta di piu' — e da quando il motore del possesso (7.870)
+         legge `matchPlayers`, quella scrittura in piu' entra nella simulazione. */
+      if(typeof window!=='undefined'&&window.__CPM_PRESS959){try{const _m=clockRef.current|0;window.__CPM_PRESS959[_m]=(window.__CPM_PRESS959[_m]|0)+1;}catch(_e959){}}
       // Rigore / punizione: area libera, avversari in fila fuori dal box
       if(isSetPieceSit(sit)){/* [7.186.0] era `sit?.lockMovement`: sulle punizioni CON movimento il loop di pressing riscriveva le posizioni ogni ~600ms e CANCELLAVA la barriera appena schierata */
         // 3DV-MOV2 (fix posizioni sballate): set piece (rigore/punizione) — i giocatori TENGONO
@@ -3820,7 +3856,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);/* [7.870] rosso appaiato: __CPM_NO870 rimette in moto le vecchie macchine narrative e il vecchio mover */
       k898Ref.current=(k898Ref.current+1)%_SUB898;
       if(k898Ref.current!==0){/* [7.898] sotto-tick: solo la fisica del motore e i suoi specchi, nessuna riga, nessun minuto */
-        try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);const _st=_M.stato();_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
+        try{if(MOTORE870&&motoreRef.current&&phaseRef.current==='playing'){const _M=motoreRef.current;/* [22/09 testimone · sola lettura] QUANTI PASSI DI FISICA RICEVE OGNI MINUTO. Il motore ha un flusso di sorteggi CON STATO: se un minuto riceve un passo in piu' o in meno, tutto il seguito slitta. Il sotto-tick e' legato all'orologio da polso e salta quando c'e' una scena in corso — quindi il conto puo' cambiare da un giro all'altro. */if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{const _m=clockRef.current|0;window.__CPM_PASSI959[_m]=(window.__CPM_PASSI959[_m]|0)+1;}catch(_e959p){}}const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);const _st=_M.stato();_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
         return;}
       /* [7.494.0 F0 — CHIUDE IL BORDO NON MISURATO DEL 7.489] Il 7.489 ha reso la cronaca funzione pura di
          (seed di partita, minuto) dentro il callback di `setClock`, dove vive `_rndM`. Ma i rami che girano
@@ -3970,7 +4006,13 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            non per verifica a posteriori. La velocita' cambia solo QUANDO gli eventi vengono presentati.
            ⚠️ Il seed di partita e' lo stesso del micro-simulatore dei gol (`bgSimSeedRef`), che era gia'
            deterministico per minuto: ora tutta la catena condivide la stessa sorgente. */
-        const _rndM=(typeof window!=='undefined'&&window.__CPM_NO489)?(()=>Math.random()):seededRng(((bgSimSeedRef.current>>>0)+nx*2654435761)>>>0);/* prova del rosso: torna ai generatori non seedati */
+        const _rndM0959=(typeof window!=='undefined'&&window.__CPM_NO489)?(()=>Math.random()):seededRng(((bgSimSeedRef.current>>>0)+nx*2654435761)>>>0);/* prova del rosso: torna ai generatori non seedati */
+        /* [22/09 testimone · sola lettura] QUANTI SORTEGGI CONSUMA OGNI MINUTO. `_rndM` e' un generatore
+           CON STATO per minuto: se un ramo condizionale passa in un giro e non nell'altro, tutto il resto
+           del minuto slitta di una estrazione e la cronaca cambia protagonista a parita' di riga. La sonda
+           `rndm-conteggio` accende `window.__CPM_RNDM959` e legge questo contatore. Spento, e' `_rndM0959`. */
+        const _rndM=(typeof window!=='undefined'&&window.__CPM_RNDM959)?(()=>{try{window.__CPM_RNDM959[nx]=(window.__CPM_RNDM959[nx]|0)+1;}catch(_e959){}return _rndM0959();}):_rndM0959;
+        if(typeof window!=='undefined'&&window.__CPM_POS959){try{const _P=window.__CPM_POS959;let _h=2166136261;const _mp=matchPlayersRef.current||[];for(let _i=0;_i<_mp.length;_i++){const _q=_mp[_i]||{};_h=(Math.imul(_h^(Math.round((_q.x||0)*10)+_i*977),16777619))>>>0;_h=(Math.imul(_h^(Math.round((_q.y||0)*10)+_i*131),16777619))>>>0;}_P[nx]=_h>>>0;}catch(_e959p){}}/* [22/09 testimone] impronta delle POSIZIONI all'ingresso del minuto */
 
         if(nx>=90){const _no645=(typeof window!=='undefined'&&window.__CPM_NO645);if(!_no645&&nx<96&&(pendingGoalRef.current||golCoda645.current.length)){if(nx>=92&&pendingGoalRef.current){pendingGoalRef.current.ticks=999;if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_REC645=window.__CPM_REC645||{coda:0,codaMax:0,dir:0,rec:0,forza92:0});_w.forza92++;}catch(_e){}}}if(typeof window!=='undefined'&&window.__CPM_REC){try{const _w=(window.__CPM_REC645=window.__CPM_REC645||{coda:0,codaMax:0,dir:0,rec:0,forza92:0});_w.rec++;}catch(_e){}}/* [7.645.0 — IL FISCHIO NON AMMAZZA L'AZIONE VIVA] BUCO LATENTE censito col 7.644: qui si tornava a 90 SENZA svuotare pendingGoalRef — una costruzione viva al fischio perdeva il suo gol dal tabellone in silenzio. Ora la partita va in RECUPERO (fino al 95'): la costruzione si chiude (a 92' d'ufficio, via tetto) e i gol in coda entrano diretti, POI il fischio. Frequenza del buco: non misurata prima (caso raro); testimone __CPM_REC645.rec la conta d'ora in poi. */}else{cpmEv("fine",{min:90,causa:"clock"});/* [7.500.0 F4] */if(!_SIT_TEST)_goEndOrCeremony();return 90;}}/* [7.2.0] titolo vinto → premiazione 3D, altrimenti "ended" */
         /* [7.268.0 batteria di regressione — sub-off] LA SOSTITUZIONE HA LA PRECEDENZA SULL'HIGHLIGHT.
@@ -4796,7 +4838,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(nx%3===0&&!golMotoreRef.current){const _q=quotaMotoreRef.current;if(_q.length>=6){const _qh=Math.round(100*_q.reduce((a2,b2)=>a2+b2,0)/_q.length);const _p=clamp(possessionRef.current|0,20,80);const _want=(_qh<_p-12)?"home":(_qh>_p+12)?"away":null;if(_want)_M.chiedi.turno(_want);}}
           /* [7.849 nel motore] l'atteggiamento: chi e' sotto o pari dal 70' assalta, chi e' avanti di due dal 60' amministra */
           {const _sc=scoreRef.current||{home:0,away:0};const _d=(_sc.home|0)-(_sc.away|0);const _attDi=(dd)=>(nx>=70&&dd<=0)?1:(nx>=60&&dd>=2)?-0.6:(dd<0?0.4:0);_M.chiedi.atteggiamento("home",_attDi(_d));_M.chiedi.atteggiamento("away",_attDi(-_d));}
-          _evM870=evAcc898Ref.current.concat(_M.tick({min:nx,dt:1/_SUB898,dec:true}));evAcc898Ref.current=[];/* [7.898] il battito del minuto DECIDE (dec) e compie un terzo del movimento; i fatti dei due sotto-tick precedenti si narrano qui */
+          if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{window.__CPM_PASSI959[nx|0]=(window.__CPM_PASSI959[nx|0]|0)+1;}catch(_e959q){}}/* [22/09 testimone] il battito del minuto e' un passo come gli altri */_evM870=evAcc898Ref.current.concat(_M.tick({min:nx,dt:1/_SUB898,dec:true}));evAcc898Ref.current=[];/* [7.898] il battito del minuto DECIDE (dec) e compie un terzo del movimento; i fatti dei due sotto-tick precedenti si narrano qui */
           try{if(typeof window!=='undefined'&&window.__CPM_REC){const _acc=(window.__CPM_EVM870=window.__CPM_EVM870||[]);for(const _e of _evM870){if(_e&&_e.t==='tiro')_acc.push({tick:_e.tick,chi:(_e.chi&&_e.chi.i!=null)?_e.chi.i:String(_e.chi&&_e.chi.nome||'?'),zona:_e.zona||'?',min:_e.min});}window.__CPM_MOTORE_EV=()=>window.__CPM_EVM870||[];}}catch(_e870ev){}/* [A2 strumento] gancio di SOLA LETTURA, solo con __CPM_REC (sonde): accumula i tiri del motore, che vivono un tick solo, per contarli contro le righe raccontate */
           _stM870=_M.stato();
           _specchi898(_stM870,_evM870);/* [7.898] gli specchi del motore: la stessa funzione dei sotto-tick */
@@ -6122,7 +6164,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 } // DEF: moderate press
                 else if(ai<=7){txBias*=1.0;} // MID: full press
                 else{txBias*=1.3;} // FWD: aggressive press
-                const jitter=(Math.random()-0.5)*2;
+                const jitter=(Math.random()-0.5)*2;/* [7.959.0] seedatura provata e revocata: vedi il verbale a ~riga 2265 */
                 return{...pl,x:clamp(pl.x+txBias+jitter,44,98),y:clamp(pl.y+tyBias+(Math.random()-0.5)*3,3,97)};
               }else{
                 // Home GK: lateral tracking only, stays in goal

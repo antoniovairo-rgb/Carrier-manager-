@@ -30,7 +30,10 @@ function creaMotorePossesso(cfg){
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const hyp=(ax,ay,bx,by)=>Math.hypot(ax-bx,ay-by);
   let _s=(((cfg.seed|0)>>>0)||7)>>>0;
-  const rnd=()=>{_s=(Math.imul(_s,1664525)+1013904223)>>>0;return _s/4294967296;};
+  /* [22/09 testimone · sola lettura] QUANTI SORTEGGI CONSUMA IL MOTORE IN OGNI MINUTO. Il flusso e' CON
+     STATO (LCG seedato alla costruzione): se in un giro un ramo consuma un sorteggio in piu', tutta la
+     partita che segue e' un'altra partita. La sonda `prima-divergenza` accende `window.__CPM_RND14`. */
+  const rnd=()=>{if(typeof window!=='undefined'&&window.__CPM_RND14){try{const _m=(S&&S.min)|0;window.__CPM_RND14[_m]=(window.__CPM_RND14[_m]|0)+1;}catch(_e14){}}_s=(Math.imul(_s,1664525)+1013904223)>>>0;return _s/4294967296;};
   const seme32=()=>(Math.floor(rnd()*4294967295)>>>0)||1;
   const decidi=(typeof cfg.decidi==='function')?cfg.decidi:((typeof decideExecution==='function')?decideExecution:null);
   const GOAL_Y0=45,GOAL_Y1=55;
