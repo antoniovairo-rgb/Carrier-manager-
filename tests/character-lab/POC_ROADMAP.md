@@ -507,3 +507,9 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 - **Fatto verificato:** Character Creator 5 offre Game Base da circa 10K poligoni, rig, morph viso/corpo, sistema capelli/barba, bake materiali e LOD. Il prezzo ufficiale e' `$299` Standard / `$479` Deluxe; kit da calcio e libreria adatta non sono inclusi nella prova.
 - **Decisione:** candidato tecnicamente forte, ma non proporzionato al budget. Nessun acquisto o installazione; CGTrader resta il runtime, Human Generator trial resta il prossimo test pratico, previo consenso all'installazione isolata.
 - **Licenza:** la policy Standard dichiara uso in giochi/app degli asset esportabili; per ogni contenuto CC aggiuntivo la licenza specifica va confermata prima dell'acquisto.
+
+## Aggiornamento 22 settembre 2026 — scan di modelli calcistici e varianti
+
+- **Fatti verificati:** il pacchetto con 30 capelli e' stilizzato e pesa 87.784 poligoni; il modello Parker con rig facciale pesa 105.366 triangoli. Entrambi falliscono il gate estetico o mobile prima dell'acquisto.
+- **Candidato da file-audit:** African Football Soccer Player Male gratuito dichiara rig e 15 animazioni, ma mancano dati su triangoli, LOD, morph e modularita'. Non e' ancora adottato.
+- **Decisione:** non cambiare base e non acquistare. Prosegue l'audit di fonti gratuite e il test Human Generator isolato quando autorizzato; MetaPerson verra' misurato solo quando il browser controllato potra' usare l'accesso.
