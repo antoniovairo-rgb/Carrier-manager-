@@ -430,3 +430,9 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 - **Fatti verificati:** la scheda Fab offre FBX, GLB, OBJ e Blender, rig e kit completo; dichiara topologia pronta per animazione e scala reale. Il prezzo visualizzato e `15,94–21,26 EUR` secondo licenza.
 - **Review visiva:** la preview mostra un uomo molto generico, senza capelli o varianti visibili, in T-pose e con kit a strisce blu/rosse che richiama una livrea esistente. La pagina non dichiara poligoni, texture, LOD o numero reale di moduli.
 - **Decisione:** non acquistare. Non dimostra un vantaggio sul CGTrader per qualita del volto, personalizzazione o mobile; resta fuori dalla POC finche il venditore non fornisca dati tecnici e varianti verificabili.
+
+## 2026-09-22 — review NoEdge p6 capelli e barba
+
+- **Fatti verificati:** la preview mostra una singola silhouette maschile adulta con riga laterale, barba e baffi. La scheda dichiara materiali con colori radice/punte regolabili, supporto Blender/FBX/GLB e prezzo `20,20 EUR` su Fab.
+- **Limite tecnico:** la scheda CGTrader dello stesso p6 dichiara `24.404` poligoni per l'asset. Per aggiungerlo al CGTrader, il solo dettaglio capelli/barba sarebbe vicino al costo di un intero giocatore LOD1 e richiederebbe decimazione e fit non ancora dimostrati.
+- **Decisione:** non acquistare p6. E una singola acconciatura credibile, non una libreria, e non porta un vantaggio verificato proporzionato al costo e al budget mobile. La ricerca continua su una base modulare completa o sulla prova Human Generator.
