@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 01:35 (Europe/Rome, orologio del container)
+**Ultimo aggiornamento:** 23 settembre 2026, 00:53 (Europe/Rome; controllo periodico)
 **Stato complessivo stimato:** 64% — presa alta: gesto, contatto, possesso e inquadratura misurati nel banco; telefono e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -539,6 +539,14 @@ sorgente.
 
 ---
 
+## Avanzamento 23 settembre 2026, 00:53 — Controllo periodico
+
+- **Fase corrente:** 4/7, 64% complessivo stimato; gate finali non ancora superati.
+- **Attivita dall'ultimo aggiornamento:** nessun nuovo commit sul branch POC dopo 9ef9753a. La presa alta con camera dedicata e il rimedio al kit a chiazze restano gli ultimi interventi registrati.
+- **Verifica ed esito:** fetch remoto invariato. La roadmap precedente riporta misure locali di presa e rendering; nessuna nuova misura su telefono. Il difetto di assegnazione della clip sul Dribbling netto resta aperto.
+- **Lavoro successivo e criterio di chiusura:** correggere il gesto di dribbling e verificare in sequenza contatto piede-palla, tiro e transizioni; ripetere il test mobile reale. Nessuna build POC validata e pubblicata sul link ufficiale.
+
+---
 ## Obiettivo vincolante
 
 Creare un solo sistema di personaggi adulti credibili, stilizzati oppure semi-realistici, per partita, intro, highlight e ritratti profilo. Il modello deve essere costruito e corretto nei sorgenti Blender/GLB, non tramite geometrie correttive a runtime.
