@@ -10297,8 +10297,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 })()
               )}
               {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
-                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.45)",padding:"12px 12px 14px"}}>
-                  <div style={{fontSize:FS.small,fontWeight:800,color:"rgba(255,255,255,0.85)",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.82)"/* [7.976.0 A17] la banda stava a 0,45: sul prato chiaro il fondo composito misurava #8f9095 e il testo 2,76:1. A 0,82 il fondo resta scuro qualunque cosa ci sia sotto */,padding:"12px 12px 14px"}}>
+                  <div style={{fontSize:FS.small,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
                 </div>
               )}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
               {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
@@ -10519,7 +10519,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <span style={{fontSize:FS.caption,fontWeight:900,color:"#60a5fa"}}>🎯 {mStats.assists}</span>
               <span style={{fontSize:FS.caption,fontWeight:700,color:energy>50?"#4ade80":energy>25?"#f59e0b":"#f87171"}}>⚡ {energy}%</span>
               <span style={{fontSize:FS.caption,fontWeight:900,color:_rc_cs}}>⭐ {_r_cs}</span>
-              <span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginLeft:"auto"}}>📍 {ZONES[zone]?.label||zone}</span>
+              <span style={{fontSize:FS.caption,color:"#94a3b8"/* [7.976.0 A17] misurato dalla griglia: rgba(255,255,255,0.3) su #050810 = 2,57:1. #94a3b8 sullo stesso fondo = 7,81:1 */,marginLeft:"auto"}}>📍 {ZONES[zone]?.label||zone}</span>
             </div>
           );})()}
           {(()=>{/* [7.347.0] auto-chiusura col taccuino aperto. [7.529.0 collaudo PO «il box cronaca esterno
