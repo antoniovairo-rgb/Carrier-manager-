@@ -576,3 +576,9 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 
 - **Fatti verificati:** `HEAD.fbx` contiene una sola mesh testa da `9.083` triangoli, senza armatura, gruppi peso o shape key. `NORMAL+RIG.fbx` contiene il rig e sette mesh pesate, ma ogni mesh ha `shape_keys: []`, compresa la testa.
 - **Decisione:** non esiste un set di espressioni o volti alternativi nascosto da attivare. Le quattro varianti colore capelli restano texture sullo stesso volto/taglio; per differenziare realmente i giocatori serve una pipeline distinta, non una configurazione del pacchetto.
+
+## Aggiornamento 22 settembre 2026 — licenza e prezzo Human Generator verificati
+
+- **Fatti verificati:** la trial e' personale/portfolio e usa texture 4K con watermark: puo' servire solo al provino tecnico, non al runtime Korward. La licenza commerciale ufficiale costa `$128` una tantum per utente, include tutto il contenuto e dichiara esplicitamente l'uso in software e videogiochi, a condizione che gli utenti finali non possano estrarre e riutilizzare gli asset.
+- **Compatibilita':** la pagina ufficiale Superhive dichiara Blender `3.6–5.2`; il Blender locale 4.5.14 rientra quindi nella versione dichiarata.
+- **Decisione:** nessun acquisto ora. Se il provino isolato supera i gate tecnici e visivi, Human Generator diventa una proposta di acquisto concreta: costa meno di Character Creator 5 (`$299`) e sarebbe legalmente utilizzabile nel gioco con la licenza commerciale. La trial continua a essere solo una prova.

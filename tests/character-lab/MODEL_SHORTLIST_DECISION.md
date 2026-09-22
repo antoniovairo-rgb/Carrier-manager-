@@ -36,3 +36,9 @@ La prova necessaria è l’installazione isolata dell’add-on trial: generare i
 ## Criterio per chiudere la selezione
 
 Un candidato può sostituire il CGTrader soltanto dopo aver provato sul posto: volto adulto credibile, kit neutro, capelli/barba non ridicoli, braccia coordinate in tutte le clip, palla sincronizzata, transizioni pulite, scala corretta e prestazioni mobili. Al momento nessun sostituto soddisfa questi criteri; il CGTrader resta quindi la scelta operativa corretta.
+
+## Aggiornamento 22 settembre 2026 — licenza e prezzo Human Generator verificati
+
+- **Fatti verificati:** la trial e' personale/portfolio e usa texture 4K con watermark: puo' servire solo al provino tecnico, non al runtime Korward. La licenza commerciale ufficiale costa `$128` una tantum per utente, include tutto il contenuto e dichiara esplicitamente l'uso in software e videogiochi, a condizione che gli utenti finali non possano estrarre e riutilizzare gli asset.
+- **Compatibilita':** la pagina ufficiale Superhive dichiara Blender `3.6–5.2`; il Blender locale 4.5.14 rientra quindi nella versione dichiarata.
+- **Decisione:** nessun acquisto ora. Se il provino isolato supera i gate tecnici e visivi, Human Generator diventa una proposta di acquisto concreta: costa meno di Character Creator 5 (`$299`) e sarebbe legalmente utilizzabile nel gioco con la licenza commerciale. La trial continua a essere solo una prova.
