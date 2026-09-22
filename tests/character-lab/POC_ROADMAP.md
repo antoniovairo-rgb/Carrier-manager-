@@ -633,7 +633,7 @@ dito non e' provato. Chromium headless, non il telefono.
 - Passaggio/tiro (hl2): palla al piede nel fotogramma del calcio.
 
 **Cosa disturba un giocatore — difetti visti, cause NON verificate salvo dove detto:**
-1. **Figurina vuota:** nella finestra dopo il gol («✊ TU») il ritratto e' un rettangolo bianco (08-hl1-dopo-continua.png).
+1. **Figurina vuota:** nella finestra dopo il gol («✊ TU») il ritratto e' un rettangolo bianco (08-gioco.png).
    Causa gia' misurata: `window.__CPM_VOLTI` mai popolato (voce 00:58).
 2. **Tabellino incoerente:** risultato **2-1 VITTORIA**, ma nel «Tabellino della gara» la riga Gol riporta **2 — 2**
    (24-fischio-finale.png). Il tabellino eroe dice anche 16 tiri. Area motore/UI di `main`, fuori dal POC: da misurare.
