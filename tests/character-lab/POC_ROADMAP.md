@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 22 settembre 2026, 23:05 (Europe/Rome)
+**Ultimo aggiornamento:** 22 settembre 2026, 23:25 (Europe/Rome)
 **Stato complessivo stimato:** 60% — ridotto dopo il censimento di un debito strutturale (`src/` non allineato al file di gioco); non è un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -87,6 +87,75 @@ contesto attivo e budget renderer, prelevando dalla copia di recupero **solo le 
 **Chiude quando:** corpi resi nell'highlight scendono al contesto attivo, i tre LOD risultano caricati,
 `__CPM_CGTRADER_CINEMA_ROSTER` e `__CPM_CGTRADER_RENDER_BUDGET` rispondono, gli FPS locali risalgono
 rispetto al rosso misurato, **e la partita normale non cambia** (verifica appaiata senza il parametro).
+
+---
+
+## Avanzamento 22 settembre 2026, 23:25 — LA STRATEGIA DI MERGE, MISURATA
+
+Nota del PO: «occhio che su molti aspetti sei tu molto avanti, bisogna fare un merge davvero intelligente».
+Misurato invece che stimato, ed e' vero — ma il quadro e' **molto piu' favorevole** di quanto sembri.
+
+### Quanto sono distanti i due rami (fatti osservati)
+
+| | valore |
+| --- | --- |
+| versione del gioco nel POC | **7.949.0** |
+| versione su `main` | **7.979.0** |
+| base comune | `8dc3aaf`, **17/09 20:37** — cinque giorni |
+| commit di `main` non nel POC | **56** |
+| commit del POC non in `main` | **166** |
+
+### DOVE hanno lavorato i due rami — ed e' qui che il merge diventa facile
+
+| ramo | dove ha scritto |
+| --- | --- |
+| `main` (30 versioni) | **solo in `src/`**: 2.374 righe su 12 frammenti |
+| POC (166 commit) | **`CARRIER-MANAGER-AV.html`: +402 / −180**, piu' asset, strumenti, documenti |
+| **file di `src/` toccati dal POC** | **ZERO** |
+
+**I due rami non si sovrappongono quasi per niente.** Il POC non ha mai toccato un frammento; `main` non ha
+mai toccato `tests/character-lab/` ne' gli asset CGTrader.
+
+### Dove cadono i 42 blocchi di codice POC
+
+| destinazione | blocchi | e `main`, nello stesso periodo |
+| --- | ---: | --- |
+| `ThreeMatchView` → `src/12-three-match-view.jsx` | **35** | **+1 / −1 riga**: praticamente intatto |
+| testa/tema, avatar, `renderHeroPhoto` → `00-head` + `01-bootstrap` | 5 | `01-bootstrap` +181 / −9 |
+| `deriveHL`, `LiveMatch` → `src/15-live-match.jsx` | 2 | +400 / −196 |
+| `PresentationStage3D`, `ParataBus3D`, `IntroCinematic` → `src/16-scene-3d-cerimonie.jsx` | 3 | +202 / −160 |
+
+**Trentacinque blocchi su quarantadue stanno in un file che `main` non ha praticamente toccato.**
+
+### Prova a secco del merge `origin/main` → POC (eseguita e ANNULLATA)
+
+`git merge --no-commit --no-ff origin/main` poi `git merge --abort`. Risultato: **2 soli file in conflitto**
+— `CARRIER-MANAGER-AV.html` (il build **generato**, quindi un conflitto che non va risolto a mano ma
+**rigenerato**) e `index.html` (34 righe su `main` contro 17 nel POC). **Tutto il resto dei 222 commit si
+fonde da solo.** Il ramo e' tornato a `f965e12`, albero pulito.
+
+### Strategia proposta (NON eseguita: serve il via libera del PO)
+
+1. **`src/` di `main` e' la fonte di verita'**: e' coerente col build, e' coperta da otto rituali ed e'
+   trenta versioni avanti. Il POC non l'ha mai toccata, quindi non c'e' niente da perdere.
+2. **Portare `origin/main` DENTRO il POC** (non il contrario). Questo **non viola** il vincolo: `main` resta
+   intatto, si scrive solo sul ramo POC.
+3. **Risolvere i due conflitti nel modo giusto**: `CARRIER-MANAGER-AV.html` **non si fonde**, si **rigenera**
+   da `src/`; `index.html` si sceglie consapevolmente (34 righe contro 17, da leggere prima).
+4. **Trasferire i 42 blocchi nei frammenti**: 35 in `12-three-match-view.jsx`, il resto negli altri tre.
+5. **Da quel momento il lavoro POC si scrive in `src/`**, mai piu' nel file generato — cosi' il delta non
+   ricresce e `build-src.mjs` smette di essere un comando distruttivo.
+
+**Perche' NON il contrario**: portare `main` dentro il POC lato-HTML significherebbe rifare a mano trenta
+versioni di lavoro (contrasto, figurine, fisarmoniche, A17/A18/A19, sala stampa, determinismo, fine partita
+unica) dentro un file non tracciabile. Sarebbe la strada piu' costosa e piu' fragile.
+
+**Costo stimato del punto 4:** 402 righe aggiunte da ricollocare, il 83% in un solo frammento. **Non e' un
+oceano, ed e' verificabile**: dopo il trasferimento `check-src` deve dire IDENTICO e la review
+`cgtrader-highlight-optimized` deve comportarsi come prima.
+
+**Decisione che serve dal PO:** via libera al punto 2 (merge `main` → POC). Finche' non arriva, continuo a
+lavorare **senza** toccare `src/` e senza lanciare `build-src.mjs`.
 
 ---
 
