@@ -385,3 +385,10 @@ Ad ogni avanzamento significativo questo file viene aggiornato con fase, percent
 
 - **Fatto verificato:** la posa finale `pass` e la posa iniziale `jog` hanno radice locale coincidente (`0 m`), ma non sono equivalenti: delta massimo `41,958°` sul polpaccio sinistro; braccio inferiore destro `25,441°`, braccio superiore destro `23,483°`.
 - **Esito:** il contatto del passaggio è corretto, ma il gate transizione resta **APERTO**. Uno stacco diretto sarebbe visibile; serve osservare nel renderer un crossfade effettivo e poi ripetere la prova su mobile.
+
+## 2026-09-22 — accesso browser e disponibilità fonti esterne
+
+- **Fatto verificato:** l'accesso nel browser Chrome è disponibile e MetaPerson è stato aperto per il test del generatore.
+- **Fatto verificato:** il candidato gratuito CGTrader `Male Hairstyle Short01` non è stato scartato; il suo download firmato raggiunge Chrome ma viene fermato localmente con `ERR_BLOCKED_BY_CLIENT` prima del trasferimento.
+- **Conseguenza:** il blocco non dipende dalle credenziali CGTrader. Non viene aggirato e non sono stati modificati asset, ramo `main` o pubblicazione.
+- **Prossimo passo:** completare il test/esportazione dal generatore MetaPerson e sottoporre qualunque file ottenuto al gate locale di compatibilità, peso, volto e animazione prima dell'adozione.
