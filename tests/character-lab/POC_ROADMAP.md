@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 00:57 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 01:05 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -587,6 +587,34 @@ Partita normale `__CPM_TRI907`: **1.103.244** invariata.
   taglia il gesto si legge poco. La camera dedicata «41°/0,22» descritta il 22/09 non esiste nel sorgente. Decisione tua.
 - Un difensore esegue `tackle` sul tiro (reazione del reparto 7.519): calcio plausibile, lasciato.
 - Transizioni fra gesti: misurati rilascio a peso 0 e un gesto per azione; il giudizio del crossfade resta visivo, sul telefono.
+
+---
+
+## Avanzamento 23 settembre 2026, 01:05 — FIGURINE: STATO REALE E DECISIONI CHE SPETTANO AL PO
+
+**Fatti (ricerca in `src/`, nessuna modifica):**
+- Dopo il merge di `main` il ramo ha gia' `Figurina` 5:7 (`01-bootstrap-tema-avatar.jsx:345`, `FIG` a :318) usata in ~25 punti
+  (eroe, compagni, avversario, arbitro, mister, giornalista, procuratore). `AvatarSVG` non e' piu' montato da nessuna parte.
+- I volti passano da `voltoUrl(tipo, chiave)` (:322) che cerca in `window.__CPM_VOLTI`: **quel manifesto non viene mai
+  popolato**, quindi oggi nessuna figurina mostra un volto. I 40 ritratti di `assets/portraits/` non sono referenziati.
+- La chiave e' uno slug del **nome**; l'eroe usa tre chiavi diverse (`player.name`, `"eroe-"+avatarId`, `"avatar-"+avatarId`);
+  il mister in una scena riceve il nome del **club** (15-live-match.jsx:10738); il giornalista dell'intervista riceve il nome
+  della **testata** (18-career-app.jsx:6027).
+- ID stabili esistono solo per i giornalisti (`j_ferretti`...). Rosa, compagni (rinominati da `syncTeammateNames`), rivale,
+  mister e procuratore non hanno id. `SAVE_VERSION` 9, migrazione `migratePlayer` (17-menu-creazione-pannelli.jsx:1859).
+
+**Piano proposto (non eseguito):** registro `player.volti` salvato in carriera (migrazione additiva, niente bump se il campo e'
+facoltativo): alla prima comparsa di un'identita' le si assegna uno dei 40 slot della sua categoria scegliendo il meno usato e
+mai uno gia' presente nella stessa rosa/scena; da li' il volto non cambia piu'. `voltoUrl` riceve lo slot (quadrante del foglio
+2x2 via background-position). Correzione delle tre chiavi sbagliate sopra. Guardiani: `save-compat`, `career-critical`,
+foto delle schermate a 412x915.
+
+**Decisioni tue, prima di scrivere codice:**
+1. **Provenienza e licenza dei 40 ritratti**: la roadmap dice «creati», non da dove ne con quale licenza. L'handoff chiede di
+   verificarla prima di pubblicarli. Non posso confermarla.
+2. **Chiave dell'identita'**: assegnazione persistente per nome visibile + registro salvato (piano sopra), oppure introdurre id
+   veri per compagni/rivale/mister/procuratore (piu' pulito, tocca generazione rosa e migrazione in piu' punti).
+3. **Ordine**: le figurine sono lavoro 2D separato dai gate 3D; il gate che chiude la missione resta il telefono.
 
 ---
 
