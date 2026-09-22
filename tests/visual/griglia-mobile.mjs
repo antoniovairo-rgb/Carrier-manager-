@@ -215,6 +215,12 @@ function MISURA(W) {
        della `font-family` calcolata — quella che il browser usa davvero — su ogni nodo di testo
        visibile. Censimento, non guardiano. */
     famiglie: [], nFamiglie: 0,
+    /* [G12 · 22/09, direttiva PO «predisponi lo spazio dei volti rettangolari in verticale»] LO SPAZIO
+       DELLA FIGURINA HA UN CONTRATTO, E IL CONTRATTO SI MISURA: ogni riquadro `data-cpm-figurina` deve
+       rendere il rapporto 5:7. Qui si contano le figurine per schermata e si registra lo SCARTO PEGGIORE
+       dal rapporto dichiarato: se l'arte arriva e qualcuno la mette in un riquadro storto, il numero lo
+       dice prima del PO. */
+    nFigurine: 0, figScarto: 0, figTipi: [],
     /* [G8.3 · direttiva PO 17/09 «se una schermata e' troppo lunga valuta se mettere degli
        accordion»] QUANTO E' LUNGA. Prima di aprire e chiudere sezioni serve sapere quali
        schermate lo meritano davvero: `schermate` e' l'altezza del documento diviso l'altezza
@@ -549,6 +555,18 @@ function MISURA(W) {
     R.scuri = scuri.slice(0, 6).map(x => ({ sel: x.sel, lum: x.lum, fondo: x.fondo, px: x.px, txt: x.txt }));
   } catch (_e) { R.nScuri = -1; R.scuri = []; }
   R.nColTesto = _colT.size; R.nFondi = _fon.size; R.nCorpi = _cor.size; R.nPesi = _pes.size; R.nRaggi = _rag.size;
+  try{
+    const figs = [...radice.querySelectorAll('[data-cpm-figurina]')];
+    const tipi = new Map(); let peggio = 0;
+    for (const f of figs) {
+      const r = f.getBoundingClientRect(); if (r.width < 2 || r.height < 2) continue;
+      const att = 7 / 5, vero = r.height / r.width;
+      const sc = Math.abs(vero - att) / att; if (sc > peggio) peggio = sc;
+      const t = f.getAttribute('data-cpm-figurina') || '?'; tipi.set(t, (tipi.get(t) | 0) + 1);
+    }
+    R.nFigurine = figs.length; R.figScarto = Math.round(peggio * 1000) / 10;
+    R.figTipi = [...tipi.entries()].sort((a, b) => b[1] - a[1]).map(([t, n]) => ({ t, n }));
+  }catch(_e){ R.nFigurine = -1; }
   R.famiglie = [..._fam.entries()].sort((a, b) => b[1] - a[1]).map(([f, n]) => ({ f, n })); R.nFamiglie = _fam.size;
   R.corpi = [..._cor].sort((a, b) => a - b);
   R.raggi = [..._rag].sort((a, b) => a - b);
@@ -989,6 +1007,22 @@ righe.forEach(s2 => {
   const fam = m.famiglie || [];
   const fuori = fam.filter(x => !/^Barlow/i.test(x.f));
   R.push(`| ${s2.nome} | ${fuori.length ? '**' + (m.nFamiglie || 0) + '**' : (m.nFamiglie || 0)} | ${fam.map(x => x.f + ' x' + x.n).join(' · ') || '—'} |`);
+});
+R.push('');
+
+R.push('## 9-sexies · LO SPAZIO DELLE FIGURINE (a 412 px, la taglia del PO)');
+R.push('');
+R.push('> [G12 · 22/09, direttiva PO «predisponi lo spazio dei volti rettangolari in verticale, stile');
+R.push('> panini»] Il riquadro del volto ha un contratto: **rapporto 5:7 verticale**. Qui, schermata per');
+R.push('> schermata, quante figurine ci sono e qual e\' lo **scarto peggiore** dal rapporto dichiarato.');
+R.push('> Finche\' l\'arte non arriva il riquadro mostra il ripiego, ma lo SPAZIO e\' gia\' quello giusto.');
+R.push('');
+R.push('| schermata | figurine | scarto dal 5:7 | tipi |');
+R.push('|---|---:|---:|---|');
+righe.forEach(s2 => {
+  const m = (DATI[s2.id][412] || DATI[s2.id][W[W.length - 1]]);
+  if (!m) return;
+  R.push(`| ${s2.nome} | ${m.nFigurine || 0} | ${(m.nFigurine ? (m.figScarto || 0) + ' %' : '—')} | ${(m.figTipi || []).map(x => x.t + ' x' + x.n).join(' · ') || '—'} |`);
 });
 R.push('');
 

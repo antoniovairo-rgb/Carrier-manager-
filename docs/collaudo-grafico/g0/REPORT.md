@@ -307,24 +307,24 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---:|---|---|---|
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteFootball Career Simula |
 | Creazione | 52 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | ⚡ INIZIA I PROVINI |
-| Dashboard | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 12:26Avataaars |
+| Dashboard | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:09Avataaars |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
-|  | 53 | 0.012 | `#241438` | `div.cpm-scroll>div.cpm-career>div:nth-child(4)` | La tua storia▶ |
-|  | 58 | 0.017 | `#14243a` | `div.cpm-scroll>div.cpm-career>div:nth-child(6)` | Il tuo procuratore▶ |
-|  | 58 | 0.013 | `#331426` | `div.cpm-scroll>div.cpm-career>div:nth-child(7)` | ❤️ Vita privata▶ |
-|  | 67 | 0.012 | `#241a12` | `div.cpm-scroll>div.cpm-career>div:nth-child(9)` | Adesso guardano teNEL PIENO▶ |
-| Stagione · Classifica | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 12:26Avataaars |
-| Stagione · Calendario | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 12:26Avataaars |
-| Stagione · Coppe | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 12:26Avataaars |
-| Club | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 12:26Avataaars |
+|  | 53 | 0.012 | `#241438` | `div.cpm-scroll>div.cpm-career>div:nth-child(4)` | La tua storia› |
+|  | 58 | 0.017 | `#14243a` | `div.cpm-scroll>div.cpm-career>div:nth-child(6)` | Il tuo procuratore› |
+|  | 58 | 0.013 | `#331426` | `div.cpm-scroll>div.cpm-career>div:nth-child(7)` | ❤️ Vita privata› |
+|  | 67 | 0.012 | `#241a12` | `div.cpm-scroll>div.cpm-career>div:nth-child(9)` | Adesso guardano teNEL PIENO› |
+| Stagione · Classifica | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:09Avataaars |
+| Stagione · Calendario | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:09Avataaars |
+| Stagione · Coppe | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:09Avataaars |
+| Club | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:09Avataaars |
 |  | 207 | 0.016 | `#112240` | `div.cpm-career>div:nth-child(2)>div:nth-child(10)` | Lo Spogliatoio🧠Luigi TestaIl Ment |
-| Carriera · Profilo | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 12:26Avataaars |
-|  | 53 | 0.014 | `#1a1f2e` | `div.cpm-career>div:nth-child(3)>div:nth-child(1)` | Biografia▶ |
-|  | 69 | 0.042 | `#312e81` | `div.cpm-career>div:nth-child(3)>div:nth-child(6)` | 🆚 Il tuo rivale▶ |
-|  | 62 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(7)` | ⭐ Club dei sogni▶ |
-|  | 58 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(10)` | 💪 Stile di gioco▶ |
-| Carriera · Nazionale | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 12:26Avataaars |
-| Agente | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 12:26Avataaars |
+| Carriera · Profilo | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:09Avataaars |
+|  | 53 | 0.014 | `#1a1f2e` | `div.cpm-career>div:nth-child(3)>div:nth-child(1)` | Biografia› |
+|  | 69 | 0.042 | `#312e81` | `div.cpm-career>div:nth-child(3)>div:nth-child(6)` | 🆚 Il tuo rivale› |
+|  | 62 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(7)` | ⭐ Club dei sogni› |
+|  | 58 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(10)` | 💪 Stile di gioco› |
+| Carriera · Nazionale | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:09Avataaars |
+| Agente | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:09Avataaars |
 | Prepartita | 45 | 0.07 | `#8e1f33` | `div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus` | 📋 Formazioni → |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
@@ -356,16 +356,16 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Impostazioni | 12 | 12 | 12 | 12 | 12 |
 | Creazione | 14 | 14 | 14 | 14 | 14 |
 | Offerte | 7 | 7 | 7 | 7 | 7 |
-| Dashboard | 26 | 26 | 26 | 26 | 26 |
+| Dashboard | 18 | 18 | 18 | 18 | 18 |
 | Stagione · Classifica | 17 | 17 | 17 | 17 | 17 |
 | Stagione · Calendario | 58 | 58 | 58 | 58 | 58 |
 | Stagione · Coppe | 7 | 7 | 7 | 7 | 7 |
 | Club | 22 | 22 | 22 | 22 | 22 |
-| Carriera · Profilo | 25 | 25 | 25 | 25 | 25 |
+| Carriera · Profilo | 21 | 21 | 21 | 21 | 21 |
 | Carriera · Nazionale | 12 | 12 | 12 | 12 | 12 |
 | Agente | 14 | 14 | 14 | 14 | 14 |
 | Prepartita | 9 | 9 | 9 | 9 | 9 |
-| **TOTALE** | **232** | **232** | **232** | **232** | **232** |
+| **TOTALE** | **220** | **220** | **220** | **220** | **220** |
 
 > Contati i CARATTERI emoji sul testo reso. Il provino (`docs/collaudo-grafico/proposta-schermate/`)
 > non ne usa **nessuna**: i cappelli sono etichetta maiuscoletta + filo + azione, la barra in basso
@@ -377,12 +377,12 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Impostazioni | `⚙️ Impostazioni` · `🎨 Grafica` · `🎧 Audio` · `🔇 Muto totale` · `🎵 Musica menu` · `🏟️ Audio partite` |
 | Creazione | `Si scende in campo! ⚽` · `👤 Identità` · `🎯 Stile & percorso` · `📋 Percorso carriera` · `💪` · `🪄` |
 | Offerte | `Si scende in campo! ⚽` · `⚽` · `🎯` · `⭐ TOP` |
-| Dashboard | `Si scende in campo! ⚽` · `⚽` · `⚡ Vivi la Settimana` · `▶` · `❤️ Vita privata` · `🌱 Il ragazzo della Primavera` |
+| Dashboard | `Si scende in campo! ⚽` · `⚽` · `⚡ Vivi la Settimana` · `❤️ Vita privata` · `🌱 Il ragazzo della Primavera` · `📅` |
 | Stagione · Classifica | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `★` |
 | Stagione · Calendario | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `▶` |
 | Stagione · Coppe | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `☕ Sostieni lo sviluppo di` |
 | Club | `Si scende in campo! ⚽` · `⚽` · `⭐⭐⭐` · `🏛️` · `🧣` · `🩺 Dr.` |
-| Carriera · Profilo | `Si scende in campo! ⚽` · `⚽` · `👤` · `🌍` · `▶` · `🆚 Il tuo rivale` |
+| Carriera · Profilo | `Si scende in campo! ⚽` · `⚽` · `👤` · `🌍` · `🆚 Il tuo rivale` · `⭐ Club dei sogni` |
 | Carriera · Nazionale | `Si scende in campo! ⚽` · `⚽` · `👤` · `🌍` · `📊` · `🏆` |
 | Agente | `Si scende in campo! ⚽` · `⚽` · `🤵 Agente · −` · `🏋️` · `🥗` · `✂️ Rescindi (stop 10%)` |
 | Prepartita | `Si scende in campo! ⚽` · `⚽` · `· Giornata 11 di 34 ⚠︎ ?g` · `🗡️` · `⛅ Parz. nuvoloso` · `🎙️ ANALISI DEL MISTER — COME ` |
@@ -428,34 +428,34 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---:|---:|---|
 | Dashboard (1890 px) | 1 | 473 | 25.1 % | 📅La tua settimanaSettimana di campionatoS |
 |  | 2 | 288 | 15.3 % | Lega B · 11ª giornataProssima partitaCalen |
-|  | 3 | 183 | 9.7 % | K⚽rwardEliteSalva · 12:26AvataaarsPablo St |
+|  | 3 | 183 | 9.7 % | K⚽rwardEliteSalva · 13:09AvataaarsPablo St |
 |  | 4 | 175 | 9.3 % | Stagione 4 · Settimana 12/3812Partite14Gol |
 |  | 5 | 101 | 5.3 % | EnterGioca0AvanzaEscIndietroSpcConferma☕ S |
 |  | 6 | 86 | 4.5 % | 🏟️ Partita di Questa Settimana · W.12CREF |
 |  | 7 | 78 | 4.1 % | ⚡ Vivi la Settimanaallenamento, eventi e c |
 |  | 8 | 77 | 4.1 % | 🤝78Fiducia mister⭐64Popolarità |
-|  | 9 | 67 | 3.5 % | Adesso guardano teNEL PIENO▶ |
-|  | 10 | 67 | 3.5 % | Il mondo fuori▶ |
-|  | 11 | 58 | 3.1 % | Il progetto del club▶ |
-|  | 12 | 58 | 3.1 % | Il tuo procuratore▶ |
+|  | 9 | 67 | 3.5 % | Adesso guardano teNEL PIENO› |
+|  | 10 | 67 | 3.5 % | Il mondo fuori› |
+|  | 11 | 58 | 3.1 % | Il progetto del club› |
+|  | 12 | 58 | 3.1 % | Il tuo procuratore› |
 | Stagione · Classifica (1989 px) | 1 | 1304 | 65.6 % | Lega B ★Lega APremier DivisionLiga Ibérica |
 |  | 2 | 317 | 15.9 % | Marcatori Storici — Lega B#5Grafica Probe8 |
 |  | 3 | 246 | 12.4 % | Risultati Internazionali — W.12Premier Div |
-|  | 4 | 183 | 9.2 % | K⚽rwardEliteSalva · 12:26AvataaarsPablo St |
+|  | 4 | 183 | 9.2 % | K⚽rwardEliteSalva · 13:09AvataaarsPablo St |
 |  | 5 | 101 | 5.1 % | EnterGioca0AvanzaEscIndietroSpcConferma☕ S |
 |  | 6 | 45 | 2.3 % | 📊Classifica📅Calendario🏆Coppe |
 | Carriera · Profilo (2023 px) | 1 | 314 | 15.5 % | Attributivelocità82tecnica81fisico80mental |
 |  | 2 | 176 | 8.7 % | StatisticheGol stag.14Assist stag.6Partite |
 |  | 3 | 104 | 5.1 % | Timeline StagioniS.3🥇 Coppa Nazionale🌍 C |
 |  | 4 | 90 | 4.4 % | 🎬 Rivedi l'intro📁 Esporta salvataggio JS |
-|  | 5 | 69 | 3.4 % | 🆚 Il tuo rivale▶ |
+|  | 5 | 69 | 3.4 % | 🆚 Il tuo rivale› |
 |  | 6 | 68 | 3.4 % | TitolareProssimo gradino — Leader: la fasc |
 |  | 7 | 67 | 3.3 % | Record & Premi Personali⚽ 22 gol/stag.🎯 9 |
 |  | 8 | 67 | 3.3 % | 🐞Strumenti di collaudoIl tasto ⚠️ accanto |
-|  | 9 | 62 | 3.1 % | ⭐ Club dei sogni▶ |
-|  | 10 | 58 | 2.9 % | 💪 Stile di gioco▶ |
+|  | 9 | 62 | 3.1 % | ⭐ Club dei sogni› |
+|  | 10 | 58 | 2.9 % | 💪 Stile di gioco› |
 |  | 11 | 55 | 2.7 % | Calciatore professionistaStagioni da pro:  |
-|  | 12 | 53 | 2.6 % | Biografia▶ |
+|  | 12 | 53 | 2.6 % | Biografia› |
 
 ## 9-quinquies · I CARATTERI RESI (a 412 px, la taglia del PO)
 
@@ -480,6 +480,29 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 1 | Barlow x73 |
 | Agente | 1 | Barlow x93 |
 | Prepartita | 1 | Barlow x17 |
+
+## 9-sexies · LO SPAZIO DELLE FIGURINE (a 412 px, la taglia del PO)
+
+> [G12 · 22/09, direttiva PO «predisponi lo spazio dei volti rettangolari in verticale, stile
+> panini»] Il riquadro del volto ha un contratto: **rapporto 5:7 verticale**. Qui, schermata per
+> schermata, quante figurine ci sono e qual e' lo **scarto peggiore** dal rapporto dichiarato.
+> Finche' l'arte non arriva il riquadro mostra il ripiego, ma lo SPAZIO e' gia' quello giusto.
+
+| schermata | figurine | scarto dal 5:7 | tipi |
+|---|---:|---:|---|
+| Home fuori carriera | 0 | — | — |
+| Impostazioni | 0 | — | — |
+| Creazione | 0 | — | — |
+| Offerte | 0 | — | — |
+| Dashboard | 1 | 0.9 % | giocatore x1 |
+| Stagione · Classifica | 1 | 0.9 % | giocatore x1 |
+| Stagione · Calendario | 1 | 0.9 % | giocatore x1 |
+| Stagione · Coppe | 1 | 0.9 % | giocatore x1 |
+| Club | 1 | 0.9 % | giocatore x1 |
+| Carriera · Profilo | 1 | 0.9 % | giocatore x1 |
+| Carriera · Nazionale | 1 | 0.9 % | giocatore x1 |
+| Agente | 2 | 0.9 % | giocatore x1 · procuratore x1 |
+| Prepartita | 0 | — | — |
 
 ## Dettaglio · i nodi SOTTO IL PAVIMENTO di 11 px (a 412 px, la taglia del PO)
 

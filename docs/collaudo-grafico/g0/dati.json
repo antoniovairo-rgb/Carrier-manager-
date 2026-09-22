@@ -93,6 +93,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -190,6 +193,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 697,
     "schermate": 0.76,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -287,6 +293,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -384,6 +393,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -481,6 +493,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -613,6 +628,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -739,6 +757,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "div.cpm-root>div:nth-child(1)>div:nth-child(2)",
@@ -865,6 +886,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -991,6 +1015,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -1117,6 +1144,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -1259,6 +1289,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 1731,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1397,6 +1430,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 1731,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1535,6 +1571,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 1731,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1673,6 +1712,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 1731,
     "schermate": 1.89,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1811,6 +1853,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 1703,
     "schermate": 1.86,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -1950,6 +1995,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -2072,6 +2120,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "documento",
@@ -2194,6 +2245,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -2316,6 +2370,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -2438,6 +2495,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -2569,6 +2629,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1890,
     "schermate": 2.07,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -2588,7 +2656,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -2624,25 +2692,25 @@
      {
       "px": 67,
       "quota": 3.5,
-      "txt": "Adesso guardano teNEL PIENO▶",
+      "txt": "Adesso guardano teNEL PIENO›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 67,
       "quota": 3.5,
-      "txt": "Il mondo fuori▶",
+      "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il progetto del club▶",
+      "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il tuo procuratore▶",
+      "txt": "Il tuo procuratore›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
@@ -2658,18 +2726,18 @@
      "Stagione": 2,
      "Settimana": 6
     },
-    "nEmojiChar": 26,
+    "nEmojiChar": 18,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "▶",
      "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
      "📅",
      "🙂",
      "📊",
-     "🔥"
+     "🔥",
+     "📉"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -2681,7 +2749,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -2695,28 +2763,28 @@
       "lum": 0.012,
       "fondo": "#241438",
       "px": 53,
-      "txt": "La tua storia▶"
+      "txt": "La tua storia›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
-      "txt": "Il tuo procuratore▶"
+      "txt": "Il tuo procuratore›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
       "px": 58,
-      "txt": "❤️ Vita privata▶"
+      "txt": "❤️ Vita privata›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
-      "txt": "Adesso guardano teNEL PIENO▶"
+      "txt": "Adesso guardano teNEL PIENO›"
      }
     ]
    },
@@ -2829,6 +2897,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1890,
     "schermate": 2.07,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -2848,7 +2924,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -2884,25 +2960,25 @@
      {
       "px": 67,
       "quota": 3.5,
-      "txt": "Adesso guardano teNEL PIENO▶",
+      "txt": "Adesso guardano teNEL PIENO›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 67,
       "quota": 3.5,
-      "txt": "Il mondo fuori▶",
+      "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il progetto del club▶",
+      "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il tuo procuratore▶",
+      "txt": "Il tuo procuratore›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
@@ -2918,18 +2994,18 @@
      "Stagione": 2,
      "Settimana": 6
     },
-    "nEmojiChar": 26,
+    "nEmojiChar": 18,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "▶",
      "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
      "📅",
      "🙂",
      "📊",
-     "🔥"
+     "🔥",
+     "📉"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -2941,7 +3017,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -2955,28 +3031,28 @@
       "lum": 0.012,
       "fondo": "#241438",
       "px": 53,
-      "txt": "La tua storia▶"
+      "txt": "La tua storia›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
-      "txt": "Il tuo procuratore▶"
+      "txt": "Il tuo procuratore›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
       "px": 58,
-      "txt": "❤️ Vita privata▶"
+      "txt": "❤️ Vita privata›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
-      "txt": "Adesso guardano teNEL PIENO▶"
+      "txt": "Adesso guardano teNEL PIENO›"
      }
     ]
    },
@@ -3089,6 +3165,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1890,
     "schermate": 2.07,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -3108,7 +3192,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3144,25 +3228,25 @@
      {
       "px": 67,
       "quota": 3.5,
-      "txt": "Adesso guardano teNEL PIENO▶",
+      "txt": "Adesso guardano teNEL PIENO›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 67,
       "quota": 3.5,
-      "txt": "Il mondo fuori▶",
+      "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il progetto del club▶",
+      "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il tuo procuratore▶",
+      "txt": "Il tuo procuratore›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
@@ -3178,18 +3262,18 @@
      "Stagione": 2,
      "Settimana": 6
     },
-    "nEmojiChar": 26,
+    "nEmojiChar": 18,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "▶",
      "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
      "📅",
      "🙂",
      "📊",
-     "🔥"
+     "🔥",
+     "📉"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -3201,7 +3285,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3215,28 +3299,28 @@
       "lum": 0.012,
       "fondo": "#241438",
       "px": 53,
-      "txt": "La tua storia▶"
+      "txt": "La tua storia›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
-      "txt": "Il tuo procuratore▶"
+      "txt": "Il tuo procuratore›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
       "px": 58,
-      "txt": "❤️ Vita privata▶"
+      "txt": "❤️ Vita privata›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
-      "txt": "Adesso guardano teNEL PIENO▶"
+      "txt": "Adesso guardano teNEL PIENO›"
      }
     ]
    },
@@ -3349,6 +3433,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1890,
     "schermate": 2.07,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -3368,7 +3460,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3404,25 +3496,25 @@
      {
       "px": 67,
       "quota": 3.5,
-      "txt": "Adesso guardano teNEL PIENO▶",
+      "txt": "Adesso guardano teNEL PIENO›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 67,
       "quota": 3.5,
-      "txt": "Il mondo fuori▶",
+      "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il progetto del club▶",
+      "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il tuo procuratore▶",
+      "txt": "Il tuo procuratore›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
@@ -3438,18 +3530,18 @@
      "Stagione": 2,
      "Settimana": 6
     },
-    "nEmojiChar": 26,
+    "nEmojiChar": 18,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "▶",
      "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
      "📅",
      "🙂",
      "📊",
-     "🔥"
+     "🔥",
+     "📉"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -3461,7 +3553,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3475,28 +3567,28 @@
       "lum": 0.012,
       "fondo": "#241438",
       "px": 53,
-      "txt": "La tua storia▶"
+      "txt": "La tua storia›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
-      "txt": "Il tuo procuratore▶"
+      "txt": "Il tuo procuratore›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
       "px": 58,
-      "txt": "❤️ Vita privata▶"
+      "txt": "❤️ Vita privata›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
-      "txt": "Adesso guardano teNEL PIENO▶"
+      "txt": "Adesso guardano teNEL PIENO›"
      }
     ]
    },
@@ -3609,6 +3701,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1874,
     "schermate": 2.05,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -3628,7 +3728,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3664,25 +3764,25 @@
      {
       "px": 67,
       "quota": 3.6,
-      "txt": "Adesso guardano teNEL PIENO▶",
+      "txt": "Adesso guardano teNEL PIENO›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
      },
      {
       "px": 67,
       "quota": 3.6,
-      "txt": "Il mondo fuori▶",
+      "txt": "Il mondo fuori›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il progetto del club▶",
+      "txt": "Il progetto del club›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
       "px": 58,
       "quota": 3.1,
-      "txt": "Il tuo procuratore▶",
+      "txt": "Il tuo procuratore›",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
@@ -3698,18 +3798,18 @@
      "Stagione": 2,
      "Settimana": 6
     },
-    "nEmojiChar": 26,
+    "nEmojiChar": 18,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "▶",
      "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
      "📅",
      "🙂",
      "📊",
-     "🔥"
+     "🔥",
+     "📉"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -3721,7 +3821,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3735,28 +3835,28 @@
       "lum": 0.012,
       "fondo": "#241438",
       "px": 53,
-      "txt": "La tua storia▶"
+      "txt": "La tua storia›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
-      "txt": "Il tuo procuratore▶"
+      "txt": "Il tuo procuratore›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
       "px": 58,
-      "txt": "❤️ Vita privata▶"
+      "txt": "❤️ Vita privata›"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
-      "txt": "Adesso guardano teNEL PIENO▶"
+      "txt": "Adesso guardano teNEL PIENO›"
      }
     ]
    }
@@ -3897,6 +3997,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -3922,7 +4030,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3969,7 +4077,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -4108,6 +4216,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4133,7 +4249,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4180,7 +4296,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -4319,6 +4435,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4344,7 +4468,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4391,7 +4515,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -4530,6 +4654,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4555,7 +4687,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4602,7 +4734,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -4741,6 +4873,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1989,
     "schermate": 2.17,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4766,7 +4906,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 13:09AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4813,7 +4953,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    }
@@ -4927,6 +5067,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -4962,7 +5110,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -5074,6 +5222,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5109,7 +5265,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -5221,6 +5377,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5256,7 +5420,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -5368,6 +5532,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5403,7 +5575,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -5515,6 +5687,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1602,
     "schermate": 1.75,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -5550,7 +5730,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    }
@@ -5661,6 +5841,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -5692,7 +5880,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -5801,6 +5989,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "documento",
@@ -5832,7 +6028,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -5941,6 +6137,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -5972,7 +6176,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -6081,6 +6285,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -6112,7 +6324,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -6221,6 +6433,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",
@@ -6252,7 +6472,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    }
@@ -6367,6 +6587,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1429,
     "schermate": 1.56,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6402,7 +6630,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6522,6 +6750,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1428,
     "schermate": 1.56,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6557,7 +6793,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6677,6 +6913,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1428,
     "schermate": 1.56,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6712,7 +6956,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6832,6 +7076,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1416,
     "schermate": 1.55,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -6867,7 +7119,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6987,6 +7239,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1403,
     "schermate": 1.53,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7022,7 +7282,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -7142,6 +7402,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 2084,
     "schermate": 2.28,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7185,7 +7453,7 @@
      {
       "px": 69,
       "quota": 3.3,
-      "txt": "🆚 Il tuo rivale▶",
+      "txt": "🆚 Il tuo rivale›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
      },
      {
@@ -7197,13 +7465,13 @@
      {
       "px": 62,
       "quota": 3,
-      "txt": "⭐ Club dei sogni▶",
+      "txt": "⭐ Club dei sogni›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
      },
      {
       "px": 58,
       "quota": 2.8,
-      "txt": "💪 Stile di gioco▶",
+      "txt": "💪 Stile di gioco›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
      },
      {
@@ -7215,7 +7483,7 @@
      {
       "px": 53,
       "quota": 2.6,
-      "txt": "Biografia▶",
+      "txt": "Biografia›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
@@ -7234,18 +7502,18 @@
      "Trofei": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 25,
+    "nEmojiChar": 21,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
-     "▶",
      "🆚 Il tuo rivale",
      "⭐ Club dei sogni",
      "💪 Stile di gioco",
      "🎯",
-     "📈 Livello max"
+     "📈 Livello max",
+     "🥇 Coppa Nazionale"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -7257,35 +7525,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
       "px": 53,
-      "txt": "Biografia▶"
+      "txt": "Biografia›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
       "px": 69,
-      "txt": "🆚 Il tuo rivale▶"
+      "txt": "🆚 Il tuo rivale›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 62,
-      "txt": "⭐ Club dei sogni▶"
+      "txt": "⭐ Club dei sogni›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 58,
-      "txt": "💪 Stile di gioco▶"
+      "txt": "💪 Stile di gioco›"
      }
     ]
    },
@@ -7396,6 +7664,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 2069,
     "schermate": 2.26,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7433,7 +7709,7 @@
      {
       "px": 69,
       "quota": 3.3,
-      "txt": "🆚 Il tuo rivale▶",
+      "txt": "🆚 Il tuo rivale›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
      },
      {
@@ -7451,13 +7727,13 @@
      {
       "px": 62,
       "quota": 3,
-      "txt": "⭐ Club dei sogni▶",
+      "txt": "⭐ Club dei sogni›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
      },
      {
       "px": 58,
       "quota": 2.8,
-      "txt": "💪 Stile di gioco▶",
+      "txt": "💪 Stile di gioco›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
      },
      {
@@ -7469,7 +7745,7 @@
      {
       "px": 53,
       "quota": 2.6,
-      "txt": "Biografia▶",
+      "txt": "Biografia›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
@@ -7488,18 +7764,18 @@
      "Trofei": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 25,
+    "nEmojiChar": 21,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
-     "▶",
      "🆚 Il tuo rivale",
      "⭐ Club dei sogni",
      "💪 Stile di gioco",
      "🎯",
-     "📈 Livello max"
+     "📈 Livello max",
+     "🥇 Coppa Nazionale"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -7511,35 +7787,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
       "px": 53,
-      "txt": "Biografia▶"
+      "txt": "Biografia›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
       "px": 69,
-      "txt": "🆚 Il tuo rivale▶"
+      "txt": "🆚 Il tuo rivale›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 62,
-      "txt": "⭐ Club dei sogni▶"
+      "txt": "⭐ Club dei sogni›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 58,
-      "txt": "💪 Stile di gioco▶"
+      "txt": "💪 Stile di gioco›"
      }
     ]
    },
@@ -7650,6 +7926,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 2069,
     "schermate": 2.26,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7687,7 +7971,7 @@
      {
       "px": 69,
       "quota": 3.3,
-      "txt": "🆚 Il tuo rivale▶",
+      "txt": "🆚 Il tuo rivale›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
      },
      {
@@ -7705,13 +7989,13 @@
      {
       "px": 62,
       "quota": 3,
-      "txt": "⭐ Club dei sogni▶",
+      "txt": "⭐ Club dei sogni›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
      },
      {
       "px": 58,
       "quota": 2.8,
-      "txt": "💪 Stile di gioco▶",
+      "txt": "💪 Stile di gioco›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
      },
      {
@@ -7723,7 +8007,7 @@
      {
       "px": 53,
       "quota": 2.6,
-      "txt": "Biografia▶",
+      "txt": "Biografia›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
@@ -7742,18 +8026,18 @@
      "Trofei": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 25,
+    "nEmojiChar": 21,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
-     "▶",
      "🆚 Il tuo rivale",
      "⭐ Club dei sogni",
      "💪 Stile di gioco",
      "🎯",
-     "📈 Livello max"
+     "📈 Livello max",
+     "🥇 Coppa Nazionale"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -7765,35 +8049,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
       "px": 53,
-      "txt": "Biografia▶"
+      "txt": "Biografia›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
       "px": 69,
-      "txt": "🆚 Il tuo rivale▶"
+      "txt": "🆚 Il tuo rivale›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 62,
-      "txt": "⭐ Club dei sogni▶"
+      "txt": "⭐ Club dei sogni›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 58,
-      "txt": "💪 Stile di gioco▶"
+      "txt": "💪 Stile di gioco›"
      }
     ]
    },
@@ -7904,6 +8188,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 2023,
     "schermate": 2.21,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -7935,7 +8227,7 @@
      {
       "px": 69,
       "quota": 3.4,
-      "txt": "🆚 Il tuo rivale▶",
+      "txt": "🆚 Il tuo rivale›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
      },
      {
@@ -7959,13 +8251,13 @@
      {
       "px": 62,
       "quota": 3.1,
-      "txt": "⭐ Club dei sogni▶",
+      "txt": "⭐ Club dei sogni›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
      },
      {
       "px": 58,
       "quota": 2.9,
-      "txt": "💪 Stile di gioco▶",
+      "txt": "💪 Stile di gioco›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
      },
      {
@@ -7977,7 +8269,7 @@
      {
       "px": 53,
       "quota": 2.6,
-      "txt": "Biografia▶",
+      "txt": "Biografia›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
@@ -7996,18 +8288,18 @@
      "Trofei": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 25,
+    "nEmojiChar": 21,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
-     "▶",
      "🆚 Il tuo rivale",
      "⭐ Club dei sogni",
      "💪 Stile di gioco",
      "🎯",
-     "📈 Livello max"
+     "📈 Livello max",
+     "🥇 Coppa Nazionale"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -8019,35 +8311,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
       "px": 53,
-      "txt": "Biografia▶"
+      "txt": "Biografia›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
       "px": 69,
-      "txt": "🆚 Il tuo rivale▶"
+      "txt": "🆚 Il tuo rivale›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 62,
-      "txt": "⭐ Club dei sogni▶"
+      "txt": "⭐ Club dei sogni›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 58,
-      "txt": "💪 Stile di gioco▶"
+      "txt": "💪 Stile di gioco›"
      }
     ]
    },
@@ -8158,6 +8450,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 2023,
     "schermate": 2.21,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8189,7 +8489,7 @@
      {
       "px": 69,
       "quota": 3.4,
-      "txt": "🆚 Il tuo rivale▶",
+      "txt": "🆚 Il tuo rivale›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
      },
      {
@@ -8213,13 +8513,13 @@
      {
       "px": 62,
       "quota": 3.1,
-      "txt": "⭐ Club dei sogni▶",
+      "txt": "⭐ Club dei sogni›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
      },
      {
       "px": 58,
       "quota": 2.9,
-      "txt": "💪 Stile di gioco▶",
+      "txt": "💪 Stile di gioco›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
      },
      {
@@ -8231,7 +8531,7 @@
      {
       "px": 53,
       "quota": 2.6,
-      "txt": "Biografia▶",
+      "txt": "Biografia›",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
@@ -8250,18 +8550,18 @@
      "Trofei": 1,
      "Stagione": 1
     },
-    "nEmojiChar": 25,
+    "nEmojiChar": 21,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
-     "▶",
      "🆚 Il tuo rivale",
      "⭐ Club dei sogni",
      "💪 Stile di gioco",
      "🎯",
-     "📈 Livello max"
+     "📈 Livello max",
+     "🥇 Coppa Nazionale"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -8273,35 +8573,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
       "px": 53,
-      "txt": "Biografia▶"
+      "txt": "Biografia›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
       "px": 69,
-      "txt": "🆚 Il tuo rivale▶"
+      "txt": "🆚 Il tuo rivale›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 62,
-      "txt": "⭐ Club dei sogni▶"
+      "txt": "⭐ Club dei sogni›"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
       "px": 58,
-      "txt": "💪 Stile di gioco▶"
+      "txt": "💪 Stile di gioco›"
      }
     ]
    }
@@ -8413,6 +8713,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1155,
     "schermate": 1.26,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8450,7 +8758,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -8560,6 +8868,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1142,
     "schermate": 1.25,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8597,7 +8913,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -8707,6 +9023,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1142,
     "schermate": 1.25,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8744,7 +9068,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -8854,6 +9178,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1142,
     "schermate": 1.25,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -8891,7 +9223,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -9001,6 +9333,14 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 1,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1142,
     "schermate": 1.25,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9038,7 +9378,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    }
@@ -9153,6 +9493,18 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 2,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     },
+     {
+      "t": "procuratore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1578,
     "schermate": 1.72,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9192,7 +9544,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -9305,6 +9657,18 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 2,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     },
+     {
+      "t": "procuratore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1538,
     "schermate": 1.68,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9344,7 +9708,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -9457,6 +9821,18 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 2,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     },
+     {
+      "t": "procuratore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1521,
     "schermate": 1.66,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9496,7 +9872,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -9609,6 +9985,18 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 2,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     },
+     {
+      "t": "procuratore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1521,
     "schermate": 1.66,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9648,7 +10036,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    },
@@ -9761,6 +10149,18 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 2,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 1
+     },
+     {
+      "t": "procuratore",
+      "n": 1
+     }
+    ],
     "altezzaPx": 1521,
     "schermate": 1.66,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
@@ -9800,7 +10200,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
+      "txt": "K⚽rwardEliteSalva · 13:09Avataaars"
      }
     ]
    }
@@ -9909,6 +10309,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 800,
     "schermate": 0.87,
     "scorritore": "documento",
@@ -10044,6 +10447,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 667,
     "schermate": 0.73,
     "scorritore": "documento",
@@ -10179,6 +10585,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 844,
     "schermate": 0.92,
     "scorritore": "documento",
@@ -10314,6 +10723,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 915,
     "schermate": 1,
     "scorritore": "documento",
@@ -10449,6 +10861,9 @@
      }
     ],
     "nFamiglie": 1,
+    "nFigurine": 0,
+    "figScarto": 0,
+    "figTipi": [],
     "altezzaPx": 932,
     "schermate": 1.02,
     "scorritore": "documento",

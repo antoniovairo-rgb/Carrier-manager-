@@ -519,6 +519,74 @@ function AvatarSVG({id=0, size=60, border=false, style={}, seed, avStyle, avOpts
   return <div data-cpm-viso="1" style={{...wrap,display:"flex",alignItems:"center",justifyContent:"center",color:TH.primary,fontWeight:800,fontSize:Math.round(size*0.42)}}>{(seed!=null?String(seed):(p&&p.label)||"E").slice(0,1).toUpperCase()}</div>;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════════════════════════
+   LA FIGURINA — LO SPAZIO DEL VOLTO E' RETTANGOLARE E VERTICALE  [7.966 · direttiva PO 22/09]
+   «Inizia a predisporre lo spazio dei volti rettangolari in verticale, sto predisponendo con il team
+   codex delle figurine stile panini con i volti dei giocatori, mister, avversari, intervistatori,
+   giornalisti, ecc.»
+
+   QUESTA VERSIONE NON PORTA NESSUN DISEGNO: porta lo SPAZIO, e lo porta con un contratto scritto, in
+   modo che l'arte possa entrare senza toccare una sola schermata. Tre pezzi:
+
+   1) `FIG` — il formato, in un posto solo. Rapporto 5:7, quello della figurina da album (50x70 mm).
+      Cambiarlo e' una riga: tutte le figurine del gioco seguono.
+   2) `voltoUrl(tipo, chiave)` — da CHI a DOVE. Prima cerca nel manifesto `window.__CPM_VOLTI`
+      (un oggetto `{ "giocatore/rossi-mario": "assets/volti/..." }` che il team codex puo' pubblicare
+      senza toccare il codice), poi ripiega sulla convenzione `assets/volti/<tipo>/<chiave>.webp`.
+      Finche' il file non c'e', l'immagine non si chiede nemmeno: si vede il ripiego.
+   3) `Figurina` — il riquadro. Tiene il rapporto qualunque sia la larghezza, ritaglia l'immagine con
+      `object-fit:cover` (l'arte non si deforma mai), e finche' l'arte non c'e' mostra il volto tondo
+      di oggi dentro la cornice, su un fondo tinto col colore del club. Il gioco quindi NON cambia
+      aspetto oggi: cambia il CONTENITORE, che e' cio' che il PO ha chiesto di predisporre.
+
+   CONTRATTO PER CHI DISEGNA (vedi anche docs/FIGURINE-VOLTI.md):
+   · rapporto 5:7 verticale · consegnare a 320x448 px (2x di 160x224) e 640x896 (4x) · webp o png
+   · il volto sta nel terzo superiore, occhi a ~38% dall'alto, spalle tagliate dal bordo basso
+   · margine di sicurezza 6% per lato: la cornice arrotonda gli angoli e puo' coprire il bordo
+   · fondo pieno o sfumato, MAI trasparente (la cornice ci mette sopra il suo velo e il nome)
+   · nomi file: `<tipo>/<chiave>.webp` con tipo in {giocatore,mister,avversario,giornalista,arbitro,
+     procuratore,dirigente} e chiave in minuscolo, senza accenti, spazi come trattini. */
+const FIG={w:5,h:7,r:RAD.xs,minW:28};/* il rapporto della figurina da album, in un posto solo */
+const _slugVolto=(x)=>String(x==null?"":x).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+  .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,48);
+function voltoUrl(tipo,chiave){
+  try{
+    const k=(tipo||"giocatore")+"/"+_slugVolto(chiave);
+    const M=(typeof window!=='undefined'&&window.__CPM_VOLTI)||null;
+    if(M){const u=M[k]||M[_slugVolto(chiave)];return u||null;}
+    return null;/* senza manifesto non si chiede niente alla rete: il ripiego e' il volto di oggi */
+  }catch(_e){return null;}
+}
+/* `Figurina` — larghezza dichiarata, altezza derivata dal rapporto. `nome` accende la fascia in basso,
+   come sull'album. `ritratto` permette di passare un contenuto proprio al posto del ripiego. */
+function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,...rest}){
+  const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
+  const c1=col||"#8e1f33", c2=col2||"#f0b33a";
+  const url=voltoUrl(tipo,chiave!=null?chiave:nome);
+  const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il volto */
+  return(
+    <div data-cpm-figurina={tipo} title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
+      borderRadius:FIG.r,overflow:"hidden",background:`linear-gradient(160deg,${c1},${c1}cc 46%,#0f172a)`,
+      border:"1px solid rgba(15,23,42,0.18)",boxShadow:"0 2px 6px rgba(15,23,42,0.22)",...style}} {...rest}>
+      {url
+        ?<img src={url} alt={nome||""} width={w} height={h} loading="lazy" decoding="async"
+           style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+        :<div style={{position:"absolute",inset:0,display:"flex",alignItems:"flex-start",justifyContent:"center",paddingTop:Math.round(h*0.08)}}>
+           {ritratto!=null?ritratto:<AvatarSVG seed={chiave||nome||"volto"} size={Math.round(w*0.82)} avStyle="micah"/>}
+         </div>}
+      <span aria-hidden style={{position:"absolute",left:0,right:0,top:0,height:Math.round(h*0.10),
+        background:`linear-gradient(180deg,${c2}dd,transparent)`}}/>
+      {conNome&&(
+        <div style={{position:"absolute",left:0,right:0,bottom:0,padding:"3px 5px",
+          background:"linear-gradient(0deg,rgba(15,23,42,0.92),rgba(15,23,42,0.55) 62%,transparent)"}}>
+          <div style={{fontSize:FS.caption,fontWeight:800,color:"#fff",lineHeight:1.15,
+            overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
+          {ruolo?<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.15,
+            overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ruolo}</div>:null}
+        </div>)}
+    </div>);
+}
+
 // NPC profiles: mister, giornalisti
 const COACH_NPC_FACES=[
   {skin:"#f5c5a3",hair:"#2d1800",eye:"#5a3e2b",hairStyle:"short",beard:false},
@@ -4986,7 +5054,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.965.0"; // [7.965.0 - I RAGGI DEL GIOCO ERANO DODICI: ORA SONO QUATTRO, E LA MEDIA DELLE SCHERMATE SFONDA IL 92 PER CENTO] Due passi, ognuno con la sua misura. PRIMO - il Profilo diventa una lista di sezioni: cinque riquadri convertiti a fisarmonica (il tuo rivale, che il PO aveva chiamato «enorme», biografia, club dei sogni, stile di gioco, strumenti di collaudo). Profilo 2361 -> 2023 px, cioe 2,58 -> 2,21 schermate, completamento 83,0 -> 84,8 per cento. SECONDO - i RAGGI. Il provino approvato dal PO ne dichiara tre (3, 6, 50 per cento) piu la scala dei token; il gioco ne rendeva fino a DODICI sulla stessa schermata (1, 2, 3, 6, 8, 9, 10, 12, 13, 14, 20, 50), perche duecento raggi erano scritti a mano accanto al token che gia esisteva. Duecentoquattro valori agganciati alla scala (1 e 2 -> 3; 4, 5 e 7 -> 6; 9, 10 e 11 -> 8; 13 e 14 -> 12; 18 e 22 -> 20). RI-MISURATO, schermata per schermata: Profilo 12 -> 6 raggi, Agente 7 -> 4, Club 6 -> 5, Dashboard 7 -> 4, Classifica 5 -> 4, Calendario 5 -> 4, Creazione 5 -> 3, Impostazioni 5 -> 3, Home 5 -> 4, Prepartita 5 -> 3, Offerte 3 -> 2. MEDIA DELLE TREDICI SCHERMATE 89,7 -> 92,3 per cento, e le Impostazioni arrivano a 100. Nessun difetto nuovo: overflow 0, fuori schermo 0, pavimento 0, contrasto 0, zero errori di pagina. La freccia della fisarmonica e il chevron di casa, non il triangolo pieno: le fisarmoniche gia spedite (Record, Bacheca, Storico allenatori) usano quello. IL GUARDIANO HA BOCCIATO LA PRIMA STESURA, E AVEVA RAGIONE: agganciare i valori alla scala non basta, vanno SCRITTI come token. design-system: «164 raggi scritti a mano che HANNO GIA un token» - rosso. Riscritti tutti e 164 come RAD.xs/sm/md/xl (valori identici, resa invariata), guardiano verde. DIRETTIVA NUOVA DEL PO, adottata: la catena dei rituali si sceglie in base a cosa si e toccato. Solo grafica -> griglia-mobile + design-system + career-critical + test:logic + save-compat. Motore, partita o carriera -> catena completa. Il gate da 191 scene e fatto per il motore e su una modifica di soli pixel non ha mai trovato niente: venticinque minuti che non pagano. NON VERIFICATO: Chromium a 412x915, non l Android del PO.
+const GAME_VERSION="7.966.0"; // [7.966.0 - LO SPAZIO DEI VOLTI E RETTANGOLARE E VERTICALE: LA FIGURINA HA IL SUO CONTRATTO, PRIMA CHE ARRIVI L ARTE] Direttiva PO: «inizia a predisporre lo spazio dei volti rettangolari in verticale, sto predisponendo con il team codex delle figurine stile panini con i volti dei giocatori, mister, avversari, intervistatori, giornalisti, ecc.». Questa versione NON porta nessun disegno: porta lo SPAZIO e un contratto scritto, cosi l arte entra senza toccare una sola schermata. Tre pezzi: (1) FIG, il formato in un posto solo - rapporto 5:7, quello della figurina da album 50x70 mm, e cambiarlo e una riga per tutto il gioco; (2) voltoUrl(tipo,chiave), da CHI a DOVE - prima il manifesto window.__CPM_VOLTI, che il team codex puo pubblicare senza toccare il codice, poi la convenzione assets/volti/<tipo>/<chiave>.webp; finche il file non c e il gioco NON chiede niente alla rete; (3) Figurina, il riquadro che tiene il rapporto a qualunque larghezza, ritaglia l immagine con object-fit cover cosi l arte non si deforma mai, e intanto mostra il volto di oggi dentro la cornice su fondo col colore del club. SEI SPAZI GIA IN PIEDI: il ritratto dell EROE nella testata (larghezza 31, perche 31x7/5 fa 44, cioe l altezza esatta del tondo di prima - la testata non cresce di un pixel su nessuna delle tredici schermate) e i cinque del procuratore. MISURATO, tabella nuova della griglia 9-sexies: otto schermate con la loro figurina, scarto dal rapporto dichiarato 0,9 per cento (e lo zero virgola nove e l arrotondamento ai pixel interi), media delle tredici schermate 92,3 per cento INVARIATA - nessun costo in altezza, che era il punto. Zero errori di pagina. CONTRATTO PER CHI DISEGNA in docs/FIGURINE-VOLTI.md: rapporto, consegne a 2x e 4x, occhi al 38 per cento dall alto, spalle tagliate dal bordo basso, margine di sicurezza 6 per cento, fondo mai trasparente, nomi dei file, manifesto, e la possibilita di consegnare a LOTTI perche chi non e nel manifesto continua a mostrare il ripiego. NON TOCCATE, e dichiarato: la schermata dell intervista, dove il PO ha chiesto NESSUN volto, e l HUD di partita, che vuole la catena completa dei rituali. NON VERIFICATO: Chromium a 412x915, non l Android del PO.
 // [nota 7.761.0] [7.761.0 — FASE 10, OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO, E IL METRO DELLE RIGHE FONDATE SMETTE DI PUNIRE I TIRI]. Il censimento fondate-558 contava «smentite» righe che dichiaravano un punto e trovavano il pallone alla linea di porta (94,50) nella stessa finestra: non era la riga a mentire, era il tiro dell'eroe (parato o fuori) che il giudice non poteva vedere perche' il libro mastro registrava solo i gol. Ora handleAction scrive cpmEv(«esito», {min,key,ok,at}) per ogni azione risolta, e il metro (7.760: gol nella finestra → conto a parte; 7.761: anche gli esiti goal/miss/save/chance/assist) mette quelle righe in un conto separato, ne' fondate ne' smentite. Il gioco non cambia: cambia cio' che il libro mastro sa, e quindi cio' che i guardiani potranno chiedere. MISURA: fondate-558 sui semi 7300/7337 prima e dopo (vedi verbale).
 // [nota 7.759.0] [7.759.0 — TROVATO DAL GUARDIANO: il gol subito nella scena difensiva non entrava nel libro mastro]. La banda «tabellone» (7.756), fatta girare su QUATTRO partite per la stabilita', ha bocciato: gol raccontati 2-4 contro punteggio finale 2-5. Censiti i cinque scrittori del punteggio: gol dell'eroe da gioco aperto (1153), gol ambientale nostro e loro (4464/4465), gol dell'eroe su palla ferma (6638) hanno tutti il loro cpmEv(«goal»); il gol AVVERSARIO da scena difensiva (esito goal_against di handleAction) incrementava il punteggio senza scriverlo nel libro mastro — quindi il feed del tabellone (7.721), la banda «tabellone» e ogni guardiano che conta i gol dagli eventi lo perdevano. Ora scrive l'evento con src «scena-difensiva». Il punteggio non cambia (il microsim e le scene restano l'autorita'): cambia solo che ogni gol e' registrato. MISURA: guardiano a 4 partite, banda tabellone da rossa a verde (vedi verbale).
 // [nota 7.758.0] [7.758.0 — COLLAUDO PO 03/09 18:01 «pannello nero dietro la porta»: il cartellone centrale dietro la porta (z=0) era un rettangolo NERO senza scritta durante la scena ASSIST/DOMINIO, Coppa, GLB ON]. DIAGNOSI dal diario 7.535, che aveva gia' fotografato la firma: «quando l'allocazione non riesce, la mesh resta ma la sua texture e' vuota — e una texture vuota su materiale opaco e' NERA»; in headless non si riproduce (nessuna texture nera su 99 piani texturizzati), sul telefono con folla GLB, kit, volti e arredo la memoria GPU finisce e il primo cartellone che non si alloca e' quello che il PO guarda. RIMEDIO: il budget scende dove costa di piu' e non si vede — cartelloni (1024x160, uno per brand e stile) e drappi (1024x110) si disegnano come prima e si consegnano alla GPU a meta' lato (512x80 / 512x55), senza mipmap e con anisotropia 4. MISURATO (hook __CPM_DECOR, provino GLB ON, ON vs rosso __CPM_NO758): arredo 25,5 MB contro 30,7 MB (−17%), 11 cartelloni da 1024x160 a 512x80, stessi 167 piani e 52 texture uniche, zero texture nere in entrambi. Restano 8 texture 1024x512 (16 MB) e 2 LED 2048x128 (2 MB), censite per la prossima tacca. NON VERIFICATO sul telefono: la scomparsa del pannello nero va confermata dal PO nella stessa scena (Coppa, GLB ON). 7.757 «il piano-gol nasce dalla mente» PROVATA E REVOCATA (fondate appaiato peggiore: 75,7/71,9 contro 81,3/82,4).
@@ -45780,7 +45848,7 @@ const getThisWeekMatchday=()=>{
               </button>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:11,padding:"7px 12px 11px"}}>
-              <div style={{borderRadius:"50%",padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}><AvatarSVG id={player.avatarId||0} size={44}/></div>
+              <div style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<AvatarSVG id={player.avatarId||0} size={30}/>}/></div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.caption,color:ink,textTransform:"uppercase",letterSpacing:1.6,fontWeight:FW.bold}}>{player.nation} &middot; {player.position||"Attaccante"}</div>
                 <h1 style={{margin:"2px 0 3px",fontSize:FS.title,fontWeight:FW.black,letterSpacing:.2,color:ink,lineHeight:1.05,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{player.name}</h1>
@@ -46241,7 +46309,7 @@ const getThisWeekMatchday=()=>{
         <div style={{position:"fixed",inset:0,zIndex:80,background:"rgba(4,7,14,0.93)",overflowY:"auto",padding:"18px 14px",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <div style={{width:"100%",maxWidth:440}}>
             <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:12}}>
-              <AvatarSVG seed={_nm377} size={54} avStyle="micah"/>
+              <Figurina tipo="procuratore" chiave={_nm377} larg={44} col={TH.primary} /* [7.966] lo spazio del volto e' rettangolare verticale: oggi dentro c'e' il ripiego, domani la figurina *//>
               <div><div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>{_nm377}</div>
                 <div style={{fontSize:11.5,color:"rgba(255,255,255,0.6)"}}>Il tuo procuratore · rapporto {agentRapportTier(player.agent.rapport)}</div></div>
             </div>
@@ -46274,7 +46342,7 @@ const getThisWeekMatchday=()=>{
         <div style={{position:"fixed",inset:0,zIndex:80,background:"rgba(4,7,14,0.93)",overflowY:"auto",padding:"18px 14px",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <div style={{width:"100%",maxWidth:440}}>
             <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:12}}>
-              <AvatarSVG seed={_nm376} size={54} avStyle="micah"/>
+              <Figurina tipo="procuratore" chiave={_nm376} larg={44} col={TH.primary}/>
               <div><div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>{_nm376}</div>
                 <div style={{fontSize:11.5,color:"rgba(255,255,255,0.6)"}}>Procuratore</div></div>
             </div>
@@ -46326,7 +46394,7 @@ const getThisWeekMatchday=()=>{
         return(
         <Card style={{padding:"9px 12px",marginBottom:8,borderLeft:"3px solid "+TH.primary}}>
           <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:8}}>
-            <AvatarSVG seed={_nm378} size={30} avStyle="micah"/>
+            <Figurina tipo="procuratore" chiave={_nm378} larg={28} col={TH.primary}/>
             <div style={{fontSize:11.5,fontWeight:800,color:TH.muted}}>{_nm378}</div>
           </div>
           <div style={{fontSize:12.5,color:TH.text,lineHeight:1.65,marginBottom:9}}>«{_tx378}»</div>
@@ -49193,7 +49261,7 @@ const getThisWeekMatchday=()=>{
                           {_cand379.map(c=>(
                             <Card key={c.arch} style={{padding:"12px"}}>
                               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>
-                                <AvatarSVG seed={c.name} size={38} avStyle="micah"/>
+                                <Figurina tipo="procuratore" chiave={c.name} larg={34} col={TH.primary}/>
                                 <div style={{flex:1}}><div style={{fontSize:FS.body,fontWeight:900,color:TH.text}}>{c.name}</div>
                                   <div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>{c.nome} · {c.forte}</div></div>
                               </div>
@@ -49212,7 +49280,7 @@ const getThisWeekMatchday=()=>{
                   </div>);})()}
                 <Card style={{padding:"9px 12px"}}>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-                    <AvatarSVG seed={agentName} size={46} avStyle="micah"/>
+                    <Figurina tipo="procuratore" chiave={agentName} larg={40} col={TH.primary}/>
                     <div style={{flex:1}}>
                       <div style={{fontSize:FS.caption,color:TH.brandText,textTransform:"uppercase",letterSpacing:1.5,marginBottom:2,fontWeight:FW.bold}}>IL TUO PROCURATORE</div>
                       <div style={{fontSize:14,fontWeight:900,color:TH.text}}>{agentName}</div>

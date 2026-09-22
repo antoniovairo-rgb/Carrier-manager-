@@ -252,6 +252,74 @@ function AvatarSVG({id=0, size=60, border=false, style={}, seed, avStyle, avOpts
   return <div data-cpm-viso="1" style={{...wrap,display:"flex",alignItems:"center",justifyContent:"center",color:TH.primary,fontWeight:800,fontSize:Math.round(size*0.42)}}>{(seed!=null?String(seed):(p&&p.label)||"E").slice(0,1).toUpperCase()}</div>;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════════════════════════
+   LA FIGURINA — LO SPAZIO DEL VOLTO E' RETTANGOLARE E VERTICALE  [7.966 · direttiva PO 22/09]
+   «Inizia a predisporre lo spazio dei volti rettangolari in verticale, sto predisponendo con il team
+   codex delle figurine stile panini con i volti dei giocatori, mister, avversari, intervistatori,
+   giornalisti, ecc.»
+
+   QUESTA VERSIONE NON PORTA NESSUN DISEGNO: porta lo SPAZIO, e lo porta con un contratto scritto, in
+   modo che l'arte possa entrare senza toccare una sola schermata. Tre pezzi:
+
+   1) `FIG` — il formato, in un posto solo. Rapporto 5:7, quello della figurina da album (50x70 mm).
+      Cambiarlo e' una riga: tutte le figurine del gioco seguono.
+   2) `voltoUrl(tipo, chiave)` — da CHI a DOVE. Prima cerca nel manifesto `window.__CPM_VOLTI`
+      (un oggetto `{ "giocatore/rossi-mario": "assets/volti/..." }` che il team codex puo' pubblicare
+      senza toccare il codice), poi ripiega sulla convenzione `assets/volti/<tipo>/<chiave>.webp`.
+      Finche' il file non c'e', l'immagine non si chiede nemmeno: si vede il ripiego.
+   3) `Figurina` — il riquadro. Tiene il rapporto qualunque sia la larghezza, ritaglia l'immagine con
+      `object-fit:cover` (l'arte non si deforma mai), e finche' l'arte non c'e' mostra il volto tondo
+      di oggi dentro la cornice, su un fondo tinto col colore del club. Il gioco quindi NON cambia
+      aspetto oggi: cambia il CONTENITORE, che e' cio' che il PO ha chiesto di predisporre.
+
+   CONTRATTO PER CHI DISEGNA (vedi anche docs/FIGURINE-VOLTI.md):
+   · rapporto 5:7 verticale · consegnare a 320x448 px (2x di 160x224) e 640x896 (4x) · webp o png
+   · il volto sta nel terzo superiore, occhi a ~38% dall'alto, spalle tagliate dal bordo basso
+   · margine di sicurezza 6% per lato: la cornice arrotonda gli angoli e puo' coprire il bordo
+   · fondo pieno o sfumato, MAI trasparente (la cornice ci mette sopra il suo velo e il nome)
+   · nomi file: `<tipo>/<chiave>.webp` con tipo in {giocatore,mister,avversario,giornalista,arbitro,
+     procuratore,dirigente} e chiave in minuscolo, senza accenti, spazi come trattini. */
+const FIG={w:5,h:7,r:RAD.xs,minW:28};/* il rapporto della figurina da album, in un posto solo */
+const _slugVolto=(x)=>String(x==null?"":x).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+  .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,48);
+function voltoUrl(tipo,chiave){
+  try{
+    const k=(tipo||"giocatore")+"/"+_slugVolto(chiave);
+    const M=(typeof window!=='undefined'&&window.__CPM_VOLTI)||null;
+    if(M){const u=M[k]||M[_slugVolto(chiave)];return u||null;}
+    return null;/* senza manifesto non si chiede niente alla rete: il ripiego e' il volto di oggi */
+  }catch(_e){return null;}
+}
+/* `Figurina` — larghezza dichiarata, altezza derivata dal rapporto. `nome` accende la fascia in basso,
+   come sull'album. `ritratto` permette di passare un contenuto proprio al posto del ripiego. */
+function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,...rest}){
+  const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
+  const c1=col||"#8e1f33", c2=col2||"#f0b33a";
+  const url=voltoUrl(tipo,chiave!=null?chiave:nome);
+  const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il volto */
+  return(
+    <div data-cpm-figurina={tipo} title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
+      borderRadius:FIG.r,overflow:"hidden",background:`linear-gradient(160deg,${c1},${c1}cc 46%,#0f172a)`,
+      border:"1px solid rgba(15,23,42,0.18)",boxShadow:"0 2px 6px rgba(15,23,42,0.22)",...style}} {...rest}>
+      {url
+        ?<img src={url} alt={nome||""} width={w} height={h} loading="lazy" decoding="async"
+           style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+        :<div style={{position:"absolute",inset:0,display:"flex",alignItems:"flex-start",justifyContent:"center",paddingTop:Math.round(h*0.08)}}>
+           {ritratto!=null?ritratto:<AvatarSVG seed={chiave||nome||"volto"} size={Math.round(w*0.82)} avStyle="micah"/>}
+         </div>}
+      <span aria-hidden style={{position:"absolute",left:0,right:0,top:0,height:Math.round(h*0.10),
+        background:`linear-gradient(180deg,${c2}dd,transparent)`}}/>
+      {conNome&&(
+        <div style={{position:"absolute",left:0,right:0,bottom:0,padding:"3px 5px",
+          background:"linear-gradient(0deg,rgba(15,23,42,0.92),rgba(15,23,42,0.55) 62%,transparent)"}}>
+          <div style={{fontSize:FS.caption,fontWeight:800,color:"#fff",lineHeight:1.15,
+            overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
+          {ruolo?<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.15,
+            overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ruolo}</div>:null}
+        </div>)}
+    </div>);
+}
+
 // NPC profiles: mister, giornalisti
 const COACH_NPC_FACES=[
   {skin:"#f5c5a3",hair:"#2d1800",eye:"#5a3e2b",hairStyle:"short",beard:false},

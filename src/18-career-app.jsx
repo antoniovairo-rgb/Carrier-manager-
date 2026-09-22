@@ -6658,7 +6658,7 @@ const getThisWeekMatchday=()=>{
               </button>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:11,padding:"7px 12px 11px"}}>
-              <div style={{borderRadius:"50%",padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}><AvatarSVG id={player.avatarId||0} size={44}/></div>
+              <div style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<AvatarSVG id={player.avatarId||0} size={30}/>}/></div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.caption,color:ink,textTransform:"uppercase",letterSpacing:1.6,fontWeight:FW.bold}}>{player.nation} &middot; {player.position||"Attaccante"}</div>
                 <h1 style={{margin:"2px 0 3px",fontSize:FS.title,fontWeight:FW.black,letterSpacing:.2,color:ink,lineHeight:1.05,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{player.name}</h1>
@@ -7119,7 +7119,7 @@ const getThisWeekMatchday=()=>{
         <div style={{position:"fixed",inset:0,zIndex:80,background:"rgba(4,7,14,0.93)",overflowY:"auto",padding:"18px 14px",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <div style={{width:"100%",maxWidth:440}}>
             <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:12}}>
-              <AvatarSVG seed={_nm377} size={54} avStyle="micah"/>
+              <Figurina tipo="procuratore" chiave={_nm377} larg={44} col={TH.primary} /* [7.966] lo spazio del volto e' rettangolare verticale: oggi dentro c'e' il ripiego, domani la figurina *//>
               <div><div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>{_nm377}</div>
                 <div style={{fontSize:11.5,color:"rgba(255,255,255,0.6)"}}>Il tuo procuratore · rapporto {agentRapportTier(player.agent.rapport)}</div></div>
             </div>
@@ -7152,7 +7152,7 @@ const getThisWeekMatchday=()=>{
         <div style={{position:"fixed",inset:0,zIndex:80,background:"rgba(4,7,14,0.93)",overflowY:"auto",padding:"18px 14px",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <div style={{width:"100%",maxWidth:440}}>
             <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:12}}>
-              <AvatarSVG seed={_nm376} size={54} avStyle="micah"/>
+              <Figurina tipo="procuratore" chiave={_nm376} larg={44} col={TH.primary}/>
               <div><div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>{_nm376}</div>
                 <div style={{fontSize:11.5,color:"rgba(255,255,255,0.6)"}}>Procuratore</div></div>
             </div>
@@ -7204,7 +7204,7 @@ const getThisWeekMatchday=()=>{
         return(
         <Card style={{padding:"9px 12px",marginBottom:8,borderLeft:"3px solid "+TH.primary}}>
           <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:8}}>
-            <AvatarSVG seed={_nm378} size={30} avStyle="micah"/>
+            <Figurina tipo="procuratore" chiave={_nm378} larg={28} col={TH.primary}/>
             <div style={{fontSize:11.5,fontWeight:800,color:TH.muted}}>{_nm378}</div>
           </div>
           <div style={{fontSize:12.5,color:TH.text,lineHeight:1.65,marginBottom:9}}>«{_tx378}»</div>
@@ -10071,7 +10071,7 @@ const getThisWeekMatchday=()=>{
                           {_cand379.map(c=>(
                             <Card key={c.arch} style={{padding:"12px"}}>
                               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>
-                                <AvatarSVG seed={c.name} size={38} avStyle="micah"/>
+                                <Figurina tipo="procuratore" chiave={c.name} larg={34} col={TH.primary}/>
                                 <div style={{flex:1}}><div style={{fontSize:FS.body,fontWeight:900,color:TH.text}}>{c.name}</div>
                                   <div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>{c.nome} · {c.forte}</div></div>
                               </div>
@@ -10090,7 +10090,7 @@ const getThisWeekMatchday=()=>{
                   </div>);})()}
                 <Card style={{padding:"9px 12px"}}>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-                    <AvatarSVG seed={agentName} size={46} avStyle="micah"/>
+                    <Figurina tipo="procuratore" chiave={agentName} larg={40} col={TH.primary}/>
                     <div style={{flex:1}}>
                       <div style={{fontSize:FS.caption,color:TH.brandText,textTransform:"uppercase",letterSpacing:1.5,marginBottom:2,fontWeight:FW.bold}}>IL TUO PROCURATORE</div>
                       <div style={{fontSize:14,fontWeight:900,color:TH.text}}>{agentName}</div>
