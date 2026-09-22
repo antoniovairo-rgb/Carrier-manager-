@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 22 settembre 2026, 23:25 (Europe/Rome)
-**Stato complessivo stimato:** 60% — ridotto dopo il censimento di un debito strutturale (`src/` non allineato al file di gioco); non è un quality gate finale.
+**Ultimo aggiornamento:** 23 settembre 2026, 00:05 (Europe/Rome)
+**Stato complessivo stimato:** 65% — ridotto dopo il censimento di un debito strutturale (`src/` non allineato al file di gioco); non è un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
 ## Avanzamento 22 settembre 2026, 20:48
@@ -156,6 +156,67 @@ oceano, ed e' verificabile**: dopo il trasferimento `check-src` deve dire IDENTI
 
 **Decisione che serve dal PO:** via libera al punto 2 (merge `main` → POC). Finche' non arriva, continuo a
 lavorare **senza** toccare `src/` e senza lanciare `build-src.mjs`.
+
+---
+
+## Avanzamento 23 settembre 2026, 00:05 — IL METRO ERA CIECO, E ORA IL DIFETTO HA UN NUMERO
+
+### Il merge intelligente e' fatto (due passi, entrambi verificati)
+
+Il ramo POC ha ora **base 7.979.0** (contrasto 0 su sedici schermate, figurine, A17/A18/A19, sala stampa,
+fine partita unica) **e** tutto il lavoro CGTrader, con **`src/` come fonte di verita'**.
+Conflitti del merge: **2**, entrambi risolti consapevolmente. Blocchi trasferiti nei frammenti: **40 su 42
+puliti, zero ambigui**. `check-src` → **IDENTICO BYTE PER BYTE**. **Zero regressioni 3D**: quattordici
+simboli chiave con conteggio identico a prima del merge.
+
+I 2 blocchi non automatici cadevano dove i rami si toccano davvero (avatar/ritratti). Del piu' grosso ho
+preso **solo il dato** — `bodyType`/`hairStyle` sui dieci avatar, 0 occorrenze su main quindi aggiunta pura,
+ed e' cio' che serve al CGTrader per ereditare i tratti — e **rifiutato** la sostituzione di `AvatarSVG`:
+verificato che su main `AvatarSVG` e DiceBear sono ancora vivi, e il handoff chiede di **rifare**
+l'integrazione dei ritratti secondo il contratto, non di copiarla.
+
+### ⚠️ CORREZIONE DI ROTTA: gli «1-2 FPS» non misurano il roster
+
+Misura appaiata, stessa scena (situazione 33), stesso banco:
+
+| | triangoli renderizzati | fotogrammi al secondo |
+| --- | ---: | ---: |
+| con `cgtrader-highlight-optimized` | **813.559** | 1,3 – 1,9 |
+| **senza alcun parametro** (niente CGTrader in scena) | **1.103.244** | **1,2** |
+
+**La partita normale rende PEGGIO della review CGTrader**, pur avendo il 26% di triangoli in piu'. Quindi
+gli «1-2 FPS» citati come prova che l'ottimizzazione non funziona **sono dominati dal banco**: Chromium
+headless su GPU software rende 1-2 FPS qualunque cosa ci sia in scena. **Ricostruire il roster per far
+salire quel numero sarebbe lavorare su un metro cieco** — ed e' la stessa lezione gia' pagata su `main`
+con D7, dove alleggerire le mesh **non** diede fotogrammi sul telefono.
+
+### Ma il difetto e' REALE, e ora ha un numero che regge
+
+Il corpo CGTrader verificato ha **34.995 triangoli**. In scena: **813.559 ÷ 34.995 = 23,2**.
+**Sono ventitre corpi pieni**, esattamente la diagnosi «corpi pieni» della consegna — solo che a dimostrarla
+sono **i triangoli**, non gli FPS. E i tre testimoni lo confermano per via strutturale:
+
+| testimone | esito |
+| --- | --- |
+| `__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED` | `true` — il parametro **e'** riconosciuto |
+| `__CPM_CGTRADER_CINEMA_ROSTER` | **assente** |
+| `__CPM_CGTRADER_RENDER_BUDGET` | **assente** |
+| `__CPM_CGTRADER_LOD_AUDIT()` | **`null`** |
+
+### Il criterio di chiusura, corretto
+
+**Non piu'** «gli FPS risalgono in headless». **Invece:**
+1. `__CPM_CGTRADER_CINEMA_ROSTER` e `__CPM_CGTRADER_RENDER_BUDGET` rispondono;
+2. `__CPM_CGTRADER_LOD_AUDIT()` riporta il trio LOD0/1/2 con **Hero e contesto attivo in LOD0** e gli altri
+   diciotto in LOD1/2;
+3. **i triangoli renderizzati scendono nettamente sotto gli 813.559 misurati** (bersaglio indicativo: il
+   contesto attivo e' cinque corpi, cioe' ~175.000 triangoli di LOD0 piu' il costo ridotto degli altri);
+4. **la partita normale non cambia**: prova appaiata senza il parametro, triangoli invariati a ~1.103.244;
+5. gli **FPS** restano fuori dal gate locale: il loro gate e' **il telefono**, e li' resta **FAIL aperto**
+   (11-16 FPS dichiarati dall'utente, mai smentiti).
+
+**Sonda nuova:** `tests/character-lab/roster-ottimizzato-rosso.mjs` (con `CPM_BASE=1` misura il lato senza
+parametro). Scrive `roster-rosso.json` e `roster-base.json`.
 
 ---
 
