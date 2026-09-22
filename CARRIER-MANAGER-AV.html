@@ -12022,6 +12022,17 @@ function ThreeMatchView(props){
     }
     renderer.setSize(W,H);renderer.setPixelRatio(isDesktop?Math.min(devicePixelRatio,2):Math.min(devicePixelRatio,1.5));
     renderer.shadowMap.enabled=true;renderer.shadowMap.type=isDesktop?THREE.PCFSoftShadowMap:THREE.BasicShadowMap;
+    /* [23/09 — BUDGET RENDERER della review ottimizzata, ricostruito dalla copia di recupero.
+       Solo un TESTIMONE: dice a che densita' di pixel e con quali ombre sta girando la scena, cosi' il
+       collaudo puo' distinguere «la review e' attiva» da «la review e' attiva E sta davvero risparmiando».
+       Non cambia un solo valore del renderer: leggere non e' decidere, e un budget che si dichiara senza
+       essere misurato e' esattamente il tipo di numero che non vogliamo.
+       [difetto mio, trovato PRIMA di costruire e non dopo] la prima stesura leggeva
+       `_cgtraderHighlightOptimized`, che pero' e' dichiarato con `const` OTTOMILA righe piu' sotto: qui
+       sarebbe stato un errore di zona morta temporale al primo invito. Il testimone si legge da solo
+       l'URL, come faceva la copia di recupero, e non dipende piu' dall'ordine delle dichiarazioni. */
+    try{if(typeof window!=='undefined'){const _revBud=['cgtrader-squad-review','cgtrader-highlight-optimized'].includes(new URLSearchParams(window.location.search||'').get('hyperCharacter')||'');
+      window.__CPM_CGTRADER_RENDER_BUDGET=()=>({cinema:_revBud,pixelRatio:+renderer.getPixelRatio().toFixed(2),shadows:!!renderer.shadowMap.enabled});}}catch(_eBud){}
     try{if(renderer.debug&&!(typeof window!=='undefined'&&window.__CPM_NO769))renderer.debug.checkShaderErrors=false;}catch(_e769b){}/* [7.769.0] vedi la nota all'aggancio dei modelli: la lettura sincrona dei log di compilazione e' il blocco di 2,6 s all'apertura della prima scena */
     /* [7.529.0 R5 — direttiva PO «procedi con R5»] LA CATENA COLORE VERA: ACES + sRGB sul renderer
        della partita (l'unico ACES del file stava nella scena Gala — audit: «l'immagine e' piatta per
@@ -20763,6 +20774,41 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // PORTIERE avversario: la parata è segnalata da oppActType==='gk_dive' (oppMesh=awayGkMesh). La traslazione laterale/verticale
         // resta guidata dalla reazione procedurale; il GLB ci sovrappone la CLIP di tuffo per gli arti.
         const _gkWant=(oppActType==='gk_dive')?'dive':(oppActType==='gk_catch')?'catch':(oppActType==='gk_block')?'block':null;// [5.83.0 IA-3] clip catch GLB finalmente usata · [7.203.0] clip BLOCK finalmente usata (era scaricata a ogni partita e mai suonata)
+        /* [23/09 — ROSTER CINEMATOGRAFICO, ricostruito dalla copia di recupero e rimesso in `src/` dove va.
+           IL PROBLEMA, MISURATO PRIMA DI TOCCARE NULLA: con `cgtrader-highlight-optimized` la scena rendeva
+           813.559 triangoli. Il corpo CGTrader ne ha 34.995 — cioe' 23,2 corpi pieni: tutti gli avatar erano
+           in scena a piena risoluzione anche quando l'inquadratura ne mostra quattro.
+           NOTA DI METODO, perche' e' costata un'ipotesi sbagliata: la consegna citava «1-2 FPS» come prova
+           del difetto, ma la misura appaiata dice che la partita SENZA CGTrader rende 1,2 FPS con 1.103.244
+           triangoli, cioe' PEGGIO. Gli FPS qui misurano il banco (Chromium headless su GPU software), non la
+           scena. Il metro vero sono i TRIANGOLI; gli FPS hanno un solo gate, ed e' il telefono.
+           COSA FA: durante l'highlight tiene visibili solo l'eroe, il portiere piu' vicino al pallone, i tre
+           giocatori piu' vicini e chiunque stia eseguendo un gesto; gli altri restano in scena come attori
+           della simulazione ma non vengono disegnati. Nessuna posizione, nessun evento, nessun dato di
+           partita viene toccato: si spegne solo il DISEGNO.
+           Attivo SOLO nelle due review opt-in — la partita normale non lo vede mai.
+           Rosso appaiato: `window.__CPM_NO_CINEMA` riaccende tutti i corpi. */
+        /* [difetto mio, preso dalla misura e non da una rilettura] la prima stesura leggeva qui
+           `_cgtraderHighlightOptimized`: quelle costanti vivono nella funzione che carica gli avatar, non
+           in questo ciclo. Risultato misurato: «_cgtraderHighlightOptimized is not defined» a ogni
+           fotogramma, 3D mai montato, TRIANGOLI 0 e 60 FPS — cioe' una pagina vuota che sembrava veloce.
+           E' la seconda volta nello stesso rilascio che sbaglio lo scope: qui la condizione si legge dal
+           testimone che il gioco pubblica gia' su window, che e' l'unico appiglio valido in questo punto. */
+        if((typeof window!=='undefined'&&(window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED||['cgtrader-squad-review','cgtrader-lod2-benchmark'].includes(new URLSearchParams(window.location.search||'').get('hyperCharacter')||'')))&&!(window.__CPM_NO_CINEMA)&&glbAvatars&&glbAvatars.length){
+          try{
+            const _fuoco=((typeof ball!=='undefined'&&ball&&ball.position)?ball.position:hero.position);
+            const _ord=glbAvatars.map((av,index)=>{const p=av&&av.proc&&av.proc.position;const dx=p?p.x-_fuoco.x:999,dz=p?p.z-_fuoco.z:999;return{av,index,d:Math.hypot(dx,dz)};})
+              .filter(x=>x.av&&x.av.root).sort((a,b)=>a.d-b.d);
+            const _tieni=new Set([0]);/* l'eroe non si spegne mai */
+            const _port=_ord.find(x=>x.index!==0&&x.av._isGk);if(_port)_tieni.add(_port.index);
+            _ord.filter(x=>x.index!==0&&!x.av._isGk).slice(0,3).forEach(x=>_tieni.add(x.index));
+            _ord.filter(x=>x.index!==0&&(x.av._gName||x.av._gPrev)).forEach(x=>_tieni.add(x.index));/* chi sta gia' facendo un gesto resta: spegnerlo a meta' azione si vedrebbe */
+            glbAvatars.forEach((av,index)=>{if(av&&av.root)av.root.visible=_tieni.has(index);});
+            const _conta={lod0:0,lod1:0,lod2:0};
+            glbAvatars.forEach(av=>{const l=av&&av._cgLod;if(l&&_conta[l]!==undefined)_conta[l]++;});
+            if(typeof window!=='undefined')window.__CPM_CGTRADER_CINEMA_ROSTER={visible:_tieni.size,total:glbAvatars.length,hero:0,keeper:_port?_port.index:null,lod:_conta};
+          }catch(_eCin){}
+        }
         _animLodStats.frames++;_animLodStats.lastFrameUpdates=0;
         for(let _ai=0;_ai<glbAvatars.length;_ai++){const _a=glbAvatars[_ai],_p=_a.proc,_gdx=_p.position.x-_a.lx,_gdz=_p.position.z-_a.lz,_gsp=Math.hypot(_gdx,_gdz);
           _a.root.position.set(_p.position.x,(_ai===0&&_p.position.y<0)?0:_p.position.y,_p.position.z);

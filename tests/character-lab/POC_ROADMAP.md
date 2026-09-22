@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 00:05 (Europe/Rome)
-**Stato complessivo stimato:** 65% — ridotto dopo il censimento di un debito strutturale (`src/` non allineato al file di gioco); non è un quality gate finale.
+**Ultimo aggiornamento:** 23 settembre 2026, 00:45 (Europe/Rome)
+**Stato complessivo stimato:** 70% — ridotto dopo il censimento di un debito strutturale (`src/` non allineato al file di gioco); non è un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
 ## Avanzamento 22 settembre 2026, 20:48
@@ -217,6 +217,51 @@ sono **i triangoli**, non gli FPS. E i tre testimoni lo confermano per via strut
 
 **Sonda nuova:** `tests/character-lab/roster-ottimizzato-rosso.mjs` (con `CPM_BASE=1` misura il lato senza
 parametro). Scrive `roster-rosso.json` e `roster-base.json`.
+
+---
+
+## Avanzamento 23 settembre 2026, 00:45 — IL ROSTER CINEMATOGRAFICO E' RICOSTRUITO E MISURATO
+
+Ricostruito **in `src/12-three-match-view.jsx`** (non nel file generato) prelevando dalla copia di recupero
+**solo** il meccanismo necessario. Rosso appaiato: `window.__CPM_NO_CINEMA` riaccende tutti i corpi.
+
+**Cosa fa:** durante l'highlight resta visibile l'eroe, il portiere piu' vicino al pallone, i tre giocatori
+piu' vicini e chiunque stia eseguendo un gesto (spegnere un attore a meta' gesto si vedrebbe). Gli altri
+restano attori della simulazione ma **non vengono disegnati**: si spegne il DISEGNO, non il gioco — nessuna
+posizione, nessun evento, nessun dato di partita e' toccato. Attivo **solo** nelle due review opt-in.
+
+### Misure, contro il rosso di partenza
+
+| criterio di chiusura | esito |
+| --- | --- |
+| `__CPM_CGTRADER_CINEMA_ROSTER` risponde | ✅ era `undefined`, ora **object** |
+| `__CPM_CGTRADER_RENDER_BUDGET` risponde | ✅ era `undefined`, ora **function** |
+| triangoli giu' dal rosso | ✅ **813.559 → 183.649, −77,6 %** (5,25 corpi contro 23,2) |
+| **la partita normale non cambia** | ✅ **1.103.244 → 1.103.244**, identico, e il roster non si attiva mai |
+| errori di pagina | ✅ **zero** |
+| `__CPM_CGTRADER_LOD_AUDIT()` riporta il trio | ❌ **ancora `null`**: il trio LOD0/1/2 non e' caricato |
+| FPS | ⏸ fuori dal gate locale per decisione misurata; il loro gate e' **il telefono**, dove resta **FAIL aperto** |
+
+**Tre criteri su cinque superati**, uno aperto (il trio LOD) e uno che e' mobile per definizione.
+
+### Due difetti miei in questo passo, dichiarati perche' sono la parte che insegna
+
+Entrambi di **scope**, entrambi nello stesso rilascio.
+1. Il testimone del budget leggeva `_cgtraderHighlightOptimized`, che e' dichiarato con `const` ottomila
+   righe piu' sotto: zona morta temporale. **Trovato prima di costruire**, con un controllo sulle posizioni.
+2. Il blocco del roster faceva lo stesso errore, e quello **non** l'avevo controllato. **Trovato dalla
+   misura**: «_cgtraderHighlightOptimized is not defined» a ogni fotogramma, 3D mai montato,
+   **TRIANGOLI 0 e 60 FPS** — cioe' una pagina vuota che sembrava velocissima. E' il promemoria piu' utile
+   di tutta la serata: **un numero di prestazione che migliora di colpo va sempre sospettato**, e senza il
+   metro dei triangoli quel 60 avrebbe potuto essere scambiato per un successo.
+Entrambe le condizioni ora si leggono dal testimone che il gioco pubblica gia' su `window`.
+
+### Prossimo lavoro e criterio
+
+Caricare il trio **LOD0/1/2** e promuovere l'Hero e il contesto attivo a LOD0, il resto a LOD1/2, cosi' che
+`__CPM_CGTRADER_LOD_AUDIT()` smetta di rispondere `null`. **Chiude quando** l'audit riporta i tre livelli
+con Hero in LOD0, **i triangoli scendono ancora** rispetto ai 183.649 di adesso, e la partita normale resta
+a 1.103.244.
 
 ---
 

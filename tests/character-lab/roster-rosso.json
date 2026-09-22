@@ -2,13 +2,13 @@
  "modo": "cgtrader-highlight-optimized",
  "sit": 33,
  "lod": null,
- "roster": "undefined",
- "budget": "undefined",
+ "roster": "object",
+ "budget": "function",
  "ottimizzato": true,
- "triangoli": 813559,
+ "triangoli": 183649,
  "disegni": null,
  "fase": "hl_choose",
  "situazione": null,
- "fps": 1.3,
+ "fps": 3.5,
  "errori": []
 }

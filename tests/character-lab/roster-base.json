@@ -3,12 +3,12 @@
  "sit": 33,
  "lod": null,
  "roster": "undefined",
- "budget": "undefined",
+ "budget": "function",
  "ottimizzato": false,
  "triangoli": 1103244,
  "disegni": null,
  "fase": "hl_choose",
  "situazione": null,
- "fps": 1.2,
+ "fps": 1.1,
  "errori": []
 }
