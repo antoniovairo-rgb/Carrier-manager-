@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 22 settembre 2026, 23:40 (Europe/Rome, orologio del container) — vedi nota sulle date nella voce «IL METRO ERA ROTTO»
-**Stato complessivo stimato:** 70% — ridotto dopo il censimento di un debito strutturale (`src/` non allineato al file di gioco); non è un quality gate finale.
+**Ultimo aggiornamento:** 22 settembre 2026, 23:53 (Europe/Rome)
+**Stato complessivo stimato:** 60% — ultimo riesame dei quality gate; non e un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
 ## Avanzamento 22 settembre 2026, 20:48
@@ -393,6 +393,14 @@ ossa o tolto, perche' induce in errore: e' un intervento a parte, non fatto qui.
 
 ---
 
+## Avanzamento 22 settembre 2026, 23:53 — Controllo periodico
+
+- **Fase corrente:** 4/7, 60% complessivo stimato.
+- **Attivita dall'ultimo aggiornamento:** nessun nuovo commit sul branch remoto dopo 9c6b9de9; il roster CGTrader resta a cinque corpi visibili, con l'eroe LOD0 verificato nella misura precedente.
+- **Verifica ed esito:** il fetch conferma il branch remoto invariato. I dati di rendering restano quelli documentati nel checkpoint precedente; non e stata ripetuta una prova animata o mobile in questo intervallo.
+- **Lavoro successivo e criterio di chiusura:** catturare la sequenza completa gk-high-catch e provare contatto mani-palla e possesso; poi dribbling, tiro, transizioni e misure su telefono. Quality gate finali ancora aperti; nessuna build validata pubblicata sul link ufficiale.
+
+---
 ## Obiettivo vincolante
 
 Creare un solo sistema di personaggi adulti credibili, stilizzati oppure semi-realistici, per partita, intro, highlight e ritratti profilo. Il modello deve essere costruito e corretto nei sorgenti Blender/GLB, non tramite geometrie correttive a runtime.
