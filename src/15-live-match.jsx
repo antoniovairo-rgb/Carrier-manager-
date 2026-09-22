@@ -1612,7 +1612,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   },[phase]);
   // decide a fine partita: se è stato vinto un titolo → premiazione 3D, altrimenti direttamente la card di fine gara.
   //   Hoisted (function decl) → richiamabile dai callback del clock/handleContinue definiti più sopra nel corpo.
+  /* [7.976.0 — A18: LA FINE PARTITA ACCADE UNA VOLTA SOLA. Misurato, non dedotto.]
+     La griglia grafica saltava il tabellino due corse su tre con un messaggio che non diceva niente.
+     La sonda `fischio-finale.mjs` ha misurato che una partita in autoplay finisce in 163 s, contro un
+     tetto di 300: il tetto non c'entrava. Il ramo strumentato ha poi detto DOVE: «fermo al 90' in fase
+     playing, orologio fermo da 275 s». Da li' la catena e' chiusa e leggibile nel codice: al 90' il tick
+     (riga del clock) chiama questa funzione e torna 90; TUTTI i suoi rami cambiano fase — ended, ceremony,
+     shootout — TRANNE la festa di fine gara del 7.942, che fa setFesta942(...) e `return` lasciando la
+     fase a `playing`. Ma con la fase ancora `playing` il tick continua a battere e a RICHIAMARE questa
+     funzione, ogni volta con un oggetto festa NUOVO; e FestaFine942 tiene il suo timer di chiusura da
+     3,4 s in un useEffect con `[dati]` fra le dipendenze — quindi a ogni battito il timer si RIARMA
+     prima di scadere. La festa non si chiude mai e il giocatore resta sul velo.
+     NON E' UN DIFETTO DEL BANCO: succede nel gioco spedito, ogni volta che la partita merita la festa.
+     RIMEDIO: la fine partita e' un evento unico e da qui in poi lo e' anche nel codice. Il secondo
+     ingresso torna subito. Rosso appaiato __CPM_NO977 = il comportamento di prima. */
+  const fine977Ref=useRef(false);
+  useEffect(()=>{if(phase==="walkout"||phase==="matchday")fine977Ref.current=false;},[phase]);/* [7.976.0] una partita nuova ha diritto al suo fischio: la guardia si azzera all'ingresso in campo, non solo al montaggio del componente */
   function _goEndOrCeremony(){
+    if(fine977Ref.current&&!(typeof window!=='undefined'&&window.__CPM_NO977))return;
+    fine977Ref.current=true;
     try{AudioMgr.event({type:'MatchEnd'});}catch(_a){}/* [7.62.0 AUDIO] triplice fischio finale */
     try{setClock(c=>Math.max(c,90));clockRef.current=Math.max(clockRef.current||0,90);}catch(_ck){}/* [7.327.0 collaudo PO «i rigori non devono essere al 69esimo minuto!»] il fischio finale arriva all'ULTIMO highlight (7.2.0), che sul cronometro puo' essere il 69': da qui in poi (rigori, premiazione, ended) l'orologio DEVE dire 90' — header e maxischermo leggono entrambi da qui. Il hook di test __CPM_SO_FORCE lo faceva gia'; il path vero no */
     // [7.24.3 BUG GRAVE collaudo PO «di nuovo loop nelle ultime giornate, partita già giocata e vinta con
@@ -2220,7 +2238,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     window.__CPM_IDMAP538=(dir,u)=>{try{if(window.__CPM_NO538)return u<0.34?0:u<0.67?-1:1;return _corPick538(u,_prof538(dir));}catch(e){return null;}};/* [7.531.0] sweep di collaudo: percorre profilo+mappa VERI (il corridoio in volo nasce ~2,5 volte a partita — troppo raro per qualsiasi statistica: la mappa si giudica per enumerazione, il volo solo per cablaggio) *//* [7.496.0 F1b] il TABELLONE dal ref di LiveMatch: come la fase, sopravvive allo smontaggio del 3D al fischio finale — leggerlo da `__CPM_STATE` avrebbe la stessa malattia gia' pagata tre volte. `scoreRef` e' anche il punteggio LOGICO, quello che i gol incrementano SUBITO (7.113/7.120), non il `setScore` differito. */
     // [7.31.0] hook di collaudo RIGORI: forza pareggio+90' e chiama _goEndOrCeremony (il contesto KO deve
     //   essere vero: si usa da una partita di Coppa reale). Test-only, spento in store build.
-    window.__CPM_SO_FORCE=(ck)=>{try{setScore({home:1,away:1});scoreRef.current={home:1,away:1};const _c=(ck==null?90:ck);setClock(_c);clockRef.current=_c;_goEndOrCeremony();return true;}catch(e){return false;}};/* [7.327.0] clock opzionale: la probe passa 69 per provare che il fischio finale lo ALZA a 90 (il fix sta in _goEndOrCeremony, non qui) */
+    window.__CPM_SO_FORCE=(ck)=>{try{setScore({home:1,away:1});scoreRef.current={home:1,away:1};const _c=(ck==null?90:ck);setClock(_c);clockRef.current=_c;fine977Ref.current=false;/* [7.976.0] il varco chiama la fine a mano: la guardia di unicita' va azzerata o il secondo forzamento non farebbe piu' niente */_goEndOrCeremony();return true;}catch(e){return false;}};/* [7.327.0] clock opzionale: la probe passa 69 per provare che il fischio finale lo ALZA a 90 (il fix sta in _goEndOrCeremony, non qui) */
     window.__CPM_SO_STATE=()=>{try{const s=soStateRef.current;return{phase:phaseRef.current,step:s?s.step:null,hs:s?s.hs:null,as:s?s.as:null,done:s?s.done:null,won:s?s.won:null,len:s?s.seq.length:null};}catch(e){return null;}};
     /* [6.3.0 R0/LMQP-10] AUTOPLAY del Live Match Validator: gioca la partita VERA (selezione contestuale,
        catene, clock, tick playing) scegliendo le azioni con policy SEEDATA — niente force-sit, esercita

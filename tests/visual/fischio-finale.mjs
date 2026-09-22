@@ -25,9 +25,56 @@ await installCdnRoutes(page);
 console.log('=== QUANTO CI METTE IL FISCHIO FINALE ===');
 console.log(`  seme ${SEME} · tetto ${TETTO} s · lo stesso autoplay della griglia (tickMs 300, policy seeded)\n`);
 
+/* [G16 c] LA PROVA APPAIATA DEL 7.976. Il blocco scatta SOLO quando la partita merita la festa di fine
+   gara (gol, oppure voto >= 7,5, oppure colpo fuori casa), quindi una partita qualunque non lo mostra:
+   CPM_FESTA=1 usa il varco di collaudo gia' esistente (__CPM_FESTA942_FORCE) per iniettare le statistiche
+   e rendere la festa certa. CPM_ROSSO=1 riaccende il comportamento di prima (__CPM_NO977): stessa partita,
+   stesso seme, una sola differenza. Se il rosso non fischia e il verde si', il rimedio ha il suo numero. */
+const FESTA = process.env.CPM_FESTA === '1';
+const ROSSO = process.env.CPM_ROSSO === '1';
+if (FESTA || ROSSO) await page.addInitScript(({ f, r }) => {
+  if (f) { try { window.__CPM_FESTA942_FORCE = { goals: 2, assists: 1, rb: 20 }; } catch (_e) {} }
+  if (r) { try { window.__CPM_NO977 = true; } catch (_e) {} }
+}, { f: FESTA, r: ROSSO });
+if (FESTA) console.log('  · festa di fine gara FORZATA (varco __CPM_FESTA942_FORCE)');
+if (ROSSO) console.log('  · ROSSO __CPM_NO977 acceso: la fine partita puo\' essere richiamata a ogni battito, come prima del 7.976');
+
 await openMatch(page, port, { skipLoadAll: true, name: 'Fischio Probe' });
 const t0 = Date.now();
 try { await page.evaluate((s) => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), SEME); } catch (_e) {}
+
+/* [G16 b] LA DIFFERENZA FRA LA SONDA E IL BANCO. In corsa libera il fischio arriva a 163 s; dentro la
+   griglia la partita resta ferma al 90' in fase playing. L'unica cosa che la griglia fa in piu' e' il
+   RITUALE DI MISURA: cinque cambi di viewport, il congelamento delle animazioni e uno scatto per taglia.
+   Con CPM_RESIZE=1 la sonda lo replica nei due punti in cui la griglia lo esegue (al minuto 8 e alla
+   prima hl_choose): se il blocco si riproduce, la causa e' il rituale, non il gioco. */
+const RESIZE = process.env.CPM_RESIZE === '1';
+const TAGLIE = [{ w: 360, h: 800 }, { w: 375, h: 812 }, { w: 390, h: 844 }, { w: 412, h: 915 }, { w: 430, h: 932 }];
+const rituale = async (etichetta) => {
+  if (!RESIZE) return;
+  console.log(`      · rituale di misura (${etichetta}): cinque viewport + congelamento`);
+  for (const t of TAGLIE) {
+    await page.setViewportSize({ width: t.w, height: t.h });
+    await sleep(220);
+    await page.evaluate(() => {
+      if (!document.getElementById('__g0_freeze')) {
+        const st = document.createElement('style'); st.id = '__g0_freeze';
+        st.textContent = '*,*::before,*::after{transition:none!important}';
+        document.head.appendChild(st);
+      }
+      (document.getAnimations ? document.getAnimations() : []).forEach(a => {
+        try { const tt = a.effect && a.effect.getComputedTiming ? a.effect.getComputedTiming() : null;
+          if (tt && (tt.iterations === Infinity || tt.duration === Infinity)) { a.currentTime = 0; a.pause(); } else { a.finish(); } } catch (_e) {}
+      });
+      window.scrollTo(0, 0);
+    }).catch(() => {});
+    await sleep(160);
+    try { await page.screenshot({ animations: 'disabled', caret: 'hide', timeout: 40000 }); } catch (_e) {}
+  }
+  await page.setViewportSize({ width: 412, height: 915 });
+  await sleep(220);
+};
+let fattoMin8 = false, fattoScelta = false;
 
 const righe = [];
 let finito = null, ultimoMin = -1, fermoDa = 0;
@@ -43,6 +90,8 @@ for (let t = 0; t <= TETTO; t += PASSO) {
   if (st.min === ultimoMin) fermoDa += PASSO; else { fermoDa = 0; ultimoMin = st.min; }
   console.log(`  ${String(sec).padStart(4)} s · minuto ${String(st.min).padStart(3)} · fase ${st.ph}${fermoDa >= 30 ? `   ← l'orologio e' fermo da ${fermoDa} s` : ''}`);
   if (st.ph === 'ended' || st.ph === 'ceremony') { finito = sec; break; }
+  if (!fattoMin8 && (st.min | 0) >= 8) { fattoMin8 = true; await rituale("minuto 8"); }
+  else if (!fattoScelta && st.ph === 'hl_choose') { fattoScelta = true; await rituale('hl_choose'); }
   await sleep(PASSO * 1000);
 }
 
