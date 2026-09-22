@@ -9181,7 +9181,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       {/* ATE-3: etichetta azione — overlay breve sincronizzata con arco palla */}
       {actionLabel&&<div style={{position:"absolute",bottom:"16%",left:"50%",transform:"translateX(-50%)",
         background:"rgba(0,0,0,0.62)",color:ATE3_ARCCOL[bgAction?.type]||"#fff",
-        padding:"3px 13px",borderRadius:18,fontSize:FS.caption,fontWeight:800,letterSpacing:"1.8px",
+        padding:"3px 13px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:"1.8px",
         pointerEvents:"none",border:"1px solid rgba(255,255,255,0.12)",whiteSpace:"nowrap",
         textShadow:"0 1px 3px #000"}}>{actionLabel}</div>}
     </div>

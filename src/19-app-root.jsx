@@ -133,7 +133,7 @@ function ReviewWizard({onExit}){
       <MatchErrorBoundary><LiveMatch player={md.player} opponent={md.opp} context="trial" isMatchHome={!(typeof window!=='undefined'&&window.__CPM_AWAY_TEST)} onMatchEnd={()=>{}}/></MatchErrorBoundary>{/* [7.726.0 strumento] __CPM_AWAY_TEST: il provino si apre IN TRASFERTA per le sonde (la 7.725 ha corretto per lettura sei siti di frame senza poterli misurare). Default invariato. */}
     </div>
     {/* barra ALTA: avanzamento e uscita */}
-    <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.45)",backdropFilter:"blur(2px)",WebkitBackdropFilter:"blur(2px)",padding:"7px 10px",borderRadius:10,fontFamily:"inherit",fontSize:FS.small,color:"#e2e8f0",flexWrap:"wrap",textShadow:"0 1px 2px rgba(0,0,0,0.8)"}}>
+    <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.45)",backdropFilter:"blur(2px)",WebkitBackdropFilter:"blur(2px)",padding:"7px 10px",borderRadius:RAD.sm,fontFamily:"inherit",fontSize:FS.small,color:"#e2e8f0",flexWrap:"wrap",textShadow:"0 1px 2px rgba(0,0,0,0.8)"}}>
       <b style={{color:"#fbbf24",letterSpacing:1}}>🎬 REVISIONE</b>
       <span style={{fontWeight:800}}>{done} / {combos.length}</span>
       <span style={{color:"#f87171",fontWeight:800}}>{ko} da correggere</span>
@@ -199,7 +199,7 @@ function SitTest({sitN}){
     <div style={{flex:1,minHeight:0,overflow:"hidden",display:"flex",flexDirection:"column"}}>
       <MatchErrorBoundary><LiveMatch player={md.player} opponent={md.opp} context="trial" isMatchHome={!(typeof window!=='undefined'&&window.__CPM_AWAY_TEST)} onMatchEnd={()=>force(n)}/></MatchErrorBoundary>{/* [7.726.0 strumento] idem: apertura in trasferta per le sonde */}
     </div>
-    <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.82)",padding:"7px 10px",borderRadius:9,fontFamily:"monospace",fontSize:FS.small,color:"#fff",flexWrap:"wrap",boxShadow:"0 2px 10px rgba(0,0,0,0.5)"}}>
+    <div style={{position:"fixed",top:6,left:6,right:6,zIndex:99999,display:"flex",gap:8,alignItems:"center",background:"rgba(0,0,0,0.82)",padding:"7px 10px",borderRadius:RAD.sm,fontFamily:"monospace",fontSize:FS.small,color:"#fff",flexWrap:"wrap",boxShadow:"0 2px 10px rgba(0,0,0,0.5)"}}>
       <b style={{color:"#fbbf24",letterSpacing:1}}>🎬 SIT TEST</b>
       <button onClick={()=>force(n-1)} style={bs}>◀</button>
       <span style={{minWidth:64,textAlign:"center"}}>gi{n} / {total-1}</span>
@@ -555,11 +555,11 @@ function IntroCinematic({onDone}){
           :<div key={"b"+beat} style={{fontSize:cap.big.length>14?24:38,fontWeight:900,color:"#fff",letterSpacing:cap.big.length>14?1:4,textShadow:"0 3px 18px rgba(0,0,0,0.8)",animation:"celebTitle .7s ease-out both"}}>{cap.big}</div>)}
         {cap.sub&&<div key={"s"+beat} style={{fontSize:FS.bodyLg,color:"#ffd9a0",fontWeight:700,marginTop:8,textShadow:"0 2px 12px rgba(0,0,0,0.85)",animation:"celebTitle .8s ease-out .15s both"}}>{cap.sub}</div>}
         {cap.chips&&<div style={{display:"flex",flexDirection:"column",gap:8,alignItems:"center",marginTop:14}}>
-          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:22,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:14,fontWeight:800,animation:`celebTitle .5s ease-out ${0.3+i*0.55}s both`}}>{c}</div>))}
+          {cap.chips.map((c,i)=>(<div key={i} style={{padding:"8px 18px",borderRadius:RAD.xl,background:"rgba(8,12,24,0.72)",border:"1px solid rgba(255,217,160,0.45)",color:"#fff",fontSize:14,fontWeight:800,animation:`celebTitle .5s ease-out ${0.3+i*0.55}s both`}}>{c}</div>))}
         </div>}
       </div>
       {cap.cta&&<div style={{position:"absolute",left:0,right:0,bottom:"12%",display:"flex",justifyContent:"center",animation:"celebTitle .7s ease-out both"}}>
-        <button onClick={onDone} style={{padding:"15px 34px",borderRadius:14,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:FS.subhead,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>🎬 Comincia dal provino →</button>
+        <button onClick={onDone} style={{padding:"15px 34px",borderRadius:RAD.md,border:"none",background:"linear-gradient(135deg,#b91c1c,#7f1d1d)",color:"#fff",fontSize:FS.subhead,fontWeight:900,cursor:"pointer",fontFamily:"inherit",boxShadow:"0 8px 30px rgba(185,28,28,0.45)"}}>🎬 Comincia dal provino →</button>
       </div>}
       <button onClick={onDone} style={{position:"absolute",top:14,right:14,padding:"8px 15px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.3)",background:"rgba(0,0,0,0.4)",color:"#fff",fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta ⏩</button>
     </div>
@@ -626,7 +626,7 @@ function AudioSettings(){
     <Card style={{padding:'12px 14px'}}>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
         <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700}}>🎧 Audio</div>
-        <button onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}} style={{padding:'5px 12px',borderRadius:9,border:`1px solid ${TH.cardBorder}`,background:cfg.mute?TH.danger:'transparent',color:cfg.mute?'#fff':TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.caption,fontWeight:700}}>{cfg.mute?'🔇 Muto ON':'🔇 Muto totale'}</button>
+        <button onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}} style={{padding:'5px 12px',borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:cfg.mute?TH.danger:'transparent',color:cfg.mute?'#fff':TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.caption,fontWeight:700}}>{cfg.mute?'🔇 Muto ON':'🔇 Muto totale'}</button>
       </div>
       {VOL.map(r=>{
         const vol=Math.round((r.master?cfg.master:cfg.vol[r.k])*100);
@@ -674,7 +674,7 @@ function SettingsQuickBtn({onOpen}){
   return(
     <button onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onOpen)onOpen();}}
       title="Impostazioni"
-      style={{position:"fixed",bottom:"calc(env(safe-area-inset-bottom,0px) + 44px)",right:12,zIndex:99999,padding:"8px 14px 6px",minWidth:60,borderRadius:14,border:`1px solid ${TH.cardBorder}`,background:TH.card,color:TH.faint,cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:1,boxShadow:"0 4px 14px rgba(0,0,0,0.12)"}}>
+      style={{position:"fixed",bottom:"calc(env(safe-area-inset-bottom,0px) + 44px)",right:12,zIndex:99999,padding:"8px 14px 6px",minWidth:60,borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`,background:TH.card,color:TH.faint,cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",gap:1,boxShadow:"0 4px 14px rgba(0,0,0,0.12)"}}>
       <div style={{fontSize:FS.subhead}}>⚙️</div>
       <div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3,fontWeight:FW.bold}}>Opzioni</div>
     </button>
@@ -986,9 +986,9 @@ class RootErrorBoundary extends React.Component{
         <div style={{fontSize:FS.title,fontWeight:900}}>Qualcosa è andato storto</div>
         <div style={{fontSize:14,maxWidth:360,opacity:0.85,lineHeight:1.5}}>La tua carriera è <b>al sicuro</b> sul dispositivo. Ricarica per riprendere da dove eri; puoi anche tornare al menu o scaricare un backup di sicurezza.</div>
         <div style={{display:"flex",gap:10,flexWrap:"wrap",justifyContent:"center",marginTop:6}}>
-          <button onClick={()=>location.reload()} style={{padding:"11px 22px",borderRadius:10,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>↻ Ricarica</button>
-          <button onClick={()=>{try{localStorage.setItem("cpm-active","");localStorage.setItem("cpm-match-resume","");}catch(e){}location.reload();}} style={{padding:"11px 22px",borderRadius:10,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>🏠 Torna al menu</button>{/* [7.149.0] azzera l'auto-ripresa (carriera + partita) → il boot torna alla home: valvola anti crash-loop */}
-          <button onClick={()=>this._backup()} style={{padding:"11px 22px",borderRadius:10,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>📁 Scarica backup</button>
+          <button onClick={()=>location.reload()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"none",background:"#2563eb",color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>↻ Ricarica</button>
+          <button onClick={()=>{try{localStorage.setItem("cpm-active","");localStorage.setItem("cpm-match-resume","");}catch(e){}location.reload();}} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>🏠 Torna al menu</button>{/* [7.149.0] azzera l'auto-ripresa (carriera + partita) → il boot torna alla home: valvola anti crash-loop */}
+          <button onClick={()=>this._backup()} style={{padding:"11px 22px",borderRadius:RAD.sm,border:"1px solid #334155",background:"transparent",color:"#e2e8f0",fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>📁 Scarica backup</button>
         </div>
       </div>
     );

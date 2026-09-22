@@ -29,7 +29,7 @@ function DPad({onMove,dark=false,size=42}){
   const SZ=size;
   const btn=(lbl,dx,dy)=>(
     <button onPointerDown={e=>{e.preventDefault();onMove(dx,dy);}}
-      style={{width:SZ,height:SZ,borderRadius:9,
+      style={{width:SZ,height:SZ,borderRadius:RAD.sm,
         background:dark?"linear-gradient(180deg,rgba(51,65,92,0.92),rgba(34,45,68,0.92))":"rgba(30,42,60,0.08)",/* [7.919 collaudo PO «renderei un po' piu' chiari gli sfondi delle statistiche, del dpad e delle azioni»] il tasto scuro era quasi nero (0,52 di nero su fondo scuro): si vedeva il bordo, non il tasto */
         border:dark?"1px solid rgba(203,213,225,0.30)":"1px solid "+TH.cardBorder,
         color:dark?"#fff":TH.text,fontSize:16,cursor:"pointer",
@@ -173,7 +173,7 @@ function PostMatchPress({match,report,player,L,onClose}){
   return(
     <div style={{width:"100%",maxWidth:600,margin:"0 auto"}}>
       <style>{"@keyframes pmShim{0%{background-position:200% 0}100%{background-position:-200% 0}}@keyframes pmUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}"}</style>
-      <div style={{background:TH.card,borderRadius:18,overflow:"hidden",boxShadow:"0 16px 44px rgba(0,0,0,0.28)",border:`1px solid ${TH.cardBorder}`,animation:"pmUp .45s cubic-bezier(.2,.8,.2,1) both",fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"}}>
+      <div style={{background:TH.card,borderRadius:RAD.xl,overflow:"hidden",boxShadow:"0 16px 44px rgba(0,0,0,0.28)",border:`1px solid ${TH.cardBorder}`,animation:"pmUp .45s cubic-bezier(.2,.8,.2,1) both",fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"}}>
         {/* HERO risultato */}
         <div style={{padding:"16px 18px 15px",background:`linear-gradient(135deg,${TH.primary},${TH.primaryDk})`,color:"#fff"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:FS.caption,letterSpacing:2,fontWeight:800,opacity:0.92,textTransform:"uppercase"}}>
@@ -204,7 +204,7 @@ function PostMatchPress({match,report,player,L,onClose}){
         </div>
         {/* PAGELLA + STATISTICHE */}
         <div style={{display:"flex",gap:9,padding:"6px 18px 12px",alignItems:"stretch"}}>
-          <div style={{flexShrink:0,width:90,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,padding:"12px 6px",background:TH.surface2,borderRadius:14,border:`1px solid ${TH.cardBorder}`}}>
+          <div style={{flexShrink:0,width:90,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,padding:"12px 6px",background:TH.surface2,borderRadius:RAD.md,border:`1px solid ${TH.cardBorder}`}}>
             <div style={{fontSize:FS.caption,letterSpacing:2,color:TH.faint,fontWeight:700}}>PAGELLA</div>
             <div style={{width:58,height:58,borderRadius:"50%",background:rc,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 4px 14px ${rc}55`}}><span style={{fontSize:FS.h,fontWeight:900,color:"#fff"}}>{r.rating}</span></div>
             <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:600}}>{(r.goals>0?`⚽${r.goals} `:"")+(r.assists>0?`🎯${r.assists}`:"")||"—"}</div>
@@ -220,7 +220,7 @@ function PostMatchPress({match,report,player,L,onClose}){
             {hasStats?[["Possesso",r.possession+"%",r.possession,TH.primary],["Tiri",r.shots+"–"+r.oppShots,(r.shots+r.oppShots)>0?Math.round(r.shots/(r.shots+r.oppShots)*100):50,TH.accent],["Falli",""+r.fouls,null,null],["Corner",""+r.corners,null,null]].map((row,i)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:9,fontSize:FS.caption}}>
                 <span style={{width:56,color:TH.muted,fontWeight:600}}>{row[0]}</span>
-                {row[2]!=null?<div style={{flex:1,height:6,background:TH.divider,borderRadius:4,overflow:"hidden"}}><div style={{width:clamp(row[2],0,100)+"%",height:"100%",background:row[3],borderRadius:4}}/></div>:<div style={{flex:1,height:1,background:TH.divider}}/>}
+                {row[2]!=null?<div style={{flex:1,height:6,background:TH.divider,borderRadius:RAD.xs,overflow:"hidden"}}><div style={{width:clamp(row[2],0,100)+"%",height:"100%",background:row[3],borderRadius:RAD.xs}}/></div>:<div style={{flex:1,height:1,background:TH.divider}}/>}
                 <span style={{fontWeight:800,minWidth:42,textAlign:"right",color:TH.text}}>{row[1]}</span>
               </div>
             )):<div style={{fontSize:FS.caption,color:TH.faint}}>Statistiche non disponibili</div>}
@@ -292,7 +292,7 @@ function PressScreen({report,matchResult,onClose}){
         <Card style={{padding:"9px 14px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:2,marginBottom:8}}>PAGELLA</div>
           <div style={{display:"flex",alignItems:"center",gap:14}}>
-            <div style={{width:54,height:54,borderRadius:10,background:pr.color,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <div style={{width:54,height:54,borderRadius:RAD.sm,background:pr.color,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
               <div style={{fontSize:22,fontWeight:900,color:"#fff",lineHeight:1}}>{pr.value}</div>
               <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",letterSpacing:0.5}}>VOTO</div>
             </div>
@@ -508,7 +508,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
         <Btn onClick={onSimulate} v="ghost" fw style={{marginTop:8,padding:"10px",fontSize:FS.small}}>⏩ Simula partita</Btn>
       )}
       {onBack&&(
-        <button onClick={onBack} style={{width:"100%",marginTop:10,padding:"9px",borderRadius:10,border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,color:TH.muted,fontWeight:600}}>← Torna alla dashboard</button>
+        <button onClick={onBack} style={{width:"100%",marginTop:10,padding:"9px",borderRadius:RAD.sm,border:"none",background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,color:TH.muted,fontWeight:600}}>← Torna alla dashboard</button>
       )}
     </div>
   );
@@ -748,7 +748,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
   const _pipRow=(p,rev)=>(<div style={{display:"flex",gap:3,marginTop:4,flexDirection:rev?"row-reverse":"row"}}>{[0,1,2,3,4].map(i=><span key={i} style={{width:6,height:6,borderRadius:"50%",background:i<_pips(p)?"rgba(255,255,255,0.85)":"rgba(255,255,255,0.2)"}}/>)}</div>);
   const _dotMatrix=fmt=>{const raw=(fmt||"").split("-").map(n=>parseInt(n,10)).filter(n=>n>0);if(!raw.length)return null;const lines=raw.slice().reverse();const W=54,H=38,rows=lines.length;return(<svg width={W} height={H} viewBox={"0 0 "+W+" "+H} style={{flexShrink:0}}>{lines.map((cnt,ri)=>{const y=7+ri*((H-14)/Math.max(rows-1,1));return Array.from({length:cnt}).map((_,ci)=>{const x=cnt===1?W/2:7+ci*((W-14)/(cnt-1));return<circle key={ri+"_"+ci} cx={x} cy={y} r={2.2} fill={ri===0?ACC:"rgba(255,255,255,0.7)"}/>;});})}</svg>);};
   const _panel=(team,rr,kit)=>(
-    <div style={{flex:1,minWidth:0,borderRadius:10,overflow:"hidden",background:"rgba(255,255,255,0.02)",border:"1px solid "+_rgba(kit,0.25),boxShadow:"inset 0 0 24px rgba(0,0,0,0.25)"}}>
+    <div style={{flex:1,minWidth:0,borderRadius:RAD.sm,overflow:"hidden",background:"rgba(255,255,255,0.02)",border:"1px solid "+_rgba(kit,0.25),boxShadow:"inset 0 0 24px rgba(0,0,0,0.25)"}}>
       <div style={{display:"flex",alignItems:"center",gap:6,padding:"6px 8px",borderBottom:"1px solid rgba(255,255,255,0.06)",borderLeft:"4px solid "+kit,boxShadow:"inset 6px 0 8px "+_rgba(kit,0.25)}}>
         <span style={{fontSize:FS.body,fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase",color:"#f1f5f9",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{team?.a||team?.abbr||"—"}</span>
         <span style={{marginLeft:"auto",padding:"2px 7px",borderRadius:RAD.xs,background:"rgba(255,255,255,0.06)",fontSize:FS.caption,fontWeight:700,color:"rgba(255,255,255,0.75)",whiteSpace:"nowrap"}}>{_fmtOf(rr)}</span>
@@ -816,12 +816,12 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
           {_panel(awayTeam,_awayNums,awayKitCol)}
         </div>
         {/* opponent tactic — scout lower-third */}
-        <div style={{margin:"12px 8px 0",padding:"7px 11px",borderRadius:10,background:"rgba(255,255,255,0.03)",borderLeft:"4px solid "+awayKitCol,boxShadow:"inset 6px 0 10px "+_rgba(awayKitCol,0.2),animation:"cpmLtSlide .4s ease-out 160ms both"}}>
+        <div style={{margin:"12px 8px 0",padding:"7px 11px",borderRadius:RAD.sm,background:"rgba(255,255,255,0.03)",borderLeft:"4px solid "+awayKitCol,boxShadow:"inset 6px 0 10px "+_rgba(awayKitCol,0.2),animation:"cpmLtSlide .4s ease-out 160ms both"}}>
           <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(255,255,255,0.45)",marginBottom:6}}>Formazione avversaria</div>
           {(oppTacticLoading||!oppTactic)?(
             <div style={{display:"flex",alignItems:"center",gap:8}}>
-              <div style={{width:64,height:22,borderRadius:5,background:"rgba(255,255,255,0.06)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,width:"60%",height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)",animation:"cpmLtShine 1.1s linear infinite"}}/></div>
-              <div style={{flex:1,minWidth:150,height:8,borderRadius:4,background:"rgba(255,255,255,0.06)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,width:"60%",height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)",animation:"cpmLtShine 1.1s linear infinite"}}/></div>
+              <div style={{width:64,height:22,borderRadius:RAD.xs,background:"rgba(255,255,255,0.06)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,width:"60%",height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)",animation:"cpmLtShine 1.1s linear infinite"}}/></div>
+              <div style={{flex:1,minWidth:150,height:8,borderRadius:RAD.xs,background:"rgba(255,255,255,0.06)",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,width:"60%",height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)",animation:"cpmLtShine 1.1s linear infinite"}}/></div>
             </div>
           ):(
             <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
@@ -829,7 +829,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
               {_dotMatrix(oppTactic.formation)}
               <div style={{marginLeft:"auto",minWidth:150,flex:1}}>
                 <div style={{fontSize:FS.caption,fontWeight:800,color:ACC,marginBottom:3}}>PRESSING {oppTactic.pressure}%</div>
-                <div style={{position:"relative",height:8,borderRadius:4,overflow:"hidden",background:"rgba(255,255,255,0.08)"}}>
+                <div style={{position:"relative",height:8,borderRadius:RAD.xs,overflow:"hidden",background:"rgba(255,255,255,0.08)"}}>
                   <div style={{position:"absolute",left:0,top:0,height:"100%",width:clamp(oppTactic.pressure||0,0,100)+"%",transformOrigin:"left",animation:"cpmLtMeter .6s ease-out both",background:"linear-gradient(90deg,#22c55e,#f59e0b 55%,#ef4444)"}}/>
                   <div style={{position:"absolute",inset:0,background:"repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), rgba(10,14,26,0.9) calc(10% - 1px) 10%)"}}/>
                 </div>

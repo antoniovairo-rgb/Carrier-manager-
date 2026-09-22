@@ -178,7 +178,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
       {/* Save slots */}
       <div className="cpm-slots" style={{marginBottom:10}}>
         {slots.map((s,i)=>s&&s.corrupted?(
-          <div key={i} style={{border:`2px solid #fca5a5`,borderRadius:14,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:TH.lossBg}}>
+          <div key={i} style={{border:`2px solid #fca5a5`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:TH.lossBg}}>
             <div>
               <div style={{fontSize:FS.small,fontWeight:700,color:TH.txRed}}>⚠️ Slot {i+1} — dati corrotti</div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Il salvataggio non è leggibile. Elimina e ricomincia.</div>
@@ -207,12 +207,12 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:5,flexShrink:0,marginLeft:"auto"}}>
                 <Btn onClick={()=>onLoad(i)} v="primary" style={{padding:"8px 14px",fontSize:FS.body}}>{s.retired?"🏛️ Rivivi il finale →":"Continua →"}</Btn>
-                <button onClick={()=>setConfirmDel(i)} style={{padding:"5px",borderRadius:7,border:"1px solid "+TH.cardBorder,background:"transparent",cursor:"pointer",color:TH.faint,fontSize:FS.caption}}>🗑️ Elimina</button>
+                <button onClick={()=>setConfirmDel(i)} style={{padding:"5px",borderRadius:RAD.xs,border:"1px solid "+TH.cardBorder,background:"transparent",cursor:"pointer",color:TH.faint,fontSize:FS.caption}}>🗑️ Elimina</button>
               </div>
             </div>
           </Card>
         ):(
-          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:14,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.4)"}}>
+          <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.4)"}}>
             <div style={{fontSize:FS.small,color:TH.faint}}>Slot {i+1} — vuoto</div>
             <Btn onClick={()=>onNew(i)} v="secondary" style={{padding:"8px 14px",fontSize:FS.body}}>⚡ Nuova carriera</Btn>
           </div>
@@ -274,7 +274,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
   const[challengeId,setChallengeId]=useState(null);
   const[dreamClub,setDreamClub]=useState(null);
   const[dreamSearch,setDreamSearch]=useState("");
-  const inp={background:TH.surface2,border:"1px solid "+TH.cardBorder,borderRadius:10,color:TH.text,padding:"7px 12px",fontFamily:"inherit",fontSize:14,width:"100%",boxSizing:"border-box"};
+  const inp={background:TH.surface2,border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,color:TH.text,padding:"7px 12px",fontFamily:"inherit",fontSize:14,width:"100%",boxSizing:"border-box"};
   const lbl={display:"block",fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6};
   const go=()=>{
     if(!name.trim())return;
@@ -307,7 +307,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
             <label style={lbl}>Aspetto calciatore</label>
             <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:6}}>
               {pageAvatars.map(av=>(
-                <button key={av.id} onClick={()=>setAvatarId(av.id)} title={av.label} style={{padding:4,borderRadius:10,border:`2px solid ${avatarId===av.id?TH.primary:"transparent"}`,background:avatarId===av.id?TH.primaryTint:"transparent",cursor:"pointer",display:"flex",justifyContent:"center"}}>
+                <button key={av.id} onClick={()=>setAvatarId(av.id)} title={av.label} style={{padding:4,borderRadius:RAD.sm,border:`2px solid ${avatarId===av.id?TH.primary:"transparent"}`,background:avatarId===av.id?TH.primaryTint:"transparent",cursor:"pointer",display:"flex",justifyContent:"center"}}>
                   <AvatarSVG id={av.id} size={44}/>
                 </button>
               ))}
@@ -338,7 +338,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
               {ARCHETYPES.map(arc=>{
                 const sel=archetypeId===arc.id;
                 return(
-                  <button key={arc.id} onClick={()=>setArchetypeId(arc.id)} style={{padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?TH.primary:TH.cardBorder}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",textAlign:"left",transition:"border .15s"}}>
+                  <button key={arc.id} onClick={()=>setArchetypeId(arc.id)} style={{padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?TH.primary:TH.cardBorder}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",textAlign:"left",transition:"border .15s"}}>
                     <div style={{fontSize:16,marginBottom:2}}>{arc.e}</div>
                     <div style={{fontSize:FS.caption,fontWeight:700,color:sel?TH.brandText:TH.text}}>{arc.name}</div>
                     <div style={{fontSize:FS.caption,color:TH.faint,lineHeight:1.4}}>{arc.desc}</div>
@@ -365,7 +365,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
               {CLUBS.filter(c=>!c.isU18&&(!dreamSearch||c.n.toLowerCase().includes(dreamSearch.toLowerCase())||c.a.toLowerCase().includes(dreamSearch.toLowerCase()))).sort((a,b)=>b.p-a.p).map(c=>{
                 const sel=dreamClub?.id===c.id;
                 return(
-                <button key={c.id} onClick={()=>setDreamClub(sel?null:c)} title={c.n} style={{padding:"6px 9px",borderRadius:9,border:`2px solid ${sel?c.c||TH.primary:"transparent"}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",display:"flex",alignItems:"center",gap:9,textAlign:"left"}}>
+                <button key={c.id} onClick={()=>setDreamClub(sel?null:c)} title={c.n} style={{padding:"6px 9px",borderRadius:RAD.sm,border:`2px solid ${sel?c.c||TH.primary:"transparent"}`,background:sel?TH.primaryTint:TH.surface2,cursor:"pointer",display:"flex",alignItems:"center",gap:9,textAlign:"left"}}>
                   <TeamBadge team={c} size={24}/>
                   <span style={{flex:1,minWidth:0,fontSize:FS.small,fontWeight:700,color:sel?c.c||TH.brandText:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.n}</span>
                   <span style={{fontSize:FS.caption,color:TH.faint,flexShrink:0,whiteSpace:"nowrap"}}>{c.lg}</span>
@@ -375,11 +375,11 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
             </div>
             {dreamClub&&<div style={{fontSize:FS.caption,color:TH.txGreen,background:TH.bgGreen,borderRadius:RAD.sm,padding:"6px 10px",border:"1px solid "+TH.bdGreen,display:"flex",alignItems:"center",gap:8}}><TeamBadge team={dreamClub} size={20}/> Il tuo sogno: <strong>{dreamClub.n}</strong> ({dreamClub.lg}). Ce la farai?</div>}
           </div>
-          {legacyBonus&&<div style={{padding:"7px 11px",borderRadius:10,background:"linear-gradient(135deg,#7c3aed22,#4f46e522)",border:"1px solid #7c3aed44",marginBottom:6,fontSize:FS.caption,color:TH.accentText,fontWeight:700}}>🌟 Nuova Partita+ attiva — Bonus {legacyBonus.label}: +{legacyBonus.statBoost} a tutti gli attributi</div>}
+          {legacyBonus&&<div style={{padding:"7px 11px",borderRadius:RAD.sm,background:"linear-gradient(135deg,#7c3aed22,#4f46e522)",border:"1px solid #7c3aed44",marginBottom:6,fontSize:FS.caption,color:TH.accentText,fontWeight:700}}>🌟 Nuova Partita+ attiva — Bonus {legacyBonus.label}: +{legacyBonus.statBoost} a tutti gli attributi</div>}
           <details style={{marginBottom:6}}>
             <summary style={{fontSize:FS.caption,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida <span style={{color:challengeId?TH.txAmber:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
             <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
-              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:10,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?TH.bgAmber:TH.surface2,cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:FS.caption}}>{ch.name}</span></div><div style={{fontSize:FS.caption,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:FS.caption,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
+              {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?TH.bgAmber:TH.surface2,cursor:"pointer"}}><div style={{fontSize:14,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:FS.caption}}>{ch.name}</span></div><div style={{fontSize:FS.caption,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:FS.caption,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
             </div>
           </details>
           <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:FS.bodyLg}}>⚡ INIZIA I PROVINI</Btn>
@@ -538,7 +538,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
         <div style={{display:"flex",gap:11,alignItems:"flex-start"}}><div style={{fontSize:22,lineHeight:1}}>🔭</div><div style={{flex:1,fontSize:FS.small,color:TH.muted,lineHeight:1.5}}>{_react}</div></div>
       </Card>
       {/* progress dots */}
-      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:2}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:3}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
       {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:12.5,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>Manca ancora {2-trialNum} {2-trialNum===1?"provino":"provini"} per convincere i club.{_kbHint?<span style={{color:TH.faint}}> [Enter]</span>:null}</div>}
       <Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>
     </div>;}
@@ -546,7 +546,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
     {/* header + progress dots */}
     <div style={{textAlign:"center",marginBottom:10}}>
       <div style={{fontSize:FS.caption,color:TH.txAmber,letterSpacing:2,fontWeight:800,marginBottom:8}}>IL PROVINO · PASSO {trialNum+1} DI 3</div>
-      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.warning:TH.cardBorder,borderRadius:2}}/>}<div style={{width:30,height:30,borderRadius:"50%",background:i<trialNum?TH.success:i===trialNum?TH.warning:"transparent",border:`2px solid ${i<trialNum?TH.success:i===trialNum?TH.warning:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.small,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<trialNum?"✓":i+1}</div></React.Fragment>)}</div>
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.warning:TH.cardBorder,borderRadius:3}}/>}<div style={{width:30,height:30,borderRadius:"50%",background:i<trialNum?TH.success:i===trialNum?TH.warning:"transparent",border:`2px solid ${i<trialNum?TH.success:i===trialNum?TH.warning:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.small,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<trialNum?"✓":i+1}</div></React.Fragment>)}</div>
     </div>
     {/* VS hero */}
     <Card style={{padding:0,overflow:"hidden",marginBottom:9}} shadow>
@@ -842,7 +842,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
     const _conf=Array.from({length:16},(_,i)=>({left:(i*61+13)%100,delay:((i%8)*0.24).toFixed(2),dur:(2.6+(i%5)*0.4).toFixed(2),col:["#f0b33a","#a3263a","#e0526a","#ffffff"][i%4]}));
     return(
       <div style={{position:"fixed",inset:0,zIndex:60,background:"radial-gradient(circle at 50% 40%,#5e0f1d 0%,#2b0810 82%)",display:"flex",alignItems:"center",justifyContent:"center",padding:24,overflow:"hidden",fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"}}>
-        {_conf.map((c,i)=><div key={i} style={{position:"absolute",top:"-8vh",left:c.left+"%",width:9,height:14,borderRadius:2,background:c.col,opacity:0,animation:`confettiFall ${c.dur}s linear ${c.delay}s infinite`}}/>)}
+        {_conf.map((c,i)=><div key={i} style={{position:"absolute",top:"-8vh",left:c.left+"%",width:9,height:14,borderRadius:3,background:c.col,opacity:0,animation:`confettiFall ${c.dur}s linear ${c.delay}s infinite`}}/>)}
         <div style={{position:"absolute",width:380,height:380,borderRadius:"50%",background:"radial-gradient(circle,rgba(240,179,58,0.20),transparent 70%)",animation:"trophyGlow 3.2s ease-in-out infinite",pointerEvents:"none"}}/>
         <div style={{position:"relative",textAlign:"center",maxWidth:440}}>
           <div style={{fontSize:64,lineHeight:1,animation:"trophyRise 1s ease-out both"}}>👟</div>
@@ -870,7 +870,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
       <div style={{position:"fixed",inset:0,zIndex:60,background:"radial-gradient(circle at 50% 30%,#141b2e 0%,#070a14 78%)",display:"flex",alignItems:"center",justifyContent:"center",padding:22,overflow:"auto",fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"}}>
         <div style={{maxWidth:460,width:"100%",textAlign:"center",padding:"18px 0"}}>
           <div style={{fontSize:FS.caption,letterSpacing:5,color:"#93c5fd",fontWeight:800,marginBottom:8,animation:"celebTitle .7s ease-out both"}}>✍️ LA LETTERA D'ADDIO</div>
-          <div style={{textAlign:"left",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:14,padding:"11px 15px",animation:"celebTitle .8s ease-out .2s both"}}>
+          <div style={{textAlign:"left",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:RAD.md,padding:"11px 15px",animation:"celebTitle .8s ease-out .2s both"}}>
             <div style={{fontSize:12.5,color:"rgba(255,255,255,0.88)",lineHeight:1.75,fontStyle:"italic"}}>
               «Cari tifosi,<br/>
               tutto è cominciato con un pallone e un provino al {_firstClub}. Da quel giorno sono passate {_totS} stagioni, {_totM} presenze e {_totG} gol — ma i numeri non raccontano gli abbracci, i cori sotto la curva, le notti in cui non riuscivo a dormire prima di una finale.<br/>
@@ -881,7 +881,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
             <div style={{fontSize:FS.small,color:"#93c5fd",fontWeight:800,marginTop:10,textAlign:"right"}}>— {p.name}</div>
           </div>
           {_flagClub&&(
-            <div style={{marginTop:10,background:"linear-gradient(135deg,#3b2a07,#5b420c)",border:"1px solid #d4a017",borderRadius:14,padding:"7px 12px",animation:"celebTitle .8s ease-out .55s both"}}>
+            <div style={{marginTop:10,background:"linear-gradient(135deg,#3b2a07,#5b420c)",border:"1px solid #d4a017",borderRadius:RAD.md,padding:"7px 12px",animation:"celebTitle .8s ease-out .55s both"}}>
               <div style={{fontSize:34,marginBottom:4}}>👕</div>
               <div style={{fontSize:14,fontWeight:900,color:"#fde68a"}}>Il {_flagClub.n} RITIRA la maglia numero {p.jerseyNum||10}</div>
               <div style={{fontSize:FS.caption,color:"rgba(253,230,138,0.75)",marginTop:4}}>Nessuno la vestirà più: il tuo numero sale nella storia del club, accanto alle bandiere di sempre.</div>
@@ -908,8 +908,8 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         <div style={{fontSize:36,marginBottom:4}}>{grade.e}</div>
         <div style={{fontSize:18,fontWeight:900,color:grade.color,marginBottom:6}}>{grade.label}</div>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:8}}>Legacy Score: {legacyScore} / 1000</div>
-        <div style={{background:TH.cardBorder,borderRadius:10,height:8,overflow:"hidden"}}>
-          <div style={{width:`${pct}%`,height:"100%",background:grade.color,borderRadius:10}}/>
+        <div style={{background:TH.cardBorder,borderRadius:RAD.sm,height:8,overflow:"hidden"}}>
+          <div style={{width:`${pct}%`,height:"100%",background:grade.color,borderRadius:RAD.sm}}/>
         </div>
       </Card>
 
@@ -1011,13 +1011,13 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           <Card style={{marginBottom:9,padding:"7px 12px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)"}}>
             <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🆚 Il Verdetto Finale — Tu vs {r.name}</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",textAlign:"center"}}>
-              <div style={{background:"rgba(0,0,0,0.3)",borderRadius:10,padding:"10px 6px"}}>
+              <div style={{background:"rgba(0,0,0,0.3)",borderRadius:RAD.sm,padding:"10px 6px"}}>
                 <div style={{fontSize:FS.caption,color:"rgba(74,222,128,0.7)",marginBottom:2}}>TU</div>
                 <div style={{fontSize:26,fontWeight:900,color:isAhead?"#4ade80":"#f87171"}}>{p.totalGoals||0}</div>
                 <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
               </div>
               <div style={{fontSize:18,color:"rgba(165,180,252,0.4)"}}>⚔️</div>
-              <div style={{background:"rgba(0,0,0,0.3)",borderRadius:10,padding:"10px 6px"}}>
+              <div style={{background:"rgba(0,0,0,0.3)",borderRadius:RAD.sm,padding:"10px 6px"}}>
                 <div style={{fontSize:FS.caption,color:"rgba(99,102,241,0.7)",marginBottom:2}}>{r.name.split(" ")[0].toUpperCase()}</div>
                 <div style={{fontSize:26,fontWeight:900,color:isTie?"#fbbf24":(!isAhead?"#4ade80":"#f87171")}}>{r.totalGoals||0}</div>
                 <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.4)"}}>GOL CARRIERA</div>
@@ -1724,7 +1724,7 @@ function TutorialOverlay({name,step,onNext,onSkip}){
         {/* step dots */}
         <div style={{display:"flex",gap:6,justifyContent:"center",marginBottom:12}}>
           {TUTORIAL_STEPS.map((_,i)=>(
-            <div key={i} style={{width:i===step?22:8,height:8,borderRadius:4,background:i===step?TH.primary:i<step?TH.success:TH.cardBorder,transition:"width 0.2s"}}/>
+            <div key={i} style={{width:i===step?22:8,height:8,borderRadius:RAD.xs,background:i===step?TH.primary:i<step?TH.success:TH.cardBorder,transition:"width 0.2s"}}/>
           ))}
         </div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
@@ -1748,8 +1748,8 @@ function MilestoneCelebrationModal({milestone,onDismiss}){
         <div style={{fontSize:68,marginBottom:8,filter:`drop-shadow(0 0 18px ${milestone.color}aa)`}}>{icon}</div>
         <div style={{fontSize:22,fontWeight:900,color:"#fff",marginBottom:8,lineHeight:1.25,textShadow:`0 2px 20px ${milestone.color}`}}>{title}</div>
         {milestone.sub&&<div style={{fontSize:FS.body,color:"rgba(255,255,255,0.72)",marginBottom:20,lineHeight:1.6,padding:"0 8px"}}>{milestone.sub}</div>}
-        <div style={{width:72,height:3,background:milestone.color,borderRadius:2,margin:"0 auto 20px",boxShadow:`0 0 14px ${milestone.color}`}}/>
-        <button onClick={onDismiss} style={{background:milestone.color,color:"#fff",border:"none",borderRadius:14,padding:"13px 32px",fontWeight:800,fontSize:FS.bodyLg,cursor:"pointer",letterSpacing:"0.02em",fontFamily:"inherit"}}>🎉 Fantastico!</button>
+        <div style={{width:72,height:3,background:milestone.color,borderRadius:3,margin:"0 auto 20px",boxShadow:`0 0 14px ${milestone.color}`}}/>
+        <button onClick={onDismiss} style={{background:milestone.color,color:"#fff",border:"none",borderRadius:RAD.md,padding:"13px 32px",fontWeight:800,fontSize:FS.bodyLg,cursor:"pointer",letterSpacing:"0.02em",fontFamily:"inherit"}}>🎉 Fantastico!</button>
         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)",marginTop:10}}>Tocca per chiudere</div>
       </div>
     </div>

@@ -558,7 +558,7 @@ function Player3DViewer({avatarData,clubColor="#2563eb",width="100%",height="280
     };
   },[avatarData,clubColor,animate]);
 
-  return <div ref={containerRef} style={{width,height,overflow:"hidden",borderRadius:14,cursor:"grab"}}/>;
+  return <div ref={containerRef} style={{width,height,overflow:"hidden",borderRadius:RAD.md,cursor:"grab"}}/>;
 }
 
 /* ========================================

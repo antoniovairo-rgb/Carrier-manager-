@@ -52,13 +52,13 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
      sull'altezza pagando in leggibilita'. */
   const pad=density==="tight"?"7px 11px":density==="loose"?"14px 18px":"11px 15px";
   const _padM=momento?(_ap?pad:"6px 12px"):pad;
-  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:14,padding:_padM,boxShadow:el,...style}} {...rest}>
+  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:RAD.md,padding:_padM,boxShadow:el,...style}} {...rest}>
     {momento!=null&&(
       <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus"
         style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:32,padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
         <span style={{flex:1,minWidth:0,fontSize:FS.body,fontWeight:800,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{momento}</span>
         {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
-        <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"}}>▶</span>
+        <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"/* [G10] la freccia e' quella di casa: le fisarmoniche gia' spedite (Record, Bacheca, Storico) usano il chevron, non il triangolo pieno */}}>›</span>
       </button>)}
     {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
 };
@@ -78,7 +78,7 @@ const Btn=({children,onClick,v="primary",disabled=false,style={},fw=false,size="
   };
   const sz=_BTN_SIZE[size]||_BTN_SIZE.md;
   const isOff=disabled||loading;
-  return<button onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:sz.minHeight,borderRadius:10,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
+  return<button onClick={isOff?undefined:onClick} disabled={isOff} className={(isOff?"":"cpm-press ")+"cpm-focus "+className} style={{padding:sz.padding,minHeight:sz.minHeight,borderRadius:RAD.sm,border:"none",cursor:isOff?"not-allowed":"pointer",fontFamily:"inherit",fontSize:sz.fontSize,letterSpacing:.3,transition:"all .15s",opacity:isOff&&!loading?.4:1,width:fw?"100%":"auto",display:(icon||loading)?"inline-flex":undefined,alignItems:(icon||loading)?"center":undefined,justifyContent:(icon||loading)?"center":undefined,gap:(icon||loading)?6:undefined,...vs[v],...style}} {...rest}>{loading&&<span style={{width:13,height:13,border:"2px solid currentColor",borderTopColor:"transparent",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",opacity:.85}}/>}{icon}{children}</button>;
 };
 /* StatBar — refactor Ondata 1: default (ramp 80/65 · track TH.cardBorder · mb 8 · h 4) invariato.
    tone opt-in: 'attribute' = ramp NON allarmante · 'win'/'draw'/'loss'/... = colore semantico. */

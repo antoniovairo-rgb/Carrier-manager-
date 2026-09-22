@@ -74,7 +74,7 @@
     "nColTesto": 1,
     "nFondi": 1,
     "nCorpi": 2,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 1,
     "corpi": [
      12,
@@ -82,8 +82,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14,
+     12,
      20,
      50
     ],
@@ -172,7 +171,7 @@
     "nColTesto": 1,
     "nFondi": 1,
     "nCorpi": 2,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 1,
     "corpi": [
      12,
@@ -180,8 +179,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14,
+     12,
      20,
      50
     ],
@@ -270,7 +268,7 @@
     "nColTesto": 1,
     "nFondi": 1,
     "nCorpi": 2,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 1,
     "corpi": [
      12,
@@ -278,8 +276,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14,
+     12,
      20,
      50
     ],
@@ -368,7 +365,7 @@
     "nColTesto": 1,
     "nFondi": 1,
     "nCorpi": 2,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 1,
     "corpi": [
      12,
@@ -376,8 +373,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14,
+     12,
      20,
      50
     ],
@@ -466,7 +462,7 @@
     "nColTesto": 1,
     "nFondi": 1,
     "nCorpi": 2,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 1,
     "corpi": [
      12,
@@ -474,8 +470,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14,
+     12,
      20,
      50
     ],
@@ -599,7 +594,7 @@
     "nColTesto": 3,
     "nFondi": 2,
     "nCorpi": 3,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -608,9 +603,7 @@
     ],
     "raggi": [
      8,
-     9,
      12,
-     14,
      50
     ],
     "famiglie": [
@@ -727,7 +720,7 @@
     "nColTesto": 3,
     "nFondi": 2,
     "nCorpi": 3,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -736,9 +729,7 @@
     ],
     "raggi": [
      8,
-     9,
      12,
-     14,
      50
     ],
     "famiglie": [
@@ -855,7 +846,7 @@
     "nColTesto": 3,
     "nFondi": 2,
     "nCorpi": 3,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -864,9 +855,7 @@
     ],
     "raggi": [
      8,
-     9,
      12,
-     14,
      50
     ],
     "famiglie": [
@@ -983,7 +972,7 @@
     "nColTesto": 3,
     "nFondi": 2,
     "nCorpi": 3,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -992,9 +981,7 @@
     ],
     "raggi": [
      8,
-     9,
      12,
-     14,
      50
     ],
     "famiglie": [
@@ -1111,7 +1098,7 @@
     "nColTesto": 3,
     "nFondi": 2,
     "nCorpi": 3,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -1120,9 +1107,7 @@
     ],
     "raggi": [
      8,
-     9,
      12,
-     14,
      50
     ],
     "famiglie": [
@@ -1254,7 +1239,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 3,
     "corpi": [
      11,
@@ -1264,9 +1249,7 @@
     ],
     "raggi": [
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -1394,7 +1377,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 3,
     "corpi": [
      11,
@@ -1404,9 +1387,7 @@
     ],
     "raggi": [
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -1534,7 +1515,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 3,
     "corpi": [
      11,
@@ -1544,9 +1525,7 @@
     ],
     "raggi": [
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -1674,7 +1653,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 3,
     "corpi": [
      11,
@@ -1684,9 +1663,7 @@
     ],
     "raggi": [
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -1814,7 +1791,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 3,
     "corpi": [
      11,
@@ -1824,9 +1801,7 @@
     ],
     "raggi": [
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -1956,7 +1931,7 @@
     "nColTesto": 6,
     "nFondi": 4,
     "nCorpi": 4,
-    "nRaggi": 3,
+    "nRaggi": 2,
     "nPesi": 3,
     "corpi": [
      11,
@@ -1966,8 +1941,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14
+     12
     ],
     "famiglie": [
      {
@@ -2079,7 +2053,7 @@
     "nColTesto": 6,
     "nFondi": 4,
     "nCorpi": 4,
-    "nRaggi": 3,
+    "nRaggi": 2,
     "nPesi": 3,
     "corpi": [
      11,
@@ -2089,8 +2063,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14
+     12
     ],
     "famiglie": [
      {
@@ -2202,7 +2175,7 @@
     "nColTesto": 6,
     "nFondi": 4,
     "nCorpi": 4,
-    "nRaggi": 3,
+    "nRaggi": 2,
     "nPesi": 3,
     "corpi": [
      11,
@@ -2212,8 +2185,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14
+     12
     ],
     "famiglie": [
      {
@@ -2325,7 +2297,7 @@
     "nColTesto": 6,
     "nFondi": 4,
     "nCorpi": 4,
-    "nRaggi": 3,
+    "nRaggi": 2,
     "nPesi": 3,
     "corpi": [
      11,
@@ -2335,8 +2307,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14
+     12
     ],
     "famiglie": [
      {
@@ -2448,7 +2419,7 @@
     "nColTesto": 6,
     "nFondi": 4,
     "nCorpi": 4,
-    "nRaggi": 3,
+    "nRaggi": 2,
     "nPesi": 3,
     "corpi": [
      11,
@@ -2458,8 +2429,7 @@
     ],
     "raggi": [
      8,
-     10,
-     14
+     12
     ],
     "famiglie": [
      {
@@ -2573,7 +2543,7 @@
     "nColTesto": 14,
     "nFondi": 7,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -2589,7 +2559,6 @@
     "raggi": [
      6,
      12,
-     14,
      16,
      50
     ],
@@ -2619,7 +2588,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -2712,7 +2681,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -2834,7 +2803,7 @@
     "nColTesto": 14,
     "nFondi": 7,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -2850,7 +2819,6 @@
     "raggi": [
      6,
      12,
-     14,
      16,
      50
     ],
@@ -2880,7 +2848,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -2973,7 +2941,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3095,7 +3063,7 @@
     "nColTesto": 14,
     "nFondi": 7,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -3111,7 +3079,6 @@
     "raggi": [
      6,
      12,
-     14,
      16,
      50
     ],
@@ -3141,7 +3108,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3234,7 +3201,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3356,7 +3323,7 @@
     "nColTesto": 14,
     "nFondi": 7,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -3372,7 +3339,6 @@
     "raggi": [
      6,
      12,
-     14,
      16,
      50
     ],
@@ -3402,7 +3368,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3495,7 +3461,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3617,7 +3583,7 @@
     "nColTesto": 14,
     "nFondi": 7,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -3633,7 +3599,6 @@
     "raggi": [
      6,
      12,
-     14,
      16,
      50
     ],
@@ -3663,7 +3628,7 @@
      {
       "px": 183,
       "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -3756,7 +3721,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3906,7 +3871,7 @@
     "nColTesto": 13,
     "nFondi": 10,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -3922,8 +3887,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -3958,7 +3922,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4005,7 +3969,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -4118,7 +4082,7 @@
     "nColTesto": 13,
     "nFondi": 10,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4134,8 +4098,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -4170,7 +4133,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4217,7 +4180,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -4330,7 +4293,7 @@
     "nColTesto": 13,
     "nFondi": 10,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4346,8 +4309,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -4382,7 +4344,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4429,7 +4391,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -4542,7 +4504,7 @@
     "nColTesto": 13,
     "nFondi": 10,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4558,8 +4520,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -4594,7 +4555,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4641,7 +4602,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -4754,7 +4715,7 @@
     "nColTesto": 13,
     "nFondi": 10,
     "nCorpi": 9,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4770,8 +4731,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -4806,7 +4766,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 12:26AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4853,7 +4813,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    }
@@ -4940,7 +4900,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 10,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -4957,8 +4917,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -5003,7 +4962,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -5088,7 +5047,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 10,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -5105,8 +5064,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -5151,7 +5109,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -5236,7 +5194,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 10,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -5253,8 +5211,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -5299,7 +5256,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -5384,7 +5341,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 10,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -5401,8 +5358,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -5447,7 +5403,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -5532,7 +5488,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 10,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -5549,8 +5505,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -5595,7 +5550,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    }
@@ -5695,8 +5650,8 @@
     ],
     "raggi": [
      6,
-     10,
-     14,
+     8,
+     12,
      50
     ],
     "famiglie": [
@@ -5737,7 +5692,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -5835,8 +5790,8 @@
     ],
     "raggi": [
      6,
-     10,
-     14,
+     8,
+     12,
      50
     ],
     "famiglie": [
@@ -5877,7 +5832,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -5975,8 +5930,8 @@
     ],
     "raggi": [
      6,
-     10,
-     14,
+     8,
+     12,
      50
     ],
     "famiglie": [
@@ -6017,7 +5972,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -6115,8 +6070,8 @@
     ],
     "raggi": [
      6,
-     10,
-     14,
+     8,
+     12,
      50
     ],
     "famiglie": [
@@ -6157,7 +6112,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -6255,8 +6210,8 @@
     ],
     "raggi": [
      6,
-     10,
-     14,
+     8,
+     12,
      50
     ],
     "famiglie": [
@@ -6297,7 +6252,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    }
@@ -6384,7 +6339,7 @@
     "nColTesto": 11,
     "nFondi": 4,
     "nCorpi": 10,
-    "nRaggi": 6,
+    "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
      11,
@@ -6399,11 +6354,10 @@
      27
     ],
     "raggi": [
-     2,
-     4,
+     3,
      6,
      8,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -6448,7 +6402,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6540,7 +6494,7 @@
     "nColTesto": 11,
     "nFondi": 4,
     "nCorpi": 10,
-    "nRaggi": 6,
+    "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
      11,
@@ -6555,11 +6509,10 @@
      27
     ],
     "raggi": [
-     2,
-     4,
+     3,
      6,
      8,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -6604,7 +6557,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6696,7 +6649,7 @@
     "nColTesto": 11,
     "nFondi": 4,
     "nCorpi": 10,
-    "nRaggi": 6,
+    "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
      11,
@@ -6711,11 +6664,10 @@
      27
     ],
     "raggi": [
-     2,
-     4,
+     3,
      6,
      8,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -6760,7 +6712,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6852,7 +6804,7 @@
     "nColTesto": 11,
     "nFondi": 4,
     "nCorpi": 10,
-    "nRaggi": 6,
+    "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
      11,
@@ -6867,11 +6819,10 @@
      27
     ],
     "raggi": [
-     2,
-     4,
+     3,
      6,
      8,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -6916,7 +6867,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -7008,7 +6959,7 @@
     "nColTesto": 11,
     "nFondi": 4,
     "nCorpi": 10,
-    "nRaggi": 6,
+    "nRaggi": 5,
     "nPesi": 6,
     "corpi": [
      11,
@@ -7023,11 +6974,10 @@
      27
     ],
     "raggi": [
-     2,
-     4,
+     3,
      6,
      8,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -7072,7 +7022,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -7095,15 +7045,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 168,
+    "nTesto": 129,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
     "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 49,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 24,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -7166,7 +7116,7 @@
     "nColTesto": 12,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 12,
+    "nRaggi": 6,
     "nPesi": 5,
     "corpi": [
      11,
@@ -7178,16 +7128,10 @@
      24
     ],
     "raggi": [
-     1,
-     2,
      3,
      6,
      8,
-     9,
-     10,
      12,
-     13,
-     14,
      20,
      50
     ],
@@ -7198,87 +7142,87 @@
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2455,
-    "schermate": 2.68,
+    "altezzaPx": 2084,
+    "schermate": 2.28,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 326,
-      "quota": 13.3,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
       "px": 314,
-      "quota": 12.8,
+      "quota": 15.1,
       "txt": "Attributivelocità82tecnica81fisico80mental",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
      },
      {
       "px": 176,
-      "quota": 7.2,
+      "quota": 8.4,
       "txt": "StatisticheGol stag.14Assist stag.6Partite",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
      },
      {
-      "px": 158,
-      "quota": 6.4,
-      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
       "px": 126,
-      "quota": 5.2,
+      "quota": 6.1,
       "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
      },
      {
       "px": 95,
-      "quota": 3.9,
+      "quota": 4.6,
       "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
      },
      {
-      "px": 91,
-      "quota": 3.7,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
-     },
-     {
       "px": 90,
-      "quota": 3.7,
+      "quota": 4.3,
       "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
      },
      {
-      "px": 84,
-      "quota": 3.4,
-      "txt": "💪Stile di giocoBomberPotenza e istinto de",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
-     },
-     {
       "px": 83,
-      "quota": 3.4,
+      "quota": 4,
       "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
      },
      {
+      "px": 69,
+      "quota": 3.3,
+      "txt": "🆚 Il tuo rivale▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
+     },
+     {
       "px": 68,
-      "quota": 2.8,
+      "quota": 3.3,
       "txt": "TitolareProssimo gradino — Leader: la fasc",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
      },
      {
+      "px": 62,
+      "quota": 3,
+      "txt": "⭐ Club dei sogni▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 58,
+      "quota": 2.8,
+      "txt": "💪 Stile di gioco▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
       "px": 55,
-      "quota": 2.2,
+      "quota": 2.6,
       "txt": "Calciatore professionistaStagioni da pro: ",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     },
+     {
+      "px": 53,
+      "quota": 2.6,
+      "txt": "Biografia▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
     "etichette": {
-     "Gol": 9,
-     "Assist": 4,
-     "Presenze": 2,
+     "Gol": 3,
+     "Assist": 3,
+     "Presenze": 1,
      "Partite": 1,
      "OVR": 2,
      "Forma": 1,
@@ -7287,21 +7231,21 @@
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
-     "Trofei": 3,
-     "Stagione": 2
+     "Trofei": 1,
+     "Stagione": 1
     },
-    "nEmojiChar": 24,
+    "nEmojiChar": 25,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
+     "▶",
      "🆚 Il tuo rivale",
-     "🏆",
-     "✅ Sei avanti di 18 gol in carr",
      "⭐ Club dei sogni",
-     "💪",
-     "🎯"
+     "💪 Stile di gioco",
+     "🎯",
+     "📈 Livello max"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -7313,35 +7257,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
-      "px": 158,
-      "txt": "Biografia\"Grafica Probe, 26 anni, "
+      "px": 53,
+      "txt": "Biografia▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
-      "px": 326,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+      "px": 69,
+      "txt": "🆚 Il tuo rivale▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 91,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+      "px": 62,
+      "txt": "⭐ Club dei sogni▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 84,
-      "txt": "💪Stile di giocoBomberPotenza e is"
+      "px": 58,
+      "txt": "💪 Stile di gioco▶"
      }
     ]
    },
@@ -7355,15 +7299,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 168,
+    "nTesto": 129,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
     "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 49,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 24,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -7426,7 +7370,7 @@
     "nColTesto": 12,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 12,
+    "nRaggi": 6,
     "nPesi": 5,
     "corpi": [
      11,
@@ -7438,16 +7382,10 @@
      24
     ],
     "raggi": [
-     1,
-     2,
      3,
      6,
      8,
-     9,
-     10,
      12,
-     13,
-     14,
      20,
      50
     ],
@@ -7458,87 +7396,87 @@
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2420,
-    "schermate": 2.64,
+    "altezzaPx": 2069,
+    "schermate": 2.26,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 326,
-      "quota": 13.5,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
       "px": 314,
-      "quota": 13,
+      "quota": 15.2,
       "txt": "Attributivelocità82tecnica81fisico80mental",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
      },
      {
       "px": 176,
-      "quota": 7.3,
+      "quota": 8.5,
       "txt": "StatisticheGol stag.14Assist stag.6Partite",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
      },
      {
-      "px": 135,
-      "quota": 5.6,
-      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
       "px": 126,
-      "quota": 5.2,
+      "quota": 6.1,
       "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
      },
      {
       "px": 95,
-      "quota": 3.9,
+      "quota": 4.6,
       "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
      },
      {
-      "px": 91,
-      "quota": 3.8,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
-     },
-     {
       "px": 90,
-      "quota": 3.7,
+      "quota": 4.3,
       "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
      },
      {
-      "px": 84,
-      "quota": 3.5,
-      "txt": "💪Stile di giocoBomberPotenza e istinto de",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+      "px": 69,
+      "quota": 3.3,
+      "txt": "🆚 Il tuo rivale▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
      },
      {
       "px": 68,
-      "quota": 2.8,
+      "quota": 3.3,
       "txt": "TitolareProssimo gradino — Leader: la fasc",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
      },
      {
       "px": 67,
-      "quota": 2.8,
+      "quota": 3.2,
       "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
      },
      {
+      "px": 62,
+      "quota": 3,
+      "txt": "⭐ Club dei sogni▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 58,
+      "quota": 2.8,
+      "txt": "💪 Stile di gioco▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
       "px": 55,
-      "quota": 2.3,
+      "quota": 2.6,
       "txt": "Calciatore professionistaStagioni da pro: ",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     },
+     {
+      "px": 53,
+      "quota": 2.6,
+      "txt": "Biografia▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
     "etichette": {
-     "Gol": 9,
-     "Assist": 4,
-     "Presenze": 2,
+     "Gol": 3,
+     "Assist": 3,
+     "Presenze": 1,
      "Partite": 1,
      "OVR": 2,
      "Forma": 1,
@@ -7547,21 +7485,21 @@
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
-     "Trofei": 3,
-     "Stagione": 2
+     "Trofei": 1,
+     "Stagione": 1
     },
-    "nEmojiChar": 24,
+    "nEmojiChar": 25,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
+     "▶",
      "🆚 Il tuo rivale",
-     "🏆",
-     "✅ Sei avanti di 18 gol in carr",
      "⭐ Club dei sogni",
-     "💪",
-     "🎯"
+     "💪 Stile di gioco",
+     "🎯",
+     "📈 Livello max"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -7573,35 +7511,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
-      "px": 135,
-      "txt": "Biografia\"Grafica Probe, 26 anni, "
+      "px": 53,
+      "txt": "Biografia▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
-      "px": 326,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+      "px": 69,
+      "txt": "🆚 Il tuo rivale▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 91,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+      "px": 62,
+      "txt": "⭐ Club dei sogni▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 84,
-      "txt": "💪Stile di giocoBomberPotenza e is"
+      "px": 58,
+      "txt": "💪 Stile di gioco▶"
      }
     ]
    },
@@ -7615,15 +7553,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 168,
+    "nTesto": 129,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
     "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 49,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 24,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -7686,7 +7624,7 @@
     "nColTesto": 12,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 12,
+    "nRaggi": 6,
     "nPesi": 5,
     "corpi": [
      11,
@@ -7698,16 +7636,10 @@
      24
     ],
     "raggi": [
-     1,
-     2,
      3,
      6,
      8,
-     9,
-     10,
      12,
-     13,
-     14,
      20,
      50
     ],
@@ -7718,87 +7650,87 @@
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2420,
-    "schermate": 2.64,
+    "altezzaPx": 2069,
+    "schermate": 2.26,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 326,
-      "quota": 13.5,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
       "px": 314,
-      "quota": 13,
+      "quota": 15.2,
       "txt": "Attributivelocità82tecnica81fisico80mental",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
      },
      {
       "px": 176,
-      "quota": 7.3,
+      "quota": 8.5,
       "txt": "StatisticheGol stag.14Assist stag.6Partite",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
      },
      {
-      "px": 135,
-      "quota": 5.6,
-      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
       "px": 126,
-      "quota": 5.2,
+      "quota": 6.1,
       "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
      },
      {
       "px": 95,
-      "quota": 3.9,
+      "quota": 4.6,
       "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
      },
      {
-      "px": 91,
-      "quota": 3.8,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
-     },
-     {
       "px": 90,
-      "quota": 3.7,
+      "quota": 4.3,
       "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
      },
      {
-      "px": 84,
-      "quota": 3.5,
-      "txt": "💪Stile di giocoBomberPotenza e istinto de",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+      "px": 69,
+      "quota": 3.3,
+      "txt": "🆚 Il tuo rivale▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
      },
      {
       "px": 68,
-      "quota": 2.8,
+      "quota": 3.3,
       "txt": "TitolareProssimo gradino — Leader: la fasc",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
      },
      {
       "px": 67,
-      "quota": 2.8,
+      "quota": 3.2,
       "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
      },
      {
+      "px": 62,
+      "quota": 3,
+      "txt": "⭐ Club dei sogni▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 58,
+      "quota": 2.8,
+      "txt": "💪 Stile di gioco▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
       "px": 55,
-      "quota": 2.3,
+      "quota": 2.6,
       "txt": "Calciatore professionistaStagioni da pro: ",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     },
+     {
+      "px": 53,
+      "quota": 2.6,
+      "txt": "Biografia▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
     "etichette": {
-     "Gol": 9,
-     "Assist": 4,
-     "Presenze": 2,
+     "Gol": 3,
+     "Assist": 3,
+     "Presenze": 1,
      "Partite": 1,
      "OVR": 2,
      "Forma": 1,
@@ -7807,21 +7739,21 @@
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
-     "Trofei": 3,
-     "Stagione": 2
+     "Trofei": 1,
+     "Stagione": 1
     },
-    "nEmojiChar": 24,
+    "nEmojiChar": 25,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
+     "▶",
      "🆚 Il tuo rivale",
-     "🏆",
-     "✅ Sei avanti di 18 gol in carr",
      "⭐ Club dei sogni",
-     "💪",
-     "🎯"
+     "💪 Stile di gioco",
+     "🎯",
+     "📈 Livello max"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -7833,35 +7765,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
-      "px": 135,
-      "txt": "Biografia\"Grafica Probe, 26 anni, "
+      "px": 53,
+      "txt": "Biografia▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
-      "px": 326,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+      "px": 69,
+      "txt": "🆚 Il tuo rivale▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 91,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+      "px": 62,
+      "txt": "⭐ Club dei sogni▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 84,
-      "txt": "💪Stile di giocoBomberPotenza e is"
+      "px": 58,
+      "txt": "💪 Stile di gioco▶"
      }
     ]
    },
@@ -7875,15 +7807,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 168,
+    "nTesto": 129,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
     "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 49,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 24,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -7946,7 +7878,7 @@
     "nColTesto": 12,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 12,
+    "nRaggi": 6,
     "nPesi": 5,
     "corpi": [
      11,
@@ -7958,16 +7890,10 @@
      24
     ],
     "raggi": [
-     1,
-     2,
      3,
      6,
      8,
-     9,
-     10,
      12,
-     13,
-     14,
      20,
      50
     ],
@@ -7978,87 +7904,87 @@
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2361,
-    "schermate": 2.58,
+    "altezzaPx": 2023,
+    "schermate": 2.21,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 326,
-      "quota": 13.8,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
       "px": 314,
-      "quota": 13.3,
+      "quota": 15.5,
       "txt": "Attributivelocità82tecnica81fisico80mental",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
      },
      {
       "px": 176,
-      "quota": 7.4,
+      "quota": 8.7,
       "txt": "StatisticheGol stag.14Assist stag.6Partite",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
      },
      {
-      "px": 135,
-      "quota": 5.7,
-      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
       "px": 104,
-      "quota": 4.4,
+      "quota": 5.1,
       "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
      },
      {
       "px": 90,
-      "quota": 3.8,
+      "quota": 4.4,
       "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
      },
      {
-      "px": 84,
-      "quota": 3.6,
-      "txt": "💪Stile di giocoBomberPotenza e istinto de",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
-     },
-     {
-      "px": 77,
-      "quota": 3.3,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+      "px": 69,
+      "quota": 3.4,
+      "txt": "🆚 Il tuo rivale▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
      },
      {
       "px": 68,
-      "quota": 2.9,
+      "quota": 3.4,
       "txt": "TitolareProssimo gradino — Leader: la fasc",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
      },
      {
       "px": 67,
-      "quota": 2.8,
+      "quota": 3.3,
       "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
      },
      {
       "px": 67,
-      "quota": 2.8,
+      "quota": 3.3,
       "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
      },
      {
+      "px": 62,
+      "quota": 3.1,
+      "txt": "⭐ Club dei sogni▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 58,
+      "quota": 2.9,
+      "txt": "💪 Stile di gioco▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
       "px": 55,
-      "quota": 2.3,
+      "quota": 2.7,
       "txt": "Calciatore professionistaStagioni da pro: ",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     },
+     {
+      "px": 53,
+      "quota": 2.6,
+      "txt": "Biografia▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
     "etichette": {
-     "Gol": 9,
-     "Assist": 4,
-     "Presenze": 2,
+     "Gol": 3,
+     "Assist": 3,
+     "Presenze": 1,
      "Partite": 1,
      "OVR": 2,
      "Forma": 1,
@@ -8067,21 +7993,21 @@
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
-     "Trofei": 3,
-     "Stagione": 2
+     "Trofei": 1,
+     "Stagione": 1
     },
-    "nEmojiChar": 24,
+    "nEmojiChar": 25,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
+     "▶",
      "🆚 Il tuo rivale",
-     "🏆",
-     "✅ Sei avanti di 18 gol in carr",
      "⭐ Club dei sogni",
-     "💪",
-     "🎯"
+     "💪 Stile di gioco",
+     "🎯",
+     "📈 Livello max"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -8093,35 +8019,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
-      "px": 135,
-      "txt": "Biografia\"Grafica Probe, 26 anni, "
+      "px": 53,
+      "txt": "Biografia▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
-      "px": 326,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+      "px": 69,
+      "txt": "🆚 Il tuo rivale▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 77,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+      "px": 62,
+      "txt": "⭐ Club dei sogni▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 84,
-      "txt": "💪Stile di giocoBomberPotenza e is"
+      "px": 58,
+      "txt": "💪 Stile di gioco▶"
      }
     ]
    },
@@ -8135,15 +8061,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 168,
+    "nTesto": 129,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
     "nMisurati": 89,
     "nSotto": 0,
-    "nGradiente": 49,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 24,
     "peggiori": [
      {
       "testo": "#026fa7",
@@ -8206,7 +8132,7 @@
     "nColTesto": 12,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 12,
+    "nRaggi": 6,
     "nPesi": 5,
     "corpi": [
      11,
@@ -8218,16 +8144,10 @@
      24
     ],
     "raggi": [
-     1,
-     2,
      3,
      6,
      8,
-     9,
-     10,
      12,
-     13,
-     14,
      20,
      50
     ],
@@ -8238,87 +8158,87 @@
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2361,
-    "schermate": 2.58,
+    "altezzaPx": 2023,
+    "schermate": 2.21,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
-      "px": 326,
-      "quota": 13.8,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
-     },
-     {
       "px": 314,
-      "quota": 13.3,
+      "quota": 15.5,
       "txt": "Attributivelocità82tecnica81fisico80mental",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(16)"
      },
      {
       "px": 176,
-      "quota": 7.4,
+      "quota": 8.7,
       "txt": "StatisticheGol stag.14Assist stag.6Partite",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(15)"
      },
      {
-      "px": 135,
-      "quota": 5.7,
-      "txt": "Biografia\"Grafica Probe, 26 anni, Italia ·",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
-     },
-     {
       "px": 104,
-      "quota": 4.4,
+      "quota": 5.1,
       "txt": "Timeline StagioniS.3🥇 Coppa Nazionale🌍 C",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(18)"
      },
      {
       "px": 90,
-      "quota": 3.8,
+      "quota": 4.4,
       "txt": "🎬 Rivedi l'intro📁 Esporta salvataggio JS",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(23)"
      },
      {
-      "px": 84,
-      "quota": 3.6,
-      "txt": "💪Stile di giocoBomberPotenza e istinto de",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
-     },
-     {
-      "px": 77,
-      "quota": 3.3,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon hai anc",
-      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+      "px": 69,
+      "quota": 3.4,
+      "txt": "🆚 Il tuo rivale▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)"
      },
      {
       "px": 68,
-      "quota": 2.9,
+      "quota": 3.4,
       "txt": "TitolareProssimo gradino — Leader: la fasc",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(2)"
      },
      {
       "px": 67,
-      "quota": 2.8,
+      "quota": 3.3,
       "txt": "Record & Premi Personali⚽ 22 gol/stag.🎯 9",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(11)"
      },
      {
       "px": 67,
-      "quota": 2.8,
+      "quota": 3.3,
       "txt": "🐞Strumenti di collaudoIl tasto ⚠️ accanto",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(22)"
      },
      {
+      "px": 62,
+      "quota": 3.1,
+      "txt": "⭐ Club dei sogni▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)"
+     },
+     {
+      "px": 58,
+      "quota": 2.9,
+      "txt": "💪 Stile di gioco▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)"
+     },
+     {
       "px": 55,
-      "quota": 2.3,
+      "quota": 2.7,
       "txt": "Calciatore professionistaStagioni da pro: ",
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(13)"
+     },
+     {
+      "px": 53,
+      "quota": 2.6,
+      "txt": "Biografia▶",
+      "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)"
      }
     ],
     "etichette": {
-     "Gol": 9,
-     "Assist": 4,
-     "Presenze": 2,
+     "Gol": 3,
+     "Assist": 3,
+     "Presenze": 1,
      "Partite": 1,
      "OVR": 2,
      "Forma": 1,
@@ -8327,21 +8247,21 @@
      "Valore": 1,
      "Contratto": 1,
      "Fiducia": 1,
-     "Trofei": 3,
-     "Stagione": 2
+     "Trofei": 1,
+     "Stagione": 1
     },
-    "nEmojiChar": 24,
+    "nEmojiChar": 25,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "👤",
      "🌍",
+     "▶",
      "🆚 Il tuo rivale",
-     "🏆",
-     "✅ Sei avanti di 18 gol in carr",
      "⭐ Club dei sogni",
-     "💪",
-     "🎯"
+     "💪 Stile di gioco",
+     "🎯",
+     "📈 Livello max"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -8353,35 +8273,35 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
       "lum": 0.014,
       "fondo": "#1a1f2e",
-      "px": 135,
-      "txt": "Biografia\"Grafica Probe, 26 anni, "
+      "px": 53,
+      "txt": "Biografia▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(6)",
       "lum": 0.042,
       "fondo": "#312e81",
-      "px": 326,
-      "txt": "🆚 Il tuo rivale⚽Bruno SalvatoriFC"
+      "px": 69,
+      "txt": "🆚 Il tuo rivale▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(7)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 77,
-      "txt": "CAT⭐ Club dei sogniFC CatalunyaNon"
+      "px": 62,
+      "txt": "⭐ Club dei sogni▶"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(10)",
       "lum": 0.022,
       "fondo": "#1e293b",
-      "px": 84,
-      "txt": "💪Stile di giocoBomberPotenza e is"
+      "px": 58,
+      "txt": "💪 Stile di gioco▶"
      }
     ]
    }
@@ -8468,7 +8388,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 8,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -8483,8 +8403,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -8531,7 +8450,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -8616,7 +8535,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 8,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -8631,8 +8550,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -8679,7 +8597,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -8764,7 +8682,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 8,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -8779,8 +8697,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -8827,7 +8744,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -8912,7 +8829,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 8,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -8927,8 +8844,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -8975,7 +8891,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -9060,7 +8976,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 8,
-    "nRaggi": 5,
+    "nRaggi": 4,
     "nPesi": 5,
     "corpi": [
      11,
@@ -9075,8 +8991,7 @@
     "raggi": [
      6,
      8,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -9123,7 +9038,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    }
@@ -9210,7 +9125,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 11,
-    "nRaggi": 7,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -9227,11 +9142,8 @@
     ],
     "raggi": [
      6,
-     7,
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -9280,7 +9192,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -9365,7 +9277,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 11,
-    "nRaggi": 7,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -9382,11 +9294,8 @@
     ],
     "raggi": [
      6,
-     7,
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -9435,7 +9344,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -9520,7 +9429,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 11,
-    "nRaggi": 7,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -9537,11 +9446,8 @@
     ],
     "raggi": [
      6,
-     7,
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -9590,7 +9496,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -9675,7 +9581,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 11,
-    "nRaggi": 7,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -9692,11 +9598,8 @@
     ],
     "raggi": [
      6,
-     7,
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -9745,7 +9648,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    },
@@ -9830,7 +9733,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 11,
-    "nRaggi": 7,
+    "nRaggi": 4,
     "nPesi": 6,
     "corpi": [
      11,
@@ -9847,11 +9750,8 @@
     ],
     "raggi": [
      6,
-     7,
      8,
-     9,
-     10,
-     14,
+     12,
      50
     ],
     "famiglie": [
@@ -9900,7 +9800,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
+      "txt": "K⚽rwardEliteSalva · 12:26Avataaars"
      }
     ]
    }
@@ -9989,7 +9889,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -10000,9 +9900,7 @@
     "raggi": [
      6,
      8,
-     10,
-     12,
-     14
+     12
     ],
     "famiglie": [
      {
@@ -10126,7 +10024,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -10137,9 +10035,7 @@
     "raggi": [
      6,
      8,
-     10,
-     12,
-     14
+     12
     ],
     "famiglie": [
      {
@@ -10263,7 +10159,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -10274,9 +10170,7 @@
     "raggi": [
      6,
      8,
-     10,
-     12,
-     14
+     12
     ],
     "famiglie": [
      {
@@ -10400,7 +10294,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -10411,9 +10305,7 @@
     "raggi": [
      6,
      8,
-     10,
-     12,
-     14
+     12
     ],
     "famiglie": [
      {
@@ -10537,7 +10429,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 4,
-    "nRaggi": 5,
+    "nRaggi": 3,
     "nPesi": 4,
     "corpi": [
      11,
@@ -10548,9 +10440,7 @@
     "raggi": [
      6,
      8,
-     10,
-     12,
-     14
+     12
     ],
     "famiglie": [
      {

@@ -60,7 +60,7 @@ function ProTransitionScreen({player,onChoose}){
           </div>
         </div>
         {forced&&<div style={{marginTop:10,padding:"8px 10px",background:TH.lossBg,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.danger,fontWeight:600}}>⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo.</div>}
-        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:7}}>⏳ Questa è la tua ultima stagione U18 disponibile.</div>}
+        {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>⏳ Questa è la tua ultima stagione U18 disponibile.</div>}
       </Card>
       {/* Progress bar U18 */}
       <div style={{marginBottom:14}}>
@@ -89,13 +89,13 @@ function ProTransitionScreen({player,onChoose}){
                 {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno":"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
               </div>
               <div style={{display:"flex",gap:5,marginTop:4,flexWrap:"wrap"}}>
-                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
                   😄{o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
-                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:"#f3e8ff",color:TH.accentText}}>📈+{o.growthBonus}</span>
-                {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
-                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.bgBlue,color:TH.brandText}}>⭐ Consigliato</span>}
-                {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:10,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:"#f3e8ff",color:TH.accentText}}>📈+{o.growthBonus}</span>
+                {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
+                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:TH.brandText}}>⭐ Consigliato</span>}
+                {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
               </div>
             </div>
             <Btn onClick={()=>onChoose(o)} v={o.isMain?"primary":o.isStayU18?"secondary":"ghost"} style={{flexShrink:0,padding:"9px 12px",fontSize:FS.small}}>
@@ -252,7 +252,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
     <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",
       background:"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
       {/* il pannello stampa: sta nella meta' alta, l'unica che il modale lascia vedere */}
-      <div style={{position:"absolute",left:"4%",right:"4%",top:"3%",height:"41%",borderRadius:5,
+      <div style={{position:"absolute",left:"4%",right:"4%",top:"3%",height:"41%",borderRadius:RAD.xs,
         background:"linear-gradient(180deg,#ffffff,#f1f4f9)",
         border:"1px solid rgba(15,23,42,0.12)",boxShadow:"0 12px 30px rgba(15,23,42,0.20)",overflow:"hidden"}}>
         {_rid.map((riga,r)=>(
@@ -1569,7 +1569,7 @@ function GalaScena2D({beat,heroWins,avatarId=0,seed=7,act=0,club=null}){
     <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
       <style>{"@keyframes cpmGala946Cor{0%{transform:translateY(-12vh) rotate(0deg)}100%{transform:translateY(118vh) rotate(400deg)}}"}</style>
       {vinto&&_cor.map((k,i)=>(<span key={"c"+i} style={{position:"absolute",left:k.x+"%",top:"-6%",width:k.w,height:k.w*1.7,
-        background:k.c,borderRadius:1,animation:"cpmGala946Cor "+k.d+"s linear infinite",animationDelay:k.r+"s"}}/>))}
+        background:k.c,borderRadius:3,animation:"cpmGala946Cor "+k.d+"s linear infinite",animationDelay:k.r+"s"}}/>))}
       <StrisciaScena948 club={club} tono={vinto?"#d4a017":null}/>
     </div>);
 }
@@ -1929,7 +1929,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
           <div style={{maxWidth:420,width:"100%",textAlign:"center",position:"relative"}}>
             <div style={{fontSize:FS.caption,color:"#d4a017",textTransform:"uppercase",letterSpacing:3,marginBottom:6}}>🎩 La notte del Gala · Stagione {season}</div>
             <div style={{display:"flex",justifyContent:"center",gap:5,marginBottom:8}}>
-              {_galaSeq.map((a,i)=>(<span key={a.key} style={{width:i===galaAct?18:7,height:7,borderRadius:4,background:i<galaAct?"#d4a017":i===galaAct?"#fde68a":"rgba(255,255,255,0.18)",transition:"all .3s"}}/>))}
+              {_galaSeq.map((a,i)=>(<span key={a.key} style={{width:i===galaAct?18:7,height:7,borderRadius:RAD.xs,background:i<galaAct?"#d4a017":i===galaAct?"#fde68a":"rgba(255,255,255,0.18)",transition:"all .3s"}}/>))}
             </div>
             <div key={"t"+galaAct} style={{fontSize:FS.title,fontWeight:900,color:"#fff",marginBottom:2,animation:"logoIn 0.5s ease-out"}}>{_actG.e} {_actG.title}</div>
             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",marginBottom:16}}>{_actG.sub}</div>
@@ -2018,7 +2018,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         ))}
         <div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,fontStyle:"italic"}}>Non è la classifica marcatori: pesano gol, assist, rendimento e trofei vinti.</div>
         {palloneOro.playerWins&&(
-          <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:10,textAlign:"center"}}>
+          <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:RAD.sm,textAlign:"center"}}>
             <div style={{fontSize:14,fontWeight:900,color:TH.txAmber}}>🏆 Hai vinto il Trofeo d'Oro!</div>
             <div style={{fontSize:FS.caption,color:TH.txAmber,marginTop:2}}>Il riconoscimento più prestigioso del calcio europeo.</div>
           </div>
@@ -2121,7 +2121,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         <div style={{fontSize:22,fontWeight:900,color:"#fff",textShadow:"0 2px 12px rgba(0,0,0,0.85)",marginTop:4}}>{euro?.champion?"CAMPIONI D'EUROPA!":"CAMPIONI!"}</div>
         <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.85)",textShadow:"0 1px 8px rgba(0,0,0,0.8)",marginTop:2}}>{club?.n||""} · la città in festa</div>
       </div>
-      <button onClick={()=>setParata423(false)} style={{position:"absolute",bottom:26,left:"50%",transform:"translateX(-50%)",padding:"12px 34px",borderRadius:14,border:"none",background:"#7f1d2d",color:"#fff",fontWeight:800,fontSize:FS.bodyLg,boxShadow:"0 4px 18px rgba(0,0,0,0.5)"}}>Continua →</button>
+      <button onClick={()=>setParata423(false)} style={{position:"absolute",bottom:26,left:"50%",transform:"translateX(-50%)",padding:"12px 34px",borderRadius:RAD.md,border:"none",background:"#7f1d2d",color:"#fff",fontWeight:800,fontSize:FS.bodyLg,boxShadow:"0 4px 18px rgba(0,0,0,0.5)"}}>Continua →</button>
     </div>
   );
   // Find LEAGUE_PAIRS for current league to show destination labels
@@ -2267,7 +2267,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   return(
     <div style={{width:"100%"}}>
       {_celebrate83&&(<div style={{position:"fixed",inset:0,pointerEvents:"none",overflow:"hidden",zIndex:60}}>
-        {Array.from({length:44}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15","#ef4444",club?.c||"#22c55e"];return <span key={i} style={{position:"absolute",left:((i*47)%100)+"%",top:"-8%",width:8,height:13,borderRadius:2,background:_cc[i%_cc.length],animation:`confettiFall ${(2.6+(i%5)*0.7).toFixed(1)}s linear ${((i%9)*0.4).toFixed(2)}s infinite`,opacity:0.92}}/>;})}
+        {Array.from({length:44}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15","#ef4444",club?.c||"#22c55e"];return <span key={i} style={{position:"absolute",left:((i*47)%100)+"%",top:"-8%",width:8,height:13,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.6+(i%5)*0.7).toFixed(1)}s linear ${((i%9)*0.4).toFixed(2)}s infinite`,opacity:0.92}}/>;})}
       </div>)}
       {/* [7.25.0] BANNER PREMIUM — trionfo europeo di club / trionfo in Nazionale: PRIMA di tutto il resto */}
       {(euroChamp||_natWin25)&&(()=>{
@@ -2278,7 +2278,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         const _natTitle=_natWin25?(_natWin25.type==="nations_cup"?"COPPA DELLE NAZIONI!":(_natWin25.type_em==="Mondiale"?"CAMPIONI DEL MONDO!":"CAMPIONI D'EUROPA!")):"";
         const _cfg=euroChamp?(_CFG[euro?.competition]||_CFG.UCL):null;
         return(
-        <div style={{marginTop:4,marginBottom:12,borderRadius:18,padding:"22px 14px 20px",textAlign:"center",background:_isNat?"linear-gradient(150deg,#3b2a07,#d4a017 45%,#3b2a07)":_cfg.bg,boxShadow:"0 10px 34px rgba(0,0,0,0.35)"}}>
+        <div style={{marginTop:4,marginBottom:12,borderRadius:RAD.xl,padding:"22px 14px 20px",textAlign:"center",background:_isNat?"linear-gradient(150deg,#3b2a07,#d4a017 45%,#3b2a07)":_cfg.bg,boxShadow:"0 10px 34px rgba(0,0,0,0.35)"}}>
           <div style={{fontSize:56,lineHeight:1,animation:"pulse87 1.2s ease-in-out infinite"}}>🏆</div>
           <div style={{fontSize:FS.caption,letterSpacing:4,fontWeight:800,color:"rgba(255,255,255,0.72)",marginTop:8,textTransform:"uppercase"}}>{_isNat?((player.nation||"Nazionale")+" · Nazionale"):(euro?.competition==="UCL"?"Korward Champions Cup":euro?.competition==="UEL"?"Korward Europa Cup":"Korward Conference Cup")}</div>
           <div style={{fontSize:FS.h,fontWeight:900,color:"#fff",marginTop:3,letterSpacing:0.5,textShadow:"0 2px 12px rgba(0,0,0,0.4)"}}>{_isNat?_natTitle:_cfg.title}</div>
@@ -2626,7 +2626,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
       </div>
 
       {onRetire&&(player.age||17)>=35&&(
-        <div style={{marginBottom:8,padding:"10px 14px",borderRadius:10,background:TH.bgAmber,border:"1px solid #fde68a",textAlign:"center"}}>
+        <div style={{marginBottom:8,padding:"10px 14px",borderRadius:RAD.sm,background:TH.bgAmber,border:"1px solid #fde68a",textAlign:"center"}}>
           <div style={{fontSize:FS.caption,color:TH.txAmber,marginBottom:6}}>Hai {player.age} anni. Vuoi concludere qui la tua carriera con una cerimonia d'addio?</div>
           <Btn onClick={onRetire} v="danger" fw>👟 Ritirati — Fine di un'era</Btn>
         </div>
@@ -2716,7 +2716,7 @@ function ClubPresentationScreen({club,contractType,playerName,onContinue}){
         <div style={{fontSize:FS.small,color:TH.txAmber}}>{ATMOS[aIdx]}</div>
       </Card>
       {/* Progress */}
-      <div style={{height:2,background:TH.cardBorder,borderRadius:2,marginBottom:14,overflow:"hidden"}}>
+      <div style={{height:2,background:TH.cardBorder,borderRadius:3,marginBottom:14,overflow:"hidden"}}>
         <div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${col},#f59e0b)`,transition:"width .07s"}}/>
       </div>
       <Btn onClick={onContinue} v="primary" fw style={{padding:"16px",fontSize:FS.bodyLg}}>

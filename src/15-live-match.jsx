@@ -804,8 +804,8 @@ function Pagella918({r,u,colTeam}){
         overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{u.nome||("n. "+u.num)}</span>
       {r.gol>0&&<span style={{fontSize:FS.caption}}>{"⚽".repeat(Math.min(3,r.gol))}</span>}
       {r.assist>0&&<span style={{fontSize:FS.caption,color:"#7dd3fc",fontWeight:FW.bold}}>A{r.assist>1?r.assist:""}</span>}
-      {r.amm>0&&<span style={{width:5,height:8,borderRadius:1,background:"#facc15"}}/>}
-      {r.esp>0&&<span style={{width:5,height:8,borderRadius:1,background:"#ef4444"}}/>}
+      {r.amm>0&&<span style={{width:5,height:8,borderRadius:3,background:"#facc15"}}/>}
+      {r.esp>0&&<span style={{width:5,height:8,borderRadius:3,background:"#ef4444"}}/>}
       <span style={{minWidth:26,textAlign:"center",fontSize:FS.caption,fontWeight:FW.black,color:"#07101d",
         background:_voto918(r.voto),borderRadius:RAD.xs,padding:"1px 3px",fontVariantNumeric:"tabular-nums"}}>{r.voto.toFixed(1).replace(".",",")}</span>
     </div>);
@@ -860,7 +860,7 @@ function FestaFine942({dati,onChiudi}){
       display:"flex",alignItems:"center",justifyContent:"center",padding:SP.lg,cursor:"pointer",overflow:"hidden",
       animation:"cpmPop919Velo .2s ease-out"}}>
       {cor.map((k,i)=>(<span key={"c"+i} style={{position:"absolute",left:k.x+"%",top:"-6%",width:k.w,height:k.w*1.6,
-        background:k.c,borderRadius:1,animation:"cpmFesta942 "+k.d+"s linear infinite",animationDelay:k.r+"s",pointerEvents:"none"}}/>))}
+        background:k.c,borderRadius:3,animation:"cpmFesta942 "+k.d+"s linear infinite",animationDelay:k.r+"s",pointerEvents:"none"}}/>))}
       <div style={{width:"100%",maxWidth:380,borderRadius:RAD.lg,overflow:"hidden",background:_FESTA942.card,
         border:"1px solid "+_FESTA942.bordo,boxShadow:"0 24px 64px rgba(0,0,0,0.62)",position:"relative",
         animation:"cpmPop919 .3s cubic-bezier(.2,0,0,1)"}}>
@@ -9306,7 +9306,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:5,marginBottom:2}}>
                 {phase==="playing"&&!paused&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
                 {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&<div style={{width:6,height:6,borderRadius:"50%",background:"#f59e0b",flexShrink:0}}/>}
-                <div style={{padding:"2px 10px",borderRadius:14,fontSize:FS.small,fontWeight:900,background:winning?"rgba(34,197,94,0.18)":losing?"rgba(239,68,68,0.18)":"rgba(255,255,255,0.09)",color:winning?"#4ade80":losing?"#f87171":"#f1f5f9",letterSpacing:.5}}>
+                <div style={{padding:"2px 10px",borderRadius:RAD.md,fontSize:FS.small,fontWeight:900,background:winning?"rgba(34,197,94,0.18)":losing?"rgba(239,68,68,0.18)":"rgba(255,255,255,0.09)",color:winning?"#4ade80":losing?"#f87171":"#f1f5f9",letterSpacing:.5}}>
                   {phase==="walkout"?"🏃":phase==="ceremony"?"🏆":phase==="ended"?"FT":`${clock}'`}
                 </div>
                 <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>{/* [7.260.0] mai il sole su una notturna */}
@@ -9418,7 +9418,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
                 <div style={{position:"relative",marginTop:1}}>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.42)",letterSpacing:.5,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:118}}>{_compTag901}</div>
-                  {_swap893&&(clock|0)<=50&&<div data-cpm="cambio-campo" style={{position:"absolute",inset:0,textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:.6,textTransform:"uppercase",color:"#fbbf24",background:"#0d1a33",borderRadius:4,whiteSpace:"nowrap",animation:"cpmCambio905 3s ease forwards"}}>cambio campo</div>}
+                  {_swap893&&(clock|0)<=50&&<div data-cpm="cambio-campo" style={{position:"absolute",inset:0,textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:.6,textTransform:"uppercase",color:"#fbbf24",background:"#0d1a33",borderRadius:RAD.xs,whiteSpace:"nowrap",animation:"cpmCambio905 3s ease forwards"}}>cambio campo</div>}
                 </div>
               </div>
               {/* Away team */}
@@ -9626,7 +9626,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                  const _pill={display:"flex",alignItems:"center",gap:5};
                  const _sg={fontSize:FS.caption,fontWeight:800,letterSpacing:1.4,color:"rgba(241,245,249,0.92)"};
                  const _ch={fontSize:FS.caption,lineHeight:1,fontWeight:700,color:"rgba(241,245,249,0.42)"};
-                 const _acc=(c)=>({width:3,height:11,borderRadius:2,background:c,display:"inline-block",flex:"0 0 auto"});
+                 const _acc=(c)=>({width:3,height:11,borderRadius:3,background:c,display:"inline-block",flex:"0 0 auto"});
                  if(!(typeof window!=='undefined'&&window.__CPM_NO893))return null;/* [7.893] PO 14/09: «l'indicazione con le relative frecce puo' essere eliminata» — con i ventidue in campo il verso si legge dai corpi; resta sotto il rosso */
                  return(
                  <div data-cpm="verso697" style={{position:"absolute",left:0,right:0,top:"1.8%",zIndex:5,pointerEvents:"none",display:"flex",justifyContent:"center"}}>
@@ -9639,7 +9639,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                {phase==="playing"&&coms[0]&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&(
                  <div data-cpm="com661"/* [7.681.0] etichetta stabile: senza, per misurare il banner servivano selettori sullo STILE, che si rompono al primo ritocco grafico */ key={"com661-"+coms[0].t+"-"+String(coms[0].text||"").slice(0,18)} style={_sot695?{position:"absolute",left:"4%",right:"4%",bottom:(((subbedOff||(benchStart&&onBench))&&!(typeof window!=='undefined'&&(window.__CPM_NO565||window.__CPM_NO899B)))?"calc(11% + 46px)":"11%")/* [7.899] col tasto «Salta al fischio finale» la colonna delle voci sale di 46 px (7.543) e il riquadro della panchina entrava nel sottopancia: foto del PO all'80', da sostituito. Il sottopancia sale con lei. */,zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}:{position:"absolute",left:"7%",right:"7%",top:"38%",zIndex:5,pointerEvents:"none",textAlign:"center",animation:"cpmComIn661 .55s ease-out"}}>
                    <style>{"@keyframes cpmComIn661{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}@keyframes cpmPop919{from{opacity:0;transform:translateY(22px) scale(.94)}to{opacity:1;transform:none}}@keyframes cpmPop919Velo{from{opacity:0}to{opacity:1}}@keyframes cpmFesta942{0%{transform:translateY(-10vh) rotate(0deg)}100%{transform:translateY(112vh) rotate(420deg)}}@keyframes cpmPop919Tempo{from{transform:scaleX(1)}to{transform:scaleX(0)}}"}</style>
-                   <div /* [7.695.0] sottopancia: il contenitore prende tutta la larghezza e la riga si taglia con i puntini, invece di uscire dallo schermo come faceva la prima stesura (fotografata) */ style={_sot695?{display:"block",width:"100%",boxSizing:"border-box",padding:"7px 12px",borderRadius:10,background:"linear-gradient(90deg, rgba(5,8,16,0) 0%, rgba(5,8,16,0.78) 12%, rgba(5,8,16,0.78) 88%, rgba(5,8,16,0) 100%)"}:{display:"inline-block",padding:"10px 16px",borderRadius:14,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
+                   <div /* [7.695.0] sottopancia: il contenitore prende tutta la larghezza e la riga si taglia con i puntini, invece di uscire dallo schermo come faceva la prima stesura (fotografata) */ style={_sot695?{display:"block",width:"100%",boxSizing:"border-box",padding:"7px 12px",borderRadius:RAD.sm,background:"linear-gradient(90deg, rgba(5,8,16,0) 0%, rgba(5,8,16,0.78) 12%, rgba(5,8,16,0.78) 88%, rgba(5,8,16,0) 100%)"}:{display:"inline-block",padding:"10px 16px",borderRadius:RAD.md,background:"radial-gradient(ellipse at center, rgba(5,8,16,0.62) 0%, rgba(5,8,16,0.28) 70%, transparent 100%)"}}>
                      <div /* ⚠️ [7.697.0 collaudo PO: «la telecronaca durante le azioni pericolose e' tagliata, deve leggersi per intera»] IL DIFETTO ERA MIO E DI MEZZA GIORNATA FA: per tenere il sottopancia su una riga avevo messo `nowrap` piu' i puntini, e una riga di telecronaca sta in una riga sola quasi mai. Il sottopancia serve a NON coprire l'azione, non a nascondere il testo: ora va a capo fino a tre righe, resta in basso e il testo si legge tutto. */ style={_sot695?{fontSize:14,lineHeight:1.32,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.9)",letterSpacing:0.1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden",maxWidth:"100%"}:{fontSize:19,lineHeight:1.35,fontWeight:800,color:coms[0].color||"#e8edf6",textShadow:"0 2px 10px rgba(0,0,0,0.85), 0 0 26px rgba(0,0,0,0.5)",letterSpacing:0.2}}>{coms[0].text}</div>
                      {!_sot695&&(<div style={{marginTop:5,fontSize:FS.caption,fontWeight:700,color:"rgba(232,237,246,0.55)"}}>{(coms[0].t??clock)}′</div>)}
                      {/* ⚠️ [7.788.0 — LA VOCE DEL MISTER SOTTO IL RACCONTO, E PIU' GRANDE. Richiesta PO in
@@ -9680,7 +9680,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                        <div data-cpm="sc681" style={_sot695?{marginTop:6,display:"flex",flexDirection:"column",gap:4,pointerEvents:"auto"}:{marginTop:9,display:"flex",flexDirection:"column",gap:6,pointerEvents:"auto"}}>{/* [7.892] nel sottopancia le scelte sono compatte: 36 px l'una, non un pannello sopra il campo */}
                          {coms[0].sc.map((o,oi)=>(
                            <button key={oi} onClick={()=>scegli681(oi,false)}
-                             style={_sot695?{padding:"7px 10px",borderRadius:9,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:FS.body,fontWeight:800,lineHeight:1.2,textAlign:"left",cursor:"pointer"}:{padding:"9px 12px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:14,fontWeight:800,lineHeight:1.25,textAlign:"left",cursor:"pointer"}}>{o.et}</button>
+                             style={_sot695?{padding:"7px 10px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:FS.body,fontWeight:800,lineHeight:1.2,textAlign:"left",cursor:"pointer"}:{padding:"9px 12px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",fontSize:14,fontWeight:800,lineHeight:1.25,textAlign:"left",cursor:"pointer"}}>{o.et}</button>
                          ))}
                        </div>
                      )}
@@ -9712,7 +9712,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {ceremony?.name&&<div style={{fontSize:isNarrow?12:14,color:"#ffe9b8",fontWeight:700,marginTop:1}}>{ceremony.name}</div>}
                 </div>
                 {/* [7.31.0] chiusura blocco premiazione qui sotto; l'overlay RIGORI è il Fragment successivo */}
-                <button onClick={skipCeremony} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:22,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
+                <button onClick={skipCeremony} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
               </React.Fragment>)}
               {/* [7.31.0 direttiva PO] OVERLAY CALCI DI RIGORE — tabellino broadcast ✓/✗ kick-by-kick, suspense
                   sul kicker, banner finale (passi il turno / eliminati). Il 3D sotto anima i rigori veri. */}
@@ -9743,7 +9743,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     :_lastRev?<div style={{fontSize:FS.body,fontWeight:900,marginTop:7,color:_lastRev.scored?"#4ade80":"#f87171"}}>{_lastRev.scored?"GOOOL!":( _lastRev.wide?"FUORI!":"PARATO!")}</div>
                     :<div style={{fontSize:FS.small,color:"rgba(255,255,255,0.8)",fontWeight:700,marginTop:7}}>Si decide tutto dagli undici metri…</div>}
                 </div>
-                {!soState.done&&<button onClick={skipShootout} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:22,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta la serie ⏩</button>}
+                {!soState.done&&<button onClick={skipShootout} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontSize:FS.small,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Salta la serie ⏩</button>}
                 </React.Fragment>);})()}
               {/* item 4 (5.49.2): GRAFICA TV PRE-PARTITA — confronto classifica delle due squadre, stile broadcast. Solo durante l'ingresso (walkout). */}
               {/* [7.13.0] SERATA DI PRESENTAZIONE — lo speaker annuncia la squadra sul walkout del 1° match in casa */}
@@ -9764,7 +9764,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>);})()}
               {phase==="walkout"&&(
                 <div style={{position:"absolute",left:0,right:0,bottom:"6%",zIndex:14,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 10px",animation:"logoIn 0.6s ease-out"}}>
-                  <div style={{width:"100%",maxWidth:440,background:"linear-gradient(180deg,rgba(24,35,56,0.74),rgba(24,35,56,0.62))"/* [7.937 collaudo PO: «il background delle statistiche PRE PARTITA e troppo scuro, deve essere semi trasparente»] Era rgba(8,12,24) — praticamente nero — a 0,92 di opacita: lo stadio dietro non si vedeva affatto, e la scheda sembrava incollata sopra a una fotografia invece che sospesa dentro la scena. Ora e lo STESSO vetro del pannello delle statistiche in partita (rgba(24,35,56) a 0,74), che il PO ha gia approvato alla 7.922: due schermate che mostrano la stessa cosa non possono avere due vetri diversi. Il velo sale da 6 a 10 px perche il testo resti leggibile sulle tribune chiare. */,border:"1px solid rgba(148,163,184,0.22)",borderRadius:14,overflow:"hidden",boxShadow:"0 12px 40px rgba(0,0,0,0.45)",backdropFilter:"blur(10px)"}}>
+                  <div style={{width:"100%",maxWidth:440,background:"linear-gradient(180deg,rgba(24,35,56,0.74),rgba(24,35,56,0.62))"/* [7.937 collaudo PO: «il background delle statistiche PRE PARTITA e troppo scuro, deve essere semi trasparente»] Era rgba(8,12,24) — praticamente nero — a 0,92 di opacita: lo stadio dietro non si vedeva affatto, e la scheda sembrava incollata sopra a una fotografia invece che sospesa dentro la scena. Ora e lo STESSO vetro del pannello delle statistiche in partita (rgba(24,35,56) a 0,74), che il PO ha gia approvato alla 7.922: due schermate che mostrano la stessa cosa non possono avere due vetri diversi. Il velo sale da 6 a 10 px perche il testo resti leggibile sulle tribune chiare. */,border:"1px solid rgba(148,163,184,0.22)",borderRadius:RAD.md,overflow:"hidden",boxShadow:"0 12px 40px rgba(0,0,0,0.45)",backdropFilter:"blur(10px)"}}>
                     {/* barra competizione in corso */}
                     <div style={{padding:"5px 12px",textAlign:"center",fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_compCol,background:"rgba(255,255,255,0.04)",borderBottom:`1px solid ${_compCol}44`}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>{/* [6.88.0] header walkout nel colore della competizione */}
                     {/* header: nomi squadre con barra colore */}
@@ -9832,8 +9832,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>
               </div>}
               {/* Sprint 97 — pressure border */}
-              {momentum<=12&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:4,animation:"pressureBorderRed 2.6s ease-in-out infinite"}}/>}
-              {momentum>=88&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:4,animation:"pressureBorderHome 2.8s ease-in-out infinite","--ph-col":(c=>{try{const h=String(c||"#2563eb").replace("#","");const x=h.length===3?h.split("").map(q=>q+q).join(""):h;const n=parseInt(x,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},0.16)`;}catch(e){return "rgba(37,99,235,0.16)";}})(scoreHomeCol||homeKitCol)}}/>}{/* [6.74.0 3D-14] alpha 0.16 come il lato rosso: prima il colore kit PIENO → pulse casa molto più marcato di quello che il PO aveva chiesto di attenuare (6.72.0) */}
+              {momentum<=12&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderRed 2.6s ease-in-out infinite"}}/>}
+              {momentum>=88&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderHome 2.8s ease-in-out infinite","--ph-col":(c=>{try{const h=String(c||"#2563eb").replace("#","");const x=h.length===3?h.split("").map(q=>q+q).join(""):h;const n=parseInt(x,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},0.16)`;}catch(e){return "rgba(37,99,235,0.16)";}})(scoreHomeCol||homeKitCol)}}/>}{/* [6.74.0 3D-14] alpha 0.16 come il lato rosso: prima il colore kit PIENO → pulse casa molto più marcato di quello che il PO aveva chiesto di attenuare (6.72.0) */}
               {/* Sprint 97 — pressure cinema */}
               {pressureCinema&&<div key={pressureCinema.key} style={{position:"absolute",inset:0,zIndex:23,pointerEvents:"none",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <div style={{fontSize:isNarrow?28:40,fontWeight:900,color:pressureCinema.col,letterSpacing:4,animation:"pressureDrop 1.8s ease-out forwards",textShadow:`0 0 24px ${pressureCinema.col}`,fontStyle:"italic",WebkitTextStroke:"1px rgba(255,255,255,0.5)"}}>{pressureCinema.text}</div>
@@ -9897,7 +9897,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                    __CPM_NO669, che la riaccende per il confronto. */}
                 {coms.length>0&&coms[0]&&!(phase==="playing"&&!(typeof window!=="undefined"&&window.__CPM_NO661)&&!(typeof window!=="undefined"&&window.__CPM_NO669))&&(
                 <div data-cpm="fmrow" key={"fmrow"+coms[0].t+String(coms[0].text||"").slice(0,18)} style={{pointerEvents:"none",textAlign:"center",animation:"chantPulse 5s ease-out forwards"}}>
-                  <div style={{display:"inline-block",maxWidth:"100%",background:"linear-gradient(90deg,rgba(3,6,16,0),rgba(3,6,16,0.88) 12%,rgba(3,6,16,0.88) 88%,rgba(3,6,16,0))",borderRadius:10,padding:"6px 16px"}}>
+                  <div style={{display:"inline-block",maxWidth:"100%",background:"linear-gradient(90deg,rgba(3,6,16,0),rgba(3,6,16,0.88) 12%,rgba(3,6,16,0.88) 88%,rgba(3,6,16,0))",borderRadius:RAD.sm,padding:"6px 16px"}}>
                     <span style={{fontSize:FS.caption,fontWeight:800,color:"rgba(255,255,255,0.45)",marginRight:7}}>{coms[0].t}&apos;</span>
                     <span style={{fontSize:FS.bodyLg,fontWeight:700,color:coms[0].color||"#f8fafc",lineHeight:1.35,textShadow:"0 2px 8px rgba(0,0,0,0.9)"}}>{coms[0].text}</span>{/* [7.529.0 collaudo PO «leggermente ridotto e abbassato»] 17->15, bottom 4%->1,5% — ⚠️ il commento DEVE stare in graffe: come figlio JSX nudo Babel lo rende TESTO nel banner (visto in foto cronaca-534) */}
                   </div>
@@ -9948,9 +9948,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {glbFail==="error"?"Il caricamento dei giocatori non è riuscito. Controlla la connessione e riprova: la partita non parte con i modelli di ripiego.":"I giocatori ci stanno mettendo troppo a caricare (connessione lenta). Puoi riprovare senza perdere la partita."}
                   </div>
                   <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;window.__CPM_GLB_READY=false;}catch(_e){}setGlbFail(null);setGlbTry(t=>t+1);}}
-                    style={{padding:"12px 26px",borderRadius:11,border:"none",background:"#f59e0b",color:"#1a1206",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:"inherit",marginBottom:10}}>↻ Riprova il caricamento</button>
+                    style={{padding:"12px 26px",borderRadius:RAD.sm,border:"none",background:"#f59e0b",color:"#1a1206",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:"inherit",marginBottom:10}}>↻ Riprova il caricamento</button>
                   <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;}catch(_e){}setGlbFail(null);setKickoffHold(false);try{if(typeof window!=='undefined'&&window.__CPM_SHOW_PROC)window.__CPM_SHOW_PROC();}catch(_e2){}}}
-                    style={{padding:"9px 18px",borderRadius:9,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:"rgba(255,255,255,0.62)",fontWeight:700,fontSize:11.5,cursor:"pointer",fontFamily:"inherit"}}>Gioca comunque senza modelli 3D</button>
+                    style={{padding:"9px 18px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:"rgba(255,255,255,0.62)",fontWeight:700,fontSize:11.5,cursor:"pointer",fontFamily:"inherit"}}>Gioca comunque senza modelli 3D</button>
                 </div>)}
               {kickoffHold&&!paused&&phase==="playing"&&!glbFail&&(()=>{
                 const _kh=["🟢 Le squadre completano il riscaldamento…","📋 Ultime indicazioni dei mister…","🤝 L'arbitro chiama i capitani per il sorteggio…","📸 Foto di rito e strette di mano…","🏟️ Il pubblico si prepara: ci siamo quasi…"];
@@ -9959,15 +9959,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:34,marginBottom:8,filter:"drop-shadow(0 0 14px rgba(245,158,11,0.7))"}}>⚽</div>
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",letterSpacing:2.5,textTransform:"uppercase",marginBottom:10}}>Verso il fischio d'inizio</div>
                   <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.75)",letterSpacing:0.5,minHeight:18,textAlign:"center",padding:"0 20px"}}>{_kh[holdTick%_kh.length]}</div>
-                  <div style={{marginTop:14,width:120,height:3,background:"rgba(255,255,255,0.12)",borderRadius:2,overflow:"hidden"}}>
-                    <div style={{height:"100%",width:"40%",background:"#f59e0b",borderRadius:2,animation:"pulse 1.1s ease-in-out infinite alternate"}}/>
+                  <div style={{marginTop:14,width:120,height:3,background:"rgba(255,255,255,0.12)",borderRadius:3,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:"40%",background:"#f59e0b",borderRadius:3,animation:"pulse 1.1s ease-in-out infinite alternate"}}/>
                   </div>
                 </div>);})()}
               {/* [7.338.0] TACCUINO DI COLLAUDO — campo appunti in sovraimpressione, partita ferma finché non chiudi.
                   Sta SOPRA l'overlay di pausa (z 41) e ne blocca il tap-per-riprendere: la nota viene prima. */}
               {bugNote&&(
                 <div style={{position:"absolute",inset:0,background:"rgba(3,6,16,0.92)",backdropFilter:"blur(6px)",zIndex:41,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:14}} onClick={e=>e.stopPropagation()}>
-                  <div style={{width:"100%",maxWidth:430,background:"#0e1524",border:"1px solid rgba(245,158,11,0.42)",borderRadius:14,padding:"14px 14px 12px",boxShadow:"0 18px 50px rgba(0,0,0,0.6)"}}>
+                  <div style={{width:"100%",maxWidth:430,background:"#0e1524",border:"1px solid rgba(245,158,11,0.42)",borderRadius:RAD.md,padding:"14px 14px 12px",boxShadow:"0 18px 50px rgba(0,0,0,0.6)"}}>
                     <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
                       <span style={{fontSize:18}}>⚠️</span>
                       <div style={{flex:1,minWidth:0}}>
@@ -9991,18 +9991,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       return(<div style={{marginBottom:8}}>
                         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:5}}>
                           <button onClick={()=>{if(_i<L.length-1)pick(L[_i+1]);}} disabled={_i>=L.length-1}
-                            style={{flexShrink:0,padding:"7px 10px",borderRadius:9,border:"1px solid rgba(255,255,255,0.18)",background:_i>=L.length-1?"rgba(255,255,255,0.03)":"rgba(245,158,11,0.14)",color:_i>=L.length-1?"rgba(255,255,255,0.22)":"#f59e0b",fontSize:FS.caption,fontWeight:800,cursor:_i>=L.length-1?"default":"pointer"}}>◀ prec.</button>
+                            style={{flexShrink:0,padding:"7px 10px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.18)",background:_i>=L.length-1?"rgba(255,255,255,0.03)":"rgba(245,158,11,0.14)",color:_i>=L.length-1?"rgba(255,255,255,0.22)":"#f59e0b",fontSize:FS.caption,fontWeight:800,cursor:_i>=L.length-1?"default":"pointer"}}>◀ prec.</button>
                           <div style={{flex:1,minWidth:0,textAlign:"center"}}>
                             <div style={{fontSize:FS.caption,color:"#e8edf7",fontWeight:700,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_lab(_sel)}</div>
                             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)"}}>{_i===0?"l'ultima":`${_i} azion${_i===1?"e":"i"} fa`}{_sel&&_sel.out?` · ${_sel.out}`:_sel&&_sel.act?" · non conclusa":""}</div>
                           </div>
                           <button onClick={()=>{if(_i>0)pick(L[_i-1]);}} disabled={_i<=0}
-                            style={{flexShrink:0,padding:"7px 10px",borderRadius:9,border:"1px solid rgba(255,255,255,0.18)",background:_i<=0?"rgba(255,255,255,0.03)":"rgba(245,158,11,0.14)",color:_i<=0?"rgba(255,255,255,0.22)":"#f59e0b",fontSize:FS.caption,fontWeight:800,cursor:_i<=0?"default":"pointer"}}>succ. ▶</button>
+                            style={{flexShrink:0,padding:"7px 10px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.18)",background:_i<=0?"rgba(255,255,255,0.03)":"rgba(245,158,11,0.14)",color:_i<=0?"rgba(255,255,255,0.22)":"#f59e0b",fontSize:FS.caption,fontWeight:800,cursor:_i<=0?"default":"pointer"}}>succ. ▶</button>
                         </div>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.42)",marginBottom:4}}>Quale azione? (la registrazione copre tutta la partita)</div>
                         <div style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:2}}>
                           {L.map((sc,i)=>(
-                            <button key={sc.key} onClick={()=>pick(sc)} style={{flexShrink:0,padding:"5px 9px",borderRadius:14,border:`1px solid ${sc.key===cur?"#f59e0b":"rgba(255,255,255,0.18)"}`,background:sc.key===cur?"rgba(245,158,11,0.16)":"transparent",color:sc.key===cur?"#fbbf24":"rgba(255,255,255,0.62)",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap",maxWidth:170,overflow:"hidden",textOverflow:"ellipsis"}}>
+                            <button key={sc.key} onClick={()=>pick(sc)} style={{flexShrink:0,padding:"5px 9px",borderRadius:RAD.md,border:`1px solid ${sc.key===cur?"#f59e0b":"rgba(255,255,255,0.18)"}`,background:sc.key===cur?"rgba(245,158,11,0.16)":"transparent",color:sc.key===cur?"#fbbf24":"rgba(255,255,255,0.62)",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap",maxWidth:170,overflow:"hidden",textOverflow:"ellipsis"}}>
                               {sc.min}&apos; {i===0?"(ora) ":""}{(sc.sit||"azione").replace(/^[^\w«]+/,"").slice(0,22)}
                             </button>))}
                         </div>
@@ -10021,17 +10021,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         <div style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:2}}>
                           {_CODES94.map(([cd,lb])=>{const _on94=(bugNote.txt||"").indexOf("codice "+cd)>=0;
                             return(<button key={cd} onClick={()=>{setBugNote(n=>{const t=n.txt||"";if(t.indexOf("codice "+cd)>=0)return n;const _r94="codice "+cd+" — "+lb;return{...n,txt:t.trim()?t.replace(/\s+$/,"")+"\n"+_r94:_r94};});}}
-                              style={{flexShrink:0,padding:"7px 10px",borderRadius:14,border:`1px solid ${_on94?"#f59e0b":"rgba(255,255,255,0.16)"}`,background:_on94?"rgba(245,158,11,0.16)":"rgba(255,255,255,0.05)",color:_on94?"#fbbf24":"rgba(255,255,255,0.72)",fontSize:FS.caption,fontWeight:800,cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit",lineHeight:1}}>
+                              style={{flexShrink:0,padding:"7px 10px",borderRadius:RAD.md,border:`1px solid ${_on94?"#f59e0b":"rgba(255,255,255,0.16)"}`,background:_on94?"rgba(245,158,11,0.16)":"rgba(255,255,255,0.05)",color:_on94?"#fbbf24":"rgba(255,255,255,0.72)",fontSize:FS.caption,fontWeight:800,cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit",lineHeight:1}}>
                               {cd} · {lb}</button>);})}
                         </div>
                       </div>);})()}
                     <textarea autoFocus value={bugNote.txt} onChange={e=>setBugNote(n=>({...n,txt:e.target.value}))} rows={3}
                       placeholder="Cosa non va in questa azione? (es. il pallone torna indietro dopo il cross)"
-                      style={{width:"100%",boxSizing:"border-box",background:"#060b16",color:"#e8edf7",border:"1px solid rgba(255,255,255,0.16)",borderRadius:9,padding:"9px 10px",fontSize:12.5,fontFamily:"inherit",resize:"vertical",lineHeight:1.45}}/>
+                      style={{width:"100%",boxSizing:"border-box",background:"#060b16",color:"#e8edf7",border:"1px solid rgba(255,255,255,0.16)",borderRadius:RAD.sm,padding:"9px 10px",fontSize:12.5,fontFamily:"inherit",resize:"vertical",lineHeight:1.45}}/>
                     <div style={{display:"flex",gap:7,marginTop:9}}>
-                      <button onClick={()=>_bugSave(true)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:9,border:"none",background:bugNote.txt.trim()?"#f59e0b":"rgba(255,255,255,0.10)",color:bugNote.txt.trim()?"#1a1206":"rgba(255,255,255,0.35)",fontWeight:800,fontSize:FS.small,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>📋 Salva e copia</button>
-                      <button onClick={()=>_bugSave(false)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:9,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:bugNote.txt.trim()?"#e8edf7":"rgba(255,255,255,0.35)",fontWeight:700,fontSize:FS.small,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>Salva</button>
-                      <button onClick={()=>{setBugNote(null);setPaused(false);}} style={{padding:"10px 12px",borderRadius:9,border:"1px solid rgba(255,255,255,0.16)",background:"transparent",color:"rgba(255,255,255,0.55)",fontWeight:700,fontSize:FS.small,cursor:"pointer",fontFamily:"inherit"}}>Annulla</button>
+                      <button onClick={()=>_bugSave(true)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:RAD.sm,border:"none",background:bugNote.txt.trim()?"#f59e0b":"rgba(255,255,255,0.10)",color:bugNote.txt.trim()?"#1a1206":"rgba(255,255,255,0.35)",fontWeight:800,fontSize:FS.small,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>📋 Salva e copia</button>
+                      <button onClick={()=>_bugSave(false)} disabled={!bugNote.txt.trim()} style={{flex:1,padding:"10px 8px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:bugNote.txt.trim()?"#e8edf7":"rgba(255,255,255,0.35)",fontWeight:700,fontSize:FS.small,cursor:bugNote.txt.trim()?"pointer":"default",fontFamily:"inherit"}}>Salva</button>
+                      <button onClick={()=>{setBugNote(null);setPaused(false);}} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.16)",background:"transparent",color:"rgba(255,255,255,0.55)",fontWeight:700,fontSize:FS.small,cursor:"pointer",fontFamily:"inherit"}}>Annulla</button>
                     </div>
                     <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.34)",marginTop:7,textAlign:"center"}}>Li ritrovi tutti in Carriera → Profilo → 🐞 Appunti di collaudo</div>
                   </div>
@@ -10051,7 +10051,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",textAlign:"center",marginBottom:8,textShadow:"0 0 20px #f59e0b"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
                   {intentIntro(curSit.intro,_scoreDiff)&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{intentIntro(curSit.intro,_scoreDiff)}</div>}
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
-                  <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
+                  <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.2)",marginTop:6}}>{isNarrow?"Tocca per iniziare":"Tocca / Enter per iniziare"}</div>
                 </div>
               )}
@@ -10100,7 +10100,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         </span>
                       </div>
                     </div>
-                    <button onClick={()=>{clockRef.current=Math.max(clockRef.current,89);setClock(c=>Math.max(c,89));}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:22,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta al fischio finale →</button>
+                    <button onClick={()=>{clockRef.current=Math.max(clockRef.current,89);setClock(c=>Math.max(c,89));}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta al fischio finale →</button>
                   </React.Fragment>
                 );
                 // [7.135.0 collaudo PO «anche quando inizio dalla panchina togliere il livello nero e fare il tasto salta
@@ -10117,13 +10117,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       </div>{/* [7.145.0] via la riga punteggio (ridondante + invertita in trasferta) */}
                       <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.72)",fontStyle:"italic",lineHeight:1.4,maxWidth:340,margin:"3px auto 0"}}>{isWarmup?warmMsg:(benchReason||obsMsg)}</div>
                     </div>
-                    <button onClick={()=>{clockRef.current=benchMinute;setClock(benchMinute);setBenchPhase("entering");}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:22,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta l'attesa →</button>
+                    <button onClick={()=>{clockRef.current=benchMinute;setClock(benchMinute);setBenchPhase("entering");}} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)",fontFamily:"inherit"}}>Salta l'attesa →</button>
                   </React.Fragment>
                 );
               })()}
               {/* Sprint 34 — Sub event banner */}
               {phase==="playing"&&subEvent&&(
-                <div style={{position:"absolute",top:"12%",left:"4%",right:"4%",zIndex:7,background:"rgba(5,8,20,0.84)",backdropFilter:"blur(4px)",borderRadius:10,padding:"8px 12px",border:"1px solid rgba(255,255,255,0.10)",textAlign:"center",pointerEvents:"none"}}>
+                <div style={{position:"absolute",top:"12%",left:"4%",right:"4%",zIndex:7,background:"rgba(5,8,20,0.84)",backdropFilter:"blur(4px)",borderRadius:RAD.sm,padding:"8px 12px",border:"1px solid rgba(255,255,255,0.10)",textAlign:"center",pointerEvents:"none"}}>
                   <div style={{fontSize:FS.caption,color:"#e2e8f0",fontWeight:700,lineHeight:1.4}}>{subEvent}</div>
                 </div>
               )}
@@ -10148,7 +10148,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={40}/></div>}
                     <div style={{flex:1}}>
                       {curSit.maxMoves>0&&<div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:"rgba(255,255,255,0.7)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginBottom:3}}><span>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))} {movesLeft} mov</span><span>⏱ {Math.round(pressureBar*100)}%</span></div>}
-                      {curSit.maxMoves>0&&<div data-cpm="pressione" style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:2}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>}
+                      {curSit.maxMoves>0&&<div data-cpm="pressione" style={{height:3,background:"rgba(255,255,255,0.2)",borderRadius:3}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:3,transition:"width 0.1s"}}/></div>}
                       <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",textShadow:"0 1px 3px rgba(0,0,0,0.8)",marginTop:3}}>📍 {ZONES[zone]?.label}</div>
                     </div>
                     <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:14,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
@@ -10160,12 +10160,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       vestito della scheda delle scelte: fondo, bordi e tipografia identici; titolo su una riga, riga di
                       aiuto, barra «Pressione» da 3 px (ambra → rosso, legata a pressureBar), pallini delle mosse e zona;
                       in fondo il D-pad a 44 px allineato a sinistra e il tasto «Scegli» a destra, alto 52 px. Tutto ≤ 44vh. */}
-                  <div style={{width:36,height:4,borderRadius:2,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
+                  <div style={{width:36,height:4,borderRadius:3,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
                   <div style={{fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flexShrink:0}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
                   {movesLeft>0&&<div data-cpm="aiuto" style={{fontSize:FS.caption,lineHeight:1.3,fontWeight:600,color:"#c4b5fd",flexShrink:0}}>Frecce: sposta l'eroe ({movesLeft} {movesLeft===1?"mossa":"mosse"}) · scegli prima che il marcatore arrivi</div>}
                   {curSit.maxMoves>0&&<div data-cpm="pressione" style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
                     <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:"rgba(255,255,255,0.5)"}}>Pressione</div>
-                    <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:2,overflow:"hidden"}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/></div>
+                    <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:3,transition:"width 0.1s"}}/></div>
                   </div>}
                   <div style={{display:"flex",alignItems:"center",gap:8,fontSize:FS.caption,fontWeight:700,color:"#94a3b8",flexShrink:0,overflow:"hidden",whiteSpace:"nowrap"}}>
                     {curSit.maxMoves>0&&<span style={{color:"#c4b5fd",letterSpacing:1}}>{"●".repeat(movesLeft)}{"○".repeat(Math.max(0,curSit.maxMoves-movesLeft))}</span>}
@@ -10174,7 +10174,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexShrink:0}}>
                     {showDPad(curSit)?<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44}/></div>:<div/>}
-                    <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:11,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
+                    <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,minWidth:132,padding:"0 22px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Scegli</button>
                   </div>
                 </div>
                 )
@@ -10228,7 +10228,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   const _rows901=isAimSit(curSit)?setPieceOptions(curSit,player,pPos.x).map(o=>({rk:o.id,icon:o.icon,txt:o.label,attr:o.desc,go:()=>handleSetPiece(o)})):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{const _sp=_split901(intentLabelDedup(a.label,_oi,_arr));const _cat=_CAT901[a.stat]||String(a.stat||"").toUpperCase();const _sv=Math.round((player.stats&&player.stats[a.stat])||60);return{rk:_oi,icon:_sp.icon,txt:_sp.txt,attr:`${_cat} · ${_sv}`,go:()=>handleAction(a)};});
                   return(
                   <div data-cpm="scelte" style={{position:"absolute",left:0,right:0,bottom:0,zIndex:16,maxHeight:"44vh",boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"linear-gradient(180deg,rgba(38,49,76,0.96) 0%,rgba(22,30,49,0.98) 100%)",borderTop:"1px solid rgba(196,181,253,0.35)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
-                    <div style={{width:36,height:4,borderRadius:2,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
+                    <div style={{width:36,height:4,borderRadius:3,background:"rgba(255,255,255,0.22)",alignSelf:"center",flexShrink:0}}/>
                     {/* [7.902.0 — C3 v2, nota PO 15/09: «la scheda non regge le situazioni con molte opzioni» — misurato: 7 opzioni schiacciate a 34 px] header e riga di stato SEMPRE alla loro dimensione (flexShrink:0): a schiacciarsi, se qualcosa deve, e' la lista sotto, mai queste due righe. */}
                     {/* [7.905.0 — C3 v4, due note del PO dal telefono («Step-over e via!»)] (a) «a cosa serve il doppio
                         cursore?»: il D-pad non era spiegato — sopra la barra, quando restano mosse, una riga di aiuto
@@ -10258,7 +10258,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     {!curSit.lockMovement&&<div data-cpm="pressione" key={"press905-"+hlIdx+"-"+(paused?1:0)} style={{display:"flex",flexDirection:"column",gap:2,flexShrink:0}}>
                       {/* il @keyframes cpmPress905 sta nello <style> della barra superiore (sempre montata qui): uno <style> DENTRO la scheda finiva nel textContent e la sonda leggeva un «%» che il giocatore non vede */}
                       <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:.4,color:"rgba(255,255,255,0.5)"}}>Pressione</div>
-                      <div style={{position:"relative",height:3,borderRadius:2,overflow:"hidden",background:"linear-gradient(90deg,#ef4444 0%,#f97316 45%,#f59e0b 100%)"}}>
+                      <div style={{position:"relative",height:3,borderRadius:3,overflow:"hidden",background:"linear-gradient(90deg,#ef4444 0%,#f97316 45%,#f59e0b 100%)"}}>
                         <div style={{position:"absolute",top:0,right:0,bottom:0,width:"0%",background:"#10122a",animation:`cpmPress905 ${_dl905}ms linear forwards`,animationPlayState:paused?"paused":"running"}}/>
                       </div>
                     </div>}
@@ -10271,7 +10271,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         quante righe restano INTERE e visibili senza scorrere (il PO ne vuole almeno tre). */}
                     <div data-cpm="scelte-righe" style={{display:"flex",flexDirection:"column",gap:6,flex:"1 1 auto",minHeight:0,overflowY:"auto",overflowX:"hidden"}}>
                       {_rows901.map(r=>(
-                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:0.45,transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:11,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
+                        <button key={r.rk} disabled={!sceltePronte} onClick={()=>{if(sceltePronte)r.go();}} style={{opacity:sceltePronte?1:0.45,transition:"opacity .25s ease",flex:"0 0 52px",height:52,boxSizing:"border-box",padding:"7px 11px",borderRadius:RAD.sm,border:"1px solid rgba(196,181,253,0.45)",background:"rgba(24,20,48,0.86)",color:"#e9e4ff",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,textAlign:"left"}}>
                           <div style={{width:30,height:30,borderRadius:RAD.sm,background:"rgba(196,181,253,0.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.bodyLg,flexShrink:0}}>{r.icon}</div>
                           <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:1}}>
                             <div style={{fontSize:14,fontWeight:800,color:"#e9e4ff",lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.txt}</div>
@@ -10298,7 +10298,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                    il banner pieno-schermo di prima con l'intera banda cliccabile per continuare. */
                 _no901?(
                 <div data-cpm="esito" onClick={()=>{if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:outcome.outKey==="foul"?"rgba(40,20,0,0.72)":outcome.ok?"rgba(5,50,20,0.55)":"rgba(50,5,5,0.55)",padding:"10px 12px 12px",cursor:"pointer"}}>{/* [5.84.0 UX-3] tap per continuare (prima solo attesa forzata 2-3.4s ×8 HL) */}
-                  {outcome.outKey==="foul"&&<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}><div style={{width:10,height:14,background:"#fb923c",borderRadius:2,boxShadow:"0 0 8px rgba(251,146,60,0.9)",animation:"goalDrop 0.3s ease-out"}}/><span style={{fontSize:FS.caption,fontWeight:900,color:"#fb923c",letterSpacing:1,textTransform:"uppercase"}}>FALLO</span></div>}
+                  {outcome.outKey==="foul"&&<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5}}><div style={{width:10,height:14,background:"#fb923c",borderRadius:3,boxShadow:"0 0 8px rgba(251,146,60,0.9)",animation:"goalDrop 0.3s ease-out"}}/><span style={{fontSize:FS.caption,fontWeight:900,color:"#fb923c",letterSpacing:1,textTransform:"uppercase"}}>FALLO</span></div>}
                   {outcome.overlay&&<div style={{fontSize:16,fontWeight:900,letterSpacing:0.3,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#fca5a5",marginBottom:2,textShadow:"0 1px 5px rgba(0,0,0,0.85)"}}><EmoText>{(outcome.outKey!=="foul"&&outcome.overlayIcon?outcome.overlayIcon+" ":"")+outcome.overlay}</EmoText></div>}{/* [7.136.0] iconcina d'esito prima del titolo (foul ha già il badge FALLO) · [7.170.0] emoji senza box-shadow Android */}
                   <div style={{fontSize:FS.small,fontWeight:700,color:outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":"#f87171",marginBottom:3,opacity:0.92,textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}><EmoText>{(outcome.ok?"✅ ":"❌ ")+(chosenAct?.label||"")}</EmoText></div>
                   <div style={{fontSize:FS.caption,color:"#fff",lineHeight:1.4,marginBottom:4,textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}><EmoText>{outcome.text}</EmoText></div>
@@ -10330,7 +10330,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         comparsa), ma un tasto che non fa niente di vero non va in produzione. Resta il solo
                         «Continua» a tutta larghezza. */}
                     <div style={{display:"flex",alignItems:"center",marginTop:2}}>
-                      <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{flex:1,height:46,border:"none",borderRadius:11,background:TH.primary,color:"#fff",fontSize:14,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
+                      <button onClick={(e)=>{e.stopPropagation();if(Date.now()-(resultShownRef.current||0)>800)handleContinue();}} style={{flex:1,height:46,border:"none",borderRadius:RAD.sm,background:TH.primary,color:"#fff",fontSize:14,fontWeight:900,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit"}}>Continua</button>
                     </div>
                   </div>
                   );
@@ -10354,8 +10354,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       {curSit.maxMoves>0&&(
                         <div style={{marginBottom:4}}>
                           <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginBottom:2}}><span>⏱ Pressione</span><span>{Math.round(pressureBar*100)}%</span></div>
-                          <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:2}}>
-                            <div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/>
+                          <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:3}}>
+                            <div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:3,transition:"width 0.1s"}}/>
                           </div>
                         </div>
                       )}
@@ -10365,14 +10365,14 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                             <span>🏃 Difensore</span>
                             <span style={{color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80"}}>{defDist<25?"⚠ Addosso":defDist<50?"Vicino":"Lontano"}</span>
                           </div>
-                          <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:2}}>
-                            <div style={{height:"100%",width:(defDist)+"%",background:defDist>50?"#4ade80":defDist>25?"#f97316":"#ef4444",borderRadius:2,transition:"width 0.1s"}}/>
+                          <div style={{height:3,background:"rgba(255,255,255,0.12)",borderRadius:3}}>
+                            <div style={{height:"100%",width:(defDist)+"%",background:defDist>50?"#4ade80":defDist>25?"#f97316":"#ef4444",borderRadius:3,transition:"width 0.1s"}}/>
                           </div>
                         </div>
                       )}
                     </div>
                   </div>
-                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:"7px",borderRadius:7,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto [0]</button>}
+                  {phase==="hl_move"&&<button onClick={()=>setPhase("hl_choose")} style={{width:"100%",padding:"7px",borderRadius:RAD.xs,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>✅ Pronto [0]</button>}
                 </div>
               )}
 
@@ -10391,7 +10391,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     </div>
                   )}
                   {/* Defender pressure badge */}
-                  <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5,padding:"3px 6px",borderRadius:5,background:defDist<25?"rgba(239,68,68,0.2)":defDist<50?"rgba(249,115,22,0.15)":"rgba(74,222,128,0.1)",border:`1px solid ${defDist<25?"rgba(239,68,68,0.4)":defDist<50?"rgba(249,115,22,0.3)":"rgba(74,222,128,0.2)"}`}}>
+                  <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:5,padding:"3px 6px",borderRadius:RAD.xs,background:defDist<25?"rgba(239,68,68,0.2)":defDist<50?"rgba(249,115,22,0.15)":"rgba(74,222,128,0.1)",border:`1px solid ${defDist<25?"rgba(239,68,68,0.4)":defDist<50?"rgba(249,115,22,0.3)":"rgba(74,222,128,0.2)"}`}}>
                     <span style={{fontSize:FS.caption}}>{defDist<25?"⚠️":"🏃"}</span>
                     <span style={{fontSize:FS.caption,color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80",fontWeight:700}}>{defDist<25?"Difensore addosso!":defDist<50?"Pressione alta":"Spazio libero"}</span>
                     {defDist<50&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginLeft:"auto"}}>–{Math.round((100-defDist)*0.15)}% azioni</span>}
@@ -10558,7 +10558,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
               <div style={{fontFamily:_serif,fontSize:23,fontWeight:900,lineHeight:1.14,color:TH.text,letterSpacing:-0.3}}>{_hl}</div>
             </div>);})()}
-          {ceremony&&!ceremony.light&&(<div style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:14,background:"linear-gradient(135deg,#7a1f30,#8e1f33 55%,#f0b33a)",boxShadow:"0 6px 28px rgba(94,15,29,0.45)",position:"relative",overflow:"hidden"}}>
+          {ceremony&&!ceremony.light&&(<div style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:RAD.md,background:"linear-gradient(135deg,#7a1f30,#8e1f33 55%,#f0b33a)",boxShadow:"0 6px 28px rgba(94,15,29,0.45)",position:"relative",overflow:"hidden"}}>
             <div style={{fontSize:46,lineHeight:1,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
             <div style={{fontSize:FS.title,fontWeight:900,color:"#fff",letterSpacing:1,marginTop:6,textShadow:"0 2px 8px rgba(0,0,0,0.4)"}}>{ceremony.kind==="league"?"CAMPIONI!":ceremony.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
             <div style={{fontSize:FS.body,fontWeight:700,color:"#ffe9b0",marginTop:3}}>{ceremony.name}</div>
@@ -10574,7 +10574,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _confN=(_celebTier>=1&&!_CPM_TEST)?(_celebTier>=2?18:10):0;
             return(
             <div style={{margin:"0 -22px 16px",paddingBottom:14,background:"linear-gradient(165deg,#0b1224,#101a33 55%,#0d1526)",position:"relative",overflow:"hidden"}}>{/* [7.95.0] no top-margin: segue il masthead del giornale */}
-              {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:2,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
+              {_confN>0&&<div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden"}}>{Array.from({length:_confN}).map((_,i)=>{const _cc=["#f59e0b","#22c55e","#60a5fa","#f472b6","#facc15",_compCol];return <span key={i} style={{position:"absolute",left:((i*53)%100)+"%",top:"-8%",width:7,height:11,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.8+(i%5)*0.7).toFixed(1)}s linear ${((i%7)*0.45).toFixed(2)}s infinite`,opacity:0.9}}/>;})}</div>}
               <div style={{height:3,background:`linear-gradient(90deg,transparent,${_compCol},transparent)`}}/>
               <div style={{padding:"12px 14px 0"}}>
                 <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:_compCol}}>{_compLabel}{!_leagueCtx&&_tvComp?` · ${_tvComp.phase}`:""}</div>
@@ -10582,12 +10582,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginTop:10}}>
                   <div style={{flex:1,minWidth:0,textAlign:"right"}}>
                     <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{homeTeamObj?.name||homeTeamObj?.n||"Casa"}</div>
-                    <div style={{height:3,borderRadius:2,background:scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
+                    <div style={{height:3,borderRadius:3,background:scoreHomeCol||"#3b82f6",marginTop:4,marginLeft:"auto",width:"56%"}}/>
                   </div>
                   <div className="cpm-num" style={{fontSize:42,fontWeight:900,lineHeight:1,color:_hWon?"#4ade80":losing?"#f87171":"#e2e8f0",flexShrink:0}}>{isMatchHome?score.home:score.away}<span style={{color:"rgba(255,255,255,0.35)",fontSize:22,padding:"0 6px"}}>–</span>{isMatchHome?score.away:score.home}</div>
                   <div style={{flex:1,minWidth:0,textAlign:"left"}}>
                     <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{awayTeamObj?.name||awayTeamObj?.n||"Ospite"}</div>
-                    <div style={{height:3,borderRadius:2,background:scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
+                    <div style={{height:3,borderRadius:3,background:scoreAwayCol||"#ef4444",marginTop:4,width:"56%"}}/>
                   </div>
                 </div>
                 <div style={{display:"inline-block",marginTop:10,padding:"4px 14px",borderRadius:RAD.xl,fontSize:FS.caption,fontWeight:800,letterSpacing:1,background:_hWon?"rgba(34,197,94,0.16)":_hDrew?"rgba(245,158,11,0.14)":"rgba(239,68,68,0.14)",border:`1px solid ${_hWon?"#22c55e":_hDrew?"#f59e0b":"#ef4444"}55`,color:_hWon?"#4ade80":_hDrew?"#fbbf24":"#f87171"}}>{winning?"VITTORIA":_hDrew?(_drawShootout?(_shootoutWon?"VITTORIA AI RIGORI":"SCONFITTA AI RIGORI"):"PAREGGIO"):"SCONFITTA"}</div>
@@ -10667,7 +10667,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <span style={{flex:"1 1 0",textAlign:"center",fontSize:FS.caption,color:TH.muted,fontWeight:700}}>{r[0]}</span>
                       <span className="cpm-num" style={{flex:"0 0 auto",fontWeight:800,color:b>=a?TH.text:TH.muted,minWidth:34,textAlign:"right"}}>{r[2]}</span>
                     </div>
-                    <div style={{display:"flex",height:4,borderRadius:2,overflow:"hidden",background:TH.divider,marginTop:3}}>
+                    <div style={{display:"flex",height:4,borderRadius:3,overflow:"hidden",background:TH.divider,marginTop:3}}>
                       <div style={{width:qa+"%",background:TH.primary}} />
                       <div style={{width:(100-qa)+"%",background:TH.warning}} />
                     </div>
@@ -10781,7 +10781,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       )}
       {/* ATE-5: debug overlay — Shift+D */}
       {debugMode&&<div style={{position:"fixed",bottom:8,left:8,background:"rgba(0,0,0,0.82)",
-        color:"#a3e635",fontFamily:"monospace",fontSize:FS.caption,padding:"7px 11px",borderRadius:7,
+        color:"#a3e635",fontFamily:"monospace",fontSize:FS.caption,padding:"7px 11px",borderRadius:RAD.xs,
         zIndex:9999,lineHeight:1.8,pointerEvents:"none",border:"1px solid rgba(163,230,53,0.25)"}}>
         <div style={{color:"#f97316",fontWeight:700,marginBottom:2}}>◉ CPM DEBUG {GAME_VERSION}</div>
         <div>phase: <b style={{color:"#fff"}}>{phase}</b></div>
