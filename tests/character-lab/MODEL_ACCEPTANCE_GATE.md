@@ -59,3 +59,6 @@ Per questo non vengono promosse varianti automatiche di pelle o occhi: una
 correzione per soglia/colore rischierebbe di modificare anche capelli,
 sopracciglia o dettagli del volto. Le sole varianti corrette del package restano
 il taglio nativo in nero, castano, biondo e ramato.
+### Barba e baffi: gate di authoring
+
+La texture `HEAD` CGTrader è un atlante 2048×2048 con più isole UV ruotate; pelle, capelli e sopracciglia condividono il file. Non sono consentiti overlay o tint automatici per barba/baffi: senza un layout specifico e una review renderizzata causerebbero disallineamenti sul volto. Una variante può essere considerata solo se deriva da una `HEAD` texture completa, dipinta e verificata su tutti i lati del modello, senza geometria flottante.
