@@ -36,6 +36,12 @@ Questo prova che una mappatura nominale completa è disponibile; non prova ancor
 
 **FAIL del metodo di trasferimento diretto.** I due rig hanno la stessa semantica ma assi/rest pose diversi; il risultato non è una preview del dribbling e non viene promosso. Il candidato MetaPerson non è ancora rifiutato: il prossimo metodo deve usare un trasferimento calibrato nello spazio bind, come già richiesto per i rig eterogenei, prima di qualsiasi verifica palla o kit.
 
+## Secondo provino dribbling: gate non superato
+
+Il secondo banco ha trasferito solo le 22 ossa core con una calibrazione delle direzioni anatomiche in bind-space. L'import e i cinque render sono completati senza eccezioni, ma ai frame 0, 10, 21, 32 e 41 il corpo continua a collassare: arti e busto assumono rotazioni incompatibili e la parte inferiore non resta una figura umana leggibile.
+
+**FAIL del gate animazione per la POC corrente.** La compatibilità nominale dei nomi non è sufficiente: servirebbe un retargeter dedicato al preciso asset MetaPerson, con tempo e rischio aggiuntivi. Il campione non può sostituire il CGTrader nell'attuale percorso Korward e non procede ai gate palla, kit, LOD o telefono.
+
 ## Passo successivo
 
 Usare solo `model5` come prova tecnica: rimuovere visivamente l'abbigliamento civile nel banco locale, verificare mappatura delle 73 ossa verso una clip esistente e misurare un LOD separato. Il candidato potrà avanzare solo se conserva volto e capelli leggibili, raggiunge un budget misurato e supera il gesto con palla.
