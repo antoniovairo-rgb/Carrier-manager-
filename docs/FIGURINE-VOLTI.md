@@ -15,15 +15,15 @@ compaiono.
 
 | voce | valore | perché |
 |---|---|---|
-| **rapporto** | **5 : 7 verticale** (0,714) | è il rapporto della figurina da album, 50×70 mm |
+| **rapporto** | **5 : 7 verticale** (0,714) — **CONFERMATO DAL PO il 22/09: «rapporto va bene adesso»** | è il rapporto della figurina da album, 50×70 mm |
 | consegna **2x** | **320 × 448 px** | copre ogni riquadro del gioco su schermo a densità 2 |
 | consegna **4x** | **640 × 896 px** | telefoni a densità 3-4 (l'Android del PO è in questa fascia) |
 | formato file | **webp** (png accettato) | peso: il gioco è un file unico, ogni KB si paga all'avvio |
 | peso per figurina | **≤ 30 KB a 2x** | 200 volti × 30 KB = 6 MB, già quanto pesa tutto il gioco oggi |
 
-Il rapporto vive in **un posto solo** nel codice (`const FIG={w:5,h:7,…}`): se il team codex lavora su
-un rapporto diverso, si cambia quella riga e **tutte** le figurine del gioco seguono. Meglio dirlo
-prima di disegnare duecento volti.
+Il rapporto vive in **un posto solo** nel codice (`const FIG={w:5,h:7,…}`). **Il PO l'ha confermato il
+22/09** — quindi è questo il formato su cui disegnare: 5:7 verticale, consegne a 320×448 e 640×896.
+(Se un domani dovesse cambiare, si cambia quella riga e **tutte** le figurine del gioco seguono.)
 
 ## 2. L'inquadratura
 

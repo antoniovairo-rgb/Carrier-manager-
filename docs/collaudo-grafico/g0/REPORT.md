@@ -193,12 +193,12 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 3 | 3 | 3 | 3 | 3 |
 | Creazione | 9 | 9 | 9 | 9 | 9 |
 | Offerte | 6 | 6 | 6 | 6 | 6 |
-| Dashboard | 14 | 14 | 14 | 14 | 14 |
-| Stagione · Classifica | 13 | 13 | 13 | 13 | 13 |
+| Dashboard | 13 | 13 | 13 | 13 | 13 |
+| Stagione · Classifica | 11 | 11 | 11 | 11 | 11 |
 | Stagione · Calendario | 10 | 10 | 10 | 10 | 10 |
 | Stagione · Coppe | 6 | 6 | 6 | 6 | 6 |
-| Club | 11 | 11 | 11 | 11 | 11 |
-| Carriera · Profilo | 12 | 12 | 12 | 12 | 12 |
+| Club | 10 | 10 | 10 | 10 | 10 |
+| Carriera · Profilo | 9 | 9 | 9 | 9 | 9 |
 | Carriera · Nazionale | 9 | 9 | 9 | 9 | 9 |
 | Agente | 9 | 9 | 9 | 9 | 9 |
 | Prepartita | 6 | 6 | 6 | 6 | 6 |
@@ -307,24 +307,24 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---:|---|---|---|
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteFootball Career Simula |
 | Creazione | 52 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | ⚡ INIZIA I PROVINI |
-| Dashboard | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:38Avataaars |
+| Dashboard | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 14:19Avataaars |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
 |  | 53 | 0.012 | `#241438` | `div.cpm-scroll>div.cpm-career>div:nth-child(4)` | La tua storia› |
 |  | 58 | 0.017 | `#14243a` | `div.cpm-scroll>div.cpm-career>div:nth-child(6)` | Il tuo procuratore› |
 |  | 58 | 0.013 | `#331426` | `div.cpm-scroll>div.cpm-career>div:nth-child(7)` | ❤️ Vita privata› |
 |  | 67 | 0.012 | `#241a12` | `div.cpm-scroll>div.cpm-career>div:nth-child(9)` | Adesso guardano teNEL PIENO› |
-| Stagione · Classifica | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:38Avataaars |
-| Stagione · Calendario | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:38Avataaars |
-| Stagione · Coppe | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:38Avataaars |
-| Club | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:38Avataaars |
+| Stagione · Classifica | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 14:19Avataaars |
+| Stagione · Calendario | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 14:19Avataaars |
+| Stagione · Coppe | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 14:19Avataaars |
+| Club | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 14:19Avataaars |
 |  | 207 | 0.016 | `#112240` | `div.cpm-career>div:nth-child(2)>div:nth-child(10)` | Lo Spogliatoio🧠Luigi TestaIl Ment |
-| Carriera · Profilo | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:38Avataaars |
+| Carriera · Profilo | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 14:19Avataaars |
 |  | 53 | 0.014 | `#1a1f2e` | `div.cpm-career>div:nth-child(3)>div:nth-child(1)` | Biografia› |
 |  | 69 | 0.042 | `#312e81` | `div.cpm-career>div:nth-child(3)>div:nth-child(6)` | 🆚 Il tuo rivale› |
 |  | 62 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(7)` | ⭐ Club dei sogni› |
 |  | 58 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(10)` | 💪 Stile di gioco› |
-| Carriera · Nazionale | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:38Avataaars |
-| Agente | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 13:38Avataaars |
+| Carriera · Nazionale | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 14:19Avataaars |
+| Agente | 118 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 14:19Avataaars |
 | Prepartita | 45 | 0.07 | `#8e1f33` | `div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus` | 📋 Formazioni → |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
@@ -428,7 +428,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---:|---:|---|
 | Dashboard (1889 px) | 1 | 473 | 25.1 % | 📅La tua settimanaSettimana di campionatoS |
 |  | 2 | 288 | 15.3 % | Lega B · 11ª giornataProssima partitaCalen |
-|  | 3 | 181 | 9.6 % | K⚽rwardEliteSalva · 13:38AvataaarsPablo St |
+|  | 3 | 181 | 9.6 % | K⚽rwardEliteSalva · 14:19AvataaarsPablo St |
 |  | 4 | 175 | 9.3 % | Stagione 4 · Settimana 12/3812Partite14Gol |
 |  | 5 | 101 | 5.4 % | EnterGioca0AvanzaEscIndietroSpcConferma☕ S |
 |  | 6 | 86 | 4.6 % | 🏟️ Partita di Questa Settimana · W.12CREF |
@@ -441,7 +441,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Stagione · Classifica (1988 px) | 1 | 1304 | 65.6 % | Lega B ★Lega APremier DivisionLiga Ibérica |
 |  | 2 | 317 | 15.9 % | Marcatori Storici — Lega B#5Grafica Probe8 |
 |  | 3 | 246 | 12.4 % | Risultati Internazionali — W.12Premier Div |
-|  | 4 | 181 | 9.1 % | K⚽rwardEliteSalva · 13:38AvataaarsPablo St |
+|  | 4 | 181 | 9.1 % | K⚽rwardEliteSalva · 14:19AvataaarsPablo St |
 |  | 5 | 101 | 5.1 % | EnterGioca0AvanzaEscIndietroSpcConferma☕ S |
 |  | 6 | 45 | 2.3 % | 📊Classifica📅Calendario🏆Coppe |
 | Carriera · Profilo (2022 px) | 1 | 314 | 15.5 % | Attributivelocità82tecnica81fisico80mental |
@@ -480,6 +480,29 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 1 | Barlow x73 |
 | Agente | 1 | Barlow x93 |
 | Prepartita | 1 | Barlow x17 |
+
+## 9-septies · LE TINTE DEL TESTO, UNA PER UNA (a 412 px, la taglia del PO)
+
+> [G14 · 22/09] Il conteggio dice che la Dashboard rende quattordici tinte contro le cinque del
+> provino, ma non dice QUALI — e la differenza e' tutta li': una tinta **semantica** (vittoria,
+> sconfitta, allarme) e' un'informazione e deve restare; un grigio nato per sbaglio e' debito.
+> Qui ogni tinta col numero di nodi e un esempio, in ordine di diffusione.
+
+| schermata | tinte | dettaglio (tinta x nodi · esempio) |
+|---|---:|---|
+| Home fuori carriera | 1 | `#526279` x4 (⚡ Nuova carrie) |
+| Impostazioni | 3 | `#1e293b` x9 (⚙️ Impostazion) · `#596a80` x9 (30) · `#526279` x2 (🎨 Grafica) |
+| Creazione | 9 | `#596a80` x263 (👤 Identità) · `#000000` x260 (CFM) · `#1e293b` x259 (CF Madrid) · `#526279` x16 (Aspetto calcia) · `#a34a08` x8 (🏆 Scalatore N) · `#166534` x6 (tiro) · `#b91c1c` x4 (velocità) · `#8e1f33` x2 (📋 Percorso ca) · `#ffffff` x1 (⚡ INIZIA I PRO) |
+| Offerte | 6 | `#526279` x9 (Scegli →) · `#1e293b` x9 (TAT) · `#596a80` x6 (Provino) · `#92400e` x3 (7.4) · `#8e1f33` x1 (⭐ TOP) · `#ffffff` x1 (Scegli →) |
+| Dashboard | 13 | `#526279` x29 (Lega B) · `#1e293b` x21 (12) · `#596a80` x19 (Forma) · `#ffffff` x16 (82) · `#8e1f33` x9 (78) · `#7c3aed` x7 (6) · `#166534` x5 (14) · `#b91c1c` x3 (P) · `#6c1f2e` x2 (Salva) · `#b45309` x1 (↓ ti pesa) · `#155e75` x1 (Nello spogliat) · `#2563eb` x1 (Titolare Affer) · `#92400e` x1 (7.2) |
+| Stagione · Classifica | 11 | `#526279` x123 (0) · `#1e293b` x103 (TAT) · `#596a80` x53 (Forma) · `#166534` x23 (0) · `#b91c1c` x18 (0) · `#ffffff` x13 (82) · `#8e1f33` x8 (K) · `#92400e` x4 (5) · `#6c1f2e` x2 (Salva) · `#0f172a` x2 (1) · `#a34a08` x2 (1) |
+| Stagione · Calendario | 10 | `#526279` x70 (Prossime parti) · `#1e293b` x66 (CRE) · `#596a80` x39 (Forma) · `#ffffff` x21 (82) · `#166534` x12 (1) · `#92400e` x10 (7.2) · `#b91c1c` x10 (2) · `#8e1f33` x8 (K) · `#6c1f2e` x2 (Salva) · `#0f172a` x1 (Gioca →) |
+| Stagione · Coppe | 6 | `#ffffff` x11 (82) · `#1e293b` x5 (78) · `#8e1f33` x4 (K) · `#596a80` x3 (Forma) · `#6c1f2e` x2 (Salva) · `#526279` x1 (Coppa Nazional) |
+| Club | 10 | `#596a80` x34 (Forma) · `#526279` x18 (Lega B) · `#1e293b` x13 (SAL) · `#ffffff` x11 (82) · `#8e1f33` x8 (38k) · `#92400e` x3 (52) · `#166534` x3 (2.7M€) · `#6c1f2e` x2 (Salva) · `#1e40af` x1 (50) · `#7c3aed` x1 (50) |
+| Carriera · Profilo | 9 | `#596a80` x16 (Forma) · `#1e293b` x16 (78) · `#526279` x16 (Record & Premi) · `#166534` x12 (45M€) · `#ffffff` x11 (82) · `#92400e` x7 (14) · `#8e1f33` x6 (6) · `#1e40af` x3 (12) · `#6c1f2e` x2 (Salva) |
+| Carriera · Nazionale | 9 | `#596a80` x19 (Forma) · `#526279` x18 (La maglia nume) · `#ffffff` x12 (82) · `#1e293b` x12 (78) · `#8e1f33` x4 (K) · `#6c1f2e` x2 (Salva) · `#92400e` x2 (1) · `#003399` x2 (Grafica Probe) · `#166534` x2 (82) |
+| Agente | 9 | `#526279` x36 (Patrimonio) · `#1e293b` x23 (4.56M€) · `#ffffff` x11 (82) · `#8e1f33` x10 (45.0M) · `#596a80` x5 (Forma) · `#7c3aed` x3 (🤵 Agente · −) · `#6c1f2e` x2 (Salva) · `#166534` x2 (€4.9M) · `#b91c1c` x1 (🚪 Richiedi Ce) |
+| Prepartita | 6 | `#1e293b` x6 (Stadio Salernu) · `#596a80` x4 (Stadio) · `#526279` x3 (🔍 Analisi com) · `#166534` x2 (Gioco aereo) · `#8e1f33` x1 (🎙️ ANALISI DE) · `#ffffff` x1 (📋 Formazioni ) |
 
 ## 9-sexies · LO SPAZIO DELLE FIGURINE (a 412 px, la taglia del PO)
 
@@ -546,8 +569,8 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Stagione · Classifica | 4.97:1 | 4.5:1 | `#596a80` su `#fef3c7` | 11 / 700 | 1 | `div:nth-child(3)>div:nth-child(5)>div:nth-child(1)` | 5 |
 | Stagione · Classifica | 5.02:1 | 4.5:1 | `#ffffff` su `#b45309` | 11 / 800 | 1 | `tr:nth-child(3)>td:nth-child(2)>span.cpm-num` | 3 |
 | Stagione · Classifica | 5.33:1 | 4.5:1 | `#a34a08` su `#fef3c7` | 11 / 700 | 1 | `div:nth-child(3)>div:nth-child(5)>div:nth-child(3)` | 80 |
-| Stagione · Classifica | 5.34:1 | 4.5:1 | `#137036` su `#f1eee8` | 12 / 400 | 9 | `tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(5)` | 0 |
 | Stagione · Classifica | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 12 / 400 | 51 | `tbody:nth-child(2)>tr:nth-child(2)>td:nth-child(4)` | 0 |
+| Stagione · Classifica | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 700 | 32 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Forma |
 | Stagione · Calendario | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 400 | 10 | `div:nth-child(2)>div:nth-child(4)>div:nth-child(2)` | voto |
 | Stagione · Calendario | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 400 | 40 | `div:nth-child(2)>div:nth-child(2)>div:nth-child(2)` | W. |
 | Stagione · Calendario | 5.42:1 | 4.5:1 | `#0f172a` su `#16a34a` | 11 / 700 | 1 | `div:nth-child(1)>div:nth-child(2)>button.cpm-press.cpm-focus` | Gioca → |
@@ -561,13 +584,13 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Club | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 800 | 6 | `div:nth-child(4)>div:nth-child(2)>span.cpm-num` | S. |
 | Club | 5.15:1 | 4.5:1 | `#596a80` su `#f4f7fb` | 11 / 400 | 3 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(2)` | / anno |
 | Club | 5.36:1 | 4.5:1 | `#526279` su `#f1eee8` | 11 / 700 | 3 | `div:nth-child(4)>div:nth-child(2)>span.cpm-num` | 8° |
-| Club | 5.48:1 | 4.5:1 | `#026fa7` su `#ffffff` | 12 / 700 | 1 | `div:nth-child(1)>div:nth-child(1)>span.cpm-num` | 50 |
 | Club | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 20 | `div:nth-child(1)>div:nth-child(2)>div:nth-child(6)` | 🩺 Dr. |
-| Carriera · Profilo | 4.73:1 | 3:1 | `#026fa7` su `#f1eee8` | 17 / 800 | 1 | `div:nth-child(2)>div:nth-child(3)>div.cpm-num` | 12 |
+| Club | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 700 | 5 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Forma |
 | Carriera · Profilo | 4.77:1 | 4.5:1 | `#596a80` su `#f1eee8` | 11 / 400 | 6 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Gol stag. |
-| Carriera · Profilo | 5.00:1 | 3:1 | `#995404` su `#f1eee8` | 17 / 800 | 2 | `div:nth-child(2)>div:nth-child(1)>div.cpm-num` | 14 |
-| Carriera · Profilo | 5.15:1 | 3:1 | `#0f7334` su `#f1eee8` | 17 / 800 | 1 | `div:nth-child(2)>div:nth-child(6)>div.cpm-num` | 45M€ |
 | Carriera · Profilo | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 700 | 8 | `div:nth-child(2)>div:nth-child(1)>div:nth-child(1)` | Forma |
+| Carriera · Profilo | 5.53:1 | 4.5:1 | `#596a80` su `#ffffff` | 11 / 400 | 2 | `div:nth-child(3)>div:nth-child(23)>button:nth-child(1)` | 🎬 Rivedi l'intro |
+| Carriera · Profilo | 5.93:1 | 4.5:1 | `#526279` su `#f0fdf4` | 11 / 400 | 2 | `div:nth-child(3)>div:nth-child(13)>div:nth-child(2)` | Stagioni da pro: |
+| Carriera · Profilo | 6.12:1 | 3:1 | `#92400e` su `#f1eee8` | 17 / 800 | 2 | `div:nth-child(2)>div:nth-child(1)>div.cpm-num` | 14 |
 | Carriera · Nazionale | 4.66:1 | 4.5:1 | `#596a80` su `#e7ecf5` | 11 / 400 | 2 | `div:nth-child(2)>div:nth-child(1)>span.cpm-num` | 0 |
 | Carriera · Nazionale | 4.99:1 | 4.5:1 | `#596a80` su `#f5f3ef` | 11 / 900 | 6 | `div:nth-child(2)>div:nth-child(2)>span.cpm-num` | 2 |
 | Carriera · Nazionale | 4.99:1 | 4.5:1 | `#596a80` su `#f5f3ef` | 11 / 400 | 6 | `div:nth-child(2)>div:nth-child(2)>span.cpm-num` | 31 |

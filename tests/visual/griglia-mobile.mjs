@@ -221,6 +221,11 @@ function MISURA(W) {
        dal rapporto dichiarato: se l'arte arriva e qualcuno la mette in un riquadro storto, il numero lo
        dice prima del PO. */
     nFigurine: 0, figScarto: 0, figTipi: [],
+    /* [G14 · 22/09] LE TINTE DEL TESTO, UNA PER UNA. Il conteggio (`nColTesto`) dice che la Dashboard ne
+       rende quattordici contro le cinque del provino, ma non dice QUALI — e la differenza e' tutta li':
+       una tinta semantica (vittoria, sconfitta, allarme) e' un'informazione e deve restare, un grigio nato
+       per sbaglio e' debito. Senza l'elenco col nodo d'esempio, unificare sarebbe indovinare. */
+    tinteTesto: [],
     /* [G8.3 · direttiva PO 17/09 «se una schermata e' troppo lunga valuta se mettere degli
        accordion»] QUANTO E' LUNGA. Prima di aprire e chiudere sezioni serve sapere quali
        schermate lo meritano davvero: `schermate` e' l'altezza del documento diviso l'altezza
@@ -570,6 +575,11 @@ function MISURA(W) {
   R.famiglie = [..._fam.entries()].sort((a, b) => b[1] - a[1]).map(([f, n]) => ({ f, n })); R.nFamiglie = _fam.size;
   R.corpi = [..._cor].sort((a, b) => a - b);
   R.raggi = [..._rag].sort((a, b) => a - b);
+  { const per = new Map();
+    for (const e of agg.values()) { const k = e.testo; const o = per.get(k);
+      if (o) { o.n += e.n; if (e.fs > o.fs) { o.fs = e.fs; o.esempio = e.esempio; } }
+      else per.set(k, { c: k, n: e.n, fs: e.fs, esempio: e.esempio }); }
+    R.tinteTesto = [...per.values()].sort((a, b) => b.n - a.n); }
   R.peggiori = [...agg.values()].sort((a, b) => a.rap - b.rap || b.n - a.n).slice(0, 5);
   R.sottoPav = [...pav.values()].sort((a, b) => a.fs - b.fs || b.n - a.n).slice(0, 5);
   if (R.minFs != null) R.minFs = Math.round(R.minFs * 10) / 10;
@@ -1007,6 +1017,23 @@ righe.forEach(s2 => {
   const fam = m.famiglie || [];
   const fuori = fam.filter(x => !/^Barlow/i.test(x.f));
   R.push(`| ${s2.nome} | ${fuori.length ? '**' + (m.nFamiglie || 0) + '**' : (m.nFamiglie || 0)} | ${fam.map(x => x.f + ' x' + x.n).join(' · ') || '—'} |`);
+});
+R.push('');
+
+R.push('## 9-septies · LE TINTE DEL TESTO, UNA PER UNA (a 412 px, la taglia del PO)');
+R.push('');
+R.push('> [G14 · 22/09] Il conteggio dice che la Dashboard rende quattordici tinte contro le cinque del');
+R.push('> provino, ma non dice QUALI — e la differenza e\' tutta li\': una tinta **semantica** (vittoria,');
+R.push('> sconfitta, allarme) e\' un\'informazione e deve restare; un grigio nato per sbaglio e\' debito.');
+R.push('> Qui ogni tinta col numero di nodi e un esempio, in ordine di diffusione.');
+R.push('');
+R.push('| schermata | tinte | dettaglio (tinta x nodi · esempio) |');
+R.push('|---|---:|---|');
+righe.forEach(s2 => {
+  const m = (DATI[s2.id][412] || DATI[s2.id][W[W.length - 1]]);
+  if (!m) return;
+  const t = (m.tinteTesto || []).map(x => `\`${x.c}\` x${x.n} (${String(x.esempio || '').replace(/\|/g, '/').slice(0, 14)})`).join(' · ');
+  R.push(`| ${s2.nome} | ${m.nColTesto || 0} | ${t || '—'} |`);
 });
 R.push('');
 

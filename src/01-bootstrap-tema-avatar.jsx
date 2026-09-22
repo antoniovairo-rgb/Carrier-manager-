@@ -90,7 +90,7 @@ let TH = {
   // Oro metallico trofei (disambiguato da warning)
   goldGrad:"linear-gradient(135deg,#f6c04b,#d4922a)", goldText:"#a34a08"/* [PALETTE A] oro e vittoria come testo stavano a 4,3:1 sulla superficie avorio #f1eee8 (erano 4,7 sull'azzurrino): ora 5,1 e 5,3 */,
   // Token semantici di dominio (fg/bg/bd)
-  winFg:"#137036", winBg:"#e7f6ec", winBd:"#b7e4c4",
+  winFg:"#166534"/* [7.968] era #137036: due verdi scuri a 11 punti di distanza, indistinguibili a occhio e contati come due tinte dal censimento. Questo e' l'inchiostro verde approvato, lo stesso a cui si aggancia `semTesto945` */, winBg:"#e7f6ec", winBd:"#b7e4c4",
   drawFg:"#a16207", drawBg:"#fbf3dd", drawBd:"#f0dca6",
   lossFg:"#b91c1c", lossBg:"#fbe9e9", lossBd:"#f3c9c9",
   growth:"#16a34a", regression:"#dc2626", energy:"#0284c7",
@@ -159,6 +159,34 @@ function _mixNero945(h,q){h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
   if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
   const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));if(v.some(isNaN))return '#'+h;
   return '#'+v.map(c=>Math.round(c*(1-q)).toString(16).padStart(2,'0')).join('');}
+/* [G14 · 7.968 — GLI INCHIOSTRI SEMANTICI SONO UN ELENCO, NON UN CALCOLO CONTINUO. Rosso __CPM_NO968]
+   MISURATO (griglia mobile, tabella nuova «9-septies · le tinte del testo, una per una»): la Dashboard
+   rende QUATTORDICI tinte contro le cinque del provino, e l'elenco dice perche'. Non sono quattordici
+   concetti: sono TRE VERDI (#0f7334, #137036, #166534), QUATTRO AMBRE (#b45309, #92400e, #995404,
+   #a34a08), TRE BLU (#2563eb, #1e40af, #026fa7) e DUE ROSSI. Quasi nessuno di quei valori sta nel
+   sorgente — li fabbrica questa funzione: schiarisce o scurisce a passi del 16 % finche' il contrasto
+   non arriva a 4,5:1, e lo stesso verde su due fondi diversi esce con due valori diversi.
+   Il contrasto e' giusto, l'esito no: l'occhio vede due verdi dove il gioco ne intende uno.
+   Qui il risultato si AGGANCIA a un elenco di inchiostri approvati, uno per famiglia — e solo se
+   l'inchiostro approvato e' DAVVERO vicino (distanza RGB sotto la soglia) e passa lui stesso il 4,5:1
+   su quel fondo. Se non lo passa, vince il valore calcolato: il contrasto non si baratta con l'ordine. */
+const INK945=["#166534","#b91c1c","#92400e","#1e40af","#6d28d9","#155e75","#0f172a","#526279","#8e1f33"];
+const _rgb945=(h)=>{h=String(h||'').trim();if(h[0]==='#')h=h.slice(1);
+  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  if(h.length<6)return null;const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));
+  return v.some(isNaN)?null:v;};
+const _SNAP945=3*62*62;/* 62 per canale: unisce i gemelli di una famiglia, mai due famiglie diverse */
+function _agganciaInk945(c,bg){
+  try{
+    if(typeof window!=='undefined'&&window.__CPM_NO968)return c;/* prova del rosso: torna ai valori calcolati */
+    const v=_rgb945(c); if(!v)return c;
+    let best=null,bd=1e9;
+    for(const k of INK945){const w=_rgb945(k); if(!w)continue;
+      const d=(v[0]-w[0])*(v[0]-w[0])+(v[1]-w[1])*(v[1]-w[1])+(v[2]-w[2])*(v[2]-w[2]);
+      if(d<bd){bd=d;best=k;}}
+    if(best&&bd<=_SNAP945&&_rap944(best,bg)>=4.5)return best;
+    return c;
+  }catch(_e){return c;}}
 function semTesto945(col,fondo){
   try{ if(!col||typeof col!=='string'||col[0]!=='#')return col;
     if(typeof window!=='undefined'&&window.__CPM_NO945S)return col;/* prova del rosso */
@@ -167,6 +195,7 @@ function semTesto945(col,fondo){
     const versoIlNero=lf>0.18;           /* fondo chiaro -> si scurisce; fondo scuro -> si schiarisce */
     let c=col;
     for(let i=0;i<9&&_rap944(c,bg)<4.5;i++)c=versoIlNero?_mixNero945(c,0.16):_mix944(c,0.20);
+    if(c!==col&&versoIlNero)c=_agganciaInk945(c,bg);/* [7.968] i gemelli di una famiglia diventano uno */
     return c; }catch(_e){ return col; }}
 function inkSu945(col){
   try{ if(!col||typeof col!=='string'||col[0]!=='#')return '#ffffff';
