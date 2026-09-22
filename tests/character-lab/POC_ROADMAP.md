@@ -565,3 +565,9 @@ La scheda CGTrader del 2 settembre 2026 dichiara FBX/BLEND/progetto Unreal, rig 
 
 - Creata una sintesi verificabile dei candidati, delle esclusioni e del solo test con potenziale concreto: [MODEL_SHORTLIST_DECISION.md](MODEL_SHORTLIST_DECISION.md).
 - Decisione invariata: CGTrader Hisenberg è la base runtime attiva; Human Generator trial è l'unico esperimento da completare per capelli/barba/volti, previa installazione isolata autorizzata.
+
+## Aggiornamento 22 settembre 2026 — inventario completo del pacchetto CGTrader
+
+- **Fatti verificati:** fra i file inclusi ci sono componenti separati per testa, mani, gambe, maglia e pantaloncini. `HEAD.glb` e' una sola mesh da `9.083` triangoli, con una sola texture `HEAD`; non contiene teste alternative, morph o tagli separati. `HANDS.glb` contiene solo due mesh mani per `5.076` triangoli.
+- **File Earring:** l'FBX aggiuntivo e' un solo mesh da `50.000` triangoli, con mappe base/metallic/normal/roughness 4K; e' un accessorio distinto, non capelli, e supera da solo il budget Hero. Non viene integrato.
+- **Decisione:** tutti i componenti utili del pacchetto sono stati controllati. Non esistono varianti nascoste di volto, barba o capelli da promuovere; la base CGTrader resta valida per rig e kit, mentre la varietà richiede un'altra pipeline verificata.
