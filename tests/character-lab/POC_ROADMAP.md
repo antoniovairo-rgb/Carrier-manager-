@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 00:25 (Europe/Rome, orologio del container)
-**Stato complessivo stimato:** 62% — presa alta: contatto e possesso misurati, inquadratura aperta; non e' un quality gate finale.
+**Ultimo aggiornamento:** 23 settembre 2026, 00:55 (Europe/Rome, orologio del container)
+**Stato complessivo stimato:** 64% — presa alta: gesto, contatto, possesso e inquadratura misurati nel banco; telefono e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
 ## Avanzamento 22 settembre 2026, 20:48
@@ -467,6 +467,39 @@ Nuova sonda `presa-clip-profilo.mjs`: `gk-high-catch` dura **3,333 s**; mani uni
 - ⚠️ L'HUD scrive «corpi pieni» anche nella review ottimizzata (le misure dicono 5 corpi): etichetta da verificare.
 - ⚠️ Il partita normale ha lo stesso difetto di slot (`opp_stumble` occupa `oppActType`)? **Non misurato**: il
   rimedio e' limitato alla review.
+
+---
+
+## Avanzamento 23 settembre 2026, 00:55 — PRESA ALTA: ORA SI VEDE
+
+**Fase:** 4/7 · **Stato stimato: 64%**.
+
+**Causa della presa fuori quadro, misurata:** la prima passata di regia scriveva i bersagli DOPO il lerp della
+posizione camera (r. ~8456), e `tP*` si ricalcola da capo a ogni fotogramma: cambiava solo lo sguardo. Portiere
+nel quadro solo dal contatto, altezza apparente 0,06-0,09.
+**Rimedio (solo review, rosso `__CPM_NO_PRESACAM`):** posizione scritta PRIMA del lerp, sguardo prima dell'arbitro
+d'inerzia (regola 7.521); al primo fotogramma della presa uno **stacco netto**, poi inseguimento normale. Camera di
+tre quarti dal lato del volo, 11 m, quota 3,6 m.
+
+| misura (sit. 33, `keeper-catch-sequence-review.mjs`) | rosso `__CPM_NO_PRESACAM` | **verde** |
+| --- | ---: | ---: |
+| portiere nel quadro al contatto | **no** | **si** |
+| altezza apparente al contatto | 0,084 | **0,177** |
+| quota campioni col portiere nel quadro dopo l'armo | 0,71 | **1,00** |
+| tempo di clip al contatto (finestra 1,00-1,17) | 1,064 | **1,076** |
+| distanza palla-mani minima | 0 | **0** |
+| partita normale `__CPM_TRI907` | — | **1.103.244** |
+
+Prova visiva: `keeper-catch-review/presa-contatto.png` — braccia alzate, palla fra le mani sopra la testa.
+
+**Aperto, dichiarato:**
+- la palla in volo entra nel quadro solo all'ultimo tratto (in verticale il campo orizzontale e' ~±11°);
+- nell'apertura il portiere sta sul bordo: le reti di legalita' tirano ancora lo sguardo verso l'eroe;
+- a 11 m il portiere e' LOD2 (4.190 tri): da vicino la superficie e' povera. Promuoverlo a LOD1 costerebbe ~+8.000
+  triangoli (bersaglio ~69.000): decisione da prendere col tuo occhio, non fatta;
+- apertura braccia max 0,69 durante la discesa (soglia presa dal dribbling 0,65): alla vista non e' una T-pose;
+- testo d'esito «Para in tuffo» contro gesto di presa alta (vedi voce 00:25);
+- **telefono: non misurato.**
 
 ---
 

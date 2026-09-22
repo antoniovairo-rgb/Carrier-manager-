@@ -13,7 +13,8 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROSSO = process.env.CPM_ROSSO === '1'; /* rosso appaiato: __CPM_NO_PRESA spegne il canale della presa */
-const out = path.join(here, ROSSO ? 'keeper-catch-review-rosso' : 'keeper-catch-review');
+const ROSSO_CAM = process.env.CPM_ROSSO_CAM === '1'; /* rosso della sola regia: __CPM_NO_PRESACAM */
+const out = path.join(here, ROSSO ? 'keeper-catch-review-rosso' : (ROSSO_CAM ? 'keeper-catch-review-rosso-cam' : 'keeper-catch-review'));
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'presa-'));
 const N = Number(process.env.CPM_N || 70), PASSO = Number(process.env.CPM_PASSO || 180);
 const server = await startServer();
@@ -25,6 +26,7 @@ page.on('pageerror', error => errors.push(String(error.message).slice(0, 200)));
 
 try {
   if (ROSSO) await page.addInitScript(() => { window.__CPM_NO_PRESA = true; });
+  if (ROSSO_CAM) await page.addInitScript(() => { window.__CPM_NO_PRESACAM = true; });
   await installCdnRoutes(page);
   await openMatch(page, server.address().port, {
     skipLoadAll: true,
@@ -82,6 +84,10 @@ try {
     distanzaDopoContatto: dopo.map(f => k(f).handBall),
     aperturaBracciaMax: Math.max(...frames.map(f => k(f).armOpen || 0)),
     maniSopraBustoAlContatto: contatto ? k(contatto).handsAboveSpine : null,
+    portiereNelQuadroAlContatto: contatto ? (k(contatto).screen || {}).keeperInFrame ?? null : null,
+    altezzaApparenteAlContatto: contatto ? (k(contatto).screen || {}).keeperHeight ?? null : null,
+    quotaNelQuadroDopoArmo: (() => { const q = frames.filter(f => k(f).presa); return q.length ? +(q.filter(f => (k(f).screen || {}).keeperInFrame).length / q.length).toFixed(2) : null; })(),
+    tempoClipAlContatto: (frames.at(-1)?.keeper?.presa || {}).contactClipT ?? null,
     fotogrammi: Object.fromEntries(Object.entries(scelti).map(([n, f]) => [n, f ? { i: f.i, t: f.t, phase: f.phase, ...k(f) } : null])),
     errors,
   };
