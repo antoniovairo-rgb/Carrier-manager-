@@ -29,7 +29,18 @@
 /* Card — refactor Ondata 1: default pinnati (radius 14 · pad "16px 18px" · TH.shadow) → zero regressione.
    Nuovi prop opt-in: elevation(1|2|3) · tone(win|draw|loss|primary|info|warn|neutral) · interactive · header/footer · density(tight|loose). ...rest → onClick ora arriva al div (fix riga Coppe 6.8.1). */
 const _CARD_TONE={win:["winBg","winBd"],draw:["drawBg","drawBd"],loss:["lossBg","lossBd"],primary:["primaryTint","primaryBorder"],info:["bgBlue","bdBlue"],warn:["bgAmber","bdAmber"],neutral:["surface2","divider"]};
-const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=false,header,footer,density,className="",...rest})=>{
+/* [G10 · 22/09, rilievo PO «ancora tanti box molto lunghi, farei accordion o altre soluzioni a te piu'
+   congeniali» + «la schermata e' ancora lunghissima»] IL MOMENTO E' UNA FISARMONICA.
+   MISURATO (griglia mobile, tabella «dove stanno i pixel»): la Dashboard e' alta 2718 px = 2,97 schermate
+   del telefono del PO, e OTTO riquadri narrativi — storia, mondo fuori, vita privata, procuratore,
+   progetto del club, sponsor, Primavera, «adesso guardano te» — ne occupano 1399, cioe' il 51 %. Sono
+   tutti aperti insieme, uno sotto l'altro, e nessuno di loro e' l'azione della settimana.
+   Con `momento="titolo"` il riquadro si presenta CHIUSO: una riga da 40 px col suo titolo e la freccia,
+   e il contenuto (testo e bottoni) arriva al tocco. Niente e' nascosto: e' a un dito di distanza, che e'
+   esattamente quello che il PO ha chiesto. La riga chiusa resta sopra i 44 px di bersaglio tattile
+   (padding compreso) e porta `aria-expanded`, cosi' la fisarmonica esiste anche per chi non vede. */
+const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=false,header,footer,density,className="",momento,momentoAperto=false,momentoNota,momentoInk,...rest})=>{
+  const [_ap,_setAp]=React.useState(!!momentoAperto);
   const el=elevation===3?TH.el3:elevation===2?TH.el2:elevation===1?TH.el1:(shadow?TH.shadow:"none");
   const t=tone&&_CARD_TONE[tone];
   /* [21/09 · direttiva PO: «riduci lo spazio dei box da tutte le schermate, devono essere piu' compatte.
@@ -40,8 +51,16 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
      mobile, e i difetti NON devono muoversi: comprimere fino a far toccare i bordi sarebbe barare
      sull'altezza pagando in leggibilita'. */
   const pad=density==="tight"?"7px 11px":density==="loose"?"14px 18px":"11px 15px";
-  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:14,padding:pad,boxShadow:el,...style}} {...rest}>
-    {header!=null&&<div style={{marginBottom:8}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</div>);
+  const _padM=momento?(_ap?pad:"6px 12px"):pad;
+  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:14,padding:_padM,boxShadow:el,...style}} {...rest}>
+    {momento!=null&&(
+      <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus"
+        style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:32,padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
+        <span style={{flex:1,minWidth:0,fontSize:FS.body,fontWeight:800,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{momento}</span>
+        {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
+        <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"}}>▶</span>
+      </button>)}
+    {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
 };
 /* Btn — refactor Ondata 1: default 'md' == output attuale (pad "10px 18px" · minHeight 40 · fs 13).
    Nuovi prop opt-in: size(sm|md|lg) · icon · loading. .cpm-press → hover/active (nessun cambio a frame statico). */

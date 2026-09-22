@@ -2500,15 +2500,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 197,
+    "nTesto": 160,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 125,
+    "nMisurati": 115,
     "nSotto": 0,
-    "nGradiente": 42,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -2572,14 +2572,12 @@
     ],
     "nColTesto": 14,
     "nFondi": 7,
-    "nCorpi": 11,
-    "nRaggi": 7,
+    "nCorpi": 9,
+    "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      11,
-     11.5,
      12,
-     12.5,
      13,
      14,
      17,
@@ -2589,9 +2587,7 @@
      32
     ],
     "raggi": [
-     3,
      6,
-     10,
      12,
      14,
      16,
@@ -2600,113 +2596,111 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 125
+      "n": 115
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2880,
-    "schermate": 3.15,
+    "altezzaPx": 1890,
+    "schermate": 2.07,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 473,
-      "quota": 16.4,
+      "quota": 25.1,
       "txt": "📅La tua settimanaSettimana di campionatoS",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 288,
-      "quota": 10,
+      "quota": 15.3,
       "txt": "Lega B · 11ª giornataProssima partitaCalen",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
-      "px": 245,
-      "quota": 8.5,
-      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
-     },
-     {
-      "px": 207,
-      "quota": 7.2,
-      "txt": "Il tuo procuratore — questione di filosofi",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
-     },
-     {
-      "px": 206,
-      "quota": 7.1,
-      "txt": "La tua storia🆚La sfida di sempreSettimana",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
-     },
-     {
-      "px": 203,
-      "quota": 7.1,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
-      "px": 202,
-      "quota": 7,
-      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
       "px": 183,
-      "quota": 6.3,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "quota": 9.7,
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
       "px": 175,
-      "quota": 6.1,
+      "quota": 9.3,
       "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
      },
      {
-      "px": 173,
-      "quota": 6,
-      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 101,
+      "quota": 5.3,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
      },
      {
-      "px": 172,
-      "quota": 6,
-      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "px": 86,
+      "quota": 4.5,
+      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
+     },
+     {
+      "px": 78,
+      "quota": 4.1,
+      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     },
+     {
+      "px": 77,
+      "quota": 4.1,
+      "txt": "🤝78Fiducia mister⭐64Popolarità",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
+     },
+     {
+      "px": 67,
+      "quota": 3.5,
+      "txt": "Adesso guardano teNEL PIENO▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 67,
+      "quota": 3.5,
+      "txt": "Il mondo fuori▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il progetto del club▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
-      "px": 172,
-      "quota": 6,
-      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il tuo procuratore▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
     "etichette": {
      "Gol": 3,
      "Assist": 2,
-     "Partite": 3,
+     "Partite": 2,
      "OVR": 1,
      "Forma": 2,
      "Morale": 1,
      "Fatica": 1,
-     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 8,
-     "Obiettivi": 1
+     "Settimana": 6
     },
-    "nEmojiChar": 27,
+    "nEmojiChar": 26,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "🆚",
-     "🏛️",
-     "👟",
-     "✍️ Firmo l’accordo",
-     "❤️",
-     "🏠 Boutique",
-     "🌐 Global"
+     "▶",
+     "❤️ Vita privata",
+     "🌱 Il ragazzo della Primavera",
+     "📅",
+     "🙂",
+     "📊",
+     "🔥"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -2718,7 +2712,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -2731,29 +2725,29 @@
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
       "lum": 0.012,
       "fondo": "#241438",
-      "px": 206,
-      "txt": "La tua storia🆚La sfida di sempreS"
+      "px": 53,
+      "txt": "La tua storia▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
-      "px": 172,
-      "txt": "👟 Sponsor — nuova offertaFalco No"
+      "px": 58,
+      "txt": "Il tuo procuratore▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
-      "px": 173,
-      "txt": "❤️ Vita privataQualcuno in tribuna"
+      "px": 58,
+      "txt": "❤️ Vita privata▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
-      "px": 203,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+      "px": 67,
+      "txt": "Adesso guardano teNEL PIENO▶"
      }
     ]
    },
@@ -2767,15 +2761,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 197,
+    "nTesto": 160,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 125,
+    "nMisurati": 115,
     "nSotto": 0,
-    "nGradiente": 42,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -2839,14 +2833,12 @@
     ],
     "nColTesto": 14,
     "nFondi": 7,
-    "nCorpi": 11,
-    "nRaggi": 7,
+    "nCorpi": 9,
+    "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      11,
-     11.5,
      12,
-     12.5,
      13,
      14,
      17,
@@ -2856,9 +2848,7 @@
      32
     ],
     "raggi": [
-     3,
      6,
-     10,
      12,
      14,
      16,
@@ -2867,113 +2857,111 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 125
+      "n": 115
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2864,
-    "schermate": 3.13,
+    "altezzaPx": 1890,
+    "schermate": 2.07,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 473,
-      "quota": 16.5,
+      "quota": 25.1,
       "txt": "📅La tua settimanaSettimana di campionatoS",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 288,
-      "quota": 10.1,
+      "quota": 15.3,
       "txt": "Lega B · 11ª giornataProssima partitaCalen",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
-      "px": 227,
-      "quota": 7.9,
-      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
-     },
-     {
-      "px": 207,
-      "quota": 7.2,
-      "txt": "Il tuo procuratore — questione di filosofi",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
-     },
-     {
-      "px": 206,
-      "quota": 7.2,
-      "txt": "La tua storia🆚La sfida di sempreSettimana",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
-     },
-     {
-      "px": 203,
-      "quota": 7.1,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
-      "px": 202,
-      "quota": 7.1,
-      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
       "px": 183,
-      "quota": 6.4,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "quota": 9.7,
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
       "px": 175,
-      "quota": 6.1,
+      "quota": 9.3,
       "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
      },
      {
-      "px": 173,
-      "quota": 6.1,
-      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 101,
+      "quota": 5.3,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
      },
      {
-      "px": 172,
-      "quota": 6,
-      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "px": 86,
+      "quota": 4.5,
+      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
+     },
+     {
+      "px": 78,
+      "quota": 4.1,
+      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     },
+     {
+      "px": 77,
+      "quota": 4.1,
+      "txt": "🤝78Fiducia mister⭐64Popolarità",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
+     },
+     {
+      "px": 67,
+      "quota": 3.5,
+      "txt": "Adesso guardano teNEL PIENO▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 67,
+      "quota": 3.5,
+      "txt": "Il mondo fuori▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il progetto del club▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
-      "px": 172,
-      "quota": 6,
-      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il tuo procuratore▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
     "etichette": {
      "Gol": 3,
      "Assist": 2,
-     "Partite": 3,
+     "Partite": 2,
      "OVR": 1,
      "Forma": 2,
      "Morale": 1,
      "Fatica": 1,
-     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 8,
-     "Obiettivi": 1
+     "Settimana": 6
     },
-    "nEmojiChar": 27,
+    "nEmojiChar": 26,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "🆚",
-     "🏛️",
-     "👟",
-     "✍️ Firmo l’accordo",
-     "❤️",
-     "🏠 Boutique",
-     "🌐 Global"
+     "▶",
+     "❤️ Vita privata",
+     "🌱 Il ragazzo della Primavera",
+     "📅",
+     "🙂",
+     "📊",
+     "🔥"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -2985,7 +2973,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -2998,29 +2986,29 @@
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
       "lum": 0.012,
       "fondo": "#241438",
-      "px": 206,
-      "txt": "La tua storia🆚La sfida di sempreS"
+      "px": 53,
+      "txt": "La tua storia▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
-      "px": 172,
-      "txt": "👟 Sponsor — nuova offertaFalco No"
+      "px": 58,
+      "txt": "Il tuo procuratore▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
-      "px": 173,
-      "txt": "❤️ Vita privataQualcuno in tribuna"
+      "px": 58,
+      "txt": "❤️ Vita privata▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
-      "px": 203,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+      "px": 67,
+      "txt": "Adesso guardano teNEL PIENO▶"
      }
     ]
    },
@@ -3034,15 +3022,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 197,
+    "nTesto": 160,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 125,
+    "nMisurati": 115,
     "nSotto": 0,
-    "nGradiente": 42,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -3106,14 +3094,12 @@
     ],
     "nColTesto": 14,
     "nFondi": 7,
-    "nCorpi": 11,
-    "nRaggi": 7,
+    "nCorpi": 9,
+    "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      11,
-     11.5,
      12,
-     12.5,
      13,
      14,
      17,
@@ -3123,9 +3109,7 @@
      32
     ],
     "raggi": [
-     3,
      6,
-     10,
      12,
      14,
      16,
@@ -3134,113 +3118,111 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 125
+      "n": 115
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2847,
-    "schermate": 3.11,
+    "altezzaPx": 1890,
+    "schermate": 2.07,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 473,
-      "quota": 16.6,
+      "quota": 25.1,
       "txt": "📅La tua settimanaSettimana di campionatoS",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 288,
-      "quota": 10.1,
+      "quota": 15.3,
       "txt": "Lega B · 11ª giornataProssima partitaCalen",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
-      "px": 227,
-      "quota": 8,
-      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
-     },
-     {
-      "px": 207,
-      "quota": 7.3,
-      "txt": "Il tuo procuratore — questione di filosofi",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
-     },
-     {
-      "px": 203,
-      "quota": 7.1,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
-      "px": 202,
-      "quota": 7.1,
-      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
-      "px": 187,
-      "quota": 6.6,
-      "txt": "La tua storia🆚La sfida di sempreSettimana",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
-     },
-     {
       "px": 183,
-      "quota": 6.4,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "quota": 9.7,
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
       "px": 175,
-      "quota": 6.1,
+      "quota": 9.3,
       "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
      },
      {
-      "px": 173,
-      "quota": 6.1,
-      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 101,
+      "quota": 5.3,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
      },
      {
-      "px": 172,
-      "quota": 6.1,
-      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "px": 86,
+      "quota": 4.5,
+      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
+     },
+     {
+      "px": 78,
+      "quota": 4.1,
+      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     },
+     {
+      "px": 77,
+      "quota": 4.1,
+      "txt": "🤝78Fiducia mister⭐64Popolarità",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
+     },
+     {
+      "px": 67,
+      "quota": 3.5,
+      "txt": "Adesso guardano teNEL PIENO▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 67,
+      "quota": 3.5,
+      "txt": "Il mondo fuori▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il progetto del club▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
-      "px": 172,
-      "quota": 6,
-      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il tuo procuratore▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
     "etichette": {
      "Gol": 3,
      "Assist": 2,
-     "Partite": 3,
+     "Partite": 2,
      "OVR": 1,
      "Forma": 2,
      "Morale": 1,
      "Fatica": 1,
-     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 8,
-     "Obiettivi": 1
+     "Settimana": 6
     },
-    "nEmojiChar": 27,
+    "nEmojiChar": 26,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "🆚",
-     "🏛️",
-     "👟",
-     "✍️ Firmo l’accordo",
-     "❤️",
-     "🏠 Boutique",
-     "🌐 Global"
+     "▶",
+     "❤️ Vita privata",
+     "🌱 Il ragazzo della Primavera",
+     "📅",
+     "🙂",
+     "📊",
+     "🔥"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -3252,7 +3234,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3265,29 +3247,29 @@
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
       "lum": 0.012,
       "fondo": "#241438",
-      "px": 187,
-      "txt": "La tua storia🆚La sfida di sempreS"
+      "px": 53,
+      "txt": "La tua storia▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
-      "px": 172,
-      "txt": "👟 Sponsor — nuova offertaFalco No"
+      "px": 58,
+      "txt": "Il tuo procuratore▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
-      "px": 173,
-      "txt": "❤️ Vita privataQualcuno in tribuna"
+      "px": 58,
+      "txt": "❤️ Vita privata▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
-      "px": 203,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+      "px": 67,
+      "txt": "Adesso guardano teNEL PIENO▶"
      }
     ]
    },
@@ -3301,15 +3283,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 197,
+    "nTesto": 160,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 125,
+    "nMisurati": 115,
     "nSotto": 0,
-    "nGradiente": 42,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -3373,14 +3355,12 @@
     ],
     "nColTesto": 14,
     "nFondi": 7,
-    "nCorpi": 11,
-    "nRaggi": 7,
+    "nCorpi": 9,
+    "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      11,
-     11.5,
      12,
-     12.5,
      13,
      14,
      17,
@@ -3390,9 +3370,7 @@
      32
     ],
     "raggi": [
-     3,
      6,
-     10,
      12,
      14,
      16,
@@ -3401,113 +3379,111 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 125
+      "n": 115
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2718,
-    "schermate": 2.97,
+    "altezzaPx": 1890,
+    "schermate": 2.07,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 473,
-      "quota": 17.4,
+      "quota": 25.1,
       "txt": "📅La tua settimanaSettimana di campionatoS",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 288,
-      "quota": 10.6,
+      "quota": 15.3,
       "txt": "Lega B · 11ª giornataProssima partitaCalen",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
-      "px": 208,
-      "quota": 7.7,
-      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
-     },
-     {
-      "px": 187,
-      "quota": 6.9,
-      "txt": "La tua storia🆚La sfida di sempreSettimana",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
-     },
-     {
-      "px": 184,
-      "quota": 6.8,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
       "px": 183,
-      "quota": 6.7,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "quota": 9.7,
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
-      "px": 183,
-      "quota": 6.7,
-      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
       "px": 175,
-      "quota": 6.4,
+      "quota": 9.3,
       "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
      },
      {
-      "px": 174,
-      "quota": 6.4,
-      "txt": "Il tuo procuratore — questione di filosofi",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+      "px": 101,
+      "quota": 5.3,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
      },
      {
-      "px": 173,
-      "quota": 6.4,
-      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 86,
+      "quota": 4.5,
+      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
      },
      {
-      "px": 154,
-      "quota": 5.7,
-      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "px": 78,
+      "quota": 4.1,
+      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     },
+     {
+      "px": 77,
+      "quota": 4.1,
+      "txt": "🤝78Fiducia mister⭐64Popolarità",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
+     },
+     {
+      "px": 67,
+      "quota": 3.5,
+      "txt": "Adesso guardano teNEL PIENO▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 67,
+      "quota": 3.5,
+      "txt": "Il mondo fuori▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il progetto del club▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
-      "px": 136,
-      "quota": 5,
-      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il tuo procuratore▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
     "etichette": {
      "Gol": 3,
      "Assist": 2,
-     "Partite": 3,
+     "Partite": 2,
      "OVR": 1,
      "Forma": 2,
      "Morale": 1,
      "Fatica": 1,
-     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 8,
-     "Obiettivi": 1
+     "Settimana": 6
     },
-    "nEmojiChar": 27,
+    "nEmojiChar": 26,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "🆚",
-     "🏛️",
-     "👟",
-     "✍️ Firmo l’accordo",
-     "❤️",
-     "🏠 Boutique",
-     "🌐 Global"
+     "▶",
+     "❤️ Vita privata",
+     "🌱 Il ragazzo della Primavera",
+     "📅",
+     "🙂",
+     "📊",
+     "🔥"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -3519,7 +3495,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3532,29 +3508,29 @@
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
       "lum": 0.012,
       "fondo": "#241438",
-      "px": 187,
-      "txt": "La tua storia🆚La sfida di sempreS"
+      "px": 53,
+      "txt": "La tua storia▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
-      "px": 136,
-      "txt": "👟 Sponsor — nuova offertaFalco No"
+      "px": 58,
+      "txt": "Il tuo procuratore▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
-      "px": 173,
-      "txt": "❤️ Vita privataQualcuno in tribuna"
+      "px": 58,
+      "txt": "❤️ Vita privata▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
-      "px": 184,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+      "px": 67,
+      "txt": "Adesso guardano teNEL PIENO▶"
      }
     ]
    },
@@ -3568,15 +3544,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 197,
+    "nTesto": 160,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 125,
+    "nMisurati": 115,
     "nSotto": 0,
-    "nGradiente": 42,
-    "nEmoji": 30,
+    "nGradiente": 16,
+    "nEmoji": 29,
     "peggiori": [
      {
       "testo": "#b45309",
@@ -3640,14 +3616,12 @@
     ],
     "nColTesto": 14,
     "nFondi": 7,
-    "nCorpi": 11,
-    "nRaggi": 7,
+    "nCorpi": 9,
+    "nRaggi": 5,
     "nPesi": 5,
     "corpi": [
      11,
-     11.5,
      12,
-     12.5,
      13,
      14,
      17,
@@ -3657,9 +3631,7 @@
      32
     ],
     "raggi": [
-     3,
      6,
-     10,
      12,
      14,
      16,
@@ -3668,113 +3640,111 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 125
+      "n": 115
      }
     ],
     "nFamiglie": 1,
-    "altezzaPx": 2702,
-    "schermate": 2.95,
+    "altezzaPx": 1874,
+    "schermate": 2.05,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [
      {
       "px": 456,
-      "quota": 16.9,
+      "quota": 24.3,
       "txt": "📅La tua settimanaSettimana di campionatoS",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
      },
      {
       "px": 288,
-      "quota": 10.7,
+      "quota": 15.4,
       "txt": "Lega B · 11ª giornataProssima partitaCalen",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
      },
      {
-      "px": 208,
-      "quota": 7.7,
-      "txt": "Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(11)"
-     },
-     {
-      "px": 187,
-      "quota": 6.9,
-      "txt": "La tua storia🆚La sfida di sempreSettimana",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)"
-     },
-     {
-      "px": 184,
-      "quota": 6.8,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe ne acco",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
       "px": 183,
-      "quota": 6.8,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "quota": 9.7,
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
-      "px": 183,
-      "quota": 6.8,
-      "txt": "Il mondo fuori👀C'era il CT, in tribunaNes",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
       "px": 175,
-      "quota": 6.5,
+      "quota": 9.3,
       "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
      },
      {
-      "px": 174,
-      "quota": 6.4,
-      "txt": "Il tuo procuratore — questione di filosofi",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)"
+      "px": 101,
+      "quota": 5.4,
+      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
      },
      {
-      "px": 173,
-      "quota": 6.4,
-      "txt": "❤️ Vita privataQualcuno in tribunaElena er",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)"
+      "px": 86,
+      "quota": 4.6,
+      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
      },
      {
-      "px": 154,
-      "quota": 5.7,
-      "txt": "Il progetto del club🏛️Progetto solidoNess",
+      "px": 78,
+      "quota": 4.1,
+      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
+     },
+     {
+      "px": 77,
+      "quota": 4.1,
+      "txt": "🤝78Fiducia mister⭐64Popolarità",
+      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
+     },
+     {
+      "px": 67,
+      "quota": 3.6,
+      "txt": "Adesso guardano teNEL PIENO▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
+     },
+     {
+      "px": 67,
+      "quota": 3.6,
+      "txt": "Il mondo fuori▶",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
+     },
+     {
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il progetto del club▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
      },
      {
-      "px": 136,
-      "quota": 5,
-      "txt": "👟 Sponsor — nuova offertaFalco Nove ti pr",
+      "px": 58,
+      "quota": 3.1,
+      "txt": "Il tuo procuratore▶",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
      }
     ],
     "etichette": {
      "Gol": 3,
      "Assist": 2,
-     "Partite": 3,
+     "Partite": 2,
      "OVR": 1,
      "Forma": 2,
      "Morale": 1,
      "Fatica": 1,
-     "Contratto": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 8,
-     "Obiettivi": 1
+     "Settimana": 6
     },
-    "nEmojiChar": 27,
+    "nEmojiChar": 26,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "🆚",
-     "🏛️",
-     "👟",
-     "✍️ Firmo l’accordo",
-     "❤️",
-     "🏠 Boutique",
-     "🌐 Global"
+     "▶",
+     "❤️ Vita privata",
+     "🌱 Il ragazzo della Primavera",
+     "📅",
+     "🙂",
+     "📊",
+     "🔥"
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -3786,7 +3756,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3799,29 +3769,29 @@
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
       "lum": 0.012,
       "fondo": "#241438",
-      "px": 187,
-      "txt": "La tua storia🆚La sfida di sempreS"
+      "px": 53,
+      "txt": "La tua storia▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
       "lum": 0.017,
       "fondo": "#14243a",
-      "px": 136,
-      "txt": "👟 Sponsor — nuova offertaFalco No"
+      "px": 58,
+      "txt": "Il tuo procuratore▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
       "lum": 0.013,
       "fondo": "#331426",
-      "px": 173,
-      "txt": "❤️ Vita privataQualcuno in tribuna"
+      "px": 58,
+      "txt": "❤️ Vita privata▶"
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
-      "px": 184,
-      "txt": "⏳ NEL PIENO👁️Adesso guardano teTe"
+      "px": 67,
+      "txt": "Adesso guardano teNEL PIENO▶"
      }
     ]
    }
@@ -3988,7 +3958,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4035,7 +4005,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -4200,7 +4170,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4247,7 +4217,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -4412,7 +4382,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4459,7 +4429,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -4624,7 +4594,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4671,7 +4641,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -4836,7 +4806,7 @@
      {
       "px": 183,
       "quota": 9.2,
-      "txt": "K⚽rwardEliteSalva · 10:25AvataaarsPablo St",
+      "txt": "K⚽rwardEliteSalva · 11:35AvataaarsPablo St",
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
      },
      {
@@ -4883,7 +4853,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    }
@@ -5033,7 +5003,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -5181,7 +5151,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -5329,7 +5299,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -5477,7 +5447,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -5625,7 +5595,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    }
@@ -5767,7 +5737,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -5907,7 +5877,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -6047,7 +6017,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -6187,7 +6157,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -6327,7 +6297,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    }
@@ -6478,7 +6448,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6634,7 +6604,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6790,7 +6760,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -6946,7 +6916,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -7102,7 +7072,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
@@ -7343,7 +7313,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -7603,7 +7573,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -7863,7 +7833,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -8123,7 +8093,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -8383,7 +8353,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -8561,7 +8531,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -8709,7 +8679,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -8857,7 +8827,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -9005,7 +8975,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -9153,7 +9123,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    }
@@ -9310,7 +9280,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -9465,7 +9435,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -9620,7 +9590,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -9775,7 +9745,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    },
@@ -9930,7 +9900,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 119,
-      "txt": "K⚽rwardEliteSalva · 10:25Avataaars"
+      "txt": "K⚽rwardEliteSalva · 11:35Avataaars"
      }
     ]
    }

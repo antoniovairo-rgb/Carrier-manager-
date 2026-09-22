@@ -4986,7 +4986,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.963.0"; // [7.963.0 - MEZZO GIOCO ERA SCRITTO IN UN CARATTERE CHE NON E NOSTRO, E NESSUN NUMERO LO DICEVA] Collaudo PO: «la schermata iniziale e rimasta completamente fuori standard». La griglia mobile misurava contrasto, corpo, raggio, tinta - mai la FAMIGLIA del carattere, quindi il difetto era invisibile. Censimento nuovo (tabella 9-quinquies): si legge la PRIMA famiglia della font-family CALCOLATA, cioe quella che il browser usa davvero, su ogni nodo di testo visibile. MISURATO, la prima corsa: Creazione 544 nodi in Arial contro 275 in Barlow (piu della meta della schermata), Classifica 5 in Arial, e Segoe UI su otto schermate. Totale 552 nodi fuori standard. DUE CAUSE, ognuna con la sua riga: (1) input, select, textarea e button NON EREDITANO il carattere - e per contratto del browser, non un difetto nostro - e la Creazione e fatta di controlli: una riga in testa (font-family:inherit) e tutte le schermate sono a posto; (2) il MARCHIO era scritto in Segoe UI, che non e incorporato da nessuna parte: sul banco si vede, sull Android del PO cade sul ripiego di sistema, quindi il marchio cambiava aspetto col telefono. Ora e Barlow, che e incorporato (sei tagli) ed e il carattere del provino approvato. RI-MISURATO: 552 nodi fuori standard -> ZERO. Tutte e tredici le schermate rendono UNA sola famiglia, Barlow (Creazione 819/819). Nessuna regressione: overflow 0, fuori schermo 0, testo sotto il pavimento 0/1978, contrasto 0/2457, completamento medio 89,7 per cento invariato. NON VERIFICATO: Chromium a 412x915, non l Android del PO - ma e proprio il telefono del PO il posto dove il vecchio marchio cambiava faccia.
+const GAME_VERSION="7.964.0"; // [7.964.0 - IL MOMENTO E UNA FISARMONICA: LA DASHBOARD SCENDE DA TRE SCHERMATE A DUE] Rilievo PO: «ancora tanti box molto lunghi, farei accordion o altre soluzioni a te piu congeniali» e «la schermata e ancora lunghissima». MISURATO (griglia mobile, tabella dove stanno i pixel): la Dashboard era alta 2718 px = 2,97 schermate del telefono del PO, e NOVE riquadri narrativi - storia, progetto del club, sponsor, procuratore (due), vita privata, mondo fuori, saga, irripetibili - ne occupavano piu della meta. Erano tutti aperti insieme, uno sotto l altro, e nessuno di loro e l azione della settimana. Card ha ora un modo FISARMONICA (prop momento): il riquadro si presenta chiuso, una riga col suo titolo e la freccia, e il contenuto arriva al tocco. Niente e nascosto: e a un dito. La riga porta aria-expanded e resta sopra il bersaglio tattile. RI-MISURATO: Dashboard 2718 -> 1890 px, cioe 2,97 -> 2,07 schermate; completamento della schermata 80,0 -> 85,9 per cento; raggi 7 -> 5, corpi 10 -> 9; media delle tredici schermate 89,7 -> 90,2. Zero difetti: overflow 0, fuori schermo 0, pavimento 0, contrasto 0/115, nessun errore di pagina. DUE DIFETTI TROVATI DALLA MISURA E CORRETTI PRIMA DI SPEDIRE: (1) la prima stesura dichiarava l inchiostro bianco su TUTTE le fisarmoniche, ma la card del progetto del club col tono neutro sta su fondo chiaro - la griglia ha misurato bianco su bianco, 1,00:1, e l inchiostro ora segue il fondo; (2) un button non eredita la taglia del testo (la prende dal ripiego del browser, 13,333 px): il corpo della riga si dichiara. NON VERIFICATO: Chromium a 412x915, non l Android del PO.
 // [nota 7.761.0] [7.761.0 — FASE 10, OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO, E IL METRO DELLE RIGHE FONDATE SMETTE DI PUNIRE I TIRI]. Il censimento fondate-558 contava «smentite» righe che dichiaravano un punto e trovavano il pallone alla linea di porta (94,50) nella stessa finestra: non era la riga a mentire, era il tiro dell'eroe (parato o fuori) che il giudice non poteva vedere perche' il libro mastro registrava solo i gol. Ora handleAction scrive cpmEv(«esito», {min,key,ok,at}) per ogni azione risolta, e il metro (7.760: gol nella finestra → conto a parte; 7.761: anche gli esiti goal/miss/save/chance/assist) mette quelle righe in un conto separato, ne' fondate ne' smentite. Il gioco non cambia: cambia cio' che il libro mastro sa, e quindi cio' che i guardiani potranno chiedere. MISURA: fondate-558 sui semi 7300/7337 prima e dopo (vedi verbale).
 // [nota 7.759.0] [7.759.0 — TROVATO DAL GUARDIANO: il gol subito nella scena difensiva non entrava nel libro mastro]. La banda «tabellone» (7.756), fatta girare su QUATTRO partite per la stabilita', ha bocciato: gol raccontati 2-4 contro punteggio finale 2-5. Censiti i cinque scrittori del punteggio: gol dell'eroe da gioco aperto (1153), gol ambientale nostro e loro (4464/4465), gol dell'eroe su palla ferma (6638) hanno tutti il loro cpmEv(«goal»); il gol AVVERSARIO da scena difensiva (esito goal_against di handleAction) incrementava il punteggio senza scriverlo nel libro mastro — quindi il feed del tabellone (7.721), la banda «tabellone» e ogni guardiano che conta i gol dagli eventi lo perdevano. Ora scrive l'evento con src «scena-difensiva». Il punteggio non cambia (il microsim e le scene restano l'autorita'): cambia solo che ogni gol e' registrato. MISURA: guardiano a 4 partite, banda tabellone da rossa a verde (vedi verbale).
 // [nota 7.758.0] [7.758.0 — COLLAUDO PO 03/09 18:01 «pannello nero dietro la porta»: il cartellone centrale dietro la porta (z=0) era un rettangolo NERO senza scritta durante la scena ASSIST/DOMINIO, Coppa, GLB ON]. DIAGNOSI dal diario 7.535, che aveva gia' fotografato la firma: «quando l'allocazione non riesce, la mesh resta ma la sua texture e' vuota — e una texture vuota su materiale opaco e' NERA»; in headless non si riproduce (nessuna texture nera su 99 piani texturizzati), sul telefono con folla GLB, kit, volti e arredo la memoria GPU finisce e il primo cartellone che non si alloca e' quello che il PO guarda. RIMEDIO: il budget scende dove costa di piu' e non si vede — cartelloni (1024x160, uno per brand e stile) e drappi (1024x110) si disegnano come prima e si consegnano alla GPU a meta' lato (512x80 / 512x55), senza mipmap e con anisotropia 4. MISURATO (hook __CPM_DECOR, provino GLB ON, ON vs rosso __CPM_NO758): arredo 25,5 MB contro 30,7 MB (−17%), 11 cartelloni da 1024x160 a 512x80, stessi 167 piani e 52 texture uniche, zero texture nere in entrambi. Restano 8 texture 1024x512 (16 MB) e 2 LED 2048x128 (2 MB), censite per la prossima tacca. NON VERIFICATO sul telefono: la scomparsa del pannello nero va confermata dal PO nella stessa scena (Coppa, GLB ON). 7.757 «il piano-gol nasce dalla mente» PROVATA E REVOCATA (fondate appaiato peggiore: 75,7/71,9 contro 81,3/82,4).
@@ -9455,7 +9455,18 @@ function _heroSimLine(ps,rating){const _p=[];if(ps&&ps.goals)_p.push(`⚽${ps.go
 /* Card — refactor Ondata 1: default pinnati (radius 14 · pad "16px 18px" · TH.shadow) → zero regressione.
    Nuovi prop opt-in: elevation(1|2|3) · tone(win|draw|loss|primary|info|warn|neutral) · interactive · header/footer · density(tight|loose). ...rest → onClick ora arriva al div (fix riga Coppe 6.8.1). */
 const _CARD_TONE={win:["winBg","winBd"],draw:["drawBg","drawBd"],loss:["lossBg","lossBd"],primary:["primaryTint","primaryBorder"],info:["bgBlue","bdBlue"],warn:["bgAmber","bdAmber"],neutral:["surface2","divider"]};
-const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=false,header,footer,density,className="",...rest})=>{
+/* [G10 · 22/09, rilievo PO «ancora tanti box molto lunghi, farei accordion o altre soluzioni a te piu'
+   congeniali» + «la schermata e' ancora lunghissima»] IL MOMENTO E' UNA FISARMONICA.
+   MISURATO (griglia mobile, tabella «dove stanno i pixel»): la Dashboard e' alta 2718 px = 2,97 schermate
+   del telefono del PO, e OTTO riquadri narrativi — storia, mondo fuori, vita privata, procuratore,
+   progetto del club, sponsor, Primavera, «adesso guardano te» — ne occupano 1399, cioe' il 51 %. Sono
+   tutti aperti insieme, uno sotto l'altro, e nessuno di loro e' l'azione della settimana.
+   Con `momento="titolo"` il riquadro si presenta CHIUSO: una riga da 40 px col suo titolo e la freccia,
+   e il contenuto (testo e bottoni) arriva al tocco. Niente e' nascosto: e' a un dito di distanza, che e'
+   esattamente quello che il PO ha chiesto. La riga chiusa resta sopra i 44 px di bersaglio tattile
+   (padding compreso) e porta `aria-expanded`, cosi' la fisarmonica esiste anche per chi non vede. */
+const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=false,header,footer,density,className="",momento,momentoAperto=false,momentoNota,momentoInk,...rest})=>{
+  const [_ap,_setAp]=React.useState(!!momentoAperto);
   const el=elevation===3?TH.el3:elevation===2?TH.el2:elevation===1?TH.el1:(shadow?TH.shadow:"none");
   const t=tone&&_CARD_TONE[tone];
   /* [21/09 · direttiva PO: «riduci lo spazio dei box da tutte le schermate, devono essere piu' compatte.
@@ -9466,8 +9477,16 @@ const Card=({children,style={},border,bg,shadow=true,elevation,tone,interactive=
      mobile, e i difetti NON devono muoversi: comprimere fino a far toccare i bordi sarebbe barare
      sull'altezza pagando in leggibilita'. */
   const pad=density==="tight"?"7px 11px":density==="loose"?"14px 18px":"11px 15px";
-  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:14,padding:pad,boxShadow:el,...style}} {...rest}>
-    {header!=null&&<div style={{marginBottom:8}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</div>);
+  const _padM=momento?(_ap?pad:"6px 12px"):pad;
+  return(<div className={(interactive?"cpm-int ":"")+className} style={{background:bg||(t?TH[t[0]]:TH.card),border:`1px solid ${border||(t?TH[t[1]]:TH.cardBorder)}`,borderRadius:14,padding:_padM,boxShadow:el,...style}} {...rest}>
+    {momento!=null&&(
+      <button type="button" onClick={()=>_setAp(v=>!v)} aria-expanded={_ap} className="cpm-focus"
+        style={{display:"flex",alignItems:"center",gap:8,width:"100%",minHeight:32,padding:"3px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:FS.body/* [G10] il corpo si DICHIARA: un `button` non eredita la taglia del testo, la prende dal browser (13,333 px di ripiego) — e una riga di fisarmonica che dipende dal ripiego non e' nel sistema */,color:momentoInk||"inherit"/* [G10] l'inchiostro della riga chiusa lo dichiara il chiamante: questi riquadri hanno fondi scuri, e `inherit` avrebbe portato il testo della pagina (scuro) su un fondo scuro */,textAlign:"left"}}>
+        <span style={{flex:1,minWidth:0,fontSize:FS.body,fontWeight:800,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{momento}</span>
+        {momentoNota&&!_ap?<span style={{fontSize:FS.small,opacity:.75,flexShrink:0}}>{momentoNota}</span>:null}
+        <span aria-hidden style={{fontSize:FS.small,opacity:.7,flexShrink:0,transform:_ap?"rotate(90deg)":"none",transition:"transform .15s"}}>▶</span>
+      </button>)}
+    {momento!=null&&!_ap?null:(<>{header!=null&&<div style={{marginBottom:8}}>{header}</div>}{children}{footer!=null&&<div style={{marginTop:10}}>{footer}</div>}</>)}</div>);
 };
 /* Btn — refactor Ondata 1: default 'md' == output attuale (pad "10px 18px" · minHeight 40 · fs 13).
    Nuovi prop opt-in: size(sm|md|lg) · icon · loading. .cpm-press → hover/active (nessun cambio a frame statico). */
@@ -45988,7 +46007,7 @@ const getThisWeekMatchday=()=>{
           if(c.act==="nego"){try{setTimeout(()=>openNegoModal(),260);}catch(_e){}}
         };
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:`linear-gradient(150deg,${A.c1},${A.c2})`,border:`1px solid ${A.ac}44`}}>
+        <Card momento={`${A.e} ${A.lbl}`} momentoInk="#fff" momentoNota={`${ix+1}/${_tot}`} style={{marginBottom:8,padding:"9px 12px",background:`linear-gradient(150deg,${A.c1},${A.c2})`,border:`1px solid ${A.ac}44`}}>
           <div style={{fontSize:FS.caption,color:A.ac,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{A.e} {A.lbl} · episodio {ix+1} di {_tot}</div>
           <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:4}}>{_title}</div>
           <div style={{fontSize:11.5,color:"rgba(255,255,255,0.82)",lineHeight:1.5,marginBottom:8}}>{_body}</div>
@@ -46000,7 +46019,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _ch=storyChapter(player);if(!_ch)return null;
         return(
-        <Card style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#1a1026,#241438)",border:"1px solid #4c2a7a"}}>
+        <Card momento="La tua storia" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#1a1026,#241438)",border:"1px solid #4c2a7a"}}>
           <div style={{fontSize:FS.caption,color:"#c4b5fd",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La tua storia</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:22,lineHeight:1}}>{_ch.e}</span>
@@ -46138,7 +46157,7 @@ const getThisWeekMatchday=()=>{
         const seen=player.clubProjSeen;
         if(seen&&seen.k===pj.k&&seen.cid===(player.club?.id||player.club?.n))return null;
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:pj.tone==="bad"?"linear-gradient(150deg,#2a1a0e,#33210f)":pj.tone==="good"?"linear-gradient(150deg,#1a1610,#2a2113)":TH.card,border:pj.tone==="bad"?"1px solid #7a4a2a":pj.tone==="good"?"1px solid #8a6d1a":`1px solid ${TH.cardBorder}`}}>
+        <Card momento="Il progetto del club" momentoInk={pj.tone==="bad"||pj.tone==="good"?"#fff":TH.text}/* [G10] l'inchiostro segue il FONDO: col tono neutro questa card non e' scura ma `TH.card`, e il bianco dichiarato a mano dava bianco su bianco (misurato dalla griglia: 1,00:1) */ /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:pj.tone==="bad"?"linear-gradient(150deg,#2a1a0e,#33210f)":pj.tone==="good"?"linear-gradient(150deg,#1a1610,#2a2113)":TH.card,border:pj.tone==="bad"?"1px solid #7a4a2a":pj.tone==="good"?"1px solid #8a6d1a":`1px solid ${TH.cardBorder}`}}>
           <div style={{fontSize:FS.caption,color:pj.tone==="bad"?"#fdba74":pj.tone==="good"?"#fcd34d":TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il progetto del club</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{pj.e}</span>
@@ -46155,7 +46174,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const ss=stanceShift(player);if(!ss)return null;const _up=(ss.fx&&ss.fx.morale||0)>=0;
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:_up?"linear-gradient(150deg,#0d2418,#12301e)":"linear-gradient(150deg,#2a1010,#331414)",border:_up?"1px solid #1d6b45":"1px solid #7a2a2a"}}>
+        <Card momento="Sponsor" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_up?"linear-gradient(150deg,#0d2418,#12301e)":"linear-gradient(150deg,#2a1010,#331414)",border:_up?"1px solid #1d6b45":"1px solid #7a2a2a"}}>
           <div style={{fontSize:FS.caption,color:_up?"#6ee7b7":"#fca5a5",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{ss.e} Cambio di clima · {ss.label}</div>
           <div style={{fontSize:11.5,color:"rgba(255,255,255,0.86)",lineHeight:1.5,marginBottom:8}}>{ss.t}</div>
           <Btn v={_up?"primary":"ghost"} fw onClick={()=>setPlayer(p=>{const _ds=deriveStances(p)||{cid:p.club&&(p.club.id||p.club.n)};const fx=ss.fx||{};return{...p,stanceSeen:_ds,morale:clamp((p.morale||70)+(fx.morale||0),0,100),popularity:clamp((p.popularity||30)+(fx.popularity||0),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ss.e,headline:`${ss.label}: cambio di clima`,body:ss.t,color:_up?TH.txGreen:"#dc2626"}].slice(-80),log:[`${ss.e} ${ss.label}: ${ss.t}`,...(p.log||[])].slice(0,60)};})}>{_up?"Me lo tengo stretto →":"Rispondo sul campo →"}</Btn>
@@ -46164,7 +46183,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const sp=sponsorView(player);if(!sp)return null;
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(150deg,#101b2a,#14243a)",border:"1px solid #2a4a7a"}}>
+        <Card momento="Il tuo procuratore" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(150deg,#101b2a,#14243a)",border:"1px solid #2a4a7a"}}>
           <div style={{fontSize:FS.caption,color:"#93c5fd",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{sp.e} Sponsor — nuova offerta</div>
           <div style={{fontSize:11.5,color:"rgba(255,255,255,0.85)",lineHeight:1.5,marginBottom:8}}><strong>{sp.brand}</strong> ti propone un contratto da <strong>{sp.label}</strong>: {sp.weekly.toLocaleString("it-IT")}€ a settimana. {player.agentStyle==="global"?"Il tuo procuratore global ha aperto la porta prima del previsto.":"Il tuo nome comincia a valere fuori dal campo."}</div>
           <div style={{display:"flex",gap:8}}>
@@ -46188,7 +46207,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const lv=lifeView(player);if(!lv)return null;
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(150deg,#26101c,#331426)",border:"1px solid #7a2a55"}}>
+        <Card momento="❤️ Vita privata" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(150deg,#26101c,#331426)",border:"1px solid #7a2a55"}}>
           <div style={{fontSize:FS.caption,color:"#f9a8d4",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{lv.e} Vita privata</div>
           <div style={{fontSize:12.5,fontWeight:900,color:"#fff",marginBottom:3}}>{lv.t}</div>
           <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.5,marginBottom:8}}>{lv.d}</div>
@@ -46335,7 +46354,7 @@ const getThisWeekMatchday=()=>{
           </div>
         </Card>);})()}
       {tab==="dashboard"&&agentStyleView(player)&&(
-        <Card style={{marginBottom:8,padding:"9px 12px"}}>
+        <Card momento="Il tuo procuratore — la filosofia" /* [G10 · 7.964] fisarmonica: questa card e' su fondo chiaro, quindi l'inchiostro resta quello della pagina */ style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il tuo procuratore — questione di filosofia</div>
           <div style={{fontSize:11.5,color:TH.text,lineHeight:1.5,marginBottom:8}}>«Devi decidere che tipo di carriera vuoi», ti dice il tuo agente. «Posso seguirti come un'agenzia <strong>boutique</strong> — pochi assistiti, tanta cura, commissioni più basse — o portarti in una rete <strong>global</strong>: sponsor e big club arrivano prima, ma sarai uno dei tanti.»</div>
           <div style={{display:"flex",gap:8}}>
@@ -46348,7 +46367,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const ov=onceView(player);if(!ov)return null;
         return(
-        <Card style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#1c1408,#2a1f0c)",border:"1px solid #8a6d1a"}}>
+        <Card momento="Non mi era mai successo" momentoInk="#fff" /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#1c1408,#2a1f0c)",border:"1px solid #8a6d1a"}}>
           <div style={{fontSize:FS.caption,color:"#fcd34d",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Non mi era mai successo</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:22,lineHeight:1}}>{ov.e}</span>
@@ -46368,7 +46387,7 @@ const getThisWeekMatchday=()=>{
         const pa=phaseArc(player);if(!pa)return null;
         const _lab=pa.f==="esordiente"?"I PRIMI PASSI":pa.f==="titolare"?"NEL PIENO":"L'ULTIMO TRATTO";
         return(
-        <Card style={{marginBottom:8,padding:"13px 15px",background:"linear-gradient(150deg,#1a1410,#241a12)",border:"1px solid #6b5233"}}>
+        <Card momento={pa.t||_lab} momentoInk="#fff" momentoNota={_lab} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"13px 15px",background:"linear-gradient(150deg,#1a1410,#241a12)",border:"1px solid #6b5233"}}>
           <div style={{fontSize:FS.caption,color:"#fbbf24",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>⏳ {_lab}</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:21,lineHeight:1}}>{pa.e}</span>
@@ -46386,7 +46405,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const wt=worldTouch(player);if(!wt)return null;
         return(
-        <Card style={{marginBottom:8,padding:"13px 15px",background:"linear-gradient(150deg,#0b1a22,#0f2430)",border:"1px solid #2a5a6b"}}>
+        <Card momento="Il mondo fuori" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"13px 15px",background:"linear-gradient(150deg,#0b1a22,#0f2430)",border:"1px solid #2a5a6b"}}>
           <div style={{fontSize:FS.caption,color:"#7dd3fc",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il mondo fuori</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:21,lineHeight:1}}>{wt.e}</span>
@@ -46417,7 +46436,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const sv=serialView(player);if(!sv)return null;
         return(
-        <Card style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#12101f,#1b1730)",border:"1px solid #4c3f7a"}}>
+        <Card momento={`${sv.e||"🌱"} ${sv.lab||"La saga"}`} momentoInk="#fff" momentoNota={`${sv.ep+1}/${sv.tot||4}`} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#12101f,#1b1730)",border:"1px solid #4c3f7a"}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>
             <div style={{fontSize:FS.caption,color:"#c4b5fd",textTransform:"uppercase",letterSpacing:2,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{sv.lab}</div>
             <div style={{display:"flex",gap:4,flexShrink:0}}>{Array.from({length:sv.tot}).map((_,i)=>(

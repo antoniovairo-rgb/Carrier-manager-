@@ -97,7 +97,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/29 (11) | 0/29 (11) | 0/29 (11) | 0/29 (11) | 0/29 (11) |
 | Creazione | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) | 0/841 (11) |
 | Offerte | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) | 0/43 (11) |
-| Dashboard | 0/197 (11) | 0/197 (11) | 0/197 (11) | 0/197 (11) | 0/197 (11) |
+| Dashboard | 0/160 (11) | 0/160 (11) | 0/160 (11) | 0/160 (11) | 0/160 (11) |
 | Stagione · Classifica | 0/388 (11) | 0/388 (11) | 0/388 (11) | 0/389 (11) | 0/389 (11) |
 | Stagione · Calendario | 0/316 (11) | 0/316 (11) | 0/316 (11) | 0/316 (11) | 0/316 (11) |
 | Stagione · Coppe | 0/42 (11) | 0/42 (11) | 0/42 (11) | 0/42 (11) | 0/42 (11) |
@@ -106,7 +106,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0/108 (11) | 0/108 (11) | 0/108 (11) | 0/108 (11) | 0/108 (11) |
 | Agente | 0/116 (11) | 0/116 (11) | 0/116 (11) | 0/116 (11) | 0/116 (11) |
 | Prepartita | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) | 0/35 (11) |
-| **TOTALE** | **0/2457** | **0/2457** | **0/2457** | **0/2458** | **0/2458** |
+| **TOTALE** | **0/2420** | **0/2420** | **0/2420** | **0/2421** | **0/2421** |
 
 ### 3-bis · Testo SOTTO IL PAVIMENTO DICHIARATO (11 px = FS.caption) — sotto/totale
 
@@ -116,7 +116,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/29 | 0/29 | 0/29 | 0/29 | 0/29 |
 | Creazione | 0/841 | 0/841 | 0/841 | 0/841 | 0/841 |
 | Offerte | 0/43 | 0/43 | 0/43 | 0/43 | 0/43 |
-| Dashboard | 0/197 | 0/197 | 0/197 | 0/197 | 0/197 |
+| Dashboard | 0/160 | 0/160 | 0/160 | 0/160 | 0/160 |
 | Stagione · Classifica | 0/388 | 0/388 | 0/388 | 0/389 | 0/389 |
 | Stagione · Calendario | 0/316 | 0/316 | 0/316 | 0/316 | 0/316 |
 | Stagione · Coppe | 0/42 | 0/42 | 0/42 | 0/42 | 0/42 |
@@ -125,7 +125,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0/108 | 0/108 | 0/108 | 0/108 | 0/108 |
 | Agente | 0/116 | 0/116 | 0/116 | 0/116 | 0/116 |
 | Prepartita | 0/35 | 0/35 | 0/35 | 0/35 | 0/35 |
-| **TOTALE** | **0/2457** | **0/2457** | **0/2457** | **0/2458** | **0/2458** |
+| **TOTALE** | **0/2420** | **0/2420** | **0/2420** | **0/2421** | **0/2421** |
 
 ### 4 · Contrasto sotto soglia WCAG — sotto/misurati (fra parentesi: esclusi per gradiente · per glifo emoji)
 
@@ -135,7 +135,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 0/20 (0 · 9) | 0/20 (0 · 9) | 0/20 (0 · 9) | 0/20 (0 · 9) | 0/20 (0 · 9) |
 | Creazione | 0/819 (3 · 19) | 0/819 (3 · 19) | 0/819 (3 · 19) | 0/819 (3 · 19) | 0/819 (3 · 19) |
 | Offerte | 0/29 (5 · 9) | 0/29 (5 · 9) | 0/29 (5 · 9) | 0/29 (5 · 9) | 0/29 (5 · 9) |
-| Dashboard | 0/125 (42 · 30) | 0/125 (42 · 30) | 0/125 (42 · 30) | 0/125 (42 · 30) | 0/125 (42 · 30) |
+| Dashboard | 0/115 (16 · 29) | 0/115 (16 · 29) | 0/115 (16 · 29) | 0/115 (16 · 29) | 0/115 (16 · 29) |
 | Stagione · Classifica | 0/350 (9 · 29) | 0/350 (9 · 29) | 0/350 (9 · 29) | 0/351 (9 · 29) | 0/351 (9 · 29) |
 | Stagione · Calendario | 0/239 (9 · 68) | 0/239 (9 · 68) | 0/239 (9 · 68) | 0/239 (9 · 68) | 0/239 (9 · 68) |
 | Stagione · Coppe | 0/26 (9 · 7) | 0/26 (9 · 7) | 0/26 (9 · 7) | 0/26 (9 · 7) | 0/26 (9 · 7) |
@@ -144,7 +144,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Carriera · Nazionale | 0/73 (19 · 16) | 0/73 (19 · 16) | 0/73 (19 · 16) | 0/73 (19 · 16) | 0/73 (19 · 16) |
 | Agente | 0/93 (6 · 17) | 0/93 (6 · 17) | 0/93 (6 · 17) | 0/93 (6 · 17) | 0/93 (6 · 17) |
 | Prepartita | 0/17 (12 · 6) | 0/17 (12 · 6) | 0/17 (12 · 6) | 0/17 (12 · 6) | 0/17 (12 · 6) |
-| **TOTALE** | **0/1978** | **0/1978** | **0/1978** | **0/1979** | **0/1979** |
+| **TOTALE** | **0/1968** | **0/1968** | **0/1968** | **0/1969** | **0/1969** |
 
 ### 5 · Bottoni pieni di marca (una sola azione primaria per vista)
 
@@ -173,7 +173,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
 | Creazione | 1731 (1.89) | 1731 (1.89) | 1731 (1.89) | 1731 (1.89) | 1703 (1.86) |
 | Offerte | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
-| Dashboard | 2880 (3.15) | 2864 (3.13) | 2847 (3.11) | 2718 (2.97) | 2702 (2.95) |
+| Dashboard | 1890 (2.07) | 1890 (2.07) | 1890 (2.07) | 1890 (2.07) | 1874 (2.05) |
 | Stagione · Classifica | 1989 (2.17) | 1989 (2.17) | 1989 (2.17) | 1989 (2.17) | 1989 (2.17) |
 | Stagione · Calendario | 1602 (1.75) | 1602 (1.75) | 1602 (1.75) | 1602 (1.75) | 1602 (1.75) |
 | Stagione · Coppe | 800 (0.87) | 667 (0.73) | 844 (0.92) | 915 (1) | 932 (1.02) |
@@ -229,7 +229,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 3 | 3 | 3 | 3 | 3 |
 | Creazione | 4 | 4 | 4 | 4 | 4 |
 | Offerte | 4 | 4 | 4 | 4 | 4 |
-| Dashboard | 11 | 11 | 11 | 11 | 11 |
+| Dashboard | 9 | 9 | 9 | 9 | 9 |
 | Stagione · Classifica | 9 | 9 | 9 | 9 | 9 |
 | Stagione · Calendario | 10 | 10 | 10 | 10 | 10 |
 | Stagione · Coppe | 7 | 7 | 7 | 7 | 7 |
@@ -247,7 +247,7 @@ Due dettagli di metodo che cambiano i numeri, e quindi vanno detti:
 | Impostazioni | 5 | 5 | 5 | 5 | 5 |
 | Creazione | 5 | 5 | 5 | 5 | 5 |
 | Offerte | 3 | 3 | 3 | 3 | 3 |
-| Dashboard | 7 | 7 | 7 | 7 | 7 |
+| Dashboard | 5 | 5 | 5 | 5 | 5 |
 | Stagione · Classifica | 5 | 5 | 5 | 5 | 5 |
 | Stagione · Calendario | 5 | 5 | 5 | 5 | 5 |
 | Stagione · Coppe | 4 | 4 | 4 | 4 | 4 |
@@ -307,24 +307,24 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 |---|---:|---:|---|---|---|
 | Home fuori carriera | 258 | 0.095 | `#a3263a` | `div.cpm-scroll>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteFootball Career Simula |
 | Creazione | 52 | 0.07 | `#8e1f33` | `div.cpm-create>div:nth-child(2)>button.cpm-focus` | ⚡ INIZIA I PROVINI |
-| Dashboard | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
+| Dashboard | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:35Avataaars |
 |  | 62 | 0.07 | `#8e1f33` | `div.cpm-career>div:nth-child(2)>button.cpm-press` | ⚡ Vivi la Settimanaallenamento, ev |
-|  | 187 | 0.012 | `#241438` | `div.cpm-scroll>div.cpm-career>div:nth-child(4)` | La tua storia🆚La sfida di sempreS |
-|  | 136 | 0.017 | `#14243a` | `div.cpm-scroll>div.cpm-career>div:nth-child(6)` | 👟 Sponsor — nuova offertaFalco No |
-|  | 173 | 0.013 | `#331426` | `div.cpm-scroll>div.cpm-career>div:nth-child(7)` | ❤️ Vita privataQualcuno in tribuna |
-|  | 184 | 0.012 | `#241a12` | `div.cpm-scroll>div.cpm-career>div:nth-child(9)` | ⏳ NEL PIENO👁️Adesso guardano teTe |
-| Stagione · Classifica | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
-| Stagione · Calendario | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
-| Stagione · Coppe | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
-| Club | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
+|  | 53 | 0.012 | `#241438` | `div.cpm-scroll>div.cpm-career>div:nth-child(4)` | La tua storia▶ |
+|  | 58 | 0.017 | `#14243a` | `div.cpm-scroll>div.cpm-career>div:nth-child(6)` | Il tuo procuratore▶ |
+|  | 58 | 0.013 | `#331426` | `div.cpm-scroll>div.cpm-career>div:nth-child(7)` | ❤️ Vita privata▶ |
+|  | 67 | 0.012 | `#241a12` | `div.cpm-scroll>div.cpm-career>div:nth-child(9)` | Adesso guardano teNEL PIENO▶ |
+| Stagione · Classifica | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:35Avataaars |
+| Stagione · Calendario | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:35Avataaars |
+| Stagione · Coppe | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:35Avataaars |
+| Club | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:35Avataaars |
 |  | 207 | 0.016 | `#112240` | `div.cpm-career>div:nth-child(2)>div:nth-child(10)` | Lo Spogliatoio🧠Luigi TestaIl Ment |
-| Carriera · Profilo | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
+| Carriera · Profilo | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:35Avataaars |
 |  | 135 | 0.014 | `#1a1f2e` | `div.cpm-career>div:nth-child(3)>div:nth-child(1)` | Biografia"Grafica Probe, 26 anni,  |
 |  | 326 | 0.042 | `#312e81` | `div.cpm-career>div:nth-child(3)>div:nth-child(6)` | 🆚 Il tuo rivale⚽Bruno SalvatoriFC |
 |  | 77 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(7)` | CAT⭐ Club dei sogniFC CatalunyaNon |
 |  | 84 | 0.022 | `#1e293b` | `div.cpm-career>div:nth-child(3)>div:nth-child(10)` | 💪Stile di giocoBomberPotenza e is |
-| Carriera · Nazionale | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
-| Agente | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 10:25Avataaars |
+| Carriera · Nazionale | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:35Avataaars |
+| Agente | 119 | 0.044 | `#6c1f2e` | `div.cpm-career>div:nth-child(1)>div:nth-child(1)` | K⚽rwardEliteSalva · 11:35Avataaars |
 | Prepartita | 45 | 0.07 | `#8e1f33` | `div:nth-child(1)>div:nth-child(6)>button.cpm-press.cpm-focus` | 📋 Formazioni → |
 
 ### 9-ter · ALTEZZA delle strisce di fondo — voce di menu' / sostieni / idee (px)
@@ -356,7 +356,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Impostazioni | 12 | 12 | 12 | 12 | 12 |
 | Creazione | 14 | 14 | 14 | 14 | 14 |
 | Offerte | 7 | 7 | 7 | 7 | 7 |
-| Dashboard | 27 | 27 | 27 | 27 | 27 |
+| Dashboard | 26 | 26 | 26 | 26 | 26 |
 | Stagione · Classifica | 17 | 17 | 17 | 17 | 17 |
 | Stagione · Calendario | 58 | 58 | 58 | 58 | 58 |
 | Stagione · Coppe | 7 | 7 | 7 | 7 | 7 |
@@ -365,7 +365,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Carriera · Nazionale | 12 | 12 | 12 | 12 | 12 |
 | Agente | 14 | 14 | 14 | 14 | 14 |
 | Prepartita | 9 | 9 | 9 | 9 | 9 |
-| **TOTALE** | **232** | **232** | **232** | **232** | **232** |
+| **TOTALE** | **231** | **231** | **231** | **231** | **231** |
 
 > Contati i CARATTERI emoji sul testo reso. Il provino (`docs/collaudo-grafico/proposta-schermate/`)
 > non ne usa **nessuna**: i cappelli sono etichetta maiuscoletta + filo + azione, la barra in basso
@@ -377,7 +377,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Impostazioni | `⚙️ Impostazioni` · `🎨 Grafica` · `🎧 Audio` · `🔇 Muto totale` · `🎵 Musica menu` · `🏟️ Audio partite` |
 | Creazione | `Si scende in campo! ⚽` · `👤 Identità` · `🎯 Stile & percorso` · `📋 Percorso carriera` · `💪` · `🪄` |
 | Offerte | `Si scende in campo! ⚽` · `⚽` · `🎯` · `⭐ TOP` |
-| Dashboard | `Si scende in campo! ⚽` · `⚽` · `⚡ Vivi la Settimana` · `🆚` · `🏛️` · `👟` |
+| Dashboard | `Si scende in campo! ⚽` · `⚽` · `⚡ Vivi la Settimana` · `▶` · `❤️ Vita privata` · `🌱 Il ragazzo della Primavera` |
 | Stagione · Classifica | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `★` |
 | Stagione · Calendario | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `▶` |
 | Stagione · Coppe | `Si scende in campo! ⚽` · `⚽` · `📊` · `📅` · `🏆` · `☕ Sostieni lo sviluppo di` |
@@ -408,16 +408,15 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Fatica |  |  |  |  | 1 | 1 | 1 | 1 | 2 | 1 | 1 | 2 |  | **8** |
 | Morale |  |  |  |  | 1 | 1 | 1 | 1 | 2 | 1 | 1 | 1 |  | **8** |
 | Gol |  |  | 1 | 1 | 3 | 2 |  |  |  | 9 | 2 |  |  | **6** |
-| Partite |  | 1 |  |  | 3 |  | 2 |  |  | 1 | 1 |  |  | **5** |
-| Contratto |  |  |  |  | 1 |  |  |  | 2 | 1 |  | 1 |  | **4** |
-| Settimana |  |  |  |  | 8 |  |  |  |  |  | 4 | 3 |  | **3** |
+| Partite |  | 1 |  |  | 2 |  | 2 |  |  | 1 | 1 |  |  | **5** |
+| Settimana |  |  |  |  | 6 |  |  |  |  |  | 4 | 3 |  | **3** |
 | Assist |  |  | 1 |  | 2 |  |  |  |  | 4 |  |  |  | **3** |
 | Fiducia |  |  |  |  | 1 |  |  |  |  | 1 |  | 2 |  | **3** |
+| Contratto |  |  |  |  |  |  |  |  | 2 | 1 |  | 1 |  | **3** |
 | Presenze |  |  |  |  |  |  |  |  |  | 2 | 1 |  |  | **2** |
 | Valore |  |  |  |  |  |  |  |  |  | 1 |  | 1 |  | **2** |
 | Trofei |  |  |  |  |  |  |  |  |  | 3 |  |  |  | **1** |
 | Stipendio |  |  |  |  |  |  |  |  |  |  |  | 3 |  | **1** |
-| Obiettivi |  |  |  |  | 1 |  |  |  |  |  |  |  |  | **1** |
 
 ## Dettaglio · DOVE STANNO I PIXEL nelle schermate lunghe (a 412 px)
 
@@ -427,22 +426,22 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 
 | schermata | blocco | px | quota | testo |
 |---|---:|---:|---:|---|
-| Dashboard (2718 px) | 1 | 473 | 17.4 % | 📅La tua settimanaSettimana di campionatoS |
-|  | 2 | 288 | 10.6 % | Lega B · 11ª giornataProssima partitaCalen |
-|  | 3 | 208 | 7.7 % | Il ragazzo della PrimaveraPUNTATA 1 DI 4🌱 |
-|  | 4 | 187 | 6.9 % | La tua storia🆚La sfida di sempreSettimana |
-|  | 5 | 184 | 6.8 % | ⏳ NEL PIENO👁️Adesso guardano teTe ne acco |
-|  | 6 | 183 | 6.7 % | K⚽rwardEliteSalva · 10:25AvataaarsPablo St |
-|  | 7 | 183 | 6.7 % | Il mondo fuori👀C'era il CT, in tribunaNes |
-|  | 8 | 175 | 6.4 % | Stagione 4 · Settimana 12/3812Partite14Gol |
-|  | 9 | 174 | 6.4 % | Il tuo procuratore — questione di filosofi |
-|  | 10 | 173 | 6.4 % | ❤️ Vita privataQualcuno in tribunaElena er |
-|  | 11 | 154 | 5.7 % | Il progetto del club🏛️Progetto solidoNess |
-|  | 12 | 136 | 5 % | 👟 Sponsor — nuova offertaFalco Nove ti pr |
+| Dashboard (1890 px) | 1 | 473 | 25.1 % | 📅La tua settimanaSettimana di campionatoS |
+|  | 2 | 288 | 15.3 % | Lega B · 11ª giornataProssima partitaCalen |
+|  | 3 | 183 | 9.7 % | K⚽rwardEliteSalva · 11:35AvataaarsPablo St |
+|  | 4 | 175 | 9.3 % | Stagione 4 · Settimana 12/3812Partite14Gol |
+|  | 5 | 101 | 5.3 % | EnterGioca0AvanzaEscIndietroSpcConferma☕ S |
+|  | 6 | 86 | 4.5 % | 🏟️ Partita di Questa Settimana · W.12CREF |
+|  | 7 | 78 | 4.1 % | ⚡ Vivi la Settimanaallenamento, eventi e c |
+|  | 8 | 77 | 4.1 % | 🤝78Fiducia mister⭐64Popolarità |
+|  | 9 | 67 | 3.5 % | Adesso guardano teNEL PIENO▶ |
+|  | 10 | 67 | 3.5 % | Il mondo fuori▶ |
+|  | 11 | 58 | 3.1 % | Il progetto del club▶ |
+|  | 12 | 58 | 3.1 % | Il tuo procuratore▶ |
 | Stagione · Classifica (1989 px) | 1 | 1304 | 65.6 % | Lega B ★Lega APremier DivisionLiga Ibérica |
 |  | 2 | 317 | 15.9 % | Marcatori Storici — Lega B#5Grafica Probe8 |
 |  | 3 | 246 | 12.4 % | Risultati Internazionali — W.12Premier Div |
-|  | 4 | 183 | 9.2 % | K⚽rwardEliteSalva · 10:25AvataaarsPablo St |
+|  | 4 | 183 | 9.2 % | K⚽rwardEliteSalva · 11:35AvataaarsPablo St |
 |  | 5 | 101 | 5.1 % | EnterGioca0AvanzaEscIndietroSpcConferma☕ S |
 |  | 6 | 45 | 2.3 % | 📊Classifica📅Calendario🏆Coppe |
 | Carriera · Profilo (2361 px) | 1 | 326 | 13.8 % | 🆚 Il tuo rivale⚽Bruno SalvatoriFC Cremona |
@@ -472,7 +471,7 @@ Non e' overflow di pagina — la pagina non si sposta — ma e' contenuto che su
 | Impostazioni | 1 | Barlow x20 |
 | Creazione | 1 | Barlow x819 |
 | Offerte | 1 | Barlow x29 |
-| Dashboard | 1 | Barlow x125 |
+| Dashboard | 1 | Barlow x115 |
 | Stagione · Classifica | 1 | Barlow x351 |
 | Stagione · Calendario | 1 | Barlow x239 |
 | Stagione · Coppe | 1 | Barlow x26 |
