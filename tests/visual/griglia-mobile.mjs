@@ -854,9 +854,27 @@ if (PARTITA) {
     else saltate.push("partita-scelta: nessuna fase hl_choose entro 150 s");
     /* [G15] e poi si lascia finire la partita: l'autoplay risolve gli highlight, il fischio arriva al 90'
        (7.500) e li' c'e' il tabellino — la schermata che il PO ha segnalato e che nessuno misurava. */
-    const fineOk = await page.waitForFunction(() => { try { const ph = window.__CPM_PHASE && window.__CPM_PHASE(); return ph === 'ended' || ph === 'ceremony'; } catch (e) { return false; } }, null, { timeout: 300000 }).then(() => true).catch(() => false);
+    /* [G16 · 22/09 — A18] «non e' arrivato entro 300 s» non dice NIENTE, e il post-partita saltava in due
+       corse su tre. La sonda `fischio-finale.mjs` ha misurato che una partita in autoplay, da sola,
+       ci mette 163 s per novanta minuti (1,79 s al minuto, sosta piu' lunga 5 s): il tetto di 300 s e'
+       largo il doppio, quindi il colpevole NON e' il tetto — e' che la partita si ferma. Qui si smette
+       di aspettare al buio: si campiona minuto e fase ogni 5 s e, se il fischio non arriva, il salto
+       dichiara DOVE si e' fermata e DA QUANTO l'orologio non cammina. */
+    let fineOk = false, ultMin = null, ultPh = null, fermoDa = 0, prevMin = -1;
+    for (let _t = 0; _t < 300; _t += 5) {
+      const st = await page.evaluate(() => {
+        let min = null, ph = null;
+        try { min = window.__CPM_CLOCK ? (window.__CPM_CLOCK() | 0) : null; } catch (_e) {}
+        try { ph = window.__CPM_PHASE ? window.__CPM_PHASE() : null; } catch (_e) {}
+        return { min, ph };
+      }).catch(() => ({ min: null, ph: 'ERRORE' }));
+      ultMin = st.min; ultPh = st.ph;
+      if (st.min === prevMin) fermoDa += 5; else { fermoDa = 0; prevMin = st.min; }
+      if (st.ph === 'ended' || st.ph === 'ceremony') { fineOk = true; break; }
+      await sleep(5000);
+    }
     if (fineOk) { await sleep(900); await misuraTutte(page, SC('post-partita')); }
-    else saltate.push("post-partita: il fischio finale non e' arrivato entro 300 s");
+    else saltate.push(`post-partita: niente fischio entro 300 s — fermo al ${ultMin}' in fase ${ultPh}, orologio fermo da ${fermoDa} s (una partita sola ci mette 163 s)`);
   }
   await page.close();
 }

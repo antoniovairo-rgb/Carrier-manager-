@@ -10696,13 +10696,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
             ))}
           </div>
-          {(()=>{const rbC=Math.min(mStats.rb,30);const raw=clamp(5.8+rbC*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0);const rating=Math.round(raw*10)/10;const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;return(<div style={{marginBottom:14}}>
+          {(()=>{const rbC=Math.min(mStats.rb,30);const raw=clamp(5.8+rbC*0.13+(winning?0.35:losing?-0.30:0),4.0,10.0);const rating=Math.round(raw*10)/10;const rc=rating>=8?TH.success:rating>=6.5?TH.warning:TH.danger;const rcInk=semTesto945(rc,TH.surface2);/* [7.976.0 A19] misurato dalla griglia sul tabellino: TH.warning (#d97706) su TH.surface2 (#f1eee8) = 2,75:1 sia sul voto da 46 px sia sull'etichetta. Il TONO PIENO resta alla barra (e' un riempimento, non un inchiostro); il TESTO prende l'inchiostro scurito della stessa famiglia — #92400e, gia' in INK945, 6,12:1 */return(<div style={{marginBottom:14}}>
             {/* [7.86.0 collaudo PO «standardizza UX/UI»] PAGELLA: voto + meter (voto/10) in un pannello del kit */}
             <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>PAGELLA</div>
             <div style={{display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.md,textAlign:"left"}}>
-              <div className="cpm-num" style={{fontSize:46,fontWeight:900,color:rc,lineHeight:1,flexShrink:0}}>{rating}</div>
+              <div className="cpm-num" style={{fontSize:46,fontWeight:900,color:rcInk,lineHeight:1,flexShrink:0}}>{rating}</div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.small,fontWeight:700,color:rc,marginBottom:6}}>{rating>=9?"Prestazione storica!":rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>
+                <div style={{fontSize:FS.small,fontWeight:700,color:rcInk,marginBottom:6}}>{rating>=9?"Prestazione storica!":rating>=8?"Eccellente!":rating>=7?"Buona partita":rating>=6?"Sufficiente":"Da migliorare"}</div>
                 <div style={{height:6,background:TH.track,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${Math.round(rating*10)}%`,background:rc,borderRadius:3,transition:"width .5s"}}/></div>
                 <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.faint,marginTop:3}}><span>4.0</span><span>10.0</span></div>
               </div>
@@ -10719,7 +10719,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             {matchEvents.length>0&&<div style={{marginTop:10,textAlign:"left"}}>
               <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:4}}>MOMENTI CHIAVE</div>
               <div style={{display:"flex",flexDirection:"column",gap:3}}>
-                {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:"center",fontSize:FS.caption,color:ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted}}>
+                {matchEvents.map((ev,i)=><div key={i} style={{display:"flex",gap:6,alignItems:"center",fontSize:FS.caption,color:semTesto945(ev.type==="player_goal"||ev.type==="player_assist"?TH.success:ev.type==="opp_goal"?TH.danger:ev.type==="red"?"#f59e0b":TH.muted,TH.surface3)/* [7.976.0 A19] TH.success (#16a34a) su bianco misurava 3,30:1: l'inchiostro scurito della stessa famiglia e' #166534, 7,13:1. L'ambra del rosso (#f59e0b, 2,15:1) non era nel campione misurato ma era rossa lo stesso */}}>
                   <span style={{fontSize:FS.caption,fontWeight:700,minWidth:22,color:TH.faint}}>{ev.min}'</span>
                   <span>{ev.txt}</span>
                 </div>)}
