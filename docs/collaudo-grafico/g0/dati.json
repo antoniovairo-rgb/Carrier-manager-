@@ -1538,19 +1538,8 @@
     "overflowPx": 0,
     "nFuori": 0,
     "fuori": [],
-    "nContenuti": 2,
-    "contenuti": [
-     {
-      "sel": "div:nth-child(3)>div:nth-child(2)>button:nth-child(5)",
-      "px": 3.5,
-      "txt": "AvataaarsPablo Stanleyhttps://avat"
-     },
-     {
-      "sel": "div:nth-child(3)>div:nth-child(2)>button:nth-child(10)",
-      "px": 3.5,
-      "txt": "AvataaarsPablo Stanleyhttps://avat"
-     }
-    ],
+    "nContenuti": 0,
+    "contenuti": [],
     "nTesto": 589,
     "nSottoPav": 0,
     "nPiccoli": 0,
@@ -1637,9 +1626,9 @@
      15
     ],
     "raggi": [
+     6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -1648,9 +1637,14 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 0,
-    "figScarto": 0,
-    "figTipi": [],
+    "nFigurine": 11,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 11
+     }
+    ],
     "tinteTesto": [
      {
       "c": "#596a80",
@@ -1728,8 +1722,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1726,
-    "schermate": 1.89,
+    "altezzaPx": 1724,
+    "schermate": 1.88,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -1859,9 +1853,9 @@
      15
     ],
     "raggi": [
+     6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -1870,9 +1864,14 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 0,
-    "figScarto": 0,
-    "figTipi": [],
+    "nFigurine": 11,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 11
+     }
+    ],
     "tinteTesto": [
      {
       "c": "#596a80",
@@ -1950,8 +1949,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1726,
-    "schermate": 1.89,
+    "altezzaPx": 1724,
+    "schermate": 1.88,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -2081,9 +2080,9 @@
      15
     ],
     "raggi": [
+     6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -2092,9 +2091,14 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 0,
-    "figScarto": 0,
-    "figTipi": [],
+    "nFigurine": 11,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 11
+     }
+    ],
     "tinteTesto": [
      {
       "c": "#596a80",
@@ -2172,8 +2176,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1726,
-    "schermate": 1.89,
+    "altezzaPx": 1724,
+    "schermate": 1.88,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -2303,9 +2307,9 @@
      15
     ],
     "raggi": [
+     6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -2314,9 +2318,14 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 0,
-    "figScarto": 0,
-    "figTipi": [],
+    "nFigurine": 11,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 11
+     }
+    ],
     "tinteTesto": [
      {
       "c": "#596a80",
@@ -2394,8 +2403,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1726,
-    "schermate": 1.89,
+    "altezzaPx": 1724,
+    "schermate": 1.88,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -2525,9 +2534,9 @@
      15
     ],
     "raggi": [
+     6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -2536,9 +2545,14 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 0,
-    "figScarto": 0,
-    "figTipi": [],
+    "nFigurine": 11,
+    "figScarto": 0.9,
+    "figTipi": [
+     {
+      "t": "giocatore",
+      "n": 11
+     }
+    ],
     "tinteTesto": [
      {
       "c": "#596a80",
@@ -2616,8 +2630,8 @@
      }
     ],
     "nSvgTesto": 252,
-    "altezzaPx": 1698,
-    "schermate": 1.86,
+    "altezzaPx": 1696,
+    "schermate": 1.85,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -3611,40 +3625,16 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      }
     ],
-    "nTesto": 157,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 115,
+    "nMisurati": 91,
     "nSotto": 0,
-    "nGradiente": 16,
-    "nEmoji": 29,
+    "nGradiente": 14,
+    "nEmoji": 16,
     "peggiori": [
-     {
-      "testo": "#b45309",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 5.02,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "testo": "#2563eb",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 5.17,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
-      "esempio": "Titolare Affermato"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -3673,23 +3663,47 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 10,
+      "n": 5,
       "svg": false,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
+      "esempio": "28"
+     },
+     {
+      "testo": "#b91c1c",
+      "fondo": "#fbe9e9",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "svg": false,
+      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
+      "esempio": "P"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
     ],
-    "nColTesto": 13,
+    "nColTesto": 10,
     "nFondi": 7,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -3703,42 +3717,35 @@
     "raggi": [
      6,
      12,
-     16,
-     50
+     16
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 115
+      "n": 91
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
-      "c": "#526279",
-      "n": 29,
-      "fs": 12,
-      "esempio": "Lega B"
-     },
-     {
       "c": "#1e293b",
-      "n": 21,
+      "n": 20,
       "fs": 32,
       "esempio": "12"
      },
      {
-      "c": "#596a80",
+      "c": "#526279",
       "n": 19,
-      "fs": 11,
-      "esempio": "Forma"
+      "fs": 12,
+      "esempio": "Lega B"
      },
      {
       "c": "#ffffff",
@@ -3747,16 +3754,16 @@
       "esempio": "82"
      },
      {
+      "c": "#596a80",
+      "n": 13,
+      "fs": 11,
+      "esempio": "Forma"
+     },
+     {
       "c": "#8e1f33",
       "n": 9,
       "fs": 20,
       "esempio": "78"
-     },
-     {
-      "c": "#7c3aed",
-      "n": 7,
-      "fs": 32,
-      "esempio": "6"
      },
      {
       "c": "#166534",
@@ -3777,34 +3784,22 @@
       "esempio": "Salva"
      },
      {
-      "c": "#b45309",
-      "n": 1,
-      "fs": 11,
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "c": "#155e75",
-      "n": 1,
-      "fs": 11,
-      "esempio": "Nello spogliatoio"
-     },
-     {
-      "c": "#2563eb",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Titolare Affermato"
-     },
-     {
       "c": "#92400e",
-      "n": 1,
+      "n": 2,
       "fs": 32,
       "esempio": "7.2"
+     },
+     {
+      "c": "#7c3aed",
+      "n": 2,
+      "fs": 32,
+      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 75,
+      "n": 50,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -3816,7 +3811,7 @@
      },
      {
       "fs": 13,
-      "n": 10,
+      "n": 11,
       "esempio": "K",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
      },
@@ -3846,119 +3841,46 @@
      }
     ],
     "nSvgTesto": 3,
-    "altezzaPx": 1889,
-    "schermate": 2.06,
+    "altezzaPx": 1460,
+    "schermate": 1.6,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 473,
-      "quota": 25.1,
-      "txt": "📅La tua settimanaSettimana di campionatoS",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
-     },
-     {
-      "px": 288,
-      "quota": 15.3,
-      "txt": "Lega B · 11ª giornataProssima partitaCalen",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
-     },
-     {
-      "px": 181,
-      "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 16:29AvataaarsPablo St",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
-     },
-     {
-      "px": 175,
-      "quota": 9.3,
-      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
-     },
-     {
-      "px": 101,
-      "quota": 5.4,
-      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
-     },
-     {
-      "px": 89,
-      "quota": 4.7,
-      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
-     },
-     {
-      "px": 86,
-      "quota": 4.6,
-      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
-     },
-     {
-      "px": 77,
-      "quota": 4.1,
-      "txt": "🤝78Fiducia mister⭐64Popolarità",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
-     },
-     {
-      "px": 67,
-      "quota": 3.5,
-      "txt": "Adesso guardano teNEL PIENO›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
-      "px": 67,
-      "quota": 3.5,
-      "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il tuo procuratore›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
-     "Gol": 3,
+     "Gol": 2,
      "Assist": 2,
      "Partite": 2,
      "OVR": 1,
-     "Forma": 2,
+     "Forma": 3,
      "Morale": 1,
      "Fatica": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 6
+     "Settimana": 4
     },
-    "nEmojiChar": 18,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
-     "📅",
-     "🙂",
-     "📊",
      "🔥",
-     "📉"
+     "🏟️ Partita di Questa Settiman",
+     "🏠 Casa",
+     "🤝",
+     "⭐",
+     "☕ Sostieni lo sviluppo di"
     ],
     "hVoce": 49,
     "hSostieni": 26,
     "hFeedback": 25,
-    "nScuri": 8,
+    "nScuri": 6,
     "scuri": [
      {
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -3968,14 +3890,7 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      },
      {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
-      "lum": 0.012,
-      "fondo": "#241438",
-      "px": 53,
-      "txt": "La tua storia›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
@@ -3983,17 +3898,24 @@
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
-      "lum": 0.013,
-      "fondo": "#331426",
-      "px": 58,
-      "txt": "❤️ Vita privata›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
       "txt": "Adesso guardano teNEL PIENO›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)",
+      "lum": 0.016,
+      "fondo": "#0f2430",
+      "px": 67,
+      "txt": "Il mondo fuori›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.011,
+      "fondo": "#1b1730",
+      "px": 53,
+      "txt": "🌱 Il ragazzo della Primavera1/4›"
      }
     ]
    },
@@ -4013,40 +3935,16 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      }
     ],
-    "nTesto": 157,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 115,
+    "nMisurati": 91,
     "nSotto": 0,
-    "nGradiente": 16,
-    "nEmoji": 29,
+    "nGradiente": 14,
+    "nEmoji": 16,
     "peggiori": [
-     {
-      "testo": "#b45309",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 5.02,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "testo": "#2563eb",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 5.17,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
-      "esempio": "Titolare Affermato"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -4075,23 +3973,47 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 10,
+      "n": 5,
       "svg": false,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
+      "esempio": "28"
+     },
+     {
+      "testo": "#b91c1c",
+      "fondo": "#fbe9e9",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "svg": false,
+      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
+      "esempio": "P"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
     ],
-    "nColTesto": 13,
+    "nColTesto": 10,
     "nFondi": 7,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4105,42 +4027,35 @@
     "raggi": [
      6,
      12,
-     16,
-     50
+     16
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 115
+      "n": 91
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
-      "c": "#526279",
-      "n": 29,
-      "fs": 12,
-      "esempio": "Lega B"
-     },
-     {
       "c": "#1e293b",
-      "n": 21,
+      "n": 20,
       "fs": 32,
       "esempio": "12"
      },
      {
-      "c": "#596a80",
+      "c": "#526279",
       "n": 19,
-      "fs": 11,
-      "esempio": "Forma"
+      "fs": 12,
+      "esempio": "Lega B"
      },
      {
       "c": "#ffffff",
@@ -4149,16 +4064,16 @@
       "esempio": "82"
      },
      {
+      "c": "#596a80",
+      "n": 13,
+      "fs": 11,
+      "esempio": "Forma"
+     },
+     {
       "c": "#8e1f33",
       "n": 9,
       "fs": 20,
       "esempio": "78"
-     },
-     {
-      "c": "#7c3aed",
-      "n": 7,
-      "fs": 32,
-      "esempio": "6"
      },
      {
       "c": "#166534",
@@ -4179,34 +4094,22 @@
       "esempio": "Salva"
      },
      {
-      "c": "#b45309",
-      "n": 1,
-      "fs": 11,
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "c": "#155e75",
-      "n": 1,
-      "fs": 11,
-      "esempio": "Nello spogliatoio"
-     },
-     {
-      "c": "#2563eb",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Titolare Affermato"
-     },
-     {
       "c": "#92400e",
-      "n": 1,
+      "n": 2,
       "fs": 32,
       "esempio": "7.2"
+     },
+     {
+      "c": "#7c3aed",
+      "n": 2,
+      "fs": 32,
+      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 75,
+      "n": 50,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -4218,7 +4121,7 @@
      },
      {
       "fs": 13,
-      "n": 10,
+      "n": 11,
       "esempio": "K",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
      },
@@ -4248,119 +4151,46 @@
      }
     ],
     "nSvgTesto": 3,
-    "altezzaPx": 1889,
-    "schermate": 2.06,
+    "altezzaPx": 1460,
+    "schermate": 1.6,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 473,
-      "quota": 25.1,
-      "txt": "📅La tua settimanaSettimana di campionatoS",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
-     },
-     {
-      "px": 288,
-      "quota": 15.3,
-      "txt": "Lega B · 11ª giornataProssima partitaCalen",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
-     },
-     {
-      "px": 181,
-      "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 16:29AvataaarsPablo St",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
-     },
-     {
-      "px": 175,
-      "quota": 9.3,
-      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
-     },
-     {
-      "px": 101,
-      "quota": 5.4,
-      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
-     },
-     {
-      "px": 89,
-      "quota": 4.7,
-      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
-     },
-     {
-      "px": 86,
-      "quota": 4.6,
-      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
-     },
-     {
-      "px": 77,
-      "quota": 4.1,
-      "txt": "🤝78Fiducia mister⭐64Popolarità",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
-     },
-     {
-      "px": 67,
-      "quota": 3.5,
-      "txt": "Adesso guardano teNEL PIENO›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
-      "px": 67,
-      "quota": 3.5,
-      "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il tuo procuratore›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
-     "Gol": 3,
+     "Gol": 2,
      "Assist": 2,
      "Partite": 2,
      "OVR": 1,
-     "Forma": 2,
+     "Forma": 3,
      "Morale": 1,
      "Fatica": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 6
+     "Settimana": 4
     },
-    "nEmojiChar": 18,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
-     "📅",
-     "🙂",
-     "📊",
      "🔥",
-     "📉"
+     "🏟️ Partita di Questa Settiman",
+     "🏠 Casa",
+     "🤝",
+     "⭐",
+     "☕ Sostieni lo sviluppo di"
     ],
     "hVoce": 49,
     "hSostieni": 26,
     "hFeedback": 25,
-    "nScuri": 8,
+    "nScuri": 6,
     "scuri": [
      {
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4370,14 +4200,7 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      },
      {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
-      "lum": 0.012,
-      "fondo": "#241438",
-      "px": 53,
-      "txt": "La tua storia›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
@@ -4385,17 +4208,24 @@
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
-      "lum": 0.013,
-      "fondo": "#331426",
-      "px": 58,
-      "txt": "❤️ Vita privata›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
       "txt": "Adesso guardano teNEL PIENO›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)",
+      "lum": 0.016,
+      "fondo": "#0f2430",
+      "px": 67,
+      "txt": "Il mondo fuori›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.011,
+      "fondo": "#1b1730",
+      "px": 53,
+      "txt": "🌱 Il ragazzo della Primavera1/4›"
      }
     ]
    },
@@ -4415,40 +4245,16 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      }
     ],
-    "nTesto": 157,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 115,
+    "nMisurati": 91,
     "nSotto": 0,
-    "nGradiente": 16,
-    "nEmoji": 29,
+    "nGradiente": 14,
+    "nEmoji": 16,
     "peggiori": [
-     {
-      "testo": "#b45309",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 5.02,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "testo": "#2563eb",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 5.17,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
-      "esempio": "Titolare Affermato"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -4477,23 +4283,47 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 10,
+      "n": 5,
       "svg": false,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
+      "esempio": "28"
+     },
+     {
+      "testo": "#b91c1c",
+      "fondo": "#fbe9e9",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "svg": false,
+      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
+      "esempio": "P"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
     ],
-    "nColTesto": 13,
+    "nColTesto": 10,
     "nFondi": 7,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4507,42 +4337,35 @@
     "raggi": [
      6,
      12,
-     16,
-     50
+     16
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 115
+      "n": 91
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
-      "c": "#526279",
-      "n": 29,
-      "fs": 12,
-      "esempio": "Lega B"
-     },
-     {
       "c": "#1e293b",
-      "n": 21,
+      "n": 20,
       "fs": 32,
       "esempio": "12"
      },
      {
-      "c": "#596a80",
+      "c": "#526279",
       "n": 19,
-      "fs": 11,
-      "esempio": "Forma"
+      "fs": 12,
+      "esempio": "Lega B"
      },
      {
       "c": "#ffffff",
@@ -4551,16 +4374,16 @@
       "esempio": "82"
      },
      {
+      "c": "#596a80",
+      "n": 13,
+      "fs": 11,
+      "esempio": "Forma"
+     },
+     {
       "c": "#8e1f33",
       "n": 9,
       "fs": 20,
       "esempio": "78"
-     },
-     {
-      "c": "#7c3aed",
-      "n": 7,
-      "fs": 32,
-      "esempio": "6"
      },
      {
       "c": "#166534",
@@ -4581,34 +4404,22 @@
       "esempio": "Salva"
      },
      {
-      "c": "#b45309",
-      "n": 1,
-      "fs": 11,
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "c": "#155e75",
-      "n": 1,
-      "fs": 11,
-      "esempio": "Nello spogliatoio"
-     },
-     {
-      "c": "#2563eb",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Titolare Affermato"
-     },
-     {
       "c": "#92400e",
-      "n": 1,
+      "n": 2,
       "fs": 32,
       "esempio": "7.2"
+     },
+     {
+      "c": "#7c3aed",
+      "n": 2,
+      "fs": 32,
+      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 75,
+      "n": 50,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -4620,7 +4431,7 @@
      },
      {
       "fs": 13,
-      "n": 10,
+      "n": 11,
       "esempio": "K",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
      },
@@ -4650,119 +4461,46 @@
      }
     ],
     "nSvgTesto": 3,
-    "altezzaPx": 1889,
-    "schermate": 2.06,
+    "altezzaPx": 1460,
+    "schermate": 1.6,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 473,
-      "quota": 25.1,
-      "txt": "📅La tua settimanaSettimana di campionatoS",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
-     },
-     {
-      "px": 288,
-      "quota": 15.3,
-      "txt": "Lega B · 11ª giornataProssima partitaCalen",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
-     },
-     {
-      "px": 181,
-      "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 16:29AvataaarsPablo St",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
-     },
-     {
-      "px": 175,
-      "quota": 9.3,
-      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
-     },
-     {
-      "px": 101,
-      "quota": 5.4,
-      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
-     },
-     {
-      "px": 89,
-      "quota": 4.7,
-      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
-     },
-     {
-      "px": 86,
-      "quota": 4.6,
-      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
-     },
-     {
-      "px": 77,
-      "quota": 4.1,
-      "txt": "🤝78Fiducia mister⭐64Popolarità",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
-     },
-     {
-      "px": 67,
-      "quota": 3.5,
-      "txt": "Adesso guardano teNEL PIENO›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
-      "px": 67,
-      "quota": 3.5,
-      "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il tuo procuratore›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
-     "Gol": 3,
+     "Gol": 2,
      "Assist": 2,
      "Partite": 2,
      "OVR": 1,
-     "Forma": 2,
+     "Forma": 3,
      "Morale": 1,
      "Fatica": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 6
+     "Settimana": 4
     },
-    "nEmojiChar": 18,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
-     "📅",
-     "🙂",
-     "📊",
      "🔥",
-     "📉"
+     "🏟️ Partita di Questa Settiman",
+     "🏠 Casa",
+     "🤝",
+     "⭐",
+     "☕ Sostieni lo sviluppo di"
     ],
     "hVoce": 49,
     "hSostieni": 26,
     "hFeedback": 25,
-    "nScuri": 8,
+    "nScuri": 6,
     "scuri": [
      {
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -4772,14 +4510,7 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      },
      {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
-      "lum": 0.012,
-      "fondo": "#241438",
-      "px": 53,
-      "txt": "La tua storia›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
@@ -4787,17 +4518,24 @@
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
-      "lum": 0.013,
-      "fondo": "#331426",
-      "px": 58,
-      "txt": "❤️ Vita privata›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
       "txt": "Adesso guardano teNEL PIENO›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)",
+      "lum": 0.016,
+      "fondo": "#0f2430",
+      "px": 67,
+      "txt": "Il mondo fuori›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.011,
+      "fondo": "#1b1730",
+      "px": 53,
+      "txt": "🌱 Il ragazzo della Primavera1/4›"
      }
     ]
    },
@@ -4817,40 +4555,16 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      }
     ],
-    "nTesto": 157,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 115,
+    "nMisurati": 91,
     "nSotto": 0,
-    "nGradiente": 16,
-    "nEmoji": 29,
+    "nGradiente": 14,
+    "nEmoji": 16,
     "peggiori": [
-     {
-      "testo": "#b45309",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 5.02,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "testo": "#2563eb",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 5.17,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
-      "esempio": "Titolare Affermato"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -4879,23 +4593,47 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 10,
+      "n": 5,
       "svg": false,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
+      "esempio": "28"
+     },
+     {
+      "testo": "#b91c1c",
+      "fondo": "#fbe9e9",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "svg": false,
+      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
+      "esempio": "P"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
     ],
-    "nColTesto": 13,
+    "nColTesto": 10,
     "nFondi": 7,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -4909,42 +4647,35 @@
     "raggi": [
      6,
      12,
-     16,
-     50
+     16
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 115
+      "n": 91
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
-      "c": "#526279",
-      "n": 29,
-      "fs": 12,
-      "esempio": "Lega B"
-     },
-     {
       "c": "#1e293b",
-      "n": 21,
+      "n": 20,
       "fs": 32,
       "esempio": "12"
      },
      {
-      "c": "#596a80",
+      "c": "#526279",
       "n": 19,
-      "fs": 11,
-      "esempio": "Forma"
+      "fs": 12,
+      "esempio": "Lega B"
      },
      {
       "c": "#ffffff",
@@ -4953,16 +4684,16 @@
       "esempio": "82"
      },
      {
+      "c": "#596a80",
+      "n": 13,
+      "fs": 11,
+      "esempio": "Forma"
+     },
+     {
       "c": "#8e1f33",
       "n": 9,
       "fs": 20,
       "esempio": "78"
-     },
-     {
-      "c": "#7c3aed",
-      "n": 7,
-      "fs": 32,
-      "esempio": "6"
      },
      {
       "c": "#166534",
@@ -4983,34 +4714,22 @@
       "esempio": "Salva"
      },
      {
-      "c": "#b45309",
-      "n": 1,
-      "fs": 11,
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "c": "#155e75",
-      "n": 1,
-      "fs": 11,
-      "esempio": "Nello spogliatoio"
-     },
-     {
-      "c": "#2563eb",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Titolare Affermato"
-     },
-     {
       "c": "#92400e",
-      "n": 1,
+      "n": 2,
       "fs": 32,
       "esempio": "7.2"
+     },
+     {
+      "c": "#7c3aed",
+      "n": 2,
+      "fs": 32,
+      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 75,
+      "n": 50,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -5022,7 +4741,7 @@
      },
      {
       "fs": 13,
-      "n": 10,
+      "n": 11,
       "esempio": "K",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
      },
@@ -5052,119 +4771,46 @@
      }
     ],
     "nSvgTesto": 3,
-    "altezzaPx": 1889,
-    "schermate": 2.06,
+    "altezzaPx": 1460,
+    "schermate": 1.6,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 473,
-      "quota": 25.1,
-      "txt": "📅La tua settimanaSettimana di campionatoS",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
-     },
-     {
-      "px": 288,
-      "quota": 15.3,
-      "txt": "Lega B · 11ª giornataProssima partitaCalen",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
-     },
-     {
-      "px": 181,
-      "quota": 9.6,
-      "txt": "K⚽rwardEliteSalva · 16:29AvataaarsPablo St",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
-     },
-     {
-      "px": 175,
-      "quota": 9.3,
-      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
-     },
-     {
-      "px": 101,
-      "quota": 5.4,
-      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
-     },
-     {
-      "px": 89,
-      "quota": 4.7,
-      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
-     },
-     {
-      "px": 86,
-      "quota": 4.6,
-      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
-     },
-     {
-      "px": 77,
-      "quota": 4.1,
-      "txt": "🤝78Fiducia mister⭐64Popolarità",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
-     },
-     {
-      "px": 67,
-      "quota": 3.5,
-      "txt": "Adesso guardano teNEL PIENO›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
-      "px": 67,
-      "quota": 3.5,
-      "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il tuo procuratore›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
-     "Gol": 3,
+     "Gol": 2,
      "Assist": 2,
      "Partite": 2,
      "OVR": 1,
-     "Forma": 2,
+     "Forma": 3,
      "Morale": 1,
      "Fatica": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 6
+     "Settimana": 4
     },
-    "nEmojiChar": 18,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
-     "📅",
-     "🙂",
-     "📊",
      "🔥",
-     "📉"
+     "🏟️ Partita di Questa Settiman",
+     "🏠 Casa",
+     "🤝",
+     "⭐",
+     "☕ Sostieni lo sviluppo di"
     ],
     "hVoce": 49,
     "hSostieni": 26,
     "hFeedback": 25,
-    "nScuri": 8,
+    "nScuri": 6,
     "scuri": [
      {
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -5174,14 +4820,7 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      },
      {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
-      "lum": 0.012,
-      "fondo": "#241438",
-      "px": 53,
-      "txt": "La tua storia›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
@@ -5189,17 +4828,24 @@
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
-      "lum": 0.013,
-      "fondo": "#331426",
-      "px": 58,
-      "txt": "❤️ Vita privata›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
       "txt": "Adesso guardano teNEL PIENO›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)",
+      "lum": 0.016,
+      "fondo": "#0f2430",
+      "px": 67,
+      "txt": "Il mondo fuori›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.011,
+      "fondo": "#1b1730",
+      "px": 53,
+      "txt": "🌱 Il ragazzo della Primavera1/4›"
      }
     ]
    },
@@ -5219,40 +4865,16 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      }
     ],
-    "nTesto": 157,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 115,
+    "nMisurati": 91,
     "nSotto": 0,
-    "nGradiente": 16,
-    "nEmoji": 29,
+    "nGradiente": 14,
+    "nEmoji": 16,
     "peggiori": [
-     {
-      "testo": "#b45309",
-      "fondo": "#ffffff",
-      "fs": 11,
-      "fw": 700,
-      "rap": 5.02,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(1)>div:nth-child(1)>span:nth-child(3)",
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "testo": "#2563eb",
-      "fondo": "#ffffff",
-      "fs": 12,
-      "fw": 700,
-      "rap": 5.17,
-      "soglia": 4.5,
-      "n": 1,
-      "svg": false,
-      "sel": "div:nth-child(13)>div:nth-child(1)>span:nth-child(2)",
-      "esempio": "Titolare Affermato"
-     },
      {
       "testo": "#526279",
       "fondo": "#f1eee8",
@@ -5281,23 +4903,47 @@
       "testo": "#596a80",
       "fondo": "#ffffff",
       "fs": 11,
+      "fw": 700,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 8,
+      "svg": false,
+      "sel": "div:nth-child(2)>div:nth-child(1)>div:nth-child(1)",
+      "esempio": "Forma"
+     },
+     {
+      "testo": "#596a80",
+      "fondo": "#ffffff",
+      "fs": 11,
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 10,
+      "n": 5,
       "svg": false,
-      "sel": "div:nth-child(4)>div:nth-child(1)>span.cpm-num",
-      "esempio": "4"
+      "sel": "div:nth-child(11)>div:nth-child(1)>span.cpm-num",
+      "esempio": "28"
+     },
+     {
+      "testo": "#b91c1c",
+      "fondo": "#fbe9e9",
+      "fs": 11,
+      "fw": 800,
+      "rap": 5.53,
+      "soglia": 4.5,
+      "n": 3,
+      "svg": false,
+      "sel": "div:nth-child(3)>div:nth-child(2)>span.cpm-num",
+      "esempio": "P"
      }
     ],
     "nMarca": 1,
     "marca": [
      "⚡ Vivi la Settimanaallenamento, eventi e"
     ],
-    "nColTesto": 13,
+    "nColTesto": 10,
     "nFondi": 7,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -5311,42 +4957,35 @@
     "raggi": [
      6,
      12,
-     16,
-     50
+     16
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 115
+      "n": 91
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
-      "c": "#526279",
-      "n": 29,
-      "fs": 12,
-      "esempio": "Lega B"
-     },
-     {
       "c": "#1e293b",
-      "n": 21,
+      "n": 20,
       "fs": 32,
       "esempio": "12"
      },
      {
-      "c": "#596a80",
+      "c": "#526279",
       "n": 19,
-      "fs": 11,
-      "esempio": "Forma"
+      "fs": 12,
+      "esempio": "Lega B"
      },
      {
       "c": "#ffffff",
@@ -5355,16 +4994,16 @@
       "esempio": "82"
      },
      {
+      "c": "#596a80",
+      "n": 13,
+      "fs": 11,
+      "esempio": "Forma"
+     },
+     {
       "c": "#8e1f33",
       "n": 9,
       "fs": 20,
       "esempio": "78"
-     },
-     {
-      "c": "#7c3aed",
-      "n": 7,
-      "fs": 32,
-      "esempio": "6"
      },
      {
       "c": "#166534",
@@ -5385,34 +5024,22 @@
       "esempio": "Salva"
      },
      {
-      "c": "#b45309",
-      "n": 1,
-      "fs": 11,
-      "esempio": "↓ ti pesa"
-     },
-     {
-      "c": "#155e75",
-      "n": 1,
-      "fs": 11,
-      "esempio": "Nello spogliatoio"
-     },
-     {
-      "c": "#2563eb",
-      "n": 1,
-      "fs": 12,
-      "esempio": "Titolare Affermato"
-     },
-     {
       "c": "#92400e",
-      "n": 1,
+      "n": 2,
       "fs": 32,
       "esempio": "7.2"
+     },
+     {
+      "c": "#7c3aed",
+      "n": 2,
+      "fs": 32,
+      "esempio": "6"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 75,
+      "n": 50,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -5424,7 +5051,7 @@
      },
      {
       "fs": 13,
-      "n": 10,
+      "n": 11,
       "esempio": "K",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(1)"
      },
@@ -5454,119 +5081,46 @@
      }
     ],
     "nSvgTesto": 3,
-    "altezzaPx": 1873,
-    "schermate": 2.05,
+    "altezzaPx": 1460,
+    "schermate": 1.6,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
-    "blocchi": [
-     {
-      "px": 456,
-      "quota": 24.4,
-      "txt": "📅La tua settimanaSettimana di campionatoS",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(12)"
-     },
-     {
-      "px": 288,
-      "quota": 15.4,
-      "txt": "Lega B · 11ª giornataProssima partitaCalen",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(3)"
-     },
-     {
-      "px": 181,
-      "quota": 9.7,
-      "txt": "K⚽rwardEliteSalva · 16:29AvataaarsPablo St",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(1)"
-     },
-     {
-      "px": 175,
-      "quota": 9.3,
-      "txt": "Stagione 4 · Settimana 12/3812Partite14Gol",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(14)"
-     },
-     {
-      "px": 101,
-      "quota": 5.4,
-      "txt": "EnterGioca0AvanzaEscIndietroSpcConferma☕ S",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-nav-bar"
-     },
-     {
-      "px": 89,
-      "quota": 4.7,
-      "txt": "⚡ Vivi la Settimanaallenamento, eventi e c",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(2)"
-     },
-     {
-      "px": 86,
-      "quota": 4.6,
-      "txt": "🏟️ Partita di Questa Settimana · W.12CREF",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(15)"
-     },
-     {
-      "px": 77,
-      "quota": 4.1,
-      "txt": "🤝78Fiducia mister⭐64Popolarità",
-      "sel": "div.cpm-scroll>div.cpm-career>div.cpm-dash-grid"
-     },
-     {
-      "px": 67,
-      "quota": 3.6,
-      "txt": "Adesso guardano teNEL PIENO›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)"
-     },
-     {
-      "px": 67,
-      "quota": 3.6,
-      "txt": "Il mondo fuori›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(10)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il progetto del club›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)"
-     },
-     {
-      "px": 58,
-      "quota": 3.1,
-      "txt": "Il tuo procuratore›",
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)"
-     }
-    ],
+    "blocchi": [],
     "etichette": {
-     "Gol": 3,
+     "Gol": 2,
      "Assist": 2,
      "Partite": 2,
      "OVR": 1,
-     "Forma": 2,
+     "Forma": 3,
      "Morale": 1,
      "Fatica": 1,
      "Fiducia": 1,
      "Stagione": 2,
-     "Settimana": 6
+     "Settimana": 4
     },
-    "nEmojiChar": 18,
+    "nEmojiChar": 10,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
      "⚡ Vivi la Settimana",
-     "❤️ Vita privata",
      "🌱 Il ragazzo della Primavera",
-     "📅",
-     "🙂",
-     "📊",
      "🔥",
-     "📉"
+     "🏟️ Partita di Questa Settiman",
+     "🏠 Casa",
+     "🤝",
+     "⭐",
+     "☕ Sostieni lo sviluppo di"
     ],
     "hVoce": 49,
     "hSostieni": 26,
     "hFeedback": 25,
-    "nScuri": 8,
+    "nScuri": 6,
     "scuri": [
      {
       "sel": "div.cpm-career>div:nth-child(1)>div:nth-child(1)",
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>button.cpm-press",
@@ -5576,14 +5130,7 @@
       "txt": "⚡ Vivi la Settimanaallenamento, ev"
      },
      {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(4)",
-      "lum": 0.012,
-      "fondo": "#241438",
-      "px": 53,
-      "txt": "La tua storia›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(6)",
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(5)",
       "lum": 0.017,
       "fondo": "#14243a",
       "px": 58,
@@ -5591,17 +5138,24 @@
      },
      {
       "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(7)",
-      "lum": 0.013,
-      "fondo": "#331426",
-      "px": 58,
-      "txt": "❤️ Vita privata›"
-     },
-     {
-      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
       "lum": 0.012,
       "fondo": "#241a12",
       "px": 67,
       "txt": "Adesso guardano teNEL PIENO›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(8)",
+      "lum": 0.016,
+      "fondo": "#0f2430",
+      "px": 67,
+      "txt": "Il mondo fuori›"
+     },
+     {
+      "sel": "div.cpm-scroll>div.cpm-career>div:nth-child(9)",
+      "lum": 0.011,
+      "fondo": "#1b1730",
+      "px": 53,
+      "txt": "🌱 Il ragazzo della Primavera1/4›"
      }
     ]
    }
@@ -5696,10 +5250,10 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 20,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "PUG"
+      "esempio": "CRE"
      },
      {
       "testo": "#b91c1c",
@@ -5721,7 +5275,7 @@
     "nColTesto": 9,
     "nFondi": 8,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -5734,8 +5288,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -5744,12 +5297,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -5761,13 +5314,13 @@
      },
      {
       "c": "#1e293b",
-      "n": 99,
+      "n": 97,
       "fs": 27,
       "esempio": "TAT"
      },
      {
       "c": "#596a80",
-      "n": 48,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
@@ -5881,7 +5434,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -5974,10 +5527,10 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 20,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "PUG"
+      "esempio": "CRE"
      },
      {
       "testo": "#b91c1c",
@@ -5999,7 +5552,7 @@
     "nColTesto": 9,
     "nFondi": 8,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -6012,8 +5565,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -6022,12 +5574,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -6039,13 +5591,13 @@
      },
      {
       "c": "#1e293b",
-      "n": 99,
+      "n": 97,
       "fs": 27,
       "esempio": "TAT"
      },
      {
       "c": "#596a80",
-      "n": 48,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
@@ -6159,7 +5711,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -6252,10 +5804,10 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 20,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "PUG"
+      "esempio": "CRE"
      },
      {
       "testo": "#b91c1c",
@@ -6277,7 +5829,7 @@
     "nColTesto": 9,
     "nFondi": 8,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -6290,8 +5842,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -6300,12 +5851,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -6317,13 +5868,13 @@
      },
      {
       "c": "#1e293b",
-      "n": 99,
+      "n": 97,
       "fs": 27,
       "esempio": "TAT"
      },
      {
       "c": "#596a80",
-      "n": 48,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
@@ -6437,7 +5988,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -6530,10 +6081,10 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 20,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "PUG"
+      "esempio": "CRE"
      },
      {
       "testo": "#b91c1c",
@@ -6555,7 +6106,7 @@
     "nColTesto": 9,
     "nFondi": 8,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -6568,8 +6119,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -6578,12 +6128,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -6595,13 +6145,13 @@
      },
      {
       "c": "#1e293b",
-      "n": 99,
+      "n": 97,
       "fs": 27,
       "esempio": "TAT"
      },
      {
       "c": "#596a80",
-      "n": 48,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
@@ -6715,7 +6265,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -6808,10 +6358,10 @@
       "fw": 400,
       "rap": 5.53,
       "soglia": 4.5,
-      "n": 20,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(1)>div:nth-child(2)>span:nth-child(2)",
-      "esempio": "PUG"
+      "esempio": "CRE"
      },
      {
       "testo": "#b91c1c",
@@ -6833,7 +6383,7 @@
     "nColTesto": 9,
     "nFondi": 8,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -6846,8 +6396,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -6856,12 +6405,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -6873,13 +6422,13 @@
      },
      {
       "c": "#1e293b",
-      "n": 99,
+      "n": 97,
       "fs": 27,
       "esempio": "TAT"
      },
      {
       "c": "#596a80",
-      "n": 48,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
@@ -6993,7 +6542,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    }
@@ -7085,7 +6634,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -7099,8 +6648,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -7109,12 +6657,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -7128,7 +6676,7 @@
       "c": "#1e293b",
       "n": 66,
       "fs": 27,
-      "esempio": "CRE"
+      "esempio": "PIS"
      },
      {
       "c": "#596a80",
@@ -7143,10 +6691,10 @@
       "esempio": "82"
      },
      {
-      "c": "#166534",
+      "c": "#b91c1c",
       "n": 12,
       "fs": 11,
-      "esempio": "1"
+      "esempio": "2"
      },
      {
       "c": "#92400e",
@@ -7155,10 +6703,10 @@
       "esempio": "7.2"
      },
      {
-      "c": "#b91c1c",
+      "c": "#166534",
       "n": 10,
       "fs": 11,
-      "esempio": "2"
+      "esempio": "1"
      },
      {
       "c": "#8e1f33",
@@ -7259,7 +6807,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -7349,7 +6897,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -7363,8 +6911,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -7373,12 +6920,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -7392,7 +6939,7 @@
       "c": "#1e293b",
       "n": 66,
       "fs": 27,
-      "esempio": "CRE"
+      "esempio": "PIS"
      },
      {
       "c": "#596a80",
@@ -7407,10 +6954,10 @@
       "esempio": "82"
      },
      {
-      "c": "#166534",
+      "c": "#b91c1c",
       "n": 12,
       "fs": 11,
-      "esempio": "1"
+      "esempio": "2"
      },
      {
       "c": "#92400e",
@@ -7419,10 +6966,10 @@
       "esempio": "7.2"
      },
      {
-      "c": "#b91c1c",
+      "c": "#166534",
       "n": 10,
       "fs": 11,
-      "esempio": "2"
+      "esempio": "1"
      },
      {
       "c": "#8e1f33",
@@ -7523,7 +7070,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -7613,7 +7160,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -7627,8 +7174,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -7637,12 +7183,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -7656,7 +7202,7 @@
       "c": "#1e293b",
       "n": 66,
       "fs": 27,
-      "esempio": "CRE"
+      "esempio": "PIS"
      },
      {
       "c": "#596a80",
@@ -7671,10 +7217,10 @@
       "esempio": "82"
      },
      {
-      "c": "#166534",
+      "c": "#b91c1c",
       "n": 12,
       "fs": 11,
-      "esempio": "1"
+      "esempio": "2"
      },
      {
       "c": "#92400e",
@@ -7683,10 +7229,10 @@
       "esempio": "7.2"
      },
      {
-      "c": "#b91c1c",
+      "c": "#166534",
       "n": 10,
       "fs": 11,
-      "esempio": "2"
+      "esempio": "1"
      },
      {
       "c": "#8e1f33",
@@ -7787,7 +7333,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -7877,7 +7423,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -7891,8 +7437,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -7901,12 +7446,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -7920,7 +7465,7 @@
       "c": "#1e293b",
       "n": 66,
       "fs": 27,
-      "esempio": "CRE"
+      "esempio": "PIS"
      },
      {
       "c": "#596a80",
@@ -7935,10 +7480,10 @@
       "esempio": "82"
      },
      {
-      "c": "#166534",
+      "c": "#b91c1c",
       "n": 12,
       "fs": 11,
-      "esempio": "1"
+      "esempio": "2"
      },
      {
       "c": "#92400e",
@@ -7947,10 +7492,10 @@
       "esempio": "7.2"
      },
      {
-      "c": "#b91c1c",
+      "c": "#166534",
       "n": 10,
       "fs": 11,
-      "esempio": "2"
+      "esempio": "1"
      },
      {
       "c": "#8e1f33",
@@ -8051,7 +7596,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -8141,7 +7686,7 @@
     "nColTesto": 10,
     "nFondi": 9,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -8155,8 +7700,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -8165,12 +7709,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -8184,7 +7728,7 @@
       "c": "#1e293b",
       "n": 66,
       "fs": 27,
-      "esempio": "CRE"
+      "esempio": "PIS"
      },
      {
       "c": "#596a80",
@@ -8199,10 +7743,10 @@
       "esempio": "82"
      },
      {
-      "c": "#166534",
+      "c": "#b91c1c",
       "n": 12,
       "fs": 11,
-      "esempio": "1"
+      "esempio": "2"
      },
      {
       "c": "#92400e",
@@ -8211,10 +7755,10 @@
       "esempio": "7.2"
      },
      {
-      "c": "#b91c1c",
+      "c": "#166534",
       "n": 10,
       "fs": 11,
-      "esempio": "2"
+      "esempio": "1"
      },
      {
       "c": "#8e1f33",
@@ -8315,7 +7859,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    }
@@ -8407,7 +7951,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -8420,8 +7964,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -8430,12 +7973,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -8546,7 +8089,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -8636,7 +8179,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -8649,8 +8192,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -8659,12 +8201,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -8775,7 +8317,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -8865,7 +8407,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -8878,8 +8420,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -8888,12 +8429,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -9004,7 +8545,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -9094,7 +8635,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -9107,8 +8648,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -9117,12 +8657,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -9233,7 +8773,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -9323,7 +8863,7 @@
     "nColTesto": 6,
     "nFondi": 3,
     "nCorpi": 6,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -9336,8 +8876,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -9346,12 +8885,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -9462,7 +9001,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    }
@@ -9478,15 +9017,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 145,
+    "nTesto": 185,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 94,
+    "nMisurati": 126,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 27,
+    "nEmoji": 35,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -9495,7 +9034,7 @@
       "fw": 800,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 6,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
@@ -9519,10 +9058,10 @@
       "fw": 700,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 3,
+      "n": 11,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
-      "esempio": "8°"
+      "esempio": "13°"
      },
      {
       "testo": "#596a80",
@@ -9575,34 +9114,34 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 94
+      "n": 126
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
       "c": "#596a80",
-      "n": 34,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
      {
       "c": "#526279",
-      "n": 18,
+      "n": 26,
       "fs": 11,
       "esempio": "Lega B"
      },
      {
       "c": "#1e293b",
-      "n": 13,
+      "n": 21,
       "fs": 27,
       "esempio": "SAL"
      },
@@ -9652,7 +9191,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 68,
+      "n": 100,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -9694,8 +9233,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1426,
-    "schermate": 1.56,
+    "altezzaPx": 1703,
+    "schermate": 1.86,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -9729,14 +9268,14 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
       "lum": 0.016,
       "fondo": "#112240",
       "px": 207,
-      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+      "txt": "Lo Spogliatoio🧠Gabriele PirasIl M"
      }
     ]
    },
@@ -9750,15 +9289,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 145,
+    "nTesto": 185,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 94,
+    "nMisurati": 126,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 27,
+    "nEmoji": 35,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -9767,7 +9306,7 @@
       "fw": 800,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 6,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
@@ -9791,10 +9330,10 @@
       "fw": 700,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 3,
+      "n": 11,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
-      "esempio": "8°"
+      "esempio": "13°"
      },
      {
       "testo": "#596a80",
@@ -9847,34 +9386,34 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 94
+      "n": 126
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
       "c": "#596a80",
-      "n": 34,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
      {
       "c": "#526279",
-      "n": 18,
+      "n": 26,
       "fs": 11,
       "esempio": "Lega B"
      },
      {
       "c": "#1e293b",
-      "n": 13,
+      "n": 21,
       "fs": 27,
       "esempio": "SAL"
      },
@@ -9924,7 +9463,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 68,
+      "n": 100,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -9966,8 +9505,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1425,
-    "schermate": 1.56,
+    "altezzaPx": 1690,
+    "schermate": 1.85,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10001,14 +9540,14 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
       "lum": 0.016,
       "fondo": "#112240",
       "px": 207,
-      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+      "txt": "Lo Spogliatoio🧠Gabriele PirasIl M"
      }
     ]
    },
@@ -10022,15 +9561,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 145,
+    "nTesto": 185,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 94,
+    "nMisurati": 126,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 27,
+    "nEmoji": 35,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -10039,7 +9578,7 @@
       "fw": 800,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 6,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
@@ -10063,10 +9602,10 @@
       "fw": 700,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 3,
+      "n": 11,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
-      "esempio": "8°"
+      "esempio": "13°"
      },
      {
       "testo": "#596a80",
@@ -10119,34 +9658,34 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 94
+      "n": 126
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
       "c": "#596a80",
-      "n": 34,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
      {
       "c": "#526279",
-      "n": 18,
+      "n": 26,
       "fs": 11,
       "esempio": "Lega B"
      },
      {
       "c": "#1e293b",
-      "n": 13,
+      "n": 21,
       "fs": 27,
       "esempio": "SAL"
      },
@@ -10196,7 +9735,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 68,
+      "n": 100,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -10238,8 +9777,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1425,
-    "schermate": 1.56,
+    "altezzaPx": 1690,
+    "schermate": 1.85,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10273,14 +9812,14 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
       "lum": 0.016,
       "fondo": "#112240",
       "px": 207,
-      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+      "txt": "Lo Spogliatoio🧠Gabriele PirasIl M"
      }
     ]
    },
@@ -10294,15 +9833,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 145,
+    "nTesto": 185,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 94,
+    "nMisurati": 126,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 27,
+    "nEmoji": 35,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -10311,7 +9850,7 @@
       "fw": 800,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 6,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
@@ -10335,10 +9874,10 @@
       "fw": 700,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 3,
+      "n": 11,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
-      "esempio": "8°"
+      "esempio": "13°"
      },
      {
       "testo": "#596a80",
@@ -10391,34 +9930,34 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 94
+      "n": 126
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
       "c": "#596a80",
-      "n": 34,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
      {
       "c": "#526279",
-      "n": 18,
+      "n": 26,
       "fs": 11,
       "esempio": "Lega B"
      },
      {
       "c": "#1e293b",
-      "n": 13,
+      "n": 21,
       "fs": 27,
       "esempio": "SAL"
      },
@@ -10468,7 +10007,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 68,
+      "n": 100,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -10510,8 +10049,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1413,
-    "schermate": 1.54,
+    "altezzaPx": 1677,
+    "schermate": 1.83,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10545,14 +10084,14 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
       "lum": 0.016,
       "fondo": "#112240",
       "px": 207,
-      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+      "txt": "Lo Spogliatoio🧠Gabriele PirasIl M"
      }
     ]
    },
@@ -10566,15 +10105,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 145,
+    "nTesto": 185,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 94,
+    "nMisurati": 126,
     "nSotto": 0,
     "nGradiente": 25,
-    "nEmoji": 27,
+    "nEmoji": 35,
     "peggiori": [
      {
       "testo": "#596a80",
@@ -10583,7 +10122,7 @@
       "fw": 800,
       "rap": 4.77,
       "soglia": 4.5,
-      "n": 6,
+      "n": 22,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
       "esempio": "S."
@@ -10607,10 +10146,10 @@
       "fw": 700,
       "rap": 5.36,
       "soglia": 4.5,
-      "n": 3,
+      "n": 11,
       "svg": false,
       "sel": "div:nth-child(4)>div:nth-child(2)>span.cpm-num",
-      "esempio": "8°"
+      "esempio": "13°"
      },
      {
       "testo": "#596a80",
@@ -10663,34 +10202,34 @@
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 94
+      "n": 126
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
      {
       "c": "#596a80",
-      "n": 34,
+      "n": 50,
       "fs": 11,
       "esempio": "Forma"
      },
      {
       "c": "#526279",
-      "n": 18,
+      "n": 26,
       "fs": 11,
       "esempio": "Lega B"
      },
      {
       "c": "#1e293b",
-      "n": 13,
+      "n": 21,
       "fs": 27,
       "esempio": "SAL"
      },
@@ -10740,7 +10279,7 @@
     "corpiDet": [
      {
       "fs": 11,
-      "n": 68,
+      "n": 100,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -10782,8 +10321,8 @@
      }
     ],
     "nSvgTesto": 1,
-    "altezzaPx": 1400,
-    "schermate": 1.53,
+    "altezzaPx": 1665,
+    "schermate": 1.82,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -10817,14 +10356,14 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(2)>div:nth-child(10)",
       "lum": 0.016,
       "fondo": "#112240",
       "px": 207,
-      "txt": "Lo Spogliatoio🧠Luigi TestaIl Ment"
+      "txt": "Lo Spogliatoio🧠Gabriele PirasIl M"
      }
     ]
    }
@@ -10941,12 +10480,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -11159,7 +10698,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -11302,12 +10841,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -11520,7 +11059,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -11663,12 +11202,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -11881,7 +11420,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -12024,12 +11563,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -12242,7 +11781,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -12385,12 +11924,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -12603,7 +12142,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      },
      {
       "sel": "div.cpm-career>div:nth-child(3)>div:nth-child(1)",
@@ -12723,7 +12262,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -12737,8 +12276,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -12747,12 +12285,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -12893,7 +12431,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -12983,7 +12521,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -12997,8 +12535,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -13007,12 +12544,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -13153,7 +12690,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -13243,7 +12780,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -13257,8 +12794,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -13267,12 +12803,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -13413,7 +12949,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -13503,7 +13039,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -13517,8 +13053,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -13527,12 +13062,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -13673,7 +13208,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -13763,7 +13298,7 @@
     "nColTesto": 9,
     "nFondi": 6,
     "nCorpi": 7,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 5,
     "corpi": [
      11,
@@ -13777,8 +13312,7 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
@@ -13787,12 +13321,12 @@
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 1,
+    "nFigurine": 2,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      }
     ],
     "tinteTesto": [
@@ -13933,7 +13467,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    }
@@ -13949,15 +13483,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 93,
+    "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 17,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#526279",
@@ -14025,7 +13559,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 8,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -14040,22 +13574,21 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 93
+      "n": 94
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 2,
+    "nFigurine": 3,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      },
      {
       "t": "procuratore",
@@ -14071,7 +13604,7 @@
      },
      {
       "c": "#1e293b",
-      "n": 23,
+      "n": 18,
       "fs": 32,
       "esempio": "4.56M€"
      },
@@ -14086,6 +13619,12 @@
       "n": 10,
       "fs": 15,
       "esempio": "45.0M"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 7,
+      "fs": 13,
+      "esempio": "S."
      },
      {
       "c": "#596a80",
@@ -14110,18 +13649,12 @@
       "n": 2,
       "fs": 13,
       "esempio": "€4.9M"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 1,
-      "fs": 13,
-      "esempio": "🚪 Richiedi Cessione"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 67,
+      "n": 68,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -14169,8 +13702,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1576,
-    "schermate": 1.72,
+    "altezzaPx": 1624,
+    "schermate": 1.77,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -14180,12 +13713,12 @@
      "Fatica": 2,
      "Stipendio": 3,
      "Valore": 1,
-     "Contratto": 1,
+     "Contratto": 2,
      "Fiducia": 2,
      "Stagione": 2,
      "Settimana": 3
     },
-    "nEmojiChar": 14,
+    "nEmojiChar": 16,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
@@ -14194,9 +13727,9 @@
      "🥗",
      "✂️ Rescindi (stop 10%)",
      "🔴 Chiuso",
-     "🤵 IL PIANO DEL PROCURATORE — ",
-     "🚪 Richiedi Cessione",
-     "🔍"
+     "⚠️",
+     "⚠️ Contratto in scadenza — usa",
+     "🤵 IL PIANO DEL PROCURATORE — "
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -14208,7 +13741,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -14222,15 +13755,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 93,
+    "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 17,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#526279",
@@ -14298,7 +13831,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 8,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -14313,22 +13846,21 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 93
+      "n": 94
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 2,
+    "nFigurine": 3,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      },
      {
       "t": "procuratore",
@@ -14344,7 +13876,7 @@
      },
      {
       "c": "#1e293b",
-      "n": 23,
+      "n": 18,
       "fs": 32,
       "esempio": "4.56M€"
      },
@@ -14359,6 +13891,12 @@
       "n": 10,
       "fs": 15,
       "esempio": "45.0M"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 7,
+      "fs": 13,
+      "esempio": "S."
      },
      {
       "c": "#596a80",
@@ -14383,18 +13921,12 @@
       "n": 2,
       "fs": 13,
       "esempio": "€4.9M"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 1,
-      "fs": 13,
-      "esempio": "🚪 Richiedi Cessione"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 67,
+      "n": 68,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -14442,8 +13974,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1536,
-    "schermate": 1.68,
+    "altezzaPx": 1572,
+    "schermate": 1.72,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -14453,12 +13985,12 @@
      "Fatica": 2,
      "Stipendio": 3,
      "Valore": 1,
-     "Contratto": 1,
+     "Contratto": 2,
      "Fiducia": 2,
      "Stagione": 2,
      "Settimana": 3
     },
-    "nEmojiChar": 14,
+    "nEmojiChar": 16,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
@@ -14467,9 +13999,9 @@
      "🥗",
      "✂️ Rescindi (stop 10%)",
      "🔴 Chiuso",
-     "🤵 IL PIANO DEL PROCURATORE — ",
-     "🚪 Richiedi Cessione",
-     "🔍"
+     "⚠️",
+     "⚠️ Contratto in scadenza — usa",
+     "🤵 IL PIANO DEL PROCURATORE — "
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -14481,7 +14013,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -14495,15 +14027,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 93,
+    "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 17,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#526279",
@@ -14571,7 +14103,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 8,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -14586,22 +14118,21 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 93
+      "n": 94
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 2,
+    "nFigurine": 3,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      },
      {
       "t": "procuratore",
@@ -14617,7 +14148,7 @@
      },
      {
       "c": "#1e293b",
-      "n": 23,
+      "n": 18,
       "fs": 32,
       "esempio": "4.56M€"
      },
@@ -14632,6 +14163,12 @@
       "n": 10,
       "fs": 15,
       "esempio": "45.0M"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 7,
+      "fs": 13,
+      "esempio": "S."
      },
      {
       "c": "#596a80",
@@ -14656,18 +14193,12 @@
       "n": 2,
       "fs": 13,
       "esempio": "€4.9M"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 1,
-      "fs": 13,
-      "esempio": "🚪 Richiedi Cessione"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 67,
+      "n": 68,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -14715,8 +14246,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1518,
-    "schermate": 1.66,
+    "altezzaPx": 1554,
+    "schermate": 1.7,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -14726,12 +14257,12 @@
      "Fatica": 2,
      "Stipendio": 3,
      "Valore": 1,
-     "Contratto": 1,
+     "Contratto": 2,
      "Fiducia": 2,
      "Stagione": 2,
      "Settimana": 3
     },
-    "nEmojiChar": 14,
+    "nEmojiChar": 16,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
@@ -14740,9 +14271,9 @@
      "🥗",
      "✂️ Rescindi (stop 10%)",
      "🔴 Chiuso",
-     "🤵 IL PIANO DEL PROCURATORE — ",
-     "🚪 Richiedi Cessione",
-     "🔍"
+     "⚠️",
+     "⚠️ Contratto in scadenza — usa",
+     "🤵 IL PIANO DEL PROCURATORE — "
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -14754,7 +14285,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -14768,15 +14299,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 93,
+    "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 17,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#526279",
@@ -14844,7 +14375,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 8,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -14859,22 +14390,21 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 93
+      "n": 94
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 2,
+    "nFigurine": 3,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      },
      {
       "t": "procuratore",
@@ -14890,7 +14420,7 @@
      },
      {
       "c": "#1e293b",
-      "n": 23,
+      "n": 18,
       "fs": 32,
       "esempio": "4.56M€"
      },
@@ -14905,6 +14435,12 @@
       "n": 10,
       "fs": 15,
       "esempio": "45.0M"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 7,
+      "fs": 13,
+      "esempio": "S."
      },
      {
       "c": "#596a80",
@@ -14929,18 +14465,12 @@
       "n": 2,
       "fs": 13,
       "esempio": "€4.9M"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 1,
-      "fs": 13,
-      "esempio": "🚪 Richiedi Cessione"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 67,
+      "n": 68,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -14988,8 +14518,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1518,
-    "schermate": 1.66,
+    "altezzaPx": 1554,
+    "schermate": 1.7,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -14999,12 +14529,12 @@
      "Fatica": 2,
      "Stipendio": 3,
      "Valore": 1,
-     "Contratto": 1,
+     "Contratto": 2,
      "Fiducia": 2,
      "Stagione": 2,
      "Settimana": 3
     },
-    "nEmojiChar": 14,
+    "nEmojiChar": 16,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
@@ -15013,9 +14543,9 @@
      "🥗",
      "✂️ Rescindi (stop 10%)",
      "🔴 Chiuso",
-     "🤵 IL PIANO DEL PROCURATORE — ",
-     "🚪 Richiedi Cessione",
-     "🔍"
+     "⚠️",
+     "⚠️ Contratto in scadenza — usa",
+     "🤵 IL PIANO DEL PROCURATORE — "
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -15027,7 +14557,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    },
@@ -15041,15 +14571,15 @@
     "fuori": [],
     "nContenuti": 0,
     "contenuti": [],
-    "nTesto": 116,
+    "nTesto": 118,
     "nSottoPav": 0,
     "nPiccoli": 0,
     "minFs": 11,
     "sottoPav": [],
-    "nMisurati": 93,
+    "nMisurati": 94,
     "nSotto": 0,
     "nGradiente": 6,
-    "nEmoji": 17,
+    "nEmoji": 18,
     "peggiori": [
      {
       "testo": "#526279",
@@ -15117,7 +14647,7 @@
     "nColTesto": 9,
     "nFondi": 5,
     "nCorpi": 8,
-    "nRaggi": 4,
+    "nRaggi": 3,
     "nPesi": 6,
     "corpi": [
      11,
@@ -15132,22 +14662,21 @@
     "raggi": [
      6,
      8,
-     12,
-     50
+     12
     ],
     "famiglie": [
      {
       "f": "Barlow",
-      "n": 93
+      "n": 94
      }
     ],
     "nFamiglie": 1,
-    "nFigurine": 2,
+    "nFigurine": 3,
     "figScarto": 0.9,
     "figTipi": [
      {
       "t": "giocatore",
-      "n": 1
+      "n": 2
      },
      {
       "t": "procuratore",
@@ -15163,7 +14692,7 @@
      },
      {
       "c": "#1e293b",
-      "n": 23,
+      "n": 18,
       "fs": 32,
       "esempio": "4.56M€"
      },
@@ -15178,6 +14707,12 @@
       "n": 10,
       "fs": 15,
       "esempio": "45.0M"
+     },
+     {
+      "c": "#b91c1c",
+      "n": 7,
+      "fs": 13,
+      "esempio": "S."
      },
      {
       "c": "#596a80",
@@ -15202,18 +14737,12 @@
       "n": 2,
       "fs": 13,
       "esempio": "€4.9M"
-     },
-     {
-      "c": "#b91c1c",
-      "n": 1,
-      "fs": 13,
-      "esempio": "🚪 Richiedi Cessione"
      }
     ],
     "corpiDet": [
      {
       "fs": 11,
-      "n": 67,
+      "n": 68,
       "esempio": "Elite",
       "sel": "div:nth-child(1)>span:nth-child(2)>span:nth-child(2)"
      },
@@ -15261,8 +14790,8 @@
      }
     ],
     "nSvgTesto": 0,
-    "altezzaPx": 1518,
-    "schermate": 1.66,
+    "altezzaPx": 1554,
+    "schermate": 1.7,
     "scorritore": "div#root>div.cpm-root>div.cpm-scroll",
     "blocchi": [],
     "etichette": {
@@ -15272,12 +14801,12 @@
      "Fatica": 2,
      "Stipendio": 3,
      "Valore": 1,
-     "Contratto": 1,
+     "Contratto": 2,
      "Fiducia": 2,
      "Stagione": 2,
      "Settimana": 3
     },
-    "nEmojiChar": 14,
+    "nEmojiChar": 16,
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
@@ -15286,9 +14815,9 @@
      "🥗",
      "✂️ Rescindi (stop 10%)",
      "🔴 Chiuso",
-     "🤵 IL PIANO DEL PROCURATORE — ",
-     "🚪 Richiedi Cessione",
-     "🔍"
+     "⚠️",
+     "⚠️ Contratto in scadenza — usa",
+     "🤵 IL PIANO DEL PROCURATORE — "
     ],
     "hVoce": 49,
     "hSostieni": 26,
@@ -15300,7 +14829,7 @@
       "lum": 0.044,
       "fondo": "#6c1f2e",
       "px": 118,
-      "txt": "K⚽rwardEliteSalva · 16:29Avataaars"
+      "txt": "K⚽rwardEliteSalva · 17:20Italia · "
      }
     ]
    }
@@ -15348,7 +14877,7 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "Contropiede"
+      "esempio": "Fantasioso"
      },
      {
       "testo": "#526279",
@@ -15384,7 +14913,7 @@
       "n": 2,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      }
     ],
     "nMarca": 1,
@@ -15439,7 +14968,7 @@
       "c": "#166534",
       "n": 2,
       "fs": 11,
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      },
      {
       "c": "#8e1f33",
@@ -15458,7 +14987,7 @@
      {
       "fs": 11,
       "n": 11,
-      "esempio": "Contropiede",
+      "esempio": "Fantasioso",
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
      },
      {
@@ -15484,9 +15013,9 @@
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
-     "· Giornata 11 di 34 ⚠︎ ?g",
-     "🗡️",
-     "⛅ Parz. nuvoloso",
+     "· Giornata 10 di 34 ⚠︎ ?g",
+     "🎭",
+     "🌧️ Pioggia",
      "🎙️ ANALISI DEL MISTER — COME ",
      "🛡️",
      "🧤",
@@ -15549,7 +15078,7 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "Contropiede"
+      "esempio": "Fantasioso"
      },
      {
       "testo": "#526279",
@@ -15585,7 +15114,7 @@
       "n": 2,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      }
     ],
     "nMarca": 1,
@@ -15640,7 +15169,7 @@
       "c": "#166534",
       "n": 2,
       "fs": 11,
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      },
      {
       "c": "#8e1f33",
@@ -15659,7 +15188,7 @@
      {
       "fs": 11,
       "n": 11,
-      "esempio": "Contropiede",
+      "esempio": "Fantasioso",
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
      },
      {
@@ -15685,9 +15214,9 @@
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
-     "· Giornata 11 di 34 ⚠︎ ?g",
-     "🗡️",
-     "⛅ Parz. nuvoloso",
+     "· Giornata 10 di 34 ⚠︎ ?g",
+     "🎭",
+     "🌧️ Pioggia",
      "🎙️ ANALISI DEL MISTER — COME ",
      "🛡️",
      "🧤",
@@ -15750,7 +15279,7 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "Contropiede"
+      "esempio": "Fantasioso"
      },
      {
       "testo": "#526279",
@@ -15786,7 +15315,7 @@
       "n": 2,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      }
     ],
     "nMarca": 1,
@@ -15841,7 +15370,7 @@
       "c": "#166534",
       "n": 2,
       "fs": 11,
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      },
      {
       "c": "#8e1f33",
@@ -15860,7 +15389,7 @@
      {
       "fs": 11,
       "n": 11,
-      "esempio": "Contropiede",
+      "esempio": "Fantasioso",
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
      },
      {
@@ -15886,9 +15415,9 @@
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
-     "· Giornata 11 di 34 ⚠︎ ?g",
-     "🗡️",
-     "⛅ Parz. nuvoloso",
+     "· Giornata 10 di 34 ⚠︎ ?g",
+     "🎭",
+     "🌧️ Pioggia",
      "🎙️ ANALISI DEL MISTER — COME ",
      "🛡️",
      "🧤",
@@ -15951,7 +15480,7 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "Contropiede"
+      "esempio": "Fantasioso"
      },
      {
       "testo": "#526279",
@@ -15987,7 +15516,7 @@
       "n": 2,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      }
     ],
     "nMarca": 1,
@@ -16042,7 +15571,7 @@
       "c": "#166534",
       "n": 2,
       "fs": 11,
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      },
      {
       "c": "#8e1f33",
@@ -16061,7 +15590,7 @@
      {
       "fs": 11,
       "n": 11,
-      "esempio": "Contropiede",
+      "esempio": "Fantasioso",
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
      },
      {
@@ -16087,9 +15616,9 @@
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
-     "· Giornata 11 di 34 ⚠︎ ?g",
-     "🗡️",
-     "⛅ Parz. nuvoloso",
+     "· Giornata 10 di 34 ⚠︎ ?g",
+     "🎭",
+     "🌧️ Pioggia",
      "🎙️ ANALISI DEL MISTER — COME ",
      "🛡️",
      "🧤",
@@ -16152,7 +15681,7 @@
       "n": 1,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)",
-      "esempio": "Contropiede"
+      "esempio": "Fantasioso"
      },
      {
       "testo": "#526279",
@@ -16188,7 +15717,7 @@
       "n": 2,
       "svg": false,
       "sel": "div:nth-child(2)>div:nth-child(2)>b:nth-child(1)",
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      }
     ],
     "nMarca": 1,
@@ -16243,7 +15772,7 @@
       "c": "#166534",
       "n": 2,
       "fs": 11,
-      "esempio": "Gioco aereo"
+      "esempio": "Dribbling nell'1v1"
      },
      {
       "c": "#8e1f33",
@@ -16262,7 +15791,7 @@
      {
       "fs": 11,
       "n": 11,
-      "esempio": "Contropiede",
+      "esempio": "Fantasioso",
       "sel": "div:nth-child(2)>div:nth-child(3)>div:nth-child(4)"
      },
      {
@@ -16288,9 +15817,9 @@
     "doveEmoji": [
      "Si scende in campo! ⚽",
      "⚽",
-     "· Giornata 11 di 34 ⚠︎ ?g",
-     "🗡️",
-     "⛅ Parz. nuvoloso",
+     "· Giornata 10 di 34 ⚠︎ ?g",
+     "🎭",
+     "🌧️ Pioggia",
      "🎙️ ANALISI DEL MISTER — COME ",
      "🛡️",
      "🧤",

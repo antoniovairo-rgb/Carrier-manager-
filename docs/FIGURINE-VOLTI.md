@@ -25,6 +25,26 @@ Il rapporto vive in **un posto solo** nel codice (`const FIG={w:5,h:7,…}`). **
 22/09** — quindi è questo il formato su cui disegnare: 5:7 verticale, consegne a 320×448 e 640×896.
 (Se un domani dovesse cambiare, si cambia quella riga e **tutte** le figurine del gioco seguono.)
 
+## 1-bis. Cosa c'è DENTRO l'arte (dalla figurina d'esempio del PO, 22/09)
+
+L'esempio ricevuto mostra che la figurina è **completa in sé**: cornice granata con gli angoli ornati,
+**KORWARD** in alto, il ritratto, e in basso la **fascia col nome** (`MATTEO RINALDI`) più la riga
+`ATTACCANTE · 24 ANNI`. Da qui due regole del riquadro, già in codice:
+
+1. il riquadro monta l'immagine con **`object-fit: contain`**, non `cover`: ritagliare anche solo il 3 %
+   dell'altezza taglierebbe la fascia col nome, che sta a filo del bordo inferiore. Il fondo del riquadro
+   è bianco, quindi un eventuale margine di `contain` è invisibile;
+2. il riquadro **non sovrappone più nulla** quando l'arte c'è — niente fascia del nome del componente,
+   niente banda colorata in alto: sarebbe un secondo nome sopra il primo.
+
+Corollario per chi disegna: **il nome, il ruolo e l'età stanno nell'arte**, non li mette il gioco. Se un
+domani servisse il contrario (nome dal gioco, arte senza fascia), è una riga — ma va deciso una volta.
+
+⚠️ **Da confermare**: l'esempio sembra leggermente più alto del 5:7 (≈ 0,69 contro 0,714). Non ho il file
+sorgente, solo l'immagine in chat, quindi non posso misurarlo al pixel. Serve **la dimensione esatta in
+pixel** del file (o il file stesso in `assets/volti/`): con `contain` la differenza non rompe niente, ma il
+rapporto dichiarato deve essere quello vero.
+
 ## 2. L'inquadratura
 
 ```

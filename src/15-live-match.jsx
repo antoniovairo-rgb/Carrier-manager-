@@ -886,7 +886,7 @@ function FestaFine942({dati,onChiudi}){
           {(dati.facce||[]).map((f,i)=>(
             <div key={"f"+i} style={{borderRadius:"50%",padding:2,background:i===0?_FESTA942.oro:"rgba(148,163,184,0.34)",lineHeight:0,
               transform:"translateY("+(Math.sin((n+i*3)/2.4)*2.6).toFixed(1)+"px)"}}>
-              {(()=>{try{return f.eroe?<AvatarSVG id={f.id||0} size={i===0?58:44}/>:<AvatarSVG seed={f.nome} size={i===0?58:44} avStyle="micah"/>;}catch(_e){return null;}})()}
+              {(()=>{try{return f.eroe?<Figurina tipo="giocatore" chiave={f.nome||"eroe"} larg={Math.round((i===0?58:44)*5/7)}/>:<Figurina tipo="giocatore" chiave={f.nome} larg={Math.round((i===0?58:44)*5/7)}/>;}catch(_e){return null;}})()}
             </div>))}
         </div>
         <div style={{padding:SP.md+"px "+SP.lg+"px",borderTop:"1px solid rgba(148,163,184,0.16)",
@@ -928,11 +928,11 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
   const faccia=(()=>{
     try{
       if(com.fam==="MISTER")return <NpcFaceCoach coachName={coachName||"Mister"} size={58}/>;
-      if(com.fam==="COMPAGNI"&&com.chi)return <AvatarSVG seed={com.chi} size={58} avStyle="micah"/>;
-      if(com.fam==="AVVERSARI")return <AvatarSVG seed={"avv-"+(avvNome||"rivale")} size={58} avStyle="micah"/>;
-      if(com.fam==="ARBITRO")return <AvatarSVG seed={"arbitro-"+(avvNome||"gara")} size={58} avStyle="micah"/>;
+      if(com.fam==="COMPAGNI"&&com.chi)return <Figurina tipo="giocatore" chiave={com.chi} larg={41}/>;
+      if(com.fam==="AVVERSARI")return <Figurina tipo="avversario" chiave={avvNome||"rivale"} larg={41}/>;
+      if(com.fam==="ARBITRO")return <Figurina tipo="arbitro" chiave={"arbitro-"+(avvNome||"gara")} larg={41}/>;
     }catch(_e){}
-    return <AvatarSVG id={(player&&player.avatarId)||0} size={58}/>;
+    return <Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={41}/>;
   })();
   return(
     <div data-cpm="pop919" style={{position:"fixed",inset:0,zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",

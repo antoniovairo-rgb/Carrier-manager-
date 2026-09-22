@@ -329,29 +329,38 @@ function voltoUrl(tipo,chiave){
 }
 /* `Figurina` — larghezza dichiarata, altezza derivata dal rapporto. `nome` accende la fascia in basso,
    come sull'album. `ritratto` permette di passare un contenuto proprio al posto del ripiego. */
+/* [7.973 · direttive PO 22/09: «per il momento togli tutte le faccine della libreria SVG che eliminero'»
+   e «lo spazio rapporto 5:7 deve essere bianco neutro»]
+   LO SPAZIO E' VUOTO, E DEVE SEMBRARE VUOTO. Il ripiego con la faccia tonda dentro la cornice e il fondo
+   col colore del club sono stati tolti: il riquadro e' ora una superficie BIANCA NEUTRA col suo bordo,
+   che e' esattamente cio' che il PO ha chiesto — lo spazio che aspetta la figurina, non un segnaposto che
+   finge di essere un ritratto. Quando arriva l'arte (manifesto `window.__CPM_VOLTI`) l'immagine riempie il
+   riquadro e il bianco sparisce; finche' non arriva, si vede lo spazio. */
 function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,...rest}){
   const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
-  const c1=col||"#8e1f33", c2=col2||"#f0b33a";
   const url=voltoUrl(tipo,chiave!=null?chiave:nome);
-  const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il volto */
+  const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il riquadro */
   return(
     <div data-cpm-figurina={tipo} title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
-      borderRadius:FIG.r,overflow:"hidden",background:`linear-gradient(160deg,${c1},${c1}cc 46%,#0f172a)`,
-      border:"1px solid rgba(15,23,42,0.18)",boxShadow:"0 2px 6px rgba(15,23,42,0.22)",...style}} {...rest}>
+      borderRadius:FIG.r,overflow:"hidden",background:"#ffffff",
+      border:"1px solid rgba(15,23,42,0.16)",boxShadow:"0 1px 3px rgba(15,23,42,0.12)",...style}} {...rest}>
+      {/* [7.974 — la figurina d'esempio del PO cambia due regole del riquadro]
+          (1) `contain`, non `cover`: l'arte porta GIA' la sua cornice, il marchio KORWARD in alto e la
+              fascia col nome in basso. Ritagliare anche solo il 3 % dell'altezza taglierebbe proprio
+              quella fascia — «ATTACCANTE · 24 ANNI» sta a filo del bordo inferiore. Col fondo bianco del
+              riquadro, un eventuale margine di `contain` e' invisibile.
+          (2) la fascia col nome del COMPONENTE si disegna solo quando l'arte NON c'e': con l'arte
+              sarebbe un secondo nome sopra il primo. */}
       {url
         ?<img src={url} alt={nome||""} width={w} height={h} loading="lazy" decoding="async"
-           style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
-        :<div style={{position:"absolute",inset:0,display:"flex",alignItems:"flex-start",justifyContent:"center",paddingTop:Math.round(h*0.08)}}>
-           {ritratto!=null?ritratto:<AvatarSVG seed={chiave||nome||"volto"} size={Math.round(w*0.82)} avStyle="micah"/>}
-         </div>}
-      <span aria-hidden style={{position:"absolute",left:0,right:0,top:0,height:Math.round(h*0.10),
-        background:`linear-gradient(180deg,${c2}dd,transparent)`}}/>
-      {conNome&&(
+           style={{width:"100%",height:"100%",objectFit:"contain",display:"block",background:"#ffffff"}}/>
+        :(ritratto!=null?<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>{ritratto}</div>:null)}
+      {conNome&&!url&&(
         <div style={{position:"absolute",left:0,right:0,bottom:0,padding:"3px 5px",
-          background:"linear-gradient(0deg,rgba(15,23,42,0.92),rgba(15,23,42,0.55) 62%,transparent)"}}>
-          <div style={{fontSize:FS.caption,fontWeight:800,color:"#fff",lineHeight:1.15,
+          background:"linear-gradient(0deg,rgba(255,255,255,0.96),rgba(255,255,255,0.78) 62%,transparent)"}}>
+          <div style={{fontSize:FS.caption,fontWeight:800,color:"#1e293b",lineHeight:1.15,
             overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
-          {ruolo?<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.15,
+          {ruolo?<div style={{fontSize:FS.caption,color:"#526279",lineHeight:1.15,
             overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ruolo}</div>:null}
         </div>)}
     </div>);
@@ -442,7 +451,7 @@ function npcCoachAvOpts(coachName){
       facialHairColor:[_hc],eyeShadowColor:["transparent"],
       mouth:["smile","smirk"],glassesProbability:20,glassesColor:["2d3748"]}};
 }
-function NpcFaceCoach({coachName,size}){return <AvatarSVG seed={"coach-"+(coachName||"mister")} size={size||52} avStyle="micah" avOpts={npcCoachAvOpts(coachName||"mister")}/>;}
+function NpcFaceCoach({coachName,size}){return <Figurina tipo="mister" chiave={coachName||"mister"} larg={Math.round((size||52)*5/7)}/>;}
 
 /* ========================================
    PLAYER 3D VIEWER
@@ -522,7 +531,7 @@ function AvatarPhoto({id=0,size=60,border=false,style={}}){
   //   l'immagine manca. renderHeroPhoto resta definita ma NON è più usata (nessun contesto WebGL creato).
   const n=AVATARS.length,_id=((((id|0)%n)+n)%n);
   const [err,setErr]=useState(false);
-  if(err)return <AvatarSVG id={id} size={size} border={border} style={style}/>;
+  if(err)return <Figurina tipo="giocatore" chiave={"avatar-"+_id} larg={Math.round(size*5/7)} style={style}/>;/* [7.973] il ripiego del ritratto non e' piu' una faccina della libreria: e' lo spazio bianco della figurina */
   return <img src={"./assets/avatar-"+_id+".png"} width={size} height={size} alt="" onError={()=>setErr(true)} style={{width:size,height:size,borderRadius:"50%",objectFit:"cover",objectPosition:"center center",background:"#e6ecf5",display:"block",flexShrink:0,...(border?{border:"2px solid "+TH.primary,boxSizing:"border-box"}:{}),...style}}/>;
 }
 function Player3DViewer({avatarData,clubColor="#2563eb",width="100%",height="280px",animate=true}){

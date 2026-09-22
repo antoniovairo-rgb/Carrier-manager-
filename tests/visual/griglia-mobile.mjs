@@ -119,10 +119,30 @@ const OUT = process.env.CPM_OUT ? path.resolve(process.env.CPM_OUT) : path.join(
 
 /* ── SALVATAGGIO DI PROVA — cablato, cosi' due corse vedono la stessa carriera ─────────────── */
 const SAVE = { phase: 'career', player: {
-  name: 'Grafica Probe', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 4, week: 12, weekLived: false,
-  age: 26, ovr: 82, tutorialDone: true, campDone: true, jerseyNum: 9, jerseyNumSeason: 4,
-  presidentModalSeason: 4, drawSeen: 4, mercatoSeen: 4, coachPactSeason: 4,
-  seasonPledge: { season: 4, tone: 'equilibrato' }, squadRole: 'titolare',
+  /* [G16 · 22/09 — IL SALVATAGGIO DI PROVA ERA UNA CARRIERA CORTA, E MISURAVA UN GIOCO CHE IL PO NON VEDE.]
+     Rilievo del PO con quattro screenshot dal suo Android: «la home e' ancora incasinata». Il metro pero'
+     diceva Dashboard 2,06 schermate e nessun difetto. Le due cose non si contraddicono: il suo salvataggio
+     e' una STAGIONE 12 e il banco stava alla 4, quindi notizie della settimana, voci di mercato, duello
+     capocannoniere e ultime notizie non venivano proprio RESI — le fisarmoniche che ho appena messo li'
+     non avevano niente da chiudere. Stessa cecita' dei trofei del 21/09 (G8.3), su altri quattro blocchi.
+     Qui la carriera di prova va alla stagione 12 con un archivio vero: registro delle ultime notizie,
+     diario, e i contatori di una carriera lunga.
+     ⚠️ TUTTI I NUMERI DI ALTEZZA E DI NODI CITATI PRIMA DEL 22/09 SONO STATI MISURATI SU UNA CARRIERA
+     CORTA: non si confrontano con quelli di dopo. La riga di partenza si sposta, e si dichiara. */
+  name: 'Grafica Probe', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 12, week: 11, weekLived: false,
+  age: 28, ovr: 82, tutorialDone: true, campDone: true, jerseyNum: 9, jerseyNumSeason: 12,
+  presidentModalSeason: 12, drawSeen: 12, mercatoSeen: 12, coachPactSeason: 12,
+  seasonPledge: { season: 12, tone: 'equilibrato' }, squadRole: 'titolare',
+  log: [
+    'Le parole hanno retto',
+    'Rinnovo: 2 stag. a 33.3M/anno',
+    "C'era il CT, in tribuna",
+    '[diplomatico] «Ogni partita ha la sua storia. Ma quelle con...»',
+    'vs FC Goodison (3-2) | 2 gol 1 assist | 7.8',
+    'Il mister ti usa come esempio in sala video',
+    'La curva canta il tuo coro',
+    'Scontro al vertice in arrivo',
+  ],
   coachTrust: 78, teamChemistry: 72, value: 45, popularity: 64, hasAgent: true,
   goals: 14, assists: 6, matches: 12, totalGoals: 80, totalAssists: 31, totalMatches: 150,
   matchHistory: Array.from({ length: 12 }, (_, i) => ({ week: i + 1, opponent: 'FC Rivale ' + i, goals: i % 3 === 0 ? 1 : 0, assists: i % 4 === 0 ? 1 : 0, rating: 7.2, won: i % 2 === 0, drew: false, homeScore: 2, awayScore: 1 })),

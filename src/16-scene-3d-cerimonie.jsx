@@ -48,7 +48,7 @@ function ProTransitionScreen({player,onChoose}){
       {/* Player status card */}
       <Card style={{marginBottom:12,padding:"12px 14px"}} bg={forced?"#fff1f2":"#eff6ff"} border={forced?"#fecaca":"#bfdbfe"}>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
-          <AvatarSVG id={player.avatarId||0} size={46}/>
+          <Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={33}/>
           <div style={{flex:1}}>
             <div style={{fontWeight:800,fontSize:FS.body,color:TH.text}}>{player.name} · Livello {player.ovr}</div>
             <div style={{fontSize:FS.caption,color:TH.muted}}>{player.club?.lg||"Primavera"} · Età {player.age} · {player.nation} · Piede {player.foot==="L"?"sinistro":"destro"}</div>
@@ -831,13 +831,13 @@ function ParataScena2D({club,avatarId=0,heroNum=10}){
       <div style={{position:"absolute",left:0,right:0,top:"34%",display:"flex",alignItems:"flex-end",
         justifyContent:"center",gap:6,padding:"0 10px"}}>
         <div style={{textAlign:"center",filter:"drop-shadow(0 6px 16px rgba(0,0,0,0.6))"}}>
-          {(()=>{try{return <AvatarSVG id={avatarId} size={64} border/>;}catch(_e){return null;}})()}
+          {(()=>{try{return <Figurina tipo="giocatore" chiave={"eroe-"+avatarId} larg={46}/>;}catch(_e){return null;}})()}
           <div style={{marginTop:2,fontSize:FS.caption,fontWeight:900,color:"#fff",
             textShadow:"0 1px 4px rgba(0,0,0,0.85)"}}>{heroNum||10}</div>
         </div>
         {_squadra.map((q,i)=>(<div key={i} style={{textAlign:"center",opacity:0.9,
           filter:"drop-shadow(0 3px 9px rgba(0,0,0,0.55))"}}>
-          {(()=>{try{return <AvatarSVG seed={q.seme} size={38} avStyle="micah"/>;}catch(_e){return null;}})()}
+          {(()=>{try{return <Figurina tipo="giocatore" chiave={q.seme} larg={27}/>;}catch(_e){return null;}})()}
         </div>))}
       </div>
       <StrisciaScena948 club={club} tono={"#d4a017"}/>
@@ -889,8 +889,8 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
             transform:big?"scale(1.2)":"none",transition:"opacity .45s ease-out, transform .45s ease-out",
             filter:big?"drop-shadow(0 0 16px rgba(255,255,255,0.45))":"drop-shadow(0 3px 8px rgba(0,0,0,0.55))"}}>
             {(()=>{try{return big
-              ? <AvatarSVG id={avatarId} size={62} border/>
-              : <AvatarSVG seed={q.seme} size={38} avStyle="micah"/>;}catch(_e){return null;}})()}
+              ? <Figurina tipo="giocatore" chiave={"eroe-"+avatarId} larg={44}/>
+              : <Figurina tipo="giocatore" chiave={q.seme} larg={27}/>;}catch(_e){return null;}})()}
             <div style={{marginTop:2,fontSize:FS.caption,fontWeight:900,color:"#fff",
               textShadow:"0 1px 4px rgba(0,0,0,0.85)"}}>{big&&heroNum?heroNum:q.n}</div>
           </div>);})}
@@ -1911,8 +1911,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
     <div key={idx} style={{display:"flex",alignItems:"center",gap:10,padding:big?"12px 14px":"9px 12px",borderRadius:RAD.md,marginBottom:6,background:_me?"linear-gradient(135deg,#3b2a07,#5b420c)":"rgba(255,255,255,0.06)",border:`1px solid ${_me?"#d4a017":"rgba(255,255,255,0.12)"}`,animation:"logoIn 0.5s ease-out"}}>
       <span style={{fontSize:big?26:18}}>{medal}</span>
       {/* [7.946] il viso della libreria SVG accanto al nome: niente CH38, e si riconosce chi e' */}
-      {(()=>{try{return _me?<AvatarSVG id={(player&&player.avatarId)||0} size={big?42:32} border={big}/>
-        :<AvatarSVG seed={c.name||"npc"} size={big?42:32} avStyle="micah"/>;}catch(_e){return null;}})()}
+      {(()=>{try{return _me?<Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={Math.round((big?42:32)*5/7)}/>
+        :<Figurina tipo="giocatore" chiave={c.name||"npc"} larg={Math.round((big?42:32)*5/7)}/>;}catch(_e){return null;}})()}
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}</div>

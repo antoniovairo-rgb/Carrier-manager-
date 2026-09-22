@@ -6658,7 +6658,7 @@ const getThisWeekMatchday=()=>{
               </button>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:11,padding:"7px 12px 11px"}}>
-              <div style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<AvatarSVG id={player.avatarId||0} size={30}/>}/></div>
+              <div style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<Figurina tipo="giocatore" chiave={player.name} larg={21}/>}/></div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.caption,color:ink,textTransform:"uppercase",letterSpacing:1.6,fontWeight:FW.bold}}>{player.nation} &middot; {player.position||"Attaccante"}</div>
                 <h1 style={{margin:"2px 0 3px",fontSize:FS.title,fontWeight:FW.black,letterSpacing:.2,color:ink,lineHeight:1.05,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{player.name}</h1>
@@ -7398,7 +7398,12 @@ const getThisWeekMatchday=()=>{
         const th26=weekTheme(player);const iw26=innerWeather(player);
         if(!th26&&!iw26)return null;
         return(
-          <div style={{marginBottom:9,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.lg,padding:"11px 13px",boxShadow:TH.el1}}>
+          <Card momento="La tua settimana" momentoNota={th26?th26.t:null} style={{marginBottom:9}}>{/* [7.972 — collaudo PO «la home e' ancora incasinata»] IL BLOCCO PIU' GRANDE DELLA HOME DIVENTA UNA
+              FISARMONICA. MISURATO sul salvataggio nuovo (stagione 12, quello del PO): 473 px, il 25,8 %
+              dell'intera Dashboard — piu' del doppio di qualunque altro blocco. Dentro ci sono sei
+              sezioni di testo (il tema della settimana, il meteo interiore, le aspettative, dentro la
+              testa, le voci dal club, lo spogliatoio): tutta roba da LEGGERE, nessuna da decidere.
+              Chiusa, la riga porta il titolo del tema, cosi' si sa se vale la pena aprirla. */}
             {th26&&<div style={{display:"flex",alignItems:"center",gap:9}}>
               <span style={{fontSize:FS.title,lineHeight:1}}>{th26.e}</span>
               <div style={{flex:1,minWidth:0}}>
@@ -7447,7 +7452,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:legCol944("#0891b2"),textTransform:"uppercase",letterSpacing:1,marginBottom:3}}>Nello spogliatoio</div>
                 <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>{me.icon} <b style={{color:TH.text}}>{me.name}</b> <span style={{color:TH.faint,fontSize:FS.caption}}>({me.arch})</span> {me.line}</div>
               </div>);})()}
-          </div>
+          </Card>
         );
       })()}
       {/* [7.83.0 collaudo PO «ridondante! elimina»] griglia totali di carriera (Gol/Presenze/Trofei/Stagioni) RIMOSSA dal dashboard: è già nel Tab Carriera. Resta il badge fase-carriera (età/fase, non duplicato). */}
@@ -10023,7 +10028,7 @@ const getThisWeekMatchday=()=>{
             )}
             {!player.hasAgent?(
               <Card style={{padding:"20px",textAlign:"center"}}>
-                <div style={{marginBottom:8,display:"flex",justifyContent:"center",opacity:0.9}}><AvatarSVG seed="procuratore-libero" size={56} avStyle="micah"/></div>
+                <div style={{marginBottom:8,display:"flex",justifyContent:"center",opacity:0.9}}><Figurina tipo="procuratore" chiave="procuratore-libero" larg={40}/></div>
                 <div style={{fontSize:FS.body,fontWeight:900,color:TH.text,marginBottom:6}}>Nessun agente</div>
                 <div style={{fontSize:FS.small,color:TH.muted,marginBottom:12,lineHeight:1.7}}>Un procuratore apre porte, negozia contratti migliori (+15%) e gestisce la tua immagine. <b style={{color:TH.text}}>Costa il 10% del tuo stipendio (8% con agenzia boutique).</b></div>
                 <Btn onClick={function(){const _fee=Math.max(500,Math.round(player.contract?.wage||0));if((player.bankBalance||0)<_fee){notify("💸 Fondi insufficienti: l'ingaggio costa "+_fee.toLocaleString("it-IT")+"€",TH.danger);return;}setAgentIntro({fee:_fee,amb:null});/* [7.376.0 R3] anche da qui si passa dalla scena del primo incontro */}} v="primary" fw style={{padding:"13px"}}>🤵 Ingaggia un procuratore</Btn>{/* [7.179.0 backlog #1] ONORARIO D'INGAGGIO una tantum (1 stipendio settimanale, min 500€, fondi richiesti): chiude il loop «ingaggia gratis → rinnovo ×1.15 → rescindi gratis» */}{/* [7.162.0 ECO-F8] piano scritto SUBITO all'ingaggio: il fallback per-render mostrava un piano fantasma sempre-verde senza verdetto */}

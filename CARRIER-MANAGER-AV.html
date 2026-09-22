@@ -596,29 +596,38 @@ function voltoUrl(tipo,chiave){
 }
 /* `Figurina` — larghezza dichiarata, altezza derivata dal rapporto. `nome` accende la fascia in basso,
    come sull'album. `ritratto` permette di passare un contenuto proprio al posto del ripiego. */
+/* [7.973 · direttive PO 22/09: «per il momento togli tutte le faccine della libreria SVG che eliminero'»
+   e «lo spazio rapporto 5:7 deve essere bianco neutro»]
+   LO SPAZIO E' VUOTO, E DEVE SEMBRARE VUOTO. Il ripiego con la faccia tonda dentro la cornice e il fondo
+   col colore del club sono stati tolti: il riquadro e' ora una superficie BIANCA NEUTRA col suo bordo,
+   che e' esattamente cio' che il PO ha chiesto — lo spazio che aspetta la figurina, non un segnaposto che
+   finge di essere un ritratto. Quando arriva l'arte (manifesto `window.__CPM_VOLTI`) l'immagine riempie il
+   riquadro e il bianco sparisce; finche' non arriva, si vede lo spazio. */
 function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,...rest}){
   const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
-  const c1=col||"#8e1f33", c2=col2||"#f0b33a";
   const url=voltoUrl(tipo,chiave!=null?chiave:nome);
-  const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il volto */
+  const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il riquadro */
   return(
     <div data-cpm-figurina={tipo} title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
-      borderRadius:FIG.r,overflow:"hidden",background:`linear-gradient(160deg,${c1},${c1}cc 46%,#0f172a)`,
-      border:"1px solid rgba(15,23,42,0.18)",boxShadow:"0 2px 6px rgba(15,23,42,0.22)",...style}} {...rest}>
+      borderRadius:FIG.r,overflow:"hidden",background:"#ffffff",
+      border:"1px solid rgba(15,23,42,0.16)",boxShadow:"0 1px 3px rgba(15,23,42,0.12)",...style}} {...rest}>
+      {/* [7.974 — la figurina d'esempio del PO cambia due regole del riquadro]
+          (1) `contain`, non `cover`: l'arte porta GIA' la sua cornice, il marchio KORWARD in alto e la
+              fascia col nome in basso. Ritagliare anche solo il 3 % dell'altezza taglierebbe proprio
+              quella fascia — «ATTACCANTE · 24 ANNI» sta a filo del bordo inferiore. Col fondo bianco del
+              riquadro, un eventuale margine di `contain` e' invisibile.
+          (2) la fascia col nome del COMPONENTE si disegna solo quando l'arte NON c'e': con l'arte
+              sarebbe un secondo nome sopra il primo. */}
       {url
         ?<img src={url} alt={nome||""} width={w} height={h} loading="lazy" decoding="async"
-           style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
-        :<div style={{position:"absolute",inset:0,display:"flex",alignItems:"flex-start",justifyContent:"center",paddingTop:Math.round(h*0.08)}}>
-           {ritratto!=null?ritratto:<AvatarSVG seed={chiave||nome||"volto"} size={Math.round(w*0.82)} avStyle="micah"/>}
-         </div>}
-      <span aria-hidden style={{position:"absolute",left:0,right:0,top:0,height:Math.round(h*0.10),
-        background:`linear-gradient(180deg,${c2}dd,transparent)`}}/>
-      {conNome&&(
+           style={{width:"100%",height:"100%",objectFit:"contain",display:"block",background:"#ffffff"}}/>
+        :(ritratto!=null?<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>{ritratto}</div>:null)}
+      {conNome&&!url&&(
         <div style={{position:"absolute",left:0,right:0,bottom:0,padding:"3px 5px",
-          background:"linear-gradient(0deg,rgba(15,23,42,0.92),rgba(15,23,42,0.55) 62%,transparent)"}}>
-          <div style={{fontSize:FS.caption,fontWeight:800,color:"#fff",lineHeight:1.15,
+          background:"linear-gradient(0deg,rgba(255,255,255,0.96),rgba(255,255,255,0.78) 62%,transparent)"}}>
+          <div style={{fontSize:FS.caption,fontWeight:800,color:"#1e293b",lineHeight:1.15,
             overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
-          {ruolo?<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.15,
+          {ruolo?<div style={{fontSize:FS.caption,color:"#526279",lineHeight:1.15,
             overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ruolo}</div>:null}
         </div>)}
     </div>);
@@ -709,7 +718,7 @@ function npcCoachAvOpts(coachName){
       facialHairColor:[_hc],eyeShadowColor:["transparent"],
       mouth:["smile","smirk"],glassesProbability:20,glassesColor:["2d3748"]}};
 }
-function NpcFaceCoach({coachName,size}){return <AvatarSVG seed={"coach-"+(coachName||"mister")} size={size||52} avStyle="micah" avOpts={npcCoachAvOpts(coachName||"mister")}/>;}
+function NpcFaceCoach({coachName,size}){return <Figurina tipo="mister" chiave={coachName||"mister"} larg={Math.round((size||52)*5/7)}/>;}
 
 /* ========================================
    PLAYER 3D VIEWER
@@ -789,7 +798,7 @@ function AvatarPhoto({id=0,size=60,border=false,style={}}){
   //   l'immagine manca. renderHeroPhoto resta definita ma NON è più usata (nessun contesto WebGL creato).
   const n=AVATARS.length,_id=((((id|0)%n)+n)%n);
   const [err,setErr]=useState(false);
-  if(err)return <AvatarSVG id={id} size={size} border={border} style={style}/>;
+  if(err)return <Figurina tipo="giocatore" chiave={"avatar-"+_id} larg={Math.round(size*5/7)} style={style}/>;/* [7.973] il ripiego del ritratto non e' piu' una faccina della libreria: e' lo spazio bianco della figurina */
   return <img src={"./assets/avatar-"+_id+".png"} width={size} height={size} alt="" onError={()=>setErr(true)} style={{width:size,height:size,borderRadius:"50%",objectFit:"cover",objectPosition:"center center",background:"#e6ecf5",display:"block",flexShrink:0,...(border?{border:"2px solid "+TH.primary,boxSizing:"border-box"}:{}),...style}}/>;
 }
 function Player3DViewer({avatarData,clubColor="#2563eb",width="100%",height="280px",animate=true}){
@@ -5091,7 +5100,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.971.0"; // [7.971.0 - SETTE SEZIONI LUNGHE DIVENTANO FISARMONICHE, E L HUD DI PARTITA ESCE DAL ROSSO DEL CONTRASTO] Rilievi PO dal suo Android: «la home e ancora incasinata» e «anche qui ci vorrebbe un po di organizzazione, accordion» (tab Stagione). FISARMONICHE NUOVE, sette: Home - ultime notizie, notizie della settimana, voci di mercato, classifica, duello capocannoniere, obiettivi della stagione; Stagione - albo d oro, marcatori storici, risultati internazionali. MISURATO: Classifica 2,17 -> 1,91 schermate e completamento 89,8 -> 93,1 per cento; media delle tredici 93,4 -> 93,9. ⚠️ LA DASHBOARD NON SI E MOSSA, E VA DETTO PERCHE: il salvataggio del banco e una carriera corta, quindi notizie, voci di mercato e duello capocannoniere non compaiono nemmeno. Gli screenshot del PO sono una stagione 12: li quei blocchi ci sono tutti. Il metro ha un buco di RAPPRESENTATIVITA, non di misura - il salvataggio di prova va portato a carriera avanzata. L HUD DI PARTITA: alla prima corsa del metro riparato (7.970) era l unica schermata del gioco con nodi illeggibili, 8 su 24 contro zero sulle tredici di carriera. Il fioco del vetro #93a4bd faceva 2,65:1 su «possesso» e «Statistiche» (ora #cbd5e1, 4,53:1, e resta piu spento del testo pieno) e le SIGLE dei club sul vetro facevano 1,52:1 col granata - il peggiore di tutto il gioco - e ora passano da semTesto945, che alza la tinta conservando la tonalita finche non legge. Rosso appaiato __CPM_NO970. ⚠️ NON si tocca l opacita del vetro (0,74): e una decisione del PO del 7.922. CORREZIONE DEL PO ACCETTATA: il banner «Gioca vs» che si muove e VOLUTO, non e un difetto. Resta appiccicato come prima; e cambiata solo la striscia opaca dietro di lui, che ora copre anche il margine laterale della pagina cosi le righe non affiorano tagliate ai bordi. NON VERIFICATO: Chromium a 412x915, non l Android del PO - ed e proprio da li che sono arrivati questi due rilievi.
+const GAME_VERSION="7.974.0"; // [7.974.0 - VIA TUTTE LE FACCINE DELLA LIBRERIA SVG: AL LORO POSTO LO SPAZIO BIANCO DELLA FIGURINA] Direttive PO: «per il momento togli tutte le faccine della libreria SVG che eliminero», «lo spazio rapporto 5:7 deve essere bianco neutro», «dove ci sono le faccine ora ci andranno le figurine». DICIANNOVE punti di volto convertiti in un colpo solo, tutti a figurina: eroe nella testata e nei menu, compagni, avversari, arbitro, mister, procuratore, slot dei salvataggi, scelta dell avatar in creazione, cerimonie, premiazioni, formazione, HUD della partita. Conteggio delle faccine rese 25 -> ZERO. La larghezza di ogni riquadro e size*5/7, cosi l altezza resta quella del tondo di prima e nessuna riga si sposta. LO SPAZIO E BIANCO NEUTRO, come chiesto: via il fondo col colore del club, via la banda dorata, via il ripiego che fingeva di essere un ritratto. Resta una superficie bianca col suo bordo - lo spazio che aspetta la figurina. LA FIGURINA D ESEMPIO DEL PO CAMBIA DUE REGOLE DEL RIQUADRO, ed e il motivo per cui e utile riceverla PRIMA: l arte porta gia la sua cornice, il marchio KORWARD in alto e la fascia col nome in basso. Quindi (1) l immagine si monta con object-fit CONTAIN e non cover, perche ritagliare anche il 3 per cento dell altezza taglierebbe proprio quella fascia, che sta a filo del bordo; (2) il riquadro non sovrappone piu niente quando l arte c e, altrimenti sarebbe un secondo nome sopra il primo. Corollario per chi disegna: nome, ruolo ed eta stanno NELL ARTE, non li mette il gioco. DA CONFERMARE: l esempio sembra leggermente piu alto del 5:7 (circa 0,69 contro 0,714). Ho solo l immagine in chat, non il file, quindi non posso misurarlo al pixel - con contain la differenza non rompe niente, ma il rapporto dichiarato deve essere quello vero. Serve la dimensione esatta in pixel, o il file in assets/volti. MISURATO: media delle tredici schermate 93,9 -> 95,2 per cento (il grosso viene dalle faccine tolte), zero difetti, zero errori di pagina; figurine rese 22 su nove schermate, scarto dal rapporto 0,9 per cento. NON VERIFICATO: Chromium a 412x915, non l Android del PO.
 // [nota 7.761.0] [7.761.0 — FASE 10, OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO, E IL METRO DELLE RIGHE FONDATE SMETTE DI PUNIRE I TIRI]. Il censimento fondate-558 contava «smentite» righe che dichiaravano un punto e trovavano il pallone alla linea di porta (94,50) nella stessa finestra: non era la riga a mentire, era il tiro dell'eroe (parato o fuori) che il giudice non poteva vedere perche' il libro mastro registrava solo i gol. Ora handleAction scrive cpmEv(«esito», {min,key,ok,at}) per ogni azione risolta, e il metro (7.760: gol nella finestra → conto a parte; 7.761: anche gli esiti goal/miss/save/chance/assist) mette quelle righe in un conto separato, ne' fondate ne' smentite. Il gioco non cambia: cambia cio' che il libro mastro sa, e quindi cio' che i guardiani potranno chiedere. MISURA: fondate-558 sui semi 7300/7337 prima e dopo (vedi verbale).
 // [nota 7.759.0] [7.759.0 — TROVATO DAL GUARDIANO: il gol subito nella scena difensiva non entrava nel libro mastro]. La banda «tabellone» (7.756), fatta girare su QUATTRO partite per la stabilita', ha bocciato: gol raccontati 2-4 contro punteggio finale 2-5. Censiti i cinque scrittori del punteggio: gol dell'eroe da gioco aperto (1153), gol ambientale nostro e loro (4464/4465), gol dell'eroe su palla ferma (6638) hanno tutti il loro cpmEv(«goal»); il gol AVVERSARIO da scena difensiva (esito goal_against di handleAction) incrementava il punteggio senza scriverlo nel libro mastro — quindi il feed del tabellone (7.721), la banda «tabellone» e ogni guardiano che conta i gol dagli eventi lo perdevano. Ora scrive l'evento con src «scena-difensiva». Il punteggio non cambia (il microsim e le scene restano l'autorita'): cambia solo che ogni gol e' registrato. MISURA: guardiano a 4 partite, banda tabellone da rossa a verde (vedi verbale).
 // [nota 7.758.0] [7.758.0 — COLLAUDO PO 03/09 18:01 «pannello nero dietro la porta»: il cartellone centrale dietro la porta (z=0) era un rettangolo NERO senza scritta durante la scena ASSIST/DOMINIO, Coppa, GLB ON]. DIAGNOSI dal diario 7.535, che aveva gia' fotografato la firma: «quando l'allocazione non riesce, la mesh resta ma la sua texture e' vuota — e una texture vuota su materiale opaco e' NERA»; in headless non si riproduce (nessuna texture nera su 99 piani texturizzati), sul telefono con folla GLB, kit, volti e arredo la memoria GPU finisce e il primo cartellone che non si alloca e' quello che il PO guarda. RIMEDIO: il budget scende dove costa di piu' e non si vede — cartelloni (1024x160, uno per brand e stile) e drappi (1024x110) si disegnano come prima e si consegnano alla GPU a meta' lato (512x80 / 512x55), senza mipmap e con anisotropia 4. MISURATO (hook __CPM_DECOR, provino GLB ON, ON vs rosso __CPM_NO758): arredo 25,5 MB contro 30,7 MB (−17%), 11 cartelloni da 1024x160 a 512x80, stessi 167 piani e 52 texture uniche, zero texture nere in entrambi. Restano 8 texture 1024x512 (16 MB) e 2 LED 2048x128 (2 MB), censite per la prossima tacca. NON VERIFICATO sul telefono: la scomparsa del pannello nero va confermata dal PO nella stessa scena (Coppa, GLB ON). 7.757 «il piano-gol nasce dalla mente» PROVATA E REVOCATA (fondate appaiato peggiore: 75,7/71,9 contro 81,3/82,4).
@@ -24072,7 +24081,7 @@ function FestaFine942({dati,onChiudi}){
           {(dati.facce||[]).map((f,i)=>(
             <div key={"f"+i} style={{borderRadius:"50%",padding:2,background:i===0?_FESTA942.oro:"rgba(148,163,184,0.34)",lineHeight:0,
               transform:"translateY("+(Math.sin((n+i*3)/2.4)*2.6).toFixed(1)+"px)"}}>
-              {(()=>{try{return f.eroe?<AvatarSVG id={f.id||0} size={i===0?58:44}/>:<AvatarSVG seed={f.nome} size={i===0?58:44} avStyle="micah"/>;}catch(_e){return null;}})()}
+              {(()=>{try{return f.eroe?<Figurina tipo="giocatore" chiave={f.nome||"eroe"} larg={Math.round((i===0?58:44)*5/7)}/>:<Figurina tipo="giocatore" chiave={f.nome} larg={Math.round((i===0?58:44)*5/7)}/>;}catch(_e){return null;}})()}
             </div>))}
         </div>
         <div style={{padding:SP.md+"px "+SP.lg+"px",borderTop:"1px solid rgba(148,163,184,0.16)",
@@ -24114,11 +24123,11 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
   const faccia=(()=>{
     try{
       if(com.fam==="MISTER")return <NpcFaceCoach coachName={coachName||"Mister"} size={58}/>;
-      if(com.fam==="COMPAGNI"&&com.chi)return <AvatarSVG seed={com.chi} size={58} avStyle="micah"/>;
-      if(com.fam==="AVVERSARI")return <AvatarSVG seed={"avv-"+(avvNome||"rivale")} size={58} avStyle="micah"/>;
-      if(com.fam==="ARBITRO")return <AvatarSVG seed={"arbitro-"+(avvNome||"gara")} size={58} avStyle="micah"/>;
+      if(com.fam==="COMPAGNI"&&com.chi)return <Figurina tipo="giocatore" chiave={com.chi} larg={41}/>;
+      if(com.fam==="AVVERSARI")return <Figurina tipo="avversario" chiave={avvNome||"rivale"} larg={41}/>;
+      if(com.fam==="ARBITRO")return <Figurina tipo="arbitro" chiave={"arbitro-"+(avvNome||"gara")} larg={41}/>;
     }catch(_e){}
-    return <AvatarSVG id={(player&&player.avatarId)||0} size={58}/>;
+    return <Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={41}/>;
   })();
   return(
     <div data-cpm="pop919" style={{position:"fixed",inset:0,zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",
@@ -34022,7 +34031,7 @@ function ProTransitionScreen({player,onChoose}){
       {/* Player status card */}
       <Card style={{marginBottom:12,padding:"12px 14px"}} bg={forced?"#fff1f2":"#eff6ff"} border={forced?"#fecaca":"#bfdbfe"}>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
-          <AvatarSVG id={player.avatarId||0} size={46}/>
+          <Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={33}/>
           <div style={{flex:1}}>
             <div style={{fontWeight:800,fontSize:FS.body,color:TH.text}}>{player.name} · Livello {player.ovr}</div>
             <div style={{fontSize:FS.caption,color:TH.muted}}>{player.club?.lg||"Primavera"} · Età {player.age} · {player.nation} · Piede {player.foot==="L"?"sinistro":"destro"}</div>
@@ -34805,13 +34814,13 @@ function ParataScena2D({club,avatarId=0,heroNum=10}){
       <div style={{position:"absolute",left:0,right:0,top:"34%",display:"flex",alignItems:"flex-end",
         justifyContent:"center",gap:6,padding:"0 10px"}}>
         <div style={{textAlign:"center",filter:"drop-shadow(0 6px 16px rgba(0,0,0,0.6))"}}>
-          {(()=>{try{return <AvatarSVG id={avatarId} size={64} border/>;}catch(_e){return null;}})()}
+          {(()=>{try{return <Figurina tipo="giocatore" chiave={"eroe-"+avatarId} larg={46}/>;}catch(_e){return null;}})()}
           <div style={{marginTop:2,fontSize:FS.caption,fontWeight:900,color:"#fff",
             textShadow:"0 1px 4px rgba(0,0,0,0.85)"}}>{heroNum||10}</div>
         </div>
         {_squadra.map((q,i)=>(<div key={i} style={{textAlign:"center",opacity:0.9,
           filter:"drop-shadow(0 3px 9px rgba(0,0,0,0.55))"}}>
-          {(()=>{try{return <AvatarSVG seed={q.seme} size={38} avStyle="micah"/>;}catch(_e){return null;}})()}
+          {(()=>{try{return <Figurina tipo="giocatore" chiave={q.seme} larg={27}/>;}catch(_e){return null;}})()}
         </div>))}
       </div>
       <StrisciaScena948 club={club} tono={"#d4a017"}/>
@@ -34863,8 +34872,8 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
             transform:big?"scale(1.2)":"none",transition:"opacity .45s ease-out, transform .45s ease-out",
             filter:big?"drop-shadow(0 0 16px rgba(255,255,255,0.45))":"drop-shadow(0 3px 8px rgba(0,0,0,0.55))"}}>
             {(()=>{try{return big
-              ? <AvatarSVG id={avatarId} size={62} border/>
-              : <AvatarSVG seed={q.seme} size={38} avStyle="micah"/>;}catch(_e){return null;}})()}
+              ? <Figurina tipo="giocatore" chiave={"eroe-"+avatarId} larg={44}/>
+              : <Figurina tipo="giocatore" chiave={q.seme} larg={27}/>;}catch(_e){return null;}})()}
             <div style={{marginTop:2,fontSize:FS.caption,fontWeight:900,color:"#fff",
               textShadow:"0 1px 4px rgba(0,0,0,0.85)"}}>{big&&heroNum?heroNum:q.n}</div>
           </div>);})}
@@ -35885,8 +35894,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
     <div key={idx} style={{display:"flex",alignItems:"center",gap:10,padding:big?"12px 14px":"9px 12px",borderRadius:RAD.md,marginBottom:6,background:_me?"linear-gradient(135deg,#3b2a07,#5b420c)":"rgba(255,255,255,0.06)",border:`1px solid ${_me?"#d4a017":"rgba(255,255,255,0.12)"}`,animation:"logoIn 0.5s ease-out"}}>
       <span style={{fontSize:big?26:18}}>{medal}</span>
       {/* [7.946] il viso della libreria SVG accanto al nome: niente CH38, e si riconosce chi e' */}
-      {(()=>{try{return _me?<AvatarSVG id={(player&&player.avatarId)||0} size={big?42:32} border={big}/>
-        :<AvatarSVG seed={c.name||"npc"} size={big?42:32} avStyle="micah"/>;}catch(_e){return null;}})()}
+      {(()=>{try{return _me?<Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={Math.round((big?42:32)*5/7)}/>
+        :<Figurina tipo="giocatore" chiave={c.name||"npc"} larg={Math.round((big?42:32)*5/7)}/>;}catch(_e){return null;}})()}
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}</div>
@@ -36874,7 +36883,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
                 e le tre righe di testo troncano con i puntini invece di sbriciolarsi. */}
             <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
               <div style={{display:"flex",alignItems:"center",gap:8,flex:"1 1 210px",minWidth:0}}>
-                <AvatarSVG id={s.avatarId} size={46}/>
+                <Figurina tipo="giocatore" chiave={s.name} larg={33}/>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontWeight:800,fontSize:FS.body,color:TH.text,marginBottom:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name}</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#92400e",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
@@ -36978,14 +36987,14 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
         <div style={{display:"flex",flexDirection:"column",gap:14}}>
           <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>👤 Identità</div>
           <div style={{display:"flex",justifyContent:"center"}}>
-            <AvatarSVG id={avatarId} size={200} border={true}/>
+            <Figurina tipo="giocatore" chiave={"avatar-"+avatarId} larg={143}/>
           </div>
           <div>
             <label style={lbl}>Aspetto calciatore</label>
             <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:6}}>
               {pageAvatars.map(av=>(
                 <button key={av.id} onClick={()=>setAvatarId(av.id)} title={av.label} style={{padding:4,borderRadius:RAD.sm,border:`2px solid ${avatarId===av.id?TH.primary:"transparent"}`,background:avatarId===av.id?TH.primaryTint:"transparent",cursor:"pointer",display:"flex",justifyContent:"center"}}>
-                  <AvatarSVG id={av.id} size={44}/>
+                  <Figurina tipo="giocatore" chiave={"avatar-"+av.id} larg={31}/>
                 </button>
               ))}
             </div>
@@ -45897,7 +45906,7 @@ const getThisWeekMatchday=()=>{
               </button>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:11,padding:"7px 12px 11px"}}>
-              <div style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<AvatarSVG id={player.avatarId||0} size={30}/>}/></div>
+              <div style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<Figurina tipo="giocatore" chiave={player.name} larg={21}/>}/></div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.caption,color:ink,textTransform:"uppercase",letterSpacing:1.6,fontWeight:FW.bold}}>{player.nation} &middot; {player.position||"Attaccante"}</div>
                 <h1 style={{margin:"2px 0 3px",fontSize:FS.title,fontWeight:FW.black,letterSpacing:.2,color:ink,lineHeight:1.05,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{player.name}</h1>
@@ -46637,7 +46646,12 @@ const getThisWeekMatchday=()=>{
         const th26=weekTheme(player);const iw26=innerWeather(player);
         if(!th26&&!iw26)return null;
         return(
-          <div style={{marginBottom:9,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.lg,padding:"11px 13px",boxShadow:TH.el1}}>
+          <Card momento="La tua settimana" momentoNota={th26?th26.t:null} style={{marginBottom:9}}>{/* [7.972 — collaudo PO «la home e' ancora incasinata»] IL BLOCCO PIU' GRANDE DELLA HOME DIVENTA UNA
+              FISARMONICA. MISURATO sul salvataggio nuovo (stagione 12, quello del PO): 473 px, il 25,8 %
+              dell'intera Dashboard — piu' del doppio di qualunque altro blocco. Dentro ci sono sei
+              sezioni di testo (il tema della settimana, il meteo interiore, le aspettative, dentro la
+              testa, le voci dal club, lo spogliatoio): tutta roba da LEGGERE, nessuna da decidere.
+              Chiusa, la riga porta il titolo del tema, cosi' si sa se vale la pena aprirla. */}
             {th26&&<div style={{display:"flex",alignItems:"center",gap:9}}>
               <span style={{fontSize:FS.title,lineHeight:1}}>{th26.e}</span>
               <div style={{flex:1,minWidth:0}}>
@@ -46686,7 +46700,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:legCol944("#0891b2"),textTransform:"uppercase",letterSpacing:1,marginBottom:3}}>Nello spogliatoio</div>
                 <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>{me.icon} <b style={{color:TH.text}}>{me.name}</b> <span style={{color:TH.faint,fontSize:FS.caption}}>({me.arch})</span> {me.line}</div>
               </div>);})()}
-          </div>
+          </Card>
         );
       })()}
       {/* [7.83.0 collaudo PO «ridondante! elimina»] griglia totali di carriera (Gol/Presenze/Trofei/Stagioni) RIMOSSA dal dashboard: è già nel Tab Carriera. Resta il badge fase-carriera (età/fase, non duplicato). */}
@@ -49262,7 +49276,7 @@ const getThisWeekMatchday=()=>{
             )}
             {!player.hasAgent?(
               <Card style={{padding:"20px",textAlign:"center"}}>
-                <div style={{marginBottom:8,display:"flex",justifyContent:"center",opacity:0.9}}><AvatarSVG seed="procuratore-libero" size={56} avStyle="micah"/></div>
+                <div style={{marginBottom:8,display:"flex",justifyContent:"center",opacity:0.9}}><Figurina tipo="procuratore" chiave="procuratore-libero" larg={40}/></div>
                 <div style={{fontSize:FS.body,fontWeight:900,color:TH.text,marginBottom:6}}>Nessun agente</div>
                 <div style={{fontSize:FS.small,color:TH.muted,marginBottom:12,lineHeight:1.7}}>Un procuratore apre porte, negozia contratti migliori (+15%) e gestisce la tua immagine. <b style={{color:TH.text}}>Costa il 10% del tuo stipendio (8% con agenzia boutique).</b></div>
                 <Btn onClick={function(){const _fee=Math.max(500,Math.round(player.contract?.wage||0));if((player.bankBalance||0)<_fee){notify("💸 Fondi insufficienti: l'ingaggio costa "+_fee.toLocaleString("it-IT")+"€",TH.danger);return;}setAgentIntro({fee:_fee,amb:null});/* [7.376.0 R3] anche da qui si passa dalla scena del primo incontro */}} v="primary" fw style={{padding:"13px"}}>🤵 Ingaggia un procuratore</Btn>{/* [7.179.0 backlog #1] ONORARIO D'INGAGGIO una tantum (1 stipendio settimanale, min 500€, fondi richiesti): chiude il loop «ingaggia gratis → rinnovo ×1.15 → rescindi gratis» */}{/* [7.162.0 ECO-F8] piano scritto SUBITO all'ingaggio: il fallback per-render mostrava un piano fantasma sempre-verde senza verdetto */}

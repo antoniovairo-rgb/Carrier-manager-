@@ -197,7 +197,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
                 e le tre righe di testo troncano con i puntini invece di sbriciolarsi. */}
             <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
               <div style={{display:"flex",alignItems:"center",gap:8,flex:"1 1 210px",minWidth:0}}>
-                <AvatarSVG id={s.avatarId} size={46}/>
+                <Figurina tipo="giocatore" chiave={s.name} larg={33}/>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontWeight:800,fontSize:FS.body,color:TH.text,marginBottom:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name}</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.retired?<span style={{color:"#92400e",fontWeight:700}}>🏁 Carriera conclusa · S.{s.season}</span>:<>{s.club} · S.{s.season} W.{s.week}/38</>}</div>{/* [7.258.0] uno slot ritirato non promette una settimana da giocare */}
@@ -301,14 +301,14 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
         <div style={{display:"flex",flexDirection:"column",gap:14}}>
           <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>👤 Identità</div>
           <div style={{display:"flex",justifyContent:"center"}}>
-            <AvatarSVG id={avatarId} size={200} border={true}/>
+            <Figurina tipo="giocatore" chiave={"avatar-"+avatarId} larg={143}/>
           </div>
           <div>
             <label style={lbl}>Aspetto calciatore</label>
             <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:6}}>
               {pageAvatars.map(av=>(
                 <button key={av.id} onClick={()=>setAvatarId(av.id)} title={av.label} style={{padding:4,borderRadius:RAD.sm,border:`2px solid ${avatarId===av.id?TH.primary:"transparent"}`,background:avatarId===av.id?TH.primaryTint:"transparent",cursor:"pointer",display:"flex",justifyContent:"center"}}>
-                  <AvatarSVG id={av.id} size={44}/>
+                  <Figurina tipo="giocatore" chiave={"avatar-"+av.id} larg={31}/>
                 </button>
               ))}
             </div>
