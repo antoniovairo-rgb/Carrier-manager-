@@ -57,3 +57,5 @@ Il Blender incluso nel progetto è **4.5.14**. Il [repository pubblico](https://
 ### Human Generator — pacchetto trial
 
 Gli URL pubblicati nella guida ufficiale rispondono correttamente: add-on **5.059.083 byte**, contenuto trial **269.224.756 byte**, entrambi ZIP e modificati il 29 ottobre 2025. Il download completo vale dunque circa 274 MB: è sostenibile per il test, ma non è stato avviato perché l'installazione richiede autorizzazione separata.
+
+| **MB-Lab** | [Repository ufficiale](https://github.com/animate1978/MB-Lab) gratuito e basato su Blender: forme viso/corpo, rig e proxy capelli. | **Rifiutato.** Il repository è archiviato dal 21 luglio 2024; la sua release hair dichiara shader assente e mancanza di shape key, mentre issue ufficiali riportano finalizzazione e capelli problematici già in Blender 4.1. Non è responsabile introdurlo nel Blender 4.5.14 della POC. |
