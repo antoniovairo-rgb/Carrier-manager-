@@ -1,0 +1,453 @@
+{
+  "source": "C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-poc\\tests\\character-lab\\metaperson-rendering-public-sample\\metaperson_rendering_builtin\\Assets\\AvatarSDK\\MetaPerson\\RenderingSample\\Models\\model5\\model.fbx",
+  "mesh_count": 13,
+  "triangles": 68758,
+  "vertices": 46222,
+  "armatures": [
+    {
+      "name": "AvatarRoot",
+      "bone_count": 73,
+      "bone_names": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Neck1",
+        "Neck2",
+        "Head",
+        "LeftEye",
+        "RightEye",
+        "HeadTop_End",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftForeArm1",
+        "LeftForeArm2",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightForeArm1",
+        "RightForeArm2",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ]
+    }
+  ],
+  "meshes": [
+    {
+      "name": "AvatarHead",
+      "triangles": 14212,
+      "vertices": 7165,
+      "materials": [
+        "AvatarHead"
+      ],
+      "shape_key_count": 67
+    },
+    {
+      "name": "AvatarBody",
+      "triangles": 4936,
+      "vertices": 2526,
+      "materials": [
+        "AvatarBody"
+      ],
+      "shape_key_count": 0
+    },
+    {
+      "name": "AvatarLeftEyeball",
+      "triangles": 791,
+      "vertices": 414,
+      "materials": [
+        "AvatarLeftEyeball"
+      ],
+      "shape_key_count": 0
+    },
+    {
+      "name": "AvatarRightEyeball",
+      "triangles": 791,
+      "vertices": 414,
+      "materials": [
+        "AvatarRightEyeball"
+      ],
+      "shape_key_count": 0
+    },
+    {
+      "name": "AvatarTeethUpper",
+      "triangles": 3654,
+      "vertices": 2041,
+      "materials": [
+        "AvatarTeethUpper"
+      ],
+      "shape_key_count": 0
+    },
+    {
+      "name": "outfit_bottom",
+      "triangles": 5629,
+      "vertices": 2999,
+      "materials": [
+        "outfit_bottom"
+      ],
+      "shape_key_count": 0
+    },
+    {
+      "name": "outfit_top",
+      "triangles": 6800,
+      "vertices": 3731,
+      "materials": [
+        "outfit_top"
+      ],
+      "shape_key_count": 0
+    },
+    {
+      "name": "AvatarEyelashes",
+      "triangles": 4900,
+      "vertices": 6300,
+      "materials": [
+        "AvatarEyelashes"
+      ],
+      "shape_key_count": 42
+    },
+    {
+      "name": "AvatarLeftCornea",
+      "triangles": 830,
+      "vertices": 417,
+      "materials": [
+        "AvatarLeftCornea"
+      ],
+      "shape_key_count": 0
+    },
+    {
+      "name": "AvatarRightCornea",
+      "triangles": 830,
+      "vertices": 417,
+      "materials": [
+        "AvatarRightCornea"
+      ],
+      "shape_key_count": 0
+    },
+    {
+      "name": "AvatarTeethLower",
+      "triangles": 3464,
+      "vertices": 1894,
+      "materials": [
+        "AvatarTeethLower"
+      ],
+      "shape_key_count": 20
+    },
+    {
+      "name": "haircut",
+      "triangles": 17249,
+      "vertices": 15214,
+      "materials": [
+        "haircut"
+      ],
+      "shape_key_count": 0
+    },
+    {
+      "name": "outfit_shoes",
+      "triangles": 4672,
+      "vertices": 2690,
+      "materials": [
+        "outfit_shoes"
+      ],
+      "shape_key_count": 0
+    }
+  ],
+  "image_sizes": [
+    {
+      "name": "AvatarBodyMale_Color_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarBodyMale_Normal1_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarBodyMale_Roughness_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarBodyMale_UnityMetallicSmoothness_1K.png",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarEyes_Color_512.jpg",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "AvatarEyes_Normal_512.jpg",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "AvatarEyes_Roughness_512.jpg",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "AvatarEyes_UnityMetallicSmoothness_512.png",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "AvatarHeadMale_Color_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarHeadMale_Normal1_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarHeadMale_Roughness_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarHeadMale_UnityMetallicSmoothness_1K.png",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarLeftCornea_Color_512.jpg",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "AvatarRightCornea_Color_512.jpg",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "AvatarTeeth_Color_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarTeeth_Normal1_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarTeeth_Roughness_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "AvatarTeeth_UnityMetallicSmoothness_1K.png",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "HairCard1_AO_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "HairCard1_Color_1K.png",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "HairCard1_Color_1K.png.001",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "HairCard1_Normal_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "HairCard1_Roughness_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "HairCard1_UnityMetallicSmoothness_1K.png",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "KARI_Normal_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "KARI_Roughness_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "KARI_UnityMetallicSmoothness_1K.png",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "Render Result",
+      "size": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "SEVAN_Normal_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "SEVAN_Roughness_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "SEVAN_UnityMetallicSmoothness_1K.png",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "Viewer Node",
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "name": "pants_SEVAN_Color_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "sneakers_SEVAN_Color_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "t-shirt_KARI_Color_1K.jpg",
+      "size": [
+        1024,
+        1024
+      ]
+    }
+  ]
+}

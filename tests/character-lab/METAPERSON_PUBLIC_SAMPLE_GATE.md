@@ -1,0 +1,29 @@
+# Gate campioni pubblici MetaPerson
+
+## Provenienza e perimetro
+
+- Sorgente: repository ufficiale `avatarsdk/metaperson-unity-rendering-sample`.
+- La radice del repository dichiara licenza BSD-3-Clause e include cinque FBX con materiali configurati.
+- Questo audit usa solo i tre campioni maschili (`model1`, `model3`, `model5`) in una directory di prova non inclusa in Git.
+- I file non entrano nel renderer Korward, non vengono pubblicati e non sostituiscono il modello CGTrader in questa fase.
+- Qualunque eventuale integrazione richiede una verifica finale della licenza applicabile agli asset del repository e un nuovo audit di kit, rig, gesti e telefono.
+
+## Evidenza tecnica verificata
+
+| Campione | Triangoli totali | Vertici | Mesh | Ossa | Shape key | Osservazione |
+|---|---:|---:|---:|---:|---:|---|
+| `model1` | 59.831 | 34.594 | 12 | 73 | 129 | Volto maschile giovane, capelli corti nativi. |
+| `model3` | 60.193 | 35.387 | 13 | 73 | 129 | Volto maschile chiaro, barba corta nativa. |
+| `model5` | 68.758 | 46.222 | 13 | 73 | 129 | Volto maschile adulto, capelli separati e barba corta nativa. |
+
+Tutti e tre sono stati importati senza eccezioni in Blender 4.5.14. La gerarchia contiene anche dita, occhi e dita dei piedi; i 129 shape key sono distribuiti tra testa (67), ciglia (42) e denti inferiori (20). Il modello 5 ha una mesh `haircut` separata da 17.249 triangoli: è una vera risorsa capelli e non un disegno sulla texture del volto.
+
+## Valutazione provvisoria
+
+**Passano** il pre-screening su volti adulti e distinti, capelli/barba visibili e separazione di testa, corpo, capelli e outfit. Questa separazione risolve il limite dell'atlante unico del CGTrader per futuri colori e dettagli.
+
+**Non passano ancora** il gate Korward: 60–69 mila triangoli sono troppi per una squadra completa su mobile, gli abiti civili/logati non sono un kit da calcio, e non sono stati ancora verificati retarget del dribbling, contatto palla, transizioni o prestazioni sul telefono.
+
+## Passo successivo
+
+Usare solo `model5` come prova tecnica: rimuovere visivamente l'abbigliamento civile nel banco locale, verificare mappatura delle 73 ossa verso una clip esistente e misurare un LOD separato. Il candidato potrà avanzare solo se conserva volto e capelli leggibili, raggiunge un budget misurato e supera il gesto con palla.
