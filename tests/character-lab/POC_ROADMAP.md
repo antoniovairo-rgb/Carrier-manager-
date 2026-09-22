@@ -2,8 +2,8 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 22 settembre 2026, 22:50 (Europe/Rome)
-**Stato complessivo stimato:** 65% — ridotto dopo la verifica di una regressione nella review ottimizzata; non è un quality gate finale.
+**Ultimo aggiornamento:** 22 settembre 2026, 23:05 (Europe/Rome)
+**Stato complessivo stimato:** 60% — ridotto dopo il censimento di un debito strutturale (`src/` non allineato al file di gioco); non è un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
 ## Avanzamento 22 settembre 2026, 20:48
@@ -26,6 +26,69 @@
 - **Verificato nel browser locale:** il primo highlight ha mostrato «Muro in area» con l'azione «Chiama il portiere» selezionabile; il click ha avviato il gesto senza errore visibile. La build `dist` è stata rigenerata con esito positivo.
 - **Non ancora verificato:** il fotogramma decisivo della presa e il possesso della palla dopo la presa. L'azione è passata rapidamente al flusso della partita, perciò la singola immagine catturata non dimostra il sincronismo completo né la coordinazione delle braccia.
 - **Prossimo criterio di chiusura:** catturare la sequenza della presa in più fotogrammi, verificare contatto mani-palla e recupero; poi testare dribbling, passaggi e tiri e infine le prestazioni su telefono. Nessuna build ufficiale pubblicata.
+
+## Avanzamento 22 settembre 2026, 23:05 — presa in carico Claude Code
+
+**Fase corrente:** 4/7 · **Stato complessivo stimato: 60%** (abbassato da 65% non per una regressione nuova,
+ma perche' e' emerso un debito strutturale che prima non era censito — vedi il punto 1).
+
+### 1. ⚠️ RISCHIO STRUTTURALE — `src/` e il file di gioco NON raccontano la stessa cosa
+
+**Fatto osservato, misurato:** in questo ramo `node tools/check-src.mjs` dichiara **DIFFERISCONO**. La prima
+divergenza e' alla **riga 231, offset 76055**: il file di gioco dice «Ritratti statici del modello Regular,
+generati offline», i frammenti dicono «Libreria avatar DiceBear (stile adventurer)». Ricomposto da `src/`
+= **6.249.773 byte**, sul disco = **6.325.391 byte**; confrontati a blocchi di 200 caratteri, **506 blocchi
+differiscono**.
+
+**Conseguenza operativa, e non e' un dettaglio:** tutto il lavoro POC vive **solo in
+`CARRIER-MANAGER-AV.html`**, non nei frammenti. Quindi in questo ramo **`node tools/build-src.mjs` e' un
+comando DISTRUTTIVO**: ricostruisce il file dai frammenti e **cancella il lavoro POC**.
+
+**Come l'ho verificato — dichiarato perche' e' un mio errore, non una prova pianificata:** ho lanciato
+`node tools/build-src.mjs --dry-run` dando per scontato che quel flag esistesse. Non esiste: il comando ha
+ignorato l'argomento e **ha ricostruito il file di gioco**. Ripristinato subito da git e verificato al byte
+(`git hash-object` = `92191541499eb0c160dcdc984b7270451912bb5d`, identico a `HEAD:CARRIER-MANAGER-AV.html`,
+6.325.391 byte, albero pulito). **Nessun danno permanente**, ma la trappola e' reale e ora e' scritta.
+
+**Regola per chiunque lavori qui:** in questo ramo non si lancia `build-src.mjs`. La fonte di verita' e' il
+file di gioco. Riallineare `src/` al file di gioco e' un lavoro a se' (506 blocchi), da decidere
+separatamente: non va infilato dentro il ripristino del roster ottimizzato.
+
+### 2. Stato del roster ottimizzato — confermato quanto dichiarato nella consegna
+
+Occorrenze reali (`grep -o`, non conteggio di righe: la copia di recupero e' compattata e una riga sola puo'
+contenere decine di occorrenze), file di gioco attuale contro copia di recupero:
+
+| simbolo | attuale | recupero |
+| --- | ---: | ---: |
+| `cgtrader-highlight-optimized` | **2** | **11** |
+| `__CPM_CGTRADER_CINEMA_ROSTER` | **0** | 1 |
+| `__CPM_CGTRADER_RENDER_BUDGET` | **0** | 1 |
+| `LOD0` | **0** | 1 |
+| `LOD1` | 4 | 4 |
+| `LOD2` | 3 | 3 |
+| `CastPortrait` | **0** | 3 |
+| `CAST_SHEETS` | **0** | 2 |
+| `gk-high-catch` | **3** | 1 |
+
+**Lettura:** il parametro e' riconosciuto (2 occorrenze) ma **l'implementazione e' in gran parte assente** —
+niente roster cinematografico, niente budget renderer, niente LOD0. E' esattamente il sintomo descritto
+(«parametro riconosciuto, ottimizzazione non applicata, corpi pieni a 1-2 FPS»): **confermato dai simboli**,
+non ancora dalla misura FPS, che devo ancora rifare io.
+
+**Non verificato da me finora:** gli 1-2 FPS e i «corpi pieni» sono **ripresi dalla consegna**, non ancora
+misurati in questa sessione. Prossimo passo: misurarli, per avere il rosso di partenza prima del rimedio.
+
+### 3. Prossimo lavoro e criterio di chiusura
+
+Misurare il rosso di partenza sulla situazione 33 con `cgtrader-highlight-optimized` (corpi resi, FPS,
+presenza dei tre LOD), poi ricostruire **nel file di gioco** roster cinematografico, LOD0/1/2, Hero LOD0,
+contesto attivo e budget renderer, prelevando dalla copia di recupero **solo le parti necessarie**.
+**Chiude quando:** corpi resi nell'highlight scendono al contesto attivo, i tre LOD risultano caricati,
+`__CPM_CGTRADER_CINEMA_ROSTER` e `__CPM_CGTRADER_RENDER_BUDGET` rispondono, gli FPS locali risalgono
+rispetto al rosso misurato, **e la partita normale non cambia** (verifica appaiata senza il parametro).
+
+---
 
 ## Obiettivo vincolante
 
