@@ -1161,7 +1161,7 @@ function ThreeMatchView(props){
         try{window.__CPM_HYPER_BENCH={avatars:made.length,seated:made.filter(a=>a._seated904).length,coaches:made.filter(a=>a._isCoach904).length,legacyVisible:benchFigs.filter(f=>f&&f.visible).length};}catch(_e){}
         return made;
       };      const _replaceMascotsWithHyper=(pkg,mascots)=>{
-        if(!_hyperFull||!mascots||!mascots.length)return [];
+        if(!(_hyperFull||(_hyperIntro&&!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI23)))||!mascots||!mascots.length)return [];
         const _clip=name=>(pkg.animations||[]).find(c=>c&&c.name===name)||null;
         const idleClip=_clip('idle'),runClip=_clip('jog');if(!idleClip||!runClip)throw new Error('Hyper Casual child clips are unavailable');
         const made=[];
@@ -1247,6 +1247,10 @@ function ThreeMatchView(props){
           if(_cgtraderAnyReview&&!(typeof window!=='undefined'&&window.__CPM_NO_ALPHAFIX)){let _fx=0;packages.forEach(pk=>{if(pk&&pk.scene)pk.scene.traverse(o=>{if(!o.isMesh||!o.material)return;(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m&&m.transparent){m.transparent=false;m.depthWrite=true;m.alphaTest=0.5;m.needsUpdate=true;_fx++;}});});});try{window.__CPM_CGTRADER_ALPHAFIX=_fx;}catch(_e){}}
           try{window.__CPM_HYPER_ANIMATIONS=(pkg.animations||[]).map(c=>c&&c.name).filter(Boolean);}catch(_e){}
           if(_hyperIntro){if(_trioLod){const lods=packages;_replaceIntroLineupWithHyper(pkg,(old,index)=>{if(index===0||old.proc===hero)return lods[0];const dx=old.root.position.x-hero.position.x,dz=old.root.position.z-hero.position.z;return Math.hypot(dx,dz)<24?lods[1]:lods[2];},lods);}else _replaceIntroLineupWithHyper(pkg);}else _replaceHeroWithHyper(pkg);
+          /* [23/09 POC — collaudo PO «all'ingresso in campo con i bambini c'e' solo l'eroe»] nella modalita' di default
+             (CGTrader ottimizzata) i bambini dell'ingresso restavano figure procedurali, mentre il ramo CH38 dei bambini e'
+             spento quando la formazione e' CGTrader: ora anche loro sono corpi CGTrader (LOD leggero). Rosso __CPM_NO_BIMBI23. */
+          if(_hyperIntro&&!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI23)){try{const _kp=(_trioLod&&packages&&packages[2])||pkg;if(!_kp.animations||!_kp.animations.length)_kp.animations=pkg.animations;window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(_kp,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);}catch(_e){}}
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
           try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderAjaxReview?'ready-cgtrader-ajax-review':(_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_cgtraderMixedLodBenchmark?'ready-cgtrader-mixed-lod-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready')))));}catch(_e){}
         }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});

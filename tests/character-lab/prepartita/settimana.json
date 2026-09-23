@@ -7,5 +7,134 @@
   "larghezza": 412
  },
  "scout": true,
+ "ingresso": [
+  {
+   "st": "loading",
+   "audit": 0,
+   "masc": null,
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  },
+  {
+   "st": "ready-lineup",
+   "audit": 23,
+   "masc": {
+    "avatars": 22,
+    "legacyVisible": 0
+   },
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  },
+  {
+   "st": "ready-lineup",
+   "audit": 23,
+   "masc": {
+    "avatars": 22,
+    "legacyVisible": 0
+   },
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  },
+  {
+   "st": "ready-lineup",
+   "audit": 23,
+   "masc": {
+    "avatars": 22,
+    "legacyVisible": 0
+   },
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  },
+  {
+   "st": "ready-lineup",
+   "audit": 23,
+   "masc": {
+    "avatars": 22,
+    "legacyVisible": 0
+   },
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  },
+  {
+   "st": "ready-lineup",
+   "audit": 23,
+   "masc": {
+    "avatars": 22,
+    "legacyVisible": 0
+   },
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  },
+  {
+   "st": "ready-lineup",
+   "audit": 23,
+   "masc": {
+    "avatars": 22,
+    "legacyVisible": 0
+   },
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  },
+  {
+   "st": "ready-lineup",
+   "audit": 23,
+   "masc": {
+    "avatars": 22,
+    "legacyVisible": 0
+   },
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  },
+  {
+   "st": "ready-lineup",
+   "audit": 23,
+   "masc": {
+    "avatars": 22,
+    "legacyVisible": 0
+   },
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  },
+  {
+   "st": "ready-lineup",
+   "audit": 23,
+   "masc": {
+    "avatars": 22,
+    "legacyVisible": 0
+   },
+   "pol": {
+    "field": "hyper",
+    "offFieldCH38": false
+   },
+   "fase": "walkout"
+  }
+ ],
  "errori": []
 }
