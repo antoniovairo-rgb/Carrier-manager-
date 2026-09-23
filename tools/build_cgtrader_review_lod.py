@@ -48,6 +48,15 @@ for obj in meshes:
     obj.select_set(True)
     obj.hide_set(False)
 
+# [23/09 POC] MATERIALI: niente BLEND nel GLB. Con alphaMode BLEND + doubleSided il kit si ordina male ("a chiazze").
+# Blender < 4.2 usa blend_method, >= 4.2 surface_render_method: si impostano entrambi se esistono.
+# Il giudice resta il file esportato: `node tools/glb-materiali.mjs verifica <out.glb>` (esce 1 su BLEND);
+# se serve, `node tools/glb-materiali.mjs correggi <in.glb> <out.glb>`.
+for _mat in bpy.data.materials:
+    if hasattr(_mat, "blend_method"):
+        _mat.blend_method = "CLIP"
+    if hasattr(_mat, "surface_render_method"):
+        _mat.surface_render_method = "DITHERED"
 out = Path(output)
 out.parent.mkdir(parents=True, exist_ok=True)
 bpy.context.view_layer.objects.active = rig

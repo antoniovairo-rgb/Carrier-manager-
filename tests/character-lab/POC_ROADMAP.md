@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 10:18 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 10:21 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -784,6 +784,30 @@ Sonda `keeper-catch-sequence-review.mjs` (nuovi campi: LOD in presa, promozione,
 Costo +8.002 triangoli, pari al salto LOD2→LOD1 (12.244−4.190 = 8.054): sotto l'obiettivo 69k. La presa non cambia.
 **Non verificato:** il ritorno a LOD2 dopo l'highlight (la sonda si ferma all'uscita da `hl_*`); il telefono.
 A verbale (invariato): il testo dell'esito dice «Para in tuffo», il gesto e' una presa alta.
+
+## Avanzamento 23 settembre 2026, 10:21 — MATERIALI CORRETTI ALLA SORGENTE (decisione PO: «la soluzione piu' scalabile»)
+
+Il vincolo della roadmap dice che il modello si corregge nei sorgenti GLB, non a runtime. Blender non c'e' nel container, quindi
+la correzione e' fatta **sul file esportato**, dove e' verificabile:
+
+- **Strumento nuovo `tools/glb-materiali.mjs`:** `verifica` (esce 1 se un materiale e' in BLEND) e `correggi` (BLEND→MASK con
+  soglia 0,5, la stessa della rete runtime). Tocca solo il blocco JSON del GLB: i dati binari restano **byte per byte** (verificato).
+- **Asset corretti:** i 4 GLB CGTrader della review (LOD0/1/2 kit-adapter + LOD0 Ajax) avevano **tutti** i materiali in BLEND
+  (6/6; l'Ajax 5/6, la maglia baked era gia' opaca). Ora 0 BLEND.
+- **Script Blender** (`build_cgtrader_review_lod.py`, `build_cgtrader_kit_adapter.py`): prima dell'export impostano
+  `blend_method=CLIP` / `surface_render_method=DITHERED` se esistono. **Non eseguiti** (niente Blender qui): il giudice resta
+  `glb-materiali.mjs verifica` sul file esportato.
+- **Rete runtime** (BLEND→MASK al caricamento, rosso `__CPM_NO_ALPHAFIX`): resta come paracadute; con gli asset nuovi corregge 0 materiali.
+
+**Misura** (sonda nuova `materiali-disegnati.mjs`, materiali delle 35 SkinnedMesh disegnate in un fotogramma):
+
+| | Trasparenti | Senza profondita' | In maschera |
+| --- | --- | --- | --- |
+| Asset corretti, rete runtime SPENTA | **0/35** | 0/35 | 35/35 |
+| Asset corretti, rete accesa | 0/35 | 0/35 | 35/35 (rete: 0 correzioni) |
+| Asset originali, rete SPENTA (rosso) | 35/35 | 35/35 | 0/35 |
+
+**Non verificato:** il kit sul telefono; l'export da Blender con gli script aggiornati.
 
 ---
 

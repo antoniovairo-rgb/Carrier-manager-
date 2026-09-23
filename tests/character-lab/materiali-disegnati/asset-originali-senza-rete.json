@@ -1,0 +1,19 @@
+{
+ "rosso": "__CPM_NO_ALPHAFIX",
+ "skinDisegnate": 35,
+ "materiali": 35,
+ "trasparenti": 35,
+ "senzaProfondita": 35,
+ "inMaschera": 0,
+ "nomi": {
+  "HyperLegLeft": "T",
+  "HyperShirt": "T",
+  "HyperShorts": "T",
+  "HyperLegRight": "T",
+  "KorwardNativeHair_brown": "T",
+  "Material.001": "T",
+  "KorwardNativeHair_blond": "T"
+ },
+ "retteRuntime": null,
+ "errori": []
+}
