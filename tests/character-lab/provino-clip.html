@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Provino clip</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<style>body{margin:0;background:#1d2a1d}</style></head><body>
+<script>
+/* [23/09] Provino di una clip su un GLB, col three.js r128 del gioco: ?glb=<percorso>&clip=<nome>&t=0,0.8,1.6,2.4
+   Disegna una griglia di pannelli (uno per istante) e pubblica window.__PROVINO = {ok, clip, durata, ossa:{...}}. */
+const q=new URLSearchParams(location.search),GLB=q.get('glb'),CLIP=q.get('clip'),TT=(q.get('t')||'0').split(',').map(Number);
+const W=300,H=360,r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W*TT.length,H);r.setScissorTest(true);document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.add(new THREE.HemisphereLight(0xffffff,0x334433,1.1));const dl=new THREE.DirectionalLight(0xffffff,0.8);dl.position.set(2,4,3);sc.add(dl);
+const grid=new THREE.GridHelper(10,20,0x88aa88,0x557755);sc.add(grid);
+new THREE.GLTFLoader().load(GLB,g=>{const root=g.scene;sc.add(root);
+  root.traverse(o=>{if(o.isMesh&&o.material){const ms=[].concat(o.material);ms.forEach(m=>{m.transparent=false;m.depthWrite=true;});}});
+  const clip=g.animations.find(a=>a.name===CLIP);if(!clip){window.__PROVINO={ok:false,clips:g.animations.map(a=>a.name)};return;}
+  const mx=new THREE.AnimationMixer(root),act=mx.clipAction(clip);act.play();
+  const box=new THREE.Box3();const cam=new THREE.PerspectiveCamera(35,W/H,0.05,100);const info=[];
+  TT.forEach((t,k)=>{act.time=Math.min(t,clip.duration-0.001);mx.update(0);root.updateMatrixWorld(true);
+    let pel=null,hl=null,hr=null,fl=null,fr=null,hd=null;root.traverse(o=>{if(!o.isBone)return;const p=new THREE.Vector3();o.getWorldPosition(p);if(o.name==='pelvis')pel=p;if(o.name==='hand_l')hl=p;if(o.name==='hand_r')hr=p;if(o.name==='foot_l')fl=p;if(o.name==='foot_r')fr=p;if(o.name==='head')hd=p;});
+    const c=pel||new THREE.Vector3(0,1,0);cam.position.set(c.x,c.y+0.2,c.z+4.2);cam.lookAt(c.x,c.y,c.z);
+    r.setViewport(W*k,0,W,H);r.setScissor(W*k,0,W,H);r.render(sc,cam);
+    const f=v=>v?[+v.x.toFixed(2),+v.y.toFixed(2),+v.z.toFixed(2)]:null;info.push({t,pelvis:f(pel),testa:f(hd),manoSx:f(hl),manoDx:f(hr),piedeSx:f(fl),piedeDx:f(fr)});});
+  window.__PROVINO={ok:true,clip:CLIP,durata:+clip.duration.toFixed(3),pose:info};
+},undefined,e=>{window.__PROVINO={ok:false,errore:String(e)};});
+</script></body></html>

@@ -936,6 +936,21 @@ dispatcher del tiro, per gol e parata, usa quel punto invece di `Math.random`. R
 Nota: il vecchio punto a caso, su tiri dichiarati gol, cadeva anche fuori dai pali (z −5,6 e −6,46 con pali a ±3,35).
 **Non verificato:** la parata (con esito forzato «fail» il brain ha deciso «fuori» 4 volte su 4); palo/fuori/murato restano geometrici.
 
+## Avanzamento 23 settembre 2026, 23/09 13:27 — TUFFO E RESPINTA DEL PORTIERE SUI CORPI CGTRADER
+Blender 5.0.1 ora gira nel container come modulo Python (`bpy`, in un ambiente virtuale di sessione). Strumento nuovo
+`tools/retarget_cgtrader_clip.py`: riadatta una clip Mixamo (gerarchia di nodi) sullo scheletro Unreal CGTrader e la aggiunge al GLB.
+Metodo (v3): bacino da una terna costruita sui segmenti della sorgente (niente «riposo» Mixamo, che non e' la posa in piedi); ogni
+altro osso eredita il genitore e riallinea al segmento della sorgente **l'asse che a riposo punta davvero al figlio** (misurato:
+l'asse Y delle ossa Unreal importate e' a 90 gradi dal figlio — la v2 ruotava l'arto sbagliato, 85 gradi di errore).
+**Cancello anatomico NON circolare** (la prima stesura misurava cio' che imponeva: 0,00 gradi per costruzione, scartata): direzione di
+mani, piedi e testa rispetto al bacino, bersaglio contro sorgente. Tuffo mediana 3,1 gradi / massimo 12,2 · respinta 2,7 / 12,3 ·
+caviglie a 6,7 cm da terra a t0. Soglie 10/30. Provini a occhio col three.js del gioco (`provino-clip.html`), in `gesti-portiere/`.
+Asset: i 4 GLB CGTrader passano da 31 a 33 clip; mesh, triangoli, ossa, materiali (tutti MASK), immagini identici; durate delle clip
+esistenti ricampionate a 24 fps (presa alta 3,333 → 3,375 s). Mappa dei gesti: `dive`/`block` → `gk-dive`/`gk-block` (rosso `__CPM_NO_GKDIVE`).
+**In partita (review CGTrader, tiro a gol forzato):** portiere avversario in `dive` con clip `gk-dive` per 96-100 fotogrammi; rosso 0.
+La traslazione del bacino della clip resta (circa 3 m), come per il CH38: stessa regola del gioco.
+**Non verificato:** la respinta in scena; la parata decisa dal brain (l'esito forzato «fail» esce sempre «fuori»); il telefono.
+
 ---
 
 ## Obiettivo vincolante
