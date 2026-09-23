@@ -1,0 +1,1158 @@
+{
+  "lotto": "lotto-05",
+  "modello": "gpt-image-1-mini",
+  "qualita": "medium",
+  "dimensione": "1024x1024",
+  "fogli": [
+    {
+      "numero": 1,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: staff sportivo o media, Donna di 53 anni, carnagione chiara, capelli brizzolati caschetto liscio, senza barba, viso largo, lentiggini leggere. Alto destra: calciatore, Uomo di 28 anni, carnagione scura, capelli castani scuri lunghi raccolti, pizzetto, viso allungato, fronte alta. Basso sinistra: calciatore, Uomo di 24 anni, carnagione olivastra, capelli neri afro corti, baffi sottili, viso ovale, naso leggermente storto. Basso destra: calciatore, Uomo di 19 anni, carnagione ambrata, capelli castani scuri stempiati e corti, rasato, viso triangolare, zigomi alti.",
+      "volti": [
+        {
+          "id": "ai-0416",
+          "categoria": "staff",
+          "eta": 53,
+          "carnagione": "chiara",
+          "capelli": "brizzolati caschetto liscio",
+          "barba": "nessuna",
+          "viso": "largo",
+          "tratto": "lentiggini leggere"
+        },
+        {
+          "id": "ai-0411",
+          "categoria": "giocatore",
+          "eta": 28,
+          "carnagione": "scura",
+          "capelli": "castani scuri lunghi raccolti",
+          "barba": "pizzetto",
+          "viso": "allungato",
+          "tratto": "fronte alta"
+        },
+        {
+          "id": "ai-0414",
+          "categoria": "giocatore",
+          "eta": 24,
+          "carnagione": "olivastra",
+          "capelli": "neri afro corti",
+          "barba": "baffi sottili",
+          "viso": "ovale",
+          "tratto": "naso leggermente storto"
+        },
+        {
+          "id": "ai-0463",
+          "categoria": "giocatore",
+          "eta": 19,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri stempiati e corti",
+          "barba": "rasato",
+          "viso": "triangolare",
+          "tratto": "zigomi alti"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 32 anni, carnagione scura, capelli neri afro corti, pizzetto, viso largo, naso aquilino. Alto destra: calciatore, Uomo di 23 anni, carnagione ambrata, capelli neri stempiati e corti, barba corta, viso quadrato, naso largo. Basso sinistra: calciatore, Uomo di 18 anni, carnagione chiara, capelli neri ricci medi, rasato, viso allungato, lieve asimmetria del sorriso. Basso destra: staff sportivo o media, Donna di 53 anni, carnagione olivastra, capelli neri corti ondulati, senza barba, viso ovale, occhi infossati.",
+      "volti": [
+        {
+          "id": "ai-0413",
+          "categoria": "giocatore",
+          "eta": 32,
+          "carnagione": "scura",
+          "capelli": "neri afro corti",
+          "barba": "pizzetto",
+          "viso": "largo",
+          "tratto": "naso aquilino"
+        },
+        {
+          "id": "ai-0455",
+          "categoria": "giocatore",
+          "eta": 23,
+          "carnagione": "ambrata",
+          "capelli": "neri stempiati e corti",
+          "barba": "barba corta",
+          "viso": "quadrato",
+          "tratto": "naso largo"
+        },
+        {
+          "id": "ai-0472",
+          "categoria": "giocatore",
+          "eta": 18,
+          "carnagione": "chiara",
+          "capelli": "neri ricci medi",
+          "barba": "rasato",
+          "viso": "allungato",
+          "tratto": "lieve asimmetria del sorriso"
+        },
+        {
+          "id": "ai-0430",
+          "categoria": "staff",
+          "eta": 53,
+          "carnagione": "olivastra",
+          "capelli": "neri corti ondulati",
+          "barba": "nessuna",
+          "viso": "ovale",
+          "tratto": "occhi infossati"
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 36 anni, carnagione scura, capelli neri rasati a zero, pizzetto, viso quadrato, labbra sottili. Alto destra: calciatore, Uomo di 22 anni, carnagione chiara, capelli biondi stempiati e corti, barba corta, viso allungato, orecchie leggermente sporgenti. Basso sinistra: staff sportivo o media, Donna di 48 anni, carnagione ambrata, capelli brizzolati lunghi mossi, senza barba, viso largo, zigomi alti. Basso destra: calciatore, Uomo di 28 anni, carnagione olivastra, capelli castani afro corti, baffi sottili, viso rotondo, naso aquilino.",
+      "volti": [
+        {
+          "id": "ai-0434",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "scura",
+          "capelli": "neri rasati a zero",
+          "barba": "pizzetto",
+          "viso": "quadrato",
+          "tratto": "labbra sottili"
+        },
+        {
+          "id": "ai-0424",
+          "categoria": "giocatore",
+          "eta": 22,
+          "carnagione": "chiara",
+          "capelli": "biondi stempiati e corti",
+          "barba": "barba corta",
+          "viso": "allungato",
+          "tratto": "orecchie leggermente sporgenti"
+        },
+        {
+          "id": "ai-0444",
+          "categoria": "staff",
+          "eta": 48,
+          "carnagione": "ambrata",
+          "capelli": "brizzolati lunghi mossi",
+          "barba": "nessuna",
+          "viso": "largo",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0409",
+          "categoria": "giocatore",
+          "eta": 28,
+          "carnagione": "olivastra",
+          "capelli": "castani afro corti",
+          "barba": "baffi sottili",
+          "viso": "rotondo",
+          "tratto": "naso aquilino"
+        }
+      ]
+    },
+    {
+      "numero": 4,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 29 anni, carnagione chiara, capelli neri rasati a zero, barba piena curata, viso quadrato, naso leggermente storto. Alto destra: staff sportivo o media, Uomo di 46 anni, carnagione olivastra, capelli neri ricci medi, pizzetto, viso rotondo, naso largo. Basso sinistra: calciatore, Uomo di 22 anni, carnagione scura, capelli castani scuri corti lisci, baffi sottili, viso ovale, lieve asimmetria del sorriso. Basso destra: calciatore, Uomo di 33 anni, carnagione ambrata, capelli neri ricci corti, rasato, viso allungato, naso leggermente storto.",
+      "volti": [
+        {
+          "id": "ai-0441",
+          "categoria": "giocatore",
+          "eta": 29,
+          "carnagione": "chiara",
+          "capelli": "neri rasati a zero",
+          "barba": "barba piena curata",
+          "viso": "quadrato",
+          "tratto": "naso leggermente storto"
+        },
+        {
+          "id": "ai-0459",
+          "categoria": "staff",
+          "eta": 46,
+          "carnagione": "olivastra",
+          "capelli": "neri ricci medi",
+          "barba": "pizzetto",
+          "viso": "rotondo",
+          "tratto": "naso largo"
+        },
+        {
+          "id": "ai-0418",
+          "categoria": "giocatore",
+          "eta": 22,
+          "carnagione": "scura",
+          "capelli": "castani scuri corti lisci",
+          "barba": "baffi sottili",
+          "viso": "ovale",
+          "tratto": "lieve asimmetria del sorriso"
+        },
+        {
+          "id": "ai-0445",
+          "categoria": "giocatore",
+          "eta": 33,
+          "carnagione": "ambrata",
+          "capelli": "neri ricci corti",
+          "barba": "rasato",
+          "viso": "allungato",
+          "tratto": "naso leggermente storto"
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: staff sportivo o media, Uomo di 42 anni, carnagione chiara, capelli rossi ricci medi, pizzetto, viso largo, orecchie leggermente sporgenti. Alto destra: calciatore, Uomo di 32 anni, carnagione olivastra, capelli castani scuri afro corti, barba corta, viso ovale, fronte alta. Basso sinistra: calciatore, Uomo di 28 anni, carnagione scura, capelli castani scuri ricci medi, barba piena curata, viso rotondo, naso largo. Basso destra: calciatore, Uomo di 18 anni, carnagione ambrata, capelli neri lunghi raccolti, rasato, viso quadrato, labbra sottili.",
+      "volti": [
+        {
+          "id": "ai-0473",
+          "categoria": "staff",
+          "eta": 42,
+          "carnagione": "chiara",
+          "capelli": "rossi ricci medi",
+          "barba": "pizzetto",
+          "viso": "largo",
+          "tratto": "orecchie leggermente sporgenti"
+        },
+        {
+          "id": "ai-0410",
+          "categoria": "giocatore",
+          "eta": 32,
+          "carnagione": "olivastra",
+          "capelli": "castani scuri afro corti",
+          "barba": "barba corta",
+          "viso": "ovale",
+          "tratto": "fronte alta"
+        },
+        {
+          "id": "ai-0422",
+          "categoria": "giocatore",
+          "eta": 28,
+          "carnagione": "scura",
+          "capelli": "castani scuri ricci medi",
+          "barba": "barba piena curata",
+          "viso": "rotondo",
+          "tratto": "naso largo"
+        },
+        {
+          "id": "ai-0504",
+          "categoria": "giocatore",
+          "eta": 18,
+          "carnagione": "ambrata",
+          "capelli": "neri lunghi raccolti",
+          "barba": "rasato",
+          "viso": "quadrato",
+          "tratto": "labbra sottili"
+        }
+      ]
+    },
+    {
+      "numero": 6,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 28 anni, carnagione olivastra, capelli neri afro corti, pizzetto, viso ovale, zigomi alti. Alto destra: calciatore, Uomo di 21 anni, carnagione scura, capelli castani scuri rasati a zero, baffi sottili, viso rotondo, fronte alta. Basso sinistra: calciatore, Uomo di 34 anni, carnagione chiara, capelli castani rasati a zero, rasato, viso largo, lentiggini leggere. Basso destra: staff sportivo o media, Uomo di 55 anni, carnagione ambrata, capelli castani scuri ricci medi, barba piena curata, viso quadrato, lieve asimmetria del sorriso.",
+      "volti": [
+        {
+          "id": "ai-0412",
+          "categoria": "giocatore",
+          "eta": 28,
+          "carnagione": "olivastra",
+          "capelli": "neri afro corti",
+          "barba": "pizzetto",
+          "viso": "ovale",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0448",
+          "categoria": "giocatore",
+          "eta": 21,
+          "carnagione": "scura",
+          "capelli": "castani scuri rasati a zero",
+          "barba": "baffi sottili",
+          "viso": "rotondo",
+          "tratto": "fronte alta"
+        },
+        {
+          "id": "ai-0437",
+          "categoria": "giocatore",
+          "eta": 34,
+          "carnagione": "chiara",
+          "capelli": "castani rasati a zero",
+          "barba": "rasato",
+          "viso": "largo",
+          "tratto": "lentiggini leggere"
+        },
+        {
+          "id": "ai-0487",
+          "categoria": "staff",
+          "eta": 55,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri ricci medi",
+          "barba": "barba piena curata",
+          "viso": "quadrato",
+          "tratto": "lieve asimmetria del sorriso"
+        }
+      ]
+    },
+    {
+      "numero": 7,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 31 anni, carnagione ambrata, capelli castani scuri rasati a zero, baffi sottili, viso largo, naso aquilino. Alto destra: calciatore, Uomo di 36 anni, carnagione scura, capelli neri corti lisci, barba corta, viso allungato, naso largo. Basso sinistra: staff sportivo o media, Uomo di 50 anni, carnagione chiara, capelli biondi scuri ricci corti, barba piena curata, viso triangolare, zigomi alti. Basso destra: calciatore, Uomo di 21 anni, carnagione olivastra, capelli castani scuri afro corti, rasato, viso ovale, lentiggini leggere.",
+      "volti": [
+        {
+          "id": "ai-0415",
+          "categoria": "giocatore",
+          "eta": 31,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri rasati a zero",
+          "barba": "baffi sottili",
+          "viso": "largo",
+          "tratto": "naso aquilino"
+        },
+        {
+          "id": "ai-0453",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "scura",
+          "capelli": "neri corti lisci",
+          "barba": "barba corta",
+          "viso": "allungato",
+          "tratto": "naso largo"
+        },
+        {
+          "id": "ai-0501",
+          "categoria": "staff",
+          "eta": 50,
+          "carnagione": "chiara",
+          "capelli": "biondi scuri ricci corti",
+          "barba": "barba piena curata",
+          "viso": "triangolare",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0417",
+          "categoria": "giocatore",
+          "eta": 21,
+          "carnagione": "olivastra",
+          "capelli": "castani scuri afro corti",
+          "barba": "rasato",
+          "viso": "ovale",
+          "tratto": "lentiggini leggere"
+        }
+      ]
+    },
+    {
+      "numero": 8,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 34 anni, carnagione chiara, capelli biondi ricci medi, pizzetto, viso allungato, mento pronunciato. Alto destra: calciatore, Uomo di 36 anni, carnagione olivastra, capelli neri afro corti, barba corta, viso largo, zigomi alti. Basso sinistra: calciatore, Uomo di 31 anni, carnagione scura, capelli castani scuri rasati a zero, baffi sottili, viso ovale, arcata sopracciliare marcata. Basso destra: calciatore, Uomo di 19 anni, carnagione ambrata, capelli castani scuri lunghi raccolti, rasato, viso rotondo, naso aquilino.",
+      "volti": [
+        {
+          "id": "ai-0493",
+          "categoria": "giocatore",
+          "eta": 34,
+          "carnagione": "chiara",
+          "capelli": "biondi ricci medi",
+          "barba": "pizzetto",
+          "viso": "allungato",
+          "tratto": "mento pronunciato"
+        },
+        {
+          "id": "ai-0419",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "olivastra",
+          "capelli": "neri afro corti",
+          "barba": "barba corta",
+          "viso": "largo",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0426",
+          "categoria": "giocatore",
+          "eta": 31,
+          "carnagione": "scura",
+          "capelli": "castani scuri rasati a zero",
+          "barba": "baffi sottili",
+          "viso": "ovale",
+          "tratto": "arcata sopracciliare marcata"
+        },
+        {
+          "id": "ai-0438",
+          "categoria": "giocatore",
+          "eta": 19,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri lunghi raccolti",
+          "barba": "rasato",
+          "viso": "rotondo",
+          "tratto": "naso aquilino"
+        }
+      ]
+    },
+    {
+      "numero": 9,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 19 anni, carnagione olivastra, capelli castani stempiati e corti, rasato, viso largo, occhi infossati. Alto destra: calciatore, Uomo di 23 anni, carnagione ambrata, capelli neri corti mossi, pizzetto, viso allungato, zigomi alti. Basso sinistra: calciatore, Uomo di 34 anni, carnagione scura, capelli neri afro corti, barba piena curata, viso rotondo, guance piene. Basso destra: calciatore, Uomo di 23 anni, carnagione chiara, capelli rossi ricci medi, barba corta, viso quadrato, arcata sopracciliare marcata.",
+      "volti": [
+        {
+          "id": "ai-0421",
+          "categoria": "giocatore",
+          "eta": 19,
+          "carnagione": "olivastra",
+          "capelli": "castani stempiati e corti",
+          "barba": "rasato",
+          "viso": "largo",
+          "tratto": "occhi infossati"
+        },
+        {
+          "id": "ai-0420",
+          "categoria": "giocatore",
+          "eta": 23,
+          "carnagione": "ambrata",
+          "capelli": "neri corti mossi",
+          "barba": "pizzetto",
+          "viso": "allungato",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0491",
+          "categoria": "giocatore",
+          "eta": 34,
+          "carnagione": "scura",
+          "capelli": "neri afro corti",
+          "barba": "barba piena curata",
+          "viso": "rotondo",
+          "tratto": "guance piene"
+        },
+        {
+          "id": "ai-0436",
+          "categoria": "giocatore",
+          "eta": 23,
+          "carnagione": "chiara",
+          "capelli": "rossi ricci medi",
+          "barba": "barba corta",
+          "viso": "quadrato",
+          "tratto": "arcata sopracciliare marcata"
+        }
+      ]
+    },
+    {
+      "numero": 10,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 27 anni, carnagione scura, capelli castani scuri corti mossi, barba corta, viso largo, zigomi alti. Alto destra: calciatore, Uomo di 33 anni, carnagione ambrata, capelli castani scuri lunghi raccolti, rasato, viso rotondo, occhi infossati. Basso sinistra: calciatore, Uomo di 25 anni, carnagione chiara, capelli biondi rasati a zero, barba piena curata, viso ovale, zigomi alti. Basso destra: calciatore, Uomo di 21 anni, carnagione olivastra, capelli castani corti mossi, baffi sottili, viso quadrato, guance piene.",
+      "volti": [
+        {
+          "id": "ai-0425",
+          "categoria": "giocatore",
+          "eta": 27,
+          "carnagione": "scura",
+          "capelli": "castani scuri corti mossi",
+          "barba": "barba corta",
+          "viso": "largo",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0428",
+          "categoria": "giocatore",
+          "eta": 33,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri lunghi raccolti",
+          "barba": "rasato",
+          "viso": "rotondo",
+          "tratto": "occhi infossati"
+        },
+        {
+          "id": "ai-0481",
+          "categoria": "giocatore",
+          "eta": 25,
+          "carnagione": "chiara",
+          "capelli": "biondi rasati a zero",
+          "barba": "barba piena curata",
+          "viso": "ovale",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0423",
+          "categoria": "giocatore",
+          "eta": 21,
+          "carnagione": "olivastra",
+          "capelli": "castani corti mossi",
+          "barba": "baffi sottili",
+          "viso": "quadrato",
+          "tratto": "guance piene"
+        }
+      ]
+    },
+    {
+      "numero": 11,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 27 anni, carnagione scura, capelli neri ricci corti, barba corta, viso allungato, naso leggermente storto. Alto destra: calciatore, Uomo di 19 anni, carnagione chiara, capelli rossi afro corti, rasato, viso ovale, zigomi alti. Basso sinistra: calciatore, Uomo di 23 anni, carnagione olivastra, capelli castani stempiati e corti, baffi sottili, viso rotondo, sopracciglia folte. Basso destra: calciatore, Uomo di 35 anni, carnagione ambrata, capelli castani scuri lunghi raccolti, pizzetto, viso quadrato, arcata sopracciliare marcata.",
+      "volti": [
+        {
+          "id": "ai-0478",
+          "categoria": "giocatore",
+          "eta": 27,
+          "carnagione": "scura",
+          "capelli": "neri ricci corti",
+          "barba": "barba corta",
+          "viso": "allungato",
+          "tratto": "naso leggermente storto"
+        },
+        {
+          "id": "ai-0500",
+          "categoria": "giocatore",
+          "eta": 19,
+          "carnagione": "chiara",
+          "capelli": "rossi afro corti",
+          "barba": "rasato",
+          "viso": "ovale",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0432",
+          "categoria": "giocatore",
+          "eta": 23,
+          "carnagione": "olivastra",
+          "capelli": "castani stempiati e corti",
+          "barba": "baffi sottili",
+          "viso": "rotondo",
+          "tratto": "sopracciglia folte"
+        },
+        {
+          "id": "ai-0429",
+          "categoria": "giocatore",
+          "eta": 35,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri lunghi raccolti",
+          "barba": "pizzetto",
+          "viso": "quadrato",
+          "tratto": "arcata sopracciliare marcata"
+        }
+      ]
+    },
+    {
+      "numero": 12,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 32 anni, carnagione chiara, capelli neri ricci medi, barba corta, viso allungato, guance piene. Alto destra: calciatore, Uomo di 36 anni, carnagione olivastra, capelli castani scuri stempiati e corti, pizzetto, viso triangolare, naso largo. Basso sinistra: calciatore, Uomo di 23 anni, carnagione ambrata, capelli castani scuri corti mossi, baffi sottili, viso largo, zigomi alti. Basso destra: calciatore, Uomo di 27 anni, carnagione scura, capelli neri corti mossi, rasato, viso allungato, mento pronunciato.",
+      "volti": [
+        {
+          "id": "ai-0465",
+          "categoria": "giocatore",
+          "eta": 32,
+          "carnagione": "chiara",
+          "capelli": "neri ricci medi",
+          "barba": "barba corta",
+          "viso": "allungato",
+          "tratto": "guance piene"
+        },
+        {
+          "id": "ai-0433",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "olivastra",
+          "capelli": "castani scuri stempiati e corti",
+          "barba": "pizzetto",
+          "viso": "triangolare",
+          "tratto": "naso largo"
+        },
+        {
+          "id": "ai-0431",
+          "categoria": "giocatore",
+          "eta": 23,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri corti mossi",
+          "barba": "baffi sottili",
+          "viso": "largo",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0499",
+          "categoria": "giocatore",
+          "eta": 27,
+          "carnagione": "scura",
+          "capelli": "neri corti mossi",
+          "barba": "rasato",
+          "viso": "allungato",
+          "tratto": "mento pronunciato"
+        }
+      ]
+    },
+    {
+      "numero": 13,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 31 anni, carnagione olivastra, capelli castani scuri corti lisci, barba corta, viso triangolare, naso aquilino. Alto destra: calciatore, Uomo di 21 anni, carnagione ambrata, capelli neri corti mossi, rasato, viso largo, lentiggini leggere. Basso sinistra: calciatore, Uomo di 36 anni, carnagione chiara, capelli biondi lunghi raccolti, baffi sottili, viso ovale, guance piene. Basso destra: calciatore, Uomo di 30 anni, carnagione scura, capelli neri afro corti, pizzetto, viso rotondo, labbra sottili.",
+      "volti": [
+        {
+          "id": "ai-0435",
+          "categoria": "giocatore",
+          "eta": 31,
+          "carnagione": "olivastra",
+          "capelli": "castani scuri corti lisci",
+          "barba": "barba corta",
+          "viso": "triangolare",
+          "tratto": "naso aquilino"
+        },
+        {
+          "id": "ai-0449",
+          "categoria": "giocatore",
+          "eta": 21,
+          "carnagione": "ambrata",
+          "capelli": "neri corti mossi",
+          "barba": "rasato",
+          "viso": "largo",
+          "tratto": "lentiggini leggere"
+        },
+        {
+          "id": "ai-0497",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "chiara",
+          "capelli": "biondi lunghi raccolti",
+          "barba": "baffi sottili",
+          "viso": "ovale",
+          "tratto": "guance piene"
+        },
+        {
+          "id": "ai-0458",
+          "categoria": "giocatore",
+          "eta": 30,
+          "carnagione": "scura",
+          "capelli": "neri afro corti",
+          "barba": "pizzetto",
+          "viso": "rotondo",
+          "tratto": "labbra sottili"
+        }
+      ]
+    },
+    {
+      "numero": 14,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 20 anni, carnagione scura, capelli castani scuri ricci medi, rasato, viso allungato, arcata sopracciliare marcata. Alto destra: calciatore, Uomo di 32 anni, carnagione ambrata, capelli neri corti lisci, barba corta, viso rotondo, sopracciglia folte. Basso sinistra: calciatore, Uomo di 24 anni, carnagione chiara, capelli castani stempiati e corti, baffi sottili, viso ovale, occhi infossati. Basso destra: calciatore, Uomo di 26 anni, carnagione olivastra, capelli neri stempiati e corti, barba piena curata, viso quadrato, lentiggini leggere.",
+      "volti": [
+        {
+          "id": "ai-0450",
+          "categoria": "giocatore",
+          "eta": 20,
+          "carnagione": "scura",
+          "capelli": "castani scuri ricci medi",
+          "barba": "rasato",
+          "viso": "allungato",
+          "tratto": "arcata sopracciliare marcata"
+        },
+        {
+          "id": "ai-0475",
+          "categoria": "giocatore",
+          "eta": 32,
+          "carnagione": "ambrata",
+          "capelli": "neri corti lisci",
+          "barba": "barba corta",
+          "viso": "rotondo",
+          "tratto": "sopracciglia folte"
+        },
+        {
+          "id": "ai-0451",
+          "categoria": "giocatore",
+          "eta": 24,
+          "carnagione": "chiara",
+          "capelli": "castani stempiati e corti",
+          "barba": "baffi sottili",
+          "viso": "ovale",
+          "tratto": "occhi infossati"
+        },
+        {
+          "id": "ai-0439",
+          "categoria": "giocatore",
+          "eta": 26,
+          "carnagione": "olivastra",
+          "capelli": "neri stempiati e corti",
+          "barba": "barba piena curata",
+          "viso": "quadrato",
+          "tratto": "lentiggini leggere"
+        }
+      ]
+    },
+    {
+      "numero": 15,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 21 anni, carnagione scura, capelli castani scuri corti lisci, baffi sottili, viso ovale, mento pronunciato. Alto destra: calciatore, Uomo di 36 anni, carnagione chiara, capelli castani rasati a zero, rasato, viso allungato, labbra sottili. Basso sinistra: calciatore, Uomo di 33 anni, carnagione olivastra, capelli neri lunghi raccolti, barba piena curata, viso largo, occhi infossati. Basso destra: calciatore, Uomo di 26 anni, carnagione ambrata, capelli castani scuri lunghi raccolti, pizzetto, viso triangolare, naso aquilino.",
+      "volti": [
+        {
+          "id": "ai-0508",
+          "categoria": "giocatore",
+          "eta": 21,
+          "carnagione": "scura",
+          "capelli": "castani scuri corti lisci",
+          "barba": "baffi sottili",
+          "viso": "ovale",
+          "tratto": "mento pronunciato"
+        },
+        {
+          "id": "ai-0479",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "chiara",
+          "capelli": "castani rasati a zero",
+          "barba": "rasato",
+          "viso": "allungato",
+          "tratto": "labbra sottili"
+        },
+        {
+          "id": "ai-0454",
+          "categoria": "giocatore",
+          "eta": 33,
+          "carnagione": "olivastra",
+          "capelli": "neri lunghi raccolti",
+          "barba": "barba piena curata",
+          "viso": "largo",
+          "tratto": "occhi infossati"
+        },
+        {
+          "id": "ai-0443",
+          "categoria": "giocatore",
+          "eta": 26,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri lunghi raccolti",
+          "barba": "pizzetto",
+          "viso": "triangolare",
+          "tratto": "naso aquilino"
+        }
+      ]
+    },
+    {
+      "numero": 16,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 22 anni, carnagione chiara, capelli castani stempiati e corti, rasato, viso triangolare, fronte alta. Alto destra: calciatore, Uomo di 25 anni, carnagione olivastra, capelli castani scuri corti lisci, pizzetto, viso allungato, mento pronunciato. Basso sinistra: calciatore, Uomo di 35 anni, carnagione ambrata, capelli neri ricci medi, barba piena curata, viso ovale, occhi infossati. Basso destra: calciatore, Uomo di 18 anni, carnagione scura, capelli castani scuri ricci medi, baffi sottili, viso largo, sopracciglia folte.",
+      "volti": [
+        {
+          "id": "ai-0442",
+          "categoria": "giocatore",
+          "eta": 22,
+          "carnagione": "chiara",
+          "capelli": "castani stempiati e corti",
+          "barba": "rasato",
+          "viso": "triangolare",
+          "tratto": "fronte alta"
+        },
+        {
+          "id": "ai-0462",
+          "categoria": "giocatore",
+          "eta": 25,
+          "carnagione": "olivastra",
+          "capelli": "castani scuri corti lisci",
+          "barba": "pizzetto",
+          "viso": "allungato",
+          "tratto": "mento pronunciato"
+        },
+        {
+          "id": "ai-0457",
+          "categoria": "giocatore",
+          "eta": 35,
+          "carnagione": "ambrata",
+          "capelli": "neri ricci medi",
+          "barba": "barba piena curata",
+          "viso": "ovale",
+          "tratto": "occhi infossati"
+        },
+        {
+          "id": "ai-0460",
+          "categoria": "giocatore",
+          "eta": 18,
+          "carnagione": "scura",
+          "capelli": "castani scuri ricci medi",
+          "barba": "baffi sottili",
+          "viso": "largo",
+          "tratto": "sopracciglia folte"
+        }
+      ]
+    },
+    {
+      "numero": 17,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 20 anni, carnagione olivastra, capelli castani rasati a zero, baffi sottili, viso ovale, sopracciglia folte. Alto destra: calciatore, Uomo di 29 anni, carnagione ambrata, capelli castani scuri ricci medi, pizzetto, viso quadrato, arcata sopracciliare marcata. Basso sinistra: calciatore, Uomo di 35 anni, carnagione scura, capelli castani scuri rasati a zero, barba corta, viso triangolare, zigomi alti. Basso destra: calciatore, Uomo di 25 anni, carnagione chiara, capelli rossi lunghi raccolti, rasato, viso rotondo, lieve asimmetria del sorriso.",
+      "volti": [
+        {
+          "id": "ai-0464",
+          "categoria": "giocatore",
+          "eta": 20,
+          "carnagione": "olivastra",
+          "capelli": "castani rasati a zero",
+          "barba": "baffi sottili",
+          "viso": "ovale",
+          "tratto": "sopracciglia folte"
+        },
+        {
+          "id": "ai-0452",
+          "categoria": "giocatore",
+          "eta": 29,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri ricci medi",
+          "barba": "pizzetto",
+          "viso": "quadrato",
+          "tratto": "arcata sopracciliare marcata"
+        },
+        {
+          "id": "ai-0467",
+          "categoria": "giocatore",
+          "eta": 35,
+          "carnagione": "scura",
+          "capelli": "castani scuri rasati a zero",
+          "barba": "barba corta",
+          "viso": "triangolare",
+          "tratto": "zigomi alti"
+        },
+        {
+          "id": "ai-0502",
+          "categoria": "giocatore",
+          "eta": 25,
+          "carnagione": "chiara",
+          "capelli": "rossi lunghi raccolti",
+          "barba": "rasato",
+          "viso": "rotondo",
+          "tratto": "lieve asimmetria del sorriso"
+        }
+      ]
+    },
+    {
+      "numero": 18,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 24 anni, carnagione scura, capelli neri lunghi raccolti, barba corta, viso quadrato, occhi infossati. Alto destra: calciatore, Uomo di 20 anni, carnagione ambrata, capelli neri stempiati e corti, baffi sottili, viso largo, arcata sopracciliare marcata. Basso sinistra: calciatore, Uomo di 35 anni, carnagione chiara, capelli rossi corti mossi, rasato, viso rotondo, mento pronunciato. Basso destra: calciatore, Uomo di 29 anni, carnagione olivastra, capelli castani afro corti, barba piena curata, viso triangolare, lieve asimmetria del sorriso.",
+      "volti": [
+        {
+          "id": "ai-0461",
+          "categoria": "giocatore",
+          "eta": 24,
+          "carnagione": "scura",
+          "capelli": "neri lunghi raccolti",
+          "barba": "barba corta",
+          "viso": "quadrato",
+          "tratto": "occhi infossati"
+        },
+        {
+          "id": "ai-0474",
+          "categoria": "giocatore",
+          "eta": 20,
+          "carnagione": "ambrata",
+          "capelli": "neri stempiati e corti",
+          "barba": "baffi sottili",
+          "viso": "largo",
+          "tratto": "arcata sopracciliare marcata"
+        },
+        {
+          "id": "ai-0477",
+          "categoria": "giocatore",
+          "eta": 35,
+          "carnagione": "chiara",
+          "capelli": "rossi corti mossi",
+          "barba": "rasato",
+          "viso": "rotondo",
+          "tratto": "mento pronunciato"
+        },
+        {
+          "id": "ai-0470",
+          "categoria": "giocatore",
+          "eta": 29,
+          "carnagione": "olivastra",
+          "capelli": "castani afro corti",
+          "barba": "barba piena curata",
+          "viso": "triangolare",
+          "tratto": "lieve asimmetria del sorriso"
+        }
+      ]
+    },
+    {
+      "numero": 19,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 20 anni, carnagione ambrata, capelli neri stempiati e corti, baffi sottili, viso rotondo, orecchie leggermente sporgenti. Alto destra: calciatore, Uomo di 30 anni, carnagione chiara, capelli castani ricci medi, rasato, viso ovale, lentiggini leggere. Basso sinistra: calciatore, Uomo di 20 anni, carnagione olivastra, capelli neri rasati a zero, rasato, viso allungato, lieve asimmetria del sorriso. Basso destra: calciatore, Uomo di 27 anni, carnagione scura, capelli neri afro corti, pizzetto, viso triangolare, arcata sopracciliare marcata.",
+      "volti": [
+        {
+          "id": "ai-0485",
+          "categoria": "giocatore",
+          "eta": 20,
+          "carnagione": "ambrata",
+          "capelli": "neri stempiati e corti",
+          "barba": "baffi sottili",
+          "viso": "rotondo",
+          "tratto": "orecchie leggermente sporgenti"
+        },
+        {
+          "id": "ai-0483",
+          "categoria": "giocatore",
+          "eta": 30,
+          "carnagione": "chiara",
+          "capelli": "castani ricci medi",
+          "barba": "rasato",
+          "viso": "ovale",
+          "tratto": "lentiggini leggere"
+        },
+        {
+          "id": "ai-0471",
+          "categoria": "giocatore",
+          "eta": 20,
+          "carnagione": "olivastra",
+          "capelli": "neri rasati a zero",
+          "barba": "rasato",
+          "viso": "allungato",
+          "tratto": "lieve asimmetria del sorriso"
+        },
+        {
+          "id": "ai-0468",
+          "categoria": "giocatore",
+          "eta": 27,
+          "carnagione": "scura",
+          "capelli": "neri afro corti",
+          "barba": "pizzetto",
+          "viso": "triangolare",
+          "tratto": "arcata sopracciliare marcata"
+        }
+      ]
+    },
+    {
+      "numero": 20,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 23 anni, carnagione ambrata, capelli castani scuri afro corti, pizzetto, viso triangolare, naso largo. Alto destra: calciatore, Uomo di 29 anni, carnagione olivastra, capelli castani scuri ricci medi, barba corta, viso ovale, orecchie leggermente sporgenti. Basso sinistra: calciatore, Uomo di 36 anni, carnagione scura, capelli neri rasati a zero, rasato, viso triangolare, arcata sopracciliare marcata. Basso destra: calciatore, Uomo di 23 anni, carnagione chiara, capelli rossi ricci corti, baffi sottili, viso allungato, lieve asimmetria del sorriso.",
+      "volti": [
+        {
+          "id": "ai-0484",
+          "categoria": "giocatore",
+          "eta": 23,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri afro corti",
+          "barba": "pizzetto",
+          "viso": "triangolare",
+          "tratto": "naso largo"
+        },
+        {
+          "id": "ai-0476",
+          "categoria": "giocatore",
+          "eta": 29,
+          "carnagione": "olivastra",
+          "capelli": "castani scuri ricci medi",
+          "barba": "barba corta",
+          "viso": "ovale",
+          "tratto": "orecchie leggermente sporgenti"
+        },
+        {
+          "id": "ai-0482",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "scura",
+          "capelli": "neri rasati a zero",
+          "barba": "rasato",
+          "viso": "triangolare",
+          "tratto": "arcata sopracciliare marcata"
+        },
+        {
+          "id": "ai-0427",
+          "categoria": "giocatore",
+          "eta": 23,
+          "carnagione": "chiara",
+          "capelli": "rossi ricci corti",
+          "barba": "baffi sottili",
+          "viso": "allungato",
+          "tratto": "lieve asimmetria del sorriso"
+        }
+      ]
+    },
+    {
+      "numero": 21,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 31 anni, carnagione olivastra, capelli castani corti lisci, barba piena curata, viso allungato, lieve asimmetria del sorriso. Alto destra: calciatore, Uomo di 36 anni, carnagione scura, capelli neri afro corti, barba corta, viso quadrato, sopracciglia folte. Basso sinistra: calciatore, Uomo di 19 anni, carnagione chiara, capelli castani ricci corti, baffi sottili, viso rotondo, occhi infossati. Basso destra: calciatore, Uomo di 36 anni, carnagione ambrata, capelli neri ricci medi, barba piena curata, viso triangolare, fronte alta.",
+      "volti": [
+        {
+          "id": "ai-0486",
+          "categoria": "giocatore",
+          "eta": 31,
+          "carnagione": "olivastra",
+          "capelli": "castani corti lisci",
+          "barba": "barba piena curata",
+          "viso": "allungato",
+          "tratto": "lieve asimmetria del sorriso"
+        },
+        {
+          "id": "ai-0494",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "scura",
+          "capelli": "neri afro corti",
+          "barba": "barba corta",
+          "viso": "quadrato",
+          "tratto": "sopracciglia folte"
+        },
+        {
+          "id": "ai-0440",
+          "categoria": "giocatore",
+          "eta": 19,
+          "carnagione": "chiara",
+          "capelli": "castani ricci corti",
+          "barba": "baffi sottili",
+          "viso": "rotondo",
+          "tratto": "occhi infossati"
+        },
+        {
+          "id": "ai-0490",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "ambrata",
+          "capelli": "neri ricci medi",
+          "barba": "barba piena curata",
+          "viso": "triangolare",
+          "tratto": "fronte alta"
+        }
+      ]
+    },
+    {
+      "numero": 22,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 34 anni, carnagione ambrata, capelli castani scuri lunghi raccolti, barba corta, viso allungato, lieve asimmetria del sorriso. Alto destra: calciatore, Uomo di 23 anni, carnagione chiara, capelli neri stempiati e corti, rasato, viso largo, occhi infossati. Basso sinistra: calciatore, Uomo di 33 anni, carnagione scura, capelli neri ricci corti, pizzetto, viso triangolare, naso leggermente storto. Basso destra: calciatore, Uomo di 27 anni, carnagione olivastra, capelli castani ricci medi, baffi sottili, viso triangolare, labbra sottili.",
+      "volti": [
+        {
+          "id": "ai-0466",
+          "categoria": "giocatore",
+          "eta": 34,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri lunghi raccolti",
+          "barba": "barba corta",
+          "viso": "allungato",
+          "tratto": "lieve asimmetria del sorriso"
+        },
+        {
+          "id": "ai-0446",
+          "categoria": "giocatore",
+          "eta": 23,
+          "carnagione": "chiara",
+          "capelli": "neri stempiati e corti",
+          "barba": "rasato",
+          "viso": "largo",
+          "tratto": "occhi infossati"
+        },
+        {
+          "id": "ai-0492",
+          "categoria": "giocatore",
+          "eta": 33,
+          "carnagione": "scura",
+          "capelli": "neri ricci corti",
+          "barba": "pizzetto",
+          "viso": "triangolare",
+          "tratto": "naso leggermente storto"
+        },
+        {
+          "id": "ai-0488",
+          "categoria": "giocatore",
+          "eta": 27,
+          "carnagione": "olivastra",
+          "capelli": "castani ricci medi",
+          "barba": "baffi sottili",
+          "viso": "triangolare",
+          "tratto": "labbra sottili"
+        }
+      ]
+    },
+    {
+      "numero": 23,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 28 anni, carnagione ambrata, capelli castani scuri ricci medi, barba piena curata, viso allungato, fronte alta. Alto destra: calciatore, Uomo di 34 anni, carnagione chiara, capelli rossi rasati a zero, rasato, viso allungato, fronte alta. Basso sinistra: calciatore, Uomo di 36 anni, carnagione olivastra, capelli neri ricci medi, pizzetto, viso allungato, lieve asimmetria del sorriso. Basso destra: calciatore, Uomo di 32 anni, carnagione scura, capelli neri ricci corti, barba corta, viso largo, labbra sottili.",
+      "volti": [
+        {
+          "id": "ai-0456",
+          "categoria": "giocatore",
+          "eta": 28,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri ricci medi",
+          "barba": "barba piena curata",
+          "viso": "allungato",
+          "tratto": "fronte alta"
+        },
+        {
+          "id": "ai-0496",
+          "categoria": "giocatore",
+          "eta": 34,
+          "carnagione": "chiara",
+          "capelli": "rossi rasati a zero",
+          "barba": "rasato",
+          "viso": "allungato",
+          "tratto": "fronte alta"
+        },
+        {
+          "id": "ai-0489",
+          "categoria": "giocatore",
+          "eta": 36,
+          "carnagione": "olivastra",
+          "capelli": "neri ricci medi",
+          "barba": "pizzetto",
+          "viso": "allungato",
+          "tratto": "lieve asimmetria del sorriso"
+        },
+        {
+          "id": "ai-0469",
+          "categoria": "giocatore",
+          "eta": 32,
+          "carnagione": "scura",
+          "capelli": "neri ricci corti",
+          "barba": "barba corta",
+          "viso": "largo",
+          "tratto": "labbra sottili"
+        }
+      ]
+    },
+    {
+      "numero": 24,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 21 anni, carnagione scura, capelli neri stempiati e corti, baffi sottili, viso triangolare, labbra sottili. Alto destra: calciatore, Uomo di 20 anni, carnagione olivastra, capelli castani stempiati e corti, baffi sottili, viso rotondo, guance piene. Basso sinistra: calciatore, Uomo di 26 anni, carnagione ambrata, capelli castani scuri stempiati e corti, barba corta, viso quadrato, lieve asimmetria del sorriso. Basso destra: calciatore, Uomo di 34 anni, carnagione chiara, capelli neri ricci medi, baffi sottili, viso allungato, lieve asimmetria del sorriso.",
+      "volti": [
+        {
+          "id": "ai-0506",
+          "categoria": "giocatore",
+          "eta": 21,
+          "carnagione": "scura",
+          "capelli": "neri stempiati e corti",
+          "barba": "baffi sottili",
+          "viso": "triangolare",
+          "tratto": "labbra sottili"
+        },
+        {
+          "id": "ai-0495",
+          "categoria": "giocatore",
+          "eta": 20,
+          "carnagione": "olivastra",
+          "capelli": "castani stempiati e corti",
+          "barba": "baffi sottili",
+          "viso": "rotondo",
+          "tratto": "guance piene"
+        },
+        {
+          "id": "ai-0505",
+          "categoria": "giocatore",
+          "eta": 26,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri stempiati e corti",
+          "barba": "barba corta",
+          "viso": "quadrato",
+          "tratto": "lieve asimmetria del sorriso"
+        },
+        {
+          "id": "ai-0447",
+          "categoria": "giocatore",
+          "eta": 34,
+          "carnagione": "chiara",
+          "capelli": "neri ricci medi",
+          "barba": "baffi sottili",
+          "viso": "allungato",
+          "tratto": "lieve asimmetria del sorriso"
+        }
+      ]
+    },
+    {
+      "numero": 25,
+      "prompt": "Crea UNA fotografia composita quadrata 1024×1024 con ESATTAMENTE quattro ritratti 2×2, un volto diverso per ciascun quadrante 512×512, senza bordi o spazi. Ogni persona è adulta, inventata, non somigliante a persone reali o famose. Sfondo di ogni quadrante BIANCO PURO #FFFFFF, uniforme e senza ombre: mai grigio, avorio o sfumato. Testa e spalle, viso centrato e completamente visibile, sguardo in camera; stessa distanza, inquadratura e luce morbida frontale. Fotografia naturale, anatomia credibile, pelle reale, aspetto ordinario con imperfezioni naturali: non tutti fotomodelli. Abbigliamento semplice grigio chiaro neutro: maglia sportiva girocollo per i giocatori, polo o camicia per lo staff. Niente testo, loghi, stemmi, numeri, sponsor, cornici o filigrane. I quattro volti devono differire chiaramente per occhi, naso, sopracciglia, mascella e forma della testa. Alto sinistra: calciatore, Uomo di 19 anni, carnagione olivastra, capelli castani lunghi raccolti, baffi sottili, viso ovale, naso aquilino. Alto destra: calciatore, Uomo di 31 anni, carnagione ambrata, capelli castani scuri stempiati e corti, baffi sottili, viso allungato, occhi infossati. Basso sinistra: calciatore, Uomo di 33 anni, carnagione scura, capelli neri ricci corti, baffi sottili, viso rotondo, fronte alta. Basso destra: calciatore, Uomo di 26 anni, carnagione olivastra, capelli neri stempiati e corti, barba piena curata, viso largo, guance piene.",
+      "volti": [
+        {
+          "id": "ai-0498",
+          "categoria": "giocatore",
+          "eta": 19,
+          "carnagione": "olivastra",
+          "capelli": "castani lunghi raccolti",
+          "barba": "baffi sottili",
+          "viso": "ovale",
+          "tratto": "naso aquilino"
+        },
+        {
+          "id": "ai-0480",
+          "categoria": "giocatore",
+          "eta": 31,
+          "carnagione": "ambrata",
+          "capelli": "castani scuri stempiati e corti",
+          "barba": "baffi sottili",
+          "viso": "allungato",
+          "tratto": "occhi infossati"
+        },
+        {
+          "id": "ai-0507",
+          "categoria": "giocatore",
+          "eta": 33,
+          "carnagione": "scura",
+          "capelli": "neri ricci corti",
+          "barba": "baffi sottili",
+          "viso": "rotondo",
+          "tratto": "fronte alta"
+        },
+        {
+          "id": "ai-0503",
+          "categoria": "giocatore",
+          "eta": 26,
+          "carnagione": "olivastra",
+          "capelli": "neri stempiati e corti",
+          "barba": "barba piena curata",
+          "viso": "largo",
+          "tratto": "guance piene"
+        }
+      ]
+    }
+  ]
+}
