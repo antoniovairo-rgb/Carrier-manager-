@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 22:15 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 23:25 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -40,17 +40,16 @@
 8. **Catene**: tenute (il seguito lo sceglie il brain).
 - Ancora aperto: diritti dei ritratti AI (non verificabili da me) · volti femminili assenti nel catalogo.
 
-## Coda del collaudo PO (in lavorazione, in ordine)
-- Figurine in Spogliatoio, La Stampa, post-partita (migliore in campo, mister)
-- Intro: eroe troppo robusto, piede nel cartellone · kit con strisce/bande del club sui corpi CGTrader
-- Cori con il nome intero della squadra · tabellone LED all'altezza della tribuna
-- Partita 2D: prato come il 3D, meteo visibile, heat map lieve delle azioni
-- Statistiche (partita e post-partita, stesse voci): cross/azioni sulla fascia, % dribbling riusciti
-- Brain: fascia, cross, schemi · B4/B3 · gesti nuovi · orientamento eroe/tiro/passaggi
+## Prossima fase (direttiva PO 23/09): il brain rende la partita vera
+1. **Voti delle 12 aree** (scheda del collaudo-telefono) ricalcolati sul POC, con misure del banco `tests/brain/`.
+2. Correggere nel brain le aree più basse con misura/rimedio/rosso: dribbling (oggi 97% riusciti), fasce e cross, schemi, passaggi in avanti, orientamento di eroe/tiro/passaggio.
+3. Gesti/clip e render 3D sempre guidati dal brain (B3/B4, gesti nuovi).
+- Resta del piano grafico: kit con strisce per i club senza disegno noto (54 club lo hanno), primo incontro col procuratore e fine stagione nel kit, tabellone «volante» non riprodotto (serve la schermata).
 
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 23:25 | Chiuso il piano grafico del collaudo PO: figurine in Spogliatoio/Stampa/post-partita; cori col nome intero senza «Primavera»; lavagna 2D col prato del 3D, meteo e heat map; statistiche con fasce/cross/dribbling, stesse voci in partita e nel post-partita; «Il tuo tabellino in numeri» e pagella dal brain; formazioni con cognomi interi; bambini dell'ingresso in scala; torri faro nuove; Opzioni senza musica menu/telecronaca; esultanza dell'intro davanti al cartellone | presentazione 6/6 · bambini 1,25 m (prima ~10 m, riquadro mesh 0,1) · cori «FC CIOCIARO AVANTI!» (rosso «NOI SIAMO CIO!») · tabellino eroe = pagella brain (prima tiri avversari 11 contro 20) · test:logic 43/43 · griglia-mobile 65/65 · **a verbale: dribbling riusciti 97% nel brain (irrealistico)** · promozione su main bloccata dai permessi dell'ambiente · Netlify sospeso (direttiva PO) |
 | 23/09 22:15 | Collaudo PO da PC — grafica uniformata al kit: pop-up settimana/impulso/spogliatoio e «Hai una partita» nel Modal del kit; Tabs in Stagione/Carriera; tendina delle leghe; «Gioca ›» primario; striscia CTA larga come le card; pre-partita, analisi pre-partita e formazioni nel kit chiaro; strumenti dentro Opzioni; procuratore di default (niente «Fondi insufficienti»); costo spiegato nelle scelte; biografia «a metà carriera» solo da 26 anni. Presentazione: in primo piano chi viene chiamato, prato con strisce e linee, sponsor sui cartelloni. Miniatura figurina piena. Bambini dell'ingresso in campo CGTrader | presentazione 6/6 (rosso 1/6) · miniatura foto 88% (rosso 59%) · bottoni scelta 54 px (rosso 40) · CTA 0 px di sporgenza (rosso 13) · bambini CGTrader 22 (rosso 0) · griglia-mobile 65 schermate 0 sbordi · design-system OK · test:logic 43/43 · save-compat 12/12 · Netlify aggiornato |
 | 23/09 21:32 | Festa di fine partita solo per vittorie importanti o prestazioni super (direttiva PO): vittoria E (big match/derby/coppa-KO OPPURE voto >= 8, 2+ gol, gol+assist >= 3); voto dalla pagella del motore | festa-942 verde (doppietta, 8,5: compare e si chiude) · prima bastava 1 gol anche in sconfitta · rosso __CPM_NO_FESTA23 · guardiano aggiornato alle figurine |
 | 23/09 21:11 | Collaudo PO da PC: tolto «Enter» ovunque; schermate provino/fine partita uniformate (Barlow, un colore per i numeri); ovale attorno alla figurina tolto; punteggio neutro (non rosso/verde); voto a destra = pagella del motore; intro col corpo CGTrader e luce da partita | intro: 2 corpi CGTrader, 0 CH38 (rosso 0/2), prato luminosità 0,43 (era 0,66) · fine partita: 0 testi con grazie, 0 «Enter» · griglia-mobile 65 schermate 0 sbordi · design-system, test:logic, save-compat, career-critical verdi |
