@@ -21,4 +21,4 @@ Stato del 22/09/2026, 22:38 Europe/Rome. Lavorare esclusivamente sul branch `poc
 
 ## Confini di sicurezza
 
-Non includere nel merge ZIP di ricerca, backup `.blend1`, trial Human Generator, asset rifiutati o file scaricati non verificati. Il branch di salvataggio contiene prove e documenti: selezionare soltanto asset runtime e sorgenti necessari al prodotto finale. Non modificare il Match Engine per risolvere un difetto della regia 3D senza una riproduzione causale. Conservare la distinzione fra test locali, ipotesi e gate superati nella roadmap `tests/character-lab/POC_ROADMAP.md`.
+Non includere nel merge ZIP di ricerca, backup `.blend1`, trial Human Generator, asset rifiutati o file scaricati non verificati. Il branch di salvataggio contiene prove e documenti: selezionare soltanto asset runtime e sorgenti necessari al prodotto finale. Non modificare il Match Engine per risolvere un difetto della regia 3D senza una riproduzione causale. Conservare la distinzione fra test locali, ipotesi e gate superati nella roadmap `tests/character-lab/POC_ROADMAP.md (pagina corta; storico in POC_STORICO.md)`.
