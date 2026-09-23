@@ -11934,6 +11934,44 @@ if(typeof window!=='undefined'){window.__CPM_EV=function(){try{return MATCH_EV.s
 const _CUT471={at:-1e9,dur:0};
 if(typeof window!=='undefined'){window.__CPM_CUTLIVE=function(){try{return (performance.now()-_CUT471.at)<Math.max(300,_CUT471.dur||0);}catch(_e){return false;}};}/* [7.504.0] test-only: «c'e' un nero vivo?» — lo stesso criterio con cui il render-loop decide se uno snap e' mascherato (7.471). Serve ai check che misurano salti di camera: un salto DENTRO lo stacco e' regia TV voluta, non un difetto */
 /* [23/09 POC] scelta dell'esecuzione di un gesto fra le varianti (vedi _VAR23 accanto a _mkGestures): hash della scena, mai Math.random */
+/* [23/09 POC — CLIP SPECCHIATA (sinistro <-> destro), calcolata al caricamento. Rosso __CPM_NO_SPECCHIO23]
+   Il tiro nuovo di Mixamo peggiorava il contatto (la palla parte sulla fase della clip storica); la clip storica SPECCHIATA ha la
+   stessa fase ma calcia col destro: varieta' senza toccare la sincronia. Per ogni istante: rotazione mondiale di ogni osso, la sua
+   variazione dal riposo si riflette sul piano sagittale e si applica all'osso gemello (_l <-> _r); gli spostamenti (bacino) si
+   riflettono allo stesso modo. Autoverifica: posizione dei piedi specchiati contro i piedi originali riflessi (errore massimo, m). */
+function _specchiaClip23(clip,root,nome){try{
+  if(!clip||!root)return null;const B={};root.traverse(o=>{if(o.isBone&&!B[o.name])B[o.name]=o;});
+  if(!B.thigh_l||!B.thigh_r)return null;const N=Object.keys(B);
+  const pn=n=>(/_l$/.test(n)&&B[n.slice(0,-2)+'_r'])?n.slice(0,-2)+'_r':((/_r$/.test(n)&&B[n.slice(0,-2)+'_l'])?n.slice(0,-2)+'_l':n);
+  const par=n=>{const p=B[n].parent;return (p&&p.isBone&&B[p.name]===p)?p.name:null;};
+  const dep=n=>{let d=0,p=par(n);while(p){d++;p=par(p);}return d;};const ord=N.slice().sort((a,b)=>dep(a)-dep(b));
+  const Q=()=>new THREE.Quaternion(),V=()=>new THREE.Vector3();
+  const rq={},rp={},Wr={},Pr={};ord.forEach(n=>{rq[n]=B[n].quaternion.clone();rp[n]=B[n].position.clone();const p=par(n);
+    Wr[n]=p?Wr[p].clone().multiply(rq[n]):rq[n].clone();Pr[n]=p?Pr[p].clone().add(rp[n].clone().applyQuaternion(Wr[p])):rp[n].clone();});
+  const d=Pr.thigh_l.clone().sub(Pr.thigh_r),a=[Math.abs(d.x),Math.abs(d.y),Math.abs(d.z)],ax=a.indexOf(Math.max(...a));if(a[ax]<0.9*d.length())return null;
+  const mq=q=>ax===0?new THREE.Quaternion(q.x,-q.y,-q.z,q.w):(ax===1?new THREE.Quaternion(-q.x,q.y,-q.z,q.w):new THREE.Quaternion(-q.x,-q.y,q.z,q.w));
+  const mv=v=>{const r=v.clone();if(ax===0)r.x=-r.x;else if(ax===1)r.y=-r.y;else r.z=-r.z;return r;};
+  const TR={};clip.tracks.forEach(t=>{const i=t.name.lastIndexOf('.'),b=t.name.slice(0,i),k=t.name.slice(i+1);if(!B[b])return;(TR[b]=TR[b]||{})[k]=t;});
+  let T=null;for(const b in TR){const t=TR[b].quaternion;if(t&&(!T||t.times.length>T.length))T=t.times;}if(!T)return null;
+  const I={};for(const b in TR)for(const k in TR[b]){(I[b]=I[b]||{})[k]=TR[b][k].createInterpolant();}
+  const outQ={},outP={};let err=0;const lastQ={};
+  for(let fi=0;fi<T.length;fi++){const t=T[fi],q={},p={},W={},P={};
+    ord.forEach(n=>{const iq=I[n]&&I[n].quaternion,ip=I[n]&&I[n].position;q[n]=iq?Q().fromArray(iq.evaluate(t)):rq[n];p[n]=ip?V().fromArray(ip.evaluate(t)):rp[n];
+      const pa=par(n);W[n]=pa?W[pa].clone().multiply(q[n]):q[n].clone();P[n]=pa?P[pa].clone().add(p[n].clone().applyQuaternion(W[pa])):p[n].clone();});
+    const W2={},P2={};
+    ord.forEach(c=>{const s=pn(c),pa=par(c),D=W[s].clone().multiply(Wr[s].clone().invert());W2[c]=mq(D).multiply(Wr[c]);
+      const lq=pa?W2[pa].clone().invert().multiply(W2[c]):W2[c].clone();if(lastQ[c]&&lastQ[c].dot(lq)<0){lq.x=-lq.x;lq.y=-lq.y;lq.z=-lq.z;lq.w=-lq.w;}lastQ[c]=lq;
+      if((TR[c]&&TR[c].quaternion)||(TR[s]&&TR[s].quaternion))(outQ[c]=outQ[c]||[]).push(lq.x,lq.y,lq.z,lq.w);
+      let lp=rp[c];if((TR[s]&&TR[s].position)||(TR[c]&&TR[c].position)){const ps=par(s),ds=p[s].clone().sub(rp[s]),A=ps?ds.applyQuaternion(W[ps]):ds;
+        const dl=pa?mv(A).applyQuaternion(W2[pa].clone().invert()):mv(A);lp=rp[c].clone().add(dl);(outP[c]=outP[c]||[]).push(lp.x,lp.y,lp.z);}
+      P2[c]=pa?P2[pa].clone().add(lp.clone().applyQuaternion(W2[pa])):lp.clone();});
+    ['foot_l','foot_r','hand_l','hand_r'].forEach(n=>{if(P[n]&&P2[pn(n)])err=Math.max(err,mv(P[n]).distanceTo(P2[pn(n)]));});}
+  const tr=[];for(const c in outQ)tr.push(new THREE.QuaternionKeyframeTrack(c+'.quaternion',Array.from(T),outQ[c]));
+  for(const c in outP)tr.push(new THREE.VectorKeyframeTrack(c+'.position',Array.from(T),outP[c]));
+  for(const b in TR)if(TR[b].scale){const s=TR[b].scale;tr.push(new THREE.VectorKeyframeTrack(pn(b)+'.scale',Array.from(s.times),Array.from(s.values)));}
+  const out=new THREE.AnimationClip(nome||clip.name+'~m',clip.duration,tr);
+  try{(window.__CPM_SPECCHIO23=window.__CPM_SPECCHIO23||{})[out.name]={fotogrammi:T.length,erroreMax:+err.toFixed(4),asse:'xyz'[ax]};}catch(_e){}
+  return out;}catch(e){try{(window.__CPM_SPECCHIO23=window.__CPM_SPECCHIO23||{}).errore=String(e&&e.message||e);}catch(_e){}return null;}}
 /* lato del corpo verso cui va la clip (+1 sinistra del giocatore, -1 destra), misurato sul bacino (provino-clip) */
 const _LATO23={'gk-dive':1,'mx-goalkeeper-diving-save-2':-1,'gk-block':1,'mx-goalkeeper-body-block-2':-1,'mx-goalkeeper-body-block-3':1};
 function _scegliGesto23(a,want,ai,chiave,lbl,lato){
@@ -12734,7 +12772,8 @@ function ThreeMatchView(props){
          montaggio se ne sceglie una con un hash della scena (niente Math.random). Escluse «a terra» e «rialzarsi»: partono
          sdraiate e la scala del bacino esce sbagliata (x6,8). */
       let _mxAnims23=[];
-      const _VAR23={/* kick: REVOCATO. Le tre clip di tiro nuove peggiorano il contatto (piede-palla 0,83-1,46 m contro 0,21-0,45 della clip
+      const _VAR23={kick:['kick~m'],/* [23/09] il tiro storico SPECCHIATO (destro, stessa fase): vedi _specchiaClip23 */
+        /* kick Mixamo: REVOCATO. Le tre clip di tiro nuove peggiorano il contatto (piede-palla 0,83-1,46 m contro 0,21-0,45 della clip
            storica, gesto-eroe-review CPM_FORZA): la palla parte sulla fase della clip storica (sinistro, 0,98). */
         volley:['mx-scissor-kick'],
         /* header, receive, penalty, throwin, volley (rovesciata): RIMANDATI — hanno un contatto con la palla sincronizzato
@@ -13065,7 +13104,8 @@ function ThreeMatchView(props){
           const _hyperAssetUrls=_trioLod?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
         const _mx23=_trioLod&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP);
         Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).map(url=>loadGLB(url))).then(results=>{
-          const _mxRes=_mx23?results.pop():null;if(_mxRes&&_mxRes.status==='fulfilled'&&_mxRes.value){_mxAnims23=(_mxRes.value.animations||[]).slice();}try{window.__CPM_MXCLIP=_mxAnims23.length;}catch(_e){}
+          const _mxRes=_mx23?results.pop():null;if(_mxRes&&_mxRes.status==='fulfilled'&&_mxRes.value){_mxAnims23=(_mxRes.value.animations||[]).slice();}
+          if(_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_SPECCHIO23)){const _p0=results[0]&&results[0].status==='fulfilled'&&results[0].value;const _k=_p0&&(_p0.animations||[]).find(c=>c&&c.name==='kick');const _km=_k&&_specchiaClip23(_k,_p0.scene,'kick~m');if(_km)_mxAnims23.push(_km);}try{window.__CPM_MXCLIP=_mxAnims23.length;}catch(_e){}
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
           if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');if(_trioLod&&packages.length!==3)throw new Error('CGTrader mixed LOD packages are incomplete');if(_cgtraderMixedLodBenchmark)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
           /* [23/09 — IL PEZZO CHE MANCAVA, ed e' quello che rendeva invisibili i corpi.
@@ -15911,7 +15951,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          /* [23/09 POC] il contatto dipende dall'esecuzione scelta (varianti _VAR23): piede e istante misurati sulla clip
             (picco di velocita' del piede, provino-clip): kick sx 0,98 · mx-kick-soccerball sx 0,92 · mx-kick-soccerball-2 dx 0,84 ·
             mx-strike-foward-jog dx 0,38. Finestra stretta [u-w, u+0,06] (la larga [u-0,18] seguiva il piede nel caricamento: 0,85 m contro 0,43); la clip storica resta [0,72, 0,98] col sinistro. */
-         const _kc23=({'mx-kick-soccerball':{dx:false,u:0.92,w:0.08},'mx-kick-soccerball-2':{dx:true,u:0.84,w:0.08},'mx-strike-foward-jog':{dx:true,u:0.38,w:0.06},'mx-scissor-kick':{dx:true,u:0.29,w:0.06}})[((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name]||{dx:false,u:0.9};
+         const _kc23=({'mx-kick-soccerball':{dx:false,u:0.92,w:0.08},'mx-kick-soccerball-2':{dx:true,u:0.84,w:0.08},'mx-strike-foward-jog':{dx:true,u:0.38,w:0.06},'mx-scissor-kick':{dx:true,u:0.29,w:0.06},'kick~m':{dx:true,u:0.9,w:0.18}})[((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name]||{dx:false,u:0.9};
          const _u=clamp((+_cgAvatar._gAct.time||0)/_clipDur,0,1),_nearImpact=_kc23.w?(_u>=_kc23.u-_kc23.w&&_u<=Math.min(0.98,_kc23.u+0.06)):(_u>=0.72&&_u<=0.98);
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
          let _cx=hero.position.x+_fx*0.78,_cz=hero.position.z+_fz*0.78,_anchor="heading";

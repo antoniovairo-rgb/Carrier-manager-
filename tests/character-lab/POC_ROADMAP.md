@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 18:33 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 18:43 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -39,6 +39,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 18:43 | Tiro specchiato (destro) calcolato al caricamento dalla clip storica: variante del tiro senza toccare la sincronia | autoverifica piedi 5 mm · piede-palla 0,34 m (storico 0,21-0,45) · rosso __CPM_NO_SPECCHIO23 |
 | 23/09 18:33 | Clip Mixamo del PO (Drive): 54 riadattate su CGTrader in un file unico (3,0 MB); varianti per portiere e contrasti; lato del tuffo dalla palla | cancello anatomico 54/54 · tuffo dal lato giusto 3/3 (rosso 2/3) · varianti del tiro REVOCATE (piede-palla 0,83 m contro 0,21-0,45) · career-critical verde |
 | 23/09 17:45 | Anteprima Netlify: la pagina principale è il gioco, niente reindirizzamenti (pretty URL spenti) | / e /CARRIER-MANAGER-AV.html 200, identici al build + solo lo script HUD di Netlify (184 byte) |
 | 23/09 17:43 | CH38 sparisce dagli highlight: CGTrader è il default senza parametri (rosso __CPM_NO_CGDEFAULT / ?hyperCharacter=off) | corpi CH38 disegnati 0/5 (rosso 39/39); career-critical verde; restano CH38 in cerimonie, ritratto 3D menu e download di footballer/korward-regular |
