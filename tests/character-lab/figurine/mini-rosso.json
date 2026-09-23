@@ -1,34 +1,11 @@
 {
- "salvato": null,
- "eroe": {
-  "registro": {
-   "nome": "Luca Brain",
-   "volto": null,
-   "avatarId": 5,
-   "ruolo": "Attaccante",
-   "col": "#dc2626",
-   "col2": "#111111",
-   "club": "AC Milanello"
-  },
-  "id": 28,
-  "candidati": [
-   28,
-   47,
-   105,
-   107,
-   163,
-   249
-  ]
+ "testoAnteprime": {
+  "figurine": 9,
+  "righe": 16,
+  "fuori": 0,
+  "tronchi": 0,
+  "sottoGli11": 0
  },
- "dashboard": [
-  {
-   "tipo": "giocatore",
-   "nome": "Luca Brain",
-   "src": "lotto-01/volto-0028.webp",
-   "w": 35,
-   "h": 48
-  }
- ],
  "completa": {
   "testo": "KORWARD | Luca | BRAIN | ATTACCANTE | 183 cm · 77 kg",
   "larga": 260,
@@ -45,6 +22,51 @@
   "mediana": 53,
   "max": 58
  },
+ "scena": {
+  "chiavi": [
+   "Compagno 3",
+   "Compagno 20"
+  ],
+  "dentro": [
+   "lotto-01/volto-0089.webp",
+   "lotto-01/volto-0091.webp"
+  ],
+  "fuori": [
+   "lotto-01/volto-0089.webp",
+   "lotto-01/volto-0089.webp"
+  ],
+  "giornalistaImmagini": 0
+ },
+ "salvato": null,
+ "eroe": 28,
+ "candidati": [
+  28,
+  47,
+  105,
+  107,
+  163,
+  249
+ ],
+ "stabile": true,
+ "riservato": {
+  "eroe": 28,
+  "collisioni": 0
+ },
+ "rete": {
+  "totale": 17,
+  "uniche": 12,
+  "indice": 2,
+  "manifest": 0
+ },
+ "dashboard": [
+  {
+   "tipo": "giocatore",
+   "nome": "Luca Brain",
+   "src": "lotto-01/volto-0028.webp",
+   "w": 35,
+   "h": 48
+  }
+ ],
  "club": [
   {
    "tipo": "giocatore",
@@ -55,13 +77,6 @@
   }
  ],
  "intervista": [
-  {
-   "tipo": "giocatore",
-   "nome": "Luca Brain",
-   "src": "lotto-01/volto-0028.webp",
-   "w": 35,
-   "h": 48
-  },
   {
    "tipo": "giornalista",
    "nome": "Marco Ferretti",
@@ -74,11 +89,11 @@
   "mini": [
    {
     "larg": 41,
-    "quotaFoto": 0.88
+    "quotaFoto": 0.59
    },
    {
     "larg": 32,
-    "quotaFoto": 0.85
+    "quotaFoto": 0.54
    }
   ],
   "immagini": [
@@ -126,33 +141,6 @@
    "tronchi": 0,
    "sottoGli11": 0
   }
- },
- "scena": {
-  "chiavi": [
-   "Compagno 3",
-   "Compagno 20"
-  ],
-  "dentro": [
-   "lotto-01/volto-0089.webp",
-   "lotto-01/volto-0091.webp"
-  ],
-  "fuori": [
-   "lotto-01/volto-0089.webp",
-   "lotto-01/volto-0089.webp"
-  ],
-  "giornalistaImmagini": 0
- },
- "dopoRicarica": 28,
- "stabile": true,
- "riservato": {
-  "eroe": 28,
-  "collisioni": 0
- },
- "richiestePortraits": {
-  "totale": 17,
-  "uniche": 12,
-  "indice": 2,
-  "manifest": 0
  },
  "errori": []
 }

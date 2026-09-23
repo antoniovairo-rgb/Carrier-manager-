@@ -859,7 +859,7 @@ function StrisciaScena948({club,tono}){
         <span style={{fontWeight:700,fontStyle:"italic",color:"#92400e"}}>Elite</span>
       </span>
       <span style={{fontSize:FS.caption,fontWeight:800,color:"#475569",whiteSpace:"nowrap",
-        overflow:"hidden",textOverflow:"ellipsis",flex:1,textAlign:"center"}}>{spon}</span>
+        overflow:"hidden",textOverflow:"ellipsis",flex:1,textAlign:"center"}}>{(typeof window!=='undefined'&&window.__CPM_NO_SPONSOR23)?spon:null}</span>{/* [23/09 POC — collaudo PO «lo sponsor deve comparire sui cartelloni pubblicitari non li'»] lo sponsor sta sui cartelloni dello stadio (buildStadium, stadCfg.sponsor), non nella striscia. Rosso __CPM_NO_SPONSOR23 */}
       <span style={{display:"inline-flex",alignItems:"center",gap:5,minWidth:0}}>
         {(()=>{try{return <TeamBadge team={club} size={16}/>;}catch(_e){return null;}})()}
         <span style={{fontSize:FS.caption,fontWeight:800,color:"#0f172a",whiteSpace:"nowrap",
@@ -868,7 +868,7 @@ function StrisciaScena948({club,tono}){
       {tono?<span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.9}}/>:null}
     </div>);
 }
-function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[]}){
+function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,heroNum=0,gkIdx=[],annunci=null,heroChiave=null}){
   /* [7.947 v3 — SOLO SOVRAPPOSIZIONE. Direttiva PO: «come scenografia puoi usare lo stadio cosi' com'e'
      nell'as is con sovrapposizione delle schermate 2D».
      La v2 ridisegnava lo stadio in CSS: sbagliato, perche' lo stadio 3D non era il problema — lo erano i
@@ -878,7 +878,15 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
   const _squadra=React.useMemo(()=>{const a=[];
     for(let i=0;i<11;i++)a.push({n:i===0?1:(i+1),gk:i===0,seme:"pres-"+((club&&club.id)||"x")+"-"+i});
     return a;},[club]);
-  const inPrimo = b>=2 ? ((b-2)%11) : -1;
+  /* [23/09 POC — collaudo PO «esce erroneamente la figurina dell'eroe» (Il mentore · Rocco Landi, Il rivale
+     interno · Dario Porcu)] IN PRIMO PIANO C'E' CHI VIENE CHIAMATO. Il riquadro grande montava SEMPRE la
+     figurina dell'eroe col suo numero, a qualunque nome annunciato. Ora il battito porta la persona
+     (`annunci[b]`): il compagno ha il SUO volto (chiave = il suo nome, lo stesso delle altre scene), il
+     portiere va nel posto del portiere, l'eroe solo sull'ultimo battito. Rosso __CPM_NO_PRES23. */
+  const _vecchia23=(typeof window!=='undefined'&&window.__CPM_NO_PRES23)||!Array.isArray(annunci);
+  const _ann23=(!_vecchia23&&b>=2)?annunci[b]:null;
+  const _eroe23=!!(_ann23&&_ann23.eroe);
+  const inPrimo = b>=2 ? (_vecchia23?((b-2)%11):((_ann23&&_ann23.gk&&!_eroe23)?0:1+((b-2)%10))) : -1;
   if(b===0)return null;/* il primo battito e' lo stadio che si mostra: nessuno in campo */
   return(
     <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
@@ -889,10 +897,12 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
             transform:big?"scale(1.2)":"none",transition:"opacity .45s ease-out, transform .45s ease-out",
             filter:big?"drop-shadow(0 0 16px rgba(255,255,255,0.45))":"drop-shadow(0 3px 8px rgba(0,0,0,0.55))"}}>
             {(()=>{try{return big
-              ? <Figurina tipo="giocatore" chiave={"eroe-"+avatarId} larg={44}/>
+              ? (_vecchia23||_eroe23
+                  ? <Figurina tipo="giocatore" chiave={_vecchia23?"eroe-"+avatarId:(heroChiave||"eroe-"+avatarId)} larg={44} data-cpm-pres23="eroe"/>
+                  : <Figurina tipo="giocatore" chiave={_ann23&&_ann23.n} larg={44} data-cpm-pres23={_ann23&&_ann23.n}/>)
               : <Figurina tipo="giocatore" chiave={q.seme} larg={27}/>;}catch(_e){return null;}})()}
             <div style={{marginTop:2,fontSize:FS.caption,fontWeight:900,color:"#fff",
-              textShadow:"0 1px 4px rgba(0,0,0,0.85)"}}>{big&&heroNum?heroNum:q.n}</div>
+              textShadow:"0 1px 4px rgba(0,0,0,0.85)"}}>{big&&heroNum&&(_vecchia23||_eroe23)?heroNum:q.n}</div>
           </div>);})}
       </div>
       <StrisciaScena948 club={club} tono={null}/>
@@ -919,16 +929,36 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
     /* suolo oltre il campo: senza, sotto gli spalti si vede il cielo (lezione 5.99.0) */
     const ground=new THREE.Mesh(new THREE.PlaneGeometry(320,240),new THREE.MeshBasicMaterial({color:0x0a0f18}));
     ground.rotation.x=-Math.PI/2;ground.position.y=-0.06;scene.add(ground);
-    const pitch=new THREE.Mesh(new THREE.PlaneGeometry(104,68),new THREE.MeshStandardMaterial({color:0x1e4a0a,roughness:0.98}));
+    /* [23/09 POC — collaudo PO «ma le strisce e le linee sull'erba dove sono?»] IL PRATO E' UN CAMPO DA CALCIO.
+       Prima: tinta unita con la sola linea di meta' e il cerchio. Ora una texture disegnata una volta (1040x680,
+       10 px = 1 m): strisce di taglio alternate ogni 5,2 m e TUTTE le linee regolamentari (perimetro, aree di
+       rigore e di porta, dischetti, lunette, cerchio, archi d'angolo). Stesso verde di prima come base, cosi'
+       la taratura delle luci notturne non cambia. Rosso __CPM_NO_PRATO23: il prato di prima. */
+    const _prato23=!(typeof window!=='undefined'&&window.__CPM_NO_PRATO23);
+    let _pratoMat=new THREE.MeshStandardMaterial({color:0x1e4a0a,roughness:0.98});
+    if(_prato23){try{const c=document.createElement("canvas");c.width=1040;c.height=680;const g=c.getContext("2d");
+      for(let k=0;k<20;k++){g.fillStyle=k%2?"#1e4a0a":"#245812";g.fillRect(k*52,0,52,680);}
+      g.strokeStyle="#eef4f8";g.lineWidth=3.6;const L=(x0,y0,x1,y1)=>{g.beginPath();g.moveTo(x0,y0);g.lineTo(x1,y1);g.stroke();};
+      g.strokeRect(10,10,1020,660);L(520,10,520,670);
+      g.beginPath();g.arc(520,340,91.5,0,Math.PI*2);g.stroke();
+      [[10,1],[1030,-1]].forEach(([x,d])=>{g.strokeRect(d>0?x:x-165,340-201.5,165,403);g.strokeRect(d>0?x:x-55,340-91.5,55,183);
+        g.fillStyle="rgba(240,246,250,0.92)";g.beginPath();g.arc(x+d*110,340,3,0,Math.PI*2);g.fill();
+        const a=Math.acos(55/91.5);g.beginPath();if(d>0)g.arc(x+110,340,91.5,-a,a);else g.arc(x-110,340,91.5,Math.PI-a,Math.PI+a);g.stroke();});
+      g.fillStyle="rgba(240,246,250,0.92)";g.beginPath();g.arc(520,340,3,0,Math.PI*2);g.fill();
+      [[10,10,0],[1030,10,Math.PI/2],[1030,670,Math.PI],[10,670,-Math.PI/2]].forEach(([x,y,a0])=>{g.beginPath();g.arc(x,y,10,a0,a0+Math.PI/2);g.stroke();});
+      const t=new THREE.CanvasTexture(c);t.anisotropy=8;
+      _pratoMat=new THREE.MeshStandardMaterial({color:0xffffff,map:t,roughness:0.98});}catch(_e){}}
+    const pitch=new THREE.Mesh(new THREE.PlaneGeometry(104,68),_pratoMat);
     pitch.rotation.x=-Math.PI/2;scene.add(pitch);
     /* diagnostica (test-only, spenta in store build): e' la sonda che ha smascherato il prato CIANO — i fari li
        installa gia' `buildStadium`, non serviva un secondo impianto. Enumerare luci/materiali batte il tirare a
        indovinare sulle intensita'. */
     if(typeof _CPM_TEST!=="undefined"&&_CPM_TEST)window.__CPM_PRES_SCENE=scene;
-    {const lm=new THREE.MeshBasicMaterial({color:0xdfe8ee,side:THREE.DoubleSide,transparent:true,opacity:0.85});
+    if(!_prato23){const lm=new THREE.MeshBasicMaterial({color:0xdfe8ee,side:THREE.DoubleSide,transparent:true,opacity:0.85});
       const mid=new THREE.Mesh(new THREE.PlaneGeometry(0.3,68),lm);mid.rotation.x=-Math.PI/2;mid.position.y=0.02;scene.add(mid);
       const circ=new THREE.Mesh(new THREE.RingGeometry(9.0,9.3,64),lm);circ.rotation.x=-Math.PI/2;circ.position.y=0.02;scene.add(circ);}
-    try{const _cfg=(typeof stadiumConfigFor==="function")?stadiumConfigFor(club||{p:60,lg:"Lega A"},null):{prestige:(club&&club.p)||60,style:0};
+    try{let _cfg=(typeof stadiumConfigFor==="function")?stadiumConfigFor(club||{p:60,lg:"Lega A"},null):{prestige:(club&&club.p)||60,style:0};
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_SPONSOR23))_cfg={..._cfg,sponsor:sponsorDi947(club)};
       buildStadium(scene,homeHex,awayHex,_cfg);}catch(_e){}
     /* notturna da presentazione. ⚠️ La prima versione aggiungeva QUATTRO PointLight da 0.9 sopra l'ambiente e il
        direzionale: il prato verde andava in saturazione e si leggeva CIANO (verificato a schermo). Qui si usa la

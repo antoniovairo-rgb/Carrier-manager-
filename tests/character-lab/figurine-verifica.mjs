@@ -64,13 +64,17 @@ R.anteprime = await page.evaluate(() => new Promise(res => {
     React.createElement(Figurina, { tipo: 'procuratore', chiave: 'Dario Conti', nome: 'Dario Conti', ruolo: 'Procuratore', larg: 110 }),
     React.createElement(Figurina, { tipo: 'giocatore', chiave: 'Massimiliano Castellanos-Villanueva', nome: 'Massimiliano Castellanos-Villanueva', ruolo: 'Centrocampista · Real Montagnarosa', col: '#facc15', col2: '#1d4ed8', larg: 96 }),
     React.createElement(Figurina, { tipo: 'avversario', chiave: 'Gianluigi Bonaventura', nome: 'Gianluigi Bonaventura', ruolo: 'Difensore', larg: 64 }),
-    React.createElement(Figurina, { tipo: 'mister', chiave: 'Mister Bellandi', nome: 'Mister Bellandi', larg: 52 })));
+    React.createElement(Figurina, { tipo: 'mister', chiave: 'Mister Bellandi', nome: 'Mister Bellandi', larg: 52 }),
+    React.createElement(Figurina, { tipo: 'giocatore', chiave: 'Pellegrini', larg: 41, 'data-mini23': '41' }),
+    React.createElement(Figurina, { tipo: 'giocatore', chiave: 'Pellegrini', larg: 32, 'data-mini23': '32' })));
   setTimeout(() => {
     /* [23/09] il testo non deve uscire: ogni foglia di testo dentro la sua figurina e senza troncature; corpo >= 11 px */
     const figs = [...d.querySelectorAll('[data-cpm-figurina]')]; let fuori = 0, tronchi = 0, piccoli = 0, righe = 0;
     figs.forEach(f => { const R = f.getBoundingClientRect(); f.querySelectorAll('div').forEach(x => { if (x.children.length || !(x.textContent || '').trim()) return; righe++; const r = x.getBoundingClientRect();
       if (r.left < R.left - 0.5 || r.right > R.right + 0.5 || r.top < R.top - 0.5 || r.bottom > R.bottom + 0.5) fuori++; if (x.scrollWidth > x.clientWidth + 1) tronchi++; if (parseFloat(getComputedStyle(x).fontSize) < 11) piccoli++; }); });
-    res({ immagini: [...d.querySelectorAll('img')].map(i => ({ src: i.getAttribute('src').replace(/^.*ai\//, ''), ok: i.complete && i.naturalWidth > 0 })), testo: { figurine: figs.length, righe, fuori, tronchi, sottoGli11: piccoli } }); }, 2500);
+    /* [23/09 «il contorno taglia troppo la foto»] quota della miniatura occupata dalla foto */
+    const mini = [...d.querySelectorAll('[data-mini23]')].map(f => { const R = f.getBoundingClientRect(), i = f.querySelector('img'); const r = i ? i.getBoundingClientRect() : { width: 0, height: 0 }; return { larg: Math.round(R.width), quotaFoto: +((r.width * r.height) / (R.width * R.height)).toFixed(2) }; });
+    res({ mini, immagini: [...d.querySelectorAll('img')].map(i => ({ src: i.getAttribute('src').replace(/^.*ai\//, ''), ok: i.complete && i.naturalWidth > 0 })), testo: { figurine: figs.length, righe, fuori, tronchi, sottoGli11: piccoli } }); }, 2500);
 }));
 await page.screenshot({ path: path.join(out, `anteprime${TAG}.png`) });
 await page.evaluate(() => document.getElementById('anteprima23')?.remove());

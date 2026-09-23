@@ -1203,9 +1203,24 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const hLight=new THREE.Color(homeHex).lerp(new THREE.Color(0xffffff),0.4);
   const hDark=new THREE.Color(homeHex).lerp(new THREE.Color(0x000000),0.35);
   const _led=!!(T&&stadCfg.tpl&&stadCfg.tpl.ledBoards);// [5.88.0 S2] stadi moderni: pannelli LED emissivi
+  /* [23/09 POC — collaudo PO «lo sponsor deve comparire sui cartelloni pubblicitari»] con `stadCfg.sponsor` la
+     faccia verso il campo (+z locale: i cartelloni sono ruotati per guardare il prato) porta il nome dello
+     sponsor, un cartellone si' e uno no il marchio del gioco. Senza sponsor, i cartelloni di prima. */
+  const _spTex={};const _spMat=(col,k)=>{const key=col.getHexString()+"|"+k;if(_spTex[key])return _spTex[key];
+    const c=document.createElement("canvas");c.width=512;c.height=74;const x=c.getContext("2d");
+    x.fillStyle="#"+col.getHexString();x.fillRect(0,0,512,74);
+    const lum=0.2126*col.r+0.7152*col.g+0.0722*col.b,ink=lum>0.45?"#0f172a":"#ffffff";
+    if(k==="s"){x.fillStyle=ink;let f=46;x.font="900 "+f+"px 'Barlow','Segoe UI',Arial,sans-serif";
+      const t=String(stadCfg.sponsor).toUpperCase();while(f>18&&x.measureText(t).width>470){f-=2;x.font="900 "+f+"px 'Barlow','Segoe UI',Arial,sans-serif";}
+      x.textAlign="center";x.textBaseline="middle";x.fillText(t,256,39);}
+    else{try{_cvWordmark(x,256,32,34,ink);}catch(_e){x.fillStyle=ink;x.font="900 40px Arial";x.textAlign="center";x.textBaseline="middle";x.fillText("KORWARD",256,39);}}
+    const t=new THREE.CanvasTexture(c);t.anisotropy=4;
+    const base=_led?new THREE.MeshBasicMaterial({color:col}):new THREE.MeshLambertMaterial({color:col});
+    const face=_led?new THREE.MeshBasicMaterial({map:t}):new THREE.MeshLambertMaterial({map:t});
+    return (_spTex[key]=[base,base,base,base,face,base]);};
   const addAd=(ax,az,aw,ah,rotY,idx)=>{
     const col=idx%3===0?_hC:idx%3===1?hLight:hDark;
-    const m=new THREE.Mesh(new THREE.BoxGeometry(aw,ah,0.22),_led?new THREE.MeshBasicMaterial({color:col}):new THREE.MeshLambertMaterial({color:col}));
+    const m=new THREE.Mesh(new THREE.BoxGeometry(aw,ah,0.22),stadCfg&&stadCfg.sponsor?_spMat(col,(idx>>1)%2?"k":"s"):(_led?new THREE.MeshBasicMaterial({color:col}):new THREE.MeshLambertMaterial({color:col})));
     m.position.set(ax,ah/2,az);m.rotation.y=rotY;scene.add(m);
     // Small text-like stripe on top
     const stripe=new THREE.Mesh(new THREE.BoxGeometry(aw,0.15,0.24),new THREE.MeshLambertMaterial({color:0x111111}));

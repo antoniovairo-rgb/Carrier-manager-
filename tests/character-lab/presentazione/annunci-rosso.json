@@ -1,0 +1,48 @@
+{
+ "rosso": "__CPM_NO_SPONSOR23",
+ "battiti": [
+  {
+   "annuncio": "Merseyside Stadium",
+   "primoPiano": null,
+   "sponsorInStriscia": false
+  },
+  {
+   "annuncio": "IL VOSTRO FC MERSEYSIDE!",
+   "primoPiano": null,
+   "sponsorInStriscia": false
+  },
+  {
+   "annuncio": "Mattia D'Amico",
+   "primoPiano": "Mattia D'Amico",
+   "sponsorInStriscia": false
+  },
+  {
+   "annuncio": "Tommaso Moretti",
+   "primoPiano": "Tommaso Moretti",
+   "sponsorInStriscia": false
+  },
+  {
+   "annuncio": "Giacomo Merlo",
+   "primoPiano": "Giacomo Merlo",
+   "sponsorInStriscia": false
+  },
+  {
+   "annuncio": "Fabio Russo",
+   "primoPiano": "Fabio Russo",
+   "sponsorInStriscia": false
+  },
+  {
+   "annuncio": "Gianluca Galli",
+   "primoPiano": "Gianluca Galli",
+   "sponsorInStriscia": false
+  },
+  {
+   "annuncio": "SAMUEL FRANCISCO!",
+   "primoPiano": "eroe",
+   "sponsorInStriscia": false
+  }
+ ],
+ "giusti": 6,
+ "sbagliati": 0,
+ "errori": []
+}

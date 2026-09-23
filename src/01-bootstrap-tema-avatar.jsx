@@ -497,7 +497,12 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
   const D=datiFigurina23(tipo,chiave,nome,ruolo,col,col2);
   const c1=D.col||TH.primary,c2=D.col2||TH.primaryDk||TH.primary;
   const vecchia=typeof window!=='undefined'&&window.__CPM_NO_CORNICE23B;
-  const bordo=Math.max(2,Math.round(w*0.05));const marchio=w>=40;
+  /* [23/09 POC — collaudo PO «il contorno della figurina taglia troppo la foto», miniatura 41 px del pop-up]
+     Sotto i 52 px non c'e' testo e il marchio KORWARD non entra: la fascia alta (10 px) e il quadrato 37x37
+     lasciavano alla foto il 58% della figurina. In miniatura la foto riempie tutto l'interno, bordo sottile.
+     Rosso __CPM_NO_MINI23. */
+  const mini=w<52&&!(typeof window!=='undefined'&&window.__CPM_NO_MINI23);
+  const bordo=mini?Math.max(1.5,Math.round(w*0.035*2)/2):Math.max(2,Math.round(w*0.05));const marchio=w>=40&&!mini;
   const hTop=marchio?Math.max(10,Math.round(h*0.085)):0;const lato=w-2*bordo;
   const rag=w>=140?RAD.md:(w>=64?RAD.sm:RAD.xs),ragF=w>=140?RAD.sm:RAD.xs;
   /* testo: larghezza utile del pannello e scelta delle righe */
@@ -516,7 +521,7 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
   const altoMax=h-(hTop||bordo)-bassoMin;const fotoMin=Math.round(lato*0.70);
   for(const r of righe){const nx=hTesto+hRiga(r)+2;if(altoMax-fotoMin-2*pad-nx<0)break;usate.push(r);hTesto=nx;}/* priorita' rigida: se una riga non entra, non entrano nemmeno le successive */
   const hPan=usate.length?hTesto+2*Math.max(3,pad-2):0;
-  const altoF=Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0));
+  const altoF=mini?h-2*bordo:Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0));
   const topF=(hTop||bordo);
   const inkPill=_rap944("#ffffff",c1)>=4.5?"#ffffff":TH.text;
   const ordine=["nome","cognome","ruolo","fisico"];usate.sort((a,b)=>ordine.indexOf(a.k)-ordine.indexOf(b.k));
@@ -533,7 +538,7 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
       <div style={{position:"absolute",left:bordo,top:topF,width:lato,height:altoF,background:TH.card,overflow:"hidden",
         borderRadius:ragF,boxShadow:"0 0 0 1px rgba(255,255,255,0.85)"}}>
         <img src={url} alt={[D.nome,D.cognome].filter(Boolean).join(" ")} width={lato} height={altoF} loading="lazy" decoding="async"
-          style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"50% 28%",display:"block"}}/>
+          style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:mini?"50% 30%":"50% 28%",display:"block"}}/>
       </div>
       {usate.length>0&&<div style={{position:"absolute",left:bordo,right:bordo,bottom:bordo,height:hPan,
         background:TH.card,borderRadius:ragF,padding:`0 ${pad}px`,boxSizing:"border-box",
