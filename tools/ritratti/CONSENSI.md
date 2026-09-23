@@ -12,6 +12,19 @@ Nota: la frase iniziale «Nessun consenso registrato» era il segnaposto del fil
 Richiesta: creare un solo commit sul ramo poc/marioprada-character-system con gli 8 WebP, il manifest, gli strumenti e il rapporto che segnala i 4 sfondi fuori soglia. Quantità: 1 commit. Costo: €0. Nessun push né modifica a main.
 Risposta esatta di Antonio: AUTORIZZO COMMIT
 
+## 2026-09-23 11:07:54 +02:00 — PUSH LOTTO-01
+Richiesta: pubblicare il commit b3754d83320c4af251144565d0293701a1522143 con i 100 volti del LOTTO-01 sul solo ramo remoto poc/marioprada-character-system. Quantità: 1 push. Costo: €0. Nessun merge, deploy, modifica a main o push forzato.
+Risposta esatta di Antonio: AUTORIZZO PUSH
+Nota: questo consenso è registrato dopo il commit del lotto; sarà incluso nel successivo commit autorizzato.
+
+## 2026-09-23 11:10:31 +02:00 — LOTTO-02
+Richiesta: 25 fogli gpt-image-1-mini medium 1024×1024, 100 nuovi volti (93 giocatori, 7 staff), ritaglio e controlli. Il LOTTO-01 ha prodotto 100 volti: 100 maglie neutre, 0 copie quasi identiche segnalate, 9 sfondi leggermente grigi, nessuno scartato. Quantità: 25 immagini API e 100 WebP. Stima $0,311 per il lotto e circa $0,631 cumulati, più possibile addebito ignoto del primo tentativo sul foglio 18; budget utente €5. Nessuna rigenerazione, commit, push, merge o modifica a main.
+Risposta esatta di Antonio: AUTORIZZO LOTTO-02
+
+## 2026-09-23 11:11:33 +02:00 — autorizzazione generale successiva
+Istruzione esatta di Antonio: «prosegui fino all'obiettivo senza chiedere più autorizzazione».
+Questa istruzione successiva sostituisce la procedura di richiesta puntuale descritta nel brief iniziale per i passi necessari a completare i 1000 volti: lotti, riprese sicure, commit e push sul solo ramo `poc/marioprada-character-system`. Restano validi il budget massimo di €5, la regola di non toccare `main` o i file di produzione, il divieto di includere la chiave API e i PNG grezzi nel repository. Registrare in questo file le operazioni effettive e fermare le chiamate a pagamento quando il budget non è verificabile con margine adeguato.
+
 
 ## 2026-09-23 08:25:07 +02:00 — PUSH
 Richiesta: pubblicare il commit 32b358d31f6d4cda0883ac62e8adfabbeb564f14 sul solo ramo remoto poc/marioprada-character-system. Quantità: 1 push. Costo: €0. Nessun merge o pubblicazione su main.

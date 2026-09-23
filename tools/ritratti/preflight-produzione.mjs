@@ -43,8 +43,10 @@ for (const sheet of lot.fogli ?? []) {
   }
 }
 const consentCode = lot.lotto.toUpperCase();
-const hasConsent = consents.includes(`Risposta esatta di Antonio: AUTORIZZO ${consentCode}`);
-if (!hasConsent) problems.push(`Manca il consenso esplicito AUTORIZZO ${consentCode}`);
+const hasSpecificConsent = consents.includes(`Risposta esatta di Antonio: AUTORIZZO ${consentCode}`);
+const hasGeneralConsent = consents.includes('Istruzione esatta di Antonio: «prosegui fino all\'obiettivo senza chiedere più autorizzazione».');
+const hasConsent = hasSpecificConsent || hasGeneralConsent;
+if (!hasConsent) problems.push(`Manca un consenso valido per ${consentCode}`);
 
 let usedSheets = 0;
 let inputTokens = 0;
@@ -87,7 +89,8 @@ if (spentUsdEstimate + newUsdEstimate > operationalCapUsd) {
 console.log(JSON.stringify({
   lotto: lot.lotto, file: basename(file), fogli: lot.fogli?.length ?? 0,
   volti: ids.size, fogliGiaPresenti: alreadyPresent, fogliNuovi: missingSheets,
-  consensoRegistrato: hasConsent, costoGiaStimatoUsd: +spentUsdEstimate.toFixed(4),
+  consensoRegistrato: hasConsent, consensoGenerale: hasGeneralConsent,
+  costoGiaStimatoUsd: +spentUsdEstimate.toFixed(4),
   costoNuovoStimatoUsd: +newUsdEstimate.toFixed(4),
   sogliaOperativaUsd: operationalCapUsd, problemi: problems,
 }, null, 2));
