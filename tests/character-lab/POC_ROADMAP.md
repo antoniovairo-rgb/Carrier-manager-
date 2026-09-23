@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 12:40 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 12:41 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -20,9 +20,12 @@
 | Ritratti / figurine | 🟡 Codex ha consegnato **308 ritratti** (lotti 1-3) | collegarli ai volti veri (compagni, rivale, mister, procuratore) |
 | Telefono | ❌ non provato | FPS (misure passate 11-16), kit, gesti |
 
-## Prossimi 3 passi
-1. Ricevente di cross e consegne dal brain (B4).
-2. Brain che muove i 22 durante la scena (B3), poi esito dal brain (B2).
+## Piano (carta bianca del PO sulle situazioni, 23/09)
+1. ✅ Il brain apre la scena, con tipo di occasione e cast.
+2. ▶️ **Il brain risolve la scelta dell'eroe**: dado dentro il motore (stessa probabilità di oggi), catena di eventi con gli attori veri, tabellino aggiornato dal motore (addio ponte `registra`).
+3. Il 3D mostra solo quegli eventi: gesti per indice, esito e attori dal brain.
+4. Archetipi al posto delle 185 schede: opzioni (≤3) dal tipo di occasione; i testi restano racconto.
+5. Catene sostituite dal seguito deciso dal brain.
 
 ## Da decidere o guardare tu
 - **Catene** (seguito della stessa azione): rare (0 in 6 partite) e non un ostacolo, ma oggi il seguito è pescato a caso fra 3 schede, non deciso dal brain. **Proposta:** tenerle finché in B2 il seguito nasce da un evento del brain (ricezione in area, respinta, seconda palla), poi togliere le schede. In alternativa: spegnerle subito (un interruttore).
