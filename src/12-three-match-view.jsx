@@ -2319,6 +2319,7 @@ function ThreeMatchView(props){
       conduzione:e=>[['chi',['dribble','doubleStep','feint','change']]],
       tuffo:e=>[['gk',['dive','block','catch']]],
       pressione:e=>[['chi',['tackle','header']]],
+      gol:e=>[['chi',['lift','celebrate']]],
       ricezione:e=>[['chi',['receive']]],
       controllo:e=>[['chi',['receive']]],
       intercetto:e=>[['chi',['receive','tackle']]],
@@ -5297,6 +5298,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            if(_ps&&!_ps.gk&&((_pp<10)!==_homeBall)){const _dp=Math.hypot(_bGX-_ps.x,_bGY-_ps.y);
              if(_dp<_prd1+2&&_dp<24){_pr2=_pr1;_prd2=_prd1;_pr1=_pp;_prd1=_dp;}}}
          sr.current._prPrev=_pr1;}
+        /* [23/09 POC — B4: IN SCENA IL PRIMO PRESSORE E' IL DIFENSORE DEL BRAIN. Rosso __CPM_NO_B4PRESS] Misurato (scena-gesti): gli
+           interventi in scena li facevano difensori diversi dal cast, perche' il difensore del brain restava a >14u dall'azione e
+           ogni punto del 3D ripiegava sul piu' vicino. Negli highlight il primo pressore — quello che va addosso al portatore — e'
+           il difensore del cast, se difende ed e' entro 30u dal pallone: arriva lui, e i punti che scelgono il difensore lo trovano. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_B4PRESS)&&/^hl_/.test((propsRef.current&&propsRef.current.matchPhase)||'')){try{
+          const _C=propsRef.current.castBrain&&propsRef.current.castBrain.current;const _di=_C&&_C.difensore?_C.difensore.i:null;
+          if(_di!=null&&_di!==_pr1&&_di<_players.length){const _ds=all[_di];
+            if(_ds&&!_ds.gk&&((_di<10)!==_homeBall)){const _dd=Math.hypot(_bGX-_ds.x,_bGY-_ds.y);if(_dd<30){_pr2=_pr1;_prd2=_prd1;_pr1=_di;_prd1=_dd;sr.current._prPrev=_pr1;}}}
+        }catch(_eP){}}
         // PASS 1 — target pre-repulsione per ogni giocatore (coordinate di gioco 0..100)
         for(let i=0;i<_players.length;i++){
           const src=all[i];
@@ -9280,12 +9290,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              ancora un gesto montato o peso residuo (_gName o _gw>0.02): dentro, _want=null lo rilascia e il
              peso decade fino a zero. __CPM_NO516 = rosso (ingresso solo con _mateWant, orfani di nuovo
              possibili). Testimone __CPM_ORF516: conta gli avatar fuori dal ramo con peso >0,5. */
-          const _ent516=_a.gestures&&(_ai===0||_a._isGk||_mateWant||_brainWant||(!(typeof window!=='undefined'&&window.__CPM_NO516)&&(_a._gName||(_a._gw||0)>0.02)));
+          const _ent516=_a.gestures&&(_ai===0||_a._isGk||_mateWant||_brainWant||(oppActType==='opp_tackle'&&_a.proc===oppMesh)||(!(typeof window!=='undefined'&&window.__CPM_NO516)&&(_a._gName||(_a._gw||0)>0.02)));
           if(typeof window!=='undefined'&&window.__CPM_ORF516!==undefined&&_a.gestures&&!_ent516&&_a._gAct&&_a._gAct.weight>0.5){try{window.__CPM_ORF516.push(_ai);}catch(_e){}}
           if(_ent516){// EROE, PORTIERE o COMPAGNO che conclude (o in RILASCIO): gesto one-shot in crossfade con la locomozione
             // [6.76.0 LMV-A1] il gesto GK va SOLO al portiere che sta davvero reagendo (_a.proc===oppMesh):
             //   prima _gkWant era globale → su ogni parata/presa si tuffavano ENTRAMBI i portieri (anche quello a 100m).
-            const _g=(_ai===0)?((sr.current._cerLift===1||sr.current._celLift371===1)?'lift':(_gName||_brainWant)):(_a._isGk?(((_a.proc===oppMesh&&!(_gkWant==='dive'&&oppMesh&&oppMesh._fin855))?_gkWant:null)||_brainWant):_mateWant);/* [23/09 POC] eroe e portieri: se la scena non chiede nulla, parla il brain */let _want=(_g&&_a.gestures[_g])?_g:null;{const _pr=sr.current._presaRev;if(!_want&&_pr&&_a._isGk&&_a.proc===_pr.proc&&isResult&&_pr.sit===String((propsRef.current&&propsRef.current.hlSitKey)||'')&&_a.gestures.catch&&(!_pr.mounted||(_a._gName==='catch'&&_a._gAct&&_a._gAct.time<_a._gAct.getClip().duration-0.03)))_want='catch';}/* [22/09 POC] canale della presa (review): UNA esecuzione per scena — misurato, senza `mounted` la clip ripartiva a ogni fine (codice 000) *//* [7.24.1] cerimonia: posa alzata di coppa (throwin congelata) · [7.24.2] ===1: nel giro di campo (2) corre e le braccia le rialza l'override quaternioni */
+            const _g=(_ai===0)?((sr.current._cerLift===1||sr.current._celLift371===1)?'lift':(_gName||_brainWant)):(_a._isGk?(((_a.proc===oppMesh&&!(_gkWant==='dive'&&oppMesh&&oppMesh._fin855))?_gkWant:null)||_brainWant):(_mateWant||((oppActType==='opp_tackle'&&_a.proc===oppMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_OPPTACKLE23))?'tackle':null)));/* [23/09 POC] eroe e portieri: se la scena non chiede nulla, parla il brain · l'intervento del difensore (opp_tackle) era solo una posa procedurale, invisibile sotto il GLB: ora e' la clip tackle (rosso __CPM_NO_OPPTACKLE23) */let _want=(_g&&_a.gestures[_g])?_g:null;{const _pr=sr.current._presaRev;if(!_want&&_pr&&_a._isGk&&_a.proc===_pr.proc&&isResult&&_pr.sit===String((propsRef.current&&propsRef.current.hlSitKey)||'')&&_a.gestures.catch&&(!_pr.mounted||(_a._gName==='catch'&&_a._gAct&&_a._gAct.time<_a._gAct.getClip().duration-0.03)))_want='catch';}/* [22/09 POC] canale della presa (review): UNA esecuzione per scena — misurato, senza `mounted` la clip ripartiva a ogni fine (codice 000) *//* [7.24.1] cerimonia: posa alzata di coppa (throwin congelata) · [7.24.2] ===1: nel giro di campo (2) corre e le braccia le rialza l'override quaternioni */
             if(_bg23&&_want&&_want===_brainWant&&_a._gName!==_want&&_a._bgSeq23!==_bg23.seq&&typeof window!=='undefined'&&window.__CPM_BRAIN_REC){try{_a._bgSeq23=_bg23.seq;const _W=window.__CPM_BRAIN23;if(_W){_W.montati=(_W.montati|0)+1;const k=(_ai===0?'eroe':_a._isGk?'portiere':'movimento')+':'+_want;(_W.perGesto=_W.perGesto||{})[k]=(_W.perGesto[k]|0)+1;if(_a.proc&&_a.proc._brainG&&_a.proc._brainG.idx!=null){const _pi=(sr.current.players||[]).findIndex(pp=>pp&&pp.mesh===_a.proc);const _ok=(_ai===0)?_a.proc._brainG.idx===21:_pi===_a.proc._brainG.idx;_W.attoreGiusto=(_W.attoreGiusto|0)+(_ok?1:0);}}}catch(_eW){}}/* [23/09 POC testimone, solo sonda] montaggio di un gesto chiesto dal brain, e se il corpo e' l'indice dichiarato */
             if(_want&&_a._gName!==_want&&typeof window!=='undefined'&&window.__CPM_BRAIN_REC&&window.__CPM_SCENA23&&propsRef.current&&/^hl_/.test(propsRef.current.matchPhase||'')&&_a._hlSeq23!==_want+'|'+Math.floor(Date.now()/400)){try{/* [23/09 testimone punto 3] gesto montato in scena, con l'indice del motore del corpo */
               _a._hlSeq23=_want+'|'+Math.floor(Date.now()/400);const _A=window.__CPM_SCENA23;const _pi=(_ai===0)?21:(sr.current.players||[]).findIndex(pp=>pp&&pp.mesh===_a.proc);

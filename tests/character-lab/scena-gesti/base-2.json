@@ -1,7 +1,7 @@
 {
  "rosso": null,
  "tot": {
-  "motore-occasione": 10
+  "motore-occasione": 9
  },
  "esiti": [
   {
@@ -54,7 +54,7 @@
        "receive",
        "tackle"
       ],
-      "visto": false
+      "visto": true
      },
      {
       "seq": 532,
@@ -78,6 +78,17 @@
       "visto": true
      },
      {
+      "seq": 534,
+      "ev": "gol",
+      "idx": 21,
+      "nomi": [
+       "kick",
+       "lift",
+       "celebrate"
+      ],
+      "visto": false
+     },
+     {
       "seq": 535,
       "ev": "pressione",
       "idx": 13,
@@ -85,41 +96,10 @@
        "tackle",
        "header"
       ],
-      "visto": false
+      "visto": true
      },
      {
       "seq": 782,
-      "ev": "tuffo",
-      "idx": 10,
-      "nomi": [
-       "dive",
-       "block",
-       "catch"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 783,
-      "ev": "tiro",
-      "idx": 21,
-      "nomi": [
-       "kick",
-       "volley"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 784,
-      "ev": "pressione",
-      "idx": 16,
-      "nomi": [
-       "tackle",
-       "header"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 1100,
       "ev": "passaggio",
       "idx": 21,
       "nomi": [
@@ -130,16 +110,28 @@
       "visto": true
      },
      {
-      "seq": 1101,
-      "ev": "ricezione",
-      "idx": 8,
+      "seq": 783,
+      "ev": "intercetto",
+      "idx": 16,
       "nomi": [
-       "receive"
+       "receive",
+       "tackle"
       ],
-      "visto": false
+      "visto": true
      },
      {
-      "seq": 1102,
+      "seq": 1132,
+      "ev": "passaggio",
+      "idx": 21,
+      "nomi": [
+       "pass",
+       "shortPass",
+       "kick"
+      ],
+      "visto": true
+     },
+     {
+      "seq": 1133,
       "ev": "tuffo",
       "idx": 10,
       "nomi": [
@@ -150,12 +142,22 @@
       "visto": false
      },
      {
-      "seq": 1103,
+      "seq": 1134,
       "ev": "tiro",
-      "idx": 8,
+      "idx": 7,
       "nomi": [
        "kick",
        "volley"
+      ],
+      "visto": false
+     },
+     {
+      "seq": 1135,
+      "ev": "gol",
+      "idx": 7,
+      "nomi": [
+       "lift",
+       "celebrate"
       ],
       "visto": false
      }
@@ -169,8 +171,22 @@
       "fase": "hl_result"
      },
      {
+      "idx": 13,
+      "g": "tackle",
+      "gk": false,
+      "atteso": true,
+      "fase": "hl_result"
+     },
+     {
       "idx": 21,
       "g": "shortPass",
+      "gk": false,
+      "atteso": true,
+      "fase": "hl_result"
+     },
+     {
+      "idx": 13,
+      "g": "tackle",
       "gk": false,
       "atteso": true,
       "fase": "hl_result"
@@ -198,15 +214,8 @@
      },
      {
       "idx": 21,
-      "g": "kick",
+      "g": "pass",
       "gk": false,
-      "atteso": true,
-      "fase": "hl_result"
-     },
-     {
-      "idx": 10,
-      "g": "dive",
-      "gk": true,
       "atteso": true,
       "fase": "hl_result"
      },
@@ -219,9 +228,16 @@
      },
      {
       "idx": 21,
-      "g": "pass",
+      "g": "shortPass",
       "gk": false,
       "atteso": true,
+      "fase": "hl_result"
+     },
+     {
+      "idx": 7,
+      "g": "receive",
+      "gk": false,
+      "atteso": false,
       "fase": "hl_result"
      }
     ]
@@ -295,28 +311,22 @@
       "fase": "hl_result"
      }
     },
-    "64|4": {
+    "63|4": {
      "sit": "4",
      "cast": {
-      "ricevente": 8,
-      "difensore": 12,
+      "ricevente": 7,
+      "difensore": 13,
       "portiere": 10
-     },
-     "portiere": {
-      "idx": 10,
-      "brain": 10,
-      "d": 0,
-      "fase": "hl_intro"
      },
      "difensore": {
       "idx": 16,
-      "brain": 12,
-      "d": 16,
+      "brain": 13,
+      "d": 10.9,
       "fase": "hl_intro"
      },
      "ricevente": {
-      "idx": 8,
-      "brain": 8,
+      "idx": 7,
+      "brain": 7,
       "d": 0,
       "fase": "hl_result"
      }
@@ -332,7 +342,7 @@
     "scartato": 0,
     "senzaCast": 0
    },
-   "highlight": 5,
+   "highlight": 3,
    "scene": [
     {
      "min": 19,
@@ -377,10 +387,10 @@
      "sk": null
     },
     {
-     "min": 64,
+     "min": 63,
      "src": "motore-occasione",
      "tipo": "fra-le-linee",
-     "sk": "🎯 Filtrante per il centravanti!"
+     "sk": "💥 Bordata da centrocampo!"
     }
    ],
    "perSrc": {
@@ -397,125 +407,13 @@
    "fine": "ended",
    "ultimo": {
     "fase": "ended",
-    "clock": 89,
-    "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · G. 1 | PAREGGIO COMBATTUTO | PROVINI | FISCHIO FINALE | Selezione Granata | 2–2 | Polisportiva Centro | PAREGGIO | IL TUO TABELLINO | ⚽ | 0 | G"
+    "clock": 90,
+    "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · G. 1 | 3 DECIDE IL MATCH | PROVINI | FISCHIO FINALE | Selezione Granata | 3–2 | Polisportiva Centro | VITTORIA | IL TUO TABELLINO | ⚽ | 1 | Gol"
    },
    "scenaG": {
     "attesi": [
      {
-      "seq": 392,
-      "ev": "tuffo",
-      "idx": 10,
-      "nomi": [
-       "dive",
-       "block",
-       "catch"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 393,
-      "ev": "tiro",
-      "idx": 21,
-      "nomi": [
-       "kick",
-       "volley"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 394,
-      "ev": "pressione",
-      "idx": 16,
-      "nomi": [
-       "tackle",
-       "header"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 460,
-      "ev": "cross",
-      "idx": 21,
-      "nomi": [
-       "cross",
-       "pass",
-       "kick"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 461,
-      "ev": "ricezione",
-      "idx": 9,
-      "nomi": [
-       "receive"
-      ],
-      "visto": false
-     },
-     {
-      "seq": 462,
-      "ev": "tuffo",
-      "idx": 10,
-      "nomi": [
-       "dive",
-       "block",
-       "catch"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 463,
-      "ev": "tiro",
-      "idx": 9,
-      "nomi": [
-       "header"
-      ],
-      "visto": false
-     },
-     {
-      "seq": 465,
-      "ev": "pressione",
-      "idx": 16,
-      "nomi": [
-       "tackle",
-       "header"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 534,
-      "ev": "tuffo",
-      "idx": 10,
-      "nomi": [
-       "dive",
-       "block",
-       "catch"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 535,
-      "ev": "tiro",
-      "idx": 21,
-      "nomi": [
-       "kick",
-       "volley"
-      ],
-      "visto": true
-     },
-     {
-      "seq": 536,
-      "ev": "pressione",
-      "idx": 16,
-      "nomi": [
-       "tackle",
-       "header"
-      ],
-      "visto": false
-     },
-     {
-      "seq": 719,
+      "seq": 455,
       "ev": "passaggio",
       "idx": 21,
       "nomi": [
@@ -526,7 +424,91 @@
       "visto": true
      },
      {
-      "seq": 720,
+      "seq": 456,
+      "ev": "tuffo",
+      "idx": 10,
+      "nomi": [
+       "dive",
+       "block",
+       "catch"
+      ],
+      "visto": true
+     },
+     {
+      "seq": 457,
+      "ev": "tiro",
+      "idx": 9,
+      "nomi": [
+       "kick",
+       "volley"
+      ],
+      "visto": false
+     },
+     {
+      "seq": 458,
+      "ev": "gol",
+      "idx": 9,
+      "nomi": [
+       "lift",
+       "celebrate"
+      ],
+      "visto": false
+     },
+     {
+      "seq": 519,
+      "ev": "tuffo",
+      "idx": 10,
+      "nomi": [
+       "dive",
+       "block",
+       "catch"
+      ],
+      "visto": false
+     },
+     {
+      "seq": 520,
+      "ev": "tiro",
+      "idx": 21,
+      "nomi": [
+       "kick",
+       "volley"
+      ],
+      "visto": false
+     },
+     {
+      "seq": 521,
+      "ev": "gol",
+      "idx": 21,
+      "nomi": [
+       "kick",
+       "lift",
+       "celebrate"
+      ],
+      "visto": false
+     },
+     {
+      "seq": 522,
+      "ev": "pressione",
+      "idx": 16,
+      "nomi": [
+       "tackle",
+       "header"
+      ],
+      "visto": true
+     },
+     {
+      "seq": 691,
+      "ev": "passaggio",
+      "idx": 21,
+      "nomi": [
+       "pass",
+       "shortPass",
+       "kick"
+      ],
+      "visto": true
+     },
+     {
+      "seq": 692,
       "ev": "intercetto",
       "idx": 16,
       "nomi": [
@@ -536,37 +518,43 @@
       "visto": false
      },
      {
-      "seq": 1143,
-      "ev": "tiro",
+      "seq": 839,
+      "ev": "passaggio",
       "idx": 21,
       "nomi": [
-       "kick",
-       "volley"
+       "pass",
+       "shortPass",
+       "kick"
       ],
       "visto": true
-     },
-     {
-      "seq": 1144,
-      "ev": "murato",
-      "idx": 12,
-      "nomi": [
-       "tackle"
-      ],
-      "visto": false
      }
     ],
     "montati": [
      {
       "idx": 21,
-      "g": "kick",
+      "g": "pass",
       "gk": false,
       "atteso": true,
+      "fase": "hl_result"
+     },
+     {
+      "idx": 21,
+      "g": "pass",
+      "gk": false,
+      "atteso": false,
       "fase": "hl_result"
      },
      {
       "idx": 10,
       "g": "dive",
       "gk": true,
+      "atteso": true,
+      "fase": "hl_result"
+     },
+     {
+      "idx": 21,
+      "g": "pass",
+      "gk": false,
       "atteso": true,
       "fase": "hl_result"
      },
@@ -579,55 +567,13 @@
      },
      {
       "idx": 21,
-      "g": "cross",
+      "g": "pass",
       "gk": false,
       "atteso": true,
       "fase": "hl_result"
      },
      {
-      "idx": 21,
-      "g": "kick",
-      "gk": false,
-      "atteso": true,
-      "fase": "hl_result"
-     },
-     {
-      "idx": 10,
-      "g": "dive",
-      "gk": true,
-      "atteso": true,
-      "fase": "hl_result"
-     },
-     {
-      "idx": 16,
-      "g": "tackle",
-      "gk": false,
-      "atteso": true,
-      "fase": "hl_result"
-     },
-     {
-      "idx": 21,
-      "g": "shortPass",
-      "gk": false,
-      "atteso": true,
-      "fase": "hl_result"
-     },
-     {
-      "idx": 21,
-      "g": "kick",
-      "gk": false,
-      "atteso": true,
-      "fase": "hl_result"
-     },
-     {
-      "idx": 10,
-      "g": "dive",
-      "gk": true,
-      "atteso": true,
-      "fase": "hl_result"
-     },
-     {
-      "idx": 13,
+      "idx": 19,
       "g": "tackle",
       "gk": false,
       "atteso": false,
@@ -636,50 +582,38 @@
     ]
    },
    "b4": {
-    "20|0": {
+    "22|0": {
      "sit": "",
      "cast": {
       "ricevente": 9,
       "difensore": 16,
       "portiere": 10
      },
-     "portiere": {
-      "idx": 10,
-      "brain": 10,
-      "d": 0,
-      "fase": "hl_result"
-     },
-     "difensore": {
-      "idx": 16,
-      "brain": 16,
-      "d": 0,
+     "ricevente": {
+      "idx": 8,
+      "brain": 9,
+      "d": 15.9,
       "fase": "hl_result"
      }
     },
-    "23|1": {
+    "25|1": {
      "sit": "1",
      "cast": {
-      "ricevente": 9,
+      "ricevente": 5,
       "difensore": 16,
       "portiere": 10
      },
-     "portiere": {
-      "idx": 10,
-      "brain": 10,
-      "d": 0,
-      "fase": "hl_intro"
-     },
-     "difensore": {
-      "idx": 16,
-      "brain": 16,
-      "d": 0,
-      "fase": "hl_intro"
+     "ricevente": {
+      "idx": 3,
+      "brain": 5,
+      "d": 31.6,
+      "fase": "hl_result"
      }
     },
-    "27|2": {
+    "35|2": {
      "sit": "2",
      "cast": {
-      "ricevente": 9,
+      "ricevente": 5,
       "difensore": 16,
       "portiere": 10
      },
@@ -687,7 +621,7 @@
       "idx": 10,
       "brain": 10,
       "d": 0,
-      "fase": "hl_result"
+      "fase": "hl_intro"
      },
      "difensore": {
       "idx": 16,
@@ -696,57 +630,35 @@
       "fase": "hl_result"
      }
     },
-    "39|3": {
+    "42|3": {
      "sit": "3",
      "cast": {
-      "ricevente": 9,
-      "difensore": 16,
-      "portiere": 10
-     },
-     "portiere": {
-      "idx": 10,
-      "brain": 10,
-      "d": 0,
-      "fase": "hl_intro"
-     },
-     "difensore": {
-      "idx": 16,
-      "brain": 16,
-      "d": 0,
-      "fase": "hl_intro"
-     }
-    },
-    "63|4": {
-     "sit": "4",
-     "cast": {
-      "ricevente": 9,
-      "difensore": 12,
+      "ricevente": 5,
+      "difensore": 13,
       "portiere": 10
      },
      "difensore": {
       "idx": 16,
-      "brain": 12,
-      "d": 21.9,
+      "brain": 13,
+      "d": 16,
       "fase": "hl_intro"
-     },
-     "portiere": {
-      "idx": 10,
-      "brain": 10,
-      "d": 0,
-      "fase": "hl_result"
      }
     }
    },
-   "b4ric": null,
-   "b4dif": {
-    "usato": 3,
-    "scartato": 2,
+   "b4ric": {
+    "usato": 2,
+    "scartato": 0,
     "senzaCast": 0
    },
-   "highlight": 5,
+   "b4dif": {
+    "usato": 1,
+    "scartato": 1,
+    "senzaCast": 0
+   },
+   "highlight": 3,
    "scene": [
     {
-     "min": 20,
+     "min": 22,
      "src": "motore-occasione",
      "tipo": "fra-le-linee",
      "sk": "✋ Anticipa il passaggio filtrante!"
@@ -758,48 +670,35 @@
      "sk": null
     },
     {
-     "min": 23,
+     "min": 25,
      "src": "motore-occasione",
      "tipo": "fra-le-linee",
+     "sk": "✈️ Cross al secondo palo — attacca!"
+    },
+    {
+     "min": 35,
+     "src": "motore-occasione",
+     "tipo": "costruzione",
      "sk": "😱 Il portiere è fuori dai pali! Tira da lontano."
     },
     {
-     "min": 27,
-     "src": "motore-occasione",
-     "tipo": "fra-le-linee",
-     "sk": "😱 Il portiere è fuori dai pali! Tira da lontano."
-    },
-    {
-     "min": 38,
+     "min": 41,
      "src": "reattiva",
      "tipo": null,
      "sk": null
     },
     {
-     "min": 39,
+     "min": 42,
      "src": "motore-occasione",
-     "tipo": "costruzione",
-     "sk": "⚡ Cross dal fondo — angolo stretto!"
-    },
-    {
-     "min": 65,
-     "src": "sotto-63",
-     "tipo": null,
-     "sk": null
-    },
-    {
-     "min": 63,
-     "src": "motore-occasione",
-     "tipo": "spalle",
-     "sk": "🦶 Tiro col mancino a sorpresa!"
+     "tipo": "fra-le-linee",
+     "sk": "🏃 Pressing coordinato — recupera!"
     }
    ],
    "perSrc": {
-    "motore-occasione": 5
+    "motore-occasione": 4
    },
    "programmate": {
-    "reattiva": 2,
-    "sotto-63": 1
+    "reattiva": 2
    },
    "errori": []
   }

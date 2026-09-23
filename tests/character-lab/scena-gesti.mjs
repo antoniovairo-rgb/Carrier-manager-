@@ -30,6 +30,7 @@ for (let p = DA; p < DA + N; p++) {
   }
   const ultimo = await page.evaluate(() => ({ fase: window.__CPM_PHASE?.() || null, clock: window.__CPM_STATE?.()?.clock ?? null, testo: (document.body.innerText || '').slice(0, 160).replace(/\n/g, ' | ') })).catch(() => null);
   const scenaG = await page.evaluate(() => window.__CPM_SCENA23 || null).catch(() => null);
+  const b2ev = await page.evaluate(() => window.__CPM_B2EV || []).catch(() => []); console.log('  B2EV', JSON.stringify(b2ev));
   const b4 = await page.evaluate(() => window.__CPM_B4 || {}).catch(() => ({}));
   const b4ric = await page.evaluate(() => window.__CPM_B4RIC || null).catch(() => null);
   const b4dif = await page.evaluate(() => window.__CPM_B4DIF || null).catch(() => null);

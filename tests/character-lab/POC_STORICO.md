@@ -965,6 +965,17 @@ Principio: il 3D decide **quando** un gesto avviene (la sua coreografia), il bra
 Copertura (gesti del brain visti in scena): 32/55 — ricezione 0/7, tuffo 8/12, tiro 8/14, intercetto 1/3, murato 0/2.
 **Prima catena osservata:** registrata `catena-motore`, nata dal brain.
 
+## Avanzamento 23 settembre 2026, 23/09 15:08 — PUNTO 3, SECONDO GIRO: COPERTURA E ATTORI
+- **Clip `tackle` sul difensore in intervento:** `opp_tackle` era solo una posa procedurale, invisibile sotto i corpi GLB; ora il
+  difensore scelto monta la clip (rosso `__CPM_NO_OPPTACKLE23`). Murato 0/2 → 2/2, intercetto 1/3 → 3/4.
+- **Il primo pressore in scena e' il difensore del brain** (entro 30u dal pallone; rosso `__CPM_NO_B4PRESS`): e' lui che arriva
+  sull'azione, quindi i punti del 3D con tetto 9-14u lo trovano invece di ripiegare sul piu' vicino.
+- **Brain:** niente «ricezione» quando il compagno conclude di prima; tuffo del portiere solo se il pallone passa entro 7 unita' dal centro porta;
+  esultanza (`gol` → lift) nominata perche' il 3D a volte la monta.
+- Testimone B2 arricchito (famiglia, variante, etichetta dell'opzione) per leggere le scene in dettaglio.
+**Misura** (gesti montati in scena nominati dal brain, 3 campioni da 4 partite): **83%-97%** (base 36%); variazione dovuta alle scene
+diverse che ogni corsa gioca. Copertura ~50-60%: i buchi sono il tiro del compagno (non sempre una clip) e l'esultanza (il 3D la mostra di rado).
+
 ---
 
 ## Obiettivo vincolante
