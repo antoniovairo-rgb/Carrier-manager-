@@ -872,6 +872,61 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
       </div>
     </div>
   );
+  /* [23/09 POC — collaudo PO «standardizza ed uniforma la grafica» sulle formazioni]
+     La «regia TV» scura (scanline, banda diagonale, CTA ambra) era l'unica schermata del pre-partita fuori
+     dal kit. Ora: testata in Card come il pre-partita, le due formazioni in Card con le maglie su un
+     mini-campo (i cognomi bianchi restano leggibili), la tattica avversaria con SectionHeader e barra a
+     token, l'ingresso in campo e' il primario del kit. Rosso __CPM_NO_FORMAZ23. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_FORMAZ23)){
+    const _lbl=contextLabel||(_isEuro?_ecFull122:(homeTeam?.lg||"Campionato"));
+    const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden",flex:1,minWidth:0}}>
+      <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
+        <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
+        <span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",flex:1,minWidth:0}}>{team?.n||team?.a}</span>
+        <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px"}}>{_fmtOf(rr)}</span>
+      </div>
+      <div style={{background:"repeating-linear-gradient(0deg,#2c6a2f 0 22px,#2f7334 22px 44px)",padding:"8px 2px 10px"}}>
+        {rosterRows(rr).map((row,ri)=>(
+          <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:2}}>
+            {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;return isP?(
+              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={30}/></div>
+            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={30} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
+          </div>))}
+      </div>
+    </Card>);
+    const pr=oppTactic?clamp(oppTactic.pressure||0,0,100):0,prC=pr>66?TH.danger:pr>40?TH.warning:TH.success;
+    return(
+    <div data-cpm="formazioni23" style={{width:"100%",maxWidth:640,margin:"0 auto",display:"flex",flexDirection:"column",gap:SP.md}}>
+      <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,flexWrap:"wrap"}}>
+          <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
+          {euroRound&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{euroRound}</span>}
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",gap:SP.sm,marginTop:SP.md}}>
+          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0}}><TeamBadge team={homeTeam} size={36}/><span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{homeTeam?.n}</span></div>
+          <span style={{fontSize:FS.body,fontWeight:FW.black,color:TH.faint}}>VS</span>
+          <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0,justifyContent:"flex-end"}}><span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",textAlign:"right"}}>{awayTeam?.n}</span><TeamBadge team={awayTeam} size={36}/></div>
+        </div>
+      </Card>
+      <div style={{display:"flex",gap:SP.sm}}>
+        <Pannello team={homeTeam} rr={_homeNums} kit={homeKitCol}/>
+        <Pannello team={awayTeam} rr={_awayNums} kit={awayKitCol}/>
+      </div>
+      <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <SectionHeader>Formazione avversaria</SectionHeader>
+        {(oppTacticLoading||!oppTactic)?<Skeleton h={22}/>:(
+          <div style={{display:"flex",alignItems:"center",gap:SP.md,flexWrap:"wrap"}}>
+            <div className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text}}>{oppTactic.formation}</div>
+            <div style={{flex:1,minWidth:150}}>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:4}}><span>Pressing</span><span className="cpm-num" style={{fontWeight:FW.bold,color:TH.text}}>{pr}%</span></div>
+              <div style={{height:6,borderRadius:RAD.pill,background:TH.track,overflow:"hidden"}}><div style={{height:"100%",width:pr+"%",background:prC,borderRadius:RAD.pill}}/></div>
+            </div>
+          </div>)}
+      </Card>
+      <Btn onClick={onContinue} v="primary" size="lg" fw>Ingresso in campo</Btn>
+      <Btn onClick={onSkip} v="ghost" fw>Salta l'ingresso</Btn>
+    </div>);
+  }
   return(
     <div style={{position:"relative",overflow:"hidden",width:"100%",maxWidth:640,margin:"0 auto",background:"linear-gradient(180deg,#0a0e1a 0%,#0d1528 100%)",borderRadius:RAD.md,padding:"0 0 12px"}}>
       <style>{"@keyframes cpmLtSlide{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}@keyframes cpmLtMeter{from{transform:scaleX(0)}to{transform:scaleX(1)}}@keyframes cpmLtShine{from{transform:translateX(-140%) skewX(-18deg)}to{transform:translateX(240%) skewX(-18deg)}}"}</style>
