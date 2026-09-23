@@ -30,7 +30,7 @@
   }
  ],
  "completa": {
-  "testo": "KORWARD | Luca | BRAIN | ATTACCANTE | 183 cm | 77 kg",
+  "testo": "KORWARD | Luca | BRAIN | ATTACCANTE | 183 cm · 77 kg",
   "larga": 260,
   "alta": 364,
   "piena": true,
@@ -70,24 +70,45 @@
    "h": 39
   }
  ],
- "anteprime": [
-  {
-   "src": "lotto-01/volto-0028.webp",
-   "ok": true
-  },
-  {
-   "src": "lotto-09/volto-0901.webp",
-   "ok": true
-  },
-  {
-   "src": "lotto-02/volto-0204.webp",
-   "ok": true
-  },
-  {
-   "src": "lotto-04/volto-0359.webp",
-   "ok": true
+ "anteprime": {
+  "immagini": [
+   {
+    "src": "lotto-01/volto-0028.webp",
+    "ok": true
+   },
+   {
+    "src": "lotto-09/volto-0901.webp",
+    "ok": true
+   },
+   {
+    "src": "lotto-02/volto-0204.webp",
+    "ok": true
+   },
+   {
+    "src": "lotto-04/volto-0359.webp",
+    "ok": true
+   },
+   {
+    "src": "lotto-09/volto-0904.webp",
+    "ok": true
+   },
+   {
+    "src": "lotto-10/volto-0977.webp",
+    "ok": true
+   },
+   {
+    "src": "lotto-09/volto-0901.webp",
+    "ok": true
+   }
+  ],
+  "testo": {
+   "figurine": 7,
+   "righe": 16,
+   "fuori": 0,
+   "tronchi": 0,
+   "sottoGli11": 0
   }
- ],
+ },
  "scena": {
   "chiavi": [
    "Compagno 3",
@@ -110,8 +131,8 @@
   "collisioni": 0
  },
  "richiestePortraits": {
-  "totale": 14,
-  "uniche": 9,
+  "totale": 16,
+  "uniche": 11,
   "indice": 2,
   "manifest": 0
  },

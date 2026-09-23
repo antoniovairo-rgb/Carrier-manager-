@@ -61,8 +61,16 @@ R.anteprime = await page.evaluate(() => new Promise(res => {
     React.createElement(Figurina, { tipo: 'giocatore', chiave: E.nome, nome: E.nome, ruolo: 'Attaccante · AC Milanello', col: '#dc2626', col2: '#111111', larg: 170 }),
     React.createElement(Figurina, { tipo: 'mister', chiave: 'Mister Bellandi', nome: 'Mister Bellandi', ruolo: 'Allenatore · AC Milanello', col: '#dc2626', col2: '#111111', larg: 170 }),
     React.createElement(Figurina, { tipo: 'avversario', chiave: 'Ferraro', nome: 'Ferraro', ruolo: 'Difensore · rivale', larg: 110 }),
-    React.createElement(Figurina, { tipo: 'procuratore', chiave: 'Dario Conti', nome: 'Dario Conti', ruolo: 'Procuratore', larg: 110 })));
-  setTimeout(() => res([...d.querySelectorAll('img')].map(i => ({ src: i.getAttribute('src').replace(/^.*ai\//, ''), ok: i.complete && i.naturalWidth > 0 }))), 2500);
+    React.createElement(Figurina, { tipo: 'procuratore', chiave: 'Dario Conti', nome: 'Dario Conti', ruolo: 'Procuratore', larg: 110 }),
+    React.createElement(Figurina, { tipo: 'giocatore', chiave: 'Massimiliano Castellanos-Villanueva', nome: 'Massimiliano Castellanos-Villanueva', ruolo: 'Centrocampista · Real Montagnarosa', col: '#facc15', col2: '#1d4ed8', larg: 96 }),
+    React.createElement(Figurina, { tipo: 'avversario', chiave: 'Gianluigi Bonaventura', nome: 'Gianluigi Bonaventura', ruolo: 'Difensore', larg: 64 }),
+    React.createElement(Figurina, { tipo: 'mister', chiave: 'Mister Bellandi', nome: 'Mister Bellandi', larg: 52 })));
+  setTimeout(() => {
+    /* [23/09] il testo non deve uscire: ogni foglia di testo dentro la sua figurina e senza troncature; corpo >= 11 px */
+    const figs = [...d.querySelectorAll('[data-cpm-figurina]')]; let fuori = 0, tronchi = 0, piccoli = 0, righe = 0;
+    figs.forEach(f => { const R = f.getBoundingClientRect(); f.querySelectorAll('div').forEach(x => { if (x.children.length || !(x.textContent || '').trim()) return; righe++; const r = x.getBoundingClientRect();
+      if (r.left < R.left - 0.5 || r.right > R.right + 0.5 || r.top < R.top - 0.5 || r.bottom > R.bottom + 0.5) fuori++; if (x.scrollWidth > x.clientWidth + 1) tronchi++; if (parseFloat(getComputedStyle(x).fontSize) < 11) piccoli++; }); });
+    res({ immagini: [...d.querySelectorAll('img')].map(i => ({ src: i.getAttribute('src').replace(/^.*ai\//, ''), ok: i.complete && i.naturalWidth > 0 })), testo: { figurine: figs.length, righe, fuori, tronchi, sottoGli11: piccoli } }); }, 2500);
 }));
 await page.screenshot({ path: path.join(out, `anteprime${TAG}.png`) });
 await page.evaluate(() => document.getElementById('anteprima23')?.remove());
@@ -88,5 +96,5 @@ R.riservato = await page.evaluate(() => { const E = voltoEroeId23(); let hit = 0
 R.richiestePortraits = { totale: richieste.length, uniche: [...new Set(richieste)].length, indice: richieste.filter(u => /indice\.json/.test(u)).length, manifest: richieste.filter(u => /manifest\.json/.test(u)).length };
 R.errori = errori;
 fs.writeFileSync(path.join(out, `verifica${TAG}.json`), JSON.stringify(R, null, 1));
-console.log(JSON.stringify({ completa: R.completa, misterEta: R.misterEta, scena: R.scena, salvato: R.salvato, eroe: R.eroe.id, candidati: R.eroe.candidati, stabile: R.stabile, riservato: R.riservato, rete: R.richiestePortraits, dashboard: R.dashboard, club: R.club.filter(x => x.src), intervista: R.intervista.filter(x => x.tipo === 'giornalista'), anteprime: R.anteprime, errori }, null, 1));
+console.log(JSON.stringify({ testoAnteprime: R.anteprime && R.anteprime.testo, completa: R.completa, misterEta: R.misterEta, scena: R.scena, salvato: R.salvato, eroe: R.eroe.id, candidati: R.eroe.candidati, stabile: R.stabile, riservato: R.riservato, rete: R.richiestePortraits, dashboard: R.dashboard, club: R.club.filter(x => x.src), intervista: R.intervista.filter(x => x.tipo === 'giornalista'), anteprime: R.anteprime, errori }, null, 1));
 await b.close(); srv.close();
