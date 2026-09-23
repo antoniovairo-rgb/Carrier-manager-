@@ -1033,6 +1033,30 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
    quella che il PO ha scelto l'ultima volta. */
 var _MEM927={aperto:false,vista:"pag"};
 try{if(typeof window!=='undefined')window.__CPM_MEM927=_MEM927;}catch(_e){}/* sola lettura per il collaudo: la memoria si puo' misurare anche a pannello smontato */
+/* [23/09 POC — collaudo PO «nelle statistiche mancano azioni dalla fascia / cross, % dribbling riusciti» e «ovviamente
+   stesse statistiche nel post partita (omogeneita')»] UNA LISTA SOLA di voci, letta dal tabellino del motore, usata sia dal
+   pannello in partita sia dal tabellino di fine gara: stesse voci, stesso ordine, stesse etichette. */
+function righeTabellino23(A,B){const pc=(q)=>q.passaggi>0?Math.round(100*(q.passOk||0)/q.passaggi):0;
+  const dr=(q)=>q.dribbling>0?Math.round(100*(q.dribblingOk||0)/q.dribbling):0;
+  return[
+    {et:"Gol",sx:A.gol|0,dx:B.gol|0},
+    {et:"Possesso",sx:A.possesso|0,dx:B.possesso|0,pct:true},
+    {et:"Tiri",sx:A.tiri|0,dx:B.tiri|0},
+    {et:"Tiri in porta",sx:A.inPorta|0,dx:B.inPorta|0},
+    {et:"Gol attesi (xG)",sx:+(A.xg||0),dx:+(B.xg||0),dec:true},
+    {et:"Azioni dalle fasce",sx:A.fascia|0,dx:B.fascia|0},
+    {et:"Cross",sx:A.cross|0,dx:B.cross|0},
+    {et:"Dribbling riusciti",sx:dr(A),dx:dr(B),pct:true,nota:(A.dribblingOk|0)+"/"+(A.dribbling|0)+" · "+(B.dribblingOk|0)+"/"+(B.dribbling|0),n:(A.dribbling|0)+(B.dribbling|0)},
+    {et:"Passaggi",sx:A.passaggi|0,dx:B.passaggi|0},
+    {et:"Precisione passaggi",sx:pc(A),dx:pc(B),pct:true,n:(A.passaggi|0)+(B.passaggi|0)},
+    {et:"Recuperi",sx:(A.contrasti|0)+(A.intercetti|0),dx:(B.contrasti|0)+(B.intercetti|0)},
+    {et:"Parate",sx:A.parate|0,dx:B.parate|0},
+    {et:"Calci d'angolo",sx:A.corner|0,dx:B.corner|0},
+    {et:"Falli",sx:A.falli|0,dx:B.falli|0},
+    {et:"Ammonizioni",sx:A.ammonizioni|0,dx:B.ammonizioni|0},
+    {et:"Espulsioni",sx:A.espulsioni|0,dx:B.espulsioni|0},
+    {et:"Rimesse laterali",sx:A.rimesse|0,dx:B.rimesse|0},
+  ].filter(r=>r.et==="Gol"||r.et==="Possesso"||(r.n!=null?r.n>0:((+r.sx||0)+(+r.dx||0))>0));}
 function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosaOsp,nomeEroe,numEroe}){
   const [dati,setDati]=React.useState(null);
   const _no927=(typeof window!=='undefined'&&window.__CPM_NO927);/* ROSSO di collaudo: la stesura di prima, senza memoria e aperta d'ufficio */
@@ -1127,6 +1151,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
         </div>
         {aperto&&vista==="stat"&&(
           <div style={{padding:"6px "+SP.md+"px 9px",overflowY:"auto"}}>
+            {(typeof window!=='undefined'&&window.__CPM_NO_STAT23)?(<>
             <Riga918 et="possesso" sx={A.possesso} dx={100-(A.possesso||50)} colSx={colSx} colDx={colDx} fmt={(v)=>_num918(v)+"%"}/>
             <Riga918 et="tiri totali" sx={A.tiri} dx={B.tiri} colSx={colSx} colDx={colDx}/>
             <Riga918 et="tiri in porta" sx={A.inPorta} dx={B.inPorta} colSx={colSx} colDx={colDx}/>
@@ -1138,6 +1163,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
             <Riga918 et="calci d'angolo" sx={A.corner} dx={B.corner} colSx={colSx} colDx={colDx}/>
             <Riga918 et="falli" sx={A.falli} dx={B.falli} colSx={colSx} colDx={colDx}/>
             <Riga918 et="ammonizioni" sx={A.ammonizioni} dx={B.ammonizioni} colSx={colSx} colDx={colDx}/>
+            </>):righeTabellino23(A,{...B,possesso:100-(A.possesso||50)}).map(r=>(<Riga918 key={r.et} et={r.et.toLowerCase()} sx={r.sx} dx={r.dx} colSx={colSx} colDx={colDx} fmt={r.pct?((v)=>_num918(v)+"%"):r.dec?_dec918:undefined}/>))}
           </div>)}
         {aperto&&vista==="pag"&&(
           <div style={{display:"flex",gap:SP.sm,padding:"6px "+SP.sm+"px 9px",overflowY:"auto"}}>
@@ -10785,7 +10811,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           {(()=>{ let _T=null; try{ _T=motoreRef.current&&motoreRef.current.tabellino?motoreRef.current.tabellino():null; }catch(_e){}
             if(!_T||!_T.home||!_T.away)return null;
             const _mine=isMatchHome?_T.home:_T.away, _loro=isMatchHome?_T.away:_T.home;
-            const _righe=[
+            const _righe=!(typeof window!=='undefined'&&window.__CPM_NO_STAT23)?righeTabellino23(_mine,_loro).map(r=>[r.et,r.pct?r.sx+"%":r.dec?r.sx.toFixed(2):r.sx,r.pct?r.dx+"%":r.dec?r.dx.toFixed(2):r.dx,r.sx||(r.n?0.001:0),r.dx||(r.n?0.001:0)]):[
               /* [7.915.0] il GOL mancava dal tabellino: la voce piu' importante della gara non c'era */
               ["Gol",_mine.gol,_loro.gol,_mine.gol,_loro.gol],
               ["Possesso",_mine.possesso+"%",_loro.possesso+"%",_mine.possesso,_loro.possesso],

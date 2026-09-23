@@ -7,5 +7,10 @@
   "motm": true,
   "figurine": 3
  },
+ "voci": [
+  true,
+  true,
+  true
+ ],
  "errori": []
 }

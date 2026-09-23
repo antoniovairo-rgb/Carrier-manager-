@@ -98,8 +98,8 @@ function creaMotorePossesso(cfg){
      statistiche completo altrimenti non riesco a capirne l'andamento». Qui il conto si tiene dove passano TUTTI
      gli eventi — una funzione sola, per entrambe le squadre — e chi vuole le statistiche le chiede al motore.
      Serve al post-partita e servira' alla partita 2D, che le mostrera' in sovrimpressione. */
-  const _TAB0=()=>({tiri:0,inPorta:0,legni:0,murati:0,fuori:0,gol:0,xg:0,corner:0,falli:0,ammonizioni:0,espulsioni:0,rigori:0,parate:0,passaggi:0,passOk:0,cross:0,rimesse:0,contrasti:0,intercetti:0,spazzate:0,fuorigioco:0,assist:0,possesso:0});
-  S.tab={home:_TAB0(),away:_TAB0()};
+  const _TAB0=()=>({tiri:0,inPorta:0,legni:0,murati:0,fuori:0,gol:0,xg:0,corner:0,falli:0,ammonizioni:0,espulsioni:0,rigori:0,parate:0,passaggi:0,passOk:0,cross:0,rimesse:0,contrasti:0,intercetti:0,spazzate:0,fuorigioco:0,assist:0,possesso:0,dribbling:0,dribblingOk:0,fascia:0});/* [23/09 POC] dribbling (tentati/riusciti) e azioni dalle fasce: richiesta PO sulle statistiche */
+  S.tab={home:_TAB0(),away:_TAB0()};S._fascia23={home:false,away:false};
   /* [7.918.0 — F3 · LE PAGELLE NASCONO DAGLI EVENTI] Richiesta del PO (16/09): «le statistiche della partita,
      pagelle, ecc durante la partita 2D devono essere ben visibili». Una pagella inventata sarebbe una seconda
      verita': qui il voto si costruisce SOLO da cio' che il giocatore ha fatto, perche' ogni evento del motore
@@ -114,6 +114,9 @@ function creaMotorePossesso(cfg){
     switch(e.t){
       case 'passaggio': A.passaggi++;if(!e.fuori)A.passOk++;break;
       case 'cross': A.passaggi++;A.passOk++;A.cross++;break;
+      /* [23/09 POC] AZIONI DALLE FASCE: ogni volta che la squadra porta il pallone nel corridoio laterale dell'ultimo
+         terzo (y<22 o y>78, avanzamento >= 66) partendo da fuori di li'. Solo lettura degli eventi: nessun sorteggio. */
+      case 'ricezione': case 'conduzione': {const q=e.to||e.chi;if(q&&typeof q.x==='number'){const adv=l==='home'?q.x:100-q.x;const w=(q.y<22||q.y>78)&&adv>=66;if(w&&!S._fascia23[l])A.fascia++;S._fascia23[l]=w;}break;}
       case 'tiro': A.tiri++;A.xg=Math.round((A.xg+_XG914(e))*100)/100;
         if(e.esito==='goal'||e.esito==='saved')A.inPorta++;else if(e.esito==='post')A.legni++;else if(e.esito==='blocked')A.murati++;else A.fuori++;break;
       case 'gol': A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;break;
@@ -569,9 +572,10 @@ function creaMotorePossesso(cfg){
     const _no888b=(typeof window!=='undefined'&&window&&window.__CPM_NO888);
     const _entra888=!_no888b&&zona==="limite"&&spazio>=4&&adv<90;
     const pCond=(_entra888||(S.poss.t<=3&&adv<86))?((spazio>=2?(S.poss.t===2?0.55:0.32):(S.poss.t===2?0.40:0.20))+(golReq?0.10:0)+(P.eroe?0.08:0)+(_entra888?0.30:0)):0;
-    if(rnd()<pCond){if(press<3&&spazio<2&&rnd()<0.22){if(rnd()<0.35){ramo("dribblingFallo");fallo(P);return;}ramo("dribblingPerso");perdi(P);return;}
+    if(rnd()<pCond){const _T23=(press<3&&S.tab)?S.tab[P.team]:null;if(_T23)_T23.dribbling++;/* [23/09 POC] conduzione con l'avversario addosso = dribbling tentato */
+      if(press<3&&spazio<2&&rnd()<0.22){if(rnd()<0.35){if(_T23)_T23.dribblingOk++;ramo("dribblingFallo");fallo(P);return;}ramo("dribblingPerso");perdi(P);return;}
       if(Math.abs(P.y-50)>=38&&rnd()<0.42){ramo("conduzioneFuori");ev("fuori",{chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});fuoriCampo(P.x,P.y,altro(l),"throw");return;}
-      ramo("conduci");conduci(P,{spinta:_entra888});return;}
+      if(_T23)_T23.dribblingOk++;ramo("conduci");conduci(P,{spinta:_entra888});return;}
     const R=scegliRicevente(P,{golReq});
     if(R){ramo("passa");passa(P,R);return;}
     if(spazio>=3&&adv<90){ramo("conduci2");conduci(P);return;}

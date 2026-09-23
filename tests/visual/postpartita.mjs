@@ -37,5 +37,8 @@ await page.evaluate(() => { const m = document.querySelector('[data-cpm=motm23]'
 await page.screenshot({ path: path.join(out, `post-motm${TAG}.png`) });
 await page.evaluate(() => { const m = [...document.querySelectorAll('div')].find(d => /dopo la partita/i.test(d.textContent || '') && d.children.length === 0); if (m) m.scrollIntoView({ block: 'center' }); }); await sleep(500);
 await page.screenshot({ path: path.join(out, `post-mister${TAG}.png`) });
+await page.evaluate(() => { const m = [...document.querySelectorAll('div')].find(d => /^Tabellino della gara$/i.test((d.textContent || '').trim())); if (m) m.scrollIntoView({ block: 'start' }); }); await sleep(500);
+R.voci = await page.evaluate(() => ['Azioni dalle fasce', 'Cross', 'Dribbling riusciti'].map(t => document.body.innerText.includes(t)));
+await page.screenshot({ path: path.join(out, `post-tabellino${TAG}.png`) });
 R.errori = err; await browser.close(); await new Promise(r => server.close(r));
 fs.writeFileSync(path.join(out, `settimana${TAG}.json`), JSON.stringify(R, null, 1)); console.log(JSON.stringify(R));
