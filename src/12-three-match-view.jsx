@@ -2005,7 +2005,13 @@ function ThreeMatchView(props){
          della copertura, e cosi' segue ogni taglia d'impianto — alto negli stadi con la falda, piu'
          basso in provincia — invece di stare a una costante che va bene solo per uno. */
       const _yLed668=(function(){try{const _rf=sr.current&&sr.current.crowdMats&&sr.current.crowdMats.curve&&sr.current.crowdMats.curve.roofEnd;
-        return (_rf&&_rf.top)?Math.max(12,_rf.top-1.2):23.5;}catch(_e){return 23.5;}})();
+        /* [23/09 POC — collaudo PO «tabellone led volante, non rispetta l'altezza dello stadio»] senza copertura (stadi
+           piccoli, Primavera) la quota restava 23,5 contro tribune alte ~6: pannello sospeso nel cielo. Ora si appoggia
+           sul MURETTO frontale della tribuna, sopra i cartelloni (y 2,42, come gli striscioni appesi al parapetto): sulla cima o a mezz'aria copriva i tifosi. Misura in __CPM_LED23. Rosso __CPM_NO_LED658B. */
+        const _cm=sr.current&&sr.current.crowdMats;const _eh=_cm&&_cm.endH;
+        const _y=(_rf&&_rf.top)?Math.max(12,_rf.top-1.2):((!(typeof window!=='undefined'&&window.__CPM_NO_LED658B)&&_eh)?2.42:23.5);
+        try{window.__CPM_LED23={y:+_y.toFixed(2),tetto:_rf&&_rf.top?+_rf.top.toFixed(2):null,tribuna:_eh?+_eh.toFixed(2):null};}catch(_e){}
+        return _y;}catch(_e){return 23.5;}})();
       _mkStriscione(0,-36.2,0,'#0a0c10','#ffb020',_vn658,_yLed668,true,28,2.4);
       _mkStriscione(0,36.2,Math.PI,'#0a0c10','#ffb020',_vn658,_yLed668,true,28,2.4);/* [7.661.0] piu' lungo (19->28) e piu' in alto (20,5->23,5), come chiesto in collaudo */
     }catch(_e658){}}/* [7.659.0] PO in collaudo: «un po piu grande ed in alto, all altezza della copertura» — y 9,2 -> 20,5 (il bordo gradinata sta a 23-26), pannello 14x1.6 -> 19x2.2 */

@@ -439,7 +439,10 @@ function makeCrowdTex(spec){
         seated:vip?true:rnd()<_seatedP,/* [7.187.0] calore: più la gara scotta, più gente in piedi (la curva quasi sempre) */
         clapP:rnd(),// propensione all'applauso (desincronizzata, §3)
         flag:!vip&&band==="low"&&team&&rnd()<((S.flags||0)*(0.5+inten*1.2)),
-        scarf:!vip&&team&&rnd()<((S.scarves||0)*(0.6+inten*0.8)),
+        scarf:!vip&&((team&&rnd()<((S.scarves||0)*(0.6+inten*0.8)))||(/snow|neve|cold|fredd/.test(spec.meteo23||"")&&rnd()<0.35)),
+        /* [23/09 POC — domanda PO «il pubblico nello stadio e' migliorabile?»] IL PUBBLICO VIVE IL METEO: con la pioggia
+           un terzo dei tifosi seduti e fuori dalle curve apre l'ombrello (colori veri, non del club). Rosso __CPM_NO_OMBRELLI23. */
+        umb:!vip&&!(typeof window!=='undefined'&&window.__CPM_NO_OMBRELLI23)&&/rain|pioggia|storm|temporal|drizzle|thunder/.test(spec.meteo23||"")&&rnd()<(S.ultras?0.12:0.34),umbCol:["#1f2937","#0f3a6e","#7a1526","#1e5a3a","#3b3b3b","#6b4e16"][(rnd()*6)|0],
         ph:rnd()*6.28,sp:0.8+rnd()*0.6});
     }
   };
@@ -500,6 +503,7 @@ function makeCrowdTex(spec){
       if(s.vip){ctx.fillStyle="#e8e8ee";ctx.fillRect(s.x-cW*0.07,y-rH*0.06,cW*0.14,rH*0.14);}// camicia VIP
       if(s.hair){ctx.fillStyle=s.hair;ctx.beginPath();ctx.arc(s.x,y-rH*0.30*bs,cW*0.22,Math.PI,Math.PI*2);ctx.fill();}
       if(s.cap){ctx.fillStyle=s.capCol;ctx.beginPath();ctx.arc(s.x,y-rH*0.31*bs,cW*0.23,Math.PI*1.02,Math.PI*1.98);ctx.fill();ctx.fillRect(s.x-cW*0.02,y-rH*0.33*bs,cW*0.28,rH*0.04);}
+      if(s.umb){ctx.fillStyle=s.umbCol;ctx.beginPath();ctx.arc(s.x,y-rH*0.40*bs,cW*0.62,Math.PI,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(255,255,255,0.18)';ctx.fillRect(s.x-cW*0.62,y-rH*0.40*bs-1,cW*1.24,1.2);}
       if(armsUp){ctx.strokeStyle=s.skin;ctx.lineWidth=Math.max(1.4,cW*0.13);ctx.beginPath();
         if(clap&&!(ola>0.5)){ctx.moveTo(s.x-cW*0.20,y-rH*0.02);ctx.lineTo(s.x-cW*0.10,y-rH*0.34);ctx.moveTo(s.x+cW*0.20,y-rH*0.02);ctx.lineTo(s.x+cW*0.10,y-rH*0.34);}// mani che si uniscono (applauso)
         else{ctx.moveTo(s.x-cW*0.20,y-rH*0.02);ctx.lineTo(s.x-cW*0.32,y-rH*0.56);ctx.moveTo(s.x+cW*0.20,y-rH*0.02);ctx.lineTo(s.x+cW*0.32,y-rH*0.56);}
@@ -738,7 +742,7 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   const _fillTrib=Math.max(0.03,_bfC-_movedC/(2*Math.max(1,endW)));// tolti equamente alle due tribune
   const mkSpec=(key,sec,isAway,width,fillOv,rowsMul)=>({key,homeHex,awayHex,width,isMobile:isMob,seedKey:key+"_"+(crowd.seed||0),
     fill:fillOv!=null?fillOv:crowd.fill,intensity:Math.max(0,Math.min(1,(crowd.intensity||0.6)*((sec&&sec.heat)||1))),isAway,sector:sec,wedgeFill:crowd.awayFill,rowsMul:rowsMul||1,/* [7.187.0] calore PER SETTORE */
-    passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn});
+    passion:_pssC,ultras:!!(sec&&sec.ultras)&&_ultrasOn,meteo23:crowd.meteo23||""});
   /* [6.2.0 CROWD-SCALE, collaudo PO «tifosi giganti»] file derivate dall ALTEZZA REALE coperta dalla
      texture con TIFOSO-TARGET ~0.9u (giocatori ~1.9u): anello unico = muro intero con texFull (fronte
      grande + fondo fitto = LOD naturale), 2-3 anelli = banda bassa (52%) sull anello inferiore.

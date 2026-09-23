@@ -218,7 +218,7 @@ function computeCrowdContext(a){
     :tier==="final"?CROWD_CFG.awayShare.final:koCtx?CROWD_CFG.awayShare.ko
     :/^euro/.test(ctx)?CROWD_CFG.awayShare.euro:ctx==="cup"?CROWD_CFG.awayShare.cup:CROWD_CFG.awayShare.normal;/* [7.187.0] il seguito ospite dipende dalla COMPETIZIONE: in Europa si viaggia in pochi, in coppa infrasettimanale meno che in campionato */
   const attendance=ctx==="trial"?(60+Math.round(R("att")*180)):Math.min(cap,Math.max(150,Math.round(cap*fill/50)*50));
-  return{tier,fill:+fill.toFixed(3),awayFill:+Math.min(1,fill*aws).toFixed(3),intensity:+intensity.toFixed(3),
+  return{meteo23:String((a.weather&&(a.weather.id||a.weather.name))||"").toLowerCase(),tier,fill:+fill.toFixed(3),awayFill:+Math.min(1,fill*aws).toFixed(3),intensity:+intensity.toFixed(3),
     passion:prof.passion,loyalty:prof.loyalty,/* [7.187.0] usate dal builder per compattezza/coreografie */
     capacity:cap,attendance,derby:!!a.derby,isFinal:!!a.isFinal,seed,
     profile:{market:prof.market,passion:prof.passion,history:prof.history,loyalty:prof.loyalty,econ:prof.econ}};
