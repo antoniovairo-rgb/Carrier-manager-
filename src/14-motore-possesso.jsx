@@ -935,7 +935,43 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
         ricezioni:q.ricezioni,contrasti:q.contrasti,intercetti:q.intercetti,spazzate:q.spazzate,parate:q.parate,
         falli:q.falli,amm:q.amm,esp:q.esp,subiti:q.subiti,tocchi:q.tocchi});}
     return out;};
-  return{tick,chiedi,stato,tabellino,pagelle,registra,HERO,_g:g,_S:S};
+  /* [23/09 POC — B2: IL BRAIN RISOLVE LA SCELTA DELL'EROE. Direttiva PO «il brain deve essere il motore unico» + carta bianca
+     sulle situazioni.] Prima l'esito della scena lo tirava un dado a parte in LiveMatch (seme dal testo della scheda) e il motore
+     riceveva solo un resoconto (`registra`). Ora:
+       · `dado(p)` — il dado e' QUELLO DEL MOTORE (stesso flusso seedato della partita); la probabilita' la calcola ancora
+         LiveMatch con la formula di sempre (succRate e modificatori), quindi la difficolta' non cambia;
+       · `eventi(key,d)` — la scelta risolta diventa una CATENA DI EVENTI VERI del motore con gli attori del cast (eroe,
+         ricevente, difensore, portiere): passano da `ev`, quindi tabellino e pagelle li conta il motore come ogni altro fatto.
+     ⚠️ Il dado consuma il flusso del motore: da qui in poi la partita e' un'altra rispetto a prima del rimedio (sempre
+     riproducibile a parita' di scelte). */
+  const risolviEroe={
+    dado(p){const r=rnd();return r<Math.max(0.02,Math.min(0.98,+p||0));},
+    eventi(key,d){d=d||{};const out=[];const _n0=S.eventi.length;try{
+      const H=g[HERO];if(!H)return out;const C=d.cast||{};const G=w=>(w&&w.i!=null&&g[w.i])?g[w.i]:null;
+      const R=G(C.ricevente),D=G(C.difensore),K=G(C.portiere);
+      const E=(t,o)=>{const e=ev(t,Object.assign({scena:true},o));out.push(e);return e;};
+      const da=q=>({x:+q.x.toFixed(1),y:+q.y.toFixed(1)});const rew=d.rew||'';const ok=!!d.ok;
+      if(key==='goal'){E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),esito:'goal'});E('gol',{chi:chi(H),assist:null,lato:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
+      else if(key==='assist'){const T=R||null;E('passaggio',{da:chi(H),a:chi(T),kind:'corto',from:da(H),to:T?da(T):null});
+        if(ok&&T){E('tiro',{chi:chi(T),from:da(T),esito:'goal'});E('gol',{chi:chi(T),assist:chi(H),lato:T.team,x:+T.x.toFixed(1),y:+T.y.toFixed(1)});}}
+      else if(!ok&&key==='intercept'&&rew==='goal'){E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),esito:'blocked'});if(D)E('murato',{chi:chi(D),su:chi(H)});}/* tiro fermato da un uomo: murato, non fuori */
+      else if(!ok&&key==='intercept'&&D){E('intercetto',{chi:chi(D),da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
+      else if(rew==='goal'||key==='save'||key==='miss'||key==='miss_easy'||key==='post'){
+        const es=key==='save'?'saved':key==='post'?'post':'fuori';E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),esito:es});
+        if(key==='save'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(key==='post')E('palo',{chi:chi(H)});}
+      else if(rew==='assist'){E('passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});}
+      else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')){E('contrasto',{chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
+
+      if(key==='fouled'||key==='win_freekick')E('fallo',{per:H.team===HOME?AWAY:HOME,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+      else if(key==='foul')E('fallo',{chi:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+      if(d.corner)E('corner',{per:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+    }catch(_eR){}
+    /* MISURATO (tabellino-coerenza, prima stesura): lasciati in S.eventi, questi fatti uscivano dal tick successivo, la cronaca
+       li raccontava come un gol NUOVO e il tabellone contava due volte (6-2 contro 3-2 del motore). Sono gia' contati da `ev`
+       e il chiamante li riceve qui: dalla coda del tick si tolgono. */
+    S.eventi.splice(_n0);return out;}
+  };
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* CMAV-MOTORE-END */

@@ -8173,7 +8173,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   (esito non riproducibile → replay/telemetria impossibili). STESSA curva di probabilità di prima,
     //   rng seedato con la ricetta del Decision Engine (sit+azione+indice+punteggio+minuto).
     const _okR78=seededRng((Math.abs(hashStr(((situationsRef.current[hlIdxRef.current]||{}).text||"")+"|"+(action.label||"")+"|"+hlIdxRef.current+"|"+score.home+"-"+score.away+"|"+clockRef.current))>>>0)||1);
-    let ok=_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76);/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */
+    /* [23/09 POC — B2: IL DADO E' DEL BRAIN. Rosso __CPM_NO_B2] stessa probabilita' di prima (senza il rumore ±3% del vecchio
+       dado, che non spostava la media), ma tirata dal flusso seedato del motore: l'esito della scena lo decide il motore unico. */
+    var _b2On=!(typeof window!=='undefined'&&window.__CPM_NO_B2)&&!!(motoreRef.current&&motoreRef.current.risolviEroe)&&!(typeof window!=='undefined'&&window.__CPM_NO870);
+    const _pB2=clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76);
+    let ok=_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));
+    if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_B2=window.__CPM_B2||{n:0,ok:0,pSum:0,brain:0});_W.n++;_W.ok+=ok?1:0;_W.pSum+=_pB2;_W.brain+=_b2On?1:0;}catch(_eW){}}/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */
     try{const _qKeeper=new URLSearchParams(window.location.search||'');if(_qKeeper.get('cpmtest')==='1'&&_qKeeper.get('cpmForce')==='keeper'&&action&&action.gkCall)ok=true;}catch(_e){}
     if((_SIT_TEST||_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_REVIEW))&&typeof window!=='undefined'){ if(window.__CPM_FORCE_OUTCOME){/* [7.211.0] esito forzato anche in revisione · [7.229.0 #47] +cpmtest: il CRITICO automatico gira sotto ?cpmtest=1 e credeva di forzare successo/fallimento — il flag NON veniva mai consumato (solo ?sit=N e revisione lo leggevano) → ogni coppia RIUSCITO/FALLITO del critico misurava DUE VOLTE lo stesso roll naturale seedato, e i falsi «gol senza rete» erano fallimenti naturali etichettati successo. Il GATE resta intatto per costruzione: non setta mai questo flag */ok=(window.__CPM_FORCE_OUTCOME==='success');window.__CPM_FORCE_OUTCOME=null;} try{window.__CPM_LAST_K=(situationsRef.current[hlIdxRef.current].actions||[]).indexOf(action);}catch(e){} }// 5.43.8: Situation Test Mode — Ripeti SUCCESS/FAIL forza l'esito; memorizza l'ultima azione scelta
     let key=ok?action.rew:action.fail;
@@ -8341,7 +8346,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
        dichiarava 4 tiri e 2 in porta per la sua squadra: i suoi tre gol non erano contati, perche' nascono qui
        e il motore non li vede. Ogni azione risolta viene ora DICHIARATA al motore, che tiene il tabellino
        unico. Il ponte resta finche' B0 non fara' nascere l'highlight dal motore stesso. */
-    try{ const _M=motoreRef.current; if(_M&&_M.registra){
+    try{ const _M=motoreRef.current;
+      /* [23/09 POC — B2] con il dado del brain, la scelta risolta diventa una catena di eventi veri del motore (attori del cast):
+         il tabellino e le pagelle li conta il motore. Il vecchio ponte `registra` resta solo nel rosso. */
+      if(_b2On&&_M&&_M.risolviEroe){const _evB2=_M.risolviEroe.eventi(key,{rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner"});_brain23(_evB2);
+        if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
+      else if(_M&&_M.registra){
       const _lato=isMatchHome?'home':'away';
       const _rew=(action&&action.rew)||'';
       const _xgQ=calcXG(action,pPos.x);

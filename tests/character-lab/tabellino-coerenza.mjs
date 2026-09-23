@@ -29,11 +29,12 @@ for (let p = Number(process.env.CPM_DA || 0); p < PARTITE; p++) {
     if (k !== prev) { prev = k; log.push({ t: Math.round((Date.now() - t0) / 1000), ...s }); }
     if (s.fase === 'ended') break;
     if (s.fase === 'hl_choose') { await page.evaluate(k => window.__CPM_RESOLVE && window.__CPM_RESOLVE(k % 3), hl++).catch(() => {}); await sleep(2500); }
+    if (s.fase === 'hl_move') { await page.evaluate(sd => { if (!window.__cpmAP && window.__CPM_AUTOPLAY) { window.__cpmAP = 1; window.__CPM_AUTOPLAY(true, { seed: sd }); } }, 7).catch(() => {}); }
     if (s.fase === 'hl_result') { await sleep(3500); await page.evaluate(() => { const b = [...document.querySelectorAll('button')].find(x => /Continua/i.test(x.textContent || '')); if (b) b.click(); }).catch(() => {}); }
     await sleep(500);
   }
-  const testimoni = await page.evaluate(() => ({ golPersi: window.__CPM_GOLPERSO || [], intx669: (window.__CPM_INTX669 || []).slice(-40) })).catch(() => ({}));
-  console.log('  testimoni:', JSON.stringify(testimoni).slice(0, 1500));
+  const testimoni = await page.evaluate(() => ({ golPersi: window.__CPM_GOLPERSO || [], b2: window.__CPM_B2 || null, b2ev: window.__CPM_B2EV || [], intx669: (window.__CPM_INTX669 || []).slice(-40) })).catch(() => ({}));
+  console.log('  B2:', JSON.stringify(testimoni.b2), JSON.stringify(testimoni.b2ev).slice(0, 600));
   const fine = log.at(-1) || {};
   const diverge = log.filter(l => l.score && l.tab && (l.score.home !== l.tab.h || l.score.away !== l.tab.a));
   esiti.push({ partita: p, finale: { score: fine.score, tabellino: fine.tab, fase: fine.fase }, divergenze: diverge.length, testimoni, primaDivergenza: diverge[0] || null, log });

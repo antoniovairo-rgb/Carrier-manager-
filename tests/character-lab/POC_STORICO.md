@@ -915,6 +915,18 @@ catena conta come «nata dal motore» perche' e' la stessa azione; l'esito della
 Verifica: 6 partite intere (semi 0-5), **26/26 aperture dal motore**, 0 errori — **nessuna catena comparsa**, anche forzando l'esito
 riuscito (il successo porta spesso al gol, e dopo un gol si riparte dal centro). Il ramo catena e' quindi **non misurato**.
 
+## Avanzamento 23 settembre 2026, 23/09 12:59 — B2: IL BRAIN RISOLVE LA SCELTA DELL'EROE
+`risolviEroe` nel motore: `dado(p)` usa il flusso seedato del motore con la probabilita' di sempre (succRate e modificatori, senza il
+rumore ±3% che non spostava la media); `eventi(key,d)` trasforma la scelta risolta in fatti veri del motore con gli attori del cast
+(gol → tiro+gol dell'eroe · assist → passaggio+tiro+gol del ricevente con assist all'eroe · parata → tiro parato+parata del portiere
+· tiro intercettato → tiro murato+murato del difensore · passaggio intercettato → intercetto del difensore · recupero → contrasto
+dell'eroe · falli e corner). Il tabellino e le pagelle li conta il motore; il ponte `registra` resta solo nel rosso `__CPM_NO_B2`.
+**Difetto mio preso dalla misura:** nella prima stesura i fatti restavano nella coda del tick, la cronaca li raccontava di nuovo e il
+tabellone contava due volte (6-2 contro 3-2 del motore). Ora si tolgono dalla coda dopo essere stati contati (provato in Node: 0 riemessi).
+**Misura** (tabellino-coerenza, 2 partite per braccio): verde 10/10 esiti dal brain, tabellone = motore 2-3/2-3 e 2-3/2-3; rosso 0/13,
+tabellone = motore (col ponte). Probabilita' media 0,46-0,48, riuscite 4/10: campione piccolo.
+**Dichiarato:** il dado consuma il flusso del motore, quindi da qui le partite sono diverse da prima (riproducibili a parita' di scelte).
+
 ---
 
 ## Obiettivo vincolante

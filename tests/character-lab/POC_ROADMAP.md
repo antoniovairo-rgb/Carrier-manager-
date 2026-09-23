@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 12:41 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 12:59 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -8,13 +8,14 @@
 
 | Cantiere | Stato | Cosa manca |
 | --- | --- | --- |
+| 23/09 12:59 | B2: il brain tira il dado della scelta ed emette la catena di eventi (addio ponte) | esiti dal brain 0/13 → 10/10; tabellone = motore |
 | 23/09 12:40 | B0: la catena eredita l'evento del brain · 6 partite di verifica | 26/26 scene dal brain; catena non osservata |
 | Personaggi CGTrader (modello, LOD, kit) | ✅ nel banco: kit corretto nei file, portiere LOD1 nella presa, 64,6k triangoli | prova sul telefono |
 | Gesti negli highlight | ✅ presa, dribbling, passaggio, tiro misurati · eroe taglia 0,18 | ❌ tuffo e respinta del portiere CGTrader (clip assenti nel pacchetto) |
 | **Brain → scena (B0)** | ✅ scene nate dal motore **26 su 26** (6 partite) | la «catena» ora eredita l'evento del brain, ma non è mai comparsa: **non misurata** |
 | **Brain → attori (B4)** | 🟡 ricevente **3 su 5** · difensore **4 su 6** · portiere 6 su 6 (mediane 0 u) | ricevente di cross e consegne · 2 difensori ancora scelti dal 3D |
 | Brain muove i 22 in scena (B3) | ⏳ da fare | |
-| Esito deciso dal brain (B2) | ⏳ da fare | oggi lo decide il dado dell'highlight |
+| **Esito deciso dal brain (B2)** | ✅ **10 su 10** esiti col dado del brain (rosso 0/13) · eventi veri col cast · tabellone = motore | il 3D non legge ancora quegli eventi |
 | Gesti collegati al brain | 🟡 impianto pronto (tabella unica evento→gesto) | si accende con B3 |
 | Tabellino = motore | ✅ gol del compagno e gol «persi» corretti | |
 | Ritratti / figurine | 🟡 Codex ha consegnato **308 ritratti** (lotti 1-3) | collegarli ai volti veri (compagni, rivale, mister, procuratore) |
@@ -22,8 +23,8 @@
 
 ## Piano (carta bianca del PO sulle situazioni, 23/09)
 1. ✅ Il brain apre la scena, con tipo di occasione e cast.
-2. ▶️ **Il brain risolve la scelta dell'eroe**: dado dentro il motore (stessa probabilità di oggi), catena di eventi con gli attori veri, tabellino aggiornato dal motore (addio ponte `registra`).
-3. Il 3D mostra solo quegli eventi: gesti per indice, esito e attori dal brain.
+2. ✅ **Il brain risolve la scelta dell'eroe**: dado dentro il motore (stessa probabilità di oggi), catena di eventi con gli attori veri, tabellino aggiornato dal motore (addio ponte `registra`).
+3. ▶️ Il 3D mostra solo quegli eventi: gesti per indice, esito e attori dal brain.
 4. Archetipi al posto delle 185 schede: opzioni (≤3) dal tipo di occasione; i testi restano racconto.
 5. Catene sostituite dal seguito deciso dal brain.
 
