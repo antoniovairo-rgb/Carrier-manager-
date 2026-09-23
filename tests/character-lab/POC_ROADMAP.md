@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 18:43 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 18:51 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -30,7 +30,7 @@
 7. 🟡 **Clip nuove, contro la ripetizione**: 54 clip Mixamo dalla cartella Drive del PO riadattate (cancello 54/54), in gioco come varianti di tuffo (lato scelto dalla palla), respinta, presa alta, rinvio, lancio, portiere in attesa, scivolata. Tiro: varianti revocate (contatto peggiore). Prossimi: contatto misurato per testa/controllo/rigore/rimessa/rovesciata, tiro specchiato (destro), nuovi gesti (sgambetto, palleggio, portiere che dirige), CMU.
 
 ## Decisioni del PO (questionario 23/09 18:45) → ordine di lavoro
-1. **Rovesciata vera** sincronizzata col pallone (priorità alta).
+1. ✅ **Rovesciata vera** sincronizzata col pallone: piede-palla 0,28 m (rosso 0,44).
 2. **Gesto segue il testo**: se la cronaca dice tuffo, il portiere si tuffa (dal lato della palla).
 3. **CH38 via ovunque**: cerimonie, ritratto 3D dei menu, niente download del CH38.
 4. **Corpi CGTrader caricati in anticipo** (menu/pre-partita).
@@ -43,6 +43,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 18:51 | Rovesciata vera (decisione PO 1): su «Rovesciata!» parte la clip rovesciata, allineata all'impatto; la palla si prende in aria dal piede. Tolta la rovesciata a sorteggio sul tiro al volo (errore del commit 18:33) | piede-palla 0,28 m con palla a 1,37 m (rosso: tiro al volo storico 0,44 m) · rosso __CPM_NO_ROVESCIATA23 |
 | 23/09 18:43 | Tiro specchiato (destro) calcolato al caricamento dalla clip storica: variante del tiro senza toccare la sincronia | autoverifica piedi 5 mm · piede-palla 0,34 m (storico 0,21-0,45) · rosso __CPM_NO_SPECCHIO23 |
 | 23/09 18:33 | Clip Mixamo del PO (Drive): 54 riadattate su CGTrader in un file unico (3,0 MB); varianti per portiere e contrasti; lato del tuffo dalla palla | cancello anatomico 54/54 · tuffo dal lato giusto 3/3 (rosso 2/3) · varianti del tiro REVOCATE (piede-palla 0,83 m contro 0,21-0,45) · career-critical verde |
 | 23/09 17:45 | Anteprima Netlify: la pagina principale è il gioco, niente reindirizzamenti (pretty URL spenti) | / e /CARRIER-MANAGER-AV.html 200, identici al build + solo lo script HUD di Netlify (184 byte) |

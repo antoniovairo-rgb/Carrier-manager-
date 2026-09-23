@@ -112,6 +112,7 @@ try {
     esecuzioniScelte: await page.evaluate(() => window.__CPM_VAR23 || null).catch(() => null),
     latoTuffo: await page.evaluate(() => window.__CPM_TUFFO23 || null).catch(() => null),
     specchio: await page.evaluate(() => window.__CPM_SPECCHIO23 || null).catch(() => null),
+    rovesciata: await page.evaluate(() => window.__CPM_ROVESCIATA23 || null).catch(() => null),
     errors,
   };
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify({ scelta, sintesi, frames: frames.map(({ shot, ...f }) => f) }, null, 1));

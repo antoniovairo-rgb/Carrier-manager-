@@ -69,6 +69,9 @@ function _scegliGesto23(a,want,ai,chiave,lbl,lato){
   const _nm=x=>((x&&x.getClip&&x.getClip())||{}).name,W=(typeof window!=='undefined')?(window.__CPM_VAR23=window.__CPM_VAR23||{}):{};
   const _segna=(act,r)=>{try{const n=r||_nm(act)||'?';(W[want]=W[want]||{})[n]=(W[want][n]||0)+1;
     if(lato&&(want==='dive'||want==='block')){const T=(window.__CPM_TUFFO23=window.__CPM_TUFFO23||{giusto:0,sbagliato:0,ignoto:0});const l=_LATO23[_nm(act)];if(!l)T.ignoto++;else if(l===lato)T.giusto++;else T.sbagliato++;}}catch(_e){}return act;};
+  /* [23/09 POC — ROVESCIATA VERA, decisione PO] la scelta letta dal giocatore vince: «Rovesciata!»/«sforbiciata» montano la clip
+     rovesciata (Mixamo, cartella del PO). Rosso __CPM_NO_ROVESCIATA23. Il contatto si allinea all'impatto al montaggio (vedi sotto). */
+  if(ai===0&&a._gScissor&&lbl&&/rovesciat|sforbiciat/i.test(String(lbl))&&(want==='kick'||want==='volley'))return _segna(a._gScissor);
   const base=a.gestures[want];if(!base)return base;
   let v=(a._gVar&&a._gVar[want])||[base];
   /* tuffo/respinta: si tiene solo l'esecuzione che va dal lato della palla. Rosso __CPM_NO_LATO23 (sorteggio fra tutte). */
@@ -866,8 +869,7 @@ function ThreeMatchView(props){
       const _VAR23={kick:['kick~m'],/* [23/09] il tiro storico SPECCHIATO (destro, stessa fase): vedi _specchiaClip23 */
         /* kick Mixamo: REVOCATO. Le tre clip di tiro nuove peggiorano il contatto (piede-palla 0,83-1,46 m contro 0,21-0,45 della clip
            storica, gesto-eroe-review CPM_FORZA): la palla parte sulla fase della clip storica (sinistro, 0,98). */
-        volley:['mx-scissor-kick'],
-        /* header, receive, penalty, throwin, volley (rovesciata): RIMANDATI — hanno un contatto con la palla sincronizzato
+        /* header, receive, penalty, throwin: RIMANDATI (la rovesciata NON e' una variante a sorteggio: esce solo su «Rovesciata!», _gScissor) — hanno un contatto con la palla sincronizzato
            sulla clip storica, e sul tiro la misura ha bocciato le clip nuove. Si aggiungono dopo averne misurato il contatto. */
         tackle:['mx-soccer-tackle','mx-soccer-tackle-2','mx-soccer-tackle-3'],
         /* tuffo e respinta: il LATO conta (bacino, provino-clip): gk-dive e gk-block vanno a SINISTRA del portiere (+3,1 / +1,4 m),
@@ -879,6 +881,7 @@ function ThreeMatchView(props){
         gkThrow:['mx-goalkeeper-overhand-throw','mx-goalkeeper-pass'],goalKick:['mx-goalkeeper-drop-kick'],gkReady:['mx-goalkeeper-idle','mx-goalkeeper-idle-2']};
       const _PESO23={};
       const _mkGestures=(av,map)=>{if(!av)return;const out={};for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;
+        av._gScissor=null;{const _sc=_mxAnims23.find(x=>x&&x.name==='mx-scissor-kick');if(_sc&&!(typeof window!=='undefined'&&window.__CPM_NO_ROVESCIATA23)){const a=av.mx.clipAction(_sc);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gScissor=a;}}
         av._gVar=null;if(_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP)){const v={};for(const k in out){if(!out[k]||!_VAR23[k])continue;const acts=[];for(let i=0;i<(_PESO23[k]||1);i++)acts.push(out[k]);
           _VAR23[k].forEach(n=>{const c=_mxAnims23.find(x=>x&&x.name===n);if(!c)return;const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);acts.push(a);});if(acts.length>1)v[k]=acts;}av._gVar=v;}
         try{const M=(window.__CPM_MKG23=window.__CPM_MKG23||{chiamate:0,conVarianti:0,clip:0});M.chiamate++;M.clip=_mxAnims23.length;if(av._gVar&&Object.keys(av._gVar).length)M.conVarianti++;}catch(_e){}};
@@ -4042,12 +4045,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          /* [23/09 POC] il contatto dipende dall'esecuzione scelta (varianti _VAR23): piede e istante misurati sulla clip
             (picco di velocita' del piede, provino-clip): kick sx 0,98 · mx-kick-soccerball sx 0,92 · mx-kick-soccerball-2 dx 0,84 ·
             mx-strike-foward-jog dx 0,38. Finestra stretta [u-w, u+0,06] (la larga [u-0,18] seguiva il piede nel caricamento: 0,85 m contro 0,43); la clip storica resta [0,72, 0,98] col sinistro. */
-         const _kc23=({'mx-kick-soccerball':{dx:false,u:0.92,w:0.08},'mx-kick-soccerball-2':{dx:true,u:0.84,w:0.08},'mx-strike-foward-jog':{dx:true,u:0.38,w:0.06},'mx-scissor-kick':{dx:true,u:0.29,w:0.06},'kick~m':{dx:true,u:0.9,w:0.18}})[((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name]||{dx:false,u:0.9};
+         const _kc23=({'mx-kick-soccerball':{dx:false,u:0.92,w:0.08},'mx-kick-soccerball-2':{dx:true,u:0.84,w:0.08},'mx-strike-foward-jog':{dx:true,u:0.38,w:0.06},'mx-scissor-kick':{dx:true,u:0.29,w:0.06,alto:true},'kick~m':{dx:true,u:0.9,w:0.18}})[((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name]||{dx:false,u:0.9};
          const _u=clamp((+_cgAvatar._gAct.time||0)/_clipDur,0,1),_nearImpact=_kc23.w?(_u>=_kc23.u-_kc23.w&&_u<=Math.min(0.98,_kc23.u+0.06)):(_u>=0.72&&_u<=0.98);
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
          let _cx=hero.position.x+_fx*0.78,_cz=hero.position.z+_fz*0.78,_anchor="heading";
-         const _kb23=_kc23.dx?(_cgAvatar._ballR||_cgAvatar._footR):(_cgAvatar._ballL||_cgAvatar._footL);if(_nearImpact&&_kb23)try{const _bp=sr.current._cgKickBonePoint||(sr.current._cgKickBonePoint=new THREE.Vector3());_kb23.getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor=_kc23.dx?"right-foot-bone":"left-foot-bone";}}catch(_e){}
-         ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*12,1);
+         let _cy23=0.22;/* rovesciata: la palla si prende in aria, all'altezza del piede */const _kb23=_kc23.dx?(_cgAvatar._ballR||_cgAvatar._footR):(_cgAvatar._ballL||_cgAvatar._footL);if(_nearImpact&&_kb23)try{const _bp=sr.current._cgKickBonePoint||(sr.current._cgKickBonePoint=new THREE.Vector3());_kb23.getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor=_kc23.dx?"right-foot-bone":"left-foot-bone";if(_kc23.alto&&Number.isFinite(_bp.y))_cy23=_bp.y;}}catch(_e){}
+         ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(_cy23-ball.position.y)*(_kc23.alto?_gain:Math.min(aDt*12,1));
          if(typeof window!=="undefined")window.__CPM_CGTRADER_KICK_TOUCH={u:+_u.toFixed(3),anchor:_anchor,arcT:+ballArcT.toFixed(3),targetX:+_cx.toFixed(3),targetZ:+_cz.toFixed(3),gesture:"kick",lod:_cgAvatar._cgLod||null};
        } else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
@@ -9492,7 +9495,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  rosso conferma: 10 contro 17. */// [7.49.0 BL-06] il gesto precedente non si azzera di colpo (pop): sfuma in _gPrev
               _a._gName=_want;/* [23/09 POC] lato del tuffo: la sinistra del portiere e' +X del modello (piede sinistro a +0,35 a riposo); verso la palla = oppDiveDir (asse z del mondo) */
               const _lato23=(_a._isGk&&(_want==='dive'||_want==='block')&&_a.proc===oppMesh&&_a.visualRoot&&oppDiveDir)?(function(){try{const q=new THREE.Quaternion();_a.visualRoot.getWorldQuaternion(q);const lz=new THREE.Vector3(1,0,0).applyQuaternion(q).z;return Math.abs(lz)>0.2?((lz*oppDiveDir>0)?1:-1):0;}catch(_e){return 0;}})():0;
-              _a._gAct=_scegliGesto23(_a,_want,_ai,propsRef.current&&propsRef.current.hlSitKey,propsRef.current&&propsRef.current.hlActLbl,_lato23);_a._gAct.reset().play();if(_ai===0&&typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED){try{const _M=(window.__CPM_CGTRADER_MOUNTS=window.__CPM_CGTRADER_MOUNTS||{}),_k=String((propsRef.current&&propsRef.current.hlSitKey)||'?');(_M[_k]=_M[_k]||[]).length<12&&_M[_k].push(String(_want));}catch(_e){}}/* [23/09 POC] montaggi VERI dell'eroe (dopo le guardie): __CPM_G000 conta i tentativi prima della guardia 7.396 */
+              _a._gAct=_scegliGesto23(_a,_want,_ai,propsRef.current&&propsRef.current.hlSitKey,propsRef.current&&propsRef.current.hlActLbl,_lato23);_a._gAct.reset().play();if(_a._gAct===_a._gScissor&&ballArcActive){/* contatto della rovesciata a 0,8 s di clip (picco di velocita' del piede, provino-clip): la clip parte in modo che il piede arrivi alla palla all'impatto */try{_a._gAct.time=Math.max(0,Math.min(0.8+ballArcT,(_a._gAct.getClip().duration||2.8)-0.05));window.__CPM_ROVESCIATA23={montata:1,arcT:+ballArcT.toFixed(3),t0:+_a._gAct.time.toFixed(3)};}catch(_e){}}if(_ai===0&&typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED){try{const _M=(window.__CPM_CGTRADER_MOUNTS=window.__CPM_CGTRADER_MOUNTS||{}),_k=String((propsRef.current&&propsRef.current.hlSitKey)||'?');(_M[_k]=_M[_k]||[]).length<12&&_M[_k].push(String(_want));}catch(_e){}}/* [23/09 POC] montaggi VERI dell'eroe (dopo le guardie): __CPM_G000 conta i tentativi prima della guardia 7.396 */
               /* [7.517.0 R3/2 — LA MIRA SI LATCHA AL MONTAGGIO: audit «il corpo non e' orientato verso la
                  direzione del passaggio/tiro»] Al montaggio del gesto si fissa la direzione VERSO il bersaglio
                  dell'arco (se vivo): il driver di facing la usera' al posto del moto residuo. Esclusi GK

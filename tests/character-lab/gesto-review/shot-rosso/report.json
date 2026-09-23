@@ -1,7 +1,7 @@
 {
  "scelta": {
   "i": 1,
-  "k": 2,
+  "k": 0,
   "text": "🤸 Rovesciata spettacolare!",
   "labels": [
    "🤸 Rovesciata!",
@@ -12,7 +12,7 @@
  "sintesi": {
   "intento": "shot",
   "situazione": "🤸 Rovesciata spettacolare!",
-  "azione": "🦵 Tiro di prima",
+  "azione": "🤸 Rovesciata!",
   "campioni": 34,
   "fasi": [
    "hl_choose",
@@ -20,109 +20,75 @@
   ],
   "gestiEroePerScena": {
    "10001": {
-    "n": 22,
+    "n": 1,
     "gesti": [
-     "kick",
-     "kick",
-     "kick",
-     "miss",
-     "miss",
-     "miss",
-     "miss",
-     "miss"
+     "volley"
     ],
     "tipi": [
-     "shot",
-     "-"
+     "shot"
     ]
    }
   },
   "perFotogramma": {
-   "kick": {
-    "fotogrammi": 22,
-    "minPiede": 0.36,
-    "ctAlMin": 0.373,
-    "byAlMin": 0.229,
-    "faceAlMin": 0,
-    "kick": {
-     "u": 0.744,
-     "anchor": "left-foot-bone",
-     "arcT": -0.017,
-     "targetX": 38.76,
-     "targetZ": 2.155,
-     "gesture": "kick",
-     "lod": "lod0"
-    }
-   },
-   "miss": {
-    "fotogrammi": 15,
-    "minPiede": 3.777,
-    "ctAlMin": 1.438,
-    "byAlMin": 0.575,
-    "faceAlMin": 31,
-    "kick": {
-     "u": 0.744,
-     "anchor": "left-foot-bone",
-     "arcT": -0.017,
-     "targetX": 38.76,
-     "targetZ": 2.155,
-     "gesture": "kick",
-     "lod": "lod0"
-    }
+   "volley": {
+    "fotogrammi": 23,
+    "minPiede": 0.438,
+    "ctAlMin": 0.452,
+    "byAlMin": 0.998,
+    "faceAlMin": 10,
+    "kick": null
    }
   },
   "montaggiVeriEroe": {
    "10001": [
-    "kick",
-    "miss"
+    "volley"
    ]
   },
-  "campioniConGesto": 6,
+  "campioniConGesto": 4,
   "clip": [
-   "kick",
-   "missed-chance"
+   "volley"
   ],
   "contatto": {
-   "i": 10,
-   "gesto": "kick",
-   "clipTime": 0.271,
-   "clipDur": 0.458,
-   "piedeSx": 1.792,
-   "piedeDx": 0.826,
-   "facingGoalDeg": 0.8,
+   "i": 11,
+   "gesto": "volley",
+   "clipTime": 1.802,
+   "clipDur": 2.208,
+   "piedeSx": 0.849,
+   "piedeDx": 0.667,
+   "facingGoalDeg": 19.6,
    "inFrame": true,
    "ballInFrame": true,
-   "height": 0.118
+   "height": 0.125
   },
-  "eroeNelQuadro": 1,
+  "eroeNelQuadro": 0.97,
   "taglia": {
    "n": 34,
    "q10": 0.08,
-   "mediana": 0.082,
-   "q90": 0.128
+   "mediana": 0.088,
+   "q90": 0.154
   },
-  "fuoriQuadroHL": 0,
+  "fuoriQuadroHL": 0.03,
   "tpose": [],
   "tposeCampioni": 0,
   "contestoConGesto": [
    {
     "i": 8,
-    "actor": 14,
+    "actor": 13,
     "gesture": "tackle"
    },
    {
     "i": 9,
-    "actor": 14,
+    "actor": 13,
     "gesture": "tackle"
    },
    {
     "i": 10,
-    "actor": 14,
+    "actor": 13,
     "gesture": "tackle"
    },
    {
     "i": 11,
-    "actor": 14,
+    "actor": 13,
     "gesture": "tackle"
    }
   ],
@@ -130,36 +96,153 @@
    5
   ],
   "esecuzioniScelte": {
-   "kick": {
-    "senza-varianti": 1
+   "volley": {
+    "unica": 1
    },
-   "block": {
-    "senza-varianti": 1
+   "dive": {
+    "mx-goalkeeper-diving-save-2": 1
    },
    "tackle": {
-    "senza-varianti": 1
-   },
-   "miss": {
-    "senza-varianti": 1
+    "mx-soccer-tackle-2": 1
    }
   },
   "latoTuffo": {
-   "giusto": 0,
-   "sbagliato": 1,
+   "giusto": 1,
+   "sbagliato": 0,
    "ignoto": 0
   },
+  "specchio": {
+   "kick~m": {
+    "fotogrammi": 11,
+    "erroreMax": 0.0051,
+    "asse": "x"
+   }
+  },
+  "rovesciata": null,
   "errors": []
  },
  "frames": [
   {
    "i": 0,
-   "t": 1539,
+   "t": 1603,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 0.113,
+     "y": 0.521,
+     "z": 2.568
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.32,
+      "armR": 0.48,
+      "handsAtChest": 0.113,
+      "footBallL": 30.206,
+      "footBallR": 29.618,
+      "loco": "strR",
+      "facingGoalDeg": 106.7,
+      "inFrame": false,
+      "height": 0.026,
+      "ballInFrame": true
+     },
+     {
+      "i": 1,
+      "hero": false,
+      "gk": true,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.403,
+      "armR": 0.409,
+      "handsAtChest": 0.092,
+      "footBallL": 37.907,
+      "footBallR": 38.412,
+      "loco": null
+     },
+     {
+      "i": 7,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.428,
+      "armR": 0.466,
+      "handsAtChest": 0.114,
+      "footBallL": 12.495,
+      "footBallR": 12.94,
+      "loco": "strL"
+     },
+     {
+      "i": 20,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.389,
+      "armR": 0.422,
+      "handsAtChest": 0.114,
+      "footBallL": 1.239,
+      "footBallR": 0.788,
+      "loco": "strR"
+     },
+     {
+      "i": 22,
+      "hero": false,
+      "gk": false,
+      "team": "ref",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.427,
+      "armR": 0.464,
+      "handsAtChest": 0.114,
+      "footBallL": 2.064,
+      "footBallR": 2.152,
+      "loco": null
+     }
+    ]
+   },
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 1,
+   "t": 2585,
    "phase": "hl_choose",
    "sit": null,
    "a": {
     "ball": {
      "x": 37,
-     "y": 1.752,
+     "y": 1.763,
      "z": 2.72
     },
     "actors": [
@@ -174,16 +257,16 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.353,
-      "armR": 0.519,
-      "handsAtChest": 0.126,
-      "footBallL": 7.857,
-      "footBallR": 8.241,
-      "loco": "strL",
-      "facingGoalDeg": 68.9,
+      "armL": 0.366,
+      "armR": 0.494,
+      "handsAtChest": 0.144,
+      "footBallL": 1.715,
+      "footBallR": 1.778,
+      "loco": "strR",
+      "facingGoalDeg": 100.4,
       "inFrame": true,
-      "height": 0.032,
-      "ballInFrame": false
+      "height": 0.08,
+      "ballInFrame": true
      },
      {
       "i": 11,
@@ -196,11 +279,11 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.406,
-      "armR": 0.412,
-      "handsAtChest": 0.092,
-      "footBallL": 5.589,
-      "footBallR": 5.622,
+      "armL": 0.435,
+      "armR": 0.372,
+      "handsAtChest": 0.06,
+      "footBallL": 5.941,
+      "footBallR": 5.545,
       "loco": null
      },
      {
@@ -214,12 +297,12 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.403,
-      "armR": 0.42,
-      "handsAtChest": 0.09,
-      "footBallL": 8.642,
-      "footBallR": 8.792,
-      "loco": null
+      "armL": 0.358,
+      "armR": 0.467,
+      "handsAtChest": 0.024,
+      "footBallL": 8.805,
+      "footBallR": 9.155,
+      "loco": "strR"
      },
      {
       "i": 14,
@@ -232,12 +315,12 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.423,
-      "armR": 0.46,
-      "handsAtChest": 0.113,
-      "footBallL": 3.942,
-      "footBallR": 3.975,
-      "loco": null
+      "armL": 0.371,
+      "armR": 0.49,
+      "handsAtChest": 0.043,
+      "footBallL": 3.994,
+      "footBallR": 3.812,
+      "loco": "strR"
      },
      {
       "i": 17,
@@ -250,12 +333,12 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.401,
-      "armR": 0.436,
-      "handsAtChest": 0.114,
-      "footBallL": 16.047,
-      "footBallR": 16.595,
-      "loco": null
+      "armL": 0.355,
+      "armR": 0.474,
+      "handsAtChest": 0.02,
+      "footBallL": 16.456,
+      "footBallR": 16.881,
+      "loco": "strR"
      }
     ]
    },
@@ -264,14 +347,14 @@
    "mounts": null
   },
   {
-   "i": 1,
-   "t": 2744,
+   "i": 2,
+   "t": 3130,
    "phase": "hl_choose",
    "sit": null,
    "a": {
     "ball": {
      "x": 37,
-     "y": 1.776,
+     "y": 1.796,
      "z": 2.72
     },
     "actors": [
@@ -286,13 +369,125 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.385,
-      "armR": 0.51,
+      "armL": 0.36,
+      "armR": 0.45,
+      "handsAtChest": 0.077,
+      "footBallL": 1.815,
+      "footBallR": 1.85,
+      "loco": "strR",
+      "facingGoalDeg": 100.4,
+      "inFrame": true,
+      "height": 0.08,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.387,
+      "armR": 0.502,
       "handsAtChest": 0.089,
-      "footBallL": 1.706,
-      "footBallR": 1.758,
-      "loco": "strL",
-      "facingGoalDeg": 78.5,
+      "footBallL": 6.509,
+      "footBallR": 6.255,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.381,
+      "armR": 0.501,
+      "handsAtChest": 0.076,
+      "footBallL": 9.023,
+      "footBallR": 9.399,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.398,
+      "armR": 0.442,
+      "handsAtChest": 0.095,
+      "footBallL": 4.212,
+      "footBallR": 3.65,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.373,
+      "armR": 0.491,
+      "handsAtChest": 0.075,
+      "footBallL": 17.161,
+      "footBallR": 17.38,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 3,
+   "t": 3672,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 37,
+     "y": 1.823,
+     "z": 2.72
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.317,
+      "armR": 0.507,
+      "handsAtChest": 0.159,
+      "footBallL": 1.879,
+      "footBallR": 1.833,
+      "loco": "strR",
+      "facingGoalDeg": 100.4,
       "inFrame": true,
       "height": 0.08,
       "ballInFrame": true
@@ -309,10 +504,10 @@
       "clipTime": null,
       "clipDur": null,
       "armL": 0.436,
-      "armR": 0.364,
-      "handsAtChest": 0.084,
-      "footBallL": 6.187,
-      "footBallR": 5.403,
+      "armR": 0.349,
+      "handsAtChest": 0.042,
+      "footBallL": 6.922,
+      "footBallR": 7.42,
       "loco": null
      },
      {
@@ -326,12 +521,12 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.389,
-      "armR": 0.488,
-      "handsAtChest": 0.011,
-      "footBallL": 8.863,
-      "footBallR": 8.701,
-      "loco": "strL"
+      "armL": 0.378,
+      "armR": 0.51,
+      "handsAtChest": 0.104,
+      "footBallL": 9.077,
+      "footBallR": 9.372,
+      "loco": "run"
      },
      {
       "i": 14,
@@ -344,12 +539,12 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.458,
-      "armR": 0.478,
-      "handsAtChest": 0.091,
-      "footBallL": 3.405,
-      "footBallR": 3.573,
-      "loco": "back"
+      "armL": 0.447,
+      "armR": 0.374,
+      "handsAtChest": 0.13,
+      "footBallL": 4.06,
+      "footBallR": 4.283,
+      "loco": "run"
      },
      {
       "i": 17,
@@ -362,12 +557,12 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.353,
-      "armR": 0.474,
-      "handsAtChest": 0.019,
-      "footBallL": 16.423,
-      "footBallR": 16.837,
-      "loco": "strR"
+      "armL": 0.37,
+      "armR": 0.499,
+      "handsAtChest": 0.102,
+      "footBallL": 18.28,
+      "footBallR": 18.315,
+      "loco": "run"
      }
     ]
    },
@@ -376,14 +571,14 @@
    "mounts": null
   },
   {
-   "i": 2,
-   "t": 3306,
+   "i": 4,
+   "t": 4192,
    "phase": "hl_choose",
    "sit": null,
    "a": {
     "ball": {
      "x": 37,
-     "y": 1.818,
+     "y": 1.832,
      "z": 2.72
     },
     "actors": [
@@ -398,13 +593,13 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.416,
-      "armR": 0.483,
-      "handsAtChest": 0.056,
-      "footBallL": 1.82,
-      "footBallR": 1.758,
-      "loco": "strL",
-      "facingGoalDeg": 78.5,
+      "armL": 0.373,
+      "armR": 0.441,
+      "handsAtChest": 0.08,
+      "footBallL": 1.819,
+      "footBallR": 1.895,
+      "loco": "strR",
+      "facingGoalDeg": 100.4,
       "inFrame": true,
       "height": 0.08,
       "ballInFrame": true
@@ -420,11 +615,11 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.385,
-      "armR": 0.433,
-      "handsAtChest": 0.112,
-      "footBallL": 6.377,
-      "footBallR": 7.136,
+      "armL": 0.377,
+      "armR": 0.509,
+      "handsAtChest": 0.104,
+      "footBallL": 7.898,
+      "footBallR": 7.908,
       "loco": null
      },
      {
@@ -438,11 +633,1233 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.378,
-      "armR": 0.48,
+      "armL": 0.38,
+      "armR": 0.488,
+      "handsAtChest": 0.081,
+      "footBallL": 8.625,
+      "footBallR": 9.054,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.439,
+      "armR": 0.36,
+      "handsAtChest": 0.066,
+      "footBallL": 4.965,
+      "footBallR": 4.276,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.374,
+      "armR": 0.456,
+      "handsAtChest": 0.094,
+      "footBallL": 19.591,
+      "footBallR": 19.008,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 5,
+   "t": 4820,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 37,
+     "y": 1.808,
+     "z": 2.72
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.427,
+      "armR": 0.453,
+      "handsAtChest": 0.049,
+      "footBallL": 1.86,
+      "footBallR": 1.855,
+      "loco": "strR",
+      "facingGoalDeg": 100.4,
+      "inFrame": true,
+      "height": 0.08,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.416,
+      "armR": 0.35,
+      "handsAtChest": 0.078,
+      "footBallL": 7.609,
+      "footBallR": 8.352,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.409,
+      "armR": 0.35,
+      "handsAtChest": 0.111,
+      "footBallL": 7.454,
+      "footBallR": 8.187,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.424,
+      "armR": 0.488,
+      "handsAtChest": 0.081,
+      "footBallL": 4.906,
+      "footBallR": 5.042,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.394,
+      "armR": 0.351,
+      "handsAtChest": 0.122,
+      "footBallL": 19.784,
+      "footBallR": 19.393,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 6,
+   "t": 5297,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 37,
+     "y": 1.767,
+     "z": 2.72
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.479,
+      "armR": 0.483,
+      "handsAtChest": 0.161,
+      "footBallL": 1.817,
+      "footBallR": 1.819,
+      "loco": "strR",
+      "facingGoalDeg": 100.4,
+      "inFrame": true,
+      "height": 0.08,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.427,
+      "armR": 0.419,
+      "handsAtChest": 0.057,
+      "footBallL": 7.91,
+      "footBallR": 7.634,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.38,
+      "armR": 0.508,
+      "handsAtChest": 0.1,
+      "footBallL": 6.331,
+      "footBallR": 6.448,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.419,
+      "armR": 0.366,
+      "handsAtChest": 0.116,
+      "footBallL": 5.252,
+      "footBallR": 4.843,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.399,
+      "armR": 0.344,
+      "handsAtChest": 0.113,
+      "footBallL": 19.637,
+      "footBallR": 19.694,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 7,
+   "t": 5781,
+   "phase": "hl_choose",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 37,
+     "y": 1.721,
+     "z": 2.72
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.402,
+      "armR": 0.433,
+      "handsAtChest": 0.157,
+      "footBallL": 1.696,
+      "footBallR": 1.791,
+      "loco": "strR",
+      "facingGoalDeg": 100.4,
+      "inFrame": true,
+      "height": 0.08,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.413,
+      "armR": 0.454,
+      "handsAtChest": 0.106,
+      "footBallL": 7.832,
+      "footBallR": 7.702,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.429,
+      "armR": 0.364,
+      "handsAtChest": 0.137,
+      "footBallL": 4.997,
+      "footBallR": 4.212,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.432,
+      "armR": 0.458,
+      "handsAtChest": 0.084,
+      "footBallL": 4.995,
+      "footBallR": 4.87,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.44,
+      "armR": 0.354,
+      "handsAtChest": 0.048,
+      "footBallL": 19.275,
+      "footBallR": 19.492,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": null,
+   "touch": null,
+   "mounts": null
+  },
+  {
+   "i": 8,
+   "t": 6386,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 37,
+     "y": 1.39,
+     "z": 2.72
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": "volley",
+      "weight": 0.875,
+      "clip": "volley",
+      "clipTime": 0.196,
+      "clipDur": 2.208,
+      "armL": 0.547,
+      "armR": 0.449,
+      "handsAtChest": 0.154,
+      "footBallL": 0.913,
+      "footBallR": 0.892,
+      "loco": "strR",
+      "facingGoalDeg": 29,
+      "inFrame": true,
+      "height": 0.085,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "dive",
+      "weight": 0.875,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 0,
+      "clipDur": 3.267,
+      "armL": 0.47,
+      "armR": 0.502,
+      "handsAtChest": 0.16,
+      "footBallL": 7.621,
+      "footBallR": 7.615,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "tackle",
+      "weight": 0.875,
+      "clip": "mx-soccer-tackle-2",
+      "clipTime": 0.085,
+      "clipDur": 1.8,
+      "armL": 0.382,
+      "armR": 0.553,
+      "handsAtChest": 0.139,
+      "footBallL": 3.053,
+      "footBallR": 2.231,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.414,
+      "armR": 0.372,
+      "handsAtChest": 0.125,
+      "footBallL": 4.745,
+      "footBallR": 4.581,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.421,
+      "armR": 0.355,
+      "handsAtChest": 0.135,
+      "footBallL": 18.843,
+      "footBallR": 18.61,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 9,
+   "t": 6892,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 37,
+     "y": 0.895,
+     "z": 2.72
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": "volley",
+      "weight": 0.993,
+      "clip": "volley",
+      "clipTime": 0.541,
+      "clipDur": 2.208,
+      "armL": 0.209,
+      "armR": 0.507,
+      "handsAtChest": 0.68,
+      "footBallL": 1.167,
+      "footBallR": 0.934,
+      "loco": "run",
+      "facingGoalDeg": 14.5,
+      "inFrame": true,
+      "height": 0.099,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "dive",
+      "weight": 0.993,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 0,
+      "clipDur": 3.267,
+      "armL": 0.48,
+      "armR": 0.507,
+      "handsAtChest": 0.173,
+      "footBallL": 7.545,
+      "footBallR": 7.539,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "tackle",
+      "weight": 0.993,
+      "clip": "mx-soccer-tackle-2",
+      "clipTime": 0.236,
+      "clipDur": 1.8,
+      "armL": 0.459,
+      "armR": 0.343,
+      "handsAtChest": 0.812,
+      "footBallL": 1.209,
+      "footBallR": 1.775,
+      "loco": "strR"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.456,
+      "armR": 0.367,
+      "handsAtChest": 0.035,
+      "footBallL": 4.541,
+      "footBallR": 4.304,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.415,
+      "armR": 0.364,
+      "handsAtChest": 0.141,
+      "footBallL": 18.572,
+      "footBallR": 18.194,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 10,
+   "t": 7447,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 37,
+     "y": 0.497,
+     "z": 2.72
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": "volley",
+      "weight": 1,
+      "clip": "volley",
+      "clipTime": 1.091,
+      "clipDur": 2.208,
+      "armL": 0.615,
+      "armR": 0.681,
+      "handsAtChest": 0.31,
+      "footBallL": 2.915,
+      "footBallR": 3.323,
+      "loco": "run",
+      "facingGoalDeg": 21.2,
+      "inFrame": true,
+      "height": 0.116,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "dive",
+      "weight": 1,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 0,
+      "clipDur": 3.267,
+      "armL": 0.48,
+      "armR": 0.507,
+      "handsAtChest": 0.174,
+      "footBallL": 7.512,
+      "footBallR": 7.506,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "tackle",
+      "weight": 1,
+      "clip": "mx-soccer-tackle-2",
+      "clipTime": 0.476,
+      "clipDur": 1.8,
+      "armL": 0.497,
+      "armR": 0.263,
+      "handsAtChest": 0.781,
+      "footBallL": 2.901,
+      "footBallR": 3.514,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.451,
+      "armR": 0.372,
+      "handsAtChest": 0.123,
+      "footBallL": 4.414,
+      "footBallR": 4.12,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.413,
+      "armR": 0.38,
+      "handsAtChest": 0.132,
+      "footBallL": 18.016,
+      "footBallR": 17.517,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 11,
+   "t": 8019,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 37.642,
+     "y": 1.769,
+     "z": 2.181
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": "volley",
+      "weight": 1,
+      "clip": "volley",
+      "clipTime": 1.802,
+      "clipDur": 2.208,
+      "armL": 0.534,
+      "armR": 0.536,
+      "handsAtChest": 0.47,
+      "footBallL": 0.849,
+      "footBallR": 0.667,
+      "loco": "run",
+      "facingGoalDeg": 19.6,
+      "inFrame": true,
+      "height": 0.125,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "dive",
+      "weight": 1,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 0.207,
+      "clipDur": 3.267,
+      "armL": 0.488,
+      "armR": 0.452,
+      "handsAtChest": 0.16,
+      "footBallL": 6.992,
+      "footBallR": 6.989,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "tackle",
+      "weight": 1,
+      "clip": "mx-soccer-tackle-2",
+      "clipTime": 0.786,
+      "clipDur": 1.8,
+      "armL": 0.806,
+      "armR": 0.38,
+      "handsAtChest": 0.241,
+      "footBallL": 4.78,
+      "footBallR": 5.03,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.414,
+      "armR": 0.51,
+      "handsAtChest": 0.069,
+      "footBallL": 4.754,
+      "footBallR": 4.49,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.402,
+      "armR": 0.464,
       "handsAtChest": 0.08,
-      "footBallL": 8.508,
-      "footBallR": 8.417,
+      "footBallL": 17.741,
+      "footBallR": 17.522,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 12,
+   "t": 8486,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 43.526,
+     "y": 0.825,
+     "z": -2.762
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0.361,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.461,
+      "armR": 0.522,
+      "handsAtChest": 0.1,
+      "footBallL": 5.963,
+      "footBallR": 6.452,
+      "loco": "run",
+      "facingGoalDeg": 10.7,
+      "inFrame": true,
+      "height": 0.125,
+      "ballInFrame": false
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "dive",
+      "weight": 1,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 1.581,
+      "clipDur": 3.267,
+      "armL": 0.333,
+      "armR": 0.459,
+      "handsAtChest": 0.218,
+      "footBallL": 2.054,
+      "footBallR": 2.505,
+      "loco": null
+     },
+     {
+      "i": 12,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.398,
+      "armR": 0.492,
+      "handsAtChest": 0.088,
+      "footBallL": 14.61,
+      "footBallR": 15.064,
+      "loco": "run"
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.217,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.44,
+      "armR": 0.481,
+      "handsAtChest": 0.154,
+      "footBallL": 7.025,
+      "footBallR": 7.042,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.445,
+      "armR": 0.36,
+      "handsAtChest": 0.052,
+      "footBallL": 8.223,
+      "footBallR": 8.857,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 13,
+   "t": 9010,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 46.902,
+     "y": 0.718,
+     "z": -2.814
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0.122,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.461,
+      "armR": 0.387,
+      "handsAtChest": 0.037,
+      "footBallL": 7.497,
+      "footBallR": 7.979,
+      "loco": "run",
+      "facingGoalDeg": 28.6,
+      "inFrame": true,
+      "height": 0.109,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "dive",
+      "weight": 1,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 1.769,
+      "clipDur": 3.267,
+      "armL": 0.304,
+      "armR": 0.36,
+      "handsAtChest": 0.301,
+      "footBallL": 5.587,
+      "footBallR": 5.488,
+      "loco": null
+     },
+     {
+      "i": 12,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.413,
+      "armR": 0.382,
+      "handsAtChest": 0.131,
+      "footBallL": 14.905,
+      "footBallR": 15.741,
+      "loco": "run"
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.073,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.433,
+      "armR": 0.363,
+      "handsAtChest": 0.056,
+      "footBallL": 8.158,
+      "footBallR": 8.794,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.432,
+      "armR": 0.433,
+      "handsAtChest": 0.082,
+      "footBallL": 11.196,
+      "footBallR": 10.139,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 14,
+   "t": 9680,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 48.571,
+     "y": 0.688,
+     "z": -2.84
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0.029,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.409,
+      "armR": 0.477,
+      "handsAtChest": 0.073,
+      "footBallL": 8.967,
+      "footBallR": 8.653,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.099,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "dive",
+      "weight": 1,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 2.046,
+      "clipDur": 3.267,
+      "armL": 0.266,
+      "armR": 0.385,
+      "handsAtChest": 0.295,
+      "footBallL": 6.853,
+      "footBallR": 7,
+      "loco": null
+     },
+     {
+      "i": 12,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.47,
+      "armR": 0.372,
+      "handsAtChest": 0.062,
+      "footBallL": 14.841,
+      "footBallR": 14.314,
+      "loco": "run"
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.383,
+      "armR": 0.476,
+      "handsAtChest": 0.079,
+      "footBallL": 7.686,
+      "footBallR": 8.316,
       "loco": "run"
      },
      {
@@ -459,44 +1876,40 @@
       "armL": 0.463,
       "armR": 0.372,
       "handsAtChest": 0.023,
-      "footBallL": 2.698,
-      "footBallR": 2.826,
+      "footBallL": 10.531,
+      "footBallR": 10.881,
       "loco": "run"
-     },
-     {
-      "i": 17,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.384,
-      "armR": 0.432,
-      "handsAtChest": 0.086,
-      "footBallL": 16.164,
-      "footBallR": 16.314,
-      "loco": "back"
      }
     ]
    },
-   "g000": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
    "touch": null,
-   "mounts": null
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
   },
   {
-   "i": 3,
-   "t": 3816,
-   "phase": "hl_choose",
+   "i": 15,
+   "t": 10330,
+   "phase": "hl_result",
    "sit": null,
    "a": {
     "ball": {
-     "x": 37,
-     "y": 1.833,
-     "z": 2.72
+     "x": 50.6,
+     "y": 0.562,
+     "z": -2.72
     },
     "actors": [
      {
@@ -506,19 +1919,19 @@
       "team": "home",
       "lod": "lod0",
       "gesture": null,
-      "weight": 0,
+      "weight": 0.008,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.391,
-      "armR": 0.458,
-      "handsAtChest": 0.109,
-      "footBallL": 1.874,
-      "footBallR": 1.894,
-      "loco": "strL",
-      "facingGoalDeg": 78.5,
+      "armL": 0.403,
+      "armR": 0.394,
+      "handsAtChest": 0.101,
+      "footBallL": 10.021,
+      "footBallR": 10.441,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
       "inFrame": true,
-      "height": 0.08,
+      "height": 0.093,
       "ballInFrame": true
      },
      {
@@ -527,20 +1940,20 @@
       "gk": true,
       "team": "away",
       "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.421,
-      "armR": 0.395,
-      "handsAtChest": 0.12,
-      "footBallL": 8.223,
-      "footBallR": 7.174,
+      "gesture": "dive",
+      "weight": 1,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 2.313,
+      "clipDur": 3.267,
+      "armL": 0.468,
+      "armR": 0.448,
+      "handsAtChest": 0.36,
+      "footBallL": 8.793,
+      "footBallR": 8.782,
       "loco": null
      },
      {
-      "i": 13,
+      "i": 12,
       "hero": false,
       "gk": false,
       "team": "away",
@@ -550,11 +1963,29 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.427,
-      "armR": 0.349,
-      "handsAtChest": 0.063,
-      "footBallL": 8.011,
-      "footBallR": 7.902,
+      "armL": 0.442,
+      "armR": 0.391,
+      "handsAtChest": 0.14,
+      "footBallL": 15.174,
+      "footBallR": 14.477,
+      "loco": "run"
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.409,
+      "armR": 0.48,
+      "handsAtChest": 0.078,
+      "footBallL": 8.05,
+      "footBallR": 7.439,
       "loco": "run"
      },
      {
@@ -568,15 +1999,87 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.41,
-      "armR": 0.517,
-      "handsAtChest": 0.077,
-      "footBallL": 1.977,
-      "footBallR": 2.338,
+      "armL": 0.392,
+      "armR": 0.508,
+      "handsAtChest": 0.083,
+      "footBallL": 11.016,
+      "footBallR": 11.521,
       "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 16,
+   "t": 10785,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 50.6,
+     "y": 0.554,
+     "z": -2.72
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0.002,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.376,
+      "armR": 0.484,
+      "handsAtChest": 0.155,
+      "footBallL": 10.031,
+      "footBallR": 10.354,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.091,
+      "ballInFrame": true
      },
      {
-      "i": 17,
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "dive",
+      "weight": 1,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 2.582,
+      "clipDur": 3.267,
+      "armL": 0.292,
+      "armR": 0.451,
+      "handsAtChest": 0.405,
+      "footBallL": 8.627,
+      "footBallR": 8.747,
+      "loco": null
+     },
+     {
+      "i": 12,
       "hero": false,
       "gk": false,
       "team": "away",
@@ -586,29 +2089,331 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.382,
-      "armR": 0.491,
-      "handsAtChest": 0.085,
-      "footBallL": 15.536,
-      "footBallR": 15.548,
+      "armL": 0.41,
+      "armR": 0.523,
+      "handsAtChest": 0.082,
+      "footBallL": 14.83,
+      "footBallR": 14.538,
+      "loco": "run"
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.452,
+      "armR": 0.359,
+      "handsAtChest": 0.066,
+      "footBallL": 6.402,
+      "footBallR": 5.82,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.43,
+      "armR": 0.47,
+      "handsAtChest": 0.084,
+      "footBallL": 10.116,
+      "footBallR": 9.848,
       "loco": "run"
      }
     ]
    },
-   "g000": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
    "touch": null,
-   "mounts": null
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
   },
   {
-   "i": 4,
-   "t": 4405,
-   "phase": "hl_choose",
+   "i": 17,
+   "t": 11335,
+   "phase": "hl_result",
    "sit": null,
    "a": {
     "ball": {
-     "x": 37,
-     "y": 1.819,
-     "z": 2.72
+     "x": 49.554,
+     "y": 0.561,
+     "z": -2.813
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.415,
+      "armR": 0.408,
+      "handsAtChest": 0.168,
+      "footBallL": 9.226,
+      "footBallR": 9.416,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.089,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": "dive",
+      "weight": 1,
+      "clip": "mx-goalkeeper-diving-save-2",
+      "clipTime": 2.892,
+      "clipDur": 3.267,
+      "armL": 0.426,
+      "armR": 0.438,
+      "handsAtChest": 0.042,
+      "footBallL": 7.813,
+      "footBallR": 7.798,
+      "loco": null
+     },
+     {
+      "i": 12,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.394,
+      "armR": 0.527,
+      "handsAtChest": 0.092,
+      "footBallL": 15.443,
+      "footBallR": 15.102,
+      "loco": "run"
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.405,
+      "armR": 0.488,
+      "handsAtChest": 0.074,
+      "footBallL": 4.398,
+      "footBallR": 3.851,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.448,
+      "armR": 0.373,
+      "handsAtChest": 0.129,
+      "footBallL": 8.408,
+      "footBallR": 8.411,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 18,
+   "t": 11873,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.26,
+     "y": 0.553,
+     "z": -2.839
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.407,
+      "armR": 0.399,
+      "handsAtChest": 0.089,
+      "footBallL": 9.031,
+      "footBallR": 9.16,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.088,
+      "ballInFrame": true
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.361,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.336,
+      "armR": 0.403,
+      "handsAtChest": 0.07,
+      "footBallL": 6.045,
+      "footBallR": 6.752,
+      "loco": null
+     },
+     {
+      "i": 12,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.448,
+      "armR": 0.363,
+      "handsAtChest": 0.055,
+      "footBallL": 16.916,
+      "footBallR": 16.206,
+      "loco": "run"
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.383,
+      "armR": 0.469,
+      "handsAtChest": 0.086,
+      "footBallL": 2.961,
+      "footBallR": 3.606,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.401,
+      "armR": 0.427,
+      "handsAtChest": 0.124,
+      "footBallL": 7.924,
+      "footBallR": 8.189,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 19,
+   "t": 12369,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.177,
+     "y": 0.555,
+     "z": -2.847
     },
     "actors": [
      {
@@ -623,14 +2428,14 @@
       "clipTime": null,
       "clipDur": null,
       "armL": 0.389,
-      "armR": 0.434,
-      "handsAtChest": 0.056,
-      "footBallL": 1.851,
-      "footBallR": 1.877,
-      "loco": "strL",
-      "facingGoalDeg": 78.5,
+      "armR": 0.452,
+      "handsAtChest": 0.106,
+      "footBallL": 8.956,
+      "footBallR": 9.091,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
       "inFrame": true,
-      "height": 0.08,
+      "height": 0.087,
       "ballInFrame": true
      },
      {
@@ -640,15 +2445,15 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0,
+      "weight": 0.086,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.395,
-      "armR": 0.369,
-      "handsAtChest": 0.131,
-      "footBallL": 7.674,
-      "footBallR": 8.657,
+      "armL": 0.387,
+      "armR": 0.397,
+      "handsAtChest": 0.061,
+      "footBallL": 5.153,
+      "footBallR": 5.021,
       "loco": null
      },
      {
@@ -658,15 +2463,15 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0,
+      "weight": 0.018,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.438,
-      "armR": 0.359,
-      "handsAtChest": 0.12,
-      "footBallL": 7.528,
-      "footBallR": 7.177,
+      "armL": 0.439,
+      "armR": 0.355,
+      "handsAtChest": 0.043,
+      "footBallL": 2.688,
+      "footBallR": 3.257,
       "loco": "run"
      },
      {
@@ -680,69 +2485,83 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.393,
+      "armL": 0.465,
+      "armR": 0.371,
+      "handsAtChest": 0.05,
+      "footBallL": 7.884,
+      "footBallR": 8.124,
+      "loco": "run"
+     },
+     {
+      "i": 17,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.382,
+      "armR": 0.394,
+      "handsAtChest": 0.126,
+      "footBallL": 17.157,
+      "footBallR": 17.126,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 20,
+   "t": 12876,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.171,
+     "y": 0.294,
+     "z": -2.847
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.41,
       "armR": 0.495,
-      "handsAtChest": 0.079,
-      "footBallL": 2.442,
-      "footBallR": 2.405,
-      "loco": "run"
-     },
-     {
-      "i": 17,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.376,
-      "armR": 0.44,
-      "handsAtChest": 0.104,
-      "footBallL": 13.36,
-      "footBallR": 14.074,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": null,
-   "touch": null,
-   "mounts": null
-  },
-  {
-   "i": 5,
-   "t": 4959,
-   "phase": "hl_choose",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 37,
-     "y": 1.772,
-     "z": 2.72
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.482,
-      "armR": 0.499,
-      "handsAtChest": 0.115,
-      "footBallL": 1.814,
-      "footBallR": 1.81,
-      "loco": "strL",
-      "facingGoalDeg": 78.5,
+      "handsAtChest": 0.116,
+      "footBallL": 8.833,
+      "footBallR": 9.045,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
       "inFrame": true,
-      "height": 0.08,
+      "height": 0.085,
       "ballInFrame": true
      },
      {
@@ -752,15 +2571,15 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0,
+      "weight": 0.023,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.425,
-      "armR": 0.4,
-      "handsAtChest": 0.052,
-      "footBallL": 8.178,
-      "footBallR": 7.82,
+      "armL": 0.375,
+      "armR": 0.502,
+      "handsAtChest": 0.108,
+      "footBallL": 5.276,
+      "footBallR": 5.328,
       "loco": null
      },
      {
@@ -770,113 +2589,19 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0,
+      "weight": 0.018,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.388,
-      "armR": 0.413,
-      "handsAtChest": 0.123,
-      "footBallL": 7.001,
-      "footBallR": 6.798,
+      "armL": 0.452,
+      "armR": 0.363,
+      "handsAtChest": 0.051,
+      "footBallL": 2.75,
+      "footBallR": 2.613,
       "loco": "run"
      },
      {
       "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.451,
-      "armR": 0.361,
-      "handsAtChest": 0.042,
-      "footBallL": 2.606,
-      "footBallR": 1.946,
-      "loco": "back"
-     },
-     {
-      "i": 17,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.399,
-      "armR": 0.469,
-      "handsAtChest": 0.078,
-      "footBallL": 12.525,
-      "footBallR": 11.931,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": null,
-   "touch": null,
-   "mounts": null
-  },
-  {
-   "i": 6,
-   "t": 5465,
-   "phase": "hl_choose",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 37,
-     "y": 1.726,
-     "z": 2.72
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.419,
-      "armR": 0.463,
-      "handsAtChest": 0.162,
-      "footBallL": 1.719,
-      "footBallR": 1.798,
-      "loco": "strL",
-      "facingGoalDeg": 78.5,
-      "inFrame": true,
-      "height": 0.08,
-      "ballInFrame": true
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.418,
-      "armR": 0.454,
-      "handsAtChest": 0.091,
-      "footBallL": 7.932,
-      "footBallR": 7.857,
-      "loco": null
-     },
-     {
-      "i": 13,
       "hero": false,
       "gk": false,
       "team": "away",
@@ -887,28 +2612,10 @@
       "clipTime": null,
       "clipDur": null,
       "armL": 0.443,
-      "armR": 0.356,
-      "handsAtChest": 0.109,
-      "footBallL": 7.044,
-      "footBallR": 6.964,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.474,
-      "armR": 0.483,
-      "handsAtChest": 0.103,
-      "footBallL": 2.323,
-      "footBallR": 2.493,
+      "armR": 0.375,
+      "handsAtChest": 0.137,
+      "footBallL": 8.13,
+      "footBallR": 7.487,
       "loco": "run"
      },
      {
@@ -922,29 +2629,673 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.406,
-      "armR": 0.34,
-      "handsAtChest": 0.095,
-      "footBallL": 11.236,
-      "footBallR": 12.035,
+      "armL": 0.41,
+      "armR": 0.427,
+      "handsAtChest": 0.083,
+      "footBallL": 17.46,
+      "footBallR": 17.503,
       "loco": "run"
      }
     ]
    },
-   "g000": null,
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
    "touch": null,
-   "mounts": null
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
   },
   {
-   "i": 7,
-   "t": 6001,
-   "phase": "hl_choose",
+   "i": 21,
+   "t": 13393,
+   "phase": "hl_result",
    "sit": null,
    "a": {
     "ball": {
-     "x": 37,
-     "y": 1.683,
-     "z": 2.72
+     "x": 49.171,
+     "y": 0.235,
+     "z": -2.847
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.381,
+      "armR": 0.519,
+      "handsAtChest": 0.166,
+      "footBallL": 8.59,
+      "footBallR": 9.056,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.083,
+      "ballInFrame": true
+     },
+     {
+      "i": 9,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.43,
+      "armR": 0.474,
+      "handsAtChest": 0.008,
+      "footBallL": 15.839,
+      "footBallR": 16.444,
+      "loco": "strL"
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.007,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.415,
+      "armR": 0.347,
+      "handsAtChest": 0.089,
+      "footBallL": 4.97,
+      "footBallR": 5.856,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.448,
+      "armR": 0.372,
+      "handsAtChest": 0.06,
+      "footBallL": 2.756,
+      "footBallR": 2.143,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.435,
+      "armR": 0.409,
+      "handsAtChest": 0.119,
+      "footBallL": 8.109,
+      "footBallR": 7.276,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 22,
+   "t": 13915,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.171,
+     "y": 0.223,
+     "z": -2.847
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.363,
+      "armR": 0.479,
+      "handsAtChest": 0.166,
+      "footBallL": 8.584,
+      "footBallR": 9.078,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.082,
+      "ballInFrame": true
+     },
+     {
+      "i": 9,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.459,
+      "armR": 0.397,
+      "handsAtChest": 0.049,
+      "footBallL": 14.173,
+      "footBallR": 14.333,
+      "loco": "run"
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.002,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.443,
+      "armR": 0.367,
+      "handsAtChest": 0.064,
+      "footBallL": 5.548,
+      "footBallR": 4.954,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.43,
+      "armR": 0.416,
+      "handsAtChest": 0.055,
+      "footBallL": 2.574,
+      "footBallR": 1.866,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.425,
+      "armR": 0.484,
+      "handsAtChest": 0.081,
+      "footBallL": 7.829,
+      "footBallR": 7.354,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 23,
+   "t": 14421,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.171,
+     "y": 0.22,
+     "z": -2.847
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.434,
+      "armR": 0.432,
+      "handsAtChest": 0.088,
+      "footBallL": 8.766,
+      "footBallR": 9.104,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.081,
+      "ballInFrame": true
+     },
+     {
+      "i": 9,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.447,
+      "armR": 0.365,
+      "handsAtChest": 0.061,
+      "footBallL": 11.867,
+      "footBallR": 12.625,
+      "loco": "run"
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.001,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.409,
+      "armR": 0.365,
+      "handsAtChest": 0.094,
+      "footBallL": 5.162,
+      "footBallR": 5.123,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.403,
+      "armR": 0.441,
+      "handsAtChest": 0.059,
+      "footBallL": 2.308,
+      "footBallR": 1.794,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.4,
+      "armR": 0.502,
+      "handsAtChest": 0.113,
+      "footBallL": 7.44,
+      "footBallR": 7.338,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 24,
+   "t": 14937,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.171,
+     "y": 0.22,
+     "z": -2.847
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.388,
+      "armR": 0.453,
+      "handsAtChest": 0.114,
+      "footBallL": 8.864,
+      "footBallR": 9.177,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.08,
+      "ballInFrame": true
+     },
+     {
+      "i": 9,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.415,
+      "armR": 0.386,
+      "handsAtChest": 0.131,
+      "footBallL": 10.406,
+      "footBallR": 11.311,
+      "loco": "run"
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.393,
+      "armR": 0.479,
+      "handsAtChest": 0.114,
+      "footBallL": 5.064,
+      "footBallR": 5.175,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.393,
+      "armR": 0.436,
+      "handsAtChest": 0.133,
+      "footBallL": 2.082,
+      "footBallR": 1.872,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.397,
+      "armR": 0.466,
+      "handsAtChest": 0.113,
+      "footBallL": 7.087,
+      "footBallR": 7.197,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 25,
+   "t": 15488,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.171,
+     "y": 0.22,
+     "z": -2.847
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.369,
+      "armR": 0.447,
+      "handsAtChest": 0.084,
+      "footBallL": 8.897,
+      "footBallR": 9.205,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.08,
+      "ballInFrame": true
+     },
+     {
+      "i": 9,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.445,
+      "armR": 0.387,
+      "handsAtChest": 0.141,
+      "footBallL": 10.48,
+      "footBallR": 9.911,
+      "loco": "run"
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.377,
+      "armR": 0.483,
+      "handsAtChest": 0.152,
+      "footBallL": 5.072,
+      "footBallR": 5.086,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.406,
+      "armR": 0.432,
+      "handsAtChest": 0.155,
+      "footBallL": 2.046,
+      "footBallR": 1.903,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.397,
+      "armR": 0.45,
+      "handsAtChest": 0.102,
+      "footBallL": 7.055,
+      "footBallR": 7.067,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 26,
+   "t": 16129,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.171,
+     "y": 0.22,
+     "z": -2.847
     },
     "actors": [
      {
@@ -959,15 +3310,33 @@
       "clipTime": null,
       "clipDur": null,
       "armL": 0.409,
-      "armR": 0.412,
-      "handsAtChest": 0.139,
-      "footBallL": 1.726,
-      "footBallR": 1.755,
-      "loco": "strL",
-      "facingGoalDeg": 78.5,
+      "armR": 0.43,
+      "handsAtChest": 0.175,
+      "footBallL": 8.913,
+      "footBallR": 9.183,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
       "inFrame": true,
-      "height": 0.08,
+      "height": 0.079,
       "ballInFrame": true
+     },
+     {
+      "i": 9,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.447,
+      "armR": 0.365,
+      "handsAtChest": 0.061,
+      "footBallL": 9.106,
+      "footBallR": 9.722,
+      "loco": "run"
      },
      {
       "i": 11,
@@ -980,11 +3349,11 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.399,
-      "armR": 0.452,
-      "handsAtChest": 0.118,
-      "footBallL": 7.863,
-      "footBallR": 7.831,
+      "armL": 0.407,
+      "armR": 0.426,
+      "handsAtChest": 0.171,
+      "footBallL": 5.084,
+      "footBallR": 4.985,
       "loco": null
      },
      {
@@ -994,653 +3363,19 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.378,
-      "armR": 0.506,
-      "handsAtChest": 0.094,
-      "footBallL": 7.483,
-      "footBallR": 7.213,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.403,
-      "armR": 0.414,
-      "handsAtChest": 0.127,
-      "footBallL": 2.633,
-      "footBallR": 2.306,
-      "loco": "run"
-     },
-     {
-      "i": 17,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
+      "weight": 0.018,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
       "armL": 0.414,
-      "armR": 0.369,
-      "handsAtChest": 0.14,
-      "footBallL": 11.804,
-      "footBallR": 10.698,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": null,
-   "touch": null,
-   "mounts": null
-  },
-  {
-   "i": 8,
-   "t": 6601,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 37,
-     "y": 1.388,
-     "z": 3.024
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": "kick",
-      "weight": 0.75,
-      "clip": "kick",
-      "clipTime": 0.031,
-      "clipDur": 0.458,
-      "armL": 0.427,
-      "armR": 0.399,
-      "handsAtChest": 0.167,
-      "footBallL": 1.502,
-      "footBallR": 1.428,
-      "loco": "strL",
-      "facingGoalDeg": 50.2,
-      "inFrame": true,
-      "height": 0.091,
-      "ballInFrame": true
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": "block",
-      "weight": 0.75,
-      "clip": "gk-block",
-      "clipTime": 0.122,
-      "clipDur": 2.625,
-      "armL": 0.444,
-      "armR": 0.489,
-      "handsAtChest": 0.152,
-      "footBallL": 7.837,
-      "footBallR": 7.874,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.397,
-      "armR": 0.364,
-      "handsAtChest": 0.132,
-      "footBallL": 7.856,
-      "footBallR": 7.262,
+      "armR": 0.437,
+      "handsAtChest": 0.168,
+      "footBallL": 2.03,
+      "footBallR": 1.83,
       "loco": "run"
      },
      {
       "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": "tackle",
-      "weight": 0.75,
-      "clip": "slide-tackle",
-      "clipTime": 0.055,
-      "clipDur": 1.417,
-      "armL": 0.441,
-      "armR": 0.428,
-      "handsAtChest": 0.054,
-      "footBallL": 2.287,
-      "footBallR": 2,
-      "loco": "run"
-     },
-     {
-      "i": 17,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.402,
-      "armR": 0.462,
-      "handsAtChest": 0.081,
-      "footBallL": 11.618,
-      "footBallR": 10.947,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 1,
-     "gesti": [
-      "kick"
-     ],
-     "tipi": [
-      "shot"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick"
-    ]
-   }
-  },
-  {
-   "i": 9,
-   "t": 7156,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 37.063,
-     "y": 0.441,
-     "z": 3.491
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": "kick",
-      "weight": 0.996,
-      "clip": "kick",
-      "clipTime": 0.152,
-      "clipDur": 0.458,
-      "armL": 0.609,
-      "armR": 0.536,
-      "handsAtChest": 0.079,
-      "footBallL": 1.242,
-      "footBallR": 0.864,
-      "loco": "run",
-      "facingGoalDeg": 1.8,
-      "inFrame": true,
-      "height": 0.105,
-      "ballInFrame": true
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": "block",
-      "weight": 0.996,
-      "clip": "gk-block",
-      "clipTime": 0.592,
-      "clipDur": 2.625,
-      "armL": 0.504,
-      "armR": 0.506,
-      "handsAtChest": 0.382,
-      "footBallL": 7.468,
-      "footBallR": 8.046,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.415,
-      "armR": 0.35,
-      "handsAtChest": 0.092,
-      "footBallL": 7.876,
-      "footBallR": 7.388,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": "tackle",
-      "weight": 0.996,
-      "clip": "slide-tackle",
-      "clipTime": 0.267,
-      "clipDur": 1.417,
-      "armL": 0.55,
-      "armR": 0.161,
-      "handsAtChest": 0.925,
-      "footBallL": 2.328,
-      "footBallR": 2.76,
-      "loco": "run"
-     },
-     {
-      "i": 17,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.418,
-      "armR": 0.474,
-      "handsAtChest": 0.137,
-      "footBallL": 11.173,
-      "footBallR": 10.937,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 1,
-     "gesti": [
-      "kick"
-     ],
-     "tipi": [
-      "shot"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick"
-    ]
-   }
-  },
-  {
-   "i": 10,
-   "t": 7696,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 37.399,
-     "y": 0.261,
-     "z": 3.5
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": "kick",
-      "weight": 1,
-      "clip": "kick",
-      "clipTime": 0.271,
-      "clipDur": 0.458,
-      "armL": 0.691,
-      "armR": 0.639,
-      "handsAtChest": 0.322,
-      "footBallL": 1.792,
-      "footBallR": 0.826,
-      "loco": "run",
-      "facingGoalDeg": 0.8,
-      "inFrame": true,
-      "height": 0.118,
-      "ballInFrame": true
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": "block",
-      "weight": 1,
-      "clip": "gk-block",
-      "clipTime": 1.05,
-      "clipDur": 2.625,
-      "armL": 0.883,
-      "armR": 0.721,
-      "handsAtChest": 0.331,
-      "footBallL": 7.182,
-      "footBallR": 7.315,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.401,
-      "armR": 0.412,
-      "handsAtChest": 0.099,
-      "footBallL": 7.58,
-      "footBallR": 7.172,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": "tackle",
-      "weight": 1,
-      "clip": "slide-tackle",
-      "clipTime": 0.473,
-      "clipDur": 1.417,
-      "armL": 0.804,
-      "armR": 0.491,
-      "handsAtChest": 0.295,
-      "footBallL": 2,
-      "footBallR": 2.599,
-      "loco": "run"
-     },
-     {
-      "i": 17,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.422,
-      "armR": 0.47,
-      "handsAtChest": 0.145,
-      "footBallL": 11.363,
-      "footBallR": 11.181,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 1,
-     "gesti": [
-      "kick"
-     ],
-     "tipi": [
-      "shot"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick"
-    ]
-   }
-  },
-  {
-   "i": 11,
-   "t": 8178,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 38.969,
-     "y": 1.031,
-     "z": 2.267
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": "kick",
-      "weight": 1,
-      "clip": "kick",
-      "clipTime": 0.421,
-      "clipDur": 0.458,
-      "armL": 0.571,
-      "armR": 0.506,
-      "handsAtChest": 0.111,
-      "footBallL": 0.918,
-      "footBallR": 1.214,
-      "loco": "run",
-      "facingGoalDeg": 0.7,
-      "inFrame": true,
-      "height": 0.128,
-      "ballInFrame": true
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": "block",
-      "weight": 1,
-      "clip": "gk-block",
-      "clipTime": 1.634,
-      "clipDur": 2.625,
-      "armL": 0.504,
-      "armR": 0.567,
-      "handsAtChest": 0.268,
-      "footBallL": 5.319,
-      "footBallR": 5.32,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.43,
-      "armR": 0.453,
-      "handsAtChest": 0.167,
-      "footBallL": 5.761,
-      "footBallR": 5.304,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": "tackle",
-      "weight": 1,
-      "clip": "slide-tackle",
-      "clipTime": 0.737,
-      "clipDur": 1.417,
-      "armL": 0.642,
-      "armR": 0.54,
-      "handsAtChest": 0.167,
-      "footBallL": 1.011,
-      "footBallR": 0.864,
-      "loco": "back"
-     },
-     {
-      "i": 17,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.406,
-      "armR": 0.452,
-      "handsAtChest": 0.144,
-      "footBallL": 12.532,
-      "footBallR": 12.443,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 1,
-     "gesti": [
-      "kick"
-     ],
-     "tipi": [
-      "shot"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick"
-    ]
-   }
-  },
-  {
-   "i": 12,
-   "t": 8938,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 43.503,
-     "y": 1.345,
-     "z": 0.509
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0.348,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.439,
-      "armR": 0.426,
-      "handsAtChest": 0.116,
-      "footBallL": 4.74,
-      "footBallR": 4.315,
-      "loco": "run",
-      "facingGoalDeg": 18.6,
-      "inFrame": true,
-      "height": 0.136,
-      "ballInFrame": true
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": "block",
-      "weight": 1,
-      "clip": "gk-block",
-      "clipTime": 2.374,
-      "clipDur": 2.625,
-      "armL": 0.401,
-      "armR": 0.462,
-      "handsAtChest": 0.204,
-      "footBallL": 1.355,
-      "footBallR": 1.301,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.412,
-      "armR": 0.363,
-      "handsAtChest": 0.103,
-      "footBallL": 1.597,
-      "footBallR": 1.334,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.361,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.468,
-      "armR": 0.514,
-      "handsAtChest": 0.033,
-      "footBallL": 5.948,
-      "footBallR": 5.752,
-      "loco": "strL"
-     },
-     {
-      "i": 17,
       "hero": false,
       "gk": false,
       "team": "away",
@@ -1651,21 +3386,19 @@
       "clipTime": null,
       "clipDur": null,
       "armL": 0.395,
-      "armR": 0.428,
-      "handsAtChest": 0.14,
-      "footBallL": 16.833,
-      "footBallR": 16.806,
+      "armR": 0.441,
+      "handsAtChest": 0.107,
+      "footBallL": 7.05,
+      "footBallR": 6.966,
       "loco": "run"
      }
     ]
    },
    "g000": {
     "10001": {
-     "n": 3,
+     "n": 1,
      "gesti": [
-      "kick",
-      "kick",
-      "kick"
+      "volley"
      ],
      "tipi": [
       "shot"
@@ -1675,282 +3408,20 @@
    "touch": null,
    "mounts": {
     "10001": [
-     "kick"
+     "volley"
     ]
    }
   },
   {
-   "i": 13,
-   "t": 9511,
+   "i": 27,
+   "t": 16578,
    "phase": "hl_result",
    "sit": null,
    "a": {
     "ball": {
-     "x": 43.008,
-     "y": 0.575,
-     "z": -1.066
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": "miss",
-      "weight": 0.985,
-      "clip": "missed-chance",
-      "clipTime": 1.438,
-      "clipDur": 3.375,
-      "armL": 0.34,
-      "armR": 0.47,
-      "handsAtChest": 0.136,
-      "footBallL": 3.777,
-      "footBallR": 4.24,
-      "loco": "run",
-      "facingGoalDeg": 31,
-      "inFrame": true,
-      "height": 0.135,
-      "ballInFrame": true
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.244,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.47,
-      "armR": 0.501,
-      "handsAtChest": 0.111,
-      "footBallL": 1.696,
-      "footBallR": 1.454,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.384,
-      "armR": 0.454,
-      "handsAtChest": 0.167,
-      "footBallL": 1.78,
-      "footBallR": 1.943,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.088,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.382,
-      "armR": 0.49,
-      "handsAtChest": 0.022,
-      "footBallL": 6.867,
-      "footBallR": 6.19,
-      "loco": "run"
-     },
-     {
-      "i": 17,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.4,
-      "armR": 0.405,
-      "handsAtChest": 0.127,
-      "footBallL": 16.207,
-      "footBallR": 16.276,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 4,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 14,
-   "t": 10164,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 41.623,
+     "x": 49.171,
      "y": 0.22,
-     "z": -1.763
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": "miss",
-      "weight": 1,
-      "clip": "missed-chance",
-      "clipTime": 2.968,
-      "clipDur": 3.375,
-      "armL": 0.3,
-      "armR": 0.338,
-      "handsAtChest": 0.159,
-      "footBallL": 4.25,
-      "footBallR": 4.74,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.133,
-      "ballInFrame": false
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.416,
-      "armR": 0.38,
-      "handsAtChest": 0.13,
-      "footBallL": 14.433,
-      "footBallR": 15.523,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.065,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.431,
-      "armR": 0.476,
-      "handsAtChest": 0.136,
-      "footBallL": 3.245,
-      "footBallR": 3.213,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.406,
-      "armR": 0.409,
-      "handsAtChest": 0.075,
-      "footBallL": 3.102,
-      "footBallR": 3.219,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.023,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.422,
-      "armR": 0.388,
-      "handsAtChest": 0.098,
-      "footBallL": 6.502,
-      "footBallR": 5.829,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 4,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 15,
-   "t": 10805,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 40.688,
-     "y": 0.22,
-     "z": -2.057
+     "z": -2.847
     },
     "actors": [
      {
@@ -1960,693 +3431,19 @@
       "team": "home",
       "lod": "lod0",
       "gesture": null,
-      "weight": 0.435,
+      "weight": 0,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.355,
-      "armR": 0.43,
-      "handsAtChest": 0.143,
-      "footBallL": 4.807,
-      "footBallR": 5.32,
+      "armL": 0.408,
+      "armR": 0.427,
+      "handsAtChest": 0.18,
+      "footBallL": 8.919,
+      "footBallR": 9.044,
       "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.126,
-      "ballInFrame": false
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.463,
-      "armR": 0.373,
-      "handsAtChest": 0.033,
-      "footBallL": 11.412,
-      "footBallR": 11.876,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.017,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.405,
-      "armR": 0.414,
-      "handsAtChest": 0.143,
-      "footBallL": 4.275,
-      "footBallR": 4.195,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.432,
-      "armR": 0.439,
-      "handsAtChest": 0.077,
-      "footBallL": 3.632,
-      "footBallR": 3.386,
-      "loco": "back"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.472,
-      "armR": 0.471,
-      "handsAtChest": 0.094,
-      "footBallL": 6.186,
-      "footBallR": 5.621,
-      "loco": "back"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 7,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 16,
-   "t": 11411,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 40.069,
-     "y": 0.22,
-     "z": -2.177
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0.108,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.385,
-      "armR": 0.423,
-      "handsAtChest": 0.175,
-      "footBallL": 5.2,
-      "footBallR": 5.75,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.112,
-      "ballInFrame": false
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.465,
-      "armR": 0.373,
-      "handsAtChest": 0.102,
-      "footBallL": 8.81,
-      "footBallR": 7.966,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.004,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.413,
-      "armR": 0.422,
-      "handsAtChest": 0.132,
-      "footBallL": 4.841,
-      "footBallR": 4.811,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.44,
-      "armR": 0.355,
-      "handsAtChest": 0.04,
-      "footBallL": 3.088,
-      "footBallR": 3.667,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.42,
-      "armR": 0.418,
-      "handsAtChest": 0.125,
-      "footBallL": 5.291,
-      "footBallR": 5.844,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 14,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 17,
-   "t": 11963,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.679,
-     "y": 0.22,
-     "z": -2.223
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0.027,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.417,
-      "armR": 0.391,
-      "handsAtChest": 0.141,
-      "footBallL": 5.386,
-      "footBallR": 5.864,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.101,
-      "ballInFrame": false
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.416,
-      "armR": 0.523,
-      "handsAtChest": 0.077,
-      "footBallL": 5.997,
-      "footBallR": 5.504,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.001,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.401,
-      "armR": 0.448,
-      "handsAtChest": 0.116,
-      "footBallL": 5.294,
-      "footBallR": 5.199,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.382,
-      "armR": 0.507,
-      "handsAtChest": 0.097,
-      "footBallL": 2.585,
-      "footBallR": 2.47,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.44,
-      "armR": 0.417,
-      "handsAtChest": 0.111,
-      "footBallL": 5.321,
-      "footBallR": 5.589,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 21,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 18,
-   "t": 12572,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.425,
-     "y": 0.22,
-     "z": -2.241
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0.007,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.39,
-      "armR": 0.429,
-      "handsAtChest": 0.087,
-      "footBallL": 5.439,
-      "footBallR": 5.891,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.094,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.396,
-      "armR": 0.531,
-      "handsAtChest": 0.095,
-      "footBallL": 3.092,
-      "footBallR": 3.136,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.362,
-      "armR": 0.466,
-      "handsAtChest": 0.091,
-      "footBallL": 5.57,
-      "footBallR": 5.442,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.446,
-      "armR": 0.358,
-      "handsAtChest": 0.028,
-      "footBallL": 1.858,
-      "footBallR": 2.254,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.465,
-      "armR": 0.376,
-      "handsAtChest": 0.028,
-      "footBallL": 5.915,
-      "footBallR": 5.994,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 19,
-   "t": 13104,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.269,
-     "y": 0.22,
-     "z": -2.248
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0.002,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.402,
-      "armR": 0.471,
-      "handsAtChest": 0.104,
-      "footBallL": 5.47,
-      "footBallR": 5.912,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
+      "facingGoalDeg": 31.2,
       "inFrame": true,
       "height": 0.089,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.411,
-      "armR": 0.405,
-      "handsAtChest": 0.128,
-      "footBallL": 1.597,
-      "footBallR": 1.723,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.389,
-      "armR": 0.478,
-      "handsAtChest": 0.166,
-      "footBallL": 5.698,
-      "footBallR": 5.59,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.419,
-      "armR": 0.439,
-      "handsAtChest": 0.084,
-      "footBallL": 2.207,
-      "footBallR": 1.327,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.395,
-      "armR": 0.529,
-      "handsAtChest": 0.103,
-      "footBallL": 6.352,
-      "footBallR": 6.602,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 20,
-   "t": 13578,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.171,
-     "y": 0.22,
-     "z": -2.251
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.401,
-      "armR": 0.517,
-      "handsAtChest": 0.157,
-      "footBallL": 5.549,
-      "footBallR": 5.948,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.086,
       "ballInFrame": true
      },
      {
@@ -2663,8 +3460,8 @@
       "armL": 0.441,
       "armR": 0.406,
       "handsAtChest": 0.132,
-      "footBallL": 1.666,
-      "footBallR": 2.143,
+      "footBallL": 9.315,
+      "footBallR": 8.687,
       "loco": "run"
      },
      {
@@ -2678,11 +3475,11 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.428,
-      "armR": 0.465,
-      "handsAtChest": 0.174,
-      "footBallL": 5.782,
-      "footBallR": 5.765,
+      "armL": 0.423,
+      "armR": 0.393,
+      "handsAtChest": 0.14,
+      "footBallL": 5.107,
+      "footBallR": 4.978,
       "loco": null
      },
      {
@@ -2692,285 +3489,15 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.383,
-      "armR": 0.456,
-      "handsAtChest": 0.1,
-      "footBallL": 1.1,
-      "footBallR": 1.826,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
       "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.439,
-      "armR": 0.366,
-      "handsAtChest": 0.075,
-      "footBallL": 6.985,
-      "footBallR": 6.641,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 21,
-   "t": 14040,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.11,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.35,
-      "armR": 0.497,
-      "handsAtChest": 0.171,
-      "footBallL": 5.627,
-      "footBallR": 5.978,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.084,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.401,
-      "armR": 0.53,
-      "handsAtChest": 0.096,
-      "footBallL": 2.387,
-      "footBallR": 2.358,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.421,
-      "armR": 0.431,
-      "handsAtChest": 0.155,
-      "footBallL": 5.846,
-      "footBallR": 5.895,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.448,
-      "armR": 0.361,
-      "handsAtChest": 0.025,
-      "footBallL": 1.264,
-      "footBallR": 1.541,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.446,
-      "armR": 0.413,
-      "handsAtChest": 0.058,
-      "footBallL": 6.924,
-      "footBallR": 7.167,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 22,
-   "t": 14645,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.082,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.426,
-      "armR": 0.432,
-      "handsAtChest": 0.101,
-      "footBallL": 5.648,
-      "footBallR": 6.015,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.083,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.401,
-      "armR": 0.474,
-      "handsAtChest": 0.102,
-      "footBallL": 3.171,
-      "footBallR": 2.38,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
       "armL": 0.411,
-      "armR": 0.365,
-      "handsAtChest": 0.11,
-      "footBallL": 5.893,
-      "footBallR": 5.945,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.412,
-      "armR": 0.421,
-      "handsAtChest": 0.066,
-      "footBallL": 1.37,
-      "footBallR": 0.691,
+      "armR": 0.438,
+      "handsAtChest": 0.164,
+      "footBallL": 2.017,
+      "footBallR": 1.772,
       "loco": "run"
      },
      {
@@ -2978,492 +3505,6 @@
       "hero": false,
       "gk": false,
       "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.43,
-      "armR": 0.445,
-      "handsAtChest": 0.147,
-      "footBallL": 7.04,
-      "footBallR": 7.514,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 23,
-   "t": 15117,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.082,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.419,
-      "armR": 0.45,
-      "handsAtChest": 0.115,
-      "footBallL": 5.659,
-      "footBallR": 6.042,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.082,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.418,
-      "armR": 0.377,
-      "handsAtChest": 0.126,
-      "footBallL": 3.569,
-      "footBallR": 2.713,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.406,
-      "armR": 0.409,
-      "handsAtChest": 0.099,
-      "footBallL": 5.896,
-      "footBallR": 5.984,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.39,
-      "armR": 0.427,
-      "handsAtChest": 0.097,
-      "footBallL": 1.135,
-      "footBallR": 0.743,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.431,
-      "armR": 0.451,
-      "handsAtChest": 0.165,
-      "footBallL": 7.067,
-      "footBallR": 7.611,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 24,
-   "t": 15719,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.082,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.378,
-      "armR": 0.451,
-      "handsAtChest": 0.109,
-      "footBallL": 5.696,
-      "footBallR": 6.083,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.082,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.471,
-      "armR": 0.377,
-      "handsAtChest": 0.049,
-      "footBallL": 3.46,
-      "footBallR": 3.783,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.388,
-      "armR": 0.498,
-      "handsAtChest": 0.122,
-      "footBallL": 5.901,
-      "footBallR": 5.995,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.38,
-      "armR": 0.428,
-      "handsAtChest": 0.1,
-      "footBallL": 1.088,
-      "footBallR": 0.754,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.426,
-      "armR": 0.455,
-      "handsAtChest": 0.158,
-      "footBallL": 7.064,
-      "footBallR": 7.78,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 25,
-   "t": 16271,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.082,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.392,
-      "armR": 0.439,
-      "handsAtChest": 0.138,
-      "footBallL": 5.76,
-      "footBallR": 6.141,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.081,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.44,
-      "armR": 0.429,
-      "handsAtChest": 0.097,
-      "footBallL": 3.787,
-      "footBallR": 4.531,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.388,
-      "armR": 0.446,
-      "handsAtChest": 0.169,
-      "footBallL": 5.915,
-      "footBallR": 5.854,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.383,
-      "armR": 0.426,
-      "handsAtChest": 0.109,
-      "footBallL": 1.085,
-      "footBallR": 0.735,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.416,
-      "armR": 0.446,
-      "handsAtChest": 0.128,
-      "footBallL": 7.052,
-      "footBallR": 7.743,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 26,
-   "t": 16763,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.082,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.406,
-      "armR": 0.427,
-      "handsAtChest": 0.183,
-      "footBallL": 5.803,
-      "footBallR": 6.206,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.081,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
       "lod": "lod2",
       "gesture": null,
       "weight": 0,
@@ -3471,28 +3512,100 @@
       "clipTime": null,
       "clipDur": null,
       "armL": 0.396,
-      "armR": 0.534,
-      "handsAtChest": 0.104,
-      "footBallL": 4.255,
-      "footBallR": 4.531,
+      "armR": 0.439,
+      "handsAtChest": 0.112,
+      "footBallL": 7.029,
+      "footBallR": 6.922,
       "loco": "run"
-     },
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 28,
+   "t": 17183,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.171,
+     "y": 0.22,
+     "z": -2.847
+    },
+    "actors": [
      {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
       "gesture": null,
       "weight": 0,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
       "armL": 0.42,
-      "armR": 0.403,
-      "handsAtChest": 0.156,
-      "footBallL": 5.934,
-      "footBallR": 5.811,
+      "armR": 0.438,
+      "handsAtChest": 0.149,
+      "footBallL": 8.931,
+      "footBallR": 8.857,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.119,
+      "ballInFrame": true
+     },
+     {
+      "i": 9,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.41,
+      "armR": 0.413,
+      "handsAtChest": 0.127,
+      "footBallL": 7.638,
+      "footBallR": 8.676,
+      "loco": "run"
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.4,
+      "armR": 0.415,
+      "handsAtChest": 0.062,
+      "footBallL": 5.152,
+      "footBallR": 5.01,
       "loco": null
      },
      {
@@ -3502,15 +3615,15 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0,
+      "weight": 0.018,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.389,
+      "armL": 0.391,
       "armR": 0.425,
-      "handsAtChest": 0.113,
-      "footBallL": 1.073,
-      "footBallR": 0.716,
+      "handsAtChest": 0.102,
+      "footBallL": 2.022,
+      "footBallR": 1.766,
       "loco": "run"
      },
      {
@@ -3520,56 +3633,47 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0.018,
+      "weight": 0,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.407,
-      "armR": 0.441,
-      "handsAtChest": 0.1,
-      "footBallL": 7.041,
-      "footBallR": 7.685,
+      "armL": 0.406,
+      "armR": 0.429,
+      "handsAtChest": 0.092,
+      "footBallL": 6.957,
+      "footBallR": 7.064,
       "loco": "run"
      }
     ]
    },
    "g000": {
     "10001": {
-     "n": 22,
+     "n": 1,
      "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
+      "volley"
      ],
      "tipi": [
-      "shot",
-      "-"
+      "shot"
      ]
     }
    },
    "touch": null,
    "mounts": {
     "10001": [
-     "kick",
-     "miss"
+     "volley"
     ]
    }
   },
   {
-   "i": 27,
-   "t": 17875,
+   "i": 29,
+   "t": 17807,
    "phase": "hl_result",
    "sit": null,
    "a": {
     "ball": {
-     "x": 39.082,
+     "x": 49.171,
      "y": 0.22,
-     "z": -2.252
+     "z": -2.847
     },
     "actors": [
      {
@@ -3578,425 +3682,20 @@
       "gk": false,
       "team": "home",
       "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.417,
-      "armR": 0.431,
-      "handsAtChest": 0.17,
-      "footBallL": 5.813,
-      "footBallR": 6.343,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.081,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.396,
-      "armR": 0.518,
-      "handsAtChest": 0.085,
-      "footBallL": 4.352,
-      "footBallR": 4.544,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.415,
-      "armR": 0.396,
-      "handsAtChest": 0.107,
-      "footBallL": 5.967,
-      "footBallR": 5.829,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.397,
-      "armR": 0.422,
-      "handsAtChest": 0.107,
-      "footBallL": 1.057,
-      "footBallR": 0.749,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.399,
-      "armR": 0.444,
-      "handsAtChest": 0.098,
-      "footBallL": 7.045,
-      "footBallR": 7.673,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 28,
-   "t": 18358,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.082,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.414,
-      "armR": 0.439,
-      "handsAtChest": 0.135,
-      "footBallL": 5.807,
-      "footBallR": 6.432,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.081,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.429,
-      "armR": 0.365,
-      "handsAtChest": 0.109,
-      "footBallL": 4.236,
-      "footBallR": 4.422,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
       "gesture": null,
       "weight": 0,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
       "armL": 0.394,
-      "armR": 0.43,
-      "handsAtChest": 0.081,
-      "footBallL": 6.006,
-      "footBallR": 5.861,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.389,
-      "armR": 0.415,
-      "handsAtChest": 0.095,
-      "footBallL": 1.05,
-      "footBallR": 0.956,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.399,
-      "armR": 0.444,
-      "handsAtChest": 0.108,
-      "footBallL": 7.047,
-      "footBallR": 7.698,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 29,
-   "t": 19052,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.082,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.383,
-      "armR": 0.437,
-      "handsAtChest": 0.099,
-      "footBallL": 5.805,
-      "footBallR": 6.469,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.081,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.471,
-      "armR": 0.376,
-      "handsAtChest": 0.05,
-      "footBallL": 3.809,
-      "footBallR": 4.049,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.396,
-      "armR": 0.464,
-      "handsAtChest": 0.103,
-      "footBallL": 6.015,
-      "footBallR": 5.876,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.393,
       "armR": 0.438,
-      "handsAtChest": 0.101,
-      "footBallL": 1.062,
-      "footBallR": 1.176,
-      "loco": "run"
-     },
-     {
-      "i": 14,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0.018,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.411,
-      "armR": 0.441,
-      "handsAtChest": 0.111,
-      "footBallL": 7.052,
-      "footBallR": 7.727,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 30,
-   "t": 19592,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.082,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.39,
-      "armR": 0.429,
-      "handsAtChest": 0.135,
-      "footBallL": 5.801,
-      "footBallR": 6.353,
+      "handsAtChest": 0.11,
+      "footBallL": 8.942,
+      "footBallR": 8.789,
       "loco": "run",
-      "facingGoalDeg": 33.2,
+      "facingGoalDeg": 31.2,
       "inFrame": true,
-      "height": 0.081,
+      "height": 0.14,
       "ballInFrame": true
      },
      {
@@ -4012,9 +3711,9 @@
       "clipDur": null,
       "armL": 0.441,
       "armR": 0.416,
-      "handsAtChest": 0.118,
-      "footBallL": 3.409,
-      "footBallR": 3.376,
+      "handsAtChest": 0.117,
+      "footBallL": 7.476,
+      "footBallR": 6.332,
       "loco": "run"
      },
      {
@@ -4028,11 +3727,11 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.412,
-      "armR": 0.5,
-      "handsAtChest": 0.116,
-      "footBallL": 5.921,
-      "footBallR": 5.874,
+      "armL": 0.39,
+      "armR": 0.451,
+      "handsAtChest": 0.101,
+      "footBallL": 5.178,
+      "footBallR": 5.034,
       "loco": null
      },
      {
@@ -4042,15 +3741,15 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0,
+      "weight": 0.018,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.425,
-      "armR": 0.444,
-      "handsAtChest": 0.124,
-      "footBallL": 1.01,
-      "footBallR": 1.115,
+      "armL": 0.384,
+      "armR": 0.427,
+      "handsAtChest": 0.11,
+      "footBallL": 2.005,
+      "footBallR": 1.751,
       "loco": "run"
      },
      {
@@ -4060,56 +3759,47 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0.018,
+      "weight": 0,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.407,
-      "armR": 0.432,
-      "handsAtChest": 0.091,
-      "footBallL": 7.03,
-      "footBallR": 7.562,
+      "armL": 0.416,
+      "armR": 0.453,
+      "handsAtChest": 0.099,
+      "footBallL": 6.888,
+      "footBallR": 7.262,
       "loco": "run"
      }
     ]
    },
    "g000": {
     "10001": {
-     "n": 22,
+     "n": 1,
      "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
+      "volley"
      ],
      "tipi": [
-      "shot",
-      "-"
+      "shot"
      ]
     }
    },
    "touch": null,
    "mounts": {
     "10001": [
-     "kick",
-     "miss"
+     "volley"
     ]
    }
   },
   {
-   "i": 31,
-   "t": 20118,
+   "i": 30,
+   "t": 18266,
    "phase": "hl_result",
    "sit": null,
    "a": {
     "ball": {
-     "x": 39.082,
+     "x": 49.171,
      "y": 0.22,
-     "z": -2.252
+     "z": -2.847
     },
     "actors": [
      {
@@ -4123,15 +3813,15 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.412,
-      "armR": 0.428,
-      "handsAtChest": 0.169,
-      "footBallL": 5.795,
-      "footBallR": 6.226,
+      "armL": 0.383,
+      "armR": 0.434,
+      "handsAtChest": 0.103,
+      "footBallL": 8.95,
+      "footBallR": 8.796,
       "loco": "run",
-      "facingGoalDeg": 33.2,
+      "facingGoalDeg": 31.2,
       "inFrame": true,
-      "height": 0.081,
+      "height": 0.154,
       "ballInFrame": true
      },
      {
@@ -4145,11 +3835,11 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.438,
-      "armR": 0.437,
-      "handsAtChest": 0.085,
-      "footBallL": 2.803,
-      "footBallR": 2.768,
+      "armL": 0.42,
+      "armR": 0.376,
+      "handsAtChest": 0.124,
+      "footBallL": 5.192,
+      "footBallR": 6.158,
       "loco": "run"
      },
      {
@@ -4163,33 +3853,15 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.391,
-      "armR": 0.522,
-      "handsAtChest": 0.159,
-      "footBallL": 5.743,
-      "footBallR": 5.887,
+      "armL": 0.404,
+      "armR": 0.474,
+      "handsAtChest": 0.101,
+      "footBallL": 5.162,
+      "footBallR": 5.031,
       "loco": null
      },
      {
       "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.424,
-      "armR": 0.448,
-      "handsAtChest": 0.12,
-      "footBallL": 0.99,
-      "footBallR": 1.098,
-      "loco": "run"
-     },
-     {
-      "i": 14,
       "hero": false,
       "gk": false,
       "team": "away",
@@ -4200,127 +3872,10 @@
       "clipTime": null,
       "clipDur": null,
       "armL": 0.398,
-      "armR": 0.438,
-      "handsAtChest": 0.097,
-      "footBallL": 7.007,
-      "footBallR": 7.5,
-      "loco": "run"
-     }
-    ]
-   },
-   "g000": {
-    "10001": {
-     "n": 22,
-     "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
-     ],
-     "tipi": [
-      "shot",
-      "-"
-     ]
-    }
-   },
-   "touch": null,
-   "mounts": {
-    "10001": [
-     "kick",
-     "miss"
-    ]
-   }
-  },
-  {
-   "i": 32,
-   "t": 20675,
-   "phase": "hl_result",
-   "sit": null,
-   "a": {
-    "ball": {
-     "x": 39.082,
-     "y": 0.22,
-     "z": -2.252
-    },
-    "actors": [
-     {
-      "i": 0,
-      "hero": true,
-      "gk": false,
-      "team": "home",
-      "lod": "lod0",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.41,
-      "armR": 0.434,
-      "handsAtChest": 0.172,
-      "footBallL": 5.785,
-      "footBallR": 6.383,
-      "loco": "run",
-      "facingGoalDeg": 33.2,
-      "inFrame": true,
-      "height": 0.081,
-      "ballInFrame": true
-     },
-     {
-      "i": 9,
-      "hero": false,
-      "gk": false,
-      "team": "home",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.451,
-      "armR": 0.364,
-      "handsAtChest": 0.05,
-      "footBallL": 2.066,
-      "footBallR": 2.395,
-      "loco": "run"
-     },
-     {
-      "i": 11,
-      "hero": false,
-      "gk": true,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.351,
-      "armR": 0.501,
-      "handsAtChest": 0.166,
-      "footBallL": 5.678,
-      "footBallR": 5.908,
-      "loco": null
-     },
-     {
-      "i": 13,
-      "hero": false,
-      "gk": false,
-      "team": "away",
-      "lod": "lod2",
-      "gesture": null,
-      "weight": 0,
-      "clip": null,
-      "clipTime": null,
-      "clipDur": null,
-      "armL": 0.411,
-      "armR": 0.454,
-      "handsAtChest": 0.131,
-      "footBallL": 0.898,
-      "footBallR": 1.081,
+      "armR": 0.423,
+      "handsAtChest": 0.109,
+      "footBallL": 1.967,
+      "footBallR": 1.752,
       "loco": "run"
      },
      {
@@ -4330,56 +3885,47 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0.018,
+      "weight": 0,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.432,
-      "armR": 0.457,
-      "handsAtChest": 0.104,
-      "footBallL": 6.941,
-      "footBallR": 7.296,
+      "armL": 0.438,
+      "armR": 0.462,
+      "handsAtChest": 0.121,
+      "footBallL": 6.816,
+      "footBallR": 7.136,
       "loco": "run"
      }
     ]
    },
    "g000": {
     "10001": {
-     "n": 22,
+     "n": 1,
      "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
+      "volley"
      ],
      "tipi": [
-      "shot",
-      "-"
+      "shot"
      ]
     }
    },
    "touch": null,
    "mounts": {
     "10001": [
-     "kick",
-     "miss"
+     "volley"
     ]
    }
   },
   {
-   "i": 33,
-   "t": 21243,
+   "i": 31,
+   "t": 18842,
    "phase": "hl_result",
    "sit": null,
    "a": {
     "ball": {
-     "x": 39.082,
+     "x": 49.171,
      "y": 0.22,
-     "z": -2.252
+     "z": -2.847
     },
     "actors": [
      {
@@ -4393,15 +3939,15 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.401,
-      "armR": 0.43,
-      "handsAtChest": 0.147,
-      "footBallL": 5.781,
-      "footBallR": 6.461,
+      "armL": 0.393,
+      "armR": 0.428,
+      "handsAtChest": 0.142,
+      "footBallL": 8.957,
+      "footBallR": 8.908,
       "loco": "run",
-      "facingGoalDeg": 33.2,
+      "facingGoalDeg": 31.2,
       "inFrame": true,
-      "height": 0.081,
+      "height": 0.163,
       "ballInFrame": true
      },
      {
@@ -4415,11 +3961,11 @@
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.395,
-      "armR": 0.525,
-      "handsAtChest": 0.089,
-      "footBallL": 1.743,
-      "footBallR": 1.953,
+      "armL": 0.429,
+      "armR": 0.495,
+      "handsAtChest": 0.081,
+      "footBallL": 4.992,
+      "footBallR": 4.299,
       "loco": "run"
      },
      {
@@ -4434,10 +3980,10 @@
       "clipTime": null,
       "clipDur": null,
       "armL": 0.412,
-      "armR": 0.443,
-      "handsAtChest": 0.127,
-      "footBallL": 5.766,
-      "footBallR": 5.912,
+      "armR": 0.506,
+      "handsAtChest": 0.126,
+      "footBallL": 5.056,
+      "footBallR": 5.031,
       "loco": null
      },
      {
@@ -4447,15 +3993,15 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0,
+      "weight": 0.018,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.394,
-      "armR": 0.456,
-      "handsAtChest": 0.132,
-      "footBallL": 0.918,
-      "footBallR": 1.073,
+      "armL": 0.382,
+      "armR": 0.423,
+      "handsAtChest": 0.1,
+      "footBallL": 1.944,
+      "footBallR": 2.085,
       "loco": "run"
      },
      {
@@ -4465,43 +4011,286 @@
       "team": "away",
       "lod": "lod2",
       "gesture": null,
-      "weight": 0.018,
+      "weight": 0,
       "clip": null,
       "clipTime": null,
       "clipDur": null,
-      "armL": 0.442,
-      "armR": 0.462,
-      "handsAtChest": 0.122,
-      "footBallL": 6.932,
-      "footBallR": 7.264,
+      "armL": 0.42,
+      "armR": 0.469,
+      "handsAtChest": 0.133,
+      "footBallL": 6.664,
+      "footBallR": 7.105,
       "loco": "run"
      }
     ]
    },
    "g000": {
     "10001": {
-     "n": 22,
+     "n": 1,
      "gesti": [
-      "kick",
-      "kick",
-      "kick",
-      "miss",
-      "miss",
-      "miss",
-      "miss",
-      "miss"
+      "volley"
      ],
      "tipi": [
-      "shot",
-      "-"
+      "shot"
      ]
     }
    },
    "touch": null,
    "mounts": {
     "10001": [
-     "kick",
-     "miss"
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 32,
+   "t": 19424,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.171,
+     "y": 0.22,
+     "z": -2.847
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.412,
+      "armR": 0.429,
+      "handsAtChest": 0.171,
+      "footBallL": 8.964,
+      "footBallR": 8.949,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.17,
+      "ballInFrame": true
+     },
+     {
+      "i": 9,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.464,
+      "armR": 0.373,
+      "handsAtChest": 0.032,
+      "footBallL": 4.314,
+      "footBallR": 4.071,
+      "loco": "run"
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.382,
+      "armR": 0.521,
+      "handsAtChest": 0.161,
+      "footBallL": 4.882,
+      "footBallR": 5.046,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.427,
+      "armR": 0.443,
+      "handsAtChest": 0.121,
+      "footBallL": 1.872,
+      "footBallR": 2.096,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.399,
+      "armR": 0.476,
+      "handsAtChest": 0.104,
+      "footBallL": 6.863,
+      "footBallR": 7.137,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
+    ]
+   }
+  },
+  {
+   "i": 33,
+   "t": 20037,
+   "phase": "hl_result",
+   "sit": null,
+   "a": {
+    "ball": {
+     "x": 49.171,
+     "y": 0.22,
+     "z": -2.847
+    },
+    "actors": [
+     {
+      "i": 0,
+      "hero": true,
+      "gk": false,
+      "team": "home",
+      "lod": "lod0",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.409,
+      "armR": 0.434,
+      "handsAtChest": 0.171,
+      "footBallL": 8.969,
+      "footBallR": 8.884,
+      "loco": "run",
+      "facingGoalDeg": 31.2,
+      "inFrame": true,
+      "height": 0.174,
+      "ballInFrame": true
+     },
+     {
+      "i": 9,
+      "hero": false,
+      "gk": false,
+      "team": "home",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.472,
+      "armR": 0.374,
+      "handsAtChest": 0.059,
+      "footBallL": 5.063,
+      "footBallR": 5.108,
+      "loco": "run"
+     },
+     {
+      "i": 11,
+      "hero": false,
+      "gk": true,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.353,
+      "armR": 0.496,
+      "handsAtChest": 0.165,
+      "footBallL": 4.836,
+      "footBallR": 5.063,
+      "loco": null
+     },
+     {
+      "i": 13,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0.018,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.418,
+      "armR": 0.454,
+      "handsAtChest": 0.124,
+      "footBallL": 1.738,
+      "footBallR": 2.035,
+      "loco": "run"
+     },
+     {
+      "i": 14,
+      "hero": false,
+      "gk": false,
+      "team": "away",
+      "lod": "lod2",
+      "gesture": null,
+      "weight": 0,
+      "clip": null,
+      "clipTime": null,
+      "clipDur": null,
+      "armL": 0.428,
+      "armR": 0.435,
+      "handsAtChest": 0.146,
+      "footBallL": 6.894,
+      "footBallR": 7.167,
+      "loco": "run"
+     }
+    ]
+   },
+   "g000": {
+    "10001": {
+     "n": 1,
+     "gesti": [
+      "volley"
+     ],
+     "tipi": [
+      "shot"
+     ]
+    }
+   },
+   "touch": null,
+   "mounts": {
+    "10001": [
+     "volley"
     ]
    }
   }
