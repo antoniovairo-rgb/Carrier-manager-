@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 10:15 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 10:18 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -767,6 +767,23 @@ una regola di regia del gioco principale; a verbale per il PO (vedi la foto «do
 **Nella fase di scelta** la taglia rende poco perche' il blend e' 0,70 (decisione PO 7.729, «riduci lo zoom in»): non toccato.
 
 **Non verificato:** il telefono; la misura headless e' rumorosa (dribbling 0,083–0,176 sullo stesso braccio).
+
+## Avanzamento 23 settembre 2026, 10:18 — PORTIERE IN LOD1 NELLA PRESA (decisione PO)
+
+All'armo della presa (canale `_presaRev`, solo review) il portiere passa da LOD2 a LOD1 **prima** che la clip monti — a gesto
+montato lo scambio di scheletro e' bloccato per costruzione. Fuori dagli highlight torna a LOD2. Rosso `__CPM_NO_GKLOD1`.
+Sonda `keeper-catch-sequence-review.mjs` (nuovi campi: LOD in presa, promozione, triangoli da `renderer.info`; `CPM_FLAG`):
+
+| | Verde | Rosso |
+| --- | --- | --- |
+| LOD del portiere nei campioni in presa | **lod1** (16/16) | lod2 |
+| Triangoli, mediana · picco | **64.615 · 64.667** | 56.613 · 60.429 |
+| Contatto (tempo di clip) · palla-mani · dopo | 1,074 s · 0 · 0 0 0 0 | 1,070 s · 0 · 0 0 0 0 |
+| Portiere nel quadro al contatto | si' | si' |
+
+Costo +8.002 triangoli, pari al salto LOD2→LOD1 (12.244−4.190 = 8.054): sotto l'obiettivo 69k. La presa non cambia.
+**Non verificato:** il ritorno a LOD2 dopo l'highlight (la sonda si ferma all'uscita da `hl_*`); il telefono.
+A verbale (invariato): il testo dell'esito dice «Para in tuffo», il gesto e' una presa alta.
 
 ---
 

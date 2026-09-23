@@ -14,7 +14,8 @@ import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROSSO = process.env.CPM_ROSSO === '1'; /* rosso appaiato: __CPM_NO_PRESA spegne il canale della presa */
 const ROSSO_CAM = process.env.CPM_ROSSO_CAM === '1'; /* rosso della sola regia: __CPM_NO_PRESACAM */
-const out = path.join(here, ROSSO ? 'keeper-catch-review-rosso' : (ROSSO_CAM ? 'keeper-catch-review-rosso-cam' : 'keeper-catch-review'));
+const FLAG = process.env.CPM_FLAG || ''; /* rosso generico: nome di un interruttore window */
+const out = path.join(here, ROSSO ? 'keeper-catch-review-rosso' : (ROSSO_CAM ? 'keeper-catch-review-rosso-cam' : (FLAG ? 'keeper-catch-review-' + FLAG.replace(/^__CPM_/, '').toLowerCase() : 'keeper-catch-review')));
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'presa-'));
 const N = Number(process.env.CPM_N || 70), PASSO = Number(process.env.CPM_PASSO || 180);
 const server = await startServer();
@@ -27,6 +28,7 @@ page.on('pageerror', error => errors.push(String(error.message).slice(0, 200)));
 try {
   if (ROSSO) await page.addInitScript(() => { window.__CPM_NO_PRESA = true; });
   if (ROSSO_CAM) await page.addInitScript(() => { window.__CPM_NO_PRESACAM = true; });
+  if (FLAG) await page.addInitScript(n => { window[n] = true; }, FLAG);
   await installCdnRoutes(page);
   await openMatch(page, server.address().port, {
     skipLoadAll: true,
@@ -53,6 +55,7 @@ try {
       keeper: window.__CPM_CGTRADER_KEEPER_AUDIT ? window.__CPM_CGTRADER_KEEPER_AUDIT() : null,
       roster: window.__CPM_CGTRADER_CINEMA_ROSTER || null,
       sceneT: window.__CPM_SCENET ?? null,
+      tri: window.__CPM_TRI907 ? window.__CPM_TRI907() : null, gkLod1: window.__CPM_GKLOD1 || null,
     }));
     const shot = path.join(scratch, `f${String(i).padStart(3, '0')}.png`);
     await page.screenshot({ path: shot });
@@ -80,6 +83,8 @@ try {
     clip: [...new Set(inPresa.map(f => k(f).clip))],
     portiereSempreDisegnato: frames.filter(f => k(f).hasKeeper).every(f => k(f).visible),
     lodPortiere: [...new Set(frames.map(f => k(f).lod))],
+    lodPortiereInPresa: [...new Set(inPresa.map(f => k(f).lod))], promozione: frames.at(-1)?.gkLod1 || null,
+    triangoli: (() => { const v = frames.map(f => typeof f.tri === 'number' ? f.tri : (f.tri && (f.tri.triangles ?? f.tri.tri))).filter(Number.isFinite).sort((a, b) => a - b); return v.length ? { mediana: v[Math.floor(v.length / 2)], max: v.at(-1) } : null; })(),
     distanzaMinimaPallaMani: contatto ? k(contatto).handBall : null,
     distanzaDopoContatto: dopo.map(f => k(f).handBall),
     aperturaBracciaMax: Math.max(...frames.map(f => k(f).armOpen || 0)),
