@@ -988,6 +988,13 @@ coerenti, aperture dal brain 10/10, tipi osservati **spalle 4 · fra-le-linee 5*
 **Aperto:** «conclusione» (area con poca pressione) e «fascia» non compaiono ancora: nel motore l'eroe raramente riceve libero in area o
 largo. E' come gioca la squadra (motore del possesso), non la scena: prossimo lavoro.
 
+## Avanzamento 23 settembre 2026, 23/09 15:33 — PUNTO 5: IL SEGUITO DELLA CATENA LO DECIDE IL BRAIN
+Le 4 scelte del seguito (sponda · mischia · seconda palla · colpo di testa) usavano `pick()`, sorteggio libero fuori dal motore. Ora
+`risolviEroe.seguito(opzioni)` sceglie col dado seedato del motore e registra il fatto `seguito`; LiveMatch chiama `_seguito23`.
+Rosso `__CPM_NO_B5` (sorteggio di prima). Verifica: scena di cross forzata riuscita → il brain registra «Mischia in area», 0 errori.
+Nota: tutte le 191 schede hanno gia' **3 opzioni** esatte, quindi il vincolo «al massimo 3» del MACRO-PIANO e' gia' rispettato (il «max 21» era vecchio).
+**Non misurato:** la catena nel flusso vero (rara: 2 in 10 partite).
+
 ---
 
 ## Obiettivo vincolante

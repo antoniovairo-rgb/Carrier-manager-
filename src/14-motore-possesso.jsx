@@ -951,6 +951,10 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
      ⚠️ Il dado consuma il flusso del motore: da qui in poi la partita e' un'altra rispetto a prima del rimedio (sempre
      riproducibile a parita' di scelte). */
   const risolviEroe={
+    /* [23/09 POC — punto 5] IL SEGUITO DELL'AZIONE LO DECIDE IL BRAIN: la catena (sponda, mischia, seconda palla, colpo di testa)
+       si sceglie col dado seedato del motore, non piu' con un sorteggio libero, ed e' un fatto registrato (`seguito`). */
+    seguito(opzioni){try{const a=(opzioni||[]).filter(Boolean);if(!a.length)return null;const k=Math.floor(rnd()*a.length)%a.length;
+      const e=ev('seguito',{scena:true,tipo:(a[k]&&a[k]._id)||k});S.eventi.splice(S.eventi.indexOf(e),1);return a[k];}catch(_e){return null;}},
     dado(p){const r=rnd();return r<Math.max(0.02,Math.min(0.98,+p||0));},
     eventi(key,d){d=d||{};const out=[];const _n0=S.eventi.length;try{
       const H=g[HERO];if(!H)return out;const C=d.cast||{};const G=w=>(w&&w.i!=null&&g[w.i])?g[w.i]:null;

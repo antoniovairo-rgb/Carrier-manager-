@@ -8137,6 +8137,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const tacticMod=tacticBonusRef.current||0;
     // 5.43.17: penalità PUNIZIONI — le punizioni dirette nel calcio reale sono a bassissima conversione; con bonus +8 e cap 0.84 i tiratori bravi segnavano "quasi sempre". Tiered: tiro diretto fortemente penalizzato, cross su punizione meno. Si applica a TUTTE le situations "punizione" (globale).
     const _fkSit=situations[hlIdx];
+    /* [23/09 POC — punto 5] il seguito della catena lo sceglie il brain (dado seedato del motore); rosso __CPM_NO_B5 = sorteggio libero di prima */
+    const _seguito23=(arr)=>{try{const M=motoreRef.current;if(M&&M.risolviEroe&&M.risolviEroe.seguito&&!(typeof window!=='undefined'&&window.__CPM_NO_B5)){const r=M.risolviEroe.seguito(arr);if(r){if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B5=window.__CPM_B5||[]).push(String(r.text||'').slice(0,30));}catch(_e){}}return r;}}}catch(_eS){}return pick(arr);};
     const fkPenalty=(_fkSit&&(function(){try{return deriveIntent(_fkSit)==="freekick";}catch(_e){return /punizion/i.test(_fkSit.text||"");}})())?(action.rew==="goal"?0.45:action.rew==="assist"?0.18:0):0;/* [6.0.0 MP-7] intent-driven */
     // [5.80.0 BIL-3a] form e morale entrano FINALMENTE nel roll d'azione (±4% / ±2.5%): metà del dashboard
     //   non era più scenografia — il loop «gioco bene → sto meglio → gioco meglio» ora esiste in campo.
@@ -8539,10 +8541,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   catena fragile di .includes) + guardia di profondità (niente stacking di catene).
     if(ok&&(action.rew==="assist"||_chanceDrb)&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
       if(_chanceDrb)pendingChainSitRef.current={...CHAIN_SITS.dopo_dribbling,_chainDepth:1};// [5.90.0 BLK-2] uomo saltato → conclusione da giocare
-      else if(_crossChain704)pendingChainSitRef.current={...pick([CHAIN_SITS.sponda,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};/* [7.0.4] cross consegnato in area → il secondo tempo finalizza (il cross non era gol) · [7.201.0] MAI `header`: il cross l'ha messo l'EROE, non può incornarlo lui — o lo prolunga un compagno (sponda) o nasce una mischia/un rimbalzo */
-      else if(_chance78)pendingChainSitRef.current={...pick([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
+      else if(_crossChain704)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.sponda,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};/* [7.0.4] cross consegnato in area → il secondo tempo finalizza (il cross non era gol) · [7.201.0] MAI `header`: il cross l'ha messo l'EROE, non può incornarlo lui — o lo prolunga un compagno (sponda) o nasce una mischia/un rimbalzo */
+      else if(_chance78)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
       else if(situations[hlIdx]?.chainOn==="aerial")/* [6.3.2 R1a] campo dichiarativo bakato in S(), non piu regex sul testo */
-        pendingChainSitRef.current={...pick([CHAIN_SITS.sponda,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};/* [7.201.0] `header` fuori: la consegna aerea (cross/corner/punizione/rimessa) l'ha battuta l'eroe */
+        pendingChainSitRef.current={..._seguito23([CHAIN_SITS.sponda,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};/* [7.201.0] `header` fuori: la consegna aerea (cross/corner/punizione/rimessa) l'ha battuta l'eroe */
     }
     /* [6.4.7 R5.3] IL CORNER CONQUISTATO (R2.2) È UNA VERA OCCASIONE: la conclusione deviata in angolo incatena
        l'attacco del calcio d'angolo (cross in area → stacco di testa) — la sequenza calcistica reale, non un
@@ -8550,7 +8552,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     if(!ok&&_outKind==="corner"&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){
       /* [7.201.0] QUI `header` è corretto e resta: il corner nasce da una CONCLUSIONE dell'eroe deviata, quindi
          a batterlo è un compagno → l'eroe può salire a incornare. È l'unico caso in cui la consegna non è sua. */
-      pendingChainSitRef.current={...pick([CHAIN_SITS.header,CHAIN_SITS.mischia]),_chainDepth:1};}
+      pendingChainSitRef.current={..._seguito23([CHAIN_SITS.header,CHAIN_SITS.mischia]),_chainDepth:1};}
     // Sprint 79 — ball moves toward outcome position for visual coherence
     const _by79=pPosRef.current.y;
     if(key==="goal")ballTargetRef.current={x:97,y:clamp(_by79+rng(-12,12),22,78)};
