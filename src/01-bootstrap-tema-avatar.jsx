@@ -319,12 +319,71 @@ function AvatarSVG({id=0, size=60, border=false, style={}, seed, avStyle, avOpts
 const FIG={w:5,h:7,r:RAD.xs,minW:28};/* il rapporto della figurina da album, in un posto solo */
 const _slugVolto=(x)=>String(x==null?"":x).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
   .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,48);
-function voltoUrl(tipo,chiave){
+/* [23/09 POC — I 1000 VOLTI ENTRANO NEL GIOCO. Incarico PO: «collega ogni attore del gioco a un ritratto in modo stabile e
+   riproducibile».] Tre regole:
+   1) CARICAMENTO: il gioco scarica UNA volta l'indice leggero (`assets/portraits/ai/indice.json`, ~69 KB, generato da
+      tools/ritratti/indice-volti.mjs) e poi SOLO le immagini delle figurine che appaiono (`loading="lazy"`): mai i 1000 WebP.
+   2) ASSEGNAZIONE STABILE: il volto e' funzione pura di (tipo, chiave) — hash sul gruppo giusto — quindi non cambia riaprendo
+      una partita o ricaricando un salvataggio. Gruppi DISGIUNTI per tipo (lo staff: mister, procuratori, giornalisti, arbitri,
+      dirigenti in fette separate; i giocatori: compagni e avversari in due meta'), cosi' due ruoli diversi nella stessa scena
+      non possono avere la stessa faccia. Il volto dell'eroe e' RISERVATO: nessun altro lo riceve.
+   3) EROE: il volto scelto alla creazione e' salvato in `player.voltoEroe`; senza scelta (salvataggi vecchi) e' il primo
+      candidato coerente col suo aspetto 3D (carnagione e capelli di AVATARS). Tutte le chiavi con cui le schermate chiamano
+      l'eroe (nome, «eroe-N», «avatar-N») portano allo stesso volto.
+   La carnagione dell'indice serve SOLO ad avvicinare il volto all'aspetto 3D dell'eroe: non si mostra mai. Rosso __CPM_NO_VOLTI23. */
+const VOLTI23={idx:null,stato:"da-caricare",ascolta:new Set()};
+function _caricaVolti23(){
+  if(VOLTI23.stato!=="da-caricare")return;
+  if(typeof window==='undefined'||typeof fetch!=='function'||window.__CPM_NO_VOLTI23){VOLTI23.stato="spento";return;}
+  VOLTI23.stato="in-corso";
+  fetch("assets/portraits/ai/indice.json").then(r=>r.ok?r.json():null).then(j=>{
+    VOLTI23.idx=(j&&j.g&&j.s)?j:null;VOLTI23.stato=VOLTI23.idx?"pronto":"assente";
+    VOLTI23.ascolta.forEach(f=>{try{f();}catch(_e){}});
+  }).catch(()=>{VOLTI23.stato="assente";});
+}
+const _FETTE23={mister:[0,0.30],procuratore:[0.30,0.50],giornalista:[0.50,0.70],arbitro:[0.70,0.85],dirigente:[0.85,1]};
+const _hash23=(x)=>{let h=2166136261>>>0;const t=String(x);for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;};
+/* candidati per il volto dell'eroe: giovani giocatori con la carnagione e il colore di capelli dell'aspetto 3D scelto */
+function candidatiEroe23(avatarId){
+  const I=VOLTI23.idx;if(!I)return [];
+  const av=(typeof AVATARS!=='undefined'&&AVATARS.find(a=>a.id===(avatarId|0)))||null;const lab=String(av&&av.label||"").toLowerCase();
+  const k=/scura/.test(lab)?"s":/ambrata/.test(lab)?"a":/olivastra/.test(lab)?"o":"c";
+  const h=/biondi/.test(lab)?"biondi":/ramati|rossi/.test(lab)?"rossi":/neri/.test(lab)?"neri":"castani";
+  const giov=I.g.filter(r=>r.e<=23);
+  let c=giov.filter(r=>r.k===k&&r.h===h);if(c.length<4)c=c.concat(giov.filter(r=>r.k===k&&r.h!==h));
+  return c.slice(0,24).map(r=>r.n);
+}
+function _eroe23(){try{return (typeof window!=='undefined'&&window.__CPM_EROE23)||null;}catch(_e){return null;}}
+function voltoEroeId23(){const E=_eroe23();if(!E)return null;if(E.volto)return E.volto;const c=candidatiEroe23(E.avatarId);return c.length?c[0]:null;}
+/* da (tipo, chiave) al numero del volto; null = nessun volto (resta il riquadro neutro) */
+function voltoId23(tipo,chiave,salto){
+  const I=VOLTI23.idx;if(!I)return null;
+  const sl=_slugVolto(chiave);const t=tipo||"giocatore";
+  if(t==="giocatore"){const E=_eroe23();
+    if(/^avatar-\d+$/.test(sl)){const c=candidatiEroe23(+sl.slice(7));return c.length?c[0]:null;}
+    if(/^eroe(-|$)/.test(sl)||(E&&E.nome&&sl===_slugVolto(E.nome)))return voltoEroeId23();}
+  const riservato=voltoEroeId23();
+  let pool;
+  if(_FETTE23[t]){const [a,b]=_FETTE23[t];pool=I.s.slice(Math.floor(a*I.s.length),Math.floor(b*I.s.length));}
+  else{const meta=t==="avversario"?1:0;pool=I.g.filter((r,i)=>(i%2)===meta);}
+  if(!pool.length)return null;
+  let i=_hash23(t+"/"+sl)%pool.length,salti=salto|0;
+  for(let k=0;k<pool.length;k++){const n=pool[(i+k)%pool.length].n;if(n===riservato)continue;if(salti-->0)continue;return n;}
+  return null;
+}
+/* [23/09 POC] UNA PERSONA, UNA FACCIA, IN OGNI SCENA. Dentro un `ScenaVolti23` ogni figurina registra il volto che mostra; se
+   quel volto e' gia' di un'ALTRA persona della stessa scena, si passa al successivo del suo gruppo. L'ordine e' quello del
+   rendering (deterministico), e fuori dalle collisioni il volto resta quello di sempre. */
+const ScenaCtx23=React.createContext(null);
+function ScenaVolti23({children}){const r=React.useRef(null);if(!r.current)r.current={chi:new Map(),perChiave:new Map()};return <ScenaCtx23.Provider value={r.current}>{children}</ScenaCtx23.Provider>;}
+function _fileVolto23(n){const I=VOLTI23.idx;if(!I||n==null)return null;const r=I.g.find(x=>x.n===n)||I.s.find(x=>x.n===n);return r?I.base+r.f:null;}
+function voltoUrl(tipo,chiave,voltoId){
   try{
     const k=(tipo||"giocatore")+"/"+_slugVolto(chiave);
     const M=(typeof window!=='undefined'&&window.__CPM_VOLTI)||null;
-    if(M){const u=M[k]||M[_slugVolto(chiave)];return u||null;}
-    return null;/* senza manifesto non si chiede niente alla rete: il ripiego e' il volto di oggi */
+    if(M){const u=M[k]||M[_slugVolto(chiave)];if(u)return u;}/* un manifesto esplicito resta prioritario */
+    if(!VOLTI23.idx){_caricaVolti23();return null;}
+    return _fileVolto23(voltoId!=null?voltoId:voltoId23(tipo,chiave));
   }catch(_e){return null;}
 }
 /* `Figurina` — larghezza dichiarata, altezza derivata dal rapporto. `nome` accende la fascia in basso,
@@ -336,9 +395,18 @@ function voltoUrl(tipo,chiave){
    che e' esattamente cio' che il PO ha chiesto — lo spazio che aspetta la figurina, non un segnaposto che
    finge di essere un ritratto. Quando arriva l'arte (manifesto `window.__CPM_VOLTI`) l'immagine riempie il
    riquadro e il bianco sparisce; finche' non arriva, si vede lo spazio. */
-function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,...rest}){
+function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,style={},titolo,voltoId,...rest}){
   const w=Math.max(FIG.minW,Math.round(larg)), h=Math.round(w*FIG.h/FIG.w);
-  const url=voltoUrl(tipo,chiave!=null?chiave:nome);
+  const [,_rif23]=React.useReducer(x=>x+1,0);
+  React.useEffect(()=>{if(VOLTI23.idx)return;VOLTI23.ascolta.add(_rif23);_caricaVolti23();return ()=>{VOLTI23.ascolta.delete(_rif23);};},[]);
+  const _sc23=React.useContext(ScenaCtx23);
+  let _vid23=voltoId;
+  if(_sc23&&_vid23==null&&VOLTI23.idx&&!(typeof window!=='undefined'&&window.__CPM_NO_SCENA23)){const _k23=(tipo||"giocatore")+"/"+_slugVolto(chiave!=null?chiave:nome);
+    if(_sc23.perChiave.has(_k23))_vid23=_sc23.perChiave.get(_k23);
+    else{let n=voltoId23(tipo,chiave!=null?chiave:nome,0),z=0;while(n!=null&&_sc23.chi.has(n)&&_sc23.chi.get(n)!==_k23&&z<24){z++;n=voltoId23(tipo,chiave!=null?chiave:nome,z);}
+      if(n!=null){_sc23.chi.set(n,_k23);_sc23.perChiave.set(_k23,n);}_vid23=n;}}
+  const url=voltoUrl(tipo,chiave!=null?chiave:nome,_vid23);
+  if(url&&!(typeof window!=='undefined'&&window.__CPM_NO_CORNICE23))return <FigurinaKorward23 url={url} tipo={tipo} nome={nome} ruolo={ruolo} col={col} col2={col2} w={w} h={h} titolo={titolo} style={style} rest={rest}/>;
   const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il riquadro */
   return(
     <div data-cpm-figurina={tipo} title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
@@ -369,6 +437,32 @@ function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,
           {ruolo?<div style={{fontSize:FS.caption,color:"#526279",lineHeight:1.15,
             overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ruolo}</div>:null}
         </div>)}
+    </div>);
+}
+
+/* [23/09 POC] LA FIGURINA KORWARD 5:7. Cornice nei colori del club (col/col2 dal chiamante; senza, i colori del gioco), fascia
+   alta col marchio KORWARD, ritratto QUADRATO su fondo bianco (i volti sono 512x512: `cover` in un riquadro quadrato, mai
+   deformati ne' tagliati sul viso), fascia bassa con nome e ruolo come TESTO del gioco — niente e' impresso nell'immagine, e la
+   carnagione o altri attributi tecnici non compaiono mai. Sotto i 52 px spariscono le scritte, sotto i 40 anche il marchio. */
+function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest}){
+  const c1=col||TH.primary||"#8b1e3f",c2=col2||TH.accent||"#f59e0b";
+  const bordo=Math.max(2,Math.round(w*0.045));const marchio=w>=40;const scritte=!!nome&&w>=52;
+  const hTop=marchio?Math.max(8,Math.round(h*0.10)):0;const lato=w-2*bordo;
+  return(
+    <div data-cpm-figurina={tipo} data-cpm-volto="1" title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
+      borderRadius:FIG.r,overflow:"hidden",background:c1,boxShadow:"0 1px 3px rgba(15,23,42,0.18)",...style}} {...(rest||{})}>
+      {marchio&&<div style={{height:hTop,display:"flex",alignItems:"center",justifyContent:"center",color:"#ffffff",
+        fontWeight:900,letterSpacing:Math.max(0.5,w*0.012),fontSize:Math.max(6,Math.round(hTop*0.62)),lineHeight:1,fontFamily:"system-ui,sans-serif"}}>KORWARD</div>}
+      <div style={{position:"absolute",left:bordo,top:hTop||bordo,width:lato,height:lato,background:"#ffffff",overflow:"hidden",
+        borderBottom:`${Math.max(1,Math.round(bordo*0.6))}px solid ${c2}`}}>
+        <img src={url} alt={nome||""} width={lato} height={lato} loading="lazy" decoding="async"
+          style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+      </div>
+      {scritte&&<div style={{position:"absolute",left:bordo,right:bordo,bottom:bordo,top:(hTop||bordo)+lato+Math.max(1,Math.round(bordo*0.6)),
+        background:"#ffffff",padding:"2px 4px",display:"flex",flexDirection:"column",justifyContent:"center"}}>
+        <div style={{fontSize:FS.caption,fontWeight:800,color:"#1e293b",lineHeight:1.12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
+        {ruolo?<div style={{fontSize:FS.caption,color:"#526279",lineHeight:1.12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ruolo}</div>:null}
+      </div>}
     </div>);
 }
 

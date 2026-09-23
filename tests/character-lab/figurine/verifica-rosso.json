@@ -1,0 +1,84 @@
+{
+ "salvato": null,
+ "eroe": {
+  "registro": {
+   "nome": "Luca Brain",
+   "volto": null,
+   "avatarId": 5
+  },
+  "id": null,
+  "candidati": []
+ },
+ "dashboard": [
+  {
+   "tipo": "giocatore",
+   "nome": null,
+   "src": null,
+   "w": 35,
+   "h": 48
+  },
+  {
+   "tipo": "giocatore",
+   "nome": null,
+   "src": null,
+   "w": 31,
+   "h": 44
+  }
+ ],
+ "club": [
+  {
+   "tipo": "giocatore",
+   "nome": null,
+   "src": null,
+   "w": 35,
+   "h": 48
+  },
+  {
+   "tipo": "giocatore",
+   "nome": null,
+   "src": null,
+   "w": 31,
+   "h": 44
+  }
+ ],
+ "intervista": [
+  {
+   "tipo": "giocatore",
+   "nome": null,
+   "src": null,
+   "w": 35,
+   "h": 48
+  },
+  {
+   "tipo": "giocatore",
+   "nome": null,
+   "src": null,
+   "w": 31,
+   "h": 44
+  },
+  {
+   "tipo": "giornalista",
+   "nome": null,
+   "src": null,
+   "w": 28,
+   "h": 39
+  }
+ ],
+ "anteprime": [],
+ "scena": {
+  "saltato": "indice assente"
+ },
+ "dopoRicarica": null,
+ "stabile": true,
+ "riservato": {
+  "eroe": null,
+  "collisioni": 300
+ },
+ "richiestePortraits": {
+  "totale": 0,
+  "uniche": 0,
+  "indice": 0,
+  "manifest": 0
+ },
+ "errori": []
+}

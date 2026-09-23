@@ -1,0 +1,21 @@
+/* [23/09] FIGURINE — scelta del volto dell'eroe alla creazione: foto della schermata, «Altro volto», cambio di aspetto. */
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { startServer, launchBrowser, installCdnRoutes, sleep } from '../visual/lib/harness.mjs';
+const here = path.dirname(fileURLToPath(import.meta.url)); const out = path.join(here, 'figurine');
+const srv = await startServer(); const b = await launchBrowser();
+const page = await (await b.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' })).newPage();
+const errori = []; page.on('pageerror', e => errori.push(String(e.message).slice(0, 160)));
+await installCdnRoutes(page);
+await page.goto(`http://localhost:${srv.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'load' });
+await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 }); await sleep(1500);
+const clic = async re => page.evaluate(src => { const rx = new RegExp(src, 'i'); const el = [...document.querySelectorAll('button')].filter(x => rx.test(x.textContent || '')).pop(); if (el) { el.click(); return (el.textContent || '').trim().slice(0, 40); } return null; }, re);
+console.log('home →', await clic('nuova|inizia|crea'));
+await sleep(2000);
+const leggi = () => page.evaluate(() => { const f = [...document.querySelectorAll('[data-cpm-figurina]')]; const big = f.sort((a, b) => b.getBoundingClientRect().width - a.getBoundingClientRect().width)[0]; const im = big && big.querySelector('img'); return { figurine: f.length, grande: im ? im.getAttribute('src').replace(/^.*ai\//, '') : null, bottone: [...document.querySelectorAll('[data-cpm=altro-volto]')].map(x => x.textContent)[0] || null }; });
+const A = await leggi(); await page.screenshot({ path: path.join(out, 'creazione-1.png'), fullPage: false });
+await page.evaluate(() => { const x = document.querySelector('[data-cpm=altro-volto]'); if (x) { x.scrollIntoView({ block: 'center' }); x.click(); } }); await sleep(1200);
+const B = await leggi(); await page.screenshot({ path: path.join(out, 'creazione-2.png') });
+console.log(JSON.stringify({ prima: A, dopoAltroVolto: B, errori }));
+await b.close(); srv.close();

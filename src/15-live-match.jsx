@@ -901,6 +901,7 @@ function FestaFine942({dati,onChiudi}){
       </div>
     </div>);
 }
+{const _o23=FestaFine942;FestaFine942=function(p){return React.createElement(ScenaVolti23,null,React.createElement(_o23,p));};}/* [23/09 POC] una persona, una faccia, in questa scena */
 /* [7.956 · rilievo PO «il freeze dei pulsanti azioni post scegli ridicolo, troppo lungo»]
    QUANTO RESTANO SPENTI I BOTTONI DELLA SCELTA. La storia di questo numero, per intero, perche' e'
    la seconda volta che si muove e la direttiva e' cambiata:
@@ -977,6 +978,7 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
       </div>
     </div>);
 }
+{const _o23=PopScelta919;PopScelta919=function(p){return React.createElement(ScenaVolti23,null,React.createElement(_o23,p));};}/* [23/09 POC] una persona, una faccia, in questa scena */
 /* [7.927 collaudo PO: «di default pagelle e statistiche devono apparire CHIUSE e durante la partita deve
    MEMORIZZARE la scelta, non riaprire ad ogni fine highlight»] Il pannello vive dentro il ramo montato solo
    con phase==="playing": a ogni highlight veniva SMONTATO, e al ritorno in campo lo useState ripartiva dal
@@ -10761,7 +10763,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             </div>
             {/* Sprint 113 — Coach post-match evaluation */}
             {context!=="trial"&&<div style={{marginTop:12,padding:"10px 12px",background:TH.bgBlue,border:`1px solid ${TH.bdBlue}`,borderRadius:RAD.md,textAlign:"left",display:"flex",gap:10,alignItems:"flex-start"}}>
-              <NpcFaceCoach coachName={player.club?.n||"mister"} size={34}/>
+              <NpcFaceCoach coachName={player.coach?.name||player.club?.n||"mister"} size={34}/>
               <div style={{flex:1}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.txBlue,letterSpacing:1,marginBottom:4}}>MISTER DOPO LA PARTITA</div>
                 <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65)}</div>

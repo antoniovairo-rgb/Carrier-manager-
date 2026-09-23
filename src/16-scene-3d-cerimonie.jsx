@@ -2104,6 +2104,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   );
 }
 
+{const _o23=SeasonAwardsScreen;SeasonAwardsScreen=function(p){return React.createElement(ScenaVolti23,null,React.createElement(_o23,p));};}/* [23/09 POC] una persona, una faccia, in questa scena */
 /* ========================================
    SEASON END SCREEN  (Sprint 2 — B06/B05)
 ======================================== */

@@ -202,3 +202,35 @@ cornice del club, leggibilità su mobile, **assenza di quadranti sprite sbagliat
 un ritaglio sbagliato mostra mezza faccia di un altro), coerenza minima con l'eroe CGTrader, e
 **provenienza e licenza** degli asset. I quality gate di animazione, palla, transizioni e prestazioni
 mobile **restano separati e aperti**.
+
+---
+
+## 23/09 13:52 — I 1000 VOLTI SONO NEL GIOCO (ramo POC, non in produzione)
+
+### Come funziona
+| Pezzo | Dove | Cosa fa |
+| --- | --- | --- |
+| Indice leggero | `assets/portraits/ai/indice.json` (69 KB, da `tools/ritratti/indice-volti.mjs`) | numero, file, età, carnagione e capelli (solo per l'eroe), in due gruppi: 930 giocatori, 70 staff. Il manifest completo (505 KB) non si scarica mai. |
+| Caricamento | `_caricaVolti23` (src/01) | l'indice si scarica **una volta**; le immagini solo quando una figurina appare (`loading="lazy"`). Misurato: 7-9 ritratti scaricati in una sessione con dashboard, Club e intervista. |
+| Assegnazione | `voltoId23(tipo, chiave)` | hash di tipo+chiave sul gruppo del tipo: **stabile per costruzione** (stesso attore → stesso volto dopo riapertura e caricamento). Gruppi disgiunti: giocatori/compagni metà A, avversari metà B; staff in fette per mister (30%), procuratori, giornalisti, arbitri, dirigenti. |
+| Eroe | `player.voltoEroe` (salvato) · `voltoEroeId23` | scelto alla creazione fra i candidati coerenti con l'aspetto 3D (carnagione e colore capelli di AVATARS); senza scelta (salvataggi vecchi) il primo candidato. Il volto dell'eroe è **riservato**: nessun altro lo riceve. Le chiavi nome / «eroe-N» / «avatar-N» portano allo stesso volto. |
+| Una persona, una faccia | `ScenaVolti23` | nella stessa scena, se un volto è già di un'altra persona, si passa al successivo del gruppo. Attivo in festa di fine partita, scelte in partita, premiazioni. |
+| Figurina | `Figurina` → `FigurinaKorward23` | 5:7, cornice nei colori del club (col/col2), altrimenti colori del gioco; marchio KORWARD in alto; ritratto quadrato su fondo bianco; nome e ruolo come testo del gioco. Nessun dato impresso nell'immagine, carnagione mai mostrata. |
+
+### Scene collegate (tutte quelle che già usavano `Figurina`)
+Creazione (anteprima + griglia + «Altro volto») · testata della dashboard · slot di salvataggio · modale intervista (giornalista) · dialogo e scheda Club del mister · mister in panchina durante la partita (chiave allineata al nome del mister) · incontri, scheda e catalogo del procuratore · premiazioni · festa di fine partita · scelte in partita (mister, compagno, avversario, arbitro, eroe) · parata e presentazione 2D · transizione pro · fine stagione.
+
+### Limiti dichiarati
+- **Il catalogo non ha volti femminili segnati:** le giornaliste (`f:true`) restano col riquadro neutro, invece di ricevere un volto maschile.
+- **3D:** il modello CGTrader ha pelle e volto fissi; la coerenza col ritratto passa solo da carnagione e capelli dell'aspetto scelto. Il volto 3D non è il ritratto.
+- **Collisioni fuori scena:** due NPC dello stesso tipo possono condividere un volto se non compaiono mai insieme (probabilità ~1/465 per coppia); nella stessa scena la regola le separa.
+- I 99 sfondi leggermente fuori soglia e le 3 possibili somiglianze del pilota restano nel catalogo, già tracciati nel manifest.
+- Campo 2D, walkout 3D, gala e sala stampa non mostrano volti (scelta di prima, non toccata).
+
+### Verifiche (sonde `tests/character-lab/figurine-verifica.mjs`, `figurine-creazione.mjs`, 412×915)
+- Volto dell'eroe stabile dopo il ricaricamento; volto scelto (47) salvato e usato; riservato: 0 collisioni su 300 chiavi.
+- Nella stessa scena due chiavi in collisione → volti diversi (89/91); fuori scena restano 89/89; rosso `__CPM_NO_SCENA23` → 89/89.
+- Rosso `__CPM_NO_VOLTI23` → nessun ritratto e 0 richieste di rete.
+- Creazione: 10 volti in griglia, «Altro volto» 18 alternative per l'aspetto.
+- Guardiani: design-system verde · save-compat 12/12 · test logici 43/43 · career-critical verde.
+- **Non verificato:** il telefono vero; le scene di fine stagione e festa aperte dal flusso reale (collegate per costruzione, non fotografate).

@@ -1,0 +1,99 @@
+{
+ "salvato": 47,
+ "eroe": {
+  "registro": {
+   "nome": "Luca Brain",
+   "volto": 47,
+   "avatarId": 5
+  },
+  "id": 47,
+  "candidati": [
+   28,
+   47,
+   105,
+   107,
+   163,
+   249
+  ]
+ },
+ "dashboard": [
+  {
+   "tipo": "giocatore",
+   "nome": null,
+   "src": "lotto-01/volto-0047.webp",
+   "w": 35,
+   "h": 48
+  }
+ ],
+ "club": [
+  {
+   "tipo": "giocatore",
+   "nome": null,
+   "src": "lotto-01/volto-0047.webp",
+   "w": 35,
+   "h": 48
+  }
+ ],
+ "intervista": [
+  {
+   "tipo": "giocatore",
+   "nome": null,
+   "src": "lotto-01/volto-0047.webp",
+   "w": 35,
+   "h": 48
+  },
+  {
+   "tipo": "giornalista",
+   "nome": null,
+   "src": "lotto-07/volto-0644.webp",
+   "w": 28,
+   "h": 39
+  }
+ ],
+ "anteprime": [
+  {
+   "src": "lotto-01/volto-0047.webp",
+   "ok": true
+  },
+  {
+   "src": "lotto-02/volto-0201.webp",
+   "ok": true
+  },
+  {
+   "src": "lotto-02/volto-0204.webp",
+   "ok": true
+  },
+  {
+   "src": "lotto-04/volto-0387.webp",
+   "ok": true
+  }
+ ],
+ "scena": {
+  "chiavi": [
+   "Compagno 3",
+   "Compagno 20"
+  ],
+  "dentro": [
+   "lotto-01/volto-0089.webp",
+   "lotto-01/volto-0091.webp"
+  ],
+  "fuori": [
+   "lotto-01/volto-0089.webp",
+   "lotto-01/volto-0089.webp"
+  ],
+  "giornalistaImmagini": 0
+ },
+ "dopoRicarica": 47,
+ "stabile": true,
+ "riservato": {
+  "eroe": 47,
+  "collisioni": 0
+ },
+ "richiestePortraits": {
+  "totale": 13,
+  "uniche": 9,
+  "indice": 2,
+  "manifest": 0
+ },
+ "errori": []
+}

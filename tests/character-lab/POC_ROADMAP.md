@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 13:27 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 13:52 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -8,6 +8,7 @@
 
 | Cantiere | Stato | Cosa manca |
 | --- | --- | --- |
+| 23/09 13:52 | Figurine collegate: indice leggero, assegnazione stabile, scelta del volto, regola di scena | 7-9 ritratti scaricati a sessione; eroe stabile; 0 collisioni col volto dell'eroe |
 | 23/09 13:27 | Tuffo e respinta riadattati sullo scheletro CGTrader (Blender nel container) | cancello anatomico 3,1°/2,7° · tuffo in scena 96-100 fotogrammi, rosso 0 |
 | 23/09 13:09 | B3: bersaglio del tiro dichiarato dal brain (non più `Math.random`) | scarto 0,07-0,39 contro 2,8-9,1 |
 | 23/09 12:59 | B2: il brain tira il dado della scelta ed emette la catena di eventi (addio ponte) | esiti dal brain 0/13 → 10/10; tabellone = motore |
@@ -21,7 +22,7 @@
 | Gesti collegati al brain | 🟡 impianto pronto (tabella unica evento→gesto) | si accende con B3 |
 | **3D dal brain (B3)** | 🟡 il **gol va dove lo decide il brain**: scarto alla linea 0,07-0,39 (rosso 2,8-9,1) | parata non verificata · palo/fuori/murato ancora geometrici · gesti in scena |
 | Tabellino = motore | ✅ gol del compagno e gol «persi» corretti | |
-| Ritratti / figurine | 🟡 Codex ha consegnato **308 ritratti** (lotti 1-3) | collegarli ai volti veri (compagni, rivale, mister, procuratore) |
+| **Figurine** | ✅ **1000 volti nel gioco**: figurina Korward 5:7, volto dell'eroe scelto e salvato, volti stabili per tutti, una faccia per persona in scena | telefono · volti femminili assenti nel catalogo (giornaliste senza volto) |
 | Telefono | ❌ non provato | FPS (misure passate 11-16), kit, gesti |
 
 ## Piano (carta bianca del PO sulle situazioni, 23/09)

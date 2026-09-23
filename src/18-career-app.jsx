@@ -75,6 +75,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
   const[player,setPlayer]=useState(init);
+  /* [23/09 POC — FIGURINE] l'eroe pubblica chi e' e quale volto ha: tutte le schermate che lo chiamano per nome, «eroe-N» o
+     «avatar-N» portano allo stesso volto, che nessun altro attore puo' ricevere. */
+  if(typeof window!=='undefined'){try{window.__CPM_EROE23={nome:player&&player.name,volto:(player&&player.voltoEroe!=null)?player.voltoEroe:null,avatarId:player?(player.avatarId|0):0};}catch(_e){}}
   /* [7.149.0 collaudo PO «riprendere dallo stesso punto dopo background»] tab iniziale = ultimo tab attivo (cpm-active-tab),
      così dopo un reload della WebView si torna sulla stessa sezione. Solo valori noti; default dashboard; mai sotto test. */
   const _initTab=(()=>{try{if(typeof window!=="undefined"&&/[?&]cpmtest=1\b/.test(window.location.search||""))return "dashboard";
@@ -6024,7 +6027,7 @@ const getThisWeekMatchday=()=>{
                   dell'emoji del giornale c'e' lo spazio della figurina dell'intervistatore, seminato sul suo
                   NOME: lo stesso giornalista avra' sempre la stessa figurina. Larghezza 26 perche' 26x7/5 = 36,
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
-              <Figurina tipo="giornalista" chiave={interviewModal.paper?.name} larg={26} col={interviewModal.paper?.color||TH.primary}/>
+              <Figurina tipo="giornalista" chiave={interviewModal.paper?.name} voltoId={interviewModal.paper?.f?-1:undefined} larg={26} col={interviewModal.paper?.color||TH.primary}/>
               <div>
                 <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
