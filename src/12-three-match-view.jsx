@@ -100,6 +100,22 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
     const src=Array.isArray(m.material)?m.material:[m.material];const nx=src.map(b=>{const hex=b&&col[b.name];if(hex==null)return b;const c=b.clone();c.map=null;c.color=new THREE.Color(hex);if('emissive' in c)c.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in c)c.roughness=.82;if(c.transparent){c.transparent=false;c.depthWrite=true;c.alphaTest=.5;}c.needsUpdate=true;return c;});
     m.material=Array.isArray(m.material)?nx:nx[0];});
   av.userData.cpmCG23=true;return av;}catch(_e){return null;}}
+/* [23/09 POC — collaudo PO «corpi sproporzionati, spalle piccole rispetto al resto, un po' ingobbiti»]
+   CORREZIONE DI POSTURA dopo l'animazione, sulle ossa del corpo CGTrader. MISURATO (tests/character-lab/postura.mjs,
+   LOD1): giunti delle spalle a 0,357 m, testa proiettata in avanti di 44 gradi da fermi e 58 in corsa (collo→testa
+   dalla verticale). Rimedio: l'attacco del braccio si allarga del 15% (spalle piu' larghe senza allungare le braccia),
+   collo e busto alto si raddrizzano all'indietro attorno all'asse delle spalle. Idempotente: se un osso non ha traccia
+   nella clip, la correzione non si somma fotogramma dopo fotogramma. Rosso __CPM_NO_POSTURA23. */
+/*CORR23*/function _corrPostura23(B){try{if(!B||typeof THREE==='undefined')return;if(typeof window!=='undefined'&&window.__CPM_NO_POSTURA23)return;
+  const L=B.upperarm_l,R=B.upperarm_r;if(!L||!R)return;
+  [L,R].forEach(b=>{const u=b.userData;if(!u.p23)u.p23=b.position.clone();if(!u.p23o||!b.position.equals(u.p23o))u.p23=b.position.clone();b.position.copy(u.p23).multiplyScalar(1.15);u.p23o=b.position.clone();});
+  const pl=new THREE.Vector3(),pr=new THREE.Vector3();L.parent.updateMatrixWorld(true);L.getWorldPosition(pl);R.getWorldPosition(pr);const ax=pl.sub(pr);if(ax.lengthSq()<1e-8)return;ax.normalize();
+  const giro=(b,a)=>{if(!b||!b.parent)return;const u=b.userData;if(u.q23o&&b.quaternion.equals(u.q23o))b.quaternion.copy(u.q23i);u.q23i=b.quaternion.clone();
+    b.parent.updateMatrixWorld(true);const pw=new THREE.Quaternion();b.parent.getWorldQuaternion(pw);const bw=pw.clone().multiply(b.quaternion);
+    const d=new THREE.Quaternion().setFromAxisAngle(ax,-a);const nw=d.multiply(bw);b.quaternion.copy(pw.invert().multiply(nw));u.q23o=b.quaternion.clone();};
+  giro(B.spine_03,0.07);giro(B.neck_01,0.20);
+}catch(_e){}}
+function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|spine_03|neck_01)$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
 function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
   if(q)return q;if(typeof window!=='undefined'&&window.__CPM_NO_CGDEFAULT)return '';return 'cgtrader-highlight-optimized';}catch(_e){return '';}}
 /* ⚠️ [7.794.0 — IL PALLONE E' IN PROPORZIONE E POGGIA SULL'ERBA. Rosso __CPM_NO794]
@@ -601,7 +617,7 @@ function ThreeMatchView(props){
       if(protectedPose)_animLodStats.protected++;if(cadence===1)_animLodStats.fullRate++;else if(cadence===2)_animLodStats.halfRate++;else _animLodStats.quarterRate++;
       if(!due)return false;
       av._animLodAccum=(av._animLodAccum||0)+delta;const sample=Math.min(av._animLodAccum,0.066);av._animLodAccum=0;
-      av.mx.update(sample);_animLodStats.mixerUpdates++;_animLodStats.lastFrameUpdates++;return true;
+      av.mx.update(sample);if(av._hyper&&av.visualRoot)_corrPostura23(_ossa23(av.visualRoot));_animLodStats.mixerUpdates++;_animLodStats.lastFrameUpdates++;return true;
     };
     try{window.__CPM_ANIM_AUDIT=()=>{const aa=(glbAvatars||[]).filter(a=>a&&a.root&&a.root.visible),all=[];let active=0;
       aa.forEach(a=>{const acts=[a.idle,a.run,...Object.values(a.gestures||{}),...Object.values(a._locoActs||{})].filter(Boolean);acts.forEach(x=>{if(!all.includes(x)){all.push(x);if(x.weight>0.02&&(!x.isRunning||x.isRunning()))active++;}});});

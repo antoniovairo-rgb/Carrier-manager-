@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Postura</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<style>body{margin:0;background:#1d2a1d}</style></head><body>
+<script>
+/* [23/09] POSTURA del corpo CGTrader: ?glb=&clip=&t=&corr=1 . Pannelli: fronte e fianco per ogni istante.
+   Misure: spalle (upperarm_l↔upperarm_r) / anche (thigh_l↔thigh_r), inclinazione del busto (pelvis→neck_01 dalla verticale, gradi, + = in avanti),
+   testa avanti (neck_01→head dalla verticale). corr=1 applica la stessa correzione del gioco (window.corrPostura23). */
+const q=new URLSearchParams(location.search),GLB=q.get('glb'),CLIP=q.get('clip'),TT=(q.get('t')||'0').split(',').map(Number),CORR=q.get('corr')==='1';
+const W=240,H=360,r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W*TT.length*2,H);r.setScissorTest(true);document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.add(new THREE.HemisphereLight(0xffffff,0x334433,1.1));const dl=new THREE.DirectionalLight(0xffffff,0.8);dl.position.set(2,4,3);sc.add(dl);
+new THREE.GLTFLoader().load(GLB,g=>{const root=g.scene;sc.add(root);
+  root.traverse(o=>{if(o.isMesh){o.frustumCulled=false;[].concat(o.material).forEach(m=>{m.transparent=false;m.depthWrite=true;m.alphaTest=0.5;});}});
+  const B={};root.traverse(o=>{if(o.isBone)B[o.name]=o;});
+  const clip=g.animations.find(a=>a.name===CLIP);const mx=new THREE.AnimationMixer(root);if(clip)mx.clipAction(clip).play();
+  const cam=new THREE.PerspectiveCamera(30,W/H,0.05,100);const info=[];const P=n=>{const b=B[n];if(!b)return null;const v=new THREE.Vector3();b.getWorldPosition(v);return v;};
+  TT.forEach((t,k)=>{if(clip)mx.setTime(Math.min(t,clip.duration-0.001));root.updateMatrixWorld(true);
+    if(CORR&&window.corrPostura23)window.corrPostura23(B);root.updateMatrixWorld(true);
+    const ul=P('upperarm_l'),ur=P('upperarm_r'),tl=P('thigh_l'),tr=P('thigh_r'),pe=P('pelvis'),ne=P('neck_01'),hd=P('head');
+    const ang=(a,b)=>a&&b?+(Math.atan2(Math.hypot(b.x-a.x,b.z-a.z)*Math.sign((b.z-a.z)||1),b.y-a.y)*180/Math.PI).toFixed(1):null;
+    info.push({t,spalle:ul&&ur?+ul.distanceTo(ur).toFixed(3):null,anche:tl&&tr?+tl.distanceTo(tr).toFixed(3):null,busto:ang(pe,ne),testa:ang(ne,hd),altezzaTesta:hd?+hd.y.toFixed(2):null});
+    const c=pe||new THREE.Vector3(0,1,0);
+    [[0,0,4.2],[4.2,0,0]].forEach((d,j)=>{cam.position.set(c.x+d[0],c.y+0.1,c.z+d[2]);cam.lookAt(c.x,c.y,c.z);const x=W*(k*2+j);r.setViewport(x,0,W,H);r.setScissor(x,0,W,H);r.render(sc,cam);});});
+  window.__POSTURA={ok:true,ossa:Object.keys(B).filter(n=>/clav|upperarm|spine|neck|head|pelvis/.test(n)),pose:info};
+},undefined,e=>{window.__POSTURA={ok:false,errore:String(e)};});
+</script></body></html>

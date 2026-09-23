@@ -504,6 +504,7 @@ function IntroCinematic({onDone}){
         if(heroAv)heroAv.rotation.x=-0.05*Math.min(stG.vNow||0,2.4)*Math.min(1,run*1.4);/* [7.42.0] lean CONTINUO (il gate on/off a run>0.3 scattava = robotico) */
         const _mdt=Math.min(0.12,(Date.now()-(stG.lastT||Date.now()))/1000);stG.lastT=Date.now();/* [7.32.7] cap 0.05→0.12: a fps bassi le clip restavano in SLOW-MO rispetto al corpo (gliding) */
         mixers.forEach(m=>m.update(_mdt));
+        try{if(typeof _corrPostura23==='function'&&window.__CPM_INTRO_CG23){_corrPostura23(_ossa23(heroAv));_corrPostura23(_ossa23(gkAv));}}catch(_e){}/* [23/09 POC] stessa postura del gioco */
         if(stG.lifted&&heroActs.lift){const _ap=heroActs.lift.getClip().duration*0.34;if(heroActs.lift.time>=_ap){heroActs.lift.time=_ap;heroActs.lift.paused=true;}}/* congela all'apice (due mani sopra la testa) */
       }
       /* [7.32.5 collaudo PO «la palla continua a perdersela per strada, rimane spesso dietro!»] fix
