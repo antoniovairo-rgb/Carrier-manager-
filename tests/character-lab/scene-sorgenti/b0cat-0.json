@@ -1,0 +1,292 @@
+{
+ "rosso": null,
+ "tot": {
+  "motore-occasione": 8
+ },
+ "esiti": [
+  {
+   "partita": 0,
+   "fine": "ended",
+   "ultimo": {
+    "fase": "ended",
+    "clock": 90,
+    "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · G. 1 | 0 DECIDE IL MATCH | PROVINI | FISCHIO FINALE | Selezione Granata | 3–2 | Polisportiva Centro | VITTORIA | IL TUO TABELLINO | ⚽ | 1 | Gol"
+   },
+   "b4": {
+    "23|0": {
+     "sit": "",
+     "cast": {
+      "ricevente": 5,
+      "difensore": 13,
+      "portiere": 10
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_result"
+     },
+     "difensore": {
+      "idx": 16,
+      "brain": 13,
+      "d": 7.2,
+      "fase": "hl_result"
+     }
+    },
+    "27|1": {
+     "sit": "1",
+     "cast": {
+      "ricevente": 9,
+      "difensore": 13,
+      "portiere": 10
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_intro"
+     },
+     "difensore": {
+      "idx": 16,
+      "brain": 13,
+      "d": 7.2,
+      "fase": "hl_intro"
+     }
+    },
+    "30|2": {
+     "sit": "2",
+     "cast": {
+      "ricevente": 9,
+      "difensore": 13,
+      "portiere": 10
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_intro"
+     },
+     "difensore": {
+      "idx": 13,
+      "brain": 13,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    },
+    "40|3": {
+     "sit": "3",
+     "cast": {
+      "ricevente": 5,
+      "difensore": 16,
+      "portiere": 10
+     },
+     "difensore": {
+      "idx": 13,
+      "brain": 16,
+      "d": 4.4,
+      "fase": "hl_intro"
+     },
+     "ricevente": {
+      "idx": 9,
+      "brain": 5,
+      "d": 23.3,
+      "fase": "hl_result"
+     }
+    }
+   },
+   "b4ric": {
+    "usato": 1,
+    "scartato": 0,
+    "senzaCast": 0
+   },
+   "b4dif": {
+    "usato": 1,
+    "scartato": 0,
+    "senzaCast": 0
+   },
+   "highlight": 4,
+   "scene": [
+    {
+     "min": 23,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "✋ Anticipa il passaggio filtrante!"
+    },
+    {
+     "min": 25,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 27,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "🧠 Anticipo tattico — leggi il gioco!"
+    },
+    {
+     "min": 30,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "😱 Il portiere è fuori dai pali! Tira da lontano."
+    },
+    {
+     "min": 39,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 40,
+     "src": "motore-occasione",
+     "tipo": "costruzione",
+     "sk": "🎯 Deviazione ravvicinata!"
+    }
+   ],
+   "perSrc": {
+    "motore-occasione": 4
+   },
+   "programmate": {
+    "reattiva": 2
+   },
+   "errori": []
+  },
+  {
+   "partita": 1,
+   "fine": "ended",
+   "ultimo": {
+    "fase": "ended",
+    "clock": 90,
+    "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · G. 1 | 1 DECIDE IL MATCH | PROVINI | FISCHIO FINALE | Selezione Granata | 3–2 | Polisportiva Centro | VITTORIA | IL TUO TABELLINO | ⚽ | 1 | Gol"
+   },
+   "b4": {
+    "22|0": {
+     "sit": "",
+     "cast": {
+      "ricevente": 9,
+      "difensore": 16,
+      "portiere": 10
+     },
+     "ricevente": {
+      "idx": 8,
+      "brain": 9,
+      "d": 10,
+      "fase": "hl_result"
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    },
+    "25|1": {
+     "sit": "1",
+     "cast": {
+      "ricevente": 9,
+      "difensore": 16,
+      "portiere": 10
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_intro"
+     },
+     "difensore": {
+      "idx": 16,
+      "brain": 16,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    },
+    "29|2": {
+     "sit": "2",
+     "cast": {
+      "ricevente": 7,
+      "difensore": 16,
+      "portiere": 10
+     },
+     "difensore": {
+      "idx": 16,
+      "brain": 16,
+      "d": 0,
+      "fase": "hl_intro"
+     }
+    },
+    "43|3": {
+     "sit": "3",
+     "cast": {
+      "ricevente": 5,
+      "difensore": 16,
+      "portiere": 10
+     },
+     "difensore": {
+      "idx": 16,
+      "brain": 16,
+      "d": 0,
+      "fase": "hl_intro"
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    }
+   },
+   "b4ric": null,
+   "b4dif": {
+    "usato": 1,
+    "scartato": 0,
+    "senzaCast": 0
+   },
+   "highlight": 4,
+   "scene": [
+    {
+     "min": 22,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "✋ Anticipa il passaggio filtrante!"
+    },
+    {
+     "min": 25,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "😱 Il portiere è fuori dai pali! Tira da lontano."
+    },
+    {
+     "min": 27,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 29,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "⚡ Scatto puro — nessuno ti segue!"
+    },
+    {
+     "min": 41,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 43,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "🎯 Filtrante per il centravanti!"
+    }
+   ],
+   "perSrc": {
+    "motore-occasione": 4
+   },
+   "programmate": {
+    "reattiva": 2
+   },
+   "errori": []
+  }
+ ]
+}

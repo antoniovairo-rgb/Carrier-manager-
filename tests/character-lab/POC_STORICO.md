@@ -907,6 +907,14 @@ Ora chiedono `_castDif23`: il difensore del cast se e' entro 14u dal punto dell'
 Rosso `__CPM_NO_B4DIF`. 2 partite intere per braccio, 8/8 scene dal motore in entrambi.
 Difensore: verde **4/6, mediana 0 u** · rosso 2/6, mediana 12,9 u · base 0/5, 15,9 u. Campione piccolo, dichiarato.
 
+## Avanzamento 23 settembre 2026, 23/09 12:40 — B0: LA CATENA EREDITA L'EVENTO DEL MOTORE
+La catena (secondo tempo della stessa azione: sponda, mischia, seconda palla, dopo-dribbling) si apriva senza il motore. Ora eredita
+l'evento del motore che ha aperto l'azione (id = minuto + scena d'origine) e il suo cast; sorgente registrata `catena-motore`.
+Ogni apertura dal motore porta ora nel registro il campo `evento`. Rosso `__CPM_NO_B0CAT`. **Scelta di misura dichiarata:** la
+catena conta come «nata dal motore» perche' e' la stessa azione; l'esito della prima meta' resta deciso dal dado finche' non arriva B2.
+Verifica: 6 partite intere (semi 0-5), **26/26 aperture dal motore**, 0 errori — **nessuna catena comparsa**, anche forzando l'esito
+riuscito (il successo porta spesso al gol, e dopo un gol si riparte dal centro). Il ramo catena e' quindi **non misurato**.
+
 ---
 
 ## Obiettivo vincolante

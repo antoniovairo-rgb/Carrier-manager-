@@ -4247,7 +4247,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               }
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }
-            setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,/* [7.958 · rilievo PO «le interazioni dell eroe sono molto ripetitive»] IL REGISTRO DICE ANCHE QUALE SCENA E QUANTE CANDIDATE C ERANO. Il catalogo ha 185 schede e 573 azioni: se il giocatore ne vede sempre le stesse, il difetto non e la poverta del catalogo ma la SELEZIONE, e i due vogliono rimedi opposti. MISURATO con la sonda varieta-scene, 3 partite con seed diversi: 6 scene giocate, 2 schede distinte, ognuna ripetuta 3 volte. */sk:(()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current];return _s?String(_s.text||"").slice(0,60):null;}catch(_e2){return null;}})()});}catch(_e){}
+            setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),evento:occEroe879Ref.current?{min:occEroe879Ref.current.min,hl:hlIdx}:null,tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,/* [7.958 · rilievo PO «le interazioni dell eroe sono molto ripetitive»] IL REGISTRO DICE ANCHE QUALE SCENA E QUANTE CANDIDATE C ERANO. Il catalogo ha 185 schede e 573 azioni: se il giocatore ne vede sempre le stesse, il difetto non e la poverta del catalogo ma la SELEZIONE, e i due vogliono rimedi opposti. MISURATO con la sonda varieta-scene, 3 partite con seed diversi: 6 scene giocate, 2 schede distinte, ognuna ripetuta 3 volte. */sk:(()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current];return _s?String(_s.text||"").slice(0,60):null;}catch(_e2){return null;}})()});}catch(_e){}
             castBrainRef.current=(occEroe879Ref.current&&occEroe879Ref.current.cast)?{...occEroe879Ref.current.cast,min:nx|0,hl:hlIdx}:null;/* [23/09 POC B4] il cast del motore accompagna la scena che si apre */try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occEroe879Ref.current=null;
             setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
@@ -8724,7 +8724,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          maschera il ri-staging senza rompere il ritmo della catena — il float «CATENA!» resta. */
       if(!(typeof window!=='undefined'&&window.__CPM_NO620))setCutFx({key:Date.now(),dur:300});
       setFloatGoal({text:"⚡ CATENA!",col:"#f59e0b",key:Date.now()});
-      try{cpmEv("scena",{min:clockRef.current|0,src:"catena"});}catch(_e){}setPhase("hl_intro");
+      try{const _cb=castBrainRef.current;/* [23/09 POC — B0: LA CATENA E' LA STESSA AZIONE DEL MOTORE. Rosso __CPM_NO_B0CAT] il seguito eredita l'evento del motore che ha aperto l'azione (id = minuto+scena d'origine) e il suo cast; senza evento d'origine resta una catena «sola». */const _eredita=!!_cb&&!(typeof window!=='undefined'&&window.__CPM_NO_B0CAT);if(_eredita)castBrainRef.current={..._cb,hl:nx,catena:true};cpmEv("scena",{min:clockRef.current|0,src:_eredita?"catena-motore":"catena",evento:_eredita?{min:_cb.min,hl:_cb.hl}:null});}catch(_e){}setPhase("hl_intro");
       return;
     }
     /* [7.500.0 F4 — LA PARTITA FINISCE AL 90', NON QUANDO FINISCONO GLI HIGHLIGHT — direttiva PO «90 veri»]
