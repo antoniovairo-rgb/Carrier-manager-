@@ -18,6 +18,8 @@ await page.evaluate(() => window.__CPM_CAREER.goTab('profile')); await sleep(100
 const R = {}; R.profiloImpostazioni = await page.evaluate(() => [...document.querySelectorAll('button')].some(b => /Impostazioni/.test(b.textContent) && b.offsetParent && !b.title));
 await page.locator('button[title="Impostazioni"]').first().click(); await sleep(1000);
 R.opzioni = await page.evaluate(() => { const s = document.querySelector('[data-cpm=strumenti23]'); return s ? [...s.querySelectorAll('button')].map(b => b.textContent.trim().slice(0, 40)) : null; });
+R.grafica = await page.evaluate(() => /\bGrafica\b/i.test(document.body.innerText)); R.musica = await page.evaluate(() => /Musica menu/i.test(document.body.innerText)); R.telecronaca = await page.evaluate(() => /Telecronaca/i.test(document.body.innerText));
+await page.screenshot({ path: path.join(out, 'opzioni-alto.png') });
 await page.evaluate(() => { const s = document.querySelector('[data-cpm=strumenti23]'); s && s.scrollIntoView(); }); await sleep(400);
 await page.screenshot({ path: path.join(out, 'opzioni.png') });
 R.errori = err; await browser.close(); await new Promise(r => server.close(r)); console.log(JSON.stringify(R));
