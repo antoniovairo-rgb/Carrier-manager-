@@ -1,0 +1,311 @@
+[
+ {
+  "partita": 0,
+  "finale": {
+   "score": {
+    "home": 2,
+    "away": 1
+   },
+   "tabellino": {
+    "h": 2,
+    "a": 2
+   },
+   "fase": "hl_result"
+  },
+  "divergenze": 6,
+  "testimoni": {
+   "golPersi": [
+    {
+     "lato": "away",
+     "min": 20,
+     "dove": "reset-intervallo"
+    }
+   ],
+   "intx669": [
+    {
+     "min": 18,
+     "id": "er_gol",
+     "fam": "EROE",
+     "txt": "✊ Ha segnato lui. Vero si ferma un attimo davanti alla curva prima di tornare a centrocampo: adesso la partita ha il suo nome sopra."
+    }
+   ]
+  },
+  "primaDivergenza": {
+   "t": 18,
+   "motore": true,
+   "fase": "playing",
+   "min": null,
+   "score": {
+    "home": 0,
+    "away": 0
+   },
+   "tab": {
+    "h": 0,
+    "a": 1
+   },
+   "evGol": 0,
+   "ev": []
+  },
+  "log": [
+   {
+    "t": 2,
+    "motore": true,
+    "fase": "playing",
+    "min": null,
+    "score": {
+     "home": 0,
+     "away": 0
+    },
+    "tab": {
+     "h": 0,
+     "a": 0
+    },
+    "evGol": 0,
+    "ev": []
+   },
+   {
+    "t": 18,
+    "motore": true,
+    "fase": "playing",
+    "min": null,
+    "score": {
+     "home": 0,
+     "away": 0
+    },
+    "tab": {
+     "h": 0,
+     "a": 1
+    },
+    "evGol": 0,
+    "ev": []
+   },
+   {
+    "t": 19,
+    "motore": true,
+    "fase": "playing",
+    "min": null,
+    "score": {
+     "home": 0,
+     "away": 1
+    },
+    "tab": {
+     "h": 0,
+     "a": 1
+    },
+    "evGol": 1,
+    "ev": [
+     {
+      "ev": "goal",
+      "min": 11,
+      "side": "away",
+      "src": "cronaca"
+     }
+    ]
+   },
+   {
+    "t": 41,
+    "motore": true,
+    "fase": "hl_result",
+    "min": null,
+    "score": {
+     "home": 0,
+     "away": 1
+    },
+    "tab": {
+     "h": 1,
+     "a": 1
+    },
+    "evGol": 2,
+    "ev": [
+     {
+      "ev": "goal",
+      "min": 11,
+      "side": "away",
+      "src": "cronaca"
+     },
+     {
+      "ev": "esito",
+      "min": 17,
+      "key": "goal",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "t": 45,
+    "motore": true,
+    "fase": "playing",
+    "min": null,
+    "score": {
+     "home": 1,
+     "away": 1
+    },
+    "tab": {
+     "h": 1,
+     "a": 1
+    },
+    "evGol": 3,
+    "ev": [
+     {
+      "ev": "goal",
+      "min": 11,
+      "side": "away",
+      "src": "cronaca"
+     },
+     {
+      "ev": "esito",
+      "min": 17,
+      "key": "goal",
+      "ok": true
+     },
+     {
+      "ev": "goal",
+      "min": 17,
+      "side": "home",
+      "src": "highlight"
+     }
+    ]
+   },
+   {
+    "t": 82,
+    "motore": true,
+    "fase": "playing",
+    "min": null,
+    "score": {
+     "home": 1,
+     "away": 1
+    },
+    "tab": {
+     "h": 1,
+     "a": 2
+    },
+    "evGol": 3,
+    "ev": [
+     {
+      "ev": "goal",
+      "min": 11,
+      "side": "away",
+      "src": "cronaca"
+     },
+     {
+      "ev": "esito",
+      "min": 17,
+      "key": "goal",
+      "ok": true
+     },
+     {
+      "ev": "goal",
+      "min": 17,
+      "side": "home",
+      "src": "highlight"
+     }
+    ]
+   },
+   {
+    "t": 95,
+    "motore": true,
+    "fase": "hl_result",
+    "min": null,
+    "score": {
+     "home": 1,
+     "away": 1
+    },
+    "tab": {
+     "h": 2,
+     "a": 2
+    },
+    "evGol": 4,
+    "ev": [
+     {
+      "ev": "esito",
+      "min": 17,
+      "key": "goal",
+      "ok": true
+     },
+     {
+      "ev": "goal",
+      "min": 17,
+      "side": "home",
+      "src": "highlight"
+     },
+     {
+      "ev": "esito",
+      "min": 21,
+      "key": "goal",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "t": 99,
+    "motore": true,
+    "fase": "playing",
+    "min": null,
+    "score": {
+     "home": 2,
+     "away": 1
+    },
+    "tab": {
+     "h": 2,
+     "a": 2
+    },
+    "evGol": 5,
+    "ev": [
+     {
+      "ev": "goal",
+      "min": 17,
+      "side": "home",
+      "src": "highlight"
+     },
+     {
+      "ev": "esito",
+      "min": 21,
+      "key": "goal",
+      "ok": true
+     },
+     {
+      "ev": "goal",
+      "min": 21,
+      "side": "home",
+      "src": "highlight"
+     }
+    ]
+   },
+   {
+    "t": 117,
+    "motore": true,
+    "fase": "hl_result",
+    "min": null,
+    "score": {
+     "home": 2,
+     "away": 1
+    },
+    "tab": {
+     "h": 2,
+     "a": 2
+    },
+    "evGol": 6,
+    "ev": [
+     {
+      "ev": "esito",
+      "min": 21,
+      "key": "goal",
+      "ok": true
+     },
+     {
+      "ev": "goal",
+      "min": 21,
+      "side": "home",
+      "src": "highlight"
+     },
+     {
+      "ev": "esito",
+      "min": 26,
+      "key": "intercept",
+      "ok": false
+     }
+    ]
+   }
+  ]
+ }
+]

@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 09:00 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 10:04 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -718,6 +718,28 @@ invertite al 63'.
 difetto preesistente, non introdotto qui. Il test ha anche un percorso assoluto `/workspace/carrier-manager-/…` scritto a mano che
 esiste solo in un altro ambiente (usato un collegamento temporaneo, repository non toccato).
 **Non verificato:** il telefono.
+
+## Avanzamento 23 settembre 2026, 10:04 — TABELLINO: DUE GOL CHE IL TABELLONE NON VEDEVA (decisione PO: «correggere sul POC»)
+
+La simulazione e' la fonte di verita' (§20): il motore del possesso decide i gol, il tabellone deve seguirlo. Sonda nuova
+`tests/character-lab/tabellino-coerenza.mjs` (partite vere, confronta `__CPM_SCORE` con `tabellino()` del motore e il registro
+`__CPM_EV`). Due difetti distinti, entrambi presenti anche nella partita normale (quindi anche su `main`, che NON e' toccato):
+
+1. **Gol del compagno (premio `assist`) mai girato al motore.** Il ponte registrava assist e passaggio ma non il tiro vincente.
+   Rimedio: `registra('tiro',lato,{esito:'gol',chi:-1})` quando l'esito e' riuscito (rosso `__CPM_NO_TABASSIST`).
+   Misura: verde tabellone 1-2 = motore 1-2 · rosso tabellone 1-2 contro motore **0-2**.
+2. **Gol deciso dal motore fra due battiti del minuto, buttato.** Due ipotesi (A: azzeramento del buffer dei sotto-tick al riavvio
+   dell'intervallo; B: la scheda interazioni 7.669). Testimone `__CPM_GOLPERSO` (acceso solo da sonda): **A confermata** — un gol
+   «away» al 20' era nel buffer quando l'intervallo e' ripartito; la scheda B mostra solo `er_gol` al 18', non c'entra.
+   Rimedio: all'azzeramento restano in coda i soli eventi «gol», li narra il battito successivo (rosso `__CPM_NO_GOLPERSO`).
+   Misura sulla stessa partita («Giocatore Vero», 1x): verde finale **2-2 = motore 2-2** · rosso **2-1 contro motore 2-2**.
+   Controllo su altre 3 partite (2x, 180 s ciascuna, non fino al 90'): 0-2, 1-2, 1-2 tutte uguali al motore, nessun gol doppio.
+   **Costo dichiarato:** se il riavvio cade all'inizio di un highlight, il gol compare dopo l'highlight (misurato: ~16 s reali).
+   **Effetto dichiarato:** i risultati delle partite possono cambiare rispetto a prima, perche' ora contano gol che il motore gia'
+   decideva e il tabellone perdeva.
+
+**Non verificato:** partite intere al 90' in serie, telefono. I guardiani del motore (`match-sequence`, `event-ledger`) non sono
+stati rigiocati su questo ramo.
 
 ---
 
