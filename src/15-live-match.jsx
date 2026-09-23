@@ -507,7 +507,7 @@ function _gk917(a,b,usati){const cand=[[250,204,21],[34,211,238],[244,114,182],[
      · il passaggio in volo si VEDE: linea tratteggiata dal pallone al bersaglio dichiarato dal motore;
      · scia del pallone, ombre, e la bandierina del fermo di gioco sul punto dove si riprende.
    Il campo e' un solo nodo canvas: nessun DOM per ventitre pallini. Rosso __CPM_NO917: torna il 3D continuo. */
-function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza}){
+function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,rosaCasa,rosaOsp,altezza,clubPrato=null,meteo=null,bigGame=false}){
   const cRef=React.useRef(null);
   const rafRef=React.useRef(0);
   const memRef=React.useRef({sfondo:null,W:0,H:0,dpr:1,g:[],e:null,b:null,scia:[],t:0});
@@ -554,10 +554,30 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         const fondo=o.createLinearGradient(0,0,0,H);fondo.addColorStop(0,"#0a1220");fondo.addColorStop(1,"#050a14");
         o.fillStyle=fondo;o.fillRect(0,0,W,H);
         /* il prato */
+        /* [23/09 POC — collaudo PO «il prato 2D e 3D non devono essere diversi»] LO STESSO PRATO DEL 3D: palette dello
+           stadio (getStadiumPalette), correzione del meteo (pioggia piu' scuro, neve sbiancato, sole piu' chiaro), numero e
+           verso delle fasce dal seme del club, fasce piu' nette nelle grandi sfide — le stesse regole di ThreeMatchView.
+           Rosso __CPM_NO_PRATO2D23: il verde fisso di prima. */
+        const _pr23=!(typeof window!=='undefined'&&window.__CPM_NO_PRATO2D23)&&typeof getStadiumPalette==='function';
+        if(_pr23){try{
+          const pal=getStadiumPalette(clubPrato||{});const rgb=n=>[(n>>16)&255,(n>>8)&255,n&255];
+          let A=rgb(pal.grassA),B=rgb(pal.grassB);
+          const ws=String((meteo&&((meteo.id||"")+" "+(meteo.name||"")+" "+(meteo.pitchFx||"")))||meteo||"").toLowerCase();
+          const mul=(c,k)=>c.map(v=>Math.min(255,v*k)),mix=(c,k)=>c.map(v=>v+(255-v)*k);
+          if(/rain|pioggia|temporal|storm|drizzle/.test(ws)){A=mul(A,0.80);B=mul(B,0.80);}
+          else if(/snow|neve/.test(ws)){A=mix(A,0.34);B=mix(B,0.30);}
+          else if(/seren|sole|\bsun\b|clear|☀/.test(ws)){A=mul(A,1.06);B=mul(B,1.06);}
+          const SB=bigGame?mul(B,1.12):B;const css=c=>"rgb("+c.map(v=>Math.round(v)).join(",")+")";
+          const ps=Math.abs(hashStr(((clubPrato&&(clubPrato.id||clubPrato.n))||"x")+"_pitch")),N=[6,7,8,9,10][ps%5],orizz=((ps>>3)&1)===0;
+          for(let i=0;i<N;i++){o.fillStyle=css(i%2?A:SB);
+            const a0=orizz?0:(i/N)*LUN,a1=orizz?LUN:((i+1)/N)*LUN,b0=orizz?(i/N)*LAR:0,b1=orizz?((i+1)/N)*LAR:LAR;
+            const x1=PX(a0,b0),y1=PY(a0,b0),x2=PX(a1,b1),y2=PY(a1,b1);
+            o.fillRect(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x2-x1)+0.5,Math.abs(y2-y1)+0.5);}
+        }catch(_e){}}
         const pr=o.createLinearGradient(0,oy,0,oy+ph);pr.addColorStop(0,"#25753a");pr.addColorStop(0.5,"#1f6b33");pr.addColorStop(1,"#1a5c2c");
-        o.fillStyle=pr;o.fillRect(ox,oy,pw,ph);
+        if(!_pr23){o.fillStyle=pr;o.fillRect(ox,oy,pw,ph);}
         /* le fasce del taglio, sempre nel senso della larghezza del campo */
-        const FASCE=10;
+        const FASCE=_pr23?0:10;
         for(let i=0;i<FASCE;i++){
           const a=(i/FASCE)*LUN,b=((i+1)/FASCE)*LUN;
           const x1=PX(a,0),y1=PY(a,0),x2=PX(b,LAR),y2=PY(b,LAR);
@@ -627,6 +647,19 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       for(let i=0;i<G.length;i++){if(G[i])M.g[i]=segui(M.g[i],G[i],7.5);}
       if(st.eroe)M.e=segui(M.e,st.eroe,7.5);
       if(st.palla)M.b=segui(M.b,st.palla,16);
+      /* [23/09 POC — richiesta PO «heat map delle azioni molto lieve, sul prato»] dove e' stato il pallone: griglia 21x14
+         che accumula il tempo di gioco e si disegna come un velo caldo appena percettibile (alfa massima 0,13) sotto i
+         giocatori. Rosso __CPM_NO_HEAT23. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_HEAT23)&&st.palla){
+        const GX=21,GY=14;if(!M.heat)M.heat=new Float32Array(GX*GY);
+        const hx=Math.max(0,Math.min(GX-1,Math.floor(st.palla.x/100*GX))),hy=Math.max(0,Math.min(GY-1,Math.floor(st.palla.y/100*GY)));
+        M.heat[hy*GX+hx]+=dt;let mx=0;for(let i=0;i<M.heat.length;i++)if(M.heat[i]>mx)mx=M.heat[i];
+        if(mx>0.5){const _f0=g.filter;try{g.filter="blur("+Math.round(s*2.2)+"px)";}catch(_e){}for(let j=0;j<GY;j++)for(let i=0;i<GX;i++){const v=M.heat[j*GX+i]/mx;if(v<0.08)continue;
+          const x1=PX(i/GX*LUN,j/GY*LAR),y1=PY(i/GX*LUN,j/GY*LAR),x2=PX((i+1)/GX*LUN,(j+1)/GY*LAR),y2=PY((i+1)/GX*LUN,(j+1)/GY*LAR);
+          g.fillStyle="rgba(255,196,70,"+(0.13*Math.sqrt(v)).toFixed(3)+")";g.fillRect(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x2-x1),Math.abs(y2-y1));}
+          try{g.filter=_f0||"none";}catch(_e){}
+          try{window.__CPM_HEAT23={celle:M.heat.filter(v=>v/mx>=0.08).length,max:+mx.toFixed(1)};}catch(_e){}}
+      }
       /* dalle coordinate del motore (0..100 × 0..100) ai metri del campo */
       const CX=(q)=>PX((q.x/100)*LUN,(q.y/100)*LAR),CY=(q)=>PY((q.x/100)*LUN,(q.y/100)*LAR);
       const r=Math.max(7,Math.min(12,s*1.16));/* [7.926 collaudo PO: nella partita 2D si devono vedere i numeri degli altri giocatori] col pannello delle statistiche davanti il campo si schiaccia, la scala scende e i pallini restavano a 5 px di raggio: il numero non ci entrava e sparivano tutti. Pavimento a 7. *//* [7.918] i pallini portano il NUMERO: sotto i 6 px di raggio il numero non entra e la fotografia del 16/09 mostrava ventidue dischi muti */
@@ -751,10 +784,23 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         eti(siglaOspiti,KIT.osp,vert?LUN+3.6:LUN+3.6);
         g.textBaseline="alphabetic";
       }
+      /* [23/09 POC — richiesta PO «anche in partita 2D si deve capire il meteo»] pioggia (righe oblique), neve (fiocchi),
+         nebbia (velo) sopra il campo, leggeri e animati. Rosso __CPM_NO_METEO2D23. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_METEO2D23)){
+        const ws=String((meteo&&((meteo.id||"")+" "+(meteo.name||"")+" "+(meteo.pitchFx||"")))||meteo||"").toLowerCase();
+        const tipo=/snow|neve/.test(ws)?"neve":/rain|pioggia|temporal|storm|drizzle/.test(ws)?"pioggia":/fog|nebbia|foschia/.test(ws)?"nebbia":null;
+        try{window.__CPM_METEO2D23=tipo;}catch(_e){}
+        if(tipo==="nebbia"){g.fillStyle="rgba(226,232,240,0.16)";g.fillRect(0,0,W,H);}
+        else if(tipo){const n=tipo==="neve"?70:(/temporal|storm/.test(ws)?120:80);
+          if(!M.meteo||M.meteo.length!==n){M.meteo=[];for(let i=0;i<n;i++)M.meteo.push({x:Math.random()*W,y:Math.random()*H,v:0.6+Math.random()*0.8});}
+          if(tipo==="pioggia"){g.strokeStyle="rgba(210,225,245,0.30)";g.lineWidth=1;g.beginPath();
+            for(const q of M.meteo){q.y+=dt*H*0.9*q.v;q.x-=dt*W*0.12*q.v;if(q.y>H){q.y=-10;q.x=Math.random()*W*1.1;}if(q.x<-10)q.x=W;g.moveTo(q.x,q.y);g.lineTo(q.x-3,q.y+11);}g.stroke();}
+          else{g.fillStyle="rgba(255,255,255,0.70)";for(const q of M.meteo){q.y+=dt*H*0.12*q.v;q.x+=Math.sin(ora/900+q.v*9)*dt*12;if(q.y>H){q.y=-4;q.x=Math.random()*W;}g.beginPath();g.arc(q.x,q.y,1.2+q.v,0,Math.PI*2);g.fill();}}}
+      }
     };
     rafRef.current=requestAnimationFrame(disegna);
     return()=>{vivo=false;try{cancelAnimationFrame(rafRef.current);}catch(_e){}};
-  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti]);
+  },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,clubPrato,meteo,bigGame]);
   return <canvas ref={cRef} data-cpm="campo2d" style={{width:"100%",height:altezza||"100%",display:"block",background:"#071019"}} />;
 }
 
@@ -9639,7 +9685,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       dello stadio: e' il verso del campo, cioe' SEMPRE la squadra dell'eroe (per questo
                       `homeKitCol` e' `heroKitCol`). La prima stesura passava i colori e le sigle dello
                       stadio: in trasferta i ventidue pallini uscivano con le divise scambiate. */}
-                  <Campo2D motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
+                  <Campo2D clubPrato={homeTeamObj} meteo={weather} bigGame={mw>=7} motore={motoreRef.current} kitCasa={heroKitCol||"#8e1f33"} kitOspiti={awayKitCol||"#e2e8f0"} eroeLato="home" nomeEroe={(player&&player.name)?(_surnBG(player.name)||String(player.name).split(" ").pop()).slice(0,10):null} numeroEroe={player&&player.jerseyNum?player.jerseyNum:null} siglaCasa={((_heroClubObj&&(_heroClubObj.a||_heroClubObj.n))||"NOI").slice(0,3).toUpperCase()} siglaOspiti={((_oppClubObj&&(_oppClubObj.a||_oppClubObj.n))||"OSP").slice(0,3).toUpperCase()} rosaCasa={isMatchHome?homeRoster:awayRoster} rosaOsp={isMatchHome?awayRoster:homeRoster} />
                   {!(typeof window!=='undefined'&&window.__CPM_NO918)&&<PannelloLive2D motore={motoreRef.current}
                     latoSx={isMatchHome?"home":"away"}
                     siglaSx={((homeTeamObj&&(homeTeamObj.a||homeTeamObj.n))||"CASA").slice(0,3).toUpperCase()}

@@ -7,6 +7,36 @@
   "larghezza": 412
  },
  "scout": true,
+ "audit": [
+  {
+   "index": 0,
+   "procHeight": 2.29,
+   "legacyRootHeight": 1.89,
+   "declaredHeight": 1.89,
+   "targetHeight": 1.89
+  },
+  {
+   "index": 1,
+   "procHeight": 2.465,
+   "legacyRootHeight": 1.822,
+   "declaredHeight": 1.8,
+   "targetHeight": 1.8
+  },
+  {
+   "index": 2,
+   "procHeight": 2.418,
+   "legacyRootHeight": 2.023,
+   "declaredHeight": 1.8,
+   "targetHeight": 1.8
+  },
+  {
+   "index": 3,
+   "procHeight": 2.409,
+   "legacyRootHeight": 1.893,
+   "declaredHeight": 1.8,
+   "targetHeight": 1.8
+  }
+ ],
  "ingresso": [
   {
    "st": "loading",
@@ -136,5 +166,6 @@
    "fase": "walkout"
   }
  ],
+ "cam": null,
  "errori": []
 }

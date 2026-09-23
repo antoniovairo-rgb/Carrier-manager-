@@ -681,12 +681,12 @@ const kitPatternFor=(club)=>{
 };
 const _SHIRT_PATH="M16 11 C20 7.6 32 7.6 36 11 L41 13.5 L49 24.5 L42.6 31 L38 26.4 L38 49 L14 49 L14 26.4 L9.4 31 L3 24.5 L11 13.5 Z";
 /* Jersey icon — shirt SVG with number and player name */
-function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=null,color2=null}){
+function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=null,color2=null,labelW=null}){
   // [6.5.4] maglia SVG ridisegnata — silhouette moderna (spalle morbide, maniche raglan, colletto a giro,
   //   volume via highlight/ombra, orlo con accento, numero con ombra). Look pulito da broadcast.
   // [7.8.0] pattern-aware: se `pattern` (da KIT_PATTERN) e `color2` sono definiti e distinti, sovrappone
   //   il disegno (strisce/bande/metà/sciarpa/maniche) clippato alla sagoma. L'eroe resta ambra tinta unita.
-  const col=isPlayer?"#f59e0b":color;
+  const col=(isPlayer&&!labelW)?"#f59e0b":color;/* [23/09 POC] nelle formazioni del kit l'eroe veste la maglia della sua squadra: lo distingue il riquadro bianco */
   const _low=(col||"").toLowerCase();
   const _c2low=(color2||"").toLowerCase();
   const light=["#ffffff","#fff","#f0f0f0","#f2f1ec","#f4f4f4","#e8e8ee","#f1f1f3"].includes(_low);
@@ -759,7 +759,7 @@ function JerseyIcon({color="#3b82f6",number,name,isPlayer=false,size=46,pattern=
         <text x="26.5" y="37.4" textAnchor="middle" dominantBaseline="central" fill="rgba(0,0,0,0.30)" fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif">{number}</text>
         <text x="26" y="36.4" textAnchor="middle" dominantBaseline="central" fill={txtCol} fontSize="16.5" fontWeight="900" fontFamily="Arial,Helvetica,sans-serif" letterSpacing="-0.6">{number}</text>
       </svg>
-      <div style={{fontSize:FS.caption,color:isPlayer?TH.goldText:"rgba(255,255,255,0.82)",fontWeight:isPlayer?800:600,textAlign:"center",width:S+8,lineHeight:1.1,letterSpacing:"0.3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
+      <div style={{fontSize:FS.caption,color:isPlayer?(labelW?"#fde68a":TH.goldText):"rgba(255,255,255,0.82)",fontWeight:isPlayer?800:600,textAlign:"center",width:labelW||(S+8),lineHeight:1.1,letterSpacing:"0.3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
         {lastName}
       </div>
     </div>
@@ -879,7 +879,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
      token, l'ingresso in campo e' il primario del kit. Rosso __CPM_NO_FORMAZ23. */
   if(!(typeof window!=='undefined'&&window.__CPM_NO_FORMAZ23)){
     const _lbl=contextLabel||(_isEuro?_ecFull122:(homeTeam?.lg||"Campionato"));
-    const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden",flex:1,minWidth:0}}>
+    const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
         <span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",flex:1,minWidth:0}}>{team?.n||team?.a}</span>
@@ -889,8 +889,8 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
         {rosterRows(rr).map((row,ri)=>(
           <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:2}}>
             {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;return isP?(
-              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={30}/></div>
-            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={30} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
+              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={34} labelW={84}/></div>
+            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={34} labelW={84} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
           </div>))}
       </div>
     </Card>);
@@ -908,10 +908,10 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
           <div style={{display:"flex",alignItems:"center",gap:SP.sm,minWidth:0,justifyContent:"flex-end"}}><span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",textAlign:"right"}}>{awayTeam?.n}</span><TeamBadge team={awayTeam} size={36}/></div>
         </div>
       </Card>
-      <div style={{display:"flex",gap:SP.sm}}>
-        <Pannello team={homeTeam} rr={_homeNums} kit={homeKitCol}/>
-        <Pannello team={awayTeam} rr={_awayNums} kit={awayKitCol}/>
-      </div>
+      {/* [23/09 POC — collaudo PO «i cognomi vengono tagliati? hai molto spazio, sfruttalo!»] le due formazioni una sotto
+          l'altra a tutta larghezza: ogni maglia ha ~85 px di etichetta invece di 38, i cognomi entrano interi */}
+      <Pannello team={homeTeam} rr={_homeNums} kit={homeKitCol}/>
+      <Pannello team={awayTeam} rr={_awayNums} kit={awayKitCol}/>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <SectionHeader>Formazione avversaria</SectionHeader>
         {(oppTacticLoading||!oppTactic)?<Skeleton h={22}/>:(

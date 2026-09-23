@@ -1,0 +1,14 @@
+{
+ "rosso": null,
+ "play": true,
+ "aperta": true,
+ "lavagna": {
+  "heat": {
+   "celle": 47,
+   "max": 0.6
+  },
+  "meteo": "pioggia",
+  "campo": false
+ },
+ "errori": []
+}
