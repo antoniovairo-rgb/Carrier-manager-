@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 21:32 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 22:15 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -40,9 +40,18 @@
 8. **Catene**: tenute (il seguito lo sceglie il brain).
 - Ancora aperto: diritti dei ritratti AI (non verificabili da me) · volti femminili assenti nel catalogo.
 
+## Coda del collaudo PO (in lavorazione, in ordine)
+- Figurine in Spogliatoio, La Stampa, post-partita (migliore in campo, mister)
+- Intro: eroe troppo robusto, piede nel cartellone · kit con strisce/bande del club sui corpi CGTrader
+- Cori con il nome intero della squadra · tabellone LED all'altezza della tribuna
+- Partita 2D: prato come il 3D, meteo visibile, heat map lieve delle azioni
+- Statistiche (partita e post-partita, stesse voci): cross/azioni sulla fascia, % dribbling riusciti
+- Brain: fascia, cross, schemi · B4/B3 · gesti nuovi · orientamento eroe/tiro/passaggi
+
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 22:15 | Collaudo PO da PC — grafica uniformata al kit: pop-up settimana/impulso/spogliatoio e «Hai una partita» nel Modal del kit; Tabs in Stagione/Carriera; tendina delle leghe; «Gioca ›» primario; striscia CTA larga come le card; pre-partita, analisi pre-partita e formazioni nel kit chiaro; strumenti dentro Opzioni; procuratore di default (niente «Fondi insufficienti»); costo spiegato nelle scelte; biografia «a metà carriera» solo da 26 anni. Presentazione: in primo piano chi viene chiamato, prato con strisce e linee, sponsor sui cartelloni. Miniatura figurina piena. Bambini dell'ingresso in campo CGTrader | presentazione 6/6 (rosso 1/6) · miniatura foto 88% (rosso 59%) · bottoni scelta 54 px (rosso 40) · CTA 0 px di sporgenza (rosso 13) · bambini CGTrader 22 (rosso 0) · griglia-mobile 65 schermate 0 sbordi · design-system OK · test:logic 43/43 · save-compat 12/12 · Netlify aggiornato |
 | 23/09 21:32 | Festa di fine partita solo per vittorie importanti o prestazioni super (direttiva PO): vittoria E (big match/derby/coppa-KO OPPURE voto >= 8, 2+ gol, gol+assist >= 3); voto dalla pagella del motore | festa-942 verde (doppietta, 8,5: compare e si chiude) · prima bastava 1 gol anche in sconfitta · rosso __CPM_NO_FESTA23 · guardiano aggiornato alle figurine |
 | 23/09 21:11 | Collaudo PO da PC: tolto «Enter» ovunque; schermate provino/fine partita uniformate (Barlow, un colore per i numeri); ovale attorno alla figurina tolto; punteggio neutro (non rosso/verde); voto a destra = pagella del motore; intro col corpo CGTrader e luce da partita | intro: 2 corpi CGTrader, 0 CH38 (rosso 0/2), prato luminosità 0,43 (era 0,66) · fine partita: 0 testi con grazie, 0 «Enter» · griglia-mobile 65 schermate 0 sbordi · design-system, test:logic, save-compat, career-critical verdi |
 | 23/09 19:58 | Figurine nel sistema grafico del gioco (richiesta PO): colori/tipografia/raggi dai token (TH, FS >= 11 px, FW, RAD, Barlow) e testo che non sborda mai (passo FS che entra, righe per priorità, niente ellissi) | 7 figurine di prova 96-260 px: 0 righe fuori, 0 tagliate, 0 sotto 11 px · griglia-mobile 65 schermate 0 sbordi · design-system, test:logic 43/43, save-compat, career-critical verdi |
