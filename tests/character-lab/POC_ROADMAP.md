@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 11:09 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 11:21 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — highlight guidati dal motore unico («brain», direttiva PO 23/09): blocco B del MACRO-PIANO, da B0.
 
@@ -862,6 +862,22 @@ tetto della sonda (260 s): base parziale, da allargare.
   `si-continua`** (dopo un'azione riuscita il gioco pesca da solo una scheda nuova, senza il motore).
 - **Prossimo passo:** `si-continua` passa dal motore — torna al gioco e chiede al motore l'occasione dell'eroe, la scena si apre
   sull'evento `occasione_eroe`. Rosso appaiato previsto.
+
+## Avanzamento 23 settembre 2026, 11:21 — B0: OGNI SCENA NASCE DAL MOTORE (8/8)
+
+`si-continua` apriva subito la scena successiva ripescando una scheda dal catalogo, senza il motore. Ora si torna al gioco (ramo
+«montaggio») e la scena successiva si apre dalla porta normale, sull'evento `occasione_eroe` del motore. Rosso `__CPM_NO_B0SC`.
+
+| | Aperture dal motore | Sorgenti |
+| --- | --- | --- |
+| **Verde** (2 partite intere, 90', 0 errori) | **8/8** | motore-occasione 8 |
+| Rosso `__CPM_NO_B0SC` (stesso build) | 6/8 | motore-occasione 6 · si-continua 2 |
+
+**Costo dichiarato:** sparisce il passaggio immediato «⚡ SI CONTINUA!» fra due scene; la scena successiva arriva dopo un tratto di
+gioco. **Rischio dichiarato:** le due corse non giocano scene identiche (il pilota automatico e i tempi reali cambiano l'ordine);
+la misura confronta le SORGENTI, non le scene. Restano nel codice due reti che aprono senza il motore — `calendario-tick` (dopo 14'
+senza occasione) e `calendario` (salto manuale) — mai viste in queste 4 partite: da portare nel motore insieme a B2.
+**Non verificato:** il telefono; partite oltre le 2 per braccio.
 
 ---
 
