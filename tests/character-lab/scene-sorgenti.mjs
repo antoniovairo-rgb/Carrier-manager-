@@ -30,13 +30,14 @@ for (let p = DA; p < DA + N; p++) {
   const ultimo = await page.evaluate(() => ({ fase: window.__CPM_PHASE?.() || null, clock: window.__CPM_STATE?.()?.clock ?? null, testo: (document.body.innerText || '').slice(0, 160).replace(/\n/g, ' | ') })).catch(() => null);
   const b4 = await page.evaluate(() => window.__CPM_B4 || {}).catch(() => ({}));
   const b4ric = await page.evaluate(() => window.__CPM_B4RIC || null).catch(() => null);
+  const b4dif = await page.evaluate(() => window.__CPM_B4DIF || null).catch(() => null);
   const scene = await page.evaluate(() => { const EV = typeof window.__CPM_EV === 'function' ? window.__CPM_EV() : (window.__CPM_EV || []); return (EV || []).filter(e => e && e.ev === 'scena').map(e => ({ min: e.min, src: e.src, tipo: e.tipo || null, sk: e.sk || null })); }).catch(() => []);
   /* ⚠️ misurato leggendo il codice: `reattiva`/`sotto-63`/`sotto-76`/`secondo-tempo` si scrivono quando la scena viene MESSA IN
      CALENDARIO (o, per la catena, insieme a `catena`): contarle come aperture raddoppia. Aperture vere: */
   const APRE = new Set(['motore-occasione', 'calendario-tick', 'catena', 'si-continua', 'calendario']);
   const perSrc = {}, programmate = {}; scene.forEach(s => { const o = APRE.has(s.src) ? perSrc : programmate; o[s.src] = (o[s.src] | 0) + 1; });
-  esiti.push({ partita: p, fine, ultimo, b4, b4ric, highlight: hl, scene, perSrc, programmate, errori });
-  console.log(`partita ${p}: fine ${fine} · aperture ${Object.values(perSrc).reduce((a, b) => a + b, 0)} ${JSON.stringify(perSrc)} · programmate ${JSON.stringify(programmate)} · scelte risolte ${hl} · b4ric ${JSON.stringify(b4ric)} · errori ${errori.length} · ultimo ${JSON.stringify(ultimo)}`);
+  esiti.push({ partita: p, fine, ultimo, b4, b4ric, b4dif, highlight: hl, scene, perSrc, programmate, errori });
+  console.log(`partita ${p}: fine ${fine} · aperture ${Object.values(perSrc).reduce((a, b) => a + b, 0)} ${JSON.stringify(perSrc)} · programmate ${JSON.stringify(programmate)} · scelte risolte ${hl} · b4ric ${JSON.stringify(b4ric)} · b4dif ${JSON.stringify(b4dif)} · errori ${errori.length} · ultimo ${JSON.stringify(ultimo)}`);
   await page.close();
 }
 const tot = {}; esiti.forEach(e => Object.entries(e.perSrc).forEach(([k, v]) => { tot[k] = (tot[k] | 0) + v; }));

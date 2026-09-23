@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 12:00 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 12:13 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -11,7 +11,7 @@
 | Personaggi CGTrader (modello, LOD, kit) | ✅ nel banco: kit corretto nei file, portiere LOD1 nella presa, 64,6k triangoli | prova sul telefono |
 | Gesti negli highlight | ✅ presa, dribbling, passaggio, tiro misurati · eroe taglia 0,18 | ❌ tuffo e respinta del portiere CGTrader (clip assenti nel pacchetto) |
 | **Brain → scena (B0)** | 🟡 scene nate dal motore **8 su 9** | la «catena» apre ancora da sola |
-| **Brain → attori (B4)** | 🟡 ricevente del motore **3 su 5** · portiere 5 su 5 | difensore **0 su 5** · ricevente di cross e consegne |
+| **Brain → attori (B4)** | 🟡 ricevente **3 su 5** · difensore **4 su 6** · portiere 6 su 6 (mediane 0 u) | ricevente di cross e consegne · 2 difensori ancora scelti dal 3D |
 | Brain muove i 22 in scena (B3) | ⏳ da fare | |
 | Esito deciso dal brain (B2) | ⏳ da fare | oggi lo decide il dado dell'highlight |
 | Gesti collegati al brain | 🟡 impianto pronto (tabella unica evento→gesto) | si accende con B3 |
@@ -20,8 +20,8 @@
 | Telefono | ❌ non provato | FPS (misure passate 11-16), kit, gesti |
 
 ## Prossimi 3 passi
-1. Difensore della scena preso dal brain (B4).
-2. «Catena» aperta dal brain (B0 a 100%).
+1. «Catena» aperta dal brain (B0 a 100%).
+2. Ricevente di cross e consegne dal brain (B4).
 3. Brain che muove i 22 durante la scena (B3), poi esito dal brain (B2).
 
 ## Da decidere o guardare tu
@@ -33,6 +33,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 12:13 | B4: difensore della scena dal brain (4 punti del 3D) | 0/5 → 4/6, mediana 15,9 → 0 u (rosso 2/6, 12,9 u) |
 | 23/09 | Roadmap divisa: questa pagina corta + storico | 1.696 righe → storico |
 | 23/09 | B4: cast della scena dichiarato dal brain, passaggio al suo ricevente | ricevente 0/4 → 3/5 (rosso 1/2) |
 | 23/09 | B0: «si continua» passa dal brain | scene dal brain 6/8 (rosso) → 8/8 |

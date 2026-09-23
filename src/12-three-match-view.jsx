@@ -2371,6 +2371,17 @@ function ThreeMatchView(props){
     let _chooseT=-1,_hlSnap=false; // FREEZE #2: timer della fase di LETTURA + flag di SNAP iniziale (i giocatori off-ball si posizionano e restano fermi finché l'eroe non sceglie o scatta il timer)
     let netBulgeT=-1,prevInNet=false,concededT=-1; // CINE-6: gonfiamento rete + delusione portiere al gol subìto
     let passTargetMesh=null; // 3DV-14b: mesh compagno che riceve il passaggio (triangolo)
+    /* [23/09 POC — B4: IL DIFENSORE LO DICHIARA IL MOTORE. Rosso __CPM_NO_B4DIF] I quattro punti che scelgono l'avversario che
+       interviene (contrasto, intercetto, inciampo) prendevano il piu' vicino: misurato, coincideva col difensore del motore 0
+       volte su 5. Ora chiedono qui: il difensore del cast se e' in campo ed entro `maxD` dal punto dell'azione (oltre, il gesto
+       sembrerebbe teletrasportato), altrimenti la scelta geometrica di prima, contata nel testimone. */
+    const _castDif23=(fallback,ax,az,maxD)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_B4DIF)return fallback;
+      const C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;const i=C&&C.difensore?C.difensore.i:null;
+      const W=(typeof window!=='undefined'&&window.__CPM_B4REC)?(window.__CPM_B4DIF=window.__CPM_B4DIF||{usato:0,scartato:0,senzaCast:0}):null;
+      if(i==null||i===21){if(W)W.senzaCast++;return fallback;}
+      const pp=sr.current.players&&sr.current.players[i];const m=pp&&pp.mesh;
+      if(m&&Math.hypot(m.position.x-ax,m.position.z-az)<=(maxD||14)){if(W)W.usato++;return m;}
+      if(W)W.scartato++;return fallback;}catch(_eD){return fallback;}};
     let crossRcvMesh=null; // [6.74.0 3D-5] mesh compagno che ATTACCA il cross (corre sul punto di caduta e incorna)
     let _arcSrcX=null,_arcSrcZ=null; // [6.74.0 3D-6] punto di partenza dell'arco colpito → interpolazione LINEARE su u (prima lerp esponenziale: partenza a razzo e "frenata a paracadute" sul target)
     let _tackleCarrier=null; // FIX coerenza tackle: avversario portatore agganciato per la durata dell'HL difensivo (stabile)
@@ -3471,7 +3482,7 @@ function ThreeMatchView(props){
                 else if(_ht==="pass"||_ht==="build"){
                   // 5.43.2 (fail passaggio): il difensore INTERCETTA con una SCIVOLATA + il compagno destinatario fa COMUNQUE il movimento verticale (palla intercettata prima che lo raggiunga)
                   let _nd=99,_nm=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_nd){_nd=d;_nm=pp.mesh;}}});
-                  if(_nm){oppActType="opp_tackle";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;oppDiveDir=_nm.position.z>=0?1:-1;oppMesh._slideToX=_nm.position.x-3;oppMesh._slideToZ=_nm.position.z;}
+                  _nm=_castDif23(_nm,hero.position.x,hero.position.z,14);if(_nm){oppActType="opp_tackle";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;oppDiveDir=_nm.position.z>=0?1:-1;oppMesh._slideToX=_nm.position.x-3;oppMesh._slideToZ=_nm.position.z;}
                   let _rd=99,_rm=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh!==hero&&pp.mesh.position.x>hero.position.x-2){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_rd){_rd=d;_rm=pp.mesh;}}});
                   if(_rm){_rm._failRunT=0;_rm._runToX=Math.min(_rm.position.x+12,AWAY_GOAL_X-4);_rm._runToZ=_rm.position.z;}
                 }
@@ -4021,7 +4032,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if((P.hlPattern==="BALL_CARRY"||t==="dribble"||(t==="build"&&P.hlReward==="goal"&&/intercept|dispos|beaten|tackl|foul|freekick/i.test(P.hlOutcomeKind||"")))&&P.hlSuccess===false){/* [7.235.0 #51 batch PO «il dribbling non si vede» sui FALLITI] il fail del dribbling era un rimbalzino di 4u in 0.34s sotto l'overlay (misurato: arco a ~220-410ms, tutto finito a ~1.1s) — ora OGNI dribbling fallito usa il trattamento COLLAUDATO del BALL_CARRY: il difensore entra in scivolata e PORTA VIA il pallone, il duello si legge · [7.244.0 gi46 «Taglio verso l'area» FALLITO «non si vede il gesto tecnico»] un BUILD con reward GOAL è per costruzione una CORSA a finalizzare (taglio/inserimento): il suo fallimento è la palla persa nel duello, non un tiro sbagliato — stesso trattamento, strutturale (niente testo a runtime) */
             actType=(t==="dribble")?"dribble":"build";actT=0;// nessuno swing di tiro: l'eroe viene contrastato/* [7.358.0 collaudo PO #18/#104/#154 «dribbling confusionario», «doppio passo sul posto senza palla»] IL DRIBBLING FALLITO NON ERA UN DRIBBLING. Questo ramo (5.43.5) rimappava OGNI conduzione persa su `build` per evitare lo swing di tiro — ma `build` significa due cose che qui mentono: la tabella d'avanzamento gli da' 2,5u invece di 10 (l'eroe fa due passi e torna indietro) e la mappa GLB manda `build` sulla clip `dribble` (il corpo dribbla comunque). Misurato: eroe avanti 2,0u e RIENTRO 2,0u mentre la palla finiva a 14-26u. Su un `dribble` lo swing di tiro non c'era mai stato: il nome resta quello vero, la scivolata dell'avversario (poche righe sotto) e' invariata. */
             let _nd=99,_nm=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_nd){_nd=d;_nm=pp.mesh;}}});
-            if(_nm){oppActType="opp_tackle";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;oppDiveDir=_nm.position.z>=0?1:-1;oppMesh._slideToX=hero.position.x+0.5;oppMesh._slideToZ=hero.position.z;
+            _nm=_castDif23(_nm,hero.position.x,hero.position.z,14);if(_nm){oppActType="opp_tackle";oppActT=0;oppMesh=_nm;oppMesh._divePz=_nm.position.z;oppDiveDir=_nm.position.z>=0?1:-1;oppMesh._slideToX=hero.position.x+0.5;oppMesh._slideToZ=hero.position.z;
               /* [7.249.0 gi38 misurato: il «tocco» del duello volava 28u fino a un raccoglitore lontano = ancora
                  un lancio percepito] la palla persa nel contrasto viene POKATA VIA di poco (≤9u nella direzione
                  del raccoglitore): è lui che viene a prendersela, non il pallone che vola da lui. */
@@ -4444,7 +4455,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                if(_blk331){const _dI=Math.hypot(_ix-_phx,_iz-_phz);if(_dI>6){const _kI=6/_dI;_ix=_phx+(_ix-_phx)*_kI;_iz=_phz+(_iz-_phz)*_kI;}ballArcH=0.45;ballArcDur=0.28;}
                ballArcTgtX=_ix;ballArcTgtZ=_iz;
                let _id=1e9,_im=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-_ix,pp.mesh.position.z-_iz);if(d<_id){_id=d;_im=pp.mesh;}}});
-               if(_im){oppActType="opp_tackle";oppActT=0;oppMesh=_im;oppMesh._divePz=_im.position.z;oppDiveDir=_iz>=_im.position.z?1:-1;oppMesh._slideToX=_ix;oppMesh._slideToZ=_iz;}
+               _im=_castDif23(_im,_ix,_iz,14);if(_im){oppActType="opp_tackle";oppActT=0;oppMesh=_im;oppMesh._divePz=_im.position.z;oppDiveDir=_iz>=_im.position.z?1:-1;oppMesh._slideToX=_ix;oppMesh._slideToZ=_iz;}
                passTargetMesh=null;}
              /* [7.341.0 setaccio delle azioni · gi111 «Assist rasoterra in area piccola» FALLITO: l'esito diceva
                 «intercettato» e la palla finiva IN RETE] UN PASSAGGIO NON ENTRA IN PORTA. Dentro l'area piccola il
@@ -4701,7 +4712,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           } else if(t==="tackle"||t==="dribble"){
             let nearD=99,nearM=null;
             sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<nearD){nearD=d;nearM=pp.mesh;}}});
-            if(nearM){oppActType=t==="tackle"?"opp_stumble":"opp_spin";oppActT=0;oppMesh=nearM;oppMesh._divePz=nearM.position.z;}
+            nearM=_castDif23(nearM,hero.position.x,hero.position.z,14);if(nearM){oppActType=t==="tackle"?"opp_stumble":"opp_spin";oppActT=0;oppMesh=nearM;oppMesh._divePz=nearM.position.z;}
           } else if(t==="freekick"){// 3DV-4: barriera — i 3 avversari più vicini saltano
             const wallMs=[];sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){wallMs.push({m:pp.mesh,d:Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z)});}});
             wallMs.sort((a,b)=>a.d-b.d);wallMs.slice(0,3).forEach(w=>{w.m._wallJumpT=0;});

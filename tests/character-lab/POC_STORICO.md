@@ -901,6 +901,12 @@ scelgono il ricevente (cross, consegne d'emergenza): prossimi da portare sul cas
 **B0 riaperto:** in una corsa e' comparsa un'apertura `catena` (secondo tempo della stessa azione) che non passa dal motore: 8/9.
 **Prossimi passi:** difensore dal cast · ricevente negli altri punti · `catena` nel motore.
 
+## Avanzamento 23 settembre 2026, 23/09 12:13 — B4: IL DIFENSORE DAL MOTORE
+Quattro punti del 3D (contrasto su dribbling fallito ×2, intercetto, inciampo/giravolta) sceglievano l'avversario piu' vicino.
+Ora chiedono `_castDif23`: il difensore del cast se e' entro 14u dal punto dell'azione, altrimenti la scelta di prima (contata).
+Rosso `__CPM_NO_B4DIF`. 2 partite intere per braccio, 8/8 scene dal motore in entrambi.
+Difensore: verde **4/6, mediana 0 u** · rosso 2/6, mediana 12,9 u · base 0/5, 15,9 u. Campione piccolo, dichiarato.
+
 ---
 
 ## Obiettivo vincolante
