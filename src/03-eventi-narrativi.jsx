@@ -352,7 +352,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🎾 Gioco per vincere",ef:{chem:7,fatigue:7}},
     {txt:"🛋 Tifo dal divano",ef:{fatigue:-5,chem:-3}},
   ]},
-  {id:"wi_biografia",once:true,cat:"opportunità",txt:"Un editore ti propone la biografia «a metà carriera». Anticipo ricco, ma qualcuno la troverà prematura.",choices:[
+  {id:"wi_biografia",once:true,cat:"opportunità",cond:p=>(p.age||18)>=26&&(p.season||1)>=5/* [23/09 POC — collaudo PO «metà carriera è sbagliato, ha appena iniziato»] la biografia «a metà carriera» solo a carriera avviata: 26 anni e 5 stagioni */,txt:"Un editore ti propone la biografia «a metà carriera». Anticipo ricco, ma qualcuno la troverà prematura.",choices:[
     {txt:"📖 Firmo il contratto",ef:{bank:20000,popularity:6,coachTrust:-4}},
     {txt:"⌛ È troppo presto",ef:{coachTrust:4}},
   ]},

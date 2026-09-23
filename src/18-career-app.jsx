@@ -1169,6 +1169,11 @@ const getThisWeekMatchday=()=>{
          non erano mai state fotografate. Stessa famiglia di __CPM_HUD_FORCE e __CPM_FESTA942_FORCE. */
       /* [7.947] varco di solo collaudo: apre la serata di presentazione al battito chiesto. Senza,
          per fotografarla servirebbe arrivare alla settimana di apertura di una stagione. */
+      /* [23/09 POC] varco di solo collaudo: apre il pop-up della settimana (impulso, spogliatoio o settimana vissuta) per fotografarlo */
+      apriSettimana:(tipo)=>{try{const tm=(player.teammates||[])[0]||{name:"Rocco Landi",archetype:"mentor",icon:"🧠"};
+        setWeekLiveModal(tipo==="spogliatoio"?{isSpogliatoio:true,teammate:tm,event:{txt:"Oggi resta dopo l'allenamento: ti faccio vedere come si attacca il primo palo."},choices:[{txt:"🤝 Resto volentieri",ef:{chem:4}},{txt:"🏠 Stasera no, sono stanco",ef:{fatigue:-3}}]}
+          :tipo==="vissuta"?{event:{txt:"Settimana intensa: doppio allenamento e video-analisi."},changes:{morale:3,form:2,fatigue:6},coachMsg:"Ti voglio più cattivo sui contrasti."}
+          :{isImpulse:true,cat:"opportunità",event:{txt:"Un marchio di scarpini vuole girare uno spot con te. Due giorni di set, compenso interessante.",e:"🌟"},choices:[{txt:"🎬 Accetto lo spot",ef:{bank:5000}},{txt:"⚽ Resto concentrato sul campo",ef:{coachTrust:2}},{txt:"💎 Chiedo il doppio",ef:{bank:-999999999}}]});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriPresentazione:(beat)=>{try{setPresEvent({beat:Math.max(0,beat|0)});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriGala:(aw)=>{try{setSeasonAwardsData(aw||{
         palloneOro:{playerWins:true,top3:[{name:"TU",isPlayer:true,club:"FC Merseyside",goals:34},{name:"L. Moreno",club:"CF Madrid",goals:31},{name:"K. Adeyemi",club:"Deutsche Elf",goals:29}]},
@@ -5868,6 +5873,54 @@ const getThisWeekMatchday=()=>{
 
       {/* == WeekLife modal == */}
       {weekLiveModal&&(
+        /* [23/09 POC — collaudo PO «impulsi non standard, uniforma con la grafica»] il pop-up della settimana usa il
+           Modal del kit (scrim, pannello, raggio e ombra di tutte le altre finestre), non un velo e una Card fatti a
+           mano; il compagno che parla e' la sua FIGURINA; le scelte sono Btn del kit, larghe come il pollice.
+           Rosso __CPM_NO_IMPULSO23: il pop-up di prima. */
+        !(typeof window!=='undefined'&&window.__CPM_NO_IMPULSO23)?(
+        <Modal open dismissable={false} width={420}>
+          <div data-cpm="settimana23" style={{display:"flex",flexDirection:"column",gap:SP.md}}>
+            <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>{L.weekHeader} {player.week} · {player.club?.name||player.club?.n}</div>
+            <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
+              {weekLiveModal.isSpogliatoio&&weekLiveModal.teammate?.name
+                ?(()=>{try{return <Figurina tipo="giocatore" chiave={weekLiveModal.teammate.name} larg={44}/>;}catch(_e){return null;}})()
+                :<div style={{width:44,height:44,borderRadius:RAD.md,background:TH.surface2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.title,flexShrink:0}}>{weekLiveModal.isImpulse?(weekLiveModal.event?.e||"💡"):weekLiveModal.isRehab?"🏥":"📋"}</div>}
+              <div style={{minWidth:0}}>
+                <div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text,lineHeight:1.2}}>{weekLiveModal.isSpogliatoio?(weekLiveModal.teammate?.name||"Un compagno"):weekLiveModal.isImpulse?"Impulso della settimana":weekLiveModal.isRehab?"Riabilitazione":"Questa settimana"}</div>
+                {weekLiveModal.isSpogliatoio&&<div style={{fontSize:FS.small,color:TH.muted}}>Lo spogliatoio · {TEAMMATE_ARCHETYPES.find(a=>a.id===weekLiveModal.teammate?.archetype)?.name||"compagno"}</div>}
+                {weekLiveModal.isImpulse&&<div style={{fontSize:FS.small,fontWeight:FW.bold,color:{opportunità:TH.txGreen,scelta:TH.brandText,tensione:TH.txRed,conseguenza:TH.muted,addio:TH.txAmber,esordio:TH.txGreen,primopro:TH.brandText}[weekLiveModal.cat]||TH.brandText}}>{({opportunità:"Opportunità",scelta:"Scelta",tensione:"Tensione",conseguenza:"Conseguenza",addio:"L'addio",esordio:"Esordio",primopro:"Primo anno da pro"})[weekLiveModal.cat]||weekLiveModal.cat}</div>}
+              </div>
+            </div>
+            {weekLiveModal.isRehab&&<div style={{fontSize:FS.small,color:TH.txAmber}}>{weekLiveModal.injuryLabel} — ancora {weekLiveModal.injuryWeeks} settiman{weekLiveModal.injuryWeeks===1?"a":"e"} di stop</div>}
+            <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.55}}>{weekLiveModal.isSpogliatoio?"«"+weekLiveModal.event.txt+"»":weekLiveModal.event.txt}</div>
+            {weekLiveModal.choices&&weekLiveModal.choices.length>0?(
+              <div style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
+                {weekLiveModal.choices.map((ch,i)=>{const _afford95=!(ch.ef&&ch.ef.bank!=null&&ch.ef.bank<0&&((player.bankBalance||0)+ch.ef.bank<0));return(
+                  <div key={i}>
+                    <Btn v="secondary" fw size="lg" disabled={!_afford95} onClick={()=>{if(_afford95)handleImpulseChoice(ch);}} style={{justifyContent:"flex-start",textAlign:"left",color:TH.text,fontWeight:FW.semibold}}>{ch.txt}</Btn>
+                    {!_afford95&&<div style={{fontSize:FS.caption,color:TH.txRed,fontWeight:FW.bold,marginTop:4}}>Fondi insufficienti ({Math.round((player.bankBalance||0)/1000)}k€)</div>}
+                  </div>);})}
+              </div>
+            ):(
+              <>
+                {Object.keys(weekLiveModal.changes||{}).length>0&&(
+                  <div style={{display:"flex",gap:SP.sm,flexWrap:"wrap"}}>
+                    {[["morale","Morale",1],["form","Forma",1],["fatigue","Fatica",-1]].map(([k,lb,s])=>{const v=weekLiveModal.changes[k];if(v===undefined||v===0)return null;const buono=v*s>0;
+                      return <div key={k} className="cpm-num" style={{padding:"4px 10px",borderRadius:RAD.pill,background:buono?TH.bgGreen:(k==="fatigue"?TH.bgAmber:TH.bgRed),color:buono?TH.txGreen:(k==="fatigue"?TH.txAmber:TH.txRed),fontSize:FS.caption,fontWeight:FW.bold}}>{lb} {v>0?"+":""}{v}</div>;})}
+                  </div>
+                )}
+                <div style={{fontSize:FS.caption,color:TH.faint}}>{weekLiveModal.isRehab?L.rehabCompletedNote:L.weekLivedNote}</div>
+                {weekLiveModal.coachMsg&&!weekLiveModal.isRehab&&(
+                  <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.sm}px ${SP.md}px`}}>
+                    <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:2}}>Il mister</div>
+                    <div style={{fontSize:FS.small,color:TH.text,fontStyle:"italic"}}>«{weekLiveModal.coachMsg}»</div>
+                  </div>
+                )}
+                <Btn onClick={()=>setWeekLiveModal(null)} v="primary" fw size="lg">{L.understood}</Btn>
+              </>
+            )}
+          </div>
+        </Modal>):(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card style={{maxWidth:400,width:"100%",padding:"22px"}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>{L.weekHeader} {player.week} — {player.club?.name||player.club?.n}</div>
@@ -5933,7 +5986,7 @@ const getThisWeekMatchday=()=>{
             )}
           </Card>
         </div>
-      )}
+        ))}
 
       {/* == Sprint 25A — Career Moment Modal == */}
       {careerMomentModal&&(()=>{

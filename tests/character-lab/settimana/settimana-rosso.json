@@ -1,0 +1,31 @@
+{
+ "rosso": "__CPM_NO_IMPULSO23",
+ "impulso": {
+  "standard": false,
+  "raggio": null,
+  "figurina": false,
+  "bottoniMinH": [
+   40,
+   40,
+   59
+  ]
+ },
+ "spogliatoio": {
+  "standard": false,
+  "raggio": null,
+  "figurina": false,
+  "bottoniMinH": [
+   40,
+   40
+  ]
+ },
+ "vissuta": {
+  "standard": false,
+  "raggio": null,
+  "figurina": false,
+  "bottoniMinH": [
+   45
+  ]
+ },
+ "errori": []
+}

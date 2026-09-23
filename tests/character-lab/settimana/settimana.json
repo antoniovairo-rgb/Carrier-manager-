@@ -1,0 +1,31 @@
+{
+ "rosso": null,
+ "impulso": {
+  "standard": true,
+  "raggio": "20px",
+  "figurina": false,
+  "bottoniMinH": [
+   54,
+   54,
+   54
+  ]
+ },
+ "spogliatoio": {
+  "standard": true,
+  "raggio": "20px",
+  "figurina": true,
+  "bottoniMinH": [
+   54,
+   54
+  ]
+ },
+ "vissuta": {
+  "standard": true,
+  "raggio": "20px",
+  "figurina": false,
+  "bottoniMinH": [
+   54
+  ]
+ },
+ "errori": []
+}
