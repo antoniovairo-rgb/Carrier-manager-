@@ -1,0 +1,173 @@
+[
+  {
+    "id": "ai-0001",
+    "categoria": "giocatore",
+    "eta": 22,
+    "carnagione": "chiara",
+    "capelli": "castani corti mossi",
+    "barba": "rasato",
+    "viso": "ovale",
+    "tratto": "zigomi marcati",
+    "file": "assets/portraits/ai/pilota-budget5/volto-0001.webp",
+    "lotto": "pilota-budget5",
+    "foglio": 1,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": [
+        "ai-0003",
+        "cast-rivals-c.jpg#1"
+      ]
+    }
+  },
+  {
+    "id": "ai-0002",
+    "categoria": "giocatore",
+    "eta": 29,
+    "carnagione": "scura",
+    "capelli": "neri ricci corti",
+    "barba": "corta",
+    "viso": "largo",
+    "tratto": "naso ampio",
+    "file": "assets/portraits/ai/pilota-budget5/volto-0002.webp",
+    "lotto": "pilota-budget5",
+    "foglio": 1,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0003",
+    "categoria": "giocatore",
+    "eta": 25,
+    "carnagione": "olivastra",
+    "capelli": "neri lunghi raccolti",
+    "barba": "baffi sottili",
+    "viso": "allungato",
+    "tratto": "sopracciglia arcuate",
+    "file": "assets/portraits/ai/pilota-budget5/volto-0003.webp",
+    "lotto": "pilota-budget5",
+    "foglio": 1,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": [
+        "ai-0001",
+        "cast-rivals-c.jpg#4"
+      ]
+    }
+  },
+  {
+    "id": "ai-0004",
+    "categoria": "giocatore",
+    "eta": 34,
+    "carnagione": "ambrata",
+    "capelli": "neri rasati",
+    "barba": "pizzetto",
+    "viso": "quadrato",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/pilota-budget5/volto-0004.webp",
+    "lotto": "pilota-budget5",
+    "foglio": 1,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0005",
+    "categoria": "giocatore",
+    "eta": 20,
+    "carnagione": "chiara",
+    "capelli": "rossi ricci medi",
+    "barba": "rasato",
+    "viso": "a cuore",
+    "tratto": "lentiggini leggere",
+    "file": "assets/portraits/ai/pilota-budget5/volto-0005.webp",
+    "lotto": "pilota-budget5",
+    "foglio": 2,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0006",
+    "categoria": "giocatore",
+    "eta": 31,
+    "carnagione": "scura",
+    "capelli": "neri corti con tempie brizzolate",
+    "barba": "piena corta",
+    "viso": "triangolare",
+    "tratto": "piccola cicatrice su un sopracciglio",
+    "file": "assets/portraits/ai/pilota-budget5/volto-0006.webp",
+    "lotto": "pilota-budget5",
+    "foglio": 2,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": [
+        "cast-heroes-a.jpg#1",
+        "cast-heroes-a.jpg#2",
+        "cast-heroes-a.jpg#3",
+        "cast-heroes-a.jpg#4"
+      ]
+    }
+  },
+  {
+    "id": "ai-0007",
+    "categoria": "staff",
+    "eta": 49,
+    "carnagione": "olivastra",
+    "capelli": "brizzolati corti",
+    "barba": "piena",
+    "viso": "rettangolare",
+    "tratto": "lievi rughe d'espressione agli occhi",
+    "file": "assets/portraits/ai/pilota-budget5/volto-0007.webp",
+    "lotto": "pilota-budget5",
+    "foglio": 2,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0008",
+    "categoria": "staff",
+    "eta": 44,
+    "carnagione": "ambrata",
+    "capelli": "castani ricci lunghi",
+    "barba": "senza barba",
+    "viso": "tondo",
+    "tratto": "naso leggermente aquilino",
+    "file": "assets/portraits/ai/pilota-budget5/volto-0008.webp",
+    "lotto": "pilota-budget5",
+    "foglio": 2,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  }
+]
