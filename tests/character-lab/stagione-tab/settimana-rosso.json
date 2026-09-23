@@ -1,0 +1,47 @@
+{
+ "rosso": "__CPM_NO_CTA23",
+ "standings": {
+  "tendina": true,
+  "opzioni": 15,
+  "gioca": null,
+  "larghezzaPagina": 412
+ },
+ "calendar": {
+  "tendina": false,
+  "opzioni": 0,
+  "gioca": {
+   "h": 40,
+   "bg": "rgb(142, 31, 51)"
+  },
+  "larghezzaPagina": 412
+ },
+ "cta412": {
+  "striscia": [
+   -4,
+   416
+  ],
+  "bottone": [
+   9,
+   403
+  ],
+  "card": [
+   9,
+   403
+  ]
+ },
+ "cta1100": {
+  "striscia": [
+   260,
+   1087
+  ],
+  "bottone": [
+   273,
+   1073
+  ],
+  "card": [
+   273,
+   1073
+  ]
+ },
+ "errori": []
+}

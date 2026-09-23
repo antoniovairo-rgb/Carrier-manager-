@@ -759,6 +759,8 @@ function datiFigurina23(tipo,chiave,nome,ruolo,col,col2){
 const _largTesto23=(t,fs,peso)=>String(t||"").length*fs*((peso||0)>=700?0.64:0.58);/* stima PRUDENTE (Barlow ~0,52-0,58 em): meglio un passo piu' piccolo che un testo che esce */
 const _FONT23="'Barlow','Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif";
 function _passoFS23(t,disp,scala,peso){for(const f of scala){if(_largTesto23(t,f,peso)<=disp)return f;}return null;}
+/* [23/09 POC] cifre in euro leggibili: 1.000 €, 25.000 €, 1,2 mln € */
+function fmtEuro23(v){v=Math.round(+v||0);if(Math.abs(v)>=1e6)return (v/1e6).toLocaleString('it-IT',{maximumFractionDigits:1})+" mln €";return v.toLocaleString('it-IT')+" €";}
 function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,chiave}){
   const D=datiFigurina23(tipo,chiave,nome,ruolo,col,col2);
   const c1=D.col||TH.primary,c2=D.col2||TH.primaryDk||TH.primary;
@@ -41589,7 +41591,7 @@ const getThisWeekMatchday=()=>{
       apriSettimana:(tipo)=>{try{const tm=(player.teammates||[])[0]||{name:"Rocco Landi",archetype:"mentor",icon:"🧠"};
         setWeekLiveModal(tipo==="spogliatoio"?{isSpogliatoio:true,teammate:tm,event:{txt:"Oggi resta dopo l'allenamento: ti faccio vedere come si attacca il primo palo."},choices:[{txt:"🤝 Resto volentieri",ef:{chem:4}},{txt:"🏠 Stasera no, sono stanco",ef:{fatigue:-3}}]}
           :tipo==="vissuta"?{event:{txt:"Settimana intensa: doppio allenamento e video-analisi."},changes:{morale:3,form:2,fatigue:6},coachMsg:"Ti voglio più cattivo sui contrasti."}
-          :{isImpulse:true,cat:"opportunità",event:{txt:"Un marchio di scarpini vuole girare uno spot con te. Due giorni di set, compenso interessante.",e:"🌟"},choices:[{txt:"🎬 Accetto lo spot",ef:{bank:5000}},{txt:"⚽ Resto concentrato sul campo",ef:{coachTrust:2}},{txt:"💎 Chiedo il doppio",ef:{bank:-999999999}}]});return true;}catch(e){return "error:"+(e&&e.message);}},
+          :{isImpulse:true,cat:"opportunità",event:{txt:"Un marchio di scarpini vuole girare uno spot con te. Due giorni di set, compenso interessante.",e:"🌟"},choices:[{txt:"🎬 Accetto lo spot",ef:{bank:5000}},{txt:"⚽ Resto concentrato sul campo",ef:{coachTrust:2}},{txt:"💎 Pago un fotografo mio",ef:{bank:-5000}}]});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriPresentazione:(beat)=>{try{setPresEvent({beat:Math.max(0,beat|0)});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriGala:(aw)=>{try{setSeasonAwardsData(aw||{
         palloneOro:{playerWins:true,top3:[{name:"TU",isPlayer:true,club:"FC Merseyside",goals:34},{name:"L. Moreno",club:"CF Madrid",goals:31},{name:"K. Adeyemi",club:"Deutsche Elf",goals:29}]},
@@ -46313,8 +46315,13 @@ const getThisWeekMatchday=()=>{
               <div style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
                 {weekLiveModal.choices.map((ch,i)=>{const _afford95=!(ch.ef&&ch.ef.bank!=null&&ch.ef.bank<0&&((player.bankBalance||0)+ch.ef.bank<0));return(
                   <div key={i}>
-                    <Btn v="secondary" fw size="lg" disabled={!_afford95} onClick={()=>{if(_afford95)handleImpulseChoice(ch);}} style={{justifyContent:"flex-start",textAlign:"left",color:TH.text,fontWeight:FW.semibold}}>{ch.txt}</Btn>
-                    {!_afford95&&<div style={{fontSize:FS.caption,color:TH.txRed,fontWeight:FW.bold,marginTop:4}}>Fondi insufficienti ({Math.round((player.bankBalance||0)/1000)}k€)</div>}
+                    {/* [23/09 POC — collaudo PO «che vuol dire fondi insufficienti, migliora la grafica»] la scelta che costa piu'
+                        di quanto hai sul conto resta visibile ma spenta, e DENTRO il bottone dice perche', in chiaro: quanto
+                        costa e quanto hai. Niente riga rossa sotto. */}
+                    <Btn v="secondary" fw size="lg" disabled={!_afford95} onClick={()=>{if(_afford95)handleImpulseChoice(ch);}} style={{justifyContent:"flex-start",textAlign:"left",color:TH.text,fontWeight:FW.semibold,flexDirection:"column",alignItems:"flex-start",gap:2}}>
+                      <span>{ch.txt}</span>
+                      {!_afford95&&<span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.medium,color:TH.muted}}>🔒 Costa {fmtEuro23(-ch.ef.bank)} · sul conto hai {fmtEuro23(player.bankBalance||0)}</span>}
+                    </Btn>
                   </div>);})}
               </div>
             ):(
@@ -47171,23 +47178,11 @@ const getThisWeekMatchday=()=>{
 
       {/* Sub-nav pills — Stagione container */}
       {(tab==="calendar"||tab==="standings"||tab==="coppe")&&(
-        <div style={{display:"flex",gap:6,marginBottom:9,paddingBottom:10,borderBottom:"1px solid "+TH.cardBorder}}>
-          {[{id:"standings",e:"📊",l:"Classifica"},{id:"calendar",e:"📅",l:"Calendario"},{id:"coppe",e:"🏆",l:"Coppe"}].map(s=>(/* [7.67.0 collaudo PO] Classifica PRIMA del Calendario */
-            <button key={s.id} onClick={()=>goTab(s.id)} style={{flex:1,padding:"7px 6px",borderRadius:RAD.sm,border:"1px solid "+(tab===s.id?TH.primary:TH.cardBorder),background:tab===s.id?TH.primary+"22":"transparent",color:tab===s.id?TH.brandText:TH.muted,fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:4,transition:"all .15s"}}>
-              <span>{s.e}</span><span>{s.l}</span>
-            </button>
-          ))}
-        </div>
+        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"standings",icon:"📊",label:"Classifica"},{id:"calendar",icon:"📅",label:"Calendario"},{id:"coppe",icon:"🏆",label:"Coppe"}]} value={tab} onChange={goTab} style={{marginBottom:SP.md}}/>
       )}
       {/* Sub-nav pills — Carriera container */}
       {(tab==="profile"||tab==="nazionale")&&(
-        <div style={{display:"flex",gap:6,marginBottom:9,paddingBottom:10,borderBottom:"1px solid "+TH.cardBorder}}>
-          {[{id:"profile",e:"👤",l:"Profilo"},{id:"nazionale",e:"🌍",l:"Nazionale"}].map(s=>(
-            <button key={s.id} onClick={()=>goTab(s.id)} style={{flex:1,padding:"7px 6px",borderRadius:RAD.sm,border:"1px solid "+(tab===s.id?TH.primary:TH.cardBorder),background:tab===s.id?TH.primary+"22":"transparent",color:tab===s.id?TH.brandText:TH.muted,fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:4,transition:"all .15s"}}>
-              <span>{s.e}</span><span>{s.l}</span>
-            </button>
-          ))}
-        </div>
+        <Tabs /* [23/09 POC — collaudo PO «tab troppo semplici e poco uniformi»] il segmented control del kit */ items={[{id:"profile",icon:"👤",label:"Profilo"},{id:"nazionale",icon:"🌍",label:"Nazionale"}]} value={tab} onChange={goTab} style={{marginBottom:SP.md}}/>
       )}
 
       {/* [6.5.4 collaudo PO] CTA PRIMARIA STICKY in cima al dashboard — «vivi settimana / gioca / avanza» sempre
@@ -47195,8 +47190,10 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const cs=getContinuaState();
         return(
-          <div style={{position:"sticky",top:0,zIndex:8,margin:"-14px -12px 12px",padding:"14px 12px 10px",background:TH.bg,
-            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}}>
+          <div style={(typeof window!=='undefined'&&window.__CPM_NO_CTA23)?{position:"sticky",top:0,zIndex:8,margin:"-14px -12px 12px",padding:"14px 12px 10px",background:TH.bg,
+            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}}>{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
+            sporgeva di 12 px per lato oltre le card, con un'ombra che ne disegnava il bordo: ora ha la stessa larghezza
+            delle card e nessun bordo visibile. Rosso __CPM_NO_CTA23 */}
             {/* [7.971 — collaudo PO dal suo Android, «la home e' ancora incasinata»] LA BARRA APPICCICATA
                 TAGLIAVA LE RIGHE A META'. La striscia opaca era alta 6 px sopra il bottone e larga quanto il
                 testo (margine -2 px): scorrendo, la riga di testo che le passava sotto restava visibile per
@@ -48611,7 +48608,7 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.caption,color:TH.muted}}>{_compLabel} · W.{md.week}</div>
                       </div>
                       {isCur&&(_srv===null||_srv===(md.matchday+"|"+md.week))
-                        ?<Btn onClick={startMatch} v={md.type==="cup"?"gold":"green"} style={{padding:"6px 12px",fontSize:FS.caption,...(_isEuro?{background:"#7c3aed"}:{})}}>{md.type==="cup"?"🏆 Gioca →":_isEuro?`⭐ ${_euroComp}`:"Gioca →"}</Btn>
+                        ?<Btn onClick={startMatch} v="primary" size="sm" style={{flexShrink:0}} /* [23/09 POC — collaudo PO «pulsante gioca e' brutto, fuori standard»] il primario del kit, uguale per campionato, coppa ed Europa: la competizione la dice gia' la riga */>{"Gioca ›"}</Btn>
                         :isCur?<span style={{padding:"5px 10px",fontSize:FS.caption,fontWeight:700,color:TH.muted,background:TH.surface2,border:"1px solid "+TH.divider,borderRadius:RAD.pill,whiteSpace:"nowrap"}}>⏳ Poi</span>:null}{/* [7.184.2] la 2ª gara della settimana è informativa: si gioca dopo la prima */}
                     </div>
                   );
@@ -48842,11 +48839,18 @@ const getThisWeekMatchday=()=>{
           :(i)=>{if(i===0)return"champ";if(i<4)return"cl";if(i<6)return"el";if(i===6)return"conf";if(i>=N-3&&N>6)return"rel";return null;};
         return(
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          <div style={{overflowX:"auto",display:"flex",gap:6,paddingBottom:4}}>
-            {allLeagues.map(lg=>(
-              <button key={lg} onClick={()=>setStandingsLg(lg)} className="cpm-press" style={{flexShrink:0,padding:"5px 12px",borderRadius:RAD.pill,border:"1px solid "+(selLg===lg?TH.primary:TH.cardBorder),background:selLg===lg?TH.primary:TH.card,color:selLg===lg?"#fff":TH.muted,fontSize:FS.caption,cursor:"pointer",fontWeight:selLg===lg?FW.bold:FW.regular,whiteSpace:"nowrap"}}>{lg}{lg===myLeague?" ★":""}</button>
-            ))}
-          </div>
+          {/* [23/09 POC — collaudo PO «i pulsanti di scelta lega sono troppo semplici», «farei piu' un elenco a discesa»]
+              una tendina sola al posto della fila di pillole che scorreva di lato (con la barra grigia): la tua lega
+              in cima, le altre sotto. Nativa: sul telefono apre il selettore del sistema. */}
+          <label style={{display:"flex",alignItems:"center",gap:SP.sm,background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.md,padding:`0 ${SP.md}px`,boxShadow:TH.el1,position:"relative"}}>
+            <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,whiteSpace:"nowrap"}}>Lega</span>
+            <select data-cpm="lega23" value={selLg} onChange={e=>setStandingsLg(e.target.value)} className="cpm-focus"
+              style={{flex:1,minWidth:0,appearance:"none",WebkitAppearance:"none",border:"none",background:"transparent",fontFamily:"inherit",fontSize:FS.bodyLg,fontWeight:FW.bold,color:TH.text,padding:"12px 24px 12px 0",cursor:"pointer",outline:"none"}}>
+              <optgroup label="La tua lega"><option value={myLeague}>{myLeague}</option></optgroup>
+              <optgroup label="Altre leghe">{allLeagues.filter(lg=>lg!==myLeague).map(lg=>(<option key={lg} value={lg}>{lg}</option>))}</optgroup>
+            </select>
+            <span aria-hidden="true" style={{position:"absolute",right:SP.md,pointerEvents:"none",color:TH.muted,fontSize:FS.bodyLg,transform:"rotate(90deg)"}}>›</span>
+          </label>
           <Card>
             <SectionHeader icon="📊" right={selLg===myLeague?<Badge tone="win" size="sm">● Live</Badge>:<span style={{fontSize:FS.caption,color:TH.faint}}>W.{player.week||1}/38</span>}>Classifica {selLg} — S.{season}</SectionHeader>
             <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch"}}>

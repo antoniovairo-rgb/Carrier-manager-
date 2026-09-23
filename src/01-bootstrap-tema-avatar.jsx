@@ -493,6 +493,8 @@ function datiFigurina23(tipo,chiave,nome,ruolo,col,col2){
 const _largTesto23=(t,fs,peso)=>String(t||"").length*fs*((peso||0)>=700?0.64:0.58);/* stima PRUDENTE (Barlow ~0,52-0,58 em): meglio un passo piu' piccolo che un testo che esce */
 const _FONT23="'Barlow','Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif";
 function _passoFS23(t,disp,scala,peso){for(const f of scala){if(_largTesto23(t,f,peso)<=disp)return f;}return null;}
+/* [23/09 POC] cifre in euro leggibili: 1.000 €, 25.000 €, 1,2 mln € */
+function fmtEuro23(v){v=Math.round(+v||0);if(Math.abs(v)>=1e6)return (v/1e6).toLocaleString('it-IT',{maximumFractionDigits:1})+" mln €";return v.toLocaleString('it-IT')+" €";}
 function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,chiave}){
   const D=datiFigurina23(tipo,chiave,nome,ruolo,col,col2);
   const c1=D.col||TH.primary,c2=D.col2||TH.primaryDk||TH.primary;
