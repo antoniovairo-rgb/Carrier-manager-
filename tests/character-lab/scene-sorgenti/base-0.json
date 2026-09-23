@@ -1,0 +1,83 @@
+{
+ "rosso": null,
+ "tot": {
+  "reattiva": 3,
+  "motore-occasione": 4,
+  "si-continua": 1
+ },
+ "esiti": [
+  {
+   "partita": 0,
+   "fine": null,
+   "highlight": 3,
+   "scene": [
+    {
+     "min": 25,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 25,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "🔁 Uno-due sull'esterno — riparti in velocità!"
+    },
+    {
+     "min": 29,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "✋ Anticipa il passaggio filtrante!"
+    },
+    {
+     "min": 33,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "😱 Il portiere è fuori dai pali! Tira da lontano."
+    },
+    {
+     "min": 41,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    }
+   ],
+   "perSrc": {
+    "reattiva": 2,
+    "motore-occasione": 3
+   },
+   "errori": []
+  },
+  {
+   "partita": 1,
+   "fine": "ended",
+   "highlight": 2,
+   "scene": [
+    {
+     "min": 22,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "✋ Anticipa il passaggio filtrante!"
+    },
+    {
+     "min": 22,
+     "src": "si-continua",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 87,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    }
+   ],
+   "perSrc": {
+    "motore-occasione": 1,
+    "si-continua": 1,
+    "reattiva": 1
+   },
+   "errori": []
+  }
+ ]
+}

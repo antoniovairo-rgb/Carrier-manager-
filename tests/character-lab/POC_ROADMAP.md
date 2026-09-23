@@ -2,9 +2,9 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 10:23 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 10:47 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
-**Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
+**Fase corrente:** 4/7 — highlight guidati dal motore unico («brain», direttiva PO 23/09): blocco B del MACRO-PIANO, da B0.
 
 ## Avanzamento 22 settembre 2026, 20:48
 
@@ -817,6 +817,38 @@ i due GLB scaricati sono identici al repo; il file di gioco e' identico salvo lo
 (`/.netlify/scripts/hud`, gia' a verbale). L'indirizzo `CARRIER-MANAGER-AV.html` viene reindirizzato da Netlify a
 `/carrier-manager-av` (URL «pretty»): stesso contenuto. `main` e GitHub Pages non toccati.
 **Non verificato:** il caricamento sul telefono (il Chromium del container non raggiunge siti esterni).
+
+## Avanzamento 23 settembre 2026, 10:47 — DIRETTIVA PO: IL MOTORE UNICO («BRAIN») GUIDA ANCHE GLI HIGHLIGHT
+
+**Parole del PO:** «Il motore deve essere unico e guidare anche gli highlights · il render 3D deve parlare solo con il motore
+unico (brain) · monta tutti i gesti e collegali a brain». Coincide con il blocco **B** di `docs/MACRO-PIANO-2026-09.md`
+(B0 l'highlight nasce dal motore · B4 attori dai ruoli del motore · B3 il motore muove i 22 in scena · B2 l'esito torna nel
+motore): si segue quell'ordine.
+
+**Ricognizione (fatti, con righe nel codice):**
+- negli highlight il motore e' **fermo** (`scena`): l'esito lo decidono `succRate` + dado seedato + `decideExecution` in
+  `handleAction`; il motore riceve solo il resoconto (`registra`) per il tabellino;
+- il 3D **non legge mai il motore**: ~90 prop da React, gran parte da `SITUATIONS`/`deriveHL`/`hlBallSpot`; il render decide
+  ancora da solo direzione del tiro, tuffo, ricevente, rimbalzi (`Math.random`, prossimita', cognome);
+- gli eventi del motore portano gia' l'indice di chi agisce (`chi/da/a/gk`), ma al 3D arriva un cognome o niente;
+- gesti: l'eroe li prende solo dalla scena; i compagni ne ricevono 5 su 17; presa, ricezione, conduzione, rimessa, rinvio,
+  spazzata mai collegati; **i portieri CGTrader non hanno tuffo ne' respinta** (il pacchetto ha 31 clip, senza `gk-dive`/`gk-block`).
+- **Scoperta che cambia il piano:** dal 7.917 fra un highlight e l'altro il 3D e' **sospeso** (`__CPM_SOSP917`: il PO guarda il
+  campo 2D). Il primo passo che avevo scritto — gesti del gioco vivo dal motore — e' quindi **invisibile**; il lavoro vero e' dentro
+  la scena.
+
+**Impianto gia' scritto (nessun effetto visibile oggi, rosso `__CPM_NO_BRAINGESTI`):** coda `brainEvRef` in LiveMatch (ogni evento
+del motore, appena nasce, con numero d'ordine) passata al 3D come prop `brain`; tabella unica **`BRAIN_GESTI`** evento→ruolo→gesto;
+lettore nel ciclo del render che chiede il gesto sul corpo per **indice del motore** (0-20, eroe 21); il vecchio gesto dedotto dalla
+cronaca tace quando parla il brain. Testimone `__CPM_BRAIN23`, sonda `brain-gesti.mjs`. Misurato: la coda riceve ~24 eventi per
+minuto di gioco; il lettore non gira nel gioco vivo perche' il 3D e' sospeso. Si riusa per la scena (B3/B4).
+
+**Base di B0** (sonda nuova `scene-sorgenti.mjs`, registro `__CPM_EV`, 2 partite a 2x): **4 scene su 8 nascono da un evento del
+motore** (`motore-occasione`); le altre 4 da `reattiva` (3) e `si-continua` (1). La partita 0 non e' arrivata al fischio entro il
+tetto della sonda (260 s): base parziale, da allargare.
+
+**Prossimo passo:** B0 — ogni scena porta l'id dell'evento del motore che l'ha generata; le sorgenti `reattiva`, `si-continua`,
+`catena`, `calendario-tick` passano dal motore (che le propone come evento) invece di aprirsi da sole.
 
 ---
 

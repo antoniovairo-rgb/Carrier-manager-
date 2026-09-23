@@ -56,7 +56,7 @@
    rimette il pallone grande e, per non toccare le formule dell'arco, gli ridona la vecchia levitazione
    con un solo scarto dichiarato nel blocco della scala. */
 function ThreeMatchView(props){
-  const {playerX,playerY,homeCol,oppCol,allPlayers,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
+  const {playerX,playerY,homeCol,oppCol,allPlayers,brain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
     stadiumHomeCol,stadiumAwayCol,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
@@ -2306,6 +2306,29 @@ function ThreeMatchView(props){
        Il profilo NON tocca i bersagli ne' i punti d'arrivo (pancia sopra la corda, 0 agli estremi): la
        lezione 7.477 resta — traiettorie SOPRA i bersagli, mai al posto. Le colonne future (contactAt,
        vRef, spin, tgtY, foot) si aggiungono QUI, ognuna col suo consumatore e la sua misura. */
+    /* [23/09 POC — BRAIN_GESTI: L'UNICA TABELLA EVENTO DEL MOTORE -> GESTO. Direttiva PO: «monta tutti i gesti e
+       collegali a brain».] Ogni riga dice, per un evento del motore del possesso, QUALE ruolo dell'evento (campo che
+       porta l'indice del giocatore: chi/da/a/gk) suona QUALE gesto; la prima chiave presente nella mappa dei gesti
+       di quel corpo vince (i portieri CGTrader non hanno `dive`: ripiegano su `catch`). Nessun cognome, nessuna
+       prossimita': l'indice del motore (0-20, eroe 21) e' l'indice di `allPlayers`. Chi aggiunge un gesto al gioco
+       vivo aggiunge QUI la riga. Rosso __CPM_NO_BRAINGESTI: torna il gesto dedotto dalla cronaca. */
+    const BRAIN_GESTI={
+      passaggio:e=>[['da',e.kind==='lancio'?['longPass','pass','kick']:['pass','shortPass','kick']]],
+      cross:e=>[['da',['cross','pass','kick']]],
+      tiro:e=>[['chi',e.intent==='header'?['header']:e.intent==='penalty'?['penalty','kick']:['kick']]],
+      conduzione:e=>[['chi',['dribble']]],
+      ricezione:e=>[['chi',['receive']]],
+      controllo:e=>[['chi',['receive']]],
+      intercetto:e=>[['chi',['receive','tackle']]],
+      contrasto:e=>[['chi',['tackle']]],
+      murato:e=>[['chi',['tackle']]],
+      spazzata:e=>[['chi',['kick']]],
+      recupero:e=>[['chi',['tackle']]],
+      parata:e=>[['gk',['dive','catch','block']]],
+      presa:e=>[['gk',['catch']]],
+      battuta:e=>[['chi',e.kind==='throw'?['throwin','lift']:e.kind==='pen'?['penalty','kick']:e.kind==='corner'?['cross','kick']:['kick']]],
+      calcio_inizio:e=>[['chi',['pass','kick']]],
+    };
     const GESTI={
       shot:{base:{clip:'kick',prof:'tesa'},shot_power:{clip:'kick',prof:'tesa'},shot_first_time:{clip:'kick',prof:'tesa'},
         shot_placed:{clip:'kick',prof:null},shot_one_on_one:{clip:'kick',prof:null},shot_curled:{clip:'kick',prof:null},
@@ -2811,7 +2834,29 @@ function ThreeMatchView(props){
         m673.rotation.y=Math.atan2(_gx673-m673.position.x,0-m673.position.z);
         if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{(window.__CPM_FACE673=window.__CPM_FACE673||[]).push({g:nome673,x:+m673.position.x.toFixed(1),ry:+m673.rotation.y.toFixed(2)});}catch(_e){}}
       }catch(_e673){}};
-      if(sr.current._mateFx){sr.current._mateFx.t-=dt;if(sr.current._mateFx.t<=0)sr.current._mateFx=null;}/* ⚠️ `dt` e non `aDt`: qui aDt non è ancora dichiarato (TDZ) */
+      if(sr.current._mateFx){sr.current._mateFx.t-=dt;if(sr.current._mateFx.t<=0)sr.current._mateFx=null;}
+      {/* [23/09 POC — LETTORE DEL BRAIN] richieste di gesto PER CORPO (`mesh._brainG`), vita 0,6 s; nel solo gioco vivo:
+          negli highlight il gesto lo decide ancora la scena (fase 3 della roadmap). */
+       const _BR=propsRef.current&&propsRef.current.brain&&propsRef.current.brain.current;
+       const _on23=!!_BR&&!(typeof window!=='undefined'&&window.__CPM_NO_BRAINGESTI);
+       sr.current._brainOn=_on23;if(typeof window!=='undefined'&&window.__CPM_BRAIN_REC){window.__CPM_BRAINFR=(window.__CPM_BRAINFR|0)+1;window.__CPM_BRAINBR=_BR?(_BR.seq|0):-1;}
+       const _rq=sr.current._brainReq||(sr.current._brainReq=new Set());
+       _rq.forEach(m=>{if(m._brainG){m._brainG.t-=dt;if(m._brainG.t<=0){m._brainG=null;_rq.delete(m);}}else _rq.delete(m);});
+       if(_on23){
+         if(sr.current._brainSeq==null)sr.current._brainSeq=_BR.seq|0;/* al montaggio non si rigioca il passato */
+         const _ph23=propsRef.current.matchPhase;
+         for(const e of _BR.coda){if(!e||e._seq<=sr.current._brainSeq)continue;sr.current._brainSeq=e._seq;
+           const _W=(typeof window!=='undefined'&&window.__CPM_BRAIN_REC)?(window.__CPM_BRAIN23=window.__CPM_BRAIN23||{ev:0,perTipo:{},richieste:0,senzaCorpo:0,fuoriGioco:0,log:[]}):null;
+           if(_W){_W.ev++;_W.perTipo[e.t]=(_W.perTipo[e.t]|0)+1;}
+           if(_ph23!=='playing'){if(_W)_W.fuoriGioco++;continue;}
+           const _r=BRAIN_GESTI[e.t];if(!_r)continue;
+           for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx==null)continue;
+             const m=(idx===21)?hero:(sr.current.players&&sr.current.players[idx]&&sr.current.players[idx].mesh);
+             if(!m){if(_W)_W.senzaCorpo++;continue;}
+             m._brainG={nomi,t:0.6,seq:e._seq,idx,ev:e.t};_rq.add(m);
+             if(_W){_W.richieste++;if(_W.log.length<400)_W.log.push({seq:e._seq,ev:e.t,idx,nomi:nomi.join('|')});}}}
+       }
+      }/* ⚠️ `dt` e non `aDt`: qui aDt non è ancora dichiarato (TDZ) */
       // Sprint 3D-8a: slow-motion sull'esito — bullet-time sul tiro (0.28x) poi ritorno a 1x in ~1.6s.
       // Solo le animazioni rallentano (aDt/ak); la camera resta in tempo reale → movimento fluido.
       const isResult=P.matchPhase==="hl_result";
@@ -4918,7 +4963,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                if((_ba.side==='away')!==(src.team==='away'))return;
                const _m=pp.mesh;if(!_m)return;const _d=Math.hypot(_m.position.x-_fx511,_m.position.z-_fz511);
                if(_d<_bd511){_bd511=_d;_bm511=_m;}});
-             if(_bm511&&(_own546||_bd511<14)){sr.current._mateFx={mesh:_bm511,name:_ba.type==='tackle'?'tackle':'kick',t:0.55};
+             if(_bm511&&(_own546||_bd511<14)&&!sr.current._brainOn){sr.current._mateFx={mesh:_bm511,name:_ba.type==='tackle'?'tackle':'kick',t:0.55};/* [23/09 POC] con il brain acceso il gesto del gioco vivo NON si deduce dalla cronaca */
                if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_BGACT511=window.__CPM_BGACT511||[]).push({ty:_ba.type,d:+_bd511.toFixed(1),side:_ba.side||null,nm:_own546?1:0});}catch(_e){}}}}
            /* [7.523.0 — IL PASSAGGIO MIRA A UN RICEVENTE REALE] L'arco volava verso un punto di ZONA vuoto:
               ora mira alla mesh di movimento del lato dichiarato piu' vicina alla destinazione (tetto 18u),
@@ -9163,7 +9208,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           /* [7.209.0] richiesta di gesto PER-MESH: chi conclude un'azione (il compagno che finalizza l'assist,
              chi incorna il cross) chiede il proprio calcio/colpo di testa tramite `sr.current._mateFx`. */
           const _mfx=sr.current._mateFx;
-          const _mateWant=(_mfx&&_mfx.mesh===_a.proc&&_mfx.t>0)?_mfx.name:null;
+          const _bg23=(sr.current._brainOn&&_a.proc&&_a.proc._brainG&&_a.gestures)?_a.proc._brainG:null;
+          const _brainWant=_bg23?(_bg23.nomi.find(n=>_a.gestures[n])||null):null;/* [23/09 POC] il primo gesto della riga che QUESTO corpo possiede */
+          const _mateWant=(_mfx&&_mfx.mesh===_a.proc&&_mfx.t>0)?_mfx.name:_brainWant;
           /* [7.516.0 R3/1 — IL RILASCIO NON DIPENDE DALLA CONDIZIONE D'INGRESSO: audit critica «il compagno
              resta deformato per il resto della partita»] Il decadimento del peso del gesto (righe _gw piu'
              sotto) vive DENTRO questo ramo: quando il timer _mateFx scadeva, il compagno non entrava piu' e
@@ -9172,12 +9219,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              ancora un gesto montato o peso residuo (_gName o _gw>0.02): dentro, _want=null lo rilascia e il
              peso decade fino a zero. __CPM_NO516 = rosso (ingresso solo con _mateWant, orfani di nuovo
              possibili). Testimone __CPM_ORF516: conta gli avatar fuori dal ramo con peso >0,5. */
-          const _ent516=_a.gestures&&(_ai===0||_a._isGk||_mateWant||(!(typeof window!=='undefined'&&window.__CPM_NO516)&&(_a._gName||(_a._gw||0)>0.02)));
+          const _ent516=_a.gestures&&(_ai===0||_a._isGk||_mateWant||_brainWant||(!(typeof window!=='undefined'&&window.__CPM_NO516)&&(_a._gName||(_a._gw||0)>0.02)));
           if(typeof window!=='undefined'&&window.__CPM_ORF516!==undefined&&_a.gestures&&!_ent516&&_a._gAct&&_a._gAct.weight>0.5){try{window.__CPM_ORF516.push(_ai);}catch(_e){}}
           if(_ent516){// EROE, PORTIERE o COMPAGNO che conclude (o in RILASCIO): gesto one-shot in crossfade con la locomozione
             // [6.76.0 LMV-A1] il gesto GK va SOLO al portiere che sta davvero reagendo (_a.proc===oppMesh):
             //   prima _gkWant era globale → su ogni parata/presa si tuffavano ENTRAMBI i portieri (anche quello a 100m).
-            const _g=(_ai===0)?((sr.current._cerLift===1||sr.current._celLift371===1)?'lift':_gName):(_a._isGk?((_a.proc===oppMesh&&!(_gkWant==='dive'&&oppMesh&&oppMesh._fin855))?_gkWant:null):_mateWant);let _want=(_g&&_a.gestures[_g])?_g:null;{const _pr=sr.current._presaRev;if(!_want&&_pr&&_a._isGk&&_a.proc===_pr.proc&&isResult&&_pr.sit===String((propsRef.current&&propsRef.current.hlSitKey)||'')&&_a.gestures.catch&&(!_pr.mounted||(_a._gName==='catch'&&_a._gAct&&_a._gAct.time<_a._gAct.getClip().duration-0.03)))_want='catch';}/* [22/09 POC] canale della presa (review): UNA esecuzione per scena — misurato, senza `mounted` la clip ripartiva a ogni fine (codice 000) *//* [7.24.1] cerimonia: posa alzata di coppa (throwin congelata) · [7.24.2] ===1: nel giro di campo (2) corre e le braccia le rialza l'override quaternioni */
+            const _g=(_ai===0)?((sr.current._cerLift===1||sr.current._celLift371===1)?'lift':(_gName||_brainWant)):(_a._isGk?(((_a.proc===oppMesh&&!(_gkWant==='dive'&&oppMesh&&oppMesh._fin855))?_gkWant:null)||_brainWant):_mateWant);/* [23/09 POC] eroe e portieri: se la scena non chiede nulla, parla il brain */let _want=(_g&&_a.gestures[_g])?_g:null;{const _pr=sr.current._presaRev;if(!_want&&_pr&&_a._isGk&&_a.proc===_pr.proc&&isResult&&_pr.sit===String((propsRef.current&&propsRef.current.hlSitKey)||'')&&_a.gestures.catch&&(!_pr.mounted||(_a._gName==='catch'&&_a._gAct&&_a._gAct.time<_a._gAct.getClip().duration-0.03)))_want='catch';}/* [22/09 POC] canale della presa (review): UNA esecuzione per scena — misurato, senza `mounted` la clip ripartiva a ogni fine (codice 000) *//* [7.24.1] cerimonia: posa alzata di coppa (throwin congelata) · [7.24.2] ===1: nel giro di campo (2) corre e le braccia le rialza l'override quaternioni */
+            if(_bg23&&_want&&_want===_brainWant&&_a._gName!==_want&&_a._bgSeq23!==_bg23.seq&&typeof window!=='undefined'&&window.__CPM_BRAIN_REC){try{_a._bgSeq23=_bg23.seq;const _W=window.__CPM_BRAIN23;if(_W){_W.montati=(_W.montati|0)+1;const k=(_ai===0?'eroe':_a._isGk?'portiere':'movimento')+':'+_want;(_W.perGesto=_W.perGesto||{})[k]=(_W.perGesto[k]|0)+1;if(_a.proc&&_a.proc._brainG&&_a.proc._brainG.idx!=null){const _pi=(sr.current.players||[]).findIndex(pp=>pp&&pp.mesh===_a.proc);const _ok=(_ai===0)?_a.proc._brainG.idx===21:_pi===_a.proc._brainG.idx;_W.attoreGiusto=(_W.attoreGiusto|0)+(_ok?1:0);}}}catch(_eW){}}/* [23/09 POC testimone, solo sonda] montaggio di un gesto chiesto dal brain, e se il corpo e' l'indice dichiarato */
+            if(_want&&_a._gName!==_want&&_a._anySeq23!==_want+'|'+Math.floor(Date.now()/500)&&!(_bg23&&_want===_brainWant)&&typeof window!=='undefined'&&window.__CPM_BRAIN_REC&&propsRef.current&&propsRef.current.matchPhase==='playing'){try{_a._anySeq23=_want+'|'+Math.floor(Date.now()/500);const _W=(window.__CPM_BRAIN23=window.__CPM_BRAIN23||{ev:0,perTipo:{},richieste:0,senzaCorpo:0,fuoriGioco:0,log:[]});_W.altri=(_W.altri|0)+1;const k=(_ai===0?'eroe':_a._isGk?'portiere':'movimento')+':'+_want;(_W.perGestoAltri=_W.perGestoAltri||{})[k]=(_W.perGestoAltri[k]|0)+1;}catch(_eW2){}}/* [23/09 testimone] montaggi nel gioco vivo NON chiesti dal brain (cronaca, scena) */
             if(_want&&_want!=='tackle'&&_a._gName===_want&&_a._gAct&&_a._gAct.getClip&&_a._gAct.time>=_a._gAct.getClip().duration-0.03)_want=null;
             /* [7.396.0 collaudo PO codice 000, tre segnalazioni: «intervento in ritardo, alza in maniera
                scoordinata due volte la gamba» · «sembra che fa una piroetta con la gamba alzata»]
@@ -9194,7 +9243,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                il rilascio della clip. Quindi la guardia non e' «dopo la fine niente di nuovo»: e' «un
                montaggio per istanza d'azione», per il solo EROE — i compagni hanno catene legittime a due
                gesti (ricevi→tira) che vivono su azioni diverse e non c'entrano col codice 000. */
-            {const _gk396=(actType||'')+'|'+((propsRef.current&&propsRef.current.hlSitKey)||'');
+            {const _gk396=(actType||'')+'|'+((propsRef.current&&propsRef.current.hlSitKey)||'')+'|'+((!actType&&_bg23)?_bg23.seq:'');/* [23/09 POC] nel gioco vivo ogni evento del brain e' un'azione nuova */
              /* [7.582.0 — CONTARE I GESTI DELL'EROE PER SCENA, e farlo contare AL GIOCO.
                 Collaudo PO (appunti 7.578, SIT #45): «codice 000 — gesto scoordinato». La guardia del
                 7.396 concede UN montaggio per istanza d'azione, ma la chiave include `actType`: quando

@@ -1,0 +1,35 @@
+{
+ "sintesi": {
+  "modo": "CH38",
+  "rosso": null,
+  "minuto": null,
+  "fasi": {
+   "playing": 33,
+   "hl_intro": 8,
+   "hl_move": 186,
+   "hl_choose": 1,
+   "hl_result": 1
+  },
+  "highlight": 1,
+  "eventiLetti": 64,
+  "perTipo": {
+   "fuori": 1,
+   "rinvio": 1,
+   "battuta": 1,
+   "passaggio": 2,
+   "ricezione": 2,
+   "controllo": 29,
+   "occasione_eroe": 28
+  },
+  "richieste": 0,
+  "fuoriGioco": 64,
+  "senzaCorpo": 0,
+  "montatiBrain": 0,
+  "attoreGiusto": 0,
+  "perGesto": {},
+  "montatiAltri": 0,
+  "perGestoAltri": {},
+  "errori": []
+ },
+ "log": []
+}
