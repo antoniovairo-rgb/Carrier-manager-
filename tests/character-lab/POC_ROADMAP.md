@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 10:04 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 10:15 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -740,6 +740,33 @@ La simulazione e' la fonte di verita' (§20): il motore del possesso decide i go
 
 **Non verificato:** partite intere al 90' in serie, telefono. I guardiani del motore (`match-sequence`, `event-ledger`) non sono
 stati rigiocati su questo ramo.
+
+## Avanzamento 23 settembre 2026, 10:15 — TAGLIA DELL'EROE NELLA REVIEW CGTRADER: 0,18 (decisione PO)
+
+**Contesto dal codice:** in produzione la taglia e' **0,12**, scelta dal PO col collaudo del 01/09 (7.713, «zoom in minore»).
+La decisione «0,18» vale quindi **solo nella review CGTrader** (`window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED`); la partita normale
+resta a 0,12 per costruzione. Rosso `__CPM_NO_TAGLIA18`. Il numero e' la taglia CHIESTA, come nel 7.505: il percorso reale ne
+rende meno (blend `camHL` e lerp a valle).
+
+**Misura** (`gesto-eroe-review.mjs`, nuovi campi `taglia` e `fuoriQuadroHL`; altezza apparente dell'eroe, frazione del quadro):
+
+| Scena | Verde 0,18 | Rosso 0,12 |
+| --- | --- | --- |
+| Dribbling, mediana su 3 corse | 0,126 · 0,176 · 0,083 | 0,069 · 0,061 · 0,118 |
+| Tiro, fase di scelta | 0,080 | 0,069 |
+| Tiro, durante il gesto | 0,082–0,111 | 0,071–0,088 |
+| Tiro, dopo il gol (3 corse su 3) | **0,045** | 0,11 |
+| Eroe fuori quadro negli highlight | 0–3% | 0% |
+
+**Il tiro dopo il gol va al contrario, e il perche' e' misurato** (testimone nuovo `__CPM_F6LOG`, solo sonda): la regia di base
+tiene la camera a **~44 u** dall'eroe e la passata della taglia fa tutto l'avvicinamento (15–17 u). Quando la palla si allontana
+oltre 10 u il soggetto passa alla PALLA (regola 7.520) e la passata e' esente per regola 7.505: la camera torna di colpo a 44 u.
+Nel verde la palla arriva a 10,1 u dall'eroe, nel rosso si ferma a 9,4: e' un confine sfiorato, non un effetto voluto della
+taglia. Lo stesso salto a 44 u esiste anche in produzione ogni volta che il soggetto passa alla palla. **Non corretto qui**: e'
+una regola di regia del gioco principale; a verbale per il PO (vedi la foto «dopo il gol» nel banco).
+**Nella fase di scelta** la taglia rende poco perche' il blend e' 0,70 (decisione PO 7.729, «riduci lo zoom in»): non toccato.
+
+**Non verificato:** il telefono; la misura headless e' rumorosa (dribbling 0,083–0,176 sullo stesso braccio).
 
 ---
 

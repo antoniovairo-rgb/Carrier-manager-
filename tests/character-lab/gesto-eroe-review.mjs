@@ -31,6 +31,7 @@ page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
 
 try {
   if (ROSSO) await page.addInitScript(n => { window[n] = true; }, ROSSO);
+  if (process.env.CPM_F6) await page.addInitScript(() => { window.__CPM_F6REC = 1; });
   await installCdnRoutes(page);
   await openMatch(page, server.address().port, {
     skipLoadAll: true, name: 'Gesto Review',
@@ -76,6 +77,7 @@ try {
   }
 
   const rec = await page.evaluate(() => window.__REC_EROE || []);
+  if (process.env.CPM_F6) { const f6 = await page.evaluate(() => window.__CPM_F6LOG || []); fs.mkdirSync(out, { recursive: true }); fs.writeFileSync(path.join(out, 'f6.json'), JSON.stringify(f6)); }
   const hero = f => ((f.a && f.a.actors) || []).find(x => x.hero) || {};
   const conGesto = frames.filter(f => hero(f).gesture);
   const piede = h => Math.min(h.footBallL ?? 99, h.footBallR ?? 99);
@@ -101,6 +103,8 @@ try {
     campioniConGesto: conGesto.length, clip: [...new Set(conGesto.map(f => hero(f).clip))],
     contatto: h ? { i: contatto.i, gesto: h.gesture, clipTime: h.clipTime, clipDur: h.clipDur, piedeSx: h.footBallL, piedeDx: h.footBallR, facingGoalDeg: h.facingGoalDeg, inFrame: h.inFrame, ballInFrame: h.ballInFrame, height: h.height } : null,
     eroeNelQuadro: +(frames.filter(f => hero(f).inFrame).length / Math.max(1, frames.filter(f => hero(f).i !== undefined).length)).toFixed(2),
+    taglia: (() => { const v = frames.filter(f => /^hl_/.test(f.phase || '') && Number.isFinite(hero(f).height)).map(f => hero(f).height).sort((a, b) => a - b); const q = k => v.length ? +v[Math.min(v.length - 1, Math.floor(k * v.length))].toFixed(3) : null; return { n: v.length, q10: q(0.1), mediana: q(0.5), q90: q(0.9) }; })(),
+    fuoriQuadroHL: (() => { const v = frames.filter(f => /^hl_/.test(f.phase || '') && hero(f).i !== undefined); return v.length ? +(v.filter(f => !hero(f).inFrame).length / v.length).toFixed(2) : null; })(),
     tpose: tpose.slice(0, 10), tposeCampioni: tpose.length,
     contestoConGesto: contesto.slice(0, 10),
     corpiDisegnati: [...new Set(frames.map(f => ((f.a && f.a.actors) || []).length))],
