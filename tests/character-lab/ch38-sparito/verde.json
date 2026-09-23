@@ -1,10 +1,10 @@
 {
  "rosso": "",
  "campioni": {
-  "ik_foot_root|mesh_rep_0_ori_repair_quad001|HyperLegRight": 5,
   "ik_foot_root|mesh_rep_0_ori_repair_quad|HyperLegLeft": 5,
   "ik_foot_root|part_00000001001|Material.001": 5,
   "ik_foot_root|part_00000001002|Material.001": 5,
+  "ik_foot_root|mesh_rep_0_ori_repair_quad001|HyperLegRight": 5,
   "ik_foot_root|mesh_rep_0_ori_repair_quad002|HyperShirt": 5,
   "ik_foot_root|mesh_rep_0_ori_repair_quad005|HyperShorts": 5,
   "ik_foot_root|part_00000001005|KorwardNativeHair_brown": 4,
@@ -52,7 +52,8 @@
   "regular-anim-missed-chance.glb": 1,
   "cgtrader-review-lod0-kit-adapter.glb": 1,
   "cgtrader-review-lod1-kit-adapter.glb": 1,
-  "cgtrader-review-lod2-kit-adapter.glb": 1
+  "cgtrader-review-lod2-kit-adapter.glb": 1,
+  "cgtrader-clip-mixamo.glb": 1
  },
  "errori": []
 }
