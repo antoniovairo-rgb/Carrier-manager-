@@ -1,0 +1,11 @@
+{
+ "rosso": null,
+ "play": true,
+ "aperta": true,
+ "pre": {
+  "standard": true,
+  "larghezza": 412
+ },
+ "scout": true,
+ "errori": []
+}

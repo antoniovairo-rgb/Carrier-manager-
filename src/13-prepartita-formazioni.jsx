@@ -64,6 +64,58 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
   const dc=report.difficulty>72?TH.danger:report.difficulty>48?TH.warning:TH.success;
   const diffLabel=report.difficulty>72?"🔴 Molto difficile":report.difficulty>55?"🟡 Difficile":report.difficulty>38?"🟢 Abbordabile":"🔵 Accessibile";
   const prestige=opponent?.p||65;
+  /* [23/09 POC — collaudo PO «migliora standardizza ed uniforma la grafica» sull'analisi pre-partita]
+     Una Card chiara come le altre al posto della testata blu notte; il numero della difficolta' coi token
+     semantici; punti deboli/forti con l'intestazione di sezione del kit; il consiglio del mister in un
+     riquadro neutro; l'azione e' il primario del kit. Rosso __CPM_NO_SCOUT23: la schermata di prima. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_SCOUT23)){
+    const tx=report.difficulty>72?TH.txRed:report.difficulty>55?TH.txAmber:TH.txGreen;/* stesso taglio dell etichetta */
+    const lab=report.difficulty>72?"Molto difficile":report.difficulty>55?"Difficile":report.difficulty>38?"Abbordabile":"Accessibile";
+    const Riga=({t,c})=>(<div style={{display:"flex",gap:SP.sm,alignItems:"flex-start",padding:"6px 0"}}>
+      <span style={{width:6,height:6,borderRadius:"50%",background:c,marginTop:7,flexShrink:0}}/>
+      <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{t}</div></div>);
+    return(
+    <div data-cpm="scout23" style={{display:"flex",flexDirection:"column",gap:SP.md,marginBottom:SP.sm}}>
+      <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
+          <div style={{flexShrink:0}}><TeamBadge team={opponent} size={44}/></div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Analisi pre-partita</div>
+            <div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opponent?.n||"Avversario"}</div>
+            <div style={{fontSize:FS.small,color:TH.muted}}>{opponent?.lg||""}</div>
+          </div>
+          <div style={{textAlign:"right",flexShrink:0}}>
+            <div className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:tx,lineHeight:1}}>{report.difficulty}</div>
+            <div style={{fontSize:FS.caption,color:TH.muted}}>difficoltà</div>
+          </div>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:SP.sm,marginTop:SP.md}}>
+          <div style={{flex:1,height:6,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",width:`${report.difficulty}%`,background:tx,borderRadius:RAD.pill}}/></div>
+          <span style={{fontSize:FS.small,fontWeight:FW.bold,color:tx}}>{lab}</span>
+        </div>
+      </Card>
+      {report.memNote&&(<Card bg={TH.bgAmber} border={TH.bdAmber} shadow={false} style={{padding:`${SP.sm}px ${SP.lg}px`}}>
+        <div style={{fontSize:FS.small,color:TH.txAmber,fontWeight:FW.semibold,lineHeight:1.5}}>{report.memNote}</div></Card>)}
+      {report.h2h&&(<Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <SectionHeader>Precedenti</SectionHeader>
+        <div style={{display:"flex",gap:SP.sm}}>{[["Vinte",report.h2h.w,TH.txGreen],["Pari",report.h2h.d,TH.txAmber],["Perse",report.h2h.l,TH.txRed]].map(([l,v,c])=>(
+          <div key={l} style={{flex:1,textAlign:"center",background:TH.surface2,borderRadius:RAD.md,padding:"8px 0"}}>
+            <div className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:c}}>{v}</div>
+            <div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}</div>
+      </Card>)}
+      <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <SectionHeader>Da sfruttare</SectionHeader>
+        {(report.weaknesses||[]).map((w,i)=><Riga key={i} t={w} c={TH.success}/>)}
+        <SectionHeader style={{marginTop:SP.md}}>Da neutralizzare</SectionHeader>
+        {(report.strengths||[]).map((w,i)=><Riga key={i} t={w} c={TH.warning}/>)}
+      </Card>
+      <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <SectionHeader>Il consiglio del mister</SectionHeader>
+        <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6}}>«{report.recommendation}»</div>
+      </Card>
+      {onClose&&<Btn onClick={onClose} v="primary" size="lg" fw>Entra in campo</Btn>}
+    </div>);
+  }
   return(
     <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:8}}>
       {/* Header */}
@@ -422,6 +474,62 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
   const _cs99=_compId99==="NAT"?{..._cs99base,label:(leagueName==="Nazionale"?"Competizione Nazionale":leagueName)}:_cs99base;/* [6.47.0] banner nazionale con la competizione SPECIFICA (Europeo/Mondiale/Coppa delle Nazioni) invece del generico */
   const isBigMatch=matchWeight>=6;
   const isEpic=matchWeight>=8;
+  /* [23/09 POC — collaudo PO «migliora standardizza ed uniforma la grafica» sul pre-partita]
+     Una sola Card come testata (competizione in una pillola col suo colore, giornata, i due stemmi, stadio,
+     spettatori, meteo, orario), l'analisi del mister con l'intestazione di sezione del kit, e i bottoni in
+     gerarchia: Formazioni primario, poi secondari. Via la banda-bandiera a tutta larghezza e i box con
+     gradiente. Rosso __CPM_NO_PREMATCH23: la schermata di prima. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_PREMATCH23)){
+    const Squadra=({t,lato})=>(<div style={{textAlign:"center",minWidth:0}}>
+      <div style={{display:"flex",justifyContent:"center"}}><TeamBadge team={t} size={56}/></div>
+      <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.xs,lineHeight:1.25}}>{t?.name||t?.n}</div>
+      <div style={{fontSize:FS.caption,color:TH.muted}}>{lato==="home"?"Casa":"Ospite"}</div>
+      {exClub&&exClub.side===lato&&<div style={{marginTop:4}}><Badge tone="warn" size="sm">Ex squadra</Badge></div>}
+      {lato==="away"&&(()=>{const p=getClubPersona(t);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px",marginTop:4,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
+    </div>);
+    return(
+    <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:SP.md}}>
+      <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,flexWrap:"wrap"}}>
+          <span style={{display:"inline-flex",alignItems:"center",gap:6,background:_cs99.bg,color:"#fff",borderRadius:RAD.pill,padding:"4px 12px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.35)"}}>{_cs99.e} {_cs99.label}</span>
+          {roundLabel&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{roundLabel}</span>}
+        </div>
+        {isBigMatch&&<div style={{marginTop:SP.sm}}><Badge tone={isEpic?"info":"loss"} size="sm">{isEpic?"Partita epica":"Big match"}</Badge>{matchContext&&<span style={{fontSize:FS.small,color:TH.muted,marginLeft:8}}>{matchContext}</span>}</div>}
+        {exClub&&<div style={{marginTop:SP.sm,fontSize:FS.small,color:TH.txAmber,fontWeight:FW.semibold}}>Il ritorno da ex · {exClub.line}</div>}
+        <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"start",gap:SP.md,margin:`${SP.lg}px 0 ${SP.md}px`}}>
+          <Squadra t={homeTeam} lato="home"/>
+          <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.faint,marginTop:18}}>VS</div>
+          <Squadra t={awayTeam} lato="away"/>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:SP.sm,borderTop:"1px solid "+TH.divider,paddingTop:SP.md}}>
+          {[{l:"Stadio",v:stadium||"–"},{l:"Spettatori",v:(attendance||0).toLocaleString("it-IT")},{l:"Meteo",v:weather},{l:"Orario",v:time}].map(x=>(
+            <div key={x.l} style={{minWidth:0}}>
+              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>{x.l}</div>
+              <div className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.v}</div>
+            </div>))}
+        </div>
+      </Card>
+      {scoutReport&&scoutReport.exploits&&(
+        <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
+          <SectionHeader>Il mister · come vincerla</SectionHeader>
+          {scoutReport.exploits.map((e,i)=>(
+            <div key={i} style={{display:"flex",gap:SP.sm,alignItems:"flex-start",padding:"5px 0"}}>
+              <span style={{width:6,height:6,borderRadius:"50%",background:TH.success,marginTop:7,flexShrink:0}}/>
+              <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}><b>{e.fam}</b> — {e.tip}</div>
+            </div>))}
+          {scoutReport.solid&&<div style={{marginTop:SP.xs,display:"flex",gap:SP.sm,alignItems:"flex-start"}}>
+            <span style={{width:6,height:6,borderRadius:"50%",background:TH.warning,marginTop:7,flexShrink:0}}/>
+            <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.5}}>{scoutReport.solid.tip[0].toUpperCase()+scoutReport.solid.tip.slice(1)}</div></div>}
+        </Card>)}
+      <Btn onClick={onContinue} v="primary" size="lg" fw>Formazioni</Btn>
+      <div style={{display:"flex",gap:SP.sm}}>
+        {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw>{scoutLoading?"Analisi in corso…":"Analisi completa"}</Btn>}
+        <Btn onClick={onSkip} v="secondary" fw>Entra subito</Btn>
+      </div>
+      {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw>Simula la partita</Btn>}
+      {onBack&&<Btn onClick={onBack} v="ghost" fw>Torna alla home</Btn>}
+    </div>);
+  }
   return(
     <div style={{width:"100%"}}>
       {/* Sprint 99: competition banner */}
