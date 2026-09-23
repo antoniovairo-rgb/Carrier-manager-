@@ -40,9 +40,23 @@ SOGLIA_MED, SOGLIA_MAX = 10.0, 30.0
 def riadatta(T, src_path, nome):
     prima = set(bpy.data.objects.keys())
     azioni_prima = set(bpy.data.actions.keys())
-    bpy.ops.import_scene.gltf(filepath=src_path)
+    if src_path.lower().endswith('.fbx'):
+        bpy.ops.import_scene.fbx(filepath=src_path)
+    else:
+        bpy.ops.import_scene.gltf(filepath=src_path)
     nuovi = [bpy.data.objects[k] for k in bpy.data.objects.keys() if k not in prima]
     E = {o.name.split(':')[-1]: o for o in nuovi if o.type == 'EMPTY'}
+    if not E:
+        # [23/09] sorgente FBX Mixamo: un'ARMATURA (ossa `mixamorigN:Hips`) invece dei nodi vuoti del GLB. Ogni osso diventa un
+        # «nodo» con matrix_world letta dal vivo, cosi' il resto del riadattamento non cambia.
+        arm = [o for o in nuovi if o.type == 'ARMATURE']
+        if arm:
+            A = arm[0]
+            class _Nodo:
+                def __init__(s, pb): s.pb = pb
+                @property
+                def matrix_world(s): return A.matrix_world @ s.pb.matrix
+            E = {pb.name.split(':')[-1]: _Nodo(pb) for pb in A.pose.bones}
     manca = [k for k in MAPPA if k not in E]
     if manca:
         raise SystemExit(f'sorgente senza nodi {manca}')
@@ -155,7 +169,20 @@ def main():
     T = [o for o in bpy.context.scene.objects if o.type == 'ARMATURE'][0]
     base = list(bpy.data.actions)
     n_prima = len(base)
-    nuove = [riadatta(T, p, n) for p, n in coppie]
+    import os
+    nuove, rifiutate = [], []
+    for p, n in coppie:
+        try:
+            nuove.append(riadatta(T, p, n))
+        except SystemExit as e:
+            # [23/09] in lotto (CPM_SALTA_RIFIUTATE) una clip che non passa il cancello si scarta e si prosegue
+            if not os.environ.get('CPM_SALTA_RIFIUTATE'):
+                raise
+            print(f'SCARTATA {n}: {e}'); rifiutate.append(n)
+            for k in [k for k in bpy.data.actions.keys() if k == n]:
+                bpy.data.actions.remove(bpy.data.actions[k])
+            for o in [o for o in bpy.context.scene.objects if o.type == 'ARMATURE' and o != T]:
+                bpy.data.objects.remove(o, do_unlink=True)
     # ogni azione deve arrivare nell'export: una traccia NLA per azione
     T.animation_data.action = None
     for ac in base + nuove:
@@ -163,9 +190,21 @@ def main():
             tr = T.animation_data.nla_tracks.new(); tr.name = ac.name
             try: tr.strips.new(ac.name, int(ac.frame_range[0]), ac)
             except Exception as e: print('NLA', ac.name, e)
+    import os
+    if os.environ.get('CPM_SOLO_NUOVE'):
+        # [23/09] file di SOLE clip nuove: niente mesh, solo lo scheletro e le azioni riadattate (condiviso dai tre LOD, i binari
+        # delle tracce si legano per nome d'osso)
+        for o in [o for o in bpy.context.scene.objects if o.type != 'ARMATURE']:
+            bpy.data.objects.remove(o, do_unlink=True)
+        for tr in list(T.animation_data.nla_tracks):
+            if tr.strips and tr.strips[0].action not in nuove:
+                T.animation_data.nla_tracks.remove(tr)
+    if os.environ.get('CPM_FPS'):
+        bpy.context.scene.render.fps = int(os.environ['CPM_FPS']); bpy.context.scene.render.fps_base = 1.0
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.export_scene.gltf(filepath=out, export_format='GLB', export_animations=True, export_animation_mode='NLA_TRACKS',
-                              export_skins=True, export_yup=True, export_materials='EXPORT', export_image_format='AUTO')
+                              export_skins=True, export_yup=True, export_materials='EXPORT', export_image_format='AUTO',
+                              **({'export_optimize_animation_size': True, 'export_optimize_animation_keep_anim_armature': False} if os.environ.get('CPM_SOLO_NUOVE') else {}))
     print(f'ESPORTATO {out} · azioni {n_prima} + {len(nuove)}')
 
 

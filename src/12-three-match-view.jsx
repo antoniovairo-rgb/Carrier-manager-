@@ -24,6 +24,21 @@
  * ========================================================================
  */
 /* CMAV-SRC-HEADER-END */
+/* [23/09 POC] scelta dell'esecuzione di un gesto fra le varianti (vedi _VAR23 accanto a _mkGestures): hash della scena, mai Math.random */
+/* lato del corpo verso cui va la clip (+1 sinistra del giocatore, -1 destra), misurato sul bacino (provino-clip) */
+const _LATO23={'gk-dive':1,'mx-goalkeeper-diving-save-2':-1,'gk-block':1,'mx-goalkeeper-body-block-2':-1,'mx-goalkeeper-body-block-3':1};
+function _scegliGesto23(a,want,ai,chiave,lbl,lato){
+  const _nm=x=>((x&&x.getClip&&x.getClip())||{}).name,W=(typeof window!=='undefined')?(window.__CPM_VAR23=window.__CPM_VAR23||{}):{};
+  const _segna=(act,r)=>{try{const n=r||_nm(act)||'?';(W[want]=W[want]||{})[n]=(W[want][n]||0)+1;
+    if(lato&&(want==='dive'||want==='block')){const T=(window.__CPM_TUFFO23=window.__CPM_TUFFO23||{giusto:0,sbagliato:0,ignoto:0});const l=_LATO23[_nm(act)];if(!l)T.ignoto++;else if(l===lato)T.giusto++;else T.sbagliato++;}}catch(_e){}return act;};
+  const base=a.gestures[want];if(!base)return base;
+  let v=(a._gVar&&a._gVar[want])||[base];
+  /* tuffo/respinta: si tiene solo l'esecuzione che va dal lato della palla. Rosso __CPM_NO_LATO23 (sorteggio fra tutte). */
+  if(lato&&(want==='dive'||want==='block')&&!(typeof window!=='undefined'&&window.__CPM_NO_LATO23)){const pool=v.filter(x=>_LATO23[_nm(x)]===lato);if(pool.length)v=pool;}
+  if(v.length===1)return _segna(v[0],(a._gVar&&a._gVar[want])?null:(a._gVar?'unica':'senza-varianti'));
+  a._gN23=(a._gN23||0)+1;let act=v[hashStr(String(chiave||'')+'|'+ai+'|'+want+'|'+a._gN23)%v.length]||base;
+  try{const F=window.__CPM_VAR23_FORZA;if(F&&F[want]){const f=v.find(x=>_nm(x)===F[want]);if(f)act=f;}}catch(_e){}/* solo sonde: impone un'esecuzione */
+  return _segna(act);}
 /* [POC 23/09 — direttiva PO «Il modello CH38 deve sparire». Rosso __CPM_NO_CGDEFAULT o ?hyperCharacter=off]
    Il corpo CGTrader (kit-adapter lod0/1/2, portiere compreso) era visibile SOLO aprendo il gioco con
    ?hyperCharacter=cgtrader-highlight-optimized: senza parametro gli highlight usavano il CH38. Ora un unico
@@ -802,7 +817,33 @@ function ThreeMatchView(props){
       const _homeKey=(homeClub&&(homeClub.id||homeClub.n))||homeCol||'H',_awayKey=oppCol||'A';
       // gesti one-shot: EROE (offensivi: kick/penalty/header/tackle/volley) + PORTIERE avversario (parata: dive/catch/block).
       // helper riusabile: monta una mappa di clipAction one-shot (peso 0 a riposo) su un qualunque avatar.
-      const _mkGestures=(av,map)=>{if(!av)return;const out={};for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;};
+      /* [23/09 POC — CLIP MIXAMO DEL PO COME VARIANTI DEI GESTI. Rosso __CPM_NO_MXCLIP]
+         Richiesta PO: «altrimenti i gesti diventano ripetitivi». Le 54 clip Mixamo della cartella Drive del PO (Soccer pack:
+         tiri, testa, rovesciata, contrasti, prese, parate, rinvii, rimesse...) sono riadattate sullo scheletro CGTrader con
+         tools/retarget_cgtrader_clip.py (cancello anatomico superato 54/54) in UN file di sole clip, assets/cgtrader-clip-mixamo.glb
+         (3,0 MB), condiviso dai tre LOD perche' le tracce si legano per nome d'osso. Ogni gesto ha ora piu' esecuzioni: al
+         montaggio se ne sceglie una con un hash della scena (niente Math.random). Escluse «a terra» e «rialzarsi»: partono
+         sdraiate e la scala del bacino esce sbagliata (x6,8). */
+      let _mxAnims23=[];
+      const _VAR23={/* kick: REVOCATO. Le tre clip di tiro nuove peggiorano il contatto (piede-palla 0,83-1,46 m contro 0,21-0,45 della clip
+           storica, gesto-eroe-review CPM_FORZA): la palla parte sulla fase della clip storica (sinistro, 0,98). */
+        volley:['mx-scissor-kick'],
+        /* header, receive, penalty, throwin, volley (rovesciata): RIMANDATI — hanno un contatto con la palla sincronizzato
+           sulla clip storica, e sul tiro la misura ha bocciato le clip nuove. Si aggiungono dopo averne misurato il contatto. */
+        tackle:['mx-soccer-tackle','mx-soccer-tackle-2','mx-soccer-tackle-3'],
+        /* tuffo e respinta: il LATO conta (bacino, provino-clip): gk-dive e gk-block vanno a SINISTRA del portiere (+3,1 / +1,4 m),
+           diving-save-2 e body-block-2 a DESTRA (-3,5 / -1,3), body-block-3 a sinistra. «diving save» e «body block» sono
+           DOPPIONI esatti di gk-dive e gk-block (stessa sorgente): esclusi. La scelta la fa il lato della palla (_LATO23). */
+        dive:['mx-goalkeeper-diving-save-2'],block:['mx-goalkeeper-body-block-2','mx-goalkeeper-body-block-3'],
+        /* presa: solo prese ALTE come la clip storica (mani a 2,27-2,31 m); scoop e prese basse aspettano l'altezza della palla */
+        catch:['mx-goalkeeper-catch-3','mx-goalkeeper-catch-4'],
+        gkThrow:['mx-goalkeeper-overhand-throw','mx-goalkeeper-pass'],goalKick:['mx-goalkeeper-drop-kick'],gkReady:['mx-goalkeeper-idle','mx-goalkeeper-idle-2']};
+      const _PESO23={};
+      const _mkGestures=(av,map)=>{if(!av)return;const out={};for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;
+        av._gVar=null;if(_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP)){const v={};for(const k in out){if(!out[k]||!_VAR23[k])continue;const acts=[];for(let i=0;i<(_PESO23[k]||1);i++)acts.push(out[k]);
+          _VAR23[k].forEach(n=>{const c=_mxAnims23.find(x=>x&&x.name===n);if(!c)return;const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);acts.push(a);});if(acts.length>1)v[k]=acts;}av._gVar=v;}
+        try{const M=(window.__CPM_MKG23=window.__CPM_MKG23||{chiamate:0,conVarianti:0,clip:0});M.chiamate++;M.clip=_mxAnims23.length;if(av._gVar&&Object.keys(av._gVar).length)M.conVarianti++;}catch(_e){}};
+
       /* [7.907.0 — D7] costruzione dei 23 CH38 (eroe + 21 + arbitro) estratta in funzione RIUSABILE, parametrica
          sulla SCENA SORGENTE del corpo: la richiama sia il mount iniziale (sotto) sia lo scambio A CALDO dal menu
          di pausa (window.__CPM_SETBODY907, poco piu' sotto) — stessa identica sequenza (kit, aspetto, animazioni
@@ -948,7 +989,7 @@ function ThreeMatchView(props){
         const next=av._cgLodVariants[key];if(!next||!_cgtraderLodCanSwap(av)){_cgtraderLodStats.blocked++;return false;}
         const oldIdle=av.idle,oldRun=av.run;
         for(const state of Object.values(av._cgLodVariants)){if(state&&state.visualRoot)state.visualRoot.visible=state===next;}
-        av.visualRoot=next.visualRoot;av.mx=next.mx;av.idle=next.idle;av.run=next.run;av.gestures=next.gestures;av._locoClips=next._locoClips;
+        av.visualRoot=next.visualRoot;av.mx=next.mx;av.idle=next.idle;av.run=next.run;av.gestures=next.gestures;av._gVar=next._gVar||null;av._locoClips=next._locoClips;
         av.spine=next.spine;av._handL=next._handL;av._handR=next._handR;av._footL=next._footL;av._ballL=next._ballL;av._footR=next._footR;av._ballR=next._ballR;av._armB=next._armB;av._cgLod=key;
         if(oldIdle&&av.idle){av.idle.time=oldIdle.time||0;av.idle.weight=oldIdle.weight||0;av.idle.timeScale=oldIdle.timeScale||1;}
         if(oldRun&&av.run){av.run.time=oldRun.time||0;av.run.weight=oldRun.weight||0;av.run.timeScale=oldRun.timeScale||1;}
@@ -1000,7 +1041,7 @@ function ThreeMatchView(props){
            tre pacchetti, le varianti si costruiscono. Una funzione deve reagire a cio' che riceve, non a
            una variabile di modalita' che per giunta qui non sarebbe nemmeno in scope. */
         if(Array.isArray(lodPackages)&&lodPackages.length===3){
-          const _stateOf=a=>({visualRoot:a.visualRoot,mx:a.mx,idle:a.idle,run:a.run,gestures:a.gestures,_locoClips:a._locoClips,spine:a.spine,_handL:a._handL,_handR:a._handR,_footL:a._footL,_ballL:a._ballL,_footR:a._footR,_ballR:a._ballR,_armB:a._armB,_cgLod:a._cgLod});
+          const _stateOf=a=>({visualRoot:a.visualRoot,mx:a.mx,idle:a.idle,run:a.run,gestures:a.gestures,_gVar:a._gVar||null,_locoClips:a._locoClips,spine:a.spine,_handL:a._handL,_handR:a._handR,_footL:a._footL,_ballL:a._ballL,_footR:a._footR,_ballR:a._ballR,_armB:a._armB,_cgLod:a._cgLod});
           const _makeVariant=(host,avatarPkg,index)=>{
             const visual=_cloneHyperVisual(avatarPkg,hashStr('hyper-lod-'+(host.proc._sd||index)+'-'+(avatarPkg._cgLod||'x')));host.root.add(visual);visual.updateMatrixWorld(true);
             const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar((host._h||1.8)/rawHeight);visual.updateMatrixWorld(true);
@@ -1113,7 +1154,9 @@ function ThreeMatchView(props){
           riusa, non si riscrive. */
           const _trioLod=(_cgtraderMixedLodBenchmark||(_cgtraderHighlightOptimized&&!(typeof window!=='undefined'&&window.__CPM_NO_TRIO)));
           const _hyperAssetUrls=_trioLod?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
-        Promise.allSettled(_hyperAssetUrls.map(url=>loadGLB(url))).then(results=>{
+        const _mx23=_trioLod&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP);
+        Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).map(url=>loadGLB(url))).then(results=>{
+          const _mxRes=_mx23?results.pop():null;if(_mxRes&&_mxRes.status==='fulfilled'&&_mxRes.value){_mxAnims23=(_mxRes.value.animations||[]).slice();}try{window.__CPM_MXCLIP=_mxAnims23.length;}catch(_e){}
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
           if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');if(_trioLod&&packages.length!==3)throw new Error('CGTrader mixed LOD packages are incomplete');if(_cgtraderMixedLodBenchmark)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
           /* [23/09 — IL PEZZO CHE MANCAVA, ed e' quello che rendeva invisibili i corpi.
@@ -3956,10 +3999,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          if(typeof window!=="undefined"){window.__CPM_CGTRADER_DRIBBLE_TOUCH={u:+_u.toFixed(3),side:+_side.toFixed(3),contact:_contact,anchor:_anchor,targetX:+_cx.toFixed(3),targetZ:+_cz.toFixed(3),gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null};if(window.__CPM_REC&&sr.current._cgDribbleLastContact!==_contact){sr.current._cgDribbleLastContact=_contact;const _log=window.__CPM_CGTRADER_DRIBBLE_CONTACTS||(window.__CPM_CGTRADER_DRIBBLE_CONTACTS=[]);if(_log.length<16)_log.push({contact:_contact,u:+_u.toFixed(3),anchor:_anchor,gesture:_cgAvatar._gName||null,lod:_cgAvatar._cgLod||null});}const _freezeAt=Number(window.__CPM_CGTRADER_DRIBBLE_FREEZE_AT);if(window.__CPM_REC&&_contact!=="carry"&&Number.isFinite(_freezeAt)&&Math.abs(_u-_freezeAt)<=0.025){_cgAction.paused=true;window.__CPM_CGTRADER_DRIBBLE_FROZEN={u:+_u.toFixed(3),contact:_contact,anchor:_anchor,lod:_cgAvatar._cgLod||null};}}
        } else if(_cgKickContact){
          const _clipDur=(function(){try{const _c=_cgAvatar._gAct.getClip();return (_c&&_c.duration)||0.4167;}catch(_e){return 0.4167;}})();
-         const _u=clamp((+_cgAvatar._gAct.time||0)/_clipDur,0,1),_nearImpact=_u>=0.72&&_u<=0.98;
+         /* [23/09 POC] il contatto dipende dall'esecuzione scelta (varianti _VAR23): piede e istante misurati sulla clip
+            (picco di velocita' del piede, provino-clip): kick sx 0,98 · mx-kick-soccerball sx 0,92 · mx-kick-soccerball-2 dx 0,84 ·
+            mx-strike-foward-jog dx 0,38. Finestra stretta [u-w, u+0,06] (la larga [u-0,18] seguiva il piede nel caricamento: 0,85 m contro 0,43); la clip storica resta [0,72, 0,98] col sinistro. */
+         const _kc23=({'mx-kick-soccerball':{dx:false,u:0.92,w:0.08},'mx-kick-soccerball-2':{dx:true,u:0.84,w:0.08},'mx-strike-foward-jog':{dx:true,u:0.38,w:0.06},'mx-scissor-kick':{dx:true,u:0.29,w:0.06}})[((_cgAvatar._gAct.getClip&&_cgAvatar._gAct.getClip())||{}).name]||{dx:false,u:0.9};
+         const _u=clamp((+_cgAvatar._gAct.time||0)/_clipDur,0,1),_nearImpact=_kc23.w?(_u>=_kc23.u-_kc23.w&&_u<=Math.min(0.98,_kc23.u+0.06)):(_u>=0.72&&_u<=0.98);
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
          let _cx=hero.position.x+_fx*0.78,_cz=hero.position.z+_fz*0.78,_anchor="heading";
-         if(_nearImpact&&(_cgAvatar._ballL||_cgAvatar._footL))try{const _bp=sr.current._cgKickBonePoint||(sr.current._cgKickBonePoint=new THREE.Vector3());(_cgAvatar._ballL||_cgAvatar._footL).getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor="left-foot-bone";}}catch(_e){}
+         const _kb23=_kc23.dx?(_cgAvatar._ballR||_cgAvatar._footR):(_cgAvatar._ballL||_cgAvatar._footL);if(_nearImpact&&_kb23)try{const _bp=sr.current._cgKickBonePoint||(sr.current._cgKickBonePoint=new THREE.Vector3());_kb23.getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor=_kc23.dx?"right-foot-bone":"left-foot-bone";}}catch(_e){}
          ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(0.22-ball.position.y)*Math.min(aDt*12,1);
          if(typeof window!=="undefined")window.__CPM_CGTRADER_KICK_TOUCH={u:+_u.toFixed(3),anchor:_anchor,arcT:+ballArcT.toFixed(3),targetX:+_cx.toFixed(3),targetZ:+_cz.toFixed(3),gesture:"kick",lod:_cgAvatar._cgLod||null};
        } else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){
@@ -9403,7 +9450,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  clip che il mixer sta ancora fondendo la fa ripartire al retrigger successivo con peso
                  pieno. Resta la stesura semplice — chi viene sfrattato dallo slot si spegne — che il
                  rosso conferma: 10 contro 17. */// [7.49.0 BL-06] il gesto precedente non si azzera di colpo (pop): sfuma in _gPrev
-              _a._gName=_want;_a._gAct=_a.gestures[_want];_a._gAct.reset().play();if(_ai===0&&typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED){try{const _M=(window.__CPM_CGTRADER_MOUNTS=window.__CPM_CGTRADER_MOUNTS||{}),_k=String((propsRef.current&&propsRef.current.hlSitKey)||'?');(_M[_k]=_M[_k]||[]).length<12&&_M[_k].push(String(_want));}catch(_e){}}/* [23/09 POC] montaggi VERI dell'eroe (dopo le guardie): __CPM_G000 conta i tentativi prima della guardia 7.396 */
+              _a._gName=_want;/* [23/09 POC] lato del tuffo: la sinistra del portiere e' +X del modello (piede sinistro a +0,35 a riposo); verso la palla = oppDiveDir (asse z del mondo) */
+              const _lato23=(_a._isGk&&(_want==='dive'||_want==='block')&&_a.proc===oppMesh&&_a.visualRoot&&oppDiveDir)?(function(){try{const q=new THREE.Quaternion();_a.visualRoot.getWorldQuaternion(q);const lz=new THREE.Vector3(1,0,0).applyQuaternion(q).z;return Math.abs(lz)>0.2?((lz*oppDiveDir>0)?1:-1):0;}catch(_e){return 0;}})():0;
+              _a._gAct=_scegliGesto23(_a,_want,_ai,propsRef.current&&propsRef.current.hlSitKey,propsRef.current&&propsRef.current.hlActLbl,_lato23);_a._gAct.reset().play();if(_ai===0&&typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED){try{const _M=(window.__CPM_CGTRADER_MOUNTS=window.__CPM_CGTRADER_MOUNTS||{}),_k=String((propsRef.current&&propsRef.current.hlSitKey)||'?');(_M[_k]=_M[_k]||[]).length<12&&_M[_k].push(String(_want));}catch(_e){}}/* [23/09 POC] montaggi VERI dell'eroe (dopo le guardie): __CPM_G000 conta i tentativi prima della guardia 7.396 */
               /* [7.517.0 R3/2 — LA MIRA SI LATCHA AL MONTAGGIO: audit «il corpo non e' orientato verso la
                  direzione del passaggio/tiro»] Al montaggio del gesto si fissa la direzione VERSO il bersaglio
                  dell'arco (se vivo): il driver di facing la usera' al posto del moto residuo. Esclusi GK

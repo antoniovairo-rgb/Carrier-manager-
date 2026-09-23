@@ -35,6 +35,8 @@ for (let p = DA; p < DA + N; p++) {
   const b4 = await page.evaluate(() => window.__CPM_B4 || {}).catch(() => ({}));
   const b4ric = await page.evaluate(() => window.__CPM_B4RIC || null).catch(() => null);
   const b4dif = await page.evaluate(() => window.__CPM_B4DIF || null).catch(() => null);
+  const var23 = await page.evaluate(() => ({ clip: window.__CPM_MXCLIP ?? null, scelte: window.__CPM_VAR23 || null, montaggi: window.__CPM_CGTRADER_MOUNTS || null, g000: window.__CPM_G000 || null })).catch(() => null);
+  console.log(`partita ${p}: clip Mixamo caricate ${var23 && var23.clip} · esecuzioni scelte ${JSON.stringify(var23 && var23.scelte)} · montaggi eroe ${JSON.stringify(var23 && var23.montaggi)} · g000 ${JSON.stringify(var23 && var23.g000)}`);
   const scene = await page.evaluate(() => { const EV = typeof window.__CPM_EV === 'function' ? window.__CPM_EV() : (window.__CPM_EV || []); return (EV || []).filter(e => e && e.ev === 'scena').map(e => ({ min: e.min, src: e.src, tipo: e.tipo || null, sk: e.sk || null })); }).catch(() => []);
   /* ⚠️ misurato leggendo il codice: `reattiva`/`sotto-63`/`sotto-76`/`secondo-tempo` si scrivono quando la scena viene MESSA IN
      CALENDARIO (o, per la catena, insieme a `catena`): contarle come aperture raddoppia. Aperture vere: */

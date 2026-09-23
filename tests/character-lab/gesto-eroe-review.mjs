@@ -31,6 +31,7 @@ page.on('pageerror', e => errors.push(String(e.message).slice(0, 200)));
 
 try {
   if (ROSSO) await page.addInitScript(n => { window[n] = true; }, ROSSO);
+  if (process.env.CPM_FORZA) await page.addInitScript(f => { window.__CPM_VAR23_FORZA = JSON.parse(f); }, process.env.CPM_FORZA); /* es. {"kick":"mx-kick-soccerball"} */
   if (process.env.CPM_F6) await page.addInitScript(() => { window.__CPM_F6REC = 1; });
   await installCdnRoutes(page);
   await openMatch(page, server.address().port, {
@@ -108,6 +109,8 @@ try {
     tpose: tpose.slice(0, 10), tposeCampioni: tpose.length,
     contestoConGesto: contesto.slice(0, 10),
     corpiDisegnati: [...new Set(frames.map(f => ((f.a && f.a.actors) || []).length))],
+    esecuzioniScelte: await page.evaluate(() => window.__CPM_VAR23 || null).catch(() => null),
+    latoTuffo: await page.evaluate(() => window.__CPM_TUFFO23 || null).catch(() => null),
     errors,
   };
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify({ scelta, sintesi, frames: frames.map(({ shot, ...f }) => f) }, null, 1));

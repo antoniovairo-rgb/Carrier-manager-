@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 17:45 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 18:33 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -27,7 +27,7 @@
 4. 🟡 Scena coerente con l'occasione del brain: **9/9** (rosso 4/8); tipi più vari (spalle + fra le linee). Mancano conclusione e fascia. Opzioni: già 3 per scheda.
 5. ✅ Il seguito della catena lo decide il brain (dado del motore, fatto `seguito`).
 6. 🟡 **CH38 via**: highlight già CGTrader senza parametri (0 corpi CH38). Mancano cerimonie, ritratto 3D dei menu e il download dei file CH38.
-7. ⏳ **Clip nuove, contro la ripetizione** (richiesta PO 23/09): archivio CMU Motion Capture (licenza: «may be copied, modified, or redistributed without permission») — tiri di calcio (soggetti 10 e 11), esultanze, corse. Serve un convertitore ASF/AMC → scheletro CGTrader, poi varianti scelte dal brain.
+7. 🟡 **Clip nuove, contro la ripetizione**: 54 clip Mixamo dalla cartella Drive del PO riadattate (cancello 54/54), in gioco come varianti di tuffo (lato scelto dalla palla), respinta, presa alta, rinvio, lancio, portiere in attesa, scivolata. Tiro: varianti revocate (contatto peggiore). Prossimi: contatto misurato per testa/controllo/rigore/rimessa/rovesciata, tiro specchiato (destro), nuovi gesti (sgambetto, palleggio, portiere che dirige), CMU.
 
 ## Da decidere o guardare tu
 - **Catene:** tenute come valore aggiunto; il seguito ora lo sceglie il brain. Se preferisci spegnerle, è un interruttore.
@@ -39,6 +39,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 18:33 | Clip Mixamo del PO (Drive): 54 riadattate su CGTrader in un file unico (3,0 MB); varianti per portiere e contrasti; lato del tuffo dalla palla | cancello anatomico 54/54 · tuffo dal lato giusto 3/3 (rosso 2/3) · varianti del tiro REVOCATE (piede-palla 0,83 m contro 0,21-0,45) · career-critical verde |
 | 23/09 17:45 | Anteprima Netlify: la pagina principale è il gioco, niente reindirizzamenti (pretty URL spenti) | / e /CARRIER-MANAGER-AV.html 200, identici al build + solo lo script HUD di Netlify (184 byte) |
 | 23/09 17:43 | CH38 sparisce dagli highlight: CGTrader è il default senza parametri (rosso __CPM_NO_CGDEFAULT / ?hyperCharacter=off) | corpi CH38 disegnati 0/5 (rosso 39/39); career-critical verde; restano CH38 in cerimonie, ritratto 3D menu e download di footballer/korward-regular |
 | 23/09 17:28 | B3: il brain muove i 22 nelle scene offensive (funzione pura della scena) | determinismo 100% (v1 36%) · ammucchiata 0,9 contro 0,71 |
