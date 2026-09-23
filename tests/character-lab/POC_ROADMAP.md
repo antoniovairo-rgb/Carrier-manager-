@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 17:43 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 17:45 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -8,7 +8,7 @@
 
 | Cantiere | Stato | Cosa manca |
 | --- | --- | --- |
-| Personaggi CGTrader (modello, LOD, kit) | ✅ nel banco: kit corretto nei file, portiere LOD1 nella presa, 64,6k triangoli | prova sul telefono |
+| Personaggi CGTrader (modello, LOD, kit) | ✅ **default degli highlight** (CH38 0 corpi) · nel banco: kit corretto nei file, portiere LOD1 nella presa, 64,6k triangoli | prova sul telefono |
 | Gesti negli highlight | ✅ presa, dribbling, passaggio, tiro misurati · eroe taglia 0,18 · **tuffo e respinta del portiere CGTrader montati** | parata del brain non ancora vista in scena |
 | **Brain → scena (B0)** | ✅ scene nate dal motore **26 su 26** (6 partite) | la «catena» ora eredita l'evento del brain, ma non è mai comparsa: **non misurata** |
 | **Brain → attori (B4)** | 🟡 ricevente **3 su 5** · difensore **4 su 6** · portiere 6 su 6 (mediane 0 u) | ricevente di cross e consegne · 2 difensori ancora scelti dal 3D |
@@ -26,6 +26,8 @@
 3. 🟡 Il 3D mostra solo quegli eventi (coerenza 97%, copertura 58%): gesti per indice, esito e attori dal brain.
 4. 🟡 Scena coerente con l'occasione del brain: **9/9** (rosso 4/8); tipi più vari (spalle + fra le linee). Mancano conclusione e fascia. Opzioni: già 3 per scheda.
 5. ✅ Il seguito della catena lo decide il brain (dado del motore, fatto `seguito`).
+6. 🟡 **CH38 via**: highlight già CGTrader senza parametri (0 corpi CH38). Mancano cerimonie, ritratto 3D dei menu e il download dei file CH38.
+7. ⏳ **Clip nuove, contro la ripetizione** (richiesta PO 23/09): archivio CMU Motion Capture (licenza: «may be copied, modified, or redistributed without permission») — tiri di calcio (soggetti 10 e 11), esultanze, corse. Serve un convertitore ASF/AMC → scheletro CGTrader, poi varianti scelte dal brain.
 
 ## Da decidere o guardare tu
 - **Catene:** tenute come valore aggiunto; il seguito ora lo sceglie il brain. Se preferisci spegnerle, è un interruttore.
@@ -37,6 +39,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 17:45 | Anteprima Netlify: la pagina principale è il gioco, niente reindirizzamenti (pretty URL spenti) | / e /CARRIER-MANAGER-AV.html 200, identici al build + solo lo script HUD di Netlify (184 byte) |
 | 23/09 17:43 | CH38 sparisce dagli highlight: CGTrader è il default senza parametri (rosso __CPM_NO_CGDEFAULT / ?hyperCharacter=off) | corpi CH38 disegnati 0/5 (rosso 39/39); career-critical verde; restano CH38 in cerimonie, ritratto 3D menu e download di footballer/korward-regular |
 | 23/09 17:28 | B3: il brain muove i 22 nelle scene offensive (funzione pura della scena) | determinismo 100% (v1 36%) · ammucchiata 0,9 contro 0,71 |
 | 23/09 16:39 | Gesti evoluti dichiarati dal brain: rammarico, portiere in attesa, rilancio, contrasto in piedi/scivolata | CGTrader: coerenza e copertura 16/19 (84%) |
