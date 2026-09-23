@@ -25,6 +25,7 @@
 2. Brain che muove i 22 durante la scena (B3), poi esito dal brain (B2).
 
 ## Da decidere o guardare tu
+- **Catene** (seguito della stessa azione): rare (0 in 6 partite) e non un ostacolo, ma oggi il seguito è pescato a caso fra 3 schede, non deciso dal brain. **Proposta:** tenerle finché in B2 il seguito nasce da un evento del brain (ricezione in area, respinta, seconda palla), poi togliere le schede. In alternativa: spegnerle subito (un interruttore).
 - Testo «Para in tuffo» mentre il gesto è una presa alta.
 - Dopo un gol la regia si allarga di colpo (camera a ~44 u): anche in produzione.
 - La lavagna 2D non si specchia nel secondo tempo, la barra sì.
