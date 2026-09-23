@@ -49728,8 +49728,8 @@ const getThisWeekMatchday=()=>{
             )}
           {/* Sprint 24A — Lo Spogliatoio card */}
           {(player.teammates||[]).length>0&&(
-            <Card style={{padding:"9px 12px",background:"linear-gradient(135deg,#0c1a2e,#112240)",border:"1px solid rgba(56,189,248,0.2)"}}>
-              <div style={{fontSize:FS.caption,color:"rgba(186,230,253,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Lo Spogliatoio</div>
+            <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>{/* [23/09 POC — collaudo PO «metti le figurine dei compagni»] Card del kit (non piu' il blu notte) e figurina del compagno al posto dell'emoji */}
+              <SectionHeader>Lo spogliatoio</SectionHeader>
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 {(player.teammates||[]).map((tm,i)=>{
                   const arc=TEAMMATE_ARCHETYPES.find(a=>a.id===tm.archetype);
@@ -49739,24 +49739,24 @@ const getThisWeekMatchday=()=>{
                   const has50=milestones.includes(50);
                   const has75=milestones.includes(75);
                   return(
-                    <div key={i} style={{display:"flex",flexDirection:"column",gap:4,paddingBottom:i<(player.teammates.length-1)?8:0,borderBottom:i<(player.teammates.length-1)?"1px solid rgba(56,189,248,0.1)":"none"}}>
+                    <div key={i} style={{display:"flex",flexDirection:"column",gap:4,paddingBottom:i<(player.teammates.length-1)?8:0,borderBottom:i<(player.teammates.length-1)?"1px solid "+TH.divider:"none"}}>
                       <div style={{display:"flex",alignItems:"center",gap:8}}>
-                        <div style={{fontSize:FS.title,width:36,textAlign:"center"}}>{tm.icon||"👤"}</div>
+                        <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="giocatore" chiave={tm.name} larg={36}/>;}catch(_e){return null;}})()}</div>
                         <div style={{flex:1}}>
-                          <div style={{fontSize:FS.small,fontWeight:800,color:"#e0f2fe"}}>{tm.name}</div>
-                          <div style={{fontSize:FS.caption,color:"rgba(186,230,253,0.5)"}}>{arc?.name||"Compagno"} · <span style={{color:bondColor}}>{bondState(bond).e} {bondState(bond).l}</span>{/* [7.27.0 ONDA 2 §S3] stato leggibile del legame */}</div>
+                          <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>{tm.name}</div>
+                          <div style={{fontSize:FS.caption,color:TH.muted}}>{arc?.name||"Compagno"} · <span style={{color:TH.text}}>{bondState(bond).e} {bondState(bond).l}</span>{/* [7.27.0 ONDA 2 §S3] stato leggibile del legame */}</div>
                         </div>
                         <div style={{textAlign:"right"}}>
-                          <div style={{fontSize:FS.caption,fontWeight:700,color:bondColor}}>{bond}%</div>
+                          <div className="cpm-num" style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{bond}%</div>
                           <div style={{display:"flex",gap:3,justifyContent:"flex-end",marginTop:2}}>
-                            <span style={{fontSize:FS.caption,padding:"1px 4px",borderRadius:RAD.xs,background:has50?"#1e40af":"rgba(255,255,255,0.06)",color:has50?"#93c5fd":"rgba(186,230,253,0.25)"}}>50%{has50?" ✓":""}</span>
-                            <span style={{fontSize:FS.caption,padding:"1px 4px",borderRadius:RAD.xs,background:has75?"#5b21b6":"rgba(255,255,255,0.06)",color:has75?"#c4b5fd":"rgba(186,230,253,0.25)"}}>75%{has75?" ✓":""}</span>
+                            <span style={{fontSize:FS.caption,padding:"1px 4px",borderRadius:RAD.xs,background:has50?TH.bgBlue:TH.surface2,color:has50?TH.txBlue:TH.faint}}>50%{has50?" ✓":""}</span>
+                            <span style={{fontSize:FS.caption,padding:"1px 4px",borderRadius:RAD.xs,background:has75?TH.bgBlue:TH.surface2,color:has75?TH.txBlue:TH.faint}}>75%{has75?" ✓":""}</span>
                           </div>
                         </div>
                       </div>
                       {/* Sprint 69 — bond progress bar */}
-                      <div style={{height:4,background:"rgba(255,255,255,0.08)",borderRadius:RAD.pill,overflow:"hidden",marginLeft:46}}>
-                        <div style={{height:"100%",width:`${bond}%`,background:bond>=75?"#a78bfa":bond>=50?"#60a5fa":"#475569",borderRadius:RAD.pill,transition:"width 0.4s ease"}}/>
+                      <div style={{height:4,background:TH.track,borderRadius:RAD.pill,overflow:"hidden",marginLeft:44}}>
+                        <div style={{height:"100%",width:`${bond}%`,background:bond>=75?TH.success:bond>=50?TH.primary:TH.faint,borderRadius:RAD.pill,transition:"width 0.4s ease"}}/>
                       </div>
                     </div>
                   );
@@ -50060,7 +50060,8 @@ const getThisWeekMatchday=()=>{
                   const typeLabel={fan:"Fan",critico:"Critico",investigativa:"Investigativo"}[j.type]||j.type;
                   return(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,paddingBottom:i<(player.journalists.length-1)?8:0,borderBottom:i<(player.journalists.length-1)?`1px solid ${TH.cardBorder}`:"none"}}>
-                      <div style={{fontSize:FS.title,width:30,textAlign:"center"}}>{j.icon||"📰"}</div>
+                      {/* [23/09 POC — collaudo PO «anche qui figurine»] il giornalista e' la sua figurina (volto femminile per le giornaliste), non un'emoji */}
+                      <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo={j.f?"giornalista_f":"giornalista"} chiave={j.name} larg={36}/>;}catch(_e){return null;}})()}</div>
                       <div style={{flex:1}}>
                         <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>{j.name}</div>
                         <div style={{fontSize:FS.caption,color:legCol944(j.color)||TH.muted}}>{j.paper} · {typeLabel}</div>
