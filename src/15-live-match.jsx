@@ -884,7 +884,7 @@ function FestaFine942({dati,onChiudi}){
         {/* i compagni che esultano: gli stessi visi delle scelte in partita */}
         <div style={{display:"flex",justifyContent:"center",gap:SP.sm,padding:"0 "+SP.lg+"px "+SP.md+"px"}}>
           {(dati.facce||[]).map((f,i)=>(
-            <div key={"f"+i} style={{borderRadius:"50%",padding:2,background:i===0?_FESTA942.oro:"rgba(148,163,184,0.34)",lineHeight:0,
+            <div key={"f"+i} style={{borderRadius:RAD.sm,padding:i===0?2:0,background:i===0?_FESTA942.oro:"transparent",lineHeight:0,
               transform:"translateY("+(Math.sin((n+i*3)/2.4)*2.6).toFixed(1)+"px)"}}>
               {(()=>{try{return f.eroe?<Figurina tipo="giocatore" chiave={f.nome||"eroe"} larg={Math.round((i===0?58:44)*5/7)}/>:<Figurina tipo="giocatore" chiave={f.nome} larg={Math.round((i===0?58:44)*5/7)}/>;}catch(_e){return null;}})()}
             </div>))}
@@ -945,7 +945,7 @@ function PopScelta919({com,onScegli,player,coachName,avvNome,secondi}){
         {/* chi parla */}
         <div style={{display:"flex",alignItems:"center",gap:SP.md,padding:SP.md+"px "+SP.lg+"px",
           background:"linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0))",borderBottom:"1px solid rgba(148,163,184,0.16)"}}>
-          <div style={{borderRadius:"50%",padding:2,background:F.col,flexShrink:0,lineHeight:0}}>{faccia}</div>
+          <div style={{borderRadius:RAD.sm,padding:0,flexShrink:0,lineHeight:0}}>{faccia}</div>{/* [23/09 POC — collaudo PO «perche' c'e' quell'ovale attorno alla figurina?»] il tondo era la cornice delle vecchie faccine rotonde: la figurina ha gia' la sua */}
           <div style={{minWidth:0,flex:1}}>
             <div style={{fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.4,color:F.col,textTransform:"uppercase"}}>{F.ico+" "+F.et}</div>
             {nome&&<div style={{fontSize:FS.bodyLg,fontWeight:FW.bold,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>}
@@ -9339,8 +9339,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const _lbl=isNatCtx?((context||"").indexOf("euroMondiale")>=0?("🌍 "+((player.euroMondiale?.type)||"Mondiale")):"🌍 Nazionale"):(context==="euro_group"||context==="euro_ko"||context==="euro")?{UCL:"⭐ "+EURO_SIGLA.UCL,UEL:"🌍 "+EURO_SIGLA.UEL,UECL:"🌍 "+EURO_SIGLA.UECL}[player.euro?.competition||"UCL"]||"🌍 Europa":context==="cup"?"🏆 Coppa":(((player.leagueOverrides||{})[player.club?.id])||player.club?.lg||homeTeamObj?.lg||"Campionato");
     return _lbl;
   })();/* stessa IIFE di prima (7.170.0), solo spostata qui per essere condivisa dai due markup della barra (vecchio e nuovo) */
-  const _hVal901=isMatchHome?score.home:score.away,_hCol901=(isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9";
-  const _aVal901=isMatchHome?score.away:score.home,_aCol901=(isMatchHome?losing:winning)?"#4ade80":(isMatchHome?winning:losing)?"#f87171":"#f1f5f9";
+  const _hVal901=isMatchHome?score.home:score.away,_hCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?winning:losing)?"#4ade80":(isMatchHome?losing:winning)?"#f87171":"#f1f5f9"):"#f1f5f9";/* [23/09 POC — collaudo PO «il risultato rosso e verde non mi piace»] punteggio neutro, come un tabellone tv. Rosso __CPM_NO_SCORE23 */
+  const _aVal901=isMatchHome?score.away:score.home,_aCol901=(typeof window!=='undefined'&&window.__CPM_NO_SCORE23)?((isMatchHome?losing:winning)?"#4ade80":(isMatchHome?winning:losing)?"#f87171":"#f1f5f9"):"#f1f5f9";
   return(
     <div style={{width:"100%",maxWidth:isNarrow?undefined:1100,marginLeft:"auto",marginRight:"auto",...((phase==="ended")?{flex:1,minHeight:0,display:"flex",flexDirection:"column"}:(isNarrow&&(show3D||phase==="walkout"))?{flex:1,minHeight:0,display:"flex",flexDirection:"column",background:"#050810"}:{})}}>
       {phase==="matchday"&&!showScout&&(()=>{
@@ -10146,7 +10146,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {intentIntro(curSit.intro,_scoreDiff)&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.75)",textAlign:"center",fontStyle:"italic",marginBottom:10,lineHeight:1.4}}>{intentIntro(curSit.intro,_scoreDiff)}</div>}
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{curSit.type==="def"?"🛡️ DIFESA":"⚔️ ATTACCO"}</div>
                   <div style={{width:90,height:2,background:"rgba(255,255,255,0.15)",borderRadius:RAD.pill,overflow:"hidden"}}><div style={{height:"100%",background:"#f59e0b",animation:"shrinkBar 2.5s linear forwards"}}/></div>
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.2)",marginTop:6}}>{isNarrow?"Tocca per iniziare":"Tocca / Enter per iniziare"}</div>
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.2)",marginTop:6}}>{"Tocca per iniziare"}</div>
                 </div>
               )}
               {/* Sprint 118 — Bench experience: live watching → warmup → entry instructions */}
@@ -10490,7 +10490,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <span style={{fontSize:FS.caption,color:defDist<25?"#f87171":defDist<50?"#f97316":"#4ade80",fontWeight:700}}>{defDist<25?"Difensore addosso!":defDist<50?"Pressione alta":"Spazio libero"}</span>
                     {defDist<50&&<span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginLeft:"auto"}}>–{Math.round((100-defDist)*0.15)}% azioni</span>}
                   </div>
-                  {!isNarrow&&!isAimSit(curSit)&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginBottom:5,textAlign:"center"}}>
+                  {false&&!isAimSit(curSit)&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)",marginBottom:5,textAlign:"center"}}>
                     <strong style={{color:"#f59e0b"}}>1 · 2 · 3</strong> &nbsp;|&nbsp; Enter
                   </div>}{/* [6.44.0] niente hint tastiera sui rigori/punizioni · [6.45.0 RC] via «←→»: la navigazione con le frecce non era mai stata implementata (selectedActionIdx mai aggiornato) → hint fuorviante */}
                   {(+(safeLS.get("cpm-hl-tips")||0))<5&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.7)",background:"rgba(37,99,235,0.25)",borderRadius:RAD.xs,padding:"5px 8px",marginBottom:6}}>💡 Muoviti (WASD) per cambiare le opzioni d'azione.</div>}{/* [5.84.0 UX-2c] */}
@@ -10539,7 +10539,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.4,marginBottom:4}}>{outcome.text}</div>
                   {outcome.cause&&<div style={{fontSize:FS.caption,fontWeight:700,color:outcome.ok?"#86efac":"#fdba74",marginBottom:4}}>{outcome.cause}</div>}{/* [5.84.0 UX-2b] */}
                   {aiCommentary&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",fontStyle:"italic",marginBottom:4}}>{aiCommentary.reaction} {aiCommentary.commentary}</div>}
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)"}}>{isNarrow?"auto →":"auto / Enter →"}</div>
+                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.3)"}}>{"auto →"}</div>
                 </div>
               )}
 
@@ -10563,7 +10563,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)"}}>💥 TIRI</div>
                   </div>
                   <div style={{textAlign:"center",gridColumn:"span 2"}}>
-                    {(()=>{const _rb108=Math.min(mStats.rb,30);const _raw108=clamp(5.8+_rb108*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _r108=Math.round(_raw108*10)/10;const _rc108=_r108>=8?"#4ade80":_r108>=6.5?"#f59e0b":"#f87171";return<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><span style={{fontSize:FS.bodyLg,fontWeight:900,color:_rc108,lineHeight:1}}>{_r108}</span><span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)"}}>⭐ RATING</span></div>;})()}
+                    {(()=>{const _rb108=Math.min(mStats.rb,30);const _raw108=clamp(5.8+_rb108*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);/* [23/09 POC — collaudo PO «rating e pagella sono in disaccordo»] il voto e' quello della PAGELLA del motore (una sola sorgente); la formula vecchia resta solo se il motore manca. Rosso __CPM_NO_VOTO23 */let _pg23=null;try{if(!(typeof window!=='undefined'&&window.__CPM_NO_VOTO23)&&motoreRef.current&&motoreRef.current.pagelle){const _e=motoreRef.current.pagelle().find(x=>x&&x.eroe);if(_e)_pg23=_e.voto;}}catch(_e){}const _r108=_pg23!=null?_pg23:Math.round(_raw108*10)/10;const _rc108=_r108>=8?"#4ade80":_r108>=6.5?"#f59e0b":"#f87171";return<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><span style={{fontSize:FS.bodyLg,fontWeight:900,color:_rc108,lineHeight:1}}>{_r108}</span><span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.35)"}}>⭐ RATING</span></div>;})()}
                   </div>
                 </div>
                 <div style={{marginTop:5,fontSize:FS.caption,color:"rgba(255,255,255,0.25)"}}>
@@ -10644,13 +10644,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             const _hl=_drawShootout?(_shootoutWon?`DAL DISCHETTO ALLA GLORIA: ${_hn} E COMPAGNI PASSANO`:`FUORI AI RIGORI: ${_hn} E COMPAGNI ELIMINATI`)
               :winning?(_g>=4?`POKER DI ${_hn}!`:_g>=2?`${_hn} SHOW: ${_g} GOL`:_g>=1?`${_hn} DECIDE IL MATCH`:_a>=1?`${_hn} ILLUMINA: ${_a} ASSIST`:"VITTORIA DI CARATTERE"):(!winning&&!losing)?(_g>=1?`${_hn} SEGNA, FINISCE PARI`:"PAREGGIO COMBATTUTO"):(_g>=1?`${_hn} NON BASTA`:"KO AMARO");
             const _paper=((player.journalists||[])[0]&&(player.journalists[0].paper||player.journalists[0].name))||((typeof NEWSPAPERS!=="undefined"&&NEWSPAPERS[0]&&NEWSPAPERS[0].name)||"Sport Korward");
-            const _serif="Georgia,'Times New Roman',serif";
-            return(<div style={{margin:"-22px -22px 14px",padding:"14px 18px 12px",background:TH.card,borderBottom:`3px double ${TH.text}`,textAlign:"left"}}>
+            const _serif="inherit";/* [23/09 POC — richiesta PO «uniforma la grafica come le altre schermate»] il carattere del gioco (Barlow), non piu' con grazie */
+            return(<div style={{margin:"-22px -22px 14px",padding:"14px 18px 12px",background:TH.card,borderBottom:`1px solid ${TH.divider}`,textAlign:"left"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",borderBottom:`1px solid ${TH.divider}`,paddingBottom:5,marginBottom:9}}>
-                <div style={{fontFamily:_serif,fontSize:FS.title,fontWeight:900,letterSpacing:-0.4,color:TH.text}}>📰 {_paper}</div>
+                <div style={{fontFamily:_serif,fontSize:FS.subhead,fontWeight:FW.black,letterSpacing:0.2,color:TH.text}}>📰 {_paper}</div>
                 <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:0.4,whiteSpace:"nowrap"}}>Stag. {player.season||1} · G. {player.week||1}</div>
               </div>
-              <div style={{fontFamily:_serif,fontSize:FS.h,fontWeight:900,lineHeight:1.14,color:TH.text,letterSpacing:-0.3}}>{_hl}</div>
+              <div style={{fontFamily:_serif,fontSize:FS.h,fontWeight:FW.black,lineHeight:1.14,color:TH.text,letterSpacing:0,textTransform:"uppercase"}}>{_hl}</div>
             </div>);})()}
           {ceremony&&!ceremony.light&&(<div style={{margin:"-8px -8px 16px",padding:"16px 12px",borderRadius:RAD.md,background:"linear-gradient(135deg,#7a1f30,#8e1f33 55%,#f0b33a)",boxShadow:"0 6px 28px rgba(94,15,29,0.45)",position:"relative",overflow:"hidden"}}>
             <div style={{fontSize:46,lineHeight:1,animation:"trophyRise 1s ease-out, trophyGlow 1.6s ease-in-out infinite 1s"}}>🏆</div>
@@ -10701,7 +10701,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginBottom:12}}>
             {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},{l:"Tiri",v:mxStats.shots,e:"💥",c:TH.accent},{l:"Poss.",v:(Math.round(possession))+'%',e:"🔵",c:TH.success}].map(s=>(
               <Card key={s.l} style={{padding:"8px 4px",textAlign:"center"}}>
-                <div style={{fontSize:FS.body,marginBottom:1}}>{s.e}</div><div className="cpm-num" style={{fontSize:FS.title,fontWeight:900,color:legCol944(s.c),lineHeight:1}}>{s.v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
+                <div style={{fontSize:FS.body,marginBottom:1}}>{s.e}</div><div className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text,lineHeight:1}}>{s.v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
               </Card>
             ))}
           </div>
@@ -10822,13 +10822,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               {goals:mStats.goals,assists:mStats.assists,rating:_ratP,name:player.name,club:(_isNatCtx?(player.nation||"Italia"):(player.club?.n||player.club?.name||"la squadra")),homeRoster:(isMatchHome?homeRoster:awayRoster)||[]},/* [7.118.0 collaudo PO «FC Salernum–Germania in una gara di nazionale!»] squadra = NAZIONE in nat-ctx, non il club */
               {season:player.season,week:player.week,age:player.age,matchHistory:player.matchHistory,isDerby:!!drby,archetype:player.archetype,records:{topSeasonGoals:0,topSeasonAssists:0,topOvr:player.ovr||60},koPen:_koPenEnded}
             );
-            const _serif="Georgia,'Times New Roman',serif";
+            const _serif="inherit";/* [23/09 POC — richiesta PO «uniforma la grafica come le altre schermate»] il carattere del gioco (Barlow), non piu' con grazie */
             const _clubP=player.club?.p||player.club?.prestige||60,_oppP=opponent?.p||opponent?.prestige||65;
             const _kick=drby?"Un derby sentitissimo: in palio molto più di tre punti.":(mw>=8||_isFinalKO)?"Una sfida da dentro-o-fuori, di quelle che segnano una stagione.":(winning&&_oppP-_clubP>=12)?"Impresa di prestigio: piegata una squadra di categoria superiore.":((!winning)&&_clubP-_oppP>=12)?"Passo falso contro un avversario alla portata.":(mw>=6)?"Big match dal peso specifico enorme in classifica.":"";
             const _sub=(_press.headlines||[]).slice(1,4);
             const _hero=(_press.quotes||[]).find(q=>!/—\s*Mister\s*$/.test(q));
             const _hd={fontSize:FS.caption,color:TH.muted,fontWeight:800,letterSpacing:1.5,marginBottom:6,textTransform:"uppercase",fontFamily:_serif};
-            return(<div style={{marginTop:14,borderTop:`3px double ${TH.text}`,paddingTop:12,textAlign:"left"}}>
+            return(<div style={{marginTop:14,borderTop:`1px solid ${TH.divider}`,paddingTop:12,textAlign:"left"}}>
               {/* Il pezzo del giornalista: occhiello (importanza/prestigio) + analisi tattica */}
               <div style={_hd}>L'analisi</div>
               {_kick&&<div style={{fontFamily:_serif,fontSize:FS.small,fontWeight:700,fontStyle:"italic",color:TH.text,marginBottom:5,lineHeight:1.4}}>{_kick}</div>}
@@ -10868,7 +10868,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         {/* footer PINNATO — sempre visibile: SALVA il risultato e torna alla dashboard (bottone GRANATA di brand) */}
         <div style={{flexShrink:0,padding:isNarrow?"10px 12px":"12px 0 4px",background:TH.bg,borderTop:isNarrow?`1px solid ${TH.border}`:"none",boxShadow:isNarrow?"0 -4px 16px rgba(0,0,0,0.07)":"none"}}>
           <Btn onClick={handleEnd} v="primary" fw style={{padding:"14px",fontSize:FS.bodyLg,background:`linear-gradient(135deg,${TH.primary},${TH.primaryDk})`,color:"#fff"}}>
-            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla dashboard"} {!isNarrow&&<span className="kbd" style={{opacity:0.7,fontSize:FS.caption}}>Enter</span>}
+            {context==="trial"?"📋 Risultati provino":"🏟️ Torna alla dashboard"} {/* [23/09 POC] scritta Enter tolta (richiesta PO) */}
           </Btn>
         </div>
         </div>

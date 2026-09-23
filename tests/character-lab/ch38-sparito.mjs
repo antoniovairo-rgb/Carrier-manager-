@@ -21,6 +21,13 @@ try {
   await page.waitForFunction(() => window.__CPM_HYPER_CASUAL_STATUS === 'ready-lineup' || window.__CPM_NO_CGDEFAULT, null, { timeout: 180000 });
   await sleep(ROSSO ? 8000 : 500);
   await page.evaluate(() => window.__CPM_FORCE_SIT(33, true)); await sleep(3000);
+  /* [23/09] campionamento lungo: 12 fotogrammi in ~14 s dell'highlight, per famiglia di MATERIALI su tutto il corpo */
+  const lungo = [];
+  for (let k = 0; k < 12; k++) { lungo.push(await page.evaluate(() => new Promise(res => { const O = THREE.Object3D.prototype, orig = O.onBeforeRender, vis = new Set();
+    O.onBeforeRender = function () { if (this.isSkinnedMesh) vis.add(this); };
+    requestAnimationFrame(() => requestAnimationFrame(() => { O.onBeforeRender = orig; const radici = new Set(); let cg = 0, ch = 0;
+      vis.forEach(o => { let t = o; while (t.parent && !t.parent.isScene) t = t.parent; if (radici.has(t)) return; radici.add(t); let mt = ''; t.traverse(m => { if (m.isMesh) mt += ' ' + [].concat(m.material).map(x => x && x.name).join(' '); }); if (/Hyper(Shirt|Shorts|Leg|Socks|Boots)/.test(mt)) cg++; else ch++; });
+      res({ fase: (window.__CPM_PHASE && window.__CPM_PHASE()) || null, cg, ch }); })); }))); await sleep(1100); }
   const m = await page.evaluate(() => new Promise(res => {
     const O = THREE.Object3D.prototype, orig = O.onBeforeRender, vis = new Set();
     O.onBeforeRender = function () { if (this.isSkinnedMesh) vis.add(this); };
@@ -35,6 +42,7 @@ try {
     }));
   }));
   await page.screenshot({ path: path.join(out, `${TAG}.png`) });
-  fs.writeFileSync(path.join(out, `${TAG}.json`), JSON.stringify({ rosso: ROSSO, ...m, glb, errori }, null, 1));
+  fs.writeFileSync(path.join(out, `${TAG}.json`), JSON.stringify({ rosso: ROSSO, ...m, lungo, glb, errori }, null, 1));
+  console.log('LUNGO', JSON.stringify(lungo));
   console.log(TAG, ROSSO || '-', JSON.stringify(m), 'glb', JSON.stringify(glb), 'errori', errori.length);
 } finally { await browser.close(); server.close(); }

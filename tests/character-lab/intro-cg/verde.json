@@ -1,0 +1,42 @@
+{
+ "tag": "verde",
+ "istanti": [
+  {
+   "t": 4,
+   "corpi": 2,
+   "cgtrader": 2,
+   "ch38": 0,
+   "cg23": true
+  },
+  {
+   "t": 11.6,
+   "corpi": 2,
+   "cgtrader": 2,
+   "ch38": 0,
+   "cg23": true
+  },
+  {
+   "t": 14,
+   "corpi": 2,
+   "cgtrader": 2,
+   "ch38": 0,
+   "cg23": true
+  }
+ ],
+ "glb": {
+  "footballer.glb": 1,
+  "anim-idle.glb": 1,
+  "anim-jog.glb": 1,
+  "anim-kick.glb": 1,
+  "anim-penalty.glb": 1,
+  "anim-header.glb": 1,
+  "anim-tackle.glb": 1,
+  "anim-volley.glb": 1,
+  "anim-gk-dive.glb": 1,
+  "anim-gk-catch.glb": 1,
+  "anim-gk-block.glb": 1,
+  "anim-receive.glb": 1,
+  "cgtrader-review-lod1-kit-adapter.glb": 1
+ },
+ "errori": []
+}

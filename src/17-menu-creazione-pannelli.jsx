@@ -241,7 +241,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         </Card>
       )}
       {_dk&&<div style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
-        <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> slot · <span className="kbd">Enter</span> continua/nuova
+        <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> slot
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
     </div>
@@ -420,7 +420,7 @@ function OffersScreen({player,trialStats,onChoose}){
         <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Riepilogo provini</div>
         <div style={{display:"flex",gap:6}}>{trialStats.map((t,i)=><div key={i} className="cpm-num" style={{flex:1,background:TH.surface2,borderRadius:RAD.sm,padding:"7px",textAlign:"center",border:"1px solid "+TH.divider}}><div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2}}>Provino {i+1}</div><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>⚽{t.goals} 🎯{t.assists}</div><div style={{fontSize:FS.caption,color:TH.txAmber,fontWeight:FW.bold}}>{t.rating}</div></div>)}</div>
       </Card>
-      {_dk&&<div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>}
+      
       <div className="cpm-offers" style={{marginBottom:9}}>
         {offers.map((club,i)=>{
           const isSel=i===selIdx;
@@ -529,7 +529,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       <style>{`@keyframes pulse87{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}`}</style>
       {/* stat tiles */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:9}}>
-        {[{e:"⚽",l:"Gol",v:_g},{e:"🎯",l:"Assist",v:_a},{e:"⭐",l:"Voto",v:last.rating,c:TH.warning}].map(s=>(
+        {[{e:"⚽",l:"Gol",v:_g},{e:"🎯",l:"Assist",v:_a},{e:"⭐",l:"Voto",v:last.rating}/* [23/09 POC — «uniforma grafica»] stesso colore di gol e assist */].map(s=>(
           <Card key={s.l} style={{padding:"14px 8px",textAlign:"center"}}>
             <div style={{fontSize:FS.title}}>{s.e}</div>
             <div style={{fontSize:FS.h,fontWeight:900,color:s.c||TH.text,marginTop:2}}>{s.v}</div>
@@ -543,7 +543,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       </Card>
       {/* progress dots */}
       <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:10}}>{[0,1,2].map(i=><React.Fragment key={i}>{i>0&&<div style={{width:22,height:2,background:i<=trialNum?TH.success:TH.cardBorder,borderRadius:RAD.pill}}/>}<div style={{width:26,height:26,borderRadius:"50%",background:i<=trialNum?TH.success:"transparent",border:`2px solid ${i<=trialNum?TH.success:TH.cardBorder}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:i<=trialNum?"#fff":TH.faint}}>{i<=trialNum?"✓":i+1}</div></React.Fragment>)}</div>
-      {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:FS.small,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>Manca ancora {2-trialNum} {2-trialNum===1?"provino":"provini"} per convincere i club.{_kbHint?<span style={{color:TH.faint}}> [Enter]</span>:null}</div>}
+      {done?<div style={{textAlign:"center",color:TH.txGreen,fontSize:FS.small,fontWeight:700,marginBottom:9}}>✅ Tre provini completati! I club stanno valutando le offerte…</div>:<div style={{textAlign:"center",color:TH.muted,fontSize:FS.small,marginBottom:9}}>Manca ancora {2-trialNum} {2-trialNum===1?"provino":"provini"} per convincere i club.</div>}
       <Btn onClick={done?()=>{}:()=>{setTrialNum(n=>n+1);setPhase("pre");}} v={done?"success":"primary"} fw style={{padding:"14px",fontSize:FS.bodyLg}}>{done?"⏳ Calcolo delle offerte…":`Vai al Provino ${trialNum+2} →`}</Btn>
     </div>;}
   return <div style={{width:"100%",maxWidth:560,margin:"0 auto"}}>
@@ -574,7 +574,7 @@ function TrialFlow({player:initPlayer,onComplete,resume}){
       {_howTips.map((t,i)=><div key={i} style={{display:"flex",gap:11,marginBottom:i<_howTips.length-1?11:0,alignItems:"flex-start"}}><div style={{fontSize:FS.title,width:24,textAlign:"center"}}>{t.i}</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:FS.small,color:TH.text}}>{t.t}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1,lineHeight:1.45}}>{t.d}</div></div></div>)}
     </Card>}
     {trialNum>0&&<div style={{textAlign:"center",fontSize:FS.small,color:TH.muted,marginBottom:9}}>Finora ai provini: <strong style={{color:TH.text}}>{_totG} gol</strong> · <strong style={{color:TH.text}}>{_totA} assist</strong></div>}
-    <Btn onClick={()=>setPhase("match")} fw style={{padding:"15px",fontSize:FS.bodyLg}}>⚡ Inizia il provino{_kbHint?<span style={{opacity:0.6,fontSize:FS.small}}> [Enter]</span>:null}</Btn>
+    <Btn onClick={()=>setPhase("match")} fw style={{padding:"15px",fontSize:FS.bodyLg}}>⚡ Inizia il provino{/* [23/09 POC — richiesta PO «togli scritta enter»] il tasto Enter funziona ancora, la scritta no */}</Btn>
   </div>;
 }
 

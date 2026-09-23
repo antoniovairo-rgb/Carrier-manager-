@@ -74,7 +74,7 @@ function ProTransitionScreen({player,onChoose}){
       </div>
       {/* Offers */}
       <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Le tue opzioni</div>
-      {_dk&&<div style={{fontSize:FS.caption,color:TH.faint,textAlign:"center",marginBottom:8}}>↑↓ seleziona · Enter / 1·2·3 scegli</div>}
+      
       <div className="cpm-proto">
         {offers.map((o,oi)=>{const isSel=oi===selIdx;return(
           <Card key={o.id} style={{marginBottom:8,padding:"12px 14px",outline:isSel?"2px solid "+TH.primary:"none",transition:"outline .1s"}}

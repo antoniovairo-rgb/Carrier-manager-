@@ -250,16 +250,21 @@ function IntroCinematic({onDone}){
     let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true});}catch(_e){return;}
     const W=()=>host.clientWidth||360,H=()=>host.clientHeight||640;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.6));renderer.setSize(W(),H());renderer.setClearColor(0x050810,1);
+    /* [23/09 POC — collaudo PO «la intro sembra un film horror»] la scena sommava cinque luci forti SENZA la catena colore della
+       partita: prato verde fluo, corpi di plastica. Ora la stessa catena del match (ACES + uscita sRGB) e luci ridotte in proporzione.
+       Rosso __CPM_NO_LUCEINTRO23. */
+    const _luce23=!window.__CPM_NO_LUCEINTRO23;
+    if(_luce23){try{renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;}catch(_e){}}
     host.appendChild(renderer.domElement);renderer.domElement.style.cssText="position:absolute;inset:0;width:100%;height:100%;";
     const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x050810,26,74);
     const cam=new THREE.PerspectiveCamera(50,W()/H(),0.1,120);
-    scene.add(new THREE.AmbientLight(0xaab6d2,1.0));/* [7.42.0 collaudo PO «scena molto molto buia»] +54% */
-    scene.add(new THREE.HemisphereLight(0xbdd2ff,0x2a3a2c,0.55));/* riempimento cielo/prato: i dettagli si leggono */
-    const moon=new THREE.DirectionalLight(0xdfe9ff,1.05);moon.position.set(-8,18,10);scene.add(moon);
-    [[-16,14],[16,14]].forEach(([x,z])=>{const l=new THREE.PointLight(0xfff2d0,1.35,70);l.position.set(x,14,z);scene.add(l);});/* fari più caldi e potenti */
+    scene.add(new THREE.AmbientLight(0xaab6d2,_luce23?0.12:1.0));/* [7.42.0 collaudo PO «scena molto molto buia»] +54% */
+    scene.add(new THREE.HemisphereLight(0xbdd2ff,0x2a3a2c,_luce23?0.3:0.55));/* riempimento cielo/prato: i dettagli si leggono */
+    const moon=new THREE.DirectionalLight(0xdfe9ff,_luce23?0.85:1.05);moon.position.set(-8,18,10);scene.add(moon);
+    [[-16,14],[16,14]].forEach(([x,z])=>{const l=new THREE.PointLight(0xfff2d0,_luce23?0.35:1.35,70);l.position.set(x,14,z);scene.add(l);});/* fari più caldi e potenti */
     // prato a strisce
-    const pitch=new THREE.Mesh(new THREE.PlaneGeometry(64,44),new THREE.MeshStandardMaterial({color:0x1d7c3c,roughness:0.95}));pitch.rotation.x=-Math.PI/2;scene.add(pitch);
-    for(let i=0;i<8;i++){const s=new THREE.Mesh(new THREE.PlaneGeometry(64,2.7),new THREE.MeshStandardMaterial({color:0x196c34,roughness:0.95}));s.rotation.x=-Math.PI/2;s.position.set(0,0.01,-19+i*5.4);scene.add(s);}
+    const pitch=new THREE.Mesh(new THREE.PlaneGeometry(64,44),new THREE.MeshStandardMaterial({color:_luce23?0x1d7c3c:0x1d7c3c,roughness:0.95}));pitch.rotation.x=-Math.PI/2;scene.add(pitch);
+    for(let i=0;i<8;i++){const s=new THREE.Mesh(new THREE.PlaneGeometry(64,2.7),new THREE.MeshStandardMaterial({color:_luce23?0x196c34:0x196c34,roughness:0.95}));s.rotation.x=-Math.PI/2;s.position.set(0,0.01,-19+i*5.4);scene.add(s);}
     const lineMat=new THREE.MeshBasicMaterial({color:0xe8f2e8});
     /* [7.32.1 collaudo PO «disegna bene l'area di rigore con tutte le righe»] linea di fondo, area GRANDE
        (16m), area PICCOLA (6m), dischetto e LUNETTA — proporzioni reali scalate sulla porta 7.32 */
@@ -372,7 +377,28 @@ function IntroCinematic({onDone}){
     const _mkAv=(body,shirt,shorts,skin,withNum)=>{try{const av=(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone)?THREE.SkeletonUtils.clone(body.scene):null;if(!av)return null;
       const bb=new THREE.Box3().setFromObject(av);const hh=Math.max(0.1,bb.max.y-bb.min.y);av.scale.setScalar(1.82/hh);
       _tintKit(av,shirt,shorts,skin,withNum);scene.add(av);return av;}catch(_e){return null;}};
-    if(typeof loadGLB==="function"&&window.__CPM_GLB!==false){
+    /* [23/09 POC — L'INTRO SENZA CH38, decisione PO «via ovunque». Rosso __CPM_NO_CGINTRO] stesso corpo e stesse clip degli
+       highlight (cgtrader-review-lod1: 12.244 triangoli, 33 clip nel file): jog, idle, kick, gk-ready, gk-dive e throwin (l'apice
+       fa le braccia alzate come la «lift» di prima). Il numero 9 dipinto sulla schiena resta del CH38 (UV diverse): qui la maglia e'
+       a tinta unita. Senza il file, si ripiega sul CH38 di prima. */
+    const _cgIntro23=typeof corpoCG23==='function'&&typeof _hyperQ23==='function'&&/cgtrader/.test(_hyperQ23())&&!window.__CPM_NO_CGINTRO;
+    if(_cgIntro23&&typeof loadGLB==="function"&&window.__CPM_GLB!==false){
+      loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb').then(pkg=>{
+        if(!pkg||disposed)return;const A=n=>(pkg.animations||[]).find(c=>c&&c.name===n)||null;
+        heroAv=corpoCG23(pkg,{shirt:'#8e1f33',shorts:'#f2f2f2',socks:'#8e1f33',altezza:1.82});gkAv=corpoCG23(pkg,{shirt:'#f2c11c',shorts:'#1a1a1a',socks:'#f2c11c',altezza:1.82});
+        if(!heroAv||!gkAv)return;scene.add(heroAv);scene.add(gkAv);
+        const mk=(av,defs)=>{const mx=new THREE.AnimationMixer(av);mixers.push(mx);const acts={};Object.keys(defs).forEach(k=>{if(defs[k])acts[k]=mx.clipAction(defs[k]);});return acts;};
+        heroActs=mk(heroAv,{jog:A('jog'),idle:A('idle'),kick:A('kick'),lift:A('throwin')});gkActs=mk(gkAv,{idle:A('gk-ready')||A('idle'),dive:A('gk-dive')});
+        if(heroActs.jog)heroActs.jog.play();else if(heroActs.idle)heroActs.idle.play();if(gkActs.idle)gkActs.idle.play();
+        if(heroActs.kick){heroActs.kick.setLoop(THREE.LoopOnce);heroActs.kick.clampWhenFinished=true;}
+        if(heroActs.lift){heroActs.lift.setLoop(THREE.LoopOnce);heroActs.lift.clampWhenFinished=true;}
+        if(gkActs.dive){gkActs.dive.setLoop(THREE.LoopOnce);gkActs.dive.clampWhenFinished=true;}
+        try{heroAv.traverse(o=>{if(!o.isBone)return;const n=o.name||"";if(!stG.fL&&/^(ball|foot)_l$/i.test(n))stG.fL=o;if(!stG.fR&&/^(ball|foot)_r$/i.test(n))stG.fR=o;if(!stG.hd&&/^head$/i.test(n))stG.hd=o;});}catch(_e){}
+        hero.visible=false;gk.visible=false;glbOk=true;
+        try{if(!window.__CPM_STORE_BUILD){window.__CPM_INTRO_GLB=true;window.__CPM_INTRO_CG23=true;}}catch(_e){}
+      }).catch(()=>{});
+    }
+    else if(typeof loadGLB==="function"&&window.__CPM_GLB!==false){
       Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-jog.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-kick.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-gk-idle.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-gk-dive.glb').catch(()=>null),loadGLB('./assets/korward-regular-anims/regular-anim-throwin.glb').catch(()=>null)])
         .then(([body,jog,idle,kick,gkIdle,gkDive,lift])=>{
           if(!body||disposed)return;

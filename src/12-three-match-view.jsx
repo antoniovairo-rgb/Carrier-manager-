@@ -86,6 +86,20 @@ function _scegliGesto23(a,want,ai,chiave,lbl,lato){
    Il corpo CGTrader (kit-adapter lod0/1/2, portiere compreso) era visibile SOLO aprendo il gioco con
    ?hyperCharacter=cgtrader-highlight-optimized: senza parametro gli highlight usavano il CH38. Ora un unico
    selettore legge il parametro e, se manca, sceglie CGTrader. Un valore esplicito nell'URL vince sempre. */
+/* [23/09 POC — CORPO CGTRADER FUORI DAL CAMPO (direttiva PO «il CH38 deve sparire», decisione «via ovunque»)]
+   Helper di modulo per le scene che non passano dalla partita (intro): colora la divisa per NOME di materiale (gli slot
+   HyperShirt/HyperShorts/HyperSocks/HyperBoots del GLB, come _applyHyperKit) e porta il corpo alla statura voluta
+   misurandola sulle OSSA (il box dei SkinnedMesh CGTrader non misura il corpo: vedi 23/09 LOD). */
+function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
+  if(!pkg||!pkg.scene||!(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone))return null;
+  const av=THREE.SkeletonUtils.clone(pkg.scene);av.updateMatrixWorld(true);
+  let lo=Infinity,hi=-Infinity;const v=new THREE.Vector3();av.traverse(b=>{if(!b.isBone)return;b.getWorldPosition(v);lo=Math.min(lo,v.y);hi=Math.max(hi,v.y);});
+  const hh=(hi-lo)>0.5?(hi-lo):1.8;av.scale.setScalar((altezza||1.82)/hh);av.updateMatrixWorld(true);
+  const col={HyperShirt:shirt,HyperShorts:shorts,HyperSocks:socks||shirt,HyperBoots:shoes||'#15161a'};
+  av.traverse(m=>{if(!m.isMesh||!m.material)return;m.frustumCulled=false;const pm=(m.name||'').match(/^HyperShirtPattern-([a-z]+)/);if(pm)m.visible=pm[1]==='solid';
+    const src=Array.isArray(m.material)?m.material:[m.material];const nx=src.map(b=>{const hex=b&&col[b.name];if(hex==null)return b;const c=b.clone();c.map=null;c.color=new THREE.Color(hex);if('emissive' in c)c.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in c)c.roughness=.82;if(c.transparent){c.transparent=false;c.depthWrite=true;c.alphaTest=.5;}c.needsUpdate=true;return c;});
+    m.material=Array.isArray(m.material)?nx:nx[0];});
+  av.userData.cpmCG23=true;return av;}catch(_e){return null;}}
 function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
   if(q)return q;if(typeof window!=='undefined'&&window.__CPM_NO_CGDEFAULT)return '';return 'cgtrader-highlight-optimized';}catch(_e){return '';}}
 /* ⚠️ [7.794.0 — IL PALLONE E' IN PROPORZIONE E POGGIA SULL'ERBA. Rosso __CPM_NO794]

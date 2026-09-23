@@ -6743,7 +6743,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:FS.caption,color:cs.disabled?TH.faint:"rgba(255,255,255,0.72)"}}>{cs.sub}</div>
               </div>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
-                {_dk&&!cs.disabled&&<span className="kbd" style={{opacity:0.85}}>Enter</span>}
+                {/* [23/09 POC] scritta Enter tolta (richiesta PO); il tasto funziona */}
                 <span style={{fontSize:FS.subhead,color:cs.disabled?TH.faint:"rgba(255,255,255,0.9)"}}>›</span>
               </div>
             </button>
@@ -8096,7 +8096,7 @@ const getThisWeekMatchday=()=>{
           {_dk&&<Card style={{padding:"7px 12px"}} shadow={false} bg={TH.surface2}>
             <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>⌨️ Scorciatoie tastiera</div>
             <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-              {[["Enter/P","Gioca"],["A/0","Avanza sett."],["S","Salva"],["T","Allena"],["C","Calendario"],["F","Classifica"],["Esc","Indietro"],["←→","Cambia tab"]].map(([k,l])=>(
+              {[["P","Gioca"],["A/0","Avanza sett."],["S","Salva"],["T","Allena"],["C","Calendario"],["F","Classifica"],["Esc","Indietro"],["←→","Cambia tab"]].map(([k,l])=>(
                 <div key={k} style={{display:"flex",alignItems:"center",gap:4,fontSize:FS.caption,color:TH.muted}}>
                   <span className="kbd">{k}</span>{l}
                 </div>
@@ -11030,7 +11030,7 @@ const getThisWeekMatchday=()=>{
       {/* BOTTOM NAV */}
       <div className="cpm-nav-bar" style={{zIndex:100}}>
       <div className="cpm-nav-hint" style={{borderTop:"1px solid "+TH.cardBorder}}>
-        {[{k:"Enter",l:"Gioca"},{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(
+        {[{k:"0",l:"Avanza"},{k:"Esc",l:"Indietro"},{k:"Spc",l:"Conferma"}].map(h=>(/* [23/09 POC] «togli enter ovunque» */
           <span key={h.k} style={{fontSize:FS.caption,color:TH.muted,display:"flex",alignItems:"center",gap:3}}>
             <span style={{background:TH.track,borderRadius:3,padding:"1px 5px",fontFamily:"monospace",fontSize:FS.caption,color:"#334155"}}>{h.k}</span>{/* [7.120.0 audit UI] chip chiaro FISSO → testo slate scuro FISSO (era TH.text = chiaro in dark mode → illeggibile) */}
             {h.l}

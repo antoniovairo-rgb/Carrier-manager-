@@ -1,0 +1,48 @@
+{
+ "tag": "rosso",
+ "istanti": [
+  {
+   "t": 4,
+   "corpi": 2,
+   "cgtrader": 0,
+   "ch38": 2,
+   "cg23": false
+  },
+  {
+   "t": 11.6,
+   "corpi": 2,
+   "cgtrader": 0,
+   "ch38": 2,
+   "cg23": false
+  },
+  {
+   "t": 14,
+   "corpi": 2,
+   "cgtrader": 0,
+   "ch38": 2,
+   "cg23": false
+  }
+ ],
+ "glb": {
+  "footballer.glb": 1,
+  "anim-idle.glb": 1,
+  "anim-jog.glb": 1,
+  "anim-kick.glb": 1,
+  "anim-penalty.glb": 1,
+  "anim-header.glb": 1,
+  "anim-tackle.glb": 1,
+  "anim-volley.glb": 1,
+  "anim-gk-dive.glb": 1,
+  "anim-gk-catch.glb": 1,
+  "anim-gk-block.glb": 1,
+  "anim-receive.glb": 1,
+  "korward-regular-player.glb": 1,
+  "regular-anim-jog.glb": 1,
+  "regular-anim-idle.glb": 1,
+  "regular-anim-kick.glb": 1,
+  "regular-anim-gk-idle.glb": 1,
+  "regular-anim-gk-dive.glb": 1,
+  "regular-anim-throwin.glb": 1
+ },
+ "errori": []
+}

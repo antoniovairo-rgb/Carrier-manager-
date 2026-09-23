@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 19:58 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 21:11 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -43,6 +43,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 21:11 | Collaudo PO da PC: tolto «Enter» ovunque; schermate provino/fine partita uniformate (Barlow, un colore per i numeri); ovale attorno alla figurina tolto; punteggio neutro (non rosso/verde); voto a destra = pagella del motore; intro col corpo CGTrader e luce da partita | intro: 2 corpi CGTrader, 0 CH38 (rosso 0/2), prato luminosità 0,43 (era 0,66) · fine partita: 0 testi con grazie, 0 «Enter» · griglia-mobile 65 schermate 0 sbordi · design-system, test:logic, save-compat, career-critical verdi |
 | 23/09 19:58 | Figurine nel sistema grafico del gioco (richiesta PO): colori/tipografia/raggi dai token (TH, FS >= 11 px, FW, RAD, Barlow) e testo che non sborda mai (passo FS che entra, righe per priorità, niente ellissi) | 7 figurine di prova 96-260 px: 0 righe fuori, 0 tagliate, 0 sotto 11 px · griglia-mobile 65 schermate 0 sbordi · design-system, test:logic 43/43, save-compat, career-critical verdi |
 | 23/09 19:39 | Figurine (richiesta PO): scheda completa con nome, COGNOME, ruolo, altezza e peso (dallo stesso aspetto del corpo 3D), colori del club (anche in partita: casa/avversari), cornice moderna; tocco sulla miniatura in testata = figurina intera; mister solo uomini 52-58 anni; giornaliste con volto | scheda: «Luca | BRAIN | ATTACCANTE | 183 cm | 77 kg» · mister 40/40 uomini, età 52-58 (rosso 22/40, 41-58) · giornaliste 20/20 con volto femminile (prima 0) · design-system, test:logic 43/43, save-compat 12/12, career-critical verdi |
 | 23/09 19:10 | Anteprima Netlify: tolto il badge «Powered by Netlify» (richiesta PO) e pubblicati tuffo/rovesciata/varianti | badge: 0 riquadri disegnati sul sito vivo (lo script resta ma si ferma) · pagina = build + 125 byte dell'interruttore |

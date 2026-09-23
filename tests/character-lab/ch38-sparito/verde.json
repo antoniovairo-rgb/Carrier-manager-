@@ -1,20 +1,82 @@
 {
  "rosso": "",
  "campioni": {
-  "ik_foot_root|mesh_rep_0_ori_repair_quad|HyperLegLeft": 5,
   "ik_foot_root|part_00000001001|Material.001": 5,
   "ik_foot_root|part_00000001002|Material.001": 5,
+  "ik_foot_root|mesh_rep_0_ori_repair_quad|HyperLegLeft": 5,
   "ik_foot_root|mesh_rep_0_ori_repair_quad001|HyperLegRight": 5,
   "ik_foot_root|mesh_rep_0_ori_repair_quad002|HyperShirt": 5,
   "ik_foot_root|mesh_rep_0_ori_repair_quad005|HyperShorts": 5,
   "ik_foot_root|part_00000001005|KorwardNativeHair_brown": 4,
-  "ik_foot_root|part_00000001005|KorwardNativeHair_blond": 1
+  "ik_foot_root|part_00000001005|KorwardNativeHair_black": 1
  },
  "skinDisegnate": 35,
  "corpi": 5,
  "ch38": 0,
  "cgtrader": 5,
  "modo": "ready-lineup",
+ "lungo": [
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  },
+  {
+   "fase": "hl_choose",
+   "cg": 5,
+   "ch": 0
+  }
+ ],
  "glb": {
   "footballer.glb": 1,
   "anim-idle.glb": 1,
