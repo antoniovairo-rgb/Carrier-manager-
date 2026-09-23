@@ -41,6 +41,13 @@ await apri();
 R.salvato = await page.evaluate(() => { try { return JSON.parse(localStorage.getItem('cpm-v3')).player.voltoEroe ?? null; } catch (e) { return 'err'; } });
 R.eroe = await page.evaluate(() => ({ registro: window.__CPM_EROE23 || null, id: typeof voltoEroeId23 === 'function' ? voltoEroeId23() : null, candidati: typeof candidatiEroe23 === 'function' ? candidatiEroe23(5).slice(0, 6) : null }));
 R.dashboard = await volti(); await page.screenshot({ path: path.join(out, `dashboard${TAG}.png`) });
+/* [23/09] figurina completa dell'eroe: tocco sulla miniatura in testata */
+await page.evaluate(() => document.querySelector('[data-cpm=figurina-testata]')?.click()); await sleep(1500);
+R.completa = await page.evaluate(() => { const o = document.querySelector('[data-cpm=figurina-completa]'); if (!o) return null; const f = o.querySelector('[data-cpm-figurina]'); return { testo: (f && f.innerText || '').replace(/\n+/g, ' | '), larga: f ? f.offsetWidth : 0, alta: f ? f.offsetHeight : 0, piena: !!(f && f.getAttribute('data-cpm-fig-piena')), sfondo: f ? getComputedStyle(f).backgroundColor : null }; });
+await page.screenshot({ path: path.join(out, `figurina-completa${TAG}.png`) });
+await page.evaluate(() => document.querySelector('[data-cpm=figurina-completa]')?.click()); await sleep(500);
+/* mister piu' anziano: eta' dichiarata nell'indice per i volti di 40 mister diversi */
+R.misterEta = await page.evaluate(() => { if (typeof voltoId23 !== 'function' || !VOLTI23.idx) return null; const perN = new Map(VOLTI23.idx.s.map(r => [r.n, r.e])); const e = []; for (let i = 0; i < 40; i++) { const n = voltoId23('mister', 'Mister ' + i); if (n != null && perN.has(n)) e.push(perN.get(n)); } let m = 0; for (let i = 0; i < 40; i++) { const n = voltoId23('mister', 'Mister ' + i); if (typeof _STAFF_M23 !== 'undefined' && _STAFF_M23.has(n)) m++; } const gf = []; for (let i = 0; i < 20; i++) gf.push(voltoId23('giornalista_f', 'Giornalista ' + i)); e.sort((a, b) => a - b); return { uominiSu40: m, giornalisteConVolto: gf.filter(x => x != null && x !== -1).length, giornalisteDonne: gf.filter(x => typeof _STAFF_F23 !== 'undefined' && _STAFF_F23.has(x)).length, n: e.length, min: e[0], mediana: e[Math.floor(e.length / 2)], max: e[e.length - 1] }; });
 await page.evaluate(() => window.__CPM_CAREER.goTab('club')); await sleep(1500);
 R.club = await volti(); await page.screenshot({ path: path.join(out, `club${TAG}.png`) });
 const intervista = async (i, nome) => { await page.evaluate(k => { const P = window.__CPM_CAREER; const j = (P.player ? P.player().journalists : null); return P.forceInterview && P.forceInterview('win'); }, i).catch(() => {}); await sleep(1200); };
@@ -81,5 +88,5 @@ R.riservato = await page.evaluate(() => { const E = voltoEroeId23(); let hit = 0
 R.richiestePortraits = { totale: richieste.length, uniche: [...new Set(richieste)].length, indice: richieste.filter(u => /indice\.json/.test(u)).length, manifest: richieste.filter(u => /manifest\.json/.test(u)).length };
 R.errori = errori;
 fs.writeFileSync(path.join(out, `verifica${TAG}.json`), JSON.stringify(R, null, 1));
-console.log(JSON.stringify({ scena: R.scena, salvato: R.salvato, eroe: R.eroe.id, candidati: R.eroe.candidati, stabile: R.stabile, riservato: R.riservato, rete: R.richiestePortraits, dashboard: R.dashboard, club: R.club.filter(x => x.src), intervista: R.intervista.filter(x => x.tipo === 'giornalista'), anteprime: R.anteprime, errori }, null, 1));
+console.log(JSON.stringify({ completa: R.completa, misterEta: R.misterEta, scena: R.scena, salvato: R.salvato, eroe: R.eroe.id, candidati: R.eroe.candidati, stabile: R.stabile, riservato: R.riservato, rete: R.richiestePortraits, dashboard: R.dashboard, club: R.club.filter(x => x.src), intervista: R.intervista.filter(x => x.tipo === 'giornalista'), anteprime: R.anteprime, errori }, null, 1));
 await b.close(); srv.close();

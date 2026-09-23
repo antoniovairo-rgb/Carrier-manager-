@@ -9163,6 +9163,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   // Pitch kit colors: homeCol=squadra dell eroe (attacca sempre dal lato "home"), oppCol=avversario
   const homeKitCol=heroKitCol;
   const awayKitCol=_plIsKitHome?_mkits.awayShirt:_mkits.homeShirt;
+  /* [23/09 POC — FIGURINE NEI COLORI DELLE SQUADRE] durante la partita le figurine di compagni e avversari prendono i colori delle maglie in campo */
+  if(typeof window!=='undefined'){try{window.__CPM_PARTITA23={casa:{c:homeKitCol,c2:(player&&player.club&&player.club.c2)||null},avv:{c:awayKitCol,c2:(opponent&&(opponent.c2||opponent.c))||null}};}catch(_e){}}
+  React.useEffect(()=>()=>{try{window.__CPM_PARTITA23=null;}catch(_e){}},[]);
   // Scoreboard display colors: left=TRUE home team, right=TRUE away team → SEMPRE le maglie indossate in campo
   const scoreHomeCol=_mkits.homeShirt;
   const scoreAwayCol=_mkits.awayShirt;

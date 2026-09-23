@@ -4,80 +4,115 @@
   "registro": {
    "nome": "Luca Brain",
    "volto": null,
-   "avatarId": 5
+   "avatarId": 5,
+   "ruolo": "Attaccante",
+   "col": "#dc2626",
+   "col2": "#111111",
+   "club": "AC Milanello"
   },
-  "id": null,
-  "candidati": []
+  "id": 28,
+  "candidati": [
+   28,
+   47,
+   105,
+   107,
+   163,
+   249
+  ]
  },
  "dashboard": [
   {
    "tipo": "giocatore",
-   "nome": null,
-   "src": null,
+   "nome": "Luca Brain",
+   "src": "lotto-01/volto-0028.webp",
    "w": 35,
    "h": 48
-  },
-  {
-   "tipo": "giocatore",
-   "nome": null,
-   "src": null,
-   "w": 31,
-   "h": 44
   }
  ],
+ "completa": {
+  "testo": "KORWARD | Luca | BRAIN | ATTACCANTE | 183 cm · 77 kg",
+  "larga": 260,
+  "alta": 364,
+  "piena": true,
+  "sfondo": "rgb(220, 38, 38)"
+ },
+ "misterEta": {
+  "uominiSu40": 22,
+  "giornalisteConVolto": 20,
+  "giornalisteDonne": 0,
+  "n": 40,
+  "min": 41,
+  "mediana": 52,
+  "max": 58
+ },
  "club": [
   {
    "tipo": "giocatore",
-   "nome": null,
-   "src": null,
+   "nome": "Luca Brain",
+   "src": "lotto-01/volto-0028.webp",
    "w": 35,
    "h": 48
-  },
-  {
-   "tipo": "giocatore",
-   "nome": null,
-   "src": null,
-   "w": 31,
-   "h": 44
   }
  ],
  "intervista": [
   {
    "tipo": "giocatore",
-   "nome": null,
-   "src": null,
+   "nome": "Luca Brain",
+   "src": "lotto-01/volto-0028.webp",
    "w": 35,
    "h": 48
   },
   {
-   "tipo": "giocatore",
-   "nome": null,
-   "src": null,
-   "w": 31,
-   "h": 44
-  },
-  {
    "tipo": "giornalista",
-   "nome": null,
-   "src": null,
+   "nome": "Marco Ferretti",
+   "src": "lotto-07/volto-0644.webp",
    "w": 28,
    "h": 39
   }
  ],
- "anteprime": [],
+ "anteprime": [
+  {
+   "src": "lotto-01/volto-0028.webp",
+   "ok": true
+  },
+  {
+   "src": "lotto-02/volto-0201.webp",
+   "ok": true
+  },
+  {
+   "src": "lotto-02/volto-0204.webp",
+   "ok": true
+  },
+  {
+   "src": "lotto-04/volto-0387.webp",
+   "ok": true
+  }
+ ],
  "scena": {
-  "saltato": "indice assente"
+  "chiavi": [
+   "Compagno 3",
+   "Compagno 20"
+  ],
+  "dentro": [
+   "lotto-01/volto-0089.webp",
+   "lotto-01/volto-0091.webp"
+  ],
+  "fuori": [
+   "lotto-01/volto-0089.webp",
+   "lotto-01/volto-0089.webp"
+  ],
+  "giornalistaImmagini": 0
  },
- "dopoRicarica": null,
+ "dopoRicarica": 28,
  "stabile": true,
  "riservato": {
-  "eroe": null,
-  "collisioni": 300
+  "eroe": 28,
+  "collisioni": 0
  },
  "richiestePortraits": {
-  "totale": 0,
-  "uniche": 0,
-  "indice": 0,
+  "totale": 14,
+  "uniche": 9,
+  "indice": 2,
   "manifest": 0
  },
  "errori": []

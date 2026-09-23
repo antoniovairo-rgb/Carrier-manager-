@@ -75,9 +75,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
   const[player,setPlayer]=useState(init);
+  const[figAperta23,setFigAperta23]=useState(false);/* [23/09 POC] la figurina completa dell'eroe, aperta toccando la miniatura in testata */
   /* [23/09 POC — FIGURINE] l'eroe pubblica chi e' e quale volto ha: tutte le schermate che lo chiamano per nome, «eroe-N» o
      «avatar-N» portano allo stesso volto, che nessun altro attore puo' ricevere. */
-  if(typeof window!=='undefined'){try{window.__CPM_EROE23={nome:player&&player.name,volto:(player&&player.voltoEroe!=null)?player.voltoEroe:null,avatarId:player?(player.avatarId|0):0};}catch(_e){}}
+  if(typeof window!=='undefined'){try{window.__CPM_EROE23={nome:player&&player.name,volto:(player&&player.voltoEroe!=null)?player.voltoEroe:null,avatarId:player?(player.avatarId|0):0,ruolo:(player&&player.position)||'Attaccante',col:player&&player.club&&player.club.c,col2:player&&player.club&&player.club.c2,club:player&&player.club&&(player.club.name||player.club.n)};}catch(_e){}}
   /* [7.149.0 collaudo PO «riprendere dallo stesso punto dopo background»] tab iniziale = ultimo tab attivo (cpm-active-tab),
      così dopo un reload della WebView si torna sulla stessa sezione. Solo valori noti; default dashboard; mai sotto test. */
   const _initTab=(()=>{try{if(typeof window!=="undefined"&&/[?&]cpmtest=1\b/.test(window.location.search||""))return "dashboard";
@@ -6027,7 +6028,7 @@ const getThisWeekMatchday=()=>{
                   dell'emoji del giornale c'e' lo spazio della figurina dell'intervistatore, seminato sul suo
                   NOME: lo stesso giornalista avra' sempre la stessa figurina. Larghezza 26 perche' 26x7/5 = 36,
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
-              <Figurina tipo="giornalista" chiave={interviewModal.paper?.name} voltoId={interviewModal.paper?.f?-1:undefined} larg={26} col={interviewModal.paper?.color||TH.primary}/>
+              <Figurina tipo={interviewModal.paper?.f?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={26} col={interviewModal.paper?.color||TH.primary}/>
               <div>
                 <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
@@ -6673,7 +6674,12 @@ const getThisWeekMatchday=()=>{
               </button>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:11,padding:"7px 12px 11px"}}>
-              <div style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<Figurina tipo="giocatore" chiave={player.name} larg={21}/>}/></div>
+              <div role="button" aria-label="Apri la figurina" data-cpm="figurina-testata" onClick={()=>setFigAperta23(true)} className="cpm-press" style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0,cursor:"pointer"}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<Figurina tipo="giocatore" chiave={player.name} larg={21}/>}/></div>
+              {figAperta23&&<div data-cpm="figurina-completa" onClick={()=>setFigAperta23(false)} style={{position:"fixed",inset:0,zIndex:9000,background:"rgba(2,6,23,0.72)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:14,padding:16}}>
+                {/* [23/09 POC] figurina intera dell'eroe: nome, cognome, ruolo, altezza, peso e colori del club; si chiude toccando */}
+                <Figurina tipo="giocatore" chiave={player.name} nome={player.name} ruolo={player.position||"Attaccante"} col={player.club&&player.club.c} col2={player.club&&player.club.c2} larg={Math.min(260,Math.round(window.innerWidth*0.64))}/>
+                <div style={{color:"#e2e8f0",fontSize:FS.caption,fontWeight:FW.semibold}}>Tocca per chiudere</div>
+              </div>}
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.caption,color:ink,textTransform:"uppercase",letterSpacing:1.6,fontWeight:FW.bold}}>{player.nation} &middot; {player.position||"Attaccante"}</div>
                 <h1 style={{margin:"2px 0 3px",fontSize:FS.title,fontWeight:FW.black,letterSpacing:.2,color:ink,lineHeight:1.05,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{player.name}</h1>

@@ -608,6 +608,9 @@ function _caricaVolti23(){
   }).catch(()=>{VOLTI23.stato="assente";});
 }
 const _FETTE23={mister:[0,0.30],procuratore:[0.30,0.50],giornalista:[0.50,0.70],arbitro:[0.70,0.85],dirigente:[0.85,1]};
+/* volti dello staff classificati A VISTA (23/09, l'indice non ha il sesso); gli incerti 30, 244, 330, 344, 730 non stanno in nessuno dei due */
+const _STAFF_M23=new Set([7,59,73,87,101,159,173,187,201,259,273,287,301,359,373,387,401,459,473,487,501,559,573,587,601,659,673,687,701,759,773,787,801,859,873,887,901,955,973,991]);
+const _STAFF_F23=new Set([8,16,44,116,130,144,216,230,316,416,430,444,516,530,544,616,630,644,716,744,816,830,844,918,936]);
 const _hash23=(x)=>{let h=2166136261>>>0;const t=String(x);for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;};
 /* candidati per il volto dell'eroe: giovani giocatori con la carnagione e il colore di capelli dell'aspetto 3D scelto */
 function candidatiEroe23(avatarId){
@@ -630,7 +633,16 @@ function voltoId23(tipo,chiave,salto){
     if(/^eroe(-|$)/.test(sl)||(E&&E.nome&&sl===_slugVolto(E.nome)))return voltoEroeId23();}
   const riservato=voltoEroeId23();
   let pool;
-  if(_FETTE23[t]){const [a,b]=_FETTE23[t];pool=I.s.slice(Math.floor(a*I.s.length),Math.floor(b*I.s.length));}
+  /* [23/09 POC — direttiva PO «il mister deve essere piu' anziano»] L'indice dei volti NON dichiara il sesso: i 70 volti dello staff
+     sono stati guardati uno per uno (foglio di provini, 23/09) e divisi a vista in 40 uomini e 25 donne; 5 volti incerti restano
+     fuori da entrambi. Il mister pesca SOLO fra gli uomini con eta' dichiarata >= 52 (19 volti, 52-58 anni, i piu' anziani in
+     testa); procuratore/arbitro/dirigente/giornalista fra gli uomini piu' giovani; «giornalista_f» fra le donne (prima le
+     giornaliste restavano senza volto). Rosso __CPM_NO_MISTER23 (le vecchie fette per indice). */
+  if((_FETTE23[t]||t==="giornalista_f")&&!(typeof window!=='undefined'&&window.__CPM_NO_MISTER23)){
+    if(t==="giornalista_f")pool=I.s.filter(r=>_STAFF_F23.has(r.n));
+    else if(t==="mister")pool=I.s.filter(r=>r.e>=52&&_STAFF_M23.has(r.n)).sort((x,y)=>(y.e-x.e)||(x.n-y.n));
+    else{const alt=I.s.filter(r=>r.e<52&&_STAFF_M23.has(r.n));const F={procuratore:[0,0.3],giornalista:[0.3,0.6],arbitro:[0.6,0.8],dirigente:[0.8,1]}[t]||[0,1];pool=alt.slice(Math.floor(F[0]*alt.length),Math.floor(F[1]*alt.length));}}
+  else if(_FETTE23[t]){const [a,b]=_FETTE23[t];pool=I.s.slice(Math.floor(a*I.s.length),Math.floor(b*I.s.length));}
   else{const meta=t==="avversario"?1:0;pool=I.g.filter((r,i)=>(i%2)===meta);}
   if(!pool.length)return null;
   let i=_hash23(t+"/"+sl)%pool.length,salti=salto|0;
@@ -672,7 +684,7 @@ function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,
     else{let n=voltoId23(tipo,chiave!=null?chiave:nome,0),z=0;while(n!=null&&_sc23.chi.has(n)&&_sc23.chi.get(n)!==_k23&&z<24){z++;n=voltoId23(tipo,chiave!=null?chiave:nome,z);}
       if(n!=null){_sc23.chi.set(n,_k23);_sc23.perChiave.set(_k23,n);}_vid23=n;}}
   const url=voltoUrl(tipo,chiave!=null?chiave:nome,_vid23);
-  if(url&&!(typeof window!=='undefined'&&window.__CPM_NO_CORNICE23))return <FigurinaKorward23 url={url} tipo={tipo} nome={nome} ruolo={ruolo} col={col} col2={col2} w={w} h={h} titolo={titolo} style={style} rest={rest}/>;
+  if(url&&!(typeof window!=='undefined'&&window.__CPM_NO_CORNICE23))return <FigurinaKorward23 url={url} tipo={tipo} chiave={chiave} nome={nome} ruolo={ruolo} col={col} col2={col2} w={w} h={h} titolo={titolo} style={style} rest={rest}/>;
   const conNome=!!nome&&w>=52;/* sotto i 52 px la fascia col nome non si legge: si mostra solo il riquadro */
   return(
     <div data-cpm-figurina={tipo} title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
@@ -706,28 +718,77 @@ function Figurina({tipo="giocatore",chiave,nome,ruolo,col,col2,larg=64,ritratto,
     </div>);
 }
 
-/* [23/09 POC] LA FIGURINA KORWARD 5:7. Cornice nei colori del club (col/col2 dal chiamante; senza, i colori del gioco), fascia
-   alta col marchio KORWARD, ritratto QUADRATO su fondo bianco (i volti sono 512x512: `cover` in un riquadro quadrato, mai
-   deformati ne' tagliati sul viso), fascia bassa con nome e ruolo come TESTO del gioco — niente e' impresso nell'immagine, e la
-   carnagione o altri attributi tecnici non compaiono mai. Sotto i 52 px spariscono le scritte, sotto i 40 anche il marchio. */
-function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest}){
-  const c1=col||TH.primary||"#8b1e3f",c2=col2||TH.accent||"#f59e0b";
-  const bordo=Math.max(2,Math.round(w*0.045));const marchio=w>=40;const scritte=!!nome&&w>=52;
-  const hTop=marchio?Math.max(8,Math.round(h*0.10)):0;const lato=w-2*bordo;
+/* [23/09 POC — FIGURINA COMPLETA, direttiva PO «le figurine sono tagliate e non contengono nome cognome peso altezza e non
+   ereditano i colori del club»]. I DATI li fornisce il gioco, mai l'immagine:
+   - eroe: nome, ruolo e colori del club da `window.__CPM_EROE23` (pubblicato da CareerApp); altezza e peso dallo STESSO aspetto
+     del corpo 3D (`_heroAppr`: statura 1,86-2,02, corporatura 0,97-1,07) → 170-190 cm, peso = 22,4 x statura^2 x corporatura;
+   - altri giocatori: aspetto da `appearanceFromSeed(hashStr(chiave))`, stesso calcolo (165-195 cm) — stabile per costruzione;
+   - staff: nessun dato fisico, solo il mestiere.
+   NOTA: l'handoff del 22/09 diceva «non scrivere statura»; il PO oggi chiede altezza e peso: vince la direttiva del PO. */
+const _MESTIERE23={giornalista_f:"Giornalista",mister:"Allenatore",arbitro:"Arbitro",giornalista:"Giornalista",procuratore:"Procuratore",dirigente:"Dirigente"};
+function datiFigurina23(tipo,chiave,nome,ruolo,col,col2){
+  const t=tipo||"giocatore",sl=_slugVolto(chiave!=null?chiave:nome),E=_eroe23();
+  const eroe=t==="giocatore"&&E&&(/^eroe(-|$)/.test(sl)||(E.nome&&(sl===_slugVolto(E.nome)||_slugVolto(nome||"")===_slugVolto(E.nome))));
+  let n=nome||(eroe?E.nome:null);if(!n&&t!=="giocatore"&&t!=="avversario"&&chiave&&/[a-zà-ü]\s+[a-zà-ü]/i.test(String(chiave)))n=String(chiave);
+  if(!n&&(t==="giocatore"||t==="avversario")&&chiave&&/^[A-Za-zÀ-ÿ'.]+(\s+[A-Za-zÀ-ÿ'.]+)+$/.test(String(chiave).trim()))n=String(chiave).trim();
+  const parti=String(n||"").trim().split(/\s+/).filter(Boolean);const cognome=parti.length?parti[parti.length-1]:"",nomeP=parti.slice(0,-1).join(" ");
+  let cm=null,kg=null;
+  if(t==="giocatore"||t==="avversario"){try{let hh,gg;
+    if(eroe&&E.avatarId!=null){const a=E.avatarId|0;hh=1.86+((a*73)%100)/100*0.16;gg=0.97+((a*131)%100)/100*0.10;}
+    else if(typeof appearanceFromSeed==='function'){const ap=appearanceFromSeed(hashStr(t+"/"+sl));hh=ap.height;gg=ap.girth;}
+    if(hh){cm=Math.round(165+(hh-1.82)/0.24*30);kg=Math.round(22.4*(cm/100)*(cm/100)*gg);}}catch(_e){}}
+  /* in partita: compagni nei colori di casa, avversari nei colori dell'avversario (maglie in campo, `__CPM_PARTITA23`) */
+  const PT=(typeof window!=='undefined'&&window.__CPM_PARTITA23)||null;const sq=PT?(t==="avversario"?PT.avv:(t==="giocatore"?PT.casa:null)):null;
+  return {eroe,nome:nomeP,cognome,ruolo:ruolo||(eroe?E.ruolo:null)||_MESTIERE23[t]||(t==="avversario"?"Avversario":null),cm,kg,
+    col:col||(eroe?E.col:null)||(sq&&sq.c)||null,col2:col2||(eroe?E.col2:null)||(sq&&sq.c2)||null};
+}
+/* La figurina Korward 5:7. Cornice nei colori del club (col = fondo e cornice, col2 = filetto e marchio), fascia alta KORWARD,
+   ritratto QUADRATO su bianco (volti 512x512: `cover` in un quadrato = mai tagliati ne' deformati), fascia bassa col testo del
+   gioco. Le scritte crescono con lo spazio: >=96 px scheda completa (nome, COGNOME, ruolo, cm/kg); 52-95 cognome e ruolo;
+   sotto i 52 solo il ritratto; sotto i 40 niente marchio. */
+function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,chiave}){
+  /* [23/09 POC — CORNICE MODERNA, direttiva PO «piu' moderna, professionale e bella»] angoli morbidi, fondo in sfumatura
+     diagonale nei colori del club (col -> scurito -> col2), riflesso lucido diagonale da carta patinata, ritratto con angoli
+     arrotondati e filetto chiaro, marchio KORWARD sottile e spaziato, fascia bassa in vetro bianco: nome piccolo, COGNOME
+     pieno, ruolo in pastiglia nel colore del club, altezza e peso in una riga separata. Rosso __CPM_NO_CORNICE23B (la cornice
+     del primo giro). */
+  const D=datiFigurina23(tipo,chiave,nome,ruolo,col,col2);
+  const c1=D.col||TH.primary||"#8b1e3f",c2=D.col2||TH.accent||"#f59e0b";
+  const piena=w>=96,media=!piena&&w>=52&&(D.cognome||D.ruolo);
+  const vecchia=typeof window!=='undefined'&&window.__CPM_NO_CORNICE23B;
+  const bordo=Math.max(2,Math.round(w*(vecchia?0.045:0.05)));const marchio=w>=40;
+  const hTop=marchio?Math.max(8,Math.round(h*0.085)):0;const lato=w-2*bordo;const altoF=piena?Math.round(lato*0.86):lato;
+  const rag=Math.max(3,Math.round(w*0.07)),ragF=Math.max(2,Math.round(w*0.04));
+  const scuro=`color-mix(in srgb, ${c1} 62%, #000000)`;
+  const fs1=Math.max(7,Math.round(w*0.058)),fs2=Math.max(9,Math.round(w*0.092)),fs3=Math.max(7,Math.round(w*0.05));
+  const riga={overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",lineHeight:1.12};
+  const topF=(hTop||bordo);
   return(
-    <div data-cpm-figurina={tipo} data-cpm-volto="1" title={titolo||nome||undefined} style={{position:"relative",width:w,height:h,flexShrink:0,
-      borderRadius:FIG.r,overflow:"hidden",background:c1,boxShadow:"0 1px 3px rgba(15,23,42,0.18)",...style}} {...(rest||{})}>
-      {marchio&&<div style={{height:hTop,display:"flex",alignItems:"center",justifyContent:"center",color:"#ffffff",
-        fontWeight:900,letterSpacing:Math.max(0.5,w*0.012),fontSize:Math.max(6,Math.round(hTop*0.62)),lineHeight:1,fontFamily:"system-ui,sans-serif"}}>KORWARD</div>}
-      <div style={{position:"absolute",left:bordo,top:hTop||bordo,width:lato,height:lato,background:"#ffffff",overflow:"hidden",
-        borderBottom:`${Math.max(1,Math.round(bordo*0.6))}px solid ${c2}`}}>
-        <img src={url} alt={nome||""} width={lato} height={lato} loading="lazy" decoding="async"
-          style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+    <div data-cpm-figurina={tipo} data-cpm-volto="1" data-cpm-fig-piena={piena?"1":undefined} title={titolo||[D.nome,D.cognome].filter(Boolean).join(" ")||undefined}
+      style={{position:"relative",width:w,height:h,flexShrink:0,borderRadius:vecchia?FIG.r:rag,overflow:"hidden",
+      background:vecchia?c1:`linear-gradient(155deg, ${c1} 0%, ${scuro} 58%, ${c2} 100%)`,
+      boxShadow:vecchia?`0 1px 3px rgba(15,23,42,0.22)`:(piena?`0 10px 24px rgba(2,6,23,0.35), inset 0 0 0 1px rgba(255,255,255,0.28)`:`0 1px 4px rgba(2,6,23,0.28), inset 0 0 0 1px rgba(255,255,255,0.22)`),...style}} {...(rest||{})}>
+      {!vecchia&&<div aria-hidden="true" style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:2,
+        background:"linear-gradient(115deg, rgba(255,255,255,0) 35%, rgba(255,255,255,0.20) 47%, rgba(255,255,255,0.06) 53%, rgba(255,255,255,0) 62%)"}}/>}
+      {marchio&&<div style={{height:hTop,display:"flex",alignItems:"center",justifyContent:"center",gap:Math.max(2,w*0.02),color:"#ffffff",
+        fontWeight:vecchia?900:800,letterSpacing:Math.max(0.6,w*(vecchia?0.012:0.03)),fontSize:Math.max(6,Math.round(hTop*(vecchia?0.62:0.5))),lineHeight:1,fontFamily:"system-ui,sans-serif",textShadow:"0 1px 2px rgba(0,0,0,.35)"}}>
+        {!vecchia&&piena&&<span style={{width:Math.round(w*0.07),height:1,background:c2,opacity:.9}}/>}KORWARD{!vecchia&&piena&&<span style={{width:Math.round(w*0.07),height:1,background:c2,opacity:.9}}/>}</div>}
+      <div style={{position:"absolute",left:bordo,top:topF,width:lato,height:altoF,background:"#ffffff",overflow:"hidden",
+        borderRadius:vecchia?0:ragF,boxShadow:vecchia?"none":`0 0 0 ${Math.max(1,Math.round(w*0.008))}px rgba(255,255,255,0.85)`,
+        borderBottom:vecchia?`${Math.max(1,Math.round(bordo*0.6))}px solid ${c2}`:"none"}}>
+        <img src={url} alt={[D.nome,D.cognome].filter(Boolean).join(" ")} width={lato} height={altoF} loading="lazy" decoding="async"
+          style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"50% 30%",display:"block"}}/>
       </div>
-      {scritte&&<div style={{position:"absolute",left:bordo,right:bordo,bottom:bordo,top:(hTop||bordo)+lato+Math.max(1,Math.round(bordo*0.6)),
-        background:"#ffffff",padding:"2px 4px",display:"flex",flexDirection:"column",justifyContent:"center"}}>
-        <div style={{fontSize:FS.caption,fontWeight:800,color:"#1e293b",lineHeight:1.12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
-        {ruolo?<div style={{fontSize:FS.caption,color:"#526279",lineHeight:1.12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ruolo}</div>:null}
+      {(piena||media)&&<div style={{position:"absolute",left:bordo,right:bordo,bottom:bordo,top:topF+altoF+Math.max(2,Math.round(w*0.025)),
+        background:vecchia?"#ffffff":"rgba(255,255,255,0.96)",borderRadius:vecchia?0:ragF,padding:piena?"3px 6px":"2px 4px",
+        display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:piena?Math.max(1,Math.round(w*0.008)):0,textAlign:"center",fontFamily:"system-ui,sans-serif"}}>
+        {piena&&D.nome?<div style={{...riga,maxWidth:"100%",fontSize:fs1,color:"#64748b",fontWeight:600,letterSpacing:.2}}>{D.nome}</div>:null}
+        {D.cognome?<div style={{...riga,maxWidth:"100%",fontSize:piena?fs2:FS.caption,fontWeight:900,color:"#0f172a",textTransform:"uppercase",letterSpacing:piena?.6:.3}}>{D.cognome}</div>:null}
+        {D.ruolo?(piena&&!vecchia
+          ?<div style={{...riga,maxWidth:"100%",fontSize:fs3,color:"#ffffff",background:c1,borderRadius:999,padding:`1px ${Math.round(w*0.035)}px`,fontWeight:800,textTransform:"uppercase",letterSpacing:.6}}>{D.ruolo}</div>
+          :<div style={{...riga,maxWidth:"100%",fontSize:piena?fs3:FS.caption,color:"#475569",fontWeight:800,textTransform:"uppercase",letterSpacing:.4}}>{D.ruolo}</div>):null}
+        {piena&&D.cm?<div className="cpm-num" style={{...riga,fontSize:fs3,color:"#334155",fontWeight:700,display:"flex",gap:Math.round(w*0.03),alignItems:"center"}}>
+          <span>{D.cm} cm</span><span style={{width:1,height:fs3,background:"#cbd5e1"}}/><span>{D.kg} kg</span></div>:null}
       </div>}
     </div>);
 }
@@ -33284,6 +33345,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   // Pitch kit colors: homeCol=squadra dell eroe (attacca sempre dal lato "home"), oppCol=avversario
   const homeKitCol=heroKitCol;
   const awayKitCol=_plIsKitHome?_mkits.awayShirt:_mkits.homeShirt;
+  /* [23/09 POC — FIGURINE NEI COLORI DELLE SQUADRE] durante la partita le figurine di compagni e avversari prendono i colori delle maglie in campo */
+  if(typeof window!=='undefined'){try{window.__CPM_PARTITA23={casa:{c:homeKitCol,c2:(player&&player.club&&player.club.c2)||null},avv:{c:awayKitCol,c2:(opponent&&(opponent.c2||opponent.c))||null}};}catch(_e){}}
+  React.useEffect(()=>()=>{try{window.__CPM_PARTITA23=null;}catch(_e){}},[]);
   // Scoreboard display colors: left=TRUE home team, right=TRUE away team → SEMPRE le maglie indossate in campo
   const scoreHomeCol=_mkits.homeShirt;
   const scoreAwayCol=_mkits.awayShirt;
@@ -40333,9 +40397,10 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
   const[player,setPlayer]=useState(init);
+  const[figAperta23,setFigAperta23]=useState(false);/* [23/09 POC] la figurina completa dell'eroe, aperta toccando la miniatura in testata */
   /* [23/09 POC — FIGURINE] l'eroe pubblica chi e' e quale volto ha: tutte le schermate che lo chiamano per nome, «eroe-N» o
      «avatar-N» portano allo stesso volto, che nessun altro attore puo' ricevere. */
-  if(typeof window!=='undefined'){try{window.__CPM_EROE23={nome:player&&player.name,volto:(player&&player.voltoEroe!=null)?player.voltoEroe:null,avatarId:player?(player.avatarId|0):0};}catch(_e){}}
+  if(typeof window!=='undefined'){try{window.__CPM_EROE23={nome:player&&player.name,volto:(player&&player.voltoEroe!=null)?player.voltoEroe:null,avatarId:player?(player.avatarId|0):0,ruolo:(player&&player.position)||'Attaccante',col:player&&player.club&&player.club.c,col2:player&&player.club&&player.club.c2,club:player&&player.club&&(player.club.name||player.club.n)};}catch(_e){}}
   /* [7.149.0 collaudo PO «riprendere dallo stesso punto dopo background»] tab iniziale = ultimo tab attivo (cpm-active-tab),
      così dopo un reload della WebView si torna sulla stessa sezione. Solo valori noti; default dashboard; mai sotto test. */
   const _initTab=(()=>{try{if(typeof window!=="undefined"&&/[?&]cpmtest=1\b/.test(window.location.search||""))return "dashboard";
@@ -46285,7 +46350,7 @@ const getThisWeekMatchday=()=>{
                   dell'emoji del giornale c'e' lo spazio della figurina dell'intervistatore, seminato sul suo
                   NOME: lo stesso giornalista avra' sempre la stessa figurina. Larghezza 26 perche' 26x7/5 = 36,
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
-              <Figurina tipo="giornalista" chiave={interviewModal.paper?.name} voltoId={interviewModal.paper?.f?-1:undefined} larg={26} col={interviewModal.paper?.color||TH.primary}/>
+              <Figurina tipo={interviewModal.paper?.f?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={26} col={interviewModal.paper?.color||TH.primary}/>
               <div>
                 <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
@@ -46931,7 +46996,12 @@ const getThisWeekMatchday=()=>{
               </button>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:11,padding:"7px 12px 11px"}}>
-              <div style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<Figurina tipo="giocatore" chiave={player.name} larg={21}/>}/></div>
+              <div role="button" aria-label="Apri la figurina" data-cpm="figurina-testata" onClick={()=>setFigAperta23(true)} className="cpm-press" style={{borderRadius:RAD.xs,padding:2,background:inkVelo945(ink,0.18),flexShrink:0,cursor:"pointer"}}>{/* [7.966] il ritratto dell'eroe e' il primo spazio da figurina: LARGHEZZA 31 perche' 31x7/5 = 44, cioe' l'altezza esatta del tondo di prima — la testata non cresce di un pixel su nessuna delle tredici schermate. */}<Figurina tipo="giocatore" chiave={player.name} larg={31} col={player.club&&player.club.c} col2={player.club&&player.club.c2} ritratto={<Figurina tipo="giocatore" chiave={player.name} larg={21}/>}/></div>
+              {figAperta23&&<div data-cpm="figurina-completa" onClick={()=>setFigAperta23(false)} style={{position:"fixed",inset:0,zIndex:9000,background:"rgba(2,6,23,0.72)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:14,padding:16}}>
+                {/* [23/09 POC] figurina intera dell'eroe: nome, cognome, ruolo, altezza, peso e colori del club; si chiude toccando */}
+                <Figurina tipo="giocatore" chiave={player.name} nome={player.name} ruolo={player.position||"Attaccante"} col={player.club&&player.club.c} col2={player.club&&player.club.c2} larg={Math.min(260,Math.round(window.innerWidth*0.64))}/>
+                <div style={{color:"#e2e8f0",fontSize:FS.caption,fontWeight:FW.semibold}}>Tocca per chiudere</div>
+              </div>}
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.caption,color:ink,textTransform:"uppercase",letterSpacing:1.6,fontWeight:FW.bold}}>{player.nation} &middot; {player.position||"Attaccante"}</div>
                 <h1 style={{margin:"2px 0 3px",fontSize:FS.title,fontWeight:FW.black,letterSpacing:.2,color:ink,lineHeight:1.05,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{player.name}</h1>

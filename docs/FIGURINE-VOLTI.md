@@ -234,3 +234,16 @@ Creazione (anteprima + griglia + «Altro volto») · testata della dashboard · 
 - Creazione: 10 volti in griglia, «Altro volto» 18 alternative per l'aspetto.
 - Guardiani: design-system verde · save-compat 12/12 · test logici 43/43 · career-critical verde.
 - **Non verificato:** il telefono vero; le scene di fine stagione e festa aperte dal flusso reale (collegate per costruzione, non fotografate).
+
+
+## Aggiornamento 23/09 sera — figurina completa (direttiva PO)
+
+- **Il PO chiede altezza e peso sulla figurina**: supera la riga «non scrivere statura» dell'handoff del 22/09.
+  Altezza e peso NON sono dati di carriera: si derivano dallo stesso aspetto che usa il corpo 3D
+  (eroe: `_heroAppr`, altri: `appearanceFromSeed(hashStr(tipo/chiave))`), quindi sono stabili e coerenti col campo.
+- Scheda completa da 96 px di larghezza: nome, COGNOME, ruolo (pastiglia nel colore del club), `cm | kg`.
+  52-95 px: cognome e ruolo. Sotto 52 px: solo ritratto. In testata la miniatura si tocca e apre la figurina intera.
+- Colori: eroe dal club (`__CPM_EROE23`), in partita compagni/avversari dalle maglie in campo (`__CPM_PARTITA23`).
+- **Il sesso dei volti non è nell'indice.** I 70 volti dello staff sono stati classificati A VISTA: 40 uomini, 25 donne,
+  5 incerti (esclusi). Il mister pesca solo fra gli uomini con età ≥ 52; «giornalista_f» fra le donne.
+  I 930 volti dei giocatori non sono stati classificati (a vista sembrano tutti uomini: non verificato uno per uno).

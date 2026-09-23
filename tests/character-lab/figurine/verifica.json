@@ -1,12 +1,16 @@
 {
- "salvato": 47,
+ "salvato": null,
  "eroe": {
   "registro": {
    "nome": "Luca Brain",
-   "volto": 47,
-   "avatarId": 5
+   "volto": null,
+   "avatarId": 5,
+   "ruolo": "Attaccante",
+   "col": "#dc2626",
+   "col2": "#111111",
+   "club": "AC Milanello"
   },
-  "id": 47,
+  "id": 28,
   "candidati": [
    28,
    47,
@@ -19,17 +23,33 @@
  "dashboard": [
   {
    "tipo": "giocatore",
-   "nome": null,
-   "src": "lotto-01/volto-0047.webp",
+   "nome": "Luca Brain",
+   "src": "lotto-01/volto-0028.webp",
    "w": 35,
    "h": 48
   }
  ],
+ "completa": {
+  "testo": "KORWARD | Luca | BRAIN | ATTACCANTE | 183 cm | 77 kg",
+  "larga": 260,
+  "alta": 364,
+  "piena": true,
+  "sfondo": "rgba(0, 0, 0, 0)"
+ },
+ "misterEta": {
+  "uominiSu40": 40,
+  "giornalisteConVolto": 20,
+  "giornalisteDonne": 20,
+  "n": 40,
+  "min": 52,
+  "mediana": 53,
+  "max": 58
+ },
  "club": [
   {
    "tipo": "giocatore",
-   "nome": null,
-   "src": "lotto-01/volto-0047.webp",
+   "nome": "Luca Brain",
+   "src": "lotto-01/volto-0028.webp",
    "w": 35,
    "h": 48
   }
@@ -37,26 +57,26 @@
  "intervista": [
   {
    "tipo": "giocatore",
-   "nome": null,
-   "src": "lotto-01/volto-0047.webp",
+   "nome": "Luca Brain",
+   "src": "lotto-01/volto-0028.webp",
    "w": 35,
    "h": 48
   },
   {
    "tipo": "giornalista",
-   "nome": null,
-   "src": "lotto-07/volto-0644.webp",
+   "nome": "Marco Ferretti",
+   "src": "lotto-05/volto-0501.webp",
    "w": 28,
    "h": 39
   }
  ],
  "anteprime": [
   {
-   "src": "lotto-01/volto-0047.webp",
+   "src": "lotto-01/volto-0028.webp",
    "ok": true
   },
   {
-   "src": "lotto-02/volto-0201.webp",
+   "src": "lotto-09/volto-0901.webp",
    "ok": true
   },
   {
@@ -64,7 +84,7 @@
    "ok": true
   },
   {
-   "src": "lotto-04/volto-0387.webp",
+   "src": "lotto-04/volto-0359.webp",
    "ok": true
   }
  ],
@@ -83,14 +103,14 @@
   ],
   "giornalistaImmagini": 0
  },
- "dopoRicarica": 47,
+ "dopoRicarica": 28,
  "stabile": true,
  "riservato": {
-  "eroe": 47,
+  "eroe": 28,
   "collisioni": 0
  },
  "richiestePortraits": {
-  "totale": 13,
+  "totale": 14,
   "uniche": 9,
   "indice": 2,
   "manifest": 0
