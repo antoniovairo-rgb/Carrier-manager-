@@ -606,20 +606,7 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
         <button onClick={onClose} className="cpm-press" style={{width:34,height:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14}}>
-        <Card style={{padding:'12px 14px'}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>🎨 Grafica</div>
-          {/* [7.947 — IL TEMA E' UNO SOLO, ED E' CHIARO. Direttiva PO: «non perdere tempo con grafica chiara
-              o scura della grafica extra partita. La grafica deve essere UNA e fatta benissimo. Secondo me la
-              base di partenza deve essere quella chiara. Togli anche interruttore nelle impostazioni».]
-              L'interruttore sparisce e il tema scuro non si raggiunge piu'. Chi ce l'aveva acceso viene
-              riportato al chiaro all'avvio, altrimenti resterebbe in un tema senza piu' la leva per uscirne.
-              CONSEGUENZA A VERBALE: il lavoro sul contrasto notturno della 7.944 diventa in buona parte
-              SENZA BERSAGLIO. Resta valido cio' che era giusto in ogni caso — i fondi chiari scritti a mano
-              sostituiti col loro token e i colori dei club resi leggibili — e il guardiano contrasto-scuro
-              perde il suo oggetto: lo dichiaro invece di lasciarlo girare a vuoto. */}
-          {/* [7.97.0 collaudo PO «togli ovunque l'opzione Giocatori 3D realistici: non è più un'opzione, è solo 3D»]
-              toggle GLB rimosso — il 3D reale è sempre attivo (il fallback resta solo come rete di sicurezza interna). */}
-        </Card>
+        {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
         <AudioSettings/>
         {strumenti&&(
           <Card style={{padding:'12px 14px'}}>
@@ -646,8 +633,8 @@ function AudioSettings(){
   if(!cfg)return null;
   const refresh=()=>{try{setCfg(AudioMgr.getCfg());}catch(_e){}};
   // [7.97.0 collaudo PO «volume generale ridondante col device»] slider MASTER rimosso: restano solo le categorie.
-  const VOL=[{k:'music',label:'🎵 Musica menu'},{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
-  const TOG=[{k:'tel',label:'🎙️ Telecronaca',note:'in arrivo',dis:true},{k:'vibr',label:'📳 Vibrazione (mobile)'}];
+  const VOL=[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
+  const TOG=[{k:'vibr',label:'📳 Vibrazione (mobile)'}];
   const Toggle=({on,onClick,dis})=>(
     <button onClick={dis?undefined:onClick} disabled={dis} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
       <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>

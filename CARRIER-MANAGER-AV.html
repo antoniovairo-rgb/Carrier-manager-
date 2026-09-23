@@ -7808,17 +7808,19 @@ const AudioMgr=(function(){
     if(SILENT()||!ready)return;
     try{const fn=SFX[name];if(fn){_played++;fn();}}catch(_e){}
   }
+  /* [23/09 POC — collaudo PO «musica menu da eliminare»] fuori dalla partita niente musica: resta solo l'ambiente. Rosso __CPM_NO_MUSICA23 */
+  const _mus23=(k)=>{if(typeof window!=='undefined'&&window.__CPM_NO_MUSICA23)musicStart(k);else musicStop(true);};
   function scene(phase){
     _curPhase=phase;
     if(SILENT())return;
     if(!ready){_pendingScene=phase;return;}
-    if(phase==='career'){ if(!inMatch){musicStart('career');ambienceStart();} }
-    else if(phase==='home'||phase==='offers'){ musicStart('home');ambienceStart(); }
-    else if(phase==='create'||phase==='trial'){ musicStart('menu');ambienceStart(); }
+    if(phase==='career'){ if(!inMatch){_mus23('career');ambienceStart();} }
+    else if(phase==='home'||phase==='offers'){ _mus23('home');ambienceStart(); }
+    else if(phase==='create'||phase==='trial'){ _mus23('menu');ambienceStart(); }
     else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
   function enterMatch(){ if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
-  function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){musicStart('career');ambienceStart();} }
+  function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){_mus23('career');ambienceStart();} }
   // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
   //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
   //   su evento → a ended non ne parte più nessuno). inMatch resta true: la musica menu riparte solo all'uscita reale.
@@ -22808,12 +22810,11 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
       <Pannello team={homeTeam} rr={_homeNums} kit={homeKitCol}/>
       <Pannello team={awayTeam} rr={_awayNums} kit={awayKitCol}/>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
-        <SectionHeader>Formazione avversaria</SectionHeader>
+        {/* [23/09 POC — collaudo PO «il modulo e' ridondante sotto»] il modulo e' gia' nella testata della formazione: qui resta il pressing */}
         {(oppTacticLoading||!oppTactic)?<Skeleton h={22}/>:(
-          <div style={{display:"flex",alignItems:"center",gap:SP.md,flexWrap:"wrap"}}>
-            <div className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text}}>{oppTactic.formation}</div>
-            <div style={{flex:1,minWidth:150}}>
-              <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:4}}><span>Pressing</span><span className="cpm-num" style={{fontWeight:FW.bold,color:TH.text}}>{pr}%</span></div>
+          <div>
+            <div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:6}}><span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Pressing avversario</span><span className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{pr}%</span></div>
               <div style={{height:6,borderRadius:RAD.pill,background:TH.track,overflow:"hidden"}}><div style={{height:"100%",width:pr+"%",background:prC,borderRadius:RAD.pill}}/></div>
             </div>
           </div>)}
@@ -52380,20 +52381,7 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
         <button onClick={onClose} className="cpm-press" style={{width:34,height:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14}}>
-        <Card style={{padding:'12px 14px'}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>🎨 Grafica</div>
-          {/* [7.947 — IL TEMA E' UNO SOLO, ED E' CHIARO. Direttiva PO: «non perdere tempo con grafica chiara
-              o scura della grafica extra partita. La grafica deve essere UNA e fatta benissimo. Secondo me la
-              base di partenza deve essere quella chiara. Togli anche interruttore nelle impostazioni».]
-              L'interruttore sparisce e il tema scuro non si raggiunge piu'. Chi ce l'aveva acceso viene
-              riportato al chiaro all'avvio, altrimenti resterebbe in un tema senza piu' la leva per uscirne.
-              CONSEGUENZA A VERBALE: il lavoro sul contrasto notturno della 7.944 diventa in buona parte
-              SENZA BERSAGLIO. Resta valido cio' che era giusto in ogni caso — i fondi chiari scritti a mano
-              sostituiti col loro token e i colori dei club resi leggibili — e il guardiano contrasto-scuro
-              perde il suo oggetto: lo dichiaro invece di lasciarlo girare a vuoto. */}
-          {/* [7.97.0 collaudo PO «togli ovunque l'opzione Giocatori 3D realistici: non è più un'opzione, è solo 3D»]
-              toggle GLB rimosso — il 3D reale è sempre attivo (il fallback resta solo come rete di sicurezza interna). */}
-        </Card>
+        {/* [23/09 POC — collaudo PO] tolta la card «Grafica» rimasta vuota; tolte «Musica menu» e «Telecronaca (in arrivo)» */}
         <AudioSettings/>
         {strumenti&&(
           <Card style={{padding:'12px 14px'}}>
@@ -52420,8 +52408,8 @@ function AudioSettings(){
   if(!cfg)return null;
   const refresh=()=>{try{setCfg(AudioMgr.getCfg());}catch(_e){}};
   // [7.97.0 collaudo PO «volume generale ridondante col device»] slider MASTER rimosso: restano solo le categorie.
-  const VOL=[{k:'music',label:'🎵 Musica menu'},{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
-  const TOG=[{k:'tel',label:'🎙️ Telecronaca',note:'in arrivo',dis:true},{k:'vibr',label:'📳 Vibrazione (mobile)'}];
+  const VOL=[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
+  const TOG=[{k:'vibr',label:'📳 Vibrazione (mobile)'}];
   const Toggle=({on,onClick,dis})=>(
     <button onClick={dis?undefined:onClick} disabled={dis} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
       <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>

@@ -913,12 +913,11 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
       <Pannello team={homeTeam} rr={_homeNums} kit={homeKitCol}/>
       <Pannello team={awayTeam} rr={_awayNums} kit={awayKitCol}/>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
-        <SectionHeader>Formazione avversaria</SectionHeader>
+        {/* [23/09 POC — collaudo PO «il modulo e' ridondante sotto»] il modulo e' gia' nella testata della formazione: qui resta il pressing */}
         {(oppTacticLoading||!oppTactic)?<Skeleton h={22}/>:(
-          <div style={{display:"flex",alignItems:"center",gap:SP.md,flexWrap:"wrap"}}>
-            <div className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text}}>{oppTactic.formation}</div>
-            <div style={{flex:1,minWidth:150}}>
-              <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:4}}><span>Pressing</span><span className="cpm-num" style={{fontWeight:FW.bold,color:TH.text}}>{pr}%</span></div>
+          <div>
+            <div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:6}}><span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Pressing avversario</span><span className="cpm-num" style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{pr}%</span></div>
               <div style={{height:6,borderRadius:RAD.pill,background:TH.track,overflow:"hidden"}}><div style={{height:"100%",width:pr+"%",background:prC,borderRadius:RAD.pill}}/></div>
             </div>
           </div>)}

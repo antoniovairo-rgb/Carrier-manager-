@@ -409,17 +409,19 @@ const AudioMgr=(function(){
     if(SILENT()||!ready)return;
     try{const fn=SFX[name];if(fn){_played++;fn();}}catch(_e){}
   }
+  /* [23/09 POC — collaudo PO «musica menu da eliminare»] fuori dalla partita niente musica: resta solo l'ambiente. Rosso __CPM_NO_MUSICA23 */
+  const _mus23=(k)=>{if(typeof window!=='undefined'&&window.__CPM_NO_MUSICA23)musicStart(k);else musicStop(true);};
   function scene(phase){
     _curPhase=phase;
     if(SILENT())return;
     if(!ready){_pendingScene=phase;return;}
-    if(phase==='career'){ if(!inMatch){musicStart('career');ambienceStart();} }
-    else if(phase==='home'||phase==='offers'){ musicStart('home');ambienceStart(); }
-    else if(phase==='create'||phase==='trial'){ musicStart('menu');ambienceStart(); }
+    if(phase==='career'){ if(!inMatch){_mus23('career');ambienceStart();} }
+    else if(phase==='home'||phase==='offers'){ _mus23('home');ambienceStart(); }
+    else if(phase==='create'||phase==='trial'){ _mus23('menu');ambienceStart(); }
     else { musicStop(true);ambienceStop(); }// loading/cinematic → silenzio
   }
   function enterMatch(){ if(SILENT())return; inMatch=true; _matchHushed=false; if(!ready)return; musicStop(true);ambienceStop(); crowdStart(0.30); }
-  function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){musicStart('career');ambienceStart();} }
+  function exitMatch(){ if(SILENT())return; inMatch=false; crowdStop(); if(ready&&_curPhase==='career'){_mus23('career');ambienceStart();} }
   // [7.102.0 collaudo PO «rumore folla ed effetti della partita devono spegnersi nella schermata del giornale»]
   //   al FISCHIO FINALE (fase 'ended' = rassegna stampa) il letto-folla si SPEGNE (gli effetti di partita sono one-shot
   //   su evento → a ended non ne parte più nessuno). inMatch resta true: la musica menu riparte solo all'uscita reale.

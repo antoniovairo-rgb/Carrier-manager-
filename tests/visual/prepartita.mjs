@@ -6,7 +6,7 @@ const ROSSO = process.env.CPM_ROSSO || '', TAG = ROSSO ? '-rosso' : '';
 const server = await startServer(); const port = server.address().port; const browser = await launchBrowser();
 const ctx = await browser.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' }); await installCdnRoutes(ctx);
 const page = await ctx.newPage(); const err = []; page.on('pageerror', e => err.push(String(e).slice(0, 160)));
-await page.addInitScript((r) => { if (r) window[r] = true;
+await page.addInitScript((r) => { window.__CPM_CAMT767ON = true; if (r) window[r] = true;
   const save = { phase: 'career', player: { name: 'Samuel Francisco', nation: 'Spagna', avatarId: 3, proStatus: 'u18', season: 1, week: 1, age: 17, ovr: 66, jerseyNum: 77,
     club: { id: 'cio', n: 'FC Ciociaro Primavera', a: 'CIO', p: 60, c: '#f59e0b', c2: '#1d4ed8', nat: '🇮🇹', lg: 'Primavera 2' },
     teammates: [{ name: 'Rocco Landi', archetype: 'mentor', icon: '🧠' }],
@@ -28,7 +28,7 @@ await page.screenshot({ path: path.join(out, `prepartita${TAG}.png`), fullPage: 
 try { await page.getByText(/Analisi completa/).first().click({ timeout: 4000 }); await sleep(1200); R.scout = await page.evaluate(() => !!document.querySelector('[data-cpm=scout23]')); await page.screenshot({ path: path.join(out, `analisi${TAG}.png`), fullPage: true });
   await page.getByText(/Entra in campo|Capito/).first().click({ timeout: 4000 }); await sleep(800); } catch (e) { R.scoutErr = String(e.message).slice(0, 80); }
 try { await page.getByRole('button', { name: /Formazioni/ }).first().click({ timeout: 4000 }); await sleep(1800); await page.screenshot({ path: path.join(out, `formazioni${TAG}.png`), fullPage: true });
-  await page.getByText(/Ingresso in campo/).first().click({ timeout: 4000 }); R.audit = null; R.ingresso = []; for (let k = 0; k < 10; k++) { await sleep(900); R.ingresso.push(await page.evaluate(() => { try { return { st: window.__CPM_HYPER_CASUAL_STATUS, audit: (window.__CPM_CGTRADER_SCALE_AUDIT || []).length, masc: window.__CPM_HYPER_MASCOTS || null, pol: window.__CPM_HYPER_INTRO_POLICY || null, fase: window.__CPM_PHASE && window.__CPM_PHASE() }; } catch (e) { return null; } })); await page.screenshot({ path: path.join(out, `ingresso-${k}${TAG}.png`) }); }
+  await page.getByText(/Ingresso in campo/).first().click({ timeout: 4000 }); R.audit = null; R.ingresso = []; for (let k = 0; k < 10; k++) { await sleep(900); R.ingresso.push(await page.evaluate(() => { try { return { cam: window.__CPM_CAMT767 || null, st: window.__CPM_HYPER_CASUAL_STATUS, audit: (window.__CPM_CGTRADER_SCALE_AUDIT || []).length, masc: window.__CPM_HYPER_MASCOTS || null, pol: window.__CPM_HYPER_INTRO_POLICY || null, fase: window.__CPM_PHASE && window.__CPM_PHASE() }; } catch (e) { return null; } })); await page.screenshot({ path: path.join(out, `ingresso-${k}${TAG}.png`) }); }
 R.audit = await page.evaluate(() => (window.__CPM_CGTRADER_SCALE_AUDIT || []).slice(0, 4));
 R.cam = await page.evaluate(() => { try { return window.__CPM_CAMPOS ? window.__CPM_CAMPOS() : null; } catch (e) { return null; } }); } catch (e) { R.formErr = String(e.message).slice(0, 80); }
 R.errori = err; await browser.close(); await new Promise(r => server.close(r));
