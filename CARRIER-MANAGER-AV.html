@@ -11933,6 +11933,12 @@ if(typeof window!=='undefined'){window.__CPM_EV=function(){try{return MATCH_EV.s
    e letto dal render-loop: nessun prop nuovo su un componente che ne ha gia' quaranta. */
 const _CUT471={at:-1e9,dur:0};
 if(typeof window!=='undefined'){window.__CPM_CUTLIVE=function(){try{return (performance.now()-_CUT471.at)<Math.max(300,_CUT471.dur||0);}catch(_e){return false;}};}/* [7.504.0] test-only: «c'e' un nero vivo?» — lo stesso criterio con cui il render-loop decide se uno snap e' mascherato (7.471). Serve ai check che misurano salti di camera: un salto DENTRO lo stacco e' regia TV voluta, non un difetto */
+/* [POC 23/09 — direttiva PO «Il modello CH38 deve sparire». Rosso __CPM_NO_CGDEFAULT o ?hyperCharacter=off]
+   Il corpo CGTrader (kit-adapter lod0/1/2, portiere compreso) era visibile SOLO aprendo il gioco con
+   ?hyperCharacter=cgtrader-highlight-optimized: senza parametro gli highlight usavano il CH38. Ora un unico
+   selettore legge il parametro e, se manca, sceglie CGTrader. Un valore esplicito nell'URL vince sempre. */
+function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
+  if(q)return q;if(typeof window!=='undefined'&&window.__CPM_NO_CGDEFAULT)return '';return 'cgtrader-highlight-optimized';}catch(_e){return '';}}
 /* ⚠️ [7.794.0 — IL PALLONE E' IN PROPORZIONE E POGGIA SULL'ERBA. Rosso __CPM_NO794]
    Collaudo PO 06/09, con due fotografie: «il pallone e' troppo grande e sproporzionato». Vero, e si
    misura. Il giocatore e' alto 2,22 unita' (testa: sfera 0,22 centrata a 2,00); il pallone aveva raggio
@@ -12125,7 +12131,7 @@ function ThreeMatchView(props){
        `_cgtraderHighlightOptimized`, che pero' e' dichiarato con `const` OTTOMILA righe piu' sotto: qui
        sarebbe stato un errore di zona morta temporale al primo invito. Il testimone si legge da solo
        l'URL, come faceva la copia di recupero, e non dipende piu' dall'ordine delle dichiarazioni. */
-    try{if(typeof window!=='undefined'){const _revBud=['cgtrader-squad-review','cgtrader-highlight-optimized'].includes(new URLSearchParams(window.location.search||'').get('hyperCharacter')||'');
+    try{if(typeof window!=='undefined'){const _revBud=['cgtrader-squad-review','cgtrader-highlight-optimized'].includes(_hyperQ23());
       window.__CPM_CGTRADER_RENDER_BUDGET=()=>({cinema:_revBud,pixelRatio:+renderer.getPixelRatio().toFixed(2),shadows:!!renderer.shadowMap.enabled});}}catch(_eBud){}
     try{if(renderer.debug&&!(typeof window!=='undefined'&&window.__CPM_NO769))renderer.debug.checkShaderErrors=false;}catch(_e769b){}/* [7.769.0] vedi la nota all'aggancio dei modelli: la lettura sincrona dei log di compilazione e' il blocco di 2,6 s all'apertura della prima scena */
     /* [7.529.0 R5 — direttiva PO «procedi con R5»] LA CATENA COLORE VERA: ACES + sRGB sul renderer
@@ -12754,7 +12760,7 @@ function ThreeMatchView(props){
            window.__CPM_HYPER_CASUAL='hero'
          Supported values: 'off' (default), 'hero'. Squad replacement is
          deliberately deferred until kit/number UV masks and GK clips exist. */
-      const _hyperQuery=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
+      const _hyperQuery=_hyperQ23();
       const _hyperMode=(typeof window!=='undefined'&&window.__CPM_HYPER_CASUAL)||((_hyperQuery==='hero'||_hyperQuery==='intro'||_hyperQuery==='lineup'||_hyperQuery==='full'||_hyperQuery==='cgtrader-review'||_hyperQuery==='cgtrader-ajax-review'||_hyperQuery==='cgtrader-lod2-benchmark'||_hyperQuery==='cgtrader-mixed-lod-benchmark'||_hyperQuery==='cgtrader-highlight-optimized'||_hyperQuery==='cgtrader-squad-review')?_hyperQuery:'off');
       /* Explicit local-review switch for the selected CGTrader candidate.
          It is Hero-only and opt-in: default `?hyperCharacter=full` keeps its
@@ -21096,7 +21102,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            E' la seconda volta nello stesso rilascio che sbaglio lo scope: qui la condizione si legge dal
            testimone che il gioco pubblica gia' su window, che e' l'unico appiglio valido in questo punto. */
         if(!isHL&&sr.current._gkLod1&&sr.current._gkLod1.av&&typeof window!=='undefined'&&window.__CPM_CGTRADER_LOD_RUNTIME){try{const _gq=sr.current._gkLod1.av;if(_gq._cgLod!=='lod1'||window.__CPM_CGTRADER_LOD_RUNTIME.activate(_gq,'lod2','technical'))sr.current._gkLod1=null;}catch(_eGL2){sr.current._gkLod1=null;}}/* [23/09 POC] il portiere promosso per la presa torna a LOD2 fuori dagli highlight */
-        if((typeof window!=='undefined'&&(window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED||['cgtrader-squad-review','cgtrader-lod2-benchmark'].includes(new URLSearchParams(window.location.search||'').get('hyperCharacter')||'')))&&!(window.__CPM_NO_CINEMA)&&glbAvatars&&glbAvatars.length){
+        if((typeof window!=='undefined'&&(window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED||['cgtrader-squad-review','cgtrader-lod2-benchmark'].includes(_hyperQ23())))&&!(window.__CPM_NO_CINEMA)&&glbAvatars&&glbAvatars.length){
           try{
             const _fuoco=((typeof ball!=='undefined'&&ball&&ball.position)?ball.position:hero.position);
             const _ord=glbAvatars.map((av,index)=>{const p=av&&av.proc&&av.proc.position;const dx=p?p.x-_fuoco.x:999,dz=p?p.z-_fuoco.z:999;return{av,index,d:Math.hypot(dx,dz)};})

@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 17:28 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 17:43 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -37,6 +37,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 17:43 | CH38 sparisce dagli highlight: CGTrader è il default senza parametri (rosso __CPM_NO_CGDEFAULT / ?hyperCharacter=off) | corpi CH38 disegnati 0/5 (rosso 39/39); career-critical verde; restano CH38 in cerimonie, ritratto 3D menu e download di footballer/korward-regular |
 | 23/09 17:28 | B3: il brain muove i 22 nelle scene offensive (funzione pura della scena) | determinismo 100% (v1 36%) · ammucchiata 0,9 contro 0,71 |
 | 23/09 16:39 | Gesti evoluti dichiarati dal brain: rammarico, portiere in attesa, rilancio, contrasto in piedi/scivolata | CGTrader: coerenza e copertura 16/19 (84%) |
 | 23/09 16:31 | Punto 4: l'eroe si posiziona per l'occasione chiesta (parziale) | spalle ottenuta 2/2; conclusione/fascia ancora no |
