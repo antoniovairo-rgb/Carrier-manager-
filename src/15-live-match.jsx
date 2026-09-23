@@ -2802,7 +2802,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     // Sprint 155: national team identity; Sprint 156: language-congruent chant pool
     const _isNat=context==="national"||context==="nationsCup"||context==="euroMondiale_group"||context==="euroMondiale_ko"||context==="euroMondiale"||context==="euroMondiale_qualif";
     const _natD=_isNat?(NAT_CLUB_DATA[player.nation||"Italia"]||{a:"ITA",c:"#003399"}):null;
-    const clubN=(typeof window!=="undefined"&&window.__CPM_NO_CORO23)?(_isNat?(_natD?.a||player.nation||"Nazionale"):(player.club?.a||player.club?.n||player.club?.name||"la squadra")):(_isNat?(player.nation||_natD?.n||_natD?.a||"Nazionale"):(player.club?.n||player.club?.name||player.club?.a||"la squadra"));/* [23/09 POC — collaudo PO «nei cori non la sigla ma il nome per intero»] rosso __CPM_NO_CORO23 */
+    const clubN=(typeof window!=="undefined"&&window.__CPM_NO_CORO23)?(_isNat?(_natD?.a||player.nation||"Nazionale"):(player.club?.a||player.club?.n||player.club?.name||"la squadra")):(_isNat?(player.nation||_natD?.n||_natD?.a||"Nazionale"):String(player.club?.n||player.club?.name||player.club?.a||"la squadra").replace(/\s+Primavera$/i,""));/* [23/09 POC — collaudo PO «nei cori non la sigla ma il nome per intero», «Primavera e' sottinteso nei cori»] rosso __CPM_NO_CORO23 */
     // [6.39.0] pool nella LINGUA giusta: per-lega/nazione → per-lingua (riempie i buchi) → base IT
     const pool=chantPoolFor(_type,_isNat,player.nation,player.club?.lg);
     const t=pick(pool);
