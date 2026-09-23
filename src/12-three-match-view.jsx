@@ -2315,8 +2315,10 @@ function ThreeMatchView(props){
     const BRAIN_GESTI={
       passaggio:e=>[['da',e.kind==='lancio'?['longPass','pass','kick']:['pass','shortPass','kick']]],
       cross:e=>[['da',['cross','pass','kick']]],
-      tiro:e=>[['chi',e.intent==='header'?['header']:e.intent==='penalty'?['penalty','kick']:['kick']]],
-      conduzione:e=>[['chi',['dribble']]],
+      tiro:e=>[['chi',e.intent==='header'?['header']:e.intent==='penalty'?['penalty','kick']:e.intent==='volley'?['volley','kick']:['kick','volley']]],
+      conduzione:e=>[['chi',['dribble','doubleStep','feint','change']]],
+      tuffo:e=>[['gk',['dive','block','catch']]],
+      pressione:e=>[['chi',['tackle','header']]],
       ricezione:e=>[['chi',['receive']]],
       controllo:e=>[['chi',['receive']]],
       intercetto:e=>[['chi',['receive','tackle']]],
@@ -2329,6 +2331,9 @@ function ThreeMatchView(props){
       battuta:e=>[['chi',e.kind==='throw'?['throwin','lift']:e.kind==='pen'?['penalty','kick']:e.kind==='corner'?['cross','kick']:['kick']]],
       calcio_inizio:e=>[['chi',['pass','kick']]],
     };
+    /* [23/09 POC] per l'EROE il gesto atteso e' quello dell'opzione scelta dal giocatore: famiglia e variante della scena, tradotte
+       dalla stessa tabella GESTI che monta la clip. Per gli altri, la riga di BRAIN_GESTI. */
+    const _nomi23=(e,idx,nomi)=>{try{if(idx===21&&e&&e.fam&&typeof gestoDi==='function'){const g=gestoDi(e.fam,e.variante);if(g&&g.clip&&nomi.indexOf(g.clip)<0)return [g.clip].concat(nomi);}}catch(_e){}return nomi;};
     const GESTI={
       shot:{base:{clip:'kick',prof:'tesa'},shot_power:{clip:'kick',prof:'tesa'},shot_first_time:{clip:'kick',prof:'tesa'},
         shot_placed:{clip:'kick',prof:null},shot_one_on_one:{clip:'kick',prof:null},shot_curled:{clip:'kick',prof:null},
@@ -2375,6 +2380,11 @@ function ThreeMatchView(props){
        interviene (contrasto, intercetto, inciampo) prendevano il piu' vicino: misurato, coincideva col difensore del motore 0
        volte su 5. Ora chiedono qui: il difensore del cast se e' in campo ed entro `maxD` dal punto dell'azione (oltre, il gesto
        sembrerebbe teletrasportato), altrimenti la scelta geometrica di prima, contata nel testimone. */
+    /* [23/09 POC] il RICEVENTE del cast, stessa regola del difensore: se e' in campo ed entro maxD dal punto, e' lui. Rosso __CPM_NO_B4RIC. */
+    const _castRic23=(fallback,ax,az,maxD)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_B4RIC)return fallback;
+      const C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;const i=C&&C.ricevente?C.ricevente.i:null;
+      if(i==null||i===21)return fallback;const pp=sr.current.players&&sr.current.players[i];const m=pp&&pp.mesh;
+      return (m&&m!==hero&&Math.hypot(m.position.x-ax,m.position.z-az)<=(maxD||20))?m:fallback;}catch(_eR){return fallback;}};
     const _castDif23=(fallback,ax,az,maxD)=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_B4DIF)return fallback;
       const C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;const i=C&&C.difensore?C.difensore.i:null;
       const W=(typeof window!=='undefined'&&window.__CPM_B4REC)?(window.__CPM_B4DIF=window.__CPM_B4DIF||{usato:0,scartato:0,senzaCast:0}):null;
@@ -2860,12 +2870,16 @@ function ThreeMatchView(props){
            const _W=(typeof window!=='undefined'&&window.__CPM_BRAIN_REC)?(window.__CPM_BRAIN23=window.__CPM_BRAIN23||{ev:0,perTipo:{},richieste:0,senzaCorpo:0,fuoriGioco:0,log:[]}):null;
            if(_W){_W.ev++;_W.perTipo[e.t]=(_W.perTipo[e.t]|0)+1;}
            if(e.scena&&e.t==='tiro'&&e.to)sr.current._tiro23={to:e.to,esito:e.esito,chi:e.chi?e.chi.i:null,t:Date.now(),usato:false};/* [23/09 POC B3] il tiro della scena deciso dal brain */
+           if(e.scena&&typeof window!=='undefined'&&window.__CPM_BRAIN_REC){try{/* [23/09 POC testimone punto 3] gesto ATTESO dal brain per ogni evento di scena */
+             const _r=BRAIN_GESTI[e.t];const _A=(window.__CPM_SCENA23=window.__CPM_SCENA23||{attesi:[],montati:[]});
+             if(_r)for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx!=null&&_A.attesi.length<400)_A.attesi.push({seq:e._seq,ev:e.t,idx,nomi:_nomi23(e,idx,nomi),visto:false});}
+           }catch(_eA){}}
            if(_ph23!=='playing'){if(_W)_W.fuoriGioco++;continue;}
            const _r=BRAIN_GESTI[e.t];if(!_r)continue;
            for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx==null)continue;
              const m=(idx===21)?hero:(sr.current.players&&sr.current.players[idx]&&sr.current.players[idx].mesh);
              if(!m){if(_W)_W.senzaCorpo++;continue;}
-             m._brainG={nomi,t:0.6,seq:e._seq,idx,ev:e.t};_rq.add(m);
+             m._brainG={nomi:_nomi23(e,idx,nomi),t:0.6,seq:e._seq,idx,ev:e.t};_rq.add(m);
              if(_W){_W.richieste++;if(_W.log.length<400)_W.log.push({seq:e._seq,ev:e.t,idx,nomi:nomi.join('|')});}}}
        }
       }/* ⚠️ `dt` e non `aDt`: qui aDt non è ancora dichiarato (TDZ) */
@@ -3629,6 +3643,7 @@ function ThreeMatchView(props){
              la consegna — CORRE con animOne (niente glide, lezione 7.205) e la consegna si ALLUNGA quanto serve
              al suo arrivo (durata ∝ distanza, cap 1.7s; pallone rallentato in proporzione → stesso profilo). */
           if(!crossRcvMesh){let _bs58=1e9,_bm58=null,_bd58=0;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh!==hero&&pp.mesh!==passTargetMesh){const dr=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z);const d=dr+(pp.mesh.position.x<ball.position.x-2?30:0);/* [7.335.0] il terzo uomo che attacca la consegna non può stare DIETRO la palla: la scelta per sola vicinanza pescava un uomo arretrato e il pallone tornava indietro da solo */if(d<_bs58){_bs58=d;_bd58=dr;_bm58=pp.mesh;}}});
+            {const _c58=_castRic23(_bm58,ball.position.x,ball.position.z,26);if(_c58&&_c58!==_bm58){_bm58=_c58;_bd58=Math.hypot(_c58.position.x-ball.position.x,_c58.position.z-ball.position.z);}}/* [23/09 POC] chi attacca il cross e' il ricevente del brain */
             if(_bm58){crossRcvMesh=_bm58;crossRcvMesh._cgRun=1;sr.current._cgDur=Math.min(Math.max(_bd58/10,0.65),2.6);/* [7.335.0] durata dalla distanza REALE (la penalità all'indietro è solo punteggio) + cap 1.7→2.6s: l'uomo lontano deve poter ARRIVARE */}}
           const _cgD=sr.current._cgDur||0.65;
           const _u2=Math.min(hlPostArcT/_cgD,1);
@@ -3745,6 +3760,7 @@ function ThreeMatchView(props){
              1.6→20.8u, palla parcheggiata 4s)] SELEZIONE D'EMERGENZA: se nessun ricevente è agganciato, il
              compagno più vicino alla PALLA diventa il ricevente — corsa CORTA sul pallone (non la corsa
              profonda +12 delle imbucate), arrivo → tocco → conclusione. Ogni assist_recv ha SEMPRE un uomo. */
+          if(!_rm)_rm=_castRic23(null,ball.position.x,ball.position.z,20);/* [23/09 POC] la rete d'emergenza chiede prima il ricevente del brain */
           if(!_rm){let _bs56=1e9;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh!==hero){const _dh53=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);const d=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z)+(_dh53<6?14:0);if(d<_bs56){_bs56=d;_rm=pp.mesh;}}});/* [7.254.0 gi57] stessa penalità ≥6u dall'eroe della selezione primaria */
             if(_rm){passTargetMesh=_rm;_rm._runToX=Math.min(ball.position.x+2,AWAY_GOAL_X-6);_rm._runToZ=ball.position.z;}}
           if(_rm&&sr.current._arRcv!==_rm)sr.current._arRcv=_rm;/* [7.299.0] da qui in poi la consegna e' SUA */
@@ -4557,6 +4573,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.team!=='away'||src.gk)return;
                 const _m=pp.mesh;if(!_m||_m===oppMesh)return;const _d=Math.hypot(_m.position.x-_px519,_m.position.z-_pz519);
                 if(_d<_bd519){_bd519=_d;_bm519=_m;}});
+              {const _c519=_castDif23(_bm519,_px519,_pz519,9);if(_c519&&_c519!==_bm519){_bm519=_c519;_bd519=Math.hypot(_c519.position.x-_px519,_c519.position.z-_pz519);}}/* [23/09 POC] chi reagisce e' il difensore del brain, se e' li' */
               if(_bm519&&_bd519<9){
                 sr.current._mateFx={mesh:_bm519,name:_fam519==="tiro"?"tackle":"header",t:_fam519==="tiro"?0.9:0.8};
                 if(typeof window!=='undefined'&&window.__CPM_REA519!==undefined){try{window.__CPM_REA519.push({f:_fam519,d:+_bd519.toFixed(1)});}catch(_e){}}
@@ -9270,6 +9287,10 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             //   prima _gkWant era globale → su ogni parata/presa si tuffavano ENTRAMBI i portieri (anche quello a 100m).
             const _g=(_ai===0)?((sr.current._cerLift===1||sr.current._celLift371===1)?'lift':(_gName||_brainWant)):(_a._isGk?(((_a.proc===oppMesh&&!(_gkWant==='dive'&&oppMesh&&oppMesh._fin855))?_gkWant:null)||_brainWant):_mateWant);/* [23/09 POC] eroe e portieri: se la scena non chiede nulla, parla il brain */let _want=(_g&&_a.gestures[_g])?_g:null;{const _pr=sr.current._presaRev;if(!_want&&_pr&&_a._isGk&&_a.proc===_pr.proc&&isResult&&_pr.sit===String((propsRef.current&&propsRef.current.hlSitKey)||'')&&_a.gestures.catch&&(!_pr.mounted||(_a._gName==='catch'&&_a._gAct&&_a._gAct.time<_a._gAct.getClip().duration-0.03)))_want='catch';}/* [22/09 POC] canale della presa (review): UNA esecuzione per scena — misurato, senza `mounted` la clip ripartiva a ogni fine (codice 000) *//* [7.24.1] cerimonia: posa alzata di coppa (throwin congelata) · [7.24.2] ===1: nel giro di campo (2) corre e le braccia le rialza l'override quaternioni */
             if(_bg23&&_want&&_want===_brainWant&&_a._gName!==_want&&_a._bgSeq23!==_bg23.seq&&typeof window!=='undefined'&&window.__CPM_BRAIN_REC){try{_a._bgSeq23=_bg23.seq;const _W=window.__CPM_BRAIN23;if(_W){_W.montati=(_W.montati|0)+1;const k=(_ai===0?'eroe':_a._isGk?'portiere':'movimento')+':'+_want;(_W.perGesto=_W.perGesto||{})[k]=(_W.perGesto[k]|0)+1;if(_a.proc&&_a.proc._brainG&&_a.proc._brainG.idx!=null){const _pi=(sr.current.players||[]).findIndex(pp=>pp&&pp.mesh===_a.proc);const _ok=(_ai===0)?_a.proc._brainG.idx===21:_pi===_a.proc._brainG.idx;_W.attoreGiusto=(_W.attoreGiusto|0)+(_ok?1:0);}}}catch(_eW){}}/* [23/09 POC testimone, solo sonda] montaggio di un gesto chiesto dal brain, e se il corpo e' l'indice dichiarato */
+            if(_want&&_a._gName!==_want&&typeof window!=='undefined'&&window.__CPM_BRAIN_REC&&window.__CPM_SCENA23&&propsRef.current&&/^hl_/.test(propsRef.current.matchPhase||'')&&_a._hlSeq23!==_want+'|'+Math.floor(Date.now()/400)){try{/* [23/09 testimone punto 3] gesto montato in scena, con l'indice del motore del corpo */
+              _a._hlSeq23=_want+'|'+Math.floor(Date.now()/400);const _A=window.__CPM_SCENA23;const _pi=(_ai===0)?21:(sr.current.players||[]).findIndex(pp=>pp&&pp.mesh===_a.proc);
+              let _m=false;for(const x of _A.attesi){if(!x.visto&&x.idx===_pi&&x.nomi.indexOf(_want)>=0){x.visto=true;_m=true;break;}}
+              if(_A.montati.length<600)_A.montati.push({idx:_pi,g:_want,gk:!!_a._isGk,atteso:_m,fase:propsRef.current.matchPhase});}catch(_eM){}}
             if(_want&&_a._gName!==_want&&_a._anySeq23!==_want+'|'+Math.floor(Date.now()/500)&&!(_bg23&&_want===_brainWant)&&typeof window!=='undefined'&&window.__CPM_BRAIN_REC&&propsRef.current&&propsRef.current.matchPhase==='playing'){try{_a._anySeq23=_want+'|'+Math.floor(Date.now()/500);const _W=(window.__CPM_BRAIN23=window.__CPM_BRAIN23||{ev:0,perTipo:{},richieste:0,senzaCorpo:0,fuoriGioco:0,log:[]});_W.altri=(_W.altri|0)+1;const k=(_ai===0?'eroe':_a._isGk?'portiere':'movimento')+':'+_want;(_W.perGestoAltri=_W.perGestoAltri||{})[k]=(_W.perGestoAltri[k]|0)+1;}catch(_eW2){}}/* [23/09 testimone] montaggi nel gioco vivo NON chiesti dal brain (cronaca, scena) */
             if(_want&&_want!=='tackle'&&_a._gName===_want&&_a._gAct&&_a._gAct.getClip&&_a._gAct.time>=_a._gAct.getClip().duration-0.03)_want=null;
             /* [7.396.0 collaudo PO codice 000, tre segnalazioni: «intervento in ritardo, alza in maniera

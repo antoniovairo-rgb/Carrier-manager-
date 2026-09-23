@@ -949,22 +949,46 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     eventi(key,d){d=d||{};const out=[];const _n0=S.eventi.length;try{
       const H=g[HERO];if(!H)return out;const C=d.cast||{};const G=w=>(w&&w.i!=null&&g[w.i])?g[w.i]:null;
       const R=G(C.ricevente),D=G(C.difensore),K=G(C.portiere);
-      const E=(t,o)=>{const e=ev(t,Object.assign({scena:true},o));out.push(e);return e;};
+      const E=(t,o)=>{const e=ev(t,Object.assign({scena:true,fam:d.tipo||null,variante:d.variante||null},o));out.push(e);return e;};/* famiglia e variante della scena: il gesto che il giocatore ha scelto */
       const da=q=>({x:+q.x.toFixed(1),y:+q.y.toFixed(1)});const rew=d.rew||'';const ok=!!d.ok;
+      /* [23/09 POC — punto 3] la FAMIGLIA del gesto della scena (scelta dal giocatore) entra negli eventi: il tiro porta la sua
+         intenzione (testa/volee/rigore/punizione), il dribbling e' una conduzione, un passaggio riuscito ha la sua ricezione. */
+      const fam=d.tipo||'',vr=d.variante||'';
+      if(!d.intent)d.intent=(fam==='header'||/header/.test(vr))?'header':fam==='penalty'?'penalty':fam==='freekick'?'freekick':/volley/.test(vr)?'volley':null;
+      /* [23/09 POC — punto 3, v2] PRIMA IL GESTO SCELTO, POI LE CONSEGUENZE. Misurato (scena-gesti): l'eroe passava la palla in
+         scena mentre il brain registrava un tiro, perche' gli eventi seguivano solo l'ESITO. Ora: 1) il gesto dell'eroe secondo la
+         famiglia dell'opzione (passaggio/cross, conduzione, tiro, contrasto); 2) le conseguenze (ricezione, gol del compagno,
+         intercetto o contrasto del difensore, tuffo del portiere su ogni tiro verso la porta, pressione del difensore). */
       /* il PUNTO NELLO SPECCHIO lo decide il motore (dado seedato): gol verso un angolo, parata vicino al centro, palo sul
-         legno, fuori oltre il palo. y in coordinate di campo (0-100), pali a 50±4,9 (= |z| 3,35 del 3D, G2Z=(y-50)·0,68). Il 3D lo legge invece di tirare a caso. */
+         legno, fuori oltre il palo. y in coordinate di campo (0-100), pali a 50±4,9 (= |z| 3,35 del 3D, G2Z=(y-50)·0,68). */
       const porta=(es)=>{const s=rnd()<0.5?-1:1;const y=es==='goal'?50+s*(2.0+rnd()*2.4):es==='saved'?50+s*rnd()*2.4:es==='post'?50+s*4.9:es==='fuori'?50+s*(5.9+rnd()*6):50;return{x:100,y:+y.toFixed(2)};};
-      if(key==='goal'){E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to:porta('goal'),esito:'goal'});E('gol',{chi:chi(H),assist:null,lato:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
-      else if(key==='assist'){const T=R||null;E('passaggio',{da:chi(H),a:chi(T),kind:'corto',from:da(H),to:T?da(T):null});
-        if(ok&&T){E('tiro',{chi:chi(T),from:da(T),to:porta('goal'),esito:'goal'});E('gol',{chi:chi(T),assist:chi(H),lato:T.team,x:+T.x.toFixed(1),y:+T.y.toFixed(1)});}}
-      else if(!ok&&key==='intercept'&&rew==='goal'){E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),esito:'blocked'});if(D)E('murato',{chi:chi(D),su:chi(H)});}/* tiro fermato da un uomo: murato, non fuori */
-      else if(!ok&&key==='intercept'&&D){E('intercetto',{chi:chi(D),da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
-      else if(rew==='goal'||key==='save'||key==='miss'||key==='miss_easy'||key==='post'){
-        const es=key==='save'?'saved':key==='post'?'post':'fuori';E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to:porta(es),esito:es});
-        if(key==='save'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(key==='post')E('palo',{chi:chi(H)});}
-      else if(rew==='assist'){E('passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});}
-      else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')){E('contrasto',{chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
+      const famPass=(fam==='pass'||fam==='cross'||(!fam&&rew==='assist')),famDrib=fam==='dribble',famDef=fam==='tackle';
+      const tiroEroe=(es,extra)=>{if(K&&es!=='blocked'&&es!=='saved')E('tuffo',{gk:chi(K)});E('tiro',Object.assign({chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to:es==='blocked'?null:porta(es),esito:es},extra||{}));};
+      if(famPass){
+        E(fam==='cross'?'cross':'passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});
+        if(!ok&&key==='intercept'&&D)E('intercetto',{chi:chi(D),da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+        else if(!ok&&fam==='cross'&&D)E('spazzata',{chi:chi(D),corner:false});
+        if(ok&&R){E('ricezione',{chi:chi(R),da:chi(H)});
+          if(key==='assist'||key==='goal'){if(K)E('tuffo',{gk:chi(K)});E('tiro',{chi:chi(R),from:da(R),intent:fam==='cross'?'header':null,to:porta('goal'),esito:'goal'});E('gol',{chi:chi(R),assist:chi(H),lato:R.team,x:+R.x.toFixed(1),y:+R.y.toFixed(1)});}}
+        if(fam==='cross'&&D)E('pressione',{chi:chi(D),su:chi(R||H)});
+      }
+      else if(famDef){
+        if(ok&&D)E('contrasto',{chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+        else if(D)E('conduzione',{chi:chi(D),from:da(D)});/* l'avversario la scampa e prosegue */
+      }
+      else{
+        if(famDrib)E('conduzione',{chi:chi(H),from:da(H)});
+        if(key==='goal'){tiroEroe('goal');E('gol',{chi:chi(H),assist:null,lato:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
+        else if(key==='assist'){E('passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null});if(ok&&R){E('ricezione',{chi:chi(R),da:chi(H)});if(K)E('tuffo',{gk:chi(K)});E('tiro',{chi:chi(R),from:da(R),to:porta('goal'),esito:'goal'});E('gol',{chi:chi(R),assist:chi(H),lato:R.team,x:+R.x.toFixed(1),y:+R.y.toFixed(1)});}}
+        else if(!ok&&key==='intercept'&&famDrib&&D)E('contrasto',{chi:chi(D),su:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* il dribbling fermato e' un contrasto */
+        else if(!ok&&key==='intercept'){tiroEroe('blocked');if(D)E('murato',{chi:chi(D),su:chi(H)});}
+        else if(key==='save'||key==='miss'||key==='miss_easy'||key==='post'||(rew==='goal'&&!ok)){/* un'«occasione» riuscita (chance) NON e' un tiro */
+          const es=key==='save'?'saved':key==='post'?'post':'fuori';tiroEroe(es);
+          if(key==='save'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(key==='post')E('palo',{chi:chi(H)});}
+        else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')&&D)E('contrasto',{chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+      }
 
+      if(D&&out.some(e=>e.t==='tiro'&&e.chi&&e.chi.i===HERO&&e.esito!=='blocked'))E('pressione',{chi:chi(D),su:chi(H)});/* il difensore del cast chiude sul tiro dell'eroe (il 3D lo mostra con la reazione del reparto) */
       if(key==='fouled'||key==='win_freekick')E('fallo',{per:H.team===HOME?AWAY:HOME,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
       else if(key==='foul')E('fallo',{chi:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
       if(d.corner)E('corner',{per:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});

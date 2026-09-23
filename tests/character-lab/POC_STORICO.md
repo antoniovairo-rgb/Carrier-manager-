@@ -951,6 +951,20 @@ esistenti ricampionate a 24 fps (presa alta 3,333 → 3,375 s). Mappa dei gesti:
 La traslazione del bacino della clip resta (circa 3 m), come per il CH38: stessa regola del gioco.
 **Non verificato:** la respinta in scena; la parata decisa dal brain (l'esito forzato «fail» esce sempre «fuori»); il telefono.
 
+## Avanzamento 23 settembre 2026, 23/09 14:41 — PUNTO 3: IL 3D MOSTRA I GESTI DEL BRAIN
+Principio: il 3D decide **quando** un gesto avviene (la sua coreografia), il brain decide **chi** lo fa e **cosa** fa.
+- Testimone nuovo (`__CPM_SCENA23`, solo sonda): per ogni evento di scena il gesto atteso dalla tabella `BRAIN_GESTI` sull'indice del
+  brain; per ogni gesto montato in highlight, l'indice del corpo e se era atteso. Sonda `scena-gesti.mjs` (partite vere, pilota automatico).
+- Motore: gli eventi della scena seguono **prima il gesto scelto** (famiglia e variante dell'opzione: passaggio/cross, conduzione,
+  tiro, contrasto) **poi le conseguenze** (ricezione, gol del compagno con assist, intercetto/contrasto/spazzata del difensore, tuffo
+  del portiere su ogni tiro verso la porta, pressione del difensore). Un'«occasione» riuscita non e' piu' un tiro (il vecchio ponte la
+  contava: i tiri nel tabellino calano, dichiarato).
+- 3D: per l'eroe il gesto atteso e' `gestoDi(famiglia, variante)`; il ricevente del cross e della rete d'emergenza e il difensore della
+  reazione del reparto vengono dal cast (`_castRic23`, `_castDif23`).
+**Misura** (gesti montati in scena che il brain aveva nominato): base **5/14 (36%)** → **32/33 (97%)** su 4 partite (semi 0-3).
+Copertura (gesti del brain visti in scena): 32/55 — ricezione 0/7, tuffo 8/12, tiro 8/14, intercetto 1/3, murato 0/2.
+**Prima catena osservata:** registrata `catena-motore`, nata dal brain.
+
 ---
 
 ## Obiettivo vincolante

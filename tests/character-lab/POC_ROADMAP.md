@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 13:53 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 14:41 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -14,7 +14,7 @@
 | **Brain → attori (B4)** | 🟡 ricevente **3 su 5** · difensore **4 su 6** · portiere 6 su 6 (mediane 0 u) | ricevente di cross e consegne · 2 difensori ancora scelti dal 3D |
 | Brain muove i 22 in scena (B3) | ⏳ da fare | |
 | **Esito deciso dal brain (B2)** | ✅ **10 su 10** esiti col dado del brain (rosso 0/13) · eventi veri col cast · tabellone = motore | il 3D non legge ancora quegli eventi |
-| Gesti collegati al brain | 🟡 impianto pronto (tabella unica evento→gesto) | si accende con B3 |
+| **Gesti in scena dal brain** | ✅ gesti montati nominati dal brain **32/33 (97%)**, base 5/14 | copertura 32/55: ricezione, murato, intercetto |
 | **3D dal brain (B3)** | 🟡 il **gol va dove lo decide il brain**: scarto alla linea 0,07-0,39 (rosso 2,8-9,1) | parata non verificata · palo/fuori/murato ancora geometrici · gesti in scena |
 | Tabellino = motore | ✅ gol del compagno e gol «persi» corretti | |
 | **Figurine** | ✅ **1000 volti nel gioco**: figurina Korward 5:7, volto dell'eroe scelto e salvato, volti stabili per tutti, una faccia per persona in scena | telefono · volti femminili assenti nel catalogo (giornaliste senza volto) |
@@ -23,7 +23,7 @@
 ## Piano (carta bianca del PO sulle situazioni, 23/09)
 1. ✅ Il brain apre la scena, con tipo di occasione e cast.
 2. ✅ **Il brain risolve la scelta dell'eroe**: dado dentro il motore (stessa probabilità di oggi), catena di eventi con gli attori veri, tabellino aggiornato dal motore (addio ponte `registra`).
-3. ▶️ Il 3D mostra solo quegli eventi: gesti per indice, esito e attori dal brain.
+3. 🟡 Il 3D mostra solo quegli eventi (coerenza 97%, copertura 58%): gesti per indice, esito e attori dal brain.
 4. Archetipi al posto delle 185 schede: opzioni (≤3) dal tipo di occasione; i testi restano racconto.
 5. Catene sostituite dal seguito deciso dal brain.
 
@@ -37,6 +37,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 14:41 | Punto 3: eventi del brain secondo il gesto scelto; attori della scena dal cast | gesti in scena nominati dal brain 5/14 → 32/33 |
 | 23/09 13:53 | Preview Netlify aggiornata (figurine, tuffo, brain) | file online identici al repo |
 | 23/09 13:52 | Figurine collegate: indice leggero, assegnazione stabile, scelta del volto, regola di scena | 7-9 ritratti scaricati a sessione; eroe stabile; 0 collisioni col volto dell'eroe |
 | 23/09 13:27 | Tuffo e respinta riadattati sullo scheletro CGTrader (Blender nel container) | cancello anatomico 3,1°/2,7° · tuffo in scena 96-100 fotogrammi, rosso 0 |
