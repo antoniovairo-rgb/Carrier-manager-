@@ -1,0 +1,16 @@
+{
+ "rosso": null,
+ "play": true,
+ "aperta": true,
+ "voce": {
+  "rect": [
+   720,
+   39
+  ],
+  "opacita": 0.93,
+  "testo": "Wanda Trevisiol | commento tecnico",
+  "figurina": "giornalista_f",
+  "img": true
+ },
+ "errori": []
+}

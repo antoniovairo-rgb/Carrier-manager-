@@ -782,6 +782,9 @@ const TELECRONISTI=[
   {v:"Damiano Ferrucci",t:"Ilaria Bonomelli",em:"Rete Elite",st:"pacato"},
   {v:"Ninetta Ravasio",t:"Ugo Sartorello",em:"Canale Nord",st:"tecnico"}
 ];
+/* [23/09 POC — domanda PO «Wanda Trevisiol e' una giornalista, la si vede mai? ha una sua figurina?»] chi e' donna fra le voci:
+   serve alla figurina (volto femminile) accanto alla riga del commento tecnico. */
+const TELECRONISTE_F23=new Set(["Nadia Fracassi","Gloria Sanfilippo","Wanda Trevisiol","Ilaria Bonomelli","Ninetta Ravasio"]);
 /* Il commento tecnico non racconta l'azione — la LEGGE. Esce di rado, e solo dopo che la voce principale
    ha parlato: e' la seconda voce di una telecronaca, non una riga di cronaca in piu'. */
 /* [7.882.0 — LA SECONDA VOCE SI RIPETE. MISURATO sulle quattro partite della scheda n° 13: 61 battute
