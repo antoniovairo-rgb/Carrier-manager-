@@ -39,6 +39,29 @@
  ],
  "ingresso": [
   {
+   "att": null,
+   "cam": {
+    "tPx": 5.4,
+    "tPy": 25.9,
+    "tPz": -27.3,
+    "tLx": -4.7,
+    "tLy": 7.9,
+    "tLz": 25.8,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 0.6,
+    "cy": 26,
+    "cz": 30.6,
+    "lx": 7.6,
+    "ly": 2.5,
+    "lz": 5.4,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "loading",
    "audit": 0,
    "masc": null,
@@ -49,6 +72,33 @@
    "fase": "walkout"
   },
   {
+   "att": [
+    "{\"i\":0,\"hero\":true,\"gk\":false,\"team\":\"home\",\"lod\":\"lod0\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.45,\"armR\":0.474,\"handsAtChest\":0.084,\"footBallL\":26.554,\"footBallR\":25.919,\"loco\":null,\"facingGoalDeg\":95.8,\"inFrame\":false,\"",
+    "{\"i\":7,\"hero\":false,\"gk\":false,\"team\":\"home\",\"lod\":\"lod2\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.377,\"armR\":0.41,\"handsAtChest\":0.113,\"footBallL\":14.746,\"footBallR\":15.28,\"loco\":null}",
+    "{\"i\":11,\"hero\":false,\"gk\":true,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.442,\"armR\":0.361,\"handsAtChest\":0.117,\"footBallL\":27.149,\"footBallR\":26.369,\"loco\":null}"
+   ],
+   "cam": {
+    "tPx": 20.3,
+    "tPy": 25.4,
+    "tPz": -24.5,
+    "tLx": -17.8,
+    "tLy": 7.8,
+    "tLz": 23.3,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 8.5,
+    "cy": 25.8,
+    "cz": -4.6,
+    "lx": -2.8,
+    "ly": 7.7,
+    "lz": 17.6,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "ready-lineup",
    "audit": 23,
    "masc": {
@@ -62,6 +112,33 @@
    "fase": "walkout"
   },
   {
+   "att": [
+    "{\"i\":0,\"hero\":true,\"gk\":false,\"team\":\"home\",\"lod\":\"lod0\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.43,\"armR\":0.501,\"handsAtChest\":0.112,\"footBallL\":26.502,\"footBallR\":25.983,\"loco\":null,\"facingGoalDeg\":95.8,\"inFrame\":false,\"",
+    "{\"i\":11,\"hero\":false,\"gk\":true,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.383,\"armR\":0.489,\"handsAtChest\":0.08,\"footBallL\":28.696,\"footBallR\":29.194,\"loco\":null}",
+    "{\"i\":14,\"hero\":false,\"gk\":false,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.401,\"armR\":0.476,\"handsAtChest\":0.078,\"footBallL\":9.299,\"footBallR\":10.016,\"loco\":\"run\"}"
+   ],
+   "cam": {
+    "tPx": 33.3,
+    "tPy": 25,
+    "tPz": -18.5,
+    "tLx": -29.4,
+    "tLy": 7.6,
+    "tLz": 17.6,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 20.8,
+    "cy": 25.4,
+    "cz": -15.5,
+    "lx": -15.1,
+    "ly": 7.7,
+    "lz": 20.1,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "ready-lineup",
    "audit": 23,
    "masc": {
@@ -75,6 +152,33 @@
    "fase": "walkout"
   },
   {
+   "att": [
+    "{\"i\":0,\"hero\":true,\"gk\":false,\"team\":\"home\",\"lod\":\"lod0\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.481,\"armR\":0.51,\"handsAtChest\":0.051,\"footBallL\":26.511,\"footBallR\":25.965,\"loco\":null,\"facingGoalDeg\":95.8,\"inFrame\":false,\"",
+    "{\"i\":11,\"hero\":false,\"gk\":true,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.44,\"armR\":0.368,\"handsAtChest\":0.082,\"footBallL\":29.277,\"footBallR\":28.523,\"loco\":null}",
+    "{\"i\":16,\"hero\":false,\"gk\":false,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.418,\"armR\":0.439,\"handsAtChest\":0.069,\"footBallL\":4.615,\"footBallR\":4.669,\"loco\":\"run\"}"
+   ],
+   "cam": {
+    "tPx": 40.4,
+    "tPy": 24.7,
+    "tPz": -12.1,
+    "tLx": -35.8,
+    "tLy": 7.4,
+    "tLz": 11.6,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 29.8,
+    "cy": 25.1,
+    "cz": -15.4,
+    "lx": -23.8,
+    "ly": 7.6,
+    "lz": 17.9,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "ready-lineup",
    "audit": 23,
    "masc": {
@@ -88,6 +192,33 @@
    "fase": "walkout"
   },
   {
+   "att": [
+    "{\"i\":0,\"hero\":true,\"gk\":false,\"team\":\"home\",\"lod\":\"lod0\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.447,\"armR\":0.469,\"handsAtChest\":0.157,\"footBallL\":26.395,\"footBallR\":25.931,\"loco\":null,\"facingGoalDeg\":95.8,\"inFrame\":false,",
+    "{\"i\":11,\"hero\":false,\"gk\":true,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.417,\"armR\":0.454,\"handsAtChest\":0.116,\"footBallL\":28.725,\"footBallR\":28.684,\"loco\":null}",
+    "{\"i\":16,\"hero\":false,\"gk\":false,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.45,\"armR\":0.434,\"handsAtChest\":0.103,\"footBallL\":6.226,\"footBallR\":7.319,\"loco\":\"run\"}"
+   ],
+   "cam": {
+    "tPx": 44.7,
+    "tPy": 24.2,
+    "tPz": -1.7,
+    "tLx": -39.9,
+    "tLy": 7.2,
+    "tLz": 1.7,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 38.9,
+    "cy": 24.6,
+    "cz": -9.4,
+    "lx": -33.2,
+    "ly": 7.4,
+    "lz": 11.2,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "ready-lineup",
    "audit": 23,
    "masc": {
@@ -101,6 +232,33 @@
    "fase": "walkout"
   },
   {
+   "att": [
+    "{\"i\":0,\"hero\":true,\"gk\":false,\"team\":\"home\",\"lod\":\"lod0\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.478,\"armR\":0.426,\"handsAtChest\":0.104,\"footBallL\":29.334,\"footBallR\":29.803,\"loco\":\"run\",\"facingGoalDeg\":169.1,\"inFrame\":fals",
+    "{\"i\":11,\"hero\":false,\"gk\":true,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.385,\"armR\":0.44,\"handsAtChest\":0.061,\"footBallL\":28.63,\"footBallR\":28.663,\"loco\":null}",
+    "{\"i\":16,\"hero\":false,\"gk\":false,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.466,\"armR\":0.515,\"handsAtChest\":0.145,\"footBallL\":6.917,\"footBallR\":7.221,\"loco\":\"run\"}"
+   ],
+   "cam": {
+    "tPx": 42.3,
+    "tPy": 23.7,
+    "tPz": 8.2,
+    "tLx": -38,
+    "tLy": 7,
+    "tLz": -8,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 42.2,
+    "cy": 24.2,
+    "cz": -0.8,
+    "lx": -37.3,
+    "ly": 7.2,
+    "lz": 2.7,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "ready-lineup",
    "audit": 23,
    "masc": {
@@ -114,6 +272,33 @@
    "fase": "walkout"
   },
   {
+   "att": [
+    "{\"i\":0,\"hero\":true,\"gk\":false,\"team\":\"home\",\"lod\":\"lod0\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.418,\"armR\":0.563,\"handsAtChest\":0.108,\"footBallL\":31.594,\"footBallR\":31.447,\"loco\":\"run\",\"facingGoalDeg\":172.2,\"inFrame\":fals",
+    "{\"i\":11,\"hero\":false,\"gk\":true,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.491,\"armR\":0.506,\"handsAtChest\":0.12,\"footBallL\":28.502,\"footBallR\":28.663,\"loco\":null}",
+    "{\"i\":16,\"hero\":false,\"gk\":false,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.441,\"armR\":0.447,\"handsAtChest\":0.133,\"footBallL\":6.976,\"footBallR\":7.326,\"loco\":\"run\"}"
+   ],
+   "cam": {
+    "tPx": 33.4,
+    "tPy": 23.2,
+    "tPz": 17.3,
+    "tLx": -30.2,
+    "tLy": 6.8,
+    "tLz": -17,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 39.3,
+    "cy": 23.7,
+    "cz": 8.8,
+    "lx": -36.1,
+    "ly": 7,
+    "lz": -6.9,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "ready-lineup",
    "audit": 23,
    "masc": {
@@ -127,6 +312,33 @@
    "fase": "walkout"
   },
   {
+   "att": [
+    "{\"i\":0,\"hero\":true,\"gk\":false,\"team\":\"home\",\"lod\":\"lod0\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.441,\"armR\":0.515,\"handsAtChest\":0.11,\"footBallL\":31.948,\"footBallR\":31.54,\"loco\":\"run\",\"facingGoalDeg\":172.2,\"inFrame\":false,",
+    "{\"i\":11,\"hero\":false,\"gk\":true,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.408,\"armR\":0.432,\"handsAtChest\":0.15,\"footBallL\":28.704,\"footBallR\":28.636,\"loco\":null}",
+    "{\"i\":16,\"hero\":false,\"gk\":false,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.412,\"armR\":0.49,\"handsAtChest\":0.094,\"footBallL\":6.948,\"footBallR\":7.388,\"loco\":\"run\"}"
+   ],
+   "cam": {
+    "tPx": 20.7,
+    "tPy": 22.8,
+    "tPz": 23.2,
+    "tLx": -18.9,
+    "tLy": 6.6,
+    "tLz": -22.9,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 31.3,
+    "cy": 23.2,
+    "cz": 16.5,
+    "lx": -29.9,
+    "ly": 6.8,
+    "lz": -14.8,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "ready-lineup",
    "audit": 23,
    "masc": {
@@ -140,6 +352,33 @@
    "fase": "walkout"
   },
   {
+   "att": [
+    "{\"i\":0,\"hero\":true,\"gk\":false,\"team\":\"home\",\"lod\":\"lod0\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.46,\"armR\":0.459,\"handsAtChest\":0.174,\"footBallL\":31.95,\"footBallR\":31.787,\"loco\":\"run\",\"facingGoalDeg\":172.2,\"inFrame\":false,",
+    "{\"i\":11,\"hero\":false,\"gk\":true,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.415,\"armR\":0.441,\"handsAtChest\":0.128,\"footBallL\":28.67,\"footBallR\":28.618,\"loco\":null}",
+    "{\"i\":16,\"hero\":false,\"gk\":false,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.453,\"armR\":0.509,\"handsAtChest\":0.176,\"footBallL\":7.072,\"footBallR\":7.444,\"loco\":\"run\"}"
+   ],
+   "cam": {
+    "tPx": 6.9,
+    "tPy": 22.4,
+    "tPz": 25.8,
+    "tLx": -6.4,
+    "tLy": 6.4,
+    "tLz": -25.7,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 20.5,
+    "cy": 22.8,
+    "cz": 21.6,
+    "lx": -20.9,
+    "ly": 6.6,
+    "lz": -20.3,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "ready-lineup",
    "audit": 23,
    "masc": {
@@ -153,6 +392,33 @@
    "fase": "walkout"
   },
   {
+   "att": [
+    "{\"i\":0,\"hero\":true,\"gk\":false,\"team\":\"home\",\"lod\":\"lod0\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.431,\"armR\":0.496,\"handsAtChest\":0.104,\"footBallL\":31.932,\"footBallR\":31.836,\"loco\":\"run\",\"facingGoalDeg\":172.2,\"inFrame\":fals",
+    "{\"i\":11,\"hero\":false,\"gk\":true,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.364,\"armR\":0.474,\"handsAtChest\":0.122,\"footBallL\":28.727,\"footBallR\":28.594,\"loco\":null}",
+    "{\"i\":16,\"hero\":false,\"gk\":false,\"team\":\"away\",\"lod\":\"lod1\",\"gesture\":null,\"weight\":0,\"clip\":null,\"clipTime\":null,\"clipDur\":null,\"armL\":0.434,\"armR\":0.439,\"handsAtChest\":0.099,\"footBallL\":7.1,\"footBallR\":7.404,\"loco\":\"run\"}"
+   ],
+   "cam": {
+    "tPx": -8.8,
+    "tPy": 21.9,
+    "tPz": 25.4,
+    "tLx": 8.1,
+    "tLy": 6.2,
+    "tLz": -25.5,
+    "kp": 0.095,
+    "kl": 0.095,
+    "fov": 56,
+    "cx": 6.4,
+    "cy": 22.4,
+    "cz": 24.4,
+    "lx": -8.4,
+    "ly": 6.4,
+    "lz": -23.8,
+    "sal": false,
+    "hl": 0,
+    "isHL": false,
+    "ph": "walkout",
+    "tocc": []
+   },
    "st": "ready-lineup",
    "audit": 23,
    "masc": {
@@ -164,6 +430,28 @@
     "offFieldCH38": false
    },
    "fase": "walkout"
+  }
+ ],
+ "bimbi": [
+  {
+   "mesh": 0.1,
+   "skel": 1.561,
+   "finale": 1.25
+  },
+  {
+   "mesh": 0.1,
+   "skel": 1.561,
+   "finale": 1.25
+  },
+  {
+   "mesh": 0.1,
+   "skel": 1.561,
+   "finale": 1.25
+  },
+  {
+   "mesh": 0.1,
+   "skel": 1.561,
+   "finale": 1.25
   }
  ],
  "cam": null,
