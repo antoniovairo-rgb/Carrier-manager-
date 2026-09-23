@@ -29,12 +29,16 @@
 6. 🟡 **CH38 via**: highlight già CGTrader senza parametri (0 corpi CH38). Mancano cerimonie, ritratto 3D dei menu e il download dei file CH38.
 7. 🟡 **Clip nuove, contro la ripetizione**: 54 clip Mixamo dalla cartella Drive del PO riadattate (cancello 54/54), in gioco come varianti di tuffo (lato scelto dalla palla), respinta, presa alta, rinvio, lancio, portiere in attesa, scivolata. Tiro: varianti revocate (contatto peggiore). Prossimi: contatto misurato per testa/controllo/rigore/rimessa/rovesciata, tiro specchiato (destro), nuovi gesti (sgambetto, palleggio, portiere che dirige), CMU.
 
-## Da decidere o guardare tu
-- **Catene:** tenute come valore aggiunto; il seguito ora lo sceglie il brain. Se preferisci spegnerle, è un interruttore.
-- Testo «Para in tuffo» mentre il gesto è una presa alta.
-- Dopo un gol la regia si allarga di colpo (camera a ~44 u): anche in produzione.
-- La lavagna 2D non si specchia nel secondo tempo, la barra sì.
-- Diritti dei ritratti AI: non verificabili da me.
+## Decisioni del PO (questionario 23/09 18:45) → ordine di lavoro
+1. **Rovesciata vera** sincronizzata col pallone (priorità alta).
+2. **Gesto segue il testo**: se la cronaca dice tuffo, il portiere si tuffa (dal lato della palla).
+3. **CH38 via ovunque**: cerimonie, ritratto 3D dei menu, niente download del CH38.
+4. **Corpi CGTrader caricati in anticipo** (menu/pre-partita).
+5. **Gesti nuovi**: sgambetto/fallo subito · portiere che dirige · portiere che rimette in gioco.
+6. **Camera dopo il gol**: resta sull'esultanza, allargamento lento solo alla fine.
+7. **Lavagna 2D specchiata** nel secondo tempo, come la barra.
+8. **Catene**: tenute (il seguito lo sceglie il brain).
+- Ancora aperto: diritti dei ritratti AI (non verificabili da me) · volti femminili assenti nel catalogo.
 
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
