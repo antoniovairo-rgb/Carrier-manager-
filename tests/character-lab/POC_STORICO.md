@@ -1003,6 +1003,19 @@ Nota: tutte le 191 schede hanno gia' **3 opzioni** esatte, quindi il vincolo «a
 **Misura** (2 partite): «spalle» chiesta → ottenuta 2/2 dopo 0-1 attese; «conclusione», «fascia», «costruzione» ancora 8/8 attese
 (l'eroe riceve da altri canali — palle vaganti, appoggi — prima di arrivare). Scene dal brain 8/8, coerenti 8/8. **Aperto.**
 
+## Avanzamento 23 settembre 2026, 23/09 16:39 — GESTI EVOLUTI, DICHIARATI DAL BRAIN (corpi CGTrader)
+Direttiva PO: «tutti i gesti (ed evolvili) e render 3D da motore unico». Nuove chiavi nelle mappe CGTrader (clip gia' nel GLB, costo 0):
+`goalKick` (gk-goal-kick) · `gkThrow` (gk-throw) · `gkReady` (gk-ready) · `standTackle` (tackle in piedi) · `lookBack`. Gesti nuovi in scena:
+- **reazione dell'eroe alla giocata fallita** con la clip `missed-chance` (prima era una posa procedurale invisibile sotto il GLB) — rosso `__CPM_NO_MISS23`;
+- **portiere del brain in posizione d'attesa** (`gk-ready`) una volta per scena, solo il portiere del cast;
+- **rilancio con le mani** del nostro portiere dopo la presa (`gk-throw`, 0,9 s dopo avere la palla) — rosso `__CPM_NO_GKEVO23`;
+- **contrasto in piedi o in scivolata**: il modo lo dice il brain (scivolata vicino alla propria area, in piedi altrove).
+Il brain dichiara i fatti corrispondenti: `pronto`, `rammarico`, `presa`/`rilancio` (portiere chiamato), `modo` del contrasto; tuffo
+del portiere entro 12 unita' dal centro porta (prima 7: il 3D reagiva anche piu' largo).
+**Misura** (corpi CGTrader, 1 partita intera): gesti montati 19 (kick 8, dive 3, gkReady 3, tackle 2, miss 2, dribble 1) · coerenza
+16/19 · copertura 16/19 (84%). Prima corsa della stessa sonda con i gesti nuovi: 11 non attesi su 27 → dopo le rifiniture 3 su 19.
+**Non verificato:** il rilancio del portiere in scena (serve una presa del nostro portiere); il telefono.
+
 ---
 
 ## Obiettivo vincolante

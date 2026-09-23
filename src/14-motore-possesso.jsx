@@ -993,7 +993,11 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
          legno, fuori oltre il palo. y in coordinate di campo (0-100), pali a 50±4,9 (= |z| 3,35 del 3D, G2Z=(y-50)·0,68). */
       const porta=(es)=>{const s=rnd()<0.5?-1:1;const y=es==='goal'?50+s*(2.0+rnd()*2.4):es==='saved'?50+s*rnd()*2.4:es==='post'?50+s*4.9:es==='fuori'?50+s*(5.9+rnd()*6):50;return{x:100,y:+y.toFixed(2)};};
       const famPass=(fam==='pass'||fam==='cross'||(!fam&&rew==='assist')),famDrib=fam==='dribble',famDef=fam==='tackle';
-      const tiroEroe=(es,extra)=>{const to=es==='blocked'?null:porta(es);if(K&&es!=='blocked'&&es!=='saved'&&to&&Math.abs(to.y-50)<=7)E('tuffo',{gk:chi(K)});/* il portiere si tuffa solo se il pallone passa vicino ai pali */E('tiro',Object.assign({chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to,esito:es},extra||{}));};
+      /* [23/09 POC — gesti evoluti] contrasto in piedi o in scivolata: deciso dalla situazione (distanza dalla porta propria di chi
+         interviene, niente sorteggio). In scivolata quando si difende vicino alla propria area, in piedi altrove. */
+      const modo=(q)=>{try{return (q&&advDi(q.x,q.team)<32)?'scivolata':'piedi';}catch(_e){return 'scivolata';}};
+      const MIO_GK=g.find(q=>q&&q.gk&&q.team===H.team)||null;
+      const tiroEroe=(es,extra)=>{const to=es==='blocked'?null:porta(es);if(K&&es!=='blocked'&&es!=='saved'&&to&&Math.abs(to.y-50)<=12)E('tuffo',{gk:chi(K)});/* il portiere reagisce se il pallone passa entro 12 unita' dal centro porta */E('tiro',Object.assign({chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to,esito:es},extra||{}));};
       if(famPass){
         E(fam==='cross'?'cross':'passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});
         if(!ok&&key==='intercept'&&D)E('intercetto',{chi:chi(D),da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
@@ -1003,21 +1007,24 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
         if(fam==='cross'&&D)E('pressione',{chi:chi(D),su:chi(R||H)});
       }
       else if(famDef){
-        if(ok&&D)E('contrasto',{chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+        if(ok&&D)E('contrasto',{modo:modo(H),chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
         else if(D)E('conduzione',{chi:chi(D),from:da(D)});/* l'avversario la scampa e prosegue */
       }
       else{
         if(famDrib)E('conduzione',{chi:chi(H),from:da(H)});
         if(key==='goal'){tiroEroe('goal');E('gol',{chi:chi(H),assist:null,lato:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
         else if(key==='assist'){E('passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null});if(ok&&R){if(K)E('tuffo',{gk:chi(K)});E('tiro',{chi:chi(R),from:da(R),to:porta('goal'),esito:'goal'});E('gol',{chi:chi(R),assist:chi(H),lato:R.team,x:+R.x.toFixed(1),y:+R.y.toFixed(1)});}}
-        else if(!ok&&key==='intercept'&&famDrib&&D)E('contrasto',{chi:chi(D),su:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* il dribbling fermato e' un contrasto */
+        else if(!ok&&key==='intercept'&&famDrib&&D)E('contrasto',{modo:modo(D),chi:chi(D),su:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* il dribbling fermato e' un contrasto */
         else if(!ok&&key==='intercept'){tiroEroe('blocked');if(D)E('murato',{chi:chi(D),su:chi(H)});}
         else if(key==='save'||key==='miss'||key==='miss_easy'||key==='post'||(rew==='goal'&&!ok)){/* un'«occasione» riuscita (chance) NON e' un tiro */
           const es=key==='save'?'saved':key==='post'?'post':'fuori';tiroEroe(es);
           if(key==='save'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(key==='post')E('palo',{chi:chi(H)});}
-        else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')&&D)E('contrasto',{chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+        else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')&&D)E('contrasto',{modo:modo(H),chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
       }
 
+      if(K&&out.some(e=>e.t==='tiro'))out.unshift((()=>{const e=ev('pronto',{scena:true,fam:d.tipo||null,gk:chi(K)});return e;})());/* il portiere si mette in posizione prima del tiro */
+      if(!famDef&&(!ok||out.some(e=>e.t==='tiro'&&e.chi&&e.chi.i===HERO&&(e.esito==='fuori'||e.esito==='post'||e.esito==='saved'))))E('rammarico',{chi:chi(H)});/* l'eroe si prende la testa fra le mani quando la sua giocata non riesce */
+      if(d.gkCall&&MIO_GK&&ok){E('presa',{gk:chi(MIO_GK)});E('rilancio',{gk:chi(MIO_GK)});}/* chiamato il portiere: presa e rilancio con le mani */
       if(D&&out.some(e=>e.t==='tiro'&&e.chi&&e.chi.i===HERO&&e.esito!=='blocked'))E('pressione',{chi:chi(D),su:chi(H)});/* il difensore del cast chiude sul tiro dell'eroe (il 3D lo mostra con la reazione del reparto) */
       if(key==='fouled'||key==='win_freekick')E('fallo',{per:H.team===HOME?AWAY:HOME,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
       else if(key==='foul')E('fallo',{chi:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});

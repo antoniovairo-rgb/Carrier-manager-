@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 16:31 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 16:39 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -14,7 +14,7 @@
 | **Brain → attori (B4)** | 🟡 ricevente **3 su 5** · difensore **4 su 6** · portiere 6 su 6 (mediane 0 u) | ricevente di cross e consegne · 2 difensori ancora scelti dal 3D |
 | Brain muove i 22 in scena (B3) | ⏳ da fare | |
 | **Esito deciso dal brain (B2)** | ✅ **10 su 10** esiti col dado del brain (rosso 0/13) · eventi veri col cast · tabellone = motore | il 3D non legge ancora quegli eventi |
-| **Gesti in scena dal brain** | ✅ gesti montati nominati dal brain **83-97%** (base 36%) · difensore del brain come primo pressore · clip tackle sull'intervento | copertura ~55%: tiro del compagno, esultanza |
+| **Gesti in scena dal brain** | ✅ coerenza 83-97% (base 36%) · **gesti nuovi**: reazione al tiro sbagliato, portiere in attesa, rilancio, contrasto in piedi/scivolata · CGTrader: coerenza e copertura 84% | rilancio non ancora visto · tiro del compagno |
 | **3D dal brain (B3)** | 🟡 il **gol va dove lo decide il brain**: scarto alla linea 0,07-0,39 (rosso 2,8-9,1) | parata non verificata · palo/fuori/murato ancora geometrici · gesti in scena |
 | Tabellino = motore | ✅ gol del compagno e gol «persi» corretti | |
 | **Figurine** | ✅ **1000 volti nel gioco**: figurina Korward 5:7, volto dell'eroe scelto e salvato, volti stabili per tutti, una faccia per persona in scena | telefono · volti femminili assenti nel catalogo (giornaliste senza volto) |
@@ -37,6 +37,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 16:39 | Gesti evoluti dichiarati dal brain: rammarico, portiere in attesa, rilancio, contrasto in piedi/scivolata | CGTrader: coerenza e copertura 16/19 (84%) |
 | 23/09 16:31 | Punto 4: l'eroe si posiziona per l'occasione chiesta (parziale) | spalle ottenuta 2/2; conclusione/fascia ancora no |
 | 23/09 16:06 | Guardiani del motore rigiocati: match-sequence (tetto 110 s), event-ledger (2 partite) | sequenza identica 100% fra le velocità · gol libro mastro = tabellone 2/2 |
 | 23/09 15:33 | Punto 5: il seguito della catena lo sceglie il brain | sorteggio libero → dado del motore; «Mischia in area» registrata |

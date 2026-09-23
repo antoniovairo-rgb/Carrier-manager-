@@ -17,7 +17,8 @@ for (let p = DA; p < DA + N; p++) {
   if (process.env.CPM_ESITO) await page.addInitScript(e => { window.__CPM_FORCE_OUTCOME = e; }, process.env.CPM_ESITO); /* 'success': ogni azione riesce, cosi' nascono le catene */
   await page.addInitScript(r => { window.__CPM_PRESENT = 1; window.__CPM_REALWAIT = 1; window.__CPM_REC = 1; window.__CPM_B4REC = 1; window.__CPM_BRAIN_REC = 1; try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} if (r) window[r] = true; }, ROSSO);
   await installCdnRoutes(page);
-  await openMatch(page, server.address().port, { skipLoadAll: true, name: 'Scene ' + p });
+  await openMatch(page, server.address().port, { skipLoadAll: true, name: 'Scene ' + p, query: process.env.CPM_CG ? { hyperCharacter: 'cgtrader-highlight-optimized' } : {} });
+  if (process.env.CPM_CG) await page.waitForFunction(() => window.__CPM_HYPER_CASUAL_STATUS === 'ready-lineup', null, { timeout: 180000 }).catch(() => {});
   /* il pilota automatico del gioco: le scene col movimento bloccato aspettano un comando, e senza di lui la partita resta ferma in hl_move */
   await page.evaluate(sd => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: sd }), 1000 + p).catch(() => {});
   const t0 = Date.now(); let hl = 0, fine = null;
@@ -47,6 +48,7 @@ const tot = {}; esiti.forEach(e => Object.entries(e.perSrc).forEach(([k, v]) => 
 const n = Object.values(tot).reduce((a, b) => a + b, 0);
 const AT = esiti.flatMap(e => (e.scenaG && e.scenaG.attesi) || []), MO = esiti.flatMap(e => (e.scenaG && e.scenaG.montati) || []);
 const perEv = {}; AT.forEach(x => { const o = perEv[x.ev] || (perEv[x.ev] = { attesi: 0, visti: 0 }); o.attesi++; if (x.visto) o.visti++; });
+const perG = {}; MO.forEach(x => { perG[x.g] = (perG[x.g] | 0) + 1; }); console.log('GESTI MONTATI PER TIPO', JSON.stringify(perG));
 console.log('PUNTO 3 gesti del brain visti in scena:', AT.filter(x => x.visto).length + '/' + AT.length, JSON.stringify(perEv), '· montati in scena', MO.length, '· di cui non attesi', MO.filter(x => !x.atteso).length, JSON.stringify(MO.filter(x => !x.atteso).map(x => x.idx + ':' + x.g).slice(0, 30)));
 const B4 = { ricevente: [], difensore: [], portiere: [] }; esiti.forEach(e => Object.values(e.b4 || {}).forEach(sc => ['ricevente', 'difensore', 'portiere'].forEach(r => { if (sc[r]) B4[r].push(sc[r]); })));
 const med = a => { const v = a.map(x => x.d).filter(Number.isFinite).sort((x, y) => x - y); return v.length ? v[Math.floor(v.length / 2)] : null; };
