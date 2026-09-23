@@ -23205,7 +23205,15 @@ function creaMotorePossesso(cfg){
          e' la giocata che il calcio fa quando il centro e' chiuso. */
       if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0);
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
-      if(q.eroe)sc+=((cfg.eroe&&cfg.eroe.bonus)||2)+(S.richieste.scenaEroe?26:0);/* [7.879] chiesta la scena, l'eroe diventa la prima scelta */
+      if(q.eroe){let _b879=S.richieste.scenaEroe?26:0;
+        /* [23/09 POC — punto 4] con un TIPO chiesto il bonus pieno scatta solo quando l'eroe e' gia' dove quel tipo nasce (entro 9u dal
+           suo punto): prima gli arrivava il pallone ovunque fosse, e l'occasione nasceva sempre sulla soglia della trequarti.
+           Rosso __CPM_NO_B7POS. */
+        const _tq=S.richieste.scenaEroe&&S.richieste.scenaTipo;
+        if(_tq&&!(typeof window!=='undefined'&&window.__CPM_NO_B7POS)){const l=q.team;const a=advDi(q.x,l);
+          const pronto=_tq==="conclusione"?a>=80:_tq==="fascia"?(a>=62&&Math.abs(q.y-50)>=24):_tq==="spalle"?a>=74:_tq==="fra-le-linee"?(a>=60&&a<76):a<60;
+          if(!pronto)_b879=2;}
+        sc+=((cfg.eroe&&cfg.eroe.bonus)||2)+_b879;}/* [7.879] chiesta la scena, l'eroe diventa la prima scelta */
       if(fw<-12)sc-=6;
       /* [7.943 — CHI PASSA GUARDA LA LINEA. Rosso __CPM_NO943]
          La scelta del ricevente pesava avanzamento, marcatura e corsia, ma MAI il fuorigioco: il motore
@@ -23410,7 +23418,7 @@ function creaMotorePossesso(cfg){
     const _tipoOcc=(zz,pp,yy)=>(zz==="area"||zz==="limite")?(pp<3?"conclusione":"spalle"):(zz==="trequarti"?(Math.abs(yy-50)>=22?"fascia":"fra-le-linee"):"costruzione");
     if(S.richieste.scenaEroe&&P.eroe&&adv>=52&&S.richieste.scenaTipo&&_tipoOcc(zona,press,P.y)!==S.richieste.scenaTipo&&(S.richieste.scenaAttese|0)<8){S.richieste.scenaAttese=(S.richieste.scenaAttese|0)+1;}
     else     if(S.richieste.scenaEroe&&P.eroe&&adv>=52){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
-      ev("occasione_eroe",{chi:chi(P),zona:_z,press:_pr,x:+P.x.toFixed(1),y:+P.y.toFixed(1),
+      ev("occasione_eroe",{chi:chi(P),zona:_z,press:_pr,x:+P.x.toFixed(1),y:+P.y.toFixed(1),chiesto:S.richieste.scenaTipo||null,attese:S.richieste.scenaAttese|0,
         tipo:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
         liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length,
         /* [23/09 POC — B4: IL CAST DELLA SCENA LO DICHIARA IL MOTORE. Direttiva PO «il 3D parla solo col brain».] Chi riceve, chi
@@ -23656,6 +23664,18 @@ function creaMotorePossesso(cfg){
         if(p.rl==="DF"&&!inPoss){tx=sl.x+dp*Math.min(spinta,0)+(bx-50)*0.25;}
         /* [7.872] col gol decretato le punte di quel lato salgono al limite dell'area: il lancio ha un bersaglio */
         {const gr=S.richieste.gol;if(gr&&p.team===gr.lato&&p.rl==="AT"&&st!=="fermo"&&advDi(tx,p.team)<80){tx=xDa(80+(p.i%3)*2,p.team);ty=sl.y+(by-sl.y)*0.35;v=6;}}
+        /* [23/09 POC — punto 4: IL BRAIN PORTA L'EROE DOVE NASCE L'OCCASIONE CHIESTA. Rosso __CPM_NO_B7POS] Misurato: senza questo,
+           nessuna «conclusione» e nessuna «fascia» in 9 scene — l'eroe stava sempre al suo posto (x 60, y 50) e l'occasione nasceva
+           sulla soglia della trequarti. Con la scena chiesta e la squadra in possesso, l'eroe senza palla va dove quel tipo nasce:
+           in area (conclusione), largo sul suo lato (fascia), al limite (spalle), fra le linee o piu' indietro (costruzione). */
+        {const tq=S.richieste.scenaEroe&&S.richieste.scenaTipo;
+         if(tq&&p.eroe&&inPoss&&st!=="fermo"&&!(typeof window!=='undefined'&&window.__CPM_NO_B7POS)){
+           if(tq==="conclusione"){tx=xDa(84,p.team);ty=50+(p.y>=50?6:-6);}
+           else if(tq==="fascia"){tx=xDa(72,p.team);ty=p.y>=50?84:16;}
+           else if(tq==="spalle"){tx=xDa(79,p.team);ty=50;}
+           else if(tq==="fra-le-linee"){tx=xDa(68,p.team);ty=50+(p.y>=50?4:-4);}
+           else if(tq==="costruzione"){tx=xDa(46,p.team);ty=p.y;}
+           v=6;}}
         /* [7.883 v2 — L'AREA LA RIEMPIE CHI STA DAL LATO OPPOSTO AL PALLONE.
            MISURATO al banco (16 partite): cross in gioco aperto 0,38 a partita. La condizione che il
            motore richiede (portatore avanzato e largo) ricorre 2,81 volte a partita, ma in 27 casi su
@@ -28214,7 +28234,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                         ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])===0&&s2.type!=='def')
                         ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])>=0&&s2.type!=='def');
                   if(_c){_pick880=_c;try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SIT880=window.__CPM_SIT880||[]).push({min:nx,zona:occEroe879Ref.current.zona,sit:_c.zones[0],tipo:occEroe879Ref.current.tipo});}catch(_e880){}}}
-                try{if(typeof window!=='undefined'&&window.__CPM_REC){const _it=deriveIntent(_pick880);(window.__CPM_B7=window.__CPM_B7||[]).push({min:nx|0,tipo:occEroe879Ref.current.tipo,intento:_it,coerente:!!(_OK7&&_OK7.indexOf(_it)>=0),candidateCoerenti:_fresh79.filter(_coer7).length,candidate:_fresh79.length});}}catch(_e7){}
+                try{if(typeof window!=='undefined'&&window.__CPM_REC){const _it=deriveIntent(_pick880);(window.__CPM_B7=window.__CPM_B7||[]).push({min:nx|0,tipo:occEroe879Ref.current.tipo,chiesto:occEroe879Ref.current.chiesto,attese:occEroe879Ref.current.attese,x:occEroe879Ref.current.x,y:occEroe879Ref.current.y,press:occEroe879Ref.current.press,intento:_it,coerente:!!(_OK7&&_OK7.indexOf(_it)>=0),candidateCoerenti:_fresh79.filter(_coer7).length,candidate:_fresh79.length});}}catch(_e7){}
               }
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }
@@ -28940,7 +28960,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           _specchi898(_stM870,_evM870);/* [7.898] gli specchi del motore: la stessa funzione dei sotto-tick */
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCHERMO843=window.__CPM_SCHERMO843||[]);if(_S.length<400)_S.push({min:nx,ko:kickoffRef.current|0,kick:kickRef.current|0,out:0,fermo:fermoRef.current?1:0,sp:0,pg:pendingGoalRef.current?1:0,ct:0,lib:0,hl:_inHL77?1:0,cool:bgCoolRef.current|0,ph:String(phaseRef.current),motore:1,stato:_stM870.poss.stato});}catch(_e){}}
           /* [7.879] il fatto che apre la scena: lo si prende qui, dove i fatti del motore arrivano */
-          {const _oc=_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null};}
+          {const _oc=_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,chiesto:_oc.chiesto||null,attese:_oc.attese|0,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null};}
           _narr870=narra870(_evM870,_stM870,nx,{cool:bgCoolRef.current|0});
           if(_narr870&&_narr870.ef){/* il gol e' entrato: la riga porta l'evento del microsim (accredito, festa, ripresa) */const _g=golMotoreRef.current;if(_g&&_g.ev){_narr870.ms=_g.ev.ms||_narr870.ms;_narr870.w=_g.ev.w||1;}golMotoreRef.current=null;pendingGoalRef.current=null;}
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NARR870=window.__CPM_NARR870||{tick:0,eventi:0,righe:0,per:{}});_W.tick++;_W.eventi+=_evM870.length;if(_narr870){_W.righe++;_W.per[_narr870._motore870.kind]=(_W.per[_narr870._motore870.kind]|0)+1;}}catch(_e){}}

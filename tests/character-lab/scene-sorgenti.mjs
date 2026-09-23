@@ -47,7 +47,7 @@ const n = Object.values(tot).reduce((a, b) => a + b, 0);
 const B4 = { ricevente: [], difensore: [], portiere: [] }; esiti.forEach(e => Object.values(e.b4 || {}).forEach(sc => ['ricevente', 'difensore', 'portiere'].forEach(r => { if (sc[r]) B4[r].push(sc[r]); })));
 const med = a => { const v = a.map(x => x.d).filter(Number.isFinite).sort((x, y) => x - y); return v.length ? v[Math.floor(v.length / 2)] : null; };
 console.log('B4 attore 3D contro cast del motore:', JSON.stringify(Object.fromEntries(Object.entries(B4).map(([r, a]) => [r, { scene: a.length, stessoIndice: a.filter(x => x.idx === x.brain).length, mediana: med(a) }]))));
-const B7 = esiti.flatMap(e => e.b7 || []); console.log('PUNTO 4 scene coerenti con l\'occasione del brain:', B7.filter(x => x.coerente).length + '/' + B7.length, JSON.stringify(B7.map(x => x.tipo + '→' + x.intento + (x.coerente ? '' : '✗') + '(' + x.candidateCoerenti + '/' + x.candidate + ')')));
+const B7 = esiti.flatMap(e => e.b7 || []); console.log('PUNTO 4 scene coerenti con l\'occasione del brain:', B7.filter(x => x.coerente).length + '/' + B7.length, JSON.stringify(B7.map(x => (x.chiesto || '-') + '⇒' + x.tipo + '[' + x.attese + ' ' + x.x + ',' + x.y + ' p' + x.press + ']→' + x.intento + (x.coerente ? '' : '✗'))));
 console.log(`TOTALE aperture ${n} · dal motore ${(tot['motore-occasione'] | 0) + (tot['catena-motore'] | 0)}/${n} · ${JSON.stringify(tot)}`);
 const out = path.join(here, 'scene-sorgenti'); fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, `${process.env.CPM_TAG || 'base'}-${DA}.json`), JSON.stringify({ rosso: ROSSO || null, tot, esiti }, null, 1));

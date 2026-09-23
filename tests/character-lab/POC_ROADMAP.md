@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 16:06 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 16:31 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -37,6 +37,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 16:31 | Punto 4: l'eroe si posiziona per l'occasione chiesta (parziale) | spalle ottenuta 2/2; conclusione/fascia ancora no |
 | 23/09 16:06 | Guardiani del motore rigiocati: match-sequence (tetto 110 s), event-ledger (2 partite) | sequenza identica 100% fra le velocità · gol libro mastro = tabellone 2/2 |
 | 23/09 15:33 | Punto 5: il seguito della catena lo sceglie il brain | sorteggio libero → dado del motore; «Mischia in area» registrata |
 | 23/09 15:30 | Punto 4: scheda coerente con l'occasione del brain, tipo di occasione chiesto al brain | coerenti 9/9 (rosso 4/8); tipi: spalle 4 · fra le linee 5 |

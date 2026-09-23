@@ -995,6 +995,14 @@ Rosso `__CPM_NO_B5` (sorteggio di prima). Verifica: scena di cross forzata riusc
 Nota: tutte le 191 schede hanno gia' **3 opzioni** esatte, quindi il vincolo «al massimo 3» del MACRO-PIANO e' gia' rispettato (il «max 21» era vecchio).
 **Non misurato:** la catena nel flusso vero (rara: 2 in 10 partite).
 
+## Avanzamento 23 settembre 2026, 23/09 16:31 — PUNTO 4: L'EROE VA DOVE NASCE L'OCCASIONE CHIESTA (parziale)
+- Il brain registra per ogni occasione il tipo **chiesto** e quante occasioni utili ha aspettato (testimone). Misurato: l'attesa arrivava
+  sempre a 8/8 e l'eroe riceveva a x 61-79 con pressione 6-8 — gli arrivava il pallone subito, ovunque fosse.
+- Rimedi (rosso comune `__CPM_NO_B7POS`): con la scena chiesta l'eroe senza palla va verso il punto del tipo (area, fascia, limite,
+  fra le linee, costruzione); il bonus che lo fa servire per primo vale pieno solo quando e' gia' in posizione.
+**Misura** (2 partite): «spalle» chiesta → ottenuta 2/2 dopo 0-1 attese; «conclusione», «fascia», «costruzione» ancora 8/8 attese
+(l'eroe riceve da altri canali — palle vaganti, appoggi — prima di arrivare). Scene dal brain 8/8, coerenti 8/8. **Aperto.**
+
 ---
 
 ## Obiettivo vincolante
