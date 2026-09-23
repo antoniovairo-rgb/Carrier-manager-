@@ -595,14 +595,14 @@ function IntroCinematic({onDone}){
    chiaro-scuro ecc.»] MENU IMPOSTAZIONI dedicato (overlay full-screen): 🎨 GRAFICA (tema chiaro/scuro + modelli
    3D realistici) + 🎧 AUDIO completo (riusa AudioSettings: volumi per categoria, musica, effetti, pubblico,
    arbitro, muto totale, VIBRAZIONE, debug). Un unico posto per tutte le preferenze. */
-function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu}){
+function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
   const Seg=({active,label,onClick})=>(
     <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
   );
   return(
     <div style={{position:'fixed',inset:0,zIndex:9998,background:TH.bg,display:'flex',flexDirection:'column'}}>
       <div style={{flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:`1px solid ${TH.divider||TH.cardBorder}`,background:TH.card}}>
-        <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Impostazioni</div>
+        <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text}}>⚙️ Opzioni</div>
         <button onClick={onClose} className="cpm-press" style={{width:34,height:34,borderRadius:'50%',border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.bodyLg}}>✕</button>
       </div>
       <div style={{flex:1,minHeight:0,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'14px 16px',display:'flex',flexDirection:'column',gap:14}}>
@@ -621,6 +621,11 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu}){
               toggle GLB rimosso — il 3D reale è sempre attivo (il fallback resta solo come rete di sicurezza interna). */}
         </Card>
         <AudioSettings/>
+        {strumenti&&(
+          <Card style={{padding:'12px 14px'}}>
+            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:10}}>🧰 Strumenti</div>
+            <div data-cpm="strumenti23" style={{display:'flex',flexDirection:'column',gap:8}}>{strumenti}</div>
+          </Card>)}
         {onExitToMenu&&(
           <Card style={{padding:'12px 14px'}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:8}}>🚪 Sessione</div>

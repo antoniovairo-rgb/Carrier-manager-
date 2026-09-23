@@ -5813,7 +5813,66 @@ const getThisWeekMatchday=()=>{
     <div className="cpm-career">
       <Notif msg={notif?.msg} color={notif?.color}/>
       {/* [7.92.0] menu IMPOSTAZIONI dedicato (overlay full-screen), apribile dal Profilo */}
-      {showSettings&&<SettingsScreen darkMode={darkMode} onTheme={nd=>{setDarkMode(nd);try{safeLS.set("cpm-dark",nd?"1":"0");}catch(_e){}}} onClose={()=>setShowSettings(false)} onExitToMenu={onExitToMenu}/>}
+      {showSettings&&<SettingsScreen strumenti={<>
+          {/* Sprint 20 — Career card copy button in profile */}
+          <Btn onClick={()=>{const txt=buildCareerCard(player);if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>notify("📋 Riepilogo copiato!",TH.success)).catch(()=>notify("Clipboard non disponibile",TH.warning));}else{notify("Clipboard non disponibile",TH.warning);}}} v="ghost" fw style={{padding:"10px",fontSize:FS.small}}>📋 Copia Riepilogo Carriera</Btn>
+          {/* [7.92.0 collaudo PO «sezione/menu dedicato per le impostazioni»] entry al menu IMPOSTAZIONI dedicato
+              (Grafica: tema + modelli 3D · Audio: volumi/musica/effetti/pubblico/arbitro/muto/vibrazione) */}
+          {/* [7.338.0] 🐞 APPUNTI DI COLLAUDO — quelli presi col tasto ⚠️ durante la partita: qui si rileggono,
+              si copiano in blocco (per mandarmeli) e si svuotano. Strumento di collaudo: mai in build store. */}
+          {/* [7.342.0] interruttore SEMPRE visibile: la card degli appunti compare solo quando ce n'è almeno
+              uno, quindi su un telefono appena aggiornato non ci sarebbe stato nulla da cui accendere o
+              spegnere il taccuino. Da qui si vede anche se il ⚠️ è attivo in partita. */}
+          <Card style={{padding:"7px 12px"}} shadow={false}>
+            <div style={{display:"flex",alignItems:"center",gap:9}}>
+              <span style={{fontSize:FS.bodyLg}}>🐞</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>Strumenti di collaudo</div>
+                <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.35}}>Il tasto ⚠️ accanto alla pausa, in partita: ferma il gioco e apre gli appunti sull&apos;azione.</div>
+              </div>
+              <button onClick={()=>{setDevTools(!devToolsOn());notify(devToolsOn()?"🐞 Strumenti di collaudo attivi.":"Strumenti di collaudo spenti.",devToolsOn()?TH.success:TH.muted);setTab(t=>t);}}
+                style={{flexShrink:0,width:46,height:26,borderRadius:RAD.md,border:"none",cursor:"pointer",padding:0,
+                  background:devToolsOn()?TH.success:TH.surface2,transition:"background .15s"}} title={devToolsOn()?"Spegni":"Accendi"}>
+                <div style={{width:20,height:20,borderRadius:RAD.sm,background:"#fff",margin:"0 3px",
+                  transform:devToolsOn()?"translateX(20px)":"translateX(0)",transition:"transform .15s",boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
+              </button>
+            </div>
+          </Card>
+          {devToolsOn()&&(()=>{
+            let _bn=[];try{_bn=JSON.parse(safeLS.get("cpm-bugnotes")||"[]")||[];}catch(_e){}
+            if(!_bn.length)return null;
+            const _fmt1=(n)=>{const c=n.ctx||{};return `[KE ${c.v||"?"}] ${c.when||""} · ${c.min}' · ${c.phase||""}${c.opp?` · vs ${c.opp} (${c.score||"-"})`:""}\n`
+              +(c.sit?`SIT${c.gi>=0?` #${c.gi}`:""}${c.intent?` [${c.intent}]`:""}: «${c.sit}»\n`:"")
+              +(c.act?`AZIONE: «${c.act}» → esito ${c.out||"?"}${c.ok===false?" (fallita)":c.ok===true?" (riuscita)":""}\n`:"")
+              +`NOTA: ${n.txt||""}`;};
+            const _all=()=>_bn.map(_fmt1).join("\n\n———\n\n");
+            return(
+            <Card style={{padding:"9px 12px"}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                <span style={{fontSize:FS.bodyLg}}>🐞</span>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:FS.small,fontWeight:900,color:TH.text}}>Appunti di collaudo</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted}}>{_bn.length} annotat{_bn.length===1?"o":"i"} durante le partite</div>
+                </div>
+              </div>
+              <div style={{maxHeight:190,overflowY:"auto",marginBottom:8}}>
+                {_bn.slice(0,12).map((n,i)=>(
+                  <div key={i} style={{borderLeft:`3px solid ${TH.accent}`,background:TH.surface2,borderRadius:RAD.sm,padding:"6px 9px",marginBottom:5}}>
+                    <div style={{fontSize:FS.caption,color:TH.faint}}>{(n.ctx&&n.ctx.when)||""} · {(n.ctx&&n.ctx.min)||0}&apos; · {(n.ctx&&n.ctx.sit)||(n.ctx&&n.ctx.phase)||"—"}</div>
+                    <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.4}}>{n.txt}</div>
+                  </div>))}
+              </div>
+              <div style={{display:"flex",gap:7}}>
+                <Btn v="primary" fw onClick={()=>{try{navigator.clipboard.writeText(_all()).then(()=>notify("📋 Appunti copiati: incollali nella chat.",TH.success)).catch(()=>notify("Copia non riuscita su questo dispositivo.",TH.warning));}catch(_e){}}}>📋 Copia tutto</Btn>
+                <Btn v="ghost" onClick={()=>{safeLS.set("cpm-bugnotes","[]");notify("🗑 Appunti svuotati.",TH.muted);setTab(t=>t);}} style={{flexShrink:0}}>🗑</Btn>
+              </div>
+            </Card>);})()}
+          {/* [6.84.0 collaudo PO «l'esporta salvataggio in fondo a tutto»] Export save — ULTIMA voce del sottotab Profilo */}
+          <Card style={{padding:"7px 12px"}} shadow={false}>
+            <button onClick={()=>{try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={{width:"100%",padding:"7px",borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,color:TH.faint,marginBottom:6}}>🎬 Rivedi l'intro</button>{/* [7.32.0 collaudo PO «rivedibile»] */}
+            <button onClick={exportSave} style={{width:"100%",padding:"7px",borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,color:TH.faint}}>📁 {L.export||"Esporta salvataggio JSON"}</button>
+          </Card>
+          </>} darkMode={darkMode} onTheme={nd=>{setDarkMode(nd);try{safeLS.set("cpm-dark",nd?"1":"0");}catch(_e){}}} onClose={()=>setShowSettings(false)} onExitToMenu={onExitToMenu}/>}
       {/* Sprint 217 — Milestone celebration modal */}
       {milestoneModal&&<MilestoneCelebrationModal milestone={milestoneModal} onDismiss={()=>setMilestoneModal(null)}/>}
       {/* Sprint 56 — Tutorial onboarding (solo primo avvio) */}
@@ -10018,65 +10077,9 @@ const getThisWeekMatchday=()=>{
               </Card>
             );
           })()}
-          {/* Sprint 20 — Career card copy button in profile */}
-          <Btn onClick={()=>{const txt=buildCareerCard(player);if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>notify("📋 Riepilogo copiato!",TH.success)).catch(()=>notify("Clipboard non disponibile",TH.warning));}else{notify("Clipboard non disponibile",TH.warning);}}} v="ghost" fw style={{padding:"10px",fontSize:FS.small}}>📋 Copia Riepilogo Carriera</Btn>
-          {/* [7.92.0 collaudo PO «sezione/menu dedicato per le impostazioni»] entry al menu IMPOSTAZIONI dedicato
-              (Grafica: tema + modelli 3D · Audio: volumi/musica/effetti/pubblico/arbitro/muto/vibrazione) */}
-          <Btn onClick={()=>setShowSettings(true)} v="ghost" fw style={{padding:"12px",fontSize:FS.body}}>⚙️ Impostazioni</Btn>
-          {/* [7.338.0] 🐞 APPUNTI DI COLLAUDO — quelli presi col tasto ⚠️ durante la partita: qui si rileggono,
-              si copiano in blocco (per mandarmeli) e si svuotano. Strumento di collaudo: mai in build store. */}
-          {/* [7.342.0] interruttore SEMPRE visibile: la card degli appunti compare solo quando ce n'è almeno
-              uno, quindi su un telefono appena aggiornato non ci sarebbe stato nulla da cui accendere o
-              spegnere il taccuino. Da qui si vede anche se il ⚠️ è attivo in partita. */}
-          <Card style={{padding:"7px 12px"}} shadow={false}>
-            <div style={{display:"flex",alignItems:"center",gap:9}}>
-              <span style={{fontSize:FS.bodyLg}}>🐞</span>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>Strumenti di collaudo</div>
-                <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.35}}>Il tasto ⚠️ accanto alla pausa, in partita: ferma il gioco e apre gli appunti sull&apos;azione.</div>
-              </div>
-              <button onClick={()=>{setDevTools(!devToolsOn());notify(devToolsOn()?"🐞 Strumenti di collaudo attivi.":"Strumenti di collaudo spenti.",devToolsOn()?TH.success:TH.muted);setScreen("profile");setTab(t=>t);}}
-                style={{flexShrink:0,width:46,height:26,borderRadius:RAD.md,border:"none",cursor:"pointer",padding:0,
-                  background:devToolsOn()?TH.success:TH.surface2,transition:"background .15s"}} title={devToolsOn()?"Spegni":"Accendi"}>
-                <div style={{width:20,height:20,borderRadius:RAD.sm,background:"#fff",margin:"0 3px",
-                  transform:devToolsOn()?"translateX(20px)":"translateX(0)",transition:"transform .15s",boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
-              </button>
-            </div>
-          </Card>
-          {devToolsOn()&&(()=>{
-            let _bn=[];try{_bn=JSON.parse(safeLS.get("cpm-bugnotes")||"[]")||[];}catch(_e){}
-            if(!_bn.length)return null;
-            const _fmt1=(n)=>{const c=n.ctx||{};return `[KE ${c.v||"?"}] ${c.when||""} · ${c.min}' · ${c.phase||""}${c.opp?` · vs ${c.opp} (${c.score||"-"})`:""}\n`
-              +(c.sit?`SIT${c.gi>=0?` #${c.gi}`:""}${c.intent?` [${c.intent}]`:""}: «${c.sit}»\n`:"")
-              +(c.act?`AZIONE: «${c.act}» → esito ${c.out||"?"}${c.ok===false?" (fallita)":c.ok===true?" (riuscita)":""}\n`:"")
-              +`NOTA: ${n.txt||""}`;};
-            const _all=()=>_bn.map(_fmt1).join("\n\n———\n\n");
-            return(
-            <Card style={{padding:"9px 12px"}}>
-              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-                <span style={{fontSize:FS.bodyLg}}>🐞</span>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:FS.small,fontWeight:900,color:TH.text}}>Appunti di collaudo</div>
-                  <div style={{fontSize:FS.caption,color:TH.muted}}>{_bn.length} annotat{_bn.length===1?"o":"i"} durante le partite</div>
-                </div>
-              </div>
-              <div style={{maxHeight:190,overflowY:"auto",marginBottom:8}}>
-                {_bn.slice(0,12).map((n,i)=>(
-                  <div key={i} style={{borderLeft:`3px solid ${TH.accent}`,background:TH.surface2,borderRadius:RAD.sm,padding:"6px 9px",marginBottom:5}}>
-                    <div style={{fontSize:FS.caption,color:TH.faint}}>{(n.ctx&&n.ctx.when)||""} · {(n.ctx&&n.ctx.min)||0}&apos; · {(n.ctx&&n.ctx.sit)||(n.ctx&&n.ctx.phase)||"—"}</div>
-                    <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.4}}>{n.txt}</div>
-                  </div>))}
-              </div>
-              <div style={{display:"flex",gap:7}}>
-                <Btn v="primary" fw onClick={()=>{try{navigator.clipboard.writeText(_all()).then(()=>notify("📋 Appunti copiati: incollali nella chat.",TH.success)).catch(()=>notify("Copia non riuscita su questo dispositivo.",TH.warning));}catch(_e){}}}>📋 Copia tutto</Btn>
-                <Btn v="ghost" onClick={()=>{safeLS.set("cpm-bugnotes","[]");notify("🗑 Appunti svuotati.",TH.muted);setTab(t=>t);setScreen("profile");}} style={{flexShrink:0}}>🗑</Btn>
-              </div>
-            </Card>);})()}
-          {/* [6.84.0 collaudo PO «l'esporta salvataggio in fondo a tutto»] Export save — ULTIMA voce del sottotab Profilo */}
-          <Card style={{padding:"7px 12px"}} shadow={false}>
-            <button onClick={()=>{try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={{width:"100%",padding:"7px",borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,color:TH.faint,marginBottom:6}}>🎬 Rivedi l'intro</button>{/* [7.32.0 collaudo PO «rivedibile»] */}
-            <button onClick={exportSave} style={{width:"100%",padding:"7px",borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,color:TH.faint}}>📁 {L.export||"Esporta salvataggio JSON"}</button>
-          </Card>
+          {/* [23/09 POC — collaudo PO «Impostazioni e' ridondante, pure eventuali altri strumenti vanno nelle opzioni»]
+              copia riepilogo, strumenti di collaudo, rivedi l'intro ed esporta salvataggio vivono ora in Opzioni
+              (SettingsScreen, prop `strumenti`); il bottone «Impostazioni» qui era un doppione di Opzioni nella barra. */}
           {/* 5.50.6: sezione "Impostazioni AI" (API key / Mock Mode / tattica) NASCOSTA su richiesta — l'AI è disattivata nella build store */}
         </div>
       )}
