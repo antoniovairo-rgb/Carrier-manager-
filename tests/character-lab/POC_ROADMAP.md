@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 10:21 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 10:23 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -808,6 +808,15 @@ la correzione e' fatta **sul file esportato**, dove e' verificabile:
 | Asset originali, rete SPENTA (rosso) | 35/35 | 35/35 | 0/35 |
 
 **Non verificato:** il kit sul telefono; l'export da Blender con gli script aggiornati.
+
+## Avanzamento 23 settembre 2026, 10:23 — PREVIEW NETLIFY AGGIORNATA
+
+Stesso sito della preview POC (`https://korward-poc-cgtrader.netlify.app`, deploy `6ab38c41…`, stato `ready`). Dentro: tabellino
+coerente col motore, taglia 0,18, portiere LOD1 nella presa, GLB con materiali corretti. **Verifica per confronto di byte:**
+i due GLB scaricati sono identici al repo; il file di gioco e' identico salvo lo script HUD che Netlify aggiunge in fondo
+(`/.netlify/scripts/hud`, gia' a verbale). L'indirizzo `CARRIER-MANAGER-AV.html` viene reindirizzato da Netlify a
+`/carrier-manager-av` (URL «pretty»): stesso contenuto. `main` e GitHub Pages non toccati.
+**Non verificato:** il caricamento sul telefono (il Chromium del container non raggiunge siti esterni).
 
 ---
 
