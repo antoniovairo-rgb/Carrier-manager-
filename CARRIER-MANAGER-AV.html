@@ -10781,7 +10781,29 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
        emissivi su telaio scuro, ballatoio dietro); perimetrali restano pali snelli con fila di tre
        proiettori. Le LUCI (Spot+Point) sono INVARIATE: cambia solo la scenografia. */
     const _latt=(_towerT==="traliccio"||_towerT==="angolari_alte");
-    if(_latt){
+    /* [23/09 POC — collaudo PO «bruttissimi i riflettori»] TORRE MODERNA: un solo fusto rastremato color grafite (non piu'
+       quattro montanti e crociere che a distanza leggevano come un'impalcatura), testata sottile e scura con LAMPADE TONDE
+       calde disposte a griglia, e un ALONE morbido (sprite additivo) che a notte fa brillare la testata come nei broadcast.
+       Le luci vere (Spot+Point) sono invariate. Rosso __CPM_NO_FARI23: il traliccio del 7.437. */
+    if(_latt&&!(typeof window!=='undefined'&&window.__CPM_NO_FARI23)){
+      const _mastM=new THREE.MeshLambertMaterial({color:0x5b6270});
+      const mast=new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.62,floodH2,12),_mastM);mast.position.set(x,floodH2/2,z);scene.add(mast);
+      const _gw=_towerT==="angolari_alte"?5.8:4.6,_gh=_towerT==="angolari_alte"?2.9:2.2;
+      const frame=new THREE.Mesh(new THREE.BoxGeometry(_gw+0.3,_gh+0.3,0.32),new THREE.MeshLambertMaterial({color:0x22262e}));
+      frame.position.set(x,floodH2+_gh/2,z);frame.lookAt(0,4,0);scene.add(frame);
+      const neck=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.9,0.5),_mastM);neck.position.set(x,floodH2-0.2,z);scene.add(neck);
+      const _cols=_towerT==="angolari_alte"?6:5,_rows=_towerT==="angolari_alte"?3:2;const _cw=_gw/_cols,_ch=_gh/_rows;
+      const lamps=new THREE.InstancedMesh(new THREE.CircleGeometry(Math.min(_cw,_ch)*0.36,14),new THREE.MeshBasicMaterial({color:0xfff4d6}),_cols*_rows);
+      lamps.frustumCulled=false;const _pm=new THREE.Matrix4();const _fq=frame.quaternion;let _li=0;
+      for(let rr=0;rr<_rows;rr++)for(let cc2=0;cc2<_cols;cc2++){const _off=new THREE.Vector3((cc2+0.5-_cols/2)*_cw,(rr+0.5-_rows/2)*_ch,0.17).applyQuaternion(_fq);
+        _pm.makeRotationFromQuaternion(_fq);_pm.setPosition(x+_off.x,floodH2+_gh/2+_off.y,z+_off.z);lamps.setMatrixAt(_li++,_pm);}
+      scene.add(lamps);
+      try{if(!buildStadium._alone23){const c=document.createElement('canvas');c.width=c.height=128;const g2=c.getContext('2d');const rg=g2.createRadialGradient(64,64,0,64,64,64);
+          rg.addColorStop(0,'rgba(255,248,225,0.95)');rg.addColorStop(0.25,'rgba(255,240,200,0.45)');rg.addColorStop(1,'rgba(255,240,200,0)');g2.fillStyle=rg;g2.fillRect(0,0,128,128);
+          buildStadium._alone23=new THREE.CanvasTexture(c);}
+        const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:buildStadium._alone23,color:lightColor,transparent:true,opacity:0.55,depthWrite:false,blending:THREE.AdditiveBlending}));
+        const _hp=new THREE.Vector3(0,0,0.6).applyQuaternion(_fq);halo.position.set(x+_hp.x,floodH2+_gh/2+_hp.y,z+_hp.z);halo.scale.set(_gw*2.6,_gw*2.0,1);scene.add(halo);}catch(_e){}
+    } else if(_latt){
       const _lw=_towerT==="angolari_alte"?1.7:1.2;/* semi-lato base */
       for(const [lx,lz] of [[-1,-1],[1,-1],[-1,1],[1,1]]){
         const leg=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.14,floodH2,5),stM);
