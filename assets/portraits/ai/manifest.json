@@ -6169,5 +6169,2005 @@
       "magliaNeutra": true,
       "possibiliDoppioni": []
     }
+  },
+  {
+    "id": "ai-0309",
+    "categoria": "giocatore",
+    "eta": 32,
+    "carnagione": "ambrata",
+    "capelli": "neri stempiati e corti",
+    "barba": "barba corta",
+    "viso": "allungato",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0309.webp",
+    "lotto": "lotto-04",
+    "foglio": 6,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0310",
+    "categoria": "giocatore",
+    "eta": 19,
+    "carnagione": "olivastra",
+    "capelli": "castani corti mossi",
+    "barba": "rasato",
+    "viso": "triangolare",
+    "tratto": "naso largo",
+    "file": "assets/portraits/ai/lotto-04/volto-0310.webp",
+    "lotto": "lotto-04",
+    "foglio": 2,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0311",
+    "categoria": "giocatore",
+    "eta": 33,
+    "carnagione": "chiara",
+    "capelli": "rossi stempiati e corti",
+    "barba": "pizzetto",
+    "viso": "ovale",
+    "tratto": "guance piene",
+    "file": "assets/portraits/ai/lotto-04/volto-0311.webp",
+    "lotto": "lotto-04",
+    "foglio": 10,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0312",
+    "categoria": "giocatore",
+    "eta": 29,
+    "carnagione": "olivastra",
+    "capelli": "castani afro corti",
+    "barba": "barba piena curata",
+    "viso": "triangolare",
+    "tratto": "naso aquilino",
+    "file": "assets/portraits/ai/lotto-04/volto-0312.webp",
+    "lotto": "lotto-04",
+    "foglio": 3,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0313",
+    "categoria": "giocatore",
+    "eta": 35,
+    "carnagione": "olivastra",
+    "capelli": "neri ricci corti",
+    "barba": "barba corta",
+    "viso": "quadrato",
+    "tratto": "naso aquilino",
+    "file": "assets/portraits/ai/lotto-04/volto-0313.webp",
+    "lotto": "lotto-04",
+    "foglio": 7,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0314",
+    "categoria": "giocatore",
+    "eta": 29,
+    "carnagione": "olivastra",
+    "capelli": "castani rasati a zero",
+    "barba": "rasato",
+    "viso": "rotondo",
+    "tratto": "naso largo",
+    "file": "assets/portraits/ai/lotto-04/volto-0314.webp",
+    "lotto": "lotto-04",
+    "foglio": 5,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0315",
+    "categoria": "giocatore",
+    "eta": 27,
+    "carnagione": "scura",
+    "capelli": "castani scuri ricci medi",
+    "barba": "rasato",
+    "viso": "rotondo",
+    "tratto": "naso aquilino",
+    "file": "assets/portraits/ai/lotto-04/volto-0315.webp",
+    "lotto": "lotto-04",
+    "foglio": 13,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0316",
+    "categoria": "staff",
+    "eta": 43,
+    "carnagione": "olivastra",
+    "capelli": "neri corti ondulati",
+    "barba": "nessuna",
+    "viso": "allungato",
+    "tratto": "zigomi alti",
+    "file": "assets/portraits/ai/lotto-04/volto-0316.webp",
+    "lotto": "lotto-04",
+    "foglio": 1,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0317",
+    "categoria": "giocatore",
+    "eta": 28,
+    "carnagione": "scura",
+    "capelli": "castani scuri stempiati e corti",
+    "barba": "baffi sottili",
+    "viso": "allungato",
+    "tratto": "naso leggermente storto",
+    "file": "assets/portraits/ai/lotto-04/volto-0317.webp",
+    "lotto": "lotto-04",
+    "foglio": 2,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0318",
+    "categoria": "giocatore",
+    "eta": 18,
+    "carnagione": "chiara",
+    "capelli": "castani ricci corti",
+    "barba": "rasato",
+    "viso": "triangolare",
+    "tratto": "naso largo",
+    "file": "assets/portraits/ai/lotto-04/volto-0318.webp",
+    "lotto": "lotto-04",
+    "foglio": 17,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0319",
+    "categoria": "giocatore",
+    "eta": 36,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri rasati a zero",
+    "barba": "barba piena curata",
+    "viso": "triangolare",
+    "tratto": "arcata sopracciliare marcata",
+    "file": "assets/portraits/ai/lotto-04/volto-0319.webp",
+    "lotto": "lotto-04",
+    "foglio": 1,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0320",
+    "categoria": "giocatore",
+    "eta": 35,
+    "carnagione": "olivastra",
+    "capelli": "castani corti mossi",
+    "barba": "pizzetto",
+    "viso": "allungato",
+    "tratto": "naso leggermente storto",
+    "file": "assets/portraits/ai/lotto-04/volto-0320.webp",
+    "lotto": "lotto-04",
+    "foglio": 4,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0321",
+    "categoria": "giocatore",
+    "eta": 30,
+    "carnagione": "chiara",
+    "capelli": "castani lunghi raccolti",
+    "barba": "pizzetto",
+    "viso": "quadrato",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0321.webp",
+    "lotto": "lotto-04",
+    "foglio": 1,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0322",
+    "categoria": "giocatore",
+    "eta": 33,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri ricci corti",
+    "barba": "pizzetto",
+    "viso": "largo",
+    "tratto": "labbra sottili",
+    "file": "assets/portraits/ai/lotto-04/volto-0322.webp",
+    "lotto": "lotto-04",
+    "foglio": 3,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0323",
+    "categoria": "giocatore",
+    "eta": 27,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri corti mossi",
+    "barba": "rasato",
+    "viso": "allungato",
+    "tratto": "zigomi alti",
+    "file": "assets/portraits/ai/lotto-04/volto-0323.webp",
+    "lotto": "lotto-04",
+    "foglio": 8,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0324",
+    "categoria": "giocatore",
+    "eta": 33,
+    "carnagione": "chiara",
+    "capelli": "castani afro corti",
+    "barba": "rasato",
+    "viso": "quadrato",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0324.webp",
+    "lotto": "lotto-04",
+    "foglio": 21,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0325",
+    "categoria": "giocatore",
+    "eta": 33,
+    "carnagione": "chiara",
+    "capelli": "rossi lunghi raccolti",
+    "barba": "barba piena curata",
+    "viso": "largo",
+    "tratto": "orecchie leggermente sporgenti",
+    "file": "assets/portraits/ai/lotto-04/volto-0325.webp",
+    "lotto": "lotto-04",
+    "foglio": 2,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0326",
+    "categoria": "giocatore",
+    "eta": 31,
+    "carnagione": "scura",
+    "capelli": "castani scuri lunghi raccolti",
+    "barba": "barba corta",
+    "viso": "ovale",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0326.webp",
+    "lotto": "lotto-04",
+    "foglio": 10,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0327",
+    "categoria": "giocatore",
+    "eta": 29,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri corti mossi",
+    "barba": "pizzetto",
+    "viso": "allungato",
+    "tratto": "occhi infossati",
+    "file": "assets/portraits/ai/lotto-04/volto-0327.webp",
+    "lotto": "lotto-04",
+    "foglio": 9,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0328",
+    "categoria": "giocatore",
+    "eta": 33,
+    "carnagione": "ambrata",
+    "capelli": "neri lunghi raccolti",
+    "barba": "pizzetto",
+    "viso": "triangolare",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0328.webp",
+    "lotto": "lotto-04",
+    "foglio": 8,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0329",
+    "categoria": "giocatore",
+    "eta": 30,
+    "carnagione": "scura",
+    "capelli": "neri stempiati e corti",
+    "barba": "baffi sottili",
+    "viso": "allungato",
+    "tratto": "lentiggini leggere",
+    "file": "assets/portraits/ai/lotto-04/volto-0329.webp",
+    "lotto": "lotto-04",
+    "foglio": 17,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0330",
+    "categoria": "staff",
+    "eta": 45,
+    "carnagione": "ambrata",
+    "capelli": "brizzolati corti ricci",
+    "barba": "nessuna",
+    "viso": "quadrato",
+    "tratto": "guance piene",
+    "file": "assets/portraits/ai/lotto-04/volto-0330.webp",
+    "lotto": "lotto-04",
+    "foglio": 2,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0331",
+    "categoria": "giocatore",
+    "eta": 27,
+    "carnagione": "chiara",
+    "capelli": "biondi corti lisci",
+    "barba": "barba corta",
+    "viso": "ovale",
+    "tratto": "lentiggini leggere",
+    "file": "assets/portraits/ai/lotto-04/volto-0331.webp",
+    "lotto": "lotto-04",
+    "foglio": 4,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0332",
+    "categoria": "giocatore",
+    "eta": 26,
+    "carnagione": "chiara",
+    "capelli": "biondi corti mossi",
+    "barba": "barba piena curata",
+    "viso": "largo",
+    "tratto": "guance piene",
+    "file": "assets/portraits/ai/lotto-04/volto-0332.webp",
+    "lotto": "lotto-04",
+    "foglio": 6,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0333",
+    "categoria": "giocatore",
+    "eta": 21,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri afro corti",
+    "barba": "rasato",
+    "viso": "ovale",
+    "tratto": "labbra sottili",
+    "file": "assets/portraits/ai/lotto-04/volto-0333.webp",
+    "lotto": "lotto-04",
+    "foglio": 6,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0334",
+    "categoria": "giocatore",
+    "eta": 19,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri ricci medi",
+    "barba": "rasato",
+    "viso": "triangolare",
+    "tratto": "fronte alta",
+    "file": "assets/portraits/ai/lotto-04/volto-0334.webp",
+    "lotto": "lotto-04",
+    "foglio": 10,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0335",
+    "categoria": "giocatore",
+    "eta": 23,
+    "carnagione": "scura",
+    "capelli": "neri lunghi raccolti",
+    "barba": "baffi sottili",
+    "viso": "ovale",
+    "tratto": "zigomi alti",
+    "file": "assets/portraits/ai/lotto-04/volto-0335.webp",
+    "lotto": "lotto-04",
+    "foglio": 14,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0336",
+    "categoria": "giocatore",
+    "eta": 34,
+    "carnagione": "scura",
+    "capelli": "neri stempiati e corti",
+    "barba": "barba corta",
+    "viso": "quadrato",
+    "tratto": "occhi infossati",
+    "file": "assets/portraits/ai/lotto-04/volto-0336.webp",
+    "lotto": "lotto-04",
+    "foglio": 12,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0337",
+    "categoria": "giocatore",
+    "eta": 32,
+    "carnagione": "chiara",
+    "capelli": "neri afro corti",
+    "barba": "barba piena curata",
+    "viso": "ovale",
+    "tratto": "naso aquilino",
+    "file": "assets/portraits/ai/lotto-04/volto-0337.webp",
+    "lotto": "lotto-04",
+    "foglio": 8,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0338",
+    "categoria": "giocatore",
+    "eta": 23,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri stempiati e corti",
+    "barba": "pizzetto",
+    "viso": "ovale",
+    "tratto": "naso largo",
+    "file": "assets/portraits/ai/lotto-04/volto-0338.webp",
+    "lotto": "lotto-04",
+    "foglio": 7,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0339",
+    "categoria": "giocatore",
+    "eta": 27,
+    "carnagione": "scura",
+    "capelli": "neri afro corti",
+    "barba": "pizzetto",
+    "viso": "ovale",
+    "tratto": "guance piene",
+    "file": "assets/portraits/ai/lotto-04/volto-0339.webp",
+    "lotto": "lotto-04",
+    "foglio": 11,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0340",
+    "categoria": "giocatore",
+    "eta": 18,
+    "carnagione": "ambrata",
+    "capelli": "neri lunghi raccolti",
+    "barba": "rasato",
+    "viso": "ovale",
+    "tratto": "naso aquilino",
+    "file": "assets/portraits/ai/lotto-04/volto-0340.webp",
+    "lotto": "lotto-04",
+    "foglio": 9,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0341",
+    "categoria": "giocatore",
+    "eta": 19,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri stempiati e corti",
+    "barba": "baffi sottili",
+    "viso": "triangolare",
+    "tratto": "naso largo",
+    "file": "assets/portraits/ai/lotto-04/volto-0341.webp",
+    "lotto": "lotto-04",
+    "foglio": 11,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0342",
+    "categoria": "giocatore",
+    "eta": 21,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri afro corti",
+    "barba": "rasato",
+    "viso": "rotondo",
+    "tratto": "lieve asimmetria del sorriso",
+    "file": "assets/portraits/ai/lotto-04/volto-0342.webp",
+    "lotto": "lotto-04",
+    "foglio": 12,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0343",
+    "categoria": "giocatore",
+    "eta": 21,
+    "carnagione": "olivastra",
+    "capelli": "castani corti lisci",
+    "barba": "rasato",
+    "viso": "quadrato",
+    "tratto": "lieve asimmetria del sorriso",
+    "file": "assets/portraits/ai/lotto-04/volto-0343.webp",
+    "lotto": "lotto-04",
+    "foglio": 13,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0344",
+    "categoria": "staff",
+    "eta": 54,
+    "carnagione": "scura",
+    "capelli": "brizzolati corti ricci",
+    "barba": "nessuna",
+    "viso": "ovale",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0344.webp",
+    "lotto": "lotto-04",
+    "foglio": 3,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0345",
+    "categoria": "giocatore",
+    "eta": 26,
+    "carnagione": "ambrata",
+    "capelli": "neri ricci medi",
+    "barba": "baffi sottili",
+    "viso": "quadrato",
+    "tratto": "occhi infossati",
+    "file": "assets/portraits/ai/lotto-04/volto-0345.webp",
+    "lotto": "lotto-04",
+    "foglio": 10,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0346",
+    "categoria": "giocatore",
+    "eta": 28,
+    "carnagione": "ambrata",
+    "capelli": "neri corti mossi",
+    "barba": "barba piena curata",
+    "viso": "quadrato",
+    "tratto": "lieve asimmetria del sorriso",
+    "file": "assets/portraits/ai/lotto-04/volto-0346.webp",
+    "lotto": "lotto-04",
+    "foglio": 11,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0347",
+    "categoria": "giocatore",
+    "eta": 22,
+    "carnagione": "chiara",
+    "capelli": "castani ricci medi",
+    "barba": "baffi sottili",
+    "viso": "rotondo",
+    "tratto": "labbra sottili",
+    "file": "assets/portraits/ai/lotto-04/volto-0347.webp",
+    "lotto": "lotto-04",
+    "foglio": 3,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0348",
+    "categoria": "giocatore",
+    "eta": 33,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri corti mossi",
+    "barba": "baffi sottili",
+    "viso": "allungato",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0348.webp",
+    "lotto": "lotto-04",
+    "foglio": 13,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0349",
+    "categoria": "giocatore",
+    "eta": 32,
+    "carnagione": "ambrata",
+    "capelli": "neri corti mossi",
+    "barba": "rasato",
+    "viso": "allungato",
+    "tratto": "fronte alta",
+    "file": "assets/portraits/ai/lotto-04/volto-0349.webp",
+    "lotto": "lotto-04",
+    "foglio": 14,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0350",
+    "categoria": "giocatore",
+    "eta": 20,
+    "carnagione": "olivastra",
+    "capelli": "castani stempiati e corti",
+    "barba": "rasato",
+    "viso": "quadrato",
+    "tratto": "guance piene",
+    "file": "assets/portraits/ai/lotto-04/volto-0350.webp",
+    "lotto": "lotto-04",
+    "foglio": 15,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0351",
+    "categoria": "giocatore",
+    "eta": 20,
+    "carnagione": "chiara",
+    "capelli": "rossi rasati a zero",
+    "barba": "baffi sottili",
+    "viso": "ovale",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0351.webp",
+    "lotto": "lotto-04",
+    "foglio": 5,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0352",
+    "categoria": "giocatore",
+    "eta": 20,
+    "carnagione": "ambrata",
+    "capelli": "neri rasati a zero",
+    "barba": "baffi sottili",
+    "viso": "triangolare",
+    "tratto": "zigomi alti",
+    "file": "assets/portraits/ai/lotto-04/volto-0352.webp",
+    "lotto": "lotto-04",
+    "foglio": 4,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0353",
+    "categoria": "giocatore",
+    "eta": 23,
+    "carnagione": "olivastra",
+    "capelli": "castani lunghi raccolti",
+    "barba": "barba piena curata",
+    "viso": "rotondo",
+    "tratto": "guance piene",
+    "file": "assets/portraits/ai/lotto-04/volto-0353.webp",
+    "lotto": "lotto-04",
+    "foglio": 14,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0354",
+    "categoria": "giocatore",
+    "eta": 25,
+    "carnagione": "scura",
+    "capelli": "neri ricci medi",
+    "barba": "barba corta",
+    "viso": "ovale",
+    "tratto": "naso aquilino",
+    "file": "assets/portraits/ai/lotto-04/volto-0354.webp",
+    "lotto": "lotto-04",
+    "foglio": 1,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0355",
+    "categoria": "giocatore",
+    "eta": 33,
+    "carnagione": "chiara",
+    "capelli": "castani corti mossi",
+    "barba": "rasato",
+    "viso": "rotondo",
+    "tratto": "fronte alta",
+    "file": "assets/portraits/ai/lotto-04/volto-0355.webp",
+    "lotto": "lotto-04",
+    "foglio": 11,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0356",
+    "categoria": "giocatore",
+    "eta": 34,
+    "carnagione": "scura",
+    "capelli": "castani scuri ricci medi",
+    "barba": "barba corta",
+    "viso": "quadrato",
+    "tratto": "fronte alta",
+    "file": "assets/portraits/ai/lotto-04/volto-0356.webp",
+    "lotto": "lotto-04",
+    "foglio": 9,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0357",
+    "categoria": "giocatore",
+    "eta": 19,
+    "carnagione": "chiara",
+    "capelli": "castani rasati a zero",
+    "barba": "rasato",
+    "viso": "largo",
+    "tratto": "lentiggini leggere",
+    "file": "assets/portraits/ai/lotto-04/volto-0357.webp",
+    "lotto": "lotto-04",
+    "foglio": 19,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0358",
+    "categoria": "giocatore",
+    "eta": 35,
+    "carnagione": "ambrata",
+    "capelli": "neri corti lisci",
+    "barba": "baffi sottili",
+    "viso": "triangolare",
+    "tratto": "labbra sottili",
+    "file": "assets/portraits/ai/lotto-04/volto-0358.webp",
+    "lotto": "lotto-04",
+    "foglio": 15,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0359",
+    "categoria": "staff",
+    "eta": 47,
+    "carnagione": "scura",
+    "capelli": "neri ricci medi",
+    "barba": "rasato",
+    "viso": "quadrato",
+    "tratto": "labbra sottili",
+    "file": "assets/portraits/ai/lotto-04/volto-0359.webp",
+    "lotto": "lotto-04",
+    "foglio": 4,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0360",
+    "categoria": "giocatore",
+    "eta": 36,
+    "carnagione": "scura",
+    "capelli": "castani scuri ricci medi",
+    "barba": "baffi sottili",
+    "viso": "largo",
+    "tratto": "lieve asimmetria del sorriso",
+    "file": "assets/portraits/ai/lotto-04/volto-0360.webp",
+    "lotto": "lotto-04",
+    "foglio": 8,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0361",
+    "categoria": "giocatore",
+    "eta": 21,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri afro corti",
+    "barba": "baffi sottili",
+    "viso": "rotondo",
+    "tratto": "naso largo",
+    "file": "assets/portraits/ai/lotto-04/volto-0361.webp",
+    "lotto": "lotto-04",
+    "foglio": 16,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0362",
+    "categoria": "giocatore",
+    "eta": 32,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri ricci corti",
+    "barba": "rasato",
+    "viso": "quadrato",
+    "tratto": "naso largo",
+    "file": "assets/portraits/ai/lotto-04/volto-0362.webp",
+    "lotto": "lotto-04",
+    "foglio": 17,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0363",
+    "categoria": "giocatore",
+    "eta": 31,
+    "carnagione": "chiara",
+    "capelli": "biondi rasati a zero",
+    "barba": "barba corta",
+    "viso": "ovale",
+    "tratto": "orecchie leggermente sporgenti",
+    "file": "assets/portraits/ai/lotto-04/volto-0363.webp",
+    "lotto": "lotto-04",
+    "foglio": 13,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0364",
+    "categoria": "giocatore",
+    "eta": 35,
+    "carnagione": "chiara",
+    "capelli": "biondi stempiati e corti",
+    "barba": "barba piena curata",
+    "viso": "triangolare",
+    "tratto": "occhi infossati",
+    "file": "assets/portraits/ai/lotto-04/volto-0364.webp",
+    "lotto": "lotto-04",
+    "foglio": 18,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0365",
+    "categoria": "giocatore",
+    "eta": 31,
+    "carnagione": "chiara",
+    "capelli": "castani stempiati e corti",
+    "barba": "barba piena curata",
+    "viso": "allungato",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0365.webp",
+    "lotto": "lotto-04",
+    "foglio": 16,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0366",
+    "categoria": "giocatore",
+    "eta": 28,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri afro corti",
+    "barba": "barba corta",
+    "viso": "rotondo",
+    "tratto": "lieve asimmetria del sorriso",
+    "file": "assets/portraits/ai/lotto-04/volto-0366.webp",
+    "lotto": "lotto-04",
+    "foglio": 18,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0367",
+    "categoria": "giocatore",
+    "eta": 28,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri ricci medi",
+    "barba": "rasato",
+    "viso": "ovale",
+    "tratto": "fronte alta",
+    "file": "assets/portraits/ai/lotto-04/volto-0367.webp",
+    "lotto": "lotto-04",
+    "foglio": 19,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0368",
+    "categoria": "giocatore",
+    "eta": 36,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri ricci corti",
+    "barba": "rasato",
+    "viso": "largo",
+    "tratto": "labbra sottili",
+    "file": "assets/portraits/ai/lotto-04/volto-0368.webp",
+    "lotto": "lotto-04",
+    "foglio": 18,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0369",
+    "categoria": "giocatore",
+    "eta": 25,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri stempiati e corti",
+    "barba": "rasato",
+    "viso": "largo",
+    "tratto": "labbra sottili",
+    "file": "assets/portraits/ai/lotto-04/volto-0369.webp",
+    "lotto": "lotto-04",
+    "foglio": 21,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0370",
+    "categoria": "giocatore",
+    "eta": 29,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri ricci corti",
+    "barba": "baffi sottili",
+    "viso": "triangolare",
+    "tratto": "fronte alta",
+    "file": "assets/portraits/ai/lotto-04/volto-0370.webp",
+    "lotto": "lotto-04",
+    "foglio": 12,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0371",
+    "categoria": "giocatore",
+    "eta": 33,
+    "carnagione": "olivastra",
+    "capelli": "castani lunghi raccolti",
+    "barba": "rasato",
+    "viso": "ovale",
+    "tratto": "occhi infossati",
+    "file": "assets/portraits/ai/lotto-04/volto-0371.webp",
+    "lotto": "lotto-04",
+    "foglio": 16,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0372",
+    "categoria": "giocatore",
+    "eta": 19,
+    "carnagione": "olivastra",
+    "capelli": "castani corti lisci",
+    "barba": "rasato",
+    "viso": "allungato",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0372.webp",
+    "lotto": "lotto-04",
+    "foglio": 20,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0373",
+    "categoria": "staff",
+    "eta": 47,
+    "carnagione": "ambrata",
+    "capelli": "neri rasati a zero",
+    "barba": "pizzetto",
+    "viso": "quadrato",
+    "tratto": "fronte alta",
+    "file": "assets/portraits/ai/lotto-04/volto-0373.webp",
+    "lotto": "lotto-04",
+    "foglio": 5,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0374",
+    "categoria": "giocatore",
+    "eta": 32,
+    "carnagione": "ambrata",
+    "capelli": "neri afro corti",
+    "barba": "baffi sottili",
+    "viso": "quadrato",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0374.webp",
+    "lotto": "lotto-04",
+    "foglio": 19,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0375",
+    "categoria": "giocatore",
+    "eta": 29,
+    "carnagione": "ambrata",
+    "capelli": "neri corti lisci",
+    "barba": "baffi sottili",
+    "viso": "quadrato",
+    "tratto": "lentiggini leggere",
+    "file": "assets/portraits/ai/lotto-04/volto-0375.webp",
+    "lotto": "lotto-04",
+    "foglio": 20,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0376",
+    "categoria": "giocatore",
+    "eta": 32,
+    "carnagione": "chiara",
+    "capelli": "neri ricci medi",
+    "barba": "pizzetto",
+    "viso": "allungato",
+    "tratto": "naso largo",
+    "file": "assets/portraits/ai/lotto-04/volto-0376.webp",
+    "lotto": "lotto-04",
+    "foglio": 15,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0377",
+    "categoria": "giocatore",
+    "eta": 27,
+    "carnagione": "scura",
+    "capelli": "neri ricci corti",
+    "barba": "baffi sottili",
+    "viso": "allungato",
+    "tratto": "arcata sopracciliare marcata",
+    "file": "assets/portraits/ai/lotto-04/volto-0377.webp",
+    "lotto": "lotto-04",
+    "foglio": 16,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0378",
+    "categoria": "giocatore",
+    "eta": 35,
+    "carnagione": "olivastra",
+    "capelli": "neri rasati a zero",
+    "barba": "pizzetto",
+    "viso": "triangolare",
+    "tratto": "lieve asimmetria del sorriso",
+    "file": "assets/portraits/ai/lotto-04/volto-0378.webp",
+    "lotto": "lotto-04",
+    "foglio": 19,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0379",
+    "categoria": "giocatore",
+    "eta": 34,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri ricci corti",
+    "barba": "rasato",
+    "viso": "largo",
+    "tratto": "arcata sopracciliare marcata",
+    "file": "assets/portraits/ai/lotto-04/volto-0379.webp",
+    "lotto": "lotto-04",
+    "foglio": 22,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0380",
+    "categoria": "giocatore",
+    "eta": 27,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri corti mossi",
+    "barba": "barba piena curata",
+    "viso": "largo",
+    "tratto": "sopracciglia folte",
+    "file": "assets/portraits/ai/lotto-04/volto-0380.webp",
+    "lotto": "lotto-04",
+    "foglio": 17,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0381",
+    "categoria": "giocatore",
+    "eta": 25,
+    "carnagione": "olivastra",
+    "capelli": "castani ricci medi",
+    "barba": "barba corta",
+    "viso": "largo",
+    "tratto": "zigomi alti",
+    "file": "assets/portraits/ai/lotto-04/volto-0381.webp",
+    "lotto": "lotto-04",
+    "foglio": 20,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0382",
+    "categoria": "giocatore",
+    "eta": 25,
+    "carnagione": "chiara",
+    "capelli": "castani afro corti",
+    "barba": "baffi sottili",
+    "viso": "largo",
+    "tratto": "sopracciglia folte",
+    "file": "assets/portraits/ai/lotto-04/volto-0382.webp",
+    "lotto": "lotto-04",
+    "foglio": 9,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0383",
+    "categoria": "giocatore",
+    "eta": 34,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri corti lisci",
+    "barba": "pizzetto",
+    "viso": "ovale",
+    "tratto": "sopracciglia folte",
+    "file": "assets/portraits/ai/lotto-04/volto-0383.webp",
+    "lotto": "lotto-04",
+    "foglio": 21,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0384",
+    "categoria": "giocatore",
+    "eta": 28,
+    "carnagione": "chiara",
+    "capelli": "rossi lunghi raccolti",
+    "barba": "baffi sottili",
+    "viso": "ovale",
+    "tratto": "mento pronunciato",
+    "file": "assets/portraits/ai/lotto-04/volto-0384.webp",
+    "lotto": "lotto-04",
+    "foglio": 14,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0385",
+    "categoria": "giocatore",
+    "eta": 25,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri corti lisci",
+    "barba": "rasato",
+    "viso": "ovale",
+    "tratto": "lieve asimmetria del sorriso",
+    "file": "assets/portraits/ai/lotto-04/volto-0385.webp",
+    "lotto": "lotto-04",
+    "foglio": 23,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0386",
+    "categoria": "giocatore",
+    "eta": 34,
+    "carnagione": "chiara",
+    "capelli": "rossi corti lisci",
+    "barba": "rasato",
+    "viso": "triangolare",
+    "tratto": "labbra sottili",
+    "file": "assets/portraits/ai/lotto-04/volto-0386.webp",
+    "lotto": "lotto-04",
+    "foglio": 20,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0387",
+    "categoria": "staff",
+    "eta": 41,
+    "carnagione": "scura",
+    "capelli": "neri corti mossi",
+    "barba": "pizzetto",
+    "viso": "rotondo",
+    "tratto": "naso leggermente storto",
+    "file": "assets/portraits/ai/lotto-04/volto-0387.webp",
+    "lotto": "lotto-04",
+    "foglio": 6,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0388",
+    "categoria": "giocatore",
+    "eta": 28,
+    "carnagione": "chiara",
+    "capelli": "neri rasati a zero",
+    "barba": "rasato",
+    "viso": "largo",
+    "tratto": "zigomi alti",
+    "file": "assets/portraits/ai/lotto-04/volto-0388.webp",
+    "lotto": "lotto-04",
+    "foglio": 24,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0389",
+    "categoria": "giocatore",
+    "eta": 25,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri ricci medi",
+    "barba": "barba corta",
+    "viso": "ovale",
+    "tratto": "lieve asimmetria del sorriso",
+    "file": "assets/portraits/ai/lotto-04/volto-0389.webp",
+    "lotto": "lotto-04",
+    "foglio": 22,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0390",
+    "categoria": "giocatore",
+    "eta": 19,
+    "carnagione": "olivastra",
+    "capelli": "neri lunghi raccolti",
+    "barba": "rasato",
+    "viso": "ovale",
+    "tratto": "orecchie leggermente sporgenti",
+    "file": "assets/portraits/ai/lotto-04/volto-0390.webp",
+    "lotto": "lotto-04",
+    "foglio": 24,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0391",
+    "categoria": "giocatore",
+    "eta": 22,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri ricci corti",
+    "barba": "pizzetto",
+    "viso": "ovale",
+    "tratto": "sopracciglia folte",
+    "file": "assets/portraits/ai/lotto-04/volto-0391.webp",
+    "lotto": "lotto-04",
+    "foglio": 25,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0392",
+    "categoria": "giocatore",
+    "eta": 27,
+    "carnagione": "chiara",
+    "capelli": "rossi lunghi raccolti",
+    "barba": "pizzetto",
+    "viso": "largo",
+    "tratto": "orecchie leggermente sporgenti",
+    "file": "assets/portraits/ai/lotto-04/volto-0392.webp",
+    "lotto": "lotto-04",
+    "foglio": 12,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0393",
+    "categoria": "giocatore",
+    "eta": 25,
+    "carnagione": "chiara",
+    "capelli": "rossi corti lisci",
+    "barba": "rasato",
+    "viso": "largo",
+    "tratto": "lieve asimmetria del sorriso",
+    "file": "assets/portraits/ai/lotto-04/volto-0393.webp",
+    "lotto": "lotto-04",
+    "foglio": 22,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0394",
+    "categoria": "giocatore",
+    "eta": 19,
+    "carnagione": "olivastra",
+    "capelli": "castani scuri afro corti",
+    "barba": "rasato",
+    "viso": "quadrato",
+    "tratto": "lentiggini leggere",
+    "file": "assets/portraits/ai/lotto-04/volto-0394.webp",
+    "lotto": "lotto-04",
+    "foglio": 25,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0395",
+    "categoria": "giocatore",
+    "eta": 29,
+    "carnagione": "ambrata",
+    "capelli": "neri stempiati e corti",
+    "barba": "pizzetto",
+    "viso": "largo",
+    "tratto": "guance piene",
+    "file": "assets/portraits/ai/lotto-04/volto-0395.webp",
+    "lotto": "lotto-04",
+    "foglio": 24,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0396",
+    "categoria": "giocatore",
+    "eta": 20,
+    "carnagione": "olivastra",
+    "capelli": "castani lunghi raccolti",
+    "barba": "baffi sottili",
+    "viso": "allungato",
+    "tratto": "occhi infossati",
+    "file": "assets/portraits/ai/lotto-04/volto-0396.webp",
+    "lotto": "lotto-04",
+    "foglio": 21,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0397",
+    "categoria": "giocatore",
+    "eta": 29,
+    "carnagione": "olivastra",
+    "capelli": "neri corti mossi",
+    "barba": "baffi sottili",
+    "viso": "triangolare",
+    "tratto": "naso largo",
+    "file": "assets/portraits/ai/lotto-04/volto-0397.webp",
+    "lotto": "lotto-04",
+    "foglio": 22,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0398",
+    "categoria": "giocatore",
+    "eta": 35,
+    "carnagione": "chiara",
+    "capelli": "castani ricci corti",
+    "barba": "rasato",
+    "viso": "triangolare",
+    "tratto": "occhi infossati",
+    "file": "assets/portraits/ai/lotto-04/volto-0398.webp",
+    "lotto": "lotto-04",
+    "foglio": 23,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0399",
+    "categoria": "giocatore",
+    "eta": 23,
+    "carnagione": "olivastra",
+    "capelli": "neri corti mossi",
+    "barba": "pizzetto",
+    "viso": "quadrato",
+    "tratto": "lentiggini leggere",
+    "file": "assets/portraits/ai/lotto-04/volto-0399.webp",
+    "lotto": "lotto-04",
+    "foglio": 23,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0400",
+    "categoria": "giocatore",
+    "eta": 21,
+    "carnagione": "olivastra",
+    "capelli": "castani corti mossi",
+    "barba": "rasato",
+    "viso": "allungato",
+    "tratto": "orecchie leggermente sporgenti",
+    "file": "assets/portraits/ai/lotto-04/volto-0400.webp",
+    "lotto": "lotto-04",
+    "foglio": 25,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0401",
+    "categoria": "staff",
+    "eta": 48,
+    "carnagione": "scura",
+    "capelli": "brizzolati ricci medi",
+    "barba": "rasato",
+    "viso": "allungato",
+    "tratto": "naso leggermente storto",
+    "file": "assets/portraits/ai/lotto-04/volto-0401.webp",
+    "lotto": "lotto-04",
+    "foglio": 7,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": false,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0402",
+    "categoria": "giocatore",
+    "eta": 19,
+    "carnagione": "chiara",
+    "capelli": "rossi stempiati e corti",
+    "barba": "baffi sottili",
+    "viso": "largo",
+    "tratto": "sopracciglia folte",
+    "file": "assets/portraits/ai/lotto-04/volto-0402.webp",
+    "lotto": "lotto-04",
+    "foglio": 7,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0403",
+    "categoria": "giocatore",
+    "eta": 28,
+    "carnagione": "scura",
+    "capelli": "neri lunghi raccolti",
+    "barba": "baffi sottili",
+    "viso": "ovale",
+    "tratto": "guance piene",
+    "file": "assets/portraits/ai/lotto-04/volto-0403.webp",
+    "lotto": "lotto-04",
+    "foglio": 15,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0404",
+    "categoria": "giocatore",
+    "eta": 23,
+    "carnagione": "scura",
+    "capelli": "castani scuri corti lisci",
+    "barba": "barba corta",
+    "viso": "largo",
+    "tratto": "zigomi alti",
+    "file": "assets/portraits/ai/lotto-04/volto-0404.webp",
+    "lotto": "lotto-04",
+    "foglio": 5,
+    "posizione": "basso-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0405",
+    "categoria": "giocatore",
+    "eta": 24,
+    "carnagione": "scura",
+    "capelli": "neri ricci medi",
+    "barba": "rasato",
+    "viso": "ovale",
+    "tratto": "naso leggermente storto",
+    "file": "assets/portraits/ai/lotto-04/volto-0405.webp",
+    "lotto": "lotto-04",
+    "foglio": 18,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0406",
+    "categoria": "giocatore",
+    "eta": 19,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri ricci corti",
+    "barba": "baffi sottili",
+    "viso": "quadrato",
+    "tratto": "occhi infossati",
+    "file": "assets/portraits/ai/lotto-04/volto-0406.webp",
+    "lotto": "lotto-04",
+    "foglio": 24,
+    "posizione": "alto-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0407",
+    "categoria": "giocatore",
+    "eta": 28,
+    "carnagione": "olivastra",
+    "capelli": "neri stempiati e corti",
+    "barba": "baffi sottili",
+    "viso": "triangolare",
+    "tratto": "guance piene",
+    "file": "assets/portraits/ai/lotto-04/volto-0407.webp",
+    "lotto": "lotto-04",
+    "foglio": 25,
+    "posizione": "basso-sinistra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
+  },
+  {
+    "id": "ai-0408",
+    "categoria": "giocatore",
+    "eta": 30,
+    "carnagione": "ambrata",
+    "capelli": "castani scuri corti mossi",
+    "barba": "baffi sottili",
+    "viso": "allungato",
+    "tratto": "zigomi alti",
+    "file": "assets/portraits/ai/lotto-04/volto-0408.webp",
+    "lotto": "lotto-04",
+    "foglio": 23,
+    "posizione": "alto-destra",
+    "data": "2026-09-23",
+    "controlli": {
+      "fondaleBianco": true,
+      "magliaNeutra": true,
+      "possibiliDoppioni": []
+    }
   }
 ]
