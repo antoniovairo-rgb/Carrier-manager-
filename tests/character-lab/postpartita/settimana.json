@@ -1,0 +1,11 @@
+{
+ "rosso": null,
+ "play": true,
+ "aperta": true,
+ "fine": {
+  "fase": "ended",
+  "motm": true,
+  "figurine": 3
+ },
+ "errori": []
+}

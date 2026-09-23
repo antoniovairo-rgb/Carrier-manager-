@@ -10800,11 +10800,12 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               </div>
             </div>
             {/* Sprint 113 — Coach post-match evaluation */}
-            {context!=="trial"&&<div style={{marginTop:12,padding:"10px 12px",background:TH.bgBlue,border:`1px solid ${TH.bdBlue}`,borderRadius:RAD.md,textAlign:"left",display:"flex",gap:10,alignItems:"flex-start"}}>
-              <NpcFaceCoach coachName={player.coach?.name||player.club?.n||"mister"} size={34}/>
+            {/* [23/09 POC — collaudo PO «migliora la grafica e metti le figurine dove necessario»] mister, protagonista e migliore in campo con la loro figurina; etichette tutte nello stile di sezione del kit */}
+            {context!=="trial"&&<div style={{marginTop:12,padding:`${SP.sm}px ${SP.md}px`,background:TH.surface2,borderRadius:RAD.md,textAlign:"left",display:"flex",gap:SP.md,alignItems:"center"}}>
+              <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="mister" chiave={player.coach?.name||"mister"} larg={36}/>;}catch(_e){return null;}})()}</div>
               <div style={{flex:1}}>
-                <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.txBlue,letterSpacing:1,marginBottom:4}}>MISTER DOPO LA PARTITA</div>
-                <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65)}</div>
+                <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:1,marginBottom:2,textTransform:"uppercase"}}>{player.coach?.name||"Il mister"} · dopo la partita</div>
+                <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65)}</div>
               </div>
             </div>}
             {/* Sprint 113 — Key match events timeline */}
@@ -10852,18 +10853,20 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 </div>))}
               </div>}
               {/* Le parole del protagonista (commento dell'eroe) */}
-              {_hero&&<div style={{marginTop:14,borderLeft:`3px solid ${TH.primary}`,paddingLeft:11}}>
-                <div style={{fontSize:FS.caption,letterSpacing:1,color:TH.brandText,fontWeight:800,marginBottom:3,textTransform:"uppercase"}}>Le parole del protagonista</div>
-                <div style={{fontFamily:_serif,fontSize:FS.body,fontStyle:"italic",color:TH.text,lineHeight:1.5}}>{_hero.replace(/\s*—\s*[^—]+$/,"")}</div>
+              {_hero&&<div style={{marginTop:14,display:"flex",gap:SP.md,alignItems:"center"}}>
+                <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="giocatore" chiave={player.name||"eroe"} larg={36}/>;}catch(_e){return null;}})()}</div>
+                <div style={{minWidth:0}}><div style={_hd}>Le parole del protagonista</div>
+                <div style={{fontFamily:_serif,fontSize:FS.body,fontStyle:"italic",color:TH.text,lineHeight:1.5}}>«{_hero.replace(/\s*—\s*[^—]+$/,"").replace(/^["«]|["»]$/g,"")}»</div></div>
               </div>}
               {/* MIGLIORE IN CAMPO + LA CURVA (tifosi) */}
               <div style={{marginTop:14,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                <div style={{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,padding:"9px 11px"}}>
-                  <div style={{fontSize:FS.caption,letterSpacing:1,color:TH.success,fontWeight:800,marginBottom:3}}>⭐ MIGLIORE IN CAMPO</div>
-                  <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>{_press.motm}</div>
+                <div data-cpm="motm23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.sm}px ${SP.md}px`,display:"flex",gap:SP.sm,alignItems:"center"}}>
+                  <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="giocatore" chiave={_press.motm===player.name?(player.name||"eroe"):_press.motm} larg={36}/>;}catch(_e){return null;}})()}</div>
+                  <div style={{minWidth:0}}><div style={{..._hd,marginBottom:2}}>Migliore in campo</div>
+                  <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>{_press.motm}</div></div>
                 </div>
-                <div style={{background:TH.surface2,border:`1px solid ${TH.divider}`,borderRadius:RAD.sm,padding:"9px 11px"}}>
-                  <div style={{fontSize:FS.caption,letterSpacing:1,color:TH.warning,fontWeight:800,marginBottom:3}}>📣 LA CURVA</div>
+                <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.sm}px ${SP.md}px`}}>
+                  <div style={{..._hd,marginBottom:2}}>La curva</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,fontStyle:"italic",lineHeight:1.35}}>«{(_press.fanReactions||[])[0]||""}»</div>
                 </div>
               </div>
