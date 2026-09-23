@@ -45,6 +45,18 @@ async function perceptualHash(input) {
   for (const coefficient of coefficients) hash = (hash << 1n) | BigInt(coefficient >= median);
   return hash;
 }
+// The shared white background and identical pose make a face-only pHash noisy.
+// Confirm a hash match with colour pixels from the central face before flagging.
+async function facePixels(input) {
+  const normalized = await sharp(input).resize(512, 512).toBuffer();
+  return sharp(normalized).extract({ left: 105, top: 30, width: 302, height: 350 })
+    .resize(64, 64).removeAlpha().raw().toBuffer();
+}
+function faceDistance(a, b) {
+  let sum = 0;
+  for (let index = 0; index < a.length; index++) sum += Math.abs(a[index] - b[index]);
+  return sum / a.length / 255;
+}
 function hamming(a, b) {
   let value = a ^ b;
   let count = 0;
@@ -59,7 +71,6 @@ async function appearanceChecks(input) {
   };
   let backgroundTotal = 0;
   let backgroundWhite = 0;
-  let shirtTotal = 0;
   let shirtNeutral = 0;
   for (let y = 0; y < 128; y++) {
     for (let x = 0; x < 128; x++) {
@@ -70,16 +81,15 @@ async function appearanceChecks(input) {
       const backgroundSample = (y < 19 && (x < 26 || x > 101)) ||
         (y >= 26 && y < 83 && (x < 9 || x > 118));
       if (backgroundSample) { backgroundTotal++; if (nearWhite) backgroundWhite++; }
-      const shirtSample = y >= 96 && y < 124 && ((x >= 24 && x < 55) || (x >= 73 && x < 104));
-      if (shirtSample && maximum < 235) {
-        shirtTotal++;
-        if ((maximum - minimum) / Math.max(maximum, 1) <= 0.18) shirtNeutral++;
-      }
+      // Broad lower band: the former higher/outer samples included neck skin.
+      const shirtSample = y >= 106 && x >= 20 && x < 108;
+      if (shirtSample && maximum > 65 && maximum < 248 &&
+          (maximum - minimum) / maximum <= 0.18) shirtNeutral++;
     }
   }
   return {
     fondaleBianco: backgroundWhite / backgroundTotal >= 0.9,
-    magliaNeutra: shirtTotal >= 80 && shirtNeutral / shirtTotal >= 0.75,
+    magliaNeutra: shirtNeutral >= 350,
   };
 }
 
@@ -87,7 +97,7 @@ const references = [];
 for (const face of manifest) {
   const imagePath = join(repoRoot, ...face.file.split('/'));
   if (!existsSync(imagePath)) continue;
-  references.push({ id: face.id, hash: await perceptualHash(imagePath) });
+  references.push({ id: face.id, hash: await perceptualHash(imagePath), pixels: await facePixels(imagePath) });
 }
 const castDir = join(repoRoot, 'assets', 'portraits');
 for (const filename of (await readdir(castDir)).filter((name) => /^cast-.*\.jpe?g$/i.test(name))) {
@@ -100,7 +110,7 @@ for (const filename of (await readdir(castDir)).filter((name) => /^cast-.*\.jpe?
     const left = (quadrant % 2) * halfWidth;
     const top = Math.floor(quadrant / 2) * halfHeight;
     const crop = await sharp(imagePath).extract({ left, top, width: halfWidth, height: halfHeight }).toBuffer();
-    references.push({ id: `${filename}#${quadrant + 1}`, hash: await perceptualHash(crop) });
+    references.push({ id: `${filename}#${quadrant + 1}`, hash: await perceptualHash(crop), pixels: await facePixels(crop) });
   }
 }
 
@@ -109,8 +119,10 @@ for (const face of newFaces) {
   const imagePath = join(repoRoot, ...face.file.split('/'));
   if (!existsSync(imagePath)) throw new Error(`${face.id}: immagine mancante`);
   const hash = references.find((reference) => reference.id === face.id)?.hash ?? await perceptualHash(imagePath);
+  const pixels = references.find((reference) => reference.id === face.id)?.pixels ?? await facePixels(imagePath);
   const checks = await appearanceChecks(imagePath);
-  const possibleDuplicates = references.filter((reference) => reference.id !== face.id && hamming(hash, reference.hash) <= 8)
+  const possibleDuplicates = references.filter((reference) => reference.id !== face.id &&
+    hamming(hash, reference.hash) <= 8 && faceDistance(pixels, reference.pixels) <= 0.04)
     .map((reference) => reference.id).sort();
   face.controlli = { ...checks, possibiliDoppioni: possibleDuplicates };
   if (!checks.fondaleBianco || !checks.magliaNeutra || possibleDuplicates.length) flagged++;

@@ -1,0 +1,15 @@
+# Revisione LOTTO-01 — 23 settembre 2026
+
+Sul ramo `poc/marioprada-character-system` il consenso `AUTORIZZO LOTTO-01.` copre 25 fogli da quattro ritratti. I fogli 1–17 e 19–25 sono riusciti al primo tentativo. Il primo tentativo sul foglio 18 si era interrotto dopo il marcatore di richiesta; con il consenso separato `AUTORIZZO RIGENERA-18` è stato fatto **un solo** nuovo tentativo, riuscito. Ora tutti i 25 fogli hanno PNG e uso API registrati. Non sappiamo se anche il tentativo interrotto sia stato fatturato; non verrà ripetuto.
+
+Sono stati ricavati 100 WebP 512×512 (93 giocatori e 7 staff), identificati stabilmente nel manifest. Il pilota approvato contiene altri 8 file: il catalogo locale conta ora 108 ritratti, di cui 99 giocatori e 9 staff. L'anteprima completa è `C:\Users\a.vairo\ritratti-grezzi\lotto-01\anteprima-lotto-01-completo.jpg`; i PNG grezzi restano fuori dal repository. Nessun file di gioco, `main` o i 40 `cast-*.jpg` è stato modificato.
+
+La prima versione del controllo automatico segnalava 9 fondali non abbastanza bianchi, 73 maglie non neutre e 85 volti con almeno un possibile doppione sui primi 96 volti. L'ispezione ha mostrato che il campione delle maglie includeva molta pelle e che il solo pHash confondeva ritratti diversi con pose e sfondi uguali. Il controllo aggiornato campiona la parte inferiore dell'abito e conferma i possibili doppioni con un confronto cromatico del viso: **100/100 maglie neutre, 0 copie quasi identiche segnalate**. La verifica biometrica dell'identità non è disponibile; l'assenza di segnalazioni non prova l'unicità perfetta. Antonio ha precisato che visi un po' simili vanno bene se non identici, perché le figurine sono corredo estetico. Nessun volto è stato marcato `scartato` per lieve somiglianza.
+
+Restano 9 fondali sotto la soglia del bianco (`ai-0021`, `ai-0025`, `ai-0027`, `ai-0028`, `ai-0036`, `ai-0045`, `ai-0049`, `ai-0081`, `ai-0100`). Nelle aree campionate il canale minimo medio è 233–237/255: grigio molto chiaro, visivamente vicino al bianco e più chiaro del secondo foglio del pilota accettato (226–229/255). I 9 file restano nel lotto, con il rilievo tecnico visibile nel manifest.
+
+La vista d'insieme non mostra anomalie anatomiche evidenti; i 9 fondali segnalati sono stati aperti anche a 512×512. Il lotto rimane locale, senza commit e senza push. I controlli automatici filtrano errori evidenti, mentre l'approvazione estetica finale resta al Product Owner.
+
+I 27 fogli con uso registrato (2 del pilota e 25 del lotto) riportano 11.692 token di input testuale. Ai prezzi pubblicati per `gpt-image-1-mini` medium quadrato ($0,011/foglio più $2 per milione di token d'ingresso), la stima è **$0,3204**; se anche il primo tentativo del foglio 18 fosse stato addebitato, aggiungere circa $0,012. Il costo effettivamente fatturato e la conversione in euro non sono verificati. Il tetto dell'utente resta €5.
+
+Prossimi passi: chiedere consensi separati per il commit e il push del lotto completo sul solo ramo POC. Poi proporre il lotto 02 con questi risultati e la stima di costo aggiornata.

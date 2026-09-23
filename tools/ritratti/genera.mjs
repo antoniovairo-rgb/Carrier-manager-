@@ -10,8 +10,12 @@ import { randomUUID } from 'node:crypto';
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const [lotFile, ...flags] = process.argv.slice(2);
 const execute = flags.includes('--execute');
-if (!lotFile || flags.some((flag) => flag !== '--execute')) {
-  console.error('Uso: node tools/ritratti/genera.mjs tools/ritratti/lotti/pilota.json [--execute]');
+const retryFlag = flags.find((flag) => /^--retry-incomplete=\d+$/.test(flag));
+const retryNumber = retryFlag ? Number(retryFlag.split('=')[1]) : null;
+if (!lotFile || flags.some((flag) => flag !== '--execute' && flag !== retryFlag) ||
+    flags.filter((flag) => flag === '--execute').length > 1 ||
+    flags.filter((flag) => flag === retryFlag).length > 1) {
+  console.error('Uso: node tools/ritratti/genera.mjs <lotto.json> [--execute] [--retry-incomplete=N]');
   process.exit(2);
 }
 
@@ -21,6 +25,9 @@ if (!/^[a-z0-9-]+$/.test(lot.lotto) || !Array.isArray(lot.fogli) || !lot.fogli.l
 }
 if (lot.dimensione !== '1024x1024' || !lot.modello || !lot.qualita) {
   throw new Error('Modello, qualità e dimensione 1024x1024 sono obbligatori');
+}
+if (retryNumber !== null && (lot.fogli.length !== 1 || lot.fogli[0].numero !== retryNumber)) {
+  throw new Error('Il recupero deve indicare un solo foglio e il suo numero esatto');
 }
 const numbers = new Set();
 const ids = new Set();
@@ -58,6 +65,12 @@ if (!execute) {
 }
 const apiKey = process.env.OPENAI_API_KEY;
 if (!apiKey) throw new Error('OPENAI_API_KEY non impostata; nessuna richiesta inviata');
+if (retryNumber !== null) {
+  const consents = await readFile(join(repoRoot, 'tools/ritratti/CONSENSI.md'), 'utf8');
+  if (!consents.includes(`Risposta esatta di Antonio: AUTORIZZO RIGENERA-${retryNumber}`)) {
+    throw new Error(`Manca AUTORIZZO RIGENERA-${retryNumber} nel registro; nessuna richiesta inviata`);
+  }
+}
 await mkdir(rawRoot, { recursive: true });
 
 for (const sheet of lot.fogli) {
@@ -68,10 +81,14 @@ for (const sheet of lot.fogli) {
     continue;
   }
   const requestedPath = join(rawRoot, `${stem}.requested.json`);
-  if (existsSync(requestedPath)) {
+  if (existsSync(requestedPath) && retryNumber !== sheet.numero) {
     throw new Error(`${stem}: richiesta precedente senza PNG finale; controlla il billing prima di riprovare`);
   }
-  await writeFile(requestedPath, JSON.stringify({
+  if (!existsSync(requestedPath) && retryNumber === sheet.numero) {
+    throw new Error(`${stem}: nessuna richiesta precedente da recuperare`);
+  }
+  const marker = retryNumber === sheet.numero ? join(rawRoot, `${stem}.retry-1.requested.json`) : requestedPath;
+  await writeFile(marker, JSON.stringify({
     startedAt: new Date().toISOString(), modello: lot.modello,
     dimensione: lot.dimensione, qualita: lot.qualita,
   }, null, 2), { flag: 'wx' });
