@@ -29,6 +29,7 @@ try {
   if (ROSSO) await page.addInitScript(() => { window.__CPM_NO_PRESA = true; });
   if (ROSSO_CAM) await page.addInitScript(() => { window.__CPM_NO_PRESACAM = true; });
   if (FLAG) await page.addInitScript(n => { window[n] = true; }, FLAG);
+  if (process.env.CPM_OUTTX) await page.addInitScript(t => { window.__CPM_OUTTX_FORZA = t; }, process.env.CPM_OUTTX); /* impone la frase d'esito (es. «tuffo») */
   await installCdnRoutes(page);
   await openMatch(page, server.address().port, {
     skipLoadAll: true,
@@ -77,6 +78,8 @@ try {
 
   const sintesi = {
     azioneOfferta: before.buttons.some(x => /Chiama il portiere/i.test(x)),
+    testo: await page.evaluate(() => window.__CPM_TESTO23 || null).catch(() => null),
+    frase: await page.evaluate(() => { const m = (document.body.innerText || '').match(/[^\n]*(tuffo|SALVATO|Blocchi|Muro invalicabile)[^\n]*/i); return m ? m[0].slice(0, 90) : null; }).catch(() => null),
     campioni: frames.length,
     fasi: [...new Set(frames.map(f => f.phase))],
     campioniInPresa: inPresa.length,

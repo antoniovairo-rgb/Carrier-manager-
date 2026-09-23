@@ -18,16 +18,16 @@
    "clipTime": null,
    "clipDur": null,
    "hands": {
-    "x": -37.937,
+    "x": -37.933,
     "y": 1.197,
-    "z": 1.603
+    "z": 1.601
    },
    "ball": {
-    "x": -0.947,
+    "x": -2.71,
     "y": 0.22,
-    "z": 5.436
+    "z": 8.123
    },
-   "handBall": 37.2,
+   "handBall": 35.836,
    "armOpen": 0.408,
    "handsAboveSpine": -0.062,
    "root": {
@@ -43,8 +43,8 @@
    },
    "screen": {
     "keeperInFrame": false,
-    "ballInFrame": true,
-    "keeperHeight": 0.117
+    "ballInFrame": false,
+    "keeperHeight": 0.041
    },
    "presa": null
   },
@@ -53,10 +53,10 @@
  "sintesi": {
   "azioneOfferta": true,
   "testo": {
-   "coerente": 1,
-   "incoerente": 1,
+   "coerente": 0,
+   "incoerente": 2,
    "gesti": [
-    "dive",
+    "catch",
     "gkThrow"
    ]
   },
@@ -65,21 +65,25 @@
   "fasi": [
    "hl_result"
   ],
-  "campioniInPresa": 0,
-  "clip": [],
+  "campioniInPresa": 17,
+  "clip": [
+   "gk-high-catch"
+  ],
   "portiereSempreDisegnato": true,
   "lodPortiere": [
    "lod2",
    "lod1"
   ],
-  "lodPortiereInPresa": [],
+  "lodPortiereInPresa": [
+   "lod1"
+  ],
   "promozione": {
    "promosso": true,
    "lod": "lod1"
   },
   "triangoli": {
-   "mediana": 64615,
-   "max": 64617
+   "mediana": 64655,
+   "max": 64699
   },
   "distanzaMinimaPallaMani": 0,
   "distanzaDopoContatto": [
@@ -99,97 +103,146 @@
    0,
    0
   ],
-  "aperturaBracciaMax": 0.943,
-  "maniSopraBustoAlContatto": -0.377,
+  "aperturaBracciaMax": 0.705,
+  "maniSopraBustoAlContatto": 0.823,
   "portiereNelQuadroAlContatto": true,
-  "altezzaApparenteAlContatto": 0.179,
-  "quotaNelQuadroDopoArmo": 1,
-  "tempoClipAlContatto": null,
+  "altezzaApparenteAlContatto": 0.18,
+  "quotaNelQuadroDopoArmo": 0.91,
+  "tempoClipAlContatto": 1.058,
   "fotogrammi": {
-   "apertura": null,
-   "contatto": {
-    "i": 8,
-    "t": 7691,
+   "apertura": {
+    "i": 1,
+    "t": 2708,
     "phase": "hl_result",
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": "dive",
-    "gestureWeight": 1,
-    "clip": "gk-dive",
-    "clipTime": 1.228,
+    "gesture": "catch",
+    "gestureWeight": 0.898,
+    "clip": "gk-high-catch",
+    "clipTime": 0.049,
     "clipDur": 3.375,
     "hands": {
-     "x": -38.023,
-     "y": 0.357,
-     "z": 1.438
+     "x": -38.053,
+     "y": 1.219,
+     "z": 1.834
     },
     "ball": {
-     "x": -38.023,
-     "y": 0.357,
-     "z": 1.438
+     "x": -2.71,
+     "y": 0.22,
+     "z": 8.123
+    },
+    "handBall": 35.912,
+    "armOpen": 0.565,
+    "handsAboveSpine": -0.029,
+    "root": {
+     "x": -38.132,
+     "y": 0,
+     "z": 1.377
+    },
+    "opp": {
+     "type": "opp_stumble",
+     "t": 0.055,
+     "isKeeper": false,
+     "claim": true
+    },
+    "screen": {
+     "keeperInFrame": true,
+     "ballInFrame": false,
+     "keeperHeight": 0.11
+    },
+    "presa": {
+     "held": false,
+     "clipAt": 0,
+     "remAt": 1.21,
+     "ts": 0.882,
+     "contactClipT": null,
+     "cam": 4
+    }
+   },
+   "contatto": {
+    "i": 8,
+    "t": 7672,
+    "phase": "hl_result",
+    "hasKeeper": true,
+    "visible": true,
+    "lod": "lod1",
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 1.146,
+    "clipDur": 3.375,
+    "hands": {
+     "x": -41.813,
+     "y": 2.069,
+     "z": 1.704
+    },
+    "ball": {
+     "x": -41.813,
+     "y": 2.069,
+     "z": 1.704
     },
     "handBall": 0,
-    "armOpen": 0.642,
-    "handsAboveSpine": -0.377,
+    "armOpen": 0.329,
+    "handsAboveSpine": 0.823,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": true,
-     "keeperHeight": 0.179
+     "keeperHeight": 0.18
     },
     "presa": {
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 48
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 45
     }
    },
    "recupero": {
     "i": 23,
-    "t": 15592,
+    "t": 15910,
     "phase": "hl_result",
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
     "gesture": null,
     "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "clip": "gk-throw",
+    "clipTime": 2.292,
+    "clipDur": 2.292,
     "hands": {
-     "x": -41.732,
-     "y": 1.162,
-     "z": 1.882
+     "x": -41.55,
+     "y": 1.166,
+     "z": 1.69
     },
     "ball": {
-     "x": -41.732,
-     "y": 1.162,
-     "z": 1.882
+     "x": -41.55,
+     "y": 1.166,
+     "z": 1.69
     },
     "handBall": 0,
-    "armOpen": 0.471,
-    "handsAboveSpine": -0.094,
+    "armOpen": 0.44,
+    "handsAboveSpine": -0.091,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -202,9 +255,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 150
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 147
     }
    }
   },
@@ -213,7 +266,7 @@
  "frames": [
   {
    "i": 0,
-   "t": 2650,
+   "t": 2154,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -225,16 +278,16 @@
     "clipTime": null,
     "clipDur": null,
     "hands": {
-     "x": -37.937,
+     "x": -37.933,
      "y": 1.197,
-     "z": 1.603
+     "z": 1.601
     },
     "ball": {
-     "x": -0.947,
+     "x": -2.71,
      "y": 0.22,
-     "z": 5.436
+     "z": 8.123
     },
-    "handBall": 37.2,
+    "handBall": 35.836,
     "armOpen": 0.408,
     "handsAboveSpine": -0.062,
     "root": {
@@ -250,8 +303,8 @@
     },
     "screen": {
      "keeperInFrame": false,
-     "ballInFrame": true,
-     "keeperHeight": 0.117
+     "ballInFrame": false,
+     "keeperHeight": 0.041
     },
     "presa": null
    },
@@ -267,58 +320,58 @@
     }
    },
    "sceneT": 0.1,
-   "tri": 56333,
+   "tri": 61233,
    "gkLod1": null
   },
   {
    "i": 1,
-   "t": 3313,
+   "t": 2708,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": "dive",
-    "gestureWeight": 0.946,
-    "clip": "gk-dive",
-    "clipTime": 0.06,
+    "gesture": "catch",
+    "gestureWeight": 0.898,
+    "clip": "gk-high-catch",
+    "clipTime": 0.049,
     "clipDur": 3.375,
     "hands": {
-     "x": -37.919,
-     "y": 1.049,
-     "z": 1.632
+     "x": -38.053,
+     "y": 1.219,
+     "z": 1.834
     },
     "ball": {
-     "x": -0.947,
+     "x": -2.71,
      "y": 0.22,
-     "z": 5.436
+     "z": 8.123
     },
-    "handBall": 37.177,
-    "armOpen": 0.495,
-    "handsAboveSpine": -0.187,
+    "handBall": 35.912,
+    "armOpen": 0.565,
+    "handsAboveSpine": -0.029,
     "root": {
-     "x": -38.158,
+     "x": -38.132,
      "y": 0,
-     "z": 1.38
+     "z": 1.377
     },
     "opp": {
      "type": "opp_stumble",
-     "t": 0.072,
+     "t": 0.055,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": false,
-     "keeperHeight": 0.184
+     "keeperHeight": 0.11
     },
     "presa": {
      "held": false,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
+     "ts": 0.882,
      "contactClipT": null,
-     "cam": 5
+     "cam": 4
     }
    },
    "roster": {
@@ -332,8 +385,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 0.31290000000002327,
-   "tri": 62658,
+   "sceneT": 0.2685,
+   "tri": 62393,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -341,51 +394,51 @@
   },
   {
    "i": 2,
-   "t": 3914,
+   "t": 3276,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": "dive",
-    "gestureWeight": 0.999,
-    "clip": "gk-dive",
-    "clipTime": 0.158,
+    "gesture": "catch",
+    "gestureWeight": 0.998,
+    "clip": "gk-high-catch",
+    "clipTime": 0.155,
     "clipDur": 3.375,
     "hands": {
-     "x": -38.235,
-     "y": 1.082,
-     "z": 1.478
+     "x": -38.304,
+     "y": 1.233,
+     "z": 1.886
     },
     "ball": {
-     "x": -0.947,
+     "x": -2.71,
      "y": 0.22,
-     "z": 5.436
+     "z": 8.123
     },
-    "handBall": 37.507,
-    "armOpen": 0.465,
-    "handsAboveSpine": -0.166,
+    "handBall": 36.151,
+    "armOpen": 0.577,
+    "handsAboveSpine": -0.011,
     "root": {
-     "x": -38.414,
+     "x": -38.371,
      "y": 0,
-     "z": 1.413
+     "z": 1.408
     },
     "opp": {
      "type": "opp_stumble",
-     "t": 0.191,
+     "t": 0.175,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
-     "keeperInFrame": true,
+     "keeperInFrame": false,
      "ballInFrame": false,
-     "keeperHeight": 0.181
+     "keeperHeight": 0.157
     },
     "presa": {
      "held": false,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
+     "ts": 0.882,
      "contactClipT": null,
      "cam": 11
     }
@@ -401,8 +454,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 0.5800999999999767,
-   "tri": 62626,
+   "sceneT": 0.5480999999998603,
+   "tri": 62435,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -410,53 +463,53 @@
   },
   {
    "i": 3,
-   "t": 4457,
+   "t": 4117,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": "dive",
+    "gesture": "catch",
     "gestureWeight": 1,
-    "clip": "gk-dive",
-    "clipTime": 0.289,
+    "clip": "gk-high-catch",
+    "clipTime": 0.27,
     "clipDur": 3.375,
     "hands": {
-     "x": -38.65,
-     "y": 1.18,
-     "z": 1.465
+     "x": -38.736,
+     "y": 1.23,
+     "z": 1.966
     },
     "ball": {
-     "x": -0.947,
+     "x": -2.71,
      "y": 0.22,
-     "z": 5.436
+     "z": 8.123
     },
-    "handBall": 37.924,
-    "armOpen": 0.495,
-    "handsAboveSpine": -0.114,
+    "handBall": 36.563,
+    "armOpen": 0.586,
+    "handsAboveSpine": -0.014,
     "root": {
-     "x": -38.952,
+     "x": -38.777,
      "y": 0,
-     "z": 1.478
+     "z": 1.462
     },
     "opp": {
      "type": "opp_stumble",
-     "t": 0.35,
+     "t": 0.306,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
-     "keeperInFrame": true,
+     "keeperInFrame": false,
      "ballInFrame": false,
-     "keeperHeight": 0.179
+     "keeperHeight": 0.181
     },
     "presa": {
      "held": false,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
+     "ts": 0.882,
      "contactClipT": null,
-     "cam": 18
+     "cam": 17
     }
    },
    "roster": {
@@ -470,8 +523,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 0.8587999999999304,
-   "tri": 62602,
+   "sceneT": 0.7870999999998605,
+   "tri": 62487,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -479,53 +532,53 @@
   },
   {
    "i": 4,
-   "t": 4965,
+   "t": 4772,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": "dive",
+    "gesture": "catch",
     "gestureWeight": 1,
-    "clip": "gk-dive",
-    "clipTime": 0.447,
+    "clip": "gk-high-catch",
+    "clipTime": 0.421,
     "clipDur": 3.375,
     "hands": {
-     "x": -39.495,
-     "y": 1.018,
-     "z": 1.582
+     "x": -39.487,
+     "y": 1.207,
+     "z": 1.959
     },
     "ball": {
-     "x": -6.732,
-     "y": 1.476,
-     "z": 4.398
+     "x": -5.787,
+     "y": 1.102,
+     "z": 7.514
     },
-    "handBall": 32.888,
-    "armOpen": 0.455,
-    "handsAboveSpine": -0.154,
+    "handBall": 34.155,
+    "armOpen": 0.601,
+    "handsAboveSpine": -0.041,
     "root": {
-     "x": -39.901,
+     "x": -39.549,
      "y": 0,
-     "z": 1.584
+     "z": 1.564
     },
     "opp": {
      "type": "opp_stumble",
-     "t": 0.541,
+     "t": 0.478,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": false,
-     "keeperHeight": 0.175
+     "keeperHeight": 0.186
     },
     "presa": {
      "held": false,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
+     "ts": 0.882,
      "contactClipT": null,
-     "cam": 24
+     "cam": 23
     }
    },
    "roster": {
@@ -539,8 +592,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 1.1336999999999537,
-   "tri": 62731,
+   "sceneT": 1.0484999999997675,
+   "tri": 62670,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -548,51 +601,51 @@
   },
   {
    "i": 5,
-   "t": 5690,
+   "t": 5532,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": "dive",
+    "gesture": "catch",
     "gestureWeight": 1,
-    "clip": "gk-dive",
-    "clipTime": 0.622,
+    "clip": "gk-high-catch",
+    "clipTime": 0.61,
     "clipDur": 3.375,
     "hands": {
-     "x": -39.625,
-     "y": 0.822,
-     "z": 1.856
+     "x": -40.569,
+     "y": 1.498,
+     "z": 1.771
     },
     "ball": {
-     "x": -15.319,
-     "y": 2.271,
-     "z": 2.856
+     "x": -14.032,
+     "y": 2.237,
+     "z": 5.884
     },
-    "handBall": 24.37,
-    "armOpen": 0.519,
-    "handsAboveSpine": -0.28,
+    "handBall": 26.863,
+    "armOpen": 0.651,
+    "handsAboveSpine": 0.254,
     "root": {
-     "x": -40.958,
+     "x": -40.595,
      "y": 0,
-     "z": 1.685
+     "z": 1.704
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": false,
-     "keeperHeight": 0.172
+     "keeperHeight": 0.182
     },
     "presa": {
      "held": false,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
+     "ts": 0.882,
      "contactClipT": null,
      "cam": 30
     }
@@ -608,8 +661,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 1.3932999999999307,
-   "tri": 62759,
+   "sceneT": 1.3228999999996747,
+   "tri": 62648,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -617,53 +670,53 @@
   },
   {
    "i": 6,
-   "t": 6362,
+   "t": 6339,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": "dive",
+    "gesture": "catch",
     "gestureWeight": 1,
-    "clip": "gk-dive",
-    "clipTime": 0.822,
+    "clip": "gk-high-catch",
+    "clipTime": 0.775,
     "clipDur": 3.375,
     "hands": {
-     "x": -39.125,
-     "y": 1.196,
-     "z": 1.849
+     "x": -41.201,
+     "y": 1.191,
+     "z": 1.897
     },
     "ball": {
-     "x": -25.24,
-     "y": 1.936,
-     "z": 1.091
+     "x": -21.261,
+     "y": 2.392,
+     "z": 4.454
     },
-    "handBall": 13.926,
-    "armOpen": 0.883,
-    "handsAboveSpine": -0.015,
+    "handBall": 20.139,
+    "armOpen": 0.533,
+    "handsAboveSpine": -0.043,
     "root": {
-     "x": -41.676,
+     "x": -41.185,
      "y": 0,
-     "z": 1.753
+     "z": 1.783
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": false,
-     "keeperHeight": 0.172
+     "keeperHeight": 0.18
     },
     "presa": {
      "held": false,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
+     "ts": 0.882,
      "contactClipT": null,
-     "cam": 36
+     "cam": 35
     }
    },
    "roster": {
@@ -677,8 +730,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 1.6528999999999077,
-   "tri": 62783,
+   "sceneT": 1.5330999999996282,
+   "tri": 62604,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -686,53 +739,53 @@
   },
   {
    "i": 7,
-   "t": 7019,
+   "t": 6996,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": "dive",
+    "gesture": "catch",
     "gestureWeight": 1,
-    "clip": "gk-dive",
-    "clipTime": 0.999,
+    "clip": "gk-high-catch",
+    "clipTime": 0.96,
     "clipDur": 3.375,
     "hands": {
-     "x": -38.557,
-     "y": 1.104,
-     "z": 1.657
+     "x": -41.38,
+     "y": 1.998,
+     "z": 1.999
     },
     "ball": {
-     "x": -38.666,
-     "y": 0.874,
-     "z": 1.644
+     "x": -34.181,
+     "y": 1.579,
+     "z": 2.538
     },
-    "handBall": 0.255,
-    "armOpen": 0.943,
-    "handsAboveSpine": -0.12,
+    "handBall": 7.232,
+    "armOpen": 0.337,
+    "handsAboveSpine": 0.74,
     "root": {
-     "x": -41.877,
+     "x": -41.478,
      "y": 0,
-     "z": 1.772
+     "z": 1.822
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
-     "ballInFrame": true,
-     "keeperHeight": 0.176
+     "ballInFrame": false,
+     "keeperHeight": 0.18
     },
     "presa": {
      "held": false,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
+     "ts": 0.882,
      "contactClipT": null,
-     "cam": 41
+     "cam": 40
     }
    },
    "roster": {
@@ -746,8 +799,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 1.8680999999999777,
-   "tri": 63759,
+   "sceneT": 1.7477999999998146,
+   "tri": 62698,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -755,53 +808,53 @@
   },
   {
    "i": 8,
-   "t": 7691,
+   "t": 7672,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": "dive",
+    "gesture": "catch",
     "gestureWeight": 1,
-    "clip": "gk-dive",
-    "clipTime": 1.228,
+    "clip": "gk-high-catch",
+    "clipTime": 1.146,
     "clipDur": 3.375,
     "hands": {
-     "x": -38.023,
-     "y": 0.357,
-     "z": 1.438
+     "x": -41.813,
+     "y": 2.069,
+     "z": 1.704
     },
     "ball": {
-     "x": -38.023,
-     "y": 0.357,
-     "z": 1.438
+     "x": -41.813,
+     "y": 2.069,
+     "z": 1.704
     },
     "handBall": 0,
-    "armOpen": 0.642,
-    "handsAboveSpine": -0.377,
+    "armOpen": 0.329,
+    "handsAboveSpine": 0.823,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": true,
-     "keeperHeight": 0.179
+     "keeperHeight": 0.18
     },
     "presa": {
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 48
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 45
     }
    },
    "roster": {
@@ -815,8 +868,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 2.1445999999999774,
-   "tri": 64308,
+   "sceneT": 1.958899999999908,
+   "tri": 63872,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -824,53 +877,53 @@
   },
   {
    "i": 9,
-   "t": 8243,
+   "t": 8297,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": null,
-    "gestureWeight": 0.368,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 0.416,
-    "clipDur": 2.867,
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 1.392,
+    "clipDur": 3.375,
     "hands": {
-     "x": -41.101,
-     "y": 1.117,
-     "z": 1.754
+     "x": -41.8,
+     "y": 1.884,
+     "z": 1.545
     },
     "ball": {
-     "x": -41.101,
-     "y": 1.117,
-     "z": 1.754
+     "x": -41.8,
+     "y": 1.884,
+     "z": 1.545
     },
     "handBall": 0,
-    "armOpen": 0.494,
-    "handsAboveSpine": -0.004,
+    "armOpen": 0.405,
+    "handsAboveSpine": 0.649,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": true,
-     "keeperHeight": 0.18
+     "keeperHeight": 0.181
     },
     "presa": {
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 55
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 52
     }
    },
    "roster": {
@@ -884,8 +937,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 2.4910999999999763,
-   "tri": 64083,
+   "sceneT": 2.2373999999999072,
+   "tri": 64565,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -893,53 +946,53 @@
   },
   {
    "i": 10,
-   "t": 8677,
+   "t": 8942,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": null,
-    "gestureWeight": 0.126,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 0.771,
-    "clipDur": 2.867,
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 1.621,
+    "clipDur": 3.375,
     "hands": {
-     "x": -41.496,
-     "y": 1.191,
-     "z": 2.003
+     "x": -41.839,
+     "y": 1.722,
+     "z": 1.418
     },
     "ball": {
-     "x": -41.496,
-     "y": 1.191,
-     "z": 2.003
+     "x": -41.839,
+     "y": 1.722,
+     "z": 1.418
     },
     "handBall": 0,
-    "armOpen": 0.509,
-    "handsAboveSpine": -0.058,
+    "armOpen": 0.49,
+    "handsAboveSpine": 0.526,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": true,
-     "keeperHeight": 0.18
+     "keeperHeight": 0.181
     },
     "presa": {
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 60
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 58
     }
    },
    "roster": {
@@ -953,8 +1006,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 2.701999999999999,
-   "tri": 64241,
+   "sceneT": 2.4969999999997667,
+   "tri": 64679,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -962,38 +1015,38 @@
   },
   {
    "i": 11,
-   "t": 9271,
+   "t": 9534,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": null,
-    "gestureWeight": 0.033,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 1.212,
-    "clipDur": 2.867,
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 1.853,
+    "clipDur": 3.375,
     "hands": {
-     "x": -41.672,
-     "y": 1.205,
-     "z": 1.952
+     "x": -42.058,
+     "y": 1.354,
+     "z": 1.238
     },
     "ball": {
-     "x": -41.672,
-     "y": 1.205,
-     "z": 1.952
+     "x": -42.058,
+     "y": 1.354,
+     "z": 1.238
     },
     "handBall": 0,
-    "armOpen": 0.476,
-    "handsAboveSpine": -0.049,
+    "armOpen": 0.697,
+    "handsAboveSpine": 0.227,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1006,9 +1059,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 66
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 64
     }
    },
    "roster": {
@@ -1022,8 +1075,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 2.9635999999999747,
-   "tri": 64617,
+   "sceneT": 2.7599999999997658,
+   "tri": 64679,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1031,53 +1084,53 @@
   },
   {
    "i": 12,
-   "t": 9772,
+   "t": 10126,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": null,
-    "gestureWeight": 0.009,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 1.669,
-    "clipDur": 2.867,
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 2.082,
+    "clipDur": 3.375,
     "hands": {
-     "x": -41.808,
-     "y": 1.233,
-     "z": 1.897
+     "x": -42.026,
+     "y": 0.866,
+     "z": 1.198
     },
     "ball": {
-     "x": -41.808,
-     "y": 1.233,
-     "z": 1.897
+     "x": -42.026,
+     "y": 0.866,
+     "z": 1.198
     },
     "handBall": 0,
-    "armOpen": 0.477,
-    "handsAboveSpine": -0.022,
+    "armOpen": 0.705,
+    "handsAboveSpine": -0.186,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": true,
-     "keeperHeight": 0.181
+     "keeperHeight": 0.182
     },
     "presa": {
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 73
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 70
     }
    },
    "roster": {
@@ -1091,8 +1144,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 3.234099999999857,
-   "tri": 64615,
+   "sceneT": 3.0197999999998113,
+   "tri": 64679,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1100,38 +1153,38 @@
   },
   {
    "i": 13,
-   "t": 10311,
+   "t": 10643,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": null,
-    "gestureWeight": 0.002,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.109,
-    "clipDur": 2.867,
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 2.293,
+    "clipDur": 3.375,
     "hands": {
-     "x": -41.884,
-     "y": 1.202,
-     "z": 1.857
+     "x": -42.057,
+     "y": 0.707,
+     "z": 1.428
     },
     "ball": {
-     "x": -41.884,
-     "y": 1.202,
-     "z": 1.857
+     "x": -42.057,
+     "y": 0.707,
+     "z": 1.428
     },
     "handBall": 0,
-    "armOpen": 0.535,
-    "handsAboveSpine": -0.053,
+    "armOpen": 0.616,
+    "handsAboveSpine": -0.311,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1144,9 +1197,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 79
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 76
     }
    },
    "roster": {
@@ -1160,8 +1213,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 3.4949999999998798,
-   "tri": 64615,
+   "sceneT": 3.259399999999904,
+   "tri": 64667,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1169,53 +1222,53 @@
   },
   {
    "i": 14,
-   "t": 10837,
+   "t": 11280,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": null,
-    "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.636,
-    "clipDur": 2.867,
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 2.536,
+    "clipDur": 3.375,
     "hands": {
-     "x": -41.961,
-     "y": 1.148,
-     "z": 1.818
+     "x": -42.121,
+     "y": 0.915,
+     "z": 2.137
     },
     "ball": {
-     "x": -41.961,
-     "y": 1.148,
-     "z": 1.818
+     "x": -42.121,
+     "y": 0.915,
+     "z": 2.137
     },
     "handBall": 0,
-    "armOpen": 0.512,
-    "handsAboveSpine": -0.106,
+    "armOpen": 0.616,
+    "handsAboveSpine": -0.128,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
-     "ballInFrame": true,
-     "keeperHeight": 0.182
+     "ballInFrame": false,
+     "keeperHeight": 0.185
     },
     "presa": {
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 86
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 83
     }
    },
    "roster": {
@@ -1229,8 +1282,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 3.8076999999999486,
-   "tri": 64615,
+   "sceneT": 3.53519999999995,
+   "tri": 63218,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1238,53 +1291,53 @@
   },
   {
    "i": 15,
-   "t": 11292,
+   "t": 11780,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": null,
-    "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 2.785,
+    "clipDur": 3.375,
     "hands": {
-     "x": -42.036,
-     "y": 1.175,
-     "z": 1.745
+     "x": -41.982,
+     "y": 1.121,
+     "z": 2.292
     },
     "ball": {
-     "x": -42.036,
-     "y": 1.175,
-     "z": 1.745
+     "x": -41.982,
+     "y": 1.121,
+     "z": 2.292
     },
     "handBall": 0,
-    "armOpen": 0.455,
-    "handsAboveSpine": -0.079,
+    "armOpen": 0.541,
+    "handsAboveSpine": 0.001,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
     "screen": {
      "keeperInFrame": true,
      "ballInFrame": true,
-     "keeperHeight": 0.182
+     "keeperHeight": 0.184
     },
     "presa": {
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 93
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 91
     }
    },
    "roster": {
@@ -1298,8 +1351,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 4.122900000000017,
-   "tri": 64615,
+   "sceneT": 3.8178000000000423,
+   "tri": 64622,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1307,38 +1360,38 @@
   },
   {
    "i": 16,
-   "t": 11948,
+   "t": 12263,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": null,
-    "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 3.068,
+    "clipDur": 3.375,
     "hands": {
-     "x": -42.032,
-     "y": 1.209,
-     "z": 1.639
+     "x": -41.988,
+     "y": 1.129,
+     "z": 2.295
     },
     "ball": {
-     "x": -42.032,
-     "y": 1.209,
-     "z": 1.639
+     "x": -41.988,
+     "y": 1.129,
+     "z": 2.295
     },
     "handBall": 0,
-    "armOpen": 0.45,
-    "handsAboveSpine": -0.046,
+    "armOpen": 0.555,
+    "handsAboveSpine": -0.001,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1351,9 +1404,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 100
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 99
     }
    },
    "roster": {
@@ -1367,8 +1420,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 4.4347000000000625,
-   "tri": 64615,
+   "sceneT": 4.138600000000088,
+   "tri": 64660,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1376,38 +1429,38 @@
   },
   {
    "i": 17,
-   "t": 12447,
+   "t": 12733,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
-    "gesture": null,
-    "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "gesture": "catch",
+    "gestureWeight": 1,
+    "clip": "gk-high-catch",
+    "clipTime": 3.347,
+    "clipDur": 3.375,
     "hands": {
-     "x": -41.925,
-     "y": 1.195,
-     "z": 1.568
+     "x": -41.987,
+     "y": 1.136,
+     "z": 2.299
     },
     "ball": {
-     "x": -41.925,
-     "y": 1.195,
-     "z": 1.568
+     "x": -41.987,
+     "y": 1.136,
+     "z": 2.299
     },
     "handBall": 0,
-    "armOpen": 0.48,
-    "handsAboveSpine": -0.06,
+    "armOpen": 0.552,
+    "handsAboveSpine": 0.006,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1420,9 +1473,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 108
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 106
     }
    },
    "roster": {
@@ -1436,8 +1489,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 4.721800000000038,
-   "tri": 64615,
+   "sceneT": 4.455100000000087,
+   "tri": 64699,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1445,38 +1498,38 @@
   },
   {
    "i": 18,
-   "t": 12969,
+   "t": 13283,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
     "gesture": null,
-    "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "gestureWeight": 0.224,
+    "clip": "gk-throw",
+    "clipTime": 1.091,
+    "clipDur": 2.292,
     "hands": {
-     "x": -41.809,
-     "y": 1.183,
-     "z": 1.596
+     "x": -41.746,
+     "y": 1.256,
+     "z": 1.932
     },
     "ball": {
-     "x": -41.809,
-     "y": 1.183,
-     "z": 1.596
+     "x": -41.746,
+     "y": 1.256,
+     "z": 1.932
     },
     "handBall": 0,
-    "armOpen": 0.498,
-    "handsAboveSpine": -0.073,
+    "armOpen": 0.612,
+    "handsAboveSpine": -0.002,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1489,9 +1542,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 115
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 113
     }
    },
    "roster": {
@@ -1505,8 +1558,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 4.962800000000153,
-   "tri": 64615,
+   "sceneT": 4.766900000000132,
+   "tri": 64667,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1514,38 +1567,38 @@
   },
   {
    "i": 19,
-   "t": 13452,
+   "t": 13781,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
     "gesture": null,
-    "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "gestureWeight": 0.057,
+    "clip": "gk-throw",
+    "clipTime": 2.22,
+    "clipDur": 2.292,
     "hands": {
-     "x": -41.731,
-     "y": 1.156,
-     "z": 1.695
+     "x": -41.693,
+     "y": 1.184,
+     "z": 1.876
     },
     "ball": {
-     "x": -41.731,
-     "y": 1.156,
-     "z": 1.695
+     "x": -41.693,
+     "y": 1.184,
+     "z": 1.876
     },
     "handBall": 0,
-    "armOpen": 0.513,
-    "handsAboveSpine": -0.101,
+    "armOpen": 0.509,
+    "handsAboveSpine": -0.073,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1558,9 +1611,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 123
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 120
     }
    },
    "roster": {
@@ -1574,8 +1627,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 5.285600000000083,
-   "tri": 64615,
+   "sceneT": 5.037800000000272,
+   "tri": 64667,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1583,38 +1636,38 @@
   },
   {
    "i": 20,
-   "t": 13945,
+   "t": 14304,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
     "gesture": null,
-    "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "gestureWeight": 0.013,
+    "clip": "gk-throw",
+    "clipTime": 2.292,
+    "clipDur": 2.292,
     "hands": {
-     "x": -41.75,
-     "y": 1.138,
-     "z": 1.769
+     "x": -41.646,
+     "y": 1.154,
+     "z": 1.764
     },
     "ball": {
-     "x": -41.75,
-     "y": 1.138,
-     "z": 1.769
+     "x": -41.646,
+     "y": 1.154,
+     "z": 1.764
     },
     "handBall": 0,
-    "armOpen": 0.495,
-    "handsAboveSpine": -0.119,
+    "armOpen": 0.515,
+    "handsAboveSpine": -0.103,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1627,9 +1680,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 130
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 128
     }
    },
    "roster": {
@@ -1643,8 +1696,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 5.568600000000199,
-   "tri": 64615,
+   "sceneT": 5.332700000000643,
+   "tri": 64667,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1652,38 +1705,38 @@
   },
   {
    "i": 21,
-   "t": 14466,
+   "t": 14838,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
     "gesture": null,
-    "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "gestureWeight": 0.002,
+    "clip": "gk-throw",
+    "clipTime": 2.292,
+    "clipDur": 2.292,
     "hands": {
-     "x": -41.771,
-     "y": 1.134,
-     "z": 1.801
+     "x": -41.562,
+     "y": 1.133,
+     "z": 1.735
     },
     "ball": {
-     "x": -41.771,
-     "y": 1.134,
-     "z": 1.801
+     "x": -41.562,
+     "y": 1.133,
+     "z": 1.735
     },
     "handBall": 0,
-    "armOpen": 0.463,
-    "handsAboveSpine": -0.123,
+    "armOpen": 0.477,
+    "handsAboveSpine": -0.124,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1696,9 +1749,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 136
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 135
     }
    },
    "roster": {
@@ -1712,8 +1765,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 5.793300000000269,
-   "tri": 64615,
+   "sceneT": 5.682700000000642,
+   "tri": 64667,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1721,38 +1774,38 @@
   },
   {
    "i": 22,
-   "t": 14954,
+   "t": 15414,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
     "visible": true,
     "lod": "lod1",
     "gesture": null,
-    "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "gestureWeight": 0.001,
+    "clip": "gk-throw",
+    "clipTime": 2.292,
+    "clipDur": 2.292,
     "hands": {
-     "x": -41.747,
-     "y": 1.161,
-     "z": 1.823
+     "x": -41.539,
+     "y": 1.142,
+     "z": 1.713
     },
     "ball": {
-     "x": -41.747,
-     "y": 1.161,
-     "z": 1.823
+     "x": -41.539,
+     "y": 1.142,
+     "z": 1.713
     },
     "handBall": 0,
-    "armOpen": 0.44,
-    "handsAboveSpine": -0.096,
+    "armOpen": 0.446,
+    "handsAboveSpine": -0.115,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1765,9 +1818,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 143
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 141
     }
    },
    "roster": {
@@ -1781,8 +1834,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 6.111800000000268,
-   "tri": 64615,
+   "sceneT": 5.909200000000641,
+   "tri": 64655,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
@@ -1790,7 +1843,7 @@
   },
   {
    "i": 23,
-   "t": 15592,
+   "t": 15910,
    "phase": "hl_result",
    "keeper": {
     "hasKeeper": true,
@@ -1798,30 +1851,30 @@
     "lod": "lod1",
     "gesture": null,
     "gestureWeight": 0,
-    "clip": "mx-goalkeeper-overhand-throw",
-    "clipTime": 2.867,
-    "clipDur": 2.867,
+    "clip": "gk-throw",
+    "clipTime": 2.292,
+    "clipDur": 2.292,
     "hands": {
-     "x": -41.732,
-     "y": 1.162,
-     "z": 1.882
+     "x": -41.55,
+     "y": 1.166,
+     "z": 1.69
     },
     "ball": {
-     "x": -41.732,
-     "y": 1.162,
-     "z": 1.882
+     "x": -41.55,
+     "y": 1.166,
+     "z": 1.69
     },
     "handBall": 0,
-    "armOpen": 0.471,
-    "handsAboveSpine": -0.094,
+    "armOpen": 0.44,
+    "handsAboveSpine": -0.091,
     "root": {
-     "x": -41.877,
+     "x": -41.491,
      "y": 0,
-     "z": 1.772
+     "z": 1.824
     },
     "opp": {
      "type": null,
-     "t": 0.579,
+     "t": 0.56,
      "isKeeper": false,
      "claim": true
     },
@@ -1834,9 +1887,9 @@
      "held": true,
      "clipAt": 0,
      "remAt": 1.21,
-     "ts": 0.826,
-     "contactClipT": null,
-     "cam": 150
+     "ts": 0.882,
+     "contactClipT": 1.058,
+     "cam": 147
     }
    },
    "roster": {
@@ -1850,8 +1903,8 @@
      "lod2": 21
     }
    },
-   "sceneT": 6.392700000000174,
-   "tri": 64615,
+   "sceneT": 6.2086000000007795,
+   "tri": 64655,
    "gkLod1": {
     "promosso": true,
     "lod": "lod1"
