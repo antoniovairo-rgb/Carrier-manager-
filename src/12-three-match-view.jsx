@@ -56,7 +56,7 @@
    rimette il pallone grande e, per non toccare le formule dell'arco, gli ridona la vecchia levitazione
    con un solo scarto dichiarato nel blocco della scala. */
 function ThreeMatchView(props){
-  const {playerX,playerY,homeCol,oppCol,allPlayers,brain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
+  const {playerX,playerY,homeCol,oppCol,allPlayers,brain=null,castBrain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
     stadiumHomeCol,stadiumAwayCol,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
@@ -2861,6 +2861,18 @@ function ThreeMatchView(props){
       // Solo le animazioni rallentano (aDt/ak); la camera resta in tempo reale → movimento fluido.
       const isResult=P.matchPhase==="hl_result";
       const isHL=isResult||P.matchPhase==="hl_move"||P.matchPhase==="hl_choose"||P.matchPhase==="hl_intro";
+      if(isHL&&typeof window!=='undefined'&&window.__CPM_B4REC){try{/* [23/09 POC testimone B4, solo sonda] attore usato dal 3D contro attore dichiarato dal motore, uno per ruolo e per scena */
+        const C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;
+        if(C){const W=(window.__CPM_B4=window.__CPM_B4||{});const k=(C.min|0)+'|'+(C.hl|0);
+          const e=W[k]||(W[k]={sit:String((propsRef.current&&propsRef.current.hlSitKey)||''),cast:{ricevente:C.ricevente?C.ricevente.i:null,difensore:C.difensore?C.difensore.i:null,portiere:C.portiere?C.portiere.i:null}});
+          const pl=sr.current.players||[];const idxOf=mm=>{if(mm===hero)return 21;const j=pl.findIndex(pp=>pp&&pp.mesh===mm);return j;};
+          const meshOf=ci=>ci==null?null:(ci===21?hero:(pl[ci]&&pl[ci].mesh));
+          const rec=(role,mm,ci)=>{if(!mm||e[role])return;const cm=meshOf(ci);e[role]={idx:idxOf(mm),brain:ci==null?null:ci,d:cm?+Math.hypot(mm.position.x-cm.position.x,mm.position.z-cm.position.z).toFixed(1):null,fase:P.matchPhase};};
+          if(P.matchPhase==='hl_result')rec('ricevente',passTargetMesh,e.cast.ricevente);/* solo nella conclusione: `passTargetMesh` non si azzera al cambio scena, nell'intro puo' essere quello della scena prima */
+          if(oppActType&&/^gk_/.test(oppActType))rec('portiere',oppMesh,e.cast.portiere);
+          if(oppActType&&/^opp_/.test(oppActType))rec('difensore',oppMesh,e.cast.difensore);
+          const _mf=sr.current._mateFx;if(_mf&&_mf.name==='tackle')rec('difensore',_mf.mesh,e.cast.difensore);}
+      }catch(_eB4){}}
       /* [7.460.0 «esito dichiarato ≠ 3D»] IL RALLENTATORE APPARTIENE ALLA CONCLUSIONE, NON ALLA COSTRUZIONE.
          `slow` parte da 0.28 al primo fotogramma di hl_result e risale a 1 in 1,6s: il rallentatore e'
          nato per l'ESITO, ma cadeva anche sul BUILD-UP, che in hl_result gira prima. Misurato sul flusso
@@ -4202,6 +4214,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             let _ptX=_phx+9,_ptZ=_phz+_rz*9;passTargetMesh=null;let _bestRcvSc=1e9;
             // 5.49.24: il ricevente dell'assist è il compagno PIÙ AVANZATO e in spazio davanti al portatore (non solo il più vicino) → assist leggibile verso un giocatore ben piazzato
             sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team===_team&&!src.gk){const _fwd2=pp.mesh.position.x-_phx;if(_fwd2>-3){const d=Math.hypot(_fwd2,pp.mesh.position.z-_phz);if(d<(_fwd?34:20)){const _sc=d*0.8-Math.min(Math.max(0,_fwd2),14)*1.5+(d<7?18:0)+(_fwd2<1.5?12:0);if(_sc<_bestRcvSc){_bestRcvSc=_sc;_ptX=pp.mesh.position.x;_ptZ=pp.mesh.position.z;passTargetMesh=pp.mesh;}/* [7.359.0 collaudo PO #116 «passaggio scoordinato», #39 «sponda a un compagno troppo vicino e in orizzontale», #38 «dai e vai, passaggio orizzontale»] UN PASSAGGIO SERVE A GUADAGNARE CAMPO. Questo punteggio era `d - avanti*0,6`: la distanza pesava piu' della profondita', e — a differenza dei due siti gemelli che penalizzano di +14 chi sta sotto i 6u — qui non c'era NESSUNA penalita' di vicinanza. Misurato su 31 servizi reali: 7 sotto i 6 metri e 12 senza profondita'. Casi peggiori: gi25 «Filtrante per il centravanti!» servito a 1,8u con 0,0u di avanzamento (un filtrante puramente laterale a un metro e mezzo), gi156 «Lancio millimetrico in profondita'!» giocato 6,8u ALL'INDIETRO, gi107 «Palla al buco tra i centrali» -2,8u. Ora: la profondita' pesa 1,5 ma con un TETTO a 14u, e la distanza totale pesa 0,8: il punteggio ha un minimo dove cade un passaggio VERO (12-18 metri) invece di premiare l'infinito. La prima versione (profondita' 1,6 senza tetto) correggeva il difetto e ne creava l'opposto — misurato: gi24 «Ricezione tra le linee» da 6,9u a 27u, gi57 «1 vs 1» a 24,7u di cui 23,7 laterali, cioe' un cambio di campo al posto di un appoggio. Chi e' sotto i 7u paga 18 e chi non e' davanti almeno 1,5u paga 12. Restano soglie e cancelli invariati (`_fwd2>-3`, raggio 34/20), quindi se davvero non c'e' nessun compagno avanti il ricevente di ripiego e' ancora quello di prima: si cambia la PREFERENZA, non la disponibilita'. Solo aritmetica su `d` e `_fwd2` — l'estrattore analitico del check data-coherence continua a valutare questo ramo senza identificatori nuovi. */}}}});/* [7.247.0 gi38 «troppo distante il tiro»] su FALLITO l'intercettore è VICINO (≤20u): il filtrante tagliato non vola più fino a un difensore sulla linea di porta (misurato: palla a game 97 su un intercetto) */
+            /* [23/09 POC — B4: IL RICEVENTE LO DICHIARA IL MOTORE. Direttiva PO «il 3D parla solo col brain». Rosso __CPM_NO_B4RIC]
+               Misurato (scene-sorgenti, 2 partite): il ricevente scelto qui per punteggio geometrico coincideva col ricevente del
+               motore 0 volte su 4, a 29,5u di mediana — la palla andava a un uomo diverso da quello che il motore aveva in testa.
+               Ora, se il motore ha dichiarato il cast della scena e il suo ricevente e' in campo, DAVANTI alla palla (vincolo PO
+               7.475: mai all'indietro) ed entro 40u, e' lui. Altrimenti resta la scelta geometrica (contata nel testimone). */
+            if(_fwd&&!(typeof window!=='undefined'&&window.__CPM_NO_B4RIC)){try{const _C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;const _ri=_C&&_C.ricevente?_C.ricevente.i:null;
+              const _pm=(_ri!=null&&_ri!==21&&sr.current.players[_ri])?sr.current.players[_ri].mesh:null;
+              const _ok=_pm&&_pm!==hero&&(_pm.position.x-_phx)>-3&&Math.hypot(_pm.position.x-_phx,_pm.position.z-_phz)<=40;
+              if(_ok){passTargetMesh=_pm;_ptX=_pm.position.x;_ptZ=_pm.position.z;}
+              if(typeof window!=='undefined'&&window.__CPM_B4REC){const _W=(window.__CPM_B4RIC=window.__CPM_B4RIC||{usato:0,scartato:0,senzaCast:0});if(_ri==null)_W.senzaCast++;else if(_ok)_W.usato++;else _W.scartato++;}
+            }catch(_eB4r){}}
             /* [7.464.0 codice 008 «il pallone viaggia da solo» — collaudo PO #56, #30, #105, #188] IL PALLONE
                VA A UN UOMO, NON A UN PUNTO. Se nessun compagno supera il filtro (davanti di almeno -3u e
                entro 34), `_ptX/_ptZ` restavano al ripiego CIECO di due righe sopra — `palla + 9u in avanti`,

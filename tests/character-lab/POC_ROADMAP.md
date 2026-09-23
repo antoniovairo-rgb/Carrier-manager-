@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 11:21 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 11:47 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — highlight guidati dal motore unico («brain», direttiva PO 23/09): blocco B del MACRO-PIANO, da B0.
 
@@ -878,6 +878,28 @@ gioco. **Rischio dichiarato:** le due corse non giocano scene identiche (il pilo
 la misura confronta le SORGENTI, non le scene. Restano nel codice due reti che aprono senza il motore — `calendario-tick` (dopo 14'
 senza occasione) e `calendario` (salto manuale) — mai viste in queste 4 partite: da portare nel motore insieme a B2.
 **Non verificato:** il telefono; partite oltre le 2 per braccio.
+
+## Avanzamento 23 settembre 2026, 11:47 — B4 (primo passo): IL CAST DELLA SCENA LO DICHIARA IL MOTORE, IL PASSAGGIO VA AL SUO RICEVENTE
+
+- **Il motore dichiara il cast** nell'evento `occasione_eroe`: `ricevente` (compagno di movimento libero col miglior avanzamento
+  meno meta' della distanza), `difensore` (avversario di movimento piu' vicino), `portiere` (quello avversario). Solo letture
+  deterministiche, **nessun sorteggio in piu'**: la partita resta riproducibile. LiveMatch lo consegna al 3D con la scena (prop `castBrain`).
+- **Il passaggio dell'eroe va al ricevente del motore** se e' davanti alla palla (vincolo PO 7.475: mai all'indietro) ed entro 40u;
+  altrimenti resta la scelta geometrica, contata. Rosso `__CPM_NO_B4RIC`.
+- **Testimone B4** (`__CPM_B4`, solo sonda): per ogni scena, attore usato dal 3D contro attore del cast, per ruolo. Correzione di
+  metodo: il ricevente si legge solo nella conclusione (`hl_result`), perche' `passTargetMesh` non si azzera al cambio scena.
+
+| Ricevente (2 partite intere per braccio) | Stesso giocatore del motore | Distanza mediana |
+| --- | --- | --- |
+| Base prima del rimedio | 0 su 4 | 29,5 u |
+| **Verde** | **3 su 5** | **0 u** |
+| Rosso `__CPM_NO_B4RIC` | 1 su 2 | 31,2 u |
+
+Portiere: gia' coincidente (5/5, 6/6). **Difensore: non coincide** (0/5 a 15,9u nel verde, 2/5 a 6,9u nel rosso: non toccato, la
+differenza e' fra scene diverse). **Campione piccolo**, dichiarato. Le 2 scene verdi non coincidenti passano da altri punti che
+scelgono il ricevente (cross, consegne d'emergenza): prossimi da portare sul cast.
+**B0 riaperto:** in una corsa e' comparsa un'apertura `catena` (secondo tempo della stessa azione) che non passa dal motore: 8/9.
+**Prossimi passi:** difensore dal cast · ricevente negli altri punti · `catena` nel motore.
 
 ---
 

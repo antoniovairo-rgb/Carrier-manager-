@@ -436,7 +436,14 @@ function creaMotorePossesso(cfg){
     if(S.richieste.scenaEroe&&P.eroe&&adv>=52){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
       ev("occasione_eroe",{chi:chi(P),zona:_z,press:_pr,x:+P.x.toFixed(1),y:+P.y.toFixed(1),
         tipo:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
-        liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length});
+        liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length,
+        /* [23/09 POC — B4: IL CAST DELLA SCENA LO DICHIARA IL MOTORE. Direttiva PO «il 3D parla solo col brain».] Chi riceve, chi
+           difende, quale portiere: SOLO letture deterministiche (nessun rnd(): il flusso dei sorteggi non si sposta, la partita
+           resta riproducibile). Ricevente = il compagno di movimento libero (avversario piu' vicino >= 4) col miglior
+           avanzamento meno meta' della distanza dall'eroe; se nessuno e' libero, il compagno piu' vicino. */
+        cast:(()=>{try{let R=null,rs=-1e9;for(const q of g){if(!mio(q,l)||q.gk||q.i===P.i)continue;const lib=(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4;const sc=advDi(q.x,l)-0.5*hyp(q.x,q.y,P.x,P.y)+(lib?20:0);if(sc>rs){rs=sc;R=q;}}
+          const D=piuVicino(P.x,P.y,altro(l),{noGk:true});const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
+          return {ricevente:chi(R),difensore:D?chi(D.p):null,portiere:chi(K)};}catch(_eC){return null;}})()});
       ev("controllo",{chi:chi(P),press:_pr,zona:_z});return;}
     /* [7.894] IL PRIMO TOCCO NON E' SEMPRE UNA SOSTA. Il «controllo» al primo tick di ogni possesso (7.870) fermava
        il pallone ai piedi per un minuto intero in un possesso su due: banco 8 partite, rami.controllo 19 su 92

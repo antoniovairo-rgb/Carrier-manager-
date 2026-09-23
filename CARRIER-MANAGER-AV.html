@@ -11871,7 +11871,7 @@ if(typeof window!=='undefined'){window.__CPM_CUTLIVE=function(){try{return (perf
    rimette il pallone grande e, per non toccare le formule dell'arco, gli ridona la vecchia levitazione
    con un solo scarto dichiarato nel blocco della scala. */
 function ThreeMatchView(props){
-  const {playerX,playerY,homeCol,oppCol,allPlayers,brain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
+  const {playerX,playerY,homeCol,oppCol,allPlayers,brain=null,castBrain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
     stadiumHomeCol,stadiumAwayCol,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
@@ -14676,6 +14676,18 @@ function ThreeMatchView(props){
       // Solo le animazioni rallentano (aDt/ak); la camera resta in tempo reale → movimento fluido.
       const isResult=P.matchPhase==="hl_result";
       const isHL=isResult||P.matchPhase==="hl_move"||P.matchPhase==="hl_choose"||P.matchPhase==="hl_intro";
+      if(isHL&&typeof window!=='undefined'&&window.__CPM_B4REC){try{/* [23/09 POC testimone B4, solo sonda] attore usato dal 3D contro attore dichiarato dal motore, uno per ruolo e per scena */
+        const C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;
+        if(C){const W=(window.__CPM_B4=window.__CPM_B4||{});const k=(C.min|0)+'|'+(C.hl|0);
+          const e=W[k]||(W[k]={sit:String((propsRef.current&&propsRef.current.hlSitKey)||''),cast:{ricevente:C.ricevente?C.ricevente.i:null,difensore:C.difensore?C.difensore.i:null,portiere:C.portiere?C.portiere.i:null}});
+          const pl=sr.current.players||[];const idxOf=mm=>{if(mm===hero)return 21;const j=pl.findIndex(pp=>pp&&pp.mesh===mm);return j;};
+          const meshOf=ci=>ci==null?null:(ci===21?hero:(pl[ci]&&pl[ci].mesh));
+          const rec=(role,mm,ci)=>{if(!mm||e[role])return;const cm=meshOf(ci);e[role]={idx:idxOf(mm),brain:ci==null?null:ci,d:cm?+Math.hypot(mm.position.x-cm.position.x,mm.position.z-cm.position.z).toFixed(1):null,fase:P.matchPhase};};
+          if(P.matchPhase==='hl_result')rec('ricevente',passTargetMesh,e.cast.ricevente);/* solo nella conclusione: `passTargetMesh` non si azzera al cambio scena, nell'intro puo' essere quello della scena prima */
+          if(oppActType&&/^gk_/.test(oppActType))rec('portiere',oppMesh,e.cast.portiere);
+          if(oppActType&&/^opp_/.test(oppActType))rec('difensore',oppMesh,e.cast.difensore);
+          const _mf=sr.current._mateFx;if(_mf&&_mf.name==='tackle')rec('difensore',_mf.mesh,e.cast.difensore);}
+      }catch(_eB4){}}
       /* [7.460.0 «esito dichiarato ≠ 3D»] IL RALLENTATORE APPARTIENE ALLA CONCLUSIONE, NON ALLA COSTRUZIONE.
          `slow` parte da 0.28 al primo fotogramma di hl_result e risale a 1 in 1,6s: il rallentatore e'
          nato per l'ESITO, ma cadeva anche sul BUILD-UP, che in hl_result gira prima. Misurato sul flusso
@@ -16017,6 +16029,17 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             let _ptX=_phx+9,_ptZ=_phz+_rz*9;passTargetMesh=null;let _bestRcvSc=1e9;
             // 5.49.24: il ricevente dell'assist è il compagno PIÙ AVANZATO e in spazio davanti al portatore (non solo il più vicino) → assist leggibile verso un giocatore ben piazzato
             sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team===_team&&!src.gk){const _fwd2=pp.mesh.position.x-_phx;if(_fwd2>-3){const d=Math.hypot(_fwd2,pp.mesh.position.z-_phz);if(d<(_fwd?34:20)){const _sc=d*0.8-Math.min(Math.max(0,_fwd2),14)*1.5+(d<7?18:0)+(_fwd2<1.5?12:0);if(_sc<_bestRcvSc){_bestRcvSc=_sc;_ptX=pp.mesh.position.x;_ptZ=pp.mesh.position.z;passTargetMesh=pp.mesh;}/* [7.359.0 collaudo PO #116 «passaggio scoordinato», #39 «sponda a un compagno troppo vicino e in orizzontale», #38 «dai e vai, passaggio orizzontale»] UN PASSAGGIO SERVE A GUADAGNARE CAMPO. Questo punteggio era `d - avanti*0,6`: la distanza pesava piu' della profondita', e — a differenza dei due siti gemelli che penalizzano di +14 chi sta sotto i 6u — qui non c'era NESSUNA penalita' di vicinanza. Misurato su 31 servizi reali: 7 sotto i 6 metri e 12 senza profondita'. Casi peggiori: gi25 «Filtrante per il centravanti!» servito a 1,8u con 0,0u di avanzamento (un filtrante puramente laterale a un metro e mezzo), gi156 «Lancio millimetrico in profondita'!» giocato 6,8u ALL'INDIETRO, gi107 «Palla al buco tra i centrali» -2,8u. Ora: la profondita' pesa 1,5 ma con un TETTO a 14u, e la distanza totale pesa 0,8: il punteggio ha un minimo dove cade un passaggio VERO (12-18 metri) invece di premiare l'infinito. La prima versione (profondita' 1,6 senza tetto) correggeva il difetto e ne creava l'opposto — misurato: gi24 «Ricezione tra le linee» da 6,9u a 27u, gi57 «1 vs 1» a 24,7u di cui 23,7 laterali, cioe' un cambio di campo al posto di un appoggio. Chi e' sotto i 7u paga 18 e chi non e' davanti almeno 1,5u paga 12. Restano soglie e cancelli invariati (`_fwd2>-3`, raggio 34/20), quindi se davvero non c'e' nessun compagno avanti il ricevente di ripiego e' ancora quello di prima: si cambia la PREFERENZA, non la disponibilita'. Solo aritmetica su `d` e `_fwd2` — l'estrattore analitico del check data-coherence continua a valutare questo ramo senza identificatori nuovi. */}}}});/* [7.247.0 gi38 «troppo distante il tiro»] su FALLITO l'intercettore è VICINO (≤20u): il filtrante tagliato non vola più fino a un difensore sulla linea di porta (misurato: palla a game 97 su un intercetto) */
+            /* [23/09 POC — B4: IL RICEVENTE LO DICHIARA IL MOTORE. Direttiva PO «il 3D parla solo col brain». Rosso __CPM_NO_B4RIC]
+               Misurato (scene-sorgenti, 2 partite): il ricevente scelto qui per punteggio geometrico coincideva col ricevente del
+               motore 0 volte su 4, a 29,5u di mediana — la palla andava a un uomo diverso da quello che il motore aveva in testa.
+               Ora, se il motore ha dichiarato il cast della scena e il suo ricevente e' in campo, DAVANTI alla palla (vincolo PO
+               7.475: mai all'indietro) ed entro 40u, e' lui. Altrimenti resta la scelta geometrica (contata nel testimone). */
+            if(_fwd&&!(typeof window!=='undefined'&&window.__CPM_NO_B4RIC)){try{const _C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;const _ri=_C&&_C.ricevente?_C.ricevente.i:null;
+              const _pm=(_ri!=null&&_ri!==21&&sr.current.players[_ri])?sr.current.players[_ri].mesh:null;
+              const _ok=_pm&&_pm!==hero&&(_pm.position.x-_phx)>-3&&Math.hypot(_pm.position.x-_phx,_pm.position.z-_phz)<=40;
+              if(_ok){passTargetMesh=_pm;_ptX=_pm.position.x;_ptZ=_pm.position.z;}
+              if(typeof window!=='undefined'&&window.__CPM_B4REC){const _W=(window.__CPM_B4RIC=window.__CPM_B4RIC||{usato:0,scartato:0,senzaCast:0});if(_ri==null)_W.senzaCast++;else if(_ok)_W.usato++;else _W.scartato++;}
+            }catch(_eB4r){}}
             /* [7.464.0 codice 008 «il pallone viaggia da solo» — collaudo PO #56, #30, #105, #188] IL PALLONE
                VA A UN UOMO, NON A UN PUNTO. Se nessun compagno supera il filtro (davanti di almeno -3u e
                entro 34), `_ptX/_ptZ` restavano al ripiego CIECO di due righe sopra — `palla + 9u in avanti`,
@@ -23237,7 +23260,14 @@ function creaMotorePossesso(cfg){
     if(S.richieste.scenaEroe&&P.eroe&&adv>=52){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
       ev("occasione_eroe",{chi:chi(P),zona:_z,press:_pr,x:+P.x.toFixed(1),y:+P.y.toFixed(1),
         tipo:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
-        liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length});
+        liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length,
+        /* [23/09 POC — B4: IL CAST DELLA SCENA LO DICHIARA IL MOTORE. Direttiva PO «il 3D parla solo col brain».] Chi riceve, chi
+           difende, quale portiere: SOLO letture deterministiche (nessun rnd(): il flusso dei sorteggi non si sposta, la partita
+           resta riproducibile). Ricevente = il compagno di movimento libero (avversario piu' vicino >= 4) col miglior
+           avanzamento meno meta' della distanza dall'eroe; se nessuno e' libero, il compagno piu' vicino. */
+        cast:(()=>{try{let R=null,rs=-1e9;for(const q of g){if(!mio(q,l)||q.gk||q.i===P.i)continue;const lib=(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4;const sc=advDi(q.x,l)-0.5*hyp(q.x,q.y,P.x,P.y)+(lib?20:0);if(sc>rs){rs=sc;R=q;}}
+          const D=piuVicino(P.x,P.y,altro(l),{noGk:true});const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
+          return {ricevente:chi(R),difensore:D?chi(D.p):null,portiere:chi(K)};}catch(_eC){return null;}})()});
       ev("controllo",{chi:chi(P),press:_pr,zona:_z});return;}
     /* [7.894] IL PRIMO TOCCO NON E' SEMPRE UNA SOSTA. Il «controllo» al primo tick di ogni possesso (7.870) fermava
        il pallone ai piedi per un minuto intero in un possesso su due: banco 8 partite, rami.controllo 19 su 92
@@ -26117,7 +26147,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const pendingBtRef=useRef(null);/* [7.643.0] la proposta di bersaglio in coda: parte quando la consegna corrente si completa */
   const ballLagRef=useRef(false);/* [7.642.0 v5 — IL BERSAGLIO ASPETTA LA PALLA] misurato in v4: la palla e' entro 2,5u di un uomo solo 3 tick su 36 — le marce delle macchine avanzano il bersaglio anche con la palla lontana e il viaggio non si completa mai. Con la palla a >6u dal bersaglio, le quattro marce (gol-in-costruzione, contropiede, catena, trama) NON avanzano quel tick: prima si arriva, poi si riparte. */
   const carrierRef=useRef(null);
-  const motoreRef=useRef(null),golMotoreRef=useRef(null),quotaMotoreRef=useRef([]);const brainEvRef=useRef({seq:0,coda:[]});/* [23/09 POC — IL 3D PARLA COL BRAIN. Direttiva PO: «il render 3D deve parlare solo con il motore unico»] ogni evento del motore, appena nasce, entra in questa coda con un numero d'ordine; il 3D la legge (prop `brain`) e ne ricava i gesti per indice di giocatore, senza cognomi ne' prossimita'. */const _brain23=(evs)=>{try{const B=brainEvRef.current;if(typeof window!=='undefined'&&window.__CPM_BRAIN_REC)window.__CPM_BRAINQ=B;for(const e of (evs||[])){B.seq++;B.coda.push({...e,_seq:B.seq});}if(B.coda.length>64)B.coda.splice(0,B.coda.length-64);}catch(_eB){}};/* [7.870] IL MOTORE DEL POSSESSO (src/14-motore-possesso.jsx): unico scrittore del pallone e dei ventidue nel gioco vivo */
+  const motoreRef=useRef(null),golMotoreRef=useRef(null),quotaMotoreRef=useRef([]);const brainEvRef=useRef({seq:0,coda:[]});const castBrainRef=useRef(null);/* [23/09 POC — IL 3D PARLA COL BRAIN. Direttiva PO: «il render 3D deve parlare solo con il motore unico»] ogni evento del motore, appena nasce, entra in questa coda con un numero d'ordine; il 3D la legge (prop `brain`) e ne ricava i gesti per indice di giocatore, senza cognomi ne' prossimita'. */const _brain23=(evs)=>{try{const B=brainEvRef.current;if(typeof window!=='undefined'&&window.__CPM_BRAIN_REC)window.__CPM_BRAINQ=B;for(const e of (evs||[])){B.seq++;B.coda.push({...e,_seq:B.seq});}if(B.coda.length>64)B.coda.splice(0,B.coda.length-64);}catch(_eB){}};/* [7.870] IL MOTORE DEL POSSESSO (src/14-motore-possesso.jsx): unico scrittore del pallone e dei ventidue nel gioco vivo */
   const evAcc898Ref=useRef([]),k898Ref=useRef(0);/* [7.898 A2 v3] i fatti dei sotto-tick del motore (fisica: ricezioni, intercetti, arrivi), narrati al battito del minuto; contatore dei sotto-tick */
   const chaserRef850=useRef(null);/* [7.850 v3] chi INSEGUE il pallone secondo la simulazione (`_cI553` del blocco del movimento): il renderer lo disegna sul suo punto logico come il portatore */
   const lastGoalChiRef814=useRef(null);/* [7.814.0 — H del playtest n°4] chi ha fatto l'ultima battuta del piano del gol: e' lui il marcatore, non un nome a caso dalla rosa *//* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
@@ -27958,7 +27988,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }
             setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,/* [7.958 · rilievo PO «le interazioni dell eroe sono molto ripetitive»] IL REGISTRO DICE ANCHE QUALE SCENA E QUANTE CANDIDATE C ERANO. Il catalogo ha 185 schede e 573 azioni: se il giocatore ne vede sempre le stesse, il difetto non e la poverta del catalogo ma la SELEZIONE, e i due vogliono rimedi opposti. MISURATO con la sonda varieta-scene, 3 partite con seed diversi: 6 scene giocate, 2 schede distinte, ognuna ripetuta 3 volte. */sk:(()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current];return _s?String(_s.text||"").slice(0,60):null;}catch(_e2){return null;}})()});}catch(_e){}
-            try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occEroe879Ref.current=null;
+            castBrainRef.current=(occEroe879Ref.current&&occEroe879Ref.current.cast)?{...occEroe879Ref.current.cast,min:nx|0,hl:hlIdx}:null;/* [23/09 POC B4] il cast del motore accompagna la scena che si apre */try{if(motoreRef.current)motoreRef.current.chiedi.scenaEroe(false);}catch(_e879b){}chiestaScena879Ref.current=null;occEroe879Ref.current=null;
             setPhase("hl_intro");// COERENZA: spegni la cronaca BG (testo+arco) entrando nell'highlight
           }
           return nx;
@@ -28679,7 +28709,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           _specchi898(_stM870,_evM870);/* [7.898] gli specchi del motore: la stessa funzione dei sotto-tick */
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCHERMO843=window.__CPM_SCHERMO843||[]);if(_S.length<400)_S.push({min:nx,ko:kickoffRef.current|0,kick:kickRef.current|0,out:0,fermo:fermoRef.current?1:0,sp:0,pg:pendingGoalRef.current?1:0,ct:0,lib:0,hl:_inHL77?1:0,cool:bgCoolRef.current|0,ph:String(phaseRef.current),motore:1,stato:_stM870.poss.stato});}catch(_e){}}
           /* [7.879] il fatto che apre la scena: lo si prende qui, dove i fatti del motore arrivano */
-          {const _oc=_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0};}
+          {const _oc=_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null};}
           _narr870=narra870(_evM870,_stM870,nx,{cool:bgCoolRef.current|0});
           if(_narr870&&_narr870.ef){/* il gol e' entrato: la riga porta l'evento del microsim (accredito, festa, ripresa) */const _g=golMotoreRef.current;if(_g&&_g.ev){_narr870.ms=_g.ev.ms||_narr870.ms;_narr870.w=_g.ev.w||1;}golMotoreRef.current=null;pendingGoalRef.current=null;}
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NARR870=window.__CPM_NARR870||{tick:0,eventi:0,righe:0,per:{}});_W.tick++;_W.eventi+=_evM870.length;if(_narr870){_W.righe++;_W.per[_narr870._motore870.kind]=(_W.per[_narr870._motore870.kind]|0)+1;}}catch(_e){}}
@@ -33313,7 +33343,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <ThreeMatchView key={"tmv"+glbTry}/* [7.264.0] «Riprova» rimonta la scena 3D → il caricatore del CH38 riparte da zero senza perdere la partita */ playerX={pPos.x} playerY={pPos.y} zone={zone}
                 homeCol={homeKitCol} oppCol={awayKitCol}
                 opponents={opponents.current} matchPhase={matchPhase3D} matchClock={clock} avatarId={player.avatarId||0}
-                allPlayers={matchPlayers} brain={brainEvRef} homeClub={homeTeamObj} competitionLabel={_compLabel} competitionColor={_compCol} matchImportance={mw} isFinal={_isNeutralFinal} seasonPresentation={_presNight} heroNum={player.jerseyNum||10} heroName={player.name} subEntry={subEntryKey} subEntryVar={subEntryVar} subExit={subExitKey} subExitVar={subExitVar}
+                allPlayers={matchPlayers} brain={brainEvRef} castBrain={castBrainRef} homeClub={homeTeamObj} competitionLabel={_compLabel} competitionColor={_compCol} matchImportance={mw} isFinal={_isNeutralFinal} seasonPresentation={_presNight} heroNum={player.jerseyNum||10} heroName={player.name} subEntry={subEntryKey} subEntryVar={subEntryVar} subExit={subExitKey} subExitVar={subExitVar}
                 heroStandHome={isMatchHome!==false}/* [7.278.0] lato-TRIBUNA: serve alla premiazione per festeggiare sotto la PROPRIA curva */ scoreHome={isMatchHome?score.home:score.away} scoreAway={isMatchHome?score.away:score.home} homeAbbr={(homeTeamObj?.a||homeTeamObj?.n||"HOM").slice(0,3).toUpperCase()} awayAbbr={(awayTeamObj?.a||awayTeamObj?.n||"AWA").slice(0,3).toUpperCase()}
                 heroKitCol={heroKitCol} heroKitCol2={heroKitCol2} heroClub={_heroClubObj} oppClub={_oppClubObj} adSeed={(Math.abs(hashStr((player.club?.id||"x")+"|ads|"+(player.season||1)+"|"+((homeTeamObj&&homeTeamObj.nat)||player.nation||""))))>>>0}/* [7.44.0] pubblicità seedate per club+stagione+nazione */
                 stadiumHomeCol={homeTeamObj?.c||scoreHomeCol} stadiumAwayCol={awayTeamObj?.c||scoreAwayCol} stadiumHomeName={homeTeamObj?.n||homeTeamObj?.name||null} stadiumAwayName={awayTeamObj?.n||awayTeamObj?.name||null} stadiumHomeAbbr={homeTeamObj?.a||null} stadiumAwayAbbr={awayTeamObj?.a||null}/* [7.175.0] sigle reali per le bandiere */ stadiumHomeNat={homeTeamObj?.nat||null} stadiumAwayNat={awayTeamObj?.nat||null}/* [7.180.0] lingua degli striscioni */ stadiumHomeId={homeTeamObj?.id||null} stadiumVenue={(function(){try{return getStadiumName(homeTeamObj)||null;}catch(_e){return null;}})()}/* [7.658.0] il NOME DELLO STADIO (es. Stadio Meneghino) per il cartellone LED — precisazione PO: e' LUI il cartellone da fare piccolo e a scorrimento, non gli striscioni dei tifosi */ stadiumAwayId={awayTeamObj?.id||null}/* [7.181.0] anno di fondazione per NUCLEO <anno> *//* [7.171.0 TIFO 2.0] nomi REALI casa/ospite per gli striscioni dei gruppi ultras */ /* [6.2.0 KIT-1] tifo coi colori SOCIALI, non con la divisa indossata */
