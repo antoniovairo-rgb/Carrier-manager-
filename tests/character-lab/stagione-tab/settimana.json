@@ -43,5 +43,9 @@
    1073
   ]
  },
+ "partita": {
+  "standard": true,
+  "testo": "vs FC Avversario"
+ },
  "errori": []
 }

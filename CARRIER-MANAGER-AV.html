@@ -41592,6 +41592,9 @@ const getThisWeekMatchday=()=>{
         setWeekLiveModal(tipo==="spogliatoio"?{isSpogliatoio:true,teammate:tm,event:{txt:"Oggi resta dopo l'allenamento: ti faccio vedere come si attacca il primo palo."},choices:[{txt:"🤝 Resto volentieri",ef:{chem:4}},{txt:"🏠 Stasera no, sono stanco",ef:{fatigue:-3}}]}
           :tipo==="vissuta"?{event:{txt:"Settimana intensa: doppio allenamento e video-analisi."},changes:{morale:3,form:2,fatigue:6},coachMsg:"Ti voglio più cattivo sui contrasti."}
           :{isImpulse:true,cat:"opportunità",event:{txt:"Un marchio di scarpini vuole girare uno spot con te. Due giorni di set, compenso interessante.",e:"🌟"},choices:[{txt:"🎬 Accetto lo spot",ef:{bank:5000}},{txt:"⚽ Resto concentrato sul campo",ef:{coachTrust:2}},{txt:"💎 Pago un fotografo mio",ef:{bank:-5000}}]});return true;}catch(e){return "error:"+(e&&e.message);}},
+      apriPartita:(stato)=>{try{const av=(CLUBS||[]).find(c=>c.lg===(player.club&&player.club.lg)&&c.id!==(player.club&&player.club.id))||{id:"x",n:"FC Avversario"};
+        setCoachDecision({status:stato||"starter",reason:"Sei tra i migliori della rosa: il mister non può lasciarti fuori."});
+        setShowMatchPrompt({type:"league",isHome:false,opponentName:av.n,opponentId:av.id});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriPresentazione:(beat)=>{try{setPresEvent({beat:Math.max(0,beat|0)});return true;}catch(e){return "error:"+(e&&e.message);}},
       apriGala:(aw)=>{try{setSeasonAwardsData(aw||{
         palloneOro:{playerWins:true,top3:[{name:"TU",isPlayer:true,club:"FC Merseyside",goals:34},{name:"L. Moreno",club:"CF Madrid",goals:31},{name:"K. Adeyemi",club:"Deutsche Elf",goals:29}]},
@@ -46639,6 +46642,10 @@ const getThisWeekMatchday=()=>{
 
       {/* == Match Prompt — Gioca / Simula / Annulla == */}
       {showMatchPrompt&&(
+        /* [23/09 POC — collaudo PO «schermata fuori standard / uniformita'»] stesso Modal del kit del pop-up della
+           settimana: allineato a sinistra, stemma dell'avversario al posto del pallone gigante, decisione del mister
+           con i token semantici, azione primaria del kit. Rosso __CPM_NO_MATCHPROMPT23. */
+        (typeof window!=='undefined'&&window.__CPM_NO_MATCHPROMPT23)?(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card style={{maxWidth:380,width:"100%",padding:"24px",textAlign:"center"}}>
             {showMatchPrompt.type==="national"?(
@@ -46701,6 +46708,41 @@ const getThisWeekMatchday=()=>{
             </div>
           </Card>
         </div>
+        ):(
+        <Modal open onClose={()=>setShowMatchPrompt(null)} width={420}>
+          {(()=>{const _av=(typeof CLUBS!=="undefined"&&CLUBS.find(c=>c.id===showMatchPrompt.opponentId))||{n:showMatchPrompt.opponentName,a:(showMatchPrompt.opponentName||"?").replace(/^FC\s+/,"").slice(0,3).toUpperCase()};
+            const _tipo=showMatchPrompt.type==="national"?"Nazionale · amichevole":showMatchPrompt.type==="cup"?("Coppa nazionale"+(showMatchPrompt.cupRoundName?" · "+showMatchPrompt.cupRoundName:"")):(showMatchPrompt.type==="euro_group"||showMatchPrompt.type==="euro")?({UCL:"Korward Champions Cup",UEL:"Korward Europa Cup",UECL:"Korward Conference Cup"}[showMatchPrompt.competition||player.euro?.competition||"UCL"]||"Coppa europea"):(player.club?.lg||"Campionato");
+            const _dec=coachDecision&&showMatchPrompt.type!=="national"?coachDecision:null;
+            const _tn=_dec?(_dec.status==="starter"?{bg:TH.bgGreen,bd:TH.bdGreen,tx:TH.txGreen,l:"Sei titolare"}:_dec.status==="bench"?{bg:TH.bgAmber,bd:TH.bdAmber,tx:TH.txAmber,l:"Parti dalla panchina"}:{bg:TH.bgRed,bd:TH.bdRed,tx:TH.txRed,l:"Non convocato"}):null;
+            const _derby=showMatchPrompt.type!=="cup"&&isDerby(player.club?.id,showMatchPrompt.opponentId);
+            return(
+          <div data-cpm="partita23" style={{display:"flex",flexDirection:"column",gap:SP.md}}>
+            <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Settimana {player.week||1} · {_tipo}</div>
+            <div style={{display:"flex",alignItems:"center",gap:SP.md}}>
+              <div style={{flexShrink:0}}>{(()=>{try{return <TeamBadge team={_av} size={44}/>;}catch(_e){return null;}})()}</div>
+              <div style={{minWidth:0}}>
+                <div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text,lineHeight:1.2}}>vs {showMatchPrompt.opponentName}</div>
+                <div style={{fontSize:FS.small,color:TH.muted}}>{showMatchPrompt.isHome?"In casa":"In trasferta"}{_derby?" · "+_derby.e+" Derby":""}</div>
+              </div>
+            </div>
+            {_dec&&(
+              <div style={{background:_tn.bg,border:"1px solid "+_tn.bd,borderRadius:RAD.md,padding:`${SP.sm}px ${SP.md}px`}}>
+                <div style={{fontSize:FS.small,fontWeight:FW.bold,color:_tn.tx}}>{_tn.l}</div>
+                {_dec.reason&&<div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5,marginTop:2}}>«{_dec.reason}»</div>}
+              </div>)}
+            {player.isSuspended&&<div style={{background:TH.bgRed,border:"1px solid "+TH.bdRed,borderRadius:RAD.md,padding:`${SP.sm}px ${SP.md}px`,fontSize:FS.small,color:TH.txRed,fontWeight:FW.bold}}>Sei squalificato: la partita viene simulata</div>}
+            <div style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
+              {coachDecision?.status!=="not_called"&&!player.injured&&!player.isSuspended&&(
+                <Btn onClick={()=>{setShowMatchPrompt(null);setCoachDecision(null);startMatch();}} v="primary" size="lg" fw>
+                  {coachDecision?.status==="bench"?"Gioca · parti dalla panchina":"Gioca la partita"}
+                </Btn>)}
+              <Btn onClick={()=>{if(player.isSuspended)setPlayer(p=>({...p,isSuspended:false}));simulateAndAdvance();}} v="secondary" size="lg" fw>
+                {player.injured?L.skipAndRecover:"Simula e avanza la settimana"}
+              </Btn>
+              <Btn onClick={()=>setShowMatchPrompt(null)} v="ghost" fw>Non ora</Btn>
+            </div>
+          </div>);})()}
+        </Modal>)
       )}
 
       {/* == Advance week confirm == */}

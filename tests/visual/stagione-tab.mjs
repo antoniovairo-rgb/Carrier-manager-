@@ -32,5 +32,9 @@ for (const w of [412, 1100]) {
     return { striscia: [Math.round(r.left), Math.round(r.right)], bottone: [Math.round(b.left), Math.round(b.right)], card: cr ? [Math.round(cr.left), Math.round(cr.right)] : null }; });
   await page.screenshot({ path: path.join(out, `dashboard-${w}${TAG}.png`) });
 }
+await page.setViewportSize({ width: 412, height: 915 }); await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard')); await sleep(800);
+await page.evaluate(() => window.__CPM_CAREER.apriPartita('starter')); await sleep(1200);
+R.partita = await page.evaluate(() => { const m = document.querySelector('[data-cpm=partita23]'); return { standard: !!m, testo: (document.body.innerText.match(/(Hai una partita!|vs FC [A-Za-z ]+)/) || [])[0] || null }; });
+await page.screenshot({ path: path.join(out, `partita${TAG}.png`) });
 R.errori = err; await browser.close(); await new Promise(r => server.close(r));
 fs.writeFileSync(path.join(out, `settimana${TAG}.json`), JSON.stringify(R, null, 1)); console.log(JSON.stringify(R));

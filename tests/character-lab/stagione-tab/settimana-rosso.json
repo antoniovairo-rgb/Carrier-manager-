@@ -1,5 +1,5 @@
 {
- "rosso": "__CPM_NO_CTA23",
+ "rosso": "__CPM_NO_MATCHPROMPT23",
  "standings": {
   "tendina": true,
   "opzioni": 15,
@@ -17,8 +17,8 @@
  },
  "cta412": {
   "striscia": [
-   -4,
-   416
+   9,
+   403
   ],
   "bottone": [
    9,
@@ -31,8 +31,8 @@
  },
  "cta1100": {
   "striscia": [
-   260,
-   1087
+   273,
+   1073
   ],
   "bottone": [
    273,
@@ -42,6 +42,10 @@
    273,
    1073
   ]
+ },
+ "partita": {
+  "standard": false,
+  "testo": "Hai una partita!"
  },
  "errori": []
 }
