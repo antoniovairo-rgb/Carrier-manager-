@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 08:26 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 09:00 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -696,6 +696,28 @@ invertite al 63'.
   fatto con curl. (3) Il browser di prova non raggiunge siti esterni attraverso il proxy dell'ambiente: la verifica del sito
   pubblicato e' per confronto dei file, non per partita giocata sul sito.
 - **Non verificato:** la partita giocata sul sito pubblicato (la fa il PO sul telefono), l'effetto visivo dello script Netlify.
+
+---
+
+## Avanzamento 23 settembre 2026, 09:00 — PULIZIE DAL VISION TEST: «GOL!» MOLTIPLICATI, ETICHETTA FPS, CAMBIO CAMPO
+
+1. **«GOL!» sovrapposti — difetto vero, anche della partita normale (quindi anche di `main`).** Testimone nuovo `__CPM_FG_LOG`
+   (acceso solo da sonda con `__CPM_FG_REC`): lo stato della pillola cambia UNA volta per gol, ma nel DOM le pillole si accumulano
+   **1 → 10 → 14 → 22** in tre gol: copie con la **stessa chiave React** fra i ~29 fratelli condizionali del contenitore del campo.
+   Nessun `cloneNode` nel sorgente, nessun errore React in console: la causa esatta dentro la riconciliazione di React non e'
+   isolata. Rimedio: la pillola ha un **contenitore suo**, sempre montato, a tutto campo e senza eventi (`data-cpm="fg-slot"`).
+   Misura: **1 pillola per gol e 0 dopo** (rosso `__CPM_NO_FGSLOT`: 1 → 10 → 14 → 22).
+   Nota di metodo: il primo conteggio (9 pillole) sommava gli span interni delle emoji; il metro giusto conta i contenitori con
+   animazione `floatUp`.
+2. **Etichetta FPS:** il contatore l'ha voluto il PO (D7) ed e' lo strumento del collaudo telefono, quindi resta. Nella review
+   CGTrader diceva «corpi pieni», falso: ora «CGTrader · N corpi» con i corpi davvero disegnati (rosso `__CPM_NO_HUDCG`).
+3. **Squadre invertite al 63':** regola del PO 7.893 («dal 46' la barra si specchia, le squadre cambiano campo»); punteggio coerente
+   con i nomi. Nessuna modifica. La lavagna 2D invece NON si specchia: incoerenza fra le due viste, a verbale per il PO.
+
+**Guardiani:** `design-system` verde. `hud-voci` **rosso anche PRIMA di queste modifiche** (stesso esito sulla versione accantonata):
+difetto preesistente, non introdotto qui. Il test ha anche un percorso assoluto `/workspace/carrier-manager-/…` scritto a mano che
+esiste solo in un altro ambiente (usato un collegamento temporaneo, repository non toccato).
+**Non verificato:** il telefono.
 
 ---
 

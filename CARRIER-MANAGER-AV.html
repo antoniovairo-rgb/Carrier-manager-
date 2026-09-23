@@ -27505,6 +27505,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
 
   // Float label cleanup
   useEffect(()=>{
+    /* [23/09 POC — testimone, solo se una sonda lo accende con __CPM_FG_REC] ogni cambio della pillola: chiave, testo, istante e quante pillole «floatUp» ci sono nel DOM. Nato dal vision test: due o piu' «GOL!» sovrapposti. */
+    if(typeof window!=='undefined'&&window.__CPM_FG_REC){try{const R=(window.__CPM_FG_LOG=window.__CPM_FG_LOG||[]);if(R.length<200)R.push({t:Math.round(performance.now()),key:floatGoal?String(floatGoal.key):null,txt:floatGoal?String(floatGoal.text).slice(0,24):null,dom:[...document.querySelectorAll('div')].filter(d=>(d.style.animation||'').includes('floatUp')).length});}catch(_e){}}
     if(!floatGoal)return;
     const t=setTimeout(()=>setFloatGoal(null),1400);
     return()=>clearTimeout(t);
@@ -33140,7 +33142,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               fotogrammi sospesi — «19 fps» sopra un campo che ne faceva settanta. Resta dov'e' nato: negli
               highlight, dove il 3D disegna davvero (e col rosso __CPM_NO917, che rimette il 3D continuo). */}
           {(["hl_intro","hl_move","hl_choose","hl_result"].includes(phase)||(phase==="playing"&&typeof window!=='undefined'&&window.__CPM_NO917))&&fps907!=null&&(
-            <div data-cpm="fps907" style={{flex:"0 0 auto",textAlign:"center",fontSize:FS.body,fontWeight:800,fontVariantNumeric:"tabular-nums",color:"#fbbf24",letterSpacing:.6,padding:"3px 0",background:"rgba(5,8,16,0.82)",borderBottom:"1px solid rgba(251,191,36,0.35)"}}>{fps907+" fps · corpi "+corpiInUso909}</div>
+            <div data-cpm="fps907" style={{flex:"0 0 auto",textAlign:"center",fontSize:FS.body,fontWeight:800,fontVariantNumeric:"tabular-nums",color:"#fbbf24",letterSpacing:.6,padding:"3px 0",background:"rgba(5,8,16,0.82)",borderBottom:"1px solid rgba(251,191,36,0.35)"}}>{fps907+" fps · "+((typeof window!=="undefined"&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_HUDCG)?("CGTrader · "+((window.__CPM_CGTRADER_CINEMA_ROSTER&&window.__CPM_CGTRADER_CINEMA_ROSTER.visible)||"?")+" corpi"):("corpi "+corpiInUso909))/* [23/09 POC] nella review CGTrader «corpi pieni» era falso (misurati 5 corpi disegnati, vision test da giocatore): l'etichetta dice il modello e i corpi davvero disegnati. Rosso __CPM_NO_HUDCG */}</div>
           )}
 
           {/* ── Field + Panel: responsive layout ── */}
@@ -33523,11 +33525,19 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   </div>
                 </div>
               )}
-              {floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"7%",left:0,right:0,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
+              {/* [23/09 POC — LA PILLOLA HA UN CONTENITORE SUO. Rosso __CPM_NO_FGSLOT] MISURATO (testimone __CPM_FG_LOG): lo stato
+                 cambia UNA volta per gol, ma nel DOM le pillole si accumulano (1→8→24 in tre gol): copie con la STESSA chiave
+                 React fra i ~29 fratelli condizionali di questo contenitore. Nel contenitore dedicato la chiave non si confronta
+                 piu' con i fratelli. Il contenitore e' sempre montato, a tutto campo, senza eventi: layout invariato. */}
+              {(typeof window!=="undefined"&&window.__CPM_NO_FGSLOT)?(floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"7%",left:0,right:0,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
                   <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
                 </div>
-              </div>}
+              </div>):(<div data-cpm="fg-slot" style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:21}}>{floatGoal&&<div key={floatGoal.key} style={{position:"absolute",top:"7%",left:0,right:0,display:"flex",justifyContent:"center",zIndex:21,pointerEvents:"none",animation:"floatUp 1.4s ease-out forwards"}}>{/* [7.112.0 collaudo PO «la grafica del testo è basilare»] i messaggi degli highlight sono un BADGE broadcast (pill scura + bordo/glow nel colore d'esito + tipografia pulita) invece del testo piatto */}
+                <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 15px",borderRadius:RAD.pill,background:"linear-gradient(180deg,rgba(9,13,20,0.88),rgba(9,13,20,0.7))",border:`1.5px solid ${floatGoal.col}`,boxShadow:`0 0 20px ${floatGoal.col}55,0 4px 14px rgba(0,0,0,0.5)`,maxWidth:"90%"}}>
+                  <span style={{fontSize:isNarrow?15:18,fontWeight:900,letterSpacing:1.2,color:floatGoal.col,textShadow:`0 0 12px ${floatGoal.col},0 1px 3px rgba(0,0,0,0.9)`,textTransform:"uppercase",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><EmoText>{floatGoal.text}</EmoText></span>{/* [7.170.0] emoji fuori dal glow (box su Android) */}
+                </div>
+              </div>}</div>)}
               {/* Sprint 97 — pressure border */}
               {momentum<=12&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderRed 2.6s ease-in-out infinite"}}/>}
               {momentum>=88&&show3D&&<div style={{position:"absolute",inset:0,zIndex:2,pointerEvents:"none",borderRadius:RAD.xs,animation:"pressureBorderHome 2.8s ease-in-out infinite","--ph-col":(c=>{try{const h=String(c||"#2563eb").replace("#","");const x=h.length===3?h.split("").map(q=>q+q).join(""):h;const n=parseInt(x,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},0.16)`;}catch(e){return "rgba(37,99,235,0.16)";}})(scoreHomeCol||homeKitCol)}}/>}{/* [6.74.0 3D-14] alpha 0.16 come il lato rosso: prima il colore kit PIENO → pulse casa molto più marcato di quello che il PO aveva chiesto di attenuare (6.72.0) */}
