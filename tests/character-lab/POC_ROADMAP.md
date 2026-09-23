@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 01:48 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 08:26 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — ricostruzione e verifica delle animazioni CGTrader negli highlight.
 
@@ -678,6 +678,24 @@ dito non e' provato. Chromium headless, non il telefono.
 
 Senza bisogno di decisione: HUD di collaudo «fps · corpi pieni» nascosto al giocatore, doppia pillola «GOL!», verifica squadre
 invertite al 63'.
+
+---
+
+## Avanzamento 23 settembre 2026, 08:26 — PREVIEW NETLIFY DEL POC ONLINE (decisione PO)
+
+- **Link di collaudo:** https://korward-poc-cgtrader.netlify.app/CARRIER-MANAGER-AV.html?hyperCharacter=cgtrader-highlight-optimized
+  (Netlify reindirizza a `/carrier-manager-av` conservando i parametri). Progetto `korward-poc-cgtrader`, deploy `6ab36f01d1d016f0f71a3031`.
+  `main` e la GitHub Pages ufficiale **non toccati**.
+- **Cosa e' pubblicato:** solo i 100 file che il gioco usa davvero (121 MB contro i 315 di `assets/`): riferimenti statici + richieste
+  di rete registrate in due partite (review e normale) + capelli dinamici + ritratti. Servita in locale da sola: 0 file mancanti,
+  0 errori in review e in partita normale.
+- **Verifica del pubblicato:** 98/100 file identici byte per byte; i 2 HTML differiscono solo per lo script di servizio che Netlify
+  inietta in fondo alla pagina e per il link riscritto della pagina d'ingresso. Il codice di gioco e' identico.
+- **Ostacoli risolti, a verbale:** (1) la rete dell'ambiente bloccava Netlify → il PO ha aggiunto i domini; (2) lo strumento di
+  caricamento del connettore rispondeva 403 anche su un file minuscolo, mentre la stessa richiesta fatta con curl passa: caricamento
+  fatto con curl. (3) Il browser di prova non raggiunge siti esterni attraverso il proxy dell'ambiente: la verifica del sito
+  pubblicato e' per confronto dei file, non per partita giocata sul sito.
+- **Non verificato:** la partita giocata sul sito pubblicato (la fa il PO sul telefono), l'effetto visivo dello script Netlify.
 
 ---
 
