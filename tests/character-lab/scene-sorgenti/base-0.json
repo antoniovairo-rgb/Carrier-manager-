@@ -1,15 +1,19 @@
 {
  "rosso": null,
  "tot": {
-  "reattiva": 3,
-  "motore-occasione": 4,
-  "si-continua": 1
+  "motore-occasione": 5,
+  "si-continua": 2
  },
  "esiti": [
   {
    "partita": 0,
-   "fine": null,
-   "highlight": 3,
+   "fine": "ended",
+   "ultimo": {
+    "fase": "ended",
+    "clock": 90,
+    "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · G. 1 | 0 DECIDE IL MATCH | PROVINI | FISCHIO FINALE | Selezione Granata | 4–2 | Polisportiva Centro | VITTORIA | IL TUO TABELLINO | ⚽ | 1 | Gol"
+   },
+   "highlight": 1,
    "scene": [
     {
      "min": 25,
@@ -24,33 +28,47 @@
      "sk": "🔁 Uno-due sull'esterno — riparti in velocità!"
     },
     {
-     "min": 29,
-     "src": "motore-occasione",
-     "tipo": "fra-le-linee",
-     "sk": "✋ Anticipa il passaggio filtrante!"
+     "min": 25,
+     "src": "si-continua",
+     "tipo": null,
+     "sk": null
     },
     {
-     "min": 33,
+     "min": 29,
      "src": "motore-occasione",
      "tipo": "fra-le-linee",
      "sk": "😱 Il portiere è fuori dai pali! Tira da lontano."
     },
     {
-     "min": 41,
+     "min": 42,
      "src": "reattiva",
      "tipo": null,
      "sk": null
+    },
+    {
+     "min": 43,
+     "src": "motore-occasione",
+     "tipo": "spalle",
+     "sk": "✋ Anticipa il passaggio filtrante!"
     }
    ],
    "perSrc": {
-    "reattiva": 2,
-    "motore-occasione": 3
+    "motore-occasione": 3,
+    "si-continua": 1
+   },
+   "programmate": {
+    "reattiva": 2
    },
    "errori": []
   },
   {
    "partita": 1,
    "fine": "ended",
+   "ultimo": {
+    "fase": "ended",
+    "clock": 90,
+    "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · G. 1 | 1 SHOW: 2 GOL | PROVINI | FISCHIO FINALE | Selezione Granata | 3–1 | Polisportiva Centro | VITTORIA | IL TUO TABELLINO | ⚽ | 2 | Gol | 🎯 | "
+   },
    "highlight": 2,
    "scene": [
     {
@@ -70,11 +88,19 @@
      "src": "reattiva",
      "tipo": null,
      "sk": null
+    },
+    {
+     "min": 88,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "🦵 Cucchiaio in area!"
     }
    ],
    "perSrc": {
-    "motore-occasione": 1,
-    "si-continua": 1,
+    "motore-occasione": 2,
+    "si-continua": 1
+   },
+   "programmate": {
     "reattiva": 1
    },
    "errori": []

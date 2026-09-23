@@ -2,7 +2,7 @@
 
 **Ramo di lavoro corrente:** checkout `poc/marioprada-character-system-local`; backup verificato su `origin/poc/marioprada-character-system` (baseline `4c81b8e`).
 **Produzione / GitHub Pages:** `main` → `/(root)`, invariata.
-**Ultimo aggiornamento:** 23 settembre 2026, 10:47 (Europe/Rome, orologio del container, letto con `date`)
+**Ultimo aggiornamento:** 23 settembre 2026, 11:09 (Europe/Rome, orologio del container, letto con `date`)
 **Stato complessivo stimato:** 68% — presa, dribbling, passaggio e tiro misurati nel banco (contatto, un gesto per azione, orientamento, T-pose); kit a chiazze corretto. Telefono, figurine e giudizio visivo del PO aperti. Non e' un quality gate finale.
 **Fase corrente:** 4/7 — highlight guidati dal motore unico («brain», direttiva PO 23/09): blocco B del MACRO-PIANO, da B0.
 
@@ -849,6 +849,19 @@ tetto della sonda (260 s): base parziale, da allargare.
 
 **Prossimo passo:** B0 — ogni scena porta l'id dell'evento del motore che l'ha generata; le sorgenti `reattiva`, `si-continua`,
 `catena`, `calendario-tick` passano dal motore (che le propone come evento) invece di aprirsi da sole.
+
+## Avanzamento 23 settembre 2026, 11:09 — B0: LA BASE, CORRETTA
+
+- **Correzione di metodo:** la base «4/8» di prima era sbagliata. `reattiva`, `sotto-63`, `sotto-76` e `secondo-tempo` si scrivono
+  nel registro quando la scena viene **messa in calendario** (la catena si scrive anche due volte), non quando si **apre**. Ora la
+  sonda `scene-sorgenti.mjs` separa le aperture vere (`motore-occasione`, `calendario-tick`, `catena`, `si-continua`, `calendario`)
+  dalle programmazioni.
+- **Correzione di sonda:** una partita non arrivava al fischio perche' le scene col movimento bloccato aspettano un comando del
+  giocatore; la sonda ora usa il pilota automatico del gioco (`__CPM_AUTOPLAY`). Non e' un blocco del gioco.
+- **Base misurata (2 partite intere, 90', 2x, 0 errori):** **5 aperture su 7 nascono da un evento del motore**; le altre **2 sono
+  `si-continua`** (dopo un'azione riuscita il gioco pesca da solo una scheda nuova, senza il motore).
+- **Prossimo passo:** `si-continua` passa dal motore — torna al gioco e chiede al motore l'occasione dell'eroe, la scena si apre
+  sull'evento `occasione_eroe`. Rosso appaiato previsto.
 
 ---
 
