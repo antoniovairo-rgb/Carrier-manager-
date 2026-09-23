@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 13:52 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 13:53 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -8,6 +8,7 @@
 
 | Cantiere | Stato | Cosa manca |
 | --- | --- | --- |
+| 23/09 13:53 | Preview Netlify aggiornata (figurine, tuffo, brain) | file online identici al repo |
 | 23/09 13:52 | Figurine collegate: indice leggero, assegnazione stabile, scelta del volto, regola di scena | 7-9 ritratti scaricati a sessione; eroe stabile; 0 collisioni col volto dell'eroe |
 | 23/09 13:27 | Tuffo e respinta riadattati sullo scheletro CGTrader (Blender nel container) | cancello anatomico 3,1°/2,7° · tuffo in scena 96-100 fotogrammi, rosso 0 |
 | 23/09 13:09 | B3: bersaglio del tiro dichiarato dal brain (non più `Math.random`) | scarto 0,07-0,39 contro 2,8-9,1 |
