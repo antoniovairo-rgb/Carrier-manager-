@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 16:39 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 17:28 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -12,7 +12,7 @@
 | Gesti negli highlight | ✅ presa, dribbling, passaggio, tiro misurati · eroe taglia 0,18 · **tuffo e respinta del portiere CGTrader montati** | parata del brain non ancora vista in scena |
 | **Brain → scena (B0)** | ✅ scene nate dal motore **26 su 26** (6 partite) | la «catena» ora eredita l'evento del brain, ma non è mai comparsa: **non misurata** |
 | **Brain → attori (B4)** | 🟡 ricevente **3 su 5** · difensore **4 su 6** · portiere 6 su 6 (mediane 0 u) | ricevente di cross e consegne · 2 difensori ancora scelti dal 3D |
-| Brain muove i 22 in scena (B3) | ⏳ da fare | |
+| **Brain muove i 22 in scena (B3)** | ✅ scene offensive: 26 passi del brain, 0 del vecchio · determinismo 100% | piazzati e scene difensive ancora al vecchio scrittore |
 | **Esito deciso dal brain (B2)** | ✅ **10 su 10** esiti col dado del brain (rosso 0/13) · eventi veri col cast · tabellone = motore | il 3D non legge ancora quegli eventi |
 | **Gesti in scena dal brain** | ✅ coerenza 83-97% (base 36%) · **gesti nuovi**: reazione al tiro sbagliato, portiere in attesa, rilancio, contrasto in piedi/scivolata · CGTrader: coerenza e copertura 84% | rilancio non ancora visto · tiro del compagno |
 | **3D dal brain (B3)** | 🟡 il **gol va dove lo decide il brain**: scarto alla linea 0,07-0,39 (rosso 2,8-9,1) | parata non verificata · palo/fuori/murato ancora geometrici · gesti in scena |
@@ -37,6 +37,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 17:28 | B3: il brain muove i 22 nelle scene offensive (funzione pura della scena) | determinismo 100% (v1 36%) · ammucchiata 0,9 contro 0,71 |
 | 23/09 16:39 | Gesti evoluti dichiarati dal brain: rammarico, portiere in attesa, rilancio, contrasto in piedi/scivolata | CGTrader: coerenza e copertura 16/19 (84%) |
 | 23/09 16:31 | Punto 4: l'eroe si posiziona per l'occasione chiesta (parziale) | spalle ottenuta 2/2; conclusione/fascia ancora no |
 | 23/09 16:06 | Guardiani del motore rigiocati: match-sequence (tetto 110 s), event-ledger (2 partite) | sequenza identica 100% fra le velocità · gol libro mastro = tabellone 2/2 |

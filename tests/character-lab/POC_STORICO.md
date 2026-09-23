@@ -1016,6 +1016,18 @@ del portiere entro 12 unita' dal centro porta (prima 7: il 3D reagiva anche piu'
 16/19 · copertura 16/19 (84%). Prima corsa della stessa sonda con i gesti nuovi: 11 non attesi su 27 → dopo le rifiniture 3 su 19.
 **Non verificato:** il rilancio del portiere in scena (serve una presa del nostro portiere); il telefono.
 
+## Avanzamento 23 settembre 2026, 23/09 17:28 — B3: IN SCENA I VENTIDUE LI MUOVE IL BRAIN
+`chiedi.scenaMuovi`: il posizionamento del motore (`muoviTutti`) in scena, con la palla tenuta dall'eroe. Usato nelle scene offensive non
+piazzate (piazzati e scene difensive restano al vecchio scrittore). Rosso `__CPM_NO_B3MUOVI`.
+**Il determinismo ha guidato il disegno (match-sequence, tetto 110 s):**
+- v1 (passo del motore sulle posizioni correnti): la stessa partita divergeva dalla riga 19 (36% / 25% / 35%) — il numero di passi dipende dal tempo di lettura;
+- v2 (stato dei giocatori del motore fotografato e ripristinato): stessa velocita' 100%, 1x contro 2x 38% — `riprendi` riscriveva il motore
+  con le posizioni di fine scena; ora col B3 il motore riprende dalle SUE posizioni;
+- v3 (posizioni = funzione pura di partenza fotografata all'apertura + numero di passi, tetto 8, seme fisso di scena): **100% / 100% / 100%**.
+Generatore locale per le oscillazioni in scena: il flusso della partita non si sposta.
+**Scena** (2 partite, 10 campioni in scelta/movimento): passi del brain 26, vecchio scrittore 0 · giocatori entro 6u dall'eroe 0,9
+(rosso 0,71) · primo avversario 8,7u (rosso 8,0) · compagni davanti all'eroe 2 (rosso 2) · mai ammucchiate oltre 3.
+
 ---
 
 ## Obiettivo vincolante

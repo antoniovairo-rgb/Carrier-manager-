@@ -23641,6 +23641,7 @@ function creaMotorePossesso(cfg){
 
   /* ---------- il movimento dei ventidue ---------- */
   function muoviTutti(){
+    const _rj=()=>S._rjScena?S._rjScena():rnd();/* [23/09 POC B3] in scena le oscillazioni usano un generatore locale: il flusso della partita non dipende dal tempo di lettura */
     const st=S.poss.stato,l=S.poss.lato,d=dirDi(l);
     const bx=S.palla.x,by=S.palla.y;
     const padrone=S.poss.padrone!=null?g[S.poss.padrone]:null;
@@ -23767,14 +23768,14 @@ function creaMotorePossesso(cfg){
       else if(st==="volo"&&S.poss.icpt!=null&&p.i===S.poss.icpt){tx=S.poss.da.x+(S.poss.a.x-S.poss.da.x)*S.poss.icptA;ty=S.poss.da.y+(S.poss.a.y-S.poss.da.y)*S.poss.icptA;v=6;}
       else if(st==="volo"&&ins&&p.i===ins.i&&S.poss.tipo!=="tiro"){tx=S.poss.a.x;ty=S.poss.a.y;v=5;}
       else if((st==="tenuta"||st==="volo")&&cop&&p.i===cop.i){const gx=xDa(6,p.team);tx=bx+(gx-bx)*0.35;ty=by+(50-by)*0.4;v=5;}
-      else if(app.indexOf(p)>=0&&_rif924){const k=app.indexOf(p);const R=_rif924;/* [7.924 M1] tre uomini a sostegno invece di due, a 7-17 unita invece di 12-24, e con le GAMBE per arrivarci: 9 unita al minuto restano sotto il tetto di 12 del guardiano, con margine: a 11 il guardiano si accendeva a volte si e a volte no (14,3u), perche il passo dipende anche dal jitter e dalla sequenza dei dadi, e un guardiano che passa a seconda del seme non e un guardiano `un pallone, un padrone`, che a 22 si e acceso: il tetto e spedito, non lo si alza per far passare una modifica. */tx=R.x+d*(_m924?(7+k*5):(12+k*6));ty=R.y+(k===0?-1:1)*((_m924?7:12)+rnd()*(_m924?4:6))*(R.y>50?1:-1)*(k===0?-1:1);v=_m924?9:5;}
+      else if(app.indexOf(p)>=0&&_rif924){const k=app.indexOf(p);const R=_rif924;/* [7.924 M1] tre uomini a sostegno invece di due, a 7-17 unita invece di 12-24, e con le GAMBE per arrivarci: 9 unita al minuto restano sotto il tetto di 12 del guardiano, con margine: a 11 il guardiano si accendeva a volte si e a volte no (14,3u), perche il passo dipende anche dal jitter e dalla sequenza dei dadi, e un guardiano che passa a seconda del seme non e un guardiano `un pallone, un padrone`, che a 22 si e acceso: il tetto e spedito, non lo si alza per far passare una modifica. */tx=R.x+d*(_m924?(7+k*5):(12+k*6));ty=R.y+(k===0?-1:1)*((_m924?7:12)+_rj()*(_m924?4:6))*(R.y>50?1:-1)*(k===0?-1:1);v=_m924?9:5;}
       if(st==="kickoff"){const k=S.kickoff;if(p.gk){tx=sl.x;ty=50;}else{const casa=p.team===HOME;tx=casa?Math.min(sl.x,46):Math.max(sl.x,54);ty=sl.y;if(p.team===k.lato){const c=[];for(const q of g){if(!mio(q,k.lato)||q.gk)continue;c.push({q,d:hyp(q.x,q.y,50,50)});}c.sort((a,b)=>a.d-b.d);if(c[0]&&c[0].q.i===p.i){tx=50-dp*0.8;ty=50;}else if(c[1]&&c[1].q.i===p.i){tx=50-dp*3;ty=53;}}}v=8;}
       if(st==="rete"){v=1.2;}
       tx=clamp(tx,2,98);ty=clamp(ty,3,97);
       if(p.gk){tx=clamp(tx,p.team===HOME?2:88,p.team===HOME?12:98);ty=clamp(ty,30,70);}
       const _dt898=S.dt||1;v*=_dt898;/* [7.898] la corsa del minuto si compie in frazioni */
       const dx=tx-p.x,dy=ty-p.y,dd=Math.hypot(dx,dy);
-      const jx=(rnd()-0.5)*0.3*_dt898,jy=(rnd()-0.5)*0.3*_dt898;
+      const jx=(_rj()-0.5)*0.3*_dt898,jy=(_rj()-0.5)*0.3*_dt898;
       if(dd<=v){p.x=clamp(tx+jx,2,98);p.y=clamp(ty+jy,3,97);}
       else{p.x=clamp(p.x+dx/dd*v+jx,2,98);p.y=clamp(p.y+dy/dd*v+jy,3,97);}
     }
@@ -23824,6 +23825,23 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     /* [7.879] LA SCENA DELL'EROE SI CHIEDE, NON SI IMPONE. Il live match dice «fra poco tocca a lui»:
        il motore porta il pallone all'eroe con le sue regole (il compagno lo sceglie come ricevente) e
        quando ce l'ha davvero emette `occasione_eroe`. La scena si apre SU QUEL FATTO, non su un minuto. */
+    /* [23/09 POC — B3: IN SCENA I VENTIDUE LI MUOVE IL BRAIN. Direttiva PO «render 3D da motore unico». Rosso lato live __CPM_NO_B3MUOVI]
+       Durante gli highlight il motore era fermo e i ventidue li muoveva uno scrittore del live (pressing a orologio). Qui il brain
+       fa un passo del SUO posizionamento (`muoviTutti`) con la palla tenuta dall'eroe, partendo dalle posizioni attuali in campo
+       (continuita'), con un generatore LOCALE a seme di scena (il flusso della partita non si sposta), e poi ripristina lo stato
+       del possesso: la scena non cambia la partita, ne muove solo i corpi. */
+    scenaMuovi(o){o=o||{};const salva={padrone:S.poss.padrone,stato:S.poss.stato,lato:S.poss.lato,ricevente:S.poss.ricevente,dt:S.dt,px:S.palla.x,py:S.palla.y,ins:S.inseguitore};
+      /* [v2] MISURATO (match-sequence): anche ripristinando il possesso la partita divergeva dalla riga 19 — muoviTutti modifica i giocatori del motore, e quanti passi avvengono dipende dal tempo reale della scena. Ora l'intero stato dei giocatori si fotografa e si rimette com'era: la scena muove i CORPI, non la partita. */
+      const _foto=g.map(q=>q?Object.assign({},q):q);
+      try{let seme=((o.seme>>>0)||1)>>>0;S._rjScena=()=>{seme=(Math.imul(seme,1664525)+1013904223)>>>0;return seme/4294967296;};
+        if(o.gioc&&o.gioc.length){for(let i=0;i<Math.min(21,o.gioc.length);i++){const q=o.gioc[i];if(q&&q.x!=null&&g[i]){g[i].x=clamp(+q.x,2,98);g[i].y=clamp(+q.y,3,97);}}}
+        const H=g[HERO];if(o.eroe&&o.eroe.x!=null){H.x=clamp(+o.eroe.x,2,98);H.y=clamp(+o.eroe.y,3,97);}
+        S.poss.padrone=HERO;S.poss.lato=H.team;S.poss.stato='tenuta';S.poss.ricevente=null;S.dt=Math.max(0.05,Math.min(1,+o.dt||0.3));
+        S.palla.x=o.palla&&o.palla.x!=null?+o.palla.x:H.x;S.palla.y=o.palla&&o.palla.y!=null?+o.palla.y:H.y;
+        const _np=Math.max(1,Math.min(12,(o.passi|0)||1));for(let k=0;k<_np;k++)muoviTutti();/* [v3] posizioni = funzione pura di (partenza, passi): la scena converge e non dipende dal tempo reale */
+        return g.slice(0,21).map(q=>({x:+q.x.toFixed(2),y:+q.y.toFixed(2)}));
+      }catch(_e){return null;}
+      finally{for(let i=0;i<g.length;i++){if(g[i]&&_foto[i]){for(const k in g[i])if(!(k in _foto[i]))delete g[i][k];Object.assign(g[i],_foto[i]);}}S.poss.padrone=salva.padrone;S.poss.stato=salva.stato;S.poss.lato=salva.lato;S.poss.ricevente=salva.ricevente;S.dt=salva.dt;S.palla.x=salva.px;S.palla.y=salva.py;S.inseguitore=salva.ins;S._rjScena=null;}},
     scenaEroe(on,tipo){S.richieste.scenaEroe=!!on;S.richieste.scenaTipo=on?(tipo||null):null;S.richieste.scenaAttese=0;if(!on)S.conta.occEroe=0;},/* [23/09 POC] il live puo' chiedere un TIPO di occasione */
     urgenza(){if(S.richieste.gol)S.richieste.gol.t=Math.max(S.richieste.gol.t|0,9);},
     turno(lato){const l=lato===AWAY?AWAY:HOME;if(S.poss.lato!==l)S.richieste.turno=l;},
@@ -26404,7 +26422,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const pendingBtRef=useRef(null);/* [7.643.0] la proposta di bersaglio in coda: parte quando la consegna corrente si completa */
   const ballLagRef=useRef(false);/* [7.642.0 v5 — IL BERSAGLIO ASPETTA LA PALLA] misurato in v4: la palla e' entro 2,5u di un uomo solo 3 tick su 36 — le marce delle macchine avanzano il bersaglio anche con la palla lontana e il viaggio non si completa mai. Con la palla a >6u dal bersaglio, le quattro marce (gol-in-costruzione, contropiede, catena, trama) NON avanzano quel tick: prima si arriva, poi si riparte. */
   const carrierRef=useRef(null);
-  const motoreRef=useRef(null),golMotoreRef=useRef(null),quotaMotoreRef=useRef([]);const brainEvRef=useRef({seq:0,coda:[]});const castBrainRef=useRef(null);/* [23/09 POC — IL 3D PARLA COL BRAIN. Direttiva PO: «il render 3D deve parlare solo con il motore unico»] ogni evento del motore, appena nasce, entra in questa coda con un numero d'ordine; il 3D la legge (prop `brain`) e ne ricava i gesti per indice di giocatore, senza cognomi ne' prossimita'. */const _brain23=(evs)=>{try{const B=brainEvRef.current;if(typeof window!=='undefined'&&window.__CPM_BRAIN_REC)window.__CPM_BRAINQ=B;for(const e of (evs||[])){B.seq++;B.coda.push({...e,_seq:B.seq});}if(B.coda.length>64)B.coda.splice(0,B.coda.length-64);}catch(_eB){}};/* [7.870] IL MOTORE DEL POSSESSO (src/14-motore-possesso.jsx): unico scrittore del pallone e dei ventidue nel gioco vivo */
+  const motoreRef=useRef(null),golMotoreRef=useRef(null),quotaMotoreRef=useRef([]);const brainEvRef=useRef({seq:0,coda:[]});const scenaBase23Ref=useRef(null);const castBrainRef=useRef(null);/* [23/09 POC — IL 3D PARLA COL BRAIN. Direttiva PO: «il render 3D deve parlare solo con il motore unico»] ogni evento del motore, appena nasce, entra in questa coda con un numero d'ordine; il 3D la legge (prop `brain`) e ne ricava i gesti per indice di giocatore, senza cognomi ne' prossimita'. */const _brain23=(evs)=>{try{const B=brainEvRef.current;if(typeof window!=='undefined'&&window.__CPM_BRAIN_REC)window.__CPM_BRAINQ=B;for(const e of (evs||[])){B.seq++;B.coda.push({...e,_seq:B.seq});}if(B.coda.length>64)B.coda.splice(0,B.coda.length-64);}catch(_eB){}};/* [7.870] IL MOTORE DEL POSSESSO (src/14-motore-possesso.jsx): unico scrittore del pallone e dei ventidue nel gioco vivo */
   const evAcc898Ref=useRef([]),k898Ref=useRef(0);/* [7.898 A2 v3] i fatti dei sotto-tick del motore (fisica: ricezioni, intercetti, arrivi), narrati al battito del minuto; contatore dei sotto-tick */
   const chaserRef850=useRef(null);/* [7.850 v3] chi INSEGUE il pallone secondo la simulazione (`_cI553` del blocco del movimento): il renderer lo disegna sul suo punto logico come il portatore */
   const lastGoalChiRef814=useRef(null);/* [7.814.0 — H del playtest n°4] chi ha fatto l'ultima battuta del piano del gol: e' lui il marcatore, non un nome a caso dalla rosa *//* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
@@ -27269,6 +27287,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         }));
         return;
       }
+      /* [23/09 POC — B3: IN SCENA I VENTIDUE LI MUOVE IL BRAIN. Rosso __CPM_NO_B3MUOVI] Nelle scene offensive non piazzate il passo di
+         posizionamento e' quello del motore (`chiedi.scenaMuovi`): parte dalle posizioni correnti, palla tenuta dall'eroe, generatore
+         locale a seme di scena. Il vecchio scrittore resta per i piazzati (barriera, area) e per le scene difensive. */
+      if(!isDef&&motoreRef.current&&motoreRef.current.chiedi&&motoreRef.current.chiedi.scenaMuovi&&!(typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))){
+        hlTickRef.current++;
+        /* [v3] la scena parte dalle posizioni FOTOGRAFATE alla sua apertura e fa al piu' 8 passi: il risultato e' funzione pura della scena, non del tempo di lettura (misurato con match-sequence) */
+        {const _b=scenaBase23Ref.current;if(!_b||_b.hl!==hlIdx||_b.sit!==sit)scenaBase23Ref.current={hl:hlIdx,sit,k:0,gioc:(matchPlayersRef.current||[]).map(q=>q?{x:q.x,y:q.y}:null)};scenaBase23Ref.current.k=Math.min(8,scenaBase23Ref.current.k+1);}
+        const _o23=motoreRef.current.chiedi.scenaMuovi({gioc:scenaBase23Ref.current.gioc,passi:scenaBase23Ref.current.k,eroe:pPosRef.current,palla:ballPosRef.current,dt:0.3,seme:(hashStr(String((sit&&sit.text)||'')+'|'+hlIdx)>>>0)||1});
+        if(_o23){setMatchPlayers(prev=>{const nx=prev.map((pl,i)=>{const q=_o23[i];return (q&&pl&&pl.team!=='ref')?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=nx;return nx;});
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_B3MUOVI=(window.__CPM_B3MUOVI|0)+1;}catch(_e){}}
+          return;}
+      }
+      if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_B3VECCHIO=(window.__CPM_B3VECCHIO|0)+1;}catch(_e){}}
       // 3DV-MOV: target DETERMINISTICI per giocatore (angolo/spread seeded da idx, NON ri-randomizzati ogni tick)
       // + smoothing su velocità (velRef) → niente scatti/teletrasporti schizofrenici. Oscillazione lenta via sin/cos.
       hlTickRef.current++;const _T=hlTickRef.current*0.5;
@@ -28937,7 +28968,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              Misurato: sorteggi del motore al 78' 1004 contro 1022 PRIMA, 1004 contro 1022 DOPO. Zero.
              La lettura resta valida in linea di principio (la simulazione e' la source of truth) ma non
              e' questa la causa, e una modifica che non muove il suo numero non si spedisce. */
-          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:possTurnRef.current>0?"home":"away",gioc:matchPlayersRef.current||[],eroe:pPosRef.current,centro:((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
+          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:possTurnRef.current>0?"home":"away",gioc:((typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))?(matchPlayersRef.current||[]):null)/* [23/09 POC B3] col brain che muove la scena, il motore riprende dalle SUE posizioni: quelle di fine scena dipendono dal tempo reale */,eroe:pPosRef.current,centro:((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
           /* il gol del microsim diventa una richiesta: il motore lo costruisce */
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
           if(pendingGoalRef.current&&pendingGoalRef.current.motore870){pendingGoalRef.current.ticks++;if(nx>=90)_M.chiedi.urgenza();/* al 90' il decreto non puo' restare appeso: entra da dove sta la palla */}

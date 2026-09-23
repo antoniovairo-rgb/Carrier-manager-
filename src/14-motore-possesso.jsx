@@ -662,6 +662,7 @@ function creaMotorePossesso(cfg){
 
   /* ---------- il movimento dei ventidue ---------- */
   function muoviTutti(){
+    const _rj=()=>S._rjScena?S._rjScena():rnd();/* [23/09 POC B3] in scena le oscillazioni usano un generatore locale: il flusso della partita non dipende dal tempo di lettura */
     const st=S.poss.stato,l=S.poss.lato,d=dirDi(l);
     const bx=S.palla.x,by=S.palla.y;
     const padrone=S.poss.padrone!=null?g[S.poss.padrone]:null;
@@ -788,14 +789,14 @@ function creaMotorePossesso(cfg){
       else if(st==="volo"&&S.poss.icpt!=null&&p.i===S.poss.icpt){tx=S.poss.da.x+(S.poss.a.x-S.poss.da.x)*S.poss.icptA;ty=S.poss.da.y+(S.poss.a.y-S.poss.da.y)*S.poss.icptA;v=6;}
       else if(st==="volo"&&ins&&p.i===ins.i&&S.poss.tipo!=="tiro"){tx=S.poss.a.x;ty=S.poss.a.y;v=5;}
       else if((st==="tenuta"||st==="volo")&&cop&&p.i===cop.i){const gx=xDa(6,p.team);tx=bx+(gx-bx)*0.35;ty=by+(50-by)*0.4;v=5;}
-      else if(app.indexOf(p)>=0&&_rif924){const k=app.indexOf(p);const R=_rif924;/* [7.924 M1] tre uomini a sostegno invece di due, a 7-17 unita invece di 12-24, e con le GAMBE per arrivarci: 9 unita al minuto restano sotto il tetto di 12 del guardiano, con margine: a 11 il guardiano si accendeva a volte si e a volte no (14,3u), perche il passo dipende anche dal jitter e dalla sequenza dei dadi, e un guardiano che passa a seconda del seme non e un guardiano `un pallone, un padrone`, che a 22 si e acceso: il tetto e spedito, non lo si alza per far passare una modifica. */tx=R.x+d*(_m924?(7+k*5):(12+k*6));ty=R.y+(k===0?-1:1)*((_m924?7:12)+rnd()*(_m924?4:6))*(R.y>50?1:-1)*(k===0?-1:1);v=_m924?9:5;}
+      else if(app.indexOf(p)>=0&&_rif924){const k=app.indexOf(p);const R=_rif924;/* [7.924 M1] tre uomini a sostegno invece di due, a 7-17 unita invece di 12-24, e con le GAMBE per arrivarci: 9 unita al minuto restano sotto il tetto di 12 del guardiano, con margine: a 11 il guardiano si accendeva a volte si e a volte no (14,3u), perche il passo dipende anche dal jitter e dalla sequenza dei dadi, e un guardiano che passa a seconda del seme non e un guardiano `un pallone, un padrone`, che a 22 si e acceso: il tetto e spedito, non lo si alza per far passare una modifica. */tx=R.x+d*(_m924?(7+k*5):(12+k*6));ty=R.y+(k===0?-1:1)*((_m924?7:12)+_rj()*(_m924?4:6))*(R.y>50?1:-1)*(k===0?-1:1);v=_m924?9:5;}
       if(st==="kickoff"){const k=S.kickoff;if(p.gk){tx=sl.x;ty=50;}else{const casa=p.team===HOME;tx=casa?Math.min(sl.x,46):Math.max(sl.x,54);ty=sl.y;if(p.team===k.lato){const c=[];for(const q of g){if(!mio(q,k.lato)||q.gk)continue;c.push({q,d:hyp(q.x,q.y,50,50)});}c.sort((a,b)=>a.d-b.d);if(c[0]&&c[0].q.i===p.i){tx=50-dp*0.8;ty=50;}else if(c[1]&&c[1].q.i===p.i){tx=50-dp*3;ty=53;}}}v=8;}
       if(st==="rete"){v=1.2;}
       tx=clamp(tx,2,98);ty=clamp(ty,3,97);
       if(p.gk){tx=clamp(tx,p.team===HOME?2:88,p.team===HOME?12:98);ty=clamp(ty,30,70);}
       const _dt898=S.dt||1;v*=_dt898;/* [7.898] la corsa del minuto si compie in frazioni */
       const dx=tx-p.x,dy=ty-p.y,dd=Math.hypot(dx,dy);
-      const jx=(rnd()-0.5)*0.3*_dt898,jy=(rnd()-0.5)*0.3*_dt898;
+      const jx=(_rj()-0.5)*0.3*_dt898,jy=(_rj()-0.5)*0.3*_dt898;
       if(dd<=v){p.x=clamp(tx+jx,2,98);p.y=clamp(ty+jy,3,97);}
       else{p.x=clamp(p.x+dx/dd*v+jx,2,98);p.y=clamp(p.y+dy/dd*v+jy,3,97);}
     }
@@ -845,6 +846,23 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     /* [7.879] LA SCENA DELL'EROE SI CHIEDE, NON SI IMPONE. Il live match dice «fra poco tocca a lui»:
        il motore porta il pallone all'eroe con le sue regole (il compagno lo sceglie come ricevente) e
        quando ce l'ha davvero emette `occasione_eroe`. La scena si apre SU QUEL FATTO, non su un minuto. */
+    /* [23/09 POC — B3: IN SCENA I VENTIDUE LI MUOVE IL BRAIN. Direttiva PO «render 3D da motore unico». Rosso lato live __CPM_NO_B3MUOVI]
+       Durante gli highlight il motore era fermo e i ventidue li muoveva uno scrittore del live (pressing a orologio). Qui il brain
+       fa un passo del SUO posizionamento (`muoviTutti`) con la palla tenuta dall'eroe, partendo dalle posizioni attuali in campo
+       (continuita'), con un generatore LOCALE a seme di scena (il flusso della partita non si sposta), e poi ripristina lo stato
+       del possesso: la scena non cambia la partita, ne muove solo i corpi. */
+    scenaMuovi(o){o=o||{};const salva={padrone:S.poss.padrone,stato:S.poss.stato,lato:S.poss.lato,ricevente:S.poss.ricevente,dt:S.dt,px:S.palla.x,py:S.palla.y,ins:S.inseguitore};
+      /* [v2] MISURATO (match-sequence): anche ripristinando il possesso la partita divergeva dalla riga 19 — muoviTutti modifica i giocatori del motore, e quanti passi avvengono dipende dal tempo reale della scena. Ora l'intero stato dei giocatori si fotografa e si rimette com'era: la scena muove i CORPI, non la partita. */
+      const _foto=g.map(q=>q?Object.assign({},q):q);
+      try{let seme=((o.seme>>>0)||1)>>>0;S._rjScena=()=>{seme=(Math.imul(seme,1664525)+1013904223)>>>0;return seme/4294967296;};
+        if(o.gioc&&o.gioc.length){for(let i=0;i<Math.min(21,o.gioc.length);i++){const q=o.gioc[i];if(q&&q.x!=null&&g[i]){g[i].x=clamp(+q.x,2,98);g[i].y=clamp(+q.y,3,97);}}}
+        const H=g[HERO];if(o.eroe&&o.eroe.x!=null){H.x=clamp(+o.eroe.x,2,98);H.y=clamp(+o.eroe.y,3,97);}
+        S.poss.padrone=HERO;S.poss.lato=H.team;S.poss.stato='tenuta';S.poss.ricevente=null;S.dt=Math.max(0.05,Math.min(1,+o.dt||0.3));
+        S.palla.x=o.palla&&o.palla.x!=null?+o.palla.x:H.x;S.palla.y=o.palla&&o.palla.y!=null?+o.palla.y:H.y;
+        const _np=Math.max(1,Math.min(12,(o.passi|0)||1));for(let k=0;k<_np;k++)muoviTutti();/* [v3] posizioni = funzione pura di (partenza, passi): la scena converge e non dipende dal tempo reale */
+        return g.slice(0,21).map(q=>({x:+q.x.toFixed(2),y:+q.y.toFixed(2)}));
+      }catch(_e){return null;}
+      finally{for(let i=0;i<g.length;i++){if(g[i]&&_foto[i]){for(const k in g[i])if(!(k in _foto[i]))delete g[i][k];Object.assign(g[i],_foto[i]);}}S.poss.padrone=salva.padrone;S.poss.stato=salva.stato;S.poss.lato=salva.lato;S.poss.ricevente=salva.ricevente;S.dt=salva.dt;S.palla.x=salva.px;S.palla.y=salva.py;S.inseguitore=salva.ins;S._rjScena=null;}},
     scenaEroe(on,tipo){S.richieste.scenaEroe=!!on;S.richieste.scenaTipo=on?(tipo||null):null;S.richieste.scenaAttese=0;if(!on)S.conta.occEroe=0;},/* [23/09 POC] il live puo' chiedere un TIPO di occasione */
     urgenza(){if(S.richieste.gol)S.richieste.gol.t=Math.max(S.richieste.gol.t|0,9);},
     turno(lato){const l=lato===AWAY?AWAY:HOME;if(S.poss.lato!==l)S.richieste.turno=l;},

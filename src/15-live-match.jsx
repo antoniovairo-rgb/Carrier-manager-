@@ -2409,7 +2409,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const pendingBtRef=useRef(null);/* [7.643.0] la proposta di bersaglio in coda: parte quando la consegna corrente si completa */
   const ballLagRef=useRef(false);/* [7.642.0 v5 — IL BERSAGLIO ASPETTA LA PALLA] misurato in v4: la palla e' entro 2,5u di un uomo solo 3 tick su 36 — le marce delle macchine avanzano il bersaglio anche con la palla lontana e il viaggio non si completa mai. Con la palla a >6u dal bersaglio, le quattro marce (gol-in-costruzione, contropiede, catena, trama) NON avanzano quel tick: prima si arriva, poi si riparte. */
   const carrierRef=useRef(null);
-  const motoreRef=useRef(null),golMotoreRef=useRef(null),quotaMotoreRef=useRef([]);const brainEvRef=useRef({seq:0,coda:[]});const castBrainRef=useRef(null);/* [23/09 POC — IL 3D PARLA COL BRAIN. Direttiva PO: «il render 3D deve parlare solo con il motore unico»] ogni evento del motore, appena nasce, entra in questa coda con un numero d'ordine; il 3D la legge (prop `brain`) e ne ricava i gesti per indice di giocatore, senza cognomi ne' prossimita'. */const _brain23=(evs)=>{try{const B=brainEvRef.current;if(typeof window!=='undefined'&&window.__CPM_BRAIN_REC)window.__CPM_BRAINQ=B;for(const e of (evs||[])){B.seq++;B.coda.push({...e,_seq:B.seq});}if(B.coda.length>64)B.coda.splice(0,B.coda.length-64);}catch(_eB){}};/* [7.870] IL MOTORE DEL POSSESSO (src/14-motore-possesso.jsx): unico scrittore del pallone e dei ventidue nel gioco vivo */
+  const motoreRef=useRef(null),golMotoreRef=useRef(null),quotaMotoreRef=useRef([]);const brainEvRef=useRef({seq:0,coda:[]});const scenaBase23Ref=useRef(null);const castBrainRef=useRef(null);/* [23/09 POC — IL 3D PARLA COL BRAIN. Direttiva PO: «il render 3D deve parlare solo con il motore unico»] ogni evento del motore, appena nasce, entra in questa coda con un numero d'ordine; il 3D la legge (prop `brain`) e ne ricava i gesti per indice di giocatore, senza cognomi ne' prossimita'. */const _brain23=(evs)=>{try{const B=brainEvRef.current;if(typeof window!=='undefined'&&window.__CPM_BRAIN_REC)window.__CPM_BRAINQ=B;for(const e of (evs||[])){B.seq++;B.coda.push({...e,_seq:B.seq});}if(B.coda.length>64)B.coda.splice(0,B.coda.length-64);}catch(_eB){}};/* [7.870] IL MOTORE DEL POSSESSO (src/14-motore-possesso.jsx): unico scrittore del pallone e dei ventidue nel gioco vivo */
   const evAcc898Ref=useRef([]),k898Ref=useRef(0);/* [7.898 A2 v3] i fatti dei sotto-tick del motore (fisica: ricezioni, intercetti, arrivi), narrati al battito del minuto; contatore dei sotto-tick */
   const chaserRef850=useRef(null);/* [7.850 v3] chi INSEGUE il pallone secondo la simulazione (`_cI553` del blocco del movimento): il renderer lo disegna sul suo punto logico come il portatore */
   const lastGoalChiRef814=useRef(null);/* [7.814.0 — H del playtest n°4] chi ha fatto l'ultima battuta del piano del gol: e' lui il marcatore, non un nome a caso dalla rosa *//* [7.641.0 — F1a: IL PORTATORE E' UNO STATO, NON UNA DEDUZIONE] Decisione B:
@@ -3274,6 +3274,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         }));
         return;
       }
+      /* [23/09 POC — B3: IN SCENA I VENTIDUE LI MUOVE IL BRAIN. Rosso __CPM_NO_B3MUOVI] Nelle scene offensive non piazzate il passo di
+         posizionamento e' quello del motore (`chiedi.scenaMuovi`): parte dalle posizioni correnti, palla tenuta dall'eroe, generatore
+         locale a seme di scena. Il vecchio scrittore resta per i piazzati (barriera, area) e per le scene difensive. */
+      if(!isDef&&motoreRef.current&&motoreRef.current.chiedi&&motoreRef.current.chiedi.scenaMuovi&&!(typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))){
+        hlTickRef.current++;
+        /* [v3] la scena parte dalle posizioni FOTOGRAFATE alla sua apertura e fa al piu' 8 passi: il risultato e' funzione pura della scena, non del tempo di lettura (misurato con match-sequence) */
+        {const _b=scenaBase23Ref.current;if(!_b||_b.hl!==hlIdx||_b.sit!==sit)scenaBase23Ref.current={hl:hlIdx,sit,k:0,gioc:(matchPlayersRef.current||[]).map(q=>q?{x:q.x,y:q.y}:null)};scenaBase23Ref.current.k=Math.min(8,scenaBase23Ref.current.k+1);}
+        const _o23=motoreRef.current.chiedi.scenaMuovi({gioc:scenaBase23Ref.current.gioc,passi:scenaBase23Ref.current.k,eroe:pPosRef.current,palla:ballPosRef.current,dt:0.3,seme:(hashStr(String((sit&&sit.text)||'')+'|'+hlIdx)>>>0)||1});
+        if(_o23){setMatchPlayers(prev=>{const nx=prev.map((pl,i)=>{const q=_o23[i];return (q&&pl&&pl.team!=='ref')?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=nx;return nx;});
+          if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_B3MUOVI=(window.__CPM_B3MUOVI|0)+1;}catch(_e){}}
+          return;}
+      }
+      if(typeof window!=='undefined'&&window.__CPM_REC){try{window.__CPM_B3VECCHIO=(window.__CPM_B3VECCHIO|0)+1;}catch(_e){}}
       // 3DV-MOV: target DETERMINISTICI per giocatore (angolo/spread seeded da idx, NON ri-randomizzati ogni tick)
       // + smoothing su velocità (velRef) → niente scatti/teletrasporti schizofrenici. Oscillazione lenta via sin/cos.
       hlTickRef.current++;const _T=hlTickRef.current*0.5;
@@ -4942,7 +4955,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              Misurato: sorteggi del motore al 78' 1004 contro 1022 PRIMA, 1004 contro 1022 DOPO. Zero.
              La lettura resta valida in linea di principio (la simulazione e' la source of truth) ma non
              e' questa la causa, e una modifica che non muove il suo numero non si spedisce. */
-          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:possTurnRef.current>0?"home":"away",gioc:matchPlayersRef.current||[],eroe:pPosRef.current,centro:((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
+          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:possTurnRef.current>0?"home":"away",gioc:((typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))?(matchPlayersRef.current||[]):null)/* [23/09 POC B3] col brain che muove la scena, il motore riprende dalle SUE posizioni: quelle di fine scena dipendono dal tempo reale */,eroe:pPosRef.current,centro:((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
           /* il gol del microsim diventa una richiesta: il motore lo costruisce */
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
           if(pendingGoalRef.current&&pendingGoalRef.current.motore870){pendingGoalRef.current.ticks++;if(nx>=90)_M.chiedi.urgenza();/* al 90' il decreto non puo' restare appeso: entra da dove sta la palla */}

@@ -1,0 +1,14 @@
+{
+ "rosso": null,
+ "campioni": 10,
+ "passi": {
+  "brain": 26,
+  "vecchio": 0
+ },
+ "ammucchiataMedia": 0.9,
+ "ammucchiateOltre3": 0,
+ "primoAvversarioMediana": 8.7,
+ "compagniDavantiMediana": 2,
+ "senzaCompagniDavanti": 0,
+ "errori": []
+}
