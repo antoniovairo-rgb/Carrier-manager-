@@ -2859,6 +2859,7 @@ function ThreeMatchView(props){
          for(const e of _BR.coda){if(!e||e._seq<=sr.current._brainSeq)continue;sr.current._brainSeq=e._seq;
            const _W=(typeof window!=='undefined'&&window.__CPM_BRAIN_REC)?(window.__CPM_BRAIN23=window.__CPM_BRAIN23||{ev:0,perTipo:{},richieste:0,senzaCorpo:0,fuoriGioco:0,log:[]}):null;
            if(_W){_W.ev++;_W.perTipo[e.t]=(_W.perTipo[e.t]|0)+1;}
+           if(e.scena&&e.t==='tiro'&&e.to)sr.current._tiro23={to:e.to,esito:e.esito,chi:e.chi?e.chi.i:null,t:Date.now(),usato:false};/* [23/09 POC B3] il tiro della scena deciso dal brain */
            if(_ph23!=='playing'){if(_W)_W.fuoriGioco++;continue;}
            const _r=BRAIN_GESTI[e.t];if(!_r)continue;
            for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx==null)continue;
@@ -4088,7 +4089,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                :(_vs==="shot_curled")?clamp(0.75+_q*1.35,0.60,2.15)
                :(_vs==="shot_volley")?clamp(0.55+_q*1.10,0.45,1.70)
                :clamp(0.45+_q*1.30,0.38,1.85);
-            }}
+            }
+            /* [23/09 POC — B3: IL BERSAGLIO DEL TIRO LO DICHIARA IL BRAIN. Rosso __CPM_NO_B3TIRO] il punto nello specchio veniva da
+               `Math.random`; ora, per gol e parata, e' quello dell'evento `tiro` del motore (G2Z=(y-50)*0,68). Palo, fuori e murato
+               restano alla geometria della scena (li governa il post-arco). */
+            {const _t23=sr.current._tiro23;const _on=!(typeof window!=='undefined'&&window.__CPM_NO_B3TIRO);
+             if(_t23&&!_t23.usato&&(Date.now()-_t23.t)<15000&&(_t23.esito==='goal'||_t23.esito==='saved')){
+               const _z23=clamp((_t23.to.y-50)*0.68,-3.2,3.2);
+               if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_TIRO23=window.__CPM_TIRO23||[]).push({esito:_t23.esito,brainZ:+_z23.toFixed(2),casoZ:+ballArcTgtZ.toFixed(2),usato:_on});}catch(_e){}}
+               if(_on){ballArcTgtZ=_z23;_t23.usato=true;}}}
+          }
           else if(t==="header"){ballArcT=0;ballArcActive=true;
             // CINE-2: variant header — tuffo rasoterra / primo palo / secondo palo
             const _vh=P.hlVariant;

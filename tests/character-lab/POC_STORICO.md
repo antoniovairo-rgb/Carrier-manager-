@@ -927,6 +927,15 @@ tabellone contava due volte (6-2 contro 3-2 del motore). Ora si tolgono dalla co
 tabellone = motore (col ponte). Probabilita' media 0,46-0,48, riuscite 4/10: campione piccolo.
 **Dichiarato:** il dado consuma il flusso del motore, quindi da qui le partite sono diverse da prima (riproducibili a parita' di scelte).
 
+## Avanzamento 23 settembre 2026, 23/09 13:09 — B3: IL BERSAGLIO DEL TIRO LO DICHIARA IL BRAIN
+L'evento `tiro` di `risolviEroe` porta `to` (punto nello specchio col dado del motore: gol verso l'angolo, parata vicino al centro,
+palo sul legno, fuori oltre; pali a 50±4,9 = |z| 3,35 del 3D). Il lettore del brain nel 3D conserva l'ultimo tiro della scena e il
+dispatcher del tiro, per gol e parata, usa quel punto invece di `Math.random`. Rosso `__CPM_NO_B3TIRO`. Sonda nuova `tiro-brain.mjs`
+(scena di tiro forzata, esito forzato, palla a ogni fotogramma, corpi GLB spenti perche' a 1,5 fps la palla non arrivava alla linea).
+**Gol, 3 scene:** palla alla linea y 54,65/54,62/54,19 contro 54,26 del brain (scarto 0,07-0,39) · rosso 48,23/45,18/51,46 (2,8-9,1).
+Nota: il vecchio punto a caso, su tiri dichiarati gol, cadeva anche fuori dai pali (z −5,6 e −6,46 con pali a ±3,35).
+**Non verificato:** la parata (con esito forzato «fail» il brain ha deciso «fuori» 4 volte su 4); palo/fuori/murato restano geometrici.
+
 ---
 
 ## Obiettivo vincolante

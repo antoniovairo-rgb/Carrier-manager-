@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 12:59 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 13:09 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -8,6 +8,7 @@
 
 | Cantiere | Stato | Cosa manca |
 | --- | --- | --- |
+| 23/09 13:09 | B3: bersaglio del tiro dichiarato dal brain (non più `Math.random`) | scarto 0,07-0,39 contro 2,8-9,1 |
 | 23/09 12:59 | B2: il brain tira il dado della scelta ed emette la catena di eventi (addio ponte) | esiti dal brain 0/13 → 10/10; tabellone = motore |
 | 23/09 12:40 | B0: la catena eredita l'evento del brain · 6 partite di verifica | 26/26 scene dal brain; catena non osservata |
 | Personaggi CGTrader (modello, LOD, kit) | ✅ nel banco: kit corretto nei file, portiere LOD1 nella presa, 64,6k triangoli | prova sul telefono |
@@ -17,6 +18,7 @@
 | Brain muove i 22 in scena (B3) | ⏳ da fare | |
 | **Esito deciso dal brain (B2)** | ✅ **10 su 10** esiti col dado del brain (rosso 0/13) · eventi veri col cast · tabellone = motore | il 3D non legge ancora quegli eventi |
 | Gesti collegati al brain | 🟡 impianto pronto (tabella unica evento→gesto) | si accende con B3 |
+| **3D dal brain (B3)** | 🟡 il **gol va dove lo decide il brain**: scarto alla linea 0,07-0,39 (rosso 2,8-9,1) | parata non verificata · palo/fuori/murato ancora geometrici · gesti in scena |
 | Tabellino = motore | ✅ gol del compagno e gol «persi» corretti | |
 | Ritratti / figurine | 🟡 Codex ha consegnato **308 ritratti** (lotti 1-3) | collegarli ai volti veri (compagni, rivale, mister, procuratore) |
 | Telefono | ❌ non provato | FPS (misure passate 11-16), kit, gesti |

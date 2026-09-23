@@ -951,13 +951,16 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       const R=G(C.ricevente),D=G(C.difensore),K=G(C.portiere);
       const E=(t,o)=>{const e=ev(t,Object.assign({scena:true},o));out.push(e);return e;};
       const da=q=>({x:+q.x.toFixed(1),y:+q.y.toFixed(1)});const rew=d.rew||'';const ok=!!d.ok;
-      if(key==='goal'){E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),esito:'goal'});E('gol',{chi:chi(H),assist:null,lato:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
+      /* il PUNTO NELLO SPECCHIO lo decide il motore (dado seedato): gol verso un angolo, parata vicino al centro, palo sul
+         legno, fuori oltre il palo. y in coordinate di campo (0-100), pali a 50±4,9 (= |z| 3,35 del 3D, G2Z=(y-50)·0,68). Il 3D lo legge invece di tirare a caso. */
+      const porta=(es)=>{const s=rnd()<0.5?-1:1;const y=es==='goal'?50+s*(2.0+rnd()*2.4):es==='saved'?50+s*rnd()*2.4:es==='post'?50+s*4.9:es==='fuori'?50+s*(5.9+rnd()*6):50;return{x:100,y:+y.toFixed(2)};};
+      if(key==='goal'){E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to:porta('goal'),esito:'goal'});E('gol',{chi:chi(H),assist:null,lato:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
       else if(key==='assist'){const T=R||null;E('passaggio',{da:chi(H),a:chi(T),kind:'corto',from:da(H),to:T?da(T):null});
-        if(ok&&T){E('tiro',{chi:chi(T),from:da(T),esito:'goal'});E('gol',{chi:chi(T),assist:chi(H),lato:T.team,x:+T.x.toFixed(1),y:+T.y.toFixed(1)});}}
+        if(ok&&T){E('tiro',{chi:chi(T),from:da(T),to:porta('goal'),esito:'goal'});E('gol',{chi:chi(T),assist:chi(H),lato:T.team,x:+T.x.toFixed(1),y:+T.y.toFixed(1)});}}
       else if(!ok&&key==='intercept'&&rew==='goal'){E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),esito:'blocked'});if(D)E('murato',{chi:chi(D),su:chi(H)});}/* tiro fermato da un uomo: murato, non fuori */
       else if(!ok&&key==='intercept'&&D){E('intercetto',{chi:chi(D),da:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
       else if(rew==='goal'||key==='save'||key==='miss'||key==='miss_easy'||key==='post'){
-        const es=key==='save'?'saved':key==='post'?'post':'fuori';E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),esito:es});
+        const es=key==='save'?'saved':key==='post'?'post':'fuori';E('tiro',{chi:chi(H),zona:d.zona||null,intent:d.intent||null,from:da(H),to:porta(es),esito:es});
         if(key==='save'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(key==='post')E('palo',{chi:chi(H)});}
       else if(rew==='assist'){E('passaggio',{da:chi(H),a:chi(R),kind:'corto',from:da(H),to:R?da(R):null,fuori:!ok});}
       else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')){E('contrasto',{chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});}
