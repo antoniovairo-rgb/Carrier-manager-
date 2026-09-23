@@ -8,12 +8,6 @@
 
 | Cantiere | Stato | Cosa manca |
 | --- | --- | --- |
-| 23/09 13:53 | Preview Netlify aggiornata (figurine, tuffo, brain) | file online identici al repo |
-| 23/09 13:52 | Figurine collegate: indice leggero, assegnazione stabile, scelta del volto, regola di scena | 7-9 ritratti scaricati a sessione; eroe stabile; 0 collisioni col volto dell'eroe |
-| 23/09 13:27 | Tuffo e respinta riadattati sullo scheletro CGTrader (Blender nel container) | cancello anatomico 3,1°/2,7° · tuffo in scena 96-100 fotogrammi, rosso 0 |
-| 23/09 13:09 | B3: bersaglio del tiro dichiarato dal brain (non più `Math.random`) | scarto 0,07-0,39 contro 2,8-9,1 |
-| 23/09 12:59 | B2: il brain tira il dado della scelta ed emette la catena di eventi (addio ponte) | esiti dal brain 0/13 → 10/10; tabellone = motore |
-| 23/09 12:40 | B0: la catena eredita l'evento del brain · 6 partite di verifica | 26/26 scene dal brain; catena non osservata |
 | Personaggi CGTrader (modello, LOD, kit) | ✅ nel banco: kit corretto nei file, portiere LOD1 nella presa, 64,6k triangoli | prova sul telefono |
 | Gesti negli highlight | ✅ presa, dribbling, passaggio, tiro misurati · eroe taglia 0,18 · **tuffo e respinta del portiere CGTrader montati** | parata del brain non ancora vista in scena |
 | **Brain → scena (B0)** | ✅ scene nate dal motore **26 su 26** (6 partite) | la «catena» ora eredita l'evento del brain, ma non è mai comparsa: **non misurata** |
@@ -43,6 +37,12 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 13:53 | Preview Netlify aggiornata (figurine, tuffo, brain) | file online identici al repo |
+| 23/09 13:52 | Figurine collegate: indice leggero, assegnazione stabile, scelta del volto, regola di scena | 7-9 ritratti scaricati a sessione; eroe stabile; 0 collisioni col volto dell'eroe |
+| 23/09 13:27 | Tuffo e respinta riadattati sullo scheletro CGTrader (Blender nel container) | cancello anatomico 3,1°/2,7° · tuffo in scena 96-100 fotogrammi, rosso 0 |
+| 23/09 13:09 | B3: bersaglio del tiro dichiarato dal brain (non più `Math.random`) | scarto 0,07-0,39 contro 2,8-9,1 |
+| 23/09 12:59 | B2: il brain tira il dado della scelta ed emette la catena di eventi (addio ponte) | esiti dal brain 0/13 → 10/10; tabellone = motore |
+| 23/09 12:40 | B0: la catena eredita l'evento del brain · 6 partite di verifica | 26/26 scene dal brain; catena non osservata |
 | 23/09 12:13 | B4: difensore della scena dal brain (4 punti del 3D) | 0/5 → 4/6, mediana 15,9 → 0 u (rosso 2/6, 12,9 u) |
 | 23/09 | Roadmap divisa: questa pagina corta + storico | 1.696 righe → storico |
 | 23/09 | B4: cast della scena dichiarato dal brain, passaggio al suo ricevente | ricevente 0/4 → 3/5 (rosso 1/2) |
