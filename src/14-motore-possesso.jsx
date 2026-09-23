@@ -433,7 +433,13 @@ function creaMotorePossesso(cfg){
     if(S.richieste.turno&&S.richieste.turno!==l&&!golReq&&S.poss.t>=1){ramo("turno");if(rnd()<0.6)perdi(P,"contrasto");else{const R=scegliRicevente(P,{});if(R){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});passa(P,R,{sicuro:true});if(m){S.poss.icpt=m.p.i;S.poss.icptA=0.5;}}else perdi(P,"contrasto");}return;}
     /* [7.879] l'eroe ha il pallone e la scena e' stata chiesta: si dichiara l'occasione e si TIENE il
        pallone per questo tick, cosi' il live match puo' aprire la scena sul fatto invece che sul minuto */
-    if(S.richieste.scenaEroe&&P.eroe&&adv>=52){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
+    /* [23/09 POC — punto 4: IL BRAIN COSTRUISCE L'OCCASIONE CHIESTA. Misurato: 13 occasioni su 14 «fra le linee», perche'
+       l'occasione scattava appena l'eroe superava la soglia della trequarti. Se il live chiede un tipo, il brain aspetta che la
+       situazione in campo sia davvero quella (fino a 8 occasioni utili), poi accetta la prima: la scena nasce sempre dal motore.
+       Nessun sorteggio in piu' (la partita resta riproducibile). Rosso: il live non chiede tipi (__CPM_NO_B7TIPO). */
+    const _tipoOcc=(zz,pp,yy)=>(zz==="area"||zz==="limite")?(pp<3?"conclusione":"spalle"):(zz==="trequarti"?(Math.abs(yy-50)>=22?"fascia":"fra-le-linee"):"costruzione");
+    if(S.richieste.scenaEroe&&P.eroe&&adv>=52&&S.richieste.scenaTipo&&_tipoOcc(zona,press,P.y)!==S.richieste.scenaTipo&&(S.richieste.scenaAttese|0)<8){S.richieste.scenaAttese=(S.richieste.scenaAttese|0)+1;}
+    else     if(S.richieste.scenaEroe&&P.eroe&&adv>=52){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
       ev("occasione_eroe",{chi:chi(P),zona:_z,press:_pr,x:+P.x.toFixed(1),y:+P.y.toFixed(1),
         tipo:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
         liberi:g.filter(q=>mio(q,l)&&!q.gk&&q.i!==P.i&&advDi(q.x,l)>adv&&(piuVicino(q.x,q.y,altro(l),{noGk:true})||{d:99}).d>=4).length,
@@ -819,7 +825,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     /* [7.879] LA SCENA DELL'EROE SI CHIEDE, NON SI IMPONE. Il live match dice «fra poco tocca a lui»:
        il motore porta il pallone all'eroe con le sue regole (il compagno lo sceglie come ricevente) e
        quando ce l'ha davvero emette `occasione_eroe`. La scena si apre SU QUEL FATTO, non su un minuto. */
-    scenaEroe(on){S.richieste.scenaEroe=!!on;if(!on)S.conta.occEroe=0;},
+    scenaEroe(on,tipo){S.richieste.scenaEroe=!!on;S.richieste.scenaTipo=on?(tipo||null):null;S.richieste.scenaAttese=0;if(!on)S.conta.occEroe=0;},/* [23/09 POC] il live puo' chiedere un TIPO di occasione */
     urgenza(){if(S.richieste.gol)S.richieste.gol.t=Math.max(S.richieste.gol.t|0,9);},
     turno(lato){const l=lato===AWAY?AWAY:HOME;if(S.poss.lato!==l)S.richieste.turno=l;},
     verso(o){S.richieste.verso=o?{x:clamp(+o.x||50,2,98),y:clamp(+o.y||50,3,97)}:null;if(o&&o.lato)chiedi.turno(o.lato);},

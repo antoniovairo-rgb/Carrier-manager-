@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 23/09 15:08 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
+**Aggiornata:** 23/09 15:30 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
 **Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
 
@@ -24,7 +24,7 @@
 1. ✅ Il brain apre la scena, con tipo di occasione e cast.
 2. ✅ **Il brain risolve la scelta dell'eroe**: dado dentro il motore (stessa probabilità di oggi), catena di eventi con gli attori veri, tabellino aggiornato dal motore (addio ponte `registra`).
 3. 🟡 Il 3D mostra solo quegli eventi (coerenza 97%, copertura 58%): gesti per indice, esito e attori dal brain.
-4. Archetipi al posto delle 185 schede: opzioni (≤3) dal tipo di occasione; i testi restano racconto.
+4. 🟡 Scena coerente con l'occasione del brain: **9/9** (rosso 4/8); tipi più vari (spalle + fra le linee). Mancano conclusione e fascia · opzioni ≤3 da fare.
 5. Catene sostituite dal seguito deciso dal brain.
 
 ## Da decidere o guardare tu
@@ -37,6 +37,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 23/09 15:30 | Punto 4: scheda coerente con l'occasione del brain, tipo di occasione chiesto al brain | coerenti 9/9 (rosso 4/8); tipi: spalle 4 · fra le linee 5 |
 | 23/09 15:08 | Punto 3, secondo giro: difensore del brain primo pressore, clip tackle sull'intervento | coerenza 83-97% su 3 campioni; murato 0/2 → 2/2 |
 | 23/09 14:41 | Punto 3: eventi del brain secondo il gesto scelto; attori della scena dal cast | gesti in scena nominati dal brain 5/14 → 32/33 |
 | 23/09 13:53 | Preview Netlify aggiornata (figurine, tuffo, brain) | file online identici al repo |

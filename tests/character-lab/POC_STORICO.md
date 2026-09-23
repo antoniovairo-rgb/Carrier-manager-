@@ -976,6 +976,18 @@ Copertura (gesti del brain visti in scena): 32/55 — ricezione 0/7, tuffo 8/12,
 **Misura** (gesti montati in scena nominati dal brain, 3 campioni da 4 partite): **83%-97%** (base 36%); variazione dovuta alle scene
 diverse che ogni corsa gioca. Copertura ~50-60%: i buchi sono il tiro del compagno (non sempre una clip) e l'esultanza (il 3D la mostra di rado).
 
+## Avanzamento 23 settembre 2026, 23/09 15:30 — PUNTO 4: LA SCENA HA L'INTENZIONE DELL'OCCASIONE DEL BRAIN
+- **Scelta della scheda:** fra le 16 candidate vince prima quella la cui intenzione e' coerente col tipo di occasione dichiarato dal
+  brain (conclusione → tiro/inserimento/dribbling · spalle → triangolo/filtrante/dribbling · fascia → cross/dribbling · fra-le-linee →
+  filtrante/triangolo/tiro/dribbling · costruzione → progressione/cambio di gioco/filtrante/triangolo); il vecchio ordine per posizione
+  resta il ripiego. Rosso `__CPM_NO_B7`. Testimone `__CPM_B7`.
+- **Il brain costruisce l'occasione chiesta:** LiveMatch chiede un tipo a rotazione seminata per partita; il motore aspetta che la
+  situazione sia di quel tipo (fino a 8 occasioni utili) e poi accetta la prima. Nessun sorteggio in piu'. Rosso `__CPM_NO_B7TIPO`.
+**Misura** (2 partite intere): coerenza scena↔occasione verde **6/6** · rosso `__CPM_NO_B7` **4/8**. Con il tipo chiesto: **9/9**
+coerenti, aperture dal brain 10/10, tipi osservati **spalle 4 · fra-le-linee 5** (prima fra-le-linee 13/14).
+**Aperto:** «conclusione» (area con poca pressione) e «fascia» non compaiono ancora: nel motore l'eroe raramente riceve libero in area o
+largo. E' come gioca la squadra (motore del possesso), non la scena: prossimo lavoro.
+
 ---
 
 ## Obiettivo vincolante

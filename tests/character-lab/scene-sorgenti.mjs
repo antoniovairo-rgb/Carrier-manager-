@@ -29,6 +29,7 @@ for (let p = DA; p < DA + N; p++) {
     await sleep(400);
   }
   const ultimo = await page.evaluate(() => ({ fase: window.__CPM_PHASE?.() || null, clock: window.__CPM_STATE?.()?.clock ?? null, testo: (document.body.innerText || '').slice(0, 160).replace(/\n/g, ' | ') })).catch(() => null);
+  const b7 = await page.evaluate(() => window.__CPM_B7 || []).catch(() => []);
   const b4 = await page.evaluate(() => window.__CPM_B4 || {}).catch(() => ({}));
   const b4ric = await page.evaluate(() => window.__CPM_B4RIC || null).catch(() => null);
   const b4dif = await page.evaluate(() => window.__CPM_B4DIF || null).catch(() => null);
@@ -37,7 +38,7 @@ for (let p = DA; p < DA + N; p++) {
      CALENDARIO (o, per la catena, insieme a `catena`): contarle come aperture raddoppia. Aperture vere: */
   const APRE = new Set(['motore-occasione', 'calendario-tick', 'catena', 'catena-motore', 'si-continua', 'calendario']);
   const perSrc = {}, programmate = {}; scene.forEach(s => { const o = APRE.has(s.src) ? perSrc : programmate; o[s.src] = (o[s.src] | 0) + 1; });
-  esiti.push({ partita: p, fine, ultimo, b4, b4ric, b4dif, highlight: hl, scene, perSrc, programmate, errori });
+  esiti.push({ partita: p, fine, ultimo, b7, b4, b4ric, b4dif, highlight: hl, scene, perSrc, programmate, errori });
   console.log(`partita ${p}: fine ${fine} · aperture ${Object.values(perSrc).reduce((a, b) => a + b, 0)} ${JSON.stringify(perSrc)} · programmate ${JSON.stringify(programmate)} · scelte risolte ${hl} · b4ric ${JSON.stringify(b4ric)} · b4dif ${JSON.stringify(b4dif)} · errori ${errori.length} · ultimo ${JSON.stringify(ultimo)}`);
   await page.close();
 }
@@ -46,6 +47,7 @@ const n = Object.values(tot).reduce((a, b) => a + b, 0);
 const B4 = { ricevente: [], difensore: [], portiere: [] }; esiti.forEach(e => Object.values(e.b4 || {}).forEach(sc => ['ricevente', 'difensore', 'portiere'].forEach(r => { if (sc[r]) B4[r].push(sc[r]); })));
 const med = a => { const v = a.map(x => x.d).filter(Number.isFinite).sort((x, y) => x - y); return v.length ? v[Math.floor(v.length / 2)] : null; };
 console.log('B4 attore 3D contro cast del motore:', JSON.stringify(Object.fromEntries(Object.entries(B4).map(([r, a]) => [r, { scene: a.length, stessoIndice: a.filter(x => x.idx === x.brain).length, mediana: med(a) }]))));
+const B7 = esiti.flatMap(e => e.b7 || []); console.log('PUNTO 4 scene coerenti con l\'occasione del brain:', B7.filter(x => x.coerente).length + '/' + B7.length, JSON.stringify(B7.map(x => x.tipo + '→' + x.intento + (x.coerente ? '' : '✗') + '(' + x.candidateCoerenti + '/' + x.candidate + ')')));
 console.log(`TOTALE aperture ${n} · dal motore ${(tot['motore-occasione'] | 0) + (tot['catena-motore'] | 0)}/${n} · ${JSON.stringify(tot)}`);
 const out = path.join(here, 'scene-sorgenti'); fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, `${process.env.CPM_TAG || 'base'}-${DA}.json`), JSON.stringify({ rosso: ROSSO || null, tot, esiti }, null, 1));

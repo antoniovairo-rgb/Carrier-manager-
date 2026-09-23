@@ -4187,7 +4187,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _NO879=(typeof window!=='undefined'&&window.__CPM_NO879);
         const _finestra879=!_no803&&nx>=_apertoDa803&&hlIdx<hlTimesRef.current.length&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current;
         if(!_NO879&&MOTORE870&&motoreRef.current){try{
-          if(_finestra879&&!chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(true);chiestaScena879Ref.current={t0:nx};}
+          if(_finestra879&&!chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(true,(typeof window!=='undefined'&&window.__CPM_NO_B7TIPO)?null:(()=>{const T=['conclusione','conclusione','fascia','fra-le-linee','spalle','costruzione','fascia','conclusione'];return T[(hashStr('tipo7|'+_sm819()+'|'+hlIdx)>>>0)%T.length];})());/* [23/09 POC punto 4] il tipo di occasione si chiede a rotazione seminata per partita: conclusioni piu' frequenti */chiestaScena879Ref.current={t0:nx};}
           else if(!_finestra879&&chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(false);chiestaScena879Ref.current=null;}
         }catch(_e879){}}
         const _fatto879=!_NO879&&!!occEroe879Ref.current;
@@ -4242,10 +4242,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   cpmEv("candidate",{min:nx|0,fresche:_fresh79.length,
                     dentro:_fresh79.filter(s2=>s2&&s2.type!=='def'&&_dentro(s2)).length,
                     zona:_fresh79.filter(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])>=0&&s2.type!=='def').length});}}catch(_e958){}
-                if(_zm){const _c=_fresh79.find(s2=>s2&&s2.type!=='def'&&_dentro(s2))
+                /* [23/09 POC — punto 4: LA SCENA HA L'INTENZIONE DELL'OCCASIONE DEL BRAIN. Carta bianca del PO sulle situazioni. Rosso
+                   __CPM_NO_B7] Il brain dichiara il TIPO dell'occasione (conclusione · spalle · fascia · fra-le-linee · costruzione), ma la
+                   scheda si sceglieva solo per posizione: una «conclusione» poteva aprire un cambio di gioco. Ora fra le candidate vince
+                   prima quella la cui intenzione e' coerente col tipo (e, fra queste, quella che si gioca dove sta l'eroe); il vecchio
+                   ordine resta il ripiego. */
+                const _OK7={conclusione:['shot','insertion','dribble'],spalle:['onetwo','through','dribble'],fascia:['cross','dribble'],'fra-le-linee':['through','onetwo','shot','dribble'],costruzione:['progression','switch','through','onetwo']}[occEroe879Ref.current.tipo]||null;
+                const _coer7=(s2)=>{try{return !!(_OK7&&s2&&s2.type!=='def'&&_OK7.indexOf(deriveIntent(s2))>=0);}catch(_e){return false;}};
+                let _c7=null;if(_OK7&&!(typeof window!=='undefined'&&window.__CPM_NO_B7)){_c7=_fresh79.find(s2=>_coer7(s2)&&_dentro(s2))||(_zm&&_fresh79.find(s2=>_coer7(s2)&&s2.zones&&_zm.indexOf(s2.zones[0])>=0))||_fresh79.find(_coer7);}
+                if(_c7){_pick880=_c7;}
+                else if(_zm){const _c=_fresh79.find(s2=>s2&&s2.type!=='def'&&_dentro(s2))
                         ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])===0&&s2.type!=='def')
                         ||_fresh79.find(s2=>s2&&s2.zones&&_zm.indexOf(s2.zones[0])>=0&&s2.type!=='def');
                   if(_c){_pick880=_c;try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SIT880=window.__CPM_SIT880||[]).push({min:nx,zona:occEroe879Ref.current.zona,sit:_c.zones[0],tipo:occEroe879Ref.current.tipo});}catch(_e880){}}}
+                try{if(typeof window!=='undefined'&&window.__CPM_REC){const _it=deriveIntent(_pick880);(window.__CPM_B7=window.__CPM_B7||[]).push({min:nx|0,tipo:occEroe879Ref.current.tipo,intento:_it,coerente:!!(_OK7&&_OK7.indexOf(_it)>=0),candidateCoerenti:_fresh79.filter(_coer7).length,candidate:_fresh79.length});}}catch(_e7){}
               }
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }

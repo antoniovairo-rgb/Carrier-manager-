@@ -1,0 +1,422 @@
+{
+ "rosso": null,
+ "tot": {
+  "motore-occasione": 9,
+  "catena-motore": 1
+ },
+ "esiti": [
+  {
+   "partita": 0,
+   "fine": "ended",
+   "ultimo": {
+    "fase": "ended",
+    "clock": 90,
+    "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · G. 1 | 0 DECIDE IL MATCH | PROVINI | FISCHIO FINALE | Selezione Granata | 3–2 | Polisportiva Centro | VITTORIA | IL TUO TABELLINO | ⚽ | 1 | Gol"
+   },
+   "b7": [
+    {
+     "min": 27,
+     "tipo": "spalle",
+     "intento": "onetwo",
+     "coerente": true,
+     "candidateCoerenti": 6,
+     "candidate": 16
+    },
+    {
+     "min": 33,
+     "tipo": "spalle",
+     "intento": "onetwo",
+     "coerente": true,
+     "candidateCoerenti": 2,
+     "candidate": 16
+    },
+    {
+     "min": 36,
+     "tipo": "spalle",
+     "intento": "dribble",
+     "coerente": true,
+     "candidateCoerenti": 8,
+     "candidate": 16
+    },
+    {
+     "min": 54,
+     "tipo": "fra-le-linee",
+     "intento": "dribble",
+     "coerente": true,
+     "candidateCoerenti": 4,
+     "candidate": 16
+    }
+   ],
+   "b4": {
+    "27|0": {
+     "sit": "",
+     "cast": {
+      "ricevente": 6,
+      "difensore": 12,
+      "portiere": 10
+     },
+     "difensore": {
+      "idx": 12,
+      "brain": 12,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    },
+    "33|1": {
+     "sit": "1",
+     "cast": {
+      "ricevente": 9,
+      "difensore": 12,
+      "portiere": 10
+     },
+     "difensore": {
+      "idx": 12,
+      "brain": 12,
+      "d": 0,
+      "fase": "hl_intro"
+     },
+     "ricevente": {
+      "idx": 6,
+      "brain": 9,
+      "d": 20.8,
+      "fase": "hl_result"
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    },
+    "36|2": {
+     "sit": "2",
+     "cast": {
+      "ricevente": 7,
+      "difensore": 12,
+      "portiere": 10
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_intro"
+     },
+     "ricevente": {
+      "idx": 7,
+      "brain": 7,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    },
+    "54|3": {
+     "sit": "3",
+     "cast": {
+      "ricevente": 8,
+      "difensore": 16,
+      "portiere": 10
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_result"
+     },
+     "difensore": {
+      "idx": 16,
+      "brain": 16,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    }
+   },
+   "b4ric": {
+    "usato": 2,
+    "scartato": 0,
+    "senzaCast": 0
+   },
+   "b4dif": {
+    "usato": 2,
+    "scartato": 0,
+    "senzaCast": 0
+   },
+   "highlight": 4,
+   "scene": [
+    {
+     "min": 25,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 27,
+     "src": "motore-occasione",
+     "tipo": "spalle",
+     "sk": "💥 Tiro sul palo — la palla rimbalza in area!"
+    },
+    {
+     "min": 33,
+     "src": "motore-occasione",
+     "tipo": "spalle",
+     "sk": "✋ Anticipa il passaggio filtrante!"
+    },
+    {
+     "min": 36,
+     "src": "motore-occasione",
+     "tipo": "spalle",
+     "sk": "😱 Il portiere è fuori dai pali! Tira da lontano."
+    },
+    {
+     "min": 41,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 54,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "🦵 Cucchiaio in area!"
+    }
+   ],
+   "perSrc": {
+    "motore-occasione": 4
+   },
+   "programmate": {
+    "reattiva": 2
+   },
+   "errori": []
+  },
+  {
+   "partita": 1,
+   "fine": "ended",
+   "ultimo": {
+    "fase": "ended",
+    "clock": 90,
+    "testo": "🎯 PROVINO 1/3 | 📰 Zona Mista | Stag. 1 · G. 1 | 1 DECIDE IL MATCH | PROVINI | FISCHIO FINALE | Selezione Granata | 3–2 | Polisportiva Centro | VITTORIA | IL TUO TABELLINO | ⚽ | 1 | Gol"
+   },
+   "b7": [
+    {
+     "min": 23,
+     "tipo": "fra-le-linee",
+     "intento": "shot",
+     "coerente": true,
+     "candidateCoerenti": 5,
+     "candidate": 16
+    },
+    {
+     "min": 36,
+     "tipo": "fra-le-linee",
+     "intento": "onetwo",
+     "coerente": true,
+     "candidateCoerenti": 7,
+     "candidate": 16
+    },
+    {
+     "min": 44,
+     "tipo": "fra-le-linee",
+     "intento": "onetwo",
+     "coerente": true,
+     "candidateCoerenti": 4,
+     "candidate": 16
+    },
+    {
+     "min": 49,
+     "tipo": "fra-le-linee",
+     "intento": "dribble",
+     "coerente": true,
+     "candidateCoerenti": 6,
+     "candidate": 16
+    },
+    {
+     "min": 68,
+     "tipo": "spalle",
+     "intento": "onetwo",
+     "coerente": true,
+     "candidateCoerenti": 1,
+     "candidate": 16
+    }
+   ],
+   "b4": {
+    "23|0": {
+     "sit": "",
+     "cast": {
+      "ricevente": 9,
+      "difensore": 13,
+      "portiere": 10
+     },
+     "difensore": {
+      "idx": 13,
+      "brain": 13,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    },
+    "36|1": {
+     "sit": "1",
+     "cast": {
+      "ricevente": 8,
+      "difensore": 16,
+      "portiere": 10
+     },
+     "difensore": {
+      "idx": 13,
+      "brain": 16,
+      "d": 3.1,
+      "fase": "hl_intro"
+     }
+    },
+    "44|2": {
+     "sit": "2",
+     "cast": {
+      "ricevente": 8,
+      "difensore": 12,
+      "portiere": 10
+     },
+     "difensore": {
+      "idx": 16,
+      "brain": 12,
+      "d": 10.3,
+      "fase": "hl_intro"
+     }
+    },
+    "44|3": {
+     "sit": "3",
+     "cast": {
+      "ricevente": 8,
+      "difensore": 12,
+      "portiere": 10
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    },
+    "49|4": {
+     "sit": "4",
+     "cast": {
+      "ricevente": 5,
+      "difensore": 12,
+      "portiere": 10
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_intro"
+     },
+     "ricevente": {
+      "idx": 5,
+      "brain": 5,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    },
+    "68|5": {
+     "sit": "5",
+     "cast": {
+      "ricevente": 5,
+      "difensore": 12,
+      "portiere": 10
+     },
+     "ricevente": {
+      "idx": 6,
+      "brain": 5,
+      "d": 11.3,
+      "fase": "hl_result"
+     },
+     "portiere": {
+      "idx": 10,
+      "brain": 10,
+      "d": 0,
+      "fase": "hl_result"
+     }
+    }
+   },
+   "b4ric": {
+    "usato": 2,
+    "scartato": 0,
+    "senzaCast": 0
+   },
+   "b4dif": {
+    "usato": 2,
+    "scartato": 2,
+    "senzaCast": 0
+   },
+   "highlight": 5,
+   "scene": [
+    {
+     "min": 23,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "✋ Anticipa il passaggio filtrante!"
+    },
+    {
+     "min": 27,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 36,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "💥 Tiro sul palo — la palla rimbalza in area!"
+    },
+    {
+     "min": 43,
+     "src": "reattiva",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 44,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "🧱 Muro in area! Blocca il tiro."
+    },
+    {
+     "min": 44,
+     "src": "secondo-tempo",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 44,
+     "src": "catena-motore",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 49,
+     "src": "motore-occasione",
+     "tipo": "fra-le-linee",
+     "sk": "😱 Il portiere è fuori dai pali! Tira da lontano."
+    },
+    {
+     "min": 65,
+     "src": "sotto-63",
+     "tipo": null,
+     "sk": null
+    },
+    {
+     "min": 68,
+     "src": "motore-occasione",
+     "tipo": "spalle",
+     "sk": "👥 Doppia marcatura! Due difensori ti raddoppiano."
+    }
+   ],
+   "perSrc": {
+    "motore-occasione": 5,
+    "catena-motore": 1
+   },
+   "programmate": {
+    "reattiva": 2,
+    "secondo-tempo": 1,
+    "sotto-63": 1
+   },
+   "errori": []
+  }
+ ]
+}
