@@ -174,6 +174,14 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
      quando il secondo tocco non e' piu' un duplicato ma una nuova intenzione. Nessun blocco permanente
      possibile: il rilascio non dipende dalla riuscita dell'operazione. */
   const _tapAdv449=useRef(false),_tapEvt449=useRef(false);
+  /* [23/09 POC — collaudo PO «una cavolata questi fondi insufficienti, mettine uno di default»] IL PROCURATORE C'E'
+     DAL PRIMO GIORNO. Chi non ne ha uno lo riceve senza onorario d'ingaggio (resta la commissione sullo
+     stipendio, come per tutti): niente piu' «Fondi insufficienti» a un diciassettenne con 1.000 € sul conto.
+     Il procuratore si puo' sempre cambiare dal catalogo. Rosso __CPM_NO_AGENTE23. */
+  useEffect(()=>{try{if(typeof window!=='undefined'&&window.__CPM_NO_AGENTE23)return;
+    if(player&&!player.hasAgent&&typeof agentHirePatch==="function")
+      setPlayer(p=>p.hasAgent?p:({...agentHirePatch(p,0,null,null),agentDefault23:true,log:["🤵 "+agentNameFor(p)+" segue la tua carriera dal primo giorno.",...(p.log||[])].slice(0,60)}));
+  }catch(_e){}},[player&&player.hasAgent]);
   useEffect(()=>{_tapAdv449.current=false;_tapEvt449.current=false;});
   const[lastMatch,setLastMatch]=useState(null);
   const[seasonEndData,setSeasonEndData]=useState(null);
