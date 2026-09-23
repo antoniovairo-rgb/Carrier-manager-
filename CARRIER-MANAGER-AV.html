@@ -25900,14 +25900,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _forza942=(typeof window!=='undefined'&&window.__CPM_FESTA942_FORCE)||null;
         const _ms=_forza942||mStatsSnapRef.current||{goals:0,assists:0,rb:0};
         const _rbC=Math.min(_ms.rb||0,30);
-        const _voto=clamp(5.8+_rbC*0.13+(_sc.home>_sc.away?0.35:(_sc.home<_sc.away?-0.30:0)),4.0,10);
+        let _voto=clamp(5.8+_rbC*0.13+(_sc.home>_sc.away?0.35:(_sc.home<_sc.away?-0.30:0)),4.0,10);
+        /* [23/09 POC] il voto e' quello della pagella del motore (stessa sorgente del pannello), se c'e' */
+        try{if(!_forza942&&motoreRef.current&&motoreRef.current.pagelle){const _e=motoreRef.current.pagelle().find(x=>x&&x.eroe);if(_e)_voto=_e.voto;}}catch(_e){}
         const _vinta=_sc.home>_sc.away;
         const _fuoriCasaSuPiuForte=_vinta&&!isMatchHome&&mw>=6;
         /* [testimone inerte] la festa non compariva e la sonda poteva dire solo «no».
            Qui si annota COSA ha deciso: senza questi numeri «non scatta» copre tre cause
            diverse (blocco mai raggiunto · snapshot vuoto · soglie non toccate). */
         try{if(typeof window!=='undefined')window.__CPM_FESTA942={gol:_ms.goals|0,assist:_ms.assists|0,rb:_ms.rb|0,voto:+_voto.toFixed(2),vinta:_vinta,casa:!!isMatchHome,mw,fuoriCasa:_fuoriCasaSuPiuForte,snap:!!mStatsSnapRef.current};}catch(_e){}
-        if((_ms.goals|0)>0||_voto>=7.5||_fuoriCasaSuPiuForte){
+        /* [23/09 POC — direttiva PO «la festa di fine partita la farei comparire solo per partite vinte molto importanti, prestazioni
+           super»] Prima bastava UN gol (anche in una sconfitta), un 7,5 o una vittoria fuori casa: compariva quasi sempre. Ora serve la
+           VITTORIA e in piu' una partita importante (big match/derby mw>=7, coppa o eliminazione diretta) oppure una prestazione
+           super (voto >= 8, almeno 2 gol, oppure gol+assist >= 3). Rosso __CPM_NO_FESTA23 (la regola vecchia). */
+        const _imp23=mw>=7||["cup","euro_ko","euroMondiale_ko","nationsCup"].includes(context);
+        const _super23=_voto>=8||(_ms.goals|0)>=2||((_ms.goals|0)+(_ms.assists|0))>=3;
+        const _vecchia23=(typeof window!=='undefined'&&window.__CPM_NO_FESTA23);
+        try{if(typeof window!=='undefined'&&window.__CPM_FESTA942)Object.assign(window.__CPM_FESTA942,{importante:_imp23,super:_super23,voto:+(+_voto).toFixed(2)});}catch(_e){}
+        if(_vecchia23?((_ms.goals|0)>0||_voto>=7.5||_fuoriCasaSuPiuForte):(_vinta&&(_imp23||_super23))){
           const _nomi=[];
           try{const _r=(isMatchHome?homeRoster:awayRoster)||[];
             for(const q of _r){if(_nomi.length>=2)break;const _n=q&&(q.name||q.n);if(_n&&_n!==(player&&player.name))_nomi.push(String(_n));}}catch(_e){}
@@ -25916,7 +25926,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if((_ms.assists|0)>0)_voci.push({n:_ms.assists,et:"assist"});
           _voci.push({n:_voto.toFixed(1).replace('.',','),et:"voto",oro:_voto>=7.5});
           setFesta942({
-            titolo:(_ms.goals|0)>=3?"Tripletta":((_ms.goals|0)>0?"Gara da ricordare":(_fuoriCasaSuPiuForte?"Colpo fuori casa":"Che partita")),
+            titolo:(_ms.goals|0)>=3?"Tripletta":((_ms.goals|0)>=2?"Doppietta":(_imp23&&!_super23?"Vittoria pesante":(_fuoriCasaSuPiuForte?"Colpo fuori casa":"Prestazione da campione"))),
             punteggio:(isMatchHome?_sc.home:_sc.away)+" – "+(isMatchHome?_sc.away:_sc.home),
             avversario:((_oppClubObj&&(_oppClubObj.n||_oppClubObj.a))||"l'avversario"),
             facce:[{eroe:true,id:(player&&player.avatarId)||0}].concat(_nomi.map(x=>({nome:x}))),

@@ -33,7 +33,7 @@ const dettaglio = await page.evaluate(() => {
   const b = el.getBoundingClientRect();
   return { w: Math.round(b.width), h: Math.round(b.height),
     testo: String(el.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 160),
-    visi: el.querySelectorAll('svg').length, coriandoli: el.querySelectorAll('span').length,
+    visi: el.querySelectorAll('svg').length + el.querySelectorAll('[data-cpm-figurina]').length, /* [23/09] le figurine hanno sostituito le faccine SVG */ coriandoli: el.querySelectorAll('span').length,
     /* [difetto della prima stesura] contavo i coriandoli nel DOM e li dichiaravo presenti: erano 26 e non
        se ne vedeva uno, perche' il loro fotogramma chiave era annidato dentro un altro e non esisteva.
        Un CONTEGGIO non e' un AVVISTAMENTO: qui si chiede quanti stanno davvero dentro lo schermo. */
