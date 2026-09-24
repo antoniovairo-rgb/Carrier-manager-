@@ -229,7 +229,7 @@ const _SPONSOR947=["Marelluce","Vesta Assicura","Caff\u00e8 Orvino","Banca Ponte
 function sponsorDi947(club){try{const k=String((club&&(club.id||club.n))||"x");
   let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;
   return _SPONSOR947[Math.abs(h)%_SPONSOR947.length];}catch(_e){return _SPONSOR947[0];}}
-function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,partita=null,opp=null}){
+function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,partita=null,opp=null,eroe="",testate=[]}){
   /* [7.961 — LA SALA STAMPA E' DISEGNATA, E NON C'E' PIU' NESSUNA FACCIA. Rosso __CPM_NO963]
      COLLAUDO PO, due rilievi sulla stessa schermata: «Questa e' terribile, togli il 3d. Fai un disegno
      carino 2D anche senza visi» e «Cosa c'e' da ricordare?? Togli i visi, lascia solo una scenografia 2D
@@ -308,6 +308,8 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
             <span style={{width:4,height:m?330:300,background:"linear-gradient(180deg,#929eaf,#59657a 55%,#4a5667)"}}/>{/* [7.961] l'asta corre sotto il modale: tagliata a meta' aria sembrava rotta */}
           </div>))}
       </div>}
+      {_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_TAVOLO24)&&(<div style={{position:"absolute",left:0,right:0,top:"25%",height:"18%",pointerEvents:"none"}}>
+        <TavoloStampa24 club={club} nome={eroe} testate={testate} sponsor={spons}/></div>)}
       <StrisciaScena948 club={club} tono={tono}/>
       {/* [7.994.0 «sala viva»] i flash dei fotografi all'ingresso: tre lampi, una volta sola, niente per chi riduce il movimento */}
       {_v24&&(<><style>{"@keyframes cpmFlash24{0%{opacity:0}12%{opacity:.85}100%{opacity:0}}@media (prefers-reduced-motion: reduce){.cpm-flash24{display:none}}"}</style>
@@ -864,6 +866,71 @@ function ParataScena2D({club,avatarId=0,heroNum=10}){
       </div>
       <StrisciaScena948 club={club} tono={"#d4a017"}/>
     </div>);
+}
+/* [7.995.0 PO «disegnerei in maniera molto bella il tavolo della sala stampa con il microfono»] IL TAVOLO.
+   Un disegno vettoriale (SVG, nessun WebGL, nessun volto): piano in legno con riflesso, tovaglia coi colori del
+   club e il marchio del gioco, segnaposto col nome dell'eroe, tre microfoni con la spugna e il cubetto colorato
+   della testata (colori e sigle dei giornalisti VERI della carriera), bottiglietta con l'etichetta dello
+   sponsor del club e un bicchiere. Sta davanti al pannello, nella fascia che il modale lascia vedere.
+   Rosso __CPM_NO_TAVOLO24. */
+function TavoloStampa24({club=null,nome="",testate=[],sponsor=""}){
+  const c1=(club&&club.c)||"#8e1f33",c2=(club&&club.c2)||"#f0b33a";
+  const lum=(h)=>{try{return (typeof hexLum==="function")?hexLum(h):0.5;}catch(_e){return 0.5;}};
+  const tela=lum(c1)>0.8?(lum(c2)<0.8?c2:"#1f2937"):c1;/* una tovaglia bianca su pannello bianco sparirebbe */
+  const ink=lum(tela)>0.55?"#0f172a":"#ffffff";
+  const T=(testate&&testate.length?testate:[{c:"#ef4444",s:"TV"},{c:"#3b82f6",s:"RS"},{c:"#7c3aed",s:"CS"}]).slice(0,3);
+  const cog=String(nome||"").trim().toUpperCase();
+  const uid="t24";
+  const mics=[{x:172,h:40,r:-10},{x:200,h:46,r:0},{x:228,h:39,r:10}];
+  return(
+    <svg data-cpm="tavolo24" viewBox="0 0 400 130" preserveAspectRatio="xMidYMax meet" style={{width:"100%",height:"100%",display:"block",overflow:"visible"}}>
+      <defs>
+        <linearGradient id={uid+"legno"} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#a8754b"/><stop offset=".55" stopColor="#7c5233"/><stop offset="1" stopColor="#5b3a22"/></linearGradient>
+        <linearGradient id={uid+"riflesso"} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#fff" stopOpacity="0"/><stop offset=".5" stopColor="#fff" stopOpacity=".28"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></linearGradient>
+        <linearGradient id={uid+"tela"} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={tela}/><stop offset="1" stopColor={tela} stopOpacity=".78"/></linearGradient>
+        <linearGradient id={uid+"ombraTela"} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#000" stopOpacity=".28"/><stop offset=".25" stopColor="#000" stopOpacity="0"/><stop offset="1" stopColor="#000" stopOpacity=".22"/></linearGradient>
+        <linearGradient id={uid+"spugna"} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#4b5563"/><stop offset="1" stopColor="#111827"/></linearGradient>
+        <linearGradient id={uid+"acqua"} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#bfe3f5" stopOpacity=".85"/><stop offset=".45" stopColor="#ffffff" stopOpacity=".95"/><stop offset="1" stopColor="#8ec9e6" stopOpacity=".85"/></linearGradient>
+        <filter id={uid+"ombra"} x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="2.4" floodColor="#0f172a" floodOpacity=".32"/></filter>
+      </defs>
+      {/* ombra del tavolo sul pannello */}
+      <ellipse cx="200" cy="86" rx="210" ry="10" fill="#0f172a" opacity=".16"/>
+      {/* piano: trapezio in prospettiva, bordo frontale e riflesso */}
+      <polygon points="22,72 378,72 400,86 0,86" fill={"url(#"+uid+"legno)"} filter={"url(#"+uid+"ombra)"}/>
+      <polygon points="22,72 378,72 384,76 16,76" fill={"url(#"+uid+"riflesso)"}/>
+      <rect x="0" y="85" width="400" height="4" fill="#4a2f1b"/>
+      {/* tovaglia coi colori del club: pieghe morbide e fascia col marchio */}
+      <rect x="0" y="89" width="400" height="41" fill={"url(#"+uid+"tela)"}/>
+      {[40,95,150,250,305,360].map(x=>(<rect key={x} x={x} y="89" width="10" height="41" fill="#fff" opacity=".05"/>))}
+      <rect x="0" y="89" width="400" height="41" fill={"url(#"+uid+"ombraTela)"}/>
+      <rect x="130" y="93" width="140" height="22" rx="3" fill="#ffffff" opacity={ink==="#ffffff"?0.96:0.9}/>
+      <text x="200" y="108.5" textAnchor="middle" fontFamily="inherit" fontWeight="900" fontSize="12" fill="#7a1526">K<tspan fill="none" stroke="#7a1526" strokeWidth="2.2" dy="-1">●</tspan><tspan dy="1">rward </tspan><tspan fontStyle="italic" fontWeight="700" fill={lum(c2)<0.8?c2:"#b45309"}>Elite</tspan></text>
+      {/* bottiglietta con l'etichetta dello sponsor e il bicchiere */}
+      <g filter={"url(#"+uid+"ombra)"} transform="translate(330 74) scale(1.45) translate(-330 -74)">
+        <path d="M318,74 L318,50 Q318,44 322,41 L322,34 L330,34 L330,41 Q334,44 334,50 L334,74 Z" fill={"url(#"+uid+"acqua)"} stroke="#7fb3cc" strokeWidth=".8"/>
+        <rect x="321" y="30" width="10" height="5" rx="1.5" fill="#1d4ed8"/>
+        <rect x="318" y="54" width="16" height="11" fill="#ffffff"/><rect x="318" y="54" width="16" height="2" fill={tela}/>
+        <text x="326" y="61.5" textAnchor="middle" fontFamily="inherit" fontWeight="800" fontSize="3.4" fill="#0f172a">{String(sponsor||"").slice(0,12)}</text>
+        <path d="M342,74 L344,56 L356,56 L358,74 Z" fill={"url(#"+uid+"acqua)"} stroke="#9cc5d8" strokeWidth=".7" opacity=".9"/>
+        <path d="M343.4,62 L356.6,62 L358,74 L342,74 Z" fill="#9fd4ee" opacity=".55"/>
+      </g>
+      {/* segnaposto col nome */}
+      <g filter={"url(#"+uid+"ombra)"} transform="translate(110 74) scale(1.35) translate(-128 -74)">
+        <polygon points="92,74 164,74 160,58 96,58" fill="#ffffff"/>
+        <rect x="96" y="58" width="64" height="1.6" fill={tela}/>
+        <text x="128" y="70.5" textAnchor="middle" fontFamily="inherit" fontWeight="900" fontSize={cog.length>12?6.5:8} fill="#0f172a">{cog.slice(0,16)}</text>
+      </g>
+      {/* tre microfoni: asta, cubetto della testata, spugna */}
+      {mics.map((m,i)=>{const t=T[i%T.length];const top=74-m.h;return(
+        <g key={i} transform={"rotate("+m.r+" "+m.x+" 74) translate("+m.x+" 74) scale(1.55) translate("+(-m.x)+" -74)"} filter={"url(#"+uid+"ombra)"}>
+          <ellipse cx={m.x} cy="74" rx="9" ry="2.6" fill="#1f2937"/>
+          <rect x={m.x-1.3} y={top+14} width="2.6" height={m.h-14} rx="1.2" fill="#9ca3af"/>
+          <rect x={m.x-7} y={top+12} width="14" height="11" rx="2" fill={t.c}/>
+          <text x={m.x} y={top+20} textAnchor="middle" fontFamily="inherit" fontWeight="900" fontSize="5.4" fill="#ffffff">{t.s}</text>
+          <rect x={m.x-5.5} y={top} width="11" height="14" rx="5.5" fill={"url(#"+uid+"spugna)"}/>
+          <rect x={m.x-3.5} y={top+2} width="2.2" height="8" rx="1.1" fill="#ffffff" opacity=".18"/>
+        </g>);})}
+    </svg>);
 }
 function StrisciaScena948({club,tono}){
   const c1=(club&&club.c)||"#8e1f33", c2=(club&&club.c2)||"#f0b33a";
