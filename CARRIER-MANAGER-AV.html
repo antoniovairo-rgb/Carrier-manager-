@@ -24000,7 +24000,17 @@ function creaMotorePossesso(cfg){
     const _entra888=!_no888b&&zona==="limite"&&spazio>=4&&adv<90;
     const pCond=(_entra888||(S.poss.t<=3&&adv<86))?((spazio>=2?(S.poss.t===2?0.55:0.32):(S.poss.t===2?0.40:0.20))+(golReq?0.10:0)+(P.eroe?0.08:0)+(_entra888?0.30:0)):0;
     if(rnd()<pCond){const _T23=(press<3&&S.tab)?S.tab[P.team]:null;if(_T23)_T23.dribbling++;/* [23/09 POC] conduzione con l'avversario addosso = dribbling tentato */
-      if(press<3&&spazio<2&&rnd()<0.22){if(rnd()<0.35){if(_T23)_T23.dribblingOk++;ramo("dribblingFallo");fallo(P);return;}ramo("dribblingPerso");perdi(P);return;}
+      /* [24/09 POC — BRAIN «PARTITA VERA», primo difetto misurato] IL DRIBBLING NON RIESCE QUASI SEMPRE. Il dribbling
+         falliva solo con spazio<2 e al 22 %: al banco (20 partite, tests/brain/pagella.mjs) 96 % di riusciti, contro il
+         36,7 % di media della Premier League 2025-26 (Opta Analyst). Ora con l'avversario addosso la riuscita dipende
+         dall'uomo contro uomo — dribbling di chi porta palla contro fisico/posizionamento di chi difende, piu' lo spazio
+         che ha davanti — con base ~42 %. Chi perde il duello: fallo subito (30 %) o palla persa. Rosso __CPM_NO_DRIB23. */
+      if(press<3&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_DRIB23)){
+        let _D=null,_dd=99;for(const q of g){if(!attivo(q)||q.team===P.team||q.gk)continue;const d=hyp(q.x,q.y,P.x,P.y);if(d<_dd){_dd=d;_D=q;}}
+        const _a=attrsDi(P),_b=_D?attrsDi(_D):_a;
+        const _pOk=clamp(0.42+((_a.dribbling+_a.velocità)/2-(_b.fisico+_b.posizionamento)/2)*0.012+(spazio>=2?0.08:-0.06)+(P.eroe?0.04:0),0.18,0.72);
+        if(rnd()>=_pOk){if(rnd()<0.30){ramo("dribblingFallo");fallo(P);return;}ramo("dribblingPerso");perdi(P);return;}}
+      else if(press<3&&spazio<2&&rnd()<0.22){if(rnd()<0.35){if(_T23)_T23.dribblingOk++;ramo("dribblingFallo");fallo(P);return;}ramo("dribblingPerso");perdi(P);return;}
       if(Math.abs(P.y-50)>=38&&rnd()<0.42){ramo("conduzioneFuori");ev("fuori",{chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});fuoriCampo(P.x,P.y,altro(l),"throw");return;}
       if(_T23)_T23.dribblingOk++;ramo("conduci");conduci(P,{spinta:_entra888});return;}
     const R=scegliRicevente(P,{golReq});
