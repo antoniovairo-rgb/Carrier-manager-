@@ -62,6 +62,17 @@ function academySeason24(ret,prev){try{if(typeof window!=="undefined"&&window.__
   const g=academyGrad24(prev,prev.season||1);const dp=2+(g.r>=70?2:0);const cur=ret.academy24||a;
   return {...ret,academy24:{...cur,grads:[...(cur.grads||[]),g].slice(-12),tot:((cur.tot|0)+1)},popularity:Math.min(100,(ret.popularity||20)+dp),
     log:["🏫 "+(a.name||academyName24(prev))+": esce "+g.n+" ("+g.pos+", "+g.r+")"+(g.r>=70?" — pronto per una prima squadra":"")+" · popolarità +"+dp,...(ret.log||[])].slice(0,60)};}catch(_e){return ret;}}
+/* [7.991.0 Patrimonio F3] INVESTIMENTI A FINE STAGIONE. Una somma vincolata (tolta dal saldo) con un profilo:
+   prudente +2..+5% · bilanciato -4..+10% · rischioso -20..+30%. A fine stagione capitale + resa tornano sul
+   saldo; la resa e' DETERMINISTICA (hash di nome eroe + stagione + profilo): stesso save, stesso esito. Ritiro
+   anticipato: capitale meno l'1%. Attese medie: +3,5% / +3% / +5% — il rischio paga poco in media, molto a volte. */
+const INVEST24={prudente:{l:"Prudente",e:"🛡️",min:0.02,max:0.05},bilanciato:{l:"Bilanciato",e:"⚖️",min:-0.04,max:0.10},rischioso:{l:"Rischioso",e:"🎲",min:-0.20,max:0.30}};
+function investRate24(p,season,prof){const d=INVEST24[prof]||INVEST24.prudente;const k=String((p&&p.name)||"x")+"|"+season+"|"+prof+"|inv";let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);return d.min+(d.max-d.min)*((h%1000)/999);}
+function investSeason24(ret,prev){try{if(typeof window!=="undefined"&&window.__CPM_NO_INVEST24)return ret;const iv=prev&&prev.invest24;if(!iv||!(iv.amt>0))return ret;
+  const s=prev.season||1,rate=investRate24(prev,s,iv.prof),gain=Math.round(iv.amt*rate),d=INVEST24[iv.prof]||INVEST24.prudente;
+  const k=function(v){v=Math.abs(v);return v>=1000000?String(Math.round(v/100000)/10).replace(".",",")+"M€":v>=10000?Math.round(v/1000)+"k€":Math.round(v).toLocaleString("it-IT")+"€";};
+  return {...ret,bankBalance:Math.round((ret.bankBalance||0)+iv.amt+gain),invest24:null,investHist24:[...((prev.investHist24)||[]),{s,prof:iv.prof,amt:iv.amt,gain}].slice(-12),
+    log:[d.e+" Investimento "+d.l.toLowerCase()+" chiuso: "+(gain>=0?"+":"−")+k(gain)+" ("+(rate>=0?"+":"−")+String(Math.abs(Math.round(rate*1000)/10)).replace(".",",")+"%) su "+k(iv.amt),...(ret.log||[])].slice(0,60)};}catch(_e){return ret;}}
 function coachDiClub23(club,season){try{const k=String((club&&(club.id||club.n))||"x")+"|"+(season||1);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
   const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:"Mister "+COACH_NAMES[h%COACH_NAMES.length],style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
 // Sprint 11 — S11.4 Derby database
