@@ -107,6 +107,11 @@ for (const t of TS) {
   righe.push({ t, f, ...m });
   console.log(`  t=${t}s → ${f}${m.gesto ? ' · gesto eroe: ' + JSON.stringify(m.gesto) : ''}`);
 }
+/* [7.997.0] i numeri dei commenti PO sulla premiazione: coppa sopra la testa (sopra >= 0), compagni che non si
+   compenetrano (distanza minima fra due compagni >= 0,8u), compagni fermi (velocita' massima ~0). */
+{const P24=await page.evaluate(()=>window.__CPM_PREM24||null);const F=await page.evaluate(()=>window.__CPM_FOTO23||{});
+ const pts=Object.values(F).map(v=>[v[0],v[1]]);let dmin=null;for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i][0]-pts[j][0],pts[i][1]-pts[j][1]);dmin=dmin==null?d:Math.min(dmin,d);}
+ console.log('premiazione24:',JSON.stringify({coppaSulVolto:P24&&P24.faccia,distCoppaMani:P24&&P24.presa,vMaxCompagni:P24&&P24.vMax,distMinCompagni:dmin==null?null:+dmin.toFixed(2),compagni:pts.length}));}
 console.log('foto di squadra (x,z,visibile per compagno):', JSON.stringify(await page.evaluate(() => window.__CPM_FOTO23 || null)), '· capitano:', JSON.stringify(await page.evaluate(() => window.__CPM_PREMIO23 || null)));
 console.log('attori visibili:', JSON.stringify(await page.evaluate(() => { try { const A = window.__CPM_CGTRADER_ACTORS_AUDIT ? window.__CPM_CGTRADER_ACTORS_AUDIT() : null; const L = A && (A.actors || A); return Array.isArray(L) ? L.map(e => [e.i, e.team, e.hero ? 'H' : '', e.x ?? (e.spine && +e.spine.x.toFixed(1)), e.z ?? (e.spine && +e.spine.z.toFixed(1))]) : (A ? Object.keys(A) : 'nessun hook'); } catch (e) { return String(e); } })));
 for (const e of errs.slice(0, 4)) console.log('⚠ pageerror: ' + e);

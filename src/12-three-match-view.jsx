@@ -2255,9 +2255,16 @@ function ThreeMatchView(props){
     // [7.2.0] PODIO a centrocampo per la premiazione finale (beat 4). Nascosto fino alla cerimonia.
     const podiumGrp=new THREE.Group();
     {const _podMat=new THREE.MeshStandardMaterial({color:0x243049,metalness:0.35,roughness:0.6});
+     /* [7.997.0 commento PO «il palco della premiazione dovrebbe essere piu' rettangolare e non a cerchio»] palco
+        RETTANGOLARE (6,4 x 2,8, gradino 7,4 x 3,8), girato verso la camera della consegna. Rosso __CPM_NO_PALCO24. */
+     if(!(typeof window!=='undefined'&&window.__CPM_NO_PALCO24)){
+       const _podBody=new THREE.Mesh(new THREE.BoxGeometry(6.4,1.0,2.8),_podMat);_podBody.position.y=0.5;podiumGrp.add(_podBody);
+       const _podTrim=new THREE.Mesh(new THREE.BoxGeometry(6.5,0.14,2.9),_goldMat);_podTrim.position.y=1.0;podiumGrp.add(_podTrim);
+       const _podStep=new THREE.Mesh(new THREE.BoxGeometry(7.4,0.28,3.8),_podMat);_podStep.position.y=0.14;podiumGrp.add(_podStep);podiumGrp._rett24=true;}
+     else{
      const _podBody=new THREE.Mesh(new THREE.CylinderGeometry(1.7,2.0,1.0,22),_podMat);_podBody.position.y=0.5;podiumGrp.add(_podBody);
      const _podTrim=new THREE.Mesh(new THREE.CylinderGeometry(1.78,1.78,0.14,22),_goldMat);_podTrim.position.y=1.0;podiumGrp.add(_podTrim);
-     const _podStep=new THREE.Mesh(new THREE.CylinderGeometry(2.3,2.5,0.28,22),_podMat);_podStep.position.y=0.14;podiumGrp.add(_podStep);}
+     const _podStep=new THREE.Mesh(new THREE.CylinderGeometry(2.3,2.5,0.28,22),_podMat);_podStep.position.y=0.14;podiumGrp.add(_podStep);}}
     podiumGrp.visible=false;podiumGrp.position.set(0,0,0);scene.add(podiumGrp);
     let ceremonyT=-1,ceremonyFwT=0,_cerHx0=0,_cerHz0=0;// [7.2.0] _cerHx0/z0: posizione di raduno dell'eroe al fischio finale (partenza del giro di campo)
     const FW_N=60,fwPos=new Float32Array(FW_N*3),fwVel=new Float32Array(FW_N*3);
@@ -7414,8 +7421,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                promozione festeggia SENZA coppa (il premio e' la categoria) */
             try{if(trophyGrp._extra425){trophyGrp.remove(trophyGrp._extra425);}
               const _ex=new THREE.Group();trophyGrp._extra425=_ex;trophyGrp.add(_ex);
-              trophyGrp.children.forEach(ch=>{if(ch!==_ex)ch.visible=true;});trophyGrp.scale.setScalar(0.62);
-              if(_ck422==="league"){trophyGrp.children.forEach(ch=>{if(ch!==_ex)ch.visible=false;});
+              trophyGrp.children.forEach(ch=>{if(ch!==_ex)ch.visible=true;});trophyGrp.scale.setScalar(0.62);trophyGrp._kind24=_ck422;sr.current._hh24=null;
+              if(_ck422==="league"){trophyGrp.children.forEach(ch=>{if(ch!==_ex)ch.visible=false;});if(!(typeof window!=='undefined'&&window.__CPM_NO_ALZA24))trophyGrp.scale.setScalar(0.51);/* [7.997.0] il piatto era 0,46x l'eroe: ora ~0,38x, nella fascia delle coppe vere */
                 /* [7.429.0 collaudo PO «scudetto e trofeo non bene impugnato»] la targa stava a y=1.0
                    LOCALE (la quota del corpo della coppa): con l'aggancio alle mani vere (7.24.2) il
                    gruppo sta alle mani ma la targa fluttuava un metro sopra la testa — lo screenshot del
@@ -7622,6 +7629,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            else if(_bk==="hug")_shot={x:_hx3-_cSgn*8,y:3.6+_cv*0.4,z:_hz3+6,lx:_hx3,ly:1.4,lz:_hz3};
            else if(_bk==="lap")_shot={x:_hx3-_cSgn*11,y:5,z:_hz3+8,lx:_hx3,ly:1.5,lz:_hz3};
            else if(_bk==="curva")_shot={x:_hx3-_cSgn*20,y:8.5,z:_hz3+(_cv-1)*4,lx:_hx3+_cSgn*8,ly:4,lz:0};
+           else if(_team23&&!(typeof window!=='undefined'&&window.__CPM_NO_CAMPREM24)&&(_bk==="present"||_bk==="captain"||_bk==="lift"||_bk==="fest")){
+             /* [7.997.0 difetto 5 delle anteprime: meta' schermo di prato vuoto] camera PIU' VICINA E BASSA sul palco e
+                sulle due file, lo sguardo alzato sopra la testa dell'eroe: il soggetto riempie il quadro, il prato
+                davanti si accorcia. Stessa direzione di prima (le file sono tarate su di lei). Rosso __CPM_NO_CAMPREM24. */
+             const _k=_bk==="lift"?(0.9+_bp*0.1):_bk==="fest"?1.0:0.9;_shot={x:-_cSgn*10*_k,y:3.6+(_bk==="fest"?0.5:0),z:8*_k,lx:0,ly:2.3,lz:-1.2};}
            else if(_bk==="present"||_bk==="captain")_shot={x:-_cSgn*10,y:3.2,z:8,lx:0,ly:2.0,lz:0};
            else if(_bk==="lift")_shot={x:-_cSgn*(9+_bp*6),y:3.4+_bp*3,z:6+_bp*4,lx:0,ly:2.4,lz:0};
            else _shot={x:_hx3-_cSgn*16,y:7,z:_hz3+10,lx:_hx3,ly:2,lz:_hz3};
@@ -7674,6 +7686,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _hx4=trophyGrp.position.x,_hy4=trophyGrp.position.y,_hz4=trophyGrp.position.z;/* bersaglio mani: l'attacco qui sopra l'ha gia' scritto */
               trophyGrp.position.set(_hx4*_pw426,1.35+(_hy4-1.35)*_pw426,_hz4*_pw426);}
             else{trophyGrp.position.set(0,-50,0);}}/* prima della consegna la coppa non c'e' ancora: arriva SUL PODIO e vola alle mani nell'ultimo tratto */
+          /* [7.997.0 commenti PO «il trofeo e' sproporzionato e non retto bene» + «la coppa copre la testa»] MISURATO:
+             in altezza la coppa era 0,31x l'eroe (nella fascia vera), ma tenuta per la BASE: con le mani davanti al
+             viso il corpo della coppa copriva la testa, e piu' vicino alla camera sembrava enorme. Ora la coppa si
+             impugna per i MANICI (il piatto per il centro) e il suo punto piu' basso non scende mai sotto la
+             sommita' della testa. Rosso __CPM_NO_ALZA24. Testimone __CPM_PREM24.sopra. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_ALZA24)&&trophyGrp.visible&&trophyGrp.position.y>-10&&(_trofeoInMano||_bk==="lift"||_bk==="fest")){try{
+            if(sr.current._hh24==null){const _hb24=new THREE.Box3().setFromObject(hero);sr.current._hh24=Math.max(1.2,_hb24.max.y-_hb24.min.y);}
+            const _sc24=trophyGrp.scale.y,_lg24=trophyGrp._kind24==="league";
+            const _grip24=(_lg24?0.14:0.95)*_sc24,_low24=(_lg24?-0.44:0.25)*_sc24;
+            const _top24=hero.position.y+sr.current._hh24;
+            const _hands24=trophyGrp.position.y-0.10,_hi24=(_lg24?0.69:1.25)*_sc24,_chin24=_top24-0.30;
+            let _base24=_hands24-_grip24;/* le mani stringono i manici */
+            /* il VOLTO (mento..sommita') non si copre mai: mani alte -> coppa sopra la testa, mani basse -> coppa davanti al petto, sotto il mento */
+            if(_base24+_hi24>_chin24&&_base24+_low24<_top24){if(_hands24>=_top24-0.35)_base24=_top24+0.03-_low24;else _base24=_chin24-_hi24;}
+            trophyGrp.position.y=_base24;
+            const _pw=window.__CPM_PREM24||(window.__CPM_PREM24={});_pw.faccia=+Math.max(0,Math.min(_base24+_hi24,_top24)-Math.max(_base24+_low24,_chin24)).toFixed(2);_pw.presa=+Math.abs((_base24+_grip24)-_hands24).toFixed(2);
+          }catch(_e24){}}
           if(_cap23){const _cT=(_bk==="captain")?{x:0,z:0.2}:(_bk==="present")?{x:_cSgn*2.3,z:1.4}:{x:_cSgn*2.6,z:1.6};if(_cap23._snap23!==_SC){_cap23.position.x=_cSgn*2.3;_cap23.position.z=1.4;_cap23._snap23=_SC;if(hero._snap23!==_SC){hero.position.x=-_cSgn*2.3;hero.position.z=1.4;hero._snap23=_SC;}}animOne(_cap23,_cT.x,_cT.z,aDt,ak,_cT.x,_cT.z);
             if(_bk==="captain"&&_bp>0.25){try{const _cAv=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);
               if(_cAv&&_cAv._handL&&_cAv._handR){const _w1=sr.current._thv1||(sr.current._thv1=new THREE.Vector3()),_w2=sr.current._thv2||(sr.current._thv2=new THREE.Vector3());
@@ -7694,14 +7723,28 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_bk==="curva"){_mx=CURVA_X-_cSgn*(2+Math.abs(_off)*3);_mz=_off*24;}
             else if(_bk==="present"||_bk==="lift"){const _a2=(ci/_NC)*Math.PI*2;_mx=Math.cos(_a2)*6.5;_mz=Math.sin(_a2)*7.5;}
             else{const _a2=(ci/_NC)*Math.PI*2;_mx=hero.position.x+Math.cos(_a2)*(5+(ci%3)*2.5);_mz=hero.position.z+Math.sin(_a2)*(6+(ci%2)*3);}
+            const _fila24=_team23&&_bk!=="burst"&&_bk!=="hug"&&!(typeof window!=='undefined'&&window.__CPM_NO_FILA24);
             if(_team23&&_bk!=="burst"&&_bk!=="hug"){/* [24/09 POC] FOTO DI SQUADRA: arco dietro il podio visto dalla camera della consegna, due file; al primo fotogramma la squadra e' GIA' schierata (niente corsa isterica) */
               const _ba=Math.atan2(-8,_cSgn*10),_sp=Math.min(0.8,0.1*_NC),_a3=_ba+(_NC>1?(ci/(_NC-1)-0.5):0)*2*_sp,_r3=(ci%2)?5.3:4.0;_mx=Math.cos(_a3)*_r3;_mz=Math.sin(_a3)*_r3;
+              /* [7.997.0 commenti PO: compagni sul podio che si compenetrano, compagni che corrono sul posto] DUE FILE
+                 DRITTE dietro il palco, perpendicolari allo sguardo della camera, 1,05u fra un compagno e l'altro: nessuno
+                 sale sul palco, nessuno si sovrappone. La posizione si FISSA a ogni fotogramma (sotto, dopo animOne):
+                 niente viaggio, niente corsa sul posto. Rosso __CPM_NO_FILA24. */
+              if(_fila24){const _dx=_cSgn*0.781,_dz=-0.625,_px=-0.625,_pz=-_cSgn*0.781;const _row=ci%2,_nr=Math.ceil(_NC/2),_k=Math.floor(ci/2),_R=_row?4.3:3.2;
+                const _off24=(_k-(_nr-1)/2)*1.05+(_row?0.52:0);_mx=_dx*_R+_px*_off24;_mz=_dz*_R+_pz*_off24;m._snap23=_SC;
+                if(podiumGrp._rett24)podiumGrp.rotation.y=Math.atan2(_cSgn*0.781,-0.625);}
               if(!m._snap23||m._snap23!==_SC){m.position.x=_mx;m.position.z=_mz;m._snap23=_SC;}try{const _f=window.__CPM_FOTO23||(window.__CPM_FOTO23={});_f[ci]=[+m.position.x.toFixed(1),+m.position.z.toFixed(1),+_mx.toFixed(1),+_mz.toFixed(1),_bk,_cSgn];}catch(_e){}}
+            const _px24=m.position.x,_pz24=m.position.z;
             animOne(m,_mx,_mz,aDt,ak,_mx,_mz);
+            if(_fila24){m.position.x=_mx;m.position.z=_mz;try{const _pw=window.__CPM_PREM24||(window.__CPM_PREM24={});const _v=Math.hypot(_mx-_px24,_mz-_pz24)/Math.max(aDt,1e-3);if(ci===0)_pw.vMax=0;_pw.vMax=Math.max(_pw.vMax||0,+_v.toFixed(2));}catch(_e){}}
             if(_team23)m.rotation.y=Math.atan2(-_cSgn*10-m.position.x,8-m.position.z);
             /* [7.429.0 collaudo PO — un compagno mezzo AFFONDATO nel podio negli screenshot] il viaggio
                verso l'arco della consegna puo' attraversare il cilindro: spinta radiale fuori dal palco */
-            if(podiumGrp.visible){const _dp429=Math.hypot(m.position.x,m.position.z);
+            if(podiumGrp.visible&&podiumGrp._rett24){/* [7.997.0] palco rettangolare: spinta fuori dal rettangolo (nel suo riferimento) */
+              const _c=Math.cos(podiumGrp.rotation.y),_s=Math.sin(podiumGrp.rotation.y);let _lx=m.position.x*_c-m.position.z*_s,_lz=m.position.x*_s+m.position.z*_c;
+              if(Math.abs(_lx)<4.0&&Math.abs(_lz)<2.2){if(4.0-Math.abs(_lx)<2.2-Math.abs(_lz))_lx=Math.sign(_lx||1)*4.0;else _lz=Math.sign(_lz||1)*2.2;
+                m.position.x=_lx*_c+_lz*_s;m.position.z=-_lx*_s+_lz*_c;}}
+            else if(podiumGrp.visible){const _dp429=Math.hypot(m.position.x,m.position.z);
               if(_dp429<2.5&&_dp429>0.01){const _s429=2.5/_dp429;m.position.x*=_s429;m.position.z*=_s429;}}
             /* la POSA del ruolo: braccia/salto/ginocchio diversi per uomo, fasi sfalsate */
             const _ph=_ct*(3.4+(ci%5)*0.35)+ci*1.1;
