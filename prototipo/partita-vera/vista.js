@@ -166,7 +166,14 @@ let pausa=false,congela=0,fase='gioco';/* gioco | esulta | replay | cambio | sce
 let replay=null,esultaDi=null,cambio=null;const coda=[];/* eventi già disegnati */
 let scegliIo=true;const ANTICIPO=BATT;/* il motore gira un minuto avanti: serve ad anticipare i gesti (contatto piede-palla) */
 const CONTATTO={pass:0.38,kick:0.42,volley:0.45,header:0.5,tackle:0.45,'slide-tackle':0.4,throwin:0.55,penalty:0.5,'gk-dive':0.45,'gk-block':0.4,'gk-high-catch':0.45,receive:0.3,'mx-soccer-trip':0.35};/* frazioni STIMATE a vista: da misurare sulle clip */
-const secFr=()=>SEC_MIN/BATT/VEL[iVel];/* secondi reali per fotogramma */
+/* AZIONI SALIENTI (scelta PO): la partita scorre veloce e rallenta alla velocita' scelta poco prima di tiri, gol, cartellini, rigori,
+   cambi e occasioni dell'eroe. Guarda avanti nei fotogrammi gia' decisi dal motore: la vista non decide, sceglie solo il ritmo */
+let modoSalienti=Q.get('modo')!=='integrale',velAtt=1;
+const SALIENTE=(e)=>/^(tiro|gol|ammonizione|espulsione|occasione_eroe|sostituzione|intervallo|fischio_finale)$/.test(e.t)||(e.t==='battuta'&&(e.kind==='pen'||e.kind==='corner'));
+function velBersaglio(){const base=VEL[iVel];if(!modoSalienti)return base;const i=Math.floor(tR);
+  for(let k=i-4;k<=i+12;k++)for(const e of EV[k]||[])if(SALIENTE(e))return base;
+  if(ultimoAttesa&&FR.length-1-tR<12)return base;return Math.min(base*8,40);}
+const secFr=()=>SEC_MIN/BATT/velAtt;/* secondi reali per fotogramma */
 const cron=[];const segnaCron=(min,t)=>{cron.unshift(`${min}' ${t}`);if(cron.length>60)cron.pop();};
 const nomeDi=(i)=>i==null?'':(i===21?nomeEroe:(G[i]&&G[i].name)||'');
 const numDi=(i)=>i===21?10:i===0||i===10?1:(i<10?i+1:i-9);
@@ -263,7 +270,7 @@ function camera3(f,dt,modo){const bx=W(f.b[0],f.b[1]);const asp=innerWidth/inner
 /* ---------- 10. misure: FPS, caricamento, compenetrazioni, proporzioni ---------- */
 const PV=window.__PV={versione:'fase2-proto',seme:semeIn,fps:0,fpsMin1:0,caricamentoMs:null,compenetrazioni:{corpi:0,palla:0,fotogrammi:0},errori:erroriConsole,three:THREE.REVISION};
 const tempi=[];let ultimo=performance.now();
-function misuraFps(t){const dt=t-ultimo;ultimo=t;tempi.push(dt);if(tempi.length>300)tempi.shift();
+function misuraFps(t){const dt=t-ultimo;ultimo=t;/* una pausa della pagina (screenshot, cambio app) non e' un fotogramma lento: si conta a parte */if(dt>250){PV.pause=(PV.pause||0)+1;return;}tempi.push(dt);if(tempi.length>600)tempi.shift();
   if(tempi.length>30){const m=tempi.reduce((a,b)=>a+b,0)/tempi.length;const s=tempi.slice().sort((a,b)=>b-a);const p1=s[Math.max(0,Math.floor(s.length*0.01))];PV.fps=+(1000/m).toFixed(1);PV.fpsMin1=+(1000/p1).toFixed(1);}
   if(MOSTRA_FPS)$('fps').textContent=`${PV.fps||'…'} fps · 1% ${PV.fpsMin1||'…'}\ncarico ${PV.caricamentoMs!=null?(PV.caricamentoMs/1000).toFixed(1)+' s':'…'}`;}
 
@@ -272,13 +279,13 @@ function posa(i){/* posizioni interpolate fra due fotogrammi del motore */const 
   const out=new Array(22);for(let k=0;k<22;k++){const ex=a.p[k*2]+(b.p[k*2]-a.p[k*2])*u,ey=a.p[k*2+1]+(b.p[k*2+1]-a.p[k*2+1])*u;out[k]=W(ex,ey);}
   const bx=W(a.b[0]+(b.b[0]-a.b[0])*u,a.b[1]+(b.b[1]-a.b[1])*u);return{g:out,b:bx,f:a};}
 let tPrec=performance.now(),disegnati=-1;
-function ciclo(t){requestAnimationFrame(ciclo);const dt=Math.min(0.1,(t-tPrec)/1000);tPrec=t;misuraFps(t);
+function ciclo(t){requestAnimationFrame(ciclo);const dt=Math.min(0.1,(t-tPrec)/1000);tPrec=t;misuraFps(t);if(fase!=='gioco')$('velTag').style.display='none';
   if(!pausa&&fase!=='fine'){
     if(fase==='gioco'){
       if(!P.stato.finita&&!ultimoAttesa)genera(Math.floor(tR)+ANTICIPO+2,scegliIo);
       const limite=FR.length-1;
       if(ultimoAttesa&&tR>=limite-0.001){mostraScelta(ultimoAttesa);}
-      else if(tR<limite)tR=Math.min(limite,tR+dt/secFr());
+      else if(tR<limite){const vb=velBersaglio();velAtt+= (vb-velAtt)*Math.min(1,dt*(vb<velAtt?6:2));$('velTag').style.display=velAtt>VEL[iVel]*2?'block':'none';tR=Math.min(limite,tR+dt/secFr());}
       else if(P.stato.finita&&tR>=limite){fine();}
       while(disegnati<Math.floor(tR)){disegnati++;for(const e of EV[disegnati]||[])faiEvento(e);}
       /* gesti anticipati: gli eventi dei prossimi due fotogrammi partono ora, allineati al contatto */
@@ -337,6 +344,7 @@ function fine(){if(fase==='fine')return;fase='fine';const r=P.risultato();
 
 /* ---------- 13. comandi ---------- */
 $('bPlay').onclick=()=>{pausa=!pausa;$('bPlay').textContent=pausa?'▶ Gioca':'⏸ Pausa';};
+$('bModo').onclick=()=>{modoSalienti=!modoSalienti;$('bModo').classList.toggle('on',modoSalienti);$('bModo').textContent=modoSalienti?'Solo salienti':'Partita intera';};
 $('bVel').onclick=()=>{iVel=(iVel+1)%VEL.length;$('bVel').textContent='Velocità ×'+VEL[iVel];};
 $('bZoom').onclick=()=>{iZoom=(iZoom+1)%ZOOM.length;$('bZoom').textContent='Vista: '+ZOOM[iZoom].n;};
 $('bScelte').onclick=()=>{scegliIo=!scegliIo;$('bScelte').classList.toggle('on',scegliIo);$('bScelte').textContent=scegliIo?'Scelgo io':'Scelte automatiche';
@@ -349,7 +357,7 @@ $('bFine').onclick=()=>{/* «vai al 90'»: il motore gioca i minuti che mancano,
   disegnati=FR.length-1;tR=FR.length-1;fase='gioco';};
 addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();});
 /* collaudo: le sonde possono pilotare la vista senza toccare il motore */
-PV.comandi={vel:(v)=>{iVel=Math.max(0,VEL.indexOf(v));},vaiAlFischio:()=>$('bFine').onclick(),scegli:(k)=>{const b=document.querySelector(`[data-pv="scelta-${k}"]`);if(b)b.click();},auto:()=>{if(scegliIo)$('bScelte').onclick();},zoom:(n)=>{iZoom=Math.max(0,ZOOM.findIndex(z=>z.n===n));$('bZoom').textContent='Vista: '+ZOOM[iZoom].n;}};
+PV.comandi={modo:(m)=>{modoSalienti=m!=='integrale';},vel:(v)=>{iVel=Math.max(0,VEL.indexOf(v));},vaiAlFischio:()=>$('bFine').onclick(),scegli:(k)=>{const b=document.querySelector(`[data-pv="scelta-${k}"]`);if(b)b.click();},auto:()=>{if(scegliIo)$('bScelte').onclick();},zoom:(n)=>{iZoom=Math.max(0,ZOOM.findIndex(z=>z.n===n));$('bZoom').textContent='Vista: '+ZOOM[iZoom].n;}};
 PV.proporzioni={campo:[105,68],porta:[7.32,2.44],giocatore:ALTEZZA,palla:0.22};
 
 /* ---------- 14. partenza: corpi dal pacchetto del gioco; se non arrivano, sagome semplici (la partita resta la stessa) ---------- */
@@ -360,6 +368,8 @@ const avvia=()=>{for(let i=0;i<N;i++)corpi.push(creaCorpo(i));
     for(let k=0;k<FR.length;k++)for(const e of EV[k]||[]){e._g=1;if(e.t==='gol'||e.t==='ammonizione'||e.t==='espulsione'||e.t==='sostituzione')segnaCron(e.min,e.t==='gol'?'⚽ '+nomeDi(e.chi&&e.chi.i):e.t);}
     tR=FR.length-1;disegnati=FR.length-1;}
   genera(Math.floor(tR)+ANTICIPO+2,scegliIo);for(let k=0;k<22;k++){const c=corpi[k];const f=FR[Math.floor(tR)];if(!f)continue;const w=W(f.p[k*2],f.p[k*2+1]);c.px=w.x;c.pz=w.z;}
+  /* tutto sulla scheda grafica PRIMA del fischio: shader e texture mai inquadrati prima causavano lo scatto (1% a 30 fps al 45', misura PO) */
+  try{renderer.compile(scene,camera);scene.traverse(o=>{const ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];for(const m of ms)for(const k of ['map','emissiveMap'])if(m[k])renderer.initTexture(m[k]);});}catch(_e){}
   requestAnimationFrame(ciclo);};
 const base=(Q.get('asset')||'../../assets/');const lod=Q.get('lod')==='1'?'lod1':'lod2';
 if(!THREE.GLTFLoader||!THREE.SkeletonUtils||Q.get('corpi')==='0'){console.warn('GLTFLoader assente: sagome semplici');avvia();}
