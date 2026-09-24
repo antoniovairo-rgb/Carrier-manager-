@@ -49,6 +49,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 24/09 | **7.985.0 in produzione.** Via i birilli dalle scene: l'unica folla a cilindro+sfera visibile era quella del pullman (7.982); ora folla dipinta lungo i marciapiedi, nessuna figura 3D (rosso `__CPM_BIRILLI23`). In partita nessun birillo (sonda birilli.mjs). | CI 7/7 |
 | 24/09 | **7.984.0 in produzione.** Brain ai numeri veri (Premier League 2024-25, StatMuse, 20 squadre x 38): fuorigioco 3,4 → 1,7 (vero 1,69) · falli 17,8 → 12,1 (vero 11,04; 1,55 erano punizioni da fuorigioco contate come falli). Ritirati due tentativi sui tiri che la misura non reggeva. test:logic «passi umani» rosso (12,7u) per la corsa del cross della 7.980: dimezzata, 43/43. | CI 7/7 + partita-vera |
 | 24/09 | **7.983.0 in produzione.** fisarmoniche su 9 sezioni (Club, Carriera, Agente); tendina della lega senza l'anello spesso dopo la scelta (misurato: fuoco no, outline 0, bordo normale); premi di fine stagione a podio; card «La tua stagione». Catena CI 7/7 verde (gate 14/14 fp 00001505). | CI 7/7 |
 | 24/09 | **7.982.0 in produzione.** pullman scoperto rifatto: 8 corpi CGTrader (testimone cg23=8), braccia all'apice misurato (0,475 della clip), eroe con la coppa, finestre accese, tifosi con sciarpe, coriandoli a taglia fissa, regia senza l'alta da dietro. Rosso `__CPM_NO_PULLMAN23`. Catena 7/7 verde. | CI 7/7 |
