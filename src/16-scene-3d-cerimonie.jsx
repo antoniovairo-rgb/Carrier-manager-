@@ -255,7 +255,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
   const _rid=React.useMemo(()=>{const a=[];for(let r=0;r<6;r++){const n=(r%2)?2:3;const q=[];
     for(let k=0;k<n;k++)q.push(((r+k)%2)===0);a.push(q);}return a;},[]);
   return(
-    <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",
+    <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",...((_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV25))?{left:0,right:0,top:0,height:"40%"}:{inset:0}),/* [7.998.0 PO «schermata tagliata»] la scena sta nel 40% alto: le risposte hanno lo spazio che serve */overflow:"hidden",pointerEvents:"none",
       background:"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
       {/* il pannello stampa: sta nella meta' alta, l'unica che il modale lascia vedere */}
       <div style={{position:"absolute",left:"4%",right:"4%",top:"3%",height:"41%",borderRadius:RAD.xs,
@@ -271,7 +271,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
                 {marchio
                   ?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
                       border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
-                    <span style={{fontWeight:700,fontStyle:"italic",color:c2,marginLeft:2}}>Elite</span></>)
+                    <span style={{fontWeight:700,fontStyle:"italic",color:(_v24&&_lum24(c2)>0.75)?"#b45309":c2,marginLeft:2}}>Elite</span></>)
                   :(spons&&((r+k)%3===1)?(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:"#475569",fontStyle:"italic"}}>{spons}</span>):(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:cNome}}>{nome}</span>))}
               </span>))}
           </div>))}
@@ -308,7 +308,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
             <span style={{width:4,height:m?330:300,background:"linear-gradient(180deg,#929eaf,#59657a 55%,#4a5667)"}}/>{/* [7.961] l'asta corre sotto il modale: tagliata a meta' aria sembrava rotta */}
           </div>))}
       </div>}
-      {_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_TAVOLO24)&&(<div style={{position:"absolute",left:0,right:0,top:"25%",height:"18%",pointerEvents:"none"}}>
+      {_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_TAVOLO24)&&(<div style={{position:"absolute",left:0,right:0,...((typeof window!=='undefined'&&window.__CPM_NO_IV25)?{top:"25%",height:"18%"}:{top:"30%",height:"52%"}),pointerEvents:"none"}}>
         <TavoloStampa24 club={club} nome={eroe} testate={testate} sponsor={spons}/></div>)}
       <StrisciaScena948 club={club} tono={tono}/>
       {/* [7.994.0 «sala viva»] i flash dei fotografi all'ingresso: tre lampi, una volta sola, niente per chi riduce il movimento */}

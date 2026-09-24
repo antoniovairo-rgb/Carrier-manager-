@@ -6167,7 +6167,7 @@ const getThisWeekMatchday=()=>{
               testo che andava a capo ogni due parole. E' la terza volta che questa trappola morde in questo
               file: il commento sta DENTRO le graffe, sempre. (Il rosso __CPM_NO963 rimette la mixed zone 3D.) */}
           {_iv3d&&<InterviewScena2D eroe={player.name||""} testate={(player.journalists||[]).map(j=>({c:j.color||"#475569",s:String(j.paper||j.name||"").split(/\s+/).map(w=>w[0]).join("").slice(0,3).toUpperCase()}))} partita={interviewModal.partita24||null} opp={interviewModal.opponent||null} avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
-          <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:"58vh",overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)"}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1}}>
+          <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:(typeof window!=="undefined"&&window.__CPM_NO_IV25)?"58vh":"62vh",overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)"}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1}}>
             {/* Header */}
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
               {/* [7.977.0 — direttiva PO «anche in questa ad ogni modo ci andranno le figurine»] al posto
@@ -6965,7 +6965,7 @@ const getThisWeekMatchday=()=>{
         const cs=getContinuaState();
         return(
           <div style={(typeof window!=='undefined'&&window.__CPM_NO_CTA23)?{position:"sticky",top:0,zIndex:8,margin:"-14px -12px 12px",padding:"14px 12px 10px",background:TH.bg,
-            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}}>{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
+            boxShadow:"0 6px 12px -8px rgba(15,23,42,0.35)"}:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?{position:"sticky",top:0,zIndex:8,margin:"-14px 0 12px",padding:"14px 0 10px",background:TH.bg}:{position:"sticky",top:4,zIndex:8,margin:"-10px 0 12px",padding:"0",background:"transparent"})}>{/* [7.998.0 PO «il pulsante Gioca vs / Vivi la settimana ha un bordo di sfondo non trasparente»] la striscia appiccicata ora e' trasparente: resta solo il bottone. Rosso __CPM_NO_CTA24. */}{/* [23/09 POC — collaudo PO «il box Gioca vs e' piu' lungo degli altri box»] la striscia appiccicata
             sporgeva di 12 px per lato oltre le card, con un'ombra che ne disegnava il bordo: ora ha la stessa larghezza
             delle card e nessun bordo visibile. Rosso __CPM_NO_CTA23 */}
             {/* [7.971 — collaudo PO dal suo Android, «la home e' ancora incasinata»] LA BARRA APPICCICATA
@@ -6977,7 +6977,7 @@ const getThisWeekMatchday=()=>{
                 pixel sopra il bottone, e porta un'ombra bassa: il contenuto ci sparisce sotto invece di
                 affiorarne per meta'. La CTA resta dov'e' (decisione 6.5.4: sempre visibile senza scorrere). */}
             <button data-cpm="avanza23" onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
-              style={{width:"100%",padding:"11px 15px",borderRadius:RAD.lg,border:"none",background:cs.disabled?TH.track:`linear-gradient(135deg,${cs.color},${cs.color}cc)`,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":TH.el2,transition:`transform ${MO.fast}ms,box-shadow ${MO.fast}ms`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              style={{width:"100%",padding:"11px 15px",borderRadius:RAD.lg,border:"none",background:cs.disabled?TH.track:((typeof window!=="undefined"&&window.__CPM_NO_CTA24)?`linear-gradient(135deg,${cs.color},${cs.color}cc)`:`linear-gradient(135deg,${cs.color},color-mix(in srgb, ${cs.color} 82%, #ffffff))`)/* [7.998.0] opaco: «cc» lasciava trasparire la pagina sotto il bottone appiccicato */,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":TH.el2,transition:`transform ${MO.fast}ms,box-shadow ${MO.fast}ms`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div style={{textAlign:"left"}}>
                 <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:cs.disabled?TH.faint:"#fff",marginBottom:2}}>{cs.label}</div>
                 <div style={{fontSize:FS.caption,color:cs.disabled?TH.faint:"rgba(255,255,255,0.72)"}}>{cs.sub}</div>
@@ -8172,34 +8172,7 @@ const getThisWeekMatchday=()=>{
           </Card></Fisarmonica>
         );
       })()}
-      {/* 6.8.1 — RICHIAMO COMPATTO Coppa Europea di club (ex box grande, spostato qui piu in basso su richiesta PO).
-          Una riga cliccabile che porta al Tab dedicato Stagione → 🏆 Coppe (dove vive la vista completa). */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&player.euro?.active&&!player.euro?.champion&&!player.euro?.eliminated&&(()=>{
-        const eu=player.euro;
-        const _cc=eu.competition==="UCL"?"#1d4ed8":eu.competition==="UEL"?"#f59e0b":"#7c3aed";
-        const _ce=eu.competition==="UCL"?"⭐":eu.competition==="UEL"?"🟡":"🟣";
-        const _gr=eu.groupResults||[];
-        const _tot=(eu.groupOpponents||[]).length*2;
-        const _grp=eu.phase==="group"||_gr.length<_tot;
-        const _euNext=(player.calendar||[]).filter(m=>(m.type==="euro_group"||m.type==="euro")&&!m.played).sort((a,b)=>a.week-b.week)[0];
-        if(!_grp&&!_euNext)return null;
-        const _pn={"r16":"Ottavi","sf":"Semifinale","final":"Finale"};
-        const _pl=_grp?"Fase a Gironi":(_pn[eu.phase]||eu.phase||"Fase KO");
-        const _now=_euNext&&_euNext.week===(player.week||1);
-        return(
-          <Card style={{marginBottom:8,padding:"9px 12px",border:`1px solid ${_cc}44`,background:`${_cc}0a`,cursor:"pointer"}} onClick={()=>{goTab("coppe");}}>
-            <div style={{display:"flex",alignItems:"center",gap:9}}>
-              <div style={{width:26,height:26,borderRadius:RAD.sm,background:_cc,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{_ce}</div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.caption,fontWeight:800,color:_cc,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{euroSig(eu.competition)} · {_pl}{_grp?` · ${eu.pts||0}pt`:""}</div>
-                <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_euNext?`Prossima: vs ${_euNext.opponentName} · W.${_euNext.week}`:"Dettagli nel Tab Coppe"}</div>
-              </div>
-              {_now&&<span style={{fontSize:FS.caption,background:_cc,color:"#fff",borderRadius:RAD.sm,padding:"2px 7px",fontWeight:700,flexShrink:0}}>ORA!</span>}
-              <span style={{fontSize:FS.body,color:_cc,flexShrink:0}}>›</span>
-            </div>
-          </Card>
-        );
-      })()}
+
       {/* Sprint 62 — Notizie della Lega */}
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _news=generateLeagueNews(player);
@@ -8284,6 +8257,44 @@ const getThisWeekMatchday=()=>{
               </div>
             )}
           </Card></Fisarmonica>
+        );
+      })()}
+      {/* 6.8.1 — RICHIAMO COMPATTO Coppa Europea di club (ex box grande, spostato qui piu in basso su richiesta PO).
+          Una riga cliccabile che porta al Tab dedicato Stagione → 🏆 Coppe (dove vive la vista completa). */}
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&player.euro?.active&&!player.euro?.champion&&!player.euro?.eliminated&&(()=>{
+        const eu=player.euro;
+        const _cc=eu.competition==="UCL"?"#1d4ed8":eu.competition==="UEL"?"#f59e0b":"#7c3aed";
+        const _ce=eu.competition==="UCL"?"⭐":eu.competition==="UEL"?"🟡":"🟣";
+        const _gr=eu.groupResults||[];
+        const _tot=(eu.groupOpponents||[]).length*2;
+        const _grp=eu.phase==="group"||_gr.length<_tot;
+        const _euNext=(player.calendar||[]).filter(m=>(m.type==="euro_group"||m.type==="euro")&&!m.played).sort((a,b)=>a.week-b.week)[0];
+        if(!_grp&&!_euNext)return null;
+        const _pn={"r16":"Ottavi","sf":"Semifinale","final":"Finale"};
+        const _pl=_grp?"Fase a Gironi":(_pn[eu.phase]||eu.phase||"Fase KO");
+        const _now=_euNext&&_euNext.week===(player.week||1);
+        /* [7.998.0 PO «questo link alle coppe europee e' decontestualizzato e fuori standard grafico»] via la riga blu con
+           la sola sigla («KCC») e il badge «ORA!»: ora e' una sezione come le altre (fisarmonica aperta), col nome per
+           intero, cosa si gioca e quando, e sta SUBITO DOPO la partita della settimana. Rosso __CPM_NO_EURO24. */
+        if(!(typeof window!=="undefined"&&window.__CPM_NO_EURO24)){const _full={UCL:"Korward Champions Cup",UEL:"Korward Europa Cup",UECL:"Korward Conference Cup"}[eu.competition]||"Coppa europea";
+          return(<Fisarmonica id="home-euro24" titolo={<>{_ce} {_full}</>} aperta={true}><Card data-cpm="euro-home24" style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"10px 12px"}}>
+            <div style={{display:"flex",justifyContent:"space-between",gap:10,fontSize:FS.small,color:TH.text,marginBottom:6}}>
+              <span>{_grp?"Fase a gironi":_pl}</span>{_grp&&<b className="cpm-num">{eu.pts||0} punti nel girone</b>}</div>
+            <div style={{fontSize:FS.small,color:TH.muted,marginBottom:10}}>{_euNext?(_now?("Si gioca questa settimana: contro "+_euNext.opponentName):("Prossima partita: contro "+_euNext.opponentName+" · settimana "+_euNext.week)):"Il calendario completo è nella sezione Coppe."}</div>
+            <Btn v="outline" fw onClick={()=>{goTab("coppe");}} style={{padding:"8px"}}>Girone e calendario →</Btn>
+          </Card></Fisarmonica>);}
+        return(
+          <Card style={{marginBottom:8,padding:"9px 12px",border:`1px solid ${_cc}44`,background:`${_cc}0a`,cursor:"pointer"}} onClick={()=>{goTab("coppe");}}>
+            <div style={{display:"flex",alignItems:"center",gap:9}}>
+              <div style={{width:26,height:26,borderRadius:RAD.sm,background:_cc,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{_ce}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:FS.caption,fontWeight:800,color:_cc,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{euroSig(eu.competition)} · {_pl}{_grp?` · ${eu.pts||0}pt`:""}</div>
+                <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_euNext?`Prossima: vs ${_euNext.opponentName} · W.${_euNext.week}`:"Dettagli nel Tab Coppe"}</div>
+              </div>
+              {_now&&<span style={{fontSize:FS.caption,background:_cc,color:"#fff",borderRadius:RAD.sm,padding:"2px 7px",fontWeight:700,flexShrink:0}}>ORA!</span>}
+              <span style={{fontSize:FS.body,color:_cc,flexShrink:0}}>›</span>
+            </div>
+          </Card>
         );
       })()}
       {/* Sprint 64 — Mini Classifica nel Dashboard */}

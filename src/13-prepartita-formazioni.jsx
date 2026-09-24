@@ -879,24 +879,28 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
      token, l'ingresso in campo e' il primario del kit. Rosso __CPM_NO_FORMAZ23. */
   if(!(typeof window!=='undefined'&&window.__CPM_NO_FORMAZ23)){
     const _lbl=contextLabel||(_isEuro?_ecFull122:(homeTeam?.lg||"Campionato"));
+    /* [7.998.0 PO «schermata strasborda, info pressione inutile»] via il riquadro del pressing, campi piu' bassi
+       (maglie 34 -> 28 px, righe e margini stretti), i due bottoni affiancati: tutto entra in uno schermo da
+       telefono. Sonda formazioni24.mjs. Rosso __CPM_NO_FORMAZ24. */
+    const _c24=!(typeof window!=='undefined'&&window.__CPM_NO_FORMAZ24),_js24=_c24?28:34;
     const Pannello=({team,rr,kit})=>(<Card style={{padding:0,overflow:"hidden"}}>
       <div style={{display:"flex",alignItems:"center",gap:SP.sm,padding:`${SP.sm}px ${SP.md}px`}}>
         <span style={{width:10,height:10,borderRadius:"50%",background:kit,flexShrink:0,boxShadow:"0 0 0 1px "+TH.cardBorder}}/>
         <span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",flex:1,minWidth:0}}>{team?.n||team?.a}</span>
         <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px"}}>{_fmtOf(rr)}</span>
       </div>
-      <div style={{background:"repeating-linear-gradient(0deg,#2c6a2f 0 22px,#2f7334 22px 44px)",padding:"8px 2px 10px"}}>
+      <div style={{background:"repeating-linear-gradient(0deg,#2c6a2f 0 22px,#2f7334 22px 44px)",padding:_c24?"4px 2px 5px":"8px 2px 10px"}}>
         {rosterRows(rr).map((row,ri)=>(
-          <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:2}}>
+          <div key={ri} style={{display:"flex",justifyContent:"center",gap:3,flexWrap:"wrap",marginBottom:_c24?0:2}}>
             {row.map((pl,pi)=>{const isP=!!player&&pl.name===player.name;return isP?(
-              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={34} labelW={84}/></div>
-            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={34} labelW={84} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
+              <div key={pi} style={{boxShadow:"0 0 0 2px #ffffff",borderRadius:RAD.sm,padding:1}}><JerseyIcon color={kit} number={pl.num} name={pl.name} isPlayer={true} size={_js24} labelW={84}/></div>
+            ):(<JerseyIcon key={pi} color={kit} number={pl.num} name={pl.name} isPlayer={false} size={_js24} labelW={84} pattern={kitPatternFor(team)} color2={team&&team.c2}/>);})}
           </div>))}
       </div>
     </Card>);
     const pr=oppTactic?clamp(oppTactic.pressure||0,0,100):0,prC=pr>66?TH.danger:pr>40?TH.warning:TH.success;
     return(
-    <div data-cpm="formazioni23" style={{width:"100%",maxWidth:640,margin:"0 auto",display:"flex",flexDirection:"column",gap:SP.md}}>
+    <div data-cpm="formazioni23" style={{width:"100%",maxWidth:640,margin:"0 auto",display:"flex",flexDirection:"column",gap:_c24?SP.sm:SP.md}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,flexWrap:"wrap"}}>
           <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8}}>Formazioni · {_lbl}</span>
@@ -912,6 +916,9 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
           l'altra a tutta larghezza: ogni maglia ha ~85 px di etichetta invece di 38, i cognomi entrano interi */}
       <Pannello team={homeTeam} rr={_homeNums} kit={homeKitCol}/>
       <Pannello team={awayTeam} rr={_awayNums} kit={awayKitCol}/>
+      {_c24?(<div style={{display:"flex",gap:SP.sm}}>
+        <Btn onClick={onSkip} v="ghost" style={{flex:"0 0 auto"}}>Salta l'ingresso</Btn>
+        <Btn onClick={onContinue} v="primary" size="lg" style={{flex:1}}>Ingresso in campo</Btn></div>):(<>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
         {/* [23/09 POC — collaudo PO «il modulo e' ridondante sotto»] il modulo e' gia' nella testata della formazione: qui resta il pressing */}
         {(oppTacticLoading||!oppTactic)?<Skeleton h={22}/>:(
@@ -923,7 +930,7 @@ function FormationView({homeTeam,awayTeam,player,homeRoster,awayRoster,onContinu
           </div>)}
       </Card>
       <Btn onClick={onContinue} v="primary" size="lg" fw>Ingresso in campo</Btn>
-      <Btn onClick={onSkip} v="ghost" fw>Salta l'ingresso</Btn>
+      <Btn onClick={onSkip} v="ghost" fw>Salta l'ingresso</Btn></>)}
     </div>);
   }
   return(
