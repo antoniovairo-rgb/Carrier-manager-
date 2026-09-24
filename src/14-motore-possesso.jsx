@@ -316,7 +316,12 @@ function creaMotorePossesso(cfg){
     ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)}});
     volo({tipo:"passaggio",kind,x:tx,y:ty,ricevente:R.i,v:(kind==="lancio"?48:kind==="cambio"?48:50)*_v912(),icpt,icptA,arco:"pass",actor:nome(P),rcv:nome(R)});};
   const cross=(P,R,opt)=>{opt=opt||{};const l=P.team;S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
-    const tx=clamp(xDa(88+rnd()*6,l),2,98),ty=clamp(50+(rnd()-0.5)*16,3,97);
+    let tx=clamp(xDa(88+rnd()*6,l),2,98),ty=clamp(50+(rnd()-0.5)*16,3,97);
+    /* [24/09 POC — BRAIN] IL CROSS CERCA UN UOMO. Mirava a un punto a caso dell'area (88-94, y 42-58) qualunque fosse la
+       posizione del compagno: al banco pochissimi cross trovavano qualcuno (6 colpi di testa in 10 partite su ~470 cross).
+       Ora il punto e' dove il ricevente sta andando (davanti a lui, dentro l'area), con lo stesso scarto di prima; nessun
+       sorteggio in piu'. Rosso __CPM_NO_CROSS23. */
+    if(R&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_CROSS23)){const ra=clamp(advDi(R.x,l)+3,86,94);tx=clamp(xDa(ra,l),2,98);ty=clamp(R.y+(ty-50)*0.35,38,62);}
     ev("cross",{da:chi(P),a:chi(R),from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},corner:!!opt.corner});
     volo({tipo:"cross",kind:"cross",x:tx,y:ty,ricevente:R?R.i:null,v:48*_v912(),arco:"cross",actor:nome(P),rcv:R?nome(R):null});};
   const esitoTiro=(P,intent,ctx)=>{const golReq=S.richieste.gol&&S.richieste.gol.lato===P.team?S.richieste.gol:null;
@@ -517,8 +522,14 @@ function creaMotorePossesso(cfg){
        che gli eventi sono CONSEGUENZE di una scelta, non l'esito ordinario dell'essere in una zona.
        Le quote scendono e cio' che si toglie al tiro torna al passaggio, che e' la voce affamata. */
     const _t950=(typeof window!=='undefined'&&window&&window.__CPM_NO950);
-    let pTiro=(zona==="area"?(_t950?0.85:0.55):zona==="limite"?(_t950?0.45:0.30):zona==="trequarti"?(_t950?0.12:0.08):0)*_cad936();
+    let pTiro=(zona==="area"?(_t950?0.85:((typeof window!=="undefined"&&window&&window.__CPM_NO_TIRI23)?0.55:0.30)):zona==="limite"?(_t950?0.45:0.30):zona==="trequarti"?(_t950?0.12:0.08):0)*_cad936();
     pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
+    /* [24/09 POC — BRAIN «PARTITA VERA», secondo difetto misurato] SI TIRA TROPPO DA FUORI. Banco 10 partite: tiri dal limite
+       65 %, trequarti 18 %, area 16 % (anche contando l'area vera, 40 m di larghezza: 16 %) e 17,4 tiri a squadra. In Premier
+       League 2024-25 i tiri da fuori sono il 31,7 % (8,3 a partita, Opta Analyst): la conclusione nasce in area. Qui il tiro
+       al limite e dalla trequarti diventa un'eccezione (x0,40 e x0,30): chi arriva al limite passa o entra, e il tiro resta
+       pieno in area. Rosso __CPM_NO_TIRI23. */
+    if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRI23)&&!golReq){if(zona==="limite")pTiro*=0.40;else if(zona==="trequarti")pTiro*=0.30;}
     /* [7.884.0 — IL TIRO GUARDA L'ANGOLO. MISURATO al banco (48 partite, che cosa fa il portatore banda
        per banda): sotto 70 il portatore controlla, passa e conduce; appena supera 70 il 35 % delle sue
        decisioni e' un TIRO (tiroGol 20 % + tiro 15 %) e la conduzione crolla dal 16 al 10 %. Oltre
@@ -558,7 +569,7 @@ function creaMotorePossesso(cfg){
        questi tre contatori dicono quale delle tre manca, invece di farlo indovinare. */
     if(!golReq&&adv>=72)ramo("cross_avanti");
     if(!golReq&&adv>=72&&largo)ramo("cross_largo");
-    if(!golReq&&adv>=72&&largo&&rnd()<0.55){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<78||Math.abs(q.y-50)>20)continue;const sc=aq+(q.eroe?4:0)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}ramo("cross_senzaRicevente");}
+    if(!golReq&&adv>=72&&largo&&rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.55:0.40)){/* [24/09 POC] cross mirati: frequenza 0,55 -> 0,40 per non gonfiare tiri e colpi di testa */let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<78||Math.abs(q.y-50)>20)continue;const sc=aq+(q.eroe?4:0)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}ramo("cross_senzaRicevente");}
     if(verso&&!golReq){const dv=hyp(P.x,P.y,verso.x,verso.y);if(dv>10){let R=null,bs=1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const dq=hyp(q.x,q.y,verso.x,verso.y);const dd=hyp(q.x,q.y,P.x,P.y);if(dd<5||dd>40)continue;if(dq<bs){bs=dq;R=q;}}if(R&&bs<dv-4){passa(P,R,{sicuro:true});return;}}}
     /* [7.888 v2 — CHI ARRIVA AL LIMITE CON LA STRADA LIBERA PUO' ENTRARE.
        MISURATO al banco (48 partite, 188 conclusioni): trequarti 22 % · limite 61 % · area 17 %, cioe'
@@ -595,6 +606,9 @@ function creaMotorePossesso(cfg){
     const p=S.poss;const _dt=S.dt||1;if(S.fase<=1e-9)S.conta.volo++;p.t+=_dt;/* [7.898] il volo avanza di v·dt per chiamata; t conta minuti */
     const R=p.ricevente!=null?g[p.ricevente]:null;
     if(p.tipo==="passaggio"&&R&&attivo(R)){const _k=Math.pow(0.5,_dt);p.a.x=clamp(R.x+(p.a.x-R.x)*_k,2,98);p.a.y=clamp(R.y+(p.a.y-R.y)*_k,3,97);}
+    /* [24/09 POC — BRAIN] sul cross il ricevente ATTACCA il punto d'arrivo (corsa di ~7 m/s, nessun sorteggio). Rosso __CPM_NO_CROSS23 */
+    if(p.tipo==="cross"&&R&&attivo(R)&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_CROSS23)){const dx=p.a.x-R.x,dy=p.a.y-R.y,dd=Math.hypot(dx,dy),st=Math.min(dd,40*_dt);if(dd>0.01){R.x+=dx/dd*st;R.y+=dy/dd*st;}
+      /* e il difensore piu' vicino al punto d'arrivo lo va a contendere, alla stessa corsa */const _Dm=piuVicino(p.a.x,p.a.y,altro(p.lato),{noGk:true});if(_Dm&&_Dm.p){const Dq=_Dm.p,ex=p.a.x-Dq.x,ey=p.a.y-Dq.y,ed=Math.hypot(ex,ey),es=Math.min(ed,40*_dt);if(ed>0.01){Dq.x+=ex/ed*es;Dq.y+=ey/ed*es;}}}
     const dx=p.a.x-S.palla.x,dy=p.a.y-S.palla.y,dd=Math.hypot(dx,dy);
     const passo=Math.min(dd,p.v*_dt);
     let arrivato=false;
@@ -637,7 +651,7 @@ function creaMotorePossesso(cfg){
       if(D.d<4)ramo("spazz_difVicino"); else if(D.d<8)ramo("spazz_dif4_8"); else ramo("spazz_difLontano");}
     else ramo("spazz_nessunDif");
     if(dif&&(!att||rnd()<0.5)){dif.x=S.palla.x;dif.y=S.palla.y;const corner=rnd()<0.30;const _lat=!corner&&rnd()<0.20;ev("spazzata",{chi:chi(dif),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else if(_lat){/* [7.878] la spazzata finisce spesso in rimessa laterale */fuoriCampo(clamp(S.palla.x-dirDi(l)*(6+rnd()*10),6,94),S.palla.y,l,"throw");return;}else libero(clamp(S.palla.x-dirDi(l)*(14+rnd()*10),4,96),clamp(S.palla.y+(rnd()-0.5)*30,6,94));return;}
-    if(att){att.x=S.palla.x;att.y=S.palla.y;if(rnd()<0.62){tira(att,{intent:"header"});return;}tenuta(att,null);ev("ricezione",{chi:chi(att),kind:"cross"});return;}
+    if(att){att.x=S.palla.x;att.y=S.palla.y;if(rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.62:0.24)){tira(att,{intent:"header"});return;}/* [24/09 POC] con cross mirati la conclusione di testa immediata scende 0,62 -> 0,38: spesso si controlla */tenuta(att,null);ev("ricezione",{chi:chi(att),kind:"cross"});return;}
     const gk=portiereDi(altro(l));if(hyp(gk.x,gk.y,S.palla.x,S.palla.y)<9){ev("presa",{gk:chi(gk)});gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);return;}
     libero(S.palla.x,S.palla.y);
   }
@@ -659,7 +673,11 @@ function creaMotorePossesso(cfg){
     /* punizione */
     const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x-dirDi(l)*1.2;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;
     const adv=advDi(f.x,l);ev("battuta",{kind:"foul",chi:chi(T.p),adv:+adv.toFixed(0)});
-    if(adv>=72&&Math.abs(f.y-50)<=26&&rnd()<0.7){tira(T.p,{intent:"freekick"});return;}
+    /* [24/09 POC — BRAIN] LA PUNIZIONE DAL LIMITE NON E' SEMPRE UN TIRO. Banco 10 partite: 87 tiri su 236 (37 %) erano punizioni
+       dirette, perche' ogni fallo oltre 72 di avanzamento e centrale diventava tiro al 70 %. Ora il tiro diretto si prova solo da
+       vicino e centrale (>= 78 e entro 18: 45 %), altrimenti la palla va in mezzo o si gioca corta. Rosso __CPM_NO_PUNIZ23. */
+    const _p23=(typeof window!=='undefined'&&window&&window.__CPM_NO_PUNIZ23)?((adv>=72&&Math.abs(f.y-50)<=26)?0.7:0):((adv>=78&&Math.abs(f.y-50)<=18)?0.45:0);
+    if(_p23>0&&rnd()<_p23){tira(T.p,{intent:"freekick"});return;}
     if(adv>=62&&rnd()<0.5){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===T.p.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<76)continue;const sc=aq+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){cross(T.p,R);return;}}
     const R=scegliRicevente(T.p,{});if(R)passa(T.p,R,{sicuro:true});else tenuta(T.p,null);
   }
