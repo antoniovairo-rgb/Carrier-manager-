@@ -34,6 +34,20 @@ const COACH_STYLES=[
 /* [24/09 POC — risposta PO al questionario: «nell'offerta mostra l'allenatore»] IL MISTER DI UN CLUB E' DETERMINISTICO (club +
    stagione): la card dell'offerta e il trasferimento vero mostrano la STESSA persona. Prima al trasferimento il mister era estratto
    a caso, quindi qualunque nome mostrato nell'offerta poteva risultare falso dopo la firma. Rosso __CPM_NO_MISTERCLUB23. */
+/* [7.989.0 Patrimonio F1 · richiesta PO «il patrimonio adesso non serve a nulla», peso «Leggero»] STAFF PRIVATO A
+   LIVELLI. Il booleano storico (perkTrainer/perkNutrition) resta l'interruttore: spento = livello 0 (anche quando
+   la sospensione a fondi finiti lo spegne, il livello scelto e' ricordato in perk*Lv). Acceso senza perk*Lv =
+   livello 1 = ESATTAMENTE il comportamento di prima (save vecchi invariati, nessuna migration). Costi: livello 1
+   = costo storico (trainer max(700,5%) · nutri max(500,4%)), livello 2 x1.8, livello 3 x2.8. */
+const STAFF24=[
+  {k:"perkTrainer",lv:"perkTrainerLv",e:"🏋️",l:"Personal trainer",fx:["+10% efficacia allenamenti","+15% efficacia allenamenti","+20% efficacia allenamenti"],min:700,pct:0.05},
+  {k:"perkNutrition",lv:"perkNutritionLv",e:"🥗",l:"Nutrizionista",fx:["Recupero fatica +2 a settimana","Recupero fatica +3 a settimana","Recupero fatica +4 a settimana"],min:500,pct:0.04},
+  {k:"perkFisio",lv:"perkFisioLv",e:"🩺",l:"Fisioterapista",fx:["Rischio infortuni −8%","Rischio infortuni −16%","Rischio infortuni −24%"],min:500,pct:0.03},
+  {k:"perkMental",lv:"perkMentalLv",e:"🧠",l:"Mental coach",fx:["Morale +0,5 a settimana","Morale +1 a settimana","Morale +1,5 a settimana"],min:400,pct:0.03}];
+const STAFF_COSTX24=[0,1,1.8,2.8];
+function staffLv24(p,k){if(!p||!p[k])return 0;const d=STAFF24.find(function(s){return s.k===k;});const v=d?p[d.lv]:null;return (typeof v==="number"&&v>=1)?Math.min(3,v|0):1;}
+function staffCost24(p,k,lv){const d=STAFF24.find(function(s){return s.k===k;});const L=lv==null?staffLv24(p,k):lv;if(!d||!L)return 0;const wg=(p&&p.contract&&p.contract.wage)||0;return Math.round(Math.max(d.min,Math.round(wg*d.pct))*STAFF_COSTX24[L]);}
+function staffCostTot24(p){return STAFF24.reduce(function(a,d){return a+staffCost24(p,d.k);},0);}
 function coachDiClub23(club,season){try{const k=String((club&&(club.id||club.n))||"x")+"|"+(season||1);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
   const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:"Mister "+COACH_NAMES[h%COACH_NAMES.length],style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
 // Sprint 11 — S11.4 Derby database

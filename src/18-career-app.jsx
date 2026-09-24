@@ -1204,7 +1204,8 @@ const getThisWeekMatchday=()=>{
       mdRef:()=>{try{const r=_playingMdRef.current;return r?{matchday:r.matchday,type:r.type||null,oppId:r.oppId||null,isHome:!!r.isHome}:null;}catch(e){return "error:"+(e&&e.message);}}, /* [P0 #3] la gara di CLUB attualmente aperta: senza questa sonda il guardiano del ciclo di vita misurerebbe solo gli effetti, non la causa */
       resolveOpening:()=>{try{setPlayer(p=>{const sn=p.season||1;return{...p,campDone:true,presidentModalSeason:sn,jerseyNumSeason:sn,drawSeen:sn,mercatoSeen:sn,presentSeason:sn,...(((p.proStatus||"u18")==="pro"&&sn>=2&&(!p.seasonPledge||p.seasonPledge.season!==sn))?{seasonPledge:{season:sn,tone:"equilibrato"}}:{})};});return true;}catch(e){return "error:"+(e&&e.message);}}, // [7.16.0] risoluzione minima (flag, +drawSeen per i sorteggi) delle interazioni d'apertura per l'harness · [7.147.0] +mercatoSeen
       natTournamentPatch:(p)=>{try{return natTournamentPatch(p);}catch(e){return "error:"+(e&&e.message);}}, // [6.32.0 STAB-2] espone l'helper trigger tornei Nazionali per la suite career-invariants
-      weeklyEconomyFields:(p)=>{try{return weeklyEconomyFields(p);}catch(e){return "error:"+(e&&e.message);}}, // [6.35.0 STAB-7/8] espone il tick economia settimanale per la suite
+      weeklyEconomyFields:(p)=>{try{return weeklyEconomyFields(p);}catch(e){return "error:"+(e&&e.message);}},
+      weeklyGrowthFields:(p,b)=>{try{return weeklyGrowthFields(p,b||{});}catch(e){return "error:"+(e&&e.message);}},simInjuryRoll:(p,seed)=>{try{return simInjuryRoll(p,seed);}catch(e){return "error:"+(e&&e.message);}},/* [7.989.0 F1] sonda staff24 */ // [6.35.0 STAB-7/8] espone il tick economia settimanale per la suite
       euroGroupKOPatch:(p)=>{try{return euroGroupKOPatch(p);}catch(e){return "error:"+(e&&e.message);}}, // [7.15.0] espone la transizione girone→KO per la probe euro-ko-zombie
       euro:()=>{try{const e=player.euro;return e?{active:!!e.active,phase:e.phase,pts:e.pts||0,gr:(e.groupResults||[]).length,koCal:(player.calendar||[]).filter(m=>m.type==="euro"&&!m.played).map(m=>({ph:m.euroPhase,w:m.week,opp:m.opponentId,home:!!m.isHome})),egCal:(player.calendar||[]).filter(m=>m.type==="euro_group").map(m=>({w:m.week,played:!!m.played}))}:null;}catch(e){return "error:"+(e&&e.message);}}, // [7.15.0] stato euro per la probe
       forceMoment:(id)=>{try{const m=CAREER_MOMENTS.find(x=>x.id===id);if(m)setCareerMomentModal(m);return !!m;}catch(e){return "error:"+(e&&e.message);}}, // [7.159.0] apre il modal di un career moment per lo screenshot/probe
@@ -1341,9 +1342,9 @@ const getThisWeekMatchday=()=>{
     const wg=(p.contract?.wage||0);
     const _agFee=p.agentStyle==="boutique"?0.08:0.10;/* [7.29.0 ONDA 4 §S5] agenzia boutique: commissione ridotta */
     const spIn=(p.sponsors||[]).reduce((s,x)=>s+(x&&x.weekly||0),0);/* [7.29.0 ONDA 4 §S10] il secondo stipendio */
-    const cost=(p.hasAgent?Math.round(wg*_agFee):0)+(p.perkTrainer?Math.max(700,Math.round(wg*0.05)):0)+(p.perkNutrition?Math.max(500,Math.round(wg*0.04)):0);/* [7.179.0 backlog #2] lo staff personale ha un MINIMO FISSO (700/500€): con stipendi bassi i costi possono superare le entrate → la sospensione automatica a fondi finiti (ramo bb<0) è finalmente raggiungibile, non più dead code */
-    let bb=(p.bankBalance||0)+wg+spIn-cost,pt=p.perkTrainer,pn=p.perkNutrition;
-    if(bb<0){pt=false;pn=false;bb=Math.max(0,(p.bankBalance||0)+wg+spIn-(p.hasAgent?Math.round(wg*_agFee):0));}
+    const cost=(p.hasAgent?Math.round(wg*_agFee):0)+(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?((p.perkTrainer?Math.max(700,Math.round(wg*0.05)):0)+(p.perkNutrition?Math.max(500,Math.round(wg*0.04)):0)):staffCostTot24(p));/* [7.989.0 F1] quattro figure a livelli; livello 1 = costo storico *//* [7.179.0 backlog #2] lo staff personale ha un MINIMO FISSO (700/500€): con stipendi bassi i costi possono superare le entrate → la sospensione automatica a fondi finiti (ramo bb<0) è finalmente raggiungibile, non più dead code */
+    let bb=(p.bankBalance||0)+wg+spIn-cost,pt=p.perkTrainer,pn=p.perkNutrition,pf=p.perkFisio,pm=p.perkMental;
+    if(bb<0){pt=false;pn=false;pf=pf?false:pf;pm=pm?false:pm;bb=Math.max(0,(p.bankBalance||0)+wg+spIn-(p.hasAgent?Math.round(wg*_agFee):0));}
     /* [7.178.0 RC-11] il reset della ricerca-offerta alla finestra INVERNALE (W19) viveva solo in doAdvanceWeek:
        chi giocava/simulava la W18 non riotteneva mai la ricerca. Chokepoint path-uniform (idempotente col winReset storico). */
     const _winRst=(((p.week||1)+1)===19&&p.windowOfferUsed)?{windowOfferUsed:false}:{};
@@ -1369,7 +1370,7 @@ const getThisWeekMatchday=()=>{
     const _ah=agentHintCheck({...p,bankBalance:Math.round(bb)});
     const _ahF=_ah.due?{agentHint:{...(p.agentHint||{}),due:_ah.due,fee:_ah.fee,n:((p.agentHint&&+p.agentHint.n)||0)+1,s:p.season||1,w:p.week||1,
       spSeen:(p.agentHint&&p.agentHint.spSeen)||(_ah.due==="sponsor")}}:{};
-    return {bankBalance:Math.round(bb),perkTrainer:pt,perkNutrition:pn,..._winRst,..._ahF,..._ciF,..._ivF,..._rdF};
+    return {bankBalance:Math.round(bb),perkTrainer:pt,perkNutrition:pn,...(pf!==p.perkFisio?{perkFisio:pf}:{}),...(pm!==p.perkMental?{perkMental:pm}:{}),..._winRst,..._ahF,..._ciF,..._ivF,..._rdF};
   };
   // [6.82.0] STORICO NAZIONALE (collaudo PO «non c'è lo storico delle partite giocate in nazionale»):
   //   ogni presenza lascia una riga PERSISTENTE in p.natHistory (cap 60 — matchHistory è stagionale e si
@@ -1444,7 +1445,8 @@ const getThisWeekMatchday=()=>{
     const r=seededRng(((seed>>>0)||1));
     const matchFat=clamp((p.fatigue||0)+12+Math.round(r()*10),0,100);
     const roll=r();
-    if(!((matchFat>82&&roll<0.07)||(matchFat>68&&roll<0.03)))return {};
+    const _fx24=(typeof window!=='undefined'&&window.__CPM_NO_STAFF24)?1:1-0.08*staffLv24(p,"perkFisio");/* [7.989.0 F1] fisioterapista */
+    if(!((matchFat>82&&roll<0.07*_fx24)||(matchFat>68&&roll<0.03*_fx24)))return {};
     const sev=r();
     let injuryWeeks,injuryType,injurySeverity;
     if(matchFat>82&&sev<0.07){injurySeverity="grave";injuryWeeks=6+Math.round(r()*6);injuryType=sev<0.035?"osseo":"distorsione";}
@@ -1484,7 +1486,7 @@ const getThisWeekMatchday=()=>{
       const _rec=hist.slice(-3);
       const _avg=_rec.length?_rec.reduce((s,m)=>s+(m.rating||6.5),0)/_rec.length:6.5;
       const _acM=(p.assistantCoachRel||50)>=75?1.12:(p.assistantCoachRel||50)>=60?1.04:(p.assistantCoachRel||50)<=35?0.90:1.0;/* [7.114.0 audit carriera · fix PROG-1] il vice-mister (assistantCoachRel, ±12%) mancava nell'auto-training → il modificatore 9.3 era DI FATTO MORTO (l'auto-training è il default; il TrainPanel col fattore quasi non gira). Ora allineato al TrainPanel (default rel 50 → 1.0 neutro) */
-      const _mult=(_avg>=7.5?1.2:_avg>=6.5?1:_avg>=5.5?0.88:0.75)*(frm>=75?1.1:frm<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92)*_acM*TRAIN_BASE_EFF*trainAgeMult(p.age)*archGrowthMult(p)*(p.perkTrainer?1.10:1);
+      const _mult=(_avg>=7.5?1.2:_avg>=6.5?1:_avg>=5.5?0.88:0.75)*(frm>=75?1.1:frm<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92)*_acM*TRAIN_BASE_EFF*trainAgeMult(p.age)*archGrowthMult(p)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(p.perkTrainer?1.10:1):(1+[0,0.10,0.15,0.20][staffLv24(p,"perkTrainer")]));
       const _dim=(sv)=>{const v=sv||60;return v>=92?0.015:v>=90?0.03:v>=88?0.05:v>=84?0.11:v>=80?0.18:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};/* [7.9.1 collaudo PO «ritara»] rendimento decrescente INDURITO nella fascia élite (84+ ridotto, 90+ quasi piatto): con la crescita ora attiva su tutti i path (7.9.0) il profilo top toccava 93 a 28 anni — il tetto converge a ~90-92 (picco di progetto 5.80); fasce ≤80 INVARIATE → criterio §10 (50→85 in 8-10 stagioni) intatto */
       _plan.forEach(tid=>{
         if(tid==="rec"){fatigueDelta-=18;morale=clamp(morale+6,0,100);return;}
@@ -1501,7 +1503,7 @@ const getThisWeekMatchday=()=>{
         stats[_dk]=clamp((stats[_dk]||60)-1,1,99);
       }
     }
-    morale=clamp(Math.round(morale+(60-morale)*0.05),0,100);
+    morale=clamp(Math.round(morale+(60-morale)*0.05+(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?0:0.5*staffLv24(p,"perkMental"))),0,100);/* [7.989.0 F1] mental coach */
     /* [7.55.0 ONDA 7] MICRO-EFFETTO DEL DRIVER: la carica emotiva del driver della settimana (mindDriver, la
        stessa mostrata nella card «La tua settimana» → COERENTE per costruzione) pesa un filo sulla morale.
        Fold DENTRO la morale ritornata → applicato exactly-once su TUTTI i 5 path (tutti leggono .morale), zero
@@ -3418,7 +3420,8 @@ const getThisWeekMatchday=()=>{
     const _minF=result&&result.minutesPlayed!=null?clamp(result.minutesPlayed/90,0.35,1):1;/* [7.163.0 super-test LIVE-F6] la fatica scala coi MINUTI VERI (entrare al 78' o uscire al 58' non costa come 90') — la Sezione 8 lo prometteva, matchHistory li aveva già */
     const postFatigue=clamp((player.fatigue||0)+Math.round(rng(8,14)*_minF),0,100);/* [7.152.0 collaudo PO] costo-fatica di una partita ridotto (12-22 → 8-14): con una settimana di recupero una singola gara non deve lasciare uno strascico ingestibile */
     const injRoll=Math.random();
-    const newInjured=!player.injured&&((postFatigue>82&&injRoll<0.07)||(postFatigue>68&&injRoll<0.03));
+    const _fx24=(typeof window!=='undefined'&&window.__CPM_NO_STAFF24)?1:1-0.08*staffLv24(player,"perkFisio");/* [7.989.0 F1] fisioterapista */
+    const newInjured=!player.injured&&((postFatigue>82&&injRoll<0.07*_fx24)||(postFatigue>68&&injRoll<0.03*_fx24));
     // §9.6: bande di recupero realistiche — lieve 1-2 sett. (comune), medio 3-5, grave 6-12 (frattura/trauma osseo, raro e solo con fatica alta)
     let injuryWeeks=0,injuryType=null,injurySeverity=null;
     if(newInjured){
@@ -4446,7 +4449,7 @@ const getThisWeekMatchday=()=>{
       const baseForm=updP.form||p.form||70;
       const naturalForm=clamp(Math.round(baseForm*0.92+65*0.08),30,95);
       const baseFat=updP.fatigue!=null?updP.fatigue:(p.fatigue||0);
-      const naturalFat=Math.max(0,baseFat-(p.perkNutrition?8:6));// [5.81.0] il nutrizionista accelera il recupero settimanale
+      const naturalFat=Math.max(0,baseFat-(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(p.perkNutrition?8:6):6+[0,2,3,4][staffLv24(p,"perkNutrition")]));// [5.81.0] il nutrizionista accelera il recupero settimanale
       if(p.injured&&(p.injuryWeeks||0)>0){
         // Sprint 119: relapse risk — if fatigue high while still recovering
         const relapseRoll=Math.random();
@@ -4476,7 +4479,7 @@ const getThisWeekMatchday=()=>{
          accreditava il REDDITO SPONSOR (spIn) e pagava l'agente al 10% ignorando la commissione BOUTIQUE (8%). Ora tutti
          i path (live/sim/infortunio/avanza) usano la STESSA formula (sponsor + boutique + sospensione) — zero divergenza. */
       {const _ecoAdv=weeklyEconomyFields(p);/* {} per u18/svincolato (guardia interna identica) */
-        if(_ecoAdv.bankBalance!=null){if((p.perkTrainer&&_ecoAdv.perkTrainer===false)||(p.perkNutrition&&_ecoAdv.perkNutrition===false))setTimeout(()=>notify("💸 Fondi insufficienti: servizi dello staff personale sospesi.",TH.warning),700);updP={...updP,..._ecoAdv};}}
+        if(_ecoAdv.bankBalance!=null){if((p.perkTrainer&&_ecoAdv.perkTrainer===false)||(p.perkNutrition&&_ecoAdv.perkNutrition===false)||(p.perkFisio&&_ecoAdv.perkFisio===false)||(p.perkMental&&_ecoAdv.perkMental===false))setTimeout(()=>notify("💸 Fondi insufficienti: servizi dello staff personale sospesi.",TH.warning),700);updP={...updP,..._ecoAdv};}}
       const nextStreak=(p.sessionsThisWeek||0)>0||_didAutoTrain?(p.trainingStreak||0)+(_didAutoTrain?1:0):0;
       const nextWk=(p.week||1)+1;
       const winReset=nextWk===19; // finestra invernale apre → reset ricerca mercato
@@ -10207,18 +10210,23 @@ const getThisWeekMatchday=()=>{
                   {/* [7.83.0 collaudo PO «togli le ridondanze»] stipendio RIMOSSO da qui: già in «Situazione Contratto» sotto. Resta solo la nota della commissione agente (contesto del patrimonio). */}
                   {player.hasAgent?<div style={{textAlign:"right",fontSize:FS.caption,color:TH.accentText,fontWeight:FW.semibold}}>🤵 Agente · −{player.agentStyle==='boutique'?8:10}% stipendio</div>:null}{/* [7.162.0 ECO-F7] la boutique paga l'8%: la UI diceva sempre 10 */}
                 </div>
-                {[{k:"perkTrainer",e:"🏋️",l:"Personal trainer",d:"+10% efficacia allenamenti",c:Math.round((player.contract?.wage||0)*0.05)},
-                  {k:"perkNutrition",e:"🥗",l:"Nutrizionista",d:"Recupero fatica accelerato",c:Math.round((player.contract?.wage||0)*0.04)}].map(function(pk){
-                  var on=!!player[pk.k];
+                {/* [7.989.0 Patrimonio F1] staff privato a tre livelli: − / + cambia il livello, il costo e l'effetto si leggono sulla riga */}
+                <div style={{fontSize:FS.caption,color:TH.muted,margin:"2px 0 4px"}}>Staff privato · costo settimanale totale <b className="cpm-num" style={{color:TH.text}}>{Math.round(staffCostTot24(player)/100)/10}k€</b></div>
+                {STAFF24.map(function(d){
+                  var lv=staffLv24(player,d.k),mem=(typeof player[d.lv]==="number"&&player[d.lv]>=1)?Math.min(3,player[d.lv]|0):1;
+                  var shown=lv||mem,c=staffCost24(player,d.k,shown);
+                  var setLv=function(nl){nl=Math.max(0,Math.min(3,nl));setPlayer(function(p){var o={...p,[d.k]:nl>0};if(nl>0)o[d.lv]=nl;return o;});
+                    notify(nl>0?("✅ "+d.l+" · livello "+nl+" — "+d.fx[nl-1]+", "+Math.round(staffCost24(player,d.k,nl)/100)/10+"k€/sett."):("⏸️ "+d.l+" congedato — non paghi più il costo settimanale"),nl>0?TH.success:TH.muted);};
+                  var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?TH.primary:TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
                   return(
-                    <div key={pk.k} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
-                      <span style={{fontSize:FS.bodyLg}}>{pk.e}</span>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{pk.l}</div>
-                        <div style={{fontSize:FS.caption,color:TH.muted}}>{pk.d} · {Math.round(pk.c/1000)}k€/sett.</div>
+                    <div key={d.k} data-cpm={"staff24-"+d.k} data-lv={lv} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
+                      <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:700,color:TH.text}}>{d.l}
+                          <span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span></div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(d.fx[lv-1]+" · "+Math.round(c/100)/10+"k€/sett."):("Non attivo · con + livello "+shown+": "+d.fx[shown-1]+", "+Math.round(c/100)/10+"k€/sett.")}</div>
                       </div>
-                      <button onClick={function(){var nv=!on;setPlayer(function(p){return{...p,[pk.k]:!p[pk.k]};});notify(nv?("✅ "+pk.l+" attivato — bonus attivo, costo "+Math.round(pk.c/1000)+"k€/sett."):("⏸️ "+pk.l+" disattivato — non paghi più il costo settimanale"),nv?TH.success:TH.muted);}}
-                        style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+(on?TH.success:TH.primary),background:on?TH.success:"transparent",color:on?"#fff":TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>{on?"✓ ATTIVO":"ATTIVA →"}</button>
+                      <div style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>
                     </div>
                   );
                 })}
