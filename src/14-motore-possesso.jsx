@@ -347,6 +347,10 @@ function creaMotorePossesso(cfg){
       const _advT=advDi(P.x,P.team);const _zT=zonaDi(_advT,P.y);const _prT=(ctx&&ctx.pressure)||2;
       let _pOn=(_zT==='areaPiccola')?0.70:(_zT==='area')?0.56:(_zT==='limite')?0.40:0.31;/* [7.925 taratura] la prima prova (0,62/0,45/0,30/0,18) portava i tiri fuori a 3,25 ma faceva crollare le PARATE da 3,93 a 0,73 contro 3,2 vere: il 34 per cento vero e la MEDIA su tutte le zone, e questo motore tira quasi solo da fuori, quindi il valore di fuori deve stare vicino a quella media. */
       _pOn*=(_prT===1?0.80:_prT===2?0.92:1);
+      /* [7.987 — BRAIN «partita vera», risposta PO al questionario: «tiri e precisione»] La taratura 7.925 e' nata quando il motore
+         tirava «quasi solo da fuori»; oggi il 66-70 % dei tiri parte dall'area e al banco il 23 % va in porta (8,6 fuori a squadra)
+         contro il 35 % della Premier League 2024-25 (StatMuse: 4,55 in porta su 12,96). La mira sale x1,2 (tetto 0,88; x1,35 dava 5,58 in porta, troppi). Rosso __CPM_NO_MIRA24. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_MIRA24))_pOn=Math.min(0.88,_pOn*1.2);
       if(rnd()>_pOn)out=(rnd()<0.72)?'wide':'blocked';
     }
     if(golReq){if(golReq.t>=3||rnd()<0.62){out="goal";}else if(out==="saved"||out==="wide"||out==="goal"){out=rnd()<0.5?"post":"blocked";}}
@@ -656,7 +660,7 @@ function creaMotorePossesso(cfg){
       if(D.d<4)ramo("spazz_difVicino"); else if(D.d<8)ramo("spazz_dif4_8"); else ramo("spazz_difLontano");}
     else ramo("spazz_nessunDif");
     if(dif&&(!att||rnd()<0.5)){dif.x=S.palla.x;dif.y=S.palla.y;const corner=rnd()<0.30;const _lat=!corner&&rnd()<0.20;ev("spazzata",{chi:chi(dif),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else if(_lat){/* [7.878] la spazzata finisce spesso in rimessa laterale */fuoriCampo(clamp(S.palla.x-dirDi(l)*(6+rnd()*10),6,94),S.palla.y,l,"throw");return;}else libero(clamp(S.palla.x-dirDi(l)*(14+rnd()*10),4,96),clamp(S.palla.y+(rnd()-0.5)*30,6,94));return;}
-    if(att){att.x=S.palla.x;att.y=S.palla.y;if(rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.62:0.24)){tira(att,{intent:"header"});return;}/* [24/09 POC] con cross mirati la conclusione di testa immediata scende 0,62 -> 0,38: spesso si controlla */tenuta(att,null);ev("ricezione",{chi:chi(att),kind:"cross"});return;}
+    if(att){att.x=S.palla.x;att.y=S.palla.y;if(rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.62:((typeof window!=="undefined"&&window&&window.__CPM_NO_TESTA24)?0.24:0.16))){tira(att,{intent:"header"});return;}/* [7.987] 0,24 -> 0,16 insieme alla mira (sola, toglieva anche tiri in porta). Rosso __CPM_NO_TESTA24 *//* [24/09 POC] con cross mirati la conclusione di testa immediata scende 0,62 -> 0,38: spesso si controlla */tenuta(att,null);ev("ricezione",{chi:chi(att),kind:"cross"});return;}
     const gk=portiereDi(altro(l));if(hyp(gk.x,gk.y,S.palla.x,S.palla.y)<9){ev("presa",{gk:chi(gk)});gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);return;}
     libero(S.palla.x,S.palla.y);
   }
