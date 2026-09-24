@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 24/09 pomeriggio (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.988.0** (`e433ab07`) — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
+**Aggiornata:** 24/09 pomeriggio (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.998.0** (`f93a3154`) — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
 **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 72% · **Fase:** grafica dai collaudi PO chiusa per oggi → si riparte dal brain «partita vera»
 
@@ -49,7 +49,13 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
-| 24/09 | **7.992.0 (in collaudo).** Patrimonio F4: beni sobri/vistosi con reazione di tifosi e mister; il patrimonio conta nell'eredità (fino a +60 al Legacy, card al ritiro: misurato +40 = 18+10+12). Segnalazioni PO: cambio procuratore nel Modal standard; fisarmoniche su Status, Statistiche, Lo spogliatoio; Coppe e Nazionale spiegano cosa arriva (corretto un dato falso: la Coppa Nazionale c'è dal primo anno pro); via la card Scorciatoie. | in corso |
+| 24/09 | **7.998.0 in produzione.** Dal telefono del PO: coppe europee in Home come sezione standard (nome per intero, fase, punti, prossima partita) subito dopo la partita della settimana; pulsante appiccicato opaco senza fascia (il gradiente era all'80%); Formazioni in uno schermo (807 → 597 px, pressing tolto; sonda formazioni24); intervista con la scena nel 40% alto (le risposte entrano). | CI locale 10/10 |
+| 24/09 | **7.997.0 in produzione.** Premiazione: palco rettangolare, coppa per i manici che non copre mai il volto (sovrapposizione 0; in altezza era già 0,31x l'eroe, il difetto era la presa), squadra in due file ferme dietro il palco (velocità 0, distanza minima 1,0), camera più vicina. | CI locale 8/8 + partita-vera |
+| 24/09 | **7.996.0 in produzione.** Commenti sulle anteprime: figurine col volto intero sotto i 120 px (rapporto foto 0,80-0,93 → ≥1,00; sonda figurina-volto24), niente cognome doppione sul podio, coppa del pullman senza piedistallo al 40% dell'eroe. | CI locale 9/9 |
+| 24/09 | **7.995.0 in produzione.** Intervista: il tavolo della sala stampa disegnato (tovaglia del club, segnaposto, microfoni delle testate vere, bottiglietta dello sponsor). | CI locale 10/10 |
+| 24/09 | **7.994.0 in produzione.** Intervista a tre passi (scelte PO): tabellino sul pannello, sala viva, rilancio del giornalista con No comment, prima pagina di domani con gli effetti mostrati dopo la scelta (direttiva 6.5.4). | CI locale 13/13 |
+| 24/09 | **7.993.0 in produzione.** Fisarmoniche su ~60 sezioni (operative aperte, da consultare chiuse) e 14 popup fatti a mano nel Modal standard (scelte PO). | CI locale 13/13 · GitHub ✅ |
+| 24/09 | **7.992.0 in produzione.** Patrimonio F4: beni sobri/vistosi con reazione di tifosi e mister; il patrimonio conta nell'eredità (fino a +60 al Legacy, card al ritiro: misurato +40 = 18+10+12). Segnalazioni PO: cambio procuratore nel Modal standard; fisarmoniche su Status, Statistiche, Lo spogliatoio; Coppe e Nazionale spiegano cosa arriva (corretto un dato falso: la Coppa Nazionale c'è dal primo anno pro); via la card Scorciatoie. | CI locale 13/13 |
 | 24/09 | **7.991.0 in produzione.** Patrimonio F3: investimenti a fine stagione, resa deterministica. Misura su 400 stagioni: prudente +3,44% [2;5], bilanciato +3,11% [−4;10], rischioso +5,68% [−20;29,9]. | CI locale 10/10 |
 | 24/09 | **7.990.0 in produzione.** Patrimonio F2: accademia col tuo nome (un ragazzo deterministico a fine stagione, popolarità +2/+4, pausa automatica a fondi finiti). La tab Agente diventa **Staff** (id interno invariato). | CI locale 9/9 |
 | 24/09 | **7.989.0 in produzione.** Patrimonio F1: staff privato a 3 livelli (trainer, nutrizionista, fisioterapista, mental coach). Livello 1 = costi/effetti storici; fisio L3 −23,9% infortuni (4000 semi), mental coach +0,54/+1,54 morale a settimana. | CI locale 9/9 |
