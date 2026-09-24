@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 24/09 pomeriggio (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.999.0** (`6dd3ba87`) — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
+**Aggiornata:** 24/09 pomeriggio (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.999.1** (`9d23505c`) — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
 **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 72% · **Fase:** grafica dai collaudi PO chiusa per oggi → si riparte dal brain «partita vera»
 
@@ -49,6 +49,8 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 24/09 | **Fase 1 «partita vera» consegnata, in attesa dell'ok del PO.** Proposta: https://claude.ai/artifact/MAEEsrYmVppDedLmCTHnRp — il motore del possesso diventa l'unica fonte di verità (gol compresi), sim rapida = motore senza grafica (56 ms a partita in Node, stesso seme = stesso tabellino), bande reali da 4.337 partite (football-data.co.uk, 4 campionati, 2022-2025), criteri del 3D, gesti esistenti/mancanti, piano di test. | nessun file di gioco toccato |
+| 24/09 | **7.999.1 in produzione.** Conflitto 1 della Fase 0 corretto (scelta PO): il tabellino dell'intervista in trasferta non inverte più i gol (rosso `__CPM_NO_TAB25`, sonda intervista24 col caso trasferta). | CI locale 8/8 |
 | 24/09 | **Ciclo «partita vera» — Fase 0 (sola lettura) consegnata, in attesa dell'ok del PO.** Report: https://claude.ai/artifact/YDF83D6q3bUJUVxxdX5dKv — almeno 5 punti del codice decidono la partita (sim, microsim, motore del possesso, highlight, render) con semi diversi; tabellino post-partita invertito in trasferta; 2 conflitti con lavori consegnati (7.994 tabellino intervista in trasferta; taratura brain 7.984/7.987 misurata senza decideExecution) riportati, non corretti. | nessun file di gioco toccato |
 | 24/09 | **7.999.0 in produzione.** La tab «Staff» diventa «Affari» (💼), scelta PO; id interno invariato. | CI locale 7/7 |
 | 24/09 | **7.998.0 in produzione.** Dal telefono del PO: coppe europee in Home come sezione standard (nome per intero, fase, punti, prossima partita) subito dopo la partita della settimana; pulsante appiccicato opaco senza fascia (il gradiente era all'80%); Formazioni in uno schermo (807 → 597 px, pressing tolto; sonda formazioni24); intervista con la scena nel 40% alto (le risposte entrano). | CI locale 10/10 |
