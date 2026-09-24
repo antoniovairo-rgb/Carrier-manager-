@@ -33,5 +33,9 @@ await page.evaluate(() => window.__CPM_CAREER.dismiss()); await sleep(600);
 let ok = false; for (let i = 0; i < 6 && ok !== true; i++) { ok = await page.evaluate(() => window.__CPM_CAREER.forceOffer()); await sleep(900); }
 const card = await page.evaluate(() => { const c = document.querySelector('[data-cpm="club-situazione23"]'); return c ? c.innerText.replace(/\n+/g, ' · ') : null; });
 await page.screenshot({ path: path.join(OUT, '14-offerta.png') });
-console.log(JSON.stringify({ offerta: ok, card, errori: errors }));
+const dettagli = await page.evaluate(() => { const c = document.querySelector('[data-cpm="offerta-dettagli23"]'); return c ? c.innerText.replace(/\n+/g, ' · ') : null; });
+const misterCard = (dettagli && (dettagli.match(/Mister [A-Za-zÀ-ÿ']+/) || [])[0]) || null;
+await page.evaluate(() => window.__CPM_CAREER.acceptOffer()); await sleep(1500);
+const misterDopo = await page.evaluate(() => { try { const s = JSON.parse(localStorage.getItem('cpm-v3')); return s.player.coach && s.player.coach.name; } catch (e) { return null; } });
+console.log(JSON.stringify({ offerta: ok, card, dettagli, misterCard, misterDopo, stesso: !!misterCard && misterCard === misterDopo, errori: errors }));
 await browser.close(); srv.close();

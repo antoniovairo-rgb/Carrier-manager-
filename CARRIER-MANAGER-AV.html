@@ -5290,7 +5290,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.985.0"; // [7.985.0 - VIA I BIRILLI DALLE SCENE (collaudo PO 24/09 «dalle scene togli i birilli lego»)] Censite le figure fatte di primitive (sfera-testa): in partita non se ne vedono (tribune dipinte, sonda birilli.mjs); nelle scene l'unica visibile era la folla a cilindro+sfera del pullman (7.982, mia). Sostituita da una FOLLA DIPINTA su due pannelli lungo i marciapiedi (teste e spalle nei colori del club, sciarpe alzate), nessuna figura 3D. Testimone __CPM_FOLLA23="dipinta"; rosso __CPM_BIRILLI23 riporta i birilli. Restano primitive solo nei fallback che si vedono se i modelli 3D non caricano (galà vecchio, intro, cerimonie di riserva).
+const GAME_VERSION="7.986.0"; // [7.986.0 - RISPOSTE DEL PO AL QUESTIONARIO (24/09)] (1) INTERVISTA: figurina dell'eroe («Rispondi tu») speculare a quella del giornalista; il pannello sponsor resta senza volti (rosso __CPM_NO_EROEIV23). (2) OFFERTA: sotto la situazione del club, ULTIME 5 (ricostruite esatte dalla differenza fra classifiche settimanali consecutive delle altre leghe, che sono deterministiche; nella tua lega lo storico degli altri non c'e' e i pallini non compaiono), IL TUO RUOLO (dal minutaggio stimato dell'offerta: >=70 titolare, >=45 rotazione, altrimenti riserva — la rosa generata non ha voti, quindi non si confrontano i giocatori) e L'ALLENATORE con figurina. Il mister di un club ora e' DETERMINISTICO (coachDiClub23, club+stagione) anche al trasferimento: prima era estratto a caso e il nome mostrato poteva risultare falso. Sonda offerta-club.mjs: mister nella card = mister dopo la firma (Mister Mancuso = Mister Mancuso). Rossi __CPM_NO_OFFERTA23, __CPM_NO_MISTERCLUB23.
+// [7.985.0 - VIA I BIRILLI DALLE SCENE (collaudo PO 24/09 «dalle scene togli i birilli lego»)] Censite le figure fatte di primitive (sfera-testa): in partita non se ne vedono (tribune dipinte, sonda birilli.mjs); nelle scene l'unica visibile era la folla a cilindro+sfera del pullman (7.982, mia). Sostituita da una FOLLA DIPINTA su due pannelli lungo i marciapiedi (teste e spalle nei colori del club, sciarpe alzate), nessuna figura 3D. Testimone __CPM_FOLLA23="dipinta"; rosso __CPM_BIRILLI23 riporta i birilli. Restano primitive solo nei fallback che si vedono se i modelli 3D non caricano (galà vecchio, intro, cerimonie di riserva).
 // [7.984.0 - BRAIN «PARTITA VERA»: FALLI E FUORIGIOCO AI NUMERI VERI] Riferimento: Premier League 2024-25, StatMuse, media delle 20 squadre su 38 giornate — falli 11,04, fuorigioco 1,69, tiri 12,96, in porta 4,55, passaggi 446,2 all'83,9 %. Banco tests/brain/pagella.mjs (20 partite, 22 decisioni/min): (1) FUORIGIOCO 3,4 -> 1,7: chi e' sul filo della linea pesa -28 invece di -18 nella scelta del ricevente (i cross ridotti nella 7.980 avevano moltiplicato i palloni in profondita'); rosso __CPM_NO_FILO23. (2) FALLI 17,8 -> 12,1 in due pezzi misurati separatamente: la punizione per fuorigioco non si conta piu' come fallo (1,55 a squadra, rosso __CPM_NO_FALLOFG23) e il fallo di tenuta pesa x0,68 lasciando intatta la fascia del contrasto pulito (rosso __CPM_NO_FALLI23). PROVATI E RITIRATI perche' la misura non li reggeva: angolo di tiro in area (tiri 16,7 -> 17,0, nessun effetto) e colpo di testa immediato 0,24 -> 0,16 (tiri 14,9 ma in porta 4,3 -> 3,9: toglieva volume, non tiri cattivi). (3) TEST:LOGIC «un pallone, un padrone» era rosso: 12,7u per battito contro il tetto di 12 — la corsa verso il punto di caduta del cross (7.980, 40 u/min) sommata al movimento di formazione; ora 20 u/min, 43/43. Pagella dopo: falli 12,1 · fuorigioco 1,7 · tiri 17,1 · in porta 4,0 · xG 1,5. Aperti: tiri (26 % in porta contro 35 %), passaggi 241,5 al 90 %.
 // [7.983.0 - FISARMONICHE, TENDINA SOBRIA, PODIO DEI PREMI, LA TUA STAGIONE (collaudo PO 24/09 dal telefono + commenti anteprime)] (1) «Mancano diversi accordion»: nove sezioni lunghe avvolte nella Fisarmonica del kit (scelta ricordata per sezione, conteggio nel cappello): Club → Storico piazzamenti; Carriera → Attributi, MVP del Mese, Memoria, Diario, Timeline stagioni, Achievement; Agente → Richiedi cessione, Task settimanale (questa nasce aperta: si usa ogni settimana). Da 12 a 21 fisarmoniche. (2) «Evidenziazione lista valori invadente»: la tendina della lega portava cpm-focus, un anello spesso che restava dopo la scelta; ora bordo sottile della riga solo mentre e' attiva e uscita dal fuoco dopo la scelta (rosso __CPM_NO_FOCUS23). (3) Premi di fine stagione: tre premiati sono un PODIO (1° al centro piu' alto, figurine sui gradini; rosso __CPM_NO_PODIO23). (4) Chiusura dei premi: card «La tua stagione» con figurina e numeri veri (gol, assist, presenze, voto medio) prima dell'unico bottone primario (rosso __CPM_NO_RIEPILOGO23).
 // [7.982.0 - IL PULLMAN SCOPERTO RIFATTO (collaudo PO 24/09 «e' sicuramente da rivedere», proposta approvata)] Causa (foto della sonda parata-shot.mjs): omini a blocchi con la testa a sfera, pullman giallo piatto, coriandoli grandi come una ruota vicino alla lente, citta' di blocchi neri, inquadratura alta che tagliava tutto. Rimedio in ParataBus3D: 8 corpi CGTrader (corpoCG23, stessi degli highlight) con braccia dal throwin all'APICE MISURATO sul corpo (mani piu' alte rispetto alla testa: 0,475 della clip) e gambe dall'idle, clip filtrate per osso; l'eroe davanti alza la coppa fra le mani (posizione presa dalle ossa hand_l/hand_r); postura corretta come in partita; pullman ombreggiato con fascia bassa scura e luce di taglio; coriandoli a taglia fissa in pixel; facciate con finestre accese (una tela); ali di tifosi InstancedMesh con sciarpe (saltello a turni di un quarto); regia: bassa frontale sul tetto al posto dell'alta da dietro, laterale da sopra le teste. Testimone __CPM_PARATA.cg23=8, rosso __CPM_NO_PULLMAN23; la sonda ora gira coi corpi veri (CPM_GLB=0 per gli omini di riserva).
@@ -6844,6 +6845,11 @@ const COACH_STYLES=[
   {style:"Contropiede",trustMod:-3,desc:"Efficienza sopra la brillantezza"},
   {style:"Possesso Palla",trustMod:+8,desc:"Valorizza tecnica e visione"},
 ];
+/* [24/09 POC — risposta PO al questionario: «nell'offerta mostra l'allenatore»] IL MISTER DI UN CLUB E' DETERMINISTICO (club +
+   stagione): la card dell'offerta e il trasferimento vero mostrano la STESSA persona. Prima al trasferimento il mister era estratto
+   a caso, quindi qualunque nome mostrato nell'offerta poteva risultare falso dopo la firma. Rosso __CPM_NO_MISTERCLUB23. */
+function coachDiClub23(club,season){try{const k=String((club&&(club.id||club.n))||"x")+"|"+(season||1);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
+  const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:"Mister "+COACH_NAMES[h%COACH_NAMES.length],style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
 // Sprint 11 — S11.4 Derby database
 const DERBIES={
   "juve-inter":{name:"Derby d'Italia",e:"⚡"},"inter-juve":{name:"Derby d'Italia",e:"⚡"},
@@ -46505,7 +46511,8 @@ const getThisWeekMatchday=()=>{
       const newTeammates=generateTeammates({...p,club:newClub});
       // Sprint 98: generate fresh coach for new club
       const _cs98=pick(COACH_STYLES);
-      const _newCoach98={name:"Mister "+pick(COACH_NAMES),style:_cs98.style,trustMod:_cs98.trustMod};
+      const _cd23=(typeof window!=='undefined'&&window.__CPM_NO_MISTERCLUB23)?null:coachDiClub23(newClub,p.season||1);/* [24/09 POC] lo stesso mister mostrato nell'offerta */
+      const _newCoach98=_cd23?{name:_cd23.name,style:_cd23.style,trustMod:_cd23.trustMod}:{name:"Mister "+pick(COACH_NAMES),style:_cs98.style,trustMod:_cs98.trustMod};
       // Sprint 98: compute contract from offer (wage+duration already set by generateTransferOffer)
       const _newWage98=tc.wage||Math.round((p.ovr||65)*50);
       const _newDur98=tc.duration||2;
@@ -47147,6 +47154,15 @@ const getThisWeekMatchday=()=>{
                 "{(interviewModal.q?.q||"").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{club\}/g,player.club?.n||player.club?.name||"il club")}"
               </div>
             </div>
+            {/* [24/09 POC — risposta PO al questionario: «sì, eroe + giornalista»] chi risponde ha la sua figurina (volto intero),
+                speculare a quella del giornalista in testa. Rosso __CPM_NO_EROEIV23. */}
+            {!(typeof window!=='undefined'&&window.__CPM_NO_EROEIV23)&&<div data-cpm="eroe-intervista23" style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+              <Figurina tipo="giocatore" chiave={player.name} larg={44}/>
+              <div style={{minWidth:0}}>
+                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Rispondi tu</div>
+                <div style={{fontSize:FS.body,fontWeight:800,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{player.name}</div>
+              </div>
+            </div>}
             {/* Answer choices */}
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {(interviewModal.q?.a||[]).map((ans,i)=>{
@@ -47412,6 +47428,30 @@ const getThisWeekMatchday=()=>{
                     <div key={l}><div className="cpm-num" style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text}}>{v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}
                 </div>
                 <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>{lg} · prestigio {c.p||"—"} · differenza reti {(t.gd!=null?t.gd:(t.gf|0)-(t.ga|0))>0?"+":""}{t.gd!=null?t.gd:(t.gf|0)-(t.ga|0)}</div>
+                {/* [24/09 POC — risposta PO al questionario] ultime 5, ruolo in rosa, allenatore. Rosso __CPM_NO_OFFERTA23 */}
+                {!(typeof window!=='undefined'&&window.__CPM_NO_OFFERTA23)&&(()=>{
+                  /* ULTIME 5: la classifica delle ALTRE leghe e' deterministica settimana per settimana, quindi la differenza fra due
+                     settimane consecutive dice esattamente com'e' finita quella giornata. Nella tua lega lo storico degli altri non c'e': niente pallini. */
+                  const _l5=[];const _stessa=!!(player.club&&lg===player.club.lg);
+                  if(!_stessa&&typeof calcWorldStandings==="function"){let prev=null;for(let w=Math.max(1,(player.week||1)-12);w<=(player.week||1);w++){const r2=calcWorldStandings(lg,player.season||1,w,player.leagueOverrides||{}).find(x=>x&&(x.id===c.id||x.n===c.n));
+                    if(r2&&prev&&(r2.played|0)>(prev.played|0)){_l5.push((r2.wins|0)>(prev.wins|0)?"V":(r2.draws|0)>(prev.draws|0)?"P":"S");}if(r2)prev=r2;}}
+                  const l5=_l5.slice(-5);
+                  const _min=+transferOffer.minutaggio||0;const _ruolo=_min>=70?"Titolare":_min>=45?"In rotazione":"Riserva";
+                  let _nRuolo=null;try{const R=generateTeamRoster(c,player.season||1);const _pos=String(player.position||"").toLowerCase();
+                    const _grp=/att|punta|centrav|ala/.test(_pos)?/Centravanti|Attaccante|Ala/:/centroc|mezz|trequart|mediano|regista/.test(_pos)?/Centrocampista|Mezzala|Trequartista|Mediano/:/difens|terzin|centrale/.test(_pos)?/Difensore|Terzino/:null;
+                    if(_grp)_nRuolo=R.filter(x=>_grp.test(x.role)).length;}catch(_e){}
+                  const co=coachDiClub23(c,player.season||1);
+                  const _col={V:TH.winFg||"#166534",P:TH.drawFg||"#a16207",S:TH.lossFg||"#b91c1c"},_bg={V:TH.winBg,P:TH.drawBg,S:TH.lossBg};
+                  return(<div data-cpm="offerta-dettagli23" style={{marginTop:SP.md,paddingTop:SP.sm,borderTop:"1px solid "+TH.divider,display:"flex",flexDirection:"column",gap:SP.sm}}>
+                    {l5.length>0&&<div style={{display:"flex",alignItems:"center",gap:SP.sm}}><span style={{fontSize:FS.caption,color:TH.muted,minWidth:88}}>Ultime {l5.length}</span>
+                      <div style={{display:"flex",gap:4}}>{l5.map((x,k)=>(<span key={k} className="cpm-num" style={{width:22,height:22,borderRadius:RAD.xs,background:_bg[x],color:_col[x],fontSize:FS.caption,fontWeight:FW.black,display:"flex",alignItems:"center",justifyContent:"center"}}>{x}</span>))}</div></div>}
+                    <div style={{display:"flex",alignItems:"center",gap:SP.sm}}><span style={{fontSize:FS.caption,color:TH.muted,minWidth:88}}>Il tuo ruolo</span>
+                      <span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{_ruolo}</span><span style={{fontSize:FS.caption,color:TH.muted}}>· minutaggio {_min}%{_nRuolo!=null?" · "+_nRuolo+" nel tuo reparto":""}</span></div>
+                    {co&&<div style={{display:"flex",alignItems:"center",gap:SP.sm}}>
+                      {(()=>{try{return <Figurina tipo="mister" chiave={co.name} larg={34}/>;}catch(_e){return null;}})()}
+                      <div style={{minWidth:0}}><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{co.name} <span style={{fontWeight:FW.medium,color:TH.muted}}>· {co.style}</span></div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>{co.desc}</div></div></div>}
+                  </div>);})()}
               </div>);}catch(_e){return null;}})()}
             <Card style={{padding:"12px",marginBottom:10}} bg={TH.bgBlue} border="#bfdbfe" shadow={false}>
               <div style={{fontSize:FS.body,fontWeight:700,color:TH.brandText,marginBottom:4}}>📩 Offerta: {transferOffer.type}</div>

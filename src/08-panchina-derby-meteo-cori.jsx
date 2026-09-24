@@ -31,6 +31,11 @@ const COACH_STYLES=[
   {style:"Contropiede",trustMod:-3,desc:"Efficienza sopra la brillantezza"},
   {style:"Possesso Palla",trustMod:+8,desc:"Valorizza tecnica e visione"},
 ];
+/* [24/09 POC — risposta PO al questionario: «nell'offerta mostra l'allenatore»] IL MISTER DI UN CLUB E' DETERMINISTICO (club +
+   stagione): la card dell'offerta e il trasferimento vero mostrano la STESSA persona. Prima al trasferimento il mister era estratto
+   a caso, quindi qualunque nome mostrato nell'offerta poteva risultare falso dopo la firma. Rosso __CPM_NO_MISTERCLUB23. */
+function coachDiClub23(club,season){try{const k=String((club&&(club.id||club.n))||"x")+"|"+(season||1);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
+  const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:"Mister "+COACH_NAMES[h%COACH_NAMES.length],style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
 // Sprint 11 — S11.4 Derby database
 const DERBIES={
   "juve-inter":{name:"Derby d'Italia",e:"⚡"},"inter-juve":{name:"Derby d'Italia",e:"⚡"},

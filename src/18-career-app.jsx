@@ -5539,7 +5539,8 @@ const getThisWeekMatchday=()=>{
       const newTeammates=generateTeammates({...p,club:newClub});
       // Sprint 98: generate fresh coach for new club
       const _cs98=pick(COACH_STYLES);
-      const _newCoach98={name:"Mister "+pick(COACH_NAMES),style:_cs98.style,trustMod:_cs98.trustMod};
+      const _cd23=(typeof window!=='undefined'&&window.__CPM_NO_MISTERCLUB23)?null:coachDiClub23(newClub,p.season||1);/* [24/09 POC] lo stesso mister mostrato nell'offerta */
+      const _newCoach98=_cd23?{name:_cd23.name,style:_cd23.style,trustMod:_cd23.trustMod}:{name:"Mister "+pick(COACH_NAMES),style:_cs98.style,trustMod:_cs98.trustMod};
       // Sprint 98: compute contract from offer (wage+duration already set by generateTransferOffer)
       const _newWage98=tc.wage||Math.round((p.ovr||65)*50);
       const _newDur98=tc.duration||2;
@@ -6181,6 +6182,15 @@ const getThisWeekMatchday=()=>{
                 "{(interviewModal.q?.q||"").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{club\}/g,player.club?.n||player.club?.name||"il club")}"
               </div>
             </div>
+            {/* [24/09 POC — risposta PO al questionario: «sì, eroe + giornalista»] chi risponde ha la sua figurina (volto intero),
+                speculare a quella del giornalista in testa. Rosso __CPM_NO_EROEIV23. */}
+            {!(typeof window!=='undefined'&&window.__CPM_NO_EROEIV23)&&<div data-cpm="eroe-intervista23" style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+              <Figurina tipo="giocatore" chiave={player.name} larg={44}/>
+              <div style={{minWidth:0}}>
+                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Rispondi tu</div>
+                <div style={{fontSize:FS.body,fontWeight:800,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{player.name}</div>
+              </div>
+            </div>}
             {/* Answer choices */}
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {(interviewModal.q?.a||[]).map((ans,i)=>{
@@ -6446,6 +6456,30 @@ const getThisWeekMatchday=()=>{
                     <div key={l}><div className="cpm-num" style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text}}>{v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}
                 </div>
                 <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>{lg} · prestigio {c.p||"—"} · differenza reti {(t.gd!=null?t.gd:(t.gf|0)-(t.ga|0))>0?"+":""}{t.gd!=null?t.gd:(t.gf|0)-(t.ga|0)}</div>
+                {/* [24/09 POC — risposta PO al questionario] ultime 5, ruolo in rosa, allenatore. Rosso __CPM_NO_OFFERTA23 */}
+                {!(typeof window!=='undefined'&&window.__CPM_NO_OFFERTA23)&&(()=>{
+                  /* ULTIME 5: la classifica delle ALTRE leghe e' deterministica settimana per settimana, quindi la differenza fra due
+                     settimane consecutive dice esattamente com'e' finita quella giornata. Nella tua lega lo storico degli altri non c'e': niente pallini. */
+                  const _l5=[];const _stessa=!!(player.club&&lg===player.club.lg);
+                  if(!_stessa&&typeof calcWorldStandings==="function"){let prev=null;for(let w=Math.max(1,(player.week||1)-12);w<=(player.week||1);w++){const r2=calcWorldStandings(lg,player.season||1,w,player.leagueOverrides||{}).find(x=>x&&(x.id===c.id||x.n===c.n));
+                    if(r2&&prev&&(r2.played|0)>(prev.played|0)){_l5.push((r2.wins|0)>(prev.wins|0)?"V":(r2.draws|0)>(prev.draws|0)?"P":"S");}if(r2)prev=r2;}}
+                  const l5=_l5.slice(-5);
+                  const _min=+transferOffer.minutaggio||0;const _ruolo=_min>=70?"Titolare":_min>=45?"In rotazione":"Riserva";
+                  let _nRuolo=null;try{const R=generateTeamRoster(c,player.season||1);const _pos=String(player.position||"").toLowerCase();
+                    const _grp=/att|punta|centrav|ala/.test(_pos)?/Centravanti|Attaccante|Ala/:/centroc|mezz|trequart|mediano|regista/.test(_pos)?/Centrocampista|Mezzala|Trequartista|Mediano/:/difens|terzin|centrale/.test(_pos)?/Difensore|Terzino/:null;
+                    if(_grp)_nRuolo=R.filter(x=>_grp.test(x.role)).length;}catch(_e){}
+                  const co=coachDiClub23(c,player.season||1);
+                  const _col={V:TH.winFg||"#166534",P:TH.drawFg||"#a16207",S:TH.lossFg||"#b91c1c"},_bg={V:TH.winBg,P:TH.drawBg,S:TH.lossBg};
+                  return(<div data-cpm="offerta-dettagli23" style={{marginTop:SP.md,paddingTop:SP.sm,borderTop:"1px solid "+TH.divider,display:"flex",flexDirection:"column",gap:SP.sm}}>
+                    {l5.length>0&&<div style={{display:"flex",alignItems:"center",gap:SP.sm}}><span style={{fontSize:FS.caption,color:TH.muted,minWidth:88}}>Ultime {l5.length}</span>
+                      <div style={{display:"flex",gap:4}}>{l5.map((x,k)=>(<span key={k} className="cpm-num" style={{width:22,height:22,borderRadius:RAD.xs,background:_bg[x],color:_col[x],fontSize:FS.caption,fontWeight:FW.black,display:"flex",alignItems:"center",justifyContent:"center"}}>{x}</span>))}</div></div>}
+                    <div style={{display:"flex",alignItems:"center",gap:SP.sm}}><span style={{fontSize:FS.caption,color:TH.muted,minWidth:88}}>Il tuo ruolo</span>
+                      <span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{_ruolo}</span><span style={{fontSize:FS.caption,color:TH.muted}}>· minutaggio {_min}%{_nRuolo!=null?" · "+_nRuolo+" nel tuo reparto":""}</span></div>
+                    {co&&<div style={{display:"flex",alignItems:"center",gap:SP.sm}}>
+                      {(()=>{try{return <Figurina tipo="mister" chiave={co.name} larg={34}/>;}catch(_e){return null;}})()}
+                      <div style={{minWidth:0}}><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{co.name} <span style={{fontWeight:FW.medium,color:TH.muted}}>· {co.style}</span></div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>{co.desc}</div></div></div>}
+                  </div>);})()}
               </div>);}catch(_e){return null;}})()}
             <Card style={{padding:"12px",marginBottom:10}} bg={TH.bgBlue} border="#bfdbfe" shadow={false}>
               <div style={{fontSize:FS.body,fontWeight:700,color:TH.brandText,marginBottom:4}}>📩 Offerta: {transferOffer.type}</div>
