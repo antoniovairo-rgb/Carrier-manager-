@@ -5290,7 +5290,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.980.0"; // [7.980.0 - IL POC CGTRADER E IL BRAIN «PARTITA VERA» ENTRANO IN PRODUZIONE (direttiva PO 24/09: «ormai questo branch e' il mantra»)] Causa: corpi CH38 e grafica fuori standard (collaudo PO), brain con statistiche non credibili. Misure (banco tests/brain/pagella.mjs, 20 partite, rosso completo -> verde): tiri da dentro l'area 16% -> 71% (Premier League 2024-25: 68,3%, Opta Analyst), dribbling riusciti 96% -> 46% (PL 2025-26: 36,7%), punizioni dirette 87 -> 12 su 10 partite; CH38 negli highlight 39/39 -> 0; bambini dell'ingresso ~10 m -> 1,25 m; LED dello stadio 23,5 -> 2,42 (tribuna 6,44). Guardiani: test:logic 43/43, save-compat 12/12, partita-vera OK, griglia-mobile 65/65 senza sbordi, gate validate-situations. Storia completa: tests/character-lab/POC_ROADMAP.md. — precedente: [7.979.0 - IL RAGGIO 3 NON ESISTE NEL SISTEMA: LE BARRETTE PASSANO A RAD.pill] Censimento della griglia: Club [3,6,8,12,50], Profilo [3,6,8,12,20,50], post-partita [3,8,12,20] - il 3 NON e in RAD (6,8,12,16,20,999). Non era una scelta di gerarchia, era un valore inventato: su un binario alto 2-6 px un raggio 3 e gia la meta dell altezza, cioe ESATTAMENTE una pillola. 53 binari, riempimenti e linee sottili passano a RAD.pill: il RESO E IDENTICO al pixel, cambia solo che il valore adesso viene dal sistema. RESTANO 18 raggi 3 e restano apposta: quadratini dei risultati (13x13, 14x14), coriandoli e cartellini, dove il 3 e una scelta di FORMA - un quadrato smussato - e pill li farebbe diventare cerchi. Un metro non si serve peggiorando il disegno. A VERBALE, perche e la scoperta piu utile di questo passo: Club e Profilo NON salgono tagliando tinte. Le dieci tinte di Club sono due livelli VOLUTI del testo secondario (TH.faint #596a80 e TH.muted #526279, gerarchia dichiarata e con contrasti gia misurati), il colore SOCIALE del club (#6c1f2e e FC Salernum, non una tinta del tema), il bianco e gli inchiostri semantici dei numeri. Unificarle farebbe salire il punteggio PEGGIORANDO la schermata, che e il contrario del patto. NON VERIFICATO: Chromium a 412x915, non l Android del PO.
+const GAME_VERSION="7.981.0"; // [7.981.0 - I COMMENTI DEL PO SULLE ANTEPRIME (24/09)] Causa: 12 commenti sulla pagina anteprime (galà, premiazione, procuratore, offerta, toast, fine stagione, zona mista). Misure: (1) FRENO all'avanzamento compulsivo — sonda avanza-compulsivo.mjs, 20 tocchi in 4 s: verde 19 trattenuti e settimana letta, rosso __CPM_NO_FRENO23 settimana saltata fino al prompt partita; Invio non firma piu' un trasferimento. (2) UNA FINESTRA ALLA VOLTA — anteprima 05 aveva 2-3 finestre impilate (confronto+intervista+verifica mister): precedenza unica `_fila23`, rosso __CPM_NO_CODA23. (3) Toast centrato (cpm-rise sovrascriveva il translateX: toast tagliato a destra) e riscontro intervista spostato in alto. (4) PREMIAZIONE DI SQUADRA — squadra intera in scena (prima 4 attori su 11, cast «cinema»), arco dietro il podio, striscione col nome della competizione rivolto alla camera, capitano -> eroe alza la coppa guardando la camera; sonda ceremony-shot.mjs, rosso __CPM_NO_PREMIO23. (5) Offerta: card «situazione del club» (posizione/punti/V-P-S/prestigio/DR) prima di accettare, sonda offerta-club.mjs. (6) Galà: presentatori con figurina, niente spettatori 3D; fine stagione: duello col rivale e presidente nel kit chiaro (rossi __CPM_NO_RIVALE23/__CPM_NO_PRES23). Guardiani: le sonde citate + catena CI completa.
+// [7.980.0 - IL POC CGTRADER E IL BRAIN «PARTITA VERA» ENTRANO IN PRODUZIONE (direttiva PO 24/09: «ormai questo branch e' il mantra»)] Causa: corpi CH38 e grafica fuori standard (collaudo PO), brain con statistiche non credibili. Misure (banco tests/brain/pagella.mjs, 20 partite, rosso completo -> verde): tiri da dentro l'area 16% -> 71% (Premier League 2024-25: 68,3%, Opta Analyst), dribbling riusciti 96% -> 46% (PL 2025-26: 36,7%), punizioni dirette 87 -> 12 su 10 partite; CH38 negli highlight 39/39 -> 0; bambini dell'ingresso ~10 m -> 1,25 m; LED dello stadio 23,5 -> 2,42 (tribuna 6,44). Guardiani: test:logic 43/43, save-compat 12/12, partita-vera OK, griglia-mobile 65/65 senza sbordi, gate validate-situations. Storia completa: tests/character-lab/POC_ROADMAP.md. — precedente: [7.979.0 - IL RAGGIO 3 NON ESISTE NEL SISTEMA: LE BARRETTE PASSANO A RAD.pill] Censimento della griglia: Club [3,6,8,12,50], Profilo [3,6,8,12,20,50], post-partita [3,8,12,20] - il 3 NON e in RAD (6,8,12,16,20,999). Non era una scelta di gerarchia, era un valore inventato: su un binario alto 2-6 px un raggio 3 e gia la meta dell altezza, cioe ESATTAMENTE una pillola. 53 binari, riempimenti e linee sottili passano a RAD.pill: il RESO E IDENTICO al pixel, cambia solo che il valore adesso viene dal sistema. RESTANO 18 raggi 3 e restano apposta: quadratini dei risultati (13x13, 14x14), coriandoli e cartellini, dove il 3 e una scelta di FORMA - un quadrato smussato - e pill li farebbe diventare cerchi. Un metro non si serve peggiorando il disegno. A VERBALE, perche e la scoperta piu utile di questo passo: Club e Profilo NON salgono tagliando tinte. Le dieci tinte di Club sono due livelli VOLUTI del testo secondario (TH.faint #596a80 e TH.muted #526279, gerarchia dichiarata e con contrasti gia misurati), il colore SOCIALE del club (#6c1f2e e FC Salernum, non una tinta del tema), il bianco e gli inchiostri semantici dei numeri. Unificarle farebbe salire il punteggio PEGGIORANDO la schermata, che e il contrario del patto. NON VERIFICATO: Chromium a 412x915, non l Android del PO.
 // [nota 7.761.0] [7.761.0 — FASE 10, OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO, E IL METRO DELLE RIGHE FONDATE SMETTE DI PUNIRE I TIRI]. Il censimento fondate-558 contava «smentite» righe che dichiaravano un punto e trovavano il pallone alla linea di porta (94,50) nella stessa finestra: non era la riga a mentire, era il tiro dell'eroe (parato o fuori) che il giudice non poteva vedere perche' il libro mastro registrava solo i gol. Ora handleAction scrive cpmEv(«esito», {min,key,ok,at}) per ogni azione risolta, e il metro (7.760: gol nella finestra → conto a parte; 7.761: anche gli esiti goal/miss/save/chance/assist) mette quelle righe in un conto separato, ne' fondate ne' smentite. Il gioco non cambia: cambia cio' che il libro mastro sa, e quindi cio' che i guardiani potranno chiedere. MISURA: fondate-558 sui semi 7300/7337 prima e dopo (vedi verbale).
 // [nota 7.759.0] [7.759.0 — TROVATO DAL GUARDIANO: il gol subito nella scena difensiva non entrava nel libro mastro]. La banda «tabellone» (7.756), fatta girare su QUATTRO partite per la stabilita', ha bocciato: gol raccontati 2-4 contro punteggio finale 2-5. Censiti i cinque scrittori del punteggio: gol dell'eroe da gioco aperto (1153), gol ambientale nostro e loro (4464/4465), gol dell'eroe su palla ferma (6638) hanno tutti il loro cpmEv(«goal»); il gol AVVERSARIO da scena difensiva (esito goal_against di handleAction) incrementava il punteggio senza scriverlo nel libro mastro — quindi il feed del tabellone (7.721), la banda «tabellone» e ogni guardiano che conta i gol dagli eventi lo perdevano. Ora scrive l'evento con src «scena-difensiva». Il punteggio non cambia (il microsim e le scene restano l'autorita'): cambia solo che ogni gol e' registrato. MISURA: guardiano a 4 partite, banda tabellone da rossa a verde (vedi verbale).
 // [nota 7.758.0] [7.758.0 — COLLAUDO PO 03/09 18:01 «pannello nero dietro la porta»: il cartellone centrale dietro la porta (z=0) era un rettangolo NERO senza scritta durante la scena ASSIST/DOMINIO, Coppa, GLB ON]. DIAGNOSI dal diario 7.535, che aveva gia' fotografato la firma: «quando l'allocazione non riesce, la mesh resta ma la sua texture e' vuota — e una texture vuota su materiale opaco e' NERA»; in headless non si riproduce (nessuna texture nera su 99 piani texturizzati), sul telefono con folla GLB, kit, volti e arredo la memoria GPU finisce e il primo cartellone che non si alloca e' quello che il PO guarda. RIMEDIO: il budget scende dove costa di piu' e non si vede — cartelloni (1024x160, uno per brand e stile) e drappi (1024x110) si disegnano come prima e si consegnano alla GPU a meta' lato (512x80 / 512x55), senza mipmap e con anisotropia 4. MISURATO (hook __CPM_DECOR, provino GLB ON, ON vs rosso __CPM_NO758): arredo 25,5 MB contro 30,7 MB (−17%), 11 cartelloni da 1024x160 a 512x80, stessi 167 piani e 52 texture uniche, zero texture nere in entrambi. Restano 8 texture 1024x512 (16 MB) e 2 LED 2048x128 (2 MB), censite per la prossima tacca. NON VERIFICATO sul telefono: la scomparsa del pannello nero va confermata dal PO nella stessa scena (Coppa, GLB ON). 7.757 «il piano-gol nasce dalla mente» PROVATA E REVOCATA (fondate appaiato peggiore: 75,7/71,9 contro 81,3/82,4).
@@ -9825,7 +9826,19 @@ const OvrRing=({value,size=60,label="OVR"})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
   return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:fsScala(Math.max(FS.caption,size*.27))/* [C4] pavimento 11 px */,fontWeight:900,color:legCol944(c),lineHeight:1}}>{value}</div><div style={{fontSize:FS.caption,color:TH.faint}}>{label}</div></div></div>;
 };
-const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
+/* [24/09 POC — commento PO sull'anteprima «i toast devono essere piu' carini»] IL TOAST DEL KIT: pannello chiaro con la
+   striscia colorata a sinistra, l'emoji iniziale del messaggio in un bollino, testo in inchiostro della pagina; sta in BASSO
+   sopra la barra di navigazione, cosi' non copre piu' la testata («Simulazione…» sopra il nome). Rosso __CPM_NO_TOAST23. */
+const _NotifVecchio=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
+const Notif=({msg,color})=>{if(typeof window!=='undefined'&&window.__CPM_NO_TOAST23)return _NotifVecchio({msg,color});if(!msg)return null;
+  const m=String(msg).match(/^\s*((?:\p{Extended_Pictographic}|\p{Emoji_Presentation})(?:\uFE0F|\u200D(?:\p{Extended_Pictographic}|\p{Emoji_Presentation}))*)\s*/u);const ic=m?m[1]:null,tx=m?String(msg).slice(m[0].length):String(msg);
+  const c=(typeof legCol944==='function'?legCol944(color||TH.primary):(color||TH.primary));
+  /* [24/09 POC] centrato da un contenitore flex a tutta larghezza: `cpm-rise` anima `transform` e cancellava il translateX(-50%) -> toast spostato a destra e tagliato (anteprima 04/05) */
+  return(<div style={{position:"fixed",left:0,right:0,bottom:"calc(96px + env(safe-area-inset-bottom, 0px))",zIndex:9999,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 16px"}}><div data-cpm="toast23" role="status" className="cpm-rise" style={{
+    display:"flex",alignItems:"center",gap:SP.sm,maxWidth:380,minWidth:0,background:TH.surface3,border:"1px solid "+TH.divider,borderLeft:"4px solid "+c,borderRadius:RAD.md,padding:"9px 14px 9px 10px",boxShadow:TH.el3}}>
+    {ic&&<span style={{width:30,height:30,borderRadius:"50%",background:TH.surface2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{ic}</span>}
+    <span style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,lineHeight:1.35,minWidth:0,overflowWrap:"anywhere"}}>{tx}</span>
+  </div></div>);};
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
@@ -19408,6 +19421,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           actType=null;celebT=-1;sr.current._celPlan393=null;heroPostT=-1;subEntryT=-1;// la premiazione ha priorità su ogni altra posa/coreografia
           // compagni di casa (outfield, non portiere, non eroe)
           const _cel=[];sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(pp.mesh&&pp.mesh!==hero&&src&&src.team==="home"&&!src.gk)_cel.push(pp.mesh);});
+          /* [24/09 POC — commento PO sull'anteprima «la premiazione deve essere di squadra con palco in mezzo con il nome della
+             competizione, non isterica; il capitano alza la coppa e la passa all'eroe per la foto»] PREMIAZIONE DI SQUADRA:
+             sequenza calma consegna -> capitano -> l'eroe alza la coppa sul podio -> foto di gruppo; il capitano e' il primo
+             compagno di movimento, esce dal gruppo che festeggia e va al podio. Rosso __CPM_NO_PREMIO23. */
+          const _team23=!(typeof window!=='undefined'&&window.__CPM_NO_PREMIO23)&&_ck422!=="promo"&&_ck422!=="bigwin"&&!(P.ceremony&&P.ceremony.light);
+          const _cap23=_team23?(_cel.shift()||null):null;
           const _cSgn=(propsRef.current.heroStandHome===false)?-1:1;sr.current._cerSgn=_cSgn;/* [7.278.0 collaudo PO «il festeggiamento del trofeo deve avvenire sotto la curva dei propri tifosi»] La Curva Sud (x=+) ospita i tifosi della squadra di CASA REALE (lato-tribuna, lezione 7.52.2): in trasferta i tuoi stanno nella curva opposta, e il giro di campo andava sotto quella sbagliata. */
           const _NC=Math.max(1,_cel.length),CURVA_X=_cSgn*(AWAY_GOAL_X-6);
           /* [7.425.0 EVOLUTIVA CELEBRAZIONI — direttiva PO «ogni grande traguardo deve essere un
@@ -19430,10 +19449,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_ck422==="promo")_bs=[_mk("burst",2.8),_mk("hug",3.2),_mk("coach",2.6),_mk("curva",4.2),_mk("fest",3.6)];
             else if(_ck422==="int")_bs=[_mk("burst",2.4),_mk("hug",2.4),_mk("coach",2.2),_mk("present",2.8),_mk("lift",3.8),_mk("lap",4.2),_mk("curva",2.8),_mk("fest",3.0)];
             else if(_ck422==="bigwin")_bs=[_mk("burst",2.4),_mk("hug",2.8),_mk("fest",3.0)];
-            else _bs=[_mk("burst",2.4),_mk("hug",2.6),_mk("present",2.6),_mk("lift",3.6),_mk("lap",4.0),_mk("curva",3.0),_mk("fest",3.0)];/* league: la festa di popolo, completa — [7.426.0] IL GIRO DI CAMPO VA DOPO LA CONSEGNA, col trofeo in mano: prima la coppa girava il campo prima di essere consegnata */
+            else _bs=[_mk("burst",2.4),_mk("hug",2.6),_mk("present",2.6),_mk("lift",3.6),_mk("lap",4.0),_mk("curva",3.0),_mk("fest",3.0)];
+            if(_team23)_bs=[_mk("present",3.0),_mk("captain",3.4),_mk("lift",3.8),_mk("fest",3.6)];/* [24/09 POC] premiazione di squadra: niente burst/hug/lap/curva *//* league: la festa di popolo, completa — [7.426.0] IL GIRO DI CAMPO VA DOPO LA CONSEGNA, col trofeo in mano: prima la coppa girava il campo prima di essere consegnata */
             if(_r425(3)<0.5&&_bs.length>2&&_bs[1].k==="hug"&&_bs[2].k==="coach"){const _t=_bs[1];_bs[1]=_bs[2];_bs[2]=_t;}/* variante: il mister puo' arrivare prima dell'abbraccio */
             const _roles=[];for(let ri=0;ri<24;ri++)_roles.push(["salta","abbraccia","ginocchio","corre","applaude"][(_seed>>ri%16)%5===undefined?0:Math.floor(_r425(ri*3)*5)%5]);
+            if(_team23)for(let ri=0;ri<_roles.length;ri++)_roles[ri]="applaude";/* la squadra applaude composta */
             sr.current._cer425={k:(P.ceremony.name||"")+(P.ceremony.kind||""),beats:_bs,roles:_roles,camv:Math.floor(_r425(11)*3)};
+            /* il palco col nome della competizione, dietro il podio */
+            if(_team23){try{if(podiumGrp._banner23)podiumGrp.remove(podiumGrp._banner23);const cv=document.createElement('canvas');cv.width=1024;cv.height=192;const g2=cv.getContext('2d');
+              const gr=g2.createLinearGradient(0,0,0,192);gr.addColorStop(0,'#16121f');gr.addColorStop(1,'#0b0910');g2.fillStyle=gr;g2.fillRect(0,0,1024,192);
+              g2.fillStyle='#d4a017';g2.fillRect(0,0,1024,8);g2.fillRect(0,184,1024,8);g2.fillStyle='#fde68a';g2.textAlign='center';g2.textBaseline='middle';
+              let fs=86;const tx=String(P.ceremony.name||"CAMPIONI").toUpperCase();g2.font='900 '+fs+'px Barlow, Arial, sans-serif';while(fs>40&&g2.measureText(tx).width>940){fs-=4;g2.font='900 '+fs+'px Barlow, Arial, sans-serif';}g2.fillText(tx,512,100);
+              const bn=new THREE.Mesh(new THREE.PlaneGeometry(6.0,1.12),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cv)}));bn.position.set(0,3.25,0);
+              const pl=new THREE.Mesh(new THREE.BoxGeometry(0.14,3.8,0.14),new THREE.MeshLambertMaterial({color:0x2a2f3a}));const pr=pl.clone();pl.position.set(-3.0,1.9,-0.03);pr.position.set(3.0,1.9,-0.03);
+              /* il palco guarda la CAMERA della consegna (-sgn*10, 8): di fronte era a +z e la camera lo vedeva di sbieco, enorme e fuori centro */
+              const _ux=-_cSgn*10,_uz=8,_ul=Math.hypot(_ux,_uz);const gB=new THREE.Group();gB.add(bn);gB.add(pl);gB.add(pr);gB.position.set(-_ux/_ul*7.2,0,-_uz/_ul*7.2);gB.rotation.y=Math.atan2(_ux,_uz);
+              podiumGrp.add(gB);podiumGrp._banner23=gB;}catch(_eB){}}
             /* il TROFEO della competizione: la coppa classica resta; per lo scudetto un PIATTO d'oro
                con corona d'alloro, per l'internazionale la coppa GRANDE dalle orecchie larghe; la
                promozione festeggia SENZA coppa (il premio e' la categoria) */
@@ -19551,7 +19582,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(_bk==="burst"||_bk==="hug"||_bk==="coach"){_htx=_cerHx0;_htz=_cerHz0;}
           else if(_bk==="lap"){_htx=_cerHx0+(CURVA_X-_cerHx0)*_bp;_htz=_cerHz0*(1-_bp)+Math.sin(_bp*Math.PI)*(_cerHz0>=0?9:-9);_armsUp=false;}
           else if(_bk==="curva"){_htx=CURVA_X;_htz=0;if(crowdOhT<0&&Math.sin(_ct*3)>0.9)crowdOhT=0;}
-          else if(_bk==="present"){_htx=-_cSgn*2.3;_htz=1.4;podiumGrp.visible=true;}/* [7.429.0 collaudo PO «eroe che sprofonda nel palco»] alla consegna si sta ACCANTO al podio (il bersaglio (0,0) lo piantava DENTRO il cilindro); ci si sale solo al sollevamento */
+          else if(_bk==="present"||_bk==="captain"){_htx=-_cSgn*2.3;_htz=1.4;podiumGrp.visible=true;}/* [7.429.0 collaudo PO «eroe che sprofonda nel palco»] alla consegna si sta ACCANTO al podio (il bersaglio (0,0) lo piantava DENTRO il cilindro); ci si sale solo al sollevamento */
           else if(_bk==="lift"){_htx=0;_htz=0;_onPodium=true;podiumGrp.visible=true;}
           else{_htx=(_ck422==="promo"?CURVA_X*0.7:0);_htz=0;}/* fest: la promozione resta coi tifosi */
           animOne(hero,_htx,_htz,aDt,ak,_htx,_htz);// muove l'eroe (gambe animate quando cammina)
@@ -19577,7 +19608,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                piano degli screenshot del PO (misurato: dCam 5-7u costanti in ogni beat). Ora segue il
                gruppo DIETRO l'eroe sul lato opposto alla camera (z-4,5) e alla consegna sta oltre il
                podio (z-4,2), mai fra l'obiettivo e la scena. */
-            const _cto=(_bk==="coach")?{x:hero.position.x-_cSgn*1.3,z:hero.position.z}:(_bk==="lift"||_bk==="present")?{x:-_cSgn*2.6,z:-4.2}:{x:hero.position.x-_cSgn*2.2,z:hero.position.z-4.5};
+            const _cto=(_bk==="coach")?{x:hero.position.x-_cSgn*1.3,z:hero.position.z}:(_bk==="lift"||_bk==="present"||_bk==="captain")?{x:-_cSgn*2.6,z:-4.2}:{x:hero.position.x-_cSgn*2.2,z:hero.position.z-4.5};
             /* [collaudo PO nazionale «il mister vola, si muove con il teletrasporto»] il lerp
                proporzionale (aDt*1.4) su un bersaglio a 10-15u produceva passi da 4-6u/s in PLANATA,
                senza gambe: un signore che levita attraverso il campo. Ora cammina a VELOCITA' UMANA
@@ -19647,7 +19678,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            else if(_bk==="hug")_shot={x:_hx3-_cSgn*8,y:3.6+_cv*0.4,z:_hz3+6,lx:_hx3,ly:1.4,lz:_hz3};
            else if(_bk==="lap")_shot={x:_hx3-_cSgn*11,y:5,z:_hz3+8,lx:_hx3,ly:1.5,lz:_hz3};
            else if(_bk==="curva")_shot={x:_hx3-_cSgn*20,y:8.5,z:_hz3+(_cv-1)*4,lx:_hx3+_cSgn*8,ly:4,lz:0};
-           else if(_bk==="present")_shot={x:-_cSgn*10,y:3.2,z:8,lx:0,ly:2.0,lz:0};
+           else if(_bk==="present"||_bk==="captain")_shot={x:-_cSgn*10,y:3.2,z:8,lx:0,ly:2.0,lz:0};
            else if(_bk==="lift")_shot={x:-_cSgn*(9+_bp*6),y:3.4+_bp*3,z:6+_bp*4,lx:0,ly:2.4,lz:0};
            else _shot={x:_hx3-_cSgn*16,y:7,z:_hz3+10,lx:_hx3,ly:2,lz:_hz3};
            sr.current._cerCam=_shot;}
@@ -19699,6 +19730,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _hx4=trophyGrp.position.x,_hy4=trophyGrp.position.y,_hz4=trophyGrp.position.z;/* bersaglio mani: l'attacco qui sopra l'ha gia' scritto */
               trophyGrp.position.set(_hx4*_pw426,1.35+(_hy4-1.35)*_pw426,_hz4*_pw426);}
             else{trophyGrp.position.set(0,-50,0);}}/* prima della consegna la coppa non c'e' ancora: arriva SUL PODIO e vola alle mani nell'ultimo tratto */
+          if(_cap23){const _cT=(_bk==="captain")?{x:0,z:0.2}:(_bk==="present")?{x:_cSgn*2.3,z:1.4}:{x:_cSgn*2.6,z:1.6};if(_cap23._snap23!==_SC){_cap23.position.x=_cSgn*2.3;_cap23.position.z=1.4;_cap23._snap23=_SC;if(hero._snap23!==_SC){hero.position.x=-_cSgn*2.3;hero.position.z=1.4;hero._snap23=_SC;}}animOne(_cap23,_cT.x,_cT.z,aDt,ak,_cT.x,_cT.z);
+            if(_bk==="captain"&&_bp>0.25){try{const _cAv=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);
+              if(_cAv&&_cAv._handL&&_cAv._handR){const _w1=sr.current._thv1||(sr.current._thv1=new THREE.Vector3()),_w2=sr.current._thv2||(sr.current._thv2=new THREE.Vector3());
+                _w1.setFromMatrixPosition(_cAv._handL.matrixWorld);_w2.setFromMatrixPosition(_cAv._handR.matrixWorld);trophyGrp.position.set((_w1.x+_w2.x)/2,(_w1.y+_w2.y)/2+0.10,(_w1.z+_w2.z)/2);}
+              else trophyGrp.position.set(_cap23.position.x,1.75,_cap23.position.z+0.1);}catch(_eC){}}
+            if(_bk==="lift"||_bk==="fest"){const _hy=Math.atan2(-_cSgn*10-hero.position.x,8-hero.position.z);hero.rotation.y=_hy;try{const _hAv=(glbAvatars||[]).find(a=>a&&a.proc===hero);if(_hAv&&_hAv.root)_hAv.root.rotation.y=_hy;}catch(_eH){}}/* la foto: l'eroe alza la coppa GUARDANDO la camera, non di spalle */
+            try{window.__CPM_PREMIO23={beat:_bk,capitano:!!_cap23,x:+_cap23.position.x.toFixed(2),z:+_cap23.position.z.toFixed(2)};}catch(_e){}}
           trophyGrp.rotation.y+=aDt*1.3;
           _goldMat.emissiveIntensity=0.4+Math.sin(now*0.006)*0.28;
           /* COMPAGNI A RUOLI (seedati): la stessa scena, ventidue reazioni — mai cloni sincronizzati.
@@ -19712,7 +19750,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_bk==="curva"){_mx=CURVA_X-_cSgn*(2+Math.abs(_off)*3);_mz=_off*24;}
             else if(_bk==="present"||_bk==="lift"){const _a2=(ci/_NC)*Math.PI*2;_mx=Math.cos(_a2)*6.5;_mz=Math.sin(_a2)*7.5;}
             else{const _a2=(ci/_NC)*Math.PI*2;_mx=hero.position.x+Math.cos(_a2)*(5+(ci%3)*2.5);_mz=hero.position.z+Math.sin(_a2)*(6+(ci%2)*3);}
+            if(_team23&&_bk!=="burst"&&_bk!=="hug"){/* [24/09 POC] FOTO DI SQUADRA: arco dietro il podio visto dalla camera della consegna, due file; al primo fotogramma la squadra e' GIA' schierata (niente corsa isterica) */
+              const _ba=Math.atan2(-8,_cSgn*10),_sp=Math.min(0.8,0.1*_NC),_a3=_ba+(_NC>1?(ci/(_NC-1)-0.5):0)*2*_sp,_r3=(ci%2)?5.3:4.0;_mx=Math.cos(_a3)*_r3;_mz=Math.sin(_a3)*_r3;
+              if(!m._snap23||m._snap23!==_SC){m.position.x=_mx;m.position.z=_mz;m._snap23=_SC;}try{const _f=window.__CPM_FOTO23||(window.__CPM_FOTO23={});_f[ci]=[+m.position.x.toFixed(1),+m.position.z.toFixed(1),+_mx.toFixed(1),+_mz.toFixed(1),_bk,_cSgn];}catch(_e){}}
             animOne(m,_mx,_mz,aDt,ak,_mx,_mz);
+            if(_team23)m.rotation.y=Math.atan2(-_cSgn*10-m.position.x,8-m.position.z);
             /* [7.429.0 collaudo PO — un compagno mezzo AFFONDATO nel podio negli screenshot] il viaggio
                verso l'arco della consegna puo' attraversare il cilindro: spinta radiale fuori dal palco */
             if(podiumGrp.visible){const _dp429=Math.hypot(m.position.x,m.position.z);
@@ -21386,6 +21428,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _tieni=new Set([0]);/* l'eroe non si spegne mai */
             const _port=_ord.find(x=>x.index!==0&&x.av._isGk);if(_port)_tieni.add(_port.index);
             _ord.filter(x=>x.index!==0&&!x.av._isGk).slice(0,3).forEach(x=>_tieni.add(x.index));
+            if(P.ceremony&&!(window.__CPM_NO_PREMIO23)&&(P.ceremony.kind||'league')!=='promo'&&(P.ceremony.kind||'league')!=='bigwin'&&!P.ceremony.light)_ord.filter(x=>x.av._team==='home').forEach(x=>_tieni.add(x.index));/* [24/09 POC] PREMIAZIONE DI SQUADRA: in foto c'e' tutta la squadra, non l'eroe e i tre piu' vicini */
             _ord.filter(x=>x.index!==0&&(x.av._gName||x.av._gPrev)).forEach(x=>_tieni.add(x.index));/* chi sta gia' facendo un gesto resta: spegnerlo a meta' azione si vedrebbe */
             glbAvatars.forEach((av,index)=>{if(av&&av.root)av.root.visible=_tieni.has(index);});
             const _conta={lod0:0,lod1:0,lod2:0};
@@ -35739,7 +35782,9 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
       <div style={{position:"absolute",left:0,right:0,top:"46%",height:"54%",
         background:"linear-gradient(180deg,rgba(255,255,255,0.62),"+c1+"1c 26%,"+c1+"3a 72%,"+c1+"55 100%)"}}/>
       {/* due microfoni in primo piano: e' cosi' che si riconosce una sala stampa, senza disegnare nessuno */}
-      <div style={{position:"absolute",left:0,right:0,top:"44%",display:"flex",alignItems:"flex-start",
+      {/* [24/09 POC — commento PO «i microfoni e la scena sono davvero terribili»] via i microfoni disegnati: la sala stampa la
+          dicono il pannello coi marchi e le figurine nel riquadro dell'intervista. Rosso __CPM_NO_MICRO23. */}
+      {(typeof window!=='undefined'&&window.__CPM_NO_MICRO23)&&<div style={{position:"absolute",left:0,right:0,top:"44%",display:"flex",alignItems:"flex-start",
         justifyContent:"center",gap:44,filter:"drop-shadow(0 8px 12px rgba(15,23,42,0.26))"}}>
         {[0,1].map(m=>(
           <div key={m} style={{display:"flex",flexDirection:"column",alignItems:"center",
@@ -35751,7 +35796,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
               background:m?c1:"#7a1526"}}/>
             <span style={{width:4,height:m?330:300,background:"linear-gradient(180deg,#929eaf,#59657a 55%,#4a5667)"}}/>{/* [7.961] l'asta corre sotto il modale: tagliata a meta' aria sembrava rotta */}
           </div>))}
-      </div>
+      </div>}
       <StrisciaScena948 club={club} tono={tono}/>
     </div>);
 }
@@ -37126,7 +37171,9 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
     [[-1],[1]].forEach(sx=>{const h=new THREE.Mesh(new THREE.TorusGeometry(0.1,0.022,8,18,Math.PI*1.25),gold);h.position.set(sx[0]*0.2,0.5,0);h.rotation.z=sx[0]*-0.5;trophy.add(h);});
     trophy.position.set(0,1.62,-1.2);scene.add(trophy);
     // ── PUBBLICO in silhouette (3 file oltre il bordo palco) + fotografi con flash ──
-    const crowd=[];{const cm=new THREE.MeshStandardMaterial({color:0x10121c,roughness:0.95});
+    /* [24/09 POC — commento PO sull'anteprima «togli gli spettatori 3D, migliora la scena»] le 27 sagome del pubblico davanti
+       al palco non si costruiscono piu' (restano i flash dei fotografi). Rosso __CPM_NO_GALA23. */
+    const crowd=[];if(typeof window!=='undefined'&&window.__CPM_NO_GALA23){const cm=new THREE.MeshStandardMaterial({color:0x10121c,roughness:0.95});
       for(let r2=0;r2<3;r2++)for(let i2=0;i2<9;i2++){const g=new THREE.Group();
         const b=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.22,0.8,7),cm);b.position.y=0.4;g.add(b);
         const h=new THREE.Mesh(new THREE.SphereGeometry(0.115,8,7),cm);h.position.y=0.95;g.add(h);
@@ -37367,7 +37414,10 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   const SectionLabel=({children})=>(
     <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>{children}</div>
   );
-  const ScoreRow=({rank,name,val,label,isPlayer,extra})=>(
+  /* [24/09 POC — commento PO sull'anteprima «va standardizzata e uniformata la schermata, rendila piu' bella»] la riga del
+     premio nello stile del post-partita: FIGURINA del premiato, podio in un bollino col colore della medaglia, nome e club
+     su due righe, numero a destra. L'eroe ha il riquadro del marchio. Rosso __CPM_NO_PREMI23. */
+  const _ScoreRowVecchia=({rank,name,val,label,isPlayer,extra})=>(
     <div style={{display:"flex",alignItems:"center",gap:10,padding:"7px 8px",borderRadius:RAD.sm,
       background:isPlayer?"#eff6ff":"transparent",
       borderLeft:isPlayer?"3px solid "+TH.primary:"3px solid transparent",marginBottom:3}}>
@@ -37377,6 +37427,18 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {extra&&<div style={{fontSize:FS.caption,color:TH.muted}}>{extra}</div>}
     </div>
   );
+  const ScoreRow=(pr)=>{if(typeof window!=='undefined'&&window.__CPM_NO_PREMI23)return _ScoreRowVecchia(pr);const {rank,name,val,label,isPlayer,extra}=pr;
+    const med=["#d4a017","#9aa4b2","#b87333"][rank]||TH.faint;
+    return(<div data-cpm="premio23" style={{display:"flex",alignItems:"center",gap:SP.md,padding:`${SP.sm}px ${SP.md}px`,borderRadius:RAD.md,marginBottom:SP.xs,
+      background:isPlayer?TH.primaryTint||TH.surface2:TH.surface2,border:"1px solid "+(isPlayer?(TH.primaryBorder||TH.primary):"transparent")}}>
+      <span className="cpm-num" style={{width:24,height:24,borderRadius:"50%",background:med,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{rank+1}</span>
+      <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="giocatore" chiave={isPlayer?((player&&player.name)||name):name} larg={34}/>;}catch(_e){return null;}})()}</div>
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:isPlayer?TH.brandText:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{name}{isPlayer?" · tu":""}</div>
+        {extra&&<div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{extra}</div>}
+      </div>
+      <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,flexShrink:0}}>{val}<span style={{fontSize:FS.caption,fontWeight:FW.medium,color:TH.muted,marginLeft:3}}>{label}</span></div>
+    </div>);};
 
   /* [7.19.0 LA NOTTE DEL GALA — backlog favola] cerimonia TV a buste sopra la schermata premi (che resta
      identica sotto); solo stato locale, zero save. [7.33.0 direttiva PO «estendere la cerimonia 3D anche
@@ -37423,6 +37485,16 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
             <div style={{display:"flex",justifyContent:"center",gap:5,marginBottom:8}}>
               {_galaSeq.map((a,i)=>(<span key={a.key} style={{width:i===galaAct?18:7,height:7,borderRadius:RAD.xs,background:i<galaAct?"#d4a017":i===galaAct?"#fde68a":"rgba(255,255,255,0.18)",transition:"all .3s"}}/>))}
             </div>
+            {/* [24/09 POC — commento PO «metti le figurine con presentatore e presentatrice»] la coppia che conduce la serata:
+                parla uno per premio (alternati), l'altro resta un passo indietro. Rosso __CPM_NO_GALA23. */}
+            {!(typeof window!=='undefined'&&window.__CPM_NO_GALA23)&&(()=>{const _pp=[{n:"Tommaso Varesi",t:"giornalista",r:"Presentatore"},{n:"Chiara Loreti",t:"giornalista_f",r:"Presentatrice"}];const _sp=galaAct%2;
+              return(<div data-cpm="gala-conduttori23" style={{display:"flex",justifyContent:"center",gap:SP.lg,marginBottom:SP.md}}>
+                {_pp.map((q,i)=>(<div key={q.n} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,opacity:i===_sp?1:0.55,transform:i===_sp?"scale(1.06)":"none",transition:"all .3s"}}>
+                  {(()=>{try{return <Figurina tipo={q.t} chiave={q.n} larg={58}/>;}catch(_e){return null;}})()}
+                  <div style={{fontSize:FS.small,fontWeight:FW.bold,color:"#fff",lineHeight:1.1}}>{q.n}</div>
+                  <div style={{fontSize:FS.caption,color:i===_sp?"#fde68a":"rgba(255,255,255,0.6)"}}>{i===_sp?"sul palco":q.r}</div>
+                </div>))}
+              </div>);})()}
             <div key={"t"+galaAct} style={{fontSize:FS.title,fontWeight:900,color:"#fff",marginBottom:2,animation:"logoIn 0.5s ease-out"}}>{_actG.e} {_actG.title}</div>
             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",marginBottom:16}}>{_actG.sub}</div>
             {galaN===0&&(<div style={{animation:"logoIn 0.5s ease-out"}}>
@@ -37567,27 +37639,33 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {/* Young Player — ora mostrato nel blocco PREMI DI LEGA (Sprint 134) */}
 
       {/* Rival */}
-      {rival&&(
-        <Card style={{marginBottom:10,padding:"14px 16px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)"}}>
-          <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🆚 TU VS {rival.name.toUpperCase()} — {rival.relLabel}</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",marginBottom:8}}>
-            <div style={{textAlign:"center"}}>
-              <div style={{fontSize:FS.h,fontWeight:900,color:rival.tie?"#fbbf24":(rival.playerWins?"#4ade80":"#f87171")}}>{rival.playerGoals}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",marginTop:2}}>{player.name}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
-            </div>
-            <div style={{textAlign:"center",fontSize:FS.subhead,color:"rgba(165,180,252,0.5)"}}>⚽</div>
-            <div style={{textAlign:"center"}}>
-              <div style={{fontSize:FS.h,fontWeight:900,color:rival.tie?"#fbbf24":(!rival.playerWins?"#4ade80":"#f87171")}}>{rival.goals}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",marginTop:2}}>{rival.name}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
-            </div>
-          </div>
-          <div style={{textAlign:"center",fontSize:FS.small,fontWeight:700,color:rival.tie?"#fbbf24":(rival.playerWins?"#4ade80":"#f87171"),padding:"6px",background:"rgba(0,0,0,0.2)",borderRadius:RAD.sm}}>
-            {rival.tie?"🤝 Parità con "+rival.name+": "+rival.goals+" gol a testa. Si decide la prossima stagione.":rival.playerWins?"✅ Stagione migliore del rivale! Dominanza.":"😤 "+rival.name+" ti ha superato. Stagione prossima la storia cambia."}
-          </div>
+      {rival&&(typeof window!=='undefined'&&window.__CPM_NO_RIVALE23)&&(
+        <Card style={{marginBottom:10,padding:"14px 16px"}}>
+          <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>🆚 Tu vs {rival.name} — {rival.relLabel}</div>
+          <div style={{fontSize:FS.body,fontWeight:800,color:TH.text,marginTop:6}}>{rival.playerGoals} – {rival.goals}</div>
         </Card>
       )}
+      {rival&&!(typeof window!=='undefined'&&window.__CPM_NO_RIVALE23)&&(()=>{/* [23/09 POC] «standardizza, piu' bella»: la card scura a gradiente viola era l'unico blocco fuori dal kit. Ora e' una Card chiara col volto dei due rivali (Figurina) e l'esito come Badge. Rosso: __CPM_NO_RIVALE23 */
+        const _tono=rival.tie?"draw":(rival.playerWins?"win":"loss");
+        const _col=(w)=>rival.tie?(TH.drawFg||"#a16207"):(w?(TH.winFg||"#166534"):(TH.lossFg||"#b91c1c"));
+        const _lato=(nome,gol,chiave,w)=>(<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,minWidth:0}}>
+          <Figurina tipo="giocatore" chiave={chiave} larg={52}/>
+          <div style={{fontSize:FS.h,fontWeight:900,color:_col(w),fontVariantNumeric:"tabular-nums",lineHeight:1}}>{gol}</div>
+          <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text,textAlign:"center",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
+        </div>);
+        return (<Card data-cpm="rivale23" style={{marginBottom:10,padding:"14px 16px"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8,marginBottom:10}}>
+            <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>🆚 Il duello della stagione</div>
+            <Badge tone="neutral">{rival.relLabel}</Badge>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",marginBottom:10}}>
+            {_lato(player.name,rival.playerGoals,player.name,rival.playerWins)}
+            <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted}}>gol</div>
+            {_lato(rival.name,rival.goals,rival.name,!rival.playerWins)}
+          </div>
+          <div style={{display:"flex",justifyContent:"center"}}><Badge tone={_tono}>{rival.tie?"🤝 Parità: "+rival.goals+" gol a testa":rival.playerWins?"✅ Hai battuto "+rival.name:"😤 "+rival.name+" ti ha superato"}</Badge></div>
+        </Card>);
+      })()}
 
       <Btn onClick={onContinue} v="primary" fw style={{padding:"16px",fontSize:FS.bodyLg,marginTop:4}}>
         Continua alla Fine Stagione →
@@ -37819,15 +37897,16 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         </div>}
       </Card>
       {/* Sprint 100: president dialog */}
-      {_presLine100&&<Card style={{marginBottom:8,padding:"12px 14px",background:"linear-gradient(135deg,#1c0d04,#2d1507)",border:"1px solid rgba(234,179,8,0.3)"}}>
+      {_presLine100&&(()=>{const _v23=!(typeof window!=='undefined'&&window.__CPM_NO_PRES23);/* [23/09 POC] «standardizza»: il Presidente parlava da una card marrone scura fuori kit; ora Card chiara con la figurina del dirigente. Rosso __CPM_NO_PRES23 */
+        return <Card data-cpm={_v23?"presidente23":undefined} style={_v23?{marginBottom:8,padding:"12px 14px"}:{marginBottom:8,padding:"12px 14px",background:"linear-gradient(135deg,#1c0d04,#2d1507)",border:"1px solid rgba(234,179,8,0.3)"}}>
         <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
-          <div style={{fontSize:FS.h,lineHeight:1}}>🏛️</div>
+          {_v23?<Figurina tipo="dirigente" chiave={"presidente-"+(player.club||"")} larg={44}/>:<div style={{fontSize:FS.h,lineHeight:1}}>🏛️</div>}
           <div style={{flex:1}}>
-            <div style={{fontSize:FS.caption,color:"#fde68a",marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>Il Presidente — fine stagione</div>
-            <div style={{fontSize:FS.small,color:"#fef3c7",fontStyle:"italic",lineHeight:1.5}}>{_presLine100.txt}</div>
+            <div style={{fontSize:FS.caption,color:_v23?TH.muted:"#fde68a",fontWeight:_v23?800:undefined,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>Il Presidente — fine stagione</div>
+            <div style={{fontSize:FS.small,color:_v23?TH.text:"#fef3c7",fontStyle:"italic",lineHeight:1.5}}>{_presLine100.txt}</div>
           </div>
         </div>
-      </Card>}
+      </Card>;})()}
       <style>{`@keyframes pulse87{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}`}</style>
 
       {/* Status banner + stats */}
@@ -41162,7 +41241,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(weekLiveModal){setWeekLiveModal(null);return;}
         if(showMatchPrompt){setShowMatchPrompt(null);startMatch();return;}
         if(showAdvanceConfirm){doAdvanceWeek();return;}
-        if(transferOffer){acceptTransfer();return;}
+        if(transferOffer){if(!(typeof window!=="undefined"&&window.__CPM_NO_FRENO23))return;acceptTransfer();return;}/* [24/09 POC freno] un Invio di troppo non firma un trasferimento: l'offerta si decide col tasto, dopo aver letto la situazione del club */
         // Screens
         if(screen==="postmatch"){setScreen("dashboard");setTab("dashboard");return;}
         if(screen==="press"){setScreen("dashboard");setTab("dashboard");return;}
@@ -41860,9 +41939,15 @@ const getThisWeekMatchday=()=>{
   // Smart "Continua" CTA — next logical step in the weekly flow
   // IMPORTANT: always shows match prompt when a pending match exists — never bypasses it
   const handleContinua=()=>{
+    /* [24/09 POC — commento PO «evitare che il player vada avanti nel gioco in maniera compulsiva, altrimenti si incasina
+       il gioco»] FRENO AI TOCCHI RIPETUTI: (1) con una finestra aperta (settimana, partita, offerta, procuratore, momenti,
+       presentazione, ritiro, intervista, rinnovo) «Avanza» non fa nulla — si decide prima quella; (2) dopo ogni avanzamento
+       il tasto resta fermo 1,2 s (era 0,6). Misura: sonda tests/visual/avanza-compulsivo.mjs. Rosso __CPM_NO_FRENO23. */
+    const _r23=(typeof window!=='undefined'&&window.__CPM_NO_FRENO23);
+    if(!_r23&&(weekLiveModal||showMatchPrompt||transferOffer||agentIntro||milestoneModal||careerMomentModal||negoModal||presEvent||ritiroEvent||interviewModal||(player.agentCheckin&&player.agentCheckin.due&&player.hasAgent))){try{window.__CPM_FRENO23=(window.__CPM_FRENO23|0)+1;}catch(_e){}return;}
     if(continuaBusyRef.current)return; // debounce rapid keypresses
     continuaBusyRef.current=true;
-    setTimeout(()=>{continuaBusyRef.current=false;},600); // unlock after 600ms
+    setTimeout(()=>{continuaBusyRef.current=false;},_r23?600:1200); // unlock
     // Injured flow: rehab session if week not lived, else advance week
     if(player.injured){
       if(!player.weekLived){liveCurrentWeek();return;} // rehab session
@@ -41918,6 +42003,7 @@ const getThisWeekMatchday=()=>{
       patch:(o)=>{try{setPlayer(p=>({...p,...(o||{})}));return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.303.0] iniezione di stato per le probe (test-only): evita il reload, che l'addInitScript sovrascriverebbe *//* [7.303.0] la probe pres-gk-kit deve poter pescare il PORTIERE vero della rosa *//* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
       bump:()=>{try{setNotif({msg:"probe",color:TH.text});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
       get:()=>({standings:(player.standings||[]).map(r=>({id:r.id||r.clubId,n:r.n||r.name,pts:r.pts||0})),/* [7.314.0] la probe del nome ex-club ha bisogno della classifica REALE (quella sintetica non sopravvive alla riconciliazione in migration) */season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration,/* [7.380.0 Procuratore] STATO DEL PROCURATORE nell'harness di carriera (test-only). Senza, il guardiano del CICLO DI VITA e' cieco: `get()` torna un riassunto fisso e `player()` non esiste, quindi la sonda leggeva un oggetto senza nessun campo dell'agente e concludeva «non accade mai» su un sistema che non stava nemmeno guardando. */ag:(function(){try{return{has:!!player.hasAgent,hint:(player.agentHint&&player.agentHint.due)||null,checkin:!!(player.agentCheckin&&player.agentCheckin.due),init:(player.agentInit&&player.agentInit.open)?player.agentInit.k:null,rapport:player.agent?player.agent.rapport:null,amb:player.agent?(player.agent.memory.amb||[]).slice():null,fee:(typeof agentHireFee==="function")?agentHireFee(player):null,bank:player.bankBalance||0};}catch(e){return null;}})(),vita:(function(){try{return{seen:Object.keys(player.vitaSeen||{}).length,ids:Object.keys(player.vitaSeen||{}),lastCat:player.vitaLastCat||null,next:player.vitaNext?player.vitaNext.id:null};}catch(e){return null;}})()/* [7.416.0] STATO VITA nell'harness (test-only): la stessa lezione del 7.380 — senza questo campo il guardiano del flusso reale legge un oggetto in cui il sistema non c'e' e conclude che il sistema non c'e' */}),
+      forceOffer:()=>{try{const o=generateTransferOffer(player);if(o)setTransferOffer(o);return !!o;}catch(e){return "error:"+(e&&e.message);}},/* [24/09 POC] la sonda dell'offerta (situazione del club offerente) */
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
@@ -46579,6 +46665,8 @@ const getThisWeekMatchday=()=>{
     fontWeight:att?FW.bold:600,letterSpacing:"0.06em",textTransform:"uppercase",lineHeight:1.2});
   const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"}];
 
+  /* [24/09 POC — anteprima 05: tre finestre impilate sul confronto col procuratore] PRECEDENZA UNICA: le finestre del procuratore sono le ultime della fila; aspettano che ogni altra finestra sia chiusa (mai due popup uno sull'altro). Rosso __CPM_NO_CODA23 */
+  const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
       <Notif msg={notif?.msg} color={notif?.color}/>
@@ -46826,7 +46914,7 @@ const getThisWeekMatchday=()=>{
         ))}
 
       {/* == Sprint 25A — Career Moment Modal == */}
-      {careerMomentModal&&(()=>{
+      {careerMomentModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal))&&(()=>{/* [24/09 POC — anteprima 05: il «momento» si apriva SOPRA il confronto col procuratore, due finestre impilate] il momento aspetta in coda che l'altra finestra sia chiusa. Rosso __CPM_NO_CODA23 */
         // [7.159.0 B] TIER DI RARITÀ: "epico" → presentazione PREMIUM dorata (glow + label leggendaria);
         //   "raro"/default → viola storico. Il tier è dichiarato sul momento (i vecchi restano "raro").
         const _epic=careerMomentModal.tier==="epico";
@@ -46894,7 +46982,7 @@ const getThisWeekMatchday=()=>{
       )}
 
       {/* == Sprint 15 — Interview Modal == */}
-      {interviewModal&&(()=>{const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"");/* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
+      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal))&&(()=>{/* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"");/* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
     /* [7.302.0 collaudo PO «ci sono scritte erroneamente sovrapposte»] il modal viveva DENTRO `.cpm-scroll`,
        che porta `zoom:1.12` (fix zoom mobile): un ancestor con zoom diventa BLOCCO CONTENITORE dei
        discendenti `position:fixed` e apre un contesto di impilamento → su alcuni browser mobili le righe
@@ -46918,7 +47006,7 @@ const getThisWeekMatchday=()=>{
                   dell'emoji del giornale c'e' lo spazio della figurina dell'intervistatore, seminato sul suo
                   NOME: lo stesso giornalista avra' sempre la stessa figurina. Larghezza 26 perche' 26x7/5 = 36,
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
-              <Figurina tipo={interviewModal.paper?.f?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={26} col={interviewModal.paper?.color||TH.primary}/>
+              <Figurina tipo={interviewModal.paper?.f?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={44} col={interviewModal.paper?.color||TH.primary}/>{/* [24/09 POC] figurina del giornalista piu' grande e intera (collaudo PO: il contorno non deve tagliare i volti) */}
               <div>
                 <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
@@ -47039,7 +47127,7 @@ const getThisWeekMatchday=()=>{
 
       {/* == Interview feedback toast == */}
       {interviewFeedback&&(
-        <div style={{position:"fixed",bottom:80,left:"50%",transform:"translateX(-50%)",background:TH.card,border:"1px solid "+TH.cardBorder,color:TH.text,padding:"12px 20px",borderRadius:RAD.md,fontSize:FS.small,fontWeight:600,zIndex:10000,boxShadow:TH.shadow,maxWidth:320,textAlign:"center",pointerEvents:"none"}}>
+        <div data-cpm="riscontro23" style={{position:"fixed",...((typeof window!=="undefined"&&window.__CPM_NO_TOAST23)?{bottom:80}:{top:"calc(16px + env(safe-area-inset-top, 0px))"}),left:"50%",transform:"translateX(-50%)",background:TH.card,border:"1px solid "+TH.cardBorder,color:TH.text,padding:"12px 20px",borderRadius:RAD.md,fontSize:FS.small,fontWeight:600,zIndex:10000,boxShadow:TH.shadow,maxWidth:320,textAlign:"center",pointerEvents:"none"}}>
           <div style={{marginBottom:6}}>{interviewFeedback.label}</div>
           <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}}>
             {interviewFeedback.ef?.m!==0&&interviewFeedback.ef?.m&&<span style={{color:interviewFeedback.ef.m>0?TH.txGreen:TH.txRed}}>😄{interviewFeedback.ef.m>0?"+":""}{interviewFeedback.ef.m}</span>}
@@ -47173,8 +47261,11 @@ const getThisWeekMatchday=()=>{
 
       {/* req #13: transfer offer modal */}
       {transferOffer&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.4)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-          <Card style={{maxWidth:380,width:"100%",padding:"24px"}}>
+        /* [24/09 POC — commento PO «standardizza e uniforma la schermata e fai in modo che il player possa vedere il club offerente
+           in che posizione sta, qual e' la situazione del club prima di accettare o rifiutare»] Modal del kit + SCHEDA DEL CLUB dai
+           dati veri del gioco: posizione, punti e partite nella sua lega (classifica del mondo, override-aware), prestigio. */
+        <Modal open dismissable={false} width={420}>
+          <div data-cpm="offerta23">
             {player.dreamClub&&(transferOffer.club.id===player.dreamClub.id||transferOffer.club.n===player.dreamClub.n)&&(
               <div style={{background:"linear-gradient(135deg,#f59e0b,#d97706)",borderRadius:RAD.md,padding:"7px 12px",marginBottom:10,textAlign:"center"}}>
                 <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>🌟 IL TUO CLUB DEI SOGNI!</div>
@@ -47186,6 +47277,17 @@ const getThisWeekMatchday=()=>{
               <div style={{fontSize:FS.subhead,fontWeight:900,color:TH.text,marginTop:8}}>{transferOffer.club.n}</div>
               <div style={{fontSize:FS.small,color:TH.muted}}>{transferOffer.club.nat} · {transferOffer.club.lg}</div>
             </div>
+            {(()=>{try{const c=transferOffer.club||{};const lg=((player.leagueOverrides||{})[c.id])||c.lg;
+              const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
+              const i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));if(i<0)return null;const t=rows[i];
+              return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md}}>
+                <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>La situazione del club</div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:SP.sm,textAlign:"center"}}>
+                  {[["Posizione",(i+1)+"ª su "+rows.length],["Punti",t.pts|0],["Giocate",t.played|0],["V · P · S",(t.wins|0)+" · "+(t.draws|0)+" · "+(t.losses|0)]].map(([l,v])=>(
+                    <div key={l}><div className="cpm-num" style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text}}>{v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}
+                </div>
+                <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>{lg} · prestigio {c.p||"—"} · differenza reti {(t.gd!=null?t.gd:(t.gf|0)-(t.ga|0))>0?"+":""}{t.gd!=null?t.gd:(t.gf|0)-(t.ga|0)}</div>
+              </div>);}catch(_e){return null;}})()}
             <Card style={{padding:"12px",marginBottom:10}} bg={TH.bgBlue} border="#bfdbfe" shadow={false}>
               <div style={{fontSize:FS.body,fontWeight:700,color:TH.brandText,marginBottom:4}}>📩 Offerta: {transferOffer.type}</div>
               <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.7}}>
@@ -47205,11 +47307,11 @@ const getThisWeekMatchday=()=>{
             )}
             {transferOffer._counter===true&&<div style={{fontSize:FS.small,color:TH.txGreen,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Counter accettato dal club! Stipendio e durata aggiornati.</div>}{transferOffer._counter==="rejected"&&<div style={{fontSize:FS.small,color:TH.txRed,fontWeight:700,marginBottom:8,textAlign:"center"}}>❌ Il club non rilancia: restano i termini originali.</div>}
             <div style={{display:"flex",gap:8}}>
-              <Btn onClick={declineTransferOffer} v="secondary" fw>Rifiuta</Btn>
-              <Btn onClick={acceptTransfer} v="primary" fw>Accetta →</Btn>
+              <Btn onClick={declineTransferOffer} v="secondary" size="lg" fw>Rifiuta</Btn>
+              <Btn onClick={acceptTransfer} v="primary" size="lg" fw>Accetta</Btn>
             </div>
-          </Card>
-        </div>
+          </div>
+        </Modal>
       )}
 
       {/* [7.338.0] LA SCENA DEL NO: chi reagisce quando resti (curva · presidente · mister · compagno · stampa) */}
@@ -47655,7 +47757,7 @@ const getThisWeekMatchday=()=>{
                 meta'. Ora la striscia copre anche il margine laterale della pagina (-12 px) e quattordici
                 pixel sopra il bottone, e porta un'ombra bassa: il contenuto ci sparisce sotto invece di
                 affiorarne per meta'. La CTA resta dov'e' (decisione 6.5.4: sempre visibile senza scorrere). */}
-            <button onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
+            <button data-cpm="avanza23" onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
               style={{width:"100%",padding:"11px 15px",borderRadius:RAD.lg,border:"none",background:cs.disabled?TH.track:`linear-gradient(135deg,${cs.color},${cs.color}cc)`,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":TH.el2,transition:`transform ${MO.fast}ms,box-shadow ${MO.fast}ms`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div style={{textAlign:"left"}}>
                 <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:cs.disabled?TH.faint:"#fff",marginBottom:2}}>{cs.label}</div>
@@ -48061,66 +48163,76 @@ const getThisWeekMatchday=()=>{
           quattro risposte hanno conseguenze vere e non nuove: accendono l'incarico `cerca_offerte`
           e il flag `transferListed` che il mercato legge gia'. Stessa impaginazione della scena
           d'ingaggio: colonna singola, a tutta pagina, leggibile sul telefono. */}
-      {player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent&&(()=>{
+      {player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent&&!_fila23&&(()=>{
         const _nm377=(player.agent&&player.agent.name)||agentNameFor(player);
         const _ask377=agentCheckinAsk(player,player.agent);
         return(
-        <div style={{position:"fixed",inset:0,zIndex:80,background:"rgba(4,7,14,0.93)",overflowY:"auto",padding:"18px 14px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{width:"100%",maxWidth:440}}>
-            <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:12}}>
-              <Figurina tipo="procuratore" chiave={_nm377} larg={44} col={TH.primary} /* [7.966] lo spazio del volto e' rettangolare verticale: oggi dentro c'e' il ripiego, domani la figurina *//>
-              <div><div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>{_nm377}</div>
-                <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)"}}>Il tuo procuratore · rapporto {agentRapportTier(player.agent.rapport)}</div></div>
+        /* [24/09 POC — commento PO «standardizza e uniforma la schermata»] il confronto col procuratore nel Modal del kit */
+        <Modal open dismissable={false} width={440}>
+          <div data-cpm="confronto23">
+            <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>Il confronto</div>
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+              <Figurina tipo="procuratore" chiave={_nm377} larg={52} col={TH.primary} /* [7.966] lo spazio del volto e' rettangolare verticale: oggi dentro c'e' il ripiego, domani la figurina *//>
+              <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm377}</div>
+                <div style={{fontSize:FS.small,color:TH.muted}}>Il tuo procuratore · rapporto {agentRapportTier(player.agent.rapport)}</div></div>
             </div>
             {_ci377Sel?(<>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:18}}>«{AGENT_CHECKIN_REPLY[_ci377Sel]||"Ricevuto."}»</div>
-              <Btn v="outline" fw style={{padding:"13px"}} onClick={()=>{
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{AGENT_CHECKIN_REPLY[_ci377Sel]||"Ricevuto."}»</div>
+              <Btn v="primary" size="lg" fw onClick={()=>{
                 setPlayer(p=>({...p,...agentCheckinApply(p,_ci377Sel),agentCheckin:{due:false,s:p.season||1,w:p.week||1},
                   log:[`🤵 Confronto con ${_nm377}.`,...(p.log||[])].slice(0,60)}));
                 setCi377Sel(null);
               }}>Chiudi</Btn>
             </>):(<>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:8}}>«{_ask377.apertura}»</div>
-              {_ask377.ricordo&&<div style={{fontSize:FS.small,color:"#fbbf24",lineHeight:1.7,marginBottom:8,fontStyle:"italic"}}>«{_ask377.ricordo}»</div>}
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.9)",lineHeight:1.75,marginBottom:12}}>«{_ask377.lettura}»</div>
-              <div style={{fontSize:FS.body,color:"#fff",fontWeight:800,lineHeight:1.7,marginBottom:10}}>«{_ask377.domanda}»</div>
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
+                <div style={{marginBottom:SP.sm}}>«{_ask377.apertura}»</div>
+                {_ask377.ricordo&&<div style={{fontSize:FS.small,color:TH.txAmber,marginBottom:SP.sm,fontStyle:"italic"}}>«{_ask377.ricordo}»</div>}
+                <div style={{marginBottom:SP.sm}}>«{_ask377.lettura}»</div>
+                <div style={{fontWeight:FW.bold}}>«{_ask377.domanda}»</div>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
                 {_ask377.opzioni.map(o=>(
-                  <Btn key={o.id} v="ghost" fw style={{padding:"13px",textAlign:"left",justifyContent:"flex-start"}}
+                  <Btn key={o.id} v="secondary" size="lg" fw style={{textAlign:"left",justifyContent:"flex-start",color:TH.text,fontWeight:FW.semibold}}
                     onClick={()=>setCi377Sel(o.id)}>{o.label}</Btn>
                 ))}
               </div>
             </>)}
           </div>
-        </div>);})()}
-      {agentIntro&&(()=>{
+        </Modal>);})()}
+      {agentIntro&&!_fila23&&(()=>{
         const _nm376=(agentIntro.solo&&player.agent&&player.agent.name)||agentNameFor(player);
         const _ln376=agentIntroLine(player,_nm376,agentIntro.amb);
         const _op376=agentIntroOptions(player);
         return(
-        <div style={{position:"fixed",inset:0,zIndex:80,background:"rgba(4,7,14,0.93)",overflowY:"auto",padding:"18px 14px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{width:"100%",maxWidth:440}}>
-            <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:12}}>
-              <Figurina tipo="procuratore" chiave={_nm376} larg={44} col={TH.primary}/>
-              <div><div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>{_nm376}</div>
-                <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)"}}>Procuratore</div></div>
+        /* [24/09 POC — commento PO sull'anteprima «schermata da uniformare e standardizzare» (primo incontro, ambizione, firma)]
+           il primo incontro col procuratore passa nel Modal del kit: pannello chiaro, figurina, citazioni in un riquadro neutro,
+           scelte come bottoni secondari larghi, azione primaria del kit. */
+        <Modal open dismissable={false} width={440}>
+          <div data-cpm="procuratore23">
+            <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>Il primo incontro</div>
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+              <Figurina tipo="procuratore" chiave={_nm376} larg={52} col={TH.primary}/>
+              <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm376}</div>
+                <div style={{fontSize:FS.small,color:TH.muted}}>Procuratore</div></div>
             </div>
             {!agentIntro.amb?(<>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:9}}>«{_ln376.saluto}»</div>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:12}}>«{_ln376.ruolo}»</div>
-              <div style={{fontSize:FS.body,color:"#fff",fontWeight:800,lineHeight:1.7,marginBottom:10}}>«{_ln376.domanda}»</div>
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
+                <div style={{marginBottom:SP.sm}}>«{_ln376.saluto}»</div>
+                <div style={{marginBottom:SP.sm}}>«{_ln376.ruolo}»</div>
+                <div style={{fontWeight:FW.bold}}>«{_ln376.domanda}»</div>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
                 {_op376.map(o=>(
-                  <Btn key={o.id} v="ghost" fw style={{padding:"13px",textAlign:"left",justifyContent:"flex-start"}}
+                  <Btn key={o.id} v="secondary" size="lg" fw style={{textAlign:"left",justifyContent:"flex-start",color:TH.text,fontWeight:FW.semibold}}
                     onClick={()=>setAgentIntro(a=>({...a,amb:o.id}))}>{o.label}</Btn>
                 ))}
               </div>
               <div style={{marginTop:10,textAlign:"center"}}>
-                <Btn v="ghost" onClick={()=>setAgentIntro(null)} style={{padding:"9px 16px",fontSize:FS.caption,opacity:0.75}}>Ci penso ancora</Btn>
+                <Btn v="ghost" fw onClick={()=>setAgentIntro(null)}>Ci penso ancora</Btn>
               </div>
             </>):(<>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:18}}>«{_ln376.risposta}»</div>
-              <Btn v="outline" fw style={{padding:"13px"}} onClick={()=>{
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{_ln376.risposta}»</div>
+              <Btn v="primary" size="lg" fw onClick={()=>{
                 const _a=agentIntro.amb;
                 /* [7.379.0 R6 §25] col procuratore NUOVO (gia' ingaggiato dal catalogo) questa scena
                    serve solo a raccogliere le ambizioni: la relazione riparte da zero, ma non si
@@ -48136,11 +48248,11 @@ const getThisWeekMatchday=()=>{
                 setAgentIntro(null);
               }}>{agentIntro.solo?"Iniziamo":`Firma · ${(agentIntro.fee||agentHireFee(player)).toLocaleString("it-IT")}€`}</Btn>
               <div style={{marginTop:10,textAlign:"center"}}>
-                <Btn v="ghost" onClick={()=>setAgentIntro(a=>({...a,amb:null}))} style={{padding:"9px 16px",fontSize:FS.caption,opacity:0.75}}>Torna indietro</Btn>
+                <Btn v="ghost" fw onClick={()=>setAgentIntro(a=>({...a,amb:null}))}>Torna indietro</Btn>
               </div>
             </>)}
           </div>
-        </div>);})()}
+        </Modal>);})()}
       {/* [7.378.0 Procuratore R5 §6] IL PROCURATORE BUSSA. Una card compatta sul cruscotto, non un
           modale: il modale e' per i momenti che meritano di fermare il gioco (l'ingaggio, il
           confronto), questo e' il procuratore che ti dice una cosa mentre passi. Il bottone porta

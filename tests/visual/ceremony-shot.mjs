@@ -30,7 +30,8 @@ const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 2 });
 await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-await page.addInitScript(() => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_CINE = 1; });
+const ROSSO = process.env.CPM_ROSSO || '';
+await page.addInitScript((r) => { window.__CPM_GLB = true; window.__CPM_REC = true; window.__CPM_CINE = 1; if (r) window[r] = true; }, ROSSO);
 await openMatch(page, port);
 await sleep(2500);   /* i GLB devono caricare: sotto CH38 la scena e' vuota finche' non arrivano */
 
@@ -101,11 +102,13 @@ for (const t of TS) {
     } catch (e) {}
     return o;
   });
-  const f = `${OUT}/cer-${KIND}-t${String(t).replace('.', 'p')}.png`;
+  const f = `${OUT}/cer-${KIND}-t${String(t).replace('.', 'p')}${process.env.CPM_ROSSO ? '-rosso' : ''}.png`;
   await page.screenshot({ path: f });
   righe.push({ t, f, ...m });
   console.log(`  t=${t}s → ${f}${m.gesto ? ' · gesto eroe: ' + JSON.stringify(m.gesto) : ''}`);
 }
+console.log('foto di squadra (x,z,visibile per compagno):', JSON.stringify(await page.evaluate(() => window.__CPM_FOTO23 || null)), '· capitano:', JSON.stringify(await page.evaluate(() => window.__CPM_PREMIO23 || null)));
+console.log('attori visibili:', JSON.stringify(await page.evaluate(() => { try { const A = window.__CPM_CGTRADER_ACTORS_AUDIT ? window.__CPM_CGTRADER_ACTORS_AUDIT() : null; const L = A && (A.actors || A); return Array.isArray(L) ? L.map(e => [e.i, e.team, e.hero ? 'H' : '', e.x ?? (e.spine && +e.spine.x.toFixed(1)), e.z ?? (e.spine && +e.spine.z.toFixed(1))]) : (A ? Object.keys(A) : 'nessun hook'); } catch (e) { return String(e); } })));
 for (const e of errs.slice(0, 4)) console.log('⚠ pageerror: ' + e);
 await b.close(); srv.close();
 console.log(`\n${righe.length} provini in ${OUT}/ (kind «${KIND}»).`);

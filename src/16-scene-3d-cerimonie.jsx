@@ -277,7 +277,9 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
       <div style={{position:"absolute",left:0,right:0,top:"46%",height:"54%",
         background:"linear-gradient(180deg,rgba(255,255,255,0.62),"+c1+"1c 26%,"+c1+"3a 72%,"+c1+"55 100%)"}}/>
       {/* due microfoni in primo piano: e' cosi' che si riconosce una sala stampa, senza disegnare nessuno */}
-      <div style={{position:"absolute",left:0,right:0,top:"44%",display:"flex",alignItems:"flex-start",
+      {/* [24/09 POC — commento PO «i microfoni e la scena sono davvero terribili»] via i microfoni disegnati: la sala stampa la
+          dicono il pannello coi marchi e le figurine nel riquadro dell'intervista. Rosso __CPM_NO_MICRO23. */}
+      {(typeof window!=='undefined'&&window.__CPM_NO_MICRO23)&&<div style={{position:"absolute",left:0,right:0,top:"44%",display:"flex",alignItems:"flex-start",
         justifyContent:"center",gap:44,filter:"drop-shadow(0 8px 12px rgba(15,23,42,0.26))"}}>
         {[0,1].map(m=>(
           <div key={m} style={{display:"flex",flexDirection:"column",alignItems:"center",
@@ -289,7 +291,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
               background:m?c1:"#7a1526"}}/>
             <span style={{width:4,height:m?330:300,background:"linear-gradient(180deg,#929eaf,#59657a 55%,#4a5667)"}}/>{/* [7.961] l'asta corre sotto il modale: tagliata a meta' aria sembrava rotta */}
           </div>))}
-      </div>
+      </div>}
       <StrisciaScena948 club={club} tono={tono}/>
     </div>);
 }
@@ -1664,7 +1666,9 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
     [[-1],[1]].forEach(sx=>{const h=new THREE.Mesh(new THREE.TorusGeometry(0.1,0.022,8,18,Math.PI*1.25),gold);h.position.set(sx[0]*0.2,0.5,0);h.rotation.z=sx[0]*-0.5;trophy.add(h);});
     trophy.position.set(0,1.62,-1.2);scene.add(trophy);
     // ── PUBBLICO in silhouette (3 file oltre il bordo palco) + fotografi con flash ──
-    const crowd=[];{const cm=new THREE.MeshStandardMaterial({color:0x10121c,roughness:0.95});
+    /* [24/09 POC — commento PO sull'anteprima «togli gli spettatori 3D, migliora la scena»] le 27 sagome del pubblico davanti
+       al palco non si costruiscono piu' (restano i flash dei fotografi). Rosso __CPM_NO_GALA23. */
+    const crowd=[];if(typeof window!=='undefined'&&window.__CPM_NO_GALA23){const cm=new THREE.MeshStandardMaterial({color:0x10121c,roughness:0.95});
       for(let r2=0;r2<3;r2++)for(let i2=0;i2<9;i2++){const g=new THREE.Group();
         const b=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.22,0.8,7),cm);b.position.y=0.4;g.add(b);
         const h=new THREE.Mesh(new THREE.SphereGeometry(0.115,8,7),cm);h.position.y=0.95;g.add(h);
@@ -1905,7 +1909,10 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   const SectionLabel=({children})=>(
     <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>{children}</div>
   );
-  const ScoreRow=({rank,name,val,label,isPlayer,extra})=>(
+  /* [24/09 POC — commento PO sull'anteprima «va standardizzata e uniformata la schermata, rendila piu' bella»] la riga del
+     premio nello stile del post-partita: FIGURINA del premiato, podio in un bollino col colore della medaglia, nome e club
+     su due righe, numero a destra. L'eroe ha il riquadro del marchio. Rosso __CPM_NO_PREMI23. */
+  const _ScoreRowVecchia=({rank,name,val,label,isPlayer,extra})=>(
     <div style={{display:"flex",alignItems:"center",gap:10,padding:"7px 8px",borderRadius:RAD.sm,
       background:isPlayer?"#eff6ff":"transparent",
       borderLeft:isPlayer?"3px solid "+TH.primary:"3px solid transparent",marginBottom:3}}>
@@ -1915,6 +1922,18 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {extra&&<div style={{fontSize:FS.caption,color:TH.muted}}>{extra}</div>}
     </div>
   );
+  const ScoreRow=(pr)=>{if(typeof window!=='undefined'&&window.__CPM_NO_PREMI23)return _ScoreRowVecchia(pr);const {rank,name,val,label,isPlayer,extra}=pr;
+    const med=["#d4a017","#9aa4b2","#b87333"][rank]||TH.faint;
+    return(<div data-cpm="premio23" style={{display:"flex",alignItems:"center",gap:SP.md,padding:`${SP.sm}px ${SP.md}px`,borderRadius:RAD.md,marginBottom:SP.xs,
+      background:isPlayer?TH.primaryTint||TH.surface2:TH.surface2,border:"1px solid "+(isPlayer?(TH.primaryBorder||TH.primary):"transparent")}}>
+      <span className="cpm-num" style={{width:24,height:24,borderRadius:"50%",background:med,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{rank+1}</span>
+      <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="giocatore" chiave={isPlayer?((player&&player.name)||name):name} larg={34}/>;}catch(_e){return null;}})()}</div>
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:isPlayer?TH.brandText:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{name}{isPlayer?" · tu":""}</div>
+        {extra&&<div style={{fontSize:FS.caption,color:TH.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{extra}</div>}
+      </div>
+      <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,flexShrink:0}}>{val}<span style={{fontSize:FS.caption,fontWeight:FW.medium,color:TH.muted,marginLeft:3}}>{label}</span></div>
+    </div>);};
 
   /* [7.19.0 LA NOTTE DEL GALA — backlog favola] cerimonia TV a buste sopra la schermata premi (che resta
      identica sotto); solo stato locale, zero save. [7.33.0 direttiva PO «estendere la cerimonia 3D anche
@@ -1961,6 +1980,16 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
             <div style={{display:"flex",justifyContent:"center",gap:5,marginBottom:8}}>
               {_galaSeq.map((a,i)=>(<span key={a.key} style={{width:i===galaAct?18:7,height:7,borderRadius:RAD.xs,background:i<galaAct?"#d4a017":i===galaAct?"#fde68a":"rgba(255,255,255,0.18)",transition:"all .3s"}}/>))}
             </div>
+            {/* [24/09 POC — commento PO «metti le figurine con presentatore e presentatrice»] la coppia che conduce la serata:
+                parla uno per premio (alternati), l'altro resta un passo indietro. Rosso __CPM_NO_GALA23. */}
+            {!(typeof window!=='undefined'&&window.__CPM_NO_GALA23)&&(()=>{const _pp=[{n:"Tommaso Varesi",t:"giornalista",r:"Presentatore"},{n:"Chiara Loreti",t:"giornalista_f",r:"Presentatrice"}];const _sp=galaAct%2;
+              return(<div data-cpm="gala-conduttori23" style={{display:"flex",justifyContent:"center",gap:SP.lg,marginBottom:SP.md}}>
+                {_pp.map((q,i)=>(<div key={q.n} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,opacity:i===_sp?1:0.55,transform:i===_sp?"scale(1.06)":"none",transition:"all .3s"}}>
+                  {(()=>{try{return <Figurina tipo={q.t} chiave={q.n} larg={58}/>;}catch(_e){return null;}})()}
+                  <div style={{fontSize:FS.small,fontWeight:FW.bold,color:"#fff",lineHeight:1.1}}>{q.n}</div>
+                  <div style={{fontSize:FS.caption,color:i===_sp?"#fde68a":"rgba(255,255,255,0.6)"}}>{i===_sp?"sul palco":q.r}</div>
+                </div>))}
+              </div>);})()}
             <div key={"t"+galaAct} style={{fontSize:FS.title,fontWeight:900,color:"#fff",marginBottom:2,animation:"logoIn 0.5s ease-out"}}>{_actG.e} {_actG.title}</div>
             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)",marginBottom:16}}>{_actG.sub}</div>
             {galaN===0&&(<div style={{animation:"logoIn 0.5s ease-out"}}>
@@ -2105,27 +2134,33 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {/* Young Player — ora mostrato nel blocco PREMI DI LEGA (Sprint 134) */}
 
       {/* Rival */}
-      {rival&&(
-        <Card style={{marginBottom:10,padding:"14px 16px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)"}}>
-          <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>🆚 TU VS {rival.name.toUpperCase()} — {rival.relLabel}</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",marginBottom:8}}>
-            <div style={{textAlign:"center"}}>
-              <div style={{fontSize:FS.h,fontWeight:900,color:rival.tie?"#fbbf24":(rival.playerWins?"#4ade80":"#f87171")}}>{rival.playerGoals}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",marginTop:2}}>{player.name}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
-            </div>
-            <div style={{textAlign:"center",fontSize:FS.subhead,color:"rgba(165,180,252,0.5)"}}>⚽</div>
-            <div style={{textAlign:"center"}}>
-              <div style={{fontSize:FS.h,fontWeight:900,color:rival.tie?"#fbbf24":(!rival.playerWins?"#4ade80":"#f87171")}}>{rival.goals}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",marginTop:2}}>{rival.name}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.5)"}}>gol stagione</div>
-            </div>
-          </div>
-          <div style={{textAlign:"center",fontSize:FS.small,fontWeight:700,color:rival.tie?"#fbbf24":(rival.playerWins?"#4ade80":"#f87171"),padding:"6px",background:"rgba(0,0,0,0.2)",borderRadius:RAD.sm}}>
-            {rival.tie?"🤝 Parità con "+rival.name+": "+rival.goals+" gol a testa. Si decide la prossima stagione.":rival.playerWins?"✅ Stagione migliore del rivale! Dominanza.":"😤 "+rival.name+" ti ha superato. Stagione prossima la storia cambia."}
-          </div>
+      {rival&&(typeof window!=='undefined'&&window.__CPM_NO_RIVALE23)&&(
+        <Card style={{marginBottom:10,padding:"14px 16px"}}>
+          <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>🆚 Tu vs {rival.name} — {rival.relLabel}</div>
+          <div style={{fontSize:FS.body,fontWeight:800,color:TH.text,marginTop:6}}>{rival.playerGoals} – {rival.goals}</div>
         </Card>
       )}
+      {rival&&!(typeof window!=='undefined'&&window.__CPM_NO_RIVALE23)&&(()=>{/* [23/09 POC] «standardizza, piu' bella»: la card scura a gradiente viola era l'unico blocco fuori dal kit. Ora e' una Card chiara col volto dei due rivali (Figurina) e l'esito come Badge. Rosso: __CPM_NO_RIVALE23 */
+        const _tono=rival.tie?"draw":(rival.playerWins?"win":"loss");
+        const _col=(w)=>rival.tie?(TH.drawFg||"#a16207"):(w?(TH.winFg||"#166534"):(TH.lossFg||"#b91c1c"));
+        const _lato=(nome,gol,chiave,w)=>(<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,minWidth:0}}>
+          <Figurina tipo="giocatore" chiave={chiave} larg={52}/>
+          <div style={{fontSize:FS.h,fontWeight:900,color:_col(w),fontVariantNumeric:"tabular-nums",lineHeight:1}}>{gol}</div>
+          <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text,textAlign:"center",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
+        </div>);
+        return (<Card data-cpm="rivale23" style={{marginBottom:10,padding:"14px 16px"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8,marginBottom:10}}>
+            <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>🆚 Il duello della stagione</div>
+            <Badge tone="neutral">{rival.relLabel}</Badge>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",marginBottom:10}}>
+            {_lato(player.name,rival.playerGoals,player.name,rival.playerWins)}
+            <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted}}>gol</div>
+            {_lato(rival.name,rival.goals,rival.name,!rival.playerWins)}
+          </div>
+          <div style={{display:"flex",justifyContent:"center"}}><Badge tone={_tono}>{rival.tie?"🤝 Parità: "+rival.goals+" gol a testa":rival.playerWins?"✅ Hai battuto "+rival.name:"😤 "+rival.name+" ti ha superato"}</Badge></div>
+        </Card>);
+      })()}
 
       <Btn onClick={onContinue} v="primary" fw style={{padding:"16px",fontSize:FS.bodyLg,marginTop:4}}>
         Continua alla Fine Stagione →
@@ -2357,15 +2392,16 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         </div>}
       </Card>
       {/* Sprint 100: president dialog */}
-      {_presLine100&&<Card style={{marginBottom:8,padding:"12px 14px",background:"linear-gradient(135deg,#1c0d04,#2d1507)",border:"1px solid rgba(234,179,8,0.3)"}}>
+      {_presLine100&&(()=>{const _v23=!(typeof window!=='undefined'&&window.__CPM_NO_PRES23);/* [23/09 POC] «standardizza»: il Presidente parlava da una card marrone scura fuori kit; ora Card chiara con la figurina del dirigente. Rosso __CPM_NO_PRES23 */
+        return <Card data-cpm={_v23?"presidente23":undefined} style={_v23?{marginBottom:8,padding:"12px 14px"}:{marginBottom:8,padding:"12px 14px",background:"linear-gradient(135deg,#1c0d04,#2d1507)",border:"1px solid rgba(234,179,8,0.3)"}}>
         <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
-          <div style={{fontSize:FS.h,lineHeight:1}}>🏛️</div>
+          {_v23?<Figurina tipo="dirigente" chiave={"presidente-"+(player.club||"")} larg={44}/>:<div style={{fontSize:FS.h,lineHeight:1}}>🏛️</div>}
           <div style={{flex:1}}>
-            <div style={{fontSize:FS.caption,color:"#fde68a",marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>Il Presidente — fine stagione</div>
-            <div style={{fontSize:FS.small,color:"#fef3c7",fontStyle:"italic",lineHeight:1.5}}>{_presLine100.txt}</div>
+            <div style={{fontSize:FS.caption,color:_v23?TH.muted:"#fde68a",fontWeight:_v23?800:undefined,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>Il Presidente — fine stagione</div>
+            <div style={{fontSize:FS.small,color:_v23?TH.text:"#fef3c7",fontStyle:"italic",lineHeight:1.5}}>{_presLine100.txt}</div>
           </div>
         </div>
-      </Card>}
+      </Card>;})()}
       <style>{`@keyframes pulse87{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}`}</style>
 
       {/* Status banner + stats */}

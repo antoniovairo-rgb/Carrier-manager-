@@ -40,7 +40,10 @@ for (let i = 0; i < 160 && !fine; i++) {
     if (await clic('Ingaggia')) { await sleep(600); await foto('02-procuratore-ingaggio');
       await page.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => /vincere|giocare|guadagnare|crescere|nome|Nazionale|straniero|legato|Champions/i.test(b.textContent || '')); if (bs[0]) bs[0].click(); });
       await sleep(500); await foto('03-procuratore-ambizione'); await clic('Firma'); await sleep(700); await foto('04-procuratore-firmato'); } }
-  if (st.checkin && !visto.checkin) { visto.checkin = 1; await foto('05-procuratore-confronto'); await clic("Sto benissimo|piu' importante|più importante|guardarci intorno|cambiare completamente"); await sleep(500); await foto('06-procuratore-confronto-risposta'); await clic('Chiudi'); await sleep(300); }
+  if (st.checkin && !visto.checkin) { visto.checkin = 1;
+    /* [24/09] una finestra alla volta: il confronto aspetta in fila dietro intervista/verifica/momento -> prima si chiudono quelle */
+    for (let k = 0; k < 8 && !(await page.evaluate(() => !!document.querySelector('[data-cpm="confronto23"]'))); k++) { await page.evaluate(() => { try { window.__CPM_CAREER.dismiss(); } catch (_e) {} }); await clic('Diplomatico|Accetto|Continua|Chiudi|Mi metta dove serve|Rimanda a dopo'); await sleep(500); }
+    await foto('05-procuratore-confronto'); await clic("Sto benissimo|piu' importante|più importante|guardarci intorno|cambiare completamente"); await sleep(500); await foto('06-procuratore-confronto-risposta'); await clic('Chiudi'); await sleep(300); }
   if (st.init && !visto.init) { visto.init = 1; await foto('07-procuratore-iniziativa'); }
   const res = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
   if (res === 'seasonEnd') { await sleep(1500); await foto('08-gala');

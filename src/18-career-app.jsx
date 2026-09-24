@@ -400,7 +400,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         if(weekLiveModal){setWeekLiveModal(null);return;}
         if(showMatchPrompt){setShowMatchPrompt(null);startMatch();return;}
         if(showAdvanceConfirm){doAdvanceWeek();return;}
-        if(transferOffer){acceptTransfer();return;}
+        if(transferOffer){if(!(typeof window!=="undefined"&&window.__CPM_NO_FRENO23))return;acceptTransfer();return;}/* [24/09 POC freno] un Invio di troppo non firma un trasferimento: l'offerta si decide col tasto, dopo aver letto la situazione del club */
         // Screens
         if(screen==="postmatch"){setScreen("dashboard");setTab("dashboard");return;}
         if(screen==="press"){setScreen("dashboard");setTab("dashboard");return;}
@@ -1098,9 +1098,15 @@ const getThisWeekMatchday=()=>{
   // Smart "Continua" CTA — next logical step in the weekly flow
   // IMPORTANT: always shows match prompt when a pending match exists — never bypasses it
   const handleContinua=()=>{
+    /* [24/09 POC — commento PO «evitare che il player vada avanti nel gioco in maniera compulsiva, altrimenti si incasina
+       il gioco»] FRENO AI TOCCHI RIPETUTI: (1) con una finestra aperta (settimana, partita, offerta, procuratore, momenti,
+       presentazione, ritiro, intervista, rinnovo) «Avanza» non fa nulla — si decide prima quella; (2) dopo ogni avanzamento
+       il tasto resta fermo 1,2 s (era 0,6). Misura: sonda tests/visual/avanza-compulsivo.mjs. Rosso __CPM_NO_FRENO23. */
+    const _r23=(typeof window!=='undefined'&&window.__CPM_NO_FRENO23);
+    if(!_r23&&(weekLiveModal||showMatchPrompt||transferOffer||agentIntro||milestoneModal||careerMomentModal||negoModal||presEvent||ritiroEvent||interviewModal||(player.agentCheckin&&player.agentCheckin.due&&player.hasAgent))){try{window.__CPM_FRENO23=(window.__CPM_FRENO23|0)+1;}catch(_e){}return;}
     if(continuaBusyRef.current)return; // debounce rapid keypresses
     continuaBusyRef.current=true;
-    setTimeout(()=>{continuaBusyRef.current=false;},600); // unlock after 600ms
+    setTimeout(()=>{continuaBusyRef.current=false;},_r23?600:1200); // unlock
     // Injured flow: rehab session if week not lived, else advance week
     if(player.injured){
       if(!player.weekLived){liveCurrentWeek();return;} // rehab session
@@ -1156,6 +1162,7 @@ const getThisWeekMatchday=()=>{
       patch:(o)=>{try{setPlayer(p=>({...p,...(o||{})}));return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.303.0] iniezione di stato per le probe (test-only): evita il reload, che l'addInitScript sovrascriverebbe *//* [7.303.0] la probe pres-gk-kit deve poter pescare il PORTIERE vero della rosa *//* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
       bump:()=>{try{setNotif({msg:"probe",color:TH.text});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
       get:()=>({standings:(player.standings||[]).map(r=>({id:r.id||r.clubId,n:r.n||r.name,pts:r.pts||0})),/* [7.314.0] la probe del nome ex-club ha bisogno della classifica REALE (quella sintetica non sopravvive alla riconciliazione in migration) */season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration,/* [7.380.0 Procuratore] STATO DEL PROCURATORE nell'harness di carriera (test-only). Senza, il guardiano del CICLO DI VITA e' cieco: `get()` torna un riassunto fisso e `player()` non esiste, quindi la sonda leggeva un oggetto senza nessun campo dell'agente e concludeva «non accade mai» su un sistema che non stava nemmeno guardando. */ag:(function(){try{return{has:!!player.hasAgent,hint:(player.agentHint&&player.agentHint.due)||null,checkin:!!(player.agentCheckin&&player.agentCheckin.due),init:(player.agentInit&&player.agentInit.open)?player.agentInit.k:null,rapport:player.agent?player.agent.rapport:null,amb:player.agent?(player.agent.memory.amb||[]).slice():null,fee:(typeof agentHireFee==="function")?agentHireFee(player):null,bank:player.bankBalance||0};}catch(e){return null;}})(),vita:(function(){try{return{seen:Object.keys(player.vitaSeen||{}).length,ids:Object.keys(player.vitaSeen||{}),lastCat:player.vitaLastCat||null,next:player.vitaNext?player.vitaNext.id:null};}catch(e){return null;}})()/* [7.416.0] STATO VITA nell'harness (test-only): la stessa lezione del 7.380 — senza questo campo il guardiano del flusso reale legge un oggetto in cui il sistema non c'e' e conclude che il sistema non c'e' */}),
+      forceOffer:()=>{try{const o=generateTransferOffer(player);if(o)setTransferOffer(o);return !!o;}catch(e){return "error:"+(e&&e.message);}},/* [24/09 POC] la sonda dell'offerta (situazione del club offerente) */
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
@@ -5817,6 +5824,8 @@ const getThisWeekMatchday=()=>{
     fontWeight:att?FW.bold:600,letterSpacing:"0.06em",textTransform:"uppercase",lineHeight:1.2});
   const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"🤵",l:L.agent,k:"G"}];
 
+  /* [24/09 POC — anteprima 05: tre finestre impilate sul confronto col procuratore] PRECEDENZA UNICA: le finestre del procuratore sono le ultime della fila; aspettano che ogni altra finestra sia chiusa (mai due popup uno sull'altro). Rosso __CPM_NO_CODA23 */
+  const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
   return(
     <div className="cpm-career">
       <Notif msg={notif?.msg} color={notif?.color}/>
@@ -6064,7 +6073,7 @@ const getThisWeekMatchday=()=>{
         ))}
 
       {/* == Sprint 25A — Career Moment Modal == */}
-      {careerMomentModal&&(()=>{
+      {careerMomentModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal))&&(()=>{/* [24/09 POC — anteprima 05: il «momento» si apriva SOPRA il confronto col procuratore, due finestre impilate] il momento aspetta in coda che l'altra finestra sia chiusa. Rosso __CPM_NO_CODA23 */
         // [7.159.0 B] TIER DI RARITÀ: "epico" → presentazione PREMIUM dorata (glow + label leggendaria);
         //   "raro"/default → viola storico. Il tier è dichiarato sul momento (i vecchi restano "raro").
         const _epic=careerMomentModal.tier==="epico";
@@ -6132,7 +6141,7 @@ const getThisWeekMatchday=()=>{
       )}
 
       {/* == Sprint 15 — Interview Modal == */}
-      {interviewModal&&(()=>{const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"");/* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
+      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal))&&(()=>{/* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"");/* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
     /* [7.302.0 collaudo PO «ci sono scritte erroneamente sovrapposte»] il modal viveva DENTRO `.cpm-scroll`,
        che porta `zoom:1.12` (fix zoom mobile): un ancestor con zoom diventa BLOCCO CONTENITORE dei
        discendenti `position:fixed` e apre un contesto di impilamento → su alcuni browser mobili le righe
@@ -6156,7 +6165,7 @@ const getThisWeekMatchday=()=>{
                   dell'emoji del giornale c'e' lo spazio della figurina dell'intervistatore, seminato sul suo
                   NOME: lo stesso giornalista avra' sempre la stessa figurina. Larghezza 26 perche' 26x7/5 = 36,
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
-              <Figurina tipo={interviewModal.paper?.f?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={26} col={interviewModal.paper?.color||TH.primary}/>
+              <Figurina tipo={interviewModal.paper?.f?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={44} col={interviewModal.paper?.color||TH.primary}/>{/* [24/09 POC] figurina del giornalista piu' grande e intera (collaudo PO: il contorno non deve tagliare i volti) */}
               <div>
                 <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
@@ -6277,7 +6286,7 @@ const getThisWeekMatchday=()=>{
 
       {/* == Interview feedback toast == */}
       {interviewFeedback&&(
-        <div style={{position:"fixed",bottom:80,left:"50%",transform:"translateX(-50%)",background:TH.card,border:"1px solid "+TH.cardBorder,color:TH.text,padding:"12px 20px",borderRadius:RAD.md,fontSize:FS.small,fontWeight:600,zIndex:10000,boxShadow:TH.shadow,maxWidth:320,textAlign:"center",pointerEvents:"none"}}>
+        <div data-cpm="riscontro23" style={{position:"fixed",...((typeof window!=="undefined"&&window.__CPM_NO_TOAST23)?{bottom:80}:{top:"calc(16px + env(safe-area-inset-top, 0px))"}),left:"50%",transform:"translateX(-50%)",background:TH.card,border:"1px solid "+TH.cardBorder,color:TH.text,padding:"12px 20px",borderRadius:RAD.md,fontSize:FS.small,fontWeight:600,zIndex:10000,boxShadow:TH.shadow,maxWidth:320,textAlign:"center",pointerEvents:"none"}}>
           <div style={{marginBottom:6}}>{interviewFeedback.label}</div>
           <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}}>
             {interviewFeedback.ef?.m!==0&&interviewFeedback.ef?.m&&<span style={{color:interviewFeedback.ef.m>0?TH.txGreen:TH.txRed}}>😄{interviewFeedback.ef.m>0?"+":""}{interviewFeedback.ef.m}</span>}
@@ -6411,8 +6420,11 @@ const getThisWeekMatchday=()=>{
 
       {/* req #13: transfer offer modal */}
       {transferOffer&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.4)",zIndex:9997,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-          <Card style={{maxWidth:380,width:"100%",padding:"24px"}}>
+        /* [24/09 POC — commento PO «standardizza e uniforma la schermata e fai in modo che il player possa vedere il club offerente
+           in che posizione sta, qual e' la situazione del club prima di accettare o rifiutare»] Modal del kit + SCHEDA DEL CLUB dai
+           dati veri del gioco: posizione, punti e partite nella sua lega (classifica del mondo, override-aware), prestigio. */
+        <Modal open dismissable={false} width={420}>
+          <div data-cpm="offerta23">
             {player.dreamClub&&(transferOffer.club.id===player.dreamClub.id||transferOffer.club.n===player.dreamClub.n)&&(
               <div style={{background:"linear-gradient(135deg,#f59e0b,#d97706)",borderRadius:RAD.md,padding:"7px 12px",marginBottom:10,textAlign:"center"}}>
                 <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>🌟 IL TUO CLUB DEI SOGNI!</div>
@@ -6424,6 +6436,17 @@ const getThisWeekMatchday=()=>{
               <div style={{fontSize:FS.subhead,fontWeight:900,color:TH.text,marginTop:8}}>{transferOffer.club.n}</div>
               <div style={{fontSize:FS.small,color:TH.muted}}>{transferOffer.club.nat} · {transferOffer.club.lg}</div>
             </div>
+            {(()=>{try{const c=transferOffer.club||{};const lg=((player.leagueOverrides||{})[c.id])||c.lg;
+              const rows=(lg&&player.club&&lg===player.club.lg)?(player.standings||[]):(typeof calcWorldStandings==="function"?calcWorldStandings(lg,player.season||1,player.week||1,player.leagueOverrides||{}):[]);
+              const i=rows.findIndex(t=>t&&(t.id===c.id||t.n===c.n));if(i<0)return null;const t=rows[i];
+              return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md}}>
+                <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>La situazione del club</div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:SP.sm,textAlign:"center"}}>
+                  {[["Posizione",(i+1)+"ª su "+rows.length],["Punti",t.pts|0],["Giocate",t.played|0],["V · P · S",(t.wins|0)+" · "+(t.draws|0)+" · "+(t.losses|0)]].map(([l,v])=>(
+                    <div key={l}><div className="cpm-num" style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text}}>{v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}
+                </div>
+                <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>{lg} · prestigio {c.p||"—"} · differenza reti {(t.gd!=null?t.gd:(t.gf|0)-(t.ga|0))>0?"+":""}{t.gd!=null?t.gd:(t.gf|0)-(t.ga|0)}</div>
+              </div>);}catch(_e){return null;}})()}
             <Card style={{padding:"12px",marginBottom:10}} bg={TH.bgBlue} border="#bfdbfe" shadow={false}>
               <div style={{fontSize:FS.body,fontWeight:700,color:TH.brandText,marginBottom:4}}>📩 Offerta: {transferOffer.type}</div>
               <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.7}}>
@@ -6443,11 +6466,11 @@ const getThisWeekMatchday=()=>{
             )}
             {transferOffer._counter===true&&<div style={{fontSize:FS.small,color:TH.txGreen,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Counter accettato dal club! Stipendio e durata aggiornati.</div>}{transferOffer._counter==="rejected"&&<div style={{fontSize:FS.small,color:TH.txRed,fontWeight:700,marginBottom:8,textAlign:"center"}}>❌ Il club non rilancia: restano i termini originali.</div>}
             <div style={{display:"flex",gap:8}}>
-              <Btn onClick={declineTransferOffer} v="secondary" fw>Rifiuta</Btn>
-              <Btn onClick={acceptTransfer} v="primary" fw>Accetta →</Btn>
+              <Btn onClick={declineTransferOffer} v="secondary" size="lg" fw>Rifiuta</Btn>
+              <Btn onClick={acceptTransfer} v="primary" size="lg" fw>Accetta</Btn>
             </div>
-          </Card>
-        </div>
+          </div>
+        </Modal>
       )}
 
       {/* [7.338.0] LA SCENA DEL NO: chi reagisce quando resti (curva · presidente · mister · compagno · stampa) */}
@@ -6893,7 +6916,7 @@ const getThisWeekMatchday=()=>{
                 meta'. Ora la striscia copre anche il margine laterale della pagina (-12 px) e quattordici
                 pixel sopra il bottone, e porta un'ombra bassa: il contenuto ci sparisce sotto invece di
                 affiorarne per meta'. La CTA resta dov'e' (decisione 6.5.4: sempre visibile senza scorrere). */}
-            <button onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
+            <button data-cpm="avanza23" onClick={cs.disabled?undefined:handleContinua} disabled={cs.disabled} className={cs.disabled?"":"cpm-press"}
               style={{width:"100%",padding:"11px 15px",borderRadius:RAD.lg,border:"none",background:cs.disabled?TH.track:`linear-gradient(135deg,${cs.color},${cs.color}cc)`,cursor:cs.disabled?"not-allowed":"pointer",fontFamily:"inherit",boxShadow:cs.disabled?"none":TH.el2,transition:`transform ${MO.fast}ms,box-shadow ${MO.fast}ms`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div style={{textAlign:"left"}}>
                 <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:cs.disabled?TH.faint:"#fff",marginBottom:2}}>{cs.label}</div>
@@ -7299,66 +7322,76 @@ const getThisWeekMatchday=()=>{
           quattro risposte hanno conseguenze vere e non nuove: accendono l'incarico `cerca_offerte`
           e il flag `transferListed` che il mercato legge gia'. Stessa impaginazione della scena
           d'ingaggio: colonna singola, a tutta pagina, leggibile sul telefono. */}
-      {player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent&&(()=>{
+      {player.agentCheckin&&player.agentCheckin.due&&player.hasAgent&&player.agent&&!_fila23&&(()=>{
         const _nm377=(player.agent&&player.agent.name)||agentNameFor(player);
         const _ask377=agentCheckinAsk(player,player.agent);
         return(
-        <div style={{position:"fixed",inset:0,zIndex:80,background:"rgba(4,7,14,0.93)",overflowY:"auto",padding:"18px 14px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{width:"100%",maxWidth:440}}>
-            <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:12}}>
-              <Figurina tipo="procuratore" chiave={_nm377} larg={44} col={TH.primary} /* [7.966] lo spazio del volto e' rettangolare verticale: oggi dentro c'e' il ripiego, domani la figurina *//>
-              <div><div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>{_nm377}</div>
-                <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)"}}>Il tuo procuratore · rapporto {agentRapportTier(player.agent.rapport)}</div></div>
+        /* [24/09 POC — commento PO «standardizza e uniforma la schermata»] il confronto col procuratore nel Modal del kit */
+        <Modal open dismissable={false} width={440}>
+          <div data-cpm="confronto23">
+            <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>Il confronto</div>
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+              <Figurina tipo="procuratore" chiave={_nm377} larg={52} col={TH.primary} /* [7.966] lo spazio del volto e' rettangolare verticale: oggi dentro c'e' il ripiego, domani la figurina *//>
+              <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm377}</div>
+                <div style={{fontSize:FS.small,color:TH.muted}}>Il tuo procuratore · rapporto {agentRapportTier(player.agent.rapport)}</div></div>
             </div>
             {_ci377Sel?(<>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:18}}>«{AGENT_CHECKIN_REPLY[_ci377Sel]||"Ricevuto."}»</div>
-              <Btn v="outline" fw style={{padding:"13px"}} onClick={()=>{
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{AGENT_CHECKIN_REPLY[_ci377Sel]||"Ricevuto."}»</div>
+              <Btn v="primary" size="lg" fw onClick={()=>{
                 setPlayer(p=>({...p,...agentCheckinApply(p,_ci377Sel),agentCheckin:{due:false,s:p.season||1,w:p.week||1},
                   log:[`🤵 Confronto con ${_nm377}.`,...(p.log||[])].slice(0,60)}));
                 setCi377Sel(null);
               }}>Chiudi</Btn>
             </>):(<>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:8}}>«{_ask377.apertura}»</div>
-              {_ask377.ricordo&&<div style={{fontSize:FS.small,color:"#fbbf24",lineHeight:1.7,marginBottom:8,fontStyle:"italic"}}>«{_ask377.ricordo}»</div>}
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.9)",lineHeight:1.75,marginBottom:12}}>«{_ask377.lettura}»</div>
-              <div style={{fontSize:FS.body,color:"#fff",fontWeight:800,lineHeight:1.7,marginBottom:10}}>«{_ask377.domanda}»</div>
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
+                <div style={{marginBottom:SP.sm}}>«{_ask377.apertura}»</div>
+                {_ask377.ricordo&&<div style={{fontSize:FS.small,color:TH.txAmber,marginBottom:SP.sm,fontStyle:"italic"}}>«{_ask377.ricordo}»</div>}
+                <div style={{marginBottom:SP.sm}}>«{_ask377.lettura}»</div>
+                <div style={{fontWeight:FW.bold}}>«{_ask377.domanda}»</div>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
                 {_ask377.opzioni.map(o=>(
-                  <Btn key={o.id} v="ghost" fw style={{padding:"13px",textAlign:"left",justifyContent:"flex-start"}}
+                  <Btn key={o.id} v="secondary" size="lg" fw style={{textAlign:"left",justifyContent:"flex-start",color:TH.text,fontWeight:FW.semibold}}
                     onClick={()=>setCi377Sel(o.id)}>{o.label}</Btn>
                 ))}
               </div>
             </>)}
           </div>
-        </div>);})()}
-      {agentIntro&&(()=>{
+        </Modal>);})()}
+      {agentIntro&&!_fila23&&(()=>{
         const _nm376=(agentIntro.solo&&player.agent&&player.agent.name)||agentNameFor(player);
         const _ln376=agentIntroLine(player,_nm376,agentIntro.amb);
         const _op376=agentIntroOptions(player);
         return(
-        <div style={{position:"fixed",inset:0,zIndex:80,background:"rgba(4,7,14,0.93)",overflowY:"auto",padding:"18px 14px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{width:"100%",maxWidth:440}}>
-            <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:12}}>
-              <Figurina tipo="procuratore" chiave={_nm376} larg={44} col={TH.primary}/>
-              <div><div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#fff"}}>{_nm376}</div>
-                <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)"}}>Procuratore</div></div>
+        /* [24/09 POC — commento PO sull'anteprima «schermata da uniformare e standardizzare» (primo incontro, ambizione, firma)]
+           il primo incontro col procuratore passa nel Modal del kit: pannello chiaro, figurina, citazioni in un riquadro neutro,
+           scelte come bottoni secondari larghi, azione primaria del kit. */
+        <Modal open dismissable={false} width={440}>
+          <div data-cpm="procuratore23">
+            <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>Il primo incontro</div>
+            <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
+              <Figurina tipo="procuratore" chiave={_nm376} larg={52} col={TH.primary}/>
+              <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm376}</div>
+                <div style={{fontSize:FS.small,color:TH.muted}}>Procuratore</div></div>
             </div>
             {!agentIntro.amb?(<>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:9}}>«{_ln376.saluto}»</div>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:12}}>«{_ln376.ruolo}»</div>
-              <div style={{fontSize:FS.body,color:"#fff",fontWeight:800,lineHeight:1.7,marginBottom:10}}>«{_ln376.domanda}»</div>
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>
+                <div style={{marginBottom:SP.sm}}>«{_ln376.saluto}»</div>
+                <div style={{marginBottom:SP.sm}}>«{_ln376.ruolo}»</div>
+                <div style={{fontWeight:FW.bold}}>«{_ln376.domanda}»</div>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
                 {_op376.map(o=>(
-                  <Btn key={o.id} v="ghost" fw style={{padding:"13px",textAlign:"left",justifyContent:"flex-start"}}
+                  <Btn key={o.id} v="secondary" size="lg" fw style={{textAlign:"left",justifyContent:"flex-start",color:TH.text,fontWeight:FW.semibold}}
                     onClick={()=>setAgentIntro(a=>({...a,amb:o.id}))}>{o.label}</Btn>
                 ))}
               </div>
               <div style={{marginTop:10,textAlign:"center"}}>
-                <Btn v="ghost" onClick={()=>setAgentIntro(null)} style={{padding:"9px 16px",fontSize:FS.caption,opacity:0.75}}>Ci penso ancora</Btn>
+                <Btn v="ghost" fw onClick={()=>setAgentIntro(null)}>Ci penso ancora</Btn>
               </div>
             </>):(<>
-              <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.92)",lineHeight:1.75,marginBottom:18}}>«{_ln376.risposta}»</div>
-              <Btn v="outline" fw style={{padding:"13px"}} onClick={()=>{
+              <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md,fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«{_ln376.risposta}»</div>
+              <Btn v="primary" size="lg" fw onClick={()=>{
                 const _a=agentIntro.amb;
                 /* [7.379.0 R6 §25] col procuratore NUOVO (gia' ingaggiato dal catalogo) questa scena
                    serve solo a raccogliere le ambizioni: la relazione riparte da zero, ma non si
@@ -7374,11 +7407,11 @@ const getThisWeekMatchday=()=>{
                 setAgentIntro(null);
               }}>{agentIntro.solo?"Iniziamo":`Firma · ${(agentIntro.fee||agentHireFee(player)).toLocaleString("it-IT")}€`}</Btn>
               <div style={{marginTop:10,textAlign:"center"}}>
-                <Btn v="ghost" onClick={()=>setAgentIntro(a=>({...a,amb:null}))} style={{padding:"9px 16px",fontSize:FS.caption,opacity:0.75}}>Torna indietro</Btn>
+                <Btn v="ghost" fw onClick={()=>setAgentIntro(a=>({...a,amb:null}))}>Torna indietro</Btn>
               </div>
             </>)}
           </div>
-        </div>);})()}
+        </Modal>);})()}
       {/* [7.378.0 Procuratore R5 §6] IL PROCURATORE BUSSA. Una card compatta sul cruscotto, non un
           modale: il modale e' per i momenti che meritano di fermare il gioco (l'ingaggio, il
           confronto), questo e' il procuratore che ti dice una cosa mentre passi. Il bottone porta

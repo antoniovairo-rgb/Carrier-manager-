@@ -7365,6 +7365,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           actType=null;celebT=-1;sr.current._celPlan393=null;heroPostT=-1;subEntryT=-1;// la premiazione ha priorità su ogni altra posa/coreografia
           // compagni di casa (outfield, non portiere, non eroe)
           const _cel=[];sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(pp.mesh&&pp.mesh!==hero&&src&&src.team==="home"&&!src.gk)_cel.push(pp.mesh);});
+          /* [24/09 POC — commento PO sull'anteprima «la premiazione deve essere di squadra con palco in mezzo con il nome della
+             competizione, non isterica; il capitano alza la coppa e la passa all'eroe per la foto»] PREMIAZIONE DI SQUADRA:
+             sequenza calma consegna -> capitano -> l'eroe alza la coppa sul podio -> foto di gruppo; il capitano e' il primo
+             compagno di movimento, esce dal gruppo che festeggia e va al podio. Rosso __CPM_NO_PREMIO23. */
+          const _team23=!(typeof window!=='undefined'&&window.__CPM_NO_PREMIO23)&&_ck422!=="promo"&&_ck422!=="bigwin"&&!(P.ceremony&&P.ceremony.light);
+          const _cap23=_team23?(_cel.shift()||null):null;
           const _cSgn=(propsRef.current.heroStandHome===false)?-1:1;sr.current._cerSgn=_cSgn;/* [7.278.0 collaudo PO «il festeggiamento del trofeo deve avvenire sotto la curva dei propri tifosi»] La Curva Sud (x=+) ospita i tifosi della squadra di CASA REALE (lato-tribuna, lezione 7.52.2): in trasferta i tuoi stanno nella curva opposta, e il giro di campo andava sotto quella sbagliata. */
           const _NC=Math.max(1,_cel.length),CURVA_X=_cSgn*(AWAY_GOAL_X-6);
           /* [7.425.0 EVOLUTIVA CELEBRAZIONI — direttiva PO «ogni grande traguardo deve essere un
@@ -7387,10 +7393,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_ck422==="promo")_bs=[_mk("burst",2.8),_mk("hug",3.2),_mk("coach",2.6),_mk("curva",4.2),_mk("fest",3.6)];
             else if(_ck422==="int")_bs=[_mk("burst",2.4),_mk("hug",2.4),_mk("coach",2.2),_mk("present",2.8),_mk("lift",3.8),_mk("lap",4.2),_mk("curva",2.8),_mk("fest",3.0)];
             else if(_ck422==="bigwin")_bs=[_mk("burst",2.4),_mk("hug",2.8),_mk("fest",3.0)];
-            else _bs=[_mk("burst",2.4),_mk("hug",2.6),_mk("present",2.6),_mk("lift",3.6),_mk("lap",4.0),_mk("curva",3.0),_mk("fest",3.0)];/* league: la festa di popolo, completa — [7.426.0] IL GIRO DI CAMPO VA DOPO LA CONSEGNA, col trofeo in mano: prima la coppa girava il campo prima di essere consegnata */
+            else _bs=[_mk("burst",2.4),_mk("hug",2.6),_mk("present",2.6),_mk("lift",3.6),_mk("lap",4.0),_mk("curva",3.0),_mk("fest",3.0)];
+            if(_team23)_bs=[_mk("present",3.0),_mk("captain",3.4),_mk("lift",3.8),_mk("fest",3.6)];/* [24/09 POC] premiazione di squadra: niente burst/hug/lap/curva *//* league: la festa di popolo, completa — [7.426.0] IL GIRO DI CAMPO VA DOPO LA CONSEGNA, col trofeo in mano: prima la coppa girava il campo prima di essere consegnata */
             if(_r425(3)<0.5&&_bs.length>2&&_bs[1].k==="hug"&&_bs[2].k==="coach"){const _t=_bs[1];_bs[1]=_bs[2];_bs[2]=_t;}/* variante: il mister puo' arrivare prima dell'abbraccio */
             const _roles=[];for(let ri=0;ri<24;ri++)_roles.push(["salta","abbraccia","ginocchio","corre","applaude"][(_seed>>ri%16)%5===undefined?0:Math.floor(_r425(ri*3)*5)%5]);
+            if(_team23)for(let ri=0;ri<_roles.length;ri++)_roles[ri]="applaude";/* la squadra applaude composta */
             sr.current._cer425={k:(P.ceremony.name||"")+(P.ceremony.kind||""),beats:_bs,roles:_roles,camv:Math.floor(_r425(11)*3)};
+            /* il palco col nome della competizione, dietro il podio */
+            if(_team23){try{if(podiumGrp._banner23)podiumGrp.remove(podiumGrp._banner23);const cv=document.createElement('canvas');cv.width=1024;cv.height=192;const g2=cv.getContext('2d');
+              const gr=g2.createLinearGradient(0,0,0,192);gr.addColorStop(0,'#16121f');gr.addColorStop(1,'#0b0910');g2.fillStyle=gr;g2.fillRect(0,0,1024,192);
+              g2.fillStyle='#d4a017';g2.fillRect(0,0,1024,8);g2.fillRect(0,184,1024,8);g2.fillStyle='#fde68a';g2.textAlign='center';g2.textBaseline='middle';
+              let fs=86;const tx=String(P.ceremony.name||"CAMPIONI").toUpperCase();g2.font='900 '+fs+'px Barlow, Arial, sans-serif';while(fs>40&&g2.measureText(tx).width>940){fs-=4;g2.font='900 '+fs+'px Barlow, Arial, sans-serif';}g2.fillText(tx,512,100);
+              const bn=new THREE.Mesh(new THREE.PlaneGeometry(6.0,1.12),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cv)}));bn.position.set(0,3.25,0);
+              const pl=new THREE.Mesh(new THREE.BoxGeometry(0.14,3.8,0.14),new THREE.MeshLambertMaterial({color:0x2a2f3a}));const pr=pl.clone();pl.position.set(-3.0,1.9,-0.03);pr.position.set(3.0,1.9,-0.03);
+              /* il palco guarda la CAMERA della consegna (-sgn*10, 8): di fronte era a +z e la camera lo vedeva di sbieco, enorme e fuori centro */
+              const _ux=-_cSgn*10,_uz=8,_ul=Math.hypot(_ux,_uz);const gB=new THREE.Group();gB.add(bn);gB.add(pl);gB.add(pr);gB.position.set(-_ux/_ul*7.2,0,-_uz/_ul*7.2);gB.rotation.y=Math.atan2(_ux,_uz);
+              podiumGrp.add(gB);podiumGrp._banner23=gB;}catch(_eB){}}
             /* il TROFEO della competizione: la coppa classica resta; per lo scudetto un PIATTO d'oro
                con corona d'alloro, per l'internazionale la coppa GRANDE dalle orecchie larghe; la
                promozione festeggia SENZA coppa (il premio e' la categoria) */
@@ -7508,7 +7526,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(_bk==="burst"||_bk==="hug"||_bk==="coach"){_htx=_cerHx0;_htz=_cerHz0;}
           else if(_bk==="lap"){_htx=_cerHx0+(CURVA_X-_cerHx0)*_bp;_htz=_cerHz0*(1-_bp)+Math.sin(_bp*Math.PI)*(_cerHz0>=0?9:-9);_armsUp=false;}
           else if(_bk==="curva"){_htx=CURVA_X;_htz=0;if(crowdOhT<0&&Math.sin(_ct*3)>0.9)crowdOhT=0;}
-          else if(_bk==="present"){_htx=-_cSgn*2.3;_htz=1.4;podiumGrp.visible=true;}/* [7.429.0 collaudo PO «eroe che sprofonda nel palco»] alla consegna si sta ACCANTO al podio (il bersaglio (0,0) lo piantava DENTRO il cilindro); ci si sale solo al sollevamento */
+          else if(_bk==="present"||_bk==="captain"){_htx=-_cSgn*2.3;_htz=1.4;podiumGrp.visible=true;}/* [7.429.0 collaudo PO «eroe che sprofonda nel palco»] alla consegna si sta ACCANTO al podio (il bersaglio (0,0) lo piantava DENTRO il cilindro); ci si sale solo al sollevamento */
           else if(_bk==="lift"){_htx=0;_htz=0;_onPodium=true;podiumGrp.visible=true;}
           else{_htx=(_ck422==="promo"?CURVA_X*0.7:0);_htz=0;}/* fest: la promozione resta coi tifosi */
           animOne(hero,_htx,_htz,aDt,ak,_htx,_htz);// muove l'eroe (gambe animate quando cammina)
@@ -7534,7 +7552,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                piano degli screenshot del PO (misurato: dCam 5-7u costanti in ogni beat). Ora segue il
                gruppo DIETRO l'eroe sul lato opposto alla camera (z-4,5) e alla consegna sta oltre il
                podio (z-4,2), mai fra l'obiettivo e la scena. */
-            const _cto=(_bk==="coach")?{x:hero.position.x-_cSgn*1.3,z:hero.position.z}:(_bk==="lift"||_bk==="present")?{x:-_cSgn*2.6,z:-4.2}:{x:hero.position.x-_cSgn*2.2,z:hero.position.z-4.5};
+            const _cto=(_bk==="coach")?{x:hero.position.x-_cSgn*1.3,z:hero.position.z}:(_bk==="lift"||_bk==="present"||_bk==="captain")?{x:-_cSgn*2.6,z:-4.2}:{x:hero.position.x-_cSgn*2.2,z:hero.position.z-4.5};
             /* [collaudo PO nazionale «il mister vola, si muove con il teletrasporto»] il lerp
                proporzionale (aDt*1.4) su un bersaglio a 10-15u produceva passi da 4-6u/s in PLANATA,
                senza gambe: un signore che levita attraverso il campo. Ora cammina a VELOCITA' UMANA
@@ -7604,7 +7622,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            else if(_bk==="hug")_shot={x:_hx3-_cSgn*8,y:3.6+_cv*0.4,z:_hz3+6,lx:_hx3,ly:1.4,lz:_hz3};
            else if(_bk==="lap")_shot={x:_hx3-_cSgn*11,y:5,z:_hz3+8,lx:_hx3,ly:1.5,lz:_hz3};
            else if(_bk==="curva")_shot={x:_hx3-_cSgn*20,y:8.5,z:_hz3+(_cv-1)*4,lx:_hx3+_cSgn*8,ly:4,lz:0};
-           else if(_bk==="present")_shot={x:-_cSgn*10,y:3.2,z:8,lx:0,ly:2.0,lz:0};
+           else if(_bk==="present"||_bk==="captain")_shot={x:-_cSgn*10,y:3.2,z:8,lx:0,ly:2.0,lz:0};
            else if(_bk==="lift")_shot={x:-_cSgn*(9+_bp*6),y:3.4+_bp*3,z:6+_bp*4,lx:0,ly:2.4,lz:0};
            else _shot={x:_hx3-_cSgn*16,y:7,z:_hz3+10,lx:_hx3,ly:2,lz:_hz3};
            sr.current._cerCam=_shot;}
@@ -7656,6 +7674,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _hx4=trophyGrp.position.x,_hy4=trophyGrp.position.y,_hz4=trophyGrp.position.z;/* bersaglio mani: l'attacco qui sopra l'ha gia' scritto */
               trophyGrp.position.set(_hx4*_pw426,1.35+(_hy4-1.35)*_pw426,_hz4*_pw426);}
             else{trophyGrp.position.set(0,-50,0);}}/* prima della consegna la coppa non c'e' ancora: arriva SUL PODIO e vola alle mani nell'ultimo tratto */
+          if(_cap23){const _cT=(_bk==="captain")?{x:0,z:0.2}:(_bk==="present")?{x:_cSgn*2.3,z:1.4}:{x:_cSgn*2.6,z:1.6};if(_cap23._snap23!==_SC){_cap23.position.x=_cSgn*2.3;_cap23.position.z=1.4;_cap23._snap23=_SC;if(hero._snap23!==_SC){hero.position.x=-_cSgn*2.3;hero.position.z=1.4;hero._snap23=_SC;}}animOne(_cap23,_cT.x,_cT.z,aDt,ak,_cT.x,_cT.z);
+            if(_bk==="captain"&&_bp>0.25){try{const _cAv=(glbAvatars||[]).find(a=>a&&a.proc===_cap23);
+              if(_cAv&&_cAv._handL&&_cAv._handR){const _w1=sr.current._thv1||(sr.current._thv1=new THREE.Vector3()),_w2=sr.current._thv2||(sr.current._thv2=new THREE.Vector3());
+                _w1.setFromMatrixPosition(_cAv._handL.matrixWorld);_w2.setFromMatrixPosition(_cAv._handR.matrixWorld);trophyGrp.position.set((_w1.x+_w2.x)/2,(_w1.y+_w2.y)/2+0.10,(_w1.z+_w2.z)/2);}
+              else trophyGrp.position.set(_cap23.position.x,1.75,_cap23.position.z+0.1);}catch(_eC){}}
+            if(_bk==="lift"||_bk==="fest"){const _hy=Math.atan2(-_cSgn*10-hero.position.x,8-hero.position.z);hero.rotation.y=_hy;try{const _hAv=(glbAvatars||[]).find(a=>a&&a.proc===hero);if(_hAv&&_hAv.root)_hAv.root.rotation.y=_hy;}catch(_eH){}}/* la foto: l'eroe alza la coppa GUARDANDO la camera, non di spalle */
+            try{window.__CPM_PREMIO23={beat:_bk,capitano:!!_cap23,x:+_cap23.position.x.toFixed(2),z:+_cap23.position.z.toFixed(2)};}catch(_e){}}
           trophyGrp.rotation.y+=aDt*1.3;
           _goldMat.emissiveIntensity=0.4+Math.sin(now*0.006)*0.28;
           /* COMPAGNI A RUOLI (seedati): la stessa scena, ventidue reazioni — mai cloni sincronizzati.
@@ -7669,7 +7694,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_bk==="curva"){_mx=CURVA_X-_cSgn*(2+Math.abs(_off)*3);_mz=_off*24;}
             else if(_bk==="present"||_bk==="lift"){const _a2=(ci/_NC)*Math.PI*2;_mx=Math.cos(_a2)*6.5;_mz=Math.sin(_a2)*7.5;}
             else{const _a2=(ci/_NC)*Math.PI*2;_mx=hero.position.x+Math.cos(_a2)*(5+(ci%3)*2.5);_mz=hero.position.z+Math.sin(_a2)*(6+(ci%2)*3);}
+            if(_team23&&_bk!=="burst"&&_bk!=="hug"){/* [24/09 POC] FOTO DI SQUADRA: arco dietro il podio visto dalla camera della consegna, due file; al primo fotogramma la squadra e' GIA' schierata (niente corsa isterica) */
+              const _ba=Math.atan2(-8,_cSgn*10),_sp=Math.min(0.8,0.1*_NC),_a3=_ba+(_NC>1?(ci/(_NC-1)-0.5):0)*2*_sp,_r3=(ci%2)?5.3:4.0;_mx=Math.cos(_a3)*_r3;_mz=Math.sin(_a3)*_r3;
+              if(!m._snap23||m._snap23!==_SC){m.position.x=_mx;m.position.z=_mz;m._snap23=_SC;}try{const _f=window.__CPM_FOTO23||(window.__CPM_FOTO23={});_f[ci]=[+m.position.x.toFixed(1),+m.position.z.toFixed(1),+_mx.toFixed(1),+_mz.toFixed(1),_bk,_cSgn];}catch(_e){}}
             animOne(m,_mx,_mz,aDt,ak,_mx,_mz);
+            if(_team23)m.rotation.y=Math.atan2(-_cSgn*10-m.position.x,8-m.position.z);
             /* [7.429.0 collaudo PO — un compagno mezzo AFFONDATO nel podio negli screenshot] il viaggio
                verso l'arco della consegna puo' attraversare il cilindro: spinta radiale fuori dal palco */
             if(podiumGrp.visible){const _dp429=Math.hypot(m.position.x,m.position.z);
@@ -9343,6 +9372,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _tieni=new Set([0]);/* l'eroe non si spegne mai */
             const _port=_ord.find(x=>x.index!==0&&x.av._isGk);if(_port)_tieni.add(_port.index);
             _ord.filter(x=>x.index!==0&&!x.av._isGk).slice(0,3).forEach(x=>_tieni.add(x.index));
+            if(P.ceremony&&!(window.__CPM_NO_PREMIO23)&&(P.ceremony.kind||'league')!=='promo'&&(P.ceremony.kind||'league')!=='bigwin'&&!P.ceremony.light)_ord.filter(x=>x.av._team==='home').forEach(x=>_tieni.add(x.index));/* [24/09 POC] PREMIAZIONE DI SQUADRA: in foto c'e' tutta la squadra, non l'eroe e i tre piu' vicini */
             _ord.filter(x=>x.index!==0&&(x.av._gName||x.av._gPrev)).forEach(x=>_tieni.add(x.index));/* chi sta gia' facendo un gesto resta: spegnerlo a meta' azione si vedrebbe */
             glbAvatars.forEach((av,index)=>{if(av&&av.root)av.root.visible=_tieni.has(index);});
             const _conta={lod0:0,lod1:0,lod2:0};

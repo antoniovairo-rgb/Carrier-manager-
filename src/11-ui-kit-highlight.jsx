@@ -93,7 +93,19 @@ const OvrRing=({value,size=60,label="OVR"})=>{
   const c=value>=80?TH.success:value>=65?TH.warning:TH.danger;
   return<div style={{width:size,height:size,borderRadius:"50%",flexShrink:0,background:`conic-gradient(${c} ${value}%,${TH.track} 0)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:size-10,height:size-10,borderRadius:"50%",background:TH.card,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}><div className="cpm-num" style={{fontSize:fsScala(Math.max(FS.caption,size*.27))/* [C4] pavimento 11 px */,fontWeight:900,color:legCol944(c),lineHeight:1}}>{value}</div><div style={{fontSize:FS.caption,color:TH.faint}}>{label}</div></div></div>;
 };
-const Notif=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
+/* [24/09 POC — commento PO sull'anteprima «i toast devono essere piu' carini»] IL TOAST DEL KIT: pannello chiaro con la
+   striscia colorata a sinistra, l'emoji iniziale del messaggio in un bollino, testo in inchiostro della pagina; sta in BASSO
+   sopra la barra di navigazione, cosi' non copre piu' la testata («Simulazione…» sopra il nome). Rosso __CPM_NO_TOAST23. */
+const _NotifVecchio=({msg,color})=>msg?<div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",background:TH.card,border:`2px solid ${color}`,color,padding:"10px 24px",borderRadius:40,fontSize:FS.body,fontWeight:700,zIndex:9999,letterSpacing:.4,pointerEvents:"none",boxShadow:`0 4px 24px ${color}33`}}>{msg}</div>:null;
+const Notif=({msg,color})=>{if(typeof window!=='undefined'&&window.__CPM_NO_TOAST23)return _NotifVecchio({msg,color});if(!msg)return null;
+  const m=String(msg).match(/^\s*((?:\p{Extended_Pictographic}|\p{Emoji_Presentation})(?:\uFE0F|\u200D(?:\p{Extended_Pictographic}|\p{Emoji_Presentation}))*)\s*/u);const ic=m?m[1]:null,tx=m?String(msg).slice(m[0].length):String(msg);
+  const c=(typeof legCol944==='function'?legCol944(color||TH.primary):(color||TH.primary));
+  /* [24/09 POC] centrato da un contenitore flex a tutta larghezza: `cpm-rise` anima `transform` e cancellava il translateX(-50%) -> toast spostato a destra e tagliato (anteprima 04/05) */
+  return(<div style={{position:"fixed",left:0,right:0,bottom:"calc(96px + env(safe-area-inset-bottom, 0px))",zIndex:9999,pointerEvents:"none",display:"flex",justifyContent:"center",padding:"0 16px"}}><div data-cpm="toast23" role="status" className="cpm-rise" style={{
+    display:"flex",alignItems:"center",gap:SP.sm,maxWidth:380,minWidth:0,background:TH.surface3,border:"1px solid "+TH.divider,borderLeft:"4px solid "+c,borderRadius:RAD.md,padding:"9px 14px 9px 10px",boxShadow:TH.el3}}>
+    {ic&&<span style={{width:30,height:30,borderRadius:"50%",background:TH.surface2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{ic}</span>}
+    <span style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,lineHeight:1.35,minWidth:0,overflowWrap:"anywhere"}}>{tx}</span>
+  </div></div>);};
 /* Sprint 33 C4 — SVG Sparkline */
 function Sparkline({data,color,width,height}){
   var w=width||100;var h=height||30;var c=legCol944(color||TH.primary);/* [7.944] la tinta si alza sul fondo scuro: qui il colore arriva dal club, non dalla palette */
