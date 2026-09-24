@@ -5290,7 +5290,8 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.982.0"; // [7.982.0 - IL PULLMAN SCOPERTO RIFATTO (collaudo PO 24/09 «e' sicuramente da rivedere», proposta approvata)] Causa (foto della sonda parata-shot.mjs): omini a blocchi con la testa a sfera, pullman giallo piatto, coriandoli grandi come una ruota vicino alla lente, citta' di blocchi neri, inquadratura alta che tagliava tutto. Rimedio in ParataBus3D: 8 corpi CGTrader (corpoCG23, stessi degli highlight) con braccia dal throwin all'APICE MISURATO sul corpo (mani piu' alte rispetto alla testa: 0,475 della clip) e gambe dall'idle, clip filtrate per osso; l'eroe davanti alza la coppa fra le mani (posizione presa dalle ossa hand_l/hand_r); postura corretta come in partita; pullman ombreggiato con fascia bassa scura e luce di taglio; coriandoli a taglia fissa in pixel; facciate con finestre accese (una tela); ali di tifosi InstancedMesh con sciarpe (saltello a turni di un quarto); regia: bassa frontale sul tetto al posto dell'alta da dietro, laterale da sopra le teste. Testimone __CPM_PARATA.cg23=8, rosso __CPM_NO_PULLMAN23; la sonda ora gira coi corpi veri (CPM_GLB=0 per gli omini di riserva).
+const GAME_VERSION="7.983.0"; // [7.983.0 - FISARMONICHE, TENDINA SOBRIA, PODIO DEI PREMI, LA TUA STAGIONE (collaudo PO 24/09 dal telefono + commenti anteprime)] (1) «Mancano diversi accordion»: nove sezioni lunghe avvolte nella Fisarmonica del kit (scelta ricordata per sezione, conteggio nel cappello): Club → Storico piazzamenti; Carriera → Attributi, MVP del Mese, Memoria, Diario, Timeline stagioni, Achievement; Agente → Richiedi cessione, Task settimanale (questa nasce aperta: si usa ogni settimana). Da 12 a 21 fisarmoniche. (2) «Evidenziazione lista valori invadente»: la tendina della lega portava cpm-focus, un anello spesso che restava dopo la scelta; ora bordo sottile della riga solo mentre e' attiva e uscita dal fuoco dopo la scelta (rosso __CPM_NO_FOCUS23). (3) Premi di fine stagione: tre premiati sono un PODIO (1° al centro piu' alto, figurine sui gradini; rosso __CPM_NO_PODIO23). (4) Chiusura dei premi: card «La tua stagione» con figurina e numeri veri (gol, assist, presenze, voto medio) prima dell'unico bottone primario (rosso __CPM_NO_RIEPILOGO23).
+// [7.982.0 - IL PULLMAN SCOPERTO RIFATTO (collaudo PO 24/09 «e' sicuramente da rivedere», proposta approvata)] Causa (foto della sonda parata-shot.mjs): omini a blocchi con la testa a sfera, pullman giallo piatto, coriandoli grandi come una ruota vicino alla lente, citta' di blocchi neri, inquadratura alta che tagliava tutto. Rimedio in ParataBus3D: 8 corpi CGTrader (corpoCG23, stessi degli highlight) con braccia dal throwin all'APICE MISURATO sul corpo (mani piu' alte rispetto alla testa: 0,475 della clip) e gambe dall'idle, clip filtrate per osso; l'eroe davanti alza la coppa fra le mani (posizione presa dalle ossa hand_l/hand_r); postura corretta come in partita; pullman ombreggiato con fascia bassa scura e luce di taglio; coriandoli a taglia fissa in pixel; facciate con finestre accese (una tela); ali di tifosi InstancedMesh con sciarpe (saltello a turni di un quarto); regia: bassa frontale sul tetto al posto dell'alta da dietro, laterale da sopra le teste. Testimone __CPM_PARATA.cg23=8, rosso __CPM_NO_PULLMAN23; la sonda ora gira coi corpi veri (CPM_GLB=0 per gli omini di riserva).
 // [7.981.0 - I COMMENTI DEL PO SULLE ANTEPRIME (24/09)] Causa: 12 commenti sulla pagina anteprime (galà, premiazione, procuratore, offerta, toast, fine stagione, zona mista). Misure: (1) FRENO all'avanzamento compulsivo — sonda avanza-compulsivo.mjs, 20 tocchi in 4 s: verde 19 trattenuti e settimana letta, rosso __CPM_NO_FRENO23 settimana saltata fino al prompt partita; Invio non firma piu' un trasferimento. (2) UNA FINESTRA ALLA VOLTA — anteprima 05 aveva 2-3 finestre impilate (confronto+intervista+verifica mister): precedenza unica `_fila23`, rosso __CPM_NO_CODA23. (3) Toast centrato (cpm-rise sovrascriveva il translateX: toast tagliato a destra) e riscontro intervista spostato in alto. (4) PREMIAZIONE DI SQUADRA — squadra intera in scena (prima 4 attori su 11, cast «cinema»), arco dietro il podio, striscione col nome della competizione rivolto alla camera, capitano -> eroe alza la coppa guardando la camera; sonda ceremony-shot.mjs, rosso __CPM_NO_PREMIO23. (5) Offerta: card «situazione del club» (posizione/punti/V-P-S/prestigio/DR) prima di accettare, sonda offerta-club.mjs. (6) Galà: presentatori con figurina, niente spettatori 3D; fine stagione: duello col rivale e presidente nel kit chiaro (rossi __CPM_NO_RIVALE23/__CPM_NO_PRES23). Guardiani: le sonde citate + catena CI completa.
 // [7.980.0 - IL POC CGTRADER E IL BRAIN «PARTITA VERA» ENTRANO IN PRODUZIONE (direttiva PO 24/09: «ormai questo branch e' il mantra»)] Causa: corpi CH38 e grafica fuori standard (collaudo PO), brain con statistiche non credibili. Misure (banco tests/brain/pagella.mjs, 20 partite, rosso completo -> verde): tiri da dentro l'area 16% -> 71% (Premier League 2024-25: 68,3%, Opta Analyst), dribbling riusciti 96% -> 46% (PL 2025-26: 36,7%), punizioni dirette 87 -> 12 su 10 partite; CH38 negli highlight 39/39 -> 0; bambini dell'ingresso ~10 m -> 1,25 m; LED dello stadio 23,5 -> 2,42 (tribuna 6,44). Guardiani: test:logic 43/43, save-compat 12/12, partita-vera OK, griglia-mobile 65/65 senza sbordi, gate validate-situations. Storia completa: tests/character-lab/POC_ROADMAP.md. — precedente: [7.979.0 - IL RAGGIO 3 NON ESISTE NEL SISTEMA: LE BARRETTE PASSANO A RAD.pill] Censimento della griglia: Club [3,6,8,12,50], Profilo [3,6,8,12,20,50], post-partita [3,8,12,20] - il 3 NON e in RAD (6,8,12,16,20,999). Non era una scelta di gerarchia, era un valore inventato: su un binario alto 2-6 px un raggio 3 e gia la meta dell altezza, cioe ESATTAMENTE una pillola. 53 binari, riempimenti e linee sottili passano a RAD.pill: il RESO E IDENTICO al pixel, cambia solo che il valore adesso viene dal sistema. RESTANO 18 raggi 3 e restano apposta: quadratini dei risultati (13x13, 14x14), coriandoli e cartellini, dove il 3 e una scelta di FORMA - un quadrato smussato - e pill li farebbe diventare cerchi. Un metro non si serve peggiorando il disegno. A VERBALE, perche e la scoperta piu utile di questo passo: Club e Profilo NON salgono tagliando tinte. Le dieci tinte di Club sono due livelli VOLUTI del testo secondario (TH.faint #596a80 e TH.muted #526279, gerarchia dichiarata e con contrasti gia misurati), il colore SOCIALE del club (#6c1f2e e FC Salernum, non una tinta del tema), il bianco e gli inchiostri semantici dei numeri. Unificarle farebbe salire il punteggio PEGGIORANDO la schermata, che e il contrario del patto. NON VERIFICATO: Chromium a 412x915, non l Android del PO.
 // [nota 7.761.0] [7.761.0 — FASE 10, OGNI ESITO DI SCENA ENTRA NEL LIBRO MASTRO, E IL METRO DELLE RIGHE FONDATE SMETTE DI PUNIRE I TIRI]. Il censimento fondate-558 contava «smentite» righe che dichiaravano un punto e trovavano il pallone alla linea di porta (94,50) nella stessa finestra: non era la riga a mentire, era il tiro dell'eroe (parato o fuori) che il giudice non poteva vedere perche' il libro mastro registrava solo i gol. Ora handleAction scrive cpmEv(«esito», {min,key,ok,at}) per ogni azione risolta, e il metro (7.760: gol nella finestra → conto a parte; 7.761: anche gli esiti goal/miss/save/chance/assist) mette quelle righe in un conto separato, ne' fondate ne' smentite. Il gioco non cambia: cambia cio' che il libro mastro sa, e quindi cio' che i guardiani potranno chiedere. MISURA: fondate-558 sui semi 7300/7337 prima e dopo (vedi verbale).
@@ -37497,6 +37498,25 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {extra&&<div style={{fontSize:FS.caption,color:TH.muted}}>{extra}</div>}
     </div>
   );
+  /* [24/09 POC — commento PO sui premi «standardizza, rendila piu' bella»] IL PODIO: tre premiati sono un podio, non una lista.
+     1° al centro e piu' alto, 2° a sinistra, 3° a destra; figurina sopra ogni gradino, valore sul gradino. Con meno di tre nomi
+     (o col rosso __CPM_NO_PODIO23) restano le righe. */
+  const Podio23=({righe,label,extra})=>{const R3=righe||[];
+    if(R3.length<3||(typeof window!=='undefined'&&window.__CPM_NO_PODIO23))return <>{R3.map((c,i)=><ScoreRow key={i} rank={i} name={c.name} val={c.goals} label={label} isPlayer={!!c.isPlayer} extra={extra(c)}/>)}</>;
+    const H=[64,48,38],MED=["#d4a017","#9aa4b2","#b87333"],ORD=[1,0,2];
+    return(<div data-cpm="podio23" style={{display:"grid",gridTemplateColumns:"1fr 1.15fr 1fr",gap:SP.sm,alignItems:"end",margin:`${SP.sm}px 0 ${SP.xs}px`}}>
+      {ORD.map(i=>{const c=R3[i],me=!!c.isPlayer;return(
+        <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",minWidth:0}}>
+          {(()=>{try{return <Figurina tipo="giocatore" chiave={me?((player&&player.name)||c.name):c.name} larg={i===0?58:46}/>;}catch(_e){return null;}})()}
+          <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:me?TH.brandText:TH.text,marginTop:4,textAlign:"center",lineHeight:1.2,maxWidth:"100%",overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{c.name}{me?" · tu":""}</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{extra(c)||"\u00a0"}</div>
+          <div style={{width:"100%",height:H[i],marginTop:4,borderRadius:`${RAD.sm}px ${RAD.sm}px 0 0`,background:TH.surface2,borderTop:"4px solid "+MED[i],
+            outline:me?("2px solid "+(TH.primaryBorder||TH.primary)):"none",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+            <span className="cpm-num" style={{fontSize:i===0?FS.subhead:FS.body,fontWeight:FW.black,color:TH.text,lineHeight:1}}>{c.goals}<span style={{fontSize:FS.caption,fontWeight:FW.medium,color:TH.muted,marginLeft:2}}>{label}</span></span>
+            <span style={{fontSize:FS.caption,fontWeight:FW.black,color:MED[i],marginTop:2}}>{i+1}°</span>
+          </div>
+        </div>);})}
+    </div>);};
   const ScoreRow=(pr)=>{if(typeof window!=='undefined'&&window.__CPM_NO_PREMI23)return _ScoreRowVecchia(pr);const {rank,name,val,label,isPlayer,extra}=pr;
     const med=["#d4a017","#9aa4b2","#b87333"][rank]||TH.faint;
     return(<div data-cpm="premio23" style={{display:"flex",alignItems:"center",gap:SP.md,padding:`${SP.sm}px ${SP.md}px`,borderRadius:RAD.md,marginBottom:SP.xs,
@@ -37602,9 +37622,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         {/* Capocannoniere */}
         <div style={{marginBottom:10}}>
           <div style={{fontSize:FS.caption,fontWeight:800,color:TH.text,marginBottom:4}}>⚽ Capocannoniere del Campionato</div>
-          {(leagueTopScorer?.top3||[]).map((c,i)=>(
-            <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="gol" isPlayer={!!c.isPlayer} extra={c.club}/>
-          ))}
+          <Podio23 righe={leagueTopScorer?.top3} label="gol" extra={c=>c.club}/>
           {leagueTopScorer?.playerWins&&<div style={{marginTop:4,padding:"6px 10px",background:TH.winBg,borderRadius:RAD.sm,fontSize:FS.caption,fontWeight:800,color:TH.txGreen}}>🥇 Sei il capocannoniere della {lg}!</div>}
           {!leagueTopScorer?.playerWins&&(leagueTopScorer?.playerPos||0)>2&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:3,textAlign:"right"}}>La tua posizione: {(leagueTopScorer?.playerPos||0)+1}ª · {(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))} gol</div>}{/* [7.9.2] gol di LEGA (player.goals somma tutte le competizioni) */}
         </div>
@@ -37612,9 +37630,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         {/* MVP della Stagione */}
         <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:10,marginBottom:10}}>
           <div style={{fontSize:FS.caption,fontWeight:800,color:TH.text,marginBottom:4}}>🏆 MVP della Stagione</div>
-          {(leagueMvp?.top3||[]).map((c,i)=>(
-            <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="⚽" isPlayer={!!c.isPlayer} extra={c.club}/>
-          ))}
+          <Podio23 righe={leagueMvp?.top3} label="⚽" extra={c=>c.club}/>
           {leagueMvp?.playerWins&&<div style={{marginTop:4,padding:"6px 10px",background:TH.bgAmber,borderRadius:RAD.sm,fontSize:FS.caption,fontWeight:800,color:TH.txAmber}}>🏆 Miglior calciatore della {lg}!</div>}
         </div>
 
@@ -37644,12 +37660,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?thPastel("#fefce8","rgba(245,158,11,0.13)"):TH.card,border:palloneOro.playerWins?("1.5px solid "+thPastel("#fde68a","rgba(245,158,11,0.5)")):"1px solid "+TH.cardBorder}}>
         <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Migliori calciatori d'Europa</div>
-        {palloneOro.top3.map((c,i)=>(
-          /* [7.289.0] la bacheca accanto al nome: senza, un campione con 30 gol che batte un bomber da 39
-             sembra un errore del gioco invece che il verdetto (giusto) di un premio che non è la classifica
-             marcatori — quella è il Re dei Bomber, qui sotto. */
-          <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="⚽" isPlayer={!!c.isPlayer} extra={c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club)}/>
-        ))}
+        <Podio23 righe={palloneOro.top3} label="⚽" extra={c=>c.trofei?`${c.league||c.club} · 🏆 ${c.trofei}`:(c.league||c.club)}/>{/* [7.289.0] la bacheca accanto al nome: il Trofeo d'Oro non e' la classifica marcatori */}
         <div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,fontStyle:"italic"}}>Non è la classifica marcatori: pesano gol, assist, rendimento e trofei vinti.</div>
         {palloneOro.playerWins&&(
           <div style={{marginTop:10,padding:"10px 12px",background:"linear-gradient(135deg,#fef08a,#fde047)",borderRadius:RAD.sm,textAlign:"center"}}>
@@ -37665,9 +37676,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?thPastel("#f0fdf4","rgba(34,197,94,0.12)"):TH.card,border:scarpaOro.playerWins?("1.5px solid "+thPastel("#bbf7d0","rgba(34,197,94,0.45)")):"1px solid "+TH.cardBorder}}>
         <SectionLabel>👟 RE DEI BOMBER {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Top scorer nei campionati europei</div>
-        {scarpaOro.top3.map((c,i)=>(
-          <ScoreRow key={i} rank={i} name={c.name} val={c.goals} label="gol" isPlayer={!!c.isPlayer} extra={c.league||c.club}/>
-        ))}
+        <Podio23 righe={scarpaOro.top3} label="gol" extra={c=>c.league||c.club}/>
         {!scarpaOro.playerWins&&scarpaOro.playerPos>2&&(
           <div style={{marginTop:6,fontSize:FS.caption,color:TH.muted,textAlign:"right"}}>La tua posizione europea: {scarpaOro.playerPos+1}ª · {scarpaOro.playerGoals??(player.goals||0)} gol di campionato</div>
         )}
@@ -37736,6 +37745,27 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
           <div style={{display:"flex",justifyContent:"center"}}><Badge tone={_tono}>{rival.tie?"🤝 Parità: "+rival.goals+" gol a testa":rival.playerWins?"✅ Hai battuto "+rival.name:"😤 "+rival.name+" ti ha superato"}</Badge></div>
         </Card>);
       })()}
+
+      {/* [24/09 POC — commento PO sulla chiusura «standardizza, rendila piu' bella»] LA TUA STAGIONE: prima dell'unico bottone
+          primario, il riepilogo con la figurina dell'eroe e i numeri veri (gol, assist, presenze, voto medio). Rosso __CPM_NO_RIEPILOGO23. */}
+      {!(typeof window!=='undefined'&&window.__CPM_NO_RIEPILOGO23)&&(()=>{const _mh=(player.matchHistory||[]).filter(m=>m&&typeof m.rating==="number");
+        const _vm=_mh.length?(_mh.reduce((a,m)=>a+m.rating,0)/_mh.length):null;
+        const _n=[["Gol",player.goals||0],["Assist",player.assists||0],["Presenze",player.matches||_mh.length||0],["Voto medio",_vm!=null?_vm.toFixed(1):"—"]];
+        return(<Card data-cpm="riepilogo23" style={{marginBottom:10,padding:"14px 16px"}}>
+          <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:10}}>
+            {(()=>{try{return <Figurina tipo="giocatore" chiave={player.name} larg={52}/>;}catch(_e){return null;}})()}
+            <div style={{minWidth:0}}>
+              <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>La tua stagione {season}</div>
+              <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{player.name}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{(player.club&&(player.club.n||player.club.name))||""}{lg?" · "+lg:""}</div>
+            </div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:SP.xs}}>
+            {_n.map(([k,v])=>(<div key={k} style={{background:TH.surface2,borderRadius:RAD.sm,padding:"8px 4px",textAlign:"center"}}>
+              <div className="cpm-num" style={{fontSize:FS.subhead,fontWeight:FW.black,color:TH.text,lineHeight:1.1}}>{v}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{k}</div></div>))}
+          </div>
+        </Card>);})()}
 
       <Btn onClick={onContinue} v="primary" fw style={{padding:"16px",fontSize:FS.bodyLg,marginTop:4}}>
         Continua alla Fine Stagione →
@@ -49479,7 +49509,8 @@ const getThisWeekMatchday=()=>{
               in cima, le altre sotto. Nativa: sul telefono apre il selettore del sistema. */}
           <label style={{display:"flex",alignItems:"center",gap:SP.sm,background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.md,padding:`0 ${SP.md}px`,boxShadow:TH.el1,position:"relative"}}>
             <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,whiteSpace:"nowrap"}}>Lega</span>
-            <select data-cpm="lega23" value={selLg} onChange={e=>setStandingsLg(e.target.value)} className="cpm-focus"
+            <select data-cpm="lega23" value={selLg} onChange={e=>{setStandingsLg(e.target.value);try{e.target.blur();}catch(_e){}}} className={(typeof window!=='undefined'&&window.__CPM_NO_FOCUS23)?"cpm-focus":undefined}
+              onFocus={e=>{try{if(!window.__CPM_NO_FOCUS23)e.target.parentNode.style.borderColor=TH.primary;}catch(_e){}}} onBlur={e=>{try{e.target.parentNode.style.borderColor=TH.cardBorder;}catch(_e){}}}/* [24/09 POC — collaudo PO «evidenziazione lista valori invadente»] niente anello spesso di cpm-focus che restava dopo la scelta: bordo sottile della riga al colore primario solo mentre la tendina e' attiva, e dopo la scelta si esce dal fuoco. Rosso __CPM_NO_FOCUS23 */
               style={{flex:1,minWidth:0,appearance:"none",WebkitAppearance:"none",border:"none",background:"transparent",fontFamily:"inherit",fontSize:FS.bodyLg,fontWeight:FW.bold,color:TH.text,padding:"12px 24px 12px 0",cursor:"pointer",outline:"none"}}>
               <optgroup label="La tua lega"><option value={myLeague}>{myLeague}</option></optgroup>
               <optgroup label="Altre leghe">{allLeagues.filter(lg=>lg!==myLeague).map(lg=>(<option key={lg} value={lg}>{lg}</option>))}</optgroup>
@@ -49905,8 +49936,8 @@ const getThisWeekMatchday=()=>{
                 if(!d)return null;if(d.type==="cup_trophy")return"W";
                 const m=/eliminati ai\s+(R16|Ottavi|Quarti|Semifinal\w*|Final\w*)/i.exec(d.headline||"");
                 if(!m)return null;const k=m[1].toLowerCase();return k==="r16"||k.indexOf("ottavi")===0?1:k.indexOf("quarti")===0?2:k.indexOf("semi")===0?3:4;}catch(_e){return null;}};
-              return(<Card style={{padding:"7px 12px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Storico piazzamenti · {_cnm29}</div>
+              return(<Fisarmonica id="club-storico" titolo={"Storico piazzamenti · "+_cnm29} quante={_rows29.length}><Card style={{padding:"7px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                
                 {_rows29.map((r,i)=>{
                   const a=r.a;
                   const _isCh=!!r.ch||(a&&a.champion===a.playerClub);
@@ -49930,7 +49961,7 @@ const getThisWeekMatchday=()=>{
                     <span style={{fontSize:FS.caption,color:TH.faint,textAlign:"right",maxWidth:"46%",lineHeight:1.3}}>{_right}</span>
                   </div>);})}
                 <div style={{fontSize:FS.caption,color:TH.faint,marginTop:7}}>👤 = stagioni con te in rosa · il resto dal registro della lega</div>
-              </Card>);})()}
+              </Card></Fisarmonica>);})()}
 
             {/* Contratto */}
             <Card style={{padding:"7px 12px"}}>
@@ -50635,8 +50666,8 @@ const getThisWeekMatchday=()=>{
           })()}
           {/* Sprint 130 — Premi del Mese */}
           {(player.mvpMonthAwards||[]).length>0&&(
-            <Card style={{padding:"9px 12px"}}>
-              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>MVP del Mese</div>
+            <Fisarmonica id="profilo-mvp-mese" titolo="MVP del Mese" quante={(player.mvpMonthAwards||[]).length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+              
               {[...(player.mvpMonthAwards||[])].reverse().slice(0,8).map((a,i)=>(
                 <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<Math.min((player.mvpMonthAwards||[]).length,8)-1?"1px solid "+TH.cardBorder:"none"}}>
                   <span style={{fontSize:FS.subhead,flexShrink:0}}>⭐</span>
@@ -50647,7 +50678,7 @@ const getThisWeekMatchday=()=>{
                   <Badge tone="gold" size="sm">AWARD</Badge>
                 </div>
               ))}
-            </Card>
+            </Card></Fisarmonica>
           )}
           {/* Sprint 29 — MW1: Memoria della Carriera */}
           {(()=>{
@@ -50664,8 +50695,8 @@ const getThisWeekMatchday=()=>{
             const entries=(player.worldMemory||[]).filter(m=>MEM_META[m.type]).slice(-12).reverse();
             if(!entries.length)return null;
             return(
-              <Card style={{padding:"9px 12px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Memoria della Carriera</div>
+              <Fisarmonica id="profilo-memoria" titolo="Memoria della Carriera" quante={entries.length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
                   {entries.map((m,i)=>{
                     const meta=MEM_META[m.type];
@@ -50678,7 +50709,7 @@ const getThisWeekMatchday=()=>{
                     );
                   })}
                 </div>
-              </Card>
+              </Card></Fisarmonica>
             );
           })()}
           {/* Sprint 51 — Diario di Carriera */}
@@ -50702,8 +50733,8 @@ const getThisWeekMatchday=()=>{
             };
             const dEntries=[...(player.diary||[])].reverse().slice(0,15);
             return(
-              <Card style={{padding:"9px 12px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Diario di Carriera</div>
+              <Fisarmonica id="profilo-diario" titolo="Diario di Carriera" quante={(player.diary||[]).length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                
                 <div style={{position:"relative",paddingLeft:4}}>
                   <div style={{position:"absolute",left:11,top:4,bottom:4,width:2,background:TH.cardBorder,borderRadius:RAD.pill}}/>
                   {dEntries.map((entry,i)=>{
@@ -50720,7 +50751,7 @@ const getThisWeekMatchday=()=>{
                     );
                   })}
                 </div>
-              </Card>
+              </Card></Fisarmonica>
             );
           })()}
 
@@ -50832,10 +50863,10 @@ const getThisWeekMatchday=()=>{
           {/* [6.22.0] fix duplicazione (collaudo PO): la sezione Nazionale viveva sia qui (Profilo) sia
               nel Tab dedicato «🌍 Nazionale» (~20866, header+presenze+coppe+Europeo/Mondiale+ranking+momenti)
               → stessi box due volte. Rimossa da Profilo: il Tab Nazionale è l'unica casa dei contenuti azzurri. */}
-          <Card>
-            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>{L.attributes||"Attributi"}</div>
+          <Fisarmonica id="profilo-attributi" titolo={L.attributes||"Attributi"} quante={Object.keys(player.stats||{}).length}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+            
             {Object.entries(player.stats).map(([k,v])=><StatBar key={k} label={k} value={v} tone="attribute" height={6}/>)}
-          </Card>
+          </Card></Fisarmonica>
           {/* [6.77.0 collaudo PO] card «Disciplina — Stagione» RIMOSSA su direttiva (gialli/rossi/accumulo quasi
               sempre a zero = rumore). La LOGICA disciplinare (seasonCards/yellAccum/isSuspended) resta intatta:
               squalifiche e avvisi continuano a funzionare nel flusso partita/notifiche. */}
@@ -50861,8 +50892,8 @@ const getThisWeekMatchday=()=>{
           )}
           {/* Timeline stagioni */}
           {(player.history||[]).length>0&&(
-            <Card>
-              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:9}}>{L.careerHistory||"Timeline Stagioni"}</div>
+            <Fisarmonica id="profilo-timeline" titolo={L.careerHistory||"Timeline Stagioni"} quante={(player.history||[]).length}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+              
               {[...(player.history||[])].reverse().map((h,i,arr)=>{
                 const _sTr84=(player.trophies||[]).filter(t=>t&&t.season===h.season);/* [7.184.0 collaudo PO «campione di cosa, specifica!»] i trofei VERI della stagione → badge specifici */
                 const isChamp=_sTr84.length>0;
@@ -50890,7 +50921,7 @@ const getThisWeekMatchday=()=>{
                   </div>
                 );
               })}
-            </Card>
+            </Card></Fisarmonica>
           )}
           {(()=>{
             const tm=player.totalMatches||0;const tg=player.totalGoals||0;
@@ -50960,8 +50991,8 @@ const getThisWeekMatchday=()=>{
           {(player.achievements||[]).length>0&&(()=>{
             const cats=[...new Set(ACHIEVEMENTS.map(a=>a.cat))];
             return(
-              <Card style={{padding:"9px 12px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Achievement ({(player.achievements||[]).length}/{ACHIEVEMENTS.length})</div>
+              <Fisarmonica id="profilo-achievement" titolo={"Achievement ("+(player.achievements||[]).length+"/"+ACHIEVEMENTS.length+")"} quante={null}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                
                 {cats.map(cat=>{
                   const inCat=ACHIEVEMENTS.filter(a=>a.cat===cat);
                   const unlocked=inCat.filter(a=>(player.achievements||[]).includes(a.id));
@@ -50979,7 +51010,7 @@ const getThisWeekMatchday=()=>{
                     </div>
                   );
                 })}
-              </Card>
+              </Card></Fisarmonica>
             );
           })()}
           {/* [6.77.0 collaudo PO «rivalità senza senso, o gestita bene o eliminata»] pannello RIVALITÀ RIMOSSO:
@@ -51339,8 +51370,8 @@ const getThisWeekMatchday=()=>{
                   var hasAccepted=tr&&tr.status==="accepted";
                   var hasRejected=tr&&tr.status==="rejected";
                   return(
-                    <Card style={{padding:"9px 12px",border:"1px solid "+(hasPending?TH.bdAmber:hasAccepted?TH.bdGreen:hasRejected?TH.bdRed:TH.cardBorder)}}>
-                      <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Richiedi Cessione</div>
+                    <Fisarmonica id="agente-cessione" titolo="Richiedi cessione" quante={null}><Card style={{padding:"9px 12px",border:"1px solid "+(hasPending?TH.bdAmber:hasAccepted?TH.bdGreen:hasRejected?TH.bdRed:TH.cardBorder),borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                      
                       {hasPending?(
                         <div style={{padding:"9px 11px",borderRadius:RAD.sm,background:TH.bgAmber,border:"1px solid #fde68a"}}>
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber}}>⏳ Richiesta in valutazione</div>
@@ -51381,7 +51412,7 @@ const getThisWeekMatchday=()=>{
                           <div style={{fontSize:FS.caption,color:TH.muted,marginTop:6,textAlign:"center"}}>Attenzione: riduce la fiducia del mister (−10)</div>
                         </div>
                       )}
-                    </Card>
+                    </Card></Fisarmonica>
                   );
                 })()}
                 {/* E-3: Stato Prestito card */}
@@ -51417,8 +51448,8 @@ const getThisWeekMatchday=()=>{
                   );
                 })()}
                 {/* Agent task card */}
-                <Card style={{padding:"9px 12px"}}>
-                  <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Task Settimanale</div>
+                <Fisarmonica id="agente-task" titolo="Task settimanale" quante={null} aperta><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                  
                   {currentTask?(
                     <div>
                       <div style={{padding:"7px 11px",borderRadius:RAD.sm,background:TH.bgBlue,border:"1px solid #bfdbfe",marginBottom:8}}>
@@ -51443,7 +51474,7 @@ const getThisWeekMatchday=()=>{
                       </div>
                     </div>
                   )}
-                </Card>
+                </Card></Fisarmonica>
                 {/* Active offer — agent opinion */}
                 {transferOffer&&!transferOffer.isRenewal&&(
                   <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}}>

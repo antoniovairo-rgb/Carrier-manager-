@@ -8568,7 +8568,8 @@ const getThisWeekMatchday=()=>{
               in cima, le altre sotto. Nativa: sul telefono apre il selettore del sistema. */}
           <label style={{display:"flex",alignItems:"center",gap:SP.sm,background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.md,padding:`0 ${SP.md}px`,boxShadow:TH.el1,position:"relative"}}>
             <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,whiteSpace:"nowrap"}}>Lega</span>
-            <select data-cpm="lega23" value={selLg} onChange={e=>setStandingsLg(e.target.value)} className="cpm-focus"
+            <select data-cpm="lega23" value={selLg} onChange={e=>{setStandingsLg(e.target.value);try{e.target.blur();}catch(_e){}}} className={(typeof window!=='undefined'&&window.__CPM_NO_FOCUS23)?"cpm-focus":undefined}
+              onFocus={e=>{try{if(!window.__CPM_NO_FOCUS23)e.target.parentNode.style.borderColor=TH.primary;}catch(_e){}}} onBlur={e=>{try{e.target.parentNode.style.borderColor=TH.cardBorder;}catch(_e){}}}/* [24/09 POC — collaudo PO «evidenziazione lista valori invadente»] niente anello spesso di cpm-focus che restava dopo la scelta: bordo sottile della riga al colore primario solo mentre la tendina e' attiva, e dopo la scelta si esce dal fuoco. Rosso __CPM_NO_FOCUS23 */
               style={{flex:1,minWidth:0,appearance:"none",WebkitAppearance:"none",border:"none",background:"transparent",fontFamily:"inherit",fontSize:FS.bodyLg,fontWeight:FW.bold,color:TH.text,padding:"12px 24px 12px 0",cursor:"pointer",outline:"none"}}>
               <optgroup label="La tua lega"><option value={myLeague}>{myLeague}</option></optgroup>
               <optgroup label="Altre leghe">{allLeagues.filter(lg=>lg!==myLeague).map(lg=>(<option key={lg} value={lg}>{lg}</option>))}</optgroup>
@@ -8994,8 +8995,8 @@ const getThisWeekMatchday=()=>{
                 if(!d)return null;if(d.type==="cup_trophy")return"W";
                 const m=/eliminati ai\s+(R16|Ottavi|Quarti|Semifinal\w*|Final\w*)/i.exec(d.headline||"");
                 if(!m)return null;const k=m[1].toLowerCase();return k==="r16"||k.indexOf("ottavi")===0?1:k.indexOf("quarti")===0?2:k.indexOf("semi")===0?3:4;}catch(_e){return null;}};
-              return(<Card style={{padding:"7px 12px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Storico piazzamenti · {_cnm29}</div>
+              return(<Fisarmonica id="club-storico" titolo={"Storico piazzamenti · "+_cnm29} quante={_rows29.length}><Card style={{padding:"7px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                
                 {_rows29.map((r,i)=>{
                   const a=r.a;
                   const _isCh=!!r.ch||(a&&a.champion===a.playerClub);
@@ -9019,7 +9020,7 @@ const getThisWeekMatchday=()=>{
                     <span style={{fontSize:FS.caption,color:TH.faint,textAlign:"right",maxWidth:"46%",lineHeight:1.3}}>{_right}</span>
                   </div>);})}
                 <div style={{fontSize:FS.caption,color:TH.faint,marginTop:7}}>👤 = stagioni con te in rosa · il resto dal registro della lega</div>
-              </Card>);})()}
+              </Card></Fisarmonica>);})()}
 
             {/* Contratto */}
             <Card style={{padding:"7px 12px"}}>
@@ -9724,8 +9725,8 @@ const getThisWeekMatchday=()=>{
           })()}
           {/* Sprint 130 — Premi del Mese */}
           {(player.mvpMonthAwards||[]).length>0&&(
-            <Card style={{padding:"9px 12px"}}>
-              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>MVP del Mese</div>
+            <Fisarmonica id="profilo-mvp-mese" titolo="MVP del Mese" quante={(player.mvpMonthAwards||[]).length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+              
               {[...(player.mvpMonthAwards||[])].reverse().slice(0,8).map((a,i)=>(
                 <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<Math.min((player.mvpMonthAwards||[]).length,8)-1?"1px solid "+TH.cardBorder:"none"}}>
                   <span style={{fontSize:FS.subhead,flexShrink:0}}>⭐</span>
@@ -9736,7 +9737,7 @@ const getThisWeekMatchday=()=>{
                   <Badge tone="gold" size="sm">AWARD</Badge>
                 </div>
               ))}
-            </Card>
+            </Card></Fisarmonica>
           )}
           {/* Sprint 29 — MW1: Memoria della Carriera */}
           {(()=>{
@@ -9753,8 +9754,8 @@ const getThisWeekMatchday=()=>{
             const entries=(player.worldMemory||[]).filter(m=>MEM_META[m.type]).slice(-12).reverse();
             if(!entries.length)return null;
             return(
-              <Card style={{padding:"9px 12px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Memoria della Carriera</div>
+              <Fisarmonica id="profilo-memoria" titolo="Memoria della Carriera" quante={entries.length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
                   {entries.map((m,i)=>{
                     const meta=MEM_META[m.type];
@@ -9767,7 +9768,7 @@ const getThisWeekMatchday=()=>{
                     );
                   })}
                 </div>
-              </Card>
+              </Card></Fisarmonica>
             );
           })()}
           {/* Sprint 51 — Diario di Carriera */}
@@ -9791,8 +9792,8 @@ const getThisWeekMatchday=()=>{
             };
             const dEntries=[...(player.diary||[])].reverse().slice(0,15);
             return(
-              <Card style={{padding:"9px 12px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}}>Diario di Carriera</div>
+              <Fisarmonica id="profilo-diario" titolo="Diario di Carriera" quante={(player.diary||[]).length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                
                 <div style={{position:"relative",paddingLeft:4}}>
                   <div style={{position:"absolute",left:11,top:4,bottom:4,width:2,background:TH.cardBorder,borderRadius:RAD.pill}}/>
                   {dEntries.map((entry,i)=>{
@@ -9809,7 +9810,7 @@ const getThisWeekMatchday=()=>{
                     );
                   })}
                 </div>
-              </Card>
+              </Card></Fisarmonica>
             );
           })()}
 
@@ -9921,10 +9922,10 @@ const getThisWeekMatchday=()=>{
           {/* [6.22.0] fix duplicazione (collaudo PO): la sezione Nazionale viveva sia qui (Profilo) sia
               nel Tab dedicato «🌍 Nazionale» (~20866, header+presenze+coppe+Europeo/Mondiale+ranking+momenti)
               → stessi box due volte. Rimossa da Profilo: il Tab Nazionale è l'unica casa dei contenuti azzurri. */}
-          <Card>
-            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>{L.attributes||"Attributi"}</div>
+          <Fisarmonica id="profilo-attributi" titolo={L.attributes||"Attributi"} quante={Object.keys(player.stats||{}).length}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+            
             {Object.entries(player.stats).map(([k,v])=><StatBar key={k} label={k} value={v} tone="attribute" height={6}/>)}
-          </Card>
+          </Card></Fisarmonica>
           {/* [6.77.0 collaudo PO] card «Disciplina — Stagione» RIMOSSA su direttiva (gialli/rossi/accumulo quasi
               sempre a zero = rumore). La LOGICA disciplinare (seasonCards/yellAccum/isSuspended) resta intatta:
               squalifiche e avvisi continuano a funzionare nel flusso partita/notifiche. */}
@@ -9950,8 +9951,8 @@ const getThisWeekMatchday=()=>{
           )}
           {/* Timeline stagioni */}
           {(player.history||[]).length>0&&(
-            <Card>
-              <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:9}}>{L.careerHistory||"Timeline Stagioni"}</div>
+            <Fisarmonica id="profilo-timeline" titolo={L.careerHistory||"Timeline Stagioni"} quante={(player.history||[]).length}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+              
               {[...(player.history||[])].reverse().map((h,i,arr)=>{
                 const _sTr84=(player.trophies||[]).filter(t=>t&&t.season===h.season);/* [7.184.0 collaudo PO «campione di cosa, specifica!»] i trofei VERI della stagione → badge specifici */
                 const isChamp=_sTr84.length>0;
@@ -9979,7 +9980,7 @@ const getThisWeekMatchday=()=>{
                   </div>
                 );
               })}
-            </Card>
+            </Card></Fisarmonica>
           )}
           {(()=>{
             const tm=player.totalMatches||0;const tg=player.totalGoals||0;
@@ -10049,8 +10050,8 @@ const getThisWeekMatchday=()=>{
           {(player.achievements||[]).length>0&&(()=>{
             const cats=[...new Set(ACHIEVEMENTS.map(a=>a.cat))];
             return(
-              <Card style={{padding:"9px 12px"}}>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Achievement ({(player.achievements||[]).length}/{ACHIEVEMENTS.length})</div>
+              <Fisarmonica id="profilo-achievement" titolo={"Achievement ("+(player.achievements||[]).length+"/"+ACHIEVEMENTS.length+")"} quante={null}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                
                 {cats.map(cat=>{
                   const inCat=ACHIEVEMENTS.filter(a=>a.cat===cat);
                   const unlocked=inCat.filter(a=>(player.achievements||[]).includes(a.id));
@@ -10068,7 +10069,7 @@ const getThisWeekMatchday=()=>{
                     </div>
                   );
                 })}
-              </Card>
+              </Card></Fisarmonica>
             );
           })()}
           {/* [6.77.0 collaudo PO «rivalità senza senso, o gestita bene o eliminata»] pannello RIVALITÀ RIMOSSO:
@@ -10428,8 +10429,8 @@ const getThisWeekMatchday=()=>{
                   var hasAccepted=tr&&tr.status==="accepted";
                   var hasRejected=tr&&tr.status==="rejected";
                   return(
-                    <Card style={{padding:"9px 12px",border:"1px solid "+(hasPending?TH.bdAmber:hasAccepted?TH.bdGreen:hasRejected?TH.bdRed:TH.cardBorder)}}>
-                      <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Richiedi Cessione</div>
+                    <Fisarmonica id="agente-cessione" titolo="Richiedi cessione" quante={null}><Card style={{padding:"9px 12px",border:"1px solid "+(hasPending?TH.bdAmber:hasAccepted?TH.bdGreen:hasRejected?TH.bdRed:TH.cardBorder),borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                      
                       {hasPending?(
                         <div style={{padding:"9px 11px",borderRadius:RAD.sm,background:TH.bgAmber,border:"1px solid #fde68a"}}>
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txAmber}}>⏳ Richiesta in valutazione</div>
@@ -10470,7 +10471,7 @@ const getThisWeekMatchday=()=>{
                           <div style={{fontSize:FS.caption,color:TH.muted,marginTop:6,textAlign:"center"}}>Attenzione: riduce la fiducia del mister (−10)</div>
                         </div>
                       )}
-                    </Card>
+                    </Card></Fisarmonica>
                   );
                 })()}
                 {/* E-3: Stato Prestito card */}
@@ -10506,8 +10507,8 @@ const getThisWeekMatchday=()=>{
                   );
                 })()}
                 {/* Agent task card */}
-                <Card style={{padding:"9px 12px"}}>
-                  <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Task Settimanale</div>
+                <Fisarmonica id="agente-task" titolo="Task settimanale" quante={null} aperta><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                  
                   {currentTask?(
                     <div>
                       <div style={{padding:"7px 11px",borderRadius:RAD.sm,background:TH.bgBlue,border:"1px solid #bfdbfe",marginBottom:8}}>
@@ -10532,7 +10533,7 @@ const getThisWeekMatchday=()=>{
                       </div>
                     </div>
                   )}
-                </Card>
+                </Card></Fisarmonica>
                 {/* Active offer — agent opinion */}
                 {transferOffer&&!transferOffer.isRenewal&&(
                   <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}}>
