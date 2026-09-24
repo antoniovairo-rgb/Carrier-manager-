@@ -611,9 +611,9 @@ function creaMotorePossesso(cfg){
     const p=S.poss;const _dt=S.dt||1;if(S.fase<=1e-9)S.conta.volo++;p.t+=_dt;/* [7.898] il volo avanza di v·dt per chiamata; t conta minuti */
     const R=p.ricevente!=null?g[p.ricevente]:null;
     if(p.tipo==="passaggio"&&R&&attivo(R)){const _k=Math.pow(0.5,_dt);p.a.x=clamp(R.x+(p.a.x-R.x)*_k,2,98);p.a.y=clamp(R.y+(p.a.y-R.y)*_k,3,97);}
-    /* [24/09 POC — BRAIN] sul cross il ricevente ATTACCA il punto d'arrivo (corsa di ~7 m/s, nessun sorteggio). Rosso __CPM_NO_CROSS23 */
-    if(p.tipo==="cross"&&R&&attivo(R)&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_CROSS23)){const dx=p.a.x-R.x,dy=p.a.y-R.y,dd=Math.hypot(dx,dy),st=Math.min(dd,40*_dt);if(dd>0.01){R.x+=dx/dd*st;R.y+=dy/dd*st;}
-      /* e il difensore piu' vicino al punto d'arrivo lo va a contendere, alla stessa corsa */const _Dm=piuVicino(p.a.x,p.a.y,altro(p.lato),{noGk:true});if(_Dm&&_Dm.p){const Dq=_Dm.p,ex=p.a.x-Dq.x,ey=p.a.y-Dq.y,ed=Math.hypot(ex,ey),es=Math.min(ed,40*_dt);if(ed>0.01){Dq.x+=ex/ed*es;Dq.y+=ey/ed*es;}}}
+    /* [24/09 POC — BRAIN] sul cross il ricevente ATTACCA il punto d'arrivo (nessun sorteggio). Rosso __CPM_NO_CROSS23. [7.984] corsa 40 -> 20 u/min: sommata al driver di formazione superava il tetto dei «passi umani» di test:logic (12,7u per battito contro 12) — difetto latente dalla 7.980, emerso quando meno falli hanno cambiato la partita di prova */
+    if(p.tipo==="cross"&&R&&attivo(R)&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_CROSS23)){const dx=p.a.x-R.x,dy=p.a.y-R.y,dd=Math.hypot(dx,dy),st=Math.min(dd,20*_dt);if(dd>0.01){R.x+=dx/dd*st;R.y+=dy/dd*st;}
+      /* e il difensore piu' vicino al punto d'arrivo lo va a contendere, alla stessa corsa */const _Dm=piuVicino(p.a.x,p.a.y,altro(p.lato),{noGk:true});if(_Dm&&_Dm.p){const Dq=_Dm.p,ex=p.a.x-Dq.x,ey=p.a.y-Dq.y,ed=Math.hypot(ex,ey),es=Math.min(ed,20*_dt);if(ed>0.01){Dq.x+=ex/ed*es;Dq.y+=ey/ed*es;}}}
     const dx=p.a.x-S.palla.x,dy=p.a.y-S.palla.y,dd=Math.hypot(dx,dy);
     const passo=Math.min(dd,p.v*_dt);
     let arrivato=false;
