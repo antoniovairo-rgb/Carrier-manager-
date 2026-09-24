@@ -268,6 +268,27 @@ function Modal({open=true,onClose,children,title,footer,width=440,dismissable=tr
   </div>);
 }
 
+/* [7.992.0 PO «un po' sintetico, spiega cosa ci sara'»] ANTEPRIMA DI UNA SEZIONE NON ANCORA ATTIVA: invece di
+   «Solo per giocatori pro» dice COSA arrivera', QUANDO e COME ci si arriva. voci:[{e,t,d}] · nota: riga finale. */
+function AnteprimaSezione({icona,titolo,sotto,voci=[],nota}){
+  return(<Card style={{padding:"16px 14px"}}><div data-cpm="anteprima-sezione">
+    <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+      <div style={{fontSize:FS.display,lineHeight:1}}>{icona}</div>
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,textWrap:"balance"}}>{titolo}</div>
+        {sotto&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{sotto}</div>}
+      </div>
+    </div>
+    <div style={{display:"flex",flexDirection:"column",gap:8}}>
+      {voci.map(function(v,i){return(<div key={i} style={{display:"flex",gap:9,alignItems:"flex-start",padding:"8px 10px",background:TH.surface2,borderRadius:RAD.sm}}>
+        <span style={{fontSize:FS.bodyLg,lineHeight:1.2}}>{v.e}</span>
+        <div style={{flex:1,minWidth:0}}><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{v.t}</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{v.d}</div></div></div>);})}
+    </div>
+    {nota&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:FW.semibold,marginTop:10}}>{nota}</div>}
+  </div></Card>);
+}
+
 /* BottomSheet — foglio mobile (scrim + pannello dal basso). */
 function BottomSheet({open=true,onClose,children,title,style={}}){
   if(!open)return null;

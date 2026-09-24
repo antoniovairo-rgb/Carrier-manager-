@@ -73,6 +73,21 @@ function investSeason24(ret,prev){try{if(typeof window!=="undefined"&&window.__C
   const k=function(v){v=Math.abs(v);return v>=1000000?String(Math.round(v/100000)/10).replace(".",",")+"M€":v>=10000?Math.round(v/1000)+"k€":Math.round(v).toLocaleString("it-IT")+"€";};
   return {...ret,bankBalance:Math.round((ret.bankBalance||0)+iv.amt+gain),invest24:null,investHist24:[...((prev.investHist24)||[]),{s,prof:iv.prof,amt:iv.amt,gain}].slice(-12),
     log:[d.e+" Investimento "+d.l.toLowerCase()+" chiuso: "+(gain>=0?"+":"−")+k(gain)+" ("+(rate>=0?"+":"−")+String(Math.abs(Math.round(rate*1000)/10)).replace(".",",")+"%) su "+k(iv.amt),...(ret.log||[])].slice(0,60)};}catch(_e){return ret;}}
+/* [7.992.0 Patrimonio F4] BENI E STILE DI VITA + EREDITA'. Quattro acquisti una tantum, ognuno con uno STILE
+   (sobrio/vistoso) che la piazza e il mister leggono: popolarita' e fiducia del mister cambiano all'acquisto
+   (una volta), casa e barca danno +0,5 di morale a settimana. A fine carriera il patrimonio CONTA NELL'EREDITA'
+   (scelta PO): legacyPatrimonio24 somma al legacy score fino a +60 (ragazzi dell'accademia, fondazione,
+   patrimonio netto = saldo + investimento + meta' del valore dei beni). Peso «Leggero»: max 6% del punteggio. */
+const BENI24=[
+  {k:"casa",e:"🏡",l:"Casa in città",c:250000,st:"sobrio",pop:1,trust:2,mor:0.5,fx:"Morale +0,5 a settimana",tif:"«Uno di noi: ha messo radici qui.»",mis:"Il mister approva: vivere vicino al centro sportivo aiuta."},
+  {k:"auto",e:"🏎️",l:"Auto sportiva",c:150000,st:"vistoso",pop:3,trust:-2,mor:0,fx:"Popolarità +3, fiducia del mister −2",tif:"I tifosi la fotografano fuori dal campo di allenamento.",mis:"Il mister storce il naso: «Meno motori, più allenamento.»"},
+  {k:"barca",e:"⛵",l:"Barca",c:700000,st:"vistoso",pop:4,trust:-3,mor:0.5,fx:"Popolarità +4, fiducia −3, morale +0,5 a settimana",tif:"Le foto sulla barca fanno il giro dei social.",mis:"Il mister ti ricorda che le vacanze finiscono a luglio."},
+  {k:"fondazione",e:"🤝",l:"Fondazione benefica",c:300000,st:"sobrio",pop:6,trust:2,mor:0,fx:"Popolarità +6, fiducia +2, conta nell'eredità",tif:"La curva espone uno striscione di ringraziamento.",mis:"Il mister in conferenza: «Un esempio per i ragazzi.»"}];
+function beniMorale24(p){if(typeof window!=="undefined"&&window.__CPM_NO_BENI24)return 0;const b=(p&&p.beni24)||[];return BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.mor:0);},0);}
+function patrimonioNetto24(p){const b=(p&&p.beni24)||[];return Math.round(((p&&p.bankBalance)||0)+((p&&p.invest24&&p.invest24.amt)||0)+BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.c*0.5:0);},0));}
+function legacyPatrimonio24(p){if(typeof window!=="undefined"&&window.__CPM_NO_EREDITA24)return {pts:0,rag:0,fond:0,ric:0,netto:0};
+  const rag=Math.min(30,(((p&&p.academy24&&p.academy24.tot)|0))*3),fond=(((p&&p.beni24)||[]).indexOf("fondazione")>=0)?10:0,net=patrimonioNetto24(p);
+  const ric=net>=20000000?20:net>=5000000?12:net>=1000000?6:0;return {pts:rag+fond+ric,rag,fond,ric,netto:net};}
 function coachDiClub23(club,season){try{const k=String((club&&(club.id||club.n))||"x")+"|"+(season||1);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
   const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:"Mister "+COACH_NAMES[h%COACH_NAMES.length],style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
 // Sprint 11 — S11.4 Derby database

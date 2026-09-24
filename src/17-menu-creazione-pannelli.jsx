@@ -734,6 +734,7 @@ function calcLegacyScore(p){
   score+=Math.min(caps*10,150);
   score+=clamp((peakOvr-65)*5,0,150);
   score+=Math.min(seasons*5,100);
+  try{score+=legacyPatrimonio24(p).pts;}catch(_e){}/* [7.992.0 Patrimonio F4] il patrimonio conta nell'eredità (max +60) */
   return Math.round(clamp(score,0,1000));
 }
 function getLegacyGrade(score){
@@ -931,6 +932,18 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         </div>
         {bestSeason&&<div style={{background:TH.bgAmber,borderRadius:RAD.sm,padding:"8px 10px",fontSize:FS.caption,color:TH.txAmber}}>⭐ Miglior stagione: S.{bestSeason.season} con {bestSeason.goals} gol · Livello {bestSeason.ovr}</div>}
       </Card>
+
+      {/* [7.992.0 Patrimonio F4] l'eredità fuori dal campo */}
+      {(function(){var lp=legacyPatrimonio24(p);var ac=p.academy24,bn=(p.beni24||[]);if(!lp.netto&&!ac&&!bn.length)return null;
+        var k=function(v){return v>=1000000?String(Math.round(v/100000)/10).replace(".",",")+"M€":Math.round(v/1000)+"k€";};
+        return(<Card style={{marginBottom:9,padding:"7px 12px"}}><div data-cpm="eredita24" data-pts={lp.pts}>
+          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏛️ L'eredità fuori dal campo · +{lp.pts} al Legacy</div>
+          <div style={{display:"flex",flexDirection:"column",gap:4,fontSize:FS.small,color:TH.text}}>
+            <div style={{display:"flex",justifyContent:"space-between"}}><span>Patrimonio netto</span><b className="cpm-num">{k(lp.netto)} · +{lp.ric}</b></div>
+            {ac&&<div style={{display:"flex",justifyContent:"space-between"}}><span>{ac.name||"Accademia"}: {ac.tot|0} ragazzi usciti</span><b className="cpm-num">+{lp.rag}</b></div>}
+            {bn.indexOf("fondazione")>=0&&<div style={{display:"flex",justifyContent:"space-between"}}><span>🤝 Fondazione benefica</span><b className="cpm-num">+{lp.fond}</b></div>}
+            {bn.length>0&&<div style={{fontSize:FS.caption,color:TH.muted}}>Beni: {BENI24.filter(function(d){return bn.indexOf(d.k)>=0;}).map(function(d){return d.e+" "+d.l;}).join(" · ")}</div>}
+          </div></div></Card>);})()}
 
       {/* Sprint 58: Premi vinti */}
       {hasPrizes&&(

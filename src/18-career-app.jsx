@@ -1161,7 +1161,7 @@ const getThisWeekMatchday=()=>{
       }catch(e){return "error:"+(e&&e.message);}},
       patch:(o)=>{try{setPlayer(p=>({...p,...(o||{})}));return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.303.0] iniezione di stato per le probe (test-only): evita il reload, che l'addInitScript sovrascriverebbe *//* [7.303.0] la probe pres-gk-kit deve poter pescare il PORTIERE vero della rosa *//* [7.297.0] la probe verifica CHI viene chiamato sul prato *//* [7.293.0] la probe stagione-trasferimento deve poter aprire il sotto-tab Coppe: le voci di nav non sono <button> *//* [7.262.0] la probe pro-offers-stable deve poter raggiungere la schermata delle offerte pro senza attraversare due stagioni U18 */
       bump:()=>{try{setNotif({msg:"probe",color:TH.text});setTimeout(()=>setNotif(null),60);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.262.0] forza un re-render del contenitore: e' proprio la condizione in cui le offerte si riestraevano */
-      get:()=>({standings:(player.standings||[]).map(r=>({id:r.id||r.clubId,n:r.n||r.name,pts:r.pts||0})),/* [7.314.0] la probe del nome ex-club ha bisogno della classifica REALE (quella sintetica non sopravvive alla riconciliazione in migration) */season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,academy24:player.academy24||null,invest24:player.invest24||null,investHist24:player.investHist24||[],popularity:player.popularity,logTop:(player.log||[]).slice(0,8),/* [7.990.0 F2] sonda accademia24 */injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration,/* [7.380.0 Procuratore] STATO DEL PROCURATORE nell'harness di carriera (test-only). Senza, il guardiano del CICLO DI VITA e' cieco: `get()` torna un riassunto fisso e `player()` non esiste, quindi la sonda leggeva un oggetto senza nessun campo dell'agente e concludeva «non accade mai» su un sistema che non stava nemmeno guardando. */ag:(function(){try{return{has:!!player.hasAgent,hint:(player.agentHint&&player.agentHint.due)||null,checkin:!!(player.agentCheckin&&player.agentCheckin.due),init:(player.agentInit&&player.agentInit.open)?player.agentInit.k:null,rapport:player.agent?player.agent.rapport:null,amb:player.agent?(player.agent.memory.amb||[]).slice():null,fee:(typeof agentHireFee==="function")?agentHireFee(player):null,bank:player.bankBalance||0};}catch(e){return null;}})(),vita:(function(){try{return{seen:Object.keys(player.vitaSeen||{}).length,ids:Object.keys(player.vitaSeen||{}),lastCat:player.vitaLastCat||null,next:player.vitaNext?player.vitaNext.id:null};}catch(e){return null;}})()/* [7.416.0] STATO VITA nell'harness (test-only): la stessa lezione del 7.380 — senza questo campo il guardiano del flusso reale legge un oggetto in cui il sistema non c'e' e conclude che il sistema non c'e' */}),
+      get:()=>({standings:(player.standings||[]).map(r=>({id:r.id||r.clubId,n:r.n||r.name,pts:r.pts||0})),/* [7.314.0] la probe del nome ex-club ha bisogno della classifica REALE (quella sintetica non sopravvive alla riconciliazione in migration) */season:player.season||1,week:player.week||1,lived:!!player.weekLived,screen,ovr:player.ovr,bank:player.bankBalance||0,academy24:player.academy24||null,beni24:player.beni24||[],coachTrust:player.coachTrust,legacy24:(function(){try{return{score:calcLegacyScore(player),pat:legacyPatrimonio24(player)};}catch(e){return null;}})(),invest24:player.invest24||null,investHist24:player.investHist24||[],popularity:player.popularity,logTop:(player.log||[]).slice(0,8),/* [7.990.0 F2] sonda accademia24 */injured:!!player.injured,goals:player.goals||0,matches:player.matches||0,club:player.club?.id,standingsN:(player.standings||[]).length,gf:(player.standings||[]).reduce((a,t)=>a+(t.gf||0),0),ga:(player.standings||[]).reduce((a,t)=>a+(t.ga||0),0),contractDur:player.contract?.duration,/* [7.380.0 Procuratore] STATO DEL PROCURATORE nell'harness di carriera (test-only). Senza, il guardiano del CICLO DI VITA e' cieco: `get()` torna un riassunto fisso e `player()` non esiste, quindi la sonda leggeva un oggetto senza nessun campo dell'agente e concludeva «non accade mai» su un sistema che non stava nemmeno guardando. */ag:(function(){try{return{has:!!player.hasAgent,hint:(player.agentHint&&player.agentHint.due)||null,checkin:!!(player.agentCheckin&&player.agentCheckin.due),init:(player.agentInit&&player.agentInit.open)?player.agentInit.k:null,rapport:player.agent?player.agent.rapport:null,amb:player.agent?(player.agent.memory.amb||[]).slice():null,fee:(typeof agentHireFee==="function")?agentHireFee(player):null,bank:player.bankBalance||0};}catch(e){return null;}})(),vita:(function(){try{return{seen:Object.keys(player.vitaSeen||{}).length,ids:Object.keys(player.vitaSeen||{}),lastCat:player.vitaLastCat||null,next:player.vitaNext?player.vitaNext.id:null};}catch(e){return null;}})()/* [7.416.0] STATO VITA nell'harness (test-only): la stessa lezione del 7.380 — senza questo campo il guardiano del flusso reale legge un oggetto in cui il sistema non c'e' e conclude che il sistema non c'e' */}),
       forceOffer:()=>{try{const o=generateTransferOffer(player);if(o)setTransferOffer(o);return !!o;}catch(e){return "error:"+(e&&e.message);}},/* [24/09 POC] la sonda dell'offerta (situazione del club offerente) */
       dismiss:()=>{try{setWeekLiveModal(null);setShowMatchPrompt(null);setTransferOffer(null);setNegoModal(null);setNationalCallupData(null);}catch(_e){}},
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
@@ -1504,7 +1504,7 @@ const getThisWeekMatchday=()=>{
         stats[_dk]=clamp((stats[_dk]||60)-1,1,99);
       }
     }
-    morale=clamp(Math.round(morale+(60-morale)*0.05+(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?0:0.5*staffLv24(p,"perkMental"))),0,100);/* [7.989.0 F1] mental coach */
+    morale=clamp(Math.round(morale+(60-morale)*0.05+(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?0:0.5*staffLv24(p,"perkMental"))+beniMorale24(p)),0,100);/* [7.989.0 F1] mental coach · [7.992.0 F4] casa e barca */
     /* [7.55.0 ONDA 7] MICRO-EFFETTO DEL DRIVER: la carica emotiva del driver della settimana (mindDriver, la
        stessa mostrata nella card «La tua settimana» → COERENTE per costruzione) pesa un filo sulla morale.
        Fold DENTRO la morale ritornata → applicato exactly-once su TUTTI i 5 path (tutti leggono .morale), zero
@@ -8321,16 +8321,7 @@ const getThisWeekMatchday=()=>{
           {(player.log||[]).length>0&&<Card momento="Ultime notizie" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{padding:"9px 12px"}}><div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
           {/* [7.96.0 collaudo PO «la scelta chiaro/scuro deve essere fatta SOLO nelle Impostazioni»] toggle tema
               RIMOSSO da qui (ora solo nel menu ⚙️ Impostazioni). La card resta solo su desktop per le scorciatoie. */}
-          {_dk&&<Card style={{padding:"7px 12px"}} shadow={false} bg={TH.surface2}>
-            <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>⌨️ Scorciatoie tastiera</div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-              {[["P","Gioca"],["A/0","Avanza sett."],["S","Salva"],["T","Allena"],["C","Calendario"],["F","Classifica"],["Esc","Indietro"],["←→","Cambia tab"]].map(([k,l])=>(
-                <div key={k} style={{display:"flex",alignItems:"center",gap:4,fontSize:FS.caption,color:TH.muted}}>
-                  <span className="kbd">{k}</span>{l}
-                </div>
-              ))}
-            </div>
-          </Card>}
+          {/* [7.992.0 PO «togli le scorciatoie»] card «Scorciatoie tastiera» rimossa dalla Home: i tasti restano attivi, sparisce solo il promemoria */}
         </div>
       )}
 
@@ -9215,8 +9206,8 @@ const getThisWeekMatchday=()=>{
             )}
           {/* Sprint 24A — Lo Spogliatoio card */}
           {(player.teammates||[]).length>0&&(
-            <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>{/* [23/09 POC — collaudo PO «metti le figurine dei compagni»] Card del kit (non piu' il blu notte) e figurina del compagno al posto dell'emoji */}
-              <SectionHeader>Lo spogliatoio</SectionHeader>
+            <Fisarmonica id="club-spogliatoio" titolo="Lo spogliatoio" quante={(player.teammates||[]).length} aperta={true}>{/* [7.992.0 PO «manca fisarmonica»] */}<Card style={{padding:`${SP.md}px ${SP.lg}px`,borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>{/* [23/09 POC — collaudo PO «metti le figurine dei compagni»] Card del kit (non piu' il blu notte) e figurina del compagno al posto dell'emoji */}
+
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 {(player.teammates||[]).map((tm,i)=>{
                   const arc=TEAMMATE_ARCHETYPES.find(a=>a.id===tm.archetype);
@@ -9249,7 +9240,7 @@ const getThisWeekMatchday=()=>{
                   );
                 })}
               </div>
-            </Card>
+            </Card></Fisarmonica>
           )}
           </div>
         );
@@ -9853,9 +9844,8 @@ const getThisWeekMatchday=()=>{
           })()}
 
           {/* U18 status banner */}
-          {(player.proStatus||"u18")==="u18"&&(
-            <Card bg={TH.bgBlue} border={TH.bdBlue} style={{padding:"9px 12px"}}>
-              <div style={{fontSize:FS.caption,color:TH.txBlue,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>Status Under 18</div>
+          {(player.proStatus||"u18")==="u18"&&(<Fisarmonica id="profilo-status-u18" titolo="Status Under 18" aperta={true}>{/* [7.992.0 PO «mancano fisarmoniche»] */}
+            <Card bg={TH.bgBlue} border={TH.bdBlue} style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
                 <div style={{background:TH.bgBlue,borderRadius:RAD.sm,padding:"8px 10px"}}>
                   <div style={{fontSize:FS.caption,color:TH.faint}}>STAGIONI U18</div>
@@ -9873,14 +9863,14 @@ const getThisWeekMatchday=()=>{
                 {(player.u18Seasons||0)===0&&"Prima stagione in Under 18. Ottieni risultati per attrarre offerte pro."}
                 {(player.u18Seasons||0)===1&&"⚠️ Ultima stagione possibile in U18. Al termine DEVI passare al professionismo."}
               </div>
-            </Card>
+            </Card></Fisarmonica>
           )}
           {/* Pro status */}
           {(player.proStatus||"u18")!=="u18"&&(
-            <Card bg={TH.bgGreen} border={TH.bdGreen} style={{padding:"9px 12px"}}>
-              <div style={{fontSize:FS.caption,color:TH.txGreen,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:4}}>Calciatore professionista</div>
+<Fisarmonica id="profilo-status-pro" titolo="Calciatore professionista" aperta={true}>
+            <Card bg={TH.bgGreen} border={TH.bdGreen} style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{fontSize:FS.caption,color:TH.muted}}>Stagioni da pro: {Math.max(0,(player.season||1)-1-(player.u18Seasons||0))}</div>
-            </Card>
+            </Card></Fisarmonica>
           )}
           {/* Contract card */}
           {player.contract&&<Fisarmonica id="profilo-contratto" titolo="Contratto"><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
@@ -9951,12 +9941,11 @@ const getThisWeekMatchday=()=>{
           {/* [6.77.0 collaudo PO «duplicazione box da eliminare»] il banner-identità (avatar+nome+club+OVR) era
               la COPIA dell'header globale dell'app sempre visibile in cima → rimosso; restano le STATISTICHE
               (stagione/carriera/valore), che nell'header non ci sono. */}
-          <Card style={{padding:"9px 12px"}}>
-            <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Statistiche</div>
+          <Fisarmonica id="profilo-statistiche" titolo="Statistiche" quante={6}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
             <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:7}}>
               {[{l:"Gol stag.",v:player.goals||0,c:TH.warning},{l:"Assist stag.",v:player.assists||0,c:TH.primary},{l:"Partite",v:player.matches||0,c:TH.energy},{l:"Gol tot.",v:player.totalGoals||0,c:TH.warning},{l:"Assist tot.",v:player.totalAssists||0,c:TH.primary},{l:"Valore",v:`${parseFloat((player.value||0.8).toFixed(1))}M€`,c:TH.success}].map(s=><div key={s.l} style={{background:TH.surface2,borderRadius:RAD.md,padding:"9px 8px",border:"1px solid "+TH.divider}}><div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2}}>{s.l}</div><div className="cpm-num" style={{fontSize:FS.subhead,fontWeight:FW.black,color:legCol944(s.c)}}>{s.v}</div></div>)}
             </div>
-          </Card>
+          </Card></Fisarmonica>
           {/* [6.22.0] fix duplicazione (collaudo PO): la sezione Nazionale viveva sia qui (Profilo) sia
               nel Tab dedicato «🌍 Nazionale» (~20866, header+presenze+coppe+Europeo/Mondiale+ranking+momenti)
               → stessi box due volte. Rimossa da Profilo: il Tab Nazionale è l'unica casa dei contenuti azzurri. */}
@@ -10259,6 +10248,23 @@ const getThisWeekMatchday=()=>{
                       {last.length>0&&<div style={{display:"flex",flexDirection:"column",gap:2,marginTop:6,paddingLeft:30}}>{last.map(function(g,i){return <div key={i} style={{display:"flex",gap:8,fontSize:FS.caption,color:TH.text}}><span className="cpm-num" style={{color:TH.muted,minWidth:34}}>S.{g.s}</span><span style={{flex:1}}>{g.n}</span><span style={{color:TH.muted}}>{g.pos}</span><b className="cpm-num" style={{color:g.r>=70?TH.success:TH.text,minWidth:22,textAlign:"right"}}>{g.r}</b></div>;})}</div>}
                     </div>);
                 })()}
+                {/* [7.992.0 Patrimonio F4] beni e stile di vita: acquisto una tantum, la piazza e il mister reagiscono */}
+                <div data-cpm="beni24" style={{padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
+                  <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:4}}>Beni e stile di vita</div>
+                  {BENI24.map(function(d){var own=(player.beni24||[]).indexOf(d.k)>=0,b=player.bankBalance||0,kk=d.c>=1000000?(d.c/1000000)+"M€":Math.round(d.c/1000)+"k€";
+                    return(<div key={d.k} data-cpm={"bene24-"+d.k} data-own={own?1:0} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0"}}>
+                      <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{d.l} <span style={{fontWeight:600,color:d.st==="vistoso"?TH.txAmber:TH.txGreen}}>· {d.st}</span></div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>{d.fx}{own?"":" · "+kk}</div>
+                      </div>
+                      {own?<span style={{fontSize:FS.caption,fontWeight:800,color:TH.success,minWidth:78,textAlign:"center"}}>✓ TUO</span>:
+                      <button data-cpm={"bene24-compra-"+d.k} onClick={function(){if(b<d.c){notify("💸 Fondi insufficienti: "+d.l+" costa "+kk,TH.danger);return;}
+                        setPlayer(function(p){if((p.bankBalance||0)<d.c||(p.beni24||[]).indexOf(d.k)>=0)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-d.c),beni24:[...(p.beni24||[]),d.k],popularity:clamp((p.popularity||20)+d.pop,0,100),coachTrust:clamp((p.coachTrust||60)+d.trust,0,100),log:[d.e+" "+d.l+": "+d.tif+" "+d.mis,...(p.log||[])].slice(0,60)};});
+                        notify(d.e+" "+d.tif,d.st==="vistoso"?TH.warning:TH.success);setTimeout(function(){notify("🧑‍💼 "+d.mis,TH.muted);},1400);}}
+                        style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"}}>COMPRA</button>}
+                    </div>);})}
+                </div>
                 {/* [7.991.0 Patrimonio F3] investimento della stagione: somma vincolata, esito a fine stagione */}
                 {(function(){var iv=player.invest24,b=player.bankBalance||0,k=function(v){v=Math.abs(v);return v>=1000000?(Math.round(v/100000)/10)+"M€":Math.round(v/1000)+"k€";};
                   var hist=(player.investHist24||[]),last=hist[hist.length-1];
@@ -10328,20 +10334,30 @@ const getThisWeekMatchday=()=>{
                 {_sw379&&(()=>{
                   const _cand379=agentCandidates(player);
                   return(
-                  <div style={{position:"fixed",inset:0,zIndex:80,background:"rgba(4,7,14,0.93)",overflowY:"auto",padding:"18px 14px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                    <div style={{width:"100%",maxWidth:440}}>
-                      {_sw379==="conferma"?(<>
-                        <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:9}}>Credo che sia arrivato il momento di cambiare.</div>
-                        <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.9)",lineHeight:1.75,marginBottom:8}}>«Mi dispiace sentirlo.»</div>
-                        <div style={{fontSize:FS.body,color:"rgba(255,255,255,0.9)",lineHeight:1.75,marginBottom:18}}>«Abbiamo fatto molta strada insieme, ma rispetto la tua decisione.»</div>
-                        <Btn v="primary" fw style={{padding:"13px"}} onClick={()=>{
+                  /* [7.992.0 PO «schermata fuori standard»] era un overlay a tutto schermo fatto a mano (testo sul
+                     nero, nessun titolo, nessun interlocutore): ora e' il Modal standard del gioco — titolo, figurina
+                     di chi parla, bottoni in fondo — come premiazione, procuratore e offerte. */
+                  <Modal open onClose={()=>setSw379(null)} width={440} title={_sw379==="conferma"?"Cambiare procuratore":"Chi vuoi al tuo fianco?"}
+                    footer={_sw379==="conferma"?(<>
+                      <Btn v="ghost" onClick={()=>setSw379(null)} style={{padding:"9px 16px",fontSize:FS.caption}}>Lascia stare</Btn>
+                      <Btn v="primary" style={{padding:"9px 16px"}} onClick={()=>{
                           setPlayer(p=>({...p,...agentPartPatch(p),log:[`🤝 Hai chiuso il rapporto con ${agentName}.`,...(p.log||[])].slice(0,60)}));
                           setSw379(_cand379.length?"scegli":null);
-                        }}>Chiudo il rapporto</Btn>
-                        <div style={{marginTop:10,textAlign:"center"}}><Btn v="ghost" onClick={()=>setSw379(null)} style={{padding:"9px 16px",fontSize:FS.caption,opacity:0.75}}>Lascia stare</Btn></div>
+                        }}>Chiudo il rapporto</Btn></>):(
+                      <Btn v="ghost" onClick={()=>setSw379(null)} style={{padding:"9px 16px",fontSize:FS.caption}}>Non ora</Btn>)}>
+                    <div data-cpm="cambio-procuratore24">
+                      {_sw379==="conferma"?(<>
+                        <div style={{fontSize:FS.small,color:TH.muted,marginBottom:4}}>Tu</div>
+                        <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,lineHeight:1.6,marginBottom:14}}>«Credo che sia arrivato il momento di cambiare.»</div>
+                        <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+                          <Figurina tipo="procuratore" chiave={agentName} larg={40} col={TH.primary}/>
+                          <div style={{flex:1,minWidth:0}}>
+                            <div style={{fontSize:FS.small,color:TH.brandText,fontWeight:FW.bold,marginBottom:2}}>{agentName}</div>
+                            <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6}}>«Mi dispiace sentirlo. Abbiamo fatto molta strada insieme, ma rispetto la tua decisione.»</div>
+                          </div>
+                        </div>
                       </>):(<>
-                        <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:4}}>Chi vuoi al tuo fianco?</div>
-                        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",marginBottom:10}}>Sono i procuratori che, a questo punto della tua carriera, ti prenderebbero.</div>
+                        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:10}}>Sono i procuratori che, a questo punto della tua carriera, ti prenderebbero.</div>
                         <div style={{display:"flex",flexDirection:"column",gap:9}}>
                           {_cand379.map(c=>(
                             <Card key={c.arch} style={{padding:"12px"}}>
@@ -10359,10 +10375,9 @@ const getThisWeekMatchday=()=>{
                               }}>Scelgo lui · {agentHireFee(player).toLocaleString("it-IT")}€</Btn>
                             </Card>))}
                         </div>
-                        <div style={{marginTop:9,textAlign:"center"}}><Btn v="ghost" onClick={()=>setSw379(null)} style={{padding:"9px 16px",fontSize:FS.caption,opacity:0.75}}>Non ora</Btn></div>
                       </>)}
                     </div>
-                  </div>);})()}
+                  </Modal>);})()}
                 <Card style={{padding:"9px 12px"}}>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
                     <Figurina tipo="procuratore" chiave={agentName} larg={40} col={TH.primary}/>
@@ -10950,11 +10965,13 @@ const getThisWeekMatchday=()=>{
 
             {/* Non pro */}
             {!_isPro&&(
-              <Card style={{padding:"22px 16px",textAlign:"center"}}>
-                <div style={{fontSize:40,marginBottom:8}}>{natFlag}</div>
-                <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:6}}>Solo per giocatori pro</div>
-                <div style={{fontSize:FS.caption,color:TH.muted}}>Le convocazioni in nazionale partono dalla stagione professionistica. Continua a crescere!</div>
-              </Card>
+              <AnteprimaSezione icona={natFlag} titolo="La Nazionale arriva da professionista"
+                sotto={"Finché giochi in Under 18 il CT non convoca. Col primo contratto pro qui troverai:"}
+                voci={[{e:"📋",t:"Convocazioni e amichevoli",d:"Le partite con la tua Nazionale, da giocare dal vivo o da simulare, con presenze, gol e assist che contano nella carriera."},
+                  {e:"🏆",t:"Coppa delle Nazioni",d:"Nelle stagioni pari, dalla settimana 20, quando hai almeno 2 presenze in Nazionale."},
+                  {e:"🌍",t:"Europeo e Mondiale",d:"L'Europeo ogni 4 stagioni, il Mondiale ogni 8, dalla settimana 20: servono almeno 3 presenze."},
+                  {e:"📜",t:"Storico e momenti",d:"L'elenco delle partite giocate in Nazionale e i momenti che restano nella tua storia."}]}
+                nota={"Sei in Under 18 · stagione "+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>
             )}
 
             {/* [6.82.0] Storico partite in Nazionale (collaudo PO «non c'è lo storico/elenco delle partite giocate») */}
@@ -11261,8 +11278,15 @@ const getThisWeekMatchday=()=>{
             {/* [7.183.0 collaudo PO] card «Palmares» RIMOSSA: ridondante — la Bacheca Trofei completa
                 (raggruppata per competizione, coi nomi veri) vive in Carriera → Profilo; qui mostrava
                 le etichette grezze («int», «cup») duplicando il dato. */}
-            {!_isPro&&<Card style={{padding:"20px",textAlign:"center"}}><div style={{fontSize:FS.display,marginBottom:8}}>🏆</div><div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:4}}>Solo per giocatori pro</div><div style={{fontSize:FS.caption,color:TH.muted}}>Le coppe si attivano dalla stagione 2 da professionista.</div></Card>}
-            {_isPro&&!cup&&!eu?.active&&!em?.active&&<Card style={{padding:"20px",textAlign:"center"}}><div style={{fontSize:FS.display,marginBottom:8}}>🏆</div><div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:4}}>Nessuna coppa attiva</div><div style={{fontSize:FS.caption,color:TH.muted}}>Coppa Nazionale: dal tuo secondo anno pro. Coppe europee: dipendono dal piazzamento.</div></Card>}
+            {!_isPro&&<AnteprimaSezione icona="🏆" titolo="Le coppe arrivano col primo contratto da professionista"
+              sotto="In Under 18 si gioca solo il campionato. Da pro qui troverai:" voci={[{e:"🏆",t:"Coppa Nazionale",d:"Dalla tua prima stagione da professionista: 16 squadre della tua lega a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
+                {e:"⭐",t:"Coppe europee",d:"Se a fine stagione il tuo club chiude in zona Europa, l'anno dopo giochi il girone (settimane 5-15) e poi la fase a eliminazione diretta."},
+                {e:"🌍",t:"Tornei con la Nazionale",d:"Coppa delle Nazioni nelle stagioni pari, Europeo ogni 4 stagioni, Mondiale ogni 8: si giocano dalla settimana 20 e servono presenze in Nazionale."}]}
+              nota={"Sei in Under 18 · stagione "+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>}{/* [7.992.0 PO «un po' sintetico»] il vecchio testo diceva «dalla stagione 2 da pro», ma la Coppa Nazionale c'e' gia' al primo anno pro (5.97.0 CP-4) */}
+            {_isPro&&!cup&&!eu?.active&&!em?.active&&<AnteprimaSezione icona="🏆" titolo="Nessuna coppa in corso adesso"
+              sotto="Le competizioni si aprono in momenti precisi della stagione:" voci={[{e:"🏆",t:"Coppa Nazionale",d:"Dalla tua prima stagione da professionista: 16 squadre della tua lega a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
+                {e:"⭐",t:"Coppe europee",d:"Se a fine stagione il tuo club chiude in zona Europa, l'anno dopo giochi il girone (settimane 5-15) e poi la fase a eliminazione diretta."},
+                {e:"🌍",t:"Tornei con la Nazionale",d:"Coppa delle Nazioni nelle stagioni pari, Europeo ogni 4 stagioni, Mondiale ogni 8: si giocano dalla settimana 20 e servono presenze in Nazionale."}]}/>}
           </div>
         );
       })()}
