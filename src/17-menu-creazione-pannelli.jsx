@@ -141,8 +141,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
   return(
     <div style={{width:"100%"}}>
       {confirmDel!==null&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-          <Card style={{maxWidth:340,width:"100%",padding:"22px",textAlign:"center"}}>
+        <Modal open dismissable={false} width={340} style={{textAlign:"center"}}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             <div style={{fontSize:FS.h,marginBottom:8}}>🗑️</div>
             <div style={{fontSize:FS.body,fontWeight:700,marginBottom:6,color:TH.text}}>Eliminare il salvataggio?</div>
             <div style={{fontSize:FS.small,color:TH.muted,marginBottom:18}}>I progressi della carriera nello slot {confirmDel+1} saranno persi per sempre.</div>
@@ -150,8 +149,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
               <Btn onClick={()=>setConfirmDel(null)} v="secondary" fw>Annulla</Btn>
               <Btn onClick={()=>{onDelete(confirmDel);setConfirmDel(null);}} v="danger" fw>Elimina</Btn>
             </div>
-          </Card>
-        </div>
+          </Modal>
       )}
       {/* [6.19.0] HERO masthead — banner branded (prima impressione premium) */}
       <div style={{position:"relative",borderRadius:RAD.xl,overflow:"hidden",marginBottom:18,boxShadow:TH.el2,background:"linear-gradient(150deg,#a3263a 0%,#8e1f33 46%,#5e0f1d 120%)"}}>
@@ -919,8 +917,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
       </Card>
 
       {/* Career stats */}
-      <Card style={{marginBottom:9,padding:"7px 12px"}}>
-        <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📊 Statistiche Carriera</div>
+      <Fisarmonica id="ritiro-statistiche-carriera" titolo="📊 Statistiche Carriera" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"7px 12px"}}>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,textAlign:"center",marginBottom:bestSeason?10:0}}>
           {[{l:"Stagioni",v:Math.max(0,(p.season||1)-1),e:"📅"},{l:"Partite",v:p.totalMatches||0,e:"🎮"},{l:"Gol",v:p.totalGoals||0,e:"⚽"},{l:"Assist",v:p.totalAssists||0,e:"🎯"},{l:"Trofei",v:trophies.length,e:"🏆"},{l:"Caps Naz.",v:p.nationalCaps||0,e:"🌍"}].map(s=>(
             <div key={s.l} style={{background:TH.bg,borderRadius:RAD.sm,padding:"8px 4px"}}>
@@ -931,7 +928,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           ))}
         </div>
         {bestSeason&&<div style={{background:TH.bgAmber,borderRadius:RAD.sm,padding:"8px 10px",fontSize:FS.caption,color:TH.txAmber}}>⭐ Miglior stagione: S.{bestSeason.season} con {bestSeason.goals} gol · Livello {bestSeason.ovr}</div>}
-      </Card>
+      </Card></Fisarmonica>
 
       {/* [7.992.0 Patrimonio F4] l'eredità fuori dal campo */}
       {(function(){var lp=legacyPatrimonio24(p);var ac=p.academy24,bn=(p.beni24||[]);if(!lp.netto&&!ac&&!bn.length)return null;
@@ -947,8 +944,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
 
       {/* Sprint 58: Premi vinti */}
       {hasPrizes&&(
-        <Card style={{marginBottom:9,padding:"7px 12px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏅 Premi e Riconoscimenti</div>
+        <Fisarmonica id="ritiro-premi-e-riconoscimenti" titolo="🏅 Premi e Riconoscimenti" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"7px 12px"}}>
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
             {/* Premi Europei */}
             {pAwards.palloneOros.map(s=><div key={"po"+s} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",background:TH.bgAmber,borderRadius:RAD.sm,border:"1px solid #fde68a"}}><span style={{fontSize:FS.title}}>🏆</span><div><div style={{fontSize:FS.small,fontWeight:800,color:TH.txAmber}}>Trofeo d'Oro</div><div style={{fontSize:FS.caption,color:TH.txAmber}}>Stagione {s} — miglior calciatore d'Europa</div></div></div>)}
@@ -959,13 +955,12 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
             {pAwards.youngYears.map(s=><div key={"yy"+s} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",background:"#ede9fe",borderRadius:RAD.sm,border:"1px solid #c4b5fd"}}><span style={{fontSize:FS.title}}>💎</span><div><div style={{fontSize:FS.small,fontWeight:800,color:"#5b21b6"}}>Giovane dell'Anno</div><div style={{fontSize:FS.caption,color:"#4c1d95"}}>Stagione {s} — miglior Under 23 del campionato</div></div></div>)}
             {(pAwards.teamOfYearYears||[]).map(s=><div key={"ty"+s} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",background:TH.bgBlue,borderRadius:RAD.sm,border:"1px solid #bae6fd"}}><span style={{fontSize:FS.title}}>📋</span><div><div style={{fontSize:FS.small,fontWeight:800,color:TH.txBlue}}>Squadra dell'Anno</div><div style={{fontSize:FS.caption,color:TH.txBlue}}>Stagione {s} — selezionato nell'XI ideale della lega</div></div></div>)}
           </div>
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Sprint 58: Hall of Fame */}
       {lgRecordAuto&&hofPos>=0&&(
-        <Card style={{marginBottom:9,padding:"7px 12px",background:"linear-gradient(135deg,#1e1b4b 0%,#312e81 100%)",border:"1px solid rgba(99,102,241,0.3)"}}>
-          <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏟️ Hall of Fame — {lgRecordAuto.league||"Lega"}</div>
+        <Fisarmonica id="ritiro-hall-of-fame" titolo={<>🏟️ Hall of Fame — {lgRecordAuto.league||"Lega"}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"7px 12px",background:"linear-gradient(135deg,#1e1b4b 0%,#312e81 100%)",border:"1px solid rgba(99,102,241,0.3)"}}>
           <div style={{display:"flex",flexDirection:"column",gap:5}}>
             {hofScorers.slice(0,Math.min(8,hofPos+2)).map((s,i)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:RAD.sm,background:s.isPlayer?"rgba(99,102,241,0.25)":"rgba(0,0,0,0.2)",border:s.isPlayer?"1px solid rgba(99,102,241,0.5)":"none"}}>
@@ -978,13 +973,12 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
           <div style={{marginTop:8,textAlign:"center",fontSize:FS.caption,color:"rgba(165,180,252,0.7)",fontWeight:700}}>
             {hofPos===0?"🥇 Sei il capocannoniere di tutti i tempi della lega!":hofPos<=2?`🥈 #${hofPos+1} nella storia della lega — straordinario!`:`#${hofPos+1} nella storia con ${p.totalGoals||0} gol in carriera`}
           </div>
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Sprint 58: Momenti indimenticabili */}
       {diaryMoments.length>0&&(
-        <Card style={{marginBottom:9,padding:"7px 12px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>✨ Momenti Indimenticabili</div>
+        <Fisarmonica id="ritiro-momenti-indimenticabili" titolo="✨ Momenti Indimenticabili" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"7px 12px"}}>
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {diaryMoments.map((d,i)=>(
               <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
@@ -996,13 +990,12 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
               </div>
             ))}
           </div>
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Sprint 58: Verdetto dei giornalisti */}
       {journalists.length>0&&(
-        <Card style={{marginBottom:9,padding:"7px 12px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📰 Verdetto della Stampa</div>
+        <Fisarmonica id="ritiro-verdetto-della-stampa" titolo="📰 Verdetto della Stampa" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"7px 12px"}}>
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {journalists.map((j,i)=>{
               const v=jVerdict(j,i);/* [7.259.0] l'indice garantisce 3 voci distinte */
@@ -1017,7 +1010,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
               );
             })}
           </div>
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Sprint 58: Rivale finale */}
@@ -1025,8 +1018,7 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
         const r=p.rival;
         const isAhead=(p.totalGoals||0)>(r.totalGoals||0);const isTie=(p.totalGoals||0)===(r.totalGoals||0);/* [7.462.0] tre esiti, non due */
         return(
-          <Card style={{marginBottom:9,padding:"7px 12px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)"}}>
-            <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🆚 Il Verdetto Finale — Tu vs {r.name}</div>
+          <Fisarmonica id="ritiro-il-verdetto-finale-tu-vs" titolo={<>🆚 Il Verdetto Finale — Tu vs {r.name}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"7px 12px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)"}}>
             <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",textAlign:"center"}}>
               <div style={{background:"rgba(0,0,0,0.3)",borderRadius:RAD.sm,padding:"10px 6px"}}>
                 <div style={{fontSize:FS.caption,color:"rgba(74,222,128,0.7)",marginBottom:2}}>TU</div>
@@ -1046,38 +1038,35 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
             <div style={{marginTop:4,textAlign:"center",fontSize:FS.caption,color:"rgba(165,180,252,0.5)"}}>
               Relazione: {({sconosciuto:"Sconosciuto",rivale:"🔥 Rivalità accesa",rispettato:"🤝 Rispetto reciproco",amico:"👥 Amicizia"})[r.relationship||"sconosciuto"]}
             </div>
-          </Card>
+          </Card></Fisarmonica>
         );
       })()}
 
       {/* Clubs */}
       {clubs.length>0&&(
-        <Card style={{marginBottom:9,padding:"9px 12px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏟️ Club della Carriera</div>
+        <Fisarmonica id="ritiro-club-della-carriera" titolo="🏟️ Club della Carriera"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"9px 12px"}}>
           <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
             {clubs.map((c,i)=><div key={i} style={{padding:"4px 10px",borderRadius:RAD.xl,background:TH.bg,border:`1px solid ${TH.cardBorder}`,fontSize:FS.caption,color:TH.text}}>{c}</div>)}
           </div>
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Trophies */}
       {trophies.length>0&&(
-        <Card style={{marginBottom:9,padding:"9px 12px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Albo d'Oro</div>
+        <Fisarmonica id="ritiro-albo-d-oro" titolo="🏆 Albo d'Oro"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:9,padding:"9px 12px"}}>
           {trophies.map((t,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:i<trophies.length-1?"1px solid "+TH.cardBorder:"none"}}>
               <span style={{fontSize:FS.bodyLg}}>🏆</span>
               <div><div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>S.{t.season} · {t.club}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{compLbl(t.league)}</div></div>
             </div>
           ))}
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Biography */}
-      <Card style={{marginBottom:12,padding:"7px 12px"}}>
-        <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📖 Biografia</div>
+      <Fisarmonica id="ritiro-biografia" titolo="📖 Biografia"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"7px 12px"}}>
         <p style={{fontSize:FS.caption,color:TH.text,lineHeight:1.6,margin:0}}>{bio}</p>
-      </Card>
+      </Card></Fisarmonica>
 
       {/* Actions */}
       <Btn onClick={()=>{const txt=buildCareerCard(p);if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>alert("📋 Riepilogo copiato negli appunti!")).catch(()=>alert(txt));}else{alert(txt);}}}/* [6.45.0 RC] .catch: una clipboard bloccata non deve generare una promise rejection non gestita → fallback al testo */ v="ghost" fw style={{padding:"12px",fontSize:FS.body,marginBottom:8}}>

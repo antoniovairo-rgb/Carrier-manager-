@@ -2545,8 +2545,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
         const _best=(player.matchHistory||[]).filter(m=>m&&m.rating).sort((a,b)=>(b.rating||0)-(a.rating||0))[0];
         if(_mo.length===0&&!_best)return null;
         return(
-        <Card style={{marginBottom:12,padding:"14px 16px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎬 Il film della stagione</div>
+        <Fisarmonica id="fine-il-film-della-stagione" titolo="🎬 Il film della stagione" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"14px 16px"}}>
           {_best&&<div style={{fontSize:FS.caption,color:TH.text,padding:"6px 0",borderBottom:`1px dashed ${TH.cardBorder}`}}><strong>⭐ La partita dell'anno:</strong> {_best.homeScore}-{_best.awayScore} vs {_best.opponent} — voto {_best.rating}{(_best.goals||0)>0?` · ${_best.goals}⚽`:""}{(_best.assists||0)>0?` · ${_best.assists}🎯`:""}</div>}
           {_mo.map((d,i)=>(<div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"6px 0",borderBottom:i<_mo.length-1?`1px dashed ${TH.cardBorder}`:"none"}}>
             <span style={{fontSize:FS.body}}>{d.e||"📌"}</span>
@@ -2556,12 +2555,11 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
             </div>
             <span style={{fontSize:FS.caption,color:TH.faint,flexShrink:0}}>W{d.week||"–"}</span>
           </div>))}
-        </Card>);})()}
+        </Card></Fisarmonica>);})()}
 
       {/* Sprint 87: Premiazioni */}
       {awardRows.length>0&&(
-        <Card style={{marginBottom:12,padding:"12px 14px",background:TH.bgAmber,border:"1px solid #fde68a"}}>
-          <div style={{fontSize:FS.caption,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:700}}>🎖 Premiazioni stagione {season}</div>
+        <Fisarmonica id="fine-premiazioni-stagione" titolo={<>🎖 Premiazioni stagione {season}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"12px 14px",background:TH.bgAmber,border:"1px solid #fde68a"}}>
           {awardRows.map((a,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<awardRows.length-1?"1px solid #fde68a":"none"}}>
               <span style={{fontSize:FS.title}}>{a.e}</span>
@@ -2571,13 +2569,12 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
               </div>
             </div>
           ))}
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Sprint 87: Obiettivi stagione */}
       {objs.length>0&&(
-        <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🎯 Obiettivi stagione</div>
+        <Fisarmonica id="fine-obiettivi-stagione" titolo="🎯 Obiettivi stagione" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"12px 14px"}}>
           {objs.map((obj,i)=>(
             <div key={i} style={{marginBottom:i<objs.length-1?10:0}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
@@ -2599,7 +2596,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
               )}
             </div>
           ))}
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Fase carriera + narrativa */}
@@ -2616,8 +2613,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
 
       {/* Momento della stagione */}
       {bestMatch&&(bestMatch.goals>0||bestMatch.assists>0||(bestMatch.rating||0)>=8)&&(
-        <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>⚡ Momento della stagione</div>
+        <Fisarmonica id="fine-momento-della-stagione" titolo="⚡ Momento della stagione" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"12px 14px"}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
             <div style={{fontSize:FS.h,lineHeight:1}}>{bestMatch.goals>=2?"🔥":bestMatch.goals>=1?"⚽":bestMatch.assists>=1?"🎯":"⭐"}</div>
             <div style={{flex:1}}>
@@ -2625,15 +2621,12 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
               <div style={{fontSize:FS.caption,color:TH.muted}}>{bestMatch.goals>0?bestMatch.goals+"⚽ ":""}{bestMatch.assists>0?bestMatch.assists+"🎯 ":""}{bestMatch.rating?"★ "+bestMatch.rating:""} · {bestMatch.won?"Vittoria":bestMatch.drew?"Pareggio":"Sconfitta"}</div>
             </div>
           </div>
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Sprint 87: Europa recap */}
       {euroActive&&(
-        <Card style={{marginBottom:12,padding:"12px 14px",background:euro.competition==="UCL"?"#eff6ff":euro.competition==="UEL"?"#fff7ed":"#f5f3ff",border:"1px solid "+(euro.competition==="UCL"?"#bfdbfe":euro.competition==="UEL"?"#fed7aa":"#ddd6fe")}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>
-            {euro.competition==="UCL"?"⭐ Korward Champions Cup":euro.competition==="UEL"?"🟡 Korward Europa Cup":"🟣 Korward Conference Cup"}
-          </div>
+        <Fisarmonica id="fine-sezione" titolo={<>{euro.competition==="UCL"?"⭐ Korward Champions Cup":euro.competition==="UEL"?"🟡 Korward Europa Cup":"🟣 Korward Conference Cup"}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"12px 14px",background:euro.competition==="UCL"?"#eff6ff":euro.competition==="UEL"?"#fff7ed":"#f5f3ff",border:"1px solid "+(euro.competition==="UCL"?"#bfdbfe":euro.competition==="UEL"?"#fed7aa":"#ddd6fe")}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
             <span style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{euroPhaseLabel}</span>
             <span style={{fontSize:FS.caption,color:TH.muted}}>{euro.pts||0} pt nel girone</span>
@@ -2665,13 +2658,12 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
             return <div style={{fontSize:FS.small,color:TH.muted,fontStyle:"italic"}}>{_txt}</div>;
           })()}
           {euro.qualified&&!euroChamp&&!euroElim&&<div style={{fontSize:FS.small,color:"#16a34a",fontWeight:700}}>✅ Qualificati alla fase successiva</div>}
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Sprint 87: Rivale */}
       {rival&&(
-        <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>⚔️ Il tuo rivale — {rival.name}</div>
+        <Fisarmonica id="fine-il-tuo-rivale" titolo={<>⚔️ Il tuo rivale — {rival.name}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"12px 14px"}}>
           <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:4,alignItems:"center",textAlign:"center"}}>
             <div>
               <div style={{fontSize:FS.caption,fontWeight:700,color:TH.brandText}}>{player.name}</div>
@@ -2690,7 +2682,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
           <div style={{textAlign:"center",marginTop:6,fontSize:FS.caption,color:TH.muted,fontStyle:"italic"}}>
             {rival.relationship==="amico"?"🤝 Siete diventati amici nel tempo":rival.relationship==="rispettato"?"🫡 Si rispettano a vicenda":"⚡ La rivalità continua"}
           </div>
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Champion banner */}
@@ -2702,8 +2694,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
 
       {/* Standings */}
       {sorted.length>0&&(
-        <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>📊 Classifica finale</div>
+        <Fisarmonica id="fine-classifica-finale" titolo="📊 Classifica finale"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"12px 14px"}}>
           <div style={{display:"flex",justifyContent:"flex-end",gap:12,fontSize:FS.caption,color:TH.faint,marginBottom:4,paddingRight:4}}>
             <span>PG GF-GA</span><span style={{minWidth:28,textAlign:"right"}}>PT</span>
           </div>
@@ -2719,7 +2710,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
             ):<span style={{color:TH.warning}}>🟡 Top 3 · promozione</span>}
             {!_isYouth99&&<span style={{color:TH.danger}}>🔴 Ultimi 3 · retrocessione</span>}
           </div>
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Sprint 87/132: Movimenti lega — differenziato per top-flight vs lower · [6.99.0] MAI per le Primavera (niente coppe europee né movimenti) */}
@@ -2783,8 +2774,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
 
       {/* Albo d'oro */}
       {trophies.length>0&&(
-        <Card style={{marginBottom:12,padding:"12px 14px"}}>
-          <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🏆 Albo d'oro</div>
+        <Fisarmonica id="fine-albo-d-oro" titolo="🏆 Albo d'oro"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:12,padding:"12px 14px"}}>
           {trophies.map((t,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<trophies.length-1?"1px solid "+TH.cardBorder:"none"}}>
               <span style={{fontSize:FS.bodyLg}}>🏆</span>
@@ -2794,7 +2784,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
               </div>
             </div>
           ))}
-        </Card>
+        </Card></Fisarmonica>
       )}
 
       {/* Contract status */}
