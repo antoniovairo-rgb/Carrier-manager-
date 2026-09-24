@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Partita vera · prototipo</title>
+<!-- Fase 2 «partita vera»: prototipo separato. Il gioco (CARRIER-MANAGER-AV.html) non viene toccato.
+     Three.js r128, la stessa versione fissata nel gioco (src/00-head.html:62-65), con lo stesso ripiego. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>window.THREE||document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"><\/script>')</script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
+<style>
+:root{--hud:#0b1220;--hud2:rgba(11,18,32,.82);--ink:#f4f6fb;--mut:#a9b3c7;--acc:#f5c542;--ok:#34d399;--ko:#f87171;color-scheme:dark}
+html,body{margin:0;height:100%;background:#0a0f18;color:var(--ink);font-family:"Segoe UI",Roboto,system-ui,sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none}
+#scena{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+.bug{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:10px;display:flex;align-items:stretch;border-radius:6px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.45);font-weight:800;font-size:15px;letter-spacing:.3px;z-index:5}
+.bug .sq{display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--hud)}
+.bug .col{width:5px;align-self:stretch}
+.bug .ris{background:#fff;color:#0b1220;padding:5px 9px;font-variant-numeric:tabular-nums}
+.bug .ora{background:#1d2a44;padding:5px 8px;font-variant-numeric:tabular-nums;min-width:42px;text-align:center}
+.bug .rec{background:var(--acc);color:#0b1220;padding:5px 6px;display:none}
+.lbl{position:fixed;left:0;top:0;transform:translate(-50%,-100%);pointer-events:none;white-space:nowrap;font-size:11.5px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--hud2);border-left:3px solid #fff;z-index:3;will-change:transform}
+.lbl.eroe{border-left-color:var(--acc);font-size:12.5px}
+.lbl small{color:var(--mut);font-weight:600;margin-left:4px}
+.banner{position:fixed;left:50%;top:22%;transform:translate(-50%,-50%) scale(.9);opacity:0;transition:opacity .25s,transform .25s;background:var(--hud2);border-radius:10px;padding:12px 22px;text-align:center;z-index:6;pointer-events:none;min-width:200px}
+.banner.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.banner b{display:block;font-size:30px;letter-spacing:2px}
+.banner span{color:var(--mut);font-size:14px}
+.cart{display:inline-block;width:14px;height:19px;border-radius:2px;vertical-align:-3px;margin-right:6px}
+.barra{position:fixed;left:0;right:0;bottom:0;padding:8px 10px calc(env(safe-area-inset-bottom,0px) + 8px);display:flex;gap:6px;flex-wrap:wrap;justify-content:center;background:linear-gradient(0deg,rgba(10,15,24,.92),rgba(10,15,24,0));z-index:5}
+button{font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:#1d2a44;border:1px solid #2d3d5e;border-radius:8px;padding:8px 11px;cursor:pointer}
+button.on{background:var(--acc);color:#0b1220;border-color:var(--acc)}
+.scelta{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 112px);transform:translateX(-50%);background:var(--hud2);border:1px solid #2d3d5e;border-radius:12px;padding:12px;z-index:7;display:none;width:min(92vw,420px)}
+.scelta h3{margin:0 0 4px;font-size:15px}
+.scelta p{margin:0 0 10px;color:var(--mut);font-size:12.5px}
+.scelta .op{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.scelta .op button{padding:11px 8px;font-size:14px}
+.scelta .op button.auto{border-color:var(--acc)}
+.pannello{position:fixed;right:10px;top:calc(env(safe-area-inset-top,0px) + 52px);width:min(86vw,300px);max-height:62vh;overflow:auto;background:var(--hud2);border-radius:10px;padding:10px 12px;font-size:12.5px;z-index:6;display:none}
+.pannello table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.pannello td{padding:3px 2px;border-bottom:1px solid rgba(255,255,255,.07)}
+.pannello td:first-child,.pannello td:last-child{width:3.2em;text-align:center;font-weight:800}
+.pannello td:nth-child(2){text-align:center;color:var(--mut)}
+.pannello h4{margin:10px 0 4px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--mut)}
+.cron{font-size:12px;line-height:1.45}
+.cron div{padding:2px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.fps{position:fixed;right:10px;top:calc(env(safe-area-inset-top,0px) + 10px);font:600 11px ui-monospace,Menlo,monospace;background:var(--hud2);padding:4px 7px;border-radius:6px;z-index:5;white-space:pre;text-align:right}
+.fine{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(5,8,14,.72);z-index:9;padding:16px}
+.fine .box{background:#101a2c;border:1px solid #2d3d5e;border-radius:14px;padding:16px 18px;width:min(92vw,460px);max-height:86vh;overflow:auto}
+.fine h2{margin:0 0 6px;font-size:22px}
+.fine .imp{font:600 12.5px ui-monospace,Menlo,monospace;background:#0b1220;border-radius:8px;padding:8px 10px;margin:10px 0;line-height:1.6}
+.err{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#0a0f18;z-index:20;padding:20px;text-align:center;line-height:1.5}
+.carica{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);font-size:14px;color:var(--mut);z-index:4}
+.replay{position:fixed;top:calc(env(safe-area-inset-top,0px) + 52px);left:10px;background:var(--ko);color:#fff;font-weight:900;font-size:12px;letter-spacing:2px;padding:3px 8px;border-radius:4px;display:none;z-index:6}
+</style>
+</head>
+<body>
+<div id="scena"></div>
+<div class="carica" id="carica">Carico stadio e giocatori…</div>
+<div class="bug" id="bug">
+  <div class="sq"><span class="col" id="colC"></span><span id="sigC">CAS</span></div>
+  <div class="ris" id="ris">0 – 0</div>
+  <div class="sq"><span id="sigO">OSP</span><span class="col" id="colO"></span></div>
+  <div class="ora" id="ora">0'</div>
+  <div class="rec" id="rec">+0</div>
+</div>
+<div class="replay" id="replayTag">REPLAY</div>
+<div class="fps" id="fps"></div>
+<div class="banner" id="banner"><b id="banTit"></b><span id="banSub"></span></div>
+<div class="scelta" id="scelta"><h3 id="sceltaTit">Occasione!</h3><p id="sceltaSub"></p><div class="op" id="sceltaOp"></div></div>
+<div class="pannello" id="pannello"></div>
+<div class="barra">
+  <button id="bPlay">⏸ Pausa</button>
+  <button id="bVel">Velocità ×1</button>
+  <button id="bZoom">Vista: media</button>
+  <button id="bScelte" class="on">Scelgo io</button>
+  <button id="bStat">Statistiche</button>
+  <button id="bFine">Vai al 90'</button>
+</div>
+<div class="fine" id="fine"><div class="box" id="fineBox"></div></div>
+<div class="err" id="err"></div>
+<script src="motore-v2.js"></script>
+<script src="partita.js"></script>
+<script src="vista.js"></script>
+</body>
+</html>
