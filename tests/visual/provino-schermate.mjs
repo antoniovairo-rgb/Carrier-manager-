@@ -37,7 +37,7 @@ const PAGINE = [
   { f: 'stagione.html',  nome: 'Stagione · Classifica' },
   { f: 'club.html',      nome: 'Club' },
   { f: 'profilo.html',   nome: 'Carriera · Profilo' },
-  { f: 'agente.html',    nome: 'Staff' },
+  { f: 'agente.html',    nome: 'Affari' },
   { f: 'calendario.html',nome: 'Stagione · Calendario' },
 ];
 

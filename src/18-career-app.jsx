@@ -5837,7 +5837,7 @@ const getThisWeekMatchday=()=>{
      funzionare e resta nel `title`, ma non occupa piu' una riga sotto ogni voce. */
   const _NAV954=(att)=>({fontFamily:"'Barlow Condensed','Barlow',sans-serif",fontSize:FS.caption,
     fontWeight:att?FW.bold:600,letterSpacing:"0.06em",textTransform:"uppercase",lineHeight:1.2});
-  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"👥",l:L.agent,k:"G"}];
+  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"💼",l:L.agent,k:"G"}];
 
   /* [24/09 POC — anteprima 05: tre finestre impilate sul confronto col procuratore] PRECEDENZA UNICA: le finestre del procuratore sono le ultime della fila; aspettano che ogni altra finestra sia chiusa (mai due popup uno sull'altro). Rosso __CPM_NO_CODA23 */
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
