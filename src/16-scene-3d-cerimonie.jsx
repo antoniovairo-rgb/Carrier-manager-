@@ -275,13 +275,15 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
                   :(spons&&((r+k)%3===1)?(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:"#475569",fontStyle:"italic"}}>{spons}</span>):(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:cNome}}>{nome}</span>))}
               </span>))}
           </div>))}
-        {/* [7.994.0] il tabellino della partita appena giocata, al centro del pannello: e' di questa partita che si parla */}
+        {/* [7.994.0] il tabellino della partita appena giocata, al centro del pannello: e' di questa partita che si parla.
+            [7.999.1] hs/as sono gia' dal lato dell'eroe (src/15 _buildEndResult: won = home>away) e il club dell'eroe sta a sinistra:
+            in trasferta non si inverte piu'. Rosso __CPM_NO_TAB25. */}
         {_v24&&partita&&partita.hs!=null&&(<div data-cpm="tabellino24" style={{position:"absolute",left:0,right:0,top:(100/3)+"%",height:(100/3)+"%",display:"flex",flexDirection:"column",justifyContent:"center",
           background:"#ffffff",borderTop:"1px solid rgba(15,23,42,0.14)",borderBottom:"1px solid rgba(15,23,42,0.14)",padding:"9px 16px",textAlign:"center",
           boxShadow:"0 6px 18px rgba(15,23,42,0.14)"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:900,color:"#0f172a"}}>
             <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:cNome}}>{(club&&(club.a||club.n))||"Casa"}</span>
-            <span style={{fontSize:24,fontVariantNumeric:"tabular-nums"}}>{partita.casa===false?(partita.as+" – "+partita.hs):(partita.hs+" – "+partita.as)}</span>
+            <span style={{fontSize:24,fontVariantNumeric:"tabular-nums"}}>{(partita.casa===false&&typeof window!=="undefined"&&window.__CPM_NO_TAB25)?(partita.as+" – "+partita.hs):(partita.hs+" – "+partita.as)}</span>
             <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opp||"Avversario"}</span></div>
           <div style={{fontSize:11,color:"#475569",marginTop:2}}>{partita.casa===false?"In trasferta":partita.casa===true?"In casa":""}{partita.voto!=null?((partita.casa!=null?" · ":"")+"Il tuo voto "+String(partita.voto).replace(".",",")):""}{partita.gol?(" · "+partita.gol+(partita.gol===1?" gol":" gol")):""}</div>
         </div>)}

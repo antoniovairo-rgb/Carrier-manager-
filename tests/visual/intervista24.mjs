@@ -4,12 +4,12 @@
    pagina col titolo e gli effetti; la fiducia del giornalista scende di 3 in piu'; «Chiudi» chiude.
    CPM_ROSSO=1 → __CPM_NO_IV24: la finestra si chiude alla prima risposta, la sonda deve andare in rosso. */
 import { startServer, launchBrowser, installCdnRoutes, sleep } from './lib/harness.mjs';
-const ROSSO=process.env.CPM_ROSSO==='1';const S='/tmp/claude-0/-home-user/394ea3c3-9288-5fc6-bf47-a074e31528b0/scratchpad/';
+const ROSSO=process.env.CPM_ROSSO==='1'?true:process.env.CPM_ROSSO==='tab'?'tab':false;/* [7.999.1] CPM_ROSSO=tab → __CPM_NO_TAB25: il caso trasferta deve andare in rosso */const S='/tmp/claude-0/-home-user/394ea3c3-9288-5fc6-bf47-a074e31528b0/scratchpad/';
 const srv=await startServer(); const port=srv.address().port; const browser=await launchBrowser();
 const page=await browser.newPage({viewport:{width:414,height:896}}); await installCdnRoutes(page);
 const errs=[]; page.on('pageerror',e=>errs.push(String(e.message).slice(0,140)));
 const fails=[]; const F=(c,m)=>{if(!c)fails.push(m);}; const out={};
-await page.addInitScript((rosso)=>{window.__CPM_GLB=false;if(rosso)window.__CPM_NO_IV24=true;
+await page.addInitScript((rosso)=>{window.__CPM_GLB=false;if(rosso===true)window.__CPM_NO_IV24=true;if(rosso==='tab')window.__CPM_NO_TAB25=true;
   const J=[{id:'j_ferretti',name:'Marco Ferretti',paper:'Sprint Sportivo',color:'#ef4444',type:'critico',trust:50},{id:'j_esposito',name:'Sofia Esposito',f:true,paper:'Diretta TV',color:'#3b82f6',type:'fan',trust:50},{id:'j_neri',name:'Giovanni Neri',paper:'Cronaca di Sport',color:'#7c3aed',type:'investigativa',trust:50}];
   localStorage.setItem('cpm-v3',JSON.stringify({phase:'career',player:{name:'Test Uno',nation:'Italia',avatarId:0,proStatus:'pro',season:3,week:10,age:25,ovr:78,tutorialDone:true,hasAgent:true,bankBalance:900000,popularity:40,journalists:J,club:{id:'juve',n:'Torino Athletic',a:'TAT',p:88,c:'#111',c2:'#fff',nat:'🇮🇹',lg:'Lega A'},stats:{'velocità':78,tecnica:78,fisico:78,'mentalità':78,tiro:78,passaggio:78,dribbling:78,posizionamento:78},calendar:[],standings:[],matchHistory:[],worldMemory:[],contract:{duration:3,wage:40000,expiresAtSeason:6},log:[]}}));},ROSSO);
 await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`,{waitUntil:'load'});
@@ -38,6 +38,10 @@ await page.screenshot({path:S+'iv24-3.png'});
 await page.getByRole('button',{name:'Chiudi'}).first().click().catch(()=>{}); await sleep(600);
 out.chiusa=!(await page.$('[data-cpm="prima-pagina24"]'));
 F(out.chiusa,'Chiudi non chiude');
+/* [7.999.1] trasferta: vittoria 2-1 fuori casa. hs/as sono dal lato dell'eroe, il club dell'eroe e' a sinistra → «2 – 1», mai «1 – 2» */
+await page.evaluate(()=>window.__CPM_CAREER.forceInterview('win',true)); await sleep(1400);
+out.trasferta=await page.$eval('[data-cpm="tabellino24"]',e=>e.innerText.replace(/\s+/g,' ')).catch(()=>null);
+F(out.trasferta&&/2 – 1/.test(out.trasferta)&&/In trasferta/.test(out.trasferta), `tabellino in trasferta invertito: ${out.trasferta}`);
 out.errs=errs; console.log(JSON.stringify(out,null,1)); console.log('fails',JSON.stringify(fails,null,1));
 await browser.close(); srv.close();
 const ok=fails.length===0&&errs.length===0; console.log(ok?'✅ PASS intervista24':'❌ FAIL intervista24'); process.exit(ok?0:1);
