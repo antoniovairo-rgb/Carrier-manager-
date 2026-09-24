@@ -28,7 +28,7 @@ const D = JSON.parse(fs.readFileSync(F, 'utf8'));
 const NOMI = { home: 'Home fuori carriera', impostazioni: 'Impostazioni', creazione: 'Creazione', offerte: 'Offerte',
   dashboard: 'Dashboard', 'stagione-classifica': 'Classifica', 'stagione-calendario': 'Calendario',
   'stagione-coppe': 'Coppe', club: 'Club', 'carriera-profilo': 'Profilo', 'carriera-nazionale': 'Nazionale',
-  agente: 'Agente', prepartita: 'Prepartita' };
+  agente: 'Staff', prepartita: 'Prepartita' };
 const BERS = { tinte: 5, corpi: 6, raggi: 3 };   /* il provino approvato dal PO */
 const SCHERMO = 915;
 

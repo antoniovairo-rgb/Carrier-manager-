@@ -1105,7 +1105,7 @@ const CHALLENGES=[
 const LOCALE={
   IT:{
     tabs:{dashboard:"Home",calendar:"Calendario",standings:"Classifica",training:"Allena",profile:"Profilo"},
-    agent:"Agente",
+    agent:"Staff",/* [7.990.0 PO «la tab la rinominerei in staff anziché agente»] id interno resta "agente" */
     liveWeek:"⚡ Vivi la Settimana",startSeason:"🏁 Avvia Stagione",startSeasonSub:"ritiro, raduno e presentazioni",rehab:"🏥 Sessione Riabilitazione",weekLived:"✅ Settimana vissuta",advanceWeek:"⏭️ Avanza Settimana",
     season:"Stagione",week:"Settimana",matches:"Partite",goals:"Gol",assists:"Assist",
     morale:"Morale",form:"Forma",coachTrust:"Fiducia mister",popularity:"Popolarità",fatigue:"Fatica",
@@ -1139,7 +1139,7 @@ const LOCALE={
   },
   EN:{
     tabs:{dashboard:"Home",calendar:"Calendar",standings:"Standings",training:"Training",profile:"Profile"},
-    agent:"Agent",
+    agent:"Staff",
     liveWeek:"⚡ Live Week",startSeason:"🏁 Start Season",startSeasonSub:"camp, gathering and presentations",rehab:"🏥 Rehab Session",weekLived:"✅ Week Lived",advanceWeek:"⏭️ Advance Week",
     season:"Season",week:"Week",matches:"Matches",goals:"Goals",assists:"Assists",
     morale:"Morale",form:"Form",coachTrust:"Coach Trust",popularity:"Popularity",fatigue:"Fatigue",

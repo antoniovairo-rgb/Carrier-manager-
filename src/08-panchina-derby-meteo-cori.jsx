@@ -48,6 +48,20 @@ const STAFF_COSTX24=[0,1,1.8,2.8];
 function staffLv24(p,k){if(!p||!p[k])return 0;const d=STAFF24.find(function(s){return s.k===k;});const v=d?p[d.lv]:null;return (typeof v==="number"&&v>=1)?Math.min(3,v|0):1;}
 function staffCost24(p,k,lv){const d=STAFF24.find(function(s){return s.k===k;});const L=lv==null?staffLv24(p,k):lv;if(!d||!L)return 0;const wg=(p&&p.contract&&p.contract.wage)||0;return Math.round(Math.max(d.min,Math.round(wg*d.pct))*STAFF_COSTX24[L]);}
 function staffCostTot24(p){return STAFF24.reduce(function(a,d){return a+staffCost24(p,d.k);},0);}
+/* [7.990.0 Patrimonio F2] ACCADEMIA COL TUO NOME. Fondazione una tantum max(150k, 8 stipendi), gestione
+   max(400, 2% stipendio) a settimana (sospesa in pausa; a fondi finiti va in pausa da sola). A ogni fine
+   stagione esce un ragazzo: nome/ruolo/voto DETERMINISTICI (hash di nome eroe + stagione + fondazione), voto
+   55-69 + 1 per stagione di vita (max +8). Popolarita' +2, +2 se il ragazzo vale 70+. Nessun Math.random. */
+function academyCost24(p){const wg=(p&&p.contract&&p.contract.wage)||0;return {found:Math.max(150000,wg*8),week:Math.max(400,Math.round(wg*0.02))};}
+function academyName24(p){const nm=String((p&&p.name)||"").trim().split(/\s+/);return "Accademia "+(nm[nm.length-1]||"Campione");}
+function academyGrad24(p,season){const a=(p&&p.academy24)||{};const k=String((p&&p.name)||"x")+"|"+season+"|"+(a.founded||0);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
+  const F=(typeof FIRSTNAMES_IT!=="undefined"&&FIRSTNAMES_IT.length)?FIRSTNAMES_IT:["Marco"],S=(typeof SURNAMES_IT!=="undefined"&&SURNAMES_IT.length)?SURNAMES_IT:["Rossi"];
+  const POS=["POR","DIF","DIF","CEN","CEN","ATT"];const bonus=Math.max(0,Math.min(8,(season||1)-(a.founded||season||1)));
+  return {n:F[h%F.length]+" "+S[(h>>>5)%S.length],pos:POS[(h>>>9)%POS.length],r:55+((h>>>13)%15)+bonus,s:season||1};}
+function academySeason24(ret,prev){try{if(typeof window!=="undefined"&&window.__CPM_NO_ACCADEMIA24)return ret;const a=prev&&prev.academy24;if(!a||a.paused)return ret;
+  const g=academyGrad24(prev,prev.season||1);const dp=2+(g.r>=70?2:0);const cur=ret.academy24||a;
+  return {...ret,academy24:{...cur,grads:[...(cur.grads||[]),g].slice(-12),tot:((cur.tot|0)+1)},popularity:Math.min(100,(ret.popularity||20)+dp),
+    log:["🏫 "+(a.name||academyName24(prev))+": esce "+g.n+" ("+g.pos+", "+g.r+")"+(g.r>=70?" — pronto per una prima squadra":"")+" · popolarità +"+dp,...(ret.log||[])].slice(0,60)};}catch(_e){return ret;}}
 function coachDiClub23(club,season){try{const k=String((club&&(club.id||club.n))||"x")+"|"+(season||1);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
   const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:"Mister "+COACH_NAMES[h%COACH_NAMES.length],style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
 // Sprint 11 — S11.4 Derby database
