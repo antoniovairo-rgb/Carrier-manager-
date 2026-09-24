@@ -1717,7 +1717,20 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       wheels.forEach(w=>{w.rotation.x+=SPEED*dt/1.05;});/* [7.469.0] con l'asse ruota su x, avanzare verso +z vuol dire rotazione CRESCENTE: col segno vecchio le ruote giravano al contrario del moto — coerenti con la marcia indietro, non col rotolamento */
       men.forEach(m=>{const c=m._cg23;if(!c)return;const a=c.apice||c.d*0.34;c.act.time=c.eroe?a:Math.max(0,a-c.d*(0.05+0.05*Math.sin(el2*c.sp+c.ph)));c.mx.update(dt);
         try{if(typeof _corrPostura23==='function')_corrPostura23(_ossa23(m));}catch(_e){}});
-      if(eroe23&&eroe23._mani23&&eroe23._mani23.length===2){try{eroe23.updateMatrixWorld(true);_v23a.set(0,0,0);eroe23._mani23[0].getWorldPosition(_v23a);eroe23._mani23[1].getWorldPosition(_v23b);_v23a.add(_v23b).multiplyScalar(0.5);bus.worldToLocal(_v23a);cup.position.set(_v23a.x,_v23a.y-0.35,_v23a.z);}catch(_e){}}
+      if(eroe23&&eroe23._mani23&&eroe23._mani23.length===2){try{eroe23.updateMatrixWorld(true);_v23a.set(0,0,0);eroe23._mani23[0].getWorldPosition(_v23a);eroe23._mani23[1].getWorldPosition(_v23b);_v23a.add(_v23b).multiplyScalar(0.5);bus.worldToLocal(_v23a);
+        /* [7.996.0 commenti PO «trofeo / coppa enorme» sul pullman] in mano all'eroe la coppa si portava dietro il
+           PIEDISTALLO (cubo 1,15x0,4) e restava sopra le mani, tenuta per la base. Ora: piedistallo via, coppa
+           scalata al 40% dell'altezza dell'eroe (la coppa europea vera misura ~74 cm su un uomo di 1,84 m), e
+           impugnata per i MANICI (piatto di campionato: per il centro). Testimone __CPM_COPPA24 = altezza
+           coppa / altezza eroe. Rosso __CPM_NO_COPPA24 = aggancio storico. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_COPPA24)){
+          if(eroe23._h24==null){try{const _b=new THREE.Box3().setFromObject(eroe23);eroe23._h24=Math.max(1.2,(_b.max.y-_b.min.y)/Math.max(1e-3,bus.scale.y||1));}catch(_e){eroe23._h24=1.84;}}
+          const _alt=euroWin?1.36:1.54,_s=Math.min(_TSC453,(0.40*eroe23._h24)/_alt);
+          if(cped.visible)cped.visible=false;cup._spin429.scale.setScalar(_s);
+          const _pres=euroWin?(0.2+1.2*_s):(0.2+0.95*_s);
+          cup.position.set(_v23a.x,_v23a.y-_pres,_v23a.z);
+          if(typeof window!=='undefined')window.__CPM_COPPA24=+((_alt*_s)/eroe23._h24).toFixed(3);
+        }else cup.position.set(_v23a.x,_v23a.y-0.35,_v23a.z);}catch(_e){}}
       if(folla23.length){const q=(Math.floor(el2*60))%4;folla23.forEach(F=>{const o=F.o;for(let i=q;i<F.n;i+=4){const p=F.P[i],j=Math.abs(Math.sin(el2*3.2+p.ph))*0.35;
           o.position.set(p.x,p.h*0.55+0.25+j,p.z);o.scale.set(1,p.h,1);o.rotation.set(0,0,0);o.updateMatrix();F.bodyM.setMatrixAt(i,o.matrix);
           o.position.set(p.x,p.h*1.15+0.45+j,p.z);o.scale.set(1,1,1);o.updateMatrix();F.headM.setMatrixAt(i,o.matrix);

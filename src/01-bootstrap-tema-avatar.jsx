@@ -520,10 +520,17 @@ function FigurinaKorward23({url,tipo,nome,ruolo,col,col2,w,h,titolo,style,rest,c
   const hRiga=r=>Math.ceil(r.fs*1.18)*r.a+(r.k==="ruolo"?4:0);
   /* il ritratto prende quello che resta: almeno il 70% del lato, al massimo quadrato */
   const bassoMin=bordo;let usate=[],hTesto=0;
-  const altoMax=h-(hTop||bordo)-bassoMin;const fotoMin=Math.round(lato*0.70);
+  const altoMax=h-(hTop||bordo)-bassoMin;
+  /* [7.996.0 collaudo PO, cinque commenti «il contorno taglia troppo il volto» (procuratore, podio, classifiche,
+     chiusura, la tua stagione)] LA CAUSA: sotto i 120 px le righe di testo (cognome, ruolo, fisico) potevano
+     rubare alla foto fino al 30% dell'altezza, e la foto «a riempimento» perdeva fronte e mento. Il ritratto
+     e' quadrato: ora la foto resta SEMPRE quadrata e intera sotto i 120 px, e il testo entra solo se c'e'
+     spazio sotto (sul podio da 58 px non c'e': sparisce anche il cognome doppione, altro commento PO). La
+     figurina grande (ingrandita) tiene la regola storica. Rosso __CPM_NO_FOTO24. */
+  const fotoMin=Math.round(lato*((w<120&&!(typeof window!=='undefined'&&window.__CPM_NO_FOTO24))?1:0.70));
   for(const r of righe){const nx=hTesto+hRiga(r)+2;if(altoMax-fotoMin-2*pad-nx<0)break;usate.push(r);hTesto=nx;}/* priorita' rigida: se una riga non entra, non entrano nemmeno le successive */
   const hPan=usate.length?hTesto+2*Math.max(3,pad-2):0;
-  const altoF=mini?h-2*bordo:Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0));
+  const altoF=mini?h-2*bordo:((!usate.length&&w<120&&!(typeof window!=="undefined"&&window.__CPM_NO_FOTO24))?altoMax/* [7.996.0] senza testo la foto arriva in fondo: piu' alta che larga taglia solo ai lati, mai il volto */:Math.min(lato,altoMax-hPan-(usate.length?Math.max(2,Math.round(w*0.025)):0)));
   const topF=(hTop||bordo);
   const inkPill=_rap944("#ffffff",c1)>=4.5?"#ffffff":TH.text;
   const ordine=["nome","cognome","ruolo","fisico"];usate.sort((a,b)=>ordine.indexOf(a.k)-ordine.indexOf(b.k));
