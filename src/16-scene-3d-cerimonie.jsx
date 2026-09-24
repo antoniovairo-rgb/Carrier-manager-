@@ -229,7 +229,7 @@ const _SPONSOR947=["Marelluce","Vesta Assicura","Caff\u00e8 Orvino","Banca Ponte
 function sponsorDi947(club){try{const k=String((club&&(club.id||club.n))||"x");
   let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;
   return _SPONSOR947[Math.abs(h)%_SPONSOR947.length];}catch(_e){return _SPONSOR947[0];}}
-function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
+function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,partita=null,opp=null}){
   /* [7.961 — LA SALA STAMPA E' DISEGNATA, E NON C'E' PIU' NESSUNA FACCIA. Rosso __CPM_NO963]
      COLLAUDO PO, due rilievi sulla stessa schermata: «Questa e' terribile, togli il 3d. Fai un disegno
      carino 2D anche senza visi» e «Cosa c'e' da ricordare?? Togli i visi, lascia solo una scenografia 2D
@@ -242,6 +242,12 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
      Tema UNICO chiaro, come tutto il resto del gioco: la scena non e' piu' l'unica isola scura. */
   const c1=(club&&club.c)||"#8e1f33", c2=(club&&club.c2)||"#f0b33a";
   const nome=((club&&(club.n||club.name))||"Il club").toUpperCase();
+  /* [7.994.0 «contesto partita sul pannello»] il nome del club si legge sempre (nello scatto del PO era bianco su
+     bianco): fra i due colori del club vince il piu' scuro, altrimenti ardesia. Terzo marchio: lo sponsor. */
+  const _v24=!(typeof window!=='undefined'&&window.__CPM_NO_IV24);
+  const _lum24=(h)=>{try{return (typeof hexLum==="function")?hexLum(h):0.5;}catch(_e){return 0.5;}};
+  const cNome=!_v24?c1:(_lum24(c1)<0.62?c1:_lum24(c2)<0.62?c2:"#334155");
+  const spons=_v24?((typeof sponsorDi947==="function")?sponsorDi947(club):""):"";
   const tono = ctx==="win"?"#16a34a":ctx==="loss"?"#b91c1c":"#64748b";
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri */
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri.
@@ -261,14 +267,24 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
             {riga.map((marchio,k)=>(
               <span key={k} style={{display:"inline-flex",alignItems:"center",gap:2,whiteSpace:"nowrap",
                 flex:"0 0 auto",fontSize:11,fontWeight:900,letterSpacing:.2,
-                color:marchio?"#7a1526":c1,opacity:marchio?0.92:0.7}}>
+                color:marchio?"#7a1526":cNome,opacity:marchio?0.92:(_v24?0.9:0.7)}}>
                 {marchio
                   ?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
                       border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
                     <span style={{fontWeight:700,fontStyle:"italic",color:c2,marginLeft:2}}>Elite</span></>)
-                  :(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis"}}>{nome}</span>)}
+                  :(spons&&((r+k)%3===1)?(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:"#475569",fontStyle:"italic"}}>{spons}</span>):(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:cNome}}>{nome}</span>))}
               </span>))}
           </div>))}
+        {/* [7.994.0] il tabellino della partita appena giocata, al centro del pannello: e' di questa partita che si parla */}
+        {_v24&&partita&&partita.hs!=null&&(<div data-cpm="tabellino24" style={{position:"absolute",left:0,right:0,top:(100/3)+"%",height:(100/3)+"%",display:"flex",flexDirection:"column",justifyContent:"center",
+          background:"#ffffff",borderTop:"1px solid rgba(15,23,42,0.14)",borderBottom:"1px solid rgba(15,23,42,0.14)",padding:"9px 16px",textAlign:"center",
+          boxShadow:"0 6px 18px rgba(15,23,42,0.14)"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:900,color:"#0f172a"}}>
+            <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:cNome}}>{(club&&(club.a||club.n))||"Casa"}</span>
+            <span style={{fontSize:24,fontVariantNumeric:"tabular-nums"}}>{partita.casa===false?(partita.as+" – "+partita.hs):(partita.hs+" – "+partita.as)}</span>
+            <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opp||"Avversario"}</span></div>
+          <div style={{fontSize:11,color:"#475569",marginTop:2}}>{partita.casa===false?"In trasferta":partita.casa===true?"In casa":""}{partita.voto!=null?((partita.casa!=null?" · ":"")+"Il tuo voto "+String(partita.voto).replace(".",",")):""}{partita.gol?(" · "+partita.gol+(partita.gol===1?" gol":" gol")):""}</div>
+        </div>)}
         {/* il filo di luce del risultato: sul bordo del pannello, mai addosso al testo */}
         <span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.85}}/>
       </div>
@@ -293,6 +309,10 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
           </div>))}
       </div>}
       <StrisciaScena948 club={club} tono={tono}/>
+      {/* [7.994.0 «sala viva»] i flash dei fotografi all'ingresso: tre lampi, una volta sola, niente per chi riduce il movimento */}
+      {_v24&&(<><style>{"@keyframes cpmFlash24{0%{opacity:0}12%{opacity:.85}100%{opacity:0}}@media (prefers-reduced-motion: reduce){.cpm-flash24{display:none}}"}</style>
+        {[["18%","12%",".1s"],["74%","20%",".45s"],["44%","8%",".8s"]].map((f,i)=>(<span key={i} className="cpm-flash24" style={{position:"absolute",left:f[0],top:f[1],width:120,height:120,marginLeft:-60,marginTop:-60,borderRadius:"50%",
+          background:"radial-gradient(circle,rgba(255,255,255,0.95) 0%,rgba(255,255,255,0) 70%)",opacity:0,animation:"cpmFlash24 .7s ease-out "+f[2]+" 1 both"}}/>))}</>)}
     </div>);
 }
 function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null,senzaCorpi=false}){

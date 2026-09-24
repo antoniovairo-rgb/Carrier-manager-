@@ -5290,7 +5290,7 @@ const _getAvailNums=(club,season,trust,fanLegend)=>{
   if(pri>=40)return free.filter(n=>n>=10);
   return free.filter(n=>n>=20);
 };
-const GAME_VERSION="7.993.0"; // [7.993.0 - FISARMONICHE OVUNQUE + POPUP NEL MODAL STANDARD (risposte PO al questionario: «Tutte, aperte le operative» e «Sì, e cerca gli altri»)] Tre segnalazioni di fila su sezioni senza fisarmonica: invece di inseguirle una alla volta, uno script sull'albero JSX (non su regex) ha avvolto in Fisarmonica ogni Card con titolo: 44 in career-app (operative APERTE: obiettivi, partita della settimana, prossime partite, calendario, classifica, contratto, mercato, prestito, lista del CT, coppe in corso, patrimonio, consiglio, procuratore; da consultare CHIUSE: notizie, record, albo, stadio, sponsor, bacheca, biografia, statistiche, nazionale storica…), 8 a fine stagione, 9 al ritiro. Esclusi per scelta: gli eventi narrativi con una decisione (sorteggi, esonero, vita privata…: nasconderli nasconderebbe la scelta), i riquadri già a scomparsa (momento), flussi e prompt (offerte, provini, convocazione, scout). Popup: 14 finestre fatte a mano (velo + card) ora sono il Modal standard, compreso lo Spogliatoio settimanale; restano scene a tutto schermo volute (cerimonie, intervista 3D, figurina ingrandita, tutorial). [7.992.0 - PATRIMONIO F4 BENI E STILE DI VITA + EREDITA' · due segnalazioni PO] (1) Quattro beni una tantum con stile sobrio/vistoso: casa 250k (morale +0,5/sett., fiducia +2), auto 150k (pop +3, fiducia −2), barca 700k (pop +4, fiducia −3, morale +0,5/sett.), fondazione 300k (pop +6, fiducia +2); reazione di tifosi e mister in notifica e nel log. EREDITA' (scelta PO «conta nell'eredità»): calcLegacyScore somma legacyPatrimonio24 fino a +60 (ragazzi accademia x3 max 30, fondazione 10, patrimonio netto 1M/5M/20M → 6/12/20) e la schermata del ritiro mostra la card «L'eredità fuori dal campo». (2) «schermata fuori standard»: il cambio procuratore era un overlay fatto a mano, ora Modal standard con titolo, figurina di chi parla e bottoni in fondo. (3) «mancano fisarmoniche»: Status Under 18 / Calciatore professionista (aperte di default) e Statistiche (chiusa) nel Profilo; Lo spogliatoio nel Club (aperta). (4) «un po' sintetico, spiega cosa ci sarà»: Coppe (U18 e pro senza coppe in corso) e Nazionale U18 ora elencano cosa arriva, quando e come (componente AnteprimaSezione); corretto anche un dato falso: la Coppa Nazionale c'è già dal PRIMO anno pro (5.97.0 CP-4), non dal secondo. (5) «togli le scorciatoie»: card Scorciatoie tastiera rimossa dalla Home, i tasti restano attivi. Guardiano: sonda beni24.mjs. Rossi `__CPM_NO_BENI24`, `__CPM_NO_EREDITA24`. [7.991.0 - PATRIMONIO F3, INVESTIMENTI] Un quarto del saldo (arrotondato ai 10k, minimo 10k) vincolato fino a fine stagione con un profilo: prudente +2/+5% · bilanciato −4/+10% · rischioso −20/+30%; resa DETERMINISTICA (hash nome+stagione+profilo), capitale + resa tornano sul saldo nel chokepoint di fine stagione, riga nel log e storico investHist24. Ritiro anticipato −1%. Guardiano: sonda investimenti24.mjs (vincolo UI, fine stagione vera, determinismo, bande e medie su 400 stagioni). Rosso `__CPM_NO_INVEST24`. [7.990.0 - PATRIMONIO F2, ACCADEMIA COL TUO NOME + TAB «STAFF» (PO: «la tab la rinominerei in staff anziché agente»)] Fondazione una tantum max(150k, 8 stipendi), gestione max(400, 2% stipendio)/sett.; a fondi finiti va in pausa da sola. A fine stagione (chokepoint doStartNewSeason) esce un ragazzo deterministico (voto 55-69 +1 per stagione di vita, max +8), popolarità +2 (+4 se vale 70+), riga nel log. Pausa = niente ragazzo e niente costo. La tab Agente si chiama Staff (id interno invariato: save e scorciatoie identici). Guardiano: sonda accademia24.mjs (UI, economia, fine stagione vera, determinismo, pausa). Rosso `__CPM_NO_ACCADEMIA24`. [7.989.0 - PATRIMONIO F1, STAFF PRIVATO A LIVELLI (richiesta PO «il patrimonio adesso non serve a nulla», peso scelto «Leggero»)] Quattro figure (personal trainer, nutrizionista, fisioterapista, mental coach), livelli 0-3 con − / + nel Patrimonio. Livello 1 = comportamento e costo STORICI (save vecchi identici, nessuna migration: perk*Lv assente = 1). Effetti: trainer +10/15/20% allenamento · nutrizionista recupero +2/3/4 · fisio rischio infortuni −8/16/24% (live e simulato) · mental coach morale +0,5/1/1,5 a settimana. Costi L2 x1,8 · L3 x2,8; la sospensione a fondi finiti spegne tutte e quattro e ricorda il livello. Guardiano: sonda staff24.mjs (costi, effetti, sospensione, UI). Rosso `__CPM_NO_STAFF24` = formule storiche. [7.988.0 - LA CI SU MAIN ERA ROSSA (segnalazione PO dalla casella di posta)] Letti i run di GitHub Actions via API: dal 7.980 il job validate falliva in 4 run su 7 SEMPRE su final-state gi152 «Schema doppio dai e vai», «giocatore fuori campo @(105-107,51-56)» — nel pieno della rete avversaria, 5-9 m oltre il fondo; verdi 7.982/7.983/7.984 (intermittente, legato alla lentezza dei runner). In locale non si riproduce (sonda gi152-fuori.mjs, CPU x4/x6/x12, con la scena precedente del gate: massimo 97,3 — il PORTIERE avversario che si spinge sulla linea inseguendo il pallone). Rimedio strutturale in ThreeMatchView, IL RECINTO: durante gioco e highlight nessun corpo sta oltre il fondo della rete (|x| mondo <= 50,5 = 100,5 di campo, sotto la soglia 102 del check), prima della copia sugli avatar cosi' vale anche a modelli spenti. Testimone __CPM_RECINTO24, rosso __CPM_NO_RECINTO24. Il giudice e' la CI su main (non riproducibile qui). Include la 7.987.0 (tiri e precisione del brain, tetto unico al passo), verde in locale e mai promossa da sola.
+const GAME_VERSION="7.994.0"; // [7.994.0 - INTERVISTA, «LA SCENA È SCARNA» (PO sceglie tutte e 4 le idee)] (1) Contesto partita: tabellino al centro del pannello (risultato, casa/trasferta, voto, gol), sponsor del club fra i marchi, nome del club leggibile (era bianco su bianco). (2) Conseguenze visibili DOPO la scelta (direttiva 6.5.4: mai prima): «Domani in edicola», titolo della testata del giornalista che dipende da tono e risultato, ed effetti sommati delle due risposte. (3) Sala viva: gli altri giornalisti in sala come figurine piccole che reagiscono secondo il carattere e il tono; tre flash all'ingresso (spenti con movimento ridotto). (4) Rilancio: una seconda domanda che dipende dal tono della prima, più «No comment» (popolarità −2, fiducia giornalista −3, mister +1). Microfoni NON ridisegnati (bocciati dal PO in precedenza). Guardiano: sonda intervista24.mjs. Rosso `__CPM_NO_IV24` = intervista a un passo come prima. [7.993.0 - FISARMONICHE OVUNQUE + POPUP NEL MODAL STANDARD (risposte PO al questionario: «Tutte, aperte le operative» e «Sì, e cerca gli altri»)] Tre segnalazioni di fila su sezioni senza fisarmonica: invece di inseguirle una alla volta, uno script sull'albero JSX (non su regex) ha avvolto in Fisarmonica ogni Card con titolo: 44 in career-app (operative APERTE: obiettivi, partita della settimana, prossime partite, calendario, classifica, contratto, mercato, prestito, lista del CT, coppe in corso, patrimonio, consiglio, procuratore; da consultare CHIUSE: notizie, record, albo, stadio, sponsor, bacheca, biografia, statistiche, nazionale storica…), 8 a fine stagione, 9 al ritiro. Esclusi per scelta: gli eventi narrativi con una decisione (sorteggi, esonero, vita privata…: nasconderli nasconderebbe la scelta), i riquadri già a scomparsa (momento), flussi e prompt (offerte, provini, convocazione, scout). Popup: 14 finestre fatte a mano (velo + card) ora sono il Modal standard, compreso lo Spogliatoio settimanale; restano scene a tutto schermo volute (cerimonie, intervista 3D, figurina ingrandita, tutorial). [7.992.0 - PATRIMONIO F4 BENI E STILE DI VITA + EREDITA' · due segnalazioni PO] (1) Quattro beni una tantum con stile sobrio/vistoso: casa 250k (morale +0,5/sett., fiducia +2), auto 150k (pop +3, fiducia −2), barca 700k (pop +4, fiducia −3, morale +0,5/sett.), fondazione 300k (pop +6, fiducia +2); reazione di tifosi e mister in notifica e nel log. EREDITA' (scelta PO «conta nell'eredità»): calcLegacyScore somma legacyPatrimonio24 fino a +60 (ragazzi accademia x3 max 30, fondazione 10, patrimonio netto 1M/5M/20M → 6/12/20) e la schermata del ritiro mostra la card «L'eredità fuori dal campo». (2) «schermata fuori standard»: il cambio procuratore era un overlay fatto a mano, ora Modal standard con titolo, figurina di chi parla e bottoni in fondo. (3) «mancano fisarmoniche»: Status Under 18 / Calciatore professionista (aperte di default) e Statistiche (chiusa) nel Profilo; Lo spogliatoio nel Club (aperta). (4) «un po' sintetico, spiega cosa ci sarà»: Coppe (U18 e pro senza coppe in corso) e Nazionale U18 ora elencano cosa arriva, quando e come (componente AnteprimaSezione); corretto anche un dato falso: la Coppa Nazionale c'è già dal PRIMO anno pro (5.97.0 CP-4), non dal secondo. (5) «togli le scorciatoie»: card Scorciatoie tastiera rimossa dalla Home, i tasti restano attivi. Guardiano: sonda beni24.mjs. Rossi `__CPM_NO_BENI24`, `__CPM_NO_EREDITA24`. [7.991.0 - PATRIMONIO F3, INVESTIMENTI] Un quarto del saldo (arrotondato ai 10k, minimo 10k) vincolato fino a fine stagione con un profilo: prudente +2/+5% · bilanciato −4/+10% · rischioso −20/+30%; resa DETERMINISTICA (hash nome+stagione+profilo), capitale + resa tornano sul saldo nel chokepoint di fine stagione, riga nel log e storico investHist24. Ritiro anticipato −1%. Guardiano: sonda investimenti24.mjs (vincolo UI, fine stagione vera, determinismo, bande e medie su 400 stagioni). Rosso `__CPM_NO_INVEST24`. [7.990.0 - PATRIMONIO F2, ACCADEMIA COL TUO NOME + TAB «STAFF» (PO: «la tab la rinominerei in staff anziché agente»)] Fondazione una tantum max(150k, 8 stipendi), gestione max(400, 2% stipendio)/sett.; a fondi finiti va in pausa da sola. A fine stagione (chokepoint doStartNewSeason) esce un ragazzo deterministico (voto 55-69 +1 per stagione di vita, max +8), popolarità +2 (+4 se vale 70+), riga nel log. Pausa = niente ragazzo e niente costo. La tab Agente si chiama Staff (id interno invariato: save e scorciatoie identici). Guardiano: sonda accademia24.mjs (UI, economia, fine stagione vera, determinismo, pausa). Rosso `__CPM_NO_ACCADEMIA24`. [7.989.0 - PATRIMONIO F1, STAFF PRIVATO A LIVELLI (richiesta PO «il patrimonio adesso non serve a nulla», peso scelto «Leggero»)] Quattro figure (personal trainer, nutrizionista, fisioterapista, mental coach), livelli 0-3 con − / + nel Patrimonio. Livello 1 = comportamento e costo STORICI (save vecchi identici, nessuna migration: perk*Lv assente = 1). Effetti: trainer +10/15/20% allenamento · nutrizionista recupero +2/3/4 · fisio rischio infortuni −8/16/24% (live e simulato) · mental coach morale +0,5/1/1,5 a settimana. Costi L2 x1,8 · L3 x2,8; la sospensione a fondi finiti spegne tutte e quattro e ricorda il livello. Guardiano: sonda staff24.mjs (costi, effetti, sospensione, UI). Rosso `__CPM_NO_STAFF24` = formule storiche. [7.988.0 - LA CI SU MAIN ERA ROSSA (segnalazione PO dalla casella di posta)] Letti i run di GitHub Actions via API: dal 7.980 il job validate falliva in 4 run su 7 SEMPRE su final-state gi152 «Schema doppio dai e vai», «giocatore fuori campo @(105-107,51-56)» — nel pieno della rete avversaria, 5-9 m oltre il fondo; verdi 7.982/7.983/7.984 (intermittente, legato alla lentezza dei runner). In locale non si riproduce (sonda gi152-fuori.mjs, CPU x4/x6/x12, con la scena precedente del gate: massimo 97,3 — il PORTIERE avversario che si spinge sulla linea inseguendo il pallone). Rimedio strutturale in ThreeMatchView, IL RECINTO: durante gioco e highlight nessun corpo sta oltre il fondo della rete (|x| mondo <= 50,5 = 100,5 di campo, sotto la soglia 102 del check), prima della copia sugli avatar cosi' vale anche a modelli spenti. Testimone __CPM_RECINTO24, rosso __CPM_NO_RECINTO24. Il giudice e' la CI su main (non riproducibile qui). Include la 7.987.0 (tiri e precisione del brain, tetto unico al passo), verde in locale e mai promossa da sola.
 // [7.987.0 - BRAIN «PARTITA VERA»: TIRI E PRECISIONE (risposta PO al questionario)] Riferimento Premier League 2024-25, StatMuse (20 squadre x 38): tiri 12,96, in porta 4,55 (35 %). Banco (20 partite, 22 decisioni/min): tiri 17,1 -> 15,4 · in porta 3,98 -> 4,88 · quota in porta 23 % -> 32 % · fuori 8,63 -> 6,85 · murati 4,15 -> 3,20. Due leve misurate insieme (da sola ciascuna peggiorava l'altra voce): colpo di testa immediato dopo il cross 0,24 -> 0,16 (rosso __CPM_NO_TESTA24) e mira per zona x1,2 con tetto 0,88 (rosso __CPM_NO_MIRA24; x1,35 dava 5,58 in porta, troppi). TETTO UNICO AL PASSO: test:logic «i passi sono umani» era rosso (12,35u per battito, durante un piazzato: un uomo mosso da piu' routine nello stesso battito); ora a fine battito nessuno si sposta piu' di 11,5u, chiunque l'abbia mosso — 43/43 (rosso __CPM_NO_PASSO24). Pagella finale: tiri 15,1 · in porta 4,65 · 31 % in porta · falli 11,4 · fuorigioco 1,8. Costo dichiarato: xG 1,49 -> 1,34 (meno colpi di testa). Aperto: tiri ancora +2,1 sul vero, passaggi 240 al 91 %.
 // [7.986.0 - RISPOSTE DEL PO AL QUESTIONARIO (24/09)] (1) INTERVISTA: figurina dell'eroe («Rispondi tu») speculare a quella del giornalista; il pannello sponsor resta senza volti (rosso __CPM_NO_EROEIV23). (2) OFFERTA: sotto la situazione del club, ULTIME 5 (ricostruite esatte dalla differenza fra classifiche settimanali consecutive delle altre leghe, che sono deterministiche; nella tua lega lo storico degli altri non c'e' e i pallini non compaiono), IL TUO RUOLO (dal minutaggio stimato dell'offerta: >=70 titolare, >=45 rotazione, altrimenti riserva — la rosa generata non ha voti, quindi non si confrontano i giocatori) e L'ALLENATORE con figurina. Il mister di un club ora e' DETERMINISTICO (coachDiClub23, club+stagione) anche al trasferimento: prima era estratto a caso e il nome mostrato poteva risultare falso. Sonda offerta-club.mjs: mister nella card = mister dopo la firma (Mister Mancuso = Mister Mancuso). Rossi __CPM_NO_OFFERTA23, __CPM_NO_MISTERCLUB23.
 // [7.985.0 - VIA I BIRILLI DALLE SCENE (collaudo PO 24/09 «dalle scene togli i birilli lego»)] Censite le figure fatte di primitive (sfera-testa): in partita non se ne vedono (tribune dipinte, sonda birilli.mjs); nelle scene l'unica visibile era la folla a cilindro+sfera del pullman (7.982, mia). Sostituita da una FOLLA DIPINTA su due pannelli lungo i marciapiedi (teste e spalle nei colori del club, sciarpe alzate), nessuna figura 3D. Testimone __CPM_FOLLA23="dipinta"; rosso __CPM_BIRILLI23 riporta i birilli. Restano primitive solo nei fallback che si vedono se i modelli 3D non caricano (galà vecchio, intro, cerimonie di riserva).
@@ -5705,6 +5705,57 @@ const APP_ENV=(()=>{try{const h=(location.hostname||"").toLowerCase();if(h.endsW
 //   diversi → «scelgo "critico" ma mi scrive "umile"»). Un solo dizionario usato da entrambi i punti di render.
 const IV_TONE_LBL={diplomatico:"🤝 Diplomatico",diretto:"🔥 Ambizioso",umile:"🙏 Umile"};
 const IV_TONE_COL={diplomatico:"#2563eb",diretto:"#f97316",umile:"#7c3aed"};
+/* [7.994.0 INTERVISTA «scarna» - scelte PO: contesto partita, conseguenze visibili, sala viva, domanda di rilancio]
+   IL RILANCIO: il giornalista incalza sulla risposta appena data. Una sola domanda in piu', scelta dal TONO della
+   prima risposta (incalza chi e' stato ambizioso, apre chi e' stato umile, stana chi e' stato diplomatico), in modo
+   deterministico dal testo della prima domanda: stessa intervista, stesso rilancio. Effetti piu' piccoli della
+   prima risposta (e' un seguito, non una seconda intervista). «No comment» esiste e costa: popolarita' -2, il
+   giornalista se lo ricorda (fiducia -3), il mister apprezza la riservatezza (+1).
+   LA PRIMA PAGINA: dopo la seconda risposta, il titolo di domani della testata del giornalista. Il titolo dipende
+   dal tono della PRIMA risposta e dal risultato; gli effetti si mostrano solo ORA, a scelta fatta (direttiva PO
+   6.5.4: l'esito non deve condizionare la risposta). */
+IV_TONE_LBL.nocomment="🤐 No comment";IV_TONE_COL.nocomment="#64748b";
+const IV_NOCOMMENT24={tone:"nocomment",txt:"Su questo preferisco non rispondere.",ef:{p:-2,t:1}};
+const RILANCIO24={
+  diretto:[
+    {q:"Parole forti. Se la prossima va male, se ne assume la responsabilità?",a:[
+      {tone:"diretto",txt:"Sì. Chi parla poi risponde in campo, e io ci sono.",ef:{m:2,p:3,t:-1}},
+      {tone:"diplomatico",txt:"La responsabilità è del gruppo, e io ne faccio parte.",ef:{m:1,p:1,t:2}},
+      {tone:"umile",txt:"Ho detto quello che penso. Ma adesso conta il lavoro, non le parole.",ef:{m:1,p:1,t:1}}]},
+    {q:"Qualcuno nello spogliatoio potrebbe leggerla come una frecciata. Lo era?",a:[
+      {tone:"diretto",txt:"Era uno stimolo. Chi vuole vincere lo prende così.",ef:{m:1,p:2,t:-2}},
+      {tone:"diplomatico",txt:"No, parlavo di me prima che degli altri.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Se qualcuno l'ha presa male, glielo chiarisco di persona.",ef:{m:1,p:1,t:2}}]}],
+  umile:[
+    {q:"Lei è sempre molto misurato. C'è qualcosa che la fa arrabbiare davvero?",a:[
+      {tone:"diretto",txt:"Perdere. Lo odio, e si vede in allenamento.",ef:{m:2,p:2,t:0}},
+      {tone:"diplomatico",txt:"Le cose che non dipendono da me le lascio fuori dal campo.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Più che altro me la prendo con me stesso quando sbaglio.",ef:{m:1,p:1,t:1}}]},
+    {q:"Tanta modestia: non teme che la considerino poco ambizioso?",a:[
+      {tone:"diretto",txt:"Le ambizioni le tengo per me, poi le faccio vedere.",ef:{m:2,p:2,t:0}},
+      {tone:"diplomatico",txt:"Ambizione e rispetto possono stare insieme.",ef:{m:1,p:1,t:1}},
+      {tone:"umile",txt:"Preferisco che parlino i fatti, anche se ci mettono di più.",ef:{m:1,p:0,t:2}}]}],
+  diplomatico:[
+    {q:"Risposta da manuale. Ma lei, personalmente, cosa ne pensa?",a:[
+      {tone:"diretto",txt:"Personalmente? Che possiamo fare molto di più.",ef:{m:1,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Penso esattamente quello che ho detto.",ef:{m:0,p:0,t:1}},
+      {tone:"umile",txt:"Che io per primo devo dare di più.",ef:{m:1,p:1,t:1}}]},
+    {q:"Allora glielo chiedo diversamente: cosa cambierebbe da domani?",a:[
+      {tone:"diretto",txt:"L'intensità. Nelle ultime partite ce n'è stata poca.",ef:{m:1,p:2,t:-1}},
+      {tone:"diplomatico",txt:"Poco: la strada è giusta, serve continuità.",ef:{m:1,p:0,t:1}},
+      {tone:"umile",txt:"Il mio contributo in fase di non possesso.",ef:{m:1,p:1,t:2}}]}]};
+function hashIv24(s){let h=0;s=String(s||"");for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h);}
+function rilancio24(tone,seed){const L=RILANCIO24[tone]||RILANCIO24.diplomatico;const r=L[hashIv24(seed)%L.length];return {q:r.q,a:[...r.a,IV_NOCOMMENT24]};}
+const PRIMA24={
+  win:{diretto:"{nome}: «Non ci fermiamo qui»",diplomatico:"{nome} divide i meriti: «Vittoria di tutti»",umile:"{nome} vola basso dopo il successo sul {opp}"},
+  loss:{diretto:"{nome} non ci sta: «Serve di più da tutti»",diplomatico:"{nome}: «Si riparte insieme»",umile:"{nome} si prende le colpe del ko col {opp}"},
+  draw:{diretto:"{nome}: «Un pari che non ci basta»",diplomatico:"{nome}: «Un punto da non buttare»",umile:"{nome}: «Dobbiamo crescere ancora»"},
+  altro:{diretto:"{nome} alza la voce",diplomatico:"{nome} misura le parole",umile:"{nome}: «Testa bassa e lavorare»"}};
+function primaPagina24(tone1,tone2,ctx,nome,opp){const G=PRIMA24[ctx]||PRIMA24.altro;const cog=String(nome||"").trim().split(/\s+/).pop()||"Il campione";
+  const t=(G[tone1]||G.diplomatico).replace(/\{nome\}/g,cog).replace(/\{opp\}/g,opp||"l'avversario");
+  const sotto=tone2==="nocomment"?"E sul resto, bocca cucita: «Preferisco non rispondere».":tone2==="diretto"?"Poi rilancia: nessun passo indietro.":tone2==="umile"?"E chiude con un messaggio allo spogliatoio.":"Parole pesate, nessuna polemica.";
+  return {titolo:t,sotto};}
+
 const INTERVIEW_QS=[
 // === POST VITTORIA ===
 {ctx:["win"],q:"Grande prestazione oggi! Come descrive la sua partita?",a:[
@@ -35846,7 +35897,7 @@ const _SPONSOR947=["Marelluce","Vesta Assicura","Caff\u00e8 Orvino","Banca Ponte
 function sponsorDi947(club){try{const k=String((club&&(club.id||club.n))||"x");
   let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;
   return _SPONSOR947[Math.abs(h)%_SPONSOR947.length];}catch(_e){return _SPONSOR947[0];}}
-function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
+function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,partita=null,opp=null}){
   /* [7.961 — LA SALA STAMPA E' DISEGNATA, E NON C'E' PIU' NESSUNA FACCIA. Rosso __CPM_NO963]
      COLLAUDO PO, due rilievi sulla stessa schermata: «Questa e' terribile, togli il 3d. Fai un disegno
      carino 2D anche senza visi» e «Cosa c'e' da ricordare?? Togli i visi, lascia solo una scenografia 2D
@@ -35859,6 +35910,12 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
      Tema UNICO chiaro, come tutto il resto del gioco: la scena non e' piu' l'unica isola scura. */
   const c1=(club&&club.c)||"#8e1f33", c2=(club&&club.c2)||"#f0b33a";
   const nome=((club&&(club.n||club.name))||"Il club").toUpperCase();
+  /* [7.994.0 «contesto partita sul pannello»] il nome del club si legge sempre (nello scatto del PO era bianco su
+     bianco): fra i due colori del club vince il piu' scuro, altrimenti ardesia. Terzo marchio: lo sponsor. */
+  const _v24=!(typeof window!=='undefined'&&window.__CPM_NO_IV24);
+  const _lum24=(h)=>{try{return (typeof hexLum==="function")?hexLum(h):0.5;}catch(_e){return 0.5;}};
+  const cNome=!_v24?c1:(_lum24(c1)<0.62?c1:_lum24(c2)<0.62?c2:"#334155");
+  const spons=_v24?((typeof sponsorDi947==="function")?sponsorDi947(club):""):"";
   const tono = ctx==="win"?"#16a34a":ctx==="loss"?"#b91c1c":"#64748b";
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri */
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri.
@@ -35878,14 +35935,24 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
             {riga.map((marchio,k)=>(
               <span key={k} style={{display:"inline-flex",alignItems:"center",gap:2,whiteSpace:"nowrap",
                 flex:"0 0 auto",fontSize:11,fontWeight:900,letterSpacing:.2,
-                color:marchio?"#7a1526":c1,opacity:marchio?0.92:0.7}}>
+                color:marchio?"#7a1526":cNome,opacity:marchio?0.92:(_v24?0.9:0.7)}}>
                 {marchio
                   ?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
                       border:"2px solid #7a1526",boxSizing:"border-box"}}/>rward
                     <span style={{fontWeight:700,fontStyle:"italic",color:c2,marginLeft:2}}>Elite</span></>)
-                  :(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis"}}>{nome}</span>)}
+                  :(spons&&((r+k)%3===1)?(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:"#475569",fontStyle:"italic"}}>{spons}</span>):(<span style={{maxWidth:104,overflow:"hidden",textOverflow:"ellipsis",color:cNome}}>{nome}</span>))}
               </span>))}
           </div>))}
+        {/* [7.994.0] il tabellino della partita appena giocata, al centro del pannello: e' di questa partita che si parla */}
+        {_v24&&partita&&partita.hs!=null&&(<div data-cpm="tabellino24" style={{position:"absolute",left:0,right:0,top:(100/3)+"%",height:(100/3)+"%",display:"flex",flexDirection:"column",justifyContent:"center",
+          background:"#ffffff",borderTop:"1px solid rgba(15,23,42,0.14)",borderBottom:"1px solid rgba(15,23,42,0.14)",padding:"9px 16px",textAlign:"center",
+          boxShadow:"0 6px 18px rgba(15,23,42,0.14)"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:900,color:"#0f172a"}}>
+            <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:cNome}}>{(club&&(club.a||club.n))||"Casa"}</span>
+            <span style={{fontSize:24,fontVariantNumeric:"tabular-nums"}}>{partita.casa===false?(partita.as+" – "+partita.hs):(partita.hs+" – "+partita.as)}</span>
+            <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opp||"Avversario"}</span></div>
+          <div style={{fontSize:11,color:"#475569",marginTop:2}}>{partita.casa===false?"In trasferta":partita.casa===true?"In casa":""}{partita.voto!=null?((partita.casa!=null?" · ":"")+"Il tuo voto "+String(partita.voto).replace(".",",")):""}{partita.gol?(" · "+partita.gol+(partita.gol===1?" gol":" gol")):""}</div>
+        </div>)}
         {/* il filo di luce del risultato: sul bordo del pannello, mai addosso al testo */}
         <span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.85}}/>
       </div>
@@ -35910,6 +35977,10 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null}){
           </div>))}
       </div>}
       <StrisciaScena948 club={club} tono={tono}/>
+      {/* [7.994.0 «sala viva»] i flash dei fotografi all'ingresso: tre lampi, una volta sola, niente per chi riduce il movimento */}
+      {_v24&&(<><style>{"@keyframes cpmFlash24{0%{opacity:0}12%{opacity:.85}100%{opacity:0}}@media (prefers-reduced-motion: reduce){.cpm-flash24{display:none}}"}</style>
+        {[["18%","12%",".1s"],["74%","20%",".45s"],["44%","8%",".8s"]].map((f,i)=>(<span key={i} className="cpm-flash24" style={{position:"absolute",left:f[0],top:f[1],width:120,height:120,marginLeft:-60,marginTop:-60,borderRadius:"50%",
+          background:"radial-gradient(circle,rgba(255,255,255,0.95) 0%,rgba(255,255,255,0) 70%)",opacity:0,animation:"cpmFlash24 .7s ease-out "+f[2]+" 1 both"}}/>))}</>)}
     </div>);
 }
 function InterviewStage3D({avatarId=0,club=null,ctx="win",seed=7,jName=null,senzaCorpi=false}){
@@ -41397,11 +41468,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           if(ans.tone==="umile")delta=j.type==="fan"?8:j.type==="critico"?5:4;
           else if(ans.tone==="diplomatico")delta=j.type==="fan"?4:j.type==="critico"?2:3;
           else if(ans.tone==="diretto")delta=j.type==="fan"?-3:j.type==="critico"?-6:j.type==="investigativa"?2:-4;
+          else if(ans.tone==="nocomment")delta=-3;/* [7.994.0] il no comment il giornalista se lo ricorda */
           return{...j,trust:clamp((j.trust||50)+delta,0,100),lastTone:ans.tone};
         });
       }
       // Sprint 120: teamChemistry delta by tone
-      const _tcDelta=ans.tone==="umile"?4:ans.tone==="diplomatico"?2:-3;
+      const _tcDelta=ans.tone==="umile"?4:ans.tone==="diplomatico"?2:ans.tone==="nocomment"?0:-3;
       return{
         ...p,
         journalists:updJournalists,
@@ -41414,11 +41486,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         log:[`🎙️ [${ans.tone}] "${ans.txt.substring(0,45)}…"`,...(p.log||[])].slice(0,60),
       };
     });
+    if(isPolemic)setTimeout(()=>notify(`🔥 POLEMICA! ${curJ?.name||"Il giornalista"} risponde duramente. Il caso esplode sui social.`,"#ef4444"),600);
+    /* [7.994.0 PO «l'intervista è scarna»] tre passi: domanda → rilancio del giornalista → prima pagina di
+       domani con gli effetti SOMMATI (mostrati solo a scelta fatta, direttiva 6.5.4). Gli effetti di ogni
+       risposta si applicano subito, come prima: chiudere la finestra non li annulla. Rosso __CPM_NO_IV24. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_IV24)&&interviewModal){
+      const _m=interviewModal,_t0=_m.tot||{},_tot={m:(_t0.m||0)+(ef.m||0),p:(_t0.p||0)+(ef.p||0),t:(_t0.t||0)+(ef.t||0),f:(_t0.f||0)+(ef.f||0)};
+      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:rilancio24(ans.tone,(_m.q&&_m.q.q)||""),tot:_tot});return;}
+      setInterviewModal({..._m,step:"esito",tone2:ans.tone,tot:_tot});return;
+    }
     setInterviewFeedback({tone:ans.tone,label:toneLabel,ef});
     const wasPrematch=interviewModal?.matchCtx==="prematch";
     setInterviewModal(null);
     setTimeout(()=>setInterviewFeedback(null),2800);
-    if(isPolemic)setTimeout(()=>notify(`🔥 POLEMICA! ${curJ?.name||"Il giornalista"} risponde duramente. Il caso esplode sui social.`,"#ef4444"),600);
     // Sprint D3: after closing the pre-match press conference, fire the deferred mister talk
     if(wasPrematch){
       const _disc=pendingMisterDiscorsoRef.current;
@@ -41426,6 +41506,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(_disc)setTimeout(()=>setMisterDiscorsoModal(_disc),350);
     }
   };
+  /* [7.994.0] chiusura dalla prima pagina: stesso seguito di prima (dopo la conferenza pre-partita parla il mister) */
+  const chiudiIntervista24=()=>{const wasPre=interviewModal?.matchCtx==="prematch";setInterviewModal(null);
+    if(wasPre){const _disc=pendingMisterDiscorsoRef.current;pendingMisterDiscorsoRef.current=null;if(_disc)setTimeout(()=>setMisterDiscorsoModal(_disc),350);}};
 
   // global keyboard shortcuts
   useEffect(()=>{
@@ -42228,7 +42311,7 @@ const getThisWeekMatchday=()=>{
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
-      forceInterview:(ctx)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,opponent:"FC Test",matchCtx:ctx||"win"});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
+      forceInterview:(ctx)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1}});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       playMatch:()=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
         if(screen==="seasonEnd"||screen==="seasonAwards")return "seasonEnd";
@@ -44656,7 +44739,7 @@ const getThisWeekMatchday=()=>{
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon}:iw.paper;
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable}),900);
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
     }
     // S11.4 / Sprint 28: derby morale swing + worldMemory
     if(currentMatchDerby){
@@ -47215,7 +47298,7 @@ const getThisWeekMatchday=()=>{
               dell'intervista, larga 100%, veniva schiacciata e spinta a destra, tagliata fuori schermo, col
               testo che andava a capo ogni due parole. E' la terza volta che questa trappola morde in questo
               file: il commento sta DENTRO le graffe, sempre. (Il rosso __CPM_NO963 rimette la mixed zone 3D.) */}
-          {_iv3d&&<InterviewScena2D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
+          {_iv3d&&<InterviewScena2D partita={interviewModal.partita24||null} opp={interviewModal.opponent||null} avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
           <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:"58vh",overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)"}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1}}>
             {/* Header */}
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
@@ -47225,7 +47308,7 @@ const getThisWeekMatchday=()=>{
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
               <Figurina tipo={interviewModal.paper?.f?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={44} col={interviewModal.paper?.color||TH.primary}/>{/* [24/09 POC] figurina del giornalista piu' grande e intera (collaudo PO: il contorno non deve tagliare i volti) */}
               <div>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
+                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.step==="rilancio"?"Il giornalista incalza":interviewModal.step==="esito"?"Com\u0027è andata":interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
               </div>
               <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
@@ -47233,6 +47316,41 @@ const getThisWeekMatchday=()=>{
                 {interviewModal.notable&&<div style={{fontSize:FS.caption,padding:"2px 7px",borderRadius:RAD.xl,background:TH.bgAmber,color:TH.txAmber,fontWeight:700}}>{interviewModal.notable==="hattrick"?"⚽ HAT-TRICK":interviewModal.notable==="bigwin"?"🏆 BIG WIN":"💢 BIG LOSS"}</div>}
               </div>
             </div>
+            {/* [7.994.0 «sala viva»] gli altri giornalisti del gioco in sala: figurine piccole, e dopo la prima
+                risposta ognuno reagisce secondo il suo carattere (fan, critico, investigativa) e il tono scelto. */}
+            {!(typeof window!=='undefined'&&window.__CPM_NO_IV24)&&(()=>{const altri=(player.journalists||[]).filter(j=>j&&j.id!==interviewModal.journalistId&&j.name!==(interviewModal.paper&&interviewModal.paper.name)).slice(0,3);
+              if(!altri.length)return null;const t1=interviewModal.tone1;
+              const reag=(j)=>{if(!t1)return "in sala";if(t1==="diretto")return j.type==="fan"?"applaude":j.type==="critico"?"alza un sopracciglio":"prende appunti fitti";
+                if(t1==="umile")return j.type==="critico"?"annuisce, sorpreso":j.type==="fan"?"sorride":"cerca il titolo";return j.type==="investigativa"?"alza la mano":"scrive";};
+              return(<div data-cpm="sala24" style={{display:"flex",gap:10,alignItems:"center",marginBottom:10,padding:"6px 8px",background:TH.surface2,borderRadius:RAD.sm,overflowX:"auto"}}>
+                <span style={{fontSize:FS.caption,color:TH.muted,flexShrink:0}}>In sala</span>
+                {altri.map(j=>(<div key={j.id||j.name} style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
+                  <Figurina tipo={j.f?"giornalista_f":"giornalista"} chiave={j.name} larg={22} col={j.color||TH.primary}/>
+                  <div style={{lineHeight:1.2}}><div style={{fontSize:FS.caption,fontWeight:700,color:TH.text,whiteSpace:"nowrap"}}>{String(j.name||"").split(" ").slice(-1)[0]}</div>
+                    <div style={{fontSize:FS.caption,color:t1?TH.brandText:TH.faint,whiteSpace:"nowrap"}}>{reag(j)}</div></div></div>))}
+              </div>);})()}
+            {interviewModal.step==="esito"?(()=>{/* [7.994.0 «conseguenze visibili»] la prima pagina di domani + gli effetti sommati delle due risposte */
+              const _j=(player.journalists||[]).find(j=>j.id===interviewModal.journalistId);
+              const testata=(_j&&_j.paper)||"Il Quotidiano Sportivo";
+              const pp=primaPagina24(interviewModal.tone1,interviewModal.tone2,interviewModal.matchCtx,player.name,interviewModal.opponent);
+              const T=interviewModal.tot||{};const voci=[["m","😄","Morale"],["p","⭐","Popolarità"],["t","🤝","Fiducia del mister"],["f","💪","Forma"]].filter(v=>T[v[0]]);
+              const pt=interviewModal.partita24;
+              return(<div data-cpm="prima-pagina24">
+                <div style={{border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,background:TH.surface2,padding:"10px 12px",marginBottom:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",borderBottom:"2px solid "+TH.text,paddingBottom:4,marginBottom:8}}>
+                    <span style={{fontSize:FS.subhead,fontWeight:FW.black,color:TH.text,letterSpacing:.3}}>{testata}</span>
+                    <span className="cpm-num" style={{fontSize:FS.caption,color:TH.muted}}>S.{player.season||1} · W.{player.week||1}</span></div>
+                  <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,marginBottom:3}}>Domani in edicola{pt&&pt.hs!=null?(" · "+(player.club?.a||player.club?.n||"")+" "+pt.hs+"-"+pt.as+" "+(interviewModal.opponent||"")):""}</div>
+                  <div style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text,lineHeight:1.2,textWrap:"balance",marginBottom:4}}>{pp.titolo}</div>
+                  <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{pp.sotto}</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted,marginTop:6}}>di {interviewModal.paper?.name||"la redazione"}</div>
+                </div>
+                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:5}}>Cosa hanno mosso le tue parole</div>
+                <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:12}}>
+                  {voci.length?voci.map(v=>(<span key={v[0]} className="cpm-num" style={{fontSize:FS.small,fontWeight:700,padding:"4px 10px",borderRadius:RAD.xl,background:T[v[0]]>0?TH.bgGreen:TH.bgRed,color:T[v[0]]>0?TH.txGreen:TH.txRed}}>{v[1]} {v[2]} {T[v[0]]>0?"+":""}{T[v[0]]}</span>)):<span style={{fontSize:FS.small,color:TH.muted}}>Nessun effetto: parole che non spostano nulla.</span>}
+                </div>
+                <Btn v="primary" fw onClick={chiudiIntervista24} style={{padding:"11px"}}>Chiudi</Btn>
+              </div>);})():(<>
             {/* Question */}
             <div style={{background:TH.bg,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:12,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
               <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
@@ -47257,7 +47375,7 @@ const getThisWeekMatchday=()=>{
                 // [6.5.4 direttiva PO] niente più suggerimento «Chimica ±N» nelle scelte: l'esito NON deve
                 //   condizionare la risposta (decisione di ruolo, non di ottimizzazione). Solo il TONO resta visibile.
                 return(
-                  <button key={i} className="cpm-press"/* [7.121.0 rifiniture UX mobile] feedback al tocco (:active scale) — prima solo hover, sul telefono il tap non dava riscontro */ onClick={()=>applyInterviewAnswer(ans)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${toneColor}20`,borderRadius:RAD.sm,padding:"7px 11px",cursor:"pointer",transition:"all 0.15s",outline:"none",display:"block",width:"100%"}}
+                  <button key={i} className="cpm-press"/* [7.121.0 rifiniture UX mobile] feedback al tocco (:active scale) — prima solo hover, sul telefono il tap non dava riscontro */ data-cpm="risposta24" onClick={()=>applyInterviewAnswer(ans)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${toneColor}20`,borderRadius:RAD.sm,padding:"7px 11px",cursor:"pointer",transition:"all 0.15s",outline:"none",display:"block",width:"100%"}}
                     onMouseEnter={e=>{e.currentTarget.style.background=`${toneColor}10`;e.currentTarget.style.borderColor=toneColor;}}
                     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${toneColor}20`;}}>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:5}}>
@@ -47269,6 +47387,7 @@ const getThisWeekMatchday=()=>{
               })}
             </div>
             <div style={{fontSize:FS.caption,color:TH.faint,marginTop:10,textAlign:"center"}}>Scegli come rispondere — le tue parole hanno conseguenze.</div>
+            </>)}
           </Card>
         </div>
       ),document.body);})()}

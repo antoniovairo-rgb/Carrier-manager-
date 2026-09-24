@@ -336,11 +336,12 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
           if(ans.tone==="umile")delta=j.type==="fan"?8:j.type==="critico"?5:4;
           else if(ans.tone==="diplomatico")delta=j.type==="fan"?4:j.type==="critico"?2:3;
           else if(ans.tone==="diretto")delta=j.type==="fan"?-3:j.type==="critico"?-6:j.type==="investigativa"?2:-4;
+          else if(ans.tone==="nocomment")delta=-3;/* [7.994.0] il no comment il giornalista se lo ricorda */
           return{...j,trust:clamp((j.trust||50)+delta,0,100),lastTone:ans.tone};
         });
       }
       // Sprint 120: teamChemistry delta by tone
-      const _tcDelta=ans.tone==="umile"?4:ans.tone==="diplomatico"?2:-3;
+      const _tcDelta=ans.tone==="umile"?4:ans.tone==="diplomatico"?2:ans.tone==="nocomment"?0:-3;
       return{
         ...p,
         journalists:updJournalists,
@@ -353,11 +354,19 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         log:[`🎙️ [${ans.tone}] "${ans.txt.substring(0,45)}…"`,...(p.log||[])].slice(0,60),
       };
     });
+    if(isPolemic)setTimeout(()=>notify(`🔥 POLEMICA! ${curJ?.name||"Il giornalista"} risponde duramente. Il caso esplode sui social.`,"#ef4444"),600);
+    /* [7.994.0 PO «l'intervista è scarna»] tre passi: domanda → rilancio del giornalista → prima pagina di
+       domani con gli effetti SOMMATI (mostrati solo a scelta fatta, direttiva 6.5.4). Gli effetti di ogni
+       risposta si applicano subito, come prima: chiudere la finestra non li annulla. Rosso __CPM_NO_IV24. */
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_IV24)&&interviewModal){
+      const _m=interviewModal,_t0=_m.tot||{},_tot={m:(_t0.m||0)+(ef.m||0),p:(_t0.p||0)+(ef.p||0),t:(_t0.t||0)+(ef.t||0),f:(_t0.f||0)+(ef.f||0)};
+      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:rilancio24(ans.tone,(_m.q&&_m.q.q)||""),tot:_tot});return;}
+      setInterviewModal({..._m,step:"esito",tone2:ans.tone,tot:_tot});return;
+    }
     setInterviewFeedback({tone:ans.tone,label:toneLabel,ef});
     const wasPrematch=interviewModal?.matchCtx==="prematch";
     setInterviewModal(null);
     setTimeout(()=>setInterviewFeedback(null),2800);
-    if(isPolemic)setTimeout(()=>notify(`🔥 POLEMICA! ${curJ?.name||"Il giornalista"} risponde duramente. Il caso esplode sui social.`,"#ef4444"),600);
     // Sprint D3: after closing the pre-match press conference, fire the deferred mister talk
     if(wasPrematch){
       const _disc=pendingMisterDiscorsoRef.current;
@@ -365,6 +374,9 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       if(_disc)setTimeout(()=>setMisterDiscorsoModal(_disc),350);
     }
   };
+  /* [7.994.0] chiusura dalla prima pagina: stesso seguito di prima (dopo la conferenza pre-partita parla il mister) */
+  const chiudiIntervista24=()=>{const wasPre=interviewModal?.matchCtx==="prematch";setInterviewModal(null);
+    if(wasPre){const _disc=pendingMisterDiscorsoRef.current;pendingMisterDiscorsoRef.current=null;if(_disc)setTimeout(()=>setMisterDiscorsoModal(_disc),350);}};
 
   // global keyboard shortcuts
   useEffect(()=>{
@@ -1167,7 +1179,7 @@ const getThisWeekMatchday=()=>{
       clearTournaments:()=>setPlayer(p=>({...p,nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,done:true,active:false}:p.nationsCupQueue,euroMondiale:p.euroMondiale?{...p.euroMondiale,done:true,active:false,phase:"done"}:p.euroMondiale})),
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
-      forceInterview:(ctx)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,opponent:"FC Test",matchCtx:ctx||"win"});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
+      forceInterview:(ctx)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1}});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       playMatch:()=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
         if(screen==="seasonEnd"||screen==="seasonAwards")return "seasonEnd";
@@ -3595,7 +3607,7 @@ const getThisWeekMatchday=()=>{
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
       const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon}:iw.paper;
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
-      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable}),900);
+      setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
     }
     // S11.4 / Sprint 28: derby morale swing + worldMemory
     if(currentMatchDerby){
@@ -6154,7 +6166,7 @@ const getThisWeekMatchday=()=>{
               dell'intervista, larga 100%, veniva schiacciata e spinta a destra, tagliata fuori schermo, col
               testo che andava a capo ogni due parole. E' la terza volta che questa trappola morde in questo
               file: il commento sta DENTRO le graffe, sempre. (Il rosso __CPM_NO963 rimette la mixed zone 3D.) */}
-          {_iv3d&&<InterviewScena2D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
+          {_iv3d&&<InterviewScena2D partita={interviewModal.partita24||null} opp={interviewModal.opponent||null} avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
           <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:"58vh",overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)"}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1}}>
             {/* Header */}
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
@@ -6164,7 +6176,7 @@ const getThisWeekMatchday=()=>{
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
               <Figurina tipo={interviewModal.paper?.f?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={44} col={interviewModal.paper?.color||TH.primary}/>{/* [24/09 POC] figurina del giornalista piu' grande e intera (collaudo PO: il contorno non deve tagliare i volti) */}
               <div>
-                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
+                <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.step==="rilancio"?"Il giornalista incalza":interviewModal.step==="esito"?"Com\u0027è andata":interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
               </div>
               <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
@@ -6172,6 +6184,41 @@ const getThisWeekMatchday=()=>{
                 {interviewModal.notable&&<div style={{fontSize:FS.caption,padding:"2px 7px",borderRadius:RAD.xl,background:TH.bgAmber,color:TH.txAmber,fontWeight:700}}>{interviewModal.notable==="hattrick"?"⚽ HAT-TRICK":interviewModal.notable==="bigwin"?"🏆 BIG WIN":"💢 BIG LOSS"}</div>}
               </div>
             </div>
+            {/* [7.994.0 «sala viva»] gli altri giornalisti del gioco in sala: figurine piccole, e dopo la prima
+                risposta ognuno reagisce secondo il suo carattere (fan, critico, investigativa) e il tono scelto. */}
+            {!(typeof window!=='undefined'&&window.__CPM_NO_IV24)&&(()=>{const altri=(player.journalists||[]).filter(j=>j&&j.id!==interviewModal.journalistId&&j.name!==(interviewModal.paper&&interviewModal.paper.name)).slice(0,3);
+              if(!altri.length)return null;const t1=interviewModal.tone1;
+              const reag=(j)=>{if(!t1)return "in sala";if(t1==="diretto")return j.type==="fan"?"applaude":j.type==="critico"?"alza un sopracciglio":"prende appunti fitti";
+                if(t1==="umile")return j.type==="critico"?"annuisce, sorpreso":j.type==="fan"?"sorride":"cerca il titolo";return j.type==="investigativa"?"alza la mano":"scrive";};
+              return(<div data-cpm="sala24" style={{display:"flex",gap:10,alignItems:"center",marginBottom:10,padding:"6px 8px",background:TH.surface2,borderRadius:RAD.sm,overflowX:"auto"}}>
+                <span style={{fontSize:FS.caption,color:TH.muted,flexShrink:0}}>In sala</span>
+                {altri.map(j=>(<div key={j.id||j.name} style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
+                  <Figurina tipo={j.f?"giornalista_f":"giornalista"} chiave={j.name} larg={22} col={j.color||TH.primary}/>
+                  <div style={{lineHeight:1.2}}><div style={{fontSize:FS.caption,fontWeight:700,color:TH.text,whiteSpace:"nowrap"}}>{String(j.name||"").split(" ").slice(-1)[0]}</div>
+                    <div style={{fontSize:FS.caption,color:t1?TH.brandText:TH.faint,whiteSpace:"nowrap"}}>{reag(j)}</div></div></div>))}
+              </div>);})()}
+            {interviewModal.step==="esito"?(()=>{/* [7.994.0 «conseguenze visibili»] la prima pagina di domani + gli effetti sommati delle due risposte */
+              const _j=(player.journalists||[]).find(j=>j.id===interviewModal.journalistId);
+              const testata=(_j&&_j.paper)||"Il Quotidiano Sportivo";
+              const pp=primaPagina24(interviewModal.tone1,interviewModal.tone2,interviewModal.matchCtx,player.name,interviewModal.opponent);
+              const T=interviewModal.tot||{};const voci=[["m","😄","Morale"],["p","⭐","Popolarità"],["t","🤝","Fiducia del mister"],["f","💪","Forma"]].filter(v=>T[v[0]]);
+              const pt=interviewModal.partita24;
+              return(<div data-cpm="prima-pagina24">
+                <div style={{border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,background:TH.surface2,padding:"10px 12px",marginBottom:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",borderBottom:"2px solid "+TH.text,paddingBottom:4,marginBottom:8}}>
+                    <span style={{fontSize:FS.subhead,fontWeight:FW.black,color:TH.text,letterSpacing:.3}}>{testata}</span>
+                    <span className="cpm-num" style={{fontSize:FS.caption,color:TH.muted}}>S.{player.season||1} · W.{player.week||1}</span></div>
+                  <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,marginBottom:3}}>Domani in edicola{pt&&pt.hs!=null?(" · "+(player.club?.a||player.club?.n||"")+" "+pt.hs+"-"+pt.as+" "+(interviewModal.opponent||"")):""}</div>
+                  <div style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text,lineHeight:1.2,textWrap:"balance",marginBottom:4}}>{pp.titolo}</div>
+                  <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{pp.sotto}</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted,marginTop:6}}>di {interviewModal.paper?.name||"la redazione"}</div>
+                </div>
+                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:5}}>Cosa hanno mosso le tue parole</div>
+                <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:12}}>
+                  {voci.length?voci.map(v=>(<span key={v[0]} className="cpm-num" style={{fontSize:FS.small,fontWeight:700,padding:"4px 10px",borderRadius:RAD.xl,background:T[v[0]]>0?TH.bgGreen:TH.bgRed,color:T[v[0]]>0?TH.txGreen:TH.txRed}}>{v[1]} {v[2]} {T[v[0]]>0?"+":""}{T[v[0]]}</span>)):<span style={{fontSize:FS.small,color:TH.muted}}>Nessun effetto: parole che non spostano nulla.</span>}
+                </div>
+                <Btn v="primary" fw onClick={chiudiIntervista24} style={{padding:"11px"}}>Chiudi</Btn>
+              </div>);})():(<>
             {/* Question */}
             <div style={{background:TH.bg,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:12,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
               <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
@@ -6196,7 +6243,7 @@ const getThisWeekMatchday=()=>{
                 // [6.5.4 direttiva PO] niente più suggerimento «Chimica ±N» nelle scelte: l'esito NON deve
                 //   condizionare la risposta (decisione di ruolo, non di ottimizzazione). Solo il TONO resta visibile.
                 return(
-                  <button key={i} className="cpm-press"/* [7.121.0 rifiniture UX mobile] feedback al tocco (:active scale) — prima solo hover, sul telefono il tap non dava riscontro */ onClick={()=>applyInterviewAnswer(ans)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${toneColor}20`,borderRadius:RAD.sm,padding:"7px 11px",cursor:"pointer",transition:"all 0.15s",outline:"none",display:"block",width:"100%"}}
+                  <button key={i} className="cpm-press"/* [7.121.0 rifiniture UX mobile] feedback al tocco (:active scale) — prima solo hover, sul telefono il tap non dava riscontro */ data-cpm="risposta24" onClick={()=>applyInterviewAnswer(ans)} style={{textAlign:"left",background:"transparent",border:`1.5px solid ${toneColor}20`,borderRadius:RAD.sm,padding:"7px 11px",cursor:"pointer",transition:"all 0.15s",outline:"none",display:"block",width:"100%"}}
                     onMouseEnter={e=>{e.currentTarget.style.background=`${toneColor}10`;e.currentTarget.style.borderColor=toneColor;}}
                     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=`${toneColor}20`;}}>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:5}}>
@@ -6208,6 +6255,7 @@ const getThisWeekMatchday=()=>{
               })}
             </div>
             <div style={{fontSize:FS.caption,color:TH.faint,marginTop:10,textAlign:"center"}}>Scegli come rispondere — le tue parole hanno conseguenze.</div>
+            </>)}
           </Card>
         </div>
       ),document.body);})()}
