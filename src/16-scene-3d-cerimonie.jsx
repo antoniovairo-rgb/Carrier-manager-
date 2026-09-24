@@ -1305,8 +1305,13 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
        si perdeva nel buio. Resta una scena NOTTURNA — non si accende il giorno — ma con le luci che una
        via in festa ha davvero: cielo urbano che rimanda il rosa dei lampioni da sopra e il riflesso
        dell'asfalto da sotto, e due lampioni caldi ai lati del viale che staccano il pullman dal fondo. */
-    scene.add(new THREE.AmbientLight(0xffffff,0.78));
-    scene.add(new THREE.HemisphereLight(0xffd9b0,0x2a3350,0.55));
+    /* [24/09 POC — collaudo PO «il pullman scoperto e' sicuramente da rivedere», proposta approvata] SECONDA VITA DELLA PARATA:
+       squadra CGTrader sul tetto (l'eroe davanti alza la coppa), pullman ombreggiato, coriandoli a taglia fissa, facciate con
+       finestre accese, ali di tifosi con le sciarpe, regia senza l'inquadratura alta da dietro. Rosso __CPM_NO_PULLMAN23. */
+    const _N23=!(typeof window!=='undefined'&&window.__CPM_NO_PULLMAN23);
+    scene.add(new THREE.AmbientLight(0xffffff,_N23?0.42:0.78));
+    scene.add(new THREE.HemisphereLight(0xffd9b0,0x2a3350,_N23?0.7:0.55));
+    if(_N23){const _key=new THREE.DirectionalLight(0xffe6c4,0.9);_key.position.set(26,14,18);scene.add(_key);}/* luce di taglio: la fiancata ha un lato in luce e uno in ombra, il giallo pieno diventa un volume */
     const dl=new THREE.DirectionalLight(0xfff2d0,1.05);dl.position.set(20,40,10);scene.add(dl);
     for(const _lx of [-16,16]){const _pt=new THREE.PointLight(0xffc98a,0.85,60,2);_pt.position.set(_lx,11,6);scene.add(_pt);}
     const homeHex=(club&&club.c)||"#dc2626",awayHex=(club&&club.c2)||"#ffffff";
@@ -1327,6 +1332,13 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       kerb.position.set(side*12.15,0.21,0);scene.add(kerb);
       const edge=new THREE.Mesh(new THREE.BoxGeometry(0.26,0.02,340),new THREE.MeshLambertMaterial({color:0xcdd3dd}));
       edge.position.set(side*11.5,0.03,0);scene.add(edge);}
+    /* [24/09 POC] facciate con finestre: una tela sola (finestre accese/spente, calde e fredde), ripetuta secondo la taglia del palazzo */
+    let _facTex23=null;
+    const _facciata23=(w,h)=>{try{if(!_facTex23){const cv=document.createElement('canvas');cv.width=128;cv.height=256;const g=cv.getContext('2d');g.fillStyle='#161b28';g.fillRect(0,0,128,256);
+        for(let yy=0;yy<16;yy++)for(let xx=0;xx<8;xx++){const r=R(yy*17+xx*5+3);g.fillStyle=r<0.42?'#ffd98a':(r<0.55?'#bcd4ff':'#222a3a');g.fillRect(xx*16+4,yy*16+4,8,9);}
+        _facTex23=new THREE.CanvasTexture(cv);_facTex23.wrapS=_facTex23.wrapT=THREE.RepeatWrapping;}
+      const t=_facTex23.clone();t.needsUpdate=true;t.repeat.set(Math.max(1,Math.round(w/6)),Math.max(1,Math.round(h/8)));
+      return new THREE.MeshLambertMaterial({map:t,emissive:0xffffff,emissiveMap:t,emissiveIntensity:0.55,color:0x8a8f9c});}catch(_e){return new THREE.MeshLambertMaterial({color:0x141824});}};
     /* IL MONDO CHE SCORRE: palazzi, lampioni, bandiere, folla — pattern modulare (periodo 96) */
     const worldGrp=new THREE.Group();scene.add(worldGrp);
     /* [7.469.0] MEZZERIA TRATTEGGIATA dentro `worldGrp`: scorre con la via, quindi e' il riferimento che
@@ -1335,12 +1347,12 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
      for(let z=-PERIOD;z<PERIOD*2;z+=8){const d=new THREE.Mesh(new THREE.BoxGeometry(0.32,0.02,3.6),_dm);d.position.set(0,0.03,z);worldGrp.add(d);}}
     for(const side of [-1,1]){for(let rep=-2;rep<=2;rep++){for(let i=0;i<4;i++){
       const h=10+R(i*3+side)*15,w=9+R(i*7+side)*5,z=rep*PERIOD+i*24-36;
-      const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,15),new THREE.MeshLambertMaterial({color:0x141824}));
+      const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,15),_N23?_facciata23(w,h):new THREE.MeshLambertMaterial({color:0x141824}));
       b.position.set(side*(27+R(i*11+side)*5),h/2,z);worldGrp.add(b);
       const wn=8+((R(i*13+side)*8)|0),wp=new Float32Array(wn*3);
       for(let k=0;k<wn;k++){wp[k*3]=side*(27+R(i*11+side)*5)-side*(w/2+0.06);wp[k*3+1]=1.5+R(k*3+i)*(h-2.5);wp[k*3+2]=z+(R(k*7+i)-0.5)*12;}
       const wg=new THREE.BufferGeometry();wg.setAttribute('position',new THREE.BufferAttribute(wp,3));
-      worldGrp.add(new THREE.Points(wg,new THREE.PointsMaterial({color:0xffe9a8,size:0.55,sizeAttenuation:true})));
+      if(!_N23)worldGrp.add(new THREE.Points(wg,new THREE.PointsMaterial({color:0xffe9a8,size:0.55,sizeAttenuation:true})));
       /* lampione per blocco */
       const lp=new THREE.Group();
       const palo=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.12,6.4,8),new THREE.MeshLambertMaterial({color:0x3a3f4c}));palo.position.y=3.2;lp.add(palo);
@@ -1360,7 +1372,24 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       for(let i=0;i<n;i++){cp[i*3]=side*(9.8+R(i*2+side)*3.4);base[i]=0.8+R(i*5)*0.9;cp[i*3+1]=base[i];cp[i*3+2]=-PERIOD*2+R(i*9+side)*PERIOD*4;
         const c=R(i*4)<0.55?c1:(R(i*6)<0.5?c2:new THREE.Color(0xf1e8d8));col[i*3]=c.r;col[i*3+1]=c.g;col[i*3+2]=c.b;}
       const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(cp,3));g.setAttribute('color',new THREE.BufferAttribute(col,3));
-      worldGrp.add(new THREE.Points(g,new THREE.PointsMaterial({vertexColors:true,size:1.05,sizeAttenuation:true})));crowds.push({g,cp,base,n});}
+      if(!_N23){worldGrp.add(new THREE.Points(g,new THREE.PointsMaterial({vertexColors:true,size:1.05,sizeAttenuation:true})));crowds.push({g,cp,base,n});}}
+    /* [24/09 POC] LA GENTE: persone vere al posto dei punti — corpo, testa e, per quattro su dieci, la SCIARPA alzata nei colori del
+       club. Tre InstancedMesh per lato (6 disegni in tutto); il saltello gira a turno su un quarto della folla per fotogramma. */
+    const folla23=[];
+    if(_N23)for(const side of [-1,1]){const n=420,c1=new THREE.Color(homeHex),c2=new THREE.Color(awayHex),cw=new THREE.Color(0xf1e8d8);
+      const _sk=[0xf0c8a0,0xe8b890,0xc8956a,0xa9743f,0x7c4a1e,0xf5d2b3].map(x=>new THREE.Color(x));
+      const bodyM=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.26,0.32,1.15,10),new THREE.MeshLambertMaterial({color:0xffffff}),n);
+      const headM=new THREE.InstancedMesh(new THREE.SphereGeometry(0.2,8,6),new THREE.MeshLambertMaterial({color:0xffffff}),n);
+      const scarfM=new THREE.InstancedMesh(new THREE.BoxGeometry(1.05,0.2,0.05),new THREE.MeshLambertMaterial({color:0xffffff}),n);
+      const P=[],o=new THREE.Object3D();
+      for(let i=0;i<n;i++){const x=side*(10.4+R(i*2+side*7)*3.6),z=-PERIOD*2+((i+R(i*9+side)*0.8)/n)*PERIOD*4,h=0.95+R(i*5+1)*0.35,sc=R(i*13+side)<0.4;
+        P.push({x,z,h,sc,ph:R(i*3+side)*6.28});
+        bodyM.setColorAt(i,R(i*4)<0.6?c1:(R(i*6)<0.5?c2:cw));headM.setColorAt(i,_sk[i%_sk.length]);scarfM.setColorAt(i,(i%2)?c1:c2);
+        o.position.set(x,h*0.55+0.25,z);o.scale.set(1,h,1);o.rotation.set(0,0,0);o.updateMatrix();bodyM.setMatrixAt(i,o.matrix);
+        o.position.set(x,h*1.15+0.45,z);o.scale.set(1,1,1);o.updateMatrix();headM.setMatrixAt(i,o.matrix);
+        o.position.set(x,sc?h*1.15+1.05:-50,z);o.rotation.set(0,Math.PI/2,0);o.updateMatrix();scarfM.setMatrixAt(i,o.matrix);o.rotation.set(0,0,0);}
+      [bodyM,headM,scarfM].forEach(m=>{m.frustumCulled=false;if(m.instanceColor)m.instanceColor.needsUpdate=true;worldGrp.add(m);});
+      folla23.push({bodyM,headM,scarfM,P,n,o});}
     /* FUMOGENI nei colori del club (4 pennacchi che salgono dalle ali) */
     const smokes=[];
     for(let si=0;si<4;si++){const n=90,sp=new Float32Array(n*3),sv=[];
@@ -1371,7 +1400,8 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       const pts=new THREE.Points(g,m);worldGrp.add(pts);smokes.push({g,sp,sv,n,sx,sz});}
     /* IL PULLMAN SCOPERTO (fermo in scena: il mondo gli scorre incontro) */
     const bus=new THREE.Group();
-    const body=new THREE.Mesh(new THREE.BoxGeometry(6.4,4.6,16),new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}));body.position.y=3.1;bus.add(body);
+    const body=new THREE.Mesh(new THREE.BoxGeometry(6.4,4.6,16),_N23?new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex),roughness:0.42,metalness:0.18}):new THREE.MeshLambertMaterial({color:new THREE.Color(homeHex)}));body.position.y=3.1;bus.add(body);
+    if(_N23){const _low=new THREE.Mesh(new THREE.BoxGeometry(6.44,1.5,16.04),new THREE.MeshStandardMaterial({color:new THREE.Color(homeHex).multiplyScalar(0.55),roughness:0.5,metalness:0.2}));_low.position.y=1.55;bus.add(_low);}/* fascia bassa scura: la livrea ha un disegno, non una tinta sola */
     const band=new THREE.Mesh(new THREE.BoxGeometry(6.45,1.1,16.05),new THREE.MeshLambertMaterial({color:0x1c2230}));band.position.y=3.4;bus.add(band);
     /* [7.429.0 collaudo PO «pullman scoperto che sembra uno scatolo di scarpe»] IL MUSETTO E I DETTAGLI:
        parabrezza inclinato, mascherina e fari a prua, paraurti, MONTANTI sulla fascia finestrini (la
@@ -1461,7 +1491,37 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       return g;};
     const placeMen=(mk)=>{for(let i=0;i<NM;i++){const m=mk(i);m.position.set(slots[i].x,5.35,slots[i].z);m.rotation.y=(slots[i].x<0?-1:1)*Math.PI/2;bus.add(m);men.push(m);}
       cup.position.set(0,5.75,7.0);bus.add(cup);};
-    if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
+    let eroe23=null;
+    if(_N23&&!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&typeof corpoCG23==="function"){
+      /* [24/09 POC] la squadra sul tetto con gli STESSI corpi CGTrader degli highlight e della premiazione: l'eroe (davanti, al
+         centro) alza la coppa sopra la testa, gli altri salutano con le braccia (clip «throwin» tenuta attorno all'apice, fasi
+         diverse per uomo: mai un plotone sincronizzato). Postura corretta come in partita. Senza il file: gli omini di prima. */
+      loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb').then(pkg=>{
+        const _A=n=>pkg&&(pkg.animations||[]).find(c=>c&&c.name===n);const clip0=_A('throwin'),idle0=_A('idle');
+        if(!pkg||!clip0||!idle0){placeMen(mkFallback);return;}
+        /* la POSA: gambe e busto dall'idle (in piedi, fermi), BRACCIA dal throwin (sopra la testa). Le due clip sono filtrate per
+           osso: sommate intere si farebbero la media sulle braccia e l'uomo resterebbe a meta' fra affondo e riposo. */
+        const _BR=/(clavicle|upperarm|lowerarm|hand|index|middle|ring|pinky|thumb)_/;
+        const clip=new THREE.AnimationClip('braccia23',clip0.duration,clip0.tracks.filter(t=>_BR.test(t.name)));
+        const idle=new THREE.AnimationClip('gambe23',idle0.duration,idle0.tracks.filter(t=>!_BR.test(t.name)));
+        let apice=clip0.duration*0.34;
+        for(let i=0;i<NM;i++){const av=corpoCG23(pkg,{shirt:homeHex,shorts:awayHex,socks:homeHex,altezza:1.78+R(i*31)*0.12});if(!av)continue;
+          const eroe=i===0;const sx=eroe?0:slots[i].x,sz=eroe?5.0:slots[i].z-0.6;
+          av.position.set(sx,5.3,sz);av.rotation.y=eroe?0:(sx<0?-1:1)*Math.PI/2+(R(i*7)-0.5)*0.5;bus.add(av);
+          const mx=new THREE.AnimationMixer(av),act=mx.clipAction(clip);act.play();act.paused=true;const ia=mx.clipAction(idle);ia.play();ia.paused=true;ia.time=0;/* in piedi, fermi: l'idle scorrendo alzava un ginocchio */
+          if(i===0){/* l'APICE si misura sul corpo: l'istante in cui le mani stanno piu' in alto rispetto alla testa */
+            try{let hd=null;const hs=[];av.traverse(o=>{if(!o.isBone)return;if(/^head$/.test(o.name))hd=o;if(/^hand_[lr]$/.test(o.name))hs.push(o);});
+              if(hd&&hs.length===2){let best=-1e9;const va=new THREE.Vector3(),vb=new THREE.Vector3();
+                for(let k=0;k<=40;k++){const tt=clip.duration*k/40;act.time=tt;mx.update(0);av.updateMatrixWorld(true);hd.getWorldPosition(va);let m=1e9;for(const h of hs){h.getWorldPosition(vb);m=Math.min(m,vb.y-va.y);}if(m>best){best=m;apice=tt;}}
+                try{if(window.__CPM_PARATA)window.__CPM_PARATA.apice23=+(apice/clip.duration).toFixed(3);}catch(_e){}}}catch(_e){}}
+          av._cg23={mx,act,d:clip.duration,ph:R(i*11)*6.28,sp:1.6+R(i*5)*1.2,eroe};men.push(av);if(eroe)eroe23=av;}
+        men.forEach(m=>{if(m._cg23)m._cg23.apice=apice;});
+        if(eroe23){try{const hs=[];eroe23.traverse(o=>{if(o.isBone&&/^hand_[lr]$/.test(o.name))hs.push(o);});eroe23._mani23=hs;}catch(_e){}
+          cped.visible=false;}
+        cup.position.set(0,5.75,7.0);bus.add(cup);
+        try{if(window.__CPM_PARATA){window.__CPM_PARATA.glb=true;window.__CPM_PARATA.cg23=men.length;}}catch(_e){}
+      }).catch(()=>{placeMen(mkFallback);});
+    } else if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
         if(!glb||!glb.scene){placeMen(mkFallback);return;}
         try{if(typeof window!=="undefined"&&window.__CPM_PARATA)window.__CPM_PARATA.glb=true;}catch(_e){}
@@ -1514,7 +1574,8 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
        per frame, e le posizioni restano quelle gia' animate. */
     const _cfCols=euroWin?[0xffd34d,0xffffff,0x8ec5ff]:[new THREE.Color(homeHex),new THREE.Color(awayHex),0xffffff];
     for(let _ci=0;_ci<3;_ci++){
-      const cm=new THREE.PointsMaterial({color:_cfCols[_ci],size:0.34-_ci*0.07,transparent:true,opacity:0.95,depthWrite:false});
+      const cm=_N23?new THREE.PointsMaterial({color:_cfCols[_ci],size:3.6-_ci*0.6,sizeAttenuation:false,transparent:true,opacity:0.95,depthWrite:false})/* [24/09 POC] taglia FISSA in pixel: con l'attenuazione un coriandolo vicino alla lente diventava un quadrato grande quanto una ruota */
+        :new THREE.PointsMaterial({color:_cfCols[_ci],size:0.34-_ci*0.07,transparent:true,opacity:0.95,depthWrite:false});
       const _pts=new THREE.Points(cgs[_ci],cm);_pts.renderOrder=2;scene.add(_pts);}
     try{if(typeof window!=="undefined")window.__CPM_PARATA={men:NM,glb:false,euro:!!euroWin,v:2};}catch(_e){}
     /* REGIA: tre inquadrature che si alternano con blend morbido */
@@ -1527,10 +1588,10 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
          Portata la stessa inquadratura a ~28 unita' lungo la STESSA direzione (nessun cambio di regia,
          solo distanza): il campo diventa 11,9 unita' e il pannello della livrea, che ne occupa 9,1, ci
          sta coi suoi margini. */
-      {p:[20.6,5.3,17.7],a:[-1.2,5.8,0]},   /* laterale dalla folla: il pullman passa, la squadra saluta sopra la spalla della gente */
-      {p:[-6,13.5,-24],a:[0,4.8,10]},     /* alta da dietro: la via si apre davanti al corteo */
+      _N23?{p:[20.6,11,17.7],a:[-1.2,5.8,0]}:{p:[20.6,5.3,17.7],a:[-1.2,5.8,0]},/* [24/09 POC] dall'alto delle teste: a 5,3 la folla vicina alla lente riempiva il quadro di sagome enormi */   /* laterale dalla folla: il pullman passa, la squadra saluta sopra la spalla della gente */
+      _N23?{p:[-5.5,7.4,19],a:[0,6.2,4.5]}:{p:[-6,13.5,-24],a:[0,4.8,10]},     /* [24/09 POC] bassa frontale sul tetto: l'eroe con la coppa e la squadra (la vecchia «alta da dietro» tagliava tutto) */
     ];
-    const SHOT_T=7.5,BLEND=1.6;
+    const SHOT_T=7.5,BLEND=1.6;const _v23a=new THREE.Vector3(),_v23b=new THREE.Vector3();/* vettori riusati: zero allocazioni per fotogramma */
     let raf=0,alive=true,t0=performance.now(),tPrev=t0;
     const cpos=new THREE.Vector3(...SHOTS[0].p),caim=new THREE.Vector3(...SHOTS[0].a);
     const tick=()=>{if(!alive)return;raf=requestAnimationFrame(tick);
@@ -1549,14 +1610,22 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
       /* bus: sospensioni che respirano + ruote che girano */
       bus.position.y=Math.sin(el2*1.7)*0.06;bus.rotation.z=Math.sin(el2*1.1)*0.008;
       wheels.forEach(w=>{w.rotation.x+=SPEED*dt/1.05;});/* [7.469.0] con l'asse ruota su x, avanzare verso +z vuol dire rotazione CRESCENTE: col segno vecchio le ruote giravano al contrario del moto — coerenti con la marcia indietro, non col rotolamento */
-      men.forEach((m,i)=>{const ph=Math.sin(el2*1.4+i*1.05);
+      men.forEach(m=>{const c=m._cg23;if(!c)return;const a=c.apice||c.d*0.34;c.act.time=c.eroe?a:Math.max(0,a-c.d*(0.05+0.05*Math.sin(el2*c.sp+c.ph)));c.mx.update(dt);
+        try{if(typeof _corrPostura23==='function')_corrPostura23(_ossa23(m));}catch(_e){}});
+      if(eroe23&&eroe23._mani23&&eroe23._mani23.length===2){try{eroe23.updateMatrixWorld(true);_v23a.set(0,0,0);eroe23._mani23[0].getWorldPosition(_v23a);eroe23._mani23[1].getWorldPosition(_v23b);_v23a.add(_v23b).multiplyScalar(0.5);bus.worldToLocal(_v23a);cup.position.set(_v23a.x,_v23a.y-0.35,_v23a.z);}catch(_e){}}
+      if(folla23.length){const q=(Math.floor(el2*60))%4;folla23.forEach(F=>{const o=F.o;for(let i=q;i<F.n;i+=4){const p=F.P[i],j=Math.abs(Math.sin(el2*3.2+p.ph))*0.35;
+          o.position.set(p.x,p.h*0.55+0.25+j,p.z);o.scale.set(1,p.h,1);o.rotation.set(0,0,0);o.updateMatrix();F.bodyM.setMatrixAt(i,o.matrix);
+          o.position.set(p.x,p.h*1.15+0.45+j,p.z);o.scale.set(1,1,1);o.updateMatrix();F.headM.setMatrixAt(i,o.matrix);
+          if(p.sc){o.position.set(p.x,p.h*1.15+1.05+j,p.z);o.rotation.set(Math.sin(el2*4+p.ph)*0.25,Math.PI/2,0);o.updateMatrix();F.scarfM.setMatrixAt(i,o.matrix);}}
+        F.bodyM.instanceMatrix.needsUpdate=true;F.headM.instanceMatrix.needsUpdate=true;F.scarfM.instanceMatrix.needsUpdate=true;});}
+      men.forEach((m,i)=>{if(m._cg23)return;const ph=Math.sin(el2*1.4+i*1.05);
         /* [7.424.0 collaudo PO «braccio bionico»] posa ASSOLUTA base+offset (vedi Serata): con la
            clip in pausa l'offset additivo si accumulava e il braccio girava come un'elica */
         if(m._wv){const s=0.55+0.45*ph;const _aB=m._wv.aR,_fB=m._wv.fR;
           if(_aB){if(!_aB._base419)_aB._base419={x:_aB.rotation.x,y:_aB.rotation.y,z:_aB.rotation.z};const _k430=Math.max(0,s);_aB.rotation.set(_aB._base419.x*(1-_k430)+(-1.9)*_k430,_aB._base419.y,_aB._base419.z*(1-_k430)+(-0.3)*_k430);}/* [7.430.0] stesso sweep della Serata: si alza su X, non su Z */
           if(_fB){if(!_fB._base419)_fB._base419={x:_fB.rotation.x,y:_fB.rotation.y,z:_fB.rotation.z};_fB.rotation.set(_fB._base419.x+Math.sin(el2*5+i)*0.3*Math.max(0,s),_fB._base419.y,_fB._base419.z);}}
         else if(m._waveArm){m._waveArm.rotation.x=-2.4-0.35*ph;}});
-      if(cup._spin429)cup._spin429.rotation.y+=dt*1.1;else cup.rotation.y+=dt*1.4;/* [7.429.0] gira il trofeo, non il piedistallo */
+      if(eroe23){if(cup._spin429)cup._spin429.rotation.y=0;}else if(cup._spin429)cup._spin429.rotation.y+=dt*1.1;else cup.rotation.y+=dt*1.4;/* [24/09 POC] in mano all'eroe la coppa non gira *//* [7.429.0] gira il trofeo, non il piedistallo */
       flags.forEach((f,i)=>{f._tela.rotation.y=Math.sin(el2*2.2+i)*0.45;});
       crowds.forEach(cr=>{for(let i=0;i<cr.n;i+=3){cr.cp[i*3+1]=cr.base[i]+Math.abs(Math.sin(el2*3+i))*0.5;}cr.g.attributes.position.needsUpdate=true;});
       smokes.forEach((sm,si)=>{for(let i=0;i<sm.n;i++){sm.sp[i*3+1]+=sm.sv[i]*dt;sm.sp[i*3]+=Math.sin(el2+i)*0.15*dt;

@@ -24,7 +24,8 @@ const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 820 }, deviceScaleFactor: 2 });
 await installCdnRoutes(page);
 const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-await page.addInitScript(e => { window.__CPM_GLB = false; if (e) window.__CPM_EURO_SHOT = 1; }, !!process.env.CPM_EURO);
+/* [24/09] corpi VERI di default (direttiva PO: le verifiche percettive si fanno coi corpi); CPM_GLB=0 per gli omini di riserva; CPM_ROSSO=<flag> per la prova del rosso */
+await page.addInitScript(([e, g, r]) => { if (g) window.__CPM_GLB = false; if (e) window.__CPM_EURO_SHOT = 1; if (r) window[r] = true; }, [!!process.env.CPM_EURO, process.env.CPM_GLB === '0', process.env.CPM_ROSSO || '']);
 await page.goto(`http://localhost:${port}/CARRIER-MANAGER-AV.html?cpmtest=1`, { waitUntil: 'domcontentloaded', timeout: 90000 });
 await page.waitForFunction(() => typeof window.__CPM_PARATA_C === 'function', null, { timeout: 60000 });
 
@@ -42,6 +43,7 @@ for (const t of TS) {
   await page.screenshot({ path: f });
   console.log(`  t=${t}s → ${f}`);
 }
+console.log('testimone parata:', JSON.stringify(await page.evaluate(() => window.__CPM_PARATA || null)));
 for (const e of errs.slice(0, 4)) console.log('⚠ pageerror: ' + e);
 await b.close(); srv.close();
 console.log(`\n${TS.length} provini in ${OUT}/ (tag «${TAG}»).`);
