@@ -1,8 +1,8 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 24/09 00:05 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **`main`/GitHub Pages:** intatti (`2b04fb5`)
-**Preview del POC:** https://korward-poc-cgtrader.netlify.app · **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
-**Stato stimato:** 68% · **Fase:** highlight guidati dal motore unico («brain») — direttiva PO 23/09
+**Aggiornata:** 24/09 pomeriggio (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.983.0** (`43e4e8a5`) — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
+**Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
+**Stato stimato:** 72% · **Fase:** grafica dai collaudi PO chiusa per oggi → si riparte dal brain «partita vera»
 
 ## Dove siamo
 
@@ -47,6 +47,10 @@
 - Resta, da decidere col PO: kit con strisce per i club senza disegno noto (54 lo hanno), primo incontro col procuratore e fine stagione nel kit, pubblico piu' ricco (vedi proposte).
 
 ## Registro (ultimo in alto, una riga per passo)
+- **24/09 · 7.983.0 in produzione** — fisarmoniche su 9 sezioni (Club, Carriera, Agente); tendina della lega senza l'anello spesso dopo la scelta (misurato: fuoco no, outline 0, bordo normale); premi di fine stagione a podio; card «La tua stagione». Catena CI 7/7 verde (gate 14/14 fp 00001505).
+- **24/09 · 7.982.0 in produzione** — pullman scoperto rifatto: 8 corpi CGTrader (testimone cg23=8), braccia all'apice misurato (0,475 della clip), eroe con la coppa, finestre accese, tifosi con sciarpe, coriandoli a taglia fissa, regia senza l'alta da dietro. Rosso `__CPM_NO_PULLMAN23`. Catena 7/7 verde.
+- **24/09 · 7.981.0 in produzione** — commenti PO sulle anteprime: premiazione di squadra (11 attori su 11, prima 4), una finestra alla volta, freno all'avanzamento (19/20 tocchi trattenuti; rosso: settimana saltata), situazione del club nell'offerta, galà con presentatori, toast centrato. ⚠️ Due gate rossi (`motion` 12/21 e 11/21) causati da processi browser in parallelo, verde 14/14 da solo: **i rituali si lanciano uno alla volta**.
+- **24/09 · 7.980.0 in produzione** — POC CGTrader + brain «partita vera» su `main`; CI 7/7 verificata a posteriori sul commit promosso.
 | Ora | Passo | Numero |
 | --- | --- | --- |
 | 24/09 00:05 | **Piano grafico chiuso.** Ultimi punti: telecronisti con figurina (Wanda Trevisiol), postura dei corpi CGTrader, LED dello stadio che non vola piu' negli stadi piccoli (era quello il «tabellone volante»), ombrelli/sciarpe col meteo, Opzioni senza «Grafica» | spalle 0,357→0,396 m · testa in corsa 58°→43° · LED y 23,5→2,42 (tribuna 6,44) · figurina giornalista_f nel commento tecnico · Opzioni: Grafica/Musica/Telecronaca assenti · test:logic 43/43 |
