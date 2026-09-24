@@ -9299,6 +9299,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       heroMark.rotation.y+=dt*1.1;
       heroMark.material.opacity=isHL?0.85+Math.sin(now*0.012)*0.15:0.62;
       heroMark.scale.setScalar(isHL?1.0+Math.sin(now*0.012)*0.08:0.9);
+      /* [7.988 — CI rossa su main, 4 run su 7 dal 7.980: final-state gi152 «Schema doppio dai e vai», «giocatore fuori campo @(105-107,5x)».
+         MISURATO (sonda gi152-fuori.mjs, CPU x6 come i runner lenti): e' il PORTIERE avversario, trascinato verso il pallone finito in
+         rete o dietro la porta; in locale si ferma sulla linea (95,7-98), sui runner lenti va fino a 9 m oltre. IL RECINTO: durante gioco e
+         highlight nessun corpo sta oltre il fondo della rete (x di mondo |x|<=50,5 = 100,5 in coordinate di campo). Un portiere puo'
+         finire DENTRO la sua rete dopo un tuffo; non dietro. Ingresso in campo e cerimonie esclusi. Testimone __CPM_RECINTO24 (quante
+         volte e' intervenuto), rosso __CPM_NO_RECINTO24. Prima della copia sugli avatar, cosi' vale anche a modelli spenti (il gate). */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_RECINTO24)&&(isHL||P.matchPhase==="playing")){try{const _RX=50.5;let _n24=0;
+        const _rec=(m)=>{if(!m||!m.position)return;if(m.position.x>_RX){m.position.x=_RX;_n24++;}else if(m.position.x<-_RX){m.position.x=-_RX;_n24++;}};
+        ((sr.current&&sr.current.players)||[]).forEach(pp=>_rec(pp&&(pp.mesh||pp)));_rec(hero);
+        if(_n24&&typeof window!=='undefined')window.__CPM_RECINTO24=(window.__CPM_RECINTO24|0)+_n24;}catch(_eR24){}}
       // 1.0b: sync avatar GLB (posizione/velocità→blend idle↔corsa) + gesti one-shot: EROE (actType) + PORTIERE (oppActType). No-op se flag spento.
       if(glbAvatars){
         // EROE: mappa actType→gesto (volée se variante shot_volley; cross/freekick riusano 'kick'). dribble/pass/build → solo locomozione.
