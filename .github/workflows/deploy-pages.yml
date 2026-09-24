@@ -55,6 +55,10 @@ jobs:
           cp 404.html _site/
           cp icon-192.png icon-512.png icon-maskable-512.png _site/
           cp -r assets _site/
+          # [24/09] prototipo «partita vera» (Fase 2): solo i quattro file che servono a farlo girare,
+          # cosi' il PO lo prova sul telefono. Niente banco, sonde, generatore o README.
+          mkdir -p _site/prototipo/partita-vera
+          cp prototipo/partita-vera/index.html prototipo/partita-vera/vista.js prototipo/partita-vera/partita.js prototipo/partita-vera/motore-v2.js _site/prototipo/partita-vera/
           # index.html = copia del file di gioco → l'URL nudo della Pages funziona
           cp _site/CARRIER-MANAGER-AV.html _site/index.html
           touch _site/.nojekyll
