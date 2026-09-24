@@ -855,7 +855,13 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   function tick(ctx){ctx=ctx||{};const _dt=(ctx.dt>0&&ctx.dt<1)?+ctx.dt:1;S.dt=_dt;
     /* [7.914.0] il possesso e' tempo, non eventi: si accumula qui, dove si sa chi ha la palla */
     try{const _s=S.poss.stato;if((_s==='tenuta'||_s==='volo')&&S.tab[S.poss.lato])S.tab[S.poss.lato].possesso+=_dt;}catch(_e){}/* dec: il chiamante puo' dire quale chiamata decide (il live: il battito del minuto); senza, decide la fase */const _dec=(ctx.dec!=null)?!!ctx.dec:!(S.fase>1e-9);if(ctx.dec)S.fase=0;
-    const _fine=()=>{S.fase+=_dt;if(S.fase>=1-1e-9)S.fase=0;const out=S.eventi;S.eventi=[];return out;};
+    /* [7.987 — UN TETTO UNICO AL PASSO, a fine battito] test:logic «i passi sono umani» e' andato rosso due volte (12,7u nella 7.984,
+       12,35u qui) perche' nello stesso battito un giocatore puo' essere mosso da piu' routine (pilota generale, corse programmate,
+       posizionamenti del piazzato) e i tetti erano per routine, non per uomo. Ora, chiunque l'abbia mosso, nessuno si sposta piu' di
+       11,5u per battito (1/11 di minuto; il tetto scala con dt). Rosso __CPM_NO_PASSO24. */
+    const _cap24=!(typeof window!=='undefined'&&window&&window.__CPM_NO_PASSO24);const _p0x=_cap24?g.map(q=>q.x):null,_p0y=_cap24?g.map(q=>q.y):null;
+    const _fine=()=>{if(_cap24){const _cap=11.5*11*_dt;for(let i=0;i<g.length;i++){const q=g[i];const ex=q.x-_p0x[i],ey=q.y-_p0y[i],ed=Math.hypot(ex,ey);if(ed>_cap){q.x=_p0x[i]+ex/ed*_cap;q.y=_p0y[i]+ey/ed*_cap;}}}
+      S.fase+=_dt;if(S.fase>=1-1e-9)S.fase=0;const out=S.eventi;S.eventi=[];return out;};
     /* [7.898 A2 v3] SOTTO-TICK (fase>0): nessuna decisione, nessun contatore; solo la fisica del minuto in corso */
     if(!_dec){if(ctx.min!=null)S.min=ctx.min|0;S.arco=null;if(S.scena)return[];
       const st=S.poss.stato;
