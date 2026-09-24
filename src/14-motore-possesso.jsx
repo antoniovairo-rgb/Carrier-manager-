@@ -121,7 +121,7 @@ function creaMotorePossesso(cfg){
         if(e.esito==='goal'||e.esito==='saved')A.inPorta++;else if(e.esito==='post')A.legni++;else if(e.esito==='blocked')A.murati++;else A.fuori++;break;
       case 'gol': A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;break;
       case 'corner': A.corner++;break;
-      case 'fallo': A.falli++;break;
+      case 'fallo': if(!e.daFuorigioco||(typeof window!=='undefined'&&window&&window.__CPM_NO_FALLOFG23))A.falli++;break;/* [24/09 POC] la punizione per fuorigioco non e' un fallo (1,55 a squadra al banco). Rosso __CPM_NO_FALLOFG23 */
       case 'rigore': A.rigori++;break;
       case 'rimessa': A.rimesse++;break;
       case 'fuorigioco': A.fuorigioco++;break;/* [7.932] la voce esiste anche nel tabellino a schermo, non solo al banco */
@@ -266,7 +266,7 @@ function creaMotorePossesso(cfg){
            chi e' SUL FILO lo riceve ancora spesso — ed e' li' che il fuorigioco nasce davvero, dai
            tempi sbagliati. Un veto secco su tutt'e due porterebbe la voce a zero, che e' il difetto
            opposto e altrettanto falso. */
-        if(advQ>_pen943+1.5)sc-=40; else if(advQ>_pen943)sc-=18;
+        if(advQ>_pen943+1.5)sc-=40; else if(advQ>_pen943)sc-=((typeof window!=='undefined'&&window&&window.__CPM_NO_FILO23)?18:28);/* [24/09 POC] con meno cross dalla fascia (7.980) i palloni in profondita' sul filo sono cresciuti: fuorigioco 3,4 contro 1,69 della Premier 2024-25 (StatMuse). Rosso __CPM_NO_FILO23 */
       }
       if(sc>bs){bs=sc;best=q;}}
     if(!best&&opt.conGk!==true){const gk=portiereDi(l);if(gk&&hyp(gk.x,gk.y,P.x,P.y)<=40&&!P.gk)best=gk;}
@@ -309,7 +309,7 @@ function creaMotorePossesso(cfg){
           S.conta.passaggi++;S.poss.ultimoPassatore=P.i;
           ev("passaggio",{da:chi(P),a:chi(R),kind,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+R.x.toFixed(1),y:+R.y.toFixed(1)},fuorigioco:true});
           ev("fuorigioco",{chi:chi(R),da:chi(P),x:+R.x.toFixed(1),y:+R.y.toFixed(1),lato:l});
-          fermoSet("foul",altro(l),clamp(R.x,4,96),clamp(R.y,4,96));/* punizione per chi difende, dal punto del fuorigioco */
+          fermoSet("foul",altro(l),clamp(R.x,4,96),clamp(R.y,4,96),{daFuorigioco:true});/* punizione per chi difende, dal punto del fuorigioco */
           return;}}}
     const lead=Math.min(4,hyp(P.x,P.y,R.x,R.y)*0.12);const tx=clamp(R.x+dirDi(l)*lead*(kind==="appoggio"?0:1),2,98),ty=clamp(R.y,3,97);
     S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
@@ -501,7 +501,12 @@ function creaMotorePossesso(cfg){
        (__CPM_NO900, __CPM_NO903) restano com'erano, altrimenti non riprodurrebbero piu' il loro difetto. */
     const _k929=(typeof window!=='undefined'&&window&&window.__CPM_NO929)?1:0.68;
     const _fallo900=()=>{const r=rnd();const pFb=(_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):(_no903?((press<3?0.18:0.05)+(adv>=56?0.03:0)):((press<3?0.22:0.08)+(adv>=56?0.03:0))*_k929))*_cad936();
-      const pF=golReq?((golReq.t|0)<=3?pFb*0.5:0):pFb;
+      /* [24/09 POC — BRAIN «partita vera»] I FALLI VERI ERANO 16,2 A SQUADRA contro 11,04 della Premier League 2024-25 (StatMuse,
+         media delle 20 squadre su 38 giornate): 5,45 sulla conduzione, 4,53 sul controllo, 3,48 sulla ricezione. Si riduce SOLO il
+         fallo (x0,68); la fascia del contrasto pulito resta calcolata sulla probabilita' di prima, cosi' i contrasti vinti non
+         scendono insieme ai falli. Rosso __CPM_NO_FALLI23. */
+      const _k23f=(typeof window!=='undefined'&&window&&window.__CPM_NO_FALLI23)?1:0.68;
+      const pF=golReq?((golReq.t|0)<=3?pFb*0.5*_k23f:0):pFb*_k23f;
       if(pF>0&&r<pF){ramo(golReq?"falloGol":"fallo");fallo(P);return true;}
       /* [7.933 — L'INTERVENTO PULITO ESISTE, non solo il fallo]
          MISURATO: contrasti vinti 1,38 contro 16,5 veri, mentre i falli stanno a 14,5 su 13. Il difensore
@@ -963,7 +968,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       case 'gol': A.gol++;break;
       case 'assist': A.assist++;break;
       case 'passaggio': A.passaggi++;if(d.ok!==false)A.passOk++;break;
-      case 'fallo': A.falli++;break;
+      case 'fallo': if(!e.daFuorigioco||(typeof window!=='undefined'&&window&&window.__CPM_NO_FALLOFG23))A.falli++;break;/* [24/09 POC] la punizione per fuorigioco non e' un fallo (1,55 a squadra al banco). Rosso __CPM_NO_FALLOFG23 */
       case 'falloSubito': if(B)B.falli++;break;
       case 'corner': A.corner++;break;
       case 'ammonizione': A.ammonizioni++;break;
