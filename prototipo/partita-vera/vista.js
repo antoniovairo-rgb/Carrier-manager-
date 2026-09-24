@@ -120,7 +120,7 @@ function tinta(root,kit){root.traverse(o=>{if(!o.isMesh&&!o.isSkinnedMesh)return
   o.material=Array.isArray(o.material)?nuovi:nuovi[0];});}
 const kitDi=(i)=>{if(i===22)return{maglia:'#111111',pant:'#111111',calze:'#111111'};const l=(i<10||i===21)?'home':'away';const t=coloreLato(l);const gk=(i===0||i===10);
   return gk?{maglia:l==='home'?'#16a34a':'#f59e0b',pant:'#111827',calze:l==='home'?'#16a34a':'#f59e0b'}:{maglia:t.c1,pant:t.c2,calze:t.c1};};
-function corpoSemplice(kit){const g=new THREE.Group();const m=new THREE.Mesh(new THREE.CapsuleGeometry?new THREE.CapsuleGeometry(0.25,1.2,4,8):new THREE.CylinderGeometry(0.25,0.25,1.7,10),new THREE.MeshStandardMaterial({color:kit.maglia}));m.position.y=0.9;m.castShadow=true;g.add(m);return g;}
+function corpoSemplice(kit){const g=new THREE.Group();const m=new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.25,1.7,10)/* r128: CapsuleGeometry esiste come nome ma non si costruisce */,new THREE.MeshStandardMaterial({color:kit.maglia}));m.position.y=0.9;m.castShadow=true;g.add(m);return g;}
 function creaCorpo(i){const kit=kitDi(i);let obj,mixer=null,azioni={},ossa={};
   if(pacchetto){obj=THREE.SkeletonUtils.clone(pacchetto.scene);tinta(obj,kit);
     /* altezza dalle OSSA, come il gioco (src/12:996 _skeletonWorldHeight): il riquadro di una mesh con scheletro non e' affidabile */
@@ -141,7 +141,7 @@ function suona(c,nome,opz){opz=opz||{};const a=c.azioni[nome];if(!a)return false
 const NATIVA={walk:1.4,jog:3.2,jogging:3.2,running:6.2};
 function locomuovi(c,v){const nome=v<0.35?'idle':v<2.2?'walk':v<4.6?'jog':'running';const a=c.azioni[nome];if(!a)return;
   if(c.loco!==nome){const b=c.azioni[c.loco];a.reset().play();if(b)a.crossFadeFrom(b,0.2,false);c.loco=nome;}
-  a.timeScale=nome==='idle'?1:Math.min(2.4,Math.max(0.5,v/NATIVA[nome]));
+  a.timeScale=nome==='idle'?1:Math.min(6,Math.max(0.5,v/NATIVA[nome]));/* tetto 2,4 -> 6: sopra x2 i piedi scivolavano perche' il ciclo delle gambe non teneva il passo */
   const pesoGesto=(c.gesto&&performance.now()<c.gestoFine)?0.25:1;a.setEffectiveWeight(pesoGesto);}
 /* gesti fatti nel codice (scelta PO): l'osso punta una direzione del mondo. Esultanza, cartellino dell'arbitro, il «cinque» del cambio */
 const _q=new THREE.Quaternion(),_q2=new THREE.Quaternion(),_v1=new THREE.Vector3(),_v2=new THREE.Vector3(),_v3=new THREE.Vector3();
@@ -263,7 +263,7 @@ function camera3(f,dt,modo){const bx=W(f.b[0],f.b[1]);const asp=innerWidth/inner
   else{const w=ZOOM[iZoom].w;const hfov=2*Math.atan(Math.tan(THREE.MathUtils.degToRad(36)/2)*asp);const dist=(w/2)/Math.tan(hfov/2);
     const incl=THREE.MathUtils.degToRad(ZOOM[iZoom].incl);const maxX=Math.max(0,34+4-w/2);const tx=THREE.MathUtils.clamp(bx.x,-maxX,maxX);const tz=THREE.MathUtils.clamp(bx.z,-38,38);
     const avanti=w*0.12;/* la palla sta un po' sotto il centro: si vede dove va l'azione */const des=new THREE.Vector3(tx,Math.sin(incl)*dist,tz-avanti+Math.cos(incl)*dist);const desT=new THREE.Vector3(tx,0,tz-avanti);
-    if(!camInit){camP.copy(des);camT.copy(desT);camInit=true;}const k=1-Math.pow(0.12,dt);camP.lerp(des,k);camT.lerp(desT,k);camera.fov=36;}
+    if(!camInit){camP.copy(des);camT.copy(desT);camInit=true;}/* la camera segue alla stessa velocita' del gioco: a x8 con la morbidezza di x1 restava indietro e mezzo schermo era prato vuoto (foto PO, 53') */const k=1-Math.pow(0.12,dt*((Q.get('rosso')==='cam')?1:Math.max(1,velAtt)));camP.lerp(des,k);camT.lerp(desT,k);camera.fov=36;}
   camera.position.copy(camP);camera.lookAt(camT);camera.updateProjectionMatrix();
   sole.position.set(camT.x+40,90,camT.z+30);sole.target.position.copy(camT);}
 
@@ -306,7 +306,7 @@ function ciclo(t){requestAnimationFrame(ciclo);const dt=Math.min(0.1,(t-tPrec)/1
   for(let k=0;k<22;k++){const c=corpi[k];if(!c)continue;let x=S.g[k].x,z=S.g[k].z;
     if(off[k]){x+=off[k].x;z+=off[k].z;c._off=off[k];}else if(r0>0&&c._off){x+=c._off.x*r0;z+=c._off.z*r0;}else c._off=null;
     const vx=x-c.px,vz=z-c.pz;const dist=Math.hypot(vx,vz);const vReal=dt>0?dist/dt:0;c.v=c.v*0.8+vReal*0.2;
-    const guardaPalla=Math.atan2(S.b.x-x,S.b.z-z);const verso=dist>0.02?Math.atan2(vx,vz):guardaPalla;let dd=verso-c.dir;while(dd>Math.PI)dd-=2*Math.PI;while(dd<-Math.PI)dd+=2*Math.PI;c.dir+=dd*Math.min(1,dt*8);
+    const guardaPalla=Math.atan2(S.b.x-x,S.b.z-z);const verso=dist>0.02?Math.atan2(vx,vz):guardaPalla;let dd=verso-c.dir;while(dd>Math.PI)dd-=2*Math.PI;while(dd<-Math.PI)dd+=2*Math.PI;c.dir+=dd*Math.min(1,dt*8*Math.max(1,velAtt*0.5));
     c.radice.position.set(x,0,z);c.radice.rotation.y=c.dir;c.px=x;c.pz=z;const esp=(S.f.esp||[]).includes(k);c.radice.visible=!esp;
     if(c.mixer){locomuovi(c,c.v);c.mixer.update(dt);procedurale(c,t);}}
   /* separazione estetica (sotto 0,6 m): sposta i CORPI, non la partita. Si contano le compenetrazioni prima e dopo */
@@ -319,6 +319,7 @@ function ciclo(t){requestAnimationFrame(ciclo);const dt=Math.min(0.1,(t-tPrec)/1
   if(arbitro){const pos=new THREE.Vector3(S.b.x+9,0,S.b.z+6);const ax=arbitro.radice.position;const vx=pos.x-ax.x,vz=pos.z-ax.z;const d=Math.hypot(vx,vz);const st=Math.min(d,dt*7);if(d>0.05){ax.x+=vx/d*st;ax.z+=vz/d*st;}
     arbitro.dir=Math.atan2(S.b.x-ax.x,S.b.z-ax.z);arbitro.radice.rotation.y=arbitro.dir;if(arbitro.mixer){locomuovi(arbitro,d>0.3?Math.min(6,st/dt):0);arbitro.mixer.update(dt);procedurale(arbitro,t);}}
   camera3(S.f,dt,fase==='replay'?'replay':'gioco');
+  {/* misura: il pallone resta nella fascia centrale dello schermo? (quota di fotogrammi fuori dal 25-75% in verticale) */_p.copy(palla.position).project(camera);const yy=(1-_p.y)/2;PV.cam=PV.cam||{n:0,fuori:0};if(fase==='gioco'){PV.cam.n++;if(yy<0.2||yy>0.8)PV.cam.fuori++;}}
   aggiornaHud(fase==='replay'&&esultaDi?esultaDi.k:i);aggiornaEtichette(i);
   if($('pannello').style.display==='block'&&(t|0)%500<20)pannello();
   renderer.render(scene,camera);
