@@ -43,7 +43,7 @@ for (const t of TS) {
   await page.screenshot({ path: f });
   console.log(`  t=${t}s → ${f}`);
 }
-console.log('testimone parata:', JSON.stringify(await page.evaluate(() => window.__CPM_PARATA || null)));
+console.log('testimone parata:', JSON.stringify(await page.evaluate(() => ({ ...(window.__CPM_PARATA || {}), folla: window.__CPM_FOLLA23 || 'birilli' }))));
 for (const e of errs.slice(0, 4)) console.log('⚠ pageerror: ' + e);
 await b.close(); srv.close();
 console.log(`\n${TS.length} provini in ${OUT}/ (tag «${TAG}»).`);

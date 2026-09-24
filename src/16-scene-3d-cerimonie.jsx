@@ -1376,7 +1376,25 @@ function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
     /* [24/09 POC] LA GENTE: persone vere al posto dei punti — corpo, testa e, per quattro su dieci, la SCIARPA alzata nei colori del
        club. Tre InstancedMesh per lato (6 disegni in tutto); il saltello gira a turno su un quarto della folla per fotogramma. */
     const folla23=[];
-    if(_N23)for(const side of [-1,1]){const n=420,c1=new THREE.Color(homeHex),c2=new THREE.Color(awayHex),cw=new THREE.Color(0xf1e8d8);
+    /* [24/09 POC — collaudo PO «dalle scene togli i birilli lego»] i tifosi a cilindro+sfera della 7.982 leggevano come
+       birilli: al loro posto una FOLLA DIPINTA (teste e spalle nei colori del club, sciarpe alzate) su due pannelli lungo i
+       marciapiedi, che scorrono con la via. Nessuna figura 3D. Testimone __CPM_FOLLA23="dipinta"; i birilli tornano
+       solo col rosso __CPM_BIRILLI23. */
+    if(_N23&&!(typeof window!=='undefined'&&window.__CPM_BIRILLI23)){try{
+      const cv=document.createElement('canvas');cv.width=1024;cv.height=160;const g2=cv.getContext('2d');
+      const grd=g2.createLinearGradient(0,0,0,160);grd.addColorStop(0,'#1a2032');grd.addColorStop(1,'#0e121c');g2.fillStyle=grd;g2.fillRect(0,0,1024,160);
+      const cols=[homeHex,homeHex,awayHex,'#e9e2d4'],sk=['#f0c8a0','#e8b890','#c8956a','#a9743f','#7c4a1e','#f5d2b3'];
+      for(let row=0;row<3;row++){const yb=62+row*36,sc=0.8+row*0.14;
+        for(let i=0;i<46;i++){const x=(i*22.4+(row%2)*11+R(i*7+row)*6)%1024,hy=yb-R(i*3+row*5)*6;
+          g2.fillStyle=cols[Math.floor(R(i*11+row)*cols.length)];g2.beginPath();g2.ellipse(x,hy+18*sc,11*sc,14*sc,0,Math.PI,0);g2.fill();g2.fillRect(x-11*sc,hy+18*sc,22*sc,30);
+          g2.fillStyle=sk[(i+row)%sk.length];g2.beginPath();g2.arc(x,hy+4*sc,6.5*sc,0,Math.PI*2);g2.fill();
+          if(R(i*13+row*3)<0.3){g2.fillStyle=(i%2)?homeHex:awayHex;g2.fillRect(x-16*sc,hy-14*sc,32*sc,5*sc);}}}
+      const tx=new THREE.CanvasTexture(cv);tx.wrapS=THREE.RepeatWrapping;tx.repeat.set(14,1);
+      for(const side of [-1,1]){const pn=new THREE.Mesh(new THREE.PlaneGeometry(PERIOD*4,2.6),new THREE.MeshLambertMaterial({map:tx,emissive:0xffffff,emissiveMap:tx,emissiveIntensity:0.35,side:THREE.DoubleSide}));
+        pn.position.set(side*11.9,1.3,0);pn.rotation.y=side<0?Math.PI/2:-Math.PI/2;worldGrp.add(pn);}
+      try{window.__CPM_FOLLA23="dipinta";}catch(_e){}
+    }catch(_eF){}}
+    if(_N23&&(typeof window!=='undefined'&&window.__CPM_BIRILLI23))for(const side of [-1,1]){const n=420,c1=new THREE.Color(homeHex),c2=new THREE.Color(awayHex),cw=new THREE.Color(0xf1e8d8);
       const _sk=[0xf0c8a0,0xe8b890,0xc8956a,0xa9743f,0x7c4a1e,0xf5d2b3].map(x=>new THREE.Color(x));
       const bodyM=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.26,0.32,1.15,10),new THREE.MeshLambertMaterial({color:0xffffff}),n);
       const headM=new THREE.InstancedMesh(new THREE.SphereGeometry(0.2,8,6),new THREE.MeshLambertMaterial({color:0xffffff}),n);
