@@ -10,7 +10,7 @@
   const schiera=(casa,osp)=>{
     const h=[[8,50,1],[18,12],[18,38],[18,62],[18,88],[38,25],[38,50],[38,75],[55,22],[55,78]];
     const a=[[95,50,1],[82,12],[82,38],[82,62],[82,88],[62,25],[62,50],[62,75],[48,20],[48,50],[48,80]];
-    const R=(i)=>i===0?'POR':i<=4?'DIF':i<=7?'CEN':'ATT';
+    const R=(i)=>i===0?'GK':i<=4?'DF':i<=7?'MF':'AT';/* [7.999.6] i ruoli come li passa il gioco (GK/DF/MF/AT): con POR/DIF/CEN/ATT il motore non riconosceva i reparti e il banco girava senza linea difensiva ne' spinta delle punte */
     return h.map((p,i)=>({team:'home',gk:!!p[2],name:(casa.rosa&&casa.rosa[i])||(casa.sigla+' '+(i+1)),rl:R(i),x:p[0],y:p[1]}))
       .concat(a.map((p,i)=>({team:'away',gk:!!p[2],name:(osp.rosa&&osp.rosa[i])||(osp.sigla+' '+(i+1)),rl:R(i),x:p[0],y:p[1]})));};
   /* recupero: regola MIA (non da fonte), deterministica: 1 minuto base nel primo tempo e 3 nel secondo, +0,5 per gol, +0,3 per cartellino e cambio */

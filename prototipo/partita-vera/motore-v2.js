@@ -42,11 +42,17 @@ function creaMotorePossesso(cfg){
   const HERO=21;
   g[HERO]={i:HERO,team:HOME,gk:false,name:String((cfg.eroe&&cfg.eroe.name)||"EROE"),rl:"AT",x:clamp(+(cfg.eroe&&cfg.eroe.x)||58,2,98),y:clamp(+(cfg.eroe&&cfg.eroe.y)||50,3,97),eroe:true};
   let eroeAttivo=!(cfg.eroe&&cfg.eroe.attivo===false);
+  /* [7.999.6 L'EROE DAL GIOCO — scelta PO: «meno scene, tutte vere, almeno una a partita». Rosso __CPM_NO_EROEGIOCO]
+     Prima, chiesta la scena, i compagni davano all'eroe +26 come ricevente, il suo corpo veniva portato su punti fissi e il motore
+     aspettava fino a 8 occasioni del «tipo» chiesto: l'occasione era fabbricata. Ora i compagni lo cercano per la FIDUCIA del mister
+     e la FORMA (senza questi dati il bonus resta 2, come prima) e un difensore avversario lo marca: le occasioni sono quelle che nascono. */
+  const _EG=!!cfg.v2&&!(typeof window!=='undefined'&&window.__CPM_NO_EROEGIOCO);
+  const BONUS_EROE=(()=>{const e=cfg.eroe||{};if(e.fiducia==null&&e.forma==null)return 2;const fi=clamp(+(e.fiducia!=null?e.fiducia:60),0,100),fo=clamp(+(e.forma!=null?e.forma:70),0,100);return clamp(2+5*(fi-50)/50+3*(fo-60)/40,-2,9);})();
   const forza={home:clamp(+(cfg.forza&&cfg.forza.home)||68,40,95),away:clamp(+(cfg.forza&&cfg.forza.away)||68,40,95)};
   const V2=!!cfg.v2;
   /* [v2] lo STADIO: nel motore «home» e' sempre la squadra dell'eroe (il verso del campo); qui si dice chi gioca davvero in casa */
   const STADIO=(cfg.stadio==='home'||cfg.stadio==='away')?cfg.stadio:null;
-  const K2=Object.assign({/* taratura del banco da 1000 partite (fase 2): ogni valore e' misurato, non preso da una fonte */pTiro:0.3,pAtt:0.085,sete:2.0,xg0:-1.25,xgAng:1.0,xgDist:0.06,testa:0.55,pOn0:0.20,pOnXg:1.1,forzaTiro:0.012,forzaXg:0.006,perdita:0.03,forzaPerdita:0.004,perditaMax:0.2,forzaPass:0.02,campo:6,gestione:0.03,gestioneAdv:70,cornerParata:0.38,cornerMurato:0.45,cornerSpazzata:0.45,rossoDiretto:0.004,gialli:1.2},cfg.k2||{});
+  const K2=Object.assign({/* taratura del banco da 1000 partite (fase 2): ogni valore e' misurato, non preso da una fonte */pTiro:0.3,pAtt:0.05,sete:2.0,xg0:-1.4,xgAng:1.0,xgDist:0.06,testa:0.55,pOn0:0.17,pOnXg:1.1,forzaTiro:0.012,forzaXg:0.006,perdita:0.03,forzaPerdita:0.004,perditaMax:0.2,forzaPass:0.02,campo:6,gestione:0.03,gestioneAdv:70,cornerParata:0.38,cornerMurato:0.45,cornerSpazzata:0.28,rossoDiretto:0.004,gialli:1.2},cfg.k2||{});
   const _TN0={press:0,linea:0,amp:0,ment:0,diretto:0};const _noTat=(typeof window!=='undefined'&&window.__CPM_NO_TATTICA);
   const TAT={home:Object.assign({},_TN0,(!_noTat&&cfg.tattica&&cfg.tattica.home)||{}),away:Object.assign({},_TN0,(!_noTat&&cfg.tattica&&cfg.tattica.away)||{})};
   const pressDi=(l)=>TAT[l].press*((S&&S.min>75)?0.2:(S&&S.min>55)?0.5:1);/* [7.999.5] il pressing costa: dopo il 55' la squadra ne ha la meta', dopo il 75' un quinto */
@@ -239,7 +245,8 @@ function creaMotorePossesso(cfg){
          e' la giocata che il calcio fa quando il centro e' chiuso. */
       if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0)+5*TAT[l].amp;
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
-      if(q.eroe){let _b879=S.richieste.scenaEroe?26:0;
+      if(q.eroe&&_EG){sc+=BONUS_EROE;}/* [7.999.6] l'eroe si cerca per fiducia e forma, non per decreto */
+      else if(q.eroe){let _b879=S.richieste.scenaEroe?26:0;
         /* [23/09 POC — punto 4] con un TIPO chiesto il bonus pieno scatta solo quando l'eroe e' gia' dove quel tipo nasce (entro 9u dal
            suo punto): prima gli arrivava il pallone ovunque fosse, e l'occasione nasceva sempre sulla soglia della trequarti.
            Rosso __CPM_NO_B7POS. */
@@ -479,7 +486,7 @@ function creaMotorePossesso(cfg){
        situazione in campo sia davvero quella (fino a 8 occasioni utili), poi accetta la prima: la scena nasce sempre dal motore.
        Nessun sorteggio in piu' (la partita resta riproducibile). Rosso: il live non chiede tipi (__CPM_NO_B7TIPO). */
     const _tipoOcc=(zz,pp,yy)=>(zz==="area"||zz==="limite")?(pp<3?"conclusione":"spalle"):(zz==="trequarti"?(Math.abs(yy-50)>=22?"fascia":"fra-le-linee"):"costruzione");
-    if(S.richieste.scenaEroe&&P.eroe&&adv>=52&&S.richieste.scenaTipo&&_tipoOcc(zona,press,P.y)!==S.richieste.scenaTipo&&(S.richieste.scenaAttese|0)<8){S.richieste.scenaAttese=(S.richieste.scenaAttese|0)+1;}
+    if(!_EG&&S.richieste.scenaEroe&&P.eroe&&adv>=52&&S.richieste.scenaTipo&&_tipoOcc(zona,press,P.y)!==S.richieste.scenaTipo&&(S.richieste.scenaAttese|0)<8){S.richieste.scenaAttese=(S.richieste.scenaAttese|0)+1;}
     else     if(S.richieste.scenaEroe&&P.eroe&&adv>=52){const _z=zona,_pr=+press.toFixed(1);/* [7.879] una scena si apre dove c'e' una storia: mai dalla propria meta' campo */S.conta.occEroe=(S.conta.occEroe|0)+1;
       ev("occasione_eroe",{chi:chi(P),zona:_z,press:_pr,x:+P.x.toFixed(1),y:+P.y.toFixed(1),chiesto:S.richieste.scenaTipo||null,attese:S.richieste.scenaAttese|0,
         tipo:(_z==="area"||_z==="limite")?(press<3?"conclusione":"spalle"):(_z==="trequarti"?(Math.abs(P.y-50)>=22?"fascia":"fra-le-linee"):"costruzione"),
@@ -764,6 +771,7 @@ function creaMotorePossesso(cfg){
     const _rif924=padrone||((_m924&&st==="volo"&&S.poss.ricevente!=null)?g[S.poss.ricevente]:null);
     const app=[];if(_rif924&&(st==="tenuta"||(_m924&&st==="volo"))){const c=[];for(const q of g){if(!mio(q,l)||q.gk||q.i===_rif924.i)continue;c.push({q,d:hyp(q.x,q.y,_rif924.x,_rif924.y)});}c.sort((a,b)=>a.d-b.d);for(let i=0;i<Math.min(_m924?3:2,c.length);i++)app.push(c[i].q);}
     const advB=advDi(bx,l);
+    let marc6=null;if(_EG&&eroeAttivo&&g[HERO]&&attivo(g[HERO])){const H=g[HERO];let bd=1e9;for(const q of g){if(!attivo(q)||q.gk||q.team===H.team||(ins&&q.i===ins.i))continue;if(q.rl!=="DF"&&q.rl!=="MF")continue;const dd=hyp(q.x,q.y,H.x,H.y);if(dd<bd){bd=dd;marc6=q;}}}
     for(const p of g){if(!attivo(p))continue;
       if(p.i===S.poss.padrone&&st==="tenuta")continue;/* il padrone si muove solo con la conduzione */
       const sl=slotDi(p);let tx,ty,v=4.5;
@@ -788,7 +796,7 @@ function creaMotorePossesso(cfg){
            nessuna «conclusione» e nessuna «fascia» in 9 scene — l'eroe stava sempre al suo posto (x 60, y 50) e l'occasione nasceva
            sulla soglia della trequarti. Con la scena chiesta e la squadra in possesso, l'eroe senza palla va dove quel tipo nasce:
            in area (conclusione), largo sul suo lato (fascia), al limite (spalle), fra le linee o piu' indietro (costruzione). */
-        {const tq=S.richieste.scenaEroe&&S.richieste.scenaTipo;
+        {const tq=!_EG&&S.richieste.scenaEroe&&S.richieste.scenaTipo;
          if(tq&&p.eroe&&inPoss&&st!=="fermo"&&!(typeof window!=='undefined'&&window.__CPM_NO_B7POS)){
            if(tq==="conclusione"){tx=xDa(84,p.team);ty=50+(p.y>=50?6:-6);}
            else if(tq==="fascia"){tx=xDa(72,p.team);ty=p.y>=50?84:16;}
@@ -873,6 +881,9 @@ function creaMotorePossesso(cfg){
             else{tx=xDa(Math.min(advF+6,90),f.lato);ty=25+(k-8)*25;}}
           tx=clamp(tx,2,98);ty=clamp(ty,3,97);v=6;}
       }
+      /* [7.999.6] IL MARCATORE DELL'EROE: il difensore avversario piu' vicino si mette fra lui e la propria porta; stretto (2,5u)
+         se l'eroe e' piu' forte della squadra avversaria di almeno 5, largo (5u) altrimenti */
+      if(_EG&&marc6&&p.i===marc6.i&&p.i!==S.poss.padrone){const H=g[HERO];const dh=dirDi(H.team);const stretto=((+(cfg.eroe&&cfg.eroe.ovr)||forza.home)-forza[p.team])>=5;tx=H.x+dh*(stretto?2.5:5);ty=H.y+(50-H.y)*0.1;v=stretto?6:5;}
       if(st==="volo"&&ric&&p.i===ric.i){tx=S.poss.a.x-dp*0.4;ty=S.poss.a.y;v=6;}
       else if((st==="tenuta"||st==="libero")&&ins&&p.i===ins.i){if(st==="tenuta"){tx=bx-d*3;ty=by;}else{tx=bx;ty=by;}v=5.5*(1+0.25*TAT[p.team].press);}
       else if(st==="volo"&&S.poss.icpt!=null&&p.i===S.poss.icpt){tx=S.poss.da.x+(S.poss.a.x-S.poss.da.x)*S.poss.icptA;ty=S.poss.da.y+(S.poss.a.y-S.poss.da.y)*S.poss.icptA;v=6;}

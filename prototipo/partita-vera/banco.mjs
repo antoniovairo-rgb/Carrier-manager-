@@ -54,7 +54,11 @@ if (!(camp.tiriCasa > camp.tiriOsp)) fails.push('la squadra di casa non tira piu
 chk('favorito forte in casa vince %', forte.casaV, [65, 85]); if (!(debole.casaV < pari.casaV && pari.casaV < forte.casaV)) fails.push('la forza non ordina le vittorie');
 if (!(forte.possessoCasa > 52)) fails.push(`il forte non ha piu' palla: ${forte.possessoCasa}`);
 /* determinismo: stesso seme due volte → stessa impronta; e simulazione rapida = partita «guardata» scegliendo come la scelta automatica */
-const conf = { k2: process.env.K2 ? JSON.parse(process.env.K2) : null, seed: 4242, casa: { sigla: 'CAS', forza: 72 }, ospite: { sigla: 'OSP', forza: 68 }, eroeLato: 'away', eroe: { nome: 'EROE', ovr: 78 }, v2: !VECCHIO };
+/* [7.999.6] il seme del controllo e' il primo da 4242 in cui l'eroe ha almeno un'occasione: con la marcatura (eroe dal gioco) una stella
+   in trasferta resta senza occasioni nel 2% delle partite, e «una scelta diversa cambia la partita» ha senso solo se una scelta esiste */
+const semeConScelta = (base) => { for (let s = base; s < base + 40; s++) { const c = { seed: s, casa: { sigla: 'CAS', forza: 72 }, ospite: { sigla: 'OSP', forza: 68 }, eroeLato: 'away', eroe: { nome: 'EROE', ovr: 78 }, v2: !VECCHIO, scelte: {} };
+  const Q = globalThis.creaPartita(c); while (!Q.stato.finita) { const r = Q.passo({ chiedi: true }); if (r && r.attesa) return s; } } return base; };
+const conf = { k2: process.env.K2 ? JSON.parse(process.env.K2) : null, seed: semeConScelta(4242), casa: { sigla: 'CAS', forza: 72 }, ospite: { sigla: 'OSP', forza: 68 }, eroeLato: 'away', eroe: { nome: 'EROE', ovr: 78 }, v2: !VECCHIO };
 const a = globalThis.creaPartita({ ...conf, registra: false }).tuttaSubito(), b = globalThis.creaPartita({ ...conf, registra: false }).tuttaSubito();
 if (a.impronta !== b.impronta) fails.push('determinismo: stesso seme, impronte diverse');
 /* 20 semi, eroe in casa e in trasferta: la partita guardata con le scelte automatiche deve dare la stessa impronta della sim rapida */

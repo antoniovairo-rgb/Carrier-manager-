@@ -138,6 +138,7 @@
     "risolvi-eroe": "node risolvi-eroe-test.mjs",
     "sim-motore": "node sim-motore-test.mjs",
     "tattiche": "node ../../prototipo/partita-vera/tattiche.mjs 250",
+    "eroe-dal-gioco": "node eroe-dal-gioco-test.mjs",
     "ball-owner": "node ball-owner-test.mjs",
     "bg-continuity": "node bg-continuity-test.mjs",
     "bg-decision": "node bg-decision-test.mjs",
