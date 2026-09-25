@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>Provino clip</title>
+<!-- [7.999.8] PROVINO DELLE CLIP: un corpo di gioco (CGTrader, lod1) con una clip del file Mixamo riadattato, fotografato in N istanti
+     affiancati. Parametri: ?clip=mx-soccer-trip&n=6&ripara=1 . Serve a vedere a occhio le clip prima di collegarle al gioco. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
+<script>
+/* COPIA di riparaCadute7 (src/12-three-match-view.jsx): tenere allineate. Tocca SOLO la traccia di posizione del bacino. */
+window.riparaCadute7=function(anims){try{const T=n=>anims.find(a=>a.name===n);const tr=T('mx-soccer-trip'),fa=T('mx-fallen-idle'),su=T('mx-standing-up');if(!tr||!fa||!su)return false;
+  const P=c=>c.tracks.find(t=>/(^|\.|\/)pelvis\.position$/.test(t.name));const pt=P(tr),pf=P(fa),ps=P(su);if(!pt||!pf||!ps||pt._r7)return !!(pt&&pt._r7);
+  const x0=pt.values[0],z0=pt.values[2],yT=pt.values[pt.values.length-2],yS=95.25;
+  for(let i=0;i<pt.values.length;i+=3){pt.values[i]=x0;pt.values[i+2]=z0;}
+  for(let i=0;i<pf.values.length;i+=3){pf.values[i]=x0;pf.values[i+1]=yT;pf.values[i+2]=z0;}
+  const D=su.duration||1;for(let k=0;k<ps.times.length;k++){const u=Math.min(1,Math.max(0,(ps.times[k]/D-0.2)/0.7)),s=u*u*(3-2*u);ps.values[3*k]=x0;ps.values[3*k+1]=yT+(yS-yT)*s;ps.values[3*k+2]=z0;}
+  pt._r7=true;return true;}catch(e){return false;}};
+window.riparaClip=function(clip,anims){window.riparaCadute7(anims);return clip;};
+</script>
+<style>body{margin:0;background:#1b2330;color:#dde;font:12px sans-serif}#r{display:flex;flex-wrap:wrap;gap:4px;padding:4px}figure{margin:0}figcaption{text-align:center}</style>
+</head><body><div id="r"></div><script>
+const Q=new URLSearchParams(location.search);const CLIP=Q.get('clip')||'mx-soccer-trip',N=+(Q.get('n')||6),RIPARA=Q.get('ripara')==='1';
+const L=new THREE.GLTFLoader();const ld=u=>new Promise((ok,ko)=>L.load(u,ok,undefined,ko));
+(async()=>{try{
+  const [corpo,clips]=await Promise.all([ld('../../assets/cgtrader-review-lod1-kit-adapter.glb'),ld('../../assets/cgtrader-clip-mixamo.glb')]);
+  let clip=clips.animations.find(a=>a.name===CLIP);if(!clip)throw new Error('clip assente '+CLIP);
+  if(RIPARA&&window.riparaClip)clip=window.riparaClip(clip,clips.animations);
+  const W=200,H=260;const ren=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});ren.setSize(W,H);
+  const sc=new THREE.Scene();sc.background=new THREE.Color(0x2a3a2a);sc.add(new THREE.HemisphereLight(0xffffff,0x445544,1.2));const dl=new THREE.DirectionalLight(0xffffff,0.8);dl.position.set(3,5,4);sc.add(dl);
+  const pr=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.MeshLambertMaterial({color:0x3f7a3f}));pr.rotation.x=-Math.PI/2;sc.add(pr);
+  const av=THREE.SkeletonUtils.clone(corpo.scene);sc.add(av);av.updateMatrixWorld(true);
+  /* scala dalle OSSA (testa-dita = 1,80 m): il riquadro di un corpo con scheletro non misura il corpo */
+  const osso=re=>{let b=null;av.traverse(o=>{if(!b&&o.isBone&&re.test(o.name))b=o;});return b;};const hd=osso(/Head$/i),bl=osso(/(ball_l|LeftToeBase)$/i);
+  const vh=new THREE.Vector3(),vb=new THREE.Vector3();hd.getWorldPosition(vh);bl.getWorldPosition(vb);const sca=1.8/Math.max(1e-6,vh.y-vb.y);av.scale.setScalar(sca);av.updateMatrixWorld(true);bl.getWorldPosition(vb);av.position.y=-vb.y;
+  const cam=new THREE.PerspectiveCamera(40,W/H,0.1,100);cam.position.set(3.2,1.4,3.2);cam.lookAt(0,0.8,0);
+  const mx=new THREE.AnimationMixer(av);const act=mx.clipAction(clip);act.play();const out=[];
+  for(let i=0;i<N;i++){const t=clip.duration*0.999*i/(N-1);mx.setTime(t);av.updateMatrixWorld(true);
+    let pel=null;av.traverse(o=>{if(o.isBone&&/pelvis$/i.test(o.name))pel=o;});const pw=new THREE.Vector3();if(pel)pel.getWorldPosition(pw);
+    ren.render(sc,cam);const f=document.createElement('figure');const im=new Image();im.src=ren.domElement.toDataURL();f.appendChild(im);
+    const c=document.createElement('figcaption');c.textContent=CLIP+' t='+t.toFixed(2)+' bacino y='+pw.y.toFixed(2)+' m';f.appendChild(c);document.getElementById('r').appendChild(f);out.push({t:+t.toFixed(2),y:+pw.y.toFixed(3),x:+pw.x.toFixed(2),z:+pw.z.toFixed(2)});}
+  window.__PROVINO={ok:true,clip:CLIP,durata:clip.duration,campioni:out};
+}catch(e){window.__PROVINO={ok:false,err:String(e.message)};document.body.textContent='ERRORE '+e.message;}})();
+</script></body></html>

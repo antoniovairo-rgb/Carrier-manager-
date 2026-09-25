@@ -6,7 +6,7 @@
    COME GIUDICA — PER ENUMERAZIONE (lezione trama-identita: le risoluzioni sono troppo rare per il
    campionamento). L'hook __CPM_GESTI espone la risoluzione VERA (gestoDi → tabella + rosso):
    · VERDE: (a) le risoluzioni storiche della catena restano identiche (shot_volley→volley,
-     penalty→penalty, lunge→kick, press/call→locomozione, aerial→header, pass→kick, build→dribble);
+     penalty→penalty, lunge→kick, press/call→locomozione, aerial→header, pass→pass, build→dribble; [7.999.8] cross e passaggio hanno clip dedicate dal 23/09, attese allineate alla tabella GESTI);
      (b) la famiglia shot ha ≥3 firme distinte (clip,prof) e i profili dichiarati escono davvero
      (chip→campana, power→tesa, curled→null per la pancia a giro);
    · ROSSO (CPM_ROSSO=1 → __CPM_NO547): la tabella si appiattisce alla riga base — shot_volley
@@ -31,10 +31,10 @@ if (!ok) { console.log('❌ hook __CPM_GESTI mai comparso (il renderer non è mo
 const CASI = [
   ['shot', 'shot_volley', 'volley'], ['shot', 'shot_chip', 'kick'], ['shot', null, 'kick'],
   ['penalty', 'penalty_panenka', 'penalty'], ['penalty', null, 'penalty'],
-  ['freekick', null, 'kick'], ['cross', null, 'kick'], ['header', null, 'header'],
+  ['freekick', null, 'kick'], ['cross', null, 'cross'], ['header', null, 'header'],
   ['tackle', 'lunge', 'kick'], ['tackle', 'press', null], ['tackle', 'call', null],
   ['tackle', 'aerial', 'header'], ['tackle', 'slide', 'tackle'], ['tackle', null, 'tackle'],
-  ['dribble', null, 'dribble'], ['pass', null, 'kick'], ['build', null, 'dribble'],
+  ['dribble', null, 'dribble'], ['pass', null, 'pass'], ['build', null, 'dribble'],
 ];
 const res = await page.evaluate(cc => cc.map(([f, v]) => { const g = window.__CPM_GESTI(f, v); return { f, v, clip: g ? g.clip : '∅', prof: g ? (g.prof || null) : null }; }), CASI);
 let bad = 0;
