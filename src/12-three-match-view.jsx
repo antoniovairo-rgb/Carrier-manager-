@@ -636,6 +636,27 @@ function ThreeMatchView(props){
       bone.quaternion.copy(pw.clone().invert().multiply(rq).multiply(pw).multiply(bone.quaternion.clone()));};
     const _AX904=new THREE.Vector3(1,0,0),_AZ904=new THREE.Vector3(0,0,1);
     const _findBone904=(root,re)=>{let b=null;root.traverse(o=>{if(!b&&o.isBone&&re.test(o.name||""))b=o;});return b;};
+    /* [7.999.7 IL PASSO SEGUE LA VELOCITA' — scelta PO: «correggi, giudico a occhio». Rosso __CPM_NO_PASSO7]
+       La cadenza della corsa era una formula fissa (0,62 + velocita'*0,185, scelta a mano): se il ciclo delle gambe non corrisponde
+       allo spostamento, il piede d'appoggio scivola per forza. Qui si misura UNA volta per clip, su un clone fuori scena, quanto scorre
+       all'indietro il piede piu' basso nel ciclo (velocita' naturale della clip, in altezze-corpo al secondo). La cadenza diventa
+       velocita' reale / velocita' naturale: a ogni velocita' il piede d'appoggio resta fermo sul prato (stride matching). */
+    const _PASSO7=new Map();
+    const _altezza7=(av)=>{try{const r=av.visualRoot||av.root;r.updateMatrixWorld(true);const hd=_findBone904(r,/Head$/i),bl=_findBone904(r,/(LeftToeBase|^ball_l)$/i),br=_findBone904(r,/(RightToeBase|^ball_r)$/i);if(!hd||!bl||!br)return 0;
+      const a=new THREE.Vector3().setFromMatrixPosition(hd.matrixWorld),b=new THREE.Vector3().setFromMatrixPosition(bl.matrixWorld),c=new THREE.Vector3().setFromMatrixPosition(br.matrixWorld);return a.y-Math.min(b.y,c.y);}catch(_e){return 0;}};/* altezza testa-dita del corpo in scena (unita' di mondo) */
+    const _passoNaturale7=(av)=>{try{const clip=av&&av.run&&av.run.getClip&&av.run.getClip();if(!clip)return 0;if(_PASSO7.has(clip.uuid))return _PASSO7.get(clip.uuid);
+      let rap=0;const src=av.visualRoot||av.root;
+      if(THREE.SkeletonUtils&&THREE.SkeletonUtils.clone&&src){const c=THREE.SkeletonUtils.clone(src);c.position.set(0,0,0);c.rotation.set(0,0,0);c.updateMatrixWorld(true);
+        const mx=new THREE.AnimationMixer(c);const act=mx.clipAction(clip);act.play();
+        const bl=_findBone904(c,/(LeftToeBase|^ball_l)$/i),br=_findBone904(c,/(RightToeBase|^ball_r)$/i),hd=_findBone904(c,/Head$/i);
+        if(bl&&br&&hd){const N=48,D=clip.duration||1,vL=new THREE.Vector3(),vR=new THREE.Vector3(),vH=new THREE.Vector3();let prev=null,alt=0;const vel=[];
+          for(let i=0;i<=N;i++){mx.setTime(D*i/N);c.updateMatrixWorld(true);vL.setFromMatrixPosition(bl.matrixWorld);vR.setFromMatrixPosition(br.matrixWorld);vH.setFromMatrixPosition(hd.matrixWorld);
+            alt=Math.max(alt,vH.y-Math.min(vL.y,vR.y));const basso=vL.y<vR.y?'L':'R';const q=basso==='L'?vL:vR;
+            if(prev&&prev.basso===basso)vel.push(Math.hypot(q.x-prev.x,q.z-prev.z)/(D/N));prev={basso,x:q.x,z:q.z};}
+          vel.sort((a,b)=>a-b);const med=vel.length?vel[vel.length>>1]:0;rap=alt>0?med/alt:0;}
+        try{mx.stopAllAction();mx.uncacheRoot(c);}catch(_e){}}
+      if(!(rap>0.3&&rap<6))rap=0;/* clip con movimento incorporato o misura insensata: resta la formula di prima */
+      _PASSO7.set(clip.uuid,rap);try{if(typeof window!=='undefined')(window.__CPM_PASSO7=window.__CPM_PASSO7||{})[clip.name||clip.uuid]=+rap.toFixed(3);}catch(_e){}return rap;}catch(_e){return 0;}};
     /* [7.904.0 gancio test-only, direttiva PO «non devono volare»] __CPM_PANCHINA904(): {glb,tot,seduti,coach,
        tri,appoggio:[{piedi,bacino}...]}. INTERPRETAZIONE dichiarata (la specifica dice "la seduta" per
        entrambi, il che non torna dimensionalmente per i piedi — un piede sulla SEDUTA a 0,77u sarebbe un
@@ -9435,6 +9456,24 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         }
         _animLodStats.frames++;_animLodStats.lastFrameUpdates=0;
         for(let _ai=0;_ai<glbAvatars.length;_ai++){const _a=glbAvatars[_ai],_p=_a.proc,_gdx=_p.position.x-_a.lx,_gdz=_p.position.z-_a.lz,_gsp=Math.hypot(_gdx,_gdz);
+          /* [7.999.7] TESTIMONE DEL PATTINAMENTO DEI PIEDI (sola lettura, acceso solo da __CPM_PIEDI_REC). Definizione da OmniControl
+             (ICLR 2024): quota di fotogrammi in cui un piede a terra (sotto 5 cm) scivola oltre 2,5 cm. Tradotta in velocita' perche' qui
+             i fotogrammi al secondo cambiano: piede a terra (dita sotto 6 cm) che scorre oltre 0,5 m/s (= 2,5 cm a 20 fps). Scala: altezza
+             del corpo testa-dita = 1,80 m. Si contano solo i corpi dentro l'inquadratura. Le ossa si leggono dall'ultimo render. */
+          if(typeof window!=='undefined'&&window.__CPM_PIEDI_REC&&dt>0){try{const _w=window.__CPM_PIEDI||(window.__CPM_PIEDI={fr:0,cont:0,sk:0,hl:{fr:0,cont:0,sk:0},perCorpo:{}});
+            if(!_a._pd7){_a._pd7={tL:_findBone904(_a.root,/(LeftToeBase|^ball_l)$/i),tR:_findBone904(_a.root,/(RightToeBase|^ball_r)$/i),hd:_findBone904(_a.root,/Head$/i)/* Mixamo (LeftToeBase) o Unreal (ball_l) */,v:new THREE.Vector3(),prev:null,sc:0};}
+            const P7=_a._pd7;const cam7=sr.current.camera;
+            if(!(P7.tL&&P7.tR&&P7.hd)){_w.senzaOssa=(_w.senzaOssa|0)+1;if(!_w.nomi){const n=[];_a.root.traverse(o=>{if(o.isBone&&n.length<60)n.push(o.name);});_w.nomi=n;}}
+            if(P7.tL&&P7.tR&&P7.hd&&cam7){const v=P7.v;v.setFromMatrixPosition(_a.root.matrixWorld);v.project(cam7);const dentro=Math.abs(v.x)<1&&Math.abs(v.y)<1&&v.z<1;
+              const L=new THREE.Vector3().setFromMatrixPosition(P7.tL.matrixWorld),Rr=new THREE.Vector3().setFromMatrixPosition(P7.tR.matrixWorld),Hd=new THREE.Vector3().setFromMatrixPosition(P7.hd.matrixWorld);
+              const gy=_a.root.position.y;const alt=Hd.y-Math.min(L.y,Rr.y);if(alt>0.5){P7.sc=P7.sc?P7.sc*0.9+alt*0.1:alt;}
+              const m=P7.sc>0?1.8/P7.sc:0;
+              if(dentro&&m>0&&P7.prev){const hl=String(matchPhase||'').indexOf('hl_')===0;let cont=false,sk=false;
+                for(const [q,pq] of [[L,P7.prev.L],[Rr,P7.prev.R]]){const h=(q.y-gy)*m;if(h<0.06){cont=true;const vel=Math.hypot(q.x-pq.x,q.z-pq.z)*m/dt;if(vel>0.5)sk=true;}}
+                {const rv=P7.prevR?Math.hypot(_a.root.position.x-P7.prevR.x,_a.root.position.z-P7.prevR.z)*m/dt:0;const fv=Math.min(Math.hypot(L.x-P7.prev.L.x,L.z-P7.prev.L.z),Math.hypot(Rr.x-P7.prev.R.x,Rr.z-P7.prev.R.z))*m/dt;const D=_w.diag||(_w.diag={n:0,rv:0,fv:0,mt:0});D.n++;D.rv+=rv;D.fv+=fv;if(_a.mx){D.mt=_a.mx.time;D.mts=D.mts||{};D.mts[_ai]=+_a.mx.time.toFixed(2);}D.scena=(D.scena||0)+dt;}
+                _w.fr++;if(cont)_w.cont++;if(sk)_w.sk++;if(hl){_w.hl.fr++;if(cont)_w.hl.cont++;if(sk)_w.hl.sk++;}
+                const pc=_w.perCorpo[_ai]||(_w.perCorpo[_ai]={fr:0,sk:0});pc.fr++;if(sk)pc.sk++;}
+              P7.prev={L,R:Rr};P7.prevR={x:_a.root.position.x,z:_a.root.position.z};}}catch(_e7){}}
           _a.root.position.set(_p.position.x,(_ai===0&&_p.position.y<0)?0:_p.position.y,_p.position.z);
           if(typeof window!=='undefined'&&window.__CPM_CGTRADER_LOD_RUNTIME&&typeof window.__CPM_CGTRADER_LOD_RUNTIME.update==='function')window.__CPM_CGTRADER_LOD_RUNTIME.update(_a,_ai);/* [7.246.0 batch PO «l'eroe si butta a terra da posizione sbagliata»] le pose difensive procedurali AFFONDANO y (-0.18/-0.35) perché GLB-OFF il corpo è RUOTATO orizzontale (scivolata) — ma il root CH38 copia SOLO la y, non la rotazione → modello conficcato nel prato fino alle ginocchia su lunge/press. La y negativa dell'eroe non passa al GLB (le clip fanno da sole la discesa); la y POSITIVA (salto di testa, esultanza) resta */
           // facing GRADUALE verso la direzione di movimento (turn-rate cap) — NIENTE snap per-frame (era la causa principale del "twitch schizofrenico"
@@ -9509,7 +9548,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              al massimo di +0.55. Ora la cadenza è PROPORZIONALE con banda di sicurezza (0.62-2.15: sotto è
              comunque il blend a tenere il passo calmo, sopra ~8 u/s si è nel pieno sprint e più di così il
              ciclo diventa frenetico). Il flag `?cpmcarry=0` continua a riportare al comportamento storico. */
-          const _lb=_a._locB;if(_a.run)_a.run.timeScale=_CPM_CARRY?clamp(0.62+_a._spS*0.185,0.62,2.15):(0.55+_lb*0.40);// 5.47.17: stride calmo (base max ~0.95) + P2: oltre la saturazione del blend la cadenza sale con la velocità reale (max +0.55 → ~1.5) → meno foot-slide in conduzione veloce, feel calmo a bassa velocità invariato
+          const _lb=_a._locB;if(_a.run)_a.run.timeScale=_CPM_CARRY?clamp(0.62+_a._spS*0.185,0.62,2.15):(0.55+_lb*0.40);
+          if(_a.run&&!(typeof window!=='undefined'&&window.__CPM_NO_PASSO7)){if(_a._rap7==null){_a._rap7=_passoNaturale7(_a);_a._h7=_altezza7(_a);}
+            if(_a._rap7>0&&_a._h7>0.3){const v0=_a._rap7*_a._h7;_a.run.timeScale=clamp(_a._spS/v0,0.5,2.5);}}/* [7.999.7] cadenza = velocita' reale / velocita' naturale della clip */// 5.47.17: stride calmo (base max ~0.95) + P2: oltre la saturazione del blend la cadenza sale con la velocità reale (max +0.55 → ~1.5) → meno foot-slide in conduzione veloce, feel calmo a bassa velocità invariato
           if(_CPM_TEST&&typeof window!=='undefined'&&_a.run){try{const _sb=window.__CPM_STRIDE||(window.__CPM_STRIDE=[]);if(_a._spS>1&&_sb.length<4000)_sb.push([+_a._spS.toFixed(2),+_a.run.timeScale.toFixed(3)]);}catch(_e){}}/* [7.206.0] campionamento velocita<->cadenza del passo per la probe foot-slide */
           /* [7.209.0] richiesta di gesto PER-MESH: chi conclude un'azione (il compagno che finalizza l'assist,
              chi incorna il cross) chiede il proprio calcio/colpo di testa tramite `sr.current._mateFx`. */
