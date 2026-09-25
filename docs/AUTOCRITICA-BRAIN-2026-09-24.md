@@ -119,5 +119,11 @@ Ogni affermazione cita file e righe del codice o una misura. Dove non ho verific
 - **Manovra, passaggi per catena**: già misurati da `npm run catene`. Un riferimento pubblico verificato per le catene **Non posso confermarlo** oggi: lo cerco prima di fissare la soglia.
 - **Fluidità, foot skating ratio**: quota di fotogrammi in cui un piede a terra (altezza < 5 cm) scivola più di 2,5 cm. Riferimento: OmniControl, ICLR 2024 ([arXiv 2310.08580](https://arxiv.org/abs/2310.08580)). Il movimento reale vale 0,000 e i modelli pubblicati circa 0,05-0,10. Soglia proposta per i corpi in scena: ≤ 0,05.
 
-## 6. Domande per il PO
-Nessuna bloccante. La scelta sul gol dell'eroe è già stata presa («Occasione da gol»).
+## 6. Decisioni del PO (questionario del 25/09)
+
+1. **Ordine**: prima si chiudono le due verità (Passo 3: gol dell'eroe risolti dal motore; Passo 2: simulazione rapida = motore), poi Tattiche, poi Eroe dal gioco, poi Fluidità 3D.
+2. **Tattiche**: per entrambe le squadre. Le personas NPC danno lo stile all'avversario; lo stile della squadra dell'eroe viene dal mister del club. Nessuna schermata tattica nuova per il giocatore.
+3. **Scene dell'eroe**: meno scene, tutte vere. Niente decreto, ma **almeno una per partita, sempre vera**: il motore aspetta la prima occasione vera anche tardi. Se non arriva, la cronaca spiega perché e la pagella lo riflette.
+4. **Render 3D**: intenzioni del brain, piedi agganciati e anticipazione del gesto **solo per i 3-5 corpi in scena**.
+5. **Simulazione rapida**: ritardo di «avanza settimana» impercettibile, **sotto 0,3 s** misurato sul telefono. Se sfora, si usa una modalità leggera con le stesse regole, dichiarata.
+6. **Ritaratura**: tattiche e ritaratura escono **nella stessa release**. Mai bande rosse in produzione.
