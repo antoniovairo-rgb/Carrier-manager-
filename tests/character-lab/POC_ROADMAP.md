@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 25/09 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.999.4** — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
+**Aggiornata:** 25/09 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.999.5** — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
 **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 72% · **Fase:** grafica dai collaudi PO chiusa per oggi → si riparte dal brain «partita vera»
 
@@ -49,6 +49,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 25/09 | **7.999.5 — tattiche nel motore (punto B).** Cinque manopole per squadra (pressing, linea, ampiezza, mentalità, diretto/palleggio): squadra dell'eroe = stile del mister (neutro in nazionale), avversario = persona NPC; valgono nel live e nella simulazione. Ritaratura nella stessa release: banco 1000 partite per scenario con stili a caso verde su tutte le bande reali, stile neutro identico a prima. Guardiano `npm run tattiche`, rosso `__CPM_NO_TATTICA`. Aperti: PPDA del contropiede non sopra il neutro; costo difensivo della linea alta ancora piccolo. | pressing PPDA 8,5 vs 10,5 e recuperi +3,8 · contropiede lanci +30%, recuperi −2 · possesso palla +3,4 punti · sim 2,42 gol |
 | 25/09 | **7.999.4 — motore unico passo 2.** La partita dell'eroe simulata (campionato e nazionale) la gioca il motore del live senza grafica: stesso seme ⇒ stessa partita, risultato con la stessa forma (salvataggi invariati). Il Poisson resta per le partite fra altri club e per le amichevoli del ritiro (punto aperto). Misura del tempo sul telefono: Opzioni → Strumenti di collaudo → «Misura». Guardiano `npm run sim-motore`, rosso `__CPM_NO_SIMV2`. | headless 73-105 ms a partita, prima partita della sessione fino a 486 ms · gol 2,39 · pareggi 32% · carriera 3/3 settimane dal motore · career-sim 2 stagioni OK |
 | 25/09 | **7.999.3 — motore unico passo 3.** Gli highlight su azione erano già decisi dal dado del motore; restavano due strade fuori: rigore e punizione dell'eroe (dado proprio, gol mai nel tabellino del motore) e il gol subito in scena difensiva (tabellone sì, motore no). Ora li decide e li conta il motore. Guardiani `npm run risolvi-eroe` e `motore-unico` (tabellone = motore a fine partita), rosso `__CPM_NO_RISOLVI`. | 6/6 piazzati decisi e allineati · rosso: 0/2 · rigore p≈0,74, punizione p≈0,29-0,33 · gate 191 verde |
 | 25/09 | **Decisioni PO sulla rotta A-B-C-D** (questionario). Ordine: Passo 3 → Passo 2 → Tattiche (entrambe le squadre, ritaratura nella stessa release) → Eroe dal gioco (meno scene ma vere, almeno una a partita) → Fluidità 3D solo sui 3-5 corpi in scena. Simulazione rapida col motore sotto 0,3 s. | dettaglio nella sezione 6 di `docs/AUTOCRITICA-BRAIN-2026-09-24.md` |

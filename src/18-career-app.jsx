@@ -2971,7 +2971,7 @@ const getThisWeekMatchday=()=>{
         return isInjured?{...p,...injBase,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{...p,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)};/* [7.8.28 QA STAB-7] settimana avanzata su avversario non risolvibile: stipendio+staff-rel dovuti + decremento returnPenaltyWeeks (parità col ramo gemello) */
       }
       const _aSd=standingsSeed(p.club?.id||p.club?.n,p.season,p.week);// [5.76.0 BUG-6] settimana riproducibile
-      const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome,(_aSd+(md2.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true});
+      const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome,(_aSd+(md2.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,stile:(p.coach&&p.coach.style)||null});
       // Only mark THIS specific match as played (by matchday id), not all at same week
       const newCal=(p.calendar||[]).map(m=>m.matchday===md2.matchday?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
       // Check if more unplayed euro/cup matches remain at same week after this sim
@@ -4236,7 +4236,7 @@ const getThisWeekMatchday=()=>{
           }
         } else if(opp){
           const _wSd=standingsSeed(p.club?.id||p.club?.n,p.season,p.week);// [5.76.0 BUG-6]
-          const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome,(_wSd+(md.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true});
+          const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome,(_wSd+(md.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true,stile:(p.coach&&p.coach.style)||null});
           const isCupMd=md.type==="cup";
           if(isEuroG){
             const egPts=(sim.won?3:sim.drew?1:0);
@@ -4449,7 +4449,7 @@ const getThisWeekMatchday=()=>{
             :(_xlc.find(c=>c.id===xmd.opponentId)||_xlc.find(c=>c.n===xmd.opponentName));
           if(_xopp){
             const _xSd=(standingsSeed(p.club?.id||p.club?.n,p.season,p.week)+(xmd.matchday||0)*31)>>>0;// [5.76.0 BUG-6]
-            const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true});
+            const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true,stile:(p.coach&&p.coach.style)||null});
             const _xps=p.contractExpired?{goals:0,assists:0}:_pSimStats(_xs,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_xSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
             _sCal=_sCal.map(m=>m.matchday===xmd.matchday?{...m,played:true,result:{homeScore:_xs.homeScore,awayScore:_xs.awayScore,won:_xs.won,drew:_xs.drew},simulated:true}:m);
             if(!xmd.type||xmd.type==="league"){const _xCId=p.club?.id||p.club?.n;_xSt=updateStandings(_xSt,_xCId,_xs,p.clubPrestigeShifts||{},{opponentId:xmd.opponentId||_xopp.id||_xopp.n,seed:_xSd});}

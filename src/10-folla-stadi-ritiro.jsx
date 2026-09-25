@@ -869,7 +869,8 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts,opz
      di coppa, simulatore di debug) e come ripiego se il motore non risponde. L'oggetto risultato non cambia forma. */
   if(opz&&opz.motore&&seed!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_SIMV2)&&typeof simulaPartitaMotore==='function'){try{
     const _t0=(typeof performance!=='undefined')?performance.now():0;
-    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clubP,forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65});
+    const _pe5=(typeof TATTICHE_MOTORE!=='undefined')?getClubPersona(opponent):null;/* [7.999.5] stili: il mister dell'eroe (opz.stile) e la persona dell'avversario */
+    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clubP,forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65,tattica:(typeof TATTICHE_MOTORE!=='undefined')?{home:(opz.stile&&TATTICHE_MOTORE.mister[opz.stile])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null}:null});
     hG=_r.home;aG=_r.away;
     if(typeof window!=='undefined'){try{const _ms=((typeof performance!=='undefined')?performance.now():0)-_t0;window.__CPM_SIM_MS=Math.round(_ms);(window.__CPM_SIM_LOG=window.__CPM_SIM_LOG||[]).push(Math.round(_ms));if(window.__CPM_SIM_LOG.length>40)window.__CPM_SIM_LOG.shift();}catch(_e){}}
   }catch(_eSM){}}

@@ -25,6 +25,20 @@
  * Le frasi della cronaca NON stanno qui: qui ci sono solo fatti.
  * ======================================================================== */
 /* CMAV-SRC-HEADER-END */
+/* [7.999.5 TATTICHE NEL MOTORE — scelta PO: per entrambe le squadre; stile dell'avversario dalla sua persona NPC, stile della
+   squadra dell'eroe dal suo mister. Rosso __CPM_NO_TATTICA]
+   Cinque manopole in [-1,1], tutte a zero = il motore di prima (la taratura del banco resta valida per lo stile neutro):
+   press = intensita' del pressing (piu' palle perse dall'avversario nella sua meta', inseguitore piu' rapido, blocco piu' alto)
+   linea = altezza della linea difensiva · amp = ampiezza in possesso e uso delle fasce · ment = mentalita' (voglia di tirare,
+   spinta in avanti) · diretto = gioco diretto (+: passaggio lungo e in verticale, piu' rischio) contro palleggio (-).
+   I valori per stile sono una scelta mia di progetto, dichiarata: non vengono da una fonte. */
+const TATTICHE_MOTORE={
+  persona:{dominatore:{press:0.4,linea:0.5,amp:0.3,ment:0.5,diretto:-0.8},contropiede:{press:-0.6,linea:-0.7,amp:-0.2,ment:-0.2,diretto:0.9},
+    pressing:{press:1,linea:0.6,amp:0,ment:0.2,diretto:0.2},fantasioso:{press:0,linea:0,amp:0.5,ment:0.4,diretto:-0.3}},
+  mister:{Offensivo:{press:0.2,linea:0.3,amp:0.3,ment:0.6,diretto:0.2},Difensivo:{press:-0.3,linea:-0.6,amp:-0.3,ment:-0.6,diretto:0.3},
+    Bilanciato:{press:0,linea:0,amp:0,ment:0,diretto:0},Pressing:{press:1,linea:0.6,amp:0,ment:0.2,diretto:0.2},
+    Contropiede:{press:-0.6,linea:-0.7,amp:-0.2,ment:-0.2,diretto:0.9},"Possesso Palla":{press:0.3,linea:0.3,amp:0.3,ment:0.1,diretto:-0.8}}};
+try{if(typeof globalThis!=='undefined')globalThis.TATTICHE_MOTORE=TATTICHE_MOTORE;}catch(_e){}
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -57,6 +71,9 @@ function creaMotorePossesso(cfg){
   /* [v2] lo STADIO: nel motore «home» e' sempre la squadra dell'eroe (il verso del campo); qui si dice chi gioca davvero in casa */
   const STADIO=(cfg.stadio==='home'||cfg.stadio==='away')?cfg.stadio:null;
   const K2=Object.assign({/* taratura del banco da 1000 partite (fase 2): ogni valore e' misurato, non preso da una fonte */pTiro:0.3,pAtt:0.085,sete:2.0,xg0:-1.25,xgAng:1.0,xgDist:0.06,testa:0.55,pOn0:0.20,pOnXg:1.1,forzaTiro:0.012,forzaXg:0.006,perdita:0.03,forzaPerdita:0.004,perditaMax:0.2,forzaPass:0.02,campo:6,gestione:0.03,gestioneAdv:70,cornerParata:0.38,cornerMurato:0.45,cornerSpazzata:0.45,rossoDiretto:0.004,gialli:1.2},cfg.k2||{});
+  const _TN0={press:0,linea:0,amp:0,ment:0,diretto:0};const _noTat=(typeof window!=='undefined'&&window.__CPM_NO_TATTICA);
+  const TAT={home:Object.assign({},_TN0,(!_noTat&&cfg.tattica&&cfg.tattica.home)||{}),away:Object.assign({},_TN0,(!_noTat&&cfg.tattica&&cfg.tattica.away)||{})};
+  const pressDi=(l)=>TAT[l].press*((S&&S.min>75)?0.2:(S&&S.min>55)?0.5:1);/* [7.999.5] il pressing costa: dopo il 55' la squadra ne ha la meta', dopo il 75' un quinto */
   const vantDi=(l)=>V2?((forza[l]-forza[l==='home'?'away':'home'])+(STADIO===l?K2.campo:STADIO&&STADIO!==l?-K2.campo:0)):0;
   const attrsDi=(p)=>{const f=p.eroe?clamp((+(cfg.eroe&&cfg.eroe.ovr)||forza.home),40,95):forza[p.team];const v=Math.round(f);return{tiro:v,tecnica:v,passaggio:v,dribbling:v,velocità:v,fisico:v,mentalità:v,posizionamento:v};};
   /* posti di modulo (per indice): casa 0-9 + eroe, ospiti 10-20 */
@@ -236,13 +253,15 @@ function creaMotorePossesso(cfg){
       const fw=(q.x-P.x)*d;const advQ=advDi(q.x,l);
       const mk=piuVicino(q.x,q.y,altro(l),{noGk:true});const marc=mk?mk.d:99;
       const blk=corsiaLibera(P.x,P.y,q.x,q.y,l);
-      let sc=fw*1.2-Math.abs(dd-24)*0.2-(marc<3?14:marc<5?6:0)-blk*9+(rnd()-0.5)*6;
+      let sc=fw*(1.2+0.5*TAT[l].diretto)-Math.abs(dd-(24+8*TAT[l].diretto))*0.2-(marc<3?14:marc<5?6:0)*(1-0.3*Math.max(0,TAT[l].diretto))-blk*9+(rnd()-0.5)*6;/* [7.999.5] diretto: cerca la profondita' e il passaggio lungo; palleggio: l'appoggio vicino */
+      if(TAT[l].diretto!==0){sc+=(dd>=26?10:dd<=14?-6:0)*TAT[l].diretto;}
+      {const lo=TAT[altro(l)].linea;if(lo>0&&fw>10)sc+=7*lo;}/* [7.999.5] contro una linea alta si attacca lo spazio alle spalle */
       /* [7.878] LA FASCIA E' UNO SBOCCO VERO. Misurato: rimesse laterali 0,02 a partita contro le ~40 di
          una partita vera, perche' il pallone sta sulla fascia solo il 10 % del tempo e il premio all'uomo
          largo valeva 4 punti su un punteggio dove la marcatura ne toglie 14. Il premio ora conta davvero,
          vale su tutto il campo in avanti, e cresce quando chi ha la palla e' pressato: lo scarico sull'ala
          e' la giocata che il calcio fa quando il centro e' chiuso. */
-      if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0);
+      if(Math.abs(q.y-50)>=24&&fw>-4)sc+=(advDi(P.x,l)>=50?9:6)+(pressioneSu(P)<3?5:0)+5*TAT[l].amp;
       if(golReq){sc+=Math.max(0,advQ-advDi(P.x,l))*0.8+(advQ>=70?8:0);}
       if(q.eroe){let _b879=S.richieste.scenaEroe?26:0;
         /* [23/09 POC — punto 4] con un TIPO chiesto il bonus pieno scatta solo quando l'eroe e' gia' dove quel tipo nasce (entro 9u dal
@@ -292,7 +311,7 @@ function creaMotorePossesso(cfg){
        numeri insieme, perche allargarne uno solo lascia laltro a fare da tappo. Rosso __CPM_NO923. */
     const _no923i=(typeof window!=='undefined'&&window.__CPM_NO923);
     const pIcpt=(_no923i?(kind==="lancio"?0.11:kind==="filtrante"?0.12:kind==="cambio"?0.07:0.04):(kind==="lancio"?0.22:kind==="filtrante"?0.24:kind==="cambio"?0.15:0.11))+(pressioneSu(P)<2?0.05:0)+corsiaLibera(P.x,P.y,R.x,R.y,l)*0.10;
-    let icpt=null,icptA=0;const pIcpt2=V2?Math.min(0.6,pIcpt*Math.exp(-K2.forzaPass*vantDi(l))):pIcpt;
+    let icpt=null,icptA=0;const pIcpt2=(V2?Math.min(0.6,pIcpt*Math.exp(-K2.forzaPass*vantDi(l))):pIcpt)*(advDi(P.x,l)<50?(1+1.2*pressDi(altro(l))):Math.max(0.3,1-(pressDi(altro(l))<0?1.1:0.6)*pressDi(altro(l))));/* [7.999.5] chi pressa legge e intercetta nella meta' avversaria */
     if(!opt.sicuro&&rnd()<pIcpt2){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});if(m&&m.d<(_no923i?9:12)){icpt=m.p.i;icptA=0.45+rnd()*0.35;}}/* [7.923] il candidato si cerca piu largo: a 9 unita dal mezzo della linea di passaggio restava fuori mezzo reparto */
     /* [7.878] IL PALLONE PUO' USCIRE, e piu' spesso quanto piu' il bersaglio e' vicino alla linea: nel
        calcio vero la rimessa laterale e' l'interruzione piu' comune (~40 a partita), qui ne usciva 0,02
@@ -467,13 +486,14 @@ function creaMotorePossesso(cfg){
     const press=pressioneSu(P),adv=advDi(P.x,l),zona=zonaDi(adv,P.y);
     const golReq=(S.richieste.gol&&S.richieste.gol.lato===l)?S.richieste.gol:null;
     if(golReq)golReq.t++;
-    const att=S.richieste.att[l]||0;
+    const att=clamp((S.richieste.att[l]||0)+0.35*TAT[l].ment,-1,1);/* [7.999.5] la mentalita' dello stile si somma all'atteggiamento del risultato */
     /* [v2] L'OCCASIONE DELL'EROE: la scelta e' un INGRESSO del motore. Stessa condizione di occasione(), che e' pura, ed e' il PRIMO
        controllo del battito: annunciata l'occasione, si gioca subito. Misurato: col pressing prima, il pallone perso e ripreso quattro
        battiti dopo consumava la scelta fatta per l'occasione precedente, e sim rapida e partita guardata divergevano */
     if(V2&&P.eroe&&_occV2Pronta(P)){eseguiOccV2(P);return;}
     if(V2&&!P.gk&&advDi(P.x,l)<K2.gestioneAdv){const vq=vantDi(l);if(vq>0&&pressioneSu(P)>=2.4&&rnd()<Math.min(0.45,K2.gestione*vq)){ramo("gestioneV2");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}}
-    if(V2&&!P.gk){const pP=clamp(K2.perdita-K2.forzaPerdita*vantDi(l),0.004,K2.perditaMax)*_cad936();if(rnd()<pP){ramo("pressingV2");perdi(P,"contrasto");return;}}
+    if(V2&&!P.gk&&TAT[l].diretto<0&&pressioneSu(P)>=2.4&&rnd()<0.5*(-TAT[l].diretto)){ramo("palleggio");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}/* [7.999.5] il palleggio tiene il pallone invece di forzare */
+    if(V2&&!P.gk){const pP=clamp(K2.perdita-K2.forzaPerdita*vantDi(l),0.004,K2.perditaMax)*_cad936()*(advDi(P.x,l)<50?(1+0.6*pressDi(altro(l))):Math.max(0.3,1-(pressDi(altro(l))<0?1.1:0.6)*pressDi(altro(l))))*(1+0.6*TAT[l].diretto);/* [7.999.5] il pressing SPOSTA i recuperi: piu' alti nella meta' avversaria, meno nella propria (squadra lunga) */if(rnd()<pP){ramo("pressingV2");perdi(P,"contrasto");return;}}
     if(P.gk){ramo("gk");if(S.poss.t<2&&rnd()<0.5)return;const R=scegliRicevente(P,{});if(R)passa(P,R,{kind:hyp(R.x,R.y,P.x,P.y)>26?"lancio":"corto",sicuro:true});else{const R2=piuVicino(P.x,P.y,l,{noGk:true,escl:P.i});if(R2)passa(P,R2.p,{sicuro:true});}return;}
     if(S.richieste.turno&&S.richieste.turno!==l&&!golReq&&S.poss.t>=1){ramo("turno");if(rnd()<0.6)perdi(P,"contrasto");else{const R=scegliRicevente(P,{});if(R){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});passa(P,R,{sicuro:true});if(m){S.poss.icpt=m.p.i;S.poss.icptA=0.5;}}else perdi(P,"contrasto");}return;}
     /* [7.879] l'eroe ha il pallone e la scena e' stata chiesta: si dichiara l'occasione e si TIENE il
@@ -529,7 +549,7 @@ function creaMotorePossesso(cfg){
        quindi riportata indietro dello stesso fattore: 13,0 / 19,1 = 0,68. I rami dei rossi storici
        (__CPM_NO900, __CPM_NO903) restano com'erano, altrimenti non riprodurrebbero piu' il loro difetto. */
     const _k929=(typeof window!=='undefined'&&window&&window.__CPM_NO929)?1:0.68;
-    const _fallo900=()=>{const r=rnd();const pFb=(_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):(_no903?((press<3?0.18:0.05)+(adv>=56?0.03:0)):((press<3?0.22:0.08)+(adv>=56?0.03:0))*_k929))*_cad936();
+    const _fallo900=()=>{const r=rnd();const pFb=(_no900?((press<3?0.26:0.10)+(adv>=56?0.04:0)):(_no903?((press<3?0.18:0.05)+(adv>=56?0.03:0)):((press<3?0.22:0.08)+(adv>=56?0.03:0))*_k929))*_cad936()*(adv<50?(1+1.2*Math.max(0,pressDi(altro(l)))):1);/* [7.999.5] chi pressa ferma anche col fallo tattico nella meta' avversaria: azione difensiva senza regalare tiri */
       /* [24/09 POC — BRAIN «partita vera»] I FALLI VERI ERANO 16,2 A SQUADRA contro 11,04 della Premier League 2024-25 (StatMuse,
          media delle 20 squadre su 38 giornate): 5,45 sulla conduzione, 4,53 sul controllo, 3,48 sulla ricezione. Si riduce SOLO il
          fallo (x0,68); la fascia del contrasto pulito resta calcolata sulla probabilita' di prima, cosi' i contrasti vinti non
@@ -775,15 +795,17 @@ function creaMotorePossesso(cfg){
       const dp=dirDi(p.team);
       if(p.gk){tx=sl.x+dp*(inPoss?1.5:0);ty=50+(by-50)*0.18;v=2.5;}
       else{
-        const spinta=inPoss?clamp((advB-40)*(p.rl==="AT"?0.55:0.35),-4,(p.rl==="AT"?26:14)):clamp((advDi(bx,p.team)-50)*0.30,-10,4);
+        const _T5=TAT[p.team];
+        const spinta=inPoss?clamp((advB-40)*(p.rl==="AT"?0.55:0.35)*(1+0.25*_T5.ment),-4,(p.rl==="AT"?26:14)):clamp((advDi(bx,p.team)-50)*0.30+(_T5.press<0?9:4)*_T5.press,-10+8*Math.min(0,_T5.press),4+5*Math.max(0,_T5.press));/* [7.999.5] chi pressa accorcia in avanti senza palla */
         tx=sl.x+dp*spinta+(bx-50)*0.35;
         /* [7.876 il campo e' largo quanto il campo] La squadra si SPOSTA verso il pallone mantenendo la
            forma, non COLLASSA sul pallone: con `sl.y+(by-sl.y)*0.22` ogni giocatore veniva tirato verso
            la y della palla, che parte da 50 e non esce mai — risultato misurato: pallone nel corridoio
            27-74 per il 95 % del tempo, rimesse laterali ZERO in 48 partite. Ora il blocco trasla
            (`(by-50)*0.30`) e le corsie restano: chi parte largo resta largo. */
-        ty=sl.y+(by-50)*0.30;
-        if(p.rl==="DF"&&!inPoss){tx=sl.x+dp*Math.min(spinta,0)+(bx-50)*0.25;}
+        ty=50+(sl.y-50)*(inPoss?(1+0.25*_T5.amp):1)+(by-50)*0.30;/* [7.999.5] in possesso l'ampiezza allarga le corsie */
+        if(!inPoss)tx+=dp*3.5*_T5.linea;/* [7.999.5] senza palla il blocco intero sale o scende con la linea (col pallone la posizione la decide l'azione) */
+        if(p.rl==="DF"&&!inPoss){tx=sl.x+dp*Math.min(spinta,0)+(bx-50)*0.25+dp*8*_T5.linea;}
         /* [7.872] col gol decretato le punte di quel lato salgono al limite dell'area: il lancio ha un bersaglio */
         {const gr=S.richieste.gol;if(gr&&p.team===gr.lato&&p.rl==="AT"&&st!=="fermo"&&advDi(tx,p.team)<80){tx=xDa(80+(p.i%3)*2,p.team);ty=sl.y+(by-sl.y)*0.35;v=6;}}
         /* [23/09 POC — punto 4: IL BRAIN PORTA L'EROE DOVE NASCE L'OCCASIONE CHIESTA. Rosso __CPM_NO_B7POS] Misurato: senza questo,
@@ -876,7 +898,7 @@ function creaMotorePossesso(cfg){
           tx=clamp(tx,2,98);ty=clamp(ty,3,97);v=6;}
       }
       if(st==="volo"&&ric&&p.i===ric.i){tx=S.poss.a.x-dp*0.4;ty=S.poss.a.y;v=6;}
-      else if((st==="tenuta"||st==="libero")&&ins&&p.i===ins.i){if(st==="tenuta"){tx=bx-d*3;ty=by;}else{tx=bx;ty=by;}v=5.5;}
+      else if((st==="tenuta"||st==="libero")&&ins&&p.i===ins.i){if(st==="tenuta"){tx=bx-d*3;ty=by;}else{tx=bx;ty=by;}v=5.5*(1+0.25*TAT[p.team].press);}
       else if(st==="volo"&&S.poss.icpt!=null&&p.i===S.poss.icpt){tx=S.poss.da.x+(S.poss.a.x-S.poss.da.x)*S.poss.icptA;ty=S.poss.da.y+(S.poss.a.y-S.poss.da.y)*S.poss.icptA;v=6;}
       else if(st==="volo"&&ins&&p.i===ins.i&&S.poss.tipo!=="tiro"){tx=S.poss.a.x;ty=S.poss.a.y;v=5;}
       else if((st==="tenuta"||st==="volo")&&cop&&p.i===cop.i){const gx=xDa(6,p.team);tx=bx+(gx-bx)*0.35;ty=by+(50-by)*0.4;v=5;}
@@ -1163,7 +1185,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   /* [7.999.2] l'xG di un punto del campo per la squadra dell'eroe (verso di attacco = x crescente): lo usa l'highlight per decidere
      la sua giocata con lo STESSO modello che decide i tiri di tutti gli altri */
   const xgPunto=(x,y,intent,press)=>{try{if(!V2)return null;return xgV2({team:HOME,x:clamp(+x||50,0,100),y:clamp(+y||50,0,100)},intent||null,press==null?4:+press);}catch(_e){return null;}};
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto};
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,tattica:TAT};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* [7.999.4 MOTORE UNICO passo 2 — LA SIMULAZIONE RAPIDA E' LO STESSO MOTORE, SENZA GRAFICA. Rosso __CPM_NO_SIMV2]
@@ -1176,8 +1198,9 @@ function simulaPartitaMotore(o){o=o||{};
   const Q=[[95,50,1],[82,12],[82,38],[82,62],[82,88],[62,25],[62,50],[62,75],[48,20],[48,50],[48,80]];
   const R=i=>i===0?'POR':i<=4?'DIF':i<=7?'CEN':'ATT';
   const gio=P.map((p,i)=>({team:'home',gk:!!p[2],name:'H'+(i+1),rl:R(i),x:p[0],y:p[1]})).concat(Q.map((p,i)=>({team:'away',gk:!!p[2],name:'A'+(i+1),rl:R(i),x:p[0],y:p[1]})));
-  const M=creaMotorePossesso({v2:true,occasioniV2:false,seed:(o.seed>>>0)||7,stadio:o.stadio==='away'?'away':'home',giocatori:gio,
-    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70},forza:{home:+o.forzaH||65,away:+o.forzaA||65},lato:'home'});
+  /* [7.999.5] occasioni dell'eroe ACCESE: nella partita guardata sono gli highlight, qui le risolve il motore con la scelta piu' probabile dal profilo (scelta PO). Spente, la simulazione perdeva ~0,4 gol a partita e i gol dell'eroe. */
+  const M=creaMotorePossesso({v2:true,occasioniV2:true,seed:(o.seed>>>0)||7,stadio:o.stadio==='away'?'away':'home',giocatori:gio,
+    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70},forza:{home:+o.forzaH||65,away:+o.forzaA||65},tattica:o.tattica||null,lato:'home'});
   const B=22;
   for(let m=1;m<=46;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,45),dt:1/B,dec:true});
   M.chiedi.riprendi({centro:true,lato:'away'});

@@ -9,8 +9,14 @@ const lcg = (s) => { s = (s >>> 0) || 1; return () => { s = (Math.imul(s, 166452
 const BANDE = { gol: [2.3, 3.5], casaV: [37, 50], pari: [21, 31], zeroZero: [3, 9], tiriSquadra: [9, 16], inPortaPct: [30, 40], golPerTiro: [9, 13.5],
   falli: [19, 28], corner: [8.5, 11.5], gialli: [3.5, 5.2], rossi: [0.08, 0.30], xgSuGol: [0.85, 1.15] };
 const fails = []; const viol = {}; const V = (k, m) => { viol[k] = (viol[k] || 0) + 1; if (viol[k] <= 3) fails.push(k + ': ' + m); };
+/* [7.999.5] --tattiche: ogni partita riceve uno stile del mister (squadra dell'eroe = «home» del motore) e una persona NPC
+   (avversario), scelti dal seme: le bande reali devono tenere anche con gli stili accesi */
+const TATT = process.argv.includes('--tattiche');
+function tatticaDi(seed) { if (!TATT || !globalThis.TATTICHE_MOTORE) return null; const T = globalThis.TATTICHE_MOTORE;
+  const m = Object.keys(T.mister), p = Object.keys(T.persona); const h = Math.imul(seed ^ 0x7ac1, 2654435761) >>> 0;
+  return { home: T.mister[m[h % m.length]], away: T.persona[p[(h >>> 8) % p.length]] }; }
 function gioca(seed, fc, fo, eroeLato) {
-  const P = globalThis.creaPartita({ registra: false, v2: !VECCHIO, seed, casa: { sigla: 'CAS', forza: fc }, ospite: { sigla: 'OSP', forza: fo }, eroeLato, eroe: { nome: 'EROE', ovr: Math.round((eroeLato === 'home' ? fc : fo) + 4) }, k2: process.env.K2 ? JSON.parse(process.env.K2) : null });
+  const P = globalThis.creaPartita({ registra: false, v2: !VECCHIO, seed, casa: { sigla: 'CAS', forza: fc }, ospite: { sigla: 'OSP', forza: fo }, eroeLato, eroe: { nome: 'EROE', ovr: Math.round((eroeLato === 'home' ? fc : fo) + 4) }, tattica: tatticaDi(seed), k2: process.env.K2 ? JSON.parse(process.env.K2) : null });
   const r = P.tuttaSubito(); const ev = P.stato.eventi;
   /* regole «niente di impossibile», sullo stream */
   const golEv = { home: 0, away: 0 }; const esp = new Map(); let fine = null, ultimoTiro = {};

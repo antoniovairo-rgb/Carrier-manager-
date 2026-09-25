@@ -137,6 +137,7 @@
     "motore-unico": "node motore-unico-test.mjs",
     "risolvi-eroe": "node risolvi-eroe-test.mjs",
     "sim-motore": "node sim-motore-test.mjs",
+    "tattiche": "node ../../prototipo/partita-vera/tattiche.mjs 250",
     "ball-owner": "node ball-owner-test.mjs",
     "bg-continuity": "node bg-continuity-test.mjs",
     "bg-decision": "node bg-decision-test.mjs",

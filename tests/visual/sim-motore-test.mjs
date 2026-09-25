@@ -31,10 +31,11 @@ const AB = await page.evaluate(() => {
   const club = { id: 'a', n: 'A', p: 70 }, opp = { id: 'b', n: 'B', p: 70 };
   const r1 = window.__CPM_simMatch(club, opp, 70, true, 12345, {}, { motore: true });
   const r2 = window.__CPM_simMatch(club, opp, 70, true, 12345, {}, { motore: true });
-  const m = window.__CPM_SIM_MOTORE({ seed: (12345 >>> 0) ^ 0x5a17, forzaH: 70, forzaA: 70, stadio: 'home', ovr: 70 });
+  /* [7.999.5] la simulazione passa lo stile dell'avversario (persona NPC): il confronto usa la stessa tattica */
+  const pe = getClubPersona(opp); const m = window.__CPM_SIM_MOTORE({ seed: (12345 >>> 0) ^ 0x5a17, forzaH: 70, forzaA: 70, stadio: 'home', ovr: 70, tattica: { home: null, away: TATTICHE_MOTORE.persona[pe.id] } });
   const vecchio = window.__CPM_simMatch(club, opp, 70, true, 12345);
   const N = 200; let g = 0, x = 0, T = [];
-  for (let k = 0; k < N; k++) { const t0 = performance.now(); const r = window.__CPM_simMatch(club, opp, 70, k % 2 === 0, (7000 + k * 41) >>> 0, {}, { motore: true }); T.push(performance.now() - t0); g += r.homeScore + r.awayScore; x += r.homeScore === r.awayScore ? 1 : 0; }
+  for (let k = 0; k < N; k++) { const t0 = performance.now(); const r = window.__CPM_simMatch(club, { id: 'b' + k, n: 'B' + k, p: 70 }, 70, k % 2 === 0, (7000 + k * 41) >>> 0, {}, { motore: true });/* avversari diversi = personas diverse: la banda vale per il campionato, non per uno stile solo */ T.push(performance.now() - t0); g += r.homeScore + r.awayScore; x += r.homeScore === r.awayScore ? 1 : 0; }
   T.sort((a, b) => a - b);
   return { det: r1.homeScore === r2.homeScore && r1.awayScore === r2.awayScore, motore: r1.homeScore === m.home && r1.awayScore === m.away,
     chiavi: Object.keys(r1).sort().join(','), chiaviV: Object.keys(vecchio).sort().join(','), gol: g / N, pari: 100 * x / N, msMed: T[N >> 1], msMax: T[N - 1] };

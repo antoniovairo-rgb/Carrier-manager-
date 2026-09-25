@@ -23,7 +23,7 @@
     const tE=eroeLato==='home'?o.casa:o.ospite,tA=eroeLato==='home'?o.ospite:o.casa;
     const M=crea({v2:o.v2!==false,seed:o.seed>>>0,stadio:eroeLato==='home'?'home':'away',giocatori:schiera(tE,tA),
       eroe:{name:(o.eroe&&o.eroe.nome)||'EROE',x:58,y:50,attivo:true,ovr:(o.eroe&&o.eroe.ovr)||74,profilo:(o.eroe&&o.eroe.profilo)||null},
-      forza:{home:tE.forza,away:tA.forza},scelte:o.scelte||{},k2:o.k2||null,decidi:o.decidi||undefined});
+      forza:{home:tE.forza,away:tA.forza},tattica:o.tattica||null,scelte:o.scelte||{},k2:o.k2||null,decidi:o.decidi||undefined});
     const G=M._g;const rs=lcg((o.seed^0x9e3779b9)>>>0);/* flusso SEPARATO per i cambi: non sposta il motore */
     const cambi={home:[],away:[]};for(const l of ['home','away']){const usati={};for(const fin of [[57,64],[67,74],[77,83]]){const min=fin[0]+Math.floor(rs()*(fin[1]-fin[0]+1));
       let i;do{i=(l==='home'?1:11)+Math.floor(rs()*9);}while(usati[i]);usati[i]=1;cambi[l].push({min,i});}}
