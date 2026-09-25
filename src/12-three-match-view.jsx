@@ -606,7 +606,7 @@ function ThreeMatchView(props){
        are never throttled.  `window.__CPM_ANIM_LOD=false` is the A/B switch. */
     const _updateAvatarMixerLod=(av,delta,index,technical)=>{if(!av||!av.mx)return false;
       const enabled=!(typeof window!=='undefined'&&window.__CPM_ANIM_LOD===false);
-      let cadence=1,protectedPose=!!technical||index===0||!!av._isHero||!!av._gName||!!av._gPrev||((av._gw||0)>0.02);
+      let cadence=1,protectedPose=!!technical||index===0||!!av._isHero||!!av._carta9||!!av._gName||!!av._gPrev||((av._gw||0)>0.02);
       if(enabled&&!protectedPose&&av.root&&camera){
         av.root.getWorldPosition(_animLodWorld);_animLodProbe.copy(_animLodWorld).project(camera);
         const inView=Math.abs(_animLodProbe.x)<=1.10&&Math.abs(_animLodProbe.y)<=1.10&&_animLodProbe.z>=-1&&_animLodProbe.z<=1;
@@ -3058,6 +3058,7 @@ function ThreeMatchView(props){
              const _r=BRAIN_GESTI[e.t];const _A=(window.__CPM_SCENA23=window.__CPM_SCENA23||{attesi:[],montati:[]});
              if(_r)for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx!=null&&_A.attesi.length<400)_A.attesi.push({seq:e._seq,ev:e.t,idx,nomi:_nomi23(e,idx,nomi),visto:false});}
            }catch(_eA){}}
+           if(e.scena&&(e.t==='ammonizione'||e.t==='espulsione')&&e.chi&&e.chi.i!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_CARTA9))sr.current._carta9={col:e.t==='ammonizione'?'y':'r',idx:e.chi.i,t:-1};/* [7.999.9 CARTELLINO] il cartellino deciso dal motore nella scena: l'arbitro lo mostra */
            if(_ph23!=='playing'){if(_W)_W.fuoriGioco++;continue;}
            const _r=BRAIN_GESTI[e.t];if(!_r)continue;
            for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx==null)continue;
@@ -6749,7 +6750,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // Sprint 3D-G2: arbitro segue la palla con offset laterale; guardalinee seguono x dell'azione
         // 3DV-10: durante isHL l'arbitro esce dal campo (fuori camera) per non bloccare l'azione
         {const _rk=Math.min(aDt*1.2,1);/* [7.303.0] inseguimento più calmo */
-        if(isHL){refMesh.position.x+=(-90-refMesh.position.x)*Math.min(aDt*10,1);}
+        const _c9=sr.current._carta9;let _c9m=null;if(_c9){_c9m=(_c9.idx===21)?hero:(sr.current.players&&sr.current.players[_c9.idx]&&sr.current.players[_c9.idx].mesh);          if(_c9.t<0&&_c9m&&_c9.idx!==21&&oppMesh&&oppMesh!==hero&&oppMesh!==_c9m&&Math.hypot(_c9m.position.x-hero.position.x,_c9m.position.z-hero.position.z)>14)_c9.dalContrasto=oppMesh;if(_c9.dalContrasto)_c9m=_c9.dalContrasto;/* [7.999.9] regola B4: il colpevole del motore se e' entro 14 u dall'eroe, altrimenti chi ha fatto il contrasto in scena (contato) */
+          _c9.m=_c9m;if(!_c9m||!isResult||_c9.t>4.6){sr.current._carta9=null;_c9m=null;}}
+        if(_c9m){/* [7.999.9 CARTELLINO — Passo 4. Rosso __CPM_NO_CARTA9] l'arbitro raggiunge chi ha commesso il fallo, di fronte a lui dal lato
+             della camera, e alza il braccio col cartellino (braccio e cartellino dopo il mixer, piu' sotto). Passo capato a 8 u/s: corre, non vola. */
+          const _t9=(_c9.t<0?0:_c9.t);_c9.t=_t9+aDt;
+          let _vx=camera.position.x-_c9m.position.x,_vz=camera.position.z-_c9m.position.z;const _vl=Math.hypot(_vx,_vz)||1;_vx/=_vl;_vz/=_vl;
+          const _ca=Math.cos(1.4),_sa=Math.sin(1.4);const _ox=_vx*_ca-_vz*_sa,_oz=_vx*_sa+_vz*_ca;/* 80 gradi di lato: arbitro e colpevole affiancati nell'inquadratura (a 50 l'arbitro copriva il colpevole) */
+          const _gx=_c9m.position.x+_ox*2.4,_gz=_c9m.position.z+_oz*2.4;
+          if(_t9===0){refMesh.position.x=_c9m.position.x+_ox*10;refMesh.position.z=_c9m.position.z+_oz*10;}
+          let _dx9=_gx-refMesh.position.x,_dz9=_gz-refMesh.position.z;const _dl9=Math.hypot(_dx9,_dz9),_mx9=8*aDt;if(_dl9>_mx9){_dx9*=_mx9/_dl9;_dz9*=_mx9/_dl9;}
+          refMesh.position.x+=_dx9;refMesh.position.z+=_dz9;
+          if(typeof window!=='undefined'&&window.__CPM_CARTA9_REC){try{const W=(window.__CPM_CARTA9=window.__CPM_CARTA9||{fotogrammi:0});W.fotogrammi++;W.col=_c9.col;W.idx=_c9.idx;if(W.tx0==null){W.dalContrasto=!!_c9.dalContrasto;W.opp=oppActType||null;W.oppUguale=oppMesh===_c9m;W.oppDaEroe=oppMesh?+Math.hypot(oppMesh.position.x-hero.position.x,oppMesh.position.z-hero.position.z).toFixed(1):null;W.colpDaEroe=+Math.hypot(_c9m.position.x-hero.position.x,_c9m.position.z-hero.position.z).toFixed(1);W.tx0=+_c9m.position.x.toFixed(1);W.tz0=+_c9m.position.z.toFixed(1);}W.tx=+_c9m.position.x.toFixed(1);W.tz=+_c9m.position.z.toFixed(1);W.rx=+refMesh.position.x.toFixed(1);W.rz=+refMesh.position.z.toFixed(1);W.hx=+hero.position.x.toFixed(1);W.hz=+hero.position.z.toFixed(1);W.dist=+Math.hypot(refMesh.position.x-_c9m.position.x,refMesh.position.z-_c9m.position.z).toFixed(2);W.t=+_c9.t.toFixed(2);}catch(_e9){}}}
+        else if(isHL){refMesh.position.x+=(-90-refMesh.position.x)*Math.min(aDt*10,1);}
         else{
           /* [7.303.0 collaudo PO «l'arbitro durante la cronaca è una scheggia impazzita, riduci i movimenti»]
              il lato su cui si teneva era `bz>=0?1:-1`: bastava che il pallone sfiorasse la mediana perché il
@@ -6767,7 +6780,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _mx=9*aDt,_dl=Math.hypot(_dx,_dz);if(_dl>_mx){_dx*=_mx/_dl;_dz*=_mx/_dl;}
           refMesh.position.x+=_dx;refMesh.position.z+=_dz;
         }// arbitro in diagonale (di lato e dietro l'azione), mai in mezzo al gioco
-        refMesh.rotation.y=Math.atan2(bx-refMesh.position.x,bz-refMesh.position.z);
+        refMesh.rotation.y=_c9m?Math.atan2(_c9m.position.x-refMesh.position.x,_c9m.position.z-refMesh.position.z):Math.atan2(bx-refMesh.position.x,bz-refMesh.position.z);/* [7.999.9] col cartellino guarda il giocatore */
         linRef1.position.x+=(bx*0.5-linRef1.position.x)*Math.min(aDt*0.9,1);
         linRef2.position.x+=(bx*0.5-linRef2.position.x)*Math.min(aDt*0.9,1);}
         // Sprint 3D-H3 MT-4: staff vivaci — idle sway arbitro, facing guardalinee, panchine reagiscono al gol
@@ -9462,6 +9475,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             _ord.filter(x=>x.index!==0&&!x.av._isGk).slice(0,3).forEach(x=>_tieni.add(x.index));
             if(P.ceremony&&!(window.__CPM_NO_PREMIO23)&&(P.ceremony.kind||'league')!=='promo'&&(P.ceremony.kind||'league')!=='bigwin'&&!P.ceremony.light)_ord.filter(x=>x.av._team==='home').forEach(x=>_tieni.add(x.index));/* [24/09 POC] PREMIAZIONE DI SQUADRA: in foto c'e' tutta la squadra, non l'eroe e i tre piu' vicini */
             _ord.filter(x=>x.index!==0&&(x.av._gName||x.av._gPrev)).forEach(x=>_tieni.add(x.index));/* chi sta gia' facendo un gesto resta: spegnerlo a meta' azione si vedrebbe */
+            {const _c9=sr.current._carta9;if(_c9){const _tm=_c9.m||((_c9.idx===21)?hero:(sr.current.players&&sr.current.players[_c9.idx]&&sr.current.players[_c9.idx].mesh));_ord.filter(x=>x.av._isRef||(_tm&&x.av.proc===_tm)).forEach(x=>_tieni.add(x.index));}}/* [7.999.9] col cartellino in scena si disegnano anche l'arbitro e il colpevole */
             glbAvatars.forEach((av,index)=>{if(av&&av.root)av.root.visible=_tieni.has(index);});
             const _conta={lod0:0,lod1:0,lod2:0};
             glbAvatars.forEach(av=>{const l=av&&av._cgLod;if(l&&_conta[l]!==undefined)_conta[l]++;});
@@ -9801,6 +9815,25 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           }
           if(_a.mx){const _lbW=_lb*_lb*(3-2*_lb);if(_a.run)_a.run.weight=_lbW;if(_a.idle)_a.idle.weight=1-_lbW;_updateAvatarMixerLod(_a,aDt,_ai,false);}/* [7.49.0 BL-06] smoothstep anche sugli off-ball */
         }
+        {/* [7.999.9 CARTELLINO] braccio destro dell'arbitro alzato col cartellino in mano. Nessuna clip nel pacchetto: si PUNTA l'omero e
+            l'avambraccio verso l'alto (poco in avanti, verso il giocatore) ruotando dalla direzione che hanno ora — indipendente dal bind. */
+         const _c9=sr.current._carta9,_ra=glbAvatars.find(a=>a&&a._isRef);
+         if(_ra){_ra._carta9=!!_c9;const _k9=_c9&&_c9.t>=0?Math.min(1,Math.max(0,(_c9.t-0.9)/0.35))*Math.min(1,Math.max(0,(4.2-_c9.t)/0.35)):0;
+          const _cm=sr.current._cardMesh9||(sr.current._cardMesh9=(()=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(1,1.36),new THREE.MeshBasicMaterial({color:0xfacc15,side:THREE.DoubleSide}));m.visible=false;scene.add(m);return m;})());
+          if(_k9>0.01){try{const R=_ra.visualRoot||_ra.root;
+            if(_ra._b9===undefined){const f=re=>_findBone904(R,re);const u=f(/^(upperarm_r|(mixamorig:?)?RightArm)$/i),l=f(/^(lowerarm_r|(mixamorig:?)?RightForeArm)$/i),h=f(/^(hand_r|(mixamorig:?)?RightHand)$/i);/* nomi esatti: ik_hand_r e' un osso di IK fuori dal braccio */_ra._b9=(u&&l&&h)?{u,l,h}:null;_ra._h9=_altezza7(_ra)||1.8;}
+            const B=_ra._b9;if(B){const v=sr.current._v9||(sr.current._v9={a:new THREE.Vector3(),b:new THREE.Vector3(),d:new THREE.Vector3(),t:new THREE.Vector3(),q:new THREE.Quaternion(),pw:new THREE.Quaternion()});
+              const fy=Math.sin(refMesh.rotation.y),fz=Math.cos(refMesh.rotation.y);v.t.set(fy*0.22,1,fz*0.22).normalize();
+              const aim=(bone,child)=>{bone.updateMatrixWorld(true);bone.getWorldPosition(v.a);child.getWorldPosition(v.b);v.d.subVectors(v.b,v.a).normalize();
+                const dir=v.d.clone().lerp(v.t,_k9).normalize();v.q.setFromUnitVectors(v.d,dir);bone.parent.updateMatrixWorld(true);bone.parent.getWorldQuaternion(v.pw);
+                bone.quaternion.copy(v.pw.clone().invert().multiply(v.q).multiply(v.pw).multiply(bone.quaternion.clone()));bone.updateMatrixWorld(true);};
+              R.updateMatrixWorld(true);aim(B.u,B.l);aim(B.l,B.h);
+              B.h.getWorldPosition(v.a);const H=_ra._h9;_cm.scale.set(0.085*H,0.085*H,1);_cm.position.set(v.a.x,v.a.y+0.07*H,v.a.z);_cm.quaternion.copy(camera.quaternion);
+              _cm.material.color.setHex(_c9.col==='r'?0xdc2626:0xfacc15);_cm.visible=true;
+              if(typeof window!=='undefined'&&window.__CPM_CARTA9_REC){try{const W=(window.__CPM_CARTA9=window.__CPM_CARTA9||{});R.updateMatrixWorld(true);const hd=_findBone904(R,/Head$/i);const hp=hd?hd.getWorldPosition(new THREE.Vector3()):null;
+                W.manoSopraTesta=Math.max(W.manoSopraTesta||-9,hp?+(v.a.y-hp.y).toFixed(2):-9);W.cartaVista=(W.cartaVista|0)+1;W.colore=_c9.col;{const _ca9=glbAvatars.find(a=>a&&_c9.m&&a.proc===_c9.m);W.colpevoleDisegnato=_ca9?(_ca9.root.visible?1:0):-1;W.colpVis=(W.colpVis|0)+(_ca9&&_ca9.root.visible?1:0);}W.ossa=[B.u.name,B.l.name,B.h.name];B.u.getWorldPosition(v.b);B.l.getWorldPosition(v.d);W.omeroSu=+(v.d.clone().sub(v.b).normalize().y).toFixed(2);W.spalla=hp?+(v.b.y-hp.y).toFixed(2):null;W.lung=+v.d.distanceTo(v.b).toFixed(3);}catch(_eW){}}}
+            else _cm.visible=false;}catch(_e9){_cm.visible=false;}}
+          else _cm.visible=false;}}
         // 5.49.19: NUMERI DI MAGLIA sul DORSO ANIMATO — seguono l'osso della schiena (non si staccano più durante corsa/ingresso).
         const _nv=sr.current._numV||(sr.current._numV=new THREE.Vector3());
         for(let _ai=0;_ai<glbAvatars.length;_ai++){const _a=glbAvatars[_ai],_np=_a.numPlane;if(!_np)continue;

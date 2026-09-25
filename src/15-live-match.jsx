@@ -8448,6 +8448,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   un fallo COMMESSO dall'eroe (key "foul") può portare un giallo SEEDATO; alla 2ª ammonizione o (raro) rosso diretto →
     //   ESPULSIONE reale in campo (evento cronaca + flash + uscita dal campo riusando il binario SOSTITUITO). A fine partita
     //   la squalifica deriva da heroRedRef/heroYellowsRef (fatti veri), non più da Math.random. Spento sotto test/force-sit.
+    let _carta9=null;/* [7.999.9] il cartellino dell'eroe, per il motore e il 3D */
+    if(!ok&&key==="foul"&&(_CPM_TEST||_SIT_TEST)&&typeof window!=="undefined"&&window.__CPM_FORZA_CARTA9)_carta9=window.__CPM_FORZA_CARTA9;/* solo collaudo: niente conseguenze di carriera */
     if(!ok&&key==="foul"&&!heroRedRef.current&&!subbedOffRef.current&&!benchStart&&(context==="career"||context==="cup")&&!_CPM_TEST&&!_SIT_TEST){
       const _ckC=clockRef.current;heroFoulCntRef.current++;
       const _cardSeed=Math.abs(hashStr("card|"+(player.name||"")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+(opponent?.id||opponent?.n||"x")+"|"+_ckC+"|"+heroFoulCntRef.current))%100;
@@ -8456,6 +8458,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(_cardSeed<3)_card="red_direct";               // rosso diretto (raro: fallo da ultimo uomo/brutale)
       else if(_hadYellow&&_cardSeed<46)_card="red_2y";  // 2ª ammonizione
       else if(_cardSeed<32)_card="yellow";              // ammonizione
+      if(_card)_carta9=_card==="yellow"?"yellow":"red";
       if(_card==="yellow"){heroYellowsRef.current++;flashScreen({col:"rgba(250,204,21,0.22)",dur:600});pushMatchEvent(_ckC,"yellow",em=>"🟨 Ammonizione al "+em+"'"+(heroYellowsRef.current>=2?" — attento!":""));try{notify("🟨 Ammonito al "+_ckC+"'","#f59e0b");}catch(_e){}}
       else if(_card){heroRedRef.current=true;sentOffRef.current=true;flashScreen({col:"rgba(220,38,38,0.30)",dur:800});
         pushMatchEvent(_ckC,"red",em=>(_card==="red_2y"?"🟥 ESPULSO! Doppia ammonizione al ":"🟥 ESPULSO! Rosso diretto al ")+em+"'");
@@ -8482,7 +8485,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     try{ const _M=motoreRef.current;
       /* [23/09 POC — B2] con il dado del brain, la scelta risolta diventa una catena di eventi veri del motore (attori del cast):
          il tabellino e le pagelle li conta il motore. Il vecchio ponte `registra` resta solo nel rosso. */
-      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(key,{rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',gkCall:!!(action&&action.gkCall)});_brain23(_evB2);
+      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||key,{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',gkCall:!!(action&&action.gkCall),carta:_carta9});_brain23(_evB2);
+        try{for(const _e9 of _evB2){if((_e9.t==='ammonizione'||_e9.t==='espulsione')&&_e9.chi&&!_e9.chi.eroe){const _n9=String(_e9.chi.nome||'').split(' ').slice(-1)[0]||'il difensore';pushMatchEvent(clockRef.current,_e9.t==='ammonizione'?'opp_yellow':'opp_red',em=>(_e9.t==='ammonizione'?'🟨 Ammonito '+_n9+' per il fallo su di te al ':'🟥 Espulso '+_n9+' per il fallo su di te al ')+em+"'");}}}catch(_e9){}/* [7.999.9] il cartellino all'avversario deciso dal motore entra nei momenti chiave */
         if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,rew:(action&&action.rew)||'',tipo:_cnB.type||'',var:_cnB.variant||'',lbl:String((action&&action.label)||'').slice(0,30),ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
       else if(_M&&_M.registra){
       const _lato=isMatchHome?'home':'away';

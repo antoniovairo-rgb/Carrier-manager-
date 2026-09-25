@@ -181,7 +181,8 @@
     "armo-scelte": "node armo-scelte.mjs",
     "varieta-scene": "node varieta-scene.mjs",
     "rndm-conteggio": "node rndm-conteggio.mjs",
-    "caduta-eroe": "node caduta-eroe-test.mjs"
+    "caduta-eroe": "node caduta-eroe-test.mjs",
+    "cartellino": "node cartellino-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

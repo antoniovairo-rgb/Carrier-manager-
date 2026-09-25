@@ -1181,8 +1181,17 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       if(!famDef&&(!ok||out.some(e=>e.t==='tiro'&&e.chi&&e.chi.i===HERO&&(e.esito==='fuori'||e.esito==='post'||e.esito==='saved'))))E('rammarico',{chi:chi(H)});/* l'eroe si prende la testa fra le mani quando la sua giocata non riesce */
       if(d.gkCall&&MIO_GK&&ok){E('presa',{gk:chi(MIO_GK)});E('rilancio',{gk:chi(MIO_GK)});}/* chiamato il portiere: presa e rilancio con le mani */
       if(D&&out.some(e=>e.t==='tiro'&&e.chi&&e.chi.i===HERO&&e.esito!=='blocked'))E('pressione',{chi:chi(D),su:chi(H)});/* il difensore del cast chiude sul tiro dell'eroe (il 3D lo mostra con la reazione del reparto) */
-      if(key==='fouled'||key==='win_freekick')E('fallo',{per:H.team===HOME?AWAY:HOME,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
-      else if(key==='foul')E('fallo',{chi:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+      if(key==='fouled'||key==='win_freekick'){E('fallo',{per:H.team===HOME?AWAY:HOME,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+        /* [7.999.9 CARTELLINO — Passo 4. Rosso __CPM_NO_CARTA9] chi ferma l'eroe col fallo rischia il cartellino con la STESSA regola
+           di ogni fallo della partita (_cart913: un giallo ogni 5-6 falli, di piu' se l'azione era avanzata). Prima il fallo
+           subito in scena non passava mai dall'arbitro. Colpevole: il duellante del cast se avversario, altrimenti il piu' vicino. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_CARTA9)){const _lA=H.team===HOME?AWAY:HOME;let F=(D&&D.team===_lA)?D:null;if(!F){const w=piuVicino(H.x,H.y,_lA,{noGk:true});F=w&&w.p?w.p:null;}
+          if(F){const _n9=S.eventi.length;const _fz=(typeof window!=='undefined'&&window.__CPM_FORZA_CARTA9)||null;/* solo collaudo: il cartellino a comando */
+            if(_fz)ev(_fz==='red'?'espulsione':'ammonizione',{chi:chi(F),su:chi(H),lato:F.team});else _cart913(F,H,advDi(H.x,H.team));
+            for(const e of S.eventi.slice(_n9)){e.scena=true;out.push(e);}}}}
+      else if(key==='foul'){E('fallo',{chi:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
+        /* [7.999.9] il cartellino dell'eroe lo decide la partita (carriera: squalifica) e qui diventa un fatto del motore */
+        if(d.carta&&!(typeof window!=='undefined'&&window.__CPM_NO_CARTA9))E(d.carta==='yellow'?'ammonizione':'espulsione',{chi:chi(H),lato:H.team});}
       if(d.corner)E('corner',{per:H.team,x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
     }catch(_eR){}
     /* MISURATO (tabellino-coerenza, prima stesura): lasciati in S.eventi, questi fatti uscivano dal tick successivo, la cronaca
