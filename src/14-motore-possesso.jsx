@@ -53,13 +53,18 @@ function creaMotorePossesso(cfg){
   g[HERO]={i:HERO,team:HOME,gk:false,name:String((cfg.eroe&&cfg.eroe.name)||"EROE"),rl:"AT",x:clamp(+(cfg.eroe&&cfg.eroe.x)||58,2,98),y:clamp(+(cfg.eroe&&cfg.eroe.y)||50,3,97),eroe:true};
   let eroeAttivo=!(cfg.eroe&&cfg.eroe.attivo===false);
   const forza={home:clamp(+(cfg.forza&&cfg.forza.home)||68,40,95),away:clamp(+(cfg.forza&&cfg.forza.away)||68,40,95)};
+  const V2=!!cfg.v2;
+  /* [v2] lo STADIO: nel motore «home» e' sempre la squadra dell'eroe (il verso del campo); qui si dice chi gioca davvero in casa */
+  const STADIO=(cfg.stadio==='home'||cfg.stadio==='away')?cfg.stadio:null;
+  const K2=Object.assign({/* taratura del banco da 1000 partite (fase 2): ogni valore e' misurato, non preso da una fonte */pTiro:0.3,pAtt:0.085,sete:2.0,xg0:-1.25,xgAng:1.0,xgDist:0.06,testa:0.55,pOn0:0.20,pOnXg:1.1,forzaTiro:0.012,forzaXg:0.006,perdita:0.03,forzaPerdita:0.004,perditaMax:0.2,forzaPass:0.02,campo:6,gestione:0.03,gestioneAdv:70,cornerParata:0.38,cornerMurato:0.45,cornerSpazzata:0.45,rossoDiretto:0.004,gialli:1.2},cfg.k2||{});
+  const vantDi=(l)=>V2?((forza[l]-forza[l==='home'?'away':'home'])+(STADIO===l?K2.campo:STADIO&&STADIO!==l?-K2.campo:0)):0;
   const attrsDi=(p)=>{const f=p.eroe?clamp((+(cfg.eroe&&cfg.eroe.ovr)||forza.home),40,95):forza[p.team];const v=Math.round(f);return{tiro:v,tecnica:v,passaggio:v,dribbling:v,velocità:v,fisico:v,mentalità:v,posizionamento:v};};
   /* posti di modulo (per indice): casa 0-9 + eroe, ospiti 10-20 */
   const SLOT_H=[{x:5,y:50},{x:18,y:14},{x:18,y:38},{x:18,y:62},{x:18,y:86},{x:38,y:25},{x:38,y:50},{x:38,y:75},{x:56,y:22},{x:56,y:78}];
   const SLOT_A=[{x:95,y:50},{x:82,y:14},{x:82,y:38},{x:82,y:62},{x:82,y:86},{x:62,y:25},{x:62,y:50},{x:62,y:75},{x:44,y:20},{x:40,y:50},{x:44,y:80}];
   const SLOT_EROE={x:60,y:50};
   const slotDi=(p)=>p.eroe?SLOT_EROE:(p.team===HOME?SLOT_H[p.i]:SLOT_A[p.i-10]);
-  const attivo=(p)=>!!p&&(!p.eroe||eroeAttivo);
+  const attivo=(p)=>!!p&&(!p.eroe||eroeAttivo)&&!(V2&&S&&S.cartellini&&S.cartellini[p.i]&&S.cartellini[p.i].r);
   const mio=(p,l)=>attivo(p)&&p.team===l;
 
   /* ---------- lo stato ---------- */
@@ -111,13 +116,14 @@ function creaMotorePossesso(cfg){
   const _XG914=(e)=>{const z=e.zona||'fuori';const b=z==='areaPiccola'?0.34:z==='area'?0.14:z==='limite'?0.06:0.03;const pr=typeof e.press==='number'?e.press:4;return Math.min(0.9,b*(pr<2?1.35:pr<4?1.0:0.72));};
   const _conta914=(e)=>{try{
     const l=(e.chi&&e.chi.team)||e.per||e.lato;const A=S.tab[l];if(!A)return;const B=S.tab[l==='home'?'away':'home'];
+    if(V2&&((e.t==='ricezione'&&e.kind==='cross')||(e.t==='tiro'&&e.intent==='header')))A.passOk++;
     switch(e.t){
       case 'passaggio': A.passaggi++;if(!e.fuori)A.passOk++;break;
-      case 'cross': A.passaggi++;A.passOk++;A.cross++;break;
+      case 'cross': A.passaggi++;if(!V2)A.passOk++;A.cross++;break;
       /* [23/09 POC] AZIONI DALLE FASCE: ogni volta che la squadra porta il pallone nel corridoio laterale dell'ultimo
          terzo (y<22 o y>78, avanzamento >= 66) partendo da fuori di li'. Solo lettura degli eventi: nessun sorteggio. */
       case 'ricezione': case 'conduzione': {const q=e.to||e.chi;if(q&&typeof q.x==='number'){const adv=l==='home'?q.x:100-q.x;const w=(q.y<22||q.y>78)&&adv>=66;if(w&&!S._fascia23[l])A.fascia++;S._fascia23[l]=w;}break;}
-      case 'tiro': A.tiri++;A.xg=Math.round((A.xg+_XG914(e))*100)/100;
+      case 'tiro': A.tiri++;A.xg=Math.round((A.xg+(typeof e.xg==='number'?e.xg:_XG914(e)))*1000)/1000;
         if(e.esito==='goal'||e.esito==='saved')A.inPorta++;else if(e.esito==='post')A.legni++;else if(e.esito==='blocked')A.murati++;else A.fuori++;break;
       case 'gol': A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;break;
       case 'corner': A.corner++;break;
@@ -286,8 +292,8 @@ function creaMotorePossesso(cfg){
        numeri insieme, perche allargarne uno solo lascia laltro a fare da tappo. Rosso __CPM_NO923. */
     const _no923i=(typeof window!=='undefined'&&window.__CPM_NO923);
     const pIcpt=(_no923i?(kind==="lancio"?0.11:kind==="filtrante"?0.12:kind==="cambio"?0.07:0.04):(kind==="lancio"?0.22:kind==="filtrante"?0.24:kind==="cambio"?0.15:0.11))+(pressioneSu(P)<2?0.05:0)+corsiaLibera(P.x,P.y,R.x,R.y,l)*0.10;
-    let icpt=null,icptA=0;
-    if(!opt.sicuro&&rnd()<pIcpt){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});if(m&&m.d<(_no923i?9:12)){icpt=m.p.i;icptA=0.45+rnd()*0.35;}}/* [7.923] il candidato si cerca piu largo: a 9 unita dal mezzo della linea di passaggio restava fuori mezzo reparto */
+    let icpt=null,icptA=0;const pIcpt2=V2?Math.min(0.6,pIcpt*Math.exp(-K2.forzaPass*vantDi(l))):pIcpt;
+    if(!opt.sicuro&&rnd()<pIcpt2){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});if(m&&m.d<(_no923i?9:12)){icpt=m.p.i;icptA=0.45+rnd()*0.35;}}/* [7.923] il candidato si cerca piu largo: a 9 unita dal mezzo della linea di passaggio restava fuori mezzo reparto */
     /* [7.878] IL PALLONE PUO' USCIRE, e piu' spesso quanto piu' il bersaglio e' vicino alla linea: nel
        calcio vero la rimessa laterale e' l'interruzione piu' comune (~40 a partita), qui ne usciva 0,02
        perche' la probabilita' scattava solo oltre |y-50|>=34, dove il gioco non arriva quasi mai. */
@@ -324,7 +330,19 @@ function creaMotorePossesso(cfg){
     if(R&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_CROSS23)){const ra=clamp(advDi(R.x,l)+3,86,94);tx=clamp(xDa(ra,l),2,98);ty=clamp(R.y+(ty-50)*0.35,38,62);}
     ev("cross",{da:chi(P),a:chi(R),from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},corner:!!opt.corner});
     volo({tipo:"cross",kind:"cross",x:tx,y:ty,ricevente:R?R.i:null,v:48*_v912(),arco:"cross",actor:nome(P),rcv:R?nome(R):null});};
-  const esitoTiro=(P,intent,ctx)=>{const golReq=S.richieste.gol&&S.richieste.gol.lato===P.team?S.richieste.gol:null;
+  /* [v2] xG del tiro: logistica su angolo della porta e distanza in metri (campo 105 x 68). Coefficienti TARATI sulle bande
+     (gol per tiro 11,1 % su 4.337 partite vere), non presi da una fonte. Rigore 0,76 e punizione 0,06: ipotesi dichiarate. */
+  const xgV2=(P,intent,press)=>{const l=P.team;if(intent==='penalty')return 0.76;
+    const adv=advDi(P.x,l);const mx=Math.max(0.5,(100-adv)*1.05),my=Math.abs(P.y-50)*0.68;const dist=Math.hypot(mx,my);
+    const ang=Math.max(0.02,Math.atan2(7.32*mx,mx*mx+my*my-3.66*3.66<0?0.01:mx*mx+my*my-3.66*3.66));
+    let x=1/(1+Math.exp(-(K2.xg0+K2.xgAng*ang-K2.xgDist*dist)));
+    if(intent==='freekick')x=Math.min(x,0.06);if(intent==='header')x*=K2.testa;
+    x*=(press<2?0.75:press<4?0.9:1);x*=Math.exp(K2.forzaXg*vantDi(l));return clamp(x,0.005,0.9);};
+  const esitoTiroV2=(P,intent,ctx)=>{const pr=(ctx&&ctx.pressRaw!=null)?ctx.pressRaw:4;const xg=xgV2(P,intent,pr);S._xgV2=xg;
+    if(rnd()<xg)return "goal";
+    const pOn=clamp(K2.pOn0+xg*K2.pOnXg,0.12,0.8);if(rnd()<pOn)return "saved";
+    const r=rnd();return r<0.06?"post":r<0.40?"blocked":"wide";};
+  const esitoTiro=(P,intent,ctx)=>{if(V2)return esitoTiroV2(P,intent,ctx);const golReq=S.richieste.gol&&S.richieste.gol.lato===P.team?S.richieste.gol:null;
     let out=null;
     if(decidi){try{out=decidi(intent,Object.assign({attrs:attrsDi(P),seed:seme32(),x:advDi(P.x,P.team)},ctx||{})).outcome;}catch(_e){out=null;}}
     /* [7.929 — IL LEGNO E' UN TASSO SUI TIRI, e i tiri ora sono giusti] Il sorteggio base dava «post» all'8 %
@@ -357,14 +375,14 @@ function creaMotorePossesso(cfg){
     else if(out==="goal"){out="saved";S.conta.golNegati++;}
     return out;};
   const tira=(P,opt)=>{opt=opt||{};const l=P.team;const press=pressioneSu(P);const intent=opt.intent||"shot";
-    const out=esitoTiro(P,intent,{pressure:press<2?3:press<4?2:1,gkOut:false});
+    const out=esitoTiro(P,intent,{pressure:press<2?3:press<4?2:1,gkOut:false,pressRaw:press});
     const gx=l===HOME?100.6:-0.6;let ty=50+(rnd()-0.5)*8,tx=gx;
     const adv=advDi(P.x,l);const zona=zonaDi(adv,P.y);
     if(out==="wide"){ty=rnd()<0.5?(GOAL_Y0-2-rnd()*6):(GOAL_Y1+2+rnd()*6);}
     else if(out==="post"){ty=rnd()<0.5?GOAL_Y0+0.4:GOAL_Y1-0.4;}
     else if(out==="blocked"){const m=piuVicino(P.x+dirDi(l)*3,P.y,altro(l),{noGk:true});if(m&&m.d<7){tx=m.p.x;ty=m.p.y;}else{tx=clamp(P.x+dirDi(l)*6,2,98);}}
     S.conta.tiri++;
-    ev("tiro",{chi:chi(P),zona,intent,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});
+    if(V2){S._ultTiroV2=S._ultTiroV2||{};S._ultTiroV2[l]=S.min;}ev("tiro",{chi:chi(P),zona,intent,xg:V2?+(S._xgV2||0).toFixed(3):undefined,from:{x:+P.x.toFixed(1),y:+P.y.toFixed(1)},to:{x:+tx.toFixed(1),y:+ty.toFixed(1)},esito:out,press:+press.toFixed(1)});
     volo({tipo:"tiro",kind:intent,x:tx,y:ty,ricevente:null,v:44*_v912(),esito:out,tiratore:P.i,arco:"shot",actor:nome(P)});};
   const conduci=(P,opt)=>{opt=opt||{};const d=dirDi(P.team);const _sp900=!!opt.spinta;const passo=(5+rnd()*3)+(_sp900?3:0);/* tetto 11u: il passo umano resta sotto i 12u del guardiano */const adv=advDi(P.x,P.team);/* [7.900 A4] spinta: al limite con la strada libera il portatore PUNTA LA PORTA (passo +4u, rientro deciso verso il centro) */
     /* [7.876] chi conduce sulla fascia non rientra per abitudine: punta il fondo e rientra solo in area */
@@ -406,7 +424,8 @@ function creaMotorePossesso(cfg){
        Nel calcio vero un ammonito gioca piu' attento e l'arbitro e' piu' tollerante. Il fattore e' stato TARATO in
        due passate: a 0,22 i gialli tornavano giusti (2,08 su 2,4) ma i rossi restavano al doppio del vero
        (0,25 su 0,11); a 0,09 rientrano entrambi. Il secondo giallo costa undici volte il primo. */
-    const _p=(0.16+(adv>=60?0.05:0)+(adv>=78?0.05:0))*(_st.g>=1?0.09:1);/* NON si normalizza: si sorteggia una volta per FALLO, e i falli sono gia' normalizzati */
+    const _p=(0.16+(adv>=60?0.05:0)+(adv>=78?0.05:0))*(_st.g>=1?0.09:1)*(V2?K2.gialli:1);/* NON si normalizza: si sorteggia una volta per FALLO, e i falli sono gia' normalizzati */
+    if(V2&&rnd()<K2.rossoDiretto){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"rosso diretto",lato:W.team});return;}
     if(rnd()>=_p)return;
     _st.g++;
     if(_st.g>=2){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"seconda ammonizione",lato:W.team});}
@@ -449,6 +468,12 @@ function creaMotorePossesso(cfg){
     const golReq=(S.richieste.gol&&S.richieste.gol.lato===l)?S.richieste.gol:null;
     if(golReq)golReq.t++;
     const att=S.richieste.att[l]||0;
+    /* [v2] L'OCCASIONE DELL'EROE: la scelta e' un INGRESSO del motore. Stessa condizione di occasione(), che e' pura, ed e' il PRIMO
+       controllo del battito: annunciata l'occasione, si gioca subito. Misurato: col pressing prima, il pallone perso e ripreso quattro
+       battiti dopo consumava la scelta fatta per l'occasione precedente, e sim rapida e partita guardata divergevano */
+    if(V2&&P.eroe&&_occV2Pronta(P)){eseguiOccV2(P);return;}
+    if(V2&&!P.gk&&advDi(P.x,l)<K2.gestioneAdv){const vq=vantDi(l);if(vq>0&&pressioneSu(P)>=2.4&&rnd()<Math.min(0.45,K2.gestione*vq)){ramo("gestioneV2");ev("controllo",{chi:chi(P),press:+pressioneSu(P).toFixed(1),zona:zonaDi(advDi(P.x,l),P.y),gestione:true});return;}}
+    if(V2&&!P.gk){const pP=clamp(K2.perdita-K2.forzaPerdita*vantDi(l),0.004,K2.perditaMax)*_cad936();if(rnd()<pP){ramo("pressingV2");perdi(P,"contrasto");return;}}
     if(P.gk){ramo("gk");if(S.poss.t<2&&rnd()<0.5)return;const R=scegliRicevente(P,{});if(R)passa(P,R,{kind:hyp(R.x,R.y,P.x,P.y)>26?"lancio":"corto",sicuro:true});else{const R2=piuVicino(P.x,P.y,l,{noGk:true,escl:P.i});if(R2)passa(P,R2.p,{sicuro:true});}return;}
     if(S.richieste.turno&&S.richieste.turno!==l&&!golReq&&S.poss.t>=1){ramo("turno");if(rnd()<0.6)perdi(P,"contrasto");else{const R=scegliRicevente(P,{});if(R){const m=piuVicino((P.x+R.x)/2,(P.y+R.y)/2,altro(l),{noGk:true});passa(P,R,{sicuro:true});if(m){S.poss.icpt=m.p.i;S.poss.icptA=0.5;}}else perdi(P,"contrasto");}return;}
     /* [7.879] l'eroe ha il pallone e la scena e' stata chiesta: si dichiara l'occasione e si TIENE il
@@ -532,7 +557,7 @@ function creaMotorePossesso(cfg){
        Le quote scendono e cio' che si toglie al tiro torna al passaggio, che e' la voce affamata. */
     const _t950=(typeof window!=='undefined'&&window&&window.__CPM_NO950);
     let pTiro=(zona==="area"?(_t950?0.85:((typeof window!=="undefined"&&window&&window.__CPM_NO_TIRI23)?0.55:0.30)):zona==="limite"?(_t950?0.45:0.30):zona==="trequarti"?(_t950?0.12:0.08):0)*_cad936();
-    pTiro*=(1+0.35*att);if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
+    pTiro*=(1+0.35*att);if(V2)pTiro*=K2.pTiro*Math.exp(K2.forzaTiro*vantDi(l));if(press<2.4)pTiro*=0.6;if(verso)pTiro*=0.3;
     /* [24/09 POC — BRAIN «PARTITA VERA», secondo difetto misurato] SI TIRA TROPPO DA FUORI. Banco 10 partite: tiri dal limite
        65 %, trequarti 18 %, area 16 % (anche contando l'area vera, 40 m di larghezza: 16 %) e 17,4 tiri a squadra. In Premier
        League 2024-25 i tiri da fuori sono il 31,7 % (8,3 a partita, Opta Analyst): la conclusione nasce in area. Qui il tiro
@@ -564,6 +589,10 @@ function creaMotorePossesso(cfg){
     {const _no888=(typeof window!=='undefined'&&window&&window.__CPM_NO888);
      if(!_no888&&zona==="limite"&&!golReq){const _sp888=spazioAvanti(P);
        if(_sp888>=4)pTiro*=0.35;else if(_sp888>=2)pTiro*=0.6;}}
+    /* [v2] L'IMPAZIENZA: piu' minuti senza tirare, piu' si cerca la conclusione. Misurato: gli 0-0 erano partite «morte» (16 tiri, xG 1,25
+       contro 25 e 2,84), con lunghe siccita' di tiri. Nessun numero-obiettivo: si accorciano solo le siccita' */
+    if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
+      if(rnd()<pS){ramo("tiroV2");tira(P);return;}}
     if(golReq){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
       /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
       const M=piuAvanzato(l,P.i);
@@ -578,7 +607,7 @@ function creaMotorePossesso(cfg){
        questi tre contatori dicono quale delle tre manca, invece di farlo indovinare. */
     if(!golReq&&adv>=72)ramo("cross_avanti");
     if(!golReq&&adv>=72&&largo)ramo("cross_largo");
-    if(!golReq&&adv>=72&&largo&&rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.55:0.40)){/* [24/09 POC] cross mirati: frequenza 0,55 -> 0,40 per non gonfiare tiri e colpi di testa */let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<78||Math.abs(q.y-50)>20)continue;const sc=aq+(q.eroe?4:0)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}ramo("cross_senzaRicevente");}
+    if(!golReq&&adv>=72&&largo&&rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.55:0.40)){/* [24/09 POC] cross mirati: frequenza 0,55 -> 0,40 per non gonfiare tiri e colpi di testa */let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<(V2?66:78)||Math.abs(q.y-50)>(V2?28:20))continue;const sc=aq+(q.eroe?4:0)+rnd()*6;if(sc>bs){bs=sc;R=q;}}if(R){ramo("cross");cross(P,R);return;}ramo("cross_senzaRicevente");}
     if(verso&&!golReq){const dv=hyp(P.x,P.y,verso.x,verso.y);if(dv>10){let R=null,bs=1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const dq=hyp(q.x,q.y,verso.x,verso.y);const dd=hyp(q.x,q.y,P.x,P.y);if(dd<5||dd>40)continue;if(dq<bs){bs=dq;R=q;}}if(R&&bs<dv-4){passa(P,R,{sicuro:true});return;}}}
     /* [7.888 v2 — CHI ARRIVA AL LIMITE CON LA STRADA LIBERA PUO' ENTRARE.
        MISURATO al banco (48 partite, 188 conclusioni): trequarti 22 % · limite 61 % · area 17 %, cioe'
@@ -611,6 +640,27 @@ function creaMotorePossesso(cfg){
     if(spazio>=3&&adv<90){ramo("conduci2");conduci(P);return;}
     ramo("ripiego");const R2=piuVicino(P.x,P.y,l,{escl:P.i});if(R2)passa(P,R2.p,{sicuro:true});else perdi(P);
   }
+  /* [v2] un'occasione ogni 5 minuti al massimo, quando l'eroe ha palla da avanzamento 64 in su. Funzione PURA (nessun sorteggio):
+     il chiamante la puo' interrogare prima del battito per fermarsi e chiedere la scelta, e il motore la rivaluta identica. */
+  function _occV2Pronta(P){if(!V2||cfg.occasioniV2===false||!P||!P.eroe||!eroeAttivo)return false;/* nel gioco le occasioni dell'eroe sono gli highlight */if(S.poss.stato!=="tenuta"||S.poss.padrone!==HERO)return false;
+    return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=5;}
+  /* la scelta automatica: la giocata che il profilo dell'eroe rende piu' sensata in quel punto. Regola MIA, dichiarata */
+  function sceltaAutoV2(P){const l=P.team,adv=advDi(P.x,l),zona=zonaDi(adv,P.y),press=pressioneSu(P),spazio=spazioAvanti(P);
+    const pr=(cfg.eroe&&cfg.eroe.profilo)||{};const v=(k)=>(+pr[k]||+(cfg.eroe&&cfg.eroe.ovr)||70)/70;
+    const s={tiro:(zona==="area"?1.0:zona==="limite"?0.45:0.12)*v("tiro")*(press<2?0.75:1),cross:(adv>=72&&Math.abs(P.y-50)>=22)?0.85*v("passaggio"):0,
+      dribbling:(spazio>=3?0.62:0.30)*v("dribbling"),passaggio:0.55*v("passaggio")};
+    let best="passaggio",bs=-1;for(const k of ["tiro","cross","dribbling","passaggio"])if(s[k]>bs){bs=s[k];best=k;}return best;}
+  function eseguiOccV2(P){const k=(S._nOccV2|0);S._nOccV2=k+1;S._ultOccV2=S.min;const auto=sceltaAutoV2(P);
+    const sc=(cfg.scelte&&cfg.scelte[k])||auto;const l=P.team,adv=advDi(P.x,l);
+    ev("occasione_eroe",{k,auto,scelta:sc,chi:chi(P),zona:zonaDi(adv,P.y),x:+P.x.toFixed(1),y:+P.y.toFixed(1)});
+    if(sc==="tiro"){tira(P);return;}
+    if(sc==="cross"){let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===P.i||q.gk)continue;const aq=advDi(q.x,l);if(aq<74)continue;const s2=aq-Math.abs(q.y-50)*0.3+rnd()*6;if(s2>bs){bs=s2;R=q;}}
+      if(R){cross(P,R);return;}const R2=scegliRicevente(P,{});if(R2)passa(P,R2);else conduci(P);return;}
+    if(sc==="dribbling"){let D=null,dd=99;for(const q of g){if(!attivo(q)||q.team===P.team||q.gk)continue;const d=hyp(q.x,q.y,P.x,P.y);if(d<dd){dd=d;D=q;}}
+      const a=attrsDi(P),b=D?attrsDi(D):a;const pOk=clamp(0.46+((a.dribbling+a.velocità)/2-(b.fisico+b.posizionamento)/2)*0.012,0.2,0.8);
+      if(S.tab)S.tab[l].dribbling++;if(rnd()<pOk){if(S.tab)S.tab[l].dribblingOk++;ev("dribbling",{chi:chi(P),su:chi(D),ok:true});conduci(P,{spinta:true});return;}
+      ev("dribbling",{chi:chi(P),su:chi(D),ok:false});if(rnd()<0.3){fallo(P);return;}perdi(P,"contrasto");return;}
+    const R=scegliRicevente(P,{});if(R)passa(P,R);else conduci(P);}
   function muoviVolo(){
     const p=S.poss;const _dt=S.dt||1;if(S.fase<=1e-9)S.conta.volo++;p.t+=_dt;/* [7.898] il volo avanza di v·dt per chiamata; t conta minuti */
     const R=p.ricevente!=null?g[p.ricevente]:null;
@@ -636,7 +686,7 @@ function creaMotorePossesso(cfg){
   function arrivoTiro(){const p=S.poss;const P=g[p.tiratore];const l=p.lato,out=p.esito;const gk=portiereDi(altro(l));
     if(out==="goal"){S.rete={lato:l,t:0};S.poss.stato="rete";S.conta.gol[l]++;const gr=S.richieste.gol;if(gr&&gr.lato===l){if(gr.t>=5)S.conta.golForzati++;S.richieste.gol=null;}
       ev("gol",{chi:chi(P),assist:chi(p.ultimoPassatore!=null&&p.ultimoPassatore!==p.tiratore?g[p.ultimoPassatore]:null),lato:l,x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)});return;}
-    if(out==="saved"){const corner=rnd()<0.35;ev("parata",{gk:chi(gk),chi:chi(P),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else{gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);S.poss.t=0;}return;}
+    if(out==="saved"){const corner=rnd()<(V2?K2.cornerParata:0.35);ev("parata",{gk:chi(gk),chi:chi(P),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else{gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);S.poss.t=0;}return;}
     /* [7.913.0 — A8] I CORNER. Il tabellino del PO segnava «calci d'angolo 0» a fine partita, e il banco dava
        1,45 per squadra contro i 4,9 veri. Nel calcio vero il corner nasce quasi sempre da una deviazione: un
        tiro murato che sbatte sul difensore e finisce sul fondo, un palo che rimbalza fuori, una spazzata di
@@ -644,7 +694,7 @@ function creaMotorePossesso(cfg){
     const _no913c=(typeof window!=='undefined'&&window&&window.__CPM_NO913);
     if(out==="post"){ev("palo",{chi:chi(P)});if(!_no913c&&rnd()<0.34){fuoriCampo(S.palla.x,S.palla.y,l,"corner");return;}libero(xDa(93,l),clamp(S.palla.y+(rnd()-0.5)*14,30,70));return;}
     if(out==="blocked"){const m=piuVicino(S.palla.x,S.palla.y,altro(l),{noGk:true});ev("murato",{chi:chi(m?m.p:null),su:chi(P)});
-      if(!_no913c&&rnd()<0.40){fuoriCampo(S.palla.x,S.palla.y,l,"corner");return;}/* [7.913 A8] la deviazione in angolo */
+      if(!_no913c&&rnd()<(V2?K2.cornerMurato:0.40)){fuoriCampo(S.palla.x,S.palla.y,l,"corner");return;}/* [7.913 A8] la deviazione in angolo */
       libero(clamp(S.palla.x-dirDi(l)*(3+rnd()*6),2,98),clamp(S.palla.y+(rnd()-0.5)*10,4,96));return;}
     ev("fuori",{chi:chi(P),x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)});fuoriCampo(S.palla.x,S.palla.y,altro(l),"goal_kick");
   }
@@ -659,7 +709,7 @@ function creaMotorePossesso(cfg){
     if(D){S.conta.spazzDist=(S.conta.spazzDist||0)+D.d;S.conta.spazzN=(S.conta.spazzN||0)+1;
       if(D.d<4)ramo("spazz_difVicino"); else if(D.d<8)ramo("spazz_dif4_8"); else ramo("spazz_difLontano");}
     else ramo("spazz_nessunDif");
-    if(dif&&(!att||rnd()<0.5)){dif.x=S.palla.x;dif.y=S.palla.y;const corner=rnd()<0.30;const _lat=!corner&&rnd()<0.20;ev("spazzata",{chi:chi(dif),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else if(_lat){/* [7.878] la spazzata finisce spesso in rimessa laterale */fuoriCampo(clamp(S.palla.x-dirDi(l)*(6+rnd()*10),6,94),S.palla.y,l,"throw");return;}else libero(clamp(S.palla.x-dirDi(l)*(14+rnd()*10),4,96),clamp(S.palla.y+(rnd()-0.5)*30,6,94));return;}
+    if(dif&&(!att||rnd()<0.5)){dif.x=S.palla.x;dif.y=S.palla.y;const corner=rnd()<(V2?K2.cornerSpazzata:0.30);const _lat=!corner&&rnd()<0.20;ev("spazzata",{chi:chi(dif),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else if(_lat){/* [7.878] la spazzata finisce spesso in rimessa laterale */fuoriCampo(clamp(S.palla.x-dirDi(l)*(6+rnd()*10),6,94),S.palla.y,l,"throw");return;}else libero(clamp(S.palla.x-dirDi(l)*(14+rnd()*10),4,96),clamp(S.palla.y+(rnd()-0.5)*30,6,94));return;}
     if(att){att.x=S.palla.x;att.y=S.palla.y;if(rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.62:((typeof window!=="undefined"&&window&&window.__CPM_NO_TESTA24)?0.24:0.16))){tira(att,{intent:"header"});return;}/* [7.987] 0,24 -> 0,16 insieme alla mira (sola, toglieva anche tiri in porta). Rosso __CPM_NO_TESTA24 *//* [24/09 POC] con cross mirati la conclusione di testa immediata scende 0,62 -> 0,38: spesso si controlla */tenuta(att,null);ev("ricezione",{chi:chi(att),kind:"cross"});return;}
     const gk=portiereDi(altro(l));if(hyp(gk.x,gk.y,S.palla.x,S.palla.y)<9){ev("presa",{gk:chi(gk)});gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);return;}
     libero(S.palla.x,S.palla.y);
@@ -889,7 +939,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     if(S.poss.stato==="tenuta"&&S.poss.padrone!=null){const P=g[S.poss.padrone];S.palla.x=clamp(P.x+dirDi(P.team)*0.5,0,100);S.palla.y=P.y;}
     return _fine();}
   const chiedi={
-    gol(lato){S.richieste.gol={lato:lato===AWAY?AWAY:HOME,t:0};S.richieste.verso=null;},
+    gol(lato){if(V2)return;S.richieste.gol={lato:lato===AWAY?AWAY:HOME,t:0};S.richieste.verso=null;},
     /* [7.879] LA SCENA DELL'EROE SI CHIEDE, NON SI IMPONE. Il live match dice «fra poco tocca a lui»:
        il motore porta il pallone all'eroe con le sue regole (il compagno lo sceglie come ricevente) e
        quando ce l'ha davvero emette `occasione_eroe`. La scena si apre SU QUEL FATTO, non su un minuto. */
@@ -1100,7 +1150,13 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
        e il chiamante li riceve qui: dalla coda del tick si tolgono. */
     S.eventi.splice(_n0);return out;}
   };
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S};
+  const occasione=(min)=>{const P=g[HERO];const m0=S.min;if(min!=null)S.min=min|0;const ok=V2&&!S.scena&&_occV2Pronta(P);S.min=m0;
+    return ok?{k:(S._nOccV2|0),auto:sceltaAutoV2(P),zona:zonaDi(advDi(P.x,P.team),P.y),x:+P.x.toFixed(1),y:+P.y.toFixed(1)}:null;};
+  const espulsi=()=>Object.keys(S.cartellini||{}).filter(k=>S.cartellini[k].r).map(Number);
+  /* [7.999.2] l'xG di un punto del campo per la squadra dell'eroe (verso di attacco = x crescente): lo usa l'highlight per decidere
+     la sua giocata con lo STESSO modello che decide i tiri di tutti gli altri */
+  const xgPunto=(x,y,intent,press)=>{try{if(!V2)return null;return xgV2({team:HOME,x:clamp(+x||50,0,100),y:clamp(+y||50,0,100)},intent||null,press==null?4:+press);}catch(_e){return null;}};
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* CMAV-MOTORE-END */

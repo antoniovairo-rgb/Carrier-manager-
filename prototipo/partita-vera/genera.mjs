@@ -139,9 +139,17 @@ patch('V2-6b api', `  return{tick,chiedi,stato,tabellino,pagelle,registra,risolv
   const espulsi=()=>Object.keys(S.cartellini||{}).filter(k=>S.cartellini[k].r).map(Number);
   return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2};`);
 
-for (const p of PATCH) { const n = src.split(p.da).length - 1; if (n !== 1) { console.error(`✗ patch «${p.nome}»: trovato ${n} volte`); process.exit(1); } src = src.replace(p.da, () => p.a); }
+/* dalla 7.999.2 le patch vivono DENTRO src/14 (motore unico nel gioco): se ci sono gia', il generatore copia e basta.
+   --applica: scrive le patch in src/14 (una volta sola). */
+const GIA = src.includes('const V2=!!cfg.v2;');
+if (!GIA) { for (const p of PATCH) { const n = src.split(p.da).length - 1; if (n !== 1) { console.error(`✗ patch «${p.nome}»: trovato ${n} volte`); process.exit(1); } src = src.replace(p.da, () => p.a); } }
+if (!GIA && process.argv.includes('--applica')) {
+  const f = path.join(ROOT, 'src', '14-motore-possesso.jsx'); const orig = fs.readFileSync(f, 'utf8');
+  const a = orig.indexOf('/* CMAV-SRC-HEADER-END */') + 26, b = orig.indexOf("if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA");
+  fs.writeFileSync(f, orig.slice(0, a) + src + orig.slice(b)); console.log('✓ patch scritte in src/14-motore-possesso.jsx');
+}
 const out = `/* GENERATO da prototipo/partita-vera/genera.mjs a partire da src/14-motore-possesso.jsx — non modificare a mano.
-   Patch applicate: ${PATCH.map(p => p.nome).join(' · ')} */
+   Patch: ${GIA ? 'gia\' dentro src/14' : PATCH.map(p => p.nome).join(' · ')} */
 (function(root){
 ${src}
 root.creaMotoreV2=creaMotorePossesso;

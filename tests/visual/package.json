@@ -134,6 +134,7 @@
     "parata-legibility": "node parata-legibility-test.mjs",
     "jumbotron-anchor": "node jumbotron-anchor-test.mjs",
     "event-ledger": "node event-ledger-test.mjs",
+    "motore-unico": "node motore-unico-test.mjs",
     "ball-owner": "node ball-owner-test.mjs",
     "bg-continuity": "node bg-continuity-test.mjs",
     "bg-decision": "node bg-decision-test.mjs",

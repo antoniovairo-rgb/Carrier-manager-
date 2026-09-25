@@ -4023,7 +4023,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const iv=setInterval(()=>{
       // Sprint 34 — tactic moments + sub events (checked via clockRef, outside setClock)
       const ck=clockRef.current;
-      const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);/* [7.870] rosso appaiato: __CPM_NO870 rimette in moto le vecchie macchine narrative e il vecchio mover */
+      const MOTORE870=!(typeof window!=='undefined'&&window.__CPM_NO870);
+      /* [7.999.2 — MOTORE UNICO NEL GIOCO (scelta PO: «ripartiamo dal gioco com'e', miglioriamo il brain»). Rosso __CPM_NO_V2]
+         Il motore del possesso con le correzioni v2 (banco da 1000 partite contro 4.337 partite vere) decide i gol della partita:
+         il microsim non ne decreta piu', il gol e' l'esito di un tiro del motore e la cronaca lo accredita come ogni altra riga. */
+      const V2L=MOTORE870&&!(typeof window!=='undefined'&&window.__CPM_NO_V2);/* [7.870] rosso appaiato: __CPM_NO870 rimette in moto le vecchie macchine narrative e il vecchio mover */
       /* ⚠️ [7.960.0 A14 · PRIMO PASSO PROVATO E REVOCATO DALLA SUA MISURA: IL CICLO DEI SOTTO-TICK FERMO
          DURANTE LA SCENA.] L'idea era giusta e la misura l'ha confermata a meta': fermando il contatore dei
          sotto-tick insieme alla fisica, ogni minuto riceveva esattamente i suoi 22 passi e `prima-divergenza`
@@ -4522,7 +4526,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           }
         }
         let _simEv77=null;
-        if(!_inHL77){
+        if(!_inHL77&&!V2L){
           const _sg77=bgMicroTick({min:nx,homePrestige:(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):player.club?.p),oppPrestige:oppPrestige,heroOvr:player.ovr,momentum:momentumRef.current,possession:possessionRef.current,seed:bgSimSeedRef.current,oppRed:oppRedRef.current,lead:(scoreRef.current.home-scoreRef.current.away)});/* [6.54.0] passa il margine → gestione del vantaggio (meno blowout) · [6.87.0 collaudo PO] in NAZIONALE il prestigio di casa è quello della NAZIONE, non del club dell'eroe (CF Madrid 90 gonfiava i gol dell'Italia 82) */
           if(_sg77)_simEv77=BG_MATCH.find(e=>e.ef===(_sg77.side==="home"?"team_goal":"opp_goal"))||null;
           /* [7.785 registro] i punti di uscita del gol ambientale: nasce qui, e da qui in poi ogni ramo che lo mette da parte lascia una riga. Sola lettura, sotto __CPM_REC. */
@@ -5021,7 +5025,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(MOTORE870&&!_inHL77){try{
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
-            motoreRef.current=creaMotorePossesso({seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr},forza:{home:_heroP,away:oppPrestige||65},lato:kickoffSideRef.current||"home"});
+            motoreRef.current=creaMotorePossesso({v2:V2L,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr},forza:{home:_heroP,away:oppPrestige||65},lato:kickoffSideRef.current||"home"});
             try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}
             try{window.__CPM_MOTORE_OBJ=()=>motoreRef.current;}catch(_e){}/* [7.918] il motore INTERO per le sonde: tabellino e pagelle devono poter essere confrontati con quello che il pannello scrive a schermo */}
           const _M=motoreRef.current;
@@ -5048,7 +5052,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              _M.chiedi.piazzato({kind:_kind891,x:_pen891?89:_spb.x,y:_pen891?50:_spb.y,lato:"home",batt:_M.HERO,hold:6});}
            else _M.chiedi.verso({x:_spb.x,y:_spb.y,lato:_s.type==="def"?"away":"home"});if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_s.type==="def"?-1:1,"ponte-scena");}catch(_e){}}}}
           /* la quota di possesso della simulazione e' una richiesta di turno, mai un ordine sul pallone */
-          if(nx%3===0&&!golMotoreRef.current){const _q=quotaMotoreRef.current;if(_q.length>=6){const _qh=Math.round(100*_q.reduce((a2,b2)=>a2+b2,0)/_q.length);const _p=clamp(possessionRef.current|0,20,80);const _want=(_qh<_p-12)?"home":(_qh>_p+12)?"away":null;if(_want)_M.chiedi.turno(_want);}}
+          if(nx%3===0&&!golMotoreRef.current&&!V2L){/* [7.999.2] col motore unico il possesso lo decide il motore: niente piu' cambi di turno chiesti per inseguire la quota della vecchia cronaca (misurato: tiri 9-12 per squadra contro 14 del banco) */const _q=quotaMotoreRef.current;if(_q.length>=6){const _qh=Math.round(100*_q.reduce((a2,b2)=>a2+b2,0)/_q.length);const _p=clamp(possessionRef.current|0,20,80);const _want=(_qh<_p-12)?"home":(_qh>_p+12)?"away":null;if(_want)_M.chiedi.turno(_want);}}
           /* [7.849 nel motore] l'atteggiamento: chi e' sotto o pari dal 70' assalta, chi e' avanti di due dal 60' amministra */
           {const _sc=scoreRef.current||{home:0,away:0};const _d=(_sc.home|0)-(_sc.away|0);const _attDi=(dd)=>(nx>=70&&dd<=0)?1:(nx>=60&&dd>=2)?-0.6:(dd<0?0.4:0);_M.chiedi.atteggiamento("home",_attDi(_d));_M.chiedi.atteggiamento("away",_attDi(-_d));}
           /* [7.962 A14 · QUARTA META' — IL DEBITO DI PASSI SI PAGA AL BATTITO. Rosso __CPM_NO967]
@@ -8285,7 +8289,21 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     /* [23/09 POC — B2: IL DADO E' DEL BRAIN. Rosso __CPM_NO_B2] stessa probabilita' di prima (senza il rumore ±3% del vecchio
        dado, che non spostava la media), ma tirata dal flusso seedato del motore: l'esito della scena lo decide il motore unico. */
     var _b2On=!(typeof window!=='undefined'&&window.__CPM_NO_B2)&&!!(motoreRef.current&&motoreRef.current.risolviEroe)&&!(typeof window!=='undefined'&&window.__CPM_NO870);
-    const _pB2=clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76);
+    /* [7.999.2 — LA GIOCATA DELL'EROE LA DECIDE IL MOTORE (scelta PO: «il motore, con la tua scelta e le tue statistiche»). Rosso __CPM_NO_V2]
+       Misurato sul gioco di prima: 5 gol a partita (reali 2,82), 1,7 dagli highlight, perche' un tiro dell'eroe riusciva fino al 76%.
+       Ora per le giocate da gol e da assist la probabilita' e' l'xG del motore nel punto della scena, moltiplicato per la QUALITA'
+       della giocata: la formula di sempre (scelta, statistiche, forma, morale, mister...) rapportata alla sua media 0,45 e tenuta
+       fra x0,5 e x2. L'assist e' il passaggio riuscito (0,8) per l'xG del compagno qualche metro piu' avanti. */
+    const _v2h=!(typeof window!=='undefined'&&window.__CPM_NO_V2)&&!!(motoreRef.current&&motoreRef.current.v2&&motoreRef.current.xgPunto);
+    let _pV2=null;
+    if(_v2h&&(action.rew==="goal"||action.rew==="assist")){try{
+      const _qV2=clamp(rate/0.45,0.5,2.0);const _M2=motoreRef.current;const _px=(pPos&&pPos.x)||60,_py=(pPos&&pPos.y)||50;
+      const _intV2=(_fkSit&&typeof isPenaltySit==="function"&&isPenaltySit(_fkSit))?"penalty":((_fkSit&&typeof isSetPieceSit==="function"&&isSetPieceSit(_fkSit)&&_fkSit.ballAt!=="corner")?"freekick":null);
+      const _xg0V2=action.rew==="goal"?_M2.xgPunto(_px,_py,_intV2,3):_M2.xgPunto(Math.min(94,_px+10),50,null,3);/* [7.999.2 scelta PO «Occasione da gol»] un highlight e' per definizione una GRANDE occasione: l'xG del punto (misurato 0,02-0,16) diventa 0,28+0,8*xG, tetto 0,6; poi scelta e statistiche (q). Il rigore resta il suo xG. */const _xgV2=_xg0V2==null?null:(_intV2==="penalty"?_xg0V2:(action.rew==="goal"?1:0.85)*clamp(0.28+0.8*_xg0V2,0.28,0.6));
+      if(_xgV2!=null)_pV2=clamp(_xgV2*_qV2*_cruise80*_hgD86/adapt,0.05,0.8);
+      if(typeof window!=='undefined'&&window.__CPM_REC){const _W=(window.__CPM_V2EROE=window.__CPM_V2EROE||[]);_W.push({rew:action.rew,xg:+(+_xgV2).toFixed(3),q:+_qV2.toFixed(2),p:+(+_pV2).toFixed(3),vecchio:+clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76).toFixed(3)});}
+    }catch(_eV2){_pV2=null;}}
+    const _pB2=_pV2!=null?_pV2:clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76);
     let ok=_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));
     if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_B2=window.__CPM_B2||{n:0,ok:0,pSum:0,brain:0});_W.n++;_W.ok+=ok?1:0;_W.pSum+=_pB2;_W.brain+=_b2On?1:0;}catch(_eW){}}/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */
     try{const _qKeeper=new URLSearchParams(window.location.search||'');if(_qKeeper.get('cpmtest')==='1'&&_qKeeper.get('cpmForce')==='keeper'&&action&&action.gkCall)ok=true;}catch(_e){}

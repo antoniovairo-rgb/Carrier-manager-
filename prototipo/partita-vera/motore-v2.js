@@ -1,5 +1,5 @@
 /* GENERATO da prototipo/partita-vera/genera.mjs a partire da src/14-motore-possesso.jsx — non modificare a mano.
-   Patch applicate: V2-0 vantaggio · V2-1 espulso fuori · V2-2 gol dagli xG · V2-2b pressione grezza al tiro · V2-2c xG sull'evento · V2-2d tabellino xG dall'evento · V2-3 nessun gol richiesto · V2-4 forza nel possesso · V2-4b forza nei tiri · V2-7 forza nei passaggi · V2-8a corner da parata · V2-8b corner da murato · V2-8c corner da spazzata · V2-9 tiro dal terzo · V2-10 cross con chi attacca · V2-11 gestione del forte · V2-12 rosso diretto · V2-13 gialli · V2-5 cross riuscito · V2-5b cross arrivato · V2-6 occasione eroe · V2-6b api */
+   Patch: gia' dentro src/14 */
 (function(root){
 function creaMotorePossesso(cfg){
   cfg=cfg||{};
