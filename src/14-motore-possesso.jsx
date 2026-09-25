@@ -1166,4 +1166,22 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
+/* [7.999.4 MOTORE UNICO passo 2 — LA SIMULAZIONE RAPIDA E' LO STESSO MOTORE, SENZA GRAFICA. Rosso __CPM_NO_SIMV2]
+   Prima la partita simulata (settimana avanzata senza giocarla) era un Poisson a parte (simulateMatch, src/10): due modelli
+   per la stessa partita. Qui il motore v2 gioca 90 minuti a 22 decisioni al minuto come nel live, con ripresa dal centro
+   all'intervallo. Recupero fisso (1' nel primo tempo, 3' nel secondo): regola mia, dichiarata, non da fonte.
+   «home» nel motore e' sempre la squadra dell'eroe; lo stadio dice chi gioca davvero in casa. */
+function simulaPartitaMotore(o){o=o||{};
+  const P=[[8,50,1],[18,12],[18,38],[18,62],[18,88],[38,25],[38,50],[38,75],[55,22],[55,78]];
+  const Q=[[95,50,1],[82,12],[82,38],[82,62],[82,88],[62,25],[62,50],[62,75],[48,20],[48,50],[48,80]];
+  const R=i=>i===0?'POR':i<=4?'DIF':i<=7?'CEN':'ATT';
+  const gio=P.map((p,i)=>({team:'home',gk:!!p[2],name:'H'+(i+1),rl:R(i),x:p[0],y:p[1]})).concat(Q.map((p,i)=>({team:'away',gk:!!p[2],name:'A'+(i+1),rl:R(i),x:p[0],y:p[1]})));
+  const M=creaMotorePossesso({v2:true,occasioniV2:false,seed:(o.seed>>>0)||7,stadio:o.stadio==='away'?'away':'home',giocatori:gio,
+    eroe:{name:'EROE',x:58,y:50,attivo:o.eroeAttivo!==false,ovr:+o.ovr||70},forza:{home:+o.forzaH||65,away:+o.forzaA||65},lato:'home'});
+  const B=22;
+  for(let m=1;m<=46;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,45),dt:1/B,dec:true});
+  M.chiedi.riprendi({centro:true,lato:'away'});
+  for(let m=46;m<=93;m++)for(let b=0;b<B;b++)M.tick({min:Math.min(m,90),dt:1/B,dec:true});
+  const t=M.tabellino();return{home:t.home.gol|0,away:t.away.gol|0,tab:t};}
+if(typeof window!=='undefined'){try{window.__CPM_SIM_MOTORE=simulaPartitaMotore;}catch(_e){}}
 /* CMAV-MOTORE-END */

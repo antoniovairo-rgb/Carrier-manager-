@@ -964,7 +964,7 @@ if(typeof window!=='undefined'&&window.__CPM_STORE_BUILD){window.runCPMTest50=fu
       if(md){
         const opp=lc.find(c=>c.id===md.opponentId)||lc[0];
         const _tSd=standingsSeed(p.club?.id,p.season||1,w);// [5.76.0 BUG-6] harness deterministico
-        const sim=simulateMatch(p.club,opp,p.ovr,md.isHome,(_tSd+1)>>>0,p.clubPrestigeShifts||{});
+        const sim=simulateMatch(p.club,opp,p.ovr,md.isHome,(_tSd+1)>>>0,p.clubPrestigeShifts||{},{motore:true});
         const _dG74=sim.won?rng(0,2):0;p.goals+=_dG74;p.assists+=sim.won&&Math.random()<0.4?1:0;p.matches++;p.totalMatches++;p.totalGoals+=_dG74;/* [6.74.0 QA-26] prima sommava il CUMULATO stagionale a ogni giornata (O(n²)) → l'harness dev si auto-ingannava sui totali carriera */
         p.standings=updateStandings(p.standings,p.club?.id,sim,p.clubPrestigeShifts||{},{opponentId:md.opponentId,seed:_tSd});
         p.calendar=p.calendar.map(m=>m.week===w&&!m.played?{...m,played:true,result:sim}:m);

@@ -848,7 +848,7 @@ const refuseEcho=(p,o)=>{try{
     :tier==="importante"?{popularity:2,coachTrust:3,teamChemistry:1,morale:1}:{};
   return{tier,head,body,voices,fx,club:cn,wage:thW};
 }catch(_e){return null;}};
-function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts){
+function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts,opz){
   const _rng=seed!=null?seededRng((seed>>>0)||1):Math.random;
   const _pg=l=>seed!=null?seededPoissonGoals(l,_rng):poissonGoals(l);
   const _sh=shifts||{};
@@ -862,8 +862,17 @@ function simulateMatch(playerClub,opponent,playerOvr,isHome=true,seed,shifts){
   const personaMod=oppPersona?oppPersona.lambdaMod*0.5:0;
   const lambdaH=clamp(1.42+diff*0.95+homeFactor+ovrBonus-personaMod,0.62,2.95);// [7.200.0] curva allineata alla lega + pavimento calcistico
   const lambdaA=clamp(1.26-diff*0.82-homeFactor-ovrBonus*0.32+personaMod,0.48,2.45);
-  const hG=_pg(lambdaH);
-  const aG=_pg(lambdaA);
+  let hG=_pg(lambdaH);
+  let aG=_pg(lambdaA);
+  /* [7.999.4 MOTORE UNICO passo 2. Rosso __CPM_NO_SIMV2] la partita DELL'EROE simulata la gioca il motore del live, senza
+     grafica (simulaPartitaMotore, src/14), con lo stesso seme; il Poisson sopra resta per le partite fra altri club (tabellone
+     di coppa, simulatore di debug) e come ripiego se il motore non risponde. L'oggetto risultato non cambia forma. */
+  if(opz&&opz.motore&&seed!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_SIMV2)&&typeof simulaPartitaMotore==='function'){try{
+    const _t0=(typeof performance!=='undefined')?performance.now():0;
+    const _r=simulaPartitaMotore({seed:(seed>>>0)^0x5a17,forzaH:clubP,forzaA:oppP,stadio:isHome?'home':'away',ovr:playerOvr||65});
+    hG=_r.home;aG=_r.away;
+    if(typeof window!=='undefined'){try{const _ms=((typeof performance!=='undefined')?performance.now():0)-_t0;window.__CPM_SIM_MS=Math.round(_ms);(window.__CPM_SIM_LOG=window.__CPM_SIM_LOG||[]).push(Math.round(_ms));if(window.__CPM_SIM_LOG.length>40)window.__CPM_SIM_LOG.shift();}catch(_e){}}
+  }catch(_eSM){}}
   const _m=hG-aG;
   const _baseRat=_m>0?(6.2+Math.min(_m*0.25,0.8)):(_m===0?5.8:(5.5-Math.min(-_m*0.18,0.5)));
   const _ovrMod=_m>0?clamp(((playerOvr||65)-65)/200,-0.1,0.3):clamp(((playerOvr||65)-65)/260,-0.08,0.22);/* [7.261.0 collaudo PO «non essere severo con le simulazioni»] la qualità contava SOLO nelle vittorie: un fuoriclasse che pareggia prendeva 5.8 tondo come una riserva. Ora pesa (meno) anche su pari e sconfitta — bounded ±0.22, e resta NEGATIVA per chi è sotto la media: il voto non è un regalo, è il riconoscimento del livello */

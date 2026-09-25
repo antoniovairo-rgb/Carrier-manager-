@@ -2947,7 +2947,7 @@ const getThisWeekMatchday=()=>{
         const _ndS=NAT_CLUB_DATA[_nOppN]||{id:"xx-nt",a:"INT",p:78,c:"#888888",c2:"#ffffff",nat:"🏳️"};
         const _hN=NAT_CLUB_DATA[p.nation||"Italia"]||{p:80,c:"#1e40af",c2:"#ffffff",a:(p.nation||"NAZ").slice(0,3).toUpperCase(),nat:"🏳️"};
         const _sdN=(Math.abs(hashStr("natfrsim|"+(p.season||1)+"|"+(p.week||1)+"|"+_nOppN))>>>0)||1;
-        const simN=simulateMatch({id:"nat-me",n:p.nation||"Italia",a:_hN.a,p:_hN.p,c:_hN.c,c2:_hN.c2},{id:_ndS.id,n:_nOppN,a:_ndS.a,p:_ndS.p,c:_ndS.c,c2:_ndS.c2},p.ovr||65,true,_sdN);
+        const simN=simulateMatch({id:"nat-me",n:p.nation||"Italia",a:_hN.a,p:_hN.p,c:_hN.c,c2:_hN.c2},{id:_ndS.id,n:_nOppN,a:_ndS.a,p:_ndS.p,c:_ndS.c,c2:_ndS.c2},p.ovr||65,true,_sdN,undefined,{motore:true});
         const _psN=(typeof _pSimStats==="function")?_pSimStats(simN,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_sdN+2)>>>0)):{goals:0,assists:0};
         const newCalN=(p.calendar||[]).map(m=>m.matchday===md2.matchday?{...m,played:true,result:{homeScore:simN.homeScore,awayScore:simN.awayScore,won:simN.won,drew:simN.drew},simulated:true}:m);
         const _pendNat28=newCalN.some(m=>m.week===(p.week||1)&&!m.played&&(m.type==="euro_group"||m.type==="euro"||m.type==="cup"));/* [7.8.28 QA] un turno di coppa/europa nella STESSA settimana non va strandato: la settimana resta ferma (weekLived) finché non lo risolvi */
@@ -2971,7 +2971,7 @@ const getThisWeekMatchday=()=>{
         return isInjured?{...p,...injBase,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{...p,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)};/* [7.8.28 QA STAB-7] settimana avanzata su avversario non risolvibile: stipendio+staff-rel dovuti + decremento returnPenaltyWeeks (parità col ramo gemello) */
       }
       const _aSd=standingsSeed(p.club?.id||p.club?.n,p.season,p.week);// [5.76.0 BUG-6] settimana riproducibile
-      const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome,(_aSd+(md2.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{});
+      const sim=simulateMatch(p.club,opp,p.ovr||65,md2.isHome,(_aSd+(md2.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true});
       // Only mark THIS specific match as played (by matchday id), not all at same week
       const newCal=(p.calendar||[]).map(m=>m.matchday===md2.matchday?{...m,played:true,result:{homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew},simulated:true}:m);
       // Check if more unplayed euro/cup matches remain at same week after this sim
@@ -4224,7 +4224,7 @@ const getThisWeekMatchday=()=>{
           //   (le nazionali giocano comunque), cap/gol accreditati, voce marcata. Niente standings di club.
           const _hN=NAT_CLUB_DATA[p.nation||"Italia"]||{p:80,c:"#1e40af",c2:"#ffffff",a:(p.nation||"NAZ").slice(0,3).toUpperCase()};
           const _sdN=(Math.abs(hashStr("natfradv|"+(p.season||1)+"|"+(p.week||1)+"|"+(md.opponentName||"x")))>>>0)||1;
-          const simN=simulateMatch({id:"nat-me",n:p.nation||"Italia",a:_hN.a,p:_hN.p,c:_hN.c,c2:_hN.c2},opp,p.ovr||65,true,_sdN);
+          const simN=simulateMatch({id:"nat-me",n:p.nation||"Italia",a:_hN.a,p:_hN.p,c:_hN.c,c2:_hN.c2},opp,p.ovr||65,true,_sdN,undefined,{motore:true});
           const _psN=(typeof _pSimStats==="function")?_pSimStats(simN,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_sdN+2)>>>0)):{goals:0,assists:0};
           const newCalN=(p.calendar||[]).map(m=>m.matchday===md.matchday?{...m,played:true,result:{homeScore:simN.homeScore,awayScore:simN.awayScore,won:simN.won,drew:simN.drew},simulated:true}:m);
           if(p.injured){/* [7.8.28 QA] INFORTUNATO: la Nazionale gioca senza di te — voce marcata (niente loop), NIENTE cap/gol/morale (prima Avanza accreditava Cap #N a un giocatore ai box) */
@@ -4236,7 +4236,7 @@ const getThisWeekMatchday=()=>{
           }
         } else if(opp){
           const _wSd=standingsSeed(p.club?.id||p.club?.n,p.season,p.week);// [5.76.0 BUG-6]
-          const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome,(_wSd+(md.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{});
+          const sim=simulateMatch(p.club,opp,p.ovr||65,md.isHome,(_wSd+(md.matchday||0)*31+1)>>>0,p.clubPrestigeShifts||{},{motore:true});
           const isCupMd=md.type==="cup";
           if(isEuroG){
             const egPts=(sim.won?3:sim.drew?1:0);
@@ -4449,7 +4449,7 @@ const getThisWeekMatchday=()=>{
             :(_xlc.find(c=>c.id===xmd.opponentId)||_xlc.find(c=>c.n===xmd.opponentName));
           if(_xopp){
             const _xSd=(standingsSeed(p.club?.id||p.club?.n,p.season,p.week)+(xmd.matchday||0)*31)>>>0;// [5.76.0 BUG-6]
-            const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{});
+            const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true});
             const _xps=p.contractExpired?{goals:0,assists:0}:_pSimStats(_xs,p.ovr||65,p.archetype?.id||p.archetype||"",seededRng((_xSd+2)>>>0));/* [5.98.0 EC-1] svincolato: non vieni schierato */
             _sCal=_sCal.map(m=>m.matchday===xmd.matchday?{...m,played:true,result:{homeScore:_xs.homeScore,awayScore:_xs.awayScore,won:_xs.won,drew:_xs.drew},simulated:true}:m);
             if(!xmd.type||xmd.type==="league"){const _xCId=p.club?.id||p.club?.n;_xSt=updateStandings(_xSt,_xCId,_xs,p.clubPrestigeShifts||{},{opponentId:xmd.opponentId||_xopp.id||_xopp.n,seed:_xSd});}
@@ -5220,7 +5220,7 @@ const getThisWeekMatchday=()=>{
     const seed=(Math.abs(hashStr("natsim|"+(player.season||1)+"|"+em.phase+"|"+(em.qualMatchIdx||0)+"|"+(em.groupMatchIdx||0)+"|"+(em.koPhase||"")+"|"+oppName)))>>>0;
     const homeNatTeam={id:"nat-"+(player.nation||"x"),n:player.nation||"Italia",a:heroNat.a||"NAZ",p:heroNat.p||80,c:heroNat.c,c2:heroNat.c2,nat:heroNat.nat};
     const oppNatTeam={id:nd.id,n:oppName,a:nd.a,p:nd.p,c:nd.c,c2:nd.c2,nat:nd.nat};
-    const sim=simulateMatch(homeNatTeam,oppNatTeam,player.ovr||65,true,seed);
+    const sim=simulateMatch(homeNatTeam,oppNatTeam,player.ovr||65,true,seed,undefined,{motore:true});
     const _ps=(typeof _pSimStats==="function")?_pSimStats(sim,player.ovr||65,player.archetype?.id||player.archetype||"",seededRng((seed+2)>>>0)):{goals:0,assists:0};
     const rating=Math.round(clamp(sim.rating+_ps.goals*0.4+_ps.assists*0.2,4.0,9.5)*10)/10;
     matchTypeRef.current="euroMondiale";
@@ -5240,7 +5240,7 @@ const getThisWeekMatchday=()=>{
     const seed=(Math.abs(hashStr("ncsim|"+(player.season||1)+"|"+(q.matchIdx||0)+"|"+oppName)))>>>0;
     const homeNatTeam={id:"nat-"+(player.nation||"x"),n:player.nation||"Italia",a:heroNat.a||"NAZ",p:heroNat.p||80,c:heroNat.c,c2:heroNat.c2,nat:heroNat.nat};
     const oppNatTeam={id:nd.id,n:oppName,a:nd.a,p:nd.p,c:nd.c,c2:nd.c2,nat:nd.nat};
-    const sim=simulateMatch(homeNatTeam,oppNatTeam,player.ovr||65,true,seed);
+    const sim=simulateMatch(homeNatTeam,oppNatTeam,player.ovr||65,true,seed,undefined,{motore:true});
     const _ps=(typeof _pSimStats==="function")?_pSimStats(sim,player.ovr||65,player.archetype?.id||player.archetype||"",seededRng((seed+2)>>>0)):{goals:0,assists:0};
     const rating=Math.round(clamp(sim.rating+_ps.goals*0.4+_ps.assists*0.2,4.0,9.5)*10)/10;
     matchTypeRef.current="nationsCup";
@@ -5870,6 +5870,19 @@ const getThisWeekMatchday=()=>{
               </button>
             </div>
           </Card>
+          {devToolsOn()&&<Card style={{padding:"7px 12px"}} shadow={false}>
+            {/* [7.999.4 passo 2] il PO misura sul SUO telefono il costo della simulazione col motore (limite scelto: 0,3 s a partita) */}
+            <div style={{display:"flex",alignItems:"center",gap:9}}>
+              <span style={{fontSize:FS.bodyLg}}>⏱️</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>Tempo della partita simulata</div>
+                <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.35}}>Gioca 5 partite col motore, senza grafica, e mostra il tempo mediano. Limite: 300 ms.</div>
+              </div>
+              <button onClick={()=>{try{const T=[];for(let k=0;k<5;k++){const t0=performance.now();simulaPartitaMotore({seed:(9001+k*37)>>>0,forzaH:70,forzaA:70,stadio:"home",ovr:player.ovr||70});T.push(performance.now()-t0);}
+                  T.sort((x,y)=>x-y);const med=Math.round(T[2]);notify("⏱️ Partita simulata: "+med+" ms (mediana di 5, max "+Math.round(T[4])+" ms)"+(med<=300?" — entro il limite":" — OLTRE il limite di 300 ms"),med<=300?TH.success:TH.warning);}catch(_e){notify("Misura non riuscita",TH.warning);}}}
+                style={{flexShrink:0,padding:"6px 10px",borderRadius:RAD.md,border:"none",cursor:"pointer",background:TH.surface2,color:TH.text,fontSize:FS.caption,fontWeight:800}}>Misura</button>
+            </div>
+          </Card>}
           {devToolsOn()&&(()=>{
             let _bn=[];try{_bn=JSON.parse(safeLS.get("cpm-bugnotes")||"[]")||[];}catch(_e){}
             if(!_bn.length)return null;
