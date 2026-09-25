@@ -1,6 +1,6 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 25/09 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.999.2** — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
+**Aggiornata:** 25/09 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.999.3** — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
 **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 72% · **Fase:** grafica dai collaudi PO chiusa per oggi → si riparte dal brain «partita vera»
 
@@ -49,6 +49,7 @@
 ## Registro (ultimo in alto, una riga per passo)
 | Ora | Passo | Numero |
 | --- | --- | --- |
+| 25/09 | **7.999.3 — motore unico passo 3.** Gli highlight su azione erano già decisi dal dado del motore; restavano due strade fuori: rigore e punizione dell'eroe (dado proprio, gol mai nel tabellino del motore) e il gol subito in scena difensiva (tabellone sì, motore no). Ora li decide e li conta il motore. Guardiani `npm run risolvi-eroe` e `motore-unico` (tabellone = motore a fine partita), rosso `__CPM_NO_RISOLVI`. | 6/6 piazzati decisi e allineati · rosso: 0/2 · rigore p≈0,74, punizione p≈0,29-0,33 · gate 191 verde |
 | 25/09 | **Decisioni PO sulla rotta A-B-C-D** (questionario). Ordine: Passo 3 → Passo 2 → Tattiche (entrambe le squadre, ritaratura nella stessa release) → Eroe dal gioco (meno scene ma vere, almeno una a partita) → Fluidità 3D solo sui 3-5 corpi in scena. Simulazione rapida col motore sotto 0,3 s. | dettaglio nella sezione 6 di `docs/AUTOCRITICA-BRAIN-2026-09-24.md` |
 | 25/09 | **Autocritica brain «partita vera» (richiesta PO).** Documento `docs/AUTOCRITICA-BRAIN-2026-09-24.md`: A in parte · **B no** (le tattiche non entrano nel motore) · C in parte (occasioni dell'eroe fabbricate) · D in parte (un solo corpo per evento, niente foot-lock). Nuova rotta: tattiche nel motore, eroe dal gioco, metriche PPDA e foot skating ratio con fonti. | 9 coefficienti contro 4 comportamenti nelle 7.980-7.987 |
 | 25/09 | **7.999.2 — motore unico passo 1.** Direzione PO: 2D + highlight dell'eroe, il 3D continuo è ritirato. Le patch v2 vivono in src/14; i gol della 2D li decide solo il motore (microsim spento); niente più turni forzati dalla quota della vecchia cronaca; il tiro dell'eroe vale una «grande occasione» (scelta PO). Guardiano `npm run motore-unico`, rosso `__CPM_NO_V2`. | falli 8-9 → 20 · tiri 10,6 per squadra · gol 3,0 (4 partite) · mediana gol eroe 0,33 · cronaca dal motore 95% · gate 191 verde |

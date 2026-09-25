@@ -23,7 +23,7 @@ for (let k = 0; k < N; k++) {
     const gol = d.ev.filter(e => e.ev === 'goal');/* il registro scrive il tipo in `ev` (src/11 cpmEv) */
     const cr = d.ev.filter(e => e.ev === 'chronicle');/* quota di cronaca nata dal motore (mk = tipo di fatto del motore) contro righe pescate da tabella/libreria */
     R.push({ k, righe: [cr.filter(e => e.mk).length, cr.length], score: d.score, golReq: d.golReq, gol: gol.length, src: gol.reduce((a, e) => { const s = (e.d && e.d.src) || e.src || '?'; a[s] = (a[s] | 0) + 1; return a; }, {}), eroe: d.eroe,
-      tiri: d.tab ? [d.tab.home.tiri, d.tab.away.tiri] : null, xg: d.tab ? [d.tab.home.xg, d.tab.away.xg] : null });
+      tiri: d.tab ? [d.tab.home.tiri, d.tab.away.tiri] : null, golMotore: d.tab ? [d.tab.home.gol, d.tab.away.gol] : null, xg: d.tab ? [d.tab.home.xg, d.tab.away.xg] : null });
   } catch (e) { R.push({ k, err: String(e.message).slice(0, 120) }); }
   await ctx.close();
 }
@@ -36,6 +36,8 @@ console.log(`gol a partita ${tot.toFixed(2)} · partite con gol chiesti dal micr
 const fails = []; if (ok.length < Math.ceil(N / 2)) fails.push('troppe partite non finite');
 const golReg = ok.reduce((a, r) => a + (r.gol | 0), 0), golTab = ok.reduce((a, r) => a + (r.score.home | 0) + (r.score.away | 0), 0);
 if (golTab > 0 && golReg === 0) fails.push('il registro non vede nessun gol: guardiano cieco');
+/* [7.999.3 passo 3] a fine partita il tabellino del motore e il tabellone dicono lo stesso risultato */
+for (const r of ok) if (r.golMotore && !ROSSO && (r.golMotore[0] !== (r.score.home | 0) || r.golMotore[1] !== (r.score.away | 0))) fails.push(`partita ${r.k}: tabellone ${r.score.home}-${r.score.away} ma motore ${r.golMotore[0]}-${r.golMotore[1]}`);
 if (!ROSSO) { if (micro > 0) fails.push('il microsim decide ancora gol'); if (giocate === 0) fails.push('nessuna giocata dell\'eroe decisa dal motore'); if (tot > 4.5) fails.push(`gol a partita ${tot.toFixed(2)} oltre 4,5`); 
   /* scelta PO «Occasione da gol»: il tiro dell'eroe in un highlight vale una grande occasione, non l'xG nudo del punto */
   const pg = ok.flatMap(r => (r.eroe || []).filter(x => x.rew === 'goal').map(x => +x.p)).sort((a, b) => a - b);

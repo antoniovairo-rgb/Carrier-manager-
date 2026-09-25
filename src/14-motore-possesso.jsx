@@ -1137,6 +1137,13 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
         else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')&&D)E('contrasto',{modo:modo(H),chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
       }
 
+      /* [7.999.3 PASSO 3 — IL GOL SUBITO IN SCENA ENTRA NEL TABELLINO. Rosso __CPM_NO_RISOLVI] Una scena difensiva fallita con
+         esito goal_against alza il tabellone del live (away+1) ma qui non generava nulla: il motore contava un gol in meno
+         dell'avversario. Ora il tiro e il gol si scrivono come fatti del motore. Marcatore: il duellante del cast se e'
+         avversario, altrimenti l'avversario di movimento piu' vicino all'eroe. */
+      if(key==='goal_against'&&!ok&&!(typeof window!=='undefined'&&window.__CPM_NO_RISOLVI)){const _lA=H.team===HOME?AWAY:HOME;
+        let Sx=(D&&D.team===_lA)?D:null;if(!Sx){const w=piuVicino(H.x,H.y,_lA,{noGk:true});Sx=w&&w.p?w.p:null;}
+        if(Sx){E('tiro',{chi:chi(Sx),from:da(Sx),esito:'goal'});E('gol',{chi:chi(Sx),assist:null,lato:Sx.team,x:+Sx.x.toFixed(1),y:+Sx.y.toFixed(1)});}}
       if(K&&out.some(e=>e.t==='tiro'))out.unshift((()=>{const e=ev('pronto',{scena:true,fam:d.tipo||null,gk:chi(K)});return e;})());/* il portiere si mette in posizione prima del tiro */
       if(!famDef&&(!ok||out.some(e=>e.t==='tiro'&&e.chi&&e.chi.i===HERO&&(e.esito==='fuori'||e.esito==='post'||e.esito==='saved'))))E('rammarico',{chi:chi(H)});/* l'eroe si prende la testa fra le mani quando la sua giocata non riesce */
       if(d.gkCall&&MIO_GK&&ok){E('presa',{gk:chi(MIO_GK)});E('rilancio',{gk:chi(MIO_GK)});}/* chiamato il portiere: presa e rilancio con le mani */

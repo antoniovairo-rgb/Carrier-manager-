@@ -748,7 +748,7 @@ function resolveSetPieceShot(kind,choice,ctx){
   else outKind="goal";
   const dirs=["tl","tc","tr","bl","bc","br"];const gkDir=dirs[Math.floor(rr(6)*6)%6];
   const pGoalEV=+(((1-pErr)*(1-(isPen||choice.chip?choice._svEV:clamp(choice._svEV*1.35+0.10,0.10,0.80))))).toFixed(3);
-  return{outKind,ok:outKind==="goal",chipStay,skill:+sk.toFixed(3),gk,pressure:+pr.toFixed(3),pGoalEV,gkDir};}
+  return{outKind,ok:outKind==="goal",chipStay,skill:+sk.toFixed(3),gk,pressure:+pr.toFixed(3),pGoalEV,pErr:+pErr.toFixed(3),gkDir};}/* [7.999.3] pErr esposto: il motore decide il gol e poi, se sbaglia, fra errore di mira e parata nella stessa proporzione */
 function pickSetPieceChoiceAI(kind,attrs,ctx,seed){
   const list=setPieceChoices(kind,attrs);const s=(seed>>>0)||1;let best=list[0],bv=-1;
   for(let i=0;i<list.length;i++){const c=list[i];

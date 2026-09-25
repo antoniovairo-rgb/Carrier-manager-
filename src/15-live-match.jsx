@@ -8726,6 +8726,17 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     const _seed=(Math.abs(hashStr("sp|"+opt.id+"|"+clockRef.current+"|"+score.home+"-"+score.away+"|"+(player.name||"")))>>>0)||1;
     const _sd=score.home-score.away;
     const res=resolveSetPieceShot(opt.spKind||(_isPenK?"penalty":"fk_near"),opt,{attrs:player.stats||{},fatigue:100-(energy||70),morale:player.morale||60,form:player.form||70,oppPrestige:oppPrestige,clock:clockRef.current||0,scoreDiff:_sd,mw:(typeof mw!=="undefined"?mw:5),decisive:_isPenK&&(clockRef.current||0)>=85&&Math.abs(_sd)<=1,seed:_seed});
+    /* [7.999.3 PASSO 3 — IL PIAZZATO DELL'EROE LO DECIDE IL MOTORE. Rosso __CPM_NO_RISOLVI] Prima rigore e punizione avevano un
+       dado proprio (seme da nome+minuto+punteggio) e il gol non entrava mai nel tabellino del motore: tabellone e motore
+       divergevano di un gol. Ora il resolver resta per stile, portiere e testi; il si'/no lo tira il dado del motore con la
+       probabilita' attesa della scelta (pGoalEV) e, se non e' gol, errore di mira o parata nella proporzione del resolver. */
+    const _M3=motoreRef.current;const _sp3=!(typeof window!=='undefined'&&window.__CPM_NO_RISOLVI)&&!!(_M3&&_M3.risolviEroe&&_M3.risolviEroe.dado);
+    if(_sp3){try{const _prima3=res.outKind;const _okM=_M3.risolviEroe.dado(clamp(+res.pGoalEV||0,0.02,0.98));
+      if(_okM){res.outKind="goal";res.ok=true;res.chipStay=false;}
+      else if(res.outKind==="goal"){const _pw=clamp((+res.pErr||0)/Math.max(0.02,1-(+res.pGoalEV||0)),0,1);
+        res.outKind=(!opt.chip&&_M3.risolviEroe.dado(_pw))?"wide":"saved";res.ok=false;if(opt.chip&&res.outKind==="saved")res.chipStay=true;}
+      if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SP3=window.__CPM_SP3||[]).push({p:res.pGoalEV,prima:_prima3,dopo:res.outKind});}catch(_e3){}}
+    try{if(!(typeof window!=='undefined'&&window.__CPM_NO_RISOLVI)&&_M3&&_M3.registra)_M3.registra('tiro','home',{esito:res.outKind==="goal"?'gol':res.outKind==="saved"?'parato':res.outKind==="post"?'legno':'fuori',xg:+res.pGoalEV||0});}catch(_e3r){}/* nel motore «home» e' sempre la squadra dell'eroe */
     gkDiveRef.current=res.gkDir;const gkLabel=RIGORE_DIRS[res.gkDir]||"";
     setEnergy(e=>clamp(e-(opt.nrg||8),0,100));
     setMxStats(st=>({...st,shots:st.shots+1}));

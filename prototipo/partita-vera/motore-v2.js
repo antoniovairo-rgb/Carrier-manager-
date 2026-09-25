@@ -618,7 +618,7 @@ function creaMotorePossesso(cfg){
   }
   /* [v2] un'occasione ogni 5 minuti al massimo, quando l'eroe ha palla da avanzamento 64 in su. Funzione PURA (nessun sorteggio):
      il chiamante la puo' interrogare prima del battito per fermarsi e chiedere la scelta, e il motore la rivaluta identica. */
-  function _occV2Pronta(P){if(!V2||!P||!P.eroe||!eroeAttivo)return false;if(S.poss.stato!=="tenuta"||S.poss.padrone!==HERO)return false;
+  function _occV2Pronta(P){if(!V2||cfg.occasioniV2===false||!P||!P.eroe||!eroeAttivo)return false;/* nel gioco le occasioni dell'eroe sono gli highlight */if(S.poss.stato!=="tenuta"||S.poss.padrone!==HERO)return false;
     return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=5;}
   /* la scelta automatica: la giocata che il profilo dell'eroe rende piu' sensata in quel punto. Regola MIA, dichiarata */
   function sceltaAutoV2(P){const l=P.team,adv=advDi(P.x,l),zona=zonaDi(adv,P.y),press=pressioneSu(P),spazio=spazioAvanti(P);
@@ -1113,6 +1113,13 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
         else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')&&D)E('contrasto',{modo:modo(H),chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
       }
 
+      /* [7.999.3 PASSO 3 — IL GOL SUBITO IN SCENA ENTRA NEL TABELLINO. Rosso __CPM_NO_RISOLVI] Una scena difensiva fallita con
+         esito goal_against alza il tabellone del live (away+1) ma qui non generava nulla: il motore contava un gol in meno
+         dell'avversario. Ora il tiro e il gol si scrivono come fatti del motore. Marcatore: il duellante del cast se e'
+         avversario, altrimenti l'avversario di movimento piu' vicino all'eroe. */
+      if(key==='goal_against'&&!ok&&!(typeof window!=='undefined'&&window.__CPM_NO_RISOLVI)){const _lA=H.team===HOME?AWAY:HOME;
+        let Sx=(D&&D.team===_lA)?D:null;if(!Sx){const w=piuVicino(H.x,H.y,_lA,{noGk:true});Sx=w&&w.p?w.p:null;}
+        if(Sx){E('tiro',{chi:chi(Sx),from:da(Sx),esito:'goal'});E('gol',{chi:chi(Sx),assist:null,lato:Sx.team,x:+Sx.x.toFixed(1),y:+Sx.y.toFixed(1)});}}
       if(K&&out.some(e=>e.t==='tiro'))out.unshift((()=>{const e=ev('pronto',{scena:true,fam:d.tipo||null,gk:chi(K)});return e;})());/* il portiere si mette in posizione prima del tiro */
       if(!famDef&&(!ok||out.some(e=>e.t==='tiro'&&e.chi&&e.chi.i===HERO&&(e.esito==='fuori'||e.esito==='post'||e.esito==='saved'))))E('rammarico',{chi:chi(H)});/* l'eroe si prende la testa fra le mani quando la sua giocata non riesce */
       if(d.gkCall&&MIO_GK&&ok){E('presa',{gk:chi(MIO_GK)});E('rilancio',{gk:chi(MIO_GK)});}/* chiamato il portiere: presa e rilancio con le mani */
@@ -1129,7 +1136,10 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   const occasione=(min)=>{const P=g[HERO];const m0=S.min;if(min!=null)S.min=min|0;const ok=V2&&!S.scena&&_occV2Pronta(P);S.min=m0;
     return ok?{k:(S._nOccV2|0),auto:sceltaAutoV2(P),zona:zonaDi(advDi(P.x,P.team),P.y),x:+P.x.toFixed(1),y:+P.y.toFixed(1)}:null;};
   const espulsi=()=>Object.keys(S.cartellini||{}).filter(k=>S.cartellini[k].r).map(Number);
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2};
+  /* [7.999.2] l'xG di un punto del campo per la squadra dell'eroe (verso di attacco = x crescente): lo usa l'highlight per decidere
+     la sua giocata con lo STESSO modello che decide i tiri di tutti gli altri */
+  const xgPunto=(x,y,intent,press)=>{try{if(!V2)return null;return xgV2({team:HOME,x:clamp(+x||50,0,100),y:clamp(+y||50,0,100)},intent||null,press==null?4:+press);}catch(_e){return null;}};
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto};
 }
 
 root.creaMotoreV2=creaMotorePossesso;
