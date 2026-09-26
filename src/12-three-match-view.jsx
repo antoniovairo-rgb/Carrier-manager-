@@ -3495,7 +3495,7 @@ function ThreeMatchView(props){
         const _early74=(isResult&&!P.hlDef&&P.hlType==="cross"&&P.hlSuccess===true&&u>=0.85);// [6.74.0 3D-5] sul cross-GOL il 2° tocco parte con la palla ancora in QUOTA (~metà discesa), niente atterraggio sul prato + "incornata da sola"
         if(u>=1||_early74){
           if(ballArcIsBG&&sr.current._rcv526&&!(typeof window!=='undefined'&&window.__CPM_NO526)){sr.current._por526={mesh:sr.current._rcv526,lato:sr.current._lato526||'home'};sr.current._rcv526=null;sr.current._att556=null;/* [7.556.0 P2] la palla e' arrivata: il passatore dichiarato non e' piu' il padrone */}/* [7.523.0] la ricezione: chi ha ricevuto e' il nuovo portatore */
-          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _ae=(window.__CPM_ARCEND457=window.__CPM_ARCEND457||[]);if(_ae.length<40)_ae.push({u:+(+u).toFixed(2),early:!!_early74,bg:!!ballArcIsBG,ht:P.hlType||null,hs:P.hlSuccess,def:!!P.hlDef,rew:P.hlReward||null,kind:P.hlOutcomeKind||null,ph:P.matchPhase||null,bx:+ball.position.x.toFixed(1),sk:(P.hlSitKey!=null?P.hlSitKey:null),own:!!(P.hlDefTraj&&P.hlDefTraj.toOwnGoal),res:!!isResult,cc:!!(sr.current._ccx460),srcx:(sr.current._arcSrc382?+(sr.current._arcSrc382.x+50).toFixed(1):null),adv:(sr.current._advLog773||null)});}catch(_e){}}/* [7.459.0] IL BLOCCO DI COMPLETAMENTO HA UN TESTIMONE: e' qui che nasce il post-arco, e su 4 gol su 6 il post-arco non nasce. Se questo marcatore non compare, l'arco e' stato ucciso prima; se compare e il post-arco resta nullo, e' la catena di rami a non prenderlo (i campi dicono quale). */ballArcActive=false;_arcSrcX=null;_arcSrcZ=null;// 3DV-9: trigger animazione fine azione in base all'esito
+          if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _ae=(window.__CPM_ARCEND457=window.__CPM_ARCEND457||[]);if(_ae.length<40)_ae.push({u:+(+u).toFixed(2),early:!!_early74,bg:!!ballArcIsBG,ht:P.hlType||null,hs:P.hlSuccess,def:!!P.hlDef,rew:P.hlReward||null,kind:P.hlOutcomeKind||null,ph:P.matchPhase||null,bx:+ball.position.x.toFixed(1),sk:(P.hlSitKey!=null?P.hlSitKey:null),own:!!(P.hlDefTraj&&P.hlDefTraj.toOwnGoal),res:!!isResult,cc:!!(sr.current._ccx460),srcx:(sr.current._arcSrc382?+(sr.current._arcSrc382.x+50).toFixed(1):null),adv:(sr.current._advLog773||null)});}catch(_e){}}/* [7.459.0] IL BLOCCO DI COMPLETAMENTO HA UN TESTIMONE: e' qui che nasce il post-arco, e su 4 gol su 6 il post-arco non nasce. Se questo marcatore non compare, l'arco e' stato ucciso prima; se compare e il post-arco resta nullo, e' la catena di rami a non prenderlo (i campi dicono quale). */if(typeof window!=='undefined'&&window.__CPM_INT10&&window.__CPM_INT10.length&&P.hlType==='pass'&&P.hlSuccess!==true&&oppMesh){try{const _L=window.__CPM_INT10[window.__CPM_INT10.length-1];if(_L.arrivo==null)_L.arrivo=+Math.hypot(oppMesh.position.x-ball.position.x,oppMesh.position.z-ball.position.z).toFixed(2);}catch(_eA){}}/* [7.999.10] all'arrivo del pallone: l'intercettore e' li'? */ballArcActive=false;_arcSrcX=null;_arcSrcZ=null;// 3DV-9: trigger animazione fine azione in base all'esito
           if(isResult){const _cc460=_no460?null:sr.current._ccx460;const P=(_cc460&&(propsRef.current.hlType==null||propsRef.current.hlSuccess==null))?_cc460:propsRef.current;/* [7.460.0] SI LEGGE IL CONTESTO DICHIARATO AL LANCIO, non quello del fotogramma d'atterraggio — ma SOLO quando i props vivi hanno gia' perso la conclusione: sul percorso sano questa riga vale `propsRef.current` ed e' bit-identica a prima. */const _hs=P.hlSuccess,_ht=P.hlType,_hv=P.hlVariant;
             // [7.54.0 BL-15 · AC-049/050] l'ARCO D'ESITO è arrivato (impatto parata/palo/fuori/assestamento):
             //   segnala alla UI che il 3D ha MOSTRATO l'esito → reveal/cronaca dei NON-gol sincroni all'animazione
@@ -4671,7 +4671,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                if(_blk331){const _dI=Math.hypot(_ix-_phx,_iz-_phz);if(_dI>6){const _kI=6/_dI;_ix=_phx+(_ix-_phx)*_kI;_iz=_phz+(_iz-_phz)*_kI;}ballArcH=0.45;ballArcDur=0.28;}
                ballArcTgtX=_ix;ballArcTgtZ=_iz;
                let _id=1e9,_im=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk){const d=Math.hypot(pp.mesh.position.x-_ix,pp.mesh.position.z-_iz);if(d<_id){_id=d;_im=pp.mesh;}}});
-               _im=_castDif23(_im,_ix,_iz,14);if(_im){oppActType="opp_tackle";oppActT=0;oppMesh=_im;oppMesh._divePz=_im.position.z;oppDiveDir=_iz>=_im.position.z?1:-1;oppMesh._slideToX=_ix;oppMesh._slideToZ=_iz;}
+               /* [7.999.10 PASSAGGI CREDIBILI — collaudo PO «passaggi senza senso». Rosso __CPM_NO_INT10] L'INTERCETTO SI FA DOVE UN
+                  AVVERSARIO PUO' ARRIVARCI. Il punto di taglio era fisso al 55% della linea e l'intercettore il piu' vicino a quel punto:
+                  misurato su 18 highlight veri, al lancio stava a 5,7-10 m dal punto con il pallone in volo 0,26-0,47 s — la scivolata
+                  (lerp a 3,2/s) copriva 8 m a ~16 m/s, oppure il pallone passava da un punto vuoto e finiva sui piedi dell'avversario.
+                  Ora si sceglie l'avversario piu' vicino alla LINEA del passaggio (tratto fra il 25% e l'85%) e il taglio e' la sua
+                  proiezione sulla linea: la scivolata e' corta. Il difensore dichiarato dal motore (B4) ha la precedenza se e' entro
+                  3 m in piu' del migliore. Il volo dura almeno quanto serve a lui per arrivarci a 8 m/s (applicato dopo la
+                  normalizzazione delle durate, piu' sotto). Il «murato» resta addosso al passatore come prima. */
+               sr.current._int10=null;
+               if(!_blk331&&!(typeof window!=='undefined'&&window.__CPM_NO_INT10)){try{
+                 const _lx=_fx-_phx,_lz=_fz-_phz,_l2=Math.max(0.01,_lx*_lx+_lz*_lz);
+                 const _prj=m=>{const u=clamp(((m.position.x-_phx)*_lx+(m.position.z-_phz)*_lz)/_l2,0.25,0.85);const qx=_phx+_lx*u,qz=_phz+_lz*u;return{qx,qz,d:Math.hypot(m.position.x-qx,m.position.z-qz)};};
+                 let _bm=null,_bq=null;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(src&&src.team==='away'&&!src.gk&&pp.mesh){const q=_prj(pp.mesh);if(!_bq||q.d<_bq.d){_bq=q;_bm=pp.mesh;}}});
+                 if(_bm){const _cm=_castDif23(null,_bq.qx,_bq.qz,14);if(_cm&&_cm!==_bm){const qc=_prj(_cm);if(qc.d<=_bq.d+3){_bm=_cm;_bq=qc;}}
+                   _ix=_bq.qx;_iz=_bq.qz;ballArcTgtX=_ix;ballArcTgtZ=_iz;_im=_bm;sr.current._int10={d:_bq.d,m:_bm};}
+               }catch(_e10){sr.current._int10=null;}}
+               if(!sr.current._int10)_im=_castDif23(_im,_ix,_iz,14);if(_im){oppActType="opp_tackle";oppActT=0;oppMesh=_im;oppMesh._divePz=_im.position.z;oppDiveDir=_iz>=_im.position.z?1:-1;oppMesh._slideToX=_ix;oppMesh._slideToZ=_iz;}
                passTargetMesh=null;}
              /* [7.341.0 setaccio delle azioni · gi111 «Assist rasoterra in area piccola» FALLITO: l'esito diceva
                 «intercettato» e la palla finiva IN RETE] UN PASSAGGIO NON ENTRA IN PORTA. Dentro l'area piccola il
@@ -4746,6 +4762,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _shape=clamp(ballArcDur/0.80,0.55,1.9);
               ballArcDur=clamp((_dA/_vRef)*_shape,0.24,1.55);
             }
+            if(t==="pass"&&P.hlSuccess!==true&&sr.current._int10){const _i10=sr.current._int10;const _need=_i10.d/8+0.12;/* [7.999.10] l'intercettore ci arriva correndo, non volando */
+              if(ballArcDur<_need)ballArcDur=Math.min(1.6,_need);
+              if(_i10.m)_i10.m._slideSpd10={v:Math.max(2.5,_i10.d/Math.max(0.2,ballArcDur-0.05)),sk:P.hlSitKey};
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const W=(window.__CPM_INT10=window.__CPM_INT10||[]);if(W.length<200)W.push({d:+_i10.d.toFixed(2),dur:+ballArcDur.toFixed(2),v:+(_i10.d/ballArcDur).toFixed(1)});}catch(_eW){}}}
+            else if(t==="pass"&&P.hlSuccess!==true&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)&&oppMesh&&oppMesh._slideToX!=null&&!/^(blocked|wall_blocked|dispossessed|beaten)$/.test(P.hlOutcomeKind||"")){try{const W=(window.__CPM_INT10=window.__CPM_INT10||[]);const d=Math.hypot(oppMesh.position.x-oppMesh._slideToX,oppMesh.position.z-oppMesh._slideToZ);if(W.length<200)W.push({d:+d.toFixed(2),dur:+ballArcDur.toFixed(2),v:+(d/ballArcDur).toFixed(1),rosso:1});}catch(_eW){}}/* nel rosso lo stesso testimone misura il vecchio intercetto */
           }
           /* [7.519.0 R3/4 — LE REAZIONI DI REPARTO: audit «nelle scene di tiro/testa/cross gli avversari
              sono comparse»] Le reazioni scriptate esistevano per 4 casi (GK, un difensore su tackle/dribble,
@@ -6729,7 +6750,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(!_glb674)oppMesh.position.y=-sw*0.30;if(!_glb674)oppMesh.rotation.z=_d*sw*0.9;
             oppMesh._lR.rotation.x=-sw*2.1;oppMesh._lL.rotation.x=sw*0.9;
             oppMesh._aL.rotation.x=sw*1.1;oppMesh._aR.rotation.x=-sw*0.5;
-            if(oppMesh._slideToX!=null){oppMesh.position.x+=(oppMesh._slideToX-oppMesh.position.x)*Math.min(aDt*3.2,1);oppMesh.position.z+=((oppMesh._slideToZ!=null?oppMesh._slideToZ:oppMesh.position.z)-oppMesh.position.z)*Math.min(aDt*3.2,1);}}/* 5.43.9: scivolata più morbida (lerp 5→3.2, durata 0.64→0.85) */
+            if(oppMesh._slideToX!=null){const _s10=oppMesh._slideSpd10;if(_s10&&_s10.sk===P.hlSitKey&&oppActType==='opp_tackle'){/* [7.999.10] passo costante: arriva sul taglio insieme al pallone, non a scatto */const _tz10=(oppMesh._slideToZ!=null?oppMesh._slideToZ:oppMesh.position.z),_dx10=oppMesh._slideToX-oppMesh.position.x,_dz10=_tz10-oppMesh.position.z,_dl10=Math.hypot(_dx10,_dz10),_st10=Math.min(_dl10,_s10.v*aDt);if(_dl10>1e-4){oppMesh.position.x+=_dx10/_dl10*_st10;oppMesh.position.z+=_dz10/_dl10*_st10;}}
+            else{oppMesh.position.x+=(oppMesh._slideToX-oppMesh.position.x)*Math.min(aDt*3.2,1);oppMesh.position.z+=((oppMesh._slideToZ!=null?oppMesh._slideToZ:oppMesh.position.z)-oppMesh.position.z)*Math.min(aDt*3.2,1);}}}/* 5.43.9: scivolata più morbida (lerp 5→3.2, durata 0.64→0.85) */
           if(u>=1){
             /* [7.415.0 collaudo PO gi71 «il dribbling non e' chiaro»] IL VINCITORE SI PRENDE IL PALLONE.
                Il 7.249 poka la palla via ≤9u «e' lui che viene a prendersela» — ma nessun codice lo

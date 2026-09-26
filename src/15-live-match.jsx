@@ -140,6 +140,13 @@ if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_LIB_COM
    ARMANO nello stato e la cronaca le richiama SOLO se il punteggio le mantiene (watcher 719,
    rosso __CPM_NO719). Le premesse delle schede-eco (lo spazio che si apre, lo schema che
    funziona) restano narrazione NON ancorata allo stato: le aggancera' la Fase 6B, qui a verbale. */
+/* [7.999.10 — collaudo PO: tabellino a colonne invertite in trasferta, «sotto di due» sul 3-0]
+   (1) Nel motore «home» e' SEMPRE la squadra dell'eroe (src/14: lo stadio dice solo chi gioca in casa): il tabellino di fine gara
+   scambiava i lati quando si gioca fuori casa. Rosso __CPM_NO_TAB10. (2) Lo scarto nelle frasi si scrive col numero vero. */
+const latiTabellino10=(T,isMatchHome)=>{if(typeof window!=='undefined'&&window.__CPM_NO_TAB10)return isMatchHome?{mine:T.home,loro:T.away}:{mine:T.away,loro:T.home};return{mine:T.home,loro:T.away};};
+const golScarto10=(n,maiusc)=>{n=Math.abs(n|0);if(typeof window!=='undefined'&&window.__CPM_NO_TAB10)return maiusc?'Due gol':'due';const p=['zero','uno','due','tre','quattro','cinque','sei','sette','otto','nove'][n]||String(n);const t=n===1?(maiusc?'Un gol':'uno'):(maiusc?(p.charAt(0).toUpperCase()+p.slice(1))+' gol':p);return t;};
+try{if(typeof window!=='undefined'){window.__CPM_LATI10=latiTabellino10;window.__CPM_SCARTO10=golScarto10;}}catch(_e){}
+
 const INTX669=[
  /* [7.669.0 v2 — MISURATO: una sola interazione a partita contro la banda 2-4, perche' quasi tutte
     le schede aspettavano che l'eroe avesse gia' inciso (duelli, occasioni). Ma una partita ha momenti
@@ -299,10 +306,10 @@ const INTX669=[
   txt:c=>"✊ Erano andati sotto e adesso sono avanti: "+c.eroe+" guarda il tabellone e capisce che questi minuti valgono una stagione.",cons:{fiducia:1},
   sc:[{et:"Chiudo io la partita",es:c=>c.eroe+" chiede ogni pallone in uscita: vuole essere lui la sponda che fa passare i minuti.",cons:{coinv:2,fiducia:1}},{et:"Tutti dietro la linea della palla",es:c=>c.eroe+" richiama i compagni a rientrare: si difende in undici, e lui e' il primo.",cons:{intesa:2,coinv:-1}},{et:"Cerco il gol che chiude",es:c=>c.eroe+" resta alto a cercare il colpo che spegne la partita: rischio e coraggio.",cons:{coinv:1,zona:1}}]},
  {id:"mi_dom",fam:"MISTER",cond:c=>c.diff>=2&&c.mn>=55&&c.mn<=75,
-  txt:c=>"📣 Due gol di vantaggio e il mister chiama "+c.eroe+" a bordo campo: «Adesso non regaliamo niente: tieni la palla, fai respirare la squadra.»",cons:{},
+  txt:c=>"📣 "+golScarto10(c.diff,true)+" di vantaggio e il mister chiama "+c.eroe+" a bordo campo: «Adesso non regaliamo niente: tieni la palla, fai respirare la squadra.»",cons:{},
   sc:[{et:"Gestisco il ritmo",es:c=>c.eroe+" rallenta il gioco e tiene il pallone lontano dall'area: il mister annuisce.",cons:{fiducia:2,coinv:-1}},{et:"Voglio il terzo",es:c=>c.eroe+" fa segno che vuole ancora attaccare: il mister allarga le braccia, ma non lo ferma.",cons:{coinv:2,fiducia:-1}},{et:"Faccio giocare gli altri",es:c=>c.eroe+" comincia a servire chi ha toccato meno palloni: la squadra cresce tutta insieme.",cons:{intesa:2}}]},
  {id:"av_nerv",fam:"AVVERSARI",cond:c=>c.diff>=2&&c.mn>=70,
-  txt:c=>"😠 Sotto di due, gli avversari hanno smesso di parlarsi: il loro capitano urla contro il terzino, e "+c.eroe+" lo sente.",cons:{marcatura:-1},
+  txt:c=>"😠 Sotto di "+golScarto10(c.diff)+", gli avversari hanno smesso di parlarsi: il loro capitano urla contro il terzino, e "+c.eroe+" lo sente.",cons:{marcatura:-1},/* [7.999.10 collaudo PO: «sotto di due» sul 3-0] lo scarto e' quello vero */
   sc:[{et:"Ci vado sopra",es:c=>c.eroe+" punta proprio quel terzino: chi litiga con i suoi non difende con la testa.",cons:{coinv:2,marcatura:-1}},{et:"Rispetto: gioco pulito",es:c=>c.eroe+" abbassa i toni e gioca semplice: nessuna provocazione, nessun rischio.",cons:{fiducia:1}},{et:"Tengo palla vicino alla bandierina",es:c=>c.eroe+" porta il pallone all'angolo e li fa correre: i nervi degli avversari fanno il resto.",cons:{fiducia:1,coinv:1}}]},
 ]
 
@@ -6035,7 +6042,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
              possono mentire sul pallone, ed e' anche la ragione per cui posso spedirle mentre la
              libreria delle azioni resta ferma. */
           }else if(ev&&ev._motore870){_recHij545=true;_recKind546="motore";_recSide546=ev._motore870.lato;}
-          if(_intxK669&&((typeof window!=='undefined'&&window.__CPM_NO839)||_recKind546!=="counter")/* [7.839 v5] la scheda si sceglie prima dell'armamento del contropiede e ne sostituiva l'annuncio (Moretti 25' «Gol della squadra…» al posto di «Palla persa alta»): la scheda aspetta il tick dopo */){try{
+          const _golQui10=!!(ev&&(ev.ef==="team_goal"||ev.ef==="opp_goal"));/* [7.999.10 GOL PERSO — collaudo PO «3 gol e non due». Rosso __CPM_NO_GOLINTX10] l'interazione sostituisce la riga del minuto con ef:null: se quella riga era il GOL del motore, il gol spariva dal tabellone e restava nel tabellino (misurato: partita Unico122, gol del n. 6 al 24' nel motore, tabellone 3-0 contro motore 4-0). Col gol nel minuto la scheda aspetta il tick dopo, come col contropiede. */
+          if(_golQui10&&_intxK669&&typeof window!=='undefined'&&window.__CPM_GOLPERSO_REC){try{(window.__CPM_GOLPERSO=window.__CPM_GOLPERSO||[]).push({min:nx,ef:ev.ef,dove:'interazione',rinviata:!window.__CPM_NO_GOLINTX10});}catch(_eGI){}}
+          if(_intxK669&&!(_golQui10&&!(typeof window!=='undefined'&&window.__CPM_NO_GOLINTX10))&&((typeof window!=='undefined'&&window.__CPM_NO839)||_recKind546!=="counter")/* [7.839 v5] la scheda si sceglie prima dell'armamento del contropiede e ne sostituiva l'annuncio (Moretti 25' «Gol della squadra…» al posto di «Palla persa alta»): la scheda aspetta il tick dopo */){try{
             const _N=narrRef669.current;
             const _sc=scoreRef.current||{home:0,away:0};
             const _mio=_sc.home|0,_suo=_sc.away|0;/* [7.725.0 — IL FRAME E' EROE-CENTRICO] `score.home` e' SEMPRE la squadra dell'eroe (gol nostro → home+1, gol subito → away+1; il tabellone scambia solo la visualizzazione): il vecchio `isMatchHome?home:away` invertiva la differenza reti IN TRASFERTA — le schede «sotto di un gol» uscivano quando si era in vantaggio. Trovato leggendo, non misurato: tutti i banchi sono provini in casa. */
@@ -8489,7 +8498,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         try{for(const _e9 of _evB2){if((_e9.t==='ammonizione'||_e9.t==='espulsione')&&_e9.chi&&!_e9.chi.eroe){const _n9=String(_e9.chi.nome||'').split(' ').slice(-1)[0]||'il difensore';pushMatchEvent(clockRef.current,_e9.t==='ammonizione'?'opp_yellow':'opp_red',em=>(_e9.t==='ammonizione'?'🟨 Ammonito '+_n9+' per il fallo su di te al ':'🟥 Espulso '+_n9+' per il fallo su di te al ')+em+"'");}}}catch(_e9){}/* [7.999.9] il cartellino all'avversario deciso dal motore entra nei momenti chiave */
         if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,rew:(action&&action.rew)||'',tipo:_cnB.type||'',var:_cnB.variant||'',lbl:String((action&&action.label)||'').slice(0,30),ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
       else if(_M&&_M.registra){
-      const _lato=isMatchHome?'home':'away';
+      const _lato=(typeof window!=='undefined'&&window.__CPM_NO_TAB10)?(isMatchHome?'home':'away'):'home';/* [7.999.10] nel motore «home» e' sempre la squadra dell'eroe: il ponte (ramo del rosso B2) scriveva sull'avversario in trasferta */
       const _rew=(action&&action.rew)||'';
       const _xgQ=calcXG(action,pPos.x);
       if(key==="goal")_M.registra('tiro',_lato,{esito:'gol',xg:_xgQ});
@@ -10856,7 +10865,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               riga assente. */}
           {(()=>{ let _T=null; try{ _T=motoreRef.current&&motoreRef.current.tabellino?motoreRef.current.tabellino():null; }catch(_e){}
             if(!_T||!_T.home||!_T.away)return null;
-            const _mine=isMatchHome?_T.home:_T.away, _loro=isMatchHome?_T.away:_T.home;
+            const {mine:_mine,loro:_loro}=latiTabellino10(_T,isMatchHome);
             const _righe=!(typeof window!=='undefined'&&window.__CPM_NO_STAT23)?righeTabellino23(_mine,_loro).map(r=>[r.et,r.pct?r.sx+"%":r.dec?r.sx.toFixed(2):r.sx,r.pct?r.dx+"%":r.dec?r.dx.toFixed(2):r.dx,r.sx||(r.n?0.001:0),r.dx||(r.n?0.001:0)]):[
               /* [7.915.0] il GOL mancava dal tabellino: la voce piu' importante della gara non c'era */
               ["Gol",_mine.gol,_loro.gol,_mine.gol,_loro.gol],

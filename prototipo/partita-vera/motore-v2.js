@@ -124,7 +124,7 @@ function creaMotorePossesso(cfg){
       case 'ricezione': case 'conduzione': {const q=e.to||e.chi;if(q&&typeof q.x==='number'){const adv=l==='home'?q.x:100-q.x;const w=(q.y<22||q.y>78)&&adv>=66;if(w&&!S._fascia23[l])A.fascia++;S._fascia23[l]=w;}break;}
       case 'tiro': A.tiri++;A.xg=Math.round((A.xg+(typeof e.xg==='number'?e.xg:_XG914(e)))*1000)/1000;
         if(e.esito==='goal'||e.esito==='saved')A.inPorta++;else if(e.esito==='post')A.legni++;else if(e.esito==='blocked')A.murati++;else A.fuori++;break;
-      case 'gol': A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;break;
+      case 'gol': A.gol++;if(e.assist&&e.assist.team&&S.tab[e.assist.team])S.tab[e.assist.team].assist++;try{(S._golLog=S._golLog||[]).push({min:S.min,tick:S.tick,lato:e.lato||null,scena:!!e.scena,chi:e.chi?e.chi.i:null});}catch(_eG){}/* [7.999.10] registro dei gol del motore, solo lettura: serve a confrontarlo col tabellone */break;
       case 'corner': A.corner++;break;
       case 'fallo': if(!e.daFuorigioco||(typeof window!=='undefined'&&window&&window.__CPM_NO_FALLOFG23))A.falli++;break;/* [24/09 POC] la punizione per fuorigioco non e' un fallo (1,55 a squadra al banco). Rosso __CPM_NO_FALLOFG23 */
       case 'rigore': A.rigori++;break;
@@ -1102,7 +1102,11 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     dado(p){const r=rnd();return r<Math.max(0.02,Math.min(0.98,+p||0));},
     eventi(key,d){d=d||{};const out=[];const _n0=S.eventi.length;try{
       const H=g[HERO];if(!H)return out;const C=d.cast||{};const G=w=>(w&&w.i!=null&&g[w.i])?g[w.i]:null;
-      const R=G(C.ricevente),D=G(C.difensore),K=G(C.portiere);
+      const R0=G(C.ricevente),D=G(C.difensore),K=G(C.portiere);
+      /* [7.999.10 collaudo PO: vinta 3-0 con un gol e due assist, tabellino «1 gol»] il gol del compagno su assist si scriveva solo se la
+         scena aveva un ricevente dichiarato dal motore: senza (scena non nata da un'occasione del motore) il gol spariva dal tabellino.
+         Ora, se manca, il ricevente e' il compagno di movimento piu' vicino all'eroe. Rosso __CPM_NO_TAB10. */
+      const R=R0||((key!=='assist'||(typeof window!=='undefined'&&window.__CPM_NO_TAB10))?null:(()=>{/* solo sull'ASSIST: su un «goal» da passaggio (dai e vai) il gol lo segna la catena, non il primo tocco — misurato, motore-unico 4-0 contro tabellone 3-0 */const w=piuVicino(H.x,H.y,H.team,{noGk:true,escl:HERO});return w&&w.p?w.p:null;})());
       const E=(t,o)=>{const e=ev(t,Object.assign({scena:true,fam:d.tipo||null,variante:d.variante||null},o));out.push(e);return e;};/* famiglia e variante della scena: il gesto che il giocatore ha scelto */
       const da=q=>({x:+q.x.toFixed(1),y:+q.y.toFixed(1)});const rew=d.rew||'';const ok=!!d.ok;
       /* [23/09 POC — punto 3] la FAMIGLIA del gesto della scena (scelta dal giocatore) entra negli eventi: il tiro porta la sua

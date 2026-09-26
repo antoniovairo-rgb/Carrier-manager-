@@ -182,7 +182,10 @@
     "varieta-scene": "node varieta-scene.mjs",
     "rndm-conteggio": "node rndm-conteggio.mjs",
     "caduta-eroe": "node caduta-eroe-test.mjs",
-    "cartellino": "node cartellino-test.mjs"
+    "cartellino": "node cartellino-test.mjs",
+    "intercetto-credibile": "node intercetto-credibile-test.mjs",
+    "tabellino-lati": "node tabellino-lati-test.mjs",
+    "gol-interazione": "node gol-interazione-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
