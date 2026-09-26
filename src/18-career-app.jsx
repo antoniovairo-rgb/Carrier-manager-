@@ -7069,7 +7069,7 @@ const getThisWeekMatchday=()=>{
                 {l:"Forma",v:String(player.form||0),sub:(player.form||0)>=72?"in crescita":(player.form||0)>=55?"stabile":"in calo"}].map((k,i)=>(
                 <div key={i} style={{background:TH.surface2,border:"1px solid "+TH.divider,borderRadius:RAD.md,padding:"7px 11px",display:"flex",flexDirection:"column",gap:3}}>
                   {lab2(k.l)}
-                  <div className="cpm-num" style={{fontSize:FS.h,fontWeight:FW.black,lineHeight:1.05,color:TH.text}}>{k.v}</div>
+                  <div className="cpm-num" style={{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.h:FS.title,fontWeight:FW.black,lineHeight:1.05,color:TH.text,whiteSpace:"nowrap"}}>{k.v}</div>{/* [7.999.23 collaudo PO «numeri da restringere, prendono troppo spazio»] 24 -> 20 px e mai a capo («26 · 10» andava su due righe). Rosso __CPM_NO_NUM23 */}
                   <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{k.sub}</div>
                 </div>))}
             </div>
@@ -7763,7 +7763,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{display:"flex",justifyContent:"space-around",marginBottom:8,gap:4}}>
                   {[{l:L.matches,v:player.matches||0,c:TH.text},{l:L.goals,v:player.goals||0,c:TH.success,sp:_spGol},{l:L.assists,v:player.assists||0,c:TH.accent,sp:_spAst},...(avgRat?[{l:"Media",v:avgRat,c:TH.warning,sp:_spVoto}]:[])].map((s,i)=>(
                     <div key={i} style={{textAlign:"center",flex:1}}>
-                      <div className="cpm-num" style={{fontSize:FS.display,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>
+                      <div className="cpm-num" style={{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.display:FS.h,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>{/* [7.999.23] 32 -> 24 px */}
                       <div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
                       {s.sp&&s.sp.length>=2?<div style={{marginTop:3,display:"flex",justifyContent:"center"}}><Sparkline data={s.sp} color={s.c} width={62} height={18}/></div>:null}
                     </div>
