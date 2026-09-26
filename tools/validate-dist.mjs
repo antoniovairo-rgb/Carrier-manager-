@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from '../tests/visual/node_modules/playwright/index.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const DIST = path.join(ROOT, 'dist');
+const WEB = process.argv.includes('--web');/* [7.999.11] valida la build per il sito: flag store ASSENTE */
+const DIST = path.join(ROOT, WEB ? 'dist-web' : 'dist');
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png' };
 
 const srv = http.createServer((req, res) => {
@@ -40,8 +41,8 @@ console.log(`React montato (root popolato): ${mounted ? '✅' : '❌'}`);
 console.log(`home raggiunta (bottoni: ${home.btns}, "Nuova carriera": ${home.hasNuova ? 'sì' : 'no'}): ${home.btns > 0 && home.hasNuova ? '✅' : '❌'}`);
 console.log(`richieste esterne (CDN) tentate: ${externalHits.length ? '❌ ' + externalHits.slice(0, 5).join(' ') : '✅ NESSUNA → davvero offline'}`);
 console.log(`errori console: ${errs.length ? '❌ ' + errs.slice(0, 4).join(' | ') : '✅ nessuno'}`);
-console.log(`flag build store (feature AI off, 1.6): ${storeFlag ? '✅ attivo' : '❌ assente'}`);
-const ok = mounted && home.btns > 0 && home.hasNuova && externalHits.length === 0 && errs.length === 0 && storeFlag;
+console.log(WEB ? `flag build store (deve mancare nella build per il sito): ${storeFlag ? '❌ presente' : '✅ assente'}` : `flag build store (feature AI off, 1.6): ${storeFlag ? '✅ attivo' : '❌ assente'}`);
+const ok = mounted && home.btns > 0 && home.hasNuova && externalHits.length === 0 && errs.length === 0 && (WEB ? !storeFlag : storeFlag);
 console.log(ok ? '\n✅ DIST OFFLINE FUNZIONANTE' : '\n❌ DIST da rivedere');
 await browser.close(); srv.close();
 process.exit(ok ? 0 : 1);

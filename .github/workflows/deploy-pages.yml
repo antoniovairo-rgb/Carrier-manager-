@@ -29,6 +29,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # [7.999.11 collaudo PO «si riavvia l'app quando la metto pochi secondi in background»] il sito serve la versione
+      # PRECOMPILATA (niente Babel nel browser): avvio 6,9 s -> 0,3 s, memoria JS 80 -> 6 MB misurati in headless.
+      # Android chiude prima le schede che pesano. Stessa build del Play Store ma SENZA il flag store (tools/build-dist.mjs --web).
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build precompilata per il sito (+ verifica offline)
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+        run: |
+          (cd tests/visual && npm install)
+          node tools/build-dist.mjs --web
+          (cd tests/visual && npx playwright install --with-deps chromium)
+          node tools/validate-dist.mjs --web
+
       - name: Build static site
         run: |
           # [security audit 2026-08-13] LISTA ESPLICITA di cio' che va online.
@@ -55,8 +71,9 @@ jobs:
           cp 404.html _site/
           cp icon-192.png icon-512.png icon-maskable-512.png _site/
           cp -r assets _site/
-          # index.html = copia del file di gioco → l'URL nudo della Pages funziona
-          cp _site/CARRIER-MANAGER-AV.html _site/index.html
+          # [7.999.11] radice e indirizzo storico servono la versione PRECOMPILATA (dist-web): stesso gioco, senza Babel nel browser
+          cp dist-web/index.html _site/index.html
+          cp dist-web/index.html _site/CARRIER-MANAGER-AV.html
           touch _site/.nojekyll
           # [21/09] il deploy non puo' dirsi riuscito senza il file che serve la radice: se un domani
           # la copia cambia e index.html non c'e', il passo si ferma QUI invece di pubblicare un sito

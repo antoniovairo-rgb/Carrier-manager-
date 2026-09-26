@@ -19,7 +19,11 @@ const NM = path.join(ROOT, 'tests', 'visual', 'node_modules');
 const require = createRequire(import.meta.url);
 const Babel = require(path.join(NM, '@babel', 'standalone'));
 const SRC = path.join(ROOT, 'CARRIER-MANAGER-AV.html');
-const DIST = path.join(ROOT, 'dist');
+/* [7.999.11] --web: la STESSA build precompilata per il sito (GitHub Pages), senza il flag della build store — taccuino di collaudo,
+   feature AI e strumenti restano come nella versione sorgente. Misurato: avvio fino alla home 6,9 s → 0,3 s, memoria JS 80 → 6 MB
+   (collaudo PO: «si riavvia l'app quando la metto pochi secondi in background» — Android chiude le schede che pesano). */
+const WEB = process.argv.includes('--web');
+const DIST = path.join(ROOT, WEB ? 'dist-web' : 'dist');
 const lib = p => fs.readFileSync(path.join(NM, p), 'utf8');
 
 const t0 = Date.now();
@@ -64,7 +68,7 @@ html = html.slice(0, cdnStart) + inlined + html.slice(cdnEnd);
 //     @capacitor/preferences (il wrapper `storage` del gioco lo usa già al posto di localStorage, che
 //     su WebView può essere soggetto a eviction). No-op nel browser/gate (window.Capacitor assente).
 const _headInject = '<head>\n'
-  + '<script>window.__CPM_STORE_BUILD=true;/* build store offline: feature AI disattivata (roadmap 1.6) */</script>\n'
+  + (WEB ? '' : '<script>window.__CPM_STORE_BUILD=true;/* build store offline: feature AI disattivata (roadmap 1.6) */</script>\n')
   + '<script>(function(){try{var C=window.Capacitor;if(C&&C.isNativePlatform&&C.isNativePlatform()&&typeof C.registerPlugin==="function"){var P=C.registerPlugin("Preferences");window.storage={set:function(k,v){return P.set({key:k,value:v});},get:function(k){return P.get({key:k});},delete:function(k){return P.remove({key:k});}};}}catch(e){}})();/* storage nativo anti-eviction (roadmap 6) */</script>';
 html = html.replace('<head>', _headInject);
 
