@@ -1143,10 +1143,45 @@ function ThreeMatchView(props){
          (lod1, schiena ruotata verso la camera): la SCHIENA e' un pannello unico a v 0,5-0,75 e u 0,5-0,95; la verticale del corpo
          corre lungo u (spalle a u 0,5, vita a u 0,95), l'orizzontale lungo v (centro schiena a v 0,625). Numero in alto sulla schiena,
          ruotato di -90 gradi. 512 px: 22 maglie restano sotto i 30 MB di scheda grafica. Rosso __CPM_NO_MAGLIA18 = tinta unita. */
+      /* [7.999.25 collaudo PO «strisce a V sul davanti»] IL MOTIVO SI DISEGNA DAL CORPO, NON DALLA TEXTURE. Misurato sulla geometria
+         (lod0/1/2, stesso layout): il «verso il basso» nelle due isole UV del davanti e' inclinato di +14..+19 e -9..-19 gradi, quindi
+         strisce dritte nella texture si piegano a V (e i cerchi a V rovesciata). Ora ogni pixel della maglia sa dov'e' sul corpo: le
+         strisce seguono l'angolo attorno al busto (sulle maniche attorno al braccio), i cerchi l'altezza (sulle maniche la distanza
+         lungo il braccio). Mappa cotta una volta per geometria. Rosso __CPM_NO_STRISCE25 = motivo disegnato nella texture come prima. */
+      const _shirtGeoMapCache=new Map();
+      const _shirtGeoMap=(geom,S)=>{const k=geom.uuid+'|'+S;if(_shirtGeoMapCache.has(k))return _shirtGeoMapCache.get(k);let out=null;const _t0=performance.now();
+        try{const pa=geom.attributes.position,ua=geom.attributes.uv,ix=geom.index;if(!pa||!ua)return null;const n=pa.count;
+          let cx=0,cz=0,cn=0,mnx=1e9,mxx=-1e9,mny=1e9,mxy=-1e9;for(let i=0;i<n;i++){const X=pa.getX(i);if(X<mnx)mnx=X;if(X>mxx)mxx=X;const Y=pa.getY(i);if(Y<mny)mny=Y;if(Y>mxy)mxy=Y;}
+          const W=mxx-mnx,H=mxy-mny,mid=(mxx+mnx)/2;for(let i=0;i<n;i++){if(Math.abs(pa.getX(i)-mid)<W*0.2){cx+=pa.getX(i);cz+=pa.getZ(i);cn++;}}if(!cn)return null;cx/=cn;cz/=cn;
+          let R=0;for(let i=0;i<n;i++){if(Math.abs(pa.getX(i)-mid)<W*0.2)R+=Math.hypot(pa.getX(i)-cx,pa.getZ(i)-cz);}R/=cn;
+          const arm=W*0.26;let ay=0,an=0;for(let i=0;i<n;i++){if(Math.abs(pa.getX(i)-cx)>arm){ay+=pa.getY(i);an++;}}ay=an?ay/an:mny+H*0.8;
+          const th=new Float32Array(S*S),hy=new Float32Array(S*S),cov=new Uint8Array(S*S);
+          const vt=(i,m)=>{const X=pa.getX(i),Y=pa.getY(i),Z=pa.getZ(i);if(m){return [Math.atan2(Z-cz,Y-ay),(Math.abs(X-cx)-arm)+H*0.8,1];}return [Math.atan2(X-cx,Z-cz),Y-mny,0];};
+          const T=ix?ix.count/3:n/3;for(let t=0;t<T;t++){const i0=ix?ix.getX(3*t):3*t,i1=ix?ix.getX(3*t+1):3*t+1,i2=ix?ix.getX(3*t+2):3*t+2;
+            const m=Math.abs((pa.getX(i0)+pa.getX(i1)+pa.getX(i2))/3-cx)>arm?1:0;const a=vt(i0,m),b=vt(i1,m),c=vt(i2,m);
+            for(const q of [b,c]){while(q[0]-a[0]>Math.PI)q[0]-=2*Math.PI;while(q[0]-a[0]<-Math.PI)q[0]+=2*Math.PI;}
+            const x0=ua.getX(i0)*S,y0=ua.getY(i0)*S,x1=ua.getX(i1)*S,y1=ua.getY(i1)*S,x2=ua.getX(i2)*S,y2=ua.getY(i2)*S;
+            const d=(y1-y2)*(x0-x2)+(x2-x1)*(y0-y2);if(Math.abs(d)<1e-9)continue;
+            const bx0=Math.max(0,Math.floor(Math.min(x0,x1,x2))),bx1=Math.min(S-1,Math.ceil(Math.max(x0,x1,x2))),by0=Math.max(0,Math.floor(Math.min(y0,y1,y2))),by1=Math.min(S-1,Math.ceil(Math.max(y0,y1,y2)));
+            for(let py=by0;py<=by1;py++)for(let px=bx0;px<=bx1;px++){const sx=px+0.5,sy=py+0.5;const w0=((y1-y2)*(sx-x2)+(x2-x1)*(sy-y2))/d,w1=((y2-y0)*(sx-x2)+(x0-x2)*(sy-y2))/d,w2=1-w0-w1;
+              if(w0<-0.02||w1<-0.02||w2<-0.02)continue;const o=py*S+px;th[o]=(w0*a[0]+w1*b[0]+w2*c[0]);hy[o]=(w0*a[1]+w1*b[1]+w2*c[1])/R;cov[o]=1+a[2];}}
+          for(let pass=0;pass<4;pass++){const add=[];for(let py=0;py<S;py++)for(let px=0;px<S;px++){const o=py*S+px;if(cov[o])continue;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const qx=px+dx,qy=py+dy;if(qx<0||qy<0||qx>=S||qy>=S)continue;const q=qy*S+qx;if(cov[q]){add.push(o,q);break;}}}
+            for(let j=0;j<add.length;j+=2){th[add[j]]=th[add[j+1]];hy[add[j]]=hy[add[j+1]];cov[add[j]]=cov[add[j+1]];}}
+          out={S,th,hy,cov};let _cv=0;for(let o=0;o<S*S;o++)if(cov[o])_cv++;try{if(typeof window!=='undefined'){const _w=(window.__CPM_STRISCE25=window.__CPM_STRISCE25||[]);if(_w.length<20)_w.push({tri:T,cov:+(_cv/(S*S)).toFixed(3),ms:Math.round(performance.now()-_t0)});}}catch(_e2){}}catch(_e){out=null;}
+        _shirtGeoMapCache.set(k,out);return out;};
+      const _hexRGB=h=>{const s=String(h||'#ffffff').replace('#','');const f=s.length===3?s.split('').map(ch=>ch+ch).join(''):s;return [parseInt(f.slice(0,2),16)||0,parseInt(f.slice(2,4),16)||0,parseInt(f.slice(4,6),16)||0];};
+      const _shirtGeoPaint=(x,S,geo,pattern,shirt,c2)=>{if(!geo||geo.S!==S)return false;const A=_hexRGB(shirt),B=_hexRGB(c2||'#f0f0f0');const img=x.getImageData(0,0,S,S),D=img.data;
+        const hoop=pattern==='hoops',P=2*Math.PI/(pattern==='stripesw'?16:10),hw=pattern==='stripesw'?0.1:0.25,cen=pattern==='stripes'?0.75:(hoop?0.25:0),V=new Float32Array(S*S);
+        for(let o=0;o<S*S;o++)if(geo.cov[o])V[o]=hoop?geo.hy[o]/0.62:geo.th[o]/P;
+        const df=(o,q)=>{if(q<0||q>=S*S||geo.cov[q]!==geo.cov[o])return -1;let d=Math.abs(V[q]-V[o]);return d>0.5?-1:d;};
+        for(let o=0;o<S*S;o++){if(!geo.cov[o])continue;const px=o%S;let g1=px<S-1?df(o,o+1):-1;if(g1<0)g1=px>0?df(o,o-1):-1;let g2=df(o,o+S);if(g2<0)g2=df(o,o-S);const dv=Math.max(1e-4,(Math.max(g1,0)+Math.max(g2,0))*0.75);
+          let dd=V[o]-Math.floor(V[o])-cen;dd-=Math.round(dd);const sd=hw-Math.abs(dd);const al=Math.max(0,Math.min(1,0.5+sd/dv));
+          D[4*o]=A[0]+(B[0]-A[0])*al;D[4*o+1]=A[1]+(B[1]-A[1])*al;D[4*o+2]=A[2]+(B[2]-A[2])*al;D[4*o+3]=255;}
+        x.putImageData(img,0,0);return true;};
       const _hyperShirtTexCache=new Map();
-      const _hyperShirtTex=(shirt,c2,pattern,num)=>{const key=[shirt,c2,pattern,num].join('|');if(_hyperShirtTexCache.has(key))return _hyperShirtTexCache.get(key);
+      const _hyperShirtTex=(shirt,c2,pattern,num,geom)=>{const _g25=(geom&&!(typeof window!=='undefined'&&window.__CPM_NO_STRISCE25)&&(pattern==='stripes'||pattern==='stripesw'||pattern==='hoops'))?_shirtGeoMap(geom,512):null;const key=[shirt,c2,pattern,num,_g25?geom.uuid:''].join('|');if(_hyperShirtTexCache.has(key))return _hyperShirtTexCache.get(key);
         const S=512,f=S/1024,c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');x.fillStyle=shirt;x.fillRect(0,0,S,S);x.fillStyle=c2||'#f0f0f0';
-        if(pattern==='stripes'){for(let y=0;y<1024;y+=64)x.fillRect(0,(y+16)*f,S,32*f);}
+        if(_g25&&_shirtGeoPaint(x,S,_g25,pattern,shirt,c2)){}else if(pattern==='stripes'){for(let y=0;y<1024;y+=64)x.fillRect(0,(y+16)*f,S,32*f);}
         else if(pattern==='stripesw'){for(let y=0;y<1024;y+=48)x.fillRect(0,(y+19)*f,S,10*f);}
         else if(pattern==='hoops'){for(let X=500;X<1024;X+=96)x.fillRect(X*f,0,48*f,S);}
         else if(pattern==='halves'){x.fillRect(0,640*f,S,S);}
@@ -1156,7 +1191,7 @@ function ThreeMatchView(props){
         if(num!=null&&num!==''){const lum=(()=>{const h=String(shirt).replace('#','');const r=parseInt(h.slice(0,2),16)/255,g=parseInt(h.slice(2,4),16)/255,b=parseInt(h.slice(4,6),16)/255;return 0.2126*r+0.7152*g+0.0722*b;})();
           x.save();x.translate(735*f,625*f);x.rotate(-Math.PI/2);x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';x.font=`bold ${Math.round(170*f)}px Arial, sans-serif`;
           x.lineWidth=16*f;x.strokeStyle=lum>0.62?'rgba(255,255,255,0.9)':'rgba(7,9,16,0.9)';x.strokeText(String(num),0,6*f);x.fillStyle=lum>0.62?'#111827':'#ffffff';x.fillText(String(num),0,6*f);x.restore();}
-        const t=new THREE.CanvasTexture(c);t.flipY=false;t.encoding=THREE.sRGBEncoding;t.anisotropy=4;_hyperShirtTexCache.set(key,t);try{if(typeof window!=='undefined'){const _m=(window.__CPM_MAGLIE18=window.__CPM_MAGLIE18||[]);if(_m.length<80)_m.push({num:num==null?null:String(num),pattern,shirt});}}catch(_e){}return t;};
+        const t=new THREE.CanvasTexture(c);t.flipY=false;t.encoding=THREE.sRGBEncoding;t.anisotropy=4;_hyperShirtTexCache.set(key,t);try{if(typeof window!=='undefined'){const _m=(window.__CPM_MAGLIE18=window.__CPM_MAGLIE18||[]);if(_m.length<80&&!_m.some(e=>e.num===(num==null?null:String(num))&&e.pattern===pattern&&e.shirt===shirt))_m.push({num:num==null?null:String(num),pattern,shirt});}}catch(_e){}return t;};
       /* [7.999.23 collaudo PO «il numero di maglia puo' essere esteso anche al pantaloncino»] LAYOUT MISURATO con la griglia di prova sui
          pantaloncini (lod1): la coscia SINISTRA davanti e' la cella u 0,125-0,25 · v 0,75-0,875, testo dritto. 256 px. Rosso __CPM_NO_PANT23. */
       const _hyperShortsTexCache=new Map();
@@ -1166,7 +1201,7 @@ function ThreeMatchView(props){
         x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';x.font='bold 26px Arial, sans-serif';x.lineWidth=4;x.strokeStyle=lum>0.62?'rgba(255,255,255,0.85)':'rgba(7,9,16,0.85)';x.strokeText(String(num),0.19*S,0.9375*S);x.fillStyle=lum>0.62?'#111827':'#ffffff';x.fillText(String(num),0.19*S,0.9375*S);
         const t=new THREE.CanvasTexture(c);t.flipY=false;t.encoding=THREE.sRGBEncoding;_hyperShortsTexCache.set(key,t);try{if(typeof window!=='undefined'){const _p=(window.__CPM_PANT23=window.__CPM_PANT23||[]);if(_p.length<80)_p.push({num:String(num),shorts});}}catch(_e){}return t;};
       const _applyHyperKit=(visual,kit,_appr,num)=>{const k=kit||{},pattern=k.pattern||'solid',colors={HyperShirt:k.shirt||'#7f1d2d',HyperShirtAccent:k.c2||'#f0f0f0',HyperShorts:k.shorts||'#111827',HyperSocks:k.socks||k.shirt||'#7f1d2d',HyperBoots:k.shoes||'#111827'};
-        visual.traverse(mesh=>{const patternMatch=(mesh.name||'').match(/^HyperShirtPattern-(solid|stripesw|stripes|hoops|halves|sash|sleeves|vband|band)(?:_|$)/);if(patternMatch)mesh.visible=patternMatch[1]===pattern;if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{const hex=colors[base&&base.name];if(!hex)return base;const _mg18=!(typeof window!=='undefined'&&window.__CPM_NO_MAGLIA18)&&base&&base.name==='HyperShirt'&&(pattern!=='solid'||num!=null);const _ms23=!(typeof window!=='undefined'&&window.__CPM_NO_PANT23)&&base&&base.name==='HyperShorts'&&num!=null;const key=[base.uuid,hex,_mg18?(k.c2||'')+'|'+pattern+'|'+num:'',_ms23?'p'+num:''].join('|');let material=_hyperKitMaterialCache.get(key);if(!material){material=base.clone();material.map=_mg18?_hyperShirtTex(hex,k.c2||'#f0f0f0',pattern,num):(_ms23?_hyperShortsTex(hex,num):null);material.color=new THREE.Color((_mg18||_ms23)?'#ffffff':hex);if('emissive' in material)material.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in material)material.roughness=.82;material.needsUpdate=true;_hyperKitMaterialCache.set(key,material);}return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});};      /* Lineup/intro phase.  This deliberately replaces complete avatar roots
+        visual.traverse(mesh=>{const patternMatch=(mesh.name||'').match(/^HyperShirtPattern-(solid|stripesw|stripes|hoops|halves|sash|sleeves|vband|band)(?:_|$)/);if(patternMatch)mesh.visible=patternMatch[1]===pattern;if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{const hex=colors[base&&base.name];if(!hex)return base;const _mg18=!(typeof window!=='undefined'&&window.__CPM_NO_MAGLIA18)&&base&&base.name==='HyperShirt'&&(pattern!=='solid'||num!=null);const _ms23=!(typeof window!=='undefined'&&window.__CPM_NO_PANT23)&&base&&base.name==='HyperShorts'&&num!=null;const key=[base.uuid,hex,_mg18?(k.c2||'')+'|'+pattern+'|'+num:'',_ms23?'p'+num:'',_mg18&&mesh.geometry?mesh.geometry.uuid:''].join('|');let material=_hyperKitMaterialCache.get(key);if(!material){material=base.clone();material.map=_mg18?_hyperShirtTex(hex,k.c2||'#f0f0f0',pattern,num,mesh.geometry):(_ms23?_hyperShortsTex(hex,num):null);material.color=new THREE.Color((_mg18||_ms23)?'#ffffff':hex);if('emissive' in material)material.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in material)material.roughness=.82;material.needsUpdate=true;_hyperKitMaterialCache.set(key,material);}return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});};      /* Lineup/intro phase.  This deliberately replaces complete avatar roots
          before the walkout begins instead of toggling bodies during a camera
          cut: no CH38 root can flash into the entrance shot.  Geometry and
          materials remain shared by SkeletonUtils clones; only skeletons and
