@@ -20,4 +20,7 @@ await b.close(); srv.close();
 for (const r of righe) console.log(`  ${r.w}x${r.h}: linea di fondo a ${r.porta}px · striscia statistiche finisce a ${r.stat}px · linguette a ${r.linguette}px · margini ${r.t12}/${r.b12} su ${r.H}`);
 const sotto = righe.filter(r => r.porta == null || r.stat == null || r.porta < r.stat);
 if (ROSSO) { console.log(sotto.length ? '✅ ROSSO come atteso: con la sicura vecchia il campo finisce sotto le statistiche' : '⚠️ il rosso non riproduce in headless (le linguette qui non stanno a meta\')'); process.exit(0); }
+/* [7.999.22 collaudo PO «campo 2D inizializzato piccolo»] con le linguette a meta' schermo il campo NON si schiaccia sopra di loro */
+const schiacciati = righe.filter(r => r.linguette != null && r.linguette < r.H * 0.9 && r.b12 > r.H * 0.25);
+if (!ROSSO && schiacciati.length) { console.log('❌ FAIL campo-striscia: campo schiacciato sopra le linguette su ' + schiacciati.map(r => r.w + 'x' + r.h).join(', ')); process.exit(1); }
 console.log(sotto.length ? '❌ FAIL campo-striscia: ' + sotto.map(r => r.w + 'x' + r.h).join(', ') : '✅ PASS campo-striscia'); process.exit(sotto.length ? 1 : 0);

@@ -553,7 +553,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
            porta in alto tornava sotto la striscia. Ora il margine in alto si rispetta sempre; quello in basso finche' al campo resta almeno il 40% dell'altezza.
            Rosso __CPM_NO_CAMPO19 = la sicura vecchia. */
         if(typeof window!=='undefined'&&window.__CPM_NO_CAMPO19){if(M.t12+M.b12>H*0.5){M.t12=0;M.b12=0;}}
-        else{if(M.t12+M.b12>H*0.6)M.b12=0;if(M.t12>H*0.35)M.t12=0;}}_t12=M.t12||0;_b12=M.b12||0;}catch(_e12){}}
+        else{if(M.b12>H*0.25)M.b12=0;if(M.t12>H*0.35)M.t12=0;}}/* [7.999.22 collaudo PO «campo 2D inizializzato piccolo»] con le linguette a meta' schermo il margine in basso NON si riserva: il campo usa tutta l'altezza sotto la striscia (la regola 0,6 del 7.999.19 lo schiacciava nella meta' alta) */_t12=M.t12||0;_b12=M.b12||0;}catch(_e12){}}
       if(M.t12o!=null&&Math.abs(M.t12o-_t12)<3&&Math.abs(M.b12o-_b12)<3){_t12=M.t12o;_b12=M.b12o;}/* variazioni sotto i 3 px non ridisegnano il campo */
       if(M.sfondo&&(M.t12o!==_t12||M.b12o!==_b12))M.sfondo=null;M.t12o=_t12;M.b12o=_b12;
       const padx=vert?W*0.035:W*0.02,pady=vert?H*0.02:H*0.035;
