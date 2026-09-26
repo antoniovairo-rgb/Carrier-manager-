@@ -13,7 +13,7 @@ await installCdnRoutes(ctx);
 const page = await ctx.newPage();
 let errori = 0; const messaggi = [];
 page.on('pageerror', (e) => { errori++; if (messaggi.length < 5) messaggi.push(String(e).slice(0, 180)); });
-await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_TIRI17 = 1; }, process.env.CPM_ROSSO === '1');
+await page.addInitScript(r => { window.__CPM_GLB = false; if (r) { window.__CPM_NO_TIRI17 = 1; window.__CPM_NO_VOTO20 = 1; } }, process.env.CPM_ROSSO === '1');
 await openMatch(page, port, { skipLoadAll: true, name: 'Vairo' });
 await page.evaluate(() => { if (window.__CPM_AUTOPLAY) window.__CPM_AUTOPLAY(true, { seed: 4242, policy: 'seeded', tickMs: 60 }); }).catch(() => {});
 /* velocita' doppia: il fischio finale arriva prima e la sonda non scade */
@@ -70,7 +70,10 @@ if (coerenza) {
 if (r.blocco) console.log('\n--- quello che si legge ---\n' + r.blocco.split('\n').slice(0, 30).join('\n'));
 console.log('\nfoto:', foto);
 await browser.close(); server.close();
+const voti = await page.evaluate(() => { const T = document.body.innerText || ''; const m = T.match(/PAGELLA\s*\n\s*([0-9]+(?:[.,][0-9])?)/); return { pagella: m ? parseFloat(m[1].replace(',', '.')) : null, registrato: window.__CPM_VOTO20 != null ? window.__CPM_VOTO20 : null }; }).catch(() => ({}));
+const votoOk = voti.pagella != null && voti.registrato != null && Math.abs(voti.pagella - voti.registrato) < 0.05;
+console.log(`  ${votoOk ? '✅' : '❌'} [7.999.20] voto della pagella (${voti.pagella}) = voto registrato per carriera e stampa (${voti.registrato})`);
 const tiriOk = coerenza && coerenza.numeriTiri != null && coerenza.mieiTiri === coerenza.numeriTiri;
 console.log(`  ${tiriOk ? '✅' : '❌'} [7.999.17] i tuoi tiri (${coerenza && coerenza.mieiTiri}) = i tiri del riquadro «in numeri» (${coerenza && coerenza.numeriTiri})`);
-if (process.env.CPM_ROSSO === '1') { console.log(!tiriOk ? '✅ ROSSO come atteso: senza il 7.999.17 il tuo tabellino mostra i tiri della squadra' : '❌ il rosso non riproduce'); process.exit(!tiriOk ? 0 : 1); }
-process.exit(r.presente && errori === 0 && tiriOk ? 0 : 1);
+if (process.env.CPM_ROSSO === '1') { console.log(!tiriOk && !votoOk ? '✅ ROSSO come atteso: senza il 7.999.17 il tuo tabellino mostra i tiri della squadra' : '❌ il rosso non riproduce'); process.exit(!tiriOk && !votoOk ? 0 : 1); }
+process.exit(r.presente && errori === 0 && tiriOk && votoOk ? 0 : 1);

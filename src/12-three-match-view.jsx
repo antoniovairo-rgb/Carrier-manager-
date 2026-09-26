@@ -63,6 +63,15 @@ function _specchiaClip23(clip,root,nome){try{
   const out=new THREE.AnimationClip(nome||clip.name+'~m',clip.duration,tr);
   try{(window.__CPM_SPECCHIO23=window.__CPM_SPECCHIO23||{})[out.name]={fotogrammi:T.length,erroreMax:+err.toFixed(4),asse:'xyz'[ax]};}catch(_e){}
   return out;}catch(e){try{(window.__CPM_SPECCHIO23=window.__CPM_SPECCHIO23||{}).errore=String(e&&e.message||e);}catch(_e){}return null;}}
+/* [7.999.20] LA MIRA DEL CORPO DURANTE IL GESTO, in un posto solo.
+   (a) senza bersaglio nessuna mira: nel 7.999.19 `null + 0` valeva 0 e il corpo si girava verso l'angolo zero;
+   (b) appunti PO «colpo di testa non in direzione della porta»: su un tiro SBAGLIATO il bersaglio dell'arco e' fuori dallo specchio
+       (largo o alto) e il corpo si girava li'. Per i tiri dell'eroe verso la porta (bersaglio a meno di 6 u dalla linea) il corpo
+       mira al punto piu' vicino DENTRO la porta: si sbaglia di poco, non si guarda la bandierina. Rosso __CPM_NO_MIRA20;
+   (c) rovesciata (7.999.19): spalle alla porta. Rosso __CPM_NO_ROV19. */
+function _mira20(a,px,pz,tx,tz,goalX,eroe){if(!a||a._tgt517==null)return null;const W=(typeof window!=='undefined')?window:{};let t=a._tgt517;
+  if(eroe&&!W.__CPM_NO_MIRA20&&tx!=null&&tz!=null&&tx>=goalX-6)t=Math.atan2(tx-px,Math.max(-3.3,Math.min(3.3,tz))-pz);
+  if(a._gAct&&a._gAct===a._gScissor&&!W.__CPM_NO_ROV19)t+=Math.PI;return t;}
 /* [23/09 POC] la frase dell'esito dice che il portiere si tuffa? (decisione PO: il gesto segue il testo) */
 function _tuffoTesto23(P){try{if(typeof window!=='undefined'&&window.__CPM_NO_TESTO23)return false;return /tuffo|si distende|in volo/i.test(String((P&&P.hlOutText)||''));}catch(_e){return false;}}
 /* lato del corpo verso cui va la clip (+1 sinistra del giocatore, -1 destra), misurato sul bacino (provino-clip) */
@@ -9613,11 +9622,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              esiste. Esclusi GK e gesti non direzionali, come nel 7.517. */
           if(_a._gName&&_a._tgt517==null&&!_a._isGk&&ballArcActive&&_a._gName!=='lift'&&_a._gName!=='receive'&&!(typeof window!=='undefined'&&window.__CPM_NO636)){
             _a._tgt517=Math.atan2(ballArcTgtX-_p.position.x,ballArcTgtZ-_p.position.z);
-            _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:(_a._tgt517+((_a._gAct&&_a._gAct===_a._gScissor&&!(typeof window!=='undefined'&&window.__CPM_NO_ROV19))?Math.PI:0));/* [7.999.19 appunti PO «rovesciata al contrario»] la clip mx-scissor-kick cade ALL'INDIETRO (bacino da z -0,02 a -0,32, provino-clip) e manda la palla dietro le spalle: il corpo deve dare le SPALLE alla porta, non guardarla. Rosso __CPM_NO_ROV19 */}
+            _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:_mira20(_a,_p.position.x,_p.position.z,ballArcTgtX,ballArcTgtZ,AWAY_GOAL_X,_ai===0);/* [7.999.19 appunti PO «rovesciata al contrario»] la clip mx-scissor-kick cade ALL'INDIETRO (bacino da z -0,02 a -0,32, provino-clip) e manda la palla dietro le spalle: il corpo deve dare le SPALLE alla porta, non guardarla. Rosso __CPM_NO_ROV19 */}
           if(_a._gName&&_a._aim517!=null&&!_a._isGk){/* [7.517.0 R3/2] durante il gesto comanda la MIRA
             latchata al montaggio: prima la rotazione si spegneva sotto ~1,8 u/s (gate _gsp) e il tiro si
             giocava col facing dell'avvicinamento. Turn-rate dedicato, continuo per tutto il gesto. */
             let _da=((_a._aim517-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*7,1);
+            if(_ai===0&&_a._tgt517!=null&&ballArcTgtX!=null&&ballArcTgtX>=AWAY_GOAL_X-6&&typeof window!=='undefined'){try{const _pc20=Math.atan2(AWAY_GOAL_X-_p.position.x,0-_p.position.z),_d20=Math.abs(((_pc20-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI);(window.__CPM_MIRA20=window.__CPM_MIRA20||[]).length<400&&window.__CPM_MIRA20.push({g:_a._gName,porta:+(_d20*180/Math.PI).toFixed(0),tz:+ballArcTgtZ.toFixed(1)});}catch(_e){}}
             if(_a._gAct&&_a._gAct===_a._gScissor&&_a._tgt517!=null&&typeof window!=='undefined'){try{const _d19=Math.abs(((_a._tgt517-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI);window.__CPM_ROV19={spalle:+(_d19*180/Math.PI).toFixed(0),t:+((_a._gAct.time)||0).toFixed(2)};}catch(_e){}}}
           else if(_gsp>0.03&&!_a._isGk){const _ta=Math.atan2(_gdx,_gdz);let _da=((_ta-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*5.5,1);}
           else if(_ai===0&&!_a._gName&&propsRef.current&&(propsRef.current.hlType==="penalty"||propsRef.current.hlType==="freekick"||propsRef.current.hlSetPiece)){
@@ -9778,7 +9788,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  dell'arco (se vivo): il driver di facing la usera' al posto del moto residuo. Esclusi GK
                  (guarda la palla per suo conto) e gesti non direzionali (lift/receive). */
               _a._tgt517=(!_a._isGk&&ballArcActive&&_want!=='lift'&&_want!=='receive')?Math.atan2(ballArcTgtX-_p.position.x,ballArcTgtZ-_p.position.z):null;/* il BERSAGLIO si registra in entrambi i bracci: il testimone al rilascio misura l'errore anche col rosso */
-              _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:(_a._tgt517+((_a._gAct&&_a._gAct===_a._gScissor&&!(typeof window!=='undefined'&&window.__CPM_NO_ROV19))?Math.PI:0));/* [7.999.19 appunti PO «rovesciata al contrario»] la clip mx-scissor-kick cade ALL'INDIETRO (bacino da z -0,02 a -0,32, provino-clip) e manda la palla dietro le spalle: il corpo deve dare le SPALLE alla porta, non guardarla. Rosso __CPM_NO_ROV19 */
+              _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:_mira20(_a,_p.position.x,_p.position.z,ballArcTgtX,ballArcTgtZ,AWAY_GOAL_X,_ai===0);/* [7.999.19 appunti PO «rovesciata al contrario»] la clip mx-scissor-kick cade ALL'INDIETRO (bacino da z -0,02 a -0,32, provino-clip) e manda la palla dietro le spalle: il corpo deve dare le SPALLE alla porta, non guardarla. Rosso __CPM_NO_ROV19 */
               /* [7.356.0 collaudo PO gi167 «Controbalzo improvviso in area»: «il gesto non e' sincronizzato
                  col gol»] LA CLIP DEVE STARE NELLA SUA FINESTRA. Il 7.245 aveva scoperto il difetto sul
                  tackle (2,71s in una finestra da 1,7s) e l'aveva corretto A MANO, solo li'. La stessa misura

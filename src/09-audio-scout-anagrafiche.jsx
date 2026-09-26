@@ -744,7 +744,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   // CRONACA (critico/analitico)
   const headB=won
     ?(isYoungGB?`Miglior Giovane ${name} ancora decisivo: ${goals>0?goals+" gol":"assist"} e ${club} avanti S.${season}`
-      :goals>0?`${name} decide — ${goals} reti e ${club} conquista 3 punti (voto ${rating})`
+      :goals>0?`${name} decide — ${goals===1?'una rete':goals+' reti'} e ${club} conquista 3 punti (voto ${rating})`
       :as===0?`Solidità premia il ${club}: clean sheet e vittoria ${score} su ${opp}`
       :`Il ${club} la spunta ${score} su ${opp}: vittoria di carattere`)/* [7.8.28 QA] «clean sheet» solo se davvero non si è subito gol (usciva anche sul 3-2) */
     :drew
@@ -766,7 +766,7 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   // RETE SPORT (analitico/tattico)
   const headD=won
     ?(goals>0&&assists>0?`Dati: ${name} con ${goals}G+${assists}A — efficienza da top player per il ${club}`
-      :goals>0?`Analisi: ${goals} reti e posizionamento premiato nel ${score}`
+      :goals>0?`Analisi: ${goals===1?'una rete':goals+' reti'} e posizionamento premiato nel ${score}`
       :`Tattica vincente: il ${club} domina e porta a casa i 3 punti vs ${opp}`)
     :drew
     ?`Il ${score} riflette l'equilibrio tattico: ${club} e ${opp} si equivalgono`

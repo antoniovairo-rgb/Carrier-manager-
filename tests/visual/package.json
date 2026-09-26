@@ -196,6 +196,7 @@
     "campo-striscia": "node campo-striscia-test.mjs",
     "rovesciata-spalle": "node rovesciata-spalle-test.mjs",
     "goleade": "node goleade-test.mjs",
+    "mira-porta": "node mira-porta-test.mjs",
     "tabellino-schermo": "node tabellino-schermo.mjs"
   },
   "dependencies": {
