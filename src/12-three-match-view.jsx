@@ -70,7 +70,7 @@ function _specchiaClip23(clip,root,nome){try{
        mira al punto piu' vicino DENTRO la porta: si sbaglia di poco, non si guarda la bandierina. Rosso __CPM_NO_MIRA20;
    (c) rovesciata (7.999.19): spalle alla porta. Rosso __CPM_NO_ROV19. */
 function _mira20(a,px,pz,tx,tz,goalX,eroe){if(!a||a._tgt517==null)return null;const W=(typeof window!=='undefined')?window:{};let t=a._tgt517;
-  if(eroe&&!W.__CPM_NO_MIRA20&&tx!=null&&tz!=null&&tx>=goalX-6)t=Math.atan2(tx-px,Math.max(-3.3,Math.min(3.3,tz))-pz);
+  if(eroe&&!W.__CPM_NO_MIRA20&&tx!=null&&tz!=null&&tx>=goalX-6)t=Math.atan2(goalX-px,Math.max(-3.3,Math.min(3.3,tz))-pz);/* x della LINEA di porta: il bersaglio di un tiro sbagliato puo' stare davanti alla porta (x 41,5 misurato) */
   if(a._gAct&&a._gAct===a._gScissor&&!W.__CPM_NO_ROV19)t+=Math.PI;return t;}
 /* [23/09 POC] la frase dell'esito dice che il portiere si tuffa? (decisione PO: il gesto segue il testo) */
 function _tuffoTesto23(P){try{if(typeof window!=='undefined'&&window.__CPM_NO_TESTO23)return false;return /tuffo|si distende|in volo/i.test(String((P&&P.hlOutText)||''));}catch(_e){return false;}}
