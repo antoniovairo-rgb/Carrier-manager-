@@ -27,7 +27,11 @@ await sleep(600);
 async function scena(gi) {
   await forceSituation(page, gi, { settle: 400, choose: true });
   await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_RESOLVE(0); });
-  await sleep(2600);
+  /* [7.999.12] ATTESA A SONDAGGIO SUL TESTIMONE, non 2,6 s fissi. Dal 7.999.6 la scena ha un build-up prima
+     del contatto e in headless dura 7-12 s reali: con 2,6 s la vita del gesto header non era ancora scritta su
+     2 scene su 3 (misurato: gi44 e gi86 vite=[], gi6 1,16) e la sonda usciva «CIECA». Si aspetta che il gesto
+     muoia (u>=1 scrive __CPM_VITA512), con un tetto — lezione 7.460: un tempo fisso misura il proprio cronometro. */
+  for (let k = 0; k < 40; k++) { await sleep(300); if (await page.evaluate(() => (window.__CPM_VITA512 || []).length > 0)) break; }
   return await page.evaluate(() => {
     const v = window.__CPM_VITA512 || []; window.__CPM_VITA512 = [];
     return { vite: v, arc: window.__CPM_ARC || null };

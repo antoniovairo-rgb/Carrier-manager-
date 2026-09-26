@@ -15,14 +15,16 @@
    ⚠️ Trappole di misura, tutte gia' pagate in questo repo:
      · `__CPM_DISPATCH` si scrive SOLO a fine arco e SOLO in certi rami: se la scena non ne produce
        uno si rilegge quello della scena PRECEDENTE → va azzerato prima di ogni scena.
-     · in headless l'arco parte 2,5-3s dopo la scelta: finestre corte misurano la palla ferma.
+     · in headless l'arco parte 2,5-3s dopo la scelta (dal 7.999.6: atterra 5-12s dopo): finestre corte misurano la palla ferma.
      · la scelta del ricevente dipende dalle posizioni off-ball, che derivano fra un run e l'altro
        (per questo il gate le tiene fuori dalla firma golden) → si giudica la POPOLAZIONE su piu'
        repliche, mai la singola scena.
    Uso: CPM_CHROME=… PLAYWRIGHT_BROWSERS_PATH=… node pass-landing-test.mjs                          */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 
-const REPS = +(process.env.LAND_REPS || 3);
+/* [7.999.12] 2 repliche, non 3: con l'attesa a sondaggio fino all'atterraggio ogni scena costa ~9 s reali e 3x20
+   scene stavano a 9 min 07 s (39 atterraggi). 2x20 ne danno ~26, tre volte il pavimento di 8. LAND_REPS=3 per la misura larga. */
+const REPS = +(process.env.LAND_REPS || 2);
 /* gi79 e' la scena del collaudo; le altre sono le scene della stessa famiglia (ramo `pass` con
    post-arco `assist_recv`) che nella misura completa producono un servizio a un compagno. */
 const GIS = (process.env.LAND_GIS || '79,25,85,47,107,57,147,24,156,60,89,125,26,176,162,119,187,66,18,178')
@@ -45,8 +47,11 @@ for (let r = 0; r < REPS; r++) {
     await page.evaluate(g => { window.__CPM_DISPATCH = null; window.__CPM_FORCE_SIT(g, true); }, gi);
     await sleep(560);
     await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; try { window.__CPM_RESOLVE(0); } catch (e) {} });
-    await sleep(2900);
-    const d = await page.evaluate(() => window.__CPM_DISPATCH);
+    /* [7.999.12] ATTESA A SONDAGGIO fino a fine arco, non 2,9 s fissi. Dal 7.999.6 la scena ha un build-up
+       prima del passaggio: in headless l'arco atterra 5-12 s reali dopo la scelta, e con 2,9 s `__CPM_DISPATCH`
+       era ancora vuoto quasi ovunque (misurato: 2 atterraggi su 60 tentativi → «SONDA CIECA»). Tetto 14 s. */
+    let d = null;
+    for (let k = 0; k < 35 && !d; k++) { await sleep(400); d = await page.evaluate(() => window.__CPM_DISPATCH); }
     if (!d || !d.tgt || !d.rcv || d.post !== 'assist_recv') continue;
     const rec = {
       ht: d.ht || null,                                         // famiglia: solo `pass` passa dal rendez-vous

@@ -2294,7 +2294,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        del PO. Serve poter scegliere l'azione la cui ricompensa E' il gol. */
     window.__CPM_ACTS=()=>{try{const sit=situationsRef.current[hlIdxRef.current];
       return (sit&&sit.actions)?sit.actions.map((a,i)=>({i,label:a.label,rew:a.rew})):null;}catch(e){return null;}};
-    window.__CPM_ACTS=()=>{try{const s0=situationsRef.current[hlIdxRef.current];return (s0&&s0.actions)?s0.actions.map(a=>String((a&&a.label)||'')):[];}catch(_e){return [];}}; /* [7.553 sonda] le etichette delle azioni della scena corrente: serve a trovare da fuori la scena che offre una rovesciata o un tiro al volo, senza leggere il DOM. */
+    /* [7.999.12] QUI C'ERA UNA SECONDA DEFINIZIONE (7.553) che restituiva le sole ETICHETTE e sovrascriveva quella
+       sopra: da allora `rew` era sempre undefined e le sonde che cercano l'azione per ricompensa (delivery-arrival,
+       goal-postarc, outcome-not-goal, postarc-buildup-live) non la trovavano mai — un guardiano cieco senza saperlo.
+       Chi vuole le etichette legge `.label`. */
     window.__CPM_RESOLVE=(k)=>{ const sit=situationsRef.current[hlIdxRef.current]; if(!sit||!sit.actions||!sit.actions[k])return false;
       if(window.__CPM_RESEED)window.__CPM_RESEED(hlIdxRef.current*131+((k|0)+50000));
       if(handleActionRef.current)handleActionRef.current(sit.actions[k]); return true; };

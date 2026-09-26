@@ -24,7 +24,7 @@ const cand = [];
 for (let gi = 0; gi < total && cand.length < 40; gi++) {
   let ok = false; try { ok = await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); } catch (e) {}
   if (!ok) continue;
-  const acts = await page.evaluate(() => (window.__CPM_ACTS ? window.__CPM_ACTS() : []));
+  const acts = await page.evaluate(() => (window.__CPM_ACTS ? window.__CPM_ACTS().map(a => a.label) : []));
   acts.forEach((l, ai) => { if (RX.test(l)) cand.push({ gi, ai, l }); });
 }
 const acro = cand.find(c => /rovesciat|sforbiciat/i.test(c.l));

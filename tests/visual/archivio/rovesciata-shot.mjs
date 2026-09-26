@@ -29,7 +29,7 @@ const cand = [];
 for (let gi = 0; gi < total; gi++) {
   let ok = false; try { ok = await page.evaluate(g => window.__CPM_FORCE_SIT(g, true), gi); } catch (e) {}
   if (!ok) continue;
-  const acts = await page.evaluate(() => (window.__CPM_ACTS ? window.__CPM_ACTS() : []));
+  const acts = await page.evaluate(() => (window.__CPM_ACTS ? window.__CPM_ACTS().map(a => a.label) : []));
   const k = acts.findIndex(a => RX.test(a));
   if (k >= 0) cand.push({ gi, k, label: acts[k] });
 }
