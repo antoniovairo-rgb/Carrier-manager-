@@ -549,6 +549,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         const st=document.querySelector('[data-cpm="striscia918"]'),li=document.querySelector('[data-cpm="linguette918"]');
         M.t12=st?Math.max(0,(st.getBoundingClientRect().bottom-rc.top)*sc+4):0;M.b12=li?Math.max(0,(rc.bottom-li.getBoundingClientRect().top)*sc+4):0;
         if(M.t12+M.b12>H*0.5){M.t12=0;M.b12=0;}}_t12=M.t12||0;_b12=M.b12||0;}catch(_e12){}}
+      if(M.t12o!=null&&Math.abs(M.t12o-_t12)<3&&Math.abs(M.b12o-_b12)<3){_t12=M.t12o;_b12=M.b12o;}/* variazioni sotto i 3 px non ridisegnano il campo */
       if(M.sfondo&&(M.t12o!==_t12||M.b12o!==_b12))M.sfondo=null;M.t12o=_t12;M.b12o=_b12;
       const padx=vert?W*0.035:W*0.02,pady=vert?H*0.02:H*0.035;
       const s=Math.min((W-padx*2)/(vert?LAR:LUN),(H-_t12-_b12-pady*2)/(vert?LUN:LAR));
@@ -1089,7 +1090,11 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
   /* [7.922 collaudo PO: la telecronaca si accavalla alla tabella quando il testo va su tre righe] Lo spazio
      riservato in fondo era un NUMERO FISSO (152 px), misurato su una voce da due righe: con tre righe la voce
      saliva sopra le ultime pagelle. Ora il pannello CHIEDE alla cronaca quanto e' alta e si ferma sopra di lei. */
-  const [spazio,setSpazio]=React.useState(152);
+  /* [7.999.13 collaudo PO «il pannello statistiche/pagelle si muove in base alla lunghezza del testo della cronaca»] lo spazio poteva ancora
+     crescere alla prima voce lunga, e dalla 7.999.12 anche il campo 2D seguiva il pannello. Ora e' FISSO dall'inizio, dimensionato per
+     la voce piu' alta (tre righe di cronaca + la voce della panchina). Rosso __CPM_NO_FERMO13: torna il comportamento 7.926. */
+  const _fermo13=!(typeof window!=='undefined'&&window.__CPM_NO_FERMO13);
+  const [spazio,setSpazio]=React.useState(_fermo13?214:152);
   React.useEffect(()=>{
     if(typeof document==='undefined')return;
     const misura=()=>{try{
@@ -1105,7 +1110,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
         if(daSotto>h)h=daSotto;
       });
       const _n=Math.max(96,Math.min(320,Math.round(h)+14));
-      setSpazio(function(v){return _n>v?_n:v;});/* [7.926 collaudo PO: la tabella delle statistiche deve essere FERMA, ora sale e scende con l altezza della telecronaca] Lo spazio riservato ora puo solo CRESCERE: la prima voce da tre righe lo alza e li resta. Una tabella che si muove mentre la leggi e peggio di una tabella un po piu corta. */
+      if(_fermo13)return;setSpazio(function(v){return _n>v?_n:v;});/* [7.926 collaudo PO: la tabella delle statistiche deve essere FERMA, ora sale e scende con l altezza della telecronaca] Lo spazio riservato ora puo solo CRESCERE: la prima voce da tre righe lo alza e li resta. Una tabella che si muove mentre la leggi e peggio di una tabella un po piu corta. */
     }catch(_e){}};
     misura();
     let ro=null;
@@ -5535,6 +5540,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           }
         }catch(_e){}}
         if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_INTX_N=INTX669.length;}catch(_e){}}/* [7.682.0] quante schede esistono, letto dal gioco: le sonde non devono cablare un numero che cambia a ogni release */
+        try{if(_CPM_TEST&&typeof window!=='undefined'&&window.__CPM_FORZA_INTXGOL&&!_intxK669&&typeof _narr870!=='undefined'&&_narr870&&(_narr870.ef==="team_goal"||_narr870.ef==="opp_goal"))_intxK669=INTX669.find(k=>k&&typeof k.txt==='function'&&!k.cond)||INTX669[0];}catch(_eF){}/* [7.999.13] solo collaudo: un'interazione nello stesso minuto di un gol del motore, per il guardiano gol-interazione */
         const _forzaIntx669=!!_intxK669;
         const _forzaLib666=!!(libAzRef666.current&&!_inHL77&&(typeof window!=='undefined'&&window.__CPM_LIB666_ON));
         if(_simEv77){try{if((typeof window!=='undefined'&&window.__CPM_REC)){const _L=(window.__CPM_GOL785=window.__CPM_GOL785||{});_L['arrivato_al_cancello_riga']=(_L['arrivato_al_cancello_riga']|0)+1;}}catch(_e785){}}

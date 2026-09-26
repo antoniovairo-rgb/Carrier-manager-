@@ -47,6 +47,7 @@ function creaMotorePossesso(cfg){
      aspettava fino a 8 occasioni del «tipo» chiesto: l'occasione era fabbricata. Ora i compagni lo cercano per la FIDUCIA del mister
      e la FORMA (senza questi dati il bonus resta 2, come prima) e un difensore avversario lo marca: le occasioni sono quelle che nascono. */
   const _EG=!!cfg.v2&&!(typeof window!=='undefined'&&window.__CPM_NO_EROEGIOCO);
+  const _eroeNonTira14=(P)=>!!(P&&P.eroe&&cfg.v2&&_EG&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14));/* [7.999.13] l'eroe tira solo nelle sue scene (vedi il ramo del tiro) */
   const BONUS_EROE=(()=>{const e=cfg.eroe||{};if(e.fiducia==null&&e.forma==null)return 2;const fi=clamp(+(e.fiducia!=null?e.fiducia:60),0,100),fo=clamp(+(e.forma!=null?e.forma:70),0,100);return clamp(2+5*(fi-50)/50+3*(fo-60)/40,-2,9);})();
   const forza={home:clamp(+(cfg.forza&&cfg.forza.home)||68,40,95),away:clamp(+(cfg.forza&&cfg.forza.away)||68,40,95)};
   const V2=!!cfg.v2;
@@ -506,7 +507,7 @@ function creaMotorePossesso(cfg){
        secondo: la sosta resta solo sotto pressione o quando non c'e' nessuno a cui dare la palla. Rosso __CPM_NO894. */
     const _sosta894=(typeof window!=='undefined'&&window&&window.__CPM_NO894)?true:(press>=2.6||rnd()<0.22||!scegliRicevente(P,{}));
     if(S.poss.t===1&&!golReq&&_sosta894&&!(press>=4&&adv>=56&&rnd()<0.6)){ramo("controllo");
-      if(zona==="area"&&press>=2.2&&rnd()<0.55){ramo("tiro1");tira(P);return;}
+      if(zona==="area"&&press>=2.2&&!_eroeNonTira14(P)&&rnd()<0.55){ramo("tiro1");tira(P);return;}
       if(press<1.8&&rnd()<0.12){ramo("persa1");perdi(P);return;}
       ev("controllo",{chi:chi(P),press:+press.toFixed(1),zona});return;/* controllo: il pallone sta ai piedi un tick */
     }
@@ -594,14 +595,21 @@ function creaMotorePossesso(cfg){
        if(_sp888>=4)pTiro*=0.35;else if(_sp888>=2)pTiro*=0.6;}}
     /* [v2] L'IMPAZIENZA: piu' minuti senza tirare, piu' si cerca la conclusione. Misurato: gli 0-0 erano partite «morte» (16 tiri, xG 1,25
        contro 25 e 2,84), con lunghe siccita' di tiri. Nessun numero-obiettivo: si accorciano solo le siccita' */
-    if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
+    /* [7.999.13 collaudo PO «risultato assurdo 7-0», «gol dell'eroe non mostrato negli highlight», 17-20 tiri dell'eroe. Rosso __CPM_NO_TIRO14]
+       Nel gioco fluido l'eroe era un giocatore come gli altri, ma il piu' forte e il piu' cercato (bonus fino a +9): al banco, 400 partite,
+       nel 4% tirava 10 volte o piu', e quei tiri e quei gol non diventavano mai highlight. Ora l'eroe TIRA SOLO NELLE SUE SCENE: nel gioco
+       fluido, dove avrebbe tirato, gioca il pallone; le sue conclusioni nascono dalle occasioni (la scena in partita, l'occasione
+       automatica nella simulazione rapida). Cosi' ogni suo gol si vede. */
+    const _noTiro14=_eroeNonTira14(P);
+    if(_noTiro14){S.conta.tiroEroeNegato=(S.conta.tiroEroeNegato|0)+1;}
+    else if(V2&&!golReq&&adv>=66){const _sec=S.min-((S._ultTiroV2&&S._ultTiroV2[l]!=null)?S._ultTiroV2[l]:0);const pS=K2.pAtt*Math.exp(K2.forzaTiro*vantDi(l))*_cad936()*(zona==="area"?1.6:zona==="limite"?1.0:0.45)*(Math.abs(P.y-50)>22?0.45:1)*(press<2?0.7:1)*(1+K2.sete*Math.max(0,_sec-5)/10);
       if(rnd()<pS){ramo("tiroV2");tira(P);return;}}
-    if(golReq){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
+    if(golReq&&!_noTiro14){if(zona==="area"||zona==="limite"||(zona==="trequarti"&&golReq.t>=5)){ramo("tiroGol");tira(P);return;}
       /* [7.872] il gol decretato si COSTRUISCE fino all'area: mai un tiro da centrocampo o dalla propria meta' (banco 7.871: 68 tiri col decreto su 130 partivano da «dietro»). Chi ha la palla lancia il compagno piu' avanzato o porta palla; il tiro parte dal limite, dall'area, o dalla trequarti solo dopo cinque tick */
       const M=piuAvanzato(l,P.i);
       if(M&&advDi(M.x,l)>=adv+6&&hyp(M.x,M.y,P.x,P.y)>=5){ramo("lancioGol");passa(P,M,{kind:hyp(M.x,M.y,P.x,P.y)>26?"lancio":"verticale",sicuro:golReq.t>=2});return;}
       if(adv<86){ramo("conduciGol");conduci(P);return;}}
-    else if(rnd()<pTiro){ramo("tiro");tira(P);return;}
+    else if(!_noTiro14&&rnd()<pTiro){ramo("tiro");tira(P);return;}
     if(_dopo900&&_fallo900())return;/* [7.900] il fallo, dopo il tiro */
     const spazio=spazioAvanti(P);
     const largo=Math.abs(P.y-50)>=22;
@@ -646,7 +654,10 @@ function creaMotorePossesso(cfg){
   /* [v2] un'occasione ogni 5 minuti al massimo, quando l'eroe ha palla da avanzamento 64 in su. Funzione PURA (nessun sorteggio):
      il chiamante la puo' interrogare prima del battito per fermarsi e chiedere la scelta, e il motore la rivaluta identica. */
   function _occV2Pronta(P){if(!V2||cfg.occasioniV2===false||!P||!P.eroe||!eroeAttivo)return false;/* nel gioco le occasioni dell'eroe sono gli highlight */if(S.poss.stato!=="tenuta"||S.poss.padrone!==HERO)return false;
-    return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=5;}
+    /* [7.999.13] come le scene della partita vera: almeno 12 minuti fra due occasioni e al massimo 6 a partita (prima 5 minuti e nessun tetto:
+       fino a 13 occasioni, 13 tiri dell'eroe nella simulazione rapida). Rosso __CPM_NO_TIRO14 */
+    const _v14=!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14);
+    return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=(_v14?12:5)&&(!_v14||(S._nOccV2|0)<6);}
   /* la scelta automatica: la giocata che il profilo dell'eroe rende piu' sensata in quel punto. Regola MIA, dichiarata */
   function sceltaAutoV2(P){const l=P.team,adv=advDi(P.x,l),zona=zonaDi(adv,P.y),press=pressioneSu(P),spazio=spazioAvanti(P);
     const pr=(cfg.eroe&&cfg.eroe.profilo)||{};const v=(k)=>(+pr[k]||+(cfg.eroe&&cfg.eroe.ovr)||70)/70;
@@ -713,7 +724,7 @@ function creaMotorePossesso(cfg){
       if(D.d<4)ramo("spazz_difVicino"); else if(D.d<8)ramo("spazz_dif4_8"); else ramo("spazz_difLontano");}
     else ramo("spazz_nessunDif");
     if(dif&&(!att||rnd()<0.5)){dif.x=S.palla.x;dif.y=S.palla.y;const corner=rnd()<(V2?K2.cornerSpazzata:0.30);const _lat=!corner&&rnd()<0.20;ev("spazzata",{chi:chi(dif),corner});if(corner)fuoriCampo(S.palla.x,S.palla.y,l,"corner");else if(_lat){/* [7.878] la spazzata finisce spesso in rimessa laterale */fuoriCampo(clamp(S.palla.x-dirDi(l)*(6+rnd()*10),6,94),S.palla.y,l,"throw");return;}else libero(clamp(S.palla.x-dirDi(l)*(14+rnd()*10),4,96),clamp(S.palla.y+(rnd()-0.5)*30,6,94));return;}
-    if(att){att.x=S.palla.x;att.y=S.palla.y;if(rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.62:((typeof window!=="undefined"&&window&&window.__CPM_NO_TESTA24)?0.24:0.16))){tira(att,{intent:"header"});return;}/* [7.987] 0,24 -> 0,16 insieme alla mira (sola, toglieva anche tiri in porta). Rosso __CPM_NO_TESTA24 *//* [24/09 POC] con cross mirati la conclusione di testa immediata scende 0,62 -> 0,38: spesso si controlla */tenuta(att,null);ev("ricezione",{chi:chi(att),kind:"cross"});return;}
+    if(att){att.x=S.palla.x;att.y=S.palla.y;if(!_eroeNonTira14(att)&&rnd()<((typeof window!=="undefined"&&window&&window.__CPM_NO_CROSS23)?0.62:((typeof window!=="undefined"&&window&&window.__CPM_NO_TESTA24)?0.24:0.16))){tira(att,{intent:"header"});return;}/* [7.987] 0,24 -> 0,16 insieme alla mira (sola, toglieva anche tiri in porta). Rosso __CPM_NO_TESTA24 *//* [24/09 POC] con cross mirati la conclusione di testa immediata scende 0,62 -> 0,38: spesso si controlla */tenuta(att,null);ev("ricezione",{chi:chi(att),kind:"cross"});return;}
     const gk=portiereDi(altro(l));if(hyp(gk.x,gk.y,S.palla.x,S.palla.y)<9){ev("presa",{gk:chi(gk)});gk.x=xDa(5,altro(l));gk.y=clamp(S.palla.y,42,58);tenuta(gk,null);return;}
     libero(S.palla.x,S.palla.y);
   }
