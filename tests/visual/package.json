@@ -192,6 +192,7 @@
     "taccuino-rete": "node taccuino-rete-test.mjs",
     "primo-highlight": "node primo-highlight-test.mjs",
     "voto-volume": "node voto-volume-test.mjs",
+    "maglie-numero": "node maglie-numero-test.mjs",
     "tabellino-schermo": "node tabellino-schermo.mjs"
   },
   "dependencies": {

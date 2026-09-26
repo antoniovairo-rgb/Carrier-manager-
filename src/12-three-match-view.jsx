@@ -1073,7 +1073,7 @@ function ThreeMatchView(props){
         const _groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=_groundBounds.min.y;visual.updateMatrixWorld(true);
         if(_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized)try{window.__CPM_CGTRADER_REVIEW_METRICS={meshHeight:+_meshHeight.toFixed(3),skeletonHeight:+_skeletonMeasure.height.toFixed(3),skeletonBones:_skeletonMeasure.bones,chosenHeight:+_rawHeight.toFixed(3),targetHeight:+_targetHeight.toFixed(3),scale:+visual.scale.x.toFixed(4)};}catch(_e){}
         visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-        _applyHyperBuild(visual,_heroAppr);_applyHyperKit(visual,_homeKit,_heroAppr);_applyCgtraderNativeHair(visual,_heroAppr);
+        _applyHyperBuild(visual,_heroAppr);_applyHyperKit(visual,_homeKit,_heroAppr,_heroN);_applyCgtraderNativeHair(visual,_heroAppr);
         const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
         idle.play();run.play();run.weight=0;mx.setTime(((hero._sd||0)%1)*0.8);
         const _findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
@@ -1104,8 +1104,28 @@ function ThreeMatchView(props){
       const _applyCgtraderNativeHair=(visual,appearance)=>{if(!_cgtraderAnyReview||!visual)return;const variant=_cgtraderHairVariant(appearance&&appearance.hair),texture=_cgtraderHairTexture(variant);let applied=0;visual.traverse(mesh=>{if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{if(!base||base.name!=='Material.002')return base;const key=[base.uuid,variant].join('|');let material=_cgtraderHairMaterialCache.get(key);if(!material){material=base.clone();material.name='KorwardNativeHair_'+variant;material.map=texture;material.color.set(0xffffff);material.needsUpdate=true;_cgtraderHairMaterialCache.set(key,material);}applied++;return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});visual.userData.cpmNativeHair={variant,applied};};
       /* La testa è già corretta nel GLB; qui varia soltanto la larghezza del corpo. */
       const _applyHyperBuild=(visual,appearance)=>{const build=appearance||{};const girth=Math.max(.90,Math.min(1.08,build.girth||1));visual.scale.x*=girth;visual.scale.z*=girth;};
-      const _applyHyperKit=(visual,kit)=>{const k=kit||{},pattern=k.pattern||'solid',colors={HyperShirt:k.shirt||'#7f1d2d',HyperShirtAccent:k.c2||'#f0f0f0',HyperShorts:k.shorts||'#111827',HyperSocks:k.socks||k.shirt||'#7f1d2d',HyperBoots:k.shoes||'#111827'};
-        visual.traverse(mesh=>{const patternMatch=(mesh.name||'').match(/^HyperShirtPattern-(solid|stripesw|stripes|hoops|halves|sash|sleeves|vband|band)(?:_|$)/);if(patternMatch)mesh.visible=patternMatch[1]===pattern;if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{const hex=colors[base&&base.name];if(!hex)return base;const key=[base.uuid,hex].join('|');let material=_hyperKitMaterialCache.get(key);if(!material){material=base.clone();material.map=null;material.color=new THREE.Color(hex);if('emissive' in material)material.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in material)material.roughness=.82;material.needsUpdate=true;_hyperKitMaterialCache.set(key,material);}return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});};      /* Lineup/intro phase.  This deliberately replaces complete avatar roots
+      /* [7.999.18 appunti PO «mancano i numeri di maglia» + «le maglie non hanno strisce/bande»] I tre GLB kit-adapter non hanno le
+         mesh HyperShirtPattern-* che questo codice accende (0 su 7 nodi), e la maglia veniva colorata in tinta unita (map=null): niente
+         motivo, niente numero. Ora la maglia riceve una texture disegnata qui. LAYOUT MISURATO con una griglia di prova sul corpo
+         (lod1, schiena ruotata verso la camera): la SCHIENA e' un pannello unico a v 0,5-0,75 e u 0,5-0,95; la verticale del corpo
+         corre lungo u (spalle a u 0,5, vita a u 0,95), l'orizzontale lungo v (centro schiena a v 0,625). Numero in alto sulla schiena,
+         ruotato di -90 gradi. 512 px: 22 maglie restano sotto i 30 MB di scheda grafica. Rosso __CPM_NO_MAGLIA18 = tinta unita. */
+      const _hyperShirtTexCache=new Map();
+      const _hyperShirtTex=(shirt,c2,pattern,num)=>{const key=[shirt,c2,pattern,num].join('|');if(_hyperShirtTexCache.has(key))return _hyperShirtTexCache.get(key);
+        const S=512,f=S/1024,c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');x.fillStyle=shirt;x.fillRect(0,0,S,S);x.fillStyle=c2||'#f0f0f0';
+        if(pattern==='stripes'){for(let y=0;y<1024;y+=64)x.fillRect(0,(y+16)*f,S,32*f);}
+        else if(pattern==='stripesw'){for(let y=0;y<1024;y+=48)x.fillRect(0,(y+19)*f,S,10*f);}
+        else if(pattern==='hoops'){for(let X=500;X<1024;X+=96)x.fillRect(X*f,0,48*f,S);}
+        else if(pattern==='halves'){x.fillRect(0,640*f,S,S);}
+        else if(pattern==='vband'){x.fillRect(0,596*f,S,88*f);}
+        else if(pattern==='band'){x.fillRect(640*f,0,70*f,S);}
+        else if(pattern==='sash'){x.save();x.translate(740*f,625*f);x.rotate(0.9);x.fillRect(-600*f,-40*f,1200*f,80*f);x.restore();}
+        if(num!=null&&num!==''){const lum=(()=>{const h=String(shirt).replace('#','');const r=parseInt(h.slice(0,2),16)/255,g=parseInt(h.slice(2,4),16)/255,b=parseInt(h.slice(4,6),16)/255;return 0.2126*r+0.7152*g+0.0722*b;})();
+          x.save();x.translate(735*f,625*f);x.rotate(-Math.PI/2);x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';x.font=`bold ${Math.round(170*f)}px Arial, sans-serif`;
+          x.lineWidth=16*f;x.strokeStyle=lum>0.62?'rgba(255,255,255,0.9)':'rgba(7,9,16,0.9)';x.strokeText(String(num),0,6*f);x.fillStyle=lum>0.62?'#111827':'#ffffff';x.fillText(String(num),0,6*f);x.restore();}
+        const t=new THREE.CanvasTexture(c);t.flipY=false;t.encoding=THREE.sRGBEncoding;t.anisotropy=4;_hyperShirtTexCache.set(key,t);try{if(typeof window!=='undefined'){const _m=(window.__CPM_MAGLIE18=window.__CPM_MAGLIE18||[]);if(_m.length<80)_m.push({num:num==null?null:String(num),pattern,shirt});}}catch(_e){}return t;};
+      const _applyHyperKit=(visual,kit,_appr,num)=>{const k=kit||{},pattern=k.pattern||'solid',colors={HyperShirt:k.shirt||'#7f1d2d',HyperShirtAccent:k.c2||'#f0f0f0',HyperShorts:k.shorts||'#111827',HyperSocks:k.socks||k.shirt||'#7f1d2d',HyperBoots:k.shoes||'#111827'};
+        visual.traverse(mesh=>{const patternMatch=(mesh.name||'').match(/^HyperShirtPattern-(solid|stripesw|stripes|hoops|halves|sash|sleeves|vband|band)(?:_|$)/);if(patternMatch)mesh.visible=patternMatch[1]===pattern;if(!mesh.isMesh||!mesh.material)return;const source=Array.isArray(mesh.material)?mesh.material:[mesh.material];const next=source.map(base=>{const hex=colors[base&&base.name];if(!hex)return base;const _mg18=!(typeof window!=='undefined'&&window.__CPM_NO_MAGLIA18)&&base&&base.name==='HyperShirt'&&(pattern!=='solid'||num!=null);const key=[base.uuid,hex,_mg18?(k.c2||'')+'|'+pattern+'|'+num:''].join('|');let material=_hyperKitMaterialCache.get(key);if(!material){material=base.clone();material.map=_mg18?_hyperShirtTex(hex,k.c2||'#f0f0f0',pattern,num):null;material.color=new THREE.Color(_mg18?'#ffffff':hex);if('emissive' in material)material.emissive=new THREE.Color(hex).multiplyScalar(0.035);if('roughness' in material)material.roughness=.82;material.needsUpdate=true;_hyperKitMaterialCache.set(key,material);}return material;});mesh.material=Array.isArray(mesh.material)?next:next[0];});};      /* Lineup/intro phase.  This deliberately replaces complete avatar roots
          before the walkout begins instead of toggling bodies during a camera
          cut: no CH38 root can flash into the entrance shot.  Geometry and
          materials remain shared by SkeletonUtils clones; only skeletons and
@@ -1155,7 +1175,7 @@ function ThreeMatchView(props){
           visual.scale.setScalar(targetHeight/rawHeight);visual.updateMatrixWorld(true);
           const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-          _applyHyperBuild(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_applyHyperKit(visual,old._kit||_homeKit,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_applyCgtraderNativeHair(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));
+          _applyHyperBuild(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_applyHyperKit(visual,old._kit||_homeKit,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)),old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));
           const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));
           idle.play();run.play();run.weight=0;mx.setTime(((old.proc._sd||index)%1)*0.8);
           const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
@@ -1182,7 +1202,7 @@ function ThreeMatchView(props){
             const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar((host._h||1.8)/rawHeight);visual.updateMatrixWorld(true);
             const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
             visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
-            const appearance=host._appearance||appearanceFromSeed(hashStr('hyper_'+index));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance);_applyCgtraderNativeHair(visual,appearance);
+            const appearance=host._appearance||appearanceFromSeed(hashStr('hyper_'+index));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
             const mx=new THREE.AnimationMixer(visual),idle=mx.clipAction(_clip('idle')),run=mx.clipAction(_clip('jog'));idle.play();run.play();run.weight=0;mx.setTime(((host.proc._sd||index)%1)*0.8);
             const findBone=(pattern)=>{let result=null;visual.traverse(o=>{if(!result&&o.isBone&&pattern.test(o.name||''))result=o;});return result;};
             const state={root:host.root,visualRoot:visual,mx,idle,run,proc:host.proc,_cgLod:avatarPkg._cgLod||null,spine:findBone(/spine_03|spine_02|spine_01/i),_handL:findBone(/^(?:hand\.l_|hand_l$)/i),_handR:findBone(/^(?:hand\.r_|hand_r$)/i),_footL:findBone(/^(?:foot\.l_|foot_l)$/i),_ballL:findBone(/^(?:ball\.l_|ball_l)$/i),_footR:findBone(/^(?:foot\.r_|foot_r)$/i),_ballR:findBone(/^(?:ball\.r_|ball_r)$/i)};
