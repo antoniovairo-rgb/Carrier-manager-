@@ -1,8 +1,10 @@
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
-**Aggiornata:** 25/09 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.999.15** — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
+**Aggiornata:** 26/09 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.999.15** — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)
 **Storico completo con tutte le misure:** [POC_STORICO.md](POC_STORICO.md)
 **Stato stimato:** 72% · **Fase:** grafica dai collaudi PO chiusa per oggi → si riparte dal brain «partita vera»
+
+**Legenda:** ✅ chiuso e misurato · 🟡 fatto in parte, resta aperto (la colonna a destra dice cosa manca)
 
 ## Dove siamo
 
