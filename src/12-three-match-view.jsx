@@ -878,7 +878,34 @@ function ThreeMatchView(props){
            compilazione e' piu' lenta che in headless, non piu' veloce. Due mani: (1) i programmi si compilano QUI, all'aggancio
            dei modelli, con renderer.compile — la prima scena trova gli shader pronti; (2) niente lettura sincrona dei log di
            compilazione in produzione (renderer.debug.checkShaderErrors), che e' la chiamata che blocca. */
-        try{if(_on769&&sr.current&&!sr.current._precomp769){sr.current._precomp769=true;setTimeout(()=>{try{const _t0=performance.now();renderer.compile(scene,camera);if(typeof window!=='undefined')window.__CPM_PRECOMP769={ms:+(performance.now()-_t0).toFixed(0),programs:renderer.info.programs?renderer.info.programs.length:null};}catch(_e){}try{window.__CPM_GLB_READY=true;}catch(_e2){}},0);}else if(_on769&&sr.current&&sr.current._precomp769&&window.__CPM_PRECOMP769){try{window.__CPM_GLB_READY=true;}catch(_e3){}}}catch(_e769){try{window.__CPM_GLB_READY=true;}catch(_e4){}}
+        try{if(_on769&&sr.current&&!sr.current._precomp769){sr.current._precomp769=true;setTimeout(()=>{try{const _t0=performance.now();renderer.compile(scene,camera);if(!(typeof window!=='undefined'&&window.__CPM_NO_TEX16))(renderer.info.programs||[]).forEach(pg=>{try{pg.getUniforms();}catch(_e2){}});/* [7.999.16] Chrome compila in differita: l'attesa vera arriva alla prima interrogazione del programma — la si fa QUI, non al primo disegno della scena */
+            /* [7.999.16] FOTOGRAMMA DI PROVA. compile() non prepara il passaggio delle OMBRE: il materiale di profondita' dei corpi
+               animati nasceva al primo highlight (profilo CPU: 1,4 s di getProgramParameter dentro WebGLShadowMap.render). Qui si
+               accende tutto per un istante, si disegna su un bersaglio 4x4 con la mappa d'ombra da rifare, e si rimette com'era:
+               nessun fotogramma arriva allo schermo, ombre e varianti sono pronte prima del fischio. */
+            sr.current._prova16=()=>{if(typeof window!=='undefined'&&window.__CPM_NO_TEX16)return;const _hid=[];const _tp=performance.now();try{scene.traverse(o=>{if(!o.visible){_hid.push(o);o.visible=true;}});
+              const _rt=new THREE.WebGLRenderTarget(4,4),_prev=renderer.getRenderTarget();renderer.setRenderTarget(_rt);renderer.shadowMap.needsUpdate=true;renderer.render(scene,camera);renderer.setRenderTarget(_prev);_rt.dispose();
+              (renderer.info.programs||[]).forEach(pg=>{try{pg.getUniforms();}catch(_e3){}});try{const _gl=renderer.getContext();const _px=new Uint8Array(4);_gl.readPixels(0,0,1,1,_gl.RGBA,_gl.UNSIGNED_BYTE,_px);}catch(_e5){}/* readPixels aspetta che la scheda grafica finisca: il costo resta QUI */}catch(_e4){}finally{_hid.forEach(o=>{o.visible=false;});}
+              if(typeof window!=='undefined')(window.__CPM_PROVA16=window.__CPM_PROVA16||[]).push(+(performance.now()-_tp).toFixed(0));};
+            sr.current._prova16();if(typeof window!=='undefined')window.__CPM_PRECOMP769={ms:+(performance.now()-_t0).toFixed(0),programs:renderer.info.programs?renderer.info.programs.length:null};}catch(_e){}
+          /* [7.999.16 appunti PO «001 il pallone non e' ai piedi dei nostri» + «007 la camera salta» sul tap-in] MISURATO col profilo CPU:
+             all'apertura del PRIMO highlight un compito unico di 2000 ms, 1773 ms dei quali in texImage2D — le texture dei corpi CGTrader
+             salgono sulla scheda grafica al primo disegno. renderer.compile prepara gli shader ma NON carica le texture. In quel buco eroe,
+             palla e camera arrivano in fotogrammi diversi (eroe in area, palla ancora nella cronaca, camera larga). Qui si caricano anche le
+             texture, all'aggancio dei modelli, prima del fischio. Rosso __CPM_NO_TEX16. */
+          try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TEX16)){const _t16=performance.now(),_vis16=new Set();let _n16=0;
+            scene.traverse(o=>{const _ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];for(const m of _ms)for(const k in m){const t=m[k];if(t&&t.isTexture&&!_vis16.has(t)){_vis16.add(t);try{renderer.initTexture(t);_n16++;}catch(_e16){}}}});
+            if(typeof window!=='undefined')window.__CPM_TEX16={ms:+(performance.now()-_t16).toFixed(0),n:_n16};}}catch(_e16b){}
+          /* [7.999.16] MA LE TEXTURE PESANTI ARRIVANO DOPO: kit e maglie dei 22 corpi CGTrader si montano dopo questa
+             precompilazione (misurato: 7 texture 2048 non ancora caricate prima del primo highlight, ~1,5 s di texImage2D). Un
+             passo lento, ogni 250 ms texture finche' si spendono 12 ms (almeno una), le carica durante la cronaca: il costo si spalma invece di cadere
+             tutto sull'apertura della prima scena. Si ferma da solo quando il renderer muore. Rosso __CPM_NO_TEX16. */
+          try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TEX16)&&sr.current&&!sr.current._tex16Iv){const _done16=new Set();
+            sr.current._tex16Iv=setInterval(()=>{try{if(!sr.current||sr.current._tex16Stop||renderer.getContext().isContextLost()){clearInterval(sr.current&&sr.current._tex16Iv);return;}
+              sr.current._tex16N=(sr.current._tex16N|0)+1;if(sr.current._tex16N%20===0){const _pc=performance.now();const _np=renderer.info.programs?renderer.info.programs.length:0;try{renderer.compile(scene,camera);(renderer.info.programs||[]).forEach(pg=>{try{pg.getUniforms();}catch(_e2){}});}catch(_e){}if(typeof window!=='undefined')window.__CPM_RECOMP16={n:(window.__CPM_RECOMP16?window.__CPM_RECOMP16.n:0)+1,nuovi:((renderer.info.programs?renderer.info.programs.length:0)-_np)+(window.__CPM_RECOMP16?window.__CPM_RECOMP16.nuovi:0),ms:+(performance.now()-_pc).toFixed(0)};}/* e ogni 5 s si ricompila: i materiali cambiati DOPO l'aggancio (alphaTest dei pacchetti CGTrader) trovano il programma pronto prima della scena */
+              const _tb=performance.now();let _stop=false;scene.traverse(o=>{if(_stop)return;const _ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];for(const m of _ms){for(const k in m){const t=m[k];if(t&&t.isTexture&&!_done16.has(t)){_done16.add(t);if(!(renderer.properties.get(t)||{}).__webglTexture&&t.image){renderer.initTexture(t);if(typeof window!=='undefined')window.__CPM_TEX16B=(window.__CPM_TEX16B|0)+1;if(performance.now()-_tb>12){_stop=true;break;}}}}if(_stop)break;}});}catch(_e){}},250);}}catch(_e16c){}
+          if(typeof window!=='undefined')window.__CPM_PROGS16=()=>{try{return (renderer.info.programs||[]).map(p=>({n:p.name,k:String(p.cacheKey||'')}));}catch(_e){return null;}};
+          if(typeof window!=='undefined')window.__CPM_TEXNEW16=()=>{const o16=[];try{scene.traverse(o=>{const _ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];for(const m of _ms)for(const k in m){const t=m[k];if(t&&t.isTexture&&!(renderer.properties.get(t)||{}).__webglTexture){let p=o,nm=[];while(p&&nm.length<4){nm.push(p.name||p.type);p=p.parent;}o16.push({k,w:t.image&&t.image.width,vis:o.visible,chi:nm.join('<')});}}});}catch(_e){}return o16;};try{window.__CPM_GLB_READY=true;}catch(_e2){}},0);}else if(_on769&&sr.current&&sr.current._precomp769&&window.__CPM_PRECOMP769){try{window.__CPM_GLB_READY=true;}catch(_e3){}}}catch(_e769){try{window.__CPM_GLB_READY=true;}catch(_e4){}}
         proc.visible=true;proc._procHidden95=false;// [6.95.0] il grace period nascondeva il ROOT: all'aggancio il root torna visibile (dentro c'è il GLB; i figli procedurali sotto restano spenti)
         proc.traverse(o=>{if(o.isMesh)o.visible=false;});// nascondi mesh procedurale (resta per logica/posizione)
         // item 1 (5.49.8): numero di maglia sulla SCHIENA del modello GLB — piano figlio del root (ruota col corpo), posizione dal bounding box.
@@ -10095,6 +10122,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[];
         _ms.forEach(m=>{try{Object.keys(m).forEach(k=>{const v=m[k];if(v&&v.isTexture){try{v.dispose();}catch(_e){}}});m.dispose();}catch(_e){}});
       });}catch(_e){}
+      try{if(sr.current){sr.current._tex16Stop=true;clearInterval(sr.current._tex16Iv);}}catch(e){}/* [7.999.16] ferma il caricatore lento delle texture */
       try{renderer.forceContextLoss();}catch(e){}try{renderer.dispose();}catch(e){}// 5.69.3: rilascia il contesto WebGL della partita a fine match → non si accumula tra una partita e l'altra
       if(typeof window!=='undefined')window.__CPM_MATCH_ACTIVE=false;// 5.69.3: fine partita → i ritratti possono di nuovo renderizzare
       if(mount.contains(renderer.domElement))mount.removeChild(renderer.domElement);
