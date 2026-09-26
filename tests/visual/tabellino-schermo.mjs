@@ -69,7 +69,7 @@ if (coerenza) {
 }
 if (r.blocco) console.log('\n--- quello che si legge ---\n' + r.blocco.split('\n').slice(0, 30).join('\n'));
 console.log('\nfoto:', foto);
-const voti = await page.evaluate(() => { const T = document.body.innerText || ''; const m = T.match(/PAGELLA\s*\n\s*([0-9]+(?:[.,][0-9])?)/); return { pagella: m ? parseFloat(m[1].replace(',', '.')) : null, registrato: window.__CPM_VOTO20 != null ? window.__CPM_VOTO20 : null }; }).catch(() => ({}));
+const voti = await page.evaluate(() => { const T = document.body.innerText || ''; const m = T.match(/PAGELLA\s*\n\s*([0-9]+(?:[.,][0-9])?)/); return { pagella: m ? parseFloat(m[1].replace(',', '.')) : null, registrato: (() => { try { const r = window.__CPM_ENDRESULT20 && window.__CPM_ENDRESULT20(); return r && r.rating != null ? +r.rating : (window.__CPM_VOTO20 != null ? window.__CPM_VOTO20 : null); } catch (e) { return null; } })() }; }).catch(() => ({}));
 await browser.close(); server.close();
 const votoOk = voti.pagella != null && voti.registrato != null && Math.abs(voti.pagella - voti.registrato) < 0.05;
 console.log(`  ${votoOk ? '✅' : '❌'} [7.999.20] voto della pagella (${voti.pagella}) = voto registrato per carriera e stampa (${voti.registrato})`);
