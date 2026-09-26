@@ -34,6 +34,10 @@ for (const gi of gis) {
   prove++;
   const t0 = Date.now();
   while (Date.now() - t0 < MS) { await sleep(1000); const W = await page.evaluate(() => window.__CPM_CADUTA8 || null); if (W && (W.seq || []).includes('standUp')) break; }
+  /* [7.999.19] la sonda si fermava APPENA compariva «standUp» e leggeva il bacino a rialzo appena iniziato: con pochi fotogrammi al
+     secondo (software GL) il massimo restava 0,4-0,7 m e il test falliva a caso (7.999.16 rosso, 7.999.17 verde sullo stesso codice).
+     Ora si osserva il rialzo fino a 5 s o finche' il bacino supera 0,8 m. */
+  { const t1 = Date.now(); while (Date.now() - t1 < 5000) { const W2 = await page.evaluate(() => window.__CPM_CADUTA8 || null); const su = W2 && W2.bacino && W2.bacino.standUp; if (!su || su[1] >= 0.8) break; await sleep(400); } }
   const W = await page.evaluate(() => ({ w: window.__CPM_CADUTA8 || null, ph: window.__CPM_PHASE ? window.__CPM_PHASE() : null }));
   seq = (W.w && W.w.seq) || []; senza = (W.w && W.w.senzaClip) | 0;
   console.log(`B · gi${gi}: sequenza ${JSON.stringify(seq)} · fotogrammi senza clip ${senza} · fase ${W.ph}`);

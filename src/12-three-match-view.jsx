@@ -9613,11 +9613,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              esiste. Esclusi GK e gesti non direzionali, come nel 7.517. */
           if(_a._gName&&_a._tgt517==null&&!_a._isGk&&ballArcActive&&_a._gName!=='lift'&&_a._gName!=='receive'&&!(typeof window!=='undefined'&&window.__CPM_NO636)){
             _a._tgt517=Math.atan2(ballArcTgtX-_p.position.x,ballArcTgtZ-_p.position.z);
-            _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:_a._tgt517;}
+            _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:(_a._tgt517+((_a._gAct&&_a._gAct===_a._gScissor&&!(typeof window!=='undefined'&&window.__CPM_NO_ROV19))?Math.PI:0));/* [7.999.19 appunti PO «rovesciata al contrario»] la clip mx-scissor-kick cade ALL'INDIETRO (bacino da z -0,02 a -0,32, provino-clip) e manda la palla dietro le spalle: il corpo deve dare le SPALLE alla porta, non guardarla. Rosso __CPM_NO_ROV19 */}
           if(_a._gName&&_a._aim517!=null&&!_a._isGk){/* [7.517.0 R3/2] durante il gesto comanda la MIRA
             latchata al montaggio: prima la rotazione si spegneva sotto ~1,8 u/s (gate _gsp) e il tiro si
             giocava col facing dell'avvicinamento. Turn-rate dedicato, continuo per tutto il gesto. */
-            let _da=((_a._aim517-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*7,1);}
+            let _da=((_a._aim517-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*7,1);
+            if(_a._gAct&&_a._gAct===_a._gScissor&&_a._tgt517!=null&&typeof window!=='undefined'){try{const _d19=Math.abs(((_a._tgt517-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI);window.__CPM_ROV19={spalle:+(_d19*180/Math.PI).toFixed(0),t:+((_a._gAct.time)||0).toFixed(2)};}catch(_e){}}}
           else if(_gsp>0.03&&!_a._isGk){const _ta=Math.atan2(_gdx,_gdz);let _da=((_ta-_a.root.rotation.y+Math.PI*3)%(Math.PI*2))-Math.PI;_a.root.rotation.y+=_da*Math.min(dt*5.5,1);}
           else if(_ai===0&&!_a._gName&&propsRef.current&&(propsRef.current.hlType==="penalty"||propsRef.current.hlType==="freekick"||propsRef.current.hlSetPiece)){
             /* [7.311.0 collaudo PO «postura sbagliata sulle punizioni»] il CH38 ruota SOLO col movimento: fermo
@@ -9777,7 +9778,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  dell'arco (se vivo): il driver di facing la usera' al posto del moto residuo. Esclusi GK
                  (guarda la palla per suo conto) e gesti non direzionali (lift/receive). */
               _a._tgt517=(!_a._isGk&&ballArcActive&&_want!=='lift'&&_want!=='receive')?Math.atan2(ballArcTgtX-_p.position.x,ballArcTgtZ-_p.position.z):null;/* il BERSAGLIO si registra in entrambi i bracci: il testimone al rilascio misura l'errore anche col rosso */
-              _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:_a._tgt517;
+              _a._aim517=(typeof window!=='undefined'&&window.__CPM_NO517)?null:(_a._tgt517+((_a._gAct&&_a._gAct===_a._gScissor&&!(typeof window!=='undefined'&&window.__CPM_NO_ROV19))?Math.PI:0));/* [7.999.19 appunti PO «rovesciata al contrario»] la clip mx-scissor-kick cade ALL'INDIETRO (bacino da z -0,02 a -0,32, provino-clip) e manda la palla dietro le spalle: il corpo deve dare le SPALLE alla porta, non guardarla. Rosso __CPM_NO_ROV19 */
               /* [7.356.0 collaudo PO gi167 «Controbalzo improvviso in area»: «il gesto non e' sincronizzato
                  col gol»] LA CLIP DEVE STARE NELLA SUA FINESTRA. Il 7.245 aveva scoperto il difetto sul
                  tackle (2,71s in una finestra da 1,7s) e l'aveva corretto A MANO, solo li'. La stessa misura

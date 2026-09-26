@@ -548,13 +548,19 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       let _t12=0,_b12=0;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAMPO12)){try{if(!M.m12||ora-M.m12>500){M.m12=ora;const rc=cv.getBoundingClientRect(),sc=rc.height>0?H/rc.height:1;
         const st=document.querySelector('[data-cpm="striscia918"]'),li=document.querySelector('[data-cpm="linguette918"]');
         M.t12=st?Math.max(0,(st.getBoundingClientRect().bottom-rc.top)*sc+4):0;M.b12=li?Math.max(0,(rc.bottom-li.getBoundingClientRect().top)*sc+4):0;
-        if(M.t12+M.b12>H*0.5){M.t12=0;M.b12=0;}}_t12=M.t12||0;_b12=M.b12||0;}catch(_e12){}}
+        /* [7.999.19 collaudo PO «il campo 2D sovrascrive in parte le statistiche brevi, non vedo i numeri»] sul telefono del PO le
+           linguette stanno a META' schermo: il margine in basso supera mezzo campo e questa sicura azzerava ENTRAMBI i margini, cosi' la
+           porta in alto tornava sotto la striscia. Ora il margine in alto si rispetta sempre; quello in basso finche' al campo resta almeno il 40% dell'altezza.
+           Rosso __CPM_NO_CAMPO19 = la sicura vecchia. */
+        if(typeof window!=='undefined'&&window.__CPM_NO_CAMPO19){if(M.t12+M.b12>H*0.5){M.t12=0;M.b12=0;}}
+        else{if(M.t12+M.b12>H*0.6)M.b12=0;if(M.t12>H*0.35)M.t12=0;}}_t12=M.t12||0;_b12=M.b12||0;}catch(_e12){}}
       if(M.t12o!=null&&Math.abs(M.t12o-_t12)<3&&Math.abs(M.b12o-_b12)<3){_t12=M.t12o;_b12=M.b12o;}/* variazioni sotto i 3 px non ridisegnano il campo */
       if(M.sfondo&&(M.t12o!==_t12||M.b12o!==_b12))M.sfondo=null;M.t12o=_t12;M.b12o=_b12;
       const padx=vert?W*0.035:W*0.02,pady=vert?H*0.02:H*0.035;
       const s=Math.min((W-padx*2)/(vert?LAR:LUN),(H-_t12-_b12-pady*2)/(vert?LUN:LAR));
       const pw=(vert?LAR:LUN)*s,ph=(vert?LUN:LAR)*s;
       const ox=(W-pw)/2,oy=_t12+(H-_t12-_b12-ph)/2;
+      try{if(typeof window!=='undefined'){const _cr=cv.getBoundingClientRect(),_k=_cr.height>0?_cr.height/H:1,_st=document.querySelector('[data-cpm="striscia918"]');window.__CPM_CAMPO19={t12:Math.round(_t12),b12:Math.round(_b12),H:Math.round(H),porta:Math.round(_cr.top+(oy-(vert?LUN*s*0.02:0))*_k),stat:_st?Math.round(_st.getBoundingClientRect().bottom):null};}}catch(_e19){}
       /* metri del campo → pixel dello schermo. In verticale la casa attacca verso l'ALTO. */
       const PX=(mx,my)=>vert?(ox+my*s):(ox+mx*s);
       const PY=(mx,my)=>vert?(oy+(LUN-mx)*s):(oy+my*s);
@@ -5059,7 +5065,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(!motoreRef.current){
             const _heroP=(/^(national|nationsCup|euroMondiale)/.test(context||"")?((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p||80):(player.club&&player.club.p))||65;
             const _nat5=/^(national|nationsCup|euroMondiale)/.test(context||"");let _tat5=null;try{if(typeof TATTICHE_MOTORE!=='undefined'){const _pe5=(typeof getClubPersona==='function')?getClubPersona(opponent):null;_tat5={home:(!_nat5&&player.coach&&TATTICHE_MOTORE.mister[player.coach.style])||null,away:(_pe5&&TATTICHE_MOTORE.persona[_pe5.id])||null};}}catch(_e5){}/* [7.999.5] tattiche: il mister per la squadra dell'eroe (neutro in nazionale), la persona NPC per l'avversario */
-            motoreRef.current=creaMotorePossesso({v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma */,forza:{home:_heroP,away:oppPrestige||65},lato:kickoffSideRef.current||"home"});
+            motoreRef.current=creaMotorePossesso({v2:V2L,tattica:_tat5,stadio:(isMatchHome===false?'away':'home'),occasioniV2:false,seed:(((bgSimSeedRef.current>>>0)^0x870)>>>0)||7,giocatori:(matchPlayersRef.current||matchPlayers||[]),eroe:{name:player.name,x:(pPosRef.current&&pPosRef.current.x)||58,y:(pPosRef.current&&pPosRef.current.y)||50,attivo:!onBenchRef.current&&!subbedOffRef.current,ovr:player.ovr,fiducia:(player.coachTrust!=null?player.coachTrust:null),forma:(player.form!=null?player.form:null)}/* [7.999.6] i compagni cercano l'eroe per la fiducia del mister e la forma */,forza:((typeof window!=='undefined'&&window.__CPM_FORZA19)||{home:_heroP,away:oppPrestige||65}),lato:kickoffSideRef.current||"home"});/* [7.999.19] __CPM_FORZA19: solo test, forza delle squadre nella partita vissuta */
             try{window.__CPM_MOTORE=()=>motoreRef.current&&motoreRef.current.stato();}catch(_e){}
             try{window.__CPM_MOTORE_OBJ=()=>motoreRef.current;}catch(_e){}/* [7.918] il motore INTERO per le sonde: tabellino e pagelle devono poter essere confrontati con quello che il pannello scrive a schermo */}
           const _M=motoreRef.current;
