@@ -48,6 +48,16 @@
 3. Gesti/clip e render 3D sempre guidati dal brain (B3/B4, gesti nuovi).
 - Resta, da decidere col PO: kit con strisce per i club senza disegno noto (54 lo hanno), primo incontro col procuratore e fine stagione nel kit, pubblico piu' ricco (vedi proposte).
 
+## Decisioni del PO (questionario 26/09 notte)
+1. **Occasioni dell'eroe dinamiche:** forbice 2-6 a partita per un attaccante titolare, media ~4.
+2. **Esultanza:** prima le clip già nel progetto (`opening` e simili); se non reggono, braccia costruite dal codice come il cartellino.
+3. **Scene da palla alta:** probabilità di gol più bassa delle altre (0,18-0,40 contro 0,28-0,60), come nella 7.999.26.
+4. **Rigori e punizioni dell'eroe:** ogni rigore è una scena; la punizione solo se dal limite e tirabile, le altre le calcia il motore.
+5. **Ordine:** rigori (7.999.27) → occasioni dinamiche → gesti P1-a.
+6. **Voto:** scala da quotidiano sportivo — doppietta ~8, tripletta ~8,5-9; 9 e oltre solo per prestazioni eccezionali, 10 quasi mai.
+7. **Mancino:** specchiati tiri, passaggi, cross e rigori; il piede debole solo quando lo decide il brain.
+8. **Codex:** kit minimo (AGENTS.md + 3 schede) in una release di sola documentazione subito dopo la 7.999.27.
+
 ## Coda di lavoro (ordine deciso il 26/09 sera, dopo i prompt PO su scene, gesti, stadi e pulizia)
 1. ✅ **7.999.26 — il brain decide l'origine delle scene** (cross, angoli, punizioni in mezzo) e il 3D parte dal crossatore. Su main.
 2. **7.999.27 — rigori e punizioni dirette dell'eroe** come scene decise dal brain (oggi il motore li calcia senza scena).
