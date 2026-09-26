@@ -1740,7 +1740,8 @@ function hlBallState(sit){
    sui piazzati (palla ferma per definizione) e in ogni situazione che il motore non classifica `aerial`.
    Le quote sono quelle del GESTO, non un valore unico: si incorna alla fronte, si va di volée/rovesciata sul
    collo del piede alto, un cross al volo si prende a mezza altezza. */
-function aerialContactY(P,isHL,isResult,preStrike){
+function aerialContactY(P,isHL,isResult,preStrike){const _y=_aerialContactY0(P,isHL,isResult,preStrike);if(_y==null)return _y;try{if(typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_SCALA21)return _y*0.9;}catch(_e){}return _y;}/* [7.999.21] con i corpi CGTrader ridotti del 10% il contatto aereo scende nella stessa misura */
+function _aerialContactY0(P,isHL,isResult,preStrike){
   /* [7.220.0 revisione PO «la rovesciata non parte con il pallone a mezz'aria ma va PRIMA a terra»] la quota
      di contatto regge anche nell'ATTESA DEL COLPO: prima l'esclusione di `isResult` faceva cadere il pallone
      sull'erba nell'istante fra la scelta e la partenza dell'arco — cioè esattamente il fotogramma del

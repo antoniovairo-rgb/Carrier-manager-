@@ -115,6 +115,10 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
    dalla verticale). Rimedio: l'attacco del braccio si allarga del 15% (spalle piu' larghe senza allungare le braccia),
    collo e busto alto si raddrizzano all'indietro attorno all'asse delle spalle. Idempotente: se un osso non ha traccia
    nella clip, la correzione non si somma fotogramma dopo fotogramma. Rosso __CPM_NO_POSTURA23. */
+/* [7.999.21 collaudo PO «ridurrei la grandezza generale, sembra troppo grande rispetto al campo/porta»] i giocatori CGTrader in campo
+   erano alti 1,8 unita' contro una porta di 2,44 in un campo accorciato (97 unita' per 105 m): si riducono del 10%. Lo stesso fattore
+   scala le quote di contatto aereo (testa, volee), cosi' il pallone resta all'altezza del corpo. Rosso __CPM_NO_SCALA21. */
+function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO_SCALA21)?1:0.9;}catch(_e){return 0.9;}}
 /*CORR23*/function _corrPostura23(B){try{if(!B||typeof THREE==='undefined')return;if(typeof window!=='undefined'&&window.__CPM_NO_POSTURA23)return;
   const L=B.upperarm_l,R=B.upperarm_r;if(!L||!R)return;
   [L,R].forEach(b=>{const u=b.userData;if(!u.p23)u.p23=b.position.clone();if(!u.p23o||!b.position.equals(u.p23o))u.p23=b.position.clone();b.position.copy(u.p23).multiplyScalar(1.15);u.p23o=b.position.clone();});
@@ -123,8 +127,21 @@ function corpoCG23(pkg,{shirt,shorts,socks,shoes,altezza}){try{
     b.parent.updateMatrixWorld(true);const pw=new THREE.Quaternion();b.parent.getWorldQuaternion(pw);const bw=pw.clone().multiply(b.quaternion);
     const d=new THREE.Quaternion().setFromAxisAngle(ax,-a);const nw=d.multiply(bw);b.quaternion.copy(pw.invert().multiply(nw));u.q23o=b.quaternion.clone();};
   giro(B.spine_03,0.07);giro(B.neck_01,0.20);
+  /* [7.999.21 collaudo PO «spalle troppo spioventi, sproporzionate»] MISURATO sulla posa di riferimento (lod1): dalla base del collo
+     all'attacco del braccio la linea scende di 23,8 gradi (21,7 con l'allargamento qui sopra) — il 15% di prima allargava, non alzava.
+     Le clavicole si alzano di 0,17 rad attorno all'asse avanti-dietro del busto: la spalla sale, il braccio resta attaccato. Il verso
+     giusto si trova la prima volta (la spalla deve SALIRE) e si ricorda. Rosso __CPM_NO_SPALLE21. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_SPALLE21)&&B.clavicle_l&&B.clavicle_r){const up=new THREE.Vector3(0,1,0),fw=new THREE.Vector3().crossVectors(ax,up);if(fw.lengthSq()>1e-8){fw.normalize();
+    const alza=(b,figlio,a)=>{if(!b||!b.parent||!figlio)return;const u=b.userData;if(u.q21o&&b.quaternion.equals(u.q21o))b.quaternion.copy(u.q21i);u.q21i=b.quaternion.clone();
+      b.parent.updateMatrixWorld(true);const pw=new THREE.Quaternion();b.parent.getWorldQuaternion(pw);const bw=pw.clone().multiply(b.quaternion);
+      const prova=(seg)=>{const d=new THREE.Quaternion().setFromAxisAngle(fw,seg*a);b.quaternion.copy(pw.clone().invert().multiply(d.multiply(bw.clone())));};
+      if(u.v21==null){const y0=new THREE.Vector3();b.updateMatrixWorld(true);figlio.getWorldPosition(y0);prova(1);b.updateMatrixWorld(true);const y1=new THREE.Vector3();figlio.getWorldPosition(y1);u.v21=(y1.y>=y0.y)?1:-1;}
+      prova(u.v21);u.q21o=b.quaternion.clone();};
+    alza(B.clavicle_l,B.upperarm_l,0.17);alza(B.clavicle_r,B.upperarm_r,0.17);
+    try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}}
+  else{try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}
 }catch(_e){}}
-function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|spine_03|neck_01)$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
+function _ossa23(root){if(!root)return null;const u=root.userData||(root.userData={});if(u.b23)return u.b23;const B={};root.traverse(o=>{if(o.isBone&&/^(upperarm_[lr]|clavicle_[lr]|spine_03|neck_01)$/.test(o.name))B[o.name]=o;});u.b23=B;return B;}/*/CORR23*/
 function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchParams(location.search).get('hyperCharacter'))||'';
   if(q)return q;if(typeof window!=='undefined'&&window.__CPM_NO_CGDEFAULT)return '';return 'cgtrader-highlight-optimized';}catch(_e){return '';}}
 /* ⚠️ [7.794.0 — IL PALLONE E' IN PROPORZIONE E POGGIA SULL'ERBA. Rosso __CPM_NO794]
@@ -1078,7 +1095,7 @@ function ThreeMatchView(props){
         root.add(visual);visual.updateMatrixWorld(true);
         const _rawBounds=new THREE.Box3().setFromObject(visual),_meshHeight=Math.max(0.1,_rawBounds.max.y-_rawBounds.min.y),_skeletonMeasure=_skeletonWorldHeight(visual),_rawHeight=(_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized)&&_skeletonMeasure.height>0.5?_skeletonMeasure.height:_meshHeight;
         const _targetHeight=_heroAppr.height||1.9;
-        visual.scale.setScalar(_targetHeight/_rawHeight);visual.updateMatrixWorld(true);
+        visual.scale.setScalar(_scalaCorpo21()*(_targetHeight/_rawHeight));visual.updateMatrixWorld(true);
         const _groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=_groundBounds.min.y;visual.updateMatrixWorld(true);
         if(_cgtraderReview||_cgtraderAjaxReview||_cgtraderHighlightOptimized)try{window.__CPM_CGTRADER_REVIEW_METRICS={meshHeight:+_meshHeight.toFixed(3),skeletonHeight:+_skeletonMeasure.height.toFixed(3),skeletonBones:_skeletonMeasure.bones,chosenHeight:+_rawHeight.toFixed(3),targetHeight:+_targetHeight.toFixed(3),scale:+visual.scale.x.toFixed(4)};}catch(_e){}
         visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
@@ -1181,7 +1198,7 @@ function ThreeMatchView(props){
           root.add(visual);visual.updateMatrixWorld(true);
           const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;
           const declaredHeight=(index===0?_heroAppr.height:1.8),procHeight=_worldObjectHeight(old.proc),legacyRootHeight=_worldObjectHeight(old.root),targetHeight=_footballerHeight(declaredHeight,1.8);try{const a=window.__CPM_CGTRADER_SCALE_AUDIT=window.__CPM_CGTRADER_SCALE_AUDIT||[];if(a.length<24)a.push({index,procHeight:+procHeight.toFixed(3),legacyRootHeight:+legacyRootHeight.toFixed(3),declaredHeight:+Number(declaredHeight).toFixed(3),targetHeight:+targetHeight.toFixed(3)});}catch(_e){}
-          visual.scale.setScalar(targetHeight/rawHeight);visual.updateMatrixWorld(true);
+          visual.scale.setScalar(_scalaCorpo21()*(targetHeight/rawHeight));visual.updateMatrixWorld(true);
           const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
           visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
           _applyHyperBuild(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));_applyHyperKit(visual,old._kit||_homeKit,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)),old.proc&&old.proc._num);_applyCgtraderNativeHair(visual,old._appearance||appearanceFromSeed(hashStr('hyper_'+index)));
@@ -1208,7 +1225,7 @@ function ThreeMatchView(props){
           const _stateOf=a=>({visualRoot:a.visualRoot,mx:a.mx,idle:a.idle,run:a.run,gestures:a.gestures,_gVar:a._gVar||null,_locoClips:a._locoClips,spine:a.spine,_handL:a._handL,_handR:a._handR,_footL:a._footL,_ballL:a._ballL,_footR:a._footR,_ballR:a._ballR,_armB:a._armB,_cgLod:a._cgLod});
           const _makeVariant=(host,avatarPkg,index)=>{
             const visual=_cloneHyperVisual(avatarPkg,hashStr('hyper-lod-'+(host.proc._sd||index)+'-'+(avatarPkg._cgLod||'x')));host.root.add(visual);visual.updateMatrixWorld(true);
-            const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar((host._h||1.8)/rawHeight);visual.updateMatrixWorld(true);
+            const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar(_scalaCorpo21()*((host._h||1.8)/rawHeight));visual.updateMatrixWorld(true);
             const groundBounds=new THREE.Box3().setFromObject(visual);visual.position.y-=groundBounds.min.y;visual.updateMatrixWorld(true);
             visual.traverse(o=>{if(o.isMesh){o.frustumCulled=false;o.castShadow=isDesktop;}});
             const appearance=host._appearance||appearanceFromSeed(hashStr('hyper_'+index));_applyHyperBuild(visual,appearance);_applyHyperKit(visual,host._kit||_homeKit,appearance,host.proc&&host.proc._num);_applyCgtraderNativeHair(visual,appearance);
