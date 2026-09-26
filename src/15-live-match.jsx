@@ -10858,7 +10858,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
           {/* [7.86.0 collaudo PO «standardizza UX/UI»] etichette di sezione sui due blocchi statistiche (kit) */}
           <div style={{fontSize:FS.caption,color:TH.muted,fontWeight:700,letterSpacing:1,marginBottom:6,textAlign:"left"}}>IL TUO TABELLINO</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6,marginBottom:12}}>
-            {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},{l:"Tiri",v:mxStats.shots,e:"💥",c:TH.accent},{l:"Poss.",v:(Math.round(possession))+'%',e:"🔵",c:TH.success}].map(s=>(
+            {[{l:"Gol",v:mStats.goals,e:"⚽",c:TH.warning},{l:"Assist",v:mStats.assists,e:"🎯",c:TH.primary},(()=>{/* [7.999.17 collaudo PO: «17 tiri» nel TUO tabellino contro «6/13 tiri in porta» poco sotto] quel 17 erano i tiri della SQUADRA (mxStats). Qui ora i tiri dell'EROE dalla pagella del motore, la stessa fonte del riquadro «in numeri». Rosso __CPM_NO_TIRI17 */let _q17=null;try{if(!(typeof window!=='undefined'&&window.__CPM_NO_TIRI17))_q17=(motoreRef.current&&motoreRef.current.pagelle?motoreRef.current.pagelle():[]).find(x=>x&&x.eroe)||null;}catch(_e){}return _q17?{l:"Tiri",v:_q17.tiri|0,e:"💥",c:TH.accent}:{l:"Tiri squadra",v:mxStats.shots,e:"💥",c:TH.accent};})(),{l:"Poss.",v:(Math.round(possession))+'%',e:"🔵",c:TH.success}].map(s=>(
               <Card key={s.l} style={{padding:"8px 4px",textAlign:"center"}}>
                 <div style={{fontSize:FS.body,marginBottom:1}}>{s.e}</div><div className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text,lineHeight:1}}>{s.v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
               </Card>

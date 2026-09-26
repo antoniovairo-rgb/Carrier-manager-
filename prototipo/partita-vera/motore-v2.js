@@ -110,7 +110,7 @@ function creaMotorePossesso(cfg){
      verita': qui il voto si costruisce SOLO da cio' che il giocatore ha fatto, perche' ogni evento del motore
      porta gia' il suo autore (`e.chi.i`). Il conto e' incrementale — un tick, un evento, nessuna passata sui
      ventimila eventi della partita. */
-  const _PAG0=()=>({passaggi:0,passOk:0,ricezioni:0,tiri:0,inPorta:0,gol:0,assist:0,contrasti:0,intercetti:0,spazzate:0,parate:0,falli:0,amm:0,esp:0,subiti:0,tocchi:0});
+  const _PAG0=()=>({passaggi:0,passOk:0,ricezioni:0,tiri:0,inPorta:0,gol:0,assist:0,contrasti:0,intercetti:0,spazzate:0,parate:0,falli:0,amm:0,esp:0,subiti:0,tocchi:0,sprechi:0});
   S.pag={};
   const _pag=(i)=>{if(i==null||i<0||i>=g.length)return null;if(!S.pag[i])S.pag[i]=_PAG0();return S.pag[i];};
   const _XG914=(e)=>{const z=e.zona||'fuori';const b=z==='areaPiccola'?0.34:z==='area'?0.14:z==='limite'?0.06:0.03;const pr=typeof e.press==='number'?e.press:4;return Math.min(0.9,b*(pr<2?1.35:pr<4?1.0:0.72));};
@@ -1094,9 +1094,15 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       else{v+=(gf===0?-0.25:0);}
       /* i suoi gesti */
       v+=q.gol*0.95+q.assist*0.65+q.inPorta*0.10-Math.max(0,q.tiri-q.inPorta)*0.04;
-      v+=q.passOk*0.03-Math.max(0,q.passaggi-q.passOk)*0.05+q.ricezioni*0.012;
-      v+=(q.contrasti+q.intercetti)*0.07+q.spazzate*0.04;
-      v-=q.falli*0.08+q.amm*0.25+q.esp*1.40;
+      /* [7.999.17 collaudo PO «voto assurdo»: 8,4 senza gol] MISURATO su 300 partite: il 7,6% delle gare senza gol dell'eroe finiva
+         con voto >= 8 (massimo 8,5), e sempre per VOLUME: 55 passaggi riusciti valevano +1,65 e 78 palloni ricevuti +0,94 — oltre due
+         punti e mezzo per aver toccato palla. Il volume ora ha un tetto (passaggi -0,8/+0,6, ricezioni +0,3, contrasti e intercetti
+         +0,6): a decidere il voto restano gol, assist, errori e il risultato. Rosso __CPM_NO_VOTO16 = volume senza tetto. */
+      const _vt16=!(typeof window!=='undefined'&&window&&window.__CPM_NO_VOTO16);
+      const _pa16=q.passOk*0.03-Math.max(0,q.passaggi-q.passOk)*0.05,_ri16=q.ricezioni*0.012,_di16=(q.contrasti+q.intercetti)*0.07;
+      v+=_vt16?Math.max(-0.8,Math.min(0.6,_pa16))+Math.min(0.3,_ri16):_pa16+_ri16;
+      v+=(_vt16?Math.min(0.6,_di16):_di16)+q.spazzate*0.04;
+      v-=q.falli*0.08+q.amm*0.25+q.esp*1.40;if(_vt16)v-=(q.sprechi|0)*0.5;/* [7.999.17] «gol clamorosamente sprecato»: prima valeva quanto un tiro fuori (-0,04) */
       v=Math.max(4,Math.min(9.5,Math.round(v*10)/10));
       out.push({i:i,team:p.team,gk:!!p.gk,eroe:!!p.eroe,rl:p.rl||"",rep:r,nome:p.name||"",voto:v,
         gol:q.gol,assist:q.assist,tiri:q.tiri,inPorta:q.inPorta,passaggi:q.passaggi,passOk:q.passOk,
@@ -1163,7 +1169,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
         else if(!ok&&key==='intercept'&&famDrib&&D)E('contrasto',{modo:modo(D),chi:chi(D),su:chi(H),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});/* il dribbling fermato e' un contrasto */
         else if(!ok&&key==='intercept'){tiroEroe('blocked');if(D)E('murato',{chi:chi(D),su:chi(H)});}
         else if(key==='save'||key==='miss'||key==='miss_easy'||key==='post'||(rew==='goal'&&!ok)){/* un'«occasione» riuscita (chance) NON e' un tiro */
-          const es=key==='save'?'saved':key==='post'?'post':'fuori';tiroEroe(es);
+          const es=key==='save'?'saved':key==='post'?'post':'fuori';tiroEroe(es);if(key==='miss_easy'){const _q17=_pag(HERO);if(_q17)_q17.sprechi=(_q17.sprechi|0)+1;}/* [7.999.17] il gol fatto sbagliato pesa in pagella */
           if(key==='save'&&K)E('parata',{gk:chi(K),chi:chi(H),corner:false});else if(key==='post')E('palo',{chi:chi(H)});}
         else if(ok&&(key==='recovery'||key==='intercept'||key==='tackle')&&D)E('contrasto',{modo:modo(H),chi:chi(H),su:chi(D),x:+H.x.toFixed(1),y:+H.y.toFixed(1)});
       }

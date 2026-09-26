@@ -13,7 +13,7 @@ await installCdnRoutes(ctx);
 const page = await ctx.newPage();
 let errori = 0; const messaggi = [];
 page.on('pageerror', (e) => { errori++; if (messaggi.length < 5) messaggi.push(String(e).slice(0, 180)); });
-await page.addInitScript(() => { window.__CPM_GLB = false; });
+await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_TIRI17 = 1; }, process.env.CPM_ROSSO === '1');
 await openMatch(page, port, { skipLoadAll: true, name: 'Vairo' });
 await page.evaluate(() => { if (window.__CPM_AUTOPLAY) window.__CPM_AUTOPLAY(true, { seed: 4242, policy: 'seeded', tickMs: 60 }); }).catch(() => {});
 /* velocita' doppia: il fischio finale arriva prima e la sonda non scade */
@@ -52,7 +52,9 @@ const coerenza = await page.evaluate(() => {
   const mio = (etichetta) => { const i = T.indexOf('IL TUO TABELLINO'); if (i < 0) return null; const j = T.indexOf(etichetta, i); if (j < 0) return null;
     const prima = T.slice(Math.max(0, j - 12), j).trim().split(/\s+/).pop(); return parseFloat(prima); };
   return { garaGol: num('TABELLINO DELLA GARA', 'Gol'), garaTiri: num('TABELLINO DELLA GARA', 'Tiri'),
-           mieiGol: mio('Gol'), mieiTiri: mio('Tiri') };
+           mieiGol: mio('Gol'), mieiTiri: mio('Tiri'),
+           /* [7.999.17] i tiri del TUO tabellino = il denominatore di «Tiri in porta x/y» nel riquadro in numeri */
+           numeriTiri: (() => { const m = T.match(/(\d+)\/(\d+)\s*\n?\s*Tiri in porta/); return m ? +m[2] : null; })() };
 });
 console.log(`fase finale: ${r.fase} · tabellino a schermo: ${r.presente ? 'SÌ' : 'NO'} · errori di pagina: ${errori}${messaggi.length ? ' → ' + messaggi[0] : ''}`);
 if (coerenza) {
@@ -68,4 +70,7 @@ if (coerenza) {
 if (r.blocco) console.log('\n--- quello che si legge ---\n' + r.blocco.split('\n').slice(0, 30).join('\n'));
 console.log('\nfoto:', foto);
 await browser.close(); server.close();
-process.exit(r.presente && errori === 0 ? 0 : 1);
+const tiriOk = coerenza && coerenza.numeriTiri != null && coerenza.mieiTiri === coerenza.numeriTiri;
+console.log(`  ${tiriOk ? '✅' : '❌'} [7.999.17] i tuoi tiri (${coerenza && coerenza.mieiTiri}) = i tiri del riquadro «in numeri» (${coerenza && coerenza.numeriTiri})`);
+if (process.env.CPM_ROSSO === '1') { console.log(!tiriOk ? '✅ ROSSO come atteso: senza il 7.999.17 il tuo tabellino mostra i tiri della squadra' : '❌ il rosso non riproduce'); process.exit(!tiriOk ? 0 : 1); }
+process.exit(r.presente && errori === 0 && tiriOk ? 0 : 1);

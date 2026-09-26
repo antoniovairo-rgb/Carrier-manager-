@@ -190,7 +190,9 @@
     "sfondo-ritorno": "node sfondo-ritorno-test.mjs",
     "pannello-fermo": "node pannello-fermo-test.mjs",
     "taccuino-rete": "node taccuino-rete-test.mjs",
-    "primo-highlight": "node primo-highlight-test.mjs"
+    "primo-highlight": "node primo-highlight-test.mjs",
+    "voto-volume": "node voto-volume-test.mjs",
+    "tabellino-schermo": "node tabellino-schermo.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
