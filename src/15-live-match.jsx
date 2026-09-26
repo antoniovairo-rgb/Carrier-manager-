@@ -2707,7 +2707,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      ⚠️ Il gol del micro-simulatore e' ESENTE: un gol si racconta quando accade, non quando la pausa lo
      consente. */
   /* [7.879] la richiesta di scena al motore e il fatto che ne e' nato */
-  const chiestaScena879Ref=useRef(null);const occEroe879Ref=useRef(null);const nessunaScena6Ref=useRef(false);/* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
+  const chiestaScena879Ref=useRef(null);const occEroe879Ref=useRef(null);const nessunaScena6Ref=useRef(false);const extra26Ref=useRef(0);/* [7.999.26] scene in piu' aperte dal brain (cross/angolo fuori finestra) *//* [7.999.6] la cronaca spiega una volta sola perche' l'eroe non ha avuto scene */
   const bgCoolRef=useRef(0);
   /* [7.486.0] LA COPPIA DI QUESTA PARTITA, seedata su avversario+stagione+settimana: stessa gara, stesse
      voci, come un palinsesto — e nessun campo nuovo da salvare. */
@@ -4320,9 +4320,11 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _NO879=(typeof window!=='undefined'&&window.__CPM_NO879);
         const _finestra879=!_no803&&nx>=_apertoDa803&&hlIdx<hlTimesRef.current.length&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current;
         if(!_NO879&&MOTORE870&&motoreRef.current){try{
-          if(_finestra879&&!chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(true,(typeof window!=='undefined'&&window.__CPM_NO_B7TIPO)?null:(()=>{const T=['conclusione','conclusione','fascia','fra-le-linee','spalle','costruzione','fascia','conclusione'];return T[(hashStr('tipo7|'+_sm819()+'|'+hlIdx)>>>0)%T.length];})());/* [23/09 POC punto 4] il tipo di occasione si chiede a rotazione seminata per partita: conclusioni piu' frequenti */chiestaScena879Ref.current={t0:nx};}
+          if(motoreRef.current.chiedi.origini)motoreRef.current.chiedi.origini(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&!onBenchRef.current&&!subbedOffRef.current&&nx>=Math.max(10,_apertoDa803|0)&&nx<=86&&(extra26Ref.current|0)<1,15);/* [7.999.26] il brain puo' aprire una scena da cross/angolo anche fuori finestra: PROVVISORIO al massimo 1 in piu' a partita e 15' dall'ultima (misurato: con 3 e 6' le scene raddoppiavano e i gol a partita salivano da 2,25 a 4,75) — da sostituire col numero dinamico di occasioni */
+          if(_finestra879&&!chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(true,(typeof window!=='undefined'&&window.__CPM_NO_B7TIPO)?null:(()=>{const T=['conclusione','conclusione','fascia','fra-le-linee','spalle','costruzione','fascia','conclusione'];/* [7.999.26] provata e TOLTA la richiesta di tipo «cross»: non ha prodotto scene da cross (misurato) e, lasciando la finestra aperta senza servire l'eroe, gonfiava i gol del gioco fluido (motore-unico 2,25 -> 4,75) */return T[(hashStr('tipo7|'+_sm819()+'|'+hlIdx)>>>0)%T.length];})());/* [23/09 POC punto 4] il tipo di occasione si chiede a rotazione seminata per partita: conclusioni piu' frequenti */chiestaScena879Ref.current={t0:nx};}
           else if(!_finestra879&&chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(false);chiestaScena879Ref.current=null;}
         }catch(_e879){}}
+        if(_ORIG26&&_ORIG26.active&&(hlIdx|0)>(_ORIG26.hl|0))_ORIG26=null;/* [7.999.26] finita la scena, l'origine del brain non vale piu' */
         const _fatto879=!_NO879&&!!occEroe879Ref.current;
         /* [7.999.6 L'EROE DAL GIOCO — scelta PO «meno scene, tutte vere». Rosso __CPM_NO_EROEGIOCO] Niente piu' apertura forzata dopo 14
            minuti: la richiesta resta aperta e la scena nasce solo dal fatto (l'eroe col pallone in zona utile), anche tardi. Se all'85'
@@ -4395,6 +4397,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                   if(_c){_pick880=_c;try{if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SIT880=window.__CPM_SIT880||[]).push({min:nx,zona:occEroe879Ref.current.zona,sit:_c.zones[0],tipo:occEroe879Ref.current.tipo});}catch(_e880){}}}
                 try{if(typeof window!=='undefined'&&window.__CPM_REC){const _it=deriveIntent(_pick880);(window.__CPM_B7=window.__CPM_B7||[]).push({min:nx|0,tipo:occEroe879Ref.current.tipo,chiesto:occEroe879Ref.current.chiesto,attese:occEroe879Ref.current.attese,x:occEroe879Ref.current.x,y:occEroe879Ref.current.y,press:occEroe879Ref.current.press,intento:_it,coerente:!!(_OK7&&_OK7.indexOf(_it)>=0),candidateCoerenti:_fresh79.filter(_coer7).length,candidate:_fresh79.length});}}catch(_e7){}
               }
+              /* [7.999.26 — LA SCENA NASCE DALL'ORIGINE DICHIARATA DAL BRAIN. Rosso __CPM_NO_ORIG26] Se l'occasione porta un'origine
+                 (cross di un compagno, angolo, punizione in mezzo), la scheda si cerca nell'INTERO catalogo fra quelle che raccontano
+                 proprio quello — l'eroe che riceve il cross (in corsa, di testa, al volo) o l'angolo — invece che fra le 16 estratte a
+                 caso, dove spesso non ce n'era nessuna. Scelta seminata (niente Math.random), mai una scheda gia' giocata. L'origine
+                 viaggia con la scena (_ORIG26): il pallone parte dal piede del crossatore dichiarato dal motore. */
+              {const _og26=occEroe879Ref.current&&occEroe879Ref.current.origine;
+               if(_og26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)){try{
+                 const _ang26=_og26.kind==="angolo";
+                 const _fit26=(s2)=>{if(!s2||s2.type!=="off"||_used79.indexOf(s2.text)>=0)return false;let _st=null;try{_st=hlBallState(s2);}catch(_e){}if(_st!=="aerial")return false;
+                   const _t=String(s2.text||"");const _it=deriveIntent(s2);
+                   if(_it==="cross"||_it==="onetwo")return false;/* l'eroe RICEVE: mai una scheda in cui crossa o triangola lui */
+                   if(_ang26)return s2.ballAt==="corner"||(/angolo|corner/i.test(_t)&&_it==="insertion");
+                   if(s2.ballAt||/angolo|corner|rimbalz|palo|ribattut|controbalz|errore|lancio|lanci|spizzat|centrocampo/i.test(_t))return false;
+                   return _it==="insertion"||(_it==="shot"&&/cross|volo|rovesciata|sforbiciata|testa|acrobatic/i.test(_t));};
+                 const _cand26=SITUATIONS.filter(_fit26);
+                 if(_cand26.length){_pick880=_cand26[(hashStr("orig26|"+_lzSeed+"|"+hlIdx)>>>0)%_cand26.length];
+                   _ORIG26={sit:_pick880,kind:_og26.kind,at:_ang26?"corner":"wing",x:clamp(+_og26.x||90,2,98),y:clamp(+_og26.y||50,1,99),hl:hlIdx,min:nx|0,active:true};}
+                 else _ORIG26=null;
+               }catch(_e26){_ORIG26=null;}} else _ORIG26=null;}
               if(_fresh79.length>0)setSituations(prev=>{const c=[...prev];c[hlIdx]=_pick880;return c;});
             }
             setBgAction(null);try{cpmEv("scena",{min:nx|0,src:(occEroe879Ref.current?"motore-occasione":"calendario-tick"),evento:occEroe879Ref.current?{min:occEroe879Ref.current.min,hl:hlIdx}:null,tipo:(occEroe879Ref.current&&occEroe879Ref.current.tipo)||null,/* [7.958 · rilievo PO «le interazioni dell eroe sono molto ripetitive»] IL REGISTRO DICE ANCHE QUALE SCENA E QUANTE CANDIDATE C ERANO. Il catalogo ha 185 schede e 573 azioni: se il giocatore ne vede sempre le stesse, il difetto non e la poverta del catalogo ma la SELEZIONE, e i due vogliono rimedi opposti. MISURATO con la sonda varieta-scene, 3 partite con seed diversi: 6 scene giocate, 2 schede distinte, ognuna ripetuta 3 volte. */sk:(()=>{try{const _s=(situationsRef.current||[])[hlIdxRef.current];return _s?String(_s.text||"").slice(0,60):null;}catch(_e2){return null;}})()});}catch(_e){}
@@ -5120,7 +5141,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           _specchi898(_stM870,_evM870);/* [7.898] gli specchi del motore: la stessa funzione dei sotto-tick */
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _S=(window.__CPM_SCHERMO843=window.__CPM_SCHERMO843||[]);if(_S.length<400)_S.push({min:nx,ko:kickoffRef.current|0,kick:kickRef.current|0,out:0,fermo:fermoRef.current?1:0,sp:0,pg:pendingGoalRef.current?1:0,ct:0,lib:0,hl:_inHL77?1:0,cool:bgCoolRef.current|0,ph:String(phaseRef.current),motore:1,stato:_stM870.poss.stato});}catch(_e){}}
           /* [7.879] il fatto che apre la scena: lo si prende qui, dove i fatti del motore arrivano */
-          {const _oc=_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,chiesto:_oc.chiesto||null,attese:_oc.attese|0,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null};}
+          {const _oc26=_evM870.find(e=>e&&e.t==='occasione_eroe'&&e.origine&&!e.finestra);
+            /* [7.999.26] OCCASIONE DEL BRAIN FUORI FINESTRA (cross, angolo, punizione in mezzo per l'eroe): diventa una scena in piu',
+               inserita ORA al posto corrente come fanno le scene reattive. La scheda la sceglie l'apertura, dall'origine. */
+            if(_oc26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&(extra26Ref.current|0)<1&&String(phaseRef.current)==="playing"){try{
+              extra26Ref.current=(extra26Ref.current|0)+1;const _ph26=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];
+              setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,_ph26);return c;});
+              setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,nx|0);hlTimesRef.current=v;return v;});
+              setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
+              try{cpmEv("scena",{min:nx|0,src:"brain-origine",kind:_oc26.origine.kind});}catch(_e){}}catch(_e26){}}
+            const _oc=_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,chiesto:_oc.chiesto||null,attese:_oc.attese|0,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null,origine:_oc.origine||null};}
           _narr870=narra870(_evM870,_stM870,nx,{cool:bgCoolRef.current|0});
           if(_narr870&&_narr870.ef){/* il gol e' entrato: la riga porta l'evento del microsim (accredito, festa, ripresa) */const _g=golMotoreRef.current;if(_g&&_g.ev){_narr870.ms=_g.ev.ms||_narr870.ms;_narr870.w=_g.ev.w||1;}golMotoreRef.current=null;pendingGoalRef.current=null;}
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NARR870=window.__CPM_NARR870||{tick:0,eventi:0,righe:0,per:{}});_W.tick++;_W.eventi+=_evM870.length;if(_narr870){_W.righe++;_W.per[_narr870._motore870.kind]=(_W.per[_narr870._motore870.kind]|0)+1;}}catch(_e){}}
@@ -8342,7 +8372,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     if(_v2h&&(action.rew==="goal"||action.rew==="assist")){try{
       const _qV2=clamp(rate/0.45,0.5,2.0);const _M2=motoreRef.current;const _px=(pPos&&pPos.x)||60,_py=(pPos&&pPos.y)||50;
       const _intV2=(_fkSit&&typeof isPenaltySit==="function"&&isPenaltySit(_fkSit))?"penalty":((_fkSit&&typeof isSetPieceSit==="function"&&isSetPieceSit(_fkSit)&&_fkSit.ballAt!=="corner")?"freekick":null);
-      const _xg0V2=action.rew==="goal"?_M2.xgPunto(_px,_py,_intV2,3):_M2.xgPunto(Math.min(94,_px+10),50,null,3);/* [7.999.2 scelta PO «Occasione da gol»] un highlight e' per definizione una GRANDE occasione: l'xG del punto (misurato 0,02-0,16) diventa 0,28+0,8*xG, tetto 0,6; poi scelta e statistiche (q). Il rigore resta il suo xG. */const _xgV2=_xg0V2==null?null:(_intV2==="penalty"?_xg0V2:(action.rew==="goal"?1:0.85)*clamp(0.28+0.8*_xg0V2,0.28,0.6));
+      const _xg0V2=action.rew==="goal"?_M2.xgPunto(_px,_py,_intV2,3):_M2.xgPunto(Math.min(94,_px+10),50,null,3);/* [7.999.2 scelta PO «Occasione da gol»] un highlight e' per definizione una GRANDE occasione: l'xG del punto (misurato 0,02-0,16) diventa 0,28+0,8*xG, tetto 0,6; poi scelta e statistiche (q). Il rigore resta il suo xG. */const _o26x=!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&typeof _ORIG26!=='undefined'&&_ORIG26&&_ORIG26.active&&_ORIG26.sit===_fkSit;/* [7.999.26] la scena nata da un cross, un angolo o una punizione in mezzo NON e' una «grande occasione» come un tu per tu: colpo di testa o volee su palla alta. Misurato col motore unico: senza questa correzione 4,75 gol a partita (soglia 4,5, riferimento 7.999.25: 2,25). Occasione su palla alta: 0,18+0,6*xG, fra 0,18 e 0,40 (le altre scene 0,28-0,60). Provato 0,6*xG (0,06-0,25): mediana dell'eroe 0,07, fuori dalla banda del guardiano 0,20-0,55 */const _xgV2=_xg0V2==null?null:(_intV2==="penalty"?_xg0V2:(action.rew==="goal"?1:0.85)*(_o26x?clamp(0.18+0.6*_xg0V2,0.18,0.4):clamp(0.28+0.8*_xg0V2,0.28,0.6)));
       if(_xgV2!=null)_pV2=clamp(_xgV2*_qV2*_cruise80*_hgD86/adapt,0.05,0.8);
       if(typeof window!=='undefined'&&window.__CPM_REC){const _W=(window.__CPM_V2EROE=window.__CPM_V2EROE||[]);_W.push({rew:action.rew,xg:+(+_xgV2).toFixed(3),q:+_qV2.toFixed(2),p:+(+_pV2).toFixed(3),vecchio:+clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76).toFixed(3)});}
     }catch(_eV2){_pV2=null;}}

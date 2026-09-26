@@ -1542,7 +1542,11 @@ function isReceptionSit(sit){
   if(sit&&sit.recv!=null)return sit.recv;
   return (typeof deriveReception==="function")?deriveReception(sit):false;
 }
+/* [7.999.26] origine della scena dichiarata dal brain (cross di un compagno, angolo): il live la scrive quando apre la scena
+   dall'occasione del motore, la cancella quando la scena finisce. Finche' vale, il pallone parte da li'. */
+var _ORIG26=null;
 function hlBallSpot(sit,hx,hy){
+  if(_ORIG26&&_ORIG26.active&&sit&&_ORIG26.sit===sit&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26))return {at:_ORIG26.at,x:_ORIG26.x,y:_ORIG26.y,orig:1};
   const at=(sit&&sit.ballAt)||((sit&&sit.offBall)?"mate":"hero");
   const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
   if(at==="corner"){const _sd=hy<50?1:-1;return {at,x:97,y:_sd>0?2.5:97.5};}

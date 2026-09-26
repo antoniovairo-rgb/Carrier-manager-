@@ -3305,7 +3305,7 @@ function ThreeMatchView(props){
            stageSitPositions) arriva il commit DOPO, ~30 unita' piu' in la' — e' l'intera scena che trasla,
            non il pallone. Il fix vero e' ri-armare lo snap dei ventidue E della palla sul commit di staging:
            in coda con questa nota. */
-        ball.position.x=G2X(P.ballX==null?50:P.ballX);ball.position.z=G2Z(P.ballY==null?50:P.ballY);ball.position.y=(_sy!=null?_sy:0.22);if((sr.current._ws524=1)&&sr.current._bj0)(sr.current._bj0.src='scena',sr.current._bj0.srcs.push('scena'));}
+        ball.position.x=G2X(P.ballX==null?50:P.ballX);ball.position.z=G2Z(P.ballY==null?50:P.ballY);ball.position.y=(_sy!=null&&!(typeof _ORIG26!=='undefined'&&_ORIG26&&_ORIG26.active&&!P.hlDef&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)))?_sy:0.22;/* [7.999.26] con l'origine del brain il pallone nasce sul piede del crossatore, non in aria */if((sr.current._ws524=1)&&sr.current._bj0)(sr.current._bj0.src='scena',sr.current._bj0.srcs.push('scena'));}
       const obx=ball.position.x,oby=ball.position.y,obz=ball.position.z;
       // ATE-2: durante arco BG usa destinazione 3D esatta + velocità sync con durata arco
       // 3DV-10: skip lerp x/z durante post-arco (deflect/cross_goal/in_net gestiscono x/z propri)
@@ -4270,7 +4270,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y);
          const _cx=hero.position.x+_fx*1.35,_cz=hero.position.z+_fz*1.35,_ck=Math.min(aDt*7,1);
          ball.position.x+=(_cx-ball.position.x)*_ck;ball.position.z+=(_cz-ball.position.z)*_ck;
-         ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}      else{const _aY=aerialContactY(P,isHL,isResult,sr.current._preStrike);
+         ball.position.y+=(0.42-ball.position.y)*Math.min(aDt*6,1);}      else{const _aY=(!isResult&&!P.hlDef&&typeof _ORIG26!=='undefined'&&_ORIG26&&_ORIG26.active&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26))?null:aerialContactY(P,isHL,isResult,sr.current._preStrike);/* [7.999.26] mentre si sceglie il pallone e' sul piede del crossatore: niente quota di colpo */
         /* [7.389.0 collaudo PO #87 «il pallone deve essere a terra, tra i piedi dell'eroe, e non a mezza
            altezza all'inizio della scena»] UN PALLONE ADDOSSO A UN UOMO STA AI SUOI PIEDI.
            La riga qui sotto tiene in quota il pallone di una scena AEREA, e il suo argomento e' giusto: se
@@ -5116,7 +5116,22 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           if(!_cineTest&&!_rvwChainSkip&&!P.hlDef&&(_tlKind==="shot"||_tlKind==="cross"||_tlKind==="header"||_tlKind==="pass"||_tlKind==="build")&&typeof buildHLTimeline==="function"){/* [7.238.0 batch PO gi44 «Fa gol erroneamente l'eroe!!!»] NIENTE BUILD-UP D'ATTACCO SUGLI HIGHLIGHT DIFENSIVI: la respinta di testa («Allontana!») deriva hlType header → l'executor costruiva cross+incornata VERSO LA PORTA AVVERSARIA mentre la logica segnava il gol SUBITO (banner GOL sopra l'azione finta = l'eroe che segna). Sul difensivo la scena appartiene a _defTraj (toOwnGoal/spazzata/intercetto), che l'executor scavalcava */
             try{_tlc=buildHLTimeline({type:P.hlType,pattern:P.hlPattern,variant:P.hlVariant},{x:P.playerX,y:P.playerY,reward:P.hlReward,support:P.support,nearby_def:P.nearby_def});}catch(e){_tlc=null;}
           }
-          if(_tlc&&_tlc.beats.length>1&&typeof resolveTimeline==="function"){
+          /* [7.999.26 — IL CROSS LO FA CHI L'HA FATTO NEL BRAIN. Rosso __CPM_NO_ORIG26] Se la scena nasce da un'origine dichiarata dal
+             motore (cross di un compagno, angolo, punizione in mezzo) non si inventa una costruzione: un solo volo, dal pallone che sta
+             sul piede del crossatore al punto di contatto dell'eroe, col crossatore che calcia nell'istante in cui parte. Prima il
+             pallone, gia' sospeso sopra l'eroe, scendeva a terra, vagava in una costruzione inventata e poi arrivava un cross da un
+             altro compagno (collaudo PO). Il volo lo consuma l'executor esistente: parabola da cross e planata al contatto. */
+          const _o26=(!_cineTest&&!_rvwChainSkip&&!P.hlDef&&typeof _ORIG26!=='undefined'&&_ORIG26&&_ORIG26.active&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26));
+          if(_o26){try{
+            const _sx26=ball.position.x+50,_sy26=ball.position.z/0.68+50,_hx26=(hero&&hero.position)?hero.position.x+50:(P.playerX||50),_hy26=(hero&&hero.position)?hero.position.z/0.68+50:(P.playerY||50);/* il cross va al CORPO dell'eroe in scena */
+            let _cm26=null,_cd26=1e9;sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!src||src.team!=='home'||src.gk)return;const d=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z);if(d<_cd26){_cd26=d;_cm26=pp.mesh;}});
+            if(_cm26&&_cd26<4&&!(typeof window!=="undefined"&&window.__CPM_O26FX)){_cm26._rcvT=0;}else if(_cm26&&_cd26<4){_cm26._rcvT=0;sr.current._mateFx={mesh:_cm26,name:"kick",t:0.55};}
+            const _dl26=Math.hypot(_hx26-_sx26,_hy26-_sy26);
+            tlSeg=[{tag:"orig26",kind:"cross",dur:clamp(0.55+_dl26*0.018,0.7,1.25),from:[_sx26,_sy26],to:[_hx26,_hy26],before:{},after:{}}];
+            tlBuildN=1;tlMap=null;tlOn=true;tlT=0;_tlc=null;
+            if(typeof window!=='undefined'){try{const _w=(window.__CPM_ORIG26=window.__CPM_ORIG26||[]);if(_w.length<50)_w.push({kind:_ORIG26.kind,da:[+_sx26.toFixed(1),+_sy26.toFixed(1)],a:[+_hx26.toFixed(1),+_hy26.toFixed(1)],dist:+_dl26.toFixed(1),calcia:_cm26&&_cd26<4?1:0,t:P.hlType||null});}catch(_e){}}
+          }catch(_e26){try{if(typeof window!=='undefined')window.__CPM_ORIG26ERR=String(_e26&&_e26.message||_e26);}catch(_e){}}}
+          if(!_o26&&_tlc&&_tlc.beats.length>1&&typeof resolveTimeline==="function"){
             tlSeg=resolveTimeline(_tlc);
             /* [7.236.0 batch «compare e scompare»] la coreografia deve essere UMANAMENTE corribile: il burst
                della timeline chiedeva ~25 u/s (90 km/h) e nessun inseguitore poteva starci dietro. Pavimento
@@ -5213,7 +5228,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               tlSeg=[{tag:"inbound",kind:_aer55?"cross":"through",dur:_aer55?0.62:0.42,from:[_sx55,_sy55],to:[_hx55,clamp(_hy55+_ogF48,4,96)],before:{},after:{}}];
               tlBuildN=1;tlMap=null;tlOn=true;tlT=0;
             }catch(_e){fireConclusion();}
-          } else { fireConclusion(); }
+          } else if(!_o26){ fireConclusion(); }/* [7.999.26] col cross del brain il colpo parte a fine volo (executor), mai due volte */
         }
         if(_curPh==="hl_intro"||(_curPh==="hl_move"&&prevPhase==="playing")){repCount=0;repHead=0;replayDone=false;}
         if(_curPh!=="hl_result"&&replaying){replaying=false;setReplayOn(false);}
@@ -6416,7 +6431,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  Rosso __CPM_NO546. */
               const _ltx52=(typeof window!=='undefined'&&window.__CPM_NO546)?G2X(last.to[0]):clamp(G2X(last.to[0]),-(GOAL_LINE_X-0.8),GOAL_LINE_X-0.8);
               const _ddx52=_ltx52-_lfx52,_ddz52=_ltz52-_lfz52,_dl52=Math.hypot(_ddx52,_ddz52)||1;
-              ball.position.x=_ltx52-_ddx52/_dl52*3.0;ball.position.z=_ltz52-_ddz52/_dl52*3.0;ball.position.y=_aerTL+1.0;if((sr.current._ws524=11)&&sr.current._bj0)(sr.current._bj0.src='buildup-aereo',sr.current._bj0.srcs.push('buildup-aereo'));
+              if(last.tag!=="orig26"){ball.position.x=_ltx52-_ddx52/_dl52*3.0;ball.position.z=_ltz52-_ddz52/_dl52*3.0;ball.position.y=_aerTL+1.0;}/* [7.999.26] il cross del brain arriva gia' al contatto: niente ricollocazione 3u indietro (misurato: salto all'indietro all'arrivo) */if((sr.current._ws524=11)&&sr.current._bj0)(sr.current._bj0.src='buildup-aereo',sr.current._bj0.srcs.push('buildup-aereo'));
               sr.current._aerIn52={x:_ltx52,z:_ltz52,y:_aerTL};
             } else if(last&&last.kind==='carry'&&(function(){const _cid414=(typeof last.fromId==='string')?last.fromId:((typeof last.toId==='string')?last.toId:null);const _cm414=(_cid414==='HERO')?hero:((tlMap&&_cid414&&tlMap[_cid414])||hero);return _cm414&&_cm414.position&&Math.hypot(ball.position.x-_cm414.position.x,ball.position.z-_cm414.position.z)<3.4;})()){ball.position.y=0.22;/* [7.414.0 gi24/gi79 «zig-zag» / «teletrasporto da 16,5u»] LA GUARDIA VALE PER QUALUNQUE PORTATORE, NON SOLO L'EROE: se l'ultimo beat e' la conduzione di un COMPAGNO tappato a velocita' umana, il corpo arriva corto sul piano (misurato: portatore a 4,5 col piano a 38 — 26u dall'eroe) e la scrittura del punto pianificato era un teletrasporto da 7,8-13,8u proprio al fotogramma della conclusione. Il portatore lo dice il beat (fromId→tlMap), l'eroe resta il ripiego. */
               /* [7.394.0 collaudo PO «SALTO del pallone — sembra un teletrasporto», la sorgente RESIDUA
@@ -6437,7 +6452,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                non a P.playerX (lo spot d'apertura, 12-16u più indietro), o l'eroe si teleporta all'indietro
                un frame prima del tiro. Chiave di scena → mai riusato su un highlight diverso. */
             {const _ha51=last&&last.after&&last.after.HERO;if(_ha51)sr.current._tlHeroEnd={x:_ha51[0],y:_ha51[1],k:P.hlSitKey};}
-            sr.current._tlK381=null;sr.current._tlC381=null;sr.current._tlCP382=null;sr.current._tlBi387=null;sr.current._tlFrom387=null;tlOn=false;if(fireConclusion)fireConclusion();}
+            sr.current._tlK381=null;sr.current._tlC381=null;sr.current._tlCP382=null;sr.current._tlBi387=null;sr.current._tlFrom387=null;tlOn=false;{const _wasO26=!!(last&&last.tag==="orig26");if(fireConclusion)fireConclusion();if(_wasO26&&ballArcActive)ballArcIsBG=true;/* [7.999.26] il colpo parte dal pallone arrivato col cross: il volo e' dell'arco, non dell'inseguitore del pallone logico */}}
           else{
             const sg=tlSeg[bi],p=clamp((tlT-acc)/Math.max(sg.dur,0.01),0,1);
             /* [7.387.0 collaudo PO «SALTO del pallone — sembra un teletrasporto», quattro segnalazioni]
@@ -6558,7 +6573,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(typeof window!=='undefined'&&window.__CPM_BV613!==undefined){try{const _a613=window.__CPM_BV613;
               if(_a613.length<3000)_a613.push({t:Math.round(performance.now()),bi,k:sg.kind||null,p:+p.toFixed(3),x:+_bxg.toFixed(2),y:+_byg.toFixed(2),fx:+_f0387[0].toFixed(1),tx:+sg.to[0].toFixed(1),rm:sr.current._rm613?1:0,bx0:_pre613?_pre613.x:null,by0:_pre613?_pre613.y:null,fu:(_f0387===sg.from)?0:1});sr.current._rm613=0;}catch(_e){}}
             const _arcH=sg.kind==="cross"?4.2:sg.kind==="through"?0.35:(sg.kind==="pass"||sg.kind==="give")?1.0:0.0;
-            ball.position.y=(_aerTL!=null)?(_aerTL+Math.sin(p*Math.PI)*Math.max(_arcH,0.35)):(0.22+Math.sin(p*Math.PI)*_arcH);/* [7.222.0] nelle situazioni aeree il pallone e IN VOLO per tutta la costruzione: non deve mai toccare l erba */
+            ball.position.y=(sg.tag==="orig26")?((_aerTL!=null?(0.22+(_aerTL-0.22)*p):0.22)+Math.sin(p*Math.PI)*_arcH):(_aerTL!=null)?(_aerTL+Math.sin(p*Math.PI)*Math.max(_arcH,0.35)):(0.22+Math.sin(p*Math.PI)*_arcH);/* [7.999.26] il cross dal crossatore parte dall'erba e arriva alla quota del colpo *//* [7.222.0] nelle situazioni aeree il pallone e IN VOLO per tutta la costruzione: non deve mai toccare l erba */
             /* [7.390.0 collaudo PO «si porta solo la palla avanti e fine» · «durante i movimenti si muove
                solo il pallone e non l'eroe»] UNA RICEZIONE DEVE SEMBRARE UNA RICEZIONE.
                Misurato con buildup-sync-test.mjs: quindici costruzioni su ventisei sono un solo passaggio
