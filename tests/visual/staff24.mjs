@@ -51,7 +51,7 @@ const R = await page.evaluate(()=>{
 });
 // (5) UI
 try{ await window_goto(); }catch(e){}
-async function window_goto(){ await page.evaluate(()=>window.__CPM_CAREER.goTab&&window.__CPM_CAREER.goTab('agente')); await sleep(900); }
+async function window_goto(){ await page.evaluate(()=>window.__CPM_CAREER.goTab&&window.__CPM_CAREER.goTab('ufficio')); await sleep(900); }
 const rows = await page.$$eval('[data-cpm^="staff24-"]', els=>els.map(e=>({k:e.getAttribute('data-cpm'),lv:+e.getAttribute('data-lv')})));
 R.righeUI = rows.length; if(rows.length!==4 && !ROSSO) R.fails.push(`UI: attese 4 righe staff, trovate ${rows.length}`);
 if(rows.length){

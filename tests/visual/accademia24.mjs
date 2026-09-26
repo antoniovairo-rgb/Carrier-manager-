@@ -32,7 +32,7 @@ async function boot(extra){
 }
 // (1) UI
 { const page=await boot();
-  await page.evaluate(()=>window.__CPM_CAREER.goTab('agente')); await sleep(900);
+  await page.evaluate(()=>window.__CPM_CAREER.goTab('ufficio')); await sleep(900);
   const b0=await page.evaluate(()=>window.__CPM_CAREER.get().bank);
   const st0=await page.getAttribute('[data-cpm="accademia24"]','data-stato').catch(()=>null);
   await page.click('[data-cpm="accademia24-fonda"]').catch(()=>{}); await sleep(500);

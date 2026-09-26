@@ -138,7 +138,8 @@ const SCHERMATE = [
   { id: 'club',                 ctx: 'carriera', nome: 'Club',                  tab: 'club' },
   { id: 'carriera-profilo',     ctx: 'carriera', nome: 'Carriera · Profilo',    tab: 'profile' },
   { id: 'carriera-nazionale',   ctx: 'carriera', nome: 'Carriera · Nazionale',  tab: 'nazionale' },
-  { id: 'agente',               ctx: 'carriera', nome: 'Affari',                tab: 'agente' },
+  { id: 'agente',               ctx: 'carriera', nome: 'Agente',                tab: 'agente' },
+  { id: 'ufficio',              ctx: 'carriera', nome: 'Ufficio',               tab: 'ufficio' },/* [7.999.14] la vecchia «Affari» divisa in due */
   { id: 'prepartita',           ctx: 'carriera', nome: 'Prepartita' },
   { id: 'partita-gioco',        ctx: 'partita',  nome: 'Partita · HUD in gioco' },
   { id: 'partita-scelta',       ctx: 'partita',  nome: 'Partita · HUD con la scelta' },

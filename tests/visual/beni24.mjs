@@ -31,7 +31,7 @@ async function boot(extra){
   await sleep(600); return page;
 }
 { const page=await boot();
-  await page.evaluate(()=>window.__CPM_CAREER.goTab('agente')); await sleep(900);
+  await page.evaluate(()=>window.__CPM_CAREER.goTab('ufficio')); await sleep(900);
   const P0=await page.evaluate(()=>window.__CPM_CAREER.get());
   await page.click('[data-cpm="bene24-compra-auto"]').catch(()=>{}); await sleep(500);
   const P1=await page.evaluate(()=>window.__CPM_CAREER.get());

@@ -29,7 +29,7 @@ async function boot(extra){
   await sleep(600); return page;
 }
 { const page=await boot();
-  await page.evaluate(()=>window.__CPM_CAREER.goTab('agente')); await sleep(900);
+  await page.evaluate(()=>window.__CPM_CAREER.goTab('ufficio')); await sleep(900);
   const b0=await page.evaluate(()=>window.__CPM_CAREER.get().bank);
   await page.click('[data-cpm="invest24-rischioso"]').catch(()=>{}); await sleep(500);
   const P=await page.evaluate(()=>window.__CPM_CAREER.get());

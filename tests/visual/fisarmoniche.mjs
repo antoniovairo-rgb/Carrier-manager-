@@ -39,7 +39,7 @@ for (let k = 0; k < 4; k++) { await page.evaluate(() => { const b = [...document
 await page.setViewportSize({ width: 412, height: 2600 });
 const TAG = process.env.CPM_ROSSO ? '-rosso' : '';
 const R = {};
-for (const t of ['club', 'profile', 'agente', 'standings']) {
+for (const t of ['club', 'profile', 'agente', 'ufficio', 'standings']) {
   await page.evaluate(x => window.__CPM_CAREER.goTab(x), t); await sleep(900);
   R[t] = await page.evaluate(() => [...document.querySelectorAll('button[aria-expanded]')].map(b => b.innerText.replace(/\s+/g, ' ').trim()).filter(Boolean));
   await page.screenshot({ path: path.join(OUT, t + TAG + '.png'), fullPage: true });

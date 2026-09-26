@@ -82,7 +82,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   /* [7.149.0 collaudo PO «riprendere dallo stesso punto dopo background»] tab iniziale = ultimo tab attivo (cpm-active-tab),
      così dopo un reload della WebView si torna sulla stessa sezione. Solo valori noti; default dashboard; mai sotto test. */
   const _initTab=(()=>{try{if(typeof window!=="undefined"&&/[?&]cpmtest=1\b/.test(window.location.search||""))return "dashboard";
-    const t=safeLS.get("cpm-active-tab");return (t&&["dashboard","stagione","standings","calendar","coppe","club","carriera","profile","nazionale","agente"].includes(t))?t:"dashboard";}catch(_e){return "dashboard";}})();
+    const t=safeLS.get("cpm-active-tab");return (t&&["dashboard","stagione","standings","calendar","coppe","club","carriera","profile","nazionale","agente","ufficio"].includes(t))?t:"dashboard";}catch(_e){return "dashboard";}})();
   const[tab,setTab]=useState(_initTab);
   const[agentIntro,setAgentIntro]=useState(null);
   const[_ci377Sel,setCi377Sel]=useState(null);/* [7.377.0 R4] risposta scelta nel confronto — effimera */
@@ -5837,8 +5837,8 @@ const getThisWeekMatchday=()=>{
      da tastiera ([M], [C]...) non e' nel provino e non serve su un telefono: il tasto continua a
      funzionare e resta nel `title`, ma non occupa piu' una riga sotto ogni voce. */
   const _NAV954=(att)=>({fontFamily:"'Barlow Condensed','Barlow',sans-serif",fontSize:FS.caption,
-    fontWeight:att?FW.bold:600,letterSpacing:"0.06em",textTransform:"uppercase",lineHeight:1.2});
-  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"💼",l:L.agent,k:"G"}];
+    fontWeight:att?FW.bold:600,letterSpacing:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?"0.06em":"0.01em",textTransform:"uppercase",lineHeight:1.2,whiteSpace:"nowrap"});/* [7.999.14] sette voci nella barra: spaziatura stretta, mai a capo */
+  const tabs=[{id:"dashboard",e:"🏠",l:"Home",k:"M"},{id:"stagione",e:"📅",l:"Stagione",k:"C"},{id:"club",e:"🏟️",l:"Club",k:"S"},{id:"carriera",e:"👤",l:"Carriera",k:"R"},{id:"agente",e:"💼",l:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?L.agent:"Agente",k:"G"}].concat((typeof window!=="undefined"&&window.__CPM_NO_UFF13)?[]:[{id:"ufficio",e:"🗂️",l:"Ufficio",k:"U"}]);/* [7.999.14 scelta PO «Affari» → due schede: AGENTE (procuratore, contratto, mercato) e UFFICIO (patrimonio, staff privato, accademia, beni, investimenti). Rosso __CPM_NO_UFF13 */
 
   /* [24/09 POC — anteprima 05: tre finestre impilate sul confronto col procuratore] PRECEDENZA UNICA: le finestre del procuratore sono le ultime della fila; aspettano che ogni altra finestra sia chiusa (mai due popup uno sull'altro). Rosso __CPM_NO_CODA23 */
   const _fila23=!(typeof window!=='undefined'&&window.__CPM_NO_CODA23)&&!!(weekLiveModal||monthlyReviewModal||interviewModal||careerMomentModal||misterDiscorsoModal||interviewFeedback||showMatchPrompt||negoModal||titleCeleb||jerseyPickModal||transferOffer||refuseEvent||(openingWiz&&(player.week||1)===1));
@@ -10177,7 +10177,7 @@ const getThisWeekMatchday=()=>{
       )}
 
       {/* Sprint 35 — AGENTE TAB v2: contratto + task settimanale */}
-      {tab==="agente"&&(()=>{
+      {(tab==="agente"||tab==="ufficio")&&(()=>{const _uff13=!(typeof window!=="undefined"&&window.__CPM_NO_UFF13);
         var AGENT_NAMES=["Marco Gestini","Luigi Pastore","Gianni Ferretti","Roberto Manconi","Fabio Lanzi","Sergio Donato","Andrea Turati","Claudio Venturi"];
         var aIdx=Math.abs(hashStr(player.name||"x"))%AGENT_NAMES.length;
         var agentName=(player.agent&&player.agent.name)||AGENT_NAMES[aIdx];/* [7.379.0 R6] col catalogo il procuratore ha un nome SCELTO: la derivazione dal nome del giocatore resta come rete per chi non ha ancora la relazione */
@@ -10215,7 +10215,7 @@ const getThisWeekMatchday=()=>{
         return(
           <div style={{display:"flex",flexDirection:"column",gap:9,paddingBottom:8}}>
             {/* [5.81.0 BIL-3b] ECONOMIA — saldo accumulato + staff personale con costi/effetti reali */}
-            {(player.proStatus||"u18")!=="u18"&&(
+            {(!_uff13||tab==="ufficio")&&(player.proStatus||"u18")!=="u18"&&(
               <Fisarmonica id="staff-patrimonio" titolo="Patrimonio e staff privato" aperta={true}>{/* [7.993.0 PO fisarmoniche ovunque] */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                 <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:8}}>
                   <div>
@@ -10317,7 +10317,7 @@ const getThisWeekMatchday=()=>{
                 })()}
               </Card></Fisarmonica>
             )}
-            {!player.hasAgent?(
+            {(_uff13&&tab==="ufficio")?((player.proStatus||"u18")==="u18"?<Card style={{padding:"20px",textAlign:"center",fontSize:FS.small,color:TH.muted}}>L'ufficio si apre col primo contratto da professionista: qui gestirai patrimonio, staff privato e investimenti.</Card>:null):!player.hasAgent?(
               <Card style={{padding:"20px",textAlign:"center"}}>
                 <div style={{marginBottom:8,display:"flex",justifyContent:"center",opacity:0.9}}><Figurina tipo="procuratore" chiave="procuratore-libero" larg={40}/></div>
                 <div style={{fontSize:FS.body,fontWeight:900,color:TH.text,marginBottom:6}}>Nessun agente</div>
@@ -11313,10 +11313,10 @@ const getThisWeekMatchday=()=>{
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
       {!hideStrips&&<button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{width:"100%",padding:"4px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.card,color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:700,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>💡 Idee & Feedback — scrivici la tua</button>}
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
-        {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"1 1 0",minWidth:52,padding:"15px 6px 14px",border:"none",background:"transparent"/* [21/09 · PO «aumenta un po' l'altezza dei pulsanti menu'»] togliendo icona e riga del tasto (7.955) la voce era rimasta bassa: il bersaglio del dito torna sopra i 44 px consigliati per il tocco */,cursor:"pointer",fontFamily:"inherit",color:_act?TH.brandText:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(_act)}>{t.l}</div></button>);})}
+        {tabs.map(t=>{const _act=_tabToContainer(tab)===t.id;return(<button key={t.id} className={_act?"cpm-tab-act":""} onClick={()=>goTab(t.id)} title={`${t.l} [${t.k}]`} style={{flex:"1 1 0",minWidth:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?52:0,padding:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?"15px 6px 14px":"15px 1px 14px",border:"none",background:"transparent"/* [21/09 · PO «aumenta un po' l'altezza dei pulsanti menu'»] togliendo icona e riga del tasto (7.955) la voce era rimasta bassa: il bersaglio del dito torna sopra i 44 px consigliati per il tocco */,cursor:"pointer",fontFamily:"inherit",color:_act?TH.brandText:TH.faint,borderTop:`2px solid ${_act?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(_act)}>{t.l}</div></button>);})}
         {/* [7.96.0 collaudo PO «elimina il pulsante IT (rimandiamo l'i18n) e metti Impostazioni SEMPRE visibile nel menu»]
             il vecchio bottone lingua 🌐 è sostituito da ⚙️ Opzioni, sempre presente nella barra di navigazione. */}
-        <button onClick={()=>setShowSettings(true)} title="Impostazioni" className={showSettings?"cpm-tab-act":""} style={{flex:"1 1 0",minWidth:52,padding:"15px 6px 14px",border:"none",borderLeft:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",color:showSettings?TH.brandText:TH.faint,borderTop:`2px solid ${showSettings?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(showSettings)}>Opzioni</div></button>
+        <button onClick={()=>setShowSettings(true)} title="Impostazioni" className={showSettings?"cpm-tab-act":""} style={{flex:"1 1 0",minWidth:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?52:0,padding:(typeof window!=="undefined"&&window.__CPM_NO_UFF13)?"15px 6px 14px":"15px 1px 14px",border:"none",borderLeft:`1px solid ${TH.cardBorder}`,background:"transparent",cursor:"pointer",fontFamily:"inherit",color:showSettings?TH.brandText:TH.faint,borderTop:`2px solid ${showSettings?TH.primary:"transparent"}`,transition:"all .15s"}}><div style={_NAV954(showSettings)}>Opzioni</div></button>
       </div>
       </div>{/* end bottom nav wrapper */}
     </div>
