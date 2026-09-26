@@ -2,8 +2,7 @@
 /* [7.999.20] GUARDIANO — SUL TIRO SBAGLIATO IL CORPO GUARDA LA PORTA, NON IL PUNTO DOVE FINISCE LA PALLA (appunti PO: «Colpo di testa
    non in direzione della porta», SIT #88 «Volée su cross alzato», «Colpo di testa al volo» → miss). Il corpo si girava verso il bersaglio
    dell'arco, che su un errore sta fuori dallo specchio. Corpi CGTrader accesi, scena forzata con esito fallito piu' volte; si leggono
-   solo i fotogrammi con la palla diretta FUORI dai pali. Verde: angolo mediano fra il fronte del corpo e il centro della porta < 30
-   gradi. CPM_ROSSO=1 → __CPM_NO_MIRA20. */
+   solo i fotogrammi con la palla diretta FUORI dai pali. Verde: il fronte del corpo resta dentro lo specchio fra i pali (mediana dei gradi fuori < 10). CPM_ROSSO=1 → __CPM_NO_MIRA20. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const ROSSO = process.env.CPM_ROSSO === '1';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
@@ -23,7 +22,7 @@ for (let giro = 0; giro < 10 && righe.length < 8; giro++) {
 await b.close(); srv.close();
 if (!righe.length) righe = tutte;
 const v = righe.map(x => x.porta).sort((a, c) => a - c), med = v.length ? v[v.length >> 1] : null;
-console.log(`fotogrammi con la palla diretta fuori dai pali ${tutte.filter(x => Math.abs(x.tz) > 3.66).length} (giudicati ${v.length}) · angolo corpo-porta mediano ${med} gradi · gesti ${[...new Set(righe.map(x => x.g))].join(',')}`);
+console.log(`fotogrammi con la palla diretta fuori dai pali ${tutte.filter(x => Math.abs(x.tz) > 3.66).length} (giudicati ${v.length}) · gradi del fronte del corpo FUORI dallo specchio fra i pali (0 = dentro), mediana ${med} · gesti ${[...new Set(righe.map(x => x.g))].join(',')}`);
 if (med == null) { console.log('⚠️ nessun tiro fuori dai pali in questo giro: sonda cieca'); process.exit(2); }
-if (ROSSO) { console.log(med >= 30 ? '✅ ROSSO come atteso: senza il 7.999.20 il corpo guarda il punto sbagliato' : '⚠️ il rosso non si distingue in questo campione'); process.exit(0); }
-console.log(med < 30 ? '✅ PASS mira-porta' : '❌ FAIL mira-porta'); process.exit(med < 30 ? 0 : 1);
+if (ROSSO) { console.log(med >= 10 ? '✅ ROSSO come atteso: senza il 7.999.20 il corpo guarda il punto sbagliato' : '⚠️ il rosso non si distingue in questo campione'); process.exit(0); }
+console.log(med < 10 ? '✅ PASS mira-porta' : '❌ FAIL mira-porta'); process.exit(med < 10 ? 0 : 1);
