@@ -129,7 +129,7 @@ function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO
   giro(B.spine_03,0.07);giro(B.neck_01,0.20);
   /* [7.999.21 collaudo PO «spalle troppo spioventi, sproporzionate»] MISURATO sulla posa di riferimento (lod1): dalla base del collo
      all'attacco del braccio la linea scende di 23,8 gradi (21,7 con l'allargamento qui sopra) — il 15% di prima allargava, non alzava.
-     Le clavicole si alzano di 0,17 rad attorno all'asse avanti-dietro del busto: la spalla sale, il braccio resta attaccato. Il verso
+     Le clavicole si alzano di 0,45 rad attorno all'asse avanti-dietro del busto (provino tests/visual/provino-spalle.mjs: da fermo 42 -> 24 gradi, in corsa 39 -> 21; nel gioco 0,17 rad dava solo 37,5 -> 30,5): la spalla sale, il braccio resta attaccato. Il verso
      giusto si trova la prima volta (la spalla deve SALIRE) e si ricorda. Rosso __CPM_NO_SPALLE21. */
   if(!(typeof window!=='undefined'&&window.__CPM_NO_SPALLE21)&&B.clavicle_l&&B.clavicle_r){const up=new THREE.Vector3(0,1,0),fw=new THREE.Vector3().crossVectors(ax,up);if(fw.lengthSq()>1e-8){fw.normalize();
     const alza=(b,figlio,a)=>{if(!b||!b.parent||!figlio)return;const u=b.userData;if(u.q21o&&b.quaternion.equals(u.q21o))b.quaternion.copy(u.q21i);u.q21i=b.quaternion.clone();
@@ -137,7 +137,7 @@ function _scalaCorpo21(){try{return(typeof window!=='undefined'&&window.__CPM_NO
       const prova=(seg)=>{const d=new THREE.Quaternion().setFromAxisAngle(fw,seg*a);b.quaternion.copy(pw.clone().invert().multiply(d.multiply(bw.clone())));};
       if(u.v21==null){const y0=new THREE.Vector3();b.updateMatrixWorld(true);figlio.getWorldPosition(y0);prova(1);b.updateMatrixWorld(true);const y1=new THREE.Vector3();figlio.getWorldPosition(y1);u.v21=(y1.y>=y0.y)?1:-1;}
       prova(u.v21);u.q21o=b.quaternion.clone();};
-    alza(B.clavicle_l,B.upperarm_l,0.17);alza(B.clavicle_r,B.upperarm_r,0.17);
+    alza(B.clavicle_l,B.upperarm_l,0.45);alza(B.clavicle_r,B.upperarm_r,0.45);
     try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}}
   else{try{if(typeof window!=='undefined'&&B.neck_01){const n=new THREE.Vector3(),l=new THREE.Vector3(),r=new THREE.Vector3();B.neck_01.getWorldPosition(n);B.upperarm_l.getWorldPosition(l);B.upperarm_r.getWorldPosition(r);const lat=(Math.hypot(l.x-n.x,l.z-n.z)+Math.hypot(r.x-n.x,r.z-n.z))/2,dr=n.y-(l.y+r.y)/2;(window.__CPM_SPALLE21=window.__CPM_SPALLE21||[]).length<600&&window.__CPM_SPALLE21.push(+(Math.atan2(dr,lat)*180/Math.PI).toFixed(1));}}catch(_e21){}}
 }catch(_e){}}

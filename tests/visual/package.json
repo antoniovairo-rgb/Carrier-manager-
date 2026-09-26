@@ -197,6 +197,7 @@
     "rovesciata-spalle": "node rovesciata-spalle-test.mjs",
     "goleade": "node goleade-test.mjs",
     "mira-porta": "node mira-porta-test.mjs",
+    "spalle": "node spalle-test.mjs",
     "tabellino-schermo": "node tabellino-schermo.mjs"
   },
   "dependencies": {
