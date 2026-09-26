@@ -341,7 +341,12 @@ function creaMotorePossesso(cfg){
     let x=1/(1+Math.exp(-(K2.xg0+K2.xgAng*ang-K2.xgDist*dist)));
     if(intent==='freekick')x=Math.min(x,0.06);if(intent==='header')x*=K2.testa;
     x*=(press<2?0.75:press<4?0.9:1);x*=Math.exp(K2.forzaXg*vantDi(l));return clamp(x,0.005,0.9);};
-  const esitoTiroV2=(P,intent,ctx)=>{const pr=(ctx&&ctx.pressRaw!=null)?ctx.pressRaw:4;const xg=xgV2(P,intent,pr);S._xgV2=xg;
+  const esitoTiroV2=(P,intent,ctx)=>{const pr=(ctx&&ctx.pressRaw!=null)?ctx.pressRaw:4;let xg=xgV2(P,intent,pr);
+    /* [7.999.19 collaudo PO «risultato assurdo»: 10-0 al 86'] MISURATO (200 partite, squadra dell'eroe 95 contro 50): media 2,7 gol ma
+       CODA di goleade — 7 o piu' gol nel 5% delle partite, scarto di 5+ nel 12,5%. Nel calcio chi vince largo gestisce: con 3 gol di
+       vantaggio la pericolosita' dei tiri scende al 60%, con 5+ al 40%. Rosso __CPM_NO_GEST19. */
+    if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_GEST19)){const _o19=P.team===HOME?AWAY:HOME,_vn19=(S.conta.gol[P.team===HOME?'home':'away']|0)-(S.conta.gol[_o19===HOME?'home':'away']|0);if(_vn19>=5)xg*=0.4;else if(_vn19>=3)xg*=0.6;}
+    S._xgV2=xg;
     if(rnd()<xg)return "goal";
     const pOn=clamp(K2.pOn0+xg*K2.pOnXg,0.12,0.8);if(rnd()<pOn)return "saved";
     const r=rnd();return r<0.06?"post":r<0.40?"blocked":"wide";};

@@ -195,6 +195,7 @@
     "maglie-numero": "node maglie-numero-test.mjs",
     "campo-striscia": "node campo-striscia-test.mjs",
     "rovesciata-spalle": "node rovesciata-spalle-test.mjs",
+    "goleade": "node goleade-test.mjs",
     "tabellino-schermo": "node tabellino-schermo.mjs"
   },
   "dependencies": {
