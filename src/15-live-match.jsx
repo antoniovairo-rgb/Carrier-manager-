@@ -542,14 +542,28 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       const dt=M.t?Math.min(0.1,(ora-M.t)/1000):0.016;M.t=ora;
       /* verticale sul telefono (porte in alto e in basso), coricato se lo spazio e' largo */
       const vert=H>=W*0.92;
+      /* [7.999.12 collaudo PO «il campo va sopra le statistiche brevi in alto»] il campo si disegnava sotto la striscia delle statistiche
+         (e la porta in basso sotto le linguette Statistiche/Pagelle): la sua area e' lo spazio LIBERO fra le due, misurato sul DOM.
+         Rosso __CPM_NO_CAMPO12. */
+      let _t12=0,_b12=0;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAMPO12)){try{if(!M.m12||ora-M.m12>500){M.m12=ora;const rc=cv.getBoundingClientRect(),sc=rc.height>0?H/rc.height:1;
+        const st=document.querySelector('[data-cpm="striscia918"]'),li=document.querySelector('[data-cpm="linguette918"]');
+        M.t12=st?Math.max(0,(st.getBoundingClientRect().bottom-rc.top)*sc+4):0;M.b12=li?Math.max(0,(rc.bottom-li.getBoundingClientRect().top)*sc+4):0;
+        if(M.t12+M.b12>H*0.5){M.t12=0;M.b12=0;}}_t12=M.t12||0;_b12=M.b12||0;}catch(_e12){}}
+      if(M.sfondo&&(M.t12o!==_t12||M.b12o!==_b12))M.sfondo=null;M.t12o=_t12;M.b12o=_b12;
       const padx=vert?W*0.035:W*0.02,pady=vert?H*0.02:H*0.035;
-      const s=Math.min((W-padx*2)/(vert?LAR:LUN),(H-pady*2)/(vert?LUN:LAR));
+      const s=Math.min((W-padx*2)/(vert?LAR:LUN),(H-_t12-_b12-pady*2)/(vert?LUN:LAR));
       const pw=(vert?LAR:LUN)*s,ph=(vert?LUN:LAR)*s;
-      const ox=(W-pw)/2,oy=(H-ph)/2;
+      const ox=(W-pw)/2,oy=_t12+(H-_t12-_b12-ph)/2;
       /* metri del campo → pixel dello schermo. In verticale la casa attacca verso l'ALTO. */
       const PX=(mx,my)=>vert?(ox+my*s):(ox+mx*s);
       const PY=(mx,my)=>vert?(oy+(LUN-mx)*s):(oy+my*s);
 
+      /* [7.999.12 collaudo PO «mettendo 15 secondi in background l'app si rompe la grafica»: campo 2D sparito, sfondo nero, giocatori
+         visibili] lo sfondo vive in una tela fuori schermo disegnata UNA volta; in background Chrome su Android puo' liberarne la
+         memoria e il contenuto si perde, mentre i giocatori si ridisegnano a ogni fotogramma. Si ridisegna quando il browser dichiara
+         persa una delle due tele (isContextLost) o quando la pagina torna visibile (M.rifai). Rosso __CPM_NO_SFONDO12. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_SFONDO12)&&M.sfondo){try{const _pc=M.sfondoCtx,_gc=cv.getContext('2d');
+        if(M.rifai||(_pc&&_pc.isContextLost&&_pc.isContextLost())||(_gc&&_gc.isContextLost&&_gc.isContextLost())){M.sfondo=null;M.rifai=false;M.rifatto=(M.rifatto|0)+1;try{if(typeof window!=='undefined')window.__CPM_SFONDO12=M.rifatto;}catch(_eW){}}}catch(_e12){}}
       if(!M.sfondo||M.W!==W||M.H!==H||M.dpr!==dpr){
         /* ——— LO SFONDO: prato, fasce del taglio, righe, porte. Disegnato una volta sola. ——— */
         const off=(typeof document!=='undefined')?document.createElement('canvas'):null;
@@ -633,7 +647,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         /* gli archi delle bandierine */
         ARC(0,0,1,0,Math.PI/2);ARC(0,LAR,1,-Math.PI/2,0);
         ARC(LUN,0,1,Math.PI/2,Math.PI);ARC(LUN,LAR,1,Math.PI,Math.PI*1.5);
-        M.sfondo=off;M.W=W;M.H=H;M.dpr=dpr;
+        M.sfondo=off;M.sfondoCtx=o;M.W=W;M.H=H;M.dpr=dpr;
       }
       g.setTransform(1,0,0,1,0,0);
       g.clearRect(0,0,cv.width,cv.height);
@@ -733,7 +747,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
         const num=d.gk?1:(casa?++nC:++nO);
         uomo(q,d.gk?(casa?GKC:GKO):(casa?KIT.casa:KIT.osp),casa?bordoC:bordoO,d.gk?"#0f172a":(casa?testoC:testoO),num,false,null);
         if(i===padrone){g.beginPath();g.arc(CX(q),CY(q),r+3.4,0,Math.PI*2);
-          g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();
+          if(typeof window!=="undefined"&&window.__CPM_NO_ANELLO12){g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();}else{g.save();g.setLineDash([3,2.5]);g.strokeStyle="rgba(255,255,255,"+(0.55+0.4*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();g.restore();}/* [7.999.12 collaudo PO «i portatori di palla in giallo sembrano ammoniti»] anello BIANCO TRATTEGGIATO: il giallo e' il colore del cartellino */
           /* [7.926 collaudo PO: si deve vedere il cognome di chi ha il possesso di palla, oltre all eroe]
              Il campo dall alto diceva solo «Vairo»: chi tocca il pallone era un pallino anonimo, e senza un
              nome non si capisce chi sta giocando. Il cognome viene dalla stessa rosa che scrive le pagelle. */
@@ -764,7 +778,7 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       if(M.e&&_eroeInCampo953){
         const casaE=eroeLato!=='away';
         if(padrone===21||(st.poss&&st.poss.eroe)){g.beginPath();g.arc(CX(M.e),CY(M.e),r*1.22+4.2,0,Math.PI*2);
-          g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();}
+          if(typeof window!=="undefined"&&window.__CPM_NO_ANELLO12){g.strokeStyle="rgba(253,224,71,"+(0.45+0.45*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();}else{g.save();g.setLineDash([3,2.5]);g.strokeStyle="rgba(255,255,255,"+(0.55+0.4*puls).toFixed(3)+")";g.lineWidth=2;g.stroke();g.restore();}/* [7.999.12 collaudo PO «i portatori di palla in giallo sembrano ammoniti»] anello BIANCO TRATTEGGIATO: il giallo e' il colore del cartellino */}
         /* il ripiego 11 e' lo STESSO di _uomo918: nei provini e nelle amichevoli l'eroe non ha ancora un
            numero di maglia, e senza ripiego il suo era l'unico dei ventidue cerchi vuoti — fotografato. */
         uomo(M.e,casaE?KIT.casa:KIT.osp,"#ffffff",casaE?testoC:testoO,numeroEroe||11,true,nomeEroe||null);
@@ -806,7 +820,9 @@ function Campo2D({motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCas
       }
     };
     rafRef.current=requestAnimationFrame(disegna);
-    return()=>{vivo=false;try{cancelAnimationFrame(rafRef.current);}catch(_e){}};
+    const _vis12=()=>{try{if(document.visibilityState==='visible')memRef.current.rifai=true;}catch(_e){}};/* [7.999.12] al ritorno dal background lo sfondo si ridisegna */
+    try{document.addEventListener('visibilitychange',_vis12);if(typeof window!=='undefined'&&_CPM_TEST){window.__CPM_RIFAI12=()=>{memRef.current.rifai=true;};/* solo collaudo: il danno che fa il telefono (tela di servizio svuotata) e la tela visibile da campionare */window.__CPM_DANNO12=()=>{const M=memRef.current;if(M.sfondo){const v=document.createElement('canvas');v.width=M.sfondo.width;v.height=M.sfondo.height;M.sfondo=v;M.sfondoCtx=v.getContext('2d');return true;}return false;};window.__CPM_CAMPO2D_CV=()=>cRef.current;}}catch(_e){}
+    return()=>{vivo=false;try{cancelAnimationFrame(rafRef.current);}catch(_e){}try{document.removeEventListener('visibilitychange',_vis12);}catch(_e){}};
   },[motore,kitCasa,kitOspiti,eroeLato,nomeEroe,numeroEroe,siglaCasa,siglaOspiti,clubPrato,meteo,bigGame]);
   return <canvas ref={cRef} data-cpm="campo2d" style={{width:"100%",height:altezza||"100%",display:"block",background:"#071019"}} />;
 }
@@ -1124,7 +1140,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
     <div data-cpm="pannello918" style={{position:"absolute",inset:0,zIndex:6,pointerEvents:"none",
       display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
       {/* LA STRISCIA ALTA: il possesso e le quattro voci che dicono l'andamento in un colpo d'occhio */}
-      <div style={{margin:SP.sm,padding:"7px "+SP.md+"px",borderRadius:RAD.md,background:_COL918.vetro,
+      <div data-cpm="striscia918" style={{margin:SP.sm,padding:"7px "+SP.md+"px",borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,pointerEvents:"auto"}}>
         <div style={{display:"flex",alignItems:"center",gap:SP.sm}}>
           <span style={{fontSize:FS.caption,fontWeight:FW.black,color:_sigla970(colSx),letterSpacing:.6}}>{siglaSx}</span>
@@ -1147,7 +1163,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
         </div>
       </div>
       {/* IL PANNELLO: statistiche o pagelle, col campo che si vede dietro */}
-      <div style={{margin:SP.sm,marginBottom:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
+      <div data-cpm="linguette918" style={{margin:SP.sm,marginBottom:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,
         pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%"}}>
         <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
@@ -10248,13 +10264,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                         e' gia' nel testo (anche se ce l'ha messo l'auto-bozza del 007). */}
                     {(()=>{const _CODES94=[["007","camera traballa"],["003","esito bugiardo"],["011","palla congelata"],["012","verticalizzazione all'indietro"],["004","gesto senza preparazione"],["005","palla da biliardo"],["006","reparto fermo"],["009","direzione sbagliata"],["010","pattinata"],["001","apertura scena"],["002","eroe fuori posizione"],["000","gesto scoordinato"],["014","palla flipper"],["111","portiere fuori tempo"],["113","portiere doppio gesto"],["008","palla da sola (chiuso)"]];/* [7.524.0 direttiva PO «aggiungi anche nuovi codici: es. azione confusa: palla si freeza e poi riprende la corsa in maniera anomala. verticalizzazione all'indietro ecc»] DUE CODICI NUOVI, in testa tra i caldi: 011 PALLA CONGELATA (freeze + ripresa anomala — la bozza etichetta gia' 011 la riga «palla FERMA con arco vivo») · 012 VERTICALIZZAZIONE ALL'INDIETRO (lancio/consegna dichiarati in avanti che viaggiano verso la propria porta — la bozza etichetta 012 la riga «tornato INDIETRO»). *//* [7.521.0 collaudo PO, OK esplicito] SETTE CODICI NUOVI dalla lettura del taccuino reale: 003 esito!=3D («goal_against ma palla a 52u» · «miss in rete») · 004 preRoll assente · 005 traiettorie innaturali · 006 nessuna reazione di reparto · 009 gesto specchiato (la sforbiciata al contrario) · 010 locomozione che scivola (collauda il 7.518) · 113 tuffo doppio (distinto da 111/112: gesto ripetuto vs fuori tempo). Ordine: i collaudi CALDI per primi (007+famiglie restyling); 008 in coda marcato chiuso — se ricompare e' una REGRESSIONE e la nota vale doppio. */
                       return(<div style={{marginBottom:6}}>
-                        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.42)",marginBottom:4}}>Codici rapidi (un tocco aggiunge la riga)</div>
-                        <div style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:2}}>
-                          {_CODES94.map(([cd,lb])=>{const _on94=(bugNote.txt||"").indexOf("codice "+cd)>=0;
-                            return(<button key={cd} onClick={()=>{setBugNote(n=>{const t=n.txt||"";if(t.indexOf("codice "+cd)>=0)return n;const _r94="codice "+cd+" — "+lb;return{...n,txt:t.trim()?t.replace(/\s+$/,"")+"\n"+_r94:_r94};});}}
-                              style={{flexShrink:0,padding:"7px 10px",borderRadius:RAD.md,border:`1px solid ${_on94?"#f59e0b":"rgba(255,255,255,0.16)"}`,background:_on94?"rgba(245,158,11,0.16)":"rgba(255,255,255,0.05)",color:_on94?"#fbbf24":"rgba(255,255,255,0.72)",fontSize:FS.caption,fontWeight:800,cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit",lineHeight:1}}>
-                              {cd} · {lb}</button>);})}
-                        </div>
+                        {/* [7.999.12 collaudo PO «picklist per i codici prestabiliti»] la fila di bottoni scorreva di lato e ne mostrava due e mezzo:
+                            ora un menu a tendina con tutti i codici; la scelta aggiunge la riga (niente doppioni), i gia' presenti hanno la spunta */}
+                        <select value="" onChange={e=>{const cd=e.target.value;const it=_CODES94.find(c=>c[0]===cd);if(!it)return;setBugNote(n=>{const t=n.txt||"";if(t.indexOf("codice "+cd)>=0)return n;const _r94="codice "+cd+" — "+it[1];return{...n,txt:t.trim()?t.replace(/\s+$/,"")+"\n"+_r94:_r94};});}}
+                          style={{width:"100%",boxSizing:"border-box",padding:"9px 10px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.22)",background:"#0b1322",color:"#e8edf7",fontSize:FS.small,fontWeight:700,fontFamily:"inherit",colorScheme:"dark"}}>
+                          <option value="">➕ Aggiungi un codice…</option>
+                          {_CODES94.map(([cd,lb])=>{const _on94=(bugNote.txt||"").indexOf("codice "+cd)>=0;return(<option key={cd} value={cd}>{(_on94?"✓ ":"")+cd+" · "+lb}</option>);})}
+                        </select>
                       </div>);})()}
                     <textarea autoFocus value={bugNote.txt} onChange={e=>setBugNote(n=>({...n,txt:e.target.value}))} rows={3}
                       placeholder="Cosa non va in questa azione? (es. il pallone torna indietro dopo il cross)"

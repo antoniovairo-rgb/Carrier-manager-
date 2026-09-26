@@ -186,7 +186,8 @@
     "intercetto-credibile": "node intercetto-credibile-test.mjs",
     "tabellino-lati": "node tabellino-lati-test.mjs",
     "gol-interazione": "node gol-interazione-test.mjs",
-    "dist-web-partita": "node dist-web-partita-test.mjs"
+    "dist-web-partita": "node dist-web-partita-test.mjs",
+    "sfondo-ritorno": "node sfondo-ritorno-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

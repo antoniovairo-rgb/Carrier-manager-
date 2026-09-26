@@ -490,7 +490,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
     return(
     <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:SP.md}}>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,flexWrap:"wrap"}}>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",gap:SP.xs}}>{/* [7.999.12 collaudo PO «centra nome competizione e giornata»] */}
           <span style={{display:"inline-flex",alignItems:"center",gap:6,background:_cs99.bg,color:"#fff",borderRadius:RAD.pill,padding:"4px 12px",fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:.6,textTransform:"uppercase",textShadow:"0 1px 2px rgba(0,0,0,0.35)"}}>{_cs99.e} {_cs99.label}</span>
           {roundLabel&&<span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{roundLabel}</span>}
         </div>

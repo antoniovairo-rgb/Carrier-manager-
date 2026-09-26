@@ -255,7 +255,7 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
   const _rid=React.useMemo(()=>{const a=[];for(let r=0;r<6;r++){const n=(r%2)?2:3;const q=[];
     for(let k=0;k<n;k++)q.push(((r+k)%2)===0);a.push(q);}return a;},[]);
   return(
-    <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",...((_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV25))?{left:0,right:0,top:0,height:"40%"}:{inset:0}),/* [7.998.0 PO «schermata tagliata»] la scena sta nel 40% alto: le risposte hanno lo spazio che serve */overflow:"hidden",pointerEvents:"none",
+    <div aria-hidden="true" data-cpm-scena="intervista2d" style={{position:"absolute",...((_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV25))?((typeof window!=="undefined"&&window.__CPM_NO_IV12)?{left:0,right:0,top:0,height:"40%"}:{left:"-14.5%",width:"129%",top:0,height:"40%",transform:"scale(0.775)",transformOrigin:"top center"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] la scena resta com'e' ma in scala: occupa il 31% invece del 40%, senza deformarsi */:{inset:0}),/* [7.998.0 PO «schermata tagliata»] la scena sta nel 40% alto: le risposte hanno lo spazio che serve */overflow:"hidden",pointerEvents:"none",
       background:"linear-gradient(180deg,#eceff5 0%,#e6eaf2 44%,#dde2ec 100%)"}}>
       {/* il pannello stampa: sta nella meta' alta, l'unica che il modale lascia vedere */}
       <div style={{position:"absolute",left:"4%",right:"4%",top:"3%",height:"41%",borderRadius:RAD.xs,

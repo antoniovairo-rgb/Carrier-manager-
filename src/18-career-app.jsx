@@ -360,7 +360,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
        risposta si applicano subito, come prima: chiudere la finestra non li annulla. Rosso __CPM_NO_IV24. */
     if(!(typeof window!=='undefined'&&window.__CPM_NO_IV24)&&interviewModal){
       const _m=interviewModal,_t0=_m.tot||{},_tot={m:(_t0.m||0)+(ef.m||0),p:(_t0.p||0)+(ef.p||0),t:(_t0.t||0)+(ef.t||0),f:(_t0.f||0)+(ef.f||0)};
-      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:rilancio24(ans.tone,(_m.q&&_m.q.q)||""),tot:_tot});return;}
+      if(_m.step!=="rilancio"){setInterviewModal({..._m,step:"rilancio",tone1:ans.tone,q0:_m.q,q:rilancio24(ans.tone,((_m.q&&_m.q.q)||"")+((typeof window!=='undefined'&&window.__CPM_NO_RIL12)?"":"|"+(player.season||1)+"|"+(player.week||1)))/* [7.999.12 collaudo PO «seconda domanda sempre uguale»] il seme cambia a ogni partita */,tot:_tot});return;}
       setInterviewModal({..._m,step:"esito",tone2:ans.tone,tot:_tot});return;
     }
     setInterviewFeedback({tone:ans.tone,label:toneLabel,ef});
@@ -3144,6 +3144,7 @@ const getThisWeekMatchday=()=>{
        nella finestra residua, e il recovery al mount ricommitta se il save e' rimasto indietro. Il
        «doppio dispatch» che il [7.24.3] temeva non esiste: il recovery gira solo al mount. */
     try{safeLS.set("cpm-match-resume","");}catch(_e){}matchResumeRef.current=null;/* [7.150.0] partita conclusa → snapshot di ripresa consumato */
+    try{if(result&&+result.rating>0)setPlayer(p=>({...p,ultimoVoto12:{r:+result.rating,s:p.season||1,w:p.week||1}}));}catch(_eV){}/* [7.999.12] l'ultimo voto di QUALUNQUE partita giocata (coppe ed europee non entrano in matchHistory): lo legge il procuratore. Campo facoltativo, nessun bump del salvataggio */
     // [6.73.0] anti-loop «stessa partita»: marca il matchday appena giocato come COMMITTATO questa sessione
     //   (getThisWeekMatchday non lo ri-serve più anche se un desync di stato non avanzasse la settimana). Consuma la ref.
     let _endedMdNum91=null;/* [6.91.0 collaudo PO «di nuovo ripetizione, l'ho già giocata!»] matchday realmente servito → marcatura robusta in newCal (per numero, non solo per settimana) */
@@ -6180,7 +6181,7 @@ const getThisWeekMatchday=()=>{
               testo che andava a capo ogni due parole. E' la terza volta che questa trappola morde in questo
               file: il commento sta DENTRO le graffe, sempre. (Il rosso __CPM_NO963 rimette la mixed zone 3D.) */}
           {_iv3d&&<InterviewScena2D eroe={player.name||""} testate={(player.journalists||[]).map(j=>({c:j.color||"#475569",s:String(j.paper||j.name||"").split(/\s+/).map(w=>w[0]).join("").slice(0,3).toUpperCase()}))} partita={interviewModal.partita24||null} opp={interviewModal.opponent||null} avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={typeof hashStr==="function"?hashStr((player.name||"H")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+((interviewModal.paper&&interviewModal.paper.name)||"")):7} jName={(interviewModal.paper&&interviewModal.paper.name)||null}/>}{/* [7.43.0] la mixed zone 3D SOLO per le interviste post-partita */}
-          <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:(typeof window!=="undefined"&&window.__CPM_NO_IV25)?"58vh":"62vh",overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)"}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1}}>
+          <Card style={_iv3d?{maxWidth:560,width:"100%",padding:"11px 15px",position:"relative",zIndex:1,borderRadius:"18px 18px 0 0",maxHeight:(typeof window!=="undefined"&&window.__CPM_NO_IV25)?"58vh":(typeof window!=="undefined"&&window.__CPM_NO_IV12)?"62vh":"71vh",...((typeof window!=="undefined"&&(window.__CPM_NO_IV12||window.__CPM_NO_IV25))?{}:{minHeight:"69vh"})/* [7.999.12 collaudo PO «schermata scrollabile, rimpicciolisci qualcosa»] scena 40% → 31%, riquadro 62 → 71vh */,overflowY:"auto",boxShadow:"0 -12px 40px rgba(0,0,0,0.45)"}:{maxWidth:420,width:"100%",padding:"20px",position:"relative",zIndex:1}}>
             {/* Header */}
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
               {/* [7.977.0 — direttiva PO «anche in questa ad ogni modo ci andranno le figurine»] al posto
@@ -10190,6 +10191,9 @@ const getThisWeekMatchday=()=>{
         var txOpen=(week>=1&&week<=5)||(week>=19&&week<=23);
         var lastRated=(player.matchHistory||[]).filter(function(m){return!m.simulated;}).slice(-1)[0];
         var lastRating=lastRated?lastRated.rating:0;
+        /* [7.999.12 collaudo PO «frase buttata li' senza senso»: «le ultime prestazioni mi preoccupano» dopo un 8,4 in coppa] si guardava
+           solo l'ultima gara di campionato; ora vale la partita piu' recente giocata, qualunque competizione. Rosso __CPM_NO_VOTO12. */
+        var _uv12=player.ultimoVoto12;if(!(typeof window!=='undefined'&&window.__CPM_NO_VOTO12)&&_uv12&&_uv12.r>0&&(!lastRated||((_uv12.s||0)*100+(_uv12.w||0))>=((lastRated.season||0)*100+(lastRated.week||0))))lastRating=_uv12.r;
         var speechLine=lastRating>=8?"Sei il giocatore più richiesto sul mercato. Aspettiamo le offerte giuste.":lastRating>=7?"Momento positivo. Sto spingendo il tuo nome nei posti giusti.":lastRating>=6?"Rendimento regolare. Serve il salto di qualità per attirare top club.":lastRating>0?"Dobbiamo parlare. Le ultime prestazioni mi preoccupano.":"Sono qui per te. Dimmi i tuoi obiettivi per questa stagione.";
         // Contract stats
         var wage=player.contract?.wage||577;

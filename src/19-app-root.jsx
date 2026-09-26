@@ -573,7 +573,7 @@ function IntroCinematic({onDone}){
   },[]);// eslint-disable-line
   const cap=CAPS[beat]||CAPS[0];
   return(
-    <div style={{position:"fixed",inset:0,zIndex:70,background:"#050810",overflow:"hidden",fontFamily:"inherit"}}>
+    <div style={{position:"fixed",inset:0,zIndex:(typeof window!=="undefined"&&window.__CPM_NO_INTRO12)?70:10050,background:"#050810",overflow:"hidden",fontFamily:"inherit"}}>{/* [7.999.12 collaudo PO «Rivedi l'intro non funziona più»] l'intro partiva SOTTO il pannello Opzioni (zIndex 9998): ora sta sopra tutto. Rosso __CPM_NO_INTRO12 */}
       <div ref={ref} style={{position:"absolute",inset:0}}/>
       {flash&&<div style={{position:"absolute",inset:0,background:"#fff",opacity:0.4,pointerEvents:"none"}}/>}
       <div style={{position:"absolute",left:0,right:0,top:"9%",textAlign:"center",pointerEvents:"none",padding:"0 20px"}}>
