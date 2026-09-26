@@ -657,7 +657,14 @@ function creaMotorePossesso(cfg){
     /* [7.999.13] come le scene della partita vera: almeno 12 minuti fra due occasioni e al massimo 6 a partita (prima 5 minuti e nessun tetto:
        fino a 13 occasioni, 13 tiri dell'eroe nella simulazione rapida). Rosso __CPM_NO_TIRO14 */
     const _v14=!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14);
-    return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=(_v14?12:5)&&(!_v14||(S._nOccV2|0)<6);}
+    /* [7.999.15 PO «perche' un tetto predefinito? le occasioni dovrebbero seguire l'andamento reale»] MISURATO sul tetto fisso
+       (300 partite per incrocio di forza): 0-6 occasioni, tetto toccato nell'8-16% delle gare. Via il 6: il ritmo segue il
+       punteggio — 12' di base, 9' se la squadra dell'eroe e' sotto nella ripresa (spinge), 16' se conduce di 2+ (gestisce).
+       Il limite resta la fisica della partita: palla all'eroe nell'ultimo terzo. Rosso __CPM_NO_DIN15 = tetto fisso 7.999.13 */
+    const _din15=_v14&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_DIN15);
+    let _gap=_v14?12:5;if(_din15){const _o=P.team==="home"?"away":"home",_df=(S.conta.gol[P.team]|0)-(S.conta.gol[_o]|0);
+      if(_df<0&&S.min>=46)_gap=9;else if(_df>=2)_gap=16;}
+    return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=_gap&&(!_v14||_din15||(S._nOccV2|0)<6);}
   /* la scelta automatica: la giocata che il profilo dell'eroe rende piu' sensata in quel punto. Regola MIA, dichiarata */
   function sceltaAutoV2(P){const l=P.team,adv=advDi(P.x,l),zona=zonaDi(adv,P.y),press=pressioneSu(P),spazio=spazioAvanti(P);
     const pr=(cfg.eroe&&cfg.eroe.profilo)||{};const v=(k)=>(+pr[k]||+(cfg.eroe&&cfg.eroe.ovr)||70)/70;

@@ -9777,7 +9777,13 @@ const draftBugNote=(snap,ctx)=>{try{
       /* la porta di riferimento e' quella verso cui si stava giocando: un gol SUBITO finisce in casa nostra */
       const hx=(snap&&snap.homeX!=null)?snap.homeX:-gx;
       const own=/goal_against/i.test(String(c.out)),tx=own?hx:gx,sgn=own?-1:1;
-      const inNet=(sgn*(last.x-tx))>=-0.3&&Math.abs(last.z)<3.9&&last.y<2.7;/* [7.341.0] geometria REALE della porta (semi-larghezza 3.66, traversa 2.44): con la soglia larga un pallone fermo nella bocca della porta, ma in gioco, veniva letto come gol */
+      const _st15=!(typeof window!=='undefined'&&window.__CPM_NO_RETE15);
+      /* [7.999.15 appunti PO «esito miss ma la palla e' finita IN RETE» su tap-in e colpo di testa] La soglia larga (3,9 di lato,
+         2,7 d'altezza, 0,3 PRIMA della linea) contava gol un tiro sfilato di un soffio accanto al palo (3,66) o sopra la traversa
+         (2,44), e un pallone bloccato dal portiere sulla linea. Ora serve la palla OLTRE la linea, fra i pali e sotto la traversa, nell'ultimo campione DELLA SCENA (bit arco/hl).
+         Rosso __CPM_NO_RETE15 = soglia larga. */
+      let _lz15=last;if(_st15){for(let i=W.length-1;i>=0;i--)if((W[i].f&11)!==0){_lz15=W[i];break;}}/* e solo DENTRO la scena: i 320ms di coda sono il riposizionamento per la cronaca */
+      const inNet=_st15?((sgn*(_lz15.x-tx))>=0&&Math.abs(_lz15.z)<3.66&&_lz15.y<2.44):((sgn*(last.x-tx))>=-0.3&&Math.abs(last.z)<3.9&&last.y<2.7);/* [7.341.0] geometria REALE della porta (semi-larghezza 3.66, traversa 2.44): con la soglia larga un pallone fermo nella bocca della porta, ma in gioco, veniva letto come gol */
       const netKey=/goal|in_net/.test(String(c.out));
       /* [7.341.0] la palla in rete è legittima anche sull'ASSIST (segna il compagno): il falso gol si denuncia
          solo quando l'esito dichiarato non prevede in nessun modo il pallone dentro. */
@@ -24513,7 +24519,14 @@ function creaMotorePossesso(cfg){
     /* [7.999.13] come le scene della partita vera: almeno 12 minuti fra due occasioni e al massimo 6 a partita (prima 5 minuti e nessun tetto:
        fino a 13 occasioni, 13 tiri dell'eroe nella simulazione rapida). Rosso __CPM_NO_TIRO14 */
     const _v14=!(typeof window!=='undefined'&&window&&window.__CPM_NO_TIRO14);
-    return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=(_v14?12:5)&&(!_v14||(S._nOccV2|0)<6);}
+    /* [7.999.15 PO «perche' un tetto predefinito? le occasioni dovrebbero seguire l'andamento reale»] MISURATO sul tetto fisso
+       (300 partite per incrocio di forza): 0-6 occasioni, tetto toccato nell'8-16% delle gare. Via il 6: il ritmo segue il
+       punteggio — 12' di base, 9' se la squadra dell'eroe e' sotto nella ripresa (spinge), 16' se conduce di 2+ (gestisce).
+       Il limite resta la fisica della partita: palla all'eroe nell'ultimo terzo. Rosso __CPM_NO_DIN15 = tetto fisso 7.999.13 */
+    const _din15=_v14&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_DIN15);
+    let _gap=_v14?12:5;if(_din15){const _o=P.team==="home"?"away":"home",_df=(S.conta.gol[P.team]|0)-(S.conta.gol[_o]|0);
+      if(_df<0&&S.min>=46)_gap=9;else if(_df>=2)_gap=16;}
+    return advDi(P.x,P.team)>=64&&(S.min-(S._ultOccV2==null?-99:S._ultOccV2))>=_gap&&(!_v14||_din15||(S._nOccV2|0)<6);}
   /* la scelta automatica: la giocata che il profilo dell'eroe rende piu' sensata in quel punto. Regola MIA, dichiarata */
   function sceltaAutoV2(P){const l=P.team,adv=advDi(P.x,l),zona=zonaDi(adv,P.y),press=pressioneSu(P),spazio=spazioAvanti(P);
     const pr=(cfg.eroe&&cfg.eroe.profilo)||{};const v=(k)=>(+pr[k]||+(cfg.eroe&&cfg.eroe.ovr)||70)/70;

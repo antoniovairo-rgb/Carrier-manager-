@@ -754,7 +754,13 @@ const draftBugNote=(snap,ctx)=>{try{
       /* la porta di riferimento e' quella verso cui si stava giocando: un gol SUBITO finisce in casa nostra */
       const hx=(snap&&snap.homeX!=null)?snap.homeX:-gx;
       const own=/goal_against/i.test(String(c.out)),tx=own?hx:gx,sgn=own?-1:1;
-      const inNet=(sgn*(last.x-tx))>=-0.3&&Math.abs(last.z)<3.9&&last.y<2.7;/* [7.341.0] geometria REALE della porta (semi-larghezza 3.66, traversa 2.44): con la soglia larga un pallone fermo nella bocca della porta, ma in gioco, veniva letto come gol */
+      const _st15=!(typeof window!=='undefined'&&window.__CPM_NO_RETE15);
+      /* [7.999.15 appunti PO «esito miss ma la palla e' finita IN RETE» su tap-in e colpo di testa] La soglia larga (3,9 di lato,
+         2,7 d'altezza, 0,3 PRIMA della linea) contava gol un tiro sfilato di un soffio accanto al palo (3,66) o sopra la traversa
+         (2,44), e un pallone bloccato dal portiere sulla linea. Ora serve la palla OLTRE la linea, fra i pali e sotto la traversa, nell'ultimo campione DELLA SCENA (bit arco/hl).
+         Rosso __CPM_NO_RETE15 = soglia larga. */
+      let _lz15=last;if(_st15){for(let i=W.length-1;i>=0;i--)if((W[i].f&11)!==0){_lz15=W[i];break;}}/* e solo DENTRO la scena: i 320ms di coda sono il riposizionamento per la cronaca */
+      const inNet=_st15?((sgn*(_lz15.x-tx))>=0&&Math.abs(_lz15.z)<3.66&&_lz15.y<2.44):((sgn*(last.x-tx))>=-0.3&&Math.abs(last.z)<3.9&&last.y<2.7);/* [7.341.0] geometria REALE della porta (semi-larghezza 3.66, traversa 2.44): con la soglia larga un pallone fermo nella bocca della porta, ma in gioco, veniva letto come gol */
       const netKey=/goal|in_net/.test(String(c.out));
       /* [7.341.0] la palla in rete è legittima anche sull'ASSIST (segna il compagno): il falso gol si denuncia
          solo quando l'esito dichiarato non prevede in nessun modo il pallone dentro. */

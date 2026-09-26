@@ -188,7 +188,8 @@
     "gol-interazione": "node gol-interazione-test.mjs",
     "dist-web-partita": "node dist-web-partita-test.mjs",
     "sfondo-ritorno": "node sfondo-ritorno-test.mjs",
-    "pannello-fermo": "node pannello-fermo-test.mjs"
+    "pannello-fermo": "node pannello-fermo-test.mjs",
+    "taccuino-rete": "node taccuino-rete-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
