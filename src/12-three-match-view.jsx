@@ -6435,6 +6435,18 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              palla in aria → a terra → e solo dopo l arco. Qui la costruzione rispetta lo stato-palla. */
           const _aerTL=aerialContactY(P,true,false);
           let acc=0,bi=0; for(;bi<tlBuildN;bi++){if(tlT<acc+tlSeg[bi].dur)break;acc+=tlSeg[bi].dur;}
+          /* [7.999.33 — LO STACCO ANTICIPA IL PALLONE. Collaudo PO «i colpi di testa non sono sincronizzati con la velocita' del cross».
+             Rosso __CPM_NO_TESTA33.] MISURATO (sonda testa-tempismo, 5 scene): il cross arrivava alla testa con l'eroe ancora a terra
+             (salto 0,6 u al contatto), poi l'eroe saliva fino a +2,2 u mezzo secondo DOPO che il pallone era gia' ripartito: salto e pallone
+             scollegati. Ora, nell'ultimo tratto del cross verso l'eroe, lo stacco comincia mezza finestra del gesto PRIMA dell'arrivo
+             (dal tempo che manca, non a orologio fisso: un cross lento stacca dopo, uno teso prima), la clip di testa si monta allora, e
+             alla conclusione il gesto riparte dal PICCO. L'altezza del salto e' lo scarto fra quota del contatto e testa da ferma. */
+          if(P.hlType==='header'&&P.hlVariant!=='header_diving'&&!actType&&tlBuildN>0&&bi===tlBuildN-1&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA33)){
+            const _rem33=acc+tlSeg[bi].dur-tlT,_PRE33=0.5*gwOf('header','vita');
+            if(_rem33<=_PRE33){const S33=sr.current;
+              if(!S33._pre33||S33._pre33.k!==P.hlSitKey){let _hs=1.67;try{const _hav=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _hb=_hav&&_findBone904(_hav.visualRoot||_hav.root,/^(head|(mixamorig:?)?Head)$/i);if(_hb){const _v=new THREE.Vector3();_hb.getWorldPosition(_v);_hs=_v.y-(hero.position.y||0);}}catch(_e){}
+                S33._pre33={k:P.hlSitKey,t:0,rem0:Math.max(0.12,_rem33),H:clamp(((_aerTL!=null?_aerTL:2.2)-_hs)+0.05,0.25,0.9)};}
+              S33._pre33.t+=aDt;const _k33=clamp(S33._pre33.t/S33._pre33.rem0,0,1);hero.position.y=S33._pre33.H*Math.sin(_k33*Math.PI/2);/* salita dello stacco fino al picco all'arrivo del pallone */}}
           if(bi>=tlBuildN){const last=tlSeg[tlBuildN-1];
             if(_aerTL!=null){
               /* [7.237.0 #52 misurato su gi6: palla CONGELATA a mezz'aria ~520ms (mv 0.00) tra fine consegna
@@ -6473,7 +6485,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                non a P.playerX (lo spot d'apertura, 12-16u più indietro), o l'eroe si teleporta all'indietro
                un frame prima del tiro. Chiave di scena → mai riusato su un highlight diverso. */
             {const _ha51=last&&last.after&&last.after.HERO;if(_ha51)sr.current._tlHeroEnd={x:_ha51[0],y:_ha51[1],k:P.hlSitKey};}
-            sr.current._tlK381=null;sr.current._tlC381=null;sr.current._tlCP382=null;sr.current._tlBi387=null;sr.current._tlFrom387=null;tlOn=false;{const _wasO26=!!(last&&last.tag==="orig26");if(fireConclusion)fireConclusion();if(_wasO26&&ballArcActive)ballArcIsBG=true;/* [7.999.26] il colpo parte dal pallone arrivato col cross: il volo e' dell'arco, non dell'inseguitore del pallone logico */}}
+            sr.current._tlK381=null;sr.current._tlC381=null;sr.current._tlCP382=null;sr.current._tlBi387=null;sr.current._tlFrom387=null;tlOn=false;{const _wasO26=!!(last&&last.tag==="orig26");if(fireConclusion)fireConclusion();if(sr.current._pre33&&sr.current._pre33.k===P.hlSitKey&&actType==='header'){actT=0.5*gwOf('header','vita');sr.current._pre33.picco=true;}/* [7.999.33] il colpo parte dal picco dello stacco */if(_wasO26&&ballArcActive)ballArcIsBG=true;/* [7.999.26] il colpo parte dal pallone arrivato col cross: il volo e' dell'arco, non dell'inseguitore del pallone logico */}}
           else{
             const sg=tlSeg[bi],p=clamp((tlT-acc)/Math.max(sg.dur,0.01),0,1);
             /* [7.387.0 collaudo PO «SALTO del pallone — sembra un teletrasporto», quattro segnalazioni]
@@ -7320,9 +7332,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(P.hlVariant==="header_diving"){// tuffo rasoterra: salto basso, braccia tese in avanti, torso inclinato
               hero.position.y=sw*0.85;if(hero._hd)hero._hd.rotation.x=sw*1.2;hero._aL.rotation.x=-2.8*sw;hero._aR.rotation.x=-2.8*sw;if(hero._torso)hero._torso.rotation.x=sw*0.45;
             }else if(P.hlVariant==="header_far_post"){// secondo palo: salto più alto, corpo ruota verso il palo lontano
-              hero.position.y=sw*2.5;if(hero._hd)hero._hd.rotation.x=sw*0.8;hero._aL.rotation.x=-2.2*sw;hero._aR.rotation.x=-2.2*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.4;
+              hero.position.y=sw*((sr.current._pre33&&sr.current._pre33.picco&&sr.current._pre33.k===P.hlSitKey)?sr.current._pre33.H:2.5);if(hero._hd)hero._hd.rotation.x=sw*0.8;hero._aL.rotation.x=-2.2*sw;hero._aR.rotation.x=-2.2*sw;hero.rotation.y=Math.sin(u*Math.PI)*0.4;
             }else{// near_post default: salto standard + nod testa
-              hero.position.y=sw*2.2;if(hero._hd)hero._hd.rotation.x=sw*0.7;hero._aL.rotation.x=-2.0*sw;hero._aR.rotation.x=-2.0*sw;
+              hero.position.y=sw*((sr.current._pre33&&sr.current._pre33.picco&&sr.current._pre33.k===P.hlSitKey)?sr.current._pre33.H:2.2);if(hero._hd)hero._hd.rotation.x=sw*0.7;hero._aL.rotation.x=-2.0*sw;hero._aR.rotation.x=-2.0*sw;
             }
           }
           else if(actType==="tackle"){
@@ -9785,7 +9797,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             // [6.76.0 LMV-A1] il gesto GK va SOLO al portiere che sta davvero reagendo (_a.proc===oppMesh):
             //   prima _gkWant era globale → su ogni parata/presa si tuffavano ENTRAMBI i portieri (anche quello a 100m).
             const _cad8=(_ai===0&&sr.current._cad8T>=0)?(sr.current._cad8T<1.45?'trip':sr.current._cad8T<2.45?'fallen':sr.current._cad8T<4.4?'standUp':null):null;if(_cad8&&typeof window!=='undefined'&&window.__CPM_CADUTA8){try{const _W8=window.__CPM_CADUTA8;const _q8=(_W8.seq=_W8.seq||[]);if(_q8[_q8.length-1]!==_cad8&&_q8.length<40)_q8.push(_cad8);if(!_a.gestures||!_a.gestures[_cad8])_W8.senzaClip=(_W8.senzaClip|0)+1;const _r8=_a.visualRoot||_a.root;if(_r8){if(_a._pel8===undefined)_a._pel8=_findBone904(_r8,/(^|[^a-z])pelvis$|Hips$/i)||null;if(_a._pel8){const _v8=_a._pel8.getWorldPosition(sr.current._v8||(sr.current._v8=new THREE.Vector3()));const _y8=+(_v8.y-(_a.root?_a.root.getWorldPosition(sr.current._v8b||(sr.current._v8b=new THREE.Vector3())).y:0)).toFixed(2);const _P8=(_W8.bacino=_W8.bacino||{});const _m8=_P8[_cad8]||(_P8[_cad8]=[_y8,_y8]);_m8[0]=Math.min(_m8[0],_y8);_m8[1]=Math.max(_m8[1],_y8);if(_a._gName===_cad8&&_a._gAct){const _T8=(_W8.clipT=_W8.clipT||{});_T8[_cad8]=Math.max(_T8[_cad8]||0,+_a._gAct.time.toFixed(2));_T8.ts=+(+_a._gAct.timeScale).toFixed(2);}}}}catch(_e8){}}/* [7.999.8] altezza del bacino dell'eroe per fase (min,max, metri sopra la radice): a terra deve stare bassa *//* [7.999.8 CADUTA] inciampo, a terra, rialzarsi: prevale su tutto il resto finche' dura */
-            const _g=(_ai===0)?((sr.current._cerLift===1||sr.current._celLift371===1)?'lift':(_cad8||_gName||((heroPostType==='miss'&&heroPostT>=0&&heroPostT<1.4&&!(typeof window!=='undefined'&&window.__CPM_NO_MISS23))?'miss':null)||_brainWant)):(_a._isGk?(((_a.proc===oppMesh&&!(_gkWant==='dive'&&oppMesh&&oppMesh._fin855))?_gkWant:null)||_brainWant):(_mateWant||((oppActType==='opp_tackle'&&_a.proc===oppMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_OPPTACKLE23))?((sr.current._modo23==='piedi'&&_a.gestures.standTackle)?'standTackle':'tackle'):null)));/* [23/09 POC] eroe e portieri: se la scena non chiede nulla, parla il brain · l'intervento del difensore (opp_tackle) era solo una posa procedurale, invisibile sotto il GLB: ora e' la clip tackle (rosso __CPM_NO_OPPTACKLE23) */let _want=(_g&&_a.gestures[_g])?_g:null;{const _pr=sr.current._presaRev;/* [23/09 POC — GESTI EVOLUTI, rosso __CPM_NO_GKEVO23] (a) dopo la presa, tenuta la palla ~0,9 s, il portiere RILANCIA con le mani (gk-throw); (b) nell'attesa della scena il portiere avversario sta in posizione (gk-ready), una volta per scena */
+            const _g=(_ai===0)?((sr.current._cerLift===1||sr.current._celLift371===1)?'lift':(_cad8||_gName||((sr.current._pre33&&!actType&&!sr.current._pre33.picco&&sr.current._pre33.k===(propsRef.current&&propsRef.current.hlSitKey))?'header':null)||((heroPostType==='miss'&&heroPostT>=0&&heroPostT<1.4&&!(typeof window!=='undefined'&&window.__CPM_NO_MISS23))?'miss':null)||_brainWant)):(_a._isGk?(((_a.proc===oppMesh&&!(_gkWant==='dive'&&oppMesh&&oppMesh._fin855))?_gkWant:null)||_brainWant):(_mateWant||((oppActType==='opp_tackle'&&_a.proc===oppMesh&&!(typeof window!=='undefined'&&window.__CPM_NO_OPPTACKLE23))?((sr.current._modo23==='piedi'&&_a.gestures.standTackle)?'standTackle':'tackle'):null)));/* [23/09 POC] eroe e portieri: se la scena non chiede nulla, parla il brain · l'intervento del difensore (opp_tackle) era solo una posa procedurale, invisibile sotto il GLB: ora e' la clip tackle (rosso __CPM_NO_OPPTACKLE23) */let _want=(_g&&_a.gestures[_g])?_g:null;{const _pr=sr.current._presaRev;/* [23/09 POC — GESTI EVOLUTI, rosso __CPM_NO_GKEVO23] (a) dopo la presa, tenuta la palla ~0,9 s, il portiere RILANCIA con le mani (gk-throw); (b) nell'attesa della scena il portiere avversario sta in posizione (gk-ready), una volta per scena */
           if(!(typeof window!=='undefined'&&window.__CPM_NO_GKEVO23)){
             if(!_want&&_pr&&_a._isGk&&_a.proc===_pr.proc&&_pr.held&&_pr.heldMs&&(Date.now()-_pr.heldMs)>900&&!_pr.lanciato&&_a.gestures.gkThrow&&_a._gName!=='catch'){_want='gkThrow';_pr.lanciato=true;}
             else if(!_want&&_a._isGk&&_a.gestures.gkReady&&(P.matchPhase==='hl_choose'||P.matchPhase==='hl_move')&&(()=>{try{const C=propsRef.current&&propsRef.current.castBrain&&propsRef.current.castBrain.current;const ki=C&&C.portiere?C.portiere.i:null;const pp=ki!=null&&sr.current.players?sr.current.players[ki]:null;return !!(pp&&pp.mesh===_a.proc);}catch(_e){return false;}})()/* solo il portiere del brain */&&_a._pronto23!==String((propsRef.current&&propsRef.current.hlSitKey)||'')&&!oppActType){_a._pronto23=String((propsRef.current&&propsRef.current.hlSitKey)||'');_want='gkReady';}
@@ -10000,6 +10012,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           }
           if(_a.mx){const _lbW=_lb*_lb*(3-2*_lb);if(_a.run)_a.run.weight=_lbW;if(_a.idle)_a.idle.weight=1-_lbW;_attesa32(_a,P,aDt);_updateAvatarMixerLod(_a,aDt,_ai,false);}/* [7.49.0 BL-06] smoothstep anche sugli off-ball */
         }
+        /* [7.999.33 strumento, sola lettura — collaudo PO «i colpi di testa non sono sincronizzati con la velocita' del cross, salta troppo presto»]
+            Nelle scene di testa registra a ogni fotogramma: tempo di scena, quota della testa dell'eroe, distanza pallone-testa, gesto montato.
+            Acceso solo da __CPM_TESTA33_REC. */
+         if(typeof window!=='undefined'&&window.__CPM_TESTA33_REC&&hero){try{const _P33=propsRef.current||{};
+          if(_P33.matchPhase==='hl_result'&&(_P33.hlType==='header'||actType==='header')){const _av=(glbAvatars||[]).find(a=>a&&a.proc===hero);
+            if(_av){const R=_av.visualRoot||_av.root;if(_av._hd33===undefined)_av._hd33=_findBone904(R,/^(head|(mixamorig:?)?Head)$/i)||null;
+              if(_av._hd33){const W=(window.__CPM_TESTA33=window.__CPM_TESTA33||{t:0,f:[]});W.t+=aDt;const v=sr.current._v33||(sr.current._v33=new THREE.Vector3());_av._hd33.getWorldPosition(v);const b=sr.current.ball||ball;
+                if(W.f.length<900)W.f.push({t:+W.t.toFixed(3),hy:+v.y.toFixed(3),d:+Math.hypot(b.position.x-v.x,b.position.y-v.y,b.position.z-v.z).toFixed(3),by:+b.position.y.toFixed(2),g:_av._gName||null,act:actType||null,u:+(actT||0).toFixed(3),arc:ballArcActive?1:0});}}}}catch(_e33){}}
         {/* [7.999.31 — L'ESULTANZA SI VEDE: BRACCIA AL CIELO PROCEDURALI. Lotto gesti P1-a, decisione PO 26/09 «prima clip in casa,
             altrimenti braccia procedurali». Rosso __CPM_NO_ESULTA31.] Il piano d'esultanza chiede il gesto `lift` (eroe: _celLift371;
             compagno che segna: _mateFx), ma sul corpo CGTrader `lift` punta alla clip `celebrate` che NON esiste in nessun pacchetto

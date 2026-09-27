@@ -47,6 +47,8 @@ const L=new THREE.GLTFLoader();const ld=u=>new Promise((ok,ko)=>L.load(u,ok,unde
       if(i>0){const dt=clip.duration/M,vL=Math.hypot(pL.x-qL.x,pL.z-qL.z)/dt,vR=Math.hypot(pR.x-qR.x,pR.z-qR.z)/dt;if(vL>bL.v)bL={v:vL,u:i/M};if(vR>bR.v)bR={v:vR,u:i/M};}
       qL.copy(pL);qR.copy(pR);}
     piede={calcia:bL.v>bR.v?'sinistro':'destro',sx:{v:+bL.v.toFixed(2),u:+bL.u.toFixed(2)},dx:{v:+bR.v.toFixed(2),u:+bR.u.toFixed(2)}};}
-  window.__PROVINO={ok:true,clip:CLIP,durata:clip.duration,campioni:out,piede};
+  /* [7.999.33] QUANDO LA TESTA E' PIU' ALTA: l'istante del colpo di testa nella clip (frazione della durata) */
+  let testa=null;{const hb=osso(/^(head|Head)$/i);if(hb){let best={y:-1e9,u:0};const v=new THREE.Vector3();for(let i=0;i<=120;i++){mx.setTime(clip.duration*0.995*i/120);av.updateMatrixWorld(true);hb.getWorldPosition(v);if(v.y>best.y)best={y:v.y,u:i/120};}mx.setTime(0);av.updateMatrixWorld(true);hb.getWorldPosition(v);testa={uPicco:+best.u.toFixed(2),salto:+(best.y-v.y).toFixed(2)};}}
+  window.__PROVINO={ok:true,clip:CLIP,durata:clip.duration,campioni:out,piede,testa};
 }catch(e){window.__PROVINO={ok:false,err:String(e.message)};document.body.textContent='ERRORE '+e.message;}})();
 </script></body></html>

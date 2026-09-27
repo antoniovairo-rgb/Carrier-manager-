@@ -25,7 +25,7 @@ for (const a of arg) {
   }
   const f = path.join(OUT, (cg ? 'cg-' : '') + nome + '.png');
   if (r && r.ok) await page.screenshot({ path: f, fullPage: true });
-  esiti.push({ clip: (cg ? 'cg:' : '') + nome, ok: !!(r && r.ok), piede: r && r.piede || null, durata: r && r.durata ? +r.durata.toFixed(2) : null, bacinoY: r && r.campioni ? r.campioni.map(c => c.y) : null, err: r && r.err || null });
+  esiti.push({ clip: (cg ? 'cg:' : '') + nome, ok: !!(r && r.ok), piede: r && r.piede || null, testa: r && r.testa || null, durata: r && r.durata ? +r.durata.toFixed(2) : null, bacinoY: r && r.campioni ? r.campioni.map(c => c.y) : null, err: r && r.err || null });
   console.log(JSON.stringify(esiti[esiti.length - 1]));
   await page.close();
 }
