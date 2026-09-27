@@ -1127,17 +1127,29 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
       else if(r==='C'){v+=0.08*(q.contrasti+q.intercetti);v+=(poss>=56?0.15:(poss<=44?-0.15:0));}
       else{v+=(gf===0?-0.25:0);}
       /* i suoi gesti */
-      v+=q.gol*0.95+q.assist*0.65+q.inPorta*0.10-Math.max(0,q.tiri-q.inPorta)*0.04;
+      /* [7.999.29 collaudo PO «voto sproporzionato: 9,5 con 2 gol su 4 tiri»; decisione PO: doppietta ~8, tripletta ~8,5-9, 10 quasi mai.
+         Rosso __CPM_NO_VOTO29] MISURATO su 300 partite (tests/brain/voto-gol-census.mjs): attaccanti con 1 gol 8,18 di media, con 2 gol 9,24,
+         con 3 gol 9,5 fissi (il tetto), e 16 voti >= 9 senza gol. Due cause: ogni gol valeva 0,95 pieno (il secondo quanto il primo) e al
+         gol si sommava tutto il volume (passaggi, ricezioni, contrasti: fino a +1,5). Ora gol e assist valgono a scalare (0,75 · 0,55 · 0,55 ·
+         0,30; assist 0,50 poi 0,35), il tiro in porta 0,05, e per l'attaccante il volume ha un tetto unico di +0,5. Il 10 resta solo per
+         chi segna quattro gol. */
+      const _v29=!(typeof window!=='undefined'&&window&&window.__CPM_NO_VOTO29);
+      if(_v29){const _gs=[0.75,0.55,0.55];let _g29=0;for(let j=0;j<(q.gol|0);j++)_g29+=(j<3?_gs[j]:0.30);
+        let _a29=0;for(let j=0;j<(q.assist|0);j++)_a29+=(j<1?0.50:0.35);
+        v+=_g29+_a29+q.inPorta*0.05-Math.max(0,q.tiri-q.inPorta)*0.04;}
+      else v+=q.gol*0.95+q.assist*0.65+q.inPorta*0.10-Math.max(0,q.tiri-q.inPorta)*0.04;
       /* [7.999.17 collaudo PO «voto assurdo»: 8,4 senza gol] MISURATO su 300 partite: il 7,6% delle gare senza gol dell'eroe finiva
          con voto >= 8 (massimo 8,5), e sempre per VOLUME: 55 passaggi riusciti valevano +1,65 e 78 palloni ricevuti +0,94 — oltre due
          punti e mezzo per aver toccato palla. Il volume ora ha un tetto (passaggi -0,8/+0,6, ricezioni +0,3, contrasti e intercetti
          +0,6): a decidere il voto restano gol, assist, errori e il risultato. Rosso __CPM_NO_VOTO16 = volume senza tetto. */
       const _vt16=!(typeof window!=='undefined'&&window&&window.__CPM_NO_VOTO16);
       const _pa16=q.passOk*0.03-Math.max(0,q.passaggi-q.passOk)*0.05,_ri16=q.ricezioni*0.012,_di16=(q.contrasti+q.intercetti)*0.07;
+      if(_v29&&r==='A'){v+=Math.max(-0.8,Math.min(0.5,Math.max(-0.8,Math.min(0.6,_pa16))+Math.min(0.3,_ri16)+Math.min(0.6,_di16)+q.spazzate*0.04));}/* [7.999.29] l'attaccante: un tetto unico al volume */
+      else{
       v+=_vt16?Math.max(-0.8,Math.min(0.6,_pa16))+Math.min(0.3,_ri16):_pa16+_ri16;
-      v+=(_vt16?Math.min(0.6,_di16):_di16)+q.spazzate*0.04;
+      v+=(_vt16?Math.min(0.6,_di16):_di16)+q.spazzate*0.04;}
       v-=q.falli*0.08+q.amm*0.25+q.esp*1.40;if(_vt16)v-=(q.sprechi|0)*0.5;/* [7.999.17] «gol clamorosamente sprecato»: prima valeva quanto un tiro fuori (-0,04) */
-      v=Math.max(4,Math.min(9.5,Math.round(v*10)/10));
+      v=Math.max(4,Math.min((_v29&&(q.gol|0)>=4)?10:9.5,Math.round(v*10)/10));
       out.push({i:i,team:p.team,gk:!!p.gk,eroe:!!p.eroe,rl:p.rl||"",rep:r,nome:p.name||"",voto:v,
         gol:q.gol,assist:q.assist,tiri:q.tiri,inPorta:q.inPorta,passaggi:q.passaggi,passOk:q.passOk,
         ricezioni:q.ricezioni,contrasti:q.contrasti,intercetti:q.intercetti,spazzate:q.spazzate,parate:q.parate,

@@ -12,11 +12,14 @@ segnalazioni. Una tua segnalazione è un'ipotesi finché il team non la riproduc
 
 ## Preparazione
 ```bash
-cd tests/visual && npm install          # dipendenze dei test (React/Three/Babel locali)
-node ../../tools/build-src.mjs          # ricompone il gioco dai sorgenti (non modificarli)
+cd tests/visual && npm install          # dipendenze dei test: CONSENTITO (node_modules/ è ignorato da git, non si committa)
+node ../../tools/build-src.mjs --check  # verifica che l'HTML sia allineato ai sorgenti; NON serve ricompilare: su main l'HTML è già compilato
 export CPM_CHROME=$(node -e "console.log(require('playwright').chromium.executablePath())")  # se non c'è un Chromium in /opt/pw-browsers
+export VISION_PROVIDER=none             # salta la «visione AI» di validate-situations (Ollama lento o assente = timeout senza verdetto)
 ```
 Mai eseguire `npx playwright install` se l'ambiente ha già un Chromium.
+Le cartelle `tests/visual/out/` e `tests/visual/node_modules/` sono ignorate da git: scriverci durante i test è consentito, basta non committarle.
+Se un guardiano rigenera immagini in `docs/collaudo-grafico/`, ripristinale con `git checkout -- docs/collaudo-grafico` prima del commit.
 
 ## Comandi disponibili (senza segreti)
 | Comando (da `tests/visual`) | Cosa misura | Durata indicativa |

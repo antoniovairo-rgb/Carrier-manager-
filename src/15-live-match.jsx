@@ -1952,6 +1952,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{pPosRef.current=pPos;},[pPos]);
   const [mStats,setMStats]=useState((resumeState&&resumeState.ms&&typeof resumeState.ms.goals==="number")?{goals:resumeState.ms.goals||0,assists:resumeState.ms.assists||0,rb:resumeState.ms.rb||0,xg:resumeState.ms.xg||0}:{goals:0,assists:0,rb:0,xg:0});
   const [festa942,setFesta942]=useState(null);/* [7.942] la festa cartoon di fine partita: null = niente da festeggiare */
+  const voto29Ref=useRef({k:null,v:null});/* [7.999.29] voto del riquadro di fine scena, uno per esito */
   const mStatsSnapRef=useRef(mStats);useEffect(()=>{mStatsSnapRef.current=mStats;},[mStats]);/* [7.178.0 RC-1] lo snapshot di ripresa leggeva mStats dalla CLOSURE del mount (deps []) → doppietta salvata come 0 gol: specchio in ref, sempre fresco *//* [7.163.0 LIVE-F3] ripresa: tabellino personale ripristinato */
   const assistLinksRef=useRef({given:[],received:[]});/* [7.110.0 collaudo PO «memorizza a chi ho fatto l'assist e chi mi ha fatto l'assist»] connessioni coi compagni VERI, seedate, persistite in matchHistory per gli sbocchi narrativi */
   const [energy,setEnergy]=useState(100);occ28Ctx.current.energy=energy;try{occ28Ctx.current.pitchFx=(weather&&weather.pitchFx)||null;}catch(_e){}/* [7.999.28] energia e meteo letti dal ritmo delle occasioni */
@@ -10680,7 +10681,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   {aiCommentary&&<div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",fontStyle:"italic",textShadow:"0 1px 3px rgba(0,0,0,0.7)"}}><EmoText>{(aiCommentary.reaction||"")+" "+(aiCommentary.commentary||"")}</EmoText></div>}
                 </div>
                 ):(()=>{
-                  const _rb901=Math.min(mStats.rb,30);const _raw901=clamp(5.8+_rb901*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);const _voto901=Math.round(_raw901*10)/10;
+                  const _rb901=Math.min(mStats.rb,30);const _raw901=clamp(5.8+_rb901*0.13+(score.home>score.away?0.35:score.home<score.away?-0.30:0),4.0,10.0);let _voto901=Math.round(_raw901*10)/10;try{if(!(typeof window!=='undefined'&&(window.__CPM_NO_VOTO20||window.__CPM_NO_VOTO29))&&motoreRef.current&&motoreRef.current.pagelle){const _k29=hlIdx+'|'+(outcome&&outcome.outKey)+'|'+score.home+'-'+score.away+'|'+mStats.goals+'|'+mStats.assists;const _C29=voto29Ref.current;if(_C29.k!==_k29){const _e29=motoreRef.current.pagelle().find(x=>x&&x.eroe);_C29.k=_k29;_C29.v=(_e29&&typeof _e29.voto==='number')?_e29.voto:null;}if(_C29.v!=null)_voto901=_C29.v;}}catch(_e29b){}/* [7.999.29] anche il voto nel riquadro di fine scena e' la pagella del motore: prima era una terza formula (bonus delle scene). Calcolato UNA volta per esito (cache voto29Ref): chiamato a ogni render faceva oscillare il guardiano passo-velocita (misurato: rosso 3 volte su 4, verde 3 su 3 con il riquadro spento) */
                   const _titCol901=outcome.outKey==="foul"?"#fb923c":outcome.ok?"#4ade80":outcome.overlayTone==="neutral"?"#cbd5e1":"#f87171";
                   const _titTxt901=(outcome.outKey==="foul"?"FALLO":(outcome.overlay||(outcome.ok?"Riuscito":"Fallito")))+(chosenAct?.label?(" · "+chosenAct.label):"");
                   return(
