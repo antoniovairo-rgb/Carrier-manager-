@@ -767,6 +767,10 @@ const getThisWeekMatchday=()=>{
      e' gia' chiamato da «Vivi la Settimana» (r.~31148), dal calendario e dal prompt partita, quindi la
      prima settimana resta vincolante come prima. Le card restano nel sorgente dietro questa bandiera:
      spegnerle e' reversibile, cancellarle no. */
+  /* [7.999.30 — RIQUADRI DELLA HOME: CARD NEUTRA. Collaudo PO «box fuori standard» (Deadline Day giallo, «La tua storia» viola scuro);
+     scelta PO 27/09 «Card neutra»: tutti i riquadri narrativi della home usano il fondo standard delle card, il colore resta solo
+     nell'occhiello e nelle icone (portato a contrasto >= 4,5 da semTesto945). Rosso __CPM_NO_HOME30 = i fondi scuri di prima. */
+  const _n30=(v,n)=>((typeof window!=='undefined'&&window.__CPM_NO_HOME30)?v:n);
   const _OPENING_HOME_CARDS=(typeof window!=='undefined'&&window.__CPM_HOMECARDS)?true:false;/* prova del rosso: riaccende le card sulla home */
   const [openingWiz,setOpeningWiz]=useState(false);
   const [openingWizTot,setOpeningWizTot]=useState(0);
@@ -7087,17 +7091,17 @@ const getThisWeekMatchday=()=>{
         const _ecN={UCL:"Coppa dei Campioni",UEL:"Coppa Europa",UECL:"Coppa Conference"}[_eu.competition]||"Coppa Europea";
         const _done=drawRevealN>=3;
         return(
-        <Card style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#0b1530,#101c40)",border:"1px solid #24408c"}}>
-          <div style={{fontSize:FS.caption,color:"#93c5fd",textTransform:"uppercase",letterSpacing:2,marginBottom:4}}>La notte dei sorteggi · {_ecN}</div>
-          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.75)",marginBottom:8}}>{_done?"Il girone è completo — questo è il tuo cammino europeo.":"Le urne sono pronte: estrai le tue avversarie."}</div>
+        <Card style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#0b1530,#101c40)",TH.card),border:_n30("1px solid #24408c","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#93c5fd",semTesto945("#93c5fd")),textTransform:"uppercase",letterSpacing:2,marginBottom:4}}>La notte dei sorteggi · {_ecN}</div>
+          <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.75)",TH.muted),marginBottom:8}}>{_done?"Il girone è completo — questo è il tuo cammino europeo.":"Le urne sono pronte: estrai le tue avversarie."}</div>
           {[0,1,2].map(i=>(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",marginBottom:4,borderRadius:RAD.sm,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)"}}>
-              <span style={{fontSize:FS.caption,color:"#93c5fd",minWidth:16}}>{i+1}ª</span>
+            <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",marginBottom:4,borderRadius:RAD.sm,background:_n30("rgba(255,255,255,0.06)",TH.bg),border:_n30("1px solid rgba(255,255,255,0.1)","1px solid "+TH.cardBorder)}}>
+              <span style={{fontSize:FS.caption,color:_n30("#93c5fd",semTesto945("#93c5fd")),minWidth:16}}>{i+1}ª</span>
               {drawRevealN>i?(<>
                 <span style={{fontSize:FS.body}}>{_opps[i]?.nat||"🏳️"}</span>
-                <span style={{flex:1,fontSize:FS.small,fontWeight:800,color:"#fff"}}>{_opps[i]?.n||"?"}</span>
-                <span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.5)"}}>prestigio {_opps[i]?.p||"–"}</span>
-              </>):(<span style={{flex:1,fontSize:FS.small,fontWeight:800,color:"rgba(255,255,255,0.35)",letterSpacing:3}}>? ? ? ? ?</span>)}
+                <span style={{flex:1,fontSize:FS.small,fontWeight:800,color:_n30("#fff",TH.text)}}>{_opps[i]?.n||"?"}</span>
+                <span style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.5)",TH.muted)}}>prestigio {_opps[i]?.p||"–"}</span>
+              </>):(<span style={{flex:1,fontSize:FS.small,fontWeight:800,color:_n30("rgba(255,255,255,0.35)",TH.muted),letterSpacing:3}}>? ? ? ? ?</span>)}
             </div>))}
           {!_done&&<Btn v="outline" fw onClick={()=>setDrawRevealN(n=>n+1)} style={{marginTop:6}}>🎱 Estrai dall'urna</Btn>}
           {_done&&<Btn v="ghost" fw onClick={()=>{setPlayer(p=>({...p,drawSeen:p.season||1,log:[`🎱 Sorteggio ${_ecN}: ${_opps.map(o=>o.n).join(" · ")}`,...(p.log||[])].slice(0,60)}));setDrawRevealN(0);}} style={{marginTop:6}}>Al lavoro — si parte ✅</Btn>}
@@ -7106,7 +7110,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(player.week||1)===19&&!player.contractExpired&&(()=>{
         const _listed=!!player.transferListed;
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:TH.bgAmber,border:`1px solid ${TH.bdAmber}`}}>
+        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
           {/* [7.106.1 collaudo PO «questo box è fuori standard»] allineato al pattern degli altri box-evento del dashboard (eyebrow colorato · corpo leggibile normale · CTA piena granata come i sorteggi), niente più corpo tutto-grassetto-ambra + bottone ghost slavato sul giallo */}
           <div style={{fontSize:FS.caption,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5,fontWeight:800}}>Deadline Day — finestra invernale aperta</div>
           <div style={{fontSize:FS.caption,color:TH.text,marginBottom:8,lineHeight:1.55}}>{_listed?"Sei sulla lista di mercato: le prossime ore possono cambiare la tua carriera. Tieni d'occhio le offerte.":"I telefoni degli agenti bollono in tutta Europa. Se vuoi muoverti, questa è la settimana: parla col tuo procuratore."}</div>
@@ -7119,27 +7123,27 @@ const getThisWeekMatchday=()=>{
         const sg=player.transferSaga;const d=(player.week||1)-(sg.week||1);if(d<0)return null;
         const _cl=sg.club||"Un club";
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(150deg,#08222e,#0a2e40)",border:"1px solid #155e75"}}>
-          <div style={{fontSize:FS.caption,color:"#67e8f9",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Saga di mercato · episodio {Math.min(d+1,3)} di 3</div>
+        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#08222e,#0a2e40)",TH.card),border:_n30("1px solid #155e75","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#67e8f9",semTesto945("#67e8f9")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Saga di mercato · episodio {Math.min(d+1,3)} di 3</div>
           {d===0&&(<div>
-            <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:4}}>📡 L'indiscrezione</div>
-            <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.5}}>Radio mercato: <strong>{_cl}</strong> ha chiesto informazioni su di te. Il tuo agente conferma i contatti — «per ora solo sondaggi, ma la cosa è seria». La prossima settimana se ne saprà di più.</div>
+            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>📡 L'indiscrezione</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5}}>Radio mercato: <strong>{_cl}</strong> ha chiesto informazioni su di te. Il tuo agente conferma i contatti — «per ora solo sondaggi, ma la cosa è seria». La prossima settimana se ne saprà di più.</div>
           </div>)}
           {d===1&&!sg.tone&&(<div>
-            <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:4}}>🗞️ Il pressing dei media</div>
-            <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.5,marginBottom:8}}>I giornali titolano: «<strong>{_cl}</strong> fa sul serio». In zona mista ti chiedono del tuo futuro. Cosa rispondi?</div>
+            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>🗞️ Il pressing dei media</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5,marginBottom:8}}>I giornali titolano: «<strong>{_cl}</strong> fa sul serio». In zona mista ti chiedono del tuo futuro. Cosa rispondi?</div>
             <div style={{display:"flex",flexDirection:"column",gap:6}}>
               <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,transferSaga:{...p.transferSaga,tone:"blinda"},...ledgerPush(p,{t:"promessa",who:"lo spogliatoio",what:"«Sono concentrato solo sul mio club»"}),/* [7.26.0 S2] */coachTrust:clamp((p.coachTrust||60)+2,0,100),log:[`🎙️ «Penso solo al mio club» — il mister apprezza (fiducia +2).`,...(p.log||[])].slice(0,60)}))}>🛡️ «Sono concentrato solo sul mio club»</Btn>
               <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,transferSaga:{...p.transferSaga,tone:"apri"},popularity:clamp((p.popularity||20)+2,0,100),log:[`🎙️ «Nel calcio mai dire mai…» — i tifosi di ${_cl} sognano (popolarità +2).`,...(p.log||[])].slice(0,60)}))}>🚪 «Nel calcio mai dire mai…»</Btn>
             </div>
           </div>)}
           {d===1&&sg.tone&&(<div>
-            <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:4}}>🗞️ Il pressing dei media</div>
-            <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.5}}>{sg.tone==="blinda"?"Hai blindato la tua posizione davanti ai microfoni — ma l'agente avverte: l'offerta arriverà comunque sul tavolo.":"Hai lasciato la porta aperta: i giornali parlano di offerta imminente."}</div>
+            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>🗞️ Il pressing dei media</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5}}>{sg.tone==="blinda"?"Hai blindato la tua posizione davanti ai microfoni — ma l'agente avverte: l'offerta arriverà comunque sul tavolo.":"Hai lasciato la porta aperta: i giornali parlano di offerta imminente."}</div>
           </div>)}
           {d>=2&&(<div>
-            <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:4}}>📩 L'offerta ufficiale</div>
-            <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.8)",lineHeight:1.5,marginBottom:8}}><strong>{_cl}</strong> ha presentato l'offerta: il tuo agente ti aspetta con le carte sul tavolo.</div>
+            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>📩 L'offerta ufficiale</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.8)",TH.muted),lineHeight:1.5,marginBottom:8}}><strong>{_cl}</strong> ha presentato l'offerta: il tuo agente ti aspetta con le carte sul tavolo.</div>
             <Btn v="outline" fw onClick={()=>{const _o=sg.offer;setPlayer(p=>({...p,transferSaga:null}));if(_o)setTimeout(()=>setTransferOffer(_o),150);}}>💼 Ascolta l'offerta →</Btn>
           </div>)}
         </Card>);})()}
@@ -7169,10 +7173,10 @@ const getThisWeekMatchday=()=>{
           if(c.act==="nego"){try{setTimeout(()=>openNegoModal(),260);}catch(_e){}}
         };
         return(
-        <Card momento={`${A.e} ${A.lbl}`} momentoInk="#fff" momentoNota={`${ix+1}/${_tot}`} style={{marginBottom:8,padding:"9px 12px",background:`linear-gradient(150deg,${A.c1},${A.c2})`,border:`1px solid ${A.ac}44`}}>
+        <Card momento={`${A.e} ${A.lbl}`} momentoInk={_n30("#fff",undefined)} momentoNota={`${ix+1}/${_tot}`} style={{marginBottom:8,padding:"9px 12px",background:_n30(`linear-gradient(150deg,${A.c1},${A.c2})`,TH.card),border:_n30(`1px solid ${A.ac}44`,"1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:A.ac,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{A.e} {A.lbl} · episodio {ix+1} di {_tot}</div>
-          <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:4}}>{_title}</div>
-          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.82)",lineHeight:1.5,marginBottom:8}}>{_body}</div>
+          <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>{_title}</div>
+          <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.82)",TH.muted),lineHeight:1.5,marginBottom:8}}>{_body}</div>
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
             {(_chs||[]).map((c,i)=>(<Btn key={c.k} v={i===0?"outline":"ghost"} fw onClick={()=>advance(c)}>{c.l}</Btn>))}
           </div>
@@ -7181,13 +7185,13 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _ch=storyChapter(player);if(!_ch)return null;
         return(
-        <Card momento="La tua storia" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#1a1026,#241438)",border:"1px solid #4c2a7a"}}>
-          <div style={{fontSize:FS.caption,color:"#c4b5fd",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La tua storia</div>
+        <Card momento="La tua storia" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#1a1026,#241438)",TH.card),border:_n30("1px solid #4c2a7a","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#c4b5fd",semTesto945("#c4b5fd")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La tua storia</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{_ch.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:3}}>{_ch.title}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.5}}>{_ch.body}</div>
+              <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{_ch.title}</div>
+              <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.78)",TH.muted),lineHeight:1.5}}>{_ch.body}</div>
             </div>
           </div>
           <Btn v="outline" fw onClick={()=>{const fx=_ch.fx||{};setPlayer(p=>({...p,arcSeen:{...(p.arcSeen||{}),[_ch.key]:true},morale:clamp((p.morale||70)+(fx.morale||0),0,100),popularity:clamp((p.popularity||20)+(fx.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(fx.coachTrust||0),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_ch.e,headline:_ch.title,body:_ch.body.slice(0,110),color:TH.accentText}].slice(-80),log:[`${_ch.e} ${_ch.title}`,...(p.log||[])].slice(0,60)}));}}>Continua la storia →</Btn>
@@ -7197,9 +7201,9 @@ const getThisWeekMatchday=()=>{
         const pv=pactView(player);if(!pv)return null;
         const cName=player.coach?.name||"Il mister";
         if(pv.st==="offer")return(
-          <Card style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(150deg,#0d2418,#10301f)",border:"1px solid #1d6b45"}}>
-            <div style={{fontSize:FS.caption,color:"#6ee7b7",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister</div>
-            <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.85)",lineHeight:1.5,marginBottom:8}}>{cName} ti ferma dopo l'allenamento: «{PACT_OPEN[pv.seed%PACT_OPEN.length]} {pv.kd.ask(pv.target,pv.games)} {PACT_REW[(pv.seed>>>5)%PACT_REW.length]}»</div>
+          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#0d2418,#10301f)",TH.card),border:_n30("1px solid #1d6b45","1px solid "+TH.cardBorder)}}>
+            <div style={{fontSize:FS.caption,color:_n30("#6ee7b7",semTesto945("#6ee7b7")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.85)",TH.muted),lineHeight:1.5,marginBottom:8}}>{cName} ti ferma dopo l'allenamento: «{PACT_OPEN[pv.seed%PACT_OPEN.length]} {pv.kd.ask(pv.target,pv.games)} {PACT_REW[(pv.seed>>>5)%PACT_REW.length]}»</div>
             <div style={{display:"flex",gap:8}}>
               <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,coachPact:{season:p.season||1,fromWeek:p.week||1,target:pv.target,games:pv.games,kind:pv.kind,status:"active"},...ledgerPush(p,{t:"patto",who:"il mister",what:`${pv.target} ${pv.kd.u} in ${pv.games} gare di lega`}),coachTrust:clamp((p.coachTrust||60)+2,0,100),log:[`🤝 Patto col mister: ${pv.target} ${pv.kd.u} nelle prossime ${pv.games} di lega.`,...(p.log||[])].slice(0,60)}))}>🤝 «Ci sto»</Btn>
               <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,coachPactSeason:p.season||1,log:[`💬 Hai declinato il patto del mister: «Preferisco parlare sul campo».`,...(p.log||[])].slice(0,60)}))}>«Parlo sul campo»</Btn>
@@ -7224,23 +7228,23 @@ const getThisWeekMatchday=()=>{
           `«${pv.val} su ${pv.pact.target}. Non te ne faccio una colpa: ma il posto, adesso, te lo devi riprendere.»`];
         const _vTx=_kept?_KEPT[pv.seed%_KEPT.length]:_FAIL[pv.seed%_FAIL.length];
         return(
-          <Card style={{marginBottom:8,padding:"9px 12px",background:_kept?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,border:_kept?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`}}>
-            <div style={{fontSize:FS.caption,color:_kept?"#6ee7b7":TH.txAmber,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister — verdetto</div>
-            <div style={{fontSize:FS.caption,color:_kept?"rgba(255,255,255,0.85)":TH.txAmber,lineHeight:1.5,marginBottom:8}}>{_vTx}</div>
-            <Btn v={_kept?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,coachPact:{...p.coachPact,status:_kept?"kept":"failed"},coachTrust:clamp((p.coachTrust||60)+(_kept?8:-5),0,100),morale:clamp((p.morale||70)+(_kept?5:-3),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"pact",e:_kept?"🤝":"💔",headline:_kept?"Patto mantenuto col mister":"Il patto è sfumato",body:_kept?`${pv.val} ${_u} nelle ${pv.played} gare del patto: parola mantenuta.`:`${pv.val}/${pv.pact.target} ${_u}: il patto col mister non è stato onorato.`,color:_kept?TH.txGreen:"#b45309"}].slice(-80),log:[_kept?`🤝 PATTO MANTENUTO (${pv.val}/${pv.pact.target} ${_u}) — la fiducia del mister vola.`:`💔 Patto mancato (${pv.val}/${pv.pact.target} ${_u}): il mister incassa.`,...(p.log||[])].slice(0,60)}))}>{_kept?"Una stretta di mano →":"Incassa e riparti →"}</Btn>
+          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_kept?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_kept?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
+            <div style={{fontSize:FS.caption,color:_n30(_kept?"#6ee7b7":TH.txAmber,_kept?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il patto col mister — verdetto</div>
+            <div style={{fontSize:FS.caption,color:_n30(_kept?"rgba(255,255,255,0.85)":TH.txAmber,_kept?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_vTx}</div>
+            <Btn v={_kept?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,coachPact:{...p.coachPact,status:_kept?"kept":"failed"},coachTrust:clamp((p.coachTrust||60)+(_kept?8:-5),0,100),morale:clamp((p.morale||70)+(_kept?5:-3),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"pact",e:_kept?"🤝":"💔",headline:_kept?"Patto mantenuto col mister":"Il patto è sfumato",body:_kept?`${pv.val} ${_u} nelle ${pv.played} gare del patto: parola mantenuta.`:`${pv.val}/${pv.pact.target} ${_u}: il patto col mister non è stato onorato.`,color:_n30(_kept?TH.txGreen:"#b45309",_kept?TH.txGreen:semTesto945("#b45309"))}].slice(-80),log:[_kept?`🤝 PATTO MANTENUTO (${pv.val}/${pv.pact.target} ${_u}) — la fiducia del mister vola.`:`💔 Patto mancato (${pv.val}/${pv.pact.target} ${_u}): il mister incassa.`,...(p.log||[])].slice(0,60)}))}>{_kept?"Una stretta di mano →":"Incassa e riparti →"}</Btn>
           </Card>);
       })()}
       {/* [7.27.0 ONDA 2 — §S3] SPOGLIATOIO VIVO: episodio di legame derivato dai fatti (max 1 ogni ≥3 settimane) */}
       {tab==="dashboard"&&(()=>{
         const be=bondEvent(player);if(!be)return null;
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(135deg,#0c1a2e,#112240)",border:"1px solid rgba(56,189,248,0.25)"}}>
-          <div style={{fontSize:FS.caption,color:"rgba(186,230,253,0.75)",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo spogliatoio</div>
+        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(135deg,#0c1a2e,#112240)",TH.card),border:_n30("1px solid rgba(56,189,248,0.25)","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("rgba(186,230,253,0.75)",TH.muted),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo spogliatoio</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{be.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.small,fontWeight:900,color:"#fff",marginBottom:3}}>{be.t}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.5}}>{be.d}</div>
+              <div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{be.t}</div>
+              <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.78)",TH.muted),lineHeight:1.5}}>{be.d}</div>
             </div>
           </div>
           <Btn v="outline" fw onClick={()=>setPlayer(p=>{const tms=[...(p.teammates||[])];if(tms[be.ix])tms[be.ix]={...tms[be.ix],bond:clamp((tms[be.ix].bond||40)+be.db,0,100)};return{...p,teammates:tms,bondEv:{s:p.season||1,w:p.week||1,ks:[...((p.bondEv&&p.bondEv.s===(p.season||1)&&p.bondEv.ks)||[]),be.k].filter(Boolean)},teamChemistry:clamp((p.teamChemistry||60)+(be.chem||0),0,100),morale:clamp((p.morale||70)+(be.mor||0),0,100),log:[`${be.e} ${be.t} — legame con ${be.tm.name} +${be.db}.`,...(p.log||[])].slice(0,60)};})}>Il gruppo prima di tutto →</Btn>
@@ -7249,18 +7253,18 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const sv=sackView(player);if(!sv)return null;
         if(sv.st==="sack")return(
-          <Card style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#2a0e0e,#3a1414)",border:"1px solid #7a2a2a"}}>
-            <div style={{fontSize:FS.caption,color:"#fca5a5",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Esonero</div>
-            <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:4}}>Il club ha esonerato il mister</div>
-            <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.82)",lineHeight:1.5,marginBottom:8}}>{sv.losses} sconfitte nelle ultime 7 e il {sv.pos}° posto hanno presentato il conto: via {player.coach?.name||"il mister"}, arriva <strong>{sv.newName}</strong> ({sv.newStyle}). Lo spogliatoio è scosso — e per il nuovo tecnico sei un nome sulla lavagna, non una certezza: <strong>4 partite per convincerlo</strong>.</div>
-            <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,coach:{name:sv.newName,style:sv.newStyle,trustMod:0},coachTrust:48,teamChemistry:clamp((p.teamChemistry||60)-8,0,100),coachSackSeason:p.season||1,newCoachExam:{season:p.season||1,fromWeek:p.week||1,games:4},...(p.coachPact&&p.coachPact.status==="active"?{coachPact:{...p.coachPact,status:"void"}}:{}),...ledgerPush(p,{t:"esonero",who:"il club",what:`esonerato il mister al ${sv.pos}° posto — con ${sv.newName} riparti da zero`}),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"⚡",headline:"Esonero: arriva "+sv.newName,body:"Il nuovo mister ti mette sotto esame: 4 partite per riconquistare il posto.",color:"#dc2626"}].slice(-80),log:[`⚡ ESONERO — ${sv.newName} è il nuovo mister: sei sotto esame per 4 gare.`,...(p.log||[])].slice(0,60)}))}>Il nuovo corso comincia →</Btn>
+          <Card style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#2a0e0e,#3a1414)",TH.card),border:_n30("1px solid #7a2a2a","1px solid "+TH.cardBorder)}}>
+            <div style={{fontSize:FS.caption,color:_n30("#fca5a5",semTesto945("#fca5a5")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Esonero</div>
+            <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>Il club ha esonerato il mister</div>
+            <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.82)",TH.muted),lineHeight:1.5,marginBottom:8}}>{sv.losses} sconfitte nelle ultime 7 e il {sv.pos}° posto hanno presentato il conto: via {player.coach?.name||"il mister"}, arriva <strong>{sv.newName}</strong> ({sv.newStyle}). Lo spogliatoio è scosso — e per il nuovo tecnico sei un nome sulla lavagna, non una certezza: <strong>4 partite per convincerlo</strong>.</div>
+            <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,coach:{name:sv.newName,style:sv.newStyle,trustMod:0},coachTrust:48,teamChemistry:clamp((p.teamChemistry||60)-8,0,100),coachSackSeason:p.season||1,newCoachExam:{season:p.season||1,fromWeek:p.week||1,games:4},...(p.coachPact&&p.coachPact.status==="active"?{coachPact:{...p.coachPact,status:"void"}}:{}),...ledgerPush(p,{t:"esonero",who:"il club",what:`esonerato il mister al ${sv.pos}° posto — con ${sv.newName} riparti da zero`}),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"⚡",headline:"Esonero: arriva "+sv.newName,body:"Il nuovo mister ti mette sotto esame: 4 partite per riconquistare il posto.",color:_n30("#dc2626",semTesto945("#dc2626"))}].slice(-80),log:[`⚡ ESONERO — ${sv.newName} è il nuovo mister: sei sotto esame per 4 gare.`,...(p.log||[])].slice(0,60)}))}>Il nuovo corso comincia →</Btn>
           </Card>);
         const _pass=sv.st==="exam_pass";
         return(
-          <Card style={{marginBottom:8,padding:"9px 12px",background:_pass?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,border:_pass?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`}}>
-            <div style={{fontSize:FS.caption,color:_pass?"#6ee7b7":TH.txAmber,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>L'esame del nuovo mister</div>
-            <div style={{fontSize:FS.caption,color:_pass?"rgba(255,255,255,0.85)":TH.txAmber,lineHeight:1.5,marginBottom:8}}>{_pass?`Media ${sv.avg} nelle ${sv.games} gare dell'esame: superato. «Mi avevano parlato di te — avevano ragione. Il posto è tuo finché lo difendi così.»`:`Media ${sv.avg} nelle ${sv.games} gare dell'esame: non abbastanza. «Non sei ancora quello che cerco — dimostramelo in allenamento.» Ti aspetta più panchina.`}</div>
-            <Btn v={_pass?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,newCoachExam:null,coachTrust:clamp((p.coachTrust||60)+(_pass?10:-4),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_pass?"👔":"🪑",headline:_pass?"Esame superato: il posto è riconquistato":"L'esame non è bastato",body:_pass?`Media ${sv.avg} sotto gli occhi del nuovo mister.`:`Media ${sv.avg}: col nuovo mister riparti dalle retrovie.`,color:_pass?TH.txGreen:"#b45309"}].slice(-80),log:[_pass?`👔 Esame SUPERATO (media ${sv.avg}) — il nuovo mister ti conferma.`:`🪑 Esame non superato (media ${sv.avg}): serve di più.`,...(p.log||[])].slice(0,60)}))}>{_pass?"Il posto è mio →":"Testa bassa e lavorare →"}</Btn>
+          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_pass?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_pass?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
+            <div style={{fontSize:FS.caption,color:_n30(_pass?"#6ee7b7":TH.txAmber,_pass?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>L'esame del nuovo mister</div>
+            <div style={{fontSize:FS.caption,color:_n30(_pass?"rgba(255,255,255,0.85)":TH.txAmber,_pass?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_pass?`Media ${sv.avg} nelle ${sv.games} gare dell'esame: superato. «Mi avevano parlato di te — avevano ragione. Il posto è tuo finché lo difendi così.»`:`Media ${sv.avg} nelle ${sv.games} gare dell'esame: non abbastanza. «Non sei ancora quello che cerco — dimostramelo in allenamento.» Ti aspetta più panchina.`}</div>
+            <Btn v={_pass?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,newCoachExam:null,coachTrust:clamp((p.coachTrust||60)+(_pass?10:-4),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_pass?"👔":"🪑",headline:_pass?"Esame superato: il posto è riconquistato":"L'esame non è bastato",body:_pass?`Media ${sv.avg} sotto gli occhi del nuovo mister.`:`Media ${sv.avg}: col nuovo mister riparti dalle retrovie.`,color:_n30(_pass?TH.txGreen:"#b45309",_pass?TH.txGreen:semTesto945("#b45309"))}].slice(-80),log:[_pass?`👔 Esame SUPERATO (media ${sv.avg}) — il nuovo mister ti conferma.`:`🪑 Esame non superato (media ${sv.avg}): serve di più.`,...(p.log||[])].slice(0,60)}))}>{_pass?"Il posto è mio →":"Testa bassa e lavorare →"}</Btn>
           </Card>);
       })()}
       {/* [7.288.0] LA FESTA DEL TITOLO — 2D, sulla dashboard, su OGNI percorso (live/simula/avanza) */}
@@ -7281,17 +7285,17 @@ const getThisWeekMatchday=()=>{
           <div style={{position:"fixed",inset:0,pointerEvents:"none",overflow:"hidden",zIndex:60}}>
             {Array.from({length:40}).map((_,i)=>{const _cc=["#f59e0b","#facc15","#fef3c7","#22c55e","#60a5fa",player.club?.c||"#f59e0b"];return <span key={i} style={{position:"absolute",left:((i*47)%100)+"%",top:"-8%",width:8,height:13,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.6+(i%5)*0.7).toFixed(1)}s linear ${((i%9)*0.4).toFixed(2)}s infinite`,opacity:0.92}}/>;})}
           </div>
-          <Card style={{marginBottom:8,padding:"16px 16px 14px",background:`linear-gradient(150deg,${_oro[0]},${_oro[1]} 55%,${_oro[0]})`,border:`1px solid ${_oro[1]}`,textAlign:"center"}}>
+          <Card style={{marginBottom:8,padding:"16px 16px 14px",background:_n30(`linear-gradient(150deg,${_oro[0]},${_oro[1]} 55%,${_oro[0]})`,TH.card),border:_n30(`1px solid ${_oro[1]}`,"1px solid "+TH.cardBorder),textAlign:"center"}}>
             <div style={{fontSize:34,lineHeight:1,marginBottom:4}}>{_tit?"🏆":"⬆️"}</div>
             <div style={{fontSize:FS.caption,color:_oro[2],textTransform:"uppercase",letterSpacing:2,marginBottom:4,opacity:.85}}>{_tit?"È matematica":"È fatta"}</div>
-            <div style={{fontSize:FS.title,fontWeight:900,color:"#fff",letterSpacing:.4,marginBottom:6,textShadow:"0 2px 10px rgba(0,0,0,0.35)"}}>{_tit?`CAMPIONI DI ${String(tc.name).toUpperCase()}!`:`PROMOSSI IN ${String(tc.name).toUpperCase()}!`}</div>
-            {_tit&&tc.promoTo&&<div style={{fontSize:FS.body,fontWeight:900,color:"#fff",letterSpacing:.6,marginBottom:6,opacity:.95}}>⬆️ PROMOSSI IN {String(tc.promoTo).toUpperCase()}!</div>}
+            <div style={{fontSize:FS.title,fontWeight:900,color:_n30("#fff",TH.text),letterSpacing:.4,marginBottom:6,textShadow:"0 2px 10px rgba(0,0,0,0.35)"}}>{_tit?`CAMPIONI DI ${String(tc.name).toUpperCase()}!`:`PROMOSSI IN ${String(tc.name).toUpperCase()}!`}</div>
+            {_tit&&tc.promoTo&&<div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),letterSpacing:.6,marginBottom:6,opacity:.95}}>⬆️ PROMOSSI IN {String(tc.promoTo).toUpperCase()}!</div>}
             <div style={{fontSize:FS.small,color:_oro[2],lineHeight:1.55,marginBottom:9}}>
               {_tit
-                ?<>Nessuno può più raggiungervi: <strong style={{color:"#fff"}}>{_cn}</strong> è campione{tc.rem>0?<> con <strong style={{color:"#fff"}}>{tc.rem} giornat{tc.rem===1?"a":"e"}</strong> d'anticipo</>:null}{tc.gap>0?<>, <strong style={{color:"#fff"}}>{tc.gap} punt{tc.gap===1?"o":"i"}</strong> sulla seconda</>:null}. La città è già in piazza.</>
-                :<>La matematica vi porta di sopra: <strong style={{color:"#fff"}}>{_cn}</strong> è promosso in {tc.name}. Ci si abbraccia negli spogliatoi come se fosse uno scudetto — perché lo è.</>}
+                ?<>Nessuno può più raggiungervi: <strong style={{color:_n30("#fff",TH.text)}}>{_cn}</strong> è campione{tc.rem>0?<> con <strong style={{color:_n30("#fff",TH.text)}}>{tc.rem} giornat{tc.rem===1?"a":"e"}</strong> d'anticipo</>:null}{tc.gap>0?<>, <strong style={{color:_n30("#fff",TH.text)}}>{tc.gap} punt{tc.gap===1?"o":"i"}</strong> sulla seconda</>:null}. La città è già in piazza.</>
+                :<>La matematica vi porta di sopra: <strong style={{color:_n30("#fff",TH.text)}}>{_cn}</strong> è promosso in {tc.name}. Ci si abbraccia negli spogliatoi come se fosse uno scudetto — perché lo è.</>}
             </div>
-            <Btn v="outline" fw onClick={_festeggia} style={{background:"rgba(0,0,0,0.32)",border:`1px solid ${_oro[2]}`,color:"#fff"}}>🎉 Festeggia con la squadra</Btn>
+            <Btn v="outline" fw onClick={_festeggia} style={{background:_n30("rgba(0,0,0,0.32)","transparent"),border:`1px solid ${_oro[2]}`,color:_n30("#fff",TH.text)}}>🎉 Festeggia con la squadra</Btn>
           </Card>
         </>);})()}
       {/* [7.283.0] LA PRESENTAZIONE AL NUOVO CLUB — foto con la maglia + conferenza, a ogni cambio di squadra */}
@@ -7299,7 +7303,7 @@ const getThisWeekMatchday=()=>{
         const pv=presentazioneView(player);if(!pv)return null;
         const _c=pv.club||{};
         return(
-        <Card style={{marginBottom:8,padding:"7px 12px",background:`linear-gradient(150deg,${_c.c||TH.primary}22,${TH.card})`,border:`1px solid ${_c.c||TH.primary}66`}}>
+        <Card style={{marginBottom:8,padding:"7px 12px",background:_n30(`linear-gradient(150deg,${_c.c||TH.primary}22,${TH.card})`,TH.card),border:_n30(`1px solid ${_c.c||TH.primary}66`,"1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:8}}>Presentazione · {_c.n||"nuovo club"}</div>
           <div style={{display:"flex",gap:9,alignItems:"center",marginBottom:8}}>
             <TeamBadge team={_c} size={44}/>
@@ -7319,13 +7323,13 @@ const getThisWeekMatchday=()=>{
         const seen=player.clubProjSeen;
         if(seen&&seen.k===pj.k&&seen.cid===(player.club?.id||player.club?.n))return null;
         return(
-        <Card momento="Il progetto del club" momentoInk={pj.tone==="bad"||pj.tone==="good"?"#fff":TH.text}/* [G10] l'inchiostro segue il FONDO: col tono neutro questa card non e' scura ma `TH.card`, e il bianco dichiarato a mano dava bianco su bianco (misurato dalla griglia: 1,00:1) */ /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:pj.tone==="bad"?"linear-gradient(150deg,#2a1a0e,#33210f)":pj.tone==="good"?"linear-gradient(150deg,#1a1610,#2a2113)":TH.card,border:pj.tone==="bad"?"1px solid #7a4a2a":pj.tone==="good"?"1px solid #8a6d1a":`1px solid ${TH.cardBorder}`}}>
-          <div style={{fontSize:FS.caption,color:pj.tone==="bad"?"#fdba74":pj.tone==="good"?"#fcd34d":TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il progetto del club</div>
+        <Card momento="Il progetto del club" momentoInk={_n30(pj.tone==="bad"||pj.tone==="good"?"#fff":TH.text,undefined)}/* [G10] l'inchiostro segue il FONDO: col tono neutro questa card non e' scura ma `TH.card`, e il bianco dichiarato a mano dava bianco su bianco (misurato dalla griglia: 1,00:1) */ /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30(pj.tone==="bad"?"linear-gradient(150deg,#2a1a0e,#33210f)":pj.tone==="good"?"linear-gradient(150deg,#1a1610,#2a2113)":TH.card,TH.card),border:_n30(pj.tone==="bad"?"1px solid #7a4a2a":pj.tone==="good"?"1px solid #8a6d1a":`1px solid ${TH.cardBorder}`,"1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30(pj.tone==="bad"?"#fdba74":pj.tone==="good"?"#fcd34d":TH.muted,pj.tone==="bad"?semTesto945("#fdba74"):pj.tone==="good"?semTesto945("#fcd34d"):TH.muted),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il progetto del club</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{pj.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.small,fontWeight:900,color:pj.tone!=="neutral"?"#fff":TH.text,marginBottom:3}}>{pj.t}</div>
-              <div style={{fontSize:FS.caption,color:pj.tone!=="neutral"?"rgba(255,255,255,0.78)":TH.muted,lineHeight:1.5}}>{pj.d}</div>
+              <div style={{fontSize:FS.small,fontWeight:900,color:_n30(pj.tone!=="neutral"?"#fff":TH.text,pj.tone!=="neutral"?TH.text:TH.text),marginBottom:3}}>{pj.t}</div>
+              <div style={{fontSize:FS.caption,color:_n30(pj.tone!=="neutral"?"rgba(255,255,255,0.78)":TH.muted,pj.tone!=="neutral"?TH.muted:TH.muted),lineHeight:1.5}}>{pj.d}</div>
             </div>
           </div>
           <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,clubProjSeen:{k:pj.k,cid:p.club?.id||p.club?.n,season:p.season||1},morale:clamp((p.morale||70)+(pj.tone==="good"?2:pj.tone==="bad"?-2:0),0,100),log:[`${pj.e} ${pj.t} — la direzione del club è chiara.`,...(p.log||[])].slice(0,60)}))}>Si vede in campo →</Btn>
@@ -7336,18 +7340,18 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const ss=stanceShift(player);if(!ss)return null;const _up=(ss.fx&&ss.fx.morale||0)>=0;
         return(
-        <Card momento="Sponsor" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_up?"linear-gradient(150deg,#0d2418,#12301e)":"linear-gradient(150deg,#2a1010,#331414)",border:_up?"1px solid #1d6b45":"1px solid #7a2a2a"}}>
-          <div style={{fontSize:FS.caption,color:_up?"#6ee7b7":"#fca5a5",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{ss.e} Cambio di clima · {ss.label}</div>
-          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.86)",lineHeight:1.5,marginBottom:8}}>{ss.t}</div>
-          <Btn v={_up?"primary":"ghost"} fw onClick={()=>setPlayer(p=>{const _ds=deriveStances(p)||{cid:p.club&&(p.club.id||p.club.n)};const fx=ss.fx||{};return{...p,stanceSeen:_ds,morale:clamp((p.morale||70)+(fx.morale||0),0,100),popularity:clamp((p.popularity||30)+(fx.popularity||0),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ss.e,headline:`${ss.label}: cambio di clima`,body:ss.t,color:_up?TH.txGreen:"#dc2626"}].slice(-80),log:[`${ss.e} ${ss.label}: ${ss.t}`,...(p.log||[])].slice(0,60)};})}>{_up?"Me lo tengo stretto →":"Rispondo sul campo →"}</Btn>
+        <Card momento="Sponsor" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30(_up?"linear-gradient(150deg,#0d2418,#12301e)":"linear-gradient(150deg,#2a1010,#331414)",TH.card),border:_n30(_up?"1px solid #1d6b45":"1px solid #7a2a2a","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30(_up?"#6ee7b7":"#fca5a5",_up?semTesto945("#6ee7b7"):semTesto945("#fca5a5")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{ss.e} Cambio di clima · {ss.label}</div>
+          <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.86)",TH.muted),lineHeight:1.5,marginBottom:8}}>{ss.t}</div>
+          <Btn v={_up?"primary":"ghost"} fw onClick={()=>setPlayer(p=>{const _ds=deriveStances(p)||{cid:p.club&&(p.club.id||p.club.n)};const fx=ss.fx||{};return{...p,stanceSeen:_ds,morale:clamp((p.morale||70)+(fx.morale||0),0,100),popularity:clamp((p.popularity||30)+(fx.popularity||0),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ss.e,headline:`${ss.label}: cambio di clima`,body:ss.t,color:_n30(_up?TH.txGreen:"#dc2626",_up?TH.txGreen:semTesto945("#dc2626"))}].slice(-80),log:[`${ss.e} ${ss.label}: ${ss.t}`,...(p.log||[])].slice(0,60)};})}>{_up?"Me lo tengo stretto →":"Rispondo sul campo →"}</Btn>
         </Card>);})()}
       {/* [7.29.0 ONDA 4 — §S10] SPONSOR — offerta a fascia di fama */}
       {tab==="dashboard"&&(()=>{
         const sp=sponsorView(player);if(!sp)return null;
         return(
-        <Card momento="Il tuo procuratore" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(150deg,#101b2a,#14243a)",border:"1px solid #2a4a7a"}}>
-          <div style={{fontSize:FS.caption,color:"#93c5fd",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{sp.e} Sponsor — nuova offerta</div>
-          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.85)",lineHeight:1.5,marginBottom:8}}><strong>{sp.brand}</strong> ti propone un contratto da <strong>{sp.label}</strong>: {sp.weekly.toLocaleString("it-IT")}€ a settimana. {player.agentStyle==="global"?"Il tuo procuratore global ha aperto la porta prima del previsto.":"Il tuo nome comincia a valere fuori dal campo."}</div>
+        <Card momento="Il tuo procuratore" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#101b2a,#14243a)",TH.card),border:_n30("1px solid #2a4a7a","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#93c5fd",semTesto945("#93c5fd")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{sp.e} Sponsor — nuova offerta</div>
+          <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.85)",TH.muted),lineHeight:1.5,marginBottom:8}}><strong>{sp.brand}</strong> ti propone un contratto da <strong>{sp.label}</strong>: {sp.weekly.toLocaleString("it-IT")}€ a settimana. {player.agentStyle==="global"?"Il tuo procuratore global ha aperto la porta prima del previsto.":"Il tuo nome comincia a valere fuori dal campo."}</div>
           <div style={{display:"flex",gap:8}}>
             <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,sponsors:[...(p.sponsors||[]),{tier:sp.tier,brand:sp.brand,weekly:sp.weekly,season:p.season||1}],...ledgerPush(p,{t:"sponsor",who:sp.brand,what:`accordo ${sp.label} da ${sp.weekly}€/settimana`}),log:[`${sp.e} Accordo con ${sp.brand} (${sp.label}): +${sp.weekly.toLocaleString("it-IT")}€/settimana.`,...(p.log||[])].slice(0,60)}))}>✍️ Firmo l’accordo</Btn>
             <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,sponsorDecl:{tier:sp.tier,season:p.season||1},log:[`💬 Offerta di ${sp.brand} declinata: ora conta solo il campo.`,...(p.log||[])].slice(0,60)}))}>Non ora</Btn>
@@ -7357,8 +7361,8 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const sh=sponsorShoot(player);if(!sh)return null;
         return(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:TH.bgBlue,border:`1px solid ${TH.bdBlue}`}}>
-          <div style={{fontSize:FS.caption,color:"#3b82f6",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo shooting nella settimana sbagliata</div>
+        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(TH.bgBlue,TH.card),border:_n30(`1px solid ${TH.bdBlue}`,"1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#3b82f6",semTesto945("#3b82f6")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Lo shooting nella settimana sbagliata</div>
           <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5,marginBottom:8}}><strong>{sh.sp.brand}</strong> ha fissato lo shooting proprio nella settimana del big match: mezza giornata sotto i riflettori, bonus da {sh.bonus.toLocaleString("it-IT")}€. Il mister non l'ha presa benissimo.</div>
           <div style={{display:"flex",gap:8}}>
             <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,sponsorEvS:p.season||1,bankBalance:Math.round((p.bankBalance||0)+sh.bonus),popularity:clamp((p.popularity||20)+2,0,100),fatigue:clamp((p.fatigue||0)+6,0,100),log:[`📸 Shooting con ${sh.sp.brand}: +${sh.bonus.toLocaleString("it-IT")}€, ma arrivi alla gara con qualche energia in meno.`,...(p.log||[])].slice(0,60)}))}>📸 Vai allo shooting</Btn>
@@ -7369,13 +7373,13 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const lv=lifeView(player);if(!lv)return null;
         return(
-        <Card momento="❤️ Vita privata" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(150deg,#26101c,#331426)",border:"1px solid #7a2a55"}}>
-          <div style={{fontSize:FS.caption,color:"#f9a8d4",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{lv.e} Vita privata</div>
-          <div style={{fontSize:FS.small,fontWeight:900,color:"#fff",marginBottom:3}}>{lv.t}</div>
-          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.5,marginBottom:8}}>{lv.d}</div>
-          {lv.st==="incontro"&&<Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,life:{stage:"coppia",name:lv.name,since:{s:p.season||1,w:p.week||1}},morale:clamp((p.morale||70)+4,0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"❤️",headline:"L'incontro con "+lv.name,body:"La serata finita a parlare di tutto tranne che di calcio.",color:"#db2777"}].slice(-80),log:[`❤️ Hai conosciuto ${lv.name}: c'è qualcosa di nuovo nell'aria.`,...(p.log||[])].slice(0,60)}))}>Usciamo di nuovo →</Btn>}
-          {lv.st==="matrimonio"&&<Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,life:{...p.life,stage:"sposato",since:{s:p.season||1,w:p.week||1}},morale:clamp((p.morale||70)+8,0,100),popularity:clamp((p.popularity||20)+3,0,100),...ledgerPush(p,{t:"gratitudine",who:"la squadra",what:"tutti al matrimonio: il gruppo c'era"}),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"💍",headline:"Il matrimonio con "+(p.life?.name||""),body:"La squadra al completo tra gli invitati: un'estate da ricordare.",color:"#db2777"}].slice(-80),log:[`💍 Ti sei sposato con ${p.life?.name||""}: la festa è durata fino all'alba.`,...(p.log||[])].slice(0,60)}))}>Il giorno più bello →</Btn>}
-          {lv.st==="figlio"&&<Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,life:{...p.life,stage:"genitore",since:{s:p.season||1,w:p.week||1}},morale:clamp((p.morale||70)+6,0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"👶",headline:"Sei diventato papà",body:"Da questa settimana giochi per qualcuno.",color:"#db2777"}].slice(-80),log:[`👶 È nato il tuo primo figlio: la carriera ha un significato nuovo.`,...(p.log||[])].slice(0,60)}))}>Giochi per qualcuno →</Btn>}
+        <Card momento="❤️ Vita privata" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#26101c,#331426)",TH.card),border:_n30("1px solid #7a2a55","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#f9a8d4",semTesto945("#f9a8d4")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{lv.e} Vita privata</div>
+          <div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{lv.t}</div>
+          <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.78)",TH.muted),lineHeight:1.5,marginBottom:8}}>{lv.d}</div>
+          {lv.st==="incontro"&&<Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,life:{stage:"coppia",name:lv.name,since:{s:p.season||1,w:p.week||1}},morale:clamp((p.morale||70)+4,0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"❤️",headline:"L'incontro con "+lv.name,body:"La serata finita a parlare di tutto tranne che di calcio.",color:_n30("#db2777",semTesto945("#db2777"))}].slice(-80),log:[`❤️ Hai conosciuto ${lv.name}: c'è qualcosa di nuovo nell'aria.`,...(p.log||[])].slice(0,60)}))}>Usciamo di nuovo →</Btn>}
+          {lv.st==="matrimonio"&&<Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,life:{...p.life,stage:"sposato",since:{s:p.season||1,w:p.week||1}},morale:clamp((p.morale||70)+8,0,100),popularity:clamp((p.popularity||20)+3,0,100),...ledgerPush(p,{t:"gratitudine",who:"la squadra",what:"tutti al matrimonio: il gruppo c'era"}),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"💍",headline:"Il matrimonio con "+(p.life?.name||""),body:"La squadra al completo tra gli invitati: un'estate da ricordare.",color:_n30("#db2777",semTesto945("#db2777"))}].slice(-80),log:[`💍 Ti sei sposato con ${p.life?.name||""}: la festa è durata fino all'alba.`,...(p.log||[])].slice(0,60)}))}>Il giorno più bello →</Btn>}
+          {lv.st==="figlio"&&<Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,life:{...p.life,stage:"genitore",since:{s:p.season||1,w:p.week||1}},morale:clamp((p.morale||70)+6,0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:"👶",headline:"Sei diventato papà",body:"Da questa settimana giochi per qualcuno.",color:_n30("#db2777",semTesto945("#db2777"))}].slice(-80),log:[`👶 È nato il tuo primo figlio: la carriera ha un significato nuovo.`,...(p.log||[])].slice(0,60)}))}>Giochi per qualcuno →</Btn>}
         </Card>);})()}
       {/* [7.29.0 ONDA 4 — §S5] IL PROCURATORE CON UNA FACCIA — la scelta di filosofia */}
       {/* [7.375.0 Procuratore R2 §2] IL REMINDER. Compare sul cruscotto quando la regola pura ha
@@ -7539,18 +7543,18 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const ov=onceView(player);if(!ov)return null;
         return(
-        <Card momento="Non mi era mai successo" momentoInk="#fff" /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#1c1408,#2a1f0c)",border:"1px solid #8a6d1a"}}>
-          <div style={{fontSize:FS.caption,color:"#fcd34d",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Non mi era mai successo</div>
+        <Card momento="Non mi era mai successo" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#1c1408,#2a1f0c)",TH.card),border:_n30("1px solid #8a6d1a","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#fcd34d",semTesto945("#fcd34d")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Non mi era mai successo</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{ov.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:3}}>{ov.t}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.5}}>{ov.d}</div>
+              <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{ov.t}</div>
+              <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.78)",TH.muted),lineHeight:1.5}}>{ov.d}</div>
             </div>
           </div>
           <div style={{display:"flex",gap:8}}>
             {ov.choices.map((c,i)=>(
-              <Btn key={i} v={i===0?"outline":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),onceSeen:{...(p.onceSeen||{}),[ov.k]:true},onceSeenSeason:p.season||1,diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ov.e,headline:ov.t,body:(ov.d||"").slice(0,110),color:"#d4a017"}].slice(-80),log:[`${ov.e} ${ov.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
+              <Btn key={i} v={i===0?"outline":"ghost"} fw onClick={()=>setPlayer(p=>({...p,...c.fx(p),onceSeen:{...(p.onceSeen||{}),[ov.k]:true},onceSeenSeason:p.season||1,diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:ov.e,headline:ov.t,body:(ov.d||"").slice(0,110),color:_n30("#d4a017",semTesto945("#d4a017"))}].slice(-80),log:[`${ov.e} ${ov.t} — ${c.l.replace(/^[^\s]+\s/,"")}`,...(p.log||[])].slice(0,60)}))}>{c.l}</Btn>
             ))}
           </div>
         </Card>);})()}
@@ -7559,31 +7563,31 @@ const getThisWeekMatchday=()=>{
         const pa=phaseArc(player);if(!pa)return null;
         const _lab=pa.f==="esordiente"?"I PRIMI PASSI":pa.f==="titolare"?"NEL PIENO":"L'ULTIMO TRATTO";
         return(
-        <Card momento={pa.t||_lab} momentoInk="#fff" momentoNota={_lab} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"13px 15px",background:"linear-gradient(150deg,#1a1410,#241a12)",border:"1px solid #6b5233"}}>
-          <div style={{fontSize:FS.caption,color:"#fbbf24",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>⏳ {_lab}</div>
+        <Card momento={pa.t||_lab} momentoInk={_n30("#fff",undefined)} momentoNota={_lab} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"13px 15px",background:_n30("linear-gradient(150deg,#1a1410,#241a12)",TH.card),border:_n30("1px solid #6b5233","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#fbbf24",semTesto945("#fbbf24")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>⏳ {_lab}</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{pa.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.small,fontWeight:900,color:"#fff",marginBottom:3}}>{pa.t}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.76)",lineHeight:1.55}}>{pa.d}</div>
+              <div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{pa.t}</div>
+              <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.76)",TH.muted),lineHeight:1.55}}>{pa.d}</div>
             </div>
           </div>
           <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,...pa.fx(p),
             phaseSeen:{...(p.phaseSeen||{}),[pa.k]:p.season||1},phaseSeenSeason:p.season||1,
-            diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:pa.e,headline:pa.t,body:pa.d.slice(0,180),color:"#fbbf24"}].slice(-80),
+            diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:pa.e,headline:pa.t,body:pa.d.slice(0,180),color:_n30("#fbbf24",semTesto945("#fbbf24"))}].slice(-80),
             log:[`${pa.e} ${pa.t}`,...(p.log||[])].slice(0,60)}))}>Continua →</Btn>
         </Card>);})()}
       {/* [7.270.0 P2] IL MONDO TI ATTRAVERSA — rivale, ex compagni, ex club, CT */}
       {tab==="dashboard"&&(()=>{
         const wt=worldTouch(player);if(!wt)return null;
         return(
-        <Card momento="Il mondo fuori" momentoInk="#fff" /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"13px 15px",background:"linear-gradient(150deg,#0b1a22,#0f2430)",border:"1px solid #2a5a6b"}}>
-          <div style={{fontSize:FS.caption,color:"#7dd3fc",textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il mondo fuori</div>
+        <Card momento="Il mondo fuori" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"13px 15px",background:_n30("linear-gradient(150deg,#0b1a22,#0f2430)",TH.card),border:_n30("1px solid #2a5a6b","1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30("#7dd3fc",semTesto945("#7dd3fc")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il mondo fuori</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{wt.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.small,fontWeight:900,color:"#fff",marginBottom:3}}>{wt.t}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.76)",lineHeight:1.55}}>{wt.d}</div>
+              <div style={{fontSize:FS.small,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{wt.t}</div>
+              <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.76)",TH.muted),lineHeight:1.55}}>{wt.d}</div>
             </div>
           </div>
           <Btn v="ghost" fw onClick={()=>setPlayer(p=>({...p,...wt.fx(p),
@@ -7595,10 +7599,10 @@ const getThisWeekMatchday=()=>{
         const ld=ledgerDue(player);if(!ld)return null;
         const bene=ld.e==="🤝";
         return(
-        <Card style={{marginBottom:8,padding:"13px 15px",background:bene?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,border:bene?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`}}>
-          <div style={{fontSize:FS.caption,color:bene?"#6ee7b7":TH.txAmber,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il conto delle parole</div>
-          <div style={{fontSize:FS.small,fontWeight:900,color:bene?"#fff":TH.txAmber,marginBottom:3}}>{ld.t}</div>
-          <div style={{fontSize:FS.caption,color:bene?"rgba(255,255,255,0.78)":TH.txAmber,lineHeight:1.55,marginBottom:8}}>{ld.d}</div>
+        <Card style={{marginBottom:8,padding:"13px 15px",background:_n30(bene?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(bene?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
+          <div style={{fontSize:FS.caption,color:_n30(bene?"#6ee7b7":TH.txAmber,bene?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il conto delle parole</div>
+          <div style={{fontSize:FS.small,fontWeight:900,color:_n30(bene?"#fff":TH.txAmber,bene?TH.text:TH.txAmber),marginBottom:3}}>{ld.t}</div>
+          <div style={{fontSize:FS.caption,color:_n30(bene?"rgba(255,255,255,0.78)":TH.txAmber,bene?TH.muted:TH.txAmber),lineHeight:1.55,marginBottom:8}}>{ld.d}</div>
           <Btn v={bene?"primary":"ghost"} fw onClick={()=>setPlayer(p=>{
             const _l=[...(p.ledger||[])];if(_l[ld.i])_l[ld.i]={..._l[ld.i],done:true};
             return{...p,...ld.fx(p),ledger:_l,log:[`📒 ${ld.t}`,...(p.log||[])].slice(0,60)};
@@ -7608,18 +7612,18 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const sv=serialView(player);if(!sv)return null;
         return(
-        <Card momento={`${sv.e||"🌱"} ${sv.lab||"La saga"}`} momentoInk="#fff" momentoNota={`${sv.ep+1}/${sv.tot||4}`} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"7px 12px",background:"linear-gradient(150deg,#12101f,#1b1730)",border:"1px solid #4c3f7a"}}>
+        <Card momento={`${sv.e||"🌱"} ${sv.lab||"La saga"}`} momentoInk={_n30("#fff",undefined)} momentoNota={`${sv.ep+1}/${sv.tot||4}`} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#12101f,#1b1730)",TH.card),border:_n30("1px solid #4c3f7a","1px solid "+TH.cardBorder)}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>
-            <div style={{fontSize:FS.caption,color:"#c4b5fd",textTransform:"uppercase",letterSpacing:2,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{sv.lab}</div>
+            <div style={{fontSize:FS.caption,color:_n30("#c4b5fd",semTesto945("#c4b5fd")),textTransform:"uppercase",letterSpacing:2,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{sv.lab}</div>
             <div style={{display:"flex",gap:4,flexShrink:0}}>{Array.from({length:sv.tot}).map((_,i)=>(
               <span key={i} style={{width:i===sv.ep?14:6,height:6,borderRadius:RAD.pill,background:i<=sv.ep?"#a78bfa":"#3b3358",transition:"width .2s"}}/>))}</div>
           </div>
-          <div style={{fontSize:FS.caption,color:"#8b7fb8",fontWeight:700,marginBottom:6}}>PUNTATA {sv.ep+1} DI {sv.tot}</div>
+          <div style={{fontSize:FS.caption,color:_n30("#8b7fb8",semTesto945("#8b7fb8")),fontWeight:700,marginBottom:6}}>PUNTATA {sv.ep+1} DI {sv.tot}</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{sv.e}</span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.body,fontWeight:900,color:"#fff",marginBottom:3}}>{sv.t}</div>
-              <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.78)",lineHeight:1.55}}>{sv.d}</div>
+              <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:3}}>{sv.t}</div>
+              <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.78)",TH.muted),lineHeight:1.55}}>{sv.d}</div>
             </div>
           </div>
           <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
@@ -7630,7 +7634,7 @@ const getThisWeekMatchday=()=>{
                 return{...p,...c.fx(p),
                   serial:_fin?null:{k:sv.k,ep:sv.ep+1,s:p.season||1,w:p.week||1,ch:_ch,club:(p.club&&p.club.id)||""},
                   ...(_fin?{serialDone:{...(p.serialDone||{}),[sv.k]:p.season||1},serialSeenSeason:p.season||1}:{}),
-                  diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:sv.e,headline:sv.t,body:sv.d.slice(0,180),color:"#a78bfa"}].slice(-80),
+                  diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:sv.e,headline:sv.t,body:sv.d.slice(0,180),color:_n30("#a78bfa",semTesto945("#a78bfa"))}].slice(-80),
                   log:[`${sv.e} ${sv.lab} — ${sv.t}`,...(p.log||[])].slice(0,60)};
               })}>{c.l}</Btn>
             ))}
@@ -7640,17 +7644,17 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const bv=benchView(player);if(!bv)return null;
         if(bv.st==="start")return(
-          <Card style={{marginBottom:8,padding:"9px 12px",background:TH.bgAmber,border:`1px solid ${TH.bdAmber}`}}>
+          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
             <div style={{fontSize:FS.caption,color:TH.txAmber,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La riconquista</div>
             <div style={{fontSize:FS.caption,color:TH.txAmber,lineHeight:1.5,marginBottom:8}}>Sei finito nelle retrovie e lo sai. Il mister è diretto: «Mi manca la tua {bv.weak} — fammi vedere qualcosa nelle prossime <strong>3 partite</strong> e il posto torna in discussione.»</div>
             <Btn v="outline" fw onClick={()=>setPlayer(p=>({...p,benchArc:{season:p.season||1,fromWeek:p.week||1,games:3},benchArcSeason:p.season||1,log:[`🪑 La riconquista comincia: 3 gare per riprendersi il posto.`,...(p.log||[])].slice(0,60)}))}>Fatti trovare pronto →</Btn>
           </Card>);
         const _won=bv.st==="won";
         return(
-          <Card style={{marginBottom:8,padding:"9px 12px",background:_won?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,border:_won?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`}}>
-            <div style={{fontSize:FS.caption,color:_won?"#6ee7b7":TH.txAmber,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La riconquista — verdetto</div>
-            <div style={{fontSize:FS.caption,color:_won?"rgba(255,255,255,0.85)":TH.txAmber,lineHeight:1.5,marginBottom:8}}>{_won?`Media ${bv.avg} nelle 3 gare della prova: il posto è riconquistato. Il campo ha parlato — e il mister ha ascoltato.`:`Media ${bv.avg}: non è bastato. Il procuratore, a mezza voce: «A gennaio un prestito ti farebbe giocare…». Tu decidi cosa rispondere al campo.`}</div>
-            <Btn v={_won?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,benchArc:null,coachTrust:clamp((p.coachTrust||60)+(_won?9:-2),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_won?"🪑":"🌫️",headline:_won?"Il posto è di nuovo tuo":"La riconquista è rimandata",body:_won?`Media ${bv.avg} nelle 3 gare della prova.`:`Media ${bv.avg}: serve di più.`,color:_won?TH.txGreen:"#b45309"}].slice(-80),log:[_won?`🪑 RICONQUISTA: media ${bv.avg} — il mister ti rimette al centro.`:`🌫️ Riconquista fallita (media ${bv.avg}).`,...(p.log||[])].slice(0,60)}))}>{_won?"Ora si gioca →":"Testa bassa →"}</Btn>
+          <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(_won?"linear-gradient(150deg,#0d2418,#10301f)":TH.bgAmber,TH.card),border:_n30(_won?"1px solid #1d6b45":`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
+            <div style={{fontSize:FS.caption,color:_n30(_won?"#6ee7b7":TH.txAmber,_won?semTesto945("#6ee7b7"):TH.txAmber),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>La riconquista — verdetto</div>
+            <div style={{fontSize:FS.caption,color:_n30(_won?"rgba(255,255,255,0.85)":TH.txAmber,_won?TH.muted:TH.txAmber),lineHeight:1.5,marginBottom:8}}>{_won?`Media ${bv.avg} nelle 3 gare della prova: il posto è riconquistato. Il campo ha parlato — e il mister ha ascoltato.`:`Media ${bv.avg}: non è bastato. Il procuratore, a mezza voce: «A gennaio un prestito ti farebbe giocare…». Tu decidi cosa rispondere al campo.`}</div>
+            <Btn v={_won?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,benchArc:null,coachTrust:clamp((p.coachTrust||60)+(_won?9:-2),0,100),diary:[...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_won?"🪑":"🌫️",headline:_won?"Il posto è di nuovo tuo":"La riconquista è rimandata",body:_won?`Media ${bv.avg} nelle 3 gare della prova.`:`Media ${bv.avg}: serve di più.`,color:_n30(_won?TH.txGreen:"#b45309",_won?TH.txGreen:semTesto945("#b45309"))}].slice(-80),log:[_won?`🪑 RICONQUISTA: media ${bv.avg} — il mister ti rimette al centro.`:`🌫️ Riconquista fallita (media ${bv.avg}).`,...(p.log||[])].slice(0,60)}))}>{_won?"Ora si gioca →":"Testa bassa →"}</Btn>
           </Card>);
       })()}
       {/* [7.30.0 ONDA 5 — §S15] LA SETTIMANA-TIPO — le eccezioni dell'allenamento */}
@@ -7919,7 +7923,7 @@ const getThisWeekMatchday=()=>{
         if(_gap>4||_lgG<8)return null;
         const _beaten=_gap<0,_tied=_gap===0;
         return(
-        <Fisarmonica id="s24-sezione" titolo={<>{_beaten?"👑 Record battuto!":"🎯 Record watch"}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"9px 12px",...(_beaten?{background:TH.bgAmber,border:`1px solid ${TH.bdAmber}`}:{})}}>
+        <Fisarmonica id="s24-sezione" titolo={<>{_beaten?"👑 Record battuto!":"🎯 Record watch"}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"9px 12px",...(_beaten?{background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}:{})}}>
           <div style={{fontSize:FS.small,color:_beaten?TH.txAmber:TH.text,fontWeight:700,marginBottom:2}}>{_beaten?`Nuovo record stagionale della lega: ${_lgG} gol — sei nella storia.`:_tied?`Hai agguantato il record stagionale (${_rec.goals} gol di ${_rec.name}).`:`A ${_gap} gol dal record stagionale — ${_rec.goals} di ${_rec.name}${/^S\./.test(_rec.season||"")?` (${_rec.season})`:""}.`}</div>
           <div style={{height:5,background:TH.cardBorder,borderRadius:RAD.pill,overflow:"hidden",marginTop:6}}>
             <div style={{height:"100%",width:`${clamp(Math.round(_lgG/Math.max(1,(_rec.goals||1))*100),4,100)}%`,background:_beaten?"#f59e0b":TH.primary,borderRadius:RAD.pill}}/>
@@ -8021,50 +8025,50 @@ const getThisWeekMatchday=()=>{
       )}
       {/* Sprint 26A — Il Presidente ti convoca (weeks 1-3, once per season) */}
       {_OPENING_HOME_CARDS&&tab==="dashboard"&&(player.presidentModalSeason||0)<(player.season||1)&&(player.week||1)<=3&&(player.seasonObjectives||[]).length>0&&(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(135deg,#1c0d04,#2d1507)",border:"1px solid rgba(234,179,8,0.35)"}}>
+        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(135deg,#1c0d04,#2d1507)",TH.card),border:_n30("1px solid rgba(234,179,8,0.35)","1px solid "+TH.cardBorder)}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
             <div style={{fontSize:FS.title}}>🏛️</div>
             <div>
-              <div style={{fontSize:FS.caption,color:"#fde68a",textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>Il Presidente ti convoca</div>
-              <div style={{fontSize:FS.caption,color:"rgba(253,230,138,0.7)"}}>Stagione {player.season||1} — obiettivi assegnati</div>
+              <div style={{fontSize:FS.caption,color:_n30("#fde68a",semTesto945("#fde68a")),textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>Il Presidente ti convoca</div>
+              <div style={{fontSize:FS.caption,color:_n30("rgba(253,230,138,0.7)",TH.muted)}}>Stagione {player.season||1} — obiettivi assegnati</div>
             </div>
           </div>
-          <div style={{fontSize:FS.small,color:"#fef3c7",fontStyle:"italic",marginBottom:8,paddingLeft:4,borderLeft:"2px solid rgba(234,179,8,0.5)"}}>{getPresidentOpeningQuote(player)}</div>
+          <div style={{fontSize:FS.small,color:_n30("#fef3c7",semTesto945("#fef3c7")),fontStyle:"italic",marginBottom:8,paddingLeft:4,borderLeft:"2px solid rgba(234,179,8,0.5)"}}>{getPresidentOpeningQuote(player)}</div>
           <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:9}}>
             {(player.seasonObjectives||[]).map((obj,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,color:"#fde68a"}}>
+              <div key={i} style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,color:_n30("#fde68a",semTesto945("#fde68a"))}}>
                 <span>🎯</span><span>{obj.label}</span>
               </div>
             ))}
           </div>
-          <button onClick={()=>setPlayer(p=>({...p,presidentModalSeason:p.season||1}))} style={{width:"100%",padding:"7px 12px",background:"rgba(234,179,8,0.15)",border:"1px solid rgba(234,179,8,0.4)",borderRadius:RAD.sm,color:"#fde68a",fontSize:FS.small,fontWeight:700,cursor:"pointer"}}>Capito, Presidente</button>
+          <button onClick={()=>setPlayer(p=>({...p,presidentModalSeason:p.season||1}))} style={{width:"100%",padding:"7px 12px",background:"rgba(234,179,8,0.15)",border:"1px solid rgba(234,179,8,0.4)",borderRadius:RAD.sm,color:_n30("#fde68a",semTesto945("#fde68a")),fontSize:FS.small,fontWeight:700,cursor:"pointer"}}>Capito, Presidente</button>
         </Card>
       )}
       {/* Sprint 75: Suspension warning */}
       {tab==="dashboard"&&player.isSuspended&&(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(135deg,#1f0707,#2d0a0a)",border:"1px solid rgba(239,68,68,0.5)"}}>
+        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(135deg,#1f0707,#2d0a0a)",TH.card),border:_n30("1px solid rgba(239,68,68,0.5)","1px solid "+TH.cardBorder)}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
             <div style={{fontSize:FS.h}}>⛔</div>
             <div>
-              <div style={{fontSize:FS.caption,color:"#f87171",fontWeight:800,textTransform:"uppercase",letterSpacing:1.5}}>Squalificato</div>
-              <div style={{fontSize:FS.caption,color:"rgba(248,113,113,0.7)"}}>La prossima partita verrà simulata automaticamente</div>
+              <div style={{fontSize:FS.caption,color:_n30("#f87171",semTesto945("#f87171")),fontWeight:800,textTransform:"uppercase",letterSpacing:1.5}}>Squalificato</div>
+              <div style={{fontSize:FS.caption,color:_n30("rgba(248,113,113,0.7)",TH.muted)}}>La prossima partita verrà simulata automaticamente</div>
             </div>
           </div>
         </Card>
       )}
       {/* Sprint 74: Jersey number pick card — shown week 1-3 if not yet picked this season */}
       {_OPENING_HOME_CARDS&&tab==="dashboard"&&(player.jerseyNumSeason||0)<(player.season||1)&&(player.week||1)<=3&&(
-        <Card style={{marginBottom:8,padding:"9px 12px",background:"linear-gradient(135deg,#0c1a2e,#0d2140)",border:"1px solid rgba(59,130,246,0.45)"}}>
+        <Card style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(135deg,#0c1a2e,#0d2140)",TH.card),border:_n30("1px solid rgba(59,130,246,0.45)","1px solid "+TH.cardBorder)}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
             <div style={{fontSize:FS.title}}>👕</div>
             <div>
-              <div style={{fontSize:FS.caption,color:"#93c5fd",textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>Numero di Maglia</div>
-              <div style={{fontSize:FS.caption,color:"rgba(147,197,253,0.7)"}}>Stagione {player.season||1} · scegli il tuo numero</div>
+              <div style={{fontSize:FS.caption,color:_n30("#93c5fd",semTesto945("#93c5fd")),textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>Numero di Maglia</div>
+              <div style={{fontSize:FS.caption,color:_n30("rgba(147,197,253,0.7)",TH.muted)}}>Stagione {player.season||1} · scegli il tuo numero</div>
             </div>
           </div>
-          <div style={{fontSize:FS.small,color:"#bfdbfe",marginBottom:9}}>Il tuo attuale numero è <strong style={{color:"#60a5fa",fontSize:FS.body}}>#{player.jerseyNum||10}</strong>. Puoi cambiarlo oppure tenerlo.</div>
+          <div style={{fontSize:FS.small,color:_n30("#bfdbfe",semTesto945("#bfdbfe")),marginBottom:9}}>Il tuo attuale numero è <strong style={{color:_n30("#60a5fa",semTesto945("#60a5fa")),fontSize:FS.body}}>#{player.jerseyNum||10}</strong>. Puoi cambiarlo oppure tenerlo.</div>
           <div style={{display:"flex",gap:8}}>
-            <Btn onClick={()=>setJerseyPickModal(true)} fw style={{padding:"9px",fontSize:FS.small,background:"#1d4ed8",color:"#fff"}}>👕 Scegli Numero</Btn>
+            <Btn onClick={()=>setJerseyPickModal(true)} fw style={{padding:"9px",fontSize:FS.small,background:"#1d4ed8",color:_n30("#fff",TH.text)}}>👕 Scegli Numero</Btn>
             <Btn onClick={()=>setPlayer(p=>({...p,jerseyNumSeason:p.season||1}))} v="ghost" style={{padding:"9px",fontSize:FS.small,flexShrink:0}}>Tieni #{player.jerseyNum||10}</Btn>
           </div>
         </Card>
@@ -8076,7 +8080,7 @@ const getThisWeekMatchday=()=>{
         const _ncIdx=_ncq.matchIdx||0;
         const _clubMd=getThisWeekMatchday();
         return(
-          <Card style={{marginBottom:8,padding:"9px 12px",border:`1px solid ${TH.bdBlue}`,background:TH.bgBlue}}>
+          <Card style={{marginBottom:8,padding:"9px 12px",border:_n30(`1px solid ${TH.bdBlue}`,"1px solid "+TH.cardBorder),background:_n30(TH.bgBlue,TH.card)}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
               <div style={{fontSize:FS.caption,color:TH.txBlue,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>Coppa delle Nazioni · S.{_ncq.season}</div>
               <div style={{fontSize:FS.caption,background:"#1d4ed8",color:"#fff",borderRadius:RAD.sm,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
@@ -8102,7 +8106,7 @@ const getThisWeekMatchday=()=>{
         const emCol=em.type==="Mondiale"?"#4f46e5":"#0369a1";
         const _clubMd=getThisWeekMatchday();
         return(
-          <Card style={{marginBottom:8,padding:"9px 12px",border:`1px solid ${emCol}`,background:`${emCol}10`}}>
+          <Card style={{marginBottom:8,padding:"9px 12px",border:_n30(`1px solid ${emCol}`,"1px solid "+TH.cardBorder),background:_n30(`${emCol}10`,TH.card)}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
               <div style={{fontSize:FS.caption,color:emCol,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>{em.type==="Mondiale"?"🌍 Coppa del Mondo":"🏆 Europeo"} · S.{em.season} · {phaseLabel}</div>
               <div style={{fontSize:FS.caption,background:emCol,color:"#fff",borderRadius:RAD.sm,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
@@ -8298,7 +8302,7 @@ const getThisWeekMatchday=()=>{
             <Btn v="outline" fw onClick={()=>{goTab("coppe");}} style={{padding:"8px"}}>Girone e calendario →</Btn>
           </Card></Fisarmonica>);}
         return(
-          <Card style={{marginBottom:8,padding:"9px 12px",border:`1px solid ${_cc}44`,background:`${_cc}0a`,cursor:"pointer"}} onClick={()=>{goTab("coppe");}}>
+          <Card style={{marginBottom:8,padding:"9px 12px",border:_n30(`1px solid ${_cc}44`,"1px solid "+TH.cardBorder),background:_n30(`${_cc}0a`,TH.card),cursor:"pointer"}} onClick={()=>{goTab("coppe");}}>
             <div style={{display:"flex",alignItems:"center",gap:9}}>
               <div style={{width:26,height:26,borderRadius:RAD.sm,background:_cc,display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.body,flexShrink:0}}>{_ce}</div>
               <div style={{flex:1,minWidth:0}}>
