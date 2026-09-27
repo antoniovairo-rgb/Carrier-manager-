@@ -10,13 +10,13 @@ const N = +(process.env.CPM_N || 2); const RED = process.env.CPM_RED === '1';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const errori = []; const ok = (c, m) => { if (!c) errori.push(m); console.log((c ? 'ok   ' : 'NO   ') + m); };
 const perPartita = [];
-/* B) partite di CAMPIONATO vere (il provino resta a 2-3 fisso): un eroe in gran forma in una big e uno stanco in una piccola */
+/* B) partite di CAMPIONATO vere (il provino resta a 2-3 fisso): un eroe in gran forma in una big e uno stanco in una piccola, entrambi TITOLARI (fiducia del mister alta): la forbice 2-6 vale per il titolare */
 const SAVE = (v) => ({ phase: 'career', player: { name: 'Probe Occ' + v.k, nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 4, week: 12, age: 25, ovr: v.ovr,
   campDone: true, presidentModalSeason: 4, jerseyNumSeason: 4, drawSeen: 4, mercatoSeen: 4, presentSeason: 4, tutorialDone: true, weekLived: true, seasonPledge: { season: 4, tone: 'equilibrato' },
   club: { id: 'mad', n: 'CF Madrid', a: 'CFM', p: v.clubP, c: '#ffffff', c2: '#111111', nat: '🇪🇸', lg: 'Liga Ibérica' },
   stats: { 'velocità': v.ovr, tecnica: v.ovr, fisico: v.ovr, 'mentalità': v.ovr, tiro: v.ovr, passaggio: v.ovr, dribbling: v.ovr, posizionamento: v.ovr },
-  form: v.form, morale: v.morale, fatigue: v.fatigue, popularity: 50, value: 25, bankBalance: 90000, goals: 6, assists: 3, matches: 11, contract: { duration: 3, wage: 30000, expiresAtSeason: 8 } } });
-const VARIANTI = [{ k: 0, nome: 'favorevole', ovr: 86, clubP: 90, form: 92, morale: 90, fatigue: 5 }, { k: 1, nome: 'sfavorevole', ovr: 74, clubP: 45, form: 48, morale: 40, fatigue: 80 }].slice(0, Math.max(1, N));
+  form: v.form, morale: v.morale, fatigue: v.fatigue, coachTrust: 95, squadRole: 'leader', popularity: 50, value: 25, bankBalance: 90000, goals: 6, assists: 3, matches: 11, contract: { duration: 3, wage: 30000, expiresAtSeason: 8 } } });
+const VARIANTI = [{ k: 0, nome: 'favorevole', ovr: 86, clubP: 90, form: 92, morale: 90, fatigue: 5 }, { k: 1, nome: 'sfavorevole', ovr: 74, clubP: 45, form: 48, morale: 40, fatigue: 70 }].slice(0, Math.max(1, N));
 for (const v of VARIANTI) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
   await page.addInitScript((c) => { window.__CPM_GLB = false; if (c.red) window.__CPM_NO_OCC28 = true; localStorage.setItem('cpm-v3', JSON.stringify(c.sv)); try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} }, { red: RED, sv: SAVE(v) });
