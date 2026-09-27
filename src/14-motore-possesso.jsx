@@ -389,6 +389,13 @@ function creaMotorePossesso(cfg){
        CODA di goleade — 7 o piu' gol nel 5% delle partite, scarto di 5+ nel 12,5%. Nel calcio chi vince largo gestisce: con 3 gol di
        vantaggio la pericolosita' dei tiri scende al 60%, con 5+ al 40%. Rosso __CPM_NO_GEST19. */
     if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_GEST19)){const _o19=P.team===HOME?AWAY:HOME,_vn19=(S.conta.gol[P.team===HOME?'home':'away']|0)-(S.conta.gol[_o19===HOME?'home':'away']|0);if(_vn19>=5)xg*=0.4;else if(_vn19>=3)xg*=0.6;}
+    /* [7.999.36 — LE OCCASIONI DELL'EROE FANNO PARTE DELLA SQUADRA. Collaudo PO «risultato esagerato»: Europeo, Spagna-Francia 7-1.
+       Rosso __CPM_NO_PUNT36.] MISURATO: al banco il motore segna quanto il suo xG (1,55 gol su 1,54 a partita, 90 contro 85); nella partita
+       VISSUTA le scene dell'eroe (una grande occasione ciascuna) si SOMMAVANO alla produzione normale: 4 partite con l'eroe a 93,
+       1,5 gol a partita dal motore + 1,25 dalle scene. Nella simulazione rapida le occasioni dell'eroe stanno invece dentro la produzione
+       (1,73 in tutto). Qui ogni scena dell'eroe apre un DEBITO pari ai gol attesi della sua giocata, e i tiri successivi della squadra
+       dell'eroe lo ripagano con il loro xG: in media la squadra segna quanto segnerebbe, e una parte di quei gol li fa l'eroe. */
+    if(P.team===HOME&&S.debito36>0&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PUNT36)){const a=Math.min(S.debito36,xg);S.debito36=Math.round((S.debito36-a)*1000)/1000;xg=Math.max(0,xg-a);S.conta.assorbito36=Math.round(((S.conta.assorbito36||0)+a)*1000)/1000;}
     S._xgV2=xg;
     if(rnd()<xg)return "goal";
     const pOn=clamp(K2.pOn0+xg*K2.pOnXg,0.12,0.8);if(rnd()<pOn)return "saved";
@@ -1278,8 +1285,9 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   const espulsi=()=>Object.keys(S.cartellini||{}).filter(k=>S.cartellini[k].r).map(Number);
   /* [7.999.2] l'xG di un punto del campo per la squadra dell'eroe (verso di attacco = x crescente): lo usa l'highlight per decidere
      la sua giocata con lo STESSO modello che decide i tiri di tutti gli altri */
+  const addebita=(x)=>{if((typeof window!=='undefined'&&window&&window.__CPM_NO_PUNT36))return;const v=+x;if(v>0&&isFinite(v)){S.debito36=Math.round(((S.debito36||0)+v)*1000)/1000;S.conta.addebitato36=Math.round(((S.conta.addebitato36||0)+v)*1000)/1000;}};/* [7.999.36] gol attesi di una scena dell'eroe */
   const xgPunto=(x,y,intent,press)=>{try{if(!V2)return null;return xgV2({team:HOME,x:clamp(+x||50,0,100),y:clamp(+y||50,0,100)},intent||null,press==null?4:+press);}catch(_e){return null;}};
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,tattica:TAT};
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT};
 }
 if(typeof window!=='undefined'){try{window.__CPM_MOTORE_CREA=creaMotorePossesso;}catch(_e){}}
 /* [7.999.4 MOTORE UNICO passo 2 — LA SIMULAZIONE RAPIDA E' LO STESSO MOTORE, SENZA GRAFICA. Rosso __CPM_NO_SIMV2]

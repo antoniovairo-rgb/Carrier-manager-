@@ -8457,6 +8457,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(typeof window!=='undefined'&&window.__CPM_REC){const _W=(window.__CPM_V2EROE=window.__CPM_V2EROE||[]);_W.push({rew:action.rew,piaz:_intV2||null,xg:+(+_xgV2).toFixed(3),q:+_qV2.toFixed(2),p:+(+_pV2).toFixed(3),vecchio:+clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76).toFixed(3)});}
     }catch(_eV2){_pV2=null;}}
     const _pB2=_pV2!=null?_pV2:clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76);
+    if(_v2h&&(action.rew==="goal"||action.rew==="assist")&&motoreRef.current&&motoreRef.current.addebita){try{motoreRef.current.addebita(_pB2);}catch(_e36){}}/* [7.999.36] la scena dell'eroe e' un'occasione della squadra: i suoi gol attesi si tolgono ai tiri successivi del motore */
     let ok=_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));
     if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_B2=window.__CPM_B2||{n:0,ok:0,pSum:0,brain:0});_W.n++;_W.ok+=ok?1:0;_W.pSum+=_pB2;_W.brain+=_b2On?1:0;}catch(_eW){}}/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */
     try{const _qKeeper=new URLSearchParams(window.location.search||'');if(_qKeeper.get('cpmtest')==='1'&&_qKeeper.get('cpmForce')==='keeper'&&action&&action.gkCall)ok=true;}catch(_e){}
