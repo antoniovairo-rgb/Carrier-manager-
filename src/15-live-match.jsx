@@ -8517,6 +8517,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     //   Engine decide se il filtrante diventa GOL del compagno (assist) o OCCASIONE da finalizzare (esito
     //   `chance`, finora inutilizzato): la palla è buona ma la conclusione va giocata — il chaining inietta
     //   il "secondo tempo" e in 3D il tocco del ricevente produce un RIMBALZO (deflect), non la rete.
+    /* [7.999.38] IL FALLO CERCATO RIUSCITO E' UN FALLO SUBITO: esito della scena «punizione conquistata» (il 3D fa cadere l'eroe, 7.999.8;
+       il motore conta il fallo), chiave di successo `chance` (nessun assist accreditato, nessun gol del compagno, nessuna catena). */
+    let _falloOk38=false;if(ok&&action&&action.falloCercato&&!(typeof window!=='undefined'&&window.__CPM_NO_FALLO38)){_falloOk38=true;key="chance";_outKind="win_freekick";}
     let _chance78=false,_crossChain704=false;
     if(ok&&key==="assist"&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){try{/* [7.113.0 audit massivo · fix C3] la conversione assist→chance NON scatta su una sit già di CATENA (_chainDepth): l'injection del «secondo tempo» è essa stessa _chainDepth-guardata → altrimenti la chance non genera follow-up e l'assist si perdeva nel nulla (dead-end). Allineato alla guardia della conversione dribble (sotto) e dell'injection */
       const _cnA=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};
@@ -8633,7 +8636,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     try{ const _M=motoreRef.current;
       /* [23/09 POC — B2] con il dado del brain, la scelta risolta diventa una catena di eventi veri del motore (attori del cast):
          il tabellino e le pagelle li conta il motore. Il vecchio ponte `registra` resta solo nel rosso. */
-      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||key,{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',gkCall:!!(action&&action.gkCall),carta:_carta9});_brain23(_evB2);
+      if(_b2On&&_M&&_M.risolviEroe){let _cnB={};try{_cnB=(typeof deriveHL==="function"&&deriveHL(_fkSit,action))||{};}catch(_eC){}const _evB2=_M.risolviEroe.eventi(((_SIT_TEST||_CPM_TEST)&&typeof window!=='undefined'&&window.__CPM_FORCE_KIND)||(_falloOk38?'win_freekick':key),{/* [7.999.9] il gancio di collaudo dell'esito vale anche per il motore, come per il 3D */rew:(action&&action.rew)||'',ok:!!ok,cast:castBrainRef.current,corner:_outKind==="corner",tipo:_cnB.type||'',variante:_cnB.variant||'',gkCall:!!(action&&action.gkCall),carta:_carta9});_brain23(_evB2);
         try{for(const _e9 of _evB2){if((_e9.t==='ammonizione'||_e9.t==='espulsione')&&_e9.chi&&!_e9.chi.eroe){const _n9=String(_e9.chi.nome||'').split(' ').slice(-1)[0]||'il difensore';pushMatchEvent(clockRef.current,_e9.t==='ammonizione'?'opp_yellow':'opp_red',em=>(_e9.t==='ammonizione'?'🟨 Ammonito '+_n9+' per il fallo su di te al ':'🟥 Espulso '+_n9+' per il fallo su di te al ')+em+"'");}}}catch(_e9){}/* [7.999.9] il cartellino all'avversario deciso dal motore entra nei momenti chiave */
         if(typeof window!=='undefined'&&window.__CPM_REC){try{(window.__CPM_B2EV=window.__CPM_B2EV||[]).push({key,ok:!!ok,rew:(action&&action.rew)||'',tipo:_cnB.type||'',var:_cnB.variant||'',lbl:String((action&&action.label)||'').slice(0,30),ev:_evB2.map(e=>e.t+(e.esito?':'+e.esito:''))});}catch(_eE){}}}
       else if(_M&&_M.registra){
@@ -8810,7 +8813,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     // Sprint 77 + Fase 6 (NEXT-GEN chaining robusto): un assist da palla messa in area innesca un
     //   secondo tempo (testa/mischia/rimbalzo). Rilevamento via regex case-insensitive ampia (non più
     //   catena fragile di .includes) + guardia di profondità (niente stacking di catene).
-    if(ok&&(action.rew==="assist"||_chanceDrb)&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
+    if(ok&&!_falloOk38&&(action.rew==="assist"||_chanceDrb)&&!pendingChainSitRef.current&&!(situations[hlIdx]&&situations[hlIdx]._chainDepth)){// [5.78.0 BUG-14] guardia di profondità REALE: una catena non può incatenarne un'altra
       if(_chanceDrb)pendingChainSitRef.current={...CHAIN_SITS.dopo_dribbling,_chainDepth:1};// [5.90.0 BLK-2] uomo saltato → conclusione da giocare
       else if(_crossChain704)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.sponda,CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};/* [7.0.4] cross consegnato in area → il secondo tempo finalizza (il cross non era gol) · [7.201.0] MAI `header`: il cross l'ha messo l'EROE, non può incornarlo lui — o lo prolunga un compagno (sponda) o nasce una mischia/un rimbalzo */
       else if(_chance78)pendingChainSitRef.current={..._seguito23([CHAIN_SITS.mischia,CHAIN_SITS.second_ball]),_chainDepth:1};// [5.78.0 SIT-4] la chance APRE SEMPRE il secondo tempo: la conclusione va giocata
@@ -9878,6 +9881,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               //   (fist/deflect) NON scattava → ramo in_net → la palla ENTRAVA in porta (finto gol) prima della catena.
               //   Ora la chance su SUCCESSO è propagata al 3D → il primo tocco resta al piede, niente rete.
               if(outcome&&outcome.ok===true&&outcome.outKind==="chance")_hlOutcomeKind="chance";
+              if(outcome&&outcome.ok===true&&outcome.outKind==="win_freekick"&&!(typeof window!=='undefined'&&window.__CPM_NO_FALLO38))_hlOutcomeKind="win_freekick";/* [7.999.38] il fallo cercato riuscito arriva al 3D come fallo subito: l'eroe cade (7.999.8) */
               /* [7.604.0 SOLO COLLAUDO, attivo solo in test/review come FORCE_OUTCOME (7.211)] il gancio
                  sul KIND: senza, il ramo «gol vero» dei piazzati non e' riproducibile — FORCE_OUTCOME forza
                  il successo ma il kind resta «chance», e il difetto del PO (SIT #51, gol dichiarato con la

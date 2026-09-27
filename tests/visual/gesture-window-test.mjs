@@ -27,7 +27,10 @@ await sleep(600);
 async function scena(gi) {
   await forceSituation(page, gi, { settle: 400, choose: true });
   await page.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_RESOLVE(0); });
+  /* [7.999.38] attesa a sondaggio (lezione 7.460): dalla 7.999.33 lo stacco di testa e' legato all'arrivo del cross e il gesto
+     muore piu' tardi — con 2,6 s fissi gi44 e gi86 non chiudevano mai il colpo di testa (sonda cieca). Minimo 2,6 s come prima. */
   await sleep(2600);
+  for (let k = 0; k < 16; k++) { const n = await page.evaluate(() => (window.__CPM_VITA512 || []).length); if (n > 0) break; await sleep(400); }
   return await page.evaluate(() => {
     const v = window.__CPM_VITA512 || []; window.__CPM_VITA512 = [];
     return { vite: v, arc: window.__CPM_ARC || null };

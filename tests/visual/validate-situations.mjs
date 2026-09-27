@@ -247,10 +247,15 @@ const GOLDEN = path.join(HERE, 'golden-sigs.json');
        quota su pochi campioni non e' una misura, e' un'estrazione. */
     const motIdx = [0, 2, 8, 14, 20, 26, 30, 36, 44, 52, 60, 66, 71, 79, 84, 90, 96, 104, 110, 116, 120, 128, 134, 140].filter(gi => gi < situations.length);
     const motSamples = [];
-    for (const gi of motIdx) { motSamples.push(await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1900 })); await sleep(150); }// finestra 1000→1900: il movimento è stato rallentato ~45% (5.47.9→5.47.16, cap 20→11 u/s) → serve una finestra di osservazione più ampia per misurare la liveness in modo stabile su software-GL (~5fps), specie sulle situation quasi-statiche
+    /* [7.999.38] CI main rossa su e9355ae6: gi2 12/21 contro soglia 13, in un run solo. Misurato in locale 6+6 volte su gi0/gi2
+       con la 7.999.37 e col suo rosso __CPM_NO_PASSO37: stesse distribuzioni (16-21), e campioni bassi SOLO a freddo (5/21 e 0/21
+       al primo campione, in entrambe). Una scena sotto soglia si rimisura UNA volta: una scena davvero ferma fallisce due volte;
+       la rimisura resta scritta negli avvisi del check. */
+    const motRetry = [];
+    for (const gi of motIdx) { let s = await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1900 }); if (s && s.players && s.alive < 13) { await sleep(300); const s2 = await sampleMotion(page, gi, { settle: 500, pollMs: 100, windowMs: 1900 }); motRetry.push(`gi${gi}: rimisurata (${s.alive}/${s.players} → ${s2.alive}/${s2.players})`); s = s2; } motSamples.push(s); await sleep(150); }// finestra 1000→1900: il movimento è stato rallentato ~45% (5.47.9→5.47.16, cap 20→11 u/s) → serve una finestra di osservazione più ampia per misurare la liveness in modo stabile su software-GL (~5fps), specie sulle situation quasi-statiche
     const motRes = motion.run({ samples: motSamples });
     agg['motion'].issues.push(...motRes.issues.map(msg => ({ gi: null, msg })));
-    agg['motion'].warnings.push(...motRes.warnings.map(msg => ({ gi: null, msg })));
+    agg['motion'].warnings.push(...motRes.warnings.map(msg => ({ gi: null, msg })), ...motRetry.map(msg => ({ gi: null, msg })));
     agg['motion'].info = motRes.info;
     console.log(`motion: campione ${motSamples.length} · alive ${motSamples.map(s => s.alive + '/' + s.players).join(' ')}`);
 

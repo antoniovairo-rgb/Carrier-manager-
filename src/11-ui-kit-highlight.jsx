@@ -1798,7 +1798,8 @@ function deriveHL(sit,act){
      Restano fuori testa e punizione: li' il gesto e' gia' giusto (si incorna, si batte) e hanno gia'
      le loro varianti di consegna (header_*, freekick_cross_*). Misura: 9 coppie situation x azione
      rese come conclusione con esito assist -> 0. */
-  if(type==="shot"&&act&&act.rew==="assist"&&!(typeof window!=="undefined"&&window.__CPM_NO784))type="pass";
+  if(act&&act.falloCercato&&!(typeof window!=='undefined'&&window.__CPM_NO_FALLO38))type="dribble";/* [7.999.38] il fallo cercato e' un DRIBBLING che finisce col fallo subito, non una consegna: niente regole 7.784/7.798 */
+  else if(type==="shot"&&act&&act.rew==="assist"&&!(typeof window!=="undefined"&&window.__CPM_NO784))type="pass";
   /* ⚠️ [7.798.0 — SE IL PALLONE PARTE, QUALCUNO L'HA COLPITO. Rosso __CPM_NO798]
      Codice 000 «gesto scoordinato», segnalato dal PO QUATTRO volte (SIT #178, #113, #17, #87).
      MISURATO sul catalogo intero: 91 azioni su 573 — UNA SU SEI — finiscono in RETE (51) o in ASSIST
@@ -1814,7 +1815,7 @@ function deriveHL(sit,act){
      Resta aperto, e dichiarato, il difetto piu' fine: la finta che precede non si vede comunque, perche'
      la clip e' una sola. Renderne due in sequenza e' un lavoro sul vocabolario dei gesti, non su questa
      riga. */
-  if(act&&(type==="dribble"||type==="build")&&!(typeof window!=="undefined"&&window.__CPM_NO798)){
+  if(act&&(type==="dribble"||type==="build")&&!(act.falloCercato&&!(typeof window!=='undefined'&&window.__CPM_NO_FALLO38))&&!(typeof window!=="undefined"&&window.__CPM_NO798)){
     if(act.rew==="goal")type="shot";
     else if(act.rew==="assist")type="pass";
   }

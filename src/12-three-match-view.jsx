@@ -3151,7 +3151,7 @@ function ThreeMatchView(props){
          if(_tl530&&_tl530.length){const _M530={porta:1,guinzaglio:2,gk:3,'bordo-tanh':4,'bordo-lift':5,bisezione:6,snap:7,'sguardo-pre':8,'vista-reale':9};
            _c530=Math.min(9,_tl530.length)*10+(_M530[_tl530[_tl530.length-1]]||0);}
          W.buf[o+15]=_c530;/* [7.526.0] passate camera del fotogramma PRECEDENTE (la lista si azzera piu' sotto, r.~16330: qui e' completa): conteggio*10+codice dell'ultima — l'alternanza di codici a frame alterni e' la firma del doppio scrittore */}
-        W.buf[o+14]=sr.current._ws524||0;/* [7.524.0] lo scrittore del pallone di questo campione (il reset sta DOPO questa scrittura nel loop: il codice qui accanto e' esattamente chi ha prodotto la posizione registrata) */
+        W.buf[o+14]=sr.current._ws524||0;if(typeof window!=='undefined'&&window.__CPM_WS38_REC){try{const _L=(window.__CPM_WS38=window.__CPM_WS38||[]);if(_L.length<3000)_L.push([+performance.now().toFixed(0),sr.current._ws524||0,+ball.position.x.toFixed(2),+ball.position.z.toFixed(2)]);}catch(_e){}}/* [7.999.38 strumento] chi scrive il pallone, fotogramma per fotogramma *//* [7.524.0] lo scrittore del pallone di questo campione (il reset sta DOPO questa scrittura nel loop: il codice qui accanto e' esattamente chi ha prodotto la posizione registrata) */
         W.i++;if(W.n<W.cap)W.n++;else W.i=W.i%W.cap;
         }
         /* [7.352.0] sonda di collaudo: riempie l'anello per provare che il frame prosegue lo stesso (solo test) */

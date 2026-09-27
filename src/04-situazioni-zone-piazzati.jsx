@@ -37,6 +37,11 @@ const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off",ctx=null,
      regex sul testo vive solo qui, mai a runtime) → su successo il 3D consegna la palla al portiere di casa
      col gesto di presa, non una spazzata anonima dell'eroe. */
   if(type==="def")actions.forEach(a=>{if(a&&/portiere/i.test(a.label||""))a.gkCall=true;});
+  /* [7.999.38 collaudo PO, taccuino SIT #150 «Guadagna una punizione!»: «nel dribbling il pallone e l'eroe si separano», codici 009
+     direzione sbagliata e 000 gesto scoordinato] L'azione che PROMETTE il fallo subito («Dribbling provocatorio — il fallo c'e'!»)
+     ha premio `assist`: il gioco la rendeva come un passaggio a un compagno (regole 7.784/7.798) e il pallone andava indietro a un
+     compagno e tornava, mentre il fallo non si vedeva mai. Il flag si congela qui, come gkCall: la regex vive solo in factory. */
+  if(type!=="def")actions.forEach(a=>{if(a&&/il fallo c'è|provocator|guadagna\w* (il |la |un |una )?(fallo|punizione)|cerca\w* il fallo|si lascia cadere/i.test(a.label||""))a.falloCercato=true;});
   /* [7.245.0 batch PO gi36 «Guida i compagni» RIUSCITO «Non c'è alcuna parata»] su palla AEREA avversaria,
      l'azione di ORGANIZZAZIONE (guida/organizza) che promette una PARATA (rew save) si risolve col portiere
      che esce in presa — l'eroe comanda, il portiere agisce. Stesso patto di chainOn/gkCall: regex solo qui. */
