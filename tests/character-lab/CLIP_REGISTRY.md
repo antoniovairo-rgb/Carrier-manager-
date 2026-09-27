@@ -26,6 +26,39 @@ Aperto il 26/09 su mandato PO («colmare i gap dei gesti»). Una riga per clip. 
 | `assets/cgtrader-clip-mixamo.glb` (3,0 MB) | 54 | 18 + `kick~m` specchiata (cadute ×3, rovesciata, tackle ×3, portiere ×10) | header-soccerball ×2, kick-soccerball ×2 (solo tabella contatti), kick-up-soccerball, kneeing-soccerball ×2, stall-soccerball ×4, receive-soccerball, strike-foward-jog, soccer-penalty-kick, throw-in, offensive-idle, transition, jog (7 direzioni), goalkeeper-directing ×2, placing-ball ×2, scoop, sidestep ×2, miss |
 | — | `celebrate` | **chiamata dal codice ma assente in tutti i pacchetti** → esultanza senza clip sul corpo CGTrader | — |
 
+## Provino delle clip in casa (27/09, `tests/visual/provino-lotto.mjs` → `tests/character-lab/provini-p1a/`)
+| Clip | Cosa si vede sul corpo di gioco | Esito |
+|---|---|---|
+| `opening` (CGTrader) | un gesto col braccio e uno sguardo al polso | ❌ non è un'esultanza |
+| `running`, `walk`, `jogging` (CGTrader) | corsa/camminata pulite | 🟡 per il lotto «scatto/camminata» |
+| `run-look-back` (CGTrader) | corsa guardandosi alle spalle | 🟡 per lo scanning |
+| `mx-stall-soccerball` | palleggio di coscia e piede | 🟡 per il controllo di coscia (non di petto) |
+| `mx-goalkeeper-directing` | il corpo esce dal quadro dopo il primo istante | ❌ inutilizzabile così com'è |
+| `kick`, `pass` | calciano col **sinistro** (picco del piede 8,3 e 5,3 contro 0,5 e 1,1) | base del mancino |
+| `penalty` | **destro** (14,3 contro 9,4) | base del destro |
+| `volley` | incerto (destro 12,3 contro sinistro 10,3) | escluso dalla scelta del piede |
+
+## Clip in uso da questa release (7.999.31)
+| Nome interno | Voce catalogo | Fonte | Licenza | Strada | Cancello | Provino | Peso | Righe | Guardiano / rosso |
+|---|---|---|---|---|---|---|---|---|---|
+| `mx-victory` | I1 esultanza (braccia al cielo) | FBX dal PO 27/09 «Victory.fbx», Creator «Mixamo, Inc.», **già sullo scheletro CGTrader** | Mixamo (vedi sopra) | estratta con Blender (`bpy` 4.2), tolte le tracce di `root` (scala 0,01) | non serve (stesso scheletro, stesse unità: tracce confrontate) | `provini-p1a/mx-victory.png` | 4,5 s | gesto `lift` quando il corpo non ha `celebrate` | `esultanza-braccia-test.mjs` · `__CPM_NO_ESULTA31` |
+| `mx-victory-jump` | I1 esultanza (salto a braccia alzate) | FBX dal PO «Victory_Idle.fbx», Mixamo | Mixamo | come sopra | come sopra | `provini-p1a/mx-victory-idle.png` | 1,9 s | variante di `lift` | come sopra |
+| `pass~m`, `penalty~m` | L4 piede | specchio delle clip CGTrader (`_specchiaClip23`) | CGTrader | specchio | errore di specchio in `__CPM_SPECCHIO23` | — | 0 (in memoria) | scelta dal piede per l'eroe | `piede-preferito-test.mjs` · `__CPM_NO_PIEDE31` |
+
+File: `assets/cgtrader-clip-esultanze.glb`, 206 KB, due clip. Scartate dal PO-pacchetto: «Golf Putt Victory» (contiene un colpo da golf), «Victory_1» (8,6 s, mani alla testa: tenuta di riserva, non collegata).
+Riserva: se la clip manca, le braccia al cielo si fanno proceduralmente (stesso metodo del cartellino).
+
+## Clip da cercare (per il PO) — tutte su Mixamo, scaricate **sul nostro personaggio** (come «Victory»), FBX, 30 fps, «In Place» quando c'è la spunta
+1. **Esultanze:** «Knee Slide» o «Sliding» (scivolata in ginocchio), «Chest Pound»/«Fist Pump», «Cheering», «Happy Hand Gesture», «Pointing» (dito al cielo o verso la curva), «Clapping» (applauso ai compagni).
+2. **Rammarico:** «Disappointed», «Defeated», «Head Hit»/«Frustration», «Rejected».
+3. **Controlli di palla:** «Chest Trap»/«Soccer Chest Control», «Soccer Trap», «Receive Soccer Ball» varianti.
+4. **Scatto e corsa:** «Sprint», «Fast Run», «Running Turn»; «Walking» lenta per i momenti morti.
+5. **Pressione e difesa:** «Defensive Idle», «Soccer Pass Block», «Jockeying» (passi laterali marcando), «Goalkeeper Directing» nuova versione (la nostra esce dal quadro).
+6. **Proteste e chiamate:** «Arguing», «Yelling», «Waving» (chiamare palla), «Shrug».
+7. **Colpo di testa in tuffo:** «Diving Header» / «Soccer Header» con salto.
+8. **Infortunio e caduta:** «Injured Idle», «Hurting», «Falling Back».
+⚠️ I nomi sono **indicativi** (parole da cercare): non posso confermare che su Mixamo esistano con quel nome esatto. Per ognuna: il FBX va bene così com'è; controllo io durata, scheletro, provino, piede e cancello prima di collegarla.
+
 ## Clip in lavorazione
 
 | Nome interno | Voce catalogo | Fonte | Licenza | Strada | Cancello | Provino | Peso | Righe BRAIN_GESTI/GESTI | Guardiano / rosso |

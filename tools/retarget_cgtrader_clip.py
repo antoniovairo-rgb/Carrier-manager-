@@ -46,7 +46,7 @@ def riadatta(T, src_path, nome):
         bpy.ops.import_scene.gltf(filepath=src_path)
     nuovi = [bpy.data.objects[k] for k in bpy.data.objects.keys() if k not in prima]
     E = {o.name.split(':')[-1]: o for o in nuovi if o.type == 'EMPTY'}
-    if not E:
+    if 'Hips' not in E:  # [27/09] un FBX «with skin» porta anche nodi vuoti estranei: conta che manchi il bacino, non che manchino tutti
         # [23/09] sorgente FBX Mixamo: un'ARMATURA (ossa `mixamorigN:Hips`) invece dei nodi vuoti del GLB. Ogni osso diventa un
         # «nodo» con matrix_world letta dal vivo, cosi' il resto del riadattamento non cambia.
         arm = [o for o in nuovi if o.type == 'ARMATURE']

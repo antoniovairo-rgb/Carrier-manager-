@@ -76,6 +76,13 @@ function _mira20(a,px,pz,tx,tz,goalX,eroe){if(!a||a._tgt517==null)return null;co
 function _tuffoTesto23(P){try{if(typeof window!=='undefined'&&window.__CPM_NO_TESTO23)return false;return /tuffo|si distende|in volo/i.test(String((P&&P.hlOutText)||''));}catch(_e){return false;}}
 /* lato del corpo verso cui va la clip (+1 sinistra del giocatore, -1 destra), misurato sul bacino (provino-clip) */
 const _LATO23={'gk-dive':1,'mx-goalkeeper-diving-save-2':-1,'gk-block':1,'mx-goalkeeper-body-block-2':-1,'mx-goalkeeper-body-block-3':1};
+/* [7.999.31 — IL PIEDE PREFERITO DELL'EROE SCEGLIE LA CLIP. Decisione PO 26/09 «mancino: specchiati tiri, passaggi, cross e rigori».
+   Rosso __CPM_NO_PIEDE31: torna il sorteggio fra le due esecuzioni.] Il piede di ogni clip e' MISURATO sul corpo di gioco
+   (provino-clip.html, picco di velocita' del piede, 27/09): kick sinistro 8,3 contro 0,5 · pass sinistro 5,3 contro 1,1 · penalty
+   destro 14,3 contro 9,4 · mx-kick-soccerball sinistro · mx-kick-soccerball-2 destro. La volee' resta fuori: misura incerta
+   (destro 12,3 contro sinistro 10,3). Le specchiate `~m` hanno il piede opposto. */
+var _PIEDE31=null;
+const _PIEDE_CLIP31={'kick':'L','kick~m':'R','pass':'L','pass~m':'R','penalty':'R','penalty~m':'L','mx-kick-soccerball':'L','mx-kick-soccerball-2':'R'};
 function _scegliGesto23(a,want,ai,chiave,lbl,lato){
   const _nm=x=>((x&&x.getClip&&x.getClip())||{}).name,W=(typeof window!=='undefined')?(window.__CPM_VAR23=window.__CPM_VAR23||{}):{};
   const _segna=(act,r)=>{try{const n=r||_nm(act)||'?';(W[want]=W[want]||{})[n]=(W[want][n]||0)+1;
@@ -87,10 +94,14 @@ function _scegliGesto23(a,want,ai,chiave,lbl,lato){
   let v=(a._gVar&&a._gVar[want])||[base];
   /* tuffo/respinta: si tiene solo l'esecuzione che va dal lato della palla. Rosso __CPM_NO_LATO23 (sorteggio fra tutte). */
   if(lato&&(want==='dive'||want==='block')&&!(typeof window!=='undefined'&&window.__CPM_NO_LATO23)){const pool=v.filter(x=>_LATO23[_nm(x)]===lato);if(pool.length)v=pool;}
-  if(v.length===1)return _segna(v[0],(a._gVar&&a._gVar[want])?null:(a._gVar?'unica':'senza-varianti'));
+  if(ai===0&&_PIEDE31&&v.length>1&&!(typeof window!=='undefined'&&window.__CPM_NO_PIEDE31)){const pool=v.filter(x=>_PIEDE_CLIP31[_nm(x)]===_PIEDE31);
+    if(pool.length)v=pool;}
+  /* testimone: la clip montata sull'eroe per ogni gesto che ha un piede, in ENTRAMBI i bracci (anche col sorteggio del rosso) */
+  const _t31=act=>{try{const n=_nm(act);if(ai===0&&_PIEDE_CLIP31[n]&&typeof window!=='undefined'){const T=(window.__CPM_PIEDE31=window.__CPM_PIEDE31||{piede:null,scelte:{}});T.piede=_PIEDE31;const S=T.scelte;S[want]=S[want]||{};S[want][n]=(S[want][n]||0)+1;}}catch(_e){}return act;};
+  if(v.length===1)return _t31(_segna(v[0],(a._gVar&&a._gVar[want])?null:(a._gVar?'unica':'senza-varianti')));
   a._gN23=(a._gN23||0)+1;let act=v[hashStr(String(chiave||'')+'|'+ai+'|'+want+'|'+a._gN23)%v.length]||base;
   try{const F=window.__CPM_VAR23_FORZA;if(F&&F[want]){const f=v.find(x=>_nm(x)===F[want]);if(f)act=f;}}catch(_e){}/* solo sonde: impone un'esecuzione */
-  return _segna(act);}
+  return _t31(_segna(act));}
 /* [POC 23/09 — direttiva PO «Il modello CH38 deve sparire». Rosso __CPM_NO_CGDEFAULT o ?hyperCharacter=off]
    Il corpo CGTrader (kit-adapter lod0/1/2, portiere compreso) era visibile SOLO aprendo il gioco con
    ?hyperCharacter=cgtrader-highlight-optimized: senza parametro gli highlight usavano il CH38. Ora un unico
@@ -183,12 +194,12 @@ function _hyperQ23(){try{const q=(typeof location!=='undefined'&&new URLSearchPa
    rimette il pallone grande e, per non toccare le formule dell'arco, gli ridona la vecchia levitazione
    con un solo scarto dichiarato nel blocco della scala. */
 function ThreeMatchView(props){
-  const {playerX,playerY,homeCol,oppCol,allPlayers,brain=null,castBrain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
+  const {heroFoot=null,playerX,playerY,homeCol,oppCol,allPlayers,brain=null,castBrain=null,homeClub,heroClub=null,oppClub=null,heroKitCol,avatarId=0,heroNum=10,subEntry=0,
     scoreHome=0,scoreAway=0,homeAbbr="HOM",awayAbbr="AWA",competitionLabel,
     stadiumHomeCol,stadiumAwayCol,stadiumHomeName=null,stadiumAwayName=null,stadiumHomeAbbr=null,stadiumAwayAbbr=null,stadiumHomeNat=null,stadiumAwayNat=null,stadiumHomeId=null,stadiumAwayId=null,stadiumVenue=null,stadiumStyle=0,ballX,ballY,
     matchPhase,onWalkoutDone,isDesktop=false,
     timeOfDay,weather,kickoffHour,attendance,crowd=null,
-    isDerby=false,isBigGame=false,bgAction=null,hlZone=null,shootout=null}=props;/* [7.31.0] rigori 3D */
+    isDerby=false,isBigGame=false,bgAction=null,hlZone=null,shootout=null}=props;_PIEDE31=(typeof window!=='undefined'&&(window.__CPM_FORCE_PIEDE31==='L'||window.__CPM_FORCE_PIEDE31==='R'))?window.__CPM_FORCE_PIEDE31:((heroFoot==='L'||heroFoot==='R')?heroFoot:null);/* __CPM_FORCE_PIEDE31: solo sonde *//* [7.999.31] piede preferito dell'eroe per la scelta della clip *//* [7.31.0] rigori 3D */
   const mountRef=useRef(null);
   const sr=useRef({players:[],ball:null,hero:null,raf:null,renderer:null,scene:null,camera:null});
   const propsRef=useRef(props);
@@ -991,7 +1002,7 @@ function ThreeMatchView(props){
         for(let i=0;i<pf.values.length;i+=3){pf.values[i]=x0;pf.values[i+1]=yT;pf.values[i+2]=z0;}
         const D=su.duration||1;for(let k=0;k<ps.times.length;k++){const u=Math.min(1,Math.max(0,(ps.times[k]/D-0.2)/0.7)),q=u*u*(3-2*u);ps.values[3*k]=x0;ps.values[3*k+1]=yT+(yS-yT)*q;ps.values[3*k+2]=z0;}
         pt._r7=true;return true;}catch(e){return false;}};
-      const _VAR23={kick:['kick~m'],/* [23/09] il tiro storico SPECCHIATO (destro, stessa fase): vedi _specchiaClip23 */
+      const _VAR23={lift:['mx-victory-jump'],kick:['kick~m'],pass:['pass~m'],shortPass:['pass~m'],longPass:['pass~m'],cross:['pass~m'],penalty:['penalty~m'],/* [7.999.31] passaggio e rigore specchiati: per l'eroe li sceglie il piede (_PIEDE31), per gli altri il sorteggio *//* [23/09] il tiro storico SPECCHIATO (destro, stessa fase): vedi _specchiaClip23 */
         /* kick Mixamo: REVOCATO. Le tre clip di tiro nuove peggiorano il contatto (piede-palla 0,83-1,46 m contro 0,21-0,45 della clip
            storica, gesto-eroe-review CPM_FORZA): la palla parte sulla fase della clip storica (sinistro, 0,98). */
         /* header, receive, penalty, throwin: RIMANDATI (la rovesciata NON e' una variante a sorteggio: esce solo su «Rovesciata!», _gScissor) — hanno un contatto con la palla sincronizzato
@@ -1005,7 +1016,7 @@ function ThreeMatchView(props){
         catch:['mx-goalkeeper-catch-3','mx-goalkeeper-catch-4'],
         gkThrow:['mx-goalkeeper-overhand-throw','mx-goalkeeper-pass'],goalKick:['mx-goalkeeper-drop-kick'],gkReady:['mx-goalkeeper-idle','mx-goalkeeper-idle-2']};
       const _PESO23={};
-      const _mkGestures=(av,map)=>{if(!av)return;const out={};for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;
+      const _mkGestures=(av,map)=>{if(!av)return;const out={};for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}if(!out.lift&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31)){const _cv=_mxAnims23.find(x=>x&&x.name==='mx-victory');if(_cv){const a=av.mx.clipAction(_cv);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out.lift=a;if(!out.celebrate)out.celebrate=a;}}/* [7.999.31] esultanza vera (clip del PO) al posto di `celebrate`, che nel pacchetto non c'e' */av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;
         if(!(typeof window!=='undefined'&&window.__CPM_NO_CADUTA8)){for(const [k,n] of [['trip','mx-soccer-trip'],['fallen','mx-fallen-idle'],['standUp','mx-standing-up']]){const c=_mxAnims23.find(x=>x&&x.name===n);if(!c||out[k])continue;const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}}/* [7.999.8] i tre gesti della caduta */
         av._gScissor=null;{const _sc=_mxAnims23.find(x=>x&&x.name==='mx-scissor-kick');if(_sc&&!(typeof window!=='undefined'&&window.__CPM_NO_ROVESCIATA23)){const a=av.mx.clipAction(_sc);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gScissor=a;}}
         av._gVar=null;if(_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP)){const v={};for(const k in out){if(!out[k]||!_VAR23[k])continue;const acts=[];for(let i=0;i<(_PESO23[k]||1);i++)acts.push(out[k]);
@@ -1390,9 +1401,10 @@ function ThreeMatchView(props){
           const _trioLod=(_cgtraderMixedLodBenchmark||(_cgtraderHighlightOptimized&&!(typeof window!=='undefined'&&window.__CPM_NO_TRIO)));
           const _hyperAssetUrls=_trioLod?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
         const _mx23=_trioLod&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP);
-        Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).map(url=>loadGLB(url))).then(results=>{
-          const _mxRes=_mx23?results.pop():null;if(_mxRes&&_mxRes.status==='fulfilled'&&_mxRes.value){_mxAnims23=(_mxRes.value.animations||[]).slice();if(!(typeof window!=='undefined'&&window.__CPM_NO_CADUTA8)){const ok=riparaCadute7(_mxAnims23);try{window.__CPM_CADUTA8={riparate:ok};}catch(_e){}}}
-          if(_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_SPECCHIO23)){const _p0=results[0]&&results[0].status==='fulfilled'&&results[0].value;const _k=_p0&&(_p0.animations||[]).find(c=>c&&c.name==='kick');const _km=_k&&_specchiaClip23(_k,_p0.scene,'kick~m');if(_km)_mxAnims23.push(_km);}try{window.__CPM_MXCLIP=_mxAnims23.length;}catch(_e){}
+        const _esu31=_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31);
+        Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-esultanze.glb']:[]).map(url=>loadGLB(url))).then(results=>{
+          const _esuRes=_esu31?results.pop():null;const _mxRes=_mx23?results.pop():null;if(_mxRes&&_mxRes.status==='fulfilled'&&_mxRes.value){_mxAnims23=(_mxRes.value.animations||[]).slice();if(!(typeof window!=='undefined'&&window.__CPM_NO_CADUTA8)){const ok=riparaCadute7(_mxAnims23);try{window.__CPM_CADUTA8={riparate:ok};}catch(_e){}}}
+          if(_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_SPECCHIO23)){const _p0=results[0]&&results[0].status==='fulfilled'&&results[0].value;const _k=_p0&&(_p0.animations||[]).find(c=>c&&c.name==='kick');const _km=_k&&_specchiaClip23(_k,_p0.scene,'kick~m');if(_km)_mxAnims23.push(_km);if(!(typeof window!=='undefined'&&window.__CPM_NO_PIEDE31))for(const _n31 of ['pass','penalty']){const _c31=(_p0.animations||[]).find(c=>c&&c.name===_n31);const _m31=_c31&&_specchiaClip23(_c31,_p0.scene,_n31+'~m');if(_m31)_mxAnims23.push(_m31);}}/* [7.999.31] le esultanze del PO (Mixamo sullo scheletro CGTrader): via le tracce del nodo `root`, che nell'export da FBX porta la scala dei centimetri (0,01) e farebbe sparire il corpo */if(_esuRes&&_esuRes.status==='fulfilled'&&_esuRes.value){for(const _c of (_esuRes.value.animations||[])){_c.tracks=_c.tracks.filter(t=>!/^root\./.test(t.name));_mxAnims23.push(_c);}}try{window.__CPM_MXCLIP=_mxAnims23.length;}catch(_e){}
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
           if(!pkg)throw new Error('Hyper Casual model assets could not be loaded');if(_trioLod&&packages.length!==3)throw new Error('CGTrader mixed LOD packages are incomplete');if(_cgtraderMixedLodBenchmark)packages.forEach((entry,index)=>{entry._cgLod=['lod0','lod1','lod2'][index]||null;});
           /* [23/09 — IL PEZZO CHE MANCAVA, ed e' quello che rendeva invisibili i corpi.
@@ -9979,6 +9991,33 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           }
           if(_a.mx){const _lbW=_lb*_lb*(3-2*_lb);if(_a.run)_a.run.weight=_lbW;if(_a.idle)_a.idle.weight=1-_lbW;_updateAvatarMixerLod(_a,aDt,_ai,false);}/* [7.49.0 BL-06] smoothstep anche sugli off-ball */
         }
+        {/* [7.999.31 — L'ESULTANZA SI VEDE: BRACCIA AL CIELO PROCEDURALI. Lotto gesti P1-a, decisione PO 26/09 «prima clip in casa,
+            altrimenti braccia procedurali». Rosso __CPM_NO_ESULTA31.] Il piano d'esultanza chiede il gesto `lift` (eroe: _celLift371;
+            compagno che segna: _mateFx), ma sul corpo CGTrader `lift` punta alla clip `celebrate` che NON esiste in nessun pacchetto
+            (CLIP_REGISTRY): l'eroe segnava e restava col braccio lungo il corpo. Provino delle clip in casa (27/09): `opening` e' un gesto
+            col braccio e uno sguardo all'orologio, non un'esultanza. Quindi: omero e avambraccio PUNTATI in alto e un po' in fuori
+            (a V), con un ritmo di pugni al cielo, dopo il mixer e senza toccare il bind — lo stesso metodo del cartellino (7.999.9). */
+         if(!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31)){
+          const _mf=sr.current._mateFx;const _chi31=[];
+          if(sr.current._celLift371===1&&hero)_chi31.push(hero);
+          if(_mf&&_mf.name==='lift'&&_mf.mesh)_chi31.push(_mf.mesh);
+          for(const _av of (glbAvatars||[])){if(!_av||!_av.proc)continue;const _in31=_chi31.indexOf(_av.proc)>=0,_clip31=!!(_av.gestures&&_av.gestures.lift),_want=_in31&&!_clip31;
+            _av._esu31=(_av._esu31||0)+((_want?1:0)-(_av._esu31||0))*Math.min(aDt*7,1);const _k=_clip31&&_in31?1:_av._esu31;if(_k<0.02)continue;
+            try{const R=_av.visualRoot||_av.root;
+              if(_av._b31===undefined){const f=re=>_findBone904(R,re);const uL=f(/^(upperarm_l|(mixamorig:?)?LeftArm)$/i),lL=f(/^(lowerarm_l|(mixamorig:?)?LeftForeArm)$/i),hL=f(/^(hand_l|(mixamorig:?)?LeftHand)$/i),
+                uR=f(/^(upperarm_r|(mixamorig:?)?RightArm)$/i),lR=f(/^(lowerarm_r|(mixamorig:?)?RightForeArm)$/i),hR=f(/^(hand_r|(mixamorig:?)?RightHand)$/i);_av._b31=(uL&&lL&&hL&&uR&&lR&&hR)?{uL,lL,hL,uR,lR,hR}:null;}
+              const B=_av._b31;if(!B)continue;
+              const v=sr.current._v31||(sr.current._v31={a:new THREE.Vector3(),b:new THREE.Vector3(),d:new THREE.Vector3(),lat:new THREE.Vector3(),t:new THREE.Vector3(),q:new THREE.Quaternion(),pw:new THREE.Quaternion()});
+              R.updateMatrixWorld(true);B.uL.getWorldPosition(v.a);B.uR.getWorldPosition(v.b);v.lat.subVectors(v.a,v.b);v.lat.y=0;if(v.lat.lengthSq()<1e-8)continue;v.lat.normalize();
+              _av._ph31=(_av._ph31||0)+aDt*9;const _pump=0.12*Math.sin(_av._ph31);
+              const aim=(bone,child,side)=>{bone.updateMatrixWorld(true);bone.getWorldPosition(v.a);child.getWorldPosition(v.b);v.d.subVectors(v.b,v.a).normalize();
+                v.t.set(0,1,0).addScaledVector(v.lat,side*(0.42+_pump)).normalize();const dir=v.d.clone().lerp(v.t,_k).normalize();v.q.setFromUnitVectors(v.d,dir);
+                bone.parent.updateMatrixWorld(true);bone.parent.getWorldQuaternion(v.pw);bone.quaternion.copy(v.pw.clone().invert().multiply(v.q).multiply(v.pw).multiply(bone.quaternion.clone()));bone.updateMatrixWorld(true);};
+              if(!_clip31){aim(B.uL,B.lL,1);aim(B.lL,B.hL,1);aim(B.uR,B.lR,-1);aim(B.lR,B.hR,-1);}/* con la clip vera le braccia le muove lei: qui si misura soltanto */
+              if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){const W=(window.__CPM_ESULTA31=window.__CPM_ESULTA31||{fotogrammi:0,eroe:0,compagno:0,maniSopraTesta:0,clip:0,procedurale:0});W.fotogrammi++;if(_clip31)W.clip=(W.clip|0)+1;else W.procedurale=(W.procedurale|0)+1;if(_av.proc===hero)W.eroe++;else W.compagno++;
+                const hd=_findBone904(R,/^(head|(mixamorig:?)?Head)$/i);if(hd&&_k>0.8){hd.getWorldPosition(v.a);B.hL.getWorldPosition(v.b);const hy=v.b.y;B.hR.getWorldPosition(v.b);if(hy>v.a.y||v.b.y>v.a.y)W.maniSopraTesta++;}}/* almeno una mano sopra la testa: la clip vera alterna i pugni */
+            }catch(_e31){}}
+         }}
         {/* [7.999.9 CARTELLINO] braccio destro dell'arbitro alzato col cartellino in mano. Nessuna clip nel pacchetto: si PUNTA l'omero e
             l'avambraccio verso l'alto (poco in avanti, verso il giocatore) ruotando dalla direzione che hanno ora — indipendente dal bind. */
          const _c9=sr.current._carta9,_ra=glbAvatars.find(a=>a&&a._isRef);

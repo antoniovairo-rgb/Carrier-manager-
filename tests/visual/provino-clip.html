@@ -22,7 +22,10 @@ const Q=new URLSearchParams(location.search);const CLIP=Q.get('clip')||'mx-socce
 const L=new THREE.GLTFLoader();const ld=u=>new Promise((ok,ko)=>L.load(u,ok,undefined,ko));
 (async()=>{try{
   const [corpo,clips]=await Promise.all([ld('../../assets/cgtrader-review-lod1-kit-adapter.glb'),ld('../../assets/cgtrader-clip-mixamo.glb')]);
-  let clip=clips.animations.find(a=>a.name===CLIP);if(!clip)throw new Error('clip assente '+CLIP);
+  /* [7.999.31] ?src=cg: la clip si prende dalle 33 del pacchetto CGTrader (dentro il file del corpo), non dal file Mixamo */
+  let POOL=Q.get('src')==='cg'?corpo.animations:clips.animations;
+  if(Q.get('file')){const g=await ld(Q.get('file'));POOL=g.animations.map(c=>{c.tracks=c.tracks.filter(t=>!/^root\./.test(t.name));return c;});}/* l'export da FBX anima anche il nodo `root` con scala 0,01 (centimetri): il corpo sparirebbe *//* ?file=: clip candidata in un GLB a parte (es. esportata da Mixamo sullo scheletro CGTrader) */
+  let clip=POOL.find(a=>a.name===CLIP);if(!clip)throw new Error('clip assente '+CLIP+' · disponibili: '+POOL.map(a=>a.name).join(','));
   if(RIPARA&&window.riparaClip)clip=window.riparaClip(clip,clips.animations);
   const W=200,H=260;const ren=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});ren.setSize(W,H);
   const sc=new THREE.Scene();sc.background=new THREE.Color(0x2a3a2a);sc.add(new THREE.HemisphereLight(0xffffff,0x445544,1.2));const dl=new THREE.DirectionalLight(0xffffff,0.8);dl.position.set(3,5,4);sc.add(dl);
@@ -37,6 +40,13 @@ const L=new THREE.GLTFLoader();const ld=u=>new Promise((ok,ko)=>L.load(u,ok,unde
     let pel=null;av.traverse(o=>{if(o.isBone&&/pelvis$/i.test(o.name))pel=o;});const pw=new THREE.Vector3();if(pel)pel.getWorldPosition(pw);
     ren.render(sc,cam);const f=document.createElement('figure');const im=new Image();im.src=ren.domElement.toDataURL();f.appendChild(im);
     const c=document.createElement('figcaption');c.textContent=CLIP+' t='+t.toFixed(2)+' bacino y='+pw.y.toFixed(2)+' m';f.appendChild(c);document.getElementById('r').appendChild(f);out.push({t:+t.toFixed(2),y:+pw.y.toFixed(3),x:+pw.x.toFixed(2),z:+pw.z.toFixed(2)});}
-  window.__PROVINO={ok:true,clip:CLIP,durata:clip.duration,campioni:out};
+  /* [7.999.31] QUALE PIEDE COLPISCE: picco di velocita' orizzontale di ciascun piede su 120 istanti (il piede che calcia e' il piu' veloce) */
+  const fl=osso(/^(ball_l|LeftToeBase)$/i),fr=osso(/^(ball_r|RightToeBase)$/i);/* nomi ESATTI: ik_foot_l combacia con foot_l$ ed e' un osso IK fermo */let piede=null;
+  if(fl&&fr){const M=120,pL=new THREE.Vector3(),pR=new THREE.Vector3(),qL=new THREE.Vector3(),qR=new THREE.Vector3();let bL={v:0,u:0},bR={v:0,u:0};
+    for(let i=0;i<=M;i++){const t=clip.duration*0.995*i/M;/* 0,995: al tempo pieno la clip si riavvolge e il piede 'salta' */mx.setTime(t);av.updateMatrixWorld(true);fl.getWorldPosition(pL);fr.getWorldPosition(pR);
+      if(i>0){const dt=clip.duration/M,vL=Math.hypot(pL.x-qL.x,pL.z-qL.z)/dt,vR=Math.hypot(pR.x-qR.x,pR.z-qR.z)/dt;if(vL>bL.v)bL={v:vL,u:i/M};if(vR>bR.v)bR={v:vR,u:i/M};}
+      qL.copy(pL);qR.copy(pR);}
+    piede={calcia:bL.v>bR.v?'sinistro':'destro',sx:{v:+bL.v.toFixed(2),u:+bL.u.toFixed(2)},dx:{v:+bR.v.toFixed(2),u:+bR.u.toFixed(2)}};}
+  window.__PROVINO={ok:true,clip:CLIP,durata:clip.duration,campioni:out,piede};
 }catch(e){window.__PROVINO={ok:false,err:String(e.message)};document.body.textContent='ERRORE '+e.message;}})();
 </script></body></html>
