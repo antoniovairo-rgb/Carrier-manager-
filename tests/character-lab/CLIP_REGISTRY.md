@@ -23,7 +23,7 @@ Aperto il 26/09 su mandato PO («colmare i gap dei gesti»). Una riga per clip. 
 | File | Clip | In uso oggi | Mai usate |
 |---|---|---|---|
 | `assets/cgtrader-review-lod{0,1,2}-kit-adapter.glb` | 33 ciascuno | 24 (idle, jog, jog-back, strafe ×2, kick, penalty, header, slide-tackle, tackle, volley, receive, dribble, pass, change-direction, missed-chance, throwin, gk ×7, look-over-shoulder solo in mappa, sit-clap in panchina) | walk, running, jogging, recovery-run, run-look-back, running-to-turn, opening, sit-to-stand |
-| `assets/cgtrader-clip-mixamo.glb` (3,0 MB) | 54 | 18 + `kick~m` specchiata (cadute ×3, rovesciata, tackle ×3, portiere ×10) | header-soccerball ×2, kick-soccerball ×2 (solo tabella contatti), kick-up-soccerball, kneeing-soccerball ×2, stall-soccerball ×4, receive-soccerball, strike-foward-jog, soccer-penalty-kick, throw-in, offensive-idle, transition, jog (7 direzioni), goalkeeper-directing ×2, placing-ball ×2, scoop, sidestep ×2, miss |
+| `assets/cgtrader-clip-mixamo.glb` (3,0 MB) | 54 | 19 + `kick~m` specchiata + strike-foward-jog (tiro dell'eroe, 7.999.34, radice tolta e specchiata per il sinistro) (cadute ×3, rovesciata, tackle ×3, portiere ×10) | header-soccerball ×2, kick-soccerball ×2 (solo tabella contatti), kick-up-soccerball, kneeing-soccerball ×2, stall-soccerball ×4, receive-soccerball, soccer-penalty-kick, throw-in, offensive-idle, transition, jog (7 direzioni), goalkeeper-directing ×2, placing-ball ×2, scoop, sidestep ×2, miss |
 | — | `celebrate` | **chiamata dal codice ma assente in tutti i pacchetti** → esultanza senza clip sul corpo CGTrader | — |
 
 ## Provino delle clip in casa (27/09, `tests/visual/provino-lotto.mjs` → `tests/character-lab/provini-p1a/`)
