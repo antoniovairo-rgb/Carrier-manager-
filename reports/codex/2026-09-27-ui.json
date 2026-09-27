@@ -1,0 +1,848 @@
+{
+  "versione": "7.999.28",
+  "compito": "Scheda 1 — Giudizio visivo dell’interfaccia",
+  "comando": "Da tests/visual: node griglia-mobile.mjs (Chromium headless già presente; dipendenze condivise; seme predefinito)",
+  "seme": "4242",
+  "misure": [
+    {
+      "nome": "larghezze",
+      "valore": 5,
+      "soglia": "5",
+      "esito": "ok"
+    },
+    {
+      "nome": "schermate per larghezza",
+      "valore": 14,
+      "soglia": "14",
+      "esito": "ok"
+    },
+    {
+      "nome": "scatti esaminati",
+      "valore": 70,
+      "soglia": "70",
+      "esito": "ok"
+    },
+    {
+      "nome": "scatti con anomalia visibile",
+      "valore": 20,
+      "soglia": "0",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "scatti con testo tagliato o sovrapposto visibile",
+      "valore": 0,
+      "soglia": "0",
+      "esito": "ok"
+    },
+    {
+      "nome": "scatti con elementi oltre il bordo destro visibili",
+      "valore": 0,
+      "soglia": "0",
+      "esito": "ok"
+    },
+    {
+      "nome": "scatti con testo illeggibile sul fondo visibile",
+      "valore": 0,
+      "soglia": "0",
+      "esito": "ok"
+    },
+    {
+      "nome": "scatti con riquadri visibilmente discordanti",
+      "valore": 20,
+      "soglia": "0",
+      "esito": "anomalia"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "bassa",
+      "descrizione": "La testata bordeaux arrotondata, gli slot con contorno grigio tratteggiato e la scheda bianca con ombra usano tre trattamenti e colori di riquadro diversi nella stessa vista.",
+      "come_riprodurre": "Aprire lo scatto home.png nelle cinque cartelle di larghezza di reports/codex/ui/ e confrontare i riquadri indicati.",
+      "prove": [
+        "reports/codex/ui/360/home.png",
+        "reports/codex/ui/375/home.png",
+        "reports/codex/ui/390/home.png",
+        "reports/codex/ui/412/home.png",
+        "reports/codex/ui/430/home.png"
+      ]
+    },
+    {
+      "gravita": "bassa",
+      "descrizione": "Tre righe di accesso vicine appaiono bianca con ombra, blu notte e marrone molto scuro, pur avendo lo stesso impianto di titolo e freccia.",
+      "come_riprodurre": "Aprire lo scatto dashboard.png nelle cinque cartelle di larghezza di reports/codex/ui/ e confrontare i riquadri indicati.",
+      "prove": [
+        "reports/codex/ui/360/dashboard.png",
+        "reports/codex/ui/375/dashboard.png",
+        "reports/codex/ui/390/dashboard.png",
+        "reports/codex/ui/412/dashboard.png",
+        "reports/codex/ui/430/dashboard.png"
+      ]
+    },
+    {
+      "gravita": "bassa",
+      "descrizione": "Le righe di accesso alternano blu notte, viola e bianco mantenendo struttura di titolo e freccia simile.",
+      "come_riprodurre": "Aprire lo scatto carriera-profilo.png nelle cinque cartelle di larghezza di reports/codex/ui/ e confrontare i riquadri indicati.",
+      "prove": [
+        "reports/codex/ui/360/carriera-profilo.png",
+        "reports/codex/ui/375/carriera-profilo.png",
+        "reports/codex/ui/390/carriera-profilo.png",
+        "reports/codex/ui/412/carriera-profilo.png",
+        "reports/codex/ui/430/carriera-profilo.png"
+      ]
+    },
+    {
+      "gravita": "bassa",
+      "descrizione": "Il riquadro Italia e le righe dei convocati usano bordo e testi azzurro/blu accanto alla testata bordeaux e alle altre superfici bianche visibili.",
+      "come_riprodurre": "Aprire lo scatto carriera-nazionale.png nelle cinque cartelle di larghezza di reports/codex/ui/ e confrontare i riquadri indicati.",
+      "prove": [
+        "reports/codex/ui/360/carriera-nazionale.png",
+        "reports/codex/ui/375/carriera-nazionale.png",
+        "reports/codex/ui/390/carriera-nazionale.png",
+        "reports/codex/ui/412/carriera-nazionale.png",
+        "reports/codex/ui/430/carriera-nazionale.png"
+      ]
+    }
+  ],
+  "scatti": [
+    {
+      "schermata": "Home fuori carriera",
+      "id": "home",
+      "larghezza": 360,
+      "scatto": "ui/360/home.png",
+      "esito": "anomalia",
+      "zona": "Testata, tre slot carriera, scheda descrittiva",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "La testata bordeaux arrotondata, gli slot con contorno grigio tratteggiato e la scheda bianca con ombra usano tre trattamenti e colori di riquadro diversi nella stessa vista."
+    },
+    {
+      "schermata": "Home fuori carriera",
+      "id": "home",
+      "larghezza": 375,
+      "scatto": "ui/375/home.png",
+      "esito": "anomalia",
+      "zona": "Testata, tre slot carriera, scheda descrittiva",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "La testata bordeaux arrotondata, gli slot con contorno grigio tratteggiato e la scheda bianca con ombra usano tre trattamenti e colori di riquadro diversi nella stessa vista."
+    },
+    {
+      "schermata": "Home fuori carriera",
+      "id": "home",
+      "larghezza": 390,
+      "scatto": "ui/390/home.png",
+      "esito": "anomalia",
+      "zona": "Testata, tre slot carriera, scheda descrittiva",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "La testata bordeaux arrotondata, gli slot con contorno grigio tratteggiato e la scheda bianca con ombra usano tre trattamenti e colori di riquadro diversi nella stessa vista."
+    },
+    {
+      "schermata": "Home fuori carriera",
+      "id": "home",
+      "larghezza": 412,
+      "scatto": "ui/412/home.png",
+      "esito": "anomalia",
+      "zona": "Testata, tre slot carriera, scheda descrittiva",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "La testata bordeaux arrotondata, gli slot con contorno grigio tratteggiato e la scheda bianca con ombra usano tre trattamenti e colori di riquadro diversi nella stessa vista."
+    },
+    {
+      "schermata": "Home fuori carriera",
+      "id": "home",
+      "larghezza": 430,
+      "scatto": "ui/430/home.png",
+      "esito": "anomalia",
+      "zona": "Testata, tre slot carriera, scheda descrittiva",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "La testata bordeaux arrotondata, gli slot con contorno grigio tratteggiato e la scheda bianca con ombra usano tre trattamenti e colori di riquadro diversi nella stessa vista."
+    },
+    {
+      "schermata": "Impostazioni",
+      "id": "impostazioni",
+      "larghezza": 360,
+      "scatto": "ui/360/impostazioni.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Impostazioni",
+      "id": "impostazioni",
+      "larghezza": 375,
+      "scatto": "ui/375/impostazioni.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Impostazioni",
+      "id": "impostazioni",
+      "larghezza": 390,
+      "scatto": "ui/390/impostazioni.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Impostazioni",
+      "id": "impostazioni",
+      "larghezza": 412,
+      "scatto": "ui/412/impostazioni.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Impostazioni",
+      "id": "impostazioni",
+      "larghezza": 430,
+      "scatto": "ui/430/impostazioni.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Creazione",
+      "id": "creazione",
+      "larghezza": 360,
+      "scatto": "ui/360/creazione.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Creazione",
+      "id": "creazione",
+      "larghezza": 375,
+      "scatto": "ui/375/creazione.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Creazione",
+      "id": "creazione",
+      "larghezza": 390,
+      "scatto": "ui/390/creazione.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Creazione",
+      "id": "creazione",
+      "larghezza": 412,
+      "scatto": "ui/412/creazione.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Creazione",
+      "id": "creazione",
+      "larghezza": 430,
+      "scatto": "ui/430/creazione.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Offerte",
+      "id": "offerte",
+      "larghezza": 360,
+      "scatto": "ui/360/offerte.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Offerte",
+      "id": "offerte",
+      "larghezza": 375,
+      "scatto": "ui/375/offerte.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Offerte",
+      "id": "offerte",
+      "larghezza": 390,
+      "scatto": "ui/390/offerte.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Offerte",
+      "id": "offerte",
+      "larghezza": 412,
+      "scatto": "ui/412/offerte.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Offerte",
+      "id": "offerte",
+      "larghezza": 430,
+      "scatto": "ui/430/offerte.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Dashboard",
+      "id": "dashboard",
+      "larghezza": 360,
+      "scatto": "ui/360/dashboard.png",
+      "esito": "anomalia",
+      "zona": "Il progetto del club / Il tuo procuratore",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Due righe di accesso vicine appaiono bianca con ombra e blu notte, pur avendo lo stesso impianto di titolo e freccia."
+    },
+    {
+      "schermata": "Dashboard",
+      "id": "dashboard",
+      "larghezza": 375,
+      "scatto": "ui/375/dashboard.png",
+      "esito": "anomalia",
+      "zona": "Il progetto del club / Il tuo procuratore",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Due righe di accesso vicine appaiono bianca con ombra e blu notte, pur avendo lo stesso impianto di titolo e freccia."
+    },
+    {
+      "schermata": "Dashboard",
+      "id": "dashboard",
+      "larghezza": 390,
+      "scatto": "ui/390/dashboard.png",
+      "esito": "anomalia",
+      "zona": "Il progetto del club / Il tuo procuratore",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Due righe di accesso vicine appaiono bianca con ombra e blu notte, pur avendo lo stesso impianto di titolo e freccia."
+    },
+    {
+      "schermata": "Dashboard",
+      "id": "dashboard",
+      "larghezza": 412,
+      "scatto": "ui/412/dashboard.png",
+      "esito": "anomalia",
+      "zona": "Il progetto del club / Il tuo procuratore / Adesso guardano te",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Tre righe di accesso vicine appaiono bianca con ombra, blu notte e marrone molto scuro, pur avendo lo stesso impianto di titolo e freccia."
+    },
+    {
+      "schermata": "Dashboard",
+      "id": "dashboard",
+      "larghezza": 430,
+      "scatto": "ui/430/dashboard.png",
+      "esito": "anomalia",
+      "zona": "Il progetto del club / Il tuo procuratore / Adesso guardano te",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Tre righe di accesso vicine appaiono bianca con ombra, blu notte e marrone molto scuro, pur avendo lo stesso impianto di titolo e freccia."
+    },
+    {
+      "schermata": "Stagione · Classifica",
+      "id": "stagione-classifica",
+      "larghezza": 360,
+      "scatto": "ui/360/stagione-classifica.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Classifica",
+      "id": "stagione-classifica",
+      "larghezza": 375,
+      "scatto": "ui/375/stagione-classifica.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Classifica",
+      "id": "stagione-classifica",
+      "larghezza": 390,
+      "scatto": "ui/390/stagione-classifica.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Classifica",
+      "id": "stagione-classifica",
+      "larghezza": 412,
+      "scatto": "ui/412/stagione-classifica.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Classifica",
+      "id": "stagione-classifica",
+      "larghezza": 430,
+      "scatto": "ui/430/stagione-classifica.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Calendario",
+      "id": "stagione-calendario",
+      "larghezza": 360,
+      "scatto": "ui/360/stagione-calendario.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Calendario",
+      "id": "stagione-calendario",
+      "larghezza": 375,
+      "scatto": "ui/375/stagione-calendario.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Calendario",
+      "id": "stagione-calendario",
+      "larghezza": 390,
+      "scatto": "ui/390/stagione-calendario.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Calendario",
+      "id": "stagione-calendario",
+      "larghezza": 412,
+      "scatto": "ui/412/stagione-calendario.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Calendario",
+      "id": "stagione-calendario",
+      "larghezza": 430,
+      "scatto": "ui/430/stagione-calendario.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Coppe",
+      "id": "stagione-coppe",
+      "larghezza": 360,
+      "scatto": "ui/360/stagione-coppe.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Coppe",
+      "id": "stagione-coppe",
+      "larghezza": 375,
+      "scatto": "ui/375/stagione-coppe.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Coppe",
+      "id": "stagione-coppe",
+      "larghezza": 390,
+      "scatto": "ui/390/stagione-coppe.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Coppe",
+      "id": "stagione-coppe",
+      "larghezza": 412,
+      "scatto": "ui/412/stagione-coppe.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Stagione · Coppe",
+      "id": "stagione-coppe",
+      "larghezza": 430,
+      "scatto": "ui/430/stagione-coppe.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Club",
+      "id": "club",
+      "larghezza": 360,
+      "scatto": "ui/360/club.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Club",
+      "id": "club",
+      "larghezza": 375,
+      "scatto": "ui/375/club.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Club",
+      "id": "club",
+      "larghezza": 390,
+      "scatto": "ui/390/club.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Club",
+      "id": "club",
+      "larghezza": 412,
+      "scatto": "ui/412/club.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Club",
+      "id": "club",
+      "larghezza": 430,
+      "scatto": "ui/430/club.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Carriera · Profilo",
+      "id": "carriera-profilo",
+      "larghezza": 360,
+      "scatto": "ui/360/carriera-profilo.png",
+      "esito": "anomalia",
+      "zona": "Biografia / Il tuo rivale / Club dei sogni / sezioni bianche",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Le righe di accesso alternano blu notte, viola e bianco mantenendo struttura di titolo e freccia simile."
+    },
+    {
+      "schermata": "Carriera · Profilo",
+      "id": "carriera-profilo",
+      "larghezza": 375,
+      "scatto": "ui/375/carriera-profilo.png",
+      "esito": "anomalia",
+      "zona": "Biografia / Record personali",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "La riga Biografia è blu notte mentre le righe di sezione vicine sono bianche; il trattamento del riquadro cambia."
+    },
+    {
+      "schermata": "Carriera · Profilo",
+      "id": "carriera-profilo",
+      "larghezza": 390,
+      "scatto": "ui/390/carriera-profilo.png",
+      "esito": "anomalia",
+      "zona": "Biografia / Il tuo rivale / Club dei sogni / sezioni bianche",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Le righe di accesso alternano blu notte, viola e bianco mantenendo struttura di titolo e freccia simile."
+    },
+    {
+      "schermata": "Carriera · Profilo",
+      "id": "carriera-profilo",
+      "larghezza": 412,
+      "scatto": "ui/412/carriera-profilo.png",
+      "esito": "anomalia",
+      "zona": "Biografia / Il tuo rivale / Club dei sogni / sezioni bianche",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Le righe di accesso alternano blu notte, viola e bianco mantenendo struttura di titolo e freccia simile."
+    },
+    {
+      "schermata": "Carriera · Profilo",
+      "id": "carriera-profilo",
+      "larghezza": 430,
+      "scatto": "ui/430/carriera-profilo.png",
+      "esito": "anomalia",
+      "zona": "Biografia / Il tuo rivale / Club dei sogni / sezioni bianche",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Le righe di accesso alternano blu notte, viola e bianco mantenendo struttura di titolo e freccia simile."
+    },
+    {
+      "schermata": "Carriera · Nazionale",
+      "id": "carriera-nazionale",
+      "larghezza": 360,
+      "scatto": "ui/360/carriera-nazionale.png",
+      "esito": "anomalia",
+      "zona": "Riquadro Italia / elenco convocati",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Il riquadro Italia e le righe dei convocati usano bordo e testi azzurro/blu accanto alla testata bordeaux e alle altre superfici bianche visibili."
+    },
+    {
+      "schermata": "Carriera · Nazionale",
+      "id": "carriera-nazionale",
+      "larghezza": 375,
+      "scatto": "ui/375/carriera-nazionale.png",
+      "esito": "anomalia",
+      "zona": "Riquadro Italia / elenco convocati",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Il riquadro Italia e le righe dei convocati usano bordo e testi azzurro/blu accanto alla testata bordeaux e alle altre superfici bianche visibili."
+    },
+    {
+      "schermata": "Carriera · Nazionale",
+      "id": "carriera-nazionale",
+      "larghezza": 390,
+      "scatto": "ui/390/carriera-nazionale.png",
+      "esito": "anomalia",
+      "zona": "Riquadro Italia / elenco convocati",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Il riquadro Italia e le righe dei convocati usano bordo e testi azzurro/blu accanto alla testata bordeaux e alle altre superfici bianche visibili."
+    },
+    {
+      "schermata": "Carriera · Nazionale",
+      "id": "carriera-nazionale",
+      "larghezza": 412,
+      "scatto": "ui/412/carriera-nazionale.png",
+      "esito": "anomalia",
+      "zona": "Riquadro Italia / elenco convocati",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Il riquadro Italia e le righe dei convocati usano bordo e testi azzurro/blu accanto alla testata bordeaux e alle altre superfici bianche visibili."
+    },
+    {
+      "schermata": "Carriera · Nazionale",
+      "id": "carriera-nazionale",
+      "larghezza": 430,
+      "scatto": "ui/430/carriera-nazionale.png",
+      "esito": "anomalia",
+      "zona": "Riquadro Italia / elenco convocati",
+      "criteri_violati": [
+        4
+      ],
+      "osservazione": "Il riquadro Italia e le righe dei convocati usano bordo e testi azzurro/blu accanto alla testata bordeaux e alle altre superfici bianche visibili."
+    },
+    {
+      "schermata": "Agente",
+      "id": "agente",
+      "larghezza": 360,
+      "scatto": "ui/360/agente.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Agente",
+      "id": "agente",
+      "larghezza": 375,
+      "scatto": "ui/375/agente.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Agente",
+      "id": "agente",
+      "larghezza": 390,
+      "scatto": "ui/390/agente.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Agente",
+      "id": "agente",
+      "larghezza": 412,
+      "scatto": "ui/412/agente.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Agente",
+      "id": "agente",
+      "larghezza": 430,
+      "scatto": "ui/430/agente.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Ufficio",
+      "id": "ufficio",
+      "larghezza": 360,
+      "scatto": "ui/360/ufficio.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Ufficio",
+      "id": "ufficio",
+      "larghezza": 375,
+      "scatto": "ui/375/ufficio.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Ufficio",
+      "id": "ufficio",
+      "larghezza": 390,
+      "scatto": "ui/390/ufficio.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Ufficio",
+      "id": "ufficio",
+      "larghezza": 412,
+      "scatto": "ui/412/ufficio.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Ufficio",
+      "id": "ufficio",
+      "larghezza": 430,
+      "scatto": "ui/430/ufficio.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Prepartita",
+      "id": "prepartita",
+      "larghezza": 360,
+      "scatto": "ui/360/prepartita.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Prepartita",
+      "id": "prepartita",
+      "larghezza": 375,
+      "scatto": "ui/375/prepartita.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Prepartita",
+      "id": "prepartita",
+      "larghezza": 390,
+      "scatto": "ui/390/prepartita.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Prepartita",
+      "id": "prepartita",
+      "larghezza": 412,
+      "scatto": "ui/412/prepartita.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    },
+    {
+      "schermata": "Prepartita",
+      "id": "prepartita",
+      "larghezza": 430,
+      "scatto": "ui/430/prepartita.png",
+      "esito": "ok",
+      "zona": "Nessuna anomalia visibile",
+      "criteri_violati": [],
+      "osservazione": "Nella porzione ritratta i quattro criteri risultano rispettati."
+    }
+  ]
+}
