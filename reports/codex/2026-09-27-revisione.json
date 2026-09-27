@@ -1,0 +1,20 @@
+{
+  "versione": "7.999.27",
+  "compito": "Scheda 2 — revisione indipendente delle release 7.999.26 e 7.999.27",
+  "comando": "git diff 1c735887..51285989 -- src/; lettura statica dei lettori e dei guardiani in tests/visual",
+  "seme": "non applicabile: nessun test eseguito",
+  "misure": [
+    { "nome": "file src toccati e revisionati", "valore": 5, "soglia": "5", "esito": "ok" },
+    { "nome": "rischi statici medi", "valore": 5, "soglia": "classificazione nel rapporto", "esito": "anomalia" },
+    { "nome": "rischi statici bassi", "valore": 1, "soglia": "classificazione nel rapporto", "esito": "anomalia" },
+    { "nome": "guardiani eseguiti", "valore": 0, "soglia": "non richiesti dalla scheda", "esito": "ok" }
+  ],
+  "segnalazioni": [
+    { "gravita": "media", "descrizione": "26-A: cast.ricevente punta al crossatore; il 3D sceglie inoltre il battitore per prossimità", "come_riprodurre": "Forzare cross P→R eroe con un altro compagno vicino e confrontare cast, origine e mesh animato.", "prove": ["src/14-motore-possesso.jsx:364-368", "src/12-three-match-view.jsx:2691,3205,5127-5128", "tests/visual/cross-origine-test.mjs:3-8"] },
+    { "gravita": "media", "descrizione": "26-B: origine globale può restare attiva fra partite e i rami 3D non verificano la scheda", "come_riprodurre": "Interrompere una scena da cross, aprire nuova partita nella stessa pagina e controllare _ORIG26 e il volo della prima scena.", "prove": ["src/11-ui-kit-highlight.jsx:1547-1549", "src/15-live-match.jsx:4327,4422", "src/12-three-match-view.jsx:3308,4273,5124"] },
+    { "gravita": "media", "descrizione": "26-C: l'evento che inserisce la scena e quello che fornisce l'origine possono differire nello stesso minuto", "come_riprodurre": "Accumulare occasione ordinaria e poi cross fuori finestra nello stesso minuto e confrontare evento e scena.", "prove": ["src/15-live-match.jsx:5144,5150,5160,4405-4424"] },
+    { "gravita": "bassa", "descrizione": "26-D: inserimento della scena extra senza limite globale di 8 highlight", "come_riprodurre": "Partire da otto highlight, iniettare cross fuori finestra e leggere __CPM_NUMHL().", "prove": ["src/15-live-match.jsx:5154-5158,4213,4234,4249"] },
+    { "gravita": "media", "descrizione": "27-A: la scena di punizione diretta precede il sorteggio del tiro del motore", "come_riprodurre": "Confrontare a seme fisso un fallo centrale avanzato con richiesta piazzati on/off.", "prove": ["src/14-motore-possesso.jsx:810-817", "tests/visual/piazzati-eroe-test.mjs:2-5"] },
+    { "gravita": "media", "descrizione": "27-B: catalogo piazzati esaurito lascia una scheda ordinaria per un evento da piazzato", "come_riprodurre": "Segnare come usate tutte le schede coerenti, emettere rigore o punizione e confrontare origine e intent della scheda.", "prove": ["src/15-live-match.jsx:4408-4410", "src/14-motore-possesso.jsx:797-800"] }
+  ]
+}
