@@ -2541,6 +2541,11 @@ function migratePlayer(player){
     newP={...newP,...(newP.migratedFrom==null?{migratedFrom:(newP.saveVersion||0)}:{}),saveVersion:SAVE_VERSION};
     changed=true;
   }
+    /* [7.999.35 collaudo PO «calendario sbagliato»] BONIFICA: un'amichevole della Nazionale non giocata che cade nella fase finale
+       di un Europeo/Mondiale in corso (programmata prima della correzione della convocazione) si toglie dal calendario. */
+    try{const _em=newP.euroMondiale;if(!(typeof window!=='undefined'&&window.__CPM_NO_CAL35)&&_em&&_em.active&&!_em.done&&_em.phase&&_em.phase!=="qualificazioni"&&Array.isArray(newP.calendar)){
+      const _cal=newP.calendar.filter(m=>!(m&&m.type==="national"&&!m.played&&(m.week||0)>=24));
+      if(_cal.length!==newP.calendar.length){newP={...newP,calendar:_cal};changed=true;}}}catch(_e35){}
   return {player:newP,changed};
 }
 if(typeof window!=='undefined'){window.__CPM_MIGRATE=migratePlayer;}

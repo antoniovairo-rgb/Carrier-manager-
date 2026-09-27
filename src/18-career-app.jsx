@@ -4025,7 +4025,13 @@ const getThisWeekMatchday=()=>{
           const _callupOpp=_oppPool[Math.floor(_cuR()*_oppPool.length)]||"Avversario";
           const _usedW=new Set((player.calendar||[]).filter(m=>!m.played).map(m=>m.week));
           let _natW=weekVal;do{_natW++;}while(_natW<=37&&_usedW.has(_natW));
-          if(_natW<=37){
+          /* [7.999.35 collaudo PO «calendario sbagliato»: in settimana 28, in pieno girone dell'Europeo, la home mostrava
+             «FC Merseyside vs Belgio · Premier Division»] L'amichevole della convocazione prendeva la prima settimana libera
+             DEL CALENDARIO DEL CLUB, senza guardare il torneo della Nazionale (che vive fuori dal calendario): un'amichevole in
+             mezzo alla fase finale di un Europeo/Mondiale. Ora nessuna amichevole durante la fase finale, ne' nelle settimane
+             in cui la fase finale arriva (dalla 24, dove si chiudono le qualificazioni). Rosso __CPM_NO_CAL35. */
+          const _em35=player.euroMondiale;const _torneo35=!!(_em35&&_em35.active&&!_em35.done&&(_em35.phase!=="qualificazioni"||_natW>=24))&&!(typeof window!=='undefined'&&window.__CPM_NO_CAL35);
+          if(_natW<=37&&!_torneo35){
             setPlayer(pp=>({...pp,calendar:[...(pp.calendar||[]),{matchday:1470+_natW/* [7.160.0 super-test · CAL-F1] era 970+W: per W20-29 il matchday cadeva in 990-999 = namespace di Coppa (990+round) ed euro KO (996+koRound) → le marcature per matchday cross-contaminavano (semifinale euro marcata dal risultato dell'amichevole, o non più giocabile via _committedMdRef). 1470+W (1475-1507) non collide con nessun range (lega 1-34, euro group 900-905, cup 990-994, euro KO 995-999). Save-safe: unico produttore, identità sempre per uguaglianza esatta dalla stessa voce */,week:_natW,opponentId:"nt-"+_callupOpp.toLowerCase().slice(0,3),opponentName:_callupOpp,isHome:true,played:false,result:null,type:"national",competition:"Amichevole Internazionale"}]}));
             setTimeout(()=>notify(`🌍 Convocazione in Nazionale! Amichevole vs ${_callupOpp} — settimana ${_natW}.`,TH.accent),700);
           }
@@ -7016,13 +7022,16 @@ const getThisWeekMatchday=()=>{
         let md=null;try{md=getThisWeekMatchday();}catch(_e){md=null;}
         if(!md)return null;
         const lc=(()=>{try{return getLeagueClubs(player)||[];}catch(_e){return [];}})();
-        const opp=md.opponentData||lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName||"Avversario",a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#64748b",c2:"#ffffff"};
-        const me=player.club||{n:"La tua squadra",a:"TU",c:TH.primary,c2:"#ffffff"};
+        /* [7.999.35 collaudo PO «calendario sbagliato»] un'amichevole della Nazionale e' una partita della NAZIONALE: prima la card
+           la mostrava come gara di campionato (intestazione della lega, il club come squadra di casa, la posizione in classifica). */
+        const _naz35=md.type==="national"&&!(typeof window!=='undefined'&&window.__CPM_NO_CAL35);const _ndt35=(n)=>{try{return (typeof NAT_CLUB_DATA!=="undefined"&&NAT_CLUB_DATA[n])||null;}catch(_e){return null;}};
+        const opp=_naz35?{...(_ndt35(md.opponentName)||{a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#64748b",c2:"#ffffff"}),n:md.opponentName||"Avversario"}:(md.opponentData||lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||CLUBS.find(c=>c.id===md.opponentId)||{n:md.opponentName||"Avversario",a:(md.opponentName||"???").slice(0,3).toUpperCase(),c:"#64748b",c2:"#ffffff"});
+        const me=_naz35?{...(_ndt35(player.nation||"Italia")||{a:(player.nation||"ITA").slice(0,3).toUpperCase(),c:TH.primary,c2:"#ffffff"}),n:player.nation||"Italia"}:(player.club||{n:"La tua squadra",a:"TU",c:TH.primary,c2:"#ffffff"});
         const home=md.isHome!==false;
-        const comp=md.type==="euro_group"||md.type==="euro"?"Coppa Europea":md.type==="cup"?"Coppa Nazionale":(player.club?.lg||"Campionato");
+        const comp=_naz35?(md.competition||"Amichevole Internazionale"):md.type==="euro_group"||md.type==="euro"?"Coppa Europea":md.type==="cup"?"Coppa Nazionale":(player.club?.lg||"Campionato");
         const st=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
-        const myPos=st.findIndex(t=>t.id===me.id||(t.n||t.name)===me.n);
-        const oppPos=st.findIndex(t=>t.id===opp.id||(t.n||t.name)===opp.n);
+        const myPos=_naz35?-1:st.findIndex(t=>t.id===me.id||(t.n||t.name)===me.n);
+        const oppPos=_naz35?-1:st.findIndex(t=>t.id===opp.id||(t.n||t.name)===opp.n);
         const rated=(player.matchHistory||[]).filter(m=>m&&!m.simulated&&m.rating>0).slice(-10);
         const avg=rated.length>=3?Math.round(rated.reduce((a,m)=>a+m.rating,0)/rated.length*10)/10:null;
         const cs=getContinuaState();
