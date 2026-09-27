@@ -45,7 +45,11 @@ Aperto il 26/09 su mandato PO («colmare i gap dei gesti»). Una riga per clip. 
 | `mx-victory-jump` | I1 esultanza (salto a braccia alzate) | FBX dal PO «Victory_Idle.fbx», Mixamo | Mixamo | come sopra | come sopra | `provini-p1a/mx-victory-idle.png` | 1,9 s | variante di `lift` | come sopra |
 | `pass~m`, `penalty~m` | L4 piede | specchio delle clip CGTrader (`_specchiaClip23`) | CGTrader | specchio | errore di specchio in `__CPM_SPECCHIO23` | — | 0 (in memoria) | scelta dal piede per l'eroe | `piede-preferito-test.mjs` · `__CPM_NO_PIEDE31` |
 
-File: `assets/cgtrader-clip-esultanze.glb`, 206 KB, due clip. Scartate dal PO-pacchetto: «Golf Putt Victory» (contiene un colpo da golf), «Victory_1» (8,6 s, mani alla testa: tenuta di riserva, non collegata).
+| `mx-fist-pump` | I1 esultanza SOBRIA (ginocchio su e pugno, poi braccio al cielo) | FBX dal PO «Golf Putt Victory», Mixamo, **ritagliato 4,3-8,0 s** (via il colpo da golf) | Mixamo | Blender, striscia NLA 129-240 | come sopra | `provini-p1a/mx-golf-putt-victory.png` (24 istanti) | 3,7 s | variante di `lift` SOLO per il piano `contained` (7.999.32) | `esultanza-braccia-test.mjs` |
+| `mx-defend-ready` | G/difesa: attesa in marcatura | FBX dal PO «Goalkeeper Idle», Mixamo (idea del PO) | Mixamo | Blender | come sopra | `provini-p1a/mx-gk-idle-po.png` | 4,6 s | seconda posa ferma di ogni corpo, pesata su chi difende nella scena (7.999.32) | `attesa-difesa-test.mjs` · `__CPM_NO_ATTESA32` |
+
+File (dal 7.999.32): `assets/cgtrader-clip-po.glb`, 477 KB, quattro clip (sostituisce `cgtrader-clip-esultanze.glb` della 7.999.31).
+In prova, non ancora collegate: `Receive Soccerball` (controllo di coscia, tratto 2,2-3,0 s), `Soccer Header` (testa da fermo: contatto da misurare), `Jog Forward` (corsa: da tarare sulla cadenza). Scartate dal PO-pacchetto: «Golf Putt Victory» (contiene un colpo da golf), «Victory_1» (8,6 s, mani alla testa: tenuta di riserva, non collegata).
 Riserva: se la clip manca, le braccia al cielo si fanno proceduralmente (stesso metodo del cartellino).
 
 ## Clip da cercare (per il PO) — tutte su Mixamo, scaricate **sul nostro personaggio** (come «Victory»), FBX, 30 fps, «In Place» quando c'è la spunta

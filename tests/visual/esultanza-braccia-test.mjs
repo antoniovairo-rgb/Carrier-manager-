@@ -26,7 +26,10 @@ for (const gi of GIS) {
 await b.close(); srv.close();
 const err = []; const ok = (c, m) => { if (!c) err.push(m); console.log((c ? 'ok   ' : 'NO   ') + m); };
 ok(!errs.length, 'nessun errore di pagina ' + errs.slice(0, 1).join(''));
-const conLift = righe.filter(r => /^(arms_up|jump_arms_up|run_to_crowd|run_wide|contained)$/.test(r.pick || ''));
+/* [7.999.32] l'esultanza SOBRIA (contained) e' il pugno: niente braccia al cielo, ma la clip deve essere montata */
+const conLift = righe.filter(r => /^(arms_up|jump_arms_up|run_to_crowd|run_wide)$/.test(r.pick || ''));
+const sobrie = righe.filter(r => r.pick === 'contained');
+ok(sobrie.every(r => (r.clip | 0) >= 3 || (r.procedurale | 0) >= 3), `esultanza sobria: il gesto e' montato (${sobrie.map(r => (r.clip | 0) + '/' + (r.procedurale | 0)).join(', ') || 'nessuna'})`);
 ok(righe.length >= 2, `scene di gol osservate: ${righe.length}`);
 ok(conLift.length >= 1, `almeno un'esultanza che chiede le braccia al cielo (${conLift.map(r => r.pick).join(', ') || 'nessuna'})`);
 ok(conLift.length && conLift.every(r => r.maniSopraTesta >= 3), `in ogni esultanza con braccia al cielo le mani salgono sopra la testa (${conLift.map(r => r.maniSopraTesta).join(', ')} fotogrammi)`);

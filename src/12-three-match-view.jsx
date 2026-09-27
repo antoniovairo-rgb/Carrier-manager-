@@ -81,7 +81,15 @@ const _LATO23={'gk-dive':1,'mx-goalkeeper-diving-save-2':-1,'gk-block':1,'mx-goa
    (provino-clip.html, picco di velocita' del piede, 27/09): kick sinistro 8,3 contro 0,5 · pass sinistro 5,3 contro 1,1 · penalty
    destro 14,3 contro 9,4 · mx-kick-soccerball sinistro · mx-kick-soccerball-2 destro. La volee' resta fuori: misura incerta
    (destro 12,3 contro sinistro 10,3). Le specchiate `~m` hanno il piede opposto. */
-var _PIEDE31=null;
+var _PIEDE31=null;var _PUGNO32=false;/* [7.999.32] il piano d'esultanza in corso e' quello sobrio (quiet): la clip e' il pugno */
+/* [7.999.32 — L'ATTESA IN DIFESA. Idea del PO (27/09): «Goalkeeper Idle potrebbe essere sfruttato per la posizione di attesa in difesa».
+   Rosso __CPM_NO_ATTESA32.] Ogni corpo di movimento ha DUE pose ferme: quella normale (`idle`) e l'attesa difensiva (gambe piegate,
+   braccia avanti). Durante una scena difende la squadra senza palla — gli avversari se l'eroe attacca, i suoi compagni se la scena e'
+   difensiva (P.hlDef) — e il peso della posa ferma passa, dolcemente, da una all'altra. Portieri, arbitro ed eroe esclusi. */
+function _attesa32(a,P,aDt){try{if(!a||!a._idleDif||!a.idle)return;
+  const hl=P&&/^hl_/.test(String(P.matchPhase||''));const dif=hl&&!a._isGk&&!a._isRef&&!a._isHero&&a._team===(P.hlDef?'home':'away')&&!(typeof window!=='undefined'&&window.__CPM_NO_ATTESA32);
+  a._dif32=(a._dif32||0)+((dif?1:0)-(a._dif32||0))*Math.min(aDt*3,1);const w=a.idle.weight;a._idleDif.weight=w*a._dif32;a.idle.weight=w*(1-a._dif32);
+  if(typeof window!=='undefined'&&hl){const W=(window.__CPM_ATTESA32=window.__CPM_ATTESA32||{campioni:0,inAttesa:0,home:0,away:0,sbagliati:0});W.campioni++;if(a._dif32>0.7&&w>0.3){W.inAttesa++;W[a._team]=(W[a._team]|0)+1;if(!dif)W.sbagliati++;}}}catch(_e){}}
 const _PIEDE_CLIP31={'kick':'L','kick~m':'R','pass':'L','pass~m':'R','penalty':'R','penalty~m':'L','mx-kick-soccerball':'L','mx-kick-soccerball-2':'R'};
 function _scegliGesto23(a,want,ai,chiave,lbl,lato){
   const _nm=x=>((x&&x.getClip&&x.getClip())||{}).name,W=(typeof window!=='undefined')?(window.__CPM_VAR23=window.__CPM_VAR23||{}):{};
@@ -93,6 +101,7 @@ function _scegliGesto23(a,want,ai,chiave,lbl,lato){
   const base=a.gestures[want];if(!base)return base;
   let v=(a._gVar&&a._gVar[want])||[base];
   /* tuffo/respinta: si tiene solo l'esecuzione che va dal lato della palla. Rosso __CPM_NO_LATO23 (sorteggio fra tutte). */
+  if(want==='lift'&&v.length>1){const pu=v.filter(x=>_nm(x)==='mx-fist-pump'),al=v.filter(x=>_nm(x)!=='mx-fist-pump');v=(_PUGNO32&&pu.length)?pu:(al.length?al:v);}/* [7.999.32] pugno = esultanza sobria; braccia al cielo = le altre */
   if(lato&&(want==='dive'||want==='block')&&!(typeof window!=='undefined'&&window.__CPM_NO_LATO23)){const pool=v.filter(x=>_LATO23[_nm(x)]===lato);if(pool.length)v=pool;}
   if(ai===0&&_PIEDE31&&v.length>1&&!(typeof window!=='undefined'&&window.__CPM_NO_PIEDE31)){const pool=v.filter(x=>_PIEDE_CLIP31[_nm(x)]===_PIEDE31);
     if(pool.length)v=pool;}
@@ -1002,7 +1011,7 @@ function ThreeMatchView(props){
         for(let i=0;i<pf.values.length;i+=3){pf.values[i]=x0;pf.values[i+1]=yT;pf.values[i+2]=z0;}
         const D=su.duration||1;for(let k=0;k<ps.times.length;k++){const u=Math.min(1,Math.max(0,(ps.times[k]/D-0.2)/0.7)),q=u*u*(3-2*u);ps.values[3*k]=x0;ps.values[3*k+1]=yT+(yS-yT)*q;ps.values[3*k+2]=z0;}
         pt._r7=true;return true;}catch(e){return false;}};
-      const _VAR23={lift:['mx-victory-jump'],kick:['kick~m'],pass:['pass~m'],shortPass:['pass~m'],longPass:['pass~m'],cross:['pass~m'],penalty:['penalty~m'],/* [7.999.31] passaggio e rigore specchiati: per l'eroe li sceglie il piede (_PIEDE31), per gli altri il sorteggio *//* [23/09] il tiro storico SPECCHIATO (destro, stessa fase): vedi _specchiaClip23 */
+      const _VAR23={lift:['mx-victory-jump','mx-fist-pump'],/* [7.999.32] + il pugno ritagliato da «Golf Putt Victory» (4,3-8,0 s): solo per l'esultanza SOBRIA (_PUGNO32), mai sorteggiato fra le braccia al cielo */kick:['kick~m'],pass:['pass~m'],shortPass:['pass~m'],longPass:['pass~m'],cross:['pass~m'],penalty:['penalty~m'],/* [7.999.31] passaggio e rigore specchiati: per l'eroe li sceglie il piede (_PIEDE31), per gli altri il sorteggio *//* [23/09] il tiro storico SPECCHIATO (destro, stessa fase): vedi _specchiaClip23 */
         /* kick Mixamo: REVOCATO. Le tre clip di tiro nuove peggiorano il contatto (piede-palla 0,83-1,46 m contro 0,21-0,45 della clip
            storica, gesto-eroe-review CPM_FORZA): la palla parte sulla fase della clip storica (sinistro, 0,98). */
         /* header, receive, penalty, throwin: RIMANDATI (la rovesciata NON e' una variante a sorteggio: esce solo su «Rovesciata!», _gScissor) — hanno un contatto con la palla sincronizzato
@@ -1016,7 +1025,7 @@ function ThreeMatchView(props){
         catch:['mx-goalkeeper-catch-3','mx-goalkeeper-catch-4'],
         gkThrow:['mx-goalkeeper-overhand-throw','mx-goalkeeper-pass'],goalKick:['mx-goalkeeper-drop-kick'],gkReady:['mx-goalkeeper-idle','mx-goalkeeper-idle-2']};
       const _PESO23={};
-      const _mkGestures=(av,map)=>{if(!av)return;const out={};for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}if(!out.lift&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31)){const _cv=_mxAnims23.find(x=>x&&x.name==='mx-victory');if(_cv){const a=av.mx.clipAction(_cv);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out.lift=a;if(!out.celebrate)out.celebrate=a;}}/* [7.999.31] esultanza vera (clip del PO) al posto di `celebrate`, che nel pacchetto non c'e' */av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;
+      const _mkGestures=(av,map)=>{if(!av)return;const out={};for(const k in map){const c=_clip1(map[k]);if(!c){out[k]=null;continue;}const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}if(!out.lift&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31)){const _cv=_mxAnims23.find(x=>x&&x.name==='mx-victory');if(_cv){const a=av.mx.clipAction(_cv);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out.lift=a;if(!out.celebrate)out.celebrate=a;}}/* [7.999.31] esultanza vera (clip del PO) al posto di `celebrate`, che nel pacchetto non c'e' */if(!av._idleDif&&_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_ATTESA32)){const _cd=_mxAnims23.find(x=>x&&x.name==='mx-defend-ready');if(_cd){const a=av.mx.clipAction(_cd);a.play();a.setEffectiveWeight(0);a.time=(_cd.duration||1)*((av.lx||0)*0.37%1+1)%1;av._idleDif=a;}}/* [7.999.32] seconda posa ferma: l'attesa in difesa (Goalkeeper Idle del PO) */av.gestures=out;av._gw=0;av._gName=null;av._gAct=null;
         if(!(typeof window!=='undefined'&&window.__CPM_NO_CADUTA8)){for(const [k,n] of [['trip','mx-soccer-trip'],['fallen','mx-fallen-idle'],['standUp','mx-standing-up']]){const c=_mxAnims23.find(x=>x&&x.name===n);if(!c||out[k])continue;const a=av.mx.clipAction(c);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);out[k]=a;}}/* [7.999.8] i tre gesti della caduta */
         av._gScissor=null;{const _sc=_mxAnims23.find(x=>x&&x.name==='mx-scissor-kick');if(_sc&&!(typeof window!=='undefined'&&window.__CPM_NO_ROVESCIATA23)){const a=av.mx.clipAction(_sc);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;a.setEffectiveWeight(0);av._gScissor=a;}}
         av._gVar=null;if(_mxAnims23.length&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP)){const v={};for(const k in out){if(!out[k]||!_VAR23[k])continue;const acts=[];for(let i=0;i<(_PESO23[k]||1);i++)acts.push(out[k]);
@@ -1231,7 +1240,7 @@ function ThreeMatchView(props){
         const next=av._cgLodVariants[key];if(!next||!_cgtraderLodCanSwap(av)){_cgtraderLodStats.blocked++;return false;}
         const oldIdle=av.idle,oldRun=av.run;
         for(const state of Object.values(av._cgLodVariants)){if(state&&state.visualRoot)state.visualRoot.visible=state===next;}
-        av.visualRoot=next.visualRoot;av.mx=next.mx;av.idle=next.idle;av.run=next.run;av.gestures=next.gestures;av._gVar=next._gVar||null;av._locoClips=next._locoClips;
+        const oldDif=av._idleDif;av.visualRoot=next.visualRoot;av.mx=next.mx;av.idle=next.idle;av.run=next.run;av._idleDif=next._idleDif||null;if(oldDif&&av._idleDif){av._idleDif.weight=oldDif.weight||0;}av.gestures=next.gestures;av._gVar=next._gVar||null;av._locoClips=next._locoClips;
         av.spine=next.spine;av._handL=next._handL;av._handR=next._handR;av._footL=next._footL;av._ballL=next._ballL;av._footR=next._footR;av._ballR=next._ballR;av._armB=next._armB;av._cgLod=key;
         if(oldIdle&&av.idle){av.idle.time=oldIdle.time||0;av.idle.weight=oldIdle.weight||0;av.idle.timeScale=oldIdle.timeScale||1;}
         if(oldRun&&av.run){av.run.time=oldRun.time||0;av.run.weight=oldRun.weight||0;av.run.timeScale=oldRun.timeScale||1;}
@@ -1283,7 +1292,7 @@ function ThreeMatchView(props){
            tre pacchetti, le varianti si costruiscono. Una funzione deve reagire a cio' che riceve, non a
            una variabile di modalita' che per giunta qui non sarebbe nemmeno in scope. */
         if(Array.isArray(lodPackages)&&lodPackages.length===3){
-          const _stateOf=a=>({visualRoot:a.visualRoot,mx:a.mx,idle:a.idle,run:a.run,gestures:a.gestures,_gVar:a._gVar||null,_locoClips:a._locoClips,spine:a.spine,_handL:a._handL,_handR:a._handR,_footL:a._footL,_ballL:a._ballL,_footR:a._footR,_ballR:a._ballR,_armB:a._armB,_cgLod:a._cgLod});
+          const _stateOf=a=>({visualRoot:a.visualRoot,mx:a.mx,idle:a.idle,run:a.run,_idleDif:a._idleDif||null,gestures:a.gestures,_gVar:a._gVar||null,_locoClips:a._locoClips,spine:a.spine,_handL:a._handL,_handR:a._handR,_footL:a._footL,_ballL:a._ballL,_footR:a._footR,_ballR:a._ballR,_armB:a._armB,_cgLod:a._cgLod});
           const _makeVariant=(host,avatarPkg,index)=>{
             const visual=_cloneHyperVisual(avatarPkg,hashStr('hyper-lod-'+(host.proc._sd||index)+'-'+(avatarPkg._cgLod||'x')));host.root.add(visual);visual.updateMatrixWorld(true);
             const rawBounds=new THREE.Box3().setFromObject(visual),meshHeight=Math.max(0.1,rawBounds.max.y-rawBounds.min.y),skeletonMeasure=_skeletonWorldHeight(visual),rawHeight=skeletonMeasure.height>0.5?skeletonMeasure.height:meshHeight;visual.scale.setScalar(_scalaCorpo21()*((host._h||1.8)/rawHeight));visual.updateMatrixWorld(true);
@@ -1402,7 +1411,7 @@ function ThreeMatchView(props){
           const _hyperAssetUrls=_trioLod?['./assets/cgtrader-review-lod0-kit-adapter.glb','./assets/cgtrader-review-lod1-kit-adapter.glb','./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderSquadReview?['./assets/cgtrader-review-lod2-kit-adapter.glb']:(_cgtraderHighlightOptimized?['./assets/cgtrader-review-lod0-kit-adapter.glb']:(_cgtraderAjaxReview?['./assets/cgtrader-review-lod0-ajax-kit-review.glb']:(_cgtraderReview?['./assets/cgtrader-review-lod0-kit-adapter.glb']:['./assets/hyper-casual-korward-football-authored.glb','./assets/hyper-casual-korward-football-authored-brown.glb','./assets/hyper-casual-korward-football-authored-black.glb','./assets/hyper-casual-korward-football-authored-red.glb']))));
         const _mx23=_trioLod&&!(typeof window!=='undefined'&&window.__CPM_NO_MXCLIP);
         const _esu31=_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_ESULTA31);
-        Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-esultanze.glb']:[]).map(url=>loadGLB(url))).then(results=>{
+        Promise.allSettled(_hyperAssetUrls.concat(_mx23?['./assets/cgtrader-clip-mixamo.glb']:[]).concat(_esu31?['./assets/cgtrader-clip-po.glb']:[]).map(url=>loadGLB(url))).then(results=>{
           const _esuRes=_esu31?results.pop():null;const _mxRes=_mx23?results.pop():null;if(_mxRes&&_mxRes.status==='fulfilled'&&_mxRes.value){_mxAnims23=(_mxRes.value.animations||[]).slice();if(!(typeof window!=='undefined'&&window.__CPM_NO_CADUTA8)){const ok=riparaCadute7(_mxAnims23);try{window.__CPM_CADUTA8={riparate:ok};}catch(_e){}}}
           if(_mx23&&!(typeof window!=='undefined'&&window.__CPM_NO_SPECCHIO23)){const _p0=results[0]&&results[0].status==='fulfilled'&&results[0].value;const _k=_p0&&(_p0.animations||[]).find(c=>c&&c.name==='kick');const _km=_k&&_specchiaClip23(_k,_p0.scene,'kick~m');if(_km)_mxAnims23.push(_km);if(!(typeof window!=='undefined'&&window.__CPM_NO_PIEDE31))for(const _n31 of ['pass','penalty']){const _c31=(_p0.animations||[]).find(c=>c&&c.name===_n31);const _m31=_c31&&_specchiaClip23(_c31,_p0.scene,_n31+'~m');if(_m31)_mxAnims23.push(_m31);}}/* [7.999.31] le esultanze del PO (Mixamo sullo scheletro CGTrader): via le tracce del nodo `root`, che nell'export da FBX porta la scala dei centimetri (0,01) e farebbe sparire il corpo */if(_esuRes&&_esuRes.status==='fulfilled'&&_esuRes.value){for(const _c of (_esuRes.value.animations||[])){_c.tracks=_c.tracks.filter(t=>!/^root\./.test(t.name));_mxAnims23.push(_c);}}try{window.__CPM_MXCLIP=_mxAnims23.length;}catch(_e){}
           const packages=results.filter(result=>result.status==='fulfilled'&&result.value&&result.value.scene).map(result=>result.value),pkg=packages[0];
@@ -7509,7 +7518,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _scorer373=(_pl&&_pl.by==="mate")?(passTargetMesh&&passTargetMesh.parent?passTargetMesh:null):null;
           if(_act&&_scorer373&&_cu<0.9){try{sr.current._mateFx={mesh:_scorer373,name:"lift",t:0.6};}catch(_e373){}}
           /* (a) CLIP GLB — riusa il canale gia' esistente dell'alzata del trofeo */
-          sr.current._celLift371=(_act&&_pl&&_pl.clip==="lift"&&!_scorer373&&_cu<((_pl&&_pl.quiet)?0.70:0.94))?1:0;/* [7.373.0] col gol del compagno le braccia al cielo sono SUE: l'eroe corre a raggiungerlo *//* [7.372.0] la versione SOBRIA tiene le braccia al cielo per meno tempo: con una sola clip di gioia la differenza fra esultare e contenersi la fanno durata e immobilita', non l'assenza del gesto */
+          _PUGNO32=!!(_pl&&_pl.quiet);sr.current._celLift371=(_act&&_pl&&_pl.clip==="lift"&&!_scorer373&&_cu<((_pl&&_pl.quiet)?0.70:0.94))?1:0;/* [7.373.0] col gol del compagno le braccia al cielo sono SUE: l'eroe corre a raggiungerlo *//* [7.372.0] la versione SOBRIA tiene le braccia al cielo per meno tempo: con una sola clip di gioia la differenza fra esultare e contenersi la fanno durata e immobilita', non l'assenza del gesto */
           /* (b) CORSA verso la curva / i compagni / la bandierina. Il bersaglio resta DENTRO il campo e
                  lontano dai pali: una corsa non deve mai finire dentro la porta (§11). */
           if(_act&&_pl&&(_pl.run>0||_scorer373)){
@@ -9960,7 +9969,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 if(typeof window!=='undefined'&&window.__CPM_REC){try{const _H=(window.__CPM_HOLD855=window.__CPM_HOLD855||[]);if(_H.length<400)_H.push({t:Date.now(),at:+(+oppActT).toFixed(2),ct:+(+_a._gAct.time).toFixed(2),dd:+(+oppMesh._diveDur).toFixed(2)});}catch(_e){}}}}
             if(_ai===0&&(sr.current._cerLift===1||sr.current._celLift371===1)&&_a._gName==='lift'&&_a._gAct){/* [7.384.0] il congelamento all'apice esisteva SOLO per la cerimonia: senza, la clip d'esultanza arrivava in fondo, veniva rilasciata e ri-armata al fotogramma dopo — misurato un ri-armo per esultanza anche a scala corretta. Braccia al cielo si TENGONO. */const _ld=_a._gAct.getClip().duration||1;_a._gAct.paused=true;_a._gAct.time=Math.min((_a._gAct.time||0)+aDt*1.4,_ld*0.34);}/* [7.24.1] avanza fino all'APICE della rimessa (mani sopra la testa) e CONGELA — niente lancio */
             {const _gTot=Math.min(1,_a._gw+(_a._gPw||0)),_lbW=_lb*_lb*(3-2*_lb);/* [7.49.0 BL-06] smoothstep sul blend idle↔corsa (estremi morbidi) + il totale gesto include il prev in fade → pesi sempre ≈1 */
-            if(_a.run)_a.run.weight=_lbW*(1-_gTot);if(_a.idle)_a.idle.weight=(1-_lbW)*(1-_gTot);}
+            if(_a.run)_a.run.weight=_lbW*(1-_gTot);if(_a.idle)_a.idle.weight=(1-_lbW)*(1-_gTot);_attesa32(_a,P,aDt);}
             _updateAvatarMixerLod(_a,aDt,_ai,true);
             // [7.24.2 collaudo PO «la coppa deve rimanere nelle mani anche quando corre!»] cerimonia:
             //   in B1/B3/B4 (posa congelata) CAMPIONA i quaternioni delle ossa delle braccia; nel giro di
@@ -9989,7 +9998,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             }
             continue;// [6.76.0 LMV-A2] il gesto rispetta il bullet-time (aDt, non dt): prima la gamba calciava a 3.5× mentre corpo+palla andavano in slow-mo
           }
-          if(_a.mx){const _lbW=_lb*_lb*(3-2*_lb);if(_a.run)_a.run.weight=_lbW;if(_a.idle)_a.idle.weight=1-_lbW;_updateAvatarMixerLod(_a,aDt,_ai,false);}/* [7.49.0 BL-06] smoothstep anche sugli off-ball */
+          if(_a.mx){const _lbW=_lb*_lb*(3-2*_lb);if(_a.run)_a.run.weight=_lbW;if(_a.idle)_a.idle.weight=1-_lbW;_attesa32(_a,P,aDt);_updateAvatarMixerLod(_a,aDt,_ai,false);}/* [7.49.0 BL-06] smoothstep anche sugli off-ball */
         }
         {/* [7.999.31 — L'ESULTANZA SI VEDE: BRACCIA AL CIELO PROCEDURALI. Lotto gesti P1-a, decisione PO 26/09 «prima clip in casa,
             altrimenti braccia procedurali». Rosso __CPM_NO_ESULTA31.] Il piano d'esultanza chiede il gesto `lift` (eroe: _celLift371;
