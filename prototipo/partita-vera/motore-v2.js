@@ -253,7 +253,7 @@ function creaMotorePossesso(cfg){
            Rosso __CPM_NO_B7POS. */
         const _tq=S.richieste.scenaEroe&&S.richieste.scenaTipo;
         if(_tq&&!(typeof window!=='undefined'&&window.__CPM_NO_B7POS)){const l=q.team;const a=advDi(q.x,l);
-          const pronto=_tq==="cross"?false:_tq==="conclusione"?a>=80:_tq==="fascia"?(a>=62&&Math.abs(q.y-50)>=24):_tq==="spalle"?a>=74:_tq==="fra-le-linee"?(a>=60&&a<76):a<60;
+          const pronto=_tq==="conclusione"?a>=80:_tq==="fascia"?(a>=62&&Math.abs(q.y-50)>=24):_tq==="spalle"?a>=74:_tq==="fra-le-linee"?(a>=60&&a<76):a<60;
           if(!pronto)_b879=2;}
         sc+=((cfg.eroe&&cfg.eroe.bonus)||2)+_b879;}/* [7.879] chiesta la scena, l'eroe diventa la prima scelta */
       if(fw<-12)sc-=6;
@@ -328,7 +328,7 @@ function creaMotorePossesso(cfg){
      l'eroe (bonus +3/+4 contro uno scarto di 6), mai a scena chiesta. Stessa logica del +26 dei passaggi (7.879): a richiesta aperta
      l'eroe in posizione plausibile (avanzato, non troppo largo) diventa il bersaglio preferito. Nessun sorteggio in piu'. */
   const _puo26=()=>!S.scena&&(S.richieste.scenaEroe||(S.richieste.origini&&((S.min|0)-((S._ult26==null)?-99:S._ult26))>=(S.richieste.gap26||6)));
-  const _bonusCross26=(q,l)=>(q.eroe&&_puo26()&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_ORIG26)&&advDi(q.x,l)>=58&&Math.abs(q.y-50)<=32)?30:0;
+  const _bonusCross26=(q,l)=>(q.eroe&&!S.scena&&S.richieste.scenaEroe&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_ORIG26)&&advDi(q.x,l)>=58&&Math.abs(q.y-50)<=32)?30:0;
   const cross=(P,R,opt)=>{opt=opt||{};const l=P.team;
     try{if(typeof window!=='undefined'&&window&&window.__CPM_CROSS26){const W=window.__CPM_CROSS26;W.tot++;if(P.eroe)W.daEroe++;if(R&&R.eroe){W.versoEroe++;if(S.richieste.scenaEroe)W.conRichiesta++;}if(opt.corner)W.angoli++;if(opt.corner&&R&&R.eroe)W.angoliEroe++;if(S.richieste.scenaEroe)W.aRichiesta=(W.aRichiesta|0)+1;const H=g.find(q=>q.eroe);if(H&&W.dove&&W.dove.length<40)W.dove.push([S.richieste.scenaEroe?1:0,H.team===l?1:0,Math.round(advDi(H.x,l)),Math.round(Math.abs(H.y-50))]);}}catch(_e){}/* [7.999.26 testimone, solo sonda] */
     /* [7.999.26 collaudo PO «tutto deve essere deciso dal brain, anche il render 3D degli highlights con l'eroe» · «poche azioni dalla
@@ -342,7 +342,7 @@ function creaMotorePossesso(cfg){
       const D=piuVicino(R.x,R.y,altro(l),{noGk:true});const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
       ev("occasione_eroe",{chi:chi(R),zona:zonaDi(advDi(R.x,l),R.y),press:+pressioneSu(R).toFixed(1),x:+R.x.toFixed(1),y:+R.y.toFixed(1),chiesto:S.richieste.scenaTipo||null,attese:S.richieste.scenaAttese|0,
         tipo:_k26==="angolo"?"angolo":"cross",origine:{kind:_k26,chi:chi(P),x:+P.x.toFixed(1),y:+P.y.toFixed(1)},finestra:!!S.richieste.scenaEroe,liberi:0,cast:{ricevente:chi(P),difensore:D?chi(D.p):null,portiere:chi(K),crossatore:chi(P)}});
-      tenuta(P,null);return;}
+      /* niente fermo: il cross parte come sarebbe partito. Misurato col fermo (tenuta del crossatore): tiri della squadra 8-11 -> 14-19 a partita, gol 2,25 -> 4,75 — il crossatore sul fondo, rimasto col pallone, al passo dopo tirava. */}
     S.poss.ultimoPassatore=P.i;S.conta.passaggi++;
     let tx=clamp(xDa(88+rnd()*6,l),2,98),ty=clamp(50+(rnd()-0.5)*16,3,97);
     /* [24/09 POC — BRAIN] IL CROSS CERCA UN UOMO. Mirava a un punto a caso dell'area (88-94, y 42-58) qualunque fosse la
@@ -766,6 +766,14 @@ function creaMotorePossesso(cfg){
     if(c&&c.d<=3.2){const P=c.p;if(P.team!==S.poss.lato){S.conta.contrasti++;ev("recupero",{chi:chi(P),x:+S.palla.x.toFixed(1),y:+S.palla.y.toFixed(1)});}P.x=S.palla.x-dirDi(P.team)*0.4;P.y=S.palla.y;tenuta(P,null);return;}
     if(!sub&&S.poss.t>=6&&c&&c.d<=4.5){c.p.x=S.palla.x;c.p.y=S.palla.y;tenuta(c.p,null);}
   }
+  /* [7.999.27 scelta PO «rigore sempre, punizione se da tiro»] IL PIAZZATO DELL'EROE E' UNA SCENA. Il motore faceva calciare
+     all'eroe rigori e punizioni senza scena (misurato: 0 rigori e 0 punizioni fra le scene di 6 partite). Ora, se il battitore e'
+     l'eroe e il live lo chiede, il brain dichiara l'occasione con la sua origine e ASPETTA la scena col pallone sul punto (tetto 40
+     passi: se la scena non si apre, calcia lui come prima). Il pallone fermo sul dischetto non genera tiri spuri. Rosso __CPM_NO_PIAZ27. */
+  const _piaz27=(f,T,kind)=>{if(!T||!T.eroe||!S.richieste.piazzati||S.scena||(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27))return false;
+    if(!f._o27){f._o27=1;S.conta.occEroe=(S.conta.occEroe|0)+1;const l=T.team;const K=g.find(q=>q.gk&&q.team===altro(l)&&attivo(q))||null;
+      ev("occasione_eroe",{chi:chi(T),zona:zonaDi(advDi(f.x,l),f.y),press:0,x:+f.x.toFixed(1),y:+f.y.toFixed(1),chiesto:null,attese:0,tipo:kind,origine:{kind,chi:chi(T),x:+f.x.toFixed(1),y:+f.y.toFixed(1)},finestra:false,liberi:0,cast:{ricevente:null,difensore:null,portiere:chi(K)}});return true;}
+    if(f._o27<40){f._o27++;return true;}return false;};
   function tickFermo(){const f=S.fermo;S.poss.t++;f.t++;S.conta.fermo++;S.palla.x=f.x;S.palla.y=f.y;
     if(f.t<f.tot)return;
     const l=f.lato;S.poss.lato=l;
@@ -773,9 +781,10 @@ function creaMotorePossesso(cfg){
     if(f.kind==="throw"){const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x;T.p.y=clamp(f.y,2,98);S.fermo=null;const R=scegliRicevente(T.p,{})||(piuVicino(f.x,f.y,l,{noGk:true,escl:T.p.i})||{}).p;ev("battuta",{kind:"throw",chi:chi(T.p)});if(R){S.palla.x=f.x;S.palla.y=f.y;passa(T.p,R,{sicuro:true,kind:"corto"});}else tenuta(T.p,null);return;}
     if(f.kind==="goal_kick"){const gk=portiereDi(l);gk.x=f.x;gk.y=f.y;S.fermo=null;ev("battuta",{kind:"goal_kick",chi:chi(gk)});S.palla.x=f.x;S.palla.y=f.y;const R=scegliRicevente(gk,{});if(R)passa(gk,R,{sicuro:true,kind:hyp(R.x,R.y,gk.x,gk.y)>26?"lancio":"corto"});else tenuta(gk,null);return;}
     if(f.kind==="corner"){const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;let R=null,bs=-1e9;for(const q of g){if(!mio(q,l)||q.i===T.p.i||q.gk)continue;const sc=advDi(q.x,l)-Math.abs(q.y-50)*0.5+(q.eroe?3:0)+_bonusCross26(q,l)+rnd()*5;if(sc>bs){bs=sc;R=q;}}ev("battuta",{kind:"corner",chi:chi(T.p)});cross(T.p,R,{corner:true});return;}
-    if(f.kind==="pen"){const T=(B0&&attivo(B0))?B0:null;if(!T){libero(f.x,f.y);return;}T.x=f.x-dirDi(l)*1.5;T.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;ev("battuta",{kind:"pen",chi:chi(T)});tira(T,{intent:"penalty"});return;}
+    if(f.kind==="pen"){const T=(B0&&attivo(B0))?B0:null;if(!T){libero(f.x,f.y);return;}if(_piaz27(f,T,"rigore"))return;T.x=f.x-dirDi(l)*1.5;T.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;ev("battuta",{kind:"pen",chi:chi(T)});tira(T,{intent:"penalty"});return;}
     /* punizione */
-    const T=(B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true});if(!T){libero(f.x,f.y);return;}T.p.x=f.x-dirDi(l)*1.2;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;
+    const _tir27=advDi(f.x,l)>=78&&Math.abs(f.y-50)<=18;const _H27=_tir27&&S.richieste.piazzati&&!(typeof window!=='undefined'&&window&&window.__CPM_NO_PIAZ27)?g.find(q=>q.eroe&&q.team===l&&attivo(q)):null;/* [7.999.27] dal limite, tirabile: la batte l'eroe */
+    const T=(_H27?{p:_H27}:null)||((B0&&attivo(B0))?{p:B0}:piuVicino(f.x,f.y,l,{noGk:true}));if(!T){libero(f.x,f.y);return;}if(_tir27&&_piaz27(f,T.p,"punizione"))return;T.p.x=f.x-dirDi(l)*1.2;T.p.y=f.y;S.fermo=null;S.palla.x=f.x;S.palla.y=f.y;
     const adv=advDi(f.x,l);ev("battuta",{kind:"foul",chi:chi(T.p),adv:+adv.toFixed(0)});
     /* [24/09 POC — BRAIN] LA PUNIZIONE DAL LIMITE NON E' SEMPRE UN TIRO. Banco 10 partite: 87 tiri su 236 (37 %) erano punizioni
        dirette, perche' ogni fallo oltre 72 di avanzamento e centrale diventava tiro al 70 %. Ora il tiro diretto si prova solo da
@@ -838,11 +847,6 @@ function creaMotorePossesso(cfg){
            nessuna «conclusione» e nessuna «fascia» in 9 scene — l'eroe stava sempre al suo posto (x 60, y 50) e l'occasione nasceva
            sulla soglia della trequarti. Con la scena chiesta e la squadra in possesso, l'eroe senza palla va dove quel tipo nasce:
            in area (conclusione), largo sul suo lato (fascia), al limite (spalle), fra le linee o piu' indietro (costruzione). */
-        /* [7.999.26] A SCENA «CROSS» CHIESTA L'EROE ATTACCA L'AREA quando la sua squadra ha il pallone largo sulla trequarti: e' il
-           movimento di chi va incontro al cross, vale anche con l'eroe dal gioco (7.999.6). Rosso __CPM_NO_ORIG26. */
-        if(S.richieste.scenaEroe&&S.richieste.scenaTipo==="cross"&&p.eroe&&inPoss&&st!=="fermo"&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)){
-          const _l26=p.team,_pd26=S.poss.padrone!=null?g[S.poss.padrone]:null;
-          if(_pd26&&_pd26!==p&&advDi(_pd26.x,_l26)>=60&&Math.abs(_pd26.y-50)>=18){tx=xDa(86,_l26);ty=50+(_pd26.y>=50?-5:5);}}
         {const tq=!_EG&&S.richieste.scenaEroe&&S.richieste.scenaTipo;
          if(tq&&p.eroe&&inPoss&&st!=="fermo"&&!(typeof window!=='undefined'&&window.__CPM_NO_B7POS)){
            if(tq==="conclusione"){tx=xDa(84,p.team);ty=50+(p.y>=50?6:-6);}
@@ -995,7 +999,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
     if(S.poss.stato==="tenuta"&&S.poss.padrone!=null){const P=g[S.poss.padrone];S.palla.x=clamp(P.x+dirDi(P.team)*0.5,0,100);S.palla.y=P.y;}
     return _fine();}
   const chiedi={
-    origini(on,gap){S.richieste.origini=!!on;S.richieste.gap26=(gap|0)||6;},/* [7.999.26] SOLO il live: il brain dichiara le occasioni dell'eroe con un'origine (cross, angolo, punizione in mezzo) anche fuori dalle finestre di scena */
+    origini(on,gap,piaz){S.richieste.origini=!!on;S.richieste.gap26=(gap|0)||6;S.richieste.piazzati=!!piaz;},/* [7.999.27] piaz: il live vuole la scena dei rigori e delle punizioni dal limite dell'eroe *//* [7.999.26] SOLO il live: il brain dichiara le occasioni dell'eroe con un'origine (cross, angolo, punizione in mezzo) anche fuori dalle finestre di scena */
     gol(lato){if(V2)return;S.richieste.gol={lato:lato===AWAY?AWAY:HOME,t:0};S.richieste.verso=null;},
     /* [7.879] LA SCENA DELL'EROE SI CHIEDE, NON SI IMPONE. Il live match dice «fra poco tocca a lui»:
        il motore porta il pallone all'eroe con le sue regole (il compagno lo sceglie come ricevente) e

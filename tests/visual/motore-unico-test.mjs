@@ -43,8 +43,12 @@ if (!ROSSO && process.env.CPM_NO_TAT !== '1') for (const r of ok) { const a = r.
 for (const r of ok) if (r.golMotore && !ROSSO && (r.golMotore[0] !== (r.score.home | 0) || r.golMotore[1] !== (r.score.away | 0))) fails.push(`partita ${r.k}: tabellone ${r.score.home}-${r.score.away} ma motore ${r.golMotore[0]}-${r.golMotore[1]}`);
 if (!ROSSO) { if (micro > 0) fails.push('il microsim decide ancora gol'); if (giocate === 0) fails.push('nessuna giocata dell\'eroe decisa dal motore'); if (tot > 4.5) fails.push(`gol a partita ${tot.toFixed(2)} oltre 4,5`); 
   /* scelta PO «Occasione da gol»: il tiro dell'eroe in un highlight vale una grande occasione, non l'xG nudo del punto */
-  const pg = ok.flatMap(r => (r.eroe || []).filter(x => x.rew === 'goal').map(x => +x.p)).sort((a, b) => a - b);
-  if (pg.length) { const med = pg[Math.floor(pg.length / 2)]; console.log(`probabilita' di gol dell'eroe: mediana ${med.toFixed(2)} su ${pg.length} tiri`); if (med < 0.2 || med > 0.55) fails.push(`mediana gol eroe ${med.toFixed(2)} fuori da 0,20-0,55`); } }
+  /* [7.999.27] rigori e punizioni dell'eroe sono scene per scelta PO, con la LORO probabilita' (rigore ~0,75, punizione diretta 0,05-0,20):
+     la banda 0,20-0,55 vale per le scene su azione, i piazzati si dichiarano a parte (prima della 7.999.27 non esistevano fra le scene) */
+  const pz = ok.flatMap(r => (r.eroe || []).filter(x => x.rew === 'goal' && x.piaz).map(x => x.piaz + ':' + (+x.p).toFixed(2)));
+  if (pz.length) console.log(`piazzati dell'eroe (a parte): ${pz.join(' ')}`);
+  const pg = ok.flatMap(r => (r.eroe || []).filter(x => x.rew === 'goal' && !x.piaz).map(x => +x.p)).sort((a, b) => a - b);
+  if (pg.length) { const med = pg[Math.floor(pg.length / 2)]; console.log(`probabilita' di gol dell'eroe su azione: mediana ${med.toFixed(2)} su ${pg.length} tiri`); if (med < 0.2 || med > 0.55) fails.push(`mediana gol eroe ${med.toFixed(2)} fuori da 0,20-0,55`); } }
 else { if (micro === 0 && giocate === 0) fails.push('(rosso atteso) — ok'); }
 if (ROSSO) { const rossoOk = micro > 0 && giocate === 0; console.log(rossoOk ? '✅ ROSSO come atteso: col motore spento i gol tornano dal microsim' : '❌ il rosso non riproduce il vecchio comportamento'); process.exit(rossoOk ? 0 : 1); }
 console.log(fails.length ? '❌ FAIL motore-unico\n  ' + fails.join('\n  ') : '✅ PASS motore-unico'); process.exit(fails.length ? 1 : 0);
