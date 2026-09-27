@@ -1,0 +1,2 @@
+{"red":false,"ratio":4.938271604938271,"yellow":81,"resolved":true,"witness":null,"fps":21.82850702165051,"phase":"hl_result","b2":[{"key":"intercept","ok":false,"rew":"recovery","tipo":"dribble","var":"dribble_feint","lbl":"🌀 Dribbling centrale e conduc","ev":["conduzione","rammarico","fallo","ammonizione"]}],"motorCard":1,"brain":{"seq":35,"frames":307,"events":{"ev":4,"perTipo":{"conduzione":1,"rammarico":1,"fallo":1,"ammonizione":1},"richieste":0,"senzaCorpo":0,"fuoriGioco":4,"log":[]}},"failures":["B: nessun fotogramma di cartellino"]}
+FAIL cartellino-stabile

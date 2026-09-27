@@ -1,0 +1,17 @@
+{
+  "versione": "7.999.34",
+  "compito": "Scheda 5 — revisione visiva dei gesti a 412x915",
+  "comando": "node tests/codex/capture-gestures.mjs; node tests/codex/capture-gestures.mjs --celebrations; node tests/codex/capture-gestures.mjs --late; python tests/codex/montage-gestures.py",
+  "seme": "gi 0,2,3,12,76,7,55,86,1,90; azione 0; esito success",
+  "misure": [
+    { "nome": "scene acquisite", "valore": 10, "soglia": "10", "esito": "ok" },
+    { "nome": "fotogrammi finali", "valore": 80, "soglia": "8 per scena", "esito": "ok" },
+    { "nome": "scene con eroe tagliato nella fase utile", "valore": 5, "soglia": "0", "esito": "anomalia" },
+    { "nome": "testa gi7: contatto visibile", "valore": 0, "soglia": "1", "esito": "anomalia" },
+    { "nome": "esultanza gi90: posa leggibile", "valore": 0, "soglia": "1", "esito": "anomalia" }
+  ],
+  "segnalazioni": [
+    { "gravita": "media", "descrizione": "Eroe fuori o sul bordo del quadro nella fase utile di cinque gesti; contatto di testa gi7 non giudicabile", "come_riprodurre": "Eseguire gli script di cattura indicati e aprire le tavole di contatto o i frame citati nel rapporto Markdown.", "prove": ["reports/codex/gesti-7999-34/tiro-gi002-f05.jpg", "reports/codex/gesti-7999-34/tiro-gi012-f07.jpg", "reports/codex/gesti-7999-34/tiro-gi076-f07.jpg", "reports/codex/gesti-7999-34/testa-gi007-f07.jpg", "reports/codex/gesti-7999-34/testa-gi086-f07.jpg"] },
+    { "gravita": "bassa", "descrizione": "Esultanza gi90 troppo distante per giudicare l'articolazione del gesto", "come_riprodurre": "Aprire i frame esultanza-gi090-f01..f08.jpg a 412x915.", "prove": ["reports/codex/gesti-7999-34/contact-esultanza-gi090.jpg"] }
+  ]
+}

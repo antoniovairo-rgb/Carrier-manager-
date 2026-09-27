@@ -1,0 +1,19 @@
+{
+  "versione": "7.999.34",
+  "compito": "Scheda 6 — revisione statica 7.999.33 e 7.999.34",
+  "comando": "git diff 7bd411b6..76b708a0 -- src/12-three-match-view.jsx",
+  "seme": "non applicabile",
+  "misure": [
+    { "nome": "file modificati nel diff", "valore": 1, "soglia": "1", "esito": "ok" },
+    { "nome": "righe aggiunte", "valore": 70, "soglia": "git diff --stat", "esito": "ok" },
+    { "nome": "righe rimosse", "valore": 11, "soglia": "git diff --stat", "esito": "ok" },
+    { "nome": "guardiani eseguiti per questa scheda", "valore": 0, "soglia": "sola revisione", "esito": "ok" }
+  ],
+  "segnalazioni": [
+    { "gravita": "media", "descrizione": "R1: _pre33 può sopravvivere a scena di testa interrotta e ripetuta con la stessa chiave; effetto non verificato", "come_riprodurre": "Forzare gi7, interrompere durante il build-up, forzare di nuovo gi7 e confrontare con pagina nuova.", "prove": ["src/12-three-match-view.jsx:6471-6474", "src/12-three-match-view.jsx:6513", "tests/visual/testa-tempismo-test.mjs"] },
+    { "gravita": "media", "descrizione": "R2: il driver della clip e quello del bersaglio logico si alternano senza riconciliazione esplicita; effetto non verificato", "come_riprodurre": "Registrare posizione, bersaglio e velocità agli ultimi e primi dieci frame attorno al rilascio di kick in gi0/2/12.", "prove": ["src/12-three-match-view.jsx:2830-2837", "src/12-three-match-view.jsx:9970"] },
+    { "gravita": "bassa", "descrizione": "R3: tiro caricato non coperto senza GLB o Mixamo", "come_riprodurre": "Forzare gi0 con GLB spento o asset Mixamo non disponibile e leggere clip, palla, esito ed errori pagina.", "prove": ["src/12-three-match-view.jsx:2640-2645", "tests/visual/tiro-caricato-test.mjs"] },
+    { "gravita": "bassa", "descrizione": "R4: scansione lineare della clip e allocazione per fotogramma; costo reale non verificato", "come_riprodurre": "Confrontare gli FPS di dieci scene uguali con __CPM_NO_TIRO34 attivo e spento.", "prove": ["src/12-three-match-view.jsx:88-100", "src/12-three-match-view.jsx:9970"] },
+    { "gravita": "media", "descrizione": "R5: possibile disallineamento fra velocita della clip, corpo e pallone nel rallentatore; effetto non verificato", "come_riprodurre": "Forzare gi0 in slow motion e registrare per fotogramma slow, moto del corpo, tempo della clip e distanza piede-palla.", "prove": ["src/12-three-match-view.jsx:3270-3271", "src/12-three-match-view.jsx:9837", "src/12-three-match-view.jsx:9960", "src/12-three-match-view.jsx:9970"] }
+  ]
+}

@@ -1,0 +1,2 @@
+{"red":true,"ratio":null,"yellow":0,"resolved":true,"witness":null,"fps":18.420447724100306,"phase":"hl_result","b2":[{"key":"intercept","ok":false,"rew":"recovery","tipo":"dribble","var":"dribble_feint","lbl":"🌀 Dribbling centrale e conduc","ev":["conduzione","rammarico","fallo"]}],"motorCard":0,"failures":["A: il giallo del fallo subito non entra nel tabellino","A: il giallo commesso dall eroe non entra nel tabellino","A: frequenza uno ogni Infinity falli fuori banda","B: nessun fotogramma di cartellino"]}
+FAIL cartellino-stabile

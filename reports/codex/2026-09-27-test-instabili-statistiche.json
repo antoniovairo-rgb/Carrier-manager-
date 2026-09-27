@@ -1,0 +1,72 @@
+{
+  "version": "7.999.34",
+  "commit": "76b708a0",
+  "source": "2026-09-27-test-instabili-runs.jsonl",
+  "stats": {
+    "cartellino/-": {
+      "runs": 10,
+      "passed": 1,
+      "failed": 9,
+      "durationSeconds": [
+        82.719,
+        129.203,
+        131.969,
+        131.344,
+        133.135,
+        142.743,
+        141.243,
+        135.416,
+        126.239,
+        152.402
+      ]
+    },
+    "cartellino/partita-vera": {
+      "runs": 10,
+      "passed": 0,
+      "failed": 10,
+      "durationSeconds": [
+        164.46,
+        130.778,
+        122.541,
+        123.569,
+        126.656,
+        143.195,
+        127.005,
+        123.983,
+        146.509,
+        138.458
+      ]
+    },
+    "passo-velocita/-": {
+      "runs": 10,
+      "passed": 6,
+      "failed": 4,
+      "durationSeconds": [
+        114.716,
+        112.679,
+        113.023,
+        112.494,
+        114.681,
+        110.448,
+        113.755,
+        110.69,
+        109.691,
+        114.323
+      ]
+    }
+  },
+  "excluded": [
+    {
+      "target": "cartellino",
+      "predecessor": "partita-vera",
+      "iteration": 1,
+      "started": "2026-09-27T17:20:47.941Z"
+    },
+    {
+      "target": "passo-velocita",
+      "predecessor": "dist-web-partita",
+      "iteration": 1,
+      "started": "2026-09-27T19:43:42.265Z"
+    }
+  ]
+}

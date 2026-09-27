@@ -1,0 +1,19 @@
+{
+  "versione": "7.999.34",
+  "compito": "Scheda 4 — scivolamento del piede nella corsa",
+  "comando": "CPM_CHROME=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe node tests/codex/measure-sliding.mjs",
+  "seme": "gi 0,2,12,3,4,8,11,20,21,22; azione 0; esito success",
+  "misure": [
+    { "nome": "scene shot con kick misurate", "valore": 10, "soglia": ">=10", "esito": "ok" },
+    { "nome": "campioni sl validi prima del kick", "valore": 221, "soglia": "conteggio", "esito": "ok" },
+    { "nome": "v 0-3: n / sl mediano u/s", "valore": "39 / 3.42", "soglia": "nessuna soglia dichiarata", "esito": "anomalia" },
+    { "nome": "v 3-6: n / sl mediano u/s", "valore": "51 / 2.99", "soglia": "nessuna soglia dichiarata", "esito": "anomalia" },
+    { "nome": "v 6-9: n / sl mediano u/s", "valore": "127 / 2.63", "soglia": "nessuna soglia dichiarata", "esito": "anomalia" },
+    { "nome": "v 9+: n / sl mediano u/s", "valore": "4 / 1.83", "soglia": "n>=20 per una fascia valutabile", "esito": "anomalia" },
+    { "nome": "fps mediano delle scene", "valore": 8.44, "soglia": "attendibilita insufficiente per giudizio mobile", "esito": "anomalia" }
+  ],
+  "segnalazioni": [
+    { "gravita": "media", "descrizione": "sl non nullo in tutte le fasce popolate; possibile scivolamento, qualità mobile non verificata per FPS headless bassi", "come_riprodurre": "Eseguire node tests/codex/measure-sliding.mjs da radice sul commit 76b708a0 e confrontare con dispositivo mobile a FPS stabili.", "prove": ["reports/codex/2026-09-27-scivolamento-corsa-data.json", "reports/codex/2026-09-27-scivolamento-corsa.log", "src/12-three-match-view.jsx:10053-10060"] },
+    { "gravita": "bassa", "descrizione": "fascia v 9+ composta da soli 4 campioni; conclusione non verificata", "come_riprodurre": "Contare i campioni in summary.9+ nel file dati o ripetere il comando con più scene di sprint.", "prove": ["reports/codex/2026-09-27-scivolamento-corsa-data.json"] }
+  ]
+}

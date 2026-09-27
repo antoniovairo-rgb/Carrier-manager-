@@ -1,0 +1,11 @@
+{"gi":0,"error":null,"frames":299,"samples":33,"fps":5.03,"slMedian":2.93}
+{"gi":2,"error":null,"frames":523,"samples":5,"fps":8.49,"slMedian":4.61}
+{"gi":12,"error":null,"frames":417,"samples":21,"fps":8.2,"slMedian":2.75}
+{"gi":3,"error":null,"frames":465,"samples":6,"fps":8.89,"slMedian":4.34}
+{"gi":4,"error":null,"frames":452,"samples":21,"fps":8.39,"slMedian":2.95}
+{"gi":8,"error":null,"frames":457,"samples":20,"fps":8.57,"slMedian":2.52}
+{"gi":11,"error":null,"frames":441,"samples":21,"fps":8.17,"slMedian":2.67}
+{"gi":20,"error":null,"frames":93,"samples":35,"fps":7.14,"slMedian":3.27}
+{"gi":21,"error":null,"frames":481,"samples":38,"fps":8.65,"slMedian":2.5}
+{"gi":22,"error":null,"frames":530,"samples":21,"fps":9.09,"slMedian":2.82}
+BANDS {"0-3":{"n":39,"median":3.42},"3-6":{"n":51,"median":2.99},"6-9":{"n":127,"median":2.63},"9+":{"n":4,"median":1.83}}

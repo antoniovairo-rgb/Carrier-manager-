@@ -1,0 +1,3352 @@
+{
+  "commit": "76b708a0",
+  "commands": [
+    "node tests/codex/capture-gestures.mjs",
+    "node tests/codex/capture-gestures.mjs --celebrations",
+    "node tests/codex/capture-gestures.mjs --late"
+  ],
+  "viewport": [
+    412,
+    915
+  ],
+  "cases": [
+    {
+      "kind": "tiro",
+      "gi": 2,
+      "files": [
+        {
+          "file": "tiro-gi002-f01.jpg",
+          "target": 2,
+          "resultFrames": 3,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.091,
+            "pL": [
+              -12.101,
+              0.067,
+              3.335
+            ],
+            "pR": [
+              -11.944,
+              0.032,
+              2.934
+            ],
+            "pb": [
+              -11.095,
+              0.42,
+              3.033
+            ],
+            "sl": 1.2,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 1.108,
+            "dR": 0.938,
+            "v": 0.77,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 53.725006357659865,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi002-f02.jpg",
+          "target": 6,
+          "resultFrames": 6,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.241,
+            "pL": [
+              -11.326,
+              0,
+              3.026
+            ],
+            "pR": [
+              -12.082,
+              0.043,
+              3.06
+            ],
+            "pb": [
+              -10.7,
+              0.42,
+              3.033
+            ],
+            "sl": 4.1,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 0.754,
+            "dR": 1.433,
+            "v": 3.7,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 46.932020790813894,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi002-f03.jpg",
+          "target": 10,
+          "resultFrames": 10,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.374,
+            "pL": [
+              -11.205,
+              0.153,
+              2.909
+            ],
+            "pR": [
+              -11.646,
+              0.058,
+              3.117
+            ],
+            "pb": [
+              -10.978,
+              0.22,
+              3.529
+            ],
+            "sl": 2.03,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.115,
+            "ts": 1.37,
+            "w": 0.88,
+            "dL": 0.665,
+            "dR": 0.801,
+            "v": 3.78,
+            "arc": 1,
+            "aT": -0.279,
+            "act": "shot"
+          },
+          "fps": 39.35345008456929,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi002-f04.jpg",
+          "target": 14,
+          "resultFrames": 14,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.455,
+            "pL": [
+              -10.378,
+              0.165,
+              3.047
+            ],
+            "pR": [
+              -11.643,
+              0.174,
+              3.17
+            ],
+            "pb": [
+              -10.892,
+              0.22,
+              3.759
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.226,
+            "ts": 1.37,
+            "w": 0.99,
+            "dL": 0.879,
+            "dR": 0.956,
+            "v": 4.09,
+            "arc": 1,
+            "aT": -0.199,
+            "act": "shot"
+          },
+          "fps": 33.45588010483649,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi002-f05.jpg",
+          "target": 18,
+          "resultFrames": 22,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.67,
+            "pL": [
+              -9.777,
+              0.073,
+              3.012
+            ],
+            "pR": [
+              -8.822,
+              0.874,
+              3.074
+            ],
+            "pb": [
+              -9.934,
+              0.294,
+              3.443
+            ],
+            "sl": 1.19,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.522,
+            "ts": 1.37,
+            "w": 1,
+            "dL": 0.509,
+            "dR": 1.308,
+            "v": 4.41,
+            "arc": 1,
+            "aT": 0.017,
+            "act": "shot"
+          },
+          "fps": 24.98904643261349,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi002-f06.jpg",
+          "target": 22,
+          "resultFrames": 30,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.931,
+            "pL": [
+              -8.71,
+              0.219,
+              2.846
+            ],
+            "pR": [
+              -8.254,
+              0.605,
+              3.04
+            ],
+            "pb": [
+              -1.428,
+              1.311,
+              4.484
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.88,
+            "ts": 1.37,
+            "w": 1,
+            "dL": 7.544,
+            "dR": 7.013,
+            "v": 3.48,
+            "arc": 1,
+            "aT": 0.278,
+            "act": null
+          },
+          "fps": 21.271075847388346,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi002-f07.jpg",
+          "target": 26,
+          "resultFrames": 39,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.28,
+            "pL": [
+              -7.924,
+              0.079,
+              2.833
+            ],
+            "pR": [
+              -8.027,
+              0.064,
+              3.091
+            ],
+            "pb": [
+              10.703,
+              2.114,
+              5.435
+            ],
+            "sl": 0.39,
+            "cn": "mx-strike-foward-jog",
+            "g": null,
+            "ct": 1.3,
+            "ts": 1.37,
+            "w": 0.77,
+            "dL": 18.917,
+            "dR": 18.987,
+            "v": 2.46,
+            "arc": 1,
+            "aT": 0.627,
+            "act": null
+          },
+          "fps": 19.277001061091237,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi002-f08.jpg",
+          "target": 30,
+          "resultFrames": 49,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.715,
+            "pL": [
+              -7.413,
+              0.275,
+              2.857
+            ],
+            "pR": [
+              -6.673,
+              -0.004,
+              3.107
+            ],
+            "pb": [
+              26.088,
+              2.146,
+              5.044
+            ],
+            "sl": 1.39,
+            "cn": "mx-strike-foward-jog",
+            "g": null,
+            "ct": 1.3,
+            "ts": 0,
+            "w": 0.09,
+            "dL": 33.625,
+            "dR": 32.889,
+            "v": 0,
+            "arc": 1,
+            "aT": 1.061,
+            "act": null
+          },
+          "fps": 18.123528872690922,
+          "phase": "hl_result",
+          "plan": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "kind": "tiro",
+      "gi": 3,
+      "files": [
+        {
+          "file": "tiro-gi003-f01.jpg",
+          "target": 2,
+          "resultFrames": 3,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.115,
+            "pL": [
+              -0.765,
+              0.095,
+              4.24
+            ],
+            "pR": [
+              -0.82,
+              0.016,
+              3.946
+            ],
+            "pb": [
+              0.086,
+              0.42,
+              4.005
+            ],
+            "sl": 3.7,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 0.94,
+            "dR": 0.994,
+            "v": 1.21,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 55.542003144869334,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi003-f02.jpg",
+          "target": 6,
+          "resultFrames": 9,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.349,
+            "pL": [
+              -0.253,
+              0.13,
+              3.853
+            ],
+            "pR": [
+              -0.497,
+              0.022,
+              4.125
+            ],
+            "pb": [
+              0.047,
+              0.22,
+              4.502
+            ],
+            "sl": 2.09,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.104,
+            "ts": 1.24,
+            "w": 0.88,
+            "dL": 0.721,
+            "dR": 0.691,
+            "v": 3.36,
+            "arc": 1,
+            "aT": -0.313,
+            "act": "shot"
+          },
+          "fps": 45.18983006519416,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi003-f03.jpg",
+          "target": 10,
+          "resultFrames": 14,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.437,
+            "pL": [
+              0.57,
+              0.152,
+              3.973
+            ],
+            "pR": [
+              -0.582,
+              0.148,
+              4.156
+            ],
+            "pb": [
+              0.138,
+              0.22,
+              4.728
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.213,
+            "ts": 1.24,
+            "w": 0.99,
+            "dL": 0.872,
+            "dR": 0.921,
+            "v": 3.66,
+            "arc": 1,
+            "aT": -0.224,
+            "act": "shot"
+          },
+          "fps": 38.366494386324916,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi003-f04.jpg",
+          "target": 14,
+          "resultFrames": 19,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.565,
+            "pL": [
+              1.123,
+              0.086,
+              4.006
+            ],
+            "pR": [
+              0.13,
+              0.432,
+              4.333
+            ],
+            "pb": [
+              0.759,
+              0.22,
+              4.68
+            ],
+            "sl": 2.58,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.373,
+            "ts": 1.24,
+            "w": 1,
+            "dL": 0.778,
+            "dR": 0.749,
+            "v": 5.45,
+            "arc": 1,
+            "aT": -0.096,
+            "act": "shot"
+          },
+          "fps": 31.745111534923186,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi003-f05.jpg",
+          "target": 18,
+          "resultFrames": 25,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.756,
+            "pL": [
+              1.342,
+              0.096,
+              3.901
+            ],
+            "pR": [
+              2.503,
+              1.363,
+              3.803
+            ],
+            "pb": [
+              2.992,
+              0.622,
+              4.553
+            ],
+            "sl": 1.93,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.61,
+            "ts": 1.24,
+            "w": 1,
+            "dL": 1.85,
+            "dR": 1.163,
+            "v": 3.29,
+            "arc": 1,
+            "aT": 0.095,
+            "act": "shot"
+          },
+          "fps": 25.111046298892756,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi003-f06.jpg",
+          "target": 22,
+          "resultFrames": 33,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.065,
+            "pL": [
+              2.466,
+              0.092,
+              3.655
+            ],
+            "pR": [
+              2.862,
+              0.217,
+              3.908
+            ],
+            "pb": [
+              11.893,
+              1.756,
+              5.448
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.993,
+            "ts": 1.24,
+            "w": 1,
+            "dL": 9.739,
+            "dR": 9.29,
+            "v": 3.28,
+            "arc": 1,
+            "aT": 0.403,
+            "act": null
+          },
+          "fps": 20.7014157153213,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi003-f07.jpg",
+          "target": 26,
+          "resultFrames": 39,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.303,
+            "pL": [
+              2.957,
+              0.121,
+              3.652
+            ],
+            "pR": [
+              3.037,
+              0.066,
+              3.92
+            ],
+            "pb": [
+              18.923,
+              2.401,
+              5.71
+            ],
+            "sl": 0.41,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 1.288,
+            "ts": 1.24,
+            "w": 1,
+            "dL": 16.259,
+            "dR": 16.156,
+            "v": 2.39,
+            "arc": 1,
+            "aT": 0.641,
+            "act": null
+          },
+          "fps": 19.831956339585915,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi003-f08.jpg",
+          "target": 30,
+          "resultFrames": 45,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.603,
+            "pL": [
+              3.745,
+              0.134,
+              3.719
+            ],
+            "pR": [
+              3.72,
+              -0.009,
+              3.963
+            ],
+            "pb": [
+              27.025,
+              2.24,
+              5.282
+            ],
+            "sl": 2.4,
+            "cn": "mx-strike-foward-jog",
+            "g": null,
+            "ct": 1.3,
+            "ts": 0,
+            "w": 0.22,
+            "dL": 23.428,
+            "dR": 23.451,
+            "v": 2.92,
+            "arc": 1,
+            "aT": 0.941,
+            "act": null
+          },
+          "fps": 16.931944318202635,
+          "phase": "hl_result",
+          "plan": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "kind": "tiro",
+      "gi": 12,
+      "files": [
+        {
+          "file": "tiro-gi012-f01.jpg",
+          "target": 2,
+          "resultFrames": 2,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.065,
+            "pL": [
+              -6.293,
+              0.016,
+              2.309
+            ],
+            "pR": [
+              -6.492,
+              0.115,
+              1.848
+            ],
+            "pb": [
+              -6.058,
+              0.758,
+              3.168
+            ],
+            "sl": 5.68,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 1.159,
+            "dR": 1.531,
+            "v": 0.84,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 54.497940502967126,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi012-f02.jpg",
+          "target": 6,
+          "resultFrames": 6,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.265,
+            "pL": [
+              -5.423,
+              -0.005,
+              1.842
+            ],
+            "pR": [
+              -6.143,
+              0.204,
+              1.901
+            ],
+            "pb": [
+              -4.947,
+              0.957,
+              6.568
+            ],
+            "sl": 5.56,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 4.845,
+            "dR": 4.876,
+            "v": 5.12,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 47.92888135475547,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi012-f03.jpg",
+          "target": 10,
+          "resultFrames": 10,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.465,
+            "pL": [
+              -4.596,
+              0.157,
+              1.477
+            ],
+            "pR": [
+              -4.549,
+              -0.015,
+              1.709
+            ],
+            "pb": [
+              -3.65,
+              1.014,
+              4.812
+            ],
+            "sl": 2.21,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 3.57,
+            "dR": 3.39,
+            "v": 7.27,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 39.831271094328336,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi012-f04.jpg",
+          "target": 14,
+          "resultFrames": 18,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.865,
+            "pL": [
+              -1.28,
+              -0.006,
+              0.848
+            ],
+            "pR": [
+              -1.854,
+              0.331,
+              1.152
+            ],
+            "pb": [
+              -0.426,
+              0.42,
+              0.792
+            ],
+            "sl": 1.41,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 0.956,
+            "dR": 1.476,
+            "v": 5.92,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 29.33209245346802,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi012-f05.jpg",
+          "target": 18,
+          "resultFrames": 27,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.158,
+            "pL": [
+              -0.697,
+              0.173,
+              0.892
+            ],
+            "pR": [
+              -1.25,
+              0.065,
+              1.176
+            ],
+            "pb": [
+              -0.721,
+              0.22,
+              1.753
+            ],
+            "sl": 0.79,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.143,
+            "ts": 1,
+            "w": 0.98,
+            "dL": 0.863,
+            "dR": 0.799,
+            "v": 1.95,
+            "arc": 1,
+            "aT": -0.338,
+            "act": "shot"
+          },
+          "fps": 21.272815943588707,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi012-f06.jpg",
+          "target": 22,
+          "resultFrames": 30,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.212,
+            "pL": [
+              -0.298,
+              0.148,
+              0.96
+            ],
+            "pR": [
+              -1.297,
+              0.122,
+              1.188
+            ],
+            "pb": [
+              -0.577,
+              0.22,
+              1.746
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.197,
+            "ts": 1,
+            "w": 1,
+            "dL": 0.837,
+            "dR": 0.917,
+            "v": 2.52,
+            "arc": 1,
+            "aT": -0.283,
+            "act": "shot"
+          },
+          "fps": 21.130909590706466,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi012-f07.jpg",
+          "target": 26,
+          "resultFrames": 43,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.592,
+            "pL": [
+              0.54,
+              0.079,
+              0.909
+            ],
+            "pR": [
+              1.679,
+              1.213,
+              0.827
+            ],
+            "pb": [
+              2.143,
+              0.631,
+              0.881
+            ],
+            "sl": 0.37,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.577,
+            "ts": 1,
+            "w": 1,
+            "dL": 1.695,
+            "dR": 0.747,
+            "v": 2.66,
+            "arc": 1,
+            "aT": 0.097,
+            "act": null
+          },
+          "fps": 15.747696400555524,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi012-f08.jpg",
+          "target": 30,
+          "resultFrames": 46,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.711,
+            "pL": [
+              0.945,
+              0.181,
+              0.883
+            ],
+            "pR": [
+              1.874,
+              1.354,
+              0.757
+            ],
+            "pb": [
+              5.373,
+              1.088,
+              0.035
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.696,
+            "ts": 1,
+            "w": 1,
+            "dL": 4.599,
+            "dR": 3.582,
+            "v": 2.15,
+            "arc": 1,
+            "aT": 0.216,
+            "act": null
+          },
+          "fps": 14.279561874560663,
+          "phase": "hl_result",
+          "plan": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "kind": "tiro",
+      "gi": 76,
+      "files": [
+        {
+          "file": "tiro-gi076-f01.jpg",
+          "target": 2,
+          "resultFrames": 2,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.065,
+            "pL": [
+              -1.031,
+              0.076,
+              9.882
+            ],
+            "pR": [
+              -2.219,
+              0.165,
+              9.882
+            ],
+            "pb": [
+              39.099,
+              2.064,
+              28.634
+            ],
+            "sl": 0.75,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 44.34,
+            "dR": 45.414,
+            "v": 0.29,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 49.800637346982604,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi076-f02.jpg",
+          "target": 6,
+          "resultFrames": 8,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.341,
+            "pL": [
+              -1.952,
+              -0.024,
+              9.79
+            ],
+            "pR": [
+              -2.378,
+              0.091,
+              9.143
+            ],
+            "pb": [
+              5.662,
+              2.024,
+              13.122
+            ],
+            "sl": 4.57,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 8.559,
+            "dR": 9.176,
+            "v": 3.47,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 39.8606860881192,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi076-f03.jpg",
+          "target": 10,
+          "resultFrames": 12,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.541,
+            "pL": [
+              -2.351,
+              -0.018,
+              9.244
+            ],
+            "pR": [
+              -1.987,
+              0.211,
+              9.568
+            ],
+            "pb": [
+              -0.063,
+              2.517,
+              12.496
+            ],
+            "sl": 2.45,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 4.715,
+            "dR": 4.194,
+            "v": 1.73,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 33.73304920856421,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi076-f04.jpg",
+          "target": 14,
+          "resultFrames": 19,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.891,
+            "pL": [
+              -0.804,
+              0.103,
+              8.901
+            ],
+            "pR": [
+              -0.138,
+              0.011,
+              8.987
+            ],
+            "pb": [
+              1.21,
+              2.484,
+              12.084
+            ],
+            "sl": 6.46,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 4.456,
+            "dR": 4.186,
+            "v": 7.12,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 26.245916495897156,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi076-f05.jpg",
+          "target": 18,
+          "resultFrames": 28,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.319,
+            "pL": [
+              3.138,
+              -0.01,
+              8.557
+            ],
+            "pR": [
+              2.415,
+              0.03,
+              8.787
+            ],
+            "pb": [
+              2.577,
+              1.905,
+              8.653
+            ],
+            "sl": 0.68,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 1.998,
+            "dR": 1.887,
+            "v": 6.27,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 20.5675616514374,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi076-f06.jpg",
+          "target": 22,
+          "resultFrames": 36,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.544,
+            "pL": [
+              3.115,
+              0.064,
+              8.736
+            ],
+            "pR": [
+              3.616,
+              0.189,
+              8.933
+            ],
+            "pb": [
+              3.438,
+              0.89,
+              9.535
+            ],
+            "sl": 0.27,
+            "cn": "mx-strike-foward-jog~m",
+            "g": "kick",
+            "ct": 0.125,
+            "ts": 1,
+            "w": 0.98,
+            "dL": 1.193,
+            "dR": 0.941,
+            "v": 2.39,
+            "arc": 1,
+            "aT": -0.338,
+            "act": "shot"
+          },
+          "fps": 17.034418316276586,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi076-f07.jpg",
+          "target": 26,
+          "resultFrames": 40,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.638,
+            "pL": [
+              3.075,
+              0.161,
+              8.755
+            ],
+            "pR": [
+              4.294,
+              0.16,
+              8.709
+            ],
+            "pb": [
+              3.62,
+              0.397,
+              9.589
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog~m",
+            "g": "kick",
+            "ct": 0.219,
+            "ts": 1,
+            "w": 1,
+            "dL": 1.023,
+            "dR": 1.133,
+            "v": 2.92,
+            "arc": 1,
+            "aT": -0.243,
+            "act": "shot"
+          },
+          "fps": 15.338048697482158,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi076-f08.jpg",
+          "target": 30,
+          "resultFrames": 46,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.813,
+            "pL": [
+              4.056,
+              0.331,
+              8.398
+            ],
+            "pR": [
+              4.833,
+              0.081,
+              8.564
+            ],
+            "pb": [
+              4.249,
+              0.233,
+              9.499
+            ],
+            "sl": 1.76,
+            "cn": "mx-strike-foward-jog~m",
+            "g": "kick",
+            "ct": 0.394,
+            "ts": 1,
+            "w": 1,
+            "dL": 1.122,
+            "dR": 1.113,
+            "v": 4.27,
+            "arc": 1,
+            "aT": -0.068,
+            "act": "shot"
+          },
+          "fps": 14.095094682825938,
+          "phase": "hl_result",
+          "plan": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "kind": "testa",
+      "gi": 7,
+      "files": [
+        {
+          "file": "testa-gi007-f01.jpg",
+          "target": 2,
+          "resultFrames": 2,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.065,
+            "pL": [
+              -6.072,
+              -0.018,
+              7.825
+            ],
+            "pR": [
+              -6.412,
+              0.295,
+              7.12
+            ],
+            "pb": [
+              -7.146,
+              2.394,
+              7.631
+            ],
+            "sl": 1.22,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 2.647,
+            "dR": 2.281,
+            "v": 0,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 57.329380764137504,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi007-f02.jpg",
+          "target": 6,
+          "resultFrames": 7,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.315,
+            "pL": [
+              -6.035,
+              -0.009,
+              7.972
+            ],
+            "pR": [
+              -6.401,
+              0.098,
+              7.134
+            ],
+            "pb": [
+              -11.015,
+              2.677,
+              7.471
+            ],
+            "sl": 6.8,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 5.681,
+            "dR": 5.296,
+            "v": 0,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 45.618279953216934,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi007-f03.jpg",
+          "target": 10,
+          "resultFrames": 11,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.484,
+            "pL": [
+              -6.09,
+              0.067,
+              7.348
+            ],
+            "pR": [
+              -6.209,
+              -0.009,
+              7.909
+            ],
+            "pb": [
+              -11.265,
+              0.42,
+              6.389
+            ],
+            "sl": 2.33,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 5.275,
+            "dR": 5.297,
+            "v": 0.62,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 40.331343362692756,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi007-f04.jpg",
+          "target": 14,
+          "resultFrames": 16,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.734,
+            "pL": [
+              -4.983,
+              0.018,
+              7.798
+            ],
+            "pR": [
+              -5.434,
+              0.122,
+              7.605
+            ],
+            "pb": [
+              -11.093,
+              0.42,
+              4.564
+            ],
+            "sl": 6.86,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 6.925,
+            "dR": 6.431,
+            "v": 5.6,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 32.817129471284815,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi007-f05.jpg",
+          "target": 18,
+          "resultFrames": 23,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.059,
+            "pL": [
+              -3.258,
+              0.272,
+              7.381
+            ],
+            "pR": [
+              -2.877,
+              0.001,
+              7.609
+            ],
+            "pb": [
+              -13.448,
+              2.606,
+              2.634
+            ],
+            "sl": 1.52,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 11.481,
+            "dR": 11.97,
+            "v": 7.98,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 27.35087156879802,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi007-f06.jpg",
+          "target": 22,
+          "resultFrames": 32,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.491,
+            "pL": [
+              0.214,
+              -0.019,
+              7.253
+            ],
+            "pR": [
+              -0.581,
+              0.29,
+              7.389
+            ],
+            "pb": [
+              -7.346,
+              2.929,
+              -1.65
+            ],
+            "sl": 2.08,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 12.045,
+            "dR": 11.594,
+            "v": 4.44,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 21.41965837967876,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi007-f07.jpg",
+          "target": 26,
+          "resultFrames": 43,
+          "celebFrames": 0,
+          "last": {
+            "t": 2.041,
+            "pL": [
+              1.58,
+              0.19,
+              7.665
+            ],
+            "pR": [
+              1.16,
+              0.156,
+              7.801
+            ],
+            "pb": [
+              1.242,
+              2.204,
+              7.711
+            ],
+            "sl": null,
+            "cn": "header",
+            "g": "header",
+            "ct": 0.14,
+            "ts": 2.8,
+            "w": 0.5,
+            "dL": 2.043,
+            "dR": 2.052,
+            "v": 2.23,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 15.738016943062803,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi007-f08.jpg",
+          "target": 30,
+          "resultFrames": 54,
+          "celebFrames": 0,
+          "last": {
+            "t": 2.353,
+            "pL": [
+              2.384,
+              0.251,
+              7.565
+            ],
+            "pR": [
+              2.307,
+              0.268,
+              7.936
+            ],
+            "pb": [
+              1.81,
+              1.185,
+              7.67
+            ],
+            "sl": null,
+            "cn": "header",
+            "g": "header",
+            "ct": 1.013,
+            "ts": 2.8,
+            "w": 1,
+            "dL": 1.102,
+            "dR": 1.077,
+            "v": 5.05,
+            "arc": 1,
+            "aT": -0.079,
+            "act": "header"
+          },
+          "fps": 12.432738512696371,
+          "phase": "hl_result",
+          "plan": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "kind": "testa",
+      "gi": 86,
+      "files": [
+        {
+          "file": "testa-gi086-f01.jpg",
+          "target": 2,
+          "resultFrames": 3,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.115,
+            "pL": [
+              1.964,
+              0.091,
+              2.029
+            ],
+            "pR": [
+              0.976,
+              0.01,
+              2.457
+            ],
+            "pb": [
+              -0.211,
+              2.631,
+              3.072
+            ],
+            "sl": 8.73,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 3.504,
+            "dR": 2.943,
+            "v": 0,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 47.12349971919716,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi086-f02.jpg",
+          "target": 6,
+          "resultFrames": 9,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.391,
+            "pL": [
+              1.74,
+              0.089,
+              2.205
+            ],
+            "pR": [
+              1.227,
+              0.006,
+              2.282
+            ],
+            "pb": [
+              -3.216,
+              2.439,
+              4.871
+            ],
+            "sl": 2.6,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 6.099,
+            "dR": 5.689,
+            "v": 0,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 37.73711073807193,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi086-f03.jpg",
+          "target": 10,
+          "resultFrames": 13,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.591,
+            "pL": [
+              1.7,
+              0.046,
+              1.855
+            ],
+            "pR": [
+              1.322,
+              -0.034,
+              2.428
+            ],
+            "pb": [
+              -1.648,
+              0.42,
+              5.058
+            ],
+            "sl": 4.17,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 4.649,
+            "dR": 3.993,
+            "v": 2.04,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 31.415598687085343,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi086-f04.jpg",
+          "target": 14,
+          "resultFrames": 19,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.869,
+            "pL": [
+              3.007,
+              -0.01,
+              2.091
+            ],
+            "pR": [
+              2.503,
+              0.31,
+              2.251
+            ],
+            "pb": [
+              0.833,
+              0.42,
+              3.635
+            ],
+            "sl": 2.3,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 2.701,
+            "dR": 2.172,
+            "v": 6.65,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 27.065741384826396,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi086-f05.jpg",
+          "target": 18,
+          "resultFrames": 23,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.069,
+            "pL": [
+              4.093,
+              0.247,
+              1.917
+            ],
+            "pR": [
+              4.406,
+              -0.005,
+              2.156
+            ],
+            "pb": [
+              -4.121,
+              2.805,
+              -0.949
+            ],
+            "sl": 1.31,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 9.068,
+            "dR": 9.499,
+            "v": 7.9,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 23.362352001682922,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi086-f06.jpg",
+          "target": 22,
+          "resultFrames": 39,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.86,
+            "pL": [
+              7.867,
+              0.24,
+              1.778
+            ],
+            "pR": [
+              8.716,
+              0,
+              2.297
+            ],
+            "pb": [
+              7.813,
+              5.53,
+              1.392
+            ],
+            "sl": 0.74,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 5.305,
+            "dR": 5.676,
+            "v": 2.3,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 15.746019483944663,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi086-f07.jpg",
+          "target": 26,
+          "resultFrames": 43,
+          "celebFrames": 0,
+          "last": {
+            "t": 2.06,
+            "pL": [
+              8.883,
+              0.223,
+              2.07
+            ],
+            "pR": [
+              8.811,
+              0.163,
+              2.336
+            ],
+            "pb": [
+              8.754,
+              2.078,
+              2.201
+            ],
+            "sl": null,
+            "cn": "header",
+            "g": "header",
+            "ct": 0.14,
+            "ts": 2.8,
+            "w": 0.5,
+            "dL": 1.864,
+            "dR": 1.921,
+            "v": 2.31,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 14.375194263022042,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi086-f08.jpg",
+          "target": 30,
+          "resultFrames": 48,
+          "celebFrames": 0,
+          "last": {
+            "t": 2.243,
+            "pL": [
+              9.354,
+              0.358,
+              2.039
+            ],
+            "pR": [
+              9.095,
+              0.352,
+              2.469
+            ],
+            "pb": [
+              9.37,
+              2.415,
+              2.169
+            ],
+            "sl": null,
+            "cn": "header",
+            "g": "header",
+            "ct": 0.655,
+            "ts": 2.8,
+            "w": 0.98,
+            "dL": 2.061,
+            "dR": 2.103,
+            "v": 2.93,
+            "arc": 1,
+            "aT": -0.206,
+            "act": "header"
+          },
+          "fps": 13.5951567001243,
+          "phase": "hl_result",
+          "plan": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "kind": "esultanza",
+      "gi": 1,
+      "files": [
+        {
+          "file": "esultanza-gi001-f01.jpg",
+          "target": 1,
+          "resultFrames": 57,
+          "celebFrames": 1,
+          "last": {
+            "t": 2.238,
+            "pL": [
+              42.214,
+              -0.03,
+              3.005
+            ],
+            "pR": [
+              41.676,
+              -0.022,
+              3.019
+            ],
+            "pb": [
+              48.749,
+              0.599,
+              1.368
+            ],
+            "sl": 0.36,
+            "cn": "mx-scissor-kick",
+            "g": null,
+            "ct": 2.8,
+            "ts": 0,
+            "w": 0.01,
+            "dL": 6.766,
+            "dR": 7.29,
+            "v": 0,
+            "arc": 0,
+            "aT": 0.242,
+            "act": null
+          },
+          "fps": 10.176011172934773,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi001-f02.jpg",
+          "target": 4,
+          "resultFrames": 64,
+          "celebFrames": 8,
+          "last": {
+            "t": 2.588,
+            "pL": [
+              42.014,
+              0.17,
+              2.973
+            ],
+            "pR": [
+              41.497,
+              0.244,
+              2.91
+            ],
+            "pb": [
+              49.687,
+              0.553,
+              0.609
+            ],
+            "sl": null,
+            "cn": "mx-victory-jump",
+            "g": "lift",
+            "ct": 0.07,
+            "ts": 0,
+            "w": 0.5,
+            "dL": 8.038,
+            "dR": 8.513,
+            "v": 0,
+            "arc": 0,
+            "aT": 0.242,
+            "act": null
+          },
+          "fps": 9.593223020639927,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi001-f03.jpg",
+          "target": 8,
+          "resultFrames": 70,
+          "celebFrames": 14,
+          "last": {
+            "t": 2.857,
+            "pL": [
+              42.097,
+              1.453,
+              3.119
+            ],
+            "pR": [
+              41.691,
+              1.497,
+              2.996
+            ],
+            "pb": [
+              49.292,
+              0.556,
+              1.167
+            ],
+            "sl": null,
+            "cn": "mx-victory-jump",
+            "g": "lift",
+            "ct": 0.447,
+            "ts": 0,
+            "w": 0.99,
+            "dL": 7.509,
+            "dR": 7.875,
+            "v": 0,
+            "arc": 0,
+            "aT": 0.242,
+            "act": null
+          },
+          "fps": 10.534098682858465,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi001-f04.jpg",
+          "target": 12,
+          "resultFrames": 75,
+          "celebFrames": 19,
+          "last": {
+            "t": 3.081,
+            "pL": [
+              42.001,
+              0.162,
+              3.074
+            ],
+            "pR": [
+              41.616,
+              0.203,
+              2.902
+            ],
+            "pb": [
+              49.197,
+              0.559,
+              1.3
+            ],
+            "sl": null,
+            "cn": "mx-victory-jump",
+            "g": "lift",
+            "ct": 0.646,
+            "ts": 0,
+            "w": 1,
+            "dL": 7.422,
+            "dR": 7.756,
+            "v": 0,
+            "arc": 0,
+            "aT": 0.242,
+            "act": null
+          },
+          "fps": 11.261606640305475,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi001-f05.jpg",
+          "target": 16,
+          "resultFrames": 80,
+          "celebFrames": 24,
+          "last": {
+            "t": 3.331,
+            "pL": [
+              42.001,
+              0.162,
+              3.074
+            ],
+            "pR": [
+              41.617,
+              0.203,
+              2.902
+            ],
+            "pb": [
+              49.164,
+              0.552,
+              1.348
+            ],
+            "sl": null,
+            "cn": "mx-victory-jump",
+            "g": "lift",
+            "ct": 0.646,
+            "ts": 0,
+            "w": 1,
+            "dL": 7.378,
+            "dR": 7.713,
+            "v": 0,
+            "arc": 0,
+            "aT": 0.242,
+            "act": null
+          },
+          "fps": 10.230772071550858,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi001-f06.jpg",
+          "target": 24,
+          "resultFrames": 85,
+          "celebFrames": 29,
+          "last": {
+            "t": 3.581,
+            "pL": [
+              42.001,
+              0.162,
+              3.074
+            ],
+            "pR": [
+              41.617,
+              0.203,
+              2.902
+            ],
+            "pb": [
+              49.154,
+              0.552,
+              1.361
+            ],
+            "sl": null,
+            "cn": "mx-victory-jump",
+            "g": "lift",
+            "ct": 0.646,
+            "ts": 0,
+            "w": 1,
+            "dL": 7.365,
+            "dR": 7.701,
+            "v": 0,
+            "arc": 0,
+            "aT": 0.242,
+            "act": null
+          },
+          "fps": 9.600225751508077,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi001-f07.jpg",
+          "target": 32,
+          "resultFrames": 90,
+          "celebFrames": 34,
+          "last": {
+            "t": 3.802,
+            "pL": [
+              42.001,
+              0.162,
+              3.074
+            ],
+            "pR": [
+              41.617,
+              0.203,
+              2.902
+            ],
+            "pb": [
+              49.154,
+              0.29,
+              1.361
+            ],
+            "sl": null,
+            "cn": "mx-victory-jump",
+            "g": "lift",
+            "ct": 0.646,
+            "ts": 0,
+            "w": 1,
+            "dL": 7.356,
+            "dR": 7.694,
+            "v": 0,
+            "arc": 0,
+            "aT": 0.242,
+            "act": null
+          },
+          "fps": 11.483270230609346,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi001-f08.jpg",
+          "target": 48,
+          "resultFrames": 104,
+          "celebFrames": 48,
+          "last": {
+            "t": 4.469,
+            "pL": [
+              42.001,
+              0.162,
+              3.074
+            ],
+            "pR": [
+              41.617,
+              0.203,
+              2.902
+            ],
+            "pb": [
+              49.154,
+              0.221,
+              1.361
+            ],
+            "sl": null,
+            "cn": "mx-victory-jump",
+            "g": "lift",
+            "ct": 0.646,
+            "ts": 0,
+            "w": 1,
+            "dL": 7.355,
+            "dR": 7.693,
+            "v": 0,
+            "arc": 0,
+            "aT": 0.242,
+            "act": null
+          },
+          "fps": 10.90358790536609,
+          "phase": "hl_result",
+          "plan": true
+        }
+      ],
+      "error": null,
+      "lastState": {
+        "resultFrames": 104,
+        "celebFrames": 48,
+        "last": {
+          "t": 4.469,
+          "pL": [
+            42.001,
+            0.162,
+            3.074
+          ],
+          "pR": [
+            41.617,
+            0.203,
+            2.902
+          ],
+          "pb": [
+            49.154,
+            0.221,
+            1.361
+          ],
+          "sl": null,
+          "cn": "mx-victory-jump",
+          "g": "lift",
+          "ct": 0.646,
+          "ts": 0,
+          "w": 1,
+          "dL": 7.355,
+          "dR": 7.693,
+          "v": 0,
+          "arc": 0,
+          "aT": 0.242,
+          "act": null
+        },
+        "fps": 10.90358790536609,
+        "phase": "hl_result",
+        "plan": true
+      }
+    },
+    {
+      "kind": "esultanza",
+      "gi": 90,
+      "files": [
+        {
+          "file": "esultanza-gi090-f01.jpg",
+          "target": 1,
+          "resultFrames": 108,
+          "celebFrames": 1,
+          "last": {
+            "t": 4.561,
+            "pL": [
+              3.329,
+              -0.003,
+              -3.475
+            ],
+            "pR": [
+              3.119,
+              -0.043,
+              -3.823
+            ],
+            "pb": [
+              48.692,
+              0.258,
+              1.194
+            ],
+            "sl": 0.19,
+            "cn": "header",
+            "g": null,
+            "ct": 1.542,
+            "ts": 0,
+            "w": 0,
+            "dL": 45.603,
+            "dR": 45.849,
+            "v": 0,
+            "arc": 0,
+            "aT": 1.572,
+            "act": null
+          },
+          "fps": 14.835493793277704,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi090-f02.jpg",
+          "target": 4,
+          "resultFrames": 116,
+          "celebFrames": 9,
+          "last": {
+            "t": 4.961,
+            "pL": [
+              2.755,
+              0.003,
+              -3.568
+            ],
+            "pR": [
+              2.991,
+              -0.05,
+              -4.009
+            ],
+            "pb": [
+              50.01,
+              0.285,
+              1.698
+            ],
+            "sl": 2.48,
+            "cn": "header",
+            "g": null,
+            "ct": 1.542,
+            "ts": 0,
+            "w": 0,
+            "dL": 47.548,
+            "dR": 47.365,
+            "v": 4.04,
+            "arc": 0,
+            "aT": 1.572,
+            "act": null
+          },
+          "fps": 12.022622650236212,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi090-f03.jpg",
+          "target": 8,
+          "resultFrames": 120,
+          "celebFrames": 13,
+          "last": {
+            "t": 5.161,
+            "pL": [
+              1.78,
+              -0.023,
+              -4.544
+            ],
+            "pR": [
+              2.174,
+              0.208,
+              -4.625
+            ],
+            "pb": [
+              49.452,
+              0.285,
+              1.374
+            ],
+            "sl": 4.45,
+            "cn": "header",
+            "g": null,
+            "ct": 1.542,
+            "ts": 0,
+            "w": 0,
+            "dL": 48.039,
+            "dR": 47.658,
+            "v": 8.74,
+            "arc": 0,
+            "aT": 1.572,
+            "act": null
+          },
+          "fps": 10.906103057826328,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi090-f04.jpg",
+          "target": 12,
+          "resultFrames": 134,
+          "celebFrames": 27,
+          "last": {
+            "t": 5.842,
+            "pL": [
+              -1.476,
+              -0.011,
+              -7.647
+            ],
+            "pR": [
+              -1.014,
+              0.307,
+              -7.444
+            ],
+            "pb": [
+              49.159,
+              0.285,
+              1.204
+            ],
+            "sl": 2.08,
+            "cn": "header",
+            "g": null,
+            "ct": 1.542,
+            "ts": 0,
+            "w": 0,
+            "dL": 51.404,
+            "dR": 50.913,
+            "v": 0,
+            "arc": 0,
+            "aT": 1.572,
+            "act": null
+          },
+          "fps": 10.959046479002552,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi090-f05.jpg",
+          "target": 16,
+          "resultFrames": 140,
+          "celebFrames": 33,
+          "last": {
+            "t": 6.111,
+            "pL": [
+              -1.467,
+              -0.071,
+              -7.592
+            ],
+            "pR": [
+              -1.294,
+              0.001,
+              -8.01
+            ],
+            "pb": [
+              49.155,
+              0.24,
+              1.202
+            ],
+            "sl": 1.07,
+            "cn": "header",
+            "g": null,
+            "ct": 1.542,
+            "ts": 0,
+            "w": 0,
+            "dL": 51.382,
+            "dR": 51.284,
+            "v": 0,
+            "arc": 0,
+            "aT": 1.572,
+            "act": null
+          },
+          "fps": 12.252152760760465,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi090-f06.jpg",
+          "target": 24,
+          "resultFrames": 145,
+          "celebFrames": 38,
+          "last": {
+            "t": 6.36,
+            "pL": [
+              -1.54,
+              -0.053,
+              -7.75
+            ],
+            "pR": [
+              -1.268,
+              0.049,
+              -8.033
+            ],
+            "pb": [
+              49.155,
+              0.223,
+              1.202
+            ],
+            "sl": 0.32,
+            "cn": "header",
+            "g": null,
+            "ct": 1.542,
+            "ts": 0,
+            "w": 0,
+            "dL": 51.48,
+            "dR": 51.262,
+            "v": 0,
+            "arc": 0,
+            "aT": 1.572,
+            "act": null
+          },
+          "fps": 11.928203641477229,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi090-f07.jpg",
+          "target": 32,
+          "resultFrames": 152,
+          "celebFrames": 45,
+          "last": {
+            "t": 6.71,
+            "pL": [
+              -1.537,
+              -0.057,
+              -7.787
+            ],
+            "pR": [
+              -1.398,
+              0.187,
+              -8.237
+            ],
+            "pb": [
+              49.155,
+              0.22,
+              1.202
+            ],
+            "sl": 0.03,
+            "cn": "header",
+            "g": null,
+            "ct": 1.542,
+            "ts": 0,
+            "w": 0,
+            "dL": 51.484,
+            "dR": 51.427,
+            "v": 0,
+            "arc": 0,
+            "aT": 1.572,
+            "act": null
+          },
+          "fps": 11.016744648969514,
+          "phase": "hl_result",
+          "plan": true
+        },
+        {
+          "file": "esultanza-gi090-f08.jpg",
+          "target": 48,
+          "resultFrames": 158,
+          "celebFrames": 51,
+          "last": {
+            "t": 6.998,
+            "pL": [
+              -1.527,
+              -0.058,
+              -7.779
+            ],
+            "pR": [
+              -1.53,
+              0.209,
+              -8.368
+            ],
+            "pb": [
+              49.155,
+              0.22,
+              1.202
+            ],
+            "sl": 0.04,
+            "cn": "header",
+            "g": null,
+            "ct": 1.542,
+            "ts": 0,
+            "w": 0,
+            "dL": 51.472,
+            "dR": 51.58,
+            "v": 0,
+            "arc": 0,
+            "aT": 1.572,
+            "act": null
+          },
+          "fps": 11.310348220730859,
+          "phase": "hl_result",
+          "plan": true
+        }
+      ],
+      "error": null,
+      "lastState": {
+        "resultFrames": 158,
+        "celebFrames": 51,
+        "last": {
+          "t": 6.998,
+          "pL": [
+            -1.527,
+            -0.058,
+            -7.779
+          ],
+          "pR": [
+            -1.53,
+            0.209,
+            -8.368
+          ],
+          "pb": [
+            49.155,
+            0.22,
+            1.202
+          ],
+          "sl": 0.04,
+          "cn": "header",
+          "g": null,
+          "ct": 1.542,
+          "ts": 0,
+          "w": 0,
+          "dL": 51.472,
+          "dR": 51.58,
+          "v": 0,
+          "arc": 0,
+          "aT": 1.572,
+          "act": null
+        },
+        "fps": 11.310348220730859,
+        "phase": "hl_result",
+        "plan": true
+      }
+    },
+    {
+      "kind": "tiro",
+      "gi": 0,
+      "files": [
+        {
+          "file": "tiro-gi000-f01.jpg",
+          "target": 2,
+          "resultFrames": 3,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.115,
+            "pL": [
+              40.632,
+              0.076,
+              5.882
+            ],
+            "pR": [
+              39.942,
+              -0.002,
+              6.411
+            ],
+            "pb": [
+              41.785,
+              0.472,
+              6.12
+            ],
+            "sl": 7.61,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 1.242,
+            "dR": 1.924,
+            "v": 2.16,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 52.20389069556899,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi000-f02.jpg",
+          "target": 10,
+          "resultFrames": 10,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.412,
+            "pL": [
+              41.53,
+              0.157,
+              5.952
+            ],
+            "pR": [
+              41.522,
+              -0.015,
+              6.188
+            ],
+            "pb": [
+              41.463,
+              0.313,
+              6.12
+            ],
+            "sl": 2.27,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 0.239,
+            "dR": 0.34,
+            "v": 6.85,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 41.54732812680353,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi000-f03.jpg",
+          "target": 20,
+          "resultFrames": 20,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.894,
+            "pL": [
+              45.038,
+              0.154,
+              5.998
+            ],
+            "pR": [
+              46.068,
+              0.016,
+              6.149
+            ],
+            "pb": [
+              46.606,
+              0.42,
+              5.98
+            ],
+            "sl": 14.01,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 1.591,
+            "dR": 0.694,
+            "v": 6.56,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 28.338497493977073,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi000-f04.jpg",
+          "target": 30,
+          "resultFrames": 33,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.544,
+            "pL": [
+              43.546,
+              -0.016,
+              5.496
+            ],
+            "pR": [
+              43.858,
+              0.192,
+              5.338
+            ],
+            "pb": [
+              42.636,
+              0.42,
+              5.244
+            ],
+            "sl": 3.94,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 1.04,
+            "dR": 1.247,
+            "v": 7.66,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 17.905586010748284,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi000-f05.jpg",
+          "target": 36,
+          "resultFrames": 40,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.682,
+            "pL": [
+              43.287,
+              0.211,
+              4.708
+            ],
+            "pR": [
+              43.38,
+              0.199,
+              5.787
+            ],
+            "pb": [
+              43.304,
+              0.22,
+              6.012
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.206,
+            "ts": 1.5,
+            "w": 0.98,
+            "dL": 1.304,
+            "dR": 0.239,
+            "v": 3.28,
+            "arc": 1,
+            "aT": -0.199,
+            "act": "shot"
+          },
+          "fps": 18.455505310295223,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi000-f06.jpg",
+          "target": 42,
+          "resultFrames": 45,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.785,
+            "pL": [
+              43.516,
+              0.191,
+              4.251
+            ],
+            "pR": [
+              43.486,
+              0.574,
+              5.414
+            ],
+            "pb": [
+              43.283,
+              0.22,
+              5.715
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.361,
+            "ts": 1.5,
+            "w": 1,
+            "dL": 1.482,
+            "dR": 0.508,
+            "v": 5.69,
+            "arc": 1,
+            "aT": -0.096,
+            "act": "shot"
+          },
+          "fps": 17.605022821353217,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi000-f07.jpg",
+          "target": 48,
+          "resultFrames": 49,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.877,
+            "pL": [
+              43.514,
+              0.17,
+              4.115
+            ],
+            "pR": [
+              43.856,
+              0.743,
+              3.366
+            ],
+            "pb": [
+              43.693,
+              0.22,
+              4.407
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.499,
+            "ts": 1.5,
+            "w": 1,
+            "dL": 0.346,
+            "dR": 1.176,
+            "v": 4.86,
+            "arc": 1,
+            "aT": -0.004,
+            "act": "shot"
+          },
+          "fps": 17.871234403341063,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "tiro-gi000-f08.jpg",
+          "target": 54,
+          "resultFrames": 55,
+          "celebFrames": 0,
+          "last": {
+            "t": 2.051,
+            "pL": [
+              43.676,
+              0.286,
+              3.347
+            ],
+            "pR": [
+              43.906,
+              1.095,
+              2.737
+            ],
+            "pb": [
+              45.372,
+              1.281,
+              0.034
+            ],
+            "sl": null,
+            "cn": "mx-strike-foward-jog",
+            "g": "kick",
+            "ct": 0.759,
+            "ts": 1.5,
+            "w": 1,
+            "dL": 3.853,
+            "dR": 3.08,
+            "v": 3.33,
+            "arc": 1,
+            "aT": 0.17,
+            "act": "shot"
+          },
+          "fps": 17.64633301917227,
+          "phase": "hl_result",
+          "plan": false
+        }
+      ],
+      "error": null,
+      "lastState": {
+        "resultFrames": 55,
+        "celebFrames": 0,
+        "last": {
+          "t": 2.051,
+          "pL": [
+            43.676,
+            0.286,
+            3.347
+          ],
+          "pR": [
+            43.906,
+            1.095,
+            2.737
+          ],
+          "pb": [
+            45.372,
+            1.281,
+            0.034
+          ],
+          "sl": null,
+          "cn": "mx-strike-foward-jog",
+          "g": "kick",
+          "ct": 0.759,
+          "ts": 1.5,
+          "w": 1,
+          "dL": 3.853,
+          "dR": 3.08,
+          "v": 3.33,
+          "arc": 1,
+          "aT": 0.17,
+          "act": "shot"
+        },
+        "fps": 17.64633301917227,
+        "phase": "hl_result",
+        "plan": false
+      }
+    },
+    {
+      "kind": "testa",
+      "gi": 55,
+      "files": [
+        {
+          "file": "testa-gi055-f01.jpg",
+          "target": 2,
+          "resultFrames": 3,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.113,
+            "pL": [
+              -9.071,
+              0.09,
+              -0.106
+            ],
+            "pR": [
+              -9.025,
+              0.017,
+              -0.42
+            ],
+            "pb": [
+              -10.841,
+              2.694,
+              -0.285
+            ],
+            "sl": 0.57,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 3.153,
+            "dR": 3.237,
+            "v": 0,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 52.81103823595875,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi055-f02.jpg",
+          "target": 12,
+          "resultFrames": 13,
+          "celebFrames": 0,
+          "last": {
+            "t": 0.555,
+            "pL": [
+              -8.677,
+              0.058,
+              -0.664
+            ],
+            "pR": [
+              -9.162,
+              -0.025,
+              -0.101
+            ],
+            "pb": [
+              -13.737,
+              0.42,
+              1.247
+            ],
+            "sl": 5.56,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 5.42,
+            "dR": 4.79,
+            "v": 2.5,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 39.36014404289576,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi055-f03.jpg",
+          "target": 22,
+          "resultFrames": 23,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.025,
+            "pL": [
+              -6.118,
+              0.157,
+              -0.415
+            ],
+            "pR": [
+              -6.128,
+              -0.015,
+              -0.179
+            ],
+            "pb": [
+              -16.076,
+              2.732,
+              4.561
+            ],
+            "sl": 1.86,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 11.426,
+            "dR": 11.357,
+            "v": 7.93,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 28.092857818645253,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi055-f04.jpg",
+          "target": 30,
+          "resultFrames": 30,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.371,
+            "pL": [
+              -3.488,
+              0.119,
+              -0.177
+            ],
+            "pR": [
+              -3.59,
+              -0.023,
+              0.051
+            ],
+            "pb": [
+              -12.251,
+              2.506,
+              8.912
+            ],
+            "sl": 1.87,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 12.85,
+            "dR": 12.646,
+            "v": 6.12,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 22.627882094864727,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi055-f05.jpg",
+          "target": 38,
+          "resultFrames": 38,
+          "celebFrames": 0,
+          "last": {
+            "t": 1.74,
+            "pL": [
+              -2.765,
+              0.216,
+              -0.22
+            ],
+            "pR": [
+              -1.741,
+              0.005,
+              -0.291
+            ],
+            "pb": [
+              -3.52,
+              6.069,
+              1.478
+            ],
+            "sl": 1.44,
+            "cn": null,
+            "g": null,
+            "ct": null,
+            "ts": null,
+            "w": null,
+            "dL": 6.141,
+            "dR": 6.562,
+            "v": 2.17,
+            "arc": 0,
+            "aT": 0,
+            "act": null
+          },
+          "fps": 19.841565671539968,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi055-f06.jpg",
+          "target": 46,
+          "resultFrames": 46,
+          "celebFrames": 0,
+          "last": {
+            "t": 2.14,
+            "pL": [
+              -1.237,
+              0.407,
+              -0.649
+            ],
+            "pR": [
+              -1.493,
+              0.393,
+              -0.218
+            ],
+            "pb": [
+              -1.09,
+              2.935,
+              -0.367
+            ],
+            "sl": null,
+            "cn": "header",
+            "g": "header",
+            "ct": 0.561,
+            "ts": 2.8,
+            "w": 0.94,
+            "dL": 2.548,
+            "dR": 2.578,
+            "v": 0,
+            "arc": 1,
+            "aT": -0.24,
+            "act": "header"
+          },
+          "fps": 16.486189733408107,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi055-f07.jpg",
+          "target": 54,
+          "resultFrames": 59,
+          "celebFrames": 0,
+          "last": {
+            "t": 2.439,
+            "pL": [
+              0.191,
+              0.219,
+              -0.553
+            ],
+            "pR": [
+              0.134,
+              0.224,
+              -0.227
+            ],
+            "pb": [
+              -0.273,
+              1.005,
+              -0.298
+            ],
+            "sl": null,
+            "cn": "header",
+            "g": "header",
+            "ct": 1.399,
+            "ts": 2.8,
+            "w": 1,
+            "dL": 0.948,
+            "dR": 0.884,
+            "v": 5.74,
+            "arc": 1,
+            "aT": 0.059,
+            "act": "header"
+          },
+          "fps": 12.027464152339348,
+          "phase": "hl_result",
+          "plan": false
+        },
+        {
+          "file": "testa-gi055-f08.jpg",
+          "target": 62,
+          "resultFrames": 76,
+          "celebFrames": 0,
+          "last": {
+            "t": 3.059,
+            "pL": [
+              1.327,
+              -0.046,
+              -0.505
+            ],
+            "pR": [
+              1.239,
+              0.018,
+              -0.034
+            ],
+            "pb": [
+              16.548,
+              2.298,
+              1.127
+            ],
+            "sl": 0.74,
+            "cn": "header",
+            "g": null,
+            "ct": 0.731,
+            "ts": 1.34,
+            "w": 0.09,
+            "dL": 15.487,
+            "dR": 15.521,
+            "v": 0,
+            "arc": 1,
+            "aT": 0.679,
+            "act": null
+          },
+          "fps": 12.381881286485589,
+          "phase": "hl_result",
+          "plan": false
+        }
+      ],
+      "error": null,
+      "lastState": {
+        "resultFrames": 76,
+        "celebFrames": 0,
+        "last": {
+          "t": 3.059,
+          "pL": [
+            1.327,
+            -0.046,
+            -0.505
+          ],
+          "pR": [
+            1.239,
+            0.018,
+            -0.034
+          ],
+          "pb": [
+            16.548,
+            2.298,
+            1.127
+          ],
+          "sl": 0.74,
+          "cn": "header",
+          "g": null,
+          "ct": 0.731,
+          "ts": 1.34,
+          "w": 0.09,
+          "dL": 15.487,
+          "dR": 15.521,
+          "v": 0,
+          "arc": 1,
+          "aT": 0.679,
+          "act": null
+        },
+        "fps": 12.381881286485589,
+        "phase": "hl_result",
+        "plan": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "versione": "7.999.34",
+  "compito": "Scheda 3 — ripetibilità cartellino e passo-velocita",
+  "comando": "CPM_CHROME=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe; node tests/codex/repeat-unstable.mjs <test> <precursore|-> 10; node tests/codex/report-unstable.mjs; node tests/codex/passo-velocita-stabile.mjs; CPM_ROSSO=1 node tests/codex/passo-velocita-stabile.mjs; node tests/codex/cartellino-stabile.mjs; CPM_ROSSO=1 node tests/codex/cartellino-stabile.mjs",
+  "seme": "cartellino gi30; proposta carta 77/4242/9001-9400; proposta passo 11",
+  "misure": [
+    { "nome": "cartellino isolato: passaggi / giri", "valore": "1/10", "soglia": "10/10", "esito": "anomalia" },
+    { "nome": "cartellino dopo partita-vera: passaggi / giri", "valore": "0/10", "soglia": "10/10", "esito": "anomalia" },
+    { "nome": "passo-velocita isolato: passaggi / giri", "valore": "6/10", "soglia": "10/10", "esito": "anomalia" },
+    { "nome": "passo dopo dist-web-partita: giri validi", "valore": 0, "soglia": 10, "esito": "anomalia" },
+    { "nome": "passo proposto verde: rapporto fasce", "valore": 1.1183840246047607, "soglia": "<=1.15", "esito": "ok" },
+    { "nome": "passo proposto con __CPM_NO_PASSO7: rapporto fasce", "valore": 1.3123191973695743, "soglia": ">1.15, deve fallire", "esito": "ok" },
+    { "nome": "carta proposta verde: testimone visivo", "valore": null, "soglia": "cartaVista>5", "esito": "anomalia" },
+    { "nome": "carta proposta con __CPM_NO_CARTA9: ammonizioni su 400", "valore": 0, "soglia": "test deve fallire", "esito": "ok" }
+  ],
+  "segnalazioni": [
+    { "gravita": "alta", "descrizione": "Cartellino assente in scena in 19/20 giri validi; il motore produce ammonizione ma il testimone 3D resta nullo. Causa esatta non verificata.", "come_riprodurre": "node tests/codex/repeat-unstable.mjs cartellino - 10; node tests/codex/cartellino-stabile.mjs", "prove": ["reports/codex/2026-09-27-test-instabili-tabella.md", "reports/codex/cartellino-stabile-diagnosi.log"] },
+    { "gravita": "media", "descrizione": "Il guardiano originale del passo fallisce 4/10 volte da solo e include velocità estreme nella fascia >6; il test proposto passa verde e fallisce col difetto inserito in una prova per caso.", "come_riprodurre": "node tests/codex/repeat-unstable.mjs passo-velocita - 10; node tests/codex/passo-velocita-stabile.mjs; CPM_ROSSO=1 node tests/codex/passo-velocita-stabile.mjs", "prove": ["reports/codex/2026-09-27-test-instabili-tabella.md", "reports/codex/passo-stabile-verde-campioni.json", "reports/codex/passo-stabile-rosso-campioni.json"] },
+    { "gravita": "bassa", "descrizione": "Catena dist-web-partita → passo-velocita non verificata: manca dist-web e la build richiesta scriverebbe fuori dai percorsi autorizzati.", "come_riprodurre": "cd tests/visual; npm run dist-web-partita", "prove": ["reports/codex/2026-09-27-test-instabili-runs.jsonl"] }
+  ]
+}
