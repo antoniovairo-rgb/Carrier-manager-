@@ -16,7 +16,8 @@ const out = [];
 for (const [gs, as, piede] of CASI) {
   const gi = +gs, ai = +as;
   const page = await b.newPage({ viewport: { width: 380, height: 300 } }); await installCdnRoutes(page);
-  await page.addInitScript(([r, p]) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_TIRO34_REC = 1; if (r) window.__CPM_NO_TIRO34 = 1; if (p) window.__CPM_FORCE_PIEDE31 = p; }, [RED, piede || null]);
+  await page.addInitScript(([r, p]) => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_TIRO34_REC = 1; if (r) window.__CPM_NO_TIRO34 = 1; if (p) window.__CPM_FORCE_PIEDE31 = p; if (window.name === 'x') {} }, [RED, piede || null]);
+  if (process.env.CPM_NOPASSO || RED) await page.addInitScript(() => { window.__CPM_NO_PASSO37 = 1; });
   await openMatch(page, port, { skipLoadAll: true, name: 'Tiro34' }); await sleep(1500);
   await page.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, { timeout: 60000 }).catch(() => {});
   await page.evaluate(g => { window.__CPM_TIRO34 = null; window.__CPM_FORCE_SIT(g, false); window.__CPM_FROZEN = false; }, gi);
@@ -37,7 +38,9 @@ for (const [gs, as, piede] of CASI) {
      a pochi fotogrammi al secondo il piede, a 15-19 m/s, in un fotogramma e' gia' altrove) — minimo entro 0,1 s dalla partenza */
   const PIEDE = { 'kick': 'pL', 'kick~m': 'pR', 'mx-strike-foward-jog': 'pR', 'mx-strike-foward-jog~m': 'pL' }[F[im].cn] || 'pR';
   const vicino = []; for (let j = Math.max(1, im); j < F.length; j++) { if (Math.abs(F[j].t - tA) > 0.1) continue; const f = F[j - 1][PIEDE], bb = F[j].pb; if (f && bb) vicino.push(+Math.hypot(bb[0] - f[0], bb[1] - f[1], bb[2] - f[2]).toFixed(3)); }
-  const r = { tag, clip: F[im].cn, piede: W.s34 ? W.s34.piede : null, fit: W.s34 ? +W.s34.fit.toFixed(2) : null,
+  /* [7.999.37] gambe a inizio scena: con l'eroe quasi fermo il passo della corsa (cadenza x velocita' naturale) non corre al massimo */
+  const avvio = F.slice(0, im).filter(x => x.v < 1.5 && x.rts != null && x.v0 != null && x.rw > 0.3).map(x => x.rts * x.v0);
+  const r = { tag, passoAvvio: avvio.length ? +Math.max(...avvio).toFixed(2) : null, clip: F[im].cn, piede: W.s34 ? W.s34.piede : null, fit: W.s34 ? +W.s34.fit.toFixed(2) : null,
     caricamento: +(tA - F[im].t).toFixed(2), scivolamento: sl.length ? sl[Math.floor(sl.length / 2)] : null, campioniAppoggio: sl.length,
     accompagnamento: +(F[fine].t - tA).toFixed(2), contatto: vicino.length ? Math.min(...vicino) : null };
   out.push(r); console.log(JSON.stringify(r));
@@ -53,6 +56,7 @@ for (const r of buone) {
   ok(r.accompagnamento >= 0.4, `${r.tag}: accompagnamento dopo il calcio (${r.accompagnamento} s)`);
   ok(r.scivolamento == null || r.scivolamento <= 2.5, `${r.tag}: il piede d'appoggio non scivola (${r.scivolamento} u/s su ${r.campioniAppoggio} campioni)`);
   ok(r.contatto != null && r.contatto <= 0.7, `${r.tag}: il piede che calcia arriva al pallone (${r.contatto} u)`);
+  ok(r.passoAvvio == null || r.passoAvvio <= 4, `${r.tag}: a inizio scena le gambe non corrono al massimo (passo ${r.passoAvvio} u/s con l'eroe quasi fermo)`);
   if (/\/L$/.test(r.tag) && !RED) ok(r.piede === 'L' && /~m$/.test(r.clip || ''), `${r.tag}: il mancino calcia col sinistro (${r.clip})`);
 }
 if (err.length) { console.log('\nTIRO CARICATO: FALLITO (' + err.length + ')' + (RED ? ' — atteso col rosso' : '')); process.exit(1); }

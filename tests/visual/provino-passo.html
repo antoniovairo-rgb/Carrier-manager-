@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>Provino passo</title>
+<!-- [7.999.37] PROVINO DEL PASSO: il corpo di gioco (CGTrader lod1, 1,80 m) corre a velocita' costante V a passo fisso di 1/120 s con la
+     STESSA regola di cadenza del gioco; si misura quanto scivola il piede appoggiato (il piu' basso, sotto 0,10 m) in m/s. Due modi:
+     jog = sola corsa accelerata (cadenza V/v0, tetto 2,5) · scatto = fusione jog+running a fase agganciata (7.999.35). Nessun rendering. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
+</head><body><script>
+const L=new THREE.GLTFLoader();const ld=u=>new Promise((ok,ko)=>L.load(u,ok,undefined,ko));
+(async()=>{try{
+  const corpo=await ld('../../assets/cgtrader-review-lod1-kit-adapter.glb');const A=n=>corpo.animations.find(a=>a.name===n);
+  const jog=A('jog')||A('jogging'),run=A('running');
+  const av=THREE.SkeletonUtils.clone(corpo.scene);av.updateMatrixWorld(true);
+  const osso=re=>{let b=null;av.traverse(o=>{if(!b&&o.isBone&&re.test(o.name))b=o;});return b;};
+  const hd=osso(/Head$/i),fl=osso(/^(ball_l|LeftToeBase)$/i),fr=osso(/^(ball_r|RightToeBase)$/i);
+  const v=new THREE.Vector3(),w=new THREE.Vector3();hd.getWorldPosition(v);fl.getWorldPosition(w);const sca=1.8/Math.max(1e-6,v.y-w.y);av.scale.setScalar(sca);av.updateMatrixWorld(true);fl.getWorldPosition(w);av.position.y=-w.y;
+  /* velocita' naturale come la misura il gioco (_passoNaturale7): mediana dello scorrimento del piede piu' basso, in m/s */
+  const naturale=clip=>{const mx=new THREE.AnimationMixer(av);const a=mx.clipAction(clip);a.play();const N=96,D=clip.duration;let prev=null;const vel=[];const pL=new THREE.Vector3(),pR=new THREE.Vector3();
+    for(let i=0;i<=N;i++){mx.setTime(D*i/N);av.updateMatrixWorld(true);fl.getWorldPosition(pL);fr.getWorldPosition(pR);const b=pL.y<pR.y?'L':'R',q=b==='L'?pL:pR;if(prev&&prev.b===b)vel.push(Math.hypot(q.x-prev.x,q.z-prev.z)/(D/N));prev={b,x:q.x,z:q.z};}
+    mx.stopAllAction();mx.uncacheRoot(av);vel.sort((a,b)=>a-b);return vel[vel.length>>1]||0;};
+  const vJ=naturale(jog),vS=naturale(run);
+  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+  const prova=(V,modo)=>{const mx=new THREE.AnimationMixer(av);const J=mx.clipAction(jog),S=mx.clipAction(run);J.play();S.play();
+    const dJ=jog.duration,dS=run.duration;const x=clamp((V-1.4*vJ)/Math.max(0.5,0.9*vJ),0,1),k=modo==='scatto'?x*x*(3-2*x):0;
+    const LJ=vJ*dJ,LS=vS*dS,Lk=LJ+(LS-LJ)*k;
+    if(modo==='jog'||modo==='jog35'){J.timeScale=clamp(V/vJ,0.5,modo==='jog35'?3.5:2.5);J.weight=1;S.weight=0;}
+    else{const rate=clamp(V/Math.max(0.1,Lk),0.5/dJ,3.0/dJ);J.timeScale=rate*dJ;S.timeScale=rate*dS;J.weight=1-k;S.weight=k;}
+    const dt=1/120,T=3;let pos=0,prev=null;const sl=[];const pL=new THREE.Vector3(),pR=new THREE.Vector3();
+    for(let t=0;t<T;t+=dt){if(modo==='scatto')S.time=((J.time%dJ)/dJ)*dS;mx.update(dt);pos+=V*dt;av.position.z=pos;av.updateMatrixWorld(true);fl.getWorldPosition(pL);fr.getWorldPosition(pR);
+      const b=pL.y<pR.y?'L':'R',q=b==='L'?pL:pR;if(prev&&prev.b===b&&q.y<0.10&&t>0.5)sl.push(Math.hypot(q.x-prev.x,q.z-prev.z)/dt);prev={b,x:q.x,z:q.z,y:q.y};}
+    mx.stopAllAction();mx.uncacheRoot(av);av.position.z=0;sl.sort((a,b)=>a-b);return {k:+k.toFixed(2),mediana:+(sl[sl.length>>1]||0).toFixed(2),p75:+(sl[Math.floor(sl.length*0.75)]||0).toFixed(2),campioni:sl.length};};
+  const out={vJ:+vJ.toFixed(2),vS:+vS.toFixed(2),righe:[]};
+  for(const V of [2,3.5,5,6.5,8,9.5,11,12.5]){out.righe.push({V,jog:prova(V,'jog'),jog35:prova(V,'jog35'),scatto:prova(V,'scatto')});}
+  window.__PASSO=out;}catch(e){window.__PASSO={err:String(e&&e.message||e)};}})();
+</script></body></html>

@@ -49,6 +49,13 @@ const L=new THREE.GLTFLoader();const ld=u=>new Promise((ok,ko)=>L.load(u,ok,unde
     piede={calcia:bL.v>bR.v?'sinistro':'destro',sx:{v:+bL.v.toFixed(2),u:+bL.u.toFixed(2)},dx:{v:+bR.v.toFixed(2),u:+bR.u.toFixed(2)}};}
   /* [7.999.33] QUANDO LA TESTA E' PIU' ALTA: l'istante del colpo di testa nella clip (frazione della durata) */
   let testa=null;{const hb=osso(/^(head|Head)$/i);if(hb){let best={y:-1e9,u:0};const v=new THREE.Vector3();for(let i=0;i<=120;i++){mx.setTime(clip.duration*0.995*i/120);av.updateMatrixWorld(true);hb.getWorldPosition(v);if(v.y>best.y)best={y:v.y,u:i/120};}mx.setTime(0);av.updateMatrixWorld(true);hb.getWorldPosition(v);testa={uPicco:+best.u.toFixed(2),salto:+(best.y-v.y).toFixed(2)};}}
-  window.__PROVINO={ok:true,clip:CLIP,durata:clip.duration,campioni:out,piede,testa};
+  /* [7.999.35] IL PASSO: a ogni istante quale piede e' il piu' basso (appoggio) e quanto scorre all'indietro; velocita' naturale mediana
+     (m/s, corpo da 1,80 m) e inizio dell'appoggio di ciascun piede (frazione del ciclo) per allineare la fase di due clip di corsa */
+  let passo=null;if(fl&&fr){const M=120,pL=new THREE.Vector3(),pR=new THREE.Vector3();let prev=null;const vel=[],seq=[];
+    for(let i=0;i<=M;i++){mx.setTime(clip.duration*0.995*i/M);av.updateMatrixWorld(true);fl.getWorldPosition(pL);fr.getWorldPosition(pR);const b=pL.y<pR.y?'L':'R',q=b==='L'?pL:pR;seq.push(b);
+      if(prev&&prev.b===b)vel.push(Math.hypot(q.x-prev.x,q.z-prev.z)/(clip.duration/M));prev={b,x:q.x,z:q.z};}
+    vel.sort((a,b)=>a-b);const ini={};for(let i=1;i<seq.length;i++)if(seq[i]!==seq[i-1]&&ini[seq[i]]==null)ini[seq[i]]=+(i/M).toFixed(3);
+    passo={v:+(vel[vel.length>>1]||0).toFixed(2),inizioL:ini.L??null,inizioR:ini.R??null,quotaL:+(seq.filter(x=>x==='L').length/seq.length).toFixed(2)};}
+  window.__PROVINO={ok:true,clip:CLIP,durata:clip.duration,campioni:out,piede,testa,passo};
 }catch(e){window.__PROVINO={ok:false,err:String(e.message)};document.body.textContent='ERRORE '+e.message;}})();
 </script></body></html>
