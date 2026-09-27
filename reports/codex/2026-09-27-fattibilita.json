@@ -1,0 +1,100 @@
+{
+  "versione": "7.999.27",
+  "compito": "Scheda 0 — Prova di fattibilità",
+  "comando": "cd tests/visual && npm install; node ../../tools/build-src.mjs; npm run test:logic; timeout 900 npm run validate-situations",
+  "seme": "Non applicabile",
+  "ramo": "codex/2026-09-27-fattibilita",
+  "base": "origin/main@25b5851e6d79dae5bd295849091eae27f3496cd8",
+  "comandi": [
+    {
+      "comando": "cd tests/visual && npm install",
+      "eseguito": false,
+      "riuscito": false,
+      "durata_ms": 0,
+      "errore_esatto": "Non applicabile: nessun output, comando non eseguito.",
+      "motivo": "Avrebbe scritto node_modules e possibilmente package-lock.json in tests/visual, fuori dalle sole cartelle scrivibili ammesse da AGENTS.md. Sono state riutilizzate in lettura dipendenze già installate in un altro checkout."
+    },
+    {
+      "comando": "node ../../tools/build-src.mjs",
+      "eseguito": false,
+      "riuscito": false,
+      "durata_ms": 0,
+      "errore_esatto": "Non applicabile: nessun output, comando non eseguito.",
+      "motivo": "Il comando scrive CARRIER-MANAGER-AV.html, operazione vietata da AGENTS.md."
+    },
+    {
+      "comando": "node ../../tools/build-src.mjs --check",
+      "eseguito": true,
+      "riuscito": true,
+      "durata_ms": 601,
+      "errore_esatto": "",
+      "output": "build-src --check: CARRIER-MANAGER-AV.html è già allineato ai 21 frammenti."
+    },
+    {
+      "comando": "npm run test:logic",
+      "eseguito": true,
+      "riuscito": false,
+      "durata_ms": 10365,
+      "errore_esatto": "Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'playwright' imported from C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-fattibilita\\tests\\visual\\lib\\harness.mjs"
+    },
+    {
+      "comando": "node --import ../codex/isolated-visual.mjs --test 'test/logic/*.test.mjs'",
+      "eseguito": true,
+      "riuscito": true,
+      "durata_ms": 21476,
+      "errore_esatto": "",
+      "output": "tests 43; pass 43; fail 0",
+      "nota": "Equivalente del test logico con risoluzione in sola lettura delle dipendenze di un altro checkout."
+    },
+    {
+      "comando": "timeout 900 npm run validate-situations",
+      "eseguito": false,
+      "riuscito": false,
+      "durata_ms": 0,
+      "errore_esatto": "Non applicabile: nessun output, comando non eseguito.",
+      "motivo": "Il runner scrive tests/visual/out, fuori dai confini AGENTS.md; su Windows il comando timeout della scheda non è stato usato."
+    },
+    {
+      "comando": "node tests/codex/run-validate.mjs",
+      "eseguito": true,
+      "riuscito": false,
+      "durata_ms_almeno": 1503000,
+      "durata_fonte": "reports/codex/2026-09-27-fattibilita-gate.txt: creato 07:21:27 UTC, ultimo output 07:46:30 UTC; poi interruzione manuale. Durata esatta non confermabile.",
+      "errore_esatto": "[vision:error] highlight BLOCKED {\"id\":\"gi0\",\"kind\":\"timeout\",\"msg\":\"timeout Ollama\"}",
+      "altro_errore_esatto": "[vision:error] highlight BLOCKED {\"id\":\"gi1\",\"kind\":\"timeout\",\"msg\":\"timeout Ollama\"}",
+      "nota": "191 situazioni caricate; ultimo progresso esplicito 160/191, seguito da final-state, motion, WebGL/performance e live-smoke. Il gate non ha prodotto un esito finale prima dell'interruzione."
+    },
+    {
+      "comando": "node --import ./tests/codex/isolated-visual.mjs ./tests/codex/webgl-probe.mjs",
+      "eseguito": true,
+      "riuscito": true,
+      "durata_ms": 11464,
+      "errore_esatto": "",
+      "output": "WebGL 2.0 (OpenGL ES 3.0 Chromium); ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    }
+  ],
+  "misure": [
+    { "nome": "Node", "valore": "v24.17.0", "soglia": "versione dichiarata", "esito": "ok" },
+    { "nome": "Chromium avviato", "valore": "C:\\Users\\a.vairo\\AppData\\Local\\ms-playwright\\chromium-1228\\chrome-win64\\chrome.exe", "soglia": "esistenza e avvio", "esito": "ok" },
+    { "nome": "WebGL software", "valore": "WebGL 2; SwiftShader Device", "soglia": "contesto creato senza GPU hardware", "esito": "ok" },
+    { "nome": "Test logici isolati", "valore": "43/43", "soglia": "0 fallimenti", "esito": "ok" },
+    { "nome": "Validate-situations: esito complessivo", "valore": "Non posso confermarlo", "soglia": "run completa entro 900 s", "esito": "anomalia" },
+    { "nome": "Validate-situations: prestazioni software", "valore": "5.7 fps; media 176.07 ms; p95 216.7 ms", "soglia": "nessuna soglia dichiarata nella Scheda 0; misura registrata, non giudicata", "esito": "ok" },
+    { "nome": "Durata massima di un compito nell'ambiente", "valore": "Non posso confermarlo", "soglia": "limite misurato", "esito": "anomalia" },
+    { "nome": "Accesso Internet", "valore": "Sì, fetch GitHub riuscito con esecuzione autorizzata; accesso generale: Non posso confermarlo", "soglia": "accesso di rete osservato", "esito": "ok" }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "media",
+      "descrizione": "Il checkout nuovo non contiene node_modules e l'installazione nel percorso previsto violerebbe i confini di scrittura. Il comando test:logic standard fallisce prima dei test.",
+      "come_riprodurre": "Nel ramo codex/2026-09-27-fattibilita, eseguire cd tests/visual && npm run test:logic senza dipendenze locali.",
+      "prove": ["ERR_MODULE_NOT_FOUND: Cannot find package 'playwright' imported from tests/visual/lib/harness.mjs", "La stessa suite con dipendenze riutilizzate in sola lettura passa 43/43."]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "Il gate validate-situations non ha chiuso entro il limite richiesto; la fase visione AI ha registrato timeout Ollama. Non è stato ottenuto un verdetto finale del gate.",
+      "come_riprodurre": "Avviare tests/codex/run-validate.mjs con CPM_CODEX_DEPS e CPM_CHROME impostati come nel rapporto.",
+      "prove": ["reports/codex/2026-09-27-fattibilita-gate.txt: [vision:error] highlight BLOCKED {\"id\":\"gi0\",\"kind\":\"timeout\",\"msg\":\"timeout Ollama\"}", "reports/codex/2026-09-27-fattibilita-gate.txt: perf: 5.7fps (avg 176.07ms · p95 216.7ms)"]
+    }
+  ]
+}
