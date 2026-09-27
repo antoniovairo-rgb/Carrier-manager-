@@ -1215,12 +1215,49 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
     </div>);
 }
 
+/* [7.999.28 — OCCASIONI DELL'EROE DINAMICHE. Decisione PO 26/09: forbice 2-6 a partita per un attaccante titolare, media ~4.
+   Rosso __CPM_NO_OCC28] Il numero di scene non e' piu' deciso una volta al calcio d'inizio: questo e' il RITMO atteso (occasioni
+   per 90') nel minuto corrente, dai fattori che il PO ha elencato. Il live match lo integra minuto per minuto e allunga o accorcia
+   il calendario delle scene ancora da giocare. Funzione pura: stessi ingressi, stesso ritmo (esposta per il guardiano). */
+function tassoOccasioni28(f){
+  f=f||{};const cl=(v,a,b)=>Math.max(a,Math.min(b,v));const n=(v,d)=>(typeof v==='number'&&isFinite(v))?v:d;
+  const voci={};
+  voci.forma=cl((n(f.form,70)-70)/20*0.6,-0.8,0.6);
+  voci.morale=cl((n(f.morale,70)-70)/30*0.3,-0.4,0.3);
+  voci.fatica=-cl((n(f.fatigue,0)-60)/40*0.5,0,0.5);
+  voci.energia=-cl((50-n(f.energy,100))/50*0.6,0,0.6);
+  voci.ovr=cl((n(f.ovr,65)-n(f.oppP,65))/15*0.4,-0.5,0.5);
+  voci.squadre=cl((n(f.clubP,65)-n(f.oppP,65))/20*0.5,-0.6,0.6);
+  voci.tattica=cl(n(f.ment,0)*0.5,-0.4,0.4);
+  voci.meteo={storm:-0.4,snow:-0.4,rain:-0.2,wind:-0.1,fog:-0.1}[f.pitchFx]||0;
+  voci.peso=n(f.mw,0)>=8?0.3:(n(f.mw,0)>=5?0.15:0);
+  const dG=n(f.dG,0),mn=n(f.min,0);
+  voci.punteggio=(dG<0&&mn>=55)?(dG<=-2?0.7:0.5):(dG>=2?-0.3:0);
+  voci.partita=(f.oppRed?0.5:0)+(f.giallo?-0.2:0)+(n(f.golEroe,0)>0?0.2:0);
+  let r=4;for(const k in voci)r+=voci[k];
+  return {r:cl(r,2,6),voci};
+}
+try{if(typeof window!=='undefined')window.__CPM_TASSO28=tassoOccasioni28;}catch(_e){}
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
   const numHLRef=useRef(0);
   const hlTimesRef=useRef([]);
   const _ultHL803=useRef({ult:-99,ultMin:-1,storia:[]});
+  const occ28Ref=useRef({E:0,ultMin:-1,esenti:0,T:0,r:0,storia:[]});const occ28Ctx=useRef({energy:100,pitchFx:null});/* [7.999.28] integrale del ritmo, scene esenti (catene, rigori/punizioni), ultimo bersaglio */
+  const _no28=()=>(typeof window!=='undefined'&&!!window.__CPM_NO_OCC28);
+  const _fattori28=(min)=>{let ment=0,clubP=65,mw=0;
+    try{const st=player&&player.coach&&player.coach.style;if(typeof TATTICHE_MOTORE!=='undefined'&&st&&TATTICHE_MOTORE.mister[st])ment=TATTICHE_MOTORE.mister[st].ment||0;}catch(_e){}
+    try{clubP=/^(national|nationsCup|euroMondiale)/.test(context||"")?(((NAT_CLUB_DATA[player.nation||"Italia"]||{}).p)||80):((player.club&&player.club.p)||65);}catch(_e){}
+    try{mw=context==="trial"?1:calcMatchWeight(player,opponent?.id||opponent?.n,player.standings||[],player.week||1);}catch(_e){}
+    /* i ref della partita sono dichiarati piu' sotto: al calcio d'inizio (primo render) sono ancora in zona morta, quindi ognuno si legge nel suo try */
+    let dG=0,oppRed=false,giallo=false,golEroe=0;
+    try{dG=(scoreRef.current.home|0)-(scoreRef.current.away|0);}catch(_e){}
+    try{oppRed=!!oppRedRef.current;}catch(_e){}
+    try{giallo=(heroYellowsRef.current|0)>0;}catch(_e){}
+    try{golEroe=(mStatsSnapRef.current&&mStatsSnapRef.current.goals)|0;}catch(_e){}
+    return {form:player.form,morale:player.morale,fatigue:player.fatigue,ovr:player.ovr,oppP:opponent?.p||opponent?.prestige||65,clubP,ment,mw,
+      energy:occ28Ctx.current.energy,pitchFx:occ28Ctx.current.pitchFx,min:min|0,dG,oppRed,giallo,golEroe};};
   const [numHL,setNumHL]=useState(()=>{
     if(resumeState){/* [7.150.0] ripresa: gli HL si rischedulano nella SOLA finestra rimanente [clock..88] → conteggio ridotto */
       var _c0=Math.max(0,Math.min(86,resumeState.clock|0));var _nR=clamp(Math.round((88-_c0)/16),1,4);numHLRef.current=_nR;return _nR;}
@@ -1234,6 +1271,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(form>=82)n+=1;else if(form<55)n-=1;  // in-form = more involved
     if(fat>75)n-=1;                           // tired = fewer moments
     var v=clamp(n,2,context==="trial"?3:7);
+    if(!_no28()){try{const _t0=tassoOccasioni28(_fattori28(0));v=clamp(Math.round(_t0.r),2,context==="trial"?3:6);occ28Ref.current.T=v;occ28Ref.current.r=_t0.r;}catch(_e28){}}/* [7.999.28] al calcio d'inizio e' solo la prima stima: il calendario si aggiorna ogni minuto */
     numHLRef.current=v;
     return v;
   });
@@ -1916,7 +1954,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   const [festa942,setFesta942]=useState(null);/* [7.942] la festa cartoon di fine partita: null = niente da festeggiare */
   const mStatsSnapRef=useRef(mStats);useEffect(()=>{mStatsSnapRef.current=mStats;},[mStats]);/* [7.178.0 RC-1] lo snapshot di ripresa leggeva mStats dalla CLOSURE del mount (deps []) → doppietta salvata come 0 gol: specchio in ref, sempre fresco *//* [7.163.0 LIVE-F3] ripresa: tabellino personale ripristinato */
   const assistLinksRef=useRef({given:[],received:[]});/* [7.110.0 collaudo PO «memorizza a chi ho fatto l'assist e chi mi ha fatto l'assist»] connessioni coi compagni VERI, seedate, persistite in matchHistory per gli sbocchi narrativi */
-  const [energy,setEnergy]=useState(100);
+  const [energy,setEnergy]=useState(100);occ28Ctx.current.energy=energy;try{occ28Ctx.current.pitchFx=(weather&&weather.pitchFx)||null;}catch(_e){}/* [7.999.28] energia e meteo letti dal ritmo delle occasioni */
   const [coms,setComs]=useState([]);
   const [outcome,setOutcome]=useState(null);
   const [resultReveal,setResultReveal]=useState(true);// [5.92.0 FIX PO «niente suspense»] l'esito si LEGGE solo dopo che il 3D l'ha mostrato
@@ -4305,6 +4343,39 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         const _picco803=(_sp803>=2&&_sp803>=_max803&&((typeof window!=='undefined'&&window.__CPM_NO844)||_M803.storia.length>=6));/* [7.844.0 — LA PRIMA SCENA NON CADE SEMPRE AL 13' (R). Rosso __CPM_NO844] Playtest n°23: prima scena al 13' in tutte e quattro le partite (n°19: 19/10/30/10). Il «picco» si misurava su una storia di un minuto: al primo minuto utile era gia' vero. Il picco vuole almeno sei minuti di storia. */
         const _PASSO803=8;
         const _att803=nx-(_M803.ult|0);
+        /* [7.999.28 — IL CALENDARIO DELLE SCENE SI RIFA' OGNI MINUTO. Rosso __CPM_NO_OCC28]
+           Il ritmo del minuto (forma, morale, fatica ed energia, ovr, prestigio delle due squadre, tattica, meteo, punteggio,
+           cartellini, gol dell'eroe) si integra: occasioni attese = gia' maturate + ritmo x minuti rimasti. Il bersaglio, nella
+           forbice 2-6 decisa dal PO, allunga il calendario o ne toglie le scene non ancora giocate in coda. Catene, rigori e
+           punizioni dal limite non contano (la catena e' la stessa azione, il piazzato e' sempre una scena per scelta PO). */
+        const _O28=occ28Ref.current;
+        if(!_no28()&&_O28.ultMin!==nx&&context!=="trial"&&!onBenchRef.current&&!subbedOffRef.current&&!_subDue38){
+          _O28.ultMin=nx;
+          try{
+            const _t=tassoOccasioni28(_fattori28(nx));_O28.r=_t.r;_O28.E+=_t.r/90;
+            const _proj=_O28.E+_t.r*Math.max(0,88-nx)/90;
+            const _pianif=Math.max(0,hlTimesRef.current.length-(_O28.esenti|0));
+            const _giocate=Math.max(0,(hlIdx|0)-(_O28.esenti|0));
+            /* isteresi di mezza occasione: il bersaglio cambia solo se la proiezione se ne allontana davvero */
+            let _T=_pianif;if(_proj>=_pianif+0.6)_T=_pianif+1;else if(_proj<=_pianif-0.6)_T=_pianif-1;
+            _T=Math.max(benchStart?1:2,Math.min(6,_T));_O28.T=_T;/* chi entra dalla panchina non ha il minimo di 2 del titolare */
+            if(_O28.storia.length<200)_O28.storia.push({min:nx,r:+_t.r.toFixed(2),proj:+_proj.toFixed(2),T:_T,pianif:_pianif,giocate:_giocate});
+            if(_T>_pianif&&nx<=82){
+              const _ph28=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];const _m28=Math.min(86,Math.max(nx+4,(hlTimesRef.current.filter(t=>t<9000).slice(-1)[0]|0)+4));
+              setSituations(function(prev){var c=[...prev];c.push(_ph28);return c;});
+              setHlTimes(function(prev){var v=[...prev,_m28];hlTimesRef.current=v;return v;});
+              setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
+              try{cpmEv("scena",{min:nx|0,src:"occ28+",T:_T});}catch(_e){}
+            }else if(_T<_pianif&&hlTimesRef.current.length>(hlIdx|0)){
+              const _last=hlTimesRef.current.length-1;
+              setSituations(function(prev){var c=[...prev];if(c.length>_last)c.splice(_last,1);return c;});
+              setHlTimes(function(prev){var v=[...prev];if(v.length>(hlIdx|0))v.pop();hlTimesRef.current=v;return v;});
+              setNumHL(function(prev){var v=Math.max(hlIdx|0,prev-1);numHLRef.current=v;return v;});
+              try{cpmEv("scena",{min:nx|0,src:"occ28-",T:_T});}catch(_e){}
+            }
+            if(typeof window!=='undefined')window.__CPM_OCC28={r:_O28.r,E:_O28.E,T:_O28.T,esenti:_O28.esenti|0,hl:hlTimesRef.current.length,hlIdx:hlIdx|0,voci:_t.voci,storia:_O28.storia};
+          }catch(_e28){try{if(typeof window!=='undefined')window.__CPM_OCC28ERR=String(_e28&&_e28.stack||_e28).slice(0,300);}catch(_e){}}
+        }
         const _budget803=hlTimesRef.current.length;
         const _attesi803=Math.floor(_budget803*Math.max(0,Math.min(1,(nx-12)/76)));
         const _indietro803=(hlIdx<_attesi803);
@@ -4318,9 +4389,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            apre SU QUEL FATTO. Il vecchio cancello resta come rete: se dopo 14 minuti il pallone all'eroe
            non e' arrivato, la scena si apre lo stesso — un highlight non si perde mai. */
         const _NO879=(typeof window!=='undefined'&&window.__CPM_NO879);
-        const _finestra879=!_no803&&nx>=_apertoDa803&&hlIdx<hlTimesRef.current.length&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current;
+        const _passo28=(_no28()||context==="trial")?0:(_indietro803?6:Math.floor(50/Math.max(2,occ28Ref.current.T|0)));/* [7.999.28] con un bersaglio che puo' crescere a 6 le scene non devono arrivare a raffica: passo minimo fra due scene (6' se si e' indietro sulla tabella) */
+        const _finestra879=!_no803&&nx>=_apertoDa803&&_att803>=_passo28&&hlIdx<hlTimesRef.current.length&&!_subDue38&&!onBenchRef.current&&!subbedOffRef.current;
         if(!_NO879&&MOTORE870&&motoreRef.current){try{
-          if(motoreRef.current.chiedi.origini)motoreRef.current.chiedi.origini(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&!onBenchRef.current&&!subbedOffRef.current&&nx>=Math.max(10,_apertoDa803|0)&&nx<=86&&(extra26Ref.current|0)<1,15,!(typeof window!=='undefined'&&window.__CPM_NO_PIAZ27)&&!onBenchRef.current&&!subbedOffRef.current&&nx<=89&&(extra27Ref.current|0)<4);/* [7.999.27] rigori e punizioni dal limite dell'eroe: sempre una scena (tetto di sicurezza 4 a partita) *//* [7.999.26] il brain puo' aprire una scena da cross/angolo anche fuori finestra: PROVVISORIO al massimo 1 in piu' a partita e 15' dall'ultima (misurato: con 3 e 6' le scene raddoppiavano e i gol a partita salivano da 2,25 a 4,75) — da sostituire col numero dinamico di occasioni */
+          if(motoreRef.current.chiedi.origini)motoreRef.current.chiedi.origini(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&!onBenchRef.current&&!subbedOffRef.current&&nx>=Math.max(10,_apertoDa803|0)&&nx<=86&&((_no28()||context==="trial")?((extra26Ref.current|0)<1):(_att803>=5&&(extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0))),15,!(typeof window!=='undefined'&&window.__CPM_NO_PIAZ27)&&!onBenchRef.current&&!subbedOffRef.current&&nx<=89&&(extra27Ref.current|0)<4);/* [7.999.27] rigori e punizioni dal limite dell'eroe: sempre una scena (tetto di sicurezza 4 a partita) *//* [7.999.28] la scena da cross/angolo fuori finestra ora CONSUMA un'occasione del bersaglio dinamico (il calendario toglie una scena in coda); col rosso torna il vecchio tetto di 1 *//* [7.999.26] il brain puo' aprire una scena da cross/angolo anche fuori finestra: PROVVISORIO al massimo 1 in piu' a partita e 15' dall'ultima (misurato: con 3 e 6' le scene raddoppiavano e i gol a partita salivano da 2,25 a 4,75) — da sostituire col numero dinamico di occasioni */
           if(_finestra879&&!chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(true,(typeof window!=='undefined'&&window.__CPM_NO_B7TIPO)?null:(()=>{const T=['conclusione','conclusione','fascia','fra-le-linee','spalle','costruzione','fascia','conclusione'];/* [7.999.26] provata e TOLTA la richiesta di tipo «cross»: non ha prodotto scene da cross (misurato) e, lasciando la finestra aperta senza servire l'eroe, gonfiava i gol del gioco fluido (motore-unico 2,25 -> 4,75) */return T[(hashStr('tipo7|'+_sm819()+'|'+hlIdx)>>>0)%T.length];})());/* [23/09 POC punto 4] il tipo di occasione si chiede a rotazione seminata per partita: conclusioni piu' frequenti */chiestaScena879Ref.current={t0:nx};}
           else if(!_finestra879&&chiestaScena879Ref.current){motoreRef.current.chiedi.scenaEroe(false);chiestaScena879Ref.current=null;}
         }catch(_e879){}}
@@ -4342,7 +4414,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         }
         if(!_subDue38&&hlIdx<hlTimesRef.current.length&&_apre803){
           _M803.ult=nx;
-          if(onBenchRef.current||subbedOffRef.current){setHlIdx(hi=>hi+1);}else{
+          if(onBenchRef.current||subbedOffRef.current){setHlIdx(hi=>hi+1);occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;/* [7.999.28] lo slot bruciato in panchina non e' un'occasione giocata */}else{
             const _sc=scoreRef.current;
             const _realCtx=_sc.home>_sc.away?"winning":_sc.home<_sc.away?"losing":"drawing";
             // [5.79.0 SIT-1] SELEZIONE LAZY: la situation si sceglie ADESSO, col contesto VIVO (punteggio,
@@ -5151,8 +5223,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             /* [7.999.26] OCCASIONE DEL BRAIN FUORI FINESTRA (cross, angolo, punizione in mezzo per l'eroe): diventa una scena in piu',
                inserita ORA al posto corrente come fanno le scene reattive. La scheda la sceglie l'apertura, dall'origine. */
             const _pz27=!!(_oc26&&_oc26.origine&&(_oc26.origine.kind==="rigore"||(_oc26.origine.kind==="punizione"&&_oc26.tipo==="punizione")));
-            if(_oc26&&(_pz27?((extra27Ref.current|0)<4):(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&(extra26Ref.current|0)<1))&&String(phaseRef.current)==="playing"){try{
-              if(_pz27)extra27Ref.current=(extra27Ref.current|0)+1;else extra26Ref.current=(extra26Ref.current|0)+1;const _ph26=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];
+            if(_oc26&&(_pz27?((extra27Ref.current|0)<4):(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&((_no28()||context==="trial")?((extra26Ref.current|0)<1):((extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0)))))&&String(phaseRef.current)==="playing"){try{
+              if(_pz27){extra27Ref.current=(extra27Ref.current|0)+1;occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;}else extra26Ref.current=(extra26Ref.current|0)+1;const _ph26=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];
               setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,_ph26);return c;});
               setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,nx|0);hlTimesRef.current=v;return v;});
               setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
@@ -8943,7 +9015,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       const chain=pendingChainSitRef.current;
       pendingChainSitRef.current=null;
       setSituations(prev=>{const c=[...prev];c.splice(nx,0,chain);return c;});
-      setHlTimes(prev=>{const c=[...prev];c.splice(nx,0,9999);hlTimesRef.current=c;return c;});
+      setHlTimes(prev=>{const c=[...prev];c.splice(nx,0,9999);hlTimesRef.current=c;return c;});occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;/* [7.999.28] la catena e' la stessa azione: non consuma un'occasione */
       setNumHL(prev=>{const v=prev+1;numHLRef.current=v;return v;});
       setHlIdx(nx);setOutcome(null);setChosenAct(null);
       /* [7.620.0 — ANCHE LA CATENA STACCA. Rosso __CPM_NO620]
