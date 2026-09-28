@@ -79,7 +79,7 @@ function adaptiveDifficulty(player){
 //   declino dolce — il criterio §10 della spec («crescita credibile, 2-3 stagioni di gavetta») torna vero.
 const TRAIN_BASE_EFF=0.40;
 function trainAgeMult(age){const a=age||18;return a<=26?1.0:a<=28?0.75:a<=30?0.55:a<=33?0.25:0.06;}
-// [5.80.0 MIN-8] Enfant Prodige: la «crescita x2» promessa alla creazione ora è VERA (×1.35 fino ai 22)
+// [5.80.0 MIN-8] Enfant Prodige: crescita ×1.35 fino ai 22 anni. [7.999.49 parte A] la desc diceva «crescita x2»: ora dice il vero
 function archGrowthMult(p){const id=p&&(p.archetype?.id||p.archetype);return(id==="enfant"&&((p&&p.age)||18)<23)?1.35:1;}
 // [5.80.0 BIL-10] valore di mercato = f(OVR, età, forma, popolarità), ricalcolato ogni settimana con
 //   smoothing 70/30 (gli eventi continuano a dare colore, i fondamentali tirano). Scala legacy (~0.3–5 "M€").
@@ -816,7 +816,7 @@ const ARCHETYPES=[
   {id:"trequartista", e:"🎨", name:"Trequartista",      desc:"Visione e assist al top",           bonus:{passaggio:+9,tecnica:+6,mentalità:+5,fisico:-3,tiro:-3},           favored:["passaggio","tecnica","mentalità"]},
   {id:"leader",       e:"🦁", name:"Leader",            desc:"Trascinatore mentale e fisico",     bonus:{mentalità:+9,fisico:+6,posizionamento:+4,velocità:-2,dribbling:-2}, favored:["mentalità","fisico","posizionamento"]},
   {id:"centravanti",  e:"🎯", name:"Centravanti",       desc:"Equilibrio perfetto in area",       bonus:{tiro:+5,posizionamento:+6,tecnica:+4,passaggio:+2,velocità:-2},    favored:["tiro","posizionamento","tecnica"]},
-  {id:"enfant",       e:"✨", name:"Enfant Prodige",    desc:"Potenziale sconfinato, crescita x2",bonus:{tecnica:+4,velocità:+4,tiro:+3,dribbling:+3,mentalità:+2},        favored:["tecnica","velocità","tiro","dribbling","mentalità","passaggio","fisico","posizionamento"]},
+  {id:"enfant",       e:"✨", name:"Enfant Prodige",    desc:"Cresce più in fretta fino ai 22 anni",bonus:{tecnica:+4,velocità:+4,tiro:+3,dribbling:+3,mentalità:+2},        favored:["tecnica","velocità","tiro","dribbling","mentalità","passaggio","fisico","posizionamento"]},
   {id:"tuttocampista",e:"⚖️",name:"Tuttocampista",     desc:"Nessun punto debole, nessun picco", bonus:{tiro:+2,tecnica:+2,velocità:+2,fisico:+2,mentalità:+2,passaggio:+2,dribbling:+2,posizionamento:+2}, favored:["tiro","tecnica","velocità","fisico","mentalità","passaggio","dribbling","posizionamento"]},
 ];
 /* ── S12: NPC Club Personas (deterministic from club id hash) ── */

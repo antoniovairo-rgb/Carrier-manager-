@@ -596,6 +596,8 @@ function IntroCinematic({onDone}){
    chiaro-scuro ecc.»] MENU IMPOSTAZIONI dedicato (overlay full-screen): 🎨 GRAFICA (tema chiaro/scuro + modelli
    3D realistici) + 🎧 AUDIO completo (riusa AudioSettings: volumi per categoria, musica, effetti, pubblico,
    arbitro, muto totale, VIBRAZIONE, debug). Un unico posto per tutte le preferenze. */
+/* [7.999.49 parte A] strumenti di sviluppo (revisione azioni, debug audio) solo con ?dev=1 nell'indirizzo */
+function _cpmDev49(){try{return typeof window!=='undefined'&&/[?&]dev=1(&|$)/.test(window.location.search||"");}catch(_e){return false;}}
 function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
   const Seg=({active,label,onClick})=>(
     <button onClick={onClick} className="cpm-press" style={{flex:1,padding:'10px 6px',borderRadius:RAD.md,border:`1.5px solid ${active?TH.primary:TH.cardBorder}`,background:active?(TH.primaryTint||TH.track):'transparent',color:active?TH.brandText:TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.small,fontWeight:active?FW.bold:FW.regular}}>{label}</button>
@@ -617,8 +619,8 @@ function SettingsScreen({darkMode,onTheme,onClose,onExitToMenu,strumenti}){
         {onExitToMenu&&(
           <Card style={{padding:'12px 14px'}}>
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700,marginBottom:8}}>🚪 Sessione</div>
-            <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:10}}>Il gioco riprende automaticamente da qui alla riapertura. Torna al menu solo se vuoi cambiare slot o iniziare una nuova carriera — i progressi restano salvati.</div>
-            <Btn v="ghost" fw onClick={()=>{onClose&&onClose();onExitToMenu();}} style={{padding:'12px',fontSize:FS.body}}>🏠 Torna al Menu Principale</Btn>
+            <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:10}}>Il gioco riprende automaticamente da qui alla riapertura. Torna al menu solo se vuoi cambiare salvataggio o iniziare una nuova carriera — i progressi restano salvati.</div>
+            <Btn v="ghost" fw onClick={()=>{onClose&&onClose();onExitToMenu();}} style={{padding:'12px',fontSize:FS.body}}>🏠 Torna al menu principale</Btn>
           </Card>
         )}{/* [7.149.0] uscita al menu (azzera l'auto-ripresa); presente SOLO durante la carriera, non nelle schermate pre-carriera */}
         <div style={{fontSize:FS.caption,color:TH.faint,textAlign:'center',padding:'2px 0 8px'}}>Le impostazioni si salvano automaticamente.</div>
@@ -635,7 +637,7 @@ function AudioSettings(){
   const refresh=()=>{try{setCfg(AudioMgr.getCfg());}catch(_e){}};
   // [7.97.0 collaudo PO «volume generale ridondante col device»] slider MASTER rimosso: restano solo le categorie.
   const VOL=[{k:'match',label:'🏟️ Audio partite'},{k:'sfx',label:'✨ Effetti sonori'},{k:'crowd',label:'📣 Pubblico'},{k:'referee',label:'🟨 Arbitro'}];
-  const TOG=[{k:'vibr',label:'📳 Vibrazione (mobile)'}];
+  const TOG=[{k:'vibr',label:'📳 Vibrazione'}];
   const Toggle=({on,onClick,dis})=>(
     <button onClick={dis?undefined:onClick} disabled={dis} style={{width:42,height:24,borderRadius:RAD.md,border:'none',cursor:dis?'default':'pointer',background:on?TH.success:TH.cardBorder,position:'relative',transition:'background .2s',flexShrink:0}}>
       <span style={{position:'absolute',top:2,left:on?20:2,width:20,height:20,borderRadius:'50%',background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,.3)'}}/>
@@ -645,7 +647,11 @@ function AudioSettings(){
     <Card style={{padding:'12px 14px'}}>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
         <div style={{fontSize:FS.caption,color:TH.muted,textTransform:'uppercase',letterSpacing:1.2,fontWeight:700}}>🎧 Audio</div>
-        <button onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}} style={{padding:'5px 12px',borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:cfg.mute?TH.danger:'transparent',color:cfg.mute?'#fff':TH.text,cursor:'pointer',fontFamily:'inherit',fontSize:FS.caption,fontWeight:700}}>{cfg.mute?'🔇 Muto ON':'🔇 Muto totale'}</button>
+      </div>
+      {/* [7.999.49 parte A] «Muto totale» era un bottone che non diceva il suo stato: ora interruttore come gli altri */}
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+        <span style={{fontSize:FS.small,color:TH.text,fontWeight:600}}>🔇 Silenzia tutto</span>
+        <Toggle on={!!cfg.mute} onClick={()=>{try{const m=AudioMgr.toggleMute();refresh();if(!m)AudioMgr.preview('sfx');}catch(_e){}}}/>
       </div>
       {VOL.map(r=>{
         const vol=Math.round((r.master?cfg.master:cfg.vol[r.k])*100);
@@ -673,9 +679,9 @@ function AudioSettings(){
           </div>
         ))}
       </div>
-      <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2,lineHeight:1.4}}>Audio sintetizzato in tempo reale (nessun download, funziona offline). Le impostazioni si salvano da sole.</div>
-      <button onClick={()=>setDbg(d=>!d)} style={{marginTop:8,padding:'5px 10px',borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit',fontSize:FS.caption}}>🐞 Debug audio {dbg?'▲':'▼'}</button>
-      {dbg&&(()=>{let D;try{D=AudioMgr.debug();}catch(_e){D=null;}if(!D)return null;return(
+      {/* [7.999.49 parte A] tolta la nota tecnica (e il doppione «si salvano da sole»); il debug audio solo con ?dev=1 */}
+      {_cpmDev49()&&<button onClick={()=>setDbg(d=>!d)} style={{marginTop:8,padding:'5px 10px',borderRadius:RAD.sm,border:`1px solid ${TH.cardBorder}`,background:'transparent',color:TH.faint,cursor:'pointer',fontFamily:'inherit',fontSize:FS.caption}}>🐞 Debug audio {dbg?'▲':'▼'}</button>}
+      {dbg&&_cpmDev49()&&(()=>{let D;try{D=AudioMgr.debug();}catch(_e){D=null;}if(!D)return null;return(
         <div style={{marginTop:8,padding:8,background:TH.surface2||'rgba(0,0,0,.05)',borderRadius:RAD.sm,fontSize:FS.caption}}>
           <div style={{color:TH.muted,marginBottom:6,lineHeight:1.5}}>ctx: <b>{D.ctx}</b> · scena: <b>{D.scene||'—'}</b> · folla: <b>{D.bed?'ON':'off'}</b> · sfx suonati: <b>{D.played}</b> · voci in catalogo: <b>{D.catalog.length}</b>{D.silent?' · (muto sotto test)':''}</div>
           <div style={{display:'flex',flexWrap:'wrap',gap:4,maxHeight:150,overflowY:'auto'}}>
@@ -710,7 +716,7 @@ function HomeNavBar({onImport,onSettings}){
     <div className="cpm-nav-bar" style={{zIndex:100}}>
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder}}>
         <button title="Home" className="cpm-tab-act" style={{...cellStyle(false),color:TH.brandText,borderTop:`2px solid ${TH.primary}`,cursor:"default"}}><div style={{fontSize:FS.subhead}}>🏠</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Home</div></button>
-        <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Intro</div></button>
+        <button title="Rivedi l'intro" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}try{window.dispatchEvent(new CustomEvent('cpm-replay-intro'));}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>🎬</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Rivedi intro</div></button>
         <button title="Importa salvataggio (.json)" onClick={()=>{try{fileRef.current&&fileRef.current.click();}catch(_e){}}} style={cellStyle(false)}><div style={{fontSize:FS.subhead}}>📂</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Importa</div></button>
         <button title="Impostazioni" onClick={()=>{try{AudioMgr.unlock();}catch(_e){}if(onSettings)onSettings();}} style={cellStyle(true)}><div style={{fontSize:FS.subhead}}>⚙️</div><div style={{fontSize:FS.caption,marginTop:1,letterSpacing:.3}}>Opzioni</div></button>
       </div>
@@ -939,7 +945,7 @@ function App(){
     return wrap(<ReviewWizard onExit={()=>{try{window.__CPM_REVIEW=false;window.__CPM_FORCED_MODE=false;if(typeof AudioMgr!=="undefined")AudioMgr.setSuspended(false);}catch(_e){}setPhase("home");}}/>);}
   if(phase==="loading")return wrap(<div style={{textAlign:"center",paddingTop:80,color:TH.faint}}>Caricamento…</div>);
   if(phase==="home")return wrap(<><HomeScreen slots={slots} onNew={startNew} onLoad={loadSave} onDelete={deleteSlot} onImport={importSave}/>
-    {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD)&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>
+    {(typeof window!=='undefined'&&!window.__CPM_STORE_BUILD&&_cpmDev49())&&<div style={{textAlign:"center",padding:"6px 0 26px"}}>{/* [7.999.49 parte A] solo con ?dev=1 */}
       <button onClick={()=>setPhase("review")} style={{background:"none",border:"1px dashed "+TH.divider,color:TH.faint,borderRadius:RAD.sm,padding:"7px 14px",fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🎬 Revisione azioni (sviluppo)</button>
     </div>}</>);/* [7.211.0] ingresso al wizard di revisione — solo in sviluppo, mai nella build store */
   if(phase==="create")return wrap(<CreateScreen onCreate={onCreate} legacyBonus={legacyBonus} onClearLegacy={()=>setLegacyBonus(null)}/>);

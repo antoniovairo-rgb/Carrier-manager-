@@ -9629,7 +9629,10 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
         if(_me&&cur.matchday!=null){const _pl=_me.played||0;if(_pl!==cur.matchday-1)_sp=` ⚠︎ ${_pl}g`;}
         else if(!_me&&_st.length>=2)_sp=" ⚠︎ ?g";/* la mia riga in classifica non si trova: e' proprio la cecita' che spegne le reti (E) e (H) */
       }catch(_e){}
-      return `Giornata ${cur.matchday} di ${lg.length}${_sp}`;}
+      /* [7.999.49 parte A] la spia non si mostra al giocatore: solo con window.__CPM_DIAG; altrimenti resta in window.__CPM_SPIA_G */
+      const _diag49=typeof window!=='undefined'&&!!window.__CPM_DIAG;
+      if(_sp&&!_diag49){try{window.__CPM_SPIA_G=_sp.trim();}catch(_e){}}
+      return `Giornata ${cur.matchday} di ${lg.length}${_diag49?_sp:""}`;}
     if(context==="trial")return null;
     if(context==="national")return"Amichevole internazionale";/* [7.72.2] nationsCup: cade su _tvComp.phase (13798) → «Fase a gironi · Giornata N/3» o «Finale» (prima leggeva player.nationsCup inesistente → sempre «Giornata 1 di 3») */
     return(_tvComp&&_tvComp.phase&&_tvComp.phase!==_compLabel)?_tvComp.phase:null;

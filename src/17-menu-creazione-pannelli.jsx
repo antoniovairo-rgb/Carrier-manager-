@@ -168,17 +168,20 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
             <span style={{fontFamily:"'Barlow','Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif",fontWeight:900,fontSize:40,letterSpacing:.5,color:"#fff",textShadow:"0 2px 8px rgba(0,0,0,0.3)",lineHeight:1}}>K<span style={{fontSize:31,verticalAlign:"baseline"}}>⚽</span>rward</span>
             <span style={{fontFamily:"'KWScript','Segoe Script','Snell Roundhand','Apple Chancery',cursive",fontWeight:400,fontSize:30,letterSpacing:1,color:TH.goldText,textShadow:"0 2px 8px rgba(0,0,0,0.3)",marginTop:0,lineHeight:1}}>Elite</span>
           </div>
-          <p style={{color:"rgba(255,255,255,0.86)",fontSize:FS.caption,margin:"8px 0 3px",letterSpacing:2,textTransform:"uppercase",fontWeight:FW.black}}>Football Career Simulator</p>
-          <p style={{color:"rgba(255,255,255,0.64)",fontSize:FS.small,margin:0,fontStyle:"italic"}}>From prospect to legend</p>
+          <p style={{color:"rgba(255,255,255,0.86)",fontSize:FS.caption,margin:"8px 0 3px",letterSpacing:2,textTransform:"uppercase",fontWeight:FW.black}}>Simulatore di carriera calcistica</p>
+          <p style={{color:"rgba(255,255,255,0.64)",fontSize:FS.small,margin:0,fontStyle:"italic"}}>Da promessa a leggenda</p>
         </div>
       </div>
       <PwaInstallBanner/>
       {/* Save slots */}
       <div className="cpm-slots" style={{marginBottom:10}}>
-        {slots.map((s,i)=>s&&s.corrupted?(
+        {/* [7.999.49 parte A] a carriera zero un solo bottone (usa il primo salvataggio libero); le righe vuote solo se almeno uno è occupato */}
+        {!hasAny?(
+          <Btn onClick={()=>onNew(0)} v="primary" fw style={{padding:"12px 14px",fontSize:FS.bodyLg}}>Nuova carriera</Btn>
+        ):slots.map((s,i)=>s&&s.corrupted?(
           <div key={i} style={{border:`2px solid #fca5a5`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:TH.lossBg}}>
             <div>
-              <div style={{fontSize:FS.small,fontWeight:700,color:TH.txRed}}>⚠️ Slot {i+1} — dati corrotti</div>
+              <div style={{fontSize:FS.small,fontWeight:700,color:TH.txRed}}>⚠️ Salvataggio {i+1} — dati corrotti</div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Il salvataggio non è leggibile. Elimina e ricomincia.</div>
             </div>
             <button onClick={()=>setConfirmDel(i)} style={{padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid #fca5a5",background:TH.lossBg,cursor:"pointer",color:TH.txRed,fontSize:FS.small,fontWeight:700}}>🗑️ Elimina</button>
@@ -211,8 +214,8 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
           </Card>
         ):(
           <div key={i} style={{border:`2px dashed ${TH.cardBorder}`,borderRadius:RAD.md,padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.4)"}}>
-            <div style={{fontSize:FS.small,color:TH.faint}}>Slot {i+1} — vuoto</div>
-            <Btn onClick={()=>onNew(i)} v="secondary" style={{padding:"8px 14px",fontSize:FS.body}}>⚡ Nuova carriera</Btn>
+            <div style={{fontSize:FS.small,color:TH.faint}}>Salvataggio {i+1} — libero</div>
+            <Btn onClick={()=>onNew(i)} v="secondary" style={{padding:"8px 14px",fontSize:FS.body}}>Nuova carriera</Btn>
           </div>
         ))}
       </div>
@@ -224,12 +227,12 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         <Card style={{marginBottom:8,padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <div>
-              <div style={{fontSize:FS.small,fontWeight:700,color:TH.brandText}}>⚡ Nuova Carriera</div>
-              <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Tutti gli slot sono pieni — sovrascrivine uno per iniziare</div>
+              <div style={{fontSize:FS.small,fontWeight:700,color:TH.brandText}}>Nuova carriera</div>
+              <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Tutti i salvataggi sono occupati — sovrascrivine uno per iniziare</div>
             </div>
             <div style={{display:"flex",gap:6}}>
               {slots.map((s,i)=>(
-                <button key={i} onClick={()=>onNew(i)} title={s&&s.corrupted?`Sovrascrive S${i+1} (corrotto)`:s?`Sovrascrive: ${s.name}`:`Slot ${i+1} vuoto`}
+                <button key={i} onClick={()=>onNew(i)} title={s&&s.corrupted?`Sovrascrive il salvataggio ${i+1} (corrotto)`:s?`Sovrascrive: ${s.name}`:`Salvataggio ${i+1} libero`}
                   style={{padding:"6px 10px",borderRadius:RAD.sm,border:`1px solid ${s?TH.bdRed:TH.bdBlue}`,background:s?TH.bgRed:TH.bgBlue,cursor:"pointer",fontSize:FS.caption,fontWeight:700,color:s?TH.txRed:TH.brandText}}>
                   {s?`⚠️S${i+1}`:`+S${i+1}`}
                 </button>
@@ -239,7 +242,7 @@ function HomeScreen({onNew,onLoad,onDelete,onImport,slots}){
         </Card>
       )}
       {_dk&&<div style={{textAlign:"center",marginBottom:8,fontSize:FS.caption,color:TH.faint}}>
-        <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> slot
+        <span className="kbd">1</span><span className="kbd">2</span><span className="kbd">3</span> salvataggi
       </div>}
       {/* [7.134.0 collaudo PO] Importa salvataggio e Rivedi l'intro sono ora nella nav bar della home (HomeNavBar) */}
     </div>
@@ -294,7 +297,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={46}/></div>
         <h1 style={{fontSize:FS.title,fontWeight:900,margin:0,color:TH.text}}>Crea il tuo calciatore</h1>
-        <p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>Ruolo fisso: <strong style={{color:TH.brandText}}>Attaccante</strong></p>
+        {/* [7.999.49 parte A] tolta «Ruolo fisso: Attaccante»: il ruolo lo dice già la figurina */}
       </div>
       <Card style={{maxWidth:900,margin:"0 auto",padding:"16px 16px 18px"}}>
       <div className="cpm-create">
@@ -302,7 +305,7 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
         <div style={{display:"flex",flexDirection:"column",gap:14}}>
           <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>👤 Identità</div>
           <div style={{display:"flex",justifyContent:"center"}}>
-            <Figurina tipo="giocatore" chiave={"avatar-"+avatarId} voltoId={voltoScelto} nome={name.trim()||"Il tuo calciatore"} ruolo="Attaccante" larg={143}/>
+            <Figurina tipo="giocatore" chiave={"avatar-"+avatarId} voltoId={voltoScelto} nome={name.trim()||"Il tuo nome"} ruolo="Attaccante" larg={143}/>
           </div>
           <div>
             <label style={lbl}>Aspetto calciatore</label>
@@ -321,17 +324,17 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
               </div>
             )}
             <div style={{textAlign:"center",marginTop:8,fontSize:FS.caption,color:TH.muted}}>{AVATARS[avatarId]?.label}</div>
-            {_cand23.length>1&&<div style={{textAlign:"center",marginTop:6}}><button data-cpm="altro-volto" onClick={()=>setVoltoVar(v=>v+1)} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,padding:"4px 12px",cursor:"pointer",color:TH.text,fontSize:FS.small}}>↻ Altro volto ({(voltoVar%_cand23.length)+1}/{_cand23.length})</button></div>}
+            {_cand23.length>1&&<div style={{textAlign:"center",marginTop:6}}><button data-cpm="altro-volto" onClick={()=>setVoltoVar(v=>v+1)} style={{background:"none",border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,padding:"4px 12px",cursor:"pointer",color:TH.text,fontSize:FS.small}}>↻ Altra variante di questo volto ({(voltoVar%_cand23.length)+1} di {_cand23.length})</button></div>}
           </div>
-          <div><label style={lbl}>Nome</label><input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Giovanni Pisano" maxLength={22} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name" onKeyDown={e=>e.key==="Enter"&&go()}/>{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
+          <div><label style={lbl}>Nome (obbligatorio)</label><input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Es. Giovanni Pisano" maxLength={22} autoComplete="off" autoCorrect="off" spellCheck={false} name="cpm-hero-name" onKeyDown={e=>e.key==="Enter"&&go()}/>{/* [7.37.2 collaudo PO «continuo a vedere Leo Vairo»] era l'AUTOFILL del browser (vecchio input dell'utente): il campo non aveva autocomplete=off */}</div>
           <div><label style={lbl}>Nazionalità</label><select style={inp} value={nation} onChange={e=>setNation(e.target.value)}>{NATIONS.map(n=><option key={n}>{n}</option>)}</select></div>
         </div>
-        {/* DESTRA — Stile & percorso */}
+        {/* DESTRA — Stile e percorso */}
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
-          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>🎯 Stile & percorso</div>
+          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700}}>🎯 Stile e percorso</div>
           <Card style={{padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}} shadow={false}>
             <div style={{fontSize:FS.small,color:TH.brandText,fontWeight:700,marginBottom:3}}>📋 Percorso carriera</div>
-            <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.6}}>3 provini → offerte U18 → Lega A Primavera → campionati europei</div>
+            <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.6}}>3 provini → offerte dalle Primavera → prima squadra → campionati europei</div>
           </Card>
           {/* S12.2: Archetype selection */}
           <div>
@@ -350,13 +353,15 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
             </div>
             {(()=>{const arc=ARCHETYPES.find(a=>a.id===archetypeId);return arc?(
               <div style={{marginTop:6,padding:"7px 10px",background:TH.bgGreen,borderRadius:RAD.sm,border:"1px solid "+TH.bdGreen,fontSize:FS.caption,color:TH.txGreen}}>{/* [7.120.0 audit UI] bg verde chiaro FISSO → testo verde scuro FISSO (era TH.muted = chiaro in dark mode → illeggibile) */}
-                {Object.entries(arc.bonus).map(([k,v])=><span key={k} style={{marginRight:6,color:v>0?TH.txGreen:TH.txRed,fontWeight:700}}>{k} {v>0?"+":""}{v}</span>)}
+                <span style={{fontWeight:FW.semibold}}>Effetto sugli attributi (su 100): </span>{/* [7.999.49 parte A] intestazione + nomi in maiuscola separati da « · » */}
+                {Object.entries(arc.bonus).map(([k,v],j)=><React.Fragment key={k}>{j>0?" · ":""}<span style={{color:v>0?TH.txGreen:TH.txRed,fontWeight:700,whiteSpace:"nowrap"}}>{k[0].toUpperCase()+k.slice(1)} {v>0?"+":"−"}{Math.abs(v)}</span></React.Fragment>)}
               </div>
             ):null;})()}
           </div>
-          {/* Club dei Sogni — tutti i club del gioco */}
-          <div>
-            <label style={lbl}>⭐ Club dei sogni <span style={{color:TH.faint,fontWeight:400,textTransform:"none",letterSpacing:0}}>(opzionale)</span></label>
+          {/* Club dei Sogni — tutti i club del gioco. [7.999.49 parte A] in fisarmonica chiusa: il bottone per iniziare non sta più dopo l'elenco dei club */}
+          <details style={{marginBottom:0}}>
+            <summary style={{fontSize:FS.caption,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⭐ Club dei sogni (facoltativo){dreamClub?<span style={{color:TH.txGreen,fontWeight:FW.bold}}> · {dreamClub.n}</span>:null}</summary>
+            <div style={{marginTop:8}}>
             <input
               value={dreamSearch}
               onChange={e=>setDreamSearch(e.target.value)}
@@ -376,15 +381,17 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
               })}
             </div>
             {dreamClub&&<div style={{fontSize:FS.caption,color:TH.txGreen,background:TH.bgGreen,borderRadius:RAD.sm,padding:"6px 10px",border:"1px solid "+TH.bdGreen,display:"flex",alignItems:"center",gap:8}}><TeamBadge team={dreamClub} size={20}/> Il tuo sogno: <strong>{dreamClub.n}</strong> ({dreamClub.lg}). Ce la farai?</div>}
-          </div>
+            </div>
+          </details>
           {legacyBonus&&<div style={{padding:"7px 11px",borderRadius:RAD.sm,background:"linear-gradient(135deg,#7c3aed22,#4f46e522)",border:"1px solid #7c3aed44",marginBottom:6,fontSize:FS.caption,color:TH.accentText,fontWeight:700}}>🌟 Nuova Partita+ attiva — Bonus {legacyBonus.label}: +{legacyBonus.statBoost} a tutti gli attributi</div>}
           <details style={{marginBottom:6}}>
-            <summary style={{fontSize:FS.caption,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida <span style={{color:challengeId?TH.txAmber:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
+            <summary style={{fontSize:FS.caption,color:TH.muted,cursor:"pointer",userSelect:"none",padding:"4px 0"}}>⚡ Modalità Sfida (facoltativa: obiettivi più difficili) <span style={{color:challengeId?TH.txAmber:"inherit"}}>{challengeId?`(attiva: ${CHALLENGES.find(c=>c.id===challengeId)?.name||""})`:""}</span></summary>
             <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
               {CHALLENGES.map(ch=>{const sel=challengeId===ch.id;return(<button key={ch.id} onClick={()=>setChallengeId(sel?null:ch.id)} style={{textAlign:"left",padding:"8px 10px",borderRadius:RAD.sm,border:`2px solid ${sel?"#f59e0b":TH.cardBorder}`,background:sel?TH.bgAmber:TH.surface2,cursor:"pointer"}}><div style={{fontSize:FS.body,marginBottom:2}}>{ch.icon} <span style={{fontWeight:700,fontSize:FS.caption}}>{ch.name}</span></div><div style={{fontSize:FS.caption,color:TH.muted}}>{ch.desc}</div><div style={{fontSize:FS.caption,color:TH.goldText,marginTop:2}}>{ch.reward}</div></button>);})}
             </div>
           </details>
-          <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:FS.bodyLg}}>⚡ INIZIA I PROVINI</Btn>
+          <Btn onClick={go} disabled={!name.trim()} fw style={{padding:"14px",fontSize:FS.bodyLg}}>Inizia i provini</Btn>
+          {!name.trim()&&<div style={{textAlign:"center",fontSize:FS.caption,color:TH.muted,marginTop:-8}}>Scrivi il nome per iniziare</div>}{/* [7.999.49 parte A] il bottone disattivato dice perché */}
         </div>
       </div>{/* end cpm-create */}
       </Card>
@@ -397,9 +404,12 @@ function CreateScreen({onCreate,legacyBonus,onClearLegacy}){
 ======================================== */
 function OffersScreen({player,trialStats,onChoose}){
   const _dk=window.innerWidth>=640;
+  const _ass49=trialStats.reduce((a,m)=>a+(m.assists||0),0);/* [7.999.49 parte A] assist nel riepilogo in una riga */
   const total=trialStats.reduce((a,m)=>a+m.goals,0),avg=Math.round(trialStats.reduce((a,m)=>a+m.rating,0)/Math.max(1,trialStats.length)*10)/10,perf=total*2+avg*5;
   const[offers]=useState(()=>[...ALL_U18_CLUBS].sort((a,b)=>{const sa=a.p+(Math.random()-.5)*30,sb=b.p+(Math.random()-.5)*30;return perf>50?sb-sa:sa-sb;}).slice(0,perf>50?3:2));
   const[selIdx,setSelIdx]=useState(0);
+  /* [7.999.49 parte A] «Consigliata» alla squadra di prestigio PIÙ ALTO (a pari merito nessuna), non alla prima di una lista ordinata con rumore */
+  const _maxP49=Math.max(...offers.map(o=>o.p||0)),_top49=offers.filter(o=>(o.p||0)===_maxP49).length===1?offers.findIndex(o=>(o.p||0)===_maxP49):-1;
   useEffect(()=>{
     const onKey=e=>{
       if(_scrive386(e))return;/* [7.386.0] chi scrive tiene la tastiera */
@@ -413,24 +423,21 @@ function OffersScreen({player,trialStats,onChoose}){
   },[offers,selIdx,onChoose]);// eslint-disable-line
   return(
     <div style={{width:"100%"}}>
-      <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>3 provini · {total} gol · Rating medio {avg}</p></div>
-      <Card style={{marginBottom:9,padding:"9px 12px"}}>
-        <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Riepilogo provini</div>
-        <div style={{display:"flex",gap:6}}>{trialStats.map((t,i)=><div key={i} className="cpm-num" style={{flex:1,background:TH.surface2,borderRadius:RAD.sm,padding:"7px",textAlign:"center",border:"1px solid "+TH.divider}}><div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2}}>Provino {i+1}</div><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>⚽{t.goals} 🎯{t.assists}</div><div style={{fontSize:FS.caption,color:TH.txAmber,fontWeight:FW.bold}}>{t.rating}</div></div>)}</div>
-      </Card>
+      <div style={{textAlign:"center",marginBottom:10}}><div style={{display:"flex",justifyContent:"center",marginBottom:8}}><LogoMark size={40}/></div><h1 style={{fontSize:FS.subhead,fontWeight:900,margin:0,color:TH.text}}>Offerte ricevute</h1><p style={{color:TH.muted,fontSize:FS.small,margin:"6px 0 0"}}>{trialStats.length} provini · {total} gol · {_ass49} assist · voto medio {avg.toFixed(1).replace(".",",")}</p></div>
+      {/* [7.999.49 parte A] tolto il riquadro «Riepilogo provini»: ripeteva la riga qui sopra; lo spazio va alle offerte */}
       
       <div className="cpm-offers" style={{marginBottom:9}}>
         {offers.map((club,i)=>{
           const isSel=i===selIdx;
           return(
-            <Card key={club.id} interactive border={isSel?TH.primary:i===0?TH.primaryBorder:undefined} bg={isSel?TH.primaryTint:undefined} style={{outline:isSel?`2px solid ${TH.primary}`:"none",transition:"outline .1s"}}>
+            <Card key={club.id} interactive border={isSel?TH.primary:i===_top49?TH.primaryBorder:undefined} bg={isSel?TH.primaryTint:undefined} style={{outline:isSel?`2px solid ${TH.primary}`:"none",transition:"outline .1s"}}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{display:"flex",alignItems:"center",gap:8}}>
                   <TeamBadge team={club} size={44}/>
-                  <div><div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{club.name}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>{club.nat} · Prestigio {club.p}</div></div>
+                  <div><div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{club.name||club.n}</div><div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>{club.nat} · {club.lg} · Prestigio {club.p}/100</div></div>{/* [7.999.49 parte A] le squadre Primavera hanno n, non name */}
                 </div>
                 <div style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
-                  {i===0&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>⭐ TOP</div>}
+                  {i===_top49&&<div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700}}>⭐ Consigliata</div>}
                   <div style={{display:"flex",alignItems:"center",gap:5}}>
                     {_dk&&<span className="kbd">{i+1}</span>}
                     <Btn onClick={()=>onChoose(club)} v={isSel?"primary":"secondary"}>Scegli →</Btn>
@@ -1089,7 +1096,7 @@ const CHALLENGES=[
    check:p=>(p.trophies||[]).length>0,fail:p=>(p.season||1)>5&&(p.trophies||[]).length===0,reward:"🏆 Scalatore Nato"},
   {id:"bomber",icon:"🔥",name:"Bomber Puro",desc:"Segna 50 gol in una singola stagione.",
    check:p=>(p.goals||0)>=50,fail:()=>false,reward:"⚽ Macchina da Gol"},
-  {id:"talento",icon:"💎",name:"Talento Puro",desc:"Raggiungi Livello 90 prima dei 26 anni.",
+  {id:"talento",icon:"💎",name:"Talento Puro",desc:"Raggiungi OVR 90 prima dei 26 anni.",
    check:p=>(p.ovr||60)>=90&&(p.age||17)<26,fail:p=>(p.age||17)>=26&&(p.ovr||60)<90,reward:"🌟 Predestinato"},
   // Sprint 61 — nuove sfide
   {id:"fedele",icon:"❤️",name:"Fedele per Sempre",desc:"Gioca almeno 5 stagioni nello stesso club.",
