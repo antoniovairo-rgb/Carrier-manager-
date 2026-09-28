@@ -965,12 +965,16 @@ function generateTeamRoster(club,season){
   const firstPool=seededShuffle([...names.first],base);
   const lastPool=seededShuffle([...names.last],base^0x9E3779B9);
   const ss=Math.max(1,season||1),_TEN=7;/* anni medi di permanenza in uno slot */
+  const _usati49=new Set();/* [7.999.49 parte A] lo slot i e lo slot i+13 di generazioni diverse pescavano lo STESSO indice del pool:
+     nella rosa del Club comparivano due «Sergio Monti» con ruoli diversi. Un nome gia' usato scala al cognome successivo (deterministico). */
   return roles.map((role,i)=>{
     const _ph=Math.abs(hashStr((club?.id||"x")+"_ph_"+i))%_TEN;// fase d'ingaggio dello slot (sfalsa i rinnovi)
     const _gen=Math.floor((ss+_ph)/_TEN);// "generazione" del titolare dello slot: cambia solo ogni ~7 stagioni
     const _off=_gen*13;// offset nel pool → nome diverso SOLO quando cambia la generazione (mercato), altrimenti stabile
     const _fn=firstPool[(i+_off)%firstPool.length];let _ln=lastPool[(i+_off)%lastPool.length];
     if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))_ln=lastPool[(i+_off+7)%lastPool.length];// [5.96.0 CR-1] mai un nome+cognome di calciatore reale in rosa
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_ROSA49)){for(let _k=1;_usati49.has(_fn+" "+_ln)&&_k<lastPool.length;_k++){_ln=lastPool[(i+_off+_k)%lastPool.length];if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))continue;}}
+    _usati49.add(_fn+" "+_ln);
     return{name:`${_fn} ${_ln}`,role};});
 }
 function seededShuffle(arr,seed){
