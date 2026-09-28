@@ -1,0 +1,433 @@
+{
+  "command": "CPM_GLB=1 CPM_ATTESA=15000 CPM_SCENES=5 node tests/codex/apertura-gpu.mjs",
+  "launch": {
+    "executablePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "headless": true,
+    "args": [
+      "--headless=new",
+      "--use-gl=angle",
+      "--use-angle=d3d11",
+      "--enable-gpu",
+      "--ignore-gpu-blocklist",
+      "--no-sandbox"
+    ]
+  },
+  "viewport": [
+    412,
+    915
+  ],
+  "deviceScaleFactor": 2,
+  "glbRequested": true,
+  "waitMs": 15000,
+  "nScenes": 5,
+  "openings": [
+    {
+      "index": 1,
+      "t": 79346.79999995232,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 1053,
+      "longTaskSumMs": 2351,
+      "longTasks": [
+        [
+          77922.19999992847,
+          103
+        ],
+        [
+          78025.59999990463,
+          1053
+        ],
+        [
+          79128.89999997616,
+          59
+        ],
+        [
+          79191.19999992847,
+          98
+        ],
+        [
+          79394.09999990463,
+          105
+        ],
+        [
+          79545,
+          98
+        ],
+        [
+          79643.29999995232,
+          62
+        ],
+        [
+          79764.5,
+          93
+        ],
+        [
+          79859.29999995232,
+          56
+        ],
+        [
+          80215.09999990463,
+          81
+        ],
+        [
+          80800.39999997616,
+          53
+        ],
+        [
+          81668.89999997616,
+          80
+        ],
+        [
+          81749,
+          148
+        ],
+        [
+          81977.5,
+          76
+        ],
+        [
+          82106.09999990463,
+          51
+        ],
+        [
+          82355.59999990463,
+          135
+        ]
+      ],
+      "rafMaxGapMs": 1531.5999999999913,
+      "rafFrames": 93
+    },
+    {
+      "index": 2,
+      "t": 136967.29999995232,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 532,
+      "longTaskSumMs": 766,
+      "longTasks": [
+        [
+          135812.5,
+          83
+        ],
+        [
+          136434.89999997616,
+          532
+        ],
+        [
+          136967.69999992847,
+          94
+        ],
+        [
+          137260.39999997616,
+          57
+        ]
+      ],
+      "rafMaxGapMs": 566.5,
+      "rafFrames": 247
+    },
+    {
+      "index": 3,
+      "t": 147496.89999997616,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 80,
+      "longTaskSumMs": 205,
+      "longTasks": [
+        [
+          146795.29999995232,
+          74
+        ],
+        [
+          147414,
+          80
+        ],
+        [
+          148255.09999990463,
+          51
+        ]
+      ],
+      "rafMaxGapMs": 83.19999999998254,
+      "rafFrames": 248
+    },
+    {
+      "index": 4,
+      "t": 192364.19999992847,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 91,
+      "longTaskSumMs": 462,
+      "longTasks": [
+        [
+          193742.29999995232,
+          52
+        ],
+        [
+          193794.79999995232,
+          53
+        ],
+        [
+          193848.19999992847,
+          73
+        ],
+        [
+          194655.09999990463,
+          91
+        ],
+        [
+          195158.5,
+          58
+        ],
+        [
+          195322.09999990463,
+          81
+        ],
+        [
+          195838.29999995232,
+          54
+        ]
+      ],
+      "rafMaxGapMs": 416.70000000001164,
+      "rafFrames": 207
+    },
+    {
+      "index": 5,
+      "t": 206236.59999990463,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 86,
+      "longTaskSumMs": 292,
+      "longTasks": [
+        [
+          206139.59999990463,
+          66
+        ],
+        [
+          207083.39999997616,
+          86
+        ],
+        [
+          207792.39999997616,
+          74
+        ],
+        [
+          208131.79999995232,
+          66
+        ]
+      ],
+      "rafMaxGapMs": 116.59999999997672,
+      "rafFrames": 270
+    }
+  ],
+  "errors": [],
+  "glb": {
+    "ready": true,
+    "clipCount": 63,
+    "override": null
+  },
+  "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "phaseChanges": [
+    {
+      "t": 62722,
+      "phase": "playing"
+    },
+    {
+      "t": 79346.79999995232,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 84278.79999995232,
+      "phase": "hl_move"
+    },
+    {
+      "t": 84760.79999995232,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 84917.79999995232,
+      "phase": "hl_result"
+    },
+    {
+      "t": 89165,
+      "phase": "playing"
+    },
+    {
+      "t": 136967.29999995232,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 138887.79999995232,
+      "phase": "hl_move"
+    },
+    {
+      "t": 139239.19999992847,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 139369.69999992847,
+      "phase": "hl_result"
+    },
+    {
+      "t": 143860.19999992847,
+      "phase": "playing"
+    },
+    {
+      "t": 147496.89999997616,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 150026.29999995232,
+      "phase": "hl_move"
+    },
+    {
+      "t": 150412.69999992847,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 150587.79999995232,
+      "phase": "hl_result"
+    },
+    {
+      "t": 155492.09999990463,
+      "phase": "playing"
+    },
+    {
+      "t": 192364.19999992847,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 194861.39999997616,
+      "phase": "hl_move"
+    },
+    {
+      "t": 195434.89999997616,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 195607,
+      "phase": "hl_result"
+    },
+    {
+      "t": 202817.19999992847,
+      "phase": "playing"
+    },
+    {
+      "t": 206236.59999990463,
+      "phase": "hl_intro"
+    }
+  ],
+  "observerError": null,
+  "profile": {
+    "sampledMs": 23617.33,
+    "topOwn": [
+      {
+        "functionName": "(idle) @:0",
+        "ms": 7257.21
+      },
+      {
+        "functionName": "(anonima) @:3359",
+        "ms": 3839.03
+      },
+      {
+        "functionName": "(program) @:0",
+        "ms": 3455.02
+      },
+      {
+        "functionName": "(anonima) @three.min.js:6",
+        "ms": 1926.6
+      },
+      {
+        "functionName": "traverse @three.min.js:6",
+        "ms": 1013.21
+      },
+      {
+        "functionName": "_dec918 @:8563",
+        "ms": 955.68
+      },
+      {
+        "functionName": "updateMatrixWorld @three.min.js:6",
+        "ms": 719.15
+      },
+      {
+        "functionName": "(anonima) @:7948",
+        "ms": 479.51
+      },
+      {
+        "functionName": "updateWorldMatrix @three.min.js:6",
+        "ms": 351.12
+      },
+      {
+        "functionName": "(garbage collector) @:0",
+        "ms": 347.88
+      }
+    ],
+    "topInclusive": [
+      {
+        "functionName": "(root) @:0",
+        "ms": 23617.33
+      },
+      {
+        "functionName": "(idle) @:0",
+        "ms": 7257.21
+      },
+      {
+        "functionName": "(anonima) @:3359",
+        "ms": 4969.13
+      },
+      {
+        "functionName": "traverse @three.min.js:6",
+        "ms": 4963.76
+      },
+      {
+        "functionName": "loop @:4136",
+        "ms": 4807.73
+      },
+      {
+        "functionName": "render @three.min.js:6",
+        "ms": 3671.81
+      },
+      {
+        "functionName": "(program) @:0",
+        "ms": 3455.02
+      },
+      {
+        "functionName": "renderBufferDirect @three.min.js:6",
+        "ms": 2366.39
+      },
+      {
+        "functionName": "(anonima) @three.min.js:6",
+        "ms": 2059.33
+      },
+      {
+        "functionName": "S @react.production.min.js:16",
+        "ms": 2014.52
+      }
+    ],
+    "file": "reports/codex/2026-09-28-apertura-gpu.cpuprofile"
+  },
+  "elapsedMs": 148274
+}

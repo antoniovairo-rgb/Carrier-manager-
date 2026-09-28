@@ -1,0 +1,104 @@
+{
+  "command": "node tests/codex/video-fluidita-3d.mjs",
+  "launch": {
+    "executablePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "headless": false,
+    "args": [
+      "--use-gl=angle",
+      "--use-angle=d3d11",
+      "--enable-gpu",
+      "--ignore-gpu-blocklist",
+      "--no-sandbox"
+    ]
+  },
+  "viewport": [
+    412,
+    915
+  ],
+  "deviceScaleFactor": 2,
+  "groups": [
+    {
+      "name": "peggiori",
+      "file": "reports/codex/video-fluidita-3d/peggiori.webm",
+      "scenes": [
+        {
+          "gi": 87,
+          "offsetSec": 49.54,
+          "durationSec": 6.5,
+          "frames": 210,
+          "rafFrames": 209,
+          "fpsMedian": 30.12,
+          "glb": true,
+          "mxclip": 63
+        },
+        {
+          "gi": 50,
+          "offsetSec": 56.52,
+          "durationSec": 6.5,
+          "frames": 275,
+          "rafFrames": 273,
+          "fpsMedian": 59.88,
+          "glb": true,
+          "mxclip": 63
+        },
+        {
+          "gi": 25,
+          "offsetSec": 63.3,
+          "durationSec": 6.5,
+          "frames": 240,
+          "rafFrames": 238,
+          "fpsMedian": 59.88,
+          "glb": true,
+          "mxclip": 63
+        },
+        {
+          "gi": 92,
+          "offsetSec": 70.02,
+          "durationSec": 6.5,
+          "frames": 281,
+          "rafFrames": 279,
+          "fpsMedian": 59.88,
+          "glb": true,
+          "mxclip": 63
+        },
+        {
+          "gi": 176,
+          "offsetSec": 76.72,
+          "durationSec": 6.5,
+          "frames": 303,
+          "rafFrames": 301,
+          "fpsMedian": 59.88,
+          "glb": true,
+          "mxclip": 63
+        }
+      ]
+    },
+    {
+      "name": "confronto",
+      "file": "reports/codex/video-fluidita-3d/confronto.webm",
+      "scenes": [
+        {
+          "gi": 0,
+          "offsetSec": 26.73,
+          "durationSec": 6.5,
+          "frames": 260,
+          "rafFrames": 259,
+          "fpsMedian": 59.88,
+          "glb": true,
+          "mxclip": 63
+        },
+        {
+          "gi": 42,
+          "offsetSec": 33.77,
+          "durationSec": 6.5,
+          "frames": 282,
+          "rafFrames": 280,
+          "fpsMedian": 59.88,
+          "glb": true,
+          "mxclip": 63
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

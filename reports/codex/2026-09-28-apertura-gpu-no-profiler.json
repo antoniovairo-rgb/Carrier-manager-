@@ -1,0 +1,346 @@
+{
+  "command": "CPM_GLB=1 CPM_ATTESA=15000 CPM_SCENES=5 node tests/codex/apertura-gpu.mjs",
+  "launch": {
+    "executablePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "headless": true,
+    "args": [
+      "--headless=new",
+      "--use-gl=angle",
+      "--use-angle=d3d11",
+      "--enable-gpu",
+      "--ignore-gpu-blocklist",
+      "--no-sandbox"
+    ]
+  },
+  "viewport": [
+    412,
+    915
+  ],
+  "deviceScaleFactor": 2,
+  "glbRequested": true,
+  "waitMs": 15000,
+  "nScenes": 5,
+  "profileOn": false,
+  "openings": [
+    {
+      "index": 1,
+      "t": 83169.90000009537,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 755,
+      "longTaskSumMs": 2167,
+      "longTasks": [
+        [
+          81744.60000002384,
+          83
+        ],
+        [
+          81990.40000009537,
+          76
+        ],
+        [
+          82242.20000004768,
+          85
+        ],
+        [
+          82403.90000009537,
+          755
+        ],
+        [
+          83170.20000004768,
+          88
+        ],
+        [
+          83263.70000004768,
+          59
+        ],
+        [
+          83326.60000002384,
+          202
+        ],
+        [
+          83533,
+          61
+        ],
+        [
+          83595,
+          64
+        ],
+        [
+          83703.60000002384,
+          70
+        ],
+        [
+          83808.10000002384,
+          63
+        ],
+        [
+          83872.5,
+          65
+        ],
+        [
+          84010,
+          51
+        ],
+        [
+          84061.90000009537,
+          52
+        ],
+        [
+          84304.70000004768,
+          52
+        ],
+        [
+          84720,
+          53
+        ],
+        [
+          85770.5,
+          74
+        ],
+        [
+          86418.20000004768,
+          50
+        ],
+        [
+          86837,
+          51
+        ],
+        [
+          86889.40000009537,
+          62
+        ],
+        [
+          86952.40000009537,
+          51
+        ]
+      ],
+      "rafMaxGapMs": 766.5,
+      "rafFrames": 111
+    },
+    {
+      "index": 2,
+      "t": 131693.5,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 150,
+      "longTaskSumMs": 439,
+      "longTasks": [
+        [
+          130756.70000004768,
+          80
+        ],
+        [
+          130992,
+          150
+        ],
+        [
+          131493.40000009537,
+          65
+        ],
+        [
+          131565.90000009537,
+          71
+        ],
+        [
+          132756.20000004768,
+          73
+        ]
+      ],
+      "rafMaxGapMs": 134,
+      "rafFrames": 213
+    },
+    {
+      "index": 3,
+      "t": 144353.80000007153,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 79,
+      "longTaskSumMs": 391,
+      "longTasks": [
+        [
+          144295.40000009537,
+          57
+        ],
+        [
+          145754.70000004768,
+          65
+        ],
+        [
+          146863.20000004768,
+          79
+        ],
+        [
+          147031.70000004768,
+          64
+        ],
+        [
+          147285.10000002384,
+          62
+        ],
+        [
+          147504.90000009537,
+          64
+        ]
+      ],
+      "rafMaxGapMs": 100,
+      "rafFrames": 216
+    },
+    {
+      "index": 4,
+      "t": 190979.10000002384,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 86,
+      "longTaskSumMs": 151,
+      "longTasks": [
+        [
+          190740.90000009537,
+          65
+        ],
+        [
+          190890.40000009537,
+          86
+        ]
+      ],
+      "rafMaxGapMs": 83.30000000001746,
+      "rafFrames": 226
+    },
+    {
+      "index": 5,
+      "t": 239898.20000004768,
+      "phase": "hl_intro",
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longTaskMaxMs": 74,
+      "longTaskSumMs": 124,
+      "longTasks": [
+        [
+          240742.30000007153,
+          74
+        ],
+        [
+          241195,
+          50
+        ]
+      ],
+      "rafMaxGapMs": 99.89999999999418,
+      "rafFrames": 229
+    }
+  ],
+  "errors": [],
+  "glb": {
+    "ready": true,
+    "clipCount": 63,
+    "override": null
+  },
+  "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "phaseChanges": [
+    {
+      "t": 71397.80000007153,
+      "phase": "playing"
+    },
+    {
+      "t": 83169.90000009537,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 85845.5,
+      "phase": "hl_move"
+    },
+    {
+      "t": 86332.20000004768,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 86569.5,
+      "phase": "hl_result"
+    },
+    {
+      "t": 91148.20000004768,
+      "phase": "playing"
+    },
+    {
+      "t": 131693.5,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 134111.5,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 134329.5,
+      "phase": "hl_result"
+    },
+    {
+      "t": 141029.30000007153,
+      "phase": "playing"
+    },
+    {
+      "t": 144353.80000007153,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 146989.90000009537,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 147253.60000002384,
+      "phase": "hl_result"
+    },
+    {
+      "t": 152492.60000002384,
+      "phase": "playing"
+    },
+    {
+      "t": 190979.10000002384,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 193469.90000009537,
+      "phase": "hl_move"
+    },
+    {
+      "t": 193881.30000007153,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 194063.5,
+      "phase": "hl_result"
+    },
+    {
+      "t": 201349.70000004768,
+      "phase": "playing"
+    },
+    {
+      "t": 239898.20000004768,
+      "phase": "hl_intro"
+    }
+  ],
+  "observerError": null,
+  "elapsedMs": 173697
+}
