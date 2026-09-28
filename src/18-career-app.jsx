@@ -2108,6 +2108,7 @@ const getThisWeekMatchday=()=>{
   // [7.28.0 ONDA 3 — §S12] LA MAGLIA NUMERO 9 — la lista del CT: gerarchia VIVA del tuo ruolo in Nazionale.
   //   3 NPC persistenti per ciclo di 4 stagioni (nomi/score SEEDATI da nazione+ciclo, stabili tra reload);
   //   il tuo rank deriva da OVR + caps + gol di lega REALI + squadRole. L'esclusione ha sempre un PERCHÉ.
+  const NAT_CALL_LEVEL={"Brasile":92,"Francia":91,"Argentina":90,"Spagna":89,"Inghilterra":89,"Germania":87,"Portogallo":87,"Italia":86,"Olanda":85,"Belgio":84};/* [7.999.49 parte A] livello della nazionale: soglia OVR di convocazione = livello - 8 (nazioni minori 72) */
   const ctListView=(p)=>{try{
     if((p.proStatus||"u18")!=="pro")return null;
     const natName=p.nation||"Italia";
@@ -2133,7 +2134,8 @@ const getThisWeekMatchday=()=>{
     const myScore=Math.round((p.ovr||70)+Math.min(14,(p.nationalCaps||0)*0.5)+Math.min(12,g*0.8)+((role==="titolare"||role==="leader")?3:role==="riserva"?-4:0));
     const list=[...npcs,{name:p.name,score:myScore,caps:p.nationalCaps||0,me:true}].sort((a,b)=>b.score-a.score);
     const rank=list.findIndex(x=>x.me)+1;
-    const why=rank===1?"Oggi la maglia numero 9 è tua: il CT ti considera il riferimento dell'attacco.":rank===2?"Sei il primo nome dietro al titolare: una grande striscia può ribaltare le gerarchie.":(role==="riserva"?"«Il mio 9 gioca ogni settimana — tu no.» Per rientrare nel giro serve il campo.":"Sei tra i convocabili, ma davanti c'è chi segna di più: servono numeri, non parole.");
+    const why=(rank===1&&(p.nationalCaps||0)===0)?"Sei in cima alla lista del CT, ma la maglia numero 9 si prende in campo: prima serve la convocazione."/* [7.999.49 parte A] a zero presenze la maglia non «è tua» */
+      :rank===1?"Oggi la maglia numero 9 è tua: il CT ti considera il riferimento dell'attacco.":rank===2?"Sei il primo nome dietro al titolare: una grande striscia può ribaltare le gerarchie.":(role==="riserva"?"«Il mio 9 gioca ogni settimana — tu no.» Per rientrare nel giro serve il campo.":"Sei tra i convocabili, ma davanti c'è chi segna di più: servono numeri, non parole.");
     return{list,rank,why};
   }catch(_e){return null;}};
   // [7.29.0 ONDA 4 — §S10] SPONSOR & IMMAGINE: il secondo stipendio arriva a FASCE di fama (soglie di
@@ -3997,7 +3999,7 @@ const getThisWeekMatchday=()=>{
       const seasonOpen=(typeof window!=='undefined'&&window.__CPM_NO782)?(curSeas>lastNat):true;/* [7.783.0] il tetto vero si applica sotto, e dipende dal merito: qui la porta resta aperta */
       // Sprint NAZ — convocazione meritocratica: livello nazionale, OVR, età, rendimento, continuità, reputazione.
       // Forza della nazionale: le top sono molto più selettive; le minori più permissive ma sempre credibili.
-      const NAT_LEVEL={"Brasile":92,"Francia":91,"Argentina":90,"Spagna":89,"Inghilterra":89,"Germania":87,"Portogallo":87,"Italia":86,"Olanda":85,"Belgio":84};
+      const NAT_LEVEL=NAT_CALL_LEVEL;/* [7.999.49 parte A] tabella spostata accanto a ctListView (stessi valori): il tab Nazionale mostra la soglia VERA */
       const natLvl=NAT_LEVEL[player.nation]||72;  // nazioni minori: soglia più bassa
       const ovrGate=natLvl-8;                      // es. Italia 86 → serve OVR≥78; minore 72 → ≥64
       const ovr=player.ovr||60,age=player.age||18,frm=player.form||70,rep=player.popularity||20;
@@ -9318,16 +9320,6 @@ const getThisWeekMatchday=()=>{
       {/* PROFILE  (req #12 – avatar/colori) */}
       {tab==="profile"&&(
         <div style={{display:"flex",flexDirection:"column",gap:9}}>
-          {/* Sprint 19 — Biografia automatica */}
-          {(()=>{
-            const bio=generateBio(player);
-            return(
-              <Card momento="Biografia" momentoInk="#fff" /* [G10 · 7.965] fisarmonica */ style={{padding:"7px 12px",background:"linear-gradient(135deg,#0f172a,#1a1f2e)",border:"1px solid rgba(255,255,255,0.08)"}}>
-                <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Biografia</div>
-                <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.72)",lineHeight:1.75,fontStyle:"italic"}}>"{bio}"</div>
-              </Card>
-            );
-          })()}
           {/* Sprint D1: badge gerarchia */}
           {(()=>{
             const roleColors={'primavera':'#94a3b8','riserva':'#f59e0b','rotazione':'#3b82f6','titolare':'#16a34a','leader':'#7c3aed'};
@@ -9337,9 +9329,9 @@ const getThisWeekMatchday=()=>{
             const _rec5=(player.matchHistory||[]).slice(-5);
             const _avg5=_rec5.length?Math.round(_rec5.reduce((s,m)=>s+(m.rating||6),0)/_rec5.length*10)/10:6.0;
             const _next39=role==='leader'?null
-              :role==='titolare'?"Prossimo gradino — Leader: la fascia si guadagna (età 27+ · 130+ presenze · fiducia 90+)"
-              :role==='rotazione'?`Prossimo gradino — Titolare: OVR ≥78 (ora ${player.ovr||60}) · fiducia ≥72 (ora ${player.coachTrust||60}) · media voti ≥6.8 (ora ${_avg5})`
-              :role==='riserva'?`Prossimo gradino — Rotazione: OVR ≥68 (ora ${player.ovr||60}) · fiducia ≥55 (ora ${player.coachTrust||60}) · media voti ≥6.2 (ora ${_avg5})`
+              :role==='titolare'?`Prossimo gradino — Leader: la fascia si guadagna (età 27+ (ora ${player.age||18}) · 130+ presenze (ora ${player.totalMatches||0}) · fiducia del mister 90+ (ora ${player.coachTrust||60}))`/* [7.999.49 parte A] i valori attuali anche qui, come negli altri gradini */
+              :role==='rotazione'?`Prossimo gradino — Titolare: OVR ≥78 (ora ${player.ovr||60}) · fiducia del mister ≥72 (ora ${player.coachTrust||60}) · voto medio ≥6,8 (ora ${String(_avg5).replace(".",",")})`
+              :role==='riserva'?`Prossimo gradino — Rotazione: OVR ≥68 (ora ${player.ovr||60}) · fiducia del mister ≥55 (ora ${player.coachTrust||60}) · voto medio ≥6,2 (ora ${String(_avg5).replace(".",",")})`
               :"Prossimo gradino: firma il primo contratto da professionista";
             return <div style={{marginTop:6}}>
               <div style={{display:"inline-flex",alignItems:"center",gap:5,padding:"4px 10px",borderRadius:RAD.xl,background:roleColors[role]+"22",border:`1px solid ${roleColors[role]}66`}}>
@@ -9348,6 +9340,29 @@ const getThisWeekMatchday=()=>{
               </div>
               {_next39&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:4,lineHeight:1.5}}>{_next39}</div>}
             </div>;
+          })()}
+          {/* [7.999.49 parte A] STATISTICHE IN CIMA e aperte: il primo schermo dice ruolo, gradino e numeri della stagione.
+              Qui (e solo qui) vivono i numeri stagionali; le stagioni da pro stanno sotto la griglia (era una fisarmonica a parte). */}
+          {(()=>{
+            const _eur49=(v)=>{const m=+v||0;return m>=1?"€"+String(Math.round(m*10)/10).replace(".",",")+" mln":"€"+Math.round(m*1000)+" mila";};
+            const _proS49=Math.max(0,(player.season||1)-1-(player.u18Seasons||0));
+            return(
+          <Fisarmonica id="profilo-statistiche" titolo="Statistiche" quante={6} aperta={true}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:7}}>
+              {[{l:"Gol stagione",v:player.goals||0,c:TH.warning},{l:"Assist stagione",v:player.assists||0,c:TH.primary},{l:"Presenze stag.",v:player.matches||0,c:TH.energy},{l:"Gol carriera",v:player.totalGoals||0,c:TH.warning},{l:"Assist carriera",v:player.totalAssists||0,c:TH.primary},{l:"Valore",v:_eur49(player.value||0.8),c:TH.success}].map(s=><div key={s.l} style={{background:TH.surface2,borderRadius:RAD.md,padding:"9px 8px",border:"1px solid "+TH.divider}}><div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2}}>{s.l}</div><div className="cpm-num" style={{fontSize:FS.subhead,fontWeight:FW.black,color:legCol944(s.c)}}>{s.v}</div></div>)}
+            </div>
+            {(player.proStatus||"u18")==="pro"&&_proS49>0&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:7}}>Stagioni da professionista completate: {_proS49}</div>}
+          </Card></Fisarmonica>);})()}
+          {/* Sprint 19 — Biografia automatica · [7.999.49 parte A] stessa fisarmonica delle altre sezioni (prima: card scura con freccia diversa) */}
+          {(()=>{
+            const bio=generateBio(player);
+            return(
+              <Fisarmonica id="profilo-biografia" titolo="Biografia">
+              <Card style={{padding:"9px 12px",background:"linear-gradient(135deg,#0f172a,#1a1f2e)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.72)",lineHeight:1.75,fontStyle:"italic"}}>"{bio}"</div>
+              </Card>
+              </Fisarmonica>
+            );
           })()}
           {/* Sprint 33 C4 — Statistiche Carriera sparklines */}
           {(player.history||[]).length>=2&&(()=>{
@@ -9371,20 +9386,24 @@ const getThisWeekMatchday=()=>{
               </Card></Fisarmonica>
             );
           })()}
-          {/* Sprint 67 — Bacheca Record Personali */}
+          {/* Sprint 67 — Bacheca Record Personali · [7.999.49 parte A] SOLO i massimi di carriera delle stagioni CONCLUSE
+              (storico + player.records, che si aggiorna a fine stagione): i numeri della stagione in corso stanno in
+              «Statistiche». Assorbe anche i chip «gol/stag.» e «Livello max» che stavano in «Record & Premi». */}
           {(()=>{
-            const _hist=player.history||[];
-            const _cur={season:player.season||1,club:player.club?.n||"–",goals:player.goals||0,assists:player.assists||0,matches:player.matches||0,ovr:player.ovr||60};
-            const _all=[..._hist,_cur];
-            const _bst=(f)=>_all.reduce((b,h)=>h[f]>(b?.[f]??-1)?h:b,null);
-            const _bG=_bst('goals'),_bA=_bst('assists'),_bOvr=_bst('ovr'),_bM=_bst('matches');
+            const _hist=(player.history||[]).filter(h=>h&&(h.season||0)<(player.season||1));
+            const _rc=player.records||{};
+            const _bst=(f)=>_hist.reduce((b,h)=>(h[f]||0)>(b?.[f]??-1)?h:b,null);
+            const _bG=_bst('goals'),_bA=_bst('assists'),_bM=_bst('matches');
+            const _ctx=(h,v,f)=>(h&&(h[f]||0)===v)?`S.${h.season||1}${h.club?" · "+String(h.club).slice(0,14):""}`:"";
+            const _vG=Math.max(_bG?.goals||0,_rc.topSeasonGoals||0),_vA=Math.max(_bA?.assists||0,_rc.topSeasonAssists||0);
+            const _vO=Math.max(player.ovr||0,_rc.topOvr||0,..._hist.map(h=>h.ovr||0));
             const _w=player.week||1,_g=player.goals||0;
             const _proj=_w>=5?Math.round(_g/_w*38):null;
             const _rows=[
-              {e:"⚽",l:"Miglior stagione · gol",v:_bG?.goals||0,ctx:`S.${_bG?.season||1} · ${(_bG?.club||"").slice(0,14)}`},
-              {e:"🎯",l:"Miglior stagione · assist",v:_bA?.assists||0,ctx:`S.${_bA?.season||1} · ${(_bA?.club||"").slice(0,14)}`},
-              {e:"📊",l:"OVR massimo raggiunto",v:_bOvr?.ovr||0,ctx:`S.${_bOvr?.season||1}`},
-              {e:"👕",l:"Più presenze in stagione",v:_bM?.matches||0,ctx:`S.${_bM?.season||1} · ${(_bM?.club||"").slice(0,14)}`},
+              {e:"⚽",l:"Record: gol in una stagione",v:_vG,ctx:_ctx(_bG,_vG,'goals')},
+              {e:"🎯",l:"Record: assist in una stagione",v:_vA,ctx:_ctx(_bA,_vA,'assists')},
+              {e:"📊",l:"OVR massimo raggiunto",v:_vO>60?_vO:0,ctx:""},
+              {e:"👕",l:"Record: presenze in una stagione",v:_bM?.matches||0,ctx:_ctx(_bM,_bM?.matches||0,'matches')},
             ].filter(r=>r.v>0);
             if(!_rows.length&&_proj===null)return null;
             return(
@@ -9401,7 +9420,7 @@ const getThisWeekMatchday=()=>{
                 {_proj!==null&&(
                   <div style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0 1px"}}>
                     <span style={{fontSize:FS.body,width:18,flexShrink:0}}>📈</span>
-                    <span style={{flex:1,fontSize:FS.caption,color:TH.muted}}>Proiezione (W.{_w}/38)</span>
+                    <span style={{flex:1,fontSize:FS.caption,color:TH.muted}}>Proiezione (Sett. {_w}/38)</span>
                     <span style={{fontSize:FS.body,fontWeight:800,color:TH.brandText}}>~{_proj}</span>
                     <span style={{fontSize:FS.caption,color:TH.faint,minWidth:60,textAlign:"right"}}>gol a fine stagione</span>
                   </div>
@@ -9422,10 +9441,7 @@ const getThisWeekMatchday=()=>{
             return(
               <Fisarmonica id="profilo-trofei" titolo="Bacheca trofei" quante={_tr.length}>
               <Card style={{padding:"9px 12px",background:"linear-gradient(135deg,#1c0d04,#2d1507)",border:"1px solid rgba(234,179,8,0.35)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px"}}>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
-                  <div style={{fontSize:FS.caption,color:"#fde68a",textTransform:"uppercase",letterSpacing:1.5}}>Bacheca Trofei</div>
-                  <div style={{fontSize:FS.body,fontWeight:900,color:"#fde68a"}}>{_tr.length} trofei</div>
-                </div>
+                {/* [7.999.49 parte A] tolta l'intestazione «Bacheca Trofei · N trofei»: la ripeteva il titolo della fisarmonica */}
                 {_groups.map((g,gi)=>(
                   <div key={g.key} style={{marginBottom:gi<_groups.length-1?10:0}}>
                     <div style={{fontSize:FS.caption,color:"rgba(253,230,138,0.55)",textTransform:"uppercase",letterSpacing:1.2,marginBottom:5}}>{g.e} {g.label} · {g.items.length}</div>
@@ -9445,7 +9461,9 @@ const getThisWeekMatchday=()=>{
           })()}
           {/* Sprint 70 — Storico Allenatori */}
           {(player.coachHistory||[]).length>0&&(()=>{
-            const _ch70=[...(player.coachHistory||[])].reverse();
+            /* [7.999.49 parte A] il mister ATTUALE in testa coi numeri della stagione in corso (lo storico si scrive solo a fine stagione) */
+            const _chCur=player.coach&&(player.proStatus||"u18")==="pro"&&!(player.coachHistory||[]).some(c=>c&&c.season===(player.season||1))?[{name:player.coach.name||"Il mister",style:player.coach.style||"Bilanciato",season:player.season||1,goals:player.goals||0,assists:player.assists||0,coachTrust:player.coachTrust||60,inCarica:true}]:[];
+            const _ch70=[..._chCur,...[...(player.coachHistory||[])].reverse()];
             return(
               <Fisarmonica id="profilo-allenatori" titolo="Storico allenatori" quante={_ch70.length}>
               <Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
@@ -9458,11 +9476,11 @@ const getThisWeekMatchday=()=>{
                         <div style={{fontSize:FS.subhead,width:24,textAlign:"center",flexShrink:0}}>🧑‍💼</div>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ch.name}</div>
-                          <div style={{fontSize:FS.caption,color:TH.muted}}>{ch.style} · S.{ch.season}{ch.coachChanged?" · ↩ cambio":""}</div>
+                          <div style={{fontSize:FS.caption,color:TH.muted}}>{ch.style} · S.{ch.season}{ch.inCarica?" · in carica":""}{ch.coachChanged?" · ↩ cambio":""}</div>
                         </div>
                         <div style={{textAlign:"right",flexShrink:0}}>
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{ch.goals}<span style={{fontSize:FS.caption,color:TH.muted}}>⚽</span> {ch.assists}<span style={{fontSize:FS.caption,color:TH.muted}}>🎯</span></div>
-                          <div style={{fontSize:FS.caption,color:legCol944(_cColor),fontWeight:600}}>CT {ch.coachTrust||60}</div>
+                          <div style={{fontSize:FS.caption,color:legCol944(_cColor),fontWeight:600}}>Fiducia {ch.coachTrust||60}</div>{/* [7.999.49 parte A] «CT» e' il commissario tecnico della Nazionale */}
                         </div>
                       </div>
                     );
@@ -9483,15 +9501,15 @@ const getThisWeekMatchday=()=>{
             const rAwards=r.awards||{palloneOros:[],scarpaOros:[]};
             const rFirstName=(r.name||"Rivale").split(" ")[0];
             return(
-              <Card momento="🆚 Il tuo rivale" momentoInk="#fff" /* [G10 · 7.965] fisarmonica */ style={{padding:"14px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)"}}>
-                <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>🆚 Il tuo rivale</div>
+              <Fisarmonica id="profilo-rivale" titolo={"Rivale: "+(r.name||"–")}>{/* [7.999.49 parte A] una sola fisarmonica per tutto il Profilo; il titolo chiuso dice chi e' */}
+              <Card style={{padding:"12px",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"1px solid rgba(99,102,241,0.3)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 {/* Header */}
                 <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:9}}>
                   <div style={{width:46,height:46,borderRadius:"50%",background:"rgba(99,102,241,0.3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.title,flexShrink:0}}>⚽</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#e0e7ff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
                     <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.7)"}}>{r.club?.n||"–"} · {r.club?.lg||"–"}</div>
-                    <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.55)",marginTop:1}}>{relLabel} · {r.age||"?"} anni · Liv.{r.ovr||"?"}</div>
+                    <div style={{fontSize:FS.caption,color:"rgba(165,180,252,0.55)",marginTop:1}}>{relLabel} · {r.age||"?"} anni · OVR {r.ovr||"?"}</div>
                   </div>
                   {(r.trophies||0)>0&&<div style={{textAlign:"center",flexShrink:0}}>
                     <div style={{fontSize:FS.subhead}}>🏆</div>
@@ -9551,22 +9569,25 @@ const getThisWeekMatchday=()=>{
                   {isTie?`🤝 Testa a testa: ${myGoals} gol a testa in carriera`:isAhead?`✅ Sei avanti di ${myGoals-rGoals} gol in carriera`:`⚠️ ${r.name} ti supera di ${rGoals-myGoals} gol in carriera`}
                 </div>
               </Card>
+              </Fisarmonica>
             );
           })()}
           {/* Sprint 23 — Club dei Sogni card */}
           {player.dreamClub&&(player.proStatus||"u18")==="pro"&&(()=>{
             const achieved=(player.history||[]).some(h=>h.clubId===player.dreamClub.id||h.club===player.dreamClub.n)||player.club?.id===player.dreamClub.id||player.club?.n===player.dreamClub.n;
             return(
-              <Card momento="⭐ Club dei sogni" momentoInk="#fff" /* [G10 · 7.965] fisarmonica */ style={{padding:"11px 14px",background:achieved?"linear-gradient(135deg,#78350f,#92400e)":"linear-gradient(135deg,#1e293b,#0f172a)",border:`1px solid ${achieved?"#f59e0b44":"rgba(255,255,255,0.08)"}`}}>
+              <Fisarmonica id="profilo-club-sogni" titolo={"Club dei sogni: "+(player.dreamClub.n||"–")}>{/* [7.999.49 parte A] stessa fisarmonica delle altre sezioni */}
+              <Card style={{padding:"11px 14px",background:achieved?"linear-gradient(135deg,#78350f,#92400e)":"linear-gradient(135deg,#1e293b,#0f172a)",border:`1px solid ${achieved?"#f59e0b44":"rgba(255,255,255,0.08)"}`,borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 <div style={{display:"flex",alignItems:"center",gap:8}}>
                   <TeamBadge team={player.dreamClub} size={36}/>
                   <div style={{flex:1}}>
-                    <div style={{fontSize:FS.caption,color:achieved?"#fde68a":"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>{achieved?"🏆 Sogno realizzato!":"⭐ Club dei sogni"}</div>
+                    {achieved&&<div style={{fontSize:FS.caption,color:"#fde68a",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>🏆 Sogno realizzato!</div>}{/* [7.999.49 parte A] «Club dei sogni» lo dice gia' il titolo */}
                     <div style={{fontSize:FS.body,fontWeight:900,color:achieved?"#fef3c7":"#e2e8f0"}}>{player.dreamClub.n}</div>
                     <div style={{fontSize:FS.caption,color:achieved?"#fde68a80":"rgba(255,255,255,0.35)"}}>{achieved?"Ci hai giocato. Non lo dimenticherai mai.":"Non hai ancora ricevuto un'offerta. Il tuo sogno ti aspetta."}</div>
                   </div>
                 </div>
               </Card>
+              </Fisarmonica>
             );
           })()}
           {/* [6.78.0 collaudo PO] card «Lo Spogliatoio» SPOSTATA nel Tab Club (i compagni sono contenuto del club, non del profilo) */}
@@ -9584,11 +9605,11 @@ const getThisWeekMatchday=()=>{
                       <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo={j.f?"giornalista_f":"giornalista"} chiave={j.name} larg={36}/>;}catch(_e){return null;}})()}</div>
                       <div style={{flex:1}}>
                         <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>{j.name}</div>
-                        <div style={{fontSize:FS.caption,color:legCol944(j.color)||TH.muted}}>{j.paper} · {typeLabel}</div>
+                        <div style={{fontSize:FS.caption,color:legCol944(j.color)||TH.muted}}>{[j.paper,typeLabel].filter(Boolean).join(" · ")}</div>{/* [7.999.49 parte A] niente «·» appeso se manca la testata */}
                       </div>
                       <div style={{textAlign:"right"}}>
                         <div style={{fontSize:FS.caption,fontWeight:700,color:trustColor}}>{relLabel}</div>
-                        <div style={{fontSize:FS.caption,color:TH.faint}}>{j.trust||50}/100</div>
+                        <div style={{fontSize:FS.caption,color:TH.faint}}>Rapporto {j.trust||50}/100</div>
                       </div>
                     </div>
                   );
@@ -9646,13 +9667,13 @@ const getThisWeekMatchday=()=>{
                   <div style={{flex:1}}>
                     <div style={{fontSize:FS.body,fontWeight:800,color:TH.text}}>vs {bm.opponent}</div>
                     <div style={{fontSize:FS.small,color:TH.muted,fontWeight:700}}>{bm.homeScore}–{bm.awayScore} · {winLabel}</div>
-                    <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>{bm.season?`S.${bm.season} `:""}{`W.${bm.week}`}</div>
+                    <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>{`Stagione ${bm.season||player.season||1} · Settimana ${bm.week}`}</div>{/* [7.999.49 parte A] matchHistory e' stagionale: senza campo season e' la stagione in corso */}
                     <div style={{display:"flex",gap:8,fontSize:FS.caption,marginTop:4}}>
                       {bm.goals>0&&<span style={{color:TH.txGreen,fontWeight:700}}>⚽ {bm.goals} gol</span>}
                       {bm.assists>0&&<span style={{color:TH.brandText,fontWeight:700}}>🎯 {bm.assists} assist</span>}
                     </div>
                   </div>
-                  <div style={{fontSize:FS.h,fontWeight:900,color:TH.txAmber}}>{bm.rating}★</div>
+                  <div style={{fontSize:FS.h,fontWeight:900,color:TH.txAmber}}>{String(bm.rating).replace(".",",")}★</div>
                 </div>
               </Card>
               </Fisarmonica>
@@ -9660,11 +9681,11 @@ const getThisWeekMatchday=()=>{
           })()}
           {/* S12.5: Archetype card */}
           {(()=>{const arc=ARCHETYPES.find(a=>a.id===(player.archetype?.id||player.archetype))||ARCHETYPES[0];return(
-            <Card momento="💪 Stile di gioco" momentoInk="#fff" /* [G10 · 7.965] fisarmonica */ style={{padding:"9px 12px",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)"}}>
+            <Fisarmonica id="profilo-stile" titolo={"Stile di gioco: "+arc.name}>{/* [7.999.49 parte A] stessa fisarmonica delle altre sezioni */}
+            <Card style={{padding:"9px 12px",background:"linear-gradient(135deg,#0f172a,#1e293b)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               <div style={{display:"flex",alignItems:"center",gap:9}}>
                 <div style={{fontSize:36,lineHeight:1}}>{arc.e}</div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:1.5,marginBottom:2}}>Stile di gioco</div>
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9",marginBottom:2}}>{arc.name}</div>
                   <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{arc.desc}</div>
                 </div>
@@ -9675,10 +9696,11 @@ const getThisWeekMatchday=()=>{
                 </div>
               </div>
             </Card>
+            </Fisarmonica>
           );})()}
           {/* S13.5: Records + Astro Nascente */}
-          {((player.records?.topSeasonGoals>0)||(player.goldenBoys?.length>0)||(player.playerAwards?.palloneOros?.length>0)||(player.playerAwards?.scarpaOros?.length>0))&&(
-            <Fisarmonica id="s24-record-premi-personali" titolo="Record & Premi Personali"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
+          {((player.goldenBoys?.length>0)||(player.playerAwards?.palloneOros?.length>0)||(player.playerAwards?.scarpaOros?.length>0)||(player.playerAwards?.youngYears?.length>0))&&(
+            <Fisarmonica id="s24-record-premi-personali" titolo="Premi personali">{/* [7.999.49 parte A] i record stagionali stanno in «Record personali» */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
               {/* Sprint 49: individual awards */}
               {(player.playerAwards?.palloneOros?.length>0)&&(
                 <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:6}}>
@@ -9701,11 +9723,6 @@ const getThisWeekMatchday=()=>{
                   ))}
                 </div>
               )}
-              <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:(player.goldenBoys?.length>0)?8:0}}>
-                {(player.records?.topSeasonGoals>0)&&<span style={{fontSize:FS.caption,background:TH.bgAmber,color:TH.txAmber,padding:"3px 10px",borderRadius:RAD.sm,fontWeight:700}}>⚽ {player.records.topSeasonGoals} gol/stag.</span>}
-                {(player.records?.topSeasonAssists>0)&&<span style={{fontSize:FS.caption,background:TH.bgBlue,color:TH.txBlue,padding:"3px 10px",borderRadius:RAD.sm,fontWeight:700}}>🎯 {player.records.topSeasonAssists} assist/stag.</span>}
-                {(player.records?.topOvr>60)&&<span style={{fontSize:FS.caption,background:TH.bgGreen,color:TH.txGreen,padding:"3px 10px",borderRadius:RAD.sm,fontWeight:700}}>📈 Livello max {player.records.topOvr}</span>}
-              </div>
               {(player.goldenBoys?.length>0)&&(
                 <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
                   {(player.goldenBoys||[]).map(s=>(
@@ -9721,7 +9738,15 @@ const getThisWeekMatchday=()=>{
             const _lgPres=player.club?.p||65;
             // Premi di lega
             const _topEst=Math.max(8,Math.round(_lgPres*0.20));
-            const _capoPct=Math.min(100,Math.round(_g/_topEst*100));
+            /* [7.999.49 parte A] il capocannoniere si confronta con la classifica marcatori VERA (la stessa della
+               Stagione e dei premi); la stima resta solo come ripiego e lo DICE. */
+            let _sc49=[];try{_sc49=(typeof generateLeagueScorers==="function")?generateLeagueScorers(player,{all:true}):[];}catch(_e){_sc49=[];}
+            const _myLg49=(()=>{try{return (typeof leagueGoalsOf==="function")?leagueGoalsOf(player):_g;}catch(_e){return _g;}})();
+            const _pos49=_sc49.findIndex(x=>x.isPlayer);
+            const _lead49=_sc49.filter(x=>!x.isPlayer)[0]||null;
+            const _vero49=_pos49>=0&&!!_lead49;
+            const _capoPct=_vero49?Math.min(100,Math.round(_myLg49/Math.max(1,_lead49.goals)*100)):Math.min(100,Math.round(_g/_topEst*100));
+            const _topFl49=(typeof LEAGUE_PAIRS!=="undefined")&&LEAGUE_PAIRS.some(pr=>pr[0]===player.club?.lg);/* stesso test del motore dei premi (src/09 _topFl) */
             const _mvpGoalOk=_g>=8||_a>=8;
             const _mvpPct=Math.min(100,Math.round((_g+_a)/16*100));
             const _isGB=_age<=23;
@@ -9743,15 +9768,15 @@ const getThisWeekMatchday=()=>{
                 <div style={{marginBottom:8}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
                     <span style={{fontSize:FS.caption,fontWeight:700,color:TH.txGreen}}>⚽ Capocannoniere</span>
-                    <span style={{fontSize:FS.caption,color:TH.muted}}>{_g} gol · soglia ~{_topEst}</span>
+                    <span style={{fontSize:FS.caption,color:TH.muted}}>{_vero49?`${_myLg49} gol in campionato · ${_pos49+1}º`:`${_g} gol · stima ~${_topEst}`}</span>
                   </div>
                   {_bar(_capoPct,"#16a34a")}
-                  <div style={{fontSize:FS.caption,color:TH.muted}}>{_capoPct>=100?"✅ Sei il bomber della lega!":"Sii il top scorer del campionato"}</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted}}>{_vero49?(_pos49===0?`✅ Sei primo nella classifica marcatori (${_lead49.name} ne ha ${_lead49.goals})`:`${_lead49.name} guida con ${_lead49.goals} gol: te ne mancano ${Math.max(0,_lead49.goals-_myLg49)}`):(_capoPct>=100?`Sei sopra il ritmo tipico del capocannoniere (~${_topEst}, stima)`:`Il capocannoniere di solito arriva a ~${_topEst} gol (stima)`)}</div>
                 </div>
                 <div style={{marginBottom:_isGB?8:0}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
                     <span style={{fontSize:FS.caption,fontWeight:700,color:"#4338ca"}}>🏅 MVP Stagione</span>
-                    <span style={{fontSize:FS.caption,color:TH.muted}}>{_g}G {_a}A · OVR {_ovr}</span>
+                    <span style={{fontSize:FS.caption,color:TH.muted}}>{_g} gol · {_a} assist · OVR {_ovr}</span>
                   </div>
                   {_bar(_mvpPct,"#6366f1")}
                   <div style={{fontSize:FS.caption,color:TH.muted}}>{_ovr>=70?(_mvpGoalOk?"✅ In corsa per l'MVP!":"Serve: 8+ gol o 8+ assist"):"OVR 70+ richiesto"}</div>
@@ -9760,23 +9785,26 @@ const getThisWeekMatchday=()=>{
                   <div style={{marginBottom:8}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
                       <span style={{fontSize:FS.caption,fontWeight:700,color:"#5b21b6"}}>💎 Giovane dell'Anno</span>
-                      <span style={{fontSize:FS.caption,color:TH.muted}}>{_g}G {_a}A · età {_age}</span>
+                      <span style={{fontSize:FS.caption,color:TH.muted}}>{_g} gol · {_a} assist · età {_age}</span>
                     </div>
                     {_bar(_gbPct,"#7c3aed")}
-                    <div style={{fontSize:FS.caption,color:TH.muted}}>U23 · target: 5+ gol e 10+ G+A</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted}}>Under 23 · obiettivo: 5+ gol e 10+ tra gol e assist</div>
                   </div>
                 )}
-                {/* Premi europei — solo se in corsa realistica */}
-                {_ovr>=78&&(
+                {/* Premi europei — solo se in corsa realistica · [7.999.49 parte A] e solo in massima serie, come nel motore */}
+                {_ovr>=78&&!_topFl49&&(
+                  <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,borderTop:"1px solid "+TH.divider,paddingTop:8}}>I premi europei (Trofeo d'Oro, Re dei Bomber) si giocano solo in massima serie.</div>
+                )}
+                {_ovr>=78&&_topFl49&&(
                   <>
-                    <div style={{fontSize:FS.caption,color:TH.goldText,fontWeight:FW.bold,marginBottom:6,marginTop:8,textTransform:"uppercase",letterSpacing:1,borderTop:"1px solid "+TH.divider,paddingTop:8}}>EUROPEI (rare)</div>
+                    <div style={{fontSize:FS.caption,color:TH.goldText,fontWeight:FW.bold,marginBottom:6,marginTop:8,textTransform:"uppercase",letterSpacing:1,borderTop:"1px solid "+TH.divider,paddingTop:8}}>Europei (rari)</div>
                     <div style={{marginBottom:8}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
                         <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.goldText}}>🏆 Trofeo d'Oro</span>
-                        <span style={{fontSize:FS.caption,color:TH.muted}}>{_g}G · OVR {_ovr}{_palOvrOk?" ✓":" (min.85)"}</span>
+                        <span style={{fontSize:FS.caption,color:TH.muted}}>{_g} gol · OVR {_ovr}{_palOvrOk?" ✓":" (min. 85)"}</span>
                       </div>
                       {_bar(_palPct,"#fbbf24")}
-                      <div style={{fontSize:FS.caption,color:TH.muted}}>{_palOvrOk?(_palGoalOk?"✅ In corsa — devi anche vincere il campionato":"Serve: 22+ gol oppure 18G+10A, E vincere il titolo"):"OVR 85+ e titolo richiesti"}</div>
+                      <div style={{fontSize:FS.caption,color:TH.muted}}>{_palOvrOk?(_palGoalOk?"✅ In corsa — devi anche vincere il campionato":"Serve: 22+ gol oppure 18 gol e 10 assist, e vincere il titolo"):"OVR 85+ e titolo richiesti"}</div>
                     </div>
                     <div>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
@@ -9801,9 +9829,9 @@ const getThisWeekMatchday=()=>{
                   <span style={{fontSize:FS.subhead,flexShrink:0}}>⭐</span>
                   <div style={{flex:1}}>
                     <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>MVP {a.month}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted}}>S.{a.season} · W.{a.week} · {a.goals} gol · voto {a.rating||"–"}</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted}}>S.{a.season} · Sett. {a.week} · {a.goals} gol · voto {a.rating!=null?String(a.rating).replace(".",","):"–"}</div>
                   </div>
-                  <Badge tone="gold" size="sm">AWARD</Badge>
+                  <Badge tone="gold" size="sm">Premio</Badge>
                 </div>
               ))}
             </Card></Fisarmonica>
@@ -9905,17 +9933,14 @@ const getThisWeekMatchday=()=>{
               </div>
             </Card></Fisarmonica>
           )}
-          {/* Pro status */}
-          {(player.proStatus||"u18")!=="u18"&&(
-<Fisarmonica id="profilo-status-pro" titolo="Calciatore professionista" aperta={true}>
-            <Card bg={TH.bgGreen} border={TH.bdGreen} style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
-              <div style={{fontSize:FS.caption,color:TH.muted}}>Stagioni da pro: {Math.max(0,(player.season||1)-1-(player.u18Seasons||0))}</div>
-            </Card></Fisarmonica>
-          )}
+          {/* [7.999.49 parte A] fisarmonica «Calciatore professionista» tolta: un solo dato, ora sotto «Statistiche» */}
           {/* Contract card */}
           {player.contract&&<Fisarmonica id="profilo-contratto" titolo="Contratto"><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
-              {[{l:"Stipendio",v:player.contract.wage?`€${Math.round(player.contract.wage*52/1000*10)/10}k/anno`:"–"},{l:"Durata",v:`${player.contract.duration||"–"} stagion${player.contract.duration===1?"e":"i"}`},{l:"Scade stagione",v:`S.${player.contract.expiresAtSeason||"–"}`},{l:"Status",v:(player.proStatus||"u18")==="u18"?"Under 18":"Professionista"}].map(s=><div key={s.l} style={{background:TH.surface2,borderRadius:RAD.sm,padding:"7px",border:"1px solid "+TH.cardBorder}}><div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
+              {(()=>{/* [7.999.49 parte A] stipendio in «€11,4 mln l'anno», scadenza col formato del glossario, via la cella «Status» (doppione) */
+              const _a=(player.contract.wage||0)*52;const _st=_a>=1e6?"€"+String(Math.round(_a/1e5)/10).replace(".",",")+" mln l'anno":_a>=1000?"€"+Math.round(_a/1000)+" mila l'anno":"€"+Math.round(_a)+" l'anno";
+              const _ex=player.contract.expiresAtSeason,_rest=_ex!=null?_ex-(player.season||1):null;
+              return [{l:"Stipendio",v:player.contract.wage?_st:"–"},{l:"Durata",v:`${player.contract.duration||"–"} stagion${player.contract.duration===1?"e":"i"}`},{l:"Scadenza",v:_ex==null?"–":`Fine stagione ${_ex}${_rest>0?` (${_rest} stagion${_rest===1?"e":"i"})`:_rest===0?" (questa)":""}`,w:true}];})().map(s=><div key={s.l} style={{background:TH.surface2,borderRadius:RAD.sm,padding:"7px",border:"1px solid "+TH.cardBorder,gridColumn:s.w?"1 / -1":undefined}}><div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2}}>{s.l}</div><div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{s.v}</div></div>)}
             </div>
           </Card>
           </Fisarmonica>}
@@ -9981,11 +10006,7 @@ const getThisWeekMatchday=()=>{
           {/* [6.77.0 collaudo PO «duplicazione box da eliminare»] il banner-identità (avatar+nome+club+OVR) era
               la COPIA dell'header globale dell'app sempre visibile in cima → rimosso; restano le STATISTICHE
               (stagione/carriera/valore), che nell'header non ci sono. */}
-          <Fisarmonica id="profilo-statistiche" titolo="Statistiche" quante={6}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:7}}>
-              {[{l:"Gol stag.",v:player.goals||0,c:TH.warning},{l:"Assist stag.",v:player.assists||0,c:TH.primary},{l:"Partite",v:player.matches||0,c:TH.energy},{l:"Gol tot.",v:player.totalGoals||0,c:TH.warning},{l:"Assist tot.",v:player.totalAssists||0,c:TH.primary},{l:"Valore",v:`${parseFloat((player.value||0.8).toFixed(1))}M€`,c:TH.success}].map(s=><div key={s.l} style={{background:TH.surface2,borderRadius:RAD.md,padding:"9px 8px",border:"1px solid "+TH.divider}}><div style={{fontSize:FS.caption,color:TH.faint,marginBottom:2}}>{s.l}</div><div className="cpm-num" style={{fontSize:FS.subhead,fontWeight:FW.black,color:legCol944(s.c)}}>{s.v}</div></div>)}
-            </div>
-          </Card></Fisarmonica>
+          {/* [7.999.49 parte A] «Statistiche» spostata in cima al Profilo */}
           {/* [6.22.0] fix duplicazione (collaudo PO): la sezione Nazionale viveva sia qui (Profilo) sia
               nel Tab dedicato «🌍 Nazionale» (~20866, header+presenze+coppe+Europeo/Mondiale+ranking+momenti)
               → stessi box due volte. Rimossa da Profilo: il Tab Nazionale è l'unica casa dei contenuti azzurri. */}
@@ -10001,21 +10022,7 @@ const getThisWeekMatchday=()=>{
               <div style={{background:"#fef2f2",border:"1px solid #fca5a5",borderRadius:RAD.xs,padding:"6px 10px",fontSize:FS.caption,color:"#dc2626",fontWeight:700,textAlign:"center"}}>⛔ Squalificato — prossima partita salta</div>
             </Card>
           )}
-          {/* Albo d'oro trofei */}
-          {(player.trophies||[]).length>0&&(
-            <Fisarmonica id="profilo-albo" titolo="Albo d'oro" quante={(player.trophies||[]).length}><Card bg={TH.bgAmber} border="#fde68a" style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
-              {(player.trophies||[]).map((t,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<(player.trophies||[]).length-1?"1px solid #fde68a":"none"}}>
-                  <span style={{fontSize:FS.subhead}}>🏆</span>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:FS.small,fontWeight:800,color:TH.txAmber}}>Campione · S.{t.season}</div>
-                    <div style={{fontSize:FS.caption,color:TH.txAmber}}>{t.club} · {compLbl(t.league)}</div>
-                  </div>
-                </div>
-              ))}
-            </Card>
-            </Fisarmonica>
-          )}
+          {/* [7.999.49 parte A] «Albo d'oro» tolto: elencava gli stessi trofei della «Bacheca trofei» */}
           {/* Timeline stagioni */}
           {(player.history||[]).length>0&&(
             <Fisarmonica id="profilo-timeline" titolo={L.careerHistory||"Timeline Stagioni"} quante={(player.history||[]).length}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
@@ -10033,7 +10040,7 @@ const getThisWeekMatchday=()=>{
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:1}}>
                         <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
                           <span style={{fontSize:FS.caption,fontWeight:800,color:TH.text}}>S.{h.season}</span>
-                          {_sTr84.map((t,ti)=>{const _lb=t.type==="cup"?"🥇 Coppa Nazionale":t.type==="euro"?("⭐ "+(compLbl(t.league)||"Coppa europea")):(t.type==="int"||t.isNational)?("🌍 "+(compLbl(t.league)||"Nazionale")):("🏆 Campione "+(compLbl(t.league)||"di lega"));return <span key={ti} style={{fontSize:FS.caption,padding:"1px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.txAmber,fontWeight:700}}>{_lb}</span>;})}
+                          {_sTr84.map((t,ti)=>{const _lb=t.type==="cup"?("🥇 "+(compLbl(t.league)||"Coppa nazionale"))/* [7.999.49 parte A] stesso nome della Bacheca */:t.type==="euro"?("⭐ "+(compLbl(t.league)||"Coppa europea")):(t.type==="int"||t.isNational)?("🌍 "+(compLbl(t.league)||"Nazionale")):("🏆 Campione "+(compLbl(t.league)||"di lega"));return <span key={ti} style={{fontSize:FS.caption,padding:"1px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.txAmber,fontWeight:700}}>{_lb}</span>;})}
                         </div>
                         <span style={{fontSize:FS.caption,color:TH.txAmber,fontWeight:700}}>{h.ovr} OVR</span>
                       </div>
@@ -10075,10 +10082,10 @@ const getThisWeekMatchday=()=>{
                 {l:"100 assist",e:"👑",done:ta>=100},
               ]},
               {cat:"📈 Crescita",items:[
-                {l:"Livello 70",e:"⭐",done:ovr>=70},
-                {l:"Livello 80",e:"🌟",done:ovr>=80},
-                {l:"Livello 90",e:"✨",done:ovr>=90},
-                {l:"Livello 95",e:"🚀",done:ovr>=95},
+                {l:"OVR 70",e:"⭐",done:ovr>=70},
+                {l:"OVR 80",e:"🌟",done:ovr>=80},
+                {l:"OVR 90",e:"✨",done:ovr>=90},
+                {l:"OVR 95",e:"🚀",done:ovr>=95},
               ]},
               {cat:"🏆 Carriera",items:[
                 {l:"Pro",e:"🎽",done:isPro},
@@ -10153,7 +10160,7 @@ const getThisWeekMatchday=()=>{
               const p=player;
               if(id==="scalata")return{cur:(p.trophies||[]).length,max:1,label:"trofeo"};
               if(id==="bomber")return{cur:p.goals||0,max:50,label:"gol stagione"};
-              if(id==="talento")return{cur:Math.min(p.ovr||60,90),max:90,label:"livello OVR"};
+              if(id==="talento")return{cur:Math.min(p.ovr||60,90),max:90,label:"OVR"};
               if(id==="fedele")return{cur:Math.max(0,...(p.fanLegend||[]).map(f=>f.seasons)),max:5,label:"stagioni stesso club"};
               if(id==="nazionale_star")return{cur:p.nationalCaps||0,max:20,label:"presenze nazionale"};
               if(id==="sempreverde")return{cur:Math.min(p.age||17,34),max:34,label:"anni"};
@@ -10711,7 +10718,8 @@ const getThisWeekMatchday=()=>{
         const natGoals=player.nationalGoals||0;
         const q=player.nationsCupQueue||null;
         const em=player.euroMondiale||null;
-        const _bar=(won,drew)=><span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:won?TH.winFg:drew?TH.drawFg:TH.lossFg,background:won?TH.winBg:drew?TH.drawBg:TH.lossBg,padding:"1px 7px",borderRadius:RAD.pill,minWidth:18,textAlign:"center",display:"inline-block"}}>{won?"V":drew?"P":"S"}</span>;
+        const _bar=(won,drew)=><span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.bold,color:won?TH.winFg:drew?TH.drawFg:TH.lossFg,background:won?TH.winBg:drew?TH.drawBg:TH.lossBg,padding:"1px 7px",borderRadius:RAD.pill,minWidth:18,textAlign:"center",display:"inline-block"}}>{won?"V":drew?"N":"P"}</span>;/* [7.999.49 parte A] glossario V/N/P */
+        const _gate49=(NAT_CALL_LEVEL[natName]||72)-8,_ovr49=player.ovr||60;
         return(
           <div style={{display:"flex",flexDirection:"column",gap:9}}>
             {/* Header nazionale */}
@@ -10721,11 +10729,25 @@ const getThisWeekMatchday=()=>{
                 <div>
                   <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>Nazionale</div>
                   <div style={{fontSize:FS.title,fontWeight:900,color:TH.text,lineHeight:1.1}}>{natName}</div>
-                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,marginTop:3}}>Prestige Mondiale: {nd.p}/100</div>
+                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,marginTop:3}}>Prestigio mondiale: {nd.p}/100</div>
                 </div>
               </div>
+              {/* [7.999.49 parte A] prima dell'esordio: al posto di tre zeri, lo stato della convocazione (era in fondo alla pagina) */}
+              {caps===0&&_isPro&&!nationalCallupData&&(
+                <div style={{borderTop:`1px solid ${TH.cardBorder}`,paddingTop:10}}>
+                  <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:4}}>In attesa della prima convocazione</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>{_ovr49>=_gate49
+                    ?`Hai il livello per la Nazionale (OVR ${_gate49}+). Il CT sceglie settimana per settimana guardando gol, presenze nel club, forma e popolarità: la chiamata non ha una data fissa.`
+                    :`Il CT della Nazionale chiama da OVR ${_gate49} in su: te ne mancano ${_gate49-_ovr49}. Contano anche gol, presenze nel club, forma e popolarità.`}</div>
+                  <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:8}}>
+                    <span className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:800,color:_ovr49>=_gate49?TH.txGreen:TH.goldText}}>{_ovr49}</span>
+                    <span style={{fontSize:FS.caption,color:TH.muted}}>OVR (min. {_gate49})</span>
+                  </div>
+                </div>
+              )}
+              {caps>0&&(
               <div style={{display:"flex",gap:0,borderTop:`1px solid ${TH.cardBorder}`,paddingTop:12}}>
-                {[{v:caps,l:"Presenze",e:"🌍"},{v:natGoals,l:"Gol Naz.",e:"⚽"},{v:caps>0?Math.round((natGoals/caps)*10)/10:0,l:"Media Gol",e:"📊"}].map((s,i)=>(
+                {[{v:caps,l:"Presenze",e:"🌍"},{v:natGoals,l:"Gol in Naz.",e:"⚽"},{v:String(Math.round((natGoals/caps)*10)/10).replace(".",","),l:"Gol a partita",e:"📊"}].map((s,i)=>(
                   <div key={i} style={{flex:1,textAlign:"center",borderLeft:i>0?"1px solid "+TH.cardBorder:"none",padding:"0 8px"}}>
                     <div style={{fontSize:FS.caption,marginBottom:2}}>{s.e}</div>
                     <div style={{fontSize:FS.title,fontWeight:900,color:i===0?natCol:i===1?TH.txGreen:TH.muted,lineHeight:1}}>{s.v}</div>
@@ -10733,10 +10755,12 @@ const getThisWeekMatchday=()=>{
                   </div>
                 ))}
                 <div style={{flex:1,textAlign:"center",borderLeft:"1px solid "+TH.cardBorder,padding:"0 8px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-                  <div style={{fontSize:FS.small,marginBottom:2}}>{caps>=100?"🌟":caps>=50?"⭐":caps>=20?"🏅":caps>=1?"🎽":"—"}</div>
-                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":caps>=1?"Convocato":"—"}</div>
+                  <div style={{fontSize:FS.small,marginBottom:2}}>{caps>=100?"🌟":caps>=50?"⭐":caps>=20?"🏅":"🎽"}</div>
+                  <div style={{fontSize:FS.caption,color:natCol,fontWeight:700}}>{caps>=100?"Leggenda":caps>=50?"Senatore":caps>=20?"Titolare":"Convocato"}</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>Status</div>
                 </div>
               </div>
+              )}
             </Card>
 
             {/* [7.28.0 ONDA 3 — §S12] LA MAGLIA NUMERO 9 — la lista del CT (gerarchia viva del ruolo) */}
@@ -10744,12 +10768,13 @@ const getThisWeekMatchday=()=>{
               const ct=ctListView(player);if(!ct)return null;
               return(
               <Fisarmonica id="s24-la-maglia-numero-9-la-lista-" titolo="La maglia numero 9 — La lista del CT" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
+                <div style={{fontSize:FS.caption,color:TH.faint,marginBottom:6}}>Ordine del CT: livello, gol e ruolo nel club. Accanto, le presenze in Nazionale.</div>{/* [7.999.49 parte A] il numero accanto non e' il criterio dell'ordine: lo si dice */}
                 <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:8}}>
                   {ct.list.map((x,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 9px",borderRadius:RAD.sm,background:x.me?natCol+"18":TH.bg,border:x.me?`1px solid ${natCol}66`:`1px solid ${TH.cardBorder}`}}>
                       <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:900,color:i===0?TH.txAmber:TH.faint,minWidth:16}}>{i+1}º</span>
                       <span style={{flex:1,fontSize:FS.small,fontWeight:x.me?900:700,color:x.me?natCol:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.name}{x.me?" (tu)":""}</span>
-                      <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint}}>{x.caps} cap</span>
+                      <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint}}>{x.caps} {x.caps===1?"presenza":"presenze"}</span>
                     </div>
                   ))}
                 </div>
@@ -10761,7 +10786,7 @@ const getThisWeekMatchday=()=>{
               <Card style={{padding:"14px",border:`2px solid ${natCol}`,background:`${natCol}0e`}}>
                 <div style={{fontSize:FS.caption,color:natCol,textTransform:"uppercase",letterSpacing:2,fontWeight:700,marginBottom:8}}>Convocazione</div>
                 <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:3}}>
-                  {nationalCallupData.isFirst?"🌟 Prima convocazione!":`Cap #${nationalCallupData.newCaps}`}
+                  {nationalCallupData.isFirst?"🌟 Prima convocazione!":`Presenza n. ${nationalCallupData.newCaps}`}
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:9,padding:"8px 12px",background:TH.bg,borderRadius:RAD.sm}}>
                   <span style={{fontSize:FS.title}}>{natFlag}</span>
@@ -10801,7 +10826,7 @@ const getThisWeekMatchday=()=>{
               }catch(_e){}
               if(!_sched.length&&!_next)return null;
               return(
-                <Fisarmonica id="s24-calendario-nazionale-prossim" titolo="Calendario Nazionale — prossime partite" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
+                <Fisarmonica id="s24-calendario-nazionale-prossim" titolo={_next?"Tornei della Nazionale":"Prossimi tornei della Nazionale"} aperta={true}>{/* [7.999.49 parte A] l'elenco e' di tornei, non di partite */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                   {_next&&(
                     <div style={{padding:"8px 10px",background:`${natCol}12`,border:`1px solid ${natCol}33`,borderRadius:RAD.sm,marginBottom:_sched.length?10:0}}>
                       <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>In corso — prossima gara</div>
@@ -10811,7 +10836,7 @@ const getThisWeekMatchday=()=>{
                   )}
                   {_sched.length>0&&(
                     <div>
-                      <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Prossimi tornei</div>
+                      {_next&&<div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Prossimi tornei</div>}
                       {_sched.map((it,i)=>(
                         <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderTop:i>0?"1px solid "+TH.cardBorder:"none"}}>
                           <span style={{fontSize:FS.bodyLg}}>{it.ic}</span>
@@ -10819,7 +10844,7 @@ const getThisWeekMatchday=()=>{
                             <div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{it.type}</div>
                             <div style={{fontSize:FS.caption,color:TH.muted}}>Stagione {it.season} · Settimana 20</div>
                           </div>
-                          {it.thisSeason&&<span style={{fontSize:FS.caption,background:natCol,color:"#fff",padding:"2px 7px",borderRadius:RAD.sm,fontWeight:700,flexShrink:0}}>QUESTA STAG.</span>}
+                          {it.thisSeason&&<span style={{fontSize:FS.caption,background:natCol,color:"#fff",padding:"2px 7px",borderRadius:RAD.sm,fontWeight:700,flexShrink:0}}>Questa stagione</span>}
                         </div>
                       ))}
                       <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6,fontStyle:"italic"}}>Gli avversari si definiscono all'inizio di ogni torneo.</div>
@@ -10974,24 +10999,9 @@ const getThisWeekMatchday=()=>{
               </Card>
             )}
 
-            {/* In attesa di convocazione */}
-            {_isPro&&caps===0&&!nationalCallupData&&(!q||!q.active||q.done)&&(!em||!em.active)&&(
-              <Card style={{padding:"22px 16px",textAlign:"center"}}>
-                <div style={{fontSize:40,marginBottom:8}}>{natFlag}</div>
-                <div style={{fontSize:FS.body,fontWeight:700,color:TH.text,marginBottom:6}}>In attesa della prima convocazione</div>
-                <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5}}>Il CT convoca giocatori con OVR ≥ 70 e popolarità ≥ 55. Continua a crescere — la chiamata arriverà!</div>
-                <div style={{display:"flex",gap:9,justifyContent:"center",marginTop:10}}>
-                  <div style={{textAlign:"center"}}>
-                    <div style={{fontSize:FS.bodyLg,fontWeight:800,color:(player.ovr||60)>=70?TH.txGreen:TH.goldText}}>{player.ovr||60}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted}}>OVR (min. 70)</div>
-                  </div>
-                  <div style={{textAlign:"center"}}>
-                    <div style={{fontSize:FS.bodyLg,fontWeight:800,color:(player.popularity||0)>=55?TH.txGreen:TH.goldText}}>{player.popularity||0}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted}}>Popolarità (min. 55)</div>
-                  </div>
-                </div>
-              </Card>
-            )}
+            {/* [7.999.49 parte A] «In attesa della prima convocazione» spostato nella testata, con la soglia VERA del motore
+                (OVR = livello della nazionale - 8; la popolarita' pesa ma non e' una soglia): prima diceva «OVR ≥ 70 e
+                popolarita' ≥ 55 · continua a crescere» anche a chi i requisiti li aveva gia'. */}
 
             {/* Non pro */}
             {!_isPro&&(
