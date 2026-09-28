@@ -26,7 +26,7 @@ const COACH_NAMES=["Rossi","Ferrari","Bianchi","Conti","Greco","Mancuso","Bellan
 const COACH_STYLES=[
   {style:"Offensivo",trustMod:+5,desc:"Ama i gol, premia chi attacca"},
   {style:"Difensivo",trustMod:-5,desc:"Rigore tattico, esige sacrificio"},
-  {style:"Bilanciato",trustMod:0,desc:"Equilibrio tra fase e creatività"},
+  {style:"Bilanciato",trustMod:0,desc:"Equilibrio tra fase difensiva e creatività"},
   {style:"Pressing",trustMod:+3,desc:"Alta intensità, fisico essenziale"},
   {style:"Contropiede",trustMod:-3,desc:"Efficienza sopra la brillantezza"},
   {style:"Possesso Palla",trustMod:+8,desc:"Valorizza tecnica e visione"},
@@ -81,8 +81,8 @@ function investSeason24(ret,prev){try{if(typeof window!=="undefined"&&window.__C
 const BENI24=[
   {k:"casa",e:"🏡",l:"Casa in città",c:250000,st:"sobrio",pop:1,trust:2,mor:0.5,fx:"Morale +0,5 a settimana",tif:"«Uno di noi: ha messo radici qui.»",mis:"Il mister approva: vivere vicino al centro sportivo aiuta."},
   {k:"auto",e:"🏎️",l:"Auto sportiva",c:150000,st:"vistoso",pop:3,trust:-2,mor:0,fx:"Popolarità +3, fiducia del mister −2",tif:"I tifosi la fotografano fuori dal campo di allenamento.",mis:"Il mister storce il naso: «Meno motori, più allenamento.»"},
-  {k:"barca",e:"⛵",l:"Barca",c:700000,st:"vistoso",pop:4,trust:-3,mor:0.5,fx:"Popolarità +4, fiducia −3, morale +0,5 a settimana",tif:"Le foto sulla barca fanno il giro dei social.",mis:"Il mister ti ricorda che le vacanze finiscono a luglio."},
-  {k:"fondazione",e:"🤝",l:"Fondazione benefica",c:300000,st:"sobrio",pop:6,trust:2,mor:0,fx:"Popolarità +6, fiducia +2, conta nell'eredità",tif:"La curva espone uno striscione di ringraziamento.",mis:"Il mister in conferenza: «Un esempio per i ragazzi.»"}];
+  {k:"barca",e:"⛵",l:"Barca",c:700000,st:"vistoso",pop:4,trust:-3,mor:0.5,fx:"Popolarità +4, fiducia del mister −3, morale +0,5 a settimana",tif:"Le foto sulla barca fanno il giro dei social.",mis:"Il mister ti ricorda che le vacanze finiscono a luglio."},
+  {k:"fondazione",e:"🤝",l:"Fondazione benefica",c:300000,st:"sobrio",pop:6,trust:2,mor:0,fx:"Popolarità +6, fiducia del mister +2, conta per l'eredità di carriera (valutazione finale)",tif:"La curva espone uno striscione di ringraziamento.",mis:"Il mister in conferenza: «Un esempio per i ragazzi.»"}];
 function beniMorale24(p){if(typeof window!=="undefined"&&window.__CPM_NO_BENI24)return 0;const b=(p&&p.beni24)||[];return BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.mor:0);},0);}
 function patrimonioNetto24(p){const b=(p&&p.beni24)||[];return Math.round(((p&&p.bankBalance)||0)+((p&&p.invest24&&p.invest24.amt)||0)+BENI24.reduce(function(a,d){return a+(b.indexOf(d.k)>=0?d.c*0.5:0);},0));}
 function legacyPatrimonio24(p){if(typeof window!=="undefined"&&window.__CPM_NO_EREDITA24)return {pts:0,rag:0,fond:0,ric:0,netto:0};
