@@ -774,11 +774,11 @@ function generateProContracts(player){
   //    (semantica indefinita al 1° pro): firma DEFINITIVA con un club di categoria inferiore, minutaggio garantito.
   const loanPool=CLUBS.filter(c=>c.p<68&&c.id!==parentClub.id);
   const loanClub=_pk(loanPool.length?loanPool:CLUBS);
-  offers.push({id:"loan_small",club:loanClub,contractType:"Contratto (squadra minore)",wage:Math.round(clamp(_ovrToWageWeekly133(ovr,loanClub?.p||45)*(1+_rf(-0.10,0.10)),300,80000)*agentMult),duration:1,role:"Minutaggio garantito",moralBonus:4,growthBonus:10});
+  offers.push({id:"loan_small",club:loanClub,contractType:"Contratto con un club minore",wage:Math.round(clamp(_ovrToWageWeekly133(ovr,loanClub?.p||45)*(1+_rf(-0.10,0.10)),300,80000)*agentMult),duration:1,role:"Minutaggio garantito",moralBonus:4,growthBonus:10});
   // 4. Stay another year in U18 (ONLY if under limit)
   if(!forced){
     const isLast=u18S>=1;
-    offers.push({id:"stay_u18",club:player.club,contractType:`Resta in Under 18 (${u18S+1}/2)`,wage:player.contract?.wage||200,duration:1,role:"Protagonista U18",moralBonus:-6,growthBonus:4,isStayU18:true,isLastChance:isLast});
+    offers.push({id:"stay_u18",club:player.club,contractType:"Resta in Under 18",wage:player.contract?.wage||200,duration:1,role:"Protagonista U18",moralBonus:-6,growthBonus:4,isStayU18:true,isLastChance:isLast});
   }
   return{offers,forced,perf:Math.round(perf*10)/10};
 }

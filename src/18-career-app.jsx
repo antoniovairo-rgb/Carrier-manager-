@@ -6208,7 +6208,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
               </div>
               <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}>
-                {interviewModal.matchCtx&&<div style={{fontSize:FS.caption,padding:"3px 9px",borderRadius:RAD.xl,background:interviewModal.matchCtx==="win"?TH.bgGreen:interviewModal.matchCtx==="loss"?TH.bgRed:interviewModal.matchCtx==="prematch"?TH.bgBlue:TH.bgAmber,color:interviewModal.matchCtx==="win"?TH.txGreen:interviewModal.matchCtx==="loss"?TH.txRed:interviewModal.matchCtx==="prematch"?"#2563eb":TH.txAmber,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":interviewModal.matchCtx==="prematch"?"PRE-PARTITA":"SETTIMANALE"}</div>}
+                {interviewModal.matchCtx&&!(_iv3d&&interviewModal.partita24&&interviewModal.partita24.hs!=null&&interviewModal.matchCtx!=="prematch")&&<div style={{fontSize:FS.caption,padding:"3px 9px",borderRadius:RAD.xl,background:interviewModal.matchCtx==="win"?TH.bgGreen:interviewModal.matchCtx==="loss"?TH.bgRed:interviewModal.matchCtx==="prematch"?TH.bgBlue:TH.bgAmber,color:interviewModal.matchCtx==="win"?TH.txGreen:interviewModal.matchCtx==="loss"?TH.txRed:interviewModal.matchCtx==="prematch"?"#2563eb":TH.txAmber,fontWeight:700}}>{interviewModal.matchCtx==="win"?"VITTORIA":interviewModal.matchCtx==="loss"?"SCONFITTA":interviewModal.matchCtx==="draw"?"PAREGGIO":interviewModal.matchCtx==="prematch"?"PRE-PARTITA":"SETTIMANALE"}</div>}
                 {interviewModal.notable&&<div style={{fontSize:FS.caption,padding:"2px 7px",borderRadius:RAD.xl,background:TH.bgAmber,color:TH.txAmber,fontWeight:700}}>{interviewModal.notable==="hattrick"?"⚽ HAT-TRICK":interviewModal.notable==="bigwin"?"🏆 BIG WIN":"💢 BIG LOSS"}</div>}
               </div>
             </div>
@@ -6235,7 +6235,7 @@ const getThisWeekMatchday=()=>{
                 <div style={{border:"1px solid "+TH.cardBorder,borderRadius:RAD.sm,background:TH.surface2,padding:"10px 12px",marginBottom:10}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",borderBottom:"2px solid "+TH.text,paddingBottom:4,marginBottom:8}}>
                     <span style={{fontSize:FS.subhead,fontWeight:FW.black,color:TH.text,letterSpacing:.3}}>{testata}</span>
-                    <span className="cpm-num" style={{fontSize:FS.caption,color:TH.muted}}>S.{player.season||1} · W.{player.week||1}</span></div>
+                    <span className="cpm-num" style={{fontSize:FS.caption,color:TH.muted}}>St. {player.season||1} · Sett. {player.week||1}</span></div>
                   <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2,marginBottom:3}}>Domani in edicola{pt&&pt.hs!=null?(" · "+(player.club?.a||player.club?.n||"")+" "+pt.hs+"-"+pt.as+" "+(interviewModal.opponent||"")):""}</div>
                   <div style={{fontSize:FS.title,fontWeight:FW.black,color:TH.text,lineHeight:1.2,textWrap:"balance",marginBottom:4}}>{pp.titolo}</div>
                   <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{pp.sotto}</div>
@@ -6250,7 +6250,7 @@ const getThisWeekMatchday=()=>{
             {/* Question */}
             <div style={{background:TH.bg,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:12,borderLeft:`3px solid ${interviewModal.paper?.color||TH.primary}`}}>
               <div style={{fontSize:FS.body,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
-                "{(interviewModal.q?.q||"").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{club\}/g,player.club?.n||player.club?.name||"il club")}"
+                «{(interviewModal.q?.q||"").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{club\}/g,player.club?.n||player.club?.name||"il club")}»
               </div>
             </div>
             {/* [24/09 POC — risposta PO al questionario: «sì, eroe + giornalista»] chi risponde ha la sua figurina (volto intero),
@@ -6277,12 +6277,12 @@ const getThisWeekMatchday=()=>{
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:5}}>
                       <span style={{fontSize:FS.caption,fontWeight:800,color:toneColor,padding:"2px 8px",borderRadius:RAD.xl,background:`${toneColor}15`}}>{toneLabel}</span>
                     </div>
-                    <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>"{(ans.txt||"").replace(/\{club\}/g,player.club?.n||player.club?.name||"il club").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{nome\}/g,player.name||"")}"</div>
+                    <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>«{(ans.txt||"").replace(/\{club\}/g,player.club?.n||player.club?.name||"il club").replace(/\{opp\}/g,interviewModal.opponent||"l'avversario").replace(/\{nome\}/g,player.name||"")}»</div>
                   </button>
                 );
               })}
             </div>
-            <div style={{fontSize:FS.caption,color:TH.faint,marginTop:10,textAlign:"center"}}>Scegli come rispondere — le tue parole hanno conseguenze.</div>
+            <div style={{fontSize:FS.caption,color:TH.faint,marginTop:10,textAlign:"center"}}>Scegli il tono della risposta: gli effetti li vedrai subito dopo.</div>{/* [7.999.49 parte A] gli effetti restano nascosti per scelta (6.5.4), la frase lo dice */}
             </>)}
           </Card>
         </div>
@@ -6516,29 +6516,29 @@ const getThisWeekMatchday=()=>{
               return(<div data-cpm="club-situazione23" style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,marginBottom:SP.md}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>La situazione del club</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:SP.sm,textAlign:"center"}}>
-                  {[["Posizione",(i+1)+"ª su "+rows.length],["Punti",t.pts|0],["Giocate",t.played|0],["V · P · S",(t.wins|0)+" · "+(t.draws|0)+" · "+(t.losses|0)]].map(([l,v])=>(
+                  {[["Posizione",(i+1)+"ª su "+rows.length],["Punti",t.pts|0],["Giocate",t.played|0],["V · N · P",(t.wins|0)+" · "+(t.draws|0)+" · "+(t.losses|0)]].map(([l,v])=>(
                     <div key={l}><div className="cpm-num" style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text}}>{v}</div><div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}
                 </div>
-                <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>{lg} · prestigio {c.p||"—"} · differenza reti {(t.gd!=null?t.gd:(t.gf|0)-(t.ga|0))>0?"+":""}{t.gd!=null?t.gd:(t.gf|0)-(t.ga|0)}</div>
+                <div style={{fontSize:FS.small,color:TH.muted,marginTop:SP.sm}}>{lg} · differenza reti {(t.gd!=null?t.gd:(t.gf|0)-(t.ga|0))>0?"+":""}{t.gd!=null?t.gd:(t.gf|0)-(t.ga|0)}</div>
                 {/* [24/09 POC — risposta PO al questionario] ultime 5, ruolo in rosa, allenatore. Rosso __CPM_NO_OFFERTA23 */}
                 {!(typeof window!=='undefined'&&window.__CPM_NO_OFFERTA23)&&(()=>{
                   /* ULTIME 5: la classifica delle ALTRE leghe e' deterministica settimana per settimana, quindi la differenza fra due
                      settimane consecutive dice esattamente com'e' finita quella giornata. Nella tua lega lo storico degli altri non c'e': niente pallini. */
                   const _l5=[];const _stessa=!!(player.club&&lg===player.club.lg);
                   if(!_stessa&&typeof calcWorldStandings==="function"){let prev=null;for(let w=Math.max(1,(player.week||1)-12);w<=(player.week||1);w++){const r2=calcWorldStandings(lg,player.season||1,w,player.leagueOverrides||{}).find(x=>x&&(x.id===c.id||x.n===c.n));
-                    if(r2&&prev&&(r2.played|0)>(prev.played|0)){_l5.push((r2.wins|0)>(prev.wins|0)?"V":(r2.draws|0)>(prev.draws|0)?"P":"S");}if(r2)prev=r2;}}
+                    if(r2&&prev&&(r2.played|0)>(prev.played|0)){_l5.push((r2.wins|0)>(prev.wins|0)?"V":(r2.draws|0)>(prev.draws|0)?"N":"P");}if(r2)prev=r2;}}
                   const l5=_l5.slice(-5);
                   const _min=+transferOffer.minutaggio||0;const _ruolo=_min>=70?"Titolare":_min>=45?"In rotazione":"Riserva";
                   let _nRuolo=null;try{const R=generateTeamRoster(c,player.season||1);const _pos=String(player.position||"").toLowerCase();
                     const _grp=/att|punta|centrav|ala/.test(_pos)?/Centravanti|Attaccante|Ala/:/centroc|mezz|trequart|mediano|regista/.test(_pos)?/Centrocampista|Mezzala|Trequartista|Mediano/:/difens|terzin|centrale/.test(_pos)?/Difensore|Terzino/:null;
                     if(_grp)_nRuolo=R.filter(x=>_grp.test(x.role)).length;}catch(_e){}
                   const co=coachDiClub23(c,player.season||1);
-                  const _col={V:TH.winFg||"#166534",P:TH.drawFg||"#a16207",S:TH.lossFg||"#b91c1c"},_bg={V:TH.winBg,P:TH.drawBg,S:TH.lossBg};
+                  const _col={V:TH.winFg||"#166534",N:TH.drawFg||"#a16207",P:TH.lossFg||"#b91c1c"},_bg={V:TH.winBg,N:TH.drawBg,P:TH.lossBg};/* [7.999.49 parte A] V·N·P */
                   return(<div data-cpm="offerta-dettagli23" style={{marginTop:SP.md,paddingTop:SP.sm,borderTop:"1px solid "+TH.divider,display:"flex",flexDirection:"column",gap:SP.sm}}>
                     {l5.length>0&&<div style={{display:"flex",alignItems:"center",gap:SP.sm}}><span style={{fontSize:FS.caption,color:TH.muted,minWidth:88}}>Ultime {l5.length}</span>
                       <div style={{display:"flex",gap:4}}>{l5.map((x,k)=>(<span key={k} className="cpm-num" style={{width:22,height:22,borderRadius:RAD.xs,background:_bg[x],color:_col[x],fontSize:FS.caption,fontWeight:FW.black,display:"flex",alignItems:"center",justifyContent:"center"}}>{x}</span>))}</div></div>}
                     <div style={{display:"flex",alignItems:"center",gap:SP.sm}}><span style={{fontSize:FS.caption,color:TH.muted,minWidth:88}}>Il tuo ruolo</span>
-                      <span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{_ruolo}</span><span style={{fontSize:FS.caption,color:TH.muted}}>· minutaggio {_min}%{_nRuolo!=null?" · "+_nRuolo+" nel tuo reparto":""}</span></div>
+                      <span style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{_ruolo}</span>{_nRuolo!=null&&<span style={{fontSize:FS.caption,color:TH.muted}}>· {_nRuolo} nel tuo reparto</span>}</div>
                     {co&&<div style={{display:"flex",alignItems:"center",gap:SP.sm}}>
                       {(()=>{try{return <Figurina tipo="mister" chiave={co.name} larg={34}/>;}catch(_e){return null;}})()}
                       <div style={{minWidth:0}}><div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{co.name} <span style={{fontWeight:FW.medium,color:TH.muted}}>· {co.style}</span></div>
@@ -6546,10 +6546,13 @@ const getThisWeekMatchday=()=>{
                   </div>);})()}
               </div>);}catch(_e){return null;}})()}
             <Card style={{padding:"12px",marginBottom:10}} bg={TH.bgBlue} border="#bfdbfe" shadow={false}>
-              <div style={{fontSize:FS.body,fontWeight:700,color:TH.brandText,marginBottom:4}}>📩 Offerta: {transferOffer.type}</div>
+              <div style={{fontSize:FS.body,fontWeight:700,color:TH.brandText,marginBottom:4}}>📩 Offerta: {transferOffer.type==="prestito con obbligo"?"prestito con obbligo di riscatto":transferOffer.type==="prestito con opzione"?"prestito con diritto di riscatto":transferOffer.type}</div>
               <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.7}}>
+                {/* [7.999.49 parte A] stipendio, durata e riscatto dell'offerta, se l'oggetto li porta */}
+                {transferOffer.wage>0&&<>Stipendio: <strong>{_fmtWageY133(transferOffer.wage)}/anno</strong>{transferOffer.duration?<> · Durata: <strong>{transferOffer.duration} stagion{transferOffer.duration===1?"e":"i"}</strong></>:null}<br/></>}
+                {transferOffer.buyClause>0&&<>Riscatto: <strong>€{(transferOffer.buyClause/1e6).toLocaleString("it-IT",{maximumFractionDigits:1})} mln</strong>{transferOffer.type==="prestito con obbligo"?` · scatta con almeno ${transferOffer.minMatches||10} presenze`:" · a scelta del club"}<br/></>}
                 Minutaggio stimato: <strong>{transferOffer.minutaggio}%</strong><br/>
-                Morale: <strong style={{color:TH.txGreen}}>+{transferOffer.moralBonus}</strong><br/>
+                Morale: <strong style={{color:TH.txGreen}}>+{transferOffer.moralBonus}</strong> <span style={{fontSize:FS.caption}}>(su 100)</span><br/>
                 Crescita: <strong style={{color:TH.accentText}}>+{transferOffer.growthBonus}</strong><br/>
                 Prestigio club: <strong>{transferOffer.club.p}</strong>
               </div>
@@ -6557,12 +6560,12 @@ const getThisWeekMatchday=()=>{
             {/* Sprint 29 — MW7: agent counter-offer */}
             {player.hasAgent&&!transferOffer.isRenewal&&!transferOffer._counter&&(
               <div style={{background:TH.bgBlue,borderRadius:RAD.sm,padding:"9px 12px",marginBottom:8,border:"1px solid "+TH.bdBlue}}>
-                <div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700,marginBottom:4}}>🤵 Il tuo agente propone un counter:</div>
+                <div style={{fontSize:FS.caption,color:TH.brandText,fontWeight:700,marginBottom:4}}>🤵 Il tuo procuratore propone una controproposta:</div>
                 <div style={{fontSize:FS.caption,color:TH.text}}>Stipendio: <strong>{_fmtWageY133(Math.round((transferOffer.wage||577)*1.20))}/anno</strong> · Durata: <strong>{(transferOffer.duration||2)+1} stagioni</strong></div>
-                <button onClick={()=>setTransferOffer(o=>{const _okC=seededRng((Math.abs(hashStr((o.club?.id||"x")+"|counter|"+(player.season||1)))>>>0)||1)()<0.62;/* [5.98.0 EC-7] il club può DIRE NO */return _okC?{...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}:{...o,_counter:"rejected"};})} style={{marginTop:6,padding:"5px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"#fff",color:TH.brandText,fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Proponi counter →</button>
+                <button onClick={()=>setTransferOffer(o=>{const _okC=seededRng((Math.abs(hashStr((o.club?.id||"x")+"|counter|"+(player.season||1)))>>>0)||1)()<0.62;/* [5.98.0 EC-7] il club può DIRE NO */return _okC?{...o,wage:Math.round((o.wage||500)*1.20),duration:(o.duration||2)+1,_counter:true}:{...o,_counter:"rejected"};})} style={{marginTop:6,padding:"5px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"#fff",color:TH.brandText,fontSize:FS.caption,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Fai la controproposta →</button>
               </div>
             )}
-            {transferOffer._counter===true&&<div style={{fontSize:FS.small,color:TH.txGreen,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Counter accettato dal club! Stipendio e durata aggiornati.</div>}{transferOffer._counter==="rejected"&&<div style={{fontSize:FS.small,color:TH.txRed,fontWeight:700,marginBottom:8,textAlign:"center"}}>❌ Il club non rilancia: restano i termini originali.</div>}
+            {transferOffer._counter===true&&<div style={{fontSize:FS.small,color:TH.txGreen,fontWeight:700,marginBottom:8,textAlign:"center"}}>✅ Controproposta accettata dal club! Stipendio e durata aggiornati.</div>}{transferOffer._counter==="rejected"&&<div style={{fontSize:FS.small,color:TH.txRed,fontWeight:700,marginBottom:8,textAlign:"center"}}>❌ Il club non rilancia: restano i termini originali.</div>}
             <div style={{display:"flex",gap:8}}>
               <Btn onClick={declineTransferOffer} v="secondary" size="lg" fw>Rifiuta</Btn>
               <Btn onClick={acceptTransfer} v="primary" size="lg" fw>Accetta</Btn>
