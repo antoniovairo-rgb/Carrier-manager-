@@ -41,7 +41,7 @@ function ProTransitionScreen({player,onChoose}){
   return(
     <div style={{width:"100%"}}>
       <div style={{textAlign:"center",marginBottom:14,paddingTop:6}}>
-        {(()=>{const _lg=player.club?.lg||"Primavera 1";const _isP2=_lg==="Primavera 2";return(<><div style={{fontSize:44,marginBottom:6}}>{_isP2?"🥈":"🎓"}</div><h1 style={{fontSize:FS.title,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine stagione {_lg}</h1><p style={{color:TH.muted,fontSize:FS.small,margin:0}}>Stagione {u18S+1} completata · {_lg}</p></>);})()}
+        {(()=>{const _lg=player.club?.lg||"Primavera 1";const _isP2=_lg==="Primavera 2";return(<><div style={{fontSize:44,marginBottom:6}}>{_isP2?"🥈":"🎓"}</div><h1 style={{fontSize:FS.title,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Fine stagione {_lg}</h1><p style={{color:TH.muted,fontSize:FS.small,margin:0}}>Stagione {player.season||(u18S+1)} completata</p></>);})()}
       </div>
       {/* Primavera awards */}
       {(()=>{const _aws=(player.primaveraAwards||[]).filter(a=>a.season===player.season);if(!_aws.length)return null;return(<div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10,justifyContent:"center"}}>{_aws.map((a,i)=><span key={i} style={{fontSize:FS.caption,padding:"4px 10px",borderRadius:RAD.md,background:a.type==="campione_primavera"?"#fef9c3":"#eff6ff",color:a.type==="campione_primavera"?"#92400e":TH.primary,fontWeight:700,border:`1px solid ${a.type==="campione_primavera"?"#fde68a":"#bfdbfe"}`}}>{a.type==="campione_primavera"?`🏆 Campione ${a.league}`:`⚽ Capocannoniere ${a.league} (${a.goals} gol)`}</span>)}</div>);})()}
@@ -50,14 +50,11 @@ function ProTransitionScreen({player,onChoose}){
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
           <Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={33}/>
           <div style={{flex:1}}>
-            <div style={{fontWeight:800,fontSize:FS.body,color:TH.text}}>{player.name} · Livello {player.ovr}</div>
-            <div style={{fontSize:FS.caption,color:TH.muted}}>{player.club?.lg||"Primavera"} · Età {player.age} · {player.nation} · Piede {player.foot==="L"?"sinistro":"destro"}</div>
-            <div style={{fontSize:FS.caption,color:TH.warning,marginTop:2}}>⚽ {player.goals} gol · 🎯 {player.assists} assist · {player.matches} gare</div>
+            <div style={{fontWeight:800,fontSize:FS.body,color:TH.text}}>{player.name} · OVR {player.ovr}</div>
+            <div style={{fontSize:FS.caption,color:TH.muted}}>Età {player.age} · {player.nation} · Piede {player.foot==="L"?"sinistro":"destro"}</div>
+            <div style={{fontSize:FS.caption,color:TH.warning,marginTop:2}}>⚽ {player.goals} gol · 🎯 {player.assists} assist · {player.matches} presenze</div>
           </div>
-          <div style={{textAlign:"right",flexShrink:0}}>
-            <div style={{fontSize:FS.h,fontWeight:900,color:forced?TH.danger:TH.primary,lineHeight:1}}>{u18S+1}<span style={{fontSize:FS.caption,color:TH.faint,fontWeight:400}}>/2</span></div>
-            <div style={{fontSize:FS.caption,color:TH.faint}}>stagioni U18</div>
-          </div>
+          {/* [7.999.49 parte A] il conteggio delle stagioni Under 18 resta solo nella barra qui sotto */}
         </div>
         {forced&&<div style={{marginTop:10,padding:"8px 10px",background:TH.lossBg,borderRadius:RAD.sm,fontSize:FS.caption,color:TH.danger,fontWeight:600}}>⚠️ Limite massimo raggiunto: non puoi restare in Under 18. Scegli il prossimo passo.</div>}
         {!forced&&u18S>=1&&<div style={{marginTop:8,fontSize:FS.caption,color:TH.warning,background:TH.bgAmber,padding:"6px 10px",borderRadius:RAD.xs}}>⏳ Questa è la tua ultima stagione U18 disponibile.</div>}
@@ -65,8 +62,8 @@ function ProTransitionScreen({player,onChoose}){
       {/* Progress bar U18 */}
       <div style={{marginBottom:14}}>
         <div style={{display:"flex",justifyContent:"space-between",fontSize:FS.caption,color:TH.muted,marginBottom:3}}>
-          <span>Stagioni Under 18: {u18S+1}/2</span>
-          <span style={{color:forced?TH.danger:TH.primary}}>{forced?"Limite raggiunto":"Ancora disponibile"}</span>
+          <span>Stagioni Under 18: {u18S+1} di 2</span>
+          <span style={{color:forced?TH.danger:TH.primary}}>{forced?"Limite raggiunto":"Puoi ancora restare"}</span>
         </div>
         <div style={{height:6,background:"#e2e8f0",borderRadius:RAD.pill,overflow:"hidden"}}>
           <div style={{height:"100%",width:`${(u18S+1)*50}%`,background:forced?"#ef4444":TH.warning,borderRadius:RAD.pill,transition:"width .5s"}}/>
@@ -86,15 +83,15 @@ function ProTransitionScreen({player,onChoose}){
               <div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{o.club?.n||o.club?.name}</div>
               <div style={{fontSize:FS.caption,color:o.isMain?TH.primary:o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>
-                {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno":"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
+                {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno"+(o.isStayU18?" (stipendio attuale)":""):"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
               </div>
               <div style={{display:"flex",gap:5,marginTop:4,flexWrap:"wrap"}}>
                 <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
-                  😄{o.moralBonus>=0?"+":""}{o.moralBonus}
+                  Morale {o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
-                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:"#f3e8ff",color:TH.accentText}}>📈+{o.growthBonus}</span>
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:"#f3e8ff",color:TH.accentText}}>Crescita +{o.growthBonus}</span>
                 {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
-                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:TH.brandText}}>⭐ Consigliato</span>}
+                {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:TH.brandText}}>⭐ Consigliato: primo contratto col tuo club{(o.moralBonus||0)>=Math.max(...offers.map(x=>x.moralBonus||0))?" · morale più alto":""}</span>}{/* [7.999.49 parte A] il perché del consiglio, dai dati dell'offerta (morale davvero applicato alla scelta) */}
                 {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}
               </div>
             </div>
@@ -2092,7 +2089,9 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   const{palloneOro,scarpaOro,leagueMvp,leagueTopScorer,leagueYoung,leagueTeamOfYear,youngPlayer,seasonRecord,allTime,rival}=awards;
   const lg=club?.lg||"Pro";
   const pWinsBoth=palloneOro.playerWins&&scarpaOro.playerWins;
-  const anyLeaguePrize=(leagueMvp?.playerWins||leagueTopScorer?.playerWins||leagueYoung?.playerWins||leagueTeamOfYear);
+  /* [7.999.49 parte A] «Stagione straordinaria» solo con un premio INDIVIDUALE vinto (capocannoniere, MVP, giovane dell'anno,
+     Re dei Bomber o Trofeo d'Oro). La sola Squadra dell'anno ha il suo titolo, piu' sobrio. */
+  const premioIndiv49=!!(leagueMvp?.playerWins||leagueTopScorer?.playerWins||leagueYoung?.playerWins||palloneOro.playerWins||scarpaOro.playerWins);
   const anyRecord=seasonRecord.beaten||allTime.beaten;
 
   const SectionLabel=({children})=>(
@@ -2114,7 +2113,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   /* [24/09 POC — commento PO sui premi «standardizza, rendila piu' bella»] IL PODIO: tre premiati sono un podio, non una lista.
      1° al centro e piu' alto, 2° a sinistra, 3° a destra; figurina sopra ogni gradino, valore sul gradino. Con meno di tre nomi
      (o col rosso __CPM_NO_PODIO23) restano le righe. */
-  const Podio23=({righe,label,extra})=>{const R3=righe||[];
+  const Podio23=({righe,label,extra,pari})=>{const R3=righe||[];
     if(R3.length<3||(typeof window!=='undefined'&&window.__CPM_NO_PODIO23))return <>{R3.map((c,i)=><ScoreRow key={i} rank={i} name={c.name} val={c.goals} label={label} isPlayer={!!c.isPlayer} extra={extra(c)}/>)}</>;
     const H=[64,48,38],MED=["#d4a017","#9aa4b2","#b87333"],ORD=[1,0,2];
     return(<div data-cpm="podio23" style={{display:"grid",gridTemplateColumns:"1fr 1.15fr 1fr",gap:SP.sm,alignItems:"end",margin:`${SP.sm}px 0 ${SP.xs}px`}}>
@@ -2122,11 +2121,11 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",minWidth:0}}>
           {(()=>{try{return <Figurina tipo="giocatore" chiave={me?((player&&player.name)||c.name):c.name} larg={i===0?58:46}/>;}catch(_e){return null;}})()}
           <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:me?TH.brandText:TH.text,marginTop:4,textAlign:"center",lineHeight:1.2,maxWidth:"100%",overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{c.name}{me?" · tu":""}</div>
-          <div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{extra(c)||"\u00a0"}</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",lineHeight:1.2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{extra(c)||"\u00a0"}</div>{/* [7.999.49 parte A] a capo invece dei puntini */}
           <div style={{width:"100%",height:H[i],marginTop:4,borderRadius:`${RAD.sm}px ${RAD.sm}px 0 0`,background:TH.surface2,borderTop:"4px solid "+MED[i],
             outline:me?("2px solid "+(TH.primaryBorder||TH.primary)):"none",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
             <span className="cpm-num" style={{fontSize:i===0?FS.subhead:FS.body,fontWeight:FW.black,color:TH.text,lineHeight:1}}>{c.goals}<span style={{fontSize:FS.caption,fontWeight:FW.medium,color:TH.muted,marginLeft:2}}>{label}</span></span>
-            <span style={{fontSize:FS.caption,fontWeight:FW.black,color:MED[i],marginTop:2}}>{i+1}°</span>
+            <span style={{fontSize:FS.caption,fontWeight:FW.black,color:MED[i],marginTop:2}}>{(()=>{/* [7.999.49 parte A] a gol pari stesso posto: la classifica marcatori non ha spareggi */const _p=pari?R3.findIndex(x=>x&&x.goals===c.goals):i;return (_p+1)+"°"+(pari&&R3.some((x,j)=>j!==i&&x&&x.goals===c.goals)?" pari merito":"");})()}</span>
           </div>
         </div>);})}
     </div>);};
@@ -2151,9 +2150,9 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   const _galaSeq=React.useMemo(()=>{try{const seq=[];
     const _t3=(o)=>(o&&Array.isArray(o.top3)&&o.top3.length===3)?o.top3.slice(0,3):null;
     if(leagueYoung&&leagueYoung.winner&&leagueYoung.isYoungEligible)seq.push({key:"young",e:"💎",title:"Giovane dell'Anno",sub:`Il talento U23 della ${lg}`,rows:[leagueYoung.winner],single:true});
-    const _ts=_t3(leagueTopScorer);if(_ts)seq.push({key:"capo",e:"⚽",title:"Capocannoniere",sub:`I bomber della ${lg}`,rows:_ts});
-    const _mv=_t3(leagueMvp);if(_mv)seq.push({key:"mvp",e:"🏅",title:"MVP della Stagione",sub:`Il migliore della ${lg}`,rows:_mv});
-    const _sc=_t3(scarpaOro);if(_sc)seq.push({key:"scarpa",e:"👟",title:"Re dei Bomber",sub:"Top scorer nei campionati europei",rows:_sc});
+    const _ts=_t3(leagueTopScorer);if(_ts)seq.push({key:"capo",e:"⚽",title:"Capocannoniere",sub:`I migliori marcatori della ${lg}`,rows:_ts});
+    const _mv=_t3(leagueMvp);if(_mv)seq.push({key:"mvp",e:"🏅",title:"MVP della stagione",sub:`Miglior giocatore della ${lg}`,rows:_mv});
+    const _sc=_t3(scarpaOro);if(_sc)seq.push({key:"scarpa",e:"👟",title:"Re dei Bomber",sub:"I migliori marcatori dei campionati europei",rows:_sc});
     const _po=_t3(palloneOro);if(_po)seq.push({key:"oro",e:"🌍",title:"Trofeo d'Oro",sub:"I migliori calciatori d'Europa — smoking, riflettori, una busta.",rows:_po});
     return seq;}catch(_e){return[];}},[]);// eslint-disable-line
   const [galaAct,setGalaAct]=React.useState(0);
@@ -2172,7 +2171,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         :<Figurina tipo="giocatore" chiave={c.name||"npc"} larg={Math.round((big?42:32)*5/7)}/>;}catch(_e){return null;}})()}
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontSize:big?15:12.5,fontWeight:900,color:_me?"#fde68a":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.name}{_me?" — SEI TU!":""}</div>
-        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}</div>
+        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.55)"}}>{c.club||c.league||""}{c.goals!=null?` · ${c.goals} gol`:""}{(_actG.key==="mvp"||_actG.key==="oro")&&c.assists!=null?` · ${c.assists} assist`:""}{(_actG.key==="capo"||_actG.key==="scarpa")&&_galaTop3.some((x,j)=>j!==idx&&x&&x.goals===c.goals)?" · pari merito":""}</div>{/* [7.999.49 parte A] a gol pari la classifica non ha spareggi: lo si dice */}
       </div>
     </div>);};
   return(
@@ -2187,6 +2186,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
             <div style={{fontSize:FS.caption,color:"#d4a017",textTransform:"uppercase",letterSpacing:3,marginBottom:6}}>🎩 La notte del Gala · Stagione {season}</div>
             <div style={{display:"flex",justifyContent:"center",gap:5,marginBottom:8}}>
               {_galaSeq.map((a,i)=>(<span key={a.key} style={{width:i===galaAct?18:7,height:7,borderRadius:RAD.xs,background:i<galaAct?"#d4a017":i===galaAct?"#fde68a":"rgba(255,255,255,0.18)",transition:"all .3s"}}/>))}
+              <span style={{fontSize:FS.caption,color:"rgba(255,255,255,0.7)",marginLeft:4,lineHeight:"7px"}}>Premio {galaAct+1} di {_galaSeq.length}</span>
             </div>
             {/* [24/09 POC — commento PO «metti le figurine con presentatore e presentatrice»] la coppia che conduce la serata:
                 parla uno per premio (alternati), l'altro resta un passo indietro. Rosso __CPM_NO_GALA23. */}
@@ -2194,8 +2194,8 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               return(<div data-cpm="gala-conduttori23" style={{display:"flex",justifyContent:"center",gap:SP.lg,marginBottom:SP.md}}>
                 {_pp.map((q,i)=>(<div key={q.n} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,opacity:i===_sp?1:0.55,transform:i===_sp?"scale(1.06)":"none",transition:"all .3s"}}>
                   {(()=>{try{return <Figurina tipo={q.t} chiave={q.n} larg={58}/>;}catch(_e){return null;}})()}
-                  <div style={{fontSize:FS.small,fontWeight:FW.bold,color:"#fff",lineHeight:1.1}}>{q.n}</div>
-                  <div style={{fontSize:FS.caption,color:i===_sp?"#fde68a":"rgba(255,255,255,0.6)"}}>{i===_sp?"sul palco":q.r}</div>
+                  <div style={{fontSize:FS.small,fontWeight:FW.bold,color:"#fff",lineHeight:1.1,textShadow:"0 1px 4px rgba(0,0,0,0.9)"}}>{q.n}</div>
+                  <div style={{fontSize:FS.caption,color:i===_sp?"#fde68a":"rgba(255,255,255,0.6)",textShadow:"0 1px 4px rgba(0,0,0,0.9)"}}>{q.r}</div>
                 </div>))}
               </div>);})()}
             <div key={"t"+galaAct} style={{fontSize:FS.title,fontWeight:900,color:"#fff",marginBottom:2,animation:"logoIn 0.5s ease-out"}}>{_actG.e} {_actG.title}</div>
@@ -2215,35 +2215,61 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
                 {galaN>=3&&<Btn v="primary" fw onClick={_galaNext}>{_galaLast?"Vai alla cerimonia dei premi →":"Il prossimo premio →"}</Btn>}
               </div>
             </div>)}
-            <button onClick={()=>setGalaOff(true)} style={{display:"block",margin:"14px auto 0",background:"none",border:"none",color:"rgba(255,255,255,0.35)",fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>Salta il gala</button>
+            <button onClick={()=>setGalaOff(true)} style={{display:"block",margin:"14px auto 0",background:"none",border:"none",color:"rgba(255,255,255,0.7)",fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>Salta il gala</button>
           </div>
         </div>
       )}
       {/* Header */}
       <div style={{textAlign:"center",marginBottom:16,paddingTop:4}}>
         <div style={{fontSize:46,marginBottom:6}}>🏅</div>
-        <h1 style={{fontSize:FS.subhead,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Premi Stagione {season}</h1>
-        <p style={{color:TH.muted,fontSize:FS.small,margin:"0 0 4px"}}>{lg} · Cerimonia di Fine Stagione</p>
+        <h1 style={{fontSize:FS.subhead,fontWeight:900,margin:"0 0 4px",color:TH.text}}>Premi della stagione {season}</h1>
+        <p style={{color:TH.muted,fontSize:FS.small,margin:"0 0 4px"}}>Cerimonia di fine stagione · {lg}</p>
         {pWinsBoth&&<div style={{display:"inline-block",marginTop:6,background:"linear-gradient(135deg,#fef08a,#fde047)",color:TH.txAmber,fontWeight:900,fontSize:FS.small,padding:"4px 14px",borderRadius:RAD.xl}}>🌟 STAGIONE LEGGENDARIA!</div>}
-        {anyLeaguePrize&&!pWinsBoth&&<div style={{display:"inline-block",marginTop:6,background:"linear-gradient(135deg,#dbeafe,#bfdbfe)",color:TH.txBlue,fontWeight:900,fontSize:FS.small,padding:"4px 14px",borderRadius:RAD.xl}}>⭐ STAGIONE STRAORDINARIA!</div>}
+        {premioIndiv49&&!pWinsBoth&&<div style={{display:"inline-block",marginTop:6,background:"linear-gradient(135deg,#dbeafe,#bfdbfe)",color:TH.txBlue,fontWeight:900,fontSize:FS.small,padding:"4px 14px",borderRadius:RAD.xl}}>⭐ STAGIONE STRAORDINARIA!</div>}
+        {!premioIndiv49&&!pWinsBoth&&leagueTeamOfYear&&<div style={{display:"inline-block",marginTop:6,background:TH.bgBlue,color:TH.txBlue,fontWeight:800,fontSize:FS.small,padding:"4px 14px",borderRadius:RAD.xl}}>⭐ Nella squadra dell'anno</div>}
       </div>
+
+      {/* [7.999.49 parte A] la stagione del giocatore sale in cima, subito sotto il titolo */}
+      {/* [24/09 POC — commento PO sulla chiusura «standardizza, rendila piu' bella»] LA TUA STAGIONE: prima dell'unico bottone
+          primario, il riepilogo con la figurina dell'eroe e i numeri veri (gol, assist, presenze, voto medio). Rosso __CPM_NO_RIEPILOGO23. */}
+      {!(typeof window!=='undefined'&&window.__CPM_NO_RIEPILOGO23)&&(()=>{const _mh=(player.matchHistory||[]).filter(m=>m&&typeof m.rating==="number");
+        const _vm=_mh.length?(_mh.reduce((a,m)=>a+m.rating,0)/_mh.length):null;
+        const _n=[["Gol",player.goals||0],["Assist",player.assists||0],["Presenze",player.matches||_mh.length||0],["Voto medio",_vm!=null?_vm.toFixed(1).replace(".",","):"—"]];
+        return(<Card data-cpm="riepilogo23" style={{marginBottom:10,padding:"14px 16px"}}>
+          <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:10}}>
+            {(()=>{try{return <Figurina tipo="giocatore" chiave={player.name} larg={52}/>;}catch(_e){return null;}})()}
+            <div style={{minWidth:0}}>
+              <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>La tua stagione {season}</div>
+              <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{player.name}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{(player.club&&(player.club.n||player.club.name))||""}</div>
+            </div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:SP.xs}}>
+            {_n.map(([k,v])=>(<div key={k} style={{background:TH.surface2,borderRadius:RAD.sm,padding:"8px 4px",textAlign:"center"}}>
+              <div className="cpm-num" style={{fontSize:FS.subhead,fontWeight:FW.black,color:TH.text,lineHeight:1.1}}>{v}</div>
+              <div style={{fontSize:FS.caption,color:TH.muted}}>{k}</div></div>))}
+          </div>
+          {/* [7.999.49 parte A] due conteggi di gol diversi: si dice quale e' quale */}
+          <div style={{fontSize:FS.caption,color:TH.muted,marginTop:6,textAlign:"center"}}>Gol, assist e presenze in tutte le competizioni · {(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))} gol in campionato</div>
+        </Card>);})()}
 
       {/* PREMI DI LEGA (Sprint 134) */}
       <Card style={{marginBottom:10,padding:"14px 16px"}}>
-        <SectionLabel>🏅 PREMI DI LEGA — {lg}</SectionLabel>
+        <SectionLabel>🏅 Premi di lega</SectionLabel>
 
         {/* Capocannoniere */}
         <div style={{marginBottom:10}}>
-          <div style={{fontSize:FS.caption,fontWeight:800,color:TH.text,marginBottom:4}}>⚽ Capocannoniere del Campionato</div>
-          <Podio23 righe={leagueTopScorer?.top3} label="gol" extra={c=>c.club}/>
+          <div style={{fontSize:FS.caption,fontWeight:800,color:TH.text,marginBottom:4}}>⚽ Capocannoniere</div>
+          <Podio23 righe={leagueTopScorer?.top3} label="gol" extra={c=>c.club} pari/>
           {leagueTopScorer?.playerWins&&<div style={{marginTop:4,padding:"6px 10px",background:TH.winBg,borderRadius:RAD.sm,fontSize:FS.caption,fontWeight:800,color:TH.txGreen}}>🥇 Sei il capocannoniere della {lg}!</div>}
-          {!leagueTopScorer?.playerWins&&(leagueTopScorer?.playerPos||0)>2&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:3,textAlign:"right"}}>La tua posizione: {(leagueTopScorer?.playerPos||0)+1}ª · {(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))} gol</div>}{/* [7.9.2] gol di LEGA (player.goals somma tutte le competizioni) */}
+          {!leagueTopScorer?.playerWins&&(leagueTopScorer?.playerPos||0)>2&&<div style={{fontSize:FS.caption,color:TH.muted,marginTop:3,textAlign:"right"}}>La tua posizione: {(leagueTopScorer?.playerPos||0)+1}ª · {(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))} gol in campionato</div>}{/* [7.9.2] gol di LEGA (player.goals somma tutte le competizioni) */}
         </div>
 
         {/* MVP della Stagione */}
         <div style={{borderTop:"1px solid "+TH.cardBorder,paddingTop:10,marginBottom:10}}>
-          <div style={{fontSize:FS.caption,fontWeight:800,color:TH.text,marginBottom:4}}>🏆 MVP della Stagione</div>
-          <Podio23 righe={leagueMvp?.top3} label="⚽" extra={c=>c.club}/>
+          <div style={{fontSize:FS.caption,fontWeight:800,color:TH.text,marginBottom:4}}>🏅 MVP della stagione</div>
+          <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:2}}>Miglior giocatore del campionato: contano gol, assist, OVR e titolo.</div>
+          <Podio23 righe={leagueMvp?.top3} label="gol" extra={c=>`${c.assists||0} assist · ${c.club||""}`}/>
           {leagueMvp?.playerWins&&<div style={{marginTop:4,padding:"6px 10px",background:TH.bgAmber,borderRadius:RAD.sm,fontSize:FS.caption,fontWeight:800,color:TH.txAmber}}>🏆 Miglior calciatore della {lg}!</div>}
         </div>
 
@@ -2269,7 +2295,19 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         </div>
       </Card>
 
-      {/* PREMI EUROPEI */}
+      {/* PREMI EUROPEI — [7.999.49 parte A] stesso ordine del gala (Re dei Bomber, poi Trofeo d'Oro); i podi gia' svelati al gala
+          stanno in una fisarmonica, aperta se un premio europeo e' tuo */}
+      <Fisarmonica id="premi-europei49" titolo="Premi europei" icona="🌍" quante={2} aperta={!!(palloneOro.playerWins||scarpaOro.playerWins)}>
+      <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?thPastel("#f0fdf4","rgba(34,197,94,0.12)"):TH.card,border:scarpaOro.playerWins?("1.5px solid "+thPastel("#bbf7d0","rgba(34,197,94,0.45)")):"1px solid "+TH.cardBorder}}>
+        <SectionLabel>👟 RE DEI BOMBER {season}</SectionLabel>
+        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>I migliori marcatori dei campionati europei</div>
+        <Podio23 righe={scarpaOro.top3} label="gol" extra={c=>c.league||c.club} pari/>
+        {!scarpaOro.playerWins&&scarpaOro.playerPos>2&&(
+          <div style={{marginTop:6,fontSize:FS.caption,color:TH.muted,textAlign:"right"}}>La tua posizione europea: {scarpaOro.playerPos+1}ª · {scarpaOro.playerGoals??(player.goals||0)} gol di campionato</div>
+        )}
+        {scarpaOro.playerWins&&<div style={{marginTop:8,padding:"8px 12px",background:TH.winBg,borderRadius:RAD.sm,fontSize:FS.small,fontWeight:800,color:TH.txGreen,textAlign:"center"}}>🥇 Capocannoniere d'Europa! La Re dei Bomber è tua!</div>}
+      </Card>
+
       <Card style={{marginBottom:10,padding:"14px 16px",background:palloneOro.playerWins?thPastel("#fefce8","rgba(245,158,11,0.13)"):TH.card,border:palloneOro.playerWins?("1.5px solid "+thPastel("#fde68a","rgba(245,158,11,0.5)")):"1px solid "+TH.cardBorder}}>
         <SectionLabel>🌍 TROFEO D'ORO {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Migliori calciatori d'Europa</div>
@@ -2286,15 +2324,7 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         )}
       </Card>
 
-      <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?thPastel("#f0fdf4","rgba(34,197,94,0.12)"):TH.card,border:scarpaOro.playerWins?("1.5px solid "+thPastel("#bbf7d0","rgba(34,197,94,0.45)")):"1px solid "+TH.cardBorder}}>
-        <SectionLabel>👟 RE DEI BOMBER {season}</SectionLabel>
-        <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>Top scorer nei campionati europei</div>
-        <Podio23 righe={scarpaOro.top3} label="gol" extra={c=>c.league||c.club}/>
-        {!scarpaOro.playerWins&&scarpaOro.playerPos>2&&(
-          <div style={{marginTop:6,fontSize:FS.caption,color:TH.muted,textAlign:"right"}}>La tua posizione europea: {scarpaOro.playerPos+1}ª · {scarpaOro.playerGoals??(player.goals||0)} gol di campionato</div>
-        )}
-        {scarpaOro.playerWins&&<div style={{marginTop:8,padding:"8px 12px",background:TH.winBg,borderRadius:RAD.sm,fontSize:FS.small,fontWeight:800,color:TH.txGreen,textAlign:"center"}}>🥇 Capocannoniere d'Europa! La Re dei Bomber è tua!</div>}
-      </Card>
+      </Fisarmonica>
 
       {/* Record check */}
       {(seasonRecord.beaten||seasonRecord.near)&&(
@@ -2340,48 +2370,29 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
       {rival&&!(typeof window!=='undefined'&&window.__CPM_NO_RIVALE23)&&(()=>{/* [23/09 POC] «standardizza, piu' bella»: la card scura a gradiente viola era l'unico blocco fuori dal kit. Ora e' una Card chiara col volto dei due rivali (Figurina) e l'esito come Badge. Rosso: __CPM_NO_RIVALE23 */
         const _tono=rival.tie?"draw":(rival.playerWins?"win":"loss");
         const _col=(w)=>rival.tie?(TH.drawFg||"#a16207"):(w?(TH.winFg||"#166534"):(TH.lossFg||"#b91c1c"));
-        const _lato=(nome,gol,chiave,w)=>(<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,minWidth:0}}>
+        const _lato=(nome,gol,chiave,w,sotto)=>(<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,minWidth:0}}>
           <Figurina tipo="giocatore" chiave={chiave} larg={52}/>
           <div style={{fontSize:FS.h,fontWeight:900,color:_col(w),fontVariantNumeric:"tabular-nums",lineHeight:1}}>{gol}</div>
           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text,textAlign:"center",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{nome}</div>
+          {sotto&&<div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{sotto}</div>}
         </div>);
         return (<Card data-cpm="rivale23" style={{marginBottom:10,padding:"14px 16px"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8,marginBottom:10}}>
             <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>🆚 Il duello della stagione</div>
-            <Badge tone="neutral">{rival.relLabel}</Badge>
+            {rival.relLabel&&<Badge tone="neutral">{rival.relLabel}</Badge>}{/* [7.999.49 parte A] niente pillola vuota */}
           </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:8,alignItems:"center",marginBottom:10}}>
             {_lato(player.name,rival.playerGoals,player.name,rival.playerWins)}
-            <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted}}>gol</div>
-            {_lato(rival.name,rival.goals,rival.name,!rival.playerWins)}
+            <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted,textAlign:"center",lineHeight:1.2}}>gol in<br/>campionato</div>
+            {_lato(rival.name,rival.goals,rival.name,!rival.playerWins,(player.rival&&player.rival.club&&(player.rival.club.n||player.rival.club.name))||"")}
           </div>
           <div style={{display:"flex",justifyContent:"center"}}><Badge tone={_tono}>{rival.tie?"🤝 Parità: "+rival.goals+" gol a testa":rival.playerWins?"✅ Hai battuto "+rival.name:"😤 "+rival.name+" ti ha superato"}</Badge></div>
         </Card>);
       })()}
 
-      {/* [24/09 POC — commento PO sulla chiusura «standardizza, rendila piu' bella»] LA TUA STAGIONE: prima dell'unico bottone
-          primario, il riepilogo con la figurina dell'eroe e i numeri veri (gol, assist, presenze, voto medio). Rosso __CPM_NO_RIEPILOGO23. */}
-      {!(typeof window!=='undefined'&&window.__CPM_NO_RIEPILOGO23)&&(()=>{const _mh=(player.matchHistory||[]).filter(m=>m&&typeof m.rating==="number");
-        const _vm=_mh.length?(_mh.reduce((a,m)=>a+m.rating,0)/_mh.length):null;
-        const _n=[["Gol",player.goals||0],["Assist",player.assists||0],["Presenze",player.matches||_mh.length||0],["Voto medio",_vm!=null?_vm.toFixed(1):"—"]];
-        return(<Card data-cpm="riepilogo23" style={{marginBottom:10,padding:"14px 16px"}}>
-          <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:10}}>
-            {(()=>{try{return <Figurina tipo="giocatore" chiave={player.name} larg={52}/>;}catch(_e){return null;}})()}
-            <div style={{minWidth:0}}>
-              <div style={{fontSize:FS.caption,fontWeight:800,color:TH.muted,textTransform:"uppercase",letterSpacing:1.2}}>La tua stagione {season}</div>
-              <div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{player.name}</div>
-              <div style={{fontSize:FS.caption,color:TH.muted}}>{(player.club&&(player.club.n||player.club.name))||""}{lg?" · "+lg:""}</div>
-            </div>
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:SP.xs}}>
-            {_n.map(([k,v])=>(<div key={k} style={{background:TH.surface2,borderRadius:RAD.sm,padding:"8px 4px",textAlign:"center"}}>
-              <div className="cpm-num" style={{fontSize:FS.subhead,fontWeight:FW.black,color:TH.text,lineHeight:1.1}}>{v}</div>
-              <div style={{fontSize:FS.caption,color:TH.muted}}>{k}</div></div>))}
-          </div>
-        </Card>);})()}
 
       <Btn onClick={onContinue} v="primary" fw style={{padding:"16px",fontSize:FS.bodyLg,marginTop:4}}>
-        Continua alla Fine Stagione →
+        Vai al bilancio della stagione →
       </Btn>
     </div>
   );

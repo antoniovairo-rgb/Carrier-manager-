@@ -931,7 +931,7 @@ const INTERVIEW_QS=[
 {ctx:["weekly"],q:"Ha un messaggio per i giovani che vogliono diventare calciatori professionisti?",a:[
   {tone:"diplomatico",txt:"Lavorate, siate pazienti e non mollate mai. Il talento da solo non basta.",ef:{m:5,p:7,t:4}},
   {tone:"diretto",txt:"Siate ambiziosi. Sognate in grande e lavorate come nessun altro. Io l'ho fatto.",ef:{m:7,p:8,t:-2}},
-  {tone:"umile",txt:"Credete in voi stessi ma restate umili. Il lavoro batte sempre il talento.",ef:{m:4,p:7,t:5}},
+  {tone:"umile",txt:"Io ho ancora tanto da imparare: ascoltate chi vi allena e restate umili.",ef:{m:4,p:7,t:5}},
 ]},
 {ctx:["weekly"],q:"Come si prepara psicologicamente per i momenti ad alta pressione in partita?",a:[
   {tone:"diplomatico",txt:"Con la routine e la fiducia nel lavoro fatto. Quando arrivo lì sono pronto.",ef:{m:4,p:3,t:5}},
