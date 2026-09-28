@@ -3037,6 +3037,21 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     //   schedulati nell'ultimo HL): prima facevano setState sopra la schermata finale (float/cinema fantasma).
     if(phase==="ended"){fxTimersRef.current.forEach(clearTimeout);fxTimersRef.current=[];}
   },[phase]);// eslint-disable-line
+  /* [7.999.48 PO «il coro con il nome dell'eroe» — rosso __CPM_NO_CORO48] nella festa leggera la curva canta il COGNOME
+     dell'eroe (due cori: il nome scandito, poi «c'è solo un …»). Dichiarato DOPO l'effetto che azzera i cori all'uscita
+     da playing: altrimenti quello li cancellerebbe. I timer stanno in chantTimersRef, quindi l'uscita dalla festa li pulisce. */
+  useEffect(()=>{
+    if(phase!=="ceremony"||!ceremony||!ceremony.light)return;
+    if(typeof window!=='undefined'&&window.__CPM_NO_CORO48)return;
+    let _cg=""; try{_cg=((typeof _surnBG==="function"&&_surnBG(player.name||""))||String(player.name||"").trim().split(/\s+/).pop()||"");}catch(_e){}
+    if(!_cg)return;
+    const _col="#f8fafc";/* testo chiaro: il colore del club (granata, blu scuro…) sul fondo scuro della pillola non si legge (foto 7.999.48) */
+    const _cori=[_cg.toUpperCase()+"! "+_cg.toUpperCase()+"! "+_cg.toUpperCase()+"!","C'è solo un "+_cg+"!"];
+    _cori.forEach((t,i)=>{
+      chantTimersRef.current.push(setTimeout(()=>{setCrowdChant({text:t,type:"goal",key:Date.now()+i,clubCol:_col});if(typeof window!=='undefined')(window.__CPM_CORO48=window.__CPM_CORO48||[]).push(t);},900+i*3600));
+      chantTimersRef.current.push(setTimeout(()=>setCrowdChant(null),900+i*3600+3000));
+    });
+  },[phase]);// eslint-disable-line
   // [5.75.0 BUG-3] cleanup su UNMOUNT: cori + timer effimeri (fxTimeout) muoiono col componente —
   //   prima restavano vivi → setState su LiveMatch smontato (warning React + lavoro fantasma).
   const _lmAliveRef=useRef(true);/* [7.121.0 rifiniture robustezza] LiveMatch montato? → guardia per i setState delle chiamate AI async (commentary) che possono risolvere dopo il fischio finale/uscita */
@@ -9620,7 +9635,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
     return(_tvComp&&_tvComp.phase&&_tvComp.phase!==_compLabel)?_tvComp.phase:null;
   }catch(_e){return null;}})();
 
-  const _swap893=!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45);/* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
+  const _swap893=!(typeof window!=='undefined'&&window.__CPM_NO893)&&((clock|0)>45)&&(phase!=="ceremony"||!!(typeof window!=='undefined'&&window.__CPM_NO_TAB48));/* [7.999.48 PO] alla festa/premiazione il tabellone torna casa–trasferta: la fascia dice «2 – 0 in casa» e il tabellone deve dirlo nello stesso ordine *//* [7.893] dal 46' la barra superiore si specchia (le squadre hanno cambiato campo) */
   /* [7.901.0 — C3: LA BARRA DEL RISULTATO STA IN 60 PX, UNA RIGA SOLA. Decisione del PO sulle tavole
      approvate (scratchpad/hud/Main.dc.html, Interazione.dc.html, Esito.dc.html): scudetti, sigle,
      risultato UNICO al centro (non piu' un punteggio per squadra), minuto col puntino, etichetta di

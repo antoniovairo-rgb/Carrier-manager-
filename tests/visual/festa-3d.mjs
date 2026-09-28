@@ -4,14 +4,15 @@
    gol e assist forzati), a schermo NON c'e' «PREMIAZIONE»/«TITOLO VINTO» (nessun titolo vinto), nessun riquadro festa942,
    e «Salta festeggiamenti» porta alla card di fine gara. Rosso --rosso (__CPM_NO_FESTA3D47): torna il riquadro di prima. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
-const rosso = process.argv.includes('--rosso');
+const rosso = process.argv.includes('--rosso'), rosso48 = process.argv.includes('--rosso48');
+/* [7.999.48] alla festa: tabellone casa–trasferta (scudo di casa a sinistra) e coro col cognome dell'eroe. --rosso48 li spegne (__CPM_NO_TAB48, __CPM_NO_CORO48). */
 const server = await startServer(); const port = server.address().port;
 const browser = await launchBrowser();
 const page = await browser.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
 let errori = 0; const msg = [];
 page.on('pageerror', (e) => { errori++; if (msg.length < 3) msg.push(String(e).slice(0, 160)); });
-await page.addInitScript((r) => { window.__CPM_GLB = false; if (r) window.__CPM_NO_FESTA3D47 = true;
-  window.__CPM_FESTA942_FORCE = { goals: 2, assists: 1, rb: 18 }; try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} }, rosso);
+await page.addInitScript(([r, r48]) => { window.__CPM_GLB = false; if (r) window.__CPM_NO_FESTA3D47 = true; if (r48) { window.__CPM_NO_TAB48 = true; window.__CPM_NO_CORO48 = true; }
+  window.__CPM_FESTA942_FORCE = { goals: 2, assists: 1, rb: 18 }; try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} }, [rosso, rosso48]);
 await openMatch(page, port, { skipLoadAll: true, name: 'Festa2' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 4545, policy: 'seeded', tickMs: 300 }));
 let v = null; const t0 = Date.now();
@@ -21,14 +22,18 @@ while (Date.now() - t0 < 420000) {
     return { fase: window.__CPM_PHASE ? window.__CPM_PHASE() : null, f: f ? f.innerText.replace(/\s+/g, ' ').trim() : null,
       vecchio: !!document.querySelector('[data-cpm="festa942"]'), premio: /PREMIAZIONE|TITOLO VINTO|Premiazione/.test(document.body.innerText), sc }; }).catch(() => null);
   if (v && (v.f || v.vecchio || v.fase === 'ended')) break; await sleep(300); }
-let dopo = null;
-if (v && v.f) { await page.click('[data-cpm="salta"]').catch(() => {}); for (let i = 0; i < 20; i++) { await sleep(300); dopo = await page.evaluate(() => window.__CPM_PHASE()).catch(() => null); if (dopo === 'ended') break; } }
+let dopo = null, coro = null, casaSx = null;
+if (v && v.f) {
+  for (let i = 0; i < 25 && !coro; i++) { await sleep(300); coro = await page.evaluate(() => { const c = window.__CPM_CORO48; const n = window.__CPM_HERO_NAME && window.__CPM_HERO_NAME(); return (c && c.length && n && document.body.innerText.toUpperCase().includes(n.toUpperCase() + '!')) ? c.join(' / ') : null; }).catch(() => null); }
+  casaSx = await page.evaluate(() => { const e = document.querySelector('[data-cpm="scudo-casa"] img, [data-cpm="scudo-casa"] svg, [data-cpm="scudo-casa"]'); const b = e && e.getBoundingClientRect(); const sc = window.__CPM_SCORE(); const d = document.querySelector('[data-cpm="scudo-casa"]'); return d ? { x: Math.round(b.left), testo: d.innerText.replace(/\s+/g, ' ') } : null; }).catch(() => null);
+ await page.click('[data-cpm="salta"]').catch(() => {}); for (let i = 0; i < 20; i++) { await sleep(300); dopo = await page.evaluate(() => window.__CPM_PHASE()).catch(() => null); if (dopo === 'ended') break; } }
 await browser.close(); server.close();
 const sc = v && v.sc; const pun = sc ? (() => { const a = [sc.home, sc.away].map(Number); return Math.max(...a) + ' – ' + Math.min(...a); })() : null;
-console.log(`\n=== FESTA 3D DI FINE PARTITA === ${rosso ? '[ROSSO __CPM_NO_FESTA3D47]' : '[VERDE]'}`);
+console.log(`\n=== FESTA 3D DI FINE PARTITA === ${rosso ? '[ROSSO __CPM_NO_FESTA3D47]' : rosso48 ? '[ROSSO 7.999.48]' : '[VERDE]'}`);
 console.log(`  fase ${v && v.fase} · fascia: ${v && v.f ? '«' + v.f + '»' : 'assente'} · riquadro vecchio ${v && v.vecchio ? 'SI' : 'no'} · testo premiazione ${v && v.premio ? 'SI' : 'no'}`);
+console.log(`  coro: ${coro || 'nessuno'} · scudo di casa: ${casaSx ? JSON.stringify(casaSx) : '?'}`);
 console.log(`  tabellone ${sc ? JSON.stringify(sc) : '?'} · dopo «Salta» ${dopo} · errori di pagina ${errori}${msg.length ? ' → ' + msg[0] : ''}`);
-const ok = rosso ? (!!v && !v.f && v.vecchio && errori === 0)
-  : (!!v && v.fase === 'ceremony' && !!v.f && !v.vecchio && !v.premio && !!pun && v.f.includes(pun) && /2\s*gol/.test(v.f) && /1\s*assist/.test(v.f) && dopo === 'ended' && errori === 0);
-console.log(ok ? (rosso ? '\n✅ difetto riprodotto — senza la festa 3D torna il riquadro di prima' : '\n✅ PASS — la vittoria si festeggia in 3D coi numeri veri, e «Salta» porta alla card') : '\n❌ FAIL');
+const ok = rosso48 ? (!!v && !!v.f && !coro && casaSx && casaSx.x > 150 && errori === 0) : rosso ? (!!v && !v.f && v.vecchio && errori === 0)
+  : (!!v && v.fase === 'ceremony' && !!v.f && !v.vecchio && !v.premio && !!pun && v.f.includes(pun) && /2\s*gol/.test(v.f) && /1\s*assist/.test(v.f) && dopo === 'ended' && !!coro && casaSx && casaSx.x < 150 && errori === 0);
+console.log(ok ? (rosso48 ? '\n✅ difetto riprodotto — senza il 7.999.48 niente coro e tabellone specchiato' : rosso ? '\n✅ difetto riprodotto — senza la festa 3D torna il riquadro di prima' : '\n✅ PASS — la vittoria si festeggia in 3D coi numeri veri, e «Salta» porta alla card') : '\n❌ FAIL');
 process.exit(ok ? 0 : 1);
