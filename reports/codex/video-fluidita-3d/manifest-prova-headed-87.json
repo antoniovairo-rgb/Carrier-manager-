@@ -1,0 +1,38 @@
+{
+  "command": "node tests/codex/video-fluidita-3d.mjs",
+  "launch": {
+    "executablePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "headless": false,
+    "args": [
+      "--use-gl=angle",
+      "--use-angle=d3d11",
+      "--enable-gpu",
+      "--ignore-gpu-blocklist",
+      "--no-sandbox"
+    ]
+  },
+  "viewport": [
+    412,
+    915
+  ],
+  "deviceScaleFactor": 2,
+  "groups": [
+    {
+      "name": "prova-headed-87",
+      "file": "reports/codex/video-fluidita-3d/prova-headed-87.webm",
+      "scenes": [
+        {
+          "gi": 87,
+          "offsetSec": 38.5,
+          "durationSec": 6.5,
+          "frames": 282,
+          "rafFrames": 281,
+          "fpsMedian": 59.88,
+          "glb": true,
+          "mxclip": 63
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

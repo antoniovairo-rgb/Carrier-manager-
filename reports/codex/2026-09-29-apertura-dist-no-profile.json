@@ -1,0 +1,1951 @@
+{
+  "versione": "7.999.44",
+  "compito": "apertura-dist",
+  "comando": "$env:CPM_PROFILE='0'; node tests/codex/apertura-dist.mjs",
+  "launch": {
+    "executablePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "headless": true,
+    "args": [
+      "--headless=new",
+      "--use-gl=angle",
+      "--use-angle=d3d11",
+      "--enable-gpu",
+      "--ignore-gpu-blocklist",
+      "--no-sandbox"
+    ]
+  },
+  "viewport": [
+    412,
+    915
+  ],
+  "deviceScaleFactor": 2,
+  "profileOn": false,
+  "waitMs": 15000,
+  "nScenes": 5,
+  "openings": [
+    {
+      "index": 1,
+      "t": 64705.5,
+      "pageIndex": 1,
+      "phase": "hl_intro",
+      "minute": 19,
+      "canvases": [
+        [
+          615,
+          1159
+        ]
+      ],
+      "longest": {
+        "start": 64769.10000002384,
+        "duration": 756
+      },
+      "rafMaxGapMs": 816.5,
+      "rafFrames": 104
+    },
+    {
+      "index": 2,
+      "t": 76388.9,
+      "pageIndex": 1,
+      "phase": "hl_intro",
+      "minute": 22,
+      "canvases": [
+        [
+          615,
+          1159
+        ]
+      ],
+      "longest": {
+        "start": 79108.60000002384,
+        "duration": 133
+      },
+      "rafMaxGapMs": 150,
+      "rafFrames": 235
+    },
+    {
+      "index": 3,
+      "t": 88472.7,
+      "pageIndex": 1,
+      "phase": "hl_intro",
+      "minute": 25,
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longest": {
+        "start": 87740.5,
+        "duration": 98
+      },
+      "rafMaxGapMs": 115.80000000000291,
+      "rafFrames": 215
+    },
+    {
+      "index": 4,
+      "t": 147090.6,
+      "pageIndex": 1,
+      "phase": "hl_intro",
+      "minute": 54,
+      "canvases": [
+        [
+          615,
+          1185
+        ]
+      ],
+      "longest": {
+        "start": 146635,
+        "duration": 463
+      },
+      "rafMaxGapMs": 466.6000000000058,
+      "rafFrames": 167
+    },
+    {
+      "index": 5,
+      "t": 159040.9,
+      "pageIndex": 1,
+      "phase": "hl_intro",
+      "minute": 58,
+      "canvases": [
+        [
+          615,
+          1159
+        ]
+      ],
+      "longest": {
+        "start": 159054.69999992847,
+        "duration": 76
+      },
+      "rafMaxGapMs": 83.30000000001746,
+      "rafFrames": 106
+    }
+  ],
+  "phaseChanges": [
+    {
+      "t": 60327,
+      "phase": "playing"
+    },
+    {
+      "t": 65570.79999995232,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 67919,
+      "phase": "hl_result"
+    },
+    {
+      "t": 73062,
+      "phase": "playing"
+    },
+    {
+      "t": 76454.60000002384,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 78962.19999992847,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 79243.60000002384,
+      "phase": "hl_result"
+    },
+    {
+      "t": 85215.39999997616,
+      "phase": "playing"
+    },
+    {
+      "t": 88951.89999997616,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 91109.10000002384,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 91230.69999992847,
+      "phase": "hl_result"
+    },
+    {
+      "t": 96203.29999995232,
+      "phase": "playing"
+    },
+    {
+      "t": 147101.19999992847,
+      "phase": "hl_intro"
+    },
+    {
+      "t": 149734.39999997616,
+      "phase": "hl_move"
+    },
+    {
+      "t": 149872.10000002384,
+      "phase": "hl_choose"
+    },
+    {
+      "t": 150010.89999997616,
+      "phase": "hl_result"
+    },
+    {
+      "t": 153870.69999992847,
+      "phase": "playing"
+    },
+    {
+      "t": 159133.69999992847,
+      "phase": "hl_intro"
+    }
+  ],
+  "errors": [],
+  "started": "2026-09-28T19:10:54.626Z",
+  "testModeFailure": "page.waitForFunction: Timeout 30000ms exceeded.\n    at openMatch (C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-ui\\tests\\visual\\lib\\harness.mjs:207:14)\n    at async openNatural (C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-ui\\tests\\codex\\apertura-dist.mjs:52:39)\n    at async file:///C:/Users/a.vairo/Documents/ChatGPT/Analisi%20gioco%20codex/korward-codex-ui/tests/codex/apertura-dist.mjs:61:7",
+  "afterTestModeFailure": {
+    "url": "http://localhost:57313/CARRIER-MANAGER-AV.html?cpmtest=1",
+    "title": "Korward Elite: Football Career Simulator",
+    "body": "🎯 PROVINO 1/3\nGRA\nSelezione Granata\n0–0\n8'\n☀️\n⏸\n1×\n⚠️\nPROVINI\nGIO\nGiovanili Élite\nGRA\nGIO\nPOSSESSO\n62% · 38%\nTIRI\n0 · 1\nIN PORTA\n0 · 1\nXG\n0,00 · 0,02\nSTATISTICHE\nPAGELLE\n▴\n🚀 Lancio lungo di AperturaDist44 per Pecoraro (GRA), sulla trequarti.\n⚽ 0\n🎯 0\n⚡ 100%\n⭐ 5.8\n📍 Area avversaria",
+    "phase": "playing",
+    "hooks": {
+      "phase": "function",
+      "force": "function",
+      "state": "undefined",
+      "probe": "undefined",
+      "autoplay": "function"
+    },
+    "buttons": [
+      "⏸",
+      "1×",
+      "⚠️",
+      "Statistiche",
+      "Pagelle",
+      "▴"
+    ]
+  },
+  "naturalFallback": true,
+  "glb": {
+    "clips": 64,
+    "ready": true,
+    "override": null
+  },
+  "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "observerError": null,
+  "allLongTasks": [
+    {
+      "start": 2701.6999999284744,
+      "duration": 103,
+      "pageIndex": 1
+    },
+    {
+      "start": 2831.2999999523163,
+      "duration": 140,
+      "pageIndex": 1
+    },
+    {
+      "start": 3107.600000023842,
+      "duration": 259,
+      "pageIndex": 1
+    },
+    {
+      "start": 3367,
+      "duration": 136,
+      "pageIndex": 1
+    },
+    {
+      "start": 3533.399999976158,
+      "duration": 111,
+      "pageIndex": 1
+    },
+    {
+      "start": 3684.899999976158,
+      "duration": 161,
+      "pageIndex": 1
+    },
+    {
+      "start": 4716,
+      "duration": 2386,
+      "pageIndex": 1
+    },
+    {
+      "start": 7165,
+      "duration": 227,
+      "pageIndex": 1
+    },
+    {
+      "start": 8715.299999952316,
+      "duration": 147,
+      "pageIndex": 1
+    },
+    {
+      "start": 9487.199999928474,
+      "duration": 952,
+      "pageIndex": 1
+    },
+    {
+      "start": 10604.699999928474,
+      "duration": 511,
+      "pageIndex": 1
+    },
+    {
+      "start": 11133.600000023842,
+      "duration": 58,
+      "pageIndex": 1
+    },
+    {
+      "start": 11526.100000023842,
+      "duration": 210,
+      "pageIndex": 1
+    },
+    {
+      "start": 11749.600000023842,
+      "duration": 13490,
+      "pageIndex": 1
+    },
+    {
+      "start": 25347.799999952316,
+      "duration": 178,
+      "pageIndex": 1
+    },
+    {
+      "start": 25564.199999928474,
+      "duration": 113,
+      "pageIndex": 1
+    },
+    {
+      "start": 25943.299999952316,
+      "duration": 69,
+      "pageIndex": 1
+    },
+    {
+      "start": 26078.299999952316,
+      "duration": 148,
+      "pageIndex": 1
+    },
+    {
+      "start": 26495.799999952316,
+      "duration": 51,
+      "pageIndex": 1
+    },
+    {
+      "start": 26627.100000023842,
+      "duration": 191,
+      "pageIndex": 1
+    },
+    {
+      "start": 26996.199999928474,
+      "duration": 50,
+      "pageIndex": 1
+    },
+    {
+      "start": 27098.199999928474,
+      "duration": 322,
+      "pageIndex": 1
+    },
+    {
+      "start": 27624.399999976158,
+      "duration": 109,
+      "pageIndex": 1
+    },
+    {
+      "start": 27884.199999928474,
+      "duration": 2514,
+      "pageIndex": 1
+    },
+    {
+      "start": 30427.299999952316,
+      "duration": 64,
+      "pageIndex": 1
+    },
+    {
+      "start": 30746,
+      "duration": 52,
+      "pageIndex": 1
+    },
+    {
+      "start": 31493.299999952316,
+      "duration": 160,
+      "pageIndex": 1
+    },
+    {
+      "start": 32493.699999928474,
+      "duration": 1697,
+      "pageIndex": 1
+    },
+    {
+      "start": 34503.39999997616,
+      "duration": 61,
+      "pageIndex": 1
+    },
+    {
+      "start": 34991.199999928474,
+      "duration": 168,
+      "pageIndex": 1
+    },
+    {
+      "start": 35754.39999997616,
+      "duration": 163,
+      "pageIndex": 1
+    },
+    {
+      "start": 36244.5,
+      "duration": 163,
+      "pageIndex": 1
+    },
+    {
+      "start": 38743.199999928474,
+      "duration": 100,
+      "pageIndex": 1
+    },
+    {
+      "start": 39245.10000002384,
+      "duration": 51,
+      "pageIndex": 1
+    },
+    {
+      "start": 39503.10000002384,
+      "duration": 53,
+      "pageIndex": 1
+    },
+    {
+      "start": 39743.89999997616,
+      "duration": 53,
+      "pageIndex": 1
+    },
+    {
+      "start": 39994.5,
+      "duration": 58,
+      "pageIndex": 1
+    },
+    {
+      "start": 40251.299999952316,
+      "duration": 55,
+      "pageIndex": 1
+    },
+    {
+      "start": 40490.89999997616,
+      "duration": 53,
+      "pageIndex": 1
+    },
+    {
+      "start": 40760.10000002384,
+      "duration": 70,
+      "pageIndex": 1
+    },
+    {
+      "start": 40830.89999997616,
+      "duration": 137,
+      "pageIndex": 1
+    },
+    {
+      "start": 40998.5,
+      "duration": 76,
+      "pageIndex": 1
+    },
+    {
+      "start": 41251.10000002384,
+      "duration": 51,
+      "pageIndex": 1
+    },
+    {
+      "start": 41503.199999928474,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 41749.60000002384,
+      "duration": 67,
+      "pageIndex": 1
+    },
+    {
+      "start": 42021.299999952316,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 42484.199999928474,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 42747,
+      "duration": 83,
+      "pageIndex": 1
+    },
+    {
+      "start": 43031.199999928474,
+      "duration": 82,
+      "pageIndex": 1
+    },
+    {
+      "start": 43251.39999997616,
+      "duration": 50,
+      "pageIndex": 1
+    },
+    {
+      "start": 43699.10000002384,
+      "duration": 234,
+      "pageIndex": 1
+    },
+    {
+      "start": 43995.10000002384,
+      "duration": 81,
+      "pageIndex": 1
+    },
+    {
+      "start": 45244,
+      "duration": 50,
+      "pageIndex": 1
+    },
+    {
+      "start": 45539.199999928474,
+      "duration": 190,
+      "pageIndex": 1
+    },
+    {
+      "start": 46750.199999928474,
+      "duration": 56,
+      "pageIndex": 1
+    },
+    {
+      "start": 47270.39999997616,
+      "duration": 57,
+      "pageIndex": 1
+    },
+    {
+      "start": 47511.299999952316,
+      "duration": 58,
+      "pageIndex": 1
+    },
+    {
+      "start": 47750.10000002384,
+      "duration": 54,
+      "pageIndex": 1
+    },
+    {
+      "start": 47998.299999952316,
+      "duration": 62,
+      "pageIndex": 1
+    },
+    {
+      "start": 48497.60000002384,
+      "duration": 53,
+      "pageIndex": 1
+    },
+    {
+      "start": 48748,
+      "duration": 70,
+      "pageIndex": 1
+    },
+    {
+      "start": 48999.89999997616,
+      "duration": 129,
+      "pageIndex": 1
+    },
+    {
+      "start": 49242.799999952316,
+      "duration": 188,
+      "pageIndex": 1
+    },
+    {
+      "start": 49431.199999928474,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 49514.89999997616,
+      "duration": 61,
+      "pageIndex": 1
+    },
+    {
+      "start": 49748,
+      "duration": 101,
+      "pageIndex": 1
+    },
+    {
+      "start": 49995.799999952316,
+      "duration": 57,
+      "pageIndex": 1
+    },
+    {
+      "start": 50246.5,
+      "duration": 61,
+      "pageIndex": 1
+    },
+    {
+      "start": 50494.699999928474,
+      "duration": 55,
+      "pageIndex": 1
+    },
+    {
+      "start": 50742.39999997616,
+      "duration": 67,
+      "pageIndex": 1
+    },
+    {
+      "start": 50991.699999928474,
+      "duration": 123,
+      "pageIndex": 1
+    },
+    {
+      "start": 51241.60000002384,
+      "duration": 90,
+      "pageIndex": 1
+    },
+    {
+      "start": 51504.89999997616,
+      "duration": 89,
+      "pageIndex": 1
+    },
+    {
+      "start": 51759.699999928474,
+      "duration": 83,
+      "pageIndex": 1
+    },
+    {
+      "start": 52003.5,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 52243.89999997616,
+      "duration": 79,
+      "pageIndex": 1
+    },
+    {
+      "start": 52499,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 52740.5,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 53006.10000002384,
+      "duration": 71,
+      "pageIndex": 1
+    },
+    {
+      "start": 53257.799999952316,
+      "duration": 85,
+      "pageIndex": 1
+    },
+    {
+      "start": 53492,
+      "duration": 69,
+      "pageIndex": 1
+    },
+    {
+      "start": 53743.39999997616,
+      "duration": 103,
+      "pageIndex": 1
+    },
+    {
+      "start": 54011.10000002384,
+      "duration": 299,
+      "pageIndex": 1
+    },
+    {
+      "start": 54319.199999928474,
+      "duration": 183,
+      "pageIndex": 1
+    },
+    {
+      "start": 54529.60000002384,
+      "duration": 111,
+      "pageIndex": 1
+    },
+    {
+      "start": 54745.10000002384,
+      "duration": 70,
+      "pageIndex": 1
+    },
+    {
+      "start": 54993.199999928474,
+      "duration": 154,
+      "pageIndex": 1
+    },
+    {
+      "start": 55241.39999997616,
+      "duration": 59,
+      "pageIndex": 1
+    },
+    {
+      "start": 55520,
+      "duration": 227,
+      "pageIndex": 1
+    },
+    {
+      "start": 55759.39999997616,
+      "duration": 146,
+      "pageIndex": 1
+    },
+    {
+      "start": 56044.299999952316,
+      "duration": 105,
+      "pageIndex": 1
+    },
+    {
+      "start": 56244.89999997616,
+      "duration": 96,
+      "pageIndex": 1
+    },
+    {
+      "start": 56542.799999952316,
+      "duration": 130,
+      "pageIndex": 1
+    },
+    {
+      "start": 56743.199999928474,
+      "duration": 88,
+      "pageIndex": 1
+    },
+    {
+      "start": 57004.699999928474,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 57254.799999952316,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 57491.799999952316,
+      "duration": 69,
+      "pageIndex": 1
+    },
+    {
+      "start": 57750.89999997616,
+      "duration": 78,
+      "pageIndex": 1
+    },
+    {
+      "start": 57995,
+      "duration": 85,
+      "pageIndex": 1
+    },
+    {
+      "start": 58255.299999952316,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 58491.799999952316,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 58740.89999997616,
+      "duration": 67,
+      "pageIndex": 1
+    },
+    {
+      "start": 58995.199999928474,
+      "duration": 143,
+      "pageIndex": 1
+    },
+    {
+      "start": 59258.799999952316,
+      "duration": 75,
+      "pageIndex": 1
+    },
+    {
+      "start": 59493.699999928474,
+      "duration": 107,
+      "pageIndex": 1
+    },
+    {
+      "start": 59749.39999997616,
+      "duration": 79,
+      "pageIndex": 1
+    },
+    {
+      "start": 60014.299999952316,
+      "duration": 93,
+      "pageIndex": 1
+    },
+    {
+      "start": 60249.699999928474,
+      "duration": 76,
+      "pageIndex": 1
+    },
+    {
+      "start": 60493.10000002384,
+      "duration": 75,
+      "pageIndex": 1
+    },
+    {
+      "start": 60742.5,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 60992.299999952316,
+      "duration": 95,
+      "pageIndex": 1
+    },
+    {
+      "start": 61241.699999928474,
+      "duration": 81,
+      "pageIndex": 1
+    },
+    {
+      "start": 61509.699999928474,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 61743.199999928474,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 61994,
+      "duration": 69,
+      "pageIndex": 1
+    },
+    {
+      "start": 62243.89999997616,
+      "duration": 81,
+      "pageIndex": 1
+    },
+    {
+      "start": 62497.39999997616,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 62753.799999952316,
+      "duration": 90,
+      "pageIndex": 1
+    },
+    {
+      "start": 62994.299999952316,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 63241.799999952316,
+      "duration": 85,
+      "pageIndex": 1
+    },
+    {
+      "start": 63492.799999952316,
+      "duration": 67,
+      "pageIndex": 1
+    },
+    {
+      "start": 63741.10000002384,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 63998,
+      "duration": 156,
+      "pageIndex": 1
+    },
+    {
+      "start": 64259.89999997616,
+      "duration": 67,
+      "pageIndex": 1
+    },
+    {
+      "start": 64492.39999997616,
+      "duration": 76,
+      "pageIndex": 1
+    },
+    {
+      "start": 64704.699999928474,
+      "duration": 57,
+      "pageIndex": 1
+    },
+    {
+      "start": 64769.10000002384,
+      "duration": 756,
+      "pageIndex": 1
+    },
+    {
+      "start": 65754.79999995232,
+      "duration": 59,
+      "pageIndex": 1
+    },
+    {
+      "start": 65814.69999992847,
+      "duration": 56,
+      "pageIndex": 1
+    },
+    {
+      "start": 65912.79999995232,
+      "duration": 450,
+      "pageIndex": 1
+    },
+    {
+      "start": 66379.69999992847,
+      "duration": 51,
+      "pageIndex": 1
+    },
+    {
+      "start": 67386.29999995232,
+      "duration": 75,
+      "pageIndex": 1
+    },
+    {
+      "start": 67486.69999992847,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 67703.19999992847,
+      "duration": 214,
+      "pageIndex": 1
+    },
+    {
+      "start": 68057.19999992847,
+      "duration": 69,
+      "pageIndex": 1
+    },
+    {
+      "start": 69996.19999992847,
+      "duration": 68,
+      "pageIndex": 1
+    },
+    {
+      "start": 74994,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 76389.29999995232,
+      "duration": 65,
+      "pageIndex": 1
+    },
+    {
+      "start": 77480,
+      "duration": 55,
+      "pageIndex": 1
+    },
+    {
+      "start": 78992.79999995232,
+      "duration": 51,
+      "pageIndex": 1
+    },
+    {
+      "start": 79108.60000002384,
+      "duration": 133,
+      "pageIndex": 1
+    },
+    {
+      "start": 80011.29999995232,
+      "duration": 68,
+      "pageIndex": 1
+    },
+    {
+      "start": 81868.60000002384,
+      "duration": 75,
+      "pageIndex": 1
+    },
+    {
+      "start": 82020.19999992847,
+      "duration": 54,
+      "pageIndex": 1
+    },
+    {
+      "start": 84907.60000002384,
+      "duration": 63,
+      "pageIndex": 1
+    },
+    {
+      "start": 84990.29999995232,
+      "duration": 76,
+      "pageIndex": 1
+    },
+    {
+      "start": 85743.69999992847,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 86493.19999992847,
+      "duration": 57,
+      "pageIndex": 1
+    },
+    {
+      "start": 87244.39999997616,
+      "duration": 50,
+      "pageIndex": 1
+    },
+    {
+      "start": 87740.5,
+      "duration": 98,
+      "pageIndex": 1
+    },
+    {
+      "start": 88253.19999992847,
+      "duration": 61,
+      "pageIndex": 1
+    },
+    {
+      "start": 88387.69999992847,
+      "duration": 92,
+      "pageIndex": 1
+    },
+    {
+      "start": 88487.79999995232,
+      "duration": 58,
+      "pageIndex": 1
+    },
+    {
+      "start": 88577.39999997616,
+      "duration": 57,
+      "pageIndex": 1
+    },
+    {
+      "start": 88869.79999995232,
+      "duration": 81,
+      "pageIndex": 1
+    },
+    {
+      "start": 90014.5,
+      "duration": 67,
+      "pageIndex": 1
+    },
+    {
+      "start": 90254.10000002384,
+      "duration": 61,
+      "pageIndex": 1
+    },
+    {
+      "start": 95015.10000002384,
+      "duration": 69,
+      "pageIndex": 1
+    },
+    {
+      "start": 99503.60000002384,
+      "duration": 92,
+      "pageIndex": 1
+    },
+    {
+      "start": 99762.5,
+      "duration": 97,
+      "pageIndex": 1
+    },
+    {
+      "start": 99998.10000002384,
+      "duration": 106,
+      "pageIndex": 1
+    },
+    {
+      "start": 100240.60000002384,
+      "duration": 63,
+      "pageIndex": 1
+    },
+    {
+      "start": 100504,
+      "duration": 80,
+      "pageIndex": 1
+    },
+    {
+      "start": 101247,
+      "duration": 55,
+      "pageIndex": 1
+    },
+    {
+      "start": 101500.29999995232,
+      "duration": 65,
+      "pageIndex": 1
+    },
+    {
+      "start": 101686,
+      "duration": 65,
+      "pageIndex": 1
+    },
+    {
+      "start": 101779.29999995232,
+      "duration": 53,
+      "pageIndex": 1
+    },
+    {
+      "start": 101998.5,
+      "duration": 81,
+      "pageIndex": 1
+    },
+    {
+      "start": 102499.19999992847,
+      "duration": 62,
+      "pageIndex": 1
+    },
+    {
+      "start": 102999.10000002384,
+      "duration": 54,
+      "pageIndex": 1
+    },
+    {
+      "start": 103254.39999997616,
+      "duration": 75,
+      "pageIndex": 1
+    },
+    {
+      "start": 103503.60000002384,
+      "duration": 91,
+      "pageIndex": 1
+    },
+    {
+      "start": 103604,
+      "duration": 61,
+      "pageIndex": 1
+    },
+    {
+      "start": 103752.29999995232,
+      "duration": 114,
+      "pageIndex": 1
+    },
+    {
+      "start": 104366.39999997616,
+      "duration": 69,
+      "pageIndex": 1
+    },
+    {
+      "start": 104579.39999997616,
+      "duration": 63,
+      "pageIndex": 1
+    },
+    {
+      "start": 105008,
+      "duration": 94,
+      "pageIndex": 1
+    },
+    {
+      "start": 105269.79999995232,
+      "duration": 52,
+      "pageIndex": 1
+    },
+    {
+      "start": 105507.19999992847,
+      "duration": 135,
+      "pageIndex": 1
+    },
+    {
+      "start": 105760.29999995232,
+      "duration": 58,
+      "pageIndex": 1
+    },
+    {
+      "start": 105949.89999997616,
+      "duration": 51,
+      "pageIndex": 1
+    },
+    {
+      "start": 106002,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 106247.39999997616,
+      "duration": 54,
+      "pageIndex": 1
+    },
+    {
+      "start": 106491.5,
+      "duration": 64,
+      "pageIndex": 1
+    },
+    {
+      "start": 107017.19999992847,
+      "duration": 106,
+      "pageIndex": 1
+    },
+    {
+      "start": 107240.5,
+      "duration": 50,
+      "pageIndex": 1
+    },
+    {
+      "start": 108002.39999997616,
+      "duration": 58,
+      "pageIndex": 1
+    },
+    {
+      "start": 108250.79999995232,
+      "duration": 69,
+      "pageIndex": 1
+    },
+    {
+      "start": 108493.69999992847,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 108743.39999997616,
+      "duration": 54,
+      "pageIndex": 1
+    },
+    {
+      "start": 108983,
+      "duration": 55,
+      "pageIndex": 1
+    },
+    {
+      "start": 109068.10000002384,
+      "duration": 83,
+      "pageIndex": 1
+    },
+    {
+      "start": 109245.39999997616,
+      "duration": 98,
+      "pageIndex": 1
+    },
+    {
+      "start": 109495.60000002384,
+      "duration": 79,
+      "pageIndex": 1
+    },
+    {
+      "start": 109756.29999995232,
+      "duration": 90,
+      "pageIndex": 1
+    },
+    {
+      "start": 110001.29999995232,
+      "duration": 112,
+      "pageIndex": 1
+    },
+    {
+      "start": 110264.39999997616,
+      "duration": 57,
+      "pageIndex": 1
+    },
+    {
+      "start": 110512.39999997616,
+      "duration": 68,
+      "pageIndex": 1
+    },
+    {
+      "start": 110752.10000002384,
+      "duration": 67,
+      "pageIndex": 1
+    },
+    {
+      "start": 110990.39999997616,
+      "duration": 55,
+      "pageIndex": 1
+    },
+    {
+      "start": 111244.89999997616,
+      "duration": 51,
+      "pageIndex": 1
+    },
+    {
+      "start": 111497.10000002384,
+      "duration": 52,
+      "pageIndex": 1
+    },
+    {
+      "start": 111743.39999997616,
+      "duration": 62,
+      "pageIndex": 1
+    },
+    {
+      "start": 111998.39999997616,
+      "duration": 61,
+      "pageIndex": 1
+    },
+    {
+      "start": 112247.29999995232,
+      "duration": 65,
+      "pageIndex": 1
+    },
+    {
+      "start": 112497.10000002384,
+      "duration": 68,
+      "pageIndex": 1
+    },
+    {
+      "start": 112692.60000002384,
+      "duration": 52,
+      "pageIndex": 1
+    },
+    {
+      "start": 112745.39999997616,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 113248.69999992847,
+      "duration": 83,
+      "pageIndex": 1
+    },
+    {
+      "start": 113493.79999995232,
+      "duration": 75,
+      "pageIndex": 1
+    },
+    {
+      "start": 113752.79999995232,
+      "duration": 118,
+      "pageIndex": 1
+    },
+    {
+      "start": 113993.19999992847,
+      "duration": 63,
+      "pageIndex": 1
+    },
+    {
+      "start": 114253.39999997616,
+      "duration": 52,
+      "pageIndex": 1
+    },
+    {
+      "start": 114305.79999995232,
+      "duration": 65,
+      "pageIndex": 1
+    },
+    {
+      "start": 114494.60000002384,
+      "duration": 99,
+      "pageIndex": 1
+    },
+    {
+      "start": 114742.60000002384,
+      "duration": 117,
+      "pageIndex": 1
+    },
+    {
+      "start": 115008.19999992847,
+      "duration": 91,
+      "pageIndex": 1
+    },
+    {
+      "start": 115496.5,
+      "duration": 88,
+      "pageIndex": 1
+    },
+    {
+      "start": 116251.89999997616,
+      "duration": 56,
+      "pageIndex": 1
+    },
+    {
+      "start": 116764.39999997616,
+      "duration": 115,
+      "pageIndex": 1
+    },
+    {
+      "start": 116999,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 117509.5,
+      "duration": 62,
+      "pageIndex": 1
+    },
+    {
+      "start": 117999.39999997616,
+      "duration": 58,
+      "pageIndex": 1
+    },
+    {
+      "start": 118240.89999997616,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 118490.89999997616,
+      "duration": 60,
+      "pageIndex": 1
+    },
+    {
+      "start": 118762.29999995232,
+      "duration": 68,
+      "pageIndex": 1
+    },
+    {
+      "start": 118990.39999997616,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 119241.79999995232,
+      "duration": 71,
+      "pageIndex": 1
+    },
+    {
+      "start": 119492.79999995232,
+      "duration": 64,
+      "pageIndex": 1
+    },
+    {
+      "start": 119740.39999997616,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 119999.89999997616,
+      "duration": 139,
+      "pageIndex": 1
+    },
+    {
+      "start": 120240.89999997616,
+      "duration": 80,
+      "pageIndex": 1
+    },
+    {
+      "start": 120494.79999995232,
+      "duration": 70,
+      "pageIndex": 1
+    },
+    {
+      "start": 120744.89999997616,
+      "duration": 59,
+      "pageIndex": 1
+    },
+    {
+      "start": 121007.89999997616,
+      "duration": 68,
+      "pageIndex": 1
+    },
+    {
+      "start": 121243.60000002384,
+      "duration": 75,
+      "pageIndex": 1
+    },
+    {
+      "start": 121505.89999997616,
+      "duration": 91,
+      "pageIndex": 1
+    },
+    {
+      "start": 121743.60000002384,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 121992.29999995232,
+      "duration": 64,
+      "pageIndex": 1
+    },
+    {
+      "start": 122255.69999992847,
+      "duration": 65,
+      "pageIndex": 1
+    },
+    {
+      "start": 122509,
+      "duration": 123,
+      "pageIndex": 1
+    },
+    {
+      "start": 122754,
+      "duration": 89,
+      "pageIndex": 1
+    },
+    {
+      "start": 122996.69999992847,
+      "duration": 59,
+      "pageIndex": 1
+    },
+    {
+      "start": 123247.89999997616,
+      "duration": 63,
+      "pageIndex": 1
+    },
+    {
+      "start": 123495.39999997616,
+      "duration": 70,
+      "pageIndex": 1
+    },
+    {
+      "start": 123743.60000002384,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 123998.19999992847,
+      "duration": 80,
+      "pageIndex": 1
+    },
+    {
+      "start": 124243.10000002384,
+      "duration": 76,
+      "pageIndex": 1
+    },
+    {
+      "start": 124491.19999992847,
+      "duration": 95,
+      "pageIndex": 1
+    },
+    {
+      "start": 124745.69999992847,
+      "duration": 82,
+      "pageIndex": 1
+    },
+    {
+      "start": 124992,
+      "duration": 212,
+      "pageIndex": 1
+    },
+    {
+      "start": 125240.89999997616,
+      "duration": 70,
+      "pageIndex": 1
+    },
+    {
+      "start": 125490.69999992847,
+      "duration": 62,
+      "pageIndex": 1
+    },
+    {
+      "start": 125742.39999997616,
+      "duration": 66,
+      "pageIndex": 1
+    },
+    {
+      "start": 126001.19999992847,
+      "duration": 84,
+      "pageIndex": 1
+    },
+    {
+      "start": 126241.5,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 126502.89999997616,
+      "duration": 68,
+      "pageIndex": 1
+    },
+    {
+      "start": 126756.79999995232,
+      "duration": 95,
+      "pageIndex": 1
+    },
+    {
+      "start": 127001.29999995232,
+      "duration": 64,
+      "pageIndex": 1
+    },
+    {
+      "start": 127240.69999992847,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 127492.5,
+      "duration": 78,
+      "pageIndex": 1
+    },
+    {
+      "start": 127746.60000002384,
+      "duration": 82,
+      "pageIndex": 1
+    },
+    {
+      "start": 127993.19999992847,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 128245.19999992847,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 128490.5,
+      "duration": 78,
+      "pageIndex": 1
+    },
+    {
+      "start": 128746.39999997616,
+      "duration": 80,
+      "pageIndex": 1
+    },
+    {
+      "start": 128999.29999995232,
+      "duration": 85,
+      "pageIndex": 1
+    },
+    {
+      "start": 129243.5,
+      "duration": 87,
+      "pageIndex": 1
+    },
+    {
+      "start": 129494.60000002384,
+      "duration": 71,
+      "pageIndex": 1
+    },
+    {
+      "start": 129751,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 129994,
+      "duration": 159,
+      "pageIndex": 1
+    },
+    {
+      "start": 130246.69999992847,
+      "duration": 83,
+      "pageIndex": 1
+    },
+    {
+      "start": 130505,
+      "duration": 91,
+      "pageIndex": 1
+    },
+    {
+      "start": 130754.60000002384,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 130993.19999992847,
+      "duration": 99,
+      "pageIndex": 1
+    },
+    {
+      "start": 131252.79999995232,
+      "duration": 68,
+      "pageIndex": 1
+    },
+    {
+      "start": 131434.60000002384,
+      "duration": 184,
+      "pageIndex": 1
+    },
+    {
+      "start": 131621.39999997616,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 131740.60000002384,
+      "duration": 60,
+      "pageIndex": 1
+    },
+    {
+      "start": 131992.29999995232,
+      "duration": 54,
+      "pageIndex": 1
+    },
+    {
+      "start": 132250.10000002384,
+      "duration": 58,
+      "pageIndex": 1
+    },
+    {
+      "start": 132496.39999997616,
+      "duration": 50,
+      "pageIndex": 1
+    },
+    {
+      "start": 132755.10000002384,
+      "duration": 54,
+      "pageIndex": 1
+    },
+    {
+      "start": 133004.19999992847,
+      "duration": 60,
+      "pageIndex": 1
+    },
+    {
+      "start": 133242.5,
+      "duration": 54,
+      "pageIndex": 1
+    },
+    {
+      "start": 133498.89999997616,
+      "duration": 51,
+      "pageIndex": 1
+    },
+    {
+      "start": 133741.69999992847,
+      "duration": 62,
+      "pageIndex": 1
+    },
+    {
+      "start": 133991.69999992847,
+      "duration": 61,
+      "pageIndex": 1
+    },
+    {
+      "start": 134247.29999995232,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 134493,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 134742.29999995232,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 134994.69999992847,
+      "duration": 156,
+      "pageIndex": 1
+    },
+    {
+      "start": 135243.19999992847,
+      "duration": 86,
+      "pageIndex": 1
+    },
+    {
+      "start": 135491.39999997616,
+      "duration": 83,
+      "pageIndex": 1
+    },
+    {
+      "start": 135744.39999997616,
+      "duration": 105,
+      "pageIndex": 1
+    },
+    {
+      "start": 135992.29999995232,
+      "duration": 73,
+      "pageIndex": 1
+    },
+    {
+      "start": 136243.29999995232,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 136493.29999995232,
+      "duration": 79,
+      "pageIndex": 1
+    },
+    {
+      "start": 136749.69999992847,
+      "duration": 96,
+      "pageIndex": 1
+    },
+    {
+      "start": 136992,
+      "duration": 88,
+      "pageIndex": 1
+    },
+    {
+      "start": 137241.60000002384,
+      "duration": 79,
+      "pageIndex": 1
+    },
+    {
+      "start": 137493.60000002384,
+      "duration": 91,
+      "pageIndex": 1
+    },
+    {
+      "start": 137740.89999997616,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 137991.89999997616,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 138243.60000002384,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 138494.10000002384,
+      "duration": 72,
+      "pageIndex": 1
+    },
+    {
+      "start": 138741.19999992847,
+      "duration": 84,
+      "pageIndex": 1
+    },
+    {
+      "start": 138991.60000002384,
+      "duration": 79,
+      "pageIndex": 1
+    },
+    {
+      "start": 139240.89999997616,
+      "duration": 85,
+      "pageIndex": 1
+    },
+    {
+      "start": 139494.69999992847,
+      "duration": 86,
+      "pageIndex": 1
+    },
+    {
+      "start": 139744.10000002384,
+      "duration": 78,
+      "pageIndex": 1
+    },
+    {
+      "start": 139995.60000002384,
+      "duration": 147,
+      "pageIndex": 1
+    },
+    {
+      "start": 140241,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 140494.89999997616,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 140746.29999995232,
+      "duration": 98,
+      "pageIndex": 1
+    },
+    {
+      "start": 140993.29999995232,
+      "duration": 81,
+      "pageIndex": 1
+    },
+    {
+      "start": 141241.89999997616,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 141491.69999992847,
+      "duration": 99,
+      "pageIndex": 1
+    },
+    {
+      "start": 141741.79999995232,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 142004.60000002384,
+      "duration": 144,
+      "pageIndex": 1
+    },
+    {
+      "start": 142241.89999997616,
+      "duration": 89,
+      "pageIndex": 1
+    },
+    {
+      "start": 142494.19999992847,
+      "duration": 81,
+      "pageIndex": 1
+    },
+    {
+      "start": 142741.79999995232,
+      "duration": 91,
+      "pageIndex": 1
+    },
+    {
+      "start": 142991.10000002384,
+      "duration": 78,
+      "pageIndex": 1
+    },
+    {
+      "start": 143241.29999995232,
+      "duration": 75,
+      "pageIndex": 1
+    },
+    {
+      "start": 143491.39999997616,
+      "duration": 82,
+      "pageIndex": 1
+    },
+    {
+      "start": 143740.79999995232,
+      "duration": 124,
+      "pageIndex": 1
+    },
+    {
+      "start": 143991.39999997616,
+      "duration": 81,
+      "pageIndex": 1
+    },
+    {
+      "start": 144249.89999997616,
+      "duration": 78,
+      "pageIndex": 1
+    },
+    {
+      "start": 144491.60000002384,
+      "duration": 88,
+      "pageIndex": 1
+    },
+    {
+      "start": 144762.19999992847,
+      "duration": 77,
+      "pageIndex": 1
+    },
+    {
+      "start": 144990.69999992847,
+      "duration": 153,
+      "pageIndex": 1
+    },
+    {
+      "start": 145243.10000002384,
+      "duration": 70,
+      "pageIndex": 1
+    },
+    {
+      "start": 145496,
+      "duration": 74,
+      "pageIndex": 1
+    },
+    {
+      "start": 145744.19999992847,
+      "duration": 71,
+      "pageIndex": 1
+    },
+    {
+      "start": 145993.19999992847,
+      "duration": 76,
+      "pageIndex": 1
+    },
+    {
+      "start": 146242.89999997616,
+      "duration": 69,
+      "pageIndex": 1
+    },
+    {
+      "start": 146499.89999997616,
+      "duration": 94,
+      "pageIndex": 1
+    },
+    {
+      "start": 146635,
+      "duration": 463,
+      "pageIndex": 1
+    },
+    {
+      "start": 147103.60000002384,
+      "duration": 50,
+      "pageIndex": 1
+    },
+    {
+      "start": 147543.29999995232,
+      "duration": 57,
+      "pageIndex": 1
+    },
+    {
+      "start": 150259.89999997616,
+      "duration": 67,
+      "pageIndex": 1
+    },
+    {
+      "start": 155244.89999997616,
+      "duration": 65,
+      "pageIndex": 1
+    },
+    {
+      "start": 159054.69999992847,
+      "duration": 76,
+      "pageIndex": 1
+    }
+  ],
+  "elapsedMs": 100345
+}
