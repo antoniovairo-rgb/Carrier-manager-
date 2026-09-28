@@ -102,7 +102,7 @@ async function scatta(page, id, nome) {
       /* [7.999.49] prima il riconoscimento del riepilogo scattava sul bottone «Continua alla Fine Stagione» della pagina
          premi (contiene «Fine Stagione»): fotografava ancora i premi. Ora si PREME e si fotografa la schermata dopo. */
       for (let j = 0; j < 6; j++) { const sc0 = await page.evaluate(() => window.__CPM_CAREER.screen && window.__CPM_CAREER.screen()).catch(() => null);
-        if (!(await premi(page, 'Continua alla Fine Stagione|^Continua|^Avanti|Vai alla'))) break; await sleep(1500);
+        if (!(await premi(page, 'Continua alla Fine Stagione|Vai al bilancio|^Continua|^Avanti|Vai alla'))) break; await sleep(1500);
         const sc1 = await page.evaluate(() => window.__CPM_CAREER.screen && window.__CPM_CAREER.screen()).catch(() => null);
         await scatta(page, j === 0 ? 'fine-riepilogo' : 'fine-passo-' + (j + 1), `Fine stagione · ${j === 0 ? 'riepilogo' : 'passo ' + (j + 1)} (schermata ${sc0} → ${sc1})`);
         if (sc1 !== 'seasonEnd' && sc1 !== 'seasonAwards') break; }

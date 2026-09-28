@@ -17,7 +17,7 @@ function classificaB(mh) {
   const esito = (h, a, gh, ga) => { for (const [x, f, c] of [[T[h], gh, ga], [T[a], ga, gh]]) { x.played++; x.gf += f; x.ga += c; x.gd = x.gf - x.ga; if (f > c) { x.wins++; x.pts += 3; } else if (f === c) { x.draws++; x.pts++; } else x.losses++; } };
   let seme = 20260928; const rnd = () => { seme = (seme * 1103515245 + 12345) >>> 0; return seme / 4294967296; };
   const gol = (p) => Math.floor(rnd() * 2.2 + p / 60);
-  mh.forEach((m, k) => { const o = byN[m.opponent]; if (m.isHome) esito('sal', o, m.homeScore, m.awayScore); else esito(o, 'sal', m.homeScore, m.awayScore);
+  mh.forEach((m, k) => { const o = byN[m.opponent]; if (m.isHome) esito('sal', o, m.homeScore, m.awayScore); else esito(o, 'sal', m.awayScore, m.homeScore);
     const resto = LEGA_B.map(x => x[0]).filter(id => id !== 'sal' && id !== o); const rot = resto.slice(k % resto.length).concat(resto.slice(0, k % resto.length));
     for (let i = 0; i < rot.length; i += 2) esito(rot[i], rot[i + 1], gol(T[rot[i]].p), gol(T[rot[i + 1]].p)); });
   return Object.values(T).sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
@@ -55,7 +55,7 @@ export const SAVE = { phase: 'career', player: {
   matchHistory: [[1,'FC Leonessa',1,2,0,1,0,7.6],[2,'FC Calabro',0,1,1,0,1,6.8],[3,'FC Cesenate',1,3,1,2,1,8.1],[4,'FC Empolese',0,1,1,1,0,6.9],[5,'FC Modenese',1,2,2,1,1,7.4],
     [6,'FC Altoadige',0,0,2,2,1,7.5],[7,'FC Cremona',1,2,2,2,0,7.3],[8,'FC Sicania',0,2,0,0,0,5.8],[9,'FC Pisano',1,4,1,3,1,8.6],[10,'FC Lariano',0,1,1,2,1,7.9]]
     .map(([week, opponent, casa, gf, gs, goals, assists, rating]) => ({ week, opponent, isHome: !!casa, goals, assists, rating, won: gf > gs, drew: gf === gs,
-      homeScore: casa ? gf : gs, awayScore: casa ? gs : gf })),
+      homeScore: gf, awayScore: gs })), /* il gioco salva il punteggio NOI–LORO (won = homeScore > awayScore), non casa–trasferta */
   /* [7.999.49] il gioco salva gli obiettivi come ELENCO (generateSeasonObjectives): l'oggetto {position:5} faceva crollare «Continua alla Fine Stagione» */
   seasonObjectives: [{ type: 'goals', target: 16, label: 'Segna 16 gol', bonus: { morale: 15, coachTrust: 10, value: 0.2 } }, { type: 'standing', target: 12, label: 'Finisci nei primi 12', bonus: { popularity: 15, value: 0.25 } }],
   records: { topSeasonGoals: 19, topSeasonAssists: 7, topOvr: 86 }, /* [7.999.49] allineati allo storico allenatori (S.3: 19 gol, 7 assist) */

@@ -6982,7 +6982,7 @@ const getThisWeekMatchday=()=>{
                   {player.club?.n||player.club?.name||"\u2013"}
                   {(()=>{const lg=player.club?.lg?player.club.lg:player.proStatus==="u18"?"U18":"";return lg?" \u00b7 "+lg:"";})()}
                   {" \u00b7 St. "+season+(week>38?" \u00b7 Fine stagione":" \u00b7 Sett. "+week+"/38")}{/* [7.999.49 parte A] niente «W.»: forma stretta del glossario */}
-                  {(()=>{const st=player.standings||[];if(!st.length||!player.club?.id)return "";const sorted=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));const idx=sorted.findIndex(x=>x.id===player.club.id);return idx<0?"":" \u00b7 "+(idx+1)+"\u00b0 in classifica";})()}
+                  {(()=>{const st=player.standings||[];if(!st.length||!player.club?.id)return "";const sorted=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));const idx=sorted.findIndex(x=>x.id===player.club.id);return idx<0?"":" \u00b7 "+(idx+1)+"\u00b0 posto";/* [7.999.49] «in classifica» veniva tagliato a 412 px */})()}
                 </div>
               </div>
               <div style={{flexShrink:0,textAlign:"center",lineHeight:1}}>
