@@ -21,7 +21,7 @@ const clic = async (t) => { try { await page.getByText(t, { exact: false }).firs
 await clic('Apri la busta'); await sleep(1500);
 if (await page.evaluate(() => !!document.querySelector('[data-cpm="gala51"]'))) {
   for (const [k, ms] of [[2, 4000], [3, 10000], [4, 16000]]) { await sleep(ms - (k === 2 ? 0 : k === 3 ? 4000 : 10000)); await page.screenshot({ path: `${OUT}/${TAG}-${k}-momento.png` }); }
-  console.log('testimone', JSON.stringify(await page.evaluate(() => window.__CPM_GALA51 || null)));
+  console.log('testimone', JSON.stringify(await page.evaluate(() => window.__CPM_GALA52 || window.__CPM_GALA51 || null)));
   if (await clic('Gli altri premi')) { await sleep(2500); await page.screenshot({ path: `${OUT}/${TAG}-5-riepilogo.png` }); }
   await clic('Vai al bilancio'); await sleep(2000); await page.screenshot({ path: `${OUT}/${TAG}-6-dopo.png`, fullPage: false });
 } else { await clic('Il secondo posto'); await sleep(1500); await clic('e il vincitore'); await sleep(2500);

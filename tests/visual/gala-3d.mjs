@@ -1,4 +1,4 @@
-/* [7.999.51] IL GALA' E' IL MOMENTO IN 3D (scelta PO: «il momento in 3D», «in abito da sera», «solo i miei premi in cima»).
+/* [7.999.52 PO: niente eroe sul palco, solo i presentatori] [7.999.51] IL GALA' E' IL MOMENTO IN 3D (scelta PO: «il momento in 3D», «in abito da sera», «solo i miei premi in cima»).
    Verde: apertura con la fascia; «Apri la busta» porta DIRETTO al premio vinto (niente terzo/secondo posto); l'eroe sale sul palco
    (testimone __CPM_GALA51: corpo della partita, 9 ossa, camminata, trofeo) e la fascia dice «Il premio è tuo»; alla chiusura la pagina
    mette in cima «I tuoi premi» e i podi della lega in una fisarmonica. Rosso --rosso (__CPM_NO_GALA51): torna la serata a buste. */
@@ -21,13 +21,14 @@ const clic = async (t) => { try { await page.getByText(t, { exact: false }).firs
 const txt = () => page.evaluate(() => document.body.innerText);
 const v = { nuovo: await page.evaluate(() => !!document.querySelector('[data-cpm="gala51"]')), apertura: /sono per te|è per te|nessuno per te/i.test(await txt()) };
 await clic('Apri la busta');
-let tes = null; for (let i = 0; i < 40 && !(tes && tes.eroe); i++) { await sleep(500); tes = await page.evaluate(() => window.__CPM_GALA51 || null); }
+let tes = null; for (let i = 0; i < 40 && !(tes && tes.presentatore && tes.presentatrice); i++) { await sleep(500); tes = await page.evaluate(() => window.__CPM_GALA52 || null); }
+await sleep(3000); v.eroe = await page.evaluate(() => !!(window.__CPM_GALA51 && window.__CPM_GALA51.eroe));
 const t2 = await txt(); v.premio = /Il premio è tuo/.test(t2); v.buste = /Il secondo posto/.test(t2); v.tes = tes;
 if (!rosso) { await clic('Vai al bilancio'); await sleep(1500); }
 v.miei = await page.evaluate(() => !!document.querySelector('[data-cpm="premi-miei51"]')); v.podi = /Tutti i podi della lega/i.test(await txt());
 await browser.close(); server.close();
 console.log(`\n=== GALA' 3D === ${rosso ? '[ROSSO __CPM_NO_GALA51]' : '[VERDE]'}\n  ${JSON.stringify(v)}\n  errori di pagina ${err.length}${err.length ? ' → ' + err[0] : ''}`);
 const ok = rosso ? (!v.nuovo && v.buste && err.length === 0)
-  : (v.nuovo && v.apertura && v.premio && !v.buste && tes && tes.eroe && tes.ossa === 9 && tes.camminata && tes.trofeo && v.miei && v.podi && err.length === 0);
-console.log(ok ? (rosso ? '\n✅ difetto riprodotto — senza il 7.999.51 torna la serata a buste' : '\n✅ PASS — apertura, il tuo premio in 3D in smoking, e in cima solo i tuoi premi') : '\n❌ FAIL');
+  : (v.nuovo && v.apertura && v.premio && !v.buste && tes && tes.presentatore && tes.presentatrice && !v.eroe && v.miei && v.podi && err.length === 0);
+console.log(ok ? (rosso ? '\n✅ difetto riprodotto — senza il 7.999.51 torna la serata a buste' : '\n✅ PASS — apertura, il tuo premio coi presentatori in 3D (nessun eroe in scena), e in cima solo i tuoi premi') : '\n❌ FAIL');
 process.exit(ok ? 0 : 1);

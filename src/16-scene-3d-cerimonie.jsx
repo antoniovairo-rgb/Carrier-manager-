@@ -2001,10 +2001,13 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
         if(aM&&aM.scene)presM=mkActorG(aM,{at:fig.position,rotY:fig.rotation.y,height:pH});
         if(aF&&aF.scene)presF=mkActorG(aF,{at:{x:-1.62,y:0,z:-0.62},rotY:0.55,height:1.70});/* [7.328.0] fuori dal footprint del podio (era -1.15 = gambe nella pedana) */
         if(presM||presF)env.visible=true;/* la busta torna in scena SOLO con chi la regge */
+        if(typeof _CPM_TEST!=='undefined'&&_CPM_TEST){try{window.__CPM_GALA52={presentatore:!!presM,presentatrice:!!presF};}catch(_e){}}
       }).catch(()=>{});
       /* [7.999.51 PO «il momento in 3D», «in abito da sera»] l'eroe torna sul palco col CORPO DELLA PARTITA (lo stesso della festa di
          vittoria), vestito da mkTux51. Dal 7.85 _bodyG non veniva mai caricato: il vincitore non poteva salire. Rosso __CPM_NO_GALA51. */
-      if(!(typeof window!=='undefined'&&window.__CPM_NO_GALA51)){
+      /* [7.999.52 PO «lascia perdere l'eroe nel gala' 3D, il risultato e' terribile… lascia solo i presentatori»] l'eroe in smoking
+         non sale piu' sul palco: il corpo si carica solo col varco di prova __CPM_GALA_EROE51 (per un futuro modello d'abito vero). */
+      if(typeof window!=='undefined'&&window.__CPM_GALA_EROE51&&!window.__CPM_NO_GALA51){
         /* misurato: le clip di korward-regular-anims tengono le braccia a T su questo corpo (mano a 1,51 m, 0,72 m di lato); il corpo
            della PARTITA (lod0) porta con se' idle/walk sane e la libreria PO ha mx-victory (mani a 1,85 m = trofeo sopra la testa). */
         Promise.all([loadGLB('./assets/cgtrader-review-lod0-kit-adapter.glb'),loadGLB('./assets/cgtrader-clip-po.glb').catch(()=>null)])
@@ -2117,6 +2120,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
         :b===1?[camVX+1.35*_psgn,1.72,5.4,1.25*_psgn,1.35,-0.72]/* [7.328.0] presentatori spostati a |x|=1.72 → il lookAt li segue */
         :b===2?[camVX+1.15*_psgn,1.5,3.6,1.15*_psgn,1.25,-0.62]
         :(st.current.heroWins&&heroAv&&heroAv.kw)?(heroIn<1?[heroAv.root.position.x*0.3,1.7,7.2,heroAv.root.position.x*0.6,1.1,0.2]:[0,1.45,4.2,0,1.15,0.3])/* camminata in campo largo, trofeo in primo piano *//* [7.999.51] la camera segue l'eroe che entra e lo inquadra col trofeo alzato */
+        :(st.current.heroWins&&!(typeof window!=='undefined'&&window.__CPM_NO_GALA51))?[camVX*0.5,2.05,9.0,0,1.2,-0.8]/* [7.999.52] senza eroe: campo largo, trofeo al centro e i due presentatori ai lati (a |x|=1,62 servono ~9 m in verticale) */
         :st.current.heroWins?[camVX,1.95,5.0,0,1.55,-1.05]/* [7.85.0 opzione 2] niente vincitore in scena → push-in sul TROFEO sul podio */
         :[camVX,2.0,6.6,0,1.5,-1.0];
       const k2=1-Math.exp(-dt*2.2);
