@@ -61,8 +61,8 @@ const BG_MATCH=[
   {txt:"\ud83c\udff3\ufe0f Angolo per noi: {H} disegna il traversone sul primo palo, la difesa di {A} libera di testa.",ef:null,w:2.4,bpos:{x:92,y:96},ms:{corners:1},pd:"attack_goal",at:"cross",sp:"corner_for"},
   {txt:"\ud83c\udff3\ufe0f Corner battuto corto fra {H} e {H2}: rientro sul mancino e cross velenoso in mezzo!",ef:null,w:2.2,bpos:{x:90,y:94},ms:{corners:1},pd:"attack_goal",at:"cross",sp:"corner_for"},
   {txt:"\ud83c\udff3\ufe0f {H} va sulla bandierina, tutti in area: pallone sul secondo palo, {H2} non ci arriva per un soffio.",ef:null,w:2.2,bpos:{x:93,y:5},ms:{corners:1},pd:"attack_goal",at:"cross",sp:"corner_for"},
-  {txt:"\ud83c\udff3\ufe0f Ancora un angolo: {A} respinge di testa ma la palla resta li', mischia furibonda in area!",ef:null,w:1.8,bpos:{x:91,y:93},ms:{corners:1,shots:1},pd:"attack_goal",sp:"corner_for"},
-  {txt:"\ud83c\udff3\ufe0f Terzo corner consecutivo per noi. {A} e' schiacciata sulla linea, si respira aria di gol.",ef:null,w:1.6,bpos:{x:92,y:7},ms:{corners:1},pd:"attack_goal",sp:"corner_for"},
+  {txt:"\ud83c\udff3\ufe0f Ancora un angolo: {A} respinge di testa ma la palla resta lì, mischia furibonda in area!",ef:null,w:1.8,bpos:{x:91,y:93},ms:{corners:1,shots:1},pd:"attack_goal",sp:"corner_for"},
+  {txt:"\ud83c\udff3\ufe0f Terzo corner consecutivo per noi. {A} è schiacciata sulla linea, si respira aria di gol.",ef:null,w:1.6,bpos:{x:92,y:7},ms:{corners:1},pd:"attack_goal",sp:"corner_for"},
   {txt:"\ud83c\udff3\ufe0f Corner per {A}: tutti in area, il nostro portiere esce coi pugni e allontana.",ef:null,w:2.2,bpos:{x:7,y:95},ms:{oppShots:1},pd:"defend_goal",sp:"corner_against"},
   {txt:"\ud83c\udff3\ufe0f Angolo di {A} sul secondo palo: colpo di testa alto, che sospiro.",ef:null,w:2.0,bpos:{x:6,y:6},ms:{oppShots:1},pd:"defend_goal",sp:"corner_against"},
   {txt:"\ud83c\udff3\ufe0f {A} va corta sul corner e cerca il tiro dal limite: muro della nostra difesa.",ef:null,w:1.8,bpos:{x:9,y:92},ms:{oppShots:1},pd:"defend_goal",sp:"corner_against"},
@@ -75,10 +75,10 @@ const BG_MATCH=[
      centrocampo e la nostra area e NESSUNA su `retreat`: con i pesi alzati, bg-decision e' caduto a 48%
      (soglia 60) con `retreat 0/8` — otto volte la simulazione decide un ripiegamento e nessuna riga sa
      descriverlo. Allargare un repertorio in modo sbilanciato affama le famiglie che non si toccano. */
-  {txt:"\ud83d\udfe1 Fallo di {H} per fermare la ripartenza di {A}: punizione per loro a meta' campo, noi ci ricompattiamo.",ef:null,w:2.2,bpos:{x:40,y:50},ms:{fouls:1},pd:"retreat",sp:"foul_for"},
+  {txt:"\ud83d\udfe1 Fallo di {H} per fermare la ripartenza di {A}: punizione per loro a metà campo, noi ci ricompattiamo.",ef:null,w:2.2,bpos:{x:40,y:50},ms:{fouls:1},pd:"retreat",sp:"foul_for"},
   {txt:"\ud83d\udfe1 Punizione per {A} dalla trequarti difensiva: la barriera si dispone, tutti dietro la linea della palla.",ef:null,w:2.0,bpos:{x:30,y:56},ms:{fouls:1},pd:"retreat",sp:"foul_for"},
   {txt:"\ud83c\udff3\ufe0f Angolo per {A} guadagnato sulla nostra destra: dieci uomini in area, si stringono i denti.",ef:null,w:1.8,bpos:{x:12,y:88},ms:{oppShots:1},pd:"retreat",sp:"corner_against"},
-  {txt:"\u26a0\ufe0f Contatto in area su {H2}! L'arbitro indica il dischetto: e' rigore.",ef:null,w:0.4,bpos:{x:87,y:50},ms:{fouls:1},pd:"attack_goal",sp:"pen_for"},
+  {txt:"\u26a0\ufe0f Contatto in area su {H2}! L'arbitro indica il dischetto: è rigore.",ef:null,w:0.4,bpos:{x:87,y:50},ms:{fouls:1},pd:"attack_goal",sp:"pen_for"},
   /* [7.532.0 collaudo PO «troppo concentrato a centrocampo» + «la telecronaca va ampliata»] SEDICI VOCI
      NUOVE NELLE FAMIGLIE SOTTILI: 73 righe su 188 erano `midfield` e la pesca ci ricadeva per massa.
      Battute lunghe, stile FM — la massa nuova diluisce il giro palla senza toccare pesi altrui. */
@@ -87,15 +87,15 @@ const BG_MATCH=[
   {txt:"🔥 {H} accelera palla al piede e ne salta due: serve l'accorrente {H2}, conclusione murata!",ef:null,w:2,bpos:{x:83,y:50},ms:{shots:1},pd:"attack_goal"},
   {txt:"⚽ Azione avvolgente: dentro-fuori tra {H} e {H2}, il pallone taglia l'area piccola e nessuno arriva sul secondo palo!",ef:null,w:1.6,bpos:{x:92,y:55},ms:{shots:1},pd:"attack_goal"},
   {txt:"💫 {H} si accentra dalla destra e lascia partire un sinistro a giro: {GKA} vola a deviare!",ef:null,w:1.6,bpos:{x:84,y:42},ms:{shots:1},pd:"attack_goal"},
-  {txt:"🏃 Sgroppata di {H} sull'out mancino: settanta metri palla al piede, poi il cross e' troppo lungo.",ef:null,w:2,bpos:{x:78,y:12},pd:"wide_right"},
+  {txt:"🏃 Sgroppata di {H} sull'out mancino: settanta metri palla al piede, poi il cross è troppo lungo.",ef:null,w:2,bpos:{x:78,y:12},pd:"wide_right"},
   {txt:"↗ {H} e {H2} dialogano sulla corsia: sovrapposizione e traversone teso, allontana la difesa di {A}.",ef:null,w:2,bpos:{x:80,y:85},pd:"wide_right"},
-  {txt:"⚡ {H2} attacca la profondita' sull'esterno: {H} lo pesca col contagiri ma la bandierina dice fuorigioco.",ef:null,w:1.8,bpos:{x:74,y:80},pd:"wide_right"},
+  {txt:"⚡ {H2} attacca la profondità sull'esterno: {H} lo pesca col contagiri ma la bandierina dice fuorigioco.",ef:null,w:1.8,bpos:{x:74,y:80},pd:"wide_right"},
   {txt:"🧤 Uscita bassa coraggiosa del nostro portiere sui piedi di {A}: si respira.",ef:null,w:1.8,bpos:{x:6,y:50},pd:"defend_goal"},
   {txt:"🛡️ {H} legge la traiettoria e anticipa {A} di testa al limite dell'area: che chiusura.",ef:null,w:2,bpos:{x:16,y:48},pd:"defend_goal"},
   {txt:"😤 Mischia nella nostra area! Doppia respinta, poi {H} spazza lontano e la squadra sale.",ef:null,w:1.6,bpos:{x:8,y:52},ms:{oppShots:1},pd:"defend_goal"},
-  {txt:"🏋️ Duello rusticano a meta' campo: {H} esce col pallone tra gli applausi.",ef:null,w:1.8,bpos:{x:44,y:55},poss:+1,pd:"retreat",at:"tackle"},
+  {txt:"🏋️ Duello rusticano a metà campo: {H} esce col pallone tra gli applausi.",ef:null,w:1.8,bpos:{x:44,y:55},poss:+1,pd:"retreat",at:"tackle"},
   {txt:"🧊 {A} prova a scuotersi ma {H} raddoppia in pressione: recupero e ripartenza corta.",ef:null,w:1.8,bpos:{x:38,y:45},poss:+2,pd:"retreat"},
-  {txt:"📐 {H} disegna un cambio campo di cinquanta metri: {H2} lo addomestica col petto, che qualita'.",ef:null,w:1.8,bpos:{x:68,y:20},pd:"wide_right"},
+  {txt:"📐 {H} disegna un cambio campo di cinquanta metri: {H2} lo addomestica col petto, che qualità.",ef:null,w:1.8,bpos:{x:68,y:20},pd:"wide_right"},
   {txt:"🎪 Numero di {H} sulla trequarti: elastico e avversario seduto — lo stadio si accende.",ef:null,w:1.6,bpos:{x:72,y:60},pd:"attack"},
   {txt:"🚀 {H} tenta la botta dai venticinque metri: centrale, {GKA} blocca in due tempi.",ef:null,w:2,bpos:{x:77,y:50},ms:{shots:1},pd:"attack"},
   // Tactical

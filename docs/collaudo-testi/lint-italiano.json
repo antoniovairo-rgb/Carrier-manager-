@@ -1,0 +1,101 @@
+{
+ "parola inglese": [
+  {
+   "id": "menu-home",
+   "frase": "Home",
+   "trovato": "Home"
+  },
+  {
+   "id": "menu-opzioni",
+   "frase": "Home",
+   "trovato": "Home"
+  },
+  {
+   "id": "inizio-offerte",
+   "frase": "3 provini · 7 gol · Rating medio 7.7",
+   "trovato": "Rating"
+  }
+ ],
+ "accento con apostrofo": [
+  {
+   "id": "sett-2",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "sett-3",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "sett-4",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-2",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-3",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-4",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-5",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-6",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-7",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-8",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-9",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-10",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-11",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-12",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-13",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  },
+  {
+   "id": "vita-14",
+   "frase": "«Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero.»",
+   "trovato": "e'"
+  }
+ ]
+}

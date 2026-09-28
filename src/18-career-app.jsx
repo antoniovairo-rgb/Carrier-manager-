@@ -159,7 +159,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _lbl=_st2.map(m=>`giornata ${m.matchday!=null?m.matchday:"?"} vs ${m.opponentName||"?"}`).join(" · ");
       return{...p,
         calendar:(p.calendar||[]).map(m=>_keys.has((m.week||0)+"|"+(m.matchday!=null?m.matchday:"?")+"|"+(m.opponentName||"?"))&&!m.played?{...m,played:true,healed418:true}:m),
-        log:[`🧹 Bonifica calendario: ${_lbl} risultava gia' giocata — voce ritirata (mai piu' riproposta).`,...(p.log||[])].slice(0,60)};
+        log:[`🧹 Bonifica calendario: ${_lbl} risultava già giocata — voce ritirata (mai più riproposta).`,...(p.log||[])].slice(0,60)};
     });
   }catch(_e){}},[player]);// eslint-disable-line
   const _playingMdRef=useRef(null);
@@ -2025,41 +2025,41 @@ const getThisWeekMatchday=()=>{
     const R=(k,e,t,d,tone)=>({k,e,t,d,tone});
     /* 1-3 — gli stati PLURIENNALI restano in cima: parlano della societa', non della singola stagione */
     if((evo&&(evo.seasonsTop||0)>=2)||(shift>=8&&pos>0&&pos<=4))return R("vincente","🏆","Ciclo vincente",V("vincente",[
-      "La societa' costruisce per vincere ORA: obiettivi alti, mercato ambizioso, zero alibi. Chi gioca qui porta un peso — e un privilegio.",
+      "La società costruisce per vincere ORA: obiettivi alti, mercato ambizioso, zero alibi. Chi gioca qui porta un peso — e un privilegio.",
       "Qui non si programma: si pretende. Ogni sessione di mercato aggiunge un titolare, ogni pareggio diventa un caso.",
-      "Il club e' entrato nella fascia in cui si vince o si fallisce. Nessuna stagione di passaggio e' ammessa."]),"good");
+      "Il club è entrato nella fascia in cui si vince o si fallisce. Nessuna stagione di passaggio è ammessa."]),"good");
     if((evo&&(evo.seasonsLow||0)>=2)||(pos>0&&pos>=N-2&&wk>=10))return R("crisi","🌧️","Crisi societaria",V("crisi",[
       "Conti in rosso e classifica che brucia: il club deve vendere i pezzi pregiati e il mister vive alla giornata. Restare e riportarla su vale doppio.",
       "Si naviga a vista: stipendi pagati in ritardo, mercato bloccato, spogliatoio che si guarda le spalle.",
-      "La societa' ha smesso di programmare e cerca solo di arrivare a giugno. Chi resta lo fa per orgoglio."]),"bad");
+      "La società ha smesso di programmare e cerca solo di arrivare a giugno. Chi resta lo fa per orgoglio."]),"bad");
     if(shift<=-8||(evo&&(evo.seasonsLow||0)===1))return R("ricostruzione","🧱","Ricostruzione",V("ricostruzione",[
       "Anno zero tecnico: si riparte dalle fondamenta. Spazio a chi si fa trovare pronto — le gerarchie sono tutte da scrivere.",
       "Rosa svuotata e ricostruita coi giovani: il club chiede pazienza e in cambio offre spazio a chi se lo prende.",
-      "Nuovo corso, nuovo staff, nuove regole. Chi accetta il progetto adesso, domani sara' un intoccabile."]),"neutral");
+      "Nuovo corso, nuovo staff, nuove regole. Chi accetta il progetto adesso, domani sarà un intoccabile."]),"neutral");
     /* 4-8 — la STAGIONE IN CORSO: e' qui che prima c'era il buco (tutto finiva in «solido») */
     if(_2a&&pos>0&&pos<=3&&wk>=8)return R("promozione","⬆️","Il progetto è salire",V("promozione",[
-      "Una sola parola in societa': promozione. Ogni scelta di mercato, ogni allenamento, ogni convocazione passa da li'.",
-      "Il club ha costruito per vincere questa categoria: restare quaggiu' un altro anno sarebbe un fallimento e lo sanno tutti.",
+      "Una sola parola in società: promozione. Ogni scelta di mercato, ogni allenamento, ogni convocazione passa da lì.",
+      "Il club ha costruito per vincere questa categoria: restare quaggiù un altro anno sarebbe un fallimento e lo sanno tutti.",
       "Si respira la categoria superiore: la piazza conta i punti che mancano e non parla d'altro."]),"good");
     if(_gap>=5&&pos>0&&wk>=12)return R("sorpresa","✨","La sorpresa del campionato",V("sorpresa",[
-      "Il "+pos+"° posto con questa rosa non lo aveva previsto nessuno: la societa' cavalca l'onda e comincia a sognare.",
-      "Nelle proiezioni di agosto questo club stava molto piu' in basso. Adesso in sede si chiedono fin dove puo' arrivare.",
+      "Il "+pos+"° posto con questa rosa non lo aveva previsto nessuno: la società cavalca l'onda e comincia a sognare.",
+      "Nelle proiezioni di agosto questo club stava molto più in basso. Adesso in sede si chiedono fin dove può arrivare.",
       "Una squadra che vale meno di quanto raccoglie: il gruppo ha creato qualcosa che i numeri non spiegano."]),"good");
     if(_gap<=-5&&pos>0&&wk>=12)return R("delusione","📉","Sotto le attese",V("delusione",[
-      "Per valore della rosa il club dovrebbe stare molto piu' su del "+pos+"° posto: in societa' la pazienza sta finendo.",
-      "I conti non tornano: questa squadra e' costruita per un'altra classifica e in dirigenza cercano un colpevole.",
-      "Il progetto non e' fallito, ma il campo dice il contrario di quello che dicevano i piani. E si sente."]),"bad");
+      "Per valore della rosa il club dovrebbe stare molto più su del "+pos+"° posto: in società la pazienza sta finendo.",
+      "I conti non tornano: questa squadra è costruita per un'altra classifica e in dirigenza cercano un colpevole.",
+      "Il progetto non è fallito, ma il campo dice il contrario di quello che dicevano i piani. E si sente."]),"bad");
     if(!_2a&&pos>0&&pos<=Math.max(5,Math.round(N*0.33))&&wk>=10)return R("europa","🌍","A un passo dall'Europa",V("europa",[
-      "Il club annusa l'Europa: il "+pos+"° posto vale bilanci diversi e giocatori diversi. In societa' non si parla d'altro.",
-      "Qualificarsi cambierebbe la dimensione della societa': lo sanno in dirigenza e lo sa lo spogliatoio.",
-      "La stagione ha preso una piega che nessuno aveva messo a bilancio: adesso l'Europa e' un obiettivo dichiarato."]),"good");
+      "Il club annusa l'Europa: il "+pos+"° posto vale bilanci diversi e giocatori diversi. In società non si parla d'altro.",
+      "Qualificarsi cambierebbe la dimensione della società: lo sanno in dirigenza e lo sa lo spogliatoio.",
+      "La stagione ha preso una piega che nessuno aveva messo a bilancio: adesso l'Europa è un obiettivo dichiarato."]),"good");
     if(!_2a&&pos>0&&pos>=N-5&&wk>=10)return R("salvezza","🧯","Il progetto è salvarsi",V("salvezza",[
       "Obiettivo unico e dichiarato: la salvezza. Il club taglia il superfluo e chiede punti, non spettacolo.",
       "Ogni riunione finisce con lo stesso numero: i punti che mancano per restare in categoria.",
-      "Non e' l'anno dei progetti: e' l'anno in cui bisogna portare a casa la categoria, con qualunque mezzo."]),"bad");
+      "Non è l'anno dei progetti: è l'anno in cui bisogna portare a casa la categoria, con qualunque mezzo."]),"bad");
     if(evo&&((evo.stadiumTier||0)>0||(evo.fanbase||0)>=60))return R("cantiere","🏗️","Il club investe",V("cantiere",[
-      "Cantieri aperti: stadio e strutture crescono prima della rosa. E' un club che pensa a dove sara' tra cinque anni.",
-      "La societa' mette i soldi nel mattone e nel vivaio: chi cresce qui adesso, raccogliera' quando la squadra sara' pronta.",
+      "Cantieri aperti: stadio e strutture crescono prima della rosa. È un club che pensa a dove sarà tra cinque anni.",
+      "La società mette i soldi nel mattone e nel vivaio: chi cresce qui adesso, raccoglierà quando la squadra sarà pronta.",
       "Si costruisce l'infrastruttura prima della squadra: scelta impopolare a marzo, lungimirante a lungo termine."]),"neutral");
     /* 9 — fallback VERO: meta' classifica senza segnali forti. Anche qui, tre voci e un dato reale. */
     /* [7.275.0 collaudo PO «progetto solido sempre ripetitivo» (2a segnalazione)] Il rifacimento del 7.265.0
@@ -2076,32 +2076,32 @@ const getThisWeekMatchday=()=>{
       const gapVetta=(sd[0]?(sd[0].pts||0)-(me.pts||0):0);
       const _pl=(n)=>n===1?"o":"i";
       if(wk>=10&&gapEuro>0&&gapEuro<=5)return R("bussola","🧭","A un passo da qualcosa",V("bussola",[
-        "In societa' non lo dicono ad alta voce, ma il conto lo fanno tutti: "+gapEuro+" punt"+_pl(gapEuro)+" separano questo gruppo dall'Europa. Nessuno promette niente, e intanto nessuno vuole sbagliare una partita.",
-        "Il "+pos+"° posto non fa notizia, la distanza dalla zona che conta si': "+gapEuro+" punt"+_pl(gapEuro)+". Un progetto prudente si ritrova, quasi per caso, con un obiettivo.",
+        "In società non lo dicono ad alta voce, ma il conto lo fanno tutti: "+gapEuro+" punt"+_pl(gapEuro)+" separano questo gruppo dall'Europa. Nessuno promette niente, e intanto nessuno vuole sbagliare una partita.",
+        "Il "+pos+"° posto non fa notizia, la distanza dalla zona che conta sì: "+gapEuro+" punt"+_pl(gapEuro)+". Un progetto prudente si ritrova, quasi per caso, con un obiettivo.",
         "Non era nei piani, ma la classifica corta ha acceso una lampadina: con "+gapEuro+" punt"+_pl(gapEuro)+" da recuperare il club ha smesso di parlare solo di crescita."]),"neutral");
       if(wk>=14&&gapVetta>=22&&pos<=Math.round(N*0.6))return R("distanza","🔭","La distanza dai grandi",V("distanza",[
-        "Il campionato e' tranquillo e lontanissimo: "+gapVetta+" punti dalla vetta. Qui si lavora sapendo che il traguardo non e' vincere, ed e' una consapevolezza che il club non nasconde piu'.",
-        "Nessuna paura e nessun sogno: "+gapVetta+" punti dalla prima dicono cosa e' questo club oggi. La societa' lo accetta e chiede di costruire, non di rincorrere.",
-        "Tra questo gruppo e chi lotta per il titolo ci sono "+gapVetta+" punti: una distanza che non si colma con gli slogan, e in societa' hanno smesso di provarci."]),"neutral");
-      if(wk>=10&&dr>=6&&gf>=ga)return R("attacco","⚡","La filosofia e' attaccare",V("attacco",[
-        gf+" gol fatti e "+ga+" subiti: qui si e' scelto di divertire e rischiare, e il mercato segue quell'idea. Il mister ripete che le partite si vincono davanti.",
-        "Il segno piu' nella differenza reti (+"+dr+") non e' un caso: la societa' compra gamba e qualita' offensiva, poi si vedra' dietro.",
-        "Un'identita' c'e', ed e' offensiva: "+gf+" gol segnati. In sala video si parla piu' di come attaccare gli spazi che di come coprirli."]),"good");
+        "Il campionato è tranquillo e lontanissimo: "+gapVetta+" punti dalla vetta. Qui si lavora sapendo che il traguardo non è vincere, ed è una consapevolezza che il club non nasconde più.",
+        "Nessuna paura e nessun sogno: "+gapVetta+" punti dalla prima dicono cosa è questo club oggi. La società lo accetta e chiede di costruire, non di rincorrere.",
+        "Tra questo gruppo e chi lotta per il titolo ci sono "+gapVetta+" punti: una distanza che non si colma con gli slogan, e in società hanno smesso di provarci."]),"neutral");
+      if(wk>=10&&dr>=6&&gf>=ga)return R("attacco","⚡","La filosofia è attaccare",V("attacco",[
+        gf+" gol fatti e "+ga+" subiti: qui si è scelto di divertire e rischiare, e il mercato segue quell'idea. Il mister ripete che le partite si vincono davanti.",
+        "Il segno più nella differenza reti (+"+dr+") non è un caso: la società compra gamba e qualità offensiva, poi si vedrà dietro.",
+        "Un'identita' c'e', ed è offensiva: "+gf+" gol segnati. In sala video si parla più di come attaccare gli spazi che di come coprirli."]),"good");
       if(wk>=10&&ga<=Math.round(gf*0.8)&&ga<=Math.max(8,Math.round(wk*0.9)))return R("difesa","🛡️","Prima non prenderle",V("difesa",[
         "Solo "+ga+" gol subiti: il progetto parte da dietro, e ogni acquisto passa dalla domanda «regge?».",
-        "La societa' ha costruito un blocco che concede pochissimo ("+ga+" reti al passivo). Non fara' innamorare nessuno, ma i punti arrivano.",
-        "Qui la parola d'ordine e' equilibrio: "+ga+" gol subiti sono il vero patrimonio di questa squadra, e il mister non ha intenzione di sprecarlo."]),"good");
+        "La società ha costruito un blocco che concede pochissimo ("+ga+" reti al passivo). Non farà innamorare nessuno, ma i punti arrivano.",
+        "Qui la parola d'ordine è equilibrio: "+ga+" gol subiti sono il vero patrimonio di questa squadra, e il mister non ha intenzione di sprecarlo."]),"good");
       if(wk>=12&&gapSalva>0&&gapSalva<=8&&pos>Math.round(N*0.55))return R("guardinga","😐","Un occhio sempre dietro",V("guardinga",[
-        "Salvi per ora, ma con "+gapSalva+" punt"+_pl(gapSalva)+" di margine: in societa' nessuno festeggia e ogni scelta di mercato e' improntata alla prudenza.",
-        "Il "+pos+"° posto e' comodo solo sulla carta: "+gapSalva+" punt"+_pl(gapSalva)+" dalla zona calda tengono tutti sul chi vive.",
+        "Salvi per ora, ma con "+gapSalva+" punt"+_pl(gapSalva)+" di margine: in società nessuno festeggia e ogni scelta di mercato è improntata alla prudenza.",
+        "Il "+pos+"° posto è comodo solo sulla carta: "+gapSalva+" punt"+_pl(gapSalva)+" dalla zona calda tengono tutti sul chi vive.",
         "Nessuna crisi e nessuna ambizione: si guarda in basso, si contano i punti di vantaggio ("+gapSalva+") e si tira avanti."]),"neutral");
       if(wk>=10&&pos<=Math.round(N*0.45))return R("metaalta","📈","Nella parte buona",V("metaalta",[
-        "Il "+pos+"° posto colloca il club nella meta' che conta, senza clamore. E' esattamente cio' che la societa' aveva chiesto, e adesso comincia a chiedere qualcosa in piu'.",
+        "Il "+pos+"° posto colloca il club nella metà che conta, senza clamore. È esattamente ciò che la società aveva chiesto, e adesso comincia a chiedere qualcosa in più.",
         "Niente proclami: si sta nella parte sinistra della classifica ("+pos+"°) e si lavora. In queste stagioni si costruisce quello che poi si vede negli anni buoni.",
-        "Un "+pos+"° posto solido apre una domanda che in societa' non si erano ancora posti: e se questo gruppo valesse piu' di quanto dice il bilancio?"]),"good");
+        "Un "+pos+"° posto solido apre una domanda che in società non si erano ancora posti: e se questo gruppo valesse più di quanto dice il bilancio?"]),"good");
     }
     return R("solido","🏛️","Progetto solido",V("solido",[
-      "Rotta stabile: la societa' cresce un mattone alla volta e chiede continuita', non miracoli."+(pos>0?" Il "+pos+"° posto e' esattamente dove i piani dicevano di essere.":""),
+      "Rotta stabile: la società cresce un mattone alla volta e chiede continuità, non miracoli."+(pos>0?" Il "+pos+"° posto è esattamente dove i piani dicevano di essere.":""),
       "Nessuno scossone: bilancio in ordine, mercato mirato, obiettivi realistici. Un club che non promette e non tradisce.",
       "Il club naviga in acque tranquille e lo rivendica: prima le fondamenta, i salti in avanti quando saranno sostenibili."]),"neutral");
   }catch(_e){return null;}};
@@ -2363,19 +2363,19 @@ const getThisWeekMatchday=()=>{
     if(p.retireAnnounced===sn&&p.rival&&p.rival.name&&seen.indexOf("addioRivale")<0&&wk>=6){
       const _rn=p.rival.name;
       out.push({k:"addioRivale",e:"🤝",t:`${_rn} rompe il silenzio`,
-        d:`«Ho passato una carriera a studiarlo per fermarlo. Non ci sono mai riuscito del tutto — e ora che smette posso dirlo: giocargli contro e' stato l'onore piu' grande. Detto questo: l'ultima che ci incontriamo, vinco io.» Firmato, incorniciato, sui giornali.`,
-        fx:(q)=>({morale:clamp((q.morale||70)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🤝",headline:`L'attestato di ${_rn}`,body:`«Giocargli contro e' stato l'onore piu' grande.» — il rivale di una vita · S.${sn}`,color:"#92400e"}].slice(-80)})});
+        d:`«Ho passato una carriera a studiarlo per fermarlo. Non ci sono mai riuscito del tutto — e ora che smette posso dirlo: giocargli contro è stato l'onore più grande. Detto questo: l'ultima che ci incontriamo, vinco io.» Firmato, incorniciato, sui giornali.`,
+        fx:(q)=>({morale:clamp((q.morale||70)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🤝",headline:`L'attestato di ${_rn}`,body:`«Giocargli contro è stato l'onore più grande.» — il rivale di una vita · S.${sn}`,color:"#92400e"}].slice(-80)})});
     }
     if(p.retireAnnounced===sn&&seen.indexOf("addioPremio")<0&&wk>=10){
       out.push({k:"addioPremio",e:"🎖️",t:"Premio alla carriera",
-        d:`La Lega lo annuncia in conferenza: alla cerimonia di fine stagione riceverai il PREMIO ALLA CARRIERA. Sarai il primo a riceverlo ancora in attivita' — di solito lo consegnano a chi ha smesso da dieci anni e non corre piu' il rischio di segnare alla squadra del presidente.`,
-        fx:(q)=>({morale:clamp((q.morale||70)+5,0,100),popularity:clamp((q.popularity||20)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🎖️",headline:"Premio alla carriera",body:`La Lega ti premia da giocatore in attivita': primo nella storia · S.${sn}`,color:"#92400e"}].slice(-80)})});
+        d:`La Lega lo annuncia in conferenza: alla cerimonia di fine stagione riceverai il PREMIO ALLA CARRIERA. Sarai il primo a riceverlo ancora in attività — di solito lo consegnano a chi ha smesso da dieci anni e non corre più il rischio di segnare alla squadra del presidente.`,
+        fx:(q)=>({morale:clamp((q.morale||70)+5,0,100),popularity:clamp((q.popularity||20)+4,0,100),diary:[...(q.diary||[]),{season:sn,week:q.week||1,type:"addio",e:"🎖️",headline:"Premio alla carriera",body:`La Lega ti premia da giocatore in attività: primo nella storia · S.${sn}`,color:"#92400e"}].slice(-80)})});
     }
     if(p.retireAnnounced===sn&&seen.indexOf("addioTour")<0){
       const _TA=[
         {t:"Il tour d'addio",d:"Lo stadio che ti aspetta domenica ha esaurito i biglietti in un'ora. Il loro capitano ha chiesto la tua maglia — «per il museo del club», dice. Poi ammette: «per me»."},
         {t:"L'omaggio degli avversari",d:"In allenamento arriva un pacco: la curva AVVERSARIA della prossima trasferta ha stampato una sciarpa col tuo nome e «GRAZIE DI TUTTO». Il calcio, quando vuole, sa essere una cosa seria."},
-        {t:"Il giro dei saluti",d:"Un telecronista storico apre la trasmissione cosi': «Godetevelo, ogni domenica che resta. Di giocatori cosi' ne passa uno ogni vent'anni». Tua madre ha registrato la clip."},
+        {t:"Il giro dei saluti",d:"Un telecronista storico apre la trasmissione così: «Godetevelo, ogni domenica che resta. Di giocatori così ne passa uno ogni vent'anni». Tua madre ha registrato la clip."},
       ];
       const _ta=_TA[Math.abs(hashStr((p.name||"x")+"|addio|"+wk))%_TA.length];
       out.push({k:"addioTour",e:"🏁",t:_ta.t,d:_ta.d,fx:(q)=>({morale:clamp((q.morale||70)+3,0,100)})});
@@ -2423,10 +2423,10 @@ const getThisWeekMatchday=()=>{
       const _ya430=Math.max(0,sn-((typeof _hLast438!=="undefined"&&_hLast438.season)||h.season||sn));
       const _EXV=[
         (n,c,y)=>`${n}, dal ${c} — ${y} stagioni fa, un'altra vita. Ha smesso: allena i Pulcini del quartiere. «Ho detto ai bambini che i tuoi gol li inventavo io in allenamento. Non mi crede nessuno. Mandami un video in cui lo confermi, ti pago in lasagne di mia suocera».`,
-        (n,c,y)=>`Vocale di ${n}: «Lo sai che al ${c} c'e' ancora il tuo armadietto? ${y} stagioni e nessuno lo tocca. Il magazziniere dice che e' un santuario, io dico che e' pigrizia. Comunque dentro c'e' ancora il tuo phon: lo vendo all'asta o me lo tengo?»`,
+        (n,c,y)=>`Vocale di ${n}: «Lo sai che al ${c} c'e' ancora il tuo armadietto? ${y} stagioni e nessuno lo tocca. Il magazziniere dice che è un santuario, io dico che è pigrizia. Comunque dentro c'e' ancora il tuo phon: lo vendo all'asta o me lo tengo?»`,
         (n,c,y)=>`${n} ti chiama per farti gli auguri — con due mesi di ritardo. «Meglio tardi che mai: ai tempi del ${c} arrivavo in ritardo pure ai raduni, almeno sono rimasto coerente». Mezz'ora dopo state ancora ridendo dei ritiri di ${y} stagioni fa.`,
-        (n,c,y)=>`È ${n}: ti ha preso all'asta del fantacalcio aziendale. «${y} stagioni che non ci vediamo e mi fido ancora solo di te. Ti ho pagato piu' del mio stipendio: non farmi fare figuracce coi colleghi, capitano». Chiudi la chiamata che stai ancora sorridendo.`,
-        (n,c,y)=>`${n}, voce piu' rotonda di come la ricordavi: «Dal ${c} sono passati ${y} anni e otto chili, ma il mancino e' rimasto un violino. Al torneo dei veterani li lascio tutti sul posto. Vieni a vedermi giocare, per una volta tu in tribuna e io in campo».`,
+        (n,c,y)=>`È ${n}: ti ha preso all'asta del fantacalcio aziendale. «${y} stagioni che non ci vediamo e mi fido ancora solo di te. Ti ho pagato più del mio stipendio: non farmi fare figuracce coi colleghi, capitano». Chiudi la chiamata che stai ancora sorridendo.`,
+        (n,c,y)=>`${n}, voce più rotonda di come la ricordavi: «Dal ${c} sono passati ${y} anni e otto chili, ma il mancino è rimasto un violino. Al torneo dei veterani li lascio tutti sul posto. Vieni a vedermi giocare, per una volta tu in tribuna e io in campo».`,
       ];
       const _pool430=(_ya430>=6)?_EXV:_EXM;
       const _exi=Math.abs(hashStr((h.clubId||"x")+"|exm|"+sn+"|"+(nm||"")))%_pool430.length;
@@ -5495,7 +5495,7 @@ const getThisWeekMatchday=()=>{
             const _goE287=_shufE287.slice(0,3);
             _goE287.forEach((o,i)=>{[i,i+3].forEach(k=>{_keptComp7.push({matchday:900+k,week:_slE287[k].w,opponentId:o.id,opponentName:o.n,isHome:_slE287[k].h,played:false,result:null,type:"euro_group",competition:_euTier287,opponentData:o});});});
             _updEuro7={active:true,competition:_euTier287,phase:"group",groupOpponents:_goE287,pts:0,groupResults:[],qualified:false,champion:false,eliminated:false,koResults:[],koRound:0};
-            _compLog7.push(`🌍 ${_sigE287}: il tuo nuovo club e' in Europa — sei nel girone`);
+            _compLog7.push(`🌍 ${_sigE287}: il tuo nuovo club è in Europa — sei nel girone`);
           }else if(_shufE287.length){
             /* girone gia' in corso: si entra dalla fase a eliminazione diretta, se la stagione ha ancora spazio */
             const _oppE287=_shufE287[0],_wkE287=Math.max(23,currentWeek+2);
@@ -6793,13 +6793,13 @@ const getThisWeekMatchday=()=>{
               <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6}}>Se scegli un numero nuovo, riprendi il wizard col tasto Avanza.</div>
             </div>)}
             {k==="addio"&&(<div>
-              <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>🏁 Hai <strong style={{color:TH.text}}>{player.age} anni</strong>. Nello spogliatoio nessuno lo chiede ad alta voce, ma la domanda gira: <strong style={{color:TH.text}}>e' l'ultima stagione?</strong> Annunciarlo adesso trasforma ogni partita in un saluto — ogni stadio vorra' salutarti.</div>
+              <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.5,marginBottom:8}}>🏁 Hai <strong style={{color:TH.text}}>{player.age} anni</strong>. Nello spogliatoio nessuno lo chiede ad alta voce, ma la domanda gira: <strong style={{color:TH.text}}>è l'ultima stagione?</strong> Annunciarlo adesso trasforma ogni partita in un saluto — ogni stadio vorra' salutarti.</div>
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 <Btn v="danger" fw onClick={()=>{setPlayer(p=>{const sn2=p.season||1;return{...p,retireAnnounced:sn2,retireAskedSeason:sn2,
                   morale:clamp((p.morale||70)+6,0,100),popularity:clamp((p.popularity||20)+8,0,100),
                   diary:[...(p.diary||[]),{season:sn2,week:p.week||1,type:"addio",e:"🏁",headline:"L'annuncio: e' l'ultima stagione",body:`«Ho dato tutto a questo sport. A fine stagione appendo gli scarpini.» Il mondo del calcio si ferma ad applaudire · S.${sn2}`,color:"#92400e"}].slice(-80),
                   log:[`🏁 L'ANNUNCIO: questa e' l'ultima stagione. Da oggi ogni partita e' un addio — il tour comincia.`,...(p.log||[])].slice(0,60)};});
-                  setTimeout(()=>notify("🏁 Annuncio fatto: il TOUR D'ADDIO comincia. Ogni stadio vorra' salutarti.","#b45309"),600);}}>📣 Annuncio il ritiro — questa e' l'ultima stagione</Btn>
+                  setTimeout(()=>notify("🏁 Annuncio fatto: il TOUR D'ADDIO comincia. Ogni stadio vorra' salutarti.","#b45309"),600);}}>📣 Annuncio il ritiro — questa è l'ultima stagione</Btn>
                 <Btn v="ghost" onClick={()=>setPlayer(p=>({...p,retireAskedSeason:p.season||1}))}>🔁 Non ancora — si gioca</Btn>
               </div>
             </div>)}
@@ -7422,7 +7422,7 @@ const getThisWeekMatchday=()=>{
           <div data-cpm="confronto23">
             <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:SP.sm}}>Il confronto</div>
             <div style={{display:"flex",alignItems:"center",gap:SP.md,marginBottom:SP.md}}>
-              <Figurina tipo="procuratore" chiave={_nm377} larg={52} col={TH.primary} /* [7.966] lo spazio del volto e' rettangolare verticale: oggi dentro c'e' il ripiego, domani la figurina *//>
+              <Figurina tipo="procuratore" chiave={_nm377} larg={52} col={TH.primary} /* [7.966] lo spazio del volto è rettangolare verticale: oggi dentro c'e' il ripiego, domani la figurina *//>
               <div><div style={{fontSize:FS.subhead,fontWeight:FW.bold,color:TH.text}}>{_nm377}</div>
                 <div style={{fontSize:FS.small,color:TH.muted}}>Il tuo procuratore · rapporto {agentRapportTier(player.agent.rapport)}</div></div>
             </div>
@@ -11326,7 +11326,7 @@ const getThisWeekMatchday=()=>{
         ))}
       </div>{/* [7.96.0] pulsante lingua rimosso (i18n rimandata) */}
       {/* 5.50.8: DONAZIONE su TUTTI i tab — striscia persistente sopra la barra di navigazione (link esterno, nessuna ricompensa in-app) */}
-      {!hideStrips&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione e' un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
+      {!hideStrips&&DONATION_URL&&<button onClick={openDonation} title="Sostieni lo sviluppo di Korward Elite" style={{width:"100%",padding:"4px 10px"/* [21/09 · PO «riduci in altezza il sostieni»] la striscia della donazione è un invito, non un comando: cede quota alla barra di navigazione, che invece si tocca */,border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.surface2,color:TH.brandText,cursor:"pointer",fontFamily:"inherit",fontSize:FS.small,fontWeight:800,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>☕ Sostieni lo sviluppo di <Wordmark size={13} color={TH.brandText} inRiga/></button>}
       {/* #6: IDEE & FEEDBACK — apre il client mail verso l'indirizzo del proprietario (offuscato, non in chiaro) */}
       {!hideStrips&&<button onClick={openFeedback} title="Invia idee e feedback allo sviluppatore" style={{width:"100%",padding:"4px 10px",border:"none",borderTop:"1px solid "+TH.cardBorder,background:TH.card,color:TH.text,cursor:"pointer",fontFamily:"inherit",fontSize:FS.caption,fontWeight:700,letterSpacing:.2,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>💡 Idee & Feedback — scrivici la tua</button>}
       <div className="cpm-nav-tabs" style={{background:TH.navBg,borderTop:"1px solid "+TH.cardBorder,overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>

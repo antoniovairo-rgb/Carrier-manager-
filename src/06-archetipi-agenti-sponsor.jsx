@@ -202,11 +202,11 @@ function _fmtWageY133(weeklyWage){
    inclinazioni che piu' avanti piegheranno consigli e opportunita'. `req` e' la soglia di
    carriera a cui quel procuratore ti prende in considerazione (§20). */
 const AGENT_ARCHETYPES=[
-  {id:"prudente",     nome:"Prudente",      desc:"Prima la continuita': minuti, fiducia, un posto sicuro.",
+  {id:"prudente",     nome:"Prudente",      desc:"Prima la continuità: minuti, fiducia, un posto sicuro.",
    forte:"stabilita' e minuti",        req:{pop:0,  val:0},    bias:{mercato:-0.35,soldi:-0.10,sponsor:-0.15,restare:0.40}},
-  {id:"economico",    nome:"Economico",     desc:"Il contratto prima di tutto: se vali di piu', devi guadagnare di piu'.",
+  {id:"economico",    nome:"Economico",     desc:"Il contratto prima di tutto: se vali di più, devi guadagnare di più.",
    forte:"contratti e stipendio",      req:{pop:12, val:1.5},  bias:{mercato:0.10, soldi:0.45, sponsor:0.05, restare:0.05}},
-  {id:"commerciale",  nome:"Commerciale",   desc:"La tua immagine e' un patrimonio: sa a chi farla vedere.",
+  {id:"commerciale",  nome:"Commerciale",   desc:"La tua immagine è un patrimonio: sa a chi farla vedere.",
    forte:"sponsor e immagine",         req:{pop:25, val:2.5},  bias:{mercato:0.05, soldi:0.20, sponsor:0.50, restare:0.05}},
   {id:"ambizioso",    nome:"Ambizioso",     desc:"Punta in alto e ha fretta: i grandi club, adesso.",
    forte:"grandi club",                req:{pop:35, val:6},    bias:{mercato:0.45, soldi:0.15, sponsor:0.10, restare:-0.30}},
@@ -220,7 +220,7 @@ const AGENT_ARCH_BY_ID=(id)=>AGENT_ARCHETYPES.find(a=>a.id===id)||null;
 const AGENT_AMBITIONS=[
   {id:"trofei",   label:"Vincere qualcosa di importante"},
   {id:"champions",label:"Arrivare in Champions"},
-  {id:"soldi",    label:"Guadagnare il piu' possibile"},
+  {id:"soldi",    label:"Guadagnare il più possibile"},
   {id:"titolare", label:"Giocare sempre, ovunque"},
   {id:"crescita", label:"Crescere come giocatore"},
   {id:"fama",     label:"Diventare un nome che tutti conoscono"},
@@ -310,21 +310,21 @@ function agentIntroOptions(p){
    ed e' la PRIMA prova, dentro la scena stessa, che quello che dici viene registrato (§5). */
 const AGENT_INTRO_REPLY={
   champions:"Allora sappiamo dove stiamo andando. Per arrivarci ti serve la vetrina giusta, e quella la scelgo io con te.",
-  trofei:"Vincere. Bene: e' l'unica cosa che alla fine resta scritta. Terro' d'occhio i club che lottano davvero per qualcosa.",
-  titolare:"Giocare. E' la richiesta piu' onesta che un giocatore possa farmi: senza campo non esiste il resto. Su questo non transigo.",
-  soldi:"Chiaro, e non c'e' niente di male a dirlo. Il mio lavoro e' che tu venga pagato per quello che vali, non un euro di meno.",
-  crescita:"Diventare piu' forte. Allora certe offerte le rifiuteremo insieme, anche quando faranno gola.",
+  trofei:"Vincere. Bene: è l'unica cosa che alla fine resta scritta. Terrò d'occhio i club che lottano davvero per qualcosa.",
+  titolare:"Giocare. È la richiesta più onesta che un giocatore possa farmi: senza campo non esiste il resto. Su questo non transigo.",
+  soldi:"Chiaro, e non c'e' niente di male a dirlo. Il mio lavoro è che tu venga pagato per quello che vali, non un euro di meno.",
+  crescita:"Diventare più forte. Allora certe offerte le rifiuteremo insieme, anche quando faranno gola.",
   fama:"Vuoi che il tuo nome pesi. Si costruisce dentro e fuori dal campo: della parte fuori mi occupo io.",
   nazionale:"La Nazionale. Si passa dalle prestazioni, ma anche dall'essere nel posto in cui ti guardano. Me lo segno.",
-  estero:"Cambiare aria. Ho i contatti giusti: quando sara' il momento, sapremo dove guardare.",
-  fedelta:"Restare. Se e' questo che vuoi, allora il mio lavoro e' farti stare qui alle condizioni che meriti.",
+  estero:"Cambiare aria. Ho i contatti giusti: quando sarà il momento, sapremo dove guardare.",
+  fedelta:"Restare. Se è questo che vuoi, allora il mio lavoro è farti stare qui alle condizioni che meriti.",
 };
 function agentIntroLine(p,name,ambId){
   const _n=name||"Il tuo procuratore";
   return{
     saluto:`Finalmente ci conosciamo. Ho seguito quello che hai fatto negli ultimi mesi e credo che ci sia molto margine per costruire qualcosa di importante.`,
-    ruolo:`Da oggi mi occupo io di proteggere i tuoi interessi e di aiutarti a scegliere le opportunita' migliori.`,
-    domanda:`Prima di iniziare, pero', voglio capire una cosa: che cosa vuoi davvero dalla tua carriera?`,
+    ruolo:`Da oggi mi occupo io di proteggere i tuoi interessi e di aiutarti a scegliere le opportunità migliori.`,
+    domanda:`Prima di iniziare, però, voglio capire una cosa: che cosa vuoi davvero dalla tua carriera?`,
     risposta:AGENT_INTRO_REPLY[ambId]||"Me lo segno. Da qui in avanti ragioniamo insieme.",
     nome:_n,
   };
@@ -366,15 +366,15 @@ function agentCheckinDue(p){
    il flag che il mercato gia' legge. Il procuratore non inventa un mercato suo: usa quello vero. */
 const AGENT_CHECKIN_OPTS=[
   {id:"felice", label:"Sto benissimo qui.",                       eff:{morale:4,rapport:5,nota:"restare"}},
-  {id:"ruolo",  label:"Sto bene, ma vorrei sentirmi piu' importante.", eff:{rapport:4,nota:"ruolo"}},
+  {id:"ruolo",  label:"Sto bene, ma vorrei sentirmi più importante.", eff:{rapport:4,nota:"ruolo"}},
   {id:"guardo", label:"Credo sia il momento di guardarci intorno.",    eff:{rapport:2,nota:"esplora",task:"cerca_offerte"}},
   {id:"via",    label:"Voglio cambiare completamente aria.",           eff:{rapport:1,morale:-2,nota:"partire",task:"cerca_offerte",listed:true}},
 ];
 const AGENT_CHECKIN_REPLY={
   felice:"Mi fa piacere sentirlo. Allora non ho fretta di muovermi: si costruisce da qui.",
-  ruolo:"Questo e' un discorso che posso fare io, e lo faro'. Il campo devi guadagnartelo, ma qualcuno deve anche ricordarglielo.",
+  ruolo:"Questo è un discorso che posso fare io, e lo farò. Il campo devi guadagnartelo, ma qualcuno deve anche ricordarglielo.",
   guardo:"Va bene. Giro il tuo nome con discrezione e vediamo chi si muove — senza forzare niente.",
-  via:"Ricevuto. Da adesso lavoro perche' tu abbia una scelta vera davanti, non la prima che capita.",
+  via:"Ricevuto. Da adesso lavoro perché tu abbia una scelta vera davanti, non la prima che capita.",
 };
 
 /* La domanda non e' mai generica: parte da cio' che il procuratore VEDE (i temi di `agentAdvice`,
@@ -384,16 +384,16 @@ function agentCheckinAsk(p,ag){
   const _p=p||{};const a=ag||_p.agent||null;
   const adv=(typeof agentAdvice==="function")?agentAdvice(_p,a):{temi:[],amb:[]};
   const amb=(adv.amb&&adv.amb[0])||null;
-  const AMB_TXT={champions:"vincere la Champions",trofei:"vincere qualcosa di importante",soldi:"guadagnare il piu' possibile",
-    titolare:"giocare sempre",crescita:"diventare piu' forte",fama:"farti un nome",nazionale:"vestire la maglia della Nazionale",
+  const AMB_TXT={champions:"vincere la Champions",trofei:"vincere qualcosa di importante",soldi:"guadagnare il più possibile",
+    titolare:"giocare sempre",crescita:"diventare più forte",fama:"farti un nome",nazionale:"vestire la maglia della Nazionale",
     estero:"provare un campionato straniero",fedelta:"restare legato a questo club"};
   const ricordo=amb?`Mi avevi detto che quello che volevi era ${AMB_TXT[amb]||"qualcosa di importante"}.`:null;
   let lettura="Ti seguo da un po' e volevo sentire la tua, prima di muovermi.";
-  if(adv.temi.indexOf("spazio")>=0)lettura="Secondo me il problema non e' il tuo rendimento: e' che non stai ricevendo lo spazio che meriti.";
-  else if(adv.temi.indexOf("rendimento")>=0)lettura="I numeri non stanno arrivando come speravamo. Non e' un dramma, ma va detto.";
+  if(adv.temi.indexOf("spazio")>=0)lettura="Secondo me il problema non è il tuo rendimento: è che non stai ricevendo lo spazio che meriti.";
+  else if(adv.temi.indexOf("rendimento")>=0)lettura="I numeri non stanno arrivando come speravamo. Non è un dramma, ma va detto.";
   else if(adv.temi.indexOf("scadenza")>=0)lettura="Il tuo contratto si avvicina alla fine, e queste sono le settimane in cui si decide.";
-  else if(adv.temi.indexOf("stipendio")>=0)lettura="Il tuo contratto non rispecchia piu' il giocatore che sei diventato.";
-  else if(adv.temi.indexOf("morale")>=0)lettura="Ti vedo giu'. Prima di parlare di mercato voglio capire da cosa dipende.";
+  else if(adv.temi.indexOf("stipendio")>=0)lettura="Il tuo contratto non rispecchia più il giocatore che sei diventato.";
+  else if(adv.temi.indexOf("morale")>=0)lettura="Ti vedo giù. Prima di parlare di mercato voglio capire da cosa dipende.";
   else if(adv.verso==="restare")lettura="Ti vedo bene, e la squadra gira. Non avrei fretta di muovermi.";
   return{apertura:"Abbiamo fatto parecchia strada negli ultimi mesi.",ricordo,lettura,
     domanda:"Dimmi sinceramente: sei felice qui?",opzioni:AGENT_CHECKIN_OPTS,temi:adv.temi};
@@ -470,10 +470,10 @@ function agentInitiative(p){
 }
 const AGENT_INIT_TXT={
   contratto:{scadenza:"Il tuo contratto si avvicina alla scadenza. Prima che lo facciano loro, voglio sapere cosa vuoi fare.",
-             stipendio:"Il tuo contratto non rispecchia piu' il giocatore che sei diventato. Secondo me e' il momento di parlarne."},
-  sponsor:{immagine:"Ho parlato con uno sponsor che secondo me e' perfetto per te: la tua immagine sta iniziando a valere davvero."},
+             stipendio:"Il tuo contratto non rispecchia più il giocatore che sei diventato. Secondo me è il momento di parlarne."},
+  sponsor:{immagine:"Ho parlato con uno sponsor che secondo me è perfetto per te: la tua immagine sta iniziando a valere davvero."},
   mercato1:{finestra:"Ti avviso: qualcuno si sta informando su di te. Niente di concreto per ora, ma volevo che lo sapessi da me."},
-  mercato2:{finestra:"Ho risentito chi si era mosso: l'interesse e' concreto. Non c'e' ancora niente sul tavolo, ma ci siamo vicini."},
+  mercato2:{finestra:"Ho risentito chi si era mosso: l'interesse è concreto. Non c'e' ancora niente sul tavolo, ma ci siamo vicini."},
 };
 function agentInitLine(kind,why){const g=AGENT_INIT_TXT[kind]||{};return g[why]||g[Object.keys(g)[0]]||"";}
 if(typeof window!=='undefined'){window.agentInitiative=agentInitiative;window.agentInitLine=agentInitLine;window.AGENT_INIT_TXT=AGENT_INIT_TXT;}
@@ -548,9 +548,9 @@ if(typeof window!=='undefined'){window.agentCandidates=agentCandidates;window.ag
   window.agentRapportDrift=agentRapportDrift;window.agentRapportAdvice=agentRapportAdvice;}
 
 const AGENT_HINT_TXT={
-  first:{t:"💼 Hai fatto un altro passo avanti.",b:"Ora puoi permetterti un Procuratore personale. Potra' aiutarti con mercato, contratti, sponsor e carriera."},
-  mercato:{t:"💼 Si e' aperto il mercato.",b:"Te ne avevo gia' parlato: con le trattative in corso, un procuratore al tuo fianco cambia molto."},
-  rinnovo:{t:"💼 Il tuo contratto sta per scadere.",b:"E' il momento in cui avere qualcuno che tratti per te vale di piu'."},
+  first:{t:"💼 Hai fatto un altro passo avanti.",b:"Ora puoi permetterti un Procuratore personale. Potrà aiutarti con mercato, contratti, sponsor e carriera."},
+  mercato:{t:"💼 Si è aperto il mercato.",b:"Te ne avevo già parlato: con le trattative in corso, un procuratore al tuo fianco cambia molto."},
+  rinnovo:{t:"💼 Il tuo contratto sta per scadere.",b:"È il momento in cui avere qualcuno che tratti per te vale di più."},
   interesse:{t:"💼 Qualcuno si sta muovendo per te.",b:"Ora che arrivano interessamenti, secondo me potrebbe essere il momento giusto."},
   sponsor:{t:"💼 La tua immagine inizia a valere.",b:"Con un procuratore quelle porte si aprono prima, e si aprono meglio."},
 };

@@ -400,7 +400,7 @@ function ThreeMatchView(props){
     try{const _gl535=renderer.domElement;
       if(typeof window!=='undefined'&&window.__CPM_NO535GL)throw new Error("rosso 7.535: nessun ascolto del contesto");/* prova del rosso: si torna al mondo pre-7.535 (perdita muta, nessun ripristino) */
       _gl535.addEventListener('webglcontextlost',(ev)=>{try{ev.preventDefault();}catch(_e){}
-        try{if(typeof window!=='undefined'){window.__CPM_GLLOST=(window.__CPM_GLLOST||0)+1;console.warn("[CPM-GL] contesto grafico perso: la scena verra' ricostruita al ripristino");}}catch(_e){}},false);
+        try{if(typeof window!=='undefined'){window.__CPM_GLLOST=(window.__CPM_GLLOST||0)+1;console.warn("[CPM-GL] contesto grafico perso: la scena verrà ricostruita al ripristino");}}catch(_e){}},false);
       _gl535.addEventListener('webglcontextrestored',()=>{try{if(typeof window!=='undefined'){window.__CPM_GLRESTORED=(window.__CPM_GLRESTORED||0)+1;window.dispatchEvent(new CustomEvent('cpm-gl-restored'));}}catch(_e){}},false);
     }catch(_e535){}
     mount.appendChild(renderer.domElement);
