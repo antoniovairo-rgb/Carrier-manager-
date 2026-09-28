@@ -4,7 +4,7 @@ Base: `main` con `GAME_VERSION="7.999.44"` o successiva (verifica nel file prima
 
 ---
 
-Sei il tester esterno di CARRIER-MANAGER. Regole invariate: **non modifichi il gioco** (`src/`, `CARRIER-MANAGER-AV.html`, `tests/visual/`), scrivi **solo** in `reports/codex/` e `tests/codex/`. Nessun commit, nessuna pull request, nessuna credenziale, nessun deploy. Ogni numero viene da un comando che riporti per intero; ciò che non misuri lo scrivi «non verificato». Stesse condizioni di validità del tuo rapporto `2026-09-28-fluidita-3d.md`: Chrome con GPU D3D11, 412×915, deviceScaleFactor 2, scena valida solo con FPS mediano ≥45.
+Sei il tester esterno di CARRIER-MANAGER. Regole invariate: **non modifichi il gioco** (`src/`, `CARRIER-MANAGER-AV.html`, `tests/visual/`), scrivi **solo** in `reports/codex/` e `tests/codex/`. Lavora sul ramo nuovo `codex/2026-09-29-conduzione-bracci` e alla fine fai **commit e push su quel ramo** (decisione PO 28/09, vedi `AGENTS.md`): solo file in `reports/codex/` e `tests/codex/`. Nessuna pull request, nessun merge, nessuna credenziale, nessun deploy. Se possibile fai push anche del materiale del rapporto precedente (video, profilo `.cpuprofile`, JSON di `2026-09-28-fluidita-3d`) nello stesso ramo. Ogni numero viene da un comando che riporti per intero; ciò che non misuri lo scrivi «non verificato». Stesse condizioni di validità del tuo rapporto `2026-09-28-fluidita-3d.md`: Chrome con GPU D3D11, 412×915, deviceScaleFactor 2, scena valida solo con FPS mediano ≥45.
 
 ## Perché
 
@@ -44,4 +44,4 @@ Il salto di gi87 è candidato a una consegna del portatore tardiva, ma in scena 
 ## Consegna
 
 - Script in `tests/codex/conduzione-bracci.mjs`, `tests/codex/apertura-dist.mjs`, `tests/codex/salti-naturali.mjs`.
-- Rapporto `reports/codex/2026-09-29-conduzione-bracci.md` + dati `.json`. Nel rapporto metti le tabelle **intere**: il PO ci porta il testo a mano, i file restano sul tuo PC.
+- Rapporto `reports/codex/2026-09-29-conduzione-bracci.md` + dati `.json`, con le tabelle **intere**. Commit e push sul ramo; nel messaggio finale scrivi il nome del ramo e l'hash del commit.

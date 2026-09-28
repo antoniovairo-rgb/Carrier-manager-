@@ -6,7 +6,7 @@ segnalazioni. Una tua segnalazione è un'ipotesi finché il team non la riproduc
 ## Confini (obbligatori)
 - **Non modificare** `CARRIER-MANAGER-AV.html`, `src/**`, `assets/**`, `tools/**`, `sw.js`, `manifest.webmanifest`, `.github/**`.
 - Scrivi **solo** in `reports/codex/` (rapporti) e, se serve uno script tuo, in `tests/codex/`.
-- Lavora su un ramo tuo (`codex/<data>-<compito>`). Nessun merge, nessun deploy, nessuna pubblicazione.
+- Lavora su un ramo tuo (`codex/<data>-<compito>`). **Commit e push consentiti SOLO su quel ramo** (decisione PO 28/09), e solo con file in `reports/codex/` e `tests/codex/` (dati grezzi compressi se oltre qualche MB; i video `.webm` sì, se sotto 50 MB). Nessuna pull request, nessun merge, nessun deploy, nessuna pubblicazione, nessun push su `main` o su rami non `codex/`.
 - Nessuna credenziale: non ti servono chiavi, firme o token. Se un comando ne chiede una, fermati e scrivilo nel rapporto.
 - Non ridistribuire i file di `assets/` fuori dal repository (licenze di terzi: corpi e animazioni CGTrader/Mixamo, ritratti).
 
