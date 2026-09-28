@@ -1722,7 +1722,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     if(_zoomDom184){el.style.overflowY="auto";el.style.paddingBottom="calc(28px + env(safe-area-inset-bottom,0px))";if(wr){wr.style.overflow="visible";wr.style.flex="0 0 auto";}}
     else{el.style.overflowY="hidden";el.style.paddingBottom="0px";if(wr){wr.style.overflow="hidden";wr.style.flex="1";}}
     return()=>{el.style.zoom="1.12";el.style.background="";el.style.overflowY="";el.style.paddingBottom="";if(wr){wr.style.overflow="";wr.style.flex="";}};},[phase,_zoomDom184]);
-  useEffect(()=>{phaseRef.current=phase;},[phase]);
+  const stagedRef45=useRef(false);/* [7.999.45 taccuino PO SIT #3 «001, eroe >= 43,3 u»] la scena ha messo in posizione l'eroe: finche' non si torna a 'playing' il motore non lo riscrive. Rosso __CPM_NO_STACCO45 */
+  useEffect(()=>{phaseRef.current=phase;if(phase==='playing')stagedRef45.current=false;},[phase]);
   // [7.150.0 direttiva PO «riprendere anche DENTRO la partita»] SNAPSHOT per la ripresa dopo background: su
   //   visibilitychange(hidden)/pagehide salvo clock+punteggio+momentum della partita in corso → se la WebView si
   //   ricarica (background mobile) si rientra in campo allo stesso minuto/punteggio (vedi CareerApp). SOLO contesti di
@@ -2334,7 +2335,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
       if(window.__CPM_RESEED)window.__CPM_RESEED(gi); // start position deterministica per indice
       _hlActionFiredRef.current=false; setOutcome(null); setChosenAct(null); pendingChainSitRef.current=null; pendingActionRef.current=null; _rvwChainArmRef.current=false;/* [7.227.0 #44] una nuova forzatura disinnesca la continuazione-catena della scena precedente */
       setSituations(SITUATIONS.slice());// [5.90.0] le CHAIN (assist-chance/dribbling) splice-ano l'array tra un force e l'altro → gli indici slittavano e la timeline confrontava sit diverse: riparti sempre dalla base statica // reset (consenti nuova risoluzione, niente azione "pending" residua che si auto-risolverebbe entrando in hl_choose)
-      setHlIdx(gi); const _sp224=ppos||getStartPos(sit)||{x:58,y:50}; setPPos(_sp224);// 5.43.1: ppos opzionale (Situation Test Mode → avanza l'eroe per rivelare le azioni rew=goal filtrate da px<55). Gate usa 2 arg → retro-compatibile.
+      setHlIdx(gi); const _sp224=ppos||getStartPos(sit)||{x:58,y:50}; setPPos(_sp224);stagedRef45.current=true;// 5.43.1: ppos opzionale (Situation Test Mode → avanza l'eroe per rivelare le azioni rew=goal filtrate da px<55). Gate usa 2 arg → retro-compatibile.
       stageSitPositions(sit,_sp224);/* [7.224.0] il wizard/gate entra a hl_choose saltando hl_intro: senza questa chiamata la scena forzata NON aveva regia posizionale (attori della scena a 30-43u dall'eroe) */
       cpmEmit("HighlightForced",{gi:gi,intent:sit.intent||null,zone:(sit.zones&&sit.zones[0])||null});// LMQP-1
       const mm=cappedMM(sit); const _dst=choose?"hl_choose":(mm===0&&!sit.lockMovement?"hl_choose":"hl_move");
@@ -3292,7 +3293,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                :(getStartPos(_curSit)||{x:(_sz.x[0]+_sz.x[1])/2,y:(_sz.y[0]+_sz.y[1])/2});
              if(typeof window!=='undefined'&&window.__CPM_CONT621!==undefined){try{const _c1=window.__CPM_CONT621;
                if(_c1.length<300)_c1.push({d:+Math.hypot(sp.x-_pv.x,sp.y-_pv.y).toFixed(1),in:_in?1:0,ch:_isChain?1:0});}catch(_e){}} }
-      setPPos(sp);
+      setPPos(sp);stagedRef45.current=true;
       stageSitPositions(situations[hlIdx],sp);/* [7.224.0] estratto in helper — lo chiama anche __CPM_FORCE_SIT */
     }
     // Coro folla all'ingresso del momento clou
@@ -4092,7 +4093,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           kickRef.current=_stM870.rete?Math.max(1,2-(_stM870.rete.t|0)):0;kickoffRef.current=_stM870.kickoff?1:0;
           if((kickRef.current|0)>0||(kickoffRef.current|0)>0){if(!ripT0Ref.current)ripT0Ref.current=Date.now();}
           {const _gc=_stM870.gioc;setMatchPlayers(prev=>{const _nx2=prev.map((pl,i2)=>{const q=_gc[i2];return (q&&pl&&pl.team!=="ref")?{...pl,x:q.x,y:q.y}:pl;});matchPlayersRef.current=_nx2;return _nx2;});}
-          if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current)setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});
+          if(_stM870.eroe&&_stM870.eroe.attivo&&!onBenchRef.current){if(stagedRef45.current&&!(typeof window!=='undefined'&&window.__CPM_NO_STACCO45)){if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _w45=(window.__CPM_STACCO45=window.__CPM_STACCO45||{evitate:0,ultima:null});_w45.evitate++;_w45.ultima={x:+_stM870.eroe.x.toFixed(1),y:+_stM870.eroe.y.toFixed(1),fase:phaseRef.current};}catch(_e45){}}}else{if(stagedRef45.current&&typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _w45=(window.__CPM_STACCO45=window.__CPM_STACCO45||{evitate:0,ultima:null});_w45.rosse=(_w45.rosse|0)+1;}catch(_e45){}}setPPos({x:_stM870.eroe.x,y:_stM870.eroe.y});}}/* [7.999.45] il motore non riscrive l'eroe gia' messo in scena (testimone __CPM_STACCO45: evitate / rosse) */
     };
     const iv=setInterval(()=>{
       // Sprint 34 — tactic moments + sub events (checked via clockRef, outside setClock)
@@ -4124,7 +4125,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            chiude sul confine del minuto: 22 passi ogni minuto, a qualunque velocita'. Gli SPECCHI (posizioni
            rese, pallone a schermo) restano legati alla fase: mentre la scena e' in onda il mondo continua a
            vivere, ma nessuno lo ridisegna sotto l'highlight. */
-          try{if(MOTORE870&&motoreRef.current&&(phaseRef.current==='playing'||!(typeof window!=='undefined'&&window.__CPM_NO966))){const _M=motoreRef.current;const _vivo966=(phaseRef.current==='playing');/* [22/09 testimone · sola lettura] QUANTI PASSI DI FISICA RICEVE OGNI MINUTO. Il motore ha un flusso di sorteggi CON STATO: se un minuto riceve un passo in piu' o in meno, tutto il seguito slitta. Il sotto-tick e' legato all'orologio da polso e salta quando c'e' una scena in corso — quindi il conto puo' cambiare da un giro all'altro. */if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{const _m=clockRef.current|0;window.__CPM_PASSI959[_m]=(window.__CPM_PASSI959[_m]|0)+1;}catch(_e959p){}}const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);_brain23(_ev);passi966Ref.current=(passi966Ref.current|0)+1;const _st=_M.stato();if(_vivo966)_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(_vivo966&&!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
+          try{if(MOTORE870&&motoreRef.current&&(phaseRef.current==='playing'||!(typeof window!=='undefined'&&window.__CPM_NO966))){const _M=motoreRef.current;const _vivo966=(phaseRef.current==='playing')&&(!stagedRef45.current||(typeof window!=='undefined'&&!!window.__CPM_NO_STACCO45));/* [7.999.45] niente specchi (eroe, compagni, pallone) sulla scena appena messa in posizione *//* [22/09 testimone · sola lettura] QUANTI PASSI DI FISICA RICEVE OGNI MINUTO. Il motore ha un flusso di sorteggi CON STATO: se un minuto riceve un passo in piu' o in meno, tutto il seguito slitta. Il sotto-tick e' legato all'orologio da polso e salta quando c'e' una scena in corso — quindi il conto puo' cambiare da un giro all'altro. */if(typeof window!=='undefined'&&window.__CPM_PASSI959){try{const _m=clockRef.current|0;window.__CPM_PASSI959[_m]=(window.__CPM_PASSI959[_m]|0)+1;}catch(_e959p){}}const _ev=_M.tick({min:(clockRef.current|0),dt:1/_SUB898,dec:_a912});/* [7.912 A9 v2] ogni battito DECIDE, non solo il primo del minuto */for(const _e of _ev)evAcc898Ref.current.push(_e);_brain23(_ev);passi966Ref.current=(passi966Ref.current|0)+1;const _st=_M.stato();if(_vivo966)_specchi898(_st,_ev);/* anche il pallone RESO segue il sotto-tick (7.896 v2: senza, ai piedi 63 % → 4 %) */if(_vivo966&&!_st.scena&&_st.poss.stato!=="volo")setBallPos(b=>({x:clamp(_st.palla.x,0,100),y:clamp(_st.palla.y,0,100)}));}}catch(_e898){}
         return;}
       /* [7.494.0 F0 — CHIUDE IL BORDO NON MISURATO DEL 7.489] Il 7.489 ha reso la cronaca funzione pura di
          (seed di partita, minuto) dentro il callback di `setClock`, dove vive `_rndM`. Ma i rami che girano
@@ -4491,7 +4492,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                     disegna il primo fotogramma in highlight la messa in scena e' gia' arrivata e lo scatto (testimone __CPM_SNAP42) e' sul punto
                     in entrambi i bracci. Sul telefono il ciclo di disegno puo' girare fra il commit che apre la scena e l'effetto che piazza il
                     pallone: e' la finestra che il taccuino del PO misura (32 campioni). Il giudice e' il telefono.] */
-                 try{if(_pick880&&_pick880.lockMovement&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA41)){const _sp41=getStartPos(_pick880);if(_sp41){preSp41Ref.current={k:hlIdx,sp:_sp41};setPPos(_sp41);ballPosRef.current={x:_sp41.x,y:_sp41.y};ballTargetRef.current={x:_sp41.x,y:_sp41.y};setBallPos({x:_sp41.x,y:_sp41.y});}}}catch(_e41){}
+                 try{if(_pick880&&_pick880.lockMovement&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA41)){const _sp41=getStartPos(_pick880);if(_sp41){preSp41Ref.current={k:hlIdx,sp:_sp41};setPPos(_sp41);stagedRef45.current=true;ballPosRef.current={x:_sp41.x,y:_sp41.y};ballTargetRef.current={x:_sp41.x,y:_sp41.y};setBallPos({x:_sp41.x,y:_sp41.y});}}}catch(_e41){}
                  _ORIG26=null;}
                else if(_og26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)){try{
                  const _ang26=_og26.kind==="angolo";
