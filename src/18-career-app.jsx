@@ -71,6 +71,15 @@ const _etichettaTurno957=(md)=>{
   }catch(_e){return "";}
 };
 
+/* [7.999.49 parte A] importi all'italiana per Club, Procuratore e Ufficio: «€11,4 mln», «€450 mila», «€800» */
+const _eur49=(v,dec)=>{v=Math.round(+v||0);const a=Math.abs(v),sg=v<0?"\u2212":"";
+  if(a>=1e6)return sg+"\u20ac"+(a/1e6).toLocaleString("it-IT",{maximumFractionDigits:dec==null?1:dec})+" mln";
+  if(a>=1000)return sg+"\u20ac"+(a/1000).toLocaleString("it-IT",{maximumFractionDigits:a<10000?1:0})+" mila";
+  return sg+"\u20ac"+a;};
+/* [7.999.49 parte A] il contratto detto in un modo solo: mai stagioni negative, e se e' scaduto lo dice */
+const _contratto49=(p)=>{const s=(p&&p.season)||1,exp=p&&p.contract&&p.contract.expiresAtSeason;if(!exp)return null;const left=exp-s;
+  if(left<0||(p&&p.contractExpired))return{scaduto:true,left:left,exp:exp,breve:"Contratto scaduto"};
+  return{scaduto:false,left:left,exp:exp,breve:"Scade a fine stagione "+exp+" ("+(left===0?"è l'ultima stagione":left+" "+(left===1?"stagione":"stagioni"))+")"};};
 function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLang,onNewGamePlusCB,onExitToMenu}){
   const L=LOCALE[lang]||LOCALE.IT;
   const _dk=window.innerWidth>=640; // desktop = keyboard hints visible
@@ -8949,6 +8958,9 @@ const getThisWeekMatchday=()=>{
           if(i===10)return{...pl,name:player.name,role:player.position||pl.role,jerseyNum:_jNum};
           return{...pl,jerseyNum:_numPool[_rni++]||i+1};
         });
+        /* [7.999.49 parte A] il titolare dello slot che prende l'eroe non sparisce: e' un compagno vero (lo spogliatoio
+           lo pesca da qui, syncTeammateNames) e va in panchina col primo numero libero */
+        if(_rosterRaw[10])roster.push({..._rosterRaw[10],jerseyNum:_numPool[_rni++]||24});
         const wage=player.contract?.wage||0;
         const exp=player.contract?.expiresAtSeason||((player.season||1)+1);
         const dur=player.contract?.duration||0;
@@ -8973,9 +8985,8 @@ const getThisWeekMatchday=()=>{
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontSize:FS.bodyLg,fontWeight:900,color:TH.text,lineHeight:"1.2"}}>{club.n||club.name}</div>
                   <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{club.nat||"🏳️"} {club.lg||"–"}</div>
-                  <div style={{fontSize:FS.body,marginTop:4}}>{"⭐".repeat(stars)}{"☆".repeat(Math.max(0,5-stars))}</div>
                   {currentStanding&&<div style={{fontSize:FS.caption,color:TH.brandText,marginTop:3}}>#{currentStanding.pos}/{currentStanding.total} in classifica · {currentStanding.pts}pt</div>}
-                  {(()=>{const pj=clubProject(player);return pj?<div style={{fontSize:FS.caption,color:pj.tone==="bad"?"#b45309":pj.tone==="good"?TH.txAmber:TH.muted,marginTop:3,fontWeight:700}}>{/* [7.265.0] colore per TONO: con gli stati nuovi il confronto sulle chiavi lasciava tutto grigio */}{pj.e} Progetto: {pj.t}{/* [7.28.0 ONDA 3 §S6] */}</div>:null;})()}
+                  {(()=>{const pj=clubProject(player);return pj?<div style={{fontSize:FS.caption,color:pj.tone==="bad"?"#b45309":pj.tone==="good"?TH.txAmber:TH.muted,marginTop:3,fontWeight:700}}>{/* [7.265.0] colore per TONO: con gli stati nuovi il confronto sulle chiavi lasciava tutto grigio */}{pj.e} {/progetto/i.test(pj.t)?pj.t:"Progetto: "+pj.t}{/* [7.28.0 ONDA 3 §S6] · [7.999.49 parte A] niente «Progetto: Progetto» */}</div>:null;})()}
                   {(()=>{/* [7.30.0 ONDA 5 §S11] il tuo legame con la curva + contestazione onesta */
                     const cv=curvaView(player);if(!cv)return null;
                     return(<div style={{marginTop:3}}>
@@ -8987,7 +8998,7 @@ const getThisWeekMatchday=()=>{
                 </div>
                 <div style={{textAlign:"center",flexShrink:0}}>
                   <div className="cpm-num" style={{fontSize:FS.h,fontWeight:FW.black,color:TH.txAmber}}>{prestige}</div>
-                  <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Prestige</div>
+                  <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Prestigio /100</div>{/* [7.999.49 parte A] un solo indicatore (le stelle ripetevano il numero) */}
                 </div>
               </div>
             </Card>
@@ -9008,22 +9019,22 @@ const getThisWeekMatchday=()=>{
               </div>
               {_evoCl&&(_evoCl.budget>0||_evoCl.stadiumTier>0)&&(<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:10,paddingTop:8,borderTop:`1px solid ${TH.cardBorder}`}}>
                 <div style={{fontSize:FS.caption,color:TH.faint}}>{_evoCl.stadiumTier>=2?"🏟️ Nuovo impianto":_evoCl.stadiumTier>0?"🏟️ Stadio ampliato":"💰 Tesoro del club"}</div>
-                <div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{_evoCl.budget>=1000000?(_evoCl.budget/1000000).toFixed(1)+"M\u20ac":Math.round(_evoCl.budget/1000)+"k\u20ac"}</div>
+                <div style={{fontSize:FS.small,fontWeight:700,color:TH.text}}>{_eur49(_evoCl.budget)}</div>
               </div>)}
             </Card></Fisarmonica>
 
             {/* [7.131.0 collaudo PO «gestire gli sponsor sulla maglia… aumentare i ricavi → grandi acquisti»] SPONSOR DI MAGLIA */}
             {(()=>{const _sp=(player.clubSponsor&&player.clubSponsor.clubId===(club.id||club.n))?player.clubSponsor:null;if(!_sp)return null;
-              const _fmtM=(a)=>a>=1000000?(a/1000000).toFixed(1)+"M\u20ac":Math.round(a/1000)+"k\u20ac";
+              const _fmtM=(a)=>_eur49(a);/* [7.999.49 parte A] formato unico «€2,7 mln» */
               const _left=Math.max(0,(_sp.until||0)-(player.season||1));
               return(<Fisarmonica id="s24-sponsor-di-maglia" titolo="Sponsor di maglia"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"7px 12px"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <div><div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text}}>{_sp.name}</div>
-                    <div style={{fontSize:FS.caption,color:TH.faint}}>Contratto · scade S.{_sp.until} · {_left} {_left===1?"stagione":"stagioni"} restanti</div></div>
+                    <div style={{fontSize:FS.caption,color:TH.faint}}>Scade a fine stagione {_sp.until}{_left>0?" ("+_left+" "+(_left===1?"stagione":"stagioni")+")":""}</div></div>
                   <div style={{textAlign:"right"}}><div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.bold,color:TH.txGreen}}>{_fmtM(_sp.annual)}</div>
-                    <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>/ anno al club</div></div>
+                    <div style={{fontSize:FS.caption,color:TH.faint}}>l'anno al club</div></div>
                 </div>
-                <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6,lineHeight:1.4}}>Versa nel budget mercato del club ogni stagione e PREMIA i traguardi (promozione, alta classifica) con un bonus → più fondi per grandi acquisti.</div>
+                <div style={{fontSize:FS.caption,color:TH.faint,marginTop:6,lineHeight:1.4}}>Porta {_fmtM(_sp.annual)} l'anno al mercato del club, più un bonus per promozione o alta classifica.</div>{/* [7.999.49 parte A] testo corto, niente maiuscolo gridato */}
               </Card></Fisarmonica>);})()}
 
             {/* [7.36.0 collaudo PO «nel Tab Club metterei anche lo storico dei piazzamenti nelle varie competizioni»]
@@ -9075,7 +9086,10 @@ const getThisWeekMatchday=()=>{
                 if(!d)return null;if(d.type==="cup_trophy")return"W";
                 const m=/eliminati ai\s+(R16|Ottavi|Quarti|Semifinal\w*|Final\w*)/i.exec(d.headline||"");
                 if(!m)return null;const k=m[1].toLowerCase();return k==="r16"||k.indexOf("ottavi")===0?1:k.indexOf("quarti")===0?2:k.indexOf("semi")===0?3:4;}catch(_e){return null;}};
-              return(<Fisarmonica id="club-storico" titolo={"Storico piazzamenti · "+_cnm29} quante={_rows29.length}><Card style={{padding:"7px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+              /* [7.999.49 parte A] nel titolo il riassunto: la sezione nasce chiusa e deve dire qualcosa anche cosi' */
+              const _pz49=_rows29.filter(r=>r.pos>0);const _best49=_pz49.length?Math.min(..._pz49.map(r=>r.pos)):0;const _last49=_rows29[0]&&_rows29[0].pos>0?_rows29[0].pos:0;
+              const _con49=_rows29.some(r=>r.a);
+              return(<Fisarmonica id="club-storico" titolo={"Piazzamenti"+(_best49?" · migliore "+_best49+"°":"")+(_last49?" · ultimo "+_last49+"°":"")} quante={null}><Card style={{padding:"7px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 
                 {_rows29.map((r,i)=>{
                   const a=r.a;
@@ -9097,28 +9111,17 @@ const getThisWeekMatchday=()=>{
                     <span className="cpm-num" style={{fontSize:FS.caption,fontWeight:FW.black,color:TH.faint,minWidth:26,flexShrink:0}}>S.{r.sn}</span>
                     {_mBg?<span className="cpm-num" style={{display:"inline-flex",width:18,height:18,borderRadius:RAD.pill,background:_mBg,color:TH_DARK.bg,alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:FW.black,flexShrink:0}}>{r.pos}</span>:<span className="cpm-num" style={{minWidth:18,textAlign:"center",fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,flexShrink:0}}>{r.pos>0?r.pos+"°":"—"}</span>}
                     <span style={{flex:1,fontSize:FS.caption,fontWeight:FW.semibold,color:_isCh?TH.txAmber:TH.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.league}{_isCh?" 🏆":""}{_prom36?" ⬆️":""}{_rel36?" ⬇️":""}{a?" 👤":""}</span>
-                    <span style={{fontSize:FS.caption,color:TH.faint,textAlign:"right",maxWidth:"46%",lineHeight:1.3}}>{_right}</span>
+                    {a?<span style={{fontSize:FS.caption,color:TH.faint,textAlign:"right",maxWidth:"46%",lineHeight:1.3}}>{_right}</span>:null}
                   </div>);})}
-                <div style={{fontSize:FS.caption,color:TH.faint,marginTop:7}}>👤 = stagioni con te in rosa · il resto dal registro della lega</div>
+                {_con49&&<div style={{fontSize:FS.caption,color:TH.faint,marginTop:7}}>👤 = stagioni con te in rosa (a destra coppa ed Europa; — = nessuna) · il resto dal registro della lega</div>}
               </Card></Fisarmonica>);})()}
 
-            {/* Contratto */}
-            <Fisarmonica id="s24-contratto" titolo="Contratto" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"7px 12px"}}>
-              <div style={{display:"flex",gap:8}}>
-                <div style={{flex:1,textAlign:"center",background:TH.cardBg,borderRadius:RAD.sm,padding:"8px 4px"}}>
-                  <div style={{fontSize:FS.body,fontWeight:900,color:TH.txGreen}}>{_fmtWageY133(wage)}</div>
-                  <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>/ anno</div>{/* [7.36.1 direttiva PO «lo stipendio deve essere indicato SOLO come annuale»] */}
-                </div>
-                <div style={{flex:1,textAlign:"center",background:TH.cardBg,borderRadius:RAD.sm,padding:"8px 4px"}}>
-                  <div style={{fontSize:FS.body,fontWeight:900,color:dur<=1?TH.txRed:TH.txAmber}}>S.{exp}</div>
-                  <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Scadenza</div>
-                </div>
-                <div style={{flex:1,textAlign:"center",background:TH.cardBg,borderRadius:RAD.sm,padding:"8px 4px"}}>
-                  <div style={{fontSize:FS.body,fontWeight:900,color:dur<=1?TH.txRed:TH.brandText}}>{dur}ann{dur===1?"o":"i"}</div>
-                  <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1}}>Durata</div>
-                </div>
-              </div>
-            </Card></Fisarmonica>
+            {/* Contratto — [7.999.49 parte A] per esteso solo nel Procuratore (dove si decide il rinnovo): qui una riga breve */}
+            {(()=>{const _c49=_contratto49(player);if(!_c49)return null;return(
+              <button onClick={()=>setTab("agente")} className="cpm-press" style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"8px 12px",background:TH.card,border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
+                <span style={{flex:1,minWidth:0,fontSize:FS.caption,color:_c49.scaduto||_c49.left<=0?TH.txRed:TH.muted}}><b style={{color:TH.text}}>Contratto:</b> {_c49.scaduto?"scaduto":_c49.breve.charAt(0).toLowerCase()+_c49.breve.slice(1)}</span>
+                <span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.brandText,flexShrink:0}}>Procuratore ›</span>
+              </button>);})()}
 
             {/* Allenatore — spostato da tab Agente (Sprint 122) */}
             {(()=>{
@@ -9136,14 +9139,10 @@ const getThisWeekMatchday=()=>{
                       <div style={{fontSize:FS.caption,color:TH.accentText,fontWeight:600,marginBottom:1}}>{player.coach?.style||"Bilanciato"}</div>
                       <div style={{fontSize:FS.caption,color:TH.muted,lineHeight:1.4}}>{_cs?.desc||"Approccio equilibrato"}</div>
                     </div>
-                    <div style={{textAlign:"center",flexShrink:0,background:TH.bg,borderRadius:RAD.sm,padding:"6px 10px"}}>
-                      <div style={{fontSize:FS.body,fontWeight:900,color:legCol944(_ctColor)}}>{_ct}</div>
-                      <div style={{fontSize:FS.caption,color:TH.faint}}>fiducia</div>
-                    </div>
                   </div>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-                    <div style={{fontSize:FS.caption,color:TH.muted}}>Rapporto attuale</div>
-                    <div style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_ctColor)}}>{_ctLabel}</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted}}>Fiducia del mister</div>{/* [7.999.49 parte A] una riga sola: numero e giudizio insieme */}
+                    <div className="cpm-num" style={{fontSize:FS.caption,fontWeight:700,color:legCol944(_ctColor)}}>{_ct}/100 ({_ctLabel.charAt(0)+_ctLabel.slice(1).toLowerCase()})</div>
                   </div>
                   <div style={{height:4,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}>
                     <div style={{height:"100%",width:`${_ct}%`,background:_ctColor,borderRadius:RAD.pill,transition:"width .4s"}}/>
@@ -9157,10 +9156,17 @@ const getThisWeekMatchday=()=>{
                 Al loro posto, accanto all'Allenatore, il box «Staff & Spogliatoio» (allenatore in 2ª/preparatore/chimica)
                 che prima era in fondo al Tab, sepolto sotto i 23 giocatori della rosa → sembrava sparito. */}
             {(player.proStatus||"u18")==="pro"&&(
-              <Fisarmonica id="s24-staff-spogliatoio" titolo="Staff & Spogliatoio"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
-                {[{l:"Preparatore",v:player.fitnessCoachRel||50,c:TH.energy,fx:"💨 +recupero fatica · cresce se arrivi riposato"},{l:"Vice-Mister",v:player.assistantCoachRel||50,c:TH.accent,fx:"📈 +efficacia allenamento · cresce con forma e voti alti"},{l:"Chimica Squadra",v:player.teamChemistry||60,c:TH.success,fx:"✨ +forma & morale · cresce vincendo"}].map(it=>(
+              <Fisarmonica id="s24-staff-spogliatoio" titolo="Staff tecnico"><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
+                {/* [7.999.49 parte A] scala /100 ed effetto di oggi in numeri, con le stesse formule del gioco
+                    (recupero fatica 12+(rel-50)/10 · vice-mister ×1,12/×1,04/×0,90 · chimica (c-50)/25 su forma e morale);
+                    la chimica passa sotto «Lo spogliatoio» quando ci sono i compagni */}
+                {(()=>{const _sg=(n)=>(n>0?"+":n<0?"\u2212":"+")+Math.abs(n);
+                  const _fr=Math.round(((player.fitnessCoachRel||50)-50)/10);
+                  const _ac=player.assistantCoachRel||50;const _am=_ac>=75?12:_ac>=60?4:_ac<=35?-10:0;
+                  const _ch=Math.round(((player.teamChemistry||60)-50)/25);
+                  return [{l:"Preparatore",v:player.fitnessCoachRel||50,c:TH.energy,fx:"💨 Recupero fatica "+_sg(_fr)+" a settimana · cresce se arrivi riposato"},{l:"Vice-mister",v:_ac,c:TH.accent,fx:"📈 Allenamenti "+_sg(_am)+"% · cresce con forma e voti alti"},...((player.teammates||[]).length>0?[]:[{l:"Chimica di squadra",v:player.teamChemistry||60,c:TH.success,fx:"✨ Forma e morale "+_sg(_ch)+" a settimana · cresce vincendo"}])];})().map(it=>(
                   <div key={it.l} style={{marginBottom:8}}>
-                    <Meter value={it.v} color={it.c} label={it.l} right={it.v} height={5} mb={2}/>
+                    <Meter value={it.v} color={it.c} label={it.l} right={it.v+"/100"} height={5} mb={2}/>
                     <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>{it.fx}</div>
                   </div>
                 ))}
@@ -9169,12 +9175,16 @@ const getThisWeekMatchday=()=>{
 
             {/* Rosa */}
             {(()=>{
-              const titolari=roster.slice(0,11);
-              const panchina=roster.slice(11);
               const _roleCat=r=>/portiere/i.test(r)?["P","#0891b2"]:/difensore|terzino|centrale/i.test(r)?["D","#2563eb"]:/mediano|centrocampista|mezzala|regista|interno/i.test(r)?["C","#16a34a"]:/trequartista|ala|centravanti|attaccante|punta|esterno/i.test(r)?["A","#dc2626"]:["·","#64748b"];
+              /* [7.999.49 parte A] «Jolly» e «Under-21» non sono ruoli di campo: ruolo in campo stabile (dal nome) + etichetta a parte */
+              const _campo49=pl=>{const r=pl.role||"";if(!/^(Jolly|Under-21)$/.test(r))return{r:r,tag:null};return{r:["Difensore","Centrocampista","Ala"][Math.abs(hashStr((pl.name||"x")+"_r49"))%3],tag:r==="Jolly"?"jolly":"U21"};};
+              /* [7.999.49 parte A] titolari in ordine di reparto e di numero: l'eroe resta evidenziato ma non finisce in coda */
+              const _ord49={P:0,D:1,C:2,A:3};
+              const titolari=roster.slice(0,11).sort((a,b)=>((_ord49[_roleCat(_campo49(a).r)[0]]??4)-(_ord49[_roleCat(_campo49(b).r)[0]]??4))||((a.jerseyNum||0)-(b.jerseyNum||0)));
+              const panchina=roster.slice(11);
               const renderRow=(pl,i,offset=0)=>{
                 const isMe=pl.name===(player.name||"");
-                const _rc=_roleCat(pl.role||"");
+                const _cp49=_campo49(pl);const _rc=_roleCat(_cp49.r||"");
                 // [7.1.0 collaudo PO «i compagni sono troppo scarsi rispetto all'eroe, verifica il bilanciamento OVR»]
                 //   la vecchia formula clamp(club.p±6,42,90) COLLASSAVA sul floor 42 per le squadre a basso prestigio
                 //   (Primavera club.p~30 → tutti 42-47 con eroe 68): baseline che SCALA col prestigio (40+p·0.48) +
@@ -9186,7 +9196,7 @@ const getThisWeekMatchday=()=>{
                     <span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,minWidth:16,textAlign:"center",fontWeight:FW.bold}}>{pl.jerseyNum||i+1+offset}</span>
                     <span style={{fontSize:FS.caption,fontWeight:FW.black,color:inkSu945(_rc[1]),background:_rc[1],borderRadius:RAD.xs,padding:"2px 0",width:17,textAlign:"center",flexShrink:0,letterSpacing:.3}}>{_rc[0]}</span>
                     <span style={{flex:1,minWidth:0,fontSize:FS.small,color:isMe?TH.brandText:TH.text,fontWeight:isMe?FW.bold:FW.regular,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{isMe?"★ ":""}{pl.name}</span>
-                    <span style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap"}}>{pl.role}</span>
+                    <span style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.3,whiteSpace:"nowrap"}}>{_cp49.r}{_cp49.tag?<span style={{marginLeft:4,padding:"0 4px",borderRadius:RAD.xs,background:TH.surface2,color:TH.muted,textTransform:"none"}}>{_cp49.tag}</span>:null}</span>
                     <span className="cpm-num" style={{fontSize:FS.body,fontWeight:FW.black,color:legCol944(ovc),minWidth:22,textAlign:"right"}}>{ov}</span>
                   </div>
                 );
@@ -9256,6 +9266,12 @@ const getThisWeekMatchday=()=>{
           {(player.teammates||[]).length>0&&(
             <Fisarmonica id="club-spogliatoio" titolo="Lo spogliatoio" quante={(player.teammates||[]).length} aperta={true}>{/* [7.992.0 PO «manca fisarmonica»] */}<Card style={{padding:`${SP.md}px ${SP.lg}px`,borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>{/* [23/09 POC — collaudo PO «metti le figurine dei compagni»] Card del kit (non piu' il blu notte) e figurina del compagno al posto dell'emoji */}
 
+              {(()=>{/* [7.999.49 parte A] la chimica di squadra vive qui, accanto ai compagni (era nello «Staff & Spogliatoio») */
+                const _ch=Math.round(((player.teamChemistry||60)-50)/25);
+                return(<div style={{marginBottom:10}}>
+                  <Meter value={player.teamChemistry||60} color={TH.success} label="Chimica di squadra" right={(player.teamChemistry||60)+"/100"} height={5} mb={2}/>
+                  <div style={{fontSize:FS.caption,color:TH.faint,marginTop:2}}>✨ Forma e morale {(_ch>0?"+":_ch<0?"\u2212":"+")+Math.abs(_ch)} a settimana · cresce vincendo</div>
+                </div>);})()}
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 {(player.teammates||[]).map((tm,i)=>{
                   const arc=TEAMMATE_ARCHETYPES.find(a=>a.id===tm.archetype);
@@ -9273,13 +9289,13 @@ const getThisWeekMatchday=()=>{
                           <div style={{fontSize:FS.caption,color:TH.muted}}>{arc?.name||"Compagno"} · <span style={{color:TH.text}}>{bondState(bond).e} {bondState(bond).l}</span>{/* [7.27.0 ONDA 2 §S3] stato leggibile del legame */}</div>
                         </div>
                         <div style={{textAlign:"right"}}>
-                          <div className="cpm-num" style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{bond}%</div>
-                          <div style={{display:"flex",gap:3,justifyContent:"flex-end",marginTop:2}}>
-                            <span style={{fontSize:FS.caption,padding:"1px 4px",borderRadius:RAD.xs,background:has50?TH.bgBlue:TH.surface2,color:has50?TH.txBlue:TH.faint}}>50%{has50?" ✓":""}</span>
-                            <span style={{fontSize:FS.caption,padding:"1px 4px",borderRadius:RAD.xs,background:has75?TH.bgBlue:TH.surface2,color:has75?TH.txBlue:TH.faint}}>75%{has75?" ✓":""}</span>
-                          </div>
+                          <div className="cpm-num" style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>Legame {bond}%</div>
                         </div>
                       </div>
+                      {/* [7.999.49 parte A] al posto delle due pillole mute: il prossimo traguardo e cosa porta (bond_bonus dell'archetipo, una tantum) */}
+                      {(()=>{const _nx=!has50?50:!has75?75:0;const bb=(arc&&arc.bond_bonus)||{};
+                        const _fx=[bb.form?"forma "+(bb.form>0?"+":"\u2212")+Math.abs(bb.form):null,bb.morale?"morale "+(bb.morale>0?"+":"\u2212")+Math.abs(bb.morale):null,bb.coachTrust?"fiducia del mister +"+bb.coachTrust:null,bb.fatigue?"fatica "+(bb.fatigue>0?"+":"\u2212")+Math.abs(bb.fatigue):null].filter(Boolean).join(", ");
+                        return <div style={{fontSize:FS.caption,color:TH.faint,marginLeft:44}}>{_nx?("Prossimo traguardo: "+_nx+"%"+(_fx?" (una volta: "+_fx+")":"")):"Traguardi 50% e 75% raggiunti"}</div>;})()}
                       {/* Sprint 69 — bond progress bar */}
                       <div style={{height:4,background:TH.track,borderRadius:RAD.pill,overflow:"hidden",marginLeft:44}}>
                         <div style={{height:"100%",width:`${bond}%`,background:bond>=75?TH.success:bond>=50?TH.primary:TH.faint,borderRadius:RAD.pill,transition:"width 0.4s ease"}}/>
@@ -10224,18 +10240,22 @@ const getThisWeekMatchday=()=>{
         var speechLine=lastRating>=8?"Sei il giocatore più richiesto sul mercato. Aspettiamo le offerte giuste.":lastRating>=7?"Momento positivo. Sto spingendo il tuo nome nei posti giusti.":lastRating>=6?"Rendimento regolare. Serve il salto di qualità per attirare top club.":lastRating>0?"Dobbiamo parlare. Le ultime prestazioni mi preoccupano.":"Sono qui per te. Dimmi i tuoi obiettivi per questa stagione.";
         // Contract stats
         var wage=player.contract?.wage||577;
-        var wageYear=_fmtWageY133(wage); // Sprint 133: formatted annual wage
+        var wageYear=_eur49(wage*52); // Sprint 133: formatted annual wage · [7.999.49 parte A] «€11,4 mln»
         var expiresS=player.contract?.expiresAtSeason||(player.season||1)+1;
         var seasonLeft=expiresS-(player.season||1);
-        var marketWage=_fmtWageY133(_ovrToWageWeekly133(player.ovr||65,player.club?.p||60)); // Sprint 133
+        var marketWage=_eur49(_ovrToWageWeekly133(player.ovr||65,player.club?.p||60)*52); // Sprint 133
         var isUnderpaid=(wage*52)<(_ovrToAnnualWage133(player.ovr||65)*0.80);
-        var isExpiringSoon=seasonLeft<=1;
+        /* [7.999.49 parte A] un contratto gia' scaduto si dice scaduto: mai stagioni negative, mai «in scadenza» */
+        var _c49=_contratto49(player);var isExpired49=!!(_c49&&_c49.scaduto);
+        var isExpiringSoon=!isExpired49&&seasonLeft<=1;
+        /* la base del rinnovo e' tetta a 1,25x la stima (openNegoModal): chi e' pagato sopra lo deve sapere */
+        var _cap49=_ovrToWageWeekly133(player.ovr||65,player.club?.p||60)*1.25;var isOverpaid49=!isExpired49&&wage>_cap49;
         // Agent tasks
         var TASKS=[
-          {k:"cerca_offerte",e:"🔍",l:"Cerca offerte",d:"Aumenta la probabilità di ricevere un'offerta nelle finestre di mercato"},
-          {k:"rinnovo",e:"📋",l:"Prepara rinnovo",d:"Negozia condizioni migliori: +10% stipendio al prossimo rinnovo"},
+          {k:"cerca_offerte",e:"🔍",l:"Cerca offerte",d:"Più probabilità di ricevere un'offerta: vale solo a mercato aperto (settimane 1–5 e 19–23)"},
+          {k:"rinnovo",e:"📋",l:"Prepara rinnovo",d:"+10% sull'offerta del prossimo rinnovo (si somma fino a +30%)"},
           {k:"immagine",e:"📣",l:"Costruisci immagine",d:"+4 popolarità questa settimana"},
-          {k:"silenzio",e:"🤐",l:"Silenzio stampa",d:"+6 fiducia allenatore questa settimana"},
+          {k:"silenzio",e:"🤐",l:"Silenzio stampa",d:"+6 fiducia del mister questa settimana"},
         ];
         var currentTask=player.agentTask;
         var taskDef=currentTask?TASKS.find(function(t){return t.k===currentTask;}):null;
@@ -10243,43 +10263,46 @@ const getThisWeekMatchday=()=>{
           <div style={{display:"flex",flexDirection:"column",gap:9,paddingBottom:8}}>
             {/* [5.81.0 BIL-3b] ECONOMIA — saldo accumulato + staff personale con costi/effetti reali */}
             {(!_uff13||tab==="ufficio")&&(player.proStatus||"u18")!=="u18"&&(
-              <Fisarmonica id="staff-patrimonio" titolo="Patrimonio e staff privato" aperta={true}>{/* [7.993.0 PO fisarmoniche ovunque] */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
-                <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:8}}>
-                  <div>
-                    <div className="cpm-num" style={{fontSize:FS.display,fontWeight:FW.black,color:TH.text,lineHeight:1.05}}>{(function(){var b=player.bankBalance||0;return b>=1000000?(b/1000000).toFixed(2)+"M€":Math.round(b/1000)+"k€";})()}</div>
-                  </div>
-                  {/* [7.83.0 collaudo PO «togli le ridondanze»] stipendio RIMOSSO da qui: già in «Situazione Contratto» sotto. Resta solo la nota della commissione agente (contesto del patrimonio). */}
-                  {player.hasAgent?<div style={{textAlign:"right",fontSize:FS.caption,color:TH.accentText,fontWeight:FW.semibold}}>🤵 Agente · −{player.agentStyle==='boutique'?8:10}% stipendio</div>:null}{/* [7.162.0 ECO-F7] la boutique paga l'8%: la UI diceva sempre 10 */}
+              <>{/* [7.999.49 parte A] tre fisarmoniche al posto di una: Patrimonio · Staff privato · Acquisti e investimenti */}
+              <Fisarmonica id="staff-patrimonio" titolo="Patrimonio" aperta={true}>{/* [7.993.0 PO fisarmoniche ovunque] */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
+                <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+                  <div style={{fontSize:FS.caption,color:TH.muted}}>Patrimonio:</div>
+                  <div className="cpm-num" style={{fontSize:FS.display,fontWeight:FW.black,color:TH.text,lineHeight:1.05}}>{_eur49(player.bankBalance||0,2)}</div>
                 </div>
-                {/* [7.989.0 Patrimonio F1] staff privato a tre livelli: − / + cambia il livello, il costo e l'effetto si leggono sulla riga */}
-                <div style={{fontSize:FS.caption,color:TH.muted,margin:"2px 0 4px"}}>Staff privato · costo settimanale totale <b className="cpm-num" style={{color:TH.text}}>{Math.round(staffCostTot24(player)/100)/10}k€</b></div>
+                {/* [7.999.49 parte A] la commissione del procuratore si legge in un punto solo: nella scheda Procuratore */}
+              </Card></Fisarmonica>
+              {/* [7.989.0 Patrimonio F1] staff privato a tre livelli: − / + cambia il livello, il costo e l'effetto si leggono sulla riga */}
+              <Fisarmonica id="uff-staff-privato" titolo="Staff privato" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
+                <div style={{fontSize:FS.caption,color:TH.muted,margin:"2px 0 4px"}}>{staffCostTot24(player)>0?<>Costo totale: <b className="cpm-num" style={{color:TH.text}}>{_eur49(staffCostTot24(player))}</b> a settimana</>:"Nessuno staff privato attivo."} Morale, forma e fatica si misurano su 100.</div>
                 {STAFF24.map(function(d){
                   var lv=staffLv24(player,d.k),mem=(typeof player[d.lv]==="number"&&player[d.lv]>=1)?Math.min(3,player[d.lv]|0):1;
                   var shown=lv||mem,c=staffCost24(player,d.k,shown);
                   var setLv=function(nl){nl=Math.max(0,Math.min(3,nl));setPlayer(function(p){var o={...p,[d.k]:nl>0};if(nl>0)o[d.lv]=nl;return o;});
-                    notify(nl>0?("✅ "+d.l+" · livello "+nl+" — "+d.fx[nl-1]+", "+Math.round(staffCost24(player,d.k,nl)/100)/10+"k€/sett."):("⏸️ "+d.l+" congedato — non paghi più il costo settimanale"),nl>0?TH.success:TH.muted);};
+                    notify(nl>0?("✅ "+d.l+" · livello "+nl+" — "+d.fx[nl-1]+", "+_eur49(staffCost24(player,d.k,nl))+" a settimana"):("⏸️ "+d.l+" congedato — non paghi più il costo settimanale"),nl>0?TH.success:TH.muted);};
                   var btn=function(txt,en,fn,lab){return <button aria-label={lab} disabled={!en} onClick={fn} style={{width:30,height:30,borderRadius:RAD.sm,border:"1px solid "+(en?TH.primary:TH.cardBorder),background:"transparent",color:en?TH.brandText:TH.muted,fontSize:FS.body,fontWeight:800,cursor:en?"pointer":"default",fontFamily:"inherit",opacity:en?1:0.45}}>{txt}</button>;};
                   return(
                     <div key={d.k} data-cpm={"staff24-"+d.k} data-lv={lv} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:700,color:TH.text}}>{d.l}
-                          <span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span></div>
-                        <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(d.fx[lv-1]+" · "+Math.round(c/100)/10+"k€/sett."):("Non attivo · con + livello "+shown+": "+d.fx[shown-1]+", "+Math.round(c/100)/10+"k€/sett.")}</div>
+                          <span aria-label={"livello "+lv+" di 3"} style={{display:"inline-flex",gap:3}}>{[1,2,3].map(function(i){return <span key={i} style={{width:7,height:7,borderRadius:4,background:i<=lv?TH.success:"transparent",border:"1px solid "+(i<=lv?TH.success:TH.cardBorder)}}/>;})}</span><span className="cpm-num" style={{fontWeight:600,color:TH.muted}}>Livello {lv}/3</span></div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>{lv?(d.fx[lv-1]+" · "+_eur49(c)+" a settimana"):("Non attivo. Livello "+shown+": "+d.fx[shown-1]+" · "+_eur49(c)+" a settimana")}</div>
                       </div>
                       <div style={{display:"flex",gap:5}}>{btn("−",lv>0,function(){setLv(lv-1);},"Abbassa "+d.l)}{btn("+",lv<3,function(){setLv(lv===0?mem:lv+1);},"Alza "+d.l)}</div>
                     </div>
                   );
                 })}
+              </Card></Fisarmonica>
+              <Fisarmonica id="uff-acquisti" titolo="Acquisti e investimenti" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                 {/* [7.990.0 Patrimonio F2] accademia col tuo nome */}
-                {(function(){var ac=player.academy24,co=academyCost24(player),k=function(v){return v>=1000000?(Math.round(v/100000)/10)+"M€":Math.round(v/1000)+"k€";};
+                {(function(){var ac=player.academy24,co=academyCost24(player),k=function(v){return _eur49(v);};
                   var bs={padding:"6px 12px",borderRadius:RAD.sm,border:"1px solid "+TH.primary,background:"transparent",color:TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit",minWidth:78,textAlign:"center"};
                   if(!ac)return(
                     <div data-cpm="accademia24" data-stato="assente" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
                       <span style={{fontSize:FS.bodyLg}}>🏫</span>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{academyName24(player)}</div>
-                        <div style={{fontSize:FS.caption,color:TH.muted}}>Un vivaio col tuo nome: a fine stagione esce un ragazzo, la piazza apprezza (popolarità). Fondazione {k(co.found)} · gestione {Math.round(co.week/100)/10}k€/sett.</div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>Un vivaio col tuo nome: a fine stagione esce un ragazzo, la piazza apprezza (popolarità). Costo d'apertura {k(co.found)} · gestione {k(co.week)} a settimana</div>
                       </div>
                       <button data-cpm="accademia24-fonda" onClick={function(){if((player.bankBalance||0)<co.found){notify("💸 Fondi insufficienti: fondare l'accademia costa "+k(co.found),TH.danger);return;}
                         setPlayer(function(p){var c=academyCost24(p);if((p.bankBalance||0)<c.found)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-c.found),academy24:{name:academyName24(p),founded:p.season||1,grads:[],tot:0,paused:false},log:["🏫 Hai fondato la "+academyName24(p)+" (stagione "+(p.season||1)+")",...(p.log||[])].slice(0,60)};});
@@ -10292,7 +10315,7 @@ const getThisWeekMatchday=()=>{
                         <span style={{fontSize:FS.bodyLg}}>🏫</span>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{ac.name||academyName24(player)} <span style={{fontWeight:600,color:TH.muted}}>· dalla stagione {ac.founded}</span></div>
-                          <div style={{fontSize:FS.caption,color:TH.muted}}>{ac.paused?"In pausa: nessun ragazzo a fine stagione, nessun costo":("Attiva · "+Math.round(co.week/100)/10+"k€/sett. · "+(ac.tot|0)+" ragazzi usciti")}</div>
+                          <div style={{fontSize:FS.caption,color:TH.muted}}>{ac.paused?"In pausa: nessun ragazzo a fine stagione, nessun costo":("Attiva · "+k(co.week)+" a settimana · "+(ac.tot|0)+" ragazzi usciti")}</div>
                         </div>
                         <button data-cpm="accademia24-pausa" onClick={function(){var np=!ac.paused;setPlayer(function(p){return p.academy24?{...p,academy24:{...p.academy24,paused:np}}:p;});notify(np?"⏸️ Accademia in pausa":"▶️ Accademia riaperta",np?TH.muted:TH.success);}} style={bs}>{ac.paused?"RIAPRI":"PAUSA"}</button>
                       </div>
@@ -10300,9 +10323,9 @@ const getThisWeekMatchday=()=>{
                     </div>);
                 })()}
                 {/* [7.992.0 Patrimonio F4] beni e stile di vita: acquisto una tantum, la piazza e il mister reagiscono */}
-                <div data-cpm="beni24" style={{padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
-                  <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:4}}>Beni e stile di vita</div>
-                  {BENI24.map(function(d){var own=(player.beni24||[]).indexOf(d.k)>=0,b=player.bankBalance||0,kk=d.c>=1000000?(d.c/1000000)+"M€":Math.round(d.c/1000)+"k€";
+                <div data-cpm="beni24" style={{padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>{/* [7.999.49 parte A] effetti letti su scala 100 */}
+                  <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:4}}>Beni e stile di vita <span style={{color:TH.faint}}>· morale e fiducia del mister su 100</span></div>
+                  {BENI24.map(function(d){var own=(player.beni24||[]).indexOf(d.k)>=0,b=player.bankBalance||0,kk=_eur49(d.c);
                     return(<div key={d.k} data-cpm={"bene24-"+d.k} data-own={own?1:0} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0"}}>
                       <span style={{fontSize:FS.bodyLg}}>{d.e}</span>
                       <div style={{flex:1,minWidth:0}}>
@@ -10317,7 +10340,7 @@ const getThisWeekMatchday=()=>{
                     </div>);})}
                 </div>
                 {/* [7.991.0 Patrimonio F3] investimento della stagione: somma vincolata, esito a fine stagione */}
-                {(function(){var iv=player.invest24,b=player.bankBalance||0,k=function(v){v=Math.abs(v);return v>=1000000?(Math.round(v/100000)/10)+"M€":Math.round(v/1000)+"k€";};
+                {(function(){var iv=player.invest24,b=player.bankBalance||0,k=function(v){return _eur49(Math.abs(v));};
                   var hist=(player.investHist24||[]),last=hist[hist.length-1];
                   var bs=function(on){return{padding:"6px 10px",borderRadius:RAD.sm,border:"1px solid "+(on?TH.primary:TH.cardBorder),background:on?TH.primary:"transparent",color:on?"#fff":TH.brandText,fontSize:FS.caption,fontWeight:800,cursor:"pointer",fontFamily:"inherit"};};
                   if(iv&&iv.amt>0){var d=INVEST24[iv.prof]||INVEST24.prudente;return(
@@ -10336,18 +10359,18 @@ const getThisWeekMatchday=()=>{
                         <span style={{fontSize:FS.bodyLg}}>📈</span>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>Investi un quarto del patrimonio{amt>=10000?(" · "+k(amt)):""}</div>
-                          <div style={{fontSize:FS.caption,color:TH.muted}}>{amt<10000?"Serve un patrimonio di almeno 40k€.":"Vincolato fino a fine stagione. Prudente +2/+5% · Bilanciato −4/+10% · Rischioso −20/+30%."}{last?(" Ultimo: "+(last.gain>=0?"+":"−")+k(last.gain)+" (S."+last.s+")."):""}</div>
+                          <div style={{fontSize:FS.caption,color:TH.muted}}>{amt<10000?"Serve un patrimonio di almeno €40 mila.":"Vincolato fino a fine stagione. Prudente +2/+5% · Bilanciato −4/+10% · Rischioso −20/+30%."}{last?(" Ultimo: "+(last.gain>=0?"+":"−")+k(last.gain)+" (S."+last.s+")."):""}</div>
                         </div>
                       </div>
                       {amt>=10000&&<div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:6,paddingLeft:30}}>{Object.keys(INVEST24).map(function(pr){var d=INVEST24[pr];return <button key={pr} data-cpm={"invest24-"+pr} onClick={function(){setPlayer(function(p){var a=Math.floor((p.bankBalance||0)*0.25/10000)*10000;if(p.invest24||a<10000)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-a),invest24:{prof:pr,amt:a,s:p.season||1}};});notify(d.e+" Investiti "+k(amt)+" · profilo "+d.l.toLowerCase()+": esito a fine stagione",TH.success);}} style={bs(false)}>{d.e} {d.l}</button>;})}</div>}
                     </div>);
                 })()}
-              </Card></Fisarmonica>
+              </Card></Fisarmonica></>
             )}
             {(_uff13&&tab==="ufficio")?((player.proStatus||"u18")==="u18"?<Card style={{padding:"20px",textAlign:"center",fontSize:FS.small,color:TH.muted}}>L'ufficio si apre col primo contratto da professionista: qui gestirai patrimonio, staff privato e investimenti.</Card>:null):!player.hasAgent?(
               <Card style={{padding:"20px",textAlign:"center"}}>
                 <div style={{marginBottom:8,display:"flex",justifyContent:"center",opacity:0.9}}><Figurina tipo="procuratore" chiave="procuratore-libero" larg={40}/></div>
-                <div style={{fontSize:FS.body,fontWeight:900,color:TH.text,marginBottom:6}}>Nessun agente</div>
+                <div style={{fontSize:FS.body,fontWeight:900,color:TH.text,marginBottom:6}}>Nessun procuratore</div>
                 <div style={{fontSize:FS.small,color:TH.muted,marginBottom:12,lineHeight:1.7}}>Un procuratore apre porte, negozia contratti migliori (+15%) e gestisce la tua immagine. <b style={{color:TH.text}}>Costa il 10% del tuo stipendio (8% con agenzia boutique).</b></div>
                 <Btn onClick={function(){const _fee=Math.max(500,Math.round(player.contract?.wage||0));if((player.bankBalance||0)<_fee){notify("💸 Fondi insufficienti: l'ingaggio costa "+_fee.toLocaleString("it-IT")+"€",TH.danger);return;}setAgentIntro({fee:_fee,amb:null});/* [7.376.0 R3] anche da qui si passa dalla scena del primo incontro */}} v="primary" fw style={{padding:"13px"}}>🤵 Ingaggia un procuratore</Btn>{/* [7.179.0 backlog #1] ONORARIO D'INGAGGIO una tantum (1 stipendio settimanale, min 500€, fondi richiesti): chiude il loop «ingaggia gratis → rinnovo ×1.15 → rescindi gratis» */}{/* [7.162.0 ECO-F8] piano scritto SUBITO all'ingaggio: il fallback per-render mostrava un piano fantasma sempre-verde senza verdetto */}
               </Card>
@@ -10360,26 +10383,56 @@ const getThisWeekMatchday=()=>{
                     mancavano — cosa pensa e come state insieme — e LASCIA INTATTO tutto ciò che c'era
                     sotto (piano stagionale, incarichi, sponsor, stile agenzia). Estendere, non
                     riscrivere: la §11 dice «senza rompere la UI esistente». */}
-                {player.agent&&(()=>{
-                  const _adv379=agentAdvice(player,player.agent);
-                  const _rt379=agentRapportTier(player.agent.rapport);
-                  const _rot379=agentRapportAdvice(player);
+                {/* [7.999.49 parte A] UN riquadro solo per la voce del procuratore, in testa: chi parla (nome e foto), il rapporto,
+                    la situazione, il consiglio con l'azione collegata e il piano della stagione. Prima parlava in tre
+                    punti (consiglio · piano dentro il contratto · «ti dice» in fondo) e il nome arrivava dopo. */}
+                {(()=>{
+                  const _ag49=player.agent||null;
+                  const _adv379=_ag49?agentAdvice(player,_ag49):{temi:[],verso:null};
+                  const _rt379=_ag49?agentRapportTier(_ag49.rapport):null;
+                  const _rot379=_ag49?agentRapportAdvice(player):null;
                   const _TEMA={spazio:"non stai ricevendo lo spazio che meriti",rendimento:"i numeri non stanno arrivando",
                     scadenza:"il contratto si avvicina alla scadenza",stipendio:"guadagni meno di quanto vali",
                     morale:"non ti vedo sereno",sponsor:"la tua immagine non la sta sfruttando nessuno"};
                   const _VERSO={cambiare:"Secondo me è il momento di guardarsi intorno.",restare:"Non avrei fretta di muovermi.",aspettare:"Per ora aspetterei, senza forzare niente."};
+                  /* il tema porta al compito che lo affronta (gli stessi quattro compiti qui sotto) */
+                  const _tema49=_adv379.temi[0];const _tk49={sponsor:"immagine",spazio:"cerca_offerte",stipendio:"rinnovo",scadenza:isExpired49?null:"rinnovo"}[_tema49];
+                  const _tkD49=_tk49?TASKS.find(t=>t.k===_tk49):null;
+                  const _nome1=agentName.split(" ")[0];
+                  const ap=(player.agentPlan&&player.agentPlan.season===(player.season||1))?player.agentPlan:agentPlanFor(player);
+                  const _v=player.value||0;const done=_v>=ap.target;
+                  const _span=(ap.target||0)-(ap.base||0);
+                  const pct=ap.hold||_span<=0?Math.min(100,Math.round((_v/Math.max(0.1,ap.target))*100)):Math.max(0,Math.min(100,Math.round(((_v-ap.base)/_span)*100)));
+                  const _gain=_v-(ap.base||0);
                   return(
-                  <Fisarmonica id="staff-consiglio" titolo="Il mio consiglio" aperta={true}>{/* [7.993.0 PO fisarmoniche ovunque] */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",marginBottom:8}}>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,marginBottom:9}}>
-                      <div style={{fontSize:FS.caption,color:_rt379==="conflittuale"?TH.txRed:TH.muted,fontWeight:700}}>rapporto {_rt379}</div>
+                  <Fisarmonica id="staff-consiglio" titolo={agentName+" ti dice"} aperta={true}>{/* [7.993.0 PO fisarmoniche ovunque] */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",marginBottom:8}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:9}}>
+                      <Figurina tipo="procuratore" chiave={agentName} larg={34} col={TH.primary}/>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{agentName}</div>
+                        {_rt379&&<div style={{fontSize:FS.caption,color:_rt379==="conflittuale"?TH.txRed:TH.muted,fontWeight:700}}>Rapporto con {_nome1}: {_rt379}</div>}
+                      </div>
                     </div>
+                    <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,marginBottom:7}}>«{speechLine}»</div>
                     {_adv379.temi.length>0&&(
-                      <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,marginBottom:7}}>«Guarda, {_TEMA[_adv379.temi[0]]||"c'è qualcosa di cui parlare"}.»</div>)}
-                    <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,fontWeight:700}}>«{_VERSO[_adv379.verso]}»</div>
+                      <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,marginBottom:7}}>«Guarda, {_TEMA[_tema49]||"c'è qualcosa di cui parlare"}.{_tkD49?" Assegnami «"+_tkD49.l+"» questa settimana.":""}»</div>)}
+                    {_tkD49&&(currentTask===_tkD49.k
+                      ?<div style={{fontSize:FS.caption,color:TH.txGreen,fontWeight:700,marginBottom:7}}>✓ «{_tkD49.l}» è il compito di questa settimana</div>
+                      :!currentTask&&<Btn v="ghost" style={{padding:"8px 10px",fontSize:FS.caption,marginBottom:7}} onClick={()=>{setPlayer(p=>({...p,agentTask:_tkD49.k}));notify("🤵 Compito assegnato: "+_tkD49.l,TH.primary);}}>{_tkD49.e} Assegna «{_tkD49.l}»</Btn>)}
+                    {_adv379.verso&&<div style={{fontSize:FS.small,color:TH.text,lineHeight:1.6,fontWeight:700}}>«{_VERSO[_adv379.verso]}»</div>}
                     {_rot379&&<div style={{marginTop:9,padding:"9px 10px",borderRadius:RAD.sm,background:"rgba(239,68,68,0.10)",fontSize:FS.caption,color:TH.text,lineHeight:1.6}}>«{_rot379.txt}»</div>}
-                    <div style={{marginTop:11,display:"flex",gap:8,flexWrap:"wrap"}}>
-                      <Btn v="ghost" style={{flex:"1 1 150px",padding:"10px",fontSize:FS.caption}} onClick={()=>setSw379("conferma")}>Cambia procuratore</Btn>
+                    {/* [7.40.0 §9.7] IL PIANO DEL PROCURATORE — [7.999.49 parte A] la barra misura dal punto di partenza, non dallo zero */}
+                    <div style={{marginTop:9,padding:"8px 10px",borderRadius:RAD.xs,background:TH.surface2,border:`1px solid ${TH.divider}`}}>
+                      <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:3}}>🤵 Obiettivo della stagione {player.season||1}</div>
+                      <div style={{fontSize:FS.caption,color:TH.text,marginBottom:4,lineHeight:1.4}}>{ap.hold?`«Difendiamo la valutazione: chiudere la stagione a ${_eur49(ap.target*1e6)}.»`:`«Ti porto da ${_eur49(ap.base*1e6)} a ${_eur49(ap.target*1e6)} entro fine stagione.»`}{done?" ✅":""}</div>
+                      <div style={{height:5,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:`${pct}%`,background:done?TH.success:TH.primary,borderRadius:RAD.pill}}/>
+                      </div>
+                      {!ap.hold&&_span>0&&<div className="cpm-num" style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>{(_gain<0?"\u2212":"+")+_eur49(Math.abs(_gain)*1e6)} su +{_eur49(_span*1e6)}</div>}
                     </div>
+                    {_ag49&&<div style={{marginTop:11,display:"flex",gap:8,flexWrap:"wrap"}}>
+                      <Btn v="ghost" style={{flex:"1 1 150px",padding:"10px",fontSize:FS.caption}} onClick={()=>setSw379("conferma")}>Cambia procuratore</Btn>
+                    </div>}
                   </Card></Fisarmonica>);})()}
                 {_sw379&&(()=>{
                   const _cand379=agentCandidates(player);
@@ -10430,20 +10483,22 @@ const getThisWeekMatchday=()=>{
                   </Modal>);})()}
                 <Fisarmonica id="staff-procuratore" titolo="Il tuo procuratore" aperta={true}>{/* [7.993.0 PO fisarmoniche ovunque] */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px"}}>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-                    <Figurina tipo="procuratore" chiave={agentName} larg={40} col={TH.primary}/>
                     <div style={{flex:1}}>
                       <div style={{fontSize:FS.body,fontWeight:900,color:TH.text}}>{agentName}</div>
-                      <div style={{fontSize:FS.caption,color:TH.muted}}>Agente Federale · Dal S.{Math.max(1,(player.season||1)-1)}</div>
-                      <button onClick={function(){setPlayer(function(p){return{...p,hasAgent:false,agentTask:null,agentRenewalBonus:0}/* [7.178.0 RC-12] la rescissione azzera il bonus rinnovo accumulato: sopravviveva e si applicava SENZA agente (exploit ingaggia→accumula→rescindi) */;});notify("✂️ Rapporto chiuso: stop alla commissione sullo stipendio (e ai bonus contrattuali).",TH.warning);}} style={{marginTop:4,background:"transparent",border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,color:TH.muted,fontSize:FS.caption,padding:"3px 8px",cursor:"pointer",fontFamily:"inherit"}}>✂️ Rescindi (stop 10%)</button>{/* [5.98.0 EC-10] l'agente non era licenziabile: costo perpetuo */}
+                      {/* [7.999.49 parte A] la data d'ingaggio e' quella memorizzata (agent.since); se manca non si inventa */}
+                      <div style={{fontSize:FS.caption,color:TH.muted}}>Procuratore{player.agent&&player.agent.since&&player.agent.since.s?" · dalla stagione "+player.agent.since.s:""}</div>
+                      <div style={{fontSize:FS.caption,color:TH.muted}}>Commissione: {player.agentStyle==='boutique'?8:10}% del tuo stipendio</div>
+                      <button onClick={function(){setPlayer(function(p){return{...p,hasAgent:false,agentTask:null,agentRenewalBonus:0}/* [7.178.0 RC-12] la rescissione azzera il bonus rinnovo accumulato: sopravviveva e si applicava SENZA agente (exploit ingaggia→accumula→rescindi) */;});notify("✂️ Rapporto chiuso: stop alla commissione sullo stipendio (e ai bonus contrattuali).",TH.warning);}} style={{marginTop:4,background:"transparent",border:"1px solid "+TH.cardBorder,borderRadius:RAD.xs,color:TH.muted,fontSize:FS.caption,padding:"3px 8px",cursor:"pointer",fontFamily:"inherit"}}>✂️ Licenzia il procuratore</button>{/* [5.98.0 EC-10] l'agente non era licenziabile: costo perpetuo */}
                     </div>
                     <div style={{background:txOpen?TH.winBg:TH.surface2,border:"1px solid "+(txOpen?TH.winBd:TH.divider),borderRadius:RAD.sm,padding:"6px 10px",textAlign:"center",flexShrink:0}}>
                       <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1}}>Mercato</div>
                       <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:txOpen?TH.winFg:TH.muted}}>{txOpen?"🟢 Aperto":"🔴 Chiuso"}</div>
+                      {!txOpen&&<div style={{fontSize:FS.caption,color:TH.muted}}>{week<19?"riapre alla sett. 19":"riapre a inizio stagione"}</div>}{/* [7.999.49 parte A] quando riapre */}
                     </div>
                   </div>
                   <div style={{background:TH.surface2,border:"1px solid "+TH.divider,borderRadius:RAD.sm,padding:"8px 10px"}}>
                     <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:1,textTransform:"uppercase",letterSpacing:1}}>Valore di mercato</div>
-                    <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.brandText}}>€{valStr}</div>
+                    <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.brandText}}>{_eur49(valRaw*1e6)}</div>
                   </div>
                 </Card></Fisarmonica>
                 {/* Allenatore — ora nel tab Club */}
@@ -10467,7 +10522,7 @@ const getThisWeekMatchday=()=>{
                           <div style={{fontSize:FS.caption,fontWeight:700,color:TH.txGreen}}>📋 Mettiti in lista transfer</div>
                           <div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>Più visibilità — ma il mister lo saprà</div>
                         </div>
-                        <div style={{fontSize:FS.caption,color:TH.txRed,fontWeight:600,flexShrink:0}}>−8 trust</div>
+                        <div style={{fontSize:FS.caption,color:TH.txRed,fontWeight:600,flexShrink:0}}>−8 fiducia del mister</div>
                       </button>
                     )}
                     {/* Genera offerta */}
@@ -10485,7 +10540,7 @@ const getThisWeekMatchday=()=>{
                       }}>🔍 Fai girare il nome — cerca offerta</Btn>
                     ):(
                       <div style={{padding:"8px 10px",borderRadius:RAD.sm,background:TH.surface2,border:"1px solid #d1fae5",fontSize:FS.caption,color:TH.muted,textAlign:"center"}}>
-                        ✅ Ricerca effettuata questa finestra · Prossima: {week>=19?"Estate S."+((player.season||1)+1):"Inverno W.19"}{/* [6.45.0 RC] parentesi: prima concatenava "S."+season+"1" (es. "S.31" invece di "S.4") */}
+                        ✅ Ricerca effettuata questa finestra · Prossima: {week>=19?"estate, stagione "+((player.season||1)+1):"inverno, sett. 19"}{/* [6.45.0 RC] parentesi: prima concatenava "S."+season+"1" (es. "S.31" invece di "S.4") */}
                       </div>
                     )}
                     {/* Sprint 68 — Rumor di Mercato */}
@@ -10529,50 +10584,36 @@ const getThisWeekMatchday=()=>{
                   </Card></Fisarmonica>
                 )}
                 {/* Contract status card */}
-                <Fisarmonica id="s24-situazione-contratto" titolo="Situazione Contratto" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",border:"1px solid "+(isExpiringSoon||isUnderpaid?TH.bdRed:TH.cardBorder)}}>
+                <Fisarmonica id="s24-situazione-contratto" titolo="Il tuo contratto" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",border:"1px solid "+(isExpired49||isExpiringSoon||isUnderpaid?TH.bdRed:TH.cardBorder)}}>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:8}}>
                     <div style={{background:TH.surface2,borderRadius:RAD.xs,padding:"7px 9px"}}>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>STIPENDIO ATTUALE</div>
-                      <div style={{fontSize:FS.body,fontWeight:800,color:TH.text}}>{wageYear}/anno</div>
+                      <div style={{fontSize:FS.body,fontWeight:800,color:TH.text}}>{wageYear} l'anno</div>
                     </div>
                     <div style={{background:TH.surface2,borderRadius:RAD.xs,padding:"7px 9px"}}>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>STIMA MERCATO</div>
-                      <div style={{fontSize:FS.body,fontWeight:800,color:isUnderpaid?TH.txRed:TH.txGreen}}>{marketWage}/anno</div>
+                      <div style={{fontSize:FS.body,fontWeight:800,color:isUnderpaid?TH.txRed:TH.txGreen}}>{marketWage} l'anno</div>
                     </div>
                     <div style={{background:TH.surface2,borderRadius:RAD.xs,padding:"7px 9px"}}>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>SCADENZA</div>
-                      <div style={{fontSize:FS.body,fontWeight:800,color:isExpiringSoon?TH.txRed:TH.text}}>S.{expiresS}{isExpiringSoon?" ⚠️":""}</div>
+                      <div style={{fontSize:FS.body,fontWeight:800,color:isExpired49||isExpiringSoon?TH.txRed:TH.text}}>Fine stagione {expiresS}{isExpiringSoon?" ⚠️":""}</div>
                     </div>
                     <div style={{background:TH.surface2,borderRadius:RAD.xs,padding:"7px 9px"}}>
                       <div style={{fontSize:FS.caption,color:TH.muted}}>STAGIONI RIMASTE</div>
-                      <div style={{fontSize:FS.body,fontWeight:800,color:seasonLeft<=1?TH.txRed:TH.text}}>{seasonLeft} stagion{seasonLeft===1?"e":"i"}</div>
+                      <div style={{fontSize:FS.body,fontWeight:800,color:isExpired49||seasonLeft<=1?TH.txRed:TH.text}}>{isExpired49?"Contratto scaduto":seasonLeft===0?"Ultima stagione":seasonLeft+" stagion"+(seasonLeft===1?"e":"i")}</div>
                     </div>
                   </div>
-                  {(isExpiringSoon||isUnderpaid)&&(
-                    <div style={{padding:"6px 10px",borderRadius:RAD.xs,background:isExpiringSoon?TH.bgRed:TH.bgAmber,border:"1px solid "+(isExpiringSoon?TH.bdRed:TH.bdAmber),fontSize:FS.caption,color:isExpiringSoon?TH.txRed:TH.txAmber,fontWeight:600}}>
-                      {isExpiringSoon&&!isUnderpaid?"⚠️ Contratto in scadenza — usa il task Prepara rinnovo!":isUnderpaid&&!isExpiringSoon?"💸 Sei sottopagato rispetto al mercato. L'agente può aiutarti.":"⚠️ Contratto in scadenza e stipendio sotto mercato!"}
+                  {(isExpired49||isExpiringSoon||isUnderpaid)&&(
+                    <div style={{padding:"6px 10px",borderRadius:RAD.xs,background:isExpired49||isExpiringSoon?TH.bgRed:TH.bgAmber,border:"1px solid "+(isExpired49||isExpiringSoon?TH.bdRed:TH.bdAmber),fontSize:FS.caption,color:isExpired49||isExpiringSoon?TH.txRed:TH.txAmber,fontWeight:600}}>
+                      {isExpired49?"⛔ Contratto scaduto: serve un nuovo accordo.":isExpiringSoon&&!isUnderpaid?"⚠️ Contratto in scadenza: assegna il compito «Prepara rinnovo».":isUnderpaid&&!isExpiringSoon?"💸 Sei sottopagato rispetto al mercato: il procuratore può aiutarti.":"⚠️ Contratto in scadenza e stipendio sotto il mercato."}
                     </div>
                   )}
+                  {isOverpaid49&&<div style={{marginTop:6,fontSize:FS.caption,color:TH.muted,lineHeight:1.45}}>Sei pagato sopra il mercato: al rinnovo la base della trattativa scende a {_eur49(_cap49*52)} l'anno (prima dei bonus del procuratore).</div>}
                   {/* [6.84.0 collaudo PO «il pulsante rinnova o va eliminato o portato nel Tab agente»] CTA rinnovo
                       SPOSTATA qui dal sottotab Profilo — stessa guardia (ultimo anno, entro W35, non svincolato/in prestito, non già rinnovato) */}
                   {(player.contract?.duration||2)<=1&&week<=35&&!player.contractExpired&&(player.renewalSeason||0)!==(player.season||1)&&!player.loan&&(
                     <Btn onClick={openNegoModal} v="primary" fw style={{marginTop:8}}>📋 Negozia rinnovo</Btn>
                   )}
-                  {/* [7.40.0 §9.7] IL PIANO DEL PROCURATORE — target di valutazione per la stagione */}
-                  {(()=>{
-                    const ap=(player.agentPlan&&player.agentPlan.season===(player.season||1))?player.agentPlan:agentPlanFor(player);
-                    const _f=(v)=>v>=1?String(Math.round(v*10)/10)+"M":Math.round(v*1000)+"k";
-                    const done=(player.value||0)>=ap.target;
-                    const pct=Math.min(100,Math.round(((player.value||0)/Math.max(0.1,ap.target))*100));
-                    return(
-                    <div style={{marginTop:8,padding:"8px 10px",borderRadius:RAD.xs,background:TH.surface2,border:`1px solid ${TH.divider}`}}>
-                      <div style={{fontSize:FS.caption,color:TH.muted,letterSpacing:1,marginBottom:3}}>🤵 IL PIANO DEL PROCURATORE — S.{player.season||1}</div>
-                      <div style={{fontSize:FS.caption,color:TH.text,marginBottom:4,lineHeight:1.4}}>{ap.hold?`«Difendiamo la valutazione: chiudere la stagione a €${_f(ap.target)}.»`:`«Ti porto da €${_f(ap.base)} a €${_f(ap.target)} entro fine stagione.»`}{done?" ✅":""}</div>
-                      <div style={{height:5,background:TH.track,borderRadius:RAD.pill,overflow:"hidden"}}>
-                        <div style={{height:"100%",width:`${pct}%`,background:done?TH.success:TH.primary,borderRadius:RAD.pill}}/>
-                      </div>
-                    </div>);
-                  })()}
                   {(player.agentRenewalBonus||0)>0&&(
                     <div style={{marginTop:6,padding:"5px 9px",borderRadius:RAD.xs,background:TH.bgBlue,border:"1px solid #bfdbfe",fontSize:FS.caption,color:TH.brandText,fontWeight:600}}>
                       🤵 Bonus rinnovo accumulato: +{Math.round((player.agentRenewalBonus||0)*100)}% — verrà applicato al prossimo rinnovo
@@ -10607,7 +10648,7 @@ const getThisWeekMatchday=()=>{
                         </div>
                       ):(
                         <div>
-                          <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:8,lineHeight:1.5}}>Incarica il tuo agente di presentare una richiesta formale di cessione al club. La risposta arriverà entro 2 settimane.</div>
+                          <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:8,lineHeight:1.5}}>Chiedi al tuo procuratore di presentare al club una richiesta formale di cessione. La risposta arriva entro 2 settimane; le offerte arrivano solo a mercato aperto (settimane 1–5 e 19–23).</div>
                           {/* E-2: preference chips */}
                           <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6,fontWeight:600}}>Preferenza destinazione:</div>
                           <div style={{display:"flex",gap:6,marginBottom:8}}>
@@ -10624,7 +10665,7 @@ const getThisWeekMatchday=()=>{
                             var _pref=transferPref==="any"?null:transferPref==="ambizioso"?{mode:"prestige",prestigeTarget:Math.min(99,(player.club?.p||65)+15)}:{mode:"prestige",prestigeTarget:85};
                             setPlayer(function(p){return{...p,transferRequest:{season:p.season||1,week:p.week||1,status:"pending",pref:_pref,club:(p.club&&p.club.id)||""}/* [7.282.0 collaudo PO «è rimasto il richiedi cessione di due squadre fa!»] la richiesta porta il club: è una faccenda con QUELLA società */,coachTrust:clamp((p.coachTrust||60)-10,0,100)};});
                             notify("🚪 Richiesta di cessione inviata. −10 fiducia mister.",TH.warning);
-                          }}>🚪 Richiedi Cessione</Btn>
+                          }}>🚪 Richiedi la cessione</Btn>
                           <div style={{fontSize:FS.caption,color:TH.muted,marginTop:6,textAlign:"center"}}>Attenzione: riduce la fiducia del mister (−10)</div>
                         </div>
                       )}
@@ -10663,22 +10704,22 @@ const getThisWeekMatchday=()=>{
                   );
                 })()}
                 {/* Agent task card */}
-                <Fisarmonica id="agente-task" titolo="Task settimanale" quante={null} aperta><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
+                <Fisarmonica id="agente-task" titolo="Compito della settimana" quante={null} aperta><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                   
                   {currentTask?(
                     <div>
                       <div style={{padding:"7px 11px",borderRadius:RAD.sm,background:TH.bgBlue,border:"1px solid #bfdbfe",marginBottom:8}}>
-                        <div style={{fontSize:FS.small,fontWeight:700,color:TH.brandText}}>{taskDef?taskDef.e+" "+taskDef.l:"Task assegnato"}</div>
+                        <div style={{fontSize:FS.small,fontWeight:700,color:TH.brandText}}>{taskDef?taskDef.e+" "+taskDef.l:"Compito assegnato"} <span style={{fontSize:FS.caption,color:TH.txGreen}}>✓ Attivo questa settimana</span></div>
                         <div style={{fontSize:FS.caption,color:TH.muted,marginTop:2}}>{taskDef?taskDef.d:"In esecuzione..."}</div>
                       </div>
                       <div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center"}}>✅ Risultato all'avanzamento settimana</div>
                     </div>
                   ):(
                     <div>
-                      <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:8}}>Assegna un compito all'agente per questa settimana:</div>
+                      <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:8}}>Scegli il compito del tuo procuratore per questa settimana:</div>
                       <div style={{display:"flex",flexDirection:"column",gap:6}}>
                         {TASKS.map(function(t){return(
-                          <button key={t.k} onClick={function(){setPlayer(function(p){return{...p,agentTask:t.k};});notify("🤵 Task assegnato: "+t.l,TH.primary);}} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"9px 10px",borderRadius:RAD.sm,border:"1px solid "+TH.cardBorder,background:TH.surface2,cursor:"pointer",textAlign:"left",fontFamily:"inherit",width:"100%"}}>
+                          <button key={t.k} onClick={function(){setPlayer(function(p){return{...p,agentTask:t.k};});notify("🤵 Compito assegnato: "+t.l,TH.primary);}} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"9px 10px",borderRadius:RAD.sm,border:"1px solid "+TH.cardBorder,background:TH.surface2,cursor:"pointer",textAlign:"left",fontFamily:"inherit",width:"100%"}}>
                             <span style={{fontSize:FS.subhead,flexShrink:0,lineHeight:1.1}}>{t.e}</span>
                             <div>
                               <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>{t.l}</div>
@@ -10692,17 +10733,13 @@ const getThisWeekMatchday=()=>{
                 </Card></Fisarmonica>
                 {/* Active offer — agent opinion */}
                 {transferOffer&&!transferOffer.isRenewal&&(
-                  <Fisarmonica id="s24-opinione-agente-offerta-atti" titolo="Opinione agente — Offerta attiva" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}}>
+                  <Fisarmonica id="s24-opinione-agente-offerta-atti" titolo="Parere del procuratore — offerta attiva" aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",background:TH.bgBlue,border:"1px solid #bfdbfe"}}>
                     <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.6,fontStyle:"italic"}}>
                       «{(transferOffer.club?.p||60)>=(player.club?.p||60)+10?"Questa offerta è un salto di qualità. Vale la pena valutarla seriamente.":(transferOffer.wage||500)>(player.contract?.wage||500)*1.20?"Lo stipendio è nettamente superiore. Dal punto di vista economico, è interessante.":transferOffer.minutaggio>=80?"Il minutaggio garantito è ottimo per il tuo sviluppo. Considerala.":"È un'offerta nella norma. Dipende dalle tue ambizioni."}»
                     </div>
                   </Card></Fisarmonica>
                 )}
-                {/* Agent speech */}
-                <Card style={{padding:"9px 12px"}}>
-                  <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>{agentName.split(" ")[0]} ti dice:</div>
-                  <div style={{fontSize:FS.caption,color:TH.faint,fontStyle:"italic",lineHeight:1.6}}>«{speechLine}»</div>
-                </Card>
+                {/* Agent speech — [7.999.49 parte A] spostato nel riquadro «ti dice» in testa */}
               </div>
             )}
           </div>
