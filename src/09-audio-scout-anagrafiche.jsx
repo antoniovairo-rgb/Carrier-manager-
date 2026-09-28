@@ -575,15 +575,15 @@ async function generateHighlightCommentary(situation,action,result,playerStats,z
 const SCOUT_EXPLOITS=[
   {key:"cross",  cat:"def",fam:"Cross tesi dal fondo",   rx:/cross|traversone|fondo|secondo palo|pennell|in mezzo|crossa/i, tip:"la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."},
   {key:"through",cat:"def",fam:"Palle filtranti",        rx:/filtrant|vertical|profondit|imbucat|lancio|apertura|dietro la linea|in verticale/i, tip:"si abbassano tardi in transizione: verticalizza dietro la difesa."},
-  {key:"dribble",cat:"def",fam:"Dribbling nell'1v1",     rx:/dribbl|salta l'uomo|punta l'uomo|1v1|uno contro uno|finta|salta il|elude/i, tip:"i terzini si fanno saltare: punta l'uomo nell'uno-contro-uno sulla trequarti."},
+  {key:"dribble",cat:"def",fam:"Dribbling",     rx:/dribbl|salta l'uomo|punta l'uomo|1v1|uno contro uno|finta|salta il|elude/i, tip:"i terzini si fanno saltare: punta l'uomo sulla trequarti."},
   {key:"header", cat:"def",fam:"Gioco aereo",            rx:/testa|incornata|stacco|di petto|colpo di testa/i, tip:"sono deboli in mezzo all'area: attacca di testa quando arriva il cross."},
   {key:"power",  cat:"gk", fam:"Tiri potenti",           rx:/potent|bordata|sassata|cannonata|di potenza|forte|di prima|secco/i, tip:"il portiere è insicuro: quando puoi, calcia forte e teso."},
   {key:"finesse",cat:"gk", fam:"Scavetto e tiro a giro", rx:/scavett|cucchiaio|pallonett|a giro|d'esterno|piazzat|preciso|sul palo|angolin/i, tip:"il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."},
 ];
 const SCOUT_SOLID=[
-  {key:"aerial", strDesc:"Reparto arretrato dominante nel gioco aereo", rx:/testa|incornata|stacco|cross alto/i, tip:"attenzione: sono forti di testa, evita i palloni alti e gioca basso."},
-  {key:"press",  strDesc:"Pressing alto e organizzato",                 rx:/tiene palla|palleggia|controlla|aspetta|gestisce|temporeggia/i, tip:"attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."},
-  {key:"tackle", strDesc:"Centrocampo fisico e aggressivo nei contrasti",rx:/contrasto|duello|forza|fisic|spalla|protegge/i, tip:"attenzione: centrocampo fisico, evita i duelli e gioca sul movimento."},
+  {key:"aerial", strDesc:"Reparto arretrato dominante nel gioco aereo", rx:/testa|incornata|stacco|cross alto/i, tip:"sono forti di testa: evita i palloni alti e gioca basso."},
+  {key:"press",  strDesc:"Pressing alto e organizzato",                 rx:/tiene palla|palleggia|controlla|aspetta|gestisce|temporeggia/i, tip:"pressano alto: non tenere palla, scarica veloce."},
+  {key:"tackle", strDesc:"Centrocampo fisico e aggressivo nei contrasti",rx:/contrasto|duello|forza|fisic|spalla|protegge/i, tip:"centrocampo fisico: evita i duelli e gioca sul movimento."},
 ];
 function oppMatchProfile(club,season){
   const seed=Math.abs(hashStr(((club&&(club.id||club.n))||"x")+"|scout|"+(season||1)))>>>0;

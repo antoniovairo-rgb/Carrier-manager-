@@ -104,9 +104,10 @@ function ScoutReportScreen({report,opponent,onClose,loading}){
             <div style={{fontSize:FS.caption,color:TH.muted}}>{l}</div></div>))}</div>
       </Card>)}
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
-        <SectionHeader>Da sfruttare</SectionHeader>
-        {(report.weaknesses||[]).map((w,i)=><Riga key={i} t={w} c={TH.success}/>)}
-        <SectionHeader style={{marginTop:SP.md}}>Da neutralizzare</SectionHeader>
+        {/* [7.999.49 parte A] «Da sfruttare» ripeteva i consigli già letti nel pre-partita (exploits): qui solo se il pre-partita non li ha mostrati */}
+        {!(report.exploits&&report.exploits.length)&&<><SectionHeader>Da sfruttare</SectionHeader>
+        {(report.weaknesses||[]).map((w,i)=><Riga key={i} t={w} c={TH.success}/>)}</>}
+        <SectionHeader style={{marginTop:(report.exploits&&report.exploits.length)?0:SP.md}}>Da neutralizzare</SectionHeader>
         {(report.strengths||[]).map((w,i)=><Riga key={i} t={w} c={TH.warning}/>)}
       </Card>
       <Card style={{padding:`${SP.md}px ${SP.lg}px`}}>
@@ -485,7 +486,7 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
       <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.xs,lineHeight:1.25}}>{t?.name||t?.n}</div>
       <div style={{fontSize:FS.caption,color:TH.muted}}>{lato==="home"?"Casa":"Ospite"}</div>
       {exClub&&exClub.side===lato&&<div style={{marginTop:4}}><Badge tone="warn" size="sm">Ex squadra</Badge></div>}
-      {lato==="away"&&(()=>{const p=getClubPersona(t);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px",marginTop:4,display:"inline-block"}}>{p.e} {p.name}</div>:null;})()}
+      {lato==="away"&&(()=>{const p=getClubPersona(t);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px",marginTop:4,display:"inline-block"}}>{p.e} Gioca: {p.desc.toLowerCase()}</div>:null;})()}{/* [7.999.49 parte A] lo stile spiegato (desc), non il solo nome */}
     </div>);
     return(
     <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:SP.md}}>
@@ -521,10 +522,11 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
             <span style={{width:6,height:6,borderRadius:"50%",background:TH.warning,marginTop:7,flexShrink:0}}/>
             <div style={{fontSize:FS.small,color:TH.muted,lineHeight:1.5}}>{scoutReport.solid.tip[0].toUpperCase()+scoutReport.solid.tip.slice(1)}</div></div>}
         </Card>)}
-      <Btn onClick={onContinue} v="primary" size="lg" fw>Formazioni</Btn>
+      {/* [7.999.49 parte A] etichette che dicono la differenza fra i tre bottoni */}
+      <Btn onClick={onContinue} v="primary" size="lg" fw>Vedi le formazioni</Btn>
       <div style={{display:"flex",gap:SP.sm}}>
-        {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw>{scoutLoading?"Analisi in corso…":"Analisi completa"}</Btn>}
-        <Btn onClick={onSkip} v="secondary" fw>Entra subito</Btn>
+        {(scoutReport||scoutLoading)&&<Btn onClick={onShowScout} v="secondary" fw>{scoutLoading?"Analisi in corso…":"Analisi dell'avversario"}</Btn>}
+        <Btn onClick={onSkip} v="secondary" fw>Salta e gioca</Btn>
       </div>
       {onSimulate&&<Btn onClick={onSimulate} v="ghost" fw>Simula la partita</Btn>}
       {onBack&&<Btn onClick={onBack} v="ghost" fw>Torna alla home</Btn>}

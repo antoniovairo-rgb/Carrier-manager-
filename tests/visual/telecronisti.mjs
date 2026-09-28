@@ -24,7 +24,7 @@ for (let k = 0; k < 6; k++) { R.play = await page.evaluate(() => window.__CPM_CA
 R.aperta = await page.waitForFunction(() => !!document.querySelector('[data-cpm=prepartita23]') || /OSPITE|Ospite/.test(document.body.innerText || ''), null, { timeout: 40000 }).then(() => true).catch(() => false);
 await sleep(1500);
 await page.evaluate(() => { try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} });
-await page.getByRole('button', { name: /Entra subito/ }).first().click({ timeout: 6000 });
+await page.getByRole('button', { name: /Entra subito|Salta e gioca/ }).first().click({ timeout: 6000 });
 await sleep(1500); await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 7 })).catch(() => {});
 R.voce = null; const t0 = Date.now();
 while (Date.now() - t0 < 240000 && !R.voce) { await page.evaluate(() => { const p = document.querySelector('[data-cpm=pop919]'); if (p) { const b = p.querySelectorAll('button')[0]; if (b) b.click(); } const ph = window.__CPM_PHASE && window.__CPM_PHASE(); if (ph === 'hl_choose' && window.__CPM_RESOLVE) window.__CPM_RESOLVE(0); if (ph === 'hl_result') { const x = [...document.querySelectorAll('button')].find(y => /Continua/i.test(y.textContent || '')); if (x) x.click(); } }).catch(() => {});

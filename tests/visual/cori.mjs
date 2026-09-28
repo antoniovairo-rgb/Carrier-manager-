@@ -24,7 +24,7 @@ for (let k = 0; k < 6; k++) { R.play = await page.evaluate(() => window.__CPM_CA
 R.aperta = await page.waitForFunction(() => !!document.querySelector('[data-cpm=prepartita23]') || /OSPITE|Ospite/.test(document.body.innerText || ''), null, { timeout: 40000 }).then(() => true).catch(() => false);
 await sleep(1500);
 await page.evaluate(() => { try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} });
-await page.getByRole('button', { name: /Entra subito/ }).first().click({ timeout: 6000 });
+await page.getByRole('button', { name: /Entra subito|Salta e gioca/ }).first().click({ timeout: 6000 });
 await sleep(1500); await page.evaluate(() => window.__CPM_AUTOPLAY && window.__CPM_AUTOPLAY(true, { seed: 7 })).catch(() => {});
 R.cori = new Set(); const t0 = Date.now(); let hl = 0;
 while (Date.now() - t0 < 240000) { const f = await page.evaluate(() => window.__CPM_PHASE?.() || null).catch(() => null); if (f === 'ended') break;
