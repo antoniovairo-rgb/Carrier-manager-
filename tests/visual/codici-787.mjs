@@ -27,7 +27,7 @@ await page.addInitScript((o)=>{window.__CPM_GLB=o.glb;window.__CPM_REC=true;wind
   (o.rossi||[]).forEach(r=>{window[r]=1;});},{glb:GLB,dt60:DT60,rossi:(process.env.CPM_ROSSO||'').split(',').map(x=>x.trim()).filter(Boolean)});
 await openMatch(page,port);await sleep(GLB?4000:800);
 const tot=await page.evaluate(()=>window.__CPM_SITS.length);
-const GIs=[];for(let i=0;i<tot;i+=PASSO)GIs.push(i);
+const GIs=[];if(process.env.CPM_GI)GIs.push(...process.env.CPM_GI.split(',').map(Number));else for(let i=0;i<tot;i+=PASSO)GIs.push(i);/* [7.999.39] CPM_GI=64,81 scene precise (taccuino) */
 const RIGHE=[];
 for(const gi of GIs){
   for(const ai of AZIONI){
@@ -36,7 +36,7 @@ for(const gi of GIs){
     await sleep(DT60?2000:(GLB?1200:420));
     await page.evaluate(()=>{window.__CPM_FROZEN=false;});
     await sleep(GLB?400:160);
-    let r=false;try{r=await page.evaluate(k=>window.__CPM_RESOLVE(k),ai);}catch(e){}
+    let r=false;try{r=await page.evaluate(([k,e])=>{if(e)window.__CPM_FORCE_OUTCOME=e;return window.__CPM_RESOLVE(k);},[ai,process.env.CPM_ESITO||null]);}catch(e){}/* [7.999.39] CPM_ESITO=success|fail */
     if(!r)continue;
     await sleep(DT60?12000:(GLB?7000:2600));
     const out=await page.evaluate(()=>{

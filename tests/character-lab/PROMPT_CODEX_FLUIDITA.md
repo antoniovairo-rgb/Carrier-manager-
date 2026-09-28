@@ -1,6 +1,6 @@
 # Prompt per Codex — fluidità 3D degli highlight (eroe che avanza col pallone)
 
-Base: `main` al commit `9d6b269e`, `GAME_VERSION="7.999.38"`. Da incollare in Codex così com'è.
+Base: `main` con `GAME_VERSION="7.999.39"` o successiva (verifica la versione nel file prima di partire). Da incollare in Codex così com'è.
 
 ---
 
@@ -40,6 +40,18 @@ Il tuo rapporto precedente (scivolamento) aveva un FPS mediano di 8,44: a quella
 4. **Cambi di gesto**: quante volte al secondo cambia `g` mentre l'eroe porta palla, e se ci sono gesti che durano meno di 0,15 s.
 5. **Pattinamento**: `sl` per fascia di velocità (0–3, 3–6, 6–9, 9+ u/s), con il numero di campioni per fascia. Una fascia sotto i 20 campioni non si conclude.
 6. **Regolarità dei fotogrammi**: distribuzione dei `dt`, e fotogrammi oltre 50 ms insieme a ciò che succede in quel momento (cambio di gesto, primo montaggio di una clip, cambio di camera).
+
+## Blocco all'apertura della prima scena (misura con la GPU)
+
+Da noi, in headless, dove la grafica è emulata dal processore, la **prima** scena di ogni partita apre con un compito unico che blocca il disegno. Le scene successive restano sotto i 150 ms. Misure:
+- corpi spenti: 2,8–3,2 s, speso nella compilazione degli shader (`getProgramParameter`) e in `getExtension` dentro `setupRenderTarget`;
+- corpi accesi e modelli pronti da 15 s: 1,1 s, speso quasi tutto in `renderer.setSize`. All'apertura la tela 3D passa da 410×775 a 410×791.
+
+Non sappiamo se sul telefono pesi allo stesso modo: va misurato con la GPU vera.
+- `node tests/visual/aperture-blocco-sonda.mjs` con `CPM_GLB=1 CPM_ATTESA=15000 CPM_SCENES=5`: long task più lungo a ogni apertura di scena.
+- `node tests/visual/apertura-profilo-sonda.mjs` con `CPM_GLB=1`: profilo CPU dell'apertura (funzioni per tempo proprio e totale).
+
+Riporta i numeri per la prima scena e per le successive, con la configurazione GPU usata. Se la prima scena blocca oltre 100 ms anche con la GPU, riporta le 10 funzioni più costose.
 
 ## Video (per il giudizio a occhio del PO)
 

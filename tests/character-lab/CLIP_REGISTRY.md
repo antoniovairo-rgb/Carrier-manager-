@@ -47,8 +47,10 @@ Aperto il 26/09 su mandato PO («colmare i gap dei gesti»). Una riga per clip. 
 
 | `mx-fist-pump` | I1 esultanza SOBRIA (ginocchio su e pugno, poi braccio al cielo) | FBX dal PO «Golf Putt Victory», Mixamo, **ritagliato 4,3-8,0 s** (via il colpo da golf) | Mixamo | Blender, striscia NLA 129-240 | come sopra | `provini-p1a/mx-golf-putt-victory.png` (24 istanti) | 3,7 s | variante di `lift` SOLO per il piano `contained` (7.999.32) | `esultanza-braccia-test.mjs` |
 | `mx-defend-ready` | G/difesa: attesa in marcatura | FBX dal PO «Goalkeeper Idle», Mixamo (idea del PO) | Mixamo | Blender | come sopra | `provini-p1a/mx-gk-idle-po.png` | 4,6 s | seconda posa ferma di ogni corpo, pesata su chi difende nella scena (7.999.32) | `attesa-difesa-test.mjs` · `__CPM_NO_ATTESA32` |
+| `mx-ruleta` | Dribbling: ruleta / roulette / veronica | FBX dal PO 27/09 «Soccer_Spin.fbx» («La ruleta, chiamata anche roulette, veronica o marsiglia»), Mixamo | Mixamo | Blender (`bpy` 4.2), tolte le tracce di `root`; sul posto (bacino fermo in pianta) | come sopra | misurata in scena (`ruleta-test.mjs`): suonata intera, pallone al piede entro 0,56 u | 1,27 s (in scena a 1,27x, circa 1,0 s) | tratto «feint» del tiro dopo un dribbling, SOLO se l'azione promette la roulette (7.999.39) | `ruleta-test.mjs` · `__CPM_NO_FINTA39` (niente gesto nel tratto di finta) · `__CPM_NO_RULETA39` (niente clip: finta generica) |
 
-File (dal 7.999.32): `assets/cgtrader-clip-po.glb`, 477 KB, quattro clip (sostituisce `cgtrader-clip-esultanze.glb` della 7.999.31).
+File (dal 7.999.39): `assets/cgtrader-clip-po.glb`, 557 KB, cinque clip: le quattro della 7.999.32 (stessi canali e durate, confrontati) più `mx-ruleta`.
+Dal PO, convertite ma non ancora collegate: «Golf Bad Shot» (disappunto, 13,3 s: da ritagliare), «Scissor Kick» (da confrontare con la rovesciata in uso, `mx-scissor-kick`).
 In prova, non ancora collegate: `Receive Soccerball` (controllo di coscia, tratto 2,2-3,0 s), `Soccer Header` (testa da fermo: contatto da misurare), `Jog Forward` (corsa: da tarare sulla cadenza). Scartate dal PO-pacchetto: «Golf Putt Victory» (contiene un colpo da golf), «Victory_1» (8,6 s, mani alla testa: tenuta di riserva, non collegata).
 Riserva: se la clip manca, le braccia al cielo si fanno proceduralmente (stesso metodo del cartellino).
 

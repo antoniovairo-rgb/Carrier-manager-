@@ -1923,7 +1923,7 @@ function deriveHL(sit,act){
   else if(type==="freekick")pattern="SET_PIECE";
   else if(type==="cross")pattern=variant==="cross_far_post"?"FAR_POST_CROSS":variant==="cross_cutback"?"CUTBACK":"NEAR_POST_CROSS";
   else if(type==="header")pattern="HEADER_ATTACK";
-  else if(type==="shot")pattern=cn.oneOnOne?"ONE_ON_ONE":isCarry?"BALL_CARRY":(/dribbl|finta|elastico|doppio passo|step-?over|sterzat|serpentin|sombrero|tunnel|rientr/.test(lbl)&&!/senza dribbl/.test(lbl))?"DRIBBLE_SHOT":"EDGE_SHOT";// 5.42.0: un TIRO la cui LABEL descrive un dribbling ("doppio passo/elastico/finta/rientra e tira") usa il build-up DRIBBLE_SHOT (finta+accelerazione poi tiro) invece di EDGE_SHOT → il dribbling non si perde più nella regia. "senza dribblare" resta EDGE_SHOT. pattern da campo cine (1v1) ha priorità.
+  else if(type==="shot")pattern=cn.oneOnOne?"ONE_ON_ONE":isCarry?"BALL_CARRY":((/dribbl|finta|elastico|doppio passo|step-?over|sterzat|serpentin|sombrero|tunnel|rientr/.test(lbl)||(/roulette|ruleta|veronica|marsiglies|giravolta/.test(lbl)&&!(typeof window!=='undefined'&&window.__CPM_NO_FINTA39)))&&!/senza dribbl/.test(lbl))/* [7.999.39] anche la roulette e' un dribbling prima del tiro: prima «Roulette di classe» (#92) era un tiro dal limite senza nessun giro */?"DRIBBLE_SHOT":"EDGE_SHOT";// 5.42.0: un TIRO la cui LABEL descrive un dribbling ("doppio passo/elastico/finta/rientra e tira") usa il build-up DRIBBLE_SHOT (finta+accelerazione poi tiro) invece di EDGE_SHOT → il dribbling non si perde più nella regia. "senza dribblare" resta EDGE_SHOT. pattern da campo cine (1v1) ha priorità.
   else if(type==="dribble")pattern="DRIBBLE_SHOT";
   else if(type==="tackle")pattern="TACKLE";
   else if(type==="pass"){

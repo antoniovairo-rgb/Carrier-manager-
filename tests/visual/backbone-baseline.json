@@ -91,7 +91,7 @@
  "89": "pass/COMBINATION:5:shot|shot/EDGE_SHOT:3:shot|cross/NEAR_POST_CROSS:5:shot",
  "90": "header/HEADER_ATTACK:4:header|header/HEADER_ATTACK:4:header|header/HEADER_ATTACK:4:header",
  "91": "cross/NEAR_POST_CROSS:5:shot|shot/EDGE_SHOT:3:shot|pass/COMBINATION:5:shot",
- "92": "shot/EDGE_SHOT:3:shot|shot/DRIBBLE_SHOT:4:shot|pass/COMBINATION:5:shot",
+ "92": "shot/DRIBBLE_SHOT:4:shot|shot/DRIBBLE_SHOT:4:shot|pass/COMBINATION:5:shot",
  "93": "shot/DRIBBLE_SHOT:4:shot|shot/EDGE_SHOT:3:shot|cross/NEAR_POST_CROSS:5:shot",
  "94": "shot/DRIBBLE_SHOT:4:shot|cross/NEAR_POST_CROSS:5:shot|shot/DRIBBLE_SHOT:4:shot",
  "95": "shot/DRIBBLE_SHOT:4:shot|cross/NEAR_POST_CROSS:5:shot|pass/COMBINATION:5:shot",
