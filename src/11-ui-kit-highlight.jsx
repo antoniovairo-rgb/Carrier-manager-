@@ -197,10 +197,10 @@ function Badge({children,tone="neutral",solid=false,icon,size="md",style={}}){
   return(<span style={{display:"inline-flex",alignItems:"center",gap:4,padding:sm?"1px 7px":"3px 9px",borderRadius:RAD.pill,fontSize:FS.caption/* [C4] la variante piccola scendeva a 10: sotto il pavimento dichiarato. La densita' la fa il padding, non un corpo illeggibile. */,fontWeight:FW.bold,lineHeight:1.4,whiteSpace:"nowrap",...base,...style}}>{icon}{children}</span>);
 }
 
-/* MatchBadge — esito V/P/S unificato (retira le decine di quadratini V/N/S ad-hoc). r=result 'W'|'D'|'L' o won/drew. */
+/* MatchBadge — esito V/N/P unificato (vinta/pareggio/persa, [7.999.49 parte A]). r=result 'W'|'D'|'L' o won/drew. */
 function MatchBadge({r,size=22,title}){
   const kind=r==="W"||r==="win"||r===true?"win":(r==="D"||r==="draw"?"draw":"loss");
-  const letter=kind==="win"?"V":kind==="draw"?"P":"S"; // vocabolario di gioco V/P/S (Pareggio)
+  const letter=kind==="win"?"V":kind==="draw"?"N":"P"; // [7.999.49 parte A] vocabolario unico V/N/P (P = persa)
   const bg=kind==="win"?TH.winFg:kind==="draw"?TH.drawFg:TH.lossFg;
   return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:fsScala(Math.max(FS.caption,size*.45))/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:"#fff",flexShrink:0}}>{letter}</div>);
 }
