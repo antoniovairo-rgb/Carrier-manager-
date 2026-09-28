@@ -2831,7 +2831,7 @@ function ThreeMatchView(props){
         const _cutOk51=(function(){try{const _ca=sr.current._cutAt;return _ca!=null&&(performance.now()-_ca)<900;}catch(_e){return true;}})();
         const _t34m=mesh._t34v;if(_t34m&&_t34m.on){const _a34=Math.min(dt*12,1);mesh._hvx=(mesh._hvx||0)+(_t34m.vx-(mesh._hvx||0))*_a34;mesh._hvz=(mesh._hvz||0)+(_t34m.vz-(mesh._hvz||0))*_a34;mesh.position.x+=mesh._hvx*dt;mesh.position.z+=mesh._hvz*dt;}/* [7.999.34] durante il tiro caricato la velocita' la detta la clip */
         else if((_tj51>12||d>30)&&_cutOk51){mesh.position.x=tx;mesh.position.z=tz;mesh._hvx=0;mesh._hvz=0;mesh._px=tx;mesh._pz=tz;}
-        else if(d>0.06){mesh._lag44=d;
+        else if(d>0.06){mesh._lag44=d;if(typeof window!=='undefined'&&window.__CPM_LAG44_REC){try{const _P44=propsRef.current||{};if(_P44.matchPhase==='hl_result'){const W=(window.__CPM_LAG44=window.__CPM_LAG44||{n:0,max:0,scatto:0,fr:[]});W.n++;if(d>W.max)W.max=+d.toFixed(2);if(d>6)W.scatto++;if(W.fr.length<400)W.fr.push([+d.toFixed(2),+Math.hypot(mesh._hvx||0,mesh._hvz||0).toFixed(2)]);}}catch(_e44){}}/* [7.999.45 testimone, sola lettura] ritardo dell'eroe dal suo bersaglio in hl_result: oltre 6 u scatta a 13 u/s */
           const _n=1/d,_want=Math.min(d>6?13.0:_HVMAX,d*4.2),_a=Math.min(dt*3.4,1);/* [7.236.0] oltre 6u di ritardo l'eroe passa allo SCATTO (13 u/s): rincorre la sua stessa giocata invece di teleportarsi */
           mesh._hvx=(mesh._hvx||0)+(dx*_n*_want-(mesh._hvx||0))*_a;
           mesh._hvz=(mesh._hvz||0)+(dz*_n*_want-(mesh._hvz||0))*_a;
