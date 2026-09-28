@@ -98,7 +98,7 @@ async function scatta(page, id, nome) {
     if (!visti.has(chiave) && visti.size < 14 && !/^(Home|Stagione)/.test(f)) { visti.add(chiave); await scatta(page, 'vita-' + visti.size, `Durante la stagione: «${f}» (passo ${k}, ${r})`); }
     if (r === 'seasonEnd') { fine = true; await sleep(1500); await scatta(page, 'fine-gala', 'Fine stagione · gala');
       if (await premi(page, 'Apri la busta')) { await sleep(1500); await scatta(page, 'fine-busta', 'Fine stagione · busta del premio'); }
-      if (await premi(page, 'Salta il gala')) { await sleep(1500); await scatta(page, 'fine-dopo-gala', 'Fine stagione · dopo il gala'); }
+      if (await premi(page, 'Salta il gal')) { await sleep(1500); await scatta(page, 'fine-dopo-gala', 'Fine stagione · dopo il gala'); }
       /* [7.999.49] prima il riconoscimento del riepilogo scattava sul bottone «Continua alla Fine Stagione» della pagina
          premi (contiene «Fine Stagione»): fotografava ancora i premi. Ora si PREME e si fotografa la schermata dopo. */
       for (let j = 0; j < 6; j++) { const sc0 = await page.evaluate(() => window.__CPM_CAREER.screen && window.__CPM_CAREER.screen()).catch(() => null);

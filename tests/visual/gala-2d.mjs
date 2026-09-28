@@ -13,7 +13,7 @@ const err=[]; page.on('pageerror',e=>err.push(String(e).slice(0,160)));
    e' che il suo modello non venga MAI chiesto alla rete. */
 const corpi=[]; page.on('request',r=>{const u=r.url();if(/footballer[^/]*\.glb|actor-[a-z-]*\.glb/.test(u))corpi.push(u.split('/').pop());});
 await page.addInitScript((r)=>{ /* [7.948] NON si spengono i modelli: la sonda spegnendoli impediva al braccio ROSSO di caricare
-     il CH38, quindi il guardiano passava in entrambi i bracci e non provava niente. */ if(r) window.__CPM_NO946=true;
+     il CH38, quindi il guardiano passava in entrambi i bracci e non provava niente. */ if(r) window.__CPM_NO946=true; window.__CPM_NO_GALA51=true;/* [7.999.51] questa sonda giudica il gala' a buste di prima, tenuto come riserva: quello nuovo ha npm run gala-3d */
   const save={phase:'career',player:{name:'Carrascito',nation:'Italia',avatarId:3,proStatus:'pro',
     season:11,week:39,age:28,ovr:93,
     club:{id:'mer',n:'FC Merseyside',a:'MER',p:88,c:'#8e1f33',c2:'#f0b33a',nat:'🏴',lg:'Premier Division'},

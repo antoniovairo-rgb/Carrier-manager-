@@ -18,8 +18,13 @@ await page.waitForFunction(() => !!(window.__CPM_CAREER && window.__CPM_CAREER.a
 await page.evaluate(() => window.__CPM_CAREER.apriGala()); await sleep(6000);
 await page.screenshot({ path: `${OUT}/${TAG}-1-busta.png` });
 const clic = async (t) => { try { await page.getByText(t, { exact: false }).first().click({ timeout: 5000 }); return true; } catch (_e) { return false; } };
-await clic('Apri la busta'); await sleep(1500); await clic('Il secondo posto'); await sleep(1500); await clic('e il vincitore'); await sleep(2500);
-await page.screenshot({ path: `${OUT}/${TAG}-2-vincitore.png` }); await sleep(5000);
-await page.screenshot({ path: `${OUT}/${TAG}-3-vincitore-dopo.png` });
+await clic('Apri la busta'); await sleep(1500);
+if (await page.evaluate(() => !!document.querySelector('[data-cpm="gala51"]'))) {
+  for (const [k, ms] of [[2, 4000], [3, 10000], [4, 16000]]) { await sleep(ms - (k === 2 ? 0 : k === 3 ? 4000 : 10000)); await page.screenshot({ path: `${OUT}/${TAG}-${k}-momento.png` }); }
+  console.log('testimone', JSON.stringify(await page.evaluate(() => window.__CPM_GALA51 || null)));
+  if (await clic('Gli altri premi')) { await sleep(2500); await page.screenshot({ path: `${OUT}/${TAG}-5-riepilogo.png` }); }
+  await clic('Vai al bilancio'); await sleep(2000); await page.screenshot({ path: `${OUT}/${TAG}-6-dopo.png`, fullPage: false });
+} else { await clic('Il secondo posto'); await sleep(1500); await clic('e il vincitore'); await sleep(2500);
+  await page.screenshot({ path: `${OUT}/${TAG}-2-vincitore.png` }); await sleep(5000); await page.screenshot({ path: `${OUT}/${TAG}-3-vincitore-dopo.png` }); }
 console.log('errori', err.length, err[0] || '', await page.evaluate(() => document.body.innerText.slice(0, 200).replace(/\n/g, ' | ')));
 await browser.close(); server.close();

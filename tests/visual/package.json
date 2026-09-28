@@ -49,6 +49,7 @@
     "outcome-not-goal": "node outcome-not-goal-test.mjs",
     "ball-jump-census": "node ball-jump-census.mjs",
     "gala": "node gala-2d.mjs",
+    "gala-3d": "node gala-3d.mjs",
     "intervista": "node intervista-2d.mjs",
     "presentazione": "node presentazione-2d.mjs",
     "parametri": "node parametri-dichiarati.mjs",

@@ -1899,7 +1899,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
     const _glbRootsG=[];const _mixersG=[];let presM=null,presF=null,heroAv=null,_heroLift=null,_heroLiftOn=false;
     const _gv=new THREE.Vector3(),_gv2=new THREE.Vector3();
     const _gq=new THREE.Quaternion(),_gq2=new THREE.Quaternion(),_ge=new THREE.Euler();/* [7.143.0] busta bone-parented */
-    let _bodyG=null,_idleG=null,_liftG=null;
+    let _bodyG=null,_idleG=null,_liftG=null,_walkG=null,_kw51=false;/* [7.999.51] _kw51: _bodyG e' il corpo della partita (korward), vestito in smoking da mkTux51 */
     const hAv=(typeof AVATARS!=='undefined'&&AVATARS[(((avatarId|0)%AVATARS.length)+AVATARS.length)%AVATARS.length])||{skin:'#f0c8a0',hair:'#3a2410'};
     const heroH=1.86+((avatarId*73)%100)/100*0.16,heroG=0.97+((avatarId*131)%100)/100*0.10;
     const mkElegant=(o)=>{/* CH38 in abito: giacca=shirt · pantaloni=shorts+socks in tinta · scarpe eleganti · camicia V + papillon su Spine2 · (donna) chioma 3 masse */
@@ -2002,7 +2002,52 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
         if(aF&&aF.scene)presF=mkActorG(aF,{at:{x:-1.62,y:0,z:-0.62},rotY:0.55,height:1.70});/* [7.328.0] fuori dal footprint del podio (era -1.15 = gambe nella pedana) */
         if(presM||presF)env.visible=true;/* la busta torna in scena SOLO con chi la regge */
       }).catch(()=>{});
+      /* [7.999.51 PO «il momento in 3D», «in abito da sera»] l'eroe torna sul palco col CORPO DELLA PARTITA (lo stesso della festa di
+         vittoria), vestito da mkTux51. Dal 7.85 _bodyG non veniva mai caricato: il vincitore non poteva salire. Rosso __CPM_NO_GALA51. */
+      if(!(typeof window!=='undefined'&&window.__CPM_NO_GALA51)){
+        /* misurato: le clip di korward-regular-anims tengono le braccia a T su questo corpo (mano a 1,51 m, 0,72 m di lato); il corpo
+           della PARTITA (lod0) porta con se' idle/walk sane e la libreria PO ha mx-victory (mani a 1,85 m = trofeo sopra la testa). */
+        Promise.all([loadGLB('./assets/cgtrader-review-lod0-kit-adapter.glb'),loadGLB('./assets/cgtrader-clip-po.glb').catch(()=>null)])
+          .then(([bg,po])=>{if(!bg||!bg.scene)return;const A=bg.animations||[];_bodyG=bg;_idleG={animations:[A.find(a=>a.name==='idle')].filter(Boolean)};_walkG={animations:[A.find(a=>a.name==='walk')].filter(Boolean)};
+            _liftG=po?{animations:[(po.animations||[]).find(a=>a.name==='mx-victory')].filter(Boolean)}:null;_kw51=true;}).catch(()=>{});}
     }
+    /* [7.999.51] SMOKING SUL CORPO DELLA PARTITA. Maglia → giacca, pantaloncini e calzettoni → pantaloni, scarpini → scarpe lucide;
+       le parti nude (cosce/ginocchia/polpacci, avambracci) si coprono con TUBI appesi alle OSSA (seguono la camminata: niente
+       «tuta» della 7.68, che appendeva i pantaloni solo al bacino); camicia bianca, papillon e fazzoletto sullo Spine2. */
+    const mkTux51=(o)=>{_corpo948();const av=THREE.SkeletonUtils.clone(_bodyG.scene);
+      const B={};av.traverse(b=>{if(b.isBone)B[(b.name||"").replace(/[:_. ]/g,"").toLowerCase()]=b;});
+      av.updateMatrixWorld(true);let yT=-Infinity,yB=Infinity;if(B.head){B.head.getWorldPosition(_gv);yT=_gv.y+0.13;}av.traverse(b=>{if(b.isBone){b.getWorldPosition(_gv);if(_gv.y<yB)yB=_gv.y;}});
+      const hh=(isFinite(yT)&&isFinite(yB)&&yT-yB>0.5)?(yT-yB):1.78;const sc=(o.height||1.84)/hh;av.scale.set(sc*(o.girth||1),sc,sc*(o.girth||1));/* altezza dalle OSSA: il bbox dei SkinnedMesh e' in bind-space */
+      const JK=0x15161c,TR=0x101116;
+      av.traverse(m=>{if(!m.isMesh)return;m.frustumCulled=false;const mn=((m.material&&m.material.name)||"").toLowerCase();
+        const st=(hex,rg,mt)=>{m.material=new THREE.MeshStandardMaterial({color:new THREE.Color(hex),roughness:rg,metalness:mt||0.04,skinning:true});m.material.emissive=new THREE.Color(hex).multiplyScalar(0.06);};
+        if(mn.indexOf('hypershirt')>=0)st(JK,0.46);else if(mn.indexOf('hypershorts')>=0||mn.indexOf('hyperleg')>=0)st(TR,0.52);});
+      av.position.copy(o.at);av.rotation.y=o.rotY;scene.add(av);_glbRootsG.push(av);av.updateMatrixWorld(true);
+      const rec={root:av,kw:true,bones:{head:B.head,spine:B.spine03,hips:B.pelvis,lArm:B.upperarml,rArm:B.upperarmr,lFore:B.lowerarml,rFore:B.lowerarmr,lHand:B.handl,rHand:B.handr}};
+      const tubo=(bone,child,r0,r1,hex,ov)=>{try{if(!bone||!child)return;bone.getWorldScale(_gv);const u=1/(_gv.y||1);const d=child.position.clone();const L=d.length();if(!(L>0))return;const e=L*(ov||0);
+        const g=new THREE.CylinderGeometry(r0*u,r1*u,L+2*e,14,1,true);g.translate(0,L/2,0);const t=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:hex,roughness:0.46,metalness:0.04,side:THREE.DoubleSide}));
+        t.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.clone().normalize());t.frustumCulled=false;bone.add(t);}catch(_e){}};
+      ['l','r'].forEach(sd=>{tubo(B['upperarm'+sd],B['lowerarm'+sd],0.07,0.064,JK,0.18);tubo(B['lowerarm'+sd],B['hand'+sd],0.064,0.054,JK,0.16);/* maniche lunghe, sovrapposte al gomito */
+        tubo(B['thigh'+sd],B['calf'+sd],0.1,0.086,TR,0.08);tubo(B['calf'+sd],B['foot'+sd],0.086,0.078,TR,0.06);});/* gamba dritta: i pantaloncini non si leggono piu' come tali */
+      /* ABITO NEL SISTEMA DEL PERSONAGGIO: le ossa di questo corpo hanno assi Unreal, quindi gli offset si danno nel riferimento della
+         radice (avanti = +Z, su = +Y) e si convertono nello spazio dell'osso. Prima la camicia finiva DENTRO il busto. */
+      const _qR=new THREE.Quaternion(),_qB=new THREE.Quaternion(),_pB=new THREE.Vector3();
+      const veste=(bone,mesh,dx,dy,dz,rz)=>{try{if(!bone)return;av.updateMatrixWorld(true);bone.getWorldPosition(_pB);const loc=av.worldToLocal(_pB.clone());loc.x+=dx;loc.y+=dy;loc.z+=dz;
+        const w=av.localToWorld(loc);bone.getWorldScale(_gv);mesh.scale.set(1/_gv.x,1/_gv.y,1/_gv.z);mesh.position.copy(bone.worldToLocal(w));
+        av.getWorldQuaternion(_qR);if(rz)_qR.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1),rz));bone.getWorldQuaternion(_qB);mesh.quaternion.copy(_qB.invert().multiply(_qR));mesh.frustumCulled=false;bone.add(mesh);}catch(_e){}};
+      const Ms=(hex,sat)=>new THREE.MeshStandardMaterial({color:hex,roughness:sat?0.22:0.5,metalness:sat?0.25:0.03,side:THREE.DoubleSide});
+      const petto=B.spine03||B.spine02;
+      veste(petto,new THREE.Mesh(new THREE.PlaneGeometry(0.075,0.19),new THREE.MeshBasicMaterial({color:0xf4f2ec,side:THREE.DoubleSide})),0,0.04,0.158,0);
+      veste(petto,new THREE.Mesh(new THREE.BoxGeometry(0.07,0.024,0.016),new THREE.MeshBasicMaterial({color:0x07070a})),0,0.125,0.164,0);
+      veste(petto,new THREE.Mesh(new THREE.PlaneGeometry(0.032,0.19),Ms(0x09090c,true)),-0.052,0.03,0.16,-0.24);
+      veste(petto,new THREE.Mesh(new THREE.PlaneGeometry(0.032,0.19),Ms(0x09090c,true)),0.052,0.03,0.16,0.24);
+      {const fal=new THREE.Mesh(new THREE.CylinderGeometry(0.168,0.176,0.22,24,1,true),Ms(JK,false));veste(B.pelvis,fal,0,-0.04,0,0);}/* falde della giacca: coprono i pantaloncini fino a meta' coscia */
+      const mx=new THREE.AnimationMixer(av);rec.mx=mx;_mixersG.push(mx);
+      if(_idleG&&_idleG.animations[0]){rec.idle=mx.clipAction(_idleG.animations[0]);rec.idle.play();rec.idle.setEffectiveWeight(0);}
+      if(_walkG&&_walkG.animations[0]){rec.walk=mx.clipAction(_walkG.animations[0]);rec.walk.play();rec.walk.setEffectiveWeight(1);}
+      rec.apFrac=0.4;/* mx-victory: mani sopra la testa a ~1,8 s su 4,5 */
+      if(typeof window!=='undefined'&&typeof _CPM_TEST!=='undefined'&&_CPM_TEST){try{window.__CPM_GALA51={eroe:true,ossa:Object.keys(rec.bones).filter(k=>rec.bones[k]).length,camminata:!!rec.walk,attesa:!!rec.idle,trofeo:!!(_liftG&&_liftG.animations[0]),scala:+sc.toFixed(3)};}catch(_e){}}
+      return rec;};
     // ── loop: beat → regia + busta + reazioni ──
     let raf=0,t0=performance.now(),_tPrevG=0,openT=0,heroIn=0,_cued={};
     const _nodG=(t,per,ph,amp)=>{const u2=((t+ph)%per)/per;return u2<0.10?Math.sin(u2/0.10*Math.PI)*amp:0;};
@@ -2044,13 +2089,18 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
       envFlap.rotation.x=-2.4*(openT<0.5?openT*2:1);/* prima metà: aletta */
       envCard.position.y=0.01+0.11*Math.max(0,(openT-0.45)/0.55);/* poi il cartoncino scivola su */
       // ── VINCITORE (solo se vince l'eroe): entra, riceve il trofeo, posa foto ──
-      if(winB&&st.current.heroWins&&!heroAv&&_bodyG){heroAv=mkElegant({suit:0x14151c,skin:hAv.skin,hair:hAv.hair,female:false,at:{x:3.6,y:0,z:0.4},rotY:-1.1,height:heroH,girth:heroG});/* [7.68.0] smoking quasi-nero */
+      if(winB&&st.current.heroWins&&!heroAv&&_bodyG&&_kw51){heroAv=mkTux51({skin:hAv.skin,hair:hAv.hair,at:{x:3.6,y:0,z:0.4},rotY:-1.1,height:heroH,girth:heroG});
+        if(_liftG&&_liftG.animations&&_liftG.animations[0]&&heroAv.mx){_heroLift=heroAv.mx.clipAction(_liftG.animations[0]);_heroLift.setLoop(THREE.LoopOnce);_heroLift.clampWhenFinished=true;}
+        _cue("winner_enter");}
+      if(winB&&st.current.heroWins&&!heroAv&&_bodyG&&!_kw51){heroAv=mkElegant({suit:0x14151c,skin:hAv.skin,hair:hAv.hair,female:false,at:{x:3.6,y:0,z:0.4},rotY:-1.1,height:heroH,girth:heroG});/* [7.68.0] smoking quasi-nero */
         if(_liftG&&_liftG.animations&&_liftG.animations[0]&&heroAv.mx){_heroLift=heroAv.mx.clipAction(_liftG.animations[0]);_heroLift.setLoop(THREE.LoopOnce);_heroLift.clampWhenFinished=true;}
         _cue("winner_enter");}
       if(heroAv){heroIn=Math.min(1,heroIn+dt*0.32);const e2=heroIn*heroIn*(3-2*heroIn);
-        heroAv.root.position.x=3.6+(-0.95-3.6)*e2;heroAv.root.position.z=0.4+(-0.02-0.4)*e2;heroAv.root.rotation.y=-1.1+(0.15+1.1)*e2*0.9;/* [7.68.0] finale ACCANTO al podio (x=-0.95): il volto NON è più coperto dal trofeo · [7.328.0] z -0.35→-0.02: -0.35 è ESATTAMENTE la faccia frontale della pedana p1 → i polpacci del vincitore ci entravano; ora il corpo resta davanti con ~0.33 di margine */
+        const _tx51=heroAv.kw?0:-0.95,_tz51=heroAv.kw?0.35:-0.02;/* [7.999.51] l'eroe del gala' 3D si ferma al CENTRO, davanti al podio: era sul bordo, tagliato */heroAv.root.position.x=3.6+(_tx51-3.6)*e2;heroAv.root.position.z=0.4+(_tz51-0.4)*e2;heroAv.root.rotation.y=-1.1+(0.15+1.1)*e2*0.9;/* [7.68.0] finale ACCANTO al podio (x=-0.95): il volto NON è più coperto dal trofeo · [7.328.0] z -0.35→-0.02: -0.35 è ESATTAMENTE la faccia frontale della pedana p1 → i polpacci del vincitore ci entravano; ora il corpo resta davanti con ~0.33 di margine */
+        if(heroAv.walk&&heroAv.idle){const wk=heroIn<1?1:0,lf=_heroLiftOn?1:0;heroAv.walk.setEffectiveWeight(heroAv.walk.getEffectiveWeight()+(wk-heroAv.walk.getEffectiveWeight())*0.12);
+          heroAv.idle.setEffectiveWeight(Math.max(0,1-heroAv.walk.getEffectiveWeight()-lf));}
         if(heroIn>=1){
-          if(_heroLift){if(!_heroLiftOn){_heroLiftOn=true;_heroLift.reset().fadeIn(0.35).play();_cue("trophy_lift");}const ap=_heroLift.getClip().duration*0.34;if(_heroLift.time>=ap){_heroLift.time=ap;_heroLift.paused=true;}}
+          if(_heroLift){if(!_heroLiftOn){_heroLiftOn=true;_heroLift.reset().fadeIn(0.35).play();_cue("trophy_lift");}const ap=_heroLift.getClip().duration*((heroAv&&heroAv.apFrac)||0.34);if(_heroLift.time>=ap){_heroLift.time=ap;_heroLift.paused=true;}}
           else if(heroAv.bones.lArm&&heroAv.bones.rArm){/* [7.68.0] niente clip lift → posa MANUALE: braccia alzate che reggono il trofeo (prima restava sul podio) */
             heroAv.bones.lArm.rotation.set(-1.9,0,0.55);heroAv.bones.rArm.rotation.set(-1.9,0,-0.55);
             if(heroAv.bones.lFore)heroAv.bones.lFore.rotation.set(0,0,0.5);if(heroAv.bones.rFore)heroAv.bones.rFore.rotation.set(0,0,-0.5);}
@@ -2066,6 +2116,7 @@ function GalaStage3D({beat,heroWins,avatarId=0,seed=7,act=0,senzaCorpi=false}){
       const tgt=b===0?[camVX,2.2,9.3,0,1.4,-0.8]
         :b===1?[camVX+1.35*_psgn,1.72,5.4,1.25*_psgn,1.35,-0.72]/* [7.328.0] presentatori spostati a |x|=1.72 → il lookAt li segue */
         :b===2?[camVX+1.15*_psgn,1.5,3.6,1.15*_psgn,1.25,-0.62]
+        :(st.current.heroWins&&heroAv&&heroAv.kw)?(heroIn<1?[heroAv.root.position.x*0.3,1.7,7.2,heroAv.root.position.x*0.6,1.1,0.2]:[0,1.45,4.2,0,1.15,0.3])/* camminata in campo largo, trofeo in primo piano *//* [7.999.51] la camera segue l'eroe che entra e lo inquadra col trofeo alzato */
         :st.current.heroWins?[camVX,1.95,5.0,0,1.55,-1.05]/* [7.85.0 opzione 2] niente vincitore in scena → push-in sul TROFEO sul podio */
         :[camVX,2.0,6.6,0,1.5,-1.0];
       const k2=1-Math.exp(-dt*2.2);
@@ -2163,6 +2214,13 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   const _galaTop3=_actG?_actG.rows:[];
   const _galaOn=!galaOff&&!!_actG;
   const _galaNext=()=>{if(_galaLast)setGalaOff(true);else{setGalaAct(a=>a+1);setGalaN(0);}};
+  /* [7.999.51 PO «il momento in 3D»] il gala' in tre tempi: APERTURA (i presentatori, quanti premi ti riguardano) → un MOMENTO
+     per ogni premio che VINCI (sali sul palco in smoking e alzi il trofeo: un tocco) → RIEPILOGO degli altri premi, una riga
+     ciascuno. Niente buste da aprire per i premi degli altri. Rosso __CPM_NO_GALA51 = la serata a buste di prima. */
+  const _g51=!(typeof window!=='undefined'&&window.__CPM_NO_GALA51);
+  const _vinti51=_galaSeq.map((a,i)=>({a,i})).filter(x=>x.a.rows&&x.a.rows[0]&&x.a.rows[0].isPlayer);
+  const _altri51=_galaSeq.filter(a=>!(a.rows&&a.rows[0]&&a.rows[0].isPlayer));
+  const [g51,setG51]=React.useState(0);// 0 apertura · 1..N momenti · N+1 riepilogo
   const _galaRow=(idx,medal,big)=>{const c=_galaTop3[idx];if(!c)return null;const _me=!!c.isPlayer;return(
     <div key={idx} style={{display:"flex",alignItems:"center",gap:10,padding:big?"12px 14px":"9px 12px",borderRadius:RAD.md,marginBottom:6,background:_me?"linear-gradient(135deg,#3b2a07,#5b420c)":"rgba(255,255,255,0.06)",border:`1px solid ${_me?"#d4a017":"rgba(255,255,255,0.12)"}`,animation:"logoIn 0.5s ease-out"}}>
       <span style={{fontSize:big?26:18}}>{medal}</span>
@@ -2176,7 +2234,62 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
     </div>);};
   return(
     <div style={{width:"100%"}}>
-      {_galaOn&&(
+      {_galaOn&&_g51&&(()=>{const N=_vinti51.length;const mom=g51>=1&&g51<=N?_vinti51[g51-1]:null;const rie=g51>N;
+        const _fig=(nome,me,l)=>{try{return <Figurina tipo="giocatore" chiave={me?((player&&player.name)||"eroe"):(nome||"npc")} larg={l}/>;}catch(_e){return null;}};
+        const _num=(c,k)=>c&&c.goals!=null&&(k==="capo"||k==="scarpa"||k==="oro"||k==="mvp")?c.goals:null;
+        const _chiudi=()=>setGalaOff(true);
+        return(<div data-cpm="gala51" style={{position:"fixed",inset:0,zIndex:9997,background:"#07060c"}}>
+          <GalaStage3D beat={mom?3:0} act={mom?mom.i:(g51===0?0:1)} heroWins={!!mom} avatarId={player.avatarId||0} seed={7} senzaCorpi={false}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(7,6,12,0.45) 0%,rgba(7,6,12,0) 16%,rgba(7,6,12,0) 60%,rgba(7,6,12,0.7) 100%)",pointerEvents:"none"}}/>
+          <div style={{position:"absolute",top:"calc(14px + env(safe-area-inset-top, 0px))",left:0,right:0,textAlign:"center",fontSize:FS.caption,fontWeight:FW.bold,color:"#d4a017",textTransform:"uppercase",letterSpacing:2.4}}>
+            {mom?`Premio · ${mom.a.title}`:rie?"Gli altri premi della serata":`La notte del Galà · Stagione ${season}`}</div>
+          <div data-cpm="gala51-fascia" style={{position:"absolute",left:12,right:12,bottom:"calc(16px + env(safe-area-inset-bottom, 0px))",maxWidth:460,margin:"0 auto",display:"flex",flexDirection:"column",gap:6}}>
+            {g51===0&&(<React.Fragment>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{`Stasera ${_galaSeq.length} ${_galaSeq.length===1?"premio":"premi"} · ${N===0?"nessuno per te":N===1?"1 è per te":N+" sono per te"}`}</span>
+              <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+                {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
+                <div style={{minWidth:0}}>
+                  <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{N>0?"Chiara Loreti apre la prima busta":"Chiara Loreti e Tommaso Varesi presentano la serata"}</div>
+                  <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_galaSeq.map(a=>a.title).join(" · ")}</div>
+                </div>
+              </div>
+              <Btn v="primary" fw onClick={()=>setG51(1)}>{N>0?"Apri la busta":"Vedi i premi della serata"}</Btn>
+            </React.Fragment>)}
+            {mom&&(()=>{const rows=mom.a.rows||[];const me=rows[0];const n0=_num(me,mom.a.key);return(<React.Fragment>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
+              <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  {_fig(me&&me.name,true,34)}
+                  {n0!=null&&<div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",lineHeight:1}}>{n0}</div>}
+                  <div style={{minWidth:0}}>
+                    <div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.primary}}>Il premio è tuo</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{(player&&player.name)||""}{me&&me.club?" · "+me.club:""}{n0!=null?" · "+n0+" gol":""}</div>
+                  </div>
+                </div>
+                {rows.length>1&&<div style={{display:"flex",gap:10,flexWrap:"wrap",borderTop:"1px solid "+TH.divider,paddingTop:6}}>
+                  {rows.slice(1,3).map((c,j)=>(<div key={j} style={{display:"flex",alignItems:"center",gap:5,fontSize:FS.caption,color:TH.muted,minWidth:0}}>
+                    {_fig(c.name,false,18)}<span style={{whiteSpace:"nowrap"}}>{(j+2)+"° "+c.name}{c.goals!=null?" · "+c.goals:""}{c.goals!=null&&rows.some((x,k)=>k!==j+1&&x&&x.goals===c.goals)?" (pari merito)":""}</span></div>))}
+                </div>}
+              </div>
+              <Btn v="primary" fw onClick={()=>{if(g51>=N&&!_altri51.length)_chiudi();else setG51(x=>x+1);}}>{g51<N?"Prossimo premio →":_altri51.length?"Gli altri premi →":"Vai al bilancio della stagione →"}</Btn>
+            </React.Fragment>);})()}
+            {rie&&(<React.Fragment>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>Consegnati stasera</span>
+              <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+                {_altri51.length===0&&<div style={{fontSize:FS.small,color:TH.text}}>Stasera hai vinto tutti i premi per cui eri in corsa.</div>}
+                {_altri51.map(a=>{const w=a.rows&&a.rows[0];const pos=(a.rows||[]).findIndex(x=>x&&x.isPlayer);return(
+                  <div key={a.key} style={{display:"flex",alignItems:"center",gap:8,fontSize:FS.small,color:TH.text,minWidth:0}}>
+                    {_fig(w&&w.name,false,20)}
+                    <span style={{flex:1,minWidth:0,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><b>{a.e} {a.title}</b> · {w?w.name:"—"}</span>
+                    <span style={{fontSize:FS.caption,color:pos>0?TH.primary:TH.muted,fontWeight:pos>0?FW.bold:FW.regular,whiteSpace:"nowrap"}}>{pos>0?`tu ${pos+1}°`:"non in corsa"}</span>
+                  </div>);})}
+              </div>
+              <Btn v="primary" fw onClick={_chiudi}>Vai al bilancio della stagione →</Btn>
+            </React.Fragment>)}
+            {!rie&&<button onClick={_chiudi} style={{alignSelf:"center",background:"none",border:"none",color:"rgba(255,255,255,0.75)",fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>Salta il galà</button>}
+          </div>
+        </div>);})()}
+      {_galaOn&&!_g51&&(
         <div style={{position:"fixed",inset:0,zIndex:9997,background:"radial-gradient(circle at 50% 18%, #1c1408 0%, #07060c 62%)",display:"flex",alignItems:"center",justifyContent:"center",padding:18}}>
           {/* [7.24.0] PALCO 3D dietro il gala (fallback = il gradiente qui sopra se WebGL non parte) — [7.33.0] beat/heroWins per ATTO: luci e coriandoli si riaccendono a ogni premio */}
           <GalaStage3D beat={galaN} act={galaAct} heroWins={!!(_galaTop3[0]&&_galaTop3[0].isPlayer)} avatarId={player.avatarId||0} seed={7} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO946)}/>
@@ -2253,7 +2366,24 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
           <div style={{fontSize:FS.caption,color:TH.muted,marginTop:6,textAlign:"center"}}>Gol, assist e presenze in tutte le competizioni · {(typeof leagueGoalsOf==="function"?leagueGoalsOf(player):(player.goals||0))} gol in campionato</div>
         </Card>);})()}
 
+      {/* [7.999.51 PO «solo i miei premi in cima»] dopo il gala' non si ripetono tutti i podi: in cima i premi VINTI, coi visi;
+          i podi della lega in una fisarmonica chiusa (aperta nel rosso __CPM_NO_GALA51). */}
+      {_g51&&(()=>{const mie=_vinti51.map(x=>x.a);const xi=!!leagueTeamOfYear;const gv=!!((leagueYoung||youngPlayer)&&(leagueYoung||youngPlayer).playerWins)&&!mie.some(a=>a.key==="young");
+        return(<Card data-cpm="premi-miei51" style={{marginBottom:10,padding:"12px 14px"}}>
+          <SectionLabel>I tuoi premi</SectionLabel>
+          {mie.length===0&&!xi&&!gv&&<div style={{fontSize:FS.small,color:TH.muted}}>Nessun premio individuale questa stagione.</div>}
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            {mie.map(a=>{const me=a.rows&&a.rows[0];return(<div key={a.key} style={{display:"flex",alignItems:"center",gap:10}}>
+              {(()=>{try{return <Figurina tipo="giocatore" chiave={(player&&player.name)||"eroe"} larg={30}/>;}catch(_e){return null;}})()}
+              <div style={{minWidth:0,flex:1}}><div style={{fontSize:FS.body,fontWeight:FW.black,color:TH.text}}>{a.e} {a.title}</div>
+                <div style={{fontSize:FS.caption,color:TH.muted}}>{(a.key==="oro"||a.key==="scarpa")?"Europa":lg}{me&&me.goals!=null?` · ${me.goals} gol`:""}</div></div>
+              <span style={{fontSize:FS.caption,fontWeight:FW.black,color:TH.txAmber,background:TH.bgAmber,borderRadius:RAD.pill,padding:"2px 8px"}}>1°</span></div>);})}
+            {xi&&<div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:22,width:30,textAlign:"center"}}>📋</span><div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text}}>Squadra dell'anno · {lg}</div></div>}
+            {gv&&<div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:22,width:30,textAlign:"center"}}>💎</span><div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text}}>Giovane dell'anno · {lg}</div></div>}
+          </div>
+        </Card>);})()}
       {/* PREMI DI LEGA (Sprint 134) */}
+      <Fisarmonica id="podi-lega51" titolo="Tutti i podi della lega" icona="🏅" aperta={!_g51}>
       <Card style={{marginBottom:10,padding:"14px 16px"}}>
         <SectionLabel>🏅 Premi di lega</SectionLabel>
 
@@ -2294,10 +2424,11 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
           )}
         </div>
       </Card>
+      </Fisarmonica>
 
       {/* PREMI EUROPEI — [7.999.49 parte A] stesso ordine del gala (Re dei Bomber, poi Trofeo d'Oro); i podi gia' svelati al gala
           stanno in una fisarmonica, aperta se un premio europeo e' tuo */}
-      <Fisarmonica id="premi-europei49" titolo="Premi europei" icona="🌍" quante={2} aperta={!!(palloneOro.playerWins||scarpaOro.playerWins)}>
+      <Fisarmonica id="premi-europei49" titolo="Premi europei" icona="🌍" quante={2} aperta={!_g51&&!!(palloneOro.playerWins||scarpaOro.playerWins)}>
       <Card style={{marginBottom:10,padding:"14px 16px",background:scarpaOro.playerWins?thPastel("#f0fdf4","rgba(34,197,94,0.12)"):TH.card,border:scarpaOro.playerWins?("1.5px solid "+thPastel("#bbf7d0","rgba(34,197,94,0.45)")):"1px solid "+TH.cardBorder}}>
         <SectionLabel>👟 RE DEI BOMBER {season}</SectionLabel>
         <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:6}}>I migliori marcatori dei campionati europei</div>
