@@ -3228,7 +3228,7 @@ function ThreeMatchView(props){
              const _r=BRAIN_GESTI[e.t];const _A=(window.__CPM_SCENA23=window.__CPM_SCENA23||{attesi:[],montati:[]});
              if(_r)for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx!=null&&_A.attesi.length<400)_A.attesi.push({seq:e._seq,ev:e.t,idx,nomi:_nomi23(e,idx,nomi),visto:false});}
            }catch(_eA){}}
-           if(e.scena&&(e.t==='ammonizione'||e.t==='espulsione')&&e.chi&&e.chi.i!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_CARTA9))sr.current._carta9={col:e.t==='ammonizione'?'y':'r',idx:e.chi.i,t:-1};/* [7.999.9 CARTELLINO] il cartellino deciso dal motore nella scena: l'arbitro lo mostra */
+           if(e.scena&&(e.t==='ammonizione'||e.t==='espulsione')&&e.chi&&e.chi.i!=null&&!(typeof window!=='undefined'&&window.__CPM_NO_CARTA9))sr.current._carta9={col:e.t==='ammonizione'?'y':'r',idx:e.chi.i,t:-1,nato:performance.now()};/* [7.999.9 CARTELLINO] il cartellino deciso dal motore nella scena: l'arbitro lo mostra */
            if(_ph23!=='playing'){if(_W)_W.fuoriGioco++;continue;}
            const _r=BRAIN_GESTI[e.t];if(!_r)continue;
            for(const [ruolo,nomi] of _r(e)){const w=e[ruolo];const idx=(w&&typeof w==='object')?w.i:null;if(idx==null)continue;
@@ -6979,7 +6979,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         // 3DV-10: durante isHL l'arbitro esce dal campo (fuori camera) per non bloccare l'azione
         {const _rk=Math.min(aDt*1.2,1);/* [7.303.0] inseguimento più calmo */
         const _c9=sr.current._carta9;let _c9m=null;if(_c9){_c9m=(_c9.idx===21)?hero:(sr.current.players&&sr.current.players[_c9.idx]&&sr.current.players[_c9.idx].mesh);          if(_c9.t<0&&_c9m&&_c9.idx!==21&&oppMesh&&oppMesh!==hero&&oppMesh!==_c9m&&Math.hypot(_c9m.position.x-hero.position.x,_c9m.position.z-hero.position.z)>14)_c9.dalContrasto=oppMesh;if(_c9.dalContrasto)_c9m=_c9.dalContrasto;/* [7.999.9] regola B4: il colpevole del motore se e' entro 14 u dall'eroe, altrimenti chi ha fatto il contrasto in scena (contato) */
-          _c9.m=_c9m;if(!_c9m||!isResult||_c9.t>4.6){sr.current._carta9=null;_c9m=null;}}
+          _c9.m=_c9m;
+          /* [7.999.40 — rapporto Codex «cartellino 1/10», riprodotto da noi con la CPU rallentata 4x: 0 cartellini su 2 scene] Il
+             cartellino nasce all'evento del motore, che arriva alla risoluzione; la fase passa a hl_result un commit di React dopo.
+             Sulle macchine lente fra i due c'e' almeno un fotogramma del disegno, e qui il `!isResult` lo cancellava prima che
+             l'esito cominciasse. Ora il cartellino in ATTESA (t<0) sopravvive nelle fasi dell'highlight che precedono l'esito, al
+             massimo 8 s dalla nascita, e parte solo in hl_result. Rosso __CPM_NO_CARTA40. */
+          const _att40=!isResult&&_c9.t<0&&/^hl_/.test(String(P.matchPhase||''))&&(performance.now()-(_c9.nato||0))<8000&&!(typeof window!=='undefined'&&window.__CPM_NO_CARTA40);
+          if(_att40)_c9m=null;
+          else if(!_c9m||!isResult||_c9.t>4.6){sr.current._carta9=null;_c9m=null;}}
         if(_c9m){/* [7.999.9 CARTELLINO — Passo 4. Rosso __CPM_NO_CARTA9] l'arbitro raggiunge chi ha commesso il fallo, di fronte a lui dal lato
              della camera, e alza il braccio col cartellino (braccio e cartellino dopo il mixer, piu' sotto). Passo capato a 8 u/s: corre, non vola. */
           const _t9=(_c9.t<0?0:_c9.t);_c9.t=_t9+aDt;

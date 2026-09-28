@@ -44,7 +44,7 @@ delete globalThis.window;
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
 const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 160)));
-await page.addInitScript(r => { window.__CPM_REC = true; window.__CPM_CARTA9_REC = 1; if (r) window.__CPM_NO_CARTA9 = 1; }, ROSSO);
+await page.addInitScript(o => { window.__CPM_REC = true; window.__CPM_CARTA9_REC = 1; if (o.r) window.__CPM_NO_CARTA9 = 1; if (o.r40) window.__CPM_NO_CARTA40 = 1; }, { r: ROSSO, r40: process.env.CPM_ROSSO40 === '1' });/* [7.999.40] CPM_ROSSO40=1 con CPM_CPU=4: il cartellino cancellato fra risoluzione ed esito (rapporto Codex) */
 if (process.env.CPM_CPU) { const _cdp = await page.context().newCDPSession(page); await _cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU }); }/* [7.999.40] macchina lenta simulata (Codex: 1/10 sulla sua) */
 await openMatch(page, port, { skipLoadAll: true, name: 'Carta9' });
 for (let k = 0; k < 40; k++) { await sleep(1000); if (await page.evaluate(() => { const g = window.__CPM_GESTURE && window.__CPM_GESTURE(); return !!(g && g.glb); })) break; }
