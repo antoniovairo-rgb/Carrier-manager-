@@ -455,7 +455,7 @@ function flagColsOf(nat){const code=_flagCode(nat);return (code&&_FLAG_COLS[code
 function _flagCode(f){if(!f)return null;let ri="",tg="";for(const ch of String(f)){const c=ch.codePointAt(0);if(c>=0x1F1E6&&c<=0x1F1FF)ri+=String.fromCharCode(c-0x1F1E6+65);else if(c>=0xE0061&&c<=0xE007A)tg+=String.fromCharCode(c-0xE0061+97);}
   if(ri.length>=2)return ri.slice(0,2);if(tg)return tg.toUpperCase();return null;}
 function leagueFlagBg(nat){const code=_flagCode(nat);return (code&&_FLAG_BG[code])||null;}
-function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,onSkip,scoutReport,scoutLoading,onShowScout,matchWeight=1,matchContext,weatherObj=null,kickoffHour=null,onBack=null,onSimulate=null,roundLabel=null,exClub=null}){/* [7.313.0] exClub: l'avversario e' una EX squadra dell'eroe *//* [7.32.7 collaudo PO] roundLabel: giornata/turno della competizione *//* [7.14.0 collaudo PO «non posso simulare!»] onSimulate: le gare di NAZIONALE entrate dal CTA finivano su questa schermata SENZA uscita né Simula (6.80 vieta l'abbandono) → ora il bottone c'è qui *//* [6.77.0 collaudo PO] onBack: ritorno alla dashboard in caso di cambio idea (prima solo ESC da desktop) */
+function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,onSkip,scoutReport,scoutLoading,onShowScout,matchWeight=1,matchContext,weatherObj=null,kickoffHour=null,onBack=null,onSimulate=null,roundLabel=null,exClub=null,mySide=null}){/* [7.999.49 parte A] mySide: quale delle due e' la squadra del giocatore *//* [7.313.0] exClub: l'avversario e' una EX squadra dell'eroe *//* [7.32.7 collaudo PO] roundLabel: giornata/turno della competizione *//* [7.14.0 collaudo PO «non posso simulare!»] onSimulate: le gare di NAZIONALE entrate dal CTA finivano su questa schermata SENZA uscita né Simula (6.80 vieta l'abbandono) → ora il bottone c'è qui *//* [6.77.0 collaudo PO] onBack: ritorno alla dashboard in caso di cambio idea (prima solo ESC da desktop) */
   /* [6.3.3 BUG-WX] meteo/orario REALI (seedati) della partita, passati da LiveMatch → niente più valori
      casuali che cambiavano entrando in campo e a ogni reload. Fallback ai vecchi pick() se assenti. */
   const _wDisp60=(typeof weatherNightDisp==="function")?weatherNightDisp(weatherObj,(kickoffHour!=null&&kickoffHour>=21)):weatherObj;/* [7.260.0] pre-partita coerente con la scena notturna */
@@ -484,9 +484,9 @@ function MatchdayCard({homeTeam,awayTeam,stadium,attendance,league,onContinue,on
     const Squadra=({t,lato})=>(<div style={{textAlign:"center",minWidth:0}}>
       <div style={{display:"flex",justifyContent:"center"}}><TeamBadge team={t} size={56}/></div>
       <div style={{fontSize:FS.body,fontWeight:FW.bold,color:TH.text,marginTop:SP.xs,lineHeight:1.25}}>{t?.name||t?.n}</div>
-      <div style={{fontSize:FS.caption,color:TH.muted}}>{lato==="home"?"Casa":"Ospite"}</div>
+      <div style={{fontSize:FS.caption,color:mySide===lato?TH.brandText:TH.muted,fontWeight:mySide===lato?FW.bold:FW.regular}}>{(mySide===lato?"La tua squadra · ":"")+(lato==="home"?"Casa":"Ospite")}</div>
       {exClub&&exClub.side===lato&&<div style={{marginTop:4}}><Badge tone="warn" size="sm">Ex squadra</Badge></div>}
-      {lato==="away"&&(()=>{const p=getClubPersona(t);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px",marginTop:4,display:"inline-block"}}>{p.e} Gioca: {p.desc.toLowerCase()}</div>:null;})()}{/* [7.999.49 parte A] lo stile spiegato (desc), non il solo nome */}
+      {(mySide?lato!==mySide:lato==="away")&&(()=>{const p=getClubPersona(t);return p?<div style={{fontSize:FS.caption,color:TH.muted,background:TH.surface2,borderRadius:RAD.pill,padding:"2px 8px",marginTop:4,display:"inline-block"}}>{p.e} Gioca: {p.desc.toLowerCase()}</div>:null;})()}{/* [7.999.49 parte A] lo stile spiegato (desc), non il solo nome */}
     </div>);
     return(
     <div data-cpm="prepartita23" style={{width:"100%",display:"flex",flexDirection:"column",gap:SP.md}}>

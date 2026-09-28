@@ -28,7 +28,7 @@ const COACH_STYLES=[
   {style:"Difensivo",trustMod:-5,desc:"Rigore tattico, esige sacrificio"},
   {style:"Bilanciato",trustMod:0,desc:"Equilibrio tra fase difensiva e creatività"},
   {style:"Pressing",trustMod:+3,desc:"Alta intensità, fisico essenziale"},
-  {style:"Contropiede",trustMod:-3,desc:"Efficienza sopra la brillantezza"},
+  {style:"Contropiede",trustMod:-3,desc:"Meglio concreti che belli"/* [7.999.49 parte A] era tradotto dall'inglese */},
   {style:"Possesso Palla",trustMod:+8,desc:"Valorizza tecnica e visione"},
 ];
 /* [24/09 POC — risposta PO al questionario: «nell'offerta mostra l'allenatore»] IL MISTER DI UN CLUB E' DETERMINISTICO (club +
