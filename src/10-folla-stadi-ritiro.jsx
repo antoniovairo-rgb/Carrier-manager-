@@ -907,5 +907,5 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
 }
 /* [7.261.0 collaudo PO «nel toast del risultato specifica se l'eroe ha fatto assist e gol ed il voto»] riga-eroe
    condivisa dai toast dei path SIMULA: G/A solo se >0, voto sempre (se disponibile). */
-function _heroSimLine(ps,rating){const _p=[];if(ps&&ps.goals)_p.push(`⚽${ps.goals}`);if(ps&&ps.assists)_p.push(`🅰️${ps.assists}`);if(rating!=null)_p.push(`voto ${rating}`);return _p.length?` · ${_p.join(" · ")}`:"";}
+function _heroSimLine(ps,rating){const _p=[];if(ps&&ps.goals)_p.push(`${ps.goals} gol`);if(ps&&ps.assists)_p.push(`${ps.assists} assist`);if(rating!=null&&isFinite(+rating))_p.push(`voto ${(+rating).toFixed(1).replace(".",",")}`);return _p.length?` · ${_p.join(" · ")}`:"";}/* [7.999.49 parte A] parole invece di icone, virgola decimale e sempre una cifra */
 

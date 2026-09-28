@@ -111,11 +111,11 @@ function ProTransitionScreen({player,onChoose}){
    CAREER PHASE + SEASON NARRATIVE HELPERS (Sprint 37)
 ======================================== */
 function getCareerPhase(age){
-  if(age<=21)return{label:"Giovane Promessa",e:"🌱",desc:"Stai costruendo le basi. Il tuo meglio è ancora davanti.",col:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0"};
-  if(age<=26)return{label:"Titolare Affermato",e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
-  if(age<=30)return{label:"Nel Pieno della Forma",e:"🔥",desc:"Questo è il tuo picco. Ogni stagione conta doppio.",col:"#d97706",bg:"#fff7ed",border:"#fed7aa"};
+  if(age<=21)return{label:"Giovane promessa",e:"🌱",desc:"Stai costruendo le basi. Il tuo meglio è ancora davanti.",col:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0"};
+  if(age<=26)return{label:"Titolare affermato",e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
+  if(age<=30)return{label:"Nel pieno della carriera"/* [7.999.49 parte A] «Forma» e' la condizione fisica: la fase d'eta' non la usa */,e:"🔥",desc:"Questo è il tuo picco. Ogni stagione conta doppio.",col:"#d97706",bg:"#fff7ed",border:"#fed7aa"};
   if(age<=34)return{label:"Veterano",e:"🎖️",desc:"L'esperienza vale oro. Guida i giovani con il tuo esempio.",col:"#7c3aed",bg:"#f5f3ff",border:"#ddd6fe"};
-  return{label:"Fine Carriera",e:"👟",desc:"Ogni partita potrebbe essere l'ultima. Goditi il momento.",col:"#64748b",bg:"#f8fafc",border:"#e2e8f0"};
+  return{label:"Fine carriera",e:"👟",desc:"Ogni partita potrebbe essere l'ultima. Goditi il momento.",col:"#64748b",bg:"#f8fafc",border:"#e2e8f0"};
 }
 function getSeasonNarrative(goals,assists,matches,playerPos,numTeams,isChampion,isRelegated,extra){
   // extra: {coachStyle, clubPrestige, season, isPromoted, euroChamp, cupChamp}
@@ -2749,7 +2749,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
               {(euro.groupResults||[]).map((r,i)=>{
                 const opp=r.opp||r.opponent||"?";
                 const hs=r.hs??r.homeScore??"-"; const as=r.as??r.awayScore??"-";
-                const res=r.won?"V":r.drew?"P":"S";
+                const res=r.won?"V":r.drew?"N":"P";/* [7.999.49 parte A] esiti V·N·P */
                 return <span key={i} style={{marginRight:8,color:r.won?"#16a34a":r.drew?"#d97706":"#dc2626"}}>{res} vs {opp} ({hs}-{as})</span>;
               })}
             </div>

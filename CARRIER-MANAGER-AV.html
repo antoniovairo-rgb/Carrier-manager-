@@ -2379,7 +2379,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🚗 Accetto — che spettacolo",ef:{popularity:6,morale:4,coachTrust:-3}},
     {txt:"🚙 Tengo la mia, niente distrazioni",ef:{coachTrust:4,morale:-1}},
   ]},
-  {id:"wi_polemica_social",cat:"tensione",txt:"Un tifoso avversario ti insulta online e diventa virale. I tuoi fan aspettano una tua reazione.",choices:[
+  {id:"wi_polemica_social",cat:"tensione",txt:"Un tifoso avversario ti insulta online e il post diventa virale. I tuoi fan aspettano una tua reazione.",choices:[
     {txt:"🔥 Rispondo per le rime",ef:{popularity:5,morale:-3,coachTrust:-4}},
     {txt:"🤐 Ignoro, parlerò in campo",ef:{coachTrust:4,morale:2}},
   ]},
@@ -2600,7 +2600,7 @@ const VITA_EVENTS=[
   {id:"vita_torneo_quartiere",cat:"vita",r:"r",cond:p=>(p.popularity||20)>=60,txt:"🏅 Il tuo quartiere ti ha intitolato il torneo estivo. La targa è storta e il campo è quello di sempre, con le buche. È il premio più bello dell'anno.",ef:{popularity:6,morale:7},mem:"Il torneo del quartiere"},
   // ---- EVENTI ASSURDI E MEMORABILI ----
   {id:"vita_tutto_calcolato",cat:"assurdo",r:"r",cond:p=>{const mh=p.matchHistory||[];const lm=mh[mh.length-1];return !!(lm&&(lm.goals||0)>=1);}/* [7.438.0] «ho APPENA visto il tuo gol»: idem, ultima partita */,txt:"😂 Messaggio di un compagno: «Ho appena visto il tuo gol. Era tutto calcolato?» Rispondi: «Ovviamente no.» «Lo sapevo.»",ef:{morale:6},mem:"«Era tutto calcolato?»"},
-  {id:"vita_gatto",cat:"assurdo",r:"u",txt:"🐈 Un gatto entra al campo d'allenamento, ignora tutti e si accuccia NEL TUO zaino. Il mister: «Almeno lui ha scelto bene». Da oggi è la mascotte, e ha il tuo numero.",ef:{morale:5},mem:"Il gatto portafortuna"},
+  {id:"vita_gatto",cat:"assurdo",r:"u",txt:"🐈 Un gatto entra al campo d'allenamento, ignora tutti e si accuccia proprio nel tuo zaino. Il mister: «Almeno lui ha scelto bene». Da oggi è la mascotte, e ha il tuo numero.",ef:{morale:5},mem:"Il gatto portafortuna"},
   {id:"vita_sosia",cat:"assurdo",r:"r",cond:p=>(p.popularity||20)>=45,txt:"👯 Un sosia firma autografi a tuo nome al centro commerciale. Il club, invece di denunciarlo, gli regala un abbonamento: «Porta bene».",ef:{popularity:4,morale:3},mem:"Il sosia dell'ipermercato"},
   {id:"vita_gps_buffet",cat:"assurdo",r:"u",cond:p=>(p.goals||0)>=5,txt:"📡 Riunione dati: il preparatore proietta la tua velocità massima stagionale. L'ha registrata il GPS... durante la corsa al buffet del ritiro. Applauso liberatorio.",ef:{morale:6},mem:"Il record del buffet"},
   // ---- PROCURATORE / CONFIDENTE ----
@@ -2730,7 +2730,7 @@ const CAREER_MOMENTS=[
      {txt:"💪 «Ci arriverò. A modo mio.»",ef:{morale:7,form:8},mem:"Quando il sogno sembrò sfumare, trasformasti la delusione in carburante."},
      {txt:"😔 «Forse non era destino.»",ef:{morale:-8},mem:"Quella notizia ti tolse il fiato."},
    ]},
-  {id:"cm_fascia_ad_altro",name:"La Fascia ad un Altro",
+  {id:"cm_fascia_ad_altro",name:"La fascia a un altro",
    /* [7.276.0 collaudo PO «troppo giovane e troppo poca seniorità nel club»] Il momento presuppone che tu
       fossi un CANDIDATO alla fascia, ma il trigger chiedeva solo fiducia ≥75 e terza stagione: usciva a un
       ventenne arrivato da poco, che capitano non poteva esserlo per definizione. La fascia si assegna (7.5.0)
@@ -2738,9 +2738,9 @@ const CAREER_MOMENTS=[
       quella soglia, non a metà strada dall'esordio. */
    trigger:(p)=>p.proStatus==="pro"&&(p.coachTrust||60)>=75&&!p.isCaptain&&(p.season||1)>=5&&(p.age||18)>=26&&(p.totalMatches||0)>=110&&["titolare","leader"].indexOf(p.squadRole||"")>=0,
    prob:0.04,
-   txt:"👕 Il mister annuncia il nuovo capitano. Non è te. Ti guarda negli occhi: «So cosa stai pensando. Dimostrami che ho sbagliato.»",
+   txt:"👕 Il mister annuncia il nuovo capitano. Non sei tu. Ti guarda negli occhi: «So cosa stai pensando. Dimostrami che ho sbagliato.»",
    choices:[
-     {txt:"🤝 «Lo capisco, mister. Lavoro.»",ef:{coachTrust:8,morale:3},mem:"Accettasti la fascia ad un altro con dignità. Poi parlò il campo."},
+     {txt:"🤝 «Lo capisco, mister. Lavoro.»",ef:{coachTrust:8,morale:3},mem:"Accettasti la fascia a un altro con dignità. Poi parlò il campo."},
      {txt:"😤 «Meritavo io quella fascia.»",ef:{coachTrust:-10,morale:5},mem:"Protestasti per la fascia mancata. Il mister non dimenticò."},
    ]},
   {id:"cm_scoop",name:"Lo Scoop",
@@ -8237,7 +8237,7 @@ async function generateScoutReport(opponentClub,playerStats,recentMatches){
   if(_aiMockMode){
     return generateLocalScoutReport(opponentClub,playerStats,recentMatches,arguments[3]);
   }
-  const last5=(recentMatches||[]).slice(-5).map(m=>`${m.opponent} ${m.homeScore}-${m.awayScore} (${m.won?"V":m.drew?"P":"S"})`).join(", ")||"Nessuna partita";
+  const last5=(recentMatches||[]).slice(-5).map(m=>`${m.opponent} ${m.homeScore}-${m.awayScore} (${m.won?"V":m.drew?"N":"P"})`).join(", ")||"Nessuna partita";
   const sys="Sei uno scout calcistico esperto. Analizza tatticamente con precisione. Rispondi SOLO con JSON valido.";
   const msg=`Scout report:\n- Avversario: ${opponentClub.n} (Prestige: ${opponentClub.p||65}/99)\n- Ultime 5 del giocatore: ${last5}\n- Stats: tecnica ${playerStats.tecnica||60}, velocità ${playerStats.velocità||60}, tiro ${playerStats.tiro||60}, passaggio ${playerStats.passaggio||60}\n\nJSON: {"weaknesses":["debole 1","debole 2"],"strengths":["forte 1","forte 2"],"recommendation":"consiglio tattico","difficulty":65}`;
   const res=await callClaudeAPI(sys,msg);
@@ -8534,12 +8534,16 @@ function generateTeamRoster(club,season){
   const firstPool=seededShuffle([...names.first],base);
   const lastPool=seededShuffle([...names.last],base^0x9E3779B9);
   const ss=Math.max(1,season||1),_TEN=7;/* anni medi di permanenza in uno slot */
+  const _usati49=new Set();/* [7.999.49 parte A] lo slot i e lo slot i+13 di generazioni diverse pescavano lo STESSO indice del pool:
+     nella rosa del Club comparivano due «Sergio Monti» con ruoli diversi. Un nome gia' usato scala al cognome successivo (deterministico). */
   return roles.map((role,i)=>{
     const _ph=Math.abs(hashStr((club?.id||"x")+"_ph_"+i))%_TEN;// fase d'ingaggio dello slot (sfalsa i rinnovi)
     const _gen=Math.floor((ss+_ph)/_TEN);// "generazione" del titolare dello slot: cambia solo ogni ~7 stagioni
     const _off=_gen*13;// offset nel pool → nome diverso SOLO quando cambia la generazione (mercato), altrimenti stabile
     const _fn=firstPool[(i+_off)%firstPool.length];let _ln=lastPool[(i+_off)%lastPool.length];
     if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))_ln=lastPool[(i+_off+7)%lastPool.length];// [5.96.0 CR-1] mai un nome+cognome di calciatore reale in rosa
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_ROSA49)){for(let _k=1;_usati49.has(_fn+" "+_ln)&&_k<lastPool.length;_k++){_ln=lastPool[(i+_off+_k)%lastPool.length];if(typeof _CR_FULLNAMES!=="undefined"&&_CR_FULLNAMES.has((_fn+" "+_ln).toLowerCase()))continue;}}
+    _usati49.add(_fn+" "+_ln);
     return{name:`${_fn} ${_ln}`,role};});
 }
 function seededShuffle(arr,seed){
@@ -9936,7 +9940,7 @@ function _pSimStats(sim,ovr,archId,rng){// [5.76.0 BUG-6] rng opzionale seedato 
 }
 /* [7.261.0 collaudo PO «nel toast del risultato specifica se l'eroe ha fatto assist e gol ed il voto»] riga-eroe
    condivisa dai toast dei path SIMULA: G/A solo se >0, voto sempre (se disponibile). */
-function _heroSimLine(ps,rating){const _p=[];if(ps&&ps.goals)_p.push(`⚽${ps.goals}`);if(ps&&ps.assists)_p.push(`🅰️${ps.assists}`);if(rating!=null)_p.push(`voto ${rating}`);return _p.length?` · ${_p.join(" · ")}`:"";}
+function _heroSimLine(ps,rating){const _p=[];if(ps&&ps.goals)_p.push(`${ps.goals} gol`);if(ps&&ps.assists)_p.push(`${ps.assists} assist`);if(rating!=null&&isFinite(+rating))_p.push(`voto ${(+rating).toFixed(1).replace(".",",")}`);return _p.length?` · ${_p.join(" · ")}`:"";}/* [7.999.49 parte A] parole invece di icone, virgola decimale e sempre una cifra */
 
 /* ========================================
    UI COMPONENTS  (light theme – req #1)
@@ -10112,10 +10116,10 @@ function Badge({children,tone="neutral",solid=false,icon,size="md",style={}}){
   return(<span style={{display:"inline-flex",alignItems:"center",gap:4,padding:sm?"1px 7px":"3px 9px",borderRadius:RAD.pill,fontSize:FS.caption/* [C4] la variante piccola scendeva a 10: sotto il pavimento dichiarato. La densita' la fa il padding, non un corpo illeggibile. */,fontWeight:FW.bold,lineHeight:1.4,whiteSpace:"nowrap",...base,...style}}>{icon}{children}</span>);
 }
 
-/* MatchBadge — esito V/P/S unificato (retira le decine di quadratini V/N/S ad-hoc). r=result 'W'|'D'|'L' o won/drew. */
+/* MatchBadge — esito V/N/P unificato (vinta/pareggio/persa, [7.999.49 parte A]). r=result 'W'|'D'|'L' o won/drew. */
 function MatchBadge({r,size=22,title}){
   const kind=r==="W"||r==="win"||r===true?"win":(r==="D"||r==="draw"?"draw":"loss");
-  const letter=kind==="win"?"V":kind==="draw"?"P":"S"; // vocabolario di gioco V/P/S (Pareggio)
+  const letter=kind==="win"?"V":kind==="draw"?"N":"P"; // [7.999.49 parte A] vocabolario unico V/N/P (P = persa)
   const bg=kind==="win"?TH.winFg:kind==="draw"?TH.drawFg:TH.lossFg;
   return(<div title={title} className="cpm-num" style={{width:size,height:size,borderRadius:RAD.xs,background:bg,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:fsScala(Math.max(FS.caption,size*.45))/* [C4] pavimento 11 px anche quando il quadratino e' piccolo */,fontWeight:FW.black,color:"#fff",flexShrink:0}}>{letter}</div>);
 }
@@ -36738,11 +36742,11 @@ function ProTransitionScreen({player,onChoose}){
    CAREER PHASE + SEASON NARRATIVE HELPERS (Sprint 37)
 ======================================== */
 function getCareerPhase(age){
-  if(age<=21)return{label:"Giovane Promessa",e:"🌱",desc:"Stai costruendo le basi. Il tuo meglio è ancora davanti.",col:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0"};
-  if(age<=26)return{label:"Titolare Affermato",e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
-  if(age<=30)return{label:"Nel Pieno della Forma",e:"🔥",desc:"Questo è il tuo picco. Ogni stagione conta doppio.",col:"#d97706",bg:"#fff7ed",border:"#fed7aa"};
+  if(age<=21)return{label:"Giovane promessa",e:"🌱",desc:"Stai costruendo le basi. Il tuo meglio è ancora davanti.",col:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0"};
+  if(age<=26)return{label:"Titolare affermato",e:"⭐",desc:"Hai trovato la tua dimensione. Ora è il momento di importi.",col:"#2563eb",bg:"#eff6ff",border:"#bfdbfe"};
+  if(age<=30)return{label:"Nel pieno della carriera"/* [7.999.49 parte A] «Forma» e' la condizione fisica: la fase d'eta' non la usa */,e:"🔥",desc:"Questo è il tuo picco. Ogni stagione conta doppio.",col:"#d97706",bg:"#fff7ed",border:"#fed7aa"};
   if(age<=34)return{label:"Veterano",e:"🎖️",desc:"L'esperienza vale oro. Guida i giovani con il tuo esempio.",col:"#7c3aed",bg:"#f5f3ff",border:"#ddd6fe"};
-  return{label:"Fine Carriera",e:"👟",desc:"Ogni partita potrebbe essere l'ultima. Goditi il momento.",col:"#64748b",bg:"#f8fafc",border:"#e2e8f0"};
+  return{label:"Fine carriera",e:"👟",desc:"Ogni partita potrebbe essere l'ultima. Goditi il momento.",col:"#64748b",bg:"#f8fafc",border:"#e2e8f0"};
 }
 function getSeasonNarrative(goals,assists,matches,playerPos,numTeams,isChampion,isRelegated,extra){
   // extra: {coachStyle, clubPrestige, season, isPromoted, euroChamp, cupChamp}
@@ -39376,7 +39380,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
               {(euro.groupResults||[]).map((r,i)=>{
                 const opp=r.opp||r.opponent||"?";
                 const hs=r.hs??r.homeScore??"-"; const as=r.as??r.awayScore??"-";
-                const res=r.won?"V":r.drew?"P":"S";
+                const res=r.won?"V":r.drew?"N":"P";/* [7.999.49 parte A] esiti V·N·P */
                 return <span key={i} style={{marginRight:8,color:r.won?"#16a34a":r.drew?"#d97706":"#dc2626"}}>{res} vs {opp} ({hs}-{as})</span>;
               })}
             </div>
@@ -40759,8 +40763,8 @@ const LOCALE={
     understood:"✅ Capito",cannotPlayInjured:"Non puoi giocare (infortunato)",
     skipAndRecover:"⏭️ Salta e recupera settimana",cancelStay:"rimani in dashboard",
     weekHeader:"Settimana",thisWeek:"Questa settimana",
-    weekLivedNote:"La settimana è stata vissuta. Clicca \"Avanza\" per passare alla prossima o gioca la partita prima.",
-    rehabCompletedNote:"Sessione completata. Clicca 'Avanza Settimana' per continuare il recupero.",
+    weekLivedNote:"Settimana vissuta. Ora gioca la partita o passa alla prossima settimana col pulsante in Home.",/* [7.999.49 parte A] niente «Clicca» ne' «Avanza» (pulsante che in Home non c'e') */
+    rehabCompletedNote:"Sessione completata. Passa alla prossima settimana col pulsante in Home per continuare il recupero.",
   },
   EN:{
     tabs:{dashboard:"Home",calendar:"Calendar",standings:"Standings",training:"Training",profile:"Profile"},
@@ -41075,10 +41079,15 @@ const generateWorldResults=(player)=>{
   TOP_LGS.forEach(lg=>{
     const lc=CLUBS.filter(c=>c.lg===lg&&!c.isU18);
     if(lc.length<2)return;
+    const _usati=new Set();/* [7.999.49 parte A] un club gioca UNA partita per giornata: la seconda gara salta i club della prima */
     for(let mi=0;mi<2;mi++){
       let s=Math.abs(hashStr(`wr128_${ss}_${wk}_${lg}_${mi}`));
-      const hi=s%lc.length;s=(s*1664525+1013904223)&0x7fffffff;
-      const ai=(hi+1+s%Math.max(1,lc.length-1))%lc.length;
+      let hi=s%lc.length;s=(s*1664525+1013904223)&0x7fffffff;
+      let ai=(hi+1+s%Math.max(1,lc.length-1))%lc.length;
+      if(lc.length-_usati.size<2)break;
+      for(let g=0;g<lc.length&&_usati.has(hi);g++)hi=(hi+1)%lc.length;
+      for(let g=0;g<lc.length&&(_usati.has(ai)||ai===hi);g++)ai=(ai+1)%lc.length;
+      _usati.add(hi);_usati.add(ai);
       const h=lc[hi];const a=lc[ai];
       s=(s*1664525+1013904223)&0x7fffffff;
       const pd=(h.p||60)/(((h.p||60)+(a.p||60))||120);
@@ -41388,9 +41397,9 @@ function MilestoneCelebrationModal({milestone,onDismiss}){
 const TrainPanel=({player,setPlayer,notify})=>{
   const _TT={
     fisico:{id:"fisico",e:"💪",l:"Fisico",a:"fisico",b:"velocità",col:"#16a34a"},
-    tecnico:{id:"tecnico",e:"⚽",l:"Tecnico",a:"tecnica",b:"tiro",col:"#2563eb"},
-    tattico:{id:"tattico",e:"🎯",l:"Tattico",a:"passaggio",b:"posizionamento",col:"#d97706"},
-    mentale:{id:"mentale",e:"🧠",l:"Mentale",a:"mentalità",b:"dribbling",col:"#7c3aed"},
+    tecnico:{id:"tecnico",e:"⚽",l:"Tecnica",a:"tecnica",b:"tiro",col:"#2563eb"},
+    tattico:{id:"tattico",e:"🎯",l:"Tattica",a:"passaggio",b:"posizionamento",col:"#d97706"},
+    mentale:{id:"mentale",e:"🧠",l:"Mentalità",a:"mentalità",b:"dribbling",col:"#7c3aed"},
   };
   const fat=player.fatigue||0;
   const allDone=(player.sessionsThisWeek||0)>=3;
@@ -41414,8 +41423,12 @@ const TrainPanel=({player,setPlayer,notify})=>{
   const _acR=player.assistantCoachRel||50;const _acMult=_acR>=75?1.12:_acR>=60?1.04:_acR<=35?0.90:1.0;
   const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult*TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(player.perkTrainer?1.10:1):(1+[0,0.10,0.15,0.20][staffLv24(player,"perkTrainer")]))/*[5.80.0 BIL-1/MIN-8 · 5.81.0 perk]*/;
   const _dim=(sv)=>{const v=sv||60;return v>=92?0.015:v>=90?0.03:v>=88?0.05:v>=84?0.11:v>=80?0.18:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};/* [7.9.1 collaudo PO «ritara»] rendimento decrescente INDURITO nella fascia élite (84+ ridotto, 90+ quasi piatto): con la crescita ora attiva su tutti i path (7.9.0) il profilo top toccava 93 a 28 anni — il tetto converge a ~90-92 (picco di progetto 5.80); fasce ≤80 INVARIATE → criterio §10 (50→85 in 8-10 stagioni) intatto */
-  const _t0name=_TT[_t0]?.l||_t0;const _t1name=_TT[_t1]?.l||_t1;
-  const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana puntiamo su ${_t0name} e ${_t1name}. Segui il piano.`;
+  const _t0name=(_TT[_t0]?.l||_t0).toLowerCase();const _t1name=(_TT[_t1]?.l||_t1).toLowerCase();/* [7.999.49 parte A] minuscole a meta' frase */
+  /* [7.999.49 parte A] efficacia mostrata RISPETTO ALLA BASE: senza la costante TRAIN_BASE_EFF, l'eta' e l'archetipo, che il
+     giocatore non puo' cambiare (il «↓ 67%» nasceva quasi tutto da li'). Solo testo: _mult resta quello che fa crescere. */
+  const _mEff=_mult/((TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player))||1);
+  const _mEffWhy=_avgRating>=7.5?" · voti alti":_avgRating<5.5?" · voti bassi":(player.form||60)>=75?" · grazie alla forma":(player.form||60)<=35?" · forma bassa":"";
+  const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana lavoriamo su ${_t0name} e ${_t1name}. Segui il piano.`;
   const _fitMsg=veryTired?"⚠️ Il preparatore ti ferma: rischio infortuni.":highFat?"💧 Il preparatore inserisce sessioni di recupero.":streak>=3?"🔥 Stai mantenendo continuità — il preparatore è soddisfatto.":"";
   // [5.86.0 · DIRETTIVA PO] TRAINING AUTOMATICO by design: l'eroe è un CALCIATORE, non l'allenatore —
   //   il piano settimanale lo decidono mister e preparatori (le 2 stat più deboli; recupero automatico a
@@ -41440,18 +41453,21 @@ const TrainPanel=({player,setPlayer,notify})=>{
       assistantCoachRel:clamp((p.assistantCoachRel||50)+(Math.random()<0.28?1:0),0,100),
       teamChemistry:clamp((p.teamChemistry||60)+(Math.random()<0.25?1:0),0,100)}));
     const gkeys=Object.keys(gained);
-    notify(`✅ W.${week}: ${gkeys.length?gkeys.map(k=>`+${gained[k]} ${k}`).join(" · "):"nessuna crescita questa settimana"}`,gkeys.length?TH.success:TH.muted);
+    if(gkeys.length)notify(`✅ Settimana ${week}: ${gkeys.map(k=>`+${gained[k]} ${k}`).join(" · ")}`,TH.success);/* [7.999.49 parte A] «nessuna crescita» la dice gia' la card: niente avviso doppio sopra i bottoni */
   },[]);// eslint-disable-line — auto-esecuzione al mount (direttiva PO 5.86.0)
   return(
     <Card>
       <div style={{display:"flex",alignItems:"flex-start",gap:8,marginBottom:8,padding:"8px 10px",background:TH.surface2,borderRadius:RAD.sm,border:"1px solid "+TH.cardBorder}}>
         <div style={{fontSize:FS.title,flexShrink:0}}>🧑‍🏫</div>
         <div style={{flex:1}}>
-          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister · Piano W.{week}</div>
+          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister · piano della settimana {week}</div>
           <div style={{fontSize:FS.small,color:TH.text,fontStyle:"italic"}}>"{_coachMsg}"</div>
           {_fitMsg&&<div style={{fontSize:FS.caption,color:TH.txBlue,marginTop:4}}>{_fitMsg}</div>}
         </div>
       </div>
+      {/* [7.999.49 parte A] il piano e' automatico: sessioni ed efficacia chiuse in «Dettagli del piano»; tolti i chip
+          di fatica e forma (li mostra gia' la testata) */}
+      <Fisarmonica id="allen-dettagli-piano" titolo="Dettagli del piano"><div style={{background:TH.card,border:"1px solid "+TH.cardBorder,borderTop:"none",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",padding:"8px 10px"}}>
       <div style={{display:"flex",gap:6,marginBottom:8}}>
         {_planEff.map((tid,i)=>{
           const isRec=tid==="rec"||tid==="rec_attivo"||tid==="rec_completo";
@@ -41463,13 +41479,12 @@ const TrainPanel=({player,setPlayer,notify})=>{
           </div>);
         })}
       </div>
-      <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap"}}>
-        <div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:fat>70?TH.bgRed:fat>45?TH.bgAmber:TH.bgGreen,color:fat>70?TH.txRed:fat>45?"#92400e":"#166534"}}>💧 {fat}/100</div>
-        <div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:TH.bgBlue,color:TH.txBlue}}>⭐ Forma {player.form||60}</div>
-        {_recent.length>0&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_avgRating>=7?TH.bgGreen:_avgRating<=5.5?TH.bgRed:TH.surface2,color:_avgRating>=7?TH.txGreen:_avgRating<=5.5?TH.txRed:TH.faint}}>📊 Voto {_avgRating.toFixed(1)}</div>}
-        {_mult!==1.0&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_mult>1?TH.bgGreen:"#fff7ed",color:_mult>1?"#166534":"#92400e"}}>{_mult>1?`↑ ${Math.round((_mult-1)*100)}% efficacia`:`↓ ${Math.round((1-_mult)*100)}% efficacia`}</div>}
+      <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+        {_recent.length>0&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_avgRating>=7?TH.bgGreen:_avgRating<=5.5?TH.bgRed:TH.surface2,color:_avgRating>=7?TH.txGreen:_avgRating<=5.5?TH.txRed:TH.faint}}>Voto medio (ultime {_recent.length}) {_avgRating.toFixed(1).replace(".",",")}</div>}
+        {Math.abs(_mEff-1)>=0.02&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_mEff>1?TH.bgGreen:TH.bgAmber,color:_mEff>1?TH.txGreen:TH.txAmber}}>Efficacia {_mEff>1?"+":"−"}{Math.round(Math.abs(_mEff-1)*100)}%{_mEffWhy}</div>}
         {streak>=3&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:TH.bgAmber,color:TH.txAmber}}>🔥 {streak} sett.</div>}
       </div>
+      </div></Fisarmonica>
       {allDone?(
         <div style={{textAlign:"center",padding:"10px 0",color:TH.txGreen,fontSize:FS.small,fontWeight:700}}>
           ✅ Allenamento completato
@@ -43306,6 +43321,7 @@ const getThisWeekMatchday=()=>{
     _wkMomentRef.current=wk;
     try{
       if((player.proStatus||"u18")!=="pro"&&!(player.club))return;
+      if(careerMomentModal)return;/* [7.999.49 parte A] un momento aperto e non risposto non viene sostituito ne' ripescato */
       const firedM=player.momentsFired||[];
       const eligible=CAREER_MOMENTS.filter(m=>!firedM.includes(m.id)&&m.trigger(player));
       let hit=null;for(const m of eligible){if(Math.random()<m.prob){hit=m;break;}}
@@ -45281,7 +45297,7 @@ const getThisWeekMatchday=()=>{
       const _adjRat131=Math.round(clamp(sim.rating+_sPS131.goals*0.4+_sPS131.assists*0.2,4.0,9.5)*10)/10;
       const newHistory=[...(p.matchHistory||[]),{season:p.season||1,week:p.week||1,opponent:opp.n,oppAbbr:opp.a,oppCol:opp.c,homeScore:sim.homeScore,awayScore:sim.awayScore,goals:_sPS131.goals,assists:_sPS131.assists,rating:_adjRat131,won:sim.won,drew:sim.drew,simulated:true,...(p.contractExpired?{svincolato:true,rating:null}:{})}].slice(-200);/* [7.419.0] fuori rosa: la voce lo DICE, niente voto fantasma */
       const moD=sim.won?3:sim.drew?1:-2;
-      notify(`Simulazione: ${sim.homeScore}–${sim.awayScore} vs ${opp.n}${p.contractExpired?" — 🚫 SVINCOLATO: non sei sceso in campo (rinnova o firma!)":_heroSimLine(_sPS131,_adjRat131)}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger,{prio:true});/* [7.419.0 collaudo PO «assurdo nemmeno un gol o assist in 13 partite simulate»] il silenzio era la beffa: 13 settimane simulate da svincolato senza che il gioco lo DICESSE mai *//* [7.261.0 collaudo PO] il toast dice cosa HA FATTO L'EROE */
+      notify(`${sim.won?"Vittoria":sim.drew?"Pareggio":"Sconfitta"} ${sim.homeScore}–${sim.awayScore} ${md2.isHome!==false?"in casa":"in trasferta"} vs ${opp.n} (simulata)${p.contractExpired?" — 🚫 SVINCOLATO: non sei sceso in campo (rinnova o firma!)":_heroSimLine(_sPS131,_adjRat131)}`,sim.won?TH.success:sim.drew?TH.warning:TH.danger,{prio:true});/* [7.419.0 collaudo PO «assurdo nemmeno un gol o assist in 13 partite simulate»] il silenzio era la beffa: 13 settimane simulate da svincolato senza che il gioco lo DICESSE mai *//* [7.261.0 collaudo PO] il toast dice cosa HA FATTO L'EROE */
       const _injSim79=simInjuryRoll(p,(_aSd+7));/* [7.9.0] infortunio possibile anche SIMULANDO la lega */
       if(_injSim79.injured){const _iT79=INJURY_TYPES_META[_injSim79.injuryType]||{label:"Infortunio",icon:"🩹"};setTimeout(()=>notify(`${_iT79.icon} ${_iT79.label} in partita! Stop: ${_injSim79.injuryWeeks} settiman${_injSim79.injuryWeeks===1?"a":"e"}.`,TH.danger),1400);}
       const _fatS79=clamp((p.fatigue||0)+6+(Math.abs(hashStr("fat|"+(p.season||1)+"|"+(p.week||1)+"|"+(opp&&opp.id||"")))%6),0,100),_formS79=clamp((p.form||70)+((p.form||70)<68?2:(p.form||70)>82?-2:0)+((p.returnPenaltyWeeks||0)>0?-6:0),30,95);/* [7.178.0 RC-18] la gara SIMULATA costava -14 di fatica (RECUPERO!) → ora costa +6..11 seedato come una partita vera; [RC-19] malus rientro graduale anche su questo path (prima solo Avanza) */
@@ -45340,7 +45356,7 @@ const getThisWeekMatchday=()=>{
       return{label:`${_emType==="Mondiale"?"🌍":"🏆"} ${_emType} — vs ${_emOpp||"?"}`,sub:`${_emType==="Mondiale"?"Coppa del Mondo":"Europeo"} · ${_emRound}${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:_emCol,disabled:false,action:"euroMondiale"};
     }
     const md=getThisWeekMatchday();
-    if(md){const isCupM=md.type==="cup";const isEuroM=md.type==="euro_group"||md.type==="euro";const isNatM=md.type==="national";return{label:`${isNatM?"🏳️":isCupM?"🏆":isEuroM?"🌍":"⚽"} ${L.playMatch} vs ${md.opponentName}`,sub:isNatM?`Nazionale · Amichevole Internazionale · W.${md.week}`:isCupM?`${L.cup} · ${md.cupRoundName||"Round"} · W.${md.week}`:isEuroM?`${euroSig(md.competition)||"Europa"} · ${md.cupRoundName||"Gironi"} · W.${md.week}`:`${md.isHome?`🏟️ ${L.homeMatch}`:`✈️ ${L.awayMatch}`} · W.${md.week}`,color:isNatM?"#2563eb":isCupM?TH.goldText:isEuroM?"#1d4ed8":TH.txGreen,disabled:false};}
+    if(md){const isCupM=md.type==="cup";const isEuroM=md.type==="euro_group"||md.type==="euro";const isNatM=md.type==="national";return{label:`${isNatM?"🏳️":isCupM?"🏆":isEuroM?"🌍":"⚽"} ${L.playMatch} vs ${md.opponentName}`,sub:isNatM?`Nazionale · Amichevole internazionale`:isCupM?`${L.cup} · ${md.cupRoundName||"Turno"}`:isEuroM?`${euroSig(md.competition)||"Europa"} · ${md.cupRoundName||"Gironi"}`:`${md.isHome?"🏠 In casa":"✈️ In trasferta"}`,/* [7.999.49 parte A] niente «W.»: la settimana sta in testata; casa/trasferta a parole */color:isNatM?"#2563eb":isCupM?TH.goldText:isEuroM?"#1d4ed8":TH.txGreen,disabled:false};}
     if((player.week||1)>38)return{label:"🏁 Chiudi la stagione",sub:`S.${player.season||1} completata — premi e verdetti`,color:TH.brandText,disabled:false};/* [7.257.0 screenshot PO «W.39/38 → W.40»] oltre la W.38 l'avanzamento NON va a W.40: fa scattare il rollover (design 6.70/5.75, weekVal>38) — il CTA ora dice la verità invece di promettere una settimana che non esiste */
     return{label:L.advanceWeek,sub:`W.${player.week||1} → W.${(player.week||1)+1}`,color:TH.brandText,disabled:false};
   };
@@ -48219,7 +48235,7 @@ const getThisWeekMatchday=()=>{
               </div>
             </div>
             {weekLiveModal.isRehab&&<div style={{fontSize:FS.small,color:TH.txAmber}}>{weekLiveModal.injuryLabel} — ancora {weekLiveModal.injuryWeeks} settiman{weekLiveModal.injuryWeeks===1?"a":"e"} di stop</div>}
-            <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.55}}>{weekLiveModal.isSpogliatoio?"«"+weekLiveModal.event.txt+"»":weekLiveModal.event.txt}</div>
+            <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.md}px ${SP.lg}px`,fontSize:FS.body,color:TH.text,lineHeight:1.55}}>{weekLiveModal.event.txt}{/* [7.999.49 parte A] niente «» attorno al racconto dello spogliatoio: le battute hanno gia' le loro */}</div>
             {weekLiveModal.choices&&weekLiveModal.choices.length>0?(
               <div style={{display:"flex",flexDirection:"column",gap:SP.sm}}>
                 {weekLiveModal.choices.map((ch,i)=>{const _afford95=!(ch.ef&&ch.ef.bank!=null&&ch.ef.bank<0&&((player.bankBalance||0)+ch.ef.bank<0));return(
@@ -48238,10 +48254,10 @@ const getThisWeekMatchday=()=>{
                 {Object.keys(weekLiveModal.changes||{}).length>0&&(
                   <div style={{display:"flex",gap:SP.sm,flexWrap:"wrap"}}>
                     {[["morale","Morale",1],["form","Forma",1],["fatigue","Fatica",-1]].map(([k,lb,s])=>{const v=weekLiveModal.changes[k];if(v===undefined||v===0)return null;const buono=v*s>0;
-                      return <div key={k} className="cpm-num" style={{padding:"4px 10px",borderRadius:RAD.pill,background:buono?TH.bgGreen:(k==="fatigue"?TH.bgAmber:TH.bgRed),color:buono?TH.txGreen:(k==="fatigue"?TH.txAmber:TH.txRed),fontSize:FS.caption,fontWeight:FW.bold}}>{lb} {v>0?"+":""}{v}</div>;})}
+                      return <div key={k} className="cpm-num" style={{padding:"4px 10px",borderRadius:RAD.pill,background:buono?TH.bgGreen:(k==="fatigue"?TH.bgAmber:TH.bgRed),color:buono?TH.txGreen:(k==="fatigue"?TH.txAmber:TH.txRed),fontSize:FS.caption,fontWeight:FW.bold}}>{lb} {v>0?"+":""}{v}{(()=>{const _c={morale:[0,100],form:[30,95],fatigue:[0,100]}[k],_a=player[k];return(_c&&typeof _a==="number")?(v>0&&_a>=_c[1]?" · al massimo":v<0&&_a<=_c[0]?" · al minimo":""):"";})()}</div>;})}{/* [7.999.49 parte A] col tetto raggiunto il «+5» non sale davvero di 5: lo si dice */}
                   </div>
                 )}
-                <div style={{fontSize:FS.caption,color:TH.faint}}>{weekLiveModal.isRehab?L.rehabCompletedNote:L.weekLivedNote}</div>
+                {weekLiveModal.isRehab&&<div style={{fontSize:FS.caption,color:TH.faint}}>{L.rehabCompletedNote}</div>}{/* [7.999.49 parte A] la frase d'aiuto della settimana vissuta e' tolta: il pulsante sotto e' gia' la chiamata all'azione */}
                 {weekLiveModal.coachMsg&&!weekLiveModal.isRehab&&(
                   <div style={{background:TH.surface2,borderRadius:RAD.md,padding:`${SP.sm}px ${SP.md}px`}}>
                     <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,textTransform:"uppercase",letterSpacing:.8,marginBottom:2}}>Il mister</div>
@@ -48297,12 +48313,12 @@ const getThisWeekMatchday=()=>{
               <>
                 {Object.keys(weekLiveModal.changes||{}).length>0&&(
                   <div style={{display:"flex",gap:8,marginBottom:9,flexWrap:"wrap"}}>
-                    {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.morale>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.morale>0?TH.txGreen:TH.txRed,fontSize:FS.caption,fontWeight:700}}>😄 Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}</div>}
+                    {weekLiveModal.changes.morale!==undefined&&weekLiveModal.changes.morale!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.morale>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.morale>0?TH.txGreen:TH.txRed,fontSize:FS.caption,fontWeight:700}}>😄 Morale {weekLiveModal.changes.morale>0?"+":""}{weekLiveModal.changes.morale}{weekLiveModal.changes.morale>0&&(player.morale||0)>=100?" · al massimo":""}</div>}
                     {weekLiveModal.changes.form!==undefined&&weekLiveModal.changes.form!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.form>0?TH.bgGreen:TH.bgRed,color:weekLiveModal.changes.form>0?TH.txGreen:TH.txRed,fontSize:FS.caption,fontWeight:700}}>💪 Forma {weekLiveModal.changes.form>0?"+":""}{weekLiveModal.changes.form}</div>}
                     {weekLiveModal.changes.fatigue!==undefined&&weekLiveModal.changes.fatigue!==0&&<div style={{padding:"4px 10px",borderRadius:RAD.xl,background:weekLiveModal.changes.fatigue<0?TH.bgGreen:TH.bgAmber,color:weekLiveModal.changes.fatigue<0?TH.txGreen:TH.txAmber,fontSize:FS.caption,fontWeight:700}}>⚡ Fatica {weekLiveModal.changes.fatigue>0?"+":""}{weekLiveModal.changes.fatigue}</div>}
                   </div>
                 )}
-                <div style={{fontSize:FS.caption,color:TH.faint,marginBottom:10}}>{weekLiveModal.isRehab?L.rehabCompletedNote:L.weekLivedNote}</div>
+                {weekLiveModal.isRehab&&<div style={{fontSize:FS.caption,color:TH.faint,marginBottom:10}}>{L.rehabCompletedNote}</div>}
                 {weekLiveModal.coachMsg&&!weekLiveModal.isRehab&&(
                   <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:RAD.sm,padding:"9px 12px",marginBottom:8,display:"flex",gap:8,alignItems:"flex-start"}}>
                     <div style={{fontSize:FS.bodyLg,flexShrink:0}}>🧑‍🏫</div>
@@ -48327,7 +48343,7 @@ const getThisWeekMatchday=()=>{
           ?{cardBg:"linear-gradient(135deg,#1a1204,#2a1e06)",cardBd:"1px solid rgba(245,196,66,0.55)",glow:"0 0 40px rgba(245,196,66,0.28)",kicker:"👑 Un Momento Leggendario",kickerCol:"rgba(253,224,71,0.85)",name:"#fff7e0",boxBd:"#f5c542",boxTxt:"#fde9b0",optTxt:"#fff7e0",optBd:"rgba(245,196,66,0.22)",optBdH:"rgba(245,196,66,0.65)",optBgH:"rgba(245,196,66,0.12)",memCol:"rgba(245,196,66,0.55)"}
           :{cardBg:"linear-gradient(135deg,#0f172a,#1a1535)",cardBd:"1px solid rgba(124,58,237,0.4)",glow:"none",kicker:"⚡ Un Momento Che Ricorderai",kickerCol:"rgba(165,180,252,0.7)",name:"#e0e7ff",boxBd:"#7c3aed",boxTxt:"#c7d2fe",optTxt:"#e0e7ff",optBd:"rgba(165,180,252,0.15)",optBdH:"rgba(165,180,252,0.5)",optBgH:"rgba(124,58,237,0.12)",memCol:"rgba(165,180,252,0.5)"};
         return(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:10001,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:9998/* [7.999.49 parte A] era 10001: il toast del risultato (9999) restava sotto il velo */,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <Card style={{maxWidth:420,width:"100%",padding:"24px",background:_T.cardBg,border:_T.cardBd,boxShadow:_T.glow}}>
             <div style={{textAlign:"center",marginBottom:10}}>
               <div style={{fontSize:_epic?13:14,letterSpacing:3,textTransform:"uppercase",color:_T.kickerCol,marginBottom:4,fontWeight:_epic?800:400}}>{_T.kicker}</div>
@@ -48385,14 +48401,14 @@ const getThisWeekMatchday=()=>{
       )}
 
       {/* == Sprint 15 — Interview Modal == */}
-      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal))&&(()=>{/* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"");/* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
+      {interviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal||monthlyReviewModal))&&(()=>{/* [7.999.49 parte A] l'intervista e' l'ultima della coda: risultato, momento, mister, poi i giornalisti *//* [24/09 POC] l'intervista aspetta che il procuratore/l'offerta abbiano finito: mai due finestre impilate. Rosso __CPM_NO_CODA23 */const _iv3d=["win","draw","loss"].includes(interviewModal.matchCtx||"");/* [7.48.1 collaudo PO «la scena 3D è completamente ricoperta dalle opzioni!»] con la mixed zone montata il modal diventa un BOTTOM-SHEET: card ancorata in basso (max 58vh, scroll interno) → la fascia alta resta libera per la scena 3D (che inquadra eroe+giornalista lassù); pre-partita/settimanali (senza 3D) restano centrati */
     /* [7.302.0 collaudo PO «ci sono scritte erroneamente sovrapposte»] il modal viveva DENTRO `.cpm-scroll`,
        che porta `zoom:1.12` (fix zoom mobile): un ancestor con zoom diventa BLOCCO CONTENITORE dei
        discendenti `position:fixed` e apre un contesto di impilamento → su alcuni browser mobili le righe
        della dashboard sottostante finivano DAVANTI alla scena 3D dell'intervista. Il modal esce dall'albero
        via PORTALE su `document.body`: `fixed` torna relativo al viewport e lo z-index compete alla radice. */
     return ReactDOM.createPortal((
-        <div style={_iv3d?{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}:{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
+        <div style={_iv3d?{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}:{position:"fixed",inset:0,background:"rgba(0,0,0,0.60)",zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
           {_iv3d&&(typeof window!=='undefined'&&window.__CPM_NO963)&&<InterviewStage3D avatarId={player.avatarId||0} club={player.club||null} ctx={interviewModal.matchCtx} seed={7} jName={(interviewModal.paper&&interviewModal.paper.name)||null} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO947)}/>}
           {/* [7.977.0 — collaudo PO dal suo Android: «schermata rotta e brutta». LA CAUSA E' UN COMMENTO.
               Qui stava un commento in stile C, NUDO, fra due espressioni JSX, cioe' FUORI dalle graffe: quello
@@ -48536,7 +48552,9 @@ const getThisWeekMatchday=()=>{
       )}
 
       {/* == Sprint 60: Verifica Trimestrale del Mister == */}
-      {monthlyReviewModal&&(
+      {/* [7.999.49 parte A] CODA DELLE FINESTRE: la verifica del mister aspetta che la settimana vissuta, l'offerta e il
+          momento narrativo siano chiusi (prima si apriva SOPRA la settimana e ne nascondeva evento e «Morale +5»). */}
+      {monthlyReviewModal&&((typeof window!=='undefined'&&window.__CPM_NO_CODA23)||!(transferOffer||weekLiveModal||careerMomentModal))&&(
         <Modal open dismissable={false} width={380} style={{textAlign:"center"}}>{/* [7.993.0 PO «cerca gli altri» overlay fatti a mano] Modal standard */}
             <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>
               🧑‍💼 Verifica Trimestrale · S.{monthlyReviewModal.season} W.{monthlyReviewModal.week}
@@ -49056,7 +49074,7 @@ const getThisWeekMatchday=()=>{
                   <span style={{fontSize:FS.caption,color:TH.faint,minWidth:34,textAlign:"center"}}>{r.home?"Casa":"Trasf."}</span>
                   <span style={{fontSize:FS.caption,flex:1,fontWeight:600,color:TH.text}}>vs {r.opp}</span>
                   <span style={{fontSize:FS.small,fontWeight:800,color:r.won?TH.txGreen:r.drew?TH.muted:"#dc2626"}}>{r.hs}–{r.as}</span>
-                  <span style={{fontSize:FS.caption,fontWeight:700,color:r.won?TH.txGreen:r.drew?TH.muted:"#dc2626"}}>{r.won?"V":r.drew?"P":"S"}</span>
+                  <span style={{fontSize:FS.caption,fontWeight:700,color:r.won?TH.txGreen:r.drew?TH.muted:"#dc2626"}}>{r.won?"V":r.drew?"N":"P"}</span>
                 </div>
               ))}
             </div>
@@ -49093,7 +49111,7 @@ const getThisWeekMatchday=()=>{
                 <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 10px",borderRadius:RAD.sm,background:m.won?thPastel(TH.bgGreen,"rgba(34,197,94,0.15)"):m.drew?thPastel("#f1f5f9",TH.surface2):thPastel("#fee2e2","rgba(239,68,68,0.15)"),border:"1px solid "+(m.won?thPastel("#86efac","rgba(34,197,94,0.45)"):m.drew?TH.cardBorder:thPastel("#fca5a5","rgba(239,68,68,0.45)"))}}>
                   <span style={{fontSize:FS.small,flex:1,fontWeight:600,color:TH.text}}>{nationsCupModal.myNat} vs {m.opp}</span>
                   <span style={{fontSize:FS.small,fontWeight:800,color:m.won?TH.txGreen:m.drew?TH.muted:"#dc2626"}}>{m.homeScore}–{m.awayScore}</span>
-                  <span style={{fontSize:FS.caption,color:m.won?TH.txGreen:m.drew?TH.muted:"#dc2626",fontWeight:700}}>{m.won?"V":m.drew?"P":"S"}</span>
+                  <span style={{fontSize:FS.caption,color:m.won?TH.txGreen:m.drew?TH.muted:"#dc2626",fontWeight:700}}>{m.won?"V":m.drew?"N":"P"}</span>
                 </div>
               ))}
             </div>
@@ -49174,17 +49192,17 @@ const getThisWeekMatchday=()=>{
                 <div className="cpm-num" style={{fontSize:FS.caption,color:ink,fontWeight:FW.semibold,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
                   {player.club?.n||player.club?.name||"\u2013"}
                   {(()=>{const lg=player.club?.lg?player.club.lg:player.proStatus==="u18"?"U18":"";return lg?" \u00b7 "+lg:"";})()}
-                  {" \u00b7 S."+season+(week>38?" \u00b7 Fine stagione":" W."+week+"/38")}
+                  {" \u00b7 St. "+season+(week>38?" \u00b7 Fine stagione":" \u00b7 Sett. "+week+"/38")}{/* [7.999.49 parte A] niente «W.»: forma stretta del glossario */}
                   {(()=>{const st=player.standings||[];if(!st.length||!player.club?.id)return "";const sorted=[...st].sort((a,b)=>(b.pts-a.pts)||((b.gd||0)-(a.gd||0))||((b.gf||0)-(a.gf||0)));const idx=sorted.findIndex(x=>x.id===player.club.id);return idx<0?"":" \u00b7 "+(idx+1)+"\u00b0 in classifica";})()}
                 </div>
               </div>
               <div style={{flexShrink:0,textAlign:"center",lineHeight:1}}>
                 <div className="cpm-num" style={{fontSize:FS.h,fontWeight:FW.black,color:ink}}>{ovr}</div>
-                <div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:2,color:ink,marginTop:2}}>OVR</div>
+                <div title="OVR: valore complessivo, dalla media dei tuoi attributi" style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:2,color:ink,marginTop:2}}>OVR</div>
               </div>
             </div>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr"}}>{_meter("Forma",_frm,_sc(_frm),true)}{_meter("Morale",_mor,_sc(_mor))}{_meter("Fatica",_fat,_fc(_fat))}</div>
+          {!(tab==="standings"||tab==="calendar"||tab==="coppe")&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr"}}>{_meter("Forma",_frm,_sc(_frm),true)}{_meter("Morale",_mor,_sc(_mor))}{_meter("Fatica",_fat,_fc(_fat))}</div>}{/* [7.999.49 parte A] nelle schede di Stagione la testata resta di una riga: le tre barre stanno in Home e Allenamento */}
         </div>);
       })()}
 
@@ -49246,8 +49264,6 @@ const getThisWeekMatchday=()=>{
         const st=[...(player.standings||[])].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
         const myPos=_naz35?-1:st.findIndex(t=>t.id===me.id||(t.n||t.name)===me.n);
         const oppPos=_naz35?-1:st.findIndex(t=>t.id===opp.id||(t.n||t.name)===opp.n);
-        const rated=(player.matchHistory||[]).filter(m=>m&&!m.simulated&&m.rating>0).slice(-10);
-        const avg=rated.length>=3?Math.round(rated.reduce((a,m)=>a+m.rating,0)/rated.length*10)/10:null;
         const cs=getContinuaState();
         const lab=(t)=><div style={{fontSize:FS.caption,fontWeight:FW.bold,letterSpacing:1.5,textTransform:"uppercase",color:TH.muted}}>{t}</div>;
         const lab2=(t)=><div style={{fontSize:FS.caption,fontWeight:FW.semibold,color:TH.muted,whiteSpace:"nowrap"}}>{t}</div>;
@@ -49286,23 +49302,113 @@ const getThisWeekMatchday=()=>{
               {team(home?me:opp,home?myPos:oppPos)}
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,flexShrink:0}}>
                 <div style={{fontSize:FS.title,fontWeight:FW.black,letterSpacing:2,color:TH.text}}>VS</div>
-                <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{home?"In casa":"In trasferta"} · W.{md.week||player.week||1}</div>
+                <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{home?"In casa":"In trasferta"}</div>{/* [7.999.49 parte A] la settimana sta gia' in testata */}
               </div>
               {team(home?opp:me,home?oppPos:myPos)}
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:8}}>
-              {[{l:"Gol e assist",v:`${player.goals||0} · ${player.assists||0}`,sub:`in ${player.matches||0} partite`},
-                {l:"Voto medio",v:avg!=null?String(avg).replace(".",","):"—",sub:avg!=null?"ultime 10":"dopo 3 partite"},
-                {l:"Forma",v:String(player.form||0),sub:(player.form||0)>=72?"in crescita":(player.form||0)>=55?"stabile":"in calo"}].map((k,i)=>(
-                <div key={i} style={{background:TH.surface2,border:"1px solid "+TH.divider,borderRadius:RAD.md,padding:"7px 11px",display:"flex",flexDirection:"column",gap:3}}>
-                  {lab2(k.l)}
-                  <div className="cpm-num" style={{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.h:FS.title,fontWeight:FW.black,lineHeight:1.05,color:TH.text,whiteSpace:"nowrap"}}>{k.v}</div>{/* [7.999.23 collaudo PO «numeri da restringere, prendono troppo spazio»] 24 -> 20 px e mai a capo («26 · 10» andava su due righe). Rosso __CPM_NO_NUM23 */}
-                  <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>{k.sub}</div>
-                </div>))}
-            </div>
+            {/* [7.999.49 parte A] i tre riquadri Gol e assist / Voto medio / Forma sono tolti: ripetevano il blocco
+                Stagione e la testata, e «in crescita» era una soglia sul valore, non una tendenza. Al loro posto una riga
+                sola con la forza dell'avversario, il peso della gara e i precedenti (prima nella card «Partita di questa settimana»). */}
+            {(()=>{const _fo=_naz35?null:(opp.p||null),_fm=(me&&me.p)||(player.club&&player.club.p)||null;
+              const _giu=(_fo!=null&&_fm!=null)?(_fo-_fm>=8?"più forte":_fm-_fo>=8?"più debole":"alla pari"):null;
+              let _imp=null;const _der=_naz35?null:isDerby(player.club?.id,opp.id||md.opponentId);
+              if(_der)_imp=`${_der.e} ${_der.name}`;
+              else if(myPos>=0&&oppPos>=0&&st.length>0){const pp=myPos+1,op=oppPos+1;
+                if(pp<=3&&op<=3)_imp="⚔️ Scontro al vertice";else if(op<=3)_imp="🏆 Sfida alla capolista";else if(op>=st.length-2)_imp="⚠️ Zona retrocessione";else if(Math.abs(pp-op)<=2)_imp="🎯 Scontro diretto";}
+              const _h2h=(player.matchHistory||[]).filter(m=>m&&m.opponent===(opp.n||md.opponentName));
+              const _p=[];if(_fo!=null)_p.push(`Forza ${_fo}/99${_giu?" · "+_giu:""}`);if(_h2h.length)_p.push(`Precedenti ${_h2h.filter(m=>m.won).length}V ${_h2h.filter(m=>m.drew).length}N ${_h2h.filter(m=>!m.won&&!m.drew).length}P`);
+              if(!_p.length&&!_imp)return null;
+              return(<div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:"4px 10px",fontSize:FS.small,fontWeight:FW.semibold,color:TH.muted}}>
+                {_p.map((t,i)=><span key={i} className="cpm-num">{t}</span>)}
+                {_imp&&<span style={{color:TH.text,fontWeight:FW.bold}}>{_imp}</span>}
+              </div>);})()}
           </Card>
         );
       })()}
+      {/* [7.999.49 parte A] i numeri della stagione e Fiducia/Popolarita' salgono subito sotto la Prossima partita:
+          prima arrivavano dopo sette card narrative (a 360 px alla terza schermata). */}
+      {/* [6.59.0 collaudo PO «questo box va messo più su, sotto il box delle presenze/gol globale»] la card STAGIONE (stats stagionali + azioni) è ora subito SOTTO i totali di carriera, non in fondo al grid */}
+      {tab==="dashboard"&&(
+        <div style={{marginBottom:9}}>
+          <Card elevation={2}>
+            <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:FW.bold}}>{L.season} {season} · {L.week} {week} di 38</div>
+            {(()=>{
+              const ratedMatches=(player.matchHistory||[]).filter(m=>!m.simulated&&m.rating>0);
+              const avgRat=ratedMatches.length>=3?Math.round(ratedMatches.slice(-10).reduce((s,m)=>s+(m.rating||0),0)/Math.min(10,ratedMatches.length)*10)/10:null;
+              const gs=player.goalStreak||0;
+              /* [7.75.0 UI Kit] trend REALI dal matchHistory della stagione (non simulate): gol/assist cumulativi + voto medio progressivo. Nessun dato sintetico. */
+              const _mhReal=(player.matchHistory||[]).filter(m=>!m.simulated);
+              let _cg=0,_ca=0,_rS=0,_rN=0; const _spGol=[],_spAst=[],_spVoto=[];
+              _mhReal.forEach(m=>{_cg+=(m.goals||0);_spGol.push(_cg);_ca+=(m.assists||0);_spAst.push(_ca);if(m.rating>0){_rS+=m.rating;_rN++;_spVoto.push(Math.round(_rS/_rN*10)/10);}});
+              return(
+                <div style={{display:"flex",justifyContent:"space-around",marginBottom:8,gap:4}}>
+                  {[{l:L.matches,v:player.matches||0,c:TH.text},{l:L.goals,v:player.goals||0,c:TH.success,sp:_spGol},{l:L.assists,v:player.assists||0,c:TH.accent,sp:_spAst},...(avgRat?[{l:"Voto medio",v:avgRat.toFixed(1).replace(".",","),c:TH.warning,sp:_spVoto}]:[])].map((s,i)=>(
+                    <div key={i} style={{textAlign:"center",flex:1}}>
+                      <div className="cpm-num" style={{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.display:FS.h,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>{/* [7.999.23] 32 -> 24 px */}
+                      <div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
+                      {s.sp&&s.sp.length>=2?<div style={{marginTop:3,display:"flex",justifyContent:"center"}}><Sparkline data={s.sp} color={s.c} width={62} height={18}/></div>:null}
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+            {/* [7.999.49 parte A] il voto medio non contava le simulate mentre «Partite» si': ora lo dice (testo, non calcolo) */}
+            {(()=>{const _nr=(player.matchHistory||[]).filter(m=>!m.simulated&&m.rating>0).length;if(_nr<3)return null;
+              const _ns=(player.matchHistory||[]).filter(m=>m&&m.simulated).length;
+              return(<div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",marginBottom:8,lineHeight:1.5}}>Voto medio sulle ultime {Math.min(10,_nr)} partite giocate dal vivo{_ns>0?" · le simulate non entrano nella media":""}</div>);})()}
+            {/* [7.293.0 #118] la stagione con la maglia precedente, dichiarata: i numeri qui sopra sono la SOMMA */}
+            {(()=>{const c=player.seasonCarry;if(!c||c.season!==(player.season||1))return null;
+              const sp=(c.spells||[]).filter(x=>x&&((x.g||0)+(x.a||0)+(x.m||0))>0);if(!sp.length)return null;
+              return(<div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",marginBottom:8,lineHeight:1.5}}>
+                {sp.map((x,i)=>(<div key={i}>Prima parte con il {x.n||"club precedente"}: <b style={{color:TH.text}}>{x.m}</b> partite · <b style={{color:TH.text}}>{x.g}</b> gol · <b style={{color:TH.text}}>{x.a}</b> assist</div>))}
+              </div>);})()}
+            {(()=>{
+              /* [7.465.0 collaudo PO «anche se simulate le ho giocate le ultime 5 partite»] UNA PARTITA SIMULATA
+                 E' UNA PARTITA GIOCATA. Il filtro `!m.simulated` teneva fuori dalla striscia tutto cio' che non
+                 era passato dal live match: chi sceglie SIMULA vede «ULTIMI 5» con UN badge dopo quattordici
+                 giornate (lo screenshot del PO), e la striscia sembra rotta invece che vuota. La forma recente
+                 e' la forma recente: il modo in cui la gara e' stata risolta non cambia il risultato. */
+              const last5=(player.matchHistory||[]).slice(-5);
+              const gs=player.goalStreak||0;
+              return(
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+                  {/* [7.999.49 parte A] striscia «ULTIMI 5» tolta: la mostra gia' la card Prossima partita («Ultime 5», V·N·P) */}<div/>
+                  <div style={{display:"flex",gap:4,alignItems:"center",flexShrink:0}}>
+                    {gs>=3&&<Badge tone="warn" size="sm">🔥 {gs} di fila</Badge>}
+                    {(()=>{const _ws=getWinStreak(player.matchHistory);return _ws.count>=3&&_ws.type!=='draw'?<Badge tone={_ws.type==='win'?'win':'loss'} size="sm">{_ws.type==='win'?"🏆":"📉"} {_ws.count}{_ws.type==='win'?" V":" P"}</Badge>:null;})()}
+                    {(()=>{const _cm=player.teammates||[];if(!_cm.length)return null;const _tc=Math.round(_cm.reduce((s,t)=>s+(t.bond||40),0)/_cm.length);if(_tc>=70)return<Badge tone="win" size="sm">🤝 {_tc}%</Badge>;if(_tc<38)return<Badge tone="loss" size="sm">👥 {_tc}%</Badge>;return null;})()}
+                  </div>
+                </div>
+              );
+            })()}
+            {/* [6.5.4] CONTINUA — CTA primaria SPOSTATA in cima al dashboard (sticky), sempre visibile senza scorrere */}
+            {/* Result badge when match already played */}
+            {(()=>{
+              const alreadyPlayed=!!(player.calendar||[]).find(m=>m.week===(player.week||1)&&m.played);
+              if(!alreadyPlayed||player.injured)return null;
+              const mh=(player.matchHistory||[]).find(m=>m.week===(player.week||1));
+              if(!mh)return null;
+              return<div className="cpm-num" style={{padding:"8px 12px",background:mh.won?TH.winBg:mh.drew?TH.drawBg:TH.lossBg,borderRadius:RAD.sm,border:`1px solid ${mh.won?TH.winBd:mh.drew?TH.drawBd:TH.lossBd}`,color:mh.won?TH.winFg:mh.drew?TH.drawFg:TH.lossFg,fontSize:FS.caption,marginBottom:8,fontWeight:FW.bold}}>
+                {mh.won?"✅ Vittoria":mh.drew?"🔁 Pareggio":"❌ Sconfitta"} {mh.homeScore}–{mh.awayScore} vs {mh.opponent||""}{mh.simulated?" (simulata)":""}{/* [7.999.49 parte A] esito a parole, niente «W.» */}
+              </div>;
+            })()}
+            {/* [7.80.0 collaudo PO «elimina la sezione azioni singole»] sezione «Azioni singole» RIMOSSA: Vivi la Settimana / Avanza / Parla col Mister sono già coperti dal CTA sticky in cima al dashboard (ridondanti). Handler (liveCurrentWeek/getThisWeekMatchday/coach) restano usati dal CTA. */}
+            <div style={{height:5,background:TH.track,borderRadius:RAD.pill,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:TH.primary,borderRadius:RAD.pill,transition:"width .4s"}}/></div>
+          </Card>
+        </div>
+      )}
+      {tab==="dashboard"&&(<div style={{marginBottom:9}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+            {/* [7.80.0 collaudo PO «elimina box con info ridondanti»] Morale e Forma RIMOSSI: già nei mini-meter dell'header (7.74.0). Restano Fiducia mister + Popolarità (non presenti altrove). */}
+            {[{l:"Fiducia del mister",v:Math.round(player.coachTrust||60),e:"🤝",c:TH.primary},{l:"Popolarità",v:Math.round(player.popularity||20),e:"⭐",c:TH.accent}].map(it=>(
+              <Card key={it.l} style={{padding:"9px 12px"}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:1}}><span style={{fontSize:FS.subhead}}>{it.e}</span><span className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:legCol944(it.c)}}>{it.v}<span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:TH.faint}}>/100</span></span></div>
+                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:7}}>{it.l}</div>
+                <Meter value={it.v} color={it.c} height={5}/>
+              </Card>
+            ))}
+          </div>
+      </div>)}
       {/* [7.31.1 collaudo PO «storia/momenti eccitanti più in alto, sotto il CTA»] i blocchi SORTEGGI/DEADLINE/SAGA/STORIA vivono QUI, subito dopo «La tua settimana» (prima stavano in fondo al dashboard) */}
       {/* [7.12.0 Sprint «Sorteggi & Deadline»] LA NOTTE DEI SORTEGGI — il girone europeo si RIVELA dall'urna
           una avversaria alla volta (i groupOpponents esistono già dalla qualificazione: prima apparivano e
@@ -49330,13 +49436,13 @@ const getThisWeekMatchday=()=>{
           {_done&&<Btn v="ghost" fw onClick={()=>{setPlayer(p=>({...p,drawSeen:p.season||1,log:[`🎱 Sorteggio ${_ecN}: ${_opps.map(o=>o.n).join(" · ")}`,...(p.log||[])].slice(0,60)}));setDrawRevealN(0);}} style={{marginTop:6}}>Al lavoro — si parte ✅</Btn>}
         </Card>);})()}
       {/* [7.12.0] DEADLINE DAY — la finestra invernale (W19) diventa un evento: stato del tuo mercato + CTA */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(player.week||1)===19&&!player.contractExpired&&(()=>{
-        const _listed=!!player.transferListed;
+      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&((player.week||1)===19||(player.week||1)===23)&&!player.contractExpired&&(()=>{
+        const _listed=!!player.transferListed;const _ult=(player.week||1)===23;/* [7.999.49 parte A] la W19 e' l'APERTURA della finestra (19-23), non l'ultimo giorno: «ultima settimana» solo alla W23 */
         return(
         <Card style={{marginBottom:8,padding:"9px 12px",background:_n30(TH.bgAmber,TH.card),border:_n30(`1px solid ${TH.bdAmber}`,"1px solid "+TH.cardBorder)}}>
           {/* [7.106.1 collaudo PO «questo box è fuori standard»] allineato al pattern degli altri box-evento del dashboard (eyebrow colorato · corpo leggibile normale · CTA piena granata come i sorteggi), niente più corpo tutto-grassetto-ambra + bottone ghost slavato sul giallo */}
-          <div style={{fontSize:FS.caption,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5,fontWeight:800}}>Deadline Day — finestra invernale aperta</div>
-          <div style={{fontSize:FS.caption,color:TH.text,marginBottom:8,lineHeight:1.55}}>{_listed?"Sei sulla lista di mercato: le prossime ore possono cambiare la tua carriera. Tieni d'occhio le offerte.":"I telefoni degli agenti bollono in tutta Europa. Se vuoi muoverti, questa è la settimana: parla col tuo procuratore."}</div>
+          <div style={{fontSize:FS.caption,color:TH.txAmber,textTransform:"uppercase",letterSpacing:1.5,marginBottom:5,fontWeight:800}}>{_ult?"Ultima settimana di mercato":"Mercato invernale aperto — fino alla settimana 23"}</div>
+          <div style={{fontSize:FS.caption,color:TH.text,marginBottom:8,lineHeight:1.55}}>{_listed?(_ult?"Sei sulla lista di mercato e la finestra chiude questa settimana: le prossime ore possono cambiare la tua carriera.":"Sei sulla lista di mercato: da qui alla settimana 23 possono arrivare offerte. Tieni d'occhio il procuratore."):(_ult?"La finestra chiude questa settimana. Se vuoi muoverti, è adesso: parla col tuo procuratore.":"I telefoni dei procuratori squillano in tutta Europa. Se vuoi muoverti, hai tempo fino alla settimana 23: parla col tuo procuratore.")}</div>
           <Btn v="outline" fw onClick={()=>goTab("agente")}>💼 Vai dal procuratore</Btn>
         </Card>);})()}
       {/* [7.17.0 SAGA DEL MERCATO — backlog favola] la trattativa a puntate: episodio derivato da
@@ -49396,7 +49502,7 @@ const getThisWeekMatchday=()=>{
           if(c.act==="nego"){try{setTimeout(()=>openNegoModal(),260);}catch(_e){}}
         };
         return(
-        <Card momento={`${A.e} ${A.lbl}`} momentoInk={_n30("#fff",undefined)} momentoNota={`${ix+1}/${_tot}`} style={{marginBottom:8,padding:"9px 12px",background:_n30(`linear-gradient(150deg,${A.c1},${A.c2})`,TH.card),border:_n30(`1px solid ${A.ac}44`,"1px solid "+TH.cardBorder)}}>
+        <Card momento={`${A.e} ${A.lbl}`} momentoInk={_n30("#fff",undefined)} momentoNota={`episodio ${ix+1} di ${_tot}`} style={{marginBottom:8,padding:"9px 12px",background:_n30(`linear-gradient(150deg,${A.c1},${A.c2})`,TH.card),border:_n30(`1px solid ${A.ac}44`,"1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:A.ac,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{A.e} {A.lbl} · episodio {ix+1} di {_tot}</div>
           <div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),marginBottom:4}}>{_title}</div>
           <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.82)",TH.muted),lineHeight:1.5,marginBottom:8}}>{_body}</div>
@@ -49572,7 +49678,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const sp=sponsorView(player);if(!sp)return null;
         return(
-        <Card momento="Il tuo procuratore" momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#101b2a,#14243a)",TH.card),border:_n30("1px solid #2a4a7a","1px solid "+TH.cardBorder)}}>
+        <Card momento={`Offerta di sponsor · ${sp.brand}`}/* [7.999.49 parte A] era un secondo «Il tuo procuratore»: il titolo ora dice cosa c'e' dentro */ momentoInk={_n30("#fff",undefined)} /* [G10 · 7.964] fisarmonica: il momento si apre al tocco (Dashboard 2718 px, 51 % in riquadri narrativi) */ style={{marginBottom:8,padding:"9px 12px",background:_n30("linear-gradient(150deg,#101b2a,#14243a)",TH.card),border:_n30("1px solid #2a4a7a","1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30("#93c5fd",semTesto945("#93c5fd")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>{sp.e} Sponsor — nuova offerta</div>
           <div style={{fontSize:FS.caption,color:_n30("rgba(255,255,255,0.85)",TH.muted),lineHeight:1.5,marginBottom:8}}><strong>{sp.brand}</strong> ti propone un contratto da <strong>{sp.label}</strong>: {sp.weekly.toLocaleString("it-IT")}€ a settimana. {player.agentStyle==="global"?"Il tuo procuratore global ha aperto la porta prima del previsto.":"Il tuo nome comincia a valere fuori dal campo."}</div>
           <div style={{display:"flex",gap:8}}>
@@ -49753,7 +49859,7 @@ const getThisWeekMatchday=()=>{
           </div>
         </Card>);})()}
       {tab==="dashboard"&&agentStyleView(player)&&(
-        <Card momento="Il tuo procuratore — la filosofia" /* [G10 · 7.964] fisarmonica: questa card e' su fondo chiaro, quindi l'inchiostro resta quello della pagina */ style={{marginBottom:8,padding:"9px 12px"}}>
+        <Card momento="Il tuo procuratore: boutique o global?" /* [G10 · 7.964] fisarmonica: questa card e' su fondo chiaro, quindi l'inchiostro resta quello della pagina */ style={{marginBottom:8,padding:"9px 12px"}}>
           <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>Il tuo procuratore — questione di filosofia</div>
           <div style={{fontSize:FS.caption,color:TH.text,lineHeight:1.5,marginBottom:8}}>«Devi decidere che tipo di carriera vuoi», ti dice il tuo agente. «Posso seguirti come un'agenzia <strong>boutique</strong> — pochi assistiti, tanta cura, commissioni più basse — o portarti in una rete <strong>global</strong>: sponsor e big club arrivano prima, ma sarai uno dei tanti.»</div>
           <div style={{display:"flex",gap:8}}>
@@ -49784,9 +49890,9 @@ const getThisWeekMatchday=()=>{
       {/* [7.271.0 P3] IL CAPITOLO DELLA TUA ETÀ — esordiente · titolare · veterano */}
       {tab==="dashboard"&&(()=>{
         const pa=phaseArc(player);if(!pa)return null;
-        const _lab=pa.f==="esordiente"?"I PRIMI PASSI":pa.f==="titolare"?"NEL PIENO":"L'ULTIMO TRATTO";
+        const _lab=pa.f==="esordiente"?"I primi passi":pa.f==="titolare"?"Nel pieno della carriera":"L'ultimo tratto";/* [7.999.49 parte A] maiuscole all'italiana (l'occhiello e' gia' maiuscolo da CSS) */
         return(
-        <Card momento={pa.t||_lab} momentoInk={_n30("#fff",undefined)} momentoNota={_lab} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"13px 15px",background:_n30("linear-gradient(150deg,#1a1410,#241a12)",TH.card),border:_n30("1px solid #6b5233","1px solid "+TH.cardBorder)}}>
+        <Card momento={pa.t||_lab} momentoInk={_n30("#fff",undefined)} /* [7.999.49 parte A] tolta la nota «NEL PIENO»: ripeteva la fase senza riferimento */ /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"13px 15px",background:_n30("linear-gradient(150deg,#1a1410,#241a12)",TH.card),border:_n30("1px solid #6b5233","1px solid "+TH.cardBorder)}}>
           <div style={{fontSize:FS.caption,color:_n30("#fbbf24",semTesto945("#fbbf24")),textTransform:"uppercase",letterSpacing:2,marginBottom:6}}>⏳ {_lab}</div>
           <div style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:8}}>
             <span style={{fontSize:FS.title,lineHeight:1}}>{pa.e}</span>
@@ -49835,7 +49941,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(()=>{
         const sv=serialView(player);if(!sv)return null;
         return(
-        <Card momento={`${sv.e||"🌱"} ${sv.lab||"La saga"}`} momentoInk={_n30("#fff",undefined)} momentoNota={`${sv.ep+1}/${sv.tot||4}`} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#12101f,#1b1730)",TH.card),border:_n30("1px solid #4c3f7a","1px solid "+TH.cardBorder)}}>
+        <Card momento={`${sv.e||"🌱"} ${sv.lab||"La saga"}`} momentoInk={_n30("#fff",undefined)} momentoNota={`capitolo ${sv.ep+1} di ${sv.tot||4}`} /* [G10 · 7.964] fisarmonica */ style={{marginBottom:8,padding:"7px 12px",background:_n30("linear-gradient(150deg,#12101f,#1b1730)",TH.card),border:_n30("1px solid #4c3f7a","1px solid "+TH.cardBorder)}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>
             <div style={{fontSize:FS.caption,color:_n30("#c4b5fd",semTesto945("#c4b5fd")),textTransform:"uppercase",letterSpacing:2,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{sv.lab}</div>
             <div style={{display:"flex",gap:4,flexShrink:0}}>{Array.from({length:sv.tot}).map((_,i)=>(
@@ -49910,7 +50016,7 @@ const getThisWeekMatchday=()=>{
         const th26=weekTheme(player);const iw26=innerWeather(player);
         if(!th26&&!iw26)return null;
         return(
-          <Card momento="La tua settimana" momentoNota={th26?th26.t:null} style={{marginBottom:9}}>{/* [7.972 — collaudo PO «la home e' ancora incasinata»] IL BLOCCO PIU' GRANDE DELLA HOME DIVENTA UNA
+          <Card momento="La tua settimana" momentoNota={th26&&th26.k!=="crociera"?th26.t:null}/* [7.999.49 parte A] «Settimana di campionato» non aggiungeva nulla al titolo */ style={{marginBottom:9}}>{/* [7.972 — collaudo PO «la home e' ancora incasinata»] IL BLOCCO PIU' GRANDE DELLA HOME DIVENTA UNA
               FISARMONICA. MISURATO sul salvataggio nuovo (stagione 12, quello del PO): 473 px, il 25,8 %
               dell'intera Dashboard — piu' del doppio di qualunque altro blocco. Dentro ci sono sei
               sezioni di testo (il tema della settimana, il meteo interiore, le aspettative, dentro la
@@ -49970,73 +50076,7 @@ const getThisWeekMatchday=()=>{
       {/* [7.83.0 collaudo PO «ridondante! elimina»] griglia totali di carriera (Gol/Presenze/Trofei/Stagioni) RIMOSSA dal dashboard: è già nel Tab Carriera. Resta il badge fase-carriera (età/fase, non duplicato). */}
       {tab==="dashboard"&&(player.totalMatches||0)>0&&(
         <div style={{marginBottom:8}}>
-          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni · S.{player.season||1}</span></div>);})()}
-        </div>
-      )}
-      {/* [6.59.0 collaudo PO «questo box va messo più su, sotto il box delle presenze/gol globale»] la card STAGIONE (stats stagionali + azioni) è ora subito SOTTO i totali di carriera, non in fondo al grid */}
-      {tab==="dashboard"&&(
-        <div style={{marginBottom:9}}>
-          <Card elevation={2}>
-            <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:FW.bold}}>{L.season} {season} · {L.week} {week}/38</div>
-            {(()=>{
-              const ratedMatches=(player.matchHistory||[]).filter(m=>!m.simulated&&m.rating>0);
-              const avgRat=ratedMatches.length>=3?Math.round(ratedMatches.slice(-10).reduce((s,m)=>s+(m.rating||0),0)/Math.min(10,ratedMatches.length)*10)/10:null;
-              const gs=player.goalStreak||0;
-              /* [7.75.0 UI Kit] trend REALI dal matchHistory della stagione (non simulate): gol/assist cumulativi + voto medio progressivo. Nessun dato sintetico. */
-              const _mhReal=(player.matchHistory||[]).filter(m=>!m.simulated);
-              let _cg=0,_ca=0,_rS=0,_rN=0; const _spGol=[],_spAst=[],_spVoto=[];
-              _mhReal.forEach(m=>{_cg+=(m.goals||0);_spGol.push(_cg);_ca+=(m.assists||0);_spAst.push(_ca);if(m.rating>0){_rS+=m.rating;_rN++;_spVoto.push(Math.round(_rS/_rN*10)/10);}});
-              return(
-                <div style={{display:"flex",justifyContent:"space-around",marginBottom:8,gap:4}}>
-                  {[{l:L.matches,v:player.matches||0,c:TH.text},{l:L.goals,v:player.goals||0,c:TH.success,sp:_spGol},{l:L.assists,v:player.assists||0,c:TH.accent,sp:_spAst},...(avgRat?[{l:"Media",v:avgRat,c:TH.warning,sp:_spVoto}]:[])].map((s,i)=>(
-                    <div key={i} style={{textAlign:"center",flex:1}}>
-                      <div className="cpm-num" style={{fontSize:(typeof window!=="undefined"&&window.__CPM_NO_NUM23)?FS.display:FS.h,fontWeight:FW.black,color:legCol944(s.c),lineHeight:1.05}}>{s.v}</div>{/* [7.999.23] 32 -> 24 px */}
-                      <div style={{fontSize:FS.caption,color:TH.muted}}>{s.l}</div>
-                      {s.sp&&s.sp.length>=2?<div style={{marginTop:3,display:"flex",justifyContent:"center"}}><Sparkline data={s.sp} color={s.c} width={62} height={18}/></div>:null}
-                    </div>
-                  ))}
-                </div>
-              );
-            })()}
-            {/* [7.293.0 #118] la stagione con la maglia precedente, dichiarata: i numeri qui sopra sono la SOMMA */}
-            {(()=>{const c=player.seasonCarry;if(!c||c.season!==(player.season||1))return null;
-              const sp=(c.spells||[]).filter(x=>x&&((x.g||0)+(x.a||0)+(x.m||0))>0);if(!sp.length)return null;
-              return(<div style={{fontSize:FS.caption,color:TH.muted,textAlign:"center",marginBottom:8,lineHeight:1.5}}>
-                {sp.map((x,i)=>(<div key={i}>Prima parte con il {x.n||"club precedente"}: <b style={{color:TH.text}}>{x.m}</b> partite · <b style={{color:TH.text}}>{x.g}</b> gol · <b style={{color:TH.text}}>{x.a}</b> assist</div>))}
-              </div>);})()}
-            {(()=>{
-              /* [7.465.0 collaudo PO «anche se simulate le ho giocate le ultime 5 partite»] UNA PARTITA SIMULATA
-                 E' UNA PARTITA GIOCATA. Il filtro `!m.simulated` teneva fuori dalla striscia tutto cio' che non
-                 era passato dal live match: chi sceglie SIMULA vede «ULTIMI 5» con UN badge dopo quattordici
-                 giornate (lo screenshot del PO), e la striscia sembra rotta invece che vuota. La forma recente
-                 e' la forma recente: il modo in cui la gara e' stata risolta non cambia il risultato. */
-              const last5=(player.matchHistory||[]).slice(-5);
-              const gs=player.goalStreak||0;
-              return(
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
-                  {last5.length>0?<div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:FS.caption,color:TH.faint,marginRight:2}}>ULTIMI 5</span>{last5.map((m,i)=><MatchBadge key={i} r={m.won?"W":m.drew?"D":"L"} size={22} title={`vs ${m.opponent||""} ${m.homeScore}–${m.awayScore}`}/>)}</div>:<div/>}
-                  <div style={{display:"flex",gap:4,alignItems:"center",flexShrink:0}}>
-                    {gs>=3&&<Badge tone="warn" size="sm">🔥 {gs} di fila</Badge>}
-                    {(()=>{const _ws=getWinStreak(player.matchHistory);return _ws.count>=3&&_ws.type!=='draw'?<Badge tone={_ws.type==='win'?'win':'loss'} size="sm">{_ws.type==='win'?"🏆":"📉"} {_ws.count}{_ws.type==='win'?" V":" S"}</Badge>:null;})()}
-                    {(()=>{const _cm=player.teammates||[];if(!_cm.length)return null;const _tc=Math.round(_cm.reduce((s,t)=>s+(t.bond||40),0)/_cm.length);if(_tc>=70)return<Badge tone="win" size="sm">🤝 {_tc}%</Badge>;if(_tc<38)return<Badge tone="loss" size="sm">👥 {_tc}%</Badge>;return null;})()}
-                  </div>
-                </div>
-              );
-            })()}
-            {/* [6.5.4] CONTINUA — CTA primaria SPOSTATA in cima al dashboard (sticky), sempre visibile senza scorrere */}
-            {/* Result badge when match already played */}
-            {(()=>{
-              const alreadyPlayed=!!(player.calendar||[]).find(m=>m.week===(player.week||1)&&m.played);
-              if(!alreadyPlayed||player.injured)return null;
-              const mh=(player.matchHistory||[]).find(m=>m.week===(player.week||1));
-              if(!mh)return null;
-              return<div className="cpm-num" style={{padding:"8px 12px",background:mh.won?TH.winBg:mh.drew?TH.drawBg:TH.lossBg,borderRadius:RAD.sm,border:`1px solid ${mh.won?TH.winBd:mh.drew?TH.drawBd:TH.lossBd}`,color:mh.won?TH.winFg:mh.drew?TH.drawFg:TH.lossFg,fontSize:FS.caption,marginBottom:8,fontWeight:FW.bold}}>
-                {mh.won?"✅":"🔁"} W.{player.week||1} — {mh.homeScore}–{mh.awayScore} vs {mh.opponent||""}{mh.simulated?" (sim.)":""}
-              </div>;
-            })()}
-            {/* [7.80.0 collaudo PO «elimina la sezione azioni singole»] sezione «Azioni singole» RIMOSSA: Vivi la Settimana / Avanza / Parla col Mister sono già coperti dal CTA sticky in cima al dashboard (ridondanti). Handler (liveCurrentWeek/getThisWeekMatchday/coach) restano usati dal CTA. */}
-            <div style={{height:5,background:TH.track,borderRadius:RAD.pill,marginTop:10}}><div style={{height:"100%",width:`${(week/38)*100}%`,background:TH.primary,borderRadius:RAD.pill,transition:"width .4s"}}/></div>
-          </Card>
+          {(()=>{var ph=getCareerPhase(player.age||17);return(<div style={{display:"flex",alignItems:"center",gap:7,background:TH.card,border:`1px solid ${TH.cardBorder}`,borderRadius:RAD.md,padding:"8px 13px",boxShadow:TH.el1}}><span style={{fontSize:FS.bodyLg}}>{ph.e}</span><span style={{fontSize:FS.small,fontWeight:FW.bold,color:semTesto945(ph.col,ph.bg)/* [7.969] la tinta del DATO passa dal correttore, come tutte le altre: senza, il blu e l'ambra della fase di carriera restavano due famiglie in piu' nel censimento */}}>{ph.label}</span><span className="cpm-num" style={{fontSize:FS.caption,color:TH.faint,marginLeft:"auto"}}>{player.age} anni</span>{/* [7.999.49 parte A] la stagione sta gia' in testata */}</div>);})()}
         </div>
       )}
       {/* [6.10.0 Ondata 2] Recent form strip RIMOSSA: duplicava il last-5 già mostrato (con contesto streak) nella season-card del grid. */}
@@ -50310,7 +50350,7 @@ const getThisWeekMatchday=()=>{
             </div>
             <div style={{fontSize:FS.small,color:TH.text,fontWeight:700,marginBottom:2}}>vs {_ncOpp} — Partita {_ncIdx+1}/3</div>
             <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:_clubMd?8:0}}>Punti accumulati: {_ncq.pts||0}/9</div>
-            {_clubMd&&<div style={{fontSize:FS.caption,color:TH.muted,background:`${TH.txBlue}12`,borderRadius:RAD.xs,padding:"4px 8px"}}>⏭️ Dopo: {_clubMd.opponentName} · {_clubMd.isHome?"Casa":"Trasferta"} · W.{_clubMd.week}</div>}
+            {_clubMd&&<div style={{fontSize:FS.caption,color:TH.muted,background:`${TH.txBlue}12`,borderRadius:RAD.xs,padding:"4px 8px"}}>⏭️ Dopo: {_clubMd.opponentName} · {_clubMd.isHome?"in casa":"in trasferta"} · sett. {_clubMd.week}</div>}
           </Card>
         );
       })()}
@@ -50337,7 +50377,7 @@ const getThisWeekMatchday=()=>{
             <div style={{fontSize:FS.small,color:TH.text,fontWeight:700,marginBottom:2}}>vs {oppName||"?"}</div>
             {em.phase==="group"&&<div style={{fontSize:FS.caption,color:TH.muted,marginBottom:_clubMd?8:0}}>Punti gironi: {em.groupPts||0}/{((em.groupOpponents||[]).length||3)*3} · Serve min. 4pt per qualificarsi</div>}
             {em.phase!=="group"&&<div style={{fontSize:FS.caption,color:TH.muted,marginBottom:_clubMd?8:0}}>Partita da eliminazione diretta · Nessun pareggio</div>}
-            {_clubMd&&<div style={{fontSize:FS.caption,color:TH.muted,background:"rgba(0,0,0,0.04)",borderRadius:RAD.xs,padding:"4px 8px"}}>⏭️ Dopo: {_clubMd.opponentName} · {_clubMd.isHome?"Casa":"Trasferta"} · W.{_clubMd.week}</div>}
+            {_clubMd&&<div style={{fontSize:FS.caption,color:TH.muted,background:"rgba(0,0,0,0.04)",borderRadius:RAD.xs,padding:"4px 8px"}}>⏭️ Dopo: {_clubMd.opponentName} · {_clubMd.isHome?"in casa":"in trasferta"} · sett. {_clubMd.week}</div>}
           </Card>
         );
       })()}
@@ -50447,8 +50487,9 @@ const getThisWeekMatchday=()=>{
           </Card>
         );
       })()}
-      {/* Sprint 63 — Prossima Partita: Scout Preview */}
-      {tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
+      {/* Sprint 63 — Prossima Partita: Scout Preview · [7.999.49 parte A] RIMOSSA (guardia false&&): ripeteva la card
+          Prossima partita; forza, peso della gara e precedenti ora stanno dentro quella card. */}
+      {false&&tab==="dashboard"&&(player.proStatus||"u18")==="pro"&&(()=>{
         const _cal=player.calendar||[];
         const _nmd=_cal.find(md=>md.week>=(player.week||1)&&!md.played&&(!md.type||md.type==="league"));
         if(!_nmd)return null;
@@ -50492,9 +50533,9 @@ const getThisWeekMatchday=()=>{
               <div style={{display:"flex",alignItems:"center",gap:5,fontSize:FS.caption,color:TH.muted}}>
                 <span>H2H:</span>
                 {_h2hW>0&&<span style={{fontWeight:700,color:TH.txGreen}}>{_h2hW}V</span>}
-                {_h2hD>0&&<span style={{fontWeight:700,color:TH.txAmber}}>{_h2hD}P</span>}
-                {_h2hL>0&&<span style={{fontWeight:700,color:TH.txRed}}>{_h2hL}S</span>}
-                {_h2h.slice(-4).map((m,i)=><div key={i} style={{width:14,height:14,borderRadius:3,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"P":"S"}</div>)}
+                {_h2hD>0&&<span style={{fontWeight:700,color:TH.txAmber}}>{_h2hD}N</span>}
+                {_h2hL>0&&<span style={{fontWeight:700,color:TH.txRed}}>{_h2hL}P</span>}
+                {_h2h.slice(-4).map((m,i)=><div key={i} style={{width:14,height:14,borderRadius:3,background:m.won?"#16a34a":m.drew?"#ca8a04":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.caption,fontWeight:800,color:"#fff"}}>{m.won?"V":m.drew?"N":"P"}</div>)}
               </div>
             )}
           </Card></Fisarmonica>
@@ -50575,16 +50616,6 @@ const getThisWeekMatchday=()=>{
       })()}
       {tab==="dashboard"&&(
         <div className="cpm-dash-grid">
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-            {/* [7.80.0 collaudo PO «elimina box con info ridondanti»] Morale e Forma RIMOSSI: già nei mini-meter dell'header (7.74.0). Restano Fiducia mister + Popolarità (non presenti altrove). */}
-            {[{l:"Fiducia mister",v:player.coachTrust||60,e:"🤝",c:TH.primary},{l:"Popolarità",v:player.popularity||20,e:"⭐",c:TH.accent}].map(it=>(
-              <Card key={it.l} style={{padding:"9px 12px"}}>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:1}}><span style={{fontSize:FS.subhead}}>{it.e}</span><span className="cpm-num" style={{fontSize:FS.title,fontWeight:FW.black,color:legCol944(it.c)}}>{it.v}</span></div>
-                <div style={{fontSize:FS.caption,color:TH.muted,marginBottom:7}}>{it.l}</div>
-                <Meter value={it.v} color={it.c} height={5}/>
-              </Card>
-            ))}
-          </div>
           {/* [6.24.0 collaudo PO] «Staff & Spogliatoio» SPOSTATO nel Tab Club (profilo squadra) → vedi ~19300 */}
           {(player.log||[]).length>0&&<Card momento="Ultime notizie" /* [7.971] fisarmonica su rilievo PO: «anche qui ci vorrebbe un po' di organizzazione, accordion» */ style={{padding:"9px 12px"}}><div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Ultime notizie</div>{(player.log||[]).slice(0,5).map((e,i)=><div key={i} style={{fontSize:FS.caption,color:TH.text,padding:"3px 0",borderBottom:i<4?"1px solid "+TH.cardBorder:"none"}}>{e}</div>)}</Card>}
           {/* [7.96.0 collaudo PO «la scelta chiaro/scuro deve essere fatta SOLO nelle Impostazioni»] toggle tema
@@ -50615,17 +50646,17 @@ const getThisWeekMatchday=()=>{
                   const isCur=md.week===week;
                   const _euroComp=euroSig(md.competition||(player.euro?.competition||"UCL"));/* [6.74.0 QA-P0] sigla display fantasia */
                   const _compColor=md.type==="cup"?"#d97706":_isEuro?"#7c3aed":isCur?TH.primary:TH.text;
-                  const _compLabel=md.type==="cup"?`Coppa Nazionale · ${md.cupRoundName||"Round"}`:_isEuro?(md.type==="euro_group"?`${_euroComp} · Fase Gruppi`:`${_euroComp} · Fase Eliminatoria`):`Giornata ${md.matchday}`;
+                  const _compLabel=md.type==="cup"?`Coppa Nazionale · ${md.cupRoundName||"Round"}`:_isEuro?(md.type==="euro_group"?`${_euroComp} · Fase Gruppi`:`${_euroComp} · Fase Eliminatoria`):`${md.matchday}ª giornata`;
                   return(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderBottom:i<upcoming.length-1?"1px solid "+TH.cardBorder:"none",background:isCur?TH.bgBlue:"transparent",borderRadius:isCur?6:0,paddingLeft:isCur?8:0}}>
                       <div style={{width:28,height:28,flexShrink:0}}><TeamBadge team={opp} size={28}/></div>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:FS.small,fontWeight:isCur?700:500,color:_compColor,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
-                          {isCur&&"▶ "}{md.isHome?"🏟️":"✈️"} vs {md.opponentName}
+                          {isCur&&"▶ "}vs {md.opponentName}<span style={{fontWeight:FW.regular,color:TH.muted}}>{md.isHome?" · in casa":" · in trasferta"}</span>
                           {md.type==="cup"&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgAmber,color:TH.txAmber,border:"1px solid #fde68a",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{md.cupRoundName||"Coppa"}</span>}{md.type==="national"&&<span style={{fontSize:FS.caption,marginLeft:5,background:TH.bgBlue,color:TH.txBlue,border:"1px solid "+TH.bdBlue,borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>🏳️ Nazionale</span>}
                           {_isEuro&&<span style={{fontSize:FS.caption,marginLeft:5,background:"#ede9fe",color:TH.accentText,border:"1px solid #ddd6fe",borderRadius:RAD.xs,padding:"1px 5px",fontWeight:700}}>{_euroComp}</span>}
                         </div>
-                        <div style={{fontSize:FS.caption,color:TH.muted}}>{_compLabel} · W.{md.week}</div>
+                        <div style={{fontSize:FS.caption,color:TH.muted}}>{_compLabel} · sett. {md.week}</div>
                       </div>
                       {isCur&&(_srv===null||_srv===(md.matchday+"|"+md.week))
                         ?<Btn onClick={startMatch} v="primary" size="sm" style={{flexShrink:0}} /* [23/09 POC — collaudo PO «pulsante gioca e' brutto, fuori standard»] il primario del kit, uguale per campionato, coppa ed Europa: la competizione la dice gia' la riga */>{"Gioca ›"}</Btn>
@@ -50638,7 +50669,7 @@ const getThisWeekMatchday=()=>{
           })()}
           {/* Match history */}
           {(player.matchHistory||[]).length>0&&(
-            <Fisarmonica id="s24-partite-giocate-s" titolo={<>Partite giocate — S.{season}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",}}>
+            <Fisarmonica id="s24-partite-giocate-s" titolo={(player.matchHistory||[]).length>10?<>Ultime 10 partite giocate</>:<>Partite giocate</>}>{/* [7.999.49 parte A] la lista ne mostra al massimo 10: ora lo dice */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",}}>
               {/* [7.76.0 UI Kit] ResultRow del prototipo: bordo-esito a sinistra + chip V/P/S (MatchBadge) + punteggio da tabellone; voto conservato */}
               {[...(player.matchHistory||[])].reverse().slice(0,10).map((m,i)=>{
                 const _bd=m.won?TH.winFg:m.drew?TH.drawFg:TH.lossFg;
@@ -50647,12 +50678,12 @@ const getThisWeekMatchday=()=>{
                   <MatchBadge r={m.won?"W":m.drew?"D":"L"} size={22}/>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:FS.small,fontWeight:FW.semibold,color:TH.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>vs {m.opponent}{m.simulated&&<span style={{fontSize:FS.caption,color:TH.faint,marginLeft:4}}>(sim.)</span>}</div>
-                    <div style={{fontSize:FS.caption,color:TH.muted}}>W.{m.week} · ⚽{m.goals} 🎯{m.assists}</div>
+                    <div style={{fontSize:FS.caption,color:TH.muted}}>sett. {m.week}{m.isHome===true?" · in casa":m.isHome===false?" · in trasferta":""}{m.goals?` · ${m.goals} gol`:""}{m.assists?` · ${m.assists} assist`:""}</div>
                     {m.assistLinks&&(((m.assistLinks.given||[]).length)||((m.assistLinks.received||[]).length))?(<div style={{fontSize:FS.caption,color:TH.faint,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{/* [7.110.0] connessioni assist della gara */}{(m.assistLinks.given||[]).length?<span>🎯→ {(m.assistLinks.given).map(x=>x.name).join(", ")}</span>:null}{(m.assistLinks.given||[]).length&&(m.assistLinks.received||[]).length?"  ·  ":""}{(m.assistLinks.received||[]).length?<span>⚽← {(m.assistLinks.received).map(x=>x.name).join(", ")}</span>:null}</div>):null}
                   </div>
                   <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:TH.text,minWidth:44,textAlign:"center",letterSpacing:-.3}}>{m.homeScore}<span style={{color:TH.faint,margin:"0 1px"}}>–</span>{m.awayScore}</div>
                   <div style={{textAlign:"right",minWidth:28}}>
-                    <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:m.rating>=8?TH.txGreen:m.rating>=6.5?TH.txAmber:TH.txRed,lineHeight:1}}>{m.rating}</div>
+                    <div className="cpm-num" style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:m.rating>=8?TH.txGreen:m.rating>=6.5?TH.txAmber:TH.txRed,lineHeight:1}}>{typeof m.rating==="number"?m.rating.toFixed(1).replace(".",","):"—"}</div>
                     <div style={{fontSize:FS.caption,color:TH.faint}}>voto</div>
                   </div>
                 </div>);
@@ -50755,7 +50786,7 @@ const getThisWeekMatchday=()=>{
                     <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>CLASSIFICA GIRONE · {gr.length}/6 gare</div>
                     {/* Table header */}
                     <div style={{display:"grid",gridTemplateColumns:"16px 1fr 22px 22px 22px 22px 22px 22px 28px",gap:2,padding:"3px 4px",borderBottom:"1px solid "+TH.cardBorder,marginBottom:2}}>
-                      {["","Squadra","G","V","P","S","GF","GA","Pt"].map((h,i)=><div key={i} style={{fontSize:FS.caption,color:TH.faint,textAlign:i>1?"center":"left",fontWeight:700,letterSpacing:.5}}>{h}</div>)}
+                      {["","Squadra","G","V","N","P","GF","GS","Pt"].map((h,i)=><div key={i} style={{fontSize:FS.caption,color:TH.faint,textAlign:i>1?"center":"left",fontWeight:700,letterSpacing:.5}}>{h}</div>)}
                     </div>
                     {allRows.map((row,ri)=>{
                       const isQ=ri<2;// top 2 qualify
@@ -50774,7 +50805,7 @@ const getThisWeekMatchday=()=>{
                       <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>Risultati</div>
                       {gr.map((r,i)=>(
                         <div key={i} style={{display:"flex",gap:6,alignItems:"center",padding:"3px 0",borderTop:"1px solid "+TH.cardBorder,fontSize:FS.caption}}>
-                          <span style={{fontSize:FS.caption,background:r.won?TH.bgGreen:r.drew?TH.bgAmber:TH.bgRed,color:r.won?TH.txGreen:r.drew?"#854d0e":"#dc2626",borderRadius:3,padding:"1px 4px",fontWeight:700,minWidth:14,textAlign:"center"}}>{r.won?"V":r.drew?"P":"S"}</span>
+                          <span style={{fontSize:FS.caption,background:r.won?TH.bgGreen:r.drew?TH.bgAmber:TH.bgRed,color:r.won?TH.txGreen:r.drew?"#854d0e":"#dc2626",borderRadius:3,padding:"1px 4px",fontWeight:700,minWidth:14,textAlign:"center"}}>{r.won?"V":r.drew?"N":"P"}</span>
                           <span style={{fontSize:FS.caption,color:TH.faint,minWidth:30}}>{r.home?"🏟️":"✈️"}</span>
                           <span style={{flex:1,color:TH.text}}>vs {r.opp}</span>
                           <span style={{fontWeight:700,color:TH.text}}>{r.hs}–{r.as}</span>
@@ -50817,17 +50848,18 @@ const getThisWeekMatchday=()=>{
                 const calEntry=(player.calendar||[]).find(m=>m.week===w);
                 const hasScheduled=!!calEntry;
                 return<div key={w}
-                  title={mh?`vs ${mh.opponent}: ${mh.homeScore}-${mh.awayScore}`:(calEntry?`vs ${calEntry.opponentName}${calEntry.isHome?" 🏟️":" ✈️"}`:"–")}
+                  title={mh?`vs ${mh.opponent}: ${mh.homeScore}-${mh.awayScore}`:(calEntry?`vs ${calEntry.opponentName}${calEntry.isHome?" · in casa":" · in trasferta"}`:"–")}
                   style={{borderRadius:RAD.xs,padding:"5px 3px",textAlign:"center",fontSize:FS.caption,
                     background:cur?TH.bgBlue:mh?mh.won?TH.bgGreen:mh.drew?"#fefce8":TH.bgRed:past?TH.surface2:"transparent",
                     border:`1px solid ${cur?TH.primary:mh?mh.won?TH.success:mh.drew?TH.warning:TH.danger:past?TH.cardBorder:TH.cardBorder}`,
                     color:cur?TH.brandText:mh?mh.won?TH.txGreen:mh.drew?TH.txAmber:TH.txRed:past?TH.faint:TH.faint,
                     fontWeight:cur||mh?700:400}}>
                   {w}
-                  {mh?<div style={{fontSize:FS.caption,marginTop:1}}>{mh.won?"W":mh.drew?"D":"L"}</div>:hasScheduled?<div style={{fontSize:FS.caption,color:cur?TH.brandText:TH.faint,marginTop:1}}>⚽</div>:null}
+                  {mh?<div style={{fontSize:FS.caption,marginTop:1}}>{mh.won?"V":mh.drew?"N":"P"}</div>:hasScheduled?<div style={{fontSize:FS.caption,color:cur?TH.brandText:TH.faint,marginTop:1}}>⚽</div>:null}
                 </div>;
               })}
             </div>
+            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>V vinta · N pareggio · P persa · ⚽ partita in programma · vuota = settimana senza partite</div>{/* [7.999.49 parte A] legenda della griglia */}
           </Card></Fisarmonica>
         </div>
       )}
@@ -50869,10 +50901,10 @@ const getThisWeekMatchday=()=>{
             </select>
             <span aria-hidden="true" style={{position:"absolute",right:SP.md,pointerEvents:"none",color:TH.muted,fontSize:FS.bodyLg,transform:"rotate(90deg)"}}>›</span>
           </label>
-          <Fisarmonica id="s24-classifica-s" titolo={<>Classifica {selLg} — S.{season}</>} aperta={true}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",}}>
+          <Fisarmonica id="s24-classifica-s" titolo={<>Classifica {selLg}</>} aperta={true}>{/* [7.999.49 parte A] la data sta in testata */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",}}>
             <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch"}}>
               <table className="cpm-num" style={{width:"100%",borderCollapse:"collapse",fontSize:FS.small}}>
-                <thead><tr>{["","#","Club","G","V","P","S","Gf","Gs","Diff","Pt"].map(h=><th key={h} style={{textAlign:h==="Club"?"left":"center",padding:"6px 3px",fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"2px solid "+TH.divider,whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
+                <thead><tr>{["","#","Club","G","V","N","P","Gf","Gs","Diff","Pt"].map(h=><th key={h} style={{textAlign:h==="Club"?"left":"center",padding:"6px 3px",fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:.5,borderBottom:"2px solid "+TH.divider,whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
                 <tbody>
                   {rows.map((t,i)=>{
                     const my=selLg===myLeague&&(t.id===player.club?.id||t.n===player.club?.n);
@@ -50897,6 +50929,7 @@ const getThisWeekMatchday=()=>{
                 </tbody>
               </table>
             </div>
+            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>G giocate · V vinte · N pareggiate · P perse · Gf gol fatti · Gs gol subiti · Diff differenza reti · Pt punti</div>{/* [7.999.49 parte A] legenda delle sigle */}
             <div style={{display:"flex",flexWrap:"wrap",gap:"3px 10px",marginTop:10}}>
               {(_isYouthLg99
                 ?[[ZONE_COLORS.champ,"🏆 Campione Primavera"]]
@@ -50913,7 +50946,7 @@ const getThisWeekMatchday=()=>{
             if(!scorers.length)return null;
             const playerPos=scorers.findIndex(s=>s.isPlayer);
             return(
-              <Fisarmonica id="s24-capocannonieri-s-w-38" titolo={<>⚽ Capocannonieri — S.{season} · W.{week}/38</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",marginTop:8}}>
+              <Fisarmonica id="s24-capocannonieri-s-w-38" titolo={<>⚽ Capocannonieri</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",padding:"9px 12px",marginTop:8}}>
                 <div style={{display:"flex",flexDirection:"column",gap:0}}>
                   {scorers.map((s,i)=>{
                     const isMe=s.isPlayer;
@@ -50946,7 +50979,7 @@ const getThisWeekMatchday=()=>{
         if(!_wr.length)return null;
         const _lgs=[...new Set(_wr.map(r=>r.lg))];
         return(
-          <Fisarmonica id="s24-risultati-internazionali-w" titolo={<>Risultati Internazionali — W.{player.week||1}</>}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px"}}>
+          <Fisarmonica id="s24-risultati-internazionali-w" titolo={<>Dagli altri campionati</>}>{/* [7.999.49 parte A] sono i campionati esteri, non coppe internazionali */}<Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none",marginBottom:8,padding:"7px 12px"}}>
             {_lgs.map((lg,li)=>(
               <div key={lg} style={{marginBottom:li<_lgs.length-1?10:0}}>
                 <div style={{fontSize:FS.caption,color:TH.faint,fontWeight:700,marginBottom:4,textTransform:"uppercase",letterSpacing:1}}>{lg}</div>
@@ -51512,9 +51545,9 @@ const getThisWeekMatchday=()=>{
           <Card>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
               <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>Attributi</div>
-              <div style={{display:"flex",alignItems:"center",gap:8}}>
-                <span className="cpm-num" style={{fontSize:FS.caption,color:TH.growth,fontWeight:FW.bold}}>+1</span><span style={{fontSize:FS.caption,color:TH.faint}}>= guadagnato settimana</span>
-              </div>
+              {(player.sessionLog||[]).some(s=>s&&(s.gainA||s.gainB))&&<div style={{display:"flex",alignItems:"center",gap:8}}>{/* [7.999.49 parte A] legenda solo se c'e' almeno un +1 */}
+                <span className="cpm-num" style={{fontSize:FS.caption,color:TH.growth,fontWeight:FW.bold}}>+1</span><span style={{fontSize:FS.caption,color:TH.faint}}>= guadagnato questa settimana</span>
+              </div>}
             </div>
             {(()=>{
               const _wSlog=player.sessionLog||[];
@@ -53549,13 +53582,15 @@ const getThisWeekMatchday=()=>{
                 (raggruppata per competizione, coi nomi veri) vive in Carriera → Profilo; qui mostrava
                 le etichette grezze («int», «cup») duplicando il dato. */}
             {!_isPro&&<AnteprimaSezione icona="🏆" titolo="Le coppe arrivano col primo contratto da professionista"
-              sotto="In Under 18 si gioca solo il campionato. Da pro qui troverai:" voci={[{e:"🏆",t:"Coppa Nazionale",d:"Dalla tua prima stagione da professionista: 16 squadre della tua lega a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
+              sotto="In Under 18 si gioca solo il campionato. Da pro qui troverai:" voci={[{e:"🏆",t:"Coppa Nazionale",d:"Dalla tua prima stagione da professionista: 16 squadre sorteggiate fra quelle della tua lega (il tuo club c'è sempre), a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
                 {e:"⭐",t:"Coppe europee",d:"Se a fine stagione il tuo club chiude in zona Europa, l'anno dopo giochi il girone (settimane 5-15) e poi la fase a eliminazione diretta."},
                 {e:"🌍",t:"Tornei con la Nazionale",d:"Coppa delle Nazioni nelle stagioni pari, Europeo ogni 4 stagioni, Mondiale ogni 8: si giocano dalla settimana 20 e servono presenze in Nazionale."}]}
               nota={"Sei in Under 18 · stagione "+Math.min(2,(player.u18Seasons||0)+1)+" di 2"}/>}{/* [7.992.0 PO «un po' sintetico»] il vecchio testo diceva «dalla stagione 2 da pro», ma la Coppa Nazionale c'e' gia' al primo anno pro (5.97.0 CP-4) */}
+            {/* [7.999.49 parte A] voci personalizzate: a settimana 9 passata non si dice piu' che la coppa «si apre» agli ottavi,
+                e una seconda divisione non da' accesso all'Europa (in classifica non ha zone europee, solo promozione) */}
             {_isPro&&!cup&&!eu?.active&&!em?.active&&<AnteprimaSezione icona="🏆" titolo="Nessuna coppa in corso adesso"
-              sotto="Le competizioni si aprono in momenti precisi della stagione:" voci={[{e:"🏆",t:"Coppa Nazionale",d:"Dalla tua prima stagione da professionista: 16 squadre della tua lega a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
-                {e:"⭐",t:"Coppe europee",d:"Se a fine stagione il tuo club chiude in zona Europa, l'anno dopo giochi il girone (settimane 5-15) e poi la fase a eliminazione diretta."},
+              sotto="Le competizioni si aprono in momenti precisi della stagione:" voci={[{e:"🏆",t:"Coppa Nazionale",d:(player.week||1)>9?`Quest'anno non sei in gara. Prossima edizione nella stagione ${(player.season||1)+1}: 16 squadre sorteggiate fra quelle della tua lega (il tuo club c'è sempre), ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35.`:"16 squadre sorteggiate fra quelle della tua lega (il tuo club c'è sempre), a eliminazione diretta. Ottavi alla settimana 9, quarti alla 19, semifinale alla 28, finale alla 35."},
+                {e:"⭐",t:"Coppe europee",d:(typeof LEAGUE_PAIRS!=="undefined"&&LEAGUE_PAIRS.some(([u,l])=>l===player.club?.lg))?`La ${player.club?.lg} non dà accesso alle coppe europee: serve prima la promozione. Poi, chiudendo in zona Europa, l'anno dopo giochi il girone (settimane 5-15) e la fase a eliminazione diretta.`:"Se a fine stagione il tuo club chiude in zona Europa, l'anno dopo giochi il girone (settimane 5-15) e poi la fase a eliminazione diretta."},
                 {e:"🌍",t:"Tornei con la Nazionale",d:"Coppa delle Nazioni nelle stagioni pari, Europeo ogni 4 stagioni, Mondiale ogni 8: si giocano dalla settimana 20 e servono presenze in Nazionale."}]}/>}
           </div>
         );

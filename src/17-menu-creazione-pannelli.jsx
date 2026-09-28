@@ -1143,8 +1143,8 @@ const LOCALE={
     understood:"✅ Capito",cannotPlayInjured:"Non puoi giocare (infortunato)",
     skipAndRecover:"⏭️ Salta e recupera settimana",cancelStay:"rimani in dashboard",
     weekHeader:"Settimana",thisWeek:"Questa settimana",
-    weekLivedNote:"La settimana è stata vissuta. Clicca \"Avanza\" per passare alla prossima o gioca la partita prima.",
-    rehabCompletedNote:"Sessione completata. Clicca 'Avanza Settimana' per continuare il recupero.",
+    weekLivedNote:"Settimana vissuta. Ora gioca la partita o passa alla prossima settimana col pulsante in Home.",/* [7.999.49 parte A] niente «Clicca» ne' «Avanza» (pulsante che in Home non c'e') */
+    rehabCompletedNote:"Sessione completata. Passa alla prossima settimana col pulsante in Home per continuare il recupero.",
   },
   EN:{
     tabs:{dashboard:"Home",calendar:"Calendar",standings:"Standings",training:"Training",profile:"Profile"},
@@ -1459,10 +1459,15 @@ const generateWorldResults=(player)=>{
   TOP_LGS.forEach(lg=>{
     const lc=CLUBS.filter(c=>c.lg===lg&&!c.isU18);
     if(lc.length<2)return;
+    const _usati=new Set();/* [7.999.49 parte A] un club gioca UNA partita per giornata: la seconda gara salta i club della prima */
     for(let mi=0;mi<2;mi++){
       let s=Math.abs(hashStr(`wr128_${ss}_${wk}_${lg}_${mi}`));
-      const hi=s%lc.length;s=(s*1664525+1013904223)&0x7fffffff;
-      const ai=(hi+1+s%Math.max(1,lc.length-1))%lc.length;
+      let hi=s%lc.length;s=(s*1664525+1013904223)&0x7fffffff;
+      let ai=(hi+1+s%Math.max(1,lc.length-1))%lc.length;
+      if(lc.length-_usati.size<2)break;
+      for(let g=0;g<lc.length&&_usati.has(hi);g++)hi=(hi+1)%lc.length;
+      for(let g=0;g<lc.length&&(_usati.has(ai)||ai===hi);g++)ai=(ai+1)%lc.length;
+      _usati.add(hi);_usati.add(ai);
       const h=lc[hi];const a=lc[ai];
       s=(s*1664525+1013904223)&0x7fffffff;
       const pd=(h.p||60)/(((h.p||60)+(a.p||60))||120);
@@ -1772,9 +1777,9 @@ function MilestoneCelebrationModal({milestone,onDismiss}){
 const TrainPanel=({player,setPlayer,notify})=>{
   const _TT={
     fisico:{id:"fisico",e:"💪",l:"Fisico",a:"fisico",b:"velocità",col:"#16a34a"},
-    tecnico:{id:"tecnico",e:"⚽",l:"Tecnico",a:"tecnica",b:"tiro",col:"#2563eb"},
-    tattico:{id:"tattico",e:"🎯",l:"Tattico",a:"passaggio",b:"posizionamento",col:"#d97706"},
-    mentale:{id:"mentale",e:"🧠",l:"Mentale",a:"mentalità",b:"dribbling",col:"#7c3aed"},
+    tecnico:{id:"tecnico",e:"⚽",l:"Tecnica",a:"tecnica",b:"tiro",col:"#2563eb"},
+    tattico:{id:"tattico",e:"🎯",l:"Tattica",a:"passaggio",b:"posizionamento",col:"#d97706"},
+    mentale:{id:"mentale",e:"🧠",l:"Mentalità",a:"mentalità",b:"dribbling",col:"#7c3aed"},
   };
   const fat=player.fatigue||0;
   const allDone=(player.sessionsThisWeek||0)>=3;
@@ -1798,8 +1803,12 @@ const TrainPanel=({player,setPlayer,notify})=>{
   const _acR=player.assistantCoachRel||50;const _acMult=_acR>=75?1.12:_acR>=60?1.04:_acR<=35?0.90:1.0;
   const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult*TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(player.perkTrainer?1.10:1):(1+[0,0.10,0.15,0.20][staffLv24(player,"perkTrainer")]))/*[5.80.0 BIL-1/MIN-8 · 5.81.0 perk]*/;
   const _dim=(sv)=>{const v=sv||60;return v>=92?0.015:v>=90?0.03:v>=88?0.05:v>=84?0.11:v>=80?0.18:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};/* [7.9.1 collaudo PO «ritara»] rendimento decrescente INDURITO nella fascia élite (84+ ridotto, 90+ quasi piatto): con la crescita ora attiva su tutti i path (7.9.0) il profilo top toccava 93 a 28 anni — il tetto converge a ~90-92 (picco di progetto 5.80); fasce ≤80 INVARIATE → criterio §10 (50→85 in 8-10 stagioni) intatto */
-  const _t0name=_TT[_t0]?.l||_t0;const _t1name=_TT[_t1]?.l||_t1;
-  const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana puntiamo su ${_t0name} e ${_t1name}. Segui il piano.`;
+  const _t0name=(_TT[_t0]?.l||_t0).toLowerCase();const _t1name=(_TT[_t1]?.l||_t1).toLowerCase();/* [7.999.49 parte A] minuscole a meta' frase */
+  /* [7.999.49 parte A] efficacia mostrata RISPETTO ALLA BASE: senza la costante TRAIN_BASE_EFF, l'eta' e l'archetipo, che il
+     giocatore non puo' cambiare (il «↓ 67%» nasceva quasi tutto da li'). Solo testo: _mult resta quello che fa crescere. */
+  const _mEff=_mult/((TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player))||1);
+  const _mEffWhy=_avgRating>=7.5?" · voti alti":_avgRating<5.5?" · voti bassi":(player.form||60)>=75?" · grazie alla forma":(player.form||60)<=35?" · forma bassa":"";
+  const _coachMsg=veryTired?"Sei a pezzi. Riposo assoluto — non si allena in queste condizioni.":highFat?`Stai spingendo troppo. Lavoro leggero su ${_t0name}, poi recupero totale.`:_avgRating>=7.5?`Stai giocando bene — intensifico su ${_t0name} e ${_t1name} per sfruttare questo momento.`:_avgRating<=5.5?`Dobbiamo migliorare. Doppio lavoro su ${_t0name} e poi ${_t1name}.`:`Questa settimana lavoriamo su ${_t0name} e ${_t1name}. Segui il piano.`;
   const _fitMsg=veryTired?"⚠️ Il preparatore ti ferma: rischio infortuni.":highFat?"💧 Il preparatore inserisce sessioni di recupero.":streak>=3?"🔥 Stai mantenendo continuità — il preparatore è soddisfatto.":"";
   // [5.86.0 · DIRETTIVA PO] TRAINING AUTOMATICO by design: l'eroe è un CALCIATORE, non l'allenatore —
   //   il piano settimanale lo decidono mister e preparatori (le 2 stat più deboli; recupero automatico a
@@ -1824,18 +1833,21 @@ const TrainPanel=({player,setPlayer,notify})=>{
       assistantCoachRel:clamp((p.assistantCoachRel||50)+(Math.random()<0.28?1:0),0,100),
       teamChemistry:clamp((p.teamChemistry||60)+(Math.random()<0.25?1:0),0,100)}));
     const gkeys=Object.keys(gained);
-    notify(`✅ W.${week}: ${gkeys.length?gkeys.map(k=>`+${gained[k]} ${k}`).join(" · "):"nessuna crescita questa settimana"}`,gkeys.length?TH.success:TH.muted);
+    if(gkeys.length)notify(`✅ Settimana ${week}: ${gkeys.map(k=>`+${gained[k]} ${k}`).join(" · ")}`,TH.success);/* [7.999.49 parte A] «nessuna crescita» la dice gia' la card: niente avviso doppio sopra i bottoni */
   },[]);// eslint-disable-line — auto-esecuzione al mount (direttiva PO 5.86.0)
   return(
     <Card>
       <div style={{display:"flex",alignItems:"flex-start",gap:8,marginBottom:8,padding:"8px 10px",background:TH.surface2,borderRadius:RAD.sm,border:"1px solid "+TH.cardBorder}}>
         <div style={{fontSize:FS.title,flexShrink:0}}>🧑‍🏫</div>
         <div style={{flex:1}}>
-          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister · Piano W.{week}</div>
+          <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Mister · piano della settimana {week}</div>
           <div style={{fontSize:FS.small,color:TH.text,fontStyle:"italic"}}>"{_coachMsg}"</div>
           {_fitMsg&&<div style={{fontSize:FS.caption,color:TH.txBlue,marginTop:4}}>{_fitMsg}</div>}
         </div>
       </div>
+      {/* [7.999.49 parte A] il piano e' automatico: sessioni ed efficacia chiuse in «Dettagli del piano»; tolti i chip
+          di fatica e forma (li mostra gia' la testata) */}
+      <Fisarmonica id="allen-dettagli-piano" titolo="Dettagli del piano"><div style={{background:TH.card,border:"1px solid "+TH.cardBorder,borderTop:"none",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",padding:"8px 10px"}}>
       <div style={{display:"flex",gap:6,marginBottom:8}}>
         {_planEff.map((tid,i)=>{
           const isRec=tid==="rec"||tid==="rec_attivo"||tid==="rec_completo";
@@ -1847,13 +1859,12 @@ const TrainPanel=({player,setPlayer,notify})=>{
           </div>);
         })}
       </div>
-      <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap"}}>
-        <div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:fat>70?TH.bgRed:fat>45?TH.bgAmber:TH.bgGreen,color:fat>70?TH.txRed:fat>45?"#92400e":"#166534"}}>💧 {fat}/100</div>
-        <div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:TH.bgBlue,color:TH.txBlue}}>⭐ Forma {player.form||60}</div>
-        {_recent.length>0&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_avgRating>=7?TH.bgGreen:_avgRating<=5.5?TH.bgRed:TH.surface2,color:_avgRating>=7?TH.txGreen:_avgRating<=5.5?TH.txRed:TH.faint}}>📊 Voto {_avgRating.toFixed(1)}</div>}
-        {_mult!==1.0&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_mult>1?TH.bgGreen:"#fff7ed",color:_mult>1?"#166534":"#92400e"}}>{_mult>1?`↑ ${Math.round((_mult-1)*100)}% efficacia`:`↓ ${Math.round((1-_mult)*100)}% efficacia`}</div>}
+      <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+        {_recent.length>0&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_avgRating>=7?TH.bgGreen:_avgRating<=5.5?TH.bgRed:TH.surface2,color:_avgRating>=7?TH.txGreen:_avgRating<=5.5?TH.txRed:TH.faint}}>Voto medio (ultime {_recent.length}) {_avgRating.toFixed(1).replace(".",",")}</div>}
+        {Math.abs(_mEff-1)>=0.02&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:_mEff>1?TH.bgGreen:TH.bgAmber,color:_mEff>1?TH.txGreen:TH.txAmber}}>Efficacia {_mEff>1?"+":"−"}{Math.round(Math.abs(_mEff-1)*100)}%{_mEffWhy}</div>}
         {streak>=3&&<div style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:RAD.xs,fontWeight:700,background:TH.bgAmber,color:TH.txAmber}}>🔥 {streak} sett.</div>}
       </div>
+      </div></Fisarmonica>
       {allDone?(
         <div style={{textAlign:"center",padding:"10px 0",color:TH.txGreen,fontSize:FS.small,fontWeight:700}}>
           ✅ Allenamento completato

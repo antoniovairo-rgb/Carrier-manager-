@@ -668,7 +668,7 @@ async function generateScoutReport(opponentClub,playerStats,recentMatches){
   if(_aiMockMode){
     return generateLocalScoutReport(opponentClub,playerStats,recentMatches,arguments[3]);
   }
-  const last5=(recentMatches||[]).slice(-5).map(m=>`${m.opponent} ${m.homeScore}-${m.awayScore} (${m.won?"V":m.drew?"P":"S"})`).join(", ")||"Nessuna partita";
+  const last5=(recentMatches||[]).slice(-5).map(m=>`${m.opponent} ${m.homeScore}-${m.awayScore} (${m.won?"V":m.drew?"N":"P"})`).join(", ")||"Nessuna partita";
   const sys="Sei uno scout calcistico esperto. Analizza tatticamente con precisione. Rispondi SOLO con JSON valido.";
   const msg=`Scout report:\n- Avversario: ${opponentClub.n} (Prestige: ${opponentClub.p||65}/99)\n- Ultime 5 del giocatore: ${last5}\n- Stats: tecnica ${playerStats.tecnica||60}, velocità ${playerStats.velocità||60}, tiro ${playerStats.tiro||60}, passaggio ${playerStats.passaggio||60}\n\nJSON: {"weaknesses":["debole 1","debole 2"],"strengths":["forte 1","forte 2"],"recommendation":"consiglio tattico","difficulty":65}`;
   const res=await callClaudeAPI(sys,msg);

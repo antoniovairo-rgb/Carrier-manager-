@@ -676,7 +676,7 @@ const WEEKLY_IMPULSES=[
     {txt:"🚗 Accetto — che spettacolo",ef:{popularity:6,morale:4,coachTrust:-3}},
     {txt:"🚙 Tengo la mia, niente distrazioni",ef:{coachTrust:4,morale:-1}},
   ]},
-  {id:"wi_polemica_social",cat:"tensione",txt:"Un tifoso avversario ti insulta online e diventa virale. I tuoi fan aspettano una tua reazione.",choices:[
+  {id:"wi_polemica_social",cat:"tensione",txt:"Un tifoso avversario ti insulta online e il post diventa virale. I tuoi fan aspettano una tua reazione.",choices:[
     {txt:"🔥 Rispondo per le rime",ef:{popularity:5,morale:-3,coachTrust:-4}},
     {txt:"🤐 Ignoro, parlerò in campo",ef:{coachTrust:4,morale:2}},
   ]},
@@ -897,7 +897,7 @@ const VITA_EVENTS=[
   {id:"vita_torneo_quartiere",cat:"vita",r:"r",cond:p=>(p.popularity||20)>=60,txt:"🏅 Il tuo quartiere ti ha intitolato il torneo estivo. La targa è storta e il campo è quello di sempre, con le buche. È il premio più bello dell'anno.",ef:{popularity:6,morale:7},mem:"Il torneo del quartiere"},
   // ---- EVENTI ASSURDI E MEMORABILI ----
   {id:"vita_tutto_calcolato",cat:"assurdo",r:"r",cond:p=>{const mh=p.matchHistory||[];const lm=mh[mh.length-1];return !!(lm&&(lm.goals||0)>=1);}/* [7.438.0] «ho APPENA visto il tuo gol»: idem, ultima partita */,txt:"😂 Messaggio di un compagno: «Ho appena visto il tuo gol. Era tutto calcolato?» Rispondi: «Ovviamente no.» «Lo sapevo.»",ef:{morale:6},mem:"«Era tutto calcolato?»"},
-  {id:"vita_gatto",cat:"assurdo",r:"u",txt:"🐈 Un gatto entra al campo d'allenamento, ignora tutti e si accuccia NEL TUO zaino. Il mister: «Almeno lui ha scelto bene». Da oggi è la mascotte, e ha il tuo numero.",ef:{morale:5},mem:"Il gatto portafortuna"},
+  {id:"vita_gatto",cat:"assurdo",r:"u",txt:"🐈 Un gatto entra al campo d'allenamento, ignora tutti e si accuccia proprio nel tuo zaino. Il mister: «Almeno lui ha scelto bene». Da oggi è la mascotte, e ha il tuo numero.",ef:{morale:5},mem:"Il gatto portafortuna"},
   {id:"vita_sosia",cat:"assurdo",r:"r",cond:p=>(p.popularity||20)>=45,txt:"👯 Un sosia firma autografi a tuo nome al centro commerciale. Il club, invece di denunciarlo, gli regala un abbonamento: «Porta bene».",ef:{popularity:4,morale:3},mem:"Il sosia dell'ipermercato"},
   {id:"vita_gps_buffet",cat:"assurdo",r:"u",cond:p=>(p.goals||0)>=5,txt:"📡 Riunione dati: il preparatore proietta la tua velocità massima stagionale. L'ha registrata il GPS... durante la corsa al buffet del ritiro. Applauso liberatorio.",ef:{morale:6},mem:"Il record del buffet"},
   // ---- PROCURATORE / CONFIDENTE ----
@@ -1027,7 +1027,7 @@ const CAREER_MOMENTS=[
      {txt:"💪 «Ci arriverò. A modo mio.»",ef:{morale:7,form:8},mem:"Quando il sogno sembrò sfumare, trasformasti la delusione in carburante."},
      {txt:"😔 «Forse non era destino.»",ef:{morale:-8},mem:"Quella notizia ti tolse il fiato."},
    ]},
-  {id:"cm_fascia_ad_altro",name:"La Fascia ad un Altro",
+  {id:"cm_fascia_ad_altro",name:"La fascia a un altro",
    /* [7.276.0 collaudo PO «troppo giovane e troppo poca seniorità nel club»] Il momento presuppone che tu
       fossi un CANDIDATO alla fascia, ma il trigger chiedeva solo fiducia ≥75 e terza stagione: usciva a un
       ventenne arrivato da poco, che capitano non poteva esserlo per definizione. La fascia si assegna (7.5.0)
@@ -1035,9 +1035,9 @@ const CAREER_MOMENTS=[
       quella soglia, non a metà strada dall'esordio. */
    trigger:(p)=>p.proStatus==="pro"&&(p.coachTrust||60)>=75&&!p.isCaptain&&(p.season||1)>=5&&(p.age||18)>=26&&(p.totalMatches||0)>=110&&["titolare","leader"].indexOf(p.squadRole||"")>=0,
    prob:0.04,
-   txt:"👕 Il mister annuncia il nuovo capitano. Non è te. Ti guarda negli occhi: «So cosa stai pensando. Dimostrami che ho sbagliato.»",
+   txt:"👕 Il mister annuncia il nuovo capitano. Non sei tu. Ti guarda negli occhi: «So cosa stai pensando. Dimostrami che ho sbagliato.»",
    choices:[
-     {txt:"🤝 «Lo capisco, mister. Lavoro.»",ef:{coachTrust:8,morale:3},mem:"Accettasti la fascia ad un altro con dignità. Poi parlò il campo."},
+     {txt:"🤝 «Lo capisco, mister. Lavoro.»",ef:{coachTrust:8,morale:3},mem:"Accettasti la fascia a un altro con dignità. Poi parlò il campo."},
      {txt:"😤 «Meritavo io quella fascia.»",ef:{coachTrust:-10,morale:5},mem:"Protestasti per la fascia mancata. Il mister non dimenticò."},
    ]},
   {id:"cm_scoop",name:"Lo Scoop",
