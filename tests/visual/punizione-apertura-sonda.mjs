@@ -29,7 +29,10 @@ while (Date.now() - t0 < 150000) {
   await sleep(150);
 }
 const W = await page.evaluate(() => window.__CPM_WS38 || []).catch(() => []);
+
 const LT = await page.evaluate(() => window.__LT || []).catch(() => []);
+const SN = await page.evaluate(() => window.__CPM_SNAP42 || []).catch(() => []);
+if (process.env.CPM_SNAPLOG) console.log('scatti: ' + JSON.stringify(SN.slice(0, 6)));
 const GLC = await page.evaluate(() => window.__GLCTX || []).catch(() => []);
 await b.close(); srv.close();
 if (!C.length) { console.log('❌ nessuna scena di punizione aperta'); process.exit(2); }
@@ -48,3 +51,19 @@ if (process.env.CPM_TRACCIA) { let ult = -1e9; for (const w of W) { if (w[0] < t
 { const tS = C[0].t; const lt = LT.filter(([t]) => t > tS - 3000 && t < tS + 8000); console.log('long task intorno all\'apertura (s dall\'apertura, ms): ' + lt.map(([t, d]) => ((t - tS) / 1000).toFixed(2) + ':' + d).join(' · ')); }
 console.log('contesti WebGL creati (s dall\'apertura della scena): ' + GLC.map(([t, k, wh]) => ((t - C[0].t) / 1000).toFixed(2) + ' ' + k + ' ' + wh).join(' · '));
 for (const e of E.slice(0, 3)) console.log('⚠ pageerror: ' + e);
+/* [7.999.42] VERDETTO (non-regressione): lo scatto di scena (primo fotogramma in highlight, testimone __CPM_SNAP42) mette il pallone
+   dove sara' in scelta (entro 3 u). ⚠️ Non e' una prova del rosso: in headless il long task d'apertura include gli effetti di React e il
+   rosso __CPM_NO_APERTURA41 passa anch'esso (misurato). Il difetto del taccuino vive nell'ordine fotogramma/effetto del telefono. */
+{ const err = [];
+  /* il primo fotogramma DISEGNATO dopo l'apertura (anello per-fotogramma): __CPM_STATE all'apertura restituisce l'ultimo fotogramma prima
+     del taglio, perche' all'apertura il disegno resta fermo per un long task (misurato 0,9-4,6 s headless) */
+  const _hl0 = W.filter(w => w[0] >= primo.t && w[4] === 1); console.log('primi fotogrammi in highlight: ' + _hl0.slice(0, 4).map(w => ((w[0] - primo.t) / 1000).toFixed(2) + 's(' + (w[2] + 50).toFixed(1) + ',' + (w[3] / 0.68 + 50).toFixed(1) + ')').join(' '));
+  const _sn = SN.find(x => x[0] >= primo.t - 50); const w0 = _sn ? [_sn[0], 0, _sn[1], _sn[2], 1] : null;/* [7.999.42] lo SCATTO di scena: la posizione che il primo fotogramma in highlight mostra, e che resta a schermo durante il blocco d'apertura *//* [7.999.42] il SECONDO fotogramma in highlight: nel ciclo il testimone registra prima dello scatto di scena, quindi il primo mostra ancora il pallone di prima *//* [7.999.42] il primo fotogramma in cui il 3D disegna gia' l'highlight */
+  const b0 = w0 ? { x: w0[2] + 50, y: w0[3] / 0.68 + 50 } : null;
+  console.log('scatto di scena (primo fotogramma in highlight): ' + (b0 ? `pallone (${b0.x.toFixed(1)},${b0.y.toFixed(1)}) a ${((w0[0] - primo.t) / 1000).toFixed(2)} s` : 'nessuno'));
+  const dS = (scelta && b0) ? Math.hypot(b0.x - scelta.bx, b0.y - scelta.by) : null;
+  const dA = dS;
+    if (!(dS != null && dS <= 3)) err.push(`all'apertura il pallone e' a ${dS == null ? '?' : dS.toFixed(1)} u da dove sara' in scelta (atteso <= 3)`);
+  err.forEach(m => console.log('NO   ' + m));
+  if (err.length) { console.log('\nAPERTURA PUNIZIONE: FALLITO (' + err.length + ')' + (ROSSO ? ' — atteso col rosso' : '')); process.exit(1); }
+  console.log('\nAPERTURA PUNIZIONE: PASS'); process.exit(0); }

@@ -1971,6 +1971,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{possessionRef.current=possession;},[possession]);
   const lastShoutRef=useRef({ck:-99,txt:""});// MISTER #5: spaziatura + anti-ripetizione delle grida da bordo campo
   const [ballPos,setBallPos]=useState({x:50,y:50});
+  const preSp41Ref=useRef(null);/* [7.999.41b] punto del piazzato del brain, scelto all'apertura della scena */
   const ballPosRef=useRef({x:50,y:50});
   useEffect(()=>{ballPosRef.current=ballPos;},[ballPos]);
   const [mxStats,setMxStats]=useState({shots:0,oppShots:0,fouls:0,corners:0});
@@ -3265,7 +3266,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
        if(_contKeyRef.current===_k002)return;
        _contKeyRef.current=_k002;}
       let sp;
-      if(_curSit?.lockMovement){ sp=getStartPos(_curSit); }
+      if(_curSit?.lockMovement){ sp=(preSp41Ref.current&&preSp41Ref.current.k===hlIdx)?preSp41Ref.current.sp:getStartPos(_curSit); }/* [7.999.41b] il punto del piazzato gia' scelto all'apertura */
       else { const _sz=_curSit?.startZone||{x:[55,72],y:[30,70]};
              /* [7.34.1 collaudo PO «BUG/INCOERENZA CATENA: l'azione a cascata deve riprendere più o meno dal
                 punto X dove è finita la palla (che per le chance è al limite dell'area), non a caso»] per le
@@ -4481,6 +4482,16 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                if(_pk27){try{const _rg27=_og26.kind==="rigore";
                  const _c27=SITUATIONS.filter(s2=>{if(!s2||s2.type==="def"||_used79.indexOf(s2.text)>=0)return false;if(_rg27)return (typeof isPenaltySit==="function"&&isPenaltySit(s2));const _t=String(s2.text||"");return deriveIntent(s2)==="freekick"&&!/fascia|indirett|defilat/i.test(_t);});
                  if(_c27.length)_pick880=_c27[(hashStr("piaz27|"+_lzSeed+"|"+hlIdx)>>>0)%_c27.length];}catch(_e27){}
+                 /* [7.999.41b — taccuino PO su 7.999.34, SIT #81 punizione: «codice 001: all'apertura il pallone non e' ai piedi di nessuno
+                    dei nostri (eroe >=43,3u)». Misurato con punizione-apertura-sonda: al taglio il 3D prende il pallone del gioco (50,50 a
+                    centrocampo alla prima scena) e il punto della punizione arriva solo dopo la messa in scena, un aggiornamento piu' tardi.
+                    Sul piazzato il punto e' FISSO: si sorteggia qui, una volta, e eroe e pallone ci stanno gia' nel commit che apre la scena;
+                    la messa in scena riusa lo stesso punto. Rosso __CPM_NO_APERTURA41.
+                    ⚠️ IN HEADLESS NON SI VEDE: il long task d'apertura (0,9-4,6 s) include anche gli effetti di React, quindi quando il 3D
+                    disegna il primo fotogramma in highlight la messa in scena e' gia' arrivata e lo scatto (testimone __CPM_SNAP42) e' sul punto
+                    in entrambi i bracci. Sul telefono il ciclo di disegno puo' girare fra il commit che apre la scena e l'effetto che piazza il
+                    pallone: e' la finestra che il taccuino del PO misura (32 campioni). Il giudice e' il telefono.] */
+                 try{if(_pick880&&_pick880.lockMovement&&!(typeof window!=='undefined'&&window.__CPM_NO_APERTURA41)){const _sp41=getStartPos(_pick880);if(_sp41){preSp41Ref.current={k:hlIdx,sp:_sp41};setPPos(_sp41);ballPosRef.current={x:_sp41.x,y:_sp41.y};ballTargetRef.current={x:_sp41.x,y:_sp41.y};setBallPos({x:_sp41.x,y:_sp41.y});}}}catch(_e41){}
                  _ORIG26=null;}
                else if(_og26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)){try{
                  const _ang26=_og26.kind==="angolo";
