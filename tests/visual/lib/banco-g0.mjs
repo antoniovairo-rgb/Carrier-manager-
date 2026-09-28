@@ -5,6 +5,24 @@
    del rapporto, che e' esattamente l'errore che il G16 aveva appena finito di pagare. Qui stanno una
    volta sola, e sia la griglia sia le sonde partono dalla stessa carriera. */
 
+/* [7.999.49 parte A] CLASSIFICA COERENTE: le 18 squadre vere della Lega B, 10 giornate. Le gare del Salernum sono quelle
+   del matchHistory; le altre coppie ruotano e i punteggi vengono da un generatore a seme fisso. Prima la classifica
+   mancava e il gioco la ricreava tutta a zero alla settimana 11 (con 10 partite giocate in Home). */
+const LEGA_B = [['par','FC Parmense','PAR',52],['cre','FC Cremona','CRE',48],['mod','FC Modenese','MOD',47],['pal','FC Sicania','SIC',50],['cat','FC Calabro','CLB',44],
+  ['spe','FC Spezzino','SPE',49],['bar2','FC Pugliese','PUG',49],['ven','FC Laguna','LAG',51],['pis','FC Pisano','PIS',45],['fro','FC Ciociaro','CIO',47],['ces','FC Cesenate','CES',43],
+  ['samp','FC Empolese','EMP',53],['sal','FC Salernum','SAL',45],['cit','FC Cittadino','CIT',42],['sdt','FC Altoadige','ALT',40],['cos','FC Bruzio','BRU',38],['bres','FC Leonessa','LNS',50],['lec2','FC Lariano','LAR',38]];
+function classificaB(mh) {
+  const T = Object.fromEntries(LEGA_B.map(([id, n, a, p]) => [id, { id, n, a, p, lg: 'Lega B', played: 0, wins: 0, draws: 0, losses: 0, gf: 0, ga: 0, gd: 0, pts: 0 }]));
+  const byN = Object.fromEntries(LEGA_B.map(x => [x[1], x[0]]));
+  const esito = (h, a, gh, ga) => { for (const [x, f, c] of [[T[h], gh, ga], [T[a], ga, gh]]) { x.played++; x.gf += f; x.ga += c; x.gd = x.gf - x.ga; if (f > c) { x.wins++; x.pts += 3; } else if (f === c) { x.draws++; x.pts++; } else x.losses++; } };
+  let seme = 20260928; const rnd = () => { seme = (seme * 1103515245 + 12345) >>> 0; return seme / 4294967296; };
+  const gol = (p) => Math.floor(rnd() * 2.2 + p / 60);
+  mh.forEach((m, k) => { const o = byN[m.opponent]; if (m.isHome) esito('sal', o, m.homeScore, m.awayScore); else esito(o, 'sal', m.homeScore, m.awayScore);
+    const resto = LEGA_B.map(x => x[0]).filter(id => id !== 'sal' && id !== o); const rot = resto.slice(k % resto.length).concat(resto.slice(0, k % resto.length));
+    for (let i = 0; i < rot.length; i += 2) esito(rot[i], rot[i + 1], gol(T[rot[i]].p), gol(T[rot[i + 1]].p)); });
+  return Object.values(T).sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
+}
+
 export const SAVE = { phase: 'career', player: {
   /* [G16 · 22/09 — IL SALVATAGGIO DI PROVA ERA UNA CARRIERA CORTA, E MISURAVA UN GIOCO CHE IL PO NON VEDE.]
      Rilievo del PO con quattro screenshot dal suo Android: «la home e' ancora incasinata». Il metro pero'
@@ -17,7 +35,7 @@ export const SAVE = { phase: 'career', player: {
      ⚠️ TUTTI I NUMERI DI ALTEZZA E DI NODI CITATI PRIMA DEL 22/09 SONO STATI MISURATI SU UNA CARRIERA
      CORTA: non si confrontano con quelli di dopo. La riga di partenza si sposta, e si dichiara. */
   name: 'Grafica Probe', nation: 'Italia', avatarId: 0, proStatus: 'pro', season: 12, week: 11, weekLived: false,
-  age: 28, ovr: 82, tutorialDone: true, campDone: true, jerseyNum: 9, jerseyNumSeason: 12,
+  age: 28, ovr: 86, /* [7.999.49] 86 = quello che il gioco calcola da queste stats (la linguetta Allenamento mostrava 86, le altre l'82 scritto a mano) */ tutorialDone: true, campDone: true, jerseyNum: 9, jerseyNumSeason: 12,
   presidentModalSeason: 12, drawSeen: 12, mercatoSeen: 12, coachPactSeason: 12,
   seasonPledge: { season: 12, tone: 'equilibrato' }, squadRole: 'titolare',
   log: [
@@ -31,12 +49,19 @@ export const SAVE = { phase: 'career', player: {
     'Scontro al vertice in arrivo',
   ],
   coachTrust: 78, teamChemistry: 72, value: 45, popularity: 64, hasAgent: true,
-  goals: 14, assists: 6, matches: 12, totalGoals: 80, totalAssists: 31, totalMatches: 150,
-  matchHistory: Array.from({ length: 12 }, (_, i) => ({ week: i + 1, opponent: 'FC Rivale ' + i, goals: i % 3 === 0 ? 1 : 0, assists: i % 4 === 0 ? 1 : 0, rating: 7.2, won: i % 2 === 0, drew: false, homeScore: 2, awayScore: 1 })),
-  seasonObjectives: { position: 5 }, records: { topSeasonGoals: 22, topSeasonAssists: 9, topOvr: 82 },
-  club: { id: 'sal', n: 'FC Salernum', a: 'SAL', p: 52, c: '#6c1f2e', c2: '#f5f5f4', nat: '🇮🇹', lg: 'Lega A' },
+  goals: 14, assists: 6, matches: 10, nationalCaps: 14, nationalGoals: 5, /* [7.999.49] 10 = partite di campionato giocate prima della W.11; presenze in Nazionale coerenti con la Coppa delle Nazioni vinta */ totalGoals: 80, totalAssists: 31, totalMatches: 150,
+  /* [7.999.49 parte A] prima: 12 partite tutte 2–1 con esiti alterni, W.12 giocata alla W.11, 4 gol contro i 14 dichiarati.
+     Ora 10 partite, esito coerente col punteggio e col lato (casa/trasferta), gol e assist che sommano a 14 e 6. */
+  matchHistory: [[1,'FC Leonessa',1,2,0,1,0,7.6],[2,'FC Calabro',0,1,1,0,1,6.8],[3,'FC Cesenate',1,3,1,2,1,8.1],[4,'FC Empolese',0,1,1,1,0,6.9],[5,'FC Modenese',1,2,2,1,1,7.4],
+    [6,'FC Altoadige',0,0,2,2,1,7.5],[7,'FC Cremona',1,2,2,2,0,7.3],[8,'FC Sicania',0,2,0,0,0,5.8],[9,'FC Pisano',1,4,1,3,1,8.6],[10,'FC Lariano',0,1,1,2,1,7.9]]
+    .map(([week, opponent, casa, gf, gs, goals, assists, rating]) => ({ week, opponent, isHome: !!casa, goals, assists, rating, won: gf > gs, drew: gf === gs,
+      homeScore: casa ? gf : gs, awayScore: casa ? gs : gf })),
+  /* [7.999.49] il gioco salva gli obiettivi come ELENCO (generateSeasonObjectives): l'oggetto {position:5} faceva crollare «Continua alla Fine Stagione» */
+  seasonObjectives: [{ type: 'goals', target: 16, label: 'Segna 16 gol', bonus: { morale: 15, coachTrust: 10, value: 0.2 } }, { type: 'standing', target: 12, label: 'Finisci nei primi 12', bonus: { popularity: 15, value: 0.25 } }],
+  records: { topSeasonGoals: 19, topSeasonAssists: 7, topOvr: 86 }, /* [7.999.49] allineati allo storico allenatori (S.3: 19 gol, 7 assist) */
+  club: { id: 'sal', n: 'FC Salernum', a: 'SAL', p: 45, c: '#6c1f2e', c2: '#f5f5f5', nat: '🇮🇹', lg: 'Lega B' }, /* [7.999.49] com'e' nel database (era Lega A: club fuori dalla sua classifica) */
   stats: { 'velocità': 82, tecnica: 81, fisico: 80, 'mentalità': 82, tiro: 84, passaggio: 81, dribbling: 83, posizionamento: 82 },
-  form: 78, morale: 70, fatigue: 18, contract: { duration: 2, wage: 220000, expiresAtSeason: 6 }, bankBalance: 4560000,
+  form: 78, morale: 70, fatigue: 18, contract: { duration: 2, wage: 220000, expiresAtSeason: 13 }, /* [7.999.49] scadeva alla S.6 con la carriera alla S.12 */ bankBalance: 4560000,
   /* [G8.3 · 21/09] TROFEI e STORICO ALLENATORI, che prima NON C'ERANO.
      Il salvataggio di prova e' fermo alla S.4 e non aveva ne' trofei ne' allenatori passati:
      due delle sezioni piu' lunghe del Profilo NON venivano proprio rese, e il metro non poteva
@@ -65,7 +90,7 @@ export const SAVE = { phase: 'career', player: {
      non si confrontano con quelli misurati prima del 22/09: c'e' dentro contenuto nuovo. */
   rival: { name: 'Bruno Salvatori', age: 27, ovr: 80, totalGoals: 62, trophies: 2, seasons: 3,
     relationship: 'compagno di viaggio',
-    club: { id: 'cre', n: 'FC Cremona', a: 'CRE', p: 55, c: '#8b1a1a', c2: '#f5f5f4', nat: '🇮🇹', lg: 'Lega A' },
+    club: { id: 'cre', n: 'FC Cremona', a: 'CRE', p: 48, c: '#dc2626', c2: '#9ca3af', nat: '🇮🇹', lg: 'Lega B' },
     history: [{ season: 1, goals: 8 }, { season: 2, goals: 13 }, { season: 3, goals: 17 }, { season: 4, goals: 9 }],
     awards: { palloneOros: [], scarpaOros: [] } },
   dreamClub: { id: 'cat', n: 'FC Catalunya', a: 'CAT', p: 88, c: '#1f4ea8', c2: '#8e1f33', nat: '🇪🇸', lg: 'Liga Ibérica' },
@@ -74,6 +99,8 @@ export const SAVE = { phase: 'career', player: {
     { name: 'Davide Ricci', outlet: 'Cifre del Calcio', mood: 'freddo', rel: 38 },
     { name: 'Marco Tosi', outlet: 'Zona Mista', mood: 'caldo', rel: 71 },
   ] } };
+
+SAVE.player.standings = classificaB(SAVE.player.matchHistory); /* [7.999.49] classifica coerente col matchHistory */
 
 export const INIT = (o) => {
   if (o.fisAperte) { try { window.__CPM_FIS_APERTE = true; } catch (_e) {} }

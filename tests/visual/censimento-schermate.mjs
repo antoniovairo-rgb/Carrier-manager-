@@ -13,7 +13,8 @@ import { SAVE, INIT } from './lib/banco-g0.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const OUT = path.join(ROOT, 'docs', 'collaudo-testi');
 const W = [360, 412], SEME = 20260928;
-fs.rmSync(OUT, { recursive: true, force: true }); for (const w of W) fs.mkdirSync(path.join(OUT, String(w)), { recursive: true });
+/* [7.999.49] si svuotano solo le cartelle delle foto: prima cadeva tutta docs/collaudo-testi, compreso il suo .gitignore */
+for (const w of W) { fs.rmSync(path.join(OUT, String(w)), { recursive: true, force: true }); fs.mkdirSync(path.join(OUT, String(w)), { recursive: true }); }
 const TESTI = {}; const saltate = []; const errori = [];
 const srv = await startServer(); const port = srv.address().port; const browser = await launchBrowser();
 const TRIAL = { ph: 'offers', slot: 0, res: [{ goals: 2, assists: 1, rating: 7.4 }, { goals: 2, assists: 0, rating: 7.6 }, { goals: 3, assists: 1, rating: 8.1 }],
@@ -65,7 +66,13 @@ async function scatta(page, id, nome) {
     const SCR = [['seasonEnd', 'Fine stagione'], ['seasonAwards', 'Premi di fine stagione'], ['nationalCallup', 'Convocazione in nazionale'], ['proTransition', 'Passaggio al professionismo'], ['clubPresentation', 'Presentazione al nuovo club'], ['careerEnd', 'Fine carriera']];
     for (const [s, n] of SCR) { try { await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard')); } catch (_e) {} await sleep(300);
       const r = await page.evaluate(x => window.__CPM_CAREER.goScreen(x), s); await sleep(900);
-      if (r !== true) { saltate.push(`${s}: ${r}`); continue; } await scatta(page, 'scr-' + s, n); }
+      if (r !== true) { saltate.push(`${s}: ${r}`); continue; }
+      /* [7.999.49] goScreen cambia solo la schermata: senza i suoi dati il gioco mostra la Home, e prima la fotografavamo
+         come se fosse la schermata chiesta (8 «schermate» uguali alla Home nel censimento del 28/09). Ora si dichiara. */
+      const cur = await page.evaluate(() => window.__CPM_CAREER.screen && window.__CPM_CAREER.screen()).catch(() => null);
+      const home = await page.evaluate(() => /Vivi la Settimana|PROSSIMA PARTITA/i.test(document.body.innerText || '')).catch(() => false);
+      if (cur !== s || home) { saltate.push(`${s}: non si apre senza i suoi dati (schermata ${cur}, Home visibile ${home})`); continue; }
+      await scatta(page, 'scr-' + s, n); }
     try { await page.evaluate(() => window.__CPM_CAREER.goTab('dashboard')); } catch (_e) {} await sleep(400);
     try { const r = await page.evaluate(() => window.__CPM_CAREER.forceInterview && window.__CPM_CAREER.forceInterview()); await sleep(900); if (r) await scatta(page, 'scr-intervista', 'Intervista / conferenza'); else saltate.push('intervista: forceInterview → ' + r); } catch (e) { saltate.push('intervista: ' + String(e.message).slice(0, 60)); }
     try { await page.evaluate(() => { window.__CPM_CAREER.dismiss(); window.__CPM_CAREER.goTab('dashboard'); }); } catch (_e) {} await sleep(400);
@@ -92,10 +99,17 @@ async function scatta(page, id, nome) {
     if (r === 'seasonEnd') { fine = true; await sleep(1500); await scatta(page, 'fine-gala', 'Fine stagione · gala');
       if (await premi(page, 'Apri la busta')) { await sleep(1500); await scatta(page, 'fine-busta', 'Fine stagione · busta del premio'); }
       if (await premi(page, 'Salta il gala')) { await sleep(1500); await scatta(page, 'fine-dopo-gala', 'Fine stagione · dopo il gala'); }
-      for (let j = 0; j < 6; j++) { const t = await page.evaluate(() => document.body.innerText || ''); if (/FINE STAGIONE|Riepilogo|Nuova stagione|Stagione successiva/i.test(t)) { await scatta(page, 'fine-riepilogo', 'Fine stagione · riepilogo'); break; }
-        await scatta(page, 'fine-passo-' + (j + 1), 'Fine stagione · passo ' + (j + 1)); if (!(await premi(page, 'Continua|Avanti|cerimonia|Vai'))) break; await sleep(1500); }
-      try { await page.evaluate(() => window.__CPM_CAREER.startNewSeason()); } catch (_e) {} await sleep(1500);
-      await scatta(page, 'nuova-stagione', 'Stagione nuova · primo schermo');
+      /* [7.999.49] prima il riconoscimento del riepilogo scattava sul bottone «Continua alla Fine Stagione» della pagina
+         premi (contiene «Fine Stagione»): fotografava ancora i premi. Ora si PREME e si fotografa la schermata dopo. */
+      for (let j = 0; j < 6; j++) { const sc0 = await page.evaluate(() => window.__CPM_CAREER.screen && window.__CPM_CAREER.screen()).catch(() => null);
+        if (!(await premi(page, 'Continua alla Fine Stagione|^Continua|^Avanti|Vai alla'))) break; await sleep(1500);
+        const sc1 = await page.evaluate(() => window.__CPM_CAREER.screen && window.__CPM_CAREER.screen()).catch(() => null);
+        await scatta(page, j === 0 ? 'fine-riepilogo' : 'fine-passo-' + (j + 1), `Fine stagione · ${j === 0 ? 'riepilogo' : 'passo ' + (j + 1)} (schermata ${sc0} → ${sc1})`);
+        if (sc1 !== 'seasonEnd' && sc1 !== 'seasonAwards') break; }
+      const ns = await page.evaluate(() => { try { return window.__CPM_CAREER.startNewSeason(); } catch (e) { return 'errore ' + e.message; } }); await sleep(2000);
+      const sc2 = await page.evaluate(() => window.__CPM_CAREER.screen && window.__CPM_CAREER.screen()).catch(() => null);
+      if (sc2 === 'seasonEnd' || sc2 === 'seasonAwards') saltate.push(`nuova stagione: startNewSeason → ${ns}, schermata ancora ${sc2}`);
+      else await scatta(page, 'nuova-stagione', 'Stagione nuova · primo schermo');
       try { await page.evaluate(() => window.__CPM_CAREER.step()); } catch (_e) {} await sleep(1000);
       await scatta(page, 'nuova-stagione-apertura', 'Stagione nuova · apertura (Vivi la settimana)'); }
     try { await page.evaluate(() => window.__CPM_CAREER.dismiss()); } catch (_e) {} await sleep(150);
