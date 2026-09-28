@@ -36,7 +36,10 @@ for(const gi of GIs){
     await sleep(DT60?2000:(GLB?1200:420));
     await page.evaluate(()=>{window.__CPM_FROZEN=false;});
     await sleep(GLB?400:160);
-    let r=false;try{r=await page.evaluate(([k,e])=>{if(e)window.__CPM_FORCE_OUTCOME=e;return window.__CPM_RESOLVE(k);},[ai,process.env.CPM_ESITO||null]);}catch(e){}/* [7.999.39] CPM_ESITO=success|fail */
+    const _lbl=process.env.CPM_AZLABEL?process.env.CPM_AZLABEL.split('|')[GIs.indexOf(gi)]:null;/* [7.999.45] azione per NOME, allineata a CPM_GI (taccuino PO) */
+    const aiEff=_lbl?await page.evaluate(([g,l])=>{const a=(window.__CPM_SITS[g]&&window.__CPM_SITS[g].actions)||[];return a.findIndex(x=>String(x.label||'').indexOf(l)>=0);},[gi,_lbl]):ai;
+    if(_lbl)console.log(`gi${gi}: azione «${_lbl}» → indice ${aiEff}`);
+    let r=false;try{r=await page.evaluate(([k,e])=>{if(e)window.__CPM_FORCE_OUTCOME=e;return window.__CPM_RESOLVE(k);},[aiEff,process.env.CPM_ESITO||null]);}catch(e){}/* [7.999.39] CPM_ESITO=success|fail */
     if(!r)continue;
     await sleep(DT60?12000:(GLB?7000:2600));
     const out=await page.evaluate(()=>{

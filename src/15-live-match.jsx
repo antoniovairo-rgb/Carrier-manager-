@@ -8971,6 +8971,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       const _kind=isPenaltySit(_sit)?"penalty":((_opts[0]&&_opts[0].spKind)||"fk_near");
       const _ai=pickSetPieceChoiceAI(_kind,player.stats||{},{clock:clockRef.current||0,scoreDiff:score.home-score.away,mw:(typeof mw!=="undefined"?mw:5)},(Math.abs(hashStr("ai|"+String(_legacyDir)+"|"+clockRef.current))>>>0)||1);
       const _pick=_opts.find(o=>o.id===(_ai&&_ai.id))||_opts[0];handleSetPiece(_pick);}catch(_e){}};
+  if(typeof window!=='undefined'&&_CPM_TEST)window.__CPM_SETPIECE=(id)=>{try{const _sit=situationsRef.current[hlIdxRef.current];const _px=(pPosRef.current&&pPosRef.current.x)||66;const _opts=setPieceOptions(_sit,player,_px);const o=_opts.find(q=>q.id===id);if(!o)return {err:'stile assente',ids:_opts.map(q=>q.id)};handleSetPiece(o);return {ok:o.id,label:o.label,ids:_opts.map(q=>q.id)};}catch(e){return {err:String(e)};}};/* [7.999.45 aggancio di prova, solo ?cpmtest=1] preme il pulsante di stile del piazzato come il giocatore (taccuino PO SIT #13/#78): il pilota automatico lo fa solo sui rigori */
   /* [7.781.0 collaudo PO 04/09 «codice 011 — palla congelata», due volte su un assist riuscito — rosso __CPM_NO781]
      LA SIMULAZIONE PRENDE ATTO DI DOVE IL PALLONE E' FINITO DAVVERO. Misurato sulle scene segnalate dal PO: dentro
      l'esito il punto-palla LOGICO resta fermo nel 100% dei campioni mentre il pallone reso si allontana fino a 38 e
