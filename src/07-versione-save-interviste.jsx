@@ -449,7 +449,7 @@ IV_TONE_LBL.nocomment="🤐 No comment";IV_TONE_COL.nocomment="#64748b";
 const IV_NOCOMMENT24={tone:"nocomment",txt:"Su questo preferisco non rispondere.",ef:{p:-2,t:1}};
 const RILANCIO24={
   diretto:[
-    {q:"Lei non ha paura di esporsi. Il suo allenatore apprezza questa franchezza?",a:[
+    {q:"Non hai paura di esporti. Il tuo allenatore apprezza questa franchezza?",a:[
       {tone:"diretto",txt:"Me l'ha chiesto lui: vuole giocatori che ci mettono la faccia.",ef:{m:2,p:2,t:-1}},
       {tone:"diplomatico",txt:"Ne parliamo spesso. Il rapporto è sincero, in tutte e due le direzioni.",ef:{m:1,p:1,t:2}},
       {tone:"umile",txt:"Spero di sì. Se esagero, sarà lui il primo a dirmelo.",ef:{m:1,p:0,t:2}}]},
@@ -457,11 +457,11 @@ const RILANCIO24={
       {tone:"diretto",txt:"È un messaggio per tutti: noi ci siamo.",ef:{m:2,p:3,t:-1}},
       {tone:"diplomatico",txt:"Nessun messaggio: rispetto per tutti, paura di nessuno.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"No, è un messaggio per me stesso. Devo alzare il livello.",ef:{m:1,p:1,t:1}}]},
-    {q:"Se dovesse dare un voto alla sua partita di oggi, quale sarebbe?",a:[
+    {q:"Se dovessi dare un voto alla tua partita di oggi, quale sarebbe?",a:[
       {tone:"diretto",txt:"Più alto di quello che mi darete voi, come sempre.",ef:{m:2,p:2,t:-1}},
       {tone:"diplomatico",txt:"Il voto lo lascio a voi. Io guardo cosa migliorare.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"Sufficiente, niente di più. Posso fare meglio.",ef:{m:1,p:0,t:2}}]},
-    {q:"Parole forti. Se la prossima va male, se ne assume la responsabilità?",a:[
+    {q:"Parole forti. Se la prossima va male, te ne assumi la responsabilità?",a:[
       {tone:"diretto",txt:"Sì. Chi parla poi risponde in campo, e io ci sono.",ef:{m:2,p:3,t:-1}},
       {tone:"diplomatico",txt:"La responsabilità è del gruppo, e io ne faccio parte.",ef:{m:1,p:1,t:2}},
       {tone:"umile",txt:"Ho detto quello che penso. Ma adesso conta il lavoro, non le parole.",ef:{m:1,p:1,t:1}}]},
@@ -470,44 +470,44 @@ const RILANCIO24={
       {tone:"diplomatico",txt:"No, parlavo di me prima che degli altri.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"Se qualcuno l'ha presa male, glielo chiarisco di persona.",ef:{m:1,p:1,t:2}}]}],
   umile:[
-    {q:"Parla sempre del gruppo. Ma lei, singolarmente, dove vuole arrivare?",a:[
+    {q:"Parli sempre del gruppo. Ma tu, singolarmente, dove vuoi arrivare?",a:[
       {tone:"diretto",txt:"In alto. Molto in alto. Ma un passo alla volta.",ef:{m:2,p:2,t:0}},
       {tone:"diplomatico",txt:"Dove mi porta il lavoro di ogni giorno.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"Voglio diventare un giocatore su cui i compagni possono contare sempre.",ef:{m:1,p:1,t:2}}]},
-    {q:"I tifosi però la considerano già un leader. Come vive questa responsabilità?",a:[
+    {q:"I tifosi però ti considerano già un leader. Come vivi questa responsabilità?",a:[
       {tone:"diretto",txt:"Bene. Mi piace averla, e mi piace portarla.",ef:{m:2,p:2,t:0}},
       {tone:"diplomatico",txt:"Con serenità: la squadra ha tanti leader.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"Con gratitudine. E con la voglia di non deluderli.",ef:{m:1,p:1,t:1}}]},
-    {q:"C'è un compagno che la sta aiutando più degli altri in questo periodo?",a:[
+    {q:"C'è un compagno che ti sta aiutando più degli altri in questo periodo?",a:[
       {tone:"diretto",txt:"Più di uno, ma i nomi li tengo per lo spogliatoio.",ef:{m:1,p:1,t:1}},
       {tone:"diplomatico",txt:"Tutti, davvero. Il gruppo è la nostra forza.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"I più esperti: ascoltarli mi fa crescere ogni settimana.",ef:{m:1,p:0,t:2}}]},
-    {q:"Lei è sempre molto misurato. C'è qualcosa che la fa arrabbiare davvero?",a:[
+    {q:"Sei sempre molto misurato. C'è qualcosa che ti fa arrabbiare davvero?",a:[
       {tone:"diretto",txt:"Perdere. Lo odio, e si vede in allenamento.",ef:{m:2,p:2,t:0}},
       {tone:"diplomatico",txt:"Le cose che non dipendono da me le lascio fuori dal campo.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"Più che altro me la prendo con me stesso quando sbaglio.",ef:{m:1,p:1,t:1}}]},
-    {q:"Tanta modestia: non teme che la considerino poco ambizioso?",a:[
+    {q:"Tanta modestia: non temi che ti considerino poco ambizioso?",a:[
       {tone:"diretto",txt:"Le ambizioni le tengo per me, poi le faccio vedere.",ef:{m:2,p:2,t:0}},
       {tone:"diplomatico",txt:"Ambizione e rispetto possono stare insieme.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"Preferisco che parlino i fatti, anche se ci mettono di più.",ef:{m:1,p:0,t:2}}]}],
   diplomatico:[
-    {q:"Lei è molto prudente con le parole. Cosa le ha insegnato questa prudenza?",a:[
+    {q:"Sei molto prudente con le parole. Cosa ti ha insegnato questa prudenza?",a:[
       {tone:"diretto",txt:"Che i fatti fanno più rumore delle frasi fatte.",ef:{m:1,p:2,t:0}},
       {tone:"diplomatico",txt:"A pensare prima di parlare, come in campo prima di passare.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"Ad ascoltare. Chi ascolta impara più in fretta.",ef:{m:1,p:0,t:2}}]},
-    {q:"Una risposta più personale: cosa le è piaciuto di sé oggi?",a:[
+    {q:"Una risposta più personale: cosa ti è piaciuto di te oggi?",a:[
       {tone:"diretto",txt:"La personalità. Ho chiesto la palla anche nei momenti difficili.",ef:{m:2,p:2,t:0}},
       {tone:"diplomatico",txt:"La continuità: ho fatto le cose semplici per novanta minuti.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"L'impegno. Il resto va ancora migliorato.",ef:{m:1,p:0,t:2}}]},
-    {q:"E la classifica? Ci pensa, o davvero guarda solo alla prossima partita?",a:[
+    {q:"E la classifica? Ci pensi, o davvero guardi solo alla prossima partita?",a:[
       {tone:"diretto",txt:"Ci penso eccome: siamo qui per vincere qualcosa.",ef:{m:2,p:2,t:-1}},
       {tone:"diplomatico",txt:"La guardo, ma la classifica si fa una partita alla volta.",ef:{m:1,p:1,t:1}},
       {tone:"umile",txt:"Poco. Se penso troppo avanti, sbaglio la prossima.",ef:{m:1,p:0,t:2}}]},
-    {q:"Risposta da manuale. Ma lei, personalmente, cosa ne pensa?",a:[
+    {q:"Risposta da manuale. Ma tu, personalmente, cosa ne pensi?",a:[
       {tone:"diretto",txt:"Personalmente? Che possiamo fare molto di più.",ef:{m:1,p:2,t:-1}},
       {tone:"diplomatico",txt:"Penso esattamente quello che ho detto.",ef:{m:0,p:0,t:1}},
       {tone:"umile",txt:"Che io per primo devo dare di più.",ef:{m:1,p:1,t:1}}]},
-    {q:"Allora glielo chiedo diversamente: cosa cambierebbe da domani?",a:[
+    {q:"Allora te lo chiedo diversamente: cosa cambieresti da domani?",a:[
       {tone:"diretto",txt:"L'intensità. Nelle ultime partite ce n'è stata poca.",ef:{m:1,p:2,t:-1}},
       {tone:"diplomatico",txt:"Poco: la strada è giusta, serve continuità.",ef:{m:1,p:0,t:1}},
       {tone:"umile",txt:"Il mio contributo in fase di non possesso.",ef:{m:1,p:1,t:2}}]}]};
@@ -525,17 +525,17 @@ function primaPagina24(tone1,tone2,ctx,nome,opp){const G=PRIMA24[ctx]||PRIMA24.a
 
 const INTERVIEW_QS=[
 // === POST VITTORIA ===
-{ctx:["win"],q:"Grande prestazione oggi! Come descrive la sua partita?",a:[
+{ctx:["win"],q:"Grande prestazione oggi! Come descrivi la tua partita?",a:[
   {tone:"diplomatico",txt:"Ho fatto il mio lavoro. Ma il merito è di tutto il gruppo, siamo stati perfetti.",ef:{m:5,p:4,t:6}},
   {tone:"diretto",txt:"Ero in serata di grazia. Quando sono così, la squadra ne beneficia. Sono in forma.",ef:{m:9,p:8,t:-4}},
   {tone:"umile",txt:"Potevo fare qualcosa di meglio in alcune fasi, ma il risultato è quello che conta.",ef:{m:3,p:3,t:8}},
 ]},
-{ctx:["win"],q:"Tre punti importanti. Come si sente adesso?",a:[
+{ctx:["win"],q:"Tre punti importanti. Come ti senti adesso?",a:[
   {tone:"diplomatico",txt:"Felice per i compagni. Questo successo è di tutti, staff compreso.",ef:{m:6,p:3,t:5}},
   {tone:"diretto",txt:"Fantastico. Sono in un momento eccezionale e voglio continuare così.",ef:{m:10,p:8,t:-4}},
   {tone:"umile",txt:"Contento, ma già con la testa alla prossima partita. Non ci fermiamo.",ef:{m:4,p:4,t:9}},
 ]},
-{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.161.0 super-test A1] mai «il suo gol» con 0 gol */q:"Il suo gol è stato decisivo. Cosa ha pensato al momento del tiro?",a:[
+{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.161.0 super-test A1] mai «il suo gol» con 0 gol */q:"Il tuo gol è stato decisivo. Cosa hai pensato al momento del tiro?",a:[
   {tone:"diplomatico",txt:"Ho pensato solo alla squadra. Segnare è bello ma la vittoria è collettiva.",ef:{m:6,p:5,t:5}},
   {tone:"diretto",txt:"Sapevo di segnare. Ho scelto l'angolo e ho eseguito. Tecnica pura.",ef:{m:11,p:9,t:-5}},
   {tone:"umile",txt:"Istinto. Mi fido del lavoro settimanale in allenamento, poi arriva il gol.",ef:{m:4,p:4,t:8}},
@@ -550,7 +550,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Assolutamente sì. Con me in forma, i traguardi sono alla portata.",ef:{m:9,p:7,t:-5}},
   {tone:"umile",txt:"Un passo alla volta. Siamo sulla strada giusta, ma c'è ancora molto lavoro.",ef:{m:4,p:3,t:7}},
 ]},
-{ctx:["win"],q:"Cosa direbbe ai tifosi dopo questa vittoria?",a:[
+{ctx:["win"],q:"Cosa diresti ai tifosi dopo questa vittoria?",a:[
   {tone:"diplomatico",txt:"Grazie per il vostro supporto costante. Daremo tutto per voi fino alla fine.",ef:{m:5,p:9,t:4}},
   {tone:"diretto",txt:"Sono qui per vincere e li accontenteremo. Continuate a sostenerci.",ef:{m:8,p:9,t:-2}},
   {tone:"umile",txt:"I tifosi meritano queste gioie. Lavoriamo per loro ogni singolo giorno.",ef:{m:4,p:8,t:5}},
@@ -560,17 +560,17 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Io non sento la pressione. Anzi, mi carica. Oggi si è visto chiaramente.",ef:{m:10,p:7,t:-3}},
   {tone:"umile",txt:"Abbiamo sofferto ma abbiamo tenuto duro. Ogni vittoria in trasferta è speciale.",ef:{m:4,p:4,t:7}},
 ]},
-{ctx:["win"],q:"Il mister sembra molto soddisfatto di lei. Cosa le ha detto nello spogliatoio?",a:[
+{ctx:["win"],q:"Il mister sembra molto soddisfatto di te. Cosa ti ha detto nello spogliatoio?",a:[
   {tone:"diplomatico",txt:"Ha lodato il collettivo. Siamo contenti di aver risposto alle sue aspettative.",ef:{m:5,p:3,t:10}},
   {tone:"diretto",txt:"Mi ha detto che ero il migliore. Ormai è una cosa che sento spesso ultimamente.",ef:{m:9,p:6,t:-6}},
   {tone:"umile",txt:"Ha detto che dobbiamo restare umili. Ha ragione, ovviamente. Seguiamo il mister.",ef:{m:4,p:3,t:10}},
 ]},
-{ctx:["win"],q:"Sta attraversando un gran momento di forma. Come lo spiega?",a:[/* [7.120.0 audit narrativa] era «terzo man of the match di fila» — striscia MOTM non tracciata → asserzione non garantita, genericizzata */
+{ctx:["win"],q:"Stai attraversando un gran momento di forma. Come lo spieghi?",a:[/* [7.120.0 audit narrativa] era «terzo man of the match di fila» — striscia MOTM non tracciata → asserzione non garantita, genericizzata */
   {tone:"diplomatico",txt:"Mi sento bene fisicamente e mentalmente. E la squadra mi mette nelle condizioni.",ef:{m:7,p:6,t:5}},
   {tone:"diretto",txt:"Sono entrato in un tunnel di prestazioni. Sono il migliore della rosa, punto.",ef:{m:12,p:10,t:-7}},
   {tone:"umile",txt:"I numeri sono lusinghieri ma conta solo la squadra. È un lavoro di tutti.",ef:{m:5,p:5,t:9}},
 ]},
-{ctx:["win"],q:"Come si sente quando il pubblico canta il suo nome?",a:[
+{ctx:["win"],q:"Come ti senti quando il pubblico canta il tuo nome?",a:[
   {tone:"diplomatico",txt:"È una sensazione meravigliosa. Ti dà energia pura. Lo dedico a tutto il gruppo.",ef:{m:7,p:9,t:3}},
   {tone:"diretto",txt:"Me lo aspettavo. Quando giochi così, la gente ti ama. È il frutto del lavoro.",ef:{m:10,p:8,t:-3}},
   {tone:"umile",txt:"Emozionante. Ma preferisco che cantino il nome della squadra, non il mio.",ef:{m:5,p:7,t:6}},
@@ -580,17 +580,17 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Non molliamo perché abbiamo la qualità per ribaltare ogni partita. Io in primis.",ef:{m:9,p:7,t:-4}},
   {tone:"umile",txt:"Non è un segreto, è passione vera. Ci crediamo fino all'ultimo respiro.",ef:{m:5,p:5,t:8}},
 ]},
-{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=2),/* [7.161.0 A1] */q:"Doppietta oggi. È il suo momento migliore in questa maglia?",a:[
+{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=2),/* [7.161.0 A1] */q:"Doppietta oggi. È il tuo momento migliore in questa maglia?",a:[
   {tone:"diplomatico",txt:"Ogni gol è speciale ma conta il risultato. Sono felice per come stiamo girando.",ef:{m:7,p:6,t:5}},
   {tone:"diretto",txt:"Sì, sono al top della forma. Quando mi trovano in area è quasi sempre gol.",ef:{m:12,p:10,t:-5}},
   {tone:"umile",txt:"Felice, certo. Ma preferisco parlare della squadra. Senza di loro non segno.",ef:{m:5,p:5,t:9}},
 ]},
-{ctx:["win"],q:"Il tecnico l'ha schierata in una posizione diversa. Come si è trovata?",a:[
+{ctx:["win"],q:"Il tecnico ti ha schierato in una posizione diversa. Come ti sei trovato?",a:[
   {tone:"diplomatico",txt:"Il mister sa cosa fa. Mi ha chiesto di aiutare lì e l'ho fatto con piacere.",ef:{m:4,p:3,t:10}},
   {tone:"diretto",txt:"Sono adattabile ma il mio ruolo naturale è diverso. Preferisco giocare nel mio.",ef:{m:6,p:3,t:-6}},
   {tone:"umile",txt:"Devo migliorare in quella posizione. È una sfida utile per crescere.",ef:{m:3,p:3,t:8}},
 ]},
-{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.awayScore||0)===0),/* [7.161.0 A1] clean sheet VERO (awayScore = gol subiti, lato eroe) */q:"Avete tenuto la porta inviolata. Come giudica la fase difensiva di squadra?",a:[
+{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.awayScore||0)===0),/* [7.161.0 A1] clean sheet VERO (awayScore = gol subiti, lato eroe) */q:"Avete tenuto la porta inviolata. Come giudichi la fase difensiva di squadra?",a:[
   {tone:"diplomatico",txt:"Siamo stati compatti. Difendere tutti insieme è la nostra forza.",ef:{m:5,p:4,t:6}},
   {tone:"diretto",txt:"Ottima prova difensiva. Io ho contribuito anche in fase di non possesso.",ef:{m:8,p:6,t:-3}},
   {tone:"umile",txt:"Grande lavoro di tutta la squadra. Il portiere è stato straordinario.",ef:{m:4,p:4,t:8}},
@@ -610,32 +610,32 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Non ci poniamo limiti. Siamo forti e possiamo arrivare in Europa.",ef:{m:11,p:8,t:-4}},
   {tone:"umile",txt:"È prematuro parlarne. Pensiamo partita per partita. Prima la prossima.",ef:{m:4,p:4,t:8}},
 ]},
-{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.assists||0)>=1),/* [7.161.0 A1] */q:"Il suo assist è stato di altissima qualità. Lo aveva preparato?",a:[
+{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.assists||0)>=1),/* [7.161.0 A1] */q:"Il tuo assist è stato di altissima qualità. L'avevi preparato?",a:[
   {tone:"diplomatico",txt:"Lavoro molto sugli assist in allenamento. Sapevo che il compagno era lì.",ef:{m:5,p:5,t:6}},
   {tone:"diretto",txt:"Visione di gioco naturale. Vedo il campo diversamente dagli altri.",ef:{m:9,p:7,t:-4}},
   {tone:"umile",txt:"No, è stato istintivo. Il merito è del compagno che ha finalizzato benissimo.",ef:{m:3,p:4,t:8}},
 ]},
-{ctx:["win"],cond:(p,v)=>{try{const mr=v&&v.matchResult;if(!mr)return false;const oc=CLUBS.find(c=>c.n===mr.opponent);return !!(oc&&typeof isDerby==="function"&&isDerby(p.club?.id,oc.id));}catch(e){return false;}},/* [7.161.0 A1] solo su derby REALE (pattern 7.8.5) */q:"Vittoria in derby! Cosa prova in questo momento?",a:[
+{ctx:["win"],cond:(p,v)=>{try{const mr=v&&v.matchResult;if(!mr)return false;const oc=CLUBS.find(c=>c.n===mr.opponent);return !!(oc&&typeof isDerby==="function"&&isDerby(p.club?.id,oc.id));}catch(e){return false;}},/* [7.161.0 A1] solo su derby REALE (pattern 7.8.5) */q:"Vittoria in derby! Cosa provi in questo momento?",a:[
   {tone:"diplomatico",txt:"Emozione unica. Il derby è sempre speciale per tutti, per i tifosi soprattutto.",ef:{m:8,p:10,t:5}},
   {tone:"diretto",txt:"È il risultato più bello. I derby li voglio vincere tutti, nessun rispetto per loro.",ef:{m:13,p:10,t:-5}},
   {tone:"umile",txt:"Orgoglioso. Ma già pensiamo alla prossima. Questo va dedicato ai tifosi.",ef:{m:7,p:9,t:6}},
 ]},
-{ctx:["win"],q:"Il suo percorso di crescita è evidente. Si sente un giocatore diverso?",a:[
+{ctx:["win"],q:"Il tuo percorso di crescita è evidente. Ti senti un giocatore diverso?",a:[
   {tone:"diplomatico",txt:"Lavoro ogni giorno per migliorare. Il club e il mister mi hanno fatto crescere.",ef:{m:6,p:5,t:7}},
   {tone:"diretto",txt:"Sì, sono più completo. Ho capito cosa serve per stare ad alto livello e ce la metto.",ef:{m:9,p:7,t:-3}},
   {tone:"umile",txt:"Spero di essere cresciuto. Ma c'è sempre molto da imparare da chi ha più esperienza.",ef:{m:4,p:4,t:9}},
 ]},
-{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.161.0 A1] il rigore non è tracciato nel risultato → domanda riformulata senza asserire il fatto */q:"Nei momenti che pesano lei c'è sempre. Come gestisce la pressione, anche dal dischetto?",a:[
+{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.161.0 A1] il rigore non è tracciato nel risultato → domanda riformulata senza asserire il fatto */q:"Nei momenti che pesano tu ci sei sempre. Come gestisci la pressione, anche dal dischetto?",a:[
   {tone:"diplomatico",txt:"Prendo il pallone, mi concentro e tiro. La squadra mi dà fiducia e io ricambio.",ef:{m:6,p:5,t:6}},
   {tone:"diretto",txt:"Non sento pressione sui rigori. Ho una tecnica solida e lo so. Segno quasi sempre.",ef:{m:10,p:8,t:-4}},
   {tone:"umile",txt:"Ho lavorato molto sui rigori in allenamento. Oggi ho avuto fortuna anche.",ef:{m:4,p:4,t:7}},
 ]},
-{ctx:["win"],q:"Il capitano ha elogiato il suo atteggiamento. Come accoglie queste parole?",a:[
+{ctx:["win"],q:"Il capitano ha elogiato il tuo atteggiamento. Come accogli queste parole?",a:[
   {tone:"diplomatico",txt:"Mi fa molto piacere. Cerco di dare sempre l'esempio, dentro e fuori dal campo.",ef:{m:6,p:5,t:8}},
   {tone:"diretto",txt:"È la conferma che il mio livello è riconosciuto anche dai leader dello spogliatoio.",ef:{m:8,p:6,t:-3}},
   {tone:"umile",txt:"Mi rende orgoglioso. Il capitano è un esempio per tutti. Spero di meritarlo.",ef:{m:5,p:4,t:10}},
 ]},
-{ctx:["win"],q:"Come si prepara mentalmente per le partite importanti?",a:[
+{ctx:["win"],q:"Come ti prepari mentalmente per le partite importanti?",a:[
   {tone:"diplomatico",txt:"Visualizzo le situazioni di gioco. Arrivo concentrato e pronto con la squadra.",ef:{m:5,p:4,t:6}},
   {tone:"diretto",txt:"Non ho bisogno di preparativi speciali. Sono sempre pronto. Mentalmente sono forte.",ef:{m:8,p:6,t:-3}},
   {tone:"umile",txt:"Parlo con il mister, rivedo gli schemi, mi riposo bene. Il lavoro è la chiave.",ef:{m:4,p:4,t:8}},
@@ -651,22 +651,22 @@ const INTERVIEW_QS=[
   {tone:"umile",txt:"La difesa solida nel primo tempo ci ha dato la base per vincere. Merito dei difensori.",ef:{m:4,p:4,t:7}},
 ]},
 // === POST SCONFITTA ===
-{ctx:["loss"],q:"Sconfitta pesante oggi. Cosa è andato storto secondo lei?",a:[
+{ctx:["loss"],q:"Sconfitta pesante oggi. Cosa è andato storto secondo te?",a:[
   {tone:"diplomatico",txt:"Non abbiamo giocato come sappiamo. Dobbiamo lavorare e tornare più forti.",ef:{m:-2,p:1,t:5}},
   {tone:"diretto",txt:"Qualcuno non era all'altezza oggi. Io ho fatto la mia parte, gli altri no.",ef:{m:3,p:-4,t:-9}},
   {tone:"umile",txt:"Ho sbagliato anch'io. È una sconfitta da cui dobbiamo imparare tutti quanti.",ef:{m:-3,p:2,t:7}},
 ]},
-{ctx:["loss"],q:"Come tiene alta la testa dopo una sconfitta del genere?",a:[
+{ctx:["loss"],q:"Come tieni alta la testa dopo una sconfitta del genere?",a:[
   {tone:"diplomatico",txt:"Guardo avanti. Nel calcio si vince e si perde. L'importante è la reazione.",ef:{m:0,p:2,t:5}},
   {tone:"diretto",txt:"Non mi abbatto. Sono abituato a cadere e rialzarmi. Sono mentalmente forte.",ef:{m:4,p:3,t:-3}},
   {tone:"umile",txt:"È difficile. Ma il mister sa come tirarci su. Siamo un gruppo unito.",ef:{m:-1,p:2,t:7}},
 ]},
-{ctx:["loss"],q:"Il mister è visibilmente deluso. Cosa si aspetta di sentire nello spogliatoio?",a:[
+{ctx:["loss"],q:"Il mister è visibilmente deluso. Cosa ti aspetti di sentire nello spogliatoio?",a:[
   {tone:"diplomatico",txt:"Parole dirette e oneste. Ne abbiamo bisogno. Lo accetteremo e reagiremo.",ef:{m:-1,p:1,t:8}},
   {tone:"diretto",txt:"Che ci dica cosa non ha funzionato tatticamente. Non è tutta colpa nostra.",ef:{m:2,p:0,t:-7}},
   {tone:"umile",txt:"Meritava di meglio. Siamo dispiaciuti per lui e per i tifosi. Ci scusiamo.",ef:{m:-2,p:2,t:8}},
 ]},
-{ctx:["loss"],q:"Avete sprecato troppe occasioni. Come si spiega?",a:[
+{ctx:["loss"],q:"Avete sprecato troppe occasioni. Come te lo spieghi?",a:[
   {tone:"diplomatico",txt:"Mancanza di lucidità sotto porta. Ci lavoriamo in allenamento. Succede.",ef:{m:-1,p:1,t:4}},
   {tone:"diretto",txt:"Sì, ho sbagliato un gol facile. Mi dispiace. Ma era una giornata storta per tutti.",ef:{m:-2,p:0,t:3}},
   {tone:"umile",txt:"Dobbiamo essere più concreti. Il mister ci chiede efficacia. Non l'abbiamo avuta.",ef:{m:-2,p:1,t:6}},
@@ -676,22 +676,22 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"No, non cambia i nostri obiettivi. Abbiamo le qualità per rimontare.",ef:{m:3,p:3,t:-3}},
   {tone:"umile",txt:"Forse sì. Dobbiamo essere onesti con noi stessi e correggere gli errori.",ef:{m:-2,p:1,t:6}},
 ]},
-{ctx:["loss"],q:"Come risponde a chi dice che la squadra ha un problema mentale?",a:[
+{ctx:["loss"],q:"Come rispondi a chi dice che la squadra ha un problema mentale?",a:[
   {tone:"diplomatico",txt:"Capisco la frustrazione. Ma siamo un gruppo serio e risponderemo sul campo.",ef:{m:-1,p:2,t:4}},
   {tone:"diretto",txt:"Nonsense. Abbiamo carattere. Chi dice così non conosce il nostro lavoro.",ef:{m:4,p:1,t:-5}},
   {tone:"umile",txt:"Forse c'è qualcosa da migliorare mentalmente. Lo riconosco e ci lavoreremo.",ef:{m:-2,p:2,t:7}},
 ]},
-{ctx:["loss"],q:"Il pubblico ha fischiato. Come si sente in questo momento?",a:[
+{ctx:["loss"],q:"Il pubblico ha fischiato. Come ti senti in questo momento?",a:[
   {tone:"diplomatico",txt:"Li capisco. Anche noi siamo delusi. Dobbiamo dare loro ragioni per sostenere.",ef:{m:-3,p:1,t:4}},
   {tone:"diretto",txt:"Fischiate pure. Vi daremo soddisfazione. Questo ci deve fare arrabbiare.",ef:{m:2,p:-3,t:-4}},
   {tone:"umile",txt:"Male. Ma è giusto che si facciano sentire. Dobbiamo meritarli meglio.",ef:{m:-3,p:0,t:5}},
 ]},
-{ctx:["loss"],q:"Come spiega il calo nel secondo tempo?",a:[
+{ctx:["loss"],q:"Come spieghi il calo nel secondo tempo?",a:[
   {tone:"diplomatico",txt:"Abbiamo abbassato l'intensità. Non doveva succedere. Peccato.",ef:{m:-1,p:1,t:4}},
   {tone:"diretto",txt:"Fisicamente eravamo stanchi. Ma anche tatticamente potevamo fare meglio.",ef:{m:1,p:1,t:-2}},
   {tone:"umile",txt:"È un difetto su cui stiamo lavorando. Il mister ce lo dice in settimana.",ef:{m:-1,p:1,t:7}},
 ]},
-{ctx:["loss"],q:"Sconfitta contro {opp}. Si aspettava un avversario così in forma?",a:[
+{ctx:["loss"],q:"Sconfitta contro {opp}. Ti aspettavi un avversario così in forma?",a:[
   {tone:"diplomatico",txt:"Hanno giocato bene, dobbiamo riconoscerlo. Ma potevamo fare di più.",ef:{m:-1,p:2,t:4}},
   {tone:"diretto",txt:"Hanno avuto fortuna. Se giochiamo cento volte vinciamo noi ottanta.",ef:{m:3,p:-2,t:-5}},
   {tone:"umile",txt:"Erano superiori oggi. Meritavano la vittoria. Noi dobbiamo crescere.",ef:{m:-2,p:2,t:6}},
@@ -701,7 +701,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"No, siamo in difficoltà. Ma ho visto squadre peggiori di noi uscirne. Usciremo.",ef:{m:2,p:2,t:-3}},
   {tone:"umile",txt:"È un momento difficile. Dobbiamo restare uniti e lavorare ancora di più.",ef:{m:-3,p:1,t:7}},
 ]},
-{ctx:["loss"],q:"Il suo errore ha influenzato il risultato. Come la vive?",a:[
+{ctx:["loss"],q:"Il tuo errore ha influenzato il risultato. Come la vivi?",a:[
   {tone:"diplomatico",txt:"Sono il primo a fare autocritica. Rimedierò in settimana e nella prossima gara.",ef:{m:-4,p:0,t:7}},
   {tone:"diretto",txt:"Sì, ho sbagliato. Ma la squadra avrebbe potuto coprire. Non era solo colpa mia.",ef:{m:0,p:-2,t:-6}},
   {tone:"umile",txt:"Me ne assumo la responsabilità. Ho deluso i compagni e i tifosi. Mi dispiace.",ef:{m:-5,p:0,t:8}},
@@ -726,17 +726,17 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Una vergogna. Non accettabile. Dobbiamo vendicarla la prossima volta.",ef:{m:-3,p:-2,t:-5}},
   {tone:"umile",txt:"Fa malissimo. I tifosi non meritavano questo. Ce ne assumiamo la responsabilità.",ef:{m:-5,p:1,t:7}},
 ]},
-{ctx:["loss"],q:"Come giudica la prestazione dei singoli in questa sconfitta?",a:[
+{ctx:["loss"],q:"Come giudichi la prestazione dei singoli in questa sconfitta?",a:[
   {tone:"diplomatico",txt:"Non è corretto fare nomi. Vinciamo e perdiamo insieme, sempre.",ef:{m:-1,p:2,t:7}},
   {tone:"diretto",txt:"Qualcuno sotto la sufficienza, è evidente. Io ho dato il massimo comunque.",ef:{m:2,p:-2,t:-8}},
   {tone:"umile",txt:"Siamo stati tutti insufficienti, io compreso. Nessuno può dirsi soddisfatto.",ef:{m:-2,p:1,t:7}},
 ]},
-{ctx:["loss"],q:"Il mister ha difeso la squadra in conferenza. Si sente supportato?",a:[
+{ctx:["loss"],q:"Il mister ha difeso la squadra in conferenza. Ti senti supportato?",a:[
   {tone:"diplomatico",txt:"Il mister è fantastico. Sa quando difendere e quando criticare. Lo rispettiamo.",ef:{m:3,p:2,t:9}},
   {tone:"diretto",txt:"Fa parte del suo lavoro. Ma la squadra deve dimostrar sul campo, non con le parole.",ef:{m:2,p:2,t:-2}},
   {tone:"umile",txt:"È un gesto enorme. Non meritavamo questa difesa. Dobbiamo ripagarla.",ef:{m:2,p:3,t:9}},
 ]},
-{ctx:["loss"],q:"Si sente al sicuro nel posto in formazione dopo questa prestazione?",a:[
+{ctx:["loss"],q:"Ti senti al sicuro nel posto in formazione dopo questa prestazione?",a:[
   {tone:"diplomatico",txt:"Spetta al mister decidere. Mi allenerò al massimo e aspetto le sue scelte.",ef:{m:-1,p:0,t:7}},
   {tone:"diretto",txt:"Sì, mi sento titolare. Una partita non cambia il valore che ho dimostrato.",ef:{m:3,p:2,t:-5}},
   {tone:"umile",txt:"Non lo so. Dipende da me. Devo lavorare più duramente per riconquistare la fiducia.",ef:{m:-2,p:1,t:8}},
@@ -746,28 +746,28 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Alcune cose non funzionano. Meglio risolverle internamente però.",ef:{m:2,p:-3,t:-6}},
   {tone:"umile",txt:"Quando si perde la frustrazione è normale. Ma restiamo uniti, siamo una squadra.",ef:{m:0,p:1,t:6}},
 ]},
-{ctx:["loss"],q:"Il vostro reparto offensivo è stato poco incisivo. Cosa ne pensa?",a:[
+{ctx:["loss"],q:"Il vostro reparto offensivo è stato poco incisivo. Cosa ne pensi?",a:[
   {tone:"diplomatico",txt:"Vero. Dobbiamo essere più efficaci. Ci lavoreremo in allenamento questa settimana.",ef:{m:-1,p:1,t:5}},
   {tone:"diretto",txt:"Non abbiamo avuto i palloni giusti. Il centrocampo ci ha serviti male oggi.",ef:{m:2,p:-2,t:-6}},
   {tone:"umile",txt:"Siamo stati imprecisi. Ho sbagliato anch'io. Dobbiamo fare meglio tutti.",ef:{m:-2,p:1,t:6}},
 ]},
-{ctx:["loss"],q:"Come si sente rispetto all'inizio della stagione?",a:[
+{ctx:["loss"],q:"Come ti senti rispetto all'inizio della stagione?",a:[
   {tone:"diplomatico",txt:"Deluso rispetto alle aspettative, ma è normale avere momenti difficili. Reagiremo.",ef:{m:-1,p:1,t:4}},
   {tone:"diretto",txt:"Sto bene. Sono in forma. Il problema è altrove. Non è colpa mia se non vinciamo.",ef:{m:3,p:-3,t:-7}},
   {tone:"umile",txt:"Devo migliorare alcune cose. Sto lavorando per essere più utile alla squadra.",ef:{m:-1,p:1,t:7}},
 ]},
 // === PAREGGIO ===
-{ctx:["draw"],q:"Un punto guadagnato o due persi? Come vede questo pareggio?",a:[
+{ctx:["draw"],q:"Un punto guadagnato o due persi? Come vedi questo pareggio?",a:[
   {tone:"diplomatico",txt:"Dipende dall'ottica. Abbiamo lottato e un punto contro {opp} ha un suo valore.",ef:{m:2,p:2,t:4}},
   {tone:"diretto",txt:"Due punti persi, punto. Dovevamo vincere. Avevamo le occasioni per farlo.",ef:{m:3,p:2,t:-3}},
   {tone:"umile",txt:"Senza esagerare in un senso o nell'altro. Potevamo fare meglio nel finale.",ef:{m:1,p:2,t:5}},
 ]},
-{ctx:["draw"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.161.0 A1] «il gol del pari» = un TUO gol in un pareggio */q:"Il gol del pari nel finale ha cambiato l'umore. Come sta?",a:[
+{ctx:["draw"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.161.0 A1] «il gol del pari» = un TUO gol in un pareggio */q:"Il gol del pari nel finale ha cambiato l'umore. Come stai?",a:[
   {tone:"diplomatico",txt:"Sollievo misto a rammarico. Avremmo meritato di più ma il punto vale.",ef:{m:1,p:2,t:3}},
   {tone:"diretto",txt:"Male. Abbiamo perso due punti nell'ultimo minuto. Non è accettabile.",ef:{m:-1,p:1,t:-2}},
   {tone:"umile",txt:"Ci sta nel calcio. Dobbiamo migliorare la gestione del vantaggio.",ef:{m:0,p:1,t:5}},
 ]},
-{ctx:["draw"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.homeScore||0)===0&&(v.matchResult.awayScore||0)===0),/* [7.161.0 A1] solo su 0-0 REALE (non ogni pareggio) */q:"0-0 oggi. Come si spiega la mancanza di gol?",a:[
+{ctx:["draw"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.homeScore||0)===0&&(v.matchResult.awayScore||0)===0),/* [7.161.0 A1] solo su 0-0 REALE (non ogni pareggio) */q:"0-0 oggi. Come spieghi la mancanza di gol?",a:[
   {tone:"diplomatico",txt:"Loro hanno difeso benissimo. Noi abbiamo creato ma mancava precisione.",ef:{m:0,p:1,t:4}},
   {tone:"diretto",txt:"Siamo stati bloccati. Il loro schema difensivo era difficile da superare.",ef:{m:1,p:1,t:-1}},
   {tone:"umile",txt:"Dovevo essere più pericoloso. Occasioni le ho avute. Ho sbagliato la mira.",ef:{m:-1,p:1,t:6}},
@@ -777,17 +777,17 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Non basta. Volevamo vincere. Le critiche si rispondono solo con tre punti.",ef:{m:3,p:2,t:-2}},
   {tone:"umile",txt:"Il punto è giusto forse. Dobbiamo essere più incisivi nelle prossime gare.",ef:{m:1,p:2,t:6}},
 ]},
-{ctx:["draw"],cond:(p,i)=>!!(i&&i.isHome===false),q:"Un punto in trasferta contro {opp}. Lo tiene stretto?",a:[/* [7.1.3] variante trasferta speculare (venue-aware) */
+{ctx:["draw"],cond:(p,i)=>!!(i&&i.isHome===false),q:"Un punto in trasferta contro {opp}. Lo tieni stretto?",a:[/* [7.1.3] variante trasferta speculare (venue-aware) */
   {tone:"diplomatico",txt:"Fuori casa un punto ha sempre il suo valore. Muoviamo la classifica.",ef:{m:2,p:2,t:5}},
   {tone:"diretto",txt:"Volevamo di più anche qui. Ma in trasferta non si torna mai a mani vuote per caso.",ef:{m:3,p:2,t:-2}},
   {tone:"umile",txt:"Un punto onesto su un campo tosto. Ci teniamo il pari e ripartiamo.",ef:{m:1,p:2,t:6}},
 ]},
-{ctx:["draw"],cond:(p,v)=>!(v&&v.matchResult&&v.matchResult.context&&v.matchResult.context!=="career"),/* [7.164.0 deferito M5] domanda a tema CLASSIFICA: mai dopo una gara di coppa/Europa/nazionale */q:"Pareggio che permette di mantenere la posizione in classifica. È soddisfatto?",a:[
+{ctx:["draw"],cond:(p,v)=>!(v&&v.matchResult&&v.matchResult.context&&v.matchResult.context!=="career"),/* [7.164.0 deferito M5] domanda a tema CLASSIFICA: mai dopo una gara di coppa/Europa/nazionale */q:"Pareggio che permette di mantenere la posizione in classifica. Sei soddisfatto?",a:[
   {tone:"diplomatico",txt:"Relativamente sì. Punti preziosi. Ma dobbiamo mirare a vincere ogni gara.",ef:{m:2,p:2,t:4}},
   {tone:"diretto",txt:"No, non sono soddisfatto. Siamo forti per stare lassù con più distacco.",ef:{m:4,p:3,t:-3}},
   {tone:"umile",txt:"Un punto è un punto. Il campionato è lungo. Continuiamo a lavorare.",ef:{m:2,p:2,t:5}},
 ]},
-{ctx:["draw"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.161.0 A1] */q:"Ha segnato ma la squadra non ha vinto. Questo come la condiziona?",a:[
+{ctx:["draw"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.161.0 A1] */q:"Hai segnato ma la squadra non ha vinto. Questo come ti condiziona?",a:[
   {tone:"diplomatico",txt:"Il gol personale conta poco se non vinciamo. Sono deluso per il risultato.",ef:{m:0,p:3,t:4}},
   {tone:"diretto",txt:"Ho fatto la mia parte. Almeno il mio contributo c'è stato. Gli altri dovevano chiuderla.",ef:{m:4,p:2,t:-7}},
   {tone:"umile",txt:"Amarezza. Il gol è niente senza la vittoria. Dobbiamo essere più coesi.",ef:{m:-1,p:2,t:6}},
@@ -798,67 +798,67 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Io mi sto allenando al massimo. Voglio essere pronto per la prossima gara.",ef:{m:5,p:3,t:-2}},
   {tone:"umile",txt:"Sempre con impegno. Non ho mai la sensazione di fare abbastanza.",ef:{m:2,p:2,t:7}},
 ]},
-{ctx:["weekly"],y:1,q:"Come descrive il suo rapporto con i tifosi di {club}?",a:[
+{ctx:["weekly"],y:1,q:"Come descrivi il tuo rapporto con i tifosi di {club}?",a:[
   {tone:"diplomatico",txt:"Straordinario. Il loro supporto è fondamentale. Li rispetto enormemente.",ef:{m:3,p:7,t:2}},
   {tone:"diretto",txt:"Ottimo quando gioco bene. E intendo continuare a giocare bene per loro.",ef:{m:5,p:6,t:-1}},
   {tone:"umile",txt:"Mi fanno sentire amato. Spero di non deluderli mai. Darò sempre il massimo.",ef:{m:3,p:8,t:3}},
 ]},
-{ctx:["weekly"],y:1,q:"Qual è il suo obiettivo personale per questa stagione?",a:[
+{ctx:["weekly"],y:1,q:"Qual è il tuo obiettivo personale per questa stagione?",a:[
   {tone:"diplomatico",txt:"Aiutare la squadra a raggiungere i suoi obiettivi. Il collettivo prima di tutto.",ef:{m:4,p:4,t:7}},
   {tone:"diretto",txt:"Raggiungere i miei massimi statistici. Gol, assist, prestazioni. Voglio eccellere.",ef:{m:7,p:6,t:-4}},
   {tone:"umile",txt:"Migliorare rispetto alla scorsa stagione. Ogni anno devo fare un passo avanti.",ef:{m:3,p:4,t:7}},
 ]},
-{ctx:["weekly"],cond:_brandOk453/* [7.454.0] non ci sono voci di mercato su un ragazzo della Primavera */,q:"Ci sono voci di mercato sul suo conto. Come risponde?",a:[
+{ctx:["weekly"],cond:_brandOk453/* [7.454.0] non ci sono voci di mercato su un ragazzo della Primavera */,q:"Ci sono voci di mercato sul tuo conto. Come rispondi?",a:[
   {tone:"diplomatico",txt:"Sono concentrato su {club}. Non mi interessano le voci. Il mercato è lontano.",ef:{m:2,p:3,t:6}},
   {tone:"diretto",txt:"L'interesse mi fa piacere. Significa che sto facendo bene. Ma ora penso a qui.",ef:{m:6,p:7,t:-5}},
   {tone:"umile",txt:"Non ne so nulla. Faccio il mio lavoro e lascio che siano gli altri a decidere.",ef:{m:2,p:3,t:5}},
 ]},
-{ctx:["weekly"],cond:_statusOk453/* [7.454.0] la domanda da' per scontato uno status */,q:"Come gestisce la pressione di essere un giocatore importante?",a:[
+{ctx:["weekly"],cond:_statusOk453/* [7.454.0] la domanda da' per scontato uno status */,q:"Come gestisci la pressione di essere un giocatore importante?",a:[
   {tone:"diplomatico",txt:"Con preparazione e routine. Cerco di non pensare alla pressione ma al gioco.",ef:{m:4,p:3,t:5}},
   {tone:"diretto",txt:"La pressione mi piace. Mi dà energia. Sono fatto per i momenti importanti.",ef:{m:7,p:5,t:-3}},
   {tone:"umile",txt:"Non sempre è facile. Ma ho buone persone intorno a me che mi aiutano.",ef:{m:3,p:3,t:6}},
 ]},
-{ctx:["weekly"],y:1,q:"Chi è stato il suo idolo calcistico da bambino?",a:[
+{ctx:["weekly"],y:1,q:"Chi è stato il tuo idolo calcistico da bambino?",a:[
   {tone:"diplomatico",txt:"Molti campioni mi hanno ispirato. Ma ogni giocatore deve trovare la propria strada.",ef:{m:4,p:5,t:3}},
   {tone:"diretto",txt:"Non avevo idoli. Volevo essere meglio di tutti. Me stesso è il mio unico modello.",ef:{m:6,p:4,t:-4}},
   {tone:"umile",txt:"Ho amato i grandi campioni del passato. Mi ricordano quanto strada c'è ancora da fare.",ef:{m:3,p:5,t:4}},
 ]},
-{ctx:["weekly"],cond:p=>(p.proStatus||"u18")==="pro"&&(p.nationalCaps||0)===0&&(p.ovr||60)>=72&&(p.age||20)<=30,/* [7.199.0 collaudo PO «ci ho già giocato e vinto in Nazionale, a 34 anni: domanda fuori luogo»] la 6.97.0 chiedeva un profilo CREDIBILE ma ammetteva esplicitamente chi ha già le presenze (caps>0): la domanda aspirazionale «è un suo obiettivo?» finiva così a un veterano che la Nazionale l'ha già vinta. È l'opposto: si fa solo a chi NON è ancora mai stato convocato, ha il profilo per esserlo ed è in età da esordio */q:"Pensa mai alla Nazionale? È un suo obiettivo?",a:[
+{ctx:["weekly"],cond:p=>(p.proStatus||"u18")==="pro"&&(p.nationalCaps||0)===0&&(p.ovr||60)>=72&&(p.age||20)<=30,/* [7.199.0 collaudo PO «ci ho già giocato e vinto in Nazionale, a 34 anni: domanda fuori luogo»] la 6.97.0 chiedeva un profilo CREDIBILE ma ammetteva esplicitamente chi ha già le presenze (caps>0): la domanda aspirazionale «è un suo obiettivo?» finiva così a un veterano che la Nazionale l'ha già vinta. È l'opposto: si fa solo a chi NON è ancora mai stato convocato, ha il profilo per esserlo ed è in età da esordio */q:"Pensi mai alla Nazionale? È un tuo obiettivo?",a:[
   {tone:"diplomatico",txt:"Ogni calciatore sogna la Nazionale. Ma ci si arriva solo con le prestazioni in club.",ef:{m:4,p:5,t:4}},
   {tone:"diretto",txt:"Sì, voglio la Nazionale. Ne ho le qualità. Serve solo continuità e visibilità.",ef:{m:7,p:6,t:-3}},
   {tone:"umile",txt:"Sarebbe un onore enorme. Non ci penso troppo: lavoro e vedo cosa arriva.",ef:{m:3,p:5,t:5}},
 ]},
-{ctx:["weekly"],y:1,q:"Come mantiene il fisico durante la stagione?",a:[
+{ctx:["weekly"],y:1,q:"Come mantieni il fisico durante la stagione?",a:[
   {tone:"diplomatico",txt:"Alimentazione, recupero e lavoro con lo staff medico. È un impegno quotidiano.",ef:{m:3,p:3,t:5}},
   {tone:"diretto",txt:"Sono disciplinato. Il corpo è il mio strumento. Lo curo meglio di qualsiasi cosa.",ef:{m:5,p:4,t:-2}},
   {tone:"umile",txt:"Cerco di ascoltare il corpo e seguire i consigli dello staff. Non sempre facile.",ef:{m:3,p:3,t:6}},
 ]},
-{ctx:["weekly"],q:"Qual è la partita più bella che ha giocato in carriera finora?",a:[
+{ctx:["weekly"],q:"Qual è la partita più bella che hai giocato in carriera finora?",a:[
   {tone:"diplomatico",txt:"Ogni partita ha la sua storia. Ma quelle con i compagni migliori sono le più belle.",ef:{m:5,p:5,t:4}},
   {tone:"diretto",txt:"Le ho avute diverse. Ma la mia carriera è ancora in costruzione. Il meglio viene.",ef:{m:6,p:5,t:-2}},
   {tone:"umile",txt:"Non so. Forse quella in cui ho capito di poter giocare ad alto livello. È stata speciale.",ef:{m:4,p:5,t:5}},
 ]},
-{ctx:["weekly"],y:1,q:"Come si trova a {club}? Si trova bene ambientalmente?",a:[
+{ctx:["weekly"],y:1,q:"Come ti trovi a {club}? Ti trovi bene ambientalmente?",a:[
   {tone:"diplomatico",txt:"Benissimo. Il club è organizzato, i compagni fantastici. Mi sento a casa.",ef:{m:6,p:6,t:7}},
   {tone:"diretto",txt:"Bene. Mi hanno dato fiducia e io li sto ripagando con le prestazioni.",ef:{m:7,p:5,t:-1}},
   {tone:"umile",txt:"Molto bene. Ogni giorno imparo qualcosa di nuovo. Sono grato di essere qui.",ef:{m:5,p:6,t:7}},
 ]},
-{ctx:["weekly"],y:1,q:"Cosa fa per staccare mentalmente dal calcio?",a:[
+{ctx:["weekly"],y:1,q:"Cosa fai per staccare mentalmente dal calcio?",a:[
   {tone:"diplomatico",txt:"Famiglia, musica, qualche hobby. È importante ricaricarsi per dare il massimo.",ef:{m:5,p:4,t:3}},
   {tone:"diretto",txt:"Il calcio è la mia vita. Non sento il bisogno di staccare. È la mia passione.",ef:{m:6,p:4,t:-2}},
   {tone:"umile",txt:"Leggo, mi rilasso con la famiglia. Il cervello deve riposare come il corpo.",ef:{m:4,p:4,t:4}},
 ]},
-{ctx:["weekly"],q:"Quale campionato considera il più difficile in Europa?",a:[
+{ctx:["weekly"],q:"Quale campionato consideri il più difficile in Europa?",a:[
   {tone:"diplomatico",txt:"Ogni campionato ha la sua specificità. Quello in cui gioco è sempre il più difficile.",ef:{m:3,p:3,t:4}},
   {tone:"diretto",txt:"La Premier Division fisicamente, la Lega A tatticamente. Ma io posso giocare ovunque.",ef:{m:5,p:4,t:-2}},
   {tone:"umile",txt:"Tutti sono difficili ad alto livello. Non mi permetto di fare classifiche.",ef:{m:2,p:3,t:5}},
 ]},
-{ctx:["weekly"],y:1,q:"Come descrive il suo stile di gioco ai tifosi che non la conoscono?",a:[
+{ctx:["weekly"],y:1,q:"Come descrivi il tuo stile di gioco ai tifosi che non ti conoscono?",a:[
   {tone:"diplomatico",txt:"Sono un giocatore di squadra che cerca di fare la differenza nei momenti che contano.",ef:{m:4,p:5,t:5}},
   {tone:"diretto",txt:"Tecnica, velocità, gol. Chi mi guarda una volta capisce cosa sono.",ef:{m:7,p:6,t:-3}},
   {tone:"umile",txt:"Un lavoratore. Non il più fantasioso, ma cerco di essere utile in ogni situazione.",ef:{m:3,p:4,t:7}},
 ]},
-{ctx:["weekly"],q:"Cosa pensa delle critiche ricevute dalla stampa questa settimana?",a:[
+{ctx:["weekly"],q:"Cosa pensi delle critiche ricevute dalla stampa questa settimana?",a:[
   {tone:"diplomatico",txt:"Fanno parte del gioco. Prendo quelle costruttive e ignoro il resto. Avanti.",ef:{m:3,p:2,t:4}},
   {tone:"diretto",txt:"La stampa spesso non capisce il calcio. Guardo i risultati, non i giornali.",ef:{m:5,p:-2,t:-3}},
   {tone:"umile",txt:"Alcune critiche erano giuste. Me le porto in campo per migliorare.",ef:{m:1,p:2,t:6}},
@@ -873,42 +873,42 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Mi carico con la musica e visualizzo i momenti chiave. Arrivo sempre pronto.",ef:{m:5,p:5,t:-1}},
   {tone:"umile",txt:"Prego e penso alla famiglia. Mi dà la pace giusta per entrare in campo.",ef:{m:4,p:5,t:4}},
 ]},
-{ctx:["weekly"],q:"Qual è il giocatore avversario che l'ha impressionata di più quest'anno?",a:[
+{ctx:["weekly"],q:"Qual è il giocatore avversario che ti ha impressionato di più quest'anno?",a:[
   {tone:"diplomatico",txt:"Ci sono tanti campioni in questa lega. Ogni settimana affronti qualità altissima.",ef:{m:3,p:3,t:4}},
   {tone:"diretto",txt:"Nessuno mi ha impressionato al punto da sentirmi inferiore. Sono competitivo.",ef:{m:6,p:3,t:-4}},
   {tone:"umile",txt:"Diversi. Mi piace imparare dagli avversari forti. Ogni sfida è una lezione.",ef:{m:3,p:4,t:5}},
 ]},
-{ctx:["weekly"],q:"Come vede la sua evoluzione tattica nell'ultimo anno?",a:[
+{ctx:["weekly"],q:"Come vedi la tua evoluzione tattica nell'ultimo anno?",a:[
   {tone:"diplomatico",txt:"Migliorata. Il mister e lo staff mi hanno aiutato a capire meglio il gioco.",ef:{m:4,p:3,t:7}},
   {tone:"diretto",txt:"Molto. Sono più completo e versatile. Posso giocare in più ruoli con efficacia.",ef:{m:7,p:5,t:-2}},
   {tone:"umile",txt:"Ci lavoro ogni giorno. C'è ancora molto da imparare ma sento i progressi.",ef:{m:3,p:3,t:8}},
 ]},
-{ctx:["weekly"],q:"Sogna di vincere un trofeo importante con {club}?",a:[
+{ctx:["weekly"],q:"Sogni di vincere un trofeo importante con {club}?",a:[
   {tone:"diplomatico",txt:"Certo. Ogni giocatore vuole vincere. Lavoriamo per questo obiettivo insieme.",ef:{m:6,p:5,t:6}},
   {tone:"diretto",txt:"Non sogno, programmo. Darò tutto per portare un trofeo qui. Lo voglio.",ef:{m:8,p:6,t:-2}},
   {tone:"umile",txt:"Sarebbe bellissimo. Ma ci vuole il contributo di tutti, non solo il mio.",ef:{m:5,p:5,t:7}},
 ]},
-{ctx:["weekly"],q:"Come gestisce le aspettative dei tifosi quando le sono molto alte?",a:[
+{ctx:["weekly"],q:"Come gestisci le aspettative dei tifosi quando sono molto alte?",a:[
   {tone:"diplomatico",txt:"Con rispetto. Le loro aspettative mi motivano e cerco di non deluderle.",ef:{m:4,p:6,t:4}},
   {tone:"diretto",txt:"Le aspettative alte sono il mio pane. Sono un giocatore che ama le grandi sfide.",ef:{m:7,p:6,t:-3}},
   {tone:"umile",txt:"Cerco di non pensarci troppo. Me ne faccio una responsabilità sana, non un peso.",ef:{m:3,p:5,t:5}},
 ]},
-{ctx:["weekly"],y:1,q:"Cosa significa per lei indossare questa maglia?",a:[
+{ctx:["weekly"],y:1,q:"Cosa significa per te indossare questa maglia?",a:[
   {tone:"diplomatico",txt:"È un onore e una responsabilità. Rappresento il club e i suoi tifosi ogni giorno.",ef:{m:5,p:7,t:6}},
   {tone:"diretto",txt:"Molto. E voglio che questa maglia significhi qualcosa di ancora più grande grazie a me.",ef:{m:7,p:7,t:-2}},
   {tone:"umile",txt:"È un privilegio. Non lo do mai per scontato. Ogni partita potrebbe essere l'ultima.",ef:{m:5,p:7,t:6}},
 ]},
-{ctx:["weekly"],cond:_statusOk453/* [7.454.0] un punto di riferimento lo si diventa */,q:"Parliamo di leadership. Si sente un punto di riferimento nello spogliatoio?",a:[
+{ctx:["weekly"],cond:_statusOk453/* [7.454.0] un punto di riferimento lo si diventa */,q:"Parliamo di leadership. Ti senti un punto di riferimento nello spogliatoio?",a:[
   {tone:"diplomatico",txt:"Cerco di esserlo. Con l'esempio prima di tutto. Le parole vengono dopo.",ef:{m:5,p:5,t:7}},
   {tone:"diretto",txt:"Sì. I compagni mi cercano nei momenti difficili. Questo mi inorgoglisce.",ef:{m:8,p:6,t:-3}},
   {tone:"umile",txt:"Non so. Cerco di fare il mio lavoro bene e sperare che sia d'ispirazione.",ef:{m:4,p:4,t:8}},
 ]},
-{ctx:["weekly"],q:"Il calcio giovanile l'ha preparata bene per il professionismo?",a:[
+{ctx:["weekly"],q:"Il calcio giovanile ti ha preparato bene per il professionismo?",a:[
   {tone:"diplomatico",txt:"Sì, tantissimo. I sacrifici fatti da giovane sono la base di tutto quello che sono.",ef:{m:4,p:4,t:5}},
   {tone:"diretto",txt:"In parte. Il salto è enorme. Ma avevo le qualità per farcela e ce l'ho fatta.",ef:{m:6,p:4,t:-2}},
   {tone:"umile",txt:"Mi ha dato le basi. Poi ogni giorno imparo qualcosa di nuovo dai professionisti.",ef:{m:3,p:4,t:7}},
 ]},
-{ctx:["weekly"],y:1,q:"Come definirebbe la sua stagione finora in una parola?",a:[
+{ctx:["weekly"],y:1,q:"Come definiresti la tua stagione finora in una parola?",a:[
   {tone:"diplomatico",txt:"'Crescita'. Ogni settimana mi sento più parte di questo gruppo fantastico.",ef:{m:5,p:4,t:6}},
   {tone:"diretto",txt:"'Dominante'. Quando sono in campo faccio la differenza. I numeri lo provano.",ef:{m:9,p:7,t:-5}},
   {tone:"umile",txt:"'Lavoro'. Non mi accontento mai. C'è sempre un aspetto da migliorare.",ef:{m:3,p:3,t:9}},
@@ -918,38 +918,38 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Capisce i giocatori forti e li valorizza. Con me ha fatto un ottimo lavoro.",ef:{m:6,p:4,t:2}},
   {tone:"umile",txt:"La sua pazienza con noi. Sa aspettare i risultati del suo lavoro. È un maestro.",ef:{m:3,p:3,t:10}},
 ]},
-{ctx:["weekly"],y:1,q:"C'è un compagno che l'ha sorpresa positivamente quest'anno?",a:[
+{ctx:["weekly"],y:1,q:"C'è un compagno che ti ha sorpreso positivamente quest'anno?",a:[
   {tone:"diplomatico",txt:"Diversi. Il livello della rosa è più alto di quello che si dice dall'esterno.",ef:{m:4,p:3,t:5}},
   {tone:"diretto",txt:"Qualcuno si è avvicinato al mio livello. È una bella competizione interna.",ef:{m:6,p:3,t:-4}},
   {tone:"umile",txt:"Sì. Ho imparato molto da alcuni compagni. Il calcio è scambio continuo.",ef:{m:3,p:3,t:6}},
 ]},
-{ctx:["weekly"],q:"Come descrive il campionato in cui gioca quest'anno?",a:[
+{ctx:["weekly"],q:"Come descrivi il campionato in cui giochi quest'anno?",a:[
   {tone:"diplomatico",txt:"Molto competitivo. Non ci sono partite facili. Ogni gara richiede il massimo.",ef:{m:3,p:3,t:4}},
   {tone:"diretto",txt:"Di alto livello. E io sono tra i più forti. I risultati lo confermano.",ef:{m:7,p:5,t:-4}},
   {tone:"umile",txt:"Tosto. Mi ha costretto a crescere più velocemente. È stata una grande scuola.",ef:{m:3,p:3,t:6}},
 ]},
-{ctx:["weekly"],q:"Ha un messaggio per i giovani che vogliono diventare calciatori professionisti?",a:[
+{ctx:["weekly"],q:"Hai un messaggio per i giovani che vogliono diventare calciatori professionisti?",a:[
   {tone:"diplomatico",txt:"Lavorate, siate pazienti e non mollate mai. Il talento da solo non basta.",ef:{m:5,p:7,t:4}},
   {tone:"diretto",txt:"Siate ambiziosi. Sognate in grande e lavorate come nessun altro. Io l'ho fatto.",ef:{m:7,p:8,t:-2}},
   {tone:"umile",txt:"Io ho ancora tanto da imparare: ascoltate chi vi allena e restate umili.",ef:{m:4,p:7,t:5}},
 ]},
-{ctx:["weekly"],q:"Come si prepara psicologicamente per i momenti ad alta pressione in partita?",a:[
+{ctx:["weekly"],q:"Come ti prepari psicologicamente per i momenti ad alta pressione in partita?",a:[
   {tone:"diplomatico",txt:"Con la routine e la fiducia nel lavoro fatto. Quando arrivo lì sono pronto.",ef:{m:4,p:3,t:5}},
   {tone:"diretto",txt:"Non mi preparo: sono già pronto. La pressione mi esalta, non mi blocca.",ef:{m:8,p:5,t:-3}},
   {tone:"umile",txt:"Cerco la calma. Respiro, penso al gesto tecnico. Niente di più.",ef:{m:3,p:3,t:6}},
 ]},
-{ctx:["weekly"],q:"Parliamo di social media. Come gestisce la sua presenza online?",a:[
+{ctx:["weekly"],q:"Parliamo di social media. Come gestisci la tua presenza online?",a:[
   {tone:"diplomatico",txt:"Con cura. Voglio dare un'immagine professionale. Il campo rimane la mia priorità.",ef:{m:3,p:5,t:3}},
   {tone:"diretto",txt:"Sono diretto anche lì. Mi esprimo liberamente. I miei follower lo apprezzano.",ef:{m:5,p:7,t:-4}},
   {tone:"umile",txt:"Con parsimonia. Preferisco che parlino le mie prestazioni, non i miei post.",ef:{m:2,p:4,t:5}},
 ]},
 // === CONTRATTO ===
-{ctx:["contract"],q:"Il suo contratto scade tra poco. Ha già parlato con il club?",a:[
+{ctx:["contract"],q:"Il tuo contratto scade tra poco. Hai già parlato con il club?",a:[
   {tone:"diplomatico",txt:"Ci sono dialoghi in corso. Sono fiducioso che si troverà un accordo positivo.",ef:{m:3,p:3,t:5,v:0.10}},
   {tone:"diretto",txt:"Voglio restare ma a condizioni adeguate al mio valore. Sono realista.",ef:{m:5,p:4,t:-4,v:0.15}},
   {tone:"umile",txt:"Sono felice qui. Se il club vorrà ancora me, sarò orgoglioso di rinnovare.",ef:{m:3,p:4,t:7,v:0.05}},
 ]},
-{ctx:["contract"],q:"Ci sono offerte da altri club. Come sta gestendo la situazione?",a:[
+{ctx:["contract"],q:"Ci sono offerte da altri club. Come stai gestendo la situazione?",a:[
   {tone:"diplomatico",txt:"La mia priorità è {club}. Le trattative le lascio gestire al mio agente.",ef:{m:2,p:3,t:6,v:0.10}},
   {tone:"diretto",txt:"Le offerte ci sono e sono significative. Valuterò tutto prima di decidere.",ef:{m:5,p:5,t:-6,v:0.20}},
   {tone:"umile",txt:"Non mi distraggo. Penso solo al campo. Il futuro si vedrà a tempo debito.",ef:{m:2,p:3,t:5,v:0.05}},
@@ -959,12 +959,12 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Voglio entrambi. Merito un ingaggio top E un club che vinca. Non devo scegliere.",ef:{m:6,p:5,t:-4,v:0.15}},
   {tone:"umile",txt:"Il progetto sportivo. I soldi vengono con le prestazioni. Prima la crescita.",ef:{m:4,p:5,t:7,v:0.05}},
 ]},
-{ctx:["contract"],q:"Sente di dover guadagnare di più rispetto ad ora?",a:[
+{ctx:["contract"],q:"Senti di dover guadagnare di più rispetto ad ora?",a:[
   {tone:"diplomatico",txt:"Il mercato parla da solo. Se le prestazioni lo giustificano, è legittimo.",ef:{m:3,p:2,t:2,v:0.10}},
   {tone:"diretto",txt:"Assolutamente sì. Il mio rendimento merita un contratto ai vertici della rosa.",ef:{m:5,p:3,t:-5,v:0.20}},
   {tone:"umile",txt:"Non è la mia priorità. Voglio solo giocare bene e vincere. Il resto viene da sé.",ef:{m:3,p:3,t:7}},
 ]},
-{ctx:["contract"],q:"Resterà al club anche in caso di retrocessione o cambierà aria?",a:[
+{ctx:["contract"],q:"Resterai al club anche in caso di retrocessione o cambierai aria?",a:[
   {tone:"diplomatico",txt:"È uno scenario che non voglio considerare. L'obiettivo è restare in alto.",ef:{m:1,p:2,t:4}},
   {tone:"diretto",txt:"Dipende dal progetto. Non posso permettermi di giocare a certi livelli per il mio sviluppo.",ef:{m:3,p:1,t:-5,v:0.10}},
   {tone:"umile",txt:"Sono leale. Se il club crede in me, ci sarò anche nei momenti difficili.",ef:{m:2,p:4,t:9}},
@@ -975,17 +975,17 @@ const INTERVIEW_QS=[
   {tone:"umile",txt:"Per me conta molto. Ho un debito di riconoscenza con chi mi ha dato fiducia.",ef:{m:4,p:6,t:8}},
 ]},
 // === INIZIO STAGIONE ===
-{ctx:["season_start"],q:"Quali sono le sue ambizioni per questa nuova stagione?",a:[
+{ctx:["season_start"],q:"Quali sono le tue ambizioni per questa nuova stagione?",a:[
   {tone:"diplomatico",txt:"Contribuire al massimo agli obiettivi della squadra. Ogni anno voglio fare meglio.",ef:{m:6,p:4,t:6,f:3}},
   {tone:"diretto",txt:"Più gol, più assist, più trofei. Ho una fame enorme. Questa sarà la mia stagione.",ef:{m:9,p:7,t:-3,f:4}},
   {tone:"umile",txt:"Crescere come giocatore e aiutare la squadra. Obiettivi ambiziosi ma realistici.",ef:{m:4,p:4,t:8,f:3}},
 ]},
-{ctx:["season_start"],q:"Come si è trovato in preparazione? Si sente pronto?",a:[
+{ctx:["season_start"],q:"Come ti sei trovato in preparazione? Ti senti pronto?",a:[
   {tone:"diplomatico",txt:"Preparazione intensa e produttiva. Il gruppo ha lavorato benissimo. Siamo pronti.",ef:{m:5,p:3,t:6,f:4}},
   {tone:"diretto",txt:"Fisicamente sono al top. Non vedo l'ora di iniziare. Ho una fame di gol impressionante.",ef:{m:8,p:5,t:-2,f:5}},
   {tone:"umile",txt:"Mi sono impegnato molto. Non so se sono pronto al 100%, ma darò tutto.",ef:{m:3,p:3,t:8,f:3}},
 ]},
-{ctx:["season_start"],q:"Ci sono nuovi arrivi in rosa. Come li accoglie?",a:[
+{ctx:["season_start"],q:"Ci sono nuovi arrivi in rosa. Come li accogli?",a:[
   {tone:"diplomatico",txt:"Con grande apertura. Più qualità abbiamo, meglio è per tutti.",ef:{m:4,p:3,t:6}},
   {tone:"diretto",txt:"Concorrenza benvenuta. Sono sicuro di restare tra i migliori. Stimola.",ef:{m:6,p:4,t:-3}},
   {tone:"umile",txt:"Con piacere. Imparare dai nuovi arrivati è sempre un'opportunità.",ef:{m:3,p:3,t:7}},
@@ -996,206 +996,206 @@ const INTERVIEW_QS=[
   {tone:"umile",txt:"Migliorare rispetto all'anno scorso e lottare. Poi vedremo dove arriviamo.",ef:{m:4,p:4,t:7}},
 ]},
 // === FINE STAGIONE ===
-{ctx:["season_end"],q:"Come valuta la sua stagione in modo onesto?",a:[
+{ctx:["season_end"],q:"Come valuti la tua stagione in modo onesto?",a:[
   {tone:"diplomatico",txt:"Con luci e ombre come ogni stagione. Ma sono soddisfatto della crescita.",ef:{m:4,p:4,t:5}},
   {tone:"diretto",txt:"Ottima personalmente. I miei numeri parlano chiaro. Sono tra i migliori.",ef:{m:8,p:7,t:-4}},
   {tone:"umile",txt:"Ho dato il massimo. Potevo fare meglio in alcuni momenti. C'è ancora da lavorare.",ef:{m:3,p:3,t:8}},
 ]},
-{ctx:["season_end"],q:"Cosa porterà con sé di questa stagione?",a:[
+{ctx:["season_end"],q:"Cosa porterai con te di questa stagione?",a:[
   {tone:"diplomatico",txt:"L'esperienza e la crescita. Ogni stagione lascia qualcosa di prezioso.",ef:{m:5,p:4,t:5}},
   {tone:"diretto",txt:"I gol, gli assist e la conferma che sono tra i migliori a questo livello.",ef:{m:8,p:6,t:-3}},
   {tone:"umile",txt:"Le lezioni apprese. Ogni errore mi ha reso più forte. Non buttare via niente.",ef:{m:4,p:4,t:7}},
 ]},
-{ctx:["season_end"],q:"Che obiettivo si pone per la prossima stagione?",a:[
+{ctx:["season_end"],q:"Che obiettivo ti poni per la prossima stagione?",a:[
   {tone:"diplomatico",txt:"Alzare ulteriormente il livello. Personale e collettivo. Ogni anno +1.",ef:{m:6,p:4,t:6,f:3}},
   {tone:"diretto",txt:"Dominare. Voglio essere il migliore della lega. L'anno prossimo sarà il mio.",ef:{m:10,p:7,t:-4,f:4}},
   {tone:"umile",txt:"Lavorare sulle debolezze emerse quest'anno. Voglio essere più completo.",ef:{m:4,p:4,t:8,f:3}},
 ]},
-{ctx:["season_end"],q:"La stagione finisce. Cosa dirà ai tifosi?",a:[
+{ctx:["season_end"],q:"La stagione finisce. Cosa dirai ai tifosi?",a:[
   {tone:"diplomatico",txt:"Grazie per ogni singolo momento. Senza di voi questo viaggio sarebbe vuoto.",ef:{m:5,p:9,t:5}},
   {tone:"diretto",txt:"Abbiamo dato tutto. La prossima stagione sarà ancora meglio. Restate con noi.",ef:{m:7,p:8,t:-1}},
   {tone:"umile",txt:"Scuse per i momenti negativi e grazie per quelli positivi. Vi siamo grati.",ef:{m:4,p:9,t:5}},
 ]},
 // === GIOVANE ===
-{ctx:["youth","u18"],q:"È giovane e già titolare. Come gestisce questa responsabilità?",a:[
+{ctx:["youth","u18"],q:"Sei giovane e già titolare. Come gestisci questa responsabilità?",a:[
   {tone:"diplomatico",txt:"Con umiltà e rispetto. Ascolto i più esperti e cerco di imparare ogni giorno.",ef:{m:4,p:5,t:8}},
   {tone:"diretto",txt:"La gestisco bene perché sono pronto. L'età non conta, contano le prestazioni.",ef:{m:7,p:6,t:-4}},
   {tone:"umile",txt:"Non è facile. Cerco di non sentire il peso e di giocare con la testa libera.",ef:{m:3,p:4,t:8}},
 ]},
-{ctx:["youth","u18"],q:"Cosa la distingue dai coetanei con cui ha giocato?",a:[
+{ctx:["youth","u18"],q:"Cosa ti distingue dai coetanei con cui hai giocato?",a:[
   {tone:"diplomatico",txt:"Forse la dedizione. Ho sempre sacrificato molto per il calcio.",ef:{m:4,p:4,t:6}},
   {tone:"diretto",txt:"La qualità tecnica e la mentalità vincente. Non mi accontento mai.",ef:{m:8,p:6,t:-4}},
   {tone:"umile",txt:"Non lo so. Forse la fortuna di avere le persone giuste intorno.",ef:{m:3,p:4,t:7}},
 ]},
-{ctx:["youth"],q:"È una delle promesse più seguite del campionato. Come si sente?",a:[
+{ctx:["youth"],q:"Sei una delle promesse più seguite del campionato. Come ti senti?",a:[
   {tone:"diplomatico",txt:"Onorato ma concentrato. Le etichette non mi interessano, mi interessa giocare bene.",ef:{m:5,p:6,t:5}},
   {tone:"diretto",txt:"È solo l'inizio. Diventerò uno dei migliori del mondo, non solo una promessa.",ef:{m:9,p:7,t:-4}},
   {tone:"umile",txt:"Cerco di non pensarci. Ogni settimana mi alleno come se dovessi guadagnarmi tutto.",ef:{m:4,p:5,t:8}},
 ]},
-{ctx:["youth"],q:"I veterani della squadra le hanno dato consigli preziosi?",a:[
+{ctx:["youth"],q:"I veterani della squadra ti hanno dato consigli preziosi?",a:[
   {tone:"diplomatico",txt:"Tantissimi. Ho molto da imparare da loro. È un privilegio giocare insieme.",ef:{m:4,p:4,t:8}},
   {tone:"diretto",txt:"Qualcuno sì. Ma ho anche qualcosa da insegnare io. Non sono solo un allievo.",ef:{m:6,p:4,t:-4}},
   {tone:"umile",txt:"Ogni giorno imparo da loro. Cerco di assorbire tutto come una spugna.",ef:{m:3,p:4,t:9}},
 ]},
 // === VETERANO ===
-{ctx:["veteran"],q:"Quanti anni ancora si vede giocare ad alto livello?",a:[
+{ctx:["veteran"],q:"Quanti anni ancora ti vedi giocare ad alto livello?",a:[
   {tone:"diplomatico",txt:"Non lo so. Finché il corpo regge e la testa vuole. Non mi pongo limiti.",ef:{m:5,p:5,t:4}},
   {tone:"diretto",txt:"Ancora molti. Mi curo benissimo. Sono più forte di molti giovani che conosco.",ef:{m:8,p:5,t:-3}},
   {tone:"umile",txt:"Anno dopo anno. Non programmo troppo. Ascolto il corpo e il cuore.",ef:{m:4,p:5,t:5}},
 ]},
-{ctx:["veteran"],q:"Cosa direbbe al se stesso di vent'anni fa?",a:[
+{ctx:["veteran"],q:"Cosa diresti a te stesso di vent'anni fa?",a:[
   {tone:"diplomatico",txt:"Di godersi ogni momento. La carriera passa in fretta. Ogni partita è un dono.",ef:{m:6,p:6,t:4}},
   {tone:"diretto",txt:"Che avevo tutte le qualità per arrivare ancora più in alto. Forse ho fatto meno del potenziale.",ef:{m:4,p:4,t:-1}},
   {tone:"umile",txt:"Di essere ancora più umile e paziente. I frutti del lavoro arrivano sempre.",ef:{m:5,p:6,t:6}},
 ]},
-{ctx:["veteran"],q:"Il calcio è cambiato da quando ha iniziato?",a:[
+{ctx:["veteran"],q:"Il calcio è cambiato da quando hai iniziato?",a:[
   {tone:"diplomatico",txt:"Molto. Più veloce, più fisico, più tattico. Ma i fondamentali restano gli stessi.",ef:{m:4,p:5,t:4}},
   {tone:"diretto",txt:"Sì, ma mi sono adattato. I migliori si adattano sempre. Io sono ancora qui.",ef:{m:7,p:5,t:-3}},
   {tone:"umile",txt:"Enormemente. Ogni generazione ha la sua mentalità. Cerco di capire e adattarmi.",ef:{m:4,p:5,t:5}},
 ]},
-{ctx:["veteran"],q:"Come trasmette la sua esperienza ai più giovani della rosa?",a:[
+{ctx:["veteran"],q:"Come trasmetti la tua esperienza ai più giovani della rosa?",a:[
   {tone:"diplomatico",txt:"Con l'esempio prima di tutto. Le parole contano meno di ciò che fai in campo.",ef:{m:5,p:5,t:7}},
   {tone:"diretto",txt:"Dico loro cosa non fare. Ho fatto molti errori, meglio che non li ripetano.",ef:{m:6,p:5,t:2}},
   {tone:"umile",txt:"Condivido la mia esperienza con chi vuole ascoltare. Non impongo nulla.",ef:{m:4,p:5,t:8}},
 ]},
 // === BUONA FORMA ===
-{ctx:["good_form","win"],q:"È nel momento di forma migliore della stagione. Qual è il segreto?",a:[
+{ctx:["good_form","win"],q:"Sei nel momento di forma migliore della stagione. Qual è il segreto?",a:[
   {tone:"diplomatico",txt:"Lavoro, riposo e un ambiente positivo. La squadra mi supporta alla grande.",ef:{m:6,p:5,t:6,f:3}},
   {tone:"diretto",txt:"Finalmente esprimo tutto il mio potenziale. Era solo questione di tempo.",ef:{m:10,p:8,t:-4,f:4}},
   {tone:"umile",txt:"Mi sento bene e cerco di trasformarlo in gioco. Non voglio sprecare questo momento.",ef:{m:5,p:5,t:7,f:3}},
 ]},
-{ctx:["good_form"],q:"Come mantiene questa continuità di rendimento?",a:[
+{ctx:["good_form"],q:"Come mantieni questa continuità di rendimento?",a:[
   {tone:"diplomatico",txt:"Routine, concentrazione e umiltà. Ogni partita come se fosse la prima.",ef:{m:5,p:4,t:6,f:2}},
   {tone:"diretto",txt:"Sono un professionista serio. La continuità è il frutto del mio lavoro costante.",ef:{m:8,p:6,t:-3,f:3}},
   {tone:"umile",txt:"Non so quanto durerà. Cerco di non pensarci e di godermi ogni momento.",ef:{m:4,p:4,t:7,f:2}},
 ]},
-{ctx:["good_form"],q:"Con questo rendimento, si sente pronto per un palcoscenico più grande?",a:[
+{ctx:["good_form"],q:"Con questo rendimento, ti senti pronto per un palcoscenico più grande?",a:[
   {tone:"diplomatico",txt:"Mi concentro su {club}. Se arriva qualcosa di importante, ci penserò a tempo debito.",ef:{m:5,p:5,t:5,v:0.10}},
   {tone:"diretto",txt:"Assolutamente. Sono pronto per qualsiasi sfida. Questo è il mio livello naturale.",ef:{m:9,p:8,t:-5,v:0.20}},
   {tone:"umile",txt:"Ogni giorno sono qui. Non so cosa mi riserva il futuro. Penso a oggi.",ef:{m:3,p:4,t:6,v:0.05}},
 ]},
 // === FORMA BASSA ===
-{ctx:["bad_form","loss"],q:"Sta attraversando un periodo di forma non brillante. Come spiega il calo?",a:[
+{ctx:["bad_form","loss"],q:"Stai attraversando un periodo di forma non brillante. Come spieghi il calo?",a:[
   {tone:"diplomatico",txt:"Ogni giocatore ha momenti difficili. Sto lavorando per ritrovare la condizione.",ef:{m:-1,p:1,t:5}},
   {tone:"diretto",txt:"Non è un calo di forma, è un momento. Tornerò ai miei livelli presto. Ne sono sicuro.",ef:{m:3,p:2,t:-4}},
   {tone:"umile",txt:"Non lo so esattamente. Analizzo insieme al mister. Sto lavorando per migliorare.",ef:{m:-1,p:1,t:7}},
 ]},
-{ctx:["bad_form"],q:"Come sta lavorando per ritrovare il suo miglior livello?",a:[
+{ctx:["bad_form"],q:"Come stai lavorando per ritrovare il tuo miglior livello?",a:[
   {tone:"diplomatico",txt:"Con il mister e lo staff tecnico. Analizzo gli errori e lavoro sulle lacune.",ef:{m:1,p:2,t:7}},
   {tone:"diretto",txt:"Da solo, intensamente. Non ho bisogno che mi dicano cosa fare. Lo so.",ef:{m:3,p:2,t:-5}},
   {tone:"umile",txt:"Ascoltando il mister e facendo il doppio del lavoro. Non mi arrendere mai.",ef:{m:1,p:2,t:8}},
 ]},
-{ctx:["bad_form"],q:"Le critiche dei media la aiutano o la disturbano in questo momento?",a:[
+{ctx:["bad_form"],q:"Le critiche dei media ti aiutano o ti disturbano in questo momento?",a:[
   {tone:"diplomatico",txt:"Cerco di prendere il costruttivo e ignorare il resto. Non è sempre facile.",ef:{m:0,p:1,t:4}},
   {tone:"diretto",txt:"Non leggo i giornali. Le critiche le sento solo dal mister. Gli altri non contano.",ef:{m:3,p:-1,t:-2}},
   {tone:"umile",txt:"Le accetto. Quando non rendo devo aspettarmi le critiche. Fa parte del lavoro.",ef:{m:-1,p:2,t:6}},
 ]},
 // === MORALE BASSO ===
-{ctx:["low_morale"],q:"Sembra un periodo difficile per lei. Come sta mentalmente?",a:[
+{ctx:["low_morale"],q:"Sembra un periodo difficile per te. Come stai mentalmente?",a:[
   {tone:"diplomatico",txt:"Ho momenti difficili come tutti. Ma il lavoro è la terapia migliore.",ef:{m:2,p:2,t:5}},
   {tone:"diretto",txt:"Non sono al massimo, ma questo mi fa arrabbiare nel senso buono. Reagisco.",ef:{m:4,p:2,t:-3}},
   {tone:"umile",txt:"Non è un periodo semplice. Ma so che passerà. Mi fido del processo.",ef:{m:2,p:2,t:6}},
 ]},
-{ctx:["low_morale"],q:"Come trova motivazione nei momenti difficili della carriera?",a:[
+{ctx:["low_morale"],q:"Come trovi motivazione nei momenti difficili della carriera?",a:[
   {tone:"diplomatico",txt:"Penso alla famiglia, ai tifosi, ai compagni. Non si può mollare quando gli altri contano su di te.",ef:{m:3,p:4,t:5}},
   {tone:"diretto",txt:"La motivazione non mi manca mai. Sono un guerriero. I momenti difficili mi irrobustiscono.",ef:{m:5,p:3,t:-3}},
   {tone:"umile",txt:"Torno alle origini. Perché ho iniziato. Quella passione infantile non finisce mai.",ef:{m:4,p:4,t:6}},
 ]},
 // === ALTA POPOLARITÀ ===
-{ctx:["high_popularity"],q:"È diventato un idolo per i tifosi. Come vive questa fama?",a:[
+{ctx:["high_popularity"],q:"Sei diventato un idolo per i tifosi. Come vivi questa fama?",a:[
   {tone:"diplomatico",txt:"Con responsabilità. Essere amato dai tifosi è un privilegio, non un diritto.",ef:{m:5,p:8,t:4}},
   {tone:"diretto",txt:"È meritato. Lavoro duro per dare emozioni. Sono contento che lo riconoscano.",ef:{m:7,p:8,t:-3}},
   {tone:"umile",txt:"Mi imbarazza un po'. Cerco di essere degno di questa fiducia ogni partita.",ef:{m:4,p:9,t:5}},
 ]},
-{ctx:["high_popularity"],q:"Riceve molti messaggi dai tifosi. Cosa le scrivono più spesso?",a:[
+{ctx:["high_popularity"],q:"Ricevi molti messaggi dai tifosi. Cosa ti scrivono più spesso?",a:[
   {tone:"diplomatico",txt:"Parole di supporto e affetto. Mi danno energia straordinaria. Li ringrazierò sempre.",ef:{m:6,p:7,t:3}},
   {tone:"diretto",txt:"Mi ringraziano per le emozioni. È il motivo per cui gioco a calcio.",ef:{m:7,p:7,t:-1}},
   {tone:"umile",txt:"Messaggi bellissimi che mi commuovono. Sono loro l'energia di cui ho bisogno.",ef:{m:5,p:8,t:4}},
 ]},
 // === FIDUCIA ALLENATORE ALTA ===
-{ctx:["high_trust"],q:"Il mister si fida ciecamente di lei. Come ricambia questa fiducia?",a:[
+{ctx:["high_trust"],q:"Il mister si fida ciecamente di te. Come ricambi questa fiducia?",a:[
   {tone:"diplomatico",txt:"Con il lavoro, la dedizione e il rispetto per le sue scelte tattiche.",ef:{m:5,p:4,t:9}},
   {tone:"diretto",txt:"Con le prestazioni. È il miglior modo per ricambiare. E lo faccio ogni domenica.",ef:{m:8,p:5,t:2}},
   {tone:"umile",txt:"Non do mai per scontata la sua fiducia. Ogni giorno cerco di meritarla.",ef:{m:4,p:4,t:10}},
 ]},
 // === FIDUCIA ALLENATORE BASSA ===
-{ctx:["low_trust"],q:"Sembra che il mister le preferisca altri. Come si sente?",a:[
+{ctx:["low_trust"],q:"Sembra che il mister ti preferisca altri. Come ti senti?",a:[
   {tone:"diplomatico",txt:"Rispetto le sue scelte. Quando gioco devo fare capire che merito il posto.",ef:{m:-2,p:1,t:4}},
   {tone:"diretto",txt:"Non sono d'accordo con le sue scelte. Ho le qualità per giocare titolare sempre.",ef:{m:2,p:-1,t:-8}},
   {tone:"umile",txt:"Devo meritare di più la sua fiducia. Lavoro per conquistarmela partita dopo partita.",ef:{m:-1,p:1,t:7}},
 ]},
-{ctx:["low_trust"],q:"Come gestisce il fatto di non essere sempre titolare?",a:[
+{ctx:["low_trust"],q:"Come gestisci il fatto di non essere sempre titolare?",a:[
   {tone:"diplomatico",txt:"Con professionalità. Mi tengo pronto. Quando entro voglio fare la differenza.",ef:{m:-1,p:2,t:5}},
   {tone:"diretto",txt:"Male, sinceramente. Merito più spazio. Dirò al mister quello che penso.",ef:{m:2,p:-1,t:-7}},
   {tone:"umile",txt:"Con la testa bassa. Lavoro in silenzio e aspetto il mio momento. Arriverà.",ef:{m:-1,p:2,t:8}},
 ]},
 // === TOP SCORER ===
-{ctx:["top_scorer","win"],cond:(p,v)=>{try{if(v&&v.matchResult&&v.matchResult.context&&v.matchResult.context!=="career")return false;if(typeof generateLeagueScorers!=="function")return true;const sc=generateLeagueScorers(p);return !!(sc&&sc.length&&sc[0]&&sc[0].isPlayer);}catch(e){return false;}},/* [7.164.0 deferito M5] «capocannoniere AL MOMENTO» solo se sei DAVVERO 1° nella classifica marcatori di lega (e la gara era di campionato) */q:"Capocannoniere del campionato al momento. Ci punta davvero?",a:[
+{ctx:["top_scorer","win"],cond:(p,v)=>{try{if(v&&v.matchResult&&v.matchResult.context&&v.matchResult.context!=="career")return false;if(typeof generateLeagueScorers!=="function")return true;const sc=generateLeagueScorers(p);return !!(sc&&sc.length&&sc[0]&&sc[0].isPlayer);}catch(e){return false;}},/* [7.164.0 deferito M5] «capocannoniere AL MOMENTO» solo se sei DAVVERO 1° nella classifica marcatori di lega (e la gara era di campionato) */q:"Capocannoniere del campionato al momento. Ci punti davvero?",a:[
   {tone:"diplomatico",txt:"Non ci penso. Preferisco che la squadra vinca. I gol arrivano di conseguenza.",ef:{m:5,p:5,t:6}},
   {tone:"diretto",txt:"Certo. Voglio essere il migliore realizzatore. È un riconoscimento che merito.",ef:{m:9,p:8,t:-4}},
   {tone:"umile",txt:"Non è una priorità. Se arriva in modo naturale, ben venga. Prima il collettivo.",ef:{m:4,p:5,t:7}},
 ]},
 // === PRO STATUS ===
-{ctx:["pro"],q:"Come vive la transizione dal calcio giovanile al professionismo?",a:[
+{ctx:["pro"],q:"Come vivi la transizione dal calcio giovanile al professionismo?",a:[
   {tone:"diplomatico",txt:"È stata la sfida più bella. L'intensità è diversa ma mi sono adattato.",ef:{m:4,p:4,t:5}},
   {tone:"diretto",txt:"La aspettavo da sempre. Ero pronto. Il salto è grande ma io sono più grande.",ef:{m:8,p:6,t:-3}},
   {tone:"umile",txt:"Imparando ogni giorno. Il professionismo ti insegna molto in poco tempo.",ef:{m:3,p:4,t:8}},
 ]},
 // === WIN - extra ===
-{ctx:["win","good_form"],q:"Con questa forma smagliante, il mercato estivo si scalda. Ne è consapevole?",a:[
+{ctx:["win","good_form"],q:"Con questa forma smagliante, il mercato estivo si scalda. Ne sei consapevole?",a:[
   {tone:"diplomatico",txt:"Non ne so nulla. Sono concentrato su {club} e sulla stagione. Il resto non esiste.",ef:{m:4,p:5,t:6,v:0.10}},
   {tone:"diretto",txt:"L'interesse è logico quando giochi così. Ma ora sono qui e voglio vincere qualcosa.",ef:{m:7,p:7,t:-4,v:0.20}},
   {tone:"umile",txt:"Penso solo al prossimo allenamento. Il mercato è lontano. Ora c'è solo {club}.",ef:{m:3,p:4,t:7,v:0.05}},
 ]},
 // === LOSS - extra ===
-{ctx:["loss","bad_form"],q:"Sconfitta e forma calante. È il momento più difficile della sua stagione?",a:[
+{ctx:["loss","bad_form"],q:"Sconfitta e forma calante. È il momento più difficile della tua stagione?",a:[
   {tone:"diplomatico",txt:"Sì, è un momento difficile. Ma sono professionista. Rialzo la testa e lavoro.",ef:{m:-2,p:1,t:5}},
   {tone:"diretto",txt:"Ho passato di peggio. Non si tratta di forma ma di un momento. Tornerò forte.",ef:{m:2,p:2,t:-3}},
   {tone:"umile",txt:"Forse sì. Ma nei momenti difficili si capisce il carattere. Non mi arrendo.",ef:{m:-1,p:2,t:7}},
 ]},
 // === WEEKLY - extra ===
-{ctx:["weekly"],y:1,q:"Preferisce giocare a casa o in trasferta?",a:[
+{ctx:["weekly"],y:1,q:"Preferisci giocare a casa o in trasferta?",a:[
   {tone:"diplomatico",txt:"A casa l'energia dei tifosi è speciale. Ma so vincere anche fuori. Dipende.",ef:{m:3,p:4,t:3}},
   {tone:"diretto",txt:"Mi esalto in trasferta. Il silenzio ostile mi motiva ancora di più.",ef:{m:6,p:4,t:-2}},
   {tone:"umile",txt:"Dove gioco, gioco al meglio. L'importante è essere utile in qualsiasi situazione.",ef:{m:3,p:3,t:5}},
 ]},
-{ctx:["weekly"],q:"C'è qualcosa che cambierebbe del calcio moderno?",a:[
+{ctx:["weekly"],q:"C'è qualcosa che cambieresti del calcio moderno?",a:[
   {tone:"diplomatico",txt:"Più rispetto per i valori originali del gioco. Ma il calcio evolve e dobbiamo stare al passo.",ef:{m:3,p:4,t:3}},
   {tone:"diretto",txt:"Meno teatranti e più giocatori veri. Il calcio deve tornare ad essere sport.",ef:{m:5,p:5,t:-2}},
   {tone:"umile",txt:"Non mi permetto di giudicare. Sono piccolo davanti alla storia del calcio.",ef:{m:2,p:3,t:5}},
 ]},
-{ctx:["weekly"],q:"Cosa l'ha sorpresa di più del calcio professionistico rispetto al calcio giovanile?",a:[
+{ctx:["weekly"],q:"Cosa ti ha sorpreso di più del calcio professionistico rispetto al calcio giovanile?",a:[
   {tone:"diplomatico",txt:"La intensità mentale. Non è solo fisico. Ogni giorno è una sfida psicologica.",ef:{m:3,p:3,t:5}},
   {tone:"diretto",txt:"Quanto sia diverso in realtà. Molti non reggono il salto. Io l'ho fatto.",ef:{m:6,p:4,t:-3}},
   {tone:"umile",txt:"La professionalità di tutti. Anche il più piccolo dettaglio conta enormemente.",ef:{m:3,p:3,t:7}},
 ]},
-{ctx:["weekly"],y:1,q:"Che musica ascolta per caricarsi prima delle partite?",a:[
+{ctx:["weekly"],y:1,q:"Che musica ascolti per caricarti prima delle partite?",a:[
   {tone:"diplomatico",txt:"Dipende dall'umore. A volte ritmo, a volte calma. L'importante è entrare nel giusto stato.",ef:{m:4,p:5,t:3}},
   {tone:"diretto",txt:"Roba che pompa l'adrenalina. Entro in campo come una macchina da guerra.",ef:{m:6,p:5,t:-2}},
   {tone:"umile",txt:"Qualcosa che mi riporta alle origini. Mi ricorda perché amo questo sport.",ef:{m:4,p:5,t:4}},
 ]},
 // === EXTRA WIN ===
-{ctx:["win"],q:"Vittoria dopo una settimana di polemiche. Come si sente ora?",a:[
+{ctx:["win"],q:"Vittoria dopo una settimana di polemiche. Come ti senti ora?",a:[
   {tone:"diplomatico",txt:"Il campo è l'unica risposta vera. Felice di aver dimostrato il nostro valore.",ef:{m:7,p:6,t:5}},
   {tone:"diretto",txt:"Esatto. Chi ha detto che non siamo forti può ricredersi. Noi parliamo con i fatti.",ef:{m:10,p:7,t:-4}},
   {tone:"umile",txt:"Sono contento ma non mi sento in debito con nessuno. Si lavora e basta.",ef:{m:5,p:5,t:7}},
 ]},
-{ctx:["win"],q:"Questa vittoria rafforza la sua posizione in squadra?",a:[
+{ctx:["win"],q:"Questa vittoria rafforza la tua posizione in squadra?",a:[
   {tone:"diplomatico",txt:"Non penso in questi termini. Lavoro per la squadra, non per me stesso.",ef:{m:4,p:3,t:8}},
   {tone:"diretto",txt:"Dimostro ogni partita chi sono. Chi aveva dubbi adesso ha le risposte.",ef:{m:9,p:6,t:-5}},
   {tone:"umile",txt:"Spero di aver contribuito. Il posto si guadagna ogni giorno, non con una sola gara.",ef:{m:4,p:4,t:9}},
 ]},
-{ctx:["win"],q:"Il vostro mister ha esaltato la sua duttilità tattica. La sorprende?",a:[
+{ctx:["win"],q:"Il vostro mister ha esaltato la tua duttilità tattica. Ti sorprende?",a:[
   {tone:"diplomatico",txt:"Il mister sa esaltare le caratteristiche di ogni giocatore. Lo ringrazio.",ef:{m:5,p:4,t:10}},
   {tone:"diretto",txt:"Sono un giocatore completo. Posso fare più cose bene. Non mi sorprende.",ef:{m:8,p:5,t:-2}},
   {tone:"umile",txt:"Mi impegno a migliorare su tutto. Il mister mi vede lavorare ogni giorno.",ef:{m:4,p:4,t:9}},
 ]},
-{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.assists||0)>=3),/* [7.161.0 A1] numero preciso ⇒ dev'essere vero */q:"Tre assist oggi, il massimo stagionale. È la sua partita migliore?",a:[
+{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.assists||0)>=3),/* [7.161.0 A1] numero preciso ⇒ dev'essere vero */q:"Tre assist oggi, il massimo stagionale. È la tua partita migliore?",a:[
   {tone:"diplomatico",txt:"Una buona giornata. Ma ho ancora margini di miglioramento importanti.",ef:{m:6,p:6,t:6}},
   {tone:"diretto",txt:"Forse sì. Ero ovunque. Visione, tecnica, timing. Tutto è andato alla perfezione.",ef:{m:11,p:9,t:-4}},
   {tone:"umile",txt:"I compagni hanno finalizzato benissimo. Il merito è condiviso, non solo mio.",ef:{m:5,p:6,t:8}},
 ]},
-{ctx:["win"],q:"Come descriverebbe l'atmosfera nello spogliatoio dopo questa vittoria?",a:[
+{ctx:["win"],q:"Come descriveresti l'atmosfera nello spogliatoio dopo questa vittoria?",a:[
   {tone:"diplomatico",txt:"Gioiosa e unita. È bello vincere insieme. Questo gruppo ha un'anima forte.",ef:{m:7,p:6,t:6}},
   {tone:"diretto",txt:"Carica. Quando vinciamo così tutti capiscono che possiamo fare grandi cose.",ef:{m:10,p:7,t:-2}},
   {tone:"umile",txt:"Felice e tranquilla. Non esageriamo mai. Il mister ci tiene coi piedi per terra.",ef:{m:5,p:5,t:9}},
@@ -1206,7 +1206,7 @@ const INTERVIEW_QS=[
   {tone:"umile",txt:"Nervoso sì. Mi aiuta a restare concentrato. Poi il fischio iniziale azzera tutto.",ef:{m:4,p:4,t:5}},
 ]},
 // === EXTRA LOSS ===
-{ctx:["loss"],q:"Sconfitta netta. Il tecnico ha detto che ci si aspettava di più. Come risponde?",a:[
+{ctx:["loss"],q:"Sconfitta netta. Il tecnico ha detto che ci si aspettava di più. Come rispondi?",a:[
   {tone:"diplomatico",txt:"Ha ragione. Non siamo stati all'altezza. Dobbiamo fare meglio tutti.",ef:{m:-1,p:1,t:7}},
   {tone:"diretto",txt:"Ha ragione sul risultato, ma non sulle cause. Non è così semplice.",ef:{m:2,p:-1,t:-6}},
   {tone:"umile",txt:"Accetto la critica. Ripartirò da zero mentalmente e darò il massimo in settimana.",ef:{m:-2,p:1,t:8}},
@@ -1226,7 +1226,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Non retrocederemo. Abbiamo la qualità per uscirne. Ho fiducia in questo gruppo.",ef:{m:3,p:2,t:-3}},
   {tone:"umile",txt:"È un campanello d'allarme. Dobbiamo prendere la situazione più seriamente.",ef:{m:-2,p:1,t:7}},
 ]},
-{ctx:["loss"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.redCard||v.matchResult.sentOff)),/* [7.161.0 A1] espulsione VERA (redCard/sentOff dal vivo) */q:"Espulsione in partita che ha complicato tutto. Come giudica l'episodio?",a:[
+{ctx:["loss"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.redCard||v.matchResult.sentOff)),/* [7.161.0 A1] espulsione VERA (redCard/sentOff dal vivo) */q:"Espulsione in partita che ha complicato tutto. Come giudichi l'episodio?",a:[
   {tone:"diplomatico",txt:"Non ho niente da dire sul direttore di gara. Ci penserà il club nelle sedi opportune.",ef:{m:-1,p:1,t:4}},
   {tone:"diretto",txt:"Espulsione assurda. Non era fallo. Il risultato è falsato. Lo dico chiaramente.",ef:{m:2,p:-2,t:-6}},
   {tone:"umile",txt:"Prendo il cartellino e lo squadrone subisce. Devo essere più intelligente in campo.",ef:{m:-3,p:0,t:5}},
@@ -1237,7 +1237,7 @@ const INTERVIEW_QS=[
   {tone:"umile",txt:"È stata una giornata difficile. Ma non molliamo mai. Reazione immediata.",ef:{m:0,p:2,t:6}},
 ]},
 // === EXTRA DRAW ===
-{ctx:["draw"],q:"Pareggio utile o sprecato? Come si sente?",a:[
+{ctx:["draw"],q:"Pareggio utile o sprecato? Come ti senti?",a:[
   {tone:"diplomatico",txt:"Dipende dal contesto della stagione. Oggi direi utile, ma potevamo fare meglio.",ef:{m:2,p:2,t:4}},
   {tone:"diretto",txt:"Sprecato. Avevamo il vantaggio e lo abbiamo perso. Non è accettabile.",ef:{m:0,p:1,t:-3}},
   {tone:"umile",txt:"Sono deluso ma non abbattuto. Era una partita difficile e abbiamo tenuto.",ef:{m:1,p:2,t:5}},
@@ -1248,17 +1248,17 @@ const INTERVIEW_QS=[
   {tone:"umile",txt:"Un punto è comunque importante. Ma dobbiamo ambire a di più nel lungo periodo.",ef:{m:2,p:2,t:5}},
 ]},
 // === EXTRA SETTIMANALE ===
-{ctx:["weekly"],q:"Come gestisce le aspettative dei media sulla sua carriera?",a:[
+{ctx:["weekly"],q:"Come gestisci le aspettative dei media sulla tua carriera?",a:[
   {tone:"diplomatico",txt:"Con distacco professionale. Leggo poco e lavoro molto. È la mia strategia.",ef:{m:3,p:2,t:4}},
   {tone:"diretto",txt:"Non me ne occupo. Sono io il giudice del mio lavoro, non i giornalisti.",ef:{m:5,p:-1,t:-3}},
   {tone:"umile",txt:"Cerco di prendere spunto dal feedback. Alcune osservazioni sono utili.",ef:{m:2,p:2,t:5}},
 ]},
-{ctx:["weekly"],q:"Ha mai pensato di giocare in un altro campionato estero?",a:[
+{ctx:["weekly"],q:"Hai mai pensato di giocare in un altro campionato estero?",a:[
   {tone:"diplomatico",txt:"Ogni calciatore ci pensa. Ma ora sono concentrato qui e sto bene.",ef:{m:3,p:4,t:4,v:0.05}},
   {tone:"diretto",txt:"Ci penserei volentieri. Le mie qualità si adattano a qualsiasi campionato.",ef:{m:5,p:5,t:-4,v:0.15}},
   {tone:"umile",txt:"Non lo so. Prima devo dimostrare tutto qui. Il resto è futuro.",ef:{m:2,p:3,t:5}},
 ]},
-{ctx:["weekly"],cond:p=>(p.nationalCaps||0)>0||(((p.ovr||60)>=76)&&!LEAGUE_PAIRS.some(([u,l])=>l===p.club?.lg)),/* [6.97.0] pertinente solo con caps o profilo da nazionale */q:"Cosa pensa del sistema delle convocazioni in Nazionale?",a:[
+{ctx:["weekly"],cond:p=>(p.nationalCaps||0)>0||(((p.ovr||60)>=76)&&!LEAGUE_PAIRS.some(([u,l])=>l===p.club?.lg)),/* [6.97.0] pertinente solo con caps o profilo da nazionale */q:"Cosa pensi del sistema delle convocazioni in Nazionale?",a:[
   {tone:"diplomatico",txt:"Il ct ha la sua visione e la rispetto. Lavoro per convincerlo con le prestazioni.",ef:{m:3,p:3,t:4}},
   {tone:"diretto",txt:"Merito più spazio. I miei numeri lo dimostrano. Spero vengano notati prima o poi.",ef:{m:5,p:4,t:-4}},
   {tone:"umile",txt:"Non mi permetto di commentare. Il ct sa cosa fa. Resto concentrato sul club.",ef:{m:2,p:3,t:6}},
@@ -1268,7 +1268,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Giocare in avanti, pressare alto. Quando attacchiamo siamo devastanti.",ef:{m:6,p:4,t:-3}},
   {tone:"umile",txt:"Quella che massimizza le qualità di tutti. Non esiste una tattica perfetta.",ef:{m:3,p:3,t:6}},
 ]},
-{ctx:["weekly"],cond:p=>!p.isCaptain,/* [7.256.0 screenshot PO «il capitano è l'eroe stesso!»] la domanda presuppone un capitano TERZO: con la fascia al braccio (onore 7.5.0) non ha senso — pertinenza 6.97.0 */q:"Come si rapporta con il capitano della squadra?",a:[
+{ctx:["weekly"],cond:p=>!p.isCaptain,/* [7.256.0 screenshot PO «il capitano è l'eroe stesso!»] la domanda presuppone un capitano TERZO: con la fascia al braccio (onore 7.5.0) non ha senso — pertinenza 6.97.0 */q:"Come ti rapporti con il capitano della squadra?",a:[
   {tone:"diplomatico",txt:"Ottimamente. È un punto di riferimento per tutti. Rispetto la sua esperienza.",ef:{m:4,p:3,t:7}},
   {tone:"diretto",txt:"Bene. Siamo due leader diversi ma complementari nello spogliatoio.",ef:{m:6,p:4,t:-2}},
   {tone:"umile",txt:"Con grande rispetto. Cerco di imparare da lui ogni giorno. È un esempio.",ef:{m:3,p:3,t:8}},
@@ -1278,43 +1278,43 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Quella pre-stagione. Ma io amo i carichi pesanti. Mi forgia mentalmente.",ef:{m:5,p:3,t:-1}},
   {tone:"umile",txt:"Non saprei. Ogni settimana è dura. Cerco di dare il massimo in ogni seduta.",ef:{m:3,p:3,t:7}},
 ]},
-{ctx:["weekly"],q:"Come mantiene l'equilibrio tra vita privata e calcio?",a:[
+{ctx:["weekly"],q:"Come mantieni l'equilibrio tra vita privata e calcio?",a:[
   {tone:"diplomatico",txt:"Con la famiglia e il riposo. Staccare è fondamentale per ritornare al 100%.",ef:{m:5,p:4,t:3}},
   {tone:"diretto",txt:"Il calcio è al primo posto. La vita privata si adatta. È la mia scelta.",ef:{m:6,p:3,t:-2}},
   {tone:"umile",txt:"Non è sempre facile. Ma ho persone accanto che mi aiutano a stare bene.",ef:{m:4,p:4,t:4}},
 ]},
-{ctx:["weekly"],y:1,q:"Guarda il calcio anche da tifoso o è solo lavoro per lei?",a:[
+{ctx:["weekly"],y:1,q:"Guardi il calcio anche da tifoso o per te è solo lavoro?",a:[
   {tone:"diplomatico",txt:"Sono sempre un tifoso. Amo il calcio come lo amavo da bambino. Non cambia.",ef:{m:5,p:6,t:3}},
   {tone:"diretto",txt:"Guardo soprattutto per studiare gli avversari. Ma l'amore per il calcio c'è.",ef:{m:5,p:4,t:-1}},
   {tone:"umile",txt:"Quando posso mi siedo e guardo come un tifoso vero. Mi ricorda perché gioco.",ef:{m:4,p:6,t:4}},
 ]},
-{ctx:["weekly"],y:1,q:"C'è qualcosa che vorrebbe migliorare nel vostro gioco collettivo?",a:[
+{ctx:["weekly"],y:1,q:"C'è qualcosa che vorresti migliorare nel vostro gioco collettivo?",a:[
   {tone:"diplomatico",txt:"Sempre qualcosa. Il mister individua le aree e noi lavoriamo per migliorarle.",ef:{m:3,p:2,t:7}},
   {tone:"diretto",txt:"La concretezza sotto porta. Creiamo tanto ma convertiamo poco. Dobbiamo migliorare.",ef:{m:4,p:3,t:-2}},
   {tone:"umile",txt:"Molte cose. La perfezione non esiste nel calcio. Ogni giorno miglioriamo.",ef:{m:3,p:3,t:7}},
 ]},
-{ctx:["weekly"],y:1,q:"Chi è il compagno più importante per il suo gioco?",a:[
+{ctx:["weekly"],y:1,q:"Chi è il compagno più importante per il tuo gioco?",a:[
   {tone:"diplomatico",txt:"Tutti lo sono a modo loro. Ogni ruolo del campo è fondamentale per il collettivo.",ef:{m:4,p:4,t:6}},
   {tone:"diretto",txt:"Quelli che capiscono i miei movimenti. Non tutti lo fanno ma ci sono.",ef:{m:6,p:3,t:-4}},
   {tone:"umile",txt:"Chi mi crea gli spazi. Ma è un lavoro collettivo. Non un solo compagno.",ef:{m:3,p:4,t:6}},
 ]},
-{ctx:["weekly"],y:1,q:"Parla spesso con il tecnico durante la settimana?",a:[
+{ctx:["weekly"],y:1,q:"Parli spesso con il tecnico durante la settimana?",a:[
   {tone:"diplomatico",txt:"Sì, c'è dialogo costante. È fondamentale per capire cosa si aspetta da me.",ef:{m:4,p:3,t:9}},
   {tone:"diretto",txt:"Quando serve. Non ho bisogno di conferme continue. So cosa devo fare.",ef:{m:6,p:3,t:-3}},
   {tone:"umile",txt:"Cerco di farlo il più possibile. Il suo feedback è prezioso per migliorare.",ef:{m:3,p:3,t:10}},
 ]},
-{ctx:["weekly"],y:1,q:"Cosa significa giocare davanti al proprio pubblico per lei?",a:[
+{ctx:["weekly"],y:1,q:"Cosa significa per te giocare davanti al tuo pubblico?",a:[
   {tone:"diplomatico",txt:"Un'emozione speciale ogni volta. L'energia del pubblico cambia tutto.",ef:{m:5,p:8,t:4}},
   {tone:"diretto",txt:"Mi responsabilizza. Davanti a loro devo dare sempre di più. E lo faccio.",ef:{m:7,p:7,t:-1}},
   {tone:"umile",txt:"Mi emoziono ancora ogni volta. È un privilegio enorme. Non lo do per scontato.",ef:{m:5,p:8,t:4}},
 ]},
 // === EXTRA CONTRACT ===
-{ctx:["contract"],q:"Come definirebbe il rapporto con il club in questo momento?",a:[
+{ctx:["contract"],q:"Come definiresti il rapporto con il club in questo momento?",a:[
   {tone:"diplomatico",txt:"Professionale e rispettoso. Ci confrontiamo e valutiamo il futuro insieme.",ef:{m:4,p:3,t:7,v:0.05}},
   {tone:"diretto",txt:"Ci sono cose da chiarire. Voglio le garanzie giuste per restare motivato.",ef:{m:4,p:2,t:-4,v:0.10}},
   {tone:"umile",txt:"Buono. Mi hanno dato fiducia. Spero di ripagarla al meglio fino alla fine.",ef:{m:3,p:3,t:8}},
 ]},
-{ctx:["contract"],q:"Se arrivasse un'offerta importante all'estero, cosa farebbe?",a:[
+{ctx:["contract"],q:"Se arrivasse un'offerta importante all'estero, cosa faresti?",a:[
   {tone:"diplomatico",txt:"Valuterei insieme al mio entourage. Non si può escludere nulla a priori.",ef:{m:3,p:4,t:3,v:0.10}},
   {tone:"diretto",txt:"La prenderei in seria considerazione. Un giocatore deve pensare anche al proprio sviluppo.",ef:{m:5,p:5,t:-6,v:0.20}},
   {tone:"umile",txt:"Prima di tutto parlerei con il club. La lealtà è importante per me.",ef:{m:3,p:4,t:7,v:0.05}},
@@ -1347,28 +1347,28 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Quando sono felice e motivato sono inarrestabile. Lo si vede dai risultati.",ef:{m:10,p:7,t:-3,f:4}},
   {tone:"umile",txt:"Gioco più libero. La leggerezza mentale è sottovalutata nel calcio moderno.",ef:{m:6,p:5,t:6,f:3}},
 ]},
-{ctx:["low_morale","loss"],q:"Il periodo è complicato anche a livello personale. Come sta?",a:[
+{ctx:["low_morale","loss"],q:"Il periodo è complicato anche a livello personale. Come stai?",a:[
   {tone:"diplomatico",txt:"Ho i miei momenti come tutti. Ma il lavoro mi tiene ancorato alla realtà.",ef:{m:1,p:1,t:5}},
   {tone:"diretto",txt:"Non mi vedrete mai cedere. Le difficoltà mi rendono più forte. Sempre.",ef:{m:3,p:2,t:-2}},
   {tone:"umile",txt:"Non è un periodo facile, lo ammetto. Ma ho un supporto straordinario intorno.",ef:{m:2,p:2,t:6}},
 ]},
-{ctx:["bad_form","loss"],q:"Non sta rendendo al suo solito livello. Ha parlato con il mister?",a:[
+{ctx:["bad_form","loss"],q:"Non stai rendendo al tuo solito livello. Hai parlato con il mister?",a:[
   {tone:"diplomatico",txt:"Sì, abbiamo un dialogo aperto. Stiamo lavorando insieme per trovare la soluzione.",ef:{m:1,p:1,t:8}},
   {tone:"diretto",txt:"Non ne ho bisogno. So io come recuperare. È solo una questione di tempo.",ef:{m:3,p:1,t:-6}},
   {tone:"umile",txt:"Sì, e sono grato della sua pazienza. Lo ripagherò con le prestazioni.",ef:{m:1,p:2,t:9}},
 ]},
 // === EXTRA PRO / SEASON ===
-{ctx:["pro","season_start"],q:"Nuova stagione, nuovi obiettivi. Cosa promette ai tifosi?",a:[
+{ctx:["pro","season_start"],q:"Nuova stagione, nuovi obiettivi. Cosa prometti ai tifosi?",a:[
   {tone:"diplomatico",txt:"Impegno totale, sacrificio e la migliore versione di me stesso in campo.",ef:{m:6,p:8,t:6,f:3}},
   {tone:"diretto",txt:"Prometto gol, vittorie e grandi prestazioni. Questa sarà la mia stagione.",ef:{m:9,p:9,t:-3,f:4}},
   {tone:"umile",txt:"Di dare tutto ogni domenica. Non prometto titoli ma garantisco il massimo impegno.",ef:{m:5,p:8,t:7,f:3}},
 ]},
-{ctx:["season_end","pro"],q:"Stagione finita. Ha raggiunto il suo massimo quest'anno?",a:[
+{ctx:["season_end","pro"],q:"Stagione finita. Hai raggiunto il tuo massimo quest'anno?",a:[
   {tone:"diplomatico",txt:"Mi sono avvicinato. Ma credo di avere ancora margini di crescita importanti.",ef:{m:5,p:5,t:5}},
   {tone:"diretto",txt:"Tra i miei migliori anni, sì. I dati lo confermano. Sono cresciuto tantissimo.",ef:{m:9,p:7,t:-3}},
   {tone:"umile",txt:"Non lo so. Forse no. Mi piace pensare che il meglio deve ancora venire.",ef:{m:4,p:5,t:7}},
 ]},
-{ctx:["weekly"],q:"Come descrive il suo percorso da quando è arrivato in questo club?",a:[
+{ctx:["weekly"],q:"Come descrivi il tuo percorso da quando sei arrivato in questo club?",a:[
   {tone:"diplomatico",txt:"Un percorso di crescita costante. Il club e i compagni mi hanno aiutato molto.",ef:{m:5,p:5,t:7}},
   {tone:"diretto",txt:"Ho dimostrato il mio valore passo dopo passo. Ora sono un punto di riferimento.",ef:{m:8,p:6,t:-3}},
   {tone:"umile",txt:"Un cammino bellissimo, non sempre facile. Ogni ostacolo mi ha reso più forte.",ef:{m:4,p:5,t:8}},
@@ -1378,7 +1378,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Poco. Sono già ad un livello molto alto. La continuità è l'ultimo passo.",ef:{m:9,p:6,t:-4}},
   {tone:"umile",txt:"Molte cose. La mentalità, la tecnica in certi dettagli. Il calcio non finisce mai di insegnare.",ef:{m:3,p:3,t:8}},
 ]},
-{ctx:["win"],q:"Spesso calciatori giovani come lei faticano a gestire i momenti di gloria. Come ci riesce?",a:[
+{ctx:["win"],q:"Spesso calciatori giovani come te faticano a gestire i momenti di gloria. Come ci riesci?",a:[
   {tone:"diplomatico",txt:"Con il supporto dello staff e della famiglia. Non sono solo in questo percorso.",ef:{m:5,p:5,t:6}},
   {tone:"diretto",txt:"Non è un problema per me. Sono fatto per stare sotto i riflettori. Mi riesce naturale.",ef:{m:9,p:8,t:-4}},
   {tone:"umile",txt:"Cercando di restare me stesso. Quando smetti di lavorare sodo, perdi tutto.",ef:{m:4,p:5,t:8}},
@@ -1404,12 +1404,12 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Inarrestabili. Quando siamo così in forma non ci ferma nessuno. Semplice.",ef:{m:10,p:8,t:-4}},
   {tone:"umile",txt:"Feeling ottimo. Ma dipende da tutto il collettivo, non solo dall'attacco.",ef:{m:5,p:5,t:8}},
 ]},
-{ctx:["win"],q:"Come spiega la vostra solidità difensiva quest'anno?",a:[
+{ctx:["win"],q:"Come spieghi la vostra solidità difensiva quest'anno?",a:[
   {tone:"diplomatico",txt:"Lavoro collettivo e schemi ben appresi. Difendiamo tutti, attaccanti compresi.",ef:{m:5,p:4,t:7}},
   {tone:"diretto",txt:"Difensori forti più un pressing alto micidiale. Io contribuisco dalla cima.",ef:{m:7,p:5,t:-2}},
   {tone:"umile",txt:"Il mister ha costruito un sistema difensivo eccellente. I difensori fanno miracoli.",ef:{m:4,p:4,t:8}},
 ]},
-{ctx:["loss"],q:"Avete perso punti pesanti in questa gara. Come si spiega?",a:[/* [7.120.0 audit narrativa] era «seconda volta di fila in casa» — sede+striscia non garantite dal ctx:loss → genericizzata */
+{ctx:["loss"],q:"Avete perso punti pesanti in questa gara. Come te lo spieghi?",a:[/* [7.120.0 audit narrativa] era «seconda volta di fila in casa» — sede+striscia non garantite dal ctx:loss → genericizzata */
   {tone:"diplomatico",txt:"Dobbiamo analizzare bene cosa non va. Non si possono perdere punti così in casa.",ef:{m:-2,p:0,t:5}},
   {tone:"diretto",txt:"Non è solo colpa mia. C'è qualcosa che non funziona nel sistema. Va affrontato.",ef:{m:1,p:-2,t:-6}},
   {tone:"umile",txt:"Errori individuali e collettivi. Ne prendiamo atto e lavoriamo per uscirne.",ef:{m:-2,p:1,t:7}},
@@ -1419,42 +1419,42 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Sono stato io a caricare i compagni. Leader si diventa in questi momenti.",ef:{m:4,p:3,t:-3}},
   {tone:"umile",txt:"Ci siamo parlati onestamente. Il gruppo ha risposto. Purtroppo non è bastato.",ef:{m:-1,p:2,t:6}},
 ]},
-{ctx:["draw"],q:"Il mister sembra deluso del pareggio. Condivide la sua delusione?",a:[
+{ctx:["draw"],q:"Il mister sembra deluso del pareggio. Condividi la sua delusione?",a:[
   {tone:"diplomatico",txt:"Lo capisco. Volevamo di più. Ma facciamo fronte comune e guardiamo avanti.",ef:{m:0,p:2,t:7}},
   {tone:"diretto",txt:"Un po' sì. Ma si è battuto contro un avversario ostico. Non era semplice.",ef:{m:2,p:2,t:-2}},
   {tone:"umile",txt:"Completamente. Non era il risultato che volevamo. Avremmo dovuto fare di più.",ef:{m:-1,p:2,t:8}},
 ]},
-{ctx:["weekly"],y:1,q:"Qual è il consiglio più prezioso che le ha dato il suo allenatore?",a:[
+{ctx:["weekly"],y:1,q:"Qual è il consiglio più prezioso che ti ha dato il tuo allenatore?",a:[
   {tone:"diplomatico",txt:"Di non smettere mai di imparare, anche dai più giovani. Saggio.",ef:{m:4,p:4,t:8}},
   {tone:"diretto",txt:"Di credere in me stesso senza limiti. Ha visto qualcosa in me che valorizza.",ef:{m:7,p:5,t:2}},
   {tone:"umile",txt:"Di restare umile nei momenti di gloria. Non lo dimentico mai.",ef:{m:4,p:4,t:9}},
 ]},
-{ctx:["weekly"],q:"Come descrive il rapporto con i tifosi avversari quando gioca fuori casa?",a:[
+{ctx:["weekly"],q:"Come descrivi il rapporto con i tifosi avversari quando giochi fuori casa?",a:[
   {tone:"diplomatico",txt:"Rispetto e concentrazione. Ogni stadio ha la sua atmosfera. Mi adatto.",ef:{m:3,p:3,t:4}},
   {tone:"diretto",txt:"Mi motivano. Più fischiano, più voglio fare gol. È la benzina migliore.",ef:{m:7,p:4,t:-2}},
   {tone:"umile",txt:"I tifosi fanno parte del gioco. Cerco solo di rispettare il loro stadio.",ef:{m:3,p:3,t:5}},
 ]},
-{ctx:["weekly"],q:"Ha mai visto qualcuno del club come un mentore nella carriera?",a:[
+{ctx:["weekly"],q:"Hai mai visto qualcuno del club come un mentore nella tua carriera?",a:[
   {tone:"diplomatico",txt:"Ho avuto la fortuna di incontrare persone meravigliose. Non le dimenticherò mai.",ef:{m:5,p:5,t:7}},
   {tone:"diretto",txt:"Mi sono costruito da solo. Ma qualcuno ha creduto in me quando era difficile.",ef:{m:6,p:4,t:-1}},
   {tone:"umile",txt:"Sì, diversi. Il calcio è fatto di relazioni. Sono grato a chi mi ha guidato.",ef:{m:4,p:5,t:7}},
 ]},
-{ctx:["weekly"],q:"Come gestisce le critiche dei tifosi sui social dopo una brutta prestazione?",a:[
+{ctx:["weekly"],q:"Come gestisci le critiche dei tifosi sui social dopo una brutta prestazione?",a:[
   {tone:"diplomatico",txt:"Cerco di non leggere. Ma quando lo faccio prendo il costruttivo con spirito aperto.",ef:{m:2,p:2,t:3}},
   {tone:"diretto",txt:"Non le guardo. Chi critica non capisce quanto sia difficile giocare ad alto livello.",ef:{m:4,p:-2,t:-3}},
   {tone:"umile",txt:"Alcune critiche fanno male ma sono utili. Mi ricordano che devo fare meglio.",ef:{m:1,p:1,t:5}},
 ]},
-{ctx:["weekly"],y:1,q:"Qual è la cosa che nessuno sa di lei come giocatore?",a:[
+{ctx:["weekly"],y:1,q:"Qual è la cosa che nessuno sa di te come giocatore?",a:[
   {tone:"diplomatico",txt:"Quanto lavoro fuori dal campo. La gente vede i 90 minuti, non le ore dietro.",ef:{m:5,p:6,t:5}},
   {tone:"diretto",txt:"Quanto studio l'avversario prima di ogni partita. Sono molto più preparato di quanto sembri.",ef:{m:7,p:5,t:-2}},
   {tone:"umile",txt:"Quante volte mi sono sentito inadeguato. La facciata è solo una parte della storia.",ef:{m:4,p:6,t:5}},
 ]},
-{ctx:["season_start"],q:"La rosa è stata rinnovata. Si sente favorito per un posto da titolare?",a:[
+{ctx:["season_start"],q:"La rosa è stata rinnovata. Ti senti favorito per un posto da titolare?",a:[
   {tone:"diplomatico",txt:"Sarà il mister a decidere. Mi allenerò al massimo per convincerlo.",ef:{m:4,p:3,t:7}},
   {tone:"diretto",txt:"Assolutamente sì. Ho qualità che pochi altri hanno. Il posto è mio.",ef:{m:8,p:5,t:-5}},
   {tone:"umile",txt:"Non do nulla per scontato. La competizione è sana. Devo guadagnarmelo ogni giorno.",ef:{m:3,p:3,t:8}},
 ]},
-{ctx:["season_start"],q:"Cosa ha imparato dalla stagione scorsa che applicherà quest'anno?",a:[
+{ctx:["season_start"],q:"Cosa hai imparato dalla stagione scorsa che applicherai quest'anno?",a:[
   {tone:"diplomatico",txt:"Gestire meglio le energie nei momenti chiave. Continuità è la parola d'ordine.",ef:{m:5,p:4,t:6,f:2}},
   {tone:"diretto",txt:"Che posso fare ancora meglio. Non mi sono ancora espresso al 100%. Ora voglio.",ef:{m:8,p:5,t:-2,f:3}},
   {tone:"umile",txt:"A chiedere più aiuto quando ne ho bisogno. La squadra è la mia forza.",ef:{m:4,p:4,t:8,f:2}},
@@ -1469,12 +1469,12 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Una sconfitta pesante che ancora brucio. Ma mi ha reso più forte per il futuro.",ef:{m:4,p:4,t:-2}},
   {tone:"umile",txt:"Quando ho deluso la squadra in un momento cruciale. Non lo dimenticherò.",ef:{m:2,p:3,t:6}},
 ]},
-{ctx:["high_trust","win"],q:"Il mister la schiera sempre. Come mantiene alta la concentrazione?",a:[
+{ctx:["high_trust","win"],q:"Il mister ti schiera sempre. Come mantieni alta la concentrazione?",a:[
   {tone:"diplomatico",txt:"Trattando ogni allenamento come una partita. Non abbassi mai il livello.",ef:{m:5,p:4,t:8}},
   {tone:"diretto",txt:"Sono un professionista serio. La concentrazione è una mia caratteristica base.",ef:{m:8,p:5,t:-2}},
   {tone:"umile",txt:"Non è facile. Ma la fiducia del mister è una responsabilità che prendo seriamente.",ef:{m:4,p:4,t:9}},
 ]},
-{ctx:["low_trust","weekly"],q:"Il mister ha detto che si aspetta di più da lei. Come risponde?",a:[
+{ctx:["low_trust","weekly"],q:"Il mister ha detto che si aspetta di più da te. Come rispondi?",a:[
   {tone:"diplomatico",txt:"Accetto la sfida. Lavoro per dargli quello che si aspetta e di più.",ef:{m:1,p:2,t:7}},
   {tone:"diretto",txt:"Ha torto. Sto facendo il massimo possibile con le opportunità che mi dà.",ef:{m:3,p:1,t:-9}},
   {tone:"umile",txt:"Ha ragione. Non sono ancora al mio livello massimo. Me ne assumo la responsabilità.",ef:{m:0,p:2,t:9}},
@@ -1484,27 +1484,27 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Impegnativa ma gratificante. Chi vuole fare questo mestiere deve accettarlo.",ef:{m:5,p:4,t:-1}},
   {tone:"umile",txt:"Molti momenti solitari, di fatica. Ma la passione copre tutto il resto.",ef:{m:4,p:5,t:5}},
 ]},
-{ctx:["win","top_scorer"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.164.0 M5] «un altro gol» ⇒ hai segnato OGGI */q:"Un altro gol per lei. Quanto è importante la testa in questi momenti?",a:[
+{ctx:["win","top_scorer"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1),/* [7.164.0 M5] «un altro gol» ⇒ hai segnato OGGI */q:"Un altro gol per te. Quanto è importante la testa in questi momenti?",a:[
   {tone:"diplomatico",txt:"Fondamentale. Il gol nasce nella mente prima che nei piedi. Ci lavoro.",ef:{m:6,p:6,t:5,f:2}},
   {tone:"diretto",txt:"Quando sono in zona gol non penso. Agisco d'istinto. È il mio superpotere.",ef:{m:10,p:8,t:-4,f:3}},
   {tone:"umile",txt:"La testa è tutto. Sto imparando a gestire la pressione sotto porta. Miglioro.",ef:{m:4,p:5,t:7,f:2}},
 ]},
-{ctx:["weekly"],q:"Come definirebbe il calcio italiano rispetto agli altri campionati?",a:[
+{ctx:["weekly"],q:"Come definiresti il calcio italiano rispetto agli altri campionati?",a:[
   {tone:"diplomatico",txt:"Tattico, duro e appassionante. Ha caratteristiche uniche che lo rendono speciale.",ef:{m:3,p:4,t:3}},
   {tone:"diretto",txt:"Il più tattico del mondo. Chi sa giocare qui sa giocare ovunque. Sono pronto.",ef:{m:6,p:5,t:-2}},
   {tone:"umile",txt:"Un campionato che ti forma. Ogni dettaglio conta. Ho imparato moltissimo.",ef:{m:3,p:4,t:5}},
 ]},
-{ctx:["weekly"],q:"Esiste una squadra con cui ha un conto in sospeso da sistemare?",a:[
+{ctx:["weekly"],q:"Esiste una squadra con cui hai un conto in sospeso da sistemare?",a:[
   {tone:"diplomatico",txt:"Nel calcio ogni partita è una storia a sé. Non porto rancori da una stagione all'altra.",ef:{m:3,p:3,t:4}},
   {tone:"diretto",txt:"Qualcuna sì. Non faccio nomi ma so dove voglio fare bella figura la prossima volta.",ef:{m:6,p:5,t:-3}},
   {tone:"umile",txt:"Non credo nei conti in sospeso. Ogni partita è nuova. Guardo avanti.",ef:{m:3,p:3,t:5}},
 ]},
-{ctx:["weekly"],y:1,q:"Quali aspetti della sua personalità la aiutano di più in campo?",a:[
+{ctx:["weekly"],y:1,q:"Quali aspetti della tua personalità ti aiutano di più in campo?",a:[
   {tone:"diplomatico",txt:"La determinazione e la capacità di adattarmi alle situazioni. Non mi arrendo.",ef:{m:5,p:4,t:5}},
   {tone:"diretto",txt:"Il sangue freddo e la sicurezza nei miei mezzi. Non mi faccio mai intimorire.",ef:{m:8,p:5,t:-3}},
   {tone:"umile",txt:"La pazienza e la voglia di imparare. Non ho mai pensato di sapere già tutto.",ef:{m:4,p:4,t:7}},
 ]},
-{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1&&((v.matchResult.homeScore||0)-(v.matchResult.awayScore||0))*((v.isHome===false)?-1:1)===1),/* [7.178.0 RC-7] «gol del 90» ⇒ hai segnato E vittoria di misura */q:"Ha appena segnato il gol decisivo nel finale. Come si sente?",a:[
+{ctx:["win"],cond:(p,v)=>!!(v&&v.matchResult&&(v.matchResult.goals||0)>=1&&((v.matchResult.homeScore||0)-(v.matchResult.awayScore||0))*((v.isHome===false)?-1:1)===1),/* [7.178.0 RC-7] «gol del 90» ⇒ hai segnato E vittoria di misura */q:"Hai appena segnato il gol decisivo nel finale. Come ti senti?",a:[
   {tone:"diplomatico",txt:"Incredibile emozione. Momenti come questi rendono tutti i sacrifici degni.",ef:{m:10,p:10,t:6,f:4}},
   {tone:"diretto",txt:"Sapevo che sarebbe venuto. Nei finali di partita sono il più freddo di tutti.",ef:{m:12,p:10,t:-4,f:5}},
   {tone:"umile",txt:"Che bello. È per i tifosi che non mollavano. Dedico questo gol a loro.",ef:{m:8,p:11,t:7,f:4}},
@@ -1514,32 +1514,32 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"In 10 non si può vincere contro certi avversari. Ma abbiamo dimostrato carattere.",ef:{m:3,p:3,t:-2}},
   {tone:"umile",txt:"Dobbiamo imparare a non metterci in situazioni così difficili. Disciplina.",ef:{m:0,p:2,t:6}},
 ]},
-{ctx:["weekly"],y:1,q:"Se potesse rinascere, sceglierebbe ancora il calcio?",a:[
+{ctx:["weekly"],y:1,q:"Se potessi rinascere, sceglieresti ancora il calcio?",a:[
   {tone:"diplomatico",txt:"Senza dubbio. È la mia vita, la mia passione. Non riesco a immaginarmi altrove.",ef:{m:6,p:6,t:4}},
   {tone:"diretto",txt:"Sì, ma avrei iniziato prima. Il tempo è la risorsa più preziosa per un atleta.",ef:{m:7,p:5,t:-1}},
   {tone:"umile",txt:"Credo di sì. Ma farei alcune scelte diversamente. Il senno di poi è facile.",ef:{m:5,p:5,t:4}},
 ]},
-{ctx:["win"],q:"Cosa prova quando vede i bambini con la sua maglia sugli spalti?",a:[
+{ctx:["win"],q:"Cosa provi quando vedi i bambini con la tua maglia sugli spalti?",a:[
   {tone:"diplomatico",txt:"Enorme responsabilità e orgoglio. Sono esempi per loro. Non posso deludere.",ef:{m:6,p:9,t:5}},
   {tone:"diretto",txt:"Un'emozione pura. Significa che il mio lavoro arriva alla prossima generazione.",ef:{m:8,p:9,t:-1}},
   {tone:"umile",txt:"Mi commuove ogni volta. Ricordo quando ero io quel bambino. È un cerchio magico.",ef:{m:6,p:10,t:5}},
 ]},
-{ctx:["loss"],q:"Come parlerebbe con un giovane compagno che è giù dopo questa sconfitta?",a:[
+{ctx:["loss"],q:"Come parleresti con un giovane compagno che è giù dopo questa sconfitta?",a:[
   {tone:"diplomatico",txt:"Gli direi che fa parte del percorso. Le sconfitte insegnano più delle vittorie.",ef:{m:1,p:3,t:6}},
   {tone:"diretto",txt:"Gli direi di arrabbiarsi, canalizzare quella rabbia e tornare più forte.",ef:{m:3,p:2,t:-1}},
   {tone:"umile",txt:"Che ci sono passato anch'io. E che il carattere si forma in questi momenti.",ef:{m:2,p:3,t:6}},
 ]},
-{ctx:["weekly"],q:"Qual è la dote tecnica che la distingue dagli altri nel suo ruolo?",a:[
+{ctx:["weekly"],q:"Qual è la dote tecnica che ti distingue dagli altri nel tuo ruolo?",a:[
   {tone:"diplomatico",txt:"La lettura del gioco. Capire prima degli altri dove andrà il pallone.",ef:{m:5,p:5,t:5}},
   {tone:"diretto",txt:"La qualità in zona decisiva. Quando conta, sono affidabile. Sempre.",ef:{m:9,p:7,t:-4}},
   {tone:"umile",txt:"Non saprei. Forse la disponibilità a fare lavoro sporco quando serve.",ef:{m:3,p:4,t:8}},
 ]},
-{ctx:["weekly"],q:"Come si sente quando il club fa un grande acquisto nel suo ruolo?",a:[
+{ctx:["weekly"],q:"Come ti senti quando il club fa un grande acquisto nel tuo ruolo?",a:[
   {tone:"diplomatico",txt:"La concorrenza è sana. Ogni buon giocatore in rosa eleva il livello di tutti.",ef:{m:2,p:3,t:5}},
   {tone:"diretto",txt:"Mi stimola. Nessuno mi sposta. Sono io il titolare e lo dimostrerò.",ef:{m:7,p:4,t:-5}},
   {tone:"umile",txt:"Mi fa riflettere. Devo migliorare per restare competitivo. Accetto la sfida.",ef:{m:2,p:3,t:7}},
 ]},
-{ctx:["high_popularity","win"],q:"Il pubblico impazzisce per lei. È la sua stagione migliore?",a:[
+{ctx:["high_popularity","win"],q:"Il pubblico impazzisce per te. È la tua stagione migliore?",a:[
   {tone:"diplomatico",txt:"Sto dando tutto. Se la gente è felice, sono felice anch'io. Grazie a loro.",ef:{m:7,p:10,t:5}},
   {tone:"diretto",txt:"Sì, è la mia stagione migliore. E posso fare ancora meglio. La vetta è vicina.",ef:{m:11,p:10,t:-4}},
   {tone:"umile",txt:"Spero di sì. Ma ci sono ancora molte partite. Non mi fermo finché c'è da lavorare.",ef:{m:6,p:10,t:6}},
@@ -1549,7 +1549,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Quando vinco mi diverto. La vittoria è il divertimento massimo per me.",ef:{m:7,p:5,t:-2}},
   {tone:"umile",txt:"Cerco di non perderlo mai. Quando il calcio smette di essere gioia, c'è qualcosa che non va.",ef:{m:5,p:5,t:5}},
 ]},
-{ctx:["u18","youth"],q:"Come si sente a giocare contro giocatori più grandi e fisici di lei?",a:[
+{ctx:["u18","youth"],q:"Come ti senti a giocare contro giocatori più grandi e fisici di te?",a:[
   {tone:"diplomatico",txt:"È una sfida che mi aiuta a crescere. Il fisico lo costruisco col tempo.",ef:{m:4,p:4,t:6}},
   {tone:"diretto",txt:"La tecnica batte la fisicità. Ho dimostrato che posso reggere con chiunque.",ef:{m:8,p:5,t:-3}},
   {tone:"umile",txt:"Non è sempre facile. Ma mi piace sfidare me stesso in situazioni scomode.",ef:{m:3,p:4,t:7}},
@@ -1559,12 +1559,12 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Meno gossip e più analisi tecnica. I giocatori non sono personaggi da reality.",ef:{m:5,p:3,t:-2}},
   {tone:"umile",txt:"Non mi permetto. I media fanno il loro lavoro. Spero solo in rispetto reciproco.",ef:{m:3,p:3,t:5}},
 ]},
-{ctx:["win","season_end"],q:"Stagione straordinaria per lei. Cosa rimane di questo percorso?",a:[
+{ctx:["win","season_end"],q:"Stagione straordinaria per te. Cosa ti rimane di questo percorso?",a:[
   {tone:"diplomatico",txt:"La crescita umana oltre che tecnica. Ho imparato tantissimo da ogni persona incontrata.",ef:{m:7,p:7,t:6}},
   {tone:"diretto",txt:"Numeri, prestazioni e la conferma che sono tra i migliori. È tangibile.",ef:{m:10,p:8,t:-4}},
   {tone:"umile",txt:"L'umiltà di sapere che il meglio deve ancora venire. Non mi accontento.",ef:{m:5,p:6,t:8}},
 ]},
-{ctx:["weekly"],y:1,q:"Qual è la partita dei sogni che le piacerebbe giocare un giorno?",a:[
+{ctx:["weekly"],y:1,q:"Qual è la partita dei sogni che ti piacerebbe giocare un giorno?",a:[
   {tone:"diplomatico",txt:"Qualsiasi finale di coppa importante. Il calcio ai massimi livelli, con la squadra.",ef:{m:5,p:6,t:4}},
   {tone:"diretto",txt:"Una finale europea. Da protagonista assoluto. Con gol decisivo. È il mio sogno.",ef:{m:9,p:8,t:-3}},
   {tone:"umile",txt:"Non mi pongo limiti ma neanche aspettative eccessive. Il prossimo match è già il sogno.",ef:{m:4,p:5,t:6}},
@@ -1575,12 +1575,12 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Veniamo per vincere. Non ho altro da aggiungere, il resto si fa in campo.",ef:{m:6,t:-2,p:5,f:1}},
   {tone:"umile",txt:"Sarà durissima, ma daremo tutto fino al fischio finale. Conta lo spirito.",ef:{m:3,t:3,p:1}},
 ]},
-{ctx:["prematch"],q:"Il mister le ha chiesto qualcosa di particolare in vista di questa sfida?",a:[
+{ctx:["prematch"],q:"Il mister ti ha chiesto qualcosa di particolare in vista di questa sfida?",a:[
   {tone:"diplomatico",txt:"Mi ha chiesto equilibrio e concentrazione. Seguirò le sue indicazioni alla lettera.",ef:{m:3,t:4,p:1}},
   {tone:"diretto",txt:"Mi ha dato carta bianca. Sa che nelle partite vere faccio la differenza.",ef:{m:5,t:-3,p:4}},
   {tone:"umile",txt:"Mi ha solo ricordato di restare umile e lavorare per la squadra. Ha ragione.",ef:{m:2,t:5,p:1,f:1}},
 ]},
-{ctx:["prematch"],q:"In che condizione di forma arriva a questo big match?",a:[
+{ctx:["prematch"],q:"In che condizione di forma arrivi a questo big match?",a:[
   {tone:"diplomatico",txt:"Sto bene. Mi sento dentro la partita e pronto a dare il mio contributo.",ef:{m:3,t:2,f:2}},
   {tone:"diretto",txt:"Mai stato così in forma. Oggi gli avversari faranno fatica a starmi dietro.",ef:{m:6,t:-2,p:5,f:2}},
   {tone:"umile",txt:"Bene, ma la forma vera la dimostri in campo. Parlo dopo i novanta minuti.",ef:{m:2,t:3,f:1}},
@@ -1590,7 +1590,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Non temiamo nessuno. Se giochiamo da squadra, non hanno scampo.",ef:{m:5,t:-2,p:4,f:1}},
   {tone:"umile",txt:"Hanno qualità in ogni reparto. Servirà la partita perfetta per batterli.",ef:{m:2,t:4,p:1}},
 ]},
-{ctx:["prematch"],q:"I tifosi si aspettano molto da questa gara. Sente la loro pressione?",a:[
+{ctx:["prematch"],q:"I tifosi si aspettano molto da questa gara. Senti la loro pressione?",a:[
   {tone:"diplomatico",txt:"È un onore avere il loro sostegno. La pressione è uno stimolo, non un peso.",ef:{m:4,t:2,p:3}},
   {tone:"diretto",txt:"La pressione mi carica. Più ci credono, più mi esalto in campo.",ef:{m:6,t:-1,p:5,f:1}},
   {tone:"umile",txt:"I tifosi meritano rispetto e impegno. Cercheremo di renderli orgogliosi.",ef:{m:3,t:3,p:2}},
@@ -1605,7 +1605,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"Sarà una bolgia e noi adoriamo queste serate. È qui che si diventa grandi.",ef:{m:7,t:-2,p:6,f:2}},
   {tone:"umile",txt:"Sfide così non si spiegano, si giocano. Servirà testa fredda e cuore caldo.",ef:{m:3,t:3,p:2}},
 ]},
-{ctx:["prematch"],q:"Che ruolo si aspetta di avere oggi nell'economia della partita?",a:[
+{ctx:["prematch"],q:"Che ruolo ti aspetti di avere oggi nell'economia della partita?",a:[
   {tone:"diplomatico",txt:"Quello che mi chiede il mister. Mi metto al servizio del gruppo, sempre.",ef:{m:3,t:4,p:1}},
   {tone:"diretto",txt:"Da protagonista. In queste partite voglio la palla e voglio decidere io.",ef:{m:6,t:-3,p:5,f:1}},
   {tone:"umile",txt:"Quello dell'umile lavoratore. Se serve correre per i compagni, lo farò.",ef:{m:2,t:5,p:1,f:1}},
