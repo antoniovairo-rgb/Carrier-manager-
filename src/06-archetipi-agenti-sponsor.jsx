@@ -181,7 +181,8 @@ function _ovrToWageWeekly133(ovr,prestige){
 }
 function _fmtWageY133(weeklyWage){
   const a=(weeklyWage||0)*52;
-  return a>=1000000?`€${Math.round(a/100000)/10}M`:a>=1000?`€${Math.round(a/100)/10}k`:`€${Math.round(a)}`;
+  /* [7.999.49 parte A, glossario] «€11,4 mln», «€450 mila»: prima «€11.4M»/«€450k», col punto decimale e le sigle inglesi */
+  return a>=1000000?`€${(Math.round(a/100000)/10).toLocaleString('it-IT')} mln`:a>=1000?`€${Math.round(a/1000).toLocaleString('it-IT')} mila`:`€${Math.round(a)}`;
 }
 // [7.131.0 collaudo PO «gestire gli sponsor sulla maglia… aumentare i ricavi della squadra → grandi acquisti/investimenti»]
 //   SPONSOR DI MAGLIA del club (economia completa): accordo PLURIENNALE che versa l'annuale nel budget del club
