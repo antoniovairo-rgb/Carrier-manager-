@@ -45,6 +45,7 @@ const srv = await startServer(); const port = srv.address().port; const b = awai
 const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
 const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 160)));
 await page.addInitScript(r => { window.__CPM_REC = true; window.__CPM_CARTA9_REC = 1; if (r) window.__CPM_NO_CARTA9 = 1; }, ROSSO);
+if (process.env.CPM_CPU) { const _cdp = await page.context().newCDPSession(page); await _cdp.send('Emulation.setCPUThrottlingRate', { rate: +process.env.CPM_CPU }); }/* [7.999.40] macchina lenta simulata (Codex: 1/10 sulla sua) */
 await openMatch(page, port, { skipLoadAll: true, name: 'Carta9' });
 for (let k = 0; k < 40; k++) { await sleep(1000); if (await page.evaluate(() => { const g = window.__CPM_GESTURE && window.__CPM_GESTURE(); return !!(g && g.glb); })) break; }
 if (!await page.evaluate(() => { const g = window.__CPM_GESTURE && window.__CPM_GESTURE(); return !!(g && g.glb); })) { console.log('❌ SONDA CIECA: avatar GLB non montati'); await b.close(); srv.close(); process.exit(2); }
