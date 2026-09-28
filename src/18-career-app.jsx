@@ -1187,14 +1187,18 @@ const getThisWeekMatchday=()=>{
       playMatch:()=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
         if(screen==="seasonEnd"||screen==="seasonAwards")return "seasonEnd";
-        if(player.euroMondiale?.active&&!player.euroMondiale?.done)return "blocked:euroMondiale";
-        if(player.nationsCupQueue?.active&&!player.nationsCupQueue?.done)return "blocked:nationsCup";
+        /* [7.999.43 imbracatura per il collaudo massivo delle carriere] con window.__CPM_SIM_NAT=1 la partita della Nazionale si SIMULA con
+           la funzione del bottone «Simula» (stessa del gioco) invece di fermarsi: senza, il banco doveva chiudere i tornei d'ufficio. Spento = identico a prima. */
+        if(player.euroMondiale?.active&&!player.euroMondiale?.done){if(typeof window!=='undefined'&&window.__CPM_SIM_NAT){simulateEuroMondialeMatch();return "nat:euroMondiale";}return "blocked:euroMondiale";}
+        if(player.nationsCupQueue?.active&&!player.nationsCupQueue?.done){if(typeof window!=='undefined'&&window.__CPM_SIM_NAT){simulateNationsCupMatch();return "nat:nationsCup";}return "blocked:nationsCup";}
         if(openingPending().length){window.__CPM_CAREER.resolveOpening();return "opening-resolved";}/* [7.16.0] W1 vincolante: il sim risolve le interazioni d'apertura come farebbe l'utente */
         if(!player.weekLived){liveCurrentWeek();return "lived";}
         if(getThisWeekMatchday()){simulateAndAdvance();return "simulated";}
         doAdvanceWeek();return "advanced";
       }catch(e){return "error:"+(e&&e.message);}},
-      openingPending:()=>{try{return openingPending();}catch(e){return "error:"+(e&&e.message);}}, // [7.16.0] per la probe opening-gate
+      openingPending:()=>{try{return openingPending();}catch(e){return "error:"+(e&&e.message);}},
+      snapshot:()=>{try{return JSON.parse(JSON.stringify(player));}catch(e){return "error:"+(e&&e.message);}},/* [7.999.43] copia completa dell'eroe per gli invarianti del collaudo massivo (sola lettura) */
+      screen:()=>screen,/* [7.999.43] schermata corrente: seasonEnd/seasonAwards/careerEnd/nationalCallup/proTransition/clubPresentation/dashboard... */ // [7.16.0] per la probe opening-gate
       /* [7.946] VARCO DI SOLO COLLAUDO: apre il gala' con dei premi finti. Il gala' vive a fine stagione,
          quindi per GUARDARLO servirebbe giocare una stagione intera — ed e' il motivo per cui le cerimonie
          non erano mai state fotografate. Stessa famiglia di __CPM_HUD_FORCE e __CPM_FESTA942_FORCE. */
