@@ -81,6 +81,10 @@ const TRAIN_BASE_EFF=0.40;
 function trainAgeMult(age){const a=age||18;return a<=26?1.0:a<=28?0.75:a<=30?0.55:a<=33?0.25:0.06;}
 // [5.80.0 MIN-8] Enfant Prodige: crescita ×1.35 fino ai 22 anni. [7.999.49 parte A] la desc diceva «crescita x2»: ora dice il vero
 function archGrowthMult(p){const id=p&&(p.archetype?.id||p.archetype);return(id==="enfant"&&((p&&p.age)||18)<23)?1.35:1;}
+/* [7.999.50 PO «applicarla davvero»] la «Crescita +N» delle offerte era solo mostrata: ora l'offerta accettata scrive
+   growthBoost {pct,until} e l'allenamento cresce del N% fino alla stagione `until` compresa. Campo opzionale: salvataggi vecchi = ×1.
+   Rosso __CPM_NO_CRESC49. */
+function offerGrowthMult(p){const b=p&&p.growthBoost;if(!b||(typeof window!=='undefined'&&window.__CPM_NO_CRESC49))return 1;return((p.season||1)<=(b.until||0))?1+clamp(+b.pct||0,0,30)/100:1;}
 // [5.80.0 BIL-10] valore di mercato = f(OVR, età, forma, popolarità), ricalcolato ogni settimana con
 //   smoothing 70/30 (gli eventi continuano a dare colore, i fondamentali tirano). Scala legacy (~0.3–5 "M€").
 function calcMarketValue(p){

@@ -89,7 +89,7 @@ function ProTransitionScreen({player,onChoose}){
                 <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:o.moralBonus>=0?"#dcfce7":"#fee2e2",color:o.moralBonus>=0?TH.success:TH.danger}}>
                   Morale {o.moralBonus>=0?"+":""}{o.moralBonus}
                 </span>
-                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:"#f3e8ff",color:TH.accentText}}>Crescita +{o.growthBonus}</span>
+                <span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:"#f3e8ff",color:TH.accentText}}>Crescita +{o.growthBonus}% nella prima stagione</span>
                 {o.isLastChance&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgAmber,color:TH.warning}}>⚠️ Ultima chance U18</span>}
                 {o.isMain&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.bgBlue,color:TH.brandText}}>⭐ Consigliato: primo contratto col tuo club{(o.moralBonus||0)>=Math.max(...offers.map(x=>x.moralBonus||0))?" · morale più alto":""}</span>}{/* [7.999.49 parte A] il perché del consiglio, dai dati dell'offerta (morale davvero applicato alla scelta) */}
                 {o.isNonConfirmed&&<span style={{fontSize:FS.caption,padding:"2px 6px",borderRadius:RAD.sm,background:TH.lossBg,color:TH.danger}}>❌ Non confermato</span>}

@@ -1517,7 +1517,7 @@ const getThisWeekMatchday=()=>{
       const _rec=hist.slice(-3);
       const _avg=_rec.length?_rec.reduce((s,m)=>s+(m.rating||6.5),0)/_rec.length:6.5;
       const _acM=(p.assistantCoachRel||50)>=75?1.12:(p.assistantCoachRel||50)>=60?1.04:(p.assistantCoachRel||50)<=35?0.90:1.0;/* [7.114.0 audit carriera · fix PROG-1] il vice-mister (assistantCoachRel, ±12%) mancava nell'auto-training → il modificatore 9.3 era DI FATTO MORTO (l'auto-training è il default; il TrainPanel col fattore quasi non gira). Ora allineato al TrainPanel (default rel 50 → 1.0 neutro) */
-      const _mult=(_avg>=7.5?1.2:_avg>=6.5?1:_avg>=5.5?0.88:0.75)*(frm>=75?1.1:frm<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92)*_acM*TRAIN_BASE_EFF*trainAgeMult(p.age)*archGrowthMult(p)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(p.perkTrainer?1.10:1):(1+[0,0.10,0.15,0.20][staffLv24(p,"perkTrainer")]));
+      const _mult=(_avg>=7.5?1.2:_avg>=6.5?1:_avg>=5.5?0.88:0.75)*(frm>=75?1.1:frm<=35?0.9:1)*((p.coachTrust||60)>=80?1.12:(p.coachTrust||60)>=65?1:0.92)*_acM*TRAIN_BASE_EFF*trainAgeMult(p.age)*archGrowthMult(p)*offerGrowthMult(p)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(p.perkTrainer?1.10:1):(1+[0,0.10,0.15,0.20][staffLv24(p,"perkTrainer")]));
       const _dim=(sv)=>{const v=sv||60;return v>=92?0.015:v>=90?0.03:v>=88?0.05:v>=84?0.11:v>=80?0.18:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};/* [7.9.1 collaudo PO «ritara»] rendimento decrescente INDURITO nella fascia élite (84+ ridotto, 90+ quasi piatto): con la crescita ora attiva su tutti i path (7.9.0) il profilo top toccava 93 a 28 anni — il tetto converge a ~90-92 (picco di progetto 5.80); fasce ≤80 INVARIATE → criterio §10 (50→85 in 8-10 stagioni) intatto */
       _plan.forEach(tid=>{
         if(tid==="rec"){fatigueDelta-=18;morale=clamp(morale+6,0,100);return;}
@@ -5153,7 +5153,7 @@ const getThisWeekMatchday=()=>{
       const newStandings=initStandings(lc.length?lc:getLeagueClubs(p));
       const seed=(newSeason*7919+newSeason*newSeason*31)%2147483647+hashStr(targetClub?.id||targetClub?.n||"u18")*17;
       const newCalendar=generateSeasonCalendar(targetClub||{id:"u18",n:"U18"},lc.length?lc:getLeagueClubs(p),seed);
-      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),agentPlan:p.hasAgent?agentPlanFor({...p,age:newAge},newSeason):null,/* [7.40.0 §9.7] */
+      const base={...p,week:1,weekLived:false,season:newSeason,age:newAge,goals:0,assists:0,matches:0,matchHistory:[],fatigue:clamp((p.fatigue||0)-30,0,100),morale:clamp((p.morale||70)+(offer.moralBonus||0),0,100),growthBoost:(offer.growthBonus>0?{pct:offer.growthBonus,until:newSeason}:null),/* [7.999.50] crescita dell'offerta nella prima stagione */contract:{duration:offer.duration||1,wage:offer.wage||500,expiresAtSeason:newSeason+(offer.duration||1)},standings:newStandings,calendar:newCalendar,seasonObjectives:generateSeasonObjectives({...p,club:targetClub}),agentPlan:p.hasAgent?agentPlanFor({...p,age:newAge},newSeason):null,/* [7.40.0 §9.7] */
         // [6.33.0 STAB-3] stesso reset tornei Nazionali dell'altro path di rollover (vedi nota sopra).
         euroMondiale:p.euroMondiale?{...p.euroMondiale,active:false}:p.euroMondiale,
         nationsCupQueue:p.nationsCupQueue?{...p.nationsCupQueue,active:false,done:true}:p.nationsCupQueue,
@@ -5601,7 +5601,7 @@ const getThisWeekMatchday=()=>{
            gare del VECCHIO club come risultati di stagione corrente e le guardie anti-doppione ci inciampavano. */
         matchHistory:[],seasonCarry:_carry293,
         contract:_newContract98,coach:_newCoach98,coachTrust:50,loan:_newLoan,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:42,/* [7.325.0 collaudo PO con screenshot «appena arrivato nel nuovo club e' impossibile» — Preparatore 100, Vice-Mister 100, Chimica 100 il giorno dell'arrivo] i rapporti dello spogliatoio VECCHIO seguivano il giocatore nel trasloco: il mister ripartiva da 50, preparatore/vice/chimica no. Nel nuovo club preparatore e vice non ti conoscono (50 = neutro) e la chimica parte SOTTO il default 60 (42: sei il nuovo arrivato, il posto nello spogliatoio si guadagna). Stessa classe corretta anche su transizione pro e rientro dal prestito. */
-        morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[..._compLog7,`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:[...newCalendar,..._keptComp7].sort((x,y)=>(x.week||0)-(y.week||0)),cup:_updCup7,euro:_updEuro7,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
+        morale:clamp((p.morale||70)+(tc.moralBonus||10),0,100),growthBoost:(tc.growthBonus>0?{pct:tc.growthBonus,until:p.season||1}:p.growthBoost||null),/* [7.999.50] crescita dell'offerta fino a fine stagione */offerHistory:[...(p.offerHistory||[]),{club:tc.club.n,type:tc.type,season:p.season,accepted:true}],log:[..._compLog7,`🔄 ${tc.type}: ${tc.club.n} (${tc.club.lg||tc.club.nat})!`,...(p.log||[])].slice(0,60),standings:newStandings,calendar:[...newCalendar,..._keptComp7].sort((x,y)=>(x.week||0)-(y.week||0)),cup:_updCup7,euro:_updEuro7,worldMemory:oldClubMem,rival:newRival,fanLegend:updFL,teammates:newTeammates,justRecovered:false};
     });
     setTransferOffer(null);
     setPresentationData({club:tc.club,contractType:tc.type,playerName:player.name});
@@ -6567,7 +6567,7 @@ const getThisWeekMatchday=()=>{
                 {transferOffer.buyClause>0&&<>Riscatto: <strong>€{(transferOffer.buyClause/1e6).toLocaleString("it-IT",{maximumFractionDigits:1})} mln</strong>{transferOffer.type==="prestito con obbligo"?` · scatta con almeno ${transferOffer.minMatches||10} presenze`:" · a scelta del club"}<br/></>}
                 Minutaggio stimato: <strong>{transferOffer.minutaggio}%</strong><br/>
                 Morale: <strong style={{color:TH.txGreen}}>+{transferOffer.moralBonus}</strong> <span style={{fontSize:FS.caption}}>(su 100)</span><br/>
-                Crescita: <strong style={{color:TH.accentText}}>+{transferOffer.growthBonus}</strong><br/>
+                Crescita in allenamento: <strong style={{color:TH.accentText}}>+{transferOffer.growthBonus}%</strong> <span style={{fontSize:FS.caption}}>(fino a fine stagione)</span><br/>
                 Prestigio club: <strong>{transferOffer.club.p}</strong>
               </div>
             </Card>

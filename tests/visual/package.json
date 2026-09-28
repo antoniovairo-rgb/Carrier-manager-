@@ -58,6 +58,7 @@
     "tabellino-banda": "node tabellino-banda.mjs",
     "festa": "node festa-942.mjs",
     "festa-3d": "node festa-3d.mjs",
+    "decisioni-50": "node decisioni-50.mjs",
     "ball-alive": "node ball-alive-test.mjs",
     "trama": "node trama-test.mjs",
     "finisher-facing": "node finisher-facing-test.mjs",

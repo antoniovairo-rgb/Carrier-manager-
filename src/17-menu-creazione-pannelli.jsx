@@ -1093,7 +1093,9 @@ function CareerEndScreen({retData,onNewGame,onNewGamePlus}){
 ======================================== */
 const CHALLENGES=[
   {id:"scalata",icon:"🏔️",name:"La Scalata",desc:"Vinci il campionato entro la stagione 5.",
-   check:p=>(p.trophies||[]).length>0,fail:p=>(p.season||1)>5&&(p.trophies||[]).length===0,reward:"🏆 Scalatore Nato"},
+   /* [7.999.50 PO «la regola»] contava QUALUNQUE trofeo (coppa, Europa, Nazionale): ora solo il campionato, che e' il trofeo
+      senza `type` e non della Nazionale (src/18 r.~4117). Rosso __CPM_NO_SCALATA50 = regola di prima. */
+   check:p=>(p.trophies||[]).some(t=>(typeof window!=='undefined'&&window.__CPM_NO_SCALATA50)||(!t.type&&!t.isNational)),fail:p=>(p.season||1)>5&&!(p.trophies||[]).some(t=>(typeof window!=='undefined'&&window.__CPM_NO_SCALATA50)||(!t.type&&!t.isNational)),reward:"🏆 Scalatore Nato"},
   {id:"bomber",icon:"🔥",name:"Bomber Puro",desc:"Segna 50 gol in una singola stagione.",
    check:p=>(p.goals||0)>=50,fail:()=>false,reward:"⚽ Macchina da Gol"},
   {id:"talento",icon:"💎",name:"Talento Puro",desc:"Raggiungi OVR 90 prima dei 26 anni.",
@@ -1801,7 +1803,7 @@ const TrainPanel=({player,setPlayer,notify})=>{
   const _avgRating=_recent.length?_recent.reduce((s,m)=>s+(parseFloat(m.rating)||6.5),0)/_recent.length:6.5;
   // Sprint 2 (9.3): il vice-mister (assistantCoachRel) affina il lavoro → modula l'efficacia del training (±~12%)
   const _acR=player.assistantCoachRel||50;const _acMult=_acR>=75?1.12:_acR>=60?1.04:_acR<=35?0.90:1.0;
-  const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult*TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(player.perkTrainer?1.10:1):(1+[0,0.10,0.15,0.20][staffLv24(player,"perkTrainer")]))/*[5.80.0 BIL-1/MIN-8 · 5.81.0 perk]*/;
+  const _mult=(_avgRating>=7.5?1.20:_avgRating>=6.5?1.0:_avgRating>=5.5?0.88:0.75)*((player.form||60)>=75?1.10:(player.form||60)<=35?0.90:1.0)*((player.coachTrust||60)>=80?1.12:(player.coachTrust||60)>=65?1.0:0.92)*_acMult*TRAIN_BASE_EFF*trainAgeMult(player.age)*archGrowthMult(player)*offerGrowthMult(player)*(typeof window!=='undefined'&&window.__CPM_NO_STAFF24?(player.perkTrainer?1.10:1):(1+[0,0.10,0.15,0.20][staffLv24(player,"perkTrainer")]))/*[5.80.0 BIL-1/MIN-8 · 5.81.0 perk]*/;
   const _dim=(sv)=>{const v=sv||60;return v>=92?0.015:v>=90?0.03:v>=88?0.05:v>=84?0.11:v>=80?0.18:v>=75?0.28:v>=70?0.35:v>=65?0.45:0.55;};/* [7.9.1 collaudo PO «ritara»] rendimento decrescente INDURITO nella fascia élite (84+ ridotto, 90+ quasi piatto): con la crescita ora attiva su tutti i path (7.9.0) il profilo top toccava 93 a 28 anni — il tetto converge a ~90-92 (picco di progetto 5.80); fasce ≤80 INVARIATE → criterio §10 (50→85 in 8-10 stagioni) intatto */
   const _t0name=(_TT[_t0]?.l||_t0).toLowerCase();const _t1name=(_TT[_t1]?.l||_t1).toLowerCase();/* [7.999.49 parte A] minuscole a meta' frase */
   /* [7.999.49 parte A] efficacia mostrata RISPETTO ALLA BASE: senza la costante TRAIN_BASE_EFF, l'eta' e l'archetipo, che il
