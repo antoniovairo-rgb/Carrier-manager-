@@ -11,12 +11,13 @@ const page = await ctx.newPage();
 let errori = 0; const msg = [];
 page.on('pageerror', (e) => { errori++; if (msg.length < 3) msg.push(String(e).slice(0, 160)); });
 await page.addInitScript((r) => { window.__CPM_GLB = true; if (r) window.__CPM_NO942 = true;
+  /* [7.999.47] di serie la festa e' la cerimonia 3D (npm run festa-3d): questa sonda giudica il riquadro di riserva */ window.__CPM_NO_FESTA3D47 = true;
   /* il festeggiamento scatta su una gara MERITATA: una partita qualunque non lo mostra (misurato:
      gol 0, voto 6,28). Il varco inietta due gol e un assist, cosi' la sonda giudica la SCENA. */
   window.__CPM_FESTA942_FORCE = { goals: 2, assists: 1, rb: 18 }; }, rosso);
-await openMatch(page, port, { skipLoadAll: true, name: 'Festa' });
+await openMatch(page, port, { skipLoadAll: true, name: 'Festa2' }); /* [7.999.47] «Festa» oggi finisce senza vittoria (testimone vinta:false): si usa la partita della festa 3D */
 try { await page.waitForFunction(() => window.__CPM_GLB_READY === true, { timeout: 60000 }); } catch (_e) {}
-await page.evaluate(() => { if (window.__CPM_AUTOPLAY) window.__CPM_AUTOPLAY(true, { seed: 4242, policy: 'seeded', tickMs: 60 }); }).catch(() => {});
+await page.evaluate(() => { if (window.__CPM_AUTOPLAY) window.__CPM_AUTOPLAY(true, { seed: 4545, policy: 'seeded', tickMs: 300 }); }).catch(() => {});
 /* si aspetta la fine: o compare la festa, o compare la card di fine gara */
 let visto = null;
 for (let i = 0; i < 150; i++) {

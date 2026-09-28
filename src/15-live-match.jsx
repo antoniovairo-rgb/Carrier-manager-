@@ -1854,12 +1854,19 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if((_ms.goals|0)>0)_voci.push({n:_ms.goals,et:(_ms.goals>1?"gol":"gol"),oro:true});
           if((_ms.assists|0)>0)_voci.push({n:_ms.assists,et:"assist"});
           _voci.push({n:_voto.toFixed(1).replace('.',','),et:"voto",oro:_voto>=7.5});
-          setFesta942({
+          const _fd47={
             titolo:(_ms.goals|0)>=3?"Tripletta":((_ms.goals|0)>=2?"Doppietta":(_imp23&&!_super23?"Vittoria pesante":(_fuoriCasaSuPiuForte?"Colpo fuori casa":"Prestazione da campione"))),
             punteggio:(isMatchHome?_sc.home:_sc.away)+" – "+(isMatchHome?_sc.away:_sc.home),
-            avversario:((_oppClubObj&&(_oppClubObj.n||_oppClubObj.a))||"l'avversario"),
+            avversario:((_oppClubObj&&(_oppClubObj.n||_oppClubObj.a))||"l'avversario"),casa:!!isMatchHome,
             facce:[{eroe:true,id:(player&&player.avatarId)||0}].concat(_nomi.map(x=>({nome:x}))),
-            voci:_voci.slice(0,3)});
+            voci:_voci.slice(0,3)};
+          /* [7.999.47 PO «la schermata di festeggiamento vittoria post partita e' davvero brutta, andrebbe reingegnerizzata» → scelta
+             PO «il momento in 3D»] La festa non e' piu' un riquadro scuro di 3,4 s sopra la partita 2D (tema scuro dentro un gioco
+             chiaro, facce da 31-41 px, stessi numeri che il tabellino ripete subito dopo): la partita entra nella cerimonia 3D
+             LEGGERA che esisteva solo per finali e big match (burst, abbraccio dei compagni, festa sotto la curva, ~9,5 s,
+             saltabile), con i numeri della gara in una fascia TV. Rosso __CPM_NO_FESTA3D47 = il riquadro di prima. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_FESTA3D47)){setCeremony({name:_fd47.titolo,kind:"bigwin",light:true,festa:_fd47});setPhase("ceremony");return;}
+          setFesta942(_fd47);
           return;/* la card di fine gara arriva quando la festa si chiude */
         }
       }
@@ -2376,7 +2383,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     window.__CPM_SET_NUMHL=(n)=>{try{const v=Math.max(1,Math.min(9,n|0));numHLRef.current=v;setNumHL(v);return v;}catch(e){return null;}};
     // [7.2.0] hook di collaudo della PREMIAZIONE 3D: salta direttamente alla fase ceremony (test-only). Il runner
     //   ceremony-visual.mjs monta LiveMatch (?sit=) e chiama questo per catturare i 4 beat senza dover vincere un titolo.
-    window.__CPM_FORCE_CEREMONY=(o)=>{try{setCeremony({name:(o&&o.name)||"CAMPIONI D'ITALIA",kind:(o&&o.kind)||"league"});setPhase("ceremony");return true;}catch(e){return false;}};
+    window.__CPM_FORCE_CEREMONY=(o)=>{try{setCeremony({name:(o&&o.name)||"CAMPIONI D'ITALIA",kind:(o&&o.kind)||"league",...((o&&o.light)?{light:true}:{}),...((o&&o.festa)?{festa:o.festa}:{})});setPhase("ceremony");return true;}catch(e){return false;}};/* [7.999.47] anche la cerimonia leggera con i numeri della festa */
     window.__CPM_PHASE=()=>{try{return phaseRef.current;}catch(e){return null;}};// [7.2.0] fase corrente per il collaudo cerimonia
     /* [7.911.1 — C11] LA CERIMONIA D'INGRESSO NON ERA RAGGIUNGIBILE DA UNA SONDA. Il percorso del provino entra
        dritto in `playing` (misurato: unica fase attraversata, `playing@12393`), quindi tutto cio' che vive nei
@@ -9625,7 +9632,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
   const _no901=!!(typeof window!=='undefined'&&window.__CPM_NO901);
   const _compTag901=(()=>{
     if(phase==="walkout")return"Ingresso in campo";
-    if(phase==="ceremony")return"Premiazione";
+    if(phase==="ceremony")return(ceremony&&ceremony.light&&!(typeof window!=='undefined'&&window.__CPM_NO_FESTA3D47))?"Fine partita":"Premiazione";/* [7.999.47] la festa leggera non premia nessuno */
     if(phase==="ended")return"Fine partita";
     const _lbl=isNatCtx?((context||"").indexOf("euroMondiale")>=0?("🌍 "+((player.euroMondiale?.type)||"Mondiale")):"🌍 Nazionale"):(context==="euro_group"||context==="euro_ko"||context==="euro")?{UCL:"⭐ "+EURO_SIGLA.UCL,UEL:"🌍 "+EURO_SIGLA.UEL,UECL:"🌍 "+EURO_SIGLA.UECL}[player.euro?.competition||"UCL"]||"🌍 Europa":context==="cup"?"🏆 Coppa":(((player.leagueOverrides||{})[player.club?.id])||player.club?.lg||homeTeamObj?.lg||"Campionato");
     return _lbl;
@@ -9684,7 +9691,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 {phase==="playing"&&!paused&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
                 {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&<div style={{width:6,height:6,borderRadius:"50%",background:"#f59e0b",flexShrink:0}}/>}
                 <div style={{padding:"2px 10px",borderRadius:RAD.md,fontSize:FS.small,fontWeight:900,background:winning?"rgba(34,197,94,0.18)":losing?"rgba(239,68,68,0.18)":"rgba(255,255,255,0.09)",color:winning?"#4ade80":losing?"#f87171":"#f1f5f9",letterSpacing:.5}}>
-                  {phase==="walkout"?"🏃":phase==="ceremony"?"🏆":phase==="ended"?"FT":`${clock}'`}
+                  {phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}
                 </div>
                 <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>{/* [7.260.0] mai il sole su una notturna */}
                 {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
@@ -9775,7 +9782,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 <div style={{display:"flex",alignItems:"center",gap:3,marginTop:2}}>
                   {phase==="playing"&&!paused&&<div style={{width:6,height:6,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 6px #ef4444",animation:"pulse 1s infinite",flexShrink:0}}/>}
                   {paused&&["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&<div style={{width:6,height:6,borderRadius:"50%",background:"#f59e0b",flexShrink:0}}/>}
-                  <div style={{fontSize:FS.small,fontWeight:800,color:"#f1f5f9",letterSpacing:.3,fontVariantNumeric:"tabular-nums"}}>{phase==="walkout"?"🏃":phase==="ceremony"?"🏆":phase==="ended"?"FT":`${clock}'`}</div>
+                  <div style={{fontSize:FS.small,fontWeight:800,color:"#f1f5f9",letterSpacing:.3,fontVariantNumeric:"tabular-nums"}}>{phase==="walkout"?"🏃":phase==="ceremony"?((ceremony&&ceremony.light)?"FT":"🏆"):phase==="ended"?"FT":`${clock}'`}</div>
                   <div style={{fontSize:FS.caption}} title={weatherNightDisp(weather,timeOfDay==="night")?.name}>{weatherNightDisp(weather,timeOfDay==="night")?.e||(timeOfDay==="day"?"☀️":"🌙")}</div>
                   {["playing","hl_intro","hl_move","hl_choose","hl_result"].includes(phase)&&(
                     <button onClick={()=>setPaused(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",fontSize:FS.caption,padding:"11px 4px",margin:"-9px -3px",color:"rgba(255,255,255,0.6)",lineHeight:1}} title={paused?"Riprendi (P)":"Pausa (P)"}>{paused?"▶":"⏸"}</button>
@@ -10091,11 +10098,26 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               )}
               {/* [7.2.0] PREMIAZIONE — banner celebrativo + skip. Il 3D sotto mostra giro di campo/curva/podio. */}
               {phase==="ceremony"&&(<React.Fragment>
+                {/* [7.999.47] la festa LEGGERA non e' una premiazione: niente «PREMIAZIONE · TITOLO VINTO!» (falso: nessun titolo vinto),
+                    una fascia TV in basso coi numeri veri della gara. Rosso __CPM_NO_FESTA3D47 = la testata di prima. */}
+                {ceremony&&ceremony.light&&!(typeof window!=='undefined'&&window.__CPM_NO_FESTA3D47)?(
+                  <div data-cpm="festa47" style={{position:"absolute",left:12,right:12,bottom:64,zIndex:24,pointerEvents:"none",display:"flex",flexDirection:"column",alignItems:"flex-start",gap:4}}>
+                    <div style={{fontSize:FS.caption,fontWeight:FW.black,letterSpacing:2,color:"#fff",background:TH.primary,padding:"3px 10px",borderRadius:RAD.xs,textTransform:"uppercase"}}>{"Fischio finale · "+((ceremony.festa&&ceremony.festa.titolo)||ceremony.name||"Vittoria")}</div>
+                    <div style={{width:"100%",background:"rgba(255,255,255,0.94)",borderRadius:RAD.sm,padding:"8px 12px",display:"flex",alignItems:"center",gap:12,boxShadow:"0 6px 20px rgba(0,0,0,0.35)"}}>
+                      <div style={{fontSize:28,fontWeight:FW.black,color:TH.text,fontVariantNumeric:"tabular-nums",letterSpacing:-.5,whiteSpace:"nowrap"}}>{(ceremony.festa&&ceremony.festa.punteggio)||""}</div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:FS.small,color:TH.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{ceremony.festa&&ceremony.festa.avversario?((ceremony.festa.casa?"in casa contro ":"in trasferta contro ")+ceremony.festa.avversario):ceremony.name}</div>
+                        <div style={{display:"flex",gap:10,marginTop:2}}>{((ceremony.festa&&ceremony.festa.voci)||[]).map((v,i)=>(
+                          <span key={i} style={{fontSize:FS.body,fontWeight:FW.black,color:v.oro?TH.primary:TH.text,fontVariantNumeric:"tabular-nums"}}>{v.n}<span style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,marginLeft:3}}>{v.et}</span></span>))}</div>
+                      </div>
+                    </div>
+                  </div>
+                ):(
                 <div style={{position:"absolute",top:0,left:0,right:0,zIndex:24,pointerEvents:"none",padding:"14px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(94,15,29,0.72),rgba(94,15,29,0))"}}>
                   <div style={{fontSize:FS.caption,letterSpacing:3,color:"#f0b33a",fontWeight:800}}>🏆 PREMIAZIONE</div>
                   <div style={{fontSize:isNarrow?20:26,fontWeight:900,color:"#fff",letterSpacing:1,marginTop:2,textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{ceremony?.kind==="league"?"CAMPIONI!":ceremony?.kind==="int"?"TRIONFO!":"TITOLO VINTO!"}</div>
                   {ceremony?.name&&<div style={{fontSize:isNarrow?12:14,color:"#ffe9b8",fontWeight:700,marginTop:1}}>{ceremony.name}</div>}
-                </div>
+                </div>)}
                 {/* [7.31.0] chiusura blocco premiazione qui sotto; l'overlay RIGORI è il Fragment successivo */}
                 <button onClick={skipCeremony} data-cpm="salta" style={{position:"absolute",bottom:14,right:14,zIndex:25,padding:"9px 16px",borderRadius:RAD.xl,border:"1px solid rgba(255,255,255,0.35)",background:"rgba(0,0,0,0.45)",color:"#fff",fontWeight:700,fontSize:FS.body,cursor:"pointer",backdropFilter:"blur(4px)"}}>{ceremony&&ceremony.light?"Salta festeggiamenti →":"Salta premiazione →"}</button>
               </React.Fragment>)}
