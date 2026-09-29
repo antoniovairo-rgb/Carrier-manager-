@@ -5219,6 +5219,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             const _cf=(_tlKind==="cross")?["cross"]:(_tlKind==="header")?["header"]:["shot","header"];
             let _cn=-1;for(let _i=0;_i<tlSeg.length;_i++){if(_cf.indexOf(tlSeg[_i].tag)>=0){_cn=_i;break;}}
             tlBuildN=(_cn>0)?_cn:(tlSeg.length-1);
+            /* [7.999.65 taccuino PO #107/#118 «012 verticalizzazione all'indietro» · «014 palla flipper». Rosso __CPM_NO_PASS65] MISURATO su gi107
+               (THROUGH_BALL): la costruzione conteneva GIA' il filtrante dell'eroe (HERO→x94) e il controllo del compagno, e solo dopo partiva la
+               conclusione — lo stesso filtrante — dal pallone ormai a 22u dall'eroe; sull'intercetto il pallone tornava indietro. Sul passaggio la
+               costruzione si ferma PRIMA dell'ultima giocata dell'eroe: quella e' la conclusione, e parte dai suoi piedi. */
+            if(_tlKind==="pass"&&!(typeof window!=='undefined'&&window.__CPM_NO_PASS65)){let _lh65=-1;const _lim65=(_cn>0)?_cn:tlSeg.length;for(let _i=0;_i<_lim65;_i++){const g=tlSeg[_i];if(g&&g.fromId==='HERO'&&g.kind!=='carry'&&g.kind!=='give')_lh65=_i;}if(_lh65>=0&&_lh65<tlBuildN)tlBuildN=_lh65;if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST))window.__CPM_PASS65={k:P.hlSitKey,n:tlBuildN,lh:_lh65};}
             tlMap=mapCineActors(_tlc);tlOn=tlBuildN>0;tlT=0;
             if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{window.__CPM_TLSEG={k:P.hlSitKey,n:tlBuildN,sup:P.support,pat:P.hlPattern,typ:P.hlType,seg:tlSeg.map(g=>({tag:g.tag,kind:g.kind,f:g.fromId,t:g.toId,from:g.from,to:g.to,dur:g.dur}))};}catch(_e){}}/* [7.414.0] LA TIMELINE VIVA SI PUO' LEGGERE (test-only): senza, «quale beat ha teletrasportato la palla alla consegna» resta una deduzione dai fotogrammi invece di un piano scritto */
             /* [7.395.0 collaudo PO codice 001 + «SALTO del pallone di 8,7u» — l'ULTIMA sorgente, e la piu'
