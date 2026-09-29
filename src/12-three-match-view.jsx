@@ -4324,6 +4324,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          const _fx=Math.sin(hero.rotation.y),_fz=Math.cos(hero.rotation.y),_gain=Math.min(aDt*24,1);
          let _cx=hero.position.x+_fx*0.78,_cz=hero.position.z+_fz*0.78,_anchor="heading";
          let _cy23=0.22;/* rovesciata: la palla si prende in aria, all'altezza del piede */const _kb23=_kc23.dx?(_cgAvatar._ballR||_cgAvatar._footR):(_cgAvatar._ballL||_cgAvatar._footL);if(_nearImpact&&_kb23)try{const _bp=sr.current._cgKickBonePoint||(sr.current._cgKickBonePoint=new THREE.Vector3());_kb23.getWorldPosition(_bp);if(Number.isFinite(_bp.x)&&Number.isFinite(_bp.z)){_cx=_bp.x;_cz=_bp.z;_anchor=_kc23.dx?"right-foot-bone":"left-foot-bone";if(_kc23.alto&&Number.isFinite(_bp.y))_cy23=_bp.y;}}catch(_e){}
+         /* [7.999.62 taccuino PO #9 «volée: il gesto non e' sincronizzato con la velocita' del cross» (000). Rosso __CPM_NO_VOLEE62]
+            MISURATO (gi9 «Volée potente», GLB-ON): durante il caricamento questo aggancio portava il pallone del cross da quota 2,2 a 0,2 —
+            l'eroe calciava al volo un pallone gia' fermo sul prato. Sulla volée il pallone resta alla quota del contatto aereo e
+            all'impatto si aggancia all'altezza del piede. */
+         if(P.hlVariant==='shot_volley'&&!_kc23.alto&&!(typeof window!=='undefined'&&window.__CPM_NO_VOLEE62)){let _vy62=(typeof aerialContactY==='function')?aerialContactY(P,true,false):null;if(_vy62==null||!Number.isFinite(_vy62))_vy62=0.7;_vy62=clamp(_vy62,0.45,1.1);
+           if(_nearImpact&&_kb23)try{const _bq=sr.current._cgKickBonePoint;if(_bq&&Number.isFinite(_bq.y))_vy62=Math.max(0.3,_bq.y);}catch(_e62){}
+           _cy23=_vy62;if(typeof window!=='undefined'&&window.__CPM_REC)window.__CPM_VOLEE62=(window.__CPM_VOLEE62||0)+1;}
          ball.position.x+=(_cx-ball.position.x)*_gain;ball.position.z+=(_cz-ball.position.z)*_gain;ball.position.y+=(_cy23-ball.position.y)*(_kc23.alto?_gain:Math.min(aDt*12,1));
          if(typeof window!=="undefined")window.__CPM_CGTRADER_KICK_TOUCH={u:+_u.toFixed(3),anchor:_anchor,arcT:+ballArcT.toFixed(3),targetX:+_cx.toFixed(3),targetZ:+_cz.toFixed(3),gesture:"kick",lod:_cgAvatar._cgLod||null};
        } else if(isResult&&P.hlType==="dribble"&&P.hlSuccess===true&&!P.hlDef&&hero){

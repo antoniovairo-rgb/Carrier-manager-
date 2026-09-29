@@ -213,7 +213,8 @@
     "spalle": "node spalle-test.mjs",
     "tabellino-schermo": "node tabellino-schermo.mjs",
     "punizione-62": "node punizione-62.mjs",
-    "punizione-fuori-62": "node punizione-fuori-62.mjs"
+    "punizione-fuori-62": "node punizione-fuori-62.mjs",
+    "volee-62": "node volee-62.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
