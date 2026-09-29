@@ -2867,6 +2867,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
      Qui non si mette il guinzaglio ai quattordici: si usa la loro stessa regola — VINCE L'ULTIMO
      CHE SCRIVE — con un solo blocco che scrive DOPO tutti, e solo mentre un'affermazione e' viva. */
   const [ballLock811,setBallLock811]=useState(null);
+  const spNet62Ref=useRef(null);/* [7.999.62] festa+affermazione del gol su piazzato, in attesa del pallone in rete */
   const _affermaPallone811=useCallback((x,y,ms)=>{
     if(typeof window!=='undefined'&&window.__CPM_NO811)return;
     try{setBallLock811({x,y,fino:Date.now()+(ms||1200)});
@@ -8970,9 +8971,18 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          che e' cio' da cui il render-loop fa partire `celebT`, il boato e i coriandoli: senza, il gol da
          rigore restava l'unico gol muto del gioco. */
       const _spKind373=/^pen/i.test(String(opt.id||""))?"penalty":"freekick";
-      try{buildCelebPlan({by:"hero",setPiece:_spKind373,key:Date.now()});}catch(_e373){}
-      try{setWaveEvent({t:Date.now(),home:true,stadiumHome:isMatchHome});}catch(_e374){}
-      cpmEv("goal",{min:clockRef.current,side:"home",src:"setpiece"});try{_golInRete811("home");}catch(_e811s){}/* [7.496.0 F1b] il gol dell'EROE su palla ferma: e' l'UNICO che non passa da `handleContinue` (nota 7.392), quindi va registrato qui */
+      /* [7.999.62 taccuino PO #13 «Bordata potente»: salto del pallone di 25-36u, eroe a x 50,5 dentro la porta, palla che
+         scompare (011). Rosso __CPM_NO_FK62] MISURATO: festa, onda e affermazione del pallone in rete partivano nell'istante
+         della SCELTA. L'affermazione (_golInRete811) scriveva il pallone in rete prima del calcio, e la rincorsa del piazzato,
+         che mette l'eroe dietro il pallone, lo trascinava dentro la porta; la clip di gioia partiva a 0,47 s col pallone
+         ancora sul dischetto. Ora le tre cose aspettano che il pallone entri davvero (onGoalInNet, come il gol su azione),
+         con un ripiego a 4 s se il segnale non arriva. */
+      const _fk62=()=>{try{buildCelebPlan({by:"hero",setPiece:_spKind373,key:Date.now()});}catch(_e373){}
+        try{setWaveEvent({t:Date.now(),home:true,stadiumHome:isMatchHome});}catch(_e374){}
+        try{_golInRete811("home");}catch(_e811s){}};
+      if(typeof window!=='undefined'&&window.__CPM_NO_FK62)_fk62();
+      else{spNet62Ref.current=_fk62;fxTimeout(()=>{const _f=spNet62Ref.current;if(_f===_fk62){spNet62Ref.current=null;_f();}},4000);}
+      cpmEv("goal",{min:clockRef.current,side:"home",src:"setpiece"});/* [7.496.0 F1b] il gol dell'EROE su palla ferma: e' l'UNICO che non passa da `handleContinue` (nota 7.392), quindi va registrato qui */
       scoreRef.current={home:(scoreRef.current.home||0)+1,away:scoreRef.current.away||0};/* [7.113.0 audit massivo · fix C1] il gol da set-piece incrementa il punteggio LOGICO (scoreRef) SUBITO, non solo col setScore differito a 1450ms: prima, se la punizione/rigore era l'ULTIMO HL di un KO in parità e si toccava «Continua» nella finestra 800-1450ms, `_goEndOrCeremony` leggeva ancora il pari → RIGORI FASULLI o risultato registrato incoerente (goals:1 ma homeScore:0/pari). Il setScore resta a 1450 per la sincronia visiva col pallone in rete */
       setResultReveal(false);fxTimeout(()=>setResultReveal(true),1450);
       fxTimeout(()=>{try{AudioMgr.event({type:'GoalTeam'});}catch(_a){}/* [7.62.0 AUDIO] boato sul gol da rigore (non passa da fireGoalCeleb) */addCom(txt,"#16a34a",clock);flashScreen({col:"rgba(255,255,255,0.42)",dur:500});setCutFx({key:Date.now(),dur:560});setFloatGoal({text:"⚽ GOL!",col:"#f59e0b",key:Date.now()});setScore(sc=>({...sc,home:sc.home+1}));},1450);
@@ -9987,7 +9997,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     ?["🏆 È LA FINALE. Novanta minuti per la storia — lo stadio è una bolgia.","🏆 Notte da leggenda: le due squadre si giocano tutto. Che finale sia!","🏆 L'attesa è finita: la finale comincia ORA. Brividi sugli spalti."]
                     :["🔥 Big match! L'atmosfera è elettrica, lo stadio spinge dal primo secondo.","🔥 Partita da dentro o fuori: intensità altissima già dal fischio d'inizio.","🔥 Sfida al vertice: ogni pallone peserà come un macigno."];
                     addCom(_bmPool[Math.abs(hashStr("bm88|"+(player.season||1)+"|"+(player.week||1)))%_bmPool.length],"#f59e0b",0);}
-                  setPhase("playing");}} celebPlan={celebPlan} onGoalInNet={()=>fireGoalCeleb('net')} onOutcomeShown={fireOutcomeReveal} onCutNeeded={()=>{try{setCutFx({key:Date.now(),dur:340});}catch(_e){}}}/* [7.471.0 codice 007] IL RENDERER PUO' CHIEDERE LO STACCO. Il taglio nero e' uno stato React di LiveMatch, ma chi SA che la camera sta per teletrasportarsi e' il render-loop: senza questo filo poteva solo subirlo. */ />
+                  setPhase("playing");}} celebPlan={celebPlan} onGoalInNet={()=>{const _f62=spNet62Ref.current;if(_f62){spNet62Ref.current=null;try{if(typeof window!=='undefined')window.__CPM_FK62=(window.__CPM_FK62||0)+1;}catch(_e){}_f62();}fireGoalCeleb('net');}} onOutcomeShown={fireOutcomeReveal} onCutNeeded={()=>{try{setCutFx({key:Date.now(),dur:340});}catch(_e){}}}/* [7.471.0 codice 007] IL RENDERER PUO' CHIEDERE LO STACCO. Il taglio nero e' uno stato React di LiveMatch, ma chi SA che la camera sta per teletrasportarsi e' il render-loop: senza questo filo poteva solo subirlo. */ />
               {/* [7.65.0 Phase 4 · POST-PROCESSING] VIGNETTE cinematografica sul 3D — bordi scuri morbidi (look da broadcast) + micro-grana ai bordi. Overlay DOM (pointer-events off) → zero recolor del 3D, zero costo GPU, invisibile al gate (che cattura il canvas). */}
               <div style={{position:"absolute",inset:0,pointerEvents:"none",zIndex:3,background:"radial-gradient(ellipse 118% 96% at 50% 44%, rgba(0,0,0,0) 56%, rgba(0,0,0,0.14) 82%, rgba(0,0,0,0.30) 100%)"}}/>
                {/* [7.661.0 - LA CRONACA IN PRIMO PIANO, GRANDE E CENTRALE. Richiesta PO in collaudo: «il testo della cronaca quando non ci sono azioni deve essere piu grande e centrale e carino, deve emozionare». Con la cronaca visuale spenta (7.660) lo stadio e il palcoscenico e il TESTO e lo spettacolo: l ultima riga appare grande al centro, col suo colore, ombra da broadcast e ingresso morbido (remount su key). Il feed sotto resta la storia completa. Rosso __CPM_NO661. */}
