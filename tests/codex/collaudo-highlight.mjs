@@ -6,8 +6,11 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { startServer, launchBrowser, installCdnRoutes, openMatch, matchPhase, sleep } from '../visual/lib/harness.mjs';
+const visualRequire = createRequire(new URL('../visual/package.json', import.meta.url));
+const { PNG } = visualRequire('pngjs');
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const out = path.join(root, 'reports/codex/collaudo-highlight');
@@ -45,6 +48,9 @@ try {
   const newPage = async name => {
     const ctx = await browser.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 1, serviceWorkers: 'block' });
     const page = await ctx.newPage();
+    // La scelta a tempo continua a scorrere durante gli screenshot: il clock
+    // installato prima della navigazione consente di fermarlo solo per le foto.
+    if (mode === 'forced') await page.clock.install();
     await installCdnRoutes(page);
     await page.addInitScript(() => {
       window.__CPM_GLB = true;
@@ -55,6 +61,7 @@ try {
     const pageErrors = [];
     page.on('pageerror', e => pageErrors.push(String(e.message)));
     await openMatch(page, port, { skipLoadAll: true, name });
+    if (mode === 'forced') await page.evaluate(() => window.__CPM_AUTOPLAY?.(false));
     return { ctx, page, pageErrors };
   };
   if (!data.combos) {
@@ -68,11 +75,26 @@ try {
     save();
     console.log(`Indice: ${data.situations} situazioni, ${data.combos.length} azioni, ${data.combos.length * 2} esiti.`);
   }
-  const capture = async (page, base, label, frames, probe = null) => {
+  const masked = file => {
+    const p = PNG.sync.read(fs.readFileSync(file));
+    let dark = 0, samples = 0;
+    for (let y=130; y<Math.min(p.height,620); y+=14) for (let x=12; x<p.width-12; x+=14) {
+      const i=(y*p.width+x)*4; samples++;
+      if (p.data[i]<18 && p.data[i+1]<18 && p.data[i+2]<18) dark++;
+    }
+    return samples > 0 && dark/samples > 0.95;
+  };
+  const capture = async (page, base, label, frames, probe = null, maxRecaptures = 8) => {
     const file = path.join(out, `${base}-${label}.png`);
-    await page.screenshot({ path: file, animations: 'disabled' });
+    let retry = 0, black = true;
+    while (retry <= maxRecaptures) {
+      await page.screenshot({ path: file, animations: 'disabled' });
+      black = masked(file);
+      if (!black) break;
+      retry++; if (retry <= maxRecaptures) await sleep(280);
+    }
     frames.push({ label, png: path.relative(root, file).replaceAll('\\','/'),
-      phase: await matchPhase(page), probe });
+      phase: await matchPhase(page), probe, masked: black, recaptures: retry });
   };
   const draft = async (page, combo) => page.evaluate(c => {
     const snap = window.__CPM_WATCH_SNAP?.();
@@ -94,16 +116,25 @@ try {
       const forced = await page.evaluate(gi => window.__CPM_FORCE_SIT(gi, false), combo.gi);
       if (!forced) throw new Error(`__CPM_FORCE_SIT(${combo.gi},false) ha restituito false`);
       await page.waitForFunction(() => ['hl_move','hl_choose'].includes(window.__CPM_PHASE?.()), null, { timeout: 12000 });
-      await capture(page, base, '01-apertura', frames);
+      await sleep(450); // un primo disegno prima del fermo immagine
+      await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 1000);
+      await capture(page, base, '01-apertura', frames, null, 0);
       if (await matchPhase(page) === 'hl_move') {
         const choose = page.locator('[data-cpm="scegli"]');
-        if (await choose.count()) await choose.first().click({ timeout: 8000, noWaitAfter: true });
-        else await page.getByRole('button', { name: /Scegli/i }).first().click({ timeout: 8000, noWaitAfter: true });
+        if (await choose.count()) await page.evaluate(() => document.querySelector('[data-cpm="scegli"]')?.click());
+        else await page.getByRole('button', { name: /Scegli/i }).first().evaluate(el => el.click());
       }
-      await page.waitForFunction(() => window.__CPM_PHASE?.() === 'hl_choose', null, { timeout: 12000 });
+      await page.waitForFunction(() => window.__CPM_PHASE?.() === 'hl_choose', null, { timeout: 30000 })
+        .catch(async e => { const st=await page.evaluate(() => ({ phase: window.__CPM_PHASE?.(), auto: window.__CPM_AUTOPLAY_ON }));
+          throw new Error(`hl_choose non raggiunta: ${JSON.stringify(st)}; ${e.message}`); });
+      if (frames[0].masked) { frames.shift(); await capture(page, base, '01-apertura', frames, { recoveredAfterChoose: true }); }
       await capture(page, base, '02-scelta', frames);
+      const beforeResolve = await matchPhase(page);
+      if (beforeResolve !== 'hl_choose') throw new Error(`Scelta già risolta prima dell'azione: fase ${beforeResolve}; caso invalido`);
+      await page.clock.resume();
       const n0 = await page.evaluate(() => (window.__CPM_CONT53 || []).length);
-      await page.evaluate(([ai, oo]) => { window.__CPM_FORCE_OUTCOME = oo; window.__CPM_RESOLVE(ai); }, [combo.ai, outcome]);
+      const resolved = await page.evaluate(([ai, oo]) => { window.__CPM_FORCE_OUTCOME = oo; return window.__CPM_RESOLVE(ai); }, [combo.ai, outcome]);
+      if (!resolved) throw new Error(`__CPM_RESOLVE(${combo.ai}) ha restituito false`);
       await page.waitForFunction(() => window.__CPM_PHASE?.() === 'hl_result', null, { timeout: 12000 });
       await sleep(300);
       await capture(page, base, '03-rincorsa', frames);
@@ -111,21 +142,36 @@ try {
       await capture(page, base, '04-contatto', frames, { contactSeen });
       const flightSeen = await page.waitForFunction(() => !!window.__CPM_ARC?.arc, { timeout: 3500 }).then(() => true).catch(() => false);
       await capture(page, base, '05-volo', frames, { flightSeen });
-      await sleep(550);
-      await capture(page, base, '06-esito', frames);
-      const auto = await draft(page, combo);
       const continueButton = page.getByRole('button', { name: /^Continua$/i }).first();
-      if (await continueButton.count()) await continueButton.click({ timeout: 8000, noWaitAfter: true });
-      const exitSeen = await page.waitForFunction(() => window.__CPM_PHASE?.() !== 'hl_result', null, { timeout: 30000 }).then(() => true).catch(() => false);
-      return { ...combo, outcome, frames, auto, pageErrors, exitSeen,
+      const resultReady = await continueButton.waitFor({ state: 'visible', timeout: 60000 }).then(() => true).catch(() => false);
+      await capture(page, base, '06-esito', frames, { resultReady });
+      const auto = await draft(page, combo);
+      if (auto.outcome?.ok !== (outcome === 'success')) throw new Error(`Esito inatteso ${JSON.stringify(auto.outcome)} per ${outcome}; caso invalido`);
+      if (resultReady) {
+        /* __CPM_FORCED_MODE mantiene apposta la scena statica: il pulsante
+           Continua non cambia fase finché resta acceso (src/15 handleContinue).
+           Lo si disarma solo dopo aver fotografato e letto l'esito. */
+        await page.evaluate(() => { window.__CPM_FORCED_MODE = false; });
+        await sleep(850);
+        await continueButton.click({ timeout: 8000, noWaitAfter: true });
+      }
+      const exitSeen = resultReady && await page.waitForFunction(() => window.__CPM_PHASE?.() !== 'hl_result', null, { timeout: 30000 }).then(() => true).catch(() => false);
+      return { ...combo, outcome, frames, auto, pageErrors, resultReady, exitSeen,
         note: null, codes: [], review: 'da esaminare visivamente',
         observedAt: new Date().toISOString() };
     } finally { await ctx.close(); }
   };
   if (mode === 'forced') {
+    const retryKey = process.env.CPM_RETRY_KEY || null;
+    if (retryKey) { data.forced = data.forced.filter(x => runKey(x) !== retryKey); save(); }
     const done = new Set(data.forced.map(runKey));
-    const pending = data.combos.flatMap(c => ['success','fail'].map(outcome => ({ ...c, outcome }))).filter(c => !done.has(runKey(c)));
+    const pending = data.combos.flatMap(c => ['success','fail'].map(outcome => ({ ...c, outcome })))
+      .filter(c => !done.has(runKey(c)) && (!retryKey || runKey(c) === retryKey));
     for (const c of pending.slice(0, batch)) {
+      if (os.freemem() < minFree) {
+        console.log(`RAM libera ${(os.freemem()/1024**3).toFixed(2)} GB < 1,50 GB: lotto fermato al checkpoint.`);
+        break;
+      }
       try { data.forced.push(await forceOne(c, c.outcome)); }
       catch (e) { data.errors.push({ key: runKey(c), error: String(e.stack || e), at: new Date().toISOString() }); }
       save();
@@ -136,6 +182,10 @@ try {
     const done = new Set(data.natural.map(x => x.match));
     let processed = 0;
     for (let i=0; i<seeds.length && data.natural.length<6 && processed<batch; i++) {
+      if (os.freemem() < minFree) {
+        console.log(`RAM libera ${(os.freemem()/1024**3).toFixed(2)} GB < 1,50 GB: lotto naturale fermato al checkpoint.`);
+        break;
+      }
       if (done.has(i)) continue;
       processed++;
       const { ctx, page, pageErrors } = await newPage(`HighlightNaturale${i}-${seeds[i]}`);
@@ -175,5 +225,12 @@ try {
     }
   } else throw new Error(`CPM_MODE sconosciuto: ${mode}`);
 } finally {
-  await browser?.close(); srv.close();
+  if (browser) {
+    let closed = false;
+    await Promise.race([browser.close().then(() => { closed = true; }), sleep(8000)]);
+    if (!closed) browser.process?.()?.kill();
+  }
+  srv.closeAllConnections?.();
+  srv.close();
 }
+process.exit(0);

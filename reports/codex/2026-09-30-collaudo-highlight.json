@@ -6,21 +6,27 @@
   "misure": [
     {
       "nome": "scene forzate acquisite",
-      "valore": 0,
-      "soglia": "non verificato",
+      "valore": 4,
+      "soglia": 1146,
       "esito": "anomalia"
     },
     {
       "nome": "partite naturali acquisite",
-      "valore": 0,
+      "valore": 1,
       "soglia": 6,
       "esito": "anomalia"
     },
     {
-      "nome": "note visive completate",
+      "nome": "highlight naturali con sei fotogrammi",
       "valore": 0,
-      "soglia": "non verificato",
+      "soglia": 8,
       "esito": "anomalia"
+    },
+    {
+      "nome": "note visive completate",
+      "valore": 4,
+      "soglia": 4,
+      "esito": "ok"
     }
   ],
   "segnalazioni": [],

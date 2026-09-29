@@ -11,6 +11,7 @@ const data = fs.existsSync(json) ? JSON.parse(fs.readFileSync(json, 'utf8')) : n
 const version = fs.readFileSync(path.join(root, 'src/07-versione-save-interviste.jsx'), 'utf8').match(/const GAME_VERSION="([^"]+)"/)?.[1];
 const forced = data?.forced || [];
 const natural = (data?.natural || []).flatMap(m => m.highlights.map(h => ({ ...h, match: m.match, seed: m.seed })));
+const naturalSixFrames = natural.filter(h => (h.frames || []).length === 6).length;
 const reviewed = forced.filter(x => x.review === 'verificato visivamente');
 const covered = new Set(forced.map(x => `${x.gi}:${x.ai}:${x.outcome}`));
 const total = (data?.combos?.length || 0) * 2;
@@ -29,7 +30,7 @@ const rows = [
   `**Stato:** ${total && covered.size === total && (data?.natural?.length || 0) === 6 && reviewed.length === forced.length ? 'acquisizione completa; giudizio visivo completato' : 'parziale — non è un verdetto finale'}.`,
   `**Base verificata:** GAME_VERSION=${version || 'non verificato'}; ramo codex/2026-09-30-collaudo-highlight.`,
   `**Copertura forzata:** ${covered.size}/${total || 'non verificato'} combinazioni azione×esito; ${reviewed.length}/${forced.length} note esaminate visivamente.`,
-  `**Partite naturali:** ${data?.natural?.length || 0}/6; ${natural.length} highlight acquisiti.`,
+  `**Partite naturali:** ${data?.natural?.length || 0}/6; ${natural.length} highlight intercettati, ${naturalSixFrames} con tutti i sei fotogrammi richiesti. Gli altri non costituiscono una revisione visiva completa.`,
   '',
   'Comandi: `git ls-files tools/build-src.mjs`; `node tools/build-src.mjs --check`; `$env:CPM_BATCH="1"; node tests/codex/collaudo-highlight.mjs` (ripetere fino a completamento); `$env:CPM_MODE="natural"; node tests/codex/collaudo-highlight.mjs`; `node tests/codex/collaudo-highlight-report.mjs`.',
   'Dati grezzi e checkpoint: [collaudo-highlight.json](../../tests/codex/collaudo-highlight.json).',
@@ -56,9 +57,9 @@ for (const x of reviewed) {
 rows.push('## Partite naturali', '', '| Partita | Seme | Highlight | Fotogrammi | Nota |', '|---:|---:|---|---|---|');
 for (const x of natural) rows.push(`| ${x.match+1} | ${x.seed} | gi ${x.gi ?? 'non verificato'} — ${esc(x.text)} | ${frames(x)} | ${esc(x.note || x.review)} |`);
 rows.push('', '## Differenze fra scene forzate e naturali', '',
-  natural.length && reviewed.length ? 'Confronto da redigere dopo la revisione visiva delle scene corrispondenti; al momento non verificato.' : 'Non verificato: mancano scene naturali o note visive sufficienti.',
+  naturalSixFrames && reviewed.length ? 'Confronto da redigere dopo la revisione visiva delle scene corrispondenti; al momento non verificato.' : 'Non verificato: mancano sei fotogrammi per ogni highlight naturale o note visive sufficienti.',
   '', '## Limiti', '',
-  'Condizione prevista, ancora non verificata in questo checkpoint: Chrome headless con GPU software. In tale condizione tempi e fluidità non si giudicano; i fotogrammi consentono di giudicare soltanto pose, posizioni, direzioni e coerenza pallone/esito. Un fotogramma etichettato «contatto» o «volo» senza testimone positivo resta approssimativo e non prova da solo l’istante del gesto.',
+  'Condizione prevista, ancora non verificata in questo checkpoint: Chrome headless con GPU software. In tale condizione tempi e fluidità non si giudicano; i fotogrammi consentono di giudicare soltanto pose, posizioni, direzioni e coerenza pallone/esito. Un fotogramma etichettato «contatto» o «volo» senza testimone positivo resta approssimativo e non prova da solo l’istante del gesto. Durante le prime due fotografie forzate il clock del browser viene fermato per evitare il tackle automatico dopo 9–16 secondi: lo 0 FPS visualizzato in queste due immagini è un artefatto del test.',
   '', `Errori registrati: ${data?.errors?.length || 0}. Le scene non acquisite o non osservate visivamente restano «non verificato».`, '');
 fs.mkdirSync(path.dirname(report), {recursive:true});
 fs.writeFileSync(report, rows.join('\n'));
@@ -68,6 +69,7 @@ fs.writeFileSync(summaryJson, JSON.stringify({
   misure: [
     { nome: 'scene forzate acquisite', valore: covered.size, soglia: total || 'non verificato', esito: total && covered.size === total ? 'ok' : 'anomalia' },
     { nome: 'partite naturali acquisite', valore: data?.natural?.length || 0, soglia: 6, esito: (data?.natural?.length || 0) === 6 ? 'ok' : 'anomalia' },
+    { nome: 'highlight naturali con sei fotogrammi', valore: naturalSixFrames, soglia: natural.length || 'non verificato', esito: natural.length && naturalSixFrames === natural.length ? 'ok' : 'anomalia' },
     { nome: 'note visive completate', valore: reviewed.length, soglia: forced.length || 'non verificato', esito: forced.length && reviewed.length === forced.length ? 'ok' : 'anomalia' }
   ], segnalazioni: [],
   stato: 'parziale finché acquisizione e revisione visiva non sono complete',

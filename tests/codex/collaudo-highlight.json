@@ -2,10 +2,5505 @@
   "versione": "7.999.61",
   "compito": "collaudo highlight 3D",
   "comando": "node tests/codex/collaudo-highlight.mjs",
-  "combos": null,
-  "forced": [],
-  "natural": [],
-  "errors": [],
+  "combos": [
+    {
+      "gi": 0,
+      "ai": 0,
+      "text": "⚡ Solo davanti al portiere!",
+      "label": "🦵 Tiro angolato",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 0,
+      "ai": 1,
+      "text": "⚡ Solo davanti al portiere!",
+      "label": "🎯 Piazzato basso",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 0,
+      "ai": 2,
+      "text": "⚡ Solo davanti al portiere!",
+      "label": "🤸 Pallonetto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 1,
+      "ai": 0,
+      "text": "🤸 Rovesciata spettacolare!",
+      "label": "🤸 Rovesciata!",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 1,
+      "ai": 1,
+      "text": "🤸 Rovesciata spettacolare!",
+      "label": "✈️ Stacco di testa",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 1,
+      "ai": 2,
+      "text": "🤸 Rovesciata spettacolare!",
+      "label": "🦵 Tiro di prima",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 2,
+      "ai": 0,
+      "text": "⚡ Tap-in! Porta quasi vuota.",
+      "label": "🦵 Spingila dentro!",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 2,
+      "ai": 1,
+      "text": "⚡ Tap-in! Porta quasi vuota.",
+      "label": "🎯 Precisione",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 2,
+      "ai": 2,
+      "text": "⚡ Tap-in! Porta quasi vuota.",
+      "label": "🦶 Deviazione di prima",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 3,
+      "ai": 0,
+      "text": "🌀 Con palla in area — un difensore tra te e la porta!",
+      "label": "🦵 Tiro a giro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 3,
+      "ai": 1,
+      "text": "🌀 Con palla in area — un difensore tra te e la porta!",
+      "label": "🌀 Dribbling portiere",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 3,
+      "ai": 2,
+      "text": "🌀 Con palla in area — un difensore tra te e la porta!",
+      "label": "🎯 Assist retropassaggio",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 4,
+      "ai": 0,
+      "text": "🎯 Deviazione ravvicinata!",
+      "label": "🦵 Deviazione istintiva",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 4,
+      "ai": 1,
+      "text": "🎯 Deviazione ravvicinata!",
+      "label": "🦶 Deviazione di piede",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 4,
+      "ai": 2,
+      "text": "🎯 Deviazione ravvicinata!",
+      "label": "🌀 Prima intenzione",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 5,
+      "ai": 0,
+      "text": "🔴 RIGORE! Sul dischetto.",
+      "label": "💥 Angolato rasoterra",
+      "intent": "penalty",
+      "def": false
+    },
+    {
+      "gi": 5,
+      "ai": 1,
+      "text": "🔴 RIGORE! Sul dischetto.",
+      "label": "🎯 Cucchiaio",
+      "intent": "penalty",
+      "def": false
+    },
+    {
+      "gi": 5,
+      "ai": 2,
+      "text": "🔴 RIGORE! Sul dischetto.",
+      "label": "⚡ Centro-alto",
+      "intent": "penalty",
+      "def": false
+    },
+    {
+      "gi": 6,
+      "ai": 0,
+      "text": "🏳️ Corner! Attacca il secondo palo.",
+      "label": "✈️ Stacco di testa",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 6,
+      "ai": 1,
+      "text": "🏳️ Corner! Attacca il secondo palo.",
+      "label": "🦵 Tiro al volo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 6,
+      "ai": 2,
+      "text": "🏳️ Corner! Attacca il secondo palo.",
+      "label": "🤝 Sponda per compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 7,
+      "ai": 0,
+      "text": "✈️ Cross in area! Attacca il pallone.",
+      "label": "✈️ Colpo di testa",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 7,
+      "ai": 1,
+      "text": "✈️ Cross in area! Attacca il pallone.",
+      "label": "🦵 Tiro di prima",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 7,
+      "ai": 2,
+      "text": "✈️ Cross in area! Attacca il pallone.",
+      "label": "🤸 Tacco",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 8,
+      "ai": 0,
+      "text": "💥 Tiro dal limite!",
+      "label": "💥 Tiro di potenza",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 8,
+      "ai": 1,
+      "text": "💥 Tiro dal limite!",
+      "label": "🎯 Piazzato angolato",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 8,
+      "ai": 2,
+      "text": "💥 Tiro dal limite!",
+      "label": "🏃 Avanza in area",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 9,
+      "ai": 0,
+      "text": "⚽ Tiro al volo dal limite!",
+      "label": "⚽ Volée potente",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 9,
+      "ai": 1,
+      "text": "⚽ Tiro al volo dal limite!",
+      "label": "🎯 Mezza volée",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 9,
+      "ai": 2,
+      "text": "⚽ Tiro al volo dal limite!",
+      "label": "🦵 Controllo e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 10,
+      "ai": 0,
+      "text": "🎯 Pallonetto su portiere in uscita!",
+      "label": "🎯 Pallonetto preciso",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 10,
+      "ai": 1,
+      "text": "🎯 Pallonetto su portiere in uscita!",
+      "label": "💥 Tiro di potenza",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 10,
+      "ai": 2,
+      "text": "🎯 Pallonetto su portiere in uscita!",
+      "label": "🌀 Dribbling portiere",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 11,
+      "ai": 0,
+      "text": "💥 Conclusione di collo pieno!",
+      "label": "💥 Collo pieno!",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 11,
+      "ai": 1,
+      "text": "💥 Conclusione di collo pieno!",
+      "label": "🎯 Interno precisione",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 11,
+      "ai": 2,
+      "text": "💥 Conclusione di collo pieno!",
+      "label": "🌀 Finta e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 12,
+      "ai": 0,
+      "text": "🦵 Tiro con l'esterno del piede!",
+      "label": "🦵 Esterno a giro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 12,
+      "ai": 1,
+      "text": "🦵 Tiro con l'esterno del piede!",
+      "label": "🎯 Rientra e tira",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 12,
+      "ai": 2,
+      "text": "🦵 Tiro con l'esterno del piede!",
+      "label": "🤸 Colpo d'esterno",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 13,
+      "ai": 0,
+      "text": "📐 Punizione dal limite — tiro diretto!",
+      "label": "🎯 Punizione a giro",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 13,
+      "ai": 1,
+      "text": "📐 Punizione dal limite — tiro diretto!",
+      "label": "💥 Tiro rasoterra",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 13,
+      "ai": 2,
+      "text": "📐 Punizione dal limite — tiro diretto!",
+      "label": "↗️ Palla in area",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 14,
+      "ai": 0,
+      "text": "📐 Punizione dalla fascia sinistra!",
+      "label": "↗️ Cross basso teso",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 14,
+      "ai": 1,
+      "text": "📐 Punizione dalla fascia sinistra!",
+      "label": "↗️ Cross alto",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 14,
+      "ai": 2,
+      "text": "📐 Punizione dalla fascia sinistra!",
+      "label": "🌀 Giocata corta",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 15,
+      "ai": 0,
+      "text": "📐 Punizione dalla fascia destra!",
+      "label": "↗️ Cross basso teso",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 15,
+      "ai": 1,
+      "text": "📐 Punizione dalla fascia destra!",
+      "label": "↗️ Cross alto",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 15,
+      "ai": 2,
+      "text": "📐 Punizione dalla fascia destra!",
+      "label": "🌀 Giocata corta",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 16,
+      "ai": 0,
+      "text": "⚡ Cross dalla fascia sinistra!",
+      "label": "↗️ Cross teso",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 16,
+      "ai": 1,
+      "text": "⚡ Cross dalla fascia sinistra!",
+      "label": "↗️ Cross a rientrare",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 16,
+      "ai": 2,
+      "text": "⚡ Cross dalla fascia sinistra!",
+      "label": "🦵 Tiro a giro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 17,
+      "ai": 0,
+      "text": "⚡ Cross dalla fascia destra!",
+      "label": "↗️ Cross teso",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 17,
+      "ai": 1,
+      "text": "⚡ Cross dalla fascia destra!",
+      "label": "↗️ Cross a rientrare",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 17,
+      "ai": 2,
+      "text": "⚡ Cross dalla fascia destra!",
+      "label": "🦵 Tiro a giro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 18,
+      "ai": 0,
+      "text": "🌀 Dribbling! Terzino sul lato sinistro.",
+      "label": "🌀 Dribbling netto",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 18,
+      "ai": 1,
+      "text": "🌀 Dribbling! Terzino sul lato sinistro.",
+      "label": "⚡ Sterzata fulminea",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 18,
+      "ai": 2,
+      "text": "🌀 Dribbling! Terzino sul lato sinistro.",
+      "label": "💥 Tiro a giro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 19,
+      "ai": 0,
+      "text": "🌀 Dribbling! Terzino sul lato destro.",
+      "label": "🌀 Dribbling netto",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 19,
+      "ai": 1,
+      "text": "🌀 Dribbling! Terzino sul lato destro.",
+      "label": "⚡ Sterzata fulminea",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 19,
+      "ai": 2,
+      "text": "🌀 Dribbling! Terzino sul lato destro.",
+      "label": "💥 Tiro a giro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 20,
+      "ai": 0,
+      "text": "🤼 Duello fisico! Liberati.",
+      "label": "🌀 Dribbling netto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 20,
+      "ai": 1,
+      "text": "🤼 Duello fisico! Liberati.",
+      "label": "⚡ Scatto puro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 20,
+      "ai": 2,
+      "text": "🤼 Duello fisico! Liberati.",
+      "label": "↩️ Dai e vai",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 21,
+      "ai": 0,
+      "text": "⚡ Doppio dribbling in velocità!",
+      "label": "⚡ Doppio passo esplosivo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 21,
+      "ai": 1,
+      "text": "⚡ Doppio dribbling in velocità!",
+      "label": "🌀 Elastico e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 21,
+      "ai": 2,
+      "text": "⚡ Doppio dribbling in velocità!",
+      "label": "🎯 Assist a sorpresa",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 22,
+      "ai": 0,
+      "text": "🏃 Contropiede! Campo aperto.",
+      "label": "⚡ Sprint e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 22,
+      "ai": 1,
+      "text": "🏃 Contropiede! Campo aperto.",
+      "label": "🎯 Assist filtrante",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 22,
+      "ai": 2,
+      "text": "🏃 Contropiede! Campo aperto.",
+      "label": "🌀 Dribbling GK",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 23,
+      "ai": 0,
+      "text": "⚡ Scatto in profondità!",
+      "label": "⚡ Scatto e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 23,
+      "ai": 1,
+      "text": "⚡ Scatto in profondità!",
+      "label": "🎯 Filtrante per compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 23,
+      "ai": 2,
+      "text": "⚡ Scatto in profondità!",
+      "label": "🌀 Dribbling difensore",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 24,
+      "ai": 0,
+      "text": "🧠 Ricezione tra le linee!",
+      "label": "🎯 Assist filtrante",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 24,
+      "ai": 1,
+      "text": "🧠 Ricezione tra le linee!",
+      "label": "⚡ Accelera verso porta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 24,
+      "ai": 2,
+      "text": "🧠 Ricezione tra le linee!",
+      "label": "💥 Tiro dal limite",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 25,
+      "ai": 0,
+      "text": "🎯 Filtrante per il centravanti!",
+      "label": "🎯 Filtrante millimetrico",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 25,
+      "ai": 1,
+      "text": "🎯 Filtrante per il centravanti!",
+      "label": "↩️ Dai e vai",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 25,
+      "ai": 2,
+      "text": "🎯 Filtrante per il centravanti!",
+      "label": "💥 Tiro dal limite",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 26,
+      "ai": 0,
+      "text": "💫 Assist di tacco! Giocata geniale.",
+      "label": "💫 Tacco preciso",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 26,
+      "ai": 1,
+      "text": "💫 Assist di tacco! Giocata geniale.",
+      "label": "🦵 Tiro di prima",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 26,
+      "ai": 2,
+      "text": "💫 Assist di tacco! Giocata geniale.",
+      "label": "🔄 Doppio passo e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 27,
+      "ai": 0,
+      "text": "🎯 Triangolazione perfetta!",
+      "label": "🎯 Triangolo e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 27,
+      "ai": 1,
+      "text": "🎯 Triangolazione perfetta!",
+      "label": "↩️ Dai e vai",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 27,
+      "ai": 2,
+      "text": "🎯 Triangolazione perfetta!",
+      "label": "💥 Tiro di prima",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 28,
+      "ai": 0,
+      "text": "🎮 Palla a centrocampo. Costruisci.",
+      "label": "⚡ Verticale",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 28,
+      "ai": 1,
+      "text": "🎮 Palla a centrocampo. Costruisci.",
+      "label": "🔄 Scarico sulla fascia",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 28,
+      "ai": 2,
+      "text": "🎮 Palla a centrocampo. Costruisci.",
+      "label": "🏃 Avanza e servi il taglio",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 29,
+      "ai": 0,
+      "text": "⚡ Palla contesa a centrocampo — pressa e riconquista!",
+      "label": "🏃 Lancia il contropiede",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 29,
+      "ai": 1,
+      "text": "⚡ Palla contesa a centrocampo — pressa e riconquista!",
+      "label": "🎯 Lancio lungo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 29,
+      "ai": 2,
+      "text": "⚡ Palla contesa a centrocampo — pressa e riconquista!",
+      "label": "🌀 Riconquista e conserva",
+      "intent": "build",
+      "def": false
+    },
+    {
+      "gi": 30,
+      "ai": 0,
+      "text": "🌀 Sfida 1v1 a centrocampo!",
+      "label": "🌀 Dribbling centrale e conduci",
+      "intent": "dribble",
+      "def": false
+    },
+    {
+      "gi": 30,
+      "ai": 1,
+      "text": "🌀 Sfida 1v1 a centrocampo!",
+      "label": "⚡ Scatto e servi il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 30,
+      "ai": 2,
+      "text": "🌀 Sfida 1v1 a centrocampo!",
+      "label": "↩️ Triangolo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 31,
+      "ai": 0,
+      "text": "🛡️ Avversario porta palla — sfida in scivolata!",
+      "label": "🛡️ Scivolata netta",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 31,
+      "ai": 1,
+      "text": "🛡️ Avversario porta palla — sfida in scivolata!",
+      "label": "✋ Intercetta di piede",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 31,
+      "ai": 2,
+      "text": "🛡️ Avversario porta palla — sfida in scivolata!",
+      "label": "📣 Copri la linea",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 32,
+      "ai": 0,
+      "text": "✋ Anticipa il passaggio filtrante!",
+      "label": "✋ Anticipo di posizione",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 32,
+      "ai": 1,
+      "text": "✋ Anticipa il passaggio filtrante!",
+      "label": "🏃 Sprint di copertura",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 32,
+      "ai": 2,
+      "text": "✋ Anticipa il passaggio filtrante!",
+      "label": "💪 Contrasto fisico",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 33,
+      "ai": 0,
+      "text": "🧱 Muro in area! Blocca il tiro.",
+      "label": "🧱 Blocca con il corpo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 33,
+      "ai": 1,
+      "text": "🧱 Muro in area! Blocca il tiro.",
+      "label": "✋ Devia col piede",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 33,
+      "ai": 2,
+      "text": "🧱 Muro in area! Blocca il tiro.",
+      "label": "📣 Chiama il portiere",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 34,
+      "ai": 0,
+      "text": "🏃 Pressing alto! Ostacola la costruzione.",
+      "label": "🏃 Pressing aggressivo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 34,
+      "ai": 1,
+      "text": "🏃 Pressing alto! Ostacola la costruzione.",
+      "label": "✋ Intercetta il retropassaggio",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 34,
+      "ai": 2,
+      "text": "🏃 Pressing alto! Ostacola la costruzione.",
+      "label": "🌀 Finta e recupera palla",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 35,
+      "ai": 0,
+      "text": "⚡ Contropiede avversario! Torna in difesa.",
+      "label": "⚡ Sprint di rientro",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 35,
+      "ai": 1,
+      "text": "⚡ Contropiede avversario! Torna in difesa.",
+      "label": "🛡️ Posizione preventiva",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 35,
+      "ai": 2,
+      "text": "⚡ Contropiede avversario! Torna in difesa.",
+      "label": "📣 Organizza la difesa",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 36,
+      "ai": 0,
+      "text": "💪 Duello aereo su corner avversario!",
+      "label": "✈️ Stacco di testa",
+      "intent": "header",
+      "def": true
+    },
+    {
+      "gi": 36,
+      "ai": 1,
+      "text": "💪 Duello aereo su corner avversario!",
+      "label": "🤼 Contrasto fisico",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 36,
+      "ai": 2,
+      "text": "💪 Duello aereo su corner avversario!",
+      "label": "📣 Guida i compagni",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 37,
+      "ai": 0,
+      "text": "📐 Schema! Inserimento da centrocampo in area.",
+      "label": "⚡ Taglio in profondità e rimorchio",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 37,
+      "ai": 1,
+      "text": "📐 Schema! Inserimento da centrocampo in area.",
+      "label": "🎯 Taglio sul secondo palo e sponda",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 37,
+      "ai": 2,
+      "text": "📐 Schema! Inserimento da centrocampo in area.",
+      "label": "↩️ Dai e vai corto",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 38,
+      "ai": 0,
+      "text": "🔄 Dai e vai! Schema rapido in trequarti.",
+      "label": "↩️ Dai e vai preciso",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 38,
+      "ai": 1,
+      "text": "🔄 Dai e vai! Schema rapido in trequarti.",
+      "label": "⚡ Accelera in profondità",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 38,
+      "ai": 2,
+      "text": "🔄 Dai e vai! Schema rapido in trequarti.",
+      "label": "🎯 Tiro di prima",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 39,
+      "ai": 0,
+      "text": "⚡ Corsa di inserimento sul cross!",
+      "label": "📐 Sponda per il rimorchio",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 39,
+      "ai": 1,
+      "text": "⚡ Corsa di inserimento sul cross!",
+      "label": "🦵 Tiro di prima",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 39,
+      "ai": 2,
+      "text": "⚡ Corsa di inserimento sul cross!",
+      "label": "🌀 Controllo e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 40,
+      "ai": 0,
+      "text": "🌀 Difensore di fronte — come lo superi?",
+      "label": "🌀 Tunnel perfetto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 40,
+      "ai": 1,
+      "text": "🌀 Difensore di fronte — come lo superi?",
+      "label": "⚡ Finta e scatto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 40,
+      "ai": 2,
+      "text": "🌀 Difensore di fronte — come lo superi?",
+      "label": "🔙 Retropassaggio sicuro",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 41,
+      "ai": 0,
+      "text": "🔄 Il cross arriva alto — tentazione assoluta in area!",
+      "label": "🔄 Rovesciata spettacolare",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 41,
+      "ai": 1,
+      "text": "🔄 Il cross arriva alto — tentazione assoluta in area!",
+      "label": "🦵 Colpo di testa normale",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 41,
+      "ai": 2,
+      "text": "🔄 Il cross arriva alto — tentazione assoluta in area!",
+      "label": "🔙 Controllo e appoggio",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 42,
+      "ai": 0,
+      "text": "🦶 Fascia chiusa — cross difficile, angolo stretto!",
+      "label": "🦶 Rabona cross",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 42,
+      "ai": 1,
+      "text": "🦶 Fascia chiusa — cross difficile, angolo stretto!",
+      "label": "⚡ Cross normale",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 42,
+      "ai": 2,
+      "text": "🦶 Fascia chiusa — cross difficile, angolo stretto!",
+      "label": "🎯 Tiro a giro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 43,
+      "ai": 0,
+      "text": "💥 Tiro da 30 metri! Nessuno si aspetta questa scelta.",
+      "label": "💥 Botta col collo pieno",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 43,
+      "ai": 1,
+      "text": "💥 Tiro da 30 metri! Nessuno si aspetta questa scelta.",
+      "label": "🎯 Destro rasoterra",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 43,
+      "ai": 2,
+      "text": "💥 Tiro da 30 metri! Nessuno si aspetta questa scelta.",
+      "label": "🔄 Serve in area",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 44,
+      "ai": 0,
+      "text": "✈️ Cross avversario in area! Allontana!",
+      "label": "✈️ Stacco di testa deciso",
+      "intent": "header",
+      "def": true
+    },
+    {
+      "gi": 44,
+      "ai": 1,
+      "text": "✈️ Cross avversario in area! Allontana!",
+      "label": "🛡️ Chiudi di spalla",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 44,
+      "ai": 2,
+      "text": "✈️ Cross avversario in area! Allontana!",
+      "label": "📣 Chiama il portiere",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 45,
+      "ai": 0,
+      "text": "🧱 Tiro avversario in arrivo sulla linea! Intervieni.",
+      "label": "🧱 Corpo sulla traiettoria",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 45,
+      "ai": 1,
+      "text": "🧱 Tiro avversario in arrivo sulla linea! Intervieni.",
+      "label": "✋ Devia col piede",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 45,
+      "ai": 2,
+      "text": "🧱 Tiro avversario in arrivo sulla linea! Intervieni.",
+      "label": "😱 Tentativo disperato",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 46,
+      "ai": 0,
+      "text": "⚡ Sovrapposizione! Il terzino è lanciato in fascia.",
+      "label": "↗️ Cross al centro",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 46,
+      "ai": 1,
+      "text": "⚡ Sovrapposizione! Il terzino è lanciato in fascia.",
+      "label": "⚡ Taglio verso l'area",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 46,
+      "ai": 2,
+      "text": "⚡ Sovrapposizione! Il terzino è lanciato in fascia.",
+      "label": "↩️ Appoggio corto",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 47,
+      "ai": 0,
+      "text": "🚀 Contropiede 2 contro 1! Supera il difensore!",
+      "label": "🎯 Assist al compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 47,
+      "ai": 1,
+      "text": "🚀 Contropiede 2 contro 1! Supera il difensore!",
+      "label": "⚡ Scatta e tira",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 47,
+      "ai": 2,
+      "text": "🚀 Contropiede 2 contro 1! Supera il difensore!",
+      "label": "🌀 Finta e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 48,
+      "ai": 0,
+      "text": "🔄 Rimbalzo in area! Arrivaci per primo.",
+      "label": "🦵 Spinta di prima",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 48,
+      "ai": 1,
+      "text": "🔄 Rimbalzo in area! Arrivaci per primo.",
+      "label": "✈️ Di testa",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 48,
+      "ai": 2,
+      "text": "🔄 Rimbalzo in area! Arrivaci per primo.",
+      "label": "🌀 Controllo e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 49,
+      "ai": 0,
+      "text": "↘️ Cross basso teso! Devia verso la porta.",
+      "label": "🦵 Deviazione al volo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 49,
+      "ai": 1,
+      "text": "↘️ Cross basso teso! Devia verso la porta.",
+      "label": "↗️ Sponda per compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 49,
+      "ai": 2,
+      "text": "↘️ Cross basso teso! Devia verso la porta.",
+      "label": "💥 Tiro potente",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 50,
+      "ai": 0,
+      "text": "📐 Schema corto da corner! Sorpresa tattica.",
+      "label": "🎯 Triangolo e cross",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 50,
+      "ai": 1,
+      "text": "📐 Schema corto da corner! Sorpresa tattica.",
+      "label": "💥 Tiro a giro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 50,
+      "ai": 2,
+      "text": "📐 Schema corto da corner! Sorpresa tattica.",
+      "label": "🌀 Dribbling e cross",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 51,
+      "ai": 0,
+      "text": "📐 Punizione indiretta a 5 metri dall'area!",
+      "label": "↗️ In area per l'incornata del compagno",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 51,
+      "ai": 1,
+      "text": "📐 Punizione indiretta a 5 metri dall'area!",
+      "label": "💥 Bordata sotto la barriera",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 51,
+      "ai": 2,
+      "text": "📐 Punizione indiretta a 5 metri dall'area!",
+      "label": "🌀 Giocata corta",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 52,
+      "ai": 0,
+      "text": "✈️ Lancio lungo! Il portiere esce. Attacca la palla!",
+      "label": "✈️ Colpo di testa sulla porta",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 52,
+      "ai": 1,
+      "text": "✈️ Lancio lungo! Il portiere esce. Attacca la palla!",
+      "label": "🌀 Scavalco il portiere",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 52,
+      "ai": 2,
+      "text": "✈️ Lancio lungo! Il portiere esce. Attacca la palla!",
+      "label": "🎯 Pallone al compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 53,
+      "ai": 0,
+      "text": "💥 Tiro sul palo — la palla rimbalza in area!",
+      "label": "🦵 Prima intenzione!",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 53,
+      "ai": 1,
+      "text": "💥 Tiro sul palo — la palla rimbalza in area!",
+      "label": "✈️ Di testa al volo",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 53,
+      "ai": 2,
+      "text": "💥 Tiro sul palo — la palla rimbalza in area!",
+      "label": "🤝 Sponda per compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 54,
+      "ai": 0,
+      "text": "🏃 Pressing alto in trequarti — portatore avversario sotto pressione!",
+      "label": "🏃 Pressing aggressivo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 54,
+      "ai": 1,
+      "text": "🏃 Pressing alto in trequarti — portatore avversario sotto pressione!",
+      "label": "✋ Intercetta il retropassaggio",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 54,
+      "ai": 2,
+      "text": "🏃 Pressing alto in trequarti — portatore avversario sotto pressione!",
+      "label": "📣 Copri le linee di passaggio",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 55,
+      "ai": 0,
+      "text": "✈️ Cross teso dalla fascia — attacca il palo lontano!",
+      "label": "✈️ Stacco sul palo lontano",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 55,
+      "ai": 1,
+      "text": "✈️ Cross teso dalla fascia — attacca il palo lontano!",
+      "label": "🦵 Mezza rovesciata",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 55,
+      "ai": 2,
+      "text": "✈️ Cross teso dalla fascia — attacca il palo lontano!",
+      "label": "🤝 Sponda indietro",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 56,
+      "ai": 0,
+      "text": "🎯 Lancio lungo millimetrico! Scatta in profondità.",
+      "label": "⚡ Scatto perfetto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 56,
+      "ai": 1,
+      "text": "🎯 Lancio lungo millimetrico! Scatta in profondità.",
+      "label": "🎯 Controlla e tira",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 56,
+      "ai": 2,
+      "text": "🎯 Lancio lungo millimetrico! Scatta in profondità.",
+      "label": "↩️ Rimanda al mittente",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 57,
+      "ai": 0,
+      "text": "⚡ Velocità contro posizione — 1 vs 1 sulla fascia!",
+      "label": "⚡ Spunto esplosivo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 57,
+      "ai": 1,
+      "text": "⚡ Velocità contro posizione — 1 vs 1 sulla fascia!",
+      "label": "🌀 Dribbling di tecnica",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 57,
+      "ai": 2,
+      "text": "⚡ Velocità contro posizione — 1 vs 1 sulla fascia!",
+      "label": "💥 Tiro cross teso",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 58,
+      "ai": 0,
+      "text": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
+      "label": "💥 Angolo basso — potenza",
+      "intent": "penalty",
+      "def": false
+    },
+    {
+      "gi": 58,
+      "ai": 1,
+      "text": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
+      "label": "🌀 Cucchiaio — glaciale",
+      "intent": "penalty",
+      "def": false
+    },
+    {
+      "gi": 58,
+      "ai": 2,
+      "text": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
+      "label": "⚡ Incrociato rasoterra",
+      "intent": "penalty",
+      "def": false
+    },
+    {
+      "gi": 59,
+      "ai": 0,
+      "text": "🔙 Sotto nel punteggio. L'attacco cerca il gol della speranza.",
+      "label": "🔥 Prendo in mano la squadra",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 59,
+      "ai": 1,
+      "text": "🔙 Sotto nel punteggio. L'attacco cerca il gol della speranza.",
+      "label": "⚡ Scatto in verticale",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 59,
+      "ai": 2,
+      "text": "🔙 Sotto nel punteggio. L'attacco cerca il gol della speranza.",
+      "label": "🎯 Lancio smarcante",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 60,
+      "ai": 0,
+      "text": "👥 Doppia marcatura! Due difensori ti raddoppiano.",
+      "label": "🌀 Li salto e servo il compagno libero",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 60,
+      "ai": 1,
+      "text": "👥 Doppia marcatura! Due difensori ti raddoppiano.",
+      "label": "↩️ Dai e ricevi — smarca il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 60,
+      "ai": 2,
+      "text": "👥 Doppia marcatura! Due difensori ti raddoppiano.",
+      "label": "⚡ Scatto diagonale — esci dal raddoppio",
+      "intent": "build",
+      "def": false
+    },
+    {
+      "gi": 61,
+      "ai": 0,
+      "text": "🤝 Sponda e rimorchio in area!",
+      "label": "🤝 Sponda corta e tira",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 61,
+      "ai": 1,
+      "text": "🤝 Sponda e rimorchio in area!",
+      "label": "🦵 Prima intenzione",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 61,
+      "ai": 2,
+      "text": "🤝 Sponda e rimorchio in area!",
+      "label": "↩️ Retropassaggio al limite",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 62,
+      "ai": 0,
+      "text": "💨 Prima intenzione su cross basso!",
+      "label": "💥 Tiro di prima potente",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 62,
+      "ai": 1,
+      "text": "💨 Prima intenzione su cross basso!",
+      "label": "🎯 Deviazione controllata",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 62,
+      "ai": 2,
+      "text": "💨 Prima intenzione su cross basso!",
+      "label": "🤝 Sponda al compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 63,
+      "ai": 0,
+      "text": "🎯 Tiro ad incrociare sul palo lontano!",
+      "label": "🎯 Incrociato sul palo lontano",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 63,
+      "ai": 1,
+      "text": "🎯 Tiro ad incrociare sul palo lontano!",
+      "label": "🌀 Finta e interno piede",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 63,
+      "ai": 2,
+      "text": "🎯 Tiro ad incrociare sul palo lontano!",
+      "label": "↗️ Cross basso sul secondo palo",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 64,
+      "ai": 0,
+      "text": "✈️ Colpo di testa potente da centro area!",
+      "label": "✈️ Testa potente angolato",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 64,
+      "ai": 1,
+      "text": "✈️ Colpo di testa potente da centro area!",
+      "label": "🎯 Testa preciso al centro",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 64,
+      "ai": 2,
+      "text": "✈️ Colpo di testa potente da centro area!",
+      "label": "🌀 Colpo di testa smorzato per compagno",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 65,
+      "ai": 0,
+      "text": "🛑 Stop di petto e tiro fulmineo!",
+      "label": "🛑 Stop e tiro netto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 65,
+      "ai": 1,
+      "text": "🛑 Stop di petto e tiro fulmineo!",
+      "label": "💥 Volée immediata",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 65,
+      "ai": 2,
+      "text": "🛑 Stop di petto e tiro fulmineo!",
+      "label": "↩️ Controllo e serve il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 66,
+      "ai": 0,
+      "text": "↘️ Portiere uscito sul lato — il secondo palo è libero!",
+      "label": "↘️ Tocco sotto morbido",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 66,
+      "ai": 1,
+      "text": "↘️ Portiere uscito sul lato — il secondo palo è libero!",
+      "label": "🦵 Tiro a porta semiaperta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 66,
+      "ai": 2,
+      "text": "↘️ Portiere uscito sul lato — il secondo palo è libero!",
+      "label": "🌀 Dribbling portiere e appoggia",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 67,
+      "ai": 0,
+      "text": "🦶 Tiro col mancino a sorpresa!",
+      "label": "🦶 Mancino angolato",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 67,
+      "ai": 1,
+      "text": "🦶 Tiro col mancino a sorpresa!",
+      "label": "🌀 Finta e mancino",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 67,
+      "ai": 2,
+      "text": "🦶 Tiro col mancino a sorpresa!",
+      "label": "↗️ Cross col mancino",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 68,
+      "ai": 0,
+      "text": "⚡ Sforbiciata acrobatica!",
+      "label": "⚡ Sforbiciata al volo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 68,
+      "ai": 1,
+      "text": "⚡ Sforbiciata acrobatica!",
+      "label": "🦵 Tiro di collo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 68,
+      "ai": 2,
+      "text": "⚡ Sforbiciata acrobatica!",
+      "label": "🎯 Controllo e tira",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 69,
+      "ai": 0,
+      "text": "🔄 Spalle alla porta in area — come ti giri?",
+      "label": "🔄 Tacco in porta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 69,
+      "ai": 1,
+      "text": "🔄 Spalle alla porta in area — come ti giri?",
+      "label": "🔙 Retropassaggio all'accorrente",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 69,
+      "ai": 2,
+      "text": "🔄 Spalle alla porta in area — come ti giri?",
+      "label": "🌀 Giratone e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 70,
+      "ai": 0,
+      "text": "🦵 Cucchiaio in area!",
+      "label": "🦵 Cucchiaio rasoterra",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 70,
+      "ai": 1,
+      "text": "🦵 Cucchiaio in area!",
+      "label": "💥 Tiro diretto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 70,
+      "ai": 2,
+      "text": "🦵 Cucchiaio in area!",
+      "label": "🎯 Pallonetto morbido",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 71,
+      "ai": 0,
+      "text": "🌀 Finta di esterno e tiro interno!",
+      "label": "🌀 Finta e interno",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 71,
+      "ai": 1,
+      "text": "🌀 Finta di esterno e tiro interno!",
+      "label": "🦵 Esterno subito",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 71,
+      "ai": 2,
+      "text": "🌀 Finta di esterno e tiro interno!",
+      "label": "↗️ Scarica per il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 72,
+      "ai": 0,
+      "text": "💥 Tiro di potenza sul palo corto!",
+      "label": "💥 Potenza sul palo corto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 72,
+      "ai": 1,
+      "text": "💥 Tiro di potenza sul palo corto!",
+      "label": "🎯 Piazzato sul palo lontano",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 72,
+      "ai": 2,
+      "text": "💥 Tiro di potenza sul palo corto!",
+      "label": "↗️ Cross sul secondo palo",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 73,
+      "ai": 0,
+      "text": "🤸 Rovesciata in corsa!",
+      "label": "🤸 Acrobazia istintiva in porta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 73,
+      "ai": 1,
+      "text": "🤸 Rovesciata in corsa!",
+      "label": "🦵 Tiro di collo d'istinto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 73,
+      "ai": 2,
+      "text": "🤸 Rovesciata in corsa!",
+      "label": "🎯 Controllo e conclude",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 74,
+      "ai": 0,
+      "text": "⚽ Portiere fuori posizione! L'area piccola è scoperta.",
+      "label": "⚽ Prima intenzione — dentro!",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 74,
+      "ai": 1,
+      "text": "⚽ Portiere fuori posizione! L'area piccola è scoperta.",
+      "label": "🎯 Piazzata angolata",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 74,
+      "ai": 2,
+      "text": "⚽ Portiere fuori posizione! L'area piccola è scoperta.",
+      "label": "🦶 Spinta di sicurezza",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 75,
+      "ai": 0,
+      "text": "😱 Il portiere lascia sfuggire la palla! Approfitta.",
+      "label": "🦵 Prima intenzione subito!",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 75,
+      "ai": 1,
+      "text": "😱 Il portiere lascia sfuggire la palla! Approfitta.",
+      "label": "🎯 Tocco preciso per il gol",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 75,
+      "ai": 2,
+      "text": "😱 Il portiere lascia sfuggire la palla! Approfitta.",
+      "label": "🌀 Dribbla il portiere e segna",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 76,
+      "ai": 0,
+      "text": "🏳️ Corner sul primo palo!",
+      "label": "🦵 Tiro di prima all'angolino",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 76,
+      "ai": 1,
+      "text": "🏳️ Corner sul primo palo!",
+      "label": "🔄 Tacco verso compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 76,
+      "ai": 2,
+      "text": "🏳️ Corner sul primo palo!",
+      "label": "✈️ Stacco sul primo palo",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 77,
+      "ai": 0,
+      "text": "⚡ Corner basso teso — devia!",
+      "label": "🦵 Deviazione rasoterra",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 77,
+      "ai": 1,
+      "text": "⚡ Corner basso teso — devia!",
+      "label": "💥 Prima intenzione potente",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 77,
+      "ai": 2,
+      "text": "⚡ Corner basso teso — devia!",
+      "label": "🤝 Sponda per il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 78,
+      "ai": 0,
+      "text": "📐 Punizione a effetto — curva!",
+      "label": "📐 Curva a rientrare",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 78,
+      "ai": 1,
+      "text": "📐 Punizione a effetto — curva!",
+      "label": "💥 Tiro piatto rasoterra",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 78,
+      "ai": 2,
+      "text": "📐 Punizione a effetto — curva!",
+      "label": "↗️ Palla sul secondo palo",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 79,
+      "ai": 0,
+      "text": "⚡ Rimessa rapida dal portiere!",
+      "label": "⚡ Scatto in profondità e ultimo passaggio",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 79,
+      "ai": 1,
+      "text": "⚡ Rimessa rapida dal portiere!",
+      "label": "🎯 Posizionamento smarcato",
+      "intent": "build",
+      "def": false
+    },
+    {
+      "gi": 79,
+      "ai": 2,
+      "text": "⚡ Rimessa rapida dal portiere!",
+      "label": "🔄 Schema combinato rapido",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 80,
+      "ai": 0,
+      "text": "📐 Angolo sul secondo palo!",
+      "label": "✈️ Taglio sul secondo palo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 80,
+      "ai": 1,
+      "text": "📐 Angolo sul secondo palo!",
+      "label": "💥 Tiro di prima al volo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 80,
+      "ai": 2,
+      "text": "📐 Angolo sul secondo palo!",
+      "label": "🤝 Sponda verso il centro dell'area",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 81,
+      "ai": 0,
+      "text": "📐 Punizione — muro a 9 metri!",
+      "label": "💥 Botta sopra la barriera",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 81,
+      "ai": 1,
+      "text": "📐 Punizione — muro a 9 metri!",
+      "label": "↗️ Tocco per il compagno",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 81,
+      "ai": 2,
+      "text": "📐 Punizione — muro a 9 metri!",
+      "label": "🎯 Tiro a girare sul palo",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 82,
+      "ai": 0,
+      "text": "🏳️ Angolo corto — triangola!",
+      "label": "🎯 Cross a rientrare",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 82,
+      "ai": 1,
+      "text": "🏳️ Angolo corto — triangola!",
+      "label": "💥 Tiro a giro verso il palo lontano",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 82,
+      "ai": 2,
+      "text": "🏳️ Angolo corto — triangola!",
+      "label": "🌀 Dribbling e cross in area",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 83,
+      "ai": 0,
+      "text": "↗️ Ricevi la rimessa del compagno!",
+      "label": "↗️ Cross immediato in area",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 83,
+      "ai": 1,
+      "text": "↗️ Ricevi la rimessa del compagno!",
+      "label": "⚡ Scatto sul secondo palo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 83,
+      "ai": 2,
+      "text": "↗️ Ricevi la rimessa del compagno!",
+      "label": "↩️ Giocata corta con triangolo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 84,
+      "ai": 0,
+      "text": "🎯 Cross a rientrare dalla destra!",
+      "label": "🎯 Cross a rientrare perfetto",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 84,
+      "ai": 1,
+      "text": "🎯 Cross a rientrare dalla destra!",
+      "label": "🦵 Tiro a giro forte sul portiere",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 84,
+      "ai": 2,
+      "text": "🎯 Cross a rientrare dalla destra!",
+      "label": "↗️ Cross alto sul primo palo",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 85,
+      "ai": 0,
+      "text": "↘️ Cross rasoterra al centro!",
+      "label": "↘️ Rasoterra preciso al compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 85,
+      "ai": 1,
+      "text": "↘️ Cross rasoterra al centro!",
+      "label": "💥 Tiro diretto in porta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 85,
+      "ai": 2,
+      "text": "↘️ Cross rasoterra al centro!",
+      "label": "🤸 Deviazione acrobatica col tacco",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 86,
+      "ai": 0,
+      "text": "✈️ Cross al secondo palo — attacca!",
+      "label": "✈️ Stacco sul secondo palo",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 86,
+      "ai": 1,
+      "text": "✈️ Cross al secondo palo — attacca!",
+      "label": "🦵 Tiro di prima al volo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 86,
+      "ai": 2,
+      "text": "✈️ Cross al secondo palo — attacca!",
+      "label": "🤝 Sponda verso il centro",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 87,
+      "ai": 0,
+      "text": "⚡ Cross di prima senza guardare!",
+      "label": "⚡ Cross cieco di prima",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 87,
+      "ai": 1,
+      "text": "⚡ Cross di prima senza guardare!",
+      "label": "🎯 Cross a rientrare guardato",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 87,
+      "ai": 2,
+      "text": "⚡ Cross di prima senza guardare!",
+      "label": "🦵 Tiro senza pensarci",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 88,
+      "ai": 0,
+      "text": "⚽ Volée su cross alzato!",
+      "label": "⚽ Volée di collo potente",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 88,
+      "ai": 1,
+      "text": "⚽ Volée su cross alzato!",
+      "label": "✈️ Colpo di testa al volo",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 88,
+      "ai": 2,
+      "text": "⚽ Volée su cross alzato!",
+      "label": "🎯 Controllo e tiro fermo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 89,
+      "ai": 0,
+      "text": "🌀 Cross d'esterno su cross basso!",
+      "label": "🌀 Esterno a rientrare",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 89,
+      "ai": 1,
+      "text": "🌀 Cross d'esterno su cross basso!",
+      "label": "💥 Tiro dall'angolo stretto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 89,
+      "ai": 2,
+      "text": "🌀 Cross d'esterno su cross basso!",
+      "label": "↗️ Cross interno normale",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 90,
+      "ai": 0,
+      "text": "✈️ Testa su cross dalla trequarti!",
+      "label": "✈️ Testa di potenza",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 90,
+      "ai": 1,
+      "text": "✈️ Testa su cross dalla trequarti!",
+      "label": "🎯 Testa piazzata all'angolo",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 90,
+      "ai": 2,
+      "text": "✈️ Testa su cross dalla trequarti!",
+      "label": "🌀 Testa smorzata per il compagno",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 91,
+      "ai": 0,
+      "text": "⚡ Cross dal fondo — angolo stretto!",
+      "label": "↗️ Cross sul primo palo",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 91,
+      "ai": 1,
+      "text": "⚡ Cross dal fondo — angolo stretto!",
+      "label": "🦵 Tiro da posizione impossibile",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 91,
+      "ai": 2,
+      "text": "⚡ Cross dal fondo — angolo stretto!",
+      "label": "↘️ Rasoterra rasente il palo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 92,
+      "ai": 0,
+      "text": "🔄 Roulette sul difensore!",
+      "label": "🔄 Roulette di classe",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 92,
+      "ai": 1,
+      "text": "🔄 Roulette sul difensore!",
+      "label": "⚡ Finta e scatto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 92,
+      "ai": 2,
+      "text": "🔄 Roulette sul difensore!",
+      "label": "↩️ Appoggio sicuro al compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 93,
+      "ai": 0,
+      "text": "🌀 Elastico in area!",
+      "label": "🌀 Elastico e tiro netto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 93,
+      "ai": 1,
+      "text": "🌀 Elastico in area!",
+      "label": "💥 Tiro diretto senza finte",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 93,
+      "ai": 2,
+      "text": "🌀 Elastico in area!",
+      "label": "↗️ Cross dopo dribbling",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 94,
+      "ai": 0,
+      "text": "🦵 Step-over e via!",
+      "label": "🦵 Step-over e scatto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 94,
+      "ai": 1,
+      "text": "🦵 Step-over e via!",
+      "label": "🌀 Step-over e cross",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 94,
+      "ai": 2,
+      "text": "🦵 Step-over e via!",
+      "label": "💥 Finta e tiro immediato",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 95,
+      "ai": 0,
+      "text": "💨 Finta di corpo e scatto!",
+      "label": "💨 Finta rapida e scatto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 95,
+      "ai": 1,
+      "text": "💨 Finta di corpo e scatto!",
+      "label": "🌀 Finta di corpo e cross",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 95,
+      "ai": 2,
+      "text": "💨 Finta di corpo e scatto!",
+      "label": "🎯 Assist dopo la finta",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 96,
+      "ai": 0,
+      "text": "🏃 Dribbling sulla linea di fondo!",
+      "label": "↗️ Cross al centro da fondo",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 96,
+      "ai": 1,
+      "text": "🏃 Dribbling sulla linea di fondo!",
+      "label": "🌀 Scarta il portiere da fondo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 96,
+      "ai": 2,
+      "text": "🏃 Dribbling sulla linea di fondo!",
+      "label": "🦵 Tiro da angolo impossibile",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 97,
+      "ai": 0,
+      "text": "🌀 Scarta il portiere in uscita!",
+      "label": "🌀 Scarta col dribbling",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 97,
+      "ai": 1,
+      "text": "🌀 Scarta il portiere in uscita!",
+      "label": "💥 Tiro diretto sul portiere",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 97,
+      "ai": 2,
+      "text": "🌀 Scarta il portiere in uscita!",
+      "label": "↗️ Assist al compagno libero",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 98,
+      "ai": 0,
+      "text": "🌀 Tunnel in area! Passa in mezzo.",
+      "label": "🌀 Tunnel e tiro netto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 98,
+      "ai": 1,
+      "text": "🌀 Tunnel in area! Passa in mezzo.",
+      "label": "🦵 Tiro diretto più sicuro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 98,
+      "ai": 2,
+      "text": "🌀 Tunnel in area! Passa in mezzo.",
+      "label": "↩️ Retropassaggio fuori area",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 99,
+      "ai": 0,
+      "text": "⚡ Scatto puro — nessuno ti segue!",
+      "label": "⚡ Scatto esplosivo in profondità",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 99,
+      "ai": 1,
+      "text": "⚡ Scatto puro — nessuno ti segue!",
+      "label": "🎯 Controllo e conclude",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 99,
+      "ai": 2,
+      "text": "⚡ Scatto puro — nessuno ti segue!",
+      "label": "↗️ Cross al volo in corsa",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 100,
+      "ai": 0,
+      "text": "🔄 Hocus pocus sulla fascia!",
+      "label": "🔄 Hocus pocus e cross",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 100,
+      "ai": 1,
+      "text": "🔄 Hocus pocus sulla fascia!",
+      "label": "⚡ Finta e scatto sulla fascia",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 100,
+      "ai": 2,
+      "text": "🔄 Hocus pocus sulla fascia!",
+      "label": "💥 Tiro a giro sul portiere",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 101,
+      "ai": 0,
+      "text": "🌀 Cambio di direzione a 180°!",
+      "label": "🌀 Virata istantanea e scatto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 101,
+      "ai": 1,
+      "text": "🌀 Cambio di direzione a 180°!",
+      "label": "🎯 Giro e cross",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 101,
+      "ai": 2,
+      "text": "🌀 Cambio di direzione a 180°!",
+      "label": "💥 Tiro dopo la virata",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 102,
+      "ai": 0,
+      "text": "🦵 Uno contro uno col terzino in fascia — spazio per il cross!",
+      "label": "🌀 Dribbling netto e cross",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 102,
+      "ai": 1,
+      "text": "🦵 Uno contro uno col terzino in fascia — spazio per il cross!",
+      "label": "⚡ Scatto in velocità",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 102,
+      "ai": 2,
+      "text": "🦵 Uno contro uno col terzino in fascia — spazio per il cross!",
+      "label": "↗️ Cross immediato senza dribblare",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 103,
+      "ai": 0,
+      "text": "🤸 Controllo acrobatico e tiro!",
+      "label": "🤸 Controllo acrobatico e tira",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 103,
+      "ai": 1,
+      "text": "🤸 Controllo acrobatico e tiro!",
+      "label": "✈️ Testa al volo",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 103,
+      "ai": 2,
+      "text": "🤸 Controllo acrobatico e tiro!",
+      "label": "🦵 Tiro di prima",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 104,
+      "ai": 0,
+      "text": "🌀 Dribbling in spazio ristretto!",
+      "label": "🌀 Dribbling stretto e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 104,
+      "ai": 1,
+      "text": "🌀 Dribbling in spazio ristretto!",
+      "label": "⚡ Tiro rapido senza dribblare",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 104,
+      "ai": 2,
+      "text": "🌀 Dribbling in spazio ristretto!",
+      "label": "↗️ Serve il compagno libero",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 105,
+      "ai": 0,
+      "text": "🔄 Cambio gioco rapido 50 metri!",
+      "label": "🔄 Lancio lungo di prima",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 105,
+      "ai": 1,
+      "text": "🔄 Cambio gioco rapido 50 metri!",
+      "label": "⚡ Avanza e cambia lato",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 105,
+      "ai": 2,
+      "text": "🔄 Cambio gioco rapido 50 metri!",
+      "label": "🎯 Passaggio corto e triangolo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 106,
+      "ai": 0,
+      "text": "🎯 Chip pass oltre la difesa!",
+      "label": "🎯 Chip millimetrico",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 106,
+      "ai": 1,
+      "text": "🎯 Chip pass oltre la difesa!",
+      "label": "⚡ Lancio piatto in profondità",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 106,
+      "ai": 2,
+      "text": "🎯 Chip pass oltre la difesa!",
+      "label": "🌀 Avanza e crea spazio",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 107,
+      "ai": 0,
+      "text": "🕳️ Palla al buco tra i centrali!",
+      "label": "🕳️ Filtrante tra i centrali",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 107,
+      "ai": 1,
+      "text": "🕳️ Palla al buco tra i centrali!",
+      "label": "💥 Tiro dal limite invece",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 107,
+      "ai": 2,
+      "text": "🕳️ Palla al buco tra i centrali!",
+      "label": "⚡ Avanza tu stesso",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 108,
+      "ai": 0,
+      "text": "✈️ Spizzata aerea per il compagno!",
+      "label": "✈️ Spizzata di testa",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 108,
+      "ai": 1,
+      "text": "✈️ Spizzata aerea per il compagno!",
+      "label": "🎯 Colpo di testa mirato",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 108,
+      "ai": 2,
+      "text": "✈️ Spizzata aerea per il compagno!",
+      "label": "🔙 Retropassaggio per riorganizzare",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 109,
+      "ai": 0,
+      "text": "🎯 Stop e tiro fulmineo!",
+      "label": "🎯 Stop e tiro preciso",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 109,
+      "ai": 1,
+      "text": "🎯 Stop e tiro fulmineo!",
+      "label": "💥 Prima intenzione senza stop",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 109,
+      "ai": 2,
+      "text": "🎯 Stop e tiro fulmineo!",
+      "label": "↩️ Controlla e serve",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 110,
+      "ai": 0,
+      "text": "🏃 Fai il velo per il compagno!",
+      "label": "🏃 Faccio il velo e attacco",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 110,
+      "ai": 1,
+      "text": "🏃 Fai il velo per il compagno!",
+      "label": "↩️ Ricevo dopo il velo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 110,
+      "ai": 2,
+      "text": "🏃 Fai il velo per il compagno!",
+      "label": "⚡ Scatto oltre il velo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 111,
+      "ai": 0,
+      "text": "⚡ Assist rasoterra in area piccola!",
+      "label": "⚡ Rasoterra preciso per il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 111,
+      "ai": 1,
+      "text": "⚡ Assist rasoterra in area piccola!",
+      "label": "🦵 Tiro di prima invece",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 111,
+      "ai": 2,
+      "text": "⚡ Assist rasoterra in area piccola!",
+      "label": "🤸 Tacco verso il compagno libero",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 112,
+      "ai": 0,
+      "text": "🌀 Penetrazione centrale in dribbling!",
+      "label": "🌀 Dribbling centrale e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 112,
+      "ai": 1,
+      "text": "🌀 Penetrazione centrale in dribbling!",
+      "label": "⚡ Spunto esplosivo verso porta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 112,
+      "ai": 2,
+      "text": "🌀 Penetrazione centrale in dribbling!",
+      "label": "↩️ Dai e vai in verticale",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 113,
+      "ai": 0,
+      "text": "🎯 Assist di prima al compagno libero!",
+      "label": "🎯 Assist di prima senza guardare",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 113,
+      "ai": 1,
+      "text": "🎯 Assist di prima al compagno libero!",
+      "label": "💥 Tiro a sorpresa senza assist",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 113,
+      "ai": 2,
+      "text": "🎯 Assist di prima al compagno libero!",
+      "label": "🌀 Finta e serve dopo la finta",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 114,
+      "ai": 0,
+      "text": "↩️ Rimorchio al limite dell'area!",
+      "label": "↩️ Rimorchio e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 114,
+      "ai": 1,
+      "text": "↩️ Rimorchio al limite dell'area!",
+      "label": "🎯 Rimorchio e serve il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 114,
+      "ai": 2,
+      "text": "↩️ Rimorchio al limite dell'area!",
+      "label": "⚡ Rimorchio e scatto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 115,
+      "ai": 0,
+      "text": "🦶 Tacco al limite! Colpo di classe.",
+      "label": "🌀 Tiro a giro sul secondo palo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 115,
+      "ai": 1,
+      "text": "🦶 Tacco al limite! Colpo di classe.",
+      "label": "🦵 Tiro interno piede classico",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 115,
+      "ai": 2,
+      "text": "🦶 Tacco al limite! Colpo di classe.",
+      "label": "↩️ Tacco per il compagno libero",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 116,
+      "ai": 0,
+      "text": "💡 Smarcamento improvviso!",
+      "label": "💡 Finta e scarta il difensore",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 116,
+      "ai": 1,
+      "text": "💡 Smarcamento improvviso!",
+      "label": "⚡ Taglio improvviso diagonale",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 116,
+      "ai": 2,
+      "text": "💡 Smarcamento improvviso!",
+      "label": "🎯 Schema concordato coi compagni",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 117,
+      "ai": 0,
+      "text": "🎯 Taglio diagonale e tiro!",
+      "label": "🎯 Taglio diagonale e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 117,
+      "ai": 1,
+      "text": "🎯 Taglio diagonale e tiro!",
+      "label": "🌀 Dribbling dopo il taglio",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 117,
+      "ai": 2,
+      "text": "🎯 Taglio diagonale e tiro!",
+      "label": "↩️ Appoggio per il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 118,
+      "ai": 0,
+      "text": "⚡ Smistamento rapidissimo a un tocco!",
+      "label": "⚡ Uno-due e smista subito",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 118,
+      "ai": 1,
+      "text": "⚡ Smistamento rapidissimo a un tocco!",
+      "label": "🔄 Cambia lato rapidamente",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 118,
+      "ai": 2,
+      "text": "⚡ Smistamento rapidissimo a un tocco!",
+      "label": "🏃 Avanza col pallone e conserva",
+      "intent": "build",
+      "def": false
+    },
+    {
+      "gi": 119,
+      "ai": 0,
+      "text": "📏 Cambio di gioco lungo 50 metri!",
+      "label": "📏 Lancio lungo 50m di prima",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 119,
+      "ai": 1,
+      "text": "📏 Cambio di gioco lungo 50 metri!",
+      "label": "🔄 Cambio campo 30m",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 119,
+      "ai": 2,
+      "text": "📏 Cambio di gioco lungo 50 metri!",
+      "label": "↩️ Mantieni il possesso sicuro",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 120,
+      "ai": 0,
+      "text": "🎯 Verticale filtrante di prima!",
+      "label": "🎯 Verticale filtrante di prima",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 120,
+      "ai": 1,
+      "text": "🎯 Verticale filtrante di prima!",
+      "label": "⚡ Avanza in profondità e servi",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 120,
+      "ai": 2,
+      "text": "🎯 Verticale filtrante di prima!",
+      "label": "🌀 Dribbling e conduci",
+      "intent": "dribble",
+      "def": false
+    },
+    {
+      "gi": 121,
+      "ai": 0,
+      "text": "🔥 Triangolo veloce 3 contro 2!",
+      "label": "🔥 Triangolo e vai",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 121,
+      "ai": 1,
+      "text": "🔥 Triangolo veloce 3 contro 2!",
+      "label": "↩️ Dai e vai subito",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 121,
+      "ai": 2,
+      "text": "🔥 Triangolo veloce 3 contro 2!",
+      "label": "⚡ Scatto in verticale",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 122,
+      "ai": 0,
+      "text": "🌀 Parabola d'esterno — cambio gioco!",
+      "label": "🌀 Parabola d'esterno 40m",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 122,
+      "ai": 1,
+      "text": "🌀 Parabola d'esterno — cambio gioco!",
+      "label": "📏 Lancio lungo di collo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 122,
+      "ai": 2,
+      "text": "🌀 Parabola d'esterno — cambio gioco!",
+      "label": "↩️ Passaggio sicuro corto",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 123,
+      "ai": 0,
+      "text": "🏃 Ricezione di spalle e giratone!",
+      "label": "🌀 Giratone e conduci",
+      "intent": "build",
+      "def": false
+    },
+    {
+      "gi": 123,
+      "ai": 1,
+      "text": "🏃 Ricezione di spalle e giratone!",
+      "label": "↩️ Dai e ricevi subito",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 123,
+      "ai": 2,
+      "text": "🏃 Ricezione di spalle e giratone!",
+      "label": "💥 Sventagliata improvvisa dopo il giratone",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 124,
+      "ai": 0,
+      "text": "🎯 Lanci lunghi — alzati e controlla!",
+      "label": "✈️ Colpo di testa e smista",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 124,
+      "ai": 1,
+      "text": "🎯 Lanci lunghi — alzati e controlla!",
+      "label": "🛑 Stop di petto e conserva",
+      "intent": "build",
+      "def": false
+    },
+    {
+      "gi": 124,
+      "ai": 2,
+      "text": "🎯 Lanci lunghi — alzati e controlla!",
+      "label": "⚡ Controlla al volo e lancia",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 125,
+      "ai": 0,
+      "text": "⚡ Break verticale — lancia la transizione!",
+      "label": "⚡ Lancio in profondità immediato",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 125,
+      "ai": 1,
+      "text": "⚡ Break verticale — lancia la transizione!",
+      "label": "🏃 Avanza col pallone di corsa",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 125,
+      "ai": 2,
+      "text": "⚡ Break verticale — lancia la transizione!",
+      "label": "🔄 Smista sul lato libero",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 126,
+      "ai": 0,
+      "text": "🧠 Gioco aereo a centrocampo!",
+      "label": "✈️ Stacco e indirizza il compagno",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 126,
+      "ai": 1,
+      "text": "🧠 Gioco aereo a centrocampo!",
+      "label": "💪 Stacco difensivo deciso",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 126,
+      "ai": 2,
+      "text": "🧠 Gioco aereo a centrocampo!",
+      "label": "🤝 Sponda per il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 127,
+      "ai": 0,
+      "text": "💪 Pressing aggressivo a centrocampo — sfida sul portatore!",
+      "label": "💪 Contrasto duro sull'avversario",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 127,
+      "ai": 1,
+      "text": "💪 Pressing aggressivo a centrocampo — sfida sul portatore!",
+      "label": "✋ Intercetta la traiettoria",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 127,
+      "ai": 2,
+      "text": "💪 Pressing aggressivo a centrocampo — sfida sul portatore!",
+      "label": "🏃 Sprint di copertura",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 128,
+      "ai": 0,
+      "text": "🛑 Chiusura urgente sull'attaccante!",
+      "label": "🛑 Chiusura immediata",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 128,
+      "ai": 1,
+      "text": "🛑 Chiusura urgente sull'attaccante!",
+      "label": "💪 Contrasto fisico deciso",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 128,
+      "ai": 2,
+      "text": "🛑 Chiusura urgente sull'attaccante!",
+      "label": "📣 Posizionamento strategico",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 129,
+      "ai": 0,
+      "text": "🤼 Raddoppio difensivo!",
+      "label": "🤼 Raddoppio coordinato col compagno",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 129,
+      "ai": 1,
+      "text": "🤼 Raddoppio difensivo!",
+      "label": "🏃 Sprint di copertura urgente",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 129,
+      "ai": 2,
+      "text": "🤼 Raddoppio difensivo!",
+      "label": "📣 Chiamo il compagno a raddoppiare",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 130,
+      "ai": 0,
+      "text": "✋ Intercetto in verticale!",
+      "label": "✋ Anticipo sulla traiettoria",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 130,
+      "ai": 1,
+      "text": "✋ Intercetto in verticale!",
+      "label": "⚡ Sprint anticipato",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 130,
+      "ai": 2,
+      "text": "✋ Intercetto in verticale!",
+      "label": "💪 Contrasto di spalla",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 131,
+      "ai": 0,
+      "text": "🛡️ Fallo tattico — ferma il contropiede!",
+      "label": "🛡️ Fallo intelligente in zona",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 131,
+      "ai": 1,
+      "text": "🛡️ Fallo tattico — ferma il contropiede!",
+      "label": "⚡ Recupero in velocità invece",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 131,
+      "ai": 2,
+      "text": "🛡️ Fallo tattico — ferma il contropiede!",
+      "label": "💪 Contrasto pulito senza fallo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 132,
+      "ai": 0,
+      "text": "🧱 Blocco del tiro in area!",
+      "label": "🧱 Blocco col corpo sulla traiettoria",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 132,
+      "ai": 1,
+      "text": "🧱 Blocco del tiro in area!",
+      "label": "✋ Devia col piede sul palo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 132,
+      "ai": 2,
+      "text": "🧱 Blocco del tiro in area!",
+      "label": "😱 Tentativo disperato",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 133,
+      "ai": 0,
+      "text": "🏃 Recupero sulla linea di fondo!",
+      "label": "🏃 Sprint disperato sulla linea",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 133,
+      "ai": 1,
+      "text": "🏃 Recupero sulla linea di fondo!",
+      "label": "✋ Intercetto prima del fondo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 133,
+      "ai": 2,
+      "text": "🏃 Recupero sulla linea di fondo!",
+      "label": "📣 Chiamo il portiere",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 134,
+      "ai": 0,
+      "text": "✈️ Sfida aerea su lancio lungo!",
+      "label": "✈️ Stacco dominante",
+      "intent": "header",
+      "def": true
+    },
+    {
+      "gi": 134,
+      "ai": 1,
+      "text": "✈️ Sfida aerea su lancio lungo!",
+      "label": "💪 Contrasto fisico in volo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 134,
+      "ai": 2,
+      "text": "✈️ Sfida aerea su lancio lungo!",
+      "label": "📣 Chiamo il portiere",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 135,
+      "ai": 0,
+      "text": "🤝 Copertura del compagno fuori posizione!",
+      "label": "🤝 Copro la sua posizione",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 135,
+      "ai": 1,
+      "text": "🤝 Copertura del compagno fuori posizione!",
+      "label": "⚡ Sprint per coprire lo spazio",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 135,
+      "ai": 2,
+      "text": "🤝 Copertura del compagno fuori posizione!",
+      "label": "📣 Comunico la situazione",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 136,
+      "ai": 0,
+      "text": "🛑 Cross basso in area — intercetta!",
+      "label": "🛑 Blocca il cross con il corpo",
+      "intent": "cross",
+      "def": true
+    },
+    {
+      "gi": 136,
+      "ai": 1,
+      "text": "🛑 Cross basso in area — intercetta!",
+      "label": "✋ Devia in corner",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 136,
+      "ai": 2,
+      "text": "🛑 Cross basso in area — intercetta!",
+      "label": "📣 Chiama il portiere",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 137,
+      "ai": 0,
+      "text": "⚡ Tackle in corsa — è più veloce!",
+      "label": "⚡ Tackle in corsa preciso",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 137,
+      "ai": 1,
+      "text": "⚡ Tackle in corsa — è più veloce!",
+      "label": "🌀 Indirizza verso il fallo laterale",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 137,
+      "ai": 2,
+      "text": "⚡ Tackle in corsa — è più veloce!",
+      "label": "🏃 Sprint puro di rientro",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 138,
+      "ai": 0,
+      "text": "📣 Allineati con la difesa — linea alta!",
+      "label": "📣 Allineamento difensivo immediato",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 138,
+      "ai": 1,
+      "text": "📣 Allineati con la difesa — linea alta!",
+      "label": "💪 Contrasto fisico duro",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 138,
+      "ai": 2,
+      "text": "📣 Allineati con la difesa — linea alta!",
+      "label": "⚡ Pressing immediato sul portatore",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 139,
+      "ai": 0,
+      "text": "🏃 Pressing coordinato — recupera!",
+      "label": "🏃 Pressing a zona coordinato",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 139,
+      "ai": 1,
+      "text": "🏃 Pressing coordinato — recupera!",
+      "label": "✋ Intercetta il passaggio",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 139,
+      "ai": 2,
+      "text": "🏃 Pressing coordinato — recupera!",
+      "label": "💪 Contrasto duro sull'avversario",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 140,
+      "ai": 0,
+      "text": "🔥 Siamo in vantaggio — gestisci!",
+      "label": "🔥 Porta palla nell'angolo",
+      "intent": "build",
+      "def": false
+    },
+    {
+      "gi": 140,
+      "ai": 1,
+      "text": "🔥 Siamo in vantaggio — gestisci!",
+      "label": "↩️ Passaggio sicuro laterale",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 140,
+      "ai": 2,
+      "text": "🔥 Siamo in vantaggio — gestisci!",
+      "label": "💥 Rilancio offensivo in profondità",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 141,
+      "ai": 0,
+      "text": "🔥 Caccia al gol — attacca!",
+      "label": "💥 Tiro dalla distanza!",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 141,
+      "ai": 1,
+      "text": "🔥 Caccia al gol — attacca!",
+      "label": "⚡ Sprint verso la porta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 141,
+      "ai": 2,
+      "text": "🔥 Caccia al gol — attacca!",
+      "label": "🎯 Assist preciso",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 142,
+      "ai": 0,
+      "text": "🌧️ Campo pesante — pioggia torrenziale!",
+      "label": "🌧️ Tiro rasoterra sul bagnato",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 142,
+      "ai": 1,
+      "text": "🌧️ Campo pesante — pioggia torrenziale!",
+      "label": "💪 Usa il fisico — campo pesante",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 142,
+      "ai": 2,
+      "text": "🌧️ Campo pesante — pioggia torrenziale!",
+      "label": "🎯 Passaggio corto e sicuro",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 143,
+      "ai": 0,
+      "text": "🏟️ Derby cittadino! Intensità massima.",
+      "label": "🔥 Tiro potente — adrenalina pura",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 143,
+      "ai": 1,
+      "text": "🏟️ Derby cittadino! Intensità massima.",
+      "label": "🌀 Dribbling tecnico da campione",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 143,
+      "ai": 2,
+      "text": "🏟️ Derby cittadino! Intensità massima.",
+      "label": "🎯 Assist preciso — vinci il derby",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 144,
+      "ai": 0,
+      "text": "💔 Davanti alla tua ex squadra — momento decisivo.",
+      "label": "💥 Gol dell'ex — silenzio assoluto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 144,
+      "ai": 1,
+      "text": "💔 Davanti alla tua ex squadra — momento decisivo.",
+      "label": "🎯 Assist gelido e decisivo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 144,
+      "ai": 2,
+      "text": "💔 Davanti alla tua ex squadra — momento decisivo.",
+      "label": "⚡ Scatto senza rimpianti",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 145,
+      "ai": 0,
+      "text": "🌟 Stadio in delirio! Fai il gol dell'anno.",
+      "label": "🌟 Gol dell'anno — ci provo!",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 145,
+      "ai": 1,
+      "text": "🌟 Stadio in delirio! Fai il gol dell'anno.",
+      "label": "🎯 Assist decisivo per la vittoria",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 145,
+      "ai": 2,
+      "text": "🌟 Stadio in delirio! Fai il gol dell'anno.",
+      "label": "⚡ Gioco sul sicuro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 146,
+      "ai": 0,
+      "text": "🛡️ Assalto avversario! Difendi con tutto.",
+      "label": "🛡️ Blocca con tutto il fisico",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 146,
+      "ai": 1,
+      "text": "🛡️ Assalto avversario! Difendi con tutto.",
+      "label": "⚡ Sprint disperato di copertura",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 146,
+      "ai": 2,
+      "text": "🛡️ Assalto avversario! Difendi con tutto.",
+      "label": "🧠 Intelligenza tattica — posizionati",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 147,
+      "ai": 0,
+      "text": "🎯 Superiorità numerica — sfruttala!",
+      "label": "🎯 Sfrutta lo spazio in più",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 147,
+      "ai": 1,
+      "text": "🎯 Superiorità numerica — sfruttala!",
+      "label": "⚡ Scatto senza pressione",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 147,
+      "ai": 2,
+      "text": "🎯 Superiorità numerica — sfruttala!",
+      "label": "💥 Tiro con fiducia",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 148,
+      "ai": 0,
+      "text": "🏃 Rimessa dal portiere — verticale!",
+      "label": "🏃 Scatto in profondità e cross basso",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 148,
+      "ai": 1,
+      "text": "🏃 Rimessa dal portiere — verticale!",
+      "label": "🎯 Triangolo col portiere",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 148,
+      "ai": 2,
+      "text": "🏃 Rimessa dal portiere — verticale!",
+      "label": "🧠 Costruisci con qualità",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 149,
+      "ai": 0,
+      "text": "⚡ Rimessa rapida del compagno — sorpresa!",
+      "label": "⚡ Ricevi e scatta in profondità",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 149,
+      "ai": 1,
+      "text": "⚡ Rimessa rapida del compagno — sorpresa!",
+      "label": "↗️ Chiama il lancio in area",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 149,
+      "ai": 2,
+      "text": "⚡ Rimessa rapida del compagno — sorpresa!",
+      "label": "🎯 Triangola dalla rimessa",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 150,
+      "ai": 0,
+      "text": "🎭 Guadagna una punizione!",
+      "label": "🌀 Dribbling provocatorio — il fallo c'è!",
+      "intent": "dribble",
+      "def": false
+    },
+    {
+      "gi": 150,
+      "ai": 1,
+      "text": "🎭 Guadagna una punizione!",
+      "label": "⚡ Scatto improvviso provocatorio",
+      "intent": "dribble",
+      "def": false
+    },
+    {
+      "gi": 150,
+      "ai": 2,
+      "text": "🎭 Guadagna una punizione!",
+      "label": "💥 Tiro potente invece",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 151,
+      "ai": 0,
+      "text": "🔴 Ribattuta libera in area — arrivaci per primo!",
+      "label": "⚡ Arriva di sprint sulla ribattuta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 151,
+      "ai": 1,
+      "text": "🔴 Ribattuta libera in area — arrivaci per primo!",
+      "label": "🦵 Tiro di prima sul rimbalzo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 151,
+      "ai": 2,
+      "text": "🔴 Ribattuta libera in area — arrivaci per primo!",
+      "label": "🤝 Servi il compagno libero",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 152,
+      "ai": 0,
+      "text": "📋 Schema doppio dai e vai!",
+      "label": "📋 Schema a tre — dai, ricevi, tira",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 152,
+      "ai": 1,
+      "text": "📋 Schema doppio dai e vai!",
+      "label": "⚡ Primo triangolo e scatta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 152,
+      "ai": 2,
+      "text": "📋 Schema doppio dai e vai!",
+      "label": "🎯 Terzo uomo smarcato",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 153,
+      "ai": 0,
+      "text": "💥 Bordata da centrocampo!",
+      "label": "💥 Bordata potente",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 153,
+      "ai": 1,
+      "text": "💥 Bordata da centrocampo!",
+      "label": "🎯 Tiro controllato",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 153,
+      "ai": 2,
+      "text": "💥 Bordata da centrocampo!",
+      "label": "↗️ Serve in area per il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 154,
+      "ai": 0,
+      "text": "🌀 Azione individuale — porta il pallone!",
+      "label": "🌀 Dribbling individuale feroce",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 154,
+      "ai": 1,
+      "text": "🌀 Azione individuale — porta il pallone!",
+      "label": "⚡ Sprint verso la porta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 154,
+      "ai": 2,
+      "text": "🌀 Azione individuale — porta il pallone!",
+      "label": "🎯 Serve un compagno smarcato",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 155,
+      "ai": 0,
+      "text": "🧠 Anticipo tattico — leggi il gioco!",
+      "label": "🧠 Anticipi la giocata avversaria",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 155,
+      "ai": 1,
+      "text": "🧠 Anticipo tattico — leggi il gioco!",
+      "label": "⚡ Sprint anticipato",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 155,
+      "ai": 2,
+      "text": "🧠 Anticipo tattico — leggi il gioco!",
+      "label": "↩️ Posizionamento preventivo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 156,
+      "ai": 0,
+      "text": "🎯 Lancio millimetrico in profondità!",
+      "label": "🎯 Lancio in profondità perfetto",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 156,
+      "ai": 1,
+      "text": "🎯 Lancio millimetrico in profondità!",
+      "label": "⚡ Avanza di corsa e lancia",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 156,
+      "ai": 2,
+      "text": "🎯 Lancio millimetrico in profondità!",
+      "label": "💥 Missile a scavalcare la difesa",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 157,
+      "ai": 0,
+      "text": "🛡️ Il tiro è in porta — gettati sulla traiettoria!",
+      "label": "🤸 Gettati sulla traiettoria",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 157,
+      "ai": 1,
+      "text": "🛡️ Il tiro è in porta — gettati sulla traiettoria!",
+      "label": "✋ Devia di piede sul palo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 157,
+      "ai": 2,
+      "text": "🛡️ Il tiro è in porta — gettati sulla traiettoria!",
+      "label": "📣 Avvisa il portiere",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 158,
+      "ai": 0,
+      "text": "🔙 Costruzione dal basso!",
+      "label": "🔙 Smarcati per ricevere",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 158,
+      "ai": 1,
+      "text": "🔙 Costruzione dal basso!",
+      "label": "⚡ Scatto per dargli una soluzione",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 158,
+      "ai": 2,
+      "text": "🔙 Costruzione dal basso!",
+      "label": "💪 Offri il fisico per la palla lunga",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 159,
+      "ai": 0,
+      "text": "⚽ Taglio sul cross al palo lontano — tempismo!",
+      "label": "⚽ Taglio preciso sul palo lontano",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 159,
+      "ai": 1,
+      "text": "⚽ Taglio sul cross al palo lontano — tempismo!",
+      "label": "✈️ Testa in profondità",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 159,
+      "ai": 2,
+      "text": "⚽ Taglio sul cross al palo lontano — tempismo!",
+      "label": "↩️ Serve il compagno al centro",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 160,
+      "ai": 0,
+      "text": "🌀 Portiere in uscita — scartalo!",
+      "label": "⚡ Tiro immediato prima che esca",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 160,
+      "ai": 1,
+      "text": "🌀 Portiere in uscita — scartalo!",
+      "label": "🌀 Scarta il portiere in uscita",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 160,
+      "ai": 2,
+      "text": "🌀 Portiere in uscita — scartalo!",
+      "label": "↗️ Passa al compagno a porta vuota",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 161,
+      "ai": 0,
+      "text": "📐 Punizione da posizione defilata!",
+      "label": "📐 Punizione a rientrare",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 161,
+      "ai": 1,
+      "text": "📐 Punizione da posizione defilata!",
+      "label": "↗️ Cross sul secondo palo",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 161,
+      "ai": 2,
+      "text": "📐 Punizione da posizione defilata!",
+      "label": "🎯 Palla sul primo palo",
+      "intent": "freekick",
+      "def": false
+    },
+    {
+      "gi": 162,
+      "ai": 0,
+      "text": "🎯 Assist d'esterno piede!",
+      "label": "🎯 Esterno piede preciso",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 162,
+      "ai": 1,
+      "text": "🎯 Assist d'esterno piede!",
+      "label": "💥 Tiro d'esterno a sorpresa",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 162,
+      "ai": 2,
+      "text": "🎯 Assist d'esterno piede!",
+      "label": "🌀 Finta e interno piede",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 163,
+      "ai": 0,
+      "text": "💥 Bordata dal limite!",
+      "label": "💥 Collo pieno potente",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 163,
+      "ai": 1,
+      "text": "💥 Bordata dal limite!",
+      "label": "🎯 Tiro controllato",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 163,
+      "ai": 2,
+      "text": "💥 Bordata dal limite!",
+      "label": "↗️ Serve in area per il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 164,
+      "ai": 0,
+      "text": "⚡ Taglio dal lato destro verso il centro!",
+      "label": "🌀 Rientra e tira col sinistro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 164,
+      "ai": 1,
+      "text": "⚡ Taglio dal lato destro verso il centro!",
+      "label": "🎯 Cross teso verso il secondo palo",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 164,
+      "ai": 2,
+      "text": "⚡ Taglio dal lato destro verso il centro!",
+      "label": "💥 Tiro di collo pieno",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 165,
+      "ai": 0,
+      "text": "⚡ Taglio dal lato sinistro verso il centro!",
+      "label": "🌀 Rientra e tira col destro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 165,
+      "ai": 1,
+      "text": "⚡ Taglio dal lato sinistro verso il centro!",
+      "label": "🎯 Cross teso verso il secondo palo",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 165,
+      "ai": 2,
+      "text": "⚡ Taglio dal lato sinistro verso il centro!",
+      "label": "💥 Tiro di collo pieno",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 166,
+      "ai": 0,
+      "text": "🌀 Slalom in area! Tre difensori da superare.",
+      "label": "🌀 Slalom completato e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 166,
+      "ai": 1,
+      "text": "🌀 Slalom in area! Tre difensori da superare.",
+      "label": "⚡ Scatto tra le gambe",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 166,
+      "ai": 2,
+      "text": "🌀 Slalom in area! Tre difensori da superare.",
+      "label": "🎯 Assist per il compagno smarcato",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 167,
+      "ai": 0,
+      "text": "🦵 Controbalzo improvviso in area!",
+      "label": "🦵 Controbalzo secco al volo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 167,
+      "ai": 1,
+      "text": "🦵 Controbalzo improvviso in area!",
+      "label": "🎯 Controllo e tira",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 167,
+      "ai": 2,
+      "text": "🦵 Controbalzo improvviso in area!",
+      "label": "↩️ Serve il compagno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 168,
+      "ai": 0,
+      "text": "🛡️ Ultimo uomo! Devi fermare l'avversario.",
+      "label": "🛡️ Tackle duro — rischio rosso",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 168,
+      "ai": 1,
+      "text": "🛡️ Ultimo uomo! Devi fermare l'avversario.",
+      "label": "⚡ Sprint laterale preventivo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 168,
+      "ai": 2,
+      "text": "🛡️ Ultimo uomo! Devi fermare l'avversario.",
+      "label": "📣 Guida i compagni e copri",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 169,
+      "ai": 0,
+      "text": "😱 Il portiere è fuori dai pali! Tira da lontano.",
+      "label": "💥 Tiro da distanza sul palo lontano",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 169,
+      "ai": 1,
+      "text": "😱 Il portiere è fuori dai pali! Tira da lontano.",
+      "label": "🎯 Pallonetto morbido — gol dell'anno",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 169,
+      "ai": 2,
+      "text": "😱 Il portiere è fuori dai pali! Tira da lontano.",
+      "label": "🎯 Assist per il compagno in area",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 170,
+      "ai": 0,
+      "text": "🔥 CI CREDIAMO! La rimonta è iniziata.",
+      "label": "🔥 Tiro di rabbia — per i tifosi",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 170,
+      "ai": 1,
+      "text": "🔥 CI CREDIAMO! La rimonta è iniziata.",
+      "label": "💥 Potenza esplosiva dal limite",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 170,
+      "ai": 2,
+      "text": "🔥 CI CREDIAMO! La rimonta è iniziata.",
+      "label": "🌟 Assist da campione",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 171,
+      "ai": 0,
+      "text": "🏃 Corsa in area — stacca di testa in corsa!",
+      "label": "✈️ Stacco in corsa potente",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 171,
+      "ai": 1,
+      "text": "🏃 Corsa in area — stacca di testa in corsa!",
+      "label": "🎯 Colpo di testa angolato",
+      "intent": "header",
+      "def": false
+    },
+    {
+      "gi": 171,
+      "ai": 2,
+      "text": "🏃 Corsa in area — stacca di testa in corsa!",
+      "label": "🦵 Lascia passare e tira di piede",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 172,
+      "ai": 0,
+      "text": "⚡ Ultima linea difensiva da superare — sei in area con spazio!",
+      "label": "🦵 Tiro sul palo più lontano",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 172,
+      "ai": 1,
+      "text": "⚡ Ultima linea difensiva da superare — sei in area con spazio!",
+      "label": "🎯 Piazzato nell'angolo basso",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 172,
+      "ai": 2,
+      "text": "⚡ Ultima linea difensiva da superare — sei in area con spazio!",
+      "label": "⚡ Tiro di prima — istinto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 173,
+      "ai": 0,
+      "text": "🎯 Cucchiaio a giro sul palo lontano!",
+      "label": "🎯 Cucchiaio a giro angolato",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 173,
+      "ai": 1,
+      "text": "🎯 Cucchiaio a giro sul palo lontano!",
+      "label": "💥 Tiro di collo pieno invece",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 173,
+      "ai": 2,
+      "text": "🎯 Cucchiaio a giro sul palo lontano!",
+      "label": "↗️ Cross sul secondo palo",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 174,
+      "ai": 0,
+      "text": "🧠 Verticalizzazione prima del difensore!",
+      "label": "🎯 Verticalizzazione precisa",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 174,
+      "ai": 1,
+      "text": "🧠 Verticalizzazione prima del difensore!",
+      "label": "⚡ Avanza e servi in corsa",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 174,
+      "ai": 2,
+      "text": "🧠 Verticalizzazione prima del difensore!",
+      "label": "🌀 Finta e supera il pressing",
+      "intent": "dribble",
+      "def": false
+    },
+    {
+      "gi": 175,
+      "ai": 0,
+      "text": "🧤 Errore del portiere! Ribattuta in area.",
+      "label": "⚡ Arriva in tempo sulla ribattuta",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 175,
+      "ai": 1,
+      "text": "🧤 Errore del portiere! Ribattuta in area.",
+      "label": "🦵 Tiro immediato sul rimbalzo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 175,
+      "ai": 2,
+      "text": "🧤 Errore del portiere! Ribattuta in area.",
+      "label": "🤝 Serve il compagno più vicino",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 176,
+      "ai": 0,
+      "text": "⚡ Sprint sulla fascia sinistra — supera il terzino!",
+      "label": "🌀 Sterzata d'esterno verso il fondo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 176,
+      "ai": 1,
+      "text": "⚡ Sprint sulla fascia sinistra — supera il terzino!",
+      "label": "↗️ Cross al volo senza dribblare",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 176,
+      "ai": 2,
+      "text": "⚡ Sprint sulla fascia sinistra — supera il terzino!",
+      "label": "💥 Tiro a giro dall'angolo stretto",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 177,
+      "ai": 0,
+      "text": "🌀 Marca stretta sul lato destro — finta e apri lo spazio!",
+      "label": "🌀 Sterzata esterna e fuga verso il fondo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 177,
+      "ai": 1,
+      "text": "🌀 Marca stretta sul lato destro — finta e apri lo spazio!",
+      "label": "↗️ Cross immediato di prima",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 177,
+      "ai": 2,
+      "text": "🌀 Marca stretta sul lato destro — finta e apri lo spazio!",
+      "label": "🦵 Tiro verso il palo vicino",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 178,
+      "ai": 0,
+      "text": "🏃 Accelerazione sulla fascia — il recupero avversario è lento!",
+      "label": "⚡ Sterzata d'esterno e brucia il terzino",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 178,
+      "ai": 1,
+      "text": "🏃 Accelerazione sulla fascia — il recupero avversario è lento!",
+      "label": "🎯 Cross preciso al secondo palo",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 178,
+      "ai": 2,
+      "text": "🏃 Accelerazione sulla fascia — il recupero avversario è lento!",
+      "label": "🎯 Tiro a giro sul palo lontano",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 179,
+      "ai": 0,
+      "text": "↩️ Uno-due in verticale — dai e vai!",
+      "label": "↩️ Dai e vai in verticale",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 179,
+      "ai": 1,
+      "text": "↩️ Uno-due in verticale — dai e vai!",
+      "label": "⚡ Scatta dopo lo scarico",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 179,
+      "ai": 2,
+      "text": "↩️ Uno-due in verticale — dai e vai!",
+      "label": "🔺 Triangolo stretto e servi",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 180,
+      "ai": 0,
+      "text": "🔺 Triangolo al limite — combina e concludi!",
+      "label": "🔺 Combinazione stretta e tiro",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 180,
+      "ai": 1,
+      "text": "🔺 Triangolo al limite — combina e concludi!",
+      "label": "↩️ Scarico e ricevi in area",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 180,
+      "ai": 2,
+      "text": "🔺 Triangolo al limite — combina e concludi!",
+      "label": "⚡ Parete e inserimento centrale",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 181,
+      "ai": 0,
+      "text": "↔️ Cambio di gioco — ribalta sul lato debole!",
+      "label": "↔️ Lancio diagonale a cambiare fronte",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 181,
+      "ai": 1,
+      "text": "↔️ Cambio di gioco — ribalta sul lato debole!",
+      "label": "🎯 Apri il gioco sull'esterno smarcato",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 181,
+      "ai": 2,
+      "text": "↔️ Cambio di gioco — ribalta sul lato debole!",
+      "label": "⚡ Guida e sposta il pallone di lato",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 182,
+      "ai": 0,
+      "text": "🔄 Ribaltamento veloce — l'altro lato è sguarnito!",
+      "label": "🔄 Palla lunga a ribaltare l'azione",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 182,
+      "ai": 1,
+      "text": "🔄 Ribaltamento veloce — l'altro lato è sguarnito!",
+      "label": "🎯 Cambio d'ala rasoterra",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 182,
+      "ai": 2,
+      "text": "🔄 Ribaltamento veloce — l'altro lato è sguarnito!",
+      "label": "↗️ Apri largo per la sovrapposizione",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 183,
+      "ai": 0,
+      "text": "🧠 Anticipo sulla punta — leggi il passaggio!",
+      "label": "🧠 Anticipa il pallone sulla punta",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 183,
+      "ai": 1,
+      "text": "🧠 Anticipo sulla punta — leggi il passaggio!",
+      "label": "⚡ Esci in pressione sul portatore",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 183,
+      "ai": 2,
+      "text": "🧠 Anticipo sulla punta — leggi il passaggio!",
+      "label": "↩️ Chiudi la linea e temporeggia",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 184,
+      "ai": 0,
+      "text": "✋ Lettura della linea di passaggio — intercetta!",
+      "label": "✋ Intercetta il filtrante",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 184,
+      "ai": 1,
+      "text": "✋ Lettura della linea di passaggio — intercetta!",
+      "label": "⚡ Scatta sulla linea di passaggio",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 184,
+      "ai": 2,
+      "text": "✋ Lettura della linea di passaggio — intercetta!",
+      "label": "🧠 Leggi e taglia il corridoio",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 185,
+      "ai": 0,
+      "text": "🔁 Uno-due sull'esterno — riparti in velocità!",
+      "label": "🔁 Scarico e ricevi sul fondo",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 185,
+      "ai": 1,
+      "text": "🔁 Uno-due sull'esterno — riparti in velocità!",
+      "label": "⚡ Parete e sfonda in fascia",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 185,
+      "ai": 2,
+      "text": "🔁 Uno-due sull'esterno — riparti in velocità!",
+      "label": "🎯 Triangolo veloce e cross",
+      "intent": "cross",
+      "def": false
+    },
+    {
+      "gi": 186,
+      "ai": 0,
+      "text": "👟 Muro di prima e scatto — dai e vai in area!",
+      "label": "👟 Appoggio di prima e inserimento",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 186,
+      "ai": 1,
+      "text": "👟 Muro di prima e scatto — dai e vai in area!",
+      "label": "↩️ Sponda corta e ricevi in area",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 186,
+      "ai": 2,
+      "text": "👟 Muro di prima e scatto — dai e vai in area!",
+      "label": "⚡ Uno-due e conclusione al volo",
+      "intent": "shot",
+      "def": false
+    },
+    {
+      "gi": 187,
+      "ai": 0,
+      "text": "🎯 Apertura a scavalcare — l'ala è isolata sul lato debole!",
+      "label": "🎯 Palla filtrante a scavalcare",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 187,
+      "ai": 1,
+      "text": "🎯 Apertura a scavalcare — l'ala è isolata sul lato debole!",
+      "label": "↔️ Cambio di fronte teso",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 187,
+      "ai": 2,
+      "text": "🎯 Apertura a scavalcare — l'ala è isolata sul lato debole!",
+      "label": "↗️ Guida e servi l'esterno",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 188,
+      "ai": 0,
+      "text": "🔀 Inverti il fronte — sposta il gioco e accelera!",
+      "label": "🔀 Sposta il pallone sul lato opposto",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 188,
+      "ai": 1,
+      "text": "🔀 Inverti il fronte — sposta il gioco e accelera!",
+      "label": "🎯 Diagonale rasoterra a cambiare",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 188,
+      "ai": 2,
+      "text": "🔀 Inverti il fronte — sposta il gioco e accelera!",
+      "label": "⚡ Conduci e allarga per la corsa",
+      "intent": "pass",
+      "def": false
+    },
+    {
+      "gi": 189,
+      "ai": 0,
+      "text": "🧠 Anticipo in copertura — brucia la punta sul tempo!",
+      "label": "🧠 Anticipa sul primo controllo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 189,
+      "ai": 1,
+      "text": "🧠 Anticipo in copertura — brucia la punta sul tempo!",
+      "label": "⚡ Esci in pressione e ruba il tempo",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 189,
+      "ai": 2,
+      "text": "🧠 Anticipo in copertura — brucia la punta sul tempo!",
+      "label": "↩️ Accorcia e chiudi lo specchio",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 190,
+      "ai": 0,
+      "text": "✋ Chiudi il corridoio centrale — leggi lo scambio!",
+      "label": "✋ Intercetta lo scarico centrale",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 190,
+      "ai": 1,
+      "text": "✋ Chiudi il corridoio centrale — leggi lo scambio!",
+      "label": "🧠 Leggi il triangolo e rompi il gioco",
+      "intent": "tackle",
+      "def": true
+    },
+    {
+      "gi": 190,
+      "ai": 2,
+      "text": "✋ Chiudi il corridoio centrale — leggi lo scambio!",
+      "label": "⚡ Scatta sul portatore e recupera",
+      "intent": "tackle",
+      "def": true
+    }
+  ],
+  "forced": [
+    {
+      "gi": 0,
+      "ai": 0,
+      "text": "⚡ Solo davanti al portiere!",
+      "label": "🦵 Tiro angolato",
+      "intent": "shot",
+      "def": false,
+      "outcome": "success",
+      "frames": [
+        {
+          "label": "01-apertura",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-success-01-apertura.png",
+          "phase": "hl_choose",
+          "probe": null
+        },
+        {
+          "label": "02-scelta",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-success-02-scelta.png",
+          "phase": "hl_choose",
+          "probe": null
+        },
+        {
+          "label": "03-rincorsa",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-success-03-rincorsa.png",
+          "phase": "hl_result",
+          "probe": null
+        },
+        {
+          "label": "04-contatto",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-success-04-contatto.png",
+          "phase": "hl_result",
+          "probe": {
+            "contactSeen": false
+          }
+        },
+        {
+          "label": "05-volo",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-success-05-volo.png",
+          "phase": "hl_result",
+          "probe": {
+            "flightSeen": true
+          }
+        },
+        {
+          "label": "06-esito",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-success-06-esito.png",
+          "phase": "hl_result",
+          "probe": {
+            "resultReady": true
+          }
+        }
+      ],
+      "auto": {
+        "sceneKey": 10000,
+        "sampleCount": 91,
+        "context": {
+          "sceneKey": 10000,
+          "intent": "shot",
+          "act": "🦵 Tiro angolato",
+          "def": false,
+          "out": "goal",
+          "ok": true
+        },
+        "text": "Cosa ho visto (bozza automatica):\n· corpo↔porta al contatto: 36° — MISURATO girato: al tiro il corpo non guarda la porta (eroe a x 43.4, z 4.1)\n\nCosa non va secondo me: ",
+        "contact": {
+          "sk": 10000,
+          "tipo": "shot",
+          "a": 36,
+          "x": 43.4,
+          "z": 4.1,
+          "glb": true
+        },
+        "outcome": {
+          "outKey": "goal",
+          "ok": true
+        }
+      },
+      "pageErrors": [],
+      "resultReady": true,
+      "exitSeen": false,
+      "note": "Nessun difetto provato: il tiro parte e il risultato diventa 1–0 (fotogrammi 03–06). La bozza misura 36° corpo-porta, ma le immagini non dimostrano una direzione errata.",
+      "codes": [],
+      "review": "verificato visivamente",
+      "observedAt": "2026-09-29T16:17:46.527Z"
+    },
+    {
+      "gi": 0,
+      "ai": 0,
+      "text": "⚡ Solo davanti al portiere!",
+      "label": "🦵 Tiro angolato",
+      "intent": "shot",
+      "def": false,
+      "outcome": "fail",
+      "frames": [
+        {
+          "label": "01-apertura",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-fail-01-apertura.png",
+          "phase": "hl_choose",
+          "probe": null
+        },
+        {
+          "label": "02-scelta",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-fail-02-scelta.png",
+          "phase": "hl_choose",
+          "probe": null
+        },
+        {
+          "label": "03-rincorsa",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-fail-03-rincorsa.png",
+          "phase": "hl_result",
+          "probe": null
+        },
+        {
+          "label": "04-contatto",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-fail-04-contatto.png",
+          "phase": "hl_result",
+          "probe": {
+            "contactSeen": false
+          }
+        },
+        {
+          "label": "05-volo",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-fail-05-volo.png",
+          "phase": "hl_result",
+          "probe": {
+            "flightSeen": false
+          }
+        },
+        {
+          "label": "06-esito",
+          "png": "reports/codex/collaudo-highlight/gi000-a0-fail-06-esito.png",
+          "phase": "hl_result",
+          "probe": {
+            "resultReady": true
+          }
+        }
+      ],
+      "auto": {
+        "sceneKey": 10000,
+        "sampleCount": 274,
+        "context": {
+          "sceneKey": 10000,
+          "intent": "shot",
+          "act": "🦵 Tiro angolato",
+          "def": false,
+          "out": "miss_easy",
+          "ok": false
+        },
+        "text": "Cosa ho visto (bozza automatica):\n· corpo↔porta al contatto: 5° (eroe a x 44, z 4.6)\n\nCosa non va secondo me: ",
+        "contact": {
+          "sk": 10000,
+          "tipo": "shot",
+          "a": 5,
+          "x": 44,
+          "z": 4.6,
+          "glb": true
+        },
+        "outcome": {
+          "outKey": "miss_easy",
+          "ok": false
+        }
+      },
+      "pageErrors": [],
+      "resultReady": true,
+      "exitSeen": true,
+      "note": "Nessun codice attribuito: 03 è oscurato; 04–06 mostrano la palla lontana dal portiere, ma il contatto della parata non è visibile. Coerenza della dicitura parata facile non verificata.",
+      "codes": [],
+      "review": "verificato visivamente",
+      "observedAt": "2026-09-29T16:22:50.024Z"
+    },
+    {
+      "gi": 0,
+      "ai": 1,
+      "text": "⚡ Solo davanti al portiere!",
+      "label": "🎯 Piazzato basso",
+      "intent": "shot",
+      "def": false,
+      "outcome": "success",
+      "frames": [
+        {
+          "label": "01-apertura",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-success-01-apertura.png",
+          "phase": "hl_choose",
+          "probe": null,
+          "masked": false,
+          "recaptures": 0
+        },
+        {
+          "label": "02-scelta",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-success-02-scelta.png",
+          "phase": "hl_choose",
+          "probe": null,
+          "masked": false,
+          "recaptures": 0
+        },
+        {
+          "label": "03-rincorsa",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-success-03-rincorsa.png",
+          "phase": "hl_result",
+          "probe": null,
+          "masked": false,
+          "recaptures": 2
+        },
+        {
+          "label": "04-contatto",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-success-04-contatto.png",
+          "phase": "hl_result",
+          "probe": {
+            "contactSeen": false
+          },
+          "masked": false,
+          "recaptures": 0
+        },
+        {
+          "label": "05-volo",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-success-05-volo.png",
+          "phase": "hl_result",
+          "probe": {
+            "flightSeen": false
+          },
+          "masked": false,
+          "recaptures": 0
+        },
+        {
+          "label": "06-esito",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-success-06-esito.png",
+          "phase": "hl_result",
+          "probe": {
+            "resultReady": true
+          },
+          "masked": false,
+          "recaptures": 0
+        }
+      ],
+      "auto": {
+        "sceneKey": 10000,
+        "sampleCount": 322,
+        "context": {
+          "sceneKey": 10000,
+          "intent": "shot",
+          "act": "🎯 Piazzato basso",
+          "def": false,
+          "out": "goal",
+          "ok": true
+        },
+        "text": "Cosa ho visto (bozza automatica):\n· corpo↔porta al contatto: 7° (eroe a x 43.4, z 3.4)\n\nCosa non va secondo me: ",
+        "contact": {
+          "sk": 10000,
+          "tipo": "shot",
+          "a": 7,
+          "x": 43.4,
+          "z": 3.4,
+          "glb": true
+        },
+        "outcome": {
+          "outKey": "goal",
+          "ok": true
+        }
+      },
+      "pageErrors": [],
+      "resultReady": true,
+      "exitSeen": true,
+      "note": "Nessun difetto provato: la palla raggiunge la porta e il risultato è 1–0 (fotogrammi 03–06). Contatto e volo esatti non marcati dai testimoni.",
+      "codes": [],
+      "review": "verificato visivamente",
+      "observedAt": "2026-09-29T16:53:06.112Z"
+    },
+    {
+      "gi": 0,
+      "ai": 1,
+      "text": "⚡ Solo davanti al portiere!",
+      "label": "🎯 Piazzato basso",
+      "intent": "shot",
+      "def": false,
+      "outcome": "fail",
+      "frames": [
+        {
+          "label": "01-apertura",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-fail-01-apertura.png",
+          "phase": "hl_choose",
+          "probe": {
+            "recoveredAfterChoose": true
+          },
+          "masked": true,
+          "recaptures": 9
+        },
+        {
+          "label": "02-scelta",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-fail-02-scelta.png",
+          "phase": "hl_choose",
+          "probe": null,
+          "masked": true,
+          "recaptures": 9
+        },
+        {
+          "label": "03-rincorsa",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-fail-03-rincorsa.png",
+          "phase": "hl_result",
+          "probe": null,
+          "masked": false,
+          "recaptures": 1
+        },
+        {
+          "label": "04-contatto",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-fail-04-contatto.png",
+          "phase": "hl_result",
+          "probe": {
+            "contactSeen": false
+          },
+          "masked": false,
+          "recaptures": 0
+        },
+        {
+          "label": "05-volo",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-fail-05-volo.png",
+          "phase": "hl_result",
+          "probe": {
+            "flightSeen": true
+          },
+          "masked": false,
+          "recaptures": 0
+        },
+        {
+          "label": "06-esito",
+          "png": "reports/codex/collaudo-highlight/gi000-a1-fail-06-esito.png",
+          "phase": "hl_result",
+          "probe": {
+            "resultReady": true
+          },
+          "masked": false,
+          "recaptures": 0
+        }
+      ],
+      "auto": {
+        "sceneKey": 10000,
+        "sampleCount": 300,
+        "context": {
+          "sceneKey": 10000,
+          "intent": "shot",
+          "act": "🎯 Piazzato basso",
+          "def": false,
+          "out": "miss",
+          "ok": false
+        },
+        "text": "Cosa ho visto (bozza automatica):\n· codice 012 — il pallone è tornato INDIETRO di 12.2 unità durante l'azione (dal punto più avanzato, verso la propria metà campo) — massimo arretramento a 31.5s dall'inizio scena; passo peggiore 1.1u in 322ms a 23.6s, scrittore: 16\n· corpo↔porta al contatto: 37° — MISURATO girato: al tiro il corpo non guarda la porta (eroe a x 43.3, z 4.1)\n\nCosa non va secondo me: ",
+        "contact": {
+          "sk": 10000,
+          "tipo": "shot",
+          "a": 37,
+          "x": 43.3,
+          "z": 4.1,
+          "glb": true
+        },
+        "outcome": {
+          "outKey": "miss",
+          "ok": false
+        }
+      },
+      "pageErrors": [],
+      "resultReady": true,
+      "exitSeen": true,
+      "note": "Nessun difetto provato: 05 mostra la palla a sinistra della porta e il risultato resta 0–0. Il contatto con il palo non è catturato; dicitura Palo pieno non verificata.",
+      "codes": [],
+      "review": "verificato visivamente",
+      "observedAt": "2026-09-29T17:06:13.571Z"
+    }
+  ],
+  "natural": [
+    {
+      "match": 0,
+      "seed": 5100,
+      "name": "HighlightNaturale0-5100",
+      "highlights": [
+        {
+          "key": "90:0",
+          "gi": 90,
+          "intent": "insertion",
+          "text": "✈️ Testa su cross dalla trequarti!",
+          "frames": [
+            {
+              "label": "01-apertura",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h1-01-apertura.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 1
+            },
+            {
+              "label": "03-rincorsa",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h1-03-rincorsa.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "04-contatto",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h1-04-contatto.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "05-volo",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h1-05-volo.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "06-esito",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h1-06-esito.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            }
+          ],
+          "codes": [],
+          "note": null,
+          "review": "da esaminare visivamente",
+          "auto": {
+            "sceneKey": 0,
+            "sampleCount": 76,
+            "context": {
+              "sceneKey": 0,
+              "intent": "insertion",
+              "act": null,
+              "def": false,
+              "out": null
+            },
+            "text": "Cosa ho visto (bozza automatica):\n· corpo↔porta al contatto: 26° (eroe a x 30.2, z -2.3)\n\nCosa non va secondo me: ",
+            "contact": {
+              "sk": 0,
+              "tipo": "header",
+              "a": 26,
+              "x": 30.2,
+              "z": -2.3,
+              "glb": true
+            },
+            "outcome": null
+          }
+        },
+        {
+          "key": "80:1",
+          "gi": 80,
+          "intent": "insertion",
+          "text": "📐 Angolo sul secondo palo!",
+          "frames": [
+            {
+              "label": "01-apertura",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h2-01-apertura.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "03-rincorsa",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h2-03-rincorsa.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "04-contatto",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h2-04-contatto.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "05-volo",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h2-05-volo.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            }
+          ],
+          "codes": [],
+          "note": null,
+          "review": "da esaminare visivamente"
+        },
+        {
+          "key": "169:2",
+          "gi": 169,
+          "intent": "progression",
+          "text": "😱 Il portiere è fuori dai pali! Tira da lontano.",
+          "frames": [
+            {
+              "label": "01-apertura",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h3-01-apertura.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "03-rincorsa",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h3-03-rincorsa.png",
+              "phase": "hl_intro",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "04-contatto",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h3-04-contatto.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "05-volo",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h3-05-volo.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            }
+          ],
+          "codes": [],
+          "note": null,
+          "review": "da esaminare visivamente"
+        },
+        {
+          "key": "7:2",
+          "gi": 7,
+          "intent": "insertion",
+          "text": "✈️ Cross in area! Attacca il pallone.",
+          "frames": [
+            {
+              "label": "01-apertura",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h4-01-apertura.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "03-rincorsa",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h4-03-rincorsa.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "04-contatto",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h4-04-contatto.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "05-volo",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h4-05-volo.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "06-esito",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h4-06-esito.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            }
+          ],
+          "codes": [],
+          "note": null,
+          "review": "da esaminare visivamente",
+          "auto": {
+            "sceneKey": 2,
+            "sampleCount": 281,
+            "context": {
+              "sceneKey": 2,
+              "intent": "insertion",
+              "act": null,
+              "def": false,
+              "out": null
+            },
+            "text": "Cosa ho visto (bozza automatica):\n· corpo↔porta al contatto: 1° (eroe a x 27.1, z 14.2)\n\nCosa non va secondo me: ",
+            "contact": {
+              "sk": 2,
+              "tipo": "shot",
+              "a": 1,
+              "x": 27.1,
+              "z": 14.2,
+              "glb": true
+            },
+            "outcome": null
+          }
+        },
+        {
+          "key": "126:3",
+          "gi": 126,
+          "intent": "progression",
+          "text": "🧠 Gioco aereo a centrocampo!",
+          "frames": [
+            {
+              "label": "01-apertura",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h5-01-apertura.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "03-rincorsa",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h5-03-rincorsa.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "04-contatto",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h5-04-contatto.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "05-volo",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h5-05-volo.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "06-esito",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h5-06-esito.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            }
+          ],
+          "codes": [],
+          "note": null,
+          "review": "da esaminare visivamente",
+          "auto": {
+            "sceneKey": 3,
+            "sampleCount": 385,
+            "context": {
+              "sceneKey": 3,
+              "intent": "progression",
+              "act": null,
+              "def": false,
+              "out": null
+            },
+            "text": "Cosa ho visto (bozza automatica):\n· codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 4.0u, eroe ≥28.1u per 3 campioni)\n· corpo↔porta al contatto: 3° (eroe a x 11.6, z 4.1)\n\nCosa non va secondo me: ",
+            "contact": {
+              "sk": 3,
+              "tipo": "header",
+              "a": 3,
+              "x": 11.6,
+              "z": 4.1,
+              "glb": true
+            },
+            "outcome": null
+          }
+        },
+        {
+          "key": "64:4",
+          "gi": 64,
+          "intent": "insertion",
+          "text": "✈️ Colpo di testa potente da centro area!",
+          "frames": [
+            {
+              "label": "01-apertura",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h6-01-apertura.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "03-rincorsa",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h6-03-rincorsa.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "04-contatto",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h6-04-contatto.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "05-volo",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h6-05-volo.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "06-esito",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h6-06-esito.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            }
+          ],
+          "codes": [],
+          "note": null,
+          "review": "da esaminare visivamente",
+          "auto": {
+            "sceneKey": 4,
+            "sampleCount": 441,
+            "context": {
+              "sceneKey": 4,
+              "intent": "insertion",
+              "act": null,
+              "def": false,
+              "out": null
+            },
+            "text": "Cosa ho visto (bozza automatica):\n· corpo↔porta al contatto: 16° (eroe a x 30.9, z 11.6)\n\nCosa non va secondo me: ",
+            "contact": {
+              "sk": 4,
+              "tipo": "header",
+              "a": 16,
+              "x": 30.9,
+              "z": 11.6,
+              "glb": true
+            },
+            "outcome": null
+          }
+        },
+        {
+          "key": "88:5",
+          "gi": 88,
+          "intent": "insertion",
+          "text": "⚽ Volée su cross alzato!",
+          "frames": [
+            {
+              "label": "01-apertura",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h7-01-apertura.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "03-rincorsa",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h7-03-rincorsa.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "04-contatto",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h7-04-contatto.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "05-volo",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h7-05-volo.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "06-esito",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h7-06-esito.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            }
+          ],
+          "codes": [],
+          "note": null,
+          "review": "da esaminare visivamente",
+          "auto": {
+            "sceneKey": 5,
+            "sampleCount": 503,
+            "context": {
+              "sceneKey": 5,
+              "intent": "insertion",
+              "act": null,
+              "def": false,
+              "out": null
+            },
+            "text": "Cosa ho visto (bozza automatica):\n· corpo↔porta al contatto: 4° (eroe a x 31.2, z -3.7)\n\nCosa non va secondo me: ",
+            "contact": {
+              "sk": 5,
+              "tipo": "shot",
+              "a": 4,
+              "x": 31.2,
+              "z": -3.7,
+              "glb": true
+            },
+            "outcome": null
+          }
+        },
+        {
+          "key": "152:6",
+          "gi": 152,
+          "intent": "onetwo",
+          "text": "📋 Schema doppio dai e vai!",
+          "frames": [
+            {
+              "label": "01-apertura",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h8-01-apertura.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "03-rincorsa",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h8-03-rincorsa.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "04-contatto",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h8-04-contatto.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "05-volo",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h8-05-volo.png",
+              "phase": "hl_result",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            },
+            {
+              "label": "06-esito",
+              "png": "reports/codex/collaudo-highlight/naturale-0-h8-06-esito.png",
+              "phase": "playing",
+              "probe": null,
+              "masked": false,
+              "recaptures": 0
+            }
+          ],
+          "codes": [],
+          "note": null,
+          "review": "da esaminare visivamente",
+          "auto": {
+            "sceneKey": 6,
+            "sampleCount": 606,
+            "context": {
+              "sceneKey": 6,
+              "intent": "onetwo",
+              "act": null,
+              "def": false,
+              "out": null
+            },
+            "text": "Cosa ho visto (bozza automatica):\n· corpo↔porta al contatto: 9° (eroe a x 17, z 2.2)\n\nCosa non va secondo me: ",
+            "contact": {
+              "sk": 6,
+              "tipo": "shot",
+              "a": 9,
+              "x": 17,
+              "z": 2.2,
+              "glb": true
+            },
+            "outcome": null
+          }
+        }
+      ],
+      "pageErrors": []
+    }
+  ],
+  "errors": [
+    {
+      "key": "0:1:success",
+      "error": "page.waitForFunction: Timeout 12000ms exceeded.\n    at forceOne (C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-ui\\tests\\codex\\collaudo-highlight.mjs:121:18)\n    at async file:///C:/Users/a.vairo/Documents/ChatGPT/Analisi%20gioco%20codex/korward-codex-ui/tests/codex/collaudo-highlight.mjs:157:30",
+      "at": "2026-09-29T16:29:50.762Z"
+    },
+    {
+      "key": "0:1:success",
+      "error": "Error: hl_choose non raggiunta: fase=hl_result; page.waitForFunction: Timeout 30000ms exceeded.\n    at file:///C:/Users/a.vairo/Documents/ChatGPT/Analisi%20gioco%20codex/korward-codex-ui/tests/codex/collaudo-highlight.mjs:122:35\n    at async forceOne (file:///C:/Users/a.vairo/Documents/ChatGPT/Analisi%20gioco%20codex/korward-codex-ui/tests/codex/collaudo-highlight.mjs:121:7)\n    at async file:///C:/Users/a.vairo/Documents/ChatGPT/Analisi%20gioco%20codex/korward-codex-ui/tests/codex/collaudo-highlight.mjs:158:30",
+      "at": "2026-09-29T16:34:16.655Z"
+    },
+    {
+      "key": "0:1:success",
+      "error": "clock.pauseAt: Error: Cannot fast-forward to the past\n    at ClockController._innerFastForwardTo (<anonymous>:202:13)\n    at ClockController.pauseAt (<anonymous>:133:16)\n    at async <anonymous>:337:30\n    at forceOne (C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-ui\\tests\\codex\\collaudo-highlight.mjs:120:24)\n    at async file:///C:/Users/a.vairo/Documents/ChatGPT/Analisi%20gioco%20codex/korward-codex-ui/tests/codex/collaudo-highlight.mjs:171:30",
+      "at": "2026-09-29T16:49:41.760Z"
+    }
+  ],
   "ambientePrevisto": {
     "viewport": [
       412,
@@ -16,5 +5511,6 @@
     "cine": true,
     "serviceWorkers": "block",
     "gpu": "software headless"
-  }
+  },
+  "situations": 191
 }
