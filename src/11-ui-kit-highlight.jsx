@@ -2061,7 +2061,10 @@ function buildHLTimeline(hl,o){
       B('layoff',0.36,{from:'HERO',to:'MATE2',kind:'pass'},[mv('HERO',sx+6,clamp(sy+side*2,6,94),true),mv('DEF1',sx+6,clamp(sy+side*1,6,94))]);
       B('back',0.36,{from:'MATE2',to:'HERO',kind:'give'},[mv('MATE2',sx+6,clamp(sy-side*9,6,94))]);
     }
-    B('control',0.30,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',sx+3,sy,true),mv('DEF1',sx+4,sy)]);
+    {/* [7.999.66 taccuino PO #56 «012 verticalizzazione all'indietro». Rosso __CPM_NO_CTRL67] col terzo uomo il ritorno porta l'eroe a sx+6
+        e il tocco di preparazione lo riportava a sx+3: tre unita' ALL'INDIETRO prima del tiro. Il controllo va sempre verso la porta. */
+     const _fw67=_tre775&&!(typeof window!=='undefined'&&window.__CPM_NO_CTRL67);
+     B('control',0.30,{from:'HERO',to:'HERO',kind:'carry'},[mv('HERO',_fw67?sx+8:sx+3,sy,true),mv('DEF1',_fw67?sx+9:sx+4,sy)]);}
     concl('HERO',headerFinish?'header':'shot');
   } else {// BUILDUP / fallback: scambio breve poi conclusione
     set('MATE1',sx-6,clamp(sy+side*7,6,94));

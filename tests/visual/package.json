@@ -218,7 +218,8 @@
     "testa-vera-63": "node testa-vera-63.mjs",
     "elim-64": "node elim-64.mjs",
     "panca-64": "node panca-64.mjs",
-    "passaggio-65": "node passaggio-65.mjs"
+    "passaggio-65": "node passaggio-65.mjs",
+    "controllo-67": "node controllo-67.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
