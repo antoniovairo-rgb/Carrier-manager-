@@ -6,27 +6,29 @@
    tempo). ROSSO __CPM_NO_FESTA57: la clip resta ferma (almeno 4 campioni di fila sullo stesso tempo). */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
-async function braccio(rosso) {
+async function braccio(rosso, rosso61) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
-  await page.addInitScript(r => { window.__CPM_GLB = true; if (r) window.__CPM_NO_FESTA57 = 1; window.__CPM_FESTA942_FORCE = { goals: 2, assists: 1, rb: 18 }; try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} }, rosso);
+  await page.addInitScript(([r, r61]) => { window.__CPM_GLB = true; if (r) window.__CPM_NO_FESTA57 = 1; if (r61) window.__CPM_NO_FESTA61 = 1; window.__CPM_FESTA942_FORCE = { goals: 2, assists: 1, rb: 18 }; try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} }, [rosso, rosso61]);
   await openMatch(page, port, { skipLoadAll: true, name: 'Festa2' });
   await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 4545, policy: 'seeded', tickMs: 300 }));
   const t0 = Date.now(); let f = false;
   while (Date.now() - t0 < 480000) { f = await page.evaluate(() => !!document.querySelector('[data-cpm="festa47"]')).catch(() => false); if (f) break; await sleep(400); }
-  const tempi = [];
+  const tempi = [], clip = new Set();
   for (let i = 0; i < 12; i++) {
     const r = await page.evaluate(() => { const a = window.__CPM_ANIM_AUDIT && window.__CPM_ANIM_AUDIT(); const ph = window.__CPM_PHASE && window.__CPM_PHASE();
-      const v = a && a.heroMx && a.heroMx.acts.find(x => /victory/.test(x)); return { ph, t: v ? (v.match(/@([\d.]+)/) || [])[1] : null }; });
-    if (r.ph === 'ceremony' && r.t != null) tempi.push(r.t); await sleep(600);
+      const v = a && a.heroMx && a.heroMx.acts.find(x => /victory/.test(x)); return { ph, t: v ? (v.match(/@([\d.]+)/) || [])[1] : null, n: v ? v.split(':')[0] : null }; });
+    if (r.ph === 'ceremony' && r.t != null) { tempi.push(r.t); clip.add(r.n); } await sleep(600);
   }
   await page.close();
   let fermo = 1, run = 1; for (let i = 1; i < tempi.length; i++) { run = tempi[i] === tempi[i - 1] ? run + 1 : 1; if (run > fermo) fermo = run; }
-  return { festa: f, tempi, fermo };
+  return { festa: f, tempi, fermo, clip: [...clip] };
 }
 const v = await braccio(false); console.log('VERDE', JSON.stringify(v));
 const r = await braccio(true); console.log('ROSSO', JSON.stringify(r));
+const r61 = await braccio(false, true); console.log('ROSSO61', JSON.stringify(r61));
 await b.close(); srv.close();
-const okV = v.festa && v.tempi.length >= 6 && v.fermo <= 2, okR = r.festa && r.fermo >= 4;
+const okV = v.festa && v.tempi.length >= 6 && v.fermo <= 2 && v.clip.length === 1 && v.clip[0] === 'mx-victory', ok61 = r61.festa && r61.clip.includes('mx-victory-jump') && !r61.clip.includes('mx-victory'), okR = r.festa && r.fermo >= 4;
 console.log(okV ? '✅ nella festa l\'esultanza dell\'eroe si muove' : '❌ esultanza ferma nella festa');
 console.log(okR ? '✅ il rosso __CPM_NO_FESTA57 mostra l\'eroe congelato' : '❌ il rosso non riproduce il congelamento');
-process.exit(okV && okR ? 0 : 1);
+console.log(ok61 ? '✅ il rosso __CPM_NO_FESTA61 torna al salto rannicchiato (mx-victory-jump)' : '❌ il rosso 61 non si distingue');
+process.exit(okV && okR && ok61 ? 0 : 1);

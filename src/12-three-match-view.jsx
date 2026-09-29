@@ -94,7 +94,7 @@ function _tiro34Prep(anims){try{const c=anims.find(a=>a&&a.name==='mx-strike-fow
   for(let k=0;k<n;k++)D[k]=((v[3*k]-x0)*ex+(v[3*k+2]-z0)*ez)/el;for(let k=0;k<n;k++){v[3*k]=x0;v[3*k+2]=z0;}
   c._root34={T:Float32Array.from(T),D:D,y0:v[1]};return true;}catch(e){return false;}}
 function _tiro34D(r,t){const T=r.T,D=r.D,n=T.length;if(t<=T[0])return D[0];if(t>=T[n-1])return D[n-1];let k=1;while(k<n-1&&T[k]<t)k++;const u=(t-T[k-1])/Math.max(1e-4,T[k]-T[k-1]);return D[k-1]+(D[k]-D[k-1])*u;}
-var _PIEDE31=null;var _PUGNO32=false;/* [7.999.32] il piano d'esultanza in corso e' quello sobrio (quiet): la clip e' il pugno */
+var _PIEDE31=null;var _PUGNO32=false;var _FESTA61=false;/* [7.999.61] festa leggera di fine partita in corso: l'esultanza e' mx-victory *//* [7.999.32] il piano d'esultanza in corso e' quello sobrio (quiet): la clip e' il pugno */
 /* [7.999.32 — L'ATTESA IN DIFESA. Idea del PO (27/09): «Goalkeeper Idle potrebbe essere sfruttato per la posizione di attesa in difesa».
    Rosso __CPM_NO_ATTESA32.] Ogni corpo di movimento ha DUE pose ferme: quella normale (`idle`) e l'attesa difensiva (gambe piegate,
    braccia avanti). Durante una scena difende la squadra senza palla — gli avversari se l'eroe attacca, i suoi compagni se la scena e'
@@ -116,7 +116,7 @@ function _scegliGesto23(a,want,ai,chiave,lbl,lato){
   const base=a.gestures[want];if(!base)return base;
   let v=(a._gVar&&a._gVar[want])||[base];
   /* tuffo/respinta: si tiene solo l'esecuzione che va dal lato della palla. Rosso __CPM_NO_LATO23 (sorteggio fra tutte). */
-  if(want==='lift'&&v.length>1){const pu=v.filter(x=>_nm(x)==='mx-fist-pump'),al=v.filter(x=>_nm(x)!=='mx-fist-pump');v=(_PUGNO32&&pu.length)?pu:(al.length?al:v);}/* [7.999.32] pugno = esultanza sobria; braccia al cielo = le altre */
+  if(want==='lift'&&v.length>1){const vi=v.filter(x=>_nm(x)==='mx-victory');if(_FESTA61&&vi.length&&!(typeof window!=='undefined'&&window.__CPM_NO_FESTA61)){v=vi;}else{const pu=v.filter(x=>_nm(x)==='mx-fist-pump'),al=v.filter(x=>_nm(x)!=='mx-fist-pump'&&_nm(x)!=='mx-victory');v=(_PUGNO32&&pu.length)?pu:(al.length?al:v);}}/* [7.999.32] pugno = esultanza sobria; braccia al cielo = le altre · [7.999.61 collaudo PO «il festeggiamento post partita usa un'animazione scoordinata, e' tutto accartocciato l'eroe»] nella festa leggera la clip e' mx-victory (braccia al cielo, quella del gala') invece del salto in loop, che passa quasi tutto il tempo rannicchiato. Rosso __CPM_NO_FESTA61 *//* [7.999.32] pugno = esultanza sobria; braccia al cielo = le altre */
   if(lato&&(want==='dive'||want==='block')&&!(typeof window!=='undefined'&&window.__CPM_NO_LATO23)){const pool=v.filter(x=>_LATO23[_nm(x)]===lato);if(pool.length)v=pool;}
   if(ai===0&&_PIEDE31&&v.length>1&&!(typeof window!=='undefined'&&window.__CPM_NO_PIEDE31)){const pool=v.filter(x=>_PIEDE_CLIP31[_nm(x)]===_PIEDE31);
     if(pool.length)v=pool;}
@@ -1029,7 +1029,7 @@ function ThreeMatchView(props){
         for(let i=0;i<pf.values.length;i+=3){pf.values[i]=x0;pf.values[i+1]=yT;pf.values[i+2]=z0;}
         const D=su.duration||1;for(let k=0;k<ps.times.length;k++){const u=Math.min(1,Math.max(0,(ps.times[k]/D-0.2)/0.7)),q=u*u*(3-2*u);ps.values[3*k]=x0;ps.values[3*k+1]=yT+(yS-yT)*q;ps.values[3*k+2]=z0;}
         pt._r7=true;return true;}catch(e){return false;}};
-      const _VAR23={lift:['mx-victory-jump','mx-fist-pump'],/* [7.999.32] + il pugno ritagliato da «Golf Putt Victory» (4,3-8,0 s): solo per l'esultanza SOBRIA (_PUGNO32), mai sorteggiato fra le braccia al cielo */kick:['kick~m'],pass:['pass~m'],shortPass:['pass~m'],longPass:['pass~m'],cross:['pass~m'],penalty:['penalty~m'],/* [7.999.31] passaggio e rigore specchiati: per l'eroe li sceglie il piede (_PIEDE31), per gli altri il sorteggio *//* [23/09] il tiro storico SPECCHIATO (destro, stessa fase): vedi _specchiaClip23 */
+      const _VAR23={lift:['mx-victory-jump','mx-fist-pump','mx-victory'],/* [7.999.32] + il pugno ritagliato da «Golf Putt Victory» (4,3-8,0 s): solo per l'esultanza SOBRIA (_PUGNO32), mai sorteggiato fra le braccia al cielo */kick:['kick~m'],pass:['pass~m'],shortPass:['pass~m'],longPass:['pass~m'],cross:['pass~m'],penalty:['penalty~m'],/* [7.999.31] passaggio e rigore specchiati: per l'eroe li sceglie il piede (_PIEDE31), per gli altri il sorteggio *//* [23/09] il tiro storico SPECCHIATO (destro, stessa fase): vedi _specchiaClip23 */
         /* kick Mixamo: REVOCATO. Le tre clip di tiro nuove peggiorano il contatto (piede-palla 0,83-1,46 m contro 0,21-0,45 della clip
            storica, gesto-eroe-review CPM_FORZA): la palla parte sulla fase della clip storica (sinistro, 0,98). */
         /* header, receive, penalty, throwin: RIMANDATI (la rovesciata NON e' una variante a sorteggio: esce solo su «Rovesciata!», _gScissor) — hanno un contatto con la palla sincronizzato
@@ -8093,6 +8093,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         //   kicker (eroe sui tuoi, un avversario vero sui loro), volo palla in rete/parata/fuori, tuffo del
         //   portiere COERENTE con l'esito (sul gol si butta dal lato sbagliato, sulla parata VA sulla palla),
         //   squadre schierate a centrocampo. Solo presentazione (fase dedicata, gate-cieco → collaudo dal vivo).
+        _FESTA61=!!(P.ceremony&&P.ceremony.light);/* [7.999.61] la scelta della clip d'esultanza legge questo prima del ciclo degli avatar */
         if(P.shootout){
           const _bl=sr.current.ball;const _k=P.shootout.kick;
           /* [7.999.58 collaudo PO «i rigori non si vedono bene, non si vede il tiratore e il portiere non si tuffa ma si sposta un po'

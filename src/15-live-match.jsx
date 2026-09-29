@@ -1176,7 +1176,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
       {/* IL PANNELLO: statistiche o pagelle, col campo che si vede dietro */}
       <div data-cpm="linguette918" style={{margin:SP.sm,marginBottom:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,
-        pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%"}}>
+        pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%",...((aperto&&!(typeof window!=="undefined"&&window.__CPM_NO_PANNELLO61))?{height:"55%",maxHeight:"55%"}:{})}}>{/* [7.999.61 PO «evita che il pannello si sovrapponga alla porta, meglio solo sul campo»] 55%: a 412x915 il bordo alto scende da 185 a ~239 px, sotto la porta (205-225) */}{/* [7.999.61 collaudo PO «altezza e posizione tra pagelle e statistiche differenti»] l'altezza la dava il contenuto: statistiche al tetto del 62%, pagelle piu' corte e quindi linguette piu' in basso. Aperto, il pannello ha sempre la stessa altezza; il contenuto scorre dentro */}
         <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
           {tasto("stat","Statistiche")}
           {tasto("pag","Pagelle")}
@@ -1184,7 +1184,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
             background:"transparent",color:_COL918.fioco,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold}}>{aperto?"▾":"▴"}</button>
         </div>
         {aperto&&vista==="stat"&&(
-          <div style={{padding:"6px "+SP.md+"px 9px",overflowY:"auto"}}>
+          <div style={{padding:"6px "+SP.md+"px 9px",overflowY:"auto",flex:1,minHeight:0}}>
             {(typeof window!=='undefined'&&window.__CPM_NO_STAT23)?(<>
             <Riga918 et="possesso" sx={A.possesso} dx={100-(A.possesso||50)} colSx={colSx} colDx={colDx} fmt={(v)=>_num918(v)+"%"}/>
             <Riga918 et="tiri totali" sx={A.tiri} dx={B.tiri} colSx={colSx} colDx={colDx}/>
@@ -1200,7 +1200,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
             </>):righeTabellino23(A,{...B,possesso:100-(A.possesso||50)}).map(r=>(<Riga918 key={r.et} et={r.et.toLowerCase()} sx={r.sx} dx={r.dx} colSx={colSx} colDx={colDx} fmt={r.pct?((v)=>_num918(v)+"%"):r.dec?_dec918:undefined}/>))}
           </div>)}
         {aperto&&vista==="pag"&&(
-          <div style={{display:"flex",gap:SP.sm,padding:"6px "+SP.sm+"px 9px",overflowY:"auto"}}>
+          <div style={{display:"flex",gap:SP.sm,padding:"6px "+SP.sm+"px 9px",overflowY:"auto",flex:1,minHeight:0,alignItems:"flex-start"}}>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontSize:FS.caption,fontWeight:FW.black,color:colSx,letterSpacing:.8,textTransform:"uppercase",padding:"0 4px 3px"}}>{siglaSx}</div>
               {colonna(lS,colSx)}
