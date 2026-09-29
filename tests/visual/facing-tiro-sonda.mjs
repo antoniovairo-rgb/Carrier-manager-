@@ -30,5 +30,10 @@ for (const [gs, as, es] of CASI) {
   const porta = Math.atan2(48.6 - f.hx, 0 - f.hz); const volo = Math.atan2(nx.pb[0] - f.pb[0], nx.pb[2] - f.pb[2]);
   console.log(`gi${gs}/az${as}/${es}: all'armo dell'arco corpo↔porta ${ang(fa.ry, Math.atan2(48.6 - fa.hx, 0 - fa.hz))}° · al CONTATTO (t ${f.t}) eroe (${f.hx},${f.hz}) gesto ${f.g} · corpo↔porta ${ang(f.ry, porta)}° · corpo↔volo ${ang(f.ry, volo)}° · volo↔porta ${ang(volo, porta)}° · calibrazione corpo↔moto in corsa mediana ${calMed}° su ${cal.length} · palla fine arco (${nx.pb[0]},${nx.pb[2]})`);
   if (process.env.CPM_TRACCIA) console.log('   eroe: ' + traccia);
+  /* [7.999.53] profilo della rincorsa: angolo corpo↔porta e corpo↔moto dall'armo al contatto (5 punti) */
+  if (ic > ia) { const pr = []; for (const q of [0, 0.25, 0.5, 0.75, 1]) { const k = Math.round(ia + (ic - ia) * q), x = F[k], pp = F[Math.max(0, k - 1)];
+    const mv = (x.hx != null && pp.hx != null && (x.hx !== pp.hx || x.hz !== pp.hz)) ? ang(x.ry, Math.atan2(x.hx - pp.hx, x.hz - pp.hz)) : '-';
+    pr.push(`${(x.t - F[ia].t).toFixed(2)}s porta ${ang(x.ry, Math.atan2(48.6 - x.hx, 0 - x.hz))}° moto ${mv}° v${(x.v||0).toFixed ? (x.v||0).toFixed(1) : x.v}`); }
+    console.log('   rincorsa: ' + pr.join(' | ')); }
 }
 await b.close(); srv.close();

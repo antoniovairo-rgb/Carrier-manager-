@@ -801,6 +801,10 @@ const draftBugNote=(snap,ctx)=>{try{
   if(c.intent&&c.act){
     if(/header/.test(c.intent)&&/terra|rasoterra/i.test(c.act))L.push(`azione di testa con un'esecuzione rasoterra`);
   }
+  /* [7.999.53 taccuino #3] l'angolo corpo↔porta nell'istante del contatto (testimone __CPM_CONT53, sempre acceso):
+     in headless e' 8-11°; il numero vero del difetto «al tiro non guarda la porta» arriva da qui, dal telefono. */
+  try{const C=((snap&&snap.cont)||[]).filter(e=>c.sceneKey!=null&&e.sk===c.sceneKey&&/shot|penalty|freekick|header|volley/.test(String(e.tipo||''))).pop();
+    if(C)L.push(`corpo↔porta al contatto: ${C.a}°${C.a>35?' — MISURATO girato: al tiro il corpo non guarda la porta':''} (eroe a x ${C.x}, z ${C.z})`);}catch(_e){}
   if(!L.length)return "";
   return `Cosa ho visto (bozza automatica):\n· ${L.join("\n· ")}\n\nCosa non va secondo me: `;
 }catch(_e){return "";}};

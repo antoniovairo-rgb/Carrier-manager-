@@ -3166,7 +3166,7 @@ function ThreeMatchView(props){
           const _st=w.full?w.i%w.cap:0;
           for(let _k=0;_k<w.n;_k++){const k=(_st+_k)%w.cap;const q=k*17;
             out.push({t:w.buf[q],x:w.buf[q+1],y:w.buf[q+2],z:w.buf[q+3],hx:w.buf[q+4],md:w.buf[q+5],f:w.buf[q+6],sk:w.buf[q+7],cx:w.buf[q+8],cy:w.buf[q+9],cz:w.buf[q+10],lx:w.buf[q+11],ly:w.buf[q+12],lz:w.buf[q+13],ws:w.buf[q+14],wl:w.buf[q+15],hz:w.buf[q+16]});}
-          return{samples:out,goalX:GOAL_LINE_X,homeX:-GOAL_LINE_X,now:performance.now(),span:out.length?+((out[out.length-1].t-out[0].t)/1000).toFixed(1):0,res:w.step};}catch(_e){return null;}};
+          return{samples:out,goalX:GOAL_LINE_X,homeX:-GOAL_LINE_X,now:performance.now(),span:out.length?+((out[out.length-1].t-out[0].t)/1000).toFixed(1):0,res:w.step,cont:(window.__CPM_CONT53||[]).slice()};/* [7.999.53] + il corpo al contatto */}catch(_e){return null;}};
       }catch(_e){}}
       /* [6.3.0 R0/LMQP-10] RECORDER per-frame del Live Match Validator (test-only, spento nella build store):
          con window.__CPM_REC attivo cattura {t,fase,clock,palla,eroe,22} in un ring-buffer → metriche cinematiche live. */
@@ -10069,6 +10069,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         /* [7.999.34 strumento, sola lettura — collaudo PO «il tiro e' scoordinato, non viene caricato / preparato prima del calcio»]
             Nelle scene di tiro registra a ogni fotogramma: gesto montato, tempo e velocita' della clip, peso del gesto, distanza
             pallone-piedi, velocita' dell'eroe in pianta, arco del pallone. Acceso solo da __CPM_TIRO34_REC. */
+         /* [7.999.53 taccuino PO #3 «il corpo al tentativo di tiro e' nella direzione sbagliata, non verso la porta»] In prova senza
+            schermo il corpo al contatto guarda la porta (8-11° sulla scena #3), quindi il difetto va misurato SUL TELEFONO: questo
+            testimone, sempre acceso e leggero, annota una volta per scena l'angolo corpo↔porta nel fotogramma del contatto (arco
+            armato, aT>=0) e il taccuino lo scrive nella bozza. Solo lettura. Spento da __CPM_NO_CONT53. */
+         if(typeof window!=='undefined'&&hero&&!window.__CPM_NO_CONT53){try{const _P53=propsRef.current||{};
+           if(_P53.matchPhase==='hl_result'){const _k53=String(_P53.hlSitKey);if(ballArcActive&&(ballArcT||0)>=0&&sr.current._c53!==_k53){sr.current._c53=_k53;
+             const _a53=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _ry=(((_a53&&(_a53.root||_a53.visualRoot))||hero).rotation.y)||0;
+             const _tg=Math.atan2(48.6-hero.position.x,0-hero.position.z);let _d=Math.abs(_ry-_tg)%(2*Math.PI);if(_d>Math.PI)_d=2*Math.PI-_d;
+             const L53=(window.__CPM_CONT53=window.__CPM_CONT53||[]);L53.push({sk:_P53.hlSitKey!=null?+_P53.hlSitKey:-1,tipo:_P53.hlType||null,a:Math.round(_d*180/Math.PI),x:+hero.position.x.toFixed(1),z:+hero.position.z.toFixed(1),glb:!!_a53});if(L53.length>40)L53.shift();}}
+           else sr.current._c53=null;}catch(_e53){}}
          if(typeof window!=='undefined'&&window.__CPM_TIRO34_REC&&hero){try{const _P34=propsRef.current||{};
           if(_P34.matchPhase==='hl_result'){const _av=(glbAvatars||[]).find(a=>a&&a.proc===hero);
             if(_av){const R=_av.visualRoot||_av.root;if(_av._pL34===undefined){_av._pL34=_findBone904(R,/^(ball_l|LeftToeBase|mixamorig:?LeftToeBase)$/i)||null;_av._pR34=_findBone904(R,/^(ball_r|RightToeBase|mixamorig:?RightToeBase)$/i)||null;}
