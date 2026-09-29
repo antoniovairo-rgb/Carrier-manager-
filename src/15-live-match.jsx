@@ -1731,16 +1731,25 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   //   Fedeltà onesta: ripresa COARSE (gli highlight rimanenti si rigenerano dal minuto di ripresa; l'esatto highlight
   //   in corso non è congelato). Lo snapshot si azzera a partita conclusa e in onMatchEnd (CareerApp).
   useEffect(()=>{
-    const _resumable=(context==="career"||context==="cup"||context==="euro_group"||context==="euro_ko");
-    if(!_resumable||_CPM_TEST||_SIT_TEST)return;
-    const _sig=(player.name||"")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+context+"|"+(isMatchHome?"H":"A");/* [7.178.0 RC-2] +nome: due slot alla stessa S/W non si scambiano più lo snapshot *//* season|week|context|sede identifica univocamente la gara della settimana (fixture deterministico) */
+    /* [7.999.55 collaudo PO «si perde l'avanzamento se metto l'app in background, durante la partita»] MISURATO nel codice:
+       (1) le gare della NAZIONALE (Europeo/Mondiale/Coppa delle Nazioni/amichevoli) erano ESCLUSE dalla ripresa — e il PO
+       giocava l'Europeo; (2) l'istantanea si scriveva SOLO all'evento hidden/pagehide, che su Android non sempre arriva;
+       (3) finestra 3'-86': dall'87' al fischio niente ripresa. Ora: nazionale inclusa (la firma porta l'avversario), una
+       scrittura periodica ogni 4 s in gioco oltre all'evento, finestra fino all'89'. Rosso __CPM_NO_RIPRESA55 = 7.150. */
+    const _no55=typeof window!=="undefined"&&!!window.__CPM_NO_RIPRESA55;
+    const _isNat55=/^(national|nationsCup|euroMondiale)/.test(context||"");
+    const _resumable=(context==="career"||context==="cup"||context==="euro_group"||context==="euro_ko")||(!_no55&&_isNat55);
+    const _testOk55=typeof window!=="undefined"&&!!window.__CPM_RESUME_TEST;/* solo il guardiano ripresa-55 */
+    if(!_resumable||((_CPM_TEST||_SIT_TEST)&&!_testOk55))return;
+    const _sig=(player.name||"")+"|"+(player.season||1)+"|"+(player.week||1)+"|"+context+"|"+(_isNat55?("N:"+((opponent&&opponent.n)||"")):(isMatchHome?"H":"A"));/* [7.178.0 RC-2] +nome: due slot alla stessa S/W non si scambiano più lo snapshot *//* season|week|context|sede identifica univocamente la gara della settimana (fixture deterministico) */
     const _snap=()=>{try{const ph=phaseRef.current,ck=clockRef.current|0;
       const live=(ph==="playing"||ph==="hl_intro"||ph==="hl_move"||ph==="hl_choose"||ph==="hl_result");
-      if(live&&!onBenchRef.current&&!subbedOffRef.current&&ck>=3&&ck<=86)safeLS.set("cpm-match-resume",JSON.stringify({v:1,sig:_sig,context,isHome:isMatchHome,clock:ck,score:scoreRef.current,momentum:momentumRef.current,ms:{goals:mStatsSnapRef.current.goals||0,assists:mStatsSnapRef.current.assists||0,rb:mStatsSnapRef.current.rb||0,xg:mStatsSnapRef.current.xg||0},yc:heroYellowsRef.current||0,rc:!!heroRedRef.current}));/* [7.163.0 super-test LIVE-F3] il punteggio tornava ma la TUA doppietta spariva (matchHistory goals:0, gialli evaporati) → lo snapshot porta il tabellino personale */
+      if(live&&!onBenchRef.current&&!subbedOffRef.current&&ck>=3&&ck<=(_no55?86:89))safeLS.set("cpm-match-resume",JSON.stringify({v:1,sig:_sig,context,isHome:isMatchHome,clock:ck,score:scoreRef.current,momentum:momentumRef.current,ms:{goals:mStatsSnapRef.current.goals||0,assists:mStatsSnapRef.current.assists||0,rb:mStatsSnapRef.current.rb||0,xg:mStatsSnapRef.current.xg||0},yc:heroYellowsRef.current||0,rc:!!heroRedRef.current}));/* [7.163.0 super-test LIVE-F3] il punteggio tornava ma la TUA doppietta spariva (matchHistory goals:0, gialli evaporati) → lo snapshot porta il tabellino personale */
     }catch(_e){}};
     const vh=()=>{if(document.visibilityState==="hidden")_snap();};
     document.addEventListener("visibilitychange",vh);window.addEventListener("pagehide",_snap);
-    return()=>{document.removeEventListener("visibilitychange",vh);window.removeEventListener("pagehide",_snap);};
+    const _iv55=_no55?null:setInterval(_snap,4000);/* [7.999.55] anche se l'evento di background non arriva, l'istantanea ha al massimo 4 s */
+    return()=>{document.removeEventListener("visibilitychange",vh);window.removeEventListener("pagehide",_snap);if(_iv55)clearInterval(_iv55);};
   },[]);// eslint-disable-line
   useEffect(()=>{if(phase==="ended"||phase==="ceremony"||phase==="shootout"){try{safeLS.set("cpm-match-resume","");}catch(_e){}}},[phase]);/* [7.150.0] partita conclusa → snapshot non più ripristinabile */
   useEffect(()=>{if(phase==="ended"){try{AudioMgr.hushMatch&&AudioMgr.hushMatch();}catch(_a){}}},[phase]);/* [7.102.0 collaudo PO] nella schermata GIORNALE (ended) il rumore folla/effetti partita si spengono */
@@ -4563,7 +4572,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           const _bC542=ballPosRef.current||{x:50,y:50};const _tnC542=(possTurnRef.current>0?1:-1);
           const _advC542=(_tnC542<0)?(100-_bC542.x):_bC542.x;
           const _faseC542=_advC542>=78?"pericolo":_advC542>=58?"sviluppo":"costruzione";
-          const _shout=pickCoachShout(nx,_diffS,momentumRef.current,possessionRef.current,_dkS,player.coach?.style||null,lastShoutRef.current.txt,_tnC542,_faseC542);/* [7.542.0] turno e fase: gli stessi due fatti che la cronaca consuma */
+          const _shout=pickCoachShout(nx,_diffS,momentumRef.current,possessionRef.current,_dkS,(misterInPartita(player,context)||{}).style||null,/* [7.999.54] in Nazionale grida il CT */lastShoutRef.current.txt,_tnC542,_faseC542);/* [7.542.0] turno e fase: gli stessi due fatti che la cronaca consuma */
           if(_shout){lastShoutRef.current={ck:nx,txt:_shout};addCoach("📣 «"+_shout+"»",nx);}/* [7.532.0 NO540] la voce del mister va nel riquadro panchina, non in telecronaca */
         }
         // 3DV-FIX3: cronaca meno fitta — base 18%/tick — sospesa durante gli HL.
@@ -10110,7 +10119,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 {festa942&&<FestaFine942 dati={festa942} onChiudi={()=>{setFesta942(null);setPhase("ended");}}/>}
               {!(typeof window!=='undefined'&&window.__CPM_NO919)&&coms&&coms[0]&&coms[0].sc&&coms[0].sci==null&&(
                 <PopScelta919 com={coms[0]} onScegli={scegli681} player={player}
-                  coachName={(player&&player.coach&&player.coach.name)||(player&&player.club&&player.club.n)||"Mister"}
+                  coachName={((misterInPartita(player,context)||{}).name)||(player&&player.club&&player.club.n)||"Mister"}
                   avvNome={(opponent&&(opponent.n||opponent.name))||"L'avversario"}
                   secondi={Math.round(((typeof window!=='undefined'&&+window.__CPM_SCMS681)||35000)/1000)}/>
               )}
@@ -11138,9 +11147,9 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
             {/* Sprint 113 — Coach post-match evaluation */}
             {/* [23/09 POC — collaudo PO «migliora la grafica e metti le figurine dove necessario»] mister, protagonista e migliore in campo con la loro figurina; etichette tutte nello stile di sezione del kit */}
             {context!=="trial"&&<div style={{marginTop:12,padding:`${SP.sm}px ${SP.md}px`,background:TH.surface2,borderRadius:RAD.md,textAlign:"left",display:"flex",gap:SP.md,alignItems:"center"}}>
-              <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="mister" chiave={player.coach?.name||"mister"} larg={36}/>;}catch(_e){return null;}})()}</div>
+              <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="mister" chiave={(misterInPartita(player,context)||{}).name||"mister"} larg={36}/>;}catch(_e){return null;}})()}</div>
               <div style={{flex:1}}>
-                <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:1,marginBottom:2,textTransform:"uppercase"}}>{player.coach?.name||"Il mister"} · dopo la partita</div>
+                <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:1,marginBottom:2,textTransform:"uppercase"}}>{(misterInPartita(player,context)||{}).name||"Il mister"} · dopo la partita</div>
                 <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65)}</div>
               </div>
             </div>}

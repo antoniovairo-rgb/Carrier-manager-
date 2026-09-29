@@ -88,6 +88,18 @@ function patrimonioNetto24(p){const b=(p&&p.beni24)||[];return Math.round(((p&&p
 function legacyPatrimonio24(p){if(typeof window!=="undefined"&&window.__CPM_NO_EREDITA24)return {pts:0,rag:0,fond:0,ric:0,netto:0};
   const rag=Math.min(30,(((p&&p.academy24&&p.academy24.tot)|0))*3),fond=(((p&&p.beni24)||[]).indexOf("fondazione")>=0)?10:0,net=patrimonioNetto24(p);
   const ric=net>=20000000?20:net>=5000000?12:net>=1000000?6:0;return {pts:rag+fond+ric,rag,fond,ric,netto:net};}
+/* [7.999.54 collaudo PO «il mister non cambia in nazionale, c'e' sicuramente un bug»] MISURATO nel codice: il gioco non aveva un
+   commissario tecnico — in una gara della Nazionale il pop-up delle scelte, le grida e il commento a fine partita usavano
+   player.coach, cioe' il MISTER DEL CLUB. Ora ogni nazione ha il suo CT, deterministico (nessun campo nel salvataggio): cognome
+   della nazione, cambia a ogni ciclo di 4 stagioni (dopo Europeo/Mondiale). Rosso: __CPM_NO_CT54 torna al mister del club. */
+function ctDiNazione(nation,season){try{const d=(typeof NAT_CLUB_DATA!=="undefined"&&NAT_CLUB_DATA[nation||"Italia"])||null;
+  const pool=(typeof NAME_BY_NAT!=="undefined"&&((d&&NAME_BY_NAT[d.nat])||NAME_BY_NAT["🇮🇹"]))||null;const last=(pool&&pool.last)||COACH_NAMES;
+  const ciclo=Math.floor(((season||1)-1)/4);const k=String(nation||"Italia")+"|ct|"+ciclo;let h=5381;for(let i=0;i<k.length;i++)h=((h<<5)+h)^k.charCodeAt(i);
+  h=(typeof _mix32==="function")?_mix32(h>>>0):(h>>>0);const cs=COACH_STYLES[(h>>>7)%COACH_STYLES.length];
+  return{name:"CT "+last[h%last.length],style:cs.style,trustMod:0,desc:cs.desc,ciclo};}catch(_e){return null;}}
+/* chi parla dalla panchina in QUESTA partita: il CT in Nazionale, il mister del club altrimenti */
+function misterInPartita(player,context){if(!(typeof window!=="undefined"&&window.__CPM_NO_CT54)&&/^(national|nationsCup|euroMondiale)/.test(context||"")){const ct=ctDiNazione(player&&player.nation,player&&player.season);if(ct)return ct;}
+  return (player&&player.coach)||null;}
 function coachDiClub23(club,season){try{const k=String((club&&(club.id||club.n))||"x")+"|"+(season||1);let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))|0;h=Math.abs(h);
   const cs=COACH_STYLES[(h>>>5)%COACH_STYLES.length];return{name:"Mister "+COACH_NAMES[h%COACH_NAMES.length],style:cs.style,trustMod:cs.trustMod,desc:cs.desc};}catch(_e){return null;}}
 // Sprint 11 — S11.4 Derby database

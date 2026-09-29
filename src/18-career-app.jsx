@@ -302,6 +302,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
   const pendingMisterDiscorsoRef=useRef(null); // Sprint D3: mister talk deferred until prematch press conf closes
   const matchBenchStartRef=useRef(false); // Sprint 33 C7
   const matchEntryMinuteRef=useRef(60); // Sprint 148: survives coachDecision reset
+  const _resumeNat55=useRef(null);/* [7.999.55] ripresa di un'amichevole della Nazionale: parte quando la convocazione e' pronta */
   const matchResumeRef=useRef(null); // [7.150.0] snapshot per la ripresa DENTRO la partita dopo background
   const [pendingResume,setPendingResume]=useState(null); // [7.150.0] snapshot in attesa che il calendario sia pronto
   const[coachDecision,setCoachDecision]=useState(null); // {status,reason,entryMinute} — Sprint 116
@@ -992,7 +993,7 @@ const getThisWeekMatchday=()=>{
   //       firma contro la fixture di questa settimana e — se combacia — rientra in campo (startMatch col resume). Gated !cpmtest.
   useEffect(()=>{
     try{
-      if(typeof window!=="undefined"&&/[?&]cpmtest=1\b/.test(window.location.search||""))return;
+      if(typeof window!=="undefined"&&/[?&]cpmtest=1\b/.test(window.location.search||"")&&!window.__CPM_RESUME_TEST)return;/* [7.999.55] il guardiano ripresa-55 la esercita */
       const raw=safeLS.get("cpm-match-resume");if(!raw)return;
       try{safeLS.set("cpm-match-resume","");}catch(_e2){}/* consuma subito: un solo tentativo */
       try{if(localStorage.getItem('cpm-pending-mr')){return;}}catch(_e3){}/* [7.163.0 LIVE-F5] esiste già il risultato al fischio (sidecar): NON rigiocare la partita — il recovery la committa */
@@ -1002,6 +1003,24 @@ const getThisWeekMatchday=()=>{
   },[]);// eslint-disable-line
   useEffect(()=>{
     if(!pendingResume)return;
+    /* [7.999.55] ripresa di una gara della NAZIONALE: la firma porta l'avversario, che si ricava dallo stato del torneo */
+    if(/^(national|nationsCup|euroMondiale)/.test(pendingResume.context||"")&&!(typeof window!=="undefined"&&window.__CPM_NO_RIPRESA55)){
+      const snap=pendingResume;setPendingResume(null);
+      const pre=(player.name||"")+"|"+(player.season||1)+"|"+(player.week||1)+"|";
+      try{
+        if(/^euroMondiale/.test(snap.context)){const em=player.euroMondiale;if(!em||!em.active||em.done)return;
+          const ctx=em.phase==="qualificazioni"?"euroMondiale_qualif":em.phase==="group"?"euroMondiale_group":"euroMondiale_ko";
+          const opp=em.phase==="qualificazioni"?((em.qualOpponents||[])[em.qualMatchIdx||0]||"Portogallo"):em.phase==="group"?((em.groupOpponents||[])[em.groupMatchIdx||0]||"Spagna"):(em.koOpponent||"Germania");
+          if(snap.sig!==pre+ctx+"|N:"+opp)return;startEuroMondialeMatch(snap);return;}
+        if(snap.context==="nationsCup"){const q=player.nationsCupQueue;if(!q||!q.active||q.done)return;
+          const opp=(q.opponents||[])[q.matchIdx||0]||"Avversario";if(snap.sig!==pre+"nationsCup|N:"+opp)return;startNationsCupMatch(snap);return;}
+        if(snap.context==="national"){let md=null;try{md=getThisWeekMatchday();}catch(_e){}if(!md||md.type!=="national")return;
+          const opp=md.opponentName||"Avversario";if(snap.sig!==pre+"national|N:"+opp)return;
+          setNationalCallupData({nation:player.nation||"Italia",isFirst:(player.nationalCaps||0)===0,newCaps:(player.nationalCaps||0)+1,opp});
+          _resumeNat55.current=snap;return;}
+      }catch(_e){}
+      return;
+    }
     let md=null;try{md=getThisWeekMatchday();}catch(_e){}
     if(!md)return;/* calendario non ancora pronto → riprova al prossimo aggiornamento di player */
     const ctx=md.type==="cup"?"cup":md.type==="euro_group"?"euro_group":md.type==="euro"?"euro_ko":md.type==="national"?"national":"career";
@@ -1010,6 +1029,7 @@ const getThisWeekMatchday=()=>{
     if(snap.sig!==expSig)return;/* non è più la stessa gara → scarta (la fixture resta giocabile normalmente) */
     startMatch(snap);
   },[player,pendingResume]);// eslint-disable-line
+  useEffect(()=>{if(_resumeNat55.current&&nationalCallupData){const sn=_resumeNat55.current;_resumeNat55.current=null;startNationalMatch(sn);}},[nationalCallupData]);// eslint-disable-line  [7.999.55] amichevole della Nazionale: si rientra in campo appena la convocazione e' pronta
   const confirmMisterDiscorso=(responseKey)=>{
     const efMap={
       pos:{morale:8,coachTrust:5},neu:{morale:3},neg:{morale:-4,fatigue:5},
@@ -1025,7 +1045,7 @@ const getThisWeekMatchday=()=>{
   const handleCareerMoment=(choice)=>{
     const ef=choice.ef||{};
     setPlayer(p=>{
-      const newMem=[...(p.worldMemory||[]),{type:"career_moment",label:choice.mem||"Momento importante",season:p.season||1,week:p.week||1}].slice(-40);
+      const newMem=[...(p.worldMemory||[]),{type:"career_moment",label:choice.mem||"Momento importante",season:p.season||1,week:p.week||1}].slice(-WORLD_MEM_CAP);
       const newFired=[...(p.momentsFired||[]),careerMomentModal?.id].filter(Boolean);
       return{...p,
         worldMemory:newMem,momentsFired:newFired,
@@ -1223,6 +1243,7 @@ const getThisWeekMatchday=()=>{
       startNewSeason:()=>{try{doStartNewSeason();return true;}catch(e){return "error:"+(e&&e.message);}},
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
+      apriNaz55:()=>{try{if(!(player.euroMondiale&&player.euroMondiale.active))return "no-em";startEuroMondialeMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.55] solo il guardiano ripresa-55 */
       playMatch:()=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
         if(screen==="seasonEnd"||screen==="seasonAwards")return "seasonEnd";
@@ -3274,7 +3295,7 @@ const getThisWeekMatchday=()=>{
       setPlayer(p=>{
         const em=p.euroMondiale||{};
         return{...p,fatigue:clamp((p.fatigue||0)+(result.simulated?0:rng(6,12)),0,100),/* [7.164.0 deferito LIVE-F6b] anche le gare euro/nazionale LIVE costano fatica (prima: semifinale UCL dal vivo = 0; il sim resta senza costo come il sim di lega, design 7.9.0) */...natHistPush(p,{comp:"Qualif. "+(em.type||"Europeo"),opp:result.opponent,hs:result.homeScore,as:result.awayScore,won:!!result.won,drew:!!result.drew,goals:result.goals||0,assists:result.assists||0,rating:result.rating,sim:!!result.simulated}),nationalCaps:(p.nationalCaps||0)+1,nationalGoals:(p.nationalGoals||0)+(result.goals||0),
-          ...(_qAllDone&&!_qQualified?{worldMemory:[...(p.worldMemory||[]),{type:"euro_mondiale",season:p.season||1,type_em:em.type,won:false}].slice(-40)}:{}),/* [6.74.0 QA-9] worldMemory anche su qualificazione FALLITA: la guardia del trigger W20 legge solo worldMemory → senza entry il torneo poteva ri-partire da zero nella stessa finestra (rifire con gli stessi avversari) */
+          ...(_qAllDone&&!_qQualified?{worldMemory:[...(p.worldMemory||[]),{type:"euro_mondiale",season:p.season||1,type_em:em.type,won:false}].slice(-WORLD_MEM_CAP)}:{}),/* [6.74.0 QA-9] worldMemory anche su qualificazione FALLITA: la guardia del trigger W20 legge solo worldMemory → senza entry il torneo poteva ri-partire da zero nella stessa finestra (rifire con gli stessi avversari) */
           euroMondiale:{...em,qualMatchIdx:_qIdx,qualPts:_qPts,qualDone:_qAllDone,qualQualified:_qQualified,
             // FIX finestra morta: al termine delle qualificazioni transita SUBITO (non aspetta la W24) → niente card "vs ?" né qualificazioni rigiocabili
             ...(_qAllDone?(_qQualified?{phase:"group"}:{phase:"done",done:true,eliminated:true,active:false}):{})}};
@@ -3314,7 +3335,7 @@ const getThisWeekMatchday=()=>{
             const qualified=_emGroupQualified;
             const koOppPool=_allNat.filter(n=>n!==(p.nation||"Italia")&&!(em.groupOpponents||[]).includes(n));
             const koOpp=pick(koOppPool)||_allNat[0];
-            return{...p,fatigue:clamp((p.fatigue||0)+(result.simulated?0:rng(6,12)),0,100),/* [7.164.0 deferito LIVE-F6b] anche le gare euro/nazionale LIVE costano fatica (prima: semifinale UCL dal vivo = 0; il sim resta senza costo come il sim di lega, design 7.9.0) */...natHistPush(p,{comp:(em.type||"Torneo")+" · Girone",opp:result.opponent,hs:result.homeScore,as:result.awayScore,won:!!result.won,drew:!!result.drew,goals:result.goals||0,assists:result.assists||0,rating:result.rating,sim:!!result.simulated}),nationalCaps:(p.nationalCaps||0)+1,nationalGoals:(p.nationalGoals||0)+(result.goals||0),...(qualified?{}:{worldMemory:[...(p.worldMemory||[]),{type:"euro_mondiale",season:p.season||1,type_em:em.type,won:false}].slice(-40)}),/* [6.74.0 QA-9] entry anche su eliminazione al girone (anti-rifire) */euroMondiale:{...em,phase:qualified?"ko":"done",groupMatchIdx:newIdx,groupPts:newPts,groupMatches:newGM,qualified,eliminated:!qualified,koOpponent:qualified?koOpp:null,koPhase:qualified?"r16":null,done:!qualified,...(qualified?{}:{active:false})}};// 5.67.0: il girone porta agli OTTAVI (r16), non dritti alla semifinale
+            return{...p,fatigue:clamp((p.fatigue||0)+(result.simulated?0:rng(6,12)),0,100),/* [7.164.0 deferito LIVE-F6b] anche le gare euro/nazionale LIVE costano fatica (prima: semifinale UCL dal vivo = 0; il sim resta senza costo come il sim di lega, design 7.9.0) */...natHistPush(p,{comp:(em.type||"Torneo")+" · Girone",opp:result.opponent,hs:result.homeScore,as:result.awayScore,won:!!result.won,drew:!!result.drew,goals:result.goals||0,assists:result.assists||0,rating:result.rating,sim:!!result.simulated}),nationalCaps:(p.nationalCaps||0)+1,nationalGoals:(p.nationalGoals||0)+(result.goals||0),...(qualified?{}:{worldMemory:[...(p.worldMemory||[]),{type:"euro_mondiale",season:p.season||1,type_em:em.type,won:false}].slice(-WORLD_MEM_CAP)}),/* [6.74.0 QA-9] entry anche su eliminazione al girone (anti-rifire) */euroMondiale:{...em,phase:qualified?"ko":"done",groupMatchIdx:newIdx,groupPts:newPts,groupMatches:newGM,qualified,eliminated:!qualified,koOpponent:qualified?koOpp:null,koPhase:qualified?"r16":null,done:!qualified,...(qualified?{}:{active:false})}};// 5.67.0: il girone porta agli OTTAVI (r16), non dritti alla semifinale
           }
           return{...p,fatigue:clamp((p.fatigue||0)+(result.simulated?0:rng(6,12)),0,100),/* [7.164.0 deferito LIVE-F6b] anche le gare euro/nazionale LIVE costano fatica (prima: semifinale UCL dal vivo = 0; il sim resta senza costo come il sim di lega, design 7.9.0) */...natHistPush(p,{comp:(em.type||"Torneo")+" · Girone",opp:result.opponent,hs:result.homeScore,as:result.awayScore,won:!!result.won,drew:!!result.drew,goals:result.goals||0,assists:result.assists||0,rating:result.rating,sim:!!result.simulated}),nationalCaps:(p.nationalCaps||0)+1,nationalGoals:(p.nationalGoals||0)+(result.goals||0),euroMondiale:{...em,groupMatchIdx:newIdx,groupPts:newPts,groupMatches:newGM}};
         }
@@ -3328,7 +3349,7 @@ const getThisWeekMatchday=()=>{
         const _koFaced=[...(em.koResults||[]).map(r=>r.opp),em.koOpponent].filter(Boolean);/* [6.48.0 RC] COLLAUDO PO «la finale è col Portogallo ma l'ho già battuto ai quarti!»: il pool escludeva solo girone + avversario corrente, NON i turni KO già giocati → una squadra battuta ai quarti poteva ripresentarsi in finale */
         const finalOppPool=_allNat.filter(n=>n!==(p.nation||"Italia")&&!_koFaced.includes(n)&&!(em.groupOpponents||[]).includes(n));
         const finalOpp=nextPhase?(pick(finalOppPool)||pick(_allNat.filter(n=>n!==(p.nation||"Italia")&&!_koFaced.includes(n)))||_allNat[0]):null;
-        const newMem=(isChamp||!koWon)?[...(p.worldMemory||[]),{type:"euro_mondiale",season:p.season||1,type_em:em.type,won:isChamp}].slice(-40):(p.worldMemory||[]);/* [6.74.0 QA-9] entry anche su eliminazione KO (prima solo da campione → il trigger poteva rifare fuoco nella stessa stagione) */
+        const newMem=(isChamp||!koWon)?[...(p.worldMemory||[]),{type:"euro_mondiale",season:p.season||1,type_em:em.type,won:isChamp}].slice(-WORLD_MEM_CAP):(p.worldMemory||[]);/* [6.74.0 QA-9] entry anche su eliminazione KO (prima solo da campione → il trigger poteva rifare fuoco nella stessa stagione) */
         const newTrophies=isChamp?[...(p.trophies||[]),{season:p.season||1,club:p.nation||"Italia",league:em.type||"Torneo",isNational:true,type:"int"}]:(p.trophies||[]);
         const _emDiary=isChamp?[{season:p.season||1,week:p.week||1,type:"euro_mondiale_trophy",e:"🌍",headline:`${em.type||"Torneo"} VINTO!`,body:`${p.nation||"Italia"} Campione ${em.type||"Torneo"} S.${p.season||1}!`,color:TH.accentText}]:[];
         const morD=isChamp?25:koWon?12:-8;const popD=isChamp?25:koWon?10:0;
@@ -3667,7 +3688,7 @@ const getThisWeekMatchday=()=>{
         setTimeout(()=>notify(`🔥 ${drbyE} ${drbyName} VINTO! Morale +20 · Pop. +15!`,"#f59e0b"),600);
         setPlayer(p=>{
           const mem={type:"derby_win",derbyName:drbyName,season:p.season||1,week:p.week||1,goals:result.goals,score:`${result.homeScore}-${result.awayScore}`,desc:`Vittoria nel ${drbyName}! S.${p.season||1}`};
-          return{...p,popularity:clamp((p.popularity||20)+15,0,100),morale:clamp((p.morale||70)+20,0,100),worldMemory:[...(p.worldMemory||[]),mem].slice(-40)};
+          return{...p,popularity:clamp((p.popularity||20)+15,0,100),morale:clamp((p.morale||70)+20,0,100),worldMemory:[...(p.worldMemory||[]),mem].slice(-WORLD_MEM_CAP)};
         });
       }else if(!result.drew){
         setTimeout(()=>notify(`😔 ${drbyE} ${drbyName} perso. Morale -15.`,TH.danger),600);
@@ -3861,7 +3882,7 @@ const getThisWeekMatchday=()=>{
            setPlayer(p=>{
              const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),chem:clamp((p.chem||50)+(ef.chem||0),0,100),bank:Math.max(0,(p.bank||0)+(ef.bank||0))};
              const _mk=markVitaEvent(p,ev);
-             const _wm=ev.mem?{worldMemory:[...(p.worldMemory||[]),{type:"vita",label:ev.mem,season:p.season||1,week:p.week||1}].slice(-40)}:{};
+             const _wm=ev.mem?{worldMemory:[...(p.worldMemory||[]),{type:"vita",label:ev.mem,season:p.season||1,week:p.week||1}].slice(-WORLD_MEM_CAP)}:{};
              return{...p,weekLived:true,...extras,..._mk,..._wm};
            });
            setTimeout(()=>setWeekLiveModal({event:{...ev,txt:_tx416},changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0},coachMsg:_liveCoachMsg}),50);
@@ -4419,7 +4440,7 @@ const getThisWeekMatchday=()=>{
             const ef=ev.ef||{};
             const extras={morale:clamp((p.morale||70)+(ef.morale||0),0,100),fatigue:clamp((p.fatigue||0)+(ef.fatigue||0),0,100),form:clamp((p.form||70)+(ef.form||0),30,95),popularity:clamp((p.popularity||20)+popGain(p,ef.popularity||0),0,100),coachTrust:clamp((p.coachTrust||60)+(ef.coachTrust||0),0,100),chem:clamp((p.chem||50)+(ef.chem||0),0,100),bank:Math.max(0,(p.bank||0)+(ef.bank||0))};
             const _mk=markVitaEvent(p,ev);
-            const _wm=ev.mem?{worldMemory:[...(p.worldMemory||[]),{type:"vita",label:ev.mem,season:p.season||1,week:p.week||1}].slice(-40)}:{};
+            const _wm=ev.mem?{worldMemory:[...(p.worldMemory||[]),{type:"vita",label:ev.mem,season:p.season||1,week:p.week||1}].slice(-WORLD_MEM_CAP)}:{};
             setTimeout(()=>setWeekLiveModal({event:{...ev,txt:_tx},changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0}}),100);
             updP={...updP,...extras,..._mk,..._wm};
           }
@@ -5219,7 +5240,8 @@ const getThisWeekMatchday=()=>{
     else{notify("🎓 Sei diventato professionista!",TH.success);}
   },[]);// eslint-disable-line
 
-  const startNationalMatch=()=>{
+  const startNationalMatch=(resumeSnap=null)=>{
+    matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.999.55] ripresa dopo il background */
     const callup=nationalCallupData;
     if(!callup)return;
     const oppName=callup.opp||"Avversario";
@@ -5231,7 +5253,8 @@ const getThisWeekMatchday=()=>{
     setMatchContext("national");
     setScreen("match");
   };
-  const startNationsCupMatch=()=>{
+  const startNationsCupMatch=(resumeSnap=null)=>{
+    matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.999.55] ripresa dopo il background */
     const q=player.nationsCupQueue;
     if(!q||!q.active||q.done)return;
     const oppName=(q.opponents||[])[q.matchIdx||0]||"Avversario";
@@ -5243,7 +5266,8 @@ const getThisWeekMatchday=()=>{
     setMatchContext("nationsCup");
     setScreen("match");
   };
-  const startEuroMondialeMatch=()=>{ // Sprint 53
+  const startEuroMondialeMatch=(resumeSnap=null)=>{ // Sprint 53
+    matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.999.55] ripresa dopo il background */
     const em=player.euroMondiale;
     if(!em||!em.active||em.done)return;
     if(em.phase==="qualificazioni"&&em.qualDone){notify("🌍 Qualificazioni già completate — attendi la prossima fase.",TH.warning);return;}/* [7.8.28 QA] save legacy con qualDone ma phase non transitata: senza guardia si giocava una 3ª qualificazione FANTASMA (qualOpponents[idx]=undefined → fallback «Portogallo») che poteva ribaltare l'esito */
@@ -9897,8 +9921,9 @@ const getThisWeekMatchday=()=>{
           {(player.mvpMonthAwards||[]).length>0&&(
             <Fisarmonica id="profilo-mvp-mese" titolo="MVP del Mese" quante={(player.mvpMonthAwards||[]).length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               
-              {[...(player.mvpMonthAwards||[])].reverse().slice(0,8).map((a,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<Math.min((player.mvpMonthAwards||[]).length,8)-1?"1px solid "+TH.cardBorder:"none"}}>
+              <div style={{maxHeight:360,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>{/* [7.999.54 censimento riquadri: il titolo contava tutti i premi, la lista ne mostrava 8] tutti, con scroll interno */}
+              {[...(player.mvpMonthAwards||[])].reverse().map((a,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<(player.mvpMonthAwards||[]).length-1?"1px solid "+TH.cardBorder:"none"}}>
                   <span style={{fontSize:FS.subhead,flexShrink:0}}>⭐</span>
                   <div style={{flex:1}}>
                     <div style={{fontSize:FS.caption,fontWeight:700,color:TH.text}}>MVP {a.month}</div>
@@ -9907,6 +9932,7 @@ const getThisWeekMatchday=()=>{
                   <Badge tone="gold" size="sm">Premio</Badge>
                 </div>
               ))}
+              </div>
             </Card></Fisarmonica>
           )}
           {/* Sprint 29 — MW1: Memoria della Carriera */}
@@ -9921,12 +9947,12 @@ const getThisWeekMatchday=()=>{
               euro_mondiale:{e:"🌍",label:(m)=>m.won?`🏆 ${m.type_em||"Torneo"} VINTO! (S.${m.season})`:`${m.type_em||"Torneo"} S.${m.season}`},
               vita:{e:"📖",label:(m)=>m.label?`${m.label} (S.${m.season})`:`Vita da eroe S.${m.season}`},/* [7.412.0] i ricordi della VITA DELL'EROE entrano nella Storia: senza questa voce il filtro MEM_META li scartava */
             };
-            const entries=(player.worldMemory||[]).filter(m=>MEM_META[m.type]).slice(-12).reverse();
+            const entries=(player.worldMemory||[]).filter(m=>MEM_META[m.type]).reverse();/* [7.999.54 censimento riquadri] tutti i ricordi (prima gli ultimi 12), con scroll interno */
             if(!entries.length)return null;
             return(
               <Fisarmonica id="profilo-memoria" titolo="Memoria della Carriera" quante={entries.length}><Card style={{padding:"9px 12px",borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
                 
-                <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                <div style={{display:"flex",flexDirection:"column",gap:6,maxHeight:360,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
                   {entries.map((m,i)=>{
                     const meta=MEM_META[m.type];
                     return(
@@ -10084,6 +10110,7 @@ const getThisWeekMatchday=()=>{
           {(player.history||[]).length>0&&(
             <Fisarmonica id="profilo-timeline" titolo={L.careerHistory||"Timeline Stagioni"} quante={(player.history||[]).length}><Card style={{borderRadius:"0 0 "+RAD.xs+"px "+RAD.xs+"px",borderTop:"none"}}>
               
+              <div style={{maxHeight:520,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>{/* [7.999.54 censimento riquadri] una scheda a stagione: scroll interno */}
               {[...(player.history||[])].reverse().map((h,i,arr)=>{
                 const _sTr84=(player.trophies||[]).filter(t=>t&&t.season===h.season);/* [7.184.0 collaudo PO «campione di cosa, specifica!»] i trofei VERI della stagione → badge specifici */
                 const isChamp=_sTr84.length>0;
@@ -10110,7 +10137,7 @@ const getThisWeekMatchday=()=>{
                     </div>
                   </div>
                 );
-              })}
+              })}</div>
             </Card></Fisarmonica>
           )}
           {(()=>{
@@ -10346,7 +10373,7 @@ const getThisWeekMatchday=()=>{
                         setPlayer(function(p){var c=academyCost24(p);if((p.bankBalance||0)<c.found)return p;return{...p,bankBalance:Math.round((p.bankBalance||0)-c.found),academy24:{name:academyName24(p),founded:p.season||1,grads:[],tot:0,paused:false},log:["🏫 Hai fondato la "+academyName24(p)+" (stagione "+(p.season||1)+")",...(p.log||[])].slice(0,60)};});
                         notify("🏫 "+academyName24(player)+" fondata! Il primo ragazzo esce a fine stagione.",TH.success);}} style={bs}>FONDA →</button>
                     </div>);
-                  var last=(ac.grads||[]).slice(-3).reverse();
+                  var last=(ac.grads||[]).slice().reverse();/* [7.999.54 censimento riquadri] tutti i ragazzi conservati (prima 3 senza dirlo) */
                   return(
                     <div data-cpm="accademia24" data-stato={ac.paused?"pausa":"attiva"} data-tot={ac.tot|0} style={{padding:"8px 0 2px",borderTop:"1px solid "+TH.cardBorder}}>
                       <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -10357,7 +10384,7 @@ const getThisWeekMatchday=()=>{
                         </div>
                         <button data-cpm="accademia24-pausa" onClick={function(){var np=!ac.paused;setPlayer(function(p){return p.academy24?{...p,academy24:{...p.academy24,paused:np}}:p;});notify(np?"⏸️ Accademia in pausa":"▶️ Accademia riaperta",np?TH.muted:TH.success);}} style={bs}>{ac.paused?"RIAPRI":"PAUSA"}</button>
                       </div>
-                      {last.length>0&&<div style={{display:"flex",flexDirection:"column",gap:2,marginTop:6,paddingLeft:30}}>{last.map(function(g,i){return <div key={i} style={{display:"flex",gap:8,fontSize:FS.caption,color:TH.text}}><span className="cpm-num" style={{color:TH.muted,minWidth:34}}>S.{g.s}</span><span style={{flex:1}}>{g.n}</span><span style={{color:TH.muted}}>{g.pos}</span><b className="cpm-num" style={{color:g.r>=70?TH.success:TH.text,minWidth:22,textAlign:"right"}}>{g.r}</b></div>;})}</div>}
+                      {last.length>0&&(ac.tot|0)>last.length&&<div style={{fontSize:FS.caption,color:TH.faint,marginTop:6,paddingLeft:30}}>Gli ultimi {last.length} di {ac.tot|0}</div>}{last.length>0&&<div style={{display:"flex",flexDirection:"column",gap:2,marginTop:6,paddingLeft:30,maxHeight:150,overflowY:"auto"}}>{last.map(function(g,i){return <div key={i} style={{display:"flex",gap:8,fontSize:FS.caption,color:TH.text}}><span className="cpm-num" style={{color:TH.muted,minWidth:34}}>S.{g.s}</span><span style={{flex:1}}>{g.n}</span><span style={{color:TH.muted}}>{g.pos}</span><b className="cpm-num" style={{color:g.r>=70?TH.success:TH.text,minWidth:22,textAlign:"right"}}>{g.r}</b></div>;})}</div>}
                     </div>);
                 })()}
                 {/* [7.992.0 Patrimonio F4] beni e stile di vita: acquisto una tantum, la piazza e il mister reagiscono */}
@@ -10808,6 +10835,8 @@ const getThisWeekMatchday=()=>{
                   <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:2,marginBottom:2}}>Nazionale</div>
                   <div style={{fontSize:FS.title,fontWeight:900,color:TH.text,lineHeight:1.1}}>{natName}</div>
                   <div style={{fontSize:FS.caption,color:natCol,fontWeight:700,marginTop:3}}>Prestigio mondiale: {nd.p}/100</div>
+                  {(()=>{const ct=(typeof ctDiNazione==="function")?ctDiNazione(player.nation,player.season):null;if(!ct)return null;const s0=ct.ciclo*4+1;
+                    return <div data-cpm="ct54" style={{fontSize:FS.caption,color:TH.muted,marginTop:3}}>Commissario tecnico: <b style={{color:TH.text}}>{ct.name.replace(/^CT /,"")}</b> · {ct.style} · in carica dalla stagione {s0}</div>;})()}{/* [7.999.54] il CT ha un nome e cambia a ogni ciclo di 4 stagioni */}
                 </div>
               </div>
               {/* [7.999.49 parte A] prima dell'esordio: al posto di tre zeri, lo stato della convocazione (era in fondo alla pagina) */}
