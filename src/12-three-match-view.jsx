@@ -814,7 +814,7 @@ function ThreeMatchView(props){
     const _uno910=!(typeof window!=='undefined'&&window.__CPM_NO910);
     const _bodyUrl907='./assets/korward-regular-player.glb';
     try{if(typeof window!=='undefined')window.__CPM_BODY909=()=>_corpiPref907;}catch(_e){}/* [7.909] quale corpo e' in uso: lo leggono il contatore dei fotogrammi e le sonde */
-    try{window.__CPM_GLB_READY=_useGLB?false:true;window.__CPM_GLB_FAIL=null;}catch(_e){}/* [7.264.0] il flag di fallimento si azzera a ogni mount: una partita non eredita l'errore della precedente *//* [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto non si gioca»] readiness esposta a LiveMatch: false=GLB atteso ma non ancora agganciato → il kickoff viene TRATTENUTO (overlay pre-fischio); diventa true all'aggancio del primo CH38 o su fallimento duro (ultima risorsa) */
+    try{window.__CPM_GLB_READY=_useGLB?false:true;window.__CPM_GLB_FAIL=null;window.__CPM_HYPER_COMPILED74=false;}catch(_e){}/* [7.264.0] il flag di fallimento si azzera a ogni mount: una partita non eredita l'errore della precedente *//* [7.9.3 direttiva PO «basta burattini: se CH38 non è pronto non si gioca»] readiness esposta a LiveMatch: false=GLB atteso ma non ancora agganciato → il kickoff viene TRATTENUTO (overlay pre-fischio); diventa true all'aggancio del primo CH38 o su fallimento duro (ultima risorsa) */
     // [6.95.0 · 7.8.1 collaudo PO «iniziano la partita i soldatini — va assolutamente evitato / mai burattini»]
     //   GRACE PERIOD: finché il CH38 non è agganciato i mesh procedurali (giocatori + EROE) restano NASCOSTI
     //   (la logica/posizioni girano comunque); l'aggancio GLB ripristina la visibilità (coi figli procedurali
@@ -1218,8 +1218,14 @@ function ThreeMatchView(props){
           D[4*o]=A[0]+(B[0]-A[0])*al;D[4*o+1]=A[1]+(B[1]-A[1])*al;D[4*o+2]=A[2]+(B[2]-A[2])*al;D[4*o+3]=255;}
         x.putImageData(img,0,0);return true;};
       const _hyperShirtTexCache=new Map();
+      const _hyperShirtBase74=new Map(),_geoId74=new WeakMap();let _gidN74=0;const _gid74=o=>{if(!o||typeof o!=='object')return 0;if(!_geoId74.has(o))_geoId74.set(o,++_gidN74);return _geoId74.get(o);};/* [7.999.59] fondo maglia per squadra */
       const _hyperShirtTex=(shirt,c2,pattern,num,geom)=>{const _g25=(geom&&!(typeof window!=='undefined'&&window.__CPM_NO_STRISCE25)&&(pattern==='stripes'||pattern==='stripesw'||pattern==='hoops'))?_shirtGeoMap(geom,512):null;const key=[shirt,c2,pattern,num,_g25?geom.uuid:''].join('|');if(_hyperShirtTexCache.has(key))return _hyperShirtTexCache.get(key);
-        const S=512,f=S/1024,c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');x.fillStyle=shirt;x.fillRect(0,0,S,S);x.fillStyle=c2||'#f0f0f0';
+        const S=512,f=S/1024,c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');
+        /* [7.999.59 collaudo PO «ingresso in campo pesante, va a scatti»] MISURATO col profilo CPU dell'ingresso: 2,5 s nel dipingere le
+           maglie, perche' OGNI numero rifaceva da capo la pittura pixel per pixel delle strisce (getImageData 512x512). Il fondo e' lo
+           stesso per tutta la squadra: si dipinge una volta e si copia, sopra si scrive solo il numero. Rosso __CPM_NO_MAGLIE74. */
+        const _no74=(typeof window!=='undefined'&&window.__CPM_NO_MAGLIE74);const _bk74=[shirt,c2,pattern,_gid74(_g25)].join('|');const _b74=_no74?null:_hyperShirtBase74.get(_bk74);
+        if(_b74){x.drawImage(_b74,0,0);}else{x.fillStyle=shirt;x.fillRect(0,0,S,S);x.fillStyle=c2||'#f0f0f0';
         if(_g25&&_shirtGeoPaint(x,S,_g25,pattern,shirt,c2)){}else if(pattern==='stripes'){for(let y=0;y<1024;y+=64)x.fillRect(0,(y+16)*f,S,32*f);}
         else if(pattern==='stripesw'){for(let y=0;y<1024;y+=48)x.fillRect(0,(y+19)*f,S,10*f);}
         else if(pattern==='hoops'){for(let X=500;X<1024;X+=96)x.fillRect(X*f,0,48*f,S);}
@@ -1227,6 +1233,7 @@ function ThreeMatchView(props){
         else if(pattern==='vband'){x.fillRect(0,596*f,S,88*f);}
         else if(pattern==='band'){x.fillRect(640*f,0,70*f,S);}
         else if(pattern==='sash'){x.save();x.translate(740*f,625*f);x.rotate(0.9);x.fillRect(-600*f,-40*f,1200*f,80*f);x.restore();}
+        if(!_no74){try{const bc=document.createElement('canvas');bc.width=bc.height=S;bc.getContext('2d').drawImage(c,0,0);_hyperShirtBase74.set(_bk74,bc);}catch(_e74){}}}
         if(num!=null&&num!==''){const lum=(()=>{const h=String(shirt).replace('#','');const r=parseInt(h.slice(0,2),16)/255,g=parseInt(h.slice(2,4),16)/255,b=parseInt(h.slice(4,6),16)/255;return 0.2126*r+0.7152*g+0.0722*b;})();
           x.save();x.translate(735*f,625*f);x.rotate(-Math.PI/2);x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';x.font=`bold ${Math.round(170*f)}px Arial, sans-serif`;
           x.lineWidth=16*f;x.strokeStyle=lum>0.62?'rgba(255,255,255,0.9)':'rgba(7,9,16,0.9)';x.strokeText(String(num),0,6*f);x.fillStyle=lum>0.62?'#111827':'#ffffff';x.fillText(String(num),0,6*f);x.restore();}
@@ -1469,6 +1476,7 @@ function ThreeMatchView(props){
              spento quando la formazione e' CGTrader: ora anche loro sono corpi CGTrader (LOD leggero). Rosso __CPM_NO_BIMBI23. */
           if(_hyperIntro&&!_hyperFull&&!(typeof window!=='undefined'&&window.__CPM_NO_BIMBI23)){try{const _kp=(_trioLod&&packages&&packages[2])||pkg;if(!_kp.animations||!_kp.animations.length)_kp.animations=pkg.animations;window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(_kp,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);}catch(_e){}}
           if(_hyperFull){_replaceBenchWithHyper(pkg);try{window.__CPM_HYPER_MASCOT_BUILDER=list=>_replaceMascotsWithHyper(pkg,list);const pending=window.__CPM_HYPER_MASCOT_LIST;if(pending)window.__CPM_HYPER_MASCOT_BUILDER(pending);window.__CPM_HYPER_ASSISTANT_BUILDER=list=>_replaceAssistantsWithHyper(pkg,list);const assistantPending=window.__CPM_HYPER_ASSISTANT_LIST;if(assistantPending)window.__CPM_HYPER_ASSISTANT_BUILDER(assistantPending);}catch(_e){}}
+          try{if(!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74))setTimeout(()=>{try{if(sr.current&&sr.current._prova16)sr.current._prova16();}catch(_e74){}try{window.__CPM_HYPER_COMPILED74=true;}catch(_e74b){}},0);}catch(_e74c){}/* [7.999.59] i corpi CGTrader arrivano DOPO la precompilazione CH38: si compilano subito fuori schermo (fotogramma di prova) invece che al primo disegno, a ingresso gia' partito (misurato: blocco da 6,7 s) */
           try{window.__CPM_HYPER_CASUAL_STATUS=_cgtraderAjaxReview?'ready-cgtrader-ajax-review':(_cgtraderReview?'ready-cgtrader-review':(_cgtraderSquadReview?'ready-cgtrader-lod2-benchmark':(_cgtraderMixedLodBenchmark?'ready-cgtrader-mixed-lod-benchmark':(_hyperFull?'ready-full':(_hyperIntro?'ready-lineup':'ready')))));}catch(_e){}
         }).catch(error=>{try{window.__CPM_HYPER_CASUAL_STATUS='fallback:'+String(error&&error.message||'load failed');}catch(_e){}});
       }
@@ -5526,13 +5534,21 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       // [6.28.0] INIZIO fase walkout (transizione matchday/formations → walkout): riporta TUTTI i mesh alla
       //   bocca del tunnel e riavvia il timer d'ingresso → l'ingresso scaglionato in due file si vede SEMPRE,
       //   non solo se il componente montava già in walkout. Escluso sotto ?cpmtest=1 (il gate salta la walkout).
-      if(isWalk&&!_wasWalk&&!_CPM_TEST){
+      if(isWalk&&!_wasWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))){sr.current._walkHoldT74=0;
         const _toTunnel=(m)=>{if(!m||m._wStartX==null)return;m.position.x=m._wStartX;m.position.z=m._wStartZ;m.position.y=0;m._px=m.position.x;m._pz=m.position.z;m._sp=0;m._idle=0;};
         sr.current.players.forEach(pp=>_toTunnel(pp.mesh));_toTunnel(hero);
         walkT=0;walkDone=false;
       }
       _wasWalk=isWalk;
-      if(isWalk){
+      /* [7.999.59 collaudo PO «le scene 3D all'ingresso in campo sono molto scattose e pesanti»] MISURATO (long task + profilo CPU
+         dell'ingresso): 13 blocchi del thread principale, 12,8 s in headless, quasi tutti compilazione degli shader e caricamento
+         dei corpi — lavoro SINCRONO che si puo' spostare ma non rendere fluido, e cadeva a meta' dell'animazione. Ora le squadre
+         aspettano al tunnel finche' il 3D e' pronto (__CPM_GLB_READY, lo stesso segnale del fischio d'inizio; tetto 10 s) e
+         LiveMatch copre l'attesa con un velo: l'ingresso parte dopo, fluido. Rosso __CPM_NO_WALKHOLD74. */
+      const _hold74=isWalk&&(!_CPM_TEST||(typeof window!=='undefined'&&window.__CPM_WALKTEST74))&&!(typeof window!=='undefined'&&window.__CPM_NO_WALKHOLD74)&&(typeof window!=='undefined'&&window.__CPM_GLB!==false&&(window.__CPM_GLB_READY!==true||window.__CPM_HYPER_CASUAL_STATUS==='loading'||(/^ready/.test(String(window.__CPM_HYPER_CASUAL_STATUS||''))&&!window.__CPM_HYPER_COMPILED74)))&&((sr.current._walkHoldT74=(sr.current._walkHoldT74||0)+dt)<((typeof window!=='undefined'&&+window.__CPM_WALKCAP74)||10));
+      try{if(typeof window!=='undefined'){window.__CPM_WALKHOLD74=!!_hold74;if(_CPM_TEST)window.__CPM_WALKDBG74={isWalk,t:+(sr.current._walkHoldT74||0).toFixed(2),ready:window.__CPM_GLB_READY,st:window.__CPM_HYPER_CASUAL_STATUS,c:window.__CPM_HYPER_COMPILED74,glb:window.__CPM_GLB,ph:P.matchPhase};}}catch(_e74){}
+      if(isWalk&&_hold74){/* al tunnel, fermi: nessun passo mentre il thread e' occupato */}
+      else if(isWalk){
         sr.current.players.forEach(pp=>animWalk(pp.mesh,aDt,ak));
         animWalk(hero,aDt,ak);
         walkT+=dt;
@@ -10372,7 +10388,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
     };
     loop();
 
-    const onR=()=>{const w=mount.clientWidth||W,h=mount.clientHeight||H;if(w<2||h<2)return;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();};
+    let _rW74=-1,_rH74=-1;/* [7.999.59] MISURATO: 1,7 s di setSize nell'ingresso in campo — il ResizeObserver richiama a ogni assestamento del layout e ogni setSize rialloca il buffer di disegno anche a dimensione invariata. Rosso __CPM_NO_RESIZE74. */
+    const onR=()=>{const w=mount.clientWidth||W,h=mount.clientHeight||H;if(w<2||h<2)return;if(w===_rW74&&h===_rH74&&!(typeof window!=='undefined'&&window.__CPM_NO_RESIZE74))return;_rW74=w;_rH74=h;try{if(typeof window!=='undefined')window.__CPM_RESIZE74=(window.__CPM_RESIZE74||0)+1;}catch(_e){}renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();};
     window.addEventListener('resize',onR);
     // 5.70.1 — osserva il RIDIMENSIONAMENTO del CONTENITORE (non solo window.resize): quando il layout si
     //   assesta e il mount passa da 0 alla sua altezza reale (es. avvio provino), il canvas si adatta subito →

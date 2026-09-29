@@ -131,6 +131,7 @@
     "save-monotonic": "node save-monotonic-test.mjs",
     "playing-mdref": "node playing-mdref-test.mjs",
     "double-tap": "node double-tap-test.mjs",
+    "ingresso-59": "node ingresso-59.mjs",
     "rigori-58": "node rigori-58.mjs",
     "festa-57": "node festa-57.mjs",
     "tpose-56": "node tpose-56.mjs",

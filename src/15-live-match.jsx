@@ -2255,6 +2255,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   //   Sotto ?cpmtest=1 la trattenuta è SPENTA (è presentazione: il gate/validator campionano a tempi fissi —
   //   stesso pattern del read-freeze 5.47.12).
   const [kickoffHold,setKickoffHold]=useState(true);
+  const [walkHold74,setWalkHold74]=useState(false);/* [7.999.59] l'ingresso aspetta il 3D pronto (vedi ThreeMatchView) */
+  useEffect(()=>{if(phase!=="walkout"){setWalkHold74(false);return;}const iv=setInterval(()=>{try{setWalkHold74(!!window.__CPM_WALKHOLD74);}catch(_e){}},200);return()=>clearInterval(iv);},[phase]);
   const [holdTick,setHoldTick]=useState(0);
   /* [7.264.0 direttiva PO «burattini non ne voglio mai vedere in campo, piuttosto messaggio di errore/warning»]
      glbFail: il CH38 non e' arrivato (lento o errore). Prima il fischio partiva comunque dopo 30s e la partita
@@ -10393,6 +10395,15 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     style={{padding:"12px 26px",borderRadius:RAD.sm,border:"none",background:"#f59e0b",color:"#1a1206",fontWeight:900,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",marginBottom:10}}>↻ Riprova il caricamento</button>
                   <button onClick={()=>{try{window.__CPM_GLB_FAIL=null;}catch(_e){}setGlbFail(null);setKickoffHold(false);try{if(typeof window!=='undefined'&&window.__CPM_SHOW_PROC)window.__CPM_SHOW_PROC();}catch(_e2){}}}
                     style={{padding:"9px 18px",borderRadius:RAD.sm,border:"1px solid rgba(255,255,255,0.22)",background:"transparent",color:"rgba(255,255,255,0.62)",fontWeight:700,fontSize:FS.caption,cursor:"pointer",fontFamily:"inherit"}}>Gioca comunque senza modelli 3D</button>
+                </div>)}
+              {phase==="walkout"&&walkHold74&&(
+                <div data-cpm="walkhold74" style={{position:"absolute",inset:0,background:"rgba(5,8,20,0.92)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:40}}>{/* [7.999.59] velo sull'attesa del 3D: la compilazione non si vede piu' come scatti dell'ingresso */}
+                  <div style={{fontSize:34,marginBottom:8,filter:"drop-shadow(0 0 14px rgba(245,158,11,0.7))"}}>🏟️</div>
+                  <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f59e0b",letterSpacing:2.5,textTransform:"uppercase",marginBottom:10}}>Si accendono i riflettori</div>
+                  <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.75)",letterSpacing:0.5,textAlign:"center",padding:"0 20px"}}>Le squadre sono nel tunnel…</div>
+                  <div style={{marginTop:14,width:120,height:3,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:"40%",background:"#f59e0b",borderRadius:RAD.pill,animation:"pulse 1.1s ease-in-out infinite alternate"}}/>
+                  </div>
                 </div>)}
               {kickoffHold&&!paused&&phase==="playing"&&!glbFail&&(()=>{
                 const _kh=["🟢 Le squadre completano il riscaldamento…","📋 Ultime indicazioni dei mister…","🤝 L'arbitro chiama i capitani per il sorteggio…","📸 Foto di rito e strette di mano…","🏟️ Il pubblico si prepara: ci siamo quasi…"];
