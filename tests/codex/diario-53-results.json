@@ -1,0 +1,57 @@
+{
+  "version": "7.999.53",
+  "kind": "synthetic-UI-fixture",
+  "command": "node tests/codex/diario-53.mjs",
+  "viewport": [
+    412,
+    915
+  ],
+  "deviceScaleFactor": 2,
+  "fixture": {
+    "diarySeasons": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "coachSeasons": 8,
+    "uniqueHistoricCoaches": 3,
+    "currentCoach": "Mister Delta"
+  },
+  "observed": {
+    "backward": [
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "forward": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "coachTitle": "STORICO ALLENATORI\n4\n›",
+    "coachText": "STORICO ALLENATORI\n4\n›\n🧑‍💼\nMister Delta\nBilanciato · S.9 · in carica\n0⚽ 0🎯\nFiducia 60\n🧑‍💼\nMister Gamma\nBilanciato · S.6–8 (3 stagioni)\n3⚽ 0🎯\nFiducia 60\n🧑‍💼\nMister Beta\nBilanciato · S.4–5 (2 stagioni)\n2⚽ 0🎯\nFiducia 60\n🧑‍💼\nMister Alfa\nBilanciato · S.1–3 (3 stagioni)\n3⚽ 0🎯\nFiducia 60",
+    "coachCounts": {
+      "Mister Alfa": 1,
+      "Mister Beta": 1,
+      "Mister Gamma": 1,
+      "Mister Delta": 1
+    },
+    "diaryEntries": 5
+  },
+  "errors": []
+}

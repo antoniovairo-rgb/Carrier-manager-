@@ -1,0 +1,1823 @@
+{
+  "seed": 30,
+  "save": {
+    "phase": "career",
+    "player": {
+      "name": "QA Carriera 30",
+      "nation": "Italia",
+      "avatarId": 0,
+      "proStatus": "pro",
+      "season": 3,
+      "week": 1,
+      "age": 21,
+      "ovr": 75,
+      "archetype": "enfant",
+      "tutorialDone": true,
+      "club": {
+        "id": "vill",
+        "n": "FC Submarino",
+        "a": "SUB",
+        "p": 80,
+        "c": "#f59e0b",
+        "c2": "#1d4ed8",
+        "nat": "🇪🇸",
+        "lg": "Liga Ibérica"
+      },
+      "stats": {
+        "velocità": 73,
+        "tecnica": 74,
+        "fisico": 73,
+        "mentalità": 72,
+        "tiro": 71,
+        "passaggio": 71,
+        "dribbling": 71,
+        "posizionamento": 70
+      },
+      "form": 75,
+      "morale": 97,
+      "fatigue": 0,
+      "contract": {
+        "duration": 2,
+        "wage": 6000,
+        "expiresAtSeason": 5
+      },
+      "standings": [
+        {
+          "id": "rma",
+          "n": "CF Madrid",
+          "a": "CFM",
+          "p": 99,
+          "c": "#f5f5f5",
+          "c2": "#f59e0b",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "bar",
+          "n": "FC Catalunya",
+          "a": "CAT",
+          "p": 97,
+          "c": "#1d4ed8",
+          "c2": "#dc2626",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "atm",
+          "n": "AT Manzanares",
+          "a": "ATM",
+          "p": 92,
+          "c": "#dc2626",
+          "c2": "#f5f5f5",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "sev",
+          "n": "FC Hispalense",
+          "a": "HIS",
+          "p": 84,
+          "c": "#f5f5f5",
+          "c2": "#dc2626",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "vill",
+          "n": "FC Submarino",
+          "a": "SUB",
+          "p": 80,
+          "c": "#f59e0b",
+          "c2": "#1d4ed8",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "rsoc",
+          "n": "FC Sociedad",
+          "a": "SOC",
+          "p": 78,
+          "c": "#1d4ed8",
+          "c2": "#f5f5f5",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "bet",
+          "n": "FC Verdiblanco",
+          "a": "VER",
+          "p": 76,
+          "c": "#15803d",
+          "c2": "#f5f5f5",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "val",
+          "n": "FC Valenciano",
+          "a": "VLN",
+          "p": 75,
+          "c": "#f5f5f5",
+          "c2": "#0f0f0f",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "osa",
+          "n": "FC Navarro",
+          "a": "NAV",
+          "p": 68,
+          "c": "#dc2626",
+          "c2": "#1d4ed8",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "cel",
+          "n": "FC Celeste",
+          "a": "CEL",
+          "p": 70,
+          "c": "#93c5fd",
+          "c2": "#ffffff",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "ath",
+          "n": "FC Bilbao",
+          "a": "BIL",
+          "p": 74,
+          "c": "#dc2626",
+          "c2": "#f5f5f5",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "gir",
+          "n": "FC Gironí",
+          "a": "GIR",
+          "p": 72,
+          "c": "#dc2626",
+          "c2": "#f5f5f5",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "mall",
+          "n": "FC Balear",
+          "a": "BAL",
+          "p": 65,
+          "c": "#dc2626",
+          "c2": "#0f0f0f",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "get",
+          "n": "FC Azulón",
+          "a": "AZU",
+          "p": 64,
+          "c": "#1d4ed8",
+          "c2": "#f5f5f5",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "esp",
+          "n": "FC Perico",
+          "a": "PER",
+          "p": 63,
+          "c": "#1d4ed8",
+          "c2": "#f5f5f5",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "dep",
+          "n": "FC Coruñés",
+          "a": "COR",
+          "p": 48,
+          "c": "#1d4ed8",
+          "c2": "#f5f5f5",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica 2",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "vld",
+          "n": "FC Pucela",
+          "a": "PUC",
+          "p": 52,
+          "c": "#7c3aed",
+          "c2": "#f5f5f5",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica 2",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        },
+        {
+          "id": "cad",
+          "n": "FC Gaditano",
+          "a": "GAD",
+          "p": 51,
+          "c": "#f59e0b",
+          "c2": "#1d4ed8",
+          "nat": "🇪🇸",
+          "lg": "Liga Ibérica 2",
+          "played": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "gf": 0,
+          "ga": 0,
+          "gd": 0,
+          "pts": 0
+        }
+      ],
+      "calendar": [
+        {
+          "matchday": 1,
+          "week": 1,
+          "opponentId": "bar",
+          "opponentName": "FC Catalunya",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 2,
+          "week": 2,
+          "opponentId": "vld",
+          "opponentName": "FC Pucela",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 3,
+          "week": 3,
+          "opponentId": "get",
+          "opponentName": "FC Azulón",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 4,
+          "week": 4,
+          "opponentId": "cel",
+          "opponentName": "FC Celeste",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 5,
+          "week": 5,
+          "opponentId": "bet",
+          "opponentName": "FC Verdiblanco",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 6,
+          "week": 6,
+          "opponentId": "rsoc",
+          "opponentName": "FC Sociedad",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 7,
+          "week": 7,
+          "opponentId": "mall",
+          "opponentName": "FC Balear",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 8,
+          "week": 8,
+          "opponentId": "esp",
+          "opponentName": "FC Perico",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 9,
+          "week": 10,
+          "opponentId": "osa",
+          "opponentName": "FC Navarro",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 10,
+          "week": 11,
+          "opponentId": "rma",
+          "opponentName": "CF Madrid",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 11,
+          "week": 12,
+          "opponentId": "ath",
+          "opponentName": "FC Bilbao",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 12,
+          "week": 13,
+          "opponentId": "cad",
+          "opponentName": "FC Gaditano",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 13,
+          "week": 14,
+          "opponentId": "sev",
+          "opponentName": "FC Hispalense",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 14,
+          "week": 15,
+          "opponentId": "dep",
+          "opponentName": "FC Coruñés",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 15,
+          "week": 16,
+          "opponentId": "atm",
+          "opponentName": "AT Manzanares",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 16,
+          "week": 17,
+          "opponentId": "gir",
+          "opponentName": "FC Gironí",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 17,
+          "week": 18,
+          "opponentId": "val",
+          "opponentName": "FC Valenciano",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 18,
+          "week": 20,
+          "opponentId": "bar",
+          "opponentName": "FC Catalunya",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 19,
+          "week": 21,
+          "opponentId": "vld",
+          "opponentName": "FC Pucela",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 20,
+          "week": 22,
+          "opponentId": "get",
+          "opponentName": "FC Azulón",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 21,
+          "week": 23,
+          "opponentId": "cel",
+          "opponentName": "FC Celeste",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 22,
+          "week": 24,
+          "opponentId": "bet",
+          "opponentName": "FC Verdiblanco",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 23,
+          "week": 25,
+          "opponentId": "rsoc",
+          "opponentName": "FC Sociedad",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 24,
+          "week": 26,
+          "opponentId": "mall",
+          "opponentName": "FC Balear",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 25,
+          "week": 27,
+          "opponentId": "esp",
+          "opponentName": "FC Perico",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 26,
+          "week": 29,
+          "opponentId": "osa",
+          "opponentName": "FC Navarro",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 27,
+          "week": 30,
+          "opponentId": "rma",
+          "opponentName": "CF Madrid",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 28,
+          "week": 31,
+          "opponentId": "ath",
+          "opponentName": "FC Bilbao",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 29,
+          "week": 32,
+          "opponentId": "cad",
+          "opponentName": "FC Gaditano",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 30,
+          "week": 33,
+          "opponentId": "sev",
+          "opponentName": "FC Hispalense",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 31,
+          "week": 34,
+          "opponentId": "dep",
+          "opponentName": "FC Coruñés",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 32,
+          "week": 36,
+          "opponentId": "atm",
+          "opponentName": "AT Manzanares",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 33,
+          "week": 37,
+          "opponentId": "gir",
+          "opponentName": "FC Gironí",
+          "isHome": false,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 34,
+          "week": 38,
+          "opponentId": "val",
+          "opponentName": "FC Valenciano",
+          "isHome": true,
+          "played": false,
+          "result": null
+        },
+        {
+          "matchday": 990,
+          "week": 9,
+          "opponentId": "dep",
+          "opponentName": "FC Coruñés",
+          "isHome": true,
+          "played": false,
+          "result": null,
+          "type": "cup",
+          "competition": "Coppa Nazionale",
+          "cupRound": 1,
+          "cupRoundName": "Ottavi di Finale"
+        },
+        {
+          "matchday": 900,
+          "week": 5,
+          "opponentId": "str",
+          "opponentName": "FC Strasburgo",
+          "isHome": true,
+          "played": false,
+          "result": null,
+          "type": "euro_group",
+          "competition": "UEL",
+          "opponentData": {
+            "id": "str",
+            "n": "FC Strasburgo",
+            "a": "STR",
+            "p": 68,
+            "c": "#1d4ed8",
+            "c2": "#f5f5f5",
+            "nat": "🇫🇷",
+            "lg": "Ligue Nationale"
+          }
+        },
+        {
+          "matchday": 903,
+          "week": 12,
+          "opponentId": "str",
+          "opponentName": "FC Strasburgo",
+          "isHome": false,
+          "played": false,
+          "result": null,
+          "type": "euro_group",
+          "competition": "UEL",
+          "opponentData": {
+            "id": "str",
+            "n": "FC Strasburgo",
+            "a": "STR",
+            "p": 68,
+            "c": "#1d4ed8",
+            "c2": "#f5f5f5",
+            "nat": "🇫🇷",
+            "lg": "Ligue Nationale"
+          }
+        },
+        {
+          "matchday": 901,
+          "week": 7,
+          "opponentId": "ber",
+          "opponentName": "FC Berlin Nord",
+          "isHome": false,
+          "played": false,
+          "result": null,
+          "type": "euro_group",
+          "competition": "UEL",
+          "opponentData": {
+            "id": "ber",
+            "n": "FC Berlin Nord",
+            "a": "BNO",
+            "p": 62,
+            "c": "#dc2626",
+            "c2": "#f5f5f5",
+            "nat": "🇩🇪",
+            "lg": "Deutsche Liga"
+          }
+        },
+        {
+          "matchday": 904,
+          "week": 14,
+          "opponentId": "ber",
+          "opponentName": "FC Berlin Nord",
+          "isHome": true,
+          "played": false,
+          "result": null,
+          "type": "euro_group",
+          "competition": "UEL",
+          "opponentData": {
+            "id": "ber",
+            "n": "FC Berlin Nord",
+            "a": "BNO",
+            "p": 62,
+            "c": "#dc2626",
+            "c2": "#f5f5f5",
+            "nat": "🇩🇪",
+            "lg": "Deutsche Liga"
+          }
+        },
+        {
+          "matchday": 902,
+          "week": 10,
+          "opponentId": "lyon",
+          "opponentName": "FC Lyon",
+          "isHome": true,
+          "played": false,
+          "result": null,
+          "type": "euro_group",
+          "competition": "UEL",
+          "opponentData": {
+            "id": "lyon",
+            "n": "FC Lyon",
+            "a": "LYO",
+            "p": 80,
+            "c": "#f5f5f5",
+            "c2": "#1d4ed8",
+            "nat": "🇫🇷",
+            "lg": "Ligue Nationale"
+          }
+        },
+        {
+          "matchday": 905,
+          "week": 16,
+          "opponentId": "lyon",
+          "opponentName": "FC Lyon",
+          "isHome": false,
+          "played": false,
+          "result": null,
+          "type": "euro_group",
+          "competition": "UEL",
+          "opponentData": {
+            "id": "lyon",
+            "n": "FC Lyon",
+            "a": "LYO",
+            "p": 80,
+            "c": "#f5f5f5",
+            "c2": "#1d4ed8",
+            "nat": "🇫🇷",
+            "lg": "Ligue Nationale"
+          }
+        }
+      ],
+      "aiData": {
+        "lastOpponentTactic": null,
+        "scoutReports": {},
+        "pressReports": {}
+      },
+      "trophies": [],
+      "transferListed": false,
+      "sessionsThisWeek": 0,
+      "sessionLog": [],
+      "diary": [
+        {
+          "season": 2,
+          "week": 38,
+          "type": "pledge",
+          "e": "💬",
+          "headline": "Non tutto è arrivato",
+          "body": "Qualche obiettivo dichiarato è rimasto per strada.",
+          "color": "#b45309"
+        },
+        {
+          "season": 2,
+          "week": 38,
+          "type": "persgoal",
+          "e": "📉",
+          "headline": "Obiettivi personali mancati",
+          "body": "❌ Batti il tuo record: 13+ gol (S.2: 12) · ❌ Media voto ≥ 6.7 (almeno 5 gare)",
+          "color": "#b91c1c"
+        }
+      ],
+      "trainingStreak": 38,
+      "lastTrainingType": null,
+      "windowOfferUsed": false,
+      "playedMd": {
+        "s": 2,
+        "md": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "seasonObjectives": [
+        {
+          "type": "goals",
+          "target": 13,
+          "label": "Segna 13 gol",
+          "bonus": {
+            "morale": 15,
+            "coachTrust": 10,
+            "value": 0.2
+          }
+        },
+        {
+          "type": "standing",
+          "target": 3,
+          "label": "Finisci nei primi 3",
+          "bonus": {
+            "popularity": 15,
+            "value": 0.25
+          }
+        },
+        {
+          "type": "assists",
+          "target": 8,
+          "label": "Fornisci 8 assist",
+          "bonus": {
+            "coachTrust": 8,
+            "morale": 15,
+            "value": 0.2
+          }
+        }
+      ],
+      "value": 16.8,
+      "agentPlan": {
+        "season": 3,
+        "base": 16.6,
+        "target": 22.41,
+        "hold": false
+      },
+      "log": [
+        "🎂 21 anni — stagione 3 inizia",
+        "✅ Segna 12 gol",
+        "❌ Mancato: Finisci nei primi 3",
+        "❌ Mancato: Fornisci 7 assist",
+        "🌍 QUALIFICAZIONE IN COPPA EUROPA! FC Submarino torna in Europa.",
+        "📈 Crescita giovanile: +1 velocità",
+        "📉 Obiettivi personali mancati — la promessa fatta a te stesso.",
+        "💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.",
+        "🏁 Fine S.2: 12⚽ 3🎯",
+        "📊 Report tecnico positivo del direttore sportivo.",
+        "🤵 Roberto Manconi segue la tua carriera dal primo giorno.",
+        "📈 Rivalutazione di mercato: il tuo cartellino ora vale €5.2M — le tue stagioni e i tuoi gol pesano."
+      ],
+      "nationalCaps": 0,
+      "lastNationalSeason": 0,
+      "clubPrestigeShifts": {
+        "rma": 5,
+        "bar": 3,
+        "atm": 3,
+        "ath": 3.3,
+        "sev": 1.1,
+        "vill": 1.1,
+        "rsoc": -0.2,
+        "val": 0,
+        "gir": 0.2,
+        "cel": 0,
+        "mall": 0.6,
+        "bet": -2.4,
+        "osa": -2.9,
+        "esp": -1.8,
+        "get": -2.5,
+        "ray": -7.1,
+        "alm": -5.6,
+        "las": -6.4
+      },
+      "clubEvo": {
+        "fanbase": 0,
+        "stadiumTier": 0,
+        "budget": 6060000,
+        "seasonsTop": 0,
+        "seasonsLow": 0,
+        "clubId": "vill"
+      },
+      "clubSponsor": {
+        "name": "FORTEZZA",
+        "annual": 6060000,
+        "since": 2,
+        "until": 4,
+        "clubId": "vill"
+      },
+      "cup": {
+        "active": true,
+        "round": 1,
+        "nextWeek": 9,
+        "eliminated": false,
+        "champion": false,
+        "results": [],
+        "bracket": [
+          "cad",
+          "vill",
+          "rsoc",
+          "bet",
+          "dep",
+          "rma",
+          "mall",
+          "gir",
+          "cel",
+          "vld",
+          "ath",
+          "bar",
+          "sev",
+          "get",
+          "val",
+          "atm"
+        ],
+        "cupSurvivors": [
+          "cad",
+          "vill",
+          "rsoc",
+          "bet",
+          "dep",
+          "rma",
+          "mall",
+          "gir",
+          "cel",
+          "vld",
+          "ath",
+          "bar",
+          "sev",
+          "get",
+          "val",
+          "atm"
+        ],
+        "cupBracketMatches": {},
+        "season": 3
+      },
+      "coach": {
+        "name": "Mister Mancuso",
+        "style": "Bilanciato",
+        "trustMod": 0
+      },
+      "goldenBoys": [],
+      "records": {
+        "topSeasonGoals": 12,
+        "topSeasonAssists": 3,
+        "topOvr": 75
+      },
+      "playerAwards": {
+        "palloneOros": [],
+        "scarpaOros": [],
+        "youngYears": [
+          2
+        ],
+        "seasonRecords": [],
+        "leagueMvpYears": [],
+        "leagueTopScorerYears": [],
+        "teamOfYearYears": []
+      },
+      "milestones": [
+        "ovr75"
+      ],
+      "achievements": [],
+      "rivalries": [],
+      "worldMemory": [
+        {
+          "type": "vita",
+          "label": "La serata karaoke passata alla storia",
+          "season": 2,
+          "week": 3
+        },
+        {
+          "type": "vita",
+          "label": "La maglia scritta a pennarello",
+          "season": 2,
+          "week": 22
+        },
+        {
+          "type": "record_club",
+          "stat": "gol_stagione",
+          "value": 12,
+          "club": "FC Submarino",
+          "clubId": "vill",
+          "season": 2
+        }
+      ],
+      "dreamClub": null,
+      "rival": {
+        "name": "Alessandro Müller",
+        "nation": "Italia",
+        "age": 24,
+        "ovr": 69,
+        "club": {
+          "n": "FC Verdiblanco",
+          "id": "bet",
+          "p": 76,
+          "lg": "Liga Ibérica",
+          "c": "#15803d"
+        },
+        "goals": 5,
+        "totalGoals": 18,
+        "assists": 5,
+        "trophies": 0,
+        "seasons": 2,
+        "relationship": "rispettato",
+        "history": [
+          {
+            "season": 2,
+            "goals": 5,
+            "ovr": 69,
+            "club": "FC Verdiblanco"
+          }
+        ],
+        "awards": {
+          "palloneOros": [],
+          "scarpaOros": []
+        }
+      },
+      "teammates": [
+        {
+          "name": "Ignacio Arboleda",
+          "archetype": "mentore",
+          "icon": "🧠",
+          "bond": 40
+        },
+        {
+          "name": "Iker Sastre",
+          "archetype": "capitano",
+          "icon": "🤝",
+          "bond": 40
+        },
+        {
+          "name": "Unai Domínguez",
+          "archetype": "amico",
+          "icon": "😄",
+          "bond": 40
+        }
+      ],
+      "journalists": [
+        {
+          "id": "j_esposito",
+          "name": "Sofia Esposito",
+          "f": true,
+          "paper": "Diretta TV",
+          "icon": "📺",
+          "color": "#3b82f6",
+          "type": "fan",
+          "desc": "Appassionata. Ha già deciso che sei speciale — ma non tollera tradimenti.",
+          "trust": 50,
+          "lastTone": null
+        },
+        {
+          "id": "j_ricci",
+          "name": "Davide Ricci",
+          "paper": "Cifre del Calcio",
+          "icon": "📊",
+          "color": "#10b981",
+          "type": "critico",
+          "desc": "Statistiche e fredda razionalità. Non mente mai — e non è sempre bello.",
+          "trust": 50,
+          "lastTone": null
+        },
+        {
+          "id": "j_ferretti",
+          "name": "Marco Ferretti",
+          "paper": "Sprint Sportivo",
+          "icon": "📰",
+          "color": "#ef4444",
+          "type": "critico",
+          "desc": "Analitico e spietato. Ti esalta quando meriti, ti demolisce quando sbagli.",
+          "trust": 50,
+          "lastTone": null
+        }
+      ],
+      "momentsFired": [],
+      "isCaptain": false,
+      "captainSince": null,
+      "fanLegend": [
+        {
+          "clubId": "vill",
+          "clubName": "FC Submarino",
+          "ultrasName": "Curva Ribelli",
+          "seasons": 1,
+          "status": "regular"
+        }
+      ],
+      "hasAgent": true,
+      "agentHistory": [],
+      "agentInit": {
+        "k": "contratto",
+        "why": "stipendio",
+        "tab": "club",
+        "open": true,
+        "s": 2,
+        "w": 12
+      },
+      "agentCheckin": {
+        "due": true,
+        "s": 2,
+        "w": 20
+      },
+      "agentHint": {
+        "n": 0,
+        "s": 0,
+        "w": 0,
+        "due": null
+      },
+      "bankBalance": 205200,
+      "perkTrainer": false,
+      "perkNutrition": false,
+      "nationalGoals": 0,
+      "presidentModalSeason": 2,
+      "justRecovered": false,
+      "injurySeverity": null,
+      "originalInjuryWeeks": 0,
+      "returnPenaltyWeeks": 0,
+      "teamChemistry": 65.1,
+      "foot": "R",
+      "leagueArchive": [
+        {
+          "season": 2,
+          "league": "Liga Ibérica",
+          "champion": "CF Madrid",
+          "championId": "rma",
+          "playerClub": "FC Submarino",
+          "playerClubId": "vill",
+          "playerPos": 6,
+          "playerGoals": 12,
+          "playerAssists": 3,
+          "relegated": [
+            "FC Madrid Este",
+            "FC Indálico",
+            "FC Canario"
+          ],
+          "isPlayerCupChamp": false,
+          "isPlayerEuroChamp": false,
+          "euroComp": null,
+          "cupR": null,
+          "euroPlayed": null,
+          "euroEnd": null
+        }
+      ],
+      "euro": {
+        "active": true,
+        "competition": "UEL",
+        "phase": "group",
+        "groupOpponents": [
+          {
+            "id": "str",
+            "n": "FC Strasburgo",
+            "a": "STR",
+            "p": 68,
+            "c": "#1d4ed8",
+            "c2": "#f5f5f5",
+            "nat": "🇫🇷",
+            "lg": "Ligue Nationale"
+          },
+          {
+            "id": "ber",
+            "n": "FC Berlin Nord",
+            "a": "BNO",
+            "p": 62,
+            "c": "#dc2626",
+            "c2": "#f5f5f5",
+            "nat": "🇩🇪",
+            "lg": "Deutsche Liga"
+          },
+          {
+            "id": "lyon",
+            "n": "FC Lyon",
+            "a": "LYO",
+            "p": 80,
+            "c": "#f5f5f5",
+            "c2": "#1d4ed8",
+            "nat": "🇫🇷",
+            "lg": "Ligue Nationale"
+          }
+        ],
+        "pts": 0,
+        "groupResults": [],
+        "qualified": false,
+        "champion": false,
+        "eliminated": false,
+        "koResults": [],
+        "koRound": 0
+      },
+      "nationsCupQueue": null,
+      "euroMondiale": null,
+      "goalStreak": 0,
+      "bestGoalStreak": 0,
+      "lastMonthlyReview": 32,
+      "weeklyFocusType": null,
+      "coachHistory": [
+        {
+          "name": "Mister Mancuso",
+          "style": "Bilanciato",
+          "season": 2,
+          "goals": 12,
+          "assists": 3,
+          "matches": 34,
+          "ovr": 75,
+          "coachTrust": 65.2,
+          "coachChanged": false
+        }
+      ],
+      "jerseyNum": 10,
+      "jerseyNumSeason": 0,
+      "yellAccum": 0,
+      "isSuspended": false,
+      "seasonCards": {
+        "y": 0,
+        "r": 0
+      },
+      "leagueOverrides": {
+        "ray": "Liga Ibérica 2",
+        "alm": "Liga Ibérica 2",
+        "las": "Liga Ibérica 2",
+        "cad": "Liga Ibérica",
+        "dep": "Liga Ibérica",
+        "vld": "Liga Ibérica"
+      },
+      "lastLeagueShift": {
+        "season": 2,
+        "relegated": [
+          "FC Madrid Este",
+          "FC Indálico",
+          "FC Canario"
+        ],
+        "promoted": [
+          "FC Gaditano",
+          "FC Coruñés",
+          "FC Pucela"
+        ],
+        "playerRelegated": false,
+        "playerPromoted": false,
+        "upperLg": "Liga Ibérica",
+        "lowerLg": "Liga Ibérica 2"
+      },
+      "skillPoints": 0,
+      "u18Goals": 0,
+      "u18Assists": 0,
+      "u18Matches": 0,
+      "primaveraAwards": [],
+      "mvpMonthAwards": [],
+      "totalGoals": 12,
+      "totalAssists": 3,
+      "totalMatches": 34,
+      "assistantCoachRel": 52,
+      "matchStatus": null,
+      "fitnessCoachRel": 80,
+      "squadRole": "riserva",
+      "coachPromise": null,
+      "campDone": false,
+      "loan": null,
+      "migratedFrom": 0,
+      "saveVersion": 9,
+      "stanceSeen": {
+        "cid": "vill",
+        "pres": null,
+        "mister": "neutro",
+        "curva": "osservazione"
+      },
+      "presentedClub": "vill",
+      "agent": {
+        "id": "prudente",
+        "name": "Roberto Manconi",
+        "arch": "prudente",
+        "since": {
+          "s": 2,
+          "w": 1
+        },
+        "rapport": 50,
+        "memory": {
+          "amb": [],
+          "note": []
+        },
+        "lastCheckin": {
+          "s": 2,
+          "w": 1
+        }
+      },
+      "agentDefault23": true,
+      "drawSeen": 2,
+      "mercatoSeen": 2,
+      "presentSeason": 2,
+      "seasonPledge": null,
+      "weekLived": false,
+      "recentImpulses": [
+        "wi_recupero_hitech",
+        "wi_compagno_lite",
+        "wi_giovane_aiuto",
+        "wi_cripto",
+        "wi_compagno_prestito",
+        "wi_tifoso_fisso",
+        "wi_nazionale_b",
+        "wi_media",
+        "wi_intervista_sorpresa",
+        "wi_massaggiatore_addio",
+        "wi_cena_capitano",
+        "wi_giornata_libera",
+        "wi_cena_squadra",
+        "wi_auto_lusso",
+        "wi_giovane",
+        "wi_orologi_squadra",
+        "wi_dieta_brand",
+        "wi_extra_portieri",
+        "wi_ex_club",
+        "wi_orologio",
+        "wi_veterano_allenamento",
+        "wi_torneo_padel",
+        "wi_crioterapia"
+      ],
+      "impulseSeen": {
+        "wi_recupero_hitech": 1,
+        "wi_compagno_lite": 1,
+        "wi_giovane_aiuto": 1,
+        "wi_cripto": 1,
+        "wi_compagno_prestito": 1,
+        "wi_tifoso_fisso": 1,
+        "wi_nazionale_b": 1,
+        "wi_media": 1,
+        "wi_intervista_sorpresa": 1,
+        "wi_massaggiatore_addio": 1,
+        "wi_cena_capitano": 1,
+        "wi_giornata_libera": 1,
+        "wi_cena_squadra": 1,
+        "wi_auto_lusso": 1,
+        "wi_giovane": 1,
+        "wi_orologi_squadra": 1,
+        "wi_dieta_brand": 1,
+        "wi_extra_portieri": 1,
+        "wi_ex_club": 1,
+        "wi_orologio": 1,
+        "wi_veterano_allenamento": 1,
+        "wi_torneo_padel": 1,
+        "wi_crioterapia": 1
+      },
+      "matchHistory": [],
+      "matches": 0,
+      "goals": 0,
+      "assists": 0,
+      "popularity": 26,
+      "coachTrust": 65.2,
+      "chem": 53,
+      "bank": 0,
+      "vitaSeen": {
+        "vita_karaoke": {
+          "n": 1,
+          "at": 203
+        },
+        "vita_bimbo_maglia": {
+          "n": 1,
+          "at": 222
+        },
+        "vita_consiglio_veterano": {
+          "n": 1,
+          "at": 229
+        }
+      },
+      "vitaCat": {
+        "squadra": 229,
+        "social": 222
+      },
+      "vitaLastCat": "squadra",
+      "vitaNext": null,
+      "evSeen": {
+        "📊 Report tecnico positivo del direttore sportiv": 1
+      },
+      "smLast": "sm_mentor_storia",
+      "smSeen": {
+        "sm_mentor_advice": 44,
+        "sm_amico_problema": 45,
+        "sm_friend_joke": 56,
+        "sm_crisis": 58,
+        "sm_bad_result": 74,
+        "sm_rival_tension": 75,
+        "sm_mentor_storia": 76
+      },
+      "recentCoachLines": [
+        "Nessun dramma, ma nemmeno alibi: da te mi aspetto un gradino in più a ogni verifica.",
+        "A tratti illumini, a tratti sparisci. Trova il modo di restare dentro la partita per 90 minuti.",
+        "I numeri parlano chiaro: sei tra i migliori in questo momento. Il club è orgoglioso di te.",
+        "La stampa ti incorona ogni domenica. Io ti chiedo solo di non leggere i giornali e di ascoltare me."
+      ],
+      "recentCoachChoices": [
+        "😤 So di poter fare di più. Non la deluderò.",
+        "😊 È il lavoro di squadra che fa la differenza.",
+        "🔥 Voglio fare ancora meglio da qui alla fine.",
+        "🎯 Merito anche del suo lavoro. Mi ha reso un giocatore migliore.",
+        "🏆 Se continuo così, punto a qualcosa di grande quest'anno.",
+        "💪 Grazie, mister. Non mi fermo qui.",
+        "😌 Resto coi piedi per terra: conta solo la prossima partita."
+      ],
+      "seasonClosedAt": 2,
+      "lastAwards": {
+        "season": 2,
+        "aw": {
+          "palloneOro": {
+            "winner": {
+              "name": "Henry Savage",
+              "club": "FC Islington",
+              "league": "Premier Division",
+              "ovr": 89,
+              "goals": 32,
+              "assists": 8,
+              "trofei": "doppietta",
+              "score": 101.02000000000001
+            },
+            "top3": [
+              {
+                "name": "Henry Savage",
+                "club": "FC Islington",
+                "league": "Premier Division",
+                "ovr": 89,
+                "goals": 32,
+                "assists": 8,
+                "trofei": "doppietta",
+                "score": 101.02000000000001
+              },
+              {
+                "name": "Robert Laurent",
+                "club": "CF Madrid",
+                "league": "Liga Ibérica",
+                "ovr": 83,
+                "goals": 27,
+                "assists": 4,
+                "trofei": "doppietta",
+                "score": 90.24000000000001
+              },
+              {
+                "name": "Daniel Moretti",
+                "club": "FC Catalunya",
+                "league": "Liga Ibérica",
+                "ovr": 86,
+                "goals": 24,
+                "assists": 6,
+                "trofei": "doppietta",
+                "score": 89.58
+              }
+            ]
+          },
+          "scarpaOro": {
+            "winner": {
+              "name": "Jan Lehmann",
+              "goals": 39,
+              "club": "FC Werkstadt",
+              "league": "Deutsche Liga"
+            },
+            "playerWins": false,
+            "top3": [
+              {
+                "name": "Jan Lehmann",
+                "goals": 39,
+                "club": "FC Werkstadt",
+                "league": "Deutsche Liga"
+              },
+              {
+                "name": "Roger Roussel",
+                "goals": 35,
+                "club": "FC Marseille",
+                "league": "Ligue Nationale"
+              },
+              {
+                "name": "Henry Savage",
+                "goals": 32,
+                "club": "FC Islington",
+                "league": "Premier Division"
+              }
+            ],
+            "playerPos": 7,
+            "playerGoals": 12
+          },
+          "leagueMvp": {
+            "winner": {
+              "name": "Robert Laurent",
+              "club": "CF Madrid",
+              "ovr": 77,
+              "goals": 27,
+              "assists": 9,
+              "score": 75.15
+            },
+            "top3": [
+              {
+                "name": "Robert Laurent",
+                "club": "CF Madrid",
+                "ovr": 77,
+                "goals": 27,
+                "assists": 9,
+                "score": 75.15
+              },
+              {
+                "name": "Daniel Moretti",
+                "club": "FC Catalunya",
+                "ovr": 86,
+                "goals": 24,
+                "assists": 9,
+                "score": 65.3
+              },
+              {
+                "name": "Carlos Laurent",
+                "club": "AT Manzanares",
+                "ovr": 78,
+                "goals": 23,
+                "assists": 4,
+                "score": 54
+              }
+            ]
+          },
+          "leagueTopScorer": {
+            "winner": {
+              "name": "Robert Laurent",
+              "club": "CF Madrid",
+              "goals": 27,
+              "isPlayer": false
+            },
+            "playerWins": false,
+            "top3": [
+              {
+                "name": "Robert Laurent",
+                "club": "CF Madrid",
+                "goals": 27,
+                "isPlayer": false
+              },
+              {
+                "name": "Daniel Moretti",
+                "club": "FC Catalunya",
+                "goals": 24,
+                "isPlayer": false
+              },
+              {
+                "name": "Carlos Laurent",
+                "club": "AT Manzanares",
+                "goals": 23,
+                "isPlayer": false
+              }
+            ],
+            "playerPos": 17
+          },
+          "leagueYoung": {
+            "winner": {
+              "name": "QA Carriera 30",
+              "goals": 12,
+              "assists": 3,
+              "isPlayer": true
+            },
+            "playerWins": true,
+            "isYoungEligible": true
+          },
+          "youngPlayer": {
+            "winner": {
+              "name": "QA Carriera 30",
+              "goals": 12,
+              "assists": 3,
+              "isPlayer": true
+            },
+            "playerWins": true,
+            "isYoungEligible": true
+          },
+          "seasonRecord": {
+            "record": {
+              "name": "Carlos Villanueva",
+              "goals": 43,
+              "club": "FC Valenciano",
+              "season": "2011-12"
+            },
+            "playerGoals": 12,
+            "beaten": false,
+            "near": false
+          },
+          "allTime": {
+            "record": {
+              "name": "Raúl Bengoechea",
+              "goals": 351,
+              "club": "CF Madrid",
+              "era": "1994–2015"
+            },
+            "playerCareerGoals": 12,
+            "beaten": false,
+            "position": 5
+          },
+          "rival": {
+            "name": "Alessandro Müller",
+            "goals": 5,
+            "playerGoals": 12,
+            "playerWins": true,
+            "tie": false,
+            "relLabel": "Sconosciuto"
+          },
+          "leagueRecords": {
+            "allTimeScorer": {
+              "name": "Raúl Bengoechea",
+              "goals": 351,
+              "club": "CF Madrid",
+              "era": "1994–2015"
+            },
+            "seasonRecord": {
+              "name": "Carlos Villanueva",
+              "goals": 43,
+              "club": "FC Valenciano",
+              "season": "2011-12"
+            },
+            "topScorers": [
+              {
+                "name": "Raúl Bengoechea",
+                "goals": 351
+              },
+              {
+                "name": "Carlos Villanueva",
+                "goals": 302
+              },
+              {
+                "name": "Xavi Ballesteros",
+                "goals": 247
+              },
+              {
+                "name": "Pedro Álvarez",
+                "goals": 208
+              },
+              {
+                "name": "Diego Montiel",
+                "goals": 174
+              }
+            ]
+          },
+          "playerLeagueGoals": 12,
+          "playerLeagueAssists": 3
+        }
+      },
+      "history": [
+        {
+          "season": 2,
+          "club": "FC Submarino",
+          "clubId": "vill",
+          "goals": 12,
+          "assists": 3,
+          "matches": 34,
+          "ovr": 75,
+          "league": "Liga Ibérica",
+          "leagueGoals": 12
+        }
+      ],
+      "contractExpired": false
+    }
+  },
+  "rng": 3682914004,
+  "career": {
+    "seed": 30,
+    "matrix": {
+      "start": "vertice",
+      "strength": "media",
+      "style": "prudente",
+      "archetype": "enfant",
+      "requestedLeague": "Liga Ibérica",
+      "actualLeague": "Liga Ibérica",
+      "club": "FC Submarino",
+      "clubId": "vill",
+      "leagueFallback": false,
+      "base": 70
+    },
+    "steps": 80,
+    "seasonsDone": 1,
+    "seasonStats": [
+      {
+        "season": 2,
+        "age": 20,
+        "club": "vill",
+        "league": "Liga Ibérica",
+        "ovr": 75,
+        "goals": 12,
+        "matches": 34,
+        "rating": 6.17,
+        "value": 16.6,
+        "wage": 6000,
+        "expiresAtSeason": 5,
+        "contractDuration": 3,
+        "coachTrust": 65.2,
+        "injured": null,
+        "diaryLength": 0,
+        "diarySeasons": [],
+        "trophies": [],
+        "playerAwards": {
+          "palloneOros": [],
+          "scarpaOros": [],
+          "youngYears": [
+            2
+          ],
+          "seasonRecords": [],
+          "leagueMvpYears": [],
+          "leagueTopScorerYears": [],
+          "teamOfYearYears": []
+        },
+        "primaveraAwards": [],
+        "bank": 205200,
+        "calendarN": 34,
+        "calendarUnplayed": 0,
+        "squadRole": "riserva",
+        "screen": "seasonAwards"
+      }
+    ],
+    "transfers": [],
+    "injuries": [],
+    "events": {
+      "pledge": 1,
+      "persgoal": 1
+    },
+    "messages": {
+      "2|📊 Report tecnico positivo del direttore sportivo.": 1,
+      "2|🏁 Fine S.2: 12⚽ 3🎯": 1,
+      "3|🎂 21 anni — stagione 3 inizia": 1,
+      "3|✅ Segna 12 gol": 1,
+      "3|❌ Mancato: Finisci nei primi 3": 1,
+      "3|❌ Mancato: Fornisci 7 assist": 1,
+      "3|🌍 QUALIFICAZIONE IN COPPA EUROPA! FC Submarino torna in Europa.": 1,
+      "3|📈 Crescita giovanile: +1 velocità": 1,
+      "3|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+      "3|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1
+    },
+    "pageErrors": [],
+    "status": "running",
+    "durationMs": 0,
+    "interventions": [],
+    "saveChecks": [],
+    "calendarDays": {
+      "2": {
+        "league": "Liga Ibérica",
+        "days": 34
+      },
+      "3": {
+        "league": "Liga Ibérica",
+        "days": 34
+      }
+    },
+    "renewals": [],
+    "renewalChecked": [],
+    "zeroSeasons": [],
+    "openingTrace": []
+  }
+}

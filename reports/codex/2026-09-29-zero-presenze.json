@@ -1,0 +1,48 @@
+{
+  "versione": "7.999.53",
+  "compito": "Zero presenze e rinnovi UI, stato parziale",
+  "comando": "$env:CPM_SEEDS='0,3,30,33'; $env:CPM_TIME_LIMIT_MS='14400000'; $env:CPM_OUTPUT='career-followup-results.json'; node tests/codex/career-followup.mjs",
+  "seme": "0,3,30,33",
+  "fonte": "tests/codex/career-followup-results.json",
+  "misure": [
+    {
+      "nome": "stagioni completate seme 0",
+      "valore": 8,
+      "esito": "ok",
+      "soglia": "8"
+    },
+    {
+      "nome": "stagioni completate seme 3",
+      "valore": 8,
+      "esito": "ok",
+      "soglia": "8"
+    },
+    {
+      "nome": "stagioni a zero seme 0",
+      "valore": 1,
+      "esito": "anomalia",
+      "soglia": "0"
+    },
+    {
+      "nome": "stagioni a zero seme 3",
+      "valore": 4,
+      "esito": "anomalia",
+      "soglia": "0"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "come_riprodurre": "Eseguire il comando e ispezionare careers[1].zeroSeasons e renewals.",
+      "descrizione": "Nel seme 3 le stagioni 3-6 proseguono con zero presenze e contratto scaduto dalla stagione 3; causalità non verificata.",
+      "prove": [
+        "tests/codex/career-followup-results.json"
+      ],
+      "gravita": "media"
+    }
+  ],
+  "limiti": [
+    "Seme 30 interrotto dopo quattro stagioni",
+    "Seme 33 non iniziato",
+    "16 clic UI bloccati nei semi 0 e 3; esito del rinnovo non verificato"
+  ]
+}

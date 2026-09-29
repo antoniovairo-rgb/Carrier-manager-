@@ -1,0 +1,588 @@
+{
+  "command": "node tests/codex/reload-53.mjs",
+  "env": {
+    "CPM_SEEDS": null,
+    "CPM_MAX_SEASONS": null,
+    "CPM_TIME_LIMIT_MS": 14400000,
+    "CPM_OUTPUT": null
+  },
+  "startedAt": "2026-09-29T11:33:20.507Z",
+  "version": "7.999.53",
+  "commit": "54e6047ed67042c25970af2ab050b3422404c914",
+  "catalog": {
+    "professionalClubs": 252,
+    "u18Clubs": 18,
+    "leagues": [
+      "Lega A",
+      "Premier Division",
+      "Liga Ibérica",
+      "Deutsche Liga",
+      "Ligue Nationale",
+      "Liga Lusitana",
+      "Liga Oranje",
+      "Liga Belga",
+      "Liga Anatolica",
+      "Lega B",
+      "Championship",
+      "Deutsche Liga 2",
+      "Ligue Nationale 2",
+      "Liga Ibérica 2"
+    ],
+    "leagueCounts": {
+      "Lega A": 18,
+      "Premier Division": 18,
+      "Liga Ibérica": 18,
+      "Deutsche Liga": 18,
+      "Ligue Nationale": 18,
+      "Liga Lusitana": 18,
+      "Liga Oranje": 18,
+      "Liga Belga": 18,
+      "Liga Anatolica": 18,
+      "Lega B": 18,
+      "Championship": 18,
+      "Deutsche Liga 2": 18,
+      "Ligue Nationale 2": 18,
+      "Liga Ibérica 2": 18
+    }
+  },
+  "careers": [
+    {
+      "seed": 2,
+      "matrix": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "casuale",
+        "archetype": "velocista",
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Primavera 1",
+        "club": "FC Blucerchiati Primavera",
+        "clubId": "sam",
+        "leagueFallback": false,
+        "base": 60
+      },
+      "steps": 240,
+      "seasonsDone": 3,
+      "seasonStats": [
+        {
+          "season": 1,
+          "age": 16,
+          "club": "stu2",
+          "league": "Liga Belga",
+          "ovr": 65,
+          "goals": 4,
+          "matches": 31,
+          "rating": 5.81,
+          "value": 2.75,
+          "wage": 4617,
+          "expiresAtSeason": 4,
+          "contractDuration": 3,
+          "coachTrust": 55,
+          "injured": false,
+          "diaryLength": 0,
+          "diarySeasons": [],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 78945,
+          "calendarN": 34,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 2,
+          "age": 17,
+          "club": "ant2",
+          "league": "Liga Anatolica",
+          "ovr": 66,
+          "goals": 8,
+          "matches": 35,
+          "rating": 5.87,
+          "value": 4.02,
+          "wage": 4441,
+          "expiresAtSeason": 3,
+          "contractDuration": 1,
+          "coachTrust": 59.8,
+          "injured": false,
+          "diaryLength": 2,
+          "diarySeasons": [
+            1,
+            2
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 231463,
+          "calendarN": 35,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 3,
+          "age": 18,
+          "club": "bch",
+          "league": "Liga Belga",
+          "ovr": 69,
+          "goals": 7,
+          "matches": 38,
+          "rating": 5.82,
+          "value": 6.63,
+          "wage": 8449,
+          "expiresAtSeason": 4,
+          "contractDuration": 1,
+          "coachTrust": 50,
+          "injured": false,
+          "diaryLength": 6,
+          "diarySeasons": [
+            1,
+            2,
+            3
+          ],
+          "trophies": [
+            {
+              "season": 3,
+              "club": "FC Anversa Sud",
+              "league": "Coppa",
+              "type": "cup"
+            }
+          ],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 459463,
+          "calendarN": 36,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        }
+      ],
+      "transfers": [
+        {
+          "season": 1,
+          "week": 20,
+          "from": "sam",
+          "to": "stu2",
+          "league": "Liga Belga"
+        },
+        {
+          "season": 2,
+          "week": 5,
+          "from": "stu2",
+          "to": "ant2",
+          "league": "Liga Anatolica"
+        },
+        {
+          "season": 3,
+          "week": 20,
+          "from": "ant2",
+          "to": "bch",
+          "league": "Liga Belga"
+        }
+      ],
+      "injuries": [
+        {
+          "season": 1,
+          "week": 18,
+          "recoveredSeason": 1,
+          "recoveredWeek": 22
+        }
+      ],
+      "events": {
+        "persgoal": 3,
+        "cup_out": 2,
+        "pledge": 2,
+        "cup_trophy": 1
+      },
+      "messages": {
+        "1|🔄 trasferimento definitivo: FC Truiden (Liga Belga)!": 1,
+        "1|🔒 Il club blocca qualsiasi cessione. 'È incedibile' — dichiarano in conferenza.": 1,
+        "1|🏁 Fine S.1: 4⚽ 4🎯": 1,
+        "2|🎂 17 anni — stagione 2 inizia": 1,
+        "2|❌ Mancato: Segna 6 gol col nuovo club": 1,
+        "2|✅ Finisci nei primi 9": 1,
+        "2|✅ Gioca 10 partite col nuovo club": 1,
+        "2|📈 Crescita giovanile: +1 fisico": 1,
+        "2|📈 Obiettivi personali: 1/2 — la promessa fatta a te stesso.": 1,
+        "2|📡 Radio mercato: FC Parmense ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "2|🏆 Coppa Nazionale: il cammino continua col nuovo club (Ottavi di Finale)": 1,
+        "2|🔄 prestito con opzione: FC Antalya (Liga Anatolica)!": 1,
+        "2|🏆 Coppa · Ottavi di Finale (sim): 0-1 vs FC Konya — ELIMINATO": 1,
+        "2|🌡️ Caldo eccessivo. Allenamento ridotto per precauzione.": 1,
+        "2|💪 Allenamento eccellente! Il mister ti nota.": 1,
+        "2|📚 Inizi a studiare la lingua locale. I compagni apprezzano: integrazione perfetta.": 1,
+        "2|😤 Incomprensione tattica con il centrocampista titolare.": 1,
+        "2|🏁 Fine S.2: 8⚽ 7🎯": 1,
+        "3|🎂 18 anni — stagione 3 inizia": 1,
+        "3|❌ Mancato: Segna 11 gol col nuovo club": 1,
+        "3|❌ Mancato: Finisci nei primi 9": 1,
+        "3|✅ Gioca 19 partite col nuovo club": 1,
+        "3|📈 Crescita giovanile: +1 dribbling": 1,
+        "3|🤵 Il procuratore esulta: valutazione a €3.7M come da piano — il telefono squilla.": 1,
+        "3|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "3|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "3|📡 Radio mercato: FC Griffin ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "3|🏆 Coppa · Ottavi di Finale (sim): 1-1 dcr vs FC Pendik — passi il turno ai rigori": 1,
+        "3|🏆 Coppa · Quarti di Finale (sim): 0-2 vs FC Kadıköy — ELIMINATO": 1,
+        "3|🏆 Coppa Nazionale: col nuovo club riparti dai Semifinale": 1,
+        "3|🔄 prestito con opzione: FC Anversa Sud (Liga Belga)!": 1,
+        "3|🏆 Coppa · Semifinale (sim): 1-1 dcr vs FC Leuven — passi il turno ai rigori": 1,
+        "3|🏆 Coppa · FINALE (sim): 0-0 dcr vs FC Fiandria — passi il turno ai rigori": 1,
+        "3|🏁 Fine S.3: 7⚽ 3🎯": 1,
+        "4|🎂 19 anni — stagione 4 inizia": 1,
+        "4|✅ Segna 6 gol col nuovo club": 1,
+        "4|❌ Mancato: Finisci nei primi 9": 1,
+        "4|✅ Gioca 11 partite col nuovo club": 1,
+        "4|📈 Crescita giovanile: +1 tecnica": 1,
+        "4|🤵 Il procuratore esulta: valutazione a €5.4M come da piano — il telefono squilla.": 1,
+        "4|📈 Obiettivi personali: 1/2 — la promessa fatta a te stesso.": 1,
+        "4|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1
+      },
+      "pageErrors": [],
+      "status": "target-reached",
+      "durationMs": 324077,
+      "interventions": [
+        {
+          "season": 1,
+          "week": 22,
+          "screen": "clubPresentation"
+        },
+        {
+          "season": 2,
+          "week": 7,
+          "screen": "clubPresentation"
+        },
+        {
+          "season": 3,
+          "week": 22,
+          "screen": "clubPresentation"
+        }
+      ],
+      "saveChecks": [
+        {
+          "season": 3,
+          "week": 1,
+          "equal": false,
+          "differences": [
+            {
+              "path": "playedMd.s",
+              "before": 2,
+              "after": 3
+            },
+            {
+              "path": "playedMd.md.0",
+              "before": 1
+            },
+            {
+              "path": "playedMd.md.1",
+              "before": 2
+            },
+            {
+              "path": "playedMd.md.2",
+              "before": 3
+            },
+            {
+              "path": "playedMd.md.3",
+              "before": 4
+            },
+            {
+              "path": "playedMd.md.4",
+              "before": 5
+            },
+            {
+              "path": "playedMd.md.5",
+              "before": 6
+            },
+            {
+              "path": "playedMd.md.6",
+              "before": 7
+            },
+            {
+              "path": "playedMd.md.7",
+              "before": 8
+            },
+            {
+              "path": "playedMd.md.8",
+              "before": 990
+            },
+            {
+              "path": "playedMd.md.9",
+              "before": 9
+            },
+            {
+              "path": "playedMd.md.10",
+              "before": 10
+            },
+            {
+              "path": "playedMd.md.11",
+              "before": 11
+            },
+            {
+              "path": "playedMd.md.12",
+              "before": 12
+            },
+            {
+              "path": "playedMd.md.13",
+              "before": 13
+            },
+            {
+              "path": "playedMd.md.14",
+              "before": 14
+            },
+            {
+              "path": "playedMd.md.15",
+              "before": 15
+            },
+            {
+              "path": "playedMd.md.16",
+              "before": 16
+            },
+            {
+              "path": "playedMd.md.17",
+              "before": 17
+            },
+            {
+              "path": "playedMd.md.18",
+              "before": 18
+            },
+            {
+              "path": "playedMd.md.19",
+              "before": 19
+            },
+            {
+              "path": "playedMd.md.20",
+              "before": 20
+            },
+            {
+              "path": "playedMd.md.21",
+              "before": 21
+            },
+            {
+              "path": "playedMd.md.22",
+              "before": 22
+            },
+            {
+              "path": "playedMd.md.23",
+              "before": 23
+            },
+            {
+              "path": "playedMd.md.24",
+              "before": 24
+            },
+            {
+              "path": "playedMd.md.25",
+              "before": 25
+            },
+            {
+              "path": "playedMd.md.26",
+              "before": 26
+            },
+            {
+              "path": "playedMd.md.27",
+              "before": 27
+            },
+            {
+              "path": "playedMd.md.28",
+              "before": 28
+            },
+            {
+              "path": "playedMd.md.29",
+              "before": 29
+            },
+            {
+              "path": "playedMd.md.30",
+              "before": 30
+            },
+            {
+              "path": "playedMd.md.31",
+              "before": 31
+            },
+            {
+              "path": "playedMd.md.32",
+              "before": 32
+            },
+            {
+              "path": "playedMd.md.33",
+              "before": 33
+            },
+            {
+              "path": "playedMd.md.34",
+              "before": 34
+            },
+            {
+              "path": "cup.club",
+              "after": "ant2"
+            },
+            {
+              "path": "presentedClub",
+              "after": "ant2"
+            }
+          ],
+          "beforeViews": {
+            "dashboard": "Sconfitta 1–5 in trasferta vs FC Kadıköy (simulata) · voto 4,9\n⚡ UN MOMENTO CHE RICORDERAI\nL'Ultimatum\n⏳ Il mister è brutale: «Hai un mese per convincermi, o a gennaio saluti. Il posto te lo devi riprendere in allenamento, da domani.»\n🔥 «Mi riprendo tutto. Guardi.»\nRimarrà nella storia: \"Rispondesti all'ultimatum col lavoro. Il posto te lo riprendesti coi denti.\"\n🤝 «Mi dia solo una gara vera.»\nRimarrà nella storia: \"Chiedesti solo una chance vera dopo l'ultimatum. Onesto, diretto.\"\nK⚽rward\nElite\nSalva\n· 13:36\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\n🏁 Avvia Stagione\nritiro, raduno e presentazioni\n›\nLiga Anatolica · 1ª giornata\nPROSSIMA PARTITA\nCalendario ›\nANA\nFC Antalya\n10ª in classifica\nVS\nIn casa\nFKD\nFC Kadıköy\n2ª in classifica\nForza 80/99 · più forte\n🏆 Sfida alla capolista\nSTAGIONE 3 · SETTIMANA 1 DI 38\n0\nPartite\n0\nGol\n0\nAssist\n🤝\n60/100\nFiducia del mister\n⭐\n56/100\nPopolarità\nLa tua storia\n›\nPRESENTAZIONE · FC ANTALYA\nANA\n10\n10\n2\nIl flash dei fotografi\nPresentazione ufficiale: sciarpa, maglia e prima domanda. Alzi la maglia numero 10 e ti siedi al tavolo.\n🔥 «Sono qui per vincere qualcosa»\n🎯 «Voglio ripagare la fiducia, un passo alla volta»\n🤝 «Vengo per imparare e mettermi a disposizione»\nOfferta di sponsor · Vortex Boots\n›\nIl tuo procuratore: boutique o global?\n›\nLa tua settimana\n›\n🌱\nGiovane promessa\n18 anni\n🏷️ Mercato Estivo aperto\n5 settimane rimanenti\nObiettivi della stagione\n›\nOBIETTIVI PERSONALI\n›\n🏹 Batti il tuo record: 9+ gol (S.2: 8)\n0 / 9\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n—\nA fine stagione presenti il conto a te stesso.\nUltime notizie\n›\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "club": "Sconfitta 1–5 in trasferta vs FC Kadıköy (simulata) · voto 4,9\n⚡ UN MOMENTO CHE RICORDERAI\nL'Ultimatum\n⏳ Il mister è brutale: «Hai un mese per convincermi, o a gennaio saluti. Il posto te lo devi riprendere in allenamento, da domani.»\n🔥 «Mi riprendo tutto. Guardi.»\nRimarrà nella storia: \"Rispondesti all'ultimatum col lavoro. Il posto te lo riprendesti coi denti.\"\n🤝 «Mi dia solo una gara vera.»\nRimarrà nella storia: \"Chiedesti solo una chance vera dopo l'ultimatum. Onesto, diretto.\"\nK⚽rward\nElite\nSalva\n· 13:36\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\nANA\nFC Antalya\n🇹🇷 Liga Anatolica\n#10/18 in classifica · 0pt\n🏛️ Progetto solido\n🧣 Curva: Uno di passaggio (per ora)\n🩺 Dr. Ozer (medico sociale) · 📋 Yildiz (DS)\n61.8\nPRESTIGIO /100\nSTADIO\n›\nSPONSOR DI MAGLIA\n›\nPIAZZAMENTI · MIGLIORE 11° · ULTIMA STAGIONE 11°\n›\nContratto: scade a fine stagione 5 (2 stagioni)\nProcuratore ›\nALLENATORE\n›\nSTAFF TECNICO\n›\nROSA\n24\n›\nBACHECA — FC ANTALYA\n›\nLO SPOGLIATOIO\n3\n›\nChimica di squadra\n36/100\n✨ Forma e morale −1 a settimana · cresce vincendo\nYunus Demirhan\nL'Amico · 😐 Conoscente\nLegame 40%\nProssimo traguardo: 50% (una volta: morale +7, fatica −6)\nAli Bostanci\nIl Rivale Interno · 😐 Conoscente\nLegame 40%\nProssimo traguardo: 50% (una volta: forma +6, morale −2)\nCengiz Kucukdeveci\nIl Capitano · 😐 Conoscente\nLegame 40%\nProssimo traguardo: 50% (una volta: morale +5, fiducia del mister +4)\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "carriera": "Sconfitta 1–5 in trasferta vs FC Kadıköy (simulata) · voto 4,9\n⚡ UN MOMENTO CHE RICORDERAI\nL'Ultimatum\n⏳ Il mister è brutale: «Hai un mese per convincermi, o a gennaio saluti. Il posto te lo devi riprendere in allenamento, da domani.»\n🔥 «Mi riprendo tutto. Guardi.»\nRimarrà nella storia: \"Rispondesti all'ultimatum col lavoro. Il posto te lo riprendesti coi denti.\"\n🤝 «Mi dia solo una gara vera.»\nRimarrà nella storia: \"Chiedesti solo una chance vera dopo l'ultimatum. Onesto, diretto.\"\nK⚽rward\nElite\nSalva\n· 13:36\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "agente": "Sconfitta 1–5 in trasferta vs FC Kadıköy (simulata) · voto 4,9\n⚡ UN MOMENTO CHE RICORDERAI\nL'Ultimatum\n⏳ Il mister è brutale: «Hai un mese per convincermi, o a gennaio saluti. Il posto te lo devi riprendere in allenamento, da domani.»\n🔥 «Mi riprendo tutto. Guardi.»\nRimarrà nella storia: \"Rispondesti all'ultimatum col lavoro. Il posto te lo riprendesti coi denti.\"\n🤝 «Mi dia solo una gara vera.»\nRimarrà nella storia: \"Chiedesti solo una chance vera dopo l'ultimatum. Onesto, diretto.\"\nK⚽rward\nElite\nSalva\n· 13:36\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\nGIANNI FERRETTI TI DICE\n›\nGianni Ferretti\nRapporto con Gianni: positivo\n«Sono qui per te. Dimmi i tuoi obiettivi per questa stagione.»\n«Guarda, la tua immagine non la sta sfruttando nessuno. Assegnami «Costruisci immagine» questa settimana.»\n📣 Assegna «Costruisci immagine»\n«Non avrei fretta di muovermi.»\n🤵 Obiettivo della stagione 3\n«Ti porto da €4 mln a €5,4 mln entro fine stagione.»\n+€0 su +€1,4 mln\nCambia procuratore\nIL TUO PROCURATORE\n›\nGianni Ferretti\nProcuratore · dalla stagione 1\nCommissione: 10% del tuo stipendio\n✂️ Licenzia il procuratore\nMERCATO\n🟢 Aperto\nVALORE DI MERCATO\n€4 mln\n🌊 FINESTRA DI MERCATO — ESTATE · SETT. 1\n›\n📋 Mettiti in lista transfer\nPiù visibilità — ma il mister lo saprà\n−8 fiducia del mister\n🔍 Fai girare il nome — cerca offerta\nVOCI DI MERCATO\nSCA\nFC Scaligero\n⚖️ Interesse moderato\nCEL\nFC Celeste\n⚖️ Interesse moderato\nSLN\nFC Salento\n⚖️ Interesse moderato\nSolo indiscrezioni — non è garantita un'offerta formale.\nIL TUO CONTRATTO\n›\nSTIPENDIO ATTUALE\n€254 mila l'anno\nSTIMA MERCATO\n€289 mila l'anno\nSCADENZA\nFine stagione 5\nSTAGIONI RIMASTE\n2 stagioni\n💸 Sei sottopagato rispetto al mercato: il procuratore può aiutarti.\nRICHIEDI CESSIONE\n›\nCOMPITO DELLA SETTIMANA\n›\nScegli il compito del tuo procuratore per questa settimana:\n🔍\nCerca offerte\nPiù probabilità di ricevere un'offerta: vale solo a mercato aperto (settimane 1–5 e 19–23)\n📋\nPrepara rinnovo\n+10% sull'offerta del prossimo rinnovo (si somma fino a +30%)\n📣\nCostruisci immagine\n+4 popolarità questa settimana\n🤐\nSilenzio stampa\n+6 fiducia del mister questa settimana\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "coppe": "⚡ UN MOMENTO CHE RICORDERAI\nL'Ultimatum\n⏳ Il mister è brutale: «Hai un mese per convincermi, o a gennaio saluti. Il posto te lo devi riprendere in allenamento, da domani.»\n🔥 «Mi riprendo tutto. Guardi.»\nRimarrà nella storia: \"Rispondesti all'ultimatum col lavoro. Il posto te lo riprendesti coi denti.\"\n🤝 «Mi dia solo una gara vera.»\nRimarrà nella storia: \"Chiedesti solo una chance vera dopo l'ultimatum. Onesto, diretto.\"\nK⚽rward\nElite\nSalva\n· 13:36\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\n📊\nClassifica\n📅\nCalendario\n🏆\nCoppe\nCOPPA NAZIONALE — S.3\n›\n⏳ Ottavi di Finale\nTabellone non ancora disputato.\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "profile": "⚡ UN MOMENTO CHE RICORDERAI\nL'Ultimatum\n⏳ Il mister è brutale: «Hai un mese per convincermi, o a gennaio saluti. Il posto te lo devi riprendere in allenamento, da domani.»\n🔥 «Mi riprendo tutto. Guardi.»\nRimarrà nella storia: \"Rispondesti all'ultimatum col lavoro. Il posto te lo riprendesti coi denti.\"\n🤝 «Mi dia solo una gara vera.»\nRimarrà nella storia: \"Chiedesti solo una chance vera dopo l'ultimatum. Onesto, diretto.\"\nK⚽rward\nElite\nSalva\n· 13:36\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\n👤\nProfilo\n🌍\nNazionale\nRECORD DI CARRIERA\n›\nRiserva\nProssimo gradino — Rotazione: OVR ≥68 (ora 66) · fiducia del mister ≥55 (ora 59.8) · voto medio ≥6,2 (ora 6)\nSTATISTICHE\n6\n›\nGol stagione\n0\nAssist stagione\n0\nPresenze stag.\n0\nGol carriera\n12\nAssist carriera\n11\nValore\n€4 mln\nStagioni da professionista completate: 2\nBIOGRAFIA\n›\nSTATISTICHE CARRIERA\n›\nRECORD PERSONALI\n4\n›\nSTORICO ALLENATORI\n2\n›\nRIVALE: MATTEO BAUER\n›\nLA STAMPA\n3\n›\nLA CITTÀ TI RICORDA\n›\nSTILE DI GIOCO: VELOCISTA\n›\nPREMI PERSONALI\n›\nMEMORIA DELLA CARRIERA\n2\n›\nDIARIO DI CARRIERA\n4\n›\nCONTRATTO\n›\nATTRIBUTI\n8\n›\nTIMELINE STAGIONI\n2\n›\nMILESTONE\n›\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI"
+          },
+          "afterViews": {
+            "dashboard": "TEST\nKE 7.999.53\nK⚽rward\nElite\nSalva\n· 13:37\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\n🏁 Avvia Stagione\nritiro, raduno e presentazioni\n›\nLiga Anatolica · 1ª giornata\nPROSSIMA PARTITA\nCalendario ›\nANA\nFC Antalya\n10ª in classifica\nVS\nIn casa\nFKD\nFC Kadıköy\n2ª in classifica\nForza 80/99 · più forte\n🏆 Sfida alla capolista\nSTAGIONE 3 · SETTIMANA 1 DI 38\n0\nPartite\n0\nGol\n0\nAssist\n🤝\n60/100\nFiducia del mister\n⭐\n56/100\nPopolarità\nLa tua storia\n›\nOfferta di sponsor · Vortex Boots\n›\nIL CONFRONTO\nGianni Ferretti\nIl tuo procuratore · rapporto positivo\n«Abbiamo fatto parecchia strada negli ultimi mesi.»\n«Ti vedo bene, e la squadra gira. Non avrei fretta di muovermi.»\n«Dimmi sinceramente: sei felice qui?»\nSto benissimo qui.\nSto bene, ma vorrei sentirmi più importante.\nCredo sia il momento di guardarci intorno.\nVoglio cambiare completamente aria.\nIl tuo procuratore: boutique o global?\n›\nLa tua settimana\n›\n🌱\nGiovane promessa\n18 anni\n🏷️ Mercato Estivo aperto\n5 settimane rimanenti\nObiettivi della stagione\n›\nOBIETTIVI PERSONALI\n›\n🏹 Batti il tuo record: 9+ gol (S.2: 8)\n0 / 9\n🏹 Media voto ≥ 6.7 (almeno 5 gare)\n—\nA fine stagione presenti il conto a te stesso.\nUltime notizie\n›\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "club": "TEST\nKE 7.999.53\nK⚽rward\nElite\nSalva\n· 13:37\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\nIL CONFRONTO\nGianni Ferretti\nIl tuo procuratore · rapporto positivo\n«Abbiamo fatto parecchia strada negli ultimi mesi.»\n«Ti vedo bene, e la squadra gira. Non avrei fretta di muovermi.»\n«Dimmi sinceramente: sei felice qui?»\nSto benissimo qui.\nSto bene, ma vorrei sentirmi più importante.\nCredo sia il momento di guardarci intorno.\nVoglio cambiare completamente aria.\nANA\nFC Antalya\n🇹🇷 Liga Anatolica\n#10/18 in classifica · 0pt\n🏛️ Progetto solido\n🧣 Curva: Uno di passaggio (per ora)\n🩺 Dr. Ozer (medico sociale) · 📋 Yildiz (DS)\n61.8\nPRESTIGIO /100\nSTADIO\n›\nSPONSOR DI MAGLIA\n›\nPIAZZAMENTI · MIGLIORE 11° · ULTIMA STAGIONE 11°\n›\nContratto: scade a fine stagione 5 (2 stagioni)\nProcuratore ›\nALLENATORE\n›\nSTAFF TECNICO\n›\nROSA\n24\n›\nBACHECA — FC ANTALYA\n›\nLO SPOGLIATOIO\n3\n›\nChimica di squadra\n36/100\n✨ Forma e morale −1 a settimana · cresce vincendo\nYunus Demirhan\nL'Amico · 😐 Conoscente\nLegame 40%\nProssimo traguardo: 50% (una volta: morale +7, fatica −6)\nAli Bostanci\nIl Rivale Interno · 😐 Conoscente\nLegame 40%\nProssimo traguardo: 50% (una volta: forma +6, morale −2)\nCengiz Kucukdeveci\nIl Capitano · 😐 Conoscente\nLegame 40%\nProssimo traguardo: 50% (una volta: morale +5, fiducia del mister +4)\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "carriera": "TEST\nKE 7.999.53\nK⚽rward\nElite\nSalva\n· 13:37\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\nIL CONFRONTO\nGianni Ferretti\nIl tuo procuratore · rapporto positivo\n«Abbiamo fatto parecchia strada negli ultimi mesi.»\n«Ti vedo bene, e la squadra gira. Non avrei fretta di muovermi.»\n«Dimmi sinceramente: sei felice qui?»\nSto benissimo qui.\nSto bene, ma vorrei sentirmi più importante.\nCredo sia il momento di guardarci intorno.\nVoglio cambiare completamente aria.\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "agente": "TEST\nKE 7.999.53\nK⚽rward\nElite\nSalva\n· 13:37\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\nIL CONFRONTO\nGianni Ferretti\nIl tuo procuratore · rapporto positivo\n«Abbiamo fatto parecchia strada negli ultimi mesi.»\n«Ti vedo bene, e la squadra gira. Non avrei fretta di muovermi.»\n«Dimmi sinceramente: sei felice qui?»\nSto benissimo qui.\nSto bene, ma vorrei sentirmi più importante.\nCredo sia il momento di guardarci intorno.\nVoglio cambiare completamente aria.\nGIANNI FERRETTI TI DICE\n›\nGianni Ferretti\nRapporto con Gianni: positivo\n«Sono qui per te. Dimmi i tuoi obiettivi per questa stagione.»\n«Guarda, la tua immagine non la sta sfruttando nessuno. Assegnami «Costruisci immagine» questa settimana.»\n📣 Assegna «Costruisci immagine»\n«Non avrei fretta di muovermi.»\n🤵 Obiettivo della stagione 3\n«Ti porto da €4 mln a €5,4 mln entro fine stagione.»\n+€0 su +€1,4 mln\nCambia procuratore\nIL TUO PROCURATORE\n›\nGianni Ferretti\nProcuratore · dalla stagione 1\nCommissione: 10% del tuo stipendio\n✂️ Licenzia il procuratore\nMERCATO\n🟢 Aperto\nVALORE DI MERCATO\n€4 mln\n🌊 FINESTRA DI MERCATO — ESTATE · SETT. 1\n›\n📋 Mettiti in lista transfer\nPiù visibilità — ma il mister lo saprà\n−8 fiducia del mister\n🔍 Fai girare il nome — cerca offerta\nVOCI DI MERCATO\nSCA\nFC Scaligero\n⚖️ Interesse moderato\nCEL\nFC Celeste\n⚖️ Interesse moderato\nSLN\nFC Salento\n⚖️ Interesse moderato\nSolo indiscrezioni — non è garantita un'offerta formale.\nIL TUO CONTRATTO\n›\nSTIPENDIO ATTUALE\n€254 mila l'anno\nSTIMA MERCATO\n€289 mila l'anno\nSCADENZA\nFine stagione 5\nSTAGIONI RIMASTE\n2 stagioni\n💸 Sei sottopagato rispetto al mercato: il procuratore può aiutarti.\nRICHIEDI CESSIONE\n›\nCOMPITO DELLA SETTIMANA\n›\nScegli il compito del tuo procuratore per questa settimana:\n🔍\nCerca offerte\nPiù probabilità di ricevere un'offerta: vale solo a mercato aperto (settimane 1–5 e 19–23)\n📋\nPrepara rinnovo\n+10% sull'offerta del prossimo rinnovo (si somma fino a +30%)\n📣\nCostruisci immagine\n+4 popolarità questa settimana\n🤐\nSilenzio stampa\n+6 fiducia del mister questa settimana\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "coppe": "TEST\nKE 7.999.53\nK⚽rward\nElite\nSalva\n· 13:37\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\n📊\nClassifica\n📅\nCalendario\n🏆\nCoppe\nIL CONFRONTO\nGianni Ferretti\nIl tuo procuratore · rapporto positivo\n«Abbiamo fatto parecchia strada negli ultimi mesi.»\n«Ti vedo bene, e la squadra gira. Non avrei fretta di muovermi.»\n«Dimmi sinceramente: sei felice qui?»\nSto benissimo qui.\nSto bene, ma vorrei sentirmi più importante.\nCredo sia il momento di guardarci intorno.\nVoglio cambiare completamente aria.\nCOPPA NAZIONALE — S.3\n›\n⏳ Ottavi di Finale\nTabellone non ancora disputato.\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI",
+            "profile": "TEST\nKE 7.999.53\nK⚽rward\nElite\nSalva\n· 13:37\nITALIA · ATTACCANTE\nQA CARRIERA 2\nFC Antalya · Liga Anatolica · St. 3 · Sett. 1/38 · 10° posto\n66\nOVR\nFORMA\n71\nMORALE\n88\nFATICA\n0\n👤\nProfilo\n🌍\nNazionale\nIL CONFRONTO\nGianni Ferretti\nIl tuo procuratore · rapporto positivo\n«Abbiamo fatto parecchia strada negli ultimi mesi.»\n«Ti vedo bene, e la squadra gira. Non avrei fretta di muovermi.»\n«Dimmi sinceramente: sei felice qui?»\nSto benissimo qui.\nSto bene, ma vorrei sentirmi più importante.\nCredo sia il momento di guardarci intorno.\nVoglio cambiare completamente aria.\nRECORD DI CARRIERA\n›\nRiserva\nProssimo gradino — Rotazione: OVR ≥68 (ora 66) · fiducia del mister ≥55 (ora 59.8) · voto medio ≥6,2 (ora 6)\nSTATISTICHE\n6\n›\nGol stagione\n0\nAssist stagione\n0\nPresenze stag.\n0\nGol carriera\n12\nAssist carriera\n11\nValore\n€4 mln\nStagioni da professionista completate: 2\nBIOGRAFIA\n›\nSTATISTICHE CARRIERA\n›\nRECORD PERSONALI\n4\n›\nSTORICO ALLENATORI\n2\n›\nRIVALE: MATTEO BAUER\n›\nLA STAMPA\n3\n›\nLA CITTÀ TI RICORDA\n›\nSTILE DI GIOCO: VELOCISTA\n›\nPREMI PERSONALI\n›\nMEMORIA DELLA CARRIERA\n2\n›\nDIARIO DI CARRIERA\n4\n›\nCONTRATTO\n›\nATTRIBUTI\n8\n›\nTIMELINE STAGIONI\n2\n›\nMILESTONE\n›\n☕ Sostieni il gioco\n💡 Idee e feedback\nHOME\nSTAGIONE\nCLUB\nCARRIERA\nAGENTE\nUFFICIO\nOPZIONI"
+          }
+        }
+      ],
+      "calendarDays": {
+        "1": {
+          "league": "Primavera 1",
+          "days": 34
+        },
+        "2": {
+          "league": "Liga Belga",
+          "days": 34
+        },
+        "3": {
+          "league": "Liga Anatolica",
+          "days": 34
+        },
+        "4": {
+          "league": "Liga Belga",
+          "days": 34
+        }
+      },
+      "renewals": [],
+      "renewalChecked": [],
+      "zeroSeasons": [],
+      "openingTrace": [],
+      "finalSnapshot": {
+        "season": 4,
+        "week": 1,
+        "age": 19,
+        "ovr": 69,
+        "club": "bch",
+        "goals": 0,
+        "matches": 0
+      }
+    }
+  ],
+  "anomalies": [
+    {
+      "seed": 2,
+      "career": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "casuale",
+        "archetype": "velocista",
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Primavera 1",
+        "club": "FC Blucerchiati Primavera",
+        "clubId": "sam",
+        "leagueFallback": false,
+        "base": 60
+      },
+      "season": 1,
+      "week": 22,
+      "type": "harness-intervention",
+      "observed": "goScreen dashboard from clubPresentation",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 2,
+      "career": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "casuale",
+        "archetype": "velocista",
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Primavera 1",
+        "club": "FC Blucerchiati Primavera",
+        "clubId": "sam",
+        "leagueFallback": false,
+        "base": 60
+      },
+      "season": 2,
+      "week": 7,
+      "type": "harness-intervention",
+      "observed": "goScreen dashboard from clubPresentation",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 2,
+      "career": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "casuale",
+        "archetype": "velocista",
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Primavera 1",
+        "club": "FC Blucerchiati Primavera",
+        "clubId": "sam",
+        "leagueFallback": false,
+        "base": 60
+      },
+      "season": 3,
+      "week": 1,
+      "type": "save-restore",
+      "observed": "snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":2,\"after\":3},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"ant2\"},{\"path\":\"presentedClub\",\"after\":\"ant2\"}]",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 2,
+      "career": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "casuale",
+        "archetype": "velocista",
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Primavera 1",
+        "club": "FC Blucerchiati Primavera",
+        "clubId": "sam",
+        "leagueFallback": false,
+        "base": 60
+      },
+      "season": 3,
+      "week": 22,
+      "type": "harness-intervention",
+      "observed": "goScreen dashboard from clubPresentation",
+      "severity": "media",
+      "status": "verificata"
+    }
+  ],
+  "failures": [],
+  "limits": [],
+  "durationMs": 376009
+}

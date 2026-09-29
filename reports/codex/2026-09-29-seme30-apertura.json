@@ -1,0 +1,36 @@
+{
+  "versione": "7.999.53",
+  "compito": "Seme 30 S16/W1 apertura",
+  "comando": "$env:GIT_CONFIG_COUNT='1'; $env:GIT_CONFIG_KEY_0='safe.directory'; $env:GIT_CONFIG_VALUE_0='C:/Users/a.vairo/Documents/ChatGPT/Analisi gioco codex/korward-career-53'; $env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_SEEDS='30'; $env:CPM_STOP_AFTER_SEASONS='2'; $env:CPM_CHECKPOINT='career-seed30-checkpoint.json'; $env:CPM_OUTPUT='career-seed30-stage1.json'; $env:CPM_TIME_LIMIT_MS='900000'; node tests/codex/career-followup.mjs",
+  "seme": 30,
+  "fonte": [
+    "tests/codex/career-seed30-checkpoint.json",
+    "tests/codex/career-seed30-stage1.json"
+  ],
+  "misure": [
+    {
+      "nome": "stagioni concluse",
+      "valore": 1,
+      "soglia": 16,
+      "esito": "anomalia"
+    },
+    {
+      "nome": "ultima stagione",
+      "valore": 3,
+      "soglia": 16,
+      "esito": "anomalia"
+    },
+    {
+      "nome": "ultima settimana",
+      "valore": 1,
+      "soglia": 1,
+      "esito": "ok"
+    }
+  ],
+  "segnalazioni": [],
+  "limiti": [
+    "S16/W1 non raggiunta nella 7.999.53",
+    "Blocco dopo opening-resolved non verificato",
+    "Processo interrotto per memoria libera circa 1,19 GB"
+  ]
+}

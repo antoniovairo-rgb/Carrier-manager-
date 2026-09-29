@@ -1,0 +1,6015 @@
+{
+  "command": "node tests/codex/career-followup.mjs",
+  "env": {
+    "CPM_SEEDS": "0,3,30,33",
+    "CPM_MAX_SEASONS": null,
+    "CPM_TIME_LIMIT_MS": 14400000,
+    "CPM_OUTPUT": "career-followup-results.json"
+  },
+  "startedAt": "2026-09-29T06:50:16.061Z",
+  "version": "7.999.53",
+  "commit": "54e6047ed67042c25970af2ab050b3422404c914",
+  "catalog": {
+    "professionalClubs": 252,
+    "u18Clubs": 18,
+    "leagues": [
+      "Lega A",
+      "Premier Division",
+      "Liga Ibérica",
+      "Deutsche Liga",
+      "Ligue Nationale",
+      "Liga Lusitana",
+      "Liga Oranje",
+      "Liga Belga",
+      "Liga Anatolica",
+      "Lega B",
+      "Championship",
+      "Deutsche Liga 2",
+      "Ligue Nationale 2",
+      "Liga Ibérica 2"
+    ],
+    "leagueCounts": {
+      "Lega A": 18,
+      "Premier Division": 18,
+      "Liga Ibérica": 18,
+      "Deutsche Liga": 18,
+      "Ligue Nationale": 18,
+      "Liga Lusitana": 18,
+      "Liga Oranje": 18,
+      "Liga Belga": 18,
+      "Liga Anatolica": 18,
+      "Lega B": 18,
+      "Championship": 18,
+      "Deutsche Liga 2": 18,
+      "Ligue Nationale 2": 18,
+      "Liga Ibérica 2": 18
+    }
+  },
+  "careers": [
+    {
+      "seed": 0,
+      "matrix": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "prudente",
+        "archetype": "bomber",
+        "requestedLeague": "Lega A",
+        "actualLeague": "Primavera 1",
+        "club": "FC Granata Primavera",
+        "clubId": "tor",
+        "leagueFallback": false,
+        "base": 58
+      },
+      "steps": 639,
+      "seasonsDone": 8,
+      "seasonStats": [
+        {
+          "season": 1,
+          "age": 16,
+          "club": "tor",
+          "league": "Primavera 1",
+          "ovr": 62,
+          "goals": 6,
+          "matches": 34,
+          "rating": 5.82,
+          "value": 1.67,
+          "wage": 0,
+          "expiresAtSeason": 4,
+          "contractDuration": 3,
+          "coachTrust": 60,
+          "injured": null,
+          "diaryLength": 0,
+          "diarySeasons": [],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 0,
+          "calendarN": 34,
+          "calendarUnplayed": 0,
+          "squadRole": "primavera",
+          "screen": "proTransition"
+        },
+        {
+          "season": 2,
+          "age": 17,
+          "club": "tor",
+          "league": "Lega A",
+          "ovr": 65,
+          "goals": 11,
+          "matches": 35,
+          "rating": 5.94,
+          "value": 3.29,
+          "wage": 2842,
+          "expiresAtSeason": 3,
+          "contractDuration": 1,
+          "coachTrust": 67.2,
+          "injured": null,
+          "diaryLength": 2,
+          "diarySeasons": [
+            2
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 97204,
+          "calendarN": 35,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 3,
+          "age": 18,
+          "club": "tor",
+          "league": "Lega A",
+          "ovr": 68,
+          "goals": 10,
+          "matches": 35,
+          "rating": 5.88,
+          "value": 5.82,
+          "wage": 3171,
+          "expiresAtSeason": 6,
+          "contractDuration": 3,
+          "coachTrust": 72,
+          "injured": null,
+          "diaryLength": 6,
+          "diarySeasons": [
+            2,
+            3
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 205656,
+          "calendarN": 35,
+          "calendarUnplayed": 0,
+          "squadRole": "rotazione",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 4,
+          "age": 19,
+          "club": "tor",
+          "league": "Lega A",
+          "ovr": 71,
+          "goals": 11,
+          "matches": 37,
+          "rating": 5.95,
+          "value": 10.57,
+          "wage": 3171,
+          "expiresAtSeason": 6,
+          "contractDuration": 2,
+          "coachTrust": 81.2,
+          "injured": null,
+          "diaryLength": 9,
+          "diarySeasons": [
+            2,
+            3,
+            4
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              4
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 314108,
+          "calendarN": 37,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 5,
+          "age": 20,
+          "club": "tor",
+          "league": "Lega A",
+          "ovr": 73,
+          "goals": 8,
+          "matches": 37,
+          "rating": 5.88,
+          "value": 14.05,
+          "wage": 3537,
+          "expiresAtSeason": 8,
+          "contractDuration": 3,
+          "coachTrust": 75.6,
+          "injured": null,
+          "diaryLength": 13,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              4,
+              5
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 435062,
+          "calendarN": 37,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 6,
+          "age": 21,
+          "club": "tor",
+          "league": "Lega A",
+          "ovr": 75,
+          "goals": 13,
+          "matches": 37,
+          "rating": 6.05,
+          "value": 19.72,
+          "wage": 3537,
+          "expiresAtSeason": 8,
+          "contractDuration": 2,
+          "coachTrust": 75.1,
+          "injured": null,
+          "diaryLength": 16,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              4,
+              5,
+              6
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 556016,
+          "calendarN": 37,
+          "calendarUnplayed": 0,
+          "squadRole": "rotazione",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 7,
+          "age": 22,
+          "club": "tor",
+          "league": "Lega A",
+          "ovr": 76,
+          "goals": 15,
+          "matches": 35,
+          "rating": 6.1,
+          "value": 21.22,
+          "wage": 3946,
+          "expiresAtSeason": 8,
+          "contractDuration": 1,
+          "coachTrust": 78,
+          "injured": null,
+          "diaryLength": 20,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              4,
+              5,
+              6,
+              7
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 690954,
+          "calendarN": 35,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 8,
+          "age": 23,
+          "club": "tor",
+          "league": "Lega A",
+          "ovr": 78,
+          "goals": 0,
+          "matches": 0,
+          "rating": 5.9,
+          "value": 21.64,
+          "wage": 3946,
+          "expiresAtSeason": 8,
+          "contractDuration": 0,
+          "coachTrust": 57,
+          "injured": null,
+          "diaryLength": 23,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              4,
+              5,
+              6,
+              7
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 690954,
+          "calendarN": 36,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        }
+      ],
+      "transfers": [],
+      "injuries": [],
+      "events": {
+        "contract_renewal": 4,
+        "cup_out": 7,
+        "pledge": 7,
+        "persgoal": 7
+      },
+      "messages": {
+        "2|🎓 PROFESSIONISTA! Aggregato alla rosa (prestito interno) con FC Granata!": 1,
+        "2|🏁 Fine Primavera 1 S.1: 6⚽ 4🎯": 1,
+        "2|📋 Rinnovo: 1 stag. a €148 mila/anno": 1,
+        "2|📢 Il club annuncia un nuovo sponsor di maglia. Grande campagna pubblicitaria con te in primo piano.": 1,
+        "2|🔬 Test atletico eccellente. Il preparatore è entusiasta.": 1,
+        "2|🏆 Coppa · Ottavi di Finale (sim): 1-1 vs FC Salento — ELIMINATO": 1,
+        "2|📡 Radio mercato: FC Amiens ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "2|🤝 Grande sintonia con un compagno. Spirito di squadra alto.": 1,
+        "2|🏁 Fine S.2: 11⚽ 5🎯": 1,
+        "3|🎂 18 anni — stagione 3 inizia": 1,
+        "3|❌ Mancato: Segna 15 gol": 1,
+        "3|❌ Mancato: Finisci nei primi 6": 1,
+        "3|✅ Gioca 20 partite": 1,
+        "3|📈 Crescita giovanile: +1 fisico": 1,
+        "3|🤵 Il procuratore esulta: valutazione a €2.3M come da piano — il telefono squilla.": 1,
+        "3|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "3|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "3|📋 Rinnovo: 3 stag. a €165 mila/anno": 1,
+        "3|🤵 Confronto con Marco Gestini.": 1,
+        "3|🏆 Coppa · Ottavi di Finale (sim): 0-1 vs FC Nerazzurri — ELIMINATO": 1,
+        "3|🏠 Trovi casa vicino al centro sportivo. Meno stress, più sonno: forma in crescita.": 1,
+        "3|🧠 Studio video avversario. Visione tattica rivoluzionaria.": 1,
+        "3|🌟 Un grande club ti osserva! La voce si diffonde.": 1,
+        "3|🎙️ Dichiarazione fraintesa dalla stampa. Piccola polemica.": 1,
+        "3|🎙️ Un veterano dello spogliatoio ti svela segreti del mestiere. Lezione preziosa.": 1,
+        "3|🏁 Fine S.3: 10⚽ 1🎯": 1,
+        "4|🎂 19 anni — stagione 4 inizia": 1,
+        "4|❌ Mancato: Segna 16 gol": 1,
+        "4|❌ Mancato: Finisci nei primi 6": 1,
+        "4|✅ Gioca 21 partite": 1,
+        "4|📈 Crescita giovanile: +1 tiro": 1,
+        "4|🤵 Il procuratore esulta: valutazione a €4.4M come da piano — il telefono squilla.": 1,
+        "4|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "4|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "4|🎯 Lavoro specifico sui calci piazzati col vice-allenatore.": 1,
+        "4|🏃 Lavoro specifico sulla velocità col preparatore.": 1,
+        "4|🏆 Coppa · Ottavi di Finale (sim): 6-1 vs FC Salento — passi il turno": 1,
+        "4|🍽️ Cena col presidente. Ti promette un futuro da titolare.": 1,
+        "4|🏆 Coppa · Quarti di Finale (sim): 3-0 vs FC Empolese — passi il turno": 1,
+        "4|📡 Radio mercato: FC Augsburg ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "4|🔥 Sei in un momento di grazia. Tutto funziona.": 1,
+        "4|🏆 Coppa · Semifinale (sim): 0-1 vs FC Biancoceleste — ELIMINATO": 1,
+        "4|📺 Intervista sui media: ottima impressione.": 1,
+        "4|🏁 Fine S.4: 11⚽ 4🎯": 1,
+        "5|🎂 20 anni — stagione 5 inizia": 1,
+        "5|❌ Mancato: Segna 16 gol": 1,
+        "5|❌ Mancato: Finisci nei primi 6": 1,
+        "5|✅ Gioca 22 partite": 1,
+        "5|📈 Crescita giovanile: +1 tiro": 1,
+        "5|🤵 Il procuratore esulta: valutazione a €7.9M come da piano — il telefono squilla.": 1,
+        "5|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "5|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "5|📋 Rinnovo: 3 stag. a €184 mila/anno": 1,
+        "5|🤵 Confronto con Marco Gestini.": 1,
+        "5|📺 Ospite in TV: ottima impressione, popolarità alle stelle.": 1,
+        "5|🏆 Coppa · Ottavi di Finale (sim): 1-1 dcr vs FC Felsineo — passi il turno ai rigori": 1,
+        "5|😤 Discussione in spogliatoio. Tensione alta.": 1,
+        "5|🏆 Coppa · Quarti di Finale (sim): 1-0 vs FC Biancoceleste — passi il turno": 1,
+        "5|🌍 Il ct della nazionale ti segue da vicino: sei nella lista dei pre-convocati.": 1,
+        "5|🏆 Coppa · Semifinale (sim): 0-3 vs FC Capitale — ELIMINATO": 1,
+        "5|🏁 Fine S.5: 8⚽ 8🎯": 1,
+        "6|🎂 21 anni — stagione 6 inizia": 1,
+        "6|❌ Mancato: Segna 17 gol": 1,
+        "6|❌ Mancato: Finisci nei primi 6": 1,
+        "6|✅ Gioca 22 partite": 1,
+        "6|📈 Crescita giovanile: +1 fisico": 1,
+        "6|🤵 Il piano del procuratore (€14.3M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "6|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "6|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "6|📡 Radio mercato: FC Mechelen ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "6|🧠 Sessione tattica intensa. Posizionamento migliorato.": 1,
+        "6|🏆 Coppa · Ottavi di Finale (sim): 3-0 vs FC Sardo — passi il turno": 1,
+        "6|🤝 Il club firma un accordo con un brand globale. Bonus per tutti i giocatori.": 1,
+        "6|🏆 Coppa · Quarti di Finale (sim): 1-1 dcr vs FC Scaligero — passi il turno ai rigori": 1,
+        "6|🌧️ Settimana di carichi pesanti. Corpo al limite.": 1,
+        "6|🏆 Coppa · Semifinale (sim): 0-1 vs FC Partenope — ELIMINATO": 1,
+        "6|😔 Momento di black-out. Tutto sembra più difficile.": 1,
+        "6|🏁 Fine S.6: 13⚽ 7🎯": 1,
+        "7|🎂 22 anni — stagione 7 inizia": 1,
+        "7|❌ Mancato: Segna 17 gol": 1,
+        "7|❌ Mancato: Finisci nei primi 6": 1,
+        "7|✅ Gioca 23 partite": 1,
+        "7|📈 Progressione: +1 posizionamento": 1,
+        "7|🏆 Miglior Giovane d'Europa Stagione 6! Riconoscimento continentale.": 1,
+        "7|🤵 Il procuratore esulta: valutazione a €19M come da piano — il telefono squilla.": 1,
+        "7|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "7|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "7|📋 Rinnovo: 1 stag. a €205 mila/anno": 1,
+        "7|🤵 Confronto con Marco Gestini.": 1,
+        "7|🏆 Coppa · Ottavi di Finale (sim): 0-1 vs FC Scaligero — ELIMINATO": 1,
+        "7|📚 Inizi a studiare la lingua locale. I compagni apprezzano: integrazione perfetta.": 1,
+        "7|🌡️ Caldo eccessivo. Allenamento ridotto per precauzione.": 1,
+        "7|🏁 Fine S.7: 15⚽ 5🎯": 1,
+        "8|🎂 23 anni — stagione 8 inizia": 1,
+        "8|❌ Mancato: Segna 18 gol": 1,
+        "8|❌ Mancato: Finisci nei primi 6": 1,
+        "8|❌ Mancato: Fornisci 9 assist": 1,
+        "8|📈 Progressione: +1 fisico · ⚡ Prestazione élite: +1 tiro": 1,
+        "8|🤵 Il piano del procuratore (€26.6M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "8|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "8|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "8|📡 Radio mercato: FC Rennese ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "8|🏆 Coppa · Ottavi di Finale (sim): 2-0 vs AC Rossoneri — passi il turno": 1,
+        "8|🏆 Coppa · Quarti di Finale (sim): 1-3 vs FC Partenope — ELIMINATO": 1,
+        "8|😡 Discussione con il vice-allenatore. Atmosfera tesa.": 1,
+        "8|🏁 Fine S.8: 0⚽ 0🎯": 1,
+        "9|🎂 24 anni — stagione 9 inizia": 1,
+        "9|❌ Mancato: Segna 18 gol": 1,
+        "9|❌ Mancato: Finisci nei primi 6": 1,
+        "9|❌ Mancato: Fornisci 9 assist": 1,
+        "9|🤵 Il piano del procuratore (€28.7M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "9|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "9|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1
+      },
+      "pageErrors": [],
+      "status": "target-reached",
+      "durationMs": 677897,
+      "interventions": [
+        {
+          "season": 1,
+          "week": 39,
+          "screen": "proTransition",
+          "action": "Enter (first offer)"
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Sto benissimo qui."
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Chiudi"
+        },
+        {
+          "season": 5,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Sto benissimo qui."
+        },
+        {
+          "season": 5,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Chiudi"
+        },
+        {
+          "season": 7,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Sto benissimo qui."
+        },
+        {
+          "season": 7,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Chiudi"
+        }
+      ],
+      "saveChecks": [
+        {
+          "season": 3,
+          "week": 1,
+          "equal": false,
+          "differences": [
+            {
+              "path": "playedMd.s",
+              "before": 2,
+              "after": 3
+            },
+            {
+              "path": "playedMd.md.0",
+              "before": 1
+            },
+            {
+              "path": "playedMd.md.1",
+              "before": 2
+            },
+            {
+              "path": "playedMd.md.2",
+              "before": 3
+            },
+            {
+              "path": "playedMd.md.3",
+              "before": 4
+            },
+            {
+              "path": "playedMd.md.4",
+              "before": 5
+            },
+            {
+              "path": "playedMd.md.5",
+              "before": 6
+            },
+            {
+              "path": "playedMd.md.6",
+              "before": 7
+            },
+            {
+              "path": "playedMd.md.7",
+              "before": 8
+            },
+            {
+              "path": "playedMd.md.8",
+              "before": 990
+            },
+            {
+              "path": "playedMd.md.9",
+              "before": 9
+            },
+            {
+              "path": "playedMd.md.10",
+              "before": 10
+            },
+            {
+              "path": "playedMd.md.11",
+              "before": 11
+            },
+            {
+              "path": "playedMd.md.12",
+              "before": 12
+            },
+            {
+              "path": "playedMd.md.13",
+              "before": 13
+            },
+            {
+              "path": "playedMd.md.14",
+              "before": 14
+            },
+            {
+              "path": "playedMd.md.15",
+              "before": 15
+            },
+            {
+              "path": "playedMd.md.16",
+              "before": 16
+            },
+            {
+              "path": "playedMd.md.17",
+              "before": 17
+            },
+            {
+              "path": "playedMd.md.18",
+              "before": 18
+            },
+            {
+              "path": "playedMd.md.19",
+              "before": 19
+            },
+            {
+              "path": "playedMd.md.20",
+              "before": 20
+            },
+            {
+              "path": "playedMd.md.21",
+              "before": 21
+            },
+            {
+              "path": "playedMd.md.22",
+              "before": 22
+            },
+            {
+              "path": "playedMd.md.23",
+              "before": 23
+            },
+            {
+              "path": "playedMd.md.24",
+              "before": 24
+            },
+            {
+              "path": "playedMd.md.25",
+              "before": 25
+            },
+            {
+              "path": "playedMd.md.26",
+              "before": 26
+            },
+            {
+              "path": "playedMd.md.27",
+              "before": 27
+            },
+            {
+              "path": "playedMd.md.28",
+              "before": 28
+            },
+            {
+              "path": "playedMd.md.29",
+              "before": 29
+            },
+            {
+              "path": "playedMd.md.30",
+              "before": 30
+            },
+            {
+              "path": "playedMd.md.31",
+              "before": 31
+            },
+            {
+              "path": "playedMd.md.32",
+              "before": 32
+            },
+            {
+              "path": "playedMd.md.33",
+              "before": 33
+            },
+            {
+              "path": "playedMd.md.34",
+              "before": 34
+            },
+            {
+              "path": "cup.club",
+              "after": "tor"
+            },
+            {
+              "path": "rival",
+              "before": null,
+              "after": {
+                "name": "Esteban Bianchi",
+                "nation": "Italia",
+                "age": 20,
+                "ovr": 71,
+                "club": {
+                  "n": "Torino Athletic",
+                  "id": "juve",
+                  "p": 95,
+                  "lg": "Lega A",
+                  "c": "#f5f5f5",
+                  "nat": "🇮🇹"
+                },
+                "goals": 7,
+                "totalGoals": 6,
+                "assists": 5,
+                "trophies": 0,
+                "seasons": 1,
+                "relationship": "sconosciuto",
+                "history": [],
+                "awards": {
+                  "palloneOros": [],
+                  "scarpaOros": []
+                }
+              }
+            },
+            {
+              "path": "presentedClub",
+              "after": "tor"
+            }
+          ]
+        },
+        {
+          "season": 5,
+          "week": 1,
+          "equal": false,
+          "differences": [
+            {
+              "path": "playedMd.s",
+              "before": 4,
+              "after": 5
+            },
+            {
+              "path": "playedMd.md.0",
+              "before": 1
+            },
+            {
+              "path": "playedMd.md.1",
+              "before": 2
+            },
+            {
+              "path": "playedMd.md.2",
+              "before": 3
+            },
+            {
+              "path": "playedMd.md.3",
+              "before": 4
+            },
+            {
+              "path": "playedMd.md.4",
+              "before": 5
+            },
+            {
+              "path": "playedMd.md.5",
+              "before": 6
+            },
+            {
+              "path": "playedMd.md.6",
+              "before": 7
+            },
+            {
+              "path": "playedMd.md.7",
+              "before": 8
+            },
+            {
+              "path": "playedMd.md.8",
+              "before": 990
+            },
+            {
+              "path": "playedMd.md.9",
+              "before": 9
+            },
+            {
+              "path": "playedMd.md.10",
+              "before": 10
+            },
+            {
+              "path": "playedMd.md.11",
+              "before": 11
+            },
+            {
+              "path": "playedMd.md.12",
+              "before": 12
+            },
+            {
+              "path": "playedMd.md.13",
+              "before": 13
+            },
+            {
+              "path": "playedMd.md.14",
+              "before": 14
+            },
+            {
+              "path": "playedMd.md.15",
+              "before": 15
+            },
+            {
+              "path": "playedMd.md.16",
+              "before": 16
+            },
+            {
+              "path": "playedMd.md.17",
+              "before": 17
+            },
+            {
+              "path": "playedMd.md.18",
+              "before": 992
+            },
+            {
+              "path": "playedMd.md.19",
+              "before": 18
+            },
+            {
+              "path": "playedMd.md.20",
+              "before": 19
+            },
+            {
+              "path": "playedMd.md.21",
+              "before": 20
+            },
+            {
+              "path": "playedMd.md.22",
+              "before": 21
+            },
+            {
+              "path": "playedMd.md.23",
+              "before": 22
+            },
+            {
+              "path": "playedMd.md.24",
+              "before": 23
+            },
+            {
+              "path": "playedMd.md.25",
+              "before": 24
+            },
+            {
+              "path": "playedMd.md.26",
+              "before": 25
+            },
+            {
+              "path": "playedMd.md.27",
+              "before": 993
+            },
+            {
+              "path": "playedMd.md.28",
+              "before": 26
+            },
+            {
+              "path": "playedMd.md.29",
+              "before": 27
+            },
+            {
+              "path": "playedMd.md.30",
+              "before": 28
+            },
+            {
+              "path": "playedMd.md.31",
+              "before": 29
+            },
+            {
+              "path": "playedMd.md.32",
+              "before": 30
+            },
+            {
+              "path": "playedMd.md.33",
+              "before": 31
+            },
+            {
+              "path": "playedMd.md.34",
+              "before": 32
+            },
+            {
+              "path": "playedMd.md.35",
+              "before": 33
+            },
+            {
+              "path": "playedMd.md.36",
+              "before": 34
+            },
+            {
+              "path": "cup.club",
+              "after": "tor"
+            }
+          ]
+        },
+        {
+          "season": 7,
+          "week": 1,
+          "equal": false,
+          "differences": [
+            {
+              "path": "playedMd.s",
+              "before": 6,
+              "after": 7
+            },
+            {
+              "path": "playedMd.md.0",
+              "before": 1
+            },
+            {
+              "path": "playedMd.md.1",
+              "before": 2
+            },
+            {
+              "path": "playedMd.md.2",
+              "before": 3
+            },
+            {
+              "path": "playedMd.md.3",
+              "before": 4
+            },
+            {
+              "path": "playedMd.md.4",
+              "before": 5
+            },
+            {
+              "path": "playedMd.md.5",
+              "before": 6
+            },
+            {
+              "path": "playedMd.md.6",
+              "before": 7
+            },
+            {
+              "path": "playedMd.md.7",
+              "before": 8
+            },
+            {
+              "path": "playedMd.md.8",
+              "before": 990
+            },
+            {
+              "path": "playedMd.md.9",
+              "before": 9
+            },
+            {
+              "path": "playedMd.md.10",
+              "before": 10
+            },
+            {
+              "path": "playedMd.md.11",
+              "before": 11
+            },
+            {
+              "path": "playedMd.md.12",
+              "before": 12
+            },
+            {
+              "path": "playedMd.md.13",
+              "before": 13
+            },
+            {
+              "path": "playedMd.md.14",
+              "before": 14
+            },
+            {
+              "path": "playedMd.md.15",
+              "before": 15
+            },
+            {
+              "path": "playedMd.md.16",
+              "before": 16
+            },
+            {
+              "path": "playedMd.md.17",
+              "before": 17
+            },
+            {
+              "path": "playedMd.md.18",
+              "before": 992
+            },
+            {
+              "path": "playedMd.md.19",
+              "before": 18
+            },
+            {
+              "path": "playedMd.md.20",
+              "before": 19
+            },
+            {
+              "path": "playedMd.md.21",
+              "before": 20
+            },
+            {
+              "path": "playedMd.md.22",
+              "before": 21
+            },
+            {
+              "path": "playedMd.md.23",
+              "before": 22
+            },
+            {
+              "path": "playedMd.md.24",
+              "before": 23
+            },
+            {
+              "path": "playedMd.md.25",
+              "before": 24
+            },
+            {
+              "path": "playedMd.md.26",
+              "before": 25
+            },
+            {
+              "path": "playedMd.md.27",
+              "before": 993
+            },
+            {
+              "path": "playedMd.md.28",
+              "before": 26
+            },
+            {
+              "path": "playedMd.md.29",
+              "before": 27
+            },
+            {
+              "path": "playedMd.md.30",
+              "before": 28
+            },
+            {
+              "path": "playedMd.md.31",
+              "before": 29
+            },
+            {
+              "path": "playedMd.md.32",
+              "before": 30
+            },
+            {
+              "path": "playedMd.md.33",
+              "before": 31
+            },
+            {
+              "path": "playedMd.md.34",
+              "before": 32
+            },
+            {
+              "path": "playedMd.md.35",
+              "before": 33
+            },
+            {
+              "path": "playedMd.md.36",
+              "before": 34
+            },
+            {
+              "path": "cup.club",
+              "after": "tor"
+            }
+          ]
+        }
+      ],
+      "calendarDays": {
+        "1": {
+          "league": "Primavera 1",
+          "days": 34
+        },
+        "2": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "3": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "4": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "5": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "6": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "7": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "8": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "9": {
+          "league": "Lega A",
+          "days": 34
+        }
+      },
+      "renewals": [
+        {
+          "season": 2,
+          "week": 1,
+          "outcome": "accepted-ui",
+          "oldScreen": "clubPresentation",
+          "before": {
+            "duration": 1,
+            "wage": 2547,
+            "expiresAtSeason": 3
+          },
+          "after": {
+            "duration": 1,
+            "wage": 2842,
+            "expiresAtSeason": 3
+          }
+        },
+        {
+          "season": 2,
+          "week": 16,
+          "outcome": "button-unavailable",
+          "oldScreen": "dashboard",
+          "expiresAtSeason": 3,
+          "duration": 1
+        },
+        {
+          "season": 2,
+          "week": 31,
+          "outcome": "button-unavailable",
+          "oldScreen": "dashboard",
+          "expiresAtSeason": 3,
+          "duration": 1
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "outcome": "accepted-ui",
+          "oldScreen": "dashboard",
+          "before": {
+            "duration": 0,
+            "wage": 2842,
+            "expiresAtSeason": 3
+          },
+          "after": {
+            "duration": 3,
+            "wage": 3171,
+            "expiresAtSeason": 6
+          }
+        },
+        {
+          "season": 5,
+          "week": 1,
+          "outcome": "accepted-ui",
+          "oldScreen": "dashboard",
+          "before": {
+            "duration": 1,
+            "wage": 3171,
+            "expiresAtSeason": 6
+          },
+          "after": {
+            "duration": 3,
+            "wage": 3537,
+            "expiresAtSeason": 8
+          }
+        },
+        {
+          "season": 7,
+          "week": 1,
+          "outcome": "accepted-ui",
+          "oldScreen": "dashboard",
+          "before": {
+            "duration": 1,
+            "wage": 3537,
+            "expiresAtSeason": 8
+          },
+          "after": {
+            "duration": 1,
+            "wage": 3946,
+            "expiresAtSeason": 8
+          }
+        },
+        {
+          "season": 7,
+          "week": 16,
+          "outcome": "button-unavailable",
+          "oldScreen": "dashboard",
+          "expiresAtSeason": 8,
+          "duration": 1
+        },
+        {
+          "season": 7,
+          "week": 31,
+          "outcome": "button-unavailable",
+          "oldScreen": "dashboard",
+          "expiresAtSeason": 8,
+          "duration": 1
+        },
+        {
+          "season": 8,
+          "week": 1,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 8,
+          "week": 16,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 8,
+          "week": 31,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        }
+      ],
+      "renewalChecked": [
+        "2|0",
+        "2|1",
+        "2|2",
+        "3|0",
+        "5|0",
+        "7|0",
+        "7|1",
+        "7|2",
+        "8|0",
+        "8|1",
+        "8|2"
+      ],
+      "zeroSeasons": [
+        {
+          "season": 8,
+          "age": 23,
+          "club": "tor",
+          "league": "Lega A",
+          "ovr": 78,
+          "goals": 0,
+          "matches": 0,
+          "rating": 5.9,
+          "value": 21.64,
+          "wage": 3946,
+          "expiresAtSeason": 8,
+          "contractDuration": 0,
+          "coachTrust": 57,
+          "injured": null,
+          "diaryLength": 23,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              4,
+              5,
+              6,
+              7
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 690954,
+          "calendarN": 36,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        }
+      ],
+      "openingTrace": [],
+      "finalSnapshot": {
+        "season": 9,
+        "week": 1,
+        "age": 24,
+        "ovr": 78,
+        "club": "tor",
+        "goals": 0,
+        "matches": 0
+      }
+    },
+    {
+      "seed": 3,
+      "matrix": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "steps": 639,
+      "seasonsDone": 8,
+      "seasonStats": [
+        {
+          "season": 1,
+          "age": 16,
+          "club": "ver",
+          "league": "Primavera 1",
+          "ovr": 78,
+          "goals": 11,
+          "matches": 34,
+          "rating": 5.72,
+          "value": 23.46,
+          "wage": 0,
+          "expiresAtSeason": 4,
+          "contractDuration": 3,
+          "coachTrust": 64,
+          "injured": null,
+          "diaryLength": 0,
+          "diarySeasons": [],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 0,
+          "calendarN": 34,
+          "calendarUnplayed": 0,
+          "squadRole": "primavera",
+          "screen": "proTransition"
+        },
+        {
+          "season": 2,
+          "age": 17,
+          "club": "ver",
+          "league": "Lega A",
+          "ovr": 78,
+          "goals": 10,
+          "matches": 35,
+          "rating": 6.07,
+          "value": 25.34,
+          "wage": 69554,
+          "expiresAtSeason": 3,
+          "contractDuration": 1,
+          "coachTrust": 57.7,
+          "injured": null,
+          "diaryLength": 1,
+          "diarySeasons": [
+            2
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 2378762,
+          "calendarN": 35,
+          "calendarUnplayed": 0,
+          "squadRole": "rotazione",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 3,
+          "age": 18,
+          "club": "ver",
+          "league": "Lega A",
+          "ovr": 80,
+          "goals": 0,
+          "matches": 0,
+          "rating": 6,
+          "value": 27.59,
+          "wage": 69554,
+          "expiresAtSeason": 3,
+          "contractDuration": 0,
+          "coachTrust": 42.7,
+          "injured": null,
+          "diaryLength": 4,
+          "diarySeasons": [
+            2,
+            3
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 2378762,
+          "calendarN": 38,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 4,
+          "age": 19,
+          "club": "ver",
+          "league": "Lega A",
+          "ovr": 80,
+          "goals": 0,
+          "matches": 0,
+          "rating": 6,
+          "value": 27.64,
+          "wage": 69554,
+          "expiresAtSeason": 3,
+          "contractDuration": 0,
+          "coachTrust": 24.700000000000003,
+          "injured": null,
+          "diaryLength": 7,
+          "diarySeasons": [
+            2,
+            3,
+            4
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 2378762,
+          "calendarN": 36,
+          "calendarUnplayed": 0,
+          "squadRole": "primavera",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 5,
+          "age": 20,
+          "club": "ver",
+          "league": "Lega B",
+          "ovr": 82,
+          "goals": 0,
+          "matches": 0,
+          "rating": 6.7,
+          "value": 36.22,
+          "wage": 52166,
+          "expiresAtSeason": 3,
+          "contractDuration": 0,
+          "coachTrust": 6.700000000000003,
+          "injured": null,
+          "diaryLength": 10,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "trophies": [
+            {
+              "season": 5,
+              "club": "FC Scaligero",
+              "league": "Coppa",
+              "type": "cup"
+            }
+          ],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 2378762,
+          "calendarN": 38,
+          "calendarUnplayed": 0,
+          "squadRole": "primavera",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 6,
+          "age": 21,
+          "club": "ver",
+          "league": "Lega B",
+          "ovr": 83,
+          "goals": 0,
+          "matches": 0,
+          "rating": 5.4,
+          "value": 41.45,
+          "wage": 52166,
+          "expiresAtSeason": 3,
+          "contractDuration": 0,
+          "coachTrust": 60,
+          "injured": null,
+          "diaryLength": 13,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "trophies": [
+            {
+              "season": 5,
+              "club": "FC Scaligero",
+              "league": "Coppa",
+              "type": "cup"
+            }
+          ],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 2378762,
+          "calendarN": 35,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 7,
+          "age": 22,
+          "club": "ver",
+          "league": "Lega A",
+          "ovr": 84,
+          "goals": 15,
+          "matches": 36,
+          "rating": 5.98,
+          "value": 56.12,
+          "wage": 58191,
+          "expiresAtSeason": 10,
+          "contractDuration": 3,
+          "coachTrust": 55,
+          "injured": null,
+          "diaryLength": 17,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "trophies": [
+            {
+              "season": 5,
+              "club": "FC Scaligero",
+              "league": "Coppa",
+              "type": "cup"
+            }
+          ],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              7
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 4368898,
+          "calendarN": 37,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 8,
+          "age": 23,
+          "club": "ver",
+          "league": "Lega A",
+          "ovr": 85,
+          "goals": 6,
+          "matches": 35,
+          "rating": 5.73,
+          "value": 52.88,
+          "wage": 58191,
+          "expiresAtSeason": 10,
+          "contractDuration": 2,
+          "coachTrust": 40,
+          "injured": null,
+          "diaryLength": 20,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "trophies": [
+            {
+              "season": 5,
+              "club": "FC Scaligero",
+              "league": "Coppa",
+              "type": "cup"
+            }
+          ],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              7
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 6359034,
+          "calendarN": 35,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        }
+      ],
+      "transfers": [],
+      "injuries": [],
+      "events": {
+        "cup_out": 6,
+        "pledge": 7,
+        "persgoal": 7,
+        "cup_trophy": 1,
+        "contract_renewal": 1
+      },
+      "messages": {
+        "2|🎓 PROFESSIONISTA! Primo contratto professionistico con FC Scaligero!": 1,
+        "2|🏁 Fine Primavera 1 S.1: 11⚽ 9🎯": 1,
+        "2|📡 Radio mercato: FC Goodison ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "2|🏆 Coppa · Ottavi di Finale (sim): 0-1 vs FC Biancoceleste — ELIMINATO": 1,
+        "2|🧤 Il portiere amico ti aiuta a migliorare il tiro.": 1,
+        "2|🌧️ Settimana di carichi pesanti. Corpo al limite.": 1,
+        "2|😡 Discussione con il vice-allenatore. Atmosfera tesa.": 1,
+        "2|🏁 Fine S.2: 10⚽ 8🎯": 1,
+        "3|🎂 18 anni — stagione 3 inizia": 1,
+        "3|❌ Mancato: Segna 15 gol": 1,
+        "3|❌ Mancato: Finisci nei primi 6": 1,
+        "3|❌ Mancato: Fornisci 11 assist": 1,
+        "3|📈 Crescita giovanile: +1 mentalità": 1,
+        "3|🤵 Il piano del procuratore (€31.7M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "3|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "3|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "3|🤵 Confronto con Roberto Manconi.": 1,
+        "3|🏆 Coppa · Ottavi di Finale (sim): 5-2 vs FC Salento — passi il turno": 1,
+        "3|🏆 Coppa · Quarti di Finale (sim): 1-1 dcr vs FC Friulano — passi il turno ai rigori": 1,
+        "3|🌀 Dribbling drill col preparatore tecnico. Piedi magici.": 1,
+        "3|🏆 Coppa · Semifinale (sim): 1-1 dcr vs FC Partenope — passi il turno ai rigori": 1,
+        "3|🤩 Un tuo fan ti ferma per strada. Ti senti una star.": 1,
+        "3|🏆 Coppa · FINALE (sim): 0-4 vs FC Nerazzurri — ELIMINATO": 1,
+        "3|🏁 Fine S.3: 0⚽ 0🎯": 1,
+        "4|🎂 19 anni — stagione 4 inizia": 1,
+        "4|❌ Mancato: Segna 15 gol": 1,
+        "4|❌ Mancato: Finisci nei primi 6": 1,
+        "4|❌ Mancato: Fornisci 11 assist": 1,
+        "4|📈 Crescita giovanile: +1 tecnica": 1,
+        "4|🧑‍💼 Nuovo allenatore: Mister Montaldo (Contropiede)": 1,
+        "4|🤵 Il piano del procuratore (€34.2M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "4|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "4|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "4|📩 FC Bilbao presenta un'offerta ufficiale: hai superato il livello del tuo club.": 1,
+        "4|🏆 Coppa · Ottavi di Finale (sim): 2-1 vs Torino Athletic — passi il turno": 1,
+        "4|🏗️ Lavori al centro sportivo. Allenamenti disturbati.": 1,
+        "4|🏆 Coppa · Quarti di Finale (sim): 0-1 vs AC Rossoneri — ELIMINATO": 1,
+        "4|🏁 Fine S.4: 0⚽ 0🎯": 1,
+        "5|🎂 20 anni — stagione 5 inizia": 1,
+        "5|❌ Mancato: Segna 16 gol": 1,
+        "5|❌ Mancato: Finisci nei primi 6": 1,
+        "5|❌ Mancato: Fornisci 11 assist": 1,
+        "5|📈 Crescita giovanile: +1 velocità": 1,
+        "5|🧑‍💼 Nuovo allenatore: Mister Coralli (Offensivo)": 1,
+        "5|⬇️ FC Scaligero RETROCESSA in Lega B!": 1,
+        "5|🤵 Il piano del procuratore (€37.3M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "5|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "5|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "5|📵 Il club limita i social per una settimana. Frustrazione.": 1,
+        "5|🏆 Coppa · Ottavi di Finale (sim): 1-1 dcr vs FC Modenese — passi il turno ai rigori": 1,
+        "5|🏆 Coppa · Quarti di Finale (sim): 3-0 vs FC Cesenate — passi il turno": 1,
+        "5|🏆 Il presidente promette un mercato di gennaio ambizioso. Clima eccitante.": 1,
+        "5|🏆 Coppa · Semifinale (sim): 5-1 vs FC Cittadino — passi il turno": 1,
+        "5|🏆 Coppa · FINALE (sim): 1-0 vs FC Genova — passi il turno": 1,
+        "5|🏁 Fine S.5: 0⚽ 0🎯": 1,
+        "6|🎂 21 anni — stagione 6 inizia": 1,
+        "6|❌ Mancato: Segna 16 gol": 1,
+        "6|❌ Mancato: Finisci nei primi 6": 1,
+        "6|❌ Mancato: Fornisci 11 assist": 1,
+        "6|📈 Crescita giovanile: +1 posizionamento": 1,
+        "6|🤵 Il piano del procuratore (€37.3M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "6|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "6|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "6|🚗 Nuova auto acquistata dopo il primo contratto serio. Senso di realizzazione.": 1,
+        "6|🏆 Coppa · Ottavi di Finale (sim): 0-1 vs FC Empolese — ELIMINATO": 1,
+        "6|📩 FC Aston presenta un'offerta ufficiale: hai superato il livello del tuo club.": 1,
+        "6|🌐 Feature su un portale europeo: 'Uno dei migliori under-23 del continente'.": 1,
+        "6|💰 Rumors: una proposta da 15M€ respinta dalla dirigenza. Il tuo valore esplode.": 1,
+        "6|🏁 Fine S.6: 0⚽ 0🎯": 1,
+        "7|🎂 22 anni — stagione 7 inizia": 1,
+        "7|❌ Mancato: Segna 16 gol": 1,
+        "7|✅ Finisci nei primi 6": 1,
+        "7|❌ Mancato: Fornisci 11 assist": 1,
+        "7|🆙 FC Scaligero PROMOSSA in Lega A!": 1,
+        "7|🏟️ Il club amplia lo stadio: nuova capienza ~40.000 posti!": 1,
+        "7|💰 Lo sponsor CRISTALLA premia la stagione: bonus di €0.7M nelle casse del club.": 1,
+        "7|🤵 Il piano del procuratore (€48.9M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "7|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "7|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "7|📋 Rinnovo: 3 stag. a €3 mln/anno": 1,
+        "7|🏆 Coppa · Ottavi di Finale (sim): 1-1 dcr vs FC Friulano — passi il turno ai rigori": 1,
+        "7|🤒 Piccolo problema di salute. Recupero necessario.": 1,
+        "7|🏆 Coppa · Quarti di Finale (sim): 1-3 vs FC Neroverde — ELIMINATO": 1,
+        "7|🏠 Trovi casa vicino al centro sportivo. Meno stress, più sonno: forma in crescita.": 1,
+        "7|⚠️ Richiamo per ritardo agli allenamenti. Situazione delicata.": 1,
+        "7|💚 Settimana di recupero mentale dopo una brutta partita. Il mister ti supporta.": 1,
+        "7|🏳️ Amichevole (sim): 0-2 vs Inghilterra": 1,
+        "7|🤝 Grande sintonia con un compagno. Spirito di squadra alto.": 1,
+        "7|🏁 Fine S.7: 15⚽ 5🎯": 1,
+        "8|🎂 23 anni — stagione 8 inizia": 1,
+        "8|❌ Mancato: Segna 16 gol": 1,
+        "8|❌ Mancato: Finisci nei primi 6": 1,
+        "8|❌ Mancato: Fornisci 11 assist": 1,
+        "8|📈 Progressione: +1 tecnica · ⚡ Prestazione élite: +1 dribbling": 1,
+        "8|🤵 Il procuratore esulta: valutazione a €56M come da piano — il telefono squilla.": 1,
+        "8|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "8|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "8|😤 Discussione in spogliatoio. Tensione alta.": 1,
+        "8|🏆 Coppa · Ottavi di Finale (sim): 0-5 vs Torino Athletic — ELIMINATO": 1,
+        "8|🏥 Controllo medico: affaticamento notato. Carichi ridotti.": 1,
+        "8|🏁 Fine S.8: 6⚽ 2🎯": 1,
+        "9|🎂 24 anni — stagione 9 inizia": 1,
+        "9|❌ Mancato: Segna 16 gol": 1,
+        "9|❌ Mancato: Finisci nei primi 6": 1,
+        "9|❌ Mancato: Fornisci 12 assist": 1,
+        "9|📈 Progressione: +1 velocità": 1,
+        "9|⚡ Fenomeno generazionale annunciato!": 1,
+        "9|🤵 Il piano del procuratore (€75.8M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "9|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "9|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1
+      },
+      "pageErrors": [],
+      "status": "target-reached",
+      "durationMs": 841239,
+      "interventions": [
+        {
+          "season": 1,
+          "week": 39,
+          "screen": "proTransition",
+          "action": "Enter (first offer)"
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Sto benissimo qui."
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Chiudi"
+        }
+      ],
+      "saveChecks": [
+        {
+          "season": 3,
+          "week": 1,
+          "equal": false,
+          "differences": [
+            {
+              "path": "playedMd.s",
+              "before": 2,
+              "after": 3
+            },
+            {
+              "path": "playedMd.md.0",
+              "before": 1
+            },
+            {
+              "path": "playedMd.md.1",
+              "before": 2
+            },
+            {
+              "path": "playedMd.md.2",
+              "before": 3
+            },
+            {
+              "path": "playedMd.md.3",
+              "before": 4
+            },
+            {
+              "path": "playedMd.md.4",
+              "before": 5
+            },
+            {
+              "path": "playedMd.md.5",
+              "before": 6
+            },
+            {
+              "path": "playedMd.md.6",
+              "before": 7
+            },
+            {
+              "path": "playedMd.md.7",
+              "before": 8
+            },
+            {
+              "path": "playedMd.md.8",
+              "before": 990
+            },
+            {
+              "path": "playedMd.md.9",
+              "before": 9
+            },
+            {
+              "path": "playedMd.md.10",
+              "before": 10
+            },
+            {
+              "path": "playedMd.md.11",
+              "before": 11
+            },
+            {
+              "path": "playedMd.md.12",
+              "before": 12
+            },
+            {
+              "path": "playedMd.md.13",
+              "before": 13
+            },
+            {
+              "path": "playedMd.md.14",
+              "before": 14
+            },
+            {
+              "path": "playedMd.md.15",
+              "before": 15
+            },
+            {
+              "path": "playedMd.md.16",
+              "before": 16
+            },
+            {
+              "path": "playedMd.md.17",
+              "before": 17
+            },
+            {
+              "path": "playedMd.md.18",
+              "before": 18
+            },
+            {
+              "path": "playedMd.md.19",
+              "before": 19
+            },
+            {
+              "path": "playedMd.md.20",
+              "before": 20
+            },
+            {
+              "path": "playedMd.md.21",
+              "before": 21
+            },
+            {
+              "path": "playedMd.md.22",
+              "before": 22
+            },
+            {
+              "path": "playedMd.md.23",
+              "before": 23
+            },
+            {
+              "path": "playedMd.md.24",
+              "before": 24
+            },
+            {
+              "path": "playedMd.md.25",
+              "before": 25
+            },
+            {
+              "path": "playedMd.md.26",
+              "before": 26
+            },
+            {
+              "path": "playedMd.md.27",
+              "before": 27
+            },
+            {
+              "path": "playedMd.md.28",
+              "before": 28
+            },
+            {
+              "path": "playedMd.md.29",
+              "before": 29
+            },
+            {
+              "path": "playedMd.md.30",
+              "before": 30
+            },
+            {
+              "path": "playedMd.md.31",
+              "before": 31
+            },
+            {
+              "path": "playedMd.md.32",
+              "before": 32
+            },
+            {
+              "path": "playedMd.md.33",
+              "before": 33
+            },
+            {
+              "path": "playedMd.md.34",
+              "before": 34
+            },
+            {
+              "path": "cup.club",
+              "after": "ver"
+            },
+            {
+              "path": "rival",
+              "before": null,
+              "after": {
+                "name": "Esteban Bianchi",
+                "nation": "Italia",
+                "age": 20,
+                "ovr": 84,
+                "club": {
+                  "n": "Torino Athletic",
+                  "id": "juve",
+                  "p": 95,
+                  "lg": "Lega A",
+                  "c": "#f5f5f5",
+                  "nat": "🇮🇹"
+                },
+                "goals": 7,
+                "totalGoals": 6,
+                "assists": 5,
+                "trophies": 0,
+                "seasons": 1,
+                "relationship": "sconosciuto",
+                "history": [],
+                "awards": {
+                  "palloneOros": [],
+                  "scarpaOros": []
+                }
+              }
+            },
+            {
+              "path": "presentedClub",
+              "after": "ver"
+            }
+          ]
+        },
+        {
+          "season": 5,
+          "week": 1,
+          "equal": false,
+          "differences": [
+            {
+              "path": "playedMd.s",
+              "before": 4,
+              "after": 5
+            },
+            {
+              "path": "playedMd.md.0",
+              "before": 1
+            },
+            {
+              "path": "playedMd.md.1",
+              "before": 2
+            },
+            {
+              "path": "playedMd.md.2",
+              "before": 3
+            },
+            {
+              "path": "playedMd.md.3",
+              "before": 4
+            },
+            {
+              "path": "playedMd.md.4",
+              "before": 5
+            },
+            {
+              "path": "playedMd.md.5",
+              "before": 6
+            },
+            {
+              "path": "playedMd.md.6",
+              "before": 7
+            },
+            {
+              "path": "playedMd.md.7",
+              "before": 8
+            },
+            {
+              "path": "playedMd.md.8",
+              "before": 990
+            },
+            {
+              "path": "playedMd.md.9",
+              "before": 9
+            },
+            {
+              "path": "playedMd.md.10",
+              "before": 10
+            },
+            {
+              "path": "playedMd.md.11",
+              "before": 11
+            },
+            {
+              "path": "playedMd.md.12",
+              "before": 12
+            },
+            {
+              "path": "playedMd.md.13",
+              "before": 13
+            },
+            {
+              "path": "playedMd.md.14",
+              "before": 14
+            },
+            {
+              "path": "playedMd.md.15",
+              "before": 15
+            },
+            {
+              "path": "playedMd.md.16",
+              "before": 16
+            },
+            {
+              "path": "playedMd.md.17",
+              "before": 17
+            },
+            {
+              "path": "playedMd.md.18",
+              "before": 992
+            },
+            {
+              "path": "playedMd.md.19",
+              "before": 18
+            },
+            {
+              "path": "playedMd.md.20",
+              "before": 19
+            },
+            {
+              "path": "playedMd.md.21",
+              "before": 20
+            },
+            {
+              "path": "playedMd.md.22",
+              "before": 21
+            },
+            {
+              "path": "playedMd.md.23",
+              "before": 22
+            },
+            {
+              "path": "playedMd.md.24",
+              "before": 23
+            },
+            {
+              "path": "playedMd.md.25",
+              "before": 24
+            },
+            {
+              "path": "playedMd.md.26",
+              "before": 25
+            },
+            {
+              "path": "playedMd.md.27",
+              "before": 26
+            },
+            {
+              "path": "playedMd.md.28",
+              "before": 27
+            },
+            {
+              "path": "playedMd.md.29",
+              "before": 28
+            },
+            {
+              "path": "playedMd.md.30",
+              "before": 29
+            },
+            {
+              "path": "playedMd.md.31",
+              "before": 30
+            },
+            {
+              "path": "playedMd.md.32",
+              "before": 31
+            },
+            {
+              "path": "playedMd.md.33",
+              "before": 32
+            },
+            {
+              "path": "playedMd.md.34",
+              "before": 33
+            },
+            {
+              "path": "playedMd.md.35",
+              "before": 34
+            },
+            {
+              "path": "cup.club",
+              "after": "ver"
+            }
+          ]
+        },
+        {
+          "season": 7,
+          "week": 1,
+          "equal": false,
+          "differences": [
+            {
+              "path": "playedMd.s",
+              "before": 6,
+              "after": 7
+            },
+            {
+              "path": "playedMd.md.0",
+              "before": 1
+            },
+            {
+              "path": "playedMd.md.1",
+              "before": 2
+            },
+            {
+              "path": "playedMd.md.2",
+              "before": 3
+            },
+            {
+              "path": "playedMd.md.3",
+              "before": 4
+            },
+            {
+              "path": "playedMd.md.4",
+              "before": 5
+            },
+            {
+              "path": "playedMd.md.5",
+              "before": 6
+            },
+            {
+              "path": "playedMd.md.6",
+              "before": 7
+            },
+            {
+              "path": "playedMd.md.7",
+              "before": 8
+            },
+            {
+              "path": "playedMd.md.8",
+              "before": 990
+            },
+            {
+              "path": "playedMd.md.9",
+              "before": 9
+            },
+            {
+              "path": "playedMd.md.10",
+              "before": 10
+            },
+            {
+              "path": "playedMd.md.11",
+              "before": 11
+            },
+            {
+              "path": "playedMd.md.12",
+              "before": 12
+            },
+            {
+              "path": "playedMd.md.13",
+              "before": 13
+            },
+            {
+              "path": "playedMd.md.14",
+              "before": 14
+            },
+            {
+              "path": "playedMd.md.15",
+              "before": 15
+            },
+            {
+              "path": "playedMd.md.16",
+              "before": 16
+            },
+            {
+              "path": "playedMd.md.17",
+              "before": 17
+            },
+            {
+              "path": "playedMd.md.18",
+              "before": 18
+            },
+            {
+              "path": "playedMd.md.19",
+              "before": 19
+            },
+            {
+              "path": "playedMd.md.20",
+              "before": 20
+            },
+            {
+              "path": "playedMd.md.21",
+              "before": 21
+            },
+            {
+              "path": "playedMd.md.22",
+              "before": 22
+            },
+            {
+              "path": "playedMd.md.23",
+              "before": 23
+            },
+            {
+              "path": "playedMd.md.24",
+              "before": 24
+            },
+            {
+              "path": "playedMd.md.25",
+              "before": 25
+            },
+            {
+              "path": "playedMd.md.26",
+              "before": 26
+            },
+            {
+              "path": "playedMd.md.27",
+              "before": 27
+            },
+            {
+              "path": "playedMd.md.28",
+              "before": 28
+            },
+            {
+              "path": "playedMd.md.29",
+              "before": 29
+            },
+            {
+              "path": "playedMd.md.30",
+              "before": 30
+            },
+            {
+              "path": "playedMd.md.31",
+              "before": 31
+            },
+            {
+              "path": "playedMd.md.32",
+              "before": 32
+            },
+            {
+              "path": "playedMd.md.33",
+              "before": 33
+            },
+            {
+              "path": "playedMd.md.34",
+              "before": 34
+            },
+            {
+              "path": "cup.club",
+              "after": "ver"
+            }
+          ]
+        }
+      ],
+      "calendarDays": {
+        "1": {
+          "league": "Primavera 1",
+          "days": 34
+        },
+        "2": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "3": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "4": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "5": {
+          "league": "Lega B",
+          "days": 34
+        },
+        "6": {
+          "league": "Lega B",
+          "days": 34
+        },
+        "7": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "8": {
+          "league": "Lega A",
+          "days": 34
+        },
+        "9": {
+          "league": "Lega A",
+          "days": 34
+        }
+      },
+      "renewals": [
+        {
+          "season": 2,
+          "week": 1,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 2,
+          "week": 16,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 2,
+          "week": 31,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "outcome": "club-refused",
+          "oldScreen": "dashboard",
+          "expiresAtSeason": 3,
+          "duration": 0,
+          "coachTrust": 42.7
+        },
+        {
+          "season": 3,
+          "week": 16,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 3,
+          "week": 31,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 4,
+          "week": 16,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 4,
+          "week": 31,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 5,
+          "week": 1,
+          "outcome": "club-refused",
+          "oldScreen": "dashboard",
+          "expiresAtSeason": 3,
+          "duration": 0,
+          "coachTrust": 6.700000000000003
+        },
+        {
+          "season": 5,
+          "week": 16,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 5,
+          "week": 31,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 6,
+          "week": 1,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 6,
+          "week": 16,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 6,
+          "week": 31,
+          "outcome": "ui-blocked",
+          "reason": "TimeoutError: locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waitin"
+        },
+        {
+          "season": 7,
+          "week": 1,
+          "outcome": "accepted-ui",
+          "oldScreen": "dashboard",
+          "before": {
+            "duration": 0,
+            "wage": 52166,
+            "expiresAtSeason": 3
+          },
+          "after": {
+            "duration": 3,
+            "wage": 58191,
+            "expiresAtSeason": 10
+          }
+        }
+      ],
+      "renewalChecked": [
+        "2|0",
+        "2|1",
+        "2|2",
+        "3|0",
+        "3|1",
+        "3|2",
+        "4|0",
+        "4|1",
+        "4|2",
+        "5|0",
+        "5|1",
+        "5|2",
+        "6|0",
+        "6|1",
+        "6|2",
+        "7|0"
+      ],
+      "zeroSeasons": [
+        {
+          "season": 3,
+          "age": 18,
+          "club": "ver",
+          "league": "Lega A",
+          "ovr": 80,
+          "goals": 0,
+          "matches": 0,
+          "rating": 6,
+          "value": 27.59,
+          "wage": 69554,
+          "expiresAtSeason": 3,
+          "contractDuration": 0,
+          "coachTrust": 42.7,
+          "injured": null,
+          "diaryLength": 4,
+          "diarySeasons": [
+            2,
+            3
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 2378762,
+          "calendarN": 38,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 4,
+          "age": 19,
+          "club": "ver",
+          "league": "Lega A",
+          "ovr": 80,
+          "goals": 0,
+          "matches": 0,
+          "rating": 6,
+          "value": 27.64,
+          "wage": 69554,
+          "expiresAtSeason": 3,
+          "contractDuration": 0,
+          "coachTrust": 24.700000000000003,
+          "injured": null,
+          "diaryLength": 7,
+          "diarySeasons": [
+            2,
+            3,
+            4
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 2378762,
+          "calendarN": 36,
+          "calendarUnplayed": 0,
+          "squadRole": "primavera",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 5,
+          "age": 20,
+          "club": "ver",
+          "league": "Lega B",
+          "ovr": 82,
+          "goals": 0,
+          "matches": 0,
+          "rating": 6.7,
+          "value": 36.22,
+          "wage": 52166,
+          "expiresAtSeason": 3,
+          "contractDuration": 0,
+          "coachTrust": 6.700000000000003,
+          "injured": null,
+          "diaryLength": 10,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "trophies": [
+            {
+              "season": 5,
+              "club": "FC Scaligero",
+              "league": "Coppa",
+              "type": "cup"
+            }
+          ],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 2378762,
+          "calendarN": 38,
+          "calendarUnplayed": 0,
+          "squadRole": "primavera",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 6,
+          "age": 21,
+          "club": "ver",
+          "league": "Lega B",
+          "ovr": 83,
+          "goals": 0,
+          "matches": 0,
+          "rating": 5.4,
+          "value": 41.45,
+          "wage": 52166,
+          "expiresAtSeason": 3,
+          "contractDuration": 0,
+          "coachTrust": 60,
+          "injured": null,
+          "diaryLength": 13,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "trophies": [
+            {
+              "season": 5,
+              "club": "FC Scaligero",
+              "league": "Coppa",
+              "type": "cup"
+            }
+          ],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 2378762,
+          "calendarN": 35,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        }
+      ],
+      "openingTrace": [],
+      "finalSnapshot": {
+        "season": 9,
+        "week": 1,
+        "age": 24,
+        "ovr": 85,
+        "club": "ver",
+        "goals": 0,
+        "matches": 0
+      }
+    },
+    {
+      "seed": 30,
+      "matrix": {
+        "start": "vertice",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "enfant",
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Liga Ibérica",
+        "club": "FC Submarino",
+        "clubId": "vill",
+        "leagueFallback": false,
+        "base": 70
+      },
+      "steps": 326,
+      "seasonsDone": 4,
+      "seasonStats": [
+        {
+          "season": 2,
+          "age": 20,
+          "club": "vill",
+          "league": "Liga Ibérica",
+          "ovr": 75,
+          "goals": 12,
+          "matches": 34,
+          "rating": 6.13,
+          "value": 16.33,
+          "wage": 6000,
+          "expiresAtSeason": 5,
+          "contractDuration": 3,
+          "coachTrust": 65.2,
+          "injured": null,
+          "diaryLength": 0,
+          "diarySeasons": [],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 205200,
+          "calendarN": 34,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 3,
+          "age": 21,
+          "club": "vill",
+          "league": "Liga Ibérica",
+          "ovr": 76,
+          "goals": 7,
+          "matches": 41,
+          "rating": 6.03,
+          "value": 18.8,
+          "wage": 6000,
+          "expiresAtSeason": 5,
+          "contractDuration": 2,
+          "coachTrust": 68.3,
+          "injured": null,
+          "diaryLength": 3,
+          "diarySeasons": [
+            2,
+            3
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 410400,
+          "calendarN": 41,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 4,
+          "age": 22,
+          "club": "vill",
+          "league": "Liga Ibérica",
+          "ovr": 79,
+          "goals": 11,
+          "matches": 38,
+          "rating": 6.15,
+          "value": 24.64,
+          "wage": 6693,
+          "expiresAtSeason": 7,
+          "contractDuration": 3,
+          "coachTrust": 66.3,
+          "injured": null,
+          "diaryLength": 7,
+          "diarySeasons": [
+            2,
+            3,
+            4
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              4
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 639312,
+          "calendarN": 38,
+          "calendarUnplayed": 0,
+          "squadRole": "rotazione",
+          "screen": "seasonAwards"
+        },
+        {
+          "season": 5,
+          "age": 23,
+          "club": "vill",
+          "league": "Liga Ibérica",
+          "ovr": 80,
+          "goals": 12,
+          "matches": 35,
+          "rating": 6.13,
+          "value": 30.94,
+          "wage": 6693,
+          "expiresAtSeason": 7,
+          "contractDuration": 2,
+          "coachTrust": 60.3,
+          "injured": null,
+          "diaryLength": 10,
+          "diarySeasons": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2,
+              4
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 868224,
+          "calendarN": 35,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        }
+      ],
+      "transfers": [],
+      "injuries": [],
+      "events": {
+        "pledge": 4,
+        "persgoal": 4,
+        "cup_out": 3,
+        "contract_renewal": 1
+      },
+      "messages": {
+        "2|📊 Report tecnico positivo del direttore sportivo.": 1,
+        "2|🏁 Fine S.2: 12⚽ 3🎯": 1,
+        "3|🎂 21 anni — stagione 3 inizia": 1,
+        "3|✅ Segna 12 gol": 1,
+        "3|❌ Mancato: Finisci nei primi 3": 1,
+        "3|❌ Mancato: Fornisci 7 assist": 1,
+        "3|🌍 QUALIFICAZIONE IN COPPA CONFERENCE! FC Submarino torna in Europa.": 1,
+        "3|📈 Crescita giovanile: +1 passaggio": 1,
+        "3|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "3|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "3|📡 Radio mercato: FC Friulano ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "3|🏆 Coppa · Ottavi di Finale (sim): 2-5 vs CF Madrid — ELIMINATO": 1,
+        "3|❌ KCF: eliminato dalla fase a gironi (8 pt).": 1,
+        "3|🏁 Fine S.3: 7⚽ 8🎯": 1,
+        "4|🎂 22 anni — stagione 4 inizia": 1,
+        "4|❌ Mancato: Segna 13 gol": 1,
+        "4|❌ Mancato: Finisci nei primi 3": 1,
+        "4|✅ Fornisci 8 assist": 1,
+        "4|📈 Progressione: +1 dribbling": 1,
+        "4|🧑‍💼 Nuovo allenatore: Mister Montaldo (Offensivo)": 1,
+        "4|🤵 Il piano del procuratore (€22.1M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "4|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "4|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "4|📋 Rinnovo: 3 stag. a €348 mila/anno": 1,
+        "4|🤵 Confronto con Roberto Manconi.": 1,
+        "4|🏆 Coppa · Ottavi di Finale (sim): 2-1 vs FC Navarro — passi il turno": 1,
+        "4|🏆 Coppa · Quarti di Finale (sim): 2-2 dcr vs FC Hispalense — passi il turno ai rigori": 1,
+        "4|📡 Radio mercato: FC Twente ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "4|🏆 Coppa · Semifinale (sim): 0-0 dcr vs AT Manzanares — passi il turno ai rigori": 1,
+        "4|📉 Periodo down. Il mister ti parla in privato.": 1,
+        "4|🔄 Notizia bomba: un grande club segue da settimane i tuoi allenamenti.": 1,
+        "4|🏆 Coppa · FINALE (sim): 0-3 vs FC Sociedad — ELIMINATO": 1,
+        "4|🎯 Sessione tecnica perfetta. Tecnica e velocità migliorano.": 1,
+        "4|🏁 Fine S.4: 11⚽ 4🎯": 1,
+        "5|🎂 23 anni — stagione 5 inizia": 1,
+        "5|❌ Mancato: Segna 13 gol": 1,
+        "5|❌ Mancato: Finisci nei primi 3": 1,
+        "5|❌ Mancato: Fornisci 8 assist": 1,
+        "5|📈 Progressione: +1 tecnica": 1,
+        "5|🤵 Il piano del procuratore (€25.4M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "5|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "5|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "5|📡 Radio mercato: FC Stamford ha chiesto informazioni su di te. L'agente conferma i contatti.": 1,
+        "5|🏆 Coppa · Ottavi di Finale (sim): 0-5 vs CF Madrid — ELIMINATO": 1,
+        "5|💬 Il capitano ti porta in giro per la città. Amicizia solida.": 1,
+        "5|🌍 Voci di un osservatore della nazionale in tribuna per osservarti.": 1,
+        "5|🤝 L'agente negozia con discrezione. Possibile addio a fine anno.": 1,
+        "5|🏁 Fine S.5: 12⚽ 4🎯": 1,
+        "6|🎂 24 anni — stagione 6 inizia": 1,
+        "6|❌ Mancato: Segna 13 gol": 1,
+        "6|❌ Mancato: Finisci nei primi 3": 1,
+        "6|❌ Mancato: Fornisci 8 assist": 1,
+        "6|🌍 QUALIFICAZIONE IN COPPA CONFERENCE! FC Submarino torna in Europa.": 1,
+        "6|📈 Progressione: +1 mentalità": 1,
+        "6|🤵 Il piano del procuratore (€33.3M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "6|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "6|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1
+      },
+      "pageErrors": [],
+      "status": "running",
+      "durationMs": 0,
+      "interventions": [
+        {
+          "season": 4,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Sto benissimo qui."
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "screen": "narrative-overlay",
+          "action": "Chiudi"
+        }
+      ],
+      "saveChecks": [
+        {
+          "season": 4,
+          "week": 1,
+          "equal": false,
+          "differences": [
+            {
+              "path": "playedMd.s",
+              "before": 3,
+              "after": 4
+            },
+            {
+              "path": "playedMd.md.0",
+              "before": 1
+            },
+            {
+              "path": "playedMd.md.1",
+              "before": 2
+            },
+            {
+              "path": "playedMd.md.2",
+              "before": 3
+            },
+            {
+              "path": "playedMd.md.3",
+              "before": 4
+            },
+            {
+              "path": "playedMd.md.4",
+              "before": 5
+            },
+            {
+              "path": "playedMd.md.5",
+              "before": 900
+            },
+            {
+              "path": "playedMd.md.6",
+              "before": 6
+            },
+            {
+              "path": "playedMd.md.7",
+              "before": 7
+            },
+            {
+              "path": "playedMd.md.8",
+              "before": 901
+            },
+            {
+              "path": "playedMd.md.9",
+              "before": 8
+            },
+            {
+              "path": "playedMd.md.10",
+              "before": 990
+            },
+            {
+              "path": "playedMd.md.11",
+              "before": 9
+            },
+            {
+              "path": "playedMd.md.12",
+              "before": 902
+            },
+            {
+              "path": "playedMd.md.13",
+              "before": 10
+            },
+            {
+              "path": "playedMd.md.14",
+              "before": 11
+            },
+            {
+              "path": "playedMd.md.15",
+              "before": 903
+            },
+            {
+              "path": "playedMd.md.16",
+              "before": 12
+            },
+            {
+              "path": "playedMd.md.17",
+              "before": 13
+            },
+            {
+              "path": "playedMd.md.18",
+              "before": 904
+            },
+            {
+              "path": "playedMd.md.19",
+              "before": 14
+            },
+            {
+              "path": "playedMd.md.20",
+              "before": 15
+            },
+            {
+              "path": "playedMd.md.21",
+              "before": 905
+            },
+            {
+              "path": "playedMd.md.22",
+              "before": 16
+            },
+            {
+              "path": "playedMd.md.23",
+              "before": 17
+            },
+            {
+              "path": "playedMd.md.24",
+              "before": 18
+            },
+            {
+              "path": "playedMd.md.25",
+              "before": 19
+            },
+            {
+              "path": "playedMd.md.26",
+              "before": 20
+            },
+            {
+              "path": "playedMd.md.27",
+              "before": 21
+            },
+            {
+              "path": "playedMd.md.28",
+              "before": 22
+            },
+            {
+              "path": "playedMd.md.29",
+              "before": 23
+            },
+            {
+              "path": "playedMd.md.30",
+              "before": 24
+            },
+            {
+              "path": "playedMd.md.31",
+              "before": 25
+            },
+            {
+              "path": "playedMd.md.32",
+              "before": 26
+            },
+            {
+              "path": "playedMd.md.33",
+              "before": 27
+            },
+            {
+              "path": "playedMd.md.34",
+              "before": 28
+            },
+            {
+              "path": "playedMd.md.35",
+              "before": 29
+            },
+            {
+              "path": "playedMd.md.36",
+              "before": 30
+            },
+            {
+              "path": "playedMd.md.37",
+              "before": 31
+            },
+            {
+              "path": "playedMd.md.38",
+              "before": 32
+            },
+            {
+              "path": "playedMd.md.39",
+              "before": 33
+            },
+            {
+              "path": "playedMd.md.40",
+              "before": 34
+            },
+            {
+              "path": "cup.club",
+              "after": "vill"
+            }
+          ]
+        },
+        {
+          "season": 6,
+          "week": 1,
+          "equal": false,
+          "differences": [
+            {
+              "path": "playedMd.s",
+              "before": 5,
+              "after": 6
+            },
+            {
+              "path": "playedMd.md.0",
+              "before": 1
+            },
+            {
+              "path": "playedMd.md.1",
+              "before": 2
+            },
+            {
+              "path": "playedMd.md.2",
+              "before": 3
+            },
+            {
+              "path": "playedMd.md.3",
+              "before": 4
+            },
+            {
+              "path": "playedMd.md.4",
+              "before": 5
+            },
+            {
+              "path": "playedMd.md.5",
+              "before": 6
+            },
+            {
+              "path": "playedMd.md.6",
+              "before": 7
+            },
+            {
+              "path": "playedMd.md.7",
+              "before": 8
+            },
+            {
+              "path": "playedMd.md.8",
+              "before": 990
+            },
+            {
+              "path": "playedMd.md.9",
+              "before": 9
+            },
+            {
+              "path": "playedMd.md.10",
+              "before": 10
+            },
+            {
+              "path": "playedMd.md.11",
+              "before": 11
+            },
+            {
+              "path": "playedMd.md.12",
+              "before": 12
+            },
+            {
+              "path": "playedMd.md.13",
+              "before": 13
+            },
+            {
+              "path": "playedMd.md.14",
+              "before": 14
+            },
+            {
+              "path": "playedMd.md.15",
+              "before": 15
+            },
+            {
+              "path": "playedMd.md.16",
+              "before": 16
+            },
+            {
+              "path": "playedMd.md.17",
+              "before": 17
+            },
+            {
+              "path": "playedMd.md.18",
+              "before": 18
+            },
+            {
+              "path": "playedMd.md.19",
+              "before": 19
+            },
+            {
+              "path": "playedMd.md.20",
+              "before": 20
+            },
+            {
+              "path": "playedMd.md.21",
+              "before": 21
+            },
+            {
+              "path": "playedMd.md.22",
+              "before": 22
+            },
+            {
+              "path": "playedMd.md.23",
+              "before": 23
+            },
+            {
+              "path": "playedMd.md.24",
+              "before": 24
+            },
+            {
+              "path": "playedMd.md.25",
+              "before": 25
+            },
+            {
+              "path": "playedMd.md.26",
+              "before": 26
+            },
+            {
+              "path": "playedMd.md.27",
+              "before": 27
+            },
+            {
+              "path": "playedMd.md.28",
+              "before": 28
+            },
+            {
+              "path": "playedMd.md.29",
+              "before": 29
+            },
+            {
+              "path": "playedMd.md.30",
+              "before": 30
+            },
+            {
+              "path": "playedMd.md.31",
+              "before": 31
+            },
+            {
+              "path": "playedMd.md.32",
+              "before": 32
+            },
+            {
+              "path": "playedMd.md.33",
+              "before": 33
+            },
+            {
+              "path": "playedMd.md.34",
+              "before": 34
+            },
+            {
+              "path": "cup.club",
+              "after": "vill"
+            }
+          ]
+        }
+      ],
+      "calendarDays": {
+        "2": {
+          "league": "Liga Ibérica",
+          "days": 34
+        },
+        "3": {
+          "league": "Liga Ibérica",
+          "days": 34
+        },
+        "4": {
+          "league": "Liga Ibérica",
+          "days": 34
+        },
+        "5": {
+          "league": "Liga Ibérica",
+          "days": 34
+        },
+        "6": {
+          "league": "Liga Ibérica",
+          "days": 34
+        }
+      },
+      "renewals": [
+        {
+          "season": 4,
+          "week": 1,
+          "outcome": "accepted-ui",
+          "oldScreen": "dashboard",
+          "before": {
+            "duration": 1,
+            "wage": 6000,
+            "expiresAtSeason": 5
+          },
+          "after": {
+            "duration": 3,
+            "wage": 6693,
+            "expiresAtSeason": 7
+          }
+        }
+      ],
+      "renewalChecked": [
+        "4|0"
+      ],
+      "zeroSeasons": [],
+      "openingTrace": []
+    }
+  ],
+  "anomalies": [
+    {
+      "seed": 0,
+      "career": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "prudente",
+        "archetype": "bomber",
+        "requestedLeague": "Lega A",
+        "actualLeague": "Primavera 1",
+        "club": "FC Granata Primavera",
+        "clubId": "tor",
+        "leagueFallback": false,
+        "base": 58
+      },
+      "season": 3,
+      "week": 1,
+      "type": "save-restore",
+      "observed": "snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":2,\"after\":3},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"tor\"},{\"path\":\"rival\",\"before\":null,\"after\":{\"name\":\"Esteban Bianchi\",\"nation\":\"Italia\",\"age\":20,\"ovr\":71,\"club\":{\"n\":\"Torino Athletic\",\"id\":\"juve\",\"p\":95,\"lg\":\"Lega A\",\"c\":\"#f5f5f5\",\"nat\":\"🇮🇹\"},\"goals\":7,\"totalGoals\":6,\"assists\":5,\"trophies\":0,\"seasons\":1,\"relationship\":\"sconosciuto\",\"history\":[],\"awards\":{\"palloneOros\":[],\"scarpaOros\":[]}}},{\"path\":\"presentedClub\",\"after\":\"tor\"}]",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 0,
+      "career": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "prudente",
+        "archetype": "bomber",
+        "requestedLeague": "Lega A",
+        "actualLeague": "Primavera 1",
+        "club": "FC Granata Primavera",
+        "clubId": "tor",
+        "leagueFallback": false,
+        "base": 58
+      },
+      "season": 5,
+      "week": 1,
+      "type": "save-restore",
+      "observed": "snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":4,\"after\":5},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":993},{\"path\":\"playedMd.md.28\",\"before\":26},{\"path\":\"playedMd.md.29\",\"before\":27},{\"path\":\"playedMd.md.30\",\"before\":28},{\"path\":\"playedMd.md.31\",\"before\":29},{\"path\":\"playedMd.md.32\",\"before\":30},{\"path\":\"playedMd.md.33\",\"before\":31},{\"path\":\"playedMd.md.34\",\"before\":32},{\"path\":\"playedMd.md.35\",\"before\":33},{\"path\":\"playedMd.md.36\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"tor\"}]",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 0,
+      "career": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "prudente",
+        "archetype": "bomber",
+        "requestedLeague": "Lega A",
+        "actualLeague": "Primavera 1",
+        "club": "FC Granata Primavera",
+        "clubId": "tor",
+        "leagueFallback": false,
+        "base": 58
+      },
+      "season": 7,
+      "week": 1,
+      "type": "save-restore",
+      "observed": "snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":6,\"after\":7},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":993},{\"path\":\"playedMd.md.28\",\"before\":26},{\"path\":\"playedMd.md.29\",\"before\":27},{\"path\":\"playedMd.md.30\",\"before\":28},{\"path\":\"playedMd.md.31\",\"before\":29},{\"path\":\"playedMd.md.32\",\"before\":30},{\"path\":\"playedMd.md.33\",\"before\":31},{\"path\":\"playedMd.md.34\",\"before\":32},{\"path\":\"playedMd.md.35\",\"before\":33},{\"path\":\"playedMd.md.36\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"tor\"}]",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 0,
+      "career": {
+        "start": "Primavera",
+        "strength": "debole",
+        "style": "prudente",
+        "archetype": "bomber",
+        "requestedLeague": "Lega A",
+        "actualLeague": "Primavera 1",
+        "club": "FC Granata Primavera",
+        "clubId": "tor",
+        "leagueFallback": false,
+        "base": 58
+      },
+      "season": 9,
+      "week": 1,
+      "type": "contract",
+      "observed": "expiresAtSeason=8<9",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 3,
+      "week": 1,
+      "type": "save-restore",
+      "observed": "snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":2,\"after\":3},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"ver\"},{\"path\":\"rival\",\"before\":null,\"after\":{\"name\":\"Esteban Bianchi\",\"nation\":\"Italia\",\"age\":20,\"ovr\":84,\"club\":{\"n\":\"Torino Athletic\",\"id\":\"juve\",\"p\":95,\"lg\":\"Lega A\",\"c\":\"#f5f5f5\",\"nat\":\"🇮🇹\"},\"goals\":7,\"totalGoals\":6,\"assists\":5,\"trophies\":0,\"seasons\":1,\"relationship\":\"sconosciuto\",\"history\":[],\"awards\":{\"palloneOros\":[],\"scarpaOros\":[]}}},{\"path\":\"presentedClub\",\"after\":\"ver\"}]",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 1,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 2,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 3,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 4,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 5,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 6,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 7,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 8,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 9,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 10,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 11,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 12,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 13,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 14,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 15,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 16,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 17,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 18,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 19,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 20,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 21,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 22,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 23,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 24,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 25,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 26,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 27,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 28,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 29,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 30,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 31,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 32,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 33,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 34,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 35,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 36,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 37,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 38,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 4,
+      "week": 39,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<4",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 1,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 1,
+      "type": "save-restore",
+      "observed": "snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":4,\"after\":5},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":26},{\"path\":\"playedMd.md.28\",\"before\":27},{\"path\":\"playedMd.md.29\",\"before\":28},{\"path\":\"playedMd.md.30\",\"before\":29},{\"path\":\"playedMd.md.31\",\"before\":30},{\"path\":\"playedMd.md.32\",\"before\":31},{\"path\":\"playedMd.md.33\",\"before\":32},{\"path\":\"playedMd.md.34\",\"before\":33},{\"path\":\"playedMd.md.35\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"ver\"}]",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 2,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 3,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 4,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 5,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 6,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 7,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 8,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 9,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 10,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 11,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 12,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 13,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 14,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 15,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 16,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 17,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 18,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 19,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 20,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 21,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 22,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 23,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 24,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 25,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 26,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 27,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 28,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 29,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 30,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 31,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 32,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 33,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 34,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 35,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 36,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 37,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 38,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 5,
+      "week": 39,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<5",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 1,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 2,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 3,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 4,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 5,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 6,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 7,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 8,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 9,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 10,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 11,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 12,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 13,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 14,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 15,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 16,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 17,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 18,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 19,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 20,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 21,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 22,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 23,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 24,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 25,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 26,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 27,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 28,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 29,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 30,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 31,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 32,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 33,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 34,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 35,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 36,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 37,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 38,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 6,
+      "week": 39,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<6",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 7,
+      "week": 1,
+      "type": "contract",
+      "observed": "expiresAtSeason=3<7",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 3,
+      "career": {
+        "start": "Primavera",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "trequartista",
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Primavera 1",
+        "club": "FC Scaligero Primavera",
+        "clubId": "ver",
+        "leagueFallback": false,
+        "base": 73
+      },
+      "season": 7,
+      "week": 1,
+      "type": "save-restore",
+      "observed": "snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":6,\"after\":7},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"ver\"}]",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 30,
+      "career": {
+        "start": "vertice",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "enfant",
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Liga Ibérica",
+        "club": "FC Submarino",
+        "clubId": "vill",
+        "leagueFallback": false,
+        "base": 70
+      },
+      "season": 4,
+      "week": 1,
+      "type": "save-restore",
+      "observed": "snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":18},{\"path\":\"playedMd.md.25\",\"before\":19},{\"path\":\"playedMd.md.26\",\"before\":20},{\"path\":\"playedMd.md.27\",\"before\":21},{\"path\":\"playedMd.md.28\",\"before\":22},{\"path\":\"playedMd.md.29\",\"before\":23},{\"path\":\"playedMd.md.30\",\"before\":24},{\"path\":\"playedMd.md.31\",\"before\":25},{\"path\":\"playedMd.md.32\",\"before\":26},{\"path\":\"playedMd.md.33\",\"before\":27},{\"path\":\"playedMd.md.34\",\"before\":28},{\"path\":\"playedMd.md.35\",\"before\":29},{\"path\":\"playedMd.md.36\",\"before\":30},{\"path\":\"playedMd.md.37\",\"before\":31},{\"path\":\"playedMd.md.38\",\"before\":32},{\"path\":\"playedMd.md.39\",\"before\":33},{\"path\":\"playedMd.md.40\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"vill\"}]",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 30,
+      "career": {
+        "start": "vertice",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "enfant",
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Liga Ibérica",
+        "club": "FC Submarino",
+        "clubId": "vill",
+        "leagueFallback": false,
+        "base": 70
+      },
+      "season": 6,
+      "week": 1,
+      "type": "save-restore",
+      "observed": "snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"vill\"}]",
+      "severity": "alta",
+      "status": "verificata"
+    }
+  ],
+  "failures": [],
+  "limits": [],
+  "durationMs": 2294129
+}

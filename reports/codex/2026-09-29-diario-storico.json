@@ -1,0 +1,144 @@
+{
+  "versione": "7.999.53",
+  "compito": "Diario e Storico allenatori",
+  "comando": [
+    "$env:CPM_SEEDS='0,3,30,33'; $env:CPM_TIME_LIMIT_MS='14400000'; $env:CPM_OUTPUT='career-followup-results.json'; node tests/codex/career-followup.mjs",
+    "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; node tests/codex/diario-53.mjs"
+  ],
+  "seme": "0,3 e fixture UI sintetica",
+  "fonti": [
+    "tests/codex/career-followup-results.json",
+    "tests/codex/diario-53-results.json"
+  ],
+  "misure": [
+    {
+      "nome": "Diario seme 0 stagione 1",
+      "valore": 0,
+      "stagioniDistinte": 0,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 0 stagione 2",
+      "valore": 2,
+      "stagioniDistinte": 1,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 0 stagione 3",
+      "valore": 6,
+      "stagioniDistinte": 2,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 0 stagione 4",
+      "valore": 9,
+      "stagioniDistinte": 3,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 0 stagione 5",
+      "valore": 13,
+      "stagioniDistinte": 4,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 0 stagione 6",
+      "valore": 16,
+      "stagioniDistinte": 5,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 0 stagione 7",
+      "valore": 20,
+      "stagioniDistinte": 6,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 0 stagione 8",
+      "valore": 23,
+      "stagioniDistinte": 7,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 3 stagione 1",
+      "valore": 0,
+      "stagioniDistinte": 0,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 3 stagione 2",
+      "valore": 1,
+      "stagioniDistinte": 1,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 3 stagione 3",
+      "valore": 4,
+      "stagioniDistinte": 2,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 3 stagione 4",
+      "valore": 7,
+      "stagioniDistinte": 3,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 3 stagione 5",
+      "valore": 10,
+      "stagioniDistinte": 4,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 3 stagione 6",
+      "valore": 13,
+      "stagioniDistinte": 5,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 3 stagione 7",
+      "valore": 17,
+      "stagioniDistinte": 6,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Diario seme 3 stagione 8",
+      "valore": 20,
+      "stagioniDistinte": 7,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "Stagioni navigabili fixture",
+      "valore": 8,
+      "soglia": 8,
+      "esito": "ok"
+    },
+    {
+      "nome": "Allenatori fixture",
+      "valore": 4,
+      "soglia": 4,
+      "esito": "ok"
+    }
+  ],
+  "segnalazioni": [],
+  "limiti": [
+    "UI non verificata sui salvataggi reali delle due carriere",
+    "Generazione di coachHistory in otto stagioni non verificata"
+  ]
+}

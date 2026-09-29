@@ -1,0 +1,214 @@
+{
+  "versione": "7.999.53",
+  "compito": "Ingresso in campo: cinque partite",
+  "comando": [
+    "$env:GIT_CONFIG_COUNT='1'; $env:GIT_CONFIG_KEY_0='safe.directory'; $env:GIT_CONFIG_VALUE_0='C:/Users/a.vairo/Documents/ChatGPT/Analisi gioco codex/korward-career-53'; $env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; Remove-Item Env:CPM_MATCH_LIMIT -ErrorAction SilentlyContinue; node tests/codex/match-scenes-53.mjs entry",
+    "$env:GIT_CONFIG_COUNT='1'; $env:GIT_CONFIG_KEY_0='safe.directory'; $env:GIT_CONFIG_VALUE_0='C:/Users/a.vairo/Documents/ChatGPT/Analisi gioco codex/korward-career-53'; $env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_MATCH_START='3'; $env:CPM_MATCH_LIMIT='1'; $env:CPM_OUTPUT='entry-53-europeo-1.json'; node tests/codex/match-scenes-53.mjs entry",
+    "$env:GIT_CONFIG_COUNT='1'; $env:GIT_CONFIG_KEY_0='safe.directory'; $env:GIT_CONFIG_VALUE_0='C:/Users/a.vairo/Documents/ChatGPT/Analisi gioco codex/korward-career-53'; $env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_MATCH_START='4'; $env:CPM_MATCH_LIMIT='1'; $env:CPM_OUTPUT='entry-53-europeo-2.json'; node tests/codex/match-scenes-53.mjs entry"
+  ],
+  "seme": "salvataggi sintetici: tre campionato e due Europeo",
+  "fonti": [
+    "tests/codex/entry-53-primi-tre.json",
+    "tests/codex/entry-53-europeo-1.json",
+    "tests/codex/entry-53-europeo-2.json"
+  ],
+  "misure": [
+    {
+      "nome": "campionato-1",
+      "valore": {
+        "frames": 617,
+        "durationMs": 12616.900000000001,
+        "medianMs": 16.700000000000728,
+        "p95Ms": 16.799999999999272,
+        "over50": 3,
+        "worst5": [
+          {
+            "dt": 1683.300000000003,
+            "atSeconds": 1.683
+          },
+          {
+            "dt": 450.2000000000007,
+            "atSeconds": 3.117
+          },
+          {
+            "dt": 150,
+            "atSeconds": 2.433
+          },
+          {
+            "dt": 49.900000000001455,
+            "atSeconds": 3.167
+          },
+          {
+            "dt": 33.39999999999782,
+            "atSeconds": 1.717
+          }
+        ]
+      },
+      "soglia": "non definita",
+      "esito": "anomalia",
+      "ambiente": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "fonte": "tests/codex/entry-53-primi-tre.json"
+    },
+    {
+      "nome": "campionato-2",
+      "valore": {
+        "frames": 624,
+        "durationMs": 11000.2,
+        "medianMs": 16.69999999999709,
+        "p95Ms": 16.799999999999272,
+        "over50": 1,
+        "worst5": [
+          {
+            "dt": 566.6000000000022,
+            "atSeconds": 0.567
+          },
+          {
+            "dt": 33.400000000001455,
+            "atSeconds": 0.633
+          },
+          {
+            "dt": 33.39999999999782,
+            "atSeconds": 1.517
+          },
+          {
+            "dt": 33.29999999999927,
+            "atSeconds": 0.6
+          },
+          {
+            "dt": 33.29999999999927,
+            "atSeconds": 0.917
+          }
+        ]
+      },
+      "soglia": "non definita",
+      "esito": "anomalia",
+      "ambiente": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "fonte": "tests/codex/entry-53-primi-tre.json"
+    },
+    {
+      "nome": "campionato-3",
+      "valore": {
+        "frames": 593,
+        "durationMs": 10700.800000000003,
+        "medianMs": 16.69999999999709,
+        "p95Ms": 19,
+        "over50": 7,
+        "worst5": [
+          {
+            "dt": 149.90000000000146,
+            "atSeconds": 10.168
+          },
+          {
+            "dt": 113,
+            "atSeconds": 0.217
+          },
+          {
+            "dt": 103.79999999999927,
+            "atSeconds": 0.104
+          },
+          {
+            "dt": 100.79999999999563,
+            "atSeconds": 10.018
+          },
+          {
+            "dt": 50.299999999995634,
+            "atSeconds": 9.901
+          }
+        ]
+      },
+      "soglia": "non definita",
+      "esito": "anomalia",
+      "ambiente": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "fonte": "tests/codex/entry-53-primi-tre.json"
+    },
+    {
+      "nome": "europeo-1",
+      "valore": {
+        "frames": 618,
+        "durationMs": 12316.7,
+        "medianMs": 16.69999999999709,
+        "p95Ms": 16.799999999999272,
+        "over50": 3,
+        "worst5": [
+          {
+            "dt": 1499.9000000000015,
+            "atSeconds": 1.5
+          },
+          {
+            "dt": 300,
+            "atSeconds": 2.833
+          },
+          {
+            "dt": 183.3000000000029,
+            "atSeconds": 2.3
+          },
+          {
+            "dt": 33.39999999999782,
+            "atSeconds": 1.617
+          },
+          {
+            "dt": 33.39999999999782,
+            "atSeconds": 2.433
+          }
+        ]
+      },
+      "soglia": "non definita",
+      "esito": "anomalia",
+      "ambiente": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "fonte": "tests/codex/entry-53-europeo-1.json"
+    },
+    {
+      "nome": "europeo-2",
+      "valore": {
+        "frames": 622,
+        "durationMs": 12133.699999999999,
+        "medianMs": 16.700000000000728,
+        "p95Ms": 16.799999999999272,
+        "over50": 3,
+        "worst5": [
+          {
+            "dt": 1400.1000000000004,
+            "atSeconds": 1.4
+          },
+          {
+            "dt": 266.7000000000007,
+            "atSeconds": 2.617
+          },
+          {
+            "dt": 133.39999999999782,
+            "atSeconds": 2.083
+          },
+          {
+            "dt": 33.29999999999927,
+            "atSeconds": 2.65
+          },
+          {
+            "dt": 33.20000000000073,
+            "atSeconds": 1.45
+          }
+        ]
+      },
+      "soglia": "non definita",
+      "esito": "anomalia",
+      "ambiente": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "fonte": "tests/codex/entry-53-europeo-2.json"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "media",
+      "descrizione": "Intervalli rAF lunghi durante walkout con GPU D3D11; causa interna e presenza in partita naturale non verificate",
+      "come_riprodurre": "Eseguire i comandi riportati nel rapporto con Chrome GPU D3D11",
+      "prove": [
+        "tests/codex/entry-53-primi-tre.json",
+        "tests/codex/entry-53-europeo-1.json",
+        "tests/codex/entry-53-europeo-2.json"
+      ]
+    }
+  ],
+  "limiti": [
+    "Ingresso forzato dal varco di prova",
+    "Non verificato su telefono",
+    "Prima serie interrotta per RAM libera 0,64 GB"
+  ]
+}

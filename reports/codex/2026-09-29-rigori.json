@@ -1,0 +1,995 @@
+{
+  "versione": "7.999.53",
+  "compito": "Serie dei rigori forzata",
+  "comando": "$env:GIT_CONFIG_COUNT='1'; $env:GIT_CONFIG_KEY_0='safe.directory'; $env:GIT_CONFIG_VALUE_0='C:/Users/a.vairo/Documents/ChatGPT/Analisi gioco codex/korward-career-53'; $env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; node tests/codex/match-scenes-53.mjs shootout",
+  "seme": "salvataggio sintetico Coppa",
+  "fonte": "tests/codex/shootout-53.json",
+  "misure": [
+    {
+      "nome": "tiri registrati",
+      "valore": 6,
+      "soglia": 7,
+      "esito": "anomalia"
+    },
+    {
+      "nome": "fotogrammi salvati",
+      "valore": 18,
+      "soglia": 21,
+      "esito": "anomalia"
+    },
+    {
+      "nome": "portiere team away visibile",
+      "valore": 0,
+      "soglia": 18,
+      "esito": "anomalia"
+    },
+    {
+      "nome": "giocatore più vicino al pallone visibile",
+      "valore": 0,
+      "soglia": 18,
+      "esito": "anomalia"
+    }
+  ],
+  "tiri": [
+    {
+      "kick": 1,
+      "step": 0,
+      "side": "H",
+      "frames": [
+        {
+          "label": "rincorsa",
+          "file": "reports/codex/rigori-53/rigore-01-rincorsa.png",
+          "atMs": 699,
+          "ball": {
+            "x": 78.2,
+            "y": 50,
+            "worldY": 0.26,
+            "onScreen": false,
+            "ndc": {
+              "x": -3.076,
+              "y": -0.895
+            },
+            "heldBy": {
+              "team": "home",
+              "role": null,
+              "dist": 4.9
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "home",
+            "role": null,
+            "gk": false,
+            "x": 82.8,
+            "y": 51.6,
+            "worldY": 0.02,
+            "ry": 1.654,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.327,
+              "y": -0.593
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.442,
+              "y": -0.03
+            }
+          }
+        },
+        {
+          "label": "contatto",
+          "file": "reports/codex/rigori-53/rigore-01-contatto.png",
+          "atMs": 1297,
+          "ball": {
+            "x": 86.3,
+            "y": 50.4,
+            "worldY": 0.66,
+            "onScreen": true,
+            "ndc": {
+              "x": -0.804,
+              "y": -0.292
+            },
+            "heldBy": {
+              "team": "home",
+              "role": null,
+              "dist": 1.8
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "home",
+            "role": null,
+            "gk": false,
+            "x": 84.5,
+            "y": 50.1,
+            "worldY": 0,
+            "ry": 1.576,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.179,
+              "y": -0.457
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.442,
+              "y": -0.03
+            }
+          }
+        },
+        {
+          "label": "arrivo",
+          "file": "reports/codex/rigori-53/rigore-01-arrivo.png",
+          "atMs": 1765,
+          "ball": {
+            "x": 98.8,
+            "y": 53.9,
+            "worldY": 1.82,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.926,
+              "y": 0.109
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 7.6
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "home",
+            "role": null,
+            "gk": false,
+            "x": 84.5,
+            "y": 50.1,
+            "worldY": 0.01,
+            "ry": 1.576,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.178,
+              "y": -0.454
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 46.3,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.079,
+              "y": -0.004
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kick": 2,
+      "step": 2,
+      "side": "A",
+      "frames": [
+        {
+          "label": "rincorsa",
+          "file": "reports/codex/rigori-53/rigore-02-rincorsa.png",
+          "atMs": 866,
+          "ball": {
+            "x": 72.6,
+            "y": 50,
+            "worldY": 0.23,
+            "onScreen": false,
+            "ndc": {
+              "x": -7.258,
+              "y": -1.956
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 10.3
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "away",
+            "role": null,
+            "gk": false,
+            "x": 82.8,
+            "y": 51.6,
+            "worldY": 0.02,
+            "ry": 1.654,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.327,
+              "y": -0.593
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.442,
+              "y": -0.03
+            }
+          }
+        },
+        {
+          "label": "contatto",
+          "file": "reports/codex/rigori-53/rigore-02-contatto.png",
+          "atMs": 3098,
+          "ball": {
+            "x": 95.3,
+            "y": 55.8,
+            "worldY": 0.83,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.923,
+              "y": -0.061
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 9.8
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "away",
+            "role": null,
+            "gk": false,
+            "x": 83.6,
+            "y": 50.9,
+            "worldY": 0,
+            "ry": 1.62,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.253,
+              "y": -0.526
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 46.4,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.09,
+              "y": -0.005
+            }
+          }
+        },
+        {
+          "label": "arrivo",
+          "file": "reports/codex/rigori-53/rigore-02-arrivo.png",
+          "atMs": 5263,
+          "ball": {
+            "x": 84.4,
+            "y": 50,
+            "worldY": 0.34,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.211,
+              "y": -0.414
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 1.2
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "away",
+            "role": null,
+            "gk": false,
+            "x": 83.6,
+            "y": 50.9,
+            "worldY": 0.11,
+            "ry": 1.889,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.256,
+              "y": -0.512
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.442,
+              "y": -0.03
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kick": 4,
+      "step": 6,
+      "side": "A",
+      "frames": [
+        {
+          "label": "rincorsa",
+          "file": "reports/codex/rigori-53/rigore-04-rincorsa.png",
+          "atMs": 789,
+          "ball": {
+            "x": 74.9,
+            "y": 50,
+            "worldY": 0.24,
+            "onScreen": false,
+            "ndc": {
+              "x": -4.996,
+              "y": -1.383
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 8.1
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "away",
+            "role": null,
+            "gk": false,
+            "x": 82.8,
+            "y": 51.6,
+            "worldY": 0.02,
+            "ry": 1.654,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.327,
+              "y": -0.593
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.442,
+              "y": -0.03
+            }
+          }
+        },
+        {
+          "label": "contatto",
+          "file": "reports/codex/rigori-53/rigore-04-contatto.png",
+          "atMs": 1616,
+          "ball": {
+            "x": 88.5,
+            "y": 51,
+            "worldY": 1.11,
+            "onScreen": true,
+            "ndc": {
+              "x": -0.393,
+              "y": -0.169
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 4
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "away",
+            "role": null,
+            "gk": false,
+            "x": 84.6,
+            "y": 50,
+            "worldY": 0,
+            "ry": 1.571,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.172,
+              "y": -0.45
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50.4,
+            "worldY": 0.28,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.485,
+              "y": -0.01
+            }
+          }
+        },
+        {
+          "label": "arrivo",
+          "file": "reports/codex/rigori-53/rigore-04-arrivo.png",
+          "atMs": 2629,
+          "ball": {
+            "x": 97.3,
+            "y": 53.4,
+            "worldY": 1.8,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.768,
+              "y": 0.087
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 0.7
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "away",
+            "role": null,
+            "gk": false,
+            "x": 84.6,
+            "y": 50,
+            "worldY": 0,
+            "ry": 1.571,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.172,
+              "y": -0.45
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 53.4,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.801,
+              "y": -0.057
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kick": 5,
+      "step": 8,
+      "side": "H",
+      "frames": [
+        {
+          "label": "rincorsa",
+          "file": "reports/codex/rigori-53/rigore-05-rincorsa.png",
+          "atMs": 641,
+          "ball": {
+            "x": 75.9,
+            "y": 50,
+            "worldY": 0.24,
+            "onScreen": false,
+            "ndc": {
+              "x": -4.259,
+              "y": -1.196
+            },
+            "heldBy": {
+              "team": "home",
+              "role": null,
+              "dist": 7.1
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "home",
+            "role": null,
+            "gk": false,
+            "x": 82.8,
+            "y": 51.6,
+            "worldY": 0.02,
+            "ry": 1.654,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.327,
+              "y": -0.593
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.442,
+              "y": -0.03
+            }
+          }
+        },
+        {
+          "label": "contatto",
+          "file": "reports/codex/rigori-53/rigore-05-contatto.png",
+          "atMs": 1297,
+          "ball": {
+            "x": 88.1,
+            "y": 50.9,
+            "worldY": 0.73,
+            "onScreen": true,
+            "ndc": {
+              "x": -0.46,
+              "y": -0.224
+            },
+            "heldBy": {
+              "team": "home",
+              "role": null,
+              "dist": 3.7
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "home",
+            "role": null,
+            "gk": false,
+            "x": 84.5,
+            "y": 50.1,
+            "worldY": 0,
+            "ry": 1.576,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.179,
+              "y": -0.457
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 49.7,
+            "worldY": 0.16,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.41,
+              "y": -0.015
+            }
+          }
+        },
+        {
+          "label": "arrivo",
+          "file": "reports/codex/rigori-53/rigore-05-arrivo.png",
+          "atMs": 1854,
+          "ball": {
+            "x": 98.8,
+            "y": 53.9,
+            "worldY": 0.52,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.915,
+              "y": -0.002
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 7.6
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "home",
+            "role": null,
+            "gk": false,
+            "x": 84.5,
+            "y": 50.1,
+            "worldY": 0.02,
+            "ry": 1.576,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.179,
+              "y": -0.452
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 46.3,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.08,
+              "y": -0.004
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kick": 6,
+      "step": 10,
+      "side": "A",
+      "frames": [
+        {
+          "label": "rincorsa",
+          "file": "reports/codex/rigori-53/rigore-06-rincorsa.png",
+          "atMs": 640,
+          "ball": {
+            "x": 75.9,
+            "y": 50,
+            "worldY": 0.24,
+            "onScreen": false,
+            "ndc": {
+              "x": -4.271,
+              "y": -1.199
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 7.1
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "away",
+            "role": null,
+            "gk": false,
+            "x": 82.8,
+            "y": 51.6,
+            "worldY": 0.02,
+            "ry": 1.654,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.327,
+              "y": -0.592
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.442,
+              "y": -0.03
+            }
+          }
+        },
+        {
+          "label": "contatto",
+          "file": "reports/codex/rigori-53/rigore-06-contatto.png",
+          "atMs": 1323,
+          "ball": {
+            "x": 87.6,
+            "y": 50.8,
+            "worldY": 0.95,
+            "onScreen": true,
+            "ndc": {
+              "x": -0.544,
+              "y": -0.213
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 3.2
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "away",
+            "role": null,
+            "gk": false,
+            "x": 84.5,
+            "y": 50.1,
+            "worldY": 0,
+            "ry": 1.576,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.179,
+              "y": -0.457
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 49.8,
+            "worldY": 0.1,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.423,
+              "y": -0.021
+            }
+          }
+        },
+        {
+          "label": "arrivo",
+          "file": "reports/codex/rigori-53/rigore-06-arrivo.png",
+          "atMs": 1835,
+          "ball": {
+            "x": 98.8,
+            "y": 53.9,
+            "worldY": 1.82,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.925,
+              "y": 0.109
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 7.6
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "away",
+            "role": null,
+            "gk": false,
+            "x": 84.5,
+            "y": 50.1,
+            "worldY": 0.02,
+            "ry": 1.576,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.177,
+              "y": -0.454
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 46.3,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.079,
+              "y": -0.004
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kick": 7,
+      "step": 12,
+      "side": "H",
+      "frames": [
+        {
+          "label": "rincorsa",
+          "file": "reports/codex/rigori-53/rigore-07-rincorsa.png",
+          "atMs": 666,
+          "ball": {
+            "x": 75.9,
+            "y": 50,
+            "worldY": 0.24,
+            "onScreen": false,
+            "ndc": {
+              "x": -4.252,
+              "y": -1.194
+            },
+            "heldBy": {
+              "team": "home",
+              "role": null,
+              "dist": 7.1
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "home",
+            "role": null,
+            "gk": false,
+            "x": 82.8,
+            "y": 51.6,
+            "worldY": 0.02,
+            "ry": 1.654,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.327,
+              "y": -0.593
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.442,
+              "y": -0.03
+            }
+          }
+        },
+        {
+          "label": "contatto",
+          "file": "reports/codex/rigori-53/rigore-07-contatto.png",
+          "atMs": 1351,
+          "ball": {
+            "x": 87.6,
+            "y": 49.2,
+            "worldY": 0.68,
+            "onScreen": true,
+            "ndc": {
+              "x": -0.748,
+              "y": -0.221
+            },
+            "heldBy": {
+              "team": "home",
+              "role": null,
+              "dist": 3.1
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "home",
+            "role": null,
+            "gk": false,
+            "x": 84.6,
+            "y": 50,
+            "worldY": 0,
+            "ry": 1.571,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.171,
+              "y": -0.45
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 50.2,
+            "worldY": 0.1,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.46,
+              "y": -0.024
+            }
+          }
+        },
+        {
+          "label": "arrivo",
+          "file": "reports/codex/rigori-53/rigore-07-arrivo.png",
+          "atMs": 1883,
+          "ball": {
+            "x": 98.8,
+            "y": 46.1,
+            "worldY": 0.52,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.123,
+              "y": 0.051
+            },
+            "heldBy": {
+              "team": "away",
+              "role": null,
+              "dist": 7.6
+            }
+          },
+          "nearestFieldPlayer": {
+            "team": "home",
+            "role": null,
+            "gk": false,
+            "x": 84.6,
+            "y": 50,
+            "worldY": 0.02,
+            "ry": 1.571,
+            "visible": false,
+            "onScreen": false,
+            "ndc": {
+              "x": -1.175,
+              "y": -0.447
+            }
+          },
+          "goalkeeper": {
+            "team": "away",
+            "role": null,
+            "gk": true,
+            "x": 98,
+            "y": 53.7,
+            "worldY": 0,
+            "ry": -0.233,
+            "visible": false,
+            "onScreen": true,
+            "ndc": {
+              "x": 0.839,
+              "y": -0.06
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "media",
+      "descrizione": "Nel percorso forzato il portiere è invisibile pur essendo geometricamente in quadro; tiratore non giudicabile. Serie naturale non verificata.",
+      "come_riprodurre": "$env:GIT_CONFIG_COUNT='1'; $env:GIT_CONFIG_KEY_0='safe.directory'; $env:GIT_CONFIG_VALUE_0='C:/Users/a.vairo/Documents/ChatGPT/Analisi gioco codex/korward-career-53'; $env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; node tests/codex/match-scenes-53.mjs shootout",
+      "prove": [
+        "tests/codex/shootout-53.json",
+        "reports/codex/rigori-53/rigore-01-contatto.png"
+      ]
+    }
+  ],
+  "limiti": [
+    "Tiro 3 non catturato",
+    "Varco __CPM_SO_FORCE",
+    "Tempi delle tre etichette non sincronizzati al contatto reale",
+    "Partita naturale non verificata",
+    "Per i tiri del team away il test non identifica con certezza il portiere che difende"
+  ]
+}

@@ -1,0 +1,315 @@
+{
+  "versione": "7.999.53",
+  "compito": "Reload seme 2 S3/W1",
+  "comando": "$env:GIT_CONFIG_COUNT='1'; $env:GIT_CONFIG_KEY_0='safe.directory'; $env:GIT_CONFIG_VALUE_0='C:/Users/a.vairo/Documents/ChatGPT/Analisi gioco codex/korward-career-53'; $env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; node tests/codex/reload-53.mjs",
+  "seme": 2,
+  "fonte": "tests/codex/reload-53-results.json",
+  "misure": [
+    {
+      "nome": "stagioni",
+      "valore": 3,
+      "soglia": 3,
+      "esito": "ok"
+    },
+    {
+      "nome": "passi",
+      "valore": 240,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "durata ms",
+      "valore": 376009,
+      "soglia": "non definita",
+      "esito": "ok"
+    },
+    {
+      "nome": "differenze snapshot",
+      "valore": 38,
+      "soglia": 0,
+      "esito": "anomalia"
+    }
+  ],
+  "differenze": [
+    {
+      "path": "playedMd.s",
+      "before": 2,
+      "after": 3,
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.0",
+      "before": 1,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.1",
+      "before": 2,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.2",
+      "before": 3,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.3",
+      "before": 4,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.4",
+      "before": 5,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.5",
+      "before": 6,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.6",
+      "before": 7,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.7",
+      "before": 8,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.8",
+      "before": 990,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.9",
+      "before": 9,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.10",
+      "before": 10,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.11",
+      "before": 11,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.12",
+      "before": 12,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.13",
+      "before": 13,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.14",
+      "before": 14,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.15",
+      "before": 15,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.16",
+      "before": 16,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.17",
+      "before": 17,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.18",
+      "before": 18,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.19",
+      "before": 19,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.20",
+      "before": 20,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.21",
+      "before": 21,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.22",
+      "before": 22,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.23",
+      "before": 23,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.24",
+      "before": 24,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.25",
+      "before": 25,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.26",
+      "before": 26,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.27",
+      "before": 27,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.28",
+      "before": 28,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.29",
+      "before": 29,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.30",
+      "before": 30,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.31",
+      "before": 31,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.32",
+      "before": 32,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.33",
+      "before": 33,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "playedMd.md.34",
+      "before": 34,
+      "after": "∅",
+      "classification": "ricostruito per regola",
+      "visibility": "indiretto: calendario"
+    },
+    {
+      "path": "cup.club",
+      "before": "∅",
+      "after": "ant2",
+      "classification": "inizializzazione compatibilità",
+      "visibility": "Coppe, se il club differisce"
+    },
+    {
+      "path": "presentedClub",
+      "before": "∅",
+      "after": "ant2",
+      "classification": "inizializzazione UI",
+      "visibility": "presentazione club, se attivata"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "media",
+      "descrizione": "playedMd della stagione precedente viene riallineato al caricamento; visibilità e impatto non verificati",
+      "come_riprodurre": "Eseguire il comando e ispezionare careers[0].saveChecks[0].differences",
+      "prove": [
+        "tests/codex/reload-53-results.json"
+      ]
+    }
+  ],
+  "limiti": [
+    "Catture UI contaminate da overlay narrativi e del procuratore",
+    "Impatto visibile dei 38 campi non verificato"
+  ]
+}

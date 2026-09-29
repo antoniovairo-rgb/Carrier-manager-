@@ -1,0 +1,7493 @@
+{
+  "version": "7.999.53",
+  "commit": "54e6047ed67042c25970af2ab050b3422404c914",
+  "mode": "entry",
+  "command": "node tests/codex/match-scenes-53.mjs entry",
+  "startedAt": "2026-09-29T11:46:25.442Z",
+  "launch": {
+    "chrome": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "headless": true,
+    "args": [
+      "--headless=new",
+      "--use-gl=angle",
+      "--use-angle=d3d11",
+      "--enable-gpu",
+      "--ignore-gpu-blocklist",
+      "--no-sandbox"
+    ],
+    "viewport": [
+      412,
+      915
+    ],
+    "deviceScaleFactor": 2
+  },
+  "matches": [
+    {
+      "name": "campionato-1",
+      "type": "league",
+      "status": "complete",
+      "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "errors": [],
+      "forced": true,
+      "frames": [
+        {
+          "t": 19552.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21235.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 21269.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21302.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21319.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21352.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21369.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21386,
+          "phase": "walkout"
+        },
+        {
+          "t": 21402.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21419.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21436.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 21452.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21469.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21486,
+          "phase": "walkout"
+        },
+        {
+          "t": 21502.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21519.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21536,
+          "phase": "walkout"
+        },
+        {
+          "t": 21552.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21569.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21586,
+          "phase": "walkout"
+        },
+        {
+          "t": 21602.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21619.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21636,
+          "phase": "walkout"
+        },
+        {
+          "t": 21652.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21669.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21686,
+          "phase": "walkout"
+        },
+        {
+          "t": 21702.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21719.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 21736,
+          "phase": "walkout"
+        },
+        {
+          "t": 21752.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21769.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21785.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 21802.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21819.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21836,
+          "phase": "walkout"
+        },
+        {
+          "t": 21986,
+          "phase": "walkout"
+        },
+        {
+          "t": 22002.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22019.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22036,
+          "phase": "walkout"
+        },
+        {
+          "t": 22052.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22069.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 22086,
+          "phase": "walkout"
+        },
+        {
+          "t": 22119.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22136,
+          "phase": "walkout"
+        },
+        {
+          "t": 22152.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22169.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 22186,
+          "phase": "walkout"
+        },
+        {
+          "t": 22202.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22219.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22669.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 22719.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 22736,
+          "phase": "walkout"
+        },
+        {
+          "t": 22752.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22769.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22786.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 22802.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22819.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 22836.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 22852.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22869.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22886,
+          "phase": "walkout"
+        },
+        {
+          "t": 22902.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22919.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 22936,
+          "phase": "walkout"
+        },
+        {
+          "t": 22952.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22969.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 22986.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 23002.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 23019.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23036,
+          "phase": "walkout"
+        },
+        {
+          "t": 23052.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23069.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23086.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 23102.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23119.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23136,
+          "phase": "walkout"
+        },
+        {
+          "t": 23152.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23169.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23186,
+          "phase": "walkout"
+        },
+        {
+          "t": 23202.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 23219.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23236.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 23252.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23269.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23286,
+          "phase": "walkout"
+        },
+        {
+          "t": 23302.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23319.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23352.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23369.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23386,
+          "phase": "walkout"
+        },
+        {
+          "t": 23402.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23419.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23436,
+          "phase": "walkout"
+        },
+        {
+          "t": 23452.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23469.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23486.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 23502.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23519.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23536,
+          "phase": "walkout"
+        },
+        {
+          "t": 23552.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23569.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23586.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 23602.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23619.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23636.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 23652.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23669.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23686,
+          "phase": "walkout"
+        },
+        {
+          "t": 23702.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23719.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23736.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 23752.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23769.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23786.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 23802.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23819.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23836.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 23852.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23869.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23886.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 23902.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 23919.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23936,
+          "phase": "walkout"
+        },
+        {
+          "t": 23952.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23969.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23986,
+          "phase": "walkout"
+        },
+        {
+          "t": 24002.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24019.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24036,
+          "phase": "walkout"
+        },
+        {
+          "t": 24052.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24069.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 24086,
+          "phase": "walkout"
+        },
+        {
+          "t": 24102.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24119.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24136,
+          "phase": "walkout"
+        },
+        {
+          "t": 24152.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24169.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24186,
+          "phase": "walkout"
+        },
+        {
+          "t": 24202.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24219.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24236.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24252.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24269.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24286.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 24302.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24319.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24336.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24352.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24369.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24386.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24402.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24419.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24436.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24452.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24469.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24486.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24502.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24519.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24536.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24552.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24569.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24586.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24602.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24619.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24636,
+          "phase": "walkout"
+        },
+        {
+          "t": 24652.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24669.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24686.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24702.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24719.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24736.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24752.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24769.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24786,
+          "phase": "walkout"
+        },
+        {
+          "t": 24802.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24819.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24836.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24852.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24869.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24886.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24902.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 24919.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24936.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24952.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24969.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24986.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 25002.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25019.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25036.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25052.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25069.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25086.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25102.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25119.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 25136,
+          "phase": "walkout"
+        },
+        {
+          "t": 25152.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25169.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25186.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25202.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25219.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25236.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25252.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25269.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25286.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25302.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25319.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25336.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25352.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25369.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25386.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25402.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25419.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25436.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 25452.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25469.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25486.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25502.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25519.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25536.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25552.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25569.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25586.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25602.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25619.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25636.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25652.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25669.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25686.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25702.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25719.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25736.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25752.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25769.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 25786.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25802.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25819.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25836.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25852.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25869.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 25886.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25902.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25919.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 25936.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25952.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25969.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25986.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26002.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26019.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26036.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 26052.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 26069.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26086.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26102.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26119.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26136.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26152.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26169.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26186.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 26202.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26219.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26236.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26252.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26269.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26286.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 26302.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26319.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26336.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26352.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26369.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26386.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26402.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26419.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26436.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26452.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26469.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26486.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 26502.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26519.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26536.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 26552.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26569.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26586.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26602.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26619.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26636.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 26652.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26669.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26686.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 26702.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26719.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26736.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26752.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26769.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26786.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26802.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26819.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26836.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 26852.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26869.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26886.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 26902.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26919.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26936.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26952.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26969.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26986.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27002.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27019.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27036.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27052.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27069.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27086.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27102.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27119.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27136.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27152.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27169.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27186.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27202.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27219.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27236.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27253.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27269.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27286.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27302.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 27319.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27336.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27352.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27369.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27386.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27402.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27419.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27436.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27452.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27469.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27486.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27502.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27519.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27536.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27552.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27569.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27586.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27602.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27619.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27636.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27652.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27669.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27686.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27702.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 27719.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27736.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27752.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27769.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27786.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27802.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27819.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27836.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27852.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27869.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27886.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27902.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27919.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27936.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27952.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27969.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27986.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28002.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28019.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28036.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28052.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28069.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 28086.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28102.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28119.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28136.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28152.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28169.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28186.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28202.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28219.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28236.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28252.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28269.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28286.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28302.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28319.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28336.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28352.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28369.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28386.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28403,
+          "phase": "walkout"
+        },
+        {
+          "t": 28419.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28436.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28452.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28469.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28486.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28502.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28519.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28536.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28552.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28569.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28586.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28602.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28619.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28636.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28652.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28669.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 28686.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28702.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 28719.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 28736.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28752.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 28769.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28786.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28802.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28819.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28836.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28852.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28869.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28886.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28902.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 28919.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28936.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28952.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 28969.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28986.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29002.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29019.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29036.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29052.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29069.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29086.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29102.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29119.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29136.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29153,
+          "phase": "walkout"
+        },
+        {
+          "t": 29169.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29186.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29202.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29219.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29236.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29252.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 29269.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29286.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29302.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 29319.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29336.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29352.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29369.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29386.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29402.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 29419.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29436.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29452.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29469.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29486.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29502.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29519.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29536.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 29552.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29569.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29586.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29602.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29619.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29636.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29652.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29669.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29686.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29702.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 29719.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29736.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29752.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29769.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29786.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29802.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29819.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29836.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29852.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 29869.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29886.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29902.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29919.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 29936.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 29952.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 29969.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 29986.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30002.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30019.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30036.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30053,
+          "phase": "walkout"
+        },
+        {
+          "t": 30069.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30086.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30102.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30119.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30136.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30152.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30169.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30186.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30202.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30219.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30236.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30253,
+          "phase": "walkout"
+        },
+        {
+          "t": 30269.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30286.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30302.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30319.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30336.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30352.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30369.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30386.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30402.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30419.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 30436.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30452.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30469.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30486.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30502.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30519.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30536.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30552.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30569.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30586.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30602.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 30619.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30636.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30652.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30669.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30686.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30702.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30719.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30736.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30752.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30769.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30786.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30802.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30819.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 30836.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30852.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30869.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30886.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30903,
+          "phase": "walkout"
+        },
+        {
+          "t": 30919.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30936.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 30952.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30969.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30986.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31002.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31019.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 31036.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31052.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31069.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31086.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31102.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31119.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31136.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31152.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31169.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 31186.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31202.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31219.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31236.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31252.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 31269.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31286.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31302.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31320,
+          "phase": "walkout"
+        },
+        {
+          "t": 31336.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31352.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31369.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31386.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31403,
+          "phase": "walkout"
+        },
+        {
+          "t": 31419.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 31436.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31453,
+          "phase": "walkout"
+        },
+        {
+          "t": 31469.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 31486.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31502.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31519.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31536.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31552.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31569.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31586.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31602.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31619.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31636.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31652.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31669.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31686.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31703,
+          "phase": "walkout"
+        },
+        {
+          "t": 31719.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31736.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31753,
+          "phase": "walkout"
+        },
+        {
+          "t": 31769.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31786.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31803,
+          "phase": "walkout"
+        },
+        {
+          "t": 31819.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31836.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31852.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31869.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31886.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31902.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31919.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31936.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31952.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31969.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31986.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 32002.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32019.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32036.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32052.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32069.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32086.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 32102.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32119.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32136.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32153,
+          "phase": "walkout"
+        },
+        {
+          "t": 32169.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 32186.2,
+          "phase": "playing"
+        }
+      ],
+      "summary": {
+        "frames": 617,
+        "durationMs": 12616.900000000001,
+        "medianMs": 16.700000000000728,
+        "p95Ms": 16.799999999999272,
+        "over50": 3,
+        "worst5": [
+          {
+            "dt": 1683.300000000003,
+            "atSeconds": 1.683
+          },
+          {
+            "dt": 450.2000000000007,
+            "atSeconds": 3.117
+          },
+          {
+            "dt": 150,
+            "atSeconds": 2.433
+          },
+          {
+            "dt": 49.900000000001455,
+            "atSeconds": 3.167
+          },
+          {
+            "dt": 33.39999999999782,
+            "atSeconds": 1.717
+          }
+        ]
+      }
+    },
+    {
+      "name": "campionato-2",
+      "type": "league",
+      "status": "complete",
+      "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "errors": [],
+      "forced": true,
+      "frames": [
+        {
+          "t": 17732.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 18299.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18332.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 18365.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18382.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 18399.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18415.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18432.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 18449.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 18465.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18482.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 18499.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18515.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18532.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 18549.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18565.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18582.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 18599.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18615.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18649.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18665.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18682.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 18699.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 18715.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18732.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 18749.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18766,
+          "phase": "walkout"
+        },
+        {
+          "t": 18782.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 18799.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18815.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18832.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 18849.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18865.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18882.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 18899.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18915.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 18932.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 18949.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 18965.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 18982.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 18999.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19015.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19032.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 19049.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19065.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19082.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19099.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19115.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19132.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19149.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19165.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19182.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19199.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19215.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19249.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 19265.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19282.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19299.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 19315.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19332.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19349.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 19366,
+          "phase": "walkout"
+        },
+        {
+          "t": 19382.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19399.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 19415.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19432.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 19449.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19466,
+          "phase": "walkout"
+        },
+        {
+          "t": 19482.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19499.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 19515.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19532.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19549.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 19565.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19582.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19599.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19615.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19632.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19649.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 19666.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19682.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19699.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 19715.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19732.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 19749.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19765.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19782.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19799.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 19815.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19832.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19849.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19865.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19882.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19899.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19915.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19932.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19949.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 19965.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 19982.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 19999.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 20016,
+          "phase": "walkout"
+        },
+        {
+          "t": 20032.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20049.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 20066,
+          "phase": "walkout"
+        },
+        {
+          "t": 20082.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 20099.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 20115.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20132.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20149.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 20166,
+          "phase": "walkout"
+        },
+        {
+          "t": 20182.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20199.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20216,
+          "phase": "walkout"
+        },
+        {
+          "t": 20232.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20249.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 20265.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20282.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20299.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20315.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20332.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20349.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20365.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20382.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20399.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20415.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20432.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20449.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20466,
+          "phase": "walkout"
+        },
+        {
+          "t": 20482.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20499.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20516,
+          "phase": "walkout"
+        },
+        {
+          "t": 20532.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20549.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20566,
+          "phase": "walkout"
+        },
+        {
+          "t": 20582.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20599.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20615.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20632.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20649.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20665.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20682.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20699.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20715.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20732.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20749.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20766,
+          "phase": "walkout"
+        },
+        {
+          "t": 20782.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20799.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20815.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20832.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20849.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 20865.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20882.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20899.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20915.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 20932.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20949.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 20966,
+          "phase": "walkout"
+        },
+        {
+          "t": 20982.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 20999.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 21015.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 21032.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21049.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21066,
+          "phase": "walkout"
+        },
+        {
+          "t": 21082.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21099.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21116,
+          "phase": "walkout"
+        },
+        {
+          "t": 21132.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21149.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21166,
+          "phase": "walkout"
+        },
+        {
+          "t": 21182.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21199.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 21216,
+          "phase": "walkout"
+        },
+        {
+          "t": 21232.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21249.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21266,
+          "phase": "walkout"
+        },
+        {
+          "t": 21282.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21299.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21315.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 21332.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21349.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21365.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 21382.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21399.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 21416,
+          "phase": "walkout"
+        },
+        {
+          "t": 21432.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21449.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 21466,
+          "phase": "walkout"
+        },
+        {
+          "t": 21482.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21499.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 21516,
+          "phase": "walkout"
+        },
+        {
+          "t": 21532.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21549.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 21565.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 21582.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21599.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 21616,
+          "phase": "walkout"
+        },
+        {
+          "t": 21632.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21649.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 21666,
+          "phase": "walkout"
+        },
+        {
+          "t": 21682.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21699.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21716,
+          "phase": "walkout"
+        },
+        {
+          "t": 21733.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 21749.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 21765.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 21782.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21799.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21816.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 21832.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21849.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21866,
+          "phase": "walkout"
+        },
+        {
+          "t": 21882.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21899.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 21916,
+          "phase": "walkout"
+        },
+        {
+          "t": 21932.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 21949.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 21966,
+          "phase": "walkout"
+        },
+        {
+          "t": 21982.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 21999.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22016,
+          "phase": "walkout"
+        },
+        {
+          "t": 22032.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22049.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 22065.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 22082.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22099.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22116,
+          "phase": "walkout"
+        },
+        {
+          "t": 22132.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22149.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22165.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 22182.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22199.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22215.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 22232.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22249.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22266.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 22282.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22299.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22316,
+          "phase": "walkout"
+        },
+        {
+          "t": 22332.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22349.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22366,
+          "phase": "walkout"
+        },
+        {
+          "t": 22382.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22399.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22415.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 22432.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22449.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22465.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 22482.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22499.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 22516,
+          "phase": "walkout"
+        },
+        {
+          "t": 22532.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22549.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22566,
+          "phase": "walkout"
+        },
+        {
+          "t": 22582.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22599.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22616,
+          "phase": "walkout"
+        },
+        {
+          "t": 22632.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22649.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 22665.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 22682.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22699.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22716,
+          "phase": "walkout"
+        },
+        {
+          "t": 22732.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22749.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22765.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 22782.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22799.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22816,
+          "phase": "walkout"
+        },
+        {
+          "t": 22832.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 22849.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22866,
+          "phase": "walkout"
+        },
+        {
+          "t": 22882.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22899.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 22916,
+          "phase": "walkout"
+        },
+        {
+          "t": 22932.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22949.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 22966,
+          "phase": "walkout"
+        },
+        {
+          "t": 22982.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 22999.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23015.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 23032.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23049.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23066,
+          "phase": "walkout"
+        },
+        {
+          "t": 23082.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23099.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23116,
+          "phase": "walkout"
+        },
+        {
+          "t": 23132.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 23149.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23165.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 23182.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 23199.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23215.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 23232.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23249.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23266,
+          "phase": "walkout"
+        },
+        {
+          "t": 23282.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23299.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23316,
+          "phase": "walkout"
+        },
+        {
+          "t": 23332.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23349.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23366,
+          "phase": "walkout"
+        },
+        {
+          "t": 23382.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 23399.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23416,
+          "phase": "walkout"
+        },
+        {
+          "t": 23432.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23449.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23466,
+          "phase": "walkout"
+        },
+        {
+          "t": 23482.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23499.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23515.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 23532.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23549.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23566,
+          "phase": "walkout"
+        },
+        {
+          "t": 23582.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23599.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23616,
+          "phase": "walkout"
+        },
+        {
+          "t": 23632.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23649.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23666,
+          "phase": "walkout"
+        },
+        {
+          "t": 23682.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23699.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23716,
+          "phase": "walkout"
+        },
+        {
+          "t": 23732.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23749.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 23766,
+          "phase": "walkout"
+        },
+        {
+          "t": 23782.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23799.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23816,
+          "phase": "walkout"
+        },
+        {
+          "t": 23832.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23849.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23866,
+          "phase": "walkout"
+        },
+        {
+          "t": 23882.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23899.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23916,
+          "phase": "walkout"
+        },
+        {
+          "t": 23932.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23949.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 23966,
+          "phase": "walkout"
+        },
+        {
+          "t": 23982.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 23999.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24016.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24032.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24049.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24066,
+          "phase": "walkout"
+        },
+        {
+          "t": 24082.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24099.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24116,
+          "phase": "walkout"
+        },
+        {
+          "t": 24132.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24149.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24166,
+          "phase": "walkout"
+        },
+        {
+          "t": 24182.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24199.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24216,
+          "phase": "walkout"
+        },
+        {
+          "t": 24232.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24249.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24266,
+          "phase": "walkout"
+        },
+        {
+          "t": 24282.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 24299.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24316,
+          "phase": "walkout"
+        },
+        {
+          "t": 24332.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24349.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24366.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24382.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24399.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24416.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24432.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24449.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24466,
+          "phase": "walkout"
+        },
+        {
+          "t": 24482.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 24499.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24516,
+          "phase": "walkout"
+        },
+        {
+          "t": 24532.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 24549.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24566,
+          "phase": "walkout"
+        },
+        {
+          "t": 24582.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 24599.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24616,
+          "phase": "walkout"
+        },
+        {
+          "t": 24632.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24649.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24666,
+          "phase": "walkout"
+        },
+        {
+          "t": 24682.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24699.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24716,
+          "phase": "walkout"
+        },
+        {
+          "t": 24732.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24749.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 24766,
+          "phase": "walkout"
+        },
+        {
+          "t": 24782.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24799.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24816.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24832.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24849.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24866.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 24882.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24899.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24916.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 24932.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24949.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 24966,
+          "phase": "walkout"
+        },
+        {
+          "t": 24982.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 24999.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25016.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25032.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25049.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25066,
+          "phase": "walkout"
+        },
+        {
+          "t": 25082.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25099.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25116.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25132.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25149.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25166,
+          "phase": "walkout"
+        },
+        {
+          "t": 25182.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25199.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25216,
+          "phase": "walkout"
+        },
+        {
+          "t": 25232.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 25249.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25266,
+          "phase": "walkout"
+        },
+        {
+          "t": 25282.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25299.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25316,
+          "phase": "walkout"
+        },
+        {
+          "t": 25332.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25349.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25366,
+          "phase": "walkout"
+        },
+        {
+          "t": 25382.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25399.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25416.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25432.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25449.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25466.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25482.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25499.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25516.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25532.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25549.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25566.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 25582.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25599.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25616.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25632.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25649.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25666.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25682.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25699.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25716.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25732.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25749.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25766.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25782.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25799.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25816.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25832.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25849.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 25866.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 25882.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 25899.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25916,
+          "phase": "walkout"
+        },
+        {
+          "t": 25932.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25949.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 25966,
+          "phase": "walkout"
+        },
+        {
+          "t": 25982.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 25999.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 26016.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26032.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26049.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26066,
+          "phase": "walkout"
+        },
+        {
+          "t": 26082.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26099.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26116.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26132.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26149.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26166,
+          "phase": "walkout"
+        },
+        {
+          "t": 26182.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26199.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26216.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26232.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26249.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26266.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26282.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26299.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26316,
+          "phase": "walkout"
+        },
+        {
+          "t": 26332.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26349.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26366.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26382.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26399.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26416.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26432.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26449.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26466,
+          "phase": "walkout"
+        },
+        {
+          "t": 26482.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26499.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26516.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26532.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26549.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26566.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26582.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26599.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26616.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26632.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26649.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26666.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26682.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26699.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26716.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26732.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26749.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26766.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26782.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 26799.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26816.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26832.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26849.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 26866.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26882.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26899.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26916,
+          "phase": "walkout"
+        },
+        {
+          "t": 26932.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26949.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 26966.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 26982.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 26999.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27016.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27032.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27049.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27066.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27082.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27099.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27116.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27132.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27149.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27166.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27182.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 27199.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27216.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27232.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27249.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27266.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27282.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 27299.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27316.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27332.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27349.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27366.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27382.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27399.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27416.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27432.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27449.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27466.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27482.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27499.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27516.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27532.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27549.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27566.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27582.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27599.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27616.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27632.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27649.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27666.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27682.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 27699.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27716,
+          "phase": "walkout"
+        },
+        {
+          "t": 27732.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 27749.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27766.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27782.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 27799.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 27816.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27832.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 27849.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27866,
+          "phase": "walkout"
+        },
+        {
+          "t": 27882.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 27899.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27916.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 27932.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 27949.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 27966.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 27982.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 27999.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 28016.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28032.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28049.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 28066.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28082.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28099.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 28116.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 28132.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28149.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28166.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28182.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28199.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 28216.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28232.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28249.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28266.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28282.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28299.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 28316,
+          "phase": "walkout"
+        },
+        {
+          "t": 28332.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28349.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28366.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28382.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 28399.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28416.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28432.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28449.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 28466.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28482.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28499.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28516.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28532.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 28549.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28566.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28582.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28599.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28616.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28632.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28649.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28666.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28682.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28699.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 28716.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 28732.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 28749.5,
+          "phase": "playing"
+        }
+      ],
+      "summary": {
+        "frames": 624,
+        "durationMs": 11000.2,
+        "medianMs": 16.69999999999709,
+        "p95Ms": 16.799999999999272,
+        "over50": 1,
+        "worst5": [
+          {
+            "dt": 566.6000000000022,
+            "atSeconds": 0.567
+          },
+          {
+            "dt": 33.400000000001455,
+            "atSeconds": 0.633
+          },
+          {
+            "dt": 33.39999999999782,
+            "atSeconds": 1.517
+          },
+          {
+            "dt": 33.29999999999927,
+            "atSeconds": 0.6
+          },
+          {
+            "dt": 33.29999999999927,
+            "atSeconds": 0.917
+          }
+        ]
+      }
+    },
+    {
+      "name": "campionato-3",
+      "type": "league",
+      "status": "complete",
+      "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00003EA0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "errors": [],
+      "forced": true,
+      "frames": [
+        {
+          "t": 30564,
+          "phase": "walkout"
+        },
+        {
+          "t": 30667.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 30780.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 30803.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 30815.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30830.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30847.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30863.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30880.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30897.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30914,
+          "phase": "walkout"
+        },
+        {
+          "t": 30930.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30947.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 30963.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 30980.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 30997.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31014.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31030.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31047.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 31063.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31080.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31097.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31114,
+          "phase": "walkout"
+        },
+        {
+          "t": 31131,
+          "phase": "walkout"
+        },
+        {
+          "t": 31148.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31164.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 31180.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31213.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31230.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31247.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31264,
+          "phase": "walkout"
+        },
+        {
+          "t": 31280.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31314,
+          "phase": "walkout"
+        },
+        {
+          "t": 31330.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31347.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31363.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31380.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31397.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31414.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 31430.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31447.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31464,
+          "phase": "walkout"
+        },
+        {
+          "t": 31480.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31497.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31514,
+          "phase": "walkout"
+        },
+        {
+          "t": 31530.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31547.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 31564,
+          "phase": "walkout"
+        },
+        {
+          "t": 31597.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31630.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31647.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31663.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31680.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31697.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31713.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 31730.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31747.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31764,
+          "phase": "walkout"
+        },
+        {
+          "t": 31780.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31797.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31814,
+          "phase": "walkout"
+        },
+        {
+          "t": 31830.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31847.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31864,
+          "phase": "walkout"
+        },
+        {
+          "t": 31880.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 31897.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31914,
+          "phase": "walkout"
+        },
+        {
+          "t": 31930.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31947.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 31964,
+          "phase": "walkout"
+        },
+        {
+          "t": 31980.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 31997.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32013.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32030.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 32047.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32063.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32080.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32097.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32114,
+          "phase": "walkout"
+        },
+        {
+          "t": 32130.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 32147.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 32164,
+          "phase": "walkout"
+        },
+        {
+          "t": 32180.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 32197.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32214,
+          "phase": "walkout"
+        },
+        {
+          "t": 32230.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32247.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32264,
+          "phase": "walkout"
+        },
+        {
+          "t": 32280.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32297.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32314,
+          "phase": "walkout"
+        },
+        {
+          "t": 32330.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32347.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32364,
+          "phase": "walkout"
+        },
+        {
+          "t": 32380.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32397.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32413.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32430.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32447.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32464,
+          "phase": "walkout"
+        },
+        {
+          "t": 32480.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32497.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32514,
+          "phase": "walkout"
+        },
+        {
+          "t": 32530.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32547.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32563.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32580.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32597.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32615.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 32630.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 32647.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32663.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32680.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 32697.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32714,
+          "phase": "walkout"
+        },
+        {
+          "t": 32730.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 32747.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32764,
+          "phase": "walkout"
+        },
+        {
+          "t": 32780.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 32797.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32814,
+          "phase": "walkout"
+        },
+        {
+          "t": 32830.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 32847.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32897.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 32913.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 32947.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 32964.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 32980.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 32997.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33014,
+          "phase": "walkout"
+        },
+        {
+          "t": 33030.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 33047.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 33064.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 33080.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 33097.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33113.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 33130.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 33147.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33164,
+          "phase": "walkout"
+        },
+        {
+          "t": 33180.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33197.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33214.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 33230.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33247.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33264,
+          "phase": "walkout"
+        },
+        {
+          "t": 33280.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33297.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33314,
+          "phase": "walkout"
+        },
+        {
+          "t": 33330.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 33347.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33364,
+          "phase": "walkout"
+        },
+        {
+          "t": 33380.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33397.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 33414,
+          "phase": "walkout"
+        },
+        {
+          "t": 33430.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 33447.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33464,
+          "phase": "walkout"
+        },
+        {
+          "t": 33480.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33497.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33513.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 33530.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 33547.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 33564,
+          "phase": "walkout"
+        },
+        {
+          "t": 33580.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33597.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33614.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 33630.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33647.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 33664,
+          "phase": "walkout"
+        },
+        {
+          "t": 33680.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33697.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33714.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 33730.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33747.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33764,
+          "phase": "walkout"
+        },
+        {
+          "t": 33780.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 33797.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33814.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 33830.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33847.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 33864,
+          "phase": "walkout"
+        },
+        {
+          "t": 33880.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33897.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 33914,
+          "phase": "walkout"
+        },
+        {
+          "t": 33930.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33947.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 33964,
+          "phase": "walkout"
+        },
+        {
+          "t": 33980.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 33997.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34014.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34030.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 34047.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34064,
+          "phase": "walkout"
+        },
+        {
+          "t": 34080.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34097.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34114,
+          "phase": "walkout"
+        },
+        {
+          "t": 34130.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34147.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34164,
+          "phase": "walkout"
+        },
+        {
+          "t": 34180.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34197.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34214,
+          "phase": "walkout"
+        },
+        {
+          "t": 34230.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34247.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34264,
+          "phase": "walkout"
+        },
+        {
+          "t": 34280.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34297.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34314,
+          "phase": "walkout"
+        },
+        {
+          "t": 34330.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34347.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34364,
+          "phase": "walkout"
+        },
+        {
+          "t": 34380.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34397.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34414,
+          "phase": "walkout"
+        },
+        {
+          "t": 34430.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34447.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34464.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 34480.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 34497.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34514,
+          "phase": "walkout"
+        },
+        {
+          "t": 34530.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34547.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34564,
+          "phase": "walkout"
+        },
+        {
+          "t": 34580.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34597.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34614,
+          "phase": "walkout"
+        },
+        {
+          "t": 34630.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34647.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34664,
+          "phase": "walkout"
+        },
+        {
+          "t": 34680.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34697.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34714,
+          "phase": "walkout"
+        },
+        {
+          "t": 34730.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34747.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34764,
+          "phase": "walkout"
+        },
+        {
+          "t": 34780.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34797.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34814,
+          "phase": "walkout"
+        },
+        {
+          "t": 34830.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34847.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34864,
+          "phase": "walkout"
+        },
+        {
+          "t": 34880.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34897.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 34914,
+          "phase": "walkout"
+        },
+        {
+          "t": 34930.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 34947.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 34964,
+          "phase": "walkout"
+        },
+        {
+          "t": 34980.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 34997.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 35014,
+          "phase": "walkout"
+        },
+        {
+          "t": 35030.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 35047.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 35064.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35080.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 35097.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35114,
+          "phase": "walkout"
+        },
+        {
+          "t": 35130.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35147.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 35164,
+          "phase": "walkout"
+        },
+        {
+          "t": 35180.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35197.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 35214,
+          "phase": "walkout"
+        },
+        {
+          "t": 35230.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35247.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35264.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35280.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35297.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35314.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35330.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35347.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 35364.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35380.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35397.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35414,
+          "phase": "walkout"
+        },
+        {
+          "t": 35430.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35447.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35464,
+          "phase": "walkout"
+        },
+        {
+          "t": 35480.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35497.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35514,
+          "phase": "walkout"
+        },
+        {
+          "t": 35530.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35547.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35564,
+          "phase": "walkout"
+        },
+        {
+          "t": 35580.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35597.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35614.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35630.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35647.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35664,
+          "phase": "walkout"
+        },
+        {
+          "t": 35680.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35697.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35714.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35730.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35747.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35764.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35780.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35797.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35814.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35830.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35847.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35864.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35881.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35897.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 35916.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 35930.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 35947.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 35964.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 35980.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 35997.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36014,
+          "phase": "walkout"
+        },
+        {
+          "t": 36030.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36047.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 36064.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36080.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36097.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36114.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36130.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 36147.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36164.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36180.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 36197.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36214,
+          "phase": "walkout"
+        },
+        {
+          "t": 36230.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36247.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36264.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 36280.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36297.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36314.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36330.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 36347.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 36364,
+          "phase": "walkout"
+        },
+        {
+          "t": 36380.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36397.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36414.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36430.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36447.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36464.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36480.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 36497.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36514.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 36530.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36547.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36564.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36580.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 36597.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36614.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36630.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36647.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36664.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36680.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36697.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36714,
+          "phase": "walkout"
+        },
+        {
+          "t": 36730.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 36747.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36764.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36780.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 36797.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36814.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 36833.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 36848.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 36864.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 36880.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 36897.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 36914.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 36947.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 36964.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 36980.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37014.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37030.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 37047.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37064.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 37080.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37097.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37114.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 37130.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 37147.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37164.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37181,
+          "phase": "walkout"
+        },
+        {
+          "t": 37197.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 37214.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37230.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37247.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37264.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37280.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 37297.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 37314.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 37330.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37347.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37364.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37380.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 37397.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 37414.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 37430.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 37447.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37464.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37480.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37497.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 37514.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37530.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37547.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 37564.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37580.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37597.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37614.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37630.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37647.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 37664.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37680.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37697.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37714.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37730.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 37747.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37764.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 37780.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 37797.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37814.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37830.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 37847.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 37864.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37881,
+          "phase": "walkout"
+        },
+        {
+          "t": 37897.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 37914.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37947.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 37964.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 37981,
+          "phase": "walkout"
+        },
+        {
+          "t": 37997.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 38014.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38031.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 38047.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 38064.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38082.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38097.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 38114.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38131.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 38147.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 38164.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38182.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38198.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38215.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 38230.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38249.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 38264.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38297.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 38314.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38348.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 38381,
+          "phase": "walkout"
+        },
+        {
+          "t": 38414.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38430.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38447.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 38464.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38480.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 38497.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 38514.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38530.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38547.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 38564.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38580.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38597.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 38614.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38630.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38647.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 38664.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38680.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38697.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 38714.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38730.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38747.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 38764.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38780.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 38797.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 38814.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 38830.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38847.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 38864.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38880.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38897.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 38914.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 38930.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38947.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 38964.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 38980.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 38997.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39014.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39030.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39064.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39081.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 39098,
+          "phase": "walkout"
+        },
+        {
+          "t": 39114.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39130.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39147.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39164.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39180.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39197.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39214.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39230.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39247.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 39264.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39280.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39297.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39314.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39330.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 39347.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39364.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39380.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39397.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 39414.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 39430.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 39447.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 39464.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39480.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39497.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39514.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39530.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 39547.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39564.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39580.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39598.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39614.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39630.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39647.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39664.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39680.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 39697.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39714.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39730.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 39747.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39764.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39780.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39797.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39814.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 39830.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39847.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39864.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39880.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39897.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39914.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39930.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39947.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 39964.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 39980.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 39998.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 40015.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 40050.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 40080.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 40114.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 40131,
+          "phase": "walkout"
+        },
+        {
+          "t": 40147.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 40164.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 40180.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 40199.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 40230.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 40264.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 40280.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 40297.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 40331.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 40347.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 40364.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 40414.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 40464.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 40481.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 40582.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 40732,
+          "phase": "walkout"
+        },
+        {
+          "t": 40747.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 40764.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 40780.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 40797.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 40814.1,
+          "phase": "walkout"
+        },
+        {
+          "t": 40830.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 40847.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 40864.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 40880.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 40897.7,
+          "phase": "walkout"
+        },
+        {
+          "t": 40914.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 40930.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 40947.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 40964.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 40982,
+          "phase": "walkout"
+        },
+        {
+          "t": 40997.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 41014.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 41030.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 41047.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 41064.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 41080.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 41097.6,
+          "phase": "walkout"
+        },
+        {
+          "t": 41114.2,
+          "phase": "walkout"
+        },
+        {
+          "t": 41130.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 41147.5,
+          "phase": "walkout"
+        },
+        {
+          "t": 41164.4,
+          "phase": "walkout"
+        },
+        {
+          "t": 41180.9,
+          "phase": "walkout"
+        },
+        {
+          "t": 41201.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 41231.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 41248.3,
+          "phase": "walkout"
+        },
+        {
+          "t": 41264.8,
+          "phase": "walkout"
+        },
+        {
+          "t": 41280.9,
+          "phase": "playing"
+        }
+      ],
+      "summary": {
+        "frames": 593,
+        "durationMs": 10700.800000000003,
+        "medianMs": 16.69999999999709,
+        "p95Ms": 19,
+        "over50": 7,
+        "worst5": [
+          {
+            "dt": 149.90000000000146,
+            "atSeconds": 10.168
+          },
+          {
+            "dt": 113,
+            "atSeconds": 0.217
+          },
+          {
+            "dt": 103.79999999999927,
+            "atSeconds": 0.104
+          },
+          {
+            "dt": 100.79999999999563,
+            "atSeconds": 10.018
+          },
+          {
+            "dt": 50.299999999995634,
+            "atSeconds": 9.901
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "interruptedForLowMemory": true
+}

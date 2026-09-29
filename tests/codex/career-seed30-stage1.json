@@ -1,0 +1,146 @@
+{
+  "command": "node tests/codex/career-followup.mjs",
+  "env": {
+    "CPM_SEEDS": "30",
+    "CPM_MAX_SEASONS": null,
+    "CPM_TIME_LIMIT_MS": 900000,
+    "CPM_OUTPUT": "career-seed30-stage1.json"
+  },
+  "startedAt": "2026-09-29T12:06:31.940Z",
+  "version": "7.999.53",
+  "commit": "54e6047ed67042c25970af2ab050b3422404c914",
+  "catalog": {
+    "professionalClubs": 252,
+    "u18Clubs": 18,
+    "leagues": [
+      "Lega A",
+      "Premier Division",
+      "Liga Ibérica",
+      "Deutsche Liga",
+      "Ligue Nationale",
+      "Liga Lusitana",
+      "Liga Oranje",
+      "Liga Belga",
+      "Liga Anatolica",
+      "Lega B",
+      "Championship",
+      "Deutsche Liga 2",
+      "Ligue Nationale 2",
+      "Liga Ibérica 2"
+    ],
+    "leagueCounts": {
+      "Lega A": 18,
+      "Premier Division": 18,
+      "Liga Ibérica": 18,
+      "Deutsche Liga": 18,
+      "Ligue Nationale": 18,
+      "Liga Lusitana": 18,
+      "Liga Oranje": 18,
+      "Liga Belga": 18,
+      "Liga Anatolica": 18,
+      "Lega B": 18,
+      "Championship": 18,
+      "Deutsche Liga 2": 18,
+      "Ligue Nationale 2": 18,
+      "Liga Ibérica 2": 18
+    }
+  },
+  "careers": [
+    {
+      "seed": 30,
+      "matrix": {
+        "start": "vertice",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "enfant",
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Liga Ibérica",
+        "club": "FC Submarino",
+        "clubId": "vill",
+        "leagueFallback": false,
+        "base": 70
+      },
+      "steps": 80,
+      "seasonsDone": 1,
+      "seasonStats": [
+        {
+          "season": 2,
+          "age": 20,
+          "club": "vill",
+          "league": "Liga Ibérica",
+          "ovr": 75,
+          "goals": 12,
+          "matches": 34,
+          "rating": 6.17,
+          "value": 16.6,
+          "wage": 6000,
+          "expiresAtSeason": 5,
+          "contractDuration": 3,
+          "coachTrust": 65.2,
+          "injured": null,
+          "diaryLength": 0,
+          "diarySeasons": [],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 205200,
+          "calendarN": 34,
+          "calendarUnplayed": 0,
+          "squadRole": "riserva",
+          "screen": "seasonAwards"
+        }
+      ],
+      "transfers": [],
+      "injuries": [],
+      "events": {
+        "pledge": 1,
+        "persgoal": 1
+      },
+      "messages": {
+        "2|📊 Report tecnico positivo del direttore sportivo.": 1,
+        "2|🏁 Fine S.2: 12⚽ 3🎯": 1,
+        "3|🎂 21 anni — stagione 3 inizia": 1,
+        "3|✅ Segna 12 gol": 1,
+        "3|❌ Mancato: Finisci nei primi 3": 1,
+        "3|❌ Mancato: Fornisci 7 assist": 1,
+        "3|🌍 QUALIFICAZIONE IN COPPA EUROPA! FC Submarino torna in Europa.": 1,
+        "3|📈 Crescita giovanile: +1 velocità": 1,
+        "3|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "3|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1
+      },
+      "pageErrors": [],
+      "status": "running",
+      "durationMs": 0,
+      "interventions": [],
+      "saveChecks": [],
+      "calendarDays": {
+        "2": {
+          "league": "Liga Ibérica",
+          "days": 34
+        },
+        "3": {
+          "league": "Liga Ibérica",
+          "days": 34
+        }
+      },
+      "renewals": [],
+      "renewalChecked": [],
+      "zeroSeasons": [],
+      "openingTrace": []
+    }
+  ],
+  "anomalies": [],
+  "failures": [],
+  "limits": [],
+  "durationMs": 146407
+}
