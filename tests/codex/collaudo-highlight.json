@@ -1,0 +1,20 @@
+{
+  "versione": "7.999.61",
+  "compito": "collaudo highlight 3D",
+  "comando": "node tests/codex/collaudo-highlight.mjs",
+  "combos": null,
+  "forced": [],
+  "natural": [],
+  "errors": [],
+  "ambientePrevisto": {
+    "viewport": [
+      412,
+      915
+    ],
+    "glb": true,
+    "present": true,
+    "cine": true,
+    "serviceWorkers": "block",
+    "gpu": "software headless"
+  }
+}

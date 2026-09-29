@@ -1,0 +1,29 @@
+{
+  "versione": "7.999.61",
+  "compito": "collaudo highlight 3D",
+  "comando": "node tests/codex/collaudo-highlight.mjs",
+  "seme": "forzate: indice; naturali: 5100,5197,5294,5391,5488,5585",
+  "misure": [
+    {
+      "nome": "scene forzate acquisite",
+      "valore": 0,
+      "soglia": "non verificato",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "partite naturali acquisite",
+      "valore": 0,
+      "soglia": 6,
+      "esito": "anomalia"
+    },
+    {
+      "nome": "note visive completate",
+      "valore": 0,
+      "soglia": "non verificato",
+      "esito": "anomalia"
+    }
+  ],
+  "segnalazioni": [],
+  "stato": "parziale finché acquisizione e revisione visiva non sono complete",
+  "dati": "tests/codex/collaudo-highlight.json"
+}
