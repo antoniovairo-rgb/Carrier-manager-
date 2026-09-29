@@ -1176,7 +1176,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
       {/* IL PANNELLO: statistiche o pagelle, col campo che si vede dietro */}
       <div data-cpm="linguette918" style={{margin:SP.sm,marginBottom:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,
-        pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%",...((aperto&&!(typeof window!=="undefined"&&window.__CPM_NO_PANNELLO61))?{height:"55%",maxHeight:"55%"}:{})}}>{/* [7.999.61 PO «evita che il pannello si sovrapponga alla porta, meglio solo sul campo»] 55%: a 412x915 il bordo alto scende da 185 a ~239 px, sotto la porta (205-225) */}{/* [7.999.61 collaudo PO «altezza e posizione tra pagelle e statistiche differenti»] l'altezza la dava il contenuto: statistiche al tetto del 62%, pagelle piu' corte e quindi linguette piu' in basso. Aperto, il pannello ha sempre la stessa altezza; il contenuto scorre dentro */}
+        pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%",...((aperto&&!(typeof window!=="undefined"&&window.__CPM_NO_PANNELLO61))?{height:"43%",maxHeight:"43%"}:{})}}>{/* [7.999.64 collaudo PO «posizione troppo alta del pannello statistiche/pagelle»] MISURATO a 412x915: col 55% il bordo alto stava a 235, cioe' sopra porta (205-230) e area avversaria (fino a ~320). Col 43% scende a ~330, sotto l'area; le 11 pagelle ci stanno senza scorrere */}{/* [7.999.61 PO «evita che il pannello si sovrapponga alla porta, meglio solo sul campo»] 55%: a 412x915 il bordo alto scende da 185 a ~239 px, sotto la porta (205-225) */}{/* [7.999.61 collaudo PO «altezza e posizione tra pagelle e statistiche differenti»] l'altezza la dava il contenuto: statistiche al tetto del 62%, pagelle piu' corte e quindi linguette piu' in basso. Aperto, il pannello ha sempre la stessa altezza; il contenuto scorre dentro */}
         <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
           {tasto("stat","Statistiche")}
           {tasto("pag","Pagelle")}
@@ -1688,7 +1688,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   // Sprint 118/121 — bench phase progression (watching→warmup→entering), warmup at randomized benchWarmupAt
   useEffect(()=>{
     if(!onBench||phase!=="playing"||subbedOffRef.current)return;/* [7.38.0] chi è USCITO non rientra */
-    if(clock>=benchMinute&&benchPhase!=="entering")setBenchPhase("entering");
+    if(clock>=((_CPM_TEST&&typeof window!=="undefined"&&window.__CPM_BENCH_MIN)||benchMinute)&&benchPhase!=="entering")setBenchPhase("entering");/* [7.999.64] __CPM_BENCH_MIN: solo collaudo, minuto d'ingresso della panchina forzata */
     else if(clock>=benchWarmupAt&&benchPhase==="watching")setBenchPhase("warmup");
   },[clock]);// eslint-disable-line
   // Sprint 118 — auto-dismiss bench overlay at entry time
@@ -5632,6 +5632,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
            minuti di distanza, mai dentro un highlight o sopra una scena-gol. */
         var _intxK669=null;
         if(!(typeof window!=='undefined'&&window.__CPM_NO670)&&!_inHL77&&!pendingGoalRef.current&&!_recHij545
+           &&(!(onBenchRef.current||subbedOffRef.current||heroRedRef.current)||(typeof window!=='undefined'&&window.__CPM_NO_PANCA64))/* [7.999.64 collaudo PO «scattano le interazioni anche se sono in panchina». Rosso __CPM_NO_PANCA64] le schede dell'eroe (mister, compagni, avversari) esistono solo se l'eroe e' in campo */
            &&!((typeof window!=='undefined'&&window.__CPM_SAL689_ON)&&!(typeof window!=='undefined'&&window.__CPM_NO695))/* [7.695.0] NIENTE SCHEDE NUOVE SOPRA L'AZIONE: una scheda di scelta occupa mezzo telefono, e fotografata sopra l'area copriva esattamente cio' che il PO diceva di non vedere. Le interazioni erano gia' escluse durante il gol in costruzione; ora lo sono per tutta la finestra saliente, contropiedi e rigori compresi. */
            &&nx>=((typeof window!=='undefined'&&window.__CPM_NO723)?18:((narrRef669.current&&narrRef669.current.apre723)||(narrRef669.current.apre723=18+Math.floor(_rndM()*12))))&&nx<=88&&typeof INTX669!=='undefined'){try{/* [7.723.0 — LA PRIMA SCHEDA NON ESCE SEMPRE AL 18'. Rosso __CPM_NO723] MISURATO (censimento 6 partite): la prima scheda usciva SEMPRE al 18', primo minuto della finestra, dove l'unica eleggibile senza contatori era mi_avv (4/6 partite, e la memoria fra partite la rimetteva in gioco ogni tre gare). Ora la finestra si apre in un minuto casuale fra 18 e 29, fissato una volta per partita: la prima pesca trova un paniere di 3-6 schede invece di una. */
           const _N=narrRef669.current;
@@ -10574,7 +10575,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                 //   è già gestito sopra → qui è sempre la panchina d'attesa).
                 return(
                   <React.Fragment>
-                    <div style={{position:"absolute",top:0,left:0,right:0,zIndex:9,pointerEvents:"none",padding:"12px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(8,12,24,0.82),rgba(8,12,24,0))"}}>
+                    <div data-cpm="panca64" ref={el=>{/* [7.999.64 collaudo PO «la grafica che dice che sono in panchina/a disposizione si accavalla». Rosso __CPM_NO_PANCA64] nella vista 2D in cima c'e' la striscia delle statistiche: il riquadro scende sotto di lei */try{if(!el||(typeof window!=='undefined'&&window.__CPM_NO_PANCA64))return;const st=document.querySelector('[data-cpm="striscia918"]'),par=el.offsetParent;if(!st||!par){el.style.top="0px";return;}const d=Math.round(st.getBoundingClientRect().bottom-par.getBoundingClientRect().top+4);el.style.top=(d>0?d:0)+"px";}catch(_e){}}} style={{position:"absolute",top:0,left:0,right:0,zIndex:9,pointerEvents:"none",padding:"12px 12px",textAlign:"center",background:"linear-gradient(180deg,rgba(8,12,24,0.82),rgba(8,12,24,0))"}}>
                       <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:3}}>
                         <div style={{width:8,height:8,borderRadius:"50%",background:isWarmup?"#f59e0b":"#94a3b8",boxShadow:isWarmup?"0 0 8px #f59e0b":undefined,animation:isWarmup?"pulse 1.2s infinite":undefined}}/>
                         <div style={{fontSize:isNarrow?12:14,letterSpacing:2.5,fontWeight:900,textTransform:"uppercase",color:isWarmup?"#f59e0b":"#e2e8f0",textShadow:"0 2px 10px rgba(0,0,0,0.6)"}}>{isWarmup?"RISCALDAMENTO":"A DISPOSIZIONE"}</div>
@@ -11172,7 +11173,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
               <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo="mister" chiave={(misterInPartita(player,context)||{}).name||"mister"} larg={36}/>;}catch(_e){return null;}})()}</div>
               <div style={{flex:1}}>
                 <div style={{fontSize:FS.caption,fontWeight:FW.bold,color:TH.muted,letterSpacing:1,marginBottom:2,textTransform:"uppercase"}}>{(misterInPartita(player,context)||{}).name||"Il mister"} · dopo la partita</div>
-                <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65)}</div>
+                <div style={{fontSize:FS.small,color:TH.text,lineHeight:1.5}}>{coachPostMatch(winning,!winning&&!losing,mStats.goals,mStats.assists,rating,opponent?.p||opponent?.prestige||65,{elim:!!(losing&&(context==="cup"||context==="euro_ko"||context==="euroMondiale_ko")),nat:/^(national|nazionale|nationsCup|euroMondiale)/.test(String(context||''))})}</div>
               </div>
             </div>}
             {/* Sprint 113 — Key match events timeline */}

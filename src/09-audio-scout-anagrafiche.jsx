@@ -810,6 +810,18 @@ function generateLocalPressAnalysis(matchResult,playerPerf,playerCtx={}){
   const _pDraw=[`"Non sono soddisfatto del pareggio, ma la squadra ha lottato."`,`"Volevamo i tre punti. Dobbiamo essere più concreti."`,`"Un punto è un punto. Guardiamo avanti con fiducia."`,`"Mi aspettavo di vincere, ma rispetto il risultato. Prossima volta."`,`"Abbiamo creato tanto, ci è mancato il gol. Continueremo a provarci."`,`"Il pareggio brucia, ma la prestazione c'è stata. Testa bassa e lavoro."`];
   const _mLoss=[`"Dobbiamo analizzare gli errori e reagire subito."`,`"Partita da dimenticare in fretta. Ci alleneremo duro questa settimana."`,`"Abbiamo subito gol evitabili. Serve più concentrazione difensiva."`,`"Non accetto prestazioni del genere. Parleremo chiaramente in spogliatoio."`,`"Sconfitta meritata. Prendiamoci le responsabilità e ripartiamo."`,`"Il risultato fa male, ma ci aiuterà a crescere. Torneremo più forti."`];
   const _pLoss=[`"Sconfitta che fa male. Ci rifaremo la prossima settimana."`,`"Non eravamo al 100%. Ma le scuse non servono, serve lavorare."`,`"Abbiamo deluso i tifosi. Ce lo meritiamo. Torneremo più cattivi."`,`"Partita storta. Succede. L'importante è rialzarsi subito."`,`"Non sono riuscito a incidere come volevo. Lavorerò per migliorare."`,`"Brucia tanto. Ma questa è la spinta giusta per la settimana di allenamento."`];
+  /* [7.999.64 collaudo PO «c'e' poco da allenarsi dopo un'eliminazione dalle coppe / tornei con la nazionale»] dopo un'eliminazione
+     o una sconfitta in Nazionale non si parla della «settimana di allenamento»: il torneo e' finito, o si torna al club. */
+  if(!won&&!drew&&(playerCtx.elim||playerCtx.nat)){
+    const _E=playerCtx.elim;
+    _mLoss.length=0;_pLoss.length=0;
+    if(_E&&playerCtx.nat){_mLoss.push(`"Il torneo finisce qui. Fa male, ma questo gruppo ha dato tutto."`,`"Eliminati. Ci prendiamo le responsabilita': la maglia merita di piu'."`,`"Uscire cosi' brucia. Da domani si pensa gia' al prossimo impegno della Nazionale."`);
+      _pLoss.push(`"Eliminati. Fa malissimo: avevamo il sogno di arrivare in fondo."`,`"Torno al club con l'amaro in bocca. Ma questa maglia la voglio ancora."`,`"Non ci sono parole. Chiedo scusa ai tifosi: ci riproveremo."`);}
+    else if(_E){_mLoss.push(`"Eliminati. Fa male, ma adesso la testa va al campionato."`,`"La coppa finisce qui. Nessun alibi: abbiamo sbagliato noi."`,`"Uscire cosi' brucia. Adesso dobbiamo rialzarci in campionato."`);
+      _pLoss.push(`"Eliminati. Brucia tanto: ci tenevamo a questa coppa."`,`"Fuori dalla coppa. Adesso tutte le energie sul campionato."`,`"Serata amara. Chiedo scusa ai tifosi: in campionato dobbiamo rispondere."`);}
+    else{_mLoss.push(`"Sconfitta che fa male. Analizzeremo gli errori prima del prossimo raduno."`,`"Non era la nostra serata. Ci rivediamo al prossimo impegno della Nazionale."`,`"Abbiamo sbagliato troppo. Ci prendiamo le responsabilita'."`);
+      _pLoss.push(`"Sconfitta che brucia. Torno al club e lavoro per meritarmi la prossima convocazione."`,`"Con questa maglia si deve dare di piu'. Io per primo."`,`"Serata storta. Adesso testa al club, poi di nuovo qui."`);}
+  }
   const quotes=won
     ?[_prPick(_mWin,"m")+` — Mister`,_prPick(_pWin,"p")+` — ${name}`]
     :drew

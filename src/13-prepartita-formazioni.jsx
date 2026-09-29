@@ -1456,8 +1456,8 @@ const CHAIN_SITS={
   ],false,-1,"","off",null,{pressure:"low",support:1,nearby_def:2,lanes:[],bs:"aerial"}),
 };
 // Sprint 113 — Post-match coach evaluation text generator
-function coachPostMatch(won,drew,goals,assists,rating,opponentPrestige){
-  var base="";
+function coachPostMatch(won,drew,goals,assists,rating,opponentPrestige,o){
+  var base="";o=o||{};
   var pR=opponentPrestige||65;
   if(won&&goals>=2)base="Partita dominata! "+goals+" gol — hai dimostrato la tua classe.";
   else if(won&&goals===1&&assists>=1)base="Vittoria meritata. Un gol e un assist: prestazione da leader.";
@@ -1465,6 +1465,12 @@ function coachPostMatch(won,drew,goals,assists,rating,opponentPrestige){
   else if(drew&&pR>=80)base="Pari contro una big? Rispetto, ma la vittoria era alla nostra portata.";
   else if(drew)base=goals>=1?"Un punto solo con un tuo gol. Ci è mancato il raddoppio.":"Partita bloccata. Devi trovare soluzioni diverse quando si fatica a segnare.";
   else base=goals>=1?"Sconfitta che brucia. Il tuo gol non è bastato — dobbiamo fare meglio.":"Prestazione sotto le aspettative. Domani in campo — c'è molto su cui lavorare.";
+  /* [7.999.64 collaudo PO «c'e' poco da allenarsi dopo un'eliminazione dalle coppe / tornei con la nazionale». Rosso __CPM_NO_ELIM64]
+     «Domani in campo» e' la frase del campionato: dopo un'eliminazione il torneo e' finito, dopo la Nazionale si torna al club. */
+  if(!won&&!drew&&(o.elim||o.nat)&&!(typeof window!=='undefined'&&window.__CPM_NO_ELIM64)){
+    if(o.elim&&o.nat)base=goals>=1?"Il torneo finisce qui. Il tuo gol non è bastato — fa male a tutti.":"Il torneo finisce qui. Fa male: questa maglia meritava di più.";
+    else if(o.elim)base=goals>=1?"Eliminati. Il tuo gol non è bastato — adesso la testa va al campionato.":"Eliminati. Serata amara: adesso tutte le energie sul campionato.";
+    else base=goals>=1?"Sconfitta che brucia. Il tuo gol non è bastato. Torna al club e fatti trovare pronto.":"Prestazione sotto le aspettative. Torna al club e lavora: ti seguiamo.";}
   if(rating>=8.5)return base+" Personalmente sei stato il migliore — prestazione storica.";
   if(rating>=7.5)return base+" La tua valutazione individuale è alta. Così mi piaci.";
   if(rating<5.5)return base+" E la tua performance personale? Devi alzare il livello.";

@@ -214,7 +214,10 @@
     "tabellino-schermo": "node tabellino-schermo.mjs",
     "punizione-62": "node punizione-62.mjs",
     "punizione-fuori-62": "node punizione-fuori-62.mjs",
-    "volee-62": "node volee-62.mjs"
+    "volee-62": "node volee-62.mjs",
+    "testa-vera-63": "node testa-vera-63.mjs",
+    "elim-64": "node elim-64.mjs",
+    "panca-64": "node panca-64.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

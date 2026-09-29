@@ -3652,7 +3652,7 @@ function ThreeMatchView(props){
            la quota è 0.65 e il termine si annulla → traiettoria bit-identica a prima. */
         if(_preT74<=0)ballArcY0=ball.position.y;
         ballArcT+=aDt;
-        if(_preT74<0&&ballArcT>=0)contactFlashT=0;// [6.74.0 3D-8] flash all'IMPATTO reale (fine wind-up), non al frame 0
+        if(_preT74<0&&ballArcT>=0)contactFlashT=0;if(_preT74<0&&ballArcT>=0&&P.hlType==='header'&&typeof window!=='undefined'&&window.__CPM_TESTA33_REC){try{(window.__CPM_Y063=window.__CPM_Y063||[]).push(+(+ballArcY0).toFixed(2));}catch(_e){}}/* [7.999.64] testimone: quota del pallone all'impatto di testa */// [6.74.0 3D-8] flash all'IMPATTO reale (fine wind-up), non al frame 0
         const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);
         /* [7.534.0 MP-1] LA PANCIA HA UN PROFILO: «tesa» = sin^0.7 (spalle larghe, il tiro sale presto e
            viaggia piatto), «campana» = sin(u^0.72·π) (apice anticipato a u~0,38, discesa lunga del
@@ -6495,6 +6495,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              e lo depositava a 0.65 un istante prima del colpo. Su rovesciata, stacco e volee si vedeva quindi:
              palla in aria → a terra → e solo dopo l arco. Qui la costruzione rispetta lo stato-palla. */
           const _aerTL=aerialContactY(P,true,false);
+          /* [7.999.64 taccuino PO #7, seconda causa — rosso __CPM_NO_TESTA63B] il cross del motore puntava la posizione dell'eroe AL LANCIO:
+             l'eroe intanto si muove e il pallone gli passava a 0,7-1,0u dalla testa (misurato sul flusso vero). Il volo segue l'eroe vivo. */
+          if(tlSeg&&tlSeg[0]&&tlSeg[0].tag==='orig26'&&hero&&hero.position&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA63B)){tlSeg[0].to=[hero.position.x+50,hero.position.z/0.68+50];}
           let acc=0,bi=0; for(;bi<tlBuildN;bi++){if(tlT<acc+tlSeg[bi].dur)break;acc+=tlSeg[bi].dur;}
           /* [7.999.33 — LO STACCO ANTICIPA IL PALLONE. Collaudo PO «i colpi di testa non sono sincronizzati con la velocita' del cross».
              Rosso __CPM_NO_TESTA33.] MISURATO (sonda testa-tempismo, 5 scene): il cross arrivava alla testa con l'eroe ancora a terra
@@ -6546,7 +6549,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                non a P.playerX (lo spot d'apertura, 12-16u più indietro), o l'eroe si teleporta all'indietro
                un frame prima del tiro. Chiave di scena → mai riusato su un highlight diverso. */
             {const _ha51=last&&last.after&&last.after.HERO;if(_ha51)sr.current._tlHeroEnd={x:_ha51[0],y:_ha51[1],k:P.hlSitKey};}
-            sr.current._tlK381=null;sr.current._tlC381=null;sr.current._tlCP382=null;sr.current._tlBi387=null;sr.current._tlFrom387=null;tlOn=false;{const _wasO26=!!(last&&last.tag==="orig26");if(fireConclusion)fireConclusion();if(sr.current._pre33&&sr.current._pre33.k===P.hlSitKey&&actType==='header'){actT=0.5*gwOf('header','vita');sr.current._pre33.picco=true;}/* [7.999.33] il colpo parte dal picco dello stacco */if(_wasO26&&ballArcActive)ballArcIsBG=true;/* [7.999.26] il colpo parte dal pallone arrivato col cross: il volo e' dell'arco, non dell'inseguitore del pallone logico */}}
+            sr.current._tlK381=null;sr.current._tlC381=null;sr.current._tlCP382=null;sr.current._tlBi387=null;sr.current._tlFrom387=null;tlOn=false;{const _wasO26=!!(last&&last.tag==="orig26");if(fireConclusion)fireConclusion();if(sr.current._pre33&&sr.current._pre33.k===P.hlSitKey&&actType==='header'){actT=0.5*gwOf('header','vita');sr.current._pre33.picco=true;}/* [7.999.33] il colpo parte dal picco dello stacco */if(_wasO26&&ballArcActive)ballArcIsBG=true;if(_wasO26&&ballArcActive&&ballArcT<0&&actType==='header'&&sr.current._pre33&&sr.current._pre33.picco&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA63)){ballArcY0=ball.position.y;ballArcT=0;contactFlashT=0;if(typeof window!=='undefined'&&window.__CPM_TESTA33_REC){window.__CPM_TESTA63=(window.__CPM_TESTA63||0)+1;try{(window.__CPM_Y063=window.__CPM_Y063||[]).push(+(+ballArcY0).toFixed(2));}catch(_e){}}}/* [7.999.64 taccuino PO #7 «il colpo di testa non e' sincronizzato con la velocita' del cross» (000). Rosso __CPM_NO_TESTA63] MISURATO sul flusso vero (cross del motore): alla conclusione l'arco aveva ancora 0,24 s di caricamento, in cui il pallone arrivato alla testa (quota 2,1) scendeva a ~0,6 e il colpo partiva da li' — stacco al picco e pallone alle ginocchia. Sul cross del motore lo stacco anticipato (7.999.33) E' la preparazione: il contatto e' subito, alla quota della testa. *//* [7.999.26] il colpo parte dal pallone arrivato col cross: il volo e' dell'arco, non dell'inseguitore del pallone logico */}}
           else{
             const sg=tlSeg[bi],p=clamp((tlT-acc)/Math.max(sg.dur,0.01),0,1);
             /* [7.999.39 — LA FINTA SI VEDE. Misurato su #92: nel tiro preceduto da dribbling (DRIBBLE_SHOT) l'eroe non montava NESSUN gesto

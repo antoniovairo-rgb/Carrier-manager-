@@ -22,7 +22,9 @@ for (const rosso of [false, true]) {
 }
 await b.close(); srv.close();
 const ug = r => r && r.Statistiche && r.Pagelle && r.Statistiche.h > 100 && Math.abs(r.Statistiche.top - r.Pagelle.top) <= 2 && Math.abs(r.Statistiche.h - r.Pagelle.h) <= 2;
-const okV = ug(esiti.v), okR = esiti.r && !ug(esiti.r);
+const okTop = !!(esiti.v && esiti.v.Statistiche && esiti.v.Statistiche.top >= 320);/* [7.999.64 PO «posizione troppo alta»] a 412x915 porta e area avversaria finiscono a ~320: il pannello aperto parte sotto */
+console.log(okTop ? '✅ il pannello aperto parte sotto porta e area avversaria (top ' + esiti.v.Statistiche.top + ')' : '❌ il pannello copre porta/area avversaria');
+const okV = ug(esiti.v) && okTop, okR = esiti.r && !ug(esiti.r);
 console.log(okV ? '✅ Statistiche e Pagelle: stessa posizione e stessa altezza' : '❌ pannello diverso fra le due viste');
 console.log(okR ? '✅ il rosso __CPM_NO_PANNELLO61 riproduce la differenza' : '❌ il rosso non si distingue');
 process.exit(okV && okR ? 0 : 1);
