@@ -8073,18 +8073,26 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         //   squadre schierate a centrocampo. Solo presentazione (fase dedicata, gate-cieco → collaudo dal vivo).
         if(P.shootout){
           const _bl=sr.current.ball;const _k=P.shootout.kick;
+          /* [7.999.58 collaudo PO «i rigori non si vedono bene, non si vede il tiratore e il portiere non si tuffa ma si sposta un po'
+             a cavolo»] MISURATO (sonda serie coi corpi 3D + testimone __CPM_SO80): (1) camera ferma a (23,5; 7,2; 11,5) pensata per
+             lo schermo orizzontale — sul telefono (rapporto 0,51, campo orizzontale ±12°) il rigorista cadeva a 16° dal centro, fuori
+             quadro; (2) il tuffo era solo della mesh logica (rotazione z): il corpo 3D ne copia la posizione ma non la rotazione, e la
+             clip «dive» non veniva mai armata → portiere che scivola in piedi; (3) in porta c'era SEMPRE il portiere ospite, anche
+             sui rigori tirati dagli ospiti. Rosso __CPM_NO_RIGORI58. */
+          const _no58=(typeof window!=='undefined'&&!!window.__CPM_NO_RIGORI58);
+          const _homeGk58=(()=>{let m=null;sr.current.players.forEach((pp,ii)=>{const s0=(P.allPlayers||[])[ii];if(s0&&s0.gk&&s0.team==='home'&&pp.mesh)m=pp.mesh;});return m;})();
+          const _gkS=(!_no58&&_k&&_k.side==="A"&&_homeGk58)?_homeGk58:awayGkMesh;sr.current._soGk58=_gkS;
           actType=null;celebT=-1;sr.current._celPlan393=null;heroPostT=-1;subEntryT=-1;
           sr.current.players.forEach((pp,ii)=>{const src=(P.allPlayers||[])[ii];if(!pp.mesh||!src)return;
             if(pp.mesh===sr.current._soKicker)return;/* il kicker è guidato sotto */
-            if(src.gk&&src.team==='away')return;/* il portiere che para è guidato sotto */
-            if(src.gk){animOne(pp.mesh,-8,14,aDt,ak,-8,14);return;}
+            if(_no58?(src.gk&&src.team==='away'):(pp.mesh===_gkS))return;/* il portiere che para è guidato sotto */
+            if(src.gk){const _gz58=(!_no58&&src.team==='away')?-14:14;animOne(pp.mesh,-8,_gz58,aDt,ak,-8,_gz58);return;}
             const _line=src.team==='away'?1:0;const _ix=ii%11;
             const _mx=-2-_line*4.5,_mz=(_ix-5)*3.4;
             animOne(pp.mesh,_mx,_mz,aDt,ak,_mx,_mz);
             if(pp.mesh._aL&&pp.mesh._aR){pp.mesh._aL.rotation.x=-0.5;pp.mesh._aR.rotation.x=-0.5;}/* abbracciati in fila */
           });
           if(sr.current._soKicker!==hero)animOne(hero,-2,8.6,aDt,ak,-2,8.6);/* [7.33.1 collaudo PO «non scompaiono mai dalla scena»] l'eroe (mesh separato, fuori dal loop qui sopra) torna in FILA quando non calcia */
-          const _gkS=awayGkMesh;
           /* [7.168.0 collaudo PO «durante i rigori il portiere deve rimanere FERMO SULLA LINEA in attesa del tiro,
              come da regolamento FIFA»] prima aspettava a x=45.4 (~3m DAVANTI alla linea: i pali sono a 48.6) e
              nella fase d'annuncio restava dove l'aveva lasciato il tuffo precedente. Ora: attesa SULLA linea
@@ -8110,7 +8118,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           }
           if(_k&&sr.current._soT0!=null){
             const _u=(now-sr.current._soT0)/1000;const _km=sr.current._soKicker||hero;
+            if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST)){try{const _av80=(glbAvatars||[]).find(a=>a&&a.proc===_km);const _gk80=(glbAvatars||[]).find(a=>a&&a.proc===_gkS);(window.__CPM_SO80=window.__CPM_SO80||[]).push({key:_k.key,u:+_u.toFixed(2),kx:+_km.position.x.toFixed(1),kz:+_km.position.z.toFixed(1),hero:_km===hero,av:_av80?{vis:!!_av80.root.visible,x:+_av80.root.position.x.toFixed(1),z:+_av80.root.position.z.toFixed(1)}:null,gk:_gk80?{vis:!!_gk80.root.visible,x:+_gk80.root.position.x.toFixed(1),z:+_gk80.root.position.z.toFixed(1),g:_gk80._gName||null}:null,inq:(()=>{try{const f=(o,y)=>{if(!o||typeof camera==='undefined')return null;const v=new THREE.Vector3(o.position.x,(o.position.y||0)+y,o.position.z).project(camera);return Math.abs(v.x)<=0.98&&Math.abs(v.y)<=0.98&&v.z<1;};return{k:f(_km,1.0),g:f(_gkS,1.0)};}catch(_e){return null;}})(),ball:sr.current.ball?[+sr.current.ball.position.x.toFixed(1),+sr.current.ball.position.y.toFixed(2),+sr.current.ball.position.z.toFixed(1)]:null,cam:(typeof camera!=='undefined'&&camera)?[+camera.position.x.toFixed(1),+camera.position.y.toFixed(1),+camera.position.z.toFixed(1)]:null,fov:(typeof camera!=='undefined'&&camera)?+camera.fov.toFixed(0):null,asp:(typeof camera!=='undefined'&&camera)?+camera.aspect.toFixed(2):null});if(window.__CPM_SO80.length>400)window.__CPM_SO80.shift();}catch(_e80){}}/* [7.999.58] testimone di prova: rigorista e portiere */
             _km.rotation.y=Math.atan2(46-_km.position.x,0-_km.position.z);
+            sr.current._soHold58=(_u<0.85&&!(typeof window!=='undefined'&&window.__CPM_NO_RIGORI58));if(sr.current._soHold58&&_bl){_bl.position.set(35,0.35,0);}/* [7.999.58] MISURATO: prima del calcio un altro scrittore trascinava il pallone dal dischetto verso la camera (x 35→25 in 0,8 s) — resta sul dischetto finche' non parte il tiro */
             if(_u<0.55){_km.position.y=Math.abs(Math.sin(_u*6))*0.02;}
             else if(_u<0.85){const _r=(_u-0.55)/0.30;_km.position.x=32.8+(34.6-32.8)*_r;_km.position.z=1.1*(1-_r);_km.position.y=0;}
             else{
@@ -8131,6 +8141,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(_gkS&&_f>0.10){const _gu=Math.min((_f-0.10)/0.75,1);const _gs=_gu*_gu*(3-2*_gu);/* [7.33.1 collaudo PO «i portieri non si tuffano in maniera fluida»] smoothstep (via le rampe lineari) + finestra più ampia */
                 const _gDir=(!_k.scored&&!_k.wide)?(_zT>=0?1:-1):-((_dir||1));
                 const _gzT=(!_k.scored&&!_k.wide)?_zT*0.86:_gDir*2.5;
+                if(!_no58&&sr.current._soDive58!==_k.key){sr.current._soDive58=_k.key;oppActType='gk_dive';oppActT=0;oppMesh=_gkS;oppDiveDir=_gzT>=0?1:-1;}/* [7.999.58] il corpo 3D suona la clip del tuffo (canale del portiere) */
+                if(!_no58)_gkS.position.x=48.0;
                 _gkS.position.z=_gzT*_gs;
                 _gkS.position.y=Math.sin(Math.min(_gs*1.25,1)*Math.PI)*((!_k.scored&&!_k.wide)?0.62:0.5);
                 _gkS.rotation.z=(_gzT>=0?-1:1)*_gs*1.15;
@@ -8146,7 +8158,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               }
             }
           }
-        } else if(sr.current._soKey!=null){sr.current._soKey=null;sr.current._soT0=null;sr.current._soKicker=null;if(awayGkMesh){awayGkMesh.rotation.z=0;awayGkMesh.position.y=0;}}
+        } else if(sr.current._soKey!=null){sr.current._soHold58=false;sr.current._soKey=null;sr.current._soT0=null;sr.current._soKicker=null;if(awayGkMesh){awayGkMesh.rotation.z=0;awayGkMesh.position.y=0;}}
         // 3DV-13/14: reazione eroe post-azione — miss (testa bassa) o fist (pugno vittoria)
         if(heroPostT>=0){heroPostT+=aDt;const _hpu=Math.min(heroPostT/1.6,1),_hsw=Math.sin(_hpu*Math.PI);
           if(heroPostType==="miss"){if(hero._hd)hero._hd.rotation.x=-_hsw*0.9;hero._aL.rotation.z=_hsw*1.3;hero._aR.rotation.z=-_hsw*1.3;hero.position.y=0;}
@@ -8634,7 +8646,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         else{const _oa=(_ctc-10.2)*0.65;tPx=Math.cos(_oa)*16;tPy=7.2;tPz=Math.sin(_oa)*12;tLx=0;tLy=2.6;tLz=0;}// orbita attorno al podio
         kp=Math.min(dt*1.7,1);kl=Math.min(dt*2.0,1);}
       // [7.31.0] REGIA RIGORI — camera arretrata e leggermente laterale: kicker, dischetto e porta nello stesso quadro
-      if(P.shootout){tPx=23.5;tPy=7.2;tPz=11.5;tLx=43.5;tLy=1.3;tLz=-0.4;
+      if(P.shootout){if(!(typeof window!=='undefined'&&window.__CPM_NO_RIGORI58)){tPx=23.5;tPy=3.8;tPz=2.4;tLx=46.5;tLy=1.0;tLz=-0.3;}/* [7.999.58] dietro il rigorista: rigorista, porta e pali dentro il quadro anche col telefono in verticale */else{tPx=23.5;tPy=7.2;tPz=11.5;tLx=43.5;tLy=1.3;tLz=-0.4;}
         kp=Math.min(dt*2.0,1);kl=Math.min(dt*2.4,1);}
       /* [7.220.0 revisione PO «non si vede l'eroe che effettua il dribbling» ×10] IL PROTAGONISTA RESTA IN QUADRO.
          Misurato proiettando l'eroe nello spazio schermo durante l'azione: su una scena di dribbling era FUORI
@@ -9714,7 +9726,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               .filter(x=>x.av&&x.av.root).sort((a,b)=>a.d-b.d);
             const _tieni=new Set([0]);/* l'eroe non si spegne mai */
             const _port=_ord.find(x=>x.index!==0&&x.av._isGk);if(_port)_tieni.add(_port.index);
-            _ord.filter(x=>x.index!==0&&!x.av._isGk).slice(0,3).forEach(x=>_tieni.add(x.index));
+            if(P.shootout&&!(window.__CPM_NO_RIGORI58))_ord.filter(x=>x.av.proc&&(x.av.proc===sr.current._soGk58||x.av.proc===sr.current._soKicker)).forEach(x=>_tieni.add(x.index));/* [7.999.58] nei rigori si disegnano SEMPRE il portiere in porta e il rigorista */
+            if(!(P.shootout&&!(window.__CPM_NO_RIGORI58)))_ord.filter(x=>x.index!==0&&!x.av._isGk).slice(0,3).forEach(x=>_tieni.add(x.index));/* [7.999.58] nei rigori niente «tre piu' vicini»: il rigorista che rientra in fila attraversava l'inquadratura */
             if(P.ceremony&&!(window.__CPM_NO_PREMIO23)&&(P.ceremony.kind||'league')!=='promo'&&(P.ceremony.kind||'league')!=='bigwin'&&!P.ceremony.light)_ord.filter(x=>x.av._team==='home').forEach(x=>_tieni.add(x.index));/* [24/09 POC] PREMIAZIONE DI SQUADRA: in foto c'e' tutta la squadra, non l'eroe e i tre piu' vicini */
             _ord.filter(x=>x.index!==0&&(x.av._gName||x.av._gPrev)).forEach(x=>_tieni.add(x.index));/* chi sta gia' facendo un gesto resta: spegnerlo a meta' azione si vedrebbe */
             {const _c9=sr.current._carta9;if(_c9){const _tm=_c9.m||((_c9.idx===21)?hero:(sr.current.players&&sr.current.players[_c9.idx]&&sr.current.players[_c9.idx].mesh));_ord.filter(x=>x.av._isRef||(_tm&&x.av.proc===_tm)).forEach(x=>_tieni.add(x.index));}}/* [7.999.9] col cartellino in scena si disegnano anche l'arbitro e il colpevole */
@@ -10354,6 +10367,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       }catch(_e811r){}}
       if(_toonOn941())_toonPassa941(scene);/* [7.941] i corpi entrano in scena a partita in corso: si converte cio' che e' nuovo, una volta sola per mesh */
       {const _pr=sr.current._presaRev;/* [22/09 POC — IL POSSESSO DOPO LA PRESA, solo review] Finito l'arco un altro scrittore riportava la palla a terra (0,22 m) mentre il portiere aveva le mani a 1,2 m. Dopo il contatto la palla segue il punto medio delle mani fino al cambio di scena. Rosso __CPM_NO_PRESA (il canale non si arma). */if(_pr&&_pr.held&&isResult&&_pr.sit===String((propsRef.current&&propsRef.current.hlSitKey)||'')){try{const _ka=(glbAvatars||[]).find(a=>a&&a.proc===_pr.proc);if(_ka&&_ka._handL&&_ka._handR){const _l=sr.current._gkHandL||(sr.current._gkHandL=new THREE.Vector3()),_r=sr.current._gkHandR||(sr.current._gkHandR=new THREE.Vector3());_ka._handL.getWorldPosition(_l);_ka._handR.getWorldPosition(_r);ball.position.set((_l.x+_r.x)*0.5,(_l.y+_r.y)*0.5,(_l.z+_r.z)*0.5);}}catch(_ePr){}}}
+      if(sr.current._soHold58&&propsRef.current&&propsRef.current.shootout&&sr.current.ball){sr.current.ball.position.set(35,0.35,0);}/* [7.999.58] l'ultima parola prima del disegno: pallone sul dischetto fino al calcio */
       renderer.render(scene,camera);
     };
     loop();
