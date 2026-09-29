@@ -219,7 +219,8 @@
     "elim-64": "node elim-64.mjs",
     "panca-64": "node panca-64.mjs",
     "passaggio-65": "node passaggio-65.mjs",
-    "controllo-67": "node controllo-67.mjs"
+    "controllo-67": "node controllo-67.mjs",
+    "leggibile-68": "node leggibile-68.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

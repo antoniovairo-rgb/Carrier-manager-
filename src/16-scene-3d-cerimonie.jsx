@@ -246,6 +246,9 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
   const cNome=!_v24?c1:(_lum24(c1)<0.62?c1:_lum24(c2)<0.62?c2:"#334155");
   const spons=_v24?((typeof sponsorDi947==="function")?sponsorDi947(club):""):"";
   const tono = ctx==="win"?"#16a34a":ctx==="loss"?"#b91c1c":"#64748b";
+  /* [7.999.67 collaudo PO «alcuni testi sopra non si leggono bene»] la scena e' in scala 0,775: i testi a 11 px arrivavano a ~8,5 px, e le due righe basse di marchi
+     stavano dietro microfoni e bottiglietta, tagliate. Marchi piu' grandi e solo nelle righe libere, tabellino piu' alto, riga del voto leggibile. Rosso __CPM_NO_IV68. */
+  const _v68=_v24&&!(typeof window!=='undefined'&&window.__CPM_NO_IV68);
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri */
   /* le piastrelle del pannello: marchio del gioco e nome del club a turno, come i backdrop veri.
      TRE per riga a 412 px: con cinque si tagliavano sul bordo (misurato sullo scatto della v1). */
@@ -261,9 +264,9 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
         {_rid.map((riga,r)=>(
           <div key={r} style={{display:"flex",height:(100/6)+"%",alignItems:"center",
             justifyContent:"space-evenly",gap:12,overflow:"hidden",padding:"0 8px",opacity:0.9}}>
-            {riga.map((marchio,k)=>(
+            {(_v68&&r>=4)?null:riga.map((marchio,k)=>(
               <span key={k} style={{display:"inline-flex",alignItems:"center",gap:2,whiteSpace:"nowrap",
-                flex:"0 0 auto",fontSize:11,fontWeight:900,letterSpacing:.2,
+                flex:"0 0 auto",fontSize:_v68?14:11,fontWeight:900,letterSpacing:.2,
                 color:marchio?"#7a1526":cNome,opacity:marchio?0.92:(_v24?0.9:0.7)}}>
                 {marchio
                   ?(<>K<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",
@@ -275,14 +278,14 @@ function InterviewScena2D({avatarId=0,club=null,ctx="win",seed=7,jName=null,part
         {/* [7.994.0] il tabellino della partita appena giocata, al centro del pannello: e' di questa partita che si parla.
             [7.999.1] hs/as sono gia' dal lato dell'eroe (src/15 _buildEndResult: won = home>away) e il club dell'eroe sta a sinistra:
             in trasferta non si inverte piu'. Rosso __CPM_NO_TAB25. */}
-        {_v24&&partita&&partita.hs!=null&&(<div data-cpm="tabellino24" style={{position:"absolute",left:0,right:0,top:(100/3)+"%",height:(100/3)+"%",display:"flex",flexDirection:"column",justifyContent:"center",
+        {_v24&&partita&&partita.hs!=null&&(<div data-cpm="tabellino24" style={{position:"absolute",left:0,right:0,top:_v68?"30%":(100/3)+"%",height:_v68?"42%":(100/3)+"%",display:"flex",flexDirection:"column",justifyContent:"center",
           background:"#ffffff",borderTop:"1px solid rgba(15,23,42,0.14)",borderBottom:"1px solid rgba(15,23,42,0.14)",padding:"9px 16px",textAlign:"center",
           boxShadow:"0 6px 18px rgba(15,23,42,0.14)"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,fontWeight:900,color:"#0f172a"}}>
             <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",color:cNome}}>{(club&&(club.a||club.n))||"Casa"}</span>
             <span style={{fontSize:24,fontVariantNumeric:"tabular-nums"}}>{(partita.casa===false&&typeof window!=="undefined"&&window.__CPM_NO_TAB25)?(partita.as+" – "+partita.hs):(partita.hs+" – "+partita.as)}</span>
             <span style={{fontSize:13,maxWidth:84,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{opp||"Avversario"}</span></div>
-          <div style={{fontSize:11,color:"#475569",marginTop:2}}>{partita.casa===false?"In trasferta":partita.casa===true?"In casa":""}{partita.voto!=null?((partita.casa!=null?" · ":"")+"Il tuo voto "+String(partita.voto).replace(".",",")):""}{partita.gol?(" · "+partita.gol+(partita.gol===1?" gol":" gol")):""}</div>
+          <div style={{fontSize:_v68?14:11,color:_v68?"#1e293b":"#475569",fontWeight:_v68?600:400,marginTop:_v68?4:2}}>{partita.casa===false?"In trasferta":partita.casa===true?"In casa":""}{partita.voto!=null?((partita.casa!=null?" · ":"")+"Il tuo voto "+String(partita.voto).replace(".",",")):""}{partita.gol?(" · "+partita.gol+(partita.gol===1?" gol":" gol")):""}</div>
         </div>)}
         {/* il filo di luce del risultato: sul bordo del pannello, mai addosso al testo */}
         <span style={{position:"absolute",left:0,right:0,top:0,height:3,background:tono,opacity:0.85}}/>
