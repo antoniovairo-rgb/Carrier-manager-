@@ -220,7 +220,9 @@
     "panca-64": "node panca-64.mjs",
     "passaggio-65": "node passaggio-65.mjs",
     "controllo-67": "node controllo-67.mjs",
-    "leggibile-68": "node leggibile-68.mjs"
+    "leggibile-68": "node leggibile-68.mjs",
+    "rigore-69": "node rigore-69.mjs",
+    "rovesciata-69": "node rovesciata-69.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",
