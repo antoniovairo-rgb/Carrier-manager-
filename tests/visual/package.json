@@ -247,6 +247,8 @@
     "salva-84:rosso": "CPM_ROSSO84=1 node salva-84.mjs",
     "palla-84": "node palla-84.mjs",
     "palla-84:rosso": "CPM_ROSSO84P=1 node palla-84.mjs",
+    "ga-85": "node ga-85.mjs",
+    "ga-85:rosso": "CPM_ROSSO85=1 node ga-85.mjs",
     "festa-79": "node festa-79.mjs",
     "festa-79:rosso": "CPM_ROSSO80=1 node festa-79.mjs",
     "testa-76": "node testa-76.mjs"
