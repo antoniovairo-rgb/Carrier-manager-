@@ -21,7 +21,7 @@ const RIS = [];
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 for (const c of CASI) {
   const p = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(p);
-  await p.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (r[0]) window.__CPM_NO_AVANTI78 = 1; if (r[1]) window.__CPM_NO_TIRO94 = 1; if (r[2]) window.__CPM_NO_STILE79 = 1; if (r[3]) window.__CPM_NO_RUBA80 = 1; }, [!!process.env.CPM_ROSSO78, !!process.env.CPM_ROSSO94, !!process.env.CPM_ROSSO79, !!process.env.CPM_ROSSO80]);
+  await p.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (r[0]) window.__CPM_NO_AVANTI78 = 1; if (r[1]) window.__CPM_NO_TIRO94 = 1; if (r[2]) window.__CPM_NO_STILE79 = 1; if (r[3]) window.__CPM_NO_RUBA80 = 1; if (r[4]) window.__CPM_NO_CALCIO81 = 1; }, [!!process.env.CPM_ROSSO78, !!process.env.CPM_ROSSO94, !!process.env.CPM_ROSSO79, !!process.env.CPM_ROSSO80, !!process.env.CPM_ROSSO81]);
   await openMatch(p, port, { skipLoadAll: true, name: 'Taccuino78' }); await sleep(900);
   await p.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, null, { timeout: 60000 }).catch(() => {});
   const ok = await p.evaluate(g => window.__CPM_FORCE_SIT(g, true), c.gi).catch(() => false);
@@ -36,6 +36,7 @@ for (const c of CASI) {
   if (process.env.CPM_STATO) for (const w of [300, 1200]) { await sleep(w); console.log('    stato dopo', w, JSON.stringify(await p.evaluate(() => { const s = window.__CPM_STATE && window.__CPM_STATE(); return s ? { htx: s.htx, hty: s.hty, px: s.playerX, phase: s.phase, hero: s.hero } : null; }))); }
   let key = null; for (let i = 0; i < 30 && !key; i++) { key = await p.evaluate(() => { const o = window.__CPM_OUTCOME; return o ? (o.outKey || o.key || null) : null; }); if (!key) await sleep(80); }
   for (let i = 0; i < 60; i++) { const ph = await p.evaluate(() => window.__CPM_PHASE && window.__CPM_PHASE()); if (ph !== 'hl_result') break; await sleep(250); }
+  let bozza = null; if (process.env.CPM_BOZZA) { bozza = await p.evaluate(([gi, lbl, key]) => { try { const snap = window.__CPM_WATCH_SNAP && window.__CPM_WATCH_SNAP(); const S = (snap && (snap.samples || snap.s || snap.w)) || []; const sk = S.length ? S[S.length - 1].sk : gi; return window.__CPM_DRAFTNOTE(snap, { intent: 'dribble', act: lbl, out: key, sceneKey: sk }) + ' [sk ' + sk + ' · chiavi snap ' + Object.keys(snap || {}).join(',') + ']'; } catch (e) { return 'ERR ' + e.message; } }, [c.gi, lab(acts[k]), key]); console.log('    bozza:', JSON.stringify(bozza)); }
   const pa = await p.evaluate(() => (window.__CPM_PA457 || []).slice());
   const rete = pa.filter(r => r.bx >= LINEA && Math.abs(r.bz) <= PALI);
   const vivi = pa.filter(r => r.rt >= 0.3 && !(r.pa != null && r.pa >= 0));
@@ -54,7 +55,7 @@ for (const c of CASI) {
   console.log(`gi${String(c.gi).padEnd(4)} «${lab(acts[k])}» esito ${key} (${c.nota})\n    campioni ${pa.length} · palla x ${Math.min(...pa.map(r => r.bx)).toFixed(1)}→${Math.max(...pa.map(r => r.bx)).toFixed(1)} · IN RETE ${rete.length ? 'SI (' + rete.length + ')' : 'no'} · post ${[...new Set(pa.map(r => r.pt).filter(Boolean))].join('>') || '-'}` +
     `\n    fine arco: ${fineArco ? `x ${fineArco.bx} z ${fineArco.bz} quota ${fineArco.by}` : '—'} · alla linea: ${alLinea ? `z ${alLinea.bz} quota ${alLinea.by}` : '—'} · eroe max x ${Math.max(...pa.map(r => r.hx)).toFixed(1)} (in porta: ${eroeInPorta.length}) · distanza eroe-palla (dopo 0,3s, senza post-arco) max ${Math.max(...gap).toFixed(1)} · oltre 4u per ${stMax.toFixed(2)}s di scena\n    arretramento del pallone nel tiro ${indietro.toFixed(2)} · correzioni avanti78 ${av ? av.n + ' ' + JSON.stringify(av.ultimo) : 0}`);
   if (process.env.CPM_TRACCIA) pa.filter((r, i) => (process.env.CPM_TRACCIA === "eroe" ? r.hx > 46.5 : (r.bx > 40 || i % 10 === 0))).forEach(r => console.log(`      rt ${r.rt} tl ${r.tlOn ? 1 : 0}/${r.tlT} pa ${r.pa} ${r.pt || '-'} · palla ${r.bx},${r.bz} q${r.by} · eroe ${r.hx},${r.hz}`));
-  RIS.push({ gi: c.gi, lbl: lab(acts[k]), key, inPorta: eroeInPorta.length, indietro, linea: alLinea ? { z: alLinea.bz, y: alLinea.by } : null, fine: fineArco ? { z: fineArco.bz, y: fineArco.by } : null });
+  RIS.push({ gi: c.gi, bozza, lbl: lab(acts[k]), key, inPorta: eroeInPorta.length, indietro, linea: alLinea ? { z: alLinea.bz, y: alLinea.by } : null, fine: fineArco ? { z: fineArco.bz, y: fineArco.by } : null });
   await p.close();
 }
 await b.close(); srv.close();
@@ -67,5 +68,7 @@ if (!process.env.CPM_ROSSO79 && !process.env.CPM_ROSSO94) for (const r of RIS.fi
   const z = r.linea ? Math.abs(r.linea.z) : null;
   if (/rasoterra/i.test(r.lbl) && !(z >= 2.0)) g.push(`rigore «${r.lbl}»: in porta a |z| ${z} (atteso l'angolo, ≥ 2)`);
   if (/Centro-alto/i.test(r.lbl) && !(z <= 1.0 && r.fine && r.fine.y >= 1.5)) g.push(`rigore «${r.lbl}»: |z| ${z}, quota a fine arco ${r.fine && r.fine.y} (atteso centrale e alto)`); }
-console.log(g.length ? '❌ taccuino-79\n' + g.map(x => '  ✗ ' + x).join('\n') : (process.env.CPM_ROSSO94 ? '✅ il rosso si vede (eroe nella porta senza il limite)' : '✅ taccuino-79 verde'));
+const r112 = RIS.find(r => r.gi === 112 && r.bozza);
+if (r112) { const falsa = /si separano/.test(r112.bozza); if (process.env.CPM_ROSSO81) { if (!falsa) g.push('rosso 81 CIECO: la bozza non segnala la separazione nemmeno col vecchio rilevatore'); } else if (falsa) g.push('gi112: la bozza chiama «separazione nel dribbling» il volo del tiro'); }
+console.log(g.length ? '❌ taccuino-79\n' + g.map(x => '  ✗ ' + x).join('\n') : (process.env.CPM_ROSSO94 || process.env.CPM_ROSSO81 ? '✅ il rosso si vede' : '✅ taccuino-79 verde'));
 process.exit(g.length ? 1 : 0);

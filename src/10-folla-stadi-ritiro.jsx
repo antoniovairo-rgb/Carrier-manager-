@@ -794,6 +794,11 @@ const draftBugNote=(snap,ctx)=>{try{
       let _gapT=0,_gapMax=0;
       for(let i=1;i<W.length;i++){const a=W[i-1],b=W[i],dt=(b.t-a.t)/1000;
         if(dt<=0||dt>0.5)continue;if(nearSnap(b.t))continue;if((b.f&3)===0)continue;
+        /* [7.999.81 taccuino PO SIT #112 «Dribbling centrale e TIRO»: «nel dribbling il pallone e l'eroe si separano, max 13,5u»]
+           MISURATO: la separazione contata era il VOLO DEL TIRO finale (eroe fermo a x 29, pallone verso la porta). Da quando il
+           pallone parte calciato (oltre 16 u/s mentre si stacca dall'eroe) la scena non e' piu' dribbling: si smette di contare.
+           Rosso: __CPM_NO_CALCIO81. */
+        if(!(typeof window!=='undefined'&&window.__CPM_NO_CALCIO81)){const _v81=Math.hypot(b.x-a.x,(b.z||0)-(a.z||0))/dt;if(_v81>16&&Math.abs(b.x-b.hx)>Math.abs(a.x-a.hx))break;}
         const _g=Math.abs(b.x-b.hx);if(_g>4)_gapT+=dt;if(_g>_gapMax)_gapMax=_g;}
       if(_gapT>0.5)L.push(`nel dribbling il pallone e l'eroe si separano: gap oltre 4 unità per ${_gapT.toFixed(1)}s (max ${_gapMax.toFixed(1)}u)`);}
   }
