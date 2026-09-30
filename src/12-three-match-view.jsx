@@ -470,10 +470,23 @@ function ThreeMatchView(props){
     //   più grigio tra erba e board. La touchline (z±33.2) e le bandierine d'angolo (z±33.2) coincidono già.
     const _GRW=70.0;/* [7.186.0] larghezza prato: bordo z±35.0, i cartelloni laterali stanno a z±35.2 → erba fino al board, zero fascia di piazzale (e la touchline z±33.2 resta con ~1.8u di erba di rispetto, come in un campo vero) */
     const _GRL=106.8;/* [7.190.0] lunghezza prato 104→106.8 (bordo x±53.4): dietro le porte i cartelloni stanno a x±53.2 → tolti i piani-pista (che coprivano quel tratto) l'erba arriva comunque al board, zero fascia di piazzale su NESSUNO dei 4 lati */
+    /* [7.999.70 stadi — «migliora la grafica il piu' possibile»: il prato erano strisce a tinta unita. Rosso __CPM_NO_ERBA70]
+       GRANA D'ERBA: una texture 256 px di fili e macchie (valori 0,80-1,0, media ~0,91) ripetuta ogni 3,5u su tutte le strisce,
+       con il colore compensato (×1/0,91) perche' la luminosita' media del prato NON cambi — solo la grana. Una sola texture. */
+    const _erba70=!(typeof window!=='undefined'&&window.__CPM_NO_ERBA70)&&wfx!=="snow";
+    let _gTex70=null;
+    if(_erba70){try{const c=document.createElement("canvas");c.width=c.height=256;const x=c.getContext("2d");
+      x.fillStyle="rgb(240,240,240)";x.fillRect(0,0,256,256);let sd=917;const r=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296;};
+      for(let i=0;i<60;i++){const v=(200+r()*40)|0;x.fillStyle="rgba("+v+","+v+","+v+",0.5)";x.beginPath();x.ellipse(r()*256,r()*256,6+r()*18,4+r()*12,r()*3,0,Math.PI*2);x.fill();}
+      for(let i=0;i<5200;i++){const v=(205+r()*50)|0;x.fillStyle="rgb("+v+","+v+","+v+")";const px=r()*256,py=r()*256;x.fillRect(px,py,1,1+(r()*3|0));}
+      _gTex70=new THREE.CanvasTexture(c);_gTex70.wrapS=_gTex70.wrapT=THREE.RepeatWrapping;_gTex70.anisotropy=4;}catch(_e){_gTex70=null;}}
+    const _gMat70=(col)=>{if(!_gTex70)return new THREE.MeshLambertMaterial({color:col});const cc=(col&&col.isColor?col.clone():new THREE.Color(col)).multiplyScalar(1/0.91);cc.r=Math.min(1,cc.r);cc.g=Math.min(1,cc.g);cc.b=Math.min(1,cc.b);return new THREE.MeshLambertMaterial({color:cc,map:_gTex70});};
+    const _gRep70=(w,h,geo)=>{if(!_gTex70)return geo;const uv=geo.attributes.uv;for(let i=0;i<uv.count;i++)uv.setXY(i,uv.getX(i)*w/3.5,uv.getY(i)*h/3.5);uv.needsUpdate=true;return geo;};
+    try{if(typeof window!=='undefined')window.__CPM_ERBA70=!!_gTex70;}catch(_e){}
     const grass=new THREE.Mesh(new THREE.PlaneGeometry(_GRL,_GRW),new THREE.MeshLambertMaterial({color:_gA}));
     grass.rotation.x=-Math.PI/2;grass.receiveShadow=true;scene.add(grass);
-    if(_horiz){const _sw=_GRW/_nStr;for(let i=0;i<_nStr;i++){const s=new THREE.Mesh(new THREE.PlaneGeometry(_GRL,_sw),new THREE.MeshLambertMaterial({color:i%2?_gA:_stB}));s.rotation.x=-Math.PI/2;s.position.set(0,0.01,-_GRW/2+_sw*0.5+i*_sw);s.receiveShadow=true;scene.add(s);}}
-    else{const _sw=_GRL/_nStr;for(let i=0;i<_nStr;i++){const s=new THREE.Mesh(new THREE.PlaneGeometry(_sw,_GRW),new THREE.MeshLambertMaterial({color:i%2?_gA:_stB}));s.rotation.x=-Math.PI/2;s.position.set(-_GRL/2+_sw*0.5+i*_sw,0.01,0);s.receiveShadow=true;scene.add(s);}}
+    if(_horiz){const _sw=_GRW/_nStr;for(let i=0;i<_nStr;i++){const s=new THREE.Mesh(_gRep70(_GRL,_sw,new THREE.PlaneGeometry(_GRL,_sw)),_gMat70(i%2?_gA:_stB));s.rotation.x=-Math.PI/2;s.position.set(0,0.01,-_GRW/2+_sw*0.5+i*_sw);s.receiveShadow=true;scene.add(s);}}
+    else{const _sw=_GRL/_nStr;for(let i=0;i<_nStr;i++){const s=new THREE.Mesh(_gRep70(_sw,_GRW,new THREE.PlaneGeometry(_sw,_GRW)),_gMat70(i%2?_gA:_stB));s.rotation.x=-Math.PI/2;s.position.set(-_GRL/2+_sw*0.5+i*_sw,0.01,0);s.receiveShadow=true;scene.add(s);}}
     // [7.61.0 collaudo PO «le linee del campo sono disegnate male»] le marcature erano THREE.Line = 1px in
     //   SCREEN-SPACE (larghezza costante a video, WebGL non ispessisce le linee): a distanza/di taglio la linea
     //   di metà campo diventava un FILO storto e le righe apparivano incoerenti in prospettiva. Ora sono NASTRI
@@ -2206,14 +2219,19 @@ function ThreeMatchView(props){
           x2.shadowColor=col662;x2.shadowBlur=26;x2.fillStyle=col662;x2.fillText(t662,28,66);
           x2.shadowBlur=10;x2.fillStyle="#ffffff";x2.globalAlpha=0.55;x2.fillText(t662,28,66);x2.globalAlpha=1;x2.shadowBlur=0;
           /* la GRIGLIA che trasforma la scritta in lampadine: righe E colonne, non solo scanline */
-          x2.globalCompositeOperation="destination-out";
+          /* [7.999.70 stadi — galleria: «la scritta dello stadio si sovrappone al pubblico». Rosso __CPM_NO_LED70] la griglia
+             BUCAVA il canvas (destination-out): ~44% dei pixel trasparenti e la tribuna dietro traspariva dal pannello. Ora le
+             righe della griglia sono SCURE, non vuote: stesse lampadine, pannello opaco. E il canvas e' sRGB: il fondo torna nero
+             e l'ambra non si slava. */
+          const _led70=!(typeof window!=='undefined'&&window.__CPM_NO_LED70);try{if(typeof window!=='undefined')window.__CPM_LED70={opaco:_led70};}catch(_e){}
+          if(_led70)x2.fillStyle="#040507";else x2.globalCompositeOperation="destination-out";
           for(let yy=0;yy<128;yy+=4)x2.fillRect(0,yy+3,2048,1);
           for(let xx=0;xx<2048;xx+=4)x2.fillRect(xx+3,0,1,128);
           x2.globalCompositeOperation="source-over";
-          const tx2=new THREE.CanvasTexture(c2);tx2.wrapS=THREE.RepeatWrapping;tx2.anisotropy=4;return tx2;};
+          const tx2=new THREE.CanvasTexture(c2);tx2.wrapS=THREE.RepeatWrapping;tx2.anisotropy=4;if(_led70&&THREE.sRGBEncoding!=null)tx2.encoding=THREE.sRGBEncoding;return tx2;};
         const stexL=_mkLed662(String(text||"").toUpperCase()+"   •   ","#ffb020");
         const stexG=_mkLed662("⚽ GOL!   ⚽ GOL!   ⚽ GOL!   ","#7dff8a");
-        const _matL=new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false});
+        const _matL=(!(typeof window!=='undefined'&&window.__CPM_NO_LED70))?new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,toneMapped:false}):new THREE.MeshBasicMaterial({map:stexL,side:THREE.FrontSide,transparent:true,opacity:0.98,depthWrite:false});
         const smL=new THREE.Mesh(new THREE.PlaneGeometry(ledW||14,ledH||1.6),_matL);
         smL.position.set(cx,yPos!=null?yPos:5.5,z);smL.rotation.y=rotY;(sr.current.stadiumRoot||scene).add(smL);
         /* i loghi fissi: quadrati coi colori e la sigla del club, ai due capi del pannello */
@@ -9205,7 +9223,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         if(_weT662&&_weT662!==sr.current._ledWeSeen662){sr.current._ledWeSeen662=_weT662;sr.current._ledGoalUntil662=performance.now()+6000;}/* [7.661.0] il GOL si festeggia anche sul cartellone */
         const _golOn662=(sr.current._ledGoalUntil662||0)>performance.now();
         for(const _tl of sr.current._led657){const _o=_tl.tex?_tl:{tex:_tl,texGol:null,mat:null};
-          if(_o.mat){_o.mat.map=(_golOn662&&_o.texGol)?_o.texGol:_o.tex;_o.mat.opacity=_golOn662?(0.62+0.36*Math.abs(Math.sin(performance.now()*0.012))):0.98;}
+          if(_o.mat){_o.mat.map=(_golOn662&&_o.texGol)?_o.texGol:_o.tex;_o.mat.opacity=_golOn662?(0.62+0.36*Math.abs(Math.sin(performance.now()*0.012))):0.98;if(!_o.mat.transparent&&_o.mat.color)_o.mat.color.setScalar(_golOn662?(0.55+0.45*Math.abs(Math.sin(performance.now()*0.012))):1);/* [7.999.70] pannello opaco: il lampeggio del gol passa dalla luminosita' */}
           const _t=_o.mat?_o.mat.map:_o.tex;if(_t)_t.offset.x=(_t.offset.x+dt*(_golOn662?0.18:0.045))%1;}}
       /* [7.708.0 — LA CAMERA CORRE IN TEMPO REALE. Rosso __CPM_NO708]
          Direttiva PO: «i test li devi fare con GLB ON». Rifatta l'inquadratura in quel regime: fuori

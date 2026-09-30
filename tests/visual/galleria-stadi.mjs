@@ -11,7 +11,7 @@ const NO=(process.env.CPM_NO||'').split(',').filter(Boolean);
 const OUT=path.join(__dirname,'..','out','galleria-stadi'+(NO.length?'-rosso':''));fs.mkdirSync(OUT,{recursive:true});
 const TUTTI=['provino','provincia:3000','provincia:9000','comunale:9000','comunale:18000','storico_it:18000','moderno_it:30000','inglese:30000','tedesco:50000','spagnolo:50000','francese:30000','olandese:30000','sudamericano:30000'];
 const CASI=(process.env.CPM_CASI||'').split(',').filter(Boolean);const casi=CASI.length?CASI:TUTTI;
-const VISTE={tv:{x:0,y:16,z:34,lx:0,ly:4,lz:-30},porta:{x:-44,y:6,z:0,lx:30,ly:4,lz:0},curva:{x:5,y:6,z:-20,lx:60,ly:4,lz:20},tetto:{x:0,y:4,z:5,lx:0,ly:14,lz:-55}};
+const VISTE={tv:{x:0,y:16,z:34,lx:0,ly:4,lz:-30},porta:{x:-44,y:6,z:0,lx:30,ly:4,lz:0},curva:{x:5,y:6,z:-20,lx:60,ly:4,lz:20},tetto:{x:0,y:4,z:5,lx:0,ly:14,lz:-55},prato:{x:6,y:2.4,z:12,lx:0,ly:0,lz:-6}};
 const srv=await startServer();const port=srv.address().port;const b=await launchBrowser();const indice=[];
 for(const caso of casi){
   const ctx=await b.newContext({viewport:{width:412,height:915},deviceScaleFactor:1,isMobile:true,hasTouch:true});
