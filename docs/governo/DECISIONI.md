@@ -27,3 +27,4 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 | 30/09/2026 | L1 si chiude solo con **tutte le 31 voci** aperte o parziali | PO (questionario, PO-160) | — | chiusura al rapporto Codex difesa 3D; solo note di taccuino |
 | 30/09/2026 | Pulizia del progetto come **quota del 20% in ogni lotto**, non lotto dedicato | PO (questionario, PO-072) | — | lotto dedicato al 4° posto; entrambi |
 | 30/09/2026 | Cerimonie diverse per competizione **sospese fino a L8** | PO (questionario, PO-150) | lavoro su `wip/cerimonie-differenziate` | chiuderle ora; dentro L3 |
+| 01/10/2026 | Cadenza: **fino a 6 release al giorno** (non 2) | PO | «Le release giornaliere devono essere 6 e non 2!» | 2 al giorno (proposta del team) |

@@ -3,7 +3,7 @@
 Ripeti il tuo collaudo «highlight famiglie» (rapporto 2026-09-30, base 7.999.69) sulla build attuale e allargalo alle scene difensive: nel rapporto precedente le scene d'attacco erano pulite e tutti i codici 001/002/003 erano nelle scene di difesa.
 
 ## Base
-- Ramo `main`, commit `fa129a41` (CPM 7.999.82). Scrivi il commit esatto nel rapporto; se `main` è avanzato, usa l'ultimo commit e dichiaralo.
+- Ramo `main`, commit `bb02528a` (CPM 7.999.84: contiene già le correzioni su apertura e testi delle scene difensive — misurale). Scrivi il commit esatto nel rapporto; se `main` è avanzato, usa l'ultimo commit e dichiaralo.
 - Scrivi SOLO in `reports/codex/` e `tests/codex/`; pusha SOLO su un ramo `codex/2026-09-30-collaudo-difesa-3d`. Non toccare `src/`, `tools/`, altri test, `main`.
 
 ## Casi (gi = indice del catalogo, lo stesso che hai usato: 33 = «Muro in area», 133 = «Recupero sulla linea di fondo»)
