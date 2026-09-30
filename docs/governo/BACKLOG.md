@@ -1,0 +1,226 @@
+# BACKLOG — registro unico delle richieste del PO
+
+Unica fonte di verità (prompt PO «Governo del progetto», A1). Nulla si lavora se non è qui.
+Ricostruito il 30/09/2026 dai messaggi del PO della sessione (24/09 → 30/09), dal registro delle release
+(`tests/character-lab/POC_ROADMAP.md`) e da `git log`. Orari in UTC.
+**Lotti** (`docs/governo/ROADMAP.md`): L0 governo · L1 partita e highlight · L3 salvataggi ed errori ·
+L4 pulizia e debito · L5 scene disegnabili e clip · L6 sistemi di carriera e archetipi · L7 schermate e testi ·
+L8 cerimonie e stadi. Debito tecnico dettagliato: `docs/governo/ARCHITETTURA.md` (DT-01…DT-09).
+«Non posso confermarlo» = la richiesta c'è, ma non abbiamo trovato prova che sia stata chiusa: va ricontrollata col PO.
+Il vecchio `BACKLOG.md` alla radice (voci BL-xx, stato 5.39) è storico e non si aggiorna più.
+
+## Ricostruzione (fonti e regole di stato)
+
+Bozza generata il 30/09/2026. Periodo: dal 24/09 (build 7.999.1 e anteprime delle 7.98x) alla 7.999.83 (30/09 20:40).
+Orari in UTC, presi dal transcript della sessione.
+
+**Fonti usate**
+- Messaggi del PO nella sessione: messaggi diretti, messaggi arrivati a metà turno, commenti sulle anteprime, note allegate a foto, i 12 prompt lunghi e le risposte ai questionari.
+- Rilasci: `tests/character-lab/POC_ROADMAP.md` (registro «ultimo in alto») e `git log` del ramo `poc/marioprada-character-system`.
+- Rapporti Codex caricati dal PO: `…/uploads/…/dfe8a4e3-2026-09-30-collaudo-highlight-famiglie.md`, `7dbfe5c8-2026-09-30-collaudo-highlight.md`, `065f3907-…-consegna-highlight-parziale.md`, `77dd979f-2026-09-29-collaudo-carriere.md`.
+
+**Regole di stato.** FATTO solo se il registro della roadmap o il git log nomina la release che chiude la richiesta. PARZIALE se una release ne chiude una parte e la roadmap dichiara aperto il resto. APERTO se nessuna release ne parla. SOSPESO se il PO l'ha fermata o sostituita. IN ATTESA PO se serve una decisione o un collaudo del PO. «Non posso confermarlo» se la richiesta non si collega con certezza a nessun rilascio.
+**Guardiano:** nome della sonda o dello script `npm run` citato nella riga della roadmap. Tra parentesi il flag rosso `__CPM_NO_*` quando è l'unica prova registrata.
+
+## 24/09 — anteprime (7.980–7.998) e ciclo «partita vera»
+
+| ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
+|---|---|---|---|---|---|---|---|---|
+| PO-001 | 24/09 05:34 | Galà: via gli spettatori 3D, presentatori con figurine | miglioramento | FATTO | — | 7.981.0 | — | commento anteprima: «togli gli spettatori 3D, migliora le scena e metti eventualmente le figurine con presentatore e presentatrice» |
+| PO-002 | 24/09 05:37 | Premiazione di squadra: palco centrale col nome della competizione, il capitano alza la coppa e la passa all'eroe | nuova funzione | PARZIALE | L8 | 7.981.0 (11 attori), 7.997.0 (palco) | — | «la premiazione deve essere di squadra con palco in mezzo… Il capitano deve alzare la coppa ed eventualmente la passa anche all'eroe». Il passaggio della coppa non è confermato: questionario 24/09 09:28 «Non ancora, la provo» |
+| PO-003 | 24/09 05:38 | Uniformare le schermate «Primo incontro», «Ambizione» e «Chiusura» | miglioramento | FATTO | — | 7.983.0, 7.993.0 (pop-up nel Modal standard) | — | «schermata da uniformare e standardizzare» (3 commenti) |
+| PO-004 | 24/09 05:40 | Toast più curati e freno all'avanzamento compulsivo | miglioramento | FATTO | — | 7.981.0 | (flag rosso: «settimana saltata») | «i toast devono essere più carini, e bisogna evitare che il player vada avanti nel gioco in maniera compulsiva» |
+| PO-005 | 24/09 05:42 | Offerta: mostrare la situazione del club offerente prima di accettare | miglioramento | FATTO | — | 7.981.0, 7.986.0 (ultime 5, ruolo, allenatore) | — | «fai in modo che il player possa vedere il club offerente in che posizione sta» |
+| PO-006 | 24/09 05:42 | Il contorno delle figurine non deve tagliare il volto (agente, classifiche, podio, primo incontro) | difetto | FATTO | — | 7.996.0 | sonda figurina-volto24 | «occhio alla figurina tagliata dell'agente»; «il contorno taglia troppo il volto» (6 commenti, 15:20–15:26) |
+| PO-007 | 24/09 05:43 | Premi della stagione e chiusura: uniformare e abbellire | miglioramento | FATTO | — | 7.983.0 (podio, card «La tua stagione») | — | «va standardizzata e uniformata la schermata, rendila più bella» |
+| PO-008 | 24/09 05:44 | Scena dell'intervista: microfoni e figurine coerenti | miglioramento | FATTO | — | 7.986.0, 7.995.0 | — | «i microfoni e la scena è davvero terribile… Devono comparire in maniera congruente anche le figurine» |
+| PO-009 | 24/09 06:31 | Pullman scoperto da rifare | miglioramento | FATTO | — | 7.982.0 | (`__CPM_NO_PULLMAN23`) | «mi dai anteprima del pullman scoperto è sicuramente da rivedere» |
+| PO-010 | 24/09 07:12 | Fisarmoniche sulle sezioni lunghe | miglioramento | FATTO | — | 7.983.0, 7.992.0, 7.993.0 | — | «Mancano di versi accordion / fisarmoniche» (3 note) |
+| PO-011 | 24/09 07:12 | Evidenziazione della lista valori troppo invadente | difetto | Non posso confermarlo | L7 | — | — | «Evidenziazione lista valori invadente» (nota su foto, schermata non identificata) |
+| PO-012 | 24/09 08:39 | Togliere i «birilli lego» dalle scene | difetto | FATTO | — | 7.985.0 | sonda birilli.mjs (`__CPM_BIRILLI23`) | «Dalle scene togi i birilli lego» |
+| PO-013 | 24/09 09:11 | Questionario wizard ogni volta che serve una risposta del PO | processo | FATTO (prassi in uso) | — | — | — | «fammi questionario wizard ogni volta che è necessario» (ripetuto 15:09, 25/09, 28/09, 30/09) |
+| PO-014 | 24/09 09:39 | Il patrimonio diventa parte attiva del gioco | nuova funzione | FATTO | — | 7.989.0–7.992.0 (fasi F1–F4) | — | «Il patrimonio tendenzialmente adesso non serve a nulla, proponi qualche idea nuova» |
+| PO-015 | 24/09 11:45 | Rinominare la tab «Agente» | miglioramento | FATTO | — | 7.990.0 → 7.999.0 → 7.999.14 (AGENTE + UFFICIO) | — | «La Tab la rinominerei in staff anziché agente»; poi «Il bottone staff non mi convince» |
+| PO-016 | 24/09 13:02 | «Schermata fuori standard» (nota su foto) | difetto | Non posso confermarlo | L7 | — | — | «schermata fuori standard» |
+| PO-017 | 24/09 13:06 | Spiegare cosa arriverà nelle sezioni troppo sintetiche | miglioramento | FATTO | — | 7.992.0 (Coppe e Nazionale spiegano cosa arriva) | — | «un pò sintetico, spiega cosa ci sarà in tutti i punti in cui lo dice» |
+| PO-018 | 24/09 13:07 | Togliere le scorciatoie | miglioramento | FATTO | — | 7.992.0 (via la card Scorciatoie) | — | «togli le scorciatoie» |
+| PO-019 | 24/09 13:32 | Sessione e chat sempre in italiano | processo | FATTO (prassi) | — | — | — | «se per te non è un problema puoi scrivere in italiano?»; 20:33 «La sessione deve essere in italiano» |
+| PO-020 | 24/09 14:07 | Intervista scarna: proporre idee | miglioramento | FATTO | — | 7.994.0 (scelte PO dal questionario 14:38) | — | «La scena dell'intervista è scarna proponi qualche idea» (reinviato 5 volte) |
+| PO-021 | 24/09 14:07 | Ciclo «partita vera», punto 1: partita credibile (xG, tiri, possesso coerenti con la forza delle squadre) | miglioramento | PARZIALE | L1 | 7.984.0, 7.987.0, 7.999.2–7.999.5, 7.999.19, 7.999.36, 7.999.82 | `partita-vera`, `pagella`, `goleade` | «Risultati, tiri, possesso, falli… devono essere coerenti con la forza reale delle squadre». Il 30/09 il PO segnala ancora «troppe goleade» |
+| PO-022 | 24/09 14:07 | Ciclo «partita vera», punto 2: un solo motore (brain) per sim rapida, 3D e cronaca | debito tecnico | PARZIALE | L1 | 7.999.2, 7.999.3, 7.999.4, 7.999.82 | `motore-unico`, `risolvi-eroe`, `brain-82` | «Deve esistere un unico motore di simulazione… il 3D visualizza gli eventi, non li decide». Le scene si pescano ancora da schede scritte (vedi PO-093) |
+| PO-023 | 24/09 14:07 | Ciclo «partita vera», punto 3: render 3D con criteri misurabili (FPS, caricamento, Three.js fissato a una versione) | ricerca | SOSPESO | — | prototipo del 24/09 (60,7 FPS misurati dal PO), ritirato | — | «Definisci criteri misurabili di "perfetto": FPS medi e minimi…». Sostituito da PO-025; 7.999.2: «il 3D continuo è ritirato» |
+| PO-024 | 24/09 14:07 | Ciclo «partita vera», punto 4: gesto e clip dedicati per ogni tipo di evento | nuova funzione | PARZIALE | L1 | vedi PO-073/074 | — | «Ogni tipo di evento… ha il gesto/animazione dedicato e la clip di replay» |
+| PO-025 | 24/09 21:08 | Cambio di rotta: partita 2D + highlight 3D dell'eroe, niente copia di FIFA; migliorare il render dei gesti e il brain | processo | FATTO (direzione adottata) | — | 7.999.2 | — | «era più divertente la versione precedente con partita 2D + highlights 3D dell'eroe… non deve diventare la brutta copia di Fifa» |
+| PO-026 | 24/09 19:24 | Tre gesti mancanti costruiti nel codice: esultanza, arbitro col cartellino, stretta di mano al cambio | nuova funzione | PARZIALE | L1 | 7.999.9 (cartellino), 7.999.31 (esultanza) | `cartellino` | questionario: «Mancano 3 gesti: esultanza, arbitro col cartellino, stretta di mano al cambio»="Li fai tu nel codice". Nessuna traccia della **stretta di mano** |
+| PO-027 | 24/09 22:36 | Autocritica scritta sul brain «partita vera» (A-B-C-D) | ricerca | FATTO | — | doc 25/09 | — | «Vi chiedo di fermarvi il tempo di una risposta scritta, onesta e autocritica» → `docs/AUTOCRITICA-BRAIN-2026-09-24.md` |
+| PO-028 | 24/09 22:36 | Brain B: le tattiche cambiano come si gioca | nuova funzione | FATTO | — | 7.999.5 | `tattiche` | «modulo, mentalità, pressing… devono cambiare come si gioca, non solo quanto si segna» |
+| PO-029 | 24/09 22:36 | Brain C: eroe cercato o marcato dal gioco, niente occasioni fabbricate | miglioramento | FATTO | — | 7.999.6 | `eroe-dal-gioco` | «Le occasioni dell'eroe nascono dal gioco o vengono fabbricate per lui?» |
+| PO-030 | 24/09 22:36 | Brain A: manovre vere (costruzione, triangoli, terzo uomo, sovrapposizioni) prodotte dal motore | nuova funzione | APERTO | L1 | — | — | «azioni manovrate… e fasi di gioco riconoscibili». Nessuna release la dichiara chiusa |
+| PO-031 | 24/09 22:36 | Metrica di manovra e metrica di fluidità 3D nella pagella | processo | Non posso confermarlo | L1 | — | — | «Aggiungete alla pagella almeno una metrica di manovra e una di fluidità 3D». La roadmap del 25/09 la cita come piano (PPDA, foot skating ratio), nessuna release |
+
+## 25–26/09
+
+| ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
+|---|---|---|---|---|---|---|---|---|
+| PO-032 | 25/09 13:41 | Aggiornare la roadmap a ogni fine release | processo | PARZIALE | L0 | registro aggiornato fino alla 7.999.83 | — | «aggiorna roadmap ad ogni fine release». L'intestazione di POC_ROADMAP.md dice ancora «Aggiornata: 27/09 · produzione 7.999.32» |
+| PO-033 | 25/09 21:25 | Highlight poco credibili: passaggi e movimenti senza senso | difetto | PARZIALE | L1 | 7.999.10 | sonda hl-credibilita | «Gli highlights sono ancora davvero poco credibili». La 7.999.12 dichiara ancora aperto «compagni e difensori fermi» |
+| PO-034 | 25/09 22:14 | Statistiche sbagliate: 3 gol, non 2 | difetto | FATTO | — | 7.999.10 (tabellino giusto) | — | «Statistiche sbagliate, 3 gol e non due come indicato nell'interazione» |
+| PO-035 | 26/09 01:03 | Partite assurde e goleade (7-0, 10-0) | difetto | PARZIALE | L1 | 7.999.13, 7.999.19, 7.999.36, 7.999.82 | `goleade`, `brain-82` | «Partita assurda»; «Altra goleada»; taccuino «Risultato assurdo 7 - 0!». Riaperta il 30/09 12:47 (PO-117) |
+| PO-036 | 26/09 01:04 | Schermata da scorrere poco comoda: rimpicciolire | miglioramento | Non posso confermarlo | L7 | forse 7.999.12 (intervista in una schermata) | — | «La schermata è scrollsbile, poco user friendly, rimpicciolissi qualcosa» |
+| PO-037 | 26/09 01:06 | L'app si riavvia o la grafica si rompe dopo pochi secondi in background | difetto | FATTO | — | 7.999.11, 7.999.12 | `sfondo-ritorno` | «Si riavvia l'app quando la metto pochi secondi in background»; «Mettendo 15 secondi in background l'app si rompe la grafica» |
+| PO-038 | 26/09 01:17 | Menu a tendina per i codici del taccuino | miglioramento | FATTO | — | 7.999.12 | — | «Picklist per i codici prestabiliti» |
+| PO-039 | 26/09 01:21 | Il campo 2D copre le statistiche brevi in alto | difetto | FATTO | — | 7.999.19, 7.999.22 | — | «Il campo va sopra le statistiche partita brevi in alto»; 10:56 «il campo 2d sovrascrive in parte le statistiche» |
+| PO-040 | 26/09 01:25 | La seconda domanda dell'intervista è sempre la stessa | difetto | FATTO | — | 7.999.12 (5 rilanci per tono) | — | «Seconda domanda sempre uguale» |
+| PO-041 | 26/09 01:25 | Centrare nome della competizione e giornata | miglioramento | FATTO | — | 7.999.12 | — | «Centra nome competizione e giornata» |
+| PO-042 | 26/09 01:27 | Il portatore evidenziato in giallo sembra ammonito | difetto | FATTO | — | 7.999.12 | — | «I portatori di palla in giallo sembrano ammoniti» |
+| PO-043 | 26/09 01:30 | Voto assurdo o sbilanciato | difetto | FATTO | — | 7.999.17, 7.999.20, 7.999.29 | tests/brain/voto-gol-census.mjs | «Voto assurdo»; 12:04 «Voto sbilanciato»; 19:14 «voto sproporzionato» |
+| PO-044 | 26/09 01:32 | Il pulsante «Rivedi l'intro» non funziona | difetto | FATTO | — | 7.999.12 | — | «Pulsante rivedi intro non funziona più» |
+| PO-045 | 26/09 01:33 | «Frase buttata lì senza senso» | difetto | Non posso confermarlo | L7 | — | — | «Frase buttata lì senza senso» (nota su foto) |
+| PO-046 | 26/09 02:12 | Il gol dell'eroe non si vede negli highlight | difetto | FATTO | — | 7.999.13 | — | taccuino: «Gol dell'eroe non mostrato negli highlights» |
+| PO-047 | 26/09 02:12 | Corpi CGTrader sproporzionati: spalle spioventi, troppo grandi rispetto a campo e porta | difetto | FATTO | — | 7.999.21, 7.999.22 | — | «Il calciatore è sproporzionato, troppo grande ed ha le spalle piccole»; 12:45 «spalle troppo spioventi… ridurrei anche la grandezza» |
+| PO-048 | 26/09 02:12 | L'eroe finisce in secondo piano rispetto al palo (in scena e nella festa) | difetto | PARZIALE | L1 | 7.999.79 (eroe mai dentro lo specchio della porta) | (`__CPM_NO_TIRO94`) | «l'eroe va in secondo piano rispetto al palo»; 30/09 «il palo della porta è in primo piano rispetto all'eroe mentre festeggiano» |
+| PO-049 | 26/09 02:12 | Il pannello statistiche e pagelle si sposta con la lunghezza della cronaca | difetto | FATTO | — | 7.999.13 (pannello fermo) | — | «Il pannello statistiche/pagelle si muove in base alla lunghezza del testo della cronaca» |
+| PO-050 | 26/09 02:12 | Taccuino: esito «miss» ma il pallone è finito in rete | difetto | PARZIALE | L1 | 7.999.15 | — | bozza: «l'esito dichiarato è «miss» ma la palla è finita IN RETE». Ricompare il 30/09 (#126, #64), non riprodotta nella 7.999.79 |
+| PO-051 | 26/09 02:12 | Numeri di maglia e nomi dei giocatori, anche piccoli, negli highlight | miglioramento | PARZIALE | L1 | 7.999.18 (numeri) | — | «Mancano i numeri di maglia. Il nome dei giocatori degli highlights in piccolo sarebbe carino». Nessuna traccia dei nomi |
+| PO-052 | 26/09 02:12 | Maglie con strisce e bande dettagliate | miglioramento | FATTO | — | 7.999.18, 7.999.25 | — | «le maglie non sono disegnate con il massimo dettaglio, strisce, bande ecc» |
+| PO-053 | 26/09 02:17 | Nome della scheda: «Affari» diventa Agente + Ufficio | miglioramento | FATTO | — | 7.999.14 | — | «Il nome affari non mi convince»; «anzichè VITA -> UFFICIO» |
+| PO-054 | 26/09 06:42 | Occasioni dell'eroe dinamiche, non un tetto fisso | miglioramento | FATTO | — | 7.999.15, 7.999.28 | (guardiano citato nel WIP 7.999.28, nome non riportato) | «le occasioni dovrebbero essere dinamiche»; 19:18 «devono essere definite in maniera dinamica in base a vari fattori» |
+| PO-055 | 26/09 10:56 | Rovesciata girata al contrario | difetto | FATTO | — | 7.999.19, 7.999.68 | `rigore-69` / (`__CPM_NO_RIG69`) | «Rovesciata al contrario»; 29/09 #1 «corpo↔porta 177°» |
+| PO-056 | 26/09 12:04 | Colpo di testa non rivolto verso la porta | difetto | FATTO | — | 7.999.20 | — | «Colpo di testa non in direzione della porta» |
+| PO-057 | 26/09 15:19 | I giocatori corrono con le braccia a T | difetto | FATTO | — | 7.999.22 | — | «I giocatori corrono con le braccia troppo alte, formando una T» |
+| PO-058 | 26/09 15:19 | Campo 2D aperto troppo piccolo | difetto | FATTO | — | 7.999.22 | — | «Campo 2D inizializzato piccolo» |
+| PO-059 | 26/09 15:28 | #25 filtrante: pallone che rimbalza come un flipper e torna indietro | difetto | FATTO | — | 7.999.23 | — | «codice 014 — palla flipper / codice 012 — verticalizzazione all'indietro» |
+| PO-060 | 26/09 15:28 | Numero sul pantaloncino, nella cella H1 | miglioramento | FATTO | — | 7.999.23, 7.999.24 | `maglie-numero` | «Il numero di maglia può essere esteso anche al pantaloncino»; 16:35 «in zona h1, non G1» |
+| PO-061 | 26/09 15:28 | Kit di qualità grafica migliore | miglioramento | PARZIALE | L5 | 7.999.25 | — | «migliore la qualità grafica dei kit?». La trama originale è stata provata e scartata (7.999.23) |
+| PO-062 | 26/09 15:30 | Numeri della home troppo grandi | miglioramento | FATTO | — | 7.999.23 | — | «Numeri da restringere, prendono troppo spazio» |
+| PO-063 | 26/09 18:08 | Scene aeree con il pallone ai piedi dell'eroe e il cross che arriva da chissà chi | difetto | FATTO | — | 7.999.26, 7.999.60 | — | «un'intenzione è colpo di testa… ma il pallone è nei piedi dell'eroe» |
+| PO-064 | 26/09 18:36 | Tutto deciso dal brain, anche il render 3D degli highlight | debito tecnico | PARZIALE | L1 | 7.999.26, 7.999.27, 7.999.82 | `brain-82` | «tutto deve essere deciso da brian anche il render 3D degli highlights con l'eroe» |
+| PO-065 | 26/09 18:36 | Più azioni da fascia, angoli e punizioni; tornano i rigori negli highlight | miglioramento | FATTO | — | 7.999.26, 7.999.27 | — | «vedo poche azione che partono dalla fascia… i rigori sono spariti»; 18:24 «se ne devono vedere di più» |
+| PO-066 | 26/09 19:15 | Riquadri della home fuori standard | difetto | PARZIALE | L7 | 7.999.30 (card neutra) | — | «Metti in coda: box fuori standard». Profilo e Nazionale «da portare alla card neutra» (roadmap, rapporto UI di Codex) |
+| PO-067 | 26/09 20:10 | Catalogo gesti A–L: verifica di copertura dei gesti | ricerca | FATTO | — | AUDIT_GESTI_7.999.25.md (WIP 7.999.26) | — | «voglio sapere, voce per voce, se avete valutato e implementato tutto quello che l'eroe deve saper fare» |
+| PO-068 | 26/09 20:10 | Completare i gesti dei lotti P1-b, P2 e P3 (BRAIN_GESTI nelle scene, contactAt/foot, varianti distinguibili, reazioni) | nuova funzione | PARZIALE | L1 | P1-a: 7.999.31, 7.999.32 | — | «integrate le mancanze nelle prossime release». Roadmap, punti 5 e 7 della coda: P1-b, P2 e P3 senza ✅ |
+| PO-069 | 26/09 20:10 | Metrica di copertura dei gesti nei guardiani | processo | Non posso confermarlo | L1 | — | — | «Una metrica di copertura da aggiungere ai guardiani… % di varianti con clip dedicata» |
+| PO-070 | 26/09 20:20 | Clip mancanti: procurarle o costruirle, con registro delle clip e anteprima per lotto | nuova funzione | PARZIALE | L5 | 7.999.31, .32, .39, .41 | `ruleta-test.mjs` e altri | «la clip mancante si procura o si costruisce». CLIP_REGISTRY.md esiste. Nessuna pagina di anteprima per lotto trovata |
+| PO-071 | 26/09 20:28 | Stadi 3D: qualità grafica e nuove varianti (galleria → elementi → tipologie) | miglioramento | PARZIALE | L8 | fase 1: 7.999.69 · fase 2: 7.999.69–7.999.71 · fase 3: nessuna release | `galleria-stadi`, `stadi-70`, `pali-69` | «STADI 3D: QUALITÀ GRAFICA E NUOVE VARIANTI (LAVORO IN CODA)»; 30/09 «la grafica degli stadi deve essere migliorata il più possibile» |
+| PO-072 | 26/09 20:37 | Pulizia del progetto: inventario, archivio, flag rossi, hook, commenti-changelog | debito tecnico | APERTO | L4 | — | — | «Voglio un repository e una build che contengano solo ciò che il gioco usa oggi». Nessuna release di pulizia dopo il 26/09 e nessun tag `pre-pulizia` |
+| PO-073 | 26/09 20:43 | Codex in parallelo come collaudatore: kit AGENTS.md e schede | processo | FATTO | — | 7.999.29 (AGENTS.md) | — | «USARE CODEX IN PARALLELO PER TEST E VERIFICHE». Schede 0–6 eseguite il 27/09 |
+
+## 27–28/09
+
+| ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
+|---|---|---|---|---|---|---|---|---|
+| PO-074 | 27/09 10:14 | Clip FBX del PO per l'esultanza (Victory, Golf Putt Victory…) | nuova funzione | FATTO | — | 7.999.31, 7.999.32 | — | file caricati; «va bene per per l'esultanza con il pugno» |
+| PO-075 | 27/09 11:09 | Clip del PO Receive Soccerball, Soccer Header, Jog Forward | nuova funzione | PARZIALE | L1 | — (roadmap: «in prova», provini-p1a) | — | caricate; «Jog_Forward.fbx tipo di corsa» |
+| PO-076 | 27/09 11:10 | Goalkeeper Idle per l'attesa in difesa | nuova funzione | FATTO | — | 7.999.32 | — | «potrebbe essere sfruttato per la posizione di attesa in difesa» |
+| PO-077 | 27/09 12:01 | Colpo di testa sincronizzato con cross, quota e velocità del pallone | difetto | FATTO (da ricollaudare) | — | 7.999.33, 7.999.64, 7.999.76 | `testa-vera-63`, `testa-76` | «Il colpi di testa non sono sincronizzati con la velocità del cross»; stessa nota su #7, #6, #171 (29–30/09) |
+| PO-078 | 27/09 14:25 | Gesti 3D fluidi: tiro caricato prima del calcio | difetto | FATTO | — | 7.999.34 | `tiro-caricato` | «Il tiro è scoordinato, non viene caricato / preparato prima del calcio» |
+| PO-079 | 27/09 16:57 | Movimenti poco fluidi in conduzione; il pallone si perde per strada | difetto | PARZIALE | L1 | 7.999.37 (non riprodotto), 7.999.44 (bracci di prova spenti) | — | «Movimenti poco fluidi quando l'eroe avanza con la palla»; 21:08 «si perde il pallone per strada» |
+| PO-080 | 27/09 17:01 | Ingresso in campo pesante e a scatti | difetto | FATTO | — | 7.999.16, 7.999.59 | — | «Il caricamento dello stadio all'ingresso in campo è pesante»; 29/09 05:55 «molto scattoso e pesanti» |
+| PO-081 | 27/09 17:03 | Collaudo approfondito di Codex sulla fluidità 3D | processo | FATTO | — | 7.999.44 (rapporto acquisito) | — | «Farei testare a codex in maniera approfondita la fluidità dei movimenti 3D» |
+| PO-082 | 27/09 17:27 | Clip Golf Bad Shot per il disappunto | nuova funzione | FATTO | — | 7.999.41 | — | «gesto per il disappunto, non preoccuparti che si chiama golf» |
+| PO-083 | 27/09 17:31 | Clip Soccer Spin per la ruleta | nuova funzione | FATTO | — | 7.999.39 | `ruleta-test.mjs` (`__CPM_NO_RULETA39`) | «La ruleta (chiamata anche roulette, veronica o marsiglia)» |
+| PO-084 | 27/09 17:33 | Clip Scissor Kick per la sforbiciata | nuova funzione | FATTO (già presente) | — | mx-scissor-kick dal 23/09 (SCENE_DISEGNABILI.md) | — | «non so se la usiamo già, in teoria sforbita» |
+| PO-085 | 27/09 20:04 | Scene disegnabili, passo 1: censimento automatico di tutte le situations e azioni | ricerca | FATTO | — | commit e9355ae6 | tests/visual/censimento-scene.mjs | «SCENE DELL'EROE: SOLO CIÒ CHE IL 3D SA DISEGNARE». Risultato: 191 situations e 573 azioni |
+| PO-086 | 27/09 20:04 | Scene disegnabili, passi 2–5: campo `richiede`, registro dei gesti, sospensione e riattivazione automatica, guardiano | nuova funzione | APERTO | L5 | — | — | «nessuna scena deve promettere un gesto che il 3D non mostra». `__CPM_NO_RICHIEDE` non c'è nel sorgente |
+| PO-087 | 27/09 20:04 | Scene disegnabili: schede da riformulare | processo | IN ATTESA PO | L5 | — | — | SCENE_DISEGNABILI.md §6 «Schede da riformulare (proposta, serve la tua approvazione)» |
+| PO-088 | 27/09 20:04 | Scene disegnabili, passo 6: la scena nasce dal brain (proposta) | ricerca | FATTO (proposta scritta) | — | SCENE_DISEGNABILI.md §5 | — | «Ditemi come passereste dal "brain sceglie la scheda più simile" al "brain genera la scena"» |
+| PO-089 | 27/09 21:08 | Calendario sbagliato: amichevole della Nazionale durante l'Europeo | difetto | FATTO | — | 7.999.35 | — | «Calendario sbagliato» |
+| PO-090 | 27/09 21:08 | Risultato esagerato (Europeo, 7-1) | difetto | FATTO | — | 7.999.36 | — | «Risultato esagerato» |
+| PO-091 | 27/09 21:13 | Taccuino #150: fallo cercato non visibile | difetto | FATTO | — | 7.999.38 | `fallo-cercato-test.mjs` | «codice 009 — direzione sbagliata / codice 000 — gesto scoordinato» |
+| PO-092 | 27/09 21:13 | Taccuino #92: roulette con «esito bugiardo» | difetto | FATTO | — | 7.999.39 | `ruleta-test.mjs` | «codice 003 — esito bugiardo / codice 006 — reparto fermo» |
+| PO-093 | 27/09 21:13 | Taccuino #81: pallone lontano dall'eroe all'apertura della punizione | difetto | FATTO (non dimostrabile in headless) | — | 7.999.42 | punizione-apertura-sonda | «codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri» |
+| PO-094 | 27/09 21:13 | Taccuino #176, #64, #152, #99, #38: palla da biliardo o flipper, teletrasporto, esito bugiardo | difetto | PARZIALE | L1 | 7.999.39 («misurato e non ancora corretto») | — | «SALTO del pallone di 21.1 unità in 16 ms… sembra un teletrasporto»; «l'esito dichiarato è «intercept» ma la palla è finita IN RETE» |
+| PO-095 | 28/09 12:15 | Parte A: analisi critica di tutte le schermate e glossario unico | miglioramento | FATTO | — | 7.999.46, 7.999.49 | censimento-schermate.mjs, design-system | «Ogni schermata deve dire al giocatore solo ciò che gli serve, una volta sola, in un italiano corretto» |
+| PO-096 | 28/09 12:15 | Regola permanente: le direttive per Codex le scrive il team, il PO fa da tramite | processo | FATTO (in vigore) | — | — | — | «Le direttive al team Codex le scrivete sempre voi. Io faccio solo da tramite» |
+| PO-097 | 28/09 12:15 | Parte B: scheda e imbracatura per il collaudo massivo delle carriere con Codex | processo | FATTO | — | 7.999.43 | `career-critical` | «Codex deve giocare in automatico molte carriere complete» |
+| PO-098 | 28/09 13:41 | Archetipi: da 8 a 4 stili che cambiano il gioco; Enfant diventa un tratto di crescita | nuova funzione | APERTO | L6 | — | — | «Ridurre gli archetipi e dare a ciascuno un modo di giocare riconoscibile». `__CPM_NO_STILI` non c'è nel sorgente |
+| PO-099 | 28/09 15:29 | Codex può fare push sui rami `codex/` | processo | FATTO | — | rami codex/2026-09-2x-* | — | «sì, Codex può fare push su ramo codex/» |
+| PO-100 | 28/09 15:45 | Taccuino #3: eroe a centrocampo e corpo non rivolto alla porta | difetto | PARZIALE | L1 | 7.999.45, 7.999.53 (misura sul telefono) | `contatto-53` | «il corpo al tentativo di tiro / gol è posizionato nella direzione sbagliata». Nella rincorsa resta girato di 91–97° («non ancora corretto») |
+| PO-101 | 28/09 15:45 | Taccuino #56, #105, #27: il ritorno o la verticalizzazione va all'indietro | difetto | FATTO | — | 7.999.66 | `controllo-67` | «codice 012 — verticalizzazione all'indietro». Decisione PO 28/09: «Il ritorno non va indietro» |
+| PO-102 | 28/09 15:45 | Il portiere non si tuffa sulla punizione | difetto | FATTO | — | 7.999.62 | — | «Il portiere non si tuffa o la respinge»; 29/09 #78 «il portiere non si tuffa» |
+| PO-103 | 28/09 15:45 | Traiettoria del pallone invisibile: sparisce e ricompare in porta | difetto | FATTO | — | 7.999.62 | — | «non si vede la traiettoria del pallone, sparisce e ricompare in porta» (#13, anche il 29/09) |
+| PO-104 | 28/09 15:45 | Taccuino #90 e #80: tiro potente che sembra un colpo di testa; esito bugiardo | difetto | APERTO | L1 | 7.999.45: «non riprodotti» | — | «Conclusione potente ma sembra che vuole fare un colpo di testa»; «codice 003 — esito bugiardo» |
+| PO-105 | 28/09 18:39 | Festa di vittoria da rifare in 3D | miglioramento | FATTO | — | 7.999.47 | — | «La schermata di festeggiamento vittoria post partita è davvero brutto, andrebbe reingegnerizzato» |
+| PO-106 | 28/09 19:57 | Festa: tabellone casa–trasferta e coro col nome dell'eroe | miglioramento | FATTO | — | 7.999.48 | (`__CPM_NO_TAB48`) | «Il coro con il nome dell'eroe non c'è ancora… --> fai queste migliorie in coda» |
+| PO-107 | 28/09 20:25 | Tutte le revisioni delle schermate, non solo le prime 10 | miglioramento | FATTO | — | 7.999.49 | design-system | «Effettua tutte le revisioni alle schermate!»; «tutte le correzioni, non solo le 10!» |
+| PO-108 | 28/09 21:37 | Decisioni del questionario: crescita delle offerte applicata davvero, «La Scalata» conta solo il campionato | difetto | FATTO | — | 7.999.50 | — | questionario: «Applicarla davvero»; «La regola» |
+| PO-109 | 28/09 21:48 | Galà: momento 3D, solo i miei premi in cima, figurine anche piccole, niente eroe sul palco | miglioramento | FATTO | — | 7.999.51, 7.999.52 | — | «La cerimonia di gala non mi convince»; «Lascia perdere l'eroe nel gala 3D… Lascia solo i presentatori» |
+
+## 29/09
+
+| ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
+|---|---|---|---|---|---|---|---|---|
+| PO-110 | 29/09 05:20 | Carriera: «ultimo» ambiguo, 12 allenatori che non tornano, diario con la sola ultima stagione | difetto | FATTO | — | 7.999.53 | — | «Che si intende per ultimo?»; «Non sono 12, come mai?»; «C'è solo l'ultima stagione» |
+| PO-111 | 29/09 05:36 | Scroll interno per tutti i riquadri che ne hanno bisogno | miglioramento | FATTO | — | 7.999.55 (censimento di 66 riquadri) | — | «verifica se che anche tutti gli altri box dei vari tab ne hanno bisogno dell'eventuale scroll interno!» |
+| PO-112 | 29/09 05:40 | Analizzare il collaudo carriere di Codex (zero presenze, settimana ferma, reload che cambia i campi…) | difetto | APERTO | L6 | — | — | «metti in coda l'analisi dei collaudi di codex». Roadmap punto 10: «Da riprodurre con un nostro guardiano» |
+| PO-113 | 29/09 06:04 | Rigori poco leggibili: il tiratore non si vede, il portiere non si tuffa | difetto | FATTO | — | 7.999.58 | — | «I rigori non si vedono bene, non si vede il tiratore ed il portiere non si tuffa» |
+| PO-114 | 29/09 06:18 | In Nazionale il mister non cambia | difetto | FATTO | — | 7.999.55 | `ct-54` | «il mister non cambia in nazionale, c'è sicuramente un bug!» |
+| PO-115 | 29/09 06:21 | Avanzamento perso col background durante o dopo la partita | difetto | FATTO | — | 7.999.55 | `ripresa-55` | «Si perde l'avanzamento / non salva se metto l'app in background» |
+| PO-116 | 29/09 06:26 | Tornati i giocatori in T-pose, non corrono | difetto | FATTO | — | 7.999.56 | — | «Sono ritornati in T pose e non corrono i giocatori in 3D!»; taccuino #110 «T pose!!!» |
+| PO-117 | 29/09 06:24 | Nella festa l'eroe resta congelato | difetto | FATTO | — | 7.999.57 | — | «Scena sballata, l'eroe rimane freezato per un po'» |
+| PO-118 | 29/09 07:16 | Plugin utili: installare Design; Kobiton scartato perché a pagamento | ricerca | Non posso confermarlo | — | — | — | «installa questi plugin Design (Anthropic)…»; «lasciamo perdere kobiton, è a pagamento» |
+| PO-119 | 29/09 07:40 | Angolo: il pallone rimbalza prima del tiro; il cross non parte da un compagno | difetto | FATTO | — | 7.999.60 | — | «codice 001 — apertura scena, la palla rimbalza prima del tiro»; «il cross non parte dal compagno» |
+| PO-120 | 29/09 07:40 | Al tiro il corpo non guarda la porta (#167, #154, #112) | difetto | PARZIALE | L1 | 7.999.53 (misura), 7.999.79, 7.999.81 | `contatto-53`, `taccuino-81` | «Al momento del tiro non è rivolto verso la porta»; 30/09 «149° — MISURATO girato». Non riprodotto in headless |
+| PO-121 | 29/09 12:24 | Festa 3D con l'eroe tutto accartocciato | difetto | FATTO | — | 7.999.61 | — | «Il festeggiamento post partita in 3D usa un'animazione totalmente scoordinata» |
+| PO-122 | 29/09 12:23 | Pannello statistiche e pagelle: stessa altezza, niente sovrapposizione alla porta, non troppo alto | difetto | FATTO | — | 7.999.61, 7.999.64 | `pannello-61` | «Altezza e posizione tra pagelle e statistiche differenti»; «evita che il pannello si sovrapponga alla porta»; «Posizione troppo alta» |
+| PO-123 | 29/09 13:26 | Collaudo spinto di Codex su tutti gli highlight, con appunti come quelli del PO | processo | PARZIALE | L1 | rapporti Codex del 30/09: 32 casi mirati, 5 combinazioni su 1146, 30 casi per famiglia | — | «possiamo far rifare un collaudo spinto con codex di tutti gli highlights 3D» |
+| PO-124 | 29/09 13:53 | Volée calciata con il pallone a terra | difetto | FATTO | — | 7.999.63 | — | «Il rito non è sincronizzato con la velocità del cross» (#9) |
+| PO-125 | 29/09 16:23 | Poco da allenarsi dopo un'eliminazione (coppe, Nazionale) | miglioramento | PARZIALE | L6 | 7.999.64 (corretti solo i testi) | `elim-64` | «C'è poco da allenarsi dopo un'eliminazione dalle coppe / tornei con la nazionale» |
+| PO-126 | 29/09 16:27 | Interazioni che scattano anche in panchina e grafica sovrapposta | difetto | FATTO | — | 7.999.64 | `panca-64` | «Scattano le Interazioni anche sono in panchina» |
+| PO-127 | 29/09 18:02 | #74: a inizio scena si vedono le tribune da dietro | difetto | APERTO | L1 | roadmap: «Restano… #74 (tribune da dietro)» | — | «Si vedono le tribune da dietro ad inizio scena» |
+| PO-128 | 29/09 18:02 | #107, #118: il passaggio dell'eroe si gioca due volte (palla flipper) | difetto | FATTO | — | 7.999.65 | `passaggio-65` | «codice 014 — palla flipper» / «012 — verticalizzazione all'indietro» |
+| PO-129 | 29/09 21:15 | Testi della sala stampa poco leggibili | difetto | FATTO | — | 7.999.67 | — | «Migliora un po', alcuni testi sopra non si leggono bene» |
+| PO-130 | 29/09 22:04 | Rigore: il portiere non è sulla linea | difetto | FATTO | — | 7.999.68 | `rigore-69` | «il portiere non è sulla linea» (#58) |
+| PO-131 | 29/09 22:04 | #110: tiro murato, portiere fuori tempo | difetto | FATTO | — | 7.999.72 | `muro-70` | «codice 111 — portiere fuori tempo» |
+| PO-132 | 29/09 22:04 | #134: sfida aerea con apertura scena sbagliata e reparto fermo | difetto | APERTO | L1 | 7.999.72: «NON riprodotta» | — | «codice 001 — apertura scena / codice 006 — reparto fermo». Rilevata anche da Codex il 30/09 |
+| PO-133 | 29/09 22:47 | Dopo gli stadi, valutare la consegna parziale di Codex sugli highlight | processo | PARZIALE | L1 | 7.999.69 (corretta solo la chiamata waitForFunction) | — | «in coda agli stadi valuta i risu[ltati]» |
+
+## 30/09
+
+| ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
+|---|---|---|---|---|---|---|---|---|
+| PO-134 | 30/09 05:31 | Collaudo mirato di Codex sugli highlight (7.999.61): codici 001, 002, 003 | difetto | FATTO | — | 7.999.70, 7.999.72, 7.999.73 | `conduzione-70`, `pannello-72`, `barriera-73` | «collaudo mirato highlight codex, metti in coda» |
+| PO-135 | 30/09 10:28 | Nella festa l'eroe vola: deve correre o camminare, con i piedi a terra | difetto | FATTO | — | 7.999.75, 7.999.77, 7.999.80 | `volo-75` | «L'eroe vola, dovrebbe correre o camminare»; 16:58 «continua a volare con le braccia alzate» |
+| PO-136 | 30/09 12:26 | Cerimonie, Parte 1: braccia e mani del mister storte nelle feste | difetto | FATTO | — | 7.999.78 | `mister-77` (`__CPM_NO_BRACCIA77`) | «Nelle feste 3D il mister ha braccia e mani storte, incrociate tra loro» |
+| PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
+| PO-138 | 30/09 12:38 | Intervista: «prima vittoria casalinga» falsa | difetto | FATTO | — | 7.999.77 | impulsi-contesto | «Assolutamente falso, non è la prima vittoria casalinga» |
+| PO-139 | 30/09 12:39 | Statistiche con lo scroll: mostrarle tutte | miglioramento | FATTO | — | 7.999.77 | `stat-77` | «Brutte le statistiche con lo Scroll, le mostrerei tutte» |
+| PO-140 | 30/09 12:47 | Difficoltà sbilanciata, troppe goleade | difetto | FATTO (da ricollaudare) | — | 7.999.82 | `brain-82`, `goleade` | «Secondo me difficoltà sbilanciata, troppe goleade». Decisione PO 18:41: «Realismo da serie A» |
+| PO-141 | 30/09 12:52 | Grafica degli highlight: racconto delle azioni, D-pad, movimenti, scelta, esiti | miglioramento | FATTO | — | 7.999.83 | `hl-94` (`__CPM_NO_HL94`) | «migliora la grafica negli highlights del racconto azioni, D-Pad, movimenti, scelta azioni, esiti» |
+| PO-142 | 30/09 15:34 | Taccuino #151 (ribattuta) e #5 (rigore «all'incrocio» calciato centrale) | difetto | FATTO | — | 7.999.79 | (`__CPM_NO_STILE79`, `__CPM_NO_AVANTI78`) | «L'eroe entra troppo nella porta»; «non era potente all'incrocio ma centrale» |
+| PO-143 | 30/09 15:34 | Taccuino #18, #126, #64, #140: dribbling fasullo, esiti in rete, pallone che arretra | difetto | APERTO | L1 | 7.999.79: «Non riprodotti» / «da giudicare a video» | — | «Non era un dribbling»; «Azione confusionaria con colpo di testa non sincronizzato»; «Ha fatto una sorta di colpo di testa, scena strana» |
+| PO-144 | 30/09 15:34 | Codice 007: la camera salta di 2,5 u a 4,2 s | difetto | APERTO | L1 | 7.999.79, 7.999.81: «sospetto strumento, in coda» | — | bozza: «codice 007 — la CAMERA salta: passo di 2.5 unità… a 4.2s» |
+| PO-145 | 30/09 16:58 | Pannello statistiche e pagelle più lungo | miglioramento | FATTO | — | 7.999.80 | (`__CPM_NO_LUNGO80`) | «Il pannello statistiche e pagelle deve essere più lungo» |
+| PO-146 | 30/09 16:58 | #185: non si vede il difensore che ruba o mura il passaggio | difetto | APERTO | L1 | 7.999.80 (correzione provata e RITIRATA) | — | «Non si vede che il difensore ruba o mura il passaggio» |
+| PO-147 | 30/09 16:58 | #38: dai e vai con codici 005, 014, 012, 011 | difetto | APERTO | L1 | 7.999.80: «misurati, in coda» | — | «codice 005 — palla da biliardo / 014 — palla flipper / 012… / 011 — palla congelata» |
+| PO-148 | 30/09 16:58 | #112: la bozza scambia il tiro per un dribbling | difetto | FATTO | — | 7.999.81 | `taccuino-81` | «nel dribbling il pallone e l'eroe si separano: gap oltre 4 unità per 1.5s» |
+| PO-149 | 30/09 18:36 | succRate calcolato dal brain, unico cervello del gioco | debito tecnico | FATTO | — | 7.999.82 | `brain-82`, `motore-unico` | «succRate deve essere calcolato da brain, deve essere l'unico cervello / motore del gioco» |
+| PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
+| PO-151 | 30/09 20:03 | Collaudo Codex per famiglie (7.999.69): scene difensive 33, 133, 138, 168, 134 con codici 001, 002, 003 | difetto | PARZIALE | L1 | 7.999.74 (eroe in quadro su 138, 133, 33, 146) | `hero-in-frame` | rapporto: «001 apertura scena 9 casi… 002 eroe fuori posizione 7… 003 esito bugiardo 6». Restano aperti la taglia dell'eroe (0,090 contro 0,11), la scena 134 non riprodotta e la 168 senza nessuna release |
+| PO-152 | 30/09 20:10 | Nuovo collaudo Codex «Difesa 3D» sulla 7.999.82 | processo | IN CORSO (prompt pronto, da incollare in Codex) | L1 | prompt pronto nella 7.999.83 | — | questionario: «Difesa 3D su 7.999.82 (Recommended)» → `reports/codex/PROMPT-2026-09-30-collaudo-difesa-3d.md`, da incollare in Codex |
+| PO-153 | 30/09 20:56 | Sistemi di carriera, fase 1: diagnosi misurata con la scheda Codex estesa | ricerca | APERTO | L6 | — | — | «Estendete la scheda di collaudo carriere per Codex con queste metriche» |
+| PO-154 | 30/09 20:56 | Impulsi ed eventi: contesto, conseguenze nel tempo, memoria e catene | miglioramento | IN ATTESA PO (serve prima la fase 1) | L6 | — | — | «46 impulsi su 112 non hanno condizioni… Nessun impulso ha memoria» |
+| PO-155 | 30/09 20:56 | Nazionale per finestre internazionali, qualificazioni, CT e convocati | miglioramento | IN ATTESA PO | L6 | — | — | «La convocazione è un tiro di dado settimanale… Sono segni di un sistema rattoppato» |
+| PO-156 | 30/09 20:56 | Difficoltà unica tarata sulla carriera intera (gavetta, affermazione, élite, declino) | miglioramento | IN ATTESA PO | L6 | — | — | «decisione del PO: UNICA, nessun selettore di difficoltà, né ora né in futuro» |
+| PO-157 | 30/09 20:56 | Economia e Ufficio con effetto reale; mondo vivo e pressione del club | miglioramento | IN ATTESA PO | L6 | — | — | «dare un effetto reale e visibile a ciò che resta, oppure togliere o accorpare» |
+| PO-158 | 30/09 21:10 | Governo A1: BACKLOG.md con id PO-…, riconciliazione iniziale e a ogni lotto | processo | IN CORSO (bozza in `docs/governo/`) | L0 | — | — | «ricostruite il backlog da tutti i prompt che vi ho mandato finora». Il `BACKLOG.md` alla radice è quello vecchio (BL-xx, stato 5.39) |
+| PO-159 | 30/09 21:10 | Governo A2: triage di ogni richiesta (bloccante, difetto, miglioramento, conflitto) | processo | IN CORSO (bozza in `docs/governo/`) | L0 | — | — | «Ogni nuova richiesta o segnalazione di collaudo si classifica entro la vostra risposta successiva» |
+| PO-160 | 30/09 21:10 | Governo A3: ROADMAP.md a lotti con le priorità del PO; al massimo un lotto in corso | processo | IN CORSO (bozza in `docs/governo/`) | L0 | — | — | «File ROADMAP.md: le voci del backlog raggruppate in lotti (epiche)» |
+| PO-161 | 30/09 21:10 | Governo A4: definizione di «pronto» e di «fatto» | processo | IN CORSO (bozza in `docs/governo/`) | L0 | — | — | «Fatto (si può chiudere): criteri di accettazione soddisfatti e misurati…» |
+| PO-162 | 30/09 21:10 | Governo A5: release di lotto, nota per il PO, tag git per ogni release | processo | IN CORSO (bozza in `docs/governo/`) | L0 | — | — | «Punto di ritorno: tag git per ogni release» |
+| PO-163 | 30/09 21:10 | Governo A6: una sola suite di non regressione (`npm run ci`) e indicatori di stabilità | processo | IN CORSO (bozza in `docs/governo/`) | L0 | — | — | «elencatemi cosa copre oggi e cosa manca» |
+| PO-164 | 30/09 21:10 | Governo A7: architettura in una pagina, registro del debito tecnico, DECISIONI.md | processo | IN CORSO (bozza in `docs/governo/`) | L0 | — | — | «Registro delle decisioni (DECISIONI.md)… Includete le decisioni già prese dal PO» |
+| PO-165 | 30/09 21:10 | Governo A8–A9: registro dei rischi e stato settimanale per il PO | processo | IN CORSO (bozza in `docs/governo/`) | L0 | — | — | «Una volta a settimana, una pagina» |
+| PO-166 | 30/09 21:10 | Governo A10–A11: questionario guidato registrato in DECISIONI.md; ogni risposta apre con la riga del lotto | processo | IN CORSO (bozza in `docs/governo/`) | L0 | — | — | «Ogni vostra risposta comincia con… "Lotto in corso: …"» |
+| PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
+| PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
+
+## Voci aperte da prima o dichiarate aperte nella roadmap (non sono prompt del PO)
+
+| ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
+|---|---|---|---|---|---|---|---|---|
+| PO-169 | 23/09 | Volti femminili assenti dal catalogo delle figurine (giornaliste senza volto) | difetto | APERTO | L7 | — | — | roadmap «Dove siamo»: «volti femminili assenti nel catalogo» |
+| PO-170 | 23/09 | Diritti dei ritratti AI | ricerca | APERTO | L0 | — | — | roadmap: «Ancora aperto: diritti dei ritratti AI (non verificabili da me)» |
+| PO-171 | 23/09 | Via CH38 ovunque (cerimonie, ritratto dei menu, download), corpi caricati in anticipo | debito tecnico | PARZIALE | L4 | highlight senza CH38; 7.999.59 | — | decisioni PO 23/09 punti 3–4. Cerimonie: la panchina è procedurale (7.999.78); il prompt del 30/09 cita ancora corpi CH38 per panchina e bambini |
+| PO-172 | 27/09 | Rilievi Codex sulle release 7.999.26–27 (26-A…27-B) da riprodurre | difetto | APERTO | L1 | — | — | roadmap: «6 rischi, nessuno riprodotto» |
+| PO-173 | 27/09 | Test instabili da stabilizzare (`cartellino`, `passo-velocita`, `gesture-window`, `tiro-caricato`) | debito tecnico | PARZIALE | L4 | 7.999.40 (cartellino), 7.999.38 (gesture-window) | — | roadmap punto 6b |

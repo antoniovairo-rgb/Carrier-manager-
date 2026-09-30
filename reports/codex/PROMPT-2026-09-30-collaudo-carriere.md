@@ -1,8 +1,16 @@
 # Prompt per Codex — Collaudo carriere lunghe (varietà, coerenza, conseguenze, nazionale, difficoltà, economia)
 
-Scheda nuova: una «scheda collaudo carriere» precedente **non esiste** nel repo (`docs/codex/SCHEDE.md` ha
-solo le schede 0, 1 e 2). Questa la sostituisce e copre il prompt PO «La carriera fuori dal campo» del 30/09.
-Solo misura: nessuna proposta di codice, nessuna modifica al gioco.
+Scheda **estesa**: unisce la Parte B del prompt PO del 28/09 («collaudo massivo delle carriere affidato a
+Codex») e le metriche del prompt PO «La carriera fuori dal campo» del 30/09. La scheda del 28/09 non era
+stata salvata nel repo (`docs/codex/SCHEDE.md` ha solo le schede 0, 1 e 2): questa è la versione unica.
+Solo misura: nessuna proposta di codice, nessuna modifica al gioco né ai test esistenti. La partita si
+**simula**, il 3D non si usa.
+
+## 0. Avvio e verifiche iniziali
+- Controlla `GAME_VERSION` in `src/07-versione-save-interviste.jsx`: se non è quella dichiarata sotto, **fermati** e dillo.
+- `cd tests/visual && npm install`; Chromium locale via `CPM_CHROME`.
+- Il gioco si apre con `?cpmtest=1` (harness `openMatch`/`startServer`), corpi 3D spenti (`window.__CPM_GLB=false`).
+- Prima di tutto una carriera di prova di 2 stagioni: se `step()` si blocca (pop-up, scelta, torneo della nazionale), annota dove e usa `resolveOpening()`/`forceOffer()`/`patch()` per proseguire, **dichiarando** ogni intervento.
 
 ## Base
 - Ramo `main`, ultimo commit (dichiaralo nel rapporto; alla stesura: CPM 7.999.83).
@@ -17,12 +25,26 @@ Harness: `tests/visual/lib/harness.mjs` (`startServer`, `launchBrowser`, `instal
 Ambiente: `CPM_CHROME` sul Chromium locale; mai `npx playwright install`.
 
 ## Campione
-- **60 carriere × 10 stagioni** (se il tempo non basta: 30 × 10, dichiaralo).
-- Combinazioni, bilanciate: 3 ruoli (attaccante, centrocampista, difensore) × 3 punti di partenza
-  (nazione/club di prestigio basso, medio, alto) × 2 stili di scelta negli impulsi (sempre la prima opzione;
-  scelta casuale seedata) — più 6 carriere «giocate male» (scelte peggiori, partite perse) come controllo.
-- Seed dichiarati; ogni carriera rieseguibile.
-- Pagina nuova per ogni carriera.
+- **60 carriere × 10 stagioni** più **6 carriere fino al ritiro** (se il tempo non basta: 30 × 10, dichiaralo).
+- Matrice, bilanciata:
+  - ruolo: difensore, centrocampista, attaccante (portiere solo se il gioco lo prevede: verificalo e dillo);
+  - partenza: Primavera/provini, club piccolo, medio, di vertice;
+  - campionato: almeno 5 dei 9;
+  - stile delle scelte (offerte, interviste, impulsi): prudente, ambizioso, casuale seedato;
+  - andamento: 6 carriere «deboli» di controllo (scelte peggiori), e carriere con infortuni.
+- Semi dichiarati; ogni carriera rieseguibile. Pagina nuova per ogni carriera.
+
+## Invarianti da controllare ogni settimana o stagione (ogni violazione = anomalia)
+- Classifica azzerata a inizio stagione; V+N+P = partite giocate; punti = 3V+N; calendario senza doppioni né buchi, andata e ritorno.
+- Promozioni/retrocessioni corrette; il club dell'eroe nel campionato giusto la stagione dopo.
+- Età, contratto, stipendio, banca, valore mai negativi, mai `NaN`/`undefined`.
+- Attributi dentro i limiti; crescita e declino plausibili con l'età.
+- Ruolo nella rosa coerente con minutaggio e forma.
+- Trasferimenti coerenti (club, campionato, compagni, mister aggiornati).
+- Nazionale: tornei che si chiudono; presenze che crescono solo con partite giocate.
+- Premi di fine stagione coerenti con le statistiche.
+- Salvataggio e ricaricamento a metà carriera (`snapshot()`, ricarica pagina, confronto campo per campo): nessun dato perso o cambiato.
+- Regressioni già segnalate dal collaudo del 29/09: presenze in nazionale a zero, settimana che non avanza, campi che cambiano dopo il ricaricamento — ricontrollale esplicitamente.
 
 ## Metriche
 
@@ -71,8 +93,14 @@ Errori JavaScript (`pageerror`, `console.error`) raccolti in ogni carriera; carr
 (settimana che non avanza per 3 `step()` di fila); salvataggi falliti.
 
 ## Rapporto
-`reports/codex/2026-10-collaudo-carriere.md`: una sezione per metrica, tabelle, i 10 problemi più gravi con
-il comando per riprodurli. Dati grezzi compressi in `tests/codex/collaudo-carriere.json.gz`.
+`reports/codex/2026-10-collaudo-carriere.md`, riportato anche come risposta finale del task.
+In apertura: cosa è stato eseguito davvero e cosa no, le 10 anomalie più gravi, i 5 miglioramenti più utili.
+Per ogni anomalia: seme, carriera, stagione, settimana, cosa è successo, cosa ci si aspettava, gravità,
+«verificata» o «ipotesi», comando per riprodurla. Una sezione per ogni metrica, con tabelle.
+Dati grezzi compressi in `tests/codex/collaudo-carriere.json.gz`.
+
+## Limiti
+Durata massima 3 ore. Se un comando fallisce: riportalo e passa oltre, mai inventare risultati.
 
 ## Regole
 Italiano. Non inventare: dove non si può misurare, «non verificato». Nessuna conclusione su FPS o
