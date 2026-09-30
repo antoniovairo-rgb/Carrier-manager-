@@ -226,7 +226,9 @@
     "pali-69": "node pali-69.mjs",
     "galleria-stadi": "node galleria-stadi.mjs",
     "stadi-70": "node stadi-70.mjs",
-    "conduzione-70": "node conduzione-70.mjs"
+    "conduzione-70": "node conduzione-70.mjs",
+    "muro-70": "node muro-70.mjs",
+    "pannello-72": "node pannello-72.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

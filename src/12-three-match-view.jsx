@@ -4337,6 +4337,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            let _tx83=_wide83?(AWAY_GOAL_X+2.5):_lossK83?clamp(Math.min(10,Math.max(ballArcTgtX!=null?ballArcTgtX:ball.position.x,-4.8)),(sr.current._lossAx403!=null?sr.current._lossAx403:ball.position.x)-9,(sr.current._lossAx403!=null?sr.current._lossAx403:ball.position.x)+9)/* [7.403.0 collaudo PO gi71 «finta non sincronizzata» · gi123 «passaggio all'indietro senza senso»] LA PALLA PERSA RESTA DOV'E' STATA PERSA. Il tetto di centrocampo (7.115) valeva da QUALUNQUE distanza: un dribbling perso a x 36 rotolava all'indietro di 25,6 unita' fino a x 10 mentre l'eroe correva avanti — misurato. L'avversario vince il pallone sul punto del contrasto: l'assestamento non si allontana piu' di 9 unita' dal PUNTO DI PERDITA, catturato UNA volta all'avvio della perdita — relativo alla palla del fotogramma corrente sarebbe il cricchetto rovesciato del 7.397, che regala 9 unita' a fotogramma (misurato: primo tentativo cosi', ritracciamento identico). */:(_sf83||P.hlType==="cross")?(AWAY_GOAL_X-7):Math.min(AWAY_GOAL_X-7,G2X(clamp((P.playerX||50)+16,52,74)));// clamp a game-x≥45.2: il check final-state pretende gx≥45 sui "miss" · [7.115.0 audit · fix E4] CAP superiore (world +10 ≈ centrocampo/trequarti): una PERDITA di possesso (intercetto/dispossessed su lancio profondo) non si assesta più nel terzo avversario («palla nostra vicino alla loro porta dopo un pallone perso») — l'avversario che vince palla la riporta indietro · [7.247.0 gi37 «troppo distante il tiro»/«non si vede il portiere»] il pull fino a x86 vale SOLO per le CONCLUSIONI (tiro/testa/set-piece/cross, dove la palla è già lì): un «miss» ambiguo di corsa/passaggio (taglio, sponda) si assesta a +16 dal punto d'azione (52-74) — prima rotolava 40 unità fin quasi alla porta e leggeva come un tiro siderale con GK immobile
            /* [7.999.23 appunti PO «014 palla flipper» + «012 verticalizzazione all'indietro»] su un passaggio INTERCETTATO da un difensore vero (7.999.10) il pallone restava a scivolare fino a 9 unita' verso la nostra meta' (tetto x 10 del 7.403): ora si ferma ai piedi dell'intercettatore, sul punto del taglio. Stesso scivolamento misurato sul filtrante in FUORIGIOCO (8 u indietro): il pallone resta dove si e' fermato, da li' si batte la punizione. Rosso __CPM_NO_FILTR23 */
            if(!(typeof window!=='undefined'&&window.__CPM_NO_FILTR23)){if(P.hlOutcomeKind==='intercepted'&&sr.current._int10&&sr.current._int10.m)_tx83=sr.current._int10.m.position.x;else if(P.hlOutcomeKind==='offside'&&P.hlType==='pass')_tx83=ball.position.x;}try{if(typeof window!=='undefined'&&window.__CPM_FILTR23!==undefined)window.__CPM_FILTR23={k:P.hlOutcomeKind||null,int:!!(sr.current._int10&&sr.current._int10.m),ht:P.hlType||null,tx:+_tx83.toFixed(1),loss:_lossK83?1:0};}catch(_e){}
+           /* [7.999.72 taccuino PO #110 «Faccio il velo e attacco» → murato, codice 111 «portiere fuori tempo». Rosso __CPM_NO_MURO70]
+              Per ogni conclusione rimasta in campo il pallone si assestava a AWAY_GOAL_X-7 (x 39, dentro l'area): giusto su una
+              parata, sbagliato su un tiro MURATO da un difensore 27u prima — misurato: il pallone risaliva da x 21 a 38,6 verso la
+              porta mentre il portiere restava immobile, e al PO leggeva come un portiere fuori tempo. Ora il murato si assesta dove
+              e' stato murato, 3u indietro. */
+           {const _blk70=!(typeof window!=='undefined'&&window.__CPM_NO_MURO70)&&_sf83&&!_wide83&&!P.hlDef&&(P.hlOutcomeKind==="blocked"||P.hlOutcomeKind==="wall_blocked"||P.hlOutcomeKind==="intercepted");
+            if(_blk70){if(sr.current._blkK70!==P.hlSitKey){sr.current._blkK70=P.hlSitKey;sr.current._blkX70=ball.position.x;}_tx83=Math.min(_tx83,sr.current._blkX70-3);}}
            if(!P.hlDef)ball.position.x+=(_tx83-ball.position.x)*Math.min(aDt*1.6,1);
            /* [7.533.0 MP-0e — indagine 003, ipotesi H3] IL «FUORI» ESCE DALLO SPECCHIO: il settle del tiro
               wide/out/corner porta la x oltre la linea (AWAY_GOAL_X+2.5 ≈ 48,5) ma lasciava la z dov'era
@@ -10481,6 +10488,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
       if(_toonOn941())_toonPassa941(scene);/* [7.941] i corpi entrano in scena a partita in corso: si converte cio' che e' nuovo, una volta sola per mesh */
       {const _pr=sr.current._presaRev;/* [22/09 POC — IL POSSESSO DOPO LA PRESA, solo review] Finito l'arco un altro scrittore riportava la palla a terra (0,22 m) mentre il portiere aveva le mani a 1,2 m. Dopo il contatto la palla segue il punto medio delle mani fino al cambio di scena. Rosso __CPM_NO_PRESA (il canale non si arma). */if(_pr&&_pr.held&&isResult&&_pr.sit===String((propsRef.current&&propsRef.current.hlSitKey)||'')){try{const _ka=(glbAvatars||[]).find(a=>a&&a.proc===_pr.proc);if(_ka&&_ka._handL&&_ka._handR){const _l=sr.current._gkHandL||(sr.current._gkHandL=new THREE.Vector3()),_r=sr.current._gkHandR||(sr.current._gkHandR=new THREE.Vector3());_ka._handL.getWorldPosition(_l);_ka._handR.getWorldPosition(_r);ball.position.set((_l.x+_r.x)*0.5,(_l.y+_r.y)*0.5,(_l.z+_r.z)*0.5);}}catch(_ePr){}}}
       if(sr.current._soHold58&&propsRef.current&&propsRef.current.shootout&&sr.current.ball){sr.current.ball.position.set(35,0.35,0);}/* [7.999.58] l'ultima parola prima del disegno: pallone sul dischetto fino al calcio */
+      /* [7.999.72 collaudo Codex 001/002, gi31 «Scivolata netta»: nella scelta i protagonisti stanno sotto il pannello delle azioni.
+         Rosso __CPM_NO_PAN72] Misurato: pallone a y 746-755 px, pulsanti da 736 px. La camera non sa del pannello (DOM di LiveMatch,
+         ~35% basso del quadro). Solo in hl_choose: se il pallone cade sotto ndc -0,30 la FINESTRA di proiezione scorre in basso
+         (setViewOffset) finche' torna a -0,20 — l'azione sale nel quadro senza muovere la camera ne' cambiare la taglia. Graduale,
+         tetto 22% dell'altezza, torna a zero fuori dalla scelta. */
+      try{const _ph72=propsRef.current&&propsRef.current.matchPhase,_R72=sr.current;
+        const _sz72=(_R72._sz72||(_R72._sz72=new THREE.Vector2()));renderer.getSize(_sz72);const _H72=_sz72.y||1;
+        let _tg72=0;
+        if(_ph72==="hl_choose"&&ball&&!(typeof window!=='undefined'&&window.__CPM_NO_PAN72)){
+          const _v72=(_R72._v72||(_R72._v72=new THREE.Vector3()));_v72.copy(ball.position).project(camera);
+          const _base72=_v72.y-2*(_R72._vo72||0)/_H72;/* ndc senza lo spostamento in corso */
+          if(_v72.z<1&&_base72<-0.30)_tg72=Math.min(0.22*_H72,((-0.20)-_base72)/2*_H72);}
+        const _cur72=(_R72._vo72||0)+(_tg72-(_R72._vo72||0))*Math.min((dt||0.016)*4,1);_R72._vo72=_cur72;
+        if(Math.abs(_cur72)>0.5){camera.setViewOffset(_sz72.x,_H72,0,_cur72,_sz72.x,_H72);_R72._voOn72=1;}
+        else if(_R72._voOn72){camera.clearViewOffset();_R72._voOn72=0;_R72._vo72=0;}
+        if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){window.__CPM_PAN72={ph:_ph72||null,off:+_cur72.toFixed(1),H:_H72};}
+      }catch(_e72){}
       renderer.render(scene,camera);
     };
     loop();
