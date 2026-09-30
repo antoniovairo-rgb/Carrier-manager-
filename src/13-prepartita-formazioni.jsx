@@ -25,9 +25,23 @@
 /* ========================================
    D-PAD  (W/↑ = avanti) — pulsanti grandi
 ======================================== */
-function DPad({onMove,dark=false,size=42}){
+function DPad({onMove,dark=false,size=42,v94=false,mosse=null}){
   const SZ=size;
-  const btn=(lbl,dx,dy)=>(
+  /* [7.999.83 #94 — «migliora la grafica degli highlight: D-Pad»] con v94 (solo la scheda del movimento mobile) le
+     frecce sono chevron disegnati invece dei triangoli di testo, il tasto premuto si illumina per 160 ms e al centro
+     c'e' il numero di mosse rimaste al posto del puntino. Senza v94 il pad e' quello di prima. Rosso __CPM_NO_HL94. */
+  const [prem94,setPrem94]=React.useState(null);
+  const _ch94=(r)=>(<svg width={Math.round(SZ*0.42)} height={Math.round(SZ*0.42)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{transform:"rotate("+r+"deg)"}}><path d="M6 15l6-6 6 6"></path></svg>);
+  const _ic94={"▲":0,"▶":90,"▼":180,"◀":270};
+  const btn=(lbl,dx,dy)=>v94?(
+    <button aria-label={lbl} onPointerDown={e=>{e.preventDefault();setPrem94(lbl);setTimeout(()=>setPrem94(p=>p===lbl?null:p),160);onMove(dx,dy);}}
+      style={{width:SZ,height:SZ,borderRadius:RAD.sm,background:prem94===lbl?"linear-gradient(180deg,rgba(167,139,250,0.55),rgba(124,58,237,0.45))":"linear-gradient(180deg,rgba(64,78,110,0.95),rgba(40,52,78,0.95))",
+        border:"1px solid "+(prem94===lbl?"rgba(221,214,254,0.9)":"rgba(196,181,253,0.38)"),color:"#ede9fe",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+        userSelect:"none",WebkitUserSelect:"none",touchAction:"none",padding:0,transform:prem94===lbl?"scale(0.94)":"none",transition:"transform .08s, background .12s",
+        boxShadow:"inset 0 1px 0 rgba(255,255,255,0.10), 0 2px 6px rgba(0,0,0,0.35)"}}>
+      {_ch94(_ic94[lbl])}
+    </button>
+  ):(
     <button onPointerDown={e=>{e.preventDefault();onMove(dx,dy);}}
       style={{width:SZ,height:SZ,borderRadius:RAD.sm,
         background:dark?"linear-gradient(180deg,rgba(51,65,92,0.92),rgba(34,45,68,0.92))":"rgba(30,42,60,0.08)",/* [7.919 collaudo PO «renderei un po' piu' chiari gli sfondi delle statistiche, del dpad e delle azioni»] il tasto scuro era quasi nero (0,52 di nero su fondo scuro): si vedeva il bordo, non il tasto */
@@ -43,7 +57,7 @@ function DPad({onMove,dark=false,size=42}){
   return(
     <div style={{display:"grid",gridTemplateColumns:`${SZ}px ${SZ}px ${SZ}px`,gridTemplateRows:`${SZ}px ${SZ}px ${SZ}px`,gap:4,userSelect:"none",flexShrink:0}}>
       <div/>{btn("▲",+2.5,0)}<div/>
-      {btn("◀",0,-2.5)}<div style={{display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:7,height:7,borderRadius:"50%",background:dark?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.1)"}}/></div>{btn("▶",0,+2.5)}
+      {btn("◀",0,-2.5)}<div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>{v94&&mosse!=null?<div data-cpm="dpad-mosse" style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1}}><span style={{fontSize:FS.bodyLg,fontWeight:900,color:"#ede9fe",fontVariantNumeric:"tabular-nums"}}>{mosse}</span><span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:.3,color:"rgba(196,181,253,0.85)",marginTop:1}}>{mosse===1?"mossa":"mosse"}</span></div>:<div style={{width:7,height:7,borderRadius:"50%",background:dark?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.1)"}}/>}</div>{btn("▶",0,+2.5)}
       <div/>{btn("▼",-2.5,0)}<div/>
     </div>
   );
