@@ -1,0 +1,79 @@
+{
+  "command": "node tests/codex/highlight-mirato-audit.mjs",
+  "version": "7.999.61",
+  "planned": 32,
+  "complete": 32,
+  "reviewed": 32,
+  "images": 192,
+  "acquisitions": 40,
+  "allPhaseImages": 240,
+  "additionalOpeningImages": 0,
+  "counterproofs": 8,
+  "missingFiles": [],
+  "changedDuringScreenshot": [],
+  "notReady": [],
+  "notExited": [],
+  "notReviewed": [],
+  "blackOpening": [],
+  "originalBlackOpening": [
+    {
+      "key": "6:0:fail",
+      "ratio": 1,
+      "file": "reports/codex/highlight-mirato/gi6-a0-fail-v2-01-apertura.png"
+    },
+    {
+      "key": "16:0:success",
+      "ratio": 1,
+      "file": "reports/codex/highlight-mirato/gi16-a0-success-v2-01-apertura.png"
+    },
+    {
+      "key": "16:0:fail",
+      "ratio": 1,
+      "file": "reports/codex/highlight-mirato/gi16-a0-fail-v2-01-apertura.png"
+    },
+    {
+      "key": "25:0:success",
+      "ratio": 1,
+      "file": "reports/codex/highlight-mirato/gi25-a0-success-v2-01-apertura.png"
+    },
+    {
+      "key": "25:0:fail",
+      "ratio": 1,
+      "file": "reports/codex/highlight-mirato/gi25-a0-fail-v2-01-apertura.png"
+    },
+    {
+      "key": "31:0:success",
+      "ratio": 1,
+      "file": "reports/codex/highlight-mirato/gi31-a0-success-v2-01-apertura.png"
+    },
+    {
+      "key": "7:0:fail",
+      "ratio": 1,
+      "file": "reports/codex/highlight-mirato/gi7-a0-fail-v2-01-apertura.png"
+    },
+    {
+      "key": "64:0:success",
+      "ratio": 1,
+      "file": "reports/codex/highlight-mirato/gi64-a0-success-v2-01-apertura.png"
+    }
+  ],
+  "invalidFinished": [
+    {
+      "key": "6:0:success",
+      "startedAt": "2026-09-30T00:10:12.039Z",
+      "error": "clock.pauseAt: Error: Cannot fast-forward to the past\n    at ClockController._innerFastForwardTo (<anonymous>:202:13)\n    at ClockController.pauseAt (<anonymous>:133:16)\n    at async <anonymous>:337:30\n    at C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-ui\\tests\\codex\\highlight-mirato-v2.mjs:37:21"
+    },
+    {
+      "key": "30:0:fail",
+      "startedAt": "2026-09-30T00:38:26.001Z",
+      "error": "page.evaluate: Target page, context or browser has been closed\n    at C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-ui\\tests\\codex\\highlight-mirato-v2.mjs:48:29",
+      "stopReason": "RAM sotto 1,5 GB"
+    },
+    {
+      "key": "31:0:success",
+      "startedAt": "2026-09-30T00:44:03.308Z",
+      "error": "page.evaluate: Target page, context or browser has been closed\n    at probe (C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-ui\\tests\\codex\\highlight-mirato-v2.mjs:43:25)\n    at shot (C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-ui\\tests\\codex\\highlight-mirato-v2.mjs:44:48)\n    at C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-ui\\tests\\codex\\highlight-mirato-v2.mjs:50:39",
+      "stopReason": "RAM sotto 1,5 GB"
+    }
+  ]
+}

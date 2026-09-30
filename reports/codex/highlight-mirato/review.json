@@ -1,0 +1,156 @@
+{
+  "6:0:success": {
+    "review": "immagini esaminate; non certifica contatto esatto",
+    "codes": [],
+    "note": "Esito goal coerente con punteggio superiore e tabellone finale 1–0. Nel fotogramma 04 l'eroe è in aria e il pallone appare all'altezza delle gambe; il campione registra y=1,1077. Possibile disallineamento del colpo di testa, IPOTESI da riprodurre: il testimone coincide con avvio traiettoria, non certifica contatto anatomico. 01 e 02 riprendono il corner e lo stesso menu: apertura distinta non documentata. Nessun codice definitivo assegnato.",
+    "evidence": [
+      "gi6-a0-success-04-contatto.png",
+      "gi6-a0-success-06-esito.png"
+    ]
+  },
+  "6:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "note": "Punteggi finali coerenti: 0–0. Nei fotogrammi 04 e 05 il pallone passa dalla zona delle gambe a una traiettoria alta mentre il giocatore salta: possibile disallineamento del colpo di testa, IPOTESI. La deviazione in corner dichiarata dal testo non è catturata; non verificata. Bozza 007 non validata come tremolio: il clock è simulato. Apertura e scelta sono la stessa vista.",
+    "evidence": [
+      "gi6-a0-fail-04-contatto.png",
+      "gi6-a0-fail-05-volo.png",
+      "gi6-a0-fail-06-esito.png"
+    ]
+  },
+  "16:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "note": "Nessun difetto provato negli scatti. L esito Non trova lo specchio è compatibile con il punteggio 0–0. 04 mostra il pallone già lontano dall eroe: il contatto reale non è certificato. Apertura e scelta hanno la stessa inquadratura; nessuna conclusione sulla camera in movimento.",
+    "evidence": [
+      "gi16-a0-fail-04-contatto.png",
+      "gi16-a0-fail-06-esito.png"
+    ]
+  },
+  "16:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "note": "Nessun difetto certo. Il cross riuscito non equivale a gol: il testo dichiara primo tentativo murato e palla viva, con punteggio coerente 0–0. Nel fotogramma 05 la palla non è riconoscibile; la continuità della traiettoria e il contatto reale non sono verificati. Apertura e scelta stessa vista.",
+    "evidence": [
+      "gi16-a0-success-04-contatto.png",
+      "gi16-a0-success-05-volo.png",
+      "gi16-a0-success-06-esito.png"
+    ]
+  },
+  "25:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "note": "Nessun difetto provato. Punteggio 0–0 coerente con la conclusione respinta dichiarata dal testo dopo il filtrante. Il pallone è visibile davanti alla porta e poi torna nella zona laterale. Il contatto del ricevente e la respinta non sono documentati in modo sufficiente per valutarne il sincronismo. Apertura e scelta stessa vista.",
+    "evidence": [
+      "gi25-a0-success-04-contatto.png",
+      "gi25-a0-success-06-esito.png"
+    ]
+  },
+  "25:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "note": "Nessun difetto provato. Esito fuorigioco e punteggio 0–0 coerenti. Gli scatti non consentono di stabilire se la posizione del ricevente fosse effettivamente irregolare al momento del passaggio: esattezza del fuorigioco non verificata. Apertura e scelta riprendono la stessa fase.",
+    "evidence": [
+      "gi25-a0-fail-05-volo.png",
+      "gi25-a0-fail-06-esito.png"
+    ]
+  },
+  "30:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [
+      "003"
+    ],
+    "severity": "media",
+    "note": "003: dopo la scelta offensiva Dribbling centrale e conduci, il risultato mostra Intercetto perfetto e Anticipo perfetto. Incoerenza testuale visibile, confermata nel singolo caso forzato; il checkpoint riporta def=false, tipo off, outKey=recovery. Non verificata in partita naturale. Punteggio invariato 0–1, nessuna conclusione su fluidità o pattinamento. Letto nel codice: l azione assegna recovery; il risolutore usa action.rew anche fuori dalla forzatura e i testi recovery sono difensivi. Causa compatibile con il dato, da confermare dal team.",
+    "evidence": [
+      "gi30-a0-success-02-scelta.png",
+      "gi30-a0-success-06-esito.png"
+    ],
+    "source": [
+      "src/04-situazioni-zone-piazzati.jsx:222",
+      "src/15-live-match.jsx:8511",
+      "src/05-cronaca-stadi-formazioni.jsx:321",
+      "src/05-cronaca-stadi-formazioni.jsx:335"
+    ]
+  },
+  "30:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [
+      "003"
+    ],
+    "severity": "media",
+    "note": "003: dopo Dribbling centrale e conduci il risultato recita Murato dalla difesa e La difesa mura la conclusione. La scelta non era un tiro e la sequenza mostra un contrasto in conduzione: incoerenza testuale visibile nel caso forzato. Il checkpoint riporta intercept. Punteggio invariato 0–0. Non verificato nel flusso naturale.",
+    "evidence": [
+      "gi30-a0-fail-02-scelta.png",
+      "gi30-a0-fail-06-esito.png"
+    ]
+  },
+  "31:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [
+      "001"
+    ],
+    "severity": "media",
+    "note": "001: apertura e scelta mostrano un inquadratura del campo che non comprende i protagonisti del contrasto; diventano visibili in 03. Osservazione limitata al caso forzato con clock controllato. In 05 la scivolata è visibile; testo finale di recupero coerente con la scelta difensiva. La bozza 001 sulla distanza dai nostri NON è prova autonoma: il portatore previsto è avversario.",
+    "evidence": [
+      "gi31-a0-success-01-apertura.png",
+      "gi31-a0-success-02-scelta.png",
+      "gi31-a0-success-03-rincorsa.png",
+      "gi31-a0-success-05-volo.png"
+    ]
+  },
+  "31:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [
+      "001",
+      "002"
+    ],
+    "severity": "alta",
+    "note": "001/002: apertura e scelta mostrano soltanto il campo; 03, 05 e 06 non inquadrano i protagonisti. In 04 si vede solo un giocatore al margine destro. Il fallo è dichiarato mentre il gesto non è visibile. Verificato nelle immagini del caso forzato, non in partita naturale; causa non verificata. La bozza sulla distanza della palla dai nostri non viene usata come prova, trattandosi di difesa.",
+    "evidence": [
+      "gi31-a0-fail-01-apertura.png",
+      "gi31-a0-fail-03-rincorsa.png",
+      "gi31-a0-fail-05-volo.png",
+      "gi31-a0-fail-06-esito.png"
+    ]
+  },
+  "0:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "note": "Nessun difetto provato negli scatti. Calcio e tuffo del portiere sono visibili; esito goal e punteggi finali 1–0 coerenti. Contatto anatomico esatto e sincronismo del tuffo non certificati dai sei istanti. Angolo di 34 gradi della bozza non basta a provare una direzione sbagliata.",
+    "evidence": [
+      "gi0-a0-success-04-contatto.png",
+      "gi0-a0-success-05-volo.png",
+      "gi0-a0-success-06-esito.png"
+    ]
+  },
+  "0:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "note": "Nessun difetto certo attribuito. Punteggio finale 0–0 coerente con mancato gol; il testo dichiara parata facile. Gli istanti salvati non mostrano chiaramente il contatto palla-portiere, quindi la qualità e il sincronismo della parata restano non verificati. La bozza 007 non è validata come difetto di movimento.",
+    "evidence": [
+      "gi0-a0-fail-04-contatto.png",
+      "gi0-a0-fail-05-volo.png",
+      "gi0-a0-fail-06-esito.png"
+    ]
+  },
+  "7:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "note": "Punteggio finale 0–0 e conclusione fallita coerenti. Nel fotogramma 04 il pallone appare basso rispetto al giocatore in elevazione: possibile disallineamento del colpo di testa, IPOTESI, contatto anatomico esatto non verificato. La bozza 007 non viene confermata come difetto di movimento.",
+    "evidence": [
+      "gi7-a0-fail-04-contatto.png",
+      "gi7-a0-fail-06-esito.png"
+    ]
+  },
+  "17:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "note": "Nessun difetto certo negli scatti. Il testo dichiara un cross pericoloso senza conclusione del compagno; il punteggio rimane 1–0, già presente prima della scelta. Il pallone attraversa il campo ma la ricezione esatta non è certificata. Apertura e scelta stessa vista.",
+    "evidence": [
+      "gi17-a0-success-02-scelta.png",
+      "gi17-a0-success-04-contatto.png",
+      "gi17-a0-success-06-esito.png"
+    ]
+  }
+}

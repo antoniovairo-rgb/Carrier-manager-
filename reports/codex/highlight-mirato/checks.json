@@ -1,0 +1,105 @@
+{
+  "missingLinks": [],
+  "command": "node tests/codex/highlight-mirato-checks.mjs",
+  "rows": [
+    {
+      "command": "node --check tests/codex/highlight-mirato-audit.mjs",
+      "durationMs": 519,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-checks.mjs",
+      "durationMs": 476,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-counterproof.mjs",
+      "durationMs": 455,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-header.mjs",
+      "durationMs": 453,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-lotti.mjs",
+      "durationMs": 475,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-pack.mjs",
+      "durationMs": 463,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-repo.mjs",
+      "durationMs": 511,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-report-v2.mjs",
+      "durationMs": 525,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-report.mjs",
+      "durationMs": 454,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-sheet.mjs",
+      "durationMs": 449,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-trace.mjs",
+      "durationMs": 420,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato-v2.mjs",
+      "durationMs": 446,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node --check tests/codex/highlight-mirato.mjs",
+      "durationMs": 416,
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "node tools/build-src.mjs --check",
+      "durationMs": 574,
+      "code": 0,
+      "stdout": "build-src --check: CARRIER-MANAGER-AV.html è già allineato ai 21 frammenti.\n",
+      "stderr": ""
+    }
+  ],
+  "missingEvidence": []
+}

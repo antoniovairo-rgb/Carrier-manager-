@@ -1,0 +1,7 @@
+{
+  "command": "node tests/codex/highlight-mirato-pack.mjs",
+  "archive": "reports/codex/highlight-mirato/samples.json.gz",
+  "rawBytes": 2752741,
+  "compressedBytes": 451004,
+  "attempts": 65
+}

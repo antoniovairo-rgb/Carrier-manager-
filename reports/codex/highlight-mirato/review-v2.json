@@ -1,0 +1,434 @@
+{
+  "31:0:fail": {
+    "review": "sei immagini esaminate, singola forzatura",
+    "codes": [
+      "001",
+      "002"
+    ],
+    "severity": "alta",
+    "note": "001/002: i sei fotogrammi non mostrano il contrasto né i protagonisti; l’esito FALLO è sovrapposto al terreno vuoto. Confermato nella controprova con una sola forzatura e modello ready-lineup. Non verificato in partita naturale; causa nel codice non determinata.",
+    "evidence": [
+      "gi31-a0-fail-v2-01-apertura.png",
+      "gi31-a0-fail-v2-02-scelta.png",
+      "gi31-a0-fail-v2-03-rincorsa.png",
+      "gi31-a0-fail-v2-04-contatto.png",
+      "gi31-a0-fail-v2-05-volo.png",
+      "gi31-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "6:0:success": {
+    "review": "sei immagini riesaminate confrontando la controprova della variante fallita",
+    "codes": [
+      "001"
+    ],
+    "severity": "media",
+    "note": "001: in apertura e scelta l’inquadratura mostra la zona laterale del campo e giocatori lontani sul bordo sinistro, ma non il protagonista dello stacco; il protagonista rientra in 03. Gol e passaggio del punteggio da 0–0 a 1–0 sono coerenti. Il contatto anatomico esatto non è verificato in questa acquisizione. La segnalazione automatica di salto della palla resta una bozza, non viene trasformata in 014 senza una prova indipendente.",
+    "evidence": [
+      "gi6-a0-success-v2-01-apertura.png",
+      "gi6-a0-success-v2-02-scelta.png",
+      "gi6-a0-success-v2-03-rincorsa.png",
+      "gi6-a0-success-v2-06-esito.png"
+    ]
+  },
+  "6:0:fail": {
+    "captureTag": "apertura",
+    "review": "sei immagini della controprova esaminate, incluso dettaglio 03",
+    "codes": [
+      "001",
+      "002"
+    ],
+    "severity": "media",
+    "note": "001/002: nella controprova l’apertura è leggibile, ma il protagonista non è visibile nell’area di gioco; in 03 la rincorsa mostra terreno vuoto e il marcatore tagliato sul bordo destro. In 04–06 i giocatori rientrano nel quadro. Parata e punteggio 0–0 sono coerenti. Il testimone testa registra distanza minima 0,040 u con gesto header (header-v2.json; node tests/codex/highlight-mirato-header.mjs); il fotogramma denominato contatto è successivo e non prova una mancata collisione. Riproduzione naturale non verificata.",
+    "evidence": [
+      "gi6-a0-fail-v2-apertura-01-apertura.png",
+      "gi6-a0-fail-v2-apertura-03-rincorsa.png",
+      "gi6-a0-fail-v2-apertura-04-contatto.png",
+      "gi6-a0-fail-v2-apertura-06-esito.png",
+      "header-v2.json"
+    ]
+  },
+  "16:0:success": {
+    "captureTag": "apertura",
+    "review": "sei immagini della controprova esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito nei sei scatti. Apertura e scelta mostrano il portatore e il difensore; l’apertura nera originale non si ripete. Cross e occasione ancora viva sono compatibili con 0–0. Il preciso contatto sul cross e l’eventuale tocco del compagno non sono verificati dai singoli istanti.",
+    "evidence": [
+      "gi16-a0-success-v2-apertura-01-apertura.png",
+      "gi16-a0-success-v2-apertura-02-scelta.png",
+      "gi16-a0-success-v2-apertura-04-contatto.png",
+      "gi16-a0-success-v2-apertura-06-esito.png"
+    ]
+  },
+  "16:0:fail": {
+    "captureTag": "apertura",
+    "review": "sei immagini della controprova esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito nei sei scatti. Apertura e scelta sono leggibili nella controprova. Il risultato «Non trova lo specchio» mantiene 0–0; i singoli fotogrammi non stabiliscono se descriva il cross o una conclusione del destinatario, quindi l’eventuale incoerenza narrativa resta non verificata. Contatto esatto e traiettoria completa non verificati.",
+    "evidence": [
+      "gi16-a0-fail-v2-apertura-01-apertura.png",
+      "gi16-a0-fail-v2-apertura-02-scelta.png",
+      "gi16-a0-fail-v2-apertura-04-contatto.png",
+      "gi16-a0-fail-v2-apertura-06-esito.png"
+    ]
+  },
+  "25:0:success": {
+    "captureTag": "apertura",
+    "review": "sei immagini della controprova esaminate e dettaglio 04",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito. Apertura e scelta mostrano il portatore. In 04 l’eroe è tagliato dal bordo inferiore, mentre pallone e destinatario sono inquadrati verso la porta: dopo il passaggio questa scelta di camera non basta a dimostrare un errore di posizione. L’esito descrive una conclusione respinta con palla ancora in gioco e conserva 0–0; il preciso intervento del difensore non è verificato.",
+    "evidence": [
+      "gi25-a0-success-v2-apertura-01-apertura.png",
+      "gi25-a0-success-v2-apertura-02-scelta.png",
+      "gi25-a0-success-v2-apertura-04-contatto.png",
+      "gi25-a0-success-v2-apertura-06-esito.png"
+    ]
+  },
+  "25:0:fail": {
+    "captureTag": "apertura",
+    "review": "sei immagini della controprova esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito nei sei scatti. Apertura e scelta mostrano i protagonisti. Il filtrante termina con testo di fuorigioco e punteggio 0–0 coerente; l’esatta posizione del destinatario rispetto alla linea difensiva nell’istante del passaggio non è verificata, quindi non si certifica la correttezza della chiamata.",
+    "evidence": [
+      "gi25-a0-fail-v2-apertura-01-apertura.png",
+      "gi25-a0-fail-v2-apertura-02-scelta.png",
+      "gi25-a0-fail-v2-apertura-04-contatto.png",
+      "gi25-a0-fail-v2-apertura-06-esito.png"
+    ]
+  },
+  "30:0:success": {
+    "review": "sei immagini esaminate, singola forzatura",
+    "codes": [
+      "003"
+    ],
+    "severity": "media",
+    "note": "003: scegliendo Dribbling centrale e conduci, il risultato mostra Recupero decisivo e Anticipo perfetto, testi difensivi per una scelta offensiva. Incongruenza visibile in 02 e 06, ripetuta nella controprova a singola forzatura; punteggio invariato 0–0. Letto nel codice: questa scelta assegna recovery e il risolutore usa action.rew; i testi associati sono difensivi. La causa è compatibile con il dato, da confermare dal team. Non verificata in partita naturale.",
+    "evidence": [
+      "gi30-a0-success-v2-02-scelta.png",
+      "gi30-a0-success-v2-06-esito.png"
+    ],
+    "source": [
+      "src/04-situazioni-zone-piazzati.jsx:222",
+      "src/15-live-match.jsx:8511",
+      "src/05-cronaca-stadi-formazioni.jsx:321",
+      "src/05-cronaca-stadi-formazioni.jsx:335"
+    ]
+  },
+  "30:0:fail": {
+    "review": "sei immagini esaminate, singola forzatura",
+    "codes": [
+      "003"
+    ],
+    "severity": "media",
+    "note": "003: dopo la scelta Dribbling centrale e conduci, l’esito mostra Murato dalla difesa e La difesa mura la conclusione. La scelta è una conduzione e le immagini mostrano un contrasto, non una conclusione: incoerenza testuale visibile in 02 e 06, riprodotta anche con singola forzatura. Punteggio invariato 0–0. Non verificata in partita naturale.",
+    "evidence": [
+      "gi30-a0-fail-v2-02-scelta.png",
+      "gi30-a0-fail-v2-04-contatto.png",
+      "gi30-a0-fail-v2-06-esito.png"
+    ],
+    "source": [
+      "src/04-situazioni-zone-piazzati.jsx:222",
+      "src/15-live-match.jsx:8511"
+    ]
+  },
+  "31:0:success": {
+    "captureTag": "apertura",
+    "review": "sei immagini della controprova esaminate e dettaglio 02",
+    "codes": [
+      "001"
+    ],
+    "severity": "media",
+    "note": "001: in apertura e scelta il pannello copre il corpo inferiore del portatore e la zona del pallone; la situazione da leggere prima del contrasto rimane parzialmente nascosta. Nella controprova altri giocatori sono visibili, quindi non si tratta di campo completamente vuoto come nella variante fallita. In 03–04 il contrasto diventa leggibile. Testi di chiusura/anticipo e punteggio 0–0 coerenti. Riproduzione naturale non verificata.",
+    "evidence": [
+      "gi31-a0-success-v2-apertura-01-apertura.png",
+      "gi31-a0-success-v2-apertura-02-scelta.png",
+      "gi31-a0-success-v2-apertura-03-rincorsa.png",
+      "gi31-a0-success-v2-apertura-04-contatto.png",
+      "gi31-a0-success-v2-apertura-06-esito.png"
+    ]
+  },
+  "0:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto provato negli scatti. Il calcio dell’eroe e il tuffo del portiere sono visibili; testo del gol e passaggio da 0–0 a 1–0 coerenti. L’istante esatto di contatto e la tempestività del portiere non sono certificati dalla sequenza campionata. Nessuna conclusione su fluidità o pattinamento.",
+    "evidence": [
+      "gi0-a0-success-v2-04-contatto.png",
+      "gi0-a0-success-v2-05-volo.png",
+      "gi0-a0-success-v2-06-esito.png"
+    ]
+  },
+  "0:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito. Esito Tiro centrale – parata facile e punteggio 0–0 coerenti. Il portiere è a terra in 04 e in piedi in 05, ma il contatto palla-portiere non è mostrato: tempestività e qualità della parata non verificate, nessun codice 111 assegnato. I sei istanti non certificano la continuità del gesto.",
+    "evidence": [
+      "gi0-a0-fail-v2-04-contatto.png",
+      "gi0-a0-fail-v2-05-volo.png",
+      "gi0-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "7:0:success": {
+    "review": "sei immagini esaminate e dettaglio del campione 04",
+    "codes": [],
+    "severity": null,
+    "note": "Gol e punteggio da 0–0 a 1–0 coerenti. In 04 il pallone è all’altezza delle gambe mentre l’eroe è in elevazione; possibile disallineamento del colpo di testa, IPOTESI da verificare sul contatto effettivo. Il campione fotografa l’avvio dell’arco e non certifica l’istante anatomico: nessun codice definitivo attribuito. In 05 il pallone è davanti alla porta e il portiere in tuffo.",
+    "evidence": [
+      "gi7-a0-success-v2-04-contatto.png",
+      "gi7-a0-success-v2-05-volo.png",
+      "gi7-a0-success-v2-06-esito.png"
+    ]
+  },
+  "7:0:fail": {
+    "captureTag": "apertura",
+    "review": "sei immagini della controprova esaminate e testimone testa letto",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito nei sei scatti. L’apertura è leggibile; parata e punteggio 0–0 sono coerenti. Il testimone registra distanza minima pallone-testa 0,060 u con gesto header (header-v2.json; node tests/codex/highlight-mirato-header.mjs). Il portiere è già a terra in 04–05 e torna in piedi in 06: il sincronismo del tuffo non è verificato dalla sola successione di questi istanti e non viene attribuito 111. Il fotogramma denominato contatto è successivo al punto di minima distanza.",
+    "evidence": [
+      "gi7-a0-fail-v2-apertura-01-apertura.png",
+      "gi7-a0-fail-v2-apertura-04-contatto.png",
+      "gi7-a0-fail-v2-apertura-05-volo.png",
+      "gi7-a0-fail-v2-apertura-06-esito.png",
+      "header-v2.json"
+    ]
+  },
+  "17:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto provato negli scatti. Il cross riuscito è seguito dal testo Il compagno non riesce a concludere – palla che balla in area; il punteggio rimane 0–0, coerentemente. Il pallone attraversa la zona della porta e rimane in area; ricezione e interazione precisa del compagno non sono verificate.",
+    "evidence": [
+      "gi17-a0-success-v2-04-contatto.png",
+      "gi17-a0-success-v2-05-volo.png",
+      "gi17-a0-success-v2-06-esito.png"
+    ]
+  },
+  "17:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito. Punteggio invariato 0–0 e azione fermata dalla difesa compatibili con le immagini. Il testo Conclusione murata dopo Cross teso è ambiguo: non è verificato se descriva una conclusione del ricevente o il cross stesso, perché il passaggio intermedio non è interamente campionato. Non assegnato 003 senza questa prova.",
+    "evidence": [
+      "gi17-a0-fail-v2-04-contatto.png",
+      "gi17-a0-fail-v2-05-volo.png",
+      "gi17-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "28:0:success": {
+    "review": "sei immagini esaminate e coordinate del pallone confrontate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto provato. Testo Primo tentativo murato – palla viva e punteggio 0–0 coerenti. Le coordinate registrate mostrano il pallone avanzare verso la porta e ritornare dopo la respinta: non sostengono un codice 012. Il pallone basso dietro il giocatore in 04 non dimostra da solo il contatto scorretto. Fonte supplementare: trace-28-success.json, riprodotta con node tests/codex/highlight-mirato-trace.mjs 28 success.",
+    "evidence": [
+      "gi28-a0-success-v2-04-contatto.png",
+      "gi28-a0-success-v2-05-volo.png",
+      "gi28-a0-success-v2-06-esito.png",
+      "trace-28-success.json"
+    ]
+  },
+  "28:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito. Il risultato rimane 0–0. La frase La difesa mura la conclusione dopo la scelta Verticale è ambigua rispetto a un passaggio: gli scatti non mostrano una conclusione del ricevente e non consentono di escludere un passaggio intermedio non campionato. Possibile incoerenza testuale da verificare; nessun codice definitivo 003 assegnato.",
+    "evidence": [
+      "gi28-a0-fail-v2-02-scelta.png",
+      "gi28-a0-fail-v2-04-contatto.png",
+      "gi28-a0-fail-v2-05-volo.png",
+      "gi28-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "44:0:success": {
+    "review": "sei immagini riesaminate confrontando la variante fallita",
+    "codes": [
+      "001"
+    ],
+    "severity": "media",
+    "note": "001: anche nella variante riuscita apertura e scelta mostrano terreno centrale e giocatori sui bordi, mentre il protagonista dell’intervento resta sotto il pannello; è visibile in 03. Esito di rinvio riuscito e punteggio invariato 0–0 coerenti. Il pallone passa vicino alla testa nel testimone (minimo 0,262 u; header-v2.json, comando node tests/codex/highlight-mirato-header.mjs): prossimità misurata, sincronismo preciso con la posa non verificato. La bozza considera la direzione della porta avversaria, ma un rinvio difensivo non deve necessariamente puntarla: nessun codice 009 assegnato a quel solo angolo.",
+    "evidence": [
+      "gi44-a0-success-v2-01-apertura.png",
+      "gi44-a0-success-v2-02-scelta.png",
+      "gi44-a0-success-v2-03-rincorsa.png",
+      "gi44-a0-success-v2-04-contatto.png",
+      "gi44-a0-success-v2-05-volo.png",
+      "gi44-a0-success-v2-06-esito.png",
+      "header-v2.json"
+    ],
+    "source": [
+      "src/12-three-match-view.jsx:10105–10109",
+      "src/12-three-match-view.jsx:10120"
+    ]
+  },
+  "44:0:fail": {
+    "review": "sei immagini esaminate e testimone testa analizzato",
+    "codes": [
+      "001",
+      "002"
+    ],
+    "severity": "media",
+    "note": "001: in apertura e scelta i protagonisti restano praticamente fuori dalla zona visibile, sotto il pannello delle azioni. 002: il fotogramma finale mostra terreno e righe, senza eroe né porta; il gol subito non è visibile negli scatti. Il punteggio da 0–0 a 0–1 è coerente con il testo, quindi nessun 003 attribuito. Distanza minima pallone-testa 1,559 u nel testimone (header-v2.json; node tests/codex/highlight-mirato-header.mjs): non prova un contatto, ma è compatibile con il tentativo fallito. L’angolo verso la porta avversaria della bozza non viene usato per assegnare 009 in questa azione difensiva. Riproduzione naturale non verificata.",
+    "evidence": [
+      "gi44-a0-fail-v2-01-apertura.png",
+      "gi44-a0-fail-v2-02-scelta.png",
+      "gi44-a0-fail-v2-06-esito.png",
+      "header-v2.json"
+    ]
+  },
+  "64:0:success": {
+    "captureTag": "apertura",
+    "review": "sei immagini della controprova esaminate e testimone testa letto",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito nei sei scatti. Apertura e scelta mostrano il protagonista; il gol è coerente con il punteggio da 0–0 a 1–0. Nella controprova il testimone registra distanza minima pallone-testa 0,064 u con gesto header (header-v2.json; node tests/codex/highlight-mirato-header.mjs). Il successivo scatto denominato contatto non coincide con la minima distanza e non dimostra un impatto mancato. Sincronismo completo del gesto e del portiere non verificato.",
+    "evidence": [
+      "gi64-a0-success-v2-apertura-01-apertura.png",
+      "gi64-a0-success-v2-apertura-02-scelta.png",
+      "gi64-a0-success-v2-apertura-04-contatto.png",
+      "gi64-a0-success-v2-apertura-06-esito.png",
+      "header-v2.json"
+    ]
+  },
+  "64:0:fail": {
+    "review": "sei immagini esaminate e testimone testa analizzato",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito. Esito di parata/deviazione in corner e punteggio 0–0 coerenti. Distanza minima pallone-testa 0,054 u con gesto header attivo (header-v2.json; node tests/codex/highlight-mirato-header.mjs): il pallone basso in 04 non dimostra un colpo di testa mancato. Il portiere è già a terra in 04 e si rialza in 05: possibile intervento anticipato da rivedere con una ripresa continua; contatto palla-portiere e codice 111 non verificati.",
+    "evidence": [
+      "gi64-a0-fail-v2-04-contatto.png",
+      "gi64-a0-fail-v2-05-volo.png",
+      "gi64-a0-fail-v2-06-esito.png",
+      "header-v2.json"
+    ]
+  },
+  "81:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [
+      "001"
+    ],
+    "severity": "media",
+    "note": "001, allestimento iniziale: la scena annuncia Punizione – muro a 9 metri, ma i difensori visibili sono molto distanziati e non si vede una barriera compatta (01–02). La distanza effettiva dei nove metri non è stata misurata. Gol e punteggio da 0–0 a 1–0 coerenti. Limite del test: la prima opzione visibile è Giro sopra la barriera, mentre il risolutore forzato restituisce Botta sopra la barriera; la corrispondenza con un clic reale sul menu non è verificata e non viene attribuita al gioco come 003.",
+    "evidence": [
+      "gi81-a0-success-v2-01-apertura.png",
+      "gi81-a0-success-v2-02-scelta.png",
+      "gi81-a0-success-v2-06-esito.png"
+    ]
+  },
+  "81:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [
+      "001"
+    ],
+    "severity": "media",
+    "note": "001: anche in questa variante il titolo annuncia un muro, mentre i difensori visibili in 01–02 sono distanziati e non formano una barriera compatta. Distanza regolamentare non misurata. Esito di parata e punteggio 0–0 coerenti; il contatto palla-portiere non è verificato. Rimane il limite di corrispondenza fra etichetta del menu e risolutore forzato già descritto nel caso riuscito.",
+    "evidence": [
+      "gi81-a0-fail-v2-01-apertura.png",
+      "gi81-a0-fail-v2-02-scelta.png",
+      "gi81-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "87:0:success": {
+    "review": "sei immagini esaminate e bozza automatica letta",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto provato negli scatti. Il risultato descrive una conclusione respinta con palla ancora giocabile; punteggio invariato 0–0 coerente. La bozza automatica non segnala salti del pallone in questa acquisizione. Gli scatti non certificano che il cross sia davvero di prima né il contatto del ricevente; questi aspetti restano non verificati.",
+    "evidence": [
+      "gi87-a0-success-v2-03-rincorsa.png",
+      "gi87-a0-success-v2-04-contatto.png",
+      "gi87-a0-success-v2-06-esito.png"
+    ]
+  },
+  "87:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto provato negli scatti. Il cross fermato dalla difesa e il punteggio finale 0–0 sono coerenti. Il pallone non è identificabile con sufficiente continuità in tutti gli istanti, quindi contatto del difensore, traiettoria completa e carattere di prima del cross restano non verificati.",
+    "evidence": [
+      "gi87-a0-fail-v2-04-contatto.png",
+      "gi87-a0-fail-v2-05-volo.png",
+      "gi87-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "92:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto provato negli scatti. Conclusione e gol sono visibili; punteggio da 0–0 a 1–0 coerente. La rotazione completa della roulette non è documentata dai sei istanti. In 02 Roulette di classe è la seconda opzione visibile, mentre il test usa l’indice canonico 0 di SITUATIONS: l’indice del comando non va interpretato come posizione del primo pulsante sullo schermo.",
+    "evidence": [
+      "gi92-a0-success-v2-02-scelta.png",
+      "gi92-a0-success-v2-04-contatto.png",
+      "gi92-a0-success-v2-05-volo.png",
+      "gi92-a0-success-v2-06-esito.png"
+    ]
+  },
+  "92:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto provato negli scatti. Esito di deviazione in corner e punteggio 0–0 coerenti. Il tiro è visibile, ma la rotazione completa della roulette e il contatto con il portiere non sono verificati dai sei istanti. Anche qui l’azione canonica 0 corrisponde a Roulette di classe, seconda opzione del menu visibile.",
+    "evidence": [
+      "gi92-a0-fail-v2-02-scelta.png",
+      "gi92-a0-fail-v2-04-contatto.png",
+      "gi92-a0-fail-v2-05-volo.png",
+      "gi92-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "123:0:success": {
+    "review": "sei immagini esaminate e collegamento del testo letto nel codice",
+    "codes": [
+      "003"
+    ],
+    "severity": "media",
+    "note": "003: dopo Giratone e conduci compaiono Riaggressione immediata e Muro invalicabile, testi difensivi per una scelta offensiva. Il checkpoint restituisce outKey=recovery; la stessa ricompensa è assegnata dall’azione nel catalogo. Osservazione coerente con il problema della scena 30, causa da confermare con il guardiano del team. Punteggio invariato 0–0. La rotazione completa della girata non è verificata dai sei istanti.",
+    "evidence": [
+      "gi123-a0-success-v2-02-scelta.png",
+      "gi123-a0-success-v2-06-esito.png"
+    ],
+    "source": [
+      "src/04-situazioni-zone-piazzati.jsx:454",
+      "src/15-live-match.jsx:8511",
+      "src/05-cronaca-stadi-formazioni.jsx:321",
+      "src/05-cronaca-stadi-formazioni.jsx:335"
+    ]
+  },
+  "123:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto provato negli scatti. Il testo Murato dalla difesa è compatibile con la conduzione fermata; diversamente dalla frase della scena 30 fallita, qui non viene menzionata esplicitamente una conclusione. Punteggio invariato 0–0. La girata completa e la continuità del controllo del pallone non sono verificate dai sei istanti.",
+    "evidence": [
+      "gi123-a0-fail-v2-03-rincorsa.png",
+      "gi123-a0-fail-v2-04-contatto.png",
+      "gi123-a0-fail-v2-05-volo.png",
+      "gi123-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "152:0:success": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito. Il risultato descrive un’occasione viva con un compagno libero e mantiene 0–0: non dichiara un gol inesistente. I sei scatti non documentano tutti gli scambi del doppio dai-e-vai né una conclusione finale, quindi l’esecuzione completa dello schema annunciato resta non verificata. La scelta canonica del test non coincide con la prima opzione visibile del menu.",
+    "evidence": [
+      "gi152-a0-success-v2-02-scelta.png",
+      "gi152-a0-success-v2-04-contatto.png",
+      "gi152-a0-success-v2-05-volo.png",
+      "gi152-a0-success-v2-06-esito.png"
+    ]
+  },
+  "152:0:fail": {
+    "review": "sei immagini esaminate",
+    "codes": [],
+    "severity": null,
+    "note": "Nessun difetto certo attribuito nei sei scatti. Il risultato «Murato dalla difesa» mantiene 0–0 ed è compatibile con lo schema interrotto. I fotogrammi non documentano tutti gli scambi né il preciso intervento difensivo: sequenza completa non verificata. La scelta canonica del test non coincide con la prima opzione visibile.",
+    "evidence": [
+      "gi152-a0-fail-v2-02-scelta.png",
+      "gi152-a0-fail-v2-04-contatto.png",
+      "gi152-a0-fail-v2-05-volo.png",
+      "gi152-a0-fail-v2-06-esito.png"
+    ]
+  }
+}

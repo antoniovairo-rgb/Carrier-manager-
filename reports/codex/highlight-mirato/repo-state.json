@@ -1,0 +1,35 @@
+{
+  "command": "node tests/codex/highlight-mirato-repo.mjs",
+  "version": "7.999.61",
+  "baseCommit": "54cfac82849970f898f645d4cc8138ccf39aa210",
+  "branch": "codex/2026-09-30-collaudo-highlight",
+  "trackedBuild": "tools/build-src.mjs",
+  "protectedDiff": "",
+  "nodeVersion": "v24.17.0",
+  "commands": [
+    {
+      "command": "git rev-parse HEAD",
+      "ok": true,
+      "durationMs": 10827,
+      "stdout": "54cfac82849970f898f645d4cc8138ccf39aa210\n"
+    },
+    {
+      "command": "git branch --show-current",
+      "ok": true,
+      "durationMs": 1360,
+      "stdout": "codex/2026-09-30-collaudo-highlight\n"
+    },
+    {
+      "command": "git ls-files tools/build-src.mjs",
+      "ok": true,
+      "durationMs": 1666,
+      "stdout": "tools/build-src.mjs\n"
+    },
+    {
+      "command": "git diff --name-only -- src CARRIER-MANAGER-AV.html assets tests/visual tools sw.js manifest.webmanifest .github",
+      "ok": true,
+      "durationMs": 2575,
+      "stdout": ""
+    }
+  ]
+}

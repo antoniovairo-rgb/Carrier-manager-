@@ -1,0 +1,314 @@
+{
+  "command": "node tests/codex/highlight-mirato-header.mjs",
+  "version": "7.999.61",
+  "source": "src/12-three-match-view.jsx:10105–10109",
+  "limitations": "Tempo simulato; distanza dalla posizione del bone della testa. Non misura FPS o fluidità; nessuna soglia di difetto applicata automaticamente.",
+  "rows": [
+    {
+      "gi": 44,
+      "action": 0,
+      "outcome": "success",
+      "startedAt": "2026-09-30T01:24:36.033Z",
+      "samples": 506,
+      "minDistance": 0.262,
+      "closest": {
+        "t": 0.613,
+        "hy": 1.994,
+        "d": 0.262,
+        "by": 2.09,
+        "g": null,
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "closestDuringHeader": {
+        "t": 0.853,
+        "hy": 1.929,
+        "d": 1.413,
+        "by": 2.99,
+        "g": "header",
+        "act": "header",
+        "u": 0.816,
+        "arc": 1
+      },
+      "firstArc": {
+        "t": 0.629,
+        "hy": 1.994,
+        "d": 3.161,
+        "by": 2.94,
+        "g": "header",
+        "act": "header",
+        "u": 0.591,
+        "arc": 1
+      },
+      "gestures": [
+        null,
+        "header"
+      ],
+      "arcSamples": 62
+    },
+    {
+      "gi": 44,
+      "action": 0,
+      "outcome": "fail",
+      "startedAt": "2026-09-30T01:27:58.902Z",
+      "samples": 507,
+      "minDistance": 1.559,
+      "closest": {
+        "t": 0.67,
+        "hy": 1.991,
+        "d": 1.559,
+        "by": 2.88,
+        "g": "header",
+        "act": "header",
+        "u": 0.632,
+        "arc": 1
+      },
+      "closestDuringHeader": {
+        "t": 0.67,
+        "hy": 1.991,
+        "d": 1.559,
+        "by": 2.88,
+        "g": "header",
+        "act": "header",
+        "u": 0.632,
+        "arc": 1
+      },
+      "firstArc": {
+        "t": 0.629,
+        "hy": 1.994,
+        "d": 2.133,
+        "by": 2.94,
+        "g": "header",
+        "act": "header",
+        "u": 0.591,
+        "arc": 1
+      },
+      "gestures": [
+        null,
+        "header"
+      ],
+      "arcSamples": 66
+    },
+    {
+      "gi": 64,
+      "action": 0,
+      "outcome": "success",
+      "startedAt": "2026-09-30T01:31:43.616Z",
+      "samples": 506,
+      "minDistance": 0.052,
+      "closest": {
+        "t": 2.421,
+        "hy": 2.001,
+        "d": 0.052,
+        "by": 1.97,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "closestDuringHeader": {
+        "t": 2.421,
+        "hy": 2.001,
+        "d": 0.052,
+        "by": 1.97,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "firstArc": {
+        "t": 2.437,
+        "hy": 1.994,
+        "d": 1.021,
+        "by": 2.94,
+        "g": "header",
+        "act": "header",
+        "u": 0.591,
+        "arc": 1
+      },
+      "gestures": [
+        null,
+        "header",
+        "lift"
+      ],
+      "arcSamples": 87
+    },
+    {
+      "gi": 64,
+      "action": 0,
+      "outcome": "fail",
+      "startedAt": "2026-09-30T01:35:23.918Z",
+      "samples": 507,
+      "minDistance": 0.054,
+      "closest": {
+        "t": 2.421,
+        "hy": 2.001,
+        "d": 0.054,
+        "by": 1.96,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "closestDuringHeader": {
+        "t": 2.421,
+        "hy": 2.001,
+        "d": 0.054,
+        "by": 1.96,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "firstArc": {
+        "t": 2.437,
+        "hy": 1.994,
+        "d": 1.02,
+        "by": 2.94,
+        "g": "header",
+        "act": "header",
+        "u": 0.591,
+        "arc": 1
+      },
+      "gestures": [
+        null,
+        "header",
+        "miss"
+      ],
+      "arcSamples": 85
+    },
+    {
+      "gi": 6,
+      "action": 0,
+      "outcome": "fail",
+      "startedAt": "2026-09-30T02:21:41.694Z",
+      "samples": 507,
+      "minDistance": 0.04,
+      "closest": {
+        "t": 2.613,
+        "hy": 2.007,
+        "d": 0.04,
+        "by": 1.99,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "closestDuringHeader": {
+        "t": 2.613,
+        "hy": 2.007,
+        "d": 0.04,
+        "by": 1.99,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "firstArc": {
+        "t": 2.629,
+        "hy": 2.005,
+        "d": 0.987,
+        "by": 2.94,
+        "g": "header",
+        "act": "header",
+        "u": 0.591,
+        "arc": 1
+      },
+      "gestures": [
+        null,
+        "header",
+        "miss"
+      ],
+      "arcSamples": 107
+    },
+    {
+      "gi": 7,
+      "action": 0,
+      "outcome": "fail",
+      "startedAt": "2026-09-30T02:42:38.770Z",
+      "samples": 506,
+      "minDistance": 0.06,
+      "closest": {
+        "t": 2.437,
+        "hy": 2.001,
+        "d": 0.06,
+        "by": 1.96,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "closestDuringHeader": {
+        "t": 2.437,
+        "hy": 2.001,
+        "d": 0.06,
+        "by": 1.96,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "firstArc": {
+        "t": 2.453,
+        "hy": 1.994,
+        "d": 1.014,
+        "by": 2.94,
+        "g": "header",
+        "act": "header",
+        "u": 0.591,
+        "arc": 1
+      },
+      "gestures": [
+        null,
+        "header",
+        "miss"
+      ],
+      "arcSamples": 92
+    },
+    {
+      "gi": 64,
+      "action": 0,
+      "outcome": "success",
+      "startedAt": "2026-09-30T02:46:29.894Z",
+      "samples": 506,
+      "minDistance": 0.064,
+      "closest": {
+        "t": 2.405,
+        "hy": 2.003,
+        "d": 0.064,
+        "by": 2.06,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "closestDuringHeader": {
+        "t": 2.405,
+        "hy": 2.003,
+        "d": 0.064,
+        "by": 2.06,
+        "g": "header",
+        "act": null,
+        "u": 0,
+        "arc": 0
+      },
+      "firstArc": {
+        "t": 2.437,
+        "hy": 1.994,
+        "d": 1.018,
+        "by": 2.94,
+        "g": "header",
+        "act": "header",
+        "u": 0.591,
+        "arc": 1
+      },
+      "gestures": [
+        null,
+        "header",
+        "lift"
+      ],
+      "arcSamples": 95
+    }
+  ]
+}

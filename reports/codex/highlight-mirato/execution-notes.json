@@ -1,0 +1,12 @@
+{
+  "command": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_BATCH='4'; node tests/codex/highlight-mirato.mjs",
+  "observedOutput": "(node:12432) TimeoutNegativeWarning: -3926.2670000000508 is a negative number. Timeout duration was set to 1.",
+  "impact": "Non verificato; nessuna conclusione temporale o di fluidità dal clock simulato.",
+  "additional": [
+    {
+      "command": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'\nnode tests/codex/highlight-mirato-lotti.mjs",
+      "observedOutput": "(node:8496) TimeoutNegativeWarning: -6047.148000000001 is a negative number.\nTimeout duration was set to 1.\n(Use `node --trace-warnings ...` to show where the warning was created)",
+      "impact": "Non verificato; nessuna misura di fluidità o durata reale tratta dal clock simulato."
+    }
+  ]
+}
