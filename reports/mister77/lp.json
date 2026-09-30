@@ -1,0 +1,1982 @@
+{
+ "league": {
+  "beats": [
+   "present",
+   "captain",
+   "lift",
+   "fest"
+  ],
+  "perBeat": {
+   "0:present": {
+    "n": 28,
+    "peggio": {
+     "mani": 1.063,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.064,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": false,
+     "b": "present",
+     "glb": 0,
+     "ry": 1.2,
+     "g": [
+      -20.046,
+      0.05,
+      -5.493
+     ],
+     "sL": [
+      -20.198,
+      1.83,
+      -5.101
+     ],
+     "sR": [
+      -19.894,
+      1.83,
+      -5.884
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -20.117,
+      1.028,
+      -4.95
+     ],
+     "hR": [
+      -19.732,
+      1.028,
+      -5.942
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "1:captain": {
+    "n": 28,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.065,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": false,
+     "b": "captain",
+     "glb": 0,
+     "ry": 1.105,
+     "g": [
+      -15.332,
+      0.035,
+      -5.144
+     ],
+     "sL": [
+      -15.521,
+      1.815,
+      -4.768
+     ],
+     "sR": [
+      -15.144,
+      1.815,
+      -5.519
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -15.454,
+      1.014,
+      -4.609
+     ],
+     "hR": [
+      -14.977,
+      1.014,
+      -5.561
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "2:lift": {
+    "n": 29,
+    "peggio": {
+     "mani": 0.158,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.655,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.26,
+      -0.26
+     ],
+     "hZ": [
+      0.77,
+      0.77
+     ],
+     "hX": [
+      -0.33,
+      0.33
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": false,
+     "b": "lift",
+     "glb": 0,
+     "ry": 1.153,
+     "g": [
+      -10.794,
+      0.013,
+      -4.807
+     ],
+     "sL": [
+      -10.964,
+      1.793,
+      -4.423
+     ],
+     "sR": [
+      -10.623,
+      1.793,
+      -5.191
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -10.219,
+      1.536,
+      -4.194
+     ],
+     "hR": [
+      -9.954,
+      1.536,
+      -4.793
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "3:fest": {
+    "n": 17,
+    "peggio": {
+     "mani": 0.157,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.523,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.839,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.25,
+      -0.25
+     ],
+     "hZ": [
+      0.76,
+      0.76
+     ],
+     "hX": [
+      -0.26,
+      0.26
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": false,
+     "b": "fest",
+     "glb": 0,
+     "ry": 0.495,
+     "g": [
+      -0.578,
+      0.041,
+      -5.594
+     ],
+     "sL": [
+      -0.948,
+      1.821,
+      -5.395
+     ],
+     "sR": [
+      -0.209,
+      1.821,
+      -5.793
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -0.446,
+      1.567,
+      -4.798
+     ],
+     "hR": [
+      0.015,
+      1.567,
+      -5.046
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   }
+  }
+ },
+ "cup": {
+  "beats": [
+   "present",
+   "captain",
+   "lift",
+   "fest"
+  ],
+  "perBeat": {
+   "0:present": {
+    "n": 20,
+    "peggio": {
+     "mani": 1.063,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.064,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "cup",
+     "light": false,
+     "b": "present",
+     "glb": 0,
+     "ry": 1.224,
+     "g": [
+      -21.75,
+      0.037,
+      -5.619
+     ],
+     "sL": [
+      -21.893,
+      1.817,
+      -5.224
+     ],
+     "sR": [
+      -21.608,
+      1.817,
+      -6.014
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -21.808,
+      1.016,
+      -5.074
+     ],
+     "hR": [
+      -21.447,
+      1.016,
+      -6.075
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "1:captain": {
+    "n": 30,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.064,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.841,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "cup",
+     "light": false,
+     "b": "captain",
+     "glb": 0,
+     "ry": 1.149,
+     "g": [
+      -17.208,
+      0.049,
+      -5.283
+     ],
+     "sL": [
+      -17.38,
+      1.829,
+      -4.899
+     ],
+     "sR": [
+      -17.036,
+      1.829,
+      -5.666
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -17.307,
+      1.027,
+      -4.744
+     ],
+     "hR": [
+      -16.872,
+      1.027,
+      -5.715
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "2:lift": {
+    "n": 32,
+    "peggio": {
+     "mani": 0.157,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.646,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.26,
+      -0.26
+     ],
+     "hZ": [
+      0.77,
+      0.77
+     ],
+     "hX": [
+      -0.32,
+      0.32
+     ]
+    },
+    "f": {
+     "k": "cup",
+     "light": false,
+     "b": "lift",
+     "glb": 0,
+     "ry": 0.756,
+     "g": [
+      -4.023,
+      0.045,
+      -4.305
+     ],
+     "sL": [
+      -4.329,
+      1.825,
+      -4.017
+     ],
+     "sR": [
+      -3.717,
+      1.825,
+      -4.593
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -3.728,
+      1.568,
+      -3.521
+     ],
+     "hR": [
+      -3.258,
+      1.568,
+      -3.964
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "3:fest": {
+    "n": 17,
+    "peggio": {
+     "mani": 0.157,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.178,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.26,
+      -0.26
+     ],
+     "hZ": [
+      0.7,
+      0.71
+     ],
+     "hX": [
+      -0.09,
+      0.09
+     ]
+    },
+    "f": {
+     "k": "cup",
+     "light": false,
+     "b": "fest",
+     "glb": 0,
+     "ry": 0.462,
+     "g": [
+      -0.394,
+      0,
+      -5.602
+     ],
+     "sL": [
+      -0.77,
+      1.78,
+      -5.415
+     ],
+     "sR": [
+      -0.018,
+      1.78,
+      -5.789
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -0.16,
+      1.524,
+      -4.931
+     ],
+     "hR": [
+      -0.001,
+      1.524,
+      -5.01
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   }
+  }
+ },
+ "int": {
+  "beats": [
+   "present",
+   "captain",
+   "lift",
+   "fest"
+  ],
+  "perBeat": {
+   "0:present": {
+    "n": 23,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.065,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "int",
+     "light": false,
+     "b": "present",
+     "glb": 0,
+     "ry": 1.214,
+     "g": [
+      -20.974,
+      0.028,
+      -5.562
+     ],
+     "sL": [
+      -21.121,
+      1.808,
+      -5.168
+     ],
+     "sR": [
+      -20.828,
+      1.808,
+      -5.955
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -21.038,
+      1.006,
+      -5.017
+     ],
+     "hR": [
+      -20.666,
+      1.006,
+      -6.015
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "1:captain": {
+    "n": 26,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.065,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "int",
+     "light": false,
+     "b": "captain",
+     "glb": 0,
+     "ry": 1.142,
+     "g": [
+      -16.867,
+      0.042,
+      -5.257
+     ],
+     "sL": [
+      -17.042,
+      1.822,
+      -4.875
+     ],
+     "sR": [
+      -16.693,
+      1.822,
+      -5.639
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -16.97,
+      1.021,
+      -4.719
+     ],
+     "hR": [
+      -16.527,
+      1.021,
+      -5.687
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "2:lift": {
+    "n": 30,
+    "peggio": {
+     "mani": 0.157,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.578,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.26,
+      -0.26
+     ],
+     "hZ": [
+      0.77,
+      0.77
+     ],
+     "hX": [
+      -0.29,
+      0.29
+     ]
+    },
+    "f": {
+     "k": "int",
+     "light": false,
+     "b": "lift",
+     "glb": 0,
+     "ry": 1.19,
+     "g": [
+      -12.218,
+      0.012,
+      -4.913
+     ],
+     "sL": [
+      -12.374,
+      1.792,
+      -4.523
+     ],
+     "sR": [
+      -12.062,
+      1.792,
+      -5.303
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -11.612,
+      1.537,
+      -4.359
+     ],
+     "hR": [
+      -11.397,
+      1.537,
+      -4.895
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "3:fest": {
+    "n": 31,
+    "peggio": {
+     "mani": 0.158,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.233,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.25,
+      -0.25
+     ],
+     "hZ": [
+      0.72,
+      0.72
+     ],
+     "hX": [
+      -0.12,
+      0.12
+     ]
+    },
+    "f": {
+     "k": "int",
+     "light": false,
+     "b": "fest",
+     "glb": 0,
+     "ry": 1.156,
+     "g": [
+      -7.429,
+      0.037,
+      -5.198
+     ],
+     "sL": [
+      -7.598,
+      1.817,
+      -4.813
+     ],
+     "sR": [
+      -7.26,
+      1.817,
+      -5.582
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -6.819,
+      1.563,
+      -4.802
+     ],
+     "hR": [
+      -6.725,
+      1.563,
+      -5.015
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   }
+  }
+ },
+ "promo": {
+  "beats": [
+   "burst",
+   "hug",
+   "coach",
+   "curva",
+   "fest"
+  ],
+  "perBeat": {
+   "0:burst": {
+    "n": 22,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.064,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "promo",
+     "light": false,
+     "b": "burst",
+     "glb": 0,
+     "ry": 0.859,
+     "g": [
+      -21.22,
+      0.046,
+      -5.86
+     ],
+     "sL": [
+      -21.494,
+      1.826,
+      -5.542
+     ],
+     "sR": [
+      -20.946,
+      1.826,
+      -6.178
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -21.469,
+      1.024,
+      -5.372
+     ],
+     "hR": [
+      -20.774,
+      1.024,
+      -6.178
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "1:hug": {
+    "n": 20,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.064,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.839,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "promo",
+     "light": false,
+     "b": "hug",
+     "glb": 0,
+     "ry": 0.521,
+     "g": [
+      -18.585,
+      0.005,
+      -5.86
+     ],
+     "sL": [
+      -18.949,
+      1.785,
+      -5.651
+     ],
+     "sR": [
+      -18.221,
+      1.785,
+      -6.069
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -18.982,
+      0.983,
+      -5.482
+     ],
+     "hR": [
+      -18.059,
+      0.983,
+      -6.012
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "2:coach": {
+    "n": 22,
+    "peggio": {
+     "mani": 1.27,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.271,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.841,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.09,
+      -0.09
+     ],
+     "hZ": [
+      0.79,
+      0.79
+     ],
+     "hX": [
+      -0.63,
+      0.64
+     ]
+    },
+    "f": {
+     "k": "promo",
+     "light": false,
+     "b": "coach",
+     "glb": 0,
+     "ry": 0.924,
+     "g": [
+      -17.657,
+      0.042,
+      -2.612
+     ],
+     "sL": [
+      -17.911,
+      1.822,
+      -2.276
+     ],
+     "sR": [
+      -17.404,
+      1.822,
+      -2.947
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -17.413,
+      1.735,
+      -1.631
+     ],
+     "hR": [
+      -16.647,
+      1.735,
+      -2.645
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "3:curva": {
+    "n": 33,
+    "peggio": {
+     "mani": 1.063,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.064,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "promo",
+     "light": false,
+     "b": "curva",
+     "glb": 0,
+     "ry": 1.458,
+     "g": [
+      -6.606,
+      0.029,
+      -4.43
+     ],
+     "sL": [
+      -6.653,
+      1.809,
+      -4.013
+     ],
+     "sR": [
+      -6.558,
+      1.809,
+      -4.848
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -6.536,
+      1.007,
+      -3.887
+     ],
+     "hR": [
+      -6.416,
+      1.007,
+      -4.944
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "4:fest": {
+    "n": 32,
+    "peggio": {
+     "mani": 0.158,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.56,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.25,
+      -0.25
+     ],
+     "hZ": [
+      0.77,
+      0.77
+     ],
+     "hX": [
+      -0.28,
+      0.28
+     ]
+    },
+    "f": {
+     "k": "promo",
+     "light": false,
+     "b": "fest",
+     "glb": 0,
+     "ry": 1.309,
+     "g": [
+      11.288,
+      0.037,
+      -4.472
+     ],
+     "sL": [
+      11.179,
+      1.817,
+      -4.066
+     ],
+     "sR": [
+      11.397,
+      1.817,
+      -4.877
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      11.956,
+      1.563,
+      -4.003
+     ],
+     "hR": [
+      12.101,
+      1.563,
+      -4.544
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   }
+  }
+ },
+ "bigwin": {
+  "beats": [
+   "burst",
+   "hug",
+   "fest"
+  ],
+  "perBeat": {
+   "0:burst": {
+    "n": 19,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.064,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "bigwin",
+     "light": false,
+     "b": "burst",
+     "glb": 0,
+     "ry": 0.929,
+     "g": [
+      -22.026,
+      0.011,
+      -5.86
+     ],
+     "sL": [
+      -22.277,
+      1.791,
+      -5.523
+     ],
+     "sR": [
+      -21.775,
+      1.791,
+      -6.197
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -22.24,
+      0.989,
+      -5.356
+     ],
+     "hR": [
+      -21.603,
+      0.989,
+      -6.208
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "1:hug": {
+    "n": 15,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.065,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "bigwin",
+     "light": false,
+     "b": "hug",
+     "glb": 0,
+     "ry": 0.659,
+     "g": [
+      -19.486,
+      0.024,
+      -5.86
+     ],
+     "sL": [
+      -19.818,
+      1.804,
+      -5.603
+     ],
+     "sR": [
+      -19.154,
+      1.804,
+      -6.117
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -19.827,
+      1.002,
+      -5.431
+     ],
+     "hR": [
+      -18.985,
+      1.002,
+      -6.083
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "2:fest": {
+    "n": 26,
+    "peggio": {
+     "mani": 0.157,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.304,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.25,
+      -0.25
+     ],
+     "hZ": [
+      0.73,
+      0.73
+     ],
+     "hX": [
+      -0.15,
+      0.15
+     ]
+    },
+    "f": {
+     "k": "bigwin",
+     "light": false,
+     "b": "fest",
+     "glb": 0,
+     "ry": 1.168,
+     "g": [
+      -15.37,
+      0.039,
+      -5.587
+     ],
+     "sL": [
+      -15.535,
+      1.819,
+      -5.2
+     ],
+     "sR": [
+      -15.206,
+      1.819,
+      -5.973
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -14.756,
+      1.566,
+      -5.159
+     ],
+     "hR": [
+      -14.637,
+      1.566,
+      -5.439
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   }
+  }
+ },
+ "light": {
+  "beats": [
+   "burst",
+   "hug",
+   "present",
+   "lift",
+   "lap",
+   "curva",
+   "fest"
+  ],
+  "perBeat": {
+   "0:burst": {
+    "n": 23,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.064,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.839,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": true,
+     "b": "burst",
+     "glb": 0,
+     "ry": 0.828,
+     "g": [
+      -20.903,
+      0.022,
+      -5.86
+     ],
+     "sL": [
+      -21.187,
+      1.802,
+      -5.551
+     ],
+     "sR": [
+      -20.619,
+      1.802,
+      -6.169
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -21.166,
+      1.001,
+      -5.38
+     ],
+     "hR": [
+      -20.447,
+      1.001,
+      -6.164
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "1:hug": {
+    "n": 25,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.065,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": true,
+     "b": "hug",
+     "glb": 0,
+     "ry": -0.22,
+     "g": [
+      -12.36,
+      0.018,
+      -4.766
+     ],
+     "sL": [
+      -12.77,
+      1.798,
+      -4.858
+     ],
+     "sR": [
+      -11.95,
+      1.798,
+      -4.674
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -12.908,
+      0.996,
+      -4.755
+     ],
+     "hR": [
+      -11.869,
+      0.996,
+      -4.522
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "2:present": {
+    "n": 24,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.064,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": true,
+     "b": "present",
+     "glb": 0,
+     "ry": 0,
+     "g": [
+      -2.617,
+      0,
+      -4.201
+     ],
+     "sL": [
+      -3.037,
+      1.78,
+      -4.201
+     ],
+     "sR": [
+      -2.197,
+      1.78,
+      -4.201
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -3.149,
+      0.978,
+      -4.07
+     ],
+     "hR": [
+      -2.085,
+      0.978,
+      -4.071
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "3:lift": {
+    "n": 33,
+    "peggio": {
+     "mani": 0.158,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.16,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.26,
+      -0.26
+     ],
+     "hZ": [
+      0.7,
+      0.7
+     ],
+     "hX": [
+      -0.08,
+      0.08
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": true,
+     "b": "lift",
+     "glb": 0,
+     "ry": 0.561,
+     "g": [
+      -2.617,
+      0,
+      -4.201
+     ],
+     "sL": [
+      -2.973,
+      1.78,
+      -3.978
+     ],
+     "sR": [
+      -2.261,
+      1.78,
+      -4.424
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      -2.312,
+      1.524,
+      -3.565
+     ],
+     "hR": [
+      -2.177,
+      1.524,
+      -3.65
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "4:lap": {
+    "n": 25,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.065,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": true,
+     "b": "lap",
+     "glb": 0,
+     "ry": 1.478,
+     "g": [
+      0.019,
+      0.049,
+      -10.256
+     ],
+     "sL": [
+      -0.02,
+      1.829,
+      -9.838
+     ],
+     "sR": [
+      0.058,
+      1.829,
+      -10.674
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      0.099,
+      1.027,
+      -9.714
+     ],
+     "hR": [
+      0.198,
+      1.027,
+      -10.774
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "5:curva": {
+    "n": 35,
+    "peggio": {
+     "mani": 1.064,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 1.065,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.8,
+      -0.8
+     ],
+     "hZ": [
+      0.13,
+      0.13
+     ],
+     "hX": [
+      -0.53,
+      0.53
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": true,
+     "b": "curva",
+     "glb": 0,
+     "ry": 1.225,
+     "g": [
+      18.293,
+      0.049,
+      -7.797
+     ],
+     "sL": [
+      18.151,
+      1.829,
+      -7.402
+     ],
+     "sR": [
+      18.435,
+      1.829,
+      -8.193
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      18.236,
+      1.027,
+      -7.252
+     ],
+     "hR": [
+      18.596,
+      1.027,
+      -8.254
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   },
+   "6:fest": {
+    "n": 30,
+    "peggio": {
+     "mani": 0.157,
+     "oltre": 0,
+     "dentro": 0,
+     "gomMin": null,
+     "gomMax": null
+    },
+    "ultimo": {
+     "mani": 0.583,
+     "oltreL": 0,
+     "oltreR": 0,
+     "scartoAvanti": null,
+     "spalle": 0.84,
+     "dentroL": 0,
+     "dentroR": 0,
+     "gomL": null,
+     "gomR": null,
+     "hY": [
+      -0.25,
+      -0.25
+     ],
+     "hZ": [
+      0.77,
+      0.77
+     ],
+     "hX": [
+      -0.29,
+      0.29
+     ]
+    },
+    "f": {
+     "k": "league",
+     "light": true,
+     "b": "fest",
+     "glb": 0,
+     "ry": -0.998,
+     "g": [
+      9.69,
+      0.047,
+      -4.857
+     ],
+     "sL": [
+      9.462,
+      1.827,
+      -5.21
+     ],
+     "sR": [
+      9.917,
+      1.827,
+      -4.504
+     ],
+     "eL": null,
+     "eR": null,
+     "hL": [
+      8.886,
+      1.572,
+      -4.686
+     ],
+     "hR": [
+      9.201,
+      1.572,
+      -4.196
+     ],
+     "hd": null,
+     "pe": null,
+     "tL": null,
+     "tR": null
+    }
+   }
+  }
+ }
+}

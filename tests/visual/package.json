@@ -232,6 +232,9 @@
     "barriera-73": "node barriera-73.mjs",
     "volo-75": "node volo-75.mjs",
     "stat-77": "node stat-77.mjs",
+    "mister-77": "node mister-77.mjs",
+    "mister-77:rosso": "CPM_ROSSO77=1 node mister-77.mjs",
+    "mister-77:manichino": "CPM_GLB=0 node mister-77.mjs",
     "testa-76": "node testa-76.mjs"
   },
   "dependencies": {

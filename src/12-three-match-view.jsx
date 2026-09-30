@@ -762,6 +762,36 @@ function ThreeMatchView(props){
       const d=raw-f0;if(d<=0.005){av._off77=0;return;}
       (vr.parent||vr).getWorldScale(_s77);const k=_s77.y||1;
       vr.position.y=av._vy77-d/k;av._off77=d;vr.updateMatrixWorld(true);}catch(_e){}};
+    /* [7.999.77+ Parte 1 prompt PO «le braccia del mister sono storte o incrociate nelle feste»] CAUSA MISURATA
+       (sonda mister-77): actor-presenter non nasce in T-pose ma in A-POSE — omero gia' 43,9° sotto l'orizzontale.
+       L'abbassamento al caricamento era un angolo FISSO pensato per la T-pose (71,6°): il braccio finiva a 115,5°,
+       cioe' 25,5° OLTRE la verticale, verso l'altro lato del corpo — mani incrociate 3,7 cm oltre la mediana e
+       avambracci dentro il busto in OGNI beat, perche' ogni gesto ruotava quella base gia' storta.
+       SISTEMA UNICO (nessuna rotazione locale scritta a mano): ogni posa e' una coppia di DIREZIONI nel riferimento
+       del corpo (fuori, su, avanti — specchiate per lato); a ogni fotogramma omero e avambraccio ripartono dalla
+       posa di caricamento e vengono puntati sulla direzione con una rotazione nello spazio MONDO
+       (setFromUnitVectors). Non dipende da come nasce lo scheletro (A-pose, T-pose, Biped, Mixamo). Il manichino
+       di riserva (braccio unico a scatola) usa lo stesso bersaglio. Rosso: __CPM_NO_BRACCIA77. Guardiano mister-77. */
+    const _POSE77={riposo:[[0.17,-0.98,0.06],[0.10,-0.96,0.26]],abbraccio:[[0.45,-0.25,0.86],[0.05,0.05,1]],
+      applA:[[0.12,-0.75,0.65],[-0.30,0.25,0.92]],applC:[[0.05,-0.72,0.69],[-0.72,0.25,0.65]]};
+    const _qa77=new THREE.Quaternion(),_qb77=new THREE.Quaternion(),_qr77=new THREE.Quaternion(),_pa77=new THREE.Vector3(),_pb77=new THREE.Vector3(),_ta77=new THREE.Vector3(),_tb77=new THREE.Vector3();
+    const _punta77=(b,child,tgt)=>{if(!b||!b.parent)return;if(!b._q77)b._q77=b.quaternion.clone();b.quaternion.copy(b._q77);b.updateWorldMatrix(true,true);
+      b.getWorldPosition(_pa77);
+      if(child){child.getWorldPosition(_pb77);_pb77.sub(_pa77).normalize();}else{b.getWorldQuaternion(_qa77);_pb77.set(0,-1,0).applyQuaternion(_qa77);}
+      _qr77.setFromUnitVectors(_pb77,tgt);b.parent.getWorldQuaternion(_qb77);
+      b.quaternion.copy(_qb77.clone().invert().multiply(_qr77).multiply(_qb77).multiply(b._q77));b.updateWorldMatrix(false,true);};
+    const _dir77=(v,side,q,out)=>out.set(v[0]*side,v[1],v[2]).normalize().applyQuaternion(q);
+    const _mix77=(a,c,t)=>[0,1].map(i=>[0,1,2].map(j=>a[i][j]+(c[i][j]-a[i][j])*t));
+    const _braccia77=(co,bk,ct)=>{try{
+      let pose=_POSE77.riposo;
+      if(bk==="coach")pose=_POSE77.abbraccio;
+      else if(bk==="lift"||bk==="fest"){const t=0.5+0.5*Math.sin(ct*9);pose=_mix77(_POSE77.applA,_POSE77.applC,t*t*(3-2*t));}
+      co.updateWorldMatrix(true,false);co.getWorldQuaternion(_qa77);const qc=_qa77.clone();
+      for(const [up,fo] of [[co._aL,co._glbArms434?co._fL434:null],[co._aR,co._glbArms434?co._fR434:null]]){
+        if(!up)continue;up.getWorldPosition(_pa77);co.worldToLocal(_pa77);const side=_pa77.x>=0?1:-1;/* il lato si legge dalla spalla, non dal nome */_dir77(pose[0],side,qc,_ta77);_dir77(pose[1],side,qc,_tb77);
+        if(fo){_punta77(up,fo,_ta77);const h=(fo.children||[]).find(c=>c.isBone);if(h)_punta77(fo,h,_tb77);}
+        else{_ta77.multiplyScalar(0.51).add(_tb77.multiplyScalar(0.49)).normalize();_punta77(up,null,_ta77);}}
+    }catch(_e){}};
     const _updateAvatarMixerLod=(av,delta,index,technical)=>{if(!av||!av.mx)return false;
       const enabled=!(typeof window!=='undefined'&&window.__CPM_ANIM_LOD===false);
       let cadence=1,protectedPose=!!technical||index===0||!!av._isHero||!!av._carta9||!!av._gName||!!av._gPrev||((av._gw||0)>0.02);
@@ -777,6 +807,7 @@ function ThreeMatchView(props){
       av._animLodAccum=(av._animLodAccum||0)+delta;const sample=Math.min(av._animLodAccum,0.066);av._animLodAccum=0;
       av.mx.update(sample);if(av._hyper&&av.visualRoot)_corrPostura23(_ossa23(av.visualRoot));_piedi77(av);_animLodStats.mixerUpdates++;_animLodStats.lastFrameUpdates++;return true;
     };
+    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_BURST77=(home)=>{goalBurstT=0;goalBurstHome=!!home;goalBurstStadHome=!!home;return true;};}catch(_e77b){}/* [7.999.77+] test-only: fa esultare la panchina come per un gol (home=true: la panchina di casa) */
     if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_FOOT77=()=>{const a=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero);if(!a||!a._footL||!a._footR)return null;const v=new THREE.Vector3();a._footL.getWorldPosition(v);const l=v.y;a._footR.getWorldPosition(v);return{foot:+Math.min(l,v.y).toFixed(3),root:+a.root.position.y.toFixed(3),proc:+a.proc.position.y.toFixed(3),f0:a._f077,off:a._off77,vy:a.visualRoot&&+a.visualRoot.position.y.toFixed(3),n:a._n77|0,h:a._h};};}catch(_e77){}/* [7.999.77] test-only: quota del piede piu' basso dell'eroe 3D (riferimento a terra per la festa) */
     try{window.__CPM_ANIM_AUDIT=()=>{const aa=(glbAvatars||[]).filter(a=>a&&a.root&&a.root.visible),all=[];let active=0;
       aa.forEach(a=>{const acts=[a.idle,a.run,...Object.values(a.gestures||{}),...Object.values(a._locoActs||{})].filter(Boolean);acts.forEach(x=>{if(!all.includes(x)){all.push(x);if(x.weight>0.02&&(!x.isRunning||x.isRunning()))active++;}});});
@@ -7217,6 +7248,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               if(_bounce>0.02&&av._armBones904){const{armL,armR}=av._armBones904;
                 if(armL)_rw904(armL,_AZ904,-1.3*_bounce);if(armR)_rw904(armR,_AZ904,1.3*_bounce);}
             }
+            /* [7.999.77+] testimone delle braccia della PANCHINA (solo sotto test): spalla, gomito, mano per corpo, ogni 4 fotogrammi */
+            if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)&&av._armBones904&&av._armBones904.armL&&av._armBones904.armR){try{const W=window.__CPM_BENCH77=window.__CPM_BENCH77||{fr:[]};
+              av._w77=(av._w77|0)+1;if(av._w77%4===0&&W.fr.length<3000){const _p=(o)=>{if(!o)return null;o.updateWorldMatrix(true,false);const v=new THREE.Vector3();o.getWorldPosition(v);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};
+                const _c=(b)=>b?(b.children||[]).find(c=>c.isBone)||null:null;const{armL,armR}=av._armBones904;const eL=_c(armL),eR=_c(armR);
+                W.fr.push({i:_bi,seated:av._seated904?1:0,home:av._home904?1:0,coach:av._isCoach904?1:0,bounce:+_bounce.toFixed(2),sL:_p(armL),sR:_p(armR),eL:_p(eL),eR:_p(eR),hL:_p(_c(eL)),hR:_p(_c(eR)),g:_p(av.root)});}}catch(_e77){}}
           }
         }
         // CINE-VAR: animazione eroe per tipo + variante cinematografica (Sprint 4.73.0)
@@ -8020,6 +8056,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  _co.position.x=podiumGrp.position.x+(_co.position.x-podiumGrp.position.x)*_k476;
                  _co.position.z=podiumGrp.position.z+(_co.position.z-podiumGrp.position.z)*_k476;}}}
             _co.rotation.y=Math.atan2(hero.position.x-_co.position.x,hero.position.z-_co.position.z);
+            const _B77=!(typeof window!=='undefined'&&window.__CPM_NO_BRACCIA77);
             if(_co._glbArms434){/* [7.434.0] ossa GLB in WORLD-SPACE (lezione 7.340: gli euler per-rig su Biped cadono male): base in quaternione catturata dopo la posa, rotazione attorno all'asse LATERALE del personaggio */
               const _ry434=_co.rotation.y,_lat434=new THREE.Vector3(Math.cos(_ry434),0,-Math.sin(_ry434));
               const _gW=(b,ang)=>{if(!b||!b.parent)return;if(!b._q434)b._q434=b.quaternion.clone();
@@ -8037,12 +8074,29 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                  destinazione la falcata muore da sola perche' l'ampiezza segue `_mv476`. */
               {const _sw476=(_co._mv476?Math.sin((_co._walk439||0)*7)*0.55:0);
                if(_co._tL476)_gW(_co._tL476,_sw476);if(_co._tR476)_gW(_co._tR476,-_sw476);}
-              if(_bk==="coach"){_gW(_co._aL,-1.5);_gW(_co._aR,-1.5);_gW(_co._fL434,0);_gW(_co._fR434,0);}
+              if(_B77){_braccia77(_co,_bk,_ct);}
+              else if(_bk==="coach"){_gW(_co._aL,-1.5);_gW(_co._aR,-1.5);_gW(_co._fL434,0);_gW(_co._fR434,0);}
               else if(_bk==="lift"||_bk==="fest"){const _cl=Math.sin(_ct*7)>0?-0.5:-0.9;_gW(_co._aL,_cl);_gW(_co._aR,_cl);_gW(_co._fL434,-0.3);_gW(_co._fR434,-0.3);}
               else{_gW(_co._aL,-0.1);_gW(_co._aR,-0.1);_gW(_co._fL434,0);_gW(_co._fR434,0);}}
+            else if(_B77){_braccia77(_co,_bk,_ct);}
             else if(_bk==="coach"){_co._aL.rotation.x=-1.4;_co._aR.rotation.x=-1.4;_co._aL.rotation.z=0.35;_co._aR.rotation.z=-0.35;}/* abbraccio */
             else if(_bk==="lift"||_bk==="fest"){const _cl=Math.sin(_ct*7)>0?0.5:0.9;_co._aL.rotation.x=-_cl;_co._aR.rotation.x=-_cl;_co._aL.rotation.z=0;_co._aR.rotation.z=0;}/* applauso */
-            else{_co._aL.rotation.x=-0.3;_co._aR.rotation.x=-0.3;_co._aL.rotation.z=0;_co._aR.rotation.z=0;}}
+            else{_co._aL.rotation.x=-0.3;_co._aR.rotation.x=-0.3;_co._aL.rotation.z=0;_co._aR.rotation.z=0;}
+            /* [7.999.77] TESTIMONE DELLE BRACCIA DEL MISTER (solo sotto test): posizioni MONDO di spalle, gomiti, mani,
+               bacino, testa e punte dei piedi per beat — la sonda calcola distanza fra le mani, attraversamento della
+               linea mediana, avambracci dentro il torso, angolo del gomito. */
+            if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const W=window.__CPM_COACH77=window.__CPM_COACH77||{fr:[]};
+              if(W.fr.length<600){const _p=(o)=>{if(!o)return null;o.updateWorldMatrix(true,false);const v=new THREE.Vector3();o.getWorldPosition(v);return[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];};
+                const _ch=(b)=>b?(b.children||[]).find(c=>c.isBone)||null:null;
+                const _g=_co._glb434;let _hd=null,_pe=null,_tL=null,_tR=null;
+                if(_g&&!_co._bn77){const m={};_g.traverse(b=>{if(!b.isBone)return;const n=(b.name||'').replace(/[:_. ]/g,'').toLowerCase();if(!m.hd&&/head$/.test(n))m.hd=b;if(!m.pe&&/pelvis$|hips$/.test(n))m.pe=b;if(!m.tL&&/(ltoe0?|lefttoebase)$/.test(n))m.tL=b;if(!m.tR&&/(rtoe0?|righttoebase)$/.test(n))m.tR=b;});_co._bn77=m;}
+                const B=_co._bn77||{};
+                const _hL=_co._glbArms434?_ch(_co._fL434):null,_hR=_co._glbArms434?_ch(_co._fR434):null;
+                let _hLp=_p(_hL),_hRp=_p(_hR);
+                if(!_co._glbArms434&&_co._aL&&_co._aR){const v=new THREE.Vector3();_co._aL.updateWorldMatrix(true,false);v.set(0,-0.82,0).applyMatrix4(_co._aL.matrixWorld);_hLp=[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];_co._aR.updateWorldMatrix(true,false);v.set(0,-0.82,0).applyMatrix4(_co._aR.matrixWorld);_hRp=[+v.x.toFixed(3),+v.y.toFixed(3),+v.z.toFixed(3)];}
+                W.fr.push({k:_ck422,light:!!(P.ceremony&&P.ceremony.light),b:_bk,glb:_co._glbArms434?1:0,ry:+_co.rotation.y.toFixed(3),g:_p(_co),
+                  sL:_p(_co._aL),sR:_p(_co._aR),eL:_co._glbArms434?_p(_co._fL434):null,eR:_co._glbArms434?_p(_co._fR434):null,hL:_hLp,hR:_hRp,
+                  hd:_p(B.hd),pe:_p(B.pe),tL:_p(B.tL),tR:_p(B.tR)});}}catch(_e77){}}}
           /* [7.476.0] TESTIMONE DELLA CERIMONIA (solo sotto test). Le quattro note del PO sulla premiazione
              — «l'eroe saltella come se si stesse riscaldando», «il mister vola», «entrano nel palco», «la
              coppa e' troppo grande» — sono tutte GRANDEZZE, non impressioni: la clip che l'eroe sta
