@@ -1087,6 +1087,16 @@ function righeTabellino23(A,B){const pc=(q)=>q.passaggi>0?Math.round(100*(q.pass
     {et:"Espulsioni",sx:A.espulsioni|0,dx:B.espulsioni|0},
     {et:"Rimesse laterali",sx:A.rimesse|0,dx:B.rimesse|0},
   ].filter(r=>r.et==="Gol"||r.et==="Possesso"||(r.n!=null?r.n>0:((+r.sx||0)+(+r.dx||0))>0));}
+/* [7.999.82] l'ingresso del brain per la giocata dell'eroe: famiglia del gesto, punto, intenzione (rigore/punizione), statistiche vere */
+/* [7.999.82] la percentuale mostrata sul pulsante e la scelta automatica leggono lo STESSO brain dell'esito (probabilita' del motore,
+   con la marcatura della scena); senza motore o col rosso __CPM_NO_BRAIN82, la formula di prima. */
+function _rateUI82(M,a,sit,pPos,stats,defPts,oldFn){try{if(!(typeof window!=='undefined'&&window.__CPM_NO_BRAIN82)&&M&&M.probEroe){const r=M.probEroe(_brainIn82(a,sit,pPos,stats,{mods:-(defPts||0)/100}));if(r&&isFinite(r.p))return Math.round(r.p*100);}}catch(_e){}return oldFn();}
+const _BRAIN82_UI=()=>!(typeof window!=='undefined'&&window.__CPM_NO_BRAIN82);
+function _brainIn82(action,sit,pPos,stats,ex){ex=ex||{};const rew=(action&&action.rew)||"";const st=(action&&action.stat)||"tecnica";
+  let intent=null;try{if(sit&&typeof isPenaltySit==="function"&&isPenaltySit(sit))intent="penalty";else if(sit&&typeof isSetPieceSit==="function"&&isSetPieceSit(sit)&&sit.ballAt!=="corner")intent="freekick";}catch(_e){}
+  if(!intent&&/testa|colpo di testa|incorn/i.test(String((action&&action.label)||"")))intent="header";
+  const fam=rew==="goal"?"tiro":rew==="assist"?"assist":((sit&&sit.type==="def")||rew==="recovery")?"difesa":(st==="dribbling"?"dribbling":"altro");
+  return{fam,stat:st,intent,x:(pPos&&pPos.x)||60,y:(pPos&&pPos.y)||50,stats:stats||{},mods:+ex.mods||0,mult:ex.mult==null?1:ex.mult,alta:!!ex.alta};}
 const _DOPPIE77={"Gol":1,"Possesso":1,"Tiri":1,"Tiri in porta":1,"Gol attesi (xG)":1};
 function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosaOsp,nomeEroe,numEroe}){
   const [dati,setDati]=React.useState(null);
@@ -8515,7 +8525,16 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(_xgV2!=null)_pV2=clamp(_xgV2*_qV2*_cruise80*_hgD86/adapt,0.05,0.8);
       if(typeof window!=='undefined'&&window.__CPM_REC){const _W=(window.__CPM_V2EROE=window.__CPM_V2EROE||[]);_W.push({rew:action.rew,piaz:_intV2||null,xg:+(+_xgV2).toFixed(3),q:+_qV2.toFixed(2),p:+(+_pV2).toFixed(3),vecchio:+clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76).toFixed(3)});}
     }catch(_eV2){_pV2=null;}}
-    const _pB2=_pV2!=null?_pV2:clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76);
+    /* [7.999.82 — BRAIN UNICO. Direttiva PO 30/09: «succRate deve essere calcolato da brain, deve essere l'unico cervello / motore del
+       gioco»] La probabilita' della giocata la calcola il MOTORE (probEroe, src/14) con i suoi modelli: succRate e il moltiplicatore q
+       (fino a x2) escono dalla decisione. Il contesto della scena resta com'era (marcatura, meteo, momento, forma, morale, fatica, mister,
+       pubblico, analisi, fiducia) e arriva al motore come `mods`; i freni di partita (gestione del vantaggio e del protagonista,
+       anti-farm) come `mult`. Il malus fisso delle punizioni non serve piu': la punizione diretta e' il suo xG. Rosso __CPM_NO_BRAIN82. */
+    let _pBR82=null;const _brain82=!(typeof window!=='undefined'&&window.__CPM_NO_BRAIN82)&&!!(motoreRef.current&&motoreRef.current.probEroe);
+    if(_brain82){try{const _o82=_brainIn82(action,_fkSit,pPos,player.stats,{mods:-defPenalty-weatherPenalty+momentumBonus+formMod+moraleMod-fatiguePenalty+tacticMod+atmoMod+_scout88.mod+_fid752,mult:_cruise80*_hgD86/adapt,alta:(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&typeof _ORIG26!=='undefined'&&_ORIG26&&_ORIG26.active&&_ORIG26.sit===_fkSit)});
+      const _r82=motoreRef.current.probEroe(_o82);if(_r82&&isFinite(_r82.p))_pBR82=_r82.p;
+      if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _W=(window.__CPM_BRAIN82=window.__CPM_BRAIN82||[]);if(_W.length<400)_W.push({fam:_o82.fam,rew:action.rew||null,stat:action.stat||null,det:_r82&&_r82.det,vecchio:+(_pV2!=null?_pV2:clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76)).toFixed(3)});}catch(_e){}}}catch(_e82){_pBR82=null;}}
+    const _pB2=_pBR82!=null?_pBR82:(_pV2!=null?_pV2:clamp((rate*_cruise80*_hgD86/adapt),0.05,0.76));
     if(_v2h&&(action.rew==="goal"||action.rew==="assist")&&motoreRef.current&&motoreRef.current.addebita){try{motoreRef.current.addebita(_pB2);}catch(_e36){}}/* [7.999.36] la scena dell'eroe e' un'occasione della squadra: i suoi gol attesi si tolgono ai tiri successivi del motore */
     let ok=_b2On?motoreRef.current.risolviEroe.dado(_pB2):(_okR78()<clamp((rate*_cruise80*_hgD86/adapt)+(_okR78()-.5)*.06,0.05,0.76));
     if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_B2=window.__CPM_B2||{n:0,ok:0,pSum:0,brain:0});_W.n++;_W.ok+=ok?1:0;_W.pSum+=_pB2;_W.brain+=_b2On?1:0;}catch(_eW){}}/* [6.78.0] 0.84→0.82 · [6.83.0] →0.79 · [6.87.0] →0.76 (coerente con succRate) · [6.86.0] ×_hgD86 (gestione del protagonista) */
@@ -9358,7 +9377,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       // Find worst action (lowest success) and fail it — defender tackles
       const actions=sit.actions||[];
       if(!actions.length)return;
-      const _arcId107=player.archetype?.id||player.archetype;const worst=actions.reduce((a,b)=>succRate(a,player.stats,pPos.x,oppPrestige,_arcId107)<=succRate(b,player.stats,pPos.x,oppPrestige,_arcId107)?a:b);
+      const _arcId107=player.archetype?.id||player.archetype;const _rw82=(a)=>_rateUI82(motoreRef.current,a,sit,pPos,player.stats,0,()=>succRate(a,player.stats,pPos.x,oppPrestige,_arcId107));const worst=actions.reduce((a,b)=>_rw82(a)<=_rw82(b)?a:b);
       if(_hlActionFiredRef.current)return;_hlActionFiredRef.current=true;/* [7.163.0 super-test LIVE-F2] stessa guardia di handleAction: niente doppia risoluzione tap⇄timeout */
       const tackleTexts=["Il difensore anticipa e recupera palla.","Intervento difensivo! Palla persa.","Il pressing paga: il difensore chiude l'azione.","Troppo lento — il marcatore intercetta."];
       const txt=pick(tackleTexts);
@@ -10682,8 +10701,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                       <div style={{flex:1,display:"flex",flexDirection:"column",gap:5}}>
                         {filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,_oi,_arr)=>{
                           const _dp2=defDist<25?15:defDist<50?8:0;
-                          const _rt2=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-_dp2);
-                          const _rc2=_rt2>70?"#4ade80":_rt2>50?"#f59e0b":"#f87171";
+                          const _rt2=Math.max(3,_rateUI82(motoreRef.current,a,curSit,pPos,player.stats,_dp2,()=>succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-_dp2));
+                          const _rc2=_BRAIN82_UI()?(_rt2>45?"#4ade80":_rt2>28?"#f59e0b":"#f87171"):(_rt2>70?"#4ade80":_rt2>50?"#f59e0b":"#f87171");
                           const _sel2=_oi===selectedActionIdx;
                           return(
                             <button key={_oi} onClick={()=>handleAction(a)}
@@ -10895,8 +10914,8 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     ):filterSitActions(curSit.actions||[],pPos.x,curSit).map((a,i,_arr)=>{
                       // Defender proximity reduces success rate
                       const defPenalty=Math.round(15*clamp((64-defDist)/52,0,1));/* [7.316.0] stessa rampa continua del motore (era la scala a gradini 15/8/0): il colore del bottone segue la marcatura invece di scattare a soglie invisibili */
-                      const rate=Math.max(5,succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-defPenalty);
-                      const rc=rate>70?"#4ade80":rate>50?"#f59e0b":"#f87171";
+                      const rate=Math.max(3,_rateUI82(motoreRef.current,a,curSit,pPos,player.stats,defPenalty,()=>succRate(a,player.stats,pPos.x,oppPrestige,player.archetype?.id||player.archetype)-defPenalty));
+                      const rc=_BRAIN82_UI()?(rate>45?"#4ade80":rate>28?"#f59e0b":"#f87171"):(rate>70?"#4ade80":rate>50?"#f59e0b":"#f87171");
                       const isSel=i===selectedActionIdx;
                       return(
                         <button key={i} onClick={()=>handleAction(a)}

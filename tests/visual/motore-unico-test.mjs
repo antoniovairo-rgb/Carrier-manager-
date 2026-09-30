@@ -15,7 +15,7 @@ for (let k = 0; k < N; k++) {
     await openMatch(page, port, { skipLoadAll: true, name: 'Unico' + (k * 37 + 11) });
     await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), 5100 + k * 97);
     const t0 = Date.now(); while (Date.now() - t0 < TETTO_MS) { await sleep(500); const ph = await matchPhase(page); if (ph === 'ended' || ph === 'ceremony') break; }
-    const d = await page.evaluate(() => ({ ev: (window.__CPM_EV ? window.__CPM_EV() : []), score: (window.__CPM_SCORE ? window.__CPM_SCORE() : null), eroe: window.__CPM_V2EROE || [],
+    const d = await page.evaluate(() => ({ ev: (window.__CPM_EV ? window.__CPM_EV() : []), score: (window.__CPM_SCORE ? window.__CPM_SCORE() : null), eroe: window.__CPM_V2EROE || [], brain82: window.__CPM_BRAIN82 || [],
       tab: (window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ() ? window.__CPM_MOTORE_OBJ().tabellino() : null),
       /* il gol del microsim arriva al motore come RICHIESTA (chiedi.gol) e poi il motore lo segna: nel registro esce come «cronaca».
          Il segnale che separa i due mondi e' quindi nel motore: tick con una richiesta di gol pendente. Con v2 devono essere zero. */
@@ -23,7 +23,8 @@ for (let k = 0; k < N; k++) {
       tat: (window.__CPM_MOTORE_OBJ && window.__CPM_MOTORE_OBJ() ? window.__CPM_MOTORE_OBJ().tattica : null) }));
     const gol = d.ev.filter(e => e.ev === 'goal');/* il registro scrive il tipo in `ev` (src/11 cpmEv) */
     const cr = d.ev.filter(e => e.ev === 'chronicle');/* quota di cronaca nata dal motore (mk = tipo di fatto del motore) contro righe pescate da tabella/libreria */
-    R.push({ k, tat: d.tat, righe: [cr.filter(e => e.mk).length, cr.length], score: d.score, golReq: d.golReq, gol: gol.length, src: gol.reduce((a, e) => { const s = (e.d && e.d.src) || e.src || '?'; a[s] = (a[s] | 0) + 1; return a; }, {}), eroe: d.eroe,
+    if (process.env.CPM_BRAIN82) console.log('BRAIN82', k, JSON.stringify(d.brain82.map(x => [x.fam, x.rew, x.det && x.det.p, x.vecchio, x.det && x.det.opp])));
+    R.push({ k, brain82: d.brain82, tat: d.tat, righe: [cr.filter(e => e.mk).length, cr.length], score: d.score, golReq: d.golReq, gol: gol.length, src: gol.reduce((a, e) => { const s = (e.d && e.d.src) || e.src || '?'; a[s] = (a[s] | 0) + 1; return a; }, {}), eroe: d.eroe,
       tiri: d.tab ? [d.tab.home.tiri, d.tab.away.tiri] : null, golMotore: d.tab ? [d.tab.home.gol, d.tab.away.gol] : null, xg: d.tab ? [d.tab.home.xg, d.tab.away.xg] : null });
   } catch (e) { R.push({ k, err: String(e.message).slice(0, 120) }); }
   await ctx.close();
@@ -47,8 +48,13 @@ if (!ROSSO) { if (micro > 0) fails.push('il microsim decide ancora gol'); if (gi
      la banda 0,20-0,55 vale per le scene su azione, i piazzati si dichiarano a parte (prima della 7.999.27 non esistevano fra le scene) */
   const pz = ok.flatMap(r => (r.eroe || []).filter(x => x.rew === 'goal' && x.piaz).map(x => x.piaz + ':' + (+x.p).toFixed(2)));
   if (pz.length) console.log(`piazzati dell'eroe (a parte): ${pz.join(' ')}`);
-  const pg = ok.flatMap(r => (r.eroe || []).filter(x => x.rew === 'goal' && !x.piaz).map(x => +x.p)).sort((a, b) => a - b);
-  if (pg.length) { const med = pg[Math.floor(pg.length / 2)]; console.log(`probabilita' di gol dell'eroe su azione: mediana ${med.toFixed(2)} su ${pg.length} tiri`); if (med < 0.2 || med > 0.55) fails.push(`mediana gol eroe ${med.toFixed(2)} fuori da 0,20-0,55`); } }
+  /* [7.999.82 — BRAIN UNICO, decisione PO «realismo da serie A»] la probabilita' vera ora e' quella del motore (__CPM_BRAIN82, famiglia
+     tiro, piazzati esclusi); la banda passa da 0,20-0,55 (grande occasione x q, fino a ~1,4 gol a partita per un eroe forte) a 0,08-0,32
+     (buona occasione: eroe forte ~0,7 gol a partita, guardiano brain-82). Col rosso __CPM_NO_BRAIN82 si torna alla via di prima. */
+  const _b82 = ok.flatMap(r => (r.brain82 || []).filter(x => x.fam === 'tiro' && x.det && x.det.p != null && (!x.det.intent || x.det.intent === 'header')).map(x => +x.det.p));
+  const _usaB82 = _b82.length > 0 && !process.env.CPM_NO_BRAIN82;
+  const pg = (_usaB82 ? _b82 : ok.flatMap(r => (r.eroe || []).filter(x => x.rew === 'goal' && !x.piaz).map(x => +x.p))).sort((a, b) => a - b);
+  if (pg.length) { const med = pg[Math.floor(pg.length / 2)]; console.log(`probabilita' di gol dell'eroe su azione: mediana ${med.toFixed(2)} su ${pg.length} tiri`); if ((_usaB82 ? (med < 0.08 || med > 0.32) : (med < 0.2 || med > 0.55))) fails.push(`mediana gol eroe ${med.toFixed(2)} fuori da 0,20-0,55`); } }
 else { if (micro === 0 && giocate === 0) fails.push('(rosso atteso) — ok'); }
 if (ROSSO) { const rossoOk = micro > 0 && giocate === 0; console.log(rossoOk ? '✅ ROSSO come atteso: col motore spento i gol tornano dal microsim' : '❌ il rosso non riproduce il vecchio comportamento'); process.exit(rossoOk ? 0 : 1); }
 console.log(fails.length ? '❌ FAIL motore-unico\n  ' + fails.join('\n  ') : '✅ PASS motore-unico'); process.exit(fails.length ? 1 : 0);

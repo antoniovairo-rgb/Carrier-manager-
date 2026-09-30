@@ -239,6 +239,8 @@
     "taccuino-79:rosso": "CPM_ROSSO94=1 CPM_CASI=151 node taccuino-79.mjs",
     "taccuino-81": "CPM_BOZZA=1 CPM_CASI=112 node taccuino-79.mjs",
     "taccuino-81:rosso": "CPM_ROSSO81=1 CPM_BOZZA=1 CPM_CASI=112 node taccuino-79.mjs",
+    "brain-82": "node brain-82.mjs",
+    "brain-82:rosso": "CPM_ROSSO=1 node brain-82.mjs",
     "festa-79": "node festa-79.mjs",
     "festa-79:rosso": "CPM_ROSSO80=1 node festa-79.mjs",
     "testa-76": "node testa-76.mjs"
