@@ -191,7 +191,7 @@ export async function openMatch(page, port, opts) {
      passata del gate (FATAL su openMatch → 0 Situations e tutti i check verdi a vuoto: un falso «pass» pericoloso).
      La store build precompila il JSX offline, quindi è un costo del solo harness. */
   await page.goto(url, { waitUntil: 'load', timeout: 90000 });
-  await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, { timeout: 40000 });
+  await page.waitForFunction(() => { const r = document.getElementById('root'); return r && r.children.length > 0; }, null, { timeout: 40000 });/* [30/09 segnalazione Codex] le opzioni sono il TERZO argomento: al secondo erano l'arg della funzione e valeva il default 30 s */
   if (!await clickByText(page, 'Nuova carriera')) throw new Error('flusso: "Nuova carriera" non trovato');
   await sleep(700);
   /* [7.496.0 F1b] IL NOME E' OPZIONALE, E CAMBIARLO CAMBIA LA PARTITA. Il seed di partita nasce da
@@ -204,7 +204,7 @@ export async function openMatch(page, port, opts) {
   if (!await clickByText(page, 'INIZIA I PROVINI')) throw new Error('flusso: "INIZIA I PROVINI" non trovato');
   await sleep(400);
   if (!await clickByText(page, 'Inizia il provino')) throw new Error('flusso: "Inizia il provino" non trovato');
-  await page.waitForFunction(() => typeof window.__CPM_FORCE_SIT === 'function' && typeof window.__CPM_STATE === 'function' && typeof window.__CPM_PROBE === 'function', { timeout: 20000 });
+  await page.waitForFunction(() => typeof window.__CPM_FORCE_SIT === 'function' && typeof window.__CPM_STATE === 'function' && typeof window.__CPM_PROBE === 'function', null, { timeout: 30000 });/* [30/09] terzo argomento; 30 s = il limite che valeva di fatto finora (il 20000 scritto non era mai applicato) */
   // [5.76.0 ARC-1a] skipLoadAll: lascia la partita REALE in `playing` (clock vero, niente force) — per il live-smoke
   if (opts && opts.skipLoadAll) { await sleep(300); return { total: 0 }; }
   const total = await page.evaluate(() => window.__CPM_LOAD_ALL());

@@ -222,7 +222,9 @@
     "controllo-67": "node controllo-67.mjs",
     "leggibile-68": "node leggibile-68.mjs",
     "rigore-69": "node rigore-69.mjs",
-    "rovesciata-69": "node rovesciata-69.mjs"
+    "rovesciata-69": "node rovesciata-69.mjs",
+    "pali-69": "node pali-69.mjs",
+    "galleria-stadi": "node galleria-stadi.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

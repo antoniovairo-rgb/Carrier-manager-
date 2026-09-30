@@ -1049,8 +1049,9 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   // [5.88.0 S2] stile torri: traliccio (provincia, esili) · perimetrali (6 pali bassi) · angolari_alte (iconiche ×1.3) · tetto (bank sul tetto, niente pali) · legacy
   const _fH2=_towerT==="angolari_alte"?floodH*1.3:_towerT==="perimetrali"?floodH*0.7:floodH;
   const _towPos=_towerT==="perimetrali"
-    ?[[-sideX+8,-endZ+8],[sideX-8,-endZ+8],[-sideX+8,endZ-8],[sideX-8,endZ-8],[0,-endZ+6],[0,endZ-6]]
+    ?[[-sideX+8,-endZ+8],[sideX-8,-endZ+8],[-sideX+8,endZ-8],[sideX-8,endZ-8]].concat((typeof window!=='undefined'&&window.__CPM_NO_PALI69)?[[0,-endZ+6],[0,endZ-6]]:[[0,-(endZ+endD/2+1.5)],[0,endZ+endD/2+1.5]])/* [7.999.69 stadi fase 2 — galleria fase 1: «pali davanti alla tribuna centrale». Rosso __CPM_NO_PALI69] i due pali centrali dei lati lunghi stavano a endZ-6, cioe' sui primi gradoni della tribuna (fronte a endZ-endD/2), in mezzo all'inquadratura TV: ora stanno DIETRO la tribuna, come negli impianti comunali veri. Luci invariate. */
     :[[-sideX+8,-endZ+8],[sideX-8,-endZ+8],[-sideX+8,endZ-8],[sideX-8,endZ-8]];
+  try{if(typeof window!=='undefined')window.__CPM_PALI69={tipo:_towerT,sideX:+sideX.toFixed(1),endZ:+endZ.toFixed(1),endD,pos:_towPos.map(q=>[+q[0].toFixed(1),+q[1].toFixed(1)])};}catch(_e69){}
   const _onRoof=_towerT==="tetto"&&_roofT!=="none";// senza tetto non esistono bank a tetto → fallback pali
   const floodH2=_fH2;
   /* [7.470.0 direttiva PO «migliora riflettori, rendili piu' moderni e prevedi la copertura anche nei
