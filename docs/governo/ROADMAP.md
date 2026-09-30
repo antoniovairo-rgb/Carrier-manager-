@@ -5,6 +5,7 @@ definizione di «fatto» (`PROCESSO.md`). Le voci di ogni lotto sono in `BACKLOG
 
 | # | Lotto | Stato | Osservazioni del team |
 |---|---|---|---|
+| L0 | **Governo del progetto** (PO-032, PO-158…166, PO-170) | in corso | Documenti in bozza in `docs/governo/`; si chiude con le tue risposte al primo questionario. |
 | L1 | **Fluidità e credibilità di partita e highlight, brain** (PO-021…PO-152, 31 voci aperte o parziali) | in corso | Va chiuso con un perimetro: scene difensive (collaudo Codex difesa 3D), note di taccuino aperte, compagni che si smarcano e difensori che pressano, gesti 3D del passo 4. Oggi è un contenitore aperto: proponiamo di chiuderlo quando torna il rapporto Codex e le sue segnalazioni gravi sono corrette. |
 | L2 | ~~Braccia del mister nelle feste~~ | **fatto** in 7.999.78 | Già chiuso (sonda `mister-77`). Si toglie dall'ordine. |
 | L3 | **Salvataggi persistenti (Parte B) + raccolta errori (Parte C)** (PO-167, PO-168) | pronto | Proposta: anticiparlo **prima** della fine di L1 come voce «rischio perdita dati», cioè trattarlo quasi come un bloccante. È piccolo (1–2 release). |
@@ -19,4 +20,3 @@ definizione di «fatto» (`PROCESSO.md`). Le voci di ogni lotto sono in `BACKLOG
 - Correzioni bloccanti.
 - La quota del 20% sul debito tecnico, dentro il lotto in corso.
 
-| L0 | **Governo del progetto** (PO-032, PO-158…166, PO-170) | in corso | Documenti in bozza in `docs/governo/`; si chiude con le tue risposte al primo questionario. |
