@@ -230,7 +230,8 @@
     "muro-70": "node muro-70.mjs",
     "pannello-72": "node pannello-72.mjs",
     "barriera-73": "node barriera-73.mjs",
-    "volo-75": "node volo-75.mjs"
+    "volo-75": "node volo-75.mjs",
+    "testa-76": "node testa-76.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

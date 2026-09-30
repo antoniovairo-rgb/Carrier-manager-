@@ -3725,6 +3725,12 @@ function ThreeMatchView(props){
            momento del colpo l'arco parte DA LÌ invece di far ricomparire la palla sull'erba. Su palla a terra
            la quota è 0.65 e il termine si annulla → traiettoria bit-identica a prima. */
         if(_preT74<=0)ballArcY0=ball.position.y;
+        /* [7.999.76 taccuino PO SIT #171 «Stacco in corsa potente» (000): «la palla e' bassa e non e' sincronizzata con lo stacco
+           aereo». Rosso __CPM_NO_TESTA76] Misurato: a u 0,08 della clip il pallone passa a 0,27u dalla testa (1,91 contro 1,87), ma il
+           colpo aspetta il suo caricamento e parte a quota 0,75, col pallone alle ginocchia e l'eroe all'apice dello stacco (testa 2,28).
+           Il 7.999.64 lo aveva chiuso solo sul cross costruito (orig26). Qui vale per ogni colpo di testa: se durante il caricamento il
+           pallone attraversa la quota della testa accanto all'eroe, il colpo parte in quel fotogramma. */
+        if(_preT74<0&&P.hlType==='header'&&hero&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA76)&&ball.position.y>=1.5&&ball.position.y<=2.6&&Math.hypot(ball.position.x-hero.position.x,ball.position.z-hero.position.z)<0.8){ballArcT=-aDt;}
         ballArcT+=aDt;
         if(_preT74<0&&ballArcT>=0)contactFlashT=0;if(_preT74<0&&ballArcT>=0&&P.hlType==='header'&&typeof window!=='undefined'&&window.__CPM_TESTA33_REC){try{(window.__CPM_Y063=window.__CPM_Y063||[]).push(+(+ballArcY0).toFixed(2));}catch(_e){}}/* [7.999.64] testimone: quota del pallone all'impatto di testa */// [6.74.0 3D-8] flash all'IMPATTO reale (fine wind-up), non al frame 0
         const u=Math.min(Math.max(ballArcT,0)/ballArcDur,1);
