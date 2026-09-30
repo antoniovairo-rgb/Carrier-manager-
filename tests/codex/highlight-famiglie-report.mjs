@@ -84,7 +84,7 @@ lines.push('','','## Limiti del campionamento','',
   '');
 
 const stem='reports/codex/2026-09-30-collaudo-highlight-famiglie';
-fs.writeFileSync(path.join(root,stem+'.md'),lines.join('\n'));
+fs.writeFileSync(path.join(root,stem+'.md'),lines.map(line=>line.trimEnd()).join('\n'));
 const report={versione:raw.versione,compito:'Collaudo mirato di 15 famiglie highlight 3D, success/fail',comando:'node tests/codex/highlight-famiglie-lotti.mjs; node tests/codex/highlight-famiglie-audit.mjs; node tests/codex/highlight-famiglie-report.mjs',seme:'pagina nuova per caso; nome Famiglie<gi>',misure:[{nome:'Casi validi',valore:audit.summary.valid,soglia:30,esito:audit.summary.valid===30?'ok':'anomalia'},{nome:'Immagini mancanti',valore:audit.summary.missingImages,soglia:0,esito:audit.summary.missingImages===0?'ok':'anomalia'}],segnalazioni:findings.map(f=>({gravita:f.gravita,descrizione:`${f.codes.join(', ')||'senza codice'} ${f.key}: ${f.descrizione}`,come_riprodurre:f.comando,prove:f.prove})),audit:audit.summary,plan:raw.plan,raw:'tests/codex/highlight-famiglie.json.gz'};
 fs.writeFileSync(path.join(root,stem+'.json'),JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({valid:audit.summary.valid,findings:findings.length,md:stem+'.md'}));
