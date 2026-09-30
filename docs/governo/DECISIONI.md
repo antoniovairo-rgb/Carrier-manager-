@@ -23,3 +23,7 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 | 30/09/2026 | Dubbi del PO sempre con **questionario a scelta guidata** | PO | prompt governo, A10 | domande in prosa |
 | 30/09/2026 | Governo del progetto: backlog unico, roadmap a lotti, un lotto alla volta, definizioni di pronto/fatto | PO | prompt governo, Parte A | — |
 | 30/09/2026 | I file di governo stanno in `docs/governo/` (il `ROADMAP.md` alla radice è la roadmap tecnica LMQP e resta) | team | evitare di sovrascrivere un documento esistente | nuovo `ROADMAP.md` alla radice |
+| 30/09/2026 | Salvataggi ed errori (Parti B e C, L3) **dopo L1**, come nell'ordine del PO | PO (questionario, PO-160) | — | prima di L1; in parallelo |
+| 30/09/2026 | L1 si chiude solo con **tutte le 31 voci** aperte o parziali | PO (questionario, PO-160) | — | chiusura al rapporto Codex difesa 3D; solo note di taccuino |
+| 30/09/2026 | Pulizia del progetto come **quota del 20% in ogni lotto**, non lotto dedicato | PO (questionario, PO-072) | — | lotto dedicato al 4° posto; entrambi |
+| 30/09/2026 | Cerimonie diverse per competizione **sospese fino a L8** | PO (questionario, PO-150) | lavoro su `wip/cerimonie-differenziate` | chiuderle ora; dentro L3 |
