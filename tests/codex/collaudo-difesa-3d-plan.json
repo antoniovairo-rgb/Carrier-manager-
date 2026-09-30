@@ -1,0 +1,130 @@
+[
+  {
+    "gi": 33,
+    "ai": 0,
+    "text": "🧱 Muro in area! Blocca il tiro.",
+    "label": "🧱 Blocca con il corpo",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 133,
+    "ai": 0,
+    "text": "🏃 Recupero sulla linea di fondo!",
+    "label": "🏃 Sprint disperato sulla linea",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 134,
+    "ai": 0,
+    "text": "✈️ Sfida aerea su lancio lungo!",
+    "label": "✈️ Stacco dominante",
+    "intent": "header",
+    "def": true
+  },
+  {
+    "gi": 138,
+    "ai": 0,
+    "text": "📣 Allineati con la difesa — linea alta!",
+    "label": "📣 Allineamento difensivo immediato",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 168,
+    "ai": 0,
+    "text": "🛡️ Ultimo uomo! Devi fermare l'avversario.",
+    "label": "🛡️ Tackle duro — rischio rosso",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 31,
+    "ai": 0,
+    "text": "🛡️ Avversario porta palla — sfida in scivolata!",
+    "label": "🛡️ Scivolata netta",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 32,
+    "ai": 0,
+    "text": "✋ Anticipa il passaggio filtrante!",
+    "label": "✋ Anticipo di posizione",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 36,
+    "ai": 0,
+    "text": "💪 Duello aereo su corner avversario!",
+    "label": "✈️ Stacco di testa",
+    "intent": "header",
+    "def": true
+  },
+  {
+    "gi": 44,
+    "ai": 0,
+    "text": "✈️ Cross avversario in area! Allontana!",
+    "label": "✈️ Stacco di testa deciso",
+    "intent": "header",
+    "def": true
+  },
+  {
+    "gi": 45,
+    "ai": 0,
+    "text": "🧱 Tiro avversario in arrivo sulla linea! Intervieni.",
+    "label": "🧱 Corpo sulla traiettoria",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 128,
+    "ai": 0,
+    "text": "🛑 Chiusura urgente sull'attaccante!",
+    "label": "🛑 Chiusura immediata",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 137,
+    "ai": 0,
+    "text": "⚡ Tackle in corsa — è più veloce!",
+    "label": "⚡ Tackle in corsa preciso",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 157,
+    "ai": 0,
+    "text": "🛡️ Il tiro è in porta — gettati sulla traiettoria!",
+    "label": "🤸 Gettati sulla traiettoria",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 184,
+    "ai": 0,
+    "text": "✋ Lettura della linea di passaggio — intercetta!",
+    "label": "✋ Intercetta il filtrante",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 24,
+    "ai": 0,
+    "text": "🧠 Ricezione tra le linee!",
+    "label": "🎯 Assist filtrante",
+    "intent": "pass",
+    "def": false
+  },
+  {
+    "gi": 2,
+    "ai": 0,
+    "text": "⚡ Tap-in! Porta quasi vuota.",
+    "label": "🦵 Spingila dentro!",
+    "intent": "shot",
+    "def": false
+  }
+]

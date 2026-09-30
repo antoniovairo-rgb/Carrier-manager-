@@ -1,0 +1,70 @@
+{
+  "file": "src/15-live-match.jsx",
+  "line": 10483,
+  "codes": [
+    [
+      "007",
+      "camera traballa"
+    ],
+    [
+      "003",
+      "esito bugiardo"
+    ],
+    [
+      "011",
+      "palla congelata"
+    ],
+    [
+      "012",
+      "verticalizzazione all'indietro"
+    ],
+    [
+      "004",
+      "gesto senza preparazione"
+    ],
+    [
+      "005",
+      "palla da biliardo"
+    ],
+    [
+      "006",
+      "reparto fermo"
+    ],
+    [
+      "009",
+      "direzione sbagliata"
+    ],
+    [
+      "010",
+      "pattinata"
+    ],
+    [
+      "001",
+      "apertura scena"
+    ],
+    [
+      "002",
+      "eroe fuori posizione"
+    ],
+    [
+      "000",
+      "gesto scoordinato"
+    ],
+    [
+      "014",
+      "palla flipper"
+    ],
+    [
+      "111",
+      "portiere fuori tempo"
+    ],
+    [
+      "113",
+      "portiere doppio gesto"
+    ],
+    [
+      "008",
+      "palla da sola (chiuso)"
+    ]
+  ]
+}

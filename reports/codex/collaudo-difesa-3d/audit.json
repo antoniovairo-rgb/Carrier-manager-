@@ -1,0 +1,598 @@
+{
+  "comando": "node tests/codex/collaudo-difesa-3d-audit.mjs",
+  "summary": {
+    "versione": "7.999.82",
+    "baseCommit": "fa129a41d2e72263ea20fef6bdfdd6a5077cc000",
+    "planned": 32,
+    "attempts": 32,
+    "acquired": 32,
+    "valid": 32,
+    "invalid": 0,
+    "reviewed": 32,
+    "images": 192,
+    "missingImages": 0
+  },
+  "cases": [
+    {
+      "key": "33:0:success",
+      "gi": 33,
+      "action": "🧱 Blocca con il corpo",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "33:0:fail",
+      "gi": 33,
+      "action": "🧱 Blocca con il corpo",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "133:0:success",
+      "gi": 133,
+      "action": "🏃 Sprint disperato sulla linea",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "002",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "133:0:fail",
+      "gi": 133,
+      "action": "🏃 Sprint disperato sulla linea",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "002",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "134:0:success",
+      "gi": 134,
+      "action": "✈️ Stacco dominante",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "134:0:fail",
+      "gi": 134,
+      "action": "✈️ Stacco dominante",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "138:0:success",
+      "gi": 138,
+      "action": "📣 Allineamento difensivo immediato",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "138:0:fail",
+      "gi": 138,
+      "action": "📣 Allineamento difensivo immediato",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "168:0:success",
+      "gi": 168,
+      "action": "🛡️ Tackle duro — rischio rosso",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "002"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "168:0:fail",
+      "gi": 168,
+      "action": "🛡️ Tackle duro — rischio rosso",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "002"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "31:0:success",
+      "gi": 31,
+      "action": "🛡️ Scivolata netta",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "31:0:fail",
+      "gi": 31,
+      "action": "🛡️ Scivolata netta",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "32:0:success",
+      "gi": 32,
+      "action": "✋ Anticipo di posizione",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "32:0:fail",
+      "gi": 32,
+      "action": "✋ Anticipo di posizione",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "36:0:success",
+      "gi": 36,
+      "action": "✈️ Stacco di testa",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "36:0:fail",
+      "gi": 36,
+      "action": "✈️ Stacco di testa",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "44:0:success",
+      "gi": 44,
+      "action": "✈️ Stacco di testa deciso",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "44:0:fail",
+      "gi": 44,
+      "action": "✈️ Stacco di testa deciso",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "45:0:success",
+      "gi": 45,
+      "action": "🧱 Corpo sulla traiettoria",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "45:0:fail",
+      "gi": 45,
+      "action": "🧱 Corpo sulla traiettoria",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "128:0:success",
+      "gi": 128,
+      "action": "🛑 Chiusura immediata",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "128:0:fail",
+      "gi": 128,
+      "action": "🛑 Chiusura immediata",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "137:0:success",
+      "gi": 137,
+      "action": "⚡ Tackle in corsa preciso",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "137:0:fail",
+      "gi": 137,
+      "action": "⚡ Tackle in corsa preciso",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "157:0:success",
+      "gi": 157,
+      "action": "🤸 Gettati sulla traiettoria",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "157:0:fail",
+      "gi": 157,
+      "action": "🤸 Gettati sulla traiettoria",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001",
+        "003"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "184:0:success",
+      "gi": 184,
+      "action": "✋ Intercetta il filtrante",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "184:0:fail",
+      "gi": 184,
+      "action": "✋ Intercetta il filtrante",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [
+        "001"
+      ],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "24:0:success",
+      "gi": 24,
+      "action": "🎯 Assist filtrante",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "24:0:fail",
+      "gi": 24,
+      "action": "🎯 Assist filtrante",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "2:0:success",
+      "gi": 2,
+      "action": "🦵 Spingila dentro!",
+      "outcome": "success",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [],
+      "stopReason": null,
+      "error": null
+    },
+    {
+      "key": "2:0:fail",
+      "gi": 2,
+      "action": "🦵 Spingila dentro!",
+      "outcome": "fail",
+      "attempts": 1,
+      "acquired": true,
+      "valid": true,
+      "outcomeMatched": true,
+      "frames": 6,
+      "missingFrames": [],
+      "reviewed": true,
+      "codes": [],
+      "stopReason": null,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,464 @@
+# Collaudo difesa 3D — CPM 7.999.82
+
+**Base verificata:** CPM 7.999.82, commit `fa129a41d2e72263ea20fef6bdfdd6a5077cc000` di `main`.
+**Stato:** 32/32 casi validi; 32 tentativi, 0 casi con ultimo tentativo non valido, 32 revisioni visive, 0 immagini mancanti.
+
+Lettura: viewport 412×915; pagina nuova per ogni caso; corpi GLB, presentazione e cinema attivi. Esito verificato con `window.__CPM_TIMELINE()` → `ActionResolved`. I casi senza corrispondenza restano visibili e non sono contati come validi. Campioni headless: **nessuna conclusione su fluidità, FPS o tempi di risposta**. La presenza in partita naturale è non verificata.
+
+Comandi di acquisizione: `node tests/codex/collaudo-difesa-3d.mjs`; lotti sequenziali: `node tests/codex/collaudo-difesa-3d-lotti.mjs`; fogli: `node tests/codex/collaudo-difesa-3d-sheet.mjs`; controllo: `node tests/codex/collaudo-difesa-3d-audit.mjs`; rapporto: `node tests/codex/collaudo-difesa-3d-report.mjs`.
+
+Le anomalie fotografiche sono ipotesi finché il team non le riproduce. Il codice 003 riguarda la rappresentazione o il testo visibile, non una discordanza fra esito richiesto e ActionResolved. Le sei foto non provano la continuità del movimento. Dati completi compressi: tests/codex/collaudo-difesa-3d.json.gz.
+
+## Prima (7.999.69) → adesso (7.999.82)
+
+| Scena | Prima success | Adesso success | Prima fail | Adesso fail |
+|---:|---|---|---|---|
+| 33 | 001, 003 | 001, 003 | 001, 003 | 001, 003 |
+| 133 | 001, 002 | 001, 002, 003 | 001, 002, 003 | 001, 002, 003 |
+| 134 | 001, 003 | 001, 003 | 001, 002, 003 | 001, 003 |
+| 138 | 001, 002, 003 | 001, 003 | 002 | 001 |
+| 168 | 001, 002 | 001, 002 | 001, 002 | 001, 002 |
+
+I codici precedenti provengono dal rapporto 7.999.69. Il confronto non prova da solo una correzione o una regressione.
+
+## Codici per frequenza
+
+| Codice | Significato ufficiale | Casi | Tre casi peggiori verificati |
+|---|---|---:|---|
+| 001 | apertura scena | 26 | 33:0:success, 33:0:fail, 133:0:success |
+| 003 | esito bugiardo | 13 | 33:0:success, 33:0:fail, 133:0:success |
+| 002 | eroe fuori posizione | 4 | 133:0:success, 133:0:fail, 168:0:success |
+
+
+## Tutti i casi previsti
+
+| gi | Azione richiesta e indice | Esito | Verifica | Distanza eroe–pallone foto 01 | Codici | Fotogrammi |
+|---:|---|---|---|---:|---|---|
+| 33 | 🧱 Blocca con il corpo (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 6.30 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi33-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi33-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi33-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi33-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi33-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi33-a0-success-v2-06-esito.png) |
+| 33 | 🧱 Blocca con il corpo (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 6.26 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi33-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi33-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi33-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi33-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi33-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi33-a0-fail-v2-06-esito.png) |
+| 133 | 🏃 Sprint disperato sulla linea (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 43.84 u | 001, 002, 003 | [01-apertura](collaudo-difesa-3d/gi133-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi133-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi133-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi133-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi133-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi133-a0-success-v2-06-esito.png) |
+| 133 | 🏃 Sprint disperato sulla linea (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 43.84 u | 001, 002, 003 | [01-apertura](collaudo-difesa-3d/gi133-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi133-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi133-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi133-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi133-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi133-a0-fail-v2-06-esito.png) |
+| 134 | ✈️ Stacco dominante (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 2.24 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi134-a0-success-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi134-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi134-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi134-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi134-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi134-a0-success-v2-06-esito.png) |
+| 134 | ✈️ Stacco dominante (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 2.37 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi134-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi134-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi134-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi134-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi134-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi134-a0-fail-v2-06-esito.png) |
+| 138 | 📣 Allineamento difensivo immediato (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 15.19 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi138-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi138-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi138-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi138-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi138-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi138-a0-success-v2-06-esito.png) |
+| 138 | 📣 Allineamento difensivo immediato (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 15.40 u | 001 | [01-apertura](collaudo-difesa-3d/gi138-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi138-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi138-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi138-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi138-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi138-a0-fail-v2-06-esito.png) |
+| 168 | 🛡️ Tackle duro — rischio rosso (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 3.15 u | 001, 002 | [01-apertura](collaudo-difesa-3d/gi168-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi168-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi168-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi168-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi168-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi168-a0-success-v2-06-esito.png) |
+| 168 | 🛡️ Tackle duro — rischio rosso (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 3.26 u | 001, 002 | [01-apertura](collaudo-difesa-3d/gi168-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi168-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi168-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi168-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi168-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi168-a0-fail-v2-06-esito.png) |
+| 31 | 🛡️ Scivolata netta (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 6.42 u | nessun difetto provato | [01-apertura](collaudo-difesa-3d/gi31-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi31-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi31-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi31-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi31-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi31-a0-success-v2-06-esito.png) |
+| 31 | 🛡️ Scivolata netta (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 6.56 u | nessun difetto provato | [01-apertura](collaudo-difesa-3d/gi31-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi31-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi31-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi31-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi31-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi31-a0-fail-v2-06-esito.png) |
+| 32 | ✋ Anticipo di posizione (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 19.21 u | 001 | [01-apertura](collaudo-difesa-3d/gi32-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi32-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi32-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi32-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi32-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi32-a0-success-v2-06-esito.png) |
+| 32 | ✋ Anticipo di posizione (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 19.37 u | 001 | [01-apertura](collaudo-difesa-3d/gi32-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi32-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi32-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi32-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi32-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi32-a0-fail-v2-06-esito.png) |
+| 36 | ✈️ Stacco di testa (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 6.39 u | 001 | [01-apertura](collaudo-difesa-3d/gi36-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi36-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi36-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi36-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi36-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi36-a0-success-v2-06-esito.png) |
+| 36 | ✈️ Stacco di testa (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 5.78 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi36-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi36-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi36-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi36-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi36-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi36-a0-fail-v2-06-esito.png) |
+| 44 | ✈️ Stacco di testa deciso (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 6.89 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi44-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi44-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi44-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi44-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi44-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi44-a0-success-v2-06-esito.png) |
+| 44 | ✈️ Stacco di testa deciso (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 7.36 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi44-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi44-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi44-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi44-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi44-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi44-a0-fail-v2-06-esito.png) |
+| 45 | 🧱 Corpo sulla traiettoria (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 10.14 u | 001 | [01-apertura](collaudo-difesa-3d/gi45-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi45-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi45-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi45-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi45-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi45-a0-success-v2-06-esito.png) |
+| 45 | 🧱 Corpo sulla traiettoria (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 9.77 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi45-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi45-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi45-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi45-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi45-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi45-a0-fail-v2-06-esito.png) |
+| 128 | 🛑 Chiusura immediata (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 18.63 u | 001 | [01-apertura](collaudo-difesa-3d/gi128-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi128-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi128-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi128-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi128-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi128-a0-success-v2-06-esito.png) |
+| 128 | 🛑 Chiusura immediata (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 18.56 u | 001 | [01-apertura](collaudo-difesa-3d/gi128-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi128-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi128-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi128-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi128-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi128-a0-fail-v2-06-esito.png) |
+| 137 | ⚡ Tackle in corsa preciso (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 18.79 u | 001 | [01-apertura](collaudo-difesa-3d/gi137-a0-success-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi137-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi137-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi137-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi137-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi137-a0-success-v2-06-esito.png) |
+| 137 | ⚡ Tackle in corsa preciso (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 18.80 u | 001 | [01-apertura](collaudo-difesa-3d/gi137-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi137-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi137-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi137-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi137-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi137-a0-fail-v2-06-esito.png) |
+| 157 | 🤸 Gettati sulla traiettoria (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 7.04 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi157-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi157-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi157-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi157-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi157-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi157-a0-success-v2-06-esito.png) |
+| 157 | 🤸 Gettati sulla traiettoria (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 6.43 u | 001, 003 | [01-apertura](collaudo-difesa-3d/gi157-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi157-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi157-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi157-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi157-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi157-a0-fail-v2-06-esito.png) |
+| 184 | ✋ Intercetta il filtrante (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 8.38 u | 001 | [01-apertura](collaudo-difesa-3d/gi184-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi184-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi184-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi184-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi184-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi184-a0-success-v2-06-esito.png) |
+| 184 | ✋ Intercetta il filtrante (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 8.38 u | 001 | [01-apertura](collaudo-difesa-3d/gi184-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi184-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi184-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi184-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi184-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi184-a0-fail-v2-06-esito.png) |
+| 24 | 🎯 Assist filtrante (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 0.00 u | nessun difetto provato | [01-apertura](collaudo-difesa-3d/gi24-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi24-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi24-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi24-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi24-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi24-a0-success-v2-06-esito.png) |
+| 24 | 🎯 Assist filtrante (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 0.00 u | nessun difetto provato | [01-apertura](collaudo-difesa-3d/gi24-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi24-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi24-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi24-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi24-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi24-a0-fail-v2-06-esito.png) |
+| 2 | 🦵 Spingila dentro! (indice catalogo 0, risolutore 0, UI 0) | success | valido: success | 0.00 u | nessun difetto provato | [01-apertura](collaudo-difesa-3d/gi2-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi2-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi2-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi2-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi2-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi2-a0-success-v2-06-esito.png) |
+| 2 | 🦵 Spingila dentro! (indice catalogo 0, risolutore 0, UI 0) | fail | valido: fail | 0.00 u | nessun difetto provato | [01-apertura](collaudo-difesa-3d/gi2-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi2-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi2-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi2-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi2-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi2-a0-fail-v2-06-esito.png) |
+
+
+## Note per scena
+
+### [KE 7.999.82] SIT #33 [tackle]: «🧱 Muro in area! Blocca il tiro.» · AZIONE «🧱 Blocca con il corpo» → success
+
+NOTA: Apertura con eroe nascosto dal pannello; testo finale attribuisce al portiere un salvataggio che le foto non mostrano. Il gesto di blocco resta parziale/non verificato. Codici 001, 003.
+01 Apertura: Foto 01: pallone visibile ai piedi del giocatore a strisce; eroe in granata nascosto dal pannello. Il titolo annuncia un muro in area; la foto non permette di localizzare con certezza la zona. Distanza eroe–pallone dal testimone: 6.30 u.
+03–05 Inquadratura: Foto 03-05: eroe e pallone nel quadro, con il portiere azzurro sul bordo basso; non emerge una uscita prolungata dal quadro.
+06 Esito visibile: Foto 06: testo Il portiere dice no e Blocchi la conclusione, ma il portiere non e in quadro al finale e gli scatti 03-05 non mostrano una sua parata. Il risultato del motore e success; la rappresentazione visiva del portiere resta incoerente.
+Gesto scelto: Parziale: l eroe corre verso il portatore nelle foto 03-05, ma nessuna foto mostra un blocco col corpo concluso.
+Esito osservato da ActionResolved: success, etichetta «🧱 Blocca con il corpo»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🧱Blocca con il corpoFISICO · 67 / ✋Devia col piedeTECNICA · 55 / 📣Chiama il portiereTECNICA · 55. Alias del pulsante scelto: 🧱 Blocca con il corpo; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 3.6u, eroe ≥5.4u per 86 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi33-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi33-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi33-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi33-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi33-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi33-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #33 [tackle]: «🧱 Muro in area! Blocca il tiro.» · AZIONE «🧱 Blocca con il corpo» → fail
+
+NOTA: Eroe coperto dal pannello in apertura e 0-1 visibile prima che gli scatti mostrino il tiro in porta. Codici 001, 003.
+01 Apertura: Foto 01: pallone visibile ai piedi del portatore a strisce; eroe granata sotto il pannello. Zona in area non confermabile dalla sola foto. Distanza eroe–pallone dal testimone: 6.26 u.
+03–05 Inquadratura: Foto 03-05: eroe e pallone visibili; il portiere resta in basso, senza intervento evidente.
+06 Esito visibile: Foto 03: il tabellone mostra gia 0-1 quando il pallone e ancora presso i giocatori; nelle foto 04-05 il pallone si muove in campo. Foto 06 annuncia poi Supera e segna. Esito motore fail valido ma rappresentazione temporale anticipata.
+Gesto scelto: Parziale/non verificato: eroe si avvicina e si china, ma non si vede un blocco col corpo concluso.
+Esito osservato da ActionResolved: fail, etichetta «🧱 Blocca con il corpo»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🧱Blocca con il corpoFISICO · 67 / ✋Devia col piedeTECNICA · 55 / 📣Chiama il portiereTECNICA · 55. Alias del pulsante scelto: 🧱 Blocca con il corpo; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi33-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi33-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi33-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi33-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi33-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi33-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #133 [tackle]: «🏃 Recupero sulla linea di fondo!» · AZIONE «🏃 Sprint disperato sulla linea» → success
+
+NOTA: Pallone invisibile e eroe tagliato; risultato attribuito al portiere senza portiere o parata negli scatti. Codici 001, 002, 003.
+01 Apertura: Foto 01: eroe granata visibile in basso presso la linea di fondo; pallone e portatore non visibili, mentre il titolo promette un recupero sulla linea. Distanza dal testimone oltre 43 u. Distanza eroe–pallone dal testimone: 43.84 u.
+03–05 Inquadratura: Foto 03-05: pallone fuori quadro; eroe nella zona bassa e parzialmente tagliato in foto 05. Foto 06 mostra giocatori presso il bordo superiore, lontani dal centro degli scatti precedenti.
+06 Esito visibile: Foto 06: Il portiere dice no e Blocchi la conclusione, ma nessun portiere e visibile negli scatti e il salvataggio non e mostrato. ActionResolved conferma success.
+Gesto scelto: Non verificato: corsa/sprint dichiarato, ma nelle foto 03-05 l eroe resta vicino al margine basso e la corsa verso il pallone non e leggibile.
+Esito osservato da ActionResolved: success, etichetta «🏃 Sprint disperato sulla linea»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🏃Sprint disperato sulla lineaVELOCITÀ · 59 / ✋Intercetto prima del fondoTECNICA · 55 / 📣Chiamo il portiereTECNICA · 55. Alias del pulsante scelto: 🏃 Sprint disperato sulla linea; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 007 — la camera BECCHEGGIA: 4.5 inversioni/s su-giù dell'asse ottico (ampiezza max 1.7°) — ultima passata: sguardo-pre 58% + lerp 42% · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 4.5u, eroe ≥21.4u per 104 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi133-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi133-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi133-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi133-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi133-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi133-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #133 [tackle]: «🏃 Recupero sulla linea di fondo!» · AZIONE «🏃 Sprint disperato sulla linea» → fail
+
+NOTA: Pallone invisibile, eroe tagliato e 0-1 gia prima del gol mostrato; esito non rappresentato in campo. Codici 001, 002, 003.
+01 Apertura: Foto 01: eroe granata visibile in basso presso la linea di fondo; pallone e portatore non visibili, mentre il titolo promette un recupero sulla linea. Distanza dal testimone oltre 43 u. Distanza eroe–pallone dal testimone: 43.84 u.
+03–05 Inquadratura: Foto 03-05: pallone fuori quadro; eroe nella zona bassa e parzialmente tagliato in foto 05. Foto 06 mostra giocatori presso il bordo superiore, lontani dal centro degli scatti precedenti.
+06 Esito visibile: Foto 03: tabellone gia 0-1 con pallone assente; foto 06 annuncia Supera e segna ma l azione del pallone resta fuori quadro. ActionResolved conferma fail.
+Gesto scelto: Non verificato: corsa/sprint dichiarato, ma nelle foto 03-05 l eroe resta vicino al margine basso e la corsa verso il pallone non e leggibile.
+Esito osservato da ActionResolved: fail, etichetta «🏃 Sprint disperato sulla linea»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🏃Sprint disperato sulla lineaVELOCITÀ · 59 / ✋Intercetto prima del fondoTECNICA · 55 / 📣Chiamo il portiereTECNICA · 55. Alias del pulsante scelto: 🏃 Sprint disperato sulla linea; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 007 — lo SGUARDO della camera oscilla: 3.1 inversioni/s dell'asse ottico (ampiezza max 2.4°) — ultima passata per fotogramma: lerp 55% + sguardo-pre 45% · 4.4 passate/fotogramma · codice 007 — la camera BECCHEGGIA: 20.3 inversioni/s su-giù dell'asse ottico (ampiezza max 3.2°) — ultima passata: lerp 55% + sguardo-pre 45%  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi133-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi133-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi133-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi133-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi133-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi133-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #134 [header]: «✈️ Sfida aerea su lancio lungo!» · AZIONE «✈️ Stacco dominante» → success
+
+NOTA: Pallone occultato in apertura; finale attribuito al portiere senza mostrare il suo intervento. Stacco visibile, contatto preciso non verificato. Codici 001, 003.
+01 Apertura: Foto 01: eroe granata visibile presso il bordo del pannello, pallone non distinguibile; il testimone lo colloca a 2,24 u. Sfida aerea su lancio lungo coerente con zona di centrocampo mostrata. Distanza eroe–pallone dal testimone: 2.24 u.
+03–05 Inquadratura: Foto 03-05: eroe e pallone in quadro nelle fasi aeree; nella foto 05 il pallone viaggia verso destra ma la porta non e in quadro.
+06 Esito visibile: Foto 06: Il portiere dice no e SALVATO! Che intervento, ma non compare alcun portiere nelle foto del gesto; il testo attribuisce a lui una azione difensiva non mostrata. Motore success coerente.
+Gesto scelto: Parziale: salto o stacco visibile nelle foto 03-04, ma il contatto pallone-testa non e risolvibile dai sei scatti.
+Esito osservato da ActionResolved: success, etichetta «✈️ Stacco dominante»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✈️Attacca il palloneFISICO · 67 / 💪Contrasto fisico in voloFISICO · 67 / 📣Chiamo il portiereTECNICA · 55. Alias del pulsante scelto: ✈️ Attacca il pallone; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · corpo↔porta al contatto: 109° — MISURATO girato: al tiro il corpo non guarda la porta (eroe a x -25, z 4.1)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi134-a0-success-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi134-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi134-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi134-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi134-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi134-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #134 [header]: «✈️ Sfida aerea su lancio lungo!» · AZIONE «✈️ Stacco dominante» → fail
+
+NOTA: Pallone non distinguibile all apertura, 0-1 anticipato rispetto alle foto della giocata e gol non inquadrato. Codici 001, 003.
+01 Apertura: Foto 01: eroe e avversario visibili presso il pannello, pallone non distinguibile; testimone 2,37 u dall eroe. Zona di centrocampo compatibile col lancio lungo del titolo. Distanza eroe–pallone dal testimone: 2.37 u.
+03–05 Inquadratura: Foto 03-05: eroe in quadro, anche sul lato destro in foto 05; pallone visibile in 03-04 ma non in 05, percio la traiettoria finale resta fuori quadro.
+06 Esito visibile: Foto 03: 0-1 gia sul tabellone prima che le foto mostrino l arrivo del pallone; foto 04 pallone ancora in campo. Foto 06 dice Gol avversario ma non mostra il tiro o la porta. Motore fail valido.
+Gesto scelto: Parziale: lo stacco e suggerito nella foto 03; il contatto di testa col pallone non e verificabile e la fase 04 mostra gia la palla a terra.
+Esito osservato da ActionResolved: fail, etichetta «✈️ Stacco dominante»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✈️Attacca il palloneFISICO · 67 / 💪Contrasto fisico in voloFISICO · 67 / 📣Chiamo il portiereTECNICA · 55. Alias del pulsante scelto: ✈️ Attacca il pallone; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 007 — la camera BECCHEGGIA: 4.4 inversioni/s su-giù dell'asse ottico (ampiezza max 1.0°) — ultima passata: lerp 57% + bisezione 30% · corpo↔porta al contatto: 155° — MISURATO girato: al tiro il corpo non guarda la porta (eroe a x -22.6, z 4.1)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi134-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi134-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi134-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi134-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi134-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi134-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #138 [tackle]: «📣 Allineati con la difesa — linea alta!» · AZIONE «📣 Allineamento difensivo immediato» → success
+
+NOTA: Pallone assente in apertura; finale attribuito a parata del portiere senza portiere o tuffo visibili. L eroe resta piu nel quadro rispetto alla prova precedente. Codici 001, 003.
+01 Apertura: Foto 01: giocatore granata visibile a centrocampo, eroe indicato dal triangolo vicino al pannello basso; pallone non visibile. Testimone: 15,19 u dall eroe. Il titolo chiede di allinearsi alla linea alta, ma la foto non mostra la linea completa. Distanza eroe–pallone dal testimone: 15.19 u.
+03–05 Inquadratura: Foto 03-05: eroe granata visibile nella zona bassa; pallone non visibile in 03-04 e compare lontano in alto nella 05. Nessuna prova di uscita completa dell eroe dal quadro in questi tre scatti.
+06 Esito visibile: Foto 06: testo Il portiere dice no e Para in tuffo, ma nessun portiere o tuffo compare nelle foto; la scena mostra solo campo e difensori. ActionResolved success.
+Gesto scelto: Non verificato: spostamento dell eroe visibile, ma allineamento della linea difensiva non valutabile da tre scatti con pochi difensori.
+Esito osservato da ActionResolved: success, etichetta «📣 Allineamento difensivo immediato»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 📣Allineamento difensivo immediatoMENTALITÀ · 67 / 💪Contrasto fisico duroFISICO · 67 / ⚡Pressing immediato sul portatoreVELOCITÀ · 59. Alias del pulsante scelto: 📣 Allineamento difensivo immediato; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi138-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi138-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi138-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi138-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi138-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi138-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #138 [tackle]: «📣 Allineati con la difesa — linea alta!» · AZIONE «📣 Allineamento difensivo immediato» → fail
+
+NOTA: Pallone assente in apertura; nelle foto centrali eroe e palla rientrano nel quadro e l esito fallito appare coerente. Il codice 002 del vecchio campione non e riprodotto qui. Codici 001.
+01 Apertura: Foto 01: pallone non visibile; eroe indicato vicino al pannello basso, a 15,40 u dal pallone secondo il testimone. La linea difensiva promessa dal titolo non e leggibile nella foto. Distanza eroe–pallone dal testimone: 15.40 u.
+03–05 Inquadratura: Foto 03-05: eroe granata e pallone restano in quadro; in foto 05 la palla e presso il giocatore granata piu avanzato. Nessun taglio evidente del protagonista nei tre scatti.
+06 Esito visibile: Foto 06: Saltato secco e Supera la pressione sono compatibili con il fallimento mostrato; il tabellone resta 0-0. Nessuna contraddizione provata.
+Gesto scelto: Parziale/non verificato: gli spostamenti dei due granata si vedono, ma l allineamento di reparto non si puo valutare da sei foto.
+Esito osservato da ActionResolved: fail, etichetta «📣 Allineamento difensivo immediato»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 📣Allineamento difensivo immediatoMENTALITÀ · 67 / 💪Contrasto fisico duroFISICO · 67 / ⚡Pressing immediato sul portatoreVELOCITÀ · 59. Alias del pulsante scelto: 📣 Allineamento difensivo immediato; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi138-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi138-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi138-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi138-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi138-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi138-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #168 [tackle]: «🛡️ Ultimo uomo! Devi fermare l'avversario.» · AZIONE «🛡️ Tackle duro — rischio rosso» → success
+
+NOTA: Apertura con eroe parzialmente coperto dal pannello; la scivolata esce a sinistra nella foto 04. Testo finale compatibile col successo ma recupero esatto non verificato. Codici 001, 002.
+01 Apertura: Foto 01: portatore e pallone visibili a destra, eroe granata solo in parte sopra il pannello basso; distanza 3,15 u. La foto non dimostra che sia davvero l ultimo uomo. Distanza eroe–pallone dal testimone: 3.15 u.
+03–05 Inquadratura: Foto 03: eroe e pallone in quadro. Foto 04: il giocatore granata in scivolata esce parzialmente dal bordo sinistro mentre il portatore e il pallone restano nel quadro. Foto 05: eroe nuovamente visibile.
+06 Esito visibile: Foto 06: Chiusura impeccabile e Pallone recuperato; eroe, palla e avversari visibili. Il momento esatto del recupero fra gli scatti e non verificato, quindi nessun 003 assegnato.
+Gesto scelto: Parziale: scivolata visibile in 03-04, ma il contatto conclusivo col pallone e fuori dal campione fotografico.
+Esito osservato da ActionResolved: success, etichetta «🛡️ Tackle duro — rischio rosso»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🛡️Tackle duro — rischio rossoFISICO · 67 / ⚡Sprint laterale preventivoVELOCITÀ · 59 / 📣Guida i compagni e copriMENTALITÀ · 67. Alias del pulsante scelto: 🛡️ Tackle duro — rischio rosso; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi168-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi168-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi168-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi168-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi168-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi168-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #168 [tackle]: «🛡️ Ultimo uomo! Devi fermare l'avversario.» · AZIONE «🛡️ Tackle duro — rischio rosso» → fail
+
+NOTA: Eroe parzialmente coperto in apertura e tagliato a sinistra durante la scivolata. Il testo del fallo resta compatibile con l esito richiesto. Codici 001, 002.
+01 Apertura: Foto 01: portatore e pallone visibili a destra, eroe granata solo in parte sopra il pannello basso; testimone 3,26 u. Condizione Ultimo uomo non dimostrabile dalla foto. Distanza eroe–pallone dal testimone: 3.26 u.
+03–05 Inquadratura: Foto 03: scivolata dell eroe in quadro. Foto 04: il corpo granata in scivolata esce parzialmente dal bordo sinistro; pallone e portatore restano visibili. Foto 05: eroe di nuovo visibile.
+06 Esito visibile: Foto 06: Fallo e ammonizione su un tackle duro fallito; testo e punteggio 0-0 compatibili con l esito. Il contatto che origina il fallo non e isolato negli scatti.
+Gesto scelto: Parziale: scivolata visibile in 03-04, contatto col portatore non verificato.
+Esito osservato da ActionResolved: fail, etichetta «🛡️ Tackle duro — rischio rosso»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🛡️Tackle duro — rischio rossoFISICO · 67 / ⚡Sprint laterale preventivoVELOCITÀ · 59 / 📣Guida i compagni e copriMENTALITÀ · 67. Alias del pulsante scelto: 🛡️ Tackle duro — rischio rosso; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi168-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi168-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi168-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi168-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi168-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi168-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #31 [tackle]: «🛡️ Avversario porta palla — sfida in scivolata!» · AZIONE «🛡️ Scivolata netta» → success
+
+NOTA: Apertura e inquadratura leggibili, esito visivo coerente. La scivolata scelta e solo parzialmente leggibile nei fotogrammi campionati; nessun codice assegnato. Nessun codice assegnato.
+01 Apertura: Foto 01: avversario a strisce con palla e eroe granata entrambi visibili presso il cerchio di centrocampo; testimone 6,42 u. Titolo di sfida in scivolata compatibile con la posizione del portatore. Distanza eroe–pallone dal testimone: 6.42 u.
+03–05 Inquadratura: Foto 03-05: eroe e pallone restano in quadro, senza uscita evidente dai bordi.
+06 Esito visibile: Foto 06: Chiusura impeccabile e Anticipo perfetto con eroe e pallone ancora visibili; 0-0 coerente con il recupero. Nessun 003 provato.
+Gesto scelto: Parziale: l eroe si abbassa e tenta l intervento, ma la scivolata completa e il contatto sono fra gli scatti, non verificati.
+Esito osservato da ActionResolved: success, etichetta «🛡️ Scivolata netta»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🛡️Scivolata nettaFISICO · 67 / ✋Intercetta di piedeTECNICA · 55 / 📣Copri la lineaVELOCITÀ · 59. Alias del pulsante scelto: 🛡️ Scivolata netta; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi31-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi31-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi31-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi31-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi31-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi31-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #31 [tackle]: «🛡️ Avversario porta palla — sfida in scivolata!» · AZIONE «🛡️ Scivolata netta» → fail
+
+NOTA: Scivolata fallita leggibile e coerente con il fallo assegnato; nessun difetto provato dalle foto. Nessun codice assegnato.
+01 Apertura: Foto 01: portatore e pallone a strisce, eroe granata visibili; distanza dal testimone 6,56 u, zona di centrocampo coerente con sfida in scivolata. Distanza eroe–pallone dal testimone: 6.56 u.
+03–05 Inquadratura: Foto 03-05: eroe e pallone sempre nel quadro; nella 05 eroe e a terra vicino al pallone.
+06 Esito visibile: Foto 06: Fallo e Rischio fallo, punizione concessa; 0-0 e azione in campo compatibili con il fallimento. Non si vede un gol attribuito a questa azione.
+Gesto scelto: Si: la scivolata scelta e visibile nella foto 05, con eroe a terra vicino al pallone; il contatto preciso non e verificato.
+Esito osservato da ActionResolved: fail, etichetta «🛡️ Scivolata netta»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🛡️Scivolata nettaFISICO · 67 / ✋Intercetta di piedeTECNICA · 55 / 📣Copri la lineaVELOCITÀ · 59. Alias del pulsante scelto: 🛡️ Scivolata netta; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi31-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi31-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi31-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi31-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi31-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi31-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #32 [tackle]: «✋ Anticipa il passaggio filtrante!» · AZIONE «✋ Anticipo di posizione» → success
+
+NOTA: Apertura senza pallone e portatore, poi intercetto e recupero leggibili. Il codice 007 della bozza non e confermato dai fotogrammi. Codici 001.
+01 Apertura: Foto 01: eroe granata al bordo sinistro, pallone e portatore fuori quadro; distanza eroe-pallone 19,21 u dal testimone. Il titolo chiede di anticipare un passaggio che non si vede in apertura. Distanza eroe–pallone dal testimone: 19.21 u.
+03–05 Inquadratura: Foto 03-05: eroe resta nel quadro, pur vicino al bordo sinistro in 03-04; il pallone entra nel quadro in 05 presso il giocatore granata.
+06 Esito visibile: Foto 06: Entrata pulita e recupero del pallone con eroe e palla visibili; testo compatibile con success. La parola Entrata e generica rispetto ad anticipo, ma non prova un codice 003.
+Gesto scelto: Si/parziale: in foto 05 l eroe arriva sulla linea e controlla il pallone; istante esatto dell intercetto non verificato.
+Esito osservato da ActionResolved: success, etichetta «✋ Anticipo di posizione»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✋Anticipo di posizioneTECNICA · 55 / 🏃Sprint di coperturaVELOCITÀ · 59 / 💪Contrasto fisicoFISICO · 67. Alias del pulsante scelto: ✋ Anticipo di posizione; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 007 — la CAMERA trema: 2.5 inversioni di direzione al secondo (passo max 0.85 unità) · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 3.6u, eroe ≥3.7u per 96 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi32-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi32-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi32-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi32-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi32-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi32-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #32 [tackle]: «✋ Anticipa il passaggio filtrante!» · AZIONE «✋ Anticipo di posizione» → fail
+
+NOTA: Apertura priva di pallone e portatore; esito fallito plausibile ma azione della palla non valutabile dalle foto centrali. Codici 001.
+01 Apertura: Foto 01: eroe sul bordo sinistro, pallone e portatore fuori quadro; distanza 19,37 u dal testimone. Non si vede la linea del passaggio da anticipare. Distanza eroe–pallone dal testimone: 19.37 u.
+03–05 Inquadratura: Foto 03-05: eroe visibile, ma il pallone non e distinguibile nei tre scatti; foto 05 mostra un avversario in basso e l eroe lontano in alto.
+06 Esito visibile: Foto 06: Beffato dall attaccante e Supera la pressione; 0-0 compatibile con il fallimento. Senza pallone visibile negli scatti centrali il superamento specifico resta non verificato, non e provata una contraddizione 003.
+Gesto scelto: No negli scatti selezionati: non si vede un intercetto; questo e coerente col fallimento forzato, ma il gesto fra foto non e verificato.
+Esito osservato da ActionResolved: fail, etichetta «✋ Anticipo di posizione»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✋Anticipo di posizioneTECNICA · 55 / 🏃Sprint di coperturaVELOCITÀ · 59 / 💪Contrasto fisicoFISICO · 67. Alias del pulsante scelto: ✋ Anticipo di posizione; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 6.5u, eroe ≥19.4u per 104 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi32-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi32-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi32-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi32-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi32-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi32-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #36 [header]: «💪 Duello aereo su corner avversario!» · AZIONE «✈️ Stacco di testa» → success
+
+NOTA: Pallone assente all apertura; il duello aereo e suggerito ma il contatto e il possesso finale restano non verificabili dalle sei foto. Codici 001.
+01 Apertura: Foto 01: eroe granata visibile presso l area, pallone non visibile; distanza dal testimone 6,39 u. La zona e compatibile col corner annunciato, ma la palla iniziale non e localizzabile. Distanza eroe–pallone dal testimone: 6.39 u.
+03–05 Inquadratura: Foto 03-05: eroe nel quadro; pallone visibile in 03-04, poi fuori quadro in 05 durante il volo.
+06 Esito visibile: Foto 06: Risposta da campione e Mura sulla linea, palla sua; la palla non si vede al finale. Testo non verificabile pienamente, senza prova di contraddizione con success.
+Gesto scelto: Parziale/non verificato: giocatori granata compiono il movimento di stacco nelle foto 04-05, ma il contatto testa-pallone non si distingue.
+Esito osservato da ActionResolved: success, etichetta «✈️ Stacco di testa»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✈️Attacca il palloneFISICO · 67 / 🤼Contrasto fisicoFISICO · 67 / 📣Guida i compagniTECNICA · 55. Alias del pulsante scelto: ✈️ Attacca il pallone; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · corpo↔porta al contatto: 114° — MISURATO girato: al tiro il corpo non guarda la porta (eroe a x -41, z -9.5)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi36-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi36-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi36-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi36-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi36-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi36-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #36 [header]: «💪 Duello aereo su corner avversario!» · AZIONE «✈️ Stacco di testa» → fail
+
+NOTA: Apertura senza pallone; 0-1 presente prima che la palla completi la traiettoria visibile. Il duello aereo e solo parzialmente osservabile. Codici 001, 003.
+01 Apertura: Foto 01: eroe granata visibile vicino all area, pallone assente; distanza 5,78 u. Il corner annunciato non e mostrato nel suo punto di partenza. Distanza eroe–pallone dal testimone: 5.78 u.
+03–05 Inquadratura: Foto 03-05: eroe e pallone in quadro durante il volo; nessuna uscita prolungata del protagonista.
+06 Esito visibile: Foto 03: tabellone gia 0-1 mentre il pallone e ancora in volo in campo; foto 04-05 mostrano la palla ancora in movimento, e la foto 06 dice Buco in copertura senza mostrare la porta o il gol. ActionResolved fail valido, rappresentazione anticipata.
+Gesto scelto: Parziale: eroe prepara lo stacco e alza il corpo nelle foto 04-05; contatto testa-pallone non verificato.
+Esito osservato da ActionResolved: fail, etichetta «✈️ Stacco di testa»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✈️Attacca il palloneFISICO · 67 / 🤼Contrasto fisicoFISICO · 67 / 📣Guida i compagniTECNICA · 55. Alias del pulsante scelto: ✈️ Attacca il pallone; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · corpo↔porta al contatto: 114° — MISURATO girato: al tiro il corpo non guarda la porta (eroe a x -41, z -9.5)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi36-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi36-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi36-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi36-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi36-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi36-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #44 [header]: «✈️ Cross avversario in area! Allontana!» · AZIONE «✈️ Stacco di testa deciso» → success
+
+NOTA: Apertura senza cross visibile; il finale usa un testo da parata del portiere senza intervento del portiere nelle foto. Codici 001, 003.
+01 Apertura: Foto 01: avversario tagliato sul bordo sinistro e pallone assente; eroe indicato vicino al bordo basso sotto il pannello. Distanza 6,89 u. Il cross in area annunciato non e visibile all apertura. Distanza eroe–pallone dal testimone: 6.89 u.
+03–05 Inquadratura: Foto 03-05: eroe e pallone entrano nel quadro; in 05 pallone presso un granata sul lato destro, senza taglio netto dell eroe.
+06 Esito visibile: Foto 06: Riflesso felino e SALVATO! Che intervento, mentre sono visibili solo giocatori di movimento e un granata con pallone; nessun portiere o parata compare nelle foto. Testo da parata non sostenuto dalla scena visibile.
+Gesto scelto: Parziale/non verificato: traiettoria aerea e giocatori che si preparano, ma il contatto di testa scelto non si distingue nelle sei foto.
+Esito osservato da ActionResolved: success, etichetta «✈️ Stacco di testa deciso»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✈️Attacca il palloneFISICO · 67 / 🛡️Chiudi di spallaFISICO · 67 / 📣Chiama il portiereTECNICA · 55. Alias del pulsante scelto: ✈️ Attacca il pallone; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · corpo↔porta al contatto: 113° — MISURATO girato: al tiro il corpo non guarda la porta (eroe a x -34, z 13.6)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi44-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi44-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi44-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi44-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi44-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi44-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #44 [header]: «✈️ Cross avversario in area! Allontana!» · AZIONE «✈️ Stacco di testa deciso» → fail
+
+NOTA: Pallone assente all apertura e punteggio 0-1 anticipato rispetto al volo mostrato nelle foto 03-04. Codici 001, 003.
+01 Apertura: Foto 01: pallone assente, portatore avversario tagliato a sinistra ed eroe indicato sotto il pannello; distanza 7,36 u. Il cross in area non e localizzabile nella prima foto. Distanza eroe–pallone dal testimone: 7.36 u.
+03–05 Inquadratura: Foto 03-05: pallone visibile nel volo in 03-04, poi fuori quadro in 05; l eroe resta visibile vicino all area.
+06 Esito visibile: Foto 03: tabellone gia 0-1 mentre la palla e ancora in volo; foto 04 la mostra ancora in campo. Foto 06 dice Gol avversario senza porta o arrivo del tiro visibili. ActionResolved fail coerente, rappresentazione anticipata.
+Gesto scelto: Parziale: i difensori preparano lo stacco, ma non e visibile il contatto testa-pallone.
+Esito osservato da ActionResolved: fail, etichetta «✈️ Stacco di testa deciso»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✈️Attacca il palloneFISICO · 67 / 🛡️Chiudi di spallaFISICO · 67 / 📣Chiama il portiereTECNICA · 55. Alias del pulsante scelto: ✈️ Attacca il pallone; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · corpo↔porta al contatto: 113° — MISURATO girato: al tiro il corpo non guarda la porta (eroe a x -34, z 13.6)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi44-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi44-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi44-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi44-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi44-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi44-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #45 [tackle]: «🧱 Tiro avversario in arrivo sulla linea! Intervieni.» · AZIONE «🧱 Corpo sulla traiettoria» → success
+
+NOTA: Apertura taglia eroe e pallone, ma il blocco sulla linea e il finale positivo sono leggibili nelle foto successive. Codici 001.
+01 Apertura: Foto 01: area e tratto di linea di porta visibili, eroe tagliato nell angolo alto sinistro, pallone assente; distanza 10,14 u dal testimone. Il tiro annunciato non e in quadro. Distanza eroe–pallone dal testimone: 10.14 u.
+03–05 Inquadratura: Foto 03-05: pallone ed eroe visibili presso la linea e poi la porta; nella 05 inquadratura laterale comprende anche il portiere.
+06 Esito visibile: Foto 06: Serranda abbassata e Blocchi la conclusione, palla fuori dalla porta e 0-0; testo visibile compatibile con il salvataggio dell eroe. Nessun 003 provato.
+Gesto scelto: Si/parziale: in foto 03-04 il corpo granata si oppone al pallone sulla linea; contatto preciso e durata non verificati.
+Esito osservato da ActionResolved: success, etichetta «🧱 Corpo sulla traiettoria»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🧱Corpo sulla traiettoriaFISICO · 67 / ✋Devia col piedeTECNICA · 55 / 😱Tentativo disperatoFISICO · 67. Alias del pulsante scelto: 🧱 Corpo sulla traiettoria; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi45-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi45-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi45-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi45-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi45-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi45-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #45 [tackle]: «🧱 Tiro avversario in arrivo sulla linea! Intervieni.» · AZIONE «🧱 Corpo sulla traiettoria» → fail
+
+NOTA: Apertura senza pallone; il tabellone segna gia 0-1 quando la palla appare ancora presso la linea esterna. Il fotogramma finale conferma il gol, ma il momento del cambio punteggio va riprodotto. Codici 001, 003.
+01 Apertura: Foto 01: eroe tagliato nell angolo alto sinistro, pallone assente, area visibile in basso; distanza 9,77 u. Tiro sulla linea non mostrato all apertura. Distanza eroe–pallone dal testimone: 9.77 u.
+03–05 Inquadratura: Foto 03-05: eroe e palla visibili sulla o presso la linea di porta, poi la camera passa al lato della rete; nessuna uscita prolungata dell eroe.
+06 Esito visibile: Foto 03-04: punteggio gia 0-1 mentre la sfera appare ancora sul lato esterno della linea bianca accanto al granata; foto 06 palla in rete e testo Gol subito. Sospetto anticipo del tabellone; l esatto attraversamento della linea fra foto resta non verificato.
+Gesto scelto: Si/parziale: granata si getta vicino alla traiettoria nelle foto 03-04, ma non ferma la palla; il contatto col corpo non e isolato.
+Esito osservato da ActionResolved: fail, etichetta «🧱 Corpo sulla traiettoria»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🧱Corpo sulla traiettoriaFISICO · 67 / ✋Devia col piedeTECNICA · 55 / 😱Tentativo disperatoFISICO · 67. Alias del pulsante scelto: 🧱 Corpo sulla traiettoria; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi45-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi45-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi45-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi45-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi45-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi45-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #128 [tackle]: «🛑 Chiusura urgente sull'attaccante!» · AZIONE «🛑 Chiusura immediata» → success
+
+NOTA: Apertura senza attaccante ne pallone; intervento finale visivamente plausibile, contatto non verificato. La bozza camera 007 non e confermata dalle foto. Codici 001.
+01 Apertura: Foto 01: eroe granata visibile nella meta campo, pallone e attaccante non visibili; distanza 18,63 u. Il bersaglio della Chiusura urgente e fuori quadro. Distanza eroe–pallone dal testimone: 18.63 u.
+03–05 Inquadratura: Foto 03: eroe visibile, palla assente. Foto 04: eroe al lato destro, pallone quasi fuori dal bordo sinistro. Foto 05: entrambi tornano in quadro presso il lato destro.
+06 Esito visibile: Foto 06: Contrasto vinto e Intervento pulito, palla nostra con giocatori granata e palla visibili; risultato compatibile con success.
+Gesto scelto: Parziale/non verificato: si vede il movimento del difensore e la palla presso i granata alla fine, ma nessuna foto isola il contatto del contrasto.
+Esito osservato da ActionResolved: success, etichetta «🛑 Chiusura immediata»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🛑Chiusura immediataVELOCITÀ · 59 / 💪Contrasto fisico decisoFISICO · 67 / 📣Posizionamento strategicoPOSIZIONAMENTO · 68. Alias del pulsante scelto: 🛑 Chiusura immediata; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 007 — la CAMERA trema: 2.3 inversioni di direzione al secondo (passo max 0.34 unità) · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 4.1u, eroe ≥3.7u per 101 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi128-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi128-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi128-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi128-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi128-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi128-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #128 [tackle]: «🛑 Chiusura urgente sull'attaccante!» · AZIONE «🛑 Chiusura immediata» → fail
+
+NOTA: Apertura senza palla ne avversario. Non attribuisco il codice 002: nessuna foto dimostra che il protagonista esca del tutto dal quadro durante il gesto. Codici 001.
+01 Apertura: Foto 01: difensore granata visibile, pallone e attaccante non visibili; distanza eroe-pallone 18,56 u. La chiusura urgente comincia senza mostrare il pericolo. Distanza eroe–pallone dal testimone: 18.56 u.
+03–05 Inquadratura: Foto 03-05: il difensore rimane ai margini e il pallone appare solo nella foto 05. Il contatto del contrasto non e isolato dalle foto.
+06 Esito visibile: Foto 06: Superato dall'avversario e Troppo veloce - Ti ha saltato; un avversario e la palla sono in quadro. Il tabellone resta 0-0; il testo e compatibile con fail.
+Gesto scelto: Non verificato: il tentativo di chiusura si intuisce dalla corsa, ma nessuna foto mostra chiaramente il contrasto.
+Esito osservato da ActionResolved: fail, etichetta «🛑 Chiusura immediata»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🛑Chiusura immediataVELOCITÀ · 59 / 💪Contrasto fisico decisoFISICO · 67 / 📣Posizionamento strategicoPOSIZIONAMENTO · 68. Alias del pulsante scelto: 🛑 Chiusura immediata; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 3.6u, eroe ≥15.7u per 93 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi128-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi128-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi128-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi128-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi128-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi128-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #137 [tackle]: «⚡ Tackle in corsa — è più veloce!» · AZIONE «⚡ Tackle in corsa preciso» → success
+
+NOTA: Apertura lontana dalla palla. Il risultato difensivo e plausibile, ma la sequenza fotografica non dimostra il gesto esatto. Codici 001.
+01 Apertura: Foto 01: eroe granata visibile da solo presso il centrocampo; pallone e portatore fuori quadro, distanza 18,79 u. Distanza eroe–pallone dal testimone: 18.79 u.
+03–05 Inquadratura: Foto 03-05: eroe nel quadro, il pallone compare soltanto nella foto 05. Non risulta provata una uscita del protagonista dal quadro.
+06 Esito visibile: Foto 06: Muro invalicabile e Anticipo perfetto, eroe con compagni e avversario vicino; il tabellone resta 0-0. Il testo non contraddice le foto.
+Gesto scelto: Non verificato: le foto 03-05 mostrano il difensore in attesa; non isolano il contatto del tackle in corsa.
+Esito osservato da ActionResolved: success, etichetta «⚡ Tackle in corsa preciso»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ⚡Tackle in corsa precisoFISICO · 67 / 🌀Indirizza verso il fallo lateraleTECNICA · 55 / 🏃Sprint puro di rientroVELOCITÀ · 59. Alias del pulsante scelto: ⚡ Tackle in corsa preciso; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 3.8u, eroe ≥3.7u per 93 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi137-a0-success-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi137-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi137-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi137-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi137-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi137-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #137 [tackle]: «⚡ Tackle in corsa — è più veloce!» · AZIONE «⚡ Tackle in corsa preciso» → fail
+
+NOTA: Apertura senza la palla; gli scatti non bastano per assegnare un codice al gesto o all'esito. Codici 001.
+01 Apertura: Foto 01: eroe granata da solo; pallone e portatore assenti dal quadro, distanza 18,80 u. Distanza eroe–pallone dal testimone: 18.80 u.
+03–05 Inquadratura: Foto 03-05: eroe nel quadro, pallone non visibile. Il presunto contatto non e visibile nei sei campioni.
+06 Esito visibile: Foto 06: FALLO e Rischio fallo, punizione concessa con tabellone 0-0. Il testo e compatibile con fail, ma il contatto falloso non e documentato dalle foto.
+Gesto scelto: Non verificato: nessuna foto dimostra la scivolata o il contatto del tackle.
+Esito osservato da ActionResolved: fail, etichetta «⚡ Tackle in corsa preciso»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ⚡Tackle in corsa precisoFISICO · 67 / 🌀Indirizza verso il fallo lateraleTECNICA · 55 / 🏃Sprint puro di rientroVELOCITÀ · 59. Alias del pulsante scelto: ⚡ Tackle in corsa preciso; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 4.5u, eroe ≥18.8u per 104 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi137-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi137-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi137-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi137-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi137-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi137-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #157 [tackle]: «🛡️ Il tiro è in porta — gettati sulla traiettoria!» · AZIONE «🤸 Gettati sulla traiettoria» → success
+
+NOTA: Apertura senza pallone. Possibile 003: il premio save usa testo da portiere mentre l'azione scelta e Gettati sulla traiettoria e le foto mostrano il difensore sulla palla. Codici 001, 003.
+01 Apertura: Foto 01: eroe granata e avversario a strisce visibili presso il bordo area, ma il pallone non e visibile; distanza eroe-pallone 7,04 u. Distanza eroe–pallone dal testimone: 7.04 u.
+03–05 Inquadratura: Foto 03-05: eroe, avversario e pallone in quadro durante la fase decisiva; non emergono tagli evidenti del protagonista.
+06 Esito visibile: Foto 06: Miracolo tra i pali! e Para in tuffo - rimaniamo...; si vede un difensore granata sulla palla, senza portiere che para nel quadro. Il testo attribuisce la parata a un portiere non mostrato.
+Gesto scelto: Parziale: nella foto 03 il difensore si piega verso la palla, ma la foto 04 non isola un blocco con il corpo. Un tuffo del portiere non e visibile.
+Esito osservato da ActionResolved: success, etichetta «🤸 Gettati sulla traiettoria»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🤸Gettati sulla traiettoriaFISICO · 67 / ✋Devia di piede sul paloTECNICA · 55 / 📣Avvisa il portiereTECNICA · 55. Alias del pulsante scelto: 🤸 Gettati sulla traiettoria; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi157-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi157-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi157-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi157-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi157-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi157-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #157 [tackle]: «🛡️ Il tiro è in porta — gettati sulla traiettoria!» · AZIONE «🤸 Gettati sulla traiettoria» → fail
+
+NOTA: Codice 003 ipotetico per tabellone 0-1 prima che le foto mostrino un gol; sei campioni non bastano a stabilire se il gol sia avvenuto fuori quadro tra scatti. Codici 001, 003.
+01 Apertura: Foto 01: eroe e avversario visibili presso il bordo area, pallone non visibile; distanza eroe-pallone 6,43 u. Distanza eroe–pallone dal testimone: 6.43 u.
+03–05 Inquadratura: Foto 03-05: eroe, avversario e pallone in quadro; nella foto 05 la palla corre verso il bordo inferiore, senza porta visibile.
+06 Esito visibile: Foto 03: tabellone gia 0-1 mentre la palla e ancora nel campo vicino al difensore; foto 06: Disastro difensivo e Errore difensivo - costoso, ma il tiro che supera il portiere non e visibile. L'anticipo del punteggio e una possibile incoerenza visiva.
+Gesto scelto: Parziale: l'eroe si piega e tenta l'intervento nella foto 03, ma gli scatti non isolano un tuffo o contatto conclusivo.
+Esito osservato da ActionResolved: fail, etichetta «🤸 Gettati sulla traiettoria»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🤸Gettati sulla traiettoriaFISICO · 67 / ✋Devia di piede sul paloTECNICA · 55 / 📣Avvisa il portiereTECNICA · 55. Alias del pulsante scelto: 🤸 Gettati sulla traiettoria; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi157-a0-fail-v2-01-apertura-retry1.png) · [02-scelta](collaudo-difesa-3d/gi157-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi157-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi157-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi157-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi157-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #184 [tackle]: «✋ Lettura della linea di passaggio — intercetta!» · AZIONE «✋ Intercetta il filtrante» → success
+
+NOTA: Apertura priva del pallone. La risoluzione dell'intercetto e visivamente leggibile. Codici 001.
+01 Apertura: Foto 01: l'eroe granata e visibile vicino al centrocampo ma palla e portatore mancano; distanza eroe-pallone 8,38 u. Il titolo promette la lettura del filtrante senza mostrare il passaggio. Distanza eroe–pallone dal testimone: 8.38 u.
+03–05 Inquadratura: Foto 03-05: eroe, avversario e poi pallone sono nel quadro. Nessun taglio evidente del protagonista.
+06 Esito visibile: Foto 06: Chiusura impeccabile e Muro invalicabile, eroe sulla palla davanti all'avversario; tabellone 0-0, compatibile con success.
+Gesto scelto: Parziale: nella foto 05 l'eroe si china verso la palla e nella 06 la controlla; il contatto iniziale del filtrante non e isolato.
+Esito osservato da ActionResolved: success, etichetta «✋ Intercetta il filtrante»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✋Intercetta il filtrantePOSIZIONAMENTO · 68 / ⚡Scatta sulla linea di passaggioVELOCITÀ · 59 / 🧠Leggi e taglia il corridoioMENTALITÀ · 67. Alias del pulsante scelto: ✋ Intercetta il filtrante; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 3.5u, eroe ≥7.6u per 83 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi184-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi184-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi184-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi184-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi184-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi184-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #184 [tackle]: «✋ Lettura della linea di passaggio — intercetta!» · AZIONE «✋ Intercetta il filtrante» → fail
+
+NOTA: Apertura senza palla; l'esito narrato e coerente con l'ultimo fotogramma. Codici 001.
+01 Apertura: Foto 01: eroe granata nel mezzo del campo, palla e portatore fuori quadro; distanza eroe-pallone 8,38 u. Distanza eroe–pallone dal testimone: 8.38 u.
+03–05 Inquadratura: Foto 03-05: eroe e avversario in quadro, poi la palla si vede ai piedi dell'avversario. Non emerge un protagonista fuori quadro.
+06 Esito visibile: Foto 06: Superato dall'avversario e Supera la pressione, con avversario sulla palla, tabellone 0-0. Esito compatibile con fail.
+Gesto scelto: Parziale/non verificato: nella foto 05 l'eroe si abbassa, ma il tocco fallito sul filtrante non e isolato.
+Esito osservato da ActionResolved: fail, etichetta «✋ Intercetta il filtrante»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: ✋Intercetta il filtrantePOSIZIONAMENTO · 68 / ⚡Scatta sulla linea di passaggioVELOCITÀ · 59 / 🧠Leggi e taglia il corridoioMENTALITÀ · 67. Alias del pulsante scelto: ✋ Intercetta il filtrante; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 001 MISURATO: all'apertura il pallone non è ai piedi di nessuno dei nostri (compagno più vicino 4.4u, eroe ≥8.4u per 104 campioni)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi184-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi184-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi184-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi184-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi184-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi184-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #24 [pass]: «🧠 Ricezione tra le linee!» · AZIONE «🎯 Assist filtrante» → success
+
+NOTA: Nessun difetto provato nei sei campioni. Il tiro dopo l'assist non e verificato dai fotogrammi richiesti. Nessun codice assegnato.
+01 Apertura: Foto 01: eroe granata e compagno visibili tra le linee, palla coperta dal pannello inferiore ma il testimone la colloca sui piedi dell'eroe, distanza 0,00 u. Il quadro risponde al titolo. Distanza eroe–pallone dal testimone: 0.00 u.
+03–05 Inquadratura: Foto 03-05: eroe, compagno bersaglio e pallone nel quadro; il passaggio si vede partire dal portatore verso il compagno.
+06 Esito visibile: Foto 06: Assist decisivo e Passaggio da manuale, tabellone 1-0. Il filmato campionato non mostra il tiro finale, ma non emerge una contraddizione certa.
+Gesto scelto: Si: foto 04 palla ai piedi del passatore e foto 05 palla in volo verso il compagno.
+Esito osservato da ActionResolved: success, etichetta «🎯 Assist filtrante»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🎯Assist filtrantePASSAGGIO · 50 / ⚡Accelera verso portaVELOCITÀ · 59. Alias del pulsante scelto: 🎯 Assist filtrante; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · SALTO del pallone di 6.4 unità in 16 ms (a x 50.6, a 6.5s dall'inizio scena, scrittore: 16) — 400 u/s, sembra un teletrasporto  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi24-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi24-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi24-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi24-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi24-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi24-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #24 [pass]: «🧠 Ricezione tra le linee!» · AZIONE «🎯 Assist filtrante» → fail
+
+NOTA: Nessun difetto provato nei sei campioni; testo finale plausibile, contatto della difesa non verificato. Nessun codice assegnato.
+01 Apertura: Foto 01: eroe e compagno visibili tra le linee; palla sotto il pannello ma il testimone la colloca sui piedi dell'eroe, distanza 0,00 u. Distanza eroe–pallone dal testimone: 0.00 u.
+03–05 Inquadratura: Foto 03-05: eroe, difensore, compagno e palla rimangono nel quadro. Nella foto 05 il passaggio entra nella zona della difesa.
+06 Esito visibile: Foto 06: Conclusione murata e Murato dalla difesa, tabellone 0-0; esito compatibile con fail. Il blocco esatto non e isolato.
+Gesto scelto: Si per il passaggio: palla ai piedi nella foto 04 e in volo nella 05. La murata finale non e verificabile negli scatti.
+Esito osservato da ActionResolved: fail, etichetta «🎯 Assist filtrante»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🎯Assist filtrantePASSAGGIO · 50 / ⚡Accelera verso portaVELOCITÀ · 59. Alias del pulsante scelto: 🎯 Assist filtrante; posizione: 0.
+Foto: [01-apertura](collaudo-difesa-3d/gi24-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi24-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi24-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi24-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi24-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi24-a0-fail-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #2 [shot]: «⚡ Tap-in! Porta quasi vuota.» · AZIONE «🦵 Spingila dentro!» → success
+
+NOTA: Nessun difetto provato nei sei campioni del controllo offensivo. Nessun codice assegnato.
+01 Apertura: Foto 01: attaccanti granata, portiere e porta in quadro, pallone coperto dal pannello; testimone a 0,00 u dai piedi dell'eroe. Situazione coerente con tap-in ravvicinato. Distanza eroe–pallone dal testimone: 0.00 u.
+03–05 Inquadratura: Foto 03-05: eroe, pallone e porta restano visibili durante l'avvicinamento e il tocco.
+06 Esito visibile: Foto 06: RETE! e Dentro per un pelo, tabellone 1-0; nelle foto precedenti la palla avanza verso la porta. Nessuna contraddizione dimostrata.
+Gesto scelto: Si: nella foto 04 l'eroe colpisce da distanza ravvicinata, nella 05 la palla e presso la porta.
+Esito osservato da ActionResolved: success, etichetta «🦵 Spingila dentro!»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🦵Spingila dentro!TIRO · 69 / 🎯PrecisioneTECNICA · 55 / ⚡Conclusione di primaFISICO · 67. Alias del pulsante scelto: 🦵 Spingila dentro!; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · corpo↔porta al contatto: 15° (eroe a x 43.4, z -9.7)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi2-a0-success-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi2-a0-success-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi2-a0-success-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi2-a0-success-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi2-a0-success-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi2-a0-success-v2-06-esito.png).
+
+### [KE 7.999.82] SIT #2 [shot]: «⚡ Tap-in! Porta quasi vuota.» · AZIONE «🦵 Spingila dentro!» → fail
+
+NOTA: Nessun difetto provato nel controllo offensivo. Nessun codice assegnato.
+01 Apertura: Foto 01: eroe, portiere e porta in quadro, pallone sotto il pannello; testimone a 0,00 u dai piedi dell'eroe. Distanza eroe–pallone dal testimone: 0.00 u.
+03–05 Inquadratura: Foto 03-05: eroe, palla e portiere visibili; nella foto 05 la palla e vicina al portiere presso il primo palo.
+06 Esito visibile: Foto 06: Il portiere dice di no e Tiro debole, para comodo; tabellone 0-0. Il portiere e visibile nella sequenza, esito compatibile con fail.
+Gesto scelto: Si: foto 04 eroe in caricamento vicino alla palla e foto 05 portiere sul tiro.
+Esito osservato da ActionResolved: fail, etichetta «🦵 Spingila dentro!»; corrispondenza sì; acquisizione valida.
+Pulsanti azione visibili: 🦵Spingila dentro!TIRO · 69 / 🎯PrecisioneTECNICA · 55 / ⚡Conclusione di primaFISICO · 67. Alias del pulsante scelto: 🦵 Spingila dentro!; posizione: 0.
+Bozza automatica (dato grezzo, richiede controllo visivo): Cosa ho visto (bozza automatica): · codice 007 — la CAMERA salta: passo di 5.9 unità fra due fotogrammi a scena in corso (367 u/s) — a 1.2s dall'inizio scena, intervallo 16ms · corpo↔porta al contatto: 17° (eroe a x 43.4, z -9.7)  Cosa non va secondo me:
+Foto: [01-apertura](collaudo-difesa-3d/gi2-a0-fail-v2-01-apertura.png) · [02-scelta](collaudo-difesa-3d/gi2-a0-fail-v2-02-scelta.png) · [03-rincorsa](collaudo-difesa-3d/gi2-a0-fail-v2-03-rincorsa.png) · [04-contatto](collaudo-difesa-3d/gi2-a0-fail-v2-04-contatto.png) · [05-volo](collaudo-difesa-3d/gi2-a0-fail-v2-05-volo.png) · [06-esito](collaudo-difesa-3d/gi2-a0-fail-v2-06-esito.png).
+
+## Tentativi non validi conservati
+
+Nessuno.
+
+
+## Cinque segnalazioni più gravi
+
+- **alta, codici 001, 002, 003, 133:0:fail** — Pallone invisibile, eroe tagliato e 0-1 gia prima del gol mostrato; esito non rappresentato in campo. Prove: [foto](collaudo-difesa-3d/gi133-a0-fail-v2-01-apertura.png), [foto](collaudo-difesa-3d/gi133-a0-fail-v2-05-volo.png), [foto](collaudo-difesa-3d/gi133-a0-fail-v2-06-esito.png). Da radice del repository: `$env:CPM_CHROME='C:\Program Files\Google\Chrome\Application\chrome.exe'; $env:CPM_CASES='133:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs`.
+- **alta, codici 001, 002, 003, 133:0:success** — Pallone invisibile e eroe tagliato; risultato attribuito al portiere senza portiere o parata negli scatti. Prove: [foto](collaudo-difesa-3d/gi133-a0-success-v2-01-apertura.png), [foto](collaudo-difesa-3d/gi133-a0-success-v2-05-volo.png), [foto](collaudo-difesa-3d/gi133-a0-success-v2-06-esito.png). Da radice del repository: `$env:CPM_CHROME='C:\Program Files\Google\Chrome\Application\chrome.exe'; $env:CPM_CASES='133:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs`.
+- **media, codici 001, 003, 44:0:success** — Apertura senza cross visibile; il finale usa un testo da parata del portiere senza intervento del portiere nelle foto. Prove: [foto](collaudo-difesa-3d/gi44-a0-success-v2-01-apertura.png), [foto](collaudo-difesa-3d/gi44-a0-success-v2-05-volo.png), [foto](collaudo-difesa-3d/gi44-a0-success-v2-06-esito.png). Da radice del repository: `$env:CPM_CHROME='C:\Program Files\Google\Chrome\Application\chrome.exe'; $env:CPM_CASES='44:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs`.
+- **alta, codici 001, 003, 157:0:success** — Apertura senza pallone. Possibile 003: il premio save usa testo da portiere mentre l'azione scelta e Gettati sulla traiettoria e le foto mostrano il difensore sulla palla. Prove: [foto](collaudo-difesa-3d/gi157-a0-success-v2-01-apertura.png), [foto](collaudo-difesa-3d/gi157-a0-success-v2-03-rincorsa.png), [foto](collaudo-difesa-3d/gi157-a0-success-v2-06-esito.png). Da radice del repository: `$env:CPM_CHROME='C:\Program Files\Google\Chrome\Application\chrome.exe'; $env:CPM_CASES='157:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs`.
+- **alta, codici 001, 003, 33:0:fail** — Eroe coperto dal pannello in apertura e 0-1 visibile prima che gli scatti mostrino il tiro in porta. Prove: [foto](collaudo-difesa-3d/gi33-a0-fail-v2-01-apertura.png), [foto](collaudo-difesa-3d/gi33-a0-fail-v2-03-rincorsa.png), [foto](collaudo-difesa-3d/gi33-a0-fail-v2-05-volo.png). Da radice del repository: `$env:CPM_CHROME='C:\Program Files\Google\Chrome\Application\chrome.exe'; $env:CPM_CASES='33:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs`.
+
+
+## Limiti del campionamento
+
+- Sei foto campionano ciascuna scena: movimento fra le foto, sincronismo esatto e continuità non verificati.
+- I codici sono quelli del menu in `src/15-live-match.jsx:10515`; una bozza automatica da sola non basta per trasformare una possibilità in difetto confermato.
+- Quando un caso non esiste o l’azione attesa manca, il registro lo conserva con il motivo; non viene sostituito con un’altra scena.
+- Il confronto con partite naturali e il collaudo su telefono non fanno parte di questo lotto: non verificati.
