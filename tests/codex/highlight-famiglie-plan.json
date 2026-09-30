@@ -1,0 +1,122 @@
+[
+  {
+    "gi": 1,
+    "ai": 0,
+    "text": "🤸 Rovesciata spettacolare!",
+    "label": "🤸 Rovesciata!",
+    "intent": "shot",
+    "def": false
+  },
+  {
+    "gi": 2,
+    "ai": 0,
+    "text": "⚡ Tap-in! Porta quasi vuota.",
+    "label": "🦵 Spingila dentro!",
+    "intent": "shot",
+    "def": false
+  },
+  {
+    "gi": 58,
+    "ai": 0,
+    "text": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
+    "label": "💥 Angolo basso — potenza",
+    "intent": "penalty",
+    "def": false
+  },
+  {
+    "gi": 13,
+    "ai": 0,
+    "text": "📐 Punizione dal limite — tiro diretto!",
+    "label": "🎯 Punizione a giro",
+    "intent": "freekick",
+    "def": false
+  },
+  {
+    "gi": 161,
+    "ai": 0,
+    "text": "📐 Punizione da posizione defilata!",
+    "label": "📐 Punizione a rientrare",
+    "intent": "freekick",
+    "def": false
+  },
+  {
+    "gi": 4,
+    "ai": 0,
+    "text": "🎯 Deviazione ravvicinata!",
+    "label": "🦵 Deviazione istintiva",
+    "intent": "shot",
+    "def": false
+  },
+  {
+    "gi": 9,
+    "ai": 0,
+    "text": "⚽ Tiro al volo dal limite!",
+    "label": "⚽ Volée potente",
+    "intent": "shot",
+    "def": false
+  },
+  {
+    "gi": 33,
+    "ai": 0,
+    "text": "🧱 Muro in area! Blocca il tiro.",
+    "label": "🧱 Blocca con il corpo",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 133,
+    "ai": 0,
+    "text": "🏃 Recupero sulla linea di fondo!",
+    "label": "🏃 Sprint disperato sulla linea",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 138,
+    "ai": 0,
+    "text": "📣 Allineati con la difesa — linea alta!",
+    "label": "📣 Allineamento difensivo immediato",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 168,
+    "ai": 0,
+    "text": "🛡️ Ultimo uomo! Devi fermare l'avversario.",
+    "label": "🛡️ Tackle duro — rischio rosso",
+    "intent": "tackle",
+    "def": true
+  },
+  {
+    "gi": 134,
+    "ai": 0,
+    "text": "✈️ Sfida aerea su lancio lungo!",
+    "label": "✈️ Stacco dominante",
+    "intent": "header",
+    "def": true
+  },
+  {
+    "gi": 110,
+    "ai": 0,
+    "text": "🏃 Fai il velo per il compagno!",
+    "label": "🏃 Faccio il velo e attacco",
+    "intent": "shot",
+    "def": false
+  },
+  {
+    "gi": 24,
+    "ai": 0,
+    "text": "🧠 Ricezione tra le linee!",
+    "label": "🎯 Assist filtrante",
+    "intent": "pass",
+    "def": false
+  },
+  {
+    "gi": 105,
+    "ai": 0,
+    "text": "🔄 Cambio gioco rapido 50 metri!",
+    "label": "🔄 Lancio lungo di prima",
+    "intent": "pass",
+    "def": false
+  }
+]

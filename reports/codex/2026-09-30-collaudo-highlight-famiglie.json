@@ -1,0 +1,423 @@
+{
+  "versione": "7.999.69",
+  "compito": "Collaudo mirato di 15 famiglie highlight 3D, success/fail",
+  "comando": "node tests/codex/highlight-famiglie-lotti.mjs; node tests/codex/highlight-famiglie-audit.mjs; node tests/codex/highlight-famiglie-report.mjs",
+  "seme": "pagina nuova per caso; nome Famiglie<gi>",
+  "misure": [
+    {
+      "nome": "Casi validi",
+      "valore": 30,
+      "soglia": 30,
+      "esito": "ok"
+    },
+    {
+      "nome": "Immagini mancanti",
+      "valore": 0,
+      "soglia": 0,
+      "esito": "ok"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "alta",
+      "descrizione": "001, 003 33:0:success: La situazione dichiara Muro in area! Blocca il tiro, ma la foto 01 apre presso il cerchio di centrocampo. Dopo la scelta Blocca con il corpo, la foto 06 mostra Il portiere dice no e Blocchi la conclusione! Grande difesa, pur inquadrando solo giocatori di movimento presso il centrocampo. Il testimone automatico segnala inoltre codice 001 con pallone a 3,6 u dal compagno più vicino per 95 campioni.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='33:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi33-a0-success-v2-01-apertura.png",
+        "reports/codex/highlight-famiglie/gi33-a0-success-v2-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "001, 003 33:0:fail: La situazione dichiara Muro in area ma la foto 01 apre presso il cerchio di centrocampo. Nella foto 03 il tabellone mostra già 0-1 mentre il pallone è ancora al centro; la foto 06 annuncia il gol avversario. I sei scatti non mostrano una progressione del tiro fino alla porta. Apertura e risultato sono incoerenti con la scena visibile.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='33:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi33-a0-fail-v2-01-apertura.png",
+        "reports/codex/highlight-famiglie/gi33-a0-fail-v2-03-rincorsa.png",
+        "reports/codex/highlight-famiglie/gi33-a0-fail-v2-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "001, 002 133:0:success: La situazione annuncia recupero sulla linea di fondo; nella foto 01 il protagonista è minuscolo e il pallone non è visibile. Il testimone misura eroe almeno a 24,0 u dal pallone per 104 campioni. Nelle foto 03-05 la camera inquadra quasi soltanto linea laterale, prato e cartelloni: protagonista e pallone sono fuori quadro. Nessun codice 007, perché la bozza riferisce oscillazioni di appena 0,4 gradi non valutabili dalle sei foto.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='133:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi133-a0-success-v2-01-apertura.png",
+        "reports/codex/highlight-famiglie/gi133-a0-success-v2-04-contatto.png",
+        "reports/codex/highlight-famiglie/gi133-a0-success-v2-05-volo.png"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "001, 002, 003 133:0:fail: Apertura del recupero sulla linea con protagonista lontano e pallone invisibile: il testimone misura eroe almeno a 43,3 u dal pallone per 80 campioni. Le foto 03-06 mostrano quasi solo linea laterale e cartelloni, senza gesto, palla o porta; il tabellone passa a 0-1 e il testo finale annuncia gol avversario. Il risultato può essere corretto nel motore, ma non è rappresentato al giocatore: codice 003 riferito alla presentazione visiva.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='133:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi133-a0-fail-v2-01-apertura.png",
+        "reports/codex/highlight-famiglie/gi133-a0-fail-v2-04-contatto.png",
+        "reports/codex/highlight-famiglie/gi133-a0-fail-v2-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "001, 002, 003 138:0:success: La situazione chiede un allineamento difensivo, ma la foto 01 mostra un solo giocatore isolato; il testimone misura eroe almeno a 12,9 u dal pallone per 93 campioni. Nelle foto 03-05 il portatore, il protagonista e poi il pallone escono dal quadro. La foto 06 mostra campo vuoto e il testo Il portiere dice no / Para in tuffo, benché la sequenza visibile sia a centrocampo. Codici 001, 002 e 003 supportati dalle foto; oscillazione camera della bozza non confermata visivamente.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='138:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi138-a0-success-v2-01-apertura.png",
+        "reports/codex/highlight-famiglie/gi138-a0-success-v2-04-contatto.png",
+        "reports/codex/highlight-famiglie/gi138-a0-success-v2-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "001, 002, 003 134:0:fail: Apertura della sfida aerea con giocatori e pallone nascosti dal pannello. Il duello appare nella foto 04, ma le foto 05-06 mostrano campo vuoto mentre il risultato annuncia Buco in copertura e Gol avversario. Il motore registra goal_against, ma la presentazione non mostra la finalizzazione; codici 001, 002 e 003 riferiti alla scena visibile.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='134:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi134-a0-fail-v2-01-apertura.png",
+        "reports/codex/highlight-famiglie/gi134-a0-fail-v2-04-contatto.png",
+        "reports/codex/highlight-famiglie/gi134-a0-fail-v2-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "senza codice 161:0:success: Difetto visibile di inquadratura: nel fotogramma 05 il pallone è quasi fuori dal bordo destro e la porta è interamente fuori quadro, quindi non si vede il tiro entrare. La porta ricompare soltanto nel risultato 06. Nessun codice ufficiale descrive esattamente questo taglio di camera; codice non forzato.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='161:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi161-a0-success-v2-05-volo.png",
+        "reports/codex/highlight-famiglie/gi161-a0-success-v2-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "senza codice 161:0:fail: Difetto di inquadratura ripetuto: nel fotogramma 05 la porta è fuori schermo a destra, il pallone esce dal bordo e il portiere è tagliato; il risultato finale descrive una parata che non si vede. Anche il caso success della stessa scena taglia la porta durante il volo. Nessun codice ufficiale corrisponde esattamente.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='161:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi161-a0-fail-v2-05-volo.png",
+        "reports/codex/highlight-famiglie/gi161-a0-fail-v2-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "002 138:0:fail: Nel fotogramma 04 il portatore e il pallone sono tagliati dal bordo sinistro; nel 05 il protagonista è tagliato dal bordo destro. Il risultato finale Fallimento / Supera la pressione è coerente con il registro, quindi nessun 003. La bozza segnala apertura distante 3,7 u ma gli scatti non dimostrano un errore di avvio distinto dal fuori quadro.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='138:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi138-a0-fail-v2-04-contatto.png",
+        "reports/codex/highlight-famiglie/gi138-a0-fail-v2-05-volo.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "001, 002 168:0:success: Nella foto 01 la scena Ultimo uomo apre con il personaggio rilevante già tagliato dal bordo destro. Nella foto 03 il giocatore marcato dal rombo è visibile in tackle, ma nella foto 04 ne resta solo una parte oltre il bordo sinistro; il gesto non è interamente seguibile. Esito recovery confermato da ActionResolved; nessun 003.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='168:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi168-a0-success-v2-01-apertura.png",
+        "reports/codex/highlight-famiglie/gi168-a0-success-v2-03-rincorsa.png",
+        "reports/codex/highlight-famiglie/gi168-a0-success-v2-04-contatto.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "001, 002 168:0:fail: La scena Ultimo uomo apre con il giocatore sul bordo destro della foto 01. Nel fotogramma 04 il protagonista del tackle esce in parte a sinistra; il gesto non resta interamente nel quadro. Il fallo e la ammonizione finali sono compatibili con la scelta rischiosa, quindi nessun 003. Oscillazione camera della bozza non confermata visivamente.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='168:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi168-a0-fail-v2-01-apertura.png",
+        "reports/codex/highlight-famiglie/gi168-a0-fail-v2-04-contatto.png",
+        "reports/codex/highlight-famiglie/gi168-a0-fail-v2-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "001, 003 134:0:success: Nella foto 01 della sfida aerea non si vedono né giocatori né pallone sopra il pannello di scelta; la scena si scopre soltanto nella rincorsa. Il gesto è un colpo di testa a centrocampo, ma la foto finale dice Il portiere dice no e SALVATO! Che intervento, senza portiere in quadro. Codici 001 e 003; il valore automatico di angolo corpo-porta non è pertinente a un duello aereo difensivo.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='134:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/highlight-famiglie.mjs",
+      "prove": [
+        "reports/codex/highlight-famiglie/gi134-a0-success-v2-01-apertura.png",
+        "reports/codex/highlight-famiglie/gi134-a0-success-v2-03-rincorsa.png",
+        "reports/codex/highlight-famiglie/gi134-a0-success-v2-06-esito.png"
+      ]
+    }
+  ],
+  "audit": {
+    "versione": "7.999.69",
+    "baseCommit": "09c59d24295f4bf71e7262b3d3dea29bc84a3700",
+    "planned": 30,
+    "attempts": 34,
+    "acquired": 30,
+    "valid": 30,
+    "invalid": 0,
+    "reviewed": 30,
+    "images": 180,
+    "missingImages": 0
+  },
+  "plan": [
+    {
+      "gi": 1,
+      "ai": 0,
+      "text": "🤸 Rovesciata spettacolare!",
+      "label": "🤸 Rovesciata!",
+      "intent": "shot",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 1,
+      "ai": 0,
+      "text": "🤸 Rovesciata spettacolare!",
+      "label": "🤸 Rovesciata!",
+      "intent": "shot",
+      "def": false,
+      "outcome": "fail"
+    },
+    {
+      "gi": 2,
+      "ai": 0,
+      "text": "⚡ Tap-in! Porta quasi vuota.",
+      "label": "🦵 Spingila dentro!",
+      "intent": "shot",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 2,
+      "ai": 0,
+      "text": "⚡ Tap-in! Porta quasi vuota.",
+      "label": "🦵 Spingila dentro!",
+      "intent": "shot",
+      "def": false,
+      "outcome": "fail"
+    },
+    {
+      "gi": 58,
+      "ai": 0,
+      "text": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
+      "label": "💥 Angolo basso — potenza",
+      "intent": "penalty",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 58,
+      "ai": 0,
+      "text": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
+      "label": "💥 Angolo basso — potenza",
+      "intent": "penalty",
+      "def": false,
+      "outcome": "fail"
+    },
+    {
+      "gi": 13,
+      "ai": 0,
+      "text": "📐 Punizione dal limite — tiro diretto!",
+      "label": "🎯 Punizione a giro",
+      "intent": "freekick",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 13,
+      "ai": 0,
+      "text": "📐 Punizione dal limite — tiro diretto!",
+      "label": "🎯 Punizione a giro",
+      "intent": "freekick",
+      "def": false,
+      "outcome": "fail"
+    },
+    {
+      "gi": 161,
+      "ai": 0,
+      "text": "📐 Punizione da posizione defilata!",
+      "label": "📐 Punizione a rientrare",
+      "intent": "freekick",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 161,
+      "ai": 0,
+      "text": "📐 Punizione da posizione defilata!",
+      "label": "📐 Punizione a rientrare",
+      "intent": "freekick",
+      "def": false,
+      "outcome": "fail"
+    },
+    {
+      "gi": 4,
+      "ai": 0,
+      "text": "🎯 Deviazione ravvicinata!",
+      "label": "🦵 Deviazione istintiva",
+      "intent": "shot",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 4,
+      "ai": 0,
+      "text": "🎯 Deviazione ravvicinata!",
+      "label": "🦵 Deviazione istintiva",
+      "intent": "shot",
+      "def": false,
+      "outcome": "fail"
+    },
+    {
+      "gi": 9,
+      "ai": 0,
+      "text": "⚽ Tiro al volo dal limite!",
+      "label": "⚽ Volée potente",
+      "intent": "shot",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 9,
+      "ai": 0,
+      "text": "⚽ Tiro al volo dal limite!",
+      "label": "⚽ Volée potente",
+      "intent": "shot",
+      "def": false,
+      "outcome": "fail"
+    },
+    {
+      "gi": 33,
+      "ai": 0,
+      "text": "🧱 Muro in area! Blocca il tiro.",
+      "label": "🧱 Blocca con il corpo",
+      "intent": "tackle",
+      "def": true,
+      "outcome": "success"
+    },
+    {
+      "gi": 33,
+      "ai": 0,
+      "text": "🧱 Muro in area! Blocca il tiro.",
+      "label": "🧱 Blocca con il corpo",
+      "intent": "tackle",
+      "def": true,
+      "outcome": "fail"
+    },
+    {
+      "gi": 133,
+      "ai": 0,
+      "text": "🏃 Recupero sulla linea di fondo!",
+      "label": "🏃 Sprint disperato sulla linea",
+      "intent": "tackle",
+      "def": true,
+      "outcome": "success"
+    },
+    {
+      "gi": 133,
+      "ai": 0,
+      "text": "🏃 Recupero sulla linea di fondo!",
+      "label": "🏃 Sprint disperato sulla linea",
+      "intent": "tackle",
+      "def": true,
+      "outcome": "fail"
+    },
+    {
+      "gi": 138,
+      "ai": 0,
+      "text": "📣 Allineati con la difesa — linea alta!",
+      "label": "📣 Allineamento difensivo immediato",
+      "intent": "tackle",
+      "def": true,
+      "outcome": "success"
+    },
+    {
+      "gi": 138,
+      "ai": 0,
+      "text": "📣 Allineati con la difesa — linea alta!",
+      "label": "📣 Allineamento difensivo immediato",
+      "intent": "tackle",
+      "def": true,
+      "outcome": "fail"
+    },
+    {
+      "gi": 168,
+      "ai": 0,
+      "text": "🛡️ Ultimo uomo! Devi fermare l'avversario.",
+      "label": "🛡️ Tackle duro — rischio rosso",
+      "intent": "tackle",
+      "def": true,
+      "outcome": "success"
+    },
+    {
+      "gi": 168,
+      "ai": 0,
+      "text": "🛡️ Ultimo uomo! Devi fermare l'avversario.",
+      "label": "🛡️ Tackle duro — rischio rosso",
+      "intent": "tackle",
+      "def": true,
+      "outcome": "fail"
+    },
+    {
+      "gi": 134,
+      "ai": 0,
+      "text": "✈️ Sfida aerea su lancio lungo!",
+      "label": "✈️ Stacco dominante",
+      "intent": "header",
+      "def": true,
+      "outcome": "success"
+    },
+    {
+      "gi": 134,
+      "ai": 0,
+      "text": "✈️ Sfida aerea su lancio lungo!",
+      "label": "✈️ Stacco dominante",
+      "intent": "header",
+      "def": true,
+      "outcome": "fail"
+    },
+    {
+      "gi": 110,
+      "ai": 0,
+      "text": "🏃 Fai il velo per il compagno!",
+      "label": "🏃 Faccio il velo e attacco",
+      "intent": "shot",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 110,
+      "ai": 0,
+      "text": "🏃 Fai il velo per il compagno!",
+      "label": "🏃 Faccio il velo e attacco",
+      "intent": "shot",
+      "def": false,
+      "outcome": "fail"
+    },
+    {
+      "gi": 24,
+      "ai": 0,
+      "text": "🧠 Ricezione tra le linee!",
+      "label": "🎯 Assist filtrante",
+      "intent": "pass",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 24,
+      "ai": 0,
+      "text": "🧠 Ricezione tra le linee!",
+      "label": "🎯 Assist filtrante",
+      "intent": "pass",
+      "def": false,
+      "outcome": "fail"
+    },
+    {
+      "gi": 105,
+      "ai": 0,
+      "text": "🔄 Cambio gioco rapido 50 metri!",
+      "label": "🔄 Lancio lungo di prima",
+      "intent": "pass",
+      "def": false,
+      "outcome": "success"
+    },
+    {
+      "gi": 105,
+      "ai": 0,
+      "text": "🔄 Cambio gioco rapido 50 metri!",
+      "label": "🔄 Lancio lungo di prima",
+      "intent": "pass",
+      "def": false,
+      "outcome": "fail"
+    }
+  ],
+  "raw": "tests/codex/highlight-famiglie.json.gz"
+}

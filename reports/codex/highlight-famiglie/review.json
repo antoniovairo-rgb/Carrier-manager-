@@ -1,0 +1,344 @@
+{
+  "1:0:success": {
+    "startedAt": "2026-09-30T18:49:08.308Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Rovesciata visibile nel campione di contatto aggiuntivo, poi traiettoria verso la porta e gol coerente. Nessun codice provato dagli scatti; precisione millimetrica del contatto e continuita tra fotogrammi non verificate.",
+    "evidence": [
+      "gi1-a0-success-v2-contatto-04-contatto.png",
+      "gi1-a0-success-v2-contatto-06-esito.png"
+    ]
+  },
+  "1:0:fail": {
+    "startedAt": "2026-09-30T18:51:40.157Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Rovesciata visibile nel campione vicino al contatto, pallone verso la porta e risultato parata senza gol. Nessun codice provato dagli scatti; precisione del contatto e istante esatto del tuffo non verificati.",
+    "evidence": [
+      "gi1-a0-fail-v2-contatto-04-contatto.png",
+      "gi1-a0-fail-v2-contatto-06-esito.png"
+    ]
+  },
+  "2:0:success": {
+    "startedAt": "2026-09-30T11:17:11.675Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Nel fotogramma di contatto il pallone è vicino al piede del protagonista; la conclusione va verso la porta e la schermata finale registra la rete. Nessun difetto dimostrato dai sei scatti.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi2-a0-success-v2-ripresa2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi2-a0-success-v2-ripresa2-06-esito.png"
+    ]
+  },
+  "2:0:fail": {
+    "startedAt": "2026-09-30T11:20:14.562Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Il fotogramma vicino al contatto mostra il pallone al piede; la schermata finale dichiara intervento del portiere. La bozza segnala un salto di camera di 5,9 unità in 16 ms, ma i sei scatti non provano una scossa visibile; codice 007 non assegnato.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi2-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi2-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "58:0:success": {
+    "startedAt": "2026-09-30T11:23:04.352Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Il portiere è visibile sulla linea prima del tiro; il tiratore è nel quadro e il risultato finale segna gol. Nel fotogramma di volo il pallone è ancora alto e non prova il punto esatto di arrivo; nessun codice assegnato. Il menu del rigore usa etichette diverse dalla voce canonica, quindi posizione UI non verificata.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi58-a0-success-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi58-a0-success-v2-05-volo.png",
+      "reports/codex/highlight-famiglie/gi58-a0-success-v2-06-esito.png"
+    ]
+  },
+  "58:0:fail": {
+    "startedAt": "2026-09-30T11:25:38.064Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Il tiratore resta nel quadro e il portiere parte dalla linea. La schermata finale indica tiro centrale parato; è compatibile con una conclusione eseguita male rispetto alla scelta angolo basso. Nessun difetto dimostrato dai sei scatti.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi58-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi58-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "13:0:success": {
+    "startedAt": "2026-09-30T11:28:20.895Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Il tiratore prepara il calcio e resta in quadro; nel volo il pallone supera la barriera verso la porta e la schermata finale registra gol. Il singolo fotogramma non consente di giudicare sincronismo fine o traiettoria completa; nessun codice dimostrato.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi13-a0-success-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi13-a0-success-v2-05-volo.png",
+      "reports/codex/highlight-famiglie/gi13-a0-success-v2-06-esito.png"
+    ]
+  },
+  "13:0:fail": {
+    "startedAt": "2026-09-30T11:30:58.150Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "La preparazione, il calcio e il volo verso la porta sono visibili; il portiere si sposta e la schermata finale descrive la deviazione in corner. I sei scatti non dimostrano il preciso contatto portiere-pallone; nessun codice assegnato.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi13-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi13-a0-fail-v2-05-volo.png",
+      "reports/codex/highlight-famiglie/gi13-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "161:0:success": {
+    "startedAt": "2026-09-30T11:33:44.473Z",
+    "codes": [],
+    "severity": "media",
+    "note": "Difetto visibile di inquadratura: nel fotogramma 05 il pallone è quasi fuori dal bordo destro e la porta è interamente fuori quadro, quindi non si vede il tiro entrare. La porta ricompare soltanto nel risultato 06. Nessun codice ufficiale descrive esattamente questo taglio di camera; codice non forzato.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi161-a0-success-v2-05-volo.png",
+      "reports/codex/highlight-famiglie/gi161-a0-success-v2-06-esito.png"
+    ]
+  },
+  "161:0:fail": {
+    "startedAt": "2026-09-30T11:36:15.457Z",
+    "codes": [],
+    "severity": "media",
+    "note": "Difetto di inquadratura ripetuto: nel fotogramma 05 la porta è fuori schermo a destra, il pallone esce dal bordo e il portiere è tagliato; il risultato finale descrive una parata che non si vede. Anche il caso success della stessa scena taglia la porta durante il volo. Nessun codice ufficiale corrisponde esattamente.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi161-a0-fail-v2-05-volo.png",
+      "reports/codex/highlight-famiglie/gi161-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "4:0:success": {
+    "startedAt": "2026-09-30T11:38:37.718Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Protagonista e pallone sono nel quadro vicino al contatto; la schermata finale registra gol. Gli scatti non mostrano una posa rotta o un esito incoerente; nessun codice dimostrato.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi4-a0-success-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi4-a0-success-v2-06-esito.png"
+    ]
+  },
+  "4:0:fail": {
+    "startedAt": "2026-09-30T11:41:16.254Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Il contatto è in quadro e la schermata finale dichiara parata. La bozza numerica segnala un salto camera di 2,6 unità in 16 ms, ma i sei scatti non lo provano visivamente; codice 007 non assegnato.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi4-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi4-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "9:0:success": {
+    "startedAt": "2026-09-30T11:43:59.249Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Nel fotogramma di contatto il pallone è vicino al piede che calcia mentre è in aria; nel successivo viaggia verso la porta e la schermata finale registra gol. La scelta canonica indice 0 corrisponde al secondo pulsante visibile, non al primo. Nessun difetto dimostrato.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi9-a0-success-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi9-a0-success-v2-05-volo.png",
+      "reports/codex/highlight-famiglie/gi9-a0-success-v2-06-esito.png"
+    ]
+  },
+  "9:0:fail": {
+    "startedAt": "2026-09-30T11:46:34.947Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Il gesto di calcio al volo e il pallone sono in quadro; la schermata finale dichiara parata. Anche qui la scelta canonica indice 0 è il secondo pulsante visibile. La bozza numerica segnala un salto camera, ma i sei scatti non lo dimostrano; codice 007 non assegnato.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi9-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi9-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "33:0:success": {
+    "startedAt": "2026-09-30T11:49:11.570Z",
+    "codes": [
+      "001",
+      "003"
+    ],
+    "severity": "alta",
+    "note": "La situazione dichiara Muro in area! Blocca il tiro, ma la foto 01 apre presso il cerchio di centrocampo. Dopo la scelta Blocca con il corpo, la foto 06 mostra Il portiere dice no e Blocchi la conclusione! Grande difesa, pur inquadrando solo giocatori di movimento presso il centrocampo. Il testimone automatico segnala inoltre codice 001 con pallone a 3,6 u dal compagno più vicino per 95 campioni.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi33-a0-success-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi33-a0-success-v2-06-esito.png"
+    ]
+  },
+  "33:0:fail": {
+    "startedAt": "2026-09-30T11:52:12.594Z",
+    "codes": [
+      "001",
+      "003"
+    ],
+    "severity": "alta",
+    "note": "La situazione dichiara Muro in area ma la foto 01 apre presso il cerchio di centrocampo. Nella foto 03 il tabellone mostra già 0-1 mentre il pallone è ancora al centro; la foto 06 annuncia il gol avversario. I sei scatti non mostrano una progressione del tiro fino alla porta. Apertura e risultato sono incoerenti con la scena visibile.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi33-a0-fail-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi33-a0-fail-v2-03-rincorsa.png",
+      "reports/codex/highlight-famiglie/gi33-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "133:0:success": {
+    "startedAt": "2026-09-30T11:55:00.042Z",
+    "codes": [
+      "001",
+      "002"
+    ],
+    "severity": "alta",
+    "note": "La situazione annuncia recupero sulla linea di fondo; nella foto 01 il protagonista è minuscolo e il pallone non è visibile. Il testimone misura eroe almeno a 24,0 u dal pallone per 104 campioni. Nelle foto 03-05 la camera inquadra quasi soltanto linea laterale, prato e cartelloni: protagonista e pallone sono fuori quadro. Nessun codice 007, perché la bozza riferisce oscillazioni di appena 0,4 gradi non valutabili dalle sei foto.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi133-a0-success-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi133-a0-success-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi133-a0-success-v2-05-volo.png"
+    ]
+  },
+  "133:0:fail": {
+    "startedAt": "2026-09-30T11:57:37.739Z",
+    "codes": [
+      "001",
+      "002",
+      "003"
+    ],
+    "severity": "alta",
+    "note": "Apertura del recupero sulla linea con protagonista lontano e pallone invisibile: il testimone misura eroe almeno a 43,3 u dal pallone per 80 campioni. Le foto 03-06 mostrano quasi solo linea laterale e cartelloni, senza gesto, palla o porta; il tabellone passa a 0-1 e il testo finale annuncia gol avversario. Il risultato può essere corretto nel motore, ma non è rappresentato al giocatore: codice 003 riferito alla presentazione visiva.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi133-a0-fail-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi133-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi133-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "138:0:success": {
+    "startedAt": "2026-09-30T12:00:11.389Z",
+    "codes": [
+      "001",
+      "002",
+      "003"
+    ],
+    "severity": "alta",
+    "note": "La situazione chiede un allineamento difensivo, ma la foto 01 mostra un solo giocatore isolato; il testimone misura eroe almeno a 12,9 u dal pallone per 93 campioni. Nelle foto 03-05 il portatore, il protagonista e poi il pallone escono dal quadro. La foto 06 mostra campo vuoto e il testo Il portiere dice no / Para in tuffo, benché la sequenza visibile sia a centrocampo. Codici 001, 002 e 003 supportati dalle foto; oscillazione camera della bozza non confermata visivamente.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi138-a0-success-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi138-a0-success-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi138-a0-success-v2-06-esito.png"
+    ]
+  },
+  "138:0:fail": {
+    "startedAt": "2026-09-30T12:02:58.376Z",
+    "codes": [
+      "002"
+    ],
+    "severity": "media",
+    "note": "Nel fotogramma 04 il portatore e il pallone sono tagliati dal bordo sinistro; nel 05 il protagonista è tagliato dal bordo destro. Il risultato finale Fallimento / Supera la pressione è coerente con il registro, quindi nessun 003. La bozza segnala apertura distante 3,7 u ma gli scatti non dimostrano un errore di avvio distinto dal fuori quadro.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi138-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi138-a0-fail-v2-05-volo.png"
+    ]
+  },
+  "168:0:success": {
+    "startedAt": "2026-09-30T12:07:30.672Z",
+    "codes": [
+      "001",
+      "002"
+    ],
+    "severity": "media",
+    "note": "Nella foto 01 la scena Ultimo uomo apre con il personaggio rilevante già tagliato dal bordo destro. Nella foto 03 il giocatore marcato dal rombo è visibile in tackle, ma nella foto 04 ne resta solo una parte oltre il bordo sinistro; il gesto non è interamente seguibile. Esito recovery confermato da ActionResolved; nessun 003.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi168-a0-success-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi168-a0-success-v2-03-rincorsa.png",
+      "reports/codex/highlight-famiglie/gi168-a0-success-v2-04-contatto.png"
+    ]
+  },
+  "168:0:fail": {
+    "startedAt": "2026-09-30T12:32:56.373Z",
+    "codes": [
+      "001",
+      "002"
+    ],
+    "severity": "media",
+    "note": "La scena Ultimo uomo apre con il giocatore sul bordo destro della foto 01. Nel fotogramma 04 il protagonista del tackle esce in parte a sinistra; il gesto non resta interamente nel quadro. Il fallo e la ammonizione finali sono compatibili con la scelta rischiosa, quindi nessun 003. Oscillazione camera della bozza non confermata visivamente.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi168-a0-fail-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi168-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi168-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "134:0:success": {
+    "startedAt": "2026-09-30T12:35:15.472Z",
+    "codes": [
+      "001",
+      "003"
+    ],
+    "severity": "media",
+    "note": "Nella foto 01 della sfida aerea non si vedono né giocatori né pallone sopra il pannello di scelta; la scena si scopre soltanto nella rincorsa. Il gesto è un colpo di testa a centrocampo, ma la foto finale dice Il portiere dice no e SALVATO! Che intervento, senza portiere in quadro. Codici 001 e 003; il valore automatico di angolo corpo-porta non è pertinente a un duello aereo difensivo.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi134-a0-success-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi134-a0-success-v2-03-rincorsa.png",
+      "reports/codex/highlight-famiglie/gi134-a0-success-v2-06-esito.png"
+    ]
+  },
+  "134:0:fail": {
+    "startedAt": "2026-09-30T12:38:14.326Z",
+    "codes": [
+      "001",
+      "002",
+      "003"
+    ],
+    "severity": "alta",
+    "note": "Apertura della sfida aerea con giocatori e pallone nascosti dal pannello. Il duello appare nella foto 04, ma le foto 05-06 mostrano campo vuoto mentre il risultato annuncia Buco in copertura e Gol avversario. Il motore registra goal_against, ma la presentazione non mostra la finalizzazione; codici 001, 002 e 003 riferiti alla scena visibile.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi134-a0-fail-v2-01-apertura.png",
+      "reports/codex/highlight-famiglie/gi134-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi134-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "110:0:success": {
+    "startedAt": "2026-09-30T12:40:36.920Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Nel velo il protagonista resta in quadro, il pallone prosegue verso la porta e la schermata finale registra gol. La scelta canonica indice 0 corrisponde al secondo pulsante visibile. I sei scatti non provano un difetto.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi110-a0-success-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi110-a0-success-v2-05-volo.png",
+      "reports/codex/highlight-famiglie/gi110-a0-success-v2-06-esito.png"
+    ]
+  },
+  "110:0:fail": {
+    "startedAt": "2026-09-30T12:43:06.660Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Nel velo fallito il pallone viene intercettato, la schermata finale indica Murato dalla difesa e il punteggio resta 0-0. La scelta canonica indice 0 è il secondo pulsante visibile. Nessun difetto dimostrato dalle foto.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi110-a0-fail-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi110-a0-fail-v2-06-esito.png"
+    ]
+  },
+  "24:0:success": {
+    "startedAt": "2026-09-30T12:45:47.674Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Le foto 04-06 mostrano passaggio e gol coerenti con assist. La bozza automatica misura un salto del pallone di 6,4 u in 16 ms a 6,6 s, scrittore 16; nessuno dei sei scatti cattura quel preciso istante, quindi resta un candidato da verificare e nessun codice viene assegnato.",
+    "evidence": [
+      "reports/codex/highlight-famiglie/gi24-a0-success-v2-04-contatto.png",
+      "reports/codex/highlight-famiglie/gi24-a0-success-v2-06-esito.png"
+    ]
+  },
+  "24:0:fail": {
+    "startedAt": "2026-09-30T12:48:05.866Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Nessun difetto provato nei sei scatti: il passaggio parte, il pallone procede verso il ricevente e il risultato segnala una intercettazione. Continuita tra gli scatti non verificata.",
+    "evidence": [
+      "gi24-a0-fail-v2-sheet.png"
+    ]
+  },
+  "105:0:success": {
+    "startedAt": "2026-09-30T12:50:44.984Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Nessun difetto provato nei sei scatti: lancio verso il compagno e risultato assist con gol. Il contatto preciso e la continuita del volo fra gli scatti sono non verificati.",
+    "evidence": [
+      "gi105-a0-success-v2-sheet.png"
+    ]
+  },
+  "105:0:fail": {
+    "startedAt": "2026-09-30T18:45:35.779Z",
+    "codes": [],
+    "severity": "bassa",
+    "note": "Nessun difetto provato nei sei scatti: il lancio parte e viene intercettato, con risultato e punteggio coerenti. Il testo parla di conclusione murata per una azione di passaggio: formulazione generica visibile, senza prova sufficiente per il codice 003.",
+    "evidence": [
+      "gi105-a0-fail-v2-sheet.png"
+    ]
+  }
+}
