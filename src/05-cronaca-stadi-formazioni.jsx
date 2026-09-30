@@ -321,7 +321,7 @@ const OUTCOME_TX={
   recovery:["💪 Pallone recuperato!","🛡️ Grande intervento!","✋ Anticipo perfetto!","🧱 Muro invalicabile!","🔒 Intercetto netto — palla nostra!"],
   through:["😬 L'avversario passa.","❌ Non ce la fai.","😔 Supera la pressione.","💨 Troppo veloce — ti ha saltato."],
   foul:["🟡 Fallo! Sei stato ammonito.","⚠️ Rischio fallo! Punizione concessa.","😤 Cartellino meritato — attento."],
-  save:["🧤 SALVATO! Che intervento!","🛡️ Blocchi la conclusione! Grande difesa.","🚨 Para in tuffo — miracoloso!","💪 Muro invalicabile — palla sua!"],
+  save:(typeof window!=="undefined"&&window.__CPM_NO_SALVA84)?["🧤 SALVATO! Che intervento!","🛡️ Blocchi la conclusione! Grande difesa.","🚨 Para in tuffo — miracoloso!","💪 Muro invalicabile — palla sua!"]:["🛡️ SALVATO! Che intervento!","🛡️ Blocchi la conclusione! Grande difesa.","🚨 Ti getti sulla traiettoria — salvataggio!","💪 Muro invalicabile — il tiro non passa!"],/* [7.999.84 PO-151, collaudo Codex 30/09 «Muro in area»: esito 003] la parata dell'EROE di movimento (outKey "save") usava testi da portiere («Para in tuffo», 🧤). Ora parole valide per chiunque salvi la porta. Rosso __CPM_NO_SALVA84, letto al caricamento */
 };
 // 5.51.0 — SOVRAIMPRESSIONI HIGHLIGHT: messaggio breve "televisivo" SEMPRE coerente con l'azione e l'esito.
 //   Categoria derivata da outKey + tipo azione; >50 messaggi totali, scelti via seed → varietà, niente ripetizioni.
@@ -342,7 +342,7 @@ const HL_OVERLAY_POOLS={
   nothing:["Scelta conservativa","Azione non sfruttata","Si poteva osare di più","Momento sprecato","Gioco sul sicuro"],
   conceded:["Gol subito","Disastro difensivo","Buco in copertura","Lasciato solo l'attaccante","Retroguardia in bambola"],
   foul:["Fallo!","Ammonito","Intervento falloso","Punizione concessa","Entrata in ritardo"],
-  save_hero:["Che parata!","Il portiere dice no!","Miracolo tra i pali!","Riflesso felino!","Serranda abbassata!","Risposta da campione!"],
+  save_hero:(typeof window!=="undefined"&&window.__CPM_NO_SALVA84)?["Che parata!","Il portiere dice no!","Miracolo tra i pali!","Riflesso felino!","Serranda abbassata!","Risposta da campione!"]:["Che intervento!","Salvataggio decisivo!","Porta salvata!","Chiusura provvidenziale!","Serranda abbassata!","Risposta da campione!"],/* [7.999.84 PO-151] «Il portiere dice no!» sopra un muro dell'eroe a centrocampo era il codice 003 del collaudo Codex */
 };
 // ── M1 · UNIFIED OUTCOME MODEL (coerenza overlay↔3D↔cronaca) ──────────────────
 //   Su un tiro FALLITO l'esito granulare (palo/parata/murato/fuori) lo decide UNA
@@ -433,7 +433,7 @@ function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind,wood){
           tone:good.indexOf(cat)>=0?"good":(cat==="nothing"?"neutral":"bad"), cat, fam:_nk||null, icon};
 }
 // [7.136.0] mappe iconcina esito — per categoria (cat) e per famiglia granulare del "miss" (fam)
-const _OVL_CAT_ICON={goal:"⚽",assist:"🅰️",chance:"✨",pass:"🎯",cross:"↗️",dribble:"🌀",recovery:"🔄",tackle:"🛡️",save_hero:"🧤",miss:"❌",miss_big:"😱",pass_fail:"✂️",dribble_fail:"🚫",def_fail:"⚠️",nothing:"😐",conceded:"🥅",foul:"🟨"};
+const _OVL_CAT_ICON={goal:"⚽",assist:"🅰️",chance:"✨",pass:"🎯",cross:"↗️",dribble:"🌀",recovery:"🔄",tackle:"🛡️",save_hero:(typeof window!=="undefined"&&window.__CPM_NO_SALVA84)?"🧤":"🛡️",miss:"❌",miss_big:"😱",pass_fail:"✂️",dribble_fail:"🚫",def_fail:"⚠️",nothing:"😐",conceded:"🥅",foul:"🟨"};
 const _OVL_FAM_ICON={post:"🎯",saved:"🧤",blocked:"🧱",wide:"💨",corner:"🚩",foul:"🟢",offside:"🚩"};
 // Sprint 82 — ~100 stadium names across 6 tiers + U18 pool
 const STADIUMS=["Stadio Olimpico Giovanile","Arena Primavera","Centro Sportivo Terre Rosse","Stadio Accademia del Borgo","Arena della Gioventù","Campo Sportivo Lambro","Stadio Bertolotti","Arena Giovanile Sismondi","Centro Federale Valdarno","Stadio del Settore Giovanile","Campo dei Tigli","Arena Academy Nord"];// [5.96.0 CR-1] bonifica: via Coverciano/Braglia/Vismara/Galli (riferimenti reali)

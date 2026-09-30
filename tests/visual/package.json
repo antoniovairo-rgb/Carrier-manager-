@@ -243,6 +243,10 @@
     "brain-82:rosso": "CPM_ROSSO=1 node brain-82.mjs",
     "hl-94": "node hl-94.mjs",
     "hl-94:rosso": "CPM_ROSSO94=1 node hl-94.mjs",
+    "salva-84": "node salva-84.mjs",
+    "salva-84:rosso": "CPM_ROSSO84=1 node salva-84.mjs",
+    "palla-84": "node palla-84.mjs",
+    "palla-84:rosso": "CPM_ROSSO84P=1 node palla-84.mjs",
     "festa-79": "node festa-79.mjs",
     "festa-79:rosso": "CPM_ROSSO80=1 node festa-79.mjs",
     "testa-76": "node testa-76.mjs"

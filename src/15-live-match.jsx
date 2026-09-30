@@ -3297,6 +3297,24 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           }
         }
       }catch(_e402){}
+      /* [7.999.84 PO-151 — collaudo Codex 30/09, codice 001 «Muro in area» aperto a centrocampo] IL GEMELLO DIFENSIVO
+         DEL 7.402: sulla scena difensiva il pallone ce l'ha un avversario, quindi quell'avversario deve essere DAVANTI
+         all'eroe quando la scena si apre. Misurato (sonda _apri84b, scene forzate): il portatore piu' vicino partiva a
+         31u (gi33), 14u (gi168), 36u (gi133) e ci metteva 5 s ad arrivare. Si porta UN solo uomo, e solo se e' oltre
+         8u, a 7u davanti all'eroe verso la meta' campo avversaria (l'attaccante viene verso la porta dell'eroe).
+         Rosso __CPM_NO_PALLA84. */
+      try{
+        if(sit0.type==="def"&&!(typeof window!=='undefined'&&window.__CPM_NO_PALLA84)){
+          const _hx84=(hp&&hp.x!=null)?hp.x:((sit0.startZone?.x[0]+sit0.startZone?.x[1])/2||30),_hy84=(hp&&hp.y!=null)?hp.y:((sit0.startZone?.y[0]+sit0.startZone?.y[1])/2||50);
+          setMatchPlayers(prev=>{
+            let _bi=-1,_bd=1e9;
+            prev.forEach((pl,idx)=>{if(!pl||pl.team!=="away"||idx<=10)return;const _d=Math.hypot(pl.x-_hx84,pl.y-_hy84);if(_d<_bd){_bd=_d;_bi=idx;}});
+            if(_bi<0||_bd<=8)return prev;
+            const nx=prev.map((pl,idx)=>idx===_bi?{...pl,x:clamp(_hx84+7,2,98),y:clamp(_hy84,3,97),rx:0,ry:0}:pl);
+            matchPlayersRef.current=nx;return nx;
+          });
+        }
+      }catch(_e84){}
   };
   useEffect(()=>{
     if(phase==="hl_move"||phase==="hl_intro"){
@@ -3465,7 +3483,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
     const isDef=sit?.type==="def";
     const isNearGoal=["area","bordo"].includes(sit?.zones?.[0]);
     const pressingMs=isNearGoal?550:isDef?700:650;
-    const iv=setInterval(()=>{
+    const _pal84=isDef&&!(typeof window!=='undefined'&&window.__CPM_NO_PALLA84);
+    const _tick84=()=>{
       /* [22/09 testimone · sola lettura] QUANTE VOLTE IL PRESSING SCRIVE LE POSIZIONI IN OGNI MINUTO.
          Questo loop gira a orologio da polso (650 ms) per tutta la durata della scena: se la scena dura
          un pelo di piu' in un giro, scrive una volta di piu' — e da quando il motore del possesso (7.870)
@@ -3560,7 +3579,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
           if(isDef){
             // HL DIFENSIVO: gli avversari HANNO palla → portatore ingaggiato + opzioni di passaggio, non un anello sull'eroe
             if(idx===_carrierIdx){// portatore: protegge palla davanti all'eroe, lato porta propria dell'eroe (attacca verso x-)
-              tx=clamp(pPos.x-4+Math.sin(_T+ai)*1.1,5,97);
+              tx=clamp(pPos.x+((typeof window!=='undefined'&&window.__CPM_NO_PALLA84)?-4:4.5)+Math.sin(_T+ai)*1.1,5,97);/* [7.999.84 PO-151] prima -4: il portatore attraversava l'eroe (misurato fino a 0,4u) e si fermava alle sue spalle, gia' oltre; ora resta 4,5u davanti, di fronte all'eroe che deve fermarlo. Rosso __CPM_NO_PALLA84 */
               ty=clamp(pPos.y+Math.cos(_T+ai*1.3)*1.1,3,97);
             }else if(_supIdx.has(idx)){// 2 compagni a supporto: linee di passaggio avanti-lato rispetto al portatore
               const _sd=(ai%2)?1:-1;
@@ -3632,8 +3651,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
         if(isDef&&pl.team==="away"){const _d=Math.hypot(_np.x-pPos.x,_np.y-pPos.y);if(_d<_defBd){_defBd=_d;_defBx=_np.x;_defBy=_np.y;}}
         return _np;
       });});
-      if(isDef)setBallPos({x:_defBx,y:_defBy});// 3DV-FIX3: azione difensiva → la palla è sull'avversario portatore, non sull'eroe
-    },pressingMs);
+      if(isDef&&!_pal84)setBallPos({x:_defBx,y:_defBy});// 3DV-FIX3: azione difensiva → la palla è sull'avversario portatore, non sull'eroe
+      /* [7.999.84 PO-151 — collaudo Codex 30/09, codice 001 sulle scene difensive «Muro in area», «Recupero sulla linea
+         di fondo», «Ultimo uomo»] MISURATO (sonda _apri84b, pagina nuova, pallone logico ogni 250 ms): per i primi 2,4-3,1 s
+         della scena il pallone restava dove l'aveva lasciato il gioco (44,1; 74,3: meta' campo, in tutte le scene), poi
+         finiva ESATTAMENTE sui piedi dell'eroe (12,51 · 22,44 · 7,12). Due cause: (1) la riga qui sopra legge `_defBx`,
+         che viene aggiornato DENTRO l'updater di setMatchPlayers — React lo esegue dopo, quindi al momento di setBallPos
+         vale ancora il valore iniziale, cioe' la posizione dell'eroe; (2) il primo giro partiva solo dopo 700 ms e
+         nessuno spostava prima il pallone. Ora il portatore si legge dalle posizioni correnti (lo stesso criterio del
+         codice: l'avversario di movimento piu' vicino all'eroe) e il primo giro parte subito. Rosso __CPM_NO_PALLA84. */
+      if(_pal84){const _mp84=matchPlayersRef.current||[];let _bd84=1e9,_c84=null;for(let k=11;k<_mp84.length;k++){const q=_mp84[k];if(!q||q.team!=="away")continue;const _d=Math.hypot(q.x-pPos.x,q.y-pPos.y);if(_d<_bd84){_bd84=_d;_c84=q;}}
+        if(_c84){const _bp={x:_c84.x,y:_c84.y};ballTargetRef.current=_bp;setBallPos(_bp);if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){try{window.__CPM_PALLA84={x:+_c84.x.toFixed(1),y:+_c84.y.toFixed(1),d:+_bd84.toFixed(1)};}catch(_e){}}}}
+    };
+    if(_pal84)_tick84();
+    const iv=setInterval(_tick84,pressingMs);
     return()=>clearInterval(iv);
   },[phase,hlIdx,situations,pPos.x,pPos.y,paused]);// eslint-disable-line
 
