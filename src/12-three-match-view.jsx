@@ -7902,7 +7902,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             else if(_ck422==="int")_bs=[_mk("burst",2.4),_mk("hug",2.4),_mk("coach",2.2),_mk("present",2.8),_mk("lift",3.8),_mk("lap",4.2),_mk("curva",2.8),_mk("fest",3.0)];
             else if(_ck422==="bigwin")_bs=[_mk("burst",2.4),_mk("hug",2.8),_mk("fest",3.0)];
             else _bs=[_mk("burst",2.4),_mk("hug",2.6),_mk("present",2.6),_mk("lift",3.6),_mk("lap",4.0),_mk("curva",3.0),_mk("fest",3.0)];
-            if(_team23)_bs=[_mk("present",3.0),_mk("captain",3.4),_mk("lift",3.8),_mk("fest",3.6)];/* [24/09 POC] premiazione di squadra: niente burst/hug/lap/curva *//* league: la festa di popolo, completa — [7.426.0] IL GIRO DI CAMPO VA DOPO LA CONSEGNA, col trofeo in mano: prima la coppa girava il campo prima di essere consegnata */
+            if(_team23){_bs=[_mk("present",3.0),_mk("captain",3.4),_mk("lift",3.8),_mk("fest",3.6)];if(!(typeof window!=="undefined"&&window.__CPM_NO_CERDIFF83)){if(_ck422==="cup")_bs=[_mk("present",3.0),_mk("captain",3.4),_mk("lift",3.8),_mk("curva",3.4),_mk("fest",3.4)];else if(_ck422==="int")_bs=[_mk("burst",2.4),_mk("hug",2.6),_mk("present",3.0),_mk("captain",3.4),_mk("lift",4.0),_mk("fest",3.6)];else if(_ck422!=="promo"&&_ck422!=="bigwin")_bs=[_mk("present",3.0),_mk("captain",3.4),_mk("lift",3.8),_mk("lap",4.2),_mk("fest",3.4)];}}/* [7.999.84 — decisione PO 30/09 «Differenziarle»] la premiazione di squadra era la STESSA per campionato, coppa e coppa internazionale (guardiano cerimonie rosso dal 24/09). Ora: CAMPIONATO consegna, capitano, sollevamento e GIRO DI CAMPO col trofeo (il titolo di un anno si festeggia con tutto lo stadio); COPPA consegna, capitano, sollevamento e corsa SOTTO LA CURVA; COPPA INTERNAZIONALE (finale secca) prima l'ESPLOSIONE al fischio e l'abbraccio, poi consegna, capitano e un sollevamento piu' lungo. Rosso __CPM_NO_CERDIFF83 = la sequenza unica di prima. *//* [24/09 POC] premiazione di squadra: niente burst/hug/lap/curva *//* league: la festa di popolo, completa — [7.426.0] IL GIRO DI CAMPO VA DOPO LA CONSEGNA, col trofeo in mano: prima la coppa girava il campo prima di essere consegnata */
             if(_r425(3)<0.5&&_bs.length>2&&_bs[1].k==="hug"&&_bs[2].k==="coach"){const _t=_bs[1];_bs[1]=_bs[2];_bs[2]=_t;}/* variante: il mister puo' arrivare prima dell'abbraccio */
             const _roles=[];for(let ri=0;ri<24;ri++)_roles.push(["salta","abbraccia","ginocchio","corre","applaude"][(_seed>>ri%16)%5===undefined?0:Math.floor(_r425(ri*3)*5)%5]);
             if(_team23)for(let ri=0;ri<_roles.length;ri++)_roles[ri]="applaude";/* la squadra applaude composta */
@@ -8029,7 +8029,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           }
           const _SC=sr.current._cer425;let _acc=0,_bi425=_SC.beats.length-1,_bp=1;
           for(let i=0;i<_SC.beats.length;i++){if(_ct<_acc+_SC.beats[i].d){_bi425=i;_bp=(_ct-_acc)/_SC.beats[i].d;break;}_acc+=_SC.beats[i].d;}
-          const _bk=_SC.beats[_bi425].k;sr.current._bk57=_bk;
+          const _bk=_SC.beats[_bi425].k;sr.current._bk57=_bk;if(_CPM_TEST){try{window.__CPM_CERBK=_bk;}catch(_e83){}}
           let _htx=hero.position.x,_htz=hero.position.z,_armsUp=true,_onPodium=false;
           if(_bk==="burst"||_bk==="hug"||_bk==="coach"){_htx=_cerHx0;_htz=_cerHz0;}
           else if(_bk==="lap"){_htx=_cerHx0+(CURVA_X-_cerHx0)*_bp;_htz=_cerHz0*(1-_bp)+Math.sin(_bp*Math.PI)*(_cerHz0>=0?9:-9);_armsUp=false;}

@@ -25,7 +25,7 @@ const page = await b.newPage({ viewport: { width: 412, height: 915 } });
 await installCdnRoutes(page);
 const errs = [];
 page.on('pageerror', e => errs.push(String(e).slice(0, 160)));
-await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; });
+await page.addInitScript((R) => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; if (R) window.__CPM_NO_CERDIFF83 = 1; }, !!process.env.CPM_ROSSO83);
 await openMatch(page, port); await sleep(1200);
 const scripts = {};
 for (const kind of ['league', 'cup', 'promo', 'int', 'bigwin']) {
