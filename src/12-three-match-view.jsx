@@ -741,6 +741,27 @@ function ThreeMatchView(props){
        update every frame; this only decides how often an already-created
        AnimationMixer samples its skeleton.  Hero and active technical gestures
        are never throttled.  `window.__CPM_ANIM_LOD=false` is the A/B switch. */
+    /* [7.999.77 collaudo PO «l'eroe vola nel festeggiamento post partita» (foto 14:36, 0-3 tripletta)]
+       7.999.75 aveva tolto il saltello del GRUPPO, ma a volare era la CLIP: nella festa leggera l'eroe suona
+       mx-victory, che tiene il bacino alto — misurato sul piede piu' basso del corpo 3D: 0,118 in campo da
+       fermo, 0,146-0,167 per tutta la festa e 0,30 al picco, cioe' NESSUN piede sul prato. Ancora dei piedi:
+       durante la cerimonia, fuori dal podio, dopo il campionamento della clip il corpo scende di quanto il
+       piede piu' basso sta sopra la quota a terra misurata in partita (solo verso il basso: mai sollevare).
+       Rosso: __CPM_NO_PIEDI77. Guardiano volo-75 (esteso: quota dei piedi). */
+    const _v77=new THREE.Vector3(),_s77=new THREE.Vector3();
+    const _piedi77=(av)=>{try{if(!av||!av.visualRoot||!av._footL||!av._footR||!av.proc||!av.proc._isHero)return;
+      let cer=false;try{cer=ceremonyT>=0;}catch(_e){}
+      const vr=av.visualRoot;if(av._vr77!==vr){if(av._vr77&&av._off77)av._vr77.position.y=av._vy77;av._vr77=vr;av._vy77=vr.position.y;av._off77=0;}
+      const ry=av.root?av.root.position.y:0;
+      if(!cer||(typeof window!=='undefined'&&window.__CPM_NO_PIEDI77)||av.proc.position.y>0.3){if(av._off77){vr.position.y=av._vy77;av._off77=0;}
+        if(!cer&&av.proc.position.y<0.05){vr.updateMatrixWorld(true);av._footL.getWorldPosition(_v77);const l=_v77.y;av._footR.getWorldPosition(_v77);const m=Math.min(l,_v77.y)-ry;if(m>0.02&&(av._f077==null||m<av._f077))av._f077=m;}
+        return;}
+      const f0=av._f077!=null?av._f077:0.0634*(av._h||1.86);/* quota a terra: misurata in partita; senza partita, proporzione del corpo (0,118 su 1,86) */
+      vr.position.y=av._vy77;vr.updateMatrixWorld(true);
+      av._footL.getWorldPosition(_v77);const l=_v77.y;av._footR.getWorldPosition(_v77);const raw=Math.min(l,_v77.y)-ry;
+      const d=raw-f0;if(d<=0.005){av._off77=0;return;}
+      (vr.parent||vr).getWorldScale(_s77);const k=_s77.y||1;
+      vr.position.y=av._vy77-d/k;av._off77=d;vr.updateMatrixWorld(true);}catch(_e){}};
     const _updateAvatarMixerLod=(av,delta,index,technical)=>{if(!av||!av.mx)return false;
       const enabled=!(typeof window!=='undefined'&&window.__CPM_ANIM_LOD===false);
       let cadence=1,protectedPose=!!technical||index===0||!!av._isHero||!!av._carta9||!!av._gName||!!av._gPrev||((av._gw||0)>0.02);
@@ -754,8 +775,9 @@ function ThreeMatchView(props){
       if(protectedPose)_animLodStats.protected++;if(cadence===1)_animLodStats.fullRate++;else if(cadence===2)_animLodStats.halfRate++;else _animLodStats.quarterRate++;
       if(!due)return false;
       av._animLodAccum=(av._animLodAccum||0)+delta;const sample=Math.min(av._animLodAccum,0.066);av._animLodAccum=0;
-      av.mx.update(sample);if(av._hyper&&av.visualRoot)_corrPostura23(_ossa23(av.visualRoot));_animLodStats.mixerUpdates++;_animLodStats.lastFrameUpdates++;return true;
+      av.mx.update(sample);if(av._hyper&&av.visualRoot)_corrPostura23(_ossa23(av.visualRoot));_piedi77(av);_animLodStats.mixerUpdates++;_animLodStats.lastFrameUpdates++;return true;
     };
+    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_FOOT77=()=>{const a=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero);if(!a||!a._footL||!a._footR)return null;const v=new THREE.Vector3();a._footL.getWorldPosition(v);const l=v.y;a._footR.getWorldPosition(v);return{foot:+Math.min(l,v.y).toFixed(3),root:+a.root.position.y.toFixed(3),proc:+a.proc.position.y.toFixed(3),f0:a._f077,off:a._off77,vy:a.visualRoot&&+a.visualRoot.position.y.toFixed(3),n:a._n77|0,h:a._h};};}catch(_e77){}/* [7.999.77] test-only: quota del piede piu' basso dell'eroe 3D (riferimento a terra per la festa) */
     try{window.__CPM_ANIM_AUDIT=()=>{const aa=(glbAvatars||[]).filter(a=>a&&a.root&&a.root.visible),all=[];let active=0;
       aa.forEach(a=>{const acts=[a.idle,a.run,...Object.values(a.gestures||{}),...Object.values(a._locoActs||{})].filter(Boolean);acts.forEach(x=>{if(!all.includes(x)){all.push(x);if(x.weight>0.02&&(!x.isRunning||x.isRunning()))active++;}});});
       /* [7.999.56] T-pose misurata per corpo: peso idle/corsa non finito, oppure nessuna azione del mixer con peso (tutte le clip del corpo) */
@@ -8071,7 +8093,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              richiama al centro dopo il giro) la quota sale sul piano del podio invece di sprofondarci */
           const _nearPod429=podiumGrp.visible&&Math.hypot(hero.position.x,hero.position.z)<1.7;
           if(_onPodium||_nearPod429)hero.position.y=1.05+_hop; else hero.position.y=Math.max(0,_hop);
-          if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _v75=(window.__CPM_VOLO75=window.__CPM_VOLO75||{n:0,maxY:0,glb:0});_v75.n++;_v75.glb=hero._glbDriven?1:0;if(!(_onPodium||_nearPod429)&&hero.position.y>_v75.maxY)_v75.maxY=+hero.position.y.toFixed(3);}catch(_e){}}
+          if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _v75=(window.__CPM_VOLO75=window.__CPM_VOLO75||{n:0,maxY:0,glb:0});_v75.n++;_v75.glb=hero._glbDriven?1:0;if(!(_onPodium||_nearPod429)&&hero.position.y>_v75.maxY)_v75.maxY=+hero.position.y.toFixed(3);if(!(_onPodium||_nearPod429)){const _a77=(glbAvatars||[]).find(a=>a&&a.proc===hero);if(_a77&&_a77._footL&&_a77._footR){const _w77=new THREE.Vector3();_a77._footL.getWorldPosition(_w77);const _l77=_w77.y;_a77._footR.getWorldPosition(_w77);const _m77=Math.min(_l77,_w77.y);_v75.fMax=Math.max(_v75.fMax==null?-9:_v75.fMax,+_m77.toFixed(3));_v75.fMin=Math.min(_v75.fMin==null?9:_v75.fMin,+_m77.toFixed(3));_v75.rootY=Math.max(_v75.rootY||0,+(_a77.root.position.y).toFixed(3));(_v75.tr=_v75.tr||[]).length<400&&_v75.tr.push([+(window.__CPM_SCENET||0).toFixed(2),+_m77.toFixed(3),+hero.position.x.toFixed(2),+hero.position.z.toFixed(2),(_a77._gName||'-')+'/'+((_a77.run&&_a77.run.weight)||0).toFixed(2)]);}}}catch(_e){}}/* [7.999.77] +quota dei PIEDI veri del corpo 3D (piede piu' basso, per fotogramma): la quota del gruppo procedurale non vede la clip */
           if(_armsUp){hero._aL.rotation.x=-2.5;hero._aR.rotation.x=-2.5;hero._aL.rotation.z=-0.35;hero._aR.rotation.z=0.35;}
           else{hero._aR.rotation.x=-2.6;hero._aR.rotation.z=0.35;hero._aL.rotation.x=-0.2;hero._aL.rotation.z=0;}// cammina col trofeo alzato (destra) — braccia PROCEDURALI (fallback GLB off)
           // [7.24.1 collaudo PO «non alza la coppa con le mani, gli vola in testa!»] col CH38 le braccia

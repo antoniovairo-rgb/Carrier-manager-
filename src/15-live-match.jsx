@@ -866,18 +866,18 @@ function _uomo918(i,rosaCasa,rosaOsp,nomeEroe,numEroe){
   if(i<10)return{num:i===0?1:i+1,nome:R(rosaCasa,i),eroe:false};
   return{num:i===10?1:(i-9),nome:R(rosaOsp,i-10),eroe:false};
 }
-function Riga918({et,sx,dx,colSx,colDx,fmt}){
+function Riga918({et,sx,dx,colSx,colDx,fmt,fitta}){
   const a=+sx||0,b=+dx||0,tot=a+b;
   const qa=tot>0?Math.round(100*a/tot):50;
   const F=fmt||_num918;
   return(
-    <div style={{padding:"3px 0"}}>
+    <div style={{padding:fitta?"1px 0":"3px 0"}}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:SP.sm,lineHeight:1.1}}>
         <span style={{fontSize:FS.small,fontWeight:FW.bold,color:_COL918.testo,minWidth:38,textAlign:"left",fontVariantNumeric:"tabular-nums"}}>{F(sx)}</span>
         <span style={{fontSize:FS.caption,fontWeight:FW.semibold,color:_COL918.fioco,letterSpacing:.4,textTransform:"uppercase"}}>{et}</span>
         <span style={{fontSize:FS.small,fontWeight:FW.bold,color:_COL918.testo,minWidth:38,textAlign:"right",fontVariantNumeric:"tabular-nums"}}>{F(dx)}</span>
       </div>
-      <div style={{display:"flex",height:4,marginTop:3,borderRadius:RAD.pill,overflow:"hidden",background:"rgba(148,163,184,0.16)"}}>
+      <div style={{display:"flex",height:fitta?3:4,marginTop:fitta?2:3,borderRadius:RAD.pill,overflow:"hidden",background:"rgba(148,163,184,0.16)"}}>
         <div style={{width:qa+"%",background:colSx,transition:"width .4s ease"}}/>
         <div style={{width:(100-qa)+"%",background:colDx,transition:"width .4s ease"}}/>
       </div>
@@ -1087,6 +1087,7 @@ function righeTabellino23(A,B){const pc=(q)=>q.passaggi>0?Math.round(100*(q.pass
     {et:"Espulsioni",sx:A.espulsioni|0,dx:B.espulsioni|0},
     {et:"Rimesse laterali",sx:A.rimesse|0,dx:B.rimesse|0},
   ].filter(r=>r.et==="Gol"||r.et==="Possesso"||(r.n!=null?r.n>0:((+r.sx||0)+(+r.dx||0))>0));}
+const _DOPPIE77={"Gol":1,"Possesso":1,"Tiri":1,"Tiri in porta":1,"Gol attesi (xG)":1};
 function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosaOsp,nomeEroe,numEroe}){
   const [dati,setDati]=React.useState(null);
   const _no927=(typeof window!=='undefined'&&window.__CPM_NO927);/* ROSSO di collaudo: la stesura di prima, senza memoria e aperta d'ufficio */
@@ -1136,6 +1137,11 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
   if(!dati)return null;
   const A=dati.t[latoSx==="away"?"away":"home"]||{},B=dati.t[latoSx==="away"?"home":"away"]||{};
   const prec=(q)=>q.passaggi>0?Math.round(100*(q.passOk||0)/q.passaggi):0;
+  /* [7.999.77 collaudo PO «brutte le statistiche con lo scroll, le mostrerei tutte»] a 412x915 il pannello (43%) teneva 9 righe
+     su 16: gol, possesso, tiri, tiri in porta e xG erano ripetuti sotto la striscia alta e il tabellone che li mostrano gia'
+     sulla stessa schermata. Nel pannello restano le voci che la striscia non ha, a righe piu' fitte: tutte visibili senza
+     scorrere (guardiano stat-77). Rosso __CPM_NO_STAT77. Il tabellino di fine gara resta intero. */
+  const _stat77=!(typeof window!=='undefined'&&window.__CPM_NO_STAT77);
   /* le pagelle in colonna: a sinistra la squadra di casa dello STADIO, come nel punteggio in alto */
   const lS=latoSx==="away"?"away":"home",lD=lS==="home"?"away":"home";
   /* nel motore «casa» e' SEMPRE la squadra dell'eroe (e' il verso del campo, non lo stadio): l'eroe sta
@@ -1184,7 +1190,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
             background:"transparent",color:_COL918.fioco,fontFamily:"inherit",fontSize:FS.small,fontWeight:FW.bold}}>{aperto?"▾":"▴"}</button>
         </div>
         {aperto&&vista==="stat"&&(
-          <div style={{padding:"6px "+SP.md+"px 9px",overflowY:"auto",flex:1,minHeight:0}}>
+          <div data-cpm="stat77" style={{padding:"6px "+SP.md+"px 9px",overflowY:"auto",flex:1,minHeight:0}}>
             {(typeof window!=='undefined'&&window.__CPM_NO_STAT23)?(<>
             <Riga918 et="possesso" sx={A.possesso} dx={100-(A.possesso||50)} colSx={colSx} colDx={colDx} fmt={(v)=>_num918(v)+"%"}/>
             <Riga918 et="tiri totali" sx={A.tiri} dx={B.tiri} colSx={colSx} colDx={colDx}/>
@@ -1197,7 +1203,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
             <Riga918 et="calci d'angolo" sx={A.corner} dx={B.corner} colSx={colSx} colDx={colDx}/>
             <Riga918 et="falli" sx={A.falli} dx={B.falli} colSx={colSx} colDx={colDx}/>
             <Riga918 et="ammonizioni" sx={A.ammonizioni} dx={B.ammonizioni} colSx={colSx} colDx={colDx}/>
-            </>):righeTabellino23(A,{...B,possesso:100-(A.possesso||50)}).map(r=>(<Riga918 key={r.et} et={r.et.toLowerCase()} sx={r.sx} dx={r.dx} colSx={colSx} colDx={colDx} fmt={r.pct?((v)=>_num918(v)+"%"):r.dec?_dec918:undefined}/>))}
+            </>):righeTabellino23(A,{...B,possesso:100-(A.possesso||50)}).filter(r=>!_stat77||!_DOPPIE77[r.et]).map(r=>(<Riga918 key={r.et} fitta={_stat77} et={r.et.toLowerCase()} sx={r.sx} dx={r.dx} colSx={colSx} colDx={colDx} fmt={r.pct?((v)=>_num918(v)+"%"):r.dec?_dec918:undefined}/>))}
           </div>)}
         {aperto&&vista==="pag"&&(
           <div style={{display:"flex",gap:SP.sm,padding:"6px "+SP.sm+"px 9px",overflowY:"auto",flex:1,minHeight:0,alignItems:"flex-start"}}>

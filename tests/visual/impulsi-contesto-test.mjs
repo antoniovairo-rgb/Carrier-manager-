@@ -82,6 +82,41 @@ for (const [nome, atteso] of [['_brandOk453', { ragazzo: false, affermato: true,
       if (!r.affermato) guasti.push('_statusOk453 esclude un professionista affermato: la domanda non uscirebbe mai'); } }
 }
 
+/* ── (B-ter) [7.999.77] «PRIMA vittoria in CASA»: 3-0 in trasferta e la stampa chiedeva della prima casalinga ──
+   Ogni domanda post-gara che nomina il luogo o una «prima» volta deve avere una condizione; la regola
+   _primaCasa77 deve dire no in trasferta, no se il calendario ha gia' una vittoria in casa, si' altrimenti.
+   Rosso: CPM_ROSSO77=1 simula window.__CPM_NO_CASA77 (la regola torna cieca al calendario). */
+{
+  const qi = src.indexOf('const INTERVIEW_QS=[');
+  const qbody = src.slice(qi, src.indexOf('\n];', qi));
+  const qre = /\{ctx:\[([^\]]*)\],([^\n]*?)q:"([^"]{0,150})/g;
+  const dom = []; let q;
+  while ((q = qre.exec(qbody))) dom.push({ ctx: q[1].replace(/"/g, ''), head: q[2], q: q[3] });
+  const LUOGO = /in casa|casalinga|casalingo|trasferta|prima vittoria/i;
+  const scoperte = dom.filter(d => /win|loss|draw/.test(d.ctx) && LUOGO.test(d.q) && !/cond:/.test(d.head));
+  console.log(`\ndomande post-gara che nominano luogo o «prima vittoria» senza condizione: ${scoperte.length}`);
+  scoperte.forEach(d => console.log(`   ✗ [${d.ctx}] ${d.q.slice(0, 78)}`));
+  if (scoperte.length) guasti.push(`${scoperte.length} domande post-gara nominano il luogo senza condizione`);
+  const i0 = src.indexOf('const _primaCasa77=');
+  if (i0 < 0) guasti.push("la regola _primaCasa77 non esiste piu'");
+  else {
+    const txt = src.slice(i0, src.indexOf('};\n', i0) + 1).replace(/^const _primaCasa77=/, '');
+    const window = process.env.CPM_ROSSO77 ? { __CPM_NO_CASA77: 1 } : {};
+    let f; try { f = eval('(' + txt + ')'); } catch (e) { guasti.push(`_primaCasa77 non valutabile: ${e.message}`); }
+    if (f) {
+      const cal = (vinta) => [{ week: 3, played: true, isHome: true, result: { won: vinta } }, { week: 5, played: true, isHome: false, result: { won: true } }];
+      const casi = [
+        ['trasferta (il caso del PO)', { week: 9, calendar: [] }, { isHome: false }, false],
+        ['casa, gia\' vinta in casa alla 3a', { week: 9, calendar: cal(true) }, { isHome: true }, false],
+        ['casa, nessuna vittoria in casa prima', { week: 9, calendar: cal(false) }, { isHome: true }, true],
+      ];
+      for (const [nome, p, v, atteso] of casi) { const r = !!f(p, v);
+        console.log(`_primaCasa77 ${nome}: ${r ? 'si' : 'no'} ${r === atteso ? '✓' : '✗'}`);
+        if (r !== atteso) guasti.push(`_primaCasa77 sbaglia «${nome}»: ${r} invece di ${atteso}`); }
+    }
+  }
+}
+
 /* ── (C) la convocazione in Nazionale segue delle partite giocate ── */
 const naz = voci.find(v => v.id === 'wi_nazionale_b');
 if (!naz) guasti.push('wi_nazionale_b non trovato: sonda cieca');
