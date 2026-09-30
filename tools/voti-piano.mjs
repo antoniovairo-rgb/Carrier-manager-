@@ -2,7 +2,7 @@
 /* [direttiva PO 15/09] «ad ogni rilascio nel macro piano aggiungi la sezione con i voti del player da cellulare, la
    differenza con il precedente ed un istogramma con la crescita/decrescita dei singoli parametri».
    Legge docs/voti/voti-telefono.json e rende la sezione (markdown fra i marcatori VOTI-INIZIO/VOTI-FINE in
-   docs/MACRO-PIANO-2026-09.md, e HTML fra <!--VOTI-INIZIO--> / <!--VOTI-FINE--> nel file passato come argomento).
+   docs/archivio/MACRO-PIANO-2026-09.md, e HTML fra <!--VOTI-INIZIO--> / <!--VOTI-FINE--> nel file passato come argomento).
      node tools/voti-piano.mjs [percorso-html-artefatto]                                                          */
 import fs from 'node:fs';
 const D=JSON.parse(fs.readFileSync('docs/voti/voti-telefono.json','utf8'));
@@ -20,7 +20,7 @@ md+=`| # | area | ${prev?`n° ${prev.n} | `:''}**n° ${ult.n}** | Δ | istogramm
 D.aree.forEach((a,i)=>{const v=ult.voti[i],pv=prev?prev.voti[i]:null,d=pv==null?0:v-pv;
   md+=`| ${i+1} | ${a} | ${pv!=null?pv+' | ':''}**${v}** | ${pv==null?'—':segno(d)} | \`${bar(v)}\` ${v} | ${dbar(d)} |\n`;});
 md+=`\nStorico delle medie: `+S.map(s=>`n° ${s.n} (${s.build}) **${fmt(media(s.voti))}**`).join(' · ')+'.\n';
-const P='docs/MACRO-PIANO-2026-09.md';let t=fs.readFileSync(P,'utf8');
+const P='docs/archivio/MACRO-PIANO-2026-09.md';let t=fs.readFileSync(P,'utf8');
 const A='<!-- VOTI-INIZIO -->',B='<!-- VOTI-FINE -->';
 if(!t.includes(A)){throw new Error('marcatori VOTI mancanti nel macro piano');}
 t=t.slice(0,t.indexOf(A)+A.length)+'\n'+md+'\n'+t.slice(t.indexOf(B));fs.writeFileSync(P,t);

@@ -1,3 +1,5 @@
+> **ARCHIVIATO il 01/10/2026 (decisione PO «un solo punto d'ingresso»).** Non si aggiorna più: roadmap e registro delle release in `docs/governo/ROADMAP.md`, backlog in `docs/governo/BACKLOG.md`.
+
 # Korward Elite — Macro piano delle attività (dal 14/09/2026)
 
 > Redatto dal PO-delegato la sera del 14/09 su richiesta del PO. Numeri, non impressioni: ogni riga ha un metro

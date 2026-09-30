@@ -1,3 +1,5 @@
+> **ARCHIVIATO il 01/10/2026 (decisione PO «un solo punto d'ingresso»).** Non si aggiorna più: roadmap e registro delle release in `docs/governo/ROADMAP.md`, backlog in `docs/governo/BACKLOG.md`.
+
 # ROADMAP.md
 
 **Live Match Development Platform — Product Roadmap**

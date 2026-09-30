@@ -31,7 +31,7 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
 6. **Non chiudere senza il rituale.** Gate 14/14 · guardiani se l'area li richiede · bump versione · commit ·
    push · promozione su `main` · **aggiornamento della roadmap**. → skill `production-ready`
    📌 **DIRETTIVA PO 16/09: «aggiorna sempre ad ogni rilascio la roadmap».** Ogni versione spedita scrive la
-   sua riga in `docs/MACRO-PIANO-2026-09.md` — sezione «Avanzamento», la più recente in alto, coi numeri
+   sua riga in `docs/governo/ROADMAP.md` (unico punto d'ingresso dal 01/10: lotti in alto, «Registro delle release» in fondo) — la più recente in alto, coi numeri
    misurati — e aggiorna lo **stato delle attività** dei cantieri toccati (da scrivere → in corsa → fatto,
    oppure revocata col perché). La riga si scrive quando la versione **parte** (dichiarando «sul ramo,
    rituali in corsa») e si chiude quando `main` è allineato. Una versione spedita senza riga di roadmap è
@@ -93,7 +93,8 @@ Carrier-manager-/
 ├── MASTER_PROMPT.md         ← ⭐ CHARTER DI GOVERNO: Live Match Quality Platform (LMQP) — vincolante
 ├── LIVE_MATCH_QA_SPEC.md    ← spec tecnica LMQP (architettura 3.1–3.13 + mappatura sul codice)
 ├── VALIDATORS.md            ← standard universale + catalogo validator LMV-001..030 (cap. 1, COMPLETO)
-├── ROADMAP.md               ← product roadmap LMQP (v1.0 COMPLETO: vision, pillar, SO/KPI, Phase 1–5, M1–M5, sez. 1–13)
+├── docs/governo/           ← ⭐ GOVERNO (dal 30/09): ROADMAP.md unico (lotti + registro release), BACKLOG.md, DECISIONI.md, PROCESSO.md
+├── docs/archivio/ROADMAP-LMQP-2026-07.md ← (archiviata 01/10) product roadmap LMQP (v1.0 COMPLETO: vision, pillar, SO/KPI, Phase 1–5, M1–M5, sez. 1–13)
 ├── DEVELOPMENT_RULES.md     ← regole di sviluppo (v1.0, cap. 1–20) + mappatura sul repo
 ├── ACCEPTANCE_CRITERIA.md   ← checklist di accettazione (v1.0, AC-001..200; target 600–1000 controlli)
 ├── docs/archivio/AI_VISION_REVIEW.md  ← (archiviato 14/09) spec AI Vision Review (v1.0, cap. 1–23 COMPLETO; dettaglio del cap. 3.9 della spec)

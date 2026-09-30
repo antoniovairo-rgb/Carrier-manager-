@@ -1,3 +1,5 @@
+> **ARCHIVIATO il 01/10/2026 (decisione PO «un solo punto d'ingresso»).** Non si aggiorna più: roadmap e registro delle release in `docs/governo/ROADMAP.md`, backlog in `docs/governo/BACKLOG.md`.
+
 # Roadmap POC — Korward Elite · personaggi CGTrader e motore unico
 
 **Aggiornata:** 27/09 (ora di Roma) · **Ramo:** `poc/marioprada-character-system` · **In produzione (`main`/GitHub Pages):** CPM **7.999.32** — il ramo è la produzione (direttiva PO «committa direttamente in produzione, non su Netlify»)

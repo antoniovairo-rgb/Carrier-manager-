@@ -1,3 +1,5 @@
+> **ARCHIVIATO il 01/10/2026 (decisione PO «un solo punto d'ingresso»).** Non si aggiorna più: roadmap e registro delle release in `docs/governo/ROADMAP.md`, backlog in `docs/governo/BACKLOG.md`.
+
 # BACKLOG.md — Fase 2 (Master Execution Plan)
 
 > Backlog operativo ordinato per priorità. Derivato da `TECHNICAL_ROADMAP.md` / `TECHNICAL_DEBT.md`. Stato base 5.39.0.

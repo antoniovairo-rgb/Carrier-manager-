@@ -28,3 +28,4 @@ Le decisioni del PO non si richiedono e non si contraddicono: per cambiarle serv
 | 30/09/2026 | Pulizia del progetto come **quota del 20% in ogni lotto**, non lotto dedicato | PO (questionario, PO-072) | — | lotto dedicato al 4° posto; entrambi |
 | 30/09/2026 | Cerimonie diverse per competizione **sospese fino a L8** | PO (questionario, PO-150) | lavoro su `wip/cerimonie-differenziate` | chiuderle ora; dentro L3 |
 | 01/10/2026 | Cadenza: **fino a 6 release al giorno** (non 2) | PO | «Le release giornaliere devono essere 6 e non 2!» | 2 al giorno (proposta del team) |
+| 01/10/2026 | **Un solo file di roadmap**: `docs/governo/ROADMAP.md` (lotti in alto, registro delle release in fondo); archiviati `POC_ROADMAP.md`, `ROADMAP.md` alla radice, `MACRO-PIANO-2026-09.md`, `BACKLOG.md` alla radice | PO (questionario, PO-160) | «troppi file roadmap… faccio confusione» | due file con ruoli; solo archiviare i morti |

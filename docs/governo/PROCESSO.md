@@ -1,9 +1,8 @@
 # Processo — come lavoriamo (PO + team Claude Code + Codex)
 
 Nato dal prompt PO «Governo del progetto» del 30/09 (voci PO-GOV-*). I file di governo stanno tutti in
-`docs/governo/`: `BACKLOG.md`, `ROADMAP.md`, `DECISIONI.md`, `RISCHI.md`, `ARCHITETTURA.md` e questo.
-(Il `ROADMAP.md` alla radice è la roadmap tecnica LMQP del 2026-07 e resta com'è; il registro delle
-release è `tests/character-lab/POC_ROADMAP.md`.)
+`docs/governo/`: `BACKLOG.md`, `ROADMAP.md` (unico file di roadmap: lotti + registro delle release),
+`DECISIONI.md`, `RISCHI.md`, `ARCHITETTURA.md` e questo. I vecchi file roadmap sono in `docs/archivio/`.
 
 ## Ogni risposta al PO comincia con
 `Lotto in corso: … · Voci toccate: PO-… · Richieste nuove registrate: PO-…`
