@@ -1987,7 +1987,12 @@ function buildHLTimeline(hl,o){
   /* [7.775.0] il terzo uomo entra solo se la scena dichiara supporto: senza compagni vicini la giocata resta a due. */
   const _tre775=(function(){try{if(typeof window!=='undefined'&&window.__CPM_NO775)return false;}catch(_e){}const _s=o.support;return (typeof _s==='number')?_s>=1:!!_s;})();
   const set=(id,x,y)=>{A[id]=[clamp(x,2,98),clamp(y,2,98)];};
-  const mv=(id,x,y,run)=>({who:id,to:[clamp(x,2,98),clamp(y,2,98)],run:!!run});
+  /* [7.999.79 taccuino PO SIT #151 «l'eroe entra troppo nella porta, si accavalla con il palo»] MISURATO: le corse del
+     build-up spostano l'eroe di +15/+24 limitate solo dalla LINEA DI PORTA (98): da x 92 finiva a 97-98, nello specchio,
+     e il pallone rotolava lungo la linea prima di entrare. Chi attacca (eroe e compagni) conclude DENTRO l'area, mai
+     oltre x 94 (~4,6u dalla linea); i difensori restano liberi fino a 98. Rosso: __CPM_NO_TIRO94. */
+  const _cap94=(id)=>((id==='HERO'||/^MATE/.test(id))&&!(typeof window!=='undefined'&&window.__CPM_NO_TIRO94))?94:98;
+  const mv=(id,x,y,run)=>({who:id,to:[clamp(x,2,_cap94(id)),clamp(y,2,98)],run:!!run});
   const B=(tag,dur,ball,moves)=>beats.push({tag,dur,ball,moves:moves||[]});
   const GT=(dy)=>({pt:[GX,clamp(GY+dy,18,82)]});
   const concl=(id,kind)=>B(kind==='header'?'header':'shot',kind==='header'?0.5:0.55,{from:id,to:GT(-side*7),kind:kind||'shot'},[]);

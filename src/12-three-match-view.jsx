@@ -3451,7 +3451,7 @@ function ThreeMatchView(props){
         try{const _pc457=(window.__CPM_PA457=window.__CPM_PA457||[]);
           if(_pc457.length<900)_pc457.push({tlOn:!!tlOn,tlT:+(+tlT).toFixed(3),bn:tlBuildN,
             pa:+(+hlPostArcT).toFixed(3),pt:hlPostArcType||null,
-            bx:+ball.position.x.toFixed(2),bz:+ball.position.z.toFixed(2),adt:+(+aDt).toFixed(4),t:+performance.now().toFixed(0),rt:+(+resultT).toFixed(2),
+            bx:+ball.position.x.toFixed(2),bz:+ball.position.z.toFixed(2),by:+ball.position.y.toFixed(2),hx:+hero.position.x.toFixed(2),hz:+hero.position.z.toFixed(2),adt:+(+aDt).toFixed(4),t:+performance.now().toFixed(0),rt:+(+resultT).toFixed(2),
             /* [7.459.0] il CONTESTO della conclusione: il post-arco viene assegnato solo quando l'arco
                del tiro FINISCE, e il ramo del gol pretende hlType shot/penalty/freekick/header. Se su
                un gol dichiarato il post-arco non nasce, la risposta e' in questi campi: o l'arco non
@@ -4600,7 +4600,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              /* [7.215.0] ALTEZZA D'ARRIVO del rigore: q alta = angolo alto, q bassa = centrale a mezz'altezza —
                 prima ogni rigore moriva sulla linea rasoterra e il portiere non aveva nulla da parare in alto.
                 Il cucchiaio scende morbido appena sotto la traversa. Sempre dentro lo specchio (max 2.05 < 2.44). */
-             ballArcTgtY=(P.hlVariant==="penalty_panenka")?1.55:clamp(0.42+_q*1.55,0.38,2.05);}}
+             ballArcTgtY=(P.hlVariant==="penalty_panenka")?1.55:clamp(0.42+_q*1.55,0.38,2.05);
+             /* [7.999.79 taccuino PO SIT #5 «Rigore — Potente all'incrocio» → «non era potente all'incrocio ma centrale»]
+                MISURATO nel codice: il punto nello specchio era (Math.random()-0.5)*7 scalato per la qualita' — lo STILE
+                scelto non veniva letto (solo il cucchiaio). Ora, se il pallone va nello specchio (gol o parata), lo stile
+                decide il punto: incrocio = angolo alto, angolato/rasoterra = angolo basso, centro-alto = centrale alto.
+                I pali sono a ±3,35 e la traversa a 2,44: sempre dentro. Rosso: __CPM_NO_STILE79. */
+             if(!(typeof window!=='undefined'&&window.__CPM_NO_STILE79)&&P.hlVariant!=="penalty_panenka"&&!/post|wide|miss|over|fuori|palo|out/i.test(String(P.hlOutcomeKind||""))){
+               const _lb79=String(P.hlActLbl||""),_sg79=_rz<0?-1:1;let _st79=null;
+               if(/incrocio/i.test(_lb79)){ballArcTgtZ=_sg79*(2.55+0.35*_q);ballArcTgtY=clamp(1.92+0.18*_q,1.9,2.12);_st79='incrocio';}
+               else if(/centro[- ]?alto|centrale alto/i.test(_lb79)){ballArcTgtZ=_rz*0.9;ballArcTgtY=clamp(1.75+0.3*_q,1.7,2.1);_st79='centro-alto';}
+               else if(/angolat|rasoterra|preciso/i.test(_lb79)){ballArcTgtZ=_sg79*(2.25+0.7*_q);ballArcTgtY=clamp(0.28+0.12*_q,0.26,0.42);_st79='angolo basso';}
+               if(_st79)ballArcTgtX=Math.max(ballArcTgtX,48.0);/* misurato: senza, l'arco moriva a x 43 e il centro-alto arrivava in porta a quota 0,35; con la fine sulla linea arriva a 46,3 a quota 1,7 */
+               if(_st79&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{window.__CPM_STILE79={stile:_st79,lbl:_lb79,z:+ballArcTgtZ.toFixed(2),y:+ballArcTgtY.toFixed(2),esito:P.hlOutcomeKind||null};}catch(_e){}}}}}
           else if(t==="shot"){ballArcT=0;ballArcActive=true;
             // CINE-2: variant shot — traiettorie distinte per ogni tipo di conclusione
             const _vs=P.hlVariant;
@@ -5082,6 +5094,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              mutuamente esclusivi), e pass/tackle/build entrano per la prima volta — la loro durata
              autorata sopravvive come FORMA (rapporto sulla nominale 0,80), il tempo di volo e' distanza su
              velocita' di famiglia. __CPM_NO512 = rosso: le famiglie nuove tornano alle durate costanti. */
+          /* [7.999.79 taccuino PO SIT #151 «Ribattuta libera in area» (005 biliardo · 009 direzione sbagliata · «l'eroe
+             entra troppo nella porta»)] MISURATO: l'eroe nasce sulla linea di fondo accanto al palo (x 47,6) e il
+             bersaglio del tiro e' un x CASUALE fra 43 e 47 (AWAY_GOAL_X-3+rand*4): il tiro tornava INDIETRO di 3,6u
+             verso il centro dell'area e solo dopo il post-arco lo portava in rete. Regola unica per tiro e testa verso
+             la porta avversaria: il bersaglio non sta mai dietro al pallone — al minimo 0,6u piu' avanti, mai oltre la
+             bocca della porta (48,2). Rosso: __CPM_NO_AVANTI78. Testimone __CPM_AVANTI78. */
+          if(ballArcActive&&(t==="shot"||t==="header")&&typeof ball!=='undefined'&&ball&&ball.position&&ballArcTgtX!=null&&ballArcTgtX<ball.position.x+0.6&&ball.position.x>30&&!(typeof window!=='undefined'&&window.__CPM_NO_AVANTI78)){
+            const _prima78=ballArcTgtX;ballArcTgtX=Math.min(48.2,Math.max(ballArcTgtX,ball.position.x+0.6));
+            if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const W=(window.__CPM_AVANTI78=window.__CPM_AVANTI78||{n:0,ultimo:null});W.n++;W.ultimo={t,bx:+ball.position.x.toFixed(2),prima:+_prima78.toFixed(2),dopo:+ballArcTgtX.toFixed(2)};}catch(_e){}}}
           if(ballArcActive){
             const _old512=(t==="shot"||t==="penalty"||t==="freekick"||t==="header"||t==="cross");
             /* ⚠️ dribble ESCLUSO e dichiarato: il suo ramo principale (7.369) normalizza gia' da se'
