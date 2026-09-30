@@ -5982,6 +5982,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 tx=clamp(_ball+9,_ball+6,93);
                 const _wy=_by+(50-_by)*0.25+(_by<50?-2.5:2.5);// ~sulla linea palla→centro porta, verso il palo vicino
                 ty=clamp(_wy+(_li-2.5)*1.5,12,88);// spaziatura ~1.5u → muro serrato
+                {const _W72=(sr.current._w72||(sr.current._w72=[]));_W72[i]={x:tx,y:ty,k:P.hlSitKey};}/* [7.999.73] posizione di barriera, reimposta dopo tutte le passate */
               } else {tx=clamp(_ball+15+((i*7)%9),_ball+12,91);ty=clamp(50+Math.sin(i*2.3)*24,12,88);}// resto: marcature in area, MAI dietro la palla
             } else {// la squadra dell'eroe che ATTACCA
               if(_li>=8){tx=clamp(_ball+6,55,90);ty=clamp(50+Math.cos(i*1.9)*18,16,84);}// ATT al limite per la respinta
@@ -6020,7 +6021,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           }
           const _m706f=!!(src&&src._m706)&&!(typeof window!=='undefined'&&window.__CPM_NO706);
           if(_m706f){tx=src.x;ty=src.y;}/* [7.706.0] L'ELETTO ALLA CONTESA NON SI RIVESTE. MISURATO (arrivi-705 v6): i tre difensori eletti stanno a 2-8u dal pallone in LOGICA, ma entro 6u di MESH la mediana e' 0 — corsie, scarto di possesso e richiami di questo builder tiravano il bersaglio via dalla mischia. Per l'eletto il bersaglio e' la posizione logica pura, che il deployment ha gia' messo sull'anello goal-side. */
-          {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=tx;_ob.y=ty;_ob.gk=false;_ob.hm=_hm;_ob.li=_li;_ob.att=_li>=8;_ob.def=_li>=1&&_li<=4;_ob.m706=_m706f;_ob.b592=_b592;_ob.a592=_a592;_ob.r592=_r592;_ob.c592=tx;_tg.push(_ob);}
+          {const _ob=_tgPool[_tgN]||(_tgPool[_tgN]={});_tgN++;_ob.x=tx;_ob.y=ty;_ob.gk=false;_ob.hm=_hm;_ob.li=_li;_ob.att=_li>=8;_ob.def=_li>=1&&_li<=4;_ob.mur72=!(typeof window!=='undefined'&&window.__CPM_NO_MURO72)&&!_hm&&_li>=1&&_li<=4&&(P.hlType==="freekick"||P.hlSetPiece==="freekick");/* [7.999.73 collaudo Codex 001 gi81 «muro a 9 metri» ma difensori sparsi] i quattro della barriera: esenti dalla repulsione FRA DI LORO */_ob.m706=_m706f;_ob.b592=_b592;_ob.a592=_a592;_ob.r592=_r592;_ob.c592=tx;_tg.push(_ob);}
         }
         // HL STAGING (#1/#3) — PRIMO POSIZIONAMENTO coerente: all'avvio di un highlight la scena deve MOSTRARE i giocatori
         //   che l'azione presuppone, non lasciare l'Eroe solo in campo aperto. Porta vicino all'Eroe il compagno e
@@ -6099,18 +6100,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          if(_aStr>0.3&&_hy!==50&&!_setPiece){const _covX=_homeBall?80:20;let _bi=-1,_bd=1e9;
            for(let i=0;i<_tg.length;i++){const t=_tg[i];if(!t||t.gk||!t.def||t.hm===_homeBall)continue;const d=Math.hypot(t.x-_covX,t.y-_hy);if(d<_bd){_bd=d;_bi=i;}}
            if(_bi>=0){const t=_tg[_bi],g=_aStr;t.x+=(_covX-t.x)*0.20*g;t.y=clamp(t.y+(_hy-t.y)*0.34*g,3,97);}}}
+        /* [7.999.73 collaudo Codex 001 gi81 — rosso __CPM_NO_MURO72] le passate successive (marcatura, coperture, smarcamenti) spostavano i
+           bersagli dei quattro della barriera fino a y 50-59: qui, ultima parola prima della repulsione, tornano spalla a spalla. */
+        if(sr.current._w72){for(let i=0;i<_tg.length;i++){const t=_tg[i],w=sr.current._w72[i];if(t&&t.mur72&&w&&w.k===P.hlSitKey){t.x=w.x;t.y=w.y;}}}
         // PASS 2 — repulsione/spaziatura (bolla personale ~6.5u): elimina le "ammucchiate"
         const _RB=6.5;
         for(let i=0;i<_tg.length;i++){const a=_tg[i];if(!a||a.gk)continue;
           let px=0,py=0;
           for(let j=0;j<_tg.length;j++){if(j===i)continue;const b=_tg[j];if(!b||b.gk)continue;
             const ex=a.x-b.x,ey=a.y-b.y,dd=Math.hypot(ex,ey);
+            if(a.mur72&&b.mur72)continue;/* [7.999.73] barriera: la bolla da 6,5u la spalancava da 1,5 a 3-4u fra un difensore e l'altro */
             if(dd>0.01&&dd<_RB){const f=(_RB-dd)/_RB;px+=ex/dd*f;py+=ey/dd*f;}
             else if(dd<=0.01){px+=(i<j?0.4:-0.4);}}
           // l'eroe respinge i compagni (one-way): nessuna sovrapposizione col protagonista
           {const ex=a.x-_hxg,ey=a.y-_hyg,dd=Math.hypot(ex,ey);if(dd>0.01&&dd<_RB){const f=(_RB-dd)/_RB;px+=ex/dd*f*1.2;py+=ey/dd*f*1.2;}}
           a.rx=clamp(px*1.6,-5.5,5.5);a.ry=clamp(py*1.6,-5.5,5.5);// F3: repulsione rinforzata (target più ampi → più separazione)
         }
+        if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _mw=[];for(let i=0;i<_tg.length;i++){const t=_tg[i];if(t&&t.mur72)_mw.push({i,x:+t.x.toFixed(1),y:+t.y.toFixed(1),rx:+(t.rx||0).toFixed(1),ry:+(t.ry||0).toFixed(1)});}if(_mw.length)window.__CPM_MUR72=_mw;}catch(_e){}}/* [7.999.73] testimone barriera: bersaglio e spinta */
         // APPLY — animOne sul target finale (target+repulsione), clamp dentro il campo
         // FREEZE #2 (avvio highlight TV-like): all'AVVIO dell'highlight i giocatori off-ball si POSIZIONANO (snap, mascherato dall'intro) e restano FERMI
         //   per TUTTA la fase di LETTURA — hl_intro + hl_move + hl_choose (fino alla scelta). L'EROE è sempre libero (controllo diretto).
@@ -6443,6 +6449,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           const _skipSep=(m)=>!m||m.gk||m.mesh===passTargetMesh||(m.mesh._rcvT!=null&&m.mesh._rcvT>=0)||(m.mesh._failRunT!=null&&m.mesh._failRunT>=0)||m.mesh._carry526!=null||(sr.current._pkCol415&&m.mesh===sr.current._pkCol415.m);/* [7.618.0] idem per la separazione *//* [7.523.0] il portatore non si sballotta *//* [6.45.0 RC] non spingere chi riceve (_rcvT) o corre a vuoto (_failRunT): animOne li congela di proposito → venivano sballottati a metà ricezione */
           for(let i=0;i<_players.length;i++){const pi=_players[i];if(!pi||!pi.mesh||_skipSep(pi))continue;
             for(let j=i+1;j<_players.length;j++){const pj=_players[j];if(!pj||!pj.mesh||_skipSep(pj))continue;
+              if(_tg[i]&&_tg[j]&&_tg[i].mur72&&_tg[j].mur72)continue;/* [7.999.73] barriera spalla a spalla */
               const dx=pi.mesh.position.x-pj.mesh.position.x,dz=pi.mesh.position.z-pj.mesh.position.z,d=Math.hypot(dx,dz);
               if(d<_MINSEP&&d>0.001){const push=(_MINSEP-d)*0.25,ux=dx/d,uz=dz/d;
                 pi.mesh.position.x+=ux*push;pi.mesh.position.z+=uz*push;pj.mesh.position.x-=ux*push;pj.mesh.position.z-=uz*push;}}}}
