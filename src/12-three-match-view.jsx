@@ -808,7 +808,7 @@ function ThreeMatchView(props){
       av.mx.update(sample);if(av._hyper&&av.visualRoot)_corrPostura23(_ossa23(av.visualRoot));_piedi77(av);_animLodStats.mixerUpdates++;_animLodStats.lastFrameUpdates++;return true;
     };
     if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_BURST77=(home)=>{goalBurstT=0;goalBurstHome=!!home;goalBurstStadHome=!!home;return true;};}catch(_e77b){}/* [7.999.77+] test-only: fa esultare la panchina come per un gol (home=true: la panchina di casa) */
-    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_FOOT77=()=>{const a=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero);if(!a||!a._footL||!a._footR)return null;const v=new THREE.Vector3();a._footL.getWorldPosition(v);const l=v.y;a._footR.getWorldPosition(v);return{foot:+Math.min(l,v.y).toFixed(3),root:+a.root.position.y.toFixed(3),proc:+a.proc.position.y.toFixed(3),f0:a._f077,off:a._off77,vy:a.visualRoot&&+a.visualRoot.position.y.toFixed(3),n:a._n77|0,h:a._h};};}catch(_e77){}/* [7.999.77] test-only: quota del piede piu' basso dell'eroe 3D (riferimento a terra per la festa) */
+    if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))try{window.__CPM_FOOT77=()=>{const a=(glbAvatars||[]).find(x=>x&&x.proc&&x.proc._isHero);if(!a||!a._footL||!a._footR)return null;const v=new THREE.Vector3();a._footL.getWorldPosition(v);const l=v.y;a._footR.getWorldPosition(v);return{foot:+Math.min(l,v.y).toFixed(3),root:+a.root.position.y.toFixed(3),proc:+a.proc.position.y.toFixed(3),f0:a._f077,off:a._off77,vy:a.visualRoot&&+a.visualRoot.position.y.toFixed(3),n:a._n77|0,h:a._h,x:+a.proc.position.x.toFixed(2),z:+a.proc.position.z.toFixed(2),rx:+a.root.position.x.toFixed(2),rz:+a.root.position.z.toFixed(2),g:a._gName||null,gw:+(a._gw||0).toFixed(2),run:+((a.run&&a.run.weight)||0).toFixed(2),idle:+((a.idle&&a.idle.weight)||0).toFixed(2),st:+(window.__CPM_SCENET||0).toFixed(3),ct:window.__CPM_CERT!=null?+(+window.__CPM_CERT).toFixed(2):null};};}catch(_e77){}/* [7.999.77] test-only: quota del piede piu' basso dell'eroe 3D (riferimento a terra per la festa) */
     try{window.__CPM_ANIM_AUDIT=()=>{const aa=(glbAvatars||[]).filter(a=>a&&a.root&&a.root.visible),all=[];let active=0;
       aa.forEach(a=>{const acts=[a.idle,a.run,...Object.values(a.gestures||{}),...Object.values(a._locoActs||{})].filter(Boolean);acts.forEach(x=>{if(!all.includes(x)){all.push(x);if(x.weight>0.02&&(!x.isRunning||x.isRunning()))active++;}});});
       /* [7.999.56] T-pose misurata per corpo: peso idle/corsa non finito, oppure nessuna azione del mixer con peso (tutte le clip del corpo) */
@@ -5118,7 +5118,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
             if(t==="pass"&&P.hlSuccess!==true&&sr.current._int10){const _i10=sr.current._int10;const _need=_i10.d/8+0.12;/* [7.999.10] l'intercettore ci arriva correndo, non volando */
               if(ballArcDur<_need)ballArcDur=Math.min(1.6,_need);
               if(_i10.m)_i10.m._slideSpd10={v:Math.max(2.5,_i10.d/Math.max(0.2,ballArcDur-0.05)),sk:P.hlSitKey};
-              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{const W=(window.__CPM_INT10=window.__CPM_INT10||[]);if(W.length<200)W.push({d:+_i10.d.toFixed(2),dur:+ballArcDur.toFixed(2),v:+(_i10.d/ballArcDur).toFixed(1)});}catch(_eW){}}}
+              if(typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)){try{window.__CPM_INTM80=()=>{try{const m=sr.current._int10&&sr.current._int10.m;return m?[+m.position.x.toFixed(2),+m.position.z.toFixed(2)]:null;}catch(_e){return null;}};const W=(window.__CPM_INT10=window.__CPM_INT10||[]);if(W.length<200)W.push({d:+_i10.d.toFixed(2),dur:+ballArcDur.toFixed(2),v:+(_i10.d/ballArcDur).toFixed(1)});}catch(_eW){}}}
             else if(t==="pass"&&P.hlSuccess!==true&&typeof window!=='undefined'&&(_CPM_TEST||_SIT_TEST||window.__CPM_REC)&&oppMesh&&oppMesh._slideToX!=null&&!/^(blocked|wall_blocked|dispossessed|beaten)$/.test(P.hlOutcomeKind||"")){try{const W=(window.__CPM_INT10=window.__CPM_INT10||[]);const d=Math.hypot(oppMesh.position.x-oppMesh._slideToX,oppMesh.position.z-oppMesh._slideToZ);if(W.length<200)W.push({d:+d.toFixed(2),dur:+ballArcDur.toFixed(2),v:+(d/ballArcDur).toFixed(1),rosso:1});}catch(_eW){}}/* nel rosso lo stesso testimone misura il vecchio intercetto */
           }
           /* [7.519.0 R3/4 — LE REAZIONI DI REPARTO: audit «nelle scene di tiro/testa/cross gli avversari
@@ -8196,7 +8196,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              fotogramma: la consegna la governa `_trofeoInMano`, che e' un'altra variabile e non si
              tocca. */
           const _no476c=(typeof window!=='undefined'&&window.__CPM_NO476C);
-          sr.current._cerLift=(_trofeoInMano||(_bk==="present"&&_bp>0.5)||(!_no476c&&(_bk==="burst"||_bk==="hug"||_bk==="present"||_bk==="fest"))/* NON su `lap` e `curva`: li' l'eroe CORRE (giro di campo, sotto la curva) e la locomozione e' la cosa giusta — misurato, forzando la posa la clip non attecchiva comunque perche' stava contendendo con la corsa */)?(_armsUp?1:2):0;
+          /* [7.999.80 taccuino PO 7.999.78 «l'eroe nei festeggiamenti post partita continua a volare con le braccia alzate»]
+             MISURATO (sonda festa-79): nei beat present e fest il corpo 3D si sposta a 10,6-11,8 u/s con la clip delle braccia
+             al cielo a peso pieno e la corsa a peso 0 — la clip ha le gambe ferme, quindi SCIVOLA sul prato. Velocita' reale
+             dell'eroe per fotogramma (media mobile): oltre 1,5 u/s la clip d'esultanza non si accende, comanda la locomozione;
+             fermo, le braccia tornano al cielo. Rosso: __CPM_NO_VOLO80. */
+          {const _pv80=sr.current._pv80;if(_pv80&&aDt>0){const _vi=Math.hypot(hero.position.x-_pv80.x,hero.position.z-_pv80.z)/aDt;sr.current._cv80=(sr.current._cv80||0)+(_vi-(sr.current._cv80||0))*Math.min(1,aDt*8);}
+           sr.current._pv80={x:hero.position.x,z:hero.position.z};}
+          const _muove80=!(typeof window!=='undefined'&&window.__CPM_NO_VOLO80)&&(sr.current._cv80||0)>1.5&&!_onPodium;
+          sr.current._cerLift=(_trofeoInMano||(_bk==="present"&&_bp>0.5)||(!_no476c&&(_bk==="burst"||_bk==="hug"||_bk==="present"||_bk==="fest"))/* NON su `lap` e `curva`: li' l'eroe CORRE (giro di campo, sotto la curva) e la locomozione e' la cosa giusta — misurato, forzando la posa la clip non attecchiva comunque perche' stava contendendo con la corsa */)&&!_muove80?(_armsUp?1:2):0;
           const _liftU=Math.min(_ct/1.5,1);
           let _thSet=false;
           try{const _hAv=(glbAvatars&&glbAvatars[0]&&glbAvatars[0].proc===hero)?glbAvatars[0]:null;

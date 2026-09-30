@@ -12,13 +12,16 @@ const CASI = [
   { gi: 18, et: /Dribbling netto/i, esito: 'fail', nota: 'pallone e eroe separati (13,9u)' },
   { gi: 140, et: /angolo/i, esito: 'fail', nota: '012 all\'indietro · 006 reparto fermo' },
   { gi: 171, et: /Stacco in corsa/i, esito: 'success', nota: 'testa non sincronizzata' },
+  { gi: 185, et: /Scarico e ricevi/i, esito: 'fail', nota: '003 non si vede il difensore che ruba o mura' },
+  { gi: 38, et: /Dai e vai preciso/i, esito: 'success', nota: '005/014/012/011' },
+  { gi: 112, et: /Dribbling centrale e tiro/i, esito: 'fail', nota: 'gap 13,5u · 009 tiro non verso la porta' },
 ].filter(c => !process.env.CPM_CASI || process.env.CPM_CASI.split(',').includes(String(c.gi)));
 const LINEA = 48.6, PALI = 3.35;
 const RIS = [];
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 for (const c of CASI) {
   const p = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(p);
-  await p.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (r[0]) window.__CPM_NO_AVANTI78 = 1; if (r[1]) window.__CPM_NO_TIRO94 = 1; if (r[2]) window.__CPM_NO_STILE79 = 1; }, [!!process.env.CPM_ROSSO78, !!process.env.CPM_ROSSO94, !!process.env.CPM_ROSSO79]);
+  await p.addInitScript(r => { window.__CPM_GLB = true; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; if (r[0]) window.__CPM_NO_AVANTI78 = 1; if (r[1]) window.__CPM_NO_TIRO94 = 1; if (r[2]) window.__CPM_NO_STILE79 = 1; if (r[3]) window.__CPM_NO_RUBA80 = 1; }, [!!process.env.CPM_ROSSO78, !!process.env.CPM_ROSSO94, !!process.env.CPM_ROSSO79, !!process.env.CPM_ROSSO80]);
   await openMatch(p, port, { skipLoadAll: true, name: 'Taccuino78' }); await sleep(900);
   await p.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, null, { timeout: 60000 }).catch(() => {});
   const ok = await p.evaluate(g => window.__CPM_FORCE_SIT(g, true), c.gi).catch(() => false);
@@ -44,6 +47,9 @@ for (const c of CASI) {
   /* il tiro torna indietro? massimo arretramento della palla dopo il build-up e prima del post-arco */
   let mx = -99, indietro = 0; for (const r of pa) { if (r.tlOn || (r.pa != null && r.pa >= 0)) { mx = -99; continue; } mx = Math.max(mx, r.bx); indietro = Math.max(indietro, mx - r.bx); }
   const av = await p.evaluate(() => window.__CPM_AVANTI78 || null);
+  const im = await p.evaluate(() => window.__CPM_INTM80 ? window.__CPM_INTM80() : null); const ult = pa[pa.length - 1]; if (im && ult) console.log(`    intercettore ${im} · pallone finale ${ult.bx},${ult.bz} · distanza ${Math.hypot(im[0] - ult.bx, im[1] - ult.bz).toFixed(2)}`);
+  const ht = await p.evaluate(() => { try { return window.__CPM_ARC && (window.__CPM_ARC.ht || window.__CPM_ARC.t); } catch (_e) { return null; } }); if (process.env.CPM_INT) console.log('    ht', ht);
+  if (process.env.CPM_INT) console.log('    int10', JSON.stringify(await p.evaluate(() => ({ int10: window.__CPM_INT10 || null, arc: window.__CPM_ARC || null, blocco: window.__CPM_BV613 || null }))).slice(0, 400));
   const st79 = await p.evaluate(() => window.__CPM_STILE79 || null); if (st79) console.log('    stile79', JSON.stringify(st79));
   console.log(`gi${String(c.gi).padEnd(4)} «${lab(acts[k])}» esito ${key} (${c.nota})\n    campioni ${pa.length} · palla x ${Math.min(...pa.map(r => r.bx)).toFixed(1)}→${Math.max(...pa.map(r => r.bx)).toFixed(1)} · IN RETE ${rete.length ? 'SI (' + rete.length + ')' : 'no'} · post ${[...new Set(pa.map(r => r.pt).filter(Boolean))].join('>') || '-'}` +
     `\n    fine arco: ${fineArco ? `x ${fineArco.bx} z ${fineArco.bz} quota ${fineArco.by}` : '—'} · alla linea: ${alLinea ? `z ${alLinea.bz} quota ${alLinea.by}` : '—'} · eroe max x ${Math.max(...pa.map(r => r.hx)).toFixed(1)} (in porta: ${eroeInPorta.length}) · distanza eroe-palla (dopo 0,3s, senza post-arco) max ${Math.max(...gap).toFixed(1)} · oltre 4u per ${stMax.toFixed(2)}s di scena\n    arretramento del pallone nel tiro ${indietro.toFixed(2)} · correzioni avanti78 ${av ? av.n + ' ' + JSON.stringify(av.ultimo) : 0}`);

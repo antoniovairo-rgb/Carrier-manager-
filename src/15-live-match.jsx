@@ -1101,7 +1101,12 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
      crescere alla prima voce lunga, e dalla 7.999.12 anche il campo 2D seguiva il pannello. Ora e' FISSO dall'inizio, dimensionato per
      la voce piu' alta (tre righe di cronaca + la voce della panchina). Rosso __CPM_NO_FERMO13: torna il comportamento 7.926. */
   const _fermo13=!(typeof window!=='undefined'&&window.__CPM_NO_FERMO13);
-  const [spazio,setSpazio]=React.useState(_fermo13?214:152);
+  /* [7.999.80 collaudo PO «il pannello statistiche e pagelle deve essere piu' lungo» (foto 18:54: barra di scorrimento sulle pagelle)]
+     MISURATO a 412x915: pannello 328-661, cronaca su TRE righe al massimo da 724 in giu' — 63 px mai usati sotto il pannello, e sul
+     telefono (testo reso piu' alto) le 11 pagelle scorrevano. Il pannello scende di 40 px: la CIMA resta dove il PO l'ha voluta (7.999.64),
+     il margine per la cronaca passa da 214 a 174. Rosso __CPM_NO_LUNGO80. */
+  const _lungo80=!(typeof window!=='undefined'&&window.__CPM_NO_LUNGO80);
+  const [spazio,setSpazio]=React.useState(_fermo13?(_lungo80?174:214):152);
   React.useEffect(()=>{
     if(typeof document==='undefined')return;
     const misura=()=>{try{
@@ -1182,7 +1187,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
       {/* IL PANNELLO: statistiche o pagelle, col campo che si vede dietro */}
       <div data-cpm="linguette918" style={{margin:SP.sm,marginBottom:spazio,/* MISURATO (sonda geometrica 16/09, 412x915): il riquadro del campo va da 99 a 878, il sottopancia della cronaca (com661) da 741 a 792 e le voci da 850 a 866. Con 104 il pannello arrivava a 774 e le ultime due pagelle finivano sotto la voce del telecronista — fotografato. Con 152 si ferma a 726 e la cronaca ha la sua fascia. */borderRadius:RAD.md,background:_COL918.vetro,
         border:"1px solid "+_COL918.bordo,
-        pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%",...((aperto&&!(typeof window!=="undefined"&&window.__CPM_NO_PANNELLO61))?{height:"43%",maxHeight:"43%"}:{})}}>{/* [7.999.64 collaudo PO «posizione troppo alta del pannello statistiche/pagelle»] MISURATO a 412x915: col 55% il bordo alto stava a 235, cioe' sopra porta (205-230) e area avversaria (fino a ~320). Col 43% scende a ~330, sotto l'area; le 11 pagelle ci stanno senza scorrere */}{/* [7.999.61 PO «evita che il pannello si sovrapponga alla porta, meglio solo sul campo»] 55%: a 412x915 il bordo alto scende da 185 a ~239 px, sotto la porta (205-225) */}{/* [7.999.61 collaudo PO «altezza e posizione tra pagelle e statistiche differenti»] l'altezza la dava il contenuto: statistiche al tetto del 62%, pagelle piu' corte e quindi linguette piu' in basso. Aperto, il pannello ha sempre la stessa altezza; il contenuto scorre dentro */}
+        pointerEvents:"auto",overflow:"hidden",display:"flex",flexDirection:"column",maxHeight:"62%",...((aperto&&!(typeof window!=="undefined"&&window.__CPM_NO_PANNELLO61))?{height:_lungo80?"calc(43% + 40px)":"43%",maxHeight:_lungo80?"calc(43% + 40px)":"43%"}:{})}}>{/* [7.999.64 collaudo PO «posizione troppo alta del pannello statistiche/pagelle»] MISURATO a 412x915: col 55% il bordo alto stava a 235, cioe' sopra porta (205-230) e area avversaria (fino a ~320). Col 43% scende a ~330, sotto l'area; le 11 pagelle ci stanno senza scorrere */}{/* [7.999.61 PO «evita che il pannello si sovrapponga alla porta, meglio solo sul campo»] 55%: a 412x915 il bordo alto scende da 185 a ~239 px, sotto la porta (205-225) */}{/* [7.999.61 collaudo PO «altezza e posizione tra pagelle e statistiche differenti»] l'altezza la dava il contenuto: statistiche al tetto del 62%, pagelle piu' corte e quindi linguette piu' in basso. Aperto, il pannello ha sempre la stessa altezza; il contenuto scorre dentro */}
         <div style={{display:"flex",alignItems:"center",gap:SP.xs,padding:"4px 6px",borderBottom:aperto?"1px solid "+_COL918.riga:"none"}}>
           {tasto("stat","Statistiche")}
           {tasto("pag","Pagelle")}
