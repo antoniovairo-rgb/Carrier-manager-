@@ -1039,8 +1039,22 @@ function buildStadium(scene,homeHex,awayHex,stadCfg={prestige:65,style:0}){
   if(hasCorners)[[-sideX,-endZ,Math.PI/4],[sideX,-endZ,-Math.PI/4],[-sideX,endZ,3*Math.PI/4],[sideX,endZ,-3*Math.PI/4]].forEach(([x,z,ry])=>{
     const cH=Math.round((endH+sideH)/2)*0.8;
     // angoli vicino Curva Sud (+x, casa) → texture casa; vicino Curva Nord (-x) → texture ospiti
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_ANGOLI70)){/* [7.999.70 stadi fase 2 — galleria fase 1: «blocco a puntini dietro la curva». Rosso __CPM_NO_ANGOLI70]
+       IL SETTORE D'ANGOLO ERA UN CUBO col pubblico dipinto su TUTTE e sei le facce: visto di sbieco, una torre rosa a puntini.
+       Ora e' una GRADINATA: rampa inclinata verso il campo (il lato +z locale guarda il centro con questa ry) col pubblico
+       sopra, fianchi triangolari e muro posteriore in cemento. Stessa impronta 24×24 e stessa altezza. */
+      const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;
+      const _y0=1.6,_run=24,_rise=Math.max(1,cH-_y0),_th=Math.atan2(_rise,_run),_len=Math.hypot(_run,_rise);
+      const ramp=new THREE.Mesh(new THREE.PlaneGeometry(24,_len),new THREE.MeshLambertMaterial({color:0xffffff,map:x>0?_sud.texFull:_nord.texFull}));
+      ramp.position.set(0,_y0+_rise/2,0);ramp.rotation.x=-(Math.PI/2-_th);g.add(ramp);
+      const back=new THREE.Mesh(new THREE.BoxGeometry(24,cH,0.8),cM);back.position.set(0,cH/2,-12.4);g.add(back);
+      const _sh=new THREE.Shape();_sh.moveTo(12,0);_sh.lineTo(-12.8,0);_sh.lineTo(-12.8,cH);_sh.lineTo(12,_y0);_sh.lineTo(12,0);
+      const _sg=new THREE.ShapeGeometry(_sh);
+      [-12,12].forEach(sx=>{const sd=new THREE.Mesh(_sg,new THREE.MeshLambertMaterial({color:cM.color,side:THREE.DoubleSide}));sd.rotation.y=-Math.PI/2;sd.position.set(sx,0,0);g.add(sd);});
+      scene.add(g);try{if(typeof window!=='undefined')(window.__CPM_ANGOLI70=window.__CPM_ANGOLI70||{n:0}).n++;}catch(_e){}
+    }else{
     const cm=new THREE.Mesh(new THREE.BoxGeometry(24,cH,24),new THREE.MeshLambertMaterial({color:0xffffff,map:x>0?_sud.texFull:_nord.texFull}));
-    cm.position.set(x,cH/2,z);cm.rotation.y=ry;scene.add(cm);
+    cm.position.set(x,cH/2,z);cm.rotation.y=ry;scene.add(cm);}
     const cb=new THREE.Mesh(new THREE.BoxGeometry(24,2,24),cM);cb.position.set(x,1,z);scene.add(cb);
   });
 

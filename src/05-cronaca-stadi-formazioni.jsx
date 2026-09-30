@@ -416,12 +416,13 @@ function _hlOvlCat(outKey,ok,actionLabel){
   return"pass";
 }
 function hlOverlay(outKey,ok,actionLabel,heroFirst,seed,outKind,wood){
-  const cat=_hlOvlCat(outKey,ok,actionLabel);
+  const _c70=!(typeof window!=='undefined'&&window.__CPM_NO_COND70)&&/conduc/i.test(String(actionLabel||""))&&(outKey==="recovery"||!ok);/* [7.999.70 collaudo Codex 003, gi30 «Dribbling centrale e conduci» · gi123 «Giratone e conduci». Rosso __CPM_NO_COND70] azioni d'ATTACCO col premio recovery: la sovrimpressione pescava i testi del recupero difensivo («Recupero decisivo», «Riaggressione immediata») e sul fallimento quelli del tiro murato («Conclusione murata»). Una conduzione si racconta come dribbling. */
+  const cat=_c70?(ok?"dribble":"dribble_fail"):_hlOvlCat(outKey,ok,actionLabel);
   // M1: sul "miss" usa il sotto-pool coerente con l'esito granulare deciso dal motore (palo/parata/murato/fuori).
   //   [6.76.0 LMV-S1] esteso a TUTTI i fail offensivi con esito granulare noto (fail:"intercept"/"through"/
   //   "miss_easy"): prima un cross deviato in ANGOLO con fail:"intercept" mostrava «Passaggio intercettato»
   //   mentre 3D+box-score raccontavano il corner — il layer M1 era di fatto ristretto a key==="miss".
-  const _nk=(cat==="miss"||(!ok&&(cat==="pass_fail"||cat==="def_fail"||cat==="dribble_fail"||cat==="miss_big")))?_missKindNorm(outKind):null;
+  const _nk=_c70?null:(cat==="miss"||(!ok&&(cat==="pass_fail"||cat==="def_fail"||cat==="dribble_fail"||cat==="miss_big")))?_missKindNorm(outKind):null;
   const pool=(_nk==="post"&&wood==="bar")?_BAR_OVL:((_nk&&_MISS_OVL[_nk])||HL_OVERLAY_POOLS[cat]||HL_OVERLAY_POOLS.nothing);/* [7.217.0] stessa famiglia, parole del legno REALMENTE colpito */
   const i=(((seed|0)%pool.length)+pool.length)%pool.length;
   const good=["goal","assist","chance","pass","cross","dribble","recovery","tackle","save_hero"];

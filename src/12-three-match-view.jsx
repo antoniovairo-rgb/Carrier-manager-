@@ -559,6 +559,62 @@ function ThreeMatchView(props){
        senza stadio è meglio di una schermata nera — ma smette di mentire. */
       try{if(typeof window!=='undefined'){window.__CPM_STADFAIL={msg:String((e&&e.message)||e),stack:String((e&&e.stack)||"").slice(0,600)};console.warn("[CPM-STADIO] costruzione interrotta:",(e&&e.message)||e);}}catch(_e535){}}
 
+    /* [7.999.70 stadi fase 2 — galleria fase 1: «negli stadi piccoli meta' del quadro e' cielo nero». Rosso __CPM_NO_FONDALE70]
+       IL MONDO OLTRE LO STADIO. Il cielo era solo scene.background, un colore piatto: sopra una tribuna bassa il telefono in
+       verticale mostrava un rettangolo vuoto. Ora un FONDALE: cilindro aperto (lato interno, fuori dalla nebbia, un solo draw
+       call) con cielo sfumato verso l'orizzonte, alone caldo dei riflettori sopra lo stadio e la sagoma di cio' che c'e' intorno
+       — colline, alberi e case basse in provincia; palazzi con le finestre accese in citta'. Seme = template+capienza: lo stesso
+       stadio ha sempre lo stesso orizzonte. Solo scenografia: nessuna luce, nessun effetto sul gioco. */
+    try{if(!(typeof window!=='undefined'&&window.__CPM_NO_FONDALE70)){
+      const _st70=(sr.current&&sr.current._stad455)||{},_tp70=String(_st70.tpl||""),_cp70=+(_st70.cap||18000);
+      const _paese70=/provincia|comunale/.test(_tp70)||_cp70<12000;
+      let _sd70=(Math.abs(hashStr(_tp70+"|"+_cp70+"|fondale"))>>>0)||7;const _r70=()=>{_sd70=(_sd70*1664525+1013904223)>>>0;return _sd70/4294967296;};
+      const _cv70=document.createElement("canvas");_cv70.width=2048;_cv70.height=512;const _x70=_cv70.getContext("2d");
+      const _hex70=c=>"#"+(c>>>0).toString(16).padStart(6,"0").slice(-6);
+      /* il canvas e' sRGB: la texture lo dichiara (sotto) e non passa dal tone mapping. Lo sfondo della scena invece e' un colore LINEARE che il renderer converte: la cima del cilindro usa lo stesso colore gia' convertito, cosi' la giunzione col cielo non si vede */
+      const _top70=(function(){try{const c=new THREE.Color(skyCol);if(c.convertLinearToSRGB)c.convertLinearToSRGB();return "#"+c.getHexString();}catch(_e){return _hex70(skyCol);}})();
+      const _nt70=tod!=="day"&&tod!=="dusk";
+      /* cielo: in alto il colore della scena (giunzione invisibile con scene.background), all'orizzonte piu' chiaro */
+      const _g70=_x70.createLinearGradient(0,0,0,512);
+      if(tod==="day"){_g70.addColorStop(0,_top70);_g70.addColorStop(0.72,"#b9d3ea");_g70.addColorStop(1,"#dbe7f0");}
+      else if(tod==="dusk"){_g70.addColorStop(0,_top70);_g70.addColorStop(0.55,"#5a2a4a");_g70.addColorStop(0.8,"#c8643c");_g70.addColorStop(1,"#f0a060");}
+      else{_g70.addColorStop(0,_top70);_g70.addColorStop(0.62,"#0e1830");_g70.addColorStop(0.85,"#1f2c4a");_g70.addColorStop(1,"#3a3a4e");}
+      _x70.fillStyle=_g70;_x70.fillRect(0,0,2048,512);
+      if(_nt70){/* stelle rade nella parte alta (seminate: sempre le stesse) */
+        for(let i=0;i<140;i++){const sx=_r70()*2048,sy=_r70()*230,a=0.25+_r70()*0.55;_x70.fillStyle="rgba(230,236,255,"+a.toFixed(2)+")";_x70.fillRect(sx,sy,_r70()<0.15?2:1,_r70()<0.15?2:1);}
+      }
+      const _hz70=440;/* linea dell'orizzonte nel canvas (y) */
+      const _sil70=tod==="day"?"#5f7488":tod==="dusk"?"#140a18":"#020307";
+      const _sil70b=tod==="day"?"#7d92a6":tod==="dusk"?"#221228":"#070a14";
+      const _nebbia70=(wfx==="rain"||wfx==="storm"||wfx==="fog"||wfx==="snow");
+      _x70.globalAlpha=_nebbia70?0.55:1;
+      /* piano lontano: colline morbide (sempre) */
+      _x70.fillStyle=_sil70b;_x70.beginPath();_x70.moveTo(0,512);
+      for(let x=0;x<=2048;x+=32){const y=_hz70-22-28*Math.sin(x/2048*Math.PI*4+_sd70%7)-14*Math.sin(x/2048*Math.PI*11+1.3);_x70.lineTo(x,y);}
+      _x70.lineTo(2048,512);_x70.closePath();_x70.fill();
+      _x70.fillStyle=_sil70;
+      if(_paese70){/* provincia: alberi e case basse, qualche finestra accesa, un campanile */
+        let x=0;while(x<2048){const w=18+_r70()*30;
+          if(_r70()<0.62){const h=16+_r70()*26;_x70.beginPath();_x70.ellipse(x+w/2,_hz70-h*0.55,w*0.55,h*0.6,0,0,Math.PI*2);_x70.fill();_x70.fillRect(x+w/2-2,_hz70-h*0.2,4,h*0.2+72);}
+          else{const h=14+_r70()*16;_x70.fillRect(x,_hz70-h,w,h+72);_x70.beginPath();_x70.moveTo(x-3,_hz70-h);_x70.lineTo(x+w/2,_hz70-h-9);_x70.lineTo(x+w+3,_hz70-h);_x70.fill();
+            if(_nt70&&_r70()<0.6){_x70.fillStyle="rgba(255,206,120,0.85)";_x70.fillRect(x+w*0.3,_hz70-h*0.6,3,4);_x70.fillStyle=_sil70;}}
+          x+=w*(0.7+_r70()*0.6);}
+        const cx=300+_r70()*1400;_x70.fillRect(cx,_hz70-78,10,80);_x70.beginPath();_x70.moveTo(cx-2,_hz70-78);_x70.lineTo(cx+5,_hz70-96);_x70.lineTo(cx+12,_hz70-78);_x70.fill();
+      }else{/* citta': palazzi di altezze diverse, finestre accese, qualche antenna */
+        let x=0;while(x<2048){const w=26+_r70()*54,h=30+_r70()*(_cp70>=40000?120:85);_x70.fillRect(x,_hz70-h,w,h+72);
+          if(_r70()<0.2)_x70.fillRect(x+w*0.5,_hz70-h-14,2,14);
+          if(_nt70){for(let wy=_hz70-h+6;wy<_hz70-4;wy+=7)for(let wx=x+4;wx<x+w-4;wx+=6)if(_r70()<0.18){_x70.fillStyle=_r70()<0.8?"rgba(255,214,140,0.8)":"rgba(170,210,255,0.75)";_x70.fillRect(wx,wy,2,3);}_x70.fillStyle=_sil70;}
+          x+=w+(_r70()<0.3?_r70()*16:0);}
+      }
+      _x70.globalAlpha=1;_x70.fillStyle=_sil70;_x70.fillRect(0,_hz70,2048,72);
+      if(_nt70){/* luci lontane di strade e case nella fascia di terreno: la notte ha profondita' */for(let i=0;i<(_paese70?90:220);i++){const lx=_r70()*2048,ly=_hz70+3+Math.pow(_r70(),1.6)*22;_x70.fillStyle=_r70()<0.75?"rgba(255,196,110,"+(0.35+_r70()*0.45).toFixed(2)+")":"rgba(200,225,255,0.55)";_x70.fillRect(lx,ly,_r70()<0.2?2:1,1);}}
+      if(_nt70){/* alone caldo dei riflettori che sale dallo stadio */const _gl70=_x70.createLinearGradient(0,_hz70-180,0,_hz70);_gl70.addColorStop(0,"rgba(255,236,200,0)");_gl70.addColorStop(1,"rgba(255,236,200,0.10)");_x70.fillStyle=_gl70;_x70.fillRect(0,_hz70-180,2048,180);}
+      const _tx70=new THREE.CanvasTexture(_cv70);_tx70.wrapS=THREE.RepeatWrapping;if(THREE.sRGBEncoding!=null)_tx70.encoding=THREE.sRGBEncoding;_tx70.repeat.set(2,1);
+      const _R70=175,_H70=150;/* ben oltre la tribuna piu' profonda (xl: sideX 78 + gradinate ~30) */
+      const _cyl70=new THREE.Mesh(new THREE.CylinderGeometry(_R70,_R70,_H70,48,1,true),new THREE.MeshBasicMaterial({map:_tx70,side:THREE.BackSide,fog:false,depthWrite:false,toneMapped:false}));
+      _cyl70.position.set(0,_H70/2-18,0);_cyl70.renderOrder=-1;scene.add(_cyl70);
+      try{if(typeof window!=='undefined')window.__CPM_FONDALE70={tipo:_paese70?"paese":"citta",tpl:_tp70||null,cap:_cp70,R:_R70,tod};}catch(_e){}
+    }}catch(_e70){}
     // Factory giocatore (MeshPhong procedurale)
     // Sprint 3D-6: varietà deterministica per indice — altezza/corporatura + carnagione,
     // così i 22 giocatori non sono più cloni identici (nessun nuovo prop, seed = indice roster).
