@@ -52,7 +52,7 @@ async function misura(gi) {
   const page = await b.newPage({ viewport: { width: 412, height: 915 } });
   await installCdnRoutes(page);
   page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
-  await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; window.__CPM_REC = true; });
+  await page.addInitScript(r74 => { window.__CPM_GLB = false; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; window.__CPM_REC = true; if (r74) { window.__CPM_NO_EL74 = 1; window.__CPM_NO_PG74 = 1; } }, !!process.env.CPM_ROSSO74);/* [7.999.74] CPM_ROSSO74=1 spegne sguardo ripido (EL74) e tetto della guardia-palla sulle difensive (PG74): misurato rosso gi138 73% · gi133 84% · gi146 72% · gi33 35% */
   try {
     await openMatch(page, port);
     await sleep(700);

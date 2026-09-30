@@ -8900,7 +8900,13 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _dEl=_elH-_elL;
         {const _ovE=(Math.abs(_dEl)-_elMax*0.72)/(_elMax*0.28);
          if(_ovE>0){const _wE=Math.min(_ovE,1),_pinE=_elL+(_dEl-Math.sign(_dEl)*_elMax*0.9);
-           const _el2=_elL+(_pinE-_elL)*_wE;tLy=clamp(tPy+Math.tan(_el2)*_hlC,0.4,26);}}
+           const _el2=_elL+(_pinE-_elL)*_wE;const _ly74=tPy+Math.tan(_el2)*_hlC;
+           /* [7.999.74 guardiano hero-in-frame, gi133/gi138: eroe nell'angolo della propria area, camera quasi sopra di lui (3-4u in
+              pianta, 17,7 di quota): serviva uno sguardo a -77° ma il punto guardato, fermo a ~12u e con pavimento a quota 0,4, arriva
+              al massimo a -54° → eroe sotto il bordo del quadro per tutta la conclusione. Rosso __CPM_NO_EL74] Se lo sguardo chiesto
+              buca il pavimento, il punto guardato si AVVICINA lungo la stessa direzione fino a quota 0,4: stesso angolo, niente buco. */
+           if(_ly74<0.4&&_el2<0&&!(typeof window!=='undefined'&&window.__CPM_NO_EL74)){const _h74=Math.max(0.6,(tPy-0.4)/Math.tan(Math.min(1.45,-_el2+0.07))),/* +4° di margine: il richiamo mira al busto, i piedi devono stare dentro */_k74=_h74/_hlC;tLx=tPx+(tLx-tPx)*_k74;tLz=tPz+(tLz-tPz)*_k74;tLy=0.4;}
+           else tLy=clamp(_ly74,0.4,26);}}
       }
       /* [7.237.0 #50] RICHIAMO-PALLA A LIVELLO TARGET: quando il soggetto è passato alla palla, la stessa
          rotazione del richiamo 7.225 gira sul PALLONE — così il lerp del lookAt lavora A FAVORE della
@@ -9558,6 +9564,14 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         const _aMB=Math.atan(_tHB*((camera&&camera.aspect)||0.75))*0.97;
         if(Math.abs(_dAB)>_aMB){
           let _corB=_dAB-Math.sign(_dAB)*_aMB*0.98;const _capB=Math.min(Math.abs(_corB),dt*2.8);_corB=Math.sign(_corB)*_capB;
+          /* [7.999.74 guardiano hero-in-frame, gi146: sull'intervento difensivo la guardia-palla ruotava lo sguardo verso il pallone
+             respinto e portava l'eroe a ndc x 1,1-1,6 per 19 fotogrammi su 27 (il bersaglio del richiamo era giusto, la vista resa no).
+             Rosso __CPM_NO_PG74] Sugli highlight DIFENSIVI (la storia e' l'eroe, 7.482) la rotazione verso il pallone si ferma dove
+             l'eroe toccherebbe il 94% del semiquadro: il pallone entra se c'e' posto, l'eroe resta comunque dentro. */
+          if(P.hlDef&&hero&&hero.visible&&!(typeof window!=='undefined'&&window.__CPM_NO_PG74)){
+            const _aHB=Math.atan2(hero.position.z-_czB,hero.position.x-_cxB);let _dH=_aHB-_aLB;while(_dH>Math.PI)_dH-=2*Math.PI;while(_dH<-Math.PI)_dH+=2*Math.PI;
+            const _lim=_aMB/0.97*0.94;/* dopo la rotazione l'eroe sta a (_dH-_corB) dall'asse: deve restare entro _lim */
+            if(Math.abs(_dH-_corB)>_lim){const _cMax=_corB>0?(_dH+_lim):(_dH-_lim);_corB=_corB>0?Math.max(0,Math.min(_corB,_cMax)):Math.min(0,Math.max(_corB,_cMax));}}
           _hyBump478(sr,'b',_corB);
           const _a2B=_aLB+_corB;camLook.x=_cxB+Math.cos(_a2B)*_hlB;camLook.z=_czB+Math.sin(_a2B)*_hlB;}
         const _gdB=Math.hypot(_dxB,_dzB)||1;
@@ -10327,6 +10341,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         _g.n++;_g.ultimo=+_h480.toFixed(4);if(_h480<_g.min)_g.min=+_h480.toFixed(4);if(_h480>_g.max)_g.max=+_h480.toFixed(4);
         if(!_dentro)_g.fuori++;
         _g.fase=P.matchPhase||null;
+        if(window.__CPM_FR73&&window.__CPM_FR73.length<600){try{window.__CPM_FR73.push({t:Math.round(performance.now()),ax:+_F.a.x.toFixed(2),ay:+_F.a.y.toFixed(2),hx:+hero.position.x.toFixed(1),hz:+hero.position.z.toFixed(1),bx:ball?+ball.position.x.toFixed(1):null,bz:ball?+ball.position.z.toFixed(1):null,cx:+camera.position.x.toFixed(1),cz:+camera.position.z.toFixed(1),cy:+camera.position.y.toFixed(1),lx:+camLook.x.toFixed(1),lz:+camLook.z.toFixed(1),tlx:(typeof tLx!=='undefined')?+(+tLx).toFixed(1):null,tlz:(typeof tLz!=='undefined')?+(+tLz).toFixed(1):null,sb:(typeof _subjBall50!=='undefined'&&_subjBall50)?1:0,ph:P.matchPhase||null});}catch(_e73){}}/* [7.999.74 indagine hero-in-frame] anello fotogramma per fotogramma, solo collaudo */
       }catch(_e480){}}
       /* [7.561.0 missione — IL PALLONE ESCE DALL'INQUADRATURA, E IN CRONACA NESSUNO LO RIPORTA DENTRO]
          Collaudo PO del 24 agosto: «il pallone spesso esce fuori dalla scena, la telecamera non segue
