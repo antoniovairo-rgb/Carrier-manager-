@@ -21727,7 +21727,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          a 2fps recupera i fotogrammi mancanti. Cambia SOLO la velocita' di convergenza della camera —
          bersagli, reti e ordine delle passate restano intatti; kp=0 (attesa stacco) resta 0. */
       /* [7.708 — PROVATO E REVOCATO CON LE SUE MISURE: «la camera corre in tempo reale»] La direttiva PO «i test con GLB ON» ha smascherato la camera CONGELATA nell'headless lento (fuori quadro 23% contro 8%): il clock di scena tappato a 0,05s/fotogramma rende i lerp per-FOTOGRAMMA, quindi SOTTO i 20fps la regia panora in tempo-di-scena. Rimedio provato: fattore riscalato su 1-(1-k)^(dtReale/dt). Ha funzionato dove doveva (fuori quadro 23%→0% in GLB ON) ma ha toccato cio' che non doveva: il banco tremore, in tre tarature di perimetro (globale · saliente · saliente+!isHL), ha prodotto scene 007 a 1,4/3,9/3,6 inversioni/s (v3: 1 sporca su 4 giri) contro il rosso pulito 2/2 (max 0,36/0,53). Ipotesi a verbale: con la convergenza rapida la camera arriva alle scene eroe SOTTO la soglia dello stacco-nero (_dSnap<=6), niente snap duro, e i lerp negoziano con le reti sugli ultimi metri — il duello che il 7.704 aveva spento. E il difetto curato vive SOLO sotto i 20fps (sopra, il tappo non morde): nessuna prova che il telefono del PO ci scenda. Costo misurato sul metro sacro, beneficio non provato sul dispositivo: revocato. CHI RIPRENDE: prima misuri gli fps del telefono; poi la strada giusta e' probabilmente lo SNAP D'INGRESSO scena piu' permissivo, non il riscalo. */
-      if(typeof window!=='undefined'&&window.__CPM_CAMT767ON){try{window.__CPM_PROJ767=(x,y,z)=>{const v=new THREE.Vector3(x,y,z).project(camera);return{x:+v.x.toFixed(3),y:+v.y.toFixed(3),z:+v.z.toFixed(3)};};window.__CPM_CAMT767={tPx:+tPx.toFixed(1),tPy:+tPy.toFixed(1),tPz:+tPz.toFixed(1),tLx:+tLx.toFixed(1),tLy:+tLy.toFixed(1),tLz:+tLz.toFixed(1),kp:+kp.toFixed(4),kl:+kl.toFixed(4),fov:+(camera.fov||0).toFixed(1),cx:+camera.position.x.toFixed(1),cy:+camera.position.y.toFixed(1),cz:+camera.position.z.toFixed(1),lx:+camLook.x.toFixed(1),ly:+camLook.y.toFixed(1),lz:+camLook.z.toFixed(1),sal:!!P.salienteOn,hl:+(camHL||0).toFixed(2),isHL:!!isHL,ph:P.matchPhase||null,tocc:(sr.current._tocc503||[]).slice(-6)};}catch(_e767){}}/* [7.767 strumentazione test-only] i bersagli della regia PRIMA del liscio: senza, «lo sguardo e' dieci unita' lontano dal pallone» non distingue un lerp lento da un bersaglio sbagliato */
+      if(typeof window!=='undefined'&&window.__CPM_CAMT767ON){try{window.__CPM_PROJ767=(x,y,z)=>{const v=new THREE.Vector3(x,y,z).project(camera);return{x:+v.x.toFixed(3),y:+v.y.toFixed(3),z:+v.z.toFixed(3)};};window.__CPM_CAMT767={tPx:+tPx.toFixed(1),tPy:+tPy.toFixed(1),tPz:+tPz.toFixed(1),tLx:+tLx.toFixed(1),tLy:+tLy.toFixed(1),tLz:+tLz.toFixed(1),kp:+kp.toFixed(4),kl:+kl.toFixed(4),fov:+(camera.fov||0).toFixed(1),cx:+camera.position.x.toFixed(1),cy:+camera.position.y.toFixed(1),cz:+camera.position.z.toFixed(1),lx:+camLook.x.toFixed(1),ly:+camLook.y.toFixed(1),lz:+camLook.z.toFixed(1),sal:!!P.salienteOn,hl:+(camHL||0).toFixed(2),isHL:!!isHL,ph:P.matchPhase||null,tocc:(sr.current._tocc503||[]).slice(-6),hs94:(typeof hero!=='undefined'&&hero&&hero.position)?(()=>{const _v94=hero.position.clone();_v94.y+=0.9;_v94.project(camera);return[+_v94.x.toFixed(3),+_v94.y.toFixed(3)];})():null};}catch(_e767){}}/* [7.767 strumentazione test-only] i bersagli della regia PRIMA del liscio: senza, «lo sguardo e' dieci unita' lontano dal pallone» non distingue un lerp lento da un bersaglio sbagliato */
       /* [22/09 POC — POSIZIONE della camera della presa, solo review. Rosso __CPM_NO_PRESACAM] MISURATO: scritta
          dopo questo lerp, la passata cambiava solo lo sguardo (tP* si ricalcola da capo al fotogramma dopo) —
          portiere nel quadro solo dal contatto, alto 0,06-0,09. Qui la posizione; al primo fotogramma della presa
@@ -23057,9 +23057,23 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
 /* ========================================
    D-PAD  (W/↑ = avanti) — pulsanti grandi
 ======================================== */
-function DPad({onMove,dark=false,size=42}){
+function DPad({onMove,dark=false,size=42,v94=false,mosse=null}){
   const SZ=size;
-  const btn=(lbl,dx,dy)=>(
+  /* [7.999.83 #94 — «migliora la grafica degli highlight: D-Pad»] con v94 (solo la scheda del movimento mobile) le
+     frecce sono chevron disegnati invece dei triangoli di testo, il tasto premuto si illumina per 160 ms e al centro
+     c'e' il numero di mosse rimaste al posto del puntino. Senza v94 il pad e' quello di prima. Rosso __CPM_NO_HL94. */
+  const [prem94,setPrem94]=React.useState(null);
+  const _ch94=(r)=>(<svg width={Math.round(SZ*0.42)} height={Math.round(SZ*0.42)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{transform:"rotate("+r+"deg)"}}><path d="M6 15l6-6 6 6"></path></svg>);
+  const _ic94={"▲":0,"▶":90,"▼":180,"◀":270};
+  const btn=(lbl,dx,dy)=>v94?(
+    <button aria-label={lbl} onPointerDown={e=>{e.preventDefault();setPrem94(lbl);setTimeout(()=>setPrem94(p=>p===lbl?null:p),160);onMove(dx,dy);}}
+      style={{width:SZ,height:SZ,borderRadius:RAD.sm,background:prem94===lbl?"linear-gradient(180deg,rgba(167,139,250,0.55),rgba(124,58,237,0.45))":"linear-gradient(180deg,rgba(64,78,110,0.95),rgba(40,52,78,0.95))",
+        border:"1px solid "+(prem94===lbl?"rgba(221,214,254,0.9)":"rgba(196,181,253,0.38)"),color:"#ede9fe",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+        userSelect:"none",WebkitUserSelect:"none",touchAction:"none",padding:0,transform:prem94===lbl?"scale(0.94)":"none",transition:"transform .08s, background .12s",
+        boxShadow:"inset 0 1px 0 rgba(255,255,255,0.10), 0 2px 6px rgba(0,0,0,0.35)"}}>
+      {_ch94(_ic94[lbl])}
+    </button>
+  ):(
     <button onPointerDown={e=>{e.preventDefault();onMove(dx,dy);}}
       style={{width:SZ,height:SZ,borderRadius:RAD.sm,
         background:dark?"linear-gradient(180deg,rgba(51,65,92,0.92),rgba(34,45,68,0.92))":"rgba(30,42,60,0.08)",/* [7.919 collaudo PO «renderei un po' piu' chiari gli sfondi delle statistiche, del dpad e delle azioni»] il tasto scuro era quasi nero (0,52 di nero su fondo scuro): si vedeva il bordo, non il tasto */
@@ -23075,7 +23089,7 @@ function DPad({onMove,dark=false,size=42}){
   return(
     <div style={{display:"grid",gridTemplateColumns:`${SZ}px ${SZ}px ${SZ}px`,gridTemplateRows:`${SZ}px ${SZ}px ${SZ}px`,gap:4,userSelect:"none",flexShrink:0}}>
       <div/>{btn("▲",+2.5,0)}<div/>
-      {btn("◀",0,-2.5)}<div style={{display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:7,height:7,borderRadius:"50%",background:dark?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.1)"}}/></div>{btn("▶",0,+2.5)}
+      {btn("◀",0,-2.5)}<div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>{v94&&mosse!=null?<div data-cpm="dpad-mosse" style={{display:"flex",flexDirection:"column",alignItems:"center",lineHeight:1}}><span style={{fontSize:FS.bodyLg,fontWeight:900,color:"#ede9fe",fontVariantNumeric:"tabular-nums"}}>{mosse}</span><span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:.3,color:"rgba(196,181,253,0.85)",marginTop:1}}>{mosse===1?"mossa":"mosse"}</span></div>:<div style={{width:7,height:7,borderRadius:"50%",background:dark?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.1)"}}/>}</div>{btn("▶",0,+2.5)}
       <div/>{btn("▼",-2.5,0)}<div/>
     </div>
   );
