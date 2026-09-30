@@ -9703,6 +9703,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
      che il PO ha chiesto di togliere) ma diventano piccoli, incassati nella riga del minuto. Rosso
      __CPM_NO901 = la barra di prima (due righe, ~92 px, «PREMIER DIVISION»/poss./momentum per squadra). */
   const _no901=!!(typeof window!=='undefined'&&window.__CPM_NO901);
+  const _hl94=!(typeof window!=='undefined'&&window.__CPM_NO_HL94);/* [7.999.83 #94] nuova veste degli highlight (scheda del movimento, D-pad, barra «in corso»). Rosso __CPM_NO_HL94 = la veste della 7.905 */
   const _compTag901=(()=>{
     if(phase==="walkout")return"Ingresso in campo";
     if(phase==="ceremony")return(ceremony&&ceremony.light&&!(typeof window!=='undefined'&&window.__CPM_NO_FESTA3D47))?"Fine partita":"Premiazione";/* [7.999.47] la festa leggera non premia nessuno */
@@ -10651,6 +10652,28 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                     <button onClick={()=>setPhase("hl_choose")} style={{padding:"10px 12px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:800,fontSize:FS.body,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 2px 8px rgba(0,0,0,0.5)"}}>✅</button>
                   </div>
                 </div>
+                ):_hl94?(
+                <div data-cpm="mossa" data-v94="1" style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,maxHeight:"44vh",boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"linear-gradient(180deg,rgba(38,49,76,0.94) 0%,rgba(22,30,49,0.97) 100%)",borderTop:"1px solid rgba(196,181,253,0.35)",boxShadow:"0 -10px 28px rgba(0,0,0,0.45)",padding:"10px 14px 12px",display:"flex",flexDirection:"column",gap:8}}>
+                  {/* [7.999.83 #94 — PO «migliora la grafica negli highlight: racconto azioni, D-Pad, movimenti»] MISURATO
+                      con la sonda _hl94 (412×915, scene 24/18/110): la scheda della 7.905 era alta 259 px e partiva a
+                      y 655, mentre il centro dell'eroe stava a y 615 — gambe e pallone sotto la scheda proprio nel passo
+                      in cui lo devi muovere. Qui la stessa informazione in meno righe: niente maniglia (la scheda non si
+                      trascina: era un invito falso), titolo e zona sulla stessa riga, la barra della pressione senza
+                      l'etichetta sopra (il suo senso lo dice la riga di aiuto, che ne prende il colore), le mosse
+                      rimaste DENTRO il D-pad al posto dei pallini, aiuto e «Scegli» impilati accanto al pad. */}
+                  <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
+                    <div style={{flex:1,minWidth:0,fontSize:FS.subhead,fontWeight:900,lineHeight:1.15,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{intentTitle(curSit.text,curSit.intent,_scoreDiff)}</div>
+                    {ZONES[zone]?.label&&<span style={{flexShrink:0,padding:"2px 8px",borderRadius:RAD.pill,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.14)",fontSize:FS.caption,fontWeight:800,color:"#cbd5e1",whiteSpace:"nowrap"}}>📍 {ZONES[zone]?.label}</span>}
+                  </div>
+                  {curSit.maxMoves>0&&<div data-cpm="pressione" aria-label="Pressione" style={{height:4,background:"rgba(255,255,255,0.12)",borderRadius:RAD.pill,overflow:"hidden",flexShrink:0}}><div style={{height:"100%",width:(pressureBar*100)+"%",background:pressureBar>0.4?"#f59e0b":pressureBar>0.2?"#f97316":"#ef4444",borderRadius:RAD.pill,transition:"width 0.1s"}}/></div>}
+                  <div style={{display:"flex",alignItems:"center",gap:14,flexShrink:0}}>
+                    {showDPad(curSit)&&<div data-cpm="dpad" style={{flexShrink:0}}><DPad onMove={handleDPad} dark size={44} v94 mosse={movesLeft}/></div>}
+                    <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:10}}>
+                      <div data-cpm="aiuto" style={{fontSize:FS.small,lineHeight:1.35,fontWeight:600,color:"#cbd5e1"}}>{movesLeft>0?<>Sposta l'eroe con le frecce, poi scegli la giocata. </>:<>Scegli la giocata. </>}<span style={{fontWeight:800,color:pressureBar>0.4?"#fbbf24":pressureBar>0.2?"#fb923c":"#f87171"}}>Il marcatore sta arrivando.</span></div>
+                      <button data-cpm="scegli" onClick={()=>setPhase("hl_choose")} style={{height:52,width:"100%",padding:"0 18px",borderRadius:RAD.sm,border:"none",background:TH.primary,color:"#fff",fontWeight:900,fontSize:FS.bodyLg,letterSpacing:.3,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:6,boxShadow:"0 4px 12px rgba(0,0,0,0.35)"}}>Scegli<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
+                    </div>
+                  </div>
+                </div>
                 ):(
                 <div data-cpm="mossa" style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,maxHeight:"44vh",boxSizing:"border-box",overflow:"hidden",borderRadius:"16px 16px 0 0",background:"linear-gradient(180deg,rgba(38,49,76,0.96) 0%,rgba(22,30,49,0.98) 100%)",borderTop:"1px solid rgba(196,181,253,0.35)",boxShadow:"0 -10px 28px rgba(0,0,0,0.5)",padding:"8px 14px 10px",display:"flex",flexDirection:"column",gap:6}}>
                   {/* [7.905.0 — C3 v4, terza nota del PO (foto 16:48) «primo cursore con grafica non coerente»] lo stesso
@@ -10781,11 +10804,26 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
                   );
                 })()
               )}
-              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(
+              {isNarrow&&phase==="hl_result"&&outcome&&!resultReveal&&(_hl94?(()=>{const _t94=String(chosenAct?.label||"");const _sp94=_t94.indexOf(" ");const _ic94=_sp94>0&&_sp94<=4?_t94.slice(0,_sp94):"⚽";const _tx94=_sp94>0&&_sp94<=4?_t94.slice(_sp94+1):_t94;return(
+                <div data-cpm="incorso94" style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,boxSizing:"border-box",background:"linear-gradient(180deg,rgba(5,8,16,0) 0%,rgba(5,8,16,0.86) 30%,rgba(5,8,16,0.94) 100%)",padding:"16px 14px 14px",display:"flex",alignItems:"center",gap:11}}>
+                  {/* [7.999.83 #94] «in corso»: prima una riga da 12 px con clessidra («⏳ 🎯 Assist filtrante…»), di un altro
+                      vestito rispetto a scheda e esito. Ora lo stesso linguaggio della scheda delle scelte: riquadro
+                      dell'icona, nome della giocata a 15 px, e tre punti che pulsano al posto dei puntini fissi. Il fondo
+                      resta scuro (≥ 0,86) per la leggibilita' sul prato chiaro misurata nella 7.976. */}
+                  <style>{"@keyframes cpmPunto94{0%,80%,100%{opacity:.25}40%{opacity:1}}"}</style>
+                  <div style={{width:34,height:34,borderRadius:RAD.sm,background:"rgba(196,181,253,0.16)",border:"1px solid rgba(196,181,253,0.35)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:FS.bodyLg,flexShrink:0}}><EmoText>{_ic94}</EmoText></div>
+                  <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
+                    <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:.5,color:"#a5b4fc",textTransform:"uppercase"}}>La giocata</div>
+                    <div style={{fontSize:FS.bodyLg,fontWeight:900,color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}><EmoText>{_tx94}</EmoText></div>
+                  </div>
+                  <div aria-hidden="true" style={{display:"flex",gap:4,flexShrink:0}}>{[0,1,2].map(k=><span key={k} style={{width:6,height:6,borderRadius:"50%",background:"#c4b5fd",animation:"cpmPunto94 1.2s ease-in-out "+(k*0.18)+"s infinite"}}/>)}</div>
+                </div>
+              );})():(
+
                 <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:16,background:"rgba(5,8,20,0.82)"/* [7.976.0 A17] la banda stava a 0,45: sul prato chiaro il fondo composito misurava #8f9095 e il testo 2,76:1. A 0,82 il fondo resta scuro qualunque cosa ci sia sotto */,padding:"12px 12px 14px"}}>
                   <div style={{fontSize:FS.small,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>⏳ {chosenAct?.label}<span style={{opacity:0.5}}>…</span></div>
                 </div>
-              )}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
+              ))}{/* [5.92.0 FIX PO] SUSPENSE: prima si guarda il 3D, l'esito appare al reveal */}
               {isNarrow&&phase==="hl_result"&&outcome&&resultReveal&&(
                 /* [7.901.0 — C3: L'ESITO E' UNA BANDA BASSA, ≤40% DELLO SCHERMO. Decisione del PO sulla
                    tavola approvata (Esito.dc.html): titolo dell'esito (verde se positivo), riga di cronaca,
