@@ -8056,11 +8056,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            sr.current._cerCam=_shot;}
           if(sr.current._cerFlags426&&sr.current._cerFlags426.visible)sr.current._cerFlags426.children.forEach((t,fi)=>{t.rotation.z=Math.sin(_ct*2.4+fi*1.3)*0.28;t.rotation.x=Math.sin(_ct*1.7+fi)*0.12;});
           if(sr.current._cerPhones429&&sr.current._cerPhones429.visible){const _pm429=sr.current._cerPhones429.material;_pm429.opacity=0.55+Math.sin(_ct*9)*0.2+Math.sin(_ct*23.7)*0.12;}/* [7.429.0] il tremolio dei telefonini */
-          const _hop=(_bk==="lap")?0:Math.abs(Math.sin(_ct*(_onPodium?4:3.4)))*0.22;
+          /* [7.999.75 collaudo PO «l'eroe vola, dovrebbe correre o camminare» (festa di fine partita, foto 12:26). Rosso __CPM_NO_VOLO75]
+             Il saltello continuo (fino a 0,22u) era del corpo PROCEDURALE: col corpo 3D la clip (corsa, vittoria, salti) porta gia'
+             il suo movimento verticale, e il saltello in piu' staccava i piedi dal prato mentre le gambe correvano. */
+          const _volo75=!!(hero&&hero._glbDriven)&&!(typeof window!=='undefined'&&window.__CPM_NO_VOLO75);
+          const _hop=(_bk==="lap"||_volo75)?0:Math.abs(Math.sin(_ct*(_onPodium?4:3.4)))*0.22;
           /* [7.429.0] MAI DENTRO IL PALCO: se l'eroe attraversa il cilindro del podio (es. il fest che lo
              richiama al centro dopo il giro) la quota sale sul piano del podio invece di sprofondarci */
           const _nearPod429=podiumGrp.visible&&Math.hypot(hero.position.x,hero.position.z)<1.7;
           if(_onPodium||_nearPod429)hero.position.y=1.05+_hop; else hero.position.y=Math.max(0,_hop);
+          if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _v75=(window.__CPM_VOLO75=window.__CPM_VOLO75||{n:0,maxY:0,glb:0});_v75.n++;_v75.glb=hero._glbDriven?1:0;if(!(_onPodium||_nearPod429)&&hero.position.y>_v75.maxY)_v75.maxY=+hero.position.y.toFixed(3);}catch(_e){}}
           if(_armsUp){hero._aL.rotation.x=-2.5;hero._aR.rotation.x=-2.5;hero._aL.rotation.z=-0.35;hero._aR.rotation.z=0.35;}
           else{hero._aR.rotation.x=-2.6;hero._aR.rotation.z=0.35;hero._aL.rotation.x=-0.2;hero._aL.rotation.z=0;}// cammina col trofeo alzato (destra) — braccia PROCEDURALI (fallback GLB off)
           // [7.24.1 collaudo PO «non alza la coppa con le mani, gli vola in testa!»] col CH38 le braccia
