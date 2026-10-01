@@ -1,0 +1,1224 @@
+{
+  "versione": "7.999.91",
+  "baseCommit": "d5d60bedec39b2d2dfbd7ebceccfa206999f36d2",
+  "compito": "Ricollaudo visivo difesa 3D: 16 scene, success/fail, pagina nuova per caso",
+  "comando": "$env:CPM_BATCH='1'; $env:CPM_MIN_START_GB='3.3'; $env:CPM_CHROME='C:/Program Files/Google/Chrome/Application/chrome.exe'; node tests/codex/ricollaudo-difesa-3d.mjs",
+  "seme": "scene forzate con un nome di partita distinto per indice",
+  "misure": [
+    {
+      "nome": "casi previsti",
+      "valore": 32,
+      "soglia": "32",
+      "esito": "ok"
+    },
+    {
+      "nome": "casi validi",
+      "valore": 32,
+      "soglia": "32",
+      "esito": "ok"
+    },
+    {
+      "nome": "tentativi non validi",
+      "valore": 2,
+      "soglia": "conservati nel grezzo",
+      "esito": "ok"
+    },
+    {
+      "nome": "esiti ActionResolved concordi",
+      "valore": 32,
+      "soglia": "32",
+      "esito": "ok"
+    }
+  ],
+  "codeCounts": {
+    "111": 0,
+    "113": 0,
+    "000": 0,
+    "001": 6,
+    "002": 8,
+    "003": 0,
+    "004": 0,
+    "005": 0,
+    "006": 0,
+    "007": 0,
+    "009": 0,
+    "010": 0,
+    "011": 0,
+    "012": 0,
+    "014": 0
+  },
+  "cases": [
+    {
+      "key": "33:0:success",
+      "gi": 33,
+      "ai": 0,
+      "outcome": "success",
+      "action": "🧱 Blocca con il corpo",
+      "observed": "save",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.04,
+      "openingNearestPlayerDistance": 3.66,
+      "codes84": [],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-success-v91-01-apertura.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "foot-near-impact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "33:0:fail",
+      "gi": 33,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "🧱 Blocca con il corpo",
+      "observed": "goal_against",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 2.92,
+      "openingNearestPlayerDistance": 3.66,
+      "codes84": [
+        "003"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-fail-v91-r2-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-fail-v91-r2-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-fail-v91-r2-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-fail-v91-r2-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-fail-v91-r2-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi33-a0-fail-v91-r2-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 13,
+            "y": 50.8
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "133:0:success",
+      "gi": 133,
+      "ai": 0,
+      "outcome": "success",
+      "action": "🏃 Sprint disperato sulla linea",
+      "observed": "save",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.67,
+      "openingNearestPlayerDistance": 5.73,
+      "codes84": [
+        "001",
+        "002"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "133:0:fail",
+      "gi": 133,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "🏃 Sprint disperato sulla linea",
+      "observed": "goal_against",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.88,
+      "openingNearestPlayerDistance": 5.72,
+      "codes84": [
+        "001",
+        "002",
+        "003"
+      ],
+      "codes91": [
+        "002"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi133-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 7.1,
+            "y": 21.5
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "134:0:success",
+      "gi": 134,
+      "ai": 0,
+      "outcome": "success",
+      "action": "✈️ Stacco dominante",
+      "observed": "save",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.29,
+      "openingNearestPlayerDistance": 4.34,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-success-v91-01-apertura.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "134:0:fail",
+      "gi": 134,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "✈️ Stacco dominante",
+      "observed": "goal_against",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.55,
+      "openingNearestPlayerDistance": 4.34,
+      "codes84": [
+        "001",
+        "003"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi134-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "timed-proxy-no-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 23.1,
+            "y": 55.6
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 24.3,
+            "y": 57.8
+          }
+        },
+        {
+          "ms": 750,
+          "ball": {
+            "x": 25.9,
+            "y": 62.9
+          }
+        },
+        {
+          "ms": 1000,
+          "ball": {
+            "x": 25.5,
+            "y": 62
+          }
+        },
+        {
+          "ms": 1250,
+          "ball": {
+            "x": 25.1,
+            "y": 60.9
+          }
+        },
+        {
+          "ms": 1500,
+          "ball": {
+            "x": 24.5,
+            "y": 59.6
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 2.2
+    },
+    {
+      "key": "138:0:success",
+      "gi": 138,
+      "ai": 0,
+      "outcome": "success",
+      "action": "📣 Allineamento difensivo immediato",
+      "observed": "save",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 5.64,
+      "openingNearestPlayerDistance": 3.17,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [
+        "001",
+        "002"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-success-v91-01-apertura.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "138:0:fail",
+      "gi": 138,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "📣 Allineamento difensivo immediato",
+      "observed": "through",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 5.58,
+      "openingNearestPlayerDistance": 3.22,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [
+        "001",
+        "002"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 18.8,
+            "y": 69.3
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 18.8,
+            "y": 69.3
+          }
+        },
+        {
+          "ms": 750,
+          "ball": {
+            "x": 18.8,
+            "y": 69.3
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 0.79
+    },
+    {
+      "key": "168:0:success",
+      "gi": 168,
+      "ai": 0,
+      "outcome": "success",
+      "action": "🛡️ Tackle duro — rischio rosso",
+      "observed": "recovery",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.21,
+      "openingNearestPlayerDistance": 7.23,
+      "codes84": [
+        "001",
+        "002"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "168:0:fail",
+      "gi": 168,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "🛡️ Tackle duro — rischio rosso",
+      "observed": "foul",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.23,
+      "openingNearestPlayerDistance": 7.39,
+      "codes84": [
+        "001",
+        "002"
+      ],
+      "codes91": [
+        "002"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi168-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 19.7,
+            "y": 47.3
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 19.7,
+            "y": 47.3
+          }
+        },
+        {
+          "ms": 750,
+          "ball": {
+            "x": 19.7,
+            "y": 47.3
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 0.2
+    },
+    {
+      "key": "31:0:success",
+      "gi": 31,
+      "ai": 0,
+      "outcome": "success",
+      "action": "🛡️ Scivolata netta",
+      "observed": "recovery",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 4.89,
+      "openingNearestPlayerDistance": 5.94,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "31:0:fail",
+      "gi": 31,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "🛡️ Scivolata netta",
+      "observed": "foul",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 4.51,
+      "openingNearestPlayerDistance": 5.96,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [
+        "002"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi31-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 26.4,
+            "y": 51.1
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 26.4,
+            "y": 51.1
+          }
+        },
+        {
+          "ms": 750,
+          "ball": {
+            "x": 26.4,
+            "y": 51.1
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 0.24
+    },
+    {
+      "key": "32:0:success",
+      "gi": 32,
+      "ai": 0,
+      "outcome": "success",
+      "action": "✋ Anticipo di posizione",
+      "observed": "recovery",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 15.34,
+      "openingNearestPlayerDistance": 13.62,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [
+        "002"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "32:0:fail",
+      "gi": 32,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "✋ Anticipo di posizione",
+      "observed": "through",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 15.29,
+      "openingNearestPlayerDistance": 13.64,
+      "codes84": [
+        "001",
+        "002"
+      ],
+      "codes91": [
+        "002"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi32-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 59.7,
+            "y": 25
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 59.7,
+            "y": 25
+          }
+        },
+        {
+          "ms": 750,
+          "ball": {
+            "x": 59.7,
+            "y": 25
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 0.24
+    },
+    {
+      "key": "36:0:success",
+      "gi": 36,
+      "ai": 0,
+      "outcome": "success",
+      "action": "✈️ Stacco di testa",
+      "observed": "save",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 4.23,
+      "openingNearestPlayerDistance": 5.39,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [
+        "001",
+        "002"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "36:0:fail",
+      "gi": 36,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "✈️ Stacco di testa",
+      "observed": "goal_against",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 4.46,
+      "openingNearestPlayerDistance": 5.43,
+      "codes84": [
+        "001",
+        "003"
+      ],
+      "codes91": [
+        "001"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 9.7,
+            "y": 38.9
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 9.3,
+            "y": 35
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 0.62
+    },
+    {
+      "key": "44:0:success",
+      "gi": 44,
+      "ai": 0,
+      "outcome": "success",
+      "action": "✈️ Stacco di testa deciso",
+      "observed": "save",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 4.57,
+      "openingNearestPlayerDistance": 5.28,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "44:0:fail",
+      "gi": 44,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "✈️ Stacco di testa deciso",
+      "observed": "goal_against",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 4.74,
+      "openingNearestPlayerDistance": 5.31,
+      "codes84": [
+        "001",
+        "003"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi44-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 16.4,
+            "y": 66.7
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 16.1,
+            "y": 70.8
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 0.59
+    },
+    {
+      "key": "45:0:success",
+      "gi": 45,
+      "ai": 0,
+      "outcome": "success",
+      "action": "🧱 Corpo sulla traiettoria",
+      "observed": "save",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.7,
+      "openingNearestPlayerDistance": 4.41,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [
+        "001"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "45:0:fail",
+      "gi": 45,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "🧱 Corpo sulla traiettoria",
+      "observed": "goal_against",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.69,
+      "openingNearestPlayerDistance": 4.41,
+      "codes84": [
+        "001",
+        "003"
+      ],
+      "codes91": [
+        "001"
+      ],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 6,
+            "y": 60.7
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "128:0:success",
+      "gi": 128,
+      "ai": 0,
+      "outcome": "success",
+      "action": "🛑 Chiusura immediata",
+      "observed": "recovery",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.74,
+      "openingNearestPlayerDistance": 4.5,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "128:0:fail",
+      "gi": 128,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "🛑 Chiusura immediata",
+      "observed": "through",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.73,
+      "openingNearestPlayerDistance": 4.52,
+      "codes84": [
+        "001",
+        "002"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi128-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 28.2,
+            "y": 74.6
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 28.2,
+            "y": 74.6
+          }
+        },
+        {
+          "ms": 750,
+          "ball": {
+            "x": 28.2,
+            "y": 74.6
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 0.26
+    },
+    {
+      "key": "137:0:success",
+      "gi": 137,
+      "ai": 0,
+      "outcome": "success",
+      "action": "⚡ Tackle in corsa preciso",
+      "observed": "recovery",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.65,
+      "openingNearestPlayerDistance": 3.37,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-success-v91-01-apertura.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "foot-near-impact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "137:0:fail",
+      "gi": 137,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "⚡ Tackle in corsa preciso",
+      "observed": "foul",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 4.07,
+      "openingNearestPlayerDistance": 3.36,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi137-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "foot-near-impact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 39.4,
+            "y": 29.8
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 39.8,
+            "y": 30.1
+          }
+        },
+        {
+          "ms": 750,
+          "ball": {
+            "x": 38.9,
+            "y": 29.6
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 0.18
+    },
+    {
+      "key": "157:0:success",
+      "gi": 157,
+      "ai": 0,
+      "outcome": "success",
+      "action": "🤸 Gettati sulla traiettoria",
+      "observed": "save",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.55,
+      "openingNearestPlayerDistance": 5.16,
+      "codes84": [
+        "002"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "157:0:fail",
+      "gi": 157,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "🤸 Gettati sulla traiettoria",
+      "observed": "goal_against",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 3.62,
+      "openingNearestPlayerDistance": 5.16,
+      "codes84": [
+        "002",
+        "003"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi157-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "arc-proxy-no-foot-contact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 16.3,
+            "y": 39.4
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "184:0:success",
+      "gi": 184,
+      "ai": 0,
+      "outcome": "success",
+      "action": "✋ Intercetta il filtrante",
+      "observed": "recovery",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 1.87,
+      "openingNearestPlayerDistance": 5.52,
+      "codes84": [
+        "001"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "foot-near-impact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "184:0:fail",
+      "gi": 184,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "✋ Intercetta il filtrante",
+      "observed": "through",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 1.87,
+      "openingNearestPlayerDistance": 5.52,
+      "codes84": [
+        "001",
+        "002"
+      ],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi184-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "foot-near-impact",
+      "defensePreContact": [
+        {
+          "ms": 250,
+          "ball": {
+            "x": 42.2,
+            "y": 54
+          }
+        },
+        {
+          "ms": 500,
+          "ball": {
+            "x": 42.2,
+            "y": 54.1
+          }
+        },
+        {
+          "ms": 750,
+          "ball": {
+            "x": 42,
+            "y": 53.2
+          }
+        }
+      ],
+      "meanOutfieldDisplacement": 0.71
+    },
+    {
+      "key": "24:0:success",
+      "gi": 24,
+      "ai": 0,
+      "outcome": "success",
+      "action": "🎯 Assist filtrante",
+      "observed": "assist",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 0,
+      "openingNearestPlayerDistance": 9.69,
+      "codes84": [],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-success-v91-01-apertura.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "timed-proxy-no-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "24:0:fail",
+      "gi": 24,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "🎯 Assist filtrante",
+      "observed": "intercept",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 0,
+      "openingNearestPlayerDistance": 9.79,
+      "codes84": [],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi24-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "timed-proxy-no-contact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "2:0:success",
+      "gi": 2,
+      "ai": 0,
+      "outcome": "success",
+      "action": "🦵 Spingila dentro!",
+      "observed": "goal",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 0,
+      "openingNearestPlayerDistance": 6.8,
+      "codes84": [],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-success-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-success-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-success-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-success-v91-06-esito.png"
+      ],
+      "contactTrigger": "foot-near-impact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    },
+    {
+      "key": "2:0:fail",
+      "gi": 2,
+      "ai": 0,
+      "outcome": "fail",
+      "action": "🦵 Spingila dentro!",
+      "observed": "miss_easy",
+      "outcomeMatched": true,
+      "openingHeroBallDistance": 0,
+      "openingNearestPlayerDistance": 6.81,
+      "codes84": [],
+      "codes91": [],
+      "frames": [
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-fail-v91-02-scelta.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-fail-v91-03-rincorsa.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-fail-v91-04-contatto.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi2-a0-fail-v91-06-esito.png"
+      ],
+      "contactTrigger": "foot-near-impact",
+      "defensePreContact": [],
+      "meanOutfieldDisplacement": null
+    }
+  ],
+  "limiti": "Le foto sono campioni headless; i fotogrammi etichettati contatto includono proxy e non certificano un contatto fisico. Nessun giudizio su FPS o fluidità.",
+  "segnalazioni": [
+    {
+      "gravita": "alta",
+      "descrizione": "gi138 success: 001 e 002: all’apertura non si vedono portatore e palla; in 04–05 la palla non è in quadro.",
+      "come_riprodurre": "$env:CPM_CASES='138:0:success'; $env:CPM_CAPTURE_TAG='verifica'; $env:CPM_BATCH='1'; $env:CPM_MIN_START_GB='3.3'; $env:CPM_CHROME='C:/Program Files/Google/Chrome/Application/chrome.exe'; node tests/codex/ricollaudo-difesa-3d.mjs",
+      "prove": [
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-success-v91-01-apertura.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-success-v91-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "gi138 fail: 001 e 002: stessa apertura senza contesto; in 05 la palla esce dal basso a sinistra.",
+      "come_riprodurre": "$env:CPM_CASES='138:0:fail'; $env:CPM_CAPTURE_TAG='verifica'; $env:CPM_BATCH='1'; $env:CPM_MIN_START_GB='3.3'; $env:CPM_CHROME='C:/Program Files/Google/Chrome/Application/chrome.exe'; node tests/codex/ricollaudo-difesa-3d.mjs",
+      "prove": [
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi138-a0-fail-v91-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "gi36 success: 001 e 002: attaccante tagliato e palla non riconoscibile in 01; palla assente in 04–05 durante lo stacco.",
+      "come_riprodurre": "$env:CPM_CASES='36:0:success'; $env:CPM_CAPTURE_TAG='verifica'; $env:CPM_BATCH='1'; $env:CPM_MIN_START_GB='3.3'; $env:CPM_CHROME='C:/Program Files/Google/Chrome/Application/chrome.exe'; node tests/codex/ricollaudo-difesa-3d.mjs",
+      "prove": [
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-success-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-success-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-success-v91-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "gi36 fail: 001: avvio del duello aereo con attaccante tagliato e palla non riconoscibile; il gol è dichiarato in 06.",
+      "come_riprodurre": "$env:CPM_CASES='36:0:fail'; $env:CPM_CAPTURE_TAG='verifica'; $env:CPM_BATCH='1'; $env:CPM_MIN_START_GB='3.3'; $env:CPM_CHROME='C:/Program Files/Google/Chrome/Application/chrome.exe'; node tests/codex/ricollaudo-difesa-3d.mjs",
+      "prove": [
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi36-a0-fail-v91-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "gi45 fail: 001: la palla in arrivo è indistinta e l’attaccante è tagliato nell’apertura; in 06 il gol subito è coerente con la palla presso la rete.",
+      "come_riprodurre": "$env:CPM_CASES='45:0:fail'; $env:CPM_CAPTURE_TAG='verifica'; $env:CPM_BATCH='1'; $env:CPM_MIN_START_GB='3.3'; $env:CPM_CHROME='C:/Program Files/Google/Chrome/Application/chrome.exe'; node tests/codex/ricollaudo-difesa-3d.mjs",
+      "prove": [
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-fail-v91-01-apertura-retry1.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-fail-v91-05-volo.png",
+        "reports/codex/ricollaudo-difesa-3d/gi45-a0-fail-v91-06-esito.png"
+      ]
+    }
+  ]
+}
