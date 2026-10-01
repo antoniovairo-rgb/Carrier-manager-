@@ -1,0 +1,16 @@
+{
+  "versione": "7.999.96",
+  "commit": "ccabb486d7bc957edc8d7a39ef45d2c51bb80d32",
+  "compito": "PO-144, codice 007: camera su GPU Direct3D11, collaudo non misurabile sul campione richiesto",
+  "comando": "$env:CPM_BATCH='1'; $env:CPM_HEADED='1'; $env:CPM_DSF='1'; $env:CPM_CHROME='C:/Program Files/Google/Chrome/Application/chrome.exe'; node tests/codex/collaudo-camera-007.mjs",
+  "seme": "scene forzate 171, 126, 2; nomi Camera007-<scena>:<esito>:<ripetizione>",
+  "misure": [
+    {"nome": "tentativi", "valore": 13, "soglia": "60 casi validi richiesti", "esito": "anomalia"},
+    {"nome": "casi validi a FPS medio >=50", "valore": 1, "soglia": "60", "esito": "anomalia"},
+    {"nome": "FPS del solo caso valido", "valore": 52.64, "soglia": ">=50", "esito": "ok"},
+    {"nome": "passi 007 fuori stacco nel solo caso valido", "valore": 0, "soglia": "registrare", "esito": "ok"}
+  ],
+  "segnalazioni": [
+    {"gravita": "media", "descrizione": "Campione PO-144 non misurabile su questa GPU: 12 tentativi su 13 sotto 50 FPS medi; una sola scena valida non permette un verdetto generale.", "come_riprodurre": "Eseguire tests/codex/collaudo-camera-007.mjs con CPM_HEADED=1 e CPM_DSF=1 su Chrome D3D11; confrontare i singoli fpsMean nel grezzo.", "prove": ["tests/codex/collaudo-camera-007.json.gz", "reports/codex/2026-10-01-collaudo-camera-007.md"]}
+  ]
+}
