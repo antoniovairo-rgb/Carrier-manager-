@@ -56,6 +56,7 @@ carica su richiesta; questa disciplina no). Il playbook esteso di ciascuna sta n
      && npm run validate-situations && npm run save-compat && npm run replay \
      && npm run career-critical
    ```
+   📌 **SUITE UNICA (PO-163, 01/10/2026): `npm run ci`** (= la catena qui sopra + `partita-vera` + `design-system`), e `ci:carriera` / `ci:grafica` / `ci:guardiani`. L'esecutore `ci-runner.mjs` registra ogni giro in `docs/governo/STABILITA.json`, da cui la pagina di governo calcola gli indicatori di stabilità. Per i giri lunghi: `CPM_CI_LOG=<file> nohup node ci-runner.mjs completa &` e attese in primo piano sul file (riga `FINE`).
    ⚠️ **I RITUALI SI ESEGUONO DENTRO IL TURNO, MAI IN SOTTOFONDO.** Misurato due volte il 16/09: una catena
    lanciata con `setsid nohup` viene uccisa **~2 minuti dopo la fine del turno** (container ripreso: `uptime`
    a 0 min, nessun processo superstite) — corsa delle 10:21 morta alle 10:26, corsa delle 10:53 morta alle

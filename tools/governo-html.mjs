@@ -43,6 +43,48 @@ const rRows = reg.rows.map(([ora, passo, num]) => {
   return [ora, m ? m[1] : '', passo, num];
 });
 
+// [PO-163] STABILITA': dagli esiti registrati da tests/visual/ci-runner.mjs (docs/governo/STABILITA.json)
+const COPRE = {
+  'test:vision': 'motore di revisione visiva (43 prove in node)', 'test:logic': 'logica pura: motore, cronaca, decisione, baseline delle scene',
+  'typing-shortcuts': 'campi di testo: le scorciatoie da tastiera non scattano mentre si scrive', 'validate-situations': 'gate 14/14: 191 scene forzate, stato, coerenza, golden, partita reale breve',
+  'save-compat': 'salvataggi vecchi caricabili e migrati', 'replay': 'stessa partita giocata due volte = stessa sequenza', 'career-critical': 'carriera: classifiche, calendario, tornei, prestiti, transizione pro',
+  'partita-vera': 'due partite intere sul flusso vero', 'design-system': 'token grafici (raggi, colori) al posto dei valori scritti a mano', 'griglia-mobile': 'impaginazione a larghezza telefono',
+  'goleade': 'coda di goleade, eroe forte e debole', 'scene-disegnabili': 'nessuna scena attiva promette un gesto senza animazione',
+};
+let stab = []; try { stab = JSON.parse(leggi('docs/governo/STABILITA.json')); } catch {}
+const sCols = ['Catena', 'Passo', 'Ultimo esito', 'Verdi / giri', 'Durata media (s)', 'Ultimo giro', 'Cosa copre'];
+const sMap = new Map();
+for (const g of stab) for (const p of g.passi) { const k = g.catena + '|' + p.passo; if (!sMap.has(k)) sMap.set(k, { cat: g.catena, passo: p.passo, ultimo: p.ok ? 'verde' : 'rosso', ver: g.versione + ' · ' + g.data, n: 0, ok: 0, s: 0 });
+  const e = sMap.get(k); e.n++; if (p.ok) e.ok++; e.s += p.s; }
+const sRows = [...sMap.values()].map(e => [e.cat, e.passo, e.ultimo, e.ok + ' / ' + e.n, String(Math.round(e.s / e.n)), e.ver, COPRE[e.passo] || '']);
+
+// [PO-165] STATO SETTIMANALE: una pagina, calcolata dai documenti di governo (nessun dato scritto a mano)
+const oggi = new Date(), gg = d => { const m = String(d).match(/^(\d{2})\/(\d{2})/); if (!m) return null; return new Date(oggi.getFullYear(), +m[2] - 1, +m[1]); };
+const inSett = d => { const x = gg(d); return x && (oggi - x) / 864e5 < 7 && (oggi - x) >= -864e5; };
+const relSett = reg.rows.filter(r => inSett(r[0])).map(r => (r[1].match(/^\*\*(\d+\.\d+(?:\.\d+)?)/) || [])[1]).filter(Boolean);
+const perLotto = {}; for (const r of aperte.rows) { const l = r[5] || '?'; perLotto[l] = (perLotto[l] | 0) + 1; }
+const attesaCodex = aperte.rows.filter(r => /DA COLLAUDARE|IN ATTESA/.test(r[4])).map(r => r[0]);
+const rischi = tabella(leggi('docs/governo/RISCHI.md').split('\n')).rows.filter(r => /^R-\d+/.test(r[0]));
+const rischiAlti = rischi.filter(r => r[2] === 'A' || r[3] === 'A').map(r => r[0] + ' ' + r[1].replace(/\*\*/g, ''));
+const decSett = tabella(leggi('docs/governo/DECISIONI.md').split('\n')).rows.filter(r => inSett(r[0])).map(r => r[1].replace(/\*\*/g, '').slice(0, 90));
+const ultimoGiro = stab[0] ? `${stab[0].catena} su ${stab[0].versione} (${stab[0].data}): ${stab[0].passi.filter(p => p.ok).length}/${stab[0].passi.length} verdi` : 'nessun giro registrato';
+// [PO-159] smistamento: ogni voce deve avere un tipo fra quelli di PROCESSO.md; le altre si segnalano qui e nella console
+const TIPI = ['bloccante', 'difetto', 'miglioramento', 'nuova funzione', 'debito tecnico', 'processo', 'ricerca', 'conflitto'];
+const nonSmistate = [...aperte.rows, ...chiuse.rows].filter(r => !TIPI.includes(r[3])).map(r => r[0] + ' («' + r[3] + '»)');
+if (nonSmistate.length) console.warn('⚠ voci con tipo fuori dallo smistamento: ' + nonSmistate.join(', '));
+const wCols = ['Voce', 'Valore'];
+const wRows = [
+  ['Settimana', `dal ${new Date(oggi - 6 * 864e5).toISOString().slice(0, 10)} al ${oggi.toISOString().slice(0, 10)}`],
+  ['Release della settimana', `${relSett.length}: ${relSett.join(', ')}`],
+  ['Voci aperte o parziali', `${aperte.rows.length} — ` + Object.entries(perLotto).sort().map(([l, n]) => `${l} ${n}`).join(' · ')],
+  ['Voci chiuse in totale', String(chiuse.rows.length)],
+  ['In attesa di collaudo (Codex)', `${attesaCodex.length}: ${attesaCodex.join(', ')}`],
+  ['Decisioni PO della settimana', `${decSett.length}: ${decSett.join(' · ')}`],
+  ['Ultimo giro della suite', ultimoGiro],
+  ['Voci non smistate (tipo fuori dalle categorie)', nonSmistate.length ? `${nonSmistate.length}: ${nonSmistate.join(', ')}` : '0'],
+  ['Rischi ad alta probabilità o impatto', `${rischiAlti.length}: ${rischiAlti.join(' · ')}`],
+];
+
 let commit = '';
 try { commit = execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim(); } catch {}
 const ver = (leggi('src/07-versione-save-interviste.jsx').match(/const GAME_VERSION="([^"]+)"/) || [])[1] || '';
@@ -57,6 +99,8 @@ const DATI = {
       menu: ['Lotto', 'Stato'], larga: ['Osservazioni del team', 'Lotto'] },
     { id: 'registro', nome: 'Registro release', cols: rCols, rows: rRows, ordine: [],
       menu: ['Data', 'Esito'], larga: ['Passo'] },
+    { id: 'stato', nome: 'Stato settimanale', cols: wCols, rows: wRows, ordine: [], menu: [], larga: ['Valore'] },
+    { id: 'stabilita', nome: 'Stabilità', cols: sCols, rows: sRows, ordine: [], menu: ['Catena', 'Ultimo esito'], larga: ['Cosa copre'] },
   ],
 };
 
@@ -64,7 +108,7 @@ const html = `<title>Governo Korward Elite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Registro di cantiere: una testata stretta, tre schede, tabelle dense e filtrabili colonna per colonna. */
+/* Registro di cantiere: una testata stretta, cinque schede, tabelle dense e filtrabili colonna per colonna. */
 :root{
   --bg:#f3f5f1; --panel:#ffffff; --ink:#17201b; --muted:#5b6a61; --rule:#d5ddd6; --accent:#1f7a4d; --accent-ink:#ffffff;
   --st-ok:#1f7a4d; --st-ok-bg:#e1f1e7; --st-run:#8a5a00; --st-run-bg:#fbefd6; --st-open:#a3321f; --st-open-bg:#f8e2dc; --st-wait:#3b5aa8; --st-wait-bg:#e2e8f7;

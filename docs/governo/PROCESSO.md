@@ -8,6 +8,8 @@ Nato dal prompt PO «Governo del progetto» del 30/09 (voci PO-GOV-*). I file di
 `Lotto in corso: … · Voci toccate: PO-… · Richieste nuove registrate: PO-…`
 
 ## Smistamento (triage) — entro la risposta successiva
+
+Tipi ammessi nella colonna «Tipo» del backlog: bloccante · difetto · miglioramento · nuova funzione · debito tecnico · processo · ricerca · conflitto. Un'incertezza («da verificare», «da decidere») va nello **Stato**, non nel tipo. `node tools/governo-html.mjs` avvisa delle voci fuori categoria e la scheda «Stato settimanale» le conta (PO-159, 01/10). Ogni risposta al PO apre con «Richieste nuove registrate: PO-…»: è la prova che lo smistamento è avvenuto nel turno.
 | Classe | Cosa succede |
 |---|---|
 | **Bloccante** (dati persi, gioco bloccato, carriera che non prosegue, errore evidente in produzione) | release correttiva dedicata, subito |
@@ -24,7 +26,9 @@ Obiettivo chiaro · criteri di accettazione scritti e misurabili · dipendenze r
 ## Definizione di «fatto» (si può chiudere)
 1. Criteri di accettazione soddisfatti **e misurati** (numero prima/dopo nella nota).
 2. Guardiano nuovo o aggiornato: **rosso** con l'interruttore `__CPM_NO_*`, **verde** con la modifica.
-3. Suite completa verde (`npm run ci` + `career-critical`), non solo i guardiani del lotto.
+3. Suite completa verde (`npm run ci`, che dal 01/10 comprende `career-critical`), non solo i guardiani del lotto.
+
+**Suite unica (PO-163, 01/10).** Da `tests/visual`: `npm run ci` (completa: test:vision, test:logic, typing-shortcuts, validate-situations, save-compat, replay, career-critical, partita-vera, design-system) · `npm run ci:carriera` · `npm run ci:grafica` · `npm run ci:guardiani` (i guardiani di release e i 19 ex orfani). L'esecutore è `tests/visual/ci-runner.mjs`: esegue tutti i passi anche dopo un rosso (`CPM_CI_STOP=1` per fermarsi), registra ogni giro in `docs/governo/STABILITA.json` (ultimi 60) e la pagina di governo ne mostra gli indicatori (scheda «Stabilità»: ultimo esito, verdi su giri, durata media, cosa copre). La scheda «Stato settimanale» (PO-165) si calcola da BACKLOG, ROADMAP, DECISIONI, RISCHI e STABILITA: nessun dato scritto a mano. La vecchia catena resta come `npm run ci:vecchia`.
 4. `save-compat` verde; campi nuovi additivi.
 5. Prestazioni non peggiorate oltre le soglie qui sotto.
 6. Build web e build store generate e avviate (`build-dist` + `validate-dist`).

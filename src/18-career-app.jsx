@@ -3676,7 +3676,7 @@ const getThisWeekMatchday=()=>{
     if(Math.random()<_interviewChance){
       const iw=pickInterviewByCtx(player,result);
       const pJourno=(player.journalists||[]).length>0&&Math.random()<0.55?pick(player.journalists):null;
-      const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon}:iw.paper;
+      const paperInfo=pJourno?{...iw.paper,name:pJourno.name,color:pJourno.color,e:pJourno.icon,f:giornalistaDonna(pJourno)}:iw.paper;/* [7.999.99 PO-169] il segno f viaggia con l'intervista */
       const _notable=_isHattrick?"hattrick":_isBigWin?"bigwin":_isBigLoss?"bigloss":null;
       setTimeout(()=>setInterviewModal({q:iw.q,paper:paperInfo,opponent:result.opponent||null,matchCtx:result.won?"win":result.drew?"draw":"loss",journalistId:pJourno?.id,notable:_notable,partita24:{hs:result.homeScore,as:result.awayScore,casa:typeof result.isHome==="boolean"?result.isHome:null,voto:result.rating,gol:result.goals||0}}),900);/* [7.994.0] il tabellino sul pannello */
     }
@@ -4008,10 +4008,10 @@ const getThisWeekMatchday=()=>{
         if(ef.dribbling)newStats.dribbling=clamp(p.stats.dribbling+(ef.dribbling),1,99);
         const _resolvedEvTxt=resolveEvText(ev.txt,{...p,...extras});
         upd={...upd,...extras,stats:newStats,ovr:calcOvr(newStats),log:[_resolvedEvTxt,...(p.log||[])].slice(0,60)};
-        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
+        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
         else setTimeout(()=>setWeekLiveModal({event:{...ev,txt:_resolvedEvTxt},changes:{morale:ef.morale||0,form:ef.form||0,fatigue:ef.fatigue||0},coachMsg:_liveCoachMsg}),50);
       }else{
-        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
+        if(doInterview){const iw=pickInterviewByCtx(p);const pJ=(p.journalists||[]).length>0&&Math.random()<0.55?pick(p.journalists):null;const pi=pJ?{...iw.paper,name:pJ.name,color:pJ.color,e:pJ.icon,f:giornalistaDonna(pJ)}:iw.paper;setTimeout(()=>setInterviewModal({q:iw.q,paper:pi,opponent:null,matchCtx:"weekly",journalistId:pJ?.id}),50);}
         else setTimeout(()=>setWeekLiveModal({event:{txt:"⚽ Settimana di allenamento regolare. Nessun evento particolare."},changes:{},coachMsg:_liveCoachMsg}),50);
       }
       return{...p,...upd};
@@ -6280,7 +6280,7 @@ const getThisWeekMatchday=()=>{
                   dell'emoji del giornale c'e' lo spazio della figurina dell'intervistatore, seminato sul suo
                   NOME: lo stesso giornalista avra' sempre la stessa figurina. Larghezza 26 perche' 26x7/5 = 36,
                   cioe' l'altezza che l'emoji da 20 px occupava con la sua riga: la testata non cresce. */}
-              <Figurina tipo={interviewModal.paper?.f?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={44} col={interviewModal.paper?.color||TH.primary}/>{/* [24/09 POC] figurina del giornalista piu' grande e intera (collaudo PO: il contorno non deve tagliare i volti) */}
+              <Figurina tipo={giornalistaDonna(interviewModal.paper)?"giornalista_f":"giornalista"} chiave={interviewModal.paper?.name} larg={44} col={interviewModal.paper?.color||TH.primary}/>{/* [24/09 POC] figurina del giornalista piu' grande e intera (collaudo PO: il contorno non deve tagliare i volti) */}
               <div>
                 <div style={{fontSize:FS.caption,color:TH.muted,textTransform:"uppercase",letterSpacing:1.5}}>{interviewModal.step==="rilancio"?"Il giornalista incalza":interviewModal.step==="esito"?"Com\u0027è andata":interviewModal.matchCtx==="prematch"?"📰 Conferenza Stampa":"Intervista"}</div>
                 <div style={{fontSize:FS.body,fontWeight:800,color:interviewModal.paper?.color||TH.brandText}}>{interviewModal.paper?.name||"Giornalista"}</div>
@@ -6299,7 +6299,7 @@ const getThisWeekMatchday=()=>{
               return(<div data-cpm="sala24" style={{display:"flex",gap:10,alignItems:"center",marginBottom:10,padding:"6px 8px",background:TH.surface2,borderRadius:RAD.sm,overflowX:"auto"}}>
                 <span style={{fontSize:FS.caption,color:TH.muted,flexShrink:0}}>In sala</span>
                 {altri.map(j=>(<div key={j.id||j.name} style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
-                  <Figurina tipo={j.f?"giornalista_f":"giornalista"} chiave={j.name} larg={22} col={j.color||TH.primary}/>
+                  <Figurina tipo={giornalistaDonna(j)?"giornalista_f":"giornalista"} chiave={j.name} larg={22} col={j.color||TH.primary}/>
                   <div style={{lineHeight:1.2}}><div style={{fontSize:FS.caption,fontWeight:700,color:TH.text,whiteSpace:"nowrap"}}>{String(j.name||"").split(" ").slice(-1)[0]}</div>
                     <div style={{fontSize:FS.caption,color:t1?TH.brandText:TH.faint,whiteSpace:"nowrap"}}>{reag(j)}</div></div></div>))}
               </div>);})()}
@@ -9712,7 +9712,7 @@ const getThisWeekMatchday=()=>{
                   return(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:8,paddingBottom:i<(player.journalists.length-1)?8:0,borderBottom:i<(player.journalists.length-1)?`1px solid ${TH.cardBorder}`:"none"}}>
                       {/* [23/09 POC — collaudo PO «anche qui figurine»] il giornalista e' la sua figurina (volto femminile per le giornaliste), non un'emoji */}
-                      <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo={j.f?"giornalista_f":"giornalista"} chiave={j.name} larg={36}/>;}catch(_e){return null;}})()}</div>
+                      <div style={{flexShrink:0}}>{(()=>{try{return <Figurina tipo={giornalistaDonna(j)?"giornalista_f":"giornalista"} chiave={j.name} larg={36}/>;}catch(_e){return null;}})()}</div>
                       <div style={{flex:1}}>
                         <div style={{fontSize:FS.small,fontWeight:800,color:TH.text}}>{j.name}</div>
                         <div style={{fontSize:FS.caption,color:legCol944(j.color)||TH.muted}}>{[j.paper,typeLabel].filter(Boolean).join(" · ")}</div>{/* [7.999.49 parte A] niente «·» appeso se manca la testata */}

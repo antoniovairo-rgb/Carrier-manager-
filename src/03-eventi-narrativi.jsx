@@ -804,6 +804,13 @@ const JOURNALIST_POOL=[
   {id:"j_ricci",name:"Davide Ricci",paper:"Cifre del Calcio",icon:"📊",color:"#10b981",type:"critico",desc:"Statistiche e fredda razionalità. Non mente mai — e non è sempre bello."},
   {id:"j_greco",name:"Elena Greco",f:true,paper:"Sport in Rete",icon:"🌐",color:"#8b5cf6",type:"investigativa",desc:"Interesse politico e sportivo si mescolano. Attenzione a cosa riveli."},
 ];
+/* [7.999.99 PO-169 «giornaliste senza volto», decisione PO 01/10: usare le figurine gia' nel catalogo] La figurina femminile c'era
+   (tipo «giornalista_f», 7.999.23) ma l'intervista copiava nome, colore e icona della giornalista PERDENDO il segno `f`: Sofia
+   Esposito, Anna Lombardi ed Elena Greco uscivano col volto maschile. E i salvataggi creati prima del segno non lo hanno. Ora il
+   sesso si legge da qui: segno `f`, oppure l'elenco ufficiale per id/nome, oppure le telecroniste. Rosso __CPM_NO_GIORN169. */
+function giornalistaDonna(j){if(!j)return false;if(j.f)return true;if(typeof window!=='undefined'&&window.__CPM_NO_GIORN169)return false;
+  const p=JOURNALIST_POOL.find(x=>(j.id&&x.id===j.id)||(j.name&&x.name===j.name));if(p&&p.f)return true;
+  try{return !!(typeof TELECRONISTE_F23!=='undefined'&&j.name&&TELECRONISTE_F23.has(j.name));}catch(_e){return false;}}
 
 /* ========================================
    SPRINT 62 — NOTIZIE DELLA LEGA
