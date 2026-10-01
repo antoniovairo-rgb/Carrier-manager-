@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (46)
+## Voci aperte o parziali (45)
 
-Per lotto: L0 1 · L1 24 · L3 3 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
+Per lotto: L0 1 · L1 23 · L3 3 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -27,7 +27,6 @@ Per lotto: L0 1 · L1 24 · L3 3 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-030 | 24/09 22:36 | Brain A: manovre vere (costruzione, triangoli, terzo uomo, sovrapposizioni) prodotte dal motore | nuova funzione | APERTO — PO 01/10: resta in L1, dopo le voci di difetto | L1 | — | — | «azioni manovrate… e fasi di gioco riconoscibili». Nessuna release la dichiara chiusa |
 | PO-031 | 24/09 22:36 | Metrica di manovra e metrica di fluidità 3D nella pagella | processo | APERTO — PO 01/10: «ancora molto migliorabile» | L1 | — | — | «Aggiungete alla pagella almeno una metrica di manovra e una di fluidità 3D». La roadmap del 25/09 la cita come piano (PPDA, foot skating ratio), nessuna release |
 | PO-033 | 25/09 21:25 | Highlight poco credibili: passaggi e movimenti senza senso | difetto | DA COLLAUDARE — PO 01/10: Codex (prompt «passaggi» su 10 scene) | L1 | 7.999.10 | sonda hl-credibilita | «Gli highlights sono ancora davvero poco credibili». La 7.999.12 dichiara ancora aperto «compagni e difensori fermi» |
-| PO-035 | 26/09 01:03 | Partite assurde e goleade (7-0, 10-0) | difetto | PARZIALE — collaudo numerico Codex 7.999.96 acquisito: coda 7+ ≤1,8%, asimmetria eroe debole in PO-179; partite vere (parte B) non eseguite | L1 | 7.999.13, 7.999.19, 7.999.36, 7.999.82 | `goleade`, `brain-82` | «Partita assurda»; «Altra goleada»; taccuino «Risultato assurdo 7 - 0!». Riaperta il 30/09 12:47 (PO-117) |
 | PO-048 | 26/09 02:12 | L'eroe finisce in secondo piano rispetto al palo (in scena e nella festa) | difetto | DA COLLAUDARE — PO 01/10: Codex, collaudo fotografico delle feste | L1 | 7.999.79 (eroe mai dentro lo specchio della porta) | (`__CPM_NO_TIRO94`) | «l'eroe va in secondo piano rispetto al palo»; 30/09 «il palo della porta è in primo piano rispetto all'eroe mentre festeggiano» |
 | PO-050 | 26/09 02:12 | Taccuino: esito «miss» ma il pallone è finito in rete | difetto | DA COLLAUDARE — PO 01/10: Codex (dentro il collaudo colpo di testa, #64 e #126) | L1 | 7.999.15 | — | bozza: «l'esito dichiarato è «miss» ma la palla è finita IN RETE». Ricompare il 30/09 (#126, #64), non riprodotta nella 7.999.79 |
 | PO-064 | 26/09 18:36 | Tutto deciso dal brain, anche il render 3D degli highlight | debito tecnico | PARZIALE — PO 01/10: «da completare» | L1 | 7.999.26, 7.999.27, 7.999.82 | `brain-82` | «tutto deve essere deciso da brian anche il render 3D degli highlights con l'eroe» |
@@ -44,7 +43,7 @@ Per lotto: L0 1 · L1 24 · L3 3 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-133 | 29/09 22:47 | Dopo gli stadi, valutare la consegna parziale di Codex sugli highlight | processo | DA COLLAUDARE — PO 01/10: «rifai fare un collaudo a Codex» | L1 | 7.999.69 (corretta solo la chiamata waitForFunction) | — | «in coda agli stadi valuta i risu[ltati]» |
 | PO-143 | 30/09 15:34 | Taccuino #18, #126, #64, #140: dribbling fasullo, esiti in rete, pallone che arretra | difetto | DA COLLAUDARE — PO 01/10: Codex (#64 nel collaudo colpo di testa; #126 e #18 da aggiungere); #140 FATTO in 7.999.93 | L1 | 7.999.79: «Non riprodotti»; 7.999.93 (#140) | `conduci-93` | «Non era un dribbling»; «Azione confusionaria con colpo di testa non sincronizzato»; «Ha fatto una sorta di colpo di testa, scena strana» |
 | PO-144 | 30/09 15:34 | Codice 007: la camera salta di 2,5 u a 4,2 s | difetto | NON RIPRODOTTO (01/10) · DA COLLAUDARE (Codex, prompt `reports/codex/PROMPT-2026-10-01-collaudo-camera-007.md`, richiesta PO 01/10) — 16 esiti a tempo reale (scene 38, 134, 33, 24, 2, 152): fuori dagli stacchi neri la camera va a 46-48 u/s (massimo sano 65); i passi oltre 2,5u sono fotogrammi headless da 70-220 ms. Testimone `__CPM_CAMSTEP93` pronto; serve una nota dal telefono con numero di scena | L1 | 7.999.79, 7.999.81: «sospetto strumento, in coda» | — | bozza: «codice 007 — la CAMERA salta: passo di 2.5 unità… a 4.2s» |
-| PO-172 | 27/09 | Rilievi Codex sulle release 7.999.26–27 (26-A…27-B) da riprodurre | difetto | DA COLLAUDARE — PO 01/10: Codex rifà i 6 rilievi (26-A…27-B) sulla build attuale | L1 | — | — | roadmap: «6 rischi, nessuno riprodotto» |
+| PO-172 | 27/09 | Rilievi Codex sulle release 7.999.26–27 (26-A…27-B) da riprodurre | difetto | PARZIALE — Codex 01/10: 27-B corretto (7.999.100), 26-C chiuso dalla 7.999.98, 26-D riprodotto (decisione PO sul tetto), 26-A/26-B/27-A non verificati | L1 | — | — | roadmap: «6 rischi, nessuno riprodotto» |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
 | PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
 | PO-176 | 01/10 | Salvataggio: dopo il ricaricamento cambiano `playedMd` e `cup.club` (56 confronti su 56) | difetto | DA COLLAUDARE — PO 01/10: Codex (prompt salvataggio-ricarica già dato) | L3 | — | — | Codex: «perdita visibile al giocatore: non verificato»; va separata la rigenerazione prevista dalla perdita |
@@ -67,7 +66,7 @@ Per lotto: L0 1 · L1 24 · L3 3 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 
-## Storico — voci chiuse (134)
+## Storico — voci chiuse (135)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -97,6 +96,7 @@ Per lotto: L0 1 · L1 24 · L3 3 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-029 | 24/09 22:36 | Brain C: eroe cercato o marcato dal gioco, niente occasioni fabbricate | miglioramento | FATTO | — | 7.999.6 | `eroe-dal-gioco` | «Le occasioni dell'eroe nascono dal gioco o vengono fabbricate per lui?» |
 | PO-032 | 25/09 13:41 | Aggiornare la roadmap a ogni fine release | processo | FATTO — chiusa dal PO 01/10 («OK») | L0 | registro aggiornato fino alla 7.999.83 | — | «aggiorna roadmap ad ogni fine release». L'intestazione di POC_ROADMAP.md dice ancora «Aggiornata: 27/09 · produzione 7.999.32» |
 | PO-034 | 25/09 22:14 | Statistiche sbagliate: 3 gol, non 2 | difetto | FATTO | — | 7.999.10 (tabellino giusto) | — | «Statistiche sbagliate, 3 gol e non due come indicato nell'interazione» |
+| PO-035 | 26/09 01:03 | Partite assurde e goleade (7-0, 10-0) | difetto | FATTO — collaudo Codex 7.999.96: 700 partite di motore + 20 vere senza 7+ né scarti 5+; asimmetria eroe debole chiusa in 7.999.98 (PO-179) | L1 | 7.999.13, 7.999.19, 7.999.36, 7.999.82 | `goleade`, `brain-82` | «Partita assurda»; «Altra goleada»; taccuino «Risultato assurdo 7 - 0!». Riaperta il 30/09 12:47 (PO-117) |
 | PO-036 | 26/09 01:04 | Schermata da scorrere poco comoda: rimpicciolire | miglioramento | FATTO — chiusa dal PO 01/10 («chiudi è OK») | L7 | forse 7.999.12 (intervista in una schermata) | — | «La schermata è scrollsbile, poco user friendly, rimpicciolissi qualcosa» |
 | PO-037 | 26/09 01:06 | L'app si riavvia o la grafica si rompe dopo pochi secondi in background | difetto | FATTO | — | 7.999.11, 7.999.12 | `sfondo-ritorno` | «Si riavvia l'app quando la metto pochi secondi in background»; «Mettendo 15 secondi in background l'app si rompe la grafica» |
 | PO-038 | 26/09 01:17 | Menu a tendina per i codici del taccuino | miglioramento | FATTO | — | 7.999.12 | — | «Picklist per i codici prestabiliti» |

@@ -1259,6 +1259,17 @@ function tassoOccasioni28(f){
   return {r:cl(r,2,6),voci};
 }
 try{if(typeof window!=='undefined')window.__CPM_TASSO28=tassoOccasioni28;}catch(_e){}
+/* [7.999.100 rilievo Codex 27-B, riprodotto sulla 7.999.96: seme 974734 «Rilievi23», 4 punizioni dell'eroe in una partita e 3 schede di
+   punizione diretta nel catalogo (gi 13, 78, 81): alla quarta il filtro «mai una scheda gia' giocata» restava vuoto e la scena cadeva
+   sulla scheda generica — «Rovesciata in corsa!» su una punizione. Le schede candidate per il piazzato dell'eroe (rigore o punizione
+   diretta) escluse quelle gia' giocate; ESAURITO il catalogo si ripete una scheda di piazzato invece di mostrarne una che racconta
+   altro. Funzione pura (SITUATIONS + elenco dei testi usati), interrogata dal guardiano piazzati-catalogo. Rosso __CPM_NO_PIAZ99. */
+function schedePiazzato(rigore,usate){
+  const ok=s2=>{if(!s2||s2.type==="def")return false;if(typeof sitSospesa==="function"&&sitSospesa(s2))return false;
+    if(rigore)return (typeof isPenaltySit==="function"&&isPenaltySit(s2));const _t=String(s2.text||"");return deriveIntent(s2)==="freekick"&&!/fascia|indirett|defilat/i.test(_t);};
+  const u=usate||[];const c=SITUATIONS.filter(s2=>ok(s2)&&u.indexOf(s2.text)<0);
+  if(c.length||(typeof window!=='undefined'&&window.__CPM_NO_PIAZ99))return c;
+  return SITUATIONS.filter(ok);}
 function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true,benchStart,benchReason="",entryMinute=60,titleStakes=null,mdEuroPhase=null,onQuit=null,onSimulateNat=null,resumeState=null}){/* [7.150.0] resumeState: ripresa DENTRO la partita dopo background (clock/punteggio salvati → rientra in fase playing) *//* [7.14.0] onSimulateNat: Simula dal pre-partita per le gare di Nazionale (entrate dal CTA, senza altra uscita) *//* [6.77.0] onQuit: uscita pulita dal matchday (pre-partita, nessuno stato toccato) *//* [6.74.0 QA-28] mdEuroPhase: fase KO della voce calendario → il banner rigori usa lo STESSO seed della risoluzione */
   const _rsCk138=resumeState?clamp(resumeState.clock|0,1,88):0;/* [7.150.0] minuto di ripresa dopo background (0 = partita normale) */
   // Dynamic HL count — based on match conditions, NOT random
@@ -4569,7 +4580,8 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                /* [7.999.27] rigore e punizione dal limite dell'eroe: la scheda e' il piazzato vero (niente origine da crossatore: il pallone e' sul punto, lo batte lui) */
                const _pk27=_og26&&(_og26.kind==="rigore"||(_og26.kind==="punizione"&&occEroe879Ref.current.tipo==="punizione"))&&!(typeof window!=='undefined'&&window.__CPM_NO_PIAZ27);
                if(_pk27){try{const _rg27=_og26.kind==="rigore";
-                 const _c27=SITUATIONS.filter(s2=>{if(!s2||s2.type==="def"||_used79.indexOf(s2.text)>=0)return false;if(typeof sitSospesa==="function"&&sitSospesa(s2))return false;/* [7.999.97 PO-086] */if(_rg27)return (typeof isPenaltySit==="function"&&isPenaltySit(s2));const _t=String(s2.text||"");return deriveIntent(s2)==="freekick"&&!/fascia|indirett|defilat/i.test(_t);});
+                 const _c27=schedePiazzato(_rg27,_used79);/* [7.999.100] la scelta vive in schedePiazzato (src/15, funzione pura) */
+                 try{if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST))(window.__CPM_PIAZ99=window.__CPM_PIAZ99||[]).push({min:nx|0,rigore:!!_rg27,candidate:_c27.length});}catch(_e99){}
                  if(_c27.length)_pick880=_c27[(hashStr("piaz27|"+_lzSeed+"|"+hlIdx)>>>0)%_c27.length];}catch(_e27){}
                  /* [7.999.41b — taccuino PO su 7.999.34, SIT #81 punizione: «codice 001: all'apertura il pallone non e' ai piedi di nessuno
                     dei nostri (eroe >=43,3u)». Misurato con punizione-apertura-sonda: al taglio il 3D prende il pallone del gioco (50,50 a
