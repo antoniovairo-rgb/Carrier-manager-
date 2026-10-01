@@ -10725,6 +10725,22 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
         if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){window.__CPM_PAN72={ph:_ph72||null,off:+_cur72.toFixed(1),H:_H72};}
       }catch(_e72){}
       if(typeof window!=='undefined'&&_CPM_TEST&&window.__CPM_CAMSTEP93ON){try{const _R93=sr.current,_c93=camera.position;if(_R93._cp93){const _st93=Math.hypot(_c93.x-_R93._cp93.x,_c93.y-_R93._cp93.y,_c93.z-_R93._cp93.z);if(_st93>2.5){const W=(window.__CPM_CAMSTEP93=window.__CPM_CAMSTEP93||[]);if(W.length<60)W.push({t:Math.round(performance.now()),st:+_st93.toFixed(2),dtr:+((_R93._dtReal708||0)*1000).toFixed(0),dt:+(dt*1000).toFixed(0),ph:(propsRef.current||{}).matchPhase,snap:!!_R93._cutSnap,sc:!!_R93._sceneCut,cut:!!(window.__CPM_CUTLIVE&&window.__CPM_CUTLIVE())});}}_R93._cp93={x:_c93.x,y:_c93.y,z:_c93.z};}catch(_e93){}}/* [PO-144 strumento, solo collaudo] passi di camera oltre 2,5u per fotogramma, con il passo reale */
+      /* [7.999.97 PO-051 «il nome dei giocatori degli highlights in piccolo sarebbe carino»] targhette piccole (numero + cognome)
+         sopra i giocatori, SOLO nelle fasi hl_* e solo per chi sta entro 18u dal pallone (piu' l'eroe, in oro): in cronaca e nel
+         resto del campo nessuna scritta, per non affollare il quadro. Sprite in scena (non figli della mesh procedurale, che col
+         CH38 e' nascosta), creati una volta al primo highlight. Rosso __CPM_NO_NOMI51 = nessuna targhetta. Testimone __CPM_NOMI51. */
+      try{const _R51=sr.current,_ph51=String((propsRef.current&&propsRef.current.matchPhase)||''),_on51=/^hl_/.test(_ph51)&&!(typeof window!=='undefined'&&window.__CPM_NO_NOMI51);
+        if(_on51&&!_R51._tag51){_R51._tag51=[];const _mk51=(m,gold)=>{const nm=String(m._name||'').toUpperCase().slice(0,14);if(!nm&&!m._num)return;
+            const c=document.createElement('canvas');c.width=256;c.height=48;const x=c.getContext('2d');x.font='bold 26px Arial, sans-serif';x.textAlign='center';x.textBaseline='middle';
+            const tx=(m._num?m._num+' ':'')+nm,w=Math.min(250,x.measureText(tx).width+20);x.fillStyle='rgba(7,9,16,0.62)';
+            if(x.roundRect){x.beginPath();x.roundRect(128-w/2,6,w,36,10);x.fill();}else x.fillRect(128-w/2,6,w,36);
+            x.fillStyle=gold?'#f5c542':'#ffffff';x.fillText(tx,128,25);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;
+            const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));sp.scale.set(2.1,0.39,1);sp.renderOrder=999;sp.visible=false;scene.add(sp);_R51._tag51.push({sp,m,gold});};
+          (_R51.players||[]).forEach(pp=>{if(pp&&pp.mesh)_mk51(pp.mesh,false);});if(hero)_mk51(hero,true);}
+        if(_R51._tag51){let _n51=0;const bx=ball?ball.position.x:0,bz=ball?ball.position.z:0;
+          for(const g of _R51._tag51){const v=_on51&&(g.gold||Math.hypot(g.m.position.x-bx,g.m.position.z-bz)<18);g.sp.visible=v;if(v){g.sp.position.set(g.m.position.x,2.35,g.m.position.z);_n51++;}}
+          if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length};}
+      }catch(_e51){}
       renderer.render(scene,camera);
     };
     loop();

@@ -71,6 +71,8 @@ ripetuta dopo, su partite di campionato e non solo del provino.
 
 ## 4. Piano dei passi 2–5
 
+**Stato 01/10 (7.999.97): passi 2, 3 e 5 FATTI** in una release. Campo `richiede` congelato in factory (`src/04`, registro `GESTI_PROMESSI`); registro `GESTI_COLLEGATI` (oggi vuoto: comando, velo e petto non hanno clip); pesca (`selectContextualSituations` + piazzati 27 + cross 26) e opzioni (`filterSitActions`) filtrate; riattivazione automatica scrivendo il gesto nel registro. Sospese 2 schede (gi110, gi138), nascoste 6 azioni. Guardiano `scene-disegnabili` (rosso `__CPM_NO_RICHIEDE`). Il registro delle varianti `deriveHL` (roulette/hocus_pocus/step_over…) e il passo 6 restano da fare.
+
 | Release | Cosa | Rosso | Guardiano |
 |---|---|---|---|
 | 7.999.38 | **Passo 2.** Campo `richiede` congelato in factory (azione e situation), calcolato una volta dal registro di parole-gesto spostato nel gioco (`src/04`); **registro dei gesti disponibili** costruito dalle clip caricate davvero (+ `mx-scissor-kick`, + clip del PO quando arrivano) e dalla tabella `GESTI`; `deriveHL` assegna `roulette`, `hocus_pocus`, `step_over`, `cross_rabona`, `backheel`, `chip_pass` quando l'etichetta li nomina; le 6 varianti fuori tabella entrano in `GESTI` | `__CPM_NO_RICHIEDE` | censimento in modalità guardiano (varianti raggiungibili) |

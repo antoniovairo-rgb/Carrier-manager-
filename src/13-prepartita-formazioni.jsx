@@ -1216,6 +1216,7 @@ function selectContextualSituations(all,numHL,player,seed,opts){
   var _excl=(opts&&opts.exclude)||[];
   var _ballX=(opts&&opts.ballX!=null)?opts.ballX:null;/* [7.204.0] dove si è fermato il gioco (0-100): pesa la continuità territoriale */
   var pool=all.filter(function(sit){
+    if(typeof sitSospesa==="function"&&sitSospesa(sit))return false;/* [7.999.97 PO-086] scheda che promette un gesto senza clip: sospesa dalla pesca */
     if(sit.ctx==="losing"&&scoreCtx!=="losing")return false;
     if(sit.ctx==="winning"&&scoreCtx!=="winning")return false;
     var _tc=sit.tactic||{};

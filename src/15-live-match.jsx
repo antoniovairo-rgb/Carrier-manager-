@@ -4569,7 +4569,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                /* [7.999.27] rigore e punizione dal limite dell'eroe: la scheda e' il piazzato vero (niente origine da crossatore: il pallone e' sul punto, lo batte lui) */
                const _pk27=_og26&&(_og26.kind==="rigore"||(_og26.kind==="punizione"&&occEroe879Ref.current.tipo==="punizione"))&&!(typeof window!=='undefined'&&window.__CPM_NO_PIAZ27);
                if(_pk27){try{const _rg27=_og26.kind==="rigore";
-                 const _c27=SITUATIONS.filter(s2=>{if(!s2||s2.type==="def"||_used79.indexOf(s2.text)>=0)return false;if(_rg27)return (typeof isPenaltySit==="function"&&isPenaltySit(s2));const _t=String(s2.text||"");return deriveIntent(s2)==="freekick"&&!/fascia|indirett|defilat/i.test(_t);});
+                 const _c27=SITUATIONS.filter(s2=>{if(!s2||s2.type==="def"||_used79.indexOf(s2.text)>=0)return false;if(typeof sitSospesa==="function"&&sitSospesa(s2))return false;/* [7.999.97 PO-086] */if(_rg27)return (typeof isPenaltySit==="function"&&isPenaltySit(s2));const _t=String(s2.text||"");return deriveIntent(s2)==="freekick"&&!/fascia|indirett|defilat/i.test(_t);});
                  if(_c27.length)_pick880=_c27[(hashStr("piaz27|"+_lzSeed+"|"+hlIdx)>>>0)%_c27.length];}catch(_e27){}
                  /* [7.999.41b — taccuino PO su 7.999.34, SIT #81 punizione: «codice 001: all'apertura il pallone non e' ai piedi di nessuno
                     dei nostri (eroe >=43,3u)». Misurato con punizione-apertura-sonda: al taglio il 3D prende il pallone del gioco (50,50 a
@@ -4584,7 +4584,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                  _ORIG26=null;}
                else if(_og26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)){try{
                  const _ang26=_og26.kind==="angolo";
-                 const _fit26=(s2)=>{if(!s2||s2.type!=="off"||_used79.indexOf(s2.text)>=0)return false;let _st=null;try{_st=hlBallState(s2);}catch(_e){}if(_st!=="aerial")return false;
+                 const _fit26=(s2)=>{if(!s2||s2.type!=="off"||_used79.indexOf(s2.text)>=0)return false;if(typeof sitSospesa==="function"&&sitSospesa(s2))return false;/* [7.999.97 PO-086] */let _st=null;try{_st=hlBallState(s2);}catch(_e){}if(_st!=="aerial")return false;
                    const _t=String(s2.text||"");const _it=deriveIntent(s2);
                    if(_it==="cross"||_it==="onetwo")return false;/* l'eroe RICEVE: mai una scheda in cui crossa o triangola lui */
                    if(_ang26)return s2.ballAt==="corner"||(/angolo|corner/i.test(_t)&&_it==="insertion");

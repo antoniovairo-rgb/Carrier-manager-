@@ -126,8 +126,40 @@ const S=(text,zones,mz,sz,actions,lock=false,mm=-1,intro="",type="off",ctx=null,
      sue esclusioni non scattavano e 4 situations a nascita gia' dichiarata — corner, rimessa, rinvio —
      finivano classificate ricezioni. Misurato: 41 ricezioni aeree invece delle 37 reali. */
   obj.recv=(typeof deriveReception==="function")?deriveReception(obj):null;
+  /* [7.999.97 PO-086 passo 2] la scheda e ogni azione DICHIARANO i gesti promessi che il 3D non ha ancora (campo `richiede`,
+     congelato qui come chainOn: la regex sul testo vive solo in factory). Sorgente: GESTI_PROMESSI, sotto. */
+  obj.richiede=richiedeDi(text+" "+(intro||""));
+  actions.forEach(a=>{if(!a)return;let rq=richiedeDi(a.label||"");if(a.gkCall)rq=rq.filter(k=>k!=="comando");if(a.defGesto==="call"&&!a.gkCall&&rq.indexOf("comando")<0)rq.push("comando");a.richiede=rq;});
   return obj;
 };
+/* [7.999.97 PO-086 «nessuna scena deve promettere un gesto che il 3D non mostra» — passi 2-3 del piano in
+   tests/character-lab/SCENE_DISEGNABILI.md] GESTI_PROMESSI: le parole che promettono un gesto SENZA clip (le voci «n» del
+   censimento `censimento-scene.mjs`). GESTI_COLLEGATI: chiave → clip montata davvero sul corpo. Una scheda il cui testo promette
+   un gesto non collegato, o con meno di due azioni disegnabili, e' SOSPESA dalla pesca; un'azione non disegnabile sparisce
+   dalle opzioni (se ne restano almeno due). RIATTIVAZIONE AUTOMATICA: quando una clip arriva basta scriverla in
+   GESTI_COLLEGATI (o, a runtime, in window.__CPM_GESTI_COLLEGATI) e scheda e azione tornano da sole — nessun elenco di schede
+   da mantenere. La sospensione agisce sulla PESCA e sulle OPZIONI: SITUATIONS resta intatto (il gate le forza per indice e
+   un salvataggio a meta' partita conserva le sue). Rosso __CPM_NO_RICHIEDE. Guardiano `scene-disegnabili`. */
+const GESTI_PROMESSI=[
+  ['hocus_pocus',/hocus|pocus/i],
+  ['elastico',/elastic|flip.?flap/i],
+  ['tunnel',/tunnel|in mezzo alle gambe|fra le gambe|tra le gambe/i],
+  ['sombrero',/sombrero|scavalc\w* (il|l')?(difensor|avversari|marcat)|sopra la testa/i],
+  ['rabona',/rabona/i],
+  ['tacco',/\btacc(o|hetto)\b|colpo di tacco/i],
+  ['petto',/di petto|stop di petto|controllo di petto|col petto/i],
+  ['coscia',/di coscia/i],
+  ['velo',/\bvelo\b|lascia scorrere|finta di (ricevere|calciare) e lascia/i],
+  ['comando',/organizza la difesa|guida i compagni|chiama il compagno|chiamo il compagno|urla|comunic|comand|dirig|sistema la difesa|copri la linea|linea alta|tieni la linea|allineati/i],
+];
+const GESTI_COLLEGATI={};
+function richiedeDi(t){const out=[];for(const [k,re] of GESTI_PROMESSI)if(re.test(t||""))out.push(k);return out;}
+function gestoCollegato(k){if(GESTI_COLLEGATI[k])return true;try{const w=typeof window!=='undefined'&&window.__CPM_GESTI_COLLEGATI;return !!(w&&w[k]);}catch(_e){return false;}}
+function _noRichiede(){return typeof window!=='undefined'&&!!window.__CPM_NO_RICHIEDE;}
+function azioneDisegnabile(a){if(!a||_noRichiede())return true;return (a.richiede||[]).every(gestoCollegato);}
+function sitSospesa(sit){if(!sit||_noRichiede())return false;if((sit.richiede||[]).some(k=>!gestoCollegato(k)))return true;
+  const acts=sit.actions||[];if(acts.length<2)return false;return acts.filter(azioneDisegnabile).length<2;}
+function soloDisegnabili(actions){if(!actions||!actions.length||_noRichiede())return actions;const g=actions.filter(azioneDisegnabile);return (g.length>=2||g.length===actions.length)?g:actions;}
 const A=(label,stat,bon,rew,fail,nrg)=>({label,stat,bon,rew,fail,nrg});
 const SITUATIONS=[
 /* === AREA — CONCLUSIONI === */
@@ -619,6 +651,7 @@ const getZone=x=>{for(const[k,v]of Object.entries(ZONES))if(x>=v.x[0]&&x<v.x[1])
 // sit.tactic.nearby_def: numero difensori vicini — se 0, il dribbling non ha avversario da superare.
 function filterSitActions(actions,px,sit){
   if(!actions||!actions.length)return actions;
+  actions=soloDisegnabili(actions);/* [7.999.97 PO-086] via le azioni che promettono un gesto senza clip */
   const tactic=sit?.tactic||null;
   // 5.49.4 — COERENZA STATO-PALLA: se il pallone NON è aereo (a terra/ai piedi o palla ferma), NON proporre MAI giocate AEREE
   //   (colpo di testa, rovesciata, sforbiciata, stacco, di petto). Guard runtime su TUTTE le situazioni → niente azione incoerente col contesto.
