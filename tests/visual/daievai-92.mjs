@@ -36,7 +36,7 @@ for (const gi of GI) for (const az of AZ) for (const es of ESITI) {
   }
   for (let i = 1; i < dirTimes.length; i++) if (dirTimes[i] - dirTimes[i - 1] < 400) c014++;
   if (stillMax > 500) c011 = 1;
-  const c012 = (dxTot < 0 && !/intercept/.test(tl || '')) ? 1 : 0;
+  const c012 = (dxTot < 0 && es === 'success') ? 1 : 0;
   tot.casi++; tot.c005 += c005; tot.c014 += c014; tot.c012 += c012; tot.c011 += c011; tot.salti += salti;
   console.log(`gi${gi} az${az} «${lbl[az] || '?'}» ${es} (tl ${tl}) · campioni ${R.length} · 005:${c005} 014:${c014} 012:${c012}(dx ${dxTot.toFixed(1)}) 011:${c011}(${stillMax}ms) salti:${salti}`);
   console.log('   pallone ' + R.filter((_, i) => i % 5 === 0).map(f => f.t + ':' + f.b.x.toFixed(0) + ',' + f.b.y.toFixed(0)).join(' '));
