@@ -1,8 +1,8 @@
 {
   "comando": "node tests/codex/collaudo-difesa-3d-audit.mjs",
   "summary": {
-    "versione": "7.999.82",
-    "baseCommit": "fa129a41d2e72263ea20fef6bdfdd6a5077cc000",
+    "versione": "7.999.84",
+    "baseCommit": "9eb68f7cd53cd01ba2a058020f750ecdc22a9cd1",
     "planned": 32,
     "attempts": 32,
     "acquired": 32,
@@ -25,10 +25,7 @@
       "frames": 6,
       "missingFrames": [],
       "reviewed": true,
-      "codes": [
-        "001",
-        "003"
-      ],
+      "codes": [],
       "stopReason": null,
       "error": null
     },
@@ -45,7 +42,6 @@
       "missingFrames": [],
       "reviewed": true,
       "codes": [
-        "001",
         "003"
       ],
       "stopReason": null,
@@ -65,8 +61,7 @@
       "reviewed": true,
       "codes": [
         "001",
-        "002",
-        "003"
+        "002"
       ],
       "stopReason": null,
       "error": null
@@ -104,8 +99,7 @@
       "missingFrames": [],
       "reviewed": true,
       "codes": [
-        "001",
-        "003"
+        "001"
       ],
       "stopReason": null,
       "error": null
@@ -142,8 +136,7 @@
       "missingFrames": [],
       "reviewed": true,
       "codes": [
-        "001",
-        "003"
+        "001"
       ],
       "stopReason": null,
       "error": null
@@ -216,7 +209,9 @@
       "frames": 6,
       "missingFrames": [],
       "reviewed": true,
-      "codes": [],
+      "codes": [
+        "001"
+      ],
       "stopReason": null,
       "error": null
     },
@@ -232,7 +227,9 @@
       "frames": 6,
       "missingFrames": [],
       "reviewed": true,
-      "codes": [],
+      "codes": [
+        "001"
+      ],
       "stopReason": null,
       "error": null
     },
@@ -267,7 +264,8 @@
       "missingFrames": [],
       "reviewed": true,
       "codes": [
-        "001"
+        "001",
+        "002"
       ],
       "stopReason": null,
       "error": null
@@ -322,8 +320,7 @@
       "missingFrames": [],
       "reviewed": true,
       "codes": [
-        "001",
-        "003"
+        "001"
       ],
       "stopReason": null,
       "error": null
@@ -415,7 +412,8 @@
       "missingFrames": [],
       "reviewed": true,
       "codes": [
-        "001"
+        "001",
+        "002"
       ],
       "stopReason": null,
       "error": null
@@ -469,8 +467,7 @@
       "missingFrames": [],
       "reviewed": true,
       "codes": [
-        "001",
-        "003"
+        "002"
       ],
       "stopReason": null,
       "error": null
@@ -488,7 +485,7 @@
       "missingFrames": [],
       "reviewed": true,
       "codes": [
-        "001",
+        "002",
         "003"
       ],
       "stopReason": null,
@@ -525,7 +522,8 @@
       "missingFrames": [],
       "reviewed": true,
       "codes": [
-        "001"
+        "001",
+        "002"
       ],
       "stopReason": null,
       "error": null

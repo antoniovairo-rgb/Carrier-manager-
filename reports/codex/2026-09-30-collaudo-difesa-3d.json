@@ -1,5 +1,5 @@
 {
-  "versione": "7.999.82",
+  "versione": "7.999.84",
   "compito": "Collaudo mirato difesa 3D, 16 scene success/fail",
   "comando": "node tests/codex/collaudo-difesa-3d-lotti.mjs; node tests/codex/collaudo-difesa-3d-audit.mjs; node tests/codex/collaudo-difesa-3d-report.mjs",
   "seme": "pagina nuova per caso; nome Difesa3D<gi>",
@@ -26,271 +26,287 @@
   "segnalazioni": [
     {
       "gravita": "alta",
-      "descrizione": "001, 003 33:0:success: Apertura con eroe nascosto dal pannello; testo finale attribuisce al portiere un salvataggio che le foto non mostrano. Il gesto di blocco resta parziale/non verificato.",
-      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='33:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
-      "prove": [
-        "gi33-a0-success-v2-01-apertura.png",
-        "gi33-a0-success-v2-04-contatto.png",
-        "gi33-a0-success-v2-06-esito.png"
-      ]
-    },
-    {
-      "gravita": "alta",
-      "descrizione": "001, 003 33:0:fail: Eroe coperto dal pannello in apertura e 0-1 visibile prima che gli scatti mostrino il tiro in porta.",
+      "descrizione": "003 33:0:fail: La nuova apertura elimina il vecchio 001, ma il punteggio cambia prima che le foto mostrino il gol; 003 resta ipotesi visiva da riprodurre.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='33:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi33-a0-fail-v2-01-apertura.png",
-        "gi33-a0-fail-v2-03-rincorsa.png",
-        "gi33-a0-fail-v2-05-volo.png"
+        "gi33-a0-fail-v2-84-01-apertura.png",
+        "gi33-a0-fail-v2-84-03-rincorsa.png",
+        "gi33-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "alta",
-      "descrizione": "001, 002, 003 133:0:success: Pallone invisibile e eroe tagliato; risultato attribuito al portiere senza portiere o parata negli scatti.",
+      "descrizione": "001, 002 133:0:success: Rispetto alla 7.999.82 il testo finale da portiere e corretto; apertura e inquadratura continuano a non mostrare palla e intervento.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='133:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi133-a0-success-v2-01-apertura.png",
-        "gi133-a0-success-v2-05-volo.png",
-        "gi133-a0-success-v2-06-esito.png"
+        "gi133-a0-success-v2-84-01-apertura.png",
+        "gi133-a0-success-v2-84-04-contatto.png",
+        "gi133-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "alta",
-      "descrizione": "001, 002, 003 133:0:fail: Pallone invisibile, eroe tagliato e 0-1 gia prima del gol mostrato; esito non rappresentato in campo.",
+      "descrizione": "001, 002, 003 133:0:fail: Persistono apertura e inquadratura cieche; il punteggio anticipa il gol visibile. 003 e un'ipotesi fotografica, non una divergenza da ActionResolved.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='133:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi133-a0-fail-v2-01-apertura.png",
-        "gi133-a0-fail-v2-05-volo.png",
-        "gi133-a0-fail-v2-06-esito.png"
+        "gi133-a0-fail-v2-84-01-apertura.png",
+        "gi133-a0-fail-v2-84-03-rincorsa.png",
+        "gi133-a0-fail-v2-84-05-volo.png",
+        "gi133-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "alta",
-      "descrizione": "001, 003 134:0:fail: Pallone non distinguibile all apertura, 0-1 anticipato rispetto alle foto della giocata e gol non inquadrato.",
+      "descrizione": "001, 003 134:0:fail: Il codice 003 resta una possibile incoerenza del tabellone anticipato; gli scatti non provano il momento esatto del gol fuori quadro. Apertura ancora coperta dal pannello.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='134:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi134-a0-fail-v2-01-apertura.png",
-        "gi134-a0-fail-v2-03-rincorsa.png",
-        "gi134-a0-fail-v2-04-contatto.png",
-        "gi134-a0-fail-v2-06-esito.png"
+        "gi134-a0-fail-v2-84-01-apertura.png",
+        "gi134-a0-fail-v2-84-03-rincorsa.png",
+        "gi134-a0-fail-v2-84-05-volo.png",
+        "gi134-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "alta",
-      "descrizione": "001, 003 138:0:success: Pallone assente in apertura; finale attribuito a parata del portiere senza portiere o tuffo visibili. L eroe resta piu nel quadro rispetto alla prova precedente.",
-      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='138:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
-      "prove": [
-        "gi138-a0-success-v2-01-apertura.png",
-        "gi138-a0-success-v2-05-volo.png",
-        "gi138-a0-success-v2-06-esito.png"
-      ]
-    },
-    {
-      "gravita": "alta",
-      "descrizione": "001, 003 36:0:fail: Apertura senza pallone; 0-1 presente prima che la palla completi la traiettoria visibile. Il duello aereo e solo parzialmente osservabile.",
+      "descrizione": "001, 003 36:0:fail: Apertura senza palla; 003 come ipotesi per punteggio anticipato rispetto al gol visibile, non come discordanza dal motore.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='36:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi36-a0-fail-v2-01-apertura.png",
-        "gi36-a0-fail-v2-03-rincorsa.png",
-        "gi36-a0-fail-v2-05-volo.png"
+        "gi36-a0-fail-v2-84-01-apertura.png",
+        "gi36-a0-fail-v2-84-03-rincorsa.png",
+        "gi36-a0-fail-v2-84-05-volo.png",
+        "gi36-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "alta",
-      "descrizione": "001, 003 44:0:fail: Pallone assente all apertura e punteggio 0-1 anticipato rispetto al volo mostrato nelle foto 03-04.",
+      "descrizione": "001, 003 44:0:fail: Apertura coperta; 003 ipotetico per tabellone anticipato rispetto alla giocata visibile. Non e una discordanza da ActionResolved.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='44:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi44-a0-fail-v2-01-apertura.png",
-        "gi44-a0-fail-v2-03-rincorsa.png",
-        "gi44-a0-fail-v2-04-contatto.png"
+        "gi44-a0-fail-v2-84-01-apertura.png",
+        "gi44-a0-fail-v2-84-03-rincorsa.png",
+        "gi44-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "alta",
-      "descrizione": "001, 003 45:0:fail: Apertura senza pallone; il tabellone segna gia 0-1 quando la palla appare ancora presso la linea esterna. Il fotogramma finale conferma il gol, ma il momento del cambio punteggio va riprodotto.",
+      "descrizione": "001, 003 45:0:fail: Apertura coperta; possibile 003 per punteggio aggiornato prima del gol visibile. Il punto esatto di attraversamento della linea di porta resta non verificato nei sei scatti.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='45:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi45-a0-fail-v2-01-apertura.png",
-        "gi45-a0-fail-v2-03-rincorsa.png",
-        "gi45-a0-fail-v2-04-contatto.png",
-        "gi45-a0-fail-v2-06-esito.png"
+        "gi45-a0-fail-v2-84-01-apertura.png",
+        "gi45-a0-fail-v2-84-03-rincorsa.png",
+        "gi45-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "alta",
-      "descrizione": "001, 003 157:0:success: Apertura senza pallone. Possibile 003: il premio save usa testo da portiere mentre l'azione scelta e Gettati sulla traiettoria e le foto mostrano il difensore sulla palla.",
-      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='157:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
-      "prove": [
-        "gi157-a0-success-v2-01-apertura.png",
-        "gi157-a0-success-v2-03-rincorsa.png",
-        "gi157-a0-success-v2-06-esito.png"
-      ]
-    },
-    {
-      "gravita": "alta",
-      "descrizione": "001, 003 157:0:fail: Codice 003 ipotetico per tabellone 0-1 prima che le foto mostrino un gol; sei campioni non bastano a stabilire se il gol sia avvenuto fuori quadro tra scatti.",
+      "descrizione": "002, 003 157:0:fail: 002 per il corpo tagliato nel gesto; 003 ipotetico per il tabellone anticipato rispetto al tiro mostrato, non per discordanza dell'esito dal testimone.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='157:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi157-a0-fail-v2-01-apertura.png",
-        "gi157-a0-fail-v2-03-rincorsa.png",
-        "gi157-a0-fail-v2-05-volo.png",
-        "gi157-a0-fail-v2-06-esito.png"
+        "gi157-a0-fail-v2-84-03-rincorsa.png",
+        "gi157-a0-fail-v2-84-05-volo.png",
+        "gi157-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001, 003 134:0:success: Pallone occultato in apertura; finale attribuito al portiere senza mostrare il suo intervento. Stacco visibile, contatto preciso non verificato.",
+      "descrizione": "001 134:0:success: L'apertura resta poco chiara per il pallone coperto dal pannello; l'esito testuale da portiere della 7.999.82 risulta corretto in questo campione.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='134:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi134-a0-success-v2-01-apertura.png",
-        "gi134-a0-success-v2-04-contatto.png",
-        "gi134-a0-success-v2-06-esito.png"
+        "gi134-a0-success-v2-84-01-apertura.png",
+        "gi134-a0-success-v2-84-03-rincorsa.png",
+        "gi134-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 138:0:fail: Pallone assente in apertura; nelle foto centrali eroe e palla rientrano nel quadro e l esito fallito appare coerente. Il codice 002 del vecchio campione non e riprodotto qui.",
+      "descrizione": "001 138:0:success: Apertura ancora senza pallone; il precedente testo da portiere non compare in questo esito positivo.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='138:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
+      "prove": [
+        "gi138-a0-success-v2-84-01-apertura.png",
+        "gi138-a0-success-v2-84-05-volo.png",
+        "gi138-a0-success-v2-84-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "001 138:0:fail: Persistono apertura senza palla e portatore; l'esito testuale non contraddice chiaramente gli scatti.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='138:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi138-a0-fail-v2-01-apertura.png",
-        "gi138-a0-fail-v2-05-volo.png",
-        "gi138-a0-fail-v2-06-esito.png"
+        "gi138-a0-fail-v2-84-01-apertura.png",
+        "gi138-a0-fail-v2-84-05-volo.png",
+        "gi138-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001, 002 168:0:success: Apertura con eroe parzialmente coperto dal pannello; la scivolata esce a sinistra nella foto 04. Testo finale compatibile col successo ma recupero esatto non verificato.",
+      "descrizione": "001, 002 168:0:success: Persistono pannello sull'apertura e scivolata parzialmente fuori quadro. L'esito finale e leggibile.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='168:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi168-a0-success-v2-01-apertura.png",
-        "gi168-a0-success-v2-04-contatto.png",
-        "gi168-a0-success-v2-06-esito.png"
+        "gi168-a0-success-v2-84-01-apertura.png",
+        "gi168-a0-success-v2-84-03-rincorsa.png",
+        "gi168-a0-success-v2-84-04-contatto.png",
+        "gi168-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001, 002 168:0:fail: Eroe parzialmente coperto in apertura e tagliato a sinistra durante la scivolata. Il testo del fallo resta compatibile con l esito richiesto.",
+      "descrizione": "001, 002 168:0:fail: Apertura ancora coperta dalla scheda e scivolata parzialmente fuori quadro; esito disciplinare plausibile.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='168:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi168-a0-fail-v2-01-apertura.png",
-        "gi168-a0-fail-v2-04-contatto.png",
-        "gi168-a0-fail-v2-06-esito.png"
+        "gi168-a0-fail-v2-84-01-apertura.png",
+        "gi168-a0-fail-v2-84-03-rincorsa.png",
+        "gi168-a0-fail-v2-84-04-contatto.png",
+        "gi168-a0-fail-v2-84-05-volo.png",
+        "gi168-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 32:0:success: Apertura senza pallone e portatore, poi intercetto e recupero leggibili. Il codice 007 della bozza non e confermato dai fotogrammi.",
+      "descrizione": "001 31:0:success: Apertura con avversario e pallone coperti dalla scheda; azione e recupero leggibili dopo la scelta.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='31:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
+      "prove": [
+        "gi31-a0-success-v2-84-01-apertura.png",
+        "gi31-a0-success-v2-84-04-contatto.png",
+        "gi31-a0-success-v2-84-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "001 31:0:fail: Solo l'apertura nasconde il portatore; il fallo finale e visivamente plausibile.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='31:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
+      "prove": [
+        "gi31-a0-fail-v2-84-01-apertura.png",
+        "gi31-a0-fail-v2-84-04-contatto.png",
+        "gi31-a0-fail-v2-84-05-volo.png",
+        "gi31-a0-fail-v2-84-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "001 32:0:success: Apertura senza palla e bersaglio; intervento finale plausibile quando la palla entra nel quadro.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='32:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi32-a0-success-v2-01-apertura.png",
-        "gi32-a0-success-v2-05-volo.png",
-        "gi32-a0-success-v2-06-esito.png"
+        "gi32-a0-success-v2-84-01-apertura.png",
+        "gi32-a0-success-v2-84-05-volo.png",
+        "gi32-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 32:0:fail: Apertura priva di pallone e portatore; esito fallito plausibile ma azione della palla non valutabile dalle foto centrali.",
+      "descrizione": "001, 002 32:0:fail: Apertura senza la giocata e camera che taglia l'eroe mentre la palla resta invisibile. Il testo di fail resta non verificato nelle foto.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='32:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi32-a0-fail-v2-01-apertura.png",
-        "gi32-a0-fail-v2-05-volo.png",
-        "gi32-a0-fail-v2-06-esito.png"
+        "gi32-a0-fail-v2-84-01-apertura.png",
+        "gi32-a0-fail-v2-84-05-volo.png",
+        "gi32-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 36:0:success: Pallone assente all apertura; il duello aereo e suggerito ma il contatto e il possesso finale restano non verificabili dalle sei foto.",
+      "descrizione": "001 36:0:success: L'apertura non rende visibile il pallone del corner; il successivo gesto aereo e l'esito difensivo sono plausibili.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='36:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi36-a0-success-v2-01-apertura.png",
-        "gi36-a0-success-v2-04-contatto.png",
-        "gi36-a0-success-v2-06-esito.png"
+        "gi36-a0-success-v2-84-01-apertura.png",
+        "gi36-a0-success-v2-84-03-rincorsa.png",
+        "gi36-a0-success-v2-84-05-volo.png",
+        "gi36-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001, 003 44:0:success: Apertura senza cross visibile; il finale usa un testo da parata del portiere senza intervento del portiere nelle foto.",
+      "descrizione": "001 44:0:success: Apertura coperta dal pannello; testo del salvataggio corretto in questo campione.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='44:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi44-a0-success-v2-01-apertura.png",
-        "gi44-a0-success-v2-05-volo.png",
-        "gi44-a0-success-v2-06-esito.png"
+        "gi44-a0-success-v2-84-01-apertura.png",
+        "gi44-a0-success-v2-84-03-rincorsa.png",
+        "gi44-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 45:0:success: Apertura taglia eroe e pallone, ma il blocco sulla linea e il finale positivo sono leggibili nelle foto successive.",
+      "descrizione": "001 45:0:success: L'apertura resta parzialmente nascosta dalla scheda, ma il blocco e leggibile e il testo finale non attribuisce l'intervento al portiere.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='45:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi45-a0-success-v2-01-apertura.png",
-        "gi45-a0-success-v2-04-contatto.png",
-        "gi45-a0-success-v2-06-esito.png"
+        "gi45-a0-success-v2-84-01-apertura.png",
+        "gi45-a0-success-v2-84-03-rincorsa.png",
+        "gi45-a0-success-v2-84-05-volo.png",
+        "gi45-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 128:0:success: Apertura senza attaccante ne pallone; intervento finale visivamente plausibile, contatto non verificato. La bozza camera 007 non e confermata dalle foto.",
+      "descrizione": "001 128:0:success: Apertura ancora senza portatore e pallone, sebbene la distanza logica sia molto minore della 7.999.82; recupero finale leggibile.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='128:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi128-a0-success-v2-01-apertura.png",
-        "gi128-a0-success-v2-04-contatto.png",
-        "gi128-a0-success-v2-06-esito.png"
+        "gi128-a0-success-v2-84-01-apertura.png",
+        "gi128-a0-success-v2-84-05-volo.png",
+        "gi128-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 128:0:fail: Apertura senza palla ne avversario. Non attribuisco il codice 002: nessuna foto dimostra che il protagonista esca del tutto dal quadro durante il gesto.",
+      "descrizione": "001, 002 128:0:fail: Apertura senza portatore e pallone; nella fase finale l'eroe esce in parte dal quadro. Nessun 003 certo per il testo di fail.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='128:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi128-a0-fail-v2-01-apertura.png",
-        "gi128-a0-fail-v2-05-volo.png",
-        "gi128-a0-fail-v2-06-esito.png"
+        "gi128-a0-fail-v2-84-01-apertura.png",
+        "gi128-a0-fail-v2-84-05-volo.png",
+        "gi128-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 137:0:success: Apertura lontana dalla palla. Il risultato difensivo e plausibile, ma la sequenza fotografica non dimostra il gesto esatto.",
+      "descrizione": "001 137:0:success: Apertura distante dalla palla; il recupero diventa leggibile solo nella foto finale.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='137:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi137-a0-success-v2-01-apertura.png",
-        "gi137-a0-success-v2-05-volo.png",
-        "gi137-a0-success-v2-06-esito.png"
+        "gi137-a0-success-v2-84-01-apertura.png",
+        "gi137-a0-success-v2-84-05-volo.png",
+        "gi137-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 137:0:fail: Apertura senza la palla; gli scatti non bastano per assegnare un codice al gesto o all'esito.",
+      "descrizione": "001 137:0:fail: Apertura senza il portatore, poi l'azione decisiva si svolge fuori quadro. Nessun codice 003: la foto non dimostra che il fallo non sia avvenuto.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='137:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi137-a0-fail-v2-01-apertura.png",
-        "gi137-a0-fail-v2-03-rincorsa.png",
-        "gi137-a0-fail-v2-06-esito.png"
+        "gi137-a0-fail-v2-84-01-apertura.png",
+        "gi137-a0-fail-v2-84-05-volo.png",
+        "gi137-a0-fail-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 184:0:success: Apertura priva del pallone. La risoluzione dell'intercetto e visivamente leggibile.",
+      "descrizione": "002 157:0:success: L'azione difensiva e in parte leggibile, mentre la camera taglia il protagonista nel momento piu importante. Il testo attribuito al portiere resta un sospetto 003, non dimostrato dagli scatti.",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='157:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
+      "prove": [
+        "gi157-a0-success-v2-84-01-apertura.png",
+        "gi157-a0-success-v2-84-05-volo.png",
+        "gi157-a0-success-v2-84-06-esito.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "001 184:0:success: Il pericolo annunciato e assente all'apertura; l'esito e visivamente leggibile.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='184:0:success'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi184-a0-success-v2-01-apertura.png",
-        "gi184-a0-success-v2-05-volo.png",
-        "gi184-a0-success-v2-06-esito.png"
+        "gi184-a0-success-v2-84-01-apertura.png",
+        "gi184-a0-success-v2-84-05-volo.png",
+        "gi184-a0-success-v2-84-06-esito.png"
       ]
     },
     {
       "gravita": "media",
-      "descrizione": "001 184:0:fail: Apertura senza palla; l'esito narrato e coerente con l'ultimo fotogramma.",
+      "descrizione": "001, 002 184:0:fail: Pericolo non inquadrato all'avvio e camera che spinge l'eroe sul margine durante il gesto.",
       "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_CASES='184:0:fail'; $env:CPM_CAPTURE_TAG='riproduzione'; node tests/codex/collaudo-difesa-3d.mjs",
       "prove": [
-        "gi184-a0-fail-v2-01-apertura.png",
-        "gi184-a0-fail-v2-05-volo.png",
-        "gi184-a0-fail-v2-06-esito.png"
+        "gi184-a0-fail-v2-84-01-apertura.png",
+        "gi184-a0-fail-v2-84-05-volo.png",
+        "gi184-a0-fail-v2-84-06-esito.png"
       ]
     }
   ],
   "audit": {
-    "versione": "7.999.82",
-    "baseCommit": "fa129a41d2e72263ea20fef6bdfdd6a5077cc000",
+    "versione": "7.999.84",
+    "baseCommit": "9eb68f7cd53cd01ba2a058020f750ecdc22a9cd1",
     "planned": 32,
     "attempts": 32,
     "acquired": 32,
@@ -301,57 +317,162 @@
     "missingImages": 0
   },
   "confronto": {
-    "33": {
-      "success": [
-        "001",
-        "003"
-      ],
-      "fail": [
-        "001",
-        "003"
-      ]
+    "prima69": {
+      "33": {
+        "success": [
+          "001",
+          "003"
+        ],
+        "fail": [
+          "001",
+          "003"
+        ]
+      },
+      "133": {
+        "success": [
+          "001",
+          "002"
+        ],
+        "fail": [
+          "001",
+          "002",
+          "003"
+        ]
+      },
+      "134": {
+        "success": [
+          "001",
+          "003"
+        ],
+        "fail": [
+          "001",
+          "002",
+          "003"
+        ]
+      },
+      "138": {
+        "success": [
+          "001",
+          "002",
+          "003"
+        ],
+        "fail": [
+          "002"
+        ]
+      },
+      "168": {
+        "success": [
+          "001",
+          "002"
+        ],
+        "fail": [
+          "001",
+          "002"
+        ]
+      }
     },
-    "133": {
-      "success": [
+    "intermedia82": {
+      "33:0:success": [
         "001",
-        "002"
+        "003"
       ],
-      "fail": [
+      "33:0:fail": [
+        "001",
+        "003"
+      ],
+      "133:0:success": [
         "001",
         "002",
         "003"
-      ]
-    },
-    "134": {
-      "success": [
-        "001",
-        "003"
       ],
-      "fail": [
-        "001",
-        "002",
-        "003"
-      ]
-    },
-    "138": {
-      "success": [
+      "133:0:fail": [
         "001",
         "002",
         "003"
       ],
-      "fail": [
-        "002"
-      ]
-    },
-    "168": {
-      "success": [
+      "134:0:success": [
+        "001",
+        "003"
+      ],
+      "134:0:fail": [
+        "001",
+        "003"
+      ],
+      "138:0:success": [
+        "001",
+        "003"
+      ],
+      "138:0:fail": [
+        "001"
+      ],
+      "168:0:success": [
         "001",
         "002"
       ],
-      "fail": [
+      "168:0:fail": [
         "001",
         "002"
-      ]
+      ],
+      "31:0:success": [],
+      "31:0:fail": [],
+      "32:0:success": [
+        "001"
+      ],
+      "32:0:fail": [
+        "001"
+      ],
+      "36:0:success": [
+        "001"
+      ],
+      "36:0:fail": [
+        "001",
+        "003"
+      ],
+      "44:0:success": [
+        "001",
+        "003"
+      ],
+      "44:0:fail": [
+        "001",
+        "003"
+      ],
+      "45:0:success": [
+        "001"
+      ],
+      "45:0:fail": [
+        "001",
+        "003"
+      ],
+      "128:0:success": [
+        "001"
+      ],
+      "128:0:fail": [
+        "001"
+      ],
+      "137:0:success": [
+        "001"
+      ],
+      "137:0:fail": [
+        "001"
+      ],
+      "157:0:success": [
+        "001",
+        "003"
+      ],
+      "157:0:fail": [
+        "001",
+        "003"
+      ],
+      "184:0:success": [
+        "001"
+      ],
+      "184:0:fail": [
+        "001"
+      ],
+      "24:0:success": [],
+      "24:0:fail": [],
+      "2:0:success": [],
+      "2:0:fail": []
     }
   },
   "plan": [
