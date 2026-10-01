@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (47)
+## Voci aperte o parziali (45)
 
-Per lotto: L1 23 · L3 5 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
+Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -42,11 +42,9 @@ Per lotto: L1 23 · L3 5 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-133 | 29/09 22:47 | Dopo gli stadi, valutare la consegna parziale di Codex sugli highlight | processo | DA COLLAUDARE — PO 01/10: «rifai fare un collaudo a Codex» | L1 | 7.999.69 (corretta solo la chiamata waitForFunction) | — | «in coda agli stadi valuta i risu[ltati]» |
 | PO-143 | 30/09 15:34 | Taccuino #18, #126, #64, #140: dribbling fasullo, esiti in rete, pallone che arretra | difetto | DA COLLAUDARE — PO 01/10: Codex (#64 nel collaudo colpo di testa; #126 e #18 da aggiungere); #140 FATTO in 7.999.93 | L1 | 7.999.79: «Non riprodotti»; 7.999.93 (#140) | `conduci-93` | «Non era un dribbling»; «Azione confusionaria con colpo di testa non sincronizzato»; «Ha fatto una sorta di colpo di testa, scena strana» |
 | PO-172 | 27/09 | Rilievi Codex sulle release 7.999.26–27 (26-A…27-B) da riprodurre | difetto | PARZIALE — 27-B corretto (7.999.100), 26-D corretto secondo la decisione PO (7.999.101), 26-C chiuso dalla 7.999.98; 26-A, 26-B, 27-A non verificati | L1 | — | — | roadmap: «6 rischi, nessuno riprodotto» |
-| PO-184 | 01/10 22:45 | Nomi sopra i giocatori anche dove il corpo non è disegnato (corpi CGTrader: 5 in campo) | difetto | IN CORSO — 7.999.102: la targhetta segue il corpo (nomi-51) | L1 | 7.999.102 | `nomi-51` | foto PO 22:45 |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
 | PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
 | PO-176 | 01/10 | Salvataggio: dopo il ricaricamento cambiano `playedMd` e `cup.club` (56 confronti su 56) | difetto | DA COLLAUDARE — PO 01/10: Codex (prompt salvataggio-ricarica già dato) | L3 | — | — | Codex: «perdita visibile al giocatore: non verificato»; va separata la rigenerazione prevista dalla perdita |
-| PO-182 | 01/10 22:59 | Classifica ferma a 26 partite per tutte le squadre mentre il calendario è alla 34ª giornata («Dov'è la verità?») | bloccante | IN CORSO — 7.999.102: classifica dalla lega del calendario e ricostruita dalle giornate giocate (classifica-102) | L3 | 7.999.102 | `classifica-102` | foto PO stagione 12, settimana 38 |
 | PO-183 | 01/10 22:59 | Il gioco proponeva di rigiocare l'ultima partita già pareggiata («gravissimo bug che ci portiamo avanti da tempo») | bloccante | DA RIPRODURRE — serve il salvataggio del PO (Opzioni → Esporta salvataggio JSON) | L3 | — | — | collegato a PO-176 (Codex: playedMd cambia al ricaricamento) |
 | PO-023 | 24/09 14:07 | Ciclo «partita vera», punto 3: render 3D con criteri misurabili (FPS, caricamento, Three.js fissato a una versione) | ricerca | APERTO — PO 01/10: spostata in L4 come misura di prestazioni sul telefono (FPS, caricamento, versione Three.js) | L4 | prototipo del 24/09 (60,7 FPS misurati dal PO), ritirato | — | «Definisci criteri misurabili di "perfetto": FPS medi e minimi…». Sostituito da PO-025; 7.999.2: «il 3D continuo è ritirato» |
 | PO-072 | 26/09 20:37 | Pulizia del progetto: inventario, archivio, flag rossi, hook, commenti-changelog | debito tecnico | PARZIALE — 7.999.97: inventario sonde e 149 archiviate; restano flag rossi, hook e commenti-changelog | L4 | — | — | «Voglio un repository e una build che contengano solo ciò che il gioco usa oggi». Nessuna release di pulizia dopo il 26/09 e nessun tag `pre-pulizia` |
@@ -68,7 +66,7 @@ Per lotto: L1 23 · L3 5 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 
-## Storico — voci chiuse (137)
+## Storico — voci chiuse (139)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -209,6 +207,8 @@ Per lotto: L1 23 · L3 5 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-175 | 01/10 | Classifica: somma dei gol fatti diversa dalla somma dei gol subiti nella stessa lega (semi 17, 35, 4; seme 17 riprodotto da Codex 19/19) | difetto | FATTO — 7.999.94 (lega del club dopo prestito + promozione/retrocessione); semi 17 e 35 rigiocati: stagione 3 senza scarti | L6 | 7.999.94 | `classifica-94` | anomalie 1–3; correlazione con un trasferimento a S2/W5 non verificata come causa |
 | PO-178 | 01/10 | 19 guardiani scritti nelle release 7.999.x che nessuno script lanciava: 8 risultano rossi (calendario-nazionale, cross-origine, disappunto, filtrante-intercetto, home-riquadri, numeri-home, piazzati-eroe, tiro-caricato) | debito tecnico | FATTO — 7.999.98: 8 rossi su 8 chiusi (rigore e angolo difetti veri corretti, 4 guardiani invecchiati aggiornati, tiro-caricato stabilizzato, disappunto rosso solo sotto carico) | L0 | 7.999.97 (collegati a npm) | i 19 script | trovato dall'inventario PO-072; log del giro nel rapporto della 7.999.97 |
 | PO-179 | 01/10 | Goleade asimmetriche: con l'eroe nella squadra DEBOLE lo scarto ≥5 sale all'8,6–11,9% (contro 3,8–6,5% con l'eroe nella forte) e tornano i 7+ (semi Codex 966105 e 966196: 1-7, riprodotti) | difetto | FATTO — 7.999.98: gestione del vantaggio a tre gradini, eroe debole fuori casa scarto 5+ 15,5% → 7,0% (goleade a due bracci) | L1 | — | `goleade` copre solo l'eroe forte | rapporto `reports/codex/2026-10-01-goleade-credibilita.md`; parte B (20 partite vere) non eseguita da Codex per memoria del PC |
+| PO-182 | 01/10 22:59 | Classifica ferma a 26 partite per tutte le squadre mentre il calendario è alla 34ª giornata («Dov'è la verità?») | bloccante | FATTO — 7.999.102: classifica dalla lega del calendario, ricostruita al caricamento (classifica-102); da confermare sul salvataggio del PO | L3 | 7.999.102 | `classifica-102` | foto PO stagione 12, settimana 38 |
+| PO-184 | 01/10 22:45 | Nomi sopra i giocatori anche dove il corpo non è disegnato (corpi CGTrader: 5 in campo) | difetto | FATTO — 7.999.102: la targhetta segue il corpo (nomi-51) | L1 | 7.999.102 | `nomi-51` | foto PO 22:45 |
 
 ## Ricostruzione (fonti e regole di stato)
 
