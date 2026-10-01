@@ -1,0 +1,1674 @@
+{
+  "versione": "7.999.86",
+  "compito": "Collaudo carriere lunghe",
+  "comando": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_SEEDS='0,1,2,4,8,9,13,17,19,22,26,29,31,35'; $env:CPM_MAX_SEASONS='10'; $env:CPM_TIME_LIMIT_MS='7800000'; $env:CPM_OUTPUT='collaudo-carriere-matrix86.json'; node tests/codex/career-matrix.mjs",
+  "seme": "0,1,2,4,8,9,13,17,19,22,26,29,31,35",
+  "commit": "5f89267e970ea256f9917ff6c695e873969454d7",
+  "fonte": "tests/codex/collaudo-carriere.json.gz",
+  "riproduzione_gf": {
+    "version": "7.999.86",
+    "commit": "5f89267e970ea256f9917ff6c695e873969454d7",
+    "baseline": 19,
+    "ripetizione": 19,
+    "identica": true,
+    "durataMs": 99332
+  },
+  "misure": [
+    {
+      "nome": "carriere avviate",
+      "valore": 14,
+      "soglia": "60 (ripiego 30)",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "carriere con almeno 10 stagioni",
+      "valore": 14,
+      "soglia": "30",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "stagioni concluse",
+      "valore": 140,
+      "soglia": "600 (ripiego 300)",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "settimane osservate",
+      "valore": 5474,
+      "soglia": "nessuna",
+      "esito": "ok"
+    },
+    {
+      "nome": "reload con snapshot diverso",
+      "valore": 56,
+      "soglia": "0 salvo rigenerazioni previste",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "errori JavaScript",
+      "valore": 23,
+      "soglia": "0",
+      "esito": "anomalia"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "media",
+      "descrizione": "seed 0 S2/W2 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=0 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 0 S3/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":2,\"after\":3},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"tor\"},{\"path\":\"rival\",\"before\":null,\"after\":{\"name\":\"Esteban Bianchi\",\"nation\":\"Italia\",\"age\":20,\"ovr\":71,\"club\":{\"n\":\"Torino Athletic\",\"id\":\"juve\",\"p\":95,\"lg\":\"Lega A\",\"c\":\"#f5f5f5\",\"nat\":\"🇮🇹\"},\"goals\":7,\"totalGoals\":6,\"assists\":5,\"trophies\":0,\"seasons\":1,\"relationship\":\"sconosciuto\",\"history\":[],\"awards\":{\"palloneOros\":[],\"scarpaOros\":[]}}},{\"path\":\"presentedClub\",\"after\":\"tor\"}]",
+      "come_riprodurre": "CPM_SEEDS=0 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 0 S5/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":4,\"after\":5},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":26},{\"path\":\"playedMd.md.28\",\"before\":27},{\"path\":\"playedMd.md.29\",\"before\":28},{\"path\":\"playedMd.md.30\",\"before\":29},{\"path\":\"playedMd.md.31\",\"before\":30},{\"path\":\"playedMd.md.32\",\"before\":31},{\"path\":\"playedMd.md.33\",\"before\":32},{\"path\":\"playedMd.md.34\",\"before\":33},{\"path\":\"playedMd.md.35\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"tor\"}]",
+      "come_riprodurre": "CPM_SEEDS=0 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 0 S7/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":6,\"after\":7},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":993},{\"path\":\"playedMd.md.28\",\"before\":26},{\"path\":\"playedMd.md.29\",\"before\":27},{\"path\":\"playedMd.md.30\",\"before\":28},{\"path\":\"playedMd.md.31\",\"before\":29},{\"path\":\"playedMd.md.32\",\"before\":30},{\"path\":\"playedMd.md.33\",\"before\":31},{\"path\":\"playedMd.md.34\",\"before\":994},{\"path\":\"playedMd.md.35\",\"before\":32},{\"path\":\"playedMd.md.36\",\"before\":33},{\"path\":\"playedMd.md.37\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"tor\"}]",
+      "come_riprodurre": "CPM_SEEDS=0 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 0 S9/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":8,\"after\":9},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"tor\"}]",
+      "come_riprodurre": "CPM_SEEDS=0 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 S1/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 S2/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 S3/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":2,\"after\":3},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":993},{\"path\":\"playedMd.md.28\",\"before\":26},{\"path\":\"playedMd.md.29\",\"before\":27},{\"path\":\"playedMd.md.30\",\"before\":28},{\"path\":\"playedMd.md.31\",\"before\":29},{\"path\":\"playedMd.md.32\",\"before\":30},{\"path\":\"playedMd.md.33\",\"before\":31},{\"path\":\"playedMd.md.34\",\"before\":32},{\"path\":\"playedMd.md.35\",\"before\":33},{\"path\":\"playedMd.md.36\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mec\"},{\"path\":\"teammates.0.name\",\"before\":\"Marco Saladino\",\"after\":\"Michel Willems\"},{\"path\":\"teammates.1.name\",\"before\":\"Lorenzo Villa\",\"after\":\"Hugo Peeters\"},{\"path\":\"teammates.2.name\",\"before\":\"Luca Silvestri\",\"after\":\"Quentin Martens\"},{\"path\":\"presentedClub\",\"after\":\"mec\"}]",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 S3/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 S5/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":4,\"after\":5},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":26},{\"path\":\"playedMd.md.28\",\"before\":27},{\"path\":\"playedMd.md.29\",\"before\":28},{\"path\":\"playedMd.md.30\",\"before\":29},{\"path\":\"playedMd.md.31\",\"before\":30},{\"path\":\"playedMd.md.32\",\"before\":31},{\"path\":\"playedMd.md.33\",\"before\":32},{\"path\":\"playedMd.md.34\",\"before\":33},{\"path\":\"playedMd.md.35\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mec\"}]",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 S5/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 S7/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":6,\"after\":7},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"utr\"}]",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 S7/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 S9/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":8,\"after\":9},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":18},{\"path\":\"playedMd.md.25\",\"before\":19},{\"path\":\"playedMd.md.26\",\"before\":20},{\"path\":\"playedMd.md.27\",\"before\":21},{\"path\":\"playedMd.md.28\",\"before\":995},{\"path\":\"playedMd.md.29\",\"before\":22},{\"path\":\"playedMd.md.30\",\"before\":23},{\"path\":\"playedMd.md.31\",\"before\":24},{\"path\":\"playedMd.md.32\",\"before\":997},{\"path\":\"playedMd.md.33\",\"before\":25},{\"path\":\"playedMd.md.34\",\"before\":26},{\"path\":\"playedMd.md.35\",\"before\":27},{\"path\":\"playedMd.md.36\",\"before\":28},{\"path\":\"playedMd.md.37\",\"before\":29},{\"path\":\"playedMd.md.38\",\"before\":30},{\"path\":\"playedMd.md.39\",\"before\":31},{\"path\":\"playedMd.md.40\",\"before\":32},{\"path\":\"playedMd.md.41\",\"before\":33},{\"path\":\"playedMd.md.42\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"ata\"}]",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S1/W21 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S2/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S3/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":2,\"after\":3},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":26},{\"path\":\"playedMd.md.28\",\"before\":27},{\"path\":\"playedMd.md.29\",\"before\":28},{\"path\":\"playedMd.md.30\",\"before\":29},{\"path\":\"playedMd.md.31\",\"before\":30},{\"path\":\"playedMd.md.32\",\"before\":31},{\"path\":\"playedMd.md.33\",\"before\":32},{\"path\":\"playedMd.md.34\",\"before\":33},{\"path\":\"playedMd.md.35\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"stu2\"},{\"path\":\"teammates.0.name\",\"before\":\"Mario Cristiano\",\"after\":\"Nabil Martens\"},{\"path\":\"teammates.1.name\",\"before\":\"Gino Fiorentino\",\"after\":\"Didier Wouters\"},{\"path\":\"teammates.2.name\",\"before\":\"Vincenzo Valente\",\"after\":\"Augustin Willems\"},{\"path\":\"presentedClub\",\"after\":\"stu2\"}]",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S3/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S4/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S5/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":4,\"after\":5},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":993},{\"path\":\"playedMd.md.28\",\"before\":26},{\"path\":\"playedMd.md.29\",\"before\":27},{\"path\":\"playedMd.md.30\",\"before\":28},{\"path\":\"playedMd.md.31\",\"before\":29},{\"path\":\"playedMd.md.32\",\"before\":30},{\"path\":\"playedMd.md.33\",\"before\":31},{\"path\":\"playedMd.md.34\",\"before\":32},{\"path\":\"playedMd.md.35\",\"before\":33},{\"path\":\"playedMd.md.36\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"pen\"},{\"path\":\"teammates.0.name\",\"before\":\"Matthew Rogers\",\"after\":\"Zeki Yalcin\"},{\"path\":\"teammates.1.name\",\"before\":\"Jordan Allen\",\"after\":\"Nihat Babacan\"},{\"path\":\"teammates.2.name\",\"before\":\"Declan Wilson\",\"after\":\"Mustafa Ozbay\"}]",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S5/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S6/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S7/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":6,\"after\":7},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":25},{\"path\":\"playedMd.md.28\",\"before\":26},{\"path\":\"playedMd.md.29\",\"before\":27},{\"path\":\"playedMd.md.30\",\"before\":28},{\"path\":\"playedMd.md.31\",\"before\":29},{\"path\":\"playedMd.md.32\",\"before\":30},{\"path\":\"playedMd.md.33\",\"before\":31},{\"path\":\"playedMd.md.34\",\"before\":32},{\"path\":\"playedMd.md.35\",\"before\":33},{\"path\":\"playedMd.md.36\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"stu\"}]",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S7/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S8/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S9/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":8,\"after\":9},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mtp\"}]",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S9/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 S10/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S2/W1 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S3/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":2,\"after\":3},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"ata\"},{\"path\":\"rival\",\"before\":null,\"after\":{\"name\":\"Esteban Bianchi\",\"nation\":\"Italia\",\"age\":20,\"ovr\":86,\"club\":{\"n\":\"Torino Athletic\",\"id\":\"juve\",\"p\":95,\"lg\":\"Lega A\",\"c\":\"#f5f5f5\",\"nat\":\"🇮🇹\"},\"goals\":7,\"totalGoals\":6,\"assists\":5,\"trophies\":0,\"seasons\":1,\"relationship\":\"sconosciuto\",\"history\":[],\"awards\":{\"palloneOros\":[],\"scarpaOros\":[]}}},{\"path\":\"presentedClub\",\"after\":\"ata\"}]",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S3/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 4 S4/W3 standings-goals: GF=47, GA=48",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 4 S4/W4 standings-goals: GF=65, GA=67",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 4 S4/W5 standings-goals: GF=91, GA=94",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S4/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S5/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":4,\"after\":5},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":25},{\"path\":\"playedMd.md.28\",\"before\":26},{\"path\":\"playedMd.md.29\",\"before\":27},{\"path\":\"playedMd.md.30\",\"before\":28},{\"path\":\"playedMd.md.31\",\"before\":29},{\"path\":\"playedMd.md.32\",\"before\":30},{\"path\":\"playedMd.md.33\",\"before\":31},{\"path\":\"playedMd.md.34\",\"before\":32},{\"path\":\"playedMd.md.35\",\"before\":33},{\"path\":\"playedMd.md.36\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"ars\"}]",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S5/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S7/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":6,\"after\":7},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":995},{\"path\":\"playedMd.md.30\",\"before\":22},{\"path\":\"playedMd.md.31\",\"before\":23},{\"path\":\"playedMd.md.32\",\"before\":24},{\"path\":\"playedMd.md.33\",\"before\":997},{\"path\":\"playedMd.md.34\",\"before\":25},{\"path\":\"playedMd.md.35\",\"before\":993},{\"path\":\"playedMd.md.36\",\"before\":26},{\"path\":\"playedMd.md.37\",\"before\":998},{\"path\":\"playedMd.md.38\",\"before\":27},{\"path\":\"playedMd.md.39\",\"before\":28},{\"path\":\"playedMd.md.40\",\"before\":29},{\"path\":\"playedMd.md.41\",\"before\":30},{\"path\":\"playedMd.md.42\",\"before\":31},{\"path\":\"playedMd.md.43\",\"before\":999},{\"path\":\"playedMd.md.44\",\"before\":994},{\"path\":\"playedMd.md.45\",\"before\":32},{\"path\":\"playedMd.md.46\",\"before\":33},{\"path\":\"playedMd.md.47\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"bvb\"}]",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S8/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S9/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":8,\"after\":9},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":22},{\"path\":\"playedMd.md.30\",\"before\":23},{\"path\":\"playedMd.md.31\",\"before\":24},{\"path\":\"playedMd.md.32\",\"before\":25},{\"path\":\"playedMd.md.33\",\"before\":995},{\"path\":\"playedMd.md.34\",\"before\":26},{\"path\":\"playedMd.md.35\",\"before\":27},{\"path\":\"playedMd.md.36\",\"before\":28},{\"path\":\"playedMd.md.37\",\"before\":997},{\"path\":\"playedMd.md.38\",\"before\":29},{\"path\":\"playedMd.md.39\",\"before\":30},{\"path\":\"playedMd.md.40\",\"before\":31},{\"path\":\"playedMd.md.41\",\"before\":998},{\"path\":\"playedMd.md.42\",\"before\":993},{\"path\":\"playedMd.md.43\",\"before\":32},{\"path\":\"playedMd.md.44\",\"before\":33},{\"path\":\"playedMd.md.45\",\"before\":999},{\"path\":\"playedMd.md.46\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mcy\"}]",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 4 S10/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=4 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S1/W21 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S2/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S3/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":2,\"after\":3},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"han\"},{\"path\":\"presentedClub\",\"after\":\"han\"}]",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S3/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S4/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S5/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":4,\"after\":5},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":25},{\"path\":\"playedMd.md.28\",\"before\":993},{\"path\":\"playedMd.md.29\",\"before\":26},{\"path\":\"playedMd.md.30\",\"before\":27},{\"path\":\"playedMd.md.31\",\"before\":28},{\"path\":\"playedMd.md.32\",\"before\":29},{\"path\":\"playedMd.md.33\",\"before\":30},{\"path\":\"playedMd.md.34\",\"before\":31},{\"path\":\"playedMd.md.35\",\"before\":994},{\"path\":\"playedMd.md.36\",\"before\":32},{\"path\":\"playedMd.md.37\",\"before\":33},{\"path\":\"playedMd.md.38\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"ars\"}]",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S5/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S6/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S7/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":6,\"after\":7},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":9},{\"path\":\"playedMd.md.9\",\"before\":10},{\"path\":\"playedMd.md.10\",\"before\":11},{\"path\":\"playedMd.md.11\",\"before\":12},{\"path\":\"playedMd.md.12\",\"before\":13},{\"path\":\"playedMd.md.13\",\"before\":14},{\"path\":\"playedMd.md.14\",\"before\":15},{\"path\":\"playedMd.md.15\",\"before\":16},{\"path\":\"playedMd.md.16\",\"before\":17},{\"path\":\"playedMd.md.17\",\"before\":18},{\"path\":\"playedMd.md.18\",\"before\":19},{\"path\":\"playedMd.md.19\",\"before\":20},{\"path\":\"playedMd.md.20\",\"before\":21},{\"path\":\"playedMd.md.21\",\"before\":22},{\"path\":\"playedMd.md.22\",\"before\":23},{\"path\":\"playedMd.md.23\",\"before\":24},{\"path\":\"playedMd.md.24\",\"before\":25},{\"path\":\"playedMd.md.25\",\"before\":26},{\"path\":\"playedMd.md.26\",\"before\":27},{\"path\":\"playedMd.md.27\",\"before\":28},{\"path\":\"playedMd.md.28\",\"before\":29},{\"path\":\"playedMd.md.29\",\"before\":30},{\"path\":\"playedMd.md.30\",\"before\":31},{\"path\":\"playedMd.md.31\",\"before\":32},{\"path\":\"playedMd.md.32\",\"before\":33},{\"path\":\"playedMd.md.33\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"bay\"}]",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S7/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S8/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S9/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":8,\"after\":9},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":997},{\"path\":\"playedMd.md.28\",\"before\":25},{\"path\":\"playedMd.md.29\",\"before\":993},{\"path\":\"playedMd.md.30\",\"before\":26},{\"path\":\"playedMd.md.31\",\"before\":998},{\"path\":\"playedMd.md.32\",\"before\":27},{\"path\":\"playedMd.md.33\",\"before\":28},{\"path\":\"playedMd.md.34\",\"before\":29},{\"path\":\"playedMd.md.35\",\"before\":30},{\"path\":\"playedMd.md.36\",\"before\":31},{\"path\":\"playedMd.md.37\",\"before\":994},{\"path\":\"playedMd.md.38\",\"before\":32},{\"path\":\"playedMd.md.39\",\"before\":33},{\"path\":\"playedMd.md.40\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"bay\"},{\"path\":\"teammates.0.name\",\"before\":\"Diego De Luca\",\"after\":\"Ernst Schulze\"},{\"path\":\"teammates.1.name\",\"before\":\"Nicolas Fontana\",\"after\":\"Lukas Sperling\"},{\"path\":\"teammates.2.name\",\"before\":\"Ivan Pepe\",\"after\":\"Moritz Fuchs\"}]",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S9/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S10/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 9 S4/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":26},{\"path\":\"playedMd.md.28\",\"before\":27},{\"path\":\"playedMd.md.29\",\"before\":28},{\"path\":\"playedMd.md.30\",\"before\":29},{\"path\":\"playedMd.md.31\",\"before\":30},{\"path\":\"playedMd.md.32\",\"before\":31},{\"path\":\"playedMd.md.33\",\"before\":32},{\"path\":\"playedMd.md.34\",\"before\":33},{\"path\":\"playedMd.md.35\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mod\"}]",
+      "come_riprodurre": "CPM_SEEDS=9 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 9 S6/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":26},{\"path\":\"playedMd.md.28\",\"before\":27},{\"path\":\"playedMd.md.29\",\"before\":28},{\"path\":\"playedMd.md.30\",\"before\":29},{\"path\":\"playedMd.md.31\",\"before\":30},{\"path\":\"playedMd.md.32\",\"before\":31},{\"path\":\"playedMd.md.33\",\"before\":32},{\"path\":\"playedMd.md.34\",\"before\":33},{\"path\":\"playedMd.md.35\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mod\"}]",
+      "come_riprodurre": "CPM_SEEDS=9 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 9 S8/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":7,\"after\":8},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mod\"}]",
+      "come_riprodurre": "CPM_SEEDS=9 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 9 S10/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":9,\"after\":10},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":26},{\"path\":\"playedMd.md.28\",\"before\":27},{\"path\":\"playedMd.md.29\",\"before\":28},{\"path\":\"playedMd.md.30\",\"before\":29},{\"path\":\"playedMd.md.31\",\"before\":30},{\"path\":\"playedMd.md.32\",\"before\":31},{\"path\":\"playedMd.md.33\",\"before\":32},{\"path\":\"playedMd.md.34\",\"before\":33},{\"path\":\"playedMd.md.35\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mod\"}]",
+      "come_riprodurre": "CPM_SEEDS=9 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "bassa",
+      "descrizione": "seed 9 S12/W1 contract: expiresAtSeason=11<12",
+      "come_riprodurre": "CPM_SEEDS=9 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S2/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S3/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S4/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":25},{\"path\":\"playedMd.md.28\",\"before\":993},{\"path\":\"playedMd.md.29\",\"before\":26},{\"path\":\"playedMd.md.30\",\"before\":27},{\"path\":\"playedMd.md.31\",\"before\":28},{\"path\":\"playedMd.md.32\",\"before\":29},{\"path\":\"playedMd.md.33\",\"before\":30},{\"path\":\"playedMd.md.34\",\"before\":31},{\"path\":\"playedMd.md.35\",\"before\":994},{\"path\":\"playedMd.md.36\",\"before\":32},{\"path\":\"playedMd.md.37\",\"before\":33},{\"path\":\"playedMd.md.38\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"wer\"},{\"path\":\"teammates.0.name\",\"before\":\"Pierre Claes\",\"after\":\"Sebastian Volkmann\"},{\"path\":\"teammates.1.name\",\"before\":\"Bilal Luyckx\",\"after\":\"Emil Wagner\"},{\"path\":\"teammates.2.name\",\"before\":\"Hakim Charlier\",\"after\":\"Willi Rose\"}]",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S4/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S5/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S6/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":9},{\"path\":\"playedMd.md.9\",\"before\":10},{\"path\":\"playedMd.md.10\",\"before\":11},{\"path\":\"playedMd.md.11\",\"before\":12},{\"path\":\"playedMd.md.12\",\"before\":13},{\"path\":\"playedMd.md.13\",\"before\":14},{\"path\":\"playedMd.md.14\",\"before\":15},{\"path\":\"playedMd.md.15\",\"before\":16},{\"path\":\"playedMd.md.16\",\"before\":17},{\"path\":\"playedMd.md.17\",\"before\":1489},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"psv\"}]",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S6/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S8/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":7,\"after\":8},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":995},{\"path\":\"playedMd.md.30\",\"before\":22},{\"path\":\"playedMd.md.31\",\"before\":23},{\"path\":\"playedMd.md.32\",\"before\":24},{\"path\":\"playedMd.md.33\",\"before\":25},{\"path\":\"playedMd.md.34\",\"before\":993},{\"path\":\"playedMd.md.35\",\"before\":26},{\"path\":\"playedMd.md.36\",\"before\":27},{\"path\":\"playedMd.md.37\",\"before\":28},{\"path\":\"playedMd.md.38\",\"before\":29},{\"path\":\"playedMd.md.39\",\"before\":30},{\"path\":\"playedMd.md.40\",\"before\":31},{\"path\":\"playedMd.md.41\",\"before\":994},{\"path\":\"playedMd.md.42\",\"before\":32},{\"path\":\"playedMd.md.43\",\"before\":33},{\"path\":\"playedMd.md.44\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"ben\"}]",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S9/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 S10/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":9,\"after\":10},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":995},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":25},{\"path\":\"playedMd.md.27\",\"before\":26},{\"path\":\"playedMd.md.28\",\"before\":27},{\"path\":\"playedMd.md.29\",\"before\":28},{\"path\":\"playedMd.md.30\",\"before\":29},{\"path\":\"playedMd.md.31\",\"before\":30},{\"path\":\"playedMd.md.32\",\"before\":31},{\"path\":\"playedMd.md.33\",\"before\":1505},{\"path\":\"playedMd.md.34\",\"before\":32},{\"path\":\"playedMd.md.35\",\"before\":33},{\"path\":\"playedMd.md.36\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mcy\"}]",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S2/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W2 standings-goals: GF=21, GA=15",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W3 standings-goals: GF=49, GA=42",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W4 standings-goals: GF=69, GA=57",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W5 standings-goals: GF=83, GA=74",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W6 standings-goals: GF=102, GA=90",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W7 standings-goals: GF=126, GA=113",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W8 standings-goals: GF=151, GA=133",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W9 standings-goals: GF=170, GA=150",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W10 standings-goals: GF=170, GA=150",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W11 standings-goals: GF=199, GA=176",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W12 standings-goals: GF=231, GA=202",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W13 standings-goals: GF=259, GA=228",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W14 standings-goals: GF=279, GA=253",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W15 standings-goals: GF=305, GA=276",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W16 standings-goals: GF=328, GA=299",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W17 standings-goals: GF=349, GA=319",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W18 standings-goals: GF=377, GA=346",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W19 standings-goals: GF=405, GA=370",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 17 S3/W20 standings-goals: GF=405, GA=370",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S3/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S4/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":995},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":997},{\"path\":\"playedMd.md.27\",\"before\":25},{\"path\":\"playedMd.md.28\",\"before\":993},{\"path\":\"playedMd.md.29\",\"before\":26},{\"path\":\"playedMd.md.30\",\"before\":27},{\"path\":\"playedMd.md.31\",\"before\":28},{\"path\":\"playedMd.md.32\",\"before\":29},{\"path\":\"playedMd.md.33\",\"before\":30},{\"path\":\"playedMd.md.34\",\"before\":31},{\"path\":\"playedMd.md.35\",\"before\":994},{\"path\":\"playedMd.md.36\",\"before\":32},{\"path\":\"playedMd.md.37\",\"before\":33},{\"path\":\"playedMd.md.38\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mun\"}]",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S4/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S5/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S6/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":997},{\"path\":\"playedMd.md.28\",\"before\":25},{\"path\":\"playedMd.md.29\",\"before\":993},{\"path\":\"playedMd.md.30\",\"before\":26},{\"path\":\"playedMd.md.31\",\"before\":27},{\"path\":\"playedMd.md.32\",\"before\":28},{\"path\":\"playedMd.md.33\",\"before\":29},{\"path\":\"playedMd.md.34\",\"before\":30},{\"path\":\"playedMd.md.35\",\"before\":31},{\"path\":\"playedMd.md.36\",\"before\":994},{\"path\":\"playedMd.md.37\",\"before\":32},{\"path\":\"playedMd.md.38\",\"before\":33},{\"path\":\"playedMd.md.39\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"rbl\"}]",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S6/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S7/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S8/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":7,\"after\":8},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":18},{\"path\":\"playedMd.md.25\",\"before\":19},{\"path\":\"playedMd.md.26\",\"before\":20},{\"path\":\"playedMd.md.27\",\"before\":21},{\"path\":\"playedMd.md.28\",\"before\":22},{\"path\":\"playedMd.md.29\",\"before\":23},{\"path\":\"playedMd.md.30\",\"before\":24},{\"path\":\"playedMd.md.31\",\"before\":25},{\"path\":\"playedMd.md.32\",\"before\":993},{\"path\":\"playedMd.md.33\",\"before\":26},{\"path\":\"playedMd.md.34\",\"before\":27},{\"path\":\"playedMd.md.35\",\"before\":28},{\"path\":\"playedMd.md.36\",\"before\":29},{\"path\":\"playedMd.md.37\",\"before\":30},{\"path\":\"playedMd.md.38\",\"before\":31},{\"path\":\"playedMd.md.39\",\"before\":994},{\"path\":\"playedMd.md.40\",\"before\":32},{\"path\":\"playedMd.md.41\",\"before\":33},{\"path\":\"playedMd.md.42\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"bar\"}]",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S8/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S9/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S10/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":9,\"after\":10},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":25},{\"path\":\"playedMd.md.28\",\"before\":993},{\"path\":\"playedMd.md.29\",\"before\":26},{\"path\":\"playedMd.md.30\",\"before\":27},{\"path\":\"playedMd.md.31\",\"before\":28},{\"path\":\"playedMd.md.32\",\"before\":29},{\"path\":\"playedMd.md.33\",\"before\":30},{\"path\":\"playedMd.md.34\",\"before\":31},{\"path\":\"playedMd.md.35\",\"before\":994},{\"path\":\"playedMd.md.36\",\"before\":32},{\"path\":\"playedMd.md.37\",\"before\":33},{\"path\":\"playedMd.md.38\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"b04\"}]",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S10/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 S11/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 19 S2/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=19 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 19 S4/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"tra\"}]",
+      "come_riprodurre": "CPM_SEEDS=19 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 19 S5/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=19 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 19 S6/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":995},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":997},{\"path\":\"playedMd.md.27\",\"before\":25},{\"path\":\"playedMd.md.28\",\"before\":26},{\"path\":\"playedMd.md.29\",\"before\":998},{\"path\":\"playedMd.md.30\",\"before\":27},{\"path\":\"playedMd.md.31\",\"before\":28},{\"path\":\"playedMd.md.32\",\"before\":29},{\"path\":\"playedMd.md.33\",\"before\":30},{\"path\":\"playedMd.md.34\",\"before\":31},{\"path\":\"playedMd.md.35\",\"before\":32},{\"path\":\"playedMd.md.36\",\"before\":33},{\"path\":\"playedMd.md.37\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"tra\"},{\"path\":\"teammates.0.name\",\"before\":\"Diego Grassi\",\"after\":\"Tuncay Ince\"},{\"path\":\"teammates.1.name\",\"before\":\"Giulio Poli\",\"after\":\"Ferdi Uluc\"},{\"path\":\"teammates.2.name\",\"before\":\"Ibrahim Monti\",\"after\":\"Ufuk Uzun\"}]",
+      "come_riprodurre": "CPM_SEEDS=19 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 19 S6/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=19 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 19 S7/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=19 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 19 S8/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":7,\"after\":8},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":25},{\"path\":\"playedMd.md.28\",\"before\":993},{\"path\":\"playedMd.md.29\",\"before\":26},{\"path\":\"playedMd.md.30\",\"before\":27},{\"path\":\"playedMd.md.31\",\"before\":28},{\"path\":\"playedMd.md.32\",\"before\":29},{\"path\":\"playedMd.md.33\",\"before\":30},{\"path\":\"playedMd.md.34\",\"before\":31},{\"path\":\"playedMd.md.35\",\"before\":994},{\"path\":\"playedMd.md.36\",\"before\":32},{\"path\":\"playedMd.md.37\",\"before\":33},{\"path\":\"playedMd.md.38\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"psv\"}]",
+      "come_riprodurre": "CPM_SEEDS=19 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 19 S10/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":9,\"after\":10},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":22},{\"path\":\"playedMd.md.30\",\"before\":23},{\"path\":\"playedMd.md.31\",\"before\":24},{\"path\":\"playedMd.md.32\",\"before\":25},{\"path\":\"playedMd.md.33\",\"before\":26},{\"path\":\"playedMd.md.34\",\"before\":27},{\"path\":\"playedMd.md.35\",\"before\":28},{\"path\":\"playedMd.md.36\",\"before\":29},{\"path\":\"playedMd.md.37\",\"before\":30},{\"path\":\"playedMd.md.38\",\"before\":31},{\"path\":\"playedMd.md.39\",\"before\":32},{\"path\":\"playedMd.md.40\",\"before\":33},{\"path\":\"playedMd.md.41\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"psv\"}]",
+      "come_riprodurre": "CPM_SEEDS=19 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S2/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S2/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S3/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S4/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":997},{\"path\":\"playedMd.md.28\",\"before\":25},{\"path\":\"playedMd.md.29\",\"before\":993},{\"path\":\"playedMd.md.30\",\"before\":26},{\"path\":\"playedMd.md.31\",\"before\":998},{\"path\":\"playedMd.md.32\",\"before\":27},{\"path\":\"playedMd.md.33\",\"before\":28},{\"path\":\"playedMd.md.34\",\"before\":29},{\"path\":\"playedMd.md.35\",\"before\":30},{\"path\":\"playedMd.md.36\",\"before\":31},{\"path\":\"playedMd.md.37\",\"before\":994},{\"path\":\"playedMd.md.38\",\"before\":32},{\"path\":\"playedMd.md.39\",\"before\":33},{\"path\":\"playedMd.md.40\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"bol\"},{\"path\":\"teammates.0.name\",\"before\":\"Mustafa Baysal\",\"after\":\"Carlo Barbieri\"},{\"path\":\"teammates.1.name\",\"before\":\"Tuncay Ozdemir\",\"after\":\"Pierluigi Monti\"},{\"path\":\"teammates.2.name\",\"before\":\"Ibrahim Baysal\",\"after\":\"Franco Milanese\"}]",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S4/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S4/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S5/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S6/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":9},{\"path\":\"playedMd.md.9\",\"before\":10},{\"path\":\"playedMd.md.10\",\"before\":11},{\"path\":\"playedMd.md.11\",\"before\":12},{\"path\":\"playedMd.md.12\",\"before\":13},{\"path\":\"playedMd.md.13\",\"before\":14},{\"path\":\"playedMd.md.14\",\"before\":15},{\"path\":\"playedMd.md.15\",\"before\":16},{\"path\":\"playedMd.md.16\",\"before\":17},{\"path\":\"playedMd.md.17\",\"before\":1489},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"lyon\"}]",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S6/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S7/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S8/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":7,\"after\":8},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":9},{\"path\":\"playedMd.md.9\",\"before\":10},{\"path\":\"playedMd.md.10\",\"before\":11},{\"path\":\"playedMd.md.11\",\"before\":12},{\"path\":\"playedMd.md.12\",\"before\":13},{\"path\":\"playedMd.md.13\",\"before\":14},{\"path\":\"playedMd.md.14\",\"before\":15},{\"path\":\"playedMd.md.15\",\"before\":16},{\"path\":\"playedMd.md.16\",\"before\":17},{\"path\":\"playedMd.md.17\",\"before\":18},{\"path\":\"playedMd.md.18\",\"before\":19},{\"path\":\"playedMd.md.19\",\"before\":20},{\"path\":\"playedMd.md.20\",\"before\":21},{\"path\":\"playedMd.md.21\",\"before\":22},{\"path\":\"playedMd.md.22\",\"before\":23},{\"path\":\"playedMd.md.23\",\"before\":24},{\"path\":\"playedMd.md.24\",\"before\":25},{\"path\":\"playedMd.md.25\",\"before\":26},{\"path\":\"playedMd.md.26\",\"before\":27},{\"path\":\"playedMd.md.27\",\"before\":28},{\"path\":\"playedMd.md.28\",\"before\":29},{\"path\":\"playedMd.md.29\",\"before\":30},{\"path\":\"playedMd.md.30\",\"before\":31},{\"path\":\"playedMd.md.31\",\"before\":1505},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"liv\"}]",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S9/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 S10/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":9,\"after\":10},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":9},{\"path\":\"playedMd.md.9\",\"before\":10},{\"path\":\"playedMd.md.10\",\"before\":11},{\"path\":\"playedMd.md.11\",\"before\":12},{\"path\":\"playedMd.md.12\",\"before\":13},{\"path\":\"playedMd.md.13\",\"before\":14},{\"path\":\"playedMd.md.14\",\"before\":15},{\"path\":\"playedMd.md.15\",\"before\":16},{\"path\":\"playedMd.md.16\",\"before\":17},{\"path\":\"playedMd.md.17\",\"before\":1489},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":1505},{\"path\":\"playedMd.md.33\",\"before\":32},{\"path\":\"playedMd.md.34\",\"before\":33},{\"path\":\"playedMd.md.35\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"bay\"}]",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S2/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S3/W21 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S4/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":995},{\"path\":\"playedMd.md.23\",\"before\":22},{\"path\":\"playedMd.md.24\",\"before\":23},{\"path\":\"playedMd.md.25\",\"before\":24},{\"path\":\"playedMd.md.26\",\"before\":997},{\"path\":\"playedMd.md.27\",\"before\":25},{\"path\":\"playedMd.md.28\",\"before\":993},{\"path\":\"playedMd.md.29\",\"before\":26},{\"path\":\"playedMd.md.30\",\"before\":998},{\"path\":\"playedMd.md.31\",\"before\":27},{\"path\":\"playedMd.md.32\",\"before\":28},{\"path\":\"playedMd.md.33\",\"before\":29},{\"path\":\"playedMd.md.34\",\"before\":30},{\"path\":\"playedMd.md.35\",\"before\":31},{\"path\":\"playedMd.md.36\",\"before\":994},{\"path\":\"playedMd.md.37\",\"before\":32},{\"path\":\"playedMd.md.38\",\"before\":33},{\"path\":\"playedMd.md.39\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"rbl\"}]",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S4/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S5/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S6/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":22},{\"path\":\"playedMd.md.30\",\"before\":23},{\"path\":\"playedMd.md.31\",\"before\":24},{\"path\":\"playedMd.md.32\",\"before\":25},{\"path\":\"playedMd.md.33\",\"before\":995},{\"path\":\"playedMd.md.34\",\"before\":26},{\"path\":\"playedMd.md.35\",\"before\":27},{\"path\":\"playedMd.md.36\",\"before\":28},{\"path\":\"playedMd.md.37\",\"before\":997},{\"path\":\"playedMd.md.38\",\"before\":29},{\"path\":\"playedMd.md.39\",\"before\":30},{\"path\":\"playedMd.md.40\",\"before\":31},{\"path\":\"playedMd.md.41\",\"before\":998},{\"path\":\"playedMd.md.42\",\"before\":993},{\"path\":\"playedMd.md.43\",\"before\":32},{\"path\":\"playedMd.md.44\",\"before\":994},{\"path\":\"playedMd.md.45\",\"before\":33},{\"path\":\"playedMd.md.46\",\"before\":999},{\"path\":\"playedMd.md.47\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"rma\"},{\"path\":\"teammates.0.name\",\"before\":\"Hudson Bell\",\"after\":\"Ismael Herrera\"},{\"path\":\"teammates.1.name\",\"before\":\"Archie Hudson\",\"after\":\"Óscar Bautista\"},{\"path\":\"teammates.2.name\",\"before\":\"David Foster\",\"after\":\"Santi Cárdenas\"}]",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S6/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S7/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S8/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":7,\"after\":8},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":22},{\"path\":\"playedMd.md.30\",\"before\":23},{\"path\":\"playedMd.md.31\",\"before\":24},{\"path\":\"playedMd.md.32\",\"before\":25},{\"path\":\"playedMd.md.33\",\"before\":995},{\"path\":\"playedMd.md.34\",\"before\":26},{\"path\":\"playedMd.md.35\",\"before\":27},{\"path\":\"playedMd.md.36\",\"before\":28},{\"path\":\"playedMd.md.37\",\"before\":997},{\"path\":\"playedMd.md.38\",\"before\":29},{\"path\":\"playedMd.md.39\",\"before\":30},{\"path\":\"playedMd.md.40\",\"before\":31},{\"path\":\"playedMd.md.41\",\"before\":998},{\"path\":\"playedMd.md.42\",\"before\":993},{\"path\":\"playedMd.md.43\",\"before\":32},{\"path\":\"playedMd.md.44\",\"before\":994},{\"path\":\"playedMd.md.45\",\"before\":33},{\"path\":\"playedMd.md.46\",\"before\":999},{\"path\":\"playedMd.md.47\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"rbl\"}]",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S8/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S9/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S10/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":9,\"after\":10},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":22},{\"path\":\"playedMd.md.30\",\"before\":23},{\"path\":\"playedMd.md.31\",\"before\":24},{\"path\":\"playedMd.md.32\",\"before\":25},{\"path\":\"playedMd.md.33\",\"before\":995},{\"path\":\"playedMd.md.34\",\"before\":26},{\"path\":\"playedMd.md.35\",\"before\":27},{\"path\":\"playedMd.md.36\",\"before\":28},{\"path\":\"playedMd.md.37\",\"before\":29},{\"path\":\"playedMd.md.38\",\"before\":30},{\"path\":\"playedMd.md.39\",\"before\":31},{\"path\":\"playedMd.md.40\",\"before\":993},{\"path\":\"playedMd.md.41\",\"before\":32},{\"path\":\"playedMd.md.42\",\"before\":994},{\"path\":\"playedMd.md.43\",\"before\":33},{\"path\":\"playedMd.md.44\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"rma\"},{\"path\":\"teammates.0.name\",\"before\":\"Alan Hanson\",\"after\":\"Ismael Herrera\"},{\"path\":\"teammates.1.name\",\"before\":\"Kyle McMahon\",\"after\":\"Óscar Bautista\"},{\"path\":\"teammates.2.name\",\"before\":\"Dylan Webster\",\"after\":\"Pelayo Contreras\"}]",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S10/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 S11/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S2/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S3/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S4/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"gir\"},{\"path\":\"teammates.0.name\",\"before\":\"Colin Allen\",\"after\":\"Aitor Álvarez\"},{\"path\":\"teammates.1.name\",\"before\":\"Nate Douglas\",\"after\":\"Ibai Torres\"},{\"path\":\"teammates.2.name\",\"before\":\"Jake Boyd\",\"after\":\"Xacobo Núñez\"}]",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S4/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S5/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S6/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"str\"}]",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S6/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S7/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S8/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":7,\"after\":8},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":18},{\"path\":\"playedMd.md.19\",\"before\":19},{\"path\":\"playedMd.md.20\",\"before\":20},{\"path\":\"playedMd.md.21\",\"before\":21},{\"path\":\"playedMd.md.22\",\"before\":22},{\"path\":\"playedMd.md.23\",\"before\":23},{\"path\":\"playedMd.md.24\",\"before\":24},{\"path\":\"playedMd.md.25\",\"before\":25},{\"path\":\"playedMd.md.26\",\"before\":26},{\"path\":\"playedMd.md.27\",\"before\":27},{\"path\":\"playedMd.md.28\",\"before\":28},{\"path\":\"playedMd.md.29\",\"before\":29},{\"path\":\"playedMd.md.30\",\"before\":30},{\"path\":\"playedMd.md.31\",\"before\":31},{\"path\":\"playedMd.md.32\",\"before\":32},{\"path\":\"playedMd.md.33\",\"before\":33},{\"path\":\"playedMd.md.34\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"mtp\"}]",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S8/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S9/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S10/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":9,\"after\":10},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":9},{\"path\":\"playedMd.md.9\",\"before\":10},{\"path\":\"playedMd.md.10\",\"before\":11},{\"path\":\"playedMd.md.11\",\"before\":12},{\"path\":\"playedMd.md.12\",\"before\":13},{\"path\":\"playedMd.md.13\",\"before\":14},{\"path\":\"playedMd.md.14\",\"before\":15},{\"path\":\"playedMd.md.15\",\"before\":16},{\"path\":\"playedMd.md.16\",\"before\":17},{\"path\":\"playedMd.md.17\",\"before\":18},{\"path\":\"playedMd.md.18\",\"before\":19},{\"path\":\"playedMd.md.19\",\"before\":20},{\"path\":\"playedMd.md.20\",\"before\":21},{\"path\":\"playedMd.md.21\",\"before\":22},{\"path\":\"playedMd.md.22\",\"before\":23},{\"path\":\"playedMd.md.23\",\"before\":24},{\"path\":\"playedMd.md.24\",\"before\":25},{\"path\":\"playedMd.md.25\",\"before\":26},{\"path\":\"playedMd.md.26\",\"before\":27},{\"path\":\"playedMd.md.27\",\"before\":28},{\"path\":\"playedMd.md.28\",\"before\":29},{\"path\":\"playedMd.md.29\",\"before\":30},{\"path\":\"playedMd.md.30\",\"before\":31},{\"path\":\"playedMd.md.31\",\"before\":32},{\"path\":\"playedMd.md.32\",\"before\":33},{\"path\":\"playedMd.md.33\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"usj\"}]",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S10/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 S11/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 31 S4/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":995},{\"path\":\"playedMd.md.30\",\"before\":22},{\"path\":\"playedMd.md.31\",\"before\":23},{\"path\":\"playedMd.md.32\",\"before\":24},{\"path\":\"playedMd.md.33\",\"before\":997},{\"path\":\"playedMd.md.34\",\"before\":25},{\"path\":\"playedMd.md.35\",\"before\":993},{\"path\":\"playedMd.md.36\",\"before\":26},{\"path\":\"playedMd.md.37\",\"before\":27},{\"path\":\"playedMd.md.38\",\"before\":28},{\"path\":\"playedMd.md.39\",\"before\":29},{\"path\":\"playedMd.md.40\",\"before\":30},{\"path\":\"playedMd.md.41\",\"before\":31},{\"path\":\"playedMd.md.42\",\"before\":994},{\"path\":\"playedMd.md.43\",\"before\":32},{\"path\":\"playedMd.md.44\",\"before\":33},{\"path\":\"playedMd.md.45\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"b04\"}]",
+      "come_riprodurre": "CPM_SEEDS=31 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 31 S6/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":995},{\"path\":\"playedMd.md.30\",\"before\":22},{\"path\":\"playedMd.md.31\",\"before\":23},{\"path\":\"playedMd.md.32\",\"before\":24},{\"path\":\"playedMd.md.33\",\"before\":997},{\"path\":\"playedMd.md.34\",\"before\":25},{\"path\":\"playedMd.md.35\",\"before\":993},{\"path\":\"playedMd.md.36\",\"before\":26},{\"path\":\"playedMd.md.37\",\"before\":27},{\"path\":\"playedMd.md.38\",\"before\":28},{\"path\":\"playedMd.md.39\",\"before\":29},{\"path\":\"playedMd.md.40\",\"before\":30},{\"path\":\"playedMd.md.41\",\"before\":31},{\"path\":\"playedMd.md.42\",\"before\":32},{\"path\":\"playedMd.md.43\",\"before\":33},{\"path\":\"playedMd.md.44\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"b04\"}]",
+      "come_riprodurre": "CPM_SEEDS=31 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 31 S8/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":7,\"after\":8},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":995},{\"path\":\"playedMd.md.30\",\"before\":22},{\"path\":\"playedMd.md.31\",\"before\":23},{\"path\":\"playedMd.md.32\",\"before\":24},{\"path\":\"playedMd.md.33\",\"before\":997},{\"path\":\"playedMd.md.34\",\"before\":25},{\"path\":\"playedMd.md.35\",\"before\":993},{\"path\":\"playedMd.md.36\",\"before\":26},{\"path\":\"playedMd.md.37\",\"before\":27},{\"path\":\"playedMd.md.38\",\"before\":28},{\"path\":\"playedMd.md.39\",\"before\":29},{\"path\":\"playedMd.md.40\",\"before\":30},{\"path\":\"playedMd.md.41\",\"before\":31},{\"path\":\"playedMd.md.42\",\"before\":32},{\"path\":\"playedMd.md.43\",\"before\":33},{\"path\":\"playedMd.md.44\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"b04\"}]",
+      "come_riprodurre": "CPM_SEEDS=31 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 31 S10/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":9,\"after\":10},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":995},{\"path\":\"playedMd.md.30\",\"before\":22},{\"path\":\"playedMd.md.31\",\"before\":23},{\"path\":\"playedMd.md.32\",\"before\":24},{\"path\":\"playedMd.md.33\",\"before\":997},{\"path\":\"playedMd.md.34\",\"before\":25},{\"path\":\"playedMd.md.35\",\"before\":26},{\"path\":\"playedMd.md.36\",\"before\":998},{\"path\":\"playedMd.md.37\",\"before\":27},{\"path\":\"playedMd.md.38\",\"before\":28},{\"path\":\"playedMd.md.39\",\"before\":29},{\"path\":\"playedMd.md.40\",\"before\":30},{\"path\":\"playedMd.md.41\",\"before\":31},{\"path\":\"playedMd.md.42\",\"before\":999},{\"path\":\"playedMd.md.43\",\"before\":1505},{\"path\":\"playedMd.md.44\",\"before\":32},{\"path\":\"playedMd.md.45\",\"before\":33},{\"path\":\"playedMd.md.46\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"b04\"}]",
+      "come_riprodurre": "CPM_SEEDS=31 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 31 S10/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=31 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 31 S10/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=31 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S2/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W2 standings-goals: GF=34, GA=37",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W3 standings-goals: GF=54, GA=55",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W4 standings-goals: GF=90, GA=92",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W5 standings-goals: GF=110, GA=113",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W6 standings-goals: GF=140, GA=144",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W7 standings-goals: GF=152, GA=157",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W8 standings-goals: GF=174, GA=180",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W9 standings-goals: GF=198, GA=210",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W10 standings-goals: GF=198, GA=210",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W11 standings-goals: GF=217, GA=233",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W12 standings-goals: GF=234, GA=251",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W13 standings-goals: GF=262, GA=281",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W14 standings-goals: GF=285, GA=306",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W15 standings-goals: GF=303, GA=326",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W16 standings-goals: GF=330, GA=353",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W17 standings-goals: GF=359, GA=383",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W18 standings-goals: GF=381, GA=411",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W19 standings-goals: GF=405, GA=439",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "seed 35 S3/W20 standings-goals: GF=405, GA=439",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S3/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S4/W1 save-restore: snapshot changed after reload: [{\"path\":\"club.lg\",\"before\":\"Ligue Nationale 2\",\"after\":\"Ligue Nationale\"},{\"path\":\"calendar.0.opponentId\",\"before\":\"gre\",\"after\":\"str\"},{\"path\":\"calendar.0.opponentName\",\"before\":\"FC Grenoble\",\"after\":\"FC Strasburgo\"},{\"path\":\"calendar.1.opponentId\",\"before\":\"aja2\",\"after\":\"mtp\"},{\"path\":\"calendar.1.opponentName\",\"before\":\"FC Ajaccio\",\"after\":\"FC Montpel\"},{\"path\":\"calendar.2.opponentId\",\"before\":\"hac\",\"after\":\"marse\"},{\"path\":\"calendar.2.opponentName\",\"before\":\"FC Le Havre\",\"after\":\"FC Marseille\"},{\"path\":\"calendar.3.opponentId\",\"before\":\"nic2\",\"after\":\"cae\"},{\"path\":\"calendar.3.opponentName\",\"before\":\"FC Niort\",\"after\":\"FC Caen\"},{\"path\":\"calendar.4.opponentId\",\"before\":\"lav\",\"after\":\"lille\"},{\"path\":\"calendar.4.opponentName\",\"before\":\"FC Laval\",\"after\":\"FC Lillese\"},{\"path\":\"calendar.5.opponentId\",\"before\":\"metz\",\"after\":\"str\"},{\"path\":\"calendar.5.opponentName\",\"before\":\"FC Mosella\",\"after\":\"FC Strasburgo\"},{\"path\":\"calendar.6.opponentId\",\"before\":\"val2\",\"after\":\"cae\"},{\"path\":\"calendar.6.opponentName\",\"before\":\"FC Valencien\",\"after\":\"FC Caen\"},{\"path\":\"calendar.7.opponentId\",\"before\":\"que\",\"after\":\"psg\"},{\"path\":\"calendar.7.opponentName\",\"before\":\"FC Rouen\",\"after\":\"FC Paris\"},{\"path\":\"calendar.8.opponentId\",\"before\":\"soch\",\"after\":\"len\"},{\"path\":\"calendar.8.opponentName\",\"before\":\"FC Doubs\",\"after\":\"FC Artois\"},{\"path\":\"calendar.9.opponentId\",\"before\":\"bre2\",\"after\":\"len\"},{\"path\":\"calendar.9.opponentName\",\"before\":\"FC Brest\",\"after\":\"FC Artois\"},{\"path\":\"calendar.10.opponentId\",\"before\":\"ann\",\"after\":\"marse\"},{\"path\":\"calendar.10.opponentName\",\"before\":\"FC Annecy\",\"after\":\"FC Marseille\"},{\"path\":\"calendar.11.opponentId\",\"before\":\"ami\",\"after\":\"tou\"},{\"path\":\"calendar.11.opponentName\",\"before\":\"FC Amiens\",\"after\":\"FC Tolosa\"},{\"path\":\"calendar.12.opponentId\",\"before\":\"dun\",\"after\":\"lille\"},{\"path\":\"calendar.12.opponentName\",\"before\":\"FC Dunkerque\",\"after\":\"FC Lillese\"},{\"path\":\"calendar.13.opponentId\",\"before\":\"rod\",\"after\":\"lille\"},{\"path\":\"calendar.13.opponentName\",\"before\":\"FC Rodez\",\"after\":\"FC Lillese\"},{\"path\":\"calendar.14.opponentId\",\"before\":\"tro\",\"after\":\"cae\"},{\"path\":\"calendar.14.opponentName\",\"before\":\"FC Troyes\",\"after\":\"FC Caen\"},{\"path\":\"calendar.15.opponentId\",\"before\":\"bas2\",\"after\":\"nan\"},{\"path\":\"calendar.15.opponentName\",\"before\":\"FC Bastia\",\"after\":\"FC Nantese\"},{\"path\":\"calendar.16.opponentId\",\"before\":\"con2\",\"after\":\"mon\"},{\"path\":\"calendar.16.opponentName\",\"before\":\"FC Concarneau\",\"after\":\"FC Monaco\"},{\"path\":\"calendar.17.opponentId\",\"before\":\"pau\",\"after\":\"len\"},{\"path\":\"calendar.17.opponentName\",\"before\":\"FC Pau\",\"after\":\"FC Artois\"},{\"path\":\"calendar.18.opponentId\",\"before\":\"gre\",\"after\":\"psg\"},{\"path\":\"calendar.18.opponentName\",\"before\":\"FC Grenoble\",\"after\":\"FC Paris\"},{\"path\":\"calendar.19.opponentId\",\"before\":\"aja2\",\"after\":\"str\"},{\"path\":\"calendar.19.opponentName\",\"before\":\"FC Ajaccio\",\"after\":\"FC Strasburgo\"},{\"path\":\"calendar.20.opponentId\",\"before\":\"hac\",\"after\":\"tou\"},{\"path\":\"calendar.20.opponentName\",\"before\":\"FC Le Havre\",\"after\":\"FC Tolosa\"},{\"path\":\"calendar.21.opponentId\",\"before\":\"nic2\",\"after\":\"cle\"},{\"path\":\"calendar.21.opponentName\",\"before\":\"FC Niort\",\"after\":\"FC Clermont\"},{\"path\":\"calendar.22.opponentId\",\"before\":\"lav\",\"after\":\"str\"},{\"path\":\"calendar.22.opponentName\",\"before\":\"FC Laval\",\"after\":\"FC Strasburgo\"},{\"path\":\"calendar.23.opponentId\",\"before\":\"metz\",\"after\":\"ren\"},{\"path\":\"calendar.23.opponentName\",\"before\":\"FC Mosella\",\"after\":\"FC Rennese\"},{\"path\":\"calendar.24.opponentId\",\"before\":\"val2\",\"after\":\"nan\"},{\"path\":\"calendar.24.opponentName\",\"before\":\"FC Valencien\",\"after\":\"FC Nantese\"},{\"path\":\"calendar.25.opponentId\",\"before\":\"que\",\"after\":\"tou\"},{\"path\":\"calendar.25.opponentName\",\"before\":\"FC Rouen\",\"after\":\"FC Tolosa\"},{\"path\":\"calendar.26.opponentId\",\"before\":\"soch\",\"after\":\"ren\"},{\"path\":\"calendar.26.opponentName\",\"before\":\"FC Doubs\",\"after\":\"FC Rennese\"},{\"path\":\"calendar.27.opponentId\",\"before\":\"bre2\",\"after\":\"str\"},{\"path\":\"calendar.27.opponentName\",\"before\":\"FC Brest\",\"after\":\"FC Strasburgo\"},{\"path\":\"calendar.28.opponentId\",\"before\":\"ann\",\"after\":\"rei\"},{\"path\":\"calendar.28.opponentName\",\"before\":\"FC Annecy\",\"after\":\"FC Remense\"},{\"path\":\"calendar.29.opponentId\",\"before\":\"ami\",\"after\":\"aux\"},{\"path\":\"calendar.29.opponentName\",\"before\":\"FC Amiens\",\"after\":\"FC Auxerre\"},{\"path\":\"calendar.30.opponentId\",\"before\":\"dun\",\"after\":\"str\"},{\"path\":\"calendar.30.opponentName\",\"before\":\"FC Dunkerque\",\"after\":\"FC Strasburgo\"},{\"path\":\"calendar.31.opponentId\",\"before\":\"rod\",\"after\":\"ren\"},{\"path\":\"calendar.31.opponentName\",\"before\":\"FC Rodez\",\"after\":\"FC Rennese\"},{\"path\":\"calendar.32.opponentId\",\"before\":\"tro\",\"after\":\"cae\"},{\"path\":\"calendar.32.opponentName\",\"before\":\"FC Troyes\",\"after\":\"FC Caen\"},{\"path\":\"calendar.33.opponentId\",\"before\":\"bas2\",\"after\":\"lor\"},{\"path\":\"calendar.33.opponentName\",\"before\":\"FC Bastia\",\"after\":\"FC Morbihan\"},{\"path\":\"playedMd.s\",\"before\":3,\"after\":4},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":6},{\"path\":\"playedMd.md.6\",\"before\":7},{\"path\":\"playedMd.md.7\",\"before\":8},{\"path\":\"playedMd.md.8\",\"before\":990},{\"path\":\"playedMd.md.9\",\"before\":9},{\"path\":\"playedMd.md.10\",\"before\":10},{\"path\":\"playedMd.md.11\",\"before\":11},{\"path\":\"playedMd.md.12\",\"before\":12},{\"path\":\"playedMd.md.13\",\"before\":13},{\"path\":\"playedMd.md.14\",\"before\":14},{\"path\":\"playedMd.md.15\",\"before\":15},{\"path\":\"playedMd.md.16\",\"before\":16},{\"path\":\"playedMd.md.17\",\"before\":17},{\"path\":\"playedMd.md.18\",\"before\":992},{\"path\":\"playedMd.md.19\",\"before\":18},{\"path\":\"playedMd.md.20\",\"before\":19},{\"path\":\"playedMd.md.21\",\"before\":20},{\"path\":\"playedMd.md.22\",\"before\":21},{\"path\":\"playedMd.md.23\",\"before\":995},{\"path\":\"playedMd.md.24\",\"before\":22},{\"path\":\"playedMd.md.25\",\"before\":23},{\"path\":\"playedMd.md.26\",\"before\":24},{\"path\":\"playedMd.md.27\",\"before\":997},{\"path\":\"playedMd.md.28\",\"before\":25},{\"path\":\"playedMd.md.29\",\"before\":993},{\"path\":\"playedMd.md.30\",\"before\":26},{\"path\":\"playedMd.md.31\",\"before\":998},{\"path\":\"playedMd.md.32\",\"before\":27},{\"path\":\"playedMd.md.33\",\"before\":28},{\"path\":\"playedMd.md.34\",\"before\":29},{\"path\":\"playedMd.md.35\",\"before\":30},{\"path\":\"playedMd.md.36\",\"before\":31},{\"path\":\"playedMd.md.37\",\"before\":994},{\"path\":\"playedMd.md.38\",\"before\":32},{\"path\":\"playedMd.md.39\",\"before\":33},{\"path\":\"playedMd.md.40\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"gui\"},{\"path\":\"teammates.0.name\",\"before\":\"Uwe Wahl\",\"after\":\"Lenny Garnier\"},{\"path\":\"teammates.1.name\",\"before\":\"Leon Neubert\",\"after\":\"Djibril Dubois\"},{\"path\":\"teammates.2.name\",\"before\":\"Markus Schneider\",\"after\":\"Pierre Francois\"}]",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S4/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S5/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S6/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":5,\"after\":6},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":22},{\"path\":\"playedMd.md.30\",\"before\":23},{\"path\":\"playedMd.md.31\",\"before\":24},{\"path\":\"playedMd.md.32\",\"before\":25},{\"path\":\"playedMd.md.33\",\"before\":995},{\"path\":\"playedMd.md.34\",\"before\":26},{\"path\":\"playedMd.md.35\",\"before\":27},{\"path\":\"playedMd.md.36\",\"before\":28},{\"path\":\"playedMd.md.37\",\"before\":997},{\"path\":\"playedMd.md.38\",\"before\":29},{\"path\":\"playedMd.md.39\",\"before\":30},{\"path\":\"playedMd.md.40\",\"before\":31},{\"path\":\"playedMd.md.41\",\"before\":993},{\"path\":\"playedMd.md.42\",\"before\":32},{\"path\":\"playedMd.md.43\",\"before\":994},{\"path\":\"playedMd.md.44\",\"before\":33},{\"path\":\"playedMd.md.45\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"bvb\"}]",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S6/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S7/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S8/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":7,\"after\":8},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":992},{\"path\":\"playedMd.md.25\",\"before\":18},{\"path\":\"playedMd.md.26\",\"before\":19},{\"path\":\"playedMd.md.27\",\"before\":20},{\"path\":\"playedMd.md.28\",\"before\":21},{\"path\":\"playedMd.md.29\",\"before\":22},{\"path\":\"playedMd.md.30\",\"before\":23},{\"path\":\"playedMd.md.31\",\"before\":24},{\"path\":\"playedMd.md.32\",\"before\":25},{\"path\":\"playedMd.md.33\",\"before\":995},{\"path\":\"playedMd.md.34\",\"before\":26},{\"path\":\"playedMd.md.35\",\"before\":27},{\"path\":\"playedMd.md.36\",\"before\":28},{\"path\":\"playedMd.md.37\",\"before\":997},{\"path\":\"playedMd.md.38\",\"before\":29},{\"path\":\"playedMd.md.39\",\"before\":30},{\"path\":\"playedMd.md.40\",\"before\":31},{\"path\":\"playedMd.md.41\",\"before\":993},{\"path\":\"playedMd.md.42\",\"before\":32},{\"path\":\"playedMd.md.43\",\"before\":33},{\"path\":\"playedMd.md.44\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"bvb\"},{\"path\":\"teammates.0.name\",\"before\":\"Alan Hanson\",\"after\":\"Robin Schäfer\"},{\"path\":\"teammates.1.name\",\"before\":\"Kyle McMahon\",\"after\":\"Moritz Holm\"},{\"path\":\"teammates.2.name\",\"before\":\"Dylan Webster\",\"after\":\"Stephan Jung\"}]",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S8/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S9/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S10/W1 save-restore: snapshot changed after reload: [{\"path\":\"playedMd.s\",\"before\":9,\"after\":10},{\"path\":\"playedMd.md.0\",\"before\":1},{\"path\":\"playedMd.md.1\",\"before\":2},{\"path\":\"playedMd.md.2\",\"before\":3},{\"path\":\"playedMd.md.3\",\"before\":4},{\"path\":\"playedMd.md.4\",\"before\":5},{\"path\":\"playedMd.md.5\",\"before\":900},{\"path\":\"playedMd.md.6\",\"before\":6},{\"path\":\"playedMd.md.7\",\"before\":7},{\"path\":\"playedMd.md.8\",\"before\":901},{\"path\":\"playedMd.md.9\",\"before\":8},{\"path\":\"playedMd.md.10\",\"before\":990},{\"path\":\"playedMd.md.11\",\"before\":9},{\"path\":\"playedMd.md.12\",\"before\":902},{\"path\":\"playedMd.md.13\",\"before\":10},{\"path\":\"playedMd.md.14\",\"before\":11},{\"path\":\"playedMd.md.15\",\"before\":903},{\"path\":\"playedMd.md.16\",\"before\":12},{\"path\":\"playedMd.md.17\",\"before\":13},{\"path\":\"playedMd.md.18\",\"before\":904},{\"path\":\"playedMd.md.19\",\"before\":14},{\"path\":\"playedMd.md.20\",\"before\":15},{\"path\":\"playedMd.md.21\",\"before\":905},{\"path\":\"playedMd.md.22\",\"before\":16},{\"path\":\"playedMd.md.23\",\"before\":17},{\"path\":\"playedMd.md.24\",\"before\":18},{\"path\":\"playedMd.md.25\",\"before\":19},{\"path\":\"playedMd.md.26\",\"before\":20},{\"path\":\"playedMd.md.27\",\"before\":21},{\"path\":\"playedMd.md.28\",\"before\":22},{\"path\":\"playedMd.md.29\",\"before\":23},{\"path\":\"playedMd.md.30\",\"before\":24},{\"path\":\"playedMd.md.31\",\"before\":25},{\"path\":\"playedMd.md.32\",\"before\":995},{\"path\":\"playedMd.md.33\",\"before\":26},{\"path\":\"playedMd.md.34\",\"before\":27},{\"path\":\"playedMd.md.35\",\"before\":28},{\"path\":\"playedMd.md.36\",\"before\":29},{\"path\":\"playedMd.md.37\",\"before\":30},{\"path\":\"playedMd.md.38\",\"before\":31},{\"path\":\"playedMd.md.39\",\"before\":993},{\"path\":\"playedMd.md.40\",\"before\":32},{\"path\":\"playedMd.md.41\",\"before\":994},{\"path\":\"playedMd.md.42\",\"before\":33},{\"path\":\"playedMd.md.43\",\"before\":34},{\"path\":\"cup.club\",\"after\":\"bay\"}]",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S10/W22 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 S11/W7 harness-intervention: goScreen dashboard from clubPresentation",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 S10/W39 national-zero-high-ovr: 10 stagioni, OVR massimo 96, presenze nazionale registrate sempre 0",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 1 Snull/Wnull loan-parentClub-pageerror: 2 errori JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=1 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 2 Snull/Wnull loan-parentClub-pageerror: 2 errori JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=2 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 8 Snull/Wnull loan-parentClub-pageerror: 2 errori JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=8 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 13 Snull/Wnull loan-parentClub-pageerror: 1 errore JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=13 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 17 Snull/Wnull loan-parentClub-pageerror: 3 errori JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=17 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 19 Snull/Wnull loan-parentClub-pageerror: 1 errore JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=19 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 22 Snull/Wnull loan-parentClub-pageerror: 3 errori JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=22 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 26 Snull/Wnull loan-parentClub-pageerror: 3 errori JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=26 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 29 Snull/Wnull loan-parentClub-pageerror: 2 errori JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=29 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "seed 35 Snull/Wnull loan-parentClub-pageerror: 4 errori JS «Cannot read properties of null (reading 'parentClub')»; letture in richiami ritardati src/18-career-app.jsx:4839,4847,4856; _loanE3=null a riga 4859",
+      "come_riprodurre": "CPM_SEEDS=35 node tests/codex/career-matrix.mjs",
+      "prove": [
+        "tests/codex/collaudo-carriere.json.gz"
+      ]
+    }
+  ],
+  "limiti": [],
+  "candidateRules": []
+}

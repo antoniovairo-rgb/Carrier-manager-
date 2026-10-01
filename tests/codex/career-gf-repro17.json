@@ -1,0 +1,2546 @@
+{
+  "command": "node tests/codex/career-matrix.mjs",
+  "env": {
+    "CPM_SEEDS": "17",
+    "CPM_MAX_SEASONS": 2,
+    "CPM_TIME_LIMIT_MS": 360000,
+    "CPM_OUTPUT": "career-gf-repro17.json"
+  },
+  "startedAt": "2026-10-01T07:11:51.843Z",
+  "version": "7.999.86",
+  "commit": "5f89267e970ea256f9917ff6c695e873969454d7",
+  "catalog": {
+    "professionalClubs": 252,
+    "u18Clubs": 18,
+    "leagues": [
+      "Lega A",
+      "Premier Division",
+      "Liga Ibérica",
+      "Deutsche Liga",
+      "Ligue Nationale",
+      "Liga Lusitana",
+      "Liga Oranje",
+      "Liga Belga",
+      "Liga Anatolica",
+      "Lega B",
+      "Championship",
+      "Deutsche Liga 2",
+      "Ligue Nationale 2",
+      "Liga Ibérica 2"
+    ],
+    "leagueCounts": {
+      "Lega A": 18,
+      "Premier Division": 18,
+      "Liga Ibérica": 18,
+      "Deutsche Liga": 18,
+      "Ligue Nationale": 18,
+      "Liga Lusitana": 18,
+      "Liga Oranje": 18,
+      "Liga Belga": 18,
+      "Liga Anatolica": 18,
+      "Lega B": 18,
+      "Championship": 18,
+      "Deutsche Liga 2": 18,
+      "Ligue Nationale 2": 18,
+      "Liga Ibérica 2": 18
+    }
+  },
+  "careers": [
+    {
+      "seed": 17,
+      "matrix": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "steps": 162,
+      "seasonsDone": 2,
+      "seasonStats": [
+        {
+          "season": 2,
+          "age": 20,
+          "club": "aug",
+          "league": "Deutsche Liga",
+          "position": "Attaccante",
+          "ovr": 90,
+          "goals": 11,
+          "assists": 8,
+          "matches": 34,
+          "rating": 5.86,
+          "value": 89.2,
+          "wage": 307744,
+          "contractExpiresAtSeason": 3,
+          "contractExpired": false,
+          "squadRole": "riserva",
+          "coachTrust": 50,
+          "injured": false,
+          "injuryWeeks": null,
+          "nationalCaps": 0,
+          "diaryLength": 0,
+          "diarySeasons": [],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 9438580,
+          "calendarN": 34,
+          "calendarUnplayed": 0
+        },
+        {
+          "season": 3,
+          "age": 21,
+          "club": "mun",
+          "league": "Premier Division",
+          "position": "Attaccante",
+          "ovr": 91,
+          "goals": 17,
+          "assists": 7,
+          "matches": 39,
+          "rating": 6.12,
+          "value": 107.75,
+          "wage": 401094,
+          "contractExpiresAtSeason": 4,
+          "contractExpired": false,
+          "squadRole": "primavera",
+          "coachTrust": 57,
+          "injured": false,
+          "injuryWeeks": null,
+          "nationalCaps": 0,
+          "diaryLength": 4,
+          "diarySeasons": [
+            2,
+            3
+          ],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 20638795,
+          "calendarN": 38,
+          "calendarUnplayed": 0
+        }
+      ],
+      "transfers": [
+        {
+          "season": 2,
+          "week": 5,
+          "from": "boc",
+          "to": "aug",
+          "league": "Deutsche Liga"
+        },
+        {
+          "season": 3,
+          "week": 20,
+          "from": "aug",
+          "to": "mun",
+          "league": "Premier Division"
+        }
+      ],
+      "injuries": [],
+      "events": {
+        "pledge": 2,
+        "persgoal": 2,
+        "cup_out": 2
+      },
+      "messages": {
+        "2|🔄 prestito con obbligo: FC Augsburg (Deutsche Liga)!": 1,
+        "2|🏁 Fine S.2: 11⚽ 8🎯": 1,
+        "3|🎂 21 anni — stagione 3 inizia": 1,
+        "3|❌ Mancato: Segna 16 gol col nuovo club": 1,
+        "3|❌ Mancato: Finisci nei primi 6": 1,
+        "3|❌ Mancato: Fornisci 10 assist col nuovo club": 1,
+        "3|🧑‍💼 Nuovo allenatore: Mister Petrucci (Contropiede)": 1,
+        "3|⬇️ FC Augsburg RETROCESSA in Deutsche Liga 2!": 1,
+        "3|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "3|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1,
+        "3|🎯 Lavoro sui passaggi. Visione di gioco in crescita.": 1,
+        "3|📩 FC Leipzig presenta un'offerta ufficiale: hai superato il livello del tuo club.": 1,
+        "3|🏆 Coppa · Ottavi di Finale (sim): 0-2 vs FC Berlin — ELIMINATO": 1,
+        "3|🌍 KCC: il club ha superato il girone — entri agli Ottavi (Settimana 23)": 1,
+        "3|🏆 Coppa Nazionale: col nuovo club riparti dai Semifinale": 1,
+        "3|🔄 prestito con obbligo: Manchester Rovers (Premier Division)!": 1,
+        "3|👏 Elogio pubblico del mister in conferenza.": 1,
+        "3|🏆 Coppa · Semifinale (sim): 2-0 vs FC Griffin — passi il turno": 1,
+        "3|🏆 Coppa · FINALE (sim): 0-2 vs FC Merseyside — ELIMINATO": 1,
+        "3|💬 Supporto caloroso dei tifosi dopo la gara.": 1,
+        "3|😓 Piccolo affaticamento muscolare. Serve riposo.": 1,
+        "3|🏁 Fine S.3: 17⚽ 7🎯": 1,
+        "4|🎂 22 anni — stagione 4 inizia": 1,
+        "4|✅ Segna 9 gol col nuovo club": 1,
+        "4|❌ Mancato: Finisci nei primi 3": 1,
+        "4|✅ Fornisci 6 assist col nuovo club": 1,
+        "4|📈 Progressione: +1 tecnica · ⚡ Prestazione élite: +1 dribbling": 1,
+        "4|🤵 Il piano del procuratore (€120.4M) resta sulla lavagna: «ci arriviamo, serve continuità».": 1,
+        "4|📈 Obiettivi personali: 1/2 — la promessa fatta a te stesso.": 1,
+        "4|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1
+      },
+      "weeklyObservations": [
+        {
+          "season": 2,
+          "week": 1,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 2,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_orologio"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 3,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_ciclo_forza"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 4,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 5,
+          "messages": [
+            "🔄 prestito con obbligo: FC Augsburg (Deutsche Liga)!"
+          ],
+          "diary": [],
+          "impulses": [
+            "wi_orologi_squadra"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 6,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 7,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_compagno_lite"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 8,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 9,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_fan_aggression"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 10,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_dirigente_idolo"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 11,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_veterano_allenamento"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 12,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_cena_squadra"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 13,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_opinionista"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 14,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_figlia_mister"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 15,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_agente_orgoglio"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 16,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 17,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_insonnia"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 18,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_cena_squadra"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 19,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_polemica_social"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 20,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_torneo_padel"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 21,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_intervista_sorpresa"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 22,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_mixed_zone"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 23,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_sfotto_gol"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 24,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 25,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 26,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_dieta_brand"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 27,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_bonus_gol_social"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 28,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_ospedale"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 29,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 30,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_media"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 31,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 32,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 33,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 34,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 35,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_social"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 36,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_gatto"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 37,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_beneficenza"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 38,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_crioterapia"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 39,
+          "messages": [
+            "🏁 Fine S.2: 11⚽ 8🎯"
+          ],
+          "diary": [],
+          "impulses": [
+            "wi_sponsor_auto"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "messages": [
+            "🎂 21 anni — stagione 3 inizia",
+            "❌ Mancato: Segna 16 gol col nuovo club",
+            "❌ Mancato: Finisci nei primi 6",
+            "❌ Mancato: Fornisci 10 assist col nuovo club",
+            "🧑‍💼 Nuovo allenatore: Mister Petrucci (Contropiede)",
+            "⬇️ FC Augsburg RETROCESSA in Deutsche Liga 2!",
+            "📉 Obiettivi personali mancati — la promessa fatta a te stesso.",
+            "💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada."
+          ],
+          "diary": [
+            "Non tutto è arrivato",
+            "Obiettivi personali mancati"
+          ],
+          "impulses": [],
+          "vita": [
+            "vita_bimbo_maglia"
+          ],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 2,
+          "messages": [
+            "🎯 Lavoro sui passaggi. Visione di gioco in crescita."
+          ],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 3,
+          "messages": [
+            "📩 FC Leipzig presenta un'offerta ufficiale: hai superato il livello del tuo club."
+          ],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_agente_cena"
+          ],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 4,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_scherzo_scarpe"
+          ],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 5,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_giovani_accademia"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 6,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 7,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 8,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 9,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_famiglia_stadio"
+          ],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 10,
+          "messages": [
+            "🏆 Coppa · Ottavi di Finale (sim): 0-2 vs FC Berlin — ELIMINATO"
+          ],
+          "diary": [
+            "Coppa: eliminati ai Ottavi di Finale"
+          ],
+          "impulses": [
+            "wi_bimbo_sogno"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 11,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_intervista_scomoda"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 12,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_ex_club"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 13,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_personal_chef"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 14,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_tutto_calcolato"
+          ],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 15,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_primo_mister"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 16,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 17,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_telecronaca"
+          ],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 18,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_karaoke"
+          ],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 19,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_mental_coach"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 20,
+          "messages": [
+            "🌍 KCC: il club ha superato il girone — entri agli Ottavi (Settimana 23)",
+            "🏆 Coppa Nazionale: col nuovo club riparti dai Semifinale",
+            "🔄 prestito con obbligo: Manchester Rovers (Premier Division)!"
+          ],
+          "diary": [],
+          "impulses": [
+            "wi_donazione"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 21,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 22,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_dieta_ferrea"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 23,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_sogno"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 24,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 25,
+          "messages": [
+            "👏 Elogio pubblico del mister in conferenza."
+          ],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 26,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_maglia_dieci"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 27,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_giornalista_mercato"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 28,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_scommessa_amici"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 29,
+          "messages": [
+            "🏆 Coppa · Semifinale (sim): 2-0 vs FC Griffin — passi il turno"
+          ],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_gruppo_meme"
+          ],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 30,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 31,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_auto_lusso"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 32,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 33,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 34,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 35,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_recupero_hitech"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 36,
+          "messages": [
+            "🏆 Coppa · FINALE (sim): 0-2 vs FC Merseyside — ELIMINATO"
+          ],
+          "diary": [
+            "Coppa: eliminati ai FINALE"
+          ],
+          "impulses": [
+            "wi_analisi_video"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 37,
+          "messages": [
+            "💬 Supporto caloroso dei tifosi dopo la gara."
+          ],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 38,
+          "messages": [
+            "😓 Piccolo affaticamento muscolare. Serve riposo."
+          ],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 39,
+          "messages": [
+            "🏁 Fine S.3: 17⚽ 7🎯"
+          ],
+          "diary": [],
+          "impulses": [
+            "wi_capitano_sfida"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "messages": [
+            "🎂 22 anni — stagione 4 inizia",
+            "✅ Segna 9 gol col nuovo club",
+            "❌ Mancato: Finisci nei primi 3",
+            "✅ Fornisci 6 assist col nuovo club",
+            "📈 Progressione: +1 tecnica · ⚡ Prestazione élite: +1 dribbling",
+            "🤵 Il piano del procuratore (€120.4M) resta sulla lavagna: «ci arriviamo, serve continuità».",
+            "📈 Obiettivi personali: 1/2 — la promessa fatta a te stesso.",
+            "💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada."
+          ],
+          "diary": [
+            "Non tutto è arrivato",
+            "Obiettivi personali: a metà strada"
+          ],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        }
+      ],
+      "contentObservations": [
+        {
+          "season": 2,
+          "week": 5,
+          "kind": "log",
+          "text": "🔄 prestito con obbligo: FC Augsburg (Deutsche Liga)!",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "rotazione",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 2,
+          "week": 39,
+          "kind": "log",
+          "text": "🏁 Fine S.2: 11⚽ 8🎯",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": [
+              {
+                "week": 34,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 2
+              },
+              {
+                "week": 36,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 3
+              },
+              {
+                "week": 37,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 2,
+                "awayScore": 3
+              },
+              {
+                "week": 38,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 1
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "🎂 21 anni — stagione 3 inizia",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "❌ Mancato: Segna 16 gol col nuovo club",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "❌ Mancato: Finisci nei primi 6",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "❌ Mancato: Fornisci 10 assist col nuovo club",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "🧑‍💼 Nuovo allenatore: Mister Petrucci (Contropiede)",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "⬇️ FC Augsburg RETROCESSA in Deutsche Liga 2!",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "📉 Obiettivi personali mancati — la promessa fatta a te stesso.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "diary",
+          "text": "Non tutto è arrivato",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "diary",
+          "text": "Obiettivi personali mancati",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 2,
+          "kind": "log",
+          "text": "🎯 Lavoro sui passaggi. Visione di gioco in crescita.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": [
+              {
+                "week": 1,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 5
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 3,
+          "kind": "log",
+          "text": "📩 FC Leipzig presenta un'offerta ufficiale: hai superato il livello del tuo club.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": [
+              {
+                "week": 1,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 5
+              },
+              {
+                "week": 2,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 1
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 10,
+          "kind": "log",
+          "text": "🏆 Coppa · Ottavi di Finale (sim): 0-2 vs FC Berlin — ELIMINATO",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": [
+              {
+                "week": 6,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 1
+              },
+              {
+                "week": 7,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 5
+              },
+              {
+                "week": 8,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 2
+              },
+              {
+                "week": 9,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 2
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 10,
+          "kind": "diary",
+          "text": "Coppa: eliminati ai Ottavi di Finale",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "aug",
+            "recentMatches": [
+              {
+                "week": 6,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 1
+              },
+              {
+                "week": 7,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 5
+              },
+              {
+                "week": 8,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 2
+              },
+              {
+                "week": 9,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 2
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 20,
+          "kind": "log",
+          "text": "🌍 KCC: il club ha superato il girone — entri agli Ottavi (Settimana 23)",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 20,
+          "kind": "log",
+          "text": "🏆 Coppa Nazionale: col nuovo club riparti dai Semifinale",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 20,
+          "kind": "log",
+          "text": "🔄 prestito con obbligo: Manchester Rovers (Premier Division)!",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 25,
+          "kind": "log",
+          "text": "👏 Elogio pubblico del mister in conferenza.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": [
+              {
+                "week": 22,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 1
+              },
+              {
+                "week": 23,
+                "goals": 1,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 1
+              },
+              {
+                "week": 23,
+                "goals": 2,
+                "assists": 1,
+                "minutes": null,
+                "won": true,
+                "homeScore": 4,
+                "awayScore": 3
+              },
+              {
+                "week": 24,
+                "goals": 1,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 2,
+                "awayScore": 3
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 29,
+          "kind": "log",
+          "text": "🏆 Coppa · Semifinale (sim): 2-0 vs FC Griffin — passi il turno",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": [
+              {
+                "week": 26,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 3
+              },
+              {
+                "week": 26,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 2
+              },
+              {
+                "week": 27,
+                "goals": 0,
+                "assists": 1,
+                "minutes": null,
+                "won": false,
+                "homeScore": 2,
+                "awayScore": 2
+              },
+              {
+                "week": 28,
+                "goals": 2,
+                "assists": 0,
+                "minutes": null,
+                "won": true,
+                "homeScore": 2,
+                "awayScore": 0
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 36,
+          "kind": "log",
+          "text": "🏆 Coppa · FINALE (sim): 0-2 vs FC Merseyside — ELIMINATO",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": [
+              {
+                "week": 32,
+                "goals": 1,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 2
+              },
+              {
+                "week": 33,
+                "goals": 0,
+                "assists": 1,
+                "minutes": null,
+                "won": true,
+                "homeScore": 2,
+                "awayScore": 1
+              },
+              {
+                "week": 34,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 2,
+                "awayScore": 3
+              },
+              {
+                "week": 35,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 2
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 36,
+          "kind": "diary",
+          "text": "Coppa: eliminati ai FINALE",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": [
+              {
+                "week": 32,
+                "goals": 1,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 2
+              },
+              {
+                "week": 33,
+                "goals": 0,
+                "assists": 1,
+                "minutes": null,
+                "won": true,
+                "homeScore": 2,
+                "awayScore": 1
+              },
+              {
+                "week": 34,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 2,
+                "awayScore": 3
+              },
+              {
+                "week": 35,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 2
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 37,
+          "kind": "log",
+          "text": "💬 Supporto caloroso dei tifosi dopo la gara.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": [
+              {
+                "week": 33,
+                "goals": 0,
+                "assists": 1,
+                "minutes": null,
+                "won": true,
+                "homeScore": 2,
+                "awayScore": 1
+              },
+              {
+                "week": 34,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 2,
+                "awayScore": 3
+              },
+              {
+                "week": 35,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 2
+              },
+              {
+                "week": 36,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 3
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 38,
+          "kind": "log",
+          "text": "😓 Piccolo affaticamento muscolare. Serve riposo.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": [
+              {
+                "week": 34,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 2,
+                "awayScore": 3
+              },
+              {
+                "week": 35,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 2
+              },
+              {
+                "week": 36,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 3
+              },
+              {
+                "week": 37,
+                "goals": 1,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 1
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 39,
+          "kind": "log",
+          "text": "🏁 Fine S.3: 17⚽ 7🎯",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": [
+              {
+                "week": 35,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 2
+              },
+              {
+                "week": 36,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 3
+              },
+              {
+                "week": 37,
+                "goals": 1,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 1
+              },
+              {
+                "week": 38,
+                "goals": 1,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 1
+              }
+            ]
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "log",
+          "text": "🎂 22 anni — stagione 4 inizia",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "log",
+          "text": "✅ Segna 9 gol col nuovo club",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "log",
+          "text": "❌ Mancato: Finisci nei primi 3",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "log",
+          "text": "✅ Fornisci 6 assist col nuovo club",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "log",
+          "text": "📈 Progressione: +1 tecnica · ⚡ Prestazione élite: +1 dribbling",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "log",
+          "text": "🤵 Il piano del procuratore (€120.4M) resta sulla lavagna: «ci arriviamo, serve continuità».",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "log",
+          "text": "📈 Obiettivi personali: 1/2 — la promessa fatta a te stesso.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "log",
+          "text": "💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "diary",
+          "text": "Non tutto è arrivato",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 4,
+          "week": 1,
+          "kind": "diary",
+          "text": "Obiettivi personali: a metà strada",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "primavera",
+            "injured": false,
+            "position": "Attaccante",
+            "nationalCaps": 0,
+            "club": "mun",
+            "recentMatches": []
+          }
+        }
+      ],
+      "pageErrors": [],
+      "status": "target-reached",
+      "durationMs": 73827,
+      "interventions": [
+        {
+          "season": 2,
+          "week": 7,
+          "screen": "clubPresentation"
+        },
+        {
+          "season": 3,
+          "week": 22,
+          "screen": "clubPresentation"
+        }
+      ],
+      "contractActions": [],
+      "saveChecks": [],
+      "calendarDays": {
+        "2": {
+          "league": "Deutsche Liga",
+          "days": 34
+        },
+        "3": {
+          "league": "Deutsche Liga",
+          "days": 34
+        },
+        "4": {
+          "league": "Premier Division",
+          "days": 34
+        }
+      },
+      "finalSnapshot": {
+        "season": 4,
+        "week": 1,
+        "age": 22,
+        "ovr": 91,
+        "club": "mun",
+        "goals": 0,
+        "matches": 0
+      }
+    }
+  ],
+  "anomalies": [
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 2,
+      "week": 7,
+      "type": "harness-intervention",
+      "observed": "goScreen dashboard from clubPresentation",
+      "severity": "media",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 2,
+      "type": "standings-goals",
+      "observed": "GF=21, GA=15",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 3,
+      "type": "standings-goals",
+      "observed": "GF=49, GA=42",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 4,
+      "type": "standings-goals",
+      "observed": "GF=69, GA=57",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 5,
+      "type": "standings-goals",
+      "observed": "GF=83, GA=74",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 6,
+      "type": "standings-goals",
+      "observed": "GF=102, GA=90",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 7,
+      "type": "standings-goals",
+      "observed": "GF=126, GA=113",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 8,
+      "type": "standings-goals",
+      "observed": "GF=151, GA=133",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 9,
+      "type": "standings-goals",
+      "observed": "GF=170, GA=150",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 10,
+      "type": "standings-goals",
+      "observed": "GF=170, GA=150",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 11,
+      "type": "standings-goals",
+      "observed": "GF=199, GA=176",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 12,
+      "type": "standings-goals",
+      "observed": "GF=231, GA=202",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 13,
+      "type": "standings-goals",
+      "observed": "GF=259, GA=228",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 14,
+      "type": "standings-goals",
+      "observed": "GF=279, GA=253",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 15,
+      "type": "standings-goals",
+      "observed": "GF=305, GA=276",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 16,
+      "type": "standings-goals",
+      "observed": "GF=328, GA=299",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 17,
+      "type": "standings-goals",
+      "observed": "GF=349, GA=319",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 18,
+      "type": "standings-goals",
+      "observed": "GF=377, GA=346",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 19,
+      "type": "standings-goals",
+      "observed": "GF=405, GA=370",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 20,
+      "type": "standings-goals",
+      "observed": "GF=405, GA=370",
+      "severity": "alta",
+      "status": "verificata"
+    },
+    {
+      "seed": 17,
+      "career": {
+        "start": "piccolo",
+        "strength": "forte",
+        "style": "casuale",
+        "archetype": "fantasista",
+        "position": "Attaccante",
+        "roleInjected": true,
+        "requestedLeague": "Deutsche Liga",
+        "actualLeague": "Deutsche Liga",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "leagueFallback": false,
+        "base": 86
+      },
+      "season": 3,
+      "week": 22,
+      "type": "harness-intervention",
+      "observed": "goScreen dashboard from clubPresentation",
+      "severity": "media",
+      "status": "verificata"
+    }
+  ],
+  "failures": [],
+  "limits": [],
+  "durationMs": 99332
+}
