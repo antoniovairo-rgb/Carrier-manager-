@@ -10,10 +10,10 @@ await openMatch(p, port, { skipLoadAll: true, name: 'Aereo' }); await sleep(800)
 await p.evaluate(g => window.__CPM_FORCE_SIT(g, false), gi).catch(() => {});
 const row = [];
 for (let k = 0; k < 16; k++) {
-  await sleep(120);
+  await sleep(40);
   const m = await p.evaluate(() => { const S = window.__CPM_STATE(), c = window.__CPM_CAMT767; const cv = [...document.querySelectorAll('canvas')].sort((a, b) => b.width * b.height - a.width * a.height)[0]; const R = cv.getBoundingClientRect();
     const hs = c && c.hs94; const H = S.players && S.players.find(q => q.hero);
-    return { ph: window.__CPM_PHASE(), e: hs ? Math.round(R.top + (1 - hs[1]) / 2 * R.height) : null, ex: hs ? +hs[0].toFixed(2) : null, eroe: S.heroTarget, hm: H ? { x: H.x, y: H.y } : null, cam: c ? [c.cx, c.cz, c.lx, c.lz].map(v => +(+v).toFixed(1)) : null }; });
+    return { ph: window.__CPM_PHASE(), e: hs ? Math.round(R.top + (1 - hs[1]) / 2 * R.height) : null, ex: hs ? +hs[0].toFixed(2) : null, eroe: S.heroTarget, hm: H ? { x: H.x, y: H.y } : null, cam: c ? [c.cx, c.cy, c.cz, c.lx, c.lz].map(v => +(+v).toFixed(1)) : null, cut: !!(window.__CPM_CUTLIVE && window.__CPM_CUTLIVE()), t: Math.round(performance.now()) }; });
   row.push(JSON.stringify(m));
 }
 console.log('gi' + gi + '\n' + row.join('\n'));
