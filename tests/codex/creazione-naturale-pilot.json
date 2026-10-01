@@ -1,0 +1,22 @@
+{
+  "command": "node tests/codex/creazione-naturale-pilot.mjs",
+  "seed": 30,
+  "startedAt": "2026-10-01T19:25:36.275Z",
+  "trials": [
+    {
+      "number": 1,
+      "phases": [],
+      "continued": 0,
+      "startedAt": "2026-10-01T19:25:55.822Z"
+    }
+  ],
+  "errors": [],
+  "create": {
+    "name": "QA Naturale 30",
+    "source": "interfaccia; nessun attributo o ruolo iniettato"
+  },
+  "failure": "locator.click: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Inizia il provino/i })\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">⚡ Inizia il provino</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - performing click action\u001b[22m\n\n    at C:\\Users\\a.vairo\\Documents\\ChatGPT\\Analisi gioco codex\\korward-codex-carriere-fase1\\tests\\codex\\creazione-naturale-pilot.mjs:33:64",
+  "failureScreenshot": "reports/codex/creazione-naturale-pilot-stallo.png",
+  "memoryAbort": true,
+  "elapsedMs": 20722
+}

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Pilota la creazione UI e i tre provini reali. Non inserisce valori nel salvataggio.
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {chromium} from '../visual/node_modules/playwright/index.mjs';
@@ -13,10 +14,11 @@ const seed=Number(process.env.CPM_SEED||30);
 const command='node tests/codex/creazione-naturale-pilot.mjs';
 const run={command,seed,startedAt:new Date().toISOString(),trials:[],errors:[]};
 const save=()=>fs.writeFileSync(output,JSON.stringify(run,null,2));
-const server=await startServer();let browser,context,page;
+const server=await startServer();let browser,context,page,memoryAbort=false;
+const guard=setInterval(()=>{if(!memoryAbort&&os.freemem()<1.5*2**30){memoryAbort=true;browser?.close().catch(()=>{});}},250);
 try{
-  browser=await chromium.launch({headless:true,executablePath:process.env.CPM_CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',args:['--headless=new','--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist']});
-  context=await browser.newContext({viewport:{width:412,height:915},deviceScaleFactor:2,serviceWorkers:'block'});
+  browser=await chromium.launch({headless:true,executablePath:process.env.CPM_CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',args:['--headless=new','--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist','--renderer-process-limit=1','--disable-extensions','--disable-background-networking','--no-sandbox']});
+  context=await browser.newContext({viewport:{width:360,height:640},deviceScaleFactor:1,serviceWorkers:'block'});
   page=await context.newPage();page.setDefaultTimeout(30000);
   page.on('pageerror',e=>run.errors.push(String(e.message)));
   await installCdnRoutes(page);
@@ -54,4 +56,4 @@ try{
   await page.waitForFunction(()=>!!window.__CPM_CAREER,null,{timeout:30000});
   run.career=await page.evaluate(()=>{const s=window.__CPM_CAREER.snapshot();return{name:s.name,age:s.age,season:s.season,week:s.week,position:s.position,ovr:s.ovr,stats:s.stats,club:s.club?.n,league:s.club?.lg};});
 }catch(e){run.failure=String(e.stack||e);await page?.screenshot({path:screenshot}).catch(()=>{});run.failureScreenshot=path.relative(root,screenshot).replaceAll('\\','/');}
-finally{run.elapsedMs=Date.now()-Date.parse(run.startedAt);save();await context?.close().catch(()=>{});await browser?.close().catch(()=>{});server.closeAllConnections?.();server.close();console.log(JSON.stringify({elapsedMs:run.elapsedMs,career:run.career,failure:run.failure?.slice(0,300)}));}
+finally{clearInterval(guard);run.memoryAbort=memoryAbort;run.elapsedMs=Date.now()-Date.parse(run.startedAt);save();await context?.close().catch(()=>{});await browser?.close().catch(()=>{});server.closeAllConnections?.();server.close();console.log(JSON.stringify({elapsedMs:run.elapsedMs,career:run.career,failure:run.failure?.slice(0,300),memoryAbort}));}

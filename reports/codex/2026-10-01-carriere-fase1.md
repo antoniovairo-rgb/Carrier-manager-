@@ -24,13 +24,15 @@ Totale con 10 stagioni: 3. Carriere dal percorso normale: 0. Fino al ritiro: 0. 
 
 ## Piloti non inclusi nel campione principale
 
-| Grezzo | Carriere | Stagioni | Esito | Errore o limite osservato | Comando |
+| Grezzo | Carriere | Stagioni | Esito | Errore o limite osservato | Riproducibilità |
 | --- | --- | --- | --- | --- | --- |
-| carriere-fase1-portiere-pilot.json | 1 | 1 | target-reached | nessuno | $env:CPM_SEEDS='30'; $env:CPM_NATURAL_SEEDS=''; $env:CPM_GOALKEEPER_SEEDS='30'; $env:CPM_MAX_SEASONS='1'; $env:CPM_OUTPUT='carriere-fase1-portiere-pilot.json'; node tests/codex/career-matrix.mjs |
-| carriere-fase1-natural-pilot.json | 1 | 0 | command-failed | page.waitForFunction: Timeout 240000ms exceeded. | $env:CPM_SEEDS='30'; $env:CPM_NATURAL_SEEDS='30'; $env:CPM_GOALKEEPER_SEEDS=''; $env:CPM_MAX_SEASONS='1'; $env:CPM_OUTPUT='carriere-fase1-natural-pilot.json'; node tests/codex/career-matrix.mjs |
-| carriere-fase1-natural-pilot2.json | 0 | 0 | nessuna carriera | causa non registrata | $env:CPM_SEEDS='30'; $env:CPM_NATURAL_SEEDS='30'; $env:CPM_GOALKEEPER_SEEDS=''; $env:CPM_MAX_SEASONS='1'; $env:CPM_OUTPUT='carriere-fase1-natural-pilot2.json'; node tests/codex/career-matrix.mjs |
+| carriere-fase1-portiere-pilot.json | 1 | 1 | target-reached | nessuno | $env:CPM_SEEDS='30'; $env:CPM_GOALKEEPER_SEEDS='30'; $env:CPM_MAX_SEASONS='1'; $env:CPM_OUTPUT='carriere-fase1-portiere-pilot.json'; node tests/codex/career-matrix.mjs |
+| carriere-fase1-natural-pilot.json | 1 | 0 | command-failed | page.waitForFunction: Timeout 240000ms exceeded. | non ripetibile con il matrix attualmente salvato |
+| carriere-fase1-natural-pilot2.json | 0 | 0 | nessuna carriera | causa non registrata | non ripetibile con il matrix attualmente salvato |
 
-Il primo pilota naturale si è fermato per un timeout del banco nella creazione; il secondo ha prodotto zero carriere e non ha registrato la causa. Questi risultati non dimostrano un errore del percorso normale del gioco. Il pilota portiere ha completato una stagione sintetica: non soddisfa né il requisito di dieci stagioni né quello del percorso naturale.
+Il primo pilota naturale si è fermato per un timeout del banco nella creazione; il secondo ha prodotto zero carriere e non ha registrato la causa. Il file `career-matrix.mjs` conservato in questo ramo non legge `CPM_NATURAL_SEEDS`: le due esecuzioni naturali precedenti non sono oggi ripetibili con quel comando. Questi risultati non dimostrano un errore del percorso normale del gioco. Il pilota portiere ha completato una stagione sintetica: non soddisfa né il requisito di dieci stagioni né quello del percorso naturale.
+
+Pilota UI separato: comando $env:CPM_CHROME='C:/Program Files/Google/Chrome/Application/chrome.exe'; $env:CPM_SEED='30'; node tests/codex/creazione-naturale-pilot.mjs. Creato il personaggio QA Naturale 30 dall’interfaccia, 0 provini conclusi. Il guardiano memoria ha interrotto il browser: memoryAbort=true, durata 20722 ms. Fonte: tests/codex/creazione-naturale-pilot.json. Il clic sul primo provino non è arrivato a completamento; questo è un limite della macchina e del banco, non un difetto di gioco verificato.
 
 ## Anomalie osservate
 
