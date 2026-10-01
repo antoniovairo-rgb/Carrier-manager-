@@ -1,8 +1,8 @@
 {
  "totali": {
-  "f": 275,
-  "a": 274,
-  "n": 24
+  "f": 281,
+  "a": 283,
+  "n": 9
  },
  "situations": 191,
  "azioni": 573,
@@ -20,78 +20,17 @@
   "pass/short_pass",
   "pass/long_pass",
   "pass/chip_pass",
+  "pass/heel",
   "pass/backheel",
   "tackle/aerial"
  ],
+ "varianti_dichiarate": 46,
  "situations_testo_non_disegnabile": [
-  {
-   "gi": 26,
-   "text": "💫 Assist di tacco! Giocata geniale.",
-   "promesse": [
-    "tacco"
-   ]
-  },
-  {
-   "gi": 40,
-   "text": "🌀 Difensore di fronte — come lo superi?",
-   "promesse": [
-    "tunnel"
-   ]
-  },
-  {
-   "gi": 42,
-   "text": "🦶 Fascia chiusa — cross difficile, angolo stretto!",
-   "promesse": [
-    "rabona"
-   ]
-  },
-  {
-   "gi": 65,
-   "text": "🛑 Stop di petto e tiro fulmineo!",
-   "promesse": [
-    "petto"
-   ]
-  },
-  {
-   "gi": 92,
-   "text": "🔄 Roulette sul difensore!",
-   "promesse": [
-    "roulette"
-   ]
-  },
-  {
-   "gi": 93,
-   "text": "🌀 Elastico in area!",
-   "promesse": [
-    "elastico"
-   ]
-  },
-  {
-   "gi": 98,
-   "text": "🌀 Tunnel in area! Passa in mezzo.",
-   "promesse": [
-    "tunnel"
-   ]
-  },
-  {
-   "gi": 100,
-   "text": "🔄 Hocus pocus sulla fascia!",
-   "promesse": [
-    "hocus_pocus"
-   ]
-  },
   {
    "gi": 110,
    "text": "🏃 Fai il velo per il compagno!",
    "promesse": [
     "velo"
-   ]
-  },
-  {
-   "gi": 115,
-   "text": "🦶 Tacco al limite! Colpo di classe.",
-   "promesse": [
-    "tacco"
    ]
   },
   {
@@ -406,14 +345,14 @@
    "gi": 7,
    "ai": 2,
    "sit": "✈️ Cross in area! Attacca il pallone.",
-   "label": "🤸 Tacco",
+   "label": "🤸 Deviazione di prima",
    "fam": "shot",
-   "variante": "shot_power",
+   "variante": "shot_first_time",
    "defGesto": null,
    "clip": "kick (+ tiro in corsa mx-strike-foward-jog per l'eroe)",
-   "promesse": "tacco:n",
-   "verdetto": "n",
-   "nota": "clip pass: nessun colpo di tacco"
+   "promesse": "",
+   "verdetto": "a",
+   "nota": ""
   },
   {
    "gi": 8,
@@ -939,14 +878,14 @@
    "gi": 21,
    "ai": 1,
    "sit": "⚡ Doppio dribbling in velocità!",
-   "label": "🌀 Elastico e tiro",
+   "label": "🌀 Finta e tiro",
    "fam": "shot",
    "variante": "shot_power",
    "defGesto": null,
    "clip": "kick (+ tiro in corsa mx-strike-foward-jog per l'eroe)",
-   "promesse": "elastico:n, tiro:f",
-   "verdetto": "n",
-   "nota": "nessun elastico: finta generica"
+   "promesse": "tiro:f, dribbling:a",
+   "verdetto": "a",
+   "nota": "clip dribble / change-direction (gesto generico)"
   },
   {
    "gi": 21,
@@ -1120,20 +1059,20 @@
   {
    "gi": 26,
    "ai": 0,
-   "sit": "💫 Assist di tacco! Giocata geniale.",
-   "label": "💫 Tacco preciso",
+   "sit": "💫 Appoggio di prima per il compagno! Giocata geniale.",
+   "label": "💫 Appoggio di prima preciso",
    "fam": "pass",
-   "variante": "heel",
+   "variante": null,
    "defGesto": null,
    "clip": "pass",
-   "promesse": "tacco:n",
-   "verdetto": "n",
-   "nota": "clip pass: nessun colpo di tacco"
+   "promesse": "passaggio:f",
+   "verdetto": "f",
+   "nota": ""
   },
   {
    "gi": 26,
    "ai": 1,
-   "sit": "💫 Assist di tacco! Giocata geniale.",
+   "sit": "💫 Appoggio di prima per il compagno! Giocata geniale.",
    "label": "🦵 Tiro di prima",
    "fam": "shot",
    "variante": "shot_first_time",
@@ -1146,7 +1085,7 @@
   {
    "gi": 26,
    "ai": 2,
-   "sit": "💫 Assist di tacco! Giocata geniale.",
+   "sit": "💫 Appoggio di prima per il compagno! Giocata geniale.",
    "label": "🔄 Doppio passo e tiro",
    "fam": "shot",
    "variante": "shot_power",
@@ -1667,14 +1606,14 @@
    "gi": 40,
    "ai": 0,
    "sit": "🌀 Difensore di fronte — come lo superi?",
-   "label": "🌀 Tunnel perfetto",
+   "label": "🌀 Dribbling stretto perfetto",
    "fam": "shot",
    "variante": "shot_power",
    "defGesto": null,
    "clip": "kick (+ tiro in corsa mx-strike-foward-jog per l'eroe)",
-   "promesse": "tunnel:n",
-   "verdetto": "n",
-   "nota": "il pallone non passa fra le gambe del difensore"
+   "promesse": "dribbling:a",
+   "verdetto": "a",
+   "nota": "clip dribble / change-direction (gesto generico)"
   },
   {
    "gi": 40,
@@ -1745,14 +1684,14 @@
    "gi": 42,
    "ai": 0,
    "sit": "🦶 Fascia chiusa — cross difficile, angolo stretto!",
-   "label": "🦶 Rabona cross",
+   "label": "🦶 Cross d'esterno",
    "fam": "cross",
    "variante": "cross_near_post",
    "defGesto": null,
    "clip": "pass",
-   "promesse": "rabona:n, cross:f",
-   "verdetto": "n",
-   "nota": "nessuna rabona: cross normale"
+   "promesse": "giro:f, cross:f",
+   "verdetto": "f",
+   "nota": ""
   },
   {
    "gi": 42,
@@ -2641,7 +2580,7 @@
   {
    "gi": 65,
    "ai": 0,
-   "sit": "🛑 Stop di petto e tiro fulmineo!",
+   "sit": "🛑 Controllo e tiro fulmineo!",
    "label": "🛑 Stop e tiro netto",
    "fam": "shot",
    "variante": "shot_power",
@@ -2654,7 +2593,7 @@
   {
    "gi": 65,
    "ai": 1,
-   "sit": "🛑 Stop di petto e tiro fulmineo!",
+   "sit": "🛑 Controllo e tiro fulmineo!",
    "label": "💥 Volée immediata",
    "fam": "shot",
    "variante": "shot_volley",
@@ -2667,7 +2606,7 @@
   {
    "gi": 65,
    "ai": 2,
-   "sit": "🛑 Stop di petto e tiro fulmineo!",
+   "sit": "🛑 Controllo e tiro fulmineo!",
    "label": "↩️ Controllo e serve il compagno",
    "fam": "pass",
    "variante": null,
@@ -2798,14 +2737,14 @@
    "gi": 69,
    "ai": 0,
    "sit": "🔄 Spalle alla porta in area — come ti giri?",
-   "label": "🔄 Tacco in porta",
+   "label": "🔄 Deviazione di prima in porta",
    "fam": "shot",
-   "variante": "shot_power",
+   "variante": "shot_first_time",
    "defGesto": null,
    "clip": "kick (+ tiro in corsa mx-strike-foward-jog per l'eroe)",
-   "promesse": "tacco:n",
-   "verdetto": "n",
-   "nota": "clip pass: nessun colpo di tacco"
+   "promesse": "",
+   "verdetto": "a",
+   "nota": ""
   },
   {
    "gi": 69,
@@ -3084,14 +3023,14 @@
    "gi": 76,
    "ai": 1,
    "sit": "🏳️ Corner sul primo palo!",
-   "label": "🔄 Tacco verso compagno",
+   "label": "🔄 Appoggio di prima verso il compagno",
    "fam": "pass",
-   "variante": "heel",
+   "variante": null,
    "defGesto": null,
    "clip": "pass",
-   "promesse": "tacco:n",
-   "verdetto": "n",
-   "nota": "clip pass: nessun colpo di tacco"
+   "promesse": "passaggio:f",
+   "verdetto": "f",
+   "nota": ""
   },
   {
    "gi": 76,
@@ -3448,14 +3387,14 @@
    "gi": 85,
    "ai": 2,
    "sit": "↘️ Cross rasoterra al centro!",
-   "label": "🤸 Deviazione acrobatica col tacco",
+   "label": "🤸 Deviazione acrobatica di prima",
    "fam": "shot",
    "variante": "shot_first_time",
    "defGesto": null,
    "clip": "kick (+ tiro in corsa mx-strike-foward-jog per l'eroe)",
-   "promesse": "tacco:n, acrobatico:a",
-   "verdetto": "n",
-   "nota": "clip pass: nessun colpo di tacco; «acrobatico» senza rovesciata/sforbiciata nell'etichetta: clip volley, non un gesto acrobatico"
+   "promesse": "acrobatico:a",
+   "verdetto": "a",
+   "nota": "«acrobatico» senza rovesciata/sforbiciata nell'etichetta: clip volley, non un gesto acrobatico"
   },
   {
    "gi": 86,
@@ -3700,9 +3639,9 @@
    "variante": "shot_power",
    "defGesto": null,
    "clip": "kick (+ tiro in corsa mx-strike-foward-jog per l'eroe)",
-   "promesse": "roulette:n",
-   "verdetto": "n",
-   "nota": "nessuna giravolta sul pallone: finta generica (change-direction)"
+   "promesse": "roulette:f",
+   "verdetto": "f",
+   "nota": ""
   },
   {
    "gi": 92,
@@ -3733,20 +3672,20 @@
   {
    "gi": 93,
    "ai": 0,
-   "sit": "🌀 Elastico in area!",
-   "label": "🌀 Elastico e tiro netto",
+   "sit": "🌀 Finta a rientrare in area!",
+   "label": "🌀 Finta a rientrare e tiro netto",
    "fam": "shot",
    "variante": "shot_power",
    "defGesto": null,
    "clip": "kick (+ tiro in corsa mx-strike-foward-jog per l'eroe)",
-   "promesse": "elastico:n, tiro:f",
-   "verdetto": "n",
-   "nota": "nessun elastico: finta generica"
+   "promesse": "giro:f, tiro:f, dribbling:a",
+   "verdetto": "a",
+   "nota": "clip dribble / change-direction (gesto generico)"
   },
   {
    "gi": 93,
    "ai": 1,
-   "sit": "🌀 Elastico in area!",
+   "sit": "🌀 Finta a rientrare in area!",
    "label": "💥 Tiro diretto senza finte",
    "fam": "shot",
    "variante": "shot_power",
@@ -3759,7 +3698,7 @@
   {
    "gi": 93,
    "ai": 2,
-   "sit": "🌀 Elastico in area!",
+   "sit": "🌀 Finta a rientrare in area!",
    "label": "↗️ Cross dopo dribbling",
    "fam": "cross",
    "variante": "cross_near_post",
@@ -3928,20 +3867,20 @@
   {
    "gi": 98,
    "ai": 0,
-   "sit": "🌀 Tunnel in area! Passa in mezzo.",
-   "label": "🌀 Tunnel e tiro netto",
+   "sit": "🌀 Dribbling stretto in area!",
+   "label": "🌀 Dribbling stretto e tiro netto",
    "fam": "shot",
    "variante": "shot_power",
    "defGesto": null,
    "clip": "kick (+ tiro in corsa mx-strike-foward-jog per l'eroe)",
-   "promesse": "tunnel:n, tiro:f",
-   "verdetto": "n",
-   "nota": "il pallone non passa fra le gambe del difensore"
+   "promesse": "tiro:f, dribbling:a",
+   "verdetto": "a",
+   "nota": "clip dribble / change-direction (gesto generico)"
   },
   {
    "gi": 98,
    "ai": 1,
-   "sit": "🌀 Tunnel in area! Passa in mezzo.",
+   "sit": "🌀 Dribbling stretto in area!",
    "label": "🦵 Tiro diretto più sicuro",
    "fam": "shot",
    "variante": "shot_power",
@@ -3954,7 +3893,7 @@
   {
    "gi": 98,
    "ai": 2,
-   "sit": "🌀 Tunnel in area! Passa in mezzo.",
+   "sit": "🌀 Dribbling stretto in area!",
    "label": "↩️ Retropassaggio fuori area",
    "fam": "pass",
    "variante": null,
@@ -4006,20 +3945,20 @@
   {
    "gi": 100,
    "ai": 0,
-   "sit": "🔄 Hocus pocus sulla fascia!",
-   "label": "🔄 Hocus pocus e cross",
+   "sit": "🔄 Finta e cross dalla fascia!",
+   "label": "🔄 Finta e cross",
    "fam": "cross",
    "variante": "cross_near_post",
    "defGesto": null,
    "clip": "pass",
-   "promesse": "hocus_pocus:n, cross:f",
-   "verdetto": "n",
-   "nota": "nessun colpo dietro la gamba d'appoggio"
+   "promesse": "cross:f, dribbling:a",
+   "verdetto": "a",
+   "nota": "clip dribble / change-direction (gesto generico)"
   },
   {
    "gi": 100,
    "ai": 1,
-   "sit": "🔄 Hocus pocus sulla fascia!",
+   "sit": "🔄 Finta e cross dalla fascia!",
    "label": "⚡ Finta e scatto sulla fascia",
    "fam": "pass",
    "variante": null,
@@ -4032,7 +3971,7 @@
   {
    "gi": 100,
    "ai": 2,
-   "sit": "🔄 Hocus pocus sulla fascia!",
+   "sit": "🔄 Finta e cross dalla fascia!",
    "label": "💥 Tiro a giro sul portiere",
    "fam": "shot",
    "variante": "shot_curled",
@@ -4462,14 +4401,14 @@
    "gi": 111,
    "ai": 2,
    "sit": "⚡ Assist rasoterra in area piccola!",
-   "label": "🤸 Tacco verso il compagno libero",
+   "label": "🤸 Appoggio di prima per il compagno libero",
    "fam": "pass",
-   "variante": "heel",
+   "variante": null,
    "defGesto": null,
    "clip": "pass",
-   "promesse": "tacco:n",
-   "verdetto": "n",
-   "nota": "clip pass: nessun colpo di tacco"
+   "promesse": "passaggio:f",
+   "verdetto": "f",
+   "nota": ""
   },
   {
    "gi": 112,
@@ -4591,7 +4530,7 @@
   {
    "gi": 115,
    "ai": 0,
-   "sit": "🦶 Tacco al limite! Colpo di classe.",
+   "sit": "🦶 Appoggio di prima al limite! Colpo di classe.",
    "label": "🌀 Tiro a giro sul secondo palo",
    "fam": "shot",
    "variante": "shot_curled",
@@ -4604,7 +4543,7 @@
   {
    "gi": 115,
    "ai": 1,
-   "sit": "🦶 Tacco al limite! Colpo di classe.",
+   "sit": "🦶 Appoggio di prima al limite! Colpo di classe.",
    "label": "🦵 Tiro interno piede classico",
    "fam": "shot",
    "variante": "shot_power",
@@ -4617,15 +4556,15 @@
   {
    "gi": 115,
    "ai": 2,
-   "sit": "🦶 Tacco al limite! Colpo di classe.",
-   "label": "↩️ Tacco per il compagno libero",
+   "sit": "🦶 Appoggio di prima al limite! Colpo di classe.",
+   "label": "↩️ Appoggio di prima per il compagno libero",
    "fam": "pass",
-   "variante": "heel",
+   "variante": null,
    "defGesto": null,
    "clip": "pass",
-   "promesse": "tacco:n",
-   "verdetto": "n",
-   "nota": "clip pass: nessun colpo di tacco"
+   "promesse": "passaggio:f",
+   "verdetto": "f",
+   "nota": ""
   },
   {
    "gi": 116,
@@ -5958,10 +5897,10 @@
    "ai": 0,
    "sit": "🎭 Guadagna una punizione!",
    "label": "🌀 Dribbling provocatorio — il fallo c'è!",
-   "fam": "pass",
-   "variante": null,
+   "fam": "dribble",
+   "variante": "dribble_feint",
    "defGesto": null,
-   "clip": "pass",
+   "clip": "change-direction",
    "promesse": "dribbling:a, fallo_cercato:f",
    "verdetto": "a",
    "nota": "clip dribble / change-direction (gesto generico)"
@@ -5971,10 +5910,10 @@
    "ai": 1,
    "sit": "🎭 Guadagna una punizione!",
    "label": "⚡ Scatto improvviso provocatorio",
-   "fam": "pass",
-   "variante": null,
+   "fam": "dribble",
+   "variante": "dribble_feint",
    "defGesto": null,
-   "clip": "pass",
+   "clip": "change-direction",
    "promesse": "dribbling:a, fallo_cercato:f",
    "verdetto": "a",
    "nota": "clip dribble / change-direction (gesto generico)"
@@ -6594,14 +6533,14 @@
    "gi": 166,
    "ai": 1,
    "sit": "🌀 Slalom in area! Tre difensori da superare.",
-   "label": "⚡ Scatto tra le gambe",
+   "label": "⚡ Scatto nello stretto",
    "fam": "shot",
    "variante": "shot_power",
    "defGesto": null,
    "clip": "kick (+ tiro in corsa mx-strike-foward-jog per l'eroe)",
-   "promesse": "tunnel:n, dribbling:a",
-   "verdetto": "n",
-   "nota": "il pallone non passa fra le gambe del difensore; clip dribble / change-direction (gesto generico)"
+   "promesse": "dribbling:a",
+   "verdetto": "a",
+   "nota": "clip dribble / change-direction (gesto generico)"
   },
   {
    "gi": 166,

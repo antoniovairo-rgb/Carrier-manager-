@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 const src = process.env.CPM_SRC || path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../src/04-situazioni-zone-piazzati.jsx');
 const txt = fs.readFileSync(src, 'utf8');
-const VIETATE = /\b(elastico|tunnel|hocus|rabona|tacco)\b/i;
+const VIETATE = /\b(elastico|tunnel|hocus|rabona|tacco)\b|(tra|fra|in mezzo al)le gambe/i;/* anche il tunnel detto a parole («Scatto tra le gambe», #166) */
 const titoli = [...txt.matchAll(/S\("([^"]+)"/g)].map(m => m[1]);
 const azioni = [...txt.matchAll(/A\("([^"]+)"/g)].map(m => m[1]);
 const intro = [...txt.matchAll(/\],(?:false|true),-?\d+,"([^"]*)"/g)].map(m => m[1]);

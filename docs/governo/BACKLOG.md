@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (65)
+## Voci aperte o parziali (62)
 
-Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 3 · L6 9 · L7 3 · L8 4 · — 2.
+Per lotto: L0 11 · L1 26 · L3 3 · L4 3 · L5 3 · L6 9 · L7 2 · L8 4 · — 1.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -44,7 +44,6 @@ Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 3 · L6 9 · L7 3 · L8 4 · —
 | PO-051 | 26/09 02:12 | Numeri di maglia e nomi dei giocatori, anche piccoli, negli highlight | miglioramento | PARZIALE | L1 | 7.999.18 (numeri) | — | «Mancano i numeri di maglia. Il nome dei giocatori degli highlights in piccolo sarebbe carino». Nessuna traccia dei nomi |
 | PO-064 | 26/09 18:36 | Tutto deciso dal brain, anche il render 3D degli highlight | debito tecnico | PARZIALE — PO 01/10: «da completare» | L1 | 7.999.26, 7.999.27, 7.999.82 | `brain-82` | «tutto deve essere deciso da brian anche il render 3D degli highlights con l'eroe» |
 | PO-068 | 26/09 20:10 | Completare i gesti dei lotti P1-b, P2 e P3 (BRAIN_GESTI nelle scene, contactAt/foot, varianti distinguibili, reazioni) | nuova funzione | PARZIALE — PO 01/10: «da completare» | L1 | P1-a: 7.999.31, 7.999.32 | — | «integrate le mancanze nelle prossime release». Roadmap, punti 5 e 7 della coda: P1-b, P2 e P3 senza ✅ |
-| PO-069 | 26/09 20:10 | Metrica di copertura dei gesti nei guardiani | processo | Non posso confermarlo | L1 | — | — | «Una metrica di copertura da aggiungere ai guardiani… % di varianti con clip dedicata» |
 | PO-075 | 27/09 11:09 | Clip del PO Receive Soccerball, Soccer Header, Jog Forward | nuova funzione | PARZIALE — PO 01/10: «da completare» | L1 | — (roadmap: «in prova», provini-p1a) | — | caricate; «Jog_Forward.fbx tipo di corsa» |
 | PO-077 | 27/09 12:01 | Colpo di testa sincronizzato con cross, quota e velocità del pallone | difetto | DA COLLAUDARE — PO 01/10: «da far collaudare a Codex in maniera approfondita» | L1 | 7.999.33, 7.999.64, 7.999.76 | `testa-vera-63`, `testa-76` | «Il colpi di testa non sono sincronizzati con la velocità del cross»; stessa nota su #7, #6, #171 (29–30/09) |
 | PO-079 | 27/09 16:57 | Movimenti poco fluidi in conduzione; il pallone si perde per strada | difetto | DA COLLAUDARE — PO 01/10: «da far collaudare a Codex in maniera approfondita» | L1 | 7.999.37 (non riprodotto), 7.999.44 (bracci di prova spenti) | — | «Movimenti poco fluidi quando l'eroe avanza con la palla»; 21:08 «si perde il pallone per strada» |
@@ -76,7 +75,6 @@ Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 3 · L6 9 · L7 3 · L8 4 · —
 | PO-156 | 30/09 20:56 | Difficoltà unica tarata sulla carriera intera (gavetta, affermazione, élite, declino) | miglioramento | IN ATTESA della fase 1 (Codex, decisione PO 01/10) — poi proposta e questionario | L6 | — | — | «decisione del PO: UNICA, nessun selettore di difficoltà, né ora né in futuro» |
 | PO-157 | 30/09 20:56 | Economia e Ufficio con effetto reale; mondo vivo e pressione del club | miglioramento | IN ATTESA della fase 1 (Codex, decisione PO 01/10) — poi proposta e questionario | L6 | — | — | «dare un effetto reale e visibile a ciò che resta, oppure togliere o accorpare» |
 | PO-177 | 01/10 | Nazionale: 10 stagioni con OVR fino a 96 e presenze in nazionale sempre 0 (seme 8) | difetto da verificare | APERTO | L6 | — | — | anomalia 10; il test usa `__CPM_SIM_NAT=1` e profili sintetici |
-| PO-016 | 24/09 13:02 | «Schermata fuori standard» (nota su foto) | difetto | Non posso confermarlo | L7 | — | — | «schermata fuori standard» |
 | PO-066 | 26/09 19:15 | Riquadri della home fuori standard | difetto | PARZIALE — PO 01/10: «da completare» | L7 | 7.999.30 (card neutra) | — | «Metti in coda: box fuori standard». Profilo e Nazionale «da portare alla card neutra» (roadmap, rapporto UI di Codex) |
 | PO-169 | 23/09 | Volti femminili assenti dal catalogo delle figurine (giornaliste senza volto) | difetto | APERTO | L7 | — | — | roadmap «Dove siamo»: «volti femminili assenti nel catalogo» |
 | PO-002 | 24/09 05:37 | Premiazione di squadra: palco centrale col nome della competizione, il capitano alza la coppa e la passa all'eroe | nuova funzione | PARZIALE | L8 | 7.981.0 (11 attori), 7.997.0 (palco) | — | «la premiazione deve essere di squadra con palco in mezzo… Il capitano deve alzare la coppa ed eventualmente la passa anche all'eroe». Il passaggio della coppa non è confermato: questionario 24/09 09:28 «Non ancora, la provo» |
@@ -84,9 +82,8 @@ Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 3 · L6 9 · L7 3 · L8 4 · —
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 | PO-023 | 24/09 14:07 | Ciclo «partita vera», punto 3: render 3D con criteri misurabili (FPS, caricamento, Three.js fissato a una versione) | ricerca | SOSPESO | — | prototipo del 24/09 (60,7 FPS misurati dal PO), ritirato | — | «Definisci criteri misurabili di "perfetto": FPS medi e minimi…». Sostituito da PO-025; 7.999.2: «il 3D continuo è ritirato» |
-| PO-118 | 29/09 07:16 | Plugin utili: installare Design; Kobiton scartato perché a pagamento | ricerca | Non posso confermarlo | — | — | — | «installa questi plugin Design (Anthropic)…»; «lasciamo perdere kobiton, è a pagamento» |
 
-## Storico — voci chiuse (112)
+## Storico — voci chiuse (115)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -104,6 +101,7 @@ Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 3 · L6 9 · L7 3 · L8 4 · —
 | PO-013 | 24/09 09:11 | Questionario wizard ogni volta che serve una risposta del PO | processo | FATTO (prassi in uso) | — | — | — | «fammi questionario wizard ogni volta che è necessario» (ripetuto 15:09, 25/09, 28/09, 30/09) |
 | PO-014 | 24/09 09:39 | Il patrimonio diventa parte attiva del gioco | nuova funzione | FATTO | — | 7.989.0–7.992.0 (fasi F1–F4) | — | «Il patrimonio tendenzialmente adesso non serve a nulla, proponi qualche idea nuova» |
 | PO-015 | 24/09 11:45 | Rinominare la tab «Agente» | miglioramento | FATTO | — | 7.990.0 → 7.999.0 → 7.999.14 (AGENTE + UFFICIO) | — | «La Tab la rinominerei in staff anziché agente»; poi «Il bottone staff non mi convince» |
+| PO-016 | 24/09 13:02 | «Schermata fuori standard» (nota su foto) | difetto | FATTO — chiusa come superata (decisione PO 01/10) | L7 | — | — | «schermata fuori standard» |
 | PO-017 | 24/09 13:06 | Spiegare cosa arriverà nelle sezioni troppo sintetiche | miglioramento | FATTO | — | 7.992.0 (Coppe e Nazionale spiegano cosa arriva) | — | «un pò sintetico, spiega cosa ci sarà in tutti i punti in cui lo dice» |
 | PO-018 | 24/09 13:07 | Togliere le scorciatoie | miglioramento | FATTO | — | 7.992.0 (via la card Scorciatoie) | — | «togli le scorciatoie» |
 | PO-019 | 24/09 13:32 | Sessione e chat sempre in italiano | processo | FATTO (prassi) | — | — | — | «se per te non è un problema puoi scrivere in italiano?»; 20:33 «La sessione deve essere in italiano» |
@@ -139,6 +137,7 @@ Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 3 · L6 9 · L7 3 · L8 4 · —
 | PO-063 | 26/09 18:08 | Scene aeree con il pallone ai piedi dell'eroe e il cross che arriva da chissà chi | difetto | FATTO | — | 7.999.26, 7.999.60 | — | «un'intenzione è colpo di testa… ma il pallone è nei piedi dell'eroe» |
 | PO-065 | 26/09 18:36 | Più azioni da fascia, angoli e punizioni; tornano i rigori negli highlight | miglioramento | FATTO | — | 7.999.26, 7.999.27 | — | «vedo poche azione che partono dalla fascia… i rigori sono spariti»; 18:24 «se ne devono vedere di più» |
 | PO-067 | 26/09 20:10 | Catalogo gesti A–L: verifica di copertura dei gesti | ricerca | FATTO | — | AUDIT_GESTI_7.999.25.md (WIP 7.999.26) | — | «voglio sapere, voce per voce, se avete valutato e implementato tutto quello che l'eroe deve saper fare» |
+| PO-069 | 26/09 20:10 | Metrica di copertura dei gesti nei guardiani | processo | FATTO — 7.999.96: guardiano `gesti-copertura-96` (fedeli 49,0%, varianti raggiunte 30/46, non disegnabili 9) | L1 | 7.999.96 | `gesti-copertura-96` | «Una metrica di copertura da aggiungere ai guardiani… % di varianti con clip dedicata» |
 | PO-073 | 26/09 20:43 | Codex in parallelo come collaudatore: kit AGENTS.md e schede | processo | FATTO | — | 7.999.29 (AGENTS.md) | — | «USARE CODEX IN PARALLELO PER TEST E VERIFICHE». Schede 0–6 eseguite il 27/09 |
 | PO-074 | 27/09 10:14 | Clip FBX del PO per l'esultanza (Victory, Golf Putt Victory…) | nuova funzione | FATTO | — | 7.999.31, 7.999.32 | — | file caricati; «va bene per per l'esultanza con il pugno» |
 | PO-076 | 27/09 11:10 | Goalkeeper Idle per l'attesa in difesa | nuova funzione | FATTO | — | 7.999.32 | — | «potrebbe essere sfruttato per la posizione di attesa in difesa» |
@@ -175,6 +174,7 @@ Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 3 · L6 9 · L7 3 · L8 4 · —
 | PO-115 | 29/09 06:21 | Avanzamento perso col background durante o dopo la partita | difetto | FATTO | — | 7.999.55 | `ripresa-55` | «Si perde l'avanzamento / non salva se metto l'app in background» |
 | PO-116 | 29/09 06:26 | Tornati i giocatori in T-pose, non corrono | difetto | FATTO | — | 7.999.56 | — | «Sono ritornati in T pose e non corrono i giocatori in 3D!»; taccuino #110 «T pose!!!» |
 | PO-117 | 29/09 06:24 | Nella festa l'eroe resta congelato | difetto | FATTO | — | 7.999.57 | — | «Scena sballata, l'eroe rimane freezato per un po'» |
+| PO-118 | 29/09 07:16 | Plugin utili: installare Design; Kobiton scartato perché a pagamento | ricerca | FATTO — chiusa: Kobiton scartato, Design non serve ora (decisione PO 01/10) | — | — | — | «installa questi plugin Design (Anthropic)…»; «lasciamo perdere kobiton, è a pagamento» |
 | PO-119 | 29/09 07:40 | Angolo: il pallone rimbalza prima del tiro; il cross non parte da un compagno | difetto | FATTO | — | 7.999.60 | — | «codice 001 — apertura scena, la palla rimbalza prima del tiro»; «il cross non parte dal compagno» |
 | PO-121 | 29/09 12:24 | Festa 3D con l'eroe tutto accartocciato | difetto | FATTO | — | 7.999.61 | — | «Il festeggiamento post partita in 3D usa un'animazione totalmente scoordinata» |
 | PO-122 | 29/09 12:23 | Pannello statistiche e pagelle: stessa altezza, niente sovrapposizione alla porta, non troppo alto | difetto | FATTO | — | 7.999.61, 7.999.64 | `pannello-61` | «Altezza e posizione tra pagelle e statistiche differenti»; «evita che il pannello si sovrapponga alla porta»; «Posizione troppo alta» |

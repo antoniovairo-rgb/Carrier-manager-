@@ -544,7 +544,7 @@ S("⚡ Taglio dal lato destro verso il centro!",["bordo","area"],{x:[74,96],y:[5
 S("⚡ Taglio dal lato sinistro verso il centro!",["bordo","area"],{x:[74,96],y:[3,42]},{x:[76,88],y:[8,38]},[
   A("🌀 Rientra e tira col destro","tecnica",6,"goal","miss",14),A("🎯 Cross teso verso il secondo palo","passaggio",5,"assist","intercept",10),A("💥 Tiro di collo pieno","tiro",2,"goal","miss",13)],false,-1,"","off",null,{pressure:"medium",support:1,nearby_def:2,lanes:["overlap_left"]}),
 S("🌀 Slalom in area! Tre difensori da superare.",["area"],{x:[80,96],y:[22,78]},{x:[82,92],y:[28,72]},[
-  A("🌀 Slalom completato e tiro","dribbling",8,"goal","miss",20),A("⚡ Scatto tra le gambe","velocità",4,"goal","miss",16),A("🎯 Assist per il compagno smarcato","passaggio",6,"assist","intercept",10)],false,2,"🌀 Slalom tra i difensori! Salta tutti e vai.","special",null,{pressure:"high",support:1,nearby_def:3,lanes:[]}),
+  A("🌀 Slalom completato e tiro","dribbling",8,"goal","miss",20),A("⚡ Scatto nello stretto","velocità",4,"goal","miss",16),A("🎯 Assist per il compagno smarcato","passaggio",6,"assist","intercept",10)],false,2,"🌀 Slalom tra i difensori! Salta tutti e vai.","special",null,{pressure:"high",support:1,nearby_def:3,lanes:[]}),
 S("🦵 Controbalzo improvviso in area!",["area","bordo"],{x:[74,96],y:[22,78]},{x:[76,88],y:[28,72]},[
   A("🦵 Controbalzo secco al volo","tiro",7,"goal","miss",15),A("🎯 Controllo e tira","tecnica",5,"goal","miss",13),A("↩️ Serve il compagno","passaggio",3,"assist","intercept",8)],false,-1,"","off",null,{pressure:"high",support:1,nearby_def:2,lanes:[],bs:"aerial"}),
 S("🛡️ Ultimo uomo! Devi fermare l'avversario.",["propria","difesa"],{x:[5,28],y:[20,80]},{x:[8,22],y:[30,70]},[

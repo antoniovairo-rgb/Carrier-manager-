@@ -12,7 +12,7 @@ const CLIP = { kick: 'kick (+ tiro in corsa mx-strike-foward-jog per l\'eroe)', 
 /* REGISTRO dei gesti PROMESSI riconoscibili nel testo → come li rende il 3D oggi. f = fedele (clip dedicata o traiettoria distinta),
    a = approssimata (gesto vicino ma riconoscibilmente diverso), n = non disegnabile. Giudizio mio, dichiarato: da validare col PO. */
 const PROMESSE = [
-  ['roulette', /roulette|ruleta|veronica|marsiglia/i, 'n', 'nessuna giravolta sul pallone: finta generica (change-direction)'],
+  ['roulette', /roulette|ruleta|veronica|marsiglia/i, 'f', 'clip «Soccer Spin» del PO: ruleta vera (7.999.39)'],
   ['hocus_pocus', /hocus|pocus/i, 'n', 'nessun colpo dietro la gamba d\'appoggio'],
   ['elastico', /elastic|flip.?flap/i, 'n', 'nessun elastico: finta generica'],
   ['tunnel', /tunnel|in mezzo alle gambe|fra le gambe|tra le gambe/i, 'n', 'il pallone non passa fra le gambe del difensore'],
@@ -76,7 +76,7 @@ for (const s of D.sit) {
   }
 }
 const morte = dichiarate.filter(x => !raggiunte.has(x) && !/\/base$/.test(x));
-fs.writeFileSync('../character-lab/CENSIMENTO_SCENE.json', JSON.stringify({ totali: tot, situations: D.sit.length, azioni: righe.length, varianti_mai_raggiunte: morte, situations_testo_non_disegnabile: sitTesto.n, righe }, null, 1));
+fs.writeFileSync('../character-lab/CENSIMENTO_SCENE.json', JSON.stringify({ totali: tot, situations: D.sit.length, azioni: righe.length, varianti_mai_raggiunte: morte, varianti_dichiarate: dichiarate.length, situations_testo_non_disegnabile: sitTesto.n, righe }, null, 1));
 const V = { f: 'fedele', a: 'approssimata', n: 'NON DISEGNABILE' };
 let md = `# Censimento delle scene dell'eroe (automatico)\n\nGenerato da \`tests/visual/censimento-scene.mjs\` sulla build corrente. Situations: **${D.sit.length}** · azioni: **${righe.length}**.\n\n` +
   `| Verdetto | Azioni |\n|---|---|\n| fedele | ${tot.f} |\n| approssimata | ${tot.a} |\n| non disegnabile | ${tot.n} |\n\n` +
