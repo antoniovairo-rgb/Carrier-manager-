@@ -1,0 +1,74 @@
+{
+  "versione": "7.999.91",
+  "compito": "PO-175 classifica GF/GA",
+  "comando": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_SEEDS='17'; $env:CPM_MAX_SEASONS='5'; $env:CPM_TIME_LIMIT_MS='900000'; $env:CPM_OUTPUT='classifica-gol-17.json'; node tests/codex/classifica-gol.mjs",
+  "seme": "17,35,4",
+  "commit": "d5d60bedec39b2d2dfbd7ebceccfa206999f36d2",
+  "misure": [
+    {
+      "nome": "semi con scarto riprodotto",
+      "valore": 2,
+      "soglia": "3",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "prime settimane con scarto",
+      "valore": [
+        {
+          "seed": 17,
+          "first": {
+            "season": 3,
+            "week": 2,
+            "gf": 19,
+            "ga": 15
+          }
+        },
+        {
+          "seed": 35,
+          "first": {
+            "season": 3,
+            "week": 2,
+            "gf": 34,
+            "ga": 37
+          }
+        },
+        {
+          "seed": 4,
+          "first": null
+        }
+      ],
+      "soglia": "nessuna",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "giornate seme 17 dopo primo scarto",
+      "valore": 4,
+      "soglia": 4,
+      "esito": "ok"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "alta",
+      "descrizione": "Seme 17 S3/W2: GF=19, GA=15; club eroe assente dalla classifica dopo promozione/retrocessione",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_SEEDS='17'; $env:CPM_MAX_SEASONS='5'; $env:CPM_TIME_LIMIT_MS='900000'; $env:CPM_OUTPUT='classifica-gol-17.json'; node tests/codex/classifica-gol.mjs",
+      "prove": [
+        "tests/codex/classifica-gol.json.gz"
+      ]
+    },
+    {
+      "gravita": "alta",
+      "descrizione": "Seme 35 S3/W2: GF=34, GA=37; club eroe assente dalla classifica dopo promozione/retrocessione",
+      "come_riprodurre": "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_SEEDS='35'; $env:CPM_MAX_SEASONS='5'; $env:CPM_TIME_LIMIT_MS='900000'; $env:CPM_OUTPUT='classifica-gol-35.json'; node tests/codex/classifica-gol.mjs",
+      "prove": [
+        "tests/codex/classifica-gol.json.gz"
+      ]
+    }
+  ],
+  "raw": "tests/codex/classifica-gol.json.gz",
+  "limiti": [
+    "Seme 4 non riprodotto su cinque stagioni",
+    "Primo tentativo combinato seme 4: timeout navigazione, registrato nel grezzo",
+    "Meccanismo del prestito con obbligo: ipotesi da confermare dal team"
+  ]
+}
