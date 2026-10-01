@@ -94,8 +94,12 @@ try{
     if(stopped)throw Error('Memoria/pausa');
     await page.clock.runFor(50);const p=await probe();r.samples.push({ms:ms+50,...p});
     if(c.def&&c.outcome==='fail'&&(ms+50)%250===0&&!contact){const s=await page.evaluate(()=>window.__CPM_STATE?.());if(s)r.defenseSamples.push({ms:ms+50,ball:s.ball,players:s.players?.map((v,i)=>({i,team:v.team,gk:v.gk,x:v.x,y:v.y})),hero:s.hero,phase:p.phase});}
-    if(ms===350)await shot('03-rincorsa');
-    if(((p.touch&&/foot/i.test(p.touch.anchor||'')&&Math.abs(p.touch.arcT)<=0.06)||(p.contact&&p.contact.sk===p.last?.sk))&&!contact){contact=true;r.contactTrigger=p.touch&&/foot/i.test(p.touch.anchor||'')&&Math.abs(p.touch.arcT)<=0.06?'foot-near-impact':'arc-start';r.contactMs=ms+50;await shot('04-contatto');}
+    if(ms===0)await shot('03-rincorsa');
+    const footNear=!!(p.touch&&/foot/i.test(p.touch.anchor||'')&&Math.abs(p.touch.arcT)<=0.06);
+    const arcSeen=!!(p.contact&&p.contact.sk===p.last?.sk);
+    if(!contact&&ms+50>=100&&(footNear||(c.outcome==='fail'&&arcSeen&&ms+50>=250)||ms+50>=1600)){
+     contact=true;r.contactTrigger=footNear?'foot-near-impact':arcSeen?'arc-proxy-no-foot-contact':'timed-proxy-no-contact';r.contactMs=ms+50;await shot('04-contatto');
+    }
     if(contact&&!flight&&ms+50>=r.contactMs+400){flight=true;await shot('05-volo');}
     // Il pulsante può comparire prima della fine del gesto: non troncare la ripresa.
     if(ms>=8000&&await page.getByRole('button',{name:/^Continua$/i}).count()){await shot('06-esito');break;}
@@ -105,7 +109,8 @@ try{
    r.observedAction=r.actionResolved.at(-1)||null;
    r.outcomeMatched=r.actionResolved.length===1&&r.observedAction.gi===c.gi&&r.observedAction.label===c.label&&r.observedAction.ok===(c.outcome==='success');
    r.draft=await page.evaluate(c=>{const snap=window.__CPM_WATCH_SNAP?.();const sk=snap?.samples?.at(-1)?.sk;return(window.__CPM_DRAFTNOTE||window.draftBugNote)?.(snap,{sceneKey:sk,intent:c.intent,act:c.label});},c);
-   r.sixFrames=r.frames.length===6;
+   r.frameOrderOk=r.frames.map(f=>f.label).join('|')==='01-apertura|02-scelta|03-rincorsa|04-contatto|05-volo|06-esito';
+   r.sixFrames=r.frames.length===6&&r.frameOrderOk;
    await page.evaluate(()=>{window.__CPM_FORCED_MODE=false;});
    await page.clock.runFor(1000);
    const next=page.getByRole('button',{name:/^Continua$/i});
