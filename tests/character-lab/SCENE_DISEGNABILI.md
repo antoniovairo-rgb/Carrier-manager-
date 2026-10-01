@@ -102,7 +102,7 @@ contesto.
   cornice di testo; misura: % di opzioni coerenti con la posizione del motore (compagno citato che esiste davvero, piede
   giusto) contro le schede di oggi, e schede distinte per partita.
 
-## 6. Schede da riformulare (proposta, serve la tua approvazione)
+## 6. Schede da riformulare — APPROVATE dal PO il 01/10, fatte in 7.999.95 (guardiano `etichette-95`; i tiri di tacco sono diventati «deviazione di prima»; «Stop di petto e conserva» resta, non era nella lista)
 
 Solo per le schede di valore alto, in attesa delle clip: gi92 «Roulette sul difensore!» → «Giravolta secca sul difensore!»
 diventa comunque una promessa di giro: propongo **«Finta secca sul difensore!»** · gi93 «Elastico in area!» → «Finta a

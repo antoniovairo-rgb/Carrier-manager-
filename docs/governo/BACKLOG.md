@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (66)
+## Voci aperte o parziali (65)
 
-Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 4 · L6 9 · L7 3 · L8 4 · — 2.
+Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 3 · L6 9 · L7 3 · L8 4 · — 2.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -67,7 +67,6 @@ Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 4 · L6 9 · L7 3 · L8 4 · —
 | PO-061 | 26/09 15:28 | Kit di qualità grafica migliore | miglioramento | PARZIALE — PO 01/10: «migliorabile» | L5 | 7.999.25 | — | «migliore la qualità grafica dei kit?». La trama originale è stata provata e scartata (7.999.23) |
 | PO-070 | 26/09 20:20 | Clip mancanti: procurarle o costruirle, con registro delle clip e anteprima per lotto | nuova funzione | PARZIALE — PO 01/10: «da completare» | L5 | 7.999.31, .32, .39, .41 | `ruleta-test.mjs` e altri | «la clip mancante si procura o si costruisce». CLIP_REGISTRY.md esiste. Nessuna pagina di anteprima per lotto trovata |
 | PO-086 | 27/09 20:04 | Scene disegnabili, passi 2–5: campo `richiede`, registro dei gesti, sospensione e riattivazione automatica, guardiano | nuova funzione | APERTO | L5 | — | — | «nessuna scena deve promettere un gesto che il 3D non mostra». `__CPM_NO_RICHIEDE` non c'è nel sorgente |
-| PO-087 | 27/09 20:04 | Scene disegnabili: schede da riformulare | processo | IN ATTESA PO | L5 | — | — | SCENE_DISEGNABILI.md §6 «Schede da riformulare (proposta, serve la tua approvazione)» |
 | PO-098 | 28/09 13:41 | Archetipi: da 8 a 4 stili che cambiano il gioco; Enfant diventa un tratto di crescita | nuova funzione | APERTO | L6 | — | — | «Ridurre gli archetipi e dare a ciascuno un modo di giocare riconoscibile». `__CPM_NO_STILI` non c'è nel sorgente |
 | PO-112 | 29/09 05:40 | Analizzare il collaudo carriere di Codex (zero presenze, settimana ferma, reload che cambia i campi…) | difetto | APERTO | L6 | — | — | «metti in coda l'analisi dei collaudi di codex». Roadmap punto 10: «Da riprodurre con un nostro guardiano» |
 | PO-125 | 29/09 16:23 | Poco da allenarsi dopo un'eliminazione (coppe, Nazionale) | miglioramento | PARZIALE | L6 | 7.999.64 (corretti solo i testi) | `elim-64` | «C'è poco da allenarsi dopo un'eliminazione dalle coppe / tornei con la nazionale» |
@@ -87,7 +86,7 @@ Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 4 · L6 9 · L7 3 · L8 4 · —
 | PO-023 | 24/09 14:07 | Ciclo «partita vera», punto 3: render 3D con criteri misurabili (FPS, caricamento, Three.js fissato a una versione) | ricerca | SOSPESO | — | prototipo del 24/09 (60,7 FPS misurati dal PO), ritirato | — | «Definisci criteri misurabili di "perfetto": FPS medi e minimi…». Sostituito da PO-025; 7.999.2: «il 3D continuo è ritirato» |
 | PO-118 | 29/09 07:16 | Plugin utili: installare Design; Kobiton scartato perché a pagamento | ricerca | Non posso confermarlo | — | — | — | «installa questi plugin Design (Anthropic)…»; «lasciamo perdere kobiton, è a pagamento» |
 
-## Storico — voci chiuse (111)
+## Storico — voci chiuse (112)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -150,6 +149,7 @@ Per lotto: L0 11 · L1 27 · L3 3 · L4 3 · L5 4 · L6 9 · L7 3 · L8 4 · —
 | PO-083 | 27/09 17:31 | Clip Soccer Spin per la ruleta | nuova funzione | FATTO | — | 7.999.39 | `ruleta-test.mjs` (`__CPM_NO_RULETA39`) | «La ruleta (chiamata anche roulette, veronica o marsiglia)» |
 | PO-084 | 27/09 17:33 | Clip Scissor Kick per la sforbiciata | nuova funzione | FATTO (già presente) | — | mx-scissor-kick dal 23/09 (SCENE_DISEGNABILI.md) | — | «non so se la usiamo già, in teoria sforbita» |
 | PO-085 | 27/09 20:04 | Scene disegnabili, passo 1: censimento automatico di tutte le situations e azioni | ricerca | FATTO | — | commit e9355ae6 | tests/visual/censimento-scene.mjs | «SCENE DELL'EROE: SOLO CIÒ CHE IL 3D SA DISEGNARE». Risultato: 191 situations e 573 azioni |
+| PO-087 | 27/09 20:04 | Scene disegnabili: schede da riformulare | processo | FATTO — 7.999.95 (approvazione PO 01/10) | L5 | 7.999.95 | `etichette-95` | SCENE_DISEGNABILI.md §6 «Schede da riformulare (proposta, serve la tua approvazione)» |
 | PO-088 | 27/09 20:04 | Scene disegnabili, passo 6: la scena nasce dal brain (proposta) | ricerca | FATTO (proposta scritta) | — | SCENE_DISEGNABILI.md §5 | — | «Ditemi come passereste dal "brain sceglie la scheda più simile" al "brain genera la scena"» |
 | PO-089 | 27/09 21:08 | Calendario sbagliato: amichevole della Nazionale durante l'Europeo | difetto | FATTO | — | 7.999.35 | — | «Calendario sbagliato» |
 | PO-090 | 27/09 21:08 | Risultato esagerato (Europeo, 7-1) | difetto | FATTO | — | 7.999.36 | — | «Risultato esagerato» |

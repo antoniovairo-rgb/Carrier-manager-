@@ -267,6 +267,7 @@
     "conduci-93:rosso": "CPM_GUARD=1 CPM_ROSSO93=1 node conduci-93.mjs",
     "classifica-94": "node classifica-94.mjs",
     "classifica-94:rosso": "CPM_ROSSO94=1 node classifica-94.mjs",
+    "etichette-95": "node etichette-95.mjs",
     "festa-79": "node festa-79.mjs",
     "festa-79:rosso": "CPM_ROSSO80=1 node festa-79.mjs",
     "testa-76": "node testa-76.mjs"
