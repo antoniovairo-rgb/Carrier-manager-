@@ -10646,7 +10646,30 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               rivela il pallone sta ancora a 2,2-3,6u da lui e ci arriva in 4-5 s, perche' qui si fissava solo la x (lerp 1,6/s) e
               la z restava dove era finito l'arco — in foto il difensore a terra e il pallone che gli passa accanto: mancato.
               Ora il pallone intercettato va ai piedi di chi l'ha preso, in x e in z, con presa rapida. Rosso __CPM_NO_RUBA87. */
-      try{const _P87=propsRef.current||{};if(_P87.matchPhase==='hl_result'&&!ballArcActive&&ball&&!_P87.hlDef&&_P87.hlOutcomeKind==='intercepted'&&sr.current._int10&&sr.current._int10.m&&!(typeof window!=='undefined'&&window.__CPM_NO_RUBA87)){const _m87=sr.current._int10.m;const _k87=Math.min(aDt*7,1);ball.position.x+=(_m87.position.x-0.6-ball.position.x)*_k87;ball.position.z+=(_m87.position.z-ball.position.z)*_k87;if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){window.__CPM_RUBA87=(window.__CPM_RUBA87|0)+1;}}}catch(_e87){}
+      try{const _P87=propsRef.current||{};if(_P87.matchPhase==='hl_result'&&!ballArcActive&&ball&&!_P87.hlDef&&_P87.hlOutcomeKind==='intercepted'&&sr.current._int10&&sr.current._int10.m&&!(typeof window!=='undefined'&&window.__CPM_NO_RUBA87)){const _m87=sr.current._int10.m;const _k87=Math.min(aDt*7,1);/* [7.999.92 PO-147, taccuino #38 «Dai e vai», codice 011] MISURATO (sonda _daievai92, tempo reale): nel passaggio intercettato il
+   pallone restava fermo 2,8 s ai piedi dell'intercettore, che non ripartiva — palla congelata. Dopo 0,3 s di controllo
+   l'intercettore riparte col pallone verso la porta di casa (gli ospiti attaccano verso x 0) a 5 u/s, fino a 12 u.
+   Rosso __CPM_NO_DAIEVAI92. */
+if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.current._ruba92;if(!_r92||_r92.m!==_m87){_r92=sr.current._ruba92={m:_m87,x:_m87.position.x,z:_m87.position.z,t:0,go:0};}
+  _r92.t+=aDt;if(_r92.t>0.3){_r92.go=Math.min(12,_r92.go+5*aDt);_m87.position.x=_r92.x-_r92.go;_m87.position.z=_r92.z;_m87.rotation.y=-Math.PI/2;}}ball.position.x+=(_m87.position.x-0.6-ball.position.x)*_k87;ball.position.z+=(_m87.position.z-ball.position.z)*_k87;if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){window.__CPM_RUBA87=(window.__CPM_RUBA87|0)+1;}}else if(sr.current._ruba92)sr.current._ruba92=null;}catch(_e87){}
+      /* [7.999.92 PO-147 — taccuino #38, codice 011, sulle combinazioni riuscite che creano un'occasione] MISURATO (sonda _daievai92,
+         tempo reale): «Terzo uomo smarcato» (gi152) e «Dai e vai in verticale» (gi179) riusciti, esito «chance» — il compagno riceve e
+         resta fermo col pallone per 1,4-2,5 s fino alla fine della scena: nessuna catena dopo l'arco per questo esito. Dopo 0,3 s di
+         controllo il ricevente (il compagno di movimento piu' vicino al pallone) riparte verso la porta avversaria a 5 u/s, fino a 10 u,
+         col pallone ai piedi. Rosso __CPM_NO_DAIEVAI92. */
+      try{const _P92=propsRef.current||{};
+        if(typeof window!=='undefined'&&_CPM_TEST&&_P92.matchPhase==='hl_result')window.__CPM_C92={arc:ballArcActive?1:0,pat:hlPostArcType||null,pt:+(+hlPostArcT).toFixed(2),ok:_P92.hlSuccess,kind:_P92.hlOutcomeKind||null,ric:!!sr.current._ric92};
+        if(_P92.matchPhase==='hl_result'&&!ballArcActive&&!hlPostArcType&&ball&&!_P92.hlDef&&_P92.hlSuccess===true&&_P92.hlOutcomeKind==='chance'&&!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){
+          let _c92=sr.current._ric92;
+          if(!_c92){let _bd=1e9,_bm=null;sr.current.players.forEach((pp,ii)=>{const src=(propsRef.current.allPlayers||[])[ii];if(src&&src.team==='home'&&!src.gk&&pp.mesh&&pp.mesh!==hero){const d=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z);if(d<_bd){_bd=d;_bm=pp.mesh;}}});
+            if(hero){const _dh=Math.hypot(hero.position.x-ball.position.x,hero.position.z-ball.position.z);if(_dh<_bd){_bd=_dh;_bm=hero;}}/* nel dai e vai il pallone torna all'eroe: e' lui che riparte */
+            if(!(_bm&&_bd<3.5)&&hero&&Math.hypot(hero.position.x-ball.position.x,hero.position.z-ball.position.z)<8){_bm=hero;_bd=0;}/* ritorno chiuso per tempo massimo con il pallone a 3-5u dall'eroe (gi179): e' comunque suo */
+            if(_bm&&_bd<3.5)_c92=sr.current._ric92={m:_bm,x:_bm.position.x,z:_bm.position.z,bx:ball.position.x,bz:ball.position.z,t:0,go:0};}
+          if(_c92){_c92.t+=aDt;if(_c92.t>0.3){_c92.go=Math.min(10,_c92.go+5*aDt);const _lim92=Math.max(0,(GOAL_LINE_X-4)-Math.max(_c92.x,_c92.bx));const _g92=Math.min(_c92.go,_lim92);/* corpo e pallone avanzano dello STESSO tratto: niente scatto se il corpo era davanti al pallone */
+            _c92.m.position.x=_c92.x+_g92;_c92.m.position.z=_c92.z;_c92.m.rotation.y=Math.PI/2;
+            ball.position.x=_c92.bx+_g92;ball.position.z=_c92.bz;ball.position.y=0.22;
+            if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_RIC92=(window.__CPM_RIC92|0)+1;}}
+        } else if(sr.current._ric92)sr.current._ric92=null;}catch(_e92){}
       try{const _ph72=propsRef.current&&propsRef.current.matchPhase,_R72=sr.current;
         const _sz72=(_R72._sz72||(_R72._sz72=new THREE.Vector2()));renderer.getSize(_sz72);const _H72=_sz72.y||1;
         let _tg72=0;

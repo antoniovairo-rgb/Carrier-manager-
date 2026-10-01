@@ -40,7 +40,7 @@ giudice finale resta il telefono del PO.
 - FPS: nessuna soglia headless; controllo sul telefono del PO a fine lotto.
 
 ## Cadenza delle release
-- **Release di lotto**: fino a **6 al giorno** (decisione PO 01/10), ognuna raggruppa le voci chiuse di un lotto.
+- **Release di lotto**: nessun tetto giornaliero (decisione PO 01/10, sostituisce il tetto di 6): conta **non perdere pezzi** — ogni release ha la sua riga nel registro e ogni voce toccata è aggiornata nel backlog.
 - **Release correttive**: solo per i bloccanti.
 - **Tag git** `v7.999.x` a ogni release. Ritorno alla precedente: `git checkout main && git reset --hard v7.999.x && git push --force-with-lease origin main`
   (solo su ordine del PO) oppure, più sicuro, `git revert` del merge.
