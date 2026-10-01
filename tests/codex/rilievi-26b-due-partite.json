@@ -1,0 +1,132 @@
+{
+  "version": "7.999.96",
+  "commit": "ccabb486d7bc957edc8d7a39ef45d2c51bb80d32",
+  "command": "CPM_CHROME=<chrome> node tests/codex/rilievi-26b-due-partite.mjs",
+  "settings": {
+    "samePage": true,
+    "fixture": "rilievi-precompiled.html",
+    "glb": false,
+    "sentinel": {
+      "kind": "cross",
+      "hl": 999,
+      "active": true
+    }
+  },
+  "rows": [
+    {
+      "label": "career-ready",
+      "phase": null,
+      "screen": "dashboard",
+      "origin": {
+        "active": null,
+        "hl": null,
+        "kind": null,
+        "min": null
+      },
+      "week": 6
+    },
+    {
+      "label": "first-start",
+      "result": "match"
+    },
+    {
+      "label": "first-live",
+      "phase": "playing",
+      "screen": "match",
+      "origin": {
+        "active": null,
+        "hl": null,
+        "kind": null,
+        "min": null
+      },
+      "week": 6
+    },
+    {
+      "label": "sentinel-set",
+      "phase": "playing",
+      "screen": "match",
+      "origin": {
+        "active": true,
+        "hl": 999,
+        "kind": "cross",
+        "min": 33
+      },
+      "week": 6
+    },
+    {
+      "label": "forced-end",
+      "result": true
+    },
+    {
+      "label": "first-ended",
+      "phase": "ended",
+      "screen": "match",
+      "origin": {
+        "active": true,
+        "hl": 999,
+        "kind": "cross",
+        "min": 33
+      },
+      "week": 6
+    },
+    {
+      "label": "dashboard",
+      "phase": "ended",
+      "screen": "dashboard",
+      "origin": {
+        "active": true,
+        "hl": 999,
+        "kind": "cross",
+        "min": 33
+      },
+      "week": 7
+    },
+    {
+      "label": "second-start",
+      "result": "match"
+    },
+    {
+      "label": "second-mounted",
+      "phase": "ended",
+      "screen": "dashboard",
+      "origin": {
+        "active": true,
+        "hl": 999,
+        "kind": "cross",
+        "min": 33
+      },
+      "week": 7
+    },
+    {
+      "label": "second-playing",
+      "phase": "playing",
+      "screen": "match",
+      "origin": {
+        "active": true,
+        "hl": 999,
+        "kind": "cross",
+        "min": 33
+      },
+      "week": 7
+    },
+    {
+      "label": "second-first-scene-found",
+      "result": true
+    },
+    {
+      "label": "second-first-scene",
+      "phase": "hl_intro",
+      "screen": "match",
+      "origin": {
+        "active": null,
+        "hl": null,
+        "kind": null,
+        "min": null
+      },
+      "week": 7
+    }
+  ],
+  "errors": [],
+  "memoryAbort": false,
+  "durationMs": 26905
+}

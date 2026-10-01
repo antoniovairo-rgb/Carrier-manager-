@@ -1,0 +1,1215 @@
+{
+  "version": "7.999.96",
+  "commit": "ccabb486d7bc957edc8d7a39ef45d2c51bb80d32",
+  "command": "node tests/codex/rilievi-26c-motore.mjs",
+  "limitation": "Richiesta di scena sempre attiva; non riproduce la schedulazione delle scene né il render del live match.",
+  "summary": {
+    "seeds": 200,
+    "minutesPerSeed": 90,
+    "generic": 7138,
+    "origin": 96,
+    "collisionMinutes": 0
+  },
+  "rows": [
+    {
+      "seed": 1,
+      "generic": 43,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 2,
+      "generic": 53,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 3,
+      "generic": 66,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 4,
+      "generic": 50,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 5,
+      "generic": 39,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 6,
+      "generic": 0,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 7,
+      "generic": 6,
+      "origin": 4,
+      "collisions": []
+    },
+    {
+      "seed": 8,
+      "generic": 52,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 9,
+      "generic": 9,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 10,
+      "generic": 8,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 11,
+      "generic": 72,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 12,
+      "generic": 19,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 13,
+      "generic": 0,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 14,
+      "generic": 40,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 15,
+      "generic": 16,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 16,
+      "generic": 63,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 17,
+      "generic": 38,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 18,
+      "generic": 48,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 19,
+      "generic": 18,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 20,
+      "generic": 39,
+      "origin": 4,
+      "collisions": []
+    },
+    {
+      "seed": 21,
+      "generic": 25,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 22,
+      "generic": 1,
+      "origin": 3,
+      "collisions": []
+    },
+    {
+      "seed": 23,
+      "generic": 20,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 24,
+      "generic": 42,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 25,
+      "generic": 57,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 26,
+      "generic": 11,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 27,
+      "generic": 60,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 28,
+      "generic": 15,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 29,
+      "generic": 84,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 30,
+      "generic": 33,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 31,
+      "generic": 2,
+      "origin": 4,
+      "collisions": []
+    },
+    {
+      "seed": 32,
+      "generic": 35,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 33,
+      "generic": 1,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 34,
+      "generic": 0,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 35,
+      "generic": 8,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 36,
+      "generic": 61,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 37,
+      "generic": 40,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 38,
+      "generic": 56,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 39,
+      "generic": 61,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 40,
+      "generic": 31,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 41,
+      "generic": 59,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 42,
+      "generic": 19,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 43,
+      "generic": 63,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 44,
+      "generic": 54,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 45,
+      "generic": 37,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 46,
+      "generic": 28,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 47,
+      "generic": 59,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 48,
+      "generic": 41,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 49,
+      "generic": 19,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 50,
+      "generic": 0,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 51,
+      "generic": 61,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 52,
+      "generic": 15,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 53,
+      "generic": 40,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 54,
+      "generic": 22,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 55,
+      "generic": 13,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 56,
+      "generic": 43,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 57,
+      "generic": 63,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 58,
+      "generic": 21,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 59,
+      "generic": 28,
+      "origin": 4,
+      "collisions": []
+    },
+    {
+      "seed": 60,
+      "generic": 32,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 61,
+      "generic": 58,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 62,
+      "generic": 84,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 63,
+      "generic": 38,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 64,
+      "generic": 28,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 65,
+      "generic": 66,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 66,
+      "generic": 21,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 67,
+      "generic": 3,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 68,
+      "generic": 84,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 69,
+      "generic": 48,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 70,
+      "generic": 16,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 71,
+      "generic": 56,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 72,
+      "generic": 43,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 73,
+      "generic": 18,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 74,
+      "generic": 14,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 75,
+      "generic": 1,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 76,
+      "generic": 44,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 77,
+      "generic": 53,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 78,
+      "generic": 63,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 79,
+      "generic": 17,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 80,
+      "generic": 66,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 81,
+      "generic": 52,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 82,
+      "generic": 21,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 83,
+      "generic": 10,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 84,
+      "generic": 8,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 85,
+      "generic": 12,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 86,
+      "generic": 13,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 87,
+      "generic": 2,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 88,
+      "generic": 32,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 89,
+      "generic": 69,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 90,
+      "generic": 26,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 91,
+      "generic": 83,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 92,
+      "generic": 9,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 93,
+      "generic": 24,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 94,
+      "generic": 45,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 95,
+      "generic": 59,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 96,
+      "generic": 22,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 97,
+      "generic": 0,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 98,
+      "generic": 24,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 99,
+      "generic": 14,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 100,
+      "generic": 55,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 101,
+      "generic": 54,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 102,
+      "generic": 1,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 103,
+      "generic": 23,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 104,
+      "generic": 12,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 105,
+      "generic": 79,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 106,
+      "generic": 72,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 107,
+      "generic": 56,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 108,
+      "generic": 23,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 109,
+      "generic": 37,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 110,
+      "generic": 36,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 111,
+      "generic": 51,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 112,
+      "generic": 33,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 113,
+      "generic": 28,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 114,
+      "generic": 41,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 115,
+      "generic": 15,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 116,
+      "generic": 56,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 117,
+      "generic": 0,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 118,
+      "generic": 11,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 119,
+      "generic": 1,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 120,
+      "generic": 17,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 121,
+      "generic": 21,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 122,
+      "generic": 36,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 123,
+      "generic": 5,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 124,
+      "generic": 6,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 125,
+      "generic": 47,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 126,
+      "generic": 77,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 127,
+      "generic": 15,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 128,
+      "generic": 80,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 129,
+      "generic": 30,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 130,
+      "generic": 5,
+      "origin": 5,
+      "collisions": []
+    },
+    {
+      "seed": 131,
+      "generic": 13,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 132,
+      "generic": 56,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 133,
+      "generic": 48,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 134,
+      "generic": 32,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 135,
+      "generic": 32,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 136,
+      "generic": 19,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 137,
+      "generic": 16,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 138,
+      "generic": 77,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 139,
+      "generic": 24,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 140,
+      "generic": 45,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 141,
+      "generic": 33,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 142,
+      "generic": 3,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 143,
+      "generic": 81,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 144,
+      "generic": 8,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 145,
+      "generic": 25,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 146,
+      "generic": 25,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 147,
+      "generic": 23,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 148,
+      "generic": 52,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 149,
+      "generic": 11,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 150,
+      "generic": 32,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 151,
+      "generic": 84,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 152,
+      "generic": 62,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 153,
+      "generic": 31,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 154,
+      "generic": 76,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 155,
+      "generic": 64,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 156,
+      "generic": 10,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 157,
+      "generic": 65,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 158,
+      "generic": 16,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 159,
+      "generic": 83,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 160,
+      "generic": 4,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 161,
+      "generic": 7,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 162,
+      "generic": 36,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 163,
+      "generic": 36,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 164,
+      "generic": 36,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 165,
+      "generic": 70,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 166,
+      "generic": 34,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 167,
+      "generic": 70,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 168,
+      "generic": 8,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 169,
+      "generic": 27,
+      "origin": 6,
+      "collisions": []
+    },
+    {
+      "seed": 170,
+      "generic": 25,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 171,
+      "generic": 71,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 172,
+      "generic": 55,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 173,
+      "generic": 77,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 174,
+      "generic": 4,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 175,
+      "generic": 50,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 176,
+      "generic": 14,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 177,
+      "generic": 25,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 178,
+      "generic": 40,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 179,
+      "generic": 28,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 180,
+      "generic": 68,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 181,
+      "generic": 30,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 182,
+      "generic": 16,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 183,
+      "generic": 46,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 184,
+      "generic": 53,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 185,
+      "generic": 4,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 186,
+      "generic": 42,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 187,
+      "generic": 74,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 188,
+      "generic": 43,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 189,
+      "generic": 44,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 190,
+      "generic": 19,
+      "origin": 5,
+      "collisions": []
+    },
+    {
+      "seed": 191,
+      "generic": 50,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 192,
+      "generic": 86,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 193,
+      "generic": 36,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 194,
+      "generic": 67,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 195,
+      "generic": 34,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 196,
+      "generic": 54,
+      "origin": 2,
+      "collisions": []
+    },
+    {
+      "seed": 197,
+      "generic": 29,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 198,
+      "generic": 15,
+      "origin": 0,
+      "collisions": []
+    },
+    {
+      "seed": 199,
+      "generic": 41,
+      "origin": 1,
+      "collisions": []
+    },
+    {
+      "seed": 200,
+      "generic": 16,
+      "origin": 2,
+      "collisions": []
+    }
+  ]
+}
