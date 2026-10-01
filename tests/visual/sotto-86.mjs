@@ -1,12 +1,15 @@
+/* [7.999.86 PO-151] Guardiano: nella scelta delle scene difensive, a regime (ultimi 2 campioni, dopo 2,1 s) il busto
+   dell'eroe sta SOPRA la scheda delle azioni. Rosso __CPM_NO_SOTTO86 (CPM_ROSSO86=1): gi33 resta sotto. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const SCENE = (process.env.CPM_GI || '33,168,31,133,138,157,24,2').split(',').map(Number);
 const GLB = !!process.env.CPM_GLBON;
+const RIS = [];
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 for (const gi of SCENE) {
   const ctx = await b.newContext({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(ctx);
   const p = await ctx.newPage();
-  await p.addInitScript((G) => { window.__CPM_GLB = G; window.__CPM_PRESENT = 1; window.__CPM_CAMT767ON = 1; if (window.__R85) window.__CPM_NO_SOTTO85 = 1; }, GLB);
-  if (process.env.CPM_ROSSO85S) await p.addInitScript(() => { window.__CPM_NO_SOTTO85 = 1; });
+  await p.addInitScript((G) => { window.__CPM_GLB = G; window.__CPM_PRESENT = 1; window.__CPM_CAMT767ON = 1; if (window.__R85) window.__CPM_NO_SOTTO86 = 1; }, GLB);
+  if (process.env.CPM_ROSSO86) await p.addInitScript(() => { window.__CPM_NO_SOTTO86 = 1; });
   await openMatch(p, port, { skipLoadAll: true, name: 'Vairo' }); await sleep(800);
   await p.evaluate(g => window.__CPM_FORCE_SIT(g, false), gi).catch(() => {});
   for (let i = 0; i < 60; i++) { if ((await p.evaluate(() => window.__CPM_PHASE())) === 'hl_choose') break; await sleep(200); }
@@ -18,7 +21,14 @@ for (const gi of SCENE) {
       return v ? { hy: Math.round(R.top + (1 - v[1]) / 2 * R.height), top: t } : null; });
     if (m) row.push(m.top != null ? (m.top - m.hy) : 'n/a');
   }
+  RIS.push({ gi, fin: row.slice(-2).filter(x => typeof x === 'number') });
   console.log(`gi${gi} margine scheda-eroe (px, positivo = eroe sopra la scheda): ${row.join(' ')}`);
   await ctx.close();
 }
 await b.close(); srv.close();
+const sotto = RIS.filter(r => r.fin.length && Math.min(...r.fin) < 0).map(r => 'gi' + r.gi);
+const cieche = RIS.filter(r => !r.fin.length).length;
+console.log('scene con l\'eroe sotto la scheda a regime: ' + (sotto.join(' ') || 'nessuna'));
+if (cieche > 1) { console.log('CIECO'); process.exit(2); }
+if (process.env.CPM_ROSSO86) { console.log(sotto.length ? 'ROSSO OK: il difetto si vede' : 'ROSSO KO'); process.exit(sotto.length ? 0 : 1); }
+console.log(sotto.length ? 'KO' : 'VERDE'); process.exit(sotto.length ? 1 : 0);

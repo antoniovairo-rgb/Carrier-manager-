@@ -10636,7 +10636,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
         let _tg72=0;
         if(_ph72==="hl_choose"&&ball&&!(typeof window!=='undefined'&&window.__CPM_NO_PAN72)){
           const _v72=(_R72._v72||(_R72._v72=new THREE.Vector3()));_v72.copy(ball.position).project(camera);
-          const _base72=_v72.y-2*(_R72._vo72||0)/_H72;/* ndc senza lo spostamento in corso */
+          let _base72=_v72.y-2*(_R72._vo72||0)/_H72;/* ndc senza lo spostamento in corso */
+          /* [7.999.86 PO-151, collaudo Codex difesa 3D codice 002 «eroe coperto dal pannello in apertura» (gi33/168/31/133)]
+             la finestra scorreva solo per il PALLONE; nelle scene difensive a restare sotto la scheda e' l'EROE (misurato con
+             _sotto85: gi33 da -11 a -38 px per tutta la scelta). Ora conta il piu' basso fra pallone e busto dell'eroe.
+             Rosso __CPM_NO_SOTTO86. */
+          if(hero&&!(typeof window!=='undefined'&&window.__CPM_NO_SOTTO86)){const _vh86=(_R72._vh86||(_R72._vh86=new THREE.Vector3()));_vh86.set(hero.position.x,0.4,hero.position.z).project(camera);const _bh86=_vh86.y-2*(_R72._vo72||0)/_H72;if(_vh86.z<1&&_bh86<_base72)_base72=_bh86;}
           if(_v72.z<1&&_base72<-0.30)_tg72=Math.min(0.22*_H72,((-0.20)-_base72)/2*_H72);}
         const _cur72=(_R72._vo72||0)+(_tg72-(_R72._vo72||0))*Math.min((dt||0.016)*4,1);_R72._vo72=_cur72;
         if(Math.abs(_cur72)>0.5){camera.setViewOffset(_sz72.x,_H72,0,_cur72,_sz72.x,_H72);_R72._voOn72=1;}
