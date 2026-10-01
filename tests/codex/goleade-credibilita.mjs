@@ -18,8 +18,12 @@ if (!version || Number(version.split('.').at(-1)) < 96) throw Error(`Versione in
 const phase = (process.argv[2] || '').toUpperCase();
 if (!['A', 'B'].includes(phase)) throw Error('Specificare A oppure B');
 const current = fs.existsSync(output) ? JSON.parse(gunzipSync(fs.readFileSync(output)).toString('utf8')) : null;
-if (current && (current.commit !== commit || current.version !== version)) throw Error('Il checkpoint appartiene a un altro commit/versione');
+if (current) {
+  const gameDiff = execFileSync('git', ['diff', '--name-only', `${current.commit}..HEAD`, '--', 'CARRIER-MANAGER-AV.html', 'src', 'prototipo'], { cwd: root, encoding: 'utf8' }).trim();
+  if (current.version !== version || gameDiff) throw Error('Il checkpoint appartiene a una versione diversa del gioco');
+}
 const data = current || { version, commit, startedAt: new Date().toISOString(), commands: [], environment: {}, partA: [], partB: [] };
+data.speedChecks ||= [];
 function save() {
   fs.mkdirSync(path.dirname(output), { recursive: true });
   // Su Windows renameSync non sostituisce in modo affidabile un file già presente.
@@ -72,28 +76,48 @@ if (phase === 'A') {
   }
 } else {
   const { startServer, launchBrowser, installCdnRoutes, openMatch, sleep, matchPhase } = await import('../visual/lib/harness.mjs');
-  data.environment = { platform: process.platform, arch: process.arch, node: process.version, cpu: os.cpus()[0]?.model || null, chrome: process.env.CPM_CHROME || null };
+  const light = process.env.CPM_LIGHT_CHROME === '1';
+  const fixture = light ? fs.readFileSync(path.join(root, 'tests/codex/goleade-precompiled.html'), 'utf8') : null;
+  data.environment = { platform: process.platform, arch: process.arch, node: process.version, cpu: os.cpus()[0]?.model || null, chrome: process.env.CPM_CHROME || null, light, precompiledFixture: !!fixture };
   const command = 'node tests/codex/goleade-credibilita.mjs B';
   if (!data.commands.includes(command)) data.commands.push(command);
   const server = await startServer();
-  const browser = await launchBrowser();
+  const browser = light ? await (await import('../visual/node_modules/playwright/index.mjs')).chromium.launch({
+    headless: true, executablePath: process.env.CPM_CHROME,
+    args: ['--use-gl=angle', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--renderer-process-limit=1', '--disable-extensions', '--disable-background-networking', '--no-sandbox']
+  }) : await launchBrowser();
+  let memoryAbort = false;
+  const guard = setInterval(() => {
+    if (!memoryAbort && os.freemem() < 1.5 * 2 ** 30) {
+      memoryAbort = true;
+      browser.close().catch(() => {});
+    }
+  }, 250);
   try {
-    const liveLimit = Math.min(20, Math.max(1, Number(process.env.CPM_LIVE_MATCHES || 20)));
-    for (let i = 0; i < liveLimit; i++) {
-      if (data.partB.some(x => x.i === i && x.finished)) continue;
+    const liveLimit = Math.min(40, Math.max(1, Number(process.env.CPM_LIVE_MATCHES || 20)));
+    const replayIndex = process.env.CPM_REPLAY_INDEX == null ? null : Number(process.env.CPM_REPLAY_INDEX);
+    const indices = replayIndex == null ? Array.from({ length: liveLimit }, (_, i) => i) : [replayIndex];
+    const skip = new Set((process.env.CPM_SKIP_INDICES || '').split(',').filter(Boolean).map(Number));
+    const matchSpeed = process.env.CPM_MATCH_SPEED || '1';
+    const tickMs = Math.max(25, Number(process.env.CPM_AUTOPLAY_TICK_MS || 300));
+    for (const i of indices) {
+      if (skip.has(i)) continue;
+      if (replayIndex == null && data.partB.some(x => x.i === i && x.finished)) continue;
       const name = `Credibilita${i + 1}`;
       const seed = 960200 + i * 97;
-      const context = await browser.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 2, serviceWorkers: 'block' });
+      if (memoryAbort) throw Error('Interrotto: memoria libera sotto 1,5 GB');
+      const context = await browser.newContext({ viewport: light ? { width: 360, height: 640 } : { width: 412, height: 915 }, deviceScaleFactor: light ? 1 : 2, serviceWorkers: 'block' });
       const page = await context.newPage();
       const pageErrors = [];
       page.on('pageerror', e => pageErrors.push(String(e.message)));
       await installCdnRoutes(page);
-      await page.addInitScript(() => { window.__CPM_GLB = false; window.__CPM_REC = true; });
+      if (fixture) await page.route('**/CARRIER-MANAGER-AV.html?*', route => route.fulfill({ contentType: 'text/html; charset=utf-8', body: fixture }));
+      await page.addInitScript(speed => { window.__CPM_GLB = false; window.__CPM_REC = true; localStorage.setItem('cpm-match-speed', speed); }, matchSpeed);
       const t0 = Date.now();
       let row;
       try {
         await openMatch(page, server.address().port, { skipLoadAll: true, name });
-        await page.evaluate(s => window.__CPM_AUTOPLAY(true, { seed: s, policy: 'seeded', tickMs: 300 }), seed);
+        await page.evaluate(({ seed, tickMs }) => window.__CPM_AUTOPLAY(true, { seed, policy: 'seeded', tickMs }), { seed, tickMs });
         let phaseNow = null;
         while (Date.now() - t0 < 300000) {
           phaseNow = await matchPhase(page);
@@ -110,15 +134,17 @@ if (phase === 'A') {
             goals: events.filter(e => e.ev === 'goal').map(e => ({ time: e.m ?? e.d?.min ?? null, side: e.d?.side ?? e.d?.lato ?? e.side ?? null, src: e.d?.src ?? e.src ?? null, raw: e })),
             tab: motor?.tabellino?.() || null };
         });
-        row = { i, name, seed, finished: observed.phase === 'ended' || observed.phase === 'ceremony', ...observed, pageErrors, durationMs: Date.now() - t0 };
-      } catch (e) { row = { i, name, seed, finished: false, error: String(e.stack || e), pageErrors, durationMs: Date.now() - t0 }; }
+        row = { i, name, seed, matchSpeed, tickMs, finished: observed.phase === 'ended' || observed.phase === 'ceremony', ...observed, pageErrors, durationMs: Date.now() - t0 };
+      } catch (e) { row = { i, name, seed, matchSpeed, tickMs, finished: false, error: String(e.stack || e), pageErrors, durationMs: Date.now() - t0 }; }
       finally { await context.close().catch(() => {}); }
-      const old = data.partB.findIndex(x => x.i === i);
-      if (old >= 0) data.partB[old] = row; else data.partB.push(row);
+      if (replayIndex == null) {
+        const old = data.partB.findIndex(x => x.i === i);
+        if (old >= 0) data.partB[old] = row; else data.partB.push(row);
+      } else data.speedChecks.push({ replayOf: i, row });
       save();
       console.log(`B ${i + 1}/20: ${row.finished ? 'completata' : 'non completata'} ${row.score ? `${row.score.home}-${row.score.away}` : ''}`);
     }
-  } finally { await browser.close(); server.close(); }
+  } finally { clearInterval(guard); await browser.close().catch(() => {}); server.close(); }
 }
 
 console.log(`Checkpoint: ${output}`);
