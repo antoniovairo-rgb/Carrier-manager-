@@ -1,0 +1,839 @@
+{
+  "command": "node tests/codex/career-matrix.mjs",
+  "env": {
+    "CPM_SEEDS": "30",
+    "CPM_GOALKEEPER_SEEDS": "30",
+    "CPM_MAX_SEASONS": 1,
+    "CPM_TIME_LIMIT_MS": 600000,
+    "CPM_OUTPUT": "carriere-fase1-portiere-pilot.json"
+  },
+  "startedAt": "2026-10-01T11:47:59.712Z",
+  "version": "7.999.94",
+  "commit": "d470b2a9ff2aa6318c77bb15f1c41e632963fe4d",
+  "catalog": {
+    "professionalClubs": 252,
+    "u18Clubs": 18,
+    "leagues": [
+      "Lega A",
+      "Premier Division",
+      "Liga Ibérica",
+      "Deutsche Liga",
+      "Ligue Nationale",
+      "Liga Lusitana",
+      "Liga Oranje",
+      "Liga Belga",
+      "Liga Anatolica",
+      "Lega B",
+      "Championship",
+      "Deutsche Liga 2",
+      "Ligue Nationale 2",
+      "Liga Ibérica 2"
+    ],
+    "leagueCounts": {
+      "Lega A": 18,
+      "Premier Division": 18,
+      "Liga Ibérica": 18,
+      "Deutsche Liga": 18,
+      "Ligue Nationale": 18,
+      "Liga Lusitana": 18,
+      "Liga Oranje": 18,
+      "Liga Belga": 18,
+      "Liga Anatolica": 18,
+      "Lega B": 18,
+      "Championship": 18,
+      "Deutsche Liga 2": 18,
+      "Ligue Nationale 2": 18,
+      "Liga Ibérica 2": 18
+    }
+  },
+  "careers": [
+    {
+      "seed": 30,
+      "matrix": {
+        "start": "vertice",
+        "strength": "media",
+        "style": "prudente",
+        "archetype": "enfant",
+        "position": "Portiere",
+        "roleInjected": true,
+        "requestedLeague": "Liga Ibérica",
+        "actualLeague": "Liga Ibérica",
+        "club": "FC Submarino",
+        "clubId": "vill",
+        "leagueFallback": false,
+        "base": 70
+      },
+      "steps": 80,
+      "seasonsDone": 1,
+      "seasonStats": [
+        {
+          "season": 2,
+          "age": 20,
+          "club": "vill",
+          "league": "Liga Ibérica",
+          "position": "Portiere",
+          "ovr": 75,
+          "goals": 12,
+          "assists": 3,
+          "matches": 34,
+          "rating": 6.13,
+          "value": 16.33,
+          "wage": 6000,
+          "contractExpiresAtSeason": 5,
+          "contractExpired": false,
+          "squadRole": "riserva",
+          "coachTrust": 65.2,
+          "injured": false,
+          "injuryWeeks": null,
+          "nationalCaps": 0,
+          "diaryLength": 0,
+          "diarySeasons": [],
+          "trophies": [],
+          "playerAwards": {
+            "palloneOros": [],
+            "scarpaOros": [],
+            "youngYears": [
+              2
+            ],
+            "seasonRecords": [],
+            "leagueMvpYears": [],
+            "leagueTopScorerYears": [],
+            "teamOfYearYears": []
+          },
+          "primaveraAwards": [],
+          "bank": 205200,
+          "calendarN": 34,
+          "calendarUnplayed": 0
+        }
+      ],
+      "transfers": [],
+      "injuries": [],
+      "events": {
+        "pledge": 1,
+        "persgoal": 1
+      },
+      "messages": {
+        "2|📊 Report tecnico positivo del direttore sportivo.": 1,
+        "2|🏁 Fine S.2: 12⚽ 3🎯": 1,
+        "3|🎂 21 anni — stagione 3 inizia": 1,
+        "3|✅ Segna 12 gol": 1,
+        "3|❌ Mancato: Finisci nei primi 3": 1,
+        "3|❌ Mancato: Fornisci 7 assist": 1,
+        "3|🌍 QUALIFICAZIONE IN COPPA CONFERENCE! FC Submarino torna in Europa.": 1,
+        "3|📈 Crescita giovanile: +1 passaggio": 1,
+        "3|📉 Obiettivi personali mancati — la promessa fatta a te stesso.": 1,
+        "3|💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.": 1
+      },
+      "weeklyObservations": [
+        {
+          "season": 2,
+          "week": 1,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_recupero_hitech"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 2,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_compagno_lite"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 3,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_karaoke"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 4,
+          "messages": [
+            "📊 Report tecnico positivo del direttore sportivo."
+          ],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 5,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_giovane_aiuto"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 6,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 7,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 8,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 9,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_cripto"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 10,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_compagno_prestito"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 11,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_tifoso_fisso"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 12,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_nazionale_b"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 13,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_media"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 14,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_intervista_sorpresa"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 15,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_massaggiatore_addio"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 16,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 17,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_cena_capitano"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 18,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_mixed_zone"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 19,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_orologi_squadra"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 20,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_agente_cena"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 21,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_figlia_mister"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 22,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_cena_squadra"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 23,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_tifosi"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 24,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 25,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 26,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_giornata_libera"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 27,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_torneo_padel"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 28,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_procuratore"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 29,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [
+            "vita_compleanno"
+          ],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 30,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_dieta_brand"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 31,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_bimbo_sogno"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 32,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 33,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_ospedale"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 34,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_viaggio"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 35,
+          "messages": [],
+          "diary": [],
+          "impulses": [
+            "wi_amichevole"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 36,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 37,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 38,
+          "messages": [],
+          "diary": [],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 2,
+          "week": 39,
+          "messages": [
+            "🏁 Fine S.2: 12⚽ 3🎯"
+          ],
+          "diary": [],
+          "impulses": [
+            "wi_giovane"
+          ],
+          "vita": [],
+          "moments": []
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "messages": [
+            "🎂 21 anni — stagione 3 inizia",
+            "✅ Segna 12 gol",
+            "❌ Mancato: Finisci nei primi 3",
+            "❌ Mancato: Fornisci 7 assist",
+            "🌍 QUALIFICAZIONE IN COPPA CONFERENCE! FC Submarino torna in Europa.",
+            "📈 Crescita giovanile: +1 passaggio",
+            "📉 Obiettivi personali mancati — la promessa fatta a te stesso.",
+            "💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada."
+          ],
+          "diary": [
+            "Non tutto è arrivato",
+            "Obiettivi personali mancati"
+          ],
+          "impulses": [],
+          "vita": [],
+          "moments": []
+        }
+      ],
+      "contentObservations": [
+        {
+          "season": 2,
+          "week": 4,
+          "kind": "log",
+          "text": "📊 Report tecnico positivo del direttore sportivo.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "rotazione",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": [
+              {
+                "week": 1,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": true,
+                "homeScore": 5,
+                "awayScore": 0
+              },
+              {
+                "week": 2,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 1
+              },
+              {
+                "week": 3,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 1
+              }
+            ]
+          }
+        },
+        {
+          "season": 2,
+          "week": 39,
+          "kind": "log",
+          "text": "🏁 Fine S.2: 12⚽ 3🎯",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": [
+              {
+                "week": 34,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 1
+              },
+              {
+                "week": 36,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 0
+              },
+              {
+                "week": 37,
+                "goals": 1,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 1,
+                "awayScore": 4
+              },
+              {
+                "week": 38,
+                "goals": 0,
+                "assists": 0,
+                "minutes": null,
+                "won": false,
+                "homeScore": 0,
+                "awayScore": 1
+              }
+            ]
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "🎂 21 anni — stagione 3 inizia",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "✅ Segna 12 gol",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "❌ Mancato: Finisci nei primi 3",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "❌ Mancato: Fornisci 7 assist",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "🌍 QUALIFICAZIONE IN COPPA CONFERENCE! FC Submarino torna in Europa.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "📈 Crescita giovanile: +1 passaggio",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "📉 Obiettivi personali mancati — la promessa fatta a te stesso.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "log",
+          "text": "💬 Non tutto è arrivato — Qualche obiettivo dichiarato è rimasto per strada.",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "diary",
+          "text": "Non tutto è arrivato",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "kind": "diary",
+          "text": "Obiettivi personali mancati",
+          "context": {
+            "proStatus": "pro",
+            "squadRole": "riserva",
+            "injured": false,
+            "position": "Portiere",
+            "nationalCaps": 0,
+            "club": "vill",
+            "recentMatches": []
+          }
+        }
+      ],
+      "pageErrors": [],
+      "status": "target-reached",
+      "durationMs": 49203,
+      "interventions": [],
+      "contractActions": [],
+      "saveChecks": [],
+      "calendarDays": {
+        "2": {
+          "league": "Liga Ibérica",
+          "days": 34
+        },
+        "3": {
+          "league": "Liga Ibérica",
+          "days": 34
+        }
+      },
+      "finalSnapshot": {
+        "season": 3,
+        "week": 1,
+        "age": 21,
+        "ovr": 75,
+        "club": "vill",
+        "goals": 0,
+        "matches": 0
+      }
+    }
+  ],
+  "anomalies": [],
+  "failures": [],
+  "limits": [],
+  "durationMs": 75095
+}
