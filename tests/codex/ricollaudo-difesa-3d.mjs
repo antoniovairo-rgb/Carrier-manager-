@@ -19,10 +19,15 @@ try{os.setPriority(0,10);}catch{}
 const batch=Number(process.env.CPM_BATCH||1),key=c=>`${c.gi}:${c.ai}:${c.outcome}`;
 const requested=(process.env.CPM_CASES||'').split(',').filter(Boolean);
 const captureTag=process.env.CPM_CAPTURE_TAG||'';if(!/^[a-z0-9-]*$/.test(captureTag))throw Error('Tag non valido');
+const pending=plan.filter(c=>requested.length?requested.includes(key(c)):!data.runs.some(r=>key(r)===key(c)&&r.valid===true)).slice(0,batch);
+const minStartGb=Number(process.env.CPM_MIN_START_GB||3.5);
+if(pending.length&&os.freemem()<minStartGb*1024**3){
+ console.log(`Lotto non avviato: RAM libera sotto ${minStartGb} GB prima di aprire Chromium`);
+ process.exit(0);
+}
 const srv=await startServer();let browser;
 try{
  browser=await launchBrowser();
- const pending=plan.filter(c=>requested.length?requested.includes(key(c)):!data.runs.some(r=>key(r)===key(c)&&r.wallMs)).slice(0,batch);
  for(const c of pending){
   if(fs.existsSync(pause)||os.freemem()<2.2*1024**3){console.log('Lotto fermato: pausa o RAM iniziale sotto 2,2 GB');break;}
   const start=Date.now(),r={...c,methodVersion:3,captureProtocol:'opening-at-900ms; foot-near-impact-or-arc',captureTag,startedAt:new Date().toISOString(),frames:[],samples:[],defenseSamples:[],review:'non verificato'};
