@@ -1,0 +1,54 @@
+{
+  "command": "node tests/codex/career-matrix.mjs",
+  "env": {
+    "CPM_SEEDS": "30",
+    "CPM_NATURAL_SEEDS": "30",
+    "CPM_MAX_SEASONS": 1,
+    "CPM_TIME_LIMIT_MS": 900000,
+    "CPM_OUTPUT": "carriere-fase1-natural-pilot2.json"
+  },
+  "startedAt": "2026-10-01T11:40:31.581Z",
+  "version": "7.999.94",
+  "commit": "d470b2a9ff2aa6318c77bb15f1c41e632963fe4d",
+  "catalog": {
+    "professionalClubs": 252,
+    "u18Clubs": 18,
+    "leagues": [
+      "Lega A",
+      "Premier Division",
+      "Liga Ibérica",
+      "Deutsche Liga",
+      "Ligue Nationale",
+      "Liga Lusitana",
+      "Liga Oranje",
+      "Liga Belga",
+      "Liga Anatolica",
+      "Lega B",
+      "Championship",
+      "Deutsche Liga 2",
+      "Ligue Nationale 2",
+      "Liga Ibérica 2"
+    ],
+    "leagueCounts": {
+      "Lega A": 18,
+      "Premier Division": 18,
+      "Liga Ibérica": 18,
+      "Deutsche Liga": 18,
+      "Ligue Nationale": 18,
+      "Liga Lusitana": 18,
+      "Liga Oranje": 18,
+      "Liga Belga": 18,
+      "Liga Anatolica": 18,
+      "Lega B": 18,
+      "Championship": 18,
+      "Deutsche Liga 2": 18,
+      "Ligue Nationale 2": 18,
+      "Liga Ibérica 2": 18
+    }
+  },
+  "careers": [],
+  "anomalies": [],
+  "failures": [],
+  "limits": [],
+  "durationMs": 27548
+}
