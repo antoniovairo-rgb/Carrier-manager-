@@ -32,3 +32,11 @@ Dati grezzi in `tests/codex/collaudo-passaggi.json.gz`.
 
 ## Regole
 Italiano. Non inventare: «non verificato» se un dato manca. Niente conclusioni su FPS dall'headless. Le anomalie restano ipotesi finché il team non le riproduce; nessuna patch al gioco. Niente credenziali di terzi.
+
+## Aggiunta del 01/10 sera (questionario PO: PO-094)
+Se il collaudo è già partito, aggiungi queste scene nello stesso ramo e nello stesso rapporto, in una sezione «Aggiunta».
+Scene **176**, **64**, **152** (già presente: basta la sezione dedicata), **99**: il PO aveva segnato «palla da biliardo o flipper» (005/014), «SALTO del pallone di 21,1 unità in 16 ms» e «esito dichiarato intercept» non coerente con la scena.
+Per ogni caso (ogni azione, esiti `success` e `fail`, 2 ripetizioni):
+- passi del pallone oltre 2u in un fotogramma **fuori** da uno stacco nero (`__CPM_CUTLIVE()`), con la durata reale del fotogramma: un passo grande in un fotogramma lungo non è un teletrasporto;
+- cambi di direzione del pallone oltre 60° senza un giocatore entro 1,5u (rimbalzo «da biliardo»);
+- esito dichiarato (`__CPM_STATE().act`) contro chi ha il pallone alla fine (compagno / avversario / portiere / in rete / fuori).

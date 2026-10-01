@@ -46,3 +46,10 @@ Dati grezzi compressi in `tests/codex/collaudo-testa-conduzione.json.gz`.
 - Headless: nessuna conclusione su FPS o tempi reali sul telefono; misura solo grandezze relative.
 - Le anomalie restano ipotesi finché il team non le riproduce; non proporre patch al codice del gioco.
 - Non usare credenziali di terzi.
+
+## Aggiunta del 01/10 sera (questionario PO: PO-050, PO-104, PO-143)
+Se il collaudo è già partito, aggiungi queste scene nello stesso ramo e nello stesso rapporto, in una sezione «Aggiunta».
+- **80** e **90** (PO-104 «tiro potente che sembra un colpo di testa»): per l'azione di tiro, quale clip suona l'eroe al contatto (`__CPM_GST`, nome del gesto) e a che quota è il pallone (m). Se il gesto è di testa con il pallone sotto 1 m, o di piede con il pallone sopra 1,6 m, segnalalo.
+- **64** e **126** (PO-050 «esito miss ma il pallone è finito in rete»): per ogni caso con esito `fail`, dove finisce il pallone (in rete secondo `_GLX`=48,6 e pali |z| ≤ 3,35, fuori, al portiere). Ogni `fail` con il pallone in rete è un esito bugiardo: riporta seed, scena, foto.
+- **18** (PO-143 «non era un dribbling»): con l'azione di dribbling, l'eroe supera davvero un avversario? (distanza minima eroe–avversario più vicino e se a fine azione l'avversario resta dietro rispetto alla porta). Foto ogni 200 ms.
+Stesse regole: 3 ripetizioni, esiti `success` e `fail`, pagina nuova ogni volta.
