@@ -10631,6 +10631,12 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
          ~35% basso del quadro). Solo in hl_choose: se il pallone cade sotto ndc -0,30 la FINESTRA di proiezione scorre in basso
          (setViewOffset) finche' torna a -0,20 — l'azione sale nel quadro senza muovere la camera ne' cambiare la taglia. Graduale,
          tetto 22% dell'altezza, torna a zero fuori dalla scelta. */
+           /* [7.999.87 PO-146, taccuino PO #185 «non si vede che il difensore ruba o mura il passaggio»] MISURATO (sonda _ruba87,
+              «Scarico e ricevi» fallito): l'intercetto c'e' (difensore a 6-8u dalla linea, scivolata vera), ma quando l'esito si
+              rivela il pallone sta ancora a 2,2-3,6u da lui e ci arriva in 4-5 s, perche' qui si fissava solo la x (lerp 1,6/s) e
+              la z restava dove era finito l'arco — in foto il difensore a terra e il pallone che gli passa accanto: mancato.
+              Ora il pallone intercettato va ai piedi di chi l'ha preso, in x e in z, con presa rapida. Rosso __CPM_NO_RUBA87. */
+      try{const _P87=propsRef.current||{};if(_P87.matchPhase==='hl_result'&&!ballArcActive&&ball&&!_P87.hlDef&&_P87.hlOutcomeKind==='intercepted'&&sr.current._int10&&sr.current._int10.m&&!(typeof window!=='undefined'&&window.__CPM_NO_RUBA87)){const _m87=sr.current._int10.m;const _k87=Math.min(aDt*7,1);ball.position.x+=(_m87.position.x-0.6-ball.position.x)*_k87;ball.position.z+=(_m87.position.z-ball.position.z)*_k87;if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC)){window.__CPM_RUBA87=(window.__CPM_RUBA87|0)+1;}}}catch(_e87){}
       try{const _ph72=propsRef.current&&propsRef.current.matchPhase,_R72=sr.current;
         const _sz72=(_R72._sz72||(_R72._sz72=new THREE.Vector2()));renderer.getSize(_sz72);const _H72=_sz72.y||1;
         let _tg72=0;

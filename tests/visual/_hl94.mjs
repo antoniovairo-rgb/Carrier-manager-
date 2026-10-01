@@ -4,7 +4,7 @@ const TAG = process.env.TAG || 'prima', GI = +(process.env.GI || 24);
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const ctx = await b.newContext({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 2 }); await installCdnRoutes(ctx);
 const p = await ctx.newPage();
-await p.addInitScript((ROSSO) => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_CAMT767ON = 1; if (ROSSO) window.__CPM_NO_HL94 = 1; }, !!process.env.CPM_ROSSO94);
+await p.addInitScript(({ ROSSO, ESITO }) => { window.__CPM_GLB = true; window.__CPM_PRESENT = 1; window.__CPM_CAMT767ON = 1; window.__ESITO94 = ESITO; if (ROSSO) window.__CPM_NO_HL94 = 1; }, { ROSSO: !!process.env.CPM_ROSSO94, ESITO: process.env.CPM_ESITO || 'success' });
 await openMatch(p, port, { skipLoadAll: true, name: 'Vairo' }); await sleep(800);
 await p.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, null, { timeout: 60000 }).catch(() => {});
 const cdp = await ctx.newCDPSession(p); let ult = null;
@@ -27,10 +27,10 @@ await sleep(2500); await shot('2-movimento');
 const bt = await p.$$('button'); for (const x of bt) { const t = (await x.innerText().catch(() => '')) || ''; if (/^Scegli/i.test(t.trim())) { await x.click().catch(() => {}); break; } }
 for (let i = 0; i < 20; i++) { const ph = await p.evaluate(() => window.__CPM_PHASE()); if (ph === 'hl_choose') break; await sleep(300); }
 await sleep(1200); await shot('3-scelta');
-await p.evaluate(() => { window.__CPM_FORCE_OUTCOME = 'success'; window.__CPM_RESOLVE(0); }).catch(() => {});
+await p.evaluate(() => { window.__CPM_FORCE_OUTCOME = (window.__ESITO94 || 'success'); window.__CPM_RESOLVE(0); }).catch(() => {});
 await sleep(600); await shot('4-in-corso');
 for (let i = 0; i < 40; i++) { const ph = await p.evaluate(() => window.__CPM_PHASE()); if (ph === 'hl_result') break; await sleep(300); }
 for (let i = 0; i < 40; i++) { const ok = await p.evaluate(() => !!document.querySelector('[data-cpm="esito"]')); if (ok) break; await sleep(300); }
-await sleep(600); await shot('5-esito');
+await sleep(600 + (+(process.env.CPM_ATTESA || 0))); await shot('5-esito');
 fs.writeFileSync(`out/hl94/${TAG}-${GI}.json`, JSON.stringify(MIS, null, 1)); console.log(TAG, GI, JSON.stringify(MIS));
 await b.close(); srv.close();
