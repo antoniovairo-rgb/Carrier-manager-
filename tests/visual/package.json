@@ -304,7 +304,9 @@
     "giornaliste-169": "node giornaliste-169-test.mjs",
     "giornaliste-169:rosso": "CPM_RED=1 node giornaliste-169-test.mjs",
     "piazzati-catalogo": "node piazzati-catalogo-test.mjs",
-    "piazzati-catalogo:rosso": "CPM_RED=1 node piazzati-catalogo-test.mjs"
+    "piazzati-catalogo:rosso": "CPM_RED=1 node piazzati-catalogo-test.mjs",
+    "tetto-scene": "node tetto-scene-test.mjs",
+    "tetto-scene:rosso": "CPM_RED=1 node tetto-scene-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

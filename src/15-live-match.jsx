@@ -1264,6 +1264,9 @@ try{if(typeof window!=='undefined')window.__CPM_TASSO28=tassoOccasioni28;}catch(
    sulla scheda generica — «Rovesciata in corsa!» su una punizione. Le schede candidate per il piazzato dell'eroe (rigore o punizione
    diretta) escluse quelle gia' giocate; ESAURITO il catalogo si ripete una scheda di piazzato invece di mostrarne una che racconta
    altro. Funzione pura (SITUATIONS + elenco dei testi usati), interrogata dal guardiano piazzati-catalogo. Rosso __CPM_NO_PIAZ99. */
+/* [7.999.101 decisione PO 01/10 sul rilievo 26-D] Una scena in piu' nata da un'origine del motore (rigore, punizione, cross) e'
+   ammessa se le scene della partita sono meno di 8; il rigore dell'eroe apre comunque la sua scena fino a 9 (tetto assoluto). */
+function scenaExtraAmmessa(rigore,numHL){if(typeof window!=='undefined'&&window.__CPM_NO_TETTO101)return true;return (numHL|0)<(rigore?9:8);}
 function schedePiazzato(rigore,usate){
   const ok=s2=>{if(!s2||s2.type==="def")return false;if(typeof sitSospesa==="function"&&sitSospesa(s2))return false;
     if(rigore)return (typeof isPenaltySit==="function"&&isPenaltySit(s2));const _t=String(s2.text||"");return deriveIntent(s2)==="freekick"&&!/fascia|indirett|defilat/i.test(_t);};
@@ -5338,7 +5341,10 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
                inserita ORA al posto corrente come fanno le scene reattive. La scheda la sceglie l'apertura, dall'origine. */
             const _pz27=!!(_oc26&&_oc26.origine&&(_oc26.origine.kind==="rigore"||(_oc26.origine.kind==="punizione"&&_oc26.tipo==="punizione")));
             let _ins26=false;/* [7.999.98 PO-178] la scena dell'origine e' stata inserita: l'occasione corrente deve essere LEI */
-            if(_oc26&&(_pz27?((extra27Ref.current|0)<4):(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&((_no28()||context==="trial")?((extra26Ref.current|0)<1):((extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0)))))&&String(phaseRef.current)==="playing"){try{
+            /* [7.999.101 rilievo Codex 26-D, decisione PO 01/10 «rigore sempre, resto nel tetto»] Codex: 10 highlight in 1 partita su 30
+               (seme 973182 «Rilievi7», 7.999.96: 5 inserimenti brain-origine). La regola sta in scenaExtraAmmessa (funzione pura, guardiano
+               tetto-scene). Rosso __CPM_NO_TETTO101. */
+            if(_oc26&&scenaExtraAmmessa(!!(_oc26.origine&&_oc26.origine.kind==="rigore"),numHLRef.current|0)&&(_pz27?((extra27Ref.current|0)<4):(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&((_no28()||context==="trial")?((extra26Ref.current|0)<1):((extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0)))))&&String(phaseRef.current)==="playing"){try{
               if(_pz27){extra27Ref.current=(extra27Ref.current|0)+1;occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;}else extra26Ref.current=(extra26Ref.current|0)+1;const _ph26=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];
               setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,_ph26);return c;});
               setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,nx|0);hlTimesRef.current=v;return v;});
