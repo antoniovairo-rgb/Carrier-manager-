@@ -1,0 +1,271 @@
+{
+  "seed": 974734,
+  "name": "Rilievi23",
+  "durationMs": 126938,
+  "catalog": [
+    {
+      "gi": 5,
+      "text": "🔴 RIGORE! Sul dischetto.",
+      "penalty": true,
+      "direct": false
+    },
+    {
+      "gi": 13,
+      "text": "📐 Punizione dal limite — tiro diretto!",
+      "penalty": false,
+      "direct": true
+    },
+    {
+      "gi": 58,
+      "text": "🔴 RIGORE! Sul dischetto a 5' dalla fine. Respira. Tira.",
+      "penalty": true,
+      "direct": false
+    },
+    {
+      "gi": 78,
+      "text": "📐 Punizione a effetto — curva!",
+      "penalty": false,
+      "direct": true
+    },
+    {
+      "gi": 81,
+      "text": "📐 Punizione — muro a 9 metri!",
+      "penalty": false,
+      "direct": true
+    }
+  ],
+  "cards": [
+    {
+      "phase": "hl_intro",
+      "i": 0,
+      "gi": 77,
+      "text": "⚡ Corner basso teso — devia!",
+      "intent": "insertion",
+      "penalty": false,
+      "origin": "angolo"
+    },
+    {
+      "phase": "hl_choose",
+      "i": 0,
+      "gi": 77,
+      "text": "⚡ Corner basso teso — devia!",
+      "intent": "insertion",
+      "penalty": false,
+      "origin": "angolo"
+    },
+    {
+      "phase": "hl_result",
+      "i": 0,
+      "gi": 77,
+      "text": "⚡ Corner basso teso — devia!",
+      "intent": "insertion",
+      "penalty": false,
+      "origin": "angolo"
+    },
+    {
+      "phase": "hl_intro",
+      "i": 1,
+      "gi": 112,
+      "text": "🌀 Penetrazione centrale in dribbling!",
+      "intent": "dribble",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_move",
+      "i": 1,
+      "gi": 112,
+      "text": "🌀 Penetrazione centrale in dribbling!",
+      "intent": "dribble",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_result",
+      "i": 1,
+      "gi": 112,
+      "text": "🌀 Penetrazione centrale in dribbling!",
+      "intent": "dribble",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_intro",
+      "i": 2,
+      "gi": 186,
+      "text": "👟 Muro di prima e scatto — dai e vai in area!",
+      "intent": "onetwo",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_result",
+      "i": 2,
+      "gi": 186,
+      "text": "👟 Muro di prima e scatto — dai e vai in area!",
+      "intent": "onetwo",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_intro",
+      "i": 3,
+      "gi": 13,
+      "text": "📐 Punizione dal limite — tiro diretto!",
+      "intent": "freekick",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_move",
+      "i": 3,
+      "gi": 13,
+      "text": "📐 Punizione dal limite — tiro diretto!",
+      "intent": "freekick",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_result",
+      "i": 3,
+      "gi": 13,
+      "text": "📐 Punizione dal limite — tiro diretto!",
+      "intent": "freekick",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_intro",
+      "i": 4,
+      "gi": 81,
+      "text": "📐 Punizione — muro a 9 metri!",
+      "intent": "freekick",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_move",
+      "i": 4,
+      "gi": 81,
+      "text": "📐 Punizione — muro a 9 metri!",
+      "intent": "freekick",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_result",
+      "i": 4,
+      "gi": 81,
+      "text": "📐 Punizione — muro a 9 metri!",
+      "intent": "freekick",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_intro",
+      "i": 5,
+      "gi": 78,
+      "text": "📐 Punizione a effetto — curva!",
+      "intent": "freekick",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_move",
+      "i": 5,
+      "gi": 78,
+      "text": "📐 Punizione a effetto — curva!",
+      "intent": "freekick",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_result",
+      "i": 5,
+      "gi": 78,
+      "text": "📐 Punizione a effetto — curva!",
+      "intent": "freekick",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_intro",
+      "i": 6,
+      "gi": 73,
+      "text": "🤸 Rovesciata in corsa!",
+      "intent": "shot",
+      "penalty": false,
+      "origin": null
+    },
+    {
+      "phase": "hl_result",
+      "i": 6,
+      "gi": 73,
+      "text": "🤸 Rovesciata in corsa!",
+      "intent": "shot",
+      "penalty": false,
+      "origin": null
+    }
+  ],
+  "phase": "ended",
+  "scenes": [
+    {
+      "min": 24,
+      "src": "motore-occasione",
+      "sk": "✋ Anticipa il passaggio filtrante!"
+    },
+    {
+      "min": 27,
+      "src": "motore-occasione",
+      "sk": "😱 Il portiere è fuori dai pali! Tira da lontano."
+    },
+    {
+      "min": 30,
+      "src": "motore-occasione",
+      "sk": "⚽ Tiro al volo dal limite!"
+    },
+    {
+      "min": 33,
+      "src": "brain-origine",
+      "kind": "punizione"
+    },
+    {
+      "min": 34,
+      "src": "motore-occasione",
+      "sk": "⚡ Solo davanti al portiere!"
+    },
+    {
+      "min": 55,
+      "src": "brain-origine",
+      "kind": "punizione"
+    },
+    {
+      "min": 56,
+      "src": "motore-occasione",
+      "sk": "⚡ Solo davanti al portiere!"
+    },
+    {
+      "min": 67,
+      "src": "brain-origine",
+      "kind": "punizione"
+    },
+    {
+      "min": 68,
+      "src": "motore-occasione",
+      "sk": "⚡ Solo davanti al portiere!"
+    },
+    {
+      "min": 71,
+      "src": "brain-origine",
+      "kind": "punizione"
+    },
+    {
+      "min": 72,
+      "src": "motore-occasione",
+      "sk": "⚡ Solo davanti al portiere!"
+    }
+  ],
+  "resolved": 7,
+  "numHL": 7,
+  "memoryAbort": false
+}
