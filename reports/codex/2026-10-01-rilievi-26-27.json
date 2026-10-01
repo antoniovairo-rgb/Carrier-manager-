@@ -1,0 +1,26 @@
+{
+  "versione": "7.999.96",
+  "commit_base": "ccabb486d7bc957edc8d7a39ef45d2c51bb80d32",
+  "compito": "Ricontrollo dei sei rilievi 7.999.26–27; rapporto intermedio",
+  "comando": [
+    "node tests/codex/rilievi-precompile.mjs",
+    "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_VALID='30'; node tests/codex/rilievi-26-27-census.mjs",
+    "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; node tests/codex/rilievi-27b-replay.mjs"
+  ],
+  "seme": "Censimento: 972600 + 97*i, nome Rilievi(i+1); replay 27-B: 974734, nome Rilievi23",
+  "misure": [
+    { "nome": "partite naturali valide", "valore": 30, "soglia": "almeno 30", "esito": "ok" },
+    { "nome": "partite naturali non concluse", "valore": 2, "soglia": "escluse dal denominatore", "esito": "ok" },
+    { "nome": "partite oltre otto azioni risolte", "valore": 1, "soglia": "massimo 8", "esito": "anomalia" },
+    { "nome": "massimo azioni risolte in una partita", "valore": 10, "soglia": "massimo 8", "esito": "anomalia" },
+    { "nome": "punizioni dirette candidate nel catalogo", "valore": 3, "soglia": "quattro richieste nel replay", "esito": "anomalia" }
+  ],
+  "segnalazioni": [
+    { "id": "26-A", "gravita": "media", "stato": "presente nel codice; effetto visivo non verificato", "descrizione": "cast.ricevente usa il crossatore nel ramo cross verso l'eroe", "come_riprodurre": "src/14-motore-possesso.jsx:364-368; prova 3D con due compagni vicini non eseguita", "prove": ["src/14-motore-possesso.jsx:368"] },
+    { "id": "26-B", "gravita": "media", "stato": "presente nel codice; partita non verificata", "descrizione": "_ORIG26 è globale e la pulizia dipende da hlIdx", "come_riprodurre": "due partite consecutive nella stessa pagina senza reload; non eseguito", "prove": ["src/11-ui-kit-highlight.jsx:1562", "src/15-live-match.jsx:4490"] },
+    { "id": "26-C", "gravita": "media", "stato": "presente nel codice; partita non verificata", "descrizione": "la scena extra e la scheda possono leggere due diversi occasione_eroe dello stesso minuto", "come_riprodurre": "generare due eventi nell'ordine sfavorevole nello stesso accumulo; non eseguito", "prove": ["src/15-live-match.jsx:5324", "src/15-live-match.jsx:5334"] },
+    { "id": "26-D", "gravita": "bassa", "stato": "riprodotto", "descrizione": "una partita su trenta ha dieci highlight risolti", "come_riprodurre": "node tests/codex/rilievi-26-27-census.mjs; seme 973182, nome Rilievi7", "prove": ["tests/codex/rilievi-26-27-census.json.gz", "src/15-live-match.jsx:5328-5332"] },
+    { "id": "27-A", "gravita": "media", "stato": "presente nel codice; effetto di partita non verificato", "descrizione": "_piaz27 precede il sorteggio _p23", "come_riprodurre": "confronto a parità di seme con braccio piazzati attivo/disattivo; non eseguito", "prove": ["src/14-motore-possesso.jsx:817-824"] },
+    { "id": "27-B", "gravita": "media", "stato": "riprodotto", "descrizione": "alla quarta punizione il gioco mostra Rovesciata in corsa invece di una punizione", "come_riprodurre": "node tests/codex/rilievi-27b-replay.mjs; seme 974734, nome Rilievi23", "prove": ["tests/codex/rilievi-27b-replay.json", "src/15-live-match.jsx:4572-4573"] }
+  ]
+}

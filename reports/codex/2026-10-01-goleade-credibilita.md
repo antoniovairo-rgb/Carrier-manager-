@@ -2,7 +2,7 @@
 
 Base verificata: `main` ccabb486d7bc957edc8d7a39ef45d2c51bb80d32, GAME_VERSION 7.999.96. Ramo del rapporto: `codex/2026-10-01-goleade-credibilita`.
 
-**Esito:** parte A completa (700/700 partite); parte B non verificata (0/20 partite vere completate).
+**Esito:** parte A completa (700/700 partite); parte B completa (20/20 partite vere completate).
 Il guardiano su 95–50 era già verde secondo la consegna; questo è un campione indipendente su sette accoppiamenti.
 
 ## Metodo e riproduzione
@@ -53,10 +53,43 @@ Controllo interno: 0 partite hanno un numero di eventi «gol» diverso dalla som
 
 ## Parte B — partita nel percorso carriera
 
-Non verificato. Il primo avvio di Chrome è stato interrotto quando la memoria libera è scesa a 0,71 GB (misura con `node -e "console.log((require('os').freemem()/2**30).toFixed(2))"`). Nessun risultato di quella partita viene contato. La coda di goleade nel percorso carriera e la sorgente dei gol in eccesso restano non verificati.
+Comando completo per la configurazione leggera: `node tests/codex/goleade-precompile.mjs`; `$env:CPM_LIGHT_CHROME='1'; $env:CPM_CHROME='C:\Program Files\Google\Chrome\Application\chrome.exe'; node tests/codex/goleade-credibilita.mjs B`. Per completare il campione dopo i tentativi non validi: `$env:CPM_LIVE_MATCHES='23'; $env:CPM_SKIP_INDICES='9,12,18'; node tests/codex/goleade-credibilita.mjs B`, con un browser nuovo per ogni partita. HTML del gioco derivato dalla stessa versione con JSX precompilato offline; pagina `?cpmtest=1`, percorso `Nuova carriera → Inizia il provino`, nome unico per partita, autoplay a velocità 1× con intervallo di controllo di 300 ms. Il corpo GLB è disattivato: il collaudo riguarda punteggio ed eventi, non la resa 3D. La forza delle squadre è riportata solo se esposta dal testimone.
+
+Partite concluse: 20/20 richieste; tentativi non conclusi conservati nel grezzo: 3. Gol per etichetta di provenienza nel registro: highlight 13, cronaca 21, setpiece 4. Discordanze fra numero di eventi «goal» e tabellone: 0.
+
+Tentativo non valido: #10, Credibilita10, seed 961073, dopo 300,02 s; errore: page.evaluate: Target page, context or browser has been closed.
+Tentativo non valido: #13, Credibilita13, seed 961364, dopo 300,25 s; errore: page.evaluate: Target page, context or browser has been closed.
+Tentativo non valido: #19, Credibilita19, seed 961946, dopo 300,08 s; errore: page.evaluate: Target page, context or browser has been closed.
+
+| # | Nome / seed autoplay | Punteggio | Forza casa–ospite | Gol per percorso | 7+ o scarto ≥5 |
+|---:|---|---:|---:|---|---|
+| 1 | Credibilita1 / 960200 | 2–2 | non esposto–non esposto | highlight: 2, cronaca: 2 | no |
+| 2 | Credibilita2 / 960297 | 0–1 | non esposto–non esposto | cronaca: 1 | no |
+| 3 | Credibilita3 / 960394 | 1–0 | non esposto–non esposto | highlight: 1 | no |
+| 4 | Credibilita4 / 960491 | 1–1 | non esposto–non esposto | setpiece: 1, cronaca: 1 | no |
+| 5 | Credibilita5 / 960588 | 1–1 | non esposto–non esposto | highlight: 1, cronaca: 1 | no |
+| 6 | Credibilita6 / 960685 | 3–0 | non esposto–non esposto | setpiece: 2, cronaca: 1 | no |
+| 7 | Credibilita7 / 960782 | 0–1 | non esposto–non esposto | cronaca: 1 | no |
+| 8 | Credibilita8 / 960879 | 2–2 | non esposto–non esposto | highlight: 2, cronaca: 2 | no |
+| 9 | Credibilita9 / 960976 | 1–1 | non esposto–non esposto | highlight: 1, cronaca: 1 | no |
+| 11 | Credibilita11 / 961170 | 2–1 | non esposto–non esposto | cronaca: 2, highlight: 1 | no |
+| 12 | Credibilita12 / 961267 | 1–0 | non esposto–non esposto | cronaca: 1 | no |
+| 14 | Credibilita14 / 961461 | 0–0 | non esposto–non esposto | nessuno | no |
+| 15 | Credibilita15 / 961558 | 1–1 | non esposto–non esposto | cronaca: 1, highlight: 1 | no |
+| 16 | Credibilita16 / 961655 | 4–0 | non esposto–non esposto | setpiece: 1, highlight: 2, cronaca: 1 | no |
+| 17 | Credibilita17 / 961752 | 1–1 | non esposto–non esposto | cronaca: 1, highlight: 1 | no |
+| 18 | Credibilita18 / 961849 | 0–0 | non esposto–non esposto | nessuno | no |
+| 20 | Credibilita20 / 962043 | 3–0 | non esposto–non esposto | highlight: 1, cronaca: 2 | no |
+| 21 | Credibilita21 / 962140 | 0–1 | non esposto–non esposto | cronaca: 1 | no |
+| 22 | Credibilita22 / 962237 | 1–0 | non esposto–non esposto | cronaca: 1 | no |
+| 23 | Credibilita23 / 962334 | 0–1 | non esposto–non esposto | cronaca: 1 | no |
+
+Nel campione di 20 partite vere, coda 7+ o scarto ≥5: 0/20. Non è possibile attribuire gol in eccesso a un percorso perché non ne sono stati osservati.
+
+Controllo fuori campione: stesso nome e seed della partita #1 a 2× con tick autoplay 100 ms: 3-1 contro 2-2 a 1×/300 ms. Le due impostazioni sono cambiate insieme: la causa della differenza non è isolata. Il controllo accelerato non entra nei 20 casi.
 
 ## Verdetto e limiti
 
 Nel motore senza grafica, la coda 7+ è presente; gli scarti ≥5 sono presenti. Il campione non dimostra una probabilità zero fuori dai semi provati.
-Questi numeri descrivono il motore con occasioni dell’eroe disattivate. La corrispondenza con le partite vere, e la credibilità percepita dei singoli risultati, non sono verificate da questa parte.
+La parte A descrive il motore con occasioni dell’eroe disattivate. La parte B descrive partite reali di provino all’inizio di carriere nuove, non gare di campionato avanzate. La credibilità percepita dei singoli risultati non deriva automaticamente dalle frequenze numeriche.
 Le anomalie osservate restano ipotesi fino alla riproduzione del team. Nessuna modifica al gioco.

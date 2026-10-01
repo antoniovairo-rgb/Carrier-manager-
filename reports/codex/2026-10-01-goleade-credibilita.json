@@ -1,8 +1,13 @@
 {
   "versione": "7.999.96",
-  "compito": "PO-021/035: coda delle goleade nel motore",
-  "comando": "node tests/codex/goleade-credibilita.mjs A",
-  "seme": "960100 + 1000 × indiceCoppia + i, i=0…99",
+  "compito": "PO-021/035: coda delle goleade nel motore e nelle partite vere",
+  "comando": [
+    "node tests/codex/goleade-credibilita.mjs A",
+    "node tests/codex/goleade-precompile.mjs",
+    "$env:CPM_LIGHT_CHROME='1'; $env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; node tests/codex/goleade-credibilita.mjs B",
+    "$env:CPM_LIVE_MATCHES='23'; $env:CPM_SKIP_INDICES='9,12,18'; node tests/codex/goleade-credibilita.mjs B"
+  ],
+  "seme": "A: 960100 + 1000 × indiceCoppia + i, i=0…99; B: 960200 + i × 97, i=0…22 esclusi i=9,12,18 non validi, nomi distinti",
   "misure": [
     {
       "nome": "50-50",
@@ -136,8 +141,24 @@
       },
       "soglia": "nessuna soglia prescritta per l’audit",
       "esito": "ok"
+    },
+    {
+      "nome": "partite vere",
+      "valore": {
+        "n": 20,
+        "sevenOrMargin5": 0,
+        "eventScoreMismatch": 0,
+        "sources": {
+          "highlight": 13,
+          "cronaca": 21,
+          "setpiece": 4
+        },
+        "invalidAttempts": 3
+      },
+      "soglia": "20 partite richieste",
+      "esito": "ok"
     }
   ],
   "segnalazioni": [],
-  "parteB": "non verificata"
+  "parteB": "completata"
 }
