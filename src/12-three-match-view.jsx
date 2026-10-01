@@ -10670,6 +10670,35 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             ball.position.x=_c92.bx+_g92;ball.position.z=_c92.bz;ball.position.y=0.22;
             if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_RIC92=(window.__CPM_RIC92|0)+1;}}
         } else if(sr.current._ric92)sr.current._ric92=null;}catch(_e92){}
+      /* [7.999.93 PO-143 — taccuino #140 «Siamo in vantaggio — gestisci!»: «pallone che arretra», «non era un dribbling»] MISURATO
+         (sonda _daievai92, tempo reale): «Porta palla nell'angolo» riuscito = un arco corto di 6u e poi pallone fermo 3,9 s; fallito
+         (palla persa) = il pallone arretra di 4u e resta fermo 2,6 s. La conduzione era resa come un appoggio e nessuno la portava.
+         Ora, finito l'arco: se riesce (conduzione senza gol ne' assist) chi ha il pallone lo porta verso la bandierina a 5 u/s fino a
+         16u; se il pallone e' perso, l'avversario piu' vicino lo prende e riparte verso la nostra porta (la respinta del pallone
+         perso dura 0,25 s, non 2,5). Rosso __CPM_NO_CONDUCI93. */
+      try{const _P93=propsRef.current||{};
+        const _bS93=_P93.hlType==='build'&&!_P93.hlOffBall&&_P93.hlSuccess===true&&_P93.hlReward!=='goal'&&_P93.hlReward!=='assist'&&_P93.hlOutcomeKind!=='chance';
+        const _bF93=((_P93.hlType==='build'||_P93.hlType==='dribble')&&_P93.hlSuccess===false&&_P93.hlOutcomeKind==='dispossessed')||(_P93.hlType==='pass'&&_P93.hlSuccess===false&&_P93.hlOutcomeKind==='overhit');/* anche il passaggio troppo forte e' palla persa: la respinta lo faceva tornare indietro (gi140 «Passaggio sicuro laterale»: -3u e fermo 0,9 s) */
+        if(_P93.matchPhase==='hl_result'&&!ballArcActive&&(!hlPostArcType||(_bF93&&hlPostArcType==='deflect'&&hlPostArcT>0.25))&&ball&&!_P93.hlDef&&(_bS93||_bF93)&&!(typeof window!=='undefined'&&window.__CPM_NO_CONDUCI93)){
+          let _c93=sr.current._con93;
+          if(!_c93){const _team93=_bS93?'home':'away';let _bd=1e9,_bm=null;
+            sr.current.players.forEach((pp,ii)=>{const src=(_P93.allPlayers||[])[ii];if(src&&src.team===_team93&&!src.gk&&pp.mesh&&pp.mesh!==hero){const d=Math.hypot(pp.mesh.position.x-ball.position.x,pp.mesh.position.z-ball.position.z);if(d<_bd){_bd=d;_bm=pp.mesh;}}});
+            if(_bS93&&hero){const _dh=Math.hypot(hero.position.x-ball.position.x,hero.position.z-ball.position.z);if(_dh<_bd+1.5){_bd=_dh;_bm=hero;}}/* la conduzione e' dell'eroe, se e' li' */
+            if(_bm&&_bd<12){const _sz=ball.position.z>=0?1:-1;/* fino a 12u: il primo tempo (andarsi incontro) copre la distanza; a 6u sulla fascia opposta nessuno era abbastanza vicino e il pallone aspettava fermo */
+              const _tx=_bS93?(AWAY_GOAL_X-3):-(AWAY_GOAL_X-6),_tz=_bS93?_sz*28:ball.position.z;
+              const _dx=_tx-ball.position.x,_dz=_tz-ball.position.z,_dl=Math.hypot(_dx,_dz)||1;
+              _c93=sr.current._con93={m:_bm,x:_bm.position.x,z:_bm.position.z,bx:ball.position.x,bz:ball.position.z,ux:_dx/_dl,uz:_dz/_dl,max:Math.min(16,_dl),t:0,go:0};}}
+          if(_c93){_c93.t+=aDt;if(_c93.t>0.15){const _m=_c93.m;
+            if(!_c93.has){/* prima si vanno incontro: il portatore verso il pallone (6 u/s), il pallone verso di lui (4 u/s) — niente pallone che corre da solo */
+              const _ddx=ball.position.x-_c93.x,_ddz=ball.position.z-_c93.z,_dd=Math.hypot(_ddx,_ddz);
+              if(_dd>1.2){const _sm=Math.min(_dd,6*aDt)/_dd,_sb=Math.min(_dd,4*aDt)/_dd;_c93.x+=_ddx*_sm;_c93.z+=_ddz*_sm;ball.position.x-=_ddx*_sb;ball.position.z-=_ddz*_sb;}
+              else _c93.has=true;}
+            else if(_c93.go<_c93.max){const _st=Math.min(_c93.max-_c93.go,5*aDt);_c93.go+=_st;_c93.x+=_c93.ux*_st;_c93.z+=_c93.uz*_st;}
+            _m.position.x=_c93.x;_m.position.z=_c93.z;_m.rotation.y=Math.atan2(_c93.ux,_c93.uz);
+            if(_c93.has){ball.position.x=_c93.x+_c93.ux*0.7;ball.position.z=_c93.z+_c93.uz*0.7;}
+            ball.position.y=0.22;
+            if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_CON93=(window.__CPM_CON93|0)+1;}}
+        } else if(sr.current._con93)sr.current._con93=null;}catch(_e93){}
       try{const _ph72=propsRef.current&&propsRef.current.matchPhase,_R72=sr.current;
         const _sz72=(_R72._sz72||(_R72._sz72=new THREE.Vector2()));renderer.getSize(_sz72);const _H72=_sz72.y||1;
         let _tg72=0;
@@ -10695,6 +10724,7 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
         else if(_R72._voOn72){camera.clearViewOffset();_R72._voOn72=0;_R72._vo72=0;}
         if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){window.__CPM_PAN72={ph:_ph72||null,off:+_cur72.toFixed(1),H:_H72};}
       }catch(_e72){}
+      if(typeof window!=='undefined'&&_CPM_TEST&&window.__CPM_CAMSTEP93ON){try{const _R93=sr.current,_c93=camera.position;if(_R93._cp93){const _st93=Math.hypot(_c93.x-_R93._cp93.x,_c93.y-_R93._cp93.y,_c93.z-_R93._cp93.z);if(_st93>2.5){const W=(window.__CPM_CAMSTEP93=window.__CPM_CAMSTEP93||[]);if(W.length<60)W.push({t:Math.round(performance.now()),st:+_st93.toFixed(2),dtr:+((_R93._dtReal708||0)*1000).toFixed(0),dt:+(dt*1000).toFixed(0),ph:(propsRef.current||{}).matchPhase,snap:!!_R93._cutSnap,sc:!!_R93._sceneCut,cut:!!(window.__CPM_CUTLIVE&&window.__CPM_CUTLIVE())});}}_R93._cp93={x:_c93.x,y:_c93.y,z:_c93.z};}catch(_e93){}}/* [PO-144 strumento, solo collaudo] passi di camera oltre 2,5u per fotogramma, con il passo reale */
       renderer.render(scene,camera);
     };
     loop();
