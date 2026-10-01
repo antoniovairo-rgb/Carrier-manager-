@@ -3501,7 +3501,16 @@ function ThreeMatchView(props){
       // FIX coerenza tackle: in un HL DIFENSIVO la palla sta sull'AVVERSARIO portatore (agganciato UNA volta
       //   all'inizio dell'HL → stabile, niente switch). Basta "l'eroe ha la palla ma deve contrastare".
       if(isHL&&!isResult&&P.hlType==="tackle"){
-        if(!_tackleCarrier){let _nd=1e9;const _a2=P.allPlayers||[];sr.current.players.forEach((pp,ii)=>{const s=_a2[ii];if(s&&s.team==='away'&&!s.gk){const d=Math.hypot(pp.mesh.position.x-hero.position.x,pp.mesh.position.z-hero.position.z);if(d<_nd){_nd=d;_tackleCarrier=pp.mesh;}}});}
+        /* [7.999.89 PO-172 — collaudo Codex, gi133 «Recupero sulla linea di fondo», codice 001] MISURATO (sonda _fondo89):
+           in scelta il pallone 3D stava a (21,51) mentre il pallone logico era sul portatore a (13,12), 27u dall'eroe e fuori
+           quadro. L'aggancio guardava l'avversario piu' vicino all'EROE-MESH nel primo fotogramma della scena, quando il corpo
+           dell'eroe non e' ancora arrivato sul punto della scena: agganciava un avversario a meta' campo e il pallone lo
+           seguiva per tutta la scena. Ora si aggancia l'avversario piu' vicino al pallone LOGICO (che la partita mette sul
+           portatore) e si riaggancia se quello agganciato si allontana oltre 6u dal pallone logico. Rosso __CPM_NO_FONDO89. */
+        const _no89=(typeof window!=='undefined'&&window.__CPM_NO_FONDO89);
+        const _lbx89=G2X(P.ballX==null?50:P.ballX),_lbz89=G2Z(P.ballY==null?50:P.ballY);
+        if(_tackleCarrier&&!_no89&&Math.hypot(_tackleCarrier.position.x-_lbx89,_tackleCarrier.position.z-_lbz89)>6)_tackleCarrier=null;
+        if(!_tackleCarrier){let _nd=1e9;const _a2=P.allPlayers||[];const _rx89=_no89?hero.position.x:_lbx89,_rz89=_no89?hero.position.z:_lbz89;sr.current.players.forEach((pp,ii)=>{const s=_a2[ii];if(s&&s.team==='away'&&!s.gk){const d=Math.hypot(pp.mesh.position.x-_rx89,pp.mesh.position.z-_rz89);if(d<_nd){_nd=d;_tackleCarrier=pp.mesh;}}});}
       } else _tackleCarrier=null;
       // [6.8.0 R3 slice 2] TIRO/TESTA/RIGORE/PUNIZIONE = palla COLPITA: durante l'arco d'esito la x/z punta
       //   DIRETTAMENTE al bersaglio dell'arco (ballArcTgt, lo stesso che valida il gate) con rate SINCRONIZZATO
