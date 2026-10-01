@@ -1460,6 +1460,22 @@ function updateStandings(standings,playerClubId,playerResult,prestigeShifts,opts
 // [5.76.0] seed canonico della giornata di lega: stabile per (club, stagione, settimana) → ricaricare un
 //   save e riavanzare produce la STESSA classifica (pattern di calcWorldStandings).
 function standingsSeed(clubId,season,week){return(hashStr(String(clubId||"club"))+(season||1)*100003+(week||1)*9973)>>>0;}
+/* [7.999.102 collaudo PO 01/10 «Dov'e' la verita'?»: classifica con 26 partite per TUTTE le squadre e calendario alla 34a giornata]
+   La classifica e il calendario della stagione devono parlare della STESSA lega. Il calendario nasce al cambio stagione con le squadre
+   della lega di allora (34 giornate = 18 squadre); la riconciliazione al caricamento rifaceva la classifica con la lega RICALCOLATA,
+   che puo' contare meno squadre (promozioni/retrocessioni accumulate): con 14 righe il tetto «una squadra non gioca piu' di 2x(N-1)
+   partite» di updateStandings vale 26, e da li' la classifica si fermava per tutti. Fonte di verita' della stagione = il calendario:
+   squadre = l'eroe + gli avversari di campionato del calendario; risultati = le giornate giocate, ripercorse con updateStandings e lo
+   stesso seme che il gioco usa (standingsSeed club+stagione+settimana). Le partite fra le ALTRE squadre si risimulano con quei semi:
+   escono come allora salvo gli spostamenti di prestigio nel frattempo (dichiarato). Ritorna null se il calendario non basta. */
+function leagueClubsFromCalendar(p){const cal=(p&&p.calendar)||[];const lg=cal.filter(m=>m&&!m.type&&m.opponentId!=null);if(lg.length<3)return null;
+  const me=p.club||{};const ids=[];const seen=new Set();const add=id=>{if(id!=null&&!seen.has(id)){seen.add(id);ids.push(id);}};add(me.id||me.n);lg.forEach(m=>add(m.opponentId));
+  const byId={};(p.standings||[]).forEach(r=>{if(r&&r.id!=null)byId[r.id]=r;});
+  return ids.map(id=>{const c=(typeof CLUBS!=='undefined'?CLUBS.find(x=>x.id===id||x.n===id):null)||byId[id]||(id===(me.id||me.n)?me:null)||{id,n:(lg.find(m=>m.opponentId===id)||{}).opponentName||String(id)};const{played,wins,draws,losses,gf,ga,gd,pts,...rest}=c;return {...rest,id:c.id||id};});}
+function rebuildStandingsFromCalendar(p){const clubs=leagueClubsFromCalendar(p);if(!clubs)return null;const me=p.club||{};const myId=me.id||me.n;
+  let st=initStandings(clubs);const md=(p.calendar||[]).filter(m=>m&&!m.type&&m.played&&m.result).sort((a,b)=>(a.matchday||0)-(b.matchday||0));
+  for(const m of md){st=updateStandings(st,myId,m.result,p.clubPrestigeShifts||{},{opponentId:m.opponentId,seed:standingsSeed(myId,p.season,m.week)});}
+  return st;}
 // Sprint 46 — World League ecosystem: deterministic week-by-week standings for all leagues
 // Seeded xorshift32 PRNG: same seed → same sequence, no Math.random()
 function seededRng(seed){let s=(seed>>>0)||1;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296;};}

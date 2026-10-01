@@ -1912,10 +1912,24 @@ function migratePlayer(player){
     //   (dopo la riconciliazione length===lc.length e il club è presente → non riscatta). Se non c'è NULLA da
     //   preservare (nessuna riga, o il club dell'eroe assente = pool completamente diverso) l'esito coincide con
     //   una ricostruzione pulita.
+    /* [7.999.102 collaudo PO 01/10: classifica ferma a 26 partite con il calendario alla 34a] per i professionisti la lega della stagione
+       e' quella del CALENDARIO (src/09 rebuildStandingsFromCalendar). Se la classifica non ha le stesse squadre, o una squadra ha
+       meno partite del club dell'eroe in calendario, si ricostruisce dalle giornate giocate. Rosso __CPM_NO_CLASSIFICA102. */
+    if((newP.proStatus||"u18")==="pro"&&!(typeof window!=='undefined'&&window.__CPM_NO_CLASSIFICA102)){try{
+      const _cl102=leagueClubsFromCalendar(newP);
+      if(_cl102){const _ids102=new Set(_cl102.map(c=>c.id));const _st102=newP.standings||[];
+        const _nPl102=(newP.calendar||[]).filter(m=>m&&!m.type&&m.played&&m.result).length;
+        const _diff102=_st102.length!==_cl102.length||_st102.some(r=>!_ids102.has(r.id));
+        const _myRow102=_st102.find(r=>r.id===(newP.club&&newP.club.id));
+        const _short102=!_myRow102||(_myRow102.played|0)<_nPl102||_st102.some(r=>(r.played|0)<_nPl102-1);
+        if(_diff102||_short102){const _rb102=rebuildStandingsFromCalendar(newP);
+          if(_rb102){newP={...newP,standings:_rb102};changed=true;try{if(typeof window!=='undefined')window.__CPM_CLASSIFICA102={prima:_st102.length,dopo:_rb102.length,giocate:_nPl102,motivo:_diff102?'squadre':'partite'};}catch(_e){}}}}
+    }catch(_e102){}}
+    const _lc102=((newP.proStatus||"u18")==="pro"&&!(typeof window!=='undefined'&&window.__CPM_NO_CLASSIFICA102)&&leagueClubsFromCalendar(newP))||lc;
     const _clubInStandings=(newP.standings||[]).some(s=>s.id===newP.club?.id);
-    if(!newP.standings||newP.standings.length===0||newP.standings.length!==lc.length||!_clubInStandings){
+    if(!newP.standings||newP.standings.length===0||newP.standings.length!==_lc102.length||!_clubInStandings){
       const _stById={};(newP.standings||[]).forEach(s=>{if(s&&s.id!=null)_stById[s.id]=s;});
-      const _reconciled=lc.map(c=>_stById[c.id]||{...c,played:0,wins:0,draws:0,losses:0,gf:0,ga:0,gd:0,pts:0});
+      const _reconciled=_lc102.map(c=>_stById[c.id]||{...c,played:0,wins:0,draws:0,losses:0,gf:0,ga:0,gd:0,pts:0});
       newP={...newP,standings:_reconciled};
       changed=true;
     }

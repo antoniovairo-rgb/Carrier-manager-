@@ -10738,8 +10738,15 @@ if(!(typeof window!=='undefined'&&window.__CPM_NO_DAIEVAI92)){let _r92=sr.curren
             const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));sp.scale.set(2.1,0.39,1);sp.renderOrder=999;sp.visible=false;scene.add(sp);_R51._tag51.push({sp,m,gold});};
           (_R51.players||[]).forEach(pp=>{if(pp&&pp.mesh)_mk51(pp.mesh,false);});if(hero)_mk51(hero,true);}
         if(_R51._tag51){let _n51=0;const bx=ball?ball.position.x:0,bz=ball?ball.position.z:0;
-          for(const g of _R51._tag51){const v=_on51&&(g.gold||Math.hypot(g.m.position.x-bx,g.m.position.z-bz)<18);g.sp.visible=v;if(v){g.sp.position.set(g.m.position.x,2.35,g.m.position.z);_n51++;}}
-          if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length};}
+          /* [7.999.102 collaudo PO 01/10 «nomi senza giocatori in campo»] con i corpi CGTrader si disegnano solo eroe, portiere e i 3 piu'
+             vicini al pallone (av.root.visible): le altre targhette restavano sospese sul vuoto. Ora la targhetta segue il CORPO: visibile
+             solo se il corpo che segue quella mesh e' disegnato (senza corpi GLB decide la mesh procedurale). Rosso __CPM_NO_NOMI102. */
+          const _no102=typeof window!=='undefined'&&window.__CPM_NO_NOMI102;
+          if(glbAvatars&&glbAvatars.length&&_R51._av102src!==glbAvatars){_R51._av102src=glbAvatars;_R51._av102=new Map();glbAvatars.forEach(av=>{if(av&&av.proc)_R51._av102.set(av.proc,av);});}
+          const _corpo102=m=>{if(_no102)return true;const av=_R51._av102&&_R51._av102.get(m);if(av)return !!(av.root&&av.root.visible);return m.visible!==false;};
+          let _orf102=0;
+          for(const g of _R51._tag51){const v=_on51&&(g.gold||Math.hypot(g.m.position.x-bx,g.m.position.z-bz)<18)&&_corpo102(g.m);g.sp.visible=v;if(v){g.sp.position.set(g.m.position.x,2.35,g.m.position.z);_n51++;{const av=_R51._av102&&_R51._av102.get(g.m);if(av&&!(av.root&&av.root.visible))_orf102++;}}}
+          if(typeof window!=='undefined'&&(_CPM_TEST||window.__CPM_REC))window.__CPM_NOMI51={ph:_ph51,visibili:_n51,totale:_R51._tag51.length,senzaCorpo:_orf102};}
       }catch(_e51){}
       renderer.render(scene,camera);
     };
