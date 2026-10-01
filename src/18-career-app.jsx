@@ -4834,9 +4834,14 @@ const getThisWeekMatchday=()=>{
       let _loanRestC=null,_loanNewDeal=null;/* [5.98.0 EC-4] contratto al rientro/riscatto: prima OGNI prestito finiva in svincolo (duration 1→0) */// §9.5: prestito convertito in acquisto definitivo → normalizza transferType
       if(_loanE3&&newSeason>=(_loanE3.untilSeason||newSeason+1)){
         const _lt3=_loanE3.type||"prestito";
+        /* [7.999.91 bloccante — collaudo Codex carriere 01/10: 10 errori JS «Cannot read properties of null (reading 'parentClub')» in 7 carriere su 14]
+           Le notifiche di fine prestito partono dopo 400 ms e leggevano `_loanE3`, che qui sotto viene azzerato subito: al momento del
+           timer valeva null, il richiamo si rompeva e il giocatore non vedeva mai «Fine prestito — rientri al …». Ora il prestito si
+           cattura prima. Rosso __CPM_NO_PRESTITO91 (il richiamo torna a leggere la variabile azzerata). */
+        const _lp91=_loanE3;const _pcn91=()=>((typeof window!=='undefined'&&window.__CPM_NO_PRESTITO91)?_loanE3:_lp91).parentClub?.n;
         if(_lt3==="prestito"){
           _loanReturnClub=_loanE3.parentClub;_loanRestC=_loanE3.parentContract||null;
-          setTimeout(()=>notify(`↩️ Fine prestito — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
+          setTimeout(()=>notify(`↩️ Fine prestito — rientri al ${_pcn91()||"club madre"}.`,"#6366f1"),400);
         }else if(_lt3==="prestito con opzione"){
           if((p.matches||0)>=8&&(p.coachTrust||60)>=50){
             _loanStayClub={...(p.club||{}),transferType:"trasferimento definitivo"};
@@ -4844,7 +4849,7 @@ const getThisWeekMatchday=()=>{
             setTimeout(()=>notify(`💰 Opzione esercitata — rimani al ${p.club?.n||"club"} a titolo definitivo!`,"#16a34a"),400);
           }else{
             _loanReturnClub=_loanE3.parentClub;_loanRestC=_loanE3.parentContract||null;
-            setTimeout(()=>notify(`↩️ Opzione non esercitata — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
+            setTimeout(()=>notify(`↩️ Opzione non esercitata — rientri al ${_pcn91()||"club madre"}.`,"#6366f1"),400);
           }
         }else if(_lt3==="prestito con obbligo"){
           if((p.matches||0)>=(_loanE3.minMatches||10)){
@@ -4853,7 +4858,7 @@ const getThisWeekMatchday=()=>{
             setTimeout(()=>notify(`💰 Obbligo scattato — rimani al ${p.club?.n||"club"} a titolo definitivo!`,"#16a34a"),400);
           }else{
             _loanReturnClub=_loanE3.parentClub;_loanRestC=_loanE3.parentContract||null;
-            setTimeout(()=>notify(`↩️ Obbligo non scattato — rientri al ${_loanE3.parentClub?.n||"club madre"}.`,"#6366f1"),400);
+            setTimeout(()=>notify(`↩️ Obbligo non scattato — rientri al ${_pcn91()||"club madre"}.`,"#6366f1"),400);
           }
         }
         _loanE3=null;
