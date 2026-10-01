@@ -1,0 +1,5149 @@
+{
+  "version": "7.999.96",
+  "commit": "ccabb486d7bc957edc8d7a39ef45d2c51bb80d32",
+  "command": "node tests/codex/rilievi-27a-motore.mjs",
+  "settings": {
+    "seeds": "1..100",
+    "location": {
+      "x": 85,
+      "y": 50
+    },
+    "hero": {
+      "i": 21,
+      "x": 85,
+      "y": 50,
+      "ovr": 75
+    },
+    "force": {
+      "home": 70,
+      "away": 70
+    },
+    "hold": 1,
+    "maxTicks": 20,
+    "min": 10
+  },
+  "summary": {
+    "branchEnabled": {
+      "n": 100,
+      "sceneRequested": 100,
+      "freeKickTaken": 0,
+      "directShots": 0,
+      "passes": 0,
+      "unresolvedSeeds": []
+    },
+    "branchDisabled": {
+      "n": 100,
+      "sceneRequested": 0,
+      "freeKickTaken": 100,
+      "directShots": 45,
+      "passes": 18,
+      "unresolvedSeeds": []
+    }
+  },
+  "rows": [
+    {
+      "seed": 1,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 2,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 3,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 4,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 5,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 6,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 7,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 8,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 9,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 10,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 11,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 12,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 13,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 14,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 15,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 16,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 17,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 18,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 19,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 20,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 21,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 22,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 23,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 24,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 25,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 26,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 27,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 28,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 29,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 30,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 31,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 32,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 33,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 34,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 35,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 36,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 37,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 38,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 39,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 40,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 41,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 42,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 43,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 44,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 45,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 46,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 47,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 48,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 49,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 50,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 51,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 52,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 53,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 54,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 55,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 56,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 57,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 58,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 59,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 60,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 61,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 62,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 63,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 64,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 65,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 66,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 67,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 68,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 69,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 70,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 71,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 72,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 73,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 74,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 75,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 76,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 77,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 78,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 79,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 80,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 81,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 82,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 83,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 84,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 85,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 86,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 87,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 88,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 89,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 90,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 91,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 92,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 93,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 94,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 95,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 96,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 97,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 98,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 99,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 100,
+      "disabled": false,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "occasione_eroe",
+          "kind": null,
+          "intent": null,
+          "origine": "punizione",
+          "chi": 21
+        }
+      ],
+      "fermo": "foul"
+    },
+    {
+      "seed": 1,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 2,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 3,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 4,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 5,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 6,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 7,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 8,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 9,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 10,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 11,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 12,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 13,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 14,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 15,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 16,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 17,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 18,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 19,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 20,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 21,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 22,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 23,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 24,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 25,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 26,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 27,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 28,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 29,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 30,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 31,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 32,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 33,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 34,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 35,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 36,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 37,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 38,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 39,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 40,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 41,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 42,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 43,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 44,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 45,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 46,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 47,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 48,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 49,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 50,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 51,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 52,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 53,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 54,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 55,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 56,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 57,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 58,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 59,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 60,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 61,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 62,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 63,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 64,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 65,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 66,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 67,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 68,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 69,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 70,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 71,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 72,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 73,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 74,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 75,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 76,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 77,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 78,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 79,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 80,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 81,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 82,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 83,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 84,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 85,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 86,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 87,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 88,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 89,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 90,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 91,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 92,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 93,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 94,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 95,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 96,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 97,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 98,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "tiro",
+          "kind": null,
+          "intent": "freekick",
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 99,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        },
+        {
+          "tick": 1,
+          "t": "passaggio",
+          "kind": "lancio",
+          "intent": null,
+          "origine": null,
+          "chi": null
+        }
+      ],
+      "fermo": null
+    },
+    {
+      "seed": 100,
+      "disabled": true,
+      "events": [
+        {
+          "tick": 0,
+          "t": "fallo",
+          "kind": null,
+          "intent": null,
+          "origine": null,
+          "chi": null
+        },
+        {
+          "tick": 1,
+          "t": "battuta",
+          "kind": "foul",
+          "intent": null,
+          "origine": null,
+          "chi": 21
+        }
+      ],
+      "fermo": null
+    }
+  ]
+}

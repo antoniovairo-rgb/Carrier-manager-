@@ -1,0 +1,765 @@
+{
+  "version": "7.999.96",
+  "commit": "ccabb486d7bc957edc8d7a39ef45d2c51bb80d32",
+  "command": "node tests/codex/rilievi-26a-motore.mjs",
+  "settings": {
+    "seeds": "1..100",
+    "corner": {
+      "x": 97,
+      "y": 2,
+      "batt": 8
+    },
+    "hero": {
+      "i": 21,
+      "x": 85,
+      "y": 50,
+      "ovr": 75
+    },
+    "maxTicks": 120
+  },
+  "summary": {
+    "seeds": 100,
+    "heroOriginScenes": 42,
+    "receiverIsCrosser": 42,
+    "receiverIsHero": 0,
+    "actualCrossTargetsHero": 42
+  },
+  "rows": [
+    {
+      "seed": 1,
+      "found": {
+        "tick": 30,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 3,
+        "castReceiver": 3,
+        "castCrosser": 3,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 2,
+      "found": {
+        "tick": 45,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 3,
+      "found": {
+        "tick": 47,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 5,
+        "castReceiver": 5,
+        "castCrosser": 5,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 4,
+      "found": {
+        "tick": 16,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 5,
+      "found": null
+    },
+    {
+      "seed": 6,
+      "found": null
+    },
+    {
+      "seed": 7,
+      "found": {
+        "tick": 69,
+        "kind": "angolo",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 8,
+      "found": null
+    },
+    {
+      "seed": 9,
+      "found": {
+        "tick": 22,
+        "kind": "angolo",
+        "hero": 21,
+        "originKicker": 1,
+        "castReceiver": 1,
+        "castCrosser": 1,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 10,
+      "found": {
+        "tick": 36,
+        "kind": "angolo",
+        "hero": 21,
+        "originKicker": 9,
+        "castReceiver": 9,
+        "castCrosser": 9,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 11,
+      "found": null
+    },
+    {
+      "seed": 12,
+      "found": {
+        "tick": 27,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 5,
+        "castReceiver": 5,
+        "castCrosser": 5,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 13,
+      "found": {
+        "tick": 28,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 2,
+        "castReceiver": 2,
+        "castCrosser": 2,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 14,
+      "found": {
+        "tick": 16,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 15,
+      "found": null
+    },
+    {
+      "seed": 16,
+      "found": null
+    },
+    {
+      "seed": 17,
+      "found": {
+        "tick": 19,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 18,
+      "found": null
+    },
+    {
+      "seed": 19,
+      "found": null
+    },
+    {
+      "seed": 20,
+      "found": null
+    },
+    {
+      "seed": 21,
+      "found": {
+        "tick": 36,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 1,
+        "castReceiver": 1,
+        "castCrosser": 1,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 22,
+      "found": {
+        "tick": 38,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 23,
+      "found": null
+    },
+    {
+      "seed": 24,
+      "found": null
+    },
+    {
+      "seed": 25,
+      "found": null
+    },
+    {
+      "seed": 26,
+      "found": {
+        "tick": 25,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 27,
+      "found": {
+        "tick": 45,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 7,
+        "castReceiver": 7,
+        "castCrosser": 7,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 28,
+      "found": {
+        "tick": 34,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 29,
+      "found": {
+        "tick": 17,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 30,
+      "found": null
+    },
+    {
+      "seed": 31,
+      "found": {
+        "tick": 19,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 2,
+        "castReceiver": 2,
+        "castCrosser": 2,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 32,
+      "found": {
+        "tick": 68,
+        "kind": "angolo",
+        "hero": 21,
+        "originKicker": 5,
+        "castReceiver": 5,
+        "castCrosser": 5,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 33,
+      "found": null
+    },
+    {
+      "seed": 34,
+      "found": {
+        "tick": 32,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 9,
+        "castReceiver": 9,
+        "castCrosser": 9,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 35,
+      "found": null
+    },
+    {
+      "seed": 36,
+      "found": {
+        "tick": 54,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 6,
+        "castReceiver": 6,
+        "castCrosser": 6,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 37,
+      "found": null
+    },
+    {
+      "seed": 38,
+      "found": null
+    },
+    {
+      "seed": 39,
+      "found": {
+        "tick": 25,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 5,
+        "castReceiver": 5,
+        "castCrosser": 5,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 40,
+      "found": null
+    },
+    {
+      "seed": 41,
+      "found": {
+        "tick": 16,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 42,
+      "found": null
+    },
+    {
+      "seed": 43,
+      "found": {
+        "tick": 81,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 3,
+        "castReceiver": 3,
+        "castCrosser": 3,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 44,
+      "found": null
+    },
+    {
+      "seed": 45,
+      "found": null
+    },
+    {
+      "seed": 46,
+      "found": {
+        "tick": 52,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 2,
+        "castReceiver": 2,
+        "castCrosser": 2,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 47,
+      "found": {
+        "tick": 27,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 3,
+        "castReceiver": 3,
+        "castCrosser": 3,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 48,
+      "found": null
+    },
+    {
+      "seed": 49,
+      "found": null
+    },
+    {
+      "seed": 50,
+      "found": {
+        "tick": 87,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 6,
+        "castReceiver": 6,
+        "castCrosser": 6,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 51,
+      "found": null
+    },
+    {
+      "seed": 52,
+      "found": null
+    },
+    {
+      "seed": 53,
+      "found": null
+    },
+    {
+      "seed": 54,
+      "found": null
+    },
+    {
+      "seed": 55,
+      "found": null
+    },
+    {
+      "seed": 56,
+      "found": null
+    },
+    {
+      "seed": 57,
+      "found": null
+    },
+    {
+      "seed": 58,
+      "found": null
+    },
+    {
+      "seed": 59,
+      "found": null
+    },
+    {
+      "seed": 60,
+      "found": null
+    },
+    {
+      "seed": 61,
+      "found": null
+    },
+    {
+      "seed": 62,
+      "found": null
+    },
+    {
+      "seed": 63,
+      "found": {
+        "tick": 41,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 64,
+      "found": {
+        "tick": 21,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 1,
+        "castReceiver": 1,
+        "castCrosser": 1,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 65,
+      "found": null
+    },
+    {
+      "seed": 66,
+      "found": null
+    },
+    {
+      "seed": 67,
+      "found": null
+    },
+    {
+      "seed": 68,
+      "found": {
+        "tick": 78,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 2,
+        "castReceiver": 2,
+        "castCrosser": 2,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 69,
+      "found": null
+    },
+    {
+      "seed": 70,
+      "found": null
+    },
+    {
+      "seed": 71,
+      "found": null
+    },
+    {
+      "seed": 72,
+      "found": null
+    },
+    {
+      "seed": 73,
+      "found": {
+        "tick": 15,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 74,
+      "found": {
+        "tick": 48,
+        "kind": "angolo",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 75,
+      "found": null
+    },
+    {
+      "seed": 76,
+      "found": null
+    },
+    {
+      "seed": 77,
+      "found": {
+        "tick": 30,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 5,
+        "castReceiver": 5,
+        "castCrosser": 5,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 78,
+      "found": {
+        "tick": 53,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 5,
+        "castReceiver": 5,
+        "castCrosser": 5,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 79,
+      "found": null
+    },
+    {
+      "seed": 80,
+      "found": null
+    },
+    {
+      "seed": 81,
+      "found": null
+    },
+    {
+      "seed": 82,
+      "found": {
+        "tick": 65,
+        "kind": "punizione",
+        "hero": 21,
+        "originKicker": 9,
+        "castReceiver": 9,
+        "castCrosser": 9,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 83,
+      "found": {
+        "tick": 48,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 9,
+        "castReceiver": 9,
+        "castCrosser": 9,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 84,
+      "found": {
+        "tick": 14,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 8,
+        "castReceiver": 8,
+        "castCrosser": 8,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 85,
+      "found": null
+    },
+    {
+      "seed": 86,
+      "found": null
+    },
+    {
+      "seed": 87,
+      "found": null
+    },
+    {
+      "seed": 88,
+      "found": {
+        "tick": 31,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 5,
+        "castReceiver": 5,
+        "castCrosser": 5,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 89,
+      "found": {
+        "tick": 61,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 1,
+        "castReceiver": 1,
+        "castCrosser": 1,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 90,
+      "found": null
+    },
+    {
+      "seed": 91,
+      "found": null
+    },
+    {
+      "seed": 92,
+      "found": {
+        "tick": 50,
+        "kind": "angolo",
+        "hero": 21,
+        "originKicker": 5,
+        "castReceiver": 5,
+        "castCrosser": 5,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 93,
+      "found": null
+    },
+    {
+      "seed": 94,
+      "found": {
+        "tick": 43,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 1,
+        "castReceiver": 1,
+        "castCrosser": 1,
+        "actualCrossReceiver": 21
+      }
+    },
+    {
+      "seed": 95,
+      "found": null
+    },
+    {
+      "seed": 96,
+      "found": null
+    },
+    {
+      "seed": 97,
+      "found": null
+    },
+    {
+      "seed": 98,
+      "found": null
+    },
+    {
+      "seed": 99,
+      "found": null
+    },
+    {
+      "seed": 100,
+      "found": {
+        "tick": 106,
+        "kind": "cross",
+        "hero": 21,
+        "originKicker": 7,
+        "castReceiver": 7,
+        "castCrosser": 7,
+        "actualCrossReceiver": 21
+      }
+    }
+  ]
+}
