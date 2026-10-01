@@ -38,9 +38,12 @@ for (const [gs, as, piede] of CASI) {
      a pochi fotogrammi al secondo il piede, a 15-19 m/s, in un fotogramma e' gia' altrove) — minimo entro 0,1 s dalla partenza */
   const PIEDE = { 'kick': 'pL', 'kick~m': 'pR', 'mx-strike-foward-jog': 'pR', 'mx-strike-foward-jog~m': 'pL' }[F[im].cn] || 'pR';
   const vicino = []; for (let j = Math.max(1, im); j < F.length; j++) { if (Math.abs(F[j].t - tA) > 0.1) continue; const f = F[j - 1][PIEDE], bb = F[j].pb; if (f && bb) vicino.push(+Math.hypot(bb[0] - f[0], bb[1] - f[1], bb[2] - f[2]).toFixed(3)); }
+  /* [7.999.97 PO-173] si giudica il 75° percentile, non il massimo: un solo fotogramma di frenata (velocita' gia' sotto 1,5 ma
+     cadenza ancora smussata dalla corsa) bastava a far scattare il rosso (4,09 contro 4, giro del 01/10); il difetto del 7.999.37
+     era una corsa al massimo SOSTENUTA. Sotto tre campioni il controllo non giudica. Il massimo resta stampato nel rapporto. */
   /* [7.999.37] gambe a inizio scena: con l'eroe quasi fermo il passo della corsa (cadenza x velocita' naturale) non corre al massimo */
   const avvio = F.slice(0, im).filter(x => x.v < 1.5 && x.rts != null && x.v0 != null && x.rw > 0.3).map(x => x.rts * x.v0);
-  const r = { tag, passoAvvio: avvio.length ? +Math.max(...avvio).toFixed(2) : null, clip: F[im].cn, piede: W.s34 ? W.s34.piede : null, fit: W.s34 ? +W.s34.fit.toFixed(2) : null,
+  const r = { tag, passoAvvio: avvio.length >= 3 ? +[...avvio].sort((a, b) => a - b)[Math.floor(avvio.length * 0.75)].toFixed(2) : null, passoAvvioMax: avvio.length ? +Math.max(...avvio).toFixed(2) : null, campioniAvvio: avvio.length, clip: F[im].cn, piede: W.s34 ? W.s34.piede : null, fit: W.s34 ? +W.s34.fit.toFixed(2) : null,
     caricamento: +(tA - F[im].t).toFixed(2), scivolamento: sl.length ? sl[Math.floor(sl.length / 2)] : null, campioniAppoggio: sl.length,
     accompagnamento: +(F[fine].t - tA).toFixed(2), contatto: vicino.length ? Math.min(...vicino) : null };
   out.push(r); console.log(JSON.stringify(r));
