@@ -253,6 +253,8 @@
     "sotto-86:rosso": "CPM_ROSSO86=1 CPM_GI=33,168,31,133,157,24 node sotto-86.mjs",
     "ruba-87": "node ruba-87.mjs",
     "ruba-87:rosso": "CPM_ROSSO87=1 node ruba-87.mjs",
+    "apre-88": "CPM_GI=31,128,137,168,157,33 node apre-88.mjs",
+    "apre-88:rosso": "CPM_ROSSO88=1 CPM_GI=31,128,137,168,157,33 node apre-88.mjs",
     "festa-79": "node festa-79.mjs",
     "festa-79:rosso": "CPM_ROSSO80=1 node festa-79.mjs",
     "testa-76": "node testa-76.mjs"
