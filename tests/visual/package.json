@@ -265,6 +265,8 @@
     "daievai-92:rosso": "CPM_GUARD=1 CPM_ROSSO92=1 node daievai-92.mjs",
     "conduci-93": "CPM_GUARD=1 node conduci-93.mjs",
     "conduci-93:rosso": "CPM_GUARD=1 CPM_ROSSO93=1 node conduci-93.mjs",
+    "classifica-94": "node classifica-94.mjs",
+    "classifica-94:rosso": "CPM_ROSSO94=1 node classifica-94.mjs",
     "festa-79": "node festa-79.mjs",
     "festa-79:rosso": "CPM_ROSSO80=1 node festa-79.mjs",
     "testa-76": "node testa-76.mjs"
