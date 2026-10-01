@@ -1,0 +1,2457 @@
+{
+  "versione": "7.999.92",
+  "commit": "b332f92766c5ef48ae3c1d148e33c193905e010e",
+  "compito": "PO-176 salvataggio e ricarica",
+  "comando": [
+    "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_SEEDS='0'; $env:CPM_OUTPUT='salvataggio-ricarica-pilot.json.gz'; node tests/codex/salvataggio-ricarica.mjs",
+    "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_SEEDS='1,8,13,17,35'; $env:CPM_OUTPUT='salvataggio-ricarica-rest.json.gz'; node tests/codex/salvataggio-ricarica.mjs",
+    "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_SEEDS='0,13'; $env:CPM_OUTPUT='salvataggio-ricarica-masked.json.gz'; $env:CPM_STOP_AT='S2W1'; $env:CPM_RUN_TAG='masked-'; $env:CPM_MASK_MODAL='1'; node tests/codex/salvataggio-ricarica.mjs",
+    "$env:CPM_CHROME='C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; $env:CPM_SEEDS='1,8'; $env:CPM_OUTPUT='salvataggio-ricarica-masked-1-8.json.gz'; $env:CPM_STOP_AT='S2W1'; $env:CPM_RUN_TAG='masked-'; $env:CPM_MASK_MODAL='1'; node tests/codex/salvataggio-ricarica.mjs"
+  ],
+  "seme": [
+    0,
+    1,
+    8,
+    13,
+    17,
+    35
+  ],
+  "misure": [
+    {
+      "nome": "reload misurati",
+      "valore": 21,
+      "soglia": "21 accessibili (3 S1/W10 impossibili per seed iniziali S2)",
+      "esito": "ok"
+    },
+    {
+      "nome": "campi cambiati in C",
+      "valore": 6,
+      "soglia": "0",
+      "esito": "anomalia"
+    },
+    {
+      "nome": "giornate già giocate tornate da giocare",
+      "valore": 0,
+      "soglia": "0",
+      "esito": "ok"
+    }
+  ],
+  "segnalazioni": [
+    {
+      "gravita": "media",
+      "descrizione": "Seme 0 S2W1: player.rival null → {\"name\":\"Esteban Bianchi\",\"nation\":\"Italia\",\"age\":19,\"ovr\":68,\"club\":{\"n\":\"Torino Athletic\",\"id\":\"juve\",\"p\":95,\"lg\":\"Lega A\",\"c\":\"#f5f5f5\",\"nat\":\"🇮🇹\"},\"goals\":7,\"totalGoals\":6,\"assists\":5,\"trophies\":0,\"seasons\":1,\"relationship\":\"sconosciuto\",\"history\":[],\"awards\":{\"palloneOros\":[],\"scarpaOros\":[]}}",
+      "come_riprodurre": "node tests/codex/salvataggio-ricarica.mjs",
+      "prove": [
+        "tests/codex/salvataggio-ricarica.json.gz",
+        "reports/codex/salvataggio-ricarica/masked-s0-S2W1-before-profile.png",
+        "reports/codex/salvataggio-ricarica/masked-s0-S2W1-after-profile.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "Seme 0 S2W1: player.clubSponsor null → {\"name\":\"FORTEZZA\",\"annual\":4710000,\"since\":2,\"until\":6,\"clubId\":\"tor\"}",
+      "come_riprodurre": "node tests/codex/salvataggio-ricarica.mjs",
+      "prove": [
+        "tests/codex/salvataggio-ricarica.json.gz",
+        "reports/codex/salvataggio-ricarica/masked-s0-S2W1-before-club.png",
+        "reports/codex/salvataggio-ricarica/masked-s0-S2W1-after-club.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "Seme 1 S2W1: player.rival null → {\"name\":\"Esteban Bianchi\",\"nation\":\"Italia\",\"age\":19,\"ovr\":69,\"club\":{\"n\":\"Torino Athletic\",\"id\":\"juve\",\"p\":95,\"lg\":\"Lega A\",\"c\":\"#f5f5f5\",\"nat\":\"🇮🇹\"},\"goals\":7,\"totalGoals\":6,\"assists\":5,\"trophies\":0,\"seasons\":1,\"relationship\":\"sconosciuto\",\"history\":[],\"awards\":{\"palloneOros\":[],\"scarpaOros\":[]}}",
+      "come_riprodurre": "node tests/codex/salvataggio-ricarica.mjs",
+      "prove": [
+        "tests/codex/salvataggio-ricarica.json.gz",
+        "reports/codex/salvataggio-ricarica/masked-s1-S2W1-before-profile.png",
+        "reports/codex/salvataggio-ricarica/masked-s1-S2W1-after-profile.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "Seme 1 S2W1: player.clubSponsor null → {\"name\":\"FORTEZZA\",\"annual\":4462000,\"since\":2,\"until\":6,\"clubId\":\"sas\"}",
+      "come_riprodurre": "node tests/codex/salvataggio-ricarica.mjs",
+      "prove": [
+        "tests/codex/salvataggio-ricarica.json.gz",
+        "reports/codex/salvataggio-ricarica/masked-s1-S2W1-before-club.png",
+        "reports/codex/salvataggio-ricarica/masked-s1-S2W1-after-club.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "Seme 8 S2W1: player.rival null → {\"name\":\"Esteban Bianchi\",\"nation\":\"Italia\",\"age\":19,\"ovr\":88,\"club\":{\"n\":\"Torino Athletic\",\"id\":\"juve\",\"p\":95,\"lg\":\"Lega A\",\"c\":\"#f5f5f5\",\"nat\":\"🇮🇹\"},\"goals\":7,\"totalGoals\":6,\"assists\":5,\"trophies\":0,\"seasons\":1,\"relationship\":\"sconosciuto\",\"history\":[],\"awards\":{\"palloneOros\":[],\"scarpaOros\":[]}}",
+      "come_riprodurre": "node tests/codex/salvataggio-ricarica.mjs",
+      "prove": [
+        "tests/codex/salvataggio-ricarica.json.gz",
+        "reports/codex/salvataggio-ricarica/masked-s8-S2W1-before-profile.png",
+        "reports/codex/salvataggio-ricarica/masked-s8-S2W1-after-profile.png"
+      ]
+    },
+    {
+      "gravita": "media",
+      "descrizione": "Seme 8 S2W1: player.clubSponsor null → {\"name\":\"METEORA\",\"annual\":7918000,\"since\":2,\"until\":5,\"clubId\":\"inter\"}",
+      "come_riprodurre": "node tests/codex/salvataggio-ricarica.mjs",
+      "prove": [
+        "tests/codex/salvataggio-ricarica.json.gz",
+        "reports/codex/salvataggio-ricarica/masked-s8-S2W1-before-club.png",
+        "reports/codex/salvataggio-ricarica/masked-s8-S2W1-after-club.png"
+      ]
+    }
+  ],
+  "counts": {
+    "A": 21,
+    "B": 120,
+    "C": 6,
+    "non verificato": 3
+  },
+  "checks": [
+    {
+      "seed": 0,
+      "key": "S1W10",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "Torino Athletic Primavera",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "Torino Athletic Primavera",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": null,
+      "clubId": "tor"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "saveDiff": 40,
+      "snapshotDiff": 39,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Bergamo",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Bergamo",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": "tor",
+      "clubId": "tor"
+    },
+    {
+      "seed": 0,
+      "key": "post-cup",
+      "saveDiff": 1,
+      "snapshotDiff": 0,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Blucerchiati",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Blucerchiati",
+        "type": null
+      },
+      "cupClubBefore": "tor",
+      "cupClubAfter": "tor",
+      "clubId": "tor"
+    },
+    {
+      "seed": 0,
+      "key": "S3W20",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Empolese",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Empolese",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": "tor",
+      "clubId": "tor"
+    },
+    {
+      "seed": 1,
+      "key": "S1W10",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Partenope Primavera",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Partenope Primavera",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": null,
+      "clubId": "sas"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "saveDiff": 40,
+      "snapshotDiff": 39,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "AC Rossoneri",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "AC Rossoneri",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": "sas",
+      "clubId": "sas"
+    },
+    {
+      "seed": 1,
+      "key": "post-cup",
+      "saveDiff": 1,
+      "snapshotDiff": 0,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Genova",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Genova",
+        "type": null
+      },
+      "cupClubBefore": "sas",
+      "cupClubAfter": "sas",
+      "clubId": "sas"
+    },
+    {
+      "seed": 1,
+      "key": "S3W20",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Friulano",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Friulano",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": "sas",
+      "clubId": "sas"
+    },
+    {
+      "seed": 8,
+      "key": "S1W10",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Genova Primavera",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Genova Primavera",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": null,
+      "clubId": "inter"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "saveDiff": 40,
+      "snapshotDiff": 39,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Salento",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Salento",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": "inter",
+      "clubId": "inter"
+    },
+    {
+      "seed": 8,
+      "key": "post-cup",
+      "saveDiff": 1,
+      "snapshotDiff": 0,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Capitale",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Capitale",
+        "type": null
+      },
+      "cupClubBefore": "inter",
+      "cupClubAfter": "inter",
+      "clubId": "inter"
+    },
+    {
+      "seed": 8,
+      "key": "S3W20",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Friulano",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Friulano",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": "inter",
+      "clubId": "inter"
+    },
+    {
+      "seed": 13,
+      "key": "S2W1",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Ferrolano",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Ferrolano",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": null,
+      "clubId": "alb"
+    },
+    {
+      "seed": 13,
+      "key": "post-cup",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Gaditano",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Gaditano",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": "alb",
+      "clubId": "alb"
+    },
+    {
+      "seed": 13,
+      "key": "S3W20",
+      "saveDiff": 1,
+      "snapshotDiff": 0,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Oscense",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Oscense",
+        "type": null
+      },
+      "cupClubBefore": "alb",
+      "cupClubAfter": "alb",
+      "clubId": "alb"
+    },
+    {
+      "seed": 17,
+      "key": "S2W1",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Goldwald",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Goldwald",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": null,
+      "clubId": "boc"
+    },
+    {
+      "seed": 17,
+      "key": "post-cup",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Werkstadt",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Werkstadt",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": "boc",
+      "clubId": "boc"
+    },
+    {
+      "seed": 17,
+      "key": "S3W20",
+      "saveDiff": 1,
+      "snapshotDiff": 0,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Goldwald",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Goldwald",
+        "type": null
+      },
+      "cupClubBefore": "boc",
+      "cupClubAfter": "boc",
+      "clubId": "boc"
+    },
+    {
+      "seed": 35,
+      "key": "S2W1",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Gent",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 1,
+        "week": 1,
+        "opp": "FC Gent",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": null,
+      "clubId": "and"
+    },
+    {
+      "seed": 35,
+      "key": "post-cup",
+      "saveDiff": 2,
+      "snapshotDiff": 1,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Antwerp",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 9,
+        "week": 10,
+        "opp": "FC Antwerp",
+        "type": null
+      },
+      "cupClubBefore": null,
+      "cupClubAfter": "and",
+      "clubId": "and"
+    },
+    {
+      "seed": 35,
+      "key": "S3W20",
+      "saveDiff": 1,
+      "snapshotDiff": 0,
+      "lostPlayed": 0,
+      "calendarChanged": false,
+      "currentInPlayed": false,
+      "currentMatchBefore": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Waregem",
+        "type": null
+      },
+      "currentMatchAfter": {
+        "matchday": 18,
+        "week": 20,
+        "opp": "FC Waregem",
+        "type": null
+      },
+      "cupClubBefore": "and",
+      "cupClubAfter": "and",
+      "clubId": "and"
+    }
+  ],
+  "classified": [
+    {
+      "seed": 0,
+      "key": "S1W10",
+      "path": "player.fitnessCoachRel",
+      "before": null,
+      "after": 50,
+      "c": "B",
+      "why": "valore di default 50 già usato dalla UI e dalle formule"
+    },
+    {
+      "seed": 0,
+      "key": "S1W10",
+      "path": "savedAt",
+      "before": 1790844987989,
+      "after": 1790845025446,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.s",
+      "before": 1,
+      "after": 2,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.0",
+      "before": 1,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.1",
+      "before": 2,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.2",
+      "before": 3,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.3",
+      "before": 4,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.4",
+      "before": 5,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.5",
+      "before": 6,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.6",
+      "before": 7,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.7",
+      "before": 8,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.8",
+      "before": 9,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.9",
+      "before": 10,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.10",
+      "before": 11,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.11",
+      "before": 12,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.12",
+      "before": 13,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.13",
+      "before": 14,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.14",
+      "before": 15,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.15",
+      "before": 16,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.16",
+      "before": 17,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.17",
+      "before": 18,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.18",
+      "before": 19,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.19",
+      "before": 20,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.20",
+      "before": 21,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.21",
+      "before": 22,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.22",
+      "before": 23,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.23",
+      "before": 24,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.24",
+      "before": 25,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.25",
+      "before": 26,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.26",
+      "before": 27,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.27",
+      "before": 28,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.28",
+      "before": 29,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.29",
+      "before": 30,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.30",
+      "before": 31,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.31",
+      "before": 32,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.32",
+      "before": 33,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.playedMd.md.33",
+      "before": 34,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.cup.club",
+      "before": null,
+      "after": "tor",
+      "c": "B",
+      "why": "ID del club corrente completato nello stato della coppa; tabellone e calendario invariati"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.rival",
+      "before": null,
+      "after": {
+        "name": "Esteban Bianchi",
+        "nation": "Italia",
+        "age": 19,
+        "ovr": 68,
+        "club": {
+          "n": "Torino Athletic",
+          "id": "juve",
+          "p": 95,
+          "lg": "Lega A",
+          "c": "#f5f5f5",
+          "nat": "🇮🇹"
+        },
+        "goals": 7,
+        "totalGoals": 6,
+        "assists": 5,
+        "trophies": 0,
+        "seasons": 1,
+        "relationship": "sconosciuto",
+        "history": [],
+        "awards": {
+          "palloneOros": [],
+          "scarpaOros": []
+        }
+      },
+      "c": "C",
+      "why": "rivale assente prima e presente dopo; nome visibile in Profilo"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.clubSponsor",
+      "before": null,
+      "after": {
+        "name": "FORTEZZA",
+        "annual": 4710000,
+        "since": 2,
+        "until": 6,
+        "clubId": "tor"
+      },
+      "c": "C",
+      "why": "sponsor assente prima e assegnato dopo; sezione «Sponsor di maglia» appare in Club"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "player.presentedClub",
+      "before": null,
+      "after": "tor",
+      "c": "B",
+      "why": "marcatore della presentazione del club inizializzato al caricamento"
+    },
+    {
+      "seed": 0,
+      "key": "S2W1",
+      "path": "savedAt",
+      "before": 1790845079900,
+      "after": 1790845111110,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 0,
+      "key": "post-cup",
+      "path": "savedAt",
+      "before": 1790845125216,
+      "after": 1790845157513,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 0,
+      "key": "S3W20",
+      "path": "player.cup.club",
+      "before": null,
+      "after": "tor",
+      "c": "B",
+      "why": "ID del club corrente completato nello stato della coppa; tabellone e calendario invariati"
+    },
+    {
+      "seed": 0,
+      "key": "S3W20",
+      "path": "savedAt",
+      "before": 1790845244162,
+      "after": 1790845277605,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 1,
+      "key": "S1W10",
+      "path": "player.fitnessCoachRel",
+      "before": null,
+      "after": 50,
+      "c": "B",
+      "why": "valore di default 50 già usato dalla UI e dalle formule"
+    },
+    {
+      "seed": 1,
+      "key": "S1W10",
+      "path": "savedAt",
+      "before": 1790845425412,
+      "after": 1790845460645,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.s",
+      "before": 1,
+      "after": 2,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.0",
+      "before": 1,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.1",
+      "before": 2,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.2",
+      "before": 3,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.3",
+      "before": 4,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.4",
+      "before": 5,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.5",
+      "before": 6,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.6",
+      "before": 7,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.7",
+      "before": 8,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.8",
+      "before": 9,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.9",
+      "before": 10,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.10",
+      "before": 11,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.11",
+      "before": 12,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.12",
+      "before": 13,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.13",
+      "before": 14,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.14",
+      "before": 15,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.15",
+      "before": 16,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.16",
+      "before": 17,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.17",
+      "before": 18,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.18",
+      "before": 19,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.19",
+      "before": 20,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.20",
+      "before": 21,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.21",
+      "before": 22,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.22",
+      "before": 23,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.23",
+      "before": 24,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.24",
+      "before": 25,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.25",
+      "before": 26,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.26",
+      "before": 27,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.27",
+      "before": 28,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.28",
+      "before": 29,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.29",
+      "before": 30,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.30",
+      "before": 31,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.31",
+      "before": 32,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.32",
+      "before": 33,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.playedMd.md.33",
+      "before": 34,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.cup.club",
+      "before": null,
+      "after": "sas",
+      "c": "B",
+      "why": "ID del club corrente completato nello stato della coppa; tabellone e calendario invariati"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.rival",
+      "before": null,
+      "after": {
+        "name": "Esteban Bianchi",
+        "nation": "Italia",
+        "age": 19,
+        "ovr": 69,
+        "club": {
+          "n": "Torino Athletic",
+          "id": "juve",
+          "p": 95,
+          "lg": "Lega A",
+          "c": "#f5f5f5",
+          "nat": "🇮🇹"
+        },
+        "goals": 7,
+        "totalGoals": 6,
+        "assists": 5,
+        "trophies": 0,
+        "seasons": 1,
+        "relationship": "sconosciuto",
+        "history": [],
+        "awards": {
+          "palloneOros": [],
+          "scarpaOros": []
+        }
+      },
+      "c": "C",
+      "why": "rivale assente prima e presente dopo; nome visibile in Profilo"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.clubSponsor",
+      "before": null,
+      "after": {
+        "name": "FORTEZZA",
+        "annual": 4462000,
+        "since": 2,
+        "until": 6,
+        "clubId": "sas"
+      },
+      "c": "C",
+      "why": "sponsor assente prima e assegnato dopo; sezione «Sponsor di maglia» appare in Club"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "player.presentedClub",
+      "before": null,
+      "after": "sas",
+      "c": "B",
+      "why": "marcatore della presentazione del club inizializzato al caricamento"
+    },
+    {
+      "seed": 1,
+      "key": "S2W1",
+      "path": "savedAt",
+      "before": 1790845502820,
+      "after": 1790845529880,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 1,
+      "key": "post-cup",
+      "path": "savedAt",
+      "before": 1790845544830,
+      "after": 1790845574795,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 1,
+      "key": "S3W20",
+      "path": "player.cup.club",
+      "before": null,
+      "after": "sas",
+      "c": "B",
+      "why": "ID del club corrente completato nello stato della coppa; tabellone e calendario invariati"
+    },
+    {
+      "seed": 1,
+      "key": "S3W20",
+      "path": "savedAt",
+      "before": 1790845645819,
+      "after": 1790845678377,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 8,
+      "key": "S1W10",
+      "path": "player.fitnessCoachRel",
+      "before": null,
+      "after": 50,
+      "c": "B",
+      "why": "valore di default 50 già usato dalla UI e dalle formule"
+    },
+    {
+      "seed": 8,
+      "key": "S1W10",
+      "path": "savedAt",
+      "before": 1790845716285,
+      "after": 1790845745337,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.s",
+      "before": 1,
+      "after": 2,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.0",
+      "before": 1,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.1",
+      "before": 2,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.2",
+      "before": 3,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.3",
+      "before": 4,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.4",
+      "before": 5,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.5",
+      "before": 6,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.6",
+      "before": 7,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.7",
+      "before": 8,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.8",
+      "before": 9,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.9",
+      "before": 10,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.10",
+      "before": 11,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.11",
+      "before": 12,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.12",
+      "before": 13,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.13",
+      "before": 14,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.14",
+      "before": 15,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.15",
+      "before": 16,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.16",
+      "before": 17,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.17",
+      "before": 18,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.18",
+      "before": 19,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.19",
+      "before": 20,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.20",
+      "before": 21,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.21",
+      "before": 22,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.22",
+      "before": 23,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.23",
+      "before": 24,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.24",
+      "before": 25,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.25",
+      "before": 26,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.26",
+      "before": 27,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.27",
+      "before": 28,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.28",
+      "before": 29,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.29",
+      "before": 30,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.30",
+      "before": 31,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.31",
+      "before": 32,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.32",
+      "before": 33,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.playedMd.md.33",
+      "before": 34,
+      "after": null,
+      "c": "B",
+      "why": "registro della stagione precedente azzerato alla stagione corrente; calendario invariato"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.cup.club",
+      "before": null,
+      "after": "inter",
+      "c": "B",
+      "why": "ID del club corrente completato nello stato della coppa; tabellone e calendario invariati"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.rival",
+      "before": null,
+      "after": {
+        "name": "Esteban Bianchi",
+        "nation": "Italia",
+        "age": 19,
+        "ovr": 88,
+        "club": {
+          "n": "Torino Athletic",
+          "id": "juve",
+          "p": 95,
+          "lg": "Lega A",
+          "c": "#f5f5f5",
+          "nat": "🇮🇹"
+        },
+        "goals": 7,
+        "totalGoals": 6,
+        "assists": 5,
+        "trophies": 0,
+        "seasons": 1,
+        "relationship": "sconosciuto",
+        "history": [],
+        "awards": {
+          "palloneOros": [],
+          "scarpaOros": []
+        }
+      },
+      "c": "C",
+      "why": "rivale assente prima e presente dopo; nome visibile in Profilo"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.clubSponsor",
+      "before": null,
+      "after": {
+        "name": "METEORA",
+        "annual": 7918000,
+        "since": 2,
+        "until": 5,
+        "clubId": "inter"
+      },
+      "c": "C",
+      "why": "sponsor assente prima e assegnato dopo; sezione «Sponsor di maglia» appare in Club"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "player.presentedClub",
+      "before": null,
+      "after": "inter",
+      "c": "B",
+      "why": "marcatore della presentazione del club inizializzato al caricamento"
+    },
+    {
+      "seed": 8,
+      "key": "S2W1",
+      "path": "savedAt",
+      "before": 1790845789289,
+      "after": 1790845816657,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 8,
+      "key": "post-cup",
+      "path": "savedAt",
+      "before": 1790845829636,
+      "after": 1790845860282,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 8,
+      "key": "S3W20",
+      "path": "player.cup.club",
+      "before": null,
+      "after": "inter",
+      "c": "B",
+      "why": "ID del club corrente completato nello stato della coppa; tabellone e calendario invariati"
+    },
+    {
+      "seed": 8,
+      "key": "S3W20",
+      "path": "savedAt",
+      "before": 1790846242094,
+      "after": 1790846316213,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 13,
+      "key": "S2W1",
+      "path": "player.agentPlan",
+      "before": null,
+      "after": {
+        "season": 2,
+        "base": 8.29,
+        "target": 11.19,
+        "hold": false
+      },
+      "c": "non verificato",
+      "why": "il pannello Agente calcola un valore sostitutivo, ma il verdetto a fine stagione legge il campo salvato: effetto futuro non misurato"
+    },
+    {
+      "seed": 13,
+      "key": "S2W1",
+      "path": "savedAt",
+      "before": 1790846390407,
+      "after": 1790846491809,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 13,
+      "key": "post-cup",
+      "path": "player.cup.club",
+      "before": null,
+      "after": "alb",
+      "c": "B",
+      "why": "ID del club corrente completato nello stato della coppa; tabellone e calendario invariati"
+    },
+    {
+      "seed": 13,
+      "key": "post-cup",
+      "path": "savedAt",
+      "before": 1790846639334,
+      "after": 1790846683145,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 13,
+      "key": "S3W20",
+      "path": "savedAt",
+      "before": 1790846706106,
+      "after": 1790846743565,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 17,
+      "key": "S2W1",
+      "path": "player.agentPlan",
+      "before": null,
+      "after": {
+        "season": 2,
+        "base": 39.7,
+        "target": 53.6,
+        "hold": false
+      },
+      "c": "non verificato",
+      "why": "il pannello Agente calcola un valore sostitutivo, ma il verdetto a fine stagione legge il campo salvato: effetto futuro non misurato"
+    },
+    {
+      "seed": 17,
+      "key": "S2W1",
+      "path": "savedAt",
+      "before": 1790846781709,
+      "after": 1790846821569,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 17,
+      "key": "post-cup",
+      "path": "player.cup.club",
+      "before": null,
+      "after": "boc",
+      "c": "B",
+      "why": "ID del club corrente completato nello stato della coppa; tabellone e calendario invariati"
+    },
+    {
+      "seed": 17,
+      "key": "post-cup",
+      "path": "savedAt",
+      "before": 1790846904623,
+      "after": 1790846937412,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 17,
+      "key": "S3W20",
+      "path": "savedAt",
+      "before": 1790846957402,
+      "after": 1790846988408,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 35,
+      "key": "S2W1",
+      "path": "player.agentPlan",
+      "before": null,
+      "after": {
+        "season": 2,
+        "base": 32.41,
+        "target": 43.75,
+        "hold": false
+      },
+      "c": "non verificato",
+      "why": "il pannello Agente calcola un valore sostitutivo, ma il verdetto a fine stagione legge il campo salvato: effetto futuro non misurato"
+    },
+    {
+      "seed": 35,
+      "key": "S2W1",
+      "path": "savedAt",
+      "before": 1790847018684,
+      "after": 1790847051595,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 35,
+      "key": "post-cup",
+      "path": "player.cup.club",
+      "before": null,
+      "after": "and",
+      "c": "B",
+      "why": "ID del club corrente completato nello stato della coppa; tabellone e calendario invariati"
+    },
+    {
+      "seed": 35,
+      "key": "post-cup",
+      "path": "savedAt",
+      "before": 1790847128618,
+      "after": 1790847163064,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    },
+    {
+      "seed": 35,
+      "key": "S3W20",
+      "path": "savedAt",
+      "before": 1790847181781,
+      "after": 1790847205915,
+      "c": "A",
+      "why": "metadato temporale del file; non cambia l’eroe"
+    }
+  ],
+  "paths": [
+    "player.agentPlan",
+    "player.clubSponsor",
+    "player.cup.club",
+    "player.fitnessCoachRel",
+    "player.playedMd.md.0",
+    "player.playedMd.md.1",
+    "player.playedMd.md.10",
+    "player.playedMd.md.11",
+    "player.playedMd.md.12",
+    "player.playedMd.md.13",
+    "player.playedMd.md.14",
+    "player.playedMd.md.15",
+    "player.playedMd.md.16",
+    "player.playedMd.md.17",
+    "player.playedMd.md.18",
+    "player.playedMd.md.19",
+    "player.playedMd.md.2",
+    "player.playedMd.md.20",
+    "player.playedMd.md.21",
+    "player.playedMd.md.22",
+    "player.playedMd.md.23",
+    "player.playedMd.md.24",
+    "player.playedMd.md.25",
+    "player.playedMd.md.26",
+    "player.playedMd.md.27",
+    "player.playedMd.md.28",
+    "player.playedMd.md.29",
+    "player.playedMd.md.3",
+    "player.playedMd.md.30",
+    "player.playedMd.md.31",
+    "player.playedMd.md.32",
+    "player.playedMd.md.33",
+    "player.playedMd.md.4",
+    "player.playedMd.md.5",
+    "player.playedMd.md.6",
+    "player.playedMd.md.7",
+    "player.playedMd.md.8",
+    "player.playedMd.md.9",
+    "player.playedMd.s",
+    "player.presentedClub",
+    "player.rival",
+    "savedAt"
+  ],
+  "runs": [
+    {
+      "seeds": [
+        0
+      ],
+      "errors": [],
+      "durationMs": 376271
+    },
+    {
+      "seeds": [
+        1,
+        8,
+        13,
+        17,
+        35
+      ],
+      "errors": [],
+      "durationMs": 1848891
+    }
+  ],
+  "careers": [
+    {
+      "seed": 0,
+      "matrix": {
+        "start": "Primavera",
+        "club": "FC Granata Primavera",
+        "clubId": "tor",
+        "league": "Primavera 1",
+        "initialSeason": 1
+      },
+      "status": "finished",
+      "steps": 199,
+      "errors": [],
+      "interventions": [
+        {
+          "season": 1,
+          "week": 39,
+          "action": "Enter first pro offer"
+        },
+        {
+          "season": 2,
+          "week": 1,
+          "action": "go dashboard from clubPresentation"
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "action": "renew failed",
+          "error": "locator.click: Timeout 2500ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button>…</button> from <div>…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div>…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button>…</button> from <div>…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button>…</button> from <div>…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div>…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button>…</button> from <div>…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n"
+        }
+      ],
+      "cupMatches": 3,
+      "checkpoints": [
+        {
+          "key": "S1W10",
+          "status": "measured",
+          "season": 1,
+          "week": 10
+        },
+        {
+          "key": "S2W1",
+          "status": "measured",
+          "season": 2,
+          "week": 1
+        },
+        {
+          "key": "post-cup",
+          "status": "measured",
+          "season": 2,
+          "week": 10,
+          "match": {
+            "matchday": 990,
+            "week": 9,
+            "opp": "FC Brianzolo",
+            "type": "cup"
+          }
+        },
+        {
+          "key": "S3W20",
+          "status": "measured",
+          "season": 3,
+          "week": 20
+        }
+      ]
+    },
+    {
+      "seed": 1,
+      "matrix": {
+        "start": "Primavera",
+        "club": "FC Neroverde Primavera",
+        "clubId": "sas",
+        "league": "Primavera 1",
+        "initialSeason": 1
+      },
+      "status": "finished",
+      "steps": 199,
+      "errors": [],
+      "interventions": [
+        {
+          "season": 1,
+          "week": 39,
+          "action": "Enter first pro offer"
+        },
+        {
+          "season": 2,
+          "week": 1,
+          "action": "go dashboard from clubPresentation"
+        },
+        {
+          "season": 3,
+          "week": 1,
+          "action": "renew failed",
+          "error": "locator.click: Timeout 2500ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Negozia rinnovo/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"cpm-press cpm-focus \">📋 Negozia rinnovo</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button>…</button> from <div>…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div>…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button>…</button> from <div>…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button>…</button> from <div>…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div>…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <button>…</button> from <div>…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n"
+        }
+      ],
+      "cupMatches": 2,
+      "checkpoints": [
+        {
+          "key": "S1W10",
+          "status": "measured",
+          "season": 1,
+          "week": 10
+        },
+        {
+          "key": "S2W1",
+          "status": "measured",
+          "season": 2,
+          "week": 1
+        },
+        {
+          "key": "post-cup",
+          "status": "measured",
+          "season": 2,
+          "week": 10,
+          "match": {
+            "matchday": 990,
+            "week": 9,
+            "opp": "FC Friulano",
+            "type": "cup"
+          }
+        },
+        {
+          "key": "S3W20",
+          "status": "measured",
+          "season": 3,
+          "week": 20
+        }
+      ]
+    },
+    {
+      "seed": 8,
+      "matrix": {
+        "start": "Primavera",
+        "club": "FC Nerazzurri Primavera",
+        "clubId": "inter",
+        "league": "Primavera 1",
+        "initialSeason": 1
+      },
+      "status": "finished",
+      "steps": 205,
+      "errors": [],
+      "interventions": [
+        {
+          "season": 1,
+          "week": 39,
+          "action": "Enter first pro offer"
+        },
+        {
+          "season": 2,
+          "week": 1,
+          "action": "go dashboard from clubPresentation"
+        }
+      ],
+      "cupMatches": 12,
+      "checkpoints": [
+        {
+          "key": "S1W10",
+          "status": "measured",
+          "season": 1,
+          "week": 10
+        },
+        {
+          "key": "S2W1",
+          "status": "measured",
+          "season": 2,
+          "week": 1
+        },
+        {
+          "key": "post-cup",
+          "status": "measured",
+          "season": 2,
+          "week": 10,
+          "match": {
+            "matchday": 990,
+            "week": 9,
+            "opp": "FC Granata",
+            "type": "cup"
+          }
+        },
+        {
+          "key": "S3W20",
+          "status": "measured",
+          "season": 3,
+          "week": 20
+        }
+      ]
+    },
+    {
+      "seed": 13,
+      "matrix": {
+        "start": "piccolo",
+        "club": "FC Manchego",
+        "clubId": "alb",
+        "league": "Liga Ibérica 2",
+        "initialSeason": 2
+      },
+      "status": "finished",
+      "steps": 120,
+      "errors": [],
+      "interventions": [],
+      "cupMatches": 1,
+      "checkpoints": [
+        {
+          "key": "S1W10",
+          "status": "inaccessible: seed begins at season 2"
+        },
+        {
+          "key": "S2W1",
+          "status": "measured",
+          "season": 2,
+          "week": 1
+        },
+        {
+          "key": "post-cup",
+          "status": "measured",
+          "season": 3,
+          "week": 10,
+          "match": {
+            "matchday": 990,
+            "week": 9,
+            "opp": "FC Pucela",
+            "type": "cup"
+          }
+        },
+        {
+          "key": "S3W20",
+          "status": "measured",
+          "season": 3,
+          "week": 20
+        }
+      ]
+    },
+    {
+      "seed": 17,
+      "matrix": {
+        "start": "piccolo",
+        "club": "FC Ruhrpott",
+        "clubId": "boc",
+        "league": "Deutsche Liga",
+        "initialSeason": 2
+      },
+      "status": "finished",
+      "steps": 120,
+      "errors": [],
+      "interventions": [],
+      "cupMatches": 1,
+      "checkpoints": [
+        {
+          "key": "S1W10",
+          "status": "inaccessible: seed begins at season 2"
+        },
+        {
+          "key": "S2W1",
+          "status": "measured",
+          "season": 2,
+          "week": 1
+        },
+        {
+          "key": "post-cup",
+          "status": "measured",
+          "season": 3,
+          "week": 10,
+          "match": {
+            "matchday": 990,
+            "week": 9,
+            "opp": "FC Augsburg",
+            "type": "cup"
+          }
+        },
+        {
+          "key": "S3W20",
+          "status": "measured",
+          "season": 3,
+          "week": 20
+        }
+      ]
+    },
+    {
+      "seed": 35,
+      "matrix": {
+        "start": "vertice",
+        "club": "FC Bruxella",
+        "clubId": "and",
+        "league": "Liga Belga",
+        "initialSeason": 2
+      },
+      "status": "finished",
+      "steps": 120,
+      "errors": [],
+      "interventions": [],
+      "cupMatches": 2,
+      "checkpoints": [
+        {
+          "key": "S1W10",
+          "status": "inaccessible: seed begins at season 2"
+        },
+        {
+          "key": "S2W1",
+          "status": "measured",
+          "season": 2,
+          "week": 1
+        },
+        {
+          "key": "post-cup",
+          "status": "measured",
+          "season": 3,
+          "week": 10,
+          "match": {
+            "matchday": 990,
+            "week": 9,
+            "opp": "FC Westerlo",
+            "type": "cup"
+          }
+        },
+        {
+          "key": "S3W20",
+          "status": "measured",
+          "season": 3,
+          "week": 20
+        }
+      ]
+    }
+  ]
+}
