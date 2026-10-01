@@ -172,7 +172,7 @@ Orari in UTC, presi dal transcript della sessione.
 | PO-129 | 29/09 21:15 | Testi della sala stampa poco leggibili | difetto | FATTO | — | 7.999.67 | — | «Migliora un po', alcuni testi sopra non si leggono bene» |
 | PO-130 | 29/09 22:04 | Rigore: il portiere non è sulla linea | difetto | FATTO | — | 7.999.68 | `rigore-69` | «il portiere non è sulla linea» (#58) |
 | PO-131 | 29/09 22:04 | #110: tiro murato, portiere fuori tempo | difetto | FATTO | — | 7.999.72 | `muro-70` | «codice 111 — portiere fuori tempo» |
-| PO-132 | 29/09 22:04 | #134: sfida aerea con apertura scena sbagliata e reparto fermo | difetto | APERTO | L1 | 7.999.72: «NON riprodotta» | — | «codice 001 — apertura scena / codice 006 — reparto fermo». Rilevata anche da Codex il 30/09 |
+| PO-132 | 29/09 22:04 | #134: sfida aerea con apertura scena sbagliata e reparto fermo | difetto | FATTO — 7.999.90 (avanzata prima del gol subito: pallone e reparto non più fermi); apertura a posto da 7.999.85/88 — da ricollaudare sul telefono | L1 | 7.999.72: «NON riprodotta»; 7.999.90 | `reparto-90` | «codice 001 — apertura scena / codice 006 — reparto fermo». Rilevata anche da Codex il 30/09 |
 | PO-133 | 29/09 22:47 | Dopo gli stadi, valutare la consegna parziale di Codex sugli highlight | processo | PARZIALE | L1 | 7.999.69 (corretta solo la chiamata waitForFunction) | — | «in coda agli stadi valuta i risu[ltati]» |
 
 ## 30/09

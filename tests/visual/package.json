@@ -257,6 +257,8 @@
     "apre-88:rosso": "CPM_ROSSO88=1 CPM_GI=31,128,137,168,157,33 node apre-88.mjs",
     "fondo-89": "node fondo-89.mjs",
     "fondo-89:rosso": "CPM_ROSSO89=1 node fondo-89.mjs",
+    "reparto-90": "node reparto-90.mjs",
+    "reparto-90:rosso": "CPM_ROSSO90=1 node reparto-90.mjs",
     "festa-79": "node festa-79.mjs",
     "festa-79:rosso": "CPM_ROSSO80=1 node festa-79.mjs",
     "testa-76": "node testa-76.mjs"
