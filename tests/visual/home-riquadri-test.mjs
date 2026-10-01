@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* [7.999.97 PO-178] dalla 7.999.49 la card «Deadline Day» si intitola «Mercato invernale aperto»: il guardiano cerca il titolo nuovo. */
 /* [7.999.30 guardiano — RIQUADRI DELLA HOME: CARD NEUTRA. Collaudo PO «box fuori standard» (Deadline Day giallo, «La tua storia» viola
    scuro), scelta PO 27/09 «Card neutra»] Carriera alla settimana 19 (Deadline Day, capitolo della storia): sulla home ogni riquadro
    ha il fondo standard della card, nessun fondo scuro o sfumato, e il testo dei riquadri ha contrasto >= 4,5 sul suo fondo.
@@ -26,7 +27,7 @@ const R = await page.evaluate(() => {
   const fondo = el => { for (let e = el; e && e !== document.body; e = e.parentElement) { const cs = getComputedStyle(e); if (cs.backgroundImage && cs.backgroundImage !== 'none' && /gradient/.test(cs.backgroundImage)) return { grad: cs.backgroundImage.slice(0, 80), el: e }; const c = rgb(cs.backgroundColor); if (c && c.a > 0.5) return { c, el: e }; } return { c: { r: 245, g: 243, b: 239, a: 1 }, el: document.body }; };
   const trova = t => Array.from(document.querySelectorAll('div,span')).find(e => e.childElementCount === 0 && (e.textContent || '').trim().toLowerCase().startsWith(t.toLowerCase()));
   const out = { voci: {}, scuri: [], bassi: [] };
-  for (const t of ['Deadline Day', 'La tua storia']) { const e = trova(t); if (!e) { out.voci[t] = null; continue; } const f = fondo(e); out.voci[t] = f.grad ? { grad: f.grad } : { bg: f.c, L: +lum(f.c.r, f.c.g, f.c.b).toFixed(3) }; }
+  for (const t of ['Mercato invernale', 'La tua storia']) { const e = trova(t); if (!e) { out.voci[t] = null; continue; } const f = fondo(e); out.voci[t] = f.grad ? { grad: f.grad } : { bg: f.c, L: +lum(f.c.r, f.c.g, f.c.b).toFixed(3) }; }
   /* tutti i testi visibili della pagina principale: fondo scuro o sfumato, e contrasto */
   const main = document.getElementById('root');
   for (const e of Array.from(main.querySelectorAll('div,span,strong,b'))) {
@@ -49,7 +50,7 @@ console.log('testi su fondo scuro o sfumato:', R.scuri.length, JSON.stringify(R.
 console.log('testi sotto 4,5:1:', R.bassi.length, JSON.stringify(R.bassi.slice(0, 12)));
 const err = []; const ok = (c, m) => { if (!c) err.push(m); console.log((c ? 'ok   ' : 'NO   ') + m); };
 ok(!errs.length, 'nessun errore di pagina ' + errs.join(' · '));
-for (const t of ['Deadline Day', 'La tua storia']) { const v = R.voci[t]; ok(!!v, `«${t}» presente sulla home`); if (v) ok(!v.grad && v.L > 0.97, `«${t}» su fondo card neutro (${v.grad || ('L=' + v.L)})`); }
+for (const t of ['Mercato invernale', 'La tua storia']) { const v = R.voci[t]; ok(!!v, `«${t}» presente sulla home`); if (v) ok(!v.grad && v.L > 0.97, `«${t}» su fondo card neutro (${v.grad || ('L=' + v.L)})`); }
 ok(R.scuri.length === 0, `nessun testo della home su fondo scuro o sfumato (${R.scuri.length})`);
 ok(R.bassi.length === 0, `nessun testo della home sotto 4,5:1 (${R.bassi.length})`);
 if (err.length) { console.log('\nRIQUADRI HOME: FALLITO (' + err.length + ')' + (RED ? ' — atteso col rosso' : '')); process.exit(1); }

@@ -2,7 +2,7 @@
 
 Generato da `node tools/inventario-sonde.mjs` il 2026-10-01. Una sonda è **viva** se la richiama uno script di `tests/visual/package.json`, un workflow, `lib/`, `checks/`, `tools/` o un'altra sonda viva. Le altre si spostano in `tests/visual/archivio/` con `--archivia` (restano nella storia e leggibili; per rieseguirne una si riporta su con `git mv`).
 
-Totale 272 · vive 262 · da archiviare 0 · guardiani orfani 0 · recenti 10
+Totale 274 · vive 264 · da archiviare 0 · guardiani orfani 0 · recenti 10
 
 ## Da archiviare
 
@@ -146,7 +146,7 @@ Totale 272 · vive 262 · da archiviare 0 · guardiani orfani 0 · recenti 10
 | `goal-postarc-test.mjs` | npm: goal-postarc |
 | `gol-541.mjs` | npm: gol |
 | `gol-interazione-test.mjs` | npm: gol-interazione |
-| `goleade-test.mjs` | npm: goleade |
+| `goleade-test.mjs` | npm: goleade, goleade:rosso98 |
 | `griglia-mobile.mjs` | lib/checks/tools · sonde: completamento.mjs, contrasto-scuro.mjs, provino-schermate.mjs |
 | `hero-framing-census.mjs` | npm: hero-framing, framing-guard |
 | `hero-in-frame-test.mjs` | npm: hero-in-frame |
@@ -179,6 +179,7 @@ Totale 272 · vive 262 · da archiviare 0 · guardiani orfani 0 · recenti 10
 | `motore-unico-test.mjs` | npm: motore-unico |
 | `moves-budget-test.mjs` | npm: moves-budget |
 | `muro-70.mjs` | npm: muro-70 |
+| `nomi-51-test.mjs` | npm: nomi-51, nomi-51:rosso |
 | `numeri-home-test.mjs` | npm: numeri-home |
 | `occasioni-dinamiche-test.mjs` | npm: occasioni-dinamiche |
 | `occasioni-squadra-test.mjs` | npm: occasioni-squadra |
@@ -245,6 +246,7 @@ Totale 272 · vive 262 · da archiviare 0 · guardiani orfani 0 · recenti 10
 | `run-stress.mjs` | npm: stress |
 | `salva-84.mjs` | npm: salva-84, salva-84:rosso |
 | `save-monotonic-test.mjs` | npm: save-monotonic |
+| `scene-disegnabili-test.mjs` | npm: scene-disegnabili, scene-disegnabili:rosso |
 | `scene-open-ball-test.mjs` | npm: scene-open-ball, scene-open-ball:selftest |
 | `scene-open-owner-test.mjs` | npm: scene-open-owner |
 | `scene-staging-lag-test.mjs` | npm: scene-staging-lag |

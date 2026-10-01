@@ -4,13 +4,16 @@
    2-4 u (appena il 25% della linea) e poi l'assestamento riportava il pallone verso x<=10, ~9 u all'indietro. Ora il taglio e'
    fra il 45% e l'85% della linea e il pallone si assesta dove l'ha fermato l'intercettore. Due filtranti intercettati e due in fuorigioco (stesso scivolamento
    misurato, 8 u), forzati a corpi 3D spenti: verde se in nessuno il pallone arretra di piu' di 3 u dal punto piu' avanzato raggiunto e se avanza di almeno 6 u
-   prima del taglio. CPM_ROSSO=1 → __CPM_NO_FILTR23: deve tornare l'arretramento. */
+   prima del taglio. CPM_ROSSO=1 → __CPM_NO_FILTR23: deve tornare l'arretramento.
+   [7.999.97 PO-178] Dalla 7.999.92 l'intercettore RIPARTE col pallone verso la nostra porta (voluto, guardiano daievai-92): misurato
+   6-9 u di «arretramento» che sono la sua conduzione, non lo scivolamento del 7.999.23. Questo guardiano isola il taglio spegnendo
+   la ripartenza (__CPM_NO_DAIEVAI92) in entrambi i bracci: verde 0 u, rosso col solo __CPM_NO_FILTR23. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
 const ROSSO = process.env.CPM_ROSSO === '1';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
 const E = []; page.on('pageerror', e => E.push(e.message));
-await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; window.__CPM_FILTR23 = null; if (r) window.__CPM_NO_FILTR23 = 1; }, ROSSO);
+await page.addInitScript(r => { window.__CPM_GLB = false; window.__CPM_PRESENT = 1; window.__CPM_FILTR23 = null; if (r) window.__CPM_NO_FILTR23 = 1; window.__CPM_NO_DAIEVAI92 = 1; }, ROSSO);
 await openMatch(page, port, { skipLoadAll: true, name: 'Filtr23' }); await sleep(3000);
 const runs = [];
 for (const kind of ['intercepted', 'intercepted', 'offside', 'offside']) {

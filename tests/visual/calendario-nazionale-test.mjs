@@ -35,7 +35,7 @@ async function carica(save, rosso, w) {
   const R = await page.evaluate(() => {
     const sv = JSON.parse(localStorage.getItem('cpm-v3') || '{}'); const p = sv.player || sv; const cal = p.calendar || [];
     const lab = Array.from(document.querySelectorAll('div')).find(e => e.childElementCount === 0 && /^prossima partita$/i.test((e.textContent || '').trim()));
-    let card = lab; for (let i = 0; i < 6 && card; i++) { card = card.parentElement; if (card && /VS/.test(card.innerText) && /W\.\d/.test(card.innerText)) break; }
+    let card = lab; for (let i = 0; i < 6 && card; i++) { card = card.parentElement; if (card && /VS/.test(card.innerText) && (/W\.\d/.test(card.innerText) || card.innerText.length < 300)) break; }/* [7.999.97 PO-178] la card non porta piu' «W.n»: senza il tetto di lunghezza la risalita arrivava alla pagina intera, intestazione col club compresa */
     return { amichevoli: cal.filter(m => m.type === 'national' && !m.played).map(m => m.opponentName + ' W' + m.week), card: card ? card.innerText.replace(/\s+/g, ' ').slice(0, 400) : null, week: p.week };
   });
   await page.screenshot({ path: '/tmp/cal35-' + (rosso ? 'r' : 'v') + '-' + w + '.png' });

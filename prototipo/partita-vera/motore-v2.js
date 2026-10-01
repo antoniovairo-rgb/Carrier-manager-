@@ -364,7 +364,12 @@ function creaMotorePossesso(cfg){
     /* [7.999.19 collaudo PO «risultato assurdo»: 10-0 al 86'] MISURATO (200 partite, squadra dell'eroe 95 contro 50): media 2,7 gol ma
        CODA di goleade — 7 o piu' gol nel 5% delle partite, scarto di 5+ nel 12,5%. Nel calcio chi vince largo gestisce: con 3 gol di
        vantaggio la pericolosita' dei tiri scende al 60%, con 5+ al 40%. Rosso __CPM_NO_GEST19. */
-    if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_GEST19)){const _o19=P.team===HOME?AWAY:HOME,_vn19=(S.conta.gol[P.team===HOME?'home':'away']|0)-(S.conta.gol[_o19===HOME?'home':'away']|0);if(_vn19>=5)xg*=0.4;else if(_vn19>=3)xg*=0.6;}
+    if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_GEST19)){const _o19=P.team===HOME?AWAY:HOME,_vn19=(S.conta.gol[P.team===HOME?'home':'away']|0)-(S.conta.gol[_o19===HOME?'home':'away']|0);/* [7.999.98 PO-179, decisione PO 01/10 «stesse soglie»] Collaudo Codex (700 partite) riprodotto su 600 per braccio: con
+       l'eroe nella squadra DEBOLE lo scarto di 5+ arrivava al 15,5% (fuori casa) e il 7+ al 2,0%, contro 3,2-5,8% e 0,2-0,7%
+       con l'eroe nella forte — la squadra forte senza eroe segna 2,6-2,9 gol, quella con l'eroe 2,2-2,4. La gestione del
+       vantaggio diventa a tre gradini (3 gol 0,45 · 4 gol 0,30 · 5+ 0,20): caso peggiore 7,0% e 0,2%, la squadra forte
+       dell'eroe segna ancora 2,1-2,3. __CPM_NO_G98 = vecchi gradini (0,6 / 0,4); __CPM_G19=[k3,k4,k5] solo per tarare. */
+    const _K19=(typeof window!=='undefined'&&window&&window.__CPM_G19)||((typeof window!=='undefined'&&window&&window.__CPM_NO_G98)?[0.6,0.6,0.4]:[0.45,0.3,0.2]);if(_vn19>=5)xg*=_K19[2];else if(_vn19>=4)xg*=_K19[1];else if(_vn19>=3)xg*=_K19[0];}
     /* [7.999.36 — LE OCCASIONI DELL'EROE FANNO PARTE DELLA SQUADRA. Collaudo PO «risultato esagerato»: Europeo, Spagna-Francia 7-1.
        Rosso __CPM_NO_PUNT36.] MISURATO: al banco il motore segna quanto il suo xG (1,55 gol su 1,54 a partita, 90 contro 85); nella partita
        VISSUTA le scene dell'eroe (una grande occasione ciascuna) si SOMMAVANO alla produzione normale: 4 partite con l'eroe a 93,
@@ -1263,7 +1268,36 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
      la sua giocata con lo STESSO modello che decide i tiri di tutti gli altri */
   const addebita=(x)=>{if((typeof window!=='undefined'&&window&&window.__CPM_NO_PUNT36))return;const v=+x;if(v>0&&isFinite(v)){S.debito36=Math.round(((S.debito36||0)+v)*1000)/1000;S.conta.addebitato36=Math.round(((S.conta.addebitato36||0)+v)*1000)/1000;}};/* [7.999.36] gol attesi di una scena dell'eroe */
   const xgPunto=(x,y,intent,press)=>{try{if(!V2)return null;return xgV2({team:HOME,x:clamp(+x||50,0,100),y:clamp(+y||50,0,100)},intent||null,press==null?4:+press);}catch(_e){return null;}};
-  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT};
+  /* [7.999.82 — BRAIN UNICO. Direttiva PO 30/09: «succRate deve essere calcolato da brain, deve essere l'unico cervello / motore del gioco»]
+     La probabilita' della giocata dell'eroe nella scena non viene piu' da una formula della partita vissuta (succRate + moltiplicatore q
+     fino a x2, che per un eroe forte RADDOPPIAVA l'occasione: meta' della coda di goleade misurata al banco): la calcola il MOTORE con gli
+     stessi modelli con cui gioca i 22 —
+       · tiro/testa/volee/piazzati: xG del punto (xgV2) reso «grande occasione» come da scelta PO 7.999.2 (0,28+0,8·xG, tetto 0,6; il
+         rigore resta il suo xG), per il duello FINALIZZAZIONE: tiro dell'eroe contro posizionamento del difensore piu' vicino (±1%/punto);
+       · assist: passaggio riuscito (passaggio dell'eroe contro chi legge la linea) x grande occasione del compagno qualche metro avanti;
+       · dribbling: il duello uomo contro uomo del motore (pCond/eseguiOccV2: dribbling+velocita' contro fisico+posizionamento);
+       · difesa: lo stesso duello a parti invertite; · il resto: conduzione (abilita' della giocata contro posizionamento).
+     Il contesto della scena (marcatura, meteo, momento, forma, morale, fatica, mister, pubblico, fiducia) arriva come `mods` e i freni di
+     partita (gestione del vantaggio, anti-farm) come `mult`: entrano QUI, non piu' sommati fuori. Rosso (nella partita): __CPM_NO_BRAIN82. */
+  const probEroe=(o)=>{try{if(!V2)return null;o=o||{};const H=g[HERO];const st=o.stats||{};const A=(k)=>clamp(+st[k]||60,30,99);
+    const x=clamp(+o.x||60,0,100),y=clamp(+o.y||50,0,100);
+    let D=null,dd=99;if(H){for(const q of g){if(!attivo(q)||q.team===H.team||q.gk)continue;const d=hyp(q.x,q.y,H.x,H.y);if(d<dd){dd=d;D=q;}}}
+    const _fo=(o.oppForza!=null)?clamp(+o.oppForza,40,95):null;/* solo per il banco: un avversario di forza data */
+    const b=_fo!=null?{tiro:_fo,tecnica:_fo,passaggio:_fo,dribbling:_fo,velocità:_fo,fisico:_fo,mentalità:_fo,posizionamento:_fo}:D?attrsDi(D):{tiro:forza.away,tecnica:forza.away,passaggio:forza.away,dribbling:forza.away,velocità:forza.away,fisico:forza.away,mentalità:forza.away,posizionamento:forza.away};
+    /* rigore e punizione diretta restano il loro xG (0,76 · al massimo 0,06: il calcio vero). DECISIONE PO 30/09 «realismo da serie A»:
+       MISURATO sul flusso vero, l'eroe ha 4-5 scene a partita — trattarle tutte da «grande occasione» (0,28+0,8·xG, 7.999.2) dava a un
+       eroe forte ~0,42 a scena, cioe' ~1,4 gol a partita (la coda di goleade: 6-0 con poker). In serie A anche un grande attaccante ha
+       circa UNA grande occasione a partita: la scena e' una BUONA occasione, 0,10+0,8·xG fra 0,10 e 0,45 (media ~0,2); su palla alta
+       0,08+0,6·xG fra 0,08 e 0,30. Bersaglio: eroe forte 0,6-0,9 gol a partita. */
+    const grande=(xx,yy,intent,alta)=>{const xg=xgV2({team:HOME,x:clamp(xx,0,100),y:clamp(yy,0,100)},intent||null,3);if(intent==='penalty'||intent==='freekick')return xg;return alta?clamp(0.08+0.6*xg,0.08,0.30):clamp(0.10+0.8*xg,0.10,0.45);};
+    const fam=o.fam||'altro';let p;const det={fam,opp:Math.round(b.posizionamento),intent:o.intent||null};
+    if(fam==='tiro'){const gr=grande(x,y,o.intent,!!o.alta);const sk=clamp(((A('tiro')+A(o.stat||'tiro'))/2-b.posizionamento)*0.010,-0.35,0.35);p=gr*(1+sk);det.gr=+gr.toFixed(3);det.sk=+sk.toFixed(3);}
+    else if(fam==='assist'){const pas=clamp(0.80+(A('passaggio')-b.posizionamento)*0.008,0.5,0.95);const gr=0.85*grande(Math.min(94,x+10),50,null,!!o.alta);p=pas*gr;det.pas=+pas.toFixed(3);det.gr=+gr.toFixed(3);}
+    else if(fam==='dribbling')p=clamp(0.42+((A('dribbling')+A('velocità'))/2-(b.fisico+b.posizionamento)/2)*0.012,0.18,0.72);
+    else if(fam==='difesa')p=clamp(0.46+((A('fisico')+A('posizionamento'))/2-(b.dribbling+b.velocità)/2)*0.012,0.2,0.75);
+    else p=clamp(0.55+(A(o.stat||'tecnica')-b.posizionamento)*0.010,0.25,0.8);
+    det.base=+p.toFixed(3);p=(p+(+o.mods||0))*(o.mult==null?1:+o.mult);p=clamp(p,0.03,0.85);det.p=+p.toFixed(3);return{p,det};}catch(_e){return null;}};
+  return{tick,chiedi,stato,tabellino,pagelle,registra,risolviEroe,HERO,_g:g,_S:S,occasione,espulsi,v2:V2,xgPunto,addebita,tattica:TAT,probEroe};
 }
 
 root.creaMotoreV2=creaMotorePossesso;

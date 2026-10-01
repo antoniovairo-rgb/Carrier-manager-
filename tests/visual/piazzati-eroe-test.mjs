@@ -8,7 +8,7 @@ const ROSSO = process.env.CPM_ROSSO === '1';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const page = await b.newPage({ viewport: { width: 412, height: 915 } }); await installCdnRoutes(page);
 const E = []; page.on('pageerror', e => E.push(e.message));
-await page.addInitScript(r => { window.__CPM_GLB = false; if (r) window.__CPM_NO_PIAZ27 = 1; try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} }, ROSSO);
+await page.addInitScript(([r, n98]) => { window.__CPM_GLB = false; if (r) window.__CPM_NO_PIAZ27 = 1; if (n98) window.__CPM_NO_ORIG98 = 1; try { localStorage.setItem('cpm-match-speed', '2'); } catch (e) {} }, [ROSSO, !!process.env.CPM_NO98]);
 await openMatch(page, port, { skipLoadAll: true, name: 'Rigore27' });
 await page.evaluate(() => window.__CPM_AUTOPLAY(true, { seed: 2727, policy: 'seeded', tickMs: 300 }));
 let chiesto = false, scena = null, tentativi = 0; const t0 = Date.now(); let tC = 0;

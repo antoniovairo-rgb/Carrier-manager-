@@ -31,7 +31,9 @@ for (const w of [360, 412]) {
 await browser.close(); srv.close();
 console.log(JSON.stringify(out), 'errori pagina', E.length);
 const fails = [];
-for (const o of out) { if (!o.ga) fails.push(`${o.w}px: «26 · 10» non trovato`); else if (o.ga.h > o.ga.fs * 1.6) fails.push(`${o.w}px: «26 · 10» a capo (alto ${o.ga.h.toFixed(0)} px, corpo ${o.ga.fs})`);
+/* [7.999.97 PO-178] il riquadro «Gol e assist» e' stato tolto dalla home nella 7.999.49 (parte A): la sua assenza non e' piu' un
+   difetto; se torna, deve stare su una riga. Resta il tetto dei 24 px su tutte le cifre della home. */
+for (const o of out) { if (!o.ga) {} else if (o.ga.h > o.ga.fs * 1.6) fails.push(`${o.w}px: «26 · 10» a capo (alto ${o.ga.h.toFixed(0)} px, corpo ${o.ga.fs})`);
   if (o.big.length) fails.push(`${o.w}px: cifre sopra i 24 px: ${JSON.stringify(o.big.slice(0, 4))}`); }
 if (E.length) fails.push('errori di pagina: ' + E[0]);
 if (ROSSO) { const ok = fails.some(f => /24 px|a capo/.test(f)); console.log(ok ? '✅ ROSSO come atteso: senza il 7.999.23 tornano le cifre grandi' : '❌ il rosso non riproduce'); process.exit(ok ? 0 : 1); }

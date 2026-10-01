@@ -295,7 +295,8 @@
     "nomi-51": "node nomi-51-test.mjs",
     "nomi-51:rosso": "CPM_RED=1 node nomi-51-test.mjs",
     "scene-disegnabili": "node scene-disegnabili-test.mjs",
-    "scene-disegnabili:rosso": "CPM_RED=1 node scene-disegnabili-test.mjs"
+    "scene-disegnabili:rosso": "CPM_RED=1 node scene-disegnabili-test.mjs",
+    "goleade:rosso98": "CPM_ROSSO98=1 node goleade-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

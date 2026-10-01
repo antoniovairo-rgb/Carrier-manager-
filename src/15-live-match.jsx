@@ -5325,13 +5325,18 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
             /* [7.999.26] OCCASIONE DEL BRAIN FUORI FINESTRA (cross, angolo, punizione in mezzo per l'eroe): diventa una scena in piu',
                inserita ORA al posto corrente come fanno le scene reattive. La scheda la sceglie l'apertura, dall'origine. */
             const _pz27=!!(_oc26&&_oc26.origine&&(_oc26.origine.kind==="rigore"||(_oc26.origine.kind==="punizione"&&_oc26.tipo==="punizione")));
+            let _ins26=false;/* [7.999.98 PO-178] la scena dell'origine e' stata inserita: l'occasione corrente deve essere LEI */
             if(_oc26&&(_pz27?((extra27Ref.current|0)<4):(!(typeof window!=='undefined'&&window.__CPM_NO_ORIG26)&&((_no28()||context==="trial")?((extra26Ref.current|0)<1):((extra26Ref.current|0)<3&&((hlIdx|0)-(occ28Ref.current.esenti|0))<(occ28Ref.current.T|0)))))&&String(phaseRef.current)==="playing"){try{
               if(_pz27){extra27Ref.current=(extra27Ref.current|0)+1;occ28Ref.current.esenti=(occ28Ref.current.esenti|0)+1;}else extra26Ref.current=(extra26Ref.current|0)+1;const _ph26=SITUATIONS.find(s2=>s2&&s2.type==="off")||SITUATIONS[0];
               setSituations(function(prev){var c=[...prev];c.splice(hlIdx,0,_ph26);return c;});
               setHlTimes(function(prev){var v=[...prev];v.splice(hlIdx,0,nx|0);hlTimesRef.current=v;return v;});
               setNumHL(function(prev){var v=prev+1;numHLRef.current=v;return v;});
-              try{cpmEv("scena",{min:nx|0,src:"brain-origine",kind:_oc26.origine.kind});}catch(_e){}}catch(_e26){}}
-            const _oc=_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,chiesto:_oc.chiesto||null,attese:_oc.attese|0,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null,origine:_oc.origine||null};}
+              try{cpmEv("scena",{min:nx|0,src:"brain-origine",kind:_oc26.origine.kind});}catch(_e){}_ins26=true;}catch(_e26){}}
+            /* [7.999.98 PO-178 — guardiano orfano piazzati-eroe rosso] MISURATO: nello stesso minuto il motore emette DUE occasioni
+               dell'eroe (il rigore con origine e una «spalle»); la scena del rigore veniva inserita, ma qui si registrava la PRIMA
+               dell'elenco, e la scheda aperta era «Solo davanti al portiere!» invece del rigore. Se la scena dell'origine e' stata
+               inserita, l'occasione corrente e' quella. Rosso __CPM_NO_ORIG98. */
+            const _oc=(_ins26&&!(typeof window!=='undefined'&&window.__CPM_NO_ORIG98))?_oc26:_evM870.find(e=>e&&e.t==='occasione_eroe');if(_oc)occEroe879Ref.current={min:nx,tipo:_oc.tipo,chiesto:_oc.chiesto||null,attese:_oc.attese|0,zona:_oc.zona,press:_oc.press,x:_oc.x,y:_oc.y,liberi:_oc.liberi|0,cast:_oc.cast||null,seq:_oc._seq||null,origine:_oc.origine||null};}
           _narr870=narra870(_evM870,_stM870,nx,{cool:bgCoolRef.current|0});
           if(_narr870&&_narr870.ef){/* il gol e' entrato: la riga porta l'evento del microsim (accredito, festa, ripresa) */const _g=golMotoreRef.current;if(_g&&_g.ev){_narr870.ms=_g.ev.ms||_narr870.ms;_narr870.w=_g.ev.w||1;}golMotoreRef.current=null;pendingGoalRef.current=null;}
           if(typeof window!=='undefined'&&window.__CPM_REC){try{const _W=(window.__CPM_NARR870=window.__CPM_NARR870||{tick:0,eventi:0,righe:0,per:{}});_W.tick++;_W.eventi+=_evM870.length;if(_narr870){_W.righe++;_W.per[_narr870._motore870.kind]=(_W.per[_narr870._motore870.kind]|0)+1;}}catch(_e){}}
@@ -8152,7 +8157,13 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
          questo ramo, non aggiungendone un'altra. */
       if(_sp.at!=="hero"&&_sp.at!=="gk"){
         const _kb554=hlIdx+(_forceSeqRef.current||0)*10000;
-        const _bat554=(_sp.at==="corner"||_sp.at==="throw")&&!(typeof window!=="undefined"&&window.__CPM_NO554);
+        /* [7.999.98 PO-178, guardiano orfano cross-origine; decisione PO 01/10 «angolo: sì, ora»] MISURATO: sull'angolo che nasce
+           da un'ORIGINE del motore (_ORIG26) partivano DUE battute — questa, all'apertura (il pallone si fermava a 4,6-8,8u dalla
+           bandierina durante la scelta) e quella della 7.999.26 alla risoluzione, che lo riportava sulla bandierina e crossava di
+           nuovo (salto fino a 203 u/s sotto carico). Con l'origine attiva la battuta e' una sola: quella del crossatore dichiarato.
+           Rosso __CPM_NO_ANGOLO98. */
+        const _o98=(typeof _ORIG26!=="undefined"&&_ORIG26&&_ORIG26.active&&_ORIG26.sit===_s&&!(typeof window!=="undefined"&&(window.__CPM_NO_ORIG26||window.__CPM_NO_ANGOLO98)));
+        const _bat554=(_sp.at==="corner"||_sp.at==="throw")&&!_o98&&!(typeof window!=="undefined"&&window.__CPM_NO554);
         /* ⚠️ IL PIAZZAMENTO SI RI-ASSERISCE A OGNI RI-ESECUZIONE. E' questa la ragione vera per cui il
            corner non partiva: l'effetto dipende da `pPos` e gira decine di volte per scena, e ogni giro
            RIMETTEVA la palla sulla bandierina — misurato dopo aver armato la battuta: il pallone si

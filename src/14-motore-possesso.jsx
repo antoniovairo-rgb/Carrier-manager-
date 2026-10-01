@@ -388,7 +388,12 @@ function creaMotorePossesso(cfg){
     /* [7.999.19 collaudo PO «risultato assurdo»: 10-0 al 86'] MISURATO (200 partite, squadra dell'eroe 95 contro 50): media 2,7 gol ma
        CODA di goleade — 7 o piu' gol nel 5% delle partite, scarto di 5+ nel 12,5%. Nel calcio chi vince largo gestisce: con 3 gol di
        vantaggio la pericolosita' dei tiri scende al 60%, con 5+ al 40%. Rosso __CPM_NO_GEST19. */
-    if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_GEST19)){const _o19=P.team===HOME?AWAY:HOME,_vn19=(S.conta.gol[P.team===HOME?'home':'away']|0)-(S.conta.gol[_o19===HOME?'home':'away']|0);if(_vn19>=5)xg*=0.4;else if(_vn19>=3)xg*=0.6;}
+    if(!(typeof window!=='undefined'&&window&&window.__CPM_NO_GEST19)){const _o19=P.team===HOME?AWAY:HOME,_vn19=(S.conta.gol[P.team===HOME?'home':'away']|0)-(S.conta.gol[_o19===HOME?'home':'away']|0);/* [7.999.98 PO-179, decisione PO 01/10 «stesse soglie»] Collaudo Codex (700 partite) riprodotto su 600 per braccio: con
+       l'eroe nella squadra DEBOLE lo scarto di 5+ arrivava al 15,5% (fuori casa) e il 7+ al 2,0%, contro 3,2-5,8% e 0,2-0,7%
+       con l'eroe nella forte — la squadra forte senza eroe segna 2,6-2,9 gol, quella con l'eroe 2,2-2,4. La gestione del
+       vantaggio diventa a tre gradini (3 gol 0,45 · 4 gol 0,30 · 5+ 0,20): caso peggiore 7,0% e 0,2%, la squadra forte
+       dell'eroe segna ancora 2,1-2,3. __CPM_NO_G98 = vecchi gradini (0,6 / 0,4); __CPM_G19=[k3,k4,k5] solo per tarare. */
+    const _K19=(typeof window!=='undefined'&&window&&window.__CPM_G19)||((typeof window!=='undefined'&&window&&window.__CPM_NO_G98)?[0.6,0.6,0.4]:[0.45,0.3,0.2]);if(_vn19>=5)xg*=_K19[2];else if(_vn19>=4)xg*=_K19[1];else if(_vn19>=3)xg*=_K19[0];}
     /* [7.999.36 — LE OCCASIONI DELL'EROE FANNO PARTE DELLA SQUADRA. Collaudo PO «risultato esagerato»: Europeo, Spagna-Francia 7-1.
        Rosso __CPM_NO_PUNT36.] MISURATO: al banco il motore segna quanto il suo xG (1,55 gol su 1,54 a partita, 90 contro 85); nella partita
        VISSUTA le scene dell'eroe (una grande occasione ciascuna) si SOMMAVANO alla produzione normale: 4 partite con l'eroe a 93,
