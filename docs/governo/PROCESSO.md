@@ -42,6 +42,7 @@ giudice finale resta il telefono del PO.
 ## Cadenza delle release
 - **Release di lotto**: nessun tetto giornaliero (decisione PO 01/10, sostituisce il tetto di 6): conta **non perdere pezzi** — ogni release ha la sua riga nel registro e ogni voce toccata è aggiornata nel backlog.
 - **Release correttive**: solo per i bloccanti.
+- **Vista filtrabile** (richiesta PO 01/10): a ogni release, dopo ROADMAP e BACKLOG, `node tools/governo-html.mjs` rigenera `docs/governo/governo.html` (backlog, lotti, registro con un filtro per colonna) e la pagina si ripubblica allo stesso indirizzo privato claude.ai (https://claude.ai/artifact/P4nNHMqwrSjeN9EoyDnRNa). I file `.md` restano la fonte; la pagina non si modifica a mano.
 - **Tag git** `v7.999.x` a ogni release. Ritorno alla precedente: `git checkout main && git reset --hard v7.999.x && git push --force-with-lease origin main`
   (solo su ordine del PO) oppure, più sicuro, `git revert` del merge.
 - **Limite di lavoro in parallelo**: un lotto principale più le correzioni bloccanti.
