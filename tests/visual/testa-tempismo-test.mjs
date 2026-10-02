@@ -4,13 +4,13 @@
    t_incontro = istante di minima distanza pallone-testa · t_picco = istante di massima quota della testa · scarto = t_picco - t_incontro
    (negativo = salta prima che arrivi il pallone) · quota della testa all'incontro sopra quella da fermo. Sola lettura. */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from './lib/harness.mjs';
-const CASI = (process.env.CPM_CASI || '7:0,55:0,86:0,90:0,76:2').split(',').map(x => x.split(':').map(Number));
+const CASI = (process.env.CPM_CASI || '7:0,55:0,86:0,90:0,76:2,171:0,171:1').split(',').map(x => x.split(':').map(Number));
 const RED = process.env.CPM_RED === '1';
 const srv = await startServer(); const port = srv.address().port; const b = await launchBrowser();
 const out = [];
 for (const [gi, ai] of CASI) {
   const page = await b.newPage({ viewport: { width: 380, height: 300 } }); await installCdnRoutes(page);
-  await page.addInitScript(r => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_TESTA33_REC = 1; if (r) window.__CPM_NO_TESTA33 = 1; }, RED);
+  await page.addInitScript(r => { window.__CPM_PRESENT = 1; window.__CPM_CINE = 1; window.__CPM_TESTA33_REC = 1; if (r) { window.__CPM_NO_TESTA33 = 1; window.__CPM_NO_TUFFO109 = 1; } }, RED);
   await openMatch(page, port, { skipLoadAll: true, name: 'Testa33' }); await sleep(1500);
   await page.waitForFunction(() => (window.__CPM_MXCLIP | 0) > 0, { timeout: 60000 }).catch(() => {});
   await page.evaluate(g => { window.__CPM_TESTA33 = null; window.__CPM_FORCE_SIT(g, false); window.__CPM_FROZEN = false; }, gi);
@@ -23,7 +23,9 @@ for (const [gi, ai] of CASI) {
   if (!W || W.f.length < 10) { out.push({ gi, ai, err: 'testimone vuoto', f: W && W.f.length }); console.log(JSON.stringify(out[out.length - 1])); continue; }
   const F = W.f, h0 = Math.min(...F.slice(0, 5).map(x => x.hy));
   let im = 0; F.forEach((x, i) => { if (x.d < F[im].d) im = i; });
-  let ip = 0; F.forEach((x, i) => { if (x.hy > F[ip].hy) ip = i; });
+  /* [7.999.109] il picco si cerca ATTORNO al contatto (±1 s) e mai dentro l'esultanza («lift»): prima il massimo su tutta la scena
+     prendeva il salto della festa dopo il gol e dichiarava uno scarto di 1,6 s su un colpo di testa giusto (gi171 azione 1). */
+  let ip = im; F.forEach((x, i) => { if (Math.abs(x.t - F[im].t) <= 1 && x.g !== 'lift' && x.hy > F[ip].hy) ip = i; });
   const r = { gi, ai, fotogrammi: F.length, t_incontro: F[im].t, dMin: F[im].d, t_picco: F[ip].t, scarto: +(F[ip].t - F[im].t).toFixed(2), saltoAlPicco: +(F[ip].hy - h0).toFixed(2), saltoAllIncontro: +(F[im].hy - h0).toFixed(2), gestoAllIncontro: F[im].g, gestoAlPicco: F[ip].g };
   out.push(r); console.log(JSON.stringify(r));
 }

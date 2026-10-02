@@ -32,7 +32,12 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.108";/* [7.999.108 PO-187 — decisione PO 02/10 «etichette vere»] Rilievo Codex gi18: «Dribbling netto» mostrato come
+const GAME_VERSION="7.999.109";/* [7.999.109 PO-077, rilievo Codex gi171 «stacco 591 ms dopo il minimo pallone-testa»] Riprodotto con testa-tempismo:
+   su «Stacco in corsa potente» (tuffo di testa, header_diving) il pallone arrivava alla testa con l'eroe fermo e senza gesto, e il picco
+   arrivava 0,66 s dopo. Il pre-stacco 7.999.33 escludeva il tuffo: ora vale anche per il tuffo, con salto basso (0,15–0,45 u).
+   Misurato: gesto «header» al contatto, scarto 0,1 s (rosso __CPM_NO_TUFFO109: nessun gesto, 0,68 s). Il guardiano ora cerca il
+   picco attorno al contatto e fuori dall'esultanza «lift», che falsava la misura (gi171 azione 1 era giusta). */
+/* [7.999.108 PO-187 — decisione PO 02/10 «etichette vere»] Rilievo Codex gi18: «Dribbling netto» mostrato come
    passaggio. Il tipo di scena 3D nasce dall'esito (deriveHL: assist → passaggio, gol → tiro), quindi l'etichetta deve dichiarare il gesto
    finale. Censimento completo: 73 azioni da dribbling/finta/scatto con gesto finale tiro/passaggio, 43 non lo dichiaravano; ora 0
    («Dribbling netto e assist», «Finta, scatto e tiro», …). Solo testo: nessuna scena 3D cambiata (verificato prima/dopo su 13 azioni).

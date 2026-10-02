@@ -6689,11 +6689,16 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              scollegati. Ora, nell'ultimo tratto del cross verso l'eroe, lo stacco comincia mezza finestra del gesto PRIMA dell'arrivo
              (dal tempo che manca, non a orologio fisso: un cross lento stacca dopo, uno teso prima), la clip di testa si monta allora, e
              alla conclusione il gesto riparte dal PICCO. L'altezza del salto e' lo scarto fra quota del contatto e testa da ferma. */
-          if(P.hlType==='header'&&P.hlVariant!=='header_diving'&&!actType&&tlBuildN>0&&bi===tlBuildN-1&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA33)){
+          /* [7.999.109 PO-077, rilievo Codex gi171 «stacco 591 ms dopo il minimo pallone-testa»] Riprodotto con la sonda testa-tempismo:
+             su «Stacco in corsa potente» (variante header_diving) il pallone era alla testa a 2,25 s con l'eroe fermo e SENZA gesto; il gesto
+             partiva dopo il contatto e la testa toccava il picco 0,66 s dopo, a pallone gia' lontano. Il pre-stacco 7.999.33 escludeva il
+             tuffo. Ora vale anche per il tuffo, con un salto BASSO (il tuffo e' un lancio in avanti, non in alto). Rosso __CPM_NO_TUFFO109. */
+          const _tuffo109=P.hlVariant==='header_diving'&&!(typeof window!=='undefined'&&window.__CPM_NO_TUFFO109);
+          if(P.hlType==='header'&&(P.hlVariant!=='header_diving'||_tuffo109)&&!actType&&tlBuildN>0&&bi===tlBuildN-1&&!(typeof window!=='undefined'&&window.__CPM_NO_TESTA33)){
             const _rem33=acc+tlSeg[bi].dur-tlT,_PRE33=0.5*gwOf('header','vita');
             if(_rem33<=_PRE33){const S33=sr.current;
               if(!S33._pre33||S33._pre33.k!==P.hlSitKey){let _hs=1.67;try{const _hav=(glbAvatars||[]).find(a=>a&&a.proc===hero);const _hb=_hav&&_findBone904(_hav.visualRoot||_hav.root,/^(head|(mixamorig:?)?Head)$/i);if(_hb){const _v=new THREE.Vector3();_hb.getWorldPosition(_v);_hs=_v.y-(hero.position.y||0);}}catch(_e){}
-                S33._pre33={k:P.hlSitKey,t:0,rem0:Math.max(0.12,_rem33),H:clamp(((_aerTL!=null?_aerTL:2.2)-_hs)+0.05,0.25,0.9)};}
+                S33._pre33={k:P.hlSitKey,t:0,rem0:Math.max(0.12,_rem33),H:_tuffo109?clamp(((_aerTL!=null?_aerTL:2.2)-_hs)+0.05,0.15,0.45):clamp(((_aerTL!=null?_aerTL:2.2)-_hs)+0.05,0.25,0.9)};}
               S33._pre33.t+=aDt;const _k33=clamp(S33._pre33.t/S33._pre33.rem0,0,1);hero.position.y=S33._pre33.H*Math.sin(_k33*Math.PI/2);/* salita dello stacco fino al picco all'arrivo del pallone */}}
           if(bi>=tlBuildN){const last=tlSeg[tlBuildN-1];
             if(_aerTL!=null){

@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (45)
+## Voci aperte o parziali (44)
 
-Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
+Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -31,7 +31,6 @@ Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-064 | 26/09 18:36 | Tutto deciso dal brain, anche il render 3D degli highlight | debito tecnico | PARZIALE — PO 01/10: «da completare» | L1 | 7.999.26, 7.999.27, 7.999.82 | `brain-82` | «tutto deve essere deciso da brian anche il render 3D degli highlights con l'eroe» |
 | PO-068 | 26/09 20:10 | Completare i gesti dei lotti P1-b, P2 e P3 (BRAIN_GESTI nelle scene, contactAt/foot, varianti distinguibili, reazioni) | nuova funzione | PARZIALE — PO 01/10: «da completare» | L1 | P1-a: 7.999.31, 7.999.32 | — | «integrate le mancanze nelle prossime release». Roadmap, punti 5 e 7 della coda: P1-b, P2 e P3 senza ✅ |
 | PO-075 | 27/09 11:09 | Clip del PO Receive Soccerball, Soccer Header, Jog Forward | nuova funzione | PARZIALE — PO 01/10: «da completare» | L1 | — (roadmap: «in prova», provini-p1a) | — | caricate; «Jog_Forward.fbx tipo di corsa» |
-| PO-077 | 27/09 12:01 | Colpo di testa sincronizzato con cross, quota e velocità del pallone | difetto | DA COLLAUDARE — rilievo Codex 02/10 su 7.999.103: gi171 lo stacco arriva 591 ms dopo il minimo pallone–testa in 3/3 prove (da riprodurre col banco deterministico) | L1 | 7.999.33, 7.999.64, 7.999.76 | `testa-vera-63`, `testa-76` | «Il colpi di testa non sono sincronizzati con la velocità del cross»; stessa nota su #7, #6, #171 (29–30/09) |
 | PO-079 | 27/09 16:57 | Movimenti poco fluidi in conduzione; il pallone si perde per strada | difetto | DA COLLAUDARE — PO 01/10: «da far collaudare a Codex in maniera approfondita» | L1 | 7.999.37 (non riprodotto), 7.999.44 (bracci di prova spenti) | — | «Movimenti poco fluidi quando l'eroe avanza con la palla»; 21:08 «si perde il pallone per strada» |
 | PO-094 | 27/09 21:13 | Taccuino #176, #64, #152, #99, #38: palla da biliardo o flipper, teletrasporto, esito bugiardo | difetto | DA COLLAUDARE — PO 01/10: Codex (collaudo passaggi: 005/014 e salti su #176, #64, #152, #99) | L1 | 7.999.39 («misurato e non ancora corretto») | — | «SALTO del pallone di 21.1 unità in 16 ms… sembra un teletrasporto»; «l'esito dichiarato è «intercept» ma la palla è finita IN RETE» |
 | PO-100 | 28/09 15:45 | Taccuino #3: eroe a centrocampo e corpo non rivolto alla porta | difetto | DA COLLAUDARE — PO 01/10: Codex su GPU, angolo corpo-porta al tiro | L1 | 7.999.45, 7.999.53 (misura sul telefono) | `contatto-53` | «il corpo al tentativo di tiro / gol è posizionato nella direzione sbagliata». Nella rincorsa resta girato di 91–97° («non ancora corretto») |
@@ -66,7 +65,7 @@ Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 
-## Storico — voci chiuse (142)
+## Storico — voci chiuse (143)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -128,6 +127,7 @@ Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-073 | 26/09 20:43 | Codex in parallelo come collaudatore: kit AGENTS.md e schede | processo | FATTO | — | 7.999.29 (AGENTS.md) | — | «USARE CODEX IN PARALLELO PER TEST E VERIFICHE». Schede 0–6 eseguite il 27/09 |
 | PO-074 | 27/09 10:14 | Clip FBX del PO per l'esultanza (Victory, Golf Putt Victory…) | nuova funzione | FATTO | — | 7.999.31, 7.999.32 | — | file caricati; «va bene per per l'esultanza con il pugno» |
 | PO-076 | 27/09 11:10 | Goalkeeper Idle per l'attesa in difesa | nuova funzione | FATTO | — | 7.999.32 | — | «potrebbe essere sfruttato per la posizione di attesa in difesa» |
+| PO-077 | 27/09 12:01 | Colpo di testa sincronizzato con cross, quota e velocità del pallone | difetto | FATTO — 7.999.109: rilievo Codex gi171 riprodotto (tuffo di testa: pallone alla testa con eroe fermo, picco 0,66 s dopo) e corretto (scarto 0,1 s, gesto al contatto); testa-tempismo 7 scene verde, rosso __CPM_NO_TUFFO109 | L1 | 7.999.33, 7.999.64, 7.999.76 | `testa-vera-63`, `testa-76` | «Il colpi di testa non sono sincronizzati con la velocità del cross»; stessa nota su #7, #6, #171 (29–30/09) |
 | PO-078 | 27/09 14:25 | Gesti 3D fluidi: tiro caricato prima del calcio | difetto | FATTO | — | 7.999.34 | `tiro-caricato` | «Il tiro è scoordinato, non viene caricato / preparato prima del calcio» |
 | PO-080 | 27/09 17:01 | Ingresso in campo pesante e a scatti | difetto | FATTO | — | 7.999.16, 7.999.59 | — | «Il caricamento dello stadio all'ingresso in campo è pesante»; 29/09 05:55 «molto scattoso e pesanti» |
 | PO-081 | 27/09 17:03 | Collaudo approfondito di Codex sulla fluidità 3D | processo | FATTO | — | 7.999.44 (rapporto acquisito) | — | «Farei testare a codex in maniera approfondita la fluidità dei movimenti 3D» |
