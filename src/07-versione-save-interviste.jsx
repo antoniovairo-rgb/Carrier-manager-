@@ -32,7 +32,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.112";/* [7.999.112 PO-189 — collaudo PO 02/10 «a ogni caricamento del campo fa uno strano rimbalzo»: la striscia alta c'e' dal primo fotogramma e il campo 2D nasce della misura giusta. Rosso __CPM_NO_RIMB189] *//* [7.999.111 PO-188 — collaudo PO 02/10 «statistiche pre partita con sfondo troppo scuro», seconda volta dopo la 7.937]
+const GAME_VERSION="7.999.113";/* [7.999.113 PO-194 GRAVE «partita già giocata» alla 34ª: la conferenza pre-partita si apriva insieme alla partita, compariva DOPO il fischio e il discorso del mister che la segue riapriva la gara appena giocata; ora conferenza → discorso → partita, e a fine gara niente resta in sospeso (rosso __CPM_NO_CONF194) · PO-192 «è una partita Primavera, ma quale bolgia?»: la domanda «quasi un derby» esce solo in un derby vero e tra i professionisti (rosso __CPM_NO_DERBY192) · PO-193 «SETTIMANA 39 DI 38» → «Fine stagione» (rosso __CPM_NO_SETT193)] *//* [7.999.112 PO-189 — collaudo PO 02/10 «a ogni caricamento del campo fa uno strano rimbalzo»: la striscia alta c'e' dal primo fotogramma e il campo 2D nasce della misura giusta. Rosso __CPM_NO_RIMB189] *//* [7.999.111 PO-188 — collaudo PO 02/10 «statistiche pre partita con sfondo troppo scuro», seconda volta dopo la 7.937]
    Il vetro della scheda all'ingresso in campo passa da 0,74/0,62 a 0,45/0,34 (sfocatura 6 px), con un'ombra sotto il testo bianco
    per restare leggibile sul prato. Rosso __CPM_NO_PRE188, guardiano pre-188. */
 /* [7.999.110 collaudo PO 02/10 «deve comparire sopra e deve essere più leggibile» — riquadro «Campioni di …!»]
@@ -1674,7 +1674,7 @@ const INTERVIEW_QS=[
   {tone:"diretto",txt:"È uno snodo decisivo e lo vinceremo. I nostri obiettivi passano da qui.",ef:{m:6,t:-2,p:5,f:1}},
   {tone:"umile",txt:"Un passo importante, niente di più. La stagione è lunga, restiamo coi piedi a terra.",ef:{m:2,t:4,p:1}},
 ]},
-{ctx:["prematch"],q:"È una sfida sentitissima, quasi un derby. Che atmosfera vi aspettate?",a:[
+{ctx:["prematch"],cond:(p,c)=>!!(c&&c.derby)&&(p.proStatus||"u18")==="pro"/* [7.999.113 PO-192] solo in un derby vero e tra i professionisti: «bolgia» e «serate» in Primavera non stanno in piedi */,q:"È una sfida sentitissima, quasi un derby. Che atmosfera vi aspettate?",a:[
   {tone:"diplomatico",txt:"Atmosfera da grande calcio. La vivremo con passione e massimo rispetto.",ef:{m:4,t:2,p:3}},
   {tone:"diretto",txt:"Sarà una bolgia e noi adoriamo queste serate. È qui che si diventa grandi.",ef:{m:7,t:-2,p:6,f:2}},
   {tone:"umile",txt:"Sfide così non si spiegano, si giocano. Servirà testa fredda e cuore caldo.",ef:{m:3,t:3,p:2}},

@@ -347,6 +347,7 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
     _trophyCountRef.current=n;
   },[player.trophies]);// eslint-disable-line
   const[misterDiscorsoModal,setMisterDiscorsoModal]=useState(null); // {coachName, line, mw, isCaptainTalk?}
+  const attesaConf194Ref=useRef(false); // [7.999.113 PO-194] la partita aspetta la chiusura della conferenza pre-partita
   const pendingMisterDiscorsoRef=useRef(null); // Sprint D3: mister talk deferred until prematch press conf closes
   const matchBenchStartRef=useRef(false); // Sprint 33 C7
   const matchEntryMinuteRef=useRef(60); // Sprint 148: survives coachDecision reset
@@ -459,11 +460,13 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       const _disc=pendingMisterDiscorsoRef.current;
       pendingMisterDiscorsoRef.current=null;
       if(_disc)setTimeout(()=>setMisterDiscorsoModal(_disc),350);
+      else if(attesaConf194Ref.current)setScreen("match");/* [7.999.113 PO-194] senza discorso del mister si entra in campo qui */
+      attesaConf194Ref.current=false;
     }
   };
   /* [7.994.0] chiusura dalla prima pagina: stesso seguito di prima (dopo la conferenza pre-partita parla il mister) */
   const chiudiIntervista24=()=>{const wasPre=interviewModal?.matchCtx==="prematch";setInterviewModal(null);
-    if(wasPre){const _disc=pendingMisterDiscorsoRef.current;pendingMisterDiscorsoRef.current=null;if(_disc)setTimeout(()=>setMisterDiscorsoModal(_disc),350);}};
+    if(wasPre){const _disc=pendingMisterDiscorsoRef.current;pendingMisterDiscorsoRef.current=null;if(_disc)setTimeout(()=>setMisterDiscorsoModal(_disc),350);else if(attesaConf194Ref.current)setScreen("match");attesaConf194Ref.current=false;}};
 
   // global keyboard shortcuts
   useEffect(()=>{
@@ -978,7 +981,8 @@ const getThisWeekMatchday=()=>{
   const startMatch=(resumeSnap=null)=>{
     matchResumeRef.current=(resumeSnap&&resumeSnap.v)?resumeSnap:null;/* [7.150.0] ripresa dentro la partita: pulisce eventuale snapshot stantio nel path normale */
     if(openingGate())return;/* [7.16.0] W1 vincolante */
-    const md=getThisWeekMatchday();/* [7.8.28 QA] risolta PRIMA delle guardie: squalifica di CAMPIONATO e svincolo non c'entrano con la NAZIONALE (bloccavano l'amichevole azzurra) */
+    const md=getThisWeekMatchday();try{if(typeof window!=='undefined'&&_CPM_TEST){(window.__CPM_SM194=window.__CPM_SM194||[]).push({w:player.week,wl:player.weekLived,md:md&&md.matchday,mdw:md&&md.week,pl:md&&md.played,reg:((player.playedMd||{}).md||[]).length,st:String(new Error().stack||"").split("\n").slice(1,7).join(" | ").slice(0,700)});}}catch(_e194){}/* [7.999.113 PO-194] testimone di collaudo: chi apre una partita e con quale giocatore */
+    /* [7.8.28 QA] risolta PRIMA delle guardie: squalifica di CAMPIONATO e svincolo non c'entrano con la NAZIONALE (bloccavano l'amichevole azzurra) */
     const _isNatMd28=!!(md&&md.type==="national");
     if(player.injured){notify("Sei infortunato!",TH.danger);return;}
     if(player.isSuspended&&!_isNatMd28){notify("🟥 Sei squalificato: questa partita la guardi dalla tribuna. Usa Simula/Avanza.",TH.danger);return;}/* [6.74.0 QA-13] la guardia viveva solo nel bottone del modal → la scorciatoia tastiera P bypassava la squalifica */
@@ -1037,7 +1041,11 @@ const getThisWeekMatchday=()=>{
     // Sprint D3: conferenza stampa pre-partita su big match (mw>=7, solo se tutorial completato)
     let _pressShown=false;
     if(mw>=7&&player.tutorialDone===true){
-      const _pool=INTERVIEW_QS.filter(q=>(q.ctx||[]).includes("prematch"));
+      /* [7.999.113 collaudo PO-192 «è una partita Primavera, ma quale bolgia?»] la domanda si pescava a caso fra tutte le 9 pre-partita:
+         «quasi un derby… sara' una bolgia» usciva senza derby e nelle giovanili. Ora le domande con una condizione escono solo se
+         il requisito c'e', con la stessa regola delle domande settimanali: la condizione della domanda (cond). Rosso __CPM_NO_DERBY192. */
+      const _no192=(typeof window!=='undefined'&&window.__CPM_NO_DERBY192);
+      const _pool=INTERVIEW_QS.filter(q=>(q.ctx||[]).includes("prematch")&&(_no192||!q.cond||(function(){try{return !!q.cond(player,{derby:derby||null});}catch(_e){return false;}})()));
       if(_pool.length){
         const _pq=_pool[Math.floor(Math.random()*_pool.length)];
         const _paper=NEWSPAPERS[Math.floor(Math.random()*NEWSPAPERS.length)];
@@ -1048,6 +1056,13 @@ const getThisWeekMatchday=()=>{
     }
     // If no press conference, fire the mister talk immediately (legacy behaviour)
     if(!_pressShown&&_disc)setMisterDiscorsoModal(_disc);
+    /* [7.999.113 collaudo PO-194 GRAVE «partita gia' giocata, un'altra volta sempre alla 34esima giornata» — RIPRODOTTO sul salvataggio
+       del PO] la conferenza pre-partita si apriva e NELLO STESSO ISTANTE si entrava in campo: restava sospesa e compariva sulla home
+       DOPO il fischio (settimana 39), e rispondendo partiva il discorso del mister rimasto in sospeso, la cui conferma fa
+       setScreen("match") → la gara appena giocata si riapriva da «Vedi le formazioni». Testimone __CPM_SM194: una sola chiamata a
+       startMatch. Ora con la conferenza si resta qui: conferenza → discorso del mister → partita, come previsto dallo Sprint D3.
+       Rosso __CPM_NO_CONF194. */
+    if(_pressShown&&!(typeof window!=='undefined'&&window.__CPM_NO_CONF194)){attesaConf194Ref.current=true;return;}
     setScreen("match");
   };
   // [7.150.0 direttiva PO «riprendere anche DENTRO la partita»] AUTO-RIPRESA IN-MATCH:
@@ -1307,7 +1322,7 @@ const getThisWeekMatchday=()=>{
       setOffer:(o)=>{try{setTransferOffer(o);return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.338.0] la probe apre il modale OFFERTA vero per collaudare il rifiuto */
       forceInterview:(ctx,fuori)=>{try{const iw=pickInterviewByCtx({...player,lastMatchCtx:ctx||"win"});setInterviewModal({q:iw.q,paper:(player.journalists||[])[0]||null,journalistId:((player.journalists||[])[0]||{}).id,opponent:"FC Test",matchCtx:ctx||"win",partita24:(ctx||"win")==="loss"?{hs:0,as:2,casa:true,voto:5.5,gol:0}:(ctx==="draw")?{hs:1,as:1,casa:true,voto:6.5,gol:1}:{hs:2,as:1,casa:true,voto:7.5,gol:1},...(fuori?{partita24:{hs:2,as:1,casa:false,voto:7.5,gol:1}}:{})});return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.43.0] collaudo mixed zone 3D */
       apriNaz55:()=>{try{if(!(player.euroMondiale&&player.euroMondiale.active))return "no-em";startEuroMondialeMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.55] solo il guardiano ripresa-55 */
-      playMatch:()=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();return true;}catch(e){return "error:"+(e&&e.message);}},/* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
+      playMatch:(conf194)=>{try{if(openingPending().length)return "opening";/* [7.160.0 super-test] a W1 startMatch è gated dal wizard d'apertura (7.16.0): prima ritornava true SENZA entrare in partita → il live-validator career skippava il match 1 in silenzio; ora segnala e il chiamante risolve con step() */if(!getThisWeekMatchday())return "nomatch";startMatch();if(attesaConf194Ref.current&&!conf194){attesaConf194Ref.current=false;pendingMisterDiscorsoRef.current=null;setInterviewModal(null);setScreen("match");}return true;}catch(e){return "error:"+(e&&e.message);}},/* [7.999.113] playMatch(true) lascia la conferenza pre-partita come la vede il giocatore; senza argomento la salta (le sonde vogliono il campo) *//* [6.3.1 R0] Live Match Validator: entra nella partita LIVE della settimana con gli handler VERI */
       step:()=>{try{
         if(screen==="seasonEnd"||screen==="seasonAwards")return "seasonEnd";
         /* [7.999.43 imbracatura per il collaudo massivo delle carriere] con window.__CPM_SIM_NAT=1 la partita della Nazionale si SIMULA con
@@ -3351,6 +3366,7 @@ const getThisWeekMatchday=()=>{
     //   report LOCALE (sincrono, mai vuoto) è settato SUBITO per OGNI contesto; l'AI async (lega) lo arricchisce.
     try{ setLastPressReport(generateLocalPressAnalysis(result,{name:player.name,club:_pressTeam,goals:result.goals,assists:result.assists,rating:result.rating,oppPrestige:player.standings?undefined:(result.oppPrestige||65),homeRoster:result.heroRoster||result.homeRoster||[]},{archetype:player.archetype,records:player.records,goldenBoys:player.goldenBoys,matchHistory:player.matchHistory,season:player.season,week:player.week,age:player.age,titleWon:_titleWon,titleName:_titleName,koPen:_koPen85,...((()=>{/* [7.999.64 collaudo PO «c'e' poco da allenarsi dopo un'eliminazione dalle coppe / tornei con la nazionale». Rosso __CPM_NO_ELIM64] */if(typeof window!=='undefined'&&window.__CPM_NO_ELIM64)return {};const rc=result.context;const _lost=!result.won&&!result.drew;return {elim:!!((_lost&&(rc==='cup'||rc==='euro_ko'||rc==='euroMondiale_ko'))||(_koPen85&&!_koPen85.won)),nat:/^(national|nazionale|nationsCup|euroMondiale)/.test(String(rc||''))};})())})); }catch(_ep){}
     setMisterDiscorsoModal(null); // safety net: clear any stale pre-match coach speech
+    if(!(typeof window!=='undefined'&&window.__CPM_NO_CONF194)){pendingMisterDiscorsoRef.current=null;attesaConf194Ref.current=false;setInterviewModal(m=>(m&&m.matchCtx==="prematch")?null:m);}/* [7.999.113 PO-194] rete: a partita finita una conferenza PRE-partita o un discorso rimasti in sospeso non devono sopravvivere (riaprivano la gara) */
     // [5.93.0] cerimonia consegnata → non ripeterla nelle gare successive della stagione
     try{const _ts93=titleStakesRef.current;if(_ts93&&(result.won||_ts93.late)){setPlayer(p=>({...p,titleCeremonyShown:p.season||1}));}titleStakesRef.current=null;}catch(_e){}
     // Item 6: Qualificazioni Euro/Mondiale — early return
@@ -7286,7 +7302,7 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&(
         <div style={{marginBottom:9}}>
           <Card elevation={2}>
-            <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:FW.bold}}>{L.season} {season} · {L.week} {week} di 38</div>
+            <div style={{fontSize:FS.caption,color:TH.faint,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:FW.bold}}>{L.season} {season} · {(week>38&&!(typeof window!=="undefined"&&window.__CPM_NO_SETT193))?"Fine stagione":(L.week+" "+week+" di 38")}{/* [7.999.113 PO-193 foto «SETTIMANA 39 DI 38»] oltre la 38ª la stagione e' finita: la testata dice come la riga in alto «Fine stagione». Rosso __CPM_NO_SETT193 */}</div>
             {(()=>{
               const ratedMatches=(player.matchHistory||[]).filter(m=>!m.simulated&&m.rating>0);
               const avgRat=ratedMatches.length>=3?Math.round(ratedMatches.slice(-10).reduce((s,m)=>s+(m.rating||0),0)/Math.min(10,ratedMatches.length)*10)/10:null;
