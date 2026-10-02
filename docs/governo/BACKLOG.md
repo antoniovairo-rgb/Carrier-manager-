@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (45)
+## Voci aperte o parziali (46)
 
-Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
+Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -42,6 +42,7 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-133 | 29/09 22:47 | Dopo gli stadi, valutare la consegna parziale di Codex sugli highlight | processo | DA COLLAUDARE — PO 01/10: «rifai fare un collaudo a Codex» | L1 | 7.999.69 (corretta solo la chiamata waitForFunction) | — | «in coda agli stadi valuta i risu[ltati]» |
 | PO-143 | 30/09 15:34 | Taccuino #18, #126, #64, #140: dribbling fasullo, esiti in rete, pallone che arretra | difetto | DA COLLAUDARE — PO 01/10: Codex (#64 nel collaudo colpo di testa; #126 e #18 da aggiungere); #140 FATTO in 7.999.93 | L1 | 7.999.79: «Non riprodotti»; 7.999.93 (#140) | `conduci-93` | «Non era un dribbling»; «Azione confusionaria con colpo di testa non sincronizzato»; «Ha fatto una sorta di colpo di testa, scena strana» |
 | PO-172 | 27/09 | Rilievi Codex sulle release 7.999.26–27 (26-A…27-B) da riprodurre | difetto | PARZIALE — 27-B corretto (7.999.100), 26-D corretto secondo la decisione PO (7.999.101), 26-C chiuso dalla 7.999.98; 26-A, 26-B, 27-A non verificati | L1 | — | — | roadmap: «6 rischi, nessuno riprodotto» |
+| PO-185 | 02/10 | Ricollaudo Codex difesa 3D su 7.999.91: 32/32 esiti concordi con ActionResolved; restano ipotesi visive 001 apertura (gi138, gi36, gi45: 6 casi) e 002 fuori quadro (gi133f, gi138, gi168f, gi31f, gi32, gi36s: 8 casi; gi32 eroe a 15 u dalla palla in apertura) | difetto | IN CORSO — primo riscontro 02/10 su 7.999.103: hero-in-frame (eroe nel quadro, pagina nuova, 3 passate) gi138 0%, gi133 4%, gi168 8% fuori quadro: la parte «eroe fuori quadro» NON si riproduce; resta da misurare il PALLONE fuori quadro (gi133f, gi32, gi36) e l'apertura 001 a GLB acceso | L1 | — | — | rapporto `reports/codex/2026-10-01-ricollaudo-difesa-3d.md` (ramo codex/2026-10-01-ricollaudo-difesa-3d, 8db1699b) |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
 | PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
 | PO-176 | 01/10 | Salvataggio: dopo il ricaricamento cambiano `playedMd` e `cup.club` (56 confronti su 56) | difetto | DA COLLAUDARE — PO 01/10: Codex (prompt salvataggio-ricarica già dato) | L3 | — | — | Codex: «perdita visibile al giocatore: non verificato»; va separata la rigenerazione prevista dalla perdita |
