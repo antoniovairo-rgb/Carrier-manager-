@@ -45,7 +45,7 @@ async function run({ gi, outcome, glb, repeat }) {
     await page.evaluate(() => window.__CPM_AUTOPLAY?.(false));
     await sleep(700);
     if (glb) {
-      try { await page.waitForFunction(() => window.__CPM_MXCLIP > 0, null, { timeout: 15000 }); }
+      try { await page.waitForFunction(() => window.__CPM_MXCLIP > 0, null, { timeout: Number(process.env.CPM_MXCLIP_WAIT_MS) || 30000 }); }
       catch { result.rejected = 'GLB non montato: __CPM_MXCLIP<=0'; return result; }
     }
     if (!shotsEnabled) {
@@ -59,14 +59,19 @@ async function run({ gi, outcome, glb, repeat }) {
           if (phaseBefore !== 'hl_choose') return { phaseBefore, accepted: false, phaseChangedBeforeSettle: true, elapsedVirtualMs: performance.now() - forced.t };
           window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
           return { key: b ? `${b.x},${b.y}` : null, phaseBefore, accepted: window.__CPM_RESOLVE(0), elapsedVirtualMs: performance.now() - forced.t }; }, [outcome, forced]);
-      })() : await page.evaluate(([i, o, mode]) => new Promise(resolve => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null;
-        let moved = false, last = null, same = 0; window.__CPM_FORCE_SIT(i, true); const t0 = performance.now();
-        const tick = () => { if (window.__CPM_PHASE?.() !== 'hl_choose') { resolve({ phaseBefore: window.__CPM_PHASE?.(), accepted: false, phaseChangedBeforeSettle: true, elapsedVirtualMs: performance.now() - t0 }); return; }
+      })() : await page.evaluate(([i, o, mode]) => new Promise(resolve => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null; const t0Ball = window.__CPM_BALL3?.()?.t;
+        let moved = false, last = null, same = 0, seenChoose = false; window.__CPM_FORCE_SIT(i, true); const t0 = performance.now();
+        const tick = () => { const ph = window.__CPM_PHASE?.(); if (ph === 'hl_choose') seenChoose = true;
+          else if (seenChoose) { resolve({ phaseBefore: ph, accepted: false, phaseChangedBeforeSettle: true, elapsedVirtualMs: performance.now() - t0 }); return; }
+          else { if (performance.now() - t0 > 25000) resolve(null); else requestAnimationFrame(tick); return; }
           const b = window.__CPM_BALL?.(); const key = b ? `${b.x},${b.y}` : null;
           if (key && key !== pre && key !== '50,50') moved = true;
           if (moved && key && key !== '50,50' && key === last) same++; else same = 0; last = key;
-          if ((mode === 'moved' ? moved : same >= 2)) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
-            const phaseBefore = window.__CPM_PHASE?.(); const accepted = window.__CPM_RESOLVE(0); resolve({ key, phaseBefore, accepted, elapsedVirtualMs: performance.now() - t0 }); }
+          const b3 = mode === 'target-aligned' ? window.__CPM_BALL3?.() : null;
+          const targetChanged = b3?.t && t0Ball && Math.hypot(b3.t.x-t0Ball.x,b3.t.y-t0Ball.y)>3;
+          const meshNearTarget = b3?.m && b3?.t && Math.hypot(b3.m.x-b3.t.x,b3.m.y-b3.t.y)<2;
+          if ((mode === 'moved' ? moved : mode === 'mounted-500ms' ? moved && performance.now() - t0 >= 500 : mode === 'target-aligned' ? targetChanged && meshNearTarget : same >= 2)) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
+            const phaseBefore = window.__CPM_PHASE?.(); const ball3 = window.__CPM_BALL3?.() ?? null; const accepted = window.__CPM_RESOLVE(0); resolve({ key, ball3, phaseBefore, accepted, elapsedVirtualMs: performance.now() - t0 }); }
           else if (performance.now() - t0 > 25000) resolve(null); else requestAnimationFrame(tick);
         }; requestAnimationFrame(tick); }), [gi, outcome, process.env.CPM_SETTLE_MODE]);
       result.ballStart = resolvedAt?.key ?? null; result.resolve = resolvedAt;
