@@ -7,8 +7,8 @@
 import { spawnSync } from 'node:child_process'; import fs from 'node:fs'; import path from 'node:path';
 const CATENE = {
   completa: ['test:vision', 'test:logic', 'typing-shortcuts', 'validate-situations', 'save-compat', 'replay', 'career-critical', 'partita-vera', 'design-system'],
-  carriera: ['test:logic', 'save-compat', 'replay', 'career-critical', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108'],
-  grafica: ['griglia-mobile', 'design-system', 'career-critical', 'test:logic', 'save-compat'],
+  carriera: ['test:logic', 'save-compat', 'replay', 'career-critical', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107', 'etichette-108', 'titolo-110'],
+  grafica: ['griglia-mobile', 'design-system', 'career-critical', 'test:logic', 'save-compat', 'titolo-110'],
   guardiani: ['goleade', 'scene-disegnabili', 'nomi-51', 'piazzati-eroe', 'cross-origine', 'tiro-caricato', 'passo-velocita', 'gesti-copertura-96', 'etichette-95',
     'attesa-difesa', 'calendario-nazionale', 'career-nat-sim', 'disappunto', 'esultanza-braccia', 'fallo-cercato', 'filtrante-intercetto', 'home-riquadri', 'numeri-home',
     'occasioni-dinamiche', 'occasioni-squadra', 'piede-preferito', 'ruleta', 'strisce-corpo', 'testa-tempismo', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105', 'avversario-106', 'rinvio-coppe-107'],

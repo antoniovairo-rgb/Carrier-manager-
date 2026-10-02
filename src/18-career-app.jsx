@@ -7174,6 +7174,37 @@ const getThisWeekMatchday=()=>{
           LA CARD PRINCIPALE: la prossima partita, subito sotto «cosa fare». Solo presentazione: legge getThisWeekMatchday()
           e player.standings/goals/assists/matchHistory come gia' fanno le card sotto; il bottone chiama handleContinua(),
           la stessa strada del CTA. Nessuna logica nuova. Se non c'e' una partita servita, la card non compare. */}
+      {/* [7.288.0] LA FESTA DEL TITOLO — 2D, sulla dashboard, su OGNI percorso (live/simula/avanza) · [7.999.110 collaudo PO 02/10 «deve comparire sopra e deve essere più leggibile»] in CIMA alla home, subito sotto il pulsante principale; sul fondo chiaro della grafica uniforme i testi crema (#fef3c7) erano illeggibili: ora oro scuro / testo pieno */}
+      {tab==="dashboard"&&(()=>{
+        const tc=titleClinchedNow(player);if(!tc)return null;
+        if((player.titleCelebSeason||0)===(player.season||1))return null;
+        const _tit=tc.kind==="title",_cn=player.club?.n||"il club";const _l110=!(typeof window!=="undefined"&&window.__CPM_NO_TITOLO110);/* rosso: colori di prima */
+        const _oro=_tit?["#78350f","#f59e0b","#fef3c7"]:["#064e3b","#22c55e","#dcfce7"];
+        const _festeggia=()=>setPlayer(p=>({...p,titleCelebSeason:p.season||1,
+          morale:clamp((p.morale||70)+5,0,100),popularity:clamp((p.popularity||20)+3,0,100),
+          diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_tit?"🏆":"⬆️",
+            headline:_tit?(tc.promoTo?`Campioni di ${tc.name} — promossi in ${tc.promoTo}!`:`Campioni di ${tc.name}!`):`Promossi in ${tc.name}!`,
+            body:_tit?`Con ${tc.rem} giornat${tc.rem===1?"a":"e"} d'anticipo e ${tc.gap} punti di vantaggio: la matematica dice ${_cn}.`:`${_cn} torna dove merita: promozione aritmetica.`,
+            color:_tit?TH.goldText:TH.txGreen}]),
+          log:[_tit?`🏆 MATEMATICAMENTE CAMPIONI! ${_cn} vince ${tc.name}${tc.rem>0?` con ${tc.rem} giornat${tc.rem===1?"a":"e"} d'anticipo`:""}.`:`⬆️ PROMOZIONE ARITMETICA! ${_cn} sale in ${tc.name}.`,...(p.log||[])].slice(0,60)}));
+        return(<>
+          {/* coriandoli: stessi keyframes della schermata di fine stagione, flash-safe */}
+          <div style={{position:"fixed",inset:0,pointerEvents:"none",overflow:"hidden",zIndex:60}}>
+            {Array.from({length:40}).map((_,i)=>{const _cc=["#f59e0b","#facc15","#fef3c7","#22c55e","#60a5fa",player.club?.c||"#f59e0b"];return <span key={i} style={{position:"absolute",left:((i*47)%100)+"%",top:"-8%",width:8,height:13,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.6+(i%5)*0.7).toFixed(1)}s linear ${((i%9)*0.4).toFixed(2)}s infinite`,opacity:0.92}}/>;})}
+          </div>
+          <Card style={{marginBottom:8,padding:"16px 16px 14px",background:_n30(`linear-gradient(150deg,${_oro[0]},${_oro[1]} 55%,${_oro[0]})`,TH.card),border:_n30(`1px solid ${_oro[1]}`,"1px solid "+TH.cardBorder),textAlign:"center"}}>
+            <div style={{fontSize:34,lineHeight:1,marginBottom:4}}>{_tit?"🏆":"⬆️"}</div>
+            <div style={{fontSize:FS.caption,color:_l110?_n30(_oro[2],_tit?TH.goldText:TH.txGreen):_oro[2],fontWeight:800,textTransform:"uppercase",letterSpacing:2,marginBottom:4,opacity:_n30(.85,1)}}>{_tit?"È matematica":"È fatta"}</div>
+            <div style={{fontSize:FS.title,fontWeight:900,color:_n30("#fff",TH.text),letterSpacing:.4,marginBottom:6,textShadow:"0 2px 10px rgba(0,0,0,0.35)"}}>{_tit?`CAMPIONI DI ${String(tc.name).toUpperCase()}!`:`PROMOSSI IN ${String(tc.name).toUpperCase()}!`}</div>
+            {_tit&&tc.promoTo&&<div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),letterSpacing:.6,marginBottom:6,opacity:.95}}>⬆️ PROMOSSI IN {String(tc.promoTo).toUpperCase()}!</div>}
+            <div style={{fontSize:FS.body,color:_l110?_n30(_oro[2],TH.text):_oro[2],lineHeight:1.55,marginBottom:10}}>
+              {_tit
+                ?<>Nessuno può più raggiungervi: <strong style={{color:_n30("#fff",TH.text)}}>{_cn}</strong> è campione{tc.rem>0?<> con <strong style={{color:_n30("#fff",TH.text)}}>{tc.rem} giornat{tc.rem===1?"a":"e"}</strong> d'anticipo</>:null}{tc.gap>0?<>, <strong style={{color:_n30("#fff",TH.text)}}>{tc.gap} punt{tc.gap===1?"o":"i"}</strong> sulla seconda</>:null}. La città è già in piazza.</>
+                :<>La matematica vi porta di sopra: <strong style={{color:_n30("#fff",TH.text)}}>{_cn}</strong> è promosso in {tc.name}. Ci si abbraccia negli spogliatoi come se fosse uno scudetto — perché lo è.</>}
+            </div>
+            <Btn v="outline" fw onClick={_festeggia} style={{background:_n30("rgba(0,0,0,0.32)","transparent"),border:`1px solid ${_n30(_oro[2],_oro[1])}`,color:_n30("#fff",TH.text),fontWeight:800}}>🎉 Festeggia con la squadra</Btn>
+          </Card>
+        </>);})()}
       {tab==="dashboard"&&(()=>{
         let md=null;try{md=getThisWeekMatchday();}catch(_e){md=null;}
         if(!md)return null;
@@ -7520,37 +7551,6 @@ const getThisWeekMatchday=()=>{
             <Btn v={_pass?"primary":"ghost"} fw onClick={()=>setPlayer(p=>({...p,newCoachExam:null,coachTrust:clamp((p.coachTrust||60)+(_pass?10:-4),0,100),diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_pass?"👔":"🪑",headline:_pass?"Esame superato: il posto è riconquistato":"L'esame non è bastato",body:_pass?`Media ${sv.avg} sotto gli occhi del nuovo mister.`:`Media ${sv.avg}: col nuovo mister riparti dalle retrovie.`,color:_n30(_pass?TH.txGreen:"#b45309",_pass?TH.txGreen:semTesto945("#b45309"))}]),log:[_pass?`👔 Esame SUPERATO (media ${sv.avg}) — il nuovo mister ti conferma.`:`🪑 Esame non superato (media ${sv.avg}): serve di più.`,...(p.log||[])].slice(0,60)}))}>{_pass?"Il posto è mio →":"Testa bassa e lavorare →"}</Btn>
           </Card>);
       })()}
-      {/* [7.288.0] LA FESTA DEL TITOLO — 2D, sulla dashboard, su OGNI percorso (live/simula/avanza) */}
-      {tab==="dashboard"&&(()=>{
-        const tc=titleClinchedNow(player);if(!tc)return null;
-        if((player.titleCelebSeason||0)===(player.season||1))return null;
-        const _tit=tc.kind==="title",_cn=player.club?.n||"il club";
-        const _oro=_tit?["#78350f","#f59e0b","#fef3c7"]:["#064e3b","#22c55e","#dcfce7"];
-        const _festeggia=()=>setPlayer(p=>({...p,titleCelebSeason:p.season||1,
-          morale:clamp((p.morale||70)+5,0,100),popularity:clamp((p.popularity||20)+3,0,100),
-          diary:capDiary([...(p.diary||[]),{season:p.season||1,week:p.week||1,type:"story",e:_tit?"🏆":"⬆️",
-            headline:_tit?(tc.promoTo?`Campioni di ${tc.name} — promossi in ${tc.promoTo}!`:`Campioni di ${tc.name}!`):`Promossi in ${tc.name}!`,
-            body:_tit?`Con ${tc.rem} giornat${tc.rem===1?"a":"e"} d'anticipo e ${tc.gap} punti di vantaggio: la matematica dice ${_cn}.`:`${_cn} torna dove merita: promozione aritmetica.`,
-            color:_tit?TH.goldText:TH.txGreen}]),
-          log:[_tit?`🏆 MATEMATICAMENTE CAMPIONI! ${_cn} vince ${tc.name}${tc.rem>0?` con ${tc.rem} giornat${tc.rem===1?"a":"e"} d'anticipo`:""}.`:`⬆️ PROMOZIONE ARITMETICA! ${_cn} sale in ${tc.name}.`,...(p.log||[])].slice(0,60)}));
-        return(<>
-          {/* coriandoli: stessi keyframes della schermata di fine stagione, flash-safe */}
-          <div style={{position:"fixed",inset:0,pointerEvents:"none",overflow:"hidden",zIndex:60}}>
-            {Array.from({length:40}).map((_,i)=>{const _cc=["#f59e0b","#facc15","#fef3c7","#22c55e","#60a5fa",player.club?.c||"#f59e0b"];return <span key={i} style={{position:"absolute",left:((i*47)%100)+"%",top:"-8%",width:8,height:13,borderRadius:3,background:_cc[i%_cc.length],animation:`confettiFall ${(2.6+(i%5)*0.7).toFixed(1)}s linear ${((i%9)*0.4).toFixed(2)}s infinite`,opacity:0.92}}/>;})}
-          </div>
-          <Card style={{marginBottom:8,padding:"16px 16px 14px",background:_n30(`linear-gradient(150deg,${_oro[0]},${_oro[1]} 55%,${_oro[0]})`,TH.card),border:_n30(`1px solid ${_oro[1]}`,"1px solid "+TH.cardBorder),textAlign:"center"}}>
-            <div style={{fontSize:34,lineHeight:1,marginBottom:4}}>{_tit?"🏆":"⬆️"}</div>
-            <div style={{fontSize:FS.caption,color:_oro[2],textTransform:"uppercase",letterSpacing:2,marginBottom:4,opacity:.85}}>{_tit?"È matematica":"È fatta"}</div>
-            <div style={{fontSize:FS.title,fontWeight:900,color:_n30("#fff",TH.text),letterSpacing:.4,marginBottom:6,textShadow:"0 2px 10px rgba(0,0,0,0.35)"}}>{_tit?`CAMPIONI DI ${String(tc.name).toUpperCase()}!`:`PROMOSSI IN ${String(tc.name).toUpperCase()}!`}</div>
-            {_tit&&tc.promoTo&&<div style={{fontSize:FS.body,fontWeight:900,color:_n30("#fff",TH.text),letterSpacing:.6,marginBottom:6,opacity:.95}}>⬆️ PROMOSSI IN {String(tc.promoTo).toUpperCase()}!</div>}
-            <div style={{fontSize:FS.small,color:_oro[2],lineHeight:1.55,marginBottom:9}}>
-              {_tit
-                ?<>Nessuno può più raggiungervi: <strong style={{color:_n30("#fff",TH.text)}}>{_cn}</strong> è campione{tc.rem>0?<> con <strong style={{color:_n30("#fff",TH.text)}}>{tc.rem} giornat{tc.rem===1?"a":"e"}</strong> d'anticipo</>:null}{tc.gap>0?<>, <strong style={{color:_n30("#fff",TH.text)}}>{tc.gap} punt{tc.gap===1?"o":"i"}</strong> sulla seconda</>:null}. La città è già in piazza.</>
-                :<>La matematica vi porta di sopra: <strong style={{color:_n30("#fff",TH.text)}}>{_cn}</strong> è promosso in {tc.name}. Ci si abbraccia negli spogliatoi come se fosse uno scudetto — perché lo è.</>}
-            </div>
-            <Btn v="outline" fw onClick={_festeggia} style={{background:_n30("rgba(0,0,0,0.32)","transparent"),border:`1px solid ${_oro[2]}`,color:_n30("#fff",TH.text)}}>🎉 Festeggia con la squadra</Btn>
-          </Card>
-        </>);})()}
       {/* [7.283.0] LA PRESENTAZIONE AL NUOVO CLUB — foto con la maglia + conferenza, a ogni cambio di squadra */}
       {tab==="dashboard"&&(()=>{
         const pv=presentazioneView(player);if(!pv)return null;
