@@ -64,6 +64,10 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-071 | 26/09 20:28 | Stadi 3D: qualità grafica e nuove varianti (galleria → elementi → tipologie) | miglioramento | PARZIALE — PO 01/10: «da completare in L8» (fase 3, nuove tipologie di stadio) | L8 | fase 1: 7.999.69 · fase 2: 7.999.69–7.999.71 · fase 3: nessuna release | `galleria-stadi`, `stadi-70`, `pali-69` | «STADI 3D: QUALITÀ GRAFICA E NUOVE VARIANTI (LAVORO IN CODA)»; 30/09 «la grafica degli stadi deve essere migliorata il più possibile» |
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
+| PO-188 | 02/10 20:23 | Statistiche pre-partita (ingresso in campo, riquadro «Premier Division · vs») con sfondo troppo scuro | difetto | DA FARE | L1 | — | — | foto PO 20:23 |
+| PO-189 | 02/10 20:26 | A ogni caricamento del campo 2D c'è uno strano rimbalzo, come se si ridimensionasse | difetto | DA RIPRODURRE | L1 | — | — | foto PO 20:26 (partita 2D, pannello Statistiche/Pagelle) |
+| PO-190 | 02/10 20:27 | Goleade e troppi gol in una stagione: eroe 51 gol in 36 partite (S.12), 5-0 con 15 tiri e xG 3,42 vs l'8ª | difetto | DA MISURARE | L6 | — | — | foto PO 20:26-20:27; precedenti PO-093/PO-179 (7.999.98) |
+| PO-191 | 02/10 20:26 | Premiazione 3D: compagni che attraversano il palco, eroe in posa sbagliata (gamba alzata, trofeo davanti) e che «vola» sopra il palco | difetto | DA RIPRODURRE | L1 | — | — | foto PO 20:26 (Campioni Premier Division) |
 
 ## Storico — voci chiuse (143)
 
@@ -212,10 +216,6 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-184 | 01/10 22:45 | Nomi sopra i giocatori anche dove il corpo non è disegnato (corpi CGTrader: 5 in campo) | difetto | FATTO — 7.999.102: la targhetta segue il corpo (nomi-51) | L1 | 7.999.102 | `nomi-51` | foto PO 22:45 |
 | PO-186 | 02/10 | KCC della S.12 del PO ferma agli ottavi: la gara vs FC Paris (W.23) e' rimasta non giocata nel salto 21→28 dell'Europeo; alla W.38 non c'e' calendario per giocare il resto | difetto | FATTO — decisione PO 02/10: nessun intervento, la KCC S.12 si chiude al cambio stagione (DECISIONI) | L6 | — | — | salvataggio S.12 del PO, `euro.phase=r16`, `koResults=[]` |
 | PO-187 | 02/10 | Azioni con etichetta da dribbling che il 3D mostra come passaggio o tiro (Codex: gi18 «Dribbling netto» trattato come passaggio). Censimento 7.999.107: 56 azioni da dribbling, ~10 con etichetta SOLO di dribbling e gesto finale diverso (gi18#0/#1, gi19#0/#1 → passaggio; gi57#1 → passaggio; gi40#0 → tiro; «Finta e scatto» gi40#1, gi92#1 → tiro, gi100#1 → passaggio). Causa: deriveHL deriva il tipo di scena dall'esito (assist → passaggio) | difetto | FATTO — 7.999.108: 43 etichette su 73 azioni da dribbling/finta/scatto ora dichiarano il gesto finale (etichette-108); scene 3D invariate | L1 | — | — | Codex, recap 02/10 15:50 |
-| PO-188 | 02/10 20:23 | Statistiche pre-partita (ingresso in campo, riquadro «Premier Division · vs») con sfondo troppo scuro | difetto | DA FARE | L1 | — | — | foto PO 20:23 |
-| PO-189 | 02/10 20:26 | A ogni caricamento del campo 2D c'è uno strano rimbalzo, come se si ridimensionasse | difetto | DA RIPRODURRE | L1 | — | — | foto PO 20:26 (partita 2D, pannello Statistiche/Pagelle) |
-| PO-190 | 02/10 20:27 | Goleade e troppi gol in una stagione: eroe 51 gol in 36 partite (S.12), 5-0 con 15 tiri e xG 3,42 vs l'8ª | difetto | DA MISURARE | L6 | — | — | foto PO 20:26-20:27; precedenti PO-093/PO-179 (7.999.98) |
-| PO-191 | 02/10 20:26 | Premiazione 3D: compagni che attraversano il palco, eroe in posa sbagliata (gamba alzata, trofeo davanti) e che «vola» sopra il palco | difetto | DA RIPRODURRE | L1 | — | — | foto PO 20:26 (Campioni Premier Division) |
 
 ## Ricostruzione (fonti e regole di stato)
 
