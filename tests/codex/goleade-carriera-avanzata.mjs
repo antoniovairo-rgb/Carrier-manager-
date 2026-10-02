@@ -12,6 +12,20 @@ if (!version || Number(version.split('.').at(-1)) < 111) throw Error(`Versione i
 const seeds = (process.env.CPM_SEEDS || '0,1,2').split(',').map(Number).filter(Number.isInteger);
 const data = fs.existsSync(output) ? JSON.parse(fs.readFileSync(output, 'utf8')) : { version, commit: '8cef5317', command: 'node tests/codex/goleade-carriera-avanzata.mjs', careers: [] };
 const save = () => fs.writeFileSync(output, JSON.stringify(data, null, 2));
+const leagueSummary = s => {
+  const played = (s.calendar || []).filter(m => m && !m.type && m.played && m.result && Number.isFinite(m.result.homeScore) && Number.isFinite(m.result.awayScore));
+  const scored = m => m.isHome ? m.result.homeScore : m.result.awayScore;
+  const conceded = m => m.isHome ? m.result.awayScore : m.result.homeScore;
+  const gf = played.reduce((n, m) => n + scored(m), 0);
+  const ga = played.reduce((n, m) => n + conceded(m), 0);
+  const heroLeagueGoals = (s.matchHistory || []).filter(m => m && !m.cup && !m.euro && m.simulated === true).reduce((n, m) => n + (m.goals || 0), 0);
+  return { games: played.length, gf, ga, gfPerGame: played.length ? gf / played.length : null,
+    gaPerGame: played.length ? ga / played.length : null,
+    gamesSixPlus: played.filter(m => scored(m) >= 6).map(m => ({ matchday: m.matchday, week: m.week, scored: scored(m), conceded: conceded(m), result: m.result })),
+    marginsFivePlus: played.filter(m => Math.abs(scored(m) - conceded(m)) >= 5).map(m => ({ matchday: m.matchday, week: m.week, scored: scored(m), conceded: conceded(m), result: m.result })),
+    heroLeagueGoalsSimulated: heroLeagueGoals, heroGoalShareSimulated: gf ? heroLeagueGoals / gf : null,
+    perspective: 'calendar.isHome: homeScore/awayScore', source: 'src/09-audio-scout-anagrafiche.jsx generateSeasonCalendar + calendar.result' };
+};
 const freeGB = () => os.freemem() / 2 ** 30;
 const memoryStop = () => { if (freeGB() >= 3.5) return false; data.paused = { at: new Date().toISOString(), freeGB: +freeGB().toFixed(2), reason: 'RAM libera sotto 3,5 GB' }; save(); return true; };
 if (memoryStop()) { console.error(JSON.stringify(data.paused)); process.exit(2); }
@@ -75,7 +89,7 @@ try {
         const s = state.snapshot;
         if (state.screen === 'seasonEnd' || state.screen === 'seasonAwards') {
           career.seasons.push({ season: s.season, age: s.age, club: s.club?.n, clubId: s.club?.id, position: s.position, ovr: s.ovr,
-            goals: s.goals, matches: s.matches, standings: s.standings, matchHistory: s.matchHistory, calendar: s.calendar });
+            goals: s.goals, matches: s.matches, league: leagueSummary(s), standings: s.standings, matchHistory: s.matchHistory, calendar: s.calendar });
           const next = await page.evaluate(() => { const C = window.__CPM_CAREER; C.dismiss(); return C.startNewSeason(); });
           career.steps.push({ season: s.season, week: s.week, action: 'startNewSeason', result: next });
           if (next !== true) throw Error(`Rollover S${s.season}: ${next}`);
@@ -86,6 +100,12 @@ try {
         }
         await sleep(150);
         state = await checkpoint();
+        if (state.snapshot.season >= 6 && !career.advancedSave) {
+          career.advancedSave = { season: state.snapshot.season, week: state.snapshot.week,
+            localStorage: career.checkpoint.localStorage, ovr: state.snapshot.ovr,
+            club: state.snapshot.club?.n, position: state.snapshot.position };
+          save();
+        }
         if (career.steps.length > 3000) throw Error('limite di 3000 passi');
       }
       career.completed = state.snapshot.season >= 7;

@@ -1,0 +1,10 @@
+{
+  "version": "7.999.112",
+  "commit": "8cef5317",
+  "command": "node tests/codex/goleade-live-avanzata.mjs",
+  "matches": [],
+  "paused": {
+    "reason": "RAM libera sotto 3,5 GB",
+    "freeGB": 3.38
+  }
+}

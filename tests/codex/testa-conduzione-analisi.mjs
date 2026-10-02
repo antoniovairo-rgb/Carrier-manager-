@@ -12,10 +12,13 @@ for(const run of raw.runs){
  if(run.versione!==raw.versione||!(run.methodVersion>=2)||!run.valid)continue;
  if(run.kind==='header'){
   const heads=run.headFrames.filter(f=>f.g==='header');
-  if(!heads.length){metric.push({kind:'header',gi:run.gi,rep:run.rep,outcome:run.outcome,valid:true,measurable:false,reason:'gesto header assente'});continue;}
+  if(!heads.length){metric.push({kind:'header',arm:run.arm,gi:run.gi,actionIndex:run.actionIndex,rep:run.rep,outcome:run.outcome,valid:true,measurable:false,reason:'gesto header assente'});continue;}
   const contact=heads.reduce((a,b)=>b.d<a.d?b:a);
   const window=heads.filter(f=>f.t>=contact.t-1&&f.t<=contact.t+1.2);
   const peak=window.reduce((a,b)=>b.hy>a.hy?b:a);
+  const guardContact=run.headFrames.reduce((a,b)=>b.d<a.d?b:a);
+  const guardWindow=run.headFrames.filter(f=>Math.abs(f.t-guardContact.t)<=1&&f.g!=='lift');
+  const guardPeak=(guardWindow.length?guardWindow:[guardContact]).reduce((a,b)=>b.hy>a.hy?b:a);
   const samples=run.samples.filter(s=>s.head&&s.ball3?.m);
   const nearest=t=>samples.reduce((a,b)=>Math.abs(b.head.t-t)<Math.abs(a.head.t-t)?b:a);
   const c=nearest(contact.t),before=nearest(contact.t-.2),after=nearest(contact.t+.2);
@@ -37,7 +40,7 @@ for(const run of raw.runs){
    const a=samples[i-1],b=samples[i],dt=(b.ms-a.ms)/1000,d=distance3(a,b);
    if(dt>0&&d!=null&&d>2)steps.push({ms:b.ms,d:+d.toFixed(2),dtMs:Math.round(dt*1000),over85:d>85*dt+.5});
   }
-  metric.push({kind:'header',gi:run.gi,action:run.action?.label,outcome:run.outcome,rep:run.rep,valid:true,measurable:true,contact:{t:contact.t,d:contact.d,ballY:contact.by},peak:{t:peak.t,headY:peak.hy},syncMs:Math.round(Math.abs(peak.t-contact.t)*1000),speedSource,speedBefore:speedBefore==null?null:+speedBefore.toFixed(2),speedAfter:speedAfter==null?null:+speedAfter.toFixed(2),speedRatio:speedBefore>0?+(speedAfter/speedBefore).toFixed(2):null,stepsOver2:steps.length,stepsOver85:steps.filter(s=>s.over85).length,steps,photos:run.frames,photoTimingErrorMs:run.photoTimingErrorMs||null});
+  metric.push({kind:'header',arm:run.arm,gi:run.gi,actionIndex:run.actionIndex,action:run.action?.label,outcome:run.outcome,rep:run.rep,valid:true,measurable:true,contact:{t:contact.t,d:contact.d,ballY:contact.by},peak:{t:peak.t,headY:peak.hy},syncMs:Math.round(Math.abs(peak.t-contact.t)*1000),guardContact:{t:guardContact.t,d:guardContact.d,g:guardContact.g},guardPeak:{t:guardPeak.t,headY:guardPeak.hy,g:guardPeak.g},guardSyncMs:Math.round(Math.abs(guardPeak.t-guardContact.t)*1000),speedSource,speedBefore:speedBefore==null?null:+speedBefore.toFixed(2),speedAfter:speedAfter==null?null:+speedAfter.toFixed(2),speedRatio:speedBefore>0?+(speedAfter/speedBefore).toFixed(2):null,stepsOver2:steps.length,stepsOver85:steps.filter(s=>s.over85).length,steps,photos:run.frames,photoTimingErrorMs:run.photoTimingErrorMs||null});
  }else if(run.kind==='carry'){
   const frames=run.carryFrames||[];
   const near=frames.map(f=>Math.min(f.dL??Infinity,f.dR??Infinity)).filter(Number.isFinite);
