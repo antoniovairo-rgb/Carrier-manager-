@@ -35,7 +35,7 @@ const pending=plan.filter(c=>
  &&(selectedRep==null||c.rep===selectedRep)
  &&
  !data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.versione===version&&r.skipped)
- &&!data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.outcome===c.outcome&&r.rep===c.rep&&r.versione===version&&r.methodVersion>=2&&r.valid)
+ &&(process.env.CPM_FORCE_RERUN==='1'||!data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.outcome===c.outcome&&r.rep===c.rep&&r.versione===version&&r.methodVersion>=2&&r.valid))
 ).slice(0,count);
 const srv=await startServer();const browser=await launchBrowser();
 try{
