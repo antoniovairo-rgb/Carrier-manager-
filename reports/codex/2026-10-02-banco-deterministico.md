@@ -85,3 +85,5 @@ $env:CPM_NO_SHOTS='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/
 ```
 
 Al controllo prima dell'avvio erano liberi 2,61 GB (`node -e "console.log((require('os').freemem()/1073741824).toFixed(2))"`): sotto la soglia di 3,5 GB richiesta. **Orologio a 300 frame, 64 casi e foto non verificati**; Chromium non è stato avviato. La verifica di ripetibilità e il conteggio dei tentativi scartati saranno fatti sui soli dati nuovi.
+
+Alle 20:33 UTC lo stesso comando `node tests/codex/orologio-300.mjs` ha ricontrollato la memoria immediatamente prima di Chromium: 3,38 GB. Si è fermato senza aprire il browser; il grezzo del tentativo è `tests/codex/orologio-300.json`. Il precedente controllo a 3,51 GB non costituisce autorizzazione ad avviare Chromium quando la RAM è tornata sotto soglia.
