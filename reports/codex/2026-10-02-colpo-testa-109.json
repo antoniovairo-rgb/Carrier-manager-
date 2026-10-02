@@ -1,0 +1,9 @@
+{
+  "versione": "7.999.112",
+  "commit": "8cef5317",
+  "compito": "PO-077 ricollaudo colpo di testa",
+  "comando": "node -e \"console.log((require('os').freemem()/1073741824).toFixed(2))\"",
+  "misure": [{"nome": "RAM libera prima di Chromium", "valore": 2.51, "unita": "GB", "soglia": ">=3.5 GB", "esito": "anomalia"}],
+  "segnalazioni": [],
+  "stato": "sonda preparata; collaudo non verificato per RAM insufficiente"
+}
