@@ -32,7 +32,12 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.107";/* [7.999.107 rete di sicurezza per le COPPE, seguito di PO-182] Una gara di coppa nazionale o europea rimasta indietro
+const GAME_VERSION="7.999.108";/* [7.999.108 PO-187 — decisione PO 02/10 «etichette vere»] Rilievo Codex gi18: «Dribbling netto» mostrato come
+   passaggio. Il tipo di scena 3D nasce dall'esito (deriveHL: assist → passaggio, gol → tiro), quindi l'etichetta deve dichiarare il gesto
+   finale. Censimento completo: 73 azioni da dribbling/finta/scatto con gesto finale tiro/passaggio, 43 non lo dichiaravano; ora 0
+   («Dribbling netto e assist», «Finta, scatto e tiro», …). Solo testo: nessuna scena 3D cambiata (verificato prima/dopo su 13 azioni).
+   Guardiano etichette-108 (prova del rosso sul sorgente 7.999.107: 43). */
+/* [7.999.107 rete di sicurezza per le COPPE, seguito di PO-182] Una gara di coppa nazionale o europea rimasta indietro
    (settimana passata, non giocata, competizione viva — la KCC del salvataggio S.12 nel salto 21→28) restava li' per sempre e la
    competizione si congelava. Ora viene RINVIATA alla settimana corrente (log «📅 Gara rinviata…») e si gioca con la logica normale; solo
    fino alla W.37 (decisione PO-186). Rosso __CPM_NO107, guardiano rinvio-coppe-107 (viva → rinviata e giocata, turno in cup.results;
