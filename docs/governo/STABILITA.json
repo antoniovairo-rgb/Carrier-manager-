@@ -1,5 +1,57 @@
 [
  {
+  "data": "2026-10-02 12:47",
+  "versione": "7.999.106",
+  "catena": "completa",
+  "passi": [
+   {
+    "passo": "test:vision",
+    "ok": true,
+    "s": 2
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "typing-shortcuts",
+    "ok": true,
+    "s": 29
+   },
+   {
+    "passo": "validate-situations",
+    "ok": true,
+    "s": 780
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 15
+   },
+   {
+    "passo": "replay",
+    "ok": true,
+    "s": 71
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 948
+   },
+   {
+    "passo": "partita-vera",
+    "ok": true,
+    "s": 526
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   }
+  ]
+ },
+ {
   "data": "2026-10-02 12:18",
   "versione": "7.999.105",
   "catena": "grafica",
