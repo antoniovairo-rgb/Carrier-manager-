@@ -2,7 +2,7 @@
 /* [7.999.104 PO-185 — rilievo Codex sul ricollaudo difesa 3D (7.999.91): 001 apertura senza contesto, 002 eroe/pallone fuori quadro]
    Misura, su pagina NUOVA per caso e con i corpi 3D accesi (come Codex), la quota di fotogrammi dell'highlight con l'EROE e con il
    PALLONE fuori dal quadro, sull'intera conclusione e sulle prime 12 letture (l'apertura). Testimone __CPM_FRAME480 (bn/bfuori/a12).
-   CPM_GLB=0 per la variante procedurale; CPM_RIP ripetizioni; CPM_SCENE="32:success,36:fail" per restringere; CPM_RED=1 spegne il rimedio 7.999.104 (__CPM_NO_PALLA185). */
+   CPM_GLB=0 per la variante procedurale; CPM_RIP ripetizioni; CPM_SCENE="32:success,36:fail" per restringere; CPM_RED=1 arma __CPM_NO_PALLA185 (rimedio 7.999.104 ritirato: oggi nessun effetto, resta per il prossimo tentativo). */
 import { startServer, launchBrowser, installCdnRoutes, openMatch, forceSituation, sleep } from './lib/harness.mjs';
 const GLB = process.env.CPM_GLB !== '0', RIP = +(process.env.CPM_RIP || 1), RED = process.env.CPM_RED === '1';
 const CASI = (process.env.CPM_SCENE || '133:fail,138:success,138:fail,168:fail,31:fail,32:success,32:fail,36:success,36:fail,45:success,45:fail,33:success,44:success,128:success,137:success')

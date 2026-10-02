@@ -21441,14 +21441,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            spenta), ma il quadro guadagna ~43% di area. Non e' un tetto sulle code: la distribuzione a
            0,24 era TUTTA stretta (q10 0,138 → max 0,267, zero scene sopra 0,30), quindi la correzione e'
            globale. */
-        const _tg5=(typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_TAGLIA18)?(+window.__CPM_TAGLIA_REV||0.18):0.12;/* [23/09 POC — decisione PO (wizard): nella SOLA review CGTrader la taglia chiesta e' 0,18; la partita normale resta a 0,12 (7.713). Rosso __CPM_NO_TAGLIA18. __CPM_TAGLIA_REV solo per la taratura da sonda.] */let _want5=Math.max(3.5,1.75/(2*_tg5*_tf5));
-        /* [7.999.104 PO-185 «eroe + pallone»] in difesa la taglia non stringe oltre il punto in cui eroe e pallone stanno insieme nel
-           quadro (al 75% del semiquadro orizzontale), con un tetto di 30u: piu' il pallone e' lontano, meno si stringe. Mai allontana: la
-           taglia agisce solo se la camera e' piu' lontana di _want5. Rosso __CPM_NO_PALLA185. */
-        if(P.hlDef&&ball&&ball.position&&!(typeof window!=='undefined'&&window.__CPM_NO_PALLA185)){
-          const _dHB185=Math.hypot(ball.position.x-_hx5,ball.position.z-_hz5);
-          const _azM5=Math.atan(_tf5*((camera&&camera.aspect)||0.75));
-          _want5=Math.max(_want5,Math.min(30,_dHB185/(2*Math.tan(0.75*_azM5))));}/* [7.713.0 — LA TAGLIA SCENDE DI DUE TACCHE: collaudo PO 01/09, «zoom in minore durante gli highlights dell'eroe!» e, viste le foto della prima tacca, «zoomerei anche un po' di meno». La discesa guidata dal telefono: 0,24 → «troppo stretto» (7.509) → 0,18 (reale ~0,136) → 0,15 (foto approvate ma ancora troppo) → 0,12 (reale atteso ~0,09, quasi il doppio d'area rispetto a 0,18). AVVERTENZA A VERBALE: lo sweep 7.505 marcava «gesto poco distinguibile» sotto 0,15 misurato e «figurina» verso 0,08 — 0,12 sta nel mezzo, scelto dall'occhio del PO che comanda sull'headless (lezione 007). Piano di rientro dichiarato: se arriva «non si vede il gesto», tacca a 0,165. */
+        const _tg5=(typeof window!=='undefined'&&window.__CPM_CGTRADER_HIGHLIGHT_OPTIMIZED&&!window.__CPM_NO_TAGLIA18)?(+window.__CPM_TAGLIA_REV||0.18):0.12;/* [23/09 POC — decisione PO (wizard): nella SOLA review CGTrader la taglia chiesta e' 0,18; la partita normale resta a 0,12 (7.713). Rosso __CPM_NO_TAGLIA18. __CPM_TAGLIA_REV solo per la taratura da sonda.] */const _want5=Math.max(3.5,1.75/(2*_tg5*_tf5));/* [7.713.0 — LA TAGLIA SCENDE DI DUE TACCHE: collaudo PO 01/09, «zoom in minore durante gli highlights dell'eroe!» e, viste le foto della prima tacca, «zoomerei anche un po' di meno». La discesa guidata dal telefono: 0,24 → «troppo stretto» (7.509) → 0,18 (reale ~0,136) → 0,15 (foto approvate ma ancora troppo) → 0,12 (reale atteso ~0,09, quasi il doppio d'area rispetto a 0,18). AVVERTENZA A VERBALE: lo sweep 7.505 marcava «gesto poco distinguibile» sotto 0,15 misurato e «figurina» verso 0,08 — 0,12 sta nel mezzo, scelto dall'occhio del PO che comanda sull'headless (lezione 007). Piano di rientro dichiarato: se arriva «non si vede il gesto», tacca a 0,165. */
         if(_d5>_want5){
           const _sc5=1-(1-_want5/_d5)*camHL;
           tPx=_hx5+_vx5*_sc5;tPy=Math.max(2.1,_hy5+_vy5*_sc5);tPz=_hz5+_vz5*_sc5;
@@ -21517,27 +21510,6 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
            const _el2D=_elLD+(_pinED-_elLD)*_wED;tLy=clamp(tPy+Math.tan(_el2D)*_hlD,0.4,26);}}
       }
       // Sprint 3D-11A: camera shake al gol — rumore sul target, decade in ~0.4s
-      /* [7.999.104 PO-185 — decisione PO 02/10 «eroe + pallone»] Rilievo Codex 002 sul ricollaudo difesa 3D, misurato qui col
-         testimone __CPM_TGT185: negli highlight DIFENSIVI il BERSAGLIO della camera lasciava il pallone fuori quadro (gi33 25/25
-         fotogrammi, gi36 19/20, gi133 11/11) perche' la storia e' l'eroe (7.482) e la rete che arretra per il pallone (7.306) si ferma al
-         confine dello stadio (7.398) proprio vicino alla nostra porta. Ora lo sguardo ruota verso il pallone quanto serve a portarlo al
-         70% del semiquadro, MA mai oltre il punto in cui l'eroe toccherebbe l'85%: l'eroe resta il protagonista, il pallone entra se c'e'
-         posto. La correzione e' una funzione CONTINUA della posizione (nessuna soglia secca: la lezione 7.410/7.584 sul tremolio 007).
-         Rosso __CPM_NO_PALLA185. */
-      if(isHL&&P.hlDef&&!_subjBall50&&!P.ceremony&&!P.shootout&&!replaying&&ball&&ball.position&&hero&&hero.visible
-         &&!(typeof window!=='undefined'&&window.__CPM_NO_PALLA185)){
-        const _lx185=tLx-tPx,_lz185=tLz-tPz,_ly185=tLy-tPy,_hl185=Math.hypot(_lx185,_lz185)||1;
-        const _tn185=Math.tan(((camera&&camera.fov)||46)*Math.PI/360);
-        const _azM185=Math.atan(_tn185*((camera&&camera.aspect)||0.75)),_elM185=Math.atan(_tn185);
-        const _azL185=Math.atan2(_lz185,_lx185),_elL185=Math.atan2(_ly185,_hl185);
-        const _ang185=(x,y,z)=>{const dx=x-tPx,dz=z-tPz,dy=y-tPy;let a=Math.atan2(dz,dx)-_azL185;while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return[a,Math.atan2(dy,Math.hypot(dx,dz))-_elL185];};
-        const _b185=_ang185(ball.position.x,ball.position.y+0.2,ball.position.z),_h185=_ang185(hero.position.x,hero.position.y+0.9,hero.position.z);
-        const _rot185=(b,h,m)=>{let c=Math.sign(b)*Math.max(0,Math.abs(b)-0.70*m);const lo=h-0.85*m,hi=h+0.85*m;return lo<=hi?clamp(c,lo,hi):0;};
-        const _cA185=_rot185(_b185[0],_h185[0],_azM185),_cE185=_rot185(_b185[1],_h185[1],_elM185);
-        if(_cA185){const _a2=_azL185+_cA185;tLx=tPx+Math.cos(_a2)*_hl185;tLz=tPz+Math.sin(_a2)*_hl185;}
-        if(_cE185){tLy=clamp(tPy+Math.tan(_elL185+_cE185)*_hl185,0.4,26);}
-        try{if(sr.current._tocc503&&(_cA185||_cE185))sr.current._tocc503.push('palla185');}catch(_e){}
-      }
       if(shakePow>0.01){tPx+=Math.sin(now*24)*shakePow*0.7;tPz+=Math.cos(now*18)*shakePow*0.7;shakePow*=(1-dt*6);}else shakePow=0;
       // [7.63.0 BL-10] STACCO d'esito: al primo frame drammatico TAGLIO NETTO (niente lerp) → regia TV, poi il punch-in stringe
       /* [7.306.0 collaudo PO «azione con rimorchio, un vero casino... la palla vola!» — chiude il residuo
