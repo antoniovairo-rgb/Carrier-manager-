@@ -1,5 +1,37 @@
 [
  {
+  "data": "2026-10-02 12:18",
+  "versione": "7.999.105",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 259
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 915
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 17
+   }
+  ]
+ },
+ {
   "data": "2026-10-02 11:20",
   "versione": "7.999.104",
   "catena": "completa",
