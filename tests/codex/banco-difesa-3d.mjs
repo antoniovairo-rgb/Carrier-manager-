@@ -29,7 +29,7 @@ const port = server.address().port;
 
 async function run({ gi, outcome, glb, repeat }) {
   const id = `gi${gi}-${outcome}-${glb ? 'glb' : 'procedurale'}-r${repeat}`;
-  const result = { id, gi, outcome, glb, repeat, seed: gi * 1000 + 12345, clockMode: 'one-tick-per-browser-frame', settleMode: process.env.CPM_SETTLE_MODE || 'three-still-frames', valid: false, rejected: null, photos: [] };
+  const result = { id, gi, outcome, glb, repeat, seed: gi * 1000 + 12345, clockMode: 'one-tick-per-browser-frame', settleMode: process.env.CPM_SETTLE_MODE || 'fixed-45-frames', valid: false, rejected: null, photos: [] };
   if (freeGB() < 2.2) { result.rejected = `memoria libera ${freeGB().toFixed(2)} GB < 2.2 GB dopo l'avvio di Chrome`; return result; }
   const context = await browser.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' });
   const page = await context.newPage();
@@ -61,17 +61,19 @@ async function run({ gi, outcome, glb, repeat }) {
           return { key: b ? `${b.x},${b.y}` : null, phaseBefore, accepted: window.__CPM_RESOLVE(0), elapsedVirtualMs: performance.now() - forced.t }; }, [outcome, forced]);
       })() : await page.evaluate(([i, o, mode]) => new Promise(resolve => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null; const t0Ball = window.__CPM_BALL3?.()?.t;
         let moved = false, last = null, same = 0, seenChoose = false; window.__CPM_FORCE_SIT(i, true); const t0 = performance.now();
+        let chooseFrames = 0;
         const tick = () => { const ph = window.__CPM_PHASE?.(); if (ph === 'hl_choose') seenChoose = true;
           else if (seenChoose) { resolve({ phaseBefore: ph, accepted: false, phaseChangedBeforeSettle: true, elapsedVirtualMs: performance.now() - t0 }); return; }
           else { if (performance.now() - t0 > 25000) resolve(null); else requestAnimationFrame(tick); return; }
+          chooseFrames++;
           const b = window.__CPM_BALL?.(); const key = b ? `${b.x},${b.y}` : null;
           if (key && key !== pre && key !== '50,50') moved = true;
           if (moved && key && key !== '50,50' && key === last) same++; else same = 0; last = key;
           const b3 = mode === 'target-aligned' ? window.__CPM_BALL3?.() : null;
           const targetChanged = b3?.t && t0Ball && Math.hypot(b3.t.x-t0Ball.x,b3.t.y-t0Ball.y)>3;
           const meshNearTarget = b3?.m && b3?.t && Math.hypot(b3.m.x-b3.t.x,b3.m.y-b3.t.y)<2;
-          if ((mode === 'moved' ? moved : mode === 'mounted-500ms' ? moved && performance.now() - t0 >= 500 : mode === 'target-aligned' ? targetChanged && meshNearTarget : same >= 2)) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
-            const phaseBefore = window.__CPM_PHASE?.(); const ball3 = window.__CPM_BALL3?.() ?? null; const accepted = window.__CPM_RESOLVE(0); resolve({ key, ball3, phaseBefore, accepted, elapsedVirtualMs: performance.now() - t0 }); }
+          if ((mode === 'fixed-45-frames' ? chooseFrames >= 45 : mode === 'moved' ? moved : mode === 'mounted-500ms' ? moved && performance.now() - t0 >= 500 : mode === 'target-aligned' ? targetChanged && meshNearTarget : same >= 2)) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
+            const phaseBefore = window.__CPM_PHASE?.(); const ball3 = window.__CPM_BALL3?.() ?? null; const accepted = window.__CPM_RESOLVE(0); resolve({ key, ball3, phaseBefore, accepted, chooseFrames, elapsedVirtualMs: performance.now() - t0 }); }
           else if (performance.now() - t0 > 25000) resolve(null); else requestAnimationFrame(tick);
         }; requestAnimationFrame(tick); }), [gi, outcome, process.env.CPM_SETTLE_MODE]);
       result.ballStart = resolvedAt?.key ?? null; result.resolve = resolvedAt;
@@ -141,7 +143,7 @@ try {
     const repeats = process.env.CPM_REPEAT === '1' ? 1 : repeated.has(gi) ? 2 : 1;
     for (let repeat = 0; repeat < repeats; repeat++) {
       const id = `gi${gi}-${outcome}-${glb ? 'glb' : 'procedurale'}-r${repeat}`;
-      if (data.cases.some(c => c.id === id && c.valid && c.clockMode === 'one-tick-per-browser-frame' && c.settleMode === (process.env.CPM_SETTLE_MODE || 'three-still-frames'))) continue;
+      if (data.cases.some(c => c.id === id && c.valid && c.clockMode === 'one-tick-per-browser-frame' && c.settleMode === (process.env.CPM_SETTLE_MODE || 'fixed-45-frames'))) continue;
       const r = await run({ gi, outcome, glb, repeat }); data.cases.push(r); save();
       console.log(JSON.stringify({ id, valid: r.valid, rejected: r.rejected, n: r.frame?.n, heroOutside: r.frame?.fuori, ballOutside: r.frame?.bfuori }));
       if (r.rejected?.startsWith('memoria libera')) break outer;

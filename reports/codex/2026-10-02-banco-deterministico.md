@@ -72,3 +72,16 @@ Per coppia seme/scadenza, le righe si raccolgono in tre gruppi: seme 3 con scade
 Tutte le osservazioni provengono dal ramo del vecchio banco che controllava `s.proStatus==='pro'` e `expiresAtSeason<s.season`. **Non sono 198 contratti diversi.** Le settimane distinte mostrano che la carriera avanzava anche mentre un contratto risultava scaduto. Il vecchio registratore deduplicava per seme/stagione/settimana/tipo: non permette di contare quante volte lo *stesso passo* sia stato ripetuto. La presenza di un'offerta pendente non era registrata per ogni settimana, quindi il campo è `null` nel grezzo nuovo e resta **non verificato**; non viene trasformato arbitrariamente in sì o no. Il ricontrollo di C sulla 7.999.105 è ancora da eseguire.
 
 I rilievi sul gioco restano ipotesi finché il team non li riproduce con un proprio guardiano.
+
+## Ripresa serale 02/10: orologio e 45 fotogrammi
+
+È pronta una nuova serie distinta dai tentativi precedenti: `tests/codex/orologio-300.mjs` conta 300 callback `requestAnimationFrame`, i passi nativi e quelli virtuali; `tests/codex/banco-difesa-3d.mjs` con `CPM_NO_SHOTS=1` usa ora `settleMode: fixed-45-frames`, risolvendo solo in `hl_choose` dopo 45 fotogrammi osservati in quella fase. Ogni tentativo nuovo registra `chooseFrames`, l'eventuale fase cambiata, l'esito `ActionResolved`, i conteggi `FRAME480` e GLB sì/no. I vecchi tentativi restano nel grezzo con il loro `settleMode` e **non entrano nel verdetto della nuova serie**.
+
+Comandi preparati dalla radice del repository:
+
+```powershell
+node tests/codex/orologio-300.mjs
+$env:CPM_NO_SHOTS='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs
+```
+
+Al controllo prima dell'avvio erano liberi 2,61 GB (`node -e "console.log((require('os').freemem()/1073741824).toFixed(2))"`): sotto la soglia di 3,5 GB richiesta. **Orologio a 300 frame, 64 casi e foto non verificati**; Chromium non è stato avviato. La verifica di ripetibilità e il conteggio dei tentativi scartati saranno fatti sui soli dati nuovi.
