@@ -53,7 +53,7 @@ try{
    try{await openMatch(page,srv.address().port,{skipLoadAll:true,name:`Testa-${c.gi}-${c.outcome}-${c.rep}`});}finally{boot=false;await pump;}
    const catalog=await page.evaluate(gi=>{const s=SITUATIONS[gi];return s?{text:s.text,actions:s.actions.map((a,i)=>({i,label:a.label,hl:deriveHL(s,a)}))}:null;},c.gi);
    r.catalog=catalog;
-   const candidates=c.kind==='header'?(catalog?.actions.filter(a=>a.hl?.type==='header')||[]):
+   const candidates=c.kind==='header'?(catalog?.actions.filter(a=>a.i===c.actionIndex&&a.hl?.type==='header')||[]):
      c.actionIndex===0?[catalog?.actions[0]].filter(Boolean):
      (catalog?.actions.filter(a=>a.i!==0&&/dribbl|conduc|porta palla|scatt|avanz|finta/i.test(a.label))||[]);
    if(!candidates.length){r.skipped=c.kind==='header'?'Nessuna azione di testa nel catalogo':'Nessuna seconda azione di conduzione/dribbling';throw Error(r.skipped);}
