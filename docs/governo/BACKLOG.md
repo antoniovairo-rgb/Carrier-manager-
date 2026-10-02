@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (47)
+## Voci aperte o parziali (46)
 
-Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 9 · L7 1 · L8 4.
+Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -61,14 +61,13 @@ Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 9 · L7 1 · L8 4.
 | PO-157 | 30/09 20:56 | Economia e Ufficio con effetto reale; mondo vivo e pressione del club | miglioramento | IN ATTESA della fase 1 (Codex, decisione PO 01/10) — poi proposta e questionario | L6 | — | — | «dare un effetto reale e visibile a ciò che resta, oppure togliere o accorpare» |
 | PO-177 | 01/10 | Nazionale: 10 stagioni con OVR fino a 96 e presenze in nazionale sempre 0 (seme 8) | difetto | IN ATTESA della fase 1 (Codex, punto 7) — PO 01/10 | L6 | — | — | anomalia 10; il test usa `__CPM_SIM_NAT=1` e profili sintetici |
 | PO-181 | 01/10 | Carriere Codex (checkpoint fase 1, 7.999.94): «settimana ferma» al seme 6, stagione 8 settimana 21 (9 passi senza avanzare), e 198 osservazioni di contratto oltre la scadenza | difetto | DA VERIFICARE — ipotesi: svincolato senza offerte bloccato; il banco Codex non rinnova (198 osservazioni = stesso stato ripetuto). Da riprodurre con un nostro guardiano | L6 | — | — | rapporto `reports/codex/2026-10-01-carriere-fase1.md` (5 carriere nuove su 30, limite di memoria del PC) |
-| PO-186 | 02/10 | KCC della S.12 del PO ferma agli ottavi: la gara vs FC Paris (W.23) e' rimasta non giocata nel salto 21→28 dell'Europeo; alla W.38 non c'e' calendario per giocare il resto | difetto | DA DECIDERE — conseguenza di PO-182 sul solo salvataggio colpito; la causa e' chiusa dalla 7.999.103, la campagna di questa stagione non e' recuperabile senza una scelta (chiuderla come eliminati o lasciarla chiudere al cambio stagione) | L6 | — | — | salvataggio S.12 del PO, `euro.phase=r16`, `koResults=[]` |
 | PO-066 | 26/09 19:15 | Riquadri della home fuori standard | difetto | PARZIALE — PO 01/10: «da completare» | L7 | 7.999.30 (card neutra) | — | «Metti in coda: box fuori standard». Profilo e Nazionale «da portare alla card neutra» (roadmap, rapporto UI di Codex) |
 | PO-002 | 24/09 05:37 | Premiazione di squadra: palco centrale col nome della competizione, il capitano alza la coppa e la passa all'eroe | nuova funzione | PARZIALE — PO 01/10: resta in L8 | L8 | 7.981.0 (11 attori), 7.997.0 (palco) | — | «la premiazione deve essere di squadra con palco in mezzo… Il capitano deve alzare la coppa ed eventualmente la passa anche all'eroe». Il passaggio della coppa non è confermato: questionario 24/09 09:28 «Non ancora, la provo» |
 | PO-071 | 26/09 20:28 | Stadi 3D: qualità grafica e nuove varianti (galleria → elementi → tipologie) | miglioramento | PARZIALE — PO 01/10: «da completare in L8» (fase 3, nuove tipologie di stadio) | L8 | fase 1: 7.999.69 · fase 2: 7.999.69–7.999.71 · fase 3: nessuna release | `galleria-stadi`, `stadi-70`, `pali-69` | «STADI 3D: QUALITÀ GRAFICA E NUOVE VARIANTI (LAVORO IN CODA)»; 30/09 «la grafica degli stadi deve essere migliorata il più possibile» |
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
 
-## Storico — voci chiuse (139)
+## Storico — voci chiuse (140)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -211,6 +210,7 @@ Per lotto: L1 23 · L3 4 · L4 4 · L5 2 · L6 9 · L7 1 · L8 4.
 | PO-179 | 01/10 | Goleade asimmetriche: con l'eroe nella squadra DEBOLE lo scarto ≥5 sale all'8,6–11,9% (contro 3,8–6,5% con l'eroe nella forte) e tornano i 7+ (semi Codex 966105 e 966196: 1-7, riprodotti) | difetto | FATTO — 7.999.98: gestione del vantaggio a tre gradini, eroe debole fuori casa scarto 5+ 15,5% → 7,0% (goleade a due bracci) | L1 | — | `goleade` copre solo l'eroe forte | rapporto `reports/codex/2026-10-01-goleade-credibilita.md`; parte B (20 partite vere) non eseguita da Codex per memoria del PC |
 | PO-182 | 01/10 22:59 | Classifica ferma a 26 partite per tutte le squadre mentre il calendario è alla 34ª giornata («Dov'è la verità?») | bloccante | FATTO — 7.999.103: causa vera misurata sul salvataggio del PO (Europeo: settimana 21→28 dal recupero del fischio, giornate 19-25 nascoste dalla rete (H)); giornate recuperate e classifica a 33 per tutti (recupero-103). La diagnosi del 7.999.102 non era la causa di questo salvataggio | L3 | 7.999.102 | `classifica-102` | foto PO stagione 12, settimana 38 |
 | PO-184 | 01/10 22:45 | Nomi sopra i giocatori anche dove il corpo non è disegnato (corpi CGTrader: 5 in campo) | difetto | FATTO — 7.999.102: la targhetta segue il corpo (nomi-51) | L1 | 7.999.102 | `nomi-51` | foto PO 22:45 |
+| PO-186 | 02/10 | KCC della S.12 del PO ferma agli ottavi: la gara vs FC Paris (W.23) e' rimasta non giocata nel salto 21→28 dell'Europeo; alla W.38 non c'e' calendario per giocare il resto | difetto | FATTO — decisione PO 02/10: nessun intervento, la KCC S.12 si chiude al cambio stagione (DECISIONI) | L6 | — | — | salvataggio S.12 del PO, `euro.phase=r16`, `koResults=[]` |
 
 ## Ricostruzione (fonti e regole di stato)
 
