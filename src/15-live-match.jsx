@@ -1149,8 +1149,13 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
     leggi();const id=setInterval(leggi,900);
     return()=>{vivo=false;clearInterval(id);};
   },[motore]);
-  if(!dati)return null;
-  const A=dati.t[latoSx==="away"?"away":"home"]||{},B=dati.t[latoSx==="away"?"home":"away"]||{};
+  /* [7.999.112 collaudo PO-189 «a ogni caricamento del campo fa uno strano rimbalzo, come se si ridimensionasse»] MISURATO a 412x915:
+     finche' il motore non dava il tabellino il pannello non esisteva, il campo 2D si disegnava a tutta altezza e alla comparsa della
+     striscia alta il suo margine passava da 0 a 74 px — il campo si restringeva di colpo. Ora la striscia c'e' dal primo fotogramma
+     (a zero prima del calcio d'inizio) e il campo nasce gia' della misura giusta. Rosso __CPM_NO_RIMB189. */
+  const _dati189=dati||((typeof window!=='undefined'&&window.__CPM_NO_RIMB189)?null:{t:{home:{},away:{}},p:[]});
+  if(!_dati189)return null;
+  const A=_dati189.t[latoSx==="away"?"away":"home"]||{},B=_dati189.t[latoSx==="away"?"home":"away"]||{};
   const prec=(q)=>q.passaggi>0?Math.round(100*(q.passOk||0)/q.passaggi):0;
   /* [7.999.77 collaudo PO «brutte le statistiche con lo scroll, le mostrerei tutte»] a 412x915 il pannello (43%) teneva 9 righe
      su 16: gol, possesso, tiri, tiri in porta e xG erano ripetuti sotto la striscia alta e il tabellone che li mostrano gia'
@@ -1161,7 +1166,7 @@ function PannelloLive2D({motore,latoSx,siglaSx,siglaDx,colSx,colDx,rosaCasa,rosa
   const lS=latoSx==="away"?"away":"home",lD=lS==="home"?"away":"home";
   /* nel motore «casa» e' SEMPRE la squadra dell'eroe (e' il verso del campo, non lo stadio): l'eroe sta
      gia' dentro il suo lato, e la colonna di sinistra segue il punteggio in alto. */
-  const perLato=(l)=>(dati.p||[]).filter(r=>r.team===l).sort((a,b)=>b.voto-a.voto||a.i-b.i).slice(0,11);
+  const perLato=(l)=>(_dati189.p||[]).filter(r=>r.team===l).sort((a,b)=>b.voto-a.voto||a.i-b.i).slice(0,11);
   const colonna=(l,col)=>perLato(l).map(r=><Pagella918 key={"pg"+r.i} r={r} u={_uomo918(r.i,rosaCasa,rosaOsp,nomeEroe,numEroe)} colTeam={col}/>);
   const tasto=(id,et)=>(
     <button onClick={()=>setVista(id)} style={{flex:1,padding:"6px 4px",border:"none",cursor:"pointer",

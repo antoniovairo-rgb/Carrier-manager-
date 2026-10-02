@@ -319,6 +319,7 @@
     "titolo-110": "node titolo-110-test.mjs",
     "pre-188": "node pre-188-test.mjs",
     "pre-188:rosso": "CPM_RED=1 node pre-188-test.mjs",
+    "rimbalzo-189": "node rimbalzo-189.mjs",
     "titolo-110:rosso": "CPM_RED=1 node titolo-110-test.mjs",
     "rinvio-coppe-107:rosso": "CPM_RED=1 node rinvio-coppe-107-test.mjs",
     "avversario-106:rosso": "CPM_RED=1 node avversario-106-test.mjs",

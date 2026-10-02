@@ -32,7 +32,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.111";/* [7.999.111 PO-188 — collaudo PO 02/10 «statistiche pre partita con sfondo troppo scuro», seconda volta dopo la 7.937]
+const GAME_VERSION="7.999.112";/* [7.999.112 PO-189 — collaudo PO 02/10 «a ogni caricamento del campo fa uno strano rimbalzo»: la striscia alta c'e' dal primo fotogramma e il campo 2D nasce della misura giusta. Rosso __CPM_NO_RIMB189] *//* [7.999.111 PO-188 — collaudo PO 02/10 «statistiche pre partita con sfondo troppo scuro», seconda volta dopo la 7.937]
    Il vetro della scheda all'ingresso in campo passa da 0,74/0,62 a 0,45/0,34 (sfocatura 6 px), con un'ombra sotto il testo bianco
    per restare leggibile sul prato. Rosso __CPM_NO_PRE188, guardiano pre-188. */
 /* [7.999.110 collaudo PO 02/10 «deve comparire sopra e deve essere più leggibile» — riquadro «Campioni di …!»]
