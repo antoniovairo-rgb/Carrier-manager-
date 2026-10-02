@@ -37,6 +37,7 @@ try {
     let career = data.careers.find(c => c.seed === seed);
     if (career?.completed) continue;
     if (!career) { career = { seed, creation: 'UI naturale', trials: [], steps: [], seasons: [], lived: [], errors: [], startedAt: new Date().toISOString() }; data.careers.push(career); save(); }
+    delete career.failure;
     const context = await browser.newContext({ viewport: { width: 360, height: 640 }, deviceScaleFactor: 1, serviceWorkers: 'block' });
     const page = await context.newPage(); page.setDefaultTimeout(30000);
     page.on('pageerror', e => career.errors.push(String(e.message)));
@@ -76,6 +77,7 @@ try {
         await page.keyboard.press('Enter');
       }
       await page.waitForFunction(() => !!window.__CPM_CAREER, null, { timeout: 60000 });
+      await sleep(800);
       const checkpoint = async () => {
         const state = await page.evaluate(() => ({ snapshot: window.__CPM_CAREER.snapshot(), localStorage: localStorage.getItem('cpm-v3'), screen: window.__CPM_CAREER.screen() }));
         career.checkpoint = { localStorage: state.localStorage, season: state.snapshot.season, week: state.snapshot.week, screen: state.screen };
@@ -88,6 +90,7 @@ try {
         if (memoryStop()) break;
         const s = state.snapshot;
         if (state.screen === 'seasonEnd' || state.screen === 'seasonAwards') {
+          career.seasons = career.seasons.filter(row => row.season !== s.season);
           career.seasons.push({ season: s.season, age: s.age, club: s.club?.n, clubId: s.club?.id, position: s.position, ovr: s.ovr,
             goals: s.goals, matches: s.matches, league: leagueSummary(s), standings: s.standings, matchHistory: s.matchHistory, calendar: s.calendar });
           const next = await page.evaluate(() => { const C = window.__CPM_CAREER; C.dismiss(); return C.startNewSeason(); });
@@ -98,7 +101,8 @@ try {
           career.steps.push({ season: s.season, week: s.week, action: 'step', result });
           if (typeof result === 'string' && (result.startsWith('error:') || result.startsWith('blocked:'))) throw Error(`S${s.season}/W${s.week}: ${result}`);
         }
-        await sleep(150);
+        // Il salvataggio del gioco è differito: il checkpoint deve leggere il valore persistito.
+        await sleep(800);
         state = await checkpoint();
         if (state.snapshot.season >= 6 && !career.advancedSave) {
           career.advancedSave = { season: state.snapshot.season, week: state.snapshot.week,
