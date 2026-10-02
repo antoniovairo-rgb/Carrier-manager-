@@ -94,36 +94,41 @@ async function run({ gi, outcome, glb, repeat }) {
     const forcedAt = await page.evaluate(([i, mode]) => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null;
       window.__CPM_FORCE_SIT(i, true);
       window.__QA_BANK_TRACE = [];
-      window.__QA_BANK_SETTLED = new Promise(resolve => { let moved = false, last = null, same = 0; const start = performance.now();
+      window.__QA_BANK_SETTLED = new Promise(resolve => { let moved = false, last = null, same = 0, chooseFrames = 0; const start = performance.now();
         const tick = () => { const b = window.__CPM_BALL?.(); const key = b ? `${b.x},${b.y}` : null;
+          const phase = window.__CPM_PHASE?.();
+          if (phase === 'hl_choose') chooseFrames++;
+          else if (chooseFrames > 0) { window.__QA_BANK_CHOOSE_FRAMES = chooseFrames; resolve(null); return; }
           if (key && key !== pre && key !== '50,50') moved = true;
           if (moved && key && key !== '50,50' && key === last) same++; else same = 0;
           last = key;
           if (window.__QA_BANK_TRACE.length < 150) window.__QA_BANK_TRACE.push({ ms: Math.round(performance.now() - start), key, phase: window.__CPM_PHASE?.(), moved, same });
-          if (mode === 'moved' ? moved : same >= 2) resolve(key); else if (performance.now() - start > 25000) resolve(null); else requestAnimationFrame(tick);
+          if (mode === 'fixed-45-frames' ? chooseFrames >= 45 : mode === 'moved' ? moved : same >= 2) { window.__QA_BANK_CHOOSE_FRAMES = chooseFrames; resolve(key); }
+          else if (performance.now() - start > 25000) resolve(null); else requestAnimationFrame(tick);
         }; requestAnimationFrame(tick); });
       return performance.now(); }, [gi, process.env.CPM_SETTLE_MODE]);
-    if (repeat === 0 && shotsEnabled) { await page.waitForFunction(t => performance.now() >= t, forcedAt + 900, { timeout: 25000 }); await shot('01-apertura'); }
+    if (shotsEnabled) { await page.waitForFunction(t => performance.now() >= t, forcedAt + 900, { timeout: 25000 }); await shot('01-apertura'); }
     const settled = await page.evaluate(() => window.__QA_BANK_SETTLED);
     result.ballStart = settled;
+    result.chooseFrames = await page.evaluate(() => window.__QA_BANK_CHOOSE_FRAMES ?? null);
     if (process.env.CPM_DEBUG_SETTLE === '1') result.settleTrace = await page.evaluate(() => window.__QA_BANK_TRACE);
     result.phaseAtSettle = await page.evaluate(() => window.__CPM_PHASE?.());
     if (!settled) { result.rejected = 'pallone non assestato entro 25 s virtuali'; return result; }
     if (result.phaseAtSettle !== 'hl_choose') { result.rejected = `scena passata a ${result.phaseAtSettle} prima della risoluzione`; return result; }
-    if (repeat === 0 && shotsEnabled) await shot('02-scelta');
+    if (shotsEnabled) await shot('02-scelta');
     const beforeTimeline = await page.evaluate(() => window.__CPM_TIMELINE?.().length ?? 0);
     const startInfo = await page.evaluate(o => { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
       const phaseBefore = window.__CPM_PHASE?.(); const accepted = window.__CPM_RESOLVE(0); return { t: performance.now(), phaseBefore, accepted }; }, outcome);
     result.resolve = startInfo;
     const start = startInfo.t;
     const marks = [['03-rincorsa', 300], ['04-contatto', 900], ['05-volo', 1600]];
-    if (repeat === 0 && shotsEnabled) for (const [label, dt] of marks) {
+    if (shotsEnabled) for (const [label, dt] of marks) {
       await page.waitForFunction(t => performance.now() >= t, start + dt, { timeout: 25000 });
       await shot(label);
     }
     await page.waitForFunction(() => window.__CPM_FRAME480?.n >= 5, null, { timeout: 25000 });
     await sleep(glb ? 4000 : 2400);
-    if (repeat === 0 && shotsEnabled) await shot('06-esito');
+    if (shotsEnabled) await shot('06-esito');
     const obs = await page.evaluate(() => ({ frame: window.__CPM_FRAME480, target: window.__CPM_TGT185,
       phase: window.__CPM_PHASE?.(), timeline: window.__CPM_TIMELINE?.(), draft: window.__CPM_DRAFTNOTE ?? null }));
     result.frame = obs.frame; result.target = obs.target; result.phase = obs.phase; result.draft = obs.draft;
@@ -131,8 +136,8 @@ async function run({ gi, outcome, glb, repeat }) {
     const resolved = Array.isArray(obs.timeline) ? obs.timeline.slice(beforeTimeline).filter(x => x?.type === 'ActionResolved') : [];
     result.actionResolved = resolved.at(-1) ?? null;
     result.outcomeMatched = resolved.length === 1 && result.actionResolved.gi === gi && result.actionResolved.ok === (outcome === 'success');
-    result.valid = !!obs.frame && obs.frame.n >= 5 && result.outcomeMatched;
-    if (!result.valid) result.rejected = !obs.frame || obs.frame.n < 5 ? 'FRAME480 assente o meno di 5 letture' : 'ActionResolved non concorde';
+    result.valid = !!obs.frame && obs.frame.n >= 5 && result.outcomeMatched && result.photos.length === 6;
+    if (!result.valid) result.rejected = !obs.frame || obs.frame.n < 5 ? 'FRAME480 assente o meno di 5 letture' : !result.outcomeMatched ? 'ActionResolved non concorde' : `foto ${result.photos.length}/6`;
     return result;
   } catch (e) { result.rejected = String(e?.stack || e); return result; }
   finally { await context.close().catch(() => {}); }
