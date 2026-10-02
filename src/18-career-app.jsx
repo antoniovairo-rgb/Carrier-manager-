@@ -214,6 +214,21 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       return{...p,calendar:r.calendar,standings:r.standings,
         log:[`📋 Recupero campionato: ${r.voci.length===1?"una giornata saltata e' stata giocata":r.voci.length+" giornate saltate sono state giocate"} senza di te — ${_lbl}.`,...(p.log||[])].slice(0,60)};});
   }catch(_e){}},[player]);// eslint-disable-line
+  /* [7.999.104 PO-181] IL GIRONE DELL'EUROPEO/MONDIALE SI APRE DALLO STATO, NON DA UNA STRADA. La transizione qualificazioni→girone
+     stava solo in doAdvanceWeek (weekVal===24): se la W.24 si attraversava giocando o simulando la gara di club (simulateAndAdvance,
+     onMatchEnd) il torneo restava in «qualificazioni» per sempre — misurato col guardiano euro-attesa-181: W.21→W.27 senza girone.
+     Stessa classe del STAB-2 (6.32). Ora: qualificazioni chiuse e settimana ≥ 24 → girone (o fuori, se non qualificati), da qualunque
+     strada. Idempotente: dopo il passaggio la fase non e' piu' «qualificazioni». Rosso __CPM_NO181. */
+  useEffect(()=>{try{
+    if(typeof window!=='undefined'&&window.__CPM_NO181)return;
+    const em=player.euroMondiale;
+    if(!em||!em.active||em.done||em.phase!=="qualificazioni"||!em.qualDone||(player.week||1)<24)return;
+    const _q=!!em.qualQualified;
+    setPlayer(p=>{const e=p.euroMondiale;if(!e||e.phase!=="qualificazioni"||!e.qualDone||(p.week||1)<24)return p;
+      return _q?{...p,euroMondiale:{...e,phase:"group"}}
+        :{...p,worldMemory:[...(p.worldMemory||[]),{type:"euro_mondiale",season:p.season||1,type_em:e.type,won:false}].slice(-40),euroMondiale:{...e,phase:"done",done:true,eliminated:true,active:false}};});
+    setTimeout(()=>notify(_q?`🌍 ${em.type||"Torneo"} — Qualificati! Il torneo comincia. Gioca i gironi dal pannello Nazione.`:`😔 ${em.type||"Torneo"} — Non qualificati. Riprova tra 4 stagioni.`,_q?TH.success:TH.danger),500);
+  }catch(_e){}},[player]);// eslint-disable-line
   const _playingMdRef=useRef(null);
   /* [P0 #4 · audit forense] UNA SOLA INTENZIONE DELL'UTENTE = UNA SOLA APPLICAZIONE.
      Due tocchi ravvicinati sullo stesso bottone eseguivano l'handler DUE volte: prima che React
@@ -679,6 +694,12 @@ const _mdMatchesCtx=(ctx,md)=>{
    che finiva auto-simulato senza spiegazione. Predicato identico a quello del recovery e tollerante ai
    campi assenti: se una delle due sedi non e' nota non si scarta nulla, perche' un desync non deve far
    RIPROPORRE una gara il cui risultato e' ancora pendente. */
+/* [7.999.104 PO-181 — «settimana ferma» dei collaudi Codex (seme 6, S.8 W.21), e la radice del salto 21→28 del salvataggio S.12 del PO]
+   Finite le due qualificazioni (qualDone) la fase resta «qualificazioni» fino alla W.24, dove doAdvanceWeek apre il girone. In mezzo il
+   pulsante principale e «Continua» lanciavano ancora la gara della Nazionale, e startEuroMondialeMatch rispondeva soltanto «attendi la
+   prossima fase»: nessuna via per arrivare alla W.24. Il torneo IN ATTESA non comanda il pulsante: si gioca il club e si avanza.
+   Rosso __CPM_NO181. */
+const _emInAttesa=em=>!!(em&&em.active&&!em.done&&em.phase==="qualificazioni"&&em.qualDone&&!(typeof window!=='undefined'&&window.__CPM_NO181));
 const _mdSameVenue=(ih,md)=>(ih==null||!md||md.isHome==null||(!!md.isHome)===(!!ih));
 const _isStaleMd=(p,md)=>{try{
     if(!p||!md||md.played)return false;
@@ -1215,7 +1236,7 @@ const getThisWeekMatchday=()=>{
     const _ncq2=player.nationsCupQueue;
     if(_ncq2?.active&&!_ncq2?.done){startNationsCupMatch();return;}
     const _em2=player.euroMondiale;
-    if(_em2?.active&&!_em2?.done){startEuroMondialeMatch();return;}
+    if(_em2?.active&&!_em2?.done&&!_emInAttesa(_em2)){startEuroMondialeMatch();return;}
     const md=getThisWeekMatchday();
     if(md){if(openingGate())return;setShowMatchPrompt(md);return;} // always ask: Gioca / Simula / Annulla · [7.16.0] W1 vincolante: niente prompt partita con interazioni d'apertura pendenti
     doAdvanceWeek();
@@ -1272,7 +1293,7 @@ const getThisWeekMatchday=()=>{
         if(screen==="seasonEnd"||screen==="seasonAwards")return "seasonEnd";
         /* [7.999.43 imbracatura per il collaudo massivo delle carriere] con window.__CPM_SIM_NAT=1 la partita della Nazionale si SIMULA con
            la funzione del bottone «Simula» (stessa del gioco) invece di fermarsi: senza, il banco doveva chiudere i tornei d'ufficio. Spento = identico a prima. */
-        if(player.euroMondiale?.active&&!player.euroMondiale?.done){if(typeof window!=='undefined'&&window.__CPM_SIM_NAT){simulateEuroMondialeMatch();return "nat:euroMondiale";}return "blocked:euroMondiale";}
+        if(player.euroMondiale?.active&&!player.euroMondiale?.done&&!_emInAttesa(player.euroMondiale)){if(typeof window!=='undefined'&&window.__CPM_SIM_NAT){simulateEuroMondialeMatch();return "nat:euroMondiale";}return "blocked:euroMondiale";}
         if(player.nationsCupQueue?.active&&!player.nationsCupQueue?.done){if(typeof window!=='undefined'&&window.__CPM_SIM_NAT){simulateNationsCupMatch();return "nat:nationsCup";}return "blocked:nationsCup";}
         if(openingPending().length){window.__CPM_CAREER.resolveOpening();return "opening-resolved";}/* [7.16.0] W1 vincolante: il sim risolve le interazioni d'apertura come farebbe l'utente */
         if(!player.weekLived){liveCurrentWeek();return "lived";}
@@ -3210,7 +3231,7 @@ const getThisWeekMatchday=()=>{
       return{label:`🌍 Gioca vs ${_ncOpp} — Coppa Nazioni`,sub:`${_ncFin700?"FINALE":`Partita ${_ncIdx+1}/${_ncTot700}`} · ${_ncq.pts||0}pt${_clubMd?` · poi: ${_clubMd.opponentName} W.${_clubMd.week}`:""}`,color:TH.txBlue,disabled:false,action:"nationsCup"};
     }
     const _em=player.euroMondiale;
-    if(_em?.active&&!_em?.done){
+    if(_em?.active&&!_em?.done&&!_emInAttesa(_em)){
       const _emType=_em.type||"Torneo";
       if(_em.phase==="qualificazioni"&&!_em.qualDone){
         const _emQOpp=(_em.qualOpponents||[])[_em.qualMatchIdx||0]||"?";

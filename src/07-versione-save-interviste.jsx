@@ -32,7 +32,14 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.103";/* [7.999.103 CORRETTIVA BLOCCANTE — salvataggio S.12 del PO «Dov'e' la verita'? ... Gravissimo bug che ci portiamo avanti
+const GAME_VERSION="7.999.104";/* [7.999.104 PO-181 — «settimana ferma» dei collaudi Codex (seme 6, S.8 W.21)] Nelle stagioni d'Europeo/Mondiale, finite le due
+   qualificazioni, il pulsante principale e «Continua» lanciavano ancora la gara della Nazionale e il gioco rispondeva solo «attendi la
+   prossima fase»: nessuna via per arrivare alla W.24 (probabile innesco del salto 21→28 del salvataggio S.12 del PO, che ricaricando
+   ha rimesso in moto il recupero corretto nella 7.999.103). Ora il torneo IN ATTESA non comanda il pulsante (_emInAttesa) e il girone si
+   apre dallo STATO (qualificazioni chiuse e settimana ≥ 24) da qualunque strada — prima solo da doAdvanceWeek, misurato W.21→W.27
+   senza girone. Rosso __CPM_NO181, guardiano euro-attesa-181. In piu' (solo strumenti, spenti in produzione): testimoni del pallone in
+   quadro (__CPM_FRAME480 bn/bfuori/binv/bgeo/a12) e del bersaglio camera (__CPM_TGT185) per PO-185. */
+/* [7.999.103 CORRETTIVA BLOCCANTE — salvataggio S.12 del PO «Dov'e' la verita'? ... Gravissimo bug che ci portiamo avanti
    da tempo»] Misurato sul salvataggio: dopo la prima qualificazione dell'Europeo (W.21) il recupero del risultato al fischio ha agganciato
    quella gara all'AMICHEVOLE vs Belgio della W.28 (nessun filtro di competizione per la Nazionale) e ha spostato la settimana 21→28 senza
    giocare ne' simulare le giornate 19-25; poi ha rigiocato la qualificazione (due «Belgio 5-0» in natHistory, Germania mai giocata).
