@@ -24,13 +24,18 @@ async function misura({ gi, o }, giro) {
     if (FISSA) {
       /* SCENA FISSA: si risolve appena il pallone e' montato (lasciato il centro e fermo per 3 fotogrammi), non dopo un tempo
          di orologio: in scelta il pallone avanza a velocita' di scena, e a fps diversi un'attesa fissa lo trova in punti diversi. */
-      start = await page.evaluate(([gi, o]) => new Promise(res => { const b0 = window.__CPM_BALL && window.__CPM_BALL(); const pre = b0 ? b0.x + ',' + b0.y : null; let mosso = false; window.__CPM_FORCE_SIT(gi, true); const t0 = performance.now(); let last = null, same = 0;
+      start = await page.evaluate(([gi, o]) => new Promise(res => { const b0 = window.__CPM_BALL && window.__CPM_BALL(); const pre = b0 ? b0.x + ',' + b0.y : null; let mosso = false, nMosso = 0; window.__CPM_FORCE_SIT(gi, true); const t0 = performance.now(); let last = null, same = 0;
         const tick = () => { const b = window.__CPM_BALL && window.__CPM_BALL(); const k = b ? b.x + ',' + b.y : null;
           if (k && k !== pre && k !== '50,50') mosso = true; if (mosso && k && k !== '50,50' && k === last) same++; else same = 0; last = k;
-          if (same >= 2) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o; try { window.__CPM_RESOLVE(0); } catch (e) {} res(k); }
-          else if (performance.now() - t0 > 25000) res(null); else requestAnimationFrame(tick); };
+          /* [rilievo Codex 02/10: 82 tentativi, 0 validi] si risolve SOLO in scelta: se la scena e' gia' passata all'esito il giro e'
+             perso e lo si dichiara. Se il pallone montato non si ferma entro 45 fotogrammi si risolve comunque (prima si aspettava fino a
+             25 s e la scena scivolava da sola all'esito). */
+          const fase = window.__CPM_PHASE ? window.__CPM_PHASE() : null; if (mosso) nMosso++;
+          if (fase && /^(hl_result|ended|playing)/.test(fase) && mosso) { res('scartato:fase ' + fase); return; }
+          if ((same >= 2 || nMosso >= 45) && (!fase || fase === 'hl_choose')) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o; try { window.__CPM_RESOLVE(0); } catch (e) {} res(k); }
+          else if (performance.now() - t0 > 25000) res('scartato:tempo'); else requestAnimationFrame(tick); };
         requestAnimationFrame(tick); }), [gi, o]);
-      if (!start) return null;
+      if (!start || /^scartato/.test(start)) return { scarto: start || 'nessuna partenza' };
     } else {
     await forceSituation(page, gi, { settle: 400, choose: true });
     start = await page.evaluate(() => { const b = window.__CPM_BALL && window.__CPM_BALL(); return b ? b.x + ',' + b.y : null; });
@@ -46,7 +51,7 @@ const TOT = [];
 console.log(`=== PO-185 · inquadratura eroe/pallone · ${GLB ? 'GLB acceso' : 'procedurale'} · ${RIP} ripetizioni ===`);
 for (const c of CASI) {
   const r = [];
-  for (let i = 0; i < RIP; i++) { const f = await misura(c, i); if (f && f.n >= 5) r.push(f); else if (process.env.CPM_DEBUG) console.log(`   scartato: ${f ? "n=" + f.n + " partenza " + f.start : "nessuna misura"}`); }
+  for (let i = 0; i < RIP; i++) { const f = await misura(c, i); if (f && f.scarto) { console.log(`   giro ${i} ${f.scarto}`); continue; } if (f && f.n >= 5) r.push(f); else if (process.env.CPM_DEBUG) console.log(`   scartato: ${f ? "n=" + f.n + " partenza " + f.start : "nessuna misura"}`); }
   if (!r.length) { console.log(`gi${c.gi} ${c.o}: nessuna misura`); continue; }
   const S = k => r.reduce((a, f) => a + (f[k] || 0), 0);
   const tot = { n: S('n'), f: S('fuori'), bn: S('bn'), bf: S('bfuori'), tn: S('tn'), tf: S('tf'), a: S('a12'), af: S('afuori'), abf: S('abfuori') };
