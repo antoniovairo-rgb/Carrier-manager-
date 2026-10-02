@@ -24,10 +24,16 @@ const rows = old.anomalies.filter(a => a.type === 'contract').map(a => {
   };
 });
 const keys = rows.map(r => `${r.seed}|${r.season}|${r.week}`);
+const episodeGroups = Object.entries(Object.groupBy(rows, r => `${r.seed}|${r.expiresAtSeason}`)).map(([key, a]) => ({
+  seed: a[0].seed, expiresAtSeason: a[0].expiresAtSeason, observations: a.length,
+  first: { season: a[0].season, week: a[0].week },
+  last: { season: a.at(-1).season, week: a.at(-1).week },
+}));
 const out = {
   source, sourceVersion: old.version, sourceCommit: old.commit,
   command: 'node tests/codex/banco-contratti.mjs (CPM_OLD_CAREERS=<percorso JSON precedente>)',
   count: rows.length, distinctSeedSeasonWeek: new Set(keys).size,
+  episodeGroups,
   repeatedSameStepObservable: false,
   note: 'Il banco precedente deduplicava per seme/stagione/settimana/tipo: ripetizioni nello stesso passo non sono ricostruibili. pendingOffer non era registrato.',
   rows,

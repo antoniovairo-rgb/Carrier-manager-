@@ -4,16 +4,20 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import { startServer, launchBrowser, installCdnRoutes, openMatch, sleep } from '../visual/lib/harness.mjs';
 
 const scenes = (process.env.CPM_SCENES || '33,133,134,138,168,31,32,36,44,45,128,137,157,184,24,2').split(',').map(Number);
+const outcomes = process.env.CPM_OUTCOME ? [process.env.CPM_OUTCOME] : ['success', 'fail'];
+const shotsEnabled = process.env.CPM_NO_SHOTS !== '1';
 const modes = process.env.CPM_MODE === '0' ? [false] : process.env.CPM_MODE === '1' ? [true] : [false, true];
 const repeated = new Set([33, 133, 45, 24]);
 const out = path.resolve('tests/codex/banco-difesa-3d.json');
+const gzOut = path.resolve('tests/codex/banco-difesa-3d.json.gz');
 const shots = path.resolve('reports/codex/banco-difesa-3d');
 fs.mkdirSync(shots, { recursive: true });
-const data = fs.existsSync(out) ? JSON.parse(fs.readFileSync(out, 'utf8')) : { version: '7.999.105', base: 'b2094979df9c6fdce4bc8c62b836cde43fac8eef', viewport: [412, 915], cases: [] };
-const save = () => fs.writeFileSync(out, JSON.stringify(data, null, 2));
+const data = fs.existsSync(out) ? JSON.parse(fs.readFileSync(out, 'utf8')) : fs.existsSync(gzOut) ? JSON.parse(zlib.gunzipSync(fs.readFileSync(gzOut))) : { version: '7.999.105', base: 'b2094979df9c6fdce4bc8c62b836cde43fac8eef', viewport: [412, 915], cases: [] };
+const save = () => { const raw = JSON.stringify(data, null, 2); fs.writeFileSync(out, raw); fs.writeFileSync(gzOut, zlib.gzipSync(raw)); };
 const freeGB = () => os.freemem() / 2 ** 30;
 if (freeGB() < 3.5) { console.error(`3D rinviato: RAM libera ${freeGB().toFixed(2)} GB < 3.5 GB`); process.exit(2); }
 const server = await startServer();
@@ -23,7 +27,7 @@ const port = server.address().port;
 async function run({ gi, outcome, glb, repeat }) {
   const id = `gi${gi}-${outcome}-${glb ? 'glb' : 'procedurale'}-r${repeat}`;
   const result = { id, gi, outcome, glb, repeat, seed: gi * 1000 + 12345, valid: false, rejected: null, photos: [] };
-  if (freeGB() < 3.5) { result.rejected = `memoria libera ${freeGB().toFixed(2)} GB < 3.5 GB`; return result; }
+  if (freeGB() < 2.2) { result.rejected = `memoria libera ${freeGB().toFixed(2)} GB < 2.2 GB dopo l'avvio di Chrome`; return result; }
   const context = await browser.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' });
   const page = await context.newPage();
   await installCdnRoutes(page);
@@ -34,37 +38,79 @@ async function run({ gi, outcome, glb, repeat }) {
   await page.addInitScript(g => { window.__CPM_GLB = g; window.__CPM_CINE = 1; window.__CPM_PRESENT = 1; window.__CPM_REC = true; }, glb);
   const shot = async (label) => { const file = path.join(shots, `${id}-${label}.png`); await page.screenshot({ path: file, timeout: 15000 }); result.photos.push(path.relative(process.cwd(), file).replaceAll('\\', '/')); };
   try {
-    await openMatch(page, port); await sleep(700);
+    await openMatch(page, port);
+    await page.evaluate(() => window.__CPM_AUTOPLAY?.(false));
+    await sleep(700);
     if (glb) {
       try { await page.waitForFunction(() => window.__CPM_MXCLIP > 0, null, { timeout: 15000 }); }
       catch { result.rejected = 'GLB non montato: __CPM_MXCLIP<=0'; return result; }
     }
-    const pre = await page.evaluate(() => { const b = window.__CPM_BALL?.(); return b ? `${b.x},${b.y}` : null; });
-    const forcedAt = await page.evaluate(i => { window.__CPM_FORCE_SIT(i, true); return performance.now(); }, gi);
-    if (repeat === 0) { await page.waitForFunction(t => performance.now() >= t, forcedAt + 900, { timeout: 25000 }); await shot('01-apertura'); }
-    const settled = await page.evaluate(pre => new Promise(resolve => { let moved = false, last = null, same = 0; const start = performance.now();
-      const tick = () => { const b = window.__CPM_BALL?.(); const key = b ? `${b.x},${b.y}` : null;
-        if (key && key !== pre && key !== '50,50') moved = true;
-        if (moved && key && key !== '50,50' && key === last) same++; else same = 0;
-        last = key;
-        if (same >= 2) resolve(key); else if (performance.now() - start > 25000) resolve(null); else requestAnimationFrame(tick);
-      }; requestAnimationFrame(tick); }), pre);
+    if (!shotsEnabled) {
+      // Misura numerica: usa la stessa evaluate atomica del guardiano PO-185.
+      // Una seconda chiamata Playwright fra la forzatura e il poll alterava l'istante scelto.
+      const beforeTimeline = await page.evaluate(() => window.__CPM_TIMELINE?.().length ?? 0);
+      const resolvedAt = await page.evaluate(([i, o]) => new Promise(resolve => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null;
+        let moved = false, last = null, same = 0; window.__CPM_FORCE_SIT(i, true); const t0 = performance.now();
+        const tick = () => { if (window.__CPM_PHASE?.() !== 'hl_choose') { resolve({ phaseBefore: window.__CPM_PHASE?.(), accepted: false, phaseChangedBeforeSettle: true, elapsedVirtualMs: performance.now() - t0 }); return; }
+          const b = window.__CPM_BALL?.(); const key = b ? `${b.x},${b.y}` : null;
+          if (key && key !== pre && key !== '50,50') moved = true;
+          if (moved && key && key !== '50,50' && key === last) same++; else same = 0; last = key;
+          if (same >= 2) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
+            const phaseBefore = window.__CPM_PHASE?.(); const accepted = window.__CPM_RESOLVE(0); resolve({ key, phaseBefore, accepted, elapsedVirtualMs: performance.now() - t0 }); }
+          else if (performance.now() - t0 > 25000) resolve(null); else requestAnimationFrame(tick);
+        }; requestAnimationFrame(tick); }), [gi, outcome]);
+      result.ballStart = resolvedAt?.key ?? null; result.resolve = resolvedAt;
+      if (!resolvedAt) { result.rejected = 'pallone non assestato entro 25 s virtuali'; return result; }
+      if (resolvedAt.phaseChangedBeforeSettle) { result.rejected = `scena passata a ${resolvedAt.phaseBefore} prima dell'assestamento`; return result; }
+      await sleep(glb ? 4000 : 2400);
+      const obs = await page.evaluate(() => ({ frame: window.__CPM_FRAME480, target: window.__CPM_TGT185,
+        phase: window.__CPM_PHASE?.(), timeline: window.__CPM_TIMELINE?.(), draft: window.__CPM_DRAFTNOTE ?? null }));
+      result.frame = obs.frame; result.target = obs.target; result.phase = obs.phase; result.draft = obs.draft;
+      result.timelineTail = Array.isArray(obs.timeline) ? obs.timeline.slice(beforeTimeline) : obs.timeline ?? null;
+      const events = Array.isArray(result.timelineTail) ? result.timelineTail.filter(x => x?.type === 'ActionResolved') : [];
+      result.actionResolved = events.at(-1) ?? null;
+      result.outcomeMatched = events.length === 1 && result.actionResolved.gi === gi && result.actionResolved.ok === (outcome === 'success');
+      result.valid = !!obs.frame && obs.frame.n >= 5 && result.outcomeMatched;
+      if (!result.valid) result.rejected = !obs.frame || obs.frame.n < 5 ? 'FRAME480 assente o meno di 5 letture' : 'ActionResolved non concorde';
+      return result;
+    }
+    const forcedAt = await page.evaluate(i => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null;
+      window.__CPM_FORCE_SIT(i, true);
+      window.__QA_BANK_TRACE = [];
+      window.__QA_BANK_SETTLED = new Promise(resolve => { let moved = false, last = null, same = 0; const start = performance.now();
+        const tick = () => { const b = window.__CPM_BALL?.(); const key = b ? `${b.x},${b.y}` : null;
+          if (key && key !== pre && key !== '50,50') moved = true;
+          if (moved && key && key !== '50,50' && key === last) same++; else same = 0;
+          last = key;
+          if (window.__QA_BANK_TRACE.length < 150) window.__QA_BANK_TRACE.push({ ms: Math.round(performance.now() - start), key, phase: window.__CPM_PHASE?.(), moved, same });
+          if (same >= 2) resolve(key); else if (performance.now() - start > 25000) resolve(null); else requestAnimationFrame(tick);
+        }; requestAnimationFrame(tick); });
+      return performance.now(); }, gi);
+    if (repeat === 0 && shotsEnabled) { await page.waitForFunction(t => performance.now() >= t, forcedAt + 900, { timeout: 25000 }); await shot('01-apertura'); }
+    const settled = await page.evaluate(() => window.__QA_BANK_SETTLED);
     result.ballStart = settled;
+    if (process.env.CPM_DEBUG_SETTLE === '1') result.settleTrace = await page.evaluate(() => window.__QA_BANK_TRACE);
+    result.phaseAtSettle = await page.evaluate(() => window.__CPM_PHASE?.());
     if (!settled) { result.rejected = 'pallone non assestato entro 25 s virtuali'; return result; }
-    if (repeat === 0) await shot('02-scelta');
+    if (result.phaseAtSettle !== 'hl_choose') { result.rejected = `scena passata a ${result.phaseAtSettle} prima della risoluzione`; return result; }
+    if (repeat === 0 && shotsEnabled) await shot('02-scelta');
     const beforeTimeline = await page.evaluate(() => window.__CPM_TIMELINE?.().length ?? 0);
-    const start = await page.evaluate(o => { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o; window.__CPM_RESOLVE(0); return performance.now(); }, outcome);
+    const startInfo = await page.evaluate(o => { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
+      const phaseBefore = window.__CPM_PHASE?.(); const accepted = window.__CPM_RESOLVE(0); return { t: performance.now(), phaseBefore, accepted }; }, outcome);
+    result.resolve = startInfo;
+    const start = startInfo.t;
     const marks = [['03-rincorsa', 300], ['04-contatto', 900], ['05-volo', 1600]];
-    if (repeat === 0) for (const [label, dt] of marks) {
+    if (repeat === 0 && shotsEnabled) for (const [label, dt] of marks) {
       await page.waitForFunction(t => performance.now() >= t, start + dt, { timeout: 25000 });
       await shot(label);
     }
     await page.waitForFunction(() => window.__CPM_FRAME480?.n >= 5, null, { timeout: 25000 });
     await sleep(glb ? 4000 : 2400);
-    if (repeat === 0) await shot('06-esito');
+    if (repeat === 0 && shotsEnabled) await shot('06-esito');
     const obs = await page.evaluate(() => ({ frame: window.__CPM_FRAME480, target: window.__CPM_TGT185,
       phase: window.__CPM_PHASE?.(), timeline: window.__CPM_TIMELINE?.(), draft: window.__CPM_DRAFTNOTE ?? null }));
     result.frame = obs.frame; result.target = obs.target; result.phase = obs.phase; result.draft = obs.draft;
+    result.timelineTail = Array.isArray(obs.timeline) ? obs.timeline.slice(beforeTimeline) : obs.timeline ?? null;
     const resolved = Array.isArray(obs.timeline) ? obs.timeline.slice(beforeTimeline).filter(x => x?.type === 'ActionResolved') : [];
     result.actionResolved = resolved.at(-1) ?? null;
     result.outcomeMatched = resolved.length === 1 && result.actionResolved.gi === gi && result.actionResolved.ok === (outcome === 'success');
@@ -76,14 +122,14 @@ async function run({ gi, outcome, glb, repeat }) {
 }
 
 try {
-  for (const gi of scenes) for (const outcome of ['success', 'fail']) for (const glb of modes) {
-    const repeats = repeated.has(gi) ? 2 : 1;
+  outer: for (const gi of scenes) for (const outcome of outcomes) for (const glb of modes) {
+    const repeats = process.env.CPM_REPEAT === '1' ? 1 : repeated.has(gi) ? 2 : 1;
     for (let repeat = 0; repeat < repeats; repeat++) {
       const id = `gi${gi}-${outcome}-${glb ? 'glb' : 'procedurale'}-r${repeat}`;
       if (data.cases.some(c => c.id === id && c.valid)) continue;
       const r = await run({ gi, outcome, glb, repeat }); data.cases.push(r); save();
       console.log(JSON.stringify({ id, valid: r.valid, rejected: r.rejected, n: r.frame?.n, heroOutside: r.frame?.fuori, ballOutside: r.frame?.bfuori }));
-      if (r.rejected?.startsWith('memoria libera')) break;
+      if (r.rejected?.startsWith('memoria libera')) break outer;
     }
   }
 } finally { await browser.close().catch(() => {}); server.close(); save(); }
