@@ -1,5 +1,47 @@
 [
  {
+  "data": "2026-10-02 19:03",
+  "versione": "7.999.111",
+  "catena": "grafica",
+  "passi": [
+   {
+    "passo": "griglia-mobile",
+    "ok": true,
+    "s": 247
+   },
+   {
+    "passo": "design-system",
+    "ok": true,
+    "s": 1
+   },
+   {
+    "passo": "career-critical",
+    "ok": true,
+    "s": 895
+   },
+   {
+    "passo": "test:logic",
+    "ok": true,
+    "s": 5
+   },
+   {
+    "passo": "save-compat",
+    "ok": true,
+    "s": 16
+   },
+   {
+    "passo": "titolo-110",
+    "ok": true,
+    "s": 37
+   },
+   {
+    "passo": "pre-188",
+    "ok": true,
+    "s": 24
+   }
+  ]
+ },
+ {
   "data": "2026-10-02 18:28",
   "versione": "7.999.110",
   "catena": "grafica",
