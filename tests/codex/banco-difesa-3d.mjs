@@ -17,7 +17,10 @@ const gzOut = path.resolve('tests/codex/banco-difesa-3d.json.gz');
 const shots = path.resolve('reports/codex/banco-difesa-3d');
 fs.mkdirSync(shots, { recursive: true });
 const data = fs.existsSync(out) ? JSON.parse(fs.readFileSync(out, 'utf8')) : fs.existsSync(gzOut) ? JSON.parse(zlib.gunzipSync(fs.readFileSync(gzOut))) : { version: '7.999.105', base: 'b2094979df9c6fdce4bc8c62b836cde43fac8eef', viewport: [412, 915], cases: [] };
-const save = () => { const raw = JSON.stringify(data, null, 2); fs.writeFileSync(out, raw); fs.writeFileSync(gzOut, zlib.gzipSync(raw)); };
+const save = () => { const raw = JSON.stringify(data, null, 2); fs.writeFileSync(out, raw); const gz = zlib.gzipSync(raw);
+  for (let attempt = 0; attempt < 15; attempt++) { try { fs.writeFileSync(gzOut, gz); return; }
+    catch (e) { if (e.code !== 'EBUSY' || attempt === 14) { console.error(`Checkpoint JSON conservato; compressione differita: ${e.message}`); return; }
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 200); } } };
 const freeGB = () => os.freemem() / 2 ** 30;
 if (freeGB() < 3.5) { console.error(`3D rinviato: RAM libera ${freeGB().toFixed(2)} GB < 3.5 GB`); process.exit(2); }
 const server = await startServer();
@@ -26,7 +29,7 @@ const port = server.address().port;
 
 async function run({ gi, outcome, glb, repeat }) {
   const id = `gi${gi}-${outcome}-${glb ? 'glb' : 'procedurale'}-r${repeat}`;
-  const result = { id, gi, outcome, glb, repeat, seed: gi * 1000 + 12345, valid: false, rejected: null, photos: [] };
+  const result = { id, gi, outcome, glb, repeat, seed: gi * 1000 + 12345, settleMode: process.env.CPM_SETTLE_MODE || 'three-still-frames', valid: false, rejected: null, photos: [] };
   if (freeGB() < 2.2) { result.rejected = `memoria libera ${freeGB().toFixed(2)} GB < 2.2 GB dopo l'avvio di Chrome`; return result; }
   const context = await browser.newContext({ viewport: { width: 412, height: 915 }, serviceWorkers: 'block' });
   const page = await context.newPage();
@@ -49,16 +52,23 @@ async function run({ gi, outcome, glb, repeat }) {
       // Misura numerica: usa la stessa evaluate atomica del guardiano PO-185.
       // Una seconda chiamata Playwright fra la forzatura e il poll alterava l'istante scelto.
       const beforeTimeline = await page.evaluate(() => window.__CPM_TIMELINE?.().length ?? 0);
-      const resolvedAt = await page.evaluate(([i, o]) => new Promise(resolve => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null;
+      const resolvedAt = process.env.CPM_SETTLE_MODE === 'timed' ? await (async () => {
+        const forced = await page.evaluate(i => { window.__CPM_FORCE_SIT(i, true); return { t: performance.now(), phase: window.__CPM_PHASE?.() }; }, gi);
+        await sleep(400);
+        return await page.evaluate(([o, forced]) => { const phaseBefore = window.__CPM_PHASE?.(); const b = window.__CPM_BALL?.();
+          if (phaseBefore !== 'hl_choose') return { phaseBefore, accepted: false, phaseChangedBeforeSettle: true, elapsedVirtualMs: performance.now() - forced.t };
+          window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
+          return { key: b ? `${b.x},${b.y}` : null, phaseBefore, accepted: window.__CPM_RESOLVE(0), elapsedVirtualMs: performance.now() - forced.t }; }, [outcome, forced]);
+      })() : await page.evaluate(([i, o, mode]) => new Promise(resolve => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null;
         let moved = false, last = null, same = 0; window.__CPM_FORCE_SIT(i, true); const t0 = performance.now();
         const tick = () => { if (window.__CPM_PHASE?.() !== 'hl_choose') { resolve({ phaseBefore: window.__CPM_PHASE?.(), accepted: false, phaseChangedBeforeSettle: true, elapsedVirtualMs: performance.now() - t0 }); return; }
           const b = window.__CPM_BALL?.(); const key = b ? `${b.x},${b.y}` : null;
           if (key && key !== pre && key !== '50,50') moved = true;
           if (moved && key && key !== '50,50' && key === last) same++; else same = 0; last = key;
-          if (same >= 2) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
+          if ((mode === 'moved' ? moved : same >= 2)) { window.__CPM_FRAME480 = null; window.__CPM_TGT185 = null; window.__CPM_FORCE_OUTCOME = o;
             const phaseBefore = window.__CPM_PHASE?.(); const accepted = window.__CPM_RESOLVE(0); resolve({ key, phaseBefore, accepted, elapsedVirtualMs: performance.now() - t0 }); }
           else if (performance.now() - t0 > 25000) resolve(null); else requestAnimationFrame(tick);
-        }; requestAnimationFrame(tick); }), [gi, outcome]);
+        }; requestAnimationFrame(tick); }), [gi, outcome, process.env.CPM_SETTLE_MODE]);
       result.ballStart = resolvedAt?.key ?? null; result.resolve = resolvedAt;
       if (!resolvedAt) { result.rejected = 'pallone non assestato entro 25 s virtuali'; return result; }
       if (resolvedAt.phaseChangedBeforeSettle) { result.rejected = `scena passata a ${resolvedAt.phaseBefore} prima dell'assestamento`; return result; }
@@ -74,7 +84,7 @@ async function run({ gi, outcome, glb, repeat }) {
       if (!result.valid) result.rejected = !obs.frame || obs.frame.n < 5 ? 'FRAME480 assente o meno di 5 letture' : 'ActionResolved non concorde';
       return result;
     }
-    const forcedAt = await page.evaluate(i => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null;
+    const forcedAt = await page.evaluate(([i, mode]) => { const b0 = window.__CPM_BALL?.(); const pre = b0 ? `${b0.x},${b0.y}` : null;
       window.__CPM_FORCE_SIT(i, true);
       window.__QA_BANK_TRACE = [];
       window.__QA_BANK_SETTLED = new Promise(resolve => { let moved = false, last = null, same = 0; const start = performance.now();
@@ -83,9 +93,9 @@ async function run({ gi, outcome, glb, repeat }) {
           if (moved && key && key !== '50,50' && key === last) same++; else same = 0;
           last = key;
           if (window.__QA_BANK_TRACE.length < 150) window.__QA_BANK_TRACE.push({ ms: Math.round(performance.now() - start), key, phase: window.__CPM_PHASE?.(), moved, same });
-          if (same >= 2) resolve(key); else if (performance.now() - start > 25000) resolve(null); else requestAnimationFrame(tick);
+          if (mode === 'moved' ? moved : same >= 2) resolve(key); else if (performance.now() - start > 25000) resolve(null); else requestAnimationFrame(tick);
         }; requestAnimationFrame(tick); });
-      return performance.now(); }, gi);
+      return performance.now(); }, [gi, process.env.CPM_SETTLE_MODE]);
     if (repeat === 0 && shotsEnabled) { await page.waitForFunction(t => performance.now() >= t, forcedAt + 900, { timeout: 25000 }); await shot('01-apertura'); }
     const settled = await page.evaluate(() => window.__QA_BANK_SETTLED);
     result.ballStart = settled;
