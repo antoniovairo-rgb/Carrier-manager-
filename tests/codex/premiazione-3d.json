@@ -1,0 +1,11 @@
+{
+  "version": "7.999.112",
+  "commit": "8cef5317",
+  "command": "node tests/codex/premiazione-3d.mjs",
+  "cases": [],
+  "paused": {
+    "reason": "RAM libera sotto 3,5 GB",
+    "freeGB": 3.37,
+    "at": "2026-10-02T20:33:38.106Z"
+  }
+}

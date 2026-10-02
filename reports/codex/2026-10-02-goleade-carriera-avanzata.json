@@ -1,0 +1,9 @@
+{
+  "versione": "7.999.112",
+  "commit": "8cef5317",
+  "compito": "PO-190 goleade e gol eroe in carriera avanzata",
+  "comando": "node tests/codex/goleade-carriera-avanzata.mjs",
+  "misure": [],
+  "segnalazioni": [],
+  "stato": "non verificato: tre carriere naturali e partite vissute non eseguite"
+}

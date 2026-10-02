@@ -1,0 +1,9 @@
+{
+  "versione": "7.999.112",
+  "commit": "8cef5317",
+  "compito": "PO-191 premiazione 3D",
+  "comando": "node tests/codex/premiazione-3d.mjs",
+  "misure": [],
+  "segnalazioni": [],
+  "stato": "non verificato: memoria libera sotto 3,5 GB; sonda preparata"
+}

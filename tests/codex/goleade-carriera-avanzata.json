@@ -1,0 +1,11 @@
+{
+  "version": "7.999.112",
+  "commit": "8cef5317",
+  "command": "node tests/codex/goleade-carriera-avanzata.mjs",
+  "careers": [],
+  "paused": {
+    "at": "2026-10-02T20:33:28.443Z",
+    "freeGB": 3.39,
+    "reason": "RAM libera sotto 3,5 GB"
+  }
+}
