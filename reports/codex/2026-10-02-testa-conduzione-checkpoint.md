@@ -1,0 +1,9 @@
+# Testa e conduzione 3D — checkpoint del 2 ottobre 2026
+
+**Stato: collaudo non concluso; 0 casi validi sulla build attuale.** Il ramo di prova `codex/2026-10-01-collaudo-testa-conduzione` è stato allineato a `origin/main` `2208f4cb707d42bd25854ab710584e5c8f79f4fa`, `GAME_VERSION="7.999.103"`. Non è stata modificata alcuna sorgente del gioco.
+
+Il precedente avvio sulla 7.999.96 si è interrotto prima del primo campione e prima di registrare una foto nel grezzo. Esiste un PNG isolato dell'apertura del caso gi6, non sufficiente a validarlo. Il record incompleto rimane in `tests/codex/collaudo-testa-conduzione.json.gz` con `valid:false`; non entra in alcuna conclusione. Il 2 ottobre, dopo l'aggiornamento del ramo, la RAM libera letta da `node -p "(require('os').freemem()/2**30).toFixed(2)"` era 3,35 GB, poi 2,67, 2,14, 2,18, 2,26 e 2,77 GB in letture successive. Il comando `node tests/codex/collaudo-testa-conduzione.mjs` ha restituito `Pausa: RAM libera sotto 3,5 GB`: Chromium non è stato avviato in questo tentativo.
+
+Lo script è predisposto per le scene di testa 6, 7, 39, 55, 64, 86, 90 e 171, con esiti success/fail e tre ripetizioni; cerca le azioni il cui `deriveHL(...).type` è `header` e salva i testimoni `__CPM_TESTA33`, `__CPM_Y063`, la timeline e le immagini. La correttezza dello script durante un caso completo **non è verificata**. I numeri richiesti su contatto, sincronia e velocità del cross sono **non verificati**. La parte conduzione e l'aggiunta PO-050/104/143 non sono ancora implementate nel banco, quindi restano **non verificabili con questo script**.
+
+Prossimo passo: quando la memoria libera supera 3,5 GB, eseguire un caso pilota, verificare che `ActionResolved` corrisponda all'esito richiesto e che le immagini mostrino i momenti dichiarati. Solo dopo ampliare il lotto e completare la parte conduzione. Il limite di memoria è una condizione dell'ambiente di prova, non un difetto del gioco.
