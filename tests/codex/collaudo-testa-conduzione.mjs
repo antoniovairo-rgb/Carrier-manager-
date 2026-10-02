@@ -26,15 +26,22 @@ for(const run of data.runs){
 }
 save();
 if(os.freemem()<3.5*1024**3){console.log('Pausa: RAM libera sotto 3,5 GB');process.exit(0);}
+const selectedGi=(process.env.CPM_GI||'').split(',').filter(Boolean).map(Number);
+const selectedOutcome=process.env.CPM_OUTCOME||'';
+const selectedRep=process.env.CPM_REP==null?null:Number(process.env.CPM_REP);
 const pending=plan.filter(c=>
+ (!selectedGi.length||selectedGi.includes(c.gi))
+ &&(!selectedOutcome||c.outcome===selectedOutcome)
+ &&(selectedRep==null||c.rep===selectedRep)
+ &&
  !data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.versione===version&&r.skipped)
- &&!data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.outcome===c.outcome&&r.rep===c.rep&&r.versione===version&&r.valid)
+ &&!data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.outcome===c.outcome&&r.rep===c.rep&&r.versione===version&&r.methodVersion>=2&&r.valid)
 ).slice(0,count);
 const srv=await startServer();const browser=await launchBrowser();
 try{
  for(const c of pending){
   if(os.freemem()<3.5*1024**3){console.log('Pausa: RAM libera sotto 3,5 GB');break;}
-  const r={...c,versione:version,startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
+  const r={...c,versione:version,methodVersion:2,startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
   const context=await browser.newContext({viewport:{width:412,height:915},deviceScaleFactor:1,serviceWorkers:'block'});
   const page=await context.newPage();page.setDefaultTimeout(90000);
   let lowMemory=false;const guard=setInterval(()=>{if(os.freemem()<1.8*1024**3){lowMemory=true;context.close().catch(()=>{});}},2000);
@@ -61,28 +68,40 @@ try{
    const resolver=r.labels.indexOf(r.action.label);if(resolver<0)throw Error('Etichetta azione non visibile');
    const before=await page.evaluate(()=>window.__CPM_TIMELINE?.()||[]);
    const take=async(tag,ms)=>{const ext=c.kind==='carry'?'jpg':'png';const file=path.join(out,`gi${c.gi}-a${r.action.i}-${c.outcome}-r${c.rep}-${tag}.${ext}`);await page.screenshot({path:file,type:c.kind==='carry'?'jpeg':'png',quality:c.kind==='carry'?72:undefined,timeout:20000});r.frames.push({tag,ms,file:path.relative(root,file).replaceAll('\\','/')});};
-   await take(c.kind==='header'?'01-cross':'01-inizio-corsa',0);
    await page.evaluate(([i,outcome])=>{window.__CPM_FORCE_OUTCOME=outcome;window.__CPM_RESOLVE(i);},[resolver,c.outcome]);
-   let contactCaptured=false;
+   const nearShots=[],flightShots=[];
    for(let ms=50;ms<=18000;ms+=50){
     await page.clock.runFor(50);
     const s=await page.evaluate(()=>({phase:window.__CPM_PHASE?.(),ball:window.__CPM_BALL?.(),head:(window.__CPM_TESTA33?.f||[]).at(-1)||null,headCount:window.__CPM_TESTA33?.f?.length||0,ball3:window.__CPM_BALL3?.()||null}));
     r.samples.push({ms,...s});
     if(c.kind==='header'){
-     if(ms===500)await take('02-meta-volo',ms);
-     if(!contactCaptured&&s.head&&s.head.d<0.8){contactCaptured=true;r.contactPhotoTrigger={ms,d:s.head.d};await take('04-contatto',ms);}
-     if(ms===1500)await take('03-prima-contatto-proxy',ms);
-     if(contactCaptured&&ms===r.contactPhotoTrigger.ms+100)await take('05-dopo-contatto',ms);
-    }else if(ms%300===0)await take(`corsa-${String(ms).padStart(5,'0')}`,ms);
+     if(ms===50)await take('01-partenza-cross',ms);
+     if(ms<=5000&&ms%250===0)flightShots.push({ms,buf:await page.screenshot({timeout:20000})});
+     if(s.head&&s.head.d<4&&ms<=6000)nearShots.push({ms,d:s.head.d,buf:await page.screenshot({timeout:20000})});
+    }else if(ms===50||ms%300===0)await take(`corsa-${String(ms).padStart(5,'0')}`,ms);
     if(ms>=8000&&await page.getByRole('button',{name:/^Continua$/i}).count()){await take('06-esito',ms);break;}
    }
    r.headFrames=c.kind==='header'?await page.evaluate(()=>window.__CPM_TESTA33?.f||[]):[];
    r.yImpact=c.kind==='header'?await page.evaluate(()=>window.__CPM_Y063||[]):[];
    r.carryFrames=c.kind==='carry'?await page.evaluate(()=>window.__CPM_TIRO34?.f||[]):[];
+   r.ballFrames=c.kind==='header'?await page.evaluate(()=>window.__CPM_TIRO34?.f||[]):[];
+   if(c.kind==='header'&&r.headFrames.length){
+    const gestureFrames=r.headFrames.filter(f=>f.g==='header');
+    const headContact=(gestureFrames.length?gestureFrames:r.headFrames).reduce((a,b)=>b.d<a.d?b:a);
+    const closestSample=r.samples.reduce((a,b)=>Math.abs((b.head?.t||0)-headContact.t)<Math.abs((a.head?.t||0)-headContact.t)?b:a);
+    r.contactWitness={t:headContact.t,d:headContact.d,by:headContact.by,ms:closestSample.ms};
+    const choose=(shots,target)=>shots.length?shots.reduce((a,b)=>Math.abs(b.ms-target)<Math.abs(a.ms-target)?b:a):null;
+    const selected=[['02-meta-volo',choose(flightShots,closestSample.ms/2)],['03-meno-100ms',choose(nearShots,closestSample.ms-100)],['04-contatto',choose(nearShots,closestSample.ms)],['05-piu-100ms',choose(nearShots,closestSample.ms+100)]];
+    for(const [tag,pick] of selected){if(!pick)continue;const file=path.join(out,`gi${c.gi}-a${r.action.i}-${c.outcome}-r${c.rep}-${tag}.png`);fs.writeFileSync(file,pick.buf);r.frames.push({tag,ms:pick.ms,file:path.relative(root,file).replaceAll('\\','/')});}
+    r.frames.sort((a,b)=>a.tag.localeCompare(b.tag));
+    r.photoTimingErrorMs=selected.map(([tag,pick])=>({tag,deltaMs:pick?Math.round(pick.ms-(tag==='02-meta-volo'?closestSample.ms/2:tag==='03-meno-100ms'?closestSample.ms-100:tag==='05-piu-100ms'?closestSample.ms+100:closestSample.ms)):null}));
+   }
    r.draft=await page.evaluate(intent=>{const snap=window.__CPM_WATCH_SNAP?.();const sk=snap?.samples?.at(-1)?.sk;return window.__CPM_DRAFTNOTE?.(snap,{sceneKey:sk,intent,act:window.__CPM_ACTS?.()[0]})||null;},c.kind==='header'?'header':'dribble');
    const after=await page.evaluate(()=>window.__CPM_TIMELINE?.()||[]);
    r.actionResolved=after.slice(before.length).filter(e=>e.type==='ActionResolved');
-   r.valid=r.actionResolved.length===1&&r.actionResolved[0].ok===(c.outcome==='success')&&r.actionResolved[0].gi===c.gi;
+   r.outcomeMatched=r.actionResolved.length===1&&r.actionResolved[0].ok===(c.outcome==='success')&&r.actionResolved[0].gi===c.gi;
+   r.photosComplete=c.kind==='header'?r.frames.length===6:r.frames.length>=2;
+   r.valid=!!(r.outcomeMatched&&r.photosComplete&&(c.kind!=='header'||r.headFrames.length>0));
   }catch(e){r.valid=false;r.error=String(e.stack||e);}
   finally{clearInterval(guard);await context.close().catch(()=>{});r.lowMemory=lowMemory;r.finishedAt=new Date().toISOString();save();console.log(JSON.stringify({gi:r.gi,outcome:r.outcome,rep:r.rep,valid:r.valid,headFrames:r.headFrames?.length||0,photos:r.frames.length,error:r.error,lowMemory}));}
  }
