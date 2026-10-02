@@ -32,7 +32,12 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.104";/* [7.999.104 PO-181 — «settimana ferma» dei collaudi Codex (seme 6, S.8 W.21)] Nelle stagioni d'Europeo/Mondiale, finite le due
+const GAME_VERSION="7.999.105";/* [7.999.105 riquadro «Europeo · PRIORITÀ» della home, punto di attenzione dopo PO-181] In qualificazione il riquadro
+   diceva «vs ?» e «Partita da eliminazione diretta · Nessun pareggio» (falso); nell'attesa fra qualificazioni e girone gridava PRIORITÀ
+   senza gare da giocare. Ora: qualificazione → avversario vero e «Qualificazione N/2 · pt»; attesa → «IN ATTESA · Qualificati ✓ · il
+   girone inizia alla settimana 24 · Intanto si gioca il campionato · Prossima: …». Solo testo. Rosso __CPM_NO_RIQ105, guardiano
+   riquadro-euro-105 (con foto). */
+/* [7.999.104 PO-181 — «settimana ferma» dei collaudi Codex (seme 6, S.8 W.21)] Nelle stagioni d'Europeo/Mondiale, finite le due
    qualificazioni, il pulsante principale e «Continua» lanciavano ancora la gara della Nazionale e il gioco rispondeva solo «attendi la
    prossima fase»: nessuna via per arrivare alla W.24 (probabile innesco del salto 21→28 del salvataggio S.12 del PO, che ricaricando
    ha rimesso in moto il recupero corretto nella 7.999.103). Ora il torneo IN ATTESA non comanda il pulsante (_emInAttesa) e il girone si

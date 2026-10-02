@@ -8272,19 +8272,28 @@ const getThisWeekMatchday=()=>{
       {tab==="dashboard"&&player.euroMondiale?.active&&!player.euroMondiale?.done&&(()=>{
         const em=player.euroMondiale;
         const phaseLabel=em.phase==="ko"?(EM_KO_LABEL[em.koPhase]||"Fase KO"):({group:`Gironi · Partita ${(em.groupMatchIdx||0)+1}/${(em.groupOpponents||[]).length||3}`,qualificazioni:"Qualificazioni",semi:"Semifinale",final:"Finale"}[em.phase]||"–");// 5.67.0: durante la fase KO (phase "ko") il turno è in koPhase; retro-compat con vecchi save (phase "semi"/"final")
-        const oppName=em.phase==="group"?(em.groupOpponents||[])[em.groupMatchIdx||0]:em.koOpponent;
+        /* [7.999.105 punto di attenzione dopo PO-181] in «qualificazioni» il riquadro diceva «vs ?» (l'avversario si leggeva solo per
+           girone/KO) e «Partita da eliminazione diretta · Nessun pareggio», falso; e in ATTESA (qualificazioni chiuse, girone alla W.24)
+           gridava PRIORITA' senza nessuna gara da giocare. Rosso __CPM_NO_RIQ105. */
+        const _r105=!(typeof window!=='undefined'&&window.__CPM_NO_RIQ105);
+        const _att105=_r105&&_emInAttesa(em);
+        const _q105=_r105&&em.phase==="qualificazioni"&&!em.qualDone;
+        const oppName=em.phase==="group"?(em.groupOpponents||[])[em.groupMatchIdx||0]:_q105?(em.qualOpponents||[])[em.qualMatchIdx||0]:em.koOpponent;
         const emCol=em.type==="Mondiale"?"#4f46e5":"#0369a1";
         const _clubMd=getThisWeekMatchday();
         return(
           <Card style={{marginBottom:8,padding:"9px 12px",border:_n30(`1px solid ${emCol}`,"1px solid "+TH.cardBorder),background:_n30(`${emCol}10`,TH.card)}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
               <div style={{fontSize:FS.caption,color:emCol,textTransform:"uppercase",letterSpacing:1.5,flex:1}}>{em.type==="Mondiale"?"🌍 Coppa del Mondo":"🏆 Europeo"} · S.{em.season} · {phaseLabel}</div>
-              <div style={{fontSize:FS.caption,background:emCol,color:"#fff",borderRadius:RAD.sm,padding:"2px 8px",fontWeight:700}}>PRIORITÀ</div>
+              <div style={{fontSize:FS.caption,background:_att105?TH.muted:emCol,color:"#fff",borderRadius:RAD.sm,padding:"2px 8px",fontWeight:700}}>{_att105?"IN ATTESA":"PRIORITÀ"}</div>
             </div>
-            <div style={{fontSize:FS.small,color:TH.text,fontWeight:700,marginBottom:2}}>vs {oppName||"?"}</div>
+            {_att105?<div style={{fontSize:FS.small,color:TH.text,fontWeight:700,marginBottom:2}}>{em.qualQualified?`Qualificati ✓ · ${em.qualPts||0} pt`:"Qualificazioni chiuse"} · il girone inizia alla settimana 24</div>
+              :<div style={{fontSize:FS.small,color:TH.text,fontWeight:700,marginBottom:2}}>vs {oppName||"?"}</div>}
             {em.phase==="group"&&<div style={{fontSize:FS.caption,color:TH.muted,marginBottom:_clubMd?8:0}}>Punti gironi: {em.groupPts||0}/{((em.groupOpponents||[]).length||3)*3} · Serve min. 4pt per qualificarsi</div>}
-            {em.phase!=="group"&&<div style={{fontSize:FS.caption,color:TH.muted,marginBottom:_clubMd?8:0}}>Partita da eliminazione diretta · Nessun pareggio</div>}
-            {_clubMd&&<div style={{fontSize:FS.caption,color:TH.muted,background:"rgba(0,0,0,0.04)",borderRadius:RAD.xs,padding:"4px 8px"}}>⏭️ Dopo: {_clubMd.opponentName} · {_clubMd.isHome?"in casa":"in trasferta"} · sett. {_clubMd.week}</div>}
+            {_q105&&<div style={{fontSize:FS.caption,color:TH.muted,marginBottom:_clubMd?8:0}}>Qualificazione {(em.qualMatchIdx||0)+1}/{(em.qualOpponents||[]).length||2} · {em.qualPts||0} pt</div>}
+            {_att105&&<div style={{fontSize:FS.caption,color:TH.muted,marginBottom:_clubMd?8:0}}>Intanto si gioca il campionato.</div>}
+            {em.phase!=="group"&&!_q105&&!_att105&&<div style={{fontSize:FS.caption,color:TH.muted,marginBottom:_clubMd?8:0}}>Partita da eliminazione diretta · Nessun pareggio</div>}
+            {_clubMd&&<div style={{fontSize:FS.caption,color:TH.muted,background:"rgba(0,0,0,0.04)",borderRadius:RAD.xs,padding:"4px 8px"}}>⏭️ {_att105?"Prossima":"Dopo"}: {_clubMd.opponentName} · {_clubMd.isHome?"in casa":"in trasferta"} · sett. {_clubMd.week}</div>}
           </Card>
         );
       })()}

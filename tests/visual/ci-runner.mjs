@@ -7,11 +7,11 @@
 import { spawnSync } from 'node:child_process'; import fs from 'node:fs'; import path from 'node:path';
 const CATENE = {
   completa: ['test:vision', 'test:logic', 'typing-shortcuts', 'validate-situations', 'save-compat', 'replay', 'career-critical', 'partita-vera', 'design-system'],
-  carriera: ['test:logic', 'save-compat', 'replay', 'career-critical', 'classifica-102', 'recupero-103', 'euro-attesa-181'],
+  carriera: ['test:logic', 'save-compat', 'replay', 'career-critical', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105'],
   grafica: ['griglia-mobile', 'design-system', 'career-critical', 'test:logic', 'save-compat'],
   guardiani: ['goleade', 'scene-disegnabili', 'nomi-51', 'piazzati-eroe', 'cross-origine', 'tiro-caricato', 'passo-velocita', 'gesti-copertura-96', 'etichette-95',
     'attesa-difesa', 'calendario-nazionale', 'career-nat-sim', 'disappunto', 'esultanza-braccia', 'fallo-cercato', 'filtrante-intercetto', 'home-riquadri', 'numeri-home',
-    'occasioni-dinamiche', 'occasioni-squadra', 'piede-preferito', 'ruleta', 'strisce-corpo', 'testa-tempismo', 'classifica-102', 'recupero-103', 'euro-attesa-181'],
+    'occasioni-dinamiche', 'occasioni-squadra', 'piede-preferito', 'ruleta', 'strisce-corpo', 'testa-tempismo', 'classifica-102', 'recupero-103', 'euro-attesa-181', 'riquadro-euro-105'],
   /* witness-frameskip FUORI (PO-180): instabile anche sulla 7.999.96 — sonda __CPM_WD_FILL a volte assente, pallone fermo nella
      finestra di 1,2 s (0-0,42u contro 3-6u), un campione fuori ordine. Da riscrivere prima di rientrare. */
 };
