@@ -32,7 +32,12 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.105";/* [7.999.105 riquadro «Europeo · PRIORITÀ» della home, punto di attenzione dopo PO-181] In qualificazione il riquadro
+const GAME_VERSION="7.999.106";/* [7.999.106 ipotesi dell'audit PO-182 verificata nel codice] L'avversario della giornata si cercava solo nella lega
+   RICALCOLATA (getLeagueClubs): se non c'era, la partita dal vivo e la Simula pescavano un avversario A CASO e l'avanzamento settimana
+   non simulava la gara. Ora avversarioDiGiornata (src/09): lega → archivio CLUBS → classifica; il sorteggio solo se il club non esiste.
+   Misurato anche che al caricamento una migrazione riallinea gli avversari estranei, quindi lo stato vive solo a meta' sessione.
+   Rosso __CPM_NO_AVV106, guardiano avversario-106. */
+/* [7.999.105 riquadro «Europeo · PRIORITÀ» della home, punto di attenzione dopo PO-181] In qualificazione il riquadro
    diceva «vs ?» e «Partita da eliminazione diretta · Nessun pareggio» (falso); nell'attesa fra qualificazioni e girone gridava PRIORITÀ
    senza gare da giocare. Ora: qualificazione → avversario vero e «Qualificazione N/2 · pt»; attesa → «IN ATTESA · Qualificati ✓ · il
    girone inizia alla settimana 24 · Intanto si gioca il campionato · Prossima: …». Solo testo. Rosso __CPM_NO_RIQ105, guardiano

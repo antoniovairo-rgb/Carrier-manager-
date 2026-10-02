@@ -5360,7 +5360,12 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.105";/* [7.999.105 riquadro «Europeo · PRIORITÀ» della home, punto di attenzione dopo PO-181] In qualificazione il riquadro
+const GAME_VERSION="7.999.106";/* [7.999.106 ipotesi dell'audit PO-182 verificata nel codice] L'avversario della giornata si cercava solo nella lega
+   RICALCOLATA (getLeagueClubs): se non c'era, la partita dal vivo e la Simula pescavano un avversario A CASO e l'avanzamento settimana
+   non simulava la gara. Ora avversarioDiGiornata (src/09): lega → archivio CLUBS → classifica; il sorteggio solo se il club non esiste.
+   Misurato anche che al caricamento una migrazione riallinea gli avversari estranei, quindi lo stato vive solo a meta' sessione.
+   Rosso __CPM_NO_AVV106, guardiano avversario-106. */
+/* [7.999.105 riquadro «Europeo · PRIORITÀ» della home, punto di attenzione dopo PO-181] In qualificazione il riquadro
    diceva «vs ?» e «Partita da eliminazione diretta · Nessun pareggio» (falso); nell'attesa fra qualificazioni e girone gridava PRIORITÀ
    senza gare da giocare. Ora: qualificazione → avversario vero e «Qualificazione N/2 · pt»; attesa → «IN ATTESA · Qualificati ✓ · il
    girone inizia alla settimana 24 · Intanto si gioca il campionato · Prossima: …». Solo testo. Rosso __CPM_NO_RIQ105, guardiano
@@ -9160,6 +9165,16 @@ function rebuildStandingsFromCalendar(p){const clubs=leagueClubsFromCalendar(p);
    seme che usa la Simula (standingsSeed+giornata) e si conta in classifica — e' l'invariante «avanzando oltre una settimana con una
    gara non giocata, la si auto-risolve». Ripara anche i salvataggi gia' colpiti (voci healed418 senza risultato). Ritorna null se
    non c'e' nulla da recuperare. Rosso __CPM_NO103 (lo spegne il chiamante). */
+/* [7.999.106 — ipotesi dell'audit PO-182 verificata nel codice] L'AVVERSARIO SI CERCA NEL CALENDARIO, NON SOLO NELLA LEGA RICALCOLATA.
+   getLeagueClubs puo' non coincidere con la lega della stagione (7.999.102: promozioni/retrocessioni accumulate): se l'avversario della
+   giornata non c'e', doAdvanceWeek avanzava la settimana SENZA simulare, simulateAndAdvance simulava contro un club PESCATO A CASO e
+   perfino la partita dal vivo partiva contro un avversario a caso. Ordine: lega ricalcolata (id, nome) → archivio CLUBS (id, nome) →
+   riga di classifica. null se il club non esiste da nessuna parte (allora il chiamante decide). Rosso __CPM_NO_AVV106 = solo lega. */
+function avversarioDiGiornata(lc,md,p){if(!md)return null;const L=lc||[];
+  const a=L.find(c=>c.id===md.opponentId)||L.find(c=>c.n===md.opponentName);if(a)return a;
+  if(typeof window!=='undefined'&&window.__CPM_NO_AVV106)return null;
+  const C=(typeof CLUBS!=='undefined')?CLUBS:[];
+  return C.find(c=>c.id===md.opponentId&&!c.isU18)||C.find(c=>c.n===md.opponentName&&!c.isU18)||C.find(c=>c.id===md.opponentId)||((p&&p.standings)||[]).find(r=>r&&(r.id===md.opponentId||r.n===md.opponentName))||null;}
 function recuperaGiornateMancate(p,isStale){try{
   if(!p||!p.club||!(p.standings||[]).length)return null;
   const myId=p.club.id||p.club.n;const sn=p.season||1;const wk=p.week||1;
@@ -44174,7 +44189,7 @@ const getThisWeekMatchday=()=>{
     const isEuroMd=md.type==="euro_group"||md.type==="euro";
     const opp=isEuroMd
       ?(md.opponentData||CLUBS.find(c=>c.id===md.opponentId)||CLUBS.find(c=>c.n===md.opponentName))
-      :(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n)));
+      :(avversarioDiGiornata(lc,md,player)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n)));/* [7.999.106] il sorteggio resta solo se il club non esiste da nessuna parte */
     if(!opp){_playingMdRef.current=null;/* [P0 #3] uscita dal pre-partita: il riferimento alla gara non deve sopravvivere */notify("Nessun avversario disponibile.",TH.danger);return;}
     if(isEuroMd) setMatchContext(md.type==="euro"?"euro_ko":"euro_group");
     else if(md.type==="cup") setMatchContext("cup");
@@ -46284,7 +46299,7 @@ const getThisWeekMatchday=()=>{
       const isEuroG=md2.type==="euro_group";const isEuroKO=md2.type==="euro";
       const opp=(isEuroG||isEuroKO)
         ?(md2.opponentData||CLUBS.find(c=>c.id===md2.opponentId)||CLUBS.find(c=>c.n===md2.opponentName))
-        :(lc.find(c=>c.id===md2.opponentId)||lc.find(c=>c.n===md2.opponentName)||pick(lc.filter(c=>c.id!==p.club?.id)));
+        :(avversarioDiGiornata(lc,md2,p)||pick(lc.filter(c=>c.id!==p.club?.id)));/* [7.999.106] */
       if(!opp){
         return isInjured?{...p,...injBase,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{...p,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)};/* [7.8.28 QA STAB-7] settimana avanzata su avversario non risolvibile: stipendio+staff-rel dovuti + decremento returnPenaltyWeeks (parità col ramo gemello) */
       }
@@ -47543,7 +47558,7 @@ const getThisWeekMatchday=()=>{
         const opp=isNatMd81?{id:_ndA81.id,n:md.opponentName||"Avversario",a:_ndA81.a,p:_ndA81.p,c:_ndA81.c,c2:_ndA81.c2}
           :(isEuroG||isEuroKO)
           ?(md.opponentData||CLUBS.find(c=>c.id===md.opponentId)||CLUBS.find(c=>c.n===md.opponentName))
-          :(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName));
+          :avversarioDiGiornata(lc,md,p);/* [7.999.106] prima: non trovato → settimana avanzata senza simulare */
         if(opp&&isNatMd81){
           // [6.81.0] AVANZA con amichevole Nazionale pendente: la convocazione NON si salta → si simula
           //   (le nazionali giocano comunque), cap/gol accreditati, voce marcata. Niente standings di club.
@@ -47771,7 +47786,7 @@ const getThisWeekMatchday=()=>{
           const _xlc=getLeagueClubs(p);
           const _xopp=(xmd.type==="euro_group"||xmd.type==="euro"||xmd.type==="cup")
             ?(xmd.opponentData||CLUBS.find(c=>c.id===xmd.opponentId)||CLUBS.find(c=>c.n===xmd.opponentName))
-            :(_xlc.find(c=>c.id===xmd.opponentId)||_xlc.find(c=>c.n===xmd.opponentName));
+            :avversarioDiGiornata(_xlc,xmd,p);/* [7.999.106] */
           if(_xopp){
             const _xSd=(standingsSeed(p.club?.id||p.club?.n,p.season,p.week)+(xmd.matchday||0)*31)>>>0;// [5.76.0 BUG-6]
             const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true,stile:(p.coach&&p.coach.style)||null});

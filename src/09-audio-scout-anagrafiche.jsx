@@ -1486,6 +1486,16 @@ function rebuildStandingsFromCalendar(p){const clubs=leagueClubsFromCalendar(p);
    seme che usa la Simula (standingsSeed+giornata) e si conta in classifica — e' l'invariante «avanzando oltre una settimana con una
    gara non giocata, la si auto-risolve». Ripara anche i salvataggi gia' colpiti (voci healed418 senza risultato). Ritorna null se
    non c'e' nulla da recuperare. Rosso __CPM_NO103 (lo spegne il chiamante). */
+/* [7.999.106 — ipotesi dell'audit PO-182 verificata nel codice] L'AVVERSARIO SI CERCA NEL CALENDARIO, NON SOLO NELLA LEGA RICALCOLATA.
+   getLeagueClubs puo' non coincidere con la lega della stagione (7.999.102: promozioni/retrocessioni accumulate): se l'avversario della
+   giornata non c'e', doAdvanceWeek avanzava la settimana SENZA simulare, simulateAndAdvance simulava contro un club PESCATO A CASO e
+   perfino la partita dal vivo partiva contro un avversario a caso. Ordine: lega ricalcolata (id, nome) → archivio CLUBS (id, nome) →
+   riga di classifica. null se il club non esiste da nessuna parte (allora il chiamante decide). Rosso __CPM_NO_AVV106 = solo lega. */
+function avversarioDiGiornata(lc,md,p){if(!md)return null;const L=lc||[];
+  const a=L.find(c=>c.id===md.opponentId)||L.find(c=>c.n===md.opponentName);if(a)return a;
+  if(typeof window!=='undefined'&&window.__CPM_NO_AVV106)return null;
+  const C=(typeof CLUBS!=='undefined')?CLUBS:[];
+  return C.find(c=>c.id===md.opponentId&&!c.isU18)||C.find(c=>c.n===md.opponentName&&!c.isU18)||C.find(c=>c.id===md.opponentId)||((p&&p.standings)||[]).find(r=>r&&(r.id===md.opponentId||r.n===md.opponentName))||null;}
 function recuperaGiornateMancate(p,isStale){try{
   if(!p||!p.club||!(p.standings||[]).length)return null;
   const myId=p.club.id||p.club.n;const sn=p.season||1;const wk=p.week||1;

@@ -976,7 +976,7 @@ const getThisWeekMatchday=()=>{
     const isEuroMd=md.type==="euro_group"||md.type==="euro";
     const opp=isEuroMd
       ?(md.opponentData||CLUBS.find(c=>c.id===md.opponentId)||CLUBS.find(c=>c.n===md.opponentName))
-      :(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n)));
+      :(avversarioDiGiornata(lc,md,player)||pick(lc.filter(c=>c.id!==player.club?.id&&c.n!==player.club?.n)));/* [7.999.106] il sorteggio resta solo se il club non esiste da nessuna parte */
     if(!opp){_playingMdRef.current=null;/* [P0 #3] uscita dal pre-partita: il riferimento alla gara non deve sopravvivere */notify("Nessun avversario disponibile.",TH.danger);return;}
     if(isEuroMd) setMatchContext(md.type==="euro"?"euro_ko":"euro_group");
     else if(md.type==="cup") setMatchContext("cup");
@@ -3086,7 +3086,7 @@ const getThisWeekMatchday=()=>{
       const isEuroG=md2.type==="euro_group";const isEuroKO=md2.type==="euro";
       const opp=(isEuroG||isEuroKO)
         ?(md2.opponentData||CLUBS.find(c=>c.id===md2.opponentId)||CLUBS.find(c=>c.n===md2.opponentName))
-        :(lc.find(c=>c.id===md2.opponentId)||lc.find(c=>c.n===md2.opponentName)||pick(lc.filter(c=>c.id!==p.club?.id)));
+        :(avversarioDiGiornata(lc,md2,p)||pick(lc.filter(c=>c.id!==p.club?.id)));/* [7.999.106] */
       if(!opp){
         return isInjured?{...p,...injBase,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null}:{...p,...weeklyEconomyFields(p),...weeklyStaffRel(p),week:(p.week||1)+1,weekLived:false,sessionsThisWeek:0,sessionLog:[],weeklyFocusType:null,returnPenaltyWeeks:Math.max(0,(p.returnPenaltyWeeks||0)-1)};/* [7.8.28 QA STAB-7] settimana avanzata su avversario non risolvibile: stipendio+staff-rel dovuti + decremento returnPenaltyWeeks (parità col ramo gemello) */
       }
@@ -4345,7 +4345,7 @@ const getThisWeekMatchday=()=>{
         const opp=isNatMd81?{id:_ndA81.id,n:md.opponentName||"Avversario",a:_ndA81.a,p:_ndA81.p,c:_ndA81.c,c2:_ndA81.c2}
           :(isEuroG||isEuroKO)
           ?(md.opponentData||CLUBS.find(c=>c.id===md.opponentId)||CLUBS.find(c=>c.n===md.opponentName))
-          :(lc.find(c=>c.id===md.opponentId)||lc.find(c=>c.n===md.opponentName));
+          :avversarioDiGiornata(lc,md,p);/* [7.999.106] prima: non trovato → settimana avanzata senza simulare */
         if(opp&&isNatMd81){
           // [6.81.0] AVANZA con amichevole Nazionale pendente: la convocazione NON si salta → si simula
           //   (le nazionali giocano comunque), cap/gol accreditati, voce marcata. Niente standings di club.
@@ -4573,7 +4573,7 @@ const getThisWeekMatchday=()=>{
           const _xlc=getLeagueClubs(p);
           const _xopp=(xmd.type==="euro_group"||xmd.type==="euro"||xmd.type==="cup")
             ?(xmd.opponentData||CLUBS.find(c=>c.id===xmd.opponentId)||CLUBS.find(c=>c.n===xmd.opponentName))
-            :(_xlc.find(c=>c.id===xmd.opponentId)||_xlc.find(c=>c.n===xmd.opponentName));
+            :avversarioDiGiornata(_xlc,xmd,p);/* [7.999.106] */
           if(_xopp){
             const _xSd=(standingsSeed(p.club?.id||p.club?.n,p.season,p.week)+(xmd.matchday||0)*31)>>>0;// [5.76.0 BUG-6]
             const _xs=simulateMatch(p.club,_xopp,p.ovr||65,xmd.isHome,_xSd,p.clubPrestigeShifts||{},{motore:true,stile:(p.coach&&p.coach.style)||null});
