@@ -14,9 +14,9 @@ aperte, parziali, in corso, in attesa del PO, da collaudare, non riprodotte, sos
 Più giù lo **storico delle voci chiuse** (FATTO), in ordine di ID. Una voce chiusa che il PO riapre torna in cima.
 La sezione «Ricostruzione» con fonti e regole di stato è in fondo.
 
-## Voci aperte o parziali (44)
+## Voci aperte o parziali (47)
 
-Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
+Per lotto: L1 24 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -42,6 +42,8 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-143 | 30/09 15:34 | Taccuino #18, #126, #64, #140: dribbling fasullo, esiti in rete, pallone che arretra | difetto | DA COLLAUDARE — PO 01/10: Codex (#64 nel collaudo colpo di testa; #126 e #18 da aggiungere); #140 FATTO in 7.999.93 | L1 | 7.999.79: «Non riprodotti»; 7.999.93 (#140) | `conduci-93` | «Non era un dribbling»; «Azione confusionaria con colpo di testa non sincronizzato»; «Ha fatto una sorta di colpo di testa, scena strana» |
 | PO-172 | 27/09 | Rilievi Codex sulle release 7.999.26–27 (26-A…27-B) da riprodurre | difetto | PARZIALE — 27-B corretto (7.999.100), 26-D corretto secondo la decisione PO (7.999.101), 26-C chiuso dalla 7.999.98; 26-A, 26-B, 27-A non verificati | L1 | — | — | roadmap: «6 rischi, nessuno riprodotto» |
 | PO-185 | 02/10 | Ricollaudo Codex difesa 3D su 7.999.91: 32/32 esiti concordi con ActionResolved; restano ipotesi visive 001 apertura (gi138, gi36, gi45: 6 casi) e 002 fuori quadro (gi133f, gi138, gi168f, gi31f, gi32, gi36s: 8 casi; gi32 eroe a 15 u dalla palla in apertura) | difetto | DA COLLAUDARE — banco deterministico (npm run inquadratura-185: orologio virtuale 30 fps + seme + aggancio; giri ripetuti identici fotogramma per fotogramma). Su 10 casi difensivi: pallone fuori 5%, eroe 0% (contro 22-32% a orologio vero headless): il «002 pallone fuori» di Codex e nostro era soprattutto l'effetto dei pochi fps del banco. Residuo: gi45, 1-4 fotogrammi (~0,13 s) all'ingresso della camera. Nessuna modifica al gioco: verdetto finale sul telefono del PO (scene difensive, pallone visibile?) | L1 | — | — | rapporto `reports/codex/2026-10-01-ricollaudo-difesa-3d.md` (ramo codex/2026-10-01-ricollaudo-difesa-3d, 8db1699b) |
+| PO-189 | 02/10 20:26 | A ogni caricamento del campo 2D c'è uno strano rimbalzo, come se si ridimensionasse | difetto | DA RIPRODURRE | L1 | — | — | foto PO 20:26 (partita 2D, pannello Statistiche/Pagelle) |
+| PO-191 | 02/10 20:26 | Premiazione 3D: compagni che attraversano il palco, eroe in posa sbagliata (gamba alzata, trofeo davanti) e che «vola» sopra il palco | difetto | DA RIPRODURRE | L1 | — | — | foto PO 20:26 (Campioni Premier Division) |
 | PO-167 | 30/09 21:10 | Parte B: memoria persistente, eventuale IndexedDB, backup automatico, copia di riserva degli slot | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «navigator.storage.persist() non compare nel codice» (verificato: 0 occorrenze in src) |
 | PO-168 | 30/09 21:10 | Parte C: gestore globale degli errori, error boundary, log nel taccuino, esportazione | nuova funzione | APERTO — PO 01/10: confermato dopo L1 | L3 | — | — | «window.onerror e unhandledrejection non compaiono» (verificato: 0 occorrenze in src) |
 | PO-176 | 01/10 | Salvataggio: dopo il ricaricamento cambiano `playedMd` e `cup.club` (56 confronti su 56) | difetto | DA COLLAUDARE — PO 01/10: Codex (prompt salvataggio-ricarica già dato) | L3 | — | — | Codex: «perdita visibile al giocatore: non verificato»; va separata la rigenerazione prevista dalla perdita |
@@ -59,17 +61,14 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-156 | 30/09 20:56 | Difficoltà unica tarata sulla carriera intera (gavetta, affermazione, élite, declino) | miglioramento | IN ATTESA della fase 1 (Codex, decisione PO 01/10) — poi proposta e questionario | L6 | — | — | «decisione del PO: UNICA, nessun selettore di difficoltà, né ora né in futuro» |
 | PO-157 | 30/09 20:56 | Economia e Ufficio con effetto reale; mondo vivo e pressione del club | miglioramento | IN ATTESA della fase 1 (Codex, decisione PO 01/10) — poi proposta e questionario | L6 | — | — | «dare un effetto reale e visibile a ciò che resta, oppure togliere o accorpare» |
 | PO-177 | 01/10 | Nazionale: 10 stagioni con OVR fino a 96 e presenze in nazionale sempre 0 (seme 8) | difetto | IN ATTESA della fase 1 (Codex, punto 7) — PO 01/10 | L6 | — | — | anomalia 10; il test usa `__CPM_SIM_NAT=1` e profili sintetici |
+| PO-190 | 02/10 20:27 | Goleade e troppi gol in una stagione: eroe 51 gol in 36 partite (S.12), 5-0 con 15 tiri e xG 3,42 vs l'8ª | difetto | DA MISURARE | L6 | — | — | foto PO 20:26-20:27; precedenti PO-093/PO-179 (7.999.98) |
 | PO-066 | 26/09 19:15 | Riquadri della home fuori standard | difetto | PARZIALE — PO 01/10: «da completare» | L7 | 7.999.30 (card neutra) | — | «Metti in coda: box fuori standard». Profilo e Nazionale «da portare alla card neutra» (roadmap, rapporto UI di Codex) |
 | PO-002 | 24/09 05:37 | Premiazione di squadra: palco centrale col nome della competizione, il capitano alza la coppa e la passa all'eroe | nuova funzione | PARZIALE — PO 01/10: resta in L8 | L8 | 7.981.0 (11 attori), 7.997.0 (palco) | — | «la premiazione deve essere di squadra con palco in mezzo… Il capitano deve alzare la coppa ed eventualmente la passa anche all'eroe». Il passaggio della coppa non è confermato: questionario 24/09 09:28 «Non ancora, la provo» |
 | PO-071 | 26/09 20:28 | Stadi 3D: qualità grafica e nuove varianti (galleria → elementi → tipologie) | miglioramento | PARZIALE — PO 01/10: «da completare in L8» (fase 3, nuove tipologie di stadio) | L8 | fase 1: 7.999.69 · fase 2: 7.999.69–7.999.71 · fase 3: nessuna release | `galleria-stadi`, `stadi-70`, `pali-69` | «STADI 3D: QUALITÀ GRAFICA E NUOVE VARIANTI (LAVORO IN CODA)»; 30/09 «la grafica degli stadi deve essere migliorata il più possibile» |
 | PO-137 | 30/09 12:26 | Cerimonie, Parte 2: tutte le scene 3D fuori dalla partita a qualità professionale (galà, pullman, ingresso, podio…) | miglioramento | APERTO — PO 01/10: resta in L8 | L8 | — | `cerimonie` rosso dal 24/09 (7.999.77) | «voglio che tutte le scene 3D fuori dalla partita arrivino allo stesso livello di qualità» |
 | PO-150 | 30/09 18:41 | Premiazione di squadra diversa per campionato, coppa e Nazionale | miglioramento | SOSPESO (ramo `wip/cerimonie-differenziate`) | L8 | — | `cerimonie` (rosso) | questionario: «La premiazione di squadra è uguale per campionato, coppa e nazionale»="Differenziarle (Consigliato)" |
-| PO-188 | 02/10 20:23 | Statistiche pre-partita (ingresso in campo, riquadro «Premier Division · vs») con sfondo troppo scuro | difetto | DA FARE | L1 | — | — | foto PO 20:23 |
-| PO-189 | 02/10 20:26 | A ogni caricamento del campo 2D c'è uno strano rimbalzo, come se si ridimensionasse | difetto | DA RIPRODURRE | L1 | — | — | foto PO 20:26 (partita 2D, pannello Statistiche/Pagelle) |
-| PO-190 | 02/10 20:27 | Goleade e troppi gol in una stagione: eroe 51 gol in 36 partite (S.12), 5-0 con 15 tiri e xG 3,42 vs l'8ª | difetto | DA MISURARE | L6 | — | — | foto PO 20:26-20:27; precedenti PO-093/PO-179 (7.999.98) |
-| PO-191 | 02/10 20:26 | Premiazione 3D: compagni che attraversano il palco, eroe in posa sbagliata (gamba alzata, trofeo davanti) e che «vola» sopra il palco | difetto | DA RIPRODURRE | L1 | — | — | foto PO 20:26 (Campioni Premier Division) |
 
-## Storico — voci chiuse (143)
+## Storico — voci chiuse (144)
 
 | ID | Data | Titolo | Tipo | Stato | Lotto | Release | Guardiano | Fonte/citazione |
 |---|---|---|---|---|---|---|---|---|
@@ -216,6 +215,7 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 7 · L7 1 · L8 4.
 | PO-184 | 01/10 22:45 | Nomi sopra i giocatori anche dove il corpo non è disegnato (corpi CGTrader: 5 in campo) | difetto | FATTO — 7.999.102: la targhetta segue il corpo (nomi-51) | L1 | 7.999.102 | `nomi-51` | foto PO 22:45 |
 | PO-186 | 02/10 | KCC della S.12 del PO ferma agli ottavi: la gara vs FC Paris (W.23) e' rimasta non giocata nel salto 21→28 dell'Europeo; alla W.38 non c'e' calendario per giocare il resto | difetto | FATTO — decisione PO 02/10: nessun intervento, la KCC S.12 si chiude al cambio stagione (DECISIONI) | L6 | — | — | salvataggio S.12 del PO, `euro.phase=r16`, `koResults=[]` |
 | PO-187 | 02/10 | Azioni con etichetta da dribbling che il 3D mostra come passaggio o tiro (Codex: gi18 «Dribbling netto» trattato come passaggio). Censimento 7.999.107: 56 azioni da dribbling, ~10 con etichetta SOLO di dribbling e gesto finale diverso (gi18#0/#1, gi19#0/#1 → passaggio; gi57#1 → passaggio; gi40#0 → tiro; «Finta e scatto» gi40#1, gi92#1 → tiro, gi100#1 → passaggio). Causa: deriveHL deriva il tipo di scena dall'esito (assist → passaggio) | difetto | FATTO — 7.999.108: 43 etichette su 73 azioni da dribbling/finta/scatto ora dichiarano il gesto finale (etichette-108); scene 3D invariate | L1 | — | — | Codex, recap 02/10 15:50 |
+| PO-188 | 02/10 20:23 | Statistiche pre-partita (ingresso in campo, riquadro «Premier Division · vs») con sfondo troppo scuro | difetto | FATTO — 7.999.111: vetro della scheda pre-partita da 0,74 a 0,45 con ombra sul testo (pre-188); da confermare sul telefono | L1 | — | — | foto PO 20:23 |
 
 ## Ricostruzione (fonti e regole di stato)
 

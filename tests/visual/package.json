@@ -317,6 +317,8 @@
     "rinvio-coppe-107": "node rinvio-coppe-107-test.mjs",
     "etichette-108": "node etichette-108-test.mjs",
     "titolo-110": "node titolo-110-test.mjs",
+    "pre-188": "node pre-188-test.mjs",
+    "pre-188:rosso": "CPM_RED=1 node pre-188-test.mjs",
     "titolo-110:rosso": "CPM_RED=1 node titolo-110-test.mjs",
     "rinvio-coppe-107:rosso": "CPM_RED=1 node rinvio-coppe-107-test.mjs",
     "avversario-106:rosso": "CPM_RED=1 node avversario-106-test.mjs",
