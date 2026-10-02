@@ -309,7 +309,9 @@
     "tetto-scene:rosso": "CPM_RED=1 node tetto-scene-test.mjs",
     "nomi-51:rosso102": "CPM_RED102=1 node nomi-51-test.mjs",
     "classifica-102": "node classifica-102-test.mjs",
-    "classifica-102:rosso": "CPM_RED=1 node classifica-102-test.mjs"
+    "classifica-102:rosso": "CPM_RED=1 node classifica-102-test.mjs",
+    "recupero-103": "node recupero-103-test.mjs",
+    "recupero-103:rosso": "CPM_RED=1 node recupero-103-test.mjs"
   },
   "dependencies": {
     "playwright": "^1.48.0",

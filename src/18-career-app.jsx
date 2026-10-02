@@ -200,6 +200,20 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
         log:[`🧹 Bonifica calendario: ${_lbl} risultava già giocata — voce ritirata (mai più riproposta).`,...(p.log||[])].slice(0,60)};
     });
   }catch(_e){}},[player]);// eslint-disable-line
+  /* [7.999.103] RECUPERO delle giornate di campionato MANCATE (src/09 recuperaGiornateMancate): una settimana passata senza giocare ne'
+     simulare la gara di lega (misurato: Europeo S.12 del PO, giornate 19-25) la gara si simula e si conta in classifica, con una riga
+     nel log. Mai mentre c'e' un risultato al fischio in attesa (cpm-pending-mr): quello e' la prova di una gara GIOCATA e ha la
+     precedenza. Testimone window.__CPM_RECUPERO103. Rosso __CPM_NO103. */
+  useEffect(()=>{try{
+    if(typeof window!=='undefined'&&window.__CPM_NO103)return;
+    try{if(localStorage.getItem('cpm-pending-mr'))return;}catch(_e3){}
+    if(!recuperaGiornateMancate(player,_isStaleMd))return;
+    setPlayer(p=>{const r=recuperaGiornateMancate(p,_isStaleMd);if(!r)return p;
+      try{window.__CPM_RECUPERO103={n:r.voci.length,voci:r.voci.map(v=>v.matchday)};}catch(_e){}
+      const _lbl=r.voci.map(v=>`G${v.matchday} vs ${v.opp} ${v.r.homeScore}-${v.r.awayScore}`).join(" · ");
+      return{...p,calendar:r.calendar,standings:r.standings,
+        log:[`📋 Recupero campionato: ${r.voci.length===1?"una giornata saltata e' stata giocata":r.voci.length+" giornate saltate sono state giocate"} senza di te — ${_lbl}.`,...(p.log||[])].slice(0,60)};});
+  }catch(_e){}},[player]);// eslint-disable-line
   const _playingMdRef=useRef(null);
   /* [P0 #4 · audit forense] UNA SOLA INTENZIONE DELL'UTENTE = UNA SOLA APPLICAZIONE.
      Due tocchi ravvicinati sullo stesso bottone eseguivano l'handler DUE volte: prima che React
@@ -647,6 +661,11 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
    prima), perche' un sidecar scritto da una versione precedente non deve smettere di funzionare. */
 const _mdMatchesCtx=(ctx,md)=>{
   if(!md)return false;
+  /* [7.999.103 salvataggio S.12 del PO] le gare della NAZIONALE nei tornei (euroMondiale_* e Coppa Nazioni) non hanno una voce di
+     calendario: senza filtro il risultato della qualificazione «vs Belgio» si agganciava all'AMICHEVOLE vs Belgio della settimana 28,
+     il recupero spostava la settimana 21→28 senza giocare le sette giornate di mezzo e rigiocava la qualificazione (in natHistory:
+     due volte «Belgio 5-0», Germania mai giocata). L'amichevole («national») si aggancia solo a voci «national». Rosso __CPM_NO103. */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO103)&&ctx){if(ctx==="national")return md.type==="national";if(/^euroMondiale|^nationsCup/.test(String(ctx)))return false;}
   const _t=(ctx==="cup")?"cup":(ctx==="euro_group")?"euro_group":(ctx==="euro_ko")?"euro":(ctx==="career")?"__lega__":null;
   if(!_t)return true;/* contesto ignoto: nessun filtro */
   if(_t==="__lega__")return !md.type||(md.type!=="cup"&&md.type!=="euro_group"&&md.type!=="euro"&&md.type!=="national");
@@ -695,7 +714,11 @@ const _isStaleMd=(p,md)=>{try{
     if(_st.length>=2){const _cid=p.club&&(p.club.id||p.club.n);
       const _me=_st.find(r=>r&&(r.id===_cid||r.clubId===_cid||r.n===(p.club&&p.club.n)));
       if(_me){if((_me.played||0)>=2*(_st.length-1))return true;
-        if(md.matchday!=null&&(_me.played||0)>=md.matchday)return true;/* (H) */}}
+        /* [7.999.103] (H) valeva solo senza buchi: con sette giornate MAI giocate (Europeo, salvataggio S.12 del PO) «ho giocato N
+           partite» non vuol dire «la giornata N e' giocata», e la rete ritirava una giornata mancata per ogni gara vera giocata dopo.
+           Ora (H) scatta solo se la classifica conta PIU' partite di quelle segnate giocate in calendario: l'unico caso in cui una
+           giornata non segnata puo' davvero essere gia' stata contata. Rosso __CPM_NO103 = la regola vecchia. */
+        if(md.matchday!=null&&(_me.played||0)>=md.matchday&&((typeof window!=='undefined'&&window.__CPM_NO103)||(_me.played||0)>_plg.length))return true;/* (H) */}}
     return false;
   }catch(_e){return false;}};
 const getThisWeekMatchday=()=>{
@@ -1333,9 +1356,15 @@ const getThisWeekMatchday=()=>{
     const _cands=(player.calendar||[]).filter(m=>m&&!m.played&&_tipoOk445(m)&&(
       (_pk.oid&&m.opponentId===_pk.oid)||(_pk.on&&m.opponentName===_pk.on)
       ||(m.opponentName&&m.opponentName===_r.opponent)||(m.opponentId&&m.opponentId===_r.opponent))
-      &&_mdSameVenue(_pk.ih,m));/* [7.452.0] stesso predicato di sede di _mrCleanup e della rete (G) */
+      &&_mdSameVenue(_pk.ih,m)/* [7.452.0] stesso predicato di sede di _mrCleanup e della rete (G) */
+      /* [7.999.103] il risultato appartiene alla settimana in cui e' stato scritto: una voce PIU' AVANTI sia della settimana del
+         salvataggio sia di quella del sidecar non e' quella gara, e spostarci la settimana salta le giornate di mezzo. */
+      &&((typeof window!=='undefined'&&window.__CPM_NO103)||!_pk.w||(m.week||0)<=Math.max(player.week||1,_pk.w)));
     const _md=_cands.find(m=>m.week===(_pk.w||0))||_cands.find(m=>m.week===(player.week||1))||_cands[0]||null;
     const _natC=_r.context&&_r.context!=="career"&&_r.context!=="cup"&&_r.context!=="euro_group"&&_r.context!=="euro_ko";
+    /* [7.999.103 salvataggio S.12 del PO] una gara della Nazionale GIA' scritta in natHistory (stessa stagione, settimana, avversario e
+       punteggio) non si rigioca: era la seconda «Qualif. Europeo vs Belgio 5-0» del PO, al posto di Germania mai giocata. */
+    if(_natC&&!(typeof window!=='undefined'&&window.__CPM_NO103)&&(player.natHistory||[]).some(h=>h&&(h.season||1)===_pk.s&&(h.week||0)===(_pk.w||0)&&h.opp===_r.opponent&&h.hs===_r.homeScore&&h.as===_r.awayScore)){localStorage.removeItem('cpm-pending-mr');try{window.__CPM_SIDECAR103='gia-scritta';}catch(_e9){}return;}
     if(!_md&&!_natC){if(((player.calendar||[]).length)>0)localStorage.removeItem('cpm-pending-mr');return;}/* nessuna voce non giocata compatibile = gia' committata → scarto LEGITTIMO. [9ª ricorrenza] MA SOLO SE UN CALENDARIO C'E': su un save che rigenera il calendario al load (migrazione) questo effect puo' correre col calendario ancora assente — scartare qui distruggerebbe l'unica prova della partita giocata; si lascia decidere a un mount con lo stato idratato */
     /* [7.326.0] se la voce trovata NON e' alla settimana corrente, il commit di onMatchEnd (che marca per
        settimana corrente + _playingMdRef, qui vuoto dopo il reboot) non la troverebbe: si ri-allinea la

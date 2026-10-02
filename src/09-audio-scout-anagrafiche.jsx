@@ -1476,6 +1476,37 @@ function rebuildStandingsFromCalendar(p){const clubs=leagueClubsFromCalendar(p);
   let st=initStandings(clubs);const md=(p.calendar||[]).filter(m=>m&&!m.type&&m.played&&m.result).sort((a,b)=>(a.matchday||0)-(b.matchday||0));
   for(const m of md){st=updateStandings(st,myId,m.result,p.clubPrestigeShifts||{},{opponentId:m.opponentId,seed:standingsSeed(myId,p.season,m.week)});}
   return st;}
+/* [7.999.103 collaudo PO 01/10 «Dov'e' la verita'? ... Gravissimo bug che ci portiamo avanti da tempo» — salvataggio S.12 del PO]
+   LE GIORNATE MANCATE SI RECUPERANO, NON SI NASCONDONO. Misurato sul salvataggio: durante l'Europeo la settimana e' passata dalla 21
+   alla 28 e le sette giornate di campionato di quelle settimane (19-25) non sono state ne' giocate ne' simulate. Poi la rete (H) del
+   rilevatore unico (src/18 _isStaleMd: «in classifica hai giocato N partite, quindi la giornata N e' gia' giocata») le ha dichiarate
+   stantie una alla volta, una per ogni partita vera giocata dopo, e la bonifica 7.418 le ha segnate giocate SENZA risultato: classifica
+   ferma a 26 per tutte e 18 le squadre, calendario alla 34a. Qui: una giornata di LEGA di una settimana gia' passata, senza risultato,
+   che l'eroe non ha giocato (nessuna voce nello storico per settimana+avversario) e che non e' un doppione (isStale), si SIMULA col
+   seme che usa la Simula (standingsSeed+giornata) e si conta in classifica — e' l'invariante «avanzando oltre una settimana con una
+   gara non giocata, la si auto-risolve». Ripara anche i salvataggi gia' colpiti (voci healed418 senza risultato). Ritorna null se
+   non c'e' nulla da recuperare. Rosso __CPM_NO103 (lo spegne il chiamante). */
+function recuperaGiornateMancate(p,isStale){try{
+  if(!p||!p.club||!(p.standings||[]).length)return null;
+  const myId=p.club.id||p.club.n;const sn=p.season||1;const wk=p.week||1;
+  if(!(p.standings||[]).some(r=>r&&(r.id===myId||r.n===p.club.n)))return null;
+  const H=(p.matchHistory||[]).filter(h=>h&&!h.cup&&!h.euro&&!h.national&&(h.season||1)===sn);
+  const daMe=m=>H.some(h=>(h.week||0)===(m.week||0)&&h.opponent===m.opponentName);
+  const cand=(p.calendar||[]).filter(m=>m&&!m.type&&m.matchday!=null&&(m.week||0)<wk&&!m.result&&!daMe(m)&&(m.played?!!m.healed418:!(isStale&&isStale(p,m)))).sort((a,b)=>(a.matchday||0)-(b.matchday||0));
+  if(!cand.length)return null;
+  const sh=p.clubPrestigeShifts||{};let st=p.standings;const ris={};const voci=[];
+  for(const m of cand){
+    const opp=(typeof CLUBS!=='undefined'&&CLUBS.find(c=>c.id===m.opponentId))||(p.standings||[]).find(r=>r&&r.id===m.opponentId)||(typeof CLUBS!=='undefined'&&CLUBS.find(c=>c.n===m.opponentName));
+    if(!opp)continue;
+    const sd=standingsSeed(myId,sn,m.week);
+    const sim=simulateMatch(p.club,opp,p.ovr||65,m.isHome,(sd+(m.matchday||0)*31+1)>>>0,sh,{motore:true,stile:(p.coach&&p.coach.style)||null});
+    const r={homeScore:sim.homeScore,awayScore:sim.awayScore,won:sim.won,drew:sim.drew};
+    st=updateStandings(st,myId,r,sh,{opponentId:m.opponentId||opp.id,seed:sd});
+    ris[m.matchday]=r;voci.push({matchday:m.matchday,week:m.week,opp:m.opponentName,r});}
+  if(!voci.length)return null;
+  const calendar=(p.calendar||[]).map(m=>(m&&!m.type&&ris[m.matchday]&&!m.result)?(({healed418,...k})=>({...k,played:true,result:ris[m.matchday],simulated:true,recupero103:true}))(m):m);
+  return{calendar,standings:st,voci};
+}catch(_e){return null;}}
 // Sprint 46 — World League ecosystem: deterministic week-by-week standings for all leagues
 // Seeded xorshift32 PRNG: same seed → same sequence, no Math.random()
 function seededRng(seed){let s=(seed>>>0)||1;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296;};}
