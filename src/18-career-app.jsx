@@ -214,6 +214,25 @@ function CareerApp({player:init,currentSlot=0,onRefreshSlots,lang="IT",toggleLan
       return{...p,calendar:r.calendar,standings:r.standings,
         log:[`📋 Recupero campionato: ${r.voci.length===1?"una giornata saltata e' stata giocata":r.voci.length+" giornate saltate sono state giocate"} senza di te — ${_lbl}.`,...(p.log||[])].slice(0,60)};});
   }catch(_e){}},[player]);// eslint-disable-line
+  /* [7.999.107 rete di sicurezza per le COPPE, seguito di PO-182] Il recupero 7.999.103 copre solo il campionato. Una gara di coppa
+     nazionale o europea rimasta indietro (settimana gia' passata, non giocata, competizione ancora viva: e' la KCC del salvataggio S.12,
+     ottavi della W.23 mai giocati nel salto 21→28) restava li' per sempre e la competizione si congelava. Qui la si RINVIA alla settimana
+     corrente, cosi' la si gioca (o simula) con la logica normale e il torneo avanza; due gare nella stessa settimana le gestisce gia' il
+     ramo «pending». Solo fino alla W.37 (oltre non c'e' calendario per i turni dopo: decisione PO 02/10 su PO-186). Mai con un risultato al
+     fischio in attesa. Rosso __CPM_NO107. */
+  useEffect(()=>{try{
+    if(typeof window!=='undefined'&&window.__CPM_NO107)return;
+    try{if(localStorage.getItem('cpm-pending-mr'))return;}catch(_e3){}
+    const _viva=(p,m)=>m.type==="cup"?!!(p.cup&&p.cup.active&&!p.cup.eliminated&&!p.cup.champion)
+      :(m.type==="euro"||m.type==="euro_group")?!!(p.euro&&p.euro.active&&!p.euro.eliminated&&!p.euro.champion):false;
+    const _rinv=p=>{const wk=p.week||1;if(wk>37)return[];return(p.calendar||[]).filter(m=>m&&(m.type==="cup"||m.type==="euro"||m.type==="euro_group")&&!m.played&&(m.week||0)<wk&&_viva(p,m)&&!_isStaleMd(p,m));};
+    if(!_rinv(player).length)return;
+    setPlayer(p=>{const r=_rinv(p);if(!r.length)return p;const wk=p.week||1;const ids=new Set(r.map(m=>m.type+"|"+m.matchday+"|"+m.week));
+      try{window.__CPM_RINVIO107={n:r.length,voci:r.map(m=>m.type+":"+m.matchday+"@"+m.week)};}catch(_e){}
+      const _lbl=r.map(m=>`${m.type==="cup"?"Coppa":"Europa"} vs ${m.opponentName||"?"} (sett. ${m.week})`).join(" · ");
+      return{...p,calendar:(p.calendar||[]).map(m=>m&&ids.has(m.type+"|"+m.matchday+"|"+m.week)?{...m,weekOrig107:m.week,week:wk,rinviata107:true}:m),
+        log:[`📅 Gara rinviata a questa settimana: ${_lbl}.`,...(p.log||[])].slice(0,60)};});
+  }catch(_e){}},[player]);// eslint-disable-line
   /* [7.999.104 PO-181] IL GIRONE DELL'EUROPEO/MONDIALE SI APRE DALLO STATO, NON DA UNA STRADA. La transizione qualificazioni→girone
      stava solo in doAdvanceWeek (weekVal===24): se la W.24 si attraversava giocando o simulando la gara di club (simulateAndAdvance,
      onMatchEnd) il torneo restava in «qualificazioni» per sempre — misurato col guardiano euro-attesa-181: W.21→W.27 senza girone.

@@ -314,6 +314,8 @@
     "euro-attesa-181": "node euro-attesa-181-test.mjs",
     "riquadro-euro-105": "node riquadro-euro-105-test.mjs",
     "avversario-106": "node avversario-106-test.mjs",
+    "rinvio-coppe-107": "node rinvio-coppe-107-test.mjs",
+    "rinvio-coppe-107:rosso": "CPM_RED=1 node rinvio-coppe-107-test.mjs",
     "avversario-106:rosso": "CPM_RED=1 node avversario-106-test.mjs",
     "riquadro-euro-105:rosso": "CPM_RED=1 node riquadro-euro-105-test.mjs",
     "euro-attesa-181:rosso": "CPM_RED=1 node euro-attesa-181-test.mjs",

@@ -32,7 +32,12 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.106";/* [7.999.106 ipotesi dell'audit PO-182 verificata nel codice] L'avversario della giornata si cercava solo nella lega
+const GAME_VERSION="7.999.107";/* [7.999.107 rete di sicurezza per le COPPE, seguito di PO-182] Una gara di coppa nazionale o europea rimasta indietro
+   (settimana passata, non giocata, competizione viva — la KCC del salvataggio S.12 nel salto 21→28) restava li' per sempre e la
+   competizione si congelava. Ora viene RINVIATA alla settimana corrente (log «📅 Gara rinviata…») e si gioca con la logica normale; solo
+   fino alla W.37 (decisione PO-186). Rosso __CPM_NO107, guardiano rinvio-coppe-107 (viva → rinviata e giocata, turno in cup.results;
+   W.38 e coppa chiusa → nulla). */
+/* [7.999.106 ipotesi dell'audit PO-182 verificata nel codice] L'avversario della giornata si cercava solo nella lega
    RICALCOLATA (getLeagueClubs): se non c'era, la partita dal vivo e la Simula pescavano un avversario A CASO e l'avanzamento settimana
    non simulava la gara. Ora avversarioDiGiornata (src/09): lega → archivio CLUBS → classifica; il sorteggio solo se il club non esiste.
    Misurato anche che al caricamento una migrazione riallinea gli avversari estranei, quindi lo stato vive solo a meta' sessione.
