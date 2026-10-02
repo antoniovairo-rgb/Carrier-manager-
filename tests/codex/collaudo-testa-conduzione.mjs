@@ -13,7 +13,9 @@ const version=fs.readFileSync(path.join(root,'src/07-versione-save-interviste.js
 const expected=process.env.CPM_EXPECT_VERSION||'7.999.103';
 if(version!==expected)throw Error(`Versione ${version}, attesa ${expected}`);
 const actionIndices=(process.env.CPM_ACTIONS||'0,1,2').split(',').map(Number).filter(Number.isInteger);
-const plan=[6,7,39,55,64,86,90,171].flatMap(gi=>actionIndices.flatMap(actionIndex=>['success','fail'].flatMap(outcome=>[0,1,2].map(rep=>({gi,actionIndex,outcome,rep})))));
+const headPlan=[6,7,39,55,64,86,90,171].flatMap(gi=>actionIndices.flatMap(actionIndex=>['success','fail'].flatMap(outcome=>[0,1,2].map(rep=>({kind:'header',gi,actionIndex,outcome,rep})))));
+const carryPlan=[18,19,21,22,47,96,104,112,178].flatMap(gi=>[0,1].flatMap(actionIndex=>['success','fail'].flatMap(outcome=>[0,1,2].map(rep=>({kind:'carry',gi,actionIndex,outcome,rep})))));
+const plan=process.env.CPM_KIND==='carry'?carryPlan:process.env.CPM_KIND==='all'?headPlan.concat(carryPlan):headPlan;
 const data=fs.existsSync(raw)?JSON.parse(zlib.gunzipSync(fs.readFileSync(raw))):{versione:version,baseCommit:'2208f4cb707d42bd25854ab710584e5c8f79f4fa',comando:'node tests/codex/collaudo-testa-conduzione.mjs',runs:[]};
 data.versione=version;data.baseCommit='2208f4cb707d42bd25854ab710584e5c8f79f4fa';
 const save=()=>fs.writeFileSync(raw,zlib.gzipSync(JSON.stringify(data)));
@@ -24,7 +26,10 @@ for(const run of data.runs){
 }
 save();
 if(os.freemem()<3.5*1024**3){console.log('Pausa: RAM libera sotto 3,5 GB');process.exit(0);}
-const pending=plan.filter(c=>!data.runs.some(r=>r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.outcome===c.outcome&&r.rep===c.rep&&r.versione===version&&(r.valid||r.skipped))).slice(0,count);
+const pending=plan.filter(c=>
+ !data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.versione===version&&r.skipped)
+ &&!data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.outcome===c.outcome&&r.rep===c.rep&&r.versione===version&&r.valid)
+).slice(0,count);
 const srv=await startServer();const browser=await launchBrowser();
 try{
  for(const c of pending){
@@ -41,10 +46,11 @@ try{
    try{await openMatch(page,srv.address().port,{skipLoadAll:true,name:`Testa-${c.gi}-${c.outcome}-${c.rep}`});}finally{boot=false;await pump;}
    const catalog=await page.evaluate(gi=>{const s=SITUATIONS[gi];return s?{text:s.text,actions:s.actions.map((a,i)=>({i,label:a.label,hl:deriveHL(s,a)}))}:null;},c.gi);
    r.catalog=catalog;
-   const heads=catalog?.actions.filter(a=>a.hl?.type==='header')||[];
-   if(!heads.length){r.skipped='Nessuna azione di testa nel catalogo';throw Error(r.skipped);}
-   if(c.actionIndex>=heads.length){r.skipped='Indice azione di testa assente';throw Error(r.skipped);}
-   r.action=heads[c.actionIndex];r.actionCount=heads.length;
+   const candidates=c.kind==='header'?(catalog?.actions.filter(a=>a.hl?.type==='header')||[]):
+     c.actionIndex===0?[catalog?.actions[0]].filter(Boolean):
+     (catalog?.actions.filter(a=>a.i!==0&&/dribbl|conduc|porta palla|scatt|avanz|finta/i.test(a.label))||[]);
+   if(!candidates.length){r.skipped=c.kind==='header'?'Nessuna azione di testa nel catalogo':'Nessuna seconda azione di conduzione/dribbling';throw Error(r.skipped);}
+   r.action=candidates[0];r.actionCount=candidates.length;
    await page.evaluate(gi=>window.__CPM_FORCE_SIT(gi,false),c.gi);
    await page.clock.runFor(900);
    for(let n=0;n<120&&!(await page.evaluate(()=>window.__CPM_MXCLIP>0));n++){await sleep(500);await page.clock.runFor(16);}
@@ -54,23 +60,26 @@ try{
    r.labels=await page.evaluate(()=>window.__CPM_ACTS?.()||[]);
    const resolver=r.labels.indexOf(r.action.label);if(resolver<0)throw Error('Etichetta azione non visibile');
    const before=await page.evaluate(()=>window.__CPM_TIMELINE?.()||[]);
-   const take=async(tag,ms)=>{const file=path.join(out,`gi${c.gi}-a${r.action.i}-${c.outcome}-r${c.rep}-${tag}.png`);await page.screenshot({path:file,timeout:20000});r.frames.push({tag,ms,file:path.relative(root,file).replaceAll('\\','/')});};
-   await take('01-cross',0);
+   const take=async(tag,ms)=>{const ext=c.kind==='carry'?'jpg':'png';const file=path.join(out,`gi${c.gi}-a${r.action.i}-${c.outcome}-r${c.rep}-${tag}.${ext}`);await page.screenshot({path:file,type:c.kind==='carry'?'jpeg':'png',quality:c.kind==='carry'?72:undefined,timeout:20000});r.frames.push({tag,ms,file:path.relative(root,file).replaceAll('\\','/')});};
+   await take(c.kind==='header'?'01-cross':'01-inizio-corsa',0);
    await page.evaluate(([i,outcome])=>{window.__CPM_FORCE_OUTCOME=outcome;window.__CPM_RESOLVE(i);},[resolver,c.outcome]);
    let contactCaptured=false;
    for(let ms=50;ms<=18000;ms+=50){
     await page.clock.runFor(50);
     const s=await page.evaluate(()=>({phase:window.__CPM_PHASE?.(),ball:window.__CPM_BALL?.(),head:(window.__CPM_TESTA33?.f||[]).at(-1)||null,headCount:window.__CPM_TESTA33?.f?.length||0,ball3:window.__CPM_BALL3?.()||null}));
     r.samples.push({ms,...s});
-    if(ms===500)await take('02-meta-volo',ms);
-    if(!contactCaptured&&s.head&&s.head.d<0.8){contactCaptured=true;r.contactPhotoTrigger={ms,d:s.head.d};await take('04-contatto',ms);}
-    if(ms===1500)await take('03-prima-contatto-proxy',ms);
-    if(contactCaptured&&ms===r.contactPhotoTrigger.ms+100)await take('05-dopo-contatto',ms);
+    if(c.kind==='header'){
+     if(ms===500)await take('02-meta-volo',ms);
+     if(!contactCaptured&&s.head&&s.head.d<0.8){contactCaptured=true;r.contactPhotoTrigger={ms,d:s.head.d};await take('04-contatto',ms);}
+     if(ms===1500)await take('03-prima-contatto-proxy',ms);
+     if(contactCaptured&&ms===r.contactPhotoTrigger.ms+100)await take('05-dopo-contatto',ms);
+    }else if(ms%300===0)await take(`corsa-${String(ms).padStart(5,'0')}`,ms);
     if(ms>=8000&&await page.getByRole('button',{name:/^Continua$/i}).count()){await take('06-esito',ms);break;}
    }
-   r.headFrames=await page.evaluate(()=>window.__CPM_TESTA33?.f||[]);
-   r.yImpact=await page.evaluate(()=>window.__CPM_Y063||[]);
-   r.draft=await page.evaluate(()=>{const snap=window.__CPM_WATCH_SNAP?.();const sk=snap?.samples?.at(-1)?.sk;return window.__CPM_DRAFTNOTE?.(snap,{sceneKey:sk,intent:'header',act:window.__CPM_ACTS?.()[0]})||null;});
+   r.headFrames=c.kind==='header'?await page.evaluate(()=>window.__CPM_TESTA33?.f||[]):[];
+   r.yImpact=c.kind==='header'?await page.evaluate(()=>window.__CPM_Y063||[]):[];
+   r.carryFrames=c.kind==='carry'?await page.evaluate(()=>window.__CPM_TIRO34?.f||[]):[];
+   r.draft=await page.evaluate(intent=>{const snap=window.__CPM_WATCH_SNAP?.();const sk=snap?.samples?.at(-1)?.sk;return window.__CPM_DRAFTNOTE?.(snap,{sceneKey:sk,intent,act:window.__CPM_ACTS?.()[0]})||null;},c.kind==='header'?'header':'dribble');
    const after=await page.evaluate(()=>window.__CPM_TIMELINE?.()||[]);
    r.actionResolved=after.slice(before.length).filter(e=>e.type==='ActionResolved');
    r.valid=r.actionResolved.length===1&&r.actionResolved[0].ok===(c.outcome==='success')&&r.actionResolved[0].gi===c.gi;
