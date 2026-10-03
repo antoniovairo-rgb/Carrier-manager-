@@ -7058,6 +7058,144 @@
           "deltaMs": 0
         }
       ]
+    },
+    {
+      "kind": "header",
+      "arm": "green",
+      "gi": 86,
+      "actionIndex": 0,
+      "action": "✈️ Stacco sul secondo palo",
+      "outcome": "success",
+      "rep": 0,
+      "valid": true,
+      "measurable": true,
+      "contact": {
+        "t": 2.293,
+        "d": 0.097,
+        "ballY": 2.08
+      },
+      "peak": {
+        "t": 2.293,
+        "headY": 2.002
+      },
+      "syncMs": 0,
+      "guardContact": {
+        "t": 2.293,
+        "d": 0.097,
+        "g": "header"
+      },
+      "guardPeak": {
+        "t": 2.293,
+        "headY": 2.002,
+        "g": "header"
+      },
+      "guardSyncMs": 0,
+      "speedSource": "testimone per fotogramma __CPM_TIRO34.pb",
+      "speedBefore": 8.22,
+      "speedAfter": 13.8,
+      "speedRatio": 1.68,
+      "stepsOver2": 8,
+      "stepsOver85": 0,
+      "steps": [
+        {
+          "ms": 600,
+          "d": 2.07,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1700,
+          "d": 2.28,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1750,
+          "d": 2.5,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1800,
+          "d": 3.45,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1850,
+          "d": 2.53,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1900,
+          "d": 2.34,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 2350,
+          "d": 2.72,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 4900,
+          "d": 2.17,
+          "dtMs": 50,
+          "over85": false
+        }
+      ],
+      "photos": [
+        {
+          "tag": "01-partenza-cross",
+          "ms": 50,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi86-a0-success-r0-green-01-partenza-cross.png"
+        },
+        {
+          "tag": "02-meta-volo",
+          "ms": 1250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi86-a0-success-r0-green-02-meta-volo.png"
+        },
+        {
+          "tag": "03-meno-100ms",
+          "ms": 2200,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi86-a0-success-r0-green-03-meno-100ms.png"
+        },
+        {
+          "tag": "04-contatto",
+          "ms": 2300,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi86-a0-success-r0-green-04-contatto.png"
+        },
+        {
+          "tag": "05-piu-100ms",
+          "ms": 2400,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi86-a0-success-r0-green-05-piu-100ms.png"
+        },
+        {
+          "tag": "06-esito",
+          "ms": 8000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi86-a0-success-r0-green-06-esito.png"
+        }
+      ],
+      "photoTimingErrorMs": [
+        {
+          "tag": "02-meta-volo",
+          "deltaMs": 100
+        },
+        {
+          "tag": "03-meno-100ms",
+          "deltaMs": 0
+        },
+        {
+          "tag": "04-contatto",
+          "deltaMs": 0
+        },
+        {
+          "tag": "05-piu-100ms",
+          "deltaMs": 0
+        }
+      ]
     }
   ]
 }
