@@ -70,6 +70,8 @@ Per lotto: L1 22 · L3 4 · L4 4 · L5 2 · L6 8 · L7 1 · L8 4.
 | PO-203 | 03/10 22:54 | Festa di fine partita: l'eroe affonda nell'erba (piedi sotto il prato) | difetto | DA MISURARE — quota dei piedi nella festa di fine partita | L1 | — | — | foto PO 22:54 |
 | PO-204 | 03/10 22:49 | Formazioni: prendersi più spazio verticale per il disegno | miglioramento | DA FARE — i due campetti sono schiacciati con spazio vuoto sotto | L1 | — | — | foto PO 22:49 |
 | PO-205 | 03/10 | Mappa ad albero di tutto il gioco con percentuale di consolidamento (griglia a 6 criteri con prove, valori Team e PO, tetti, elenchi dei nodi deboli/solidi/a bassa affidabilità) in `docs/governo/MAPPA_GIOCO.md`, aggiornata a ogni fine lotto | processo | IN CORSO — prima stesura affidata a un agente di sola analisi (senza browser, macchina occupata dai collaudi): le schermate non navigate sono dichiarate a affidabilità ridotta | — | — | — | richiesta PO |
+| PO-206 | 03/10 | Ingresso in campo: i giocatori in fila corrono sul posto (PO-197 aveva fermato chi è arrivato; qui la fila in attesa) | difetto | DA MISURARE — velocità vera e peso della clip di corsa dei corpi in fila (testimone __CPM_WALK197) | L1 | — | — | richiesta PO; possibile ricaduta di PO-197 |
+| PO-207 | 03/10 | Partita 2D: dopo ogni gol il gioco non riparte dalla rimessa da centrocampo | difetto | DA MISURARE — posizione del pallone e dei 22 al primo fotogramma dopo il gol | L1 | — | — | richiesta PO |
 
 ## Storico — voci chiuse (155)
 
