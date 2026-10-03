@@ -8158,7 +8158,7 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 hero:{x:+hero.position.x.toFixed(2),z:+hero.position.z.toFixed(2),y:+hero.position.y.toFixed(2),clip:(hero._gName||null),h:+_hh.toFixed(2)},
                 coach:_co2?{x:+_co2.position.x.toFixed(2),z:+_co2.position.z.toFixed(2),v:+_cv2.toFixed(2),vis:!!_co2.visible}:null,
                 trofeo:{vis:!!trophyGrp.visible,h:+_th.toFixed(2),rap:_hh>0.2?+(_th/_hh).toFixed(2):null},
-                podio:_pod?{x:+_pod.x.toFixed(2),z:+_pod.z.toFixed(2),
+                podio:_pod?{x:+_pod.x.toFixed(2),z:+_pod.z.toFixed(2),rot:+podiumGrp.rotation.y.toFixed(4),rett:!!podiumGrp._rett24,
                   dHero:+Math.hypot(hero.position.x-_pod.x,hero.position.z-_pod.z).toFixed(2),
                   dCoach:_co2?+Math.hypot(_co2.position.x-_pod.x,_co2.position.z-_pod.z).toFixed(2):null}:null});
             }}catch(_e476){}}
@@ -8188,7 +8188,19 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
           /* [7.429.0] MAI DENTRO IL PALCO: se l'eroe attraversa il cilindro del podio (es. il fest che lo
              richiama al centro dopo il giro) la quota sale sul piano del podio invece di sprofondarci */
           const _nearPod429=podiumGrp.visible&&Math.hypot(hero.position.x,hero.position.z)<1.7;
-          if(_onPodium||_nearPod429)hero.position.y=1.05+_hop; else hero.position.y=Math.max(0,_hop);
+          /* [7.999.115 collaudo PO-191 «eroe che vola sopra il palco»] MISURATO col testimone __CPM_CER476 nel riferimento del palco
+             RETTANGOLARE (7.997: corpo 6,4x2,8 alto 1,05, gradino 7,4x3,8 alto 0,28): all'inizio del sollevamento l'eroe era ancora sul
+             prato (2,45u dal lato lungo) e gia' a quota 1,05 — camminava a mezz'aria verso il podio — e passava sul gradino restando a 1,05.
+             La regola guardava il beat («lift» = sul podio) e un CERCHIO di raggio 1,7 rimasto dal palco tondo. Ora la quota segue
+             l'impronta vera sotto i piedi (corpo 1,05 · gradino 0,28 · prato 0), con un passaggio rapido ma non a scatto. Rosso __CPM_NO_PALCO191. */
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_PALCO191)){
+            let _yb191=0;if(podiumGrp.visible){const _dx191=hero.position.x-podiumGrp.position.x,_dz191=hero.position.z-podiumGrp.position.z;
+              if(podiumGrp._rett24){const _c191=Math.cos(podiumGrp.rotation.y),_s191=Math.sin(podiumGrp.rotation.y),_lx191=Math.abs(_dx191*_c191-_dz191*_s191),_lz191=Math.abs(_dx191*_s191+_dz191*_c191);
+                _yb191=(_lx191<3.2&&_lz191<1.4)?1.05:((_lx191<3.7&&_lz191<1.9)?0.28:0);}
+              else _yb191=Math.hypot(_dx191,_dz191)<1.7?1.05:0;}
+            const _y0191=(hero._y191!=null)?hero._y191:_yb191;hero._y191=_y0191+(_yb191-_y0191)*Math.min(aDt*14,1);
+            hero.position.y=hero._y191+_hop;}
+          else if(_onPodium||_nearPod429)hero.position.y=1.05+_hop; else hero.position.y=Math.max(0,_hop);
           if(typeof window!=='undefined'&&(window.__CPM_REC||_CPM_TEST)){try{const _v75=(window.__CPM_VOLO75=window.__CPM_VOLO75||{n:0,maxY:0,glb:0});_v75.n++;_v75.glb=hero._glbDriven?1:0;if(!(_onPodium||_nearPod429)&&hero.position.y>_v75.maxY)_v75.maxY=+hero.position.y.toFixed(3);if(!(_onPodium||_nearPod429)){const _a77=(glbAvatars||[]).find(a=>a&&a.proc===hero);if(_a77&&_a77._footL&&_a77._footR){const _w77=new THREE.Vector3();_a77._footL.getWorldPosition(_w77);const _l77=_w77.y;_a77._footR.getWorldPosition(_w77);const _m77=Math.min(_l77,_w77.y);_v75.fMax=Math.max(_v75.fMax==null?-9:_v75.fMax,+_m77.toFixed(3));_v75.fMin=Math.min(_v75.fMin==null?9:_v75.fMin,+_m77.toFixed(3));_v75.rootY=Math.max(_v75.rootY||0,+(_a77.root.position.y).toFixed(3));(_v75.tr=_v75.tr||[]).length<400&&_v75.tr.push([+(window.__CPM_SCENET||0).toFixed(2),+_m77.toFixed(3),+hero.position.x.toFixed(2),+hero.position.z.toFixed(2),(_a77._gName||'-')+'/'+((_a77.run&&_a77.run.weight)||0).toFixed(2)]);}}}catch(_e){}}/* [7.999.77] +quota dei PIEDI veri del corpo 3D (piede piu' basso, per fotogramma): la quota del gruppo procedurale non vede la clip */
           if(_armsUp){hero._aL.rotation.x=-2.5;hero._aR.rotation.x=-2.5;hero._aL.rotation.z=-0.35;hero._aR.rotation.z=0.35;}
           else{hero._aR.rotation.x=-2.6;hero._aR.rotation.z=0.35;hero._aL.rotation.x=-0.2;hero._aL.rotation.z=0;}// cammina col trofeo alzato (destra) — braccia PROCEDURALI (fallback GLB off)
