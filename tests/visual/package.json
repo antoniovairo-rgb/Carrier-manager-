@@ -332,6 +332,8 @@
     "rigori-190": "node rigori-190.mjs",
     "debito-190": "node debito-190.mjs",
     "parata-198": "node parata-198.mjs",
+    "busta-199": "node busta-199.mjs",
+    "presentazione-200": "node presentazione-200.mjs",
     "titolo-110:rosso": "CPM_RED=1 node titolo-110-test.mjs",
     "rinvio-coppe-107:rosso": "CPM_RED=1 node rinvio-coppe-107-test.mjs",
     "avversario-106:rosso": "CPM_RED=1 node avversario-106-test.mjs",

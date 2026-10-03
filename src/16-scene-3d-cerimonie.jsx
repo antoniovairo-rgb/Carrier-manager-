@@ -980,6 +980,22 @@ function PresentazioneScena2D({club,beat=0,total=6,seed=7,youth=false,avatarId=0
   const _eroe23=!!(_ann23&&_ann23.eroe);
   const inPrimo = b>=2 ? (_vecchia23?((b-2)%11):((_ann23&&_ann23.gk&&!_eroe23)?0:1+((b-2)%10))) : -1;
   if(b===0)return null;/* il primo battito e' lo stadio che si mostra: nessuno in campo */
+  /* [7.999.124 PO-200] COME IN TELEVISIONE: in campo ci sono i corpi CGTrader, quindi niente schieramento di figurine sul prato;
+     resta una sola targhetta piccola in basso a sinistra con il volto, il numero e il nome di chi viene chiamato.
+     Rosso __CPM_NO_PRES200 (lo schieramento di figurine della 7.947). */
+  if(!(typeof window!=='undefined'&&window.__CPM_NO_PRES200)){
+    if(b<2||!_ann23)return(<div aria-hidden="true" style={{position:"absolute",inset:0,pointerEvents:"none"}}><StrisciaScena948 club={club} tono={null}/></div>);
+    const _nm=_eroe23?(_ann23.n||""):(_ann23.n||""),_nr=_eroe23?(heroNum||""):(_ann23.num||"");
+    return(
+    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
+      <div data-cpm="pres200-tv" style={{position:"absolute",left:12,bottom:"calc(19% + env(safe-area-inset-bottom, 0px))",display:"flex",alignItems:"center",gap:8,
+        background:"rgba(10,12,20,0.82)",borderLeft:"3px solid "+((club&&club.c)||"#d4a017"),borderRadius:RAD.xs,padding:"5px 10px 5px 6px",boxShadow:"0 4px 14px rgba(0,0,0,0.5)",maxWidth:"72%"}}>
+        {(()=>{try{return <Figurina tipo="giocatore" chiave={_eroe23?(heroChiave||"eroe-"+avatarId):_ann23.n} larg={30}/>;}catch(_e){return null;}})()}
+        {_nr?<div style={{fontSize:FS.bodyLg,fontWeight:FW.black,color:"#fff",fontVariantNumeric:"tabular-nums",lineHeight:1}}>{_nr}</div>:null}
+        <div style={{fontSize:FS.small,fontWeight:FW.bold,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{_nm}</div>
+      </div>
+      <StrisciaScena948 club={club} tono={null}/>
+    </div>);}
   return(
     <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
       <div style={{position:"absolute",left:0,right:0,top:"56%",display:"flex",flexWrap:"wrap",
@@ -1084,7 +1100,25 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
     /* l'eroe e' il SUO avatar di carriera, con la stessa formula del match (9405): incarnato/capelli da AVATARS */
     const heroAppr=(function(){try{const av=(typeof AVATARS!=="undefined")&&AVATARS[((avatarId|0)%AVATARS.length+AVATARS.length)%AVATARS.length];
       return av?{height:1.86+((avatarId*73)%100)/100*0.16,girth:0.97+((avatarId*131)%100)/100*0.10,skin:av.skin,hair:av.hair,hairStyle:av.hairStyle||'short',bodyType:av.bodyType||'regular',bald:av.style==='bald'}:null;}catch(_e){return null;}})();
-    if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
+    /* [7.999.124 PO-200 collaudo PO 03/10 «Nella presentazione della squadra far vedere i CGTrader ed in piccolo come in televisione
+       la figurina»] LA FILA SONO I CORPI CGTRADER degli highlight, della premiazione e della parata (stesso file, stessa postura): in
+       piedi e fermi (idle in pausa su un istante diverso per uomo), maglia e calzettoni del club, pantaloncini nel secondo colore,
+       portiere nel colore di contrasto. Il chiamato fa il suo passo avanti (tick, invariato). Le figurine diventano una sola
+       targhetta piccola in basso, come in televisione (PresentazioneScena2D). Rosso __CPM_NO_PRES200 (comportamento 7.999.123). */
+    const _cg200=!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&typeof corpoCG23==="function"&&!window.__CPM_NO_PRES200;
+    if(_cg200){
+      loadGLB('./assets/cgtrader-review-lod1-kit-adapter.glb').then(pkg=>{
+        const idle0=pkg&&(pkg.animations||[]).find(c=>c&&c.name==='idle');if(!pkg)return;
+        const _GKP=['#1d1d1f','#facc15','#16a34a','#db2777','#e5e7eb','#06b6d4','#f97316'];
+        const _gkCol=(function(){try{const cs=[new THREE.Color(homeHex),new THREE.Color(awayHex)];let best=_GKP[0],bd=-1;
+          _GKP.forEach(c=>{const q=new THREE.Color(c);const d=Math.min.apply(null,cs.map(h=>Math.abs(q.r-h.r)+Math.abs(q.g-h.g)+Math.abs(q.b-h.b)));if(d>bd){bd=d;best=c;}});return best;}catch(_e){return '#16a34a';}})();
+        for(let i=0;i<N;i++){const isHero=(i===HERO),isGk=!isHero&&(gkIdx||[]).indexOf(i)>=0;
+          const av=corpoCG23(pkg,{shirt:isGk?_gkCol:homeHex,shorts:isGk?_gkCol:awayHex,socks:isGk?_gkCol:homeHex,altezza:isHero&&heroAppr?Math.min(1.95,heroAppr.height||1.86):1.78+R(40+i)*0.12});
+          if(!av)continue;av.position.set((i-(N-1)/2)*SP,0,LZ);av.rotation.y=0;line.add(av);men.push(av);
+          if(idle0){const mx=new THREE.AnimationMixer(av);const a=mx.clipAction(idle0);a.play();mx.setTime(R(70+i)*idle0.duration);a.paused=true;mixers.push(mx);}}
+        try{if(typeof window!=='undefined')window.__CPM_PRES200={cg:men.length};}catch(_e){}
+      }).catch(()=>{});
+    } else if(!senzaCorpi&&window.__CPM_GLB!==false&&typeof loadGLB==="function"&&THREE.SkeletonUtils&&THREE.SkeletonUtils.clone){
       Promise.all([loadGLB('./assets/korward-regular-player.glb'),loadGLB('./assets/korward-regular-anims/regular-anim-idle.glb').catch(()=>null)]).then(([glb,idle])=>{
         if(!glb||!glb.scene)return;
         for(let i=0;i<N;i++){
@@ -2241,6 +2275,14 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
   const _vinti51=_galaSeq.map((a,i)=>({a,i})).filter(x=>x.a.rows&&x.a.rows[0]&&x.a.rows[0].isPlayer);
   const _altri51=_galaSeq.filter(a=>!(a.rows&&a.rows[0]&&a.rows[0].isPlayer));
   const [g51,setG51]=React.useState(0);// 0 apertura · 1..N momenti · N+1 riepilogo
+  /* [7.999.124 PO-199 collaudo PO 03/10 «Nel galà si deve vedere apertura della busta progressivamente dal terzo al primo, non deve
+     comparire subito il vincitore del premio... un po' di suspense»] Ogni premio si apre in quattro tempi: la busta (0), il terzo
+     posto (1), il secondo (2), il vincitore (3), uno ogni 1,6 s; il tasto «Avanti» accelera. Luci e coriandoli del palco 3D partono
+     solo al vincitore. Supera la scelta della 7.999.51 («diretto al premio vinto»). Rosso __CPM_NO_BUSTA199 (vincitore subito). */
+  /* lo stato porta il premio a cui appartiene: al cambio di premio il primo fotogramma parte gia' da 0, mai da un valore vecchio */
+  const [b199,setB199]=React.useState({g:-1,rv:0});const busta199=b199.g===g51?b199.rv:0;
+  React.useEffect(()=>{setB199({g:g51,rv:0});if(g51<1||(typeof window!=='undefined'&&window.__CPM_NO_BUSTA199))return;
+    const ts=[1,2,3].map(k=>setTimeout(()=>setB199(x=>x.g===g51?{g:g51,rv:Math.max(x.rv,k)}:x),k*1600));return()=>ts.forEach(clearTimeout);},[g51]);
   const _galaRow=(idx,medal,big)=>{const c=_galaTop3[idx];if(!c)return null;const _me=!!c.isPlayer;return(
     <div key={idx} style={{display:"flex",alignItems:"center",gap:10,padding:big?"12px 14px":"9px 12px",borderRadius:RAD.md,marginBottom:6,background:_me?"linear-gradient(135deg,#3b2a07,#5b420c)":"rgba(255,255,255,0.06)",border:`1px solid ${_me?"#d4a017":"rgba(255,255,255,0.12)"}`,animation:"logoIn 0.5s ease-out"}}>
       <span style={{fontSize:big?26:18}}>{medal}</span>
@@ -2258,8 +2300,9 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
         const _fig=(nome,me,l)=>{try{return <Figurina tipo="giocatore" chiave={me?((player&&player.name)||"eroe"):(nome||"npc")} larg={l}/>;}catch(_e){return null;}};
         const _num=(c,k)=>c&&c.goals!=null&&(k==="capo"||k==="scarpa"||k==="oro"||k==="mvp")?c.goals:null;
         const _chiudi=()=>setGalaOff(true);
+        const _rv199=(typeof window!=='undefined'&&window.__CPM_NO_BUSTA199)?3:busta199;
         return(<div data-cpm="gala51" style={{position:"fixed",inset:0,zIndex:9997,background:"#07060c"}}>
-          <GalaStage3D beat={mom?3:0} act={mom?mom.i:(g51===0?0:1)} heroWins={!!mom} avatarId={player.avatarId||0} seed={7} senzaCorpi={false}/>
+          <GalaStage3D beat={mom&&_rv199>=3?3:0} act={mom?mom.i:(g51===0?0:1)} heroWins={!!mom&&_rv199>=3} avatarId={player.avatarId||0} seed={7} senzaCorpi={false}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(7,6,12,0.45) 0%,rgba(7,6,12,0) 16%,rgba(7,6,12,0) 60%,rgba(7,6,12,0.7) 100%)",pointerEvents:"none"}}/>
           <div style={{position:"absolute",top:"calc(14px + env(safe-area-inset-top, 0px))",left:0,right:0,textAlign:"center",fontSize:FS.caption,fontWeight:FW.bold,color:"#d4a017",textTransform:"uppercase",letterSpacing:2.4}}>
             {mom?`Premio · ${mom.a.title}`:rie?"Gli altri premi della serata":`La notte del Galà · Stagione ${season}`}</div>
@@ -2275,7 +2318,20 @@ function SeasonAwardsScreen({awards,player,season,club,onContinue}){
               </div>
               <Btn v="primary" fw onClick={()=>setG51(1)}>{N>0?"Apri la busta":"Vedi i premi della serata"}</Btn>
             </React.Fragment>)}
-            {mom&&(()=>{const rows=mom.a.rows||[];const me=rows[0];const n0=_num(me,mom.a.key);return(<React.Fragment>
+            {mom&&_rv199<3&&(()=>{const rows=mom.a.rows||[];const _pos=[{k:2,l:"3° posto"},{k:1,l:"2° posto"}];return(<React.Fragment>
+              <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
+              <div data-cpm="busta199" data-rev={_rv199} style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  {(()=>{try{return <Figurina tipo="giornalista_f" chiave="Chiara Loreti" larg={30}/>;}catch(_e){return null;}})()}
+                  <div style={{fontSize:FS.small,fontWeight:FW.bold,color:TH.text}}>{_rv199===0?"Chiara Loreti apre la busta…":"E il premio va a…"}</div>
+                </div>
+                {_pos.map(q=>{const c=rows[q.k];if(!c||_rv199<(q.k===2?1:2))return null;return(
+                  <div key={q.k} style={{display:"flex",alignItems:"center",gap:8,fontSize:FS.small,color:TH.text,minWidth:0,animation:"logoIn 0.45s ease-out"}}>
+                    {_fig(c.name,false,22)}<span style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}><b>{q.l}</b> · {c.name}{c.goals!=null?" · "+c.goals:""}</span></div>);})}
+              </div>
+              <Btn v="primary" fw onClick={()=>setB199(x=>({g:g51,rv:Math.min(3,(x.g===g51?x.rv:0)+1)}))}>Avanti →</Btn>
+            </React.Fragment>);})()}
+            {mom&&_rv199>=3&&(()=>{const rows=mom.a.rows||[];const me=rows[0];const n0=_num(me,mom.a.key);return(<React.Fragment>
               <span style={{alignSelf:"flex-start",background:TH.primary,color:"#fff",fontSize:FS.caption,fontWeight:FW.black,letterSpacing:1.6,textTransform:"uppercase",padding:"3px 9px",borderRadius:RAD.xs}}>{mom.a.e} {mom.a.title} · {lg}</span>
               <div style={{background:"rgba(255,255,255,0.95)",borderRadius:RAD.sm,padding:"8px 10px",display:"flex",flexDirection:"column",gap:6,boxShadow:"0 6px 18px rgba(0,0,0,0.4)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
