@@ -854,7 +854,7 @@ function ParataScena2D({club,avatarId=0,heroNum=10}){
     for(let i=0;i<7;i++)a.push({n:i+2,seme:"parata-"+((club&&club.id)||"x")+"-"+i});
     return a;},[club]);
   return(
-    <div aria-hidden="true" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
+    <div aria-hidden="true" data-cpm="parata2d" style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",background:"transparent"}}>
       <div style={{position:"absolute",left:0,right:0,top:"34%",display:"flex",alignItems:"flex-end",
         justifyContent:"center",gap:6,padding:"0 10px"}}>
         <div style={{textAlign:"center",filter:"drop-shadow(0 6px 16px rgba(0,0,0,0.6))"}}>
@@ -1366,6 +1366,18 @@ function PresentationStage3D({club,beat=0,total=6,seed=7,youth=false,avatarId=0,
    (cloni footballer, posa ferma + saluto additivo, pattern 7.419); GLB-OFF: omini low-poly.
    Si apre da Fine Stagione quando c'e' scudetto o coppa europea; «Continua» la chiude.
    ════════════════════════════════════════════════════════════════════════ */
+/* [7.999.123 PO-198 collaudo PO 03/10 20:17 «Niente figurine, solo CGTrader!»] LA PARATA COMPLETA, come la monta la Fine Stagione.
+   Dalla 7.949 la parata usciva senza corpi (omini a blocchi sul tetto) con le figurine dei visi sopra. Ora la squadra sul tetto
+   sono i corpi CGTrader degli highlight e della premiazione (l'eroe davanti alza la coppa) e le figurine non ci sono piu', come
+   gia' nel galà. Un solo componente, cosi' il guardiano parata-198 monta esattamente cio' che vede il PO.
+   Rosso __CPM_NO_PARATA198 (comportamento 7.999.122). */
+function ParataCompleta198({club,euroWin=false,avatarId=0,heroNum=10}){
+  const rosso=!!(typeof window!=='undefined'&&window.__CPM_NO_PARATA198);
+  return(<>
+    <ParataBus3D club={club} euroWin={euroWin} avatarId={avatarId} heroNum={heroNum} senzaCorpi={rosso&&!(typeof window!=='undefined'&&window.__CPM_NO949)}/>
+    {rosso&&<ParataScena2D club={club} avatarId={avatarId} heroNum={heroNum}/>}
+  </>);}
+if(typeof window!=='undefined'){try{window.__CPM_PARATA198_C=ParataCompleta198;}catch(_e){}}
 function ParataBus3D({club,euroWin,avatarId=0,heroNum=10,senzaCorpi=false}){
   /* [7.949 — DIFETTO MIO DELLA 7.948, GIA' SPEDITO E QUI CORRETTO.] La sostituzione che ha aggiunto
      `!senzaCorpi` alle tre cerimonie ha toccato ANCHE questa, che pero' non aveva quel parametro: alla
@@ -2548,8 +2560,7 @@ function SeasonEndScreen({data,player,onNewSeason,onRetire,notifBusy,farewell}){
   const[parata423,setParata423]=React.useState(()=>!!(isChampion||euro?.champion));
   if(parata423)return(
     <div style={{position:"fixed",inset:0,zIndex:400}}>
-      <ParataBus3D club={club} euroWin={!!euro?.champion} avatarId={player?.avatarId||0} heroNum={player?.jerseyNum||10} senzaCorpi={!(typeof window!=='undefined'&&window.__CPM_NO949)}/>
-      <ParataScena2D club={club} avatarId={player?.avatarId||0} heroNum={player?.jerseyNum||10}/>
+      <ParataCompleta198 club={club} euroWin={!!euro?.champion} avatarId={player?.avatarId||0} heroNum={player?.jerseyNum||10}/>
       <div style={{position:"absolute",top:26,left:0,right:0,textAlign:"center",pointerEvents:"none"}}>
         <div style={{fontSize:FS.caption,fontWeight:800,letterSpacing:3,color:"#ffd34d",textShadow:"0 2px 10px rgba(0,0,0,0.8)"}}>🚌 LA PARATA</div>
         <div style={{fontSize:FS.title,fontWeight:900,color:"#fff",textShadow:"0 2px 12px rgba(0,0,0,0.85)",marginTop:4}}>{euro?.champion?"CAMPIONI D'EUROPA!":"CAMPIONI!"}</div>
