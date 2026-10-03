@@ -18,6 +18,9 @@ const maxCases = Math.max(1, Number(process.env.CPM_MAX_CASES || Infinity));
 const rawPath = path.join(root, 'tests/codex/collaudo-passaggi-7999122.json.gz');
 const photoDir = path.join(root, 'reports/codex/collaudo-passaggi-7999122');
 const freeGiB = () => os.freemem() / 2 ** 30;
+// La sonda GLB del colpo di testa ha consumato oltre 2,2 GiB in una pagina;
+// manteniamo questo margine anche nei passaggi, ancora privi di un pilota.
+const minFreeGiB = 6;
 const actionRx = /pass|dai|triang|filtr|vertical|spond|lanci|cross|uno.?due|rimorch|scaric|servi|tocca|apri|cambia|scambia/i;
 if (version !== '7.999.122') throw Error(`GAME_VERSION atteso 7.999.122, trovato ${version}`);
 fs.mkdirSync(photoDir, { recursive: true });
@@ -56,9 +59,10 @@ function describe(trace) {
   }
   return result;
 }
-if (freeGiB() < 3.5) { data.stopped=`RAM ${freeGiB().toFixed(2)} GiB prima del browser`; save(); console.log(data.stopped); process.exit(0); }
+if (freeGiB() < minFreeGiB) { data.stopped=`RAM ${freeGiB().toFixed(2)} GiB < ${minFreeGiB} GiB prima del browser`; save(); console.log(data.stopped); process.exit(0); }
 const server=await startServer(); const browser=await launchBrowser(); const port=server.address().port;
 async function makePage(){ const context=await browser.newContext({viewport:{width:412,height:915},serviceWorkers:'block'}); const page=await context.newPage();
+  context._memoryGuard=setInterval(()=>{if(freeGiB()<3.5){data.stopped=`RAM scesa a ${freeGiB().toFixed(2)} GiB durante un caso GLB`;context.close().catch(()=>{});}},1000);
   await installCdnRoutes(page);
   await page.addInitScript(()=>{window.__CPM_GLB=true;window.__CPM_PRESENT=1;window.__CPM_CINE=1;window.__CPM_DTREAL=1;window.__CPM_REC=true;window.__CPM_WS38_REC=1;});
   return {context,page}; }
@@ -66,9 +70,9 @@ async function discovery(gi){let context;try{({context}=await makePage());const 
   await page.evaluate(g=>window.__CPM_FORCE_SIT(g,true),gi);await sleep(400);
   const row=await page.evaluate(g=>({gi:g,phase:window.__CPM_PHASE?.(),actions:window.__CPM_ACTS?.()??[],scene:window.__CPM_CURSIT?.()}),gi);
   row.selected=row.actions.map((label,i)=>({i,label})).filter(a=>actionRx.test(a.label));return row;
-}finally{await context?.close().catch(()=>{});}}
+}finally{clearInterval(context?._memoryGuard);await context?.close().catch(()=>{});}}
 async function run(gi,act,outcome,repeat){const id=`gi${gi}-a${act.i}-${outcome}-r${repeat}`;const rec={id,gi,action:act,outcome,repeat,valid:false,rejected:null,photos:[],trace:[]};
-  if(freeGiB()<3.5){rec.rejected=`RAM libera ${freeGiB().toFixed(2)} GiB < 3.5`;return rec;}
+  if(freeGiB()<minFreeGiB){rec.rejected=`RAM libera ${freeGiB().toFixed(2)} GiB < ${minFreeGiB}`;return rec;}
   let context;try{({context}=await makePage());const page=context.pages()[0];await openMatch(page,port);
     await page.evaluate(g=>window.__CPM_FORCE_SIT(g,true),gi);
     await page.waitForFunction(()=>window.__CPM_PHASE?.()==='hl_choose',null,{timeout:20000});
@@ -106,9 +110,9 @@ async function run(gi,act,outcome,repeat){const id=`gi${gi}-a${act.i}-${outcome}
     if(/filtr|vertical/i.test(act.label))rec.metrics.backwards=rec.metrics.displacementX<0;
     return rec;
   }catch(e){rec.rejected=String(e?.stack||e);return rec;}
-  finally{await context?.close().catch(()=>{});}}
+  finally{clearInterval(context?._memoryGuard);await context?.close().catch(()=>{});}}
 try{
-  outer: for(const gi of scenes){if(!data.discovery.some(x=>x.gi===gi)){if(freeGiB()<3.5){data.stopped=`RAM ${freeGiB().toFixed(2)} GiB`;save();break outer;}
+  outer: for(const gi of scenes){if(!data.discovery.some(x=>x.gi===gi)){if(freeGiB()<minFreeGiB){data.stopped=`RAM ${freeGiB().toFixed(2)} GiB < ${minFreeGiB} GiB`;save();break outer;}
       data.discovery.push(await discovery(gi));save();}
     const row=data.discovery.find(x=>x.gi===gi);
     for(const act of row.selected)for(const outcome of ['success','fail'])for(let repeat=0;repeat<2;repeat++){
