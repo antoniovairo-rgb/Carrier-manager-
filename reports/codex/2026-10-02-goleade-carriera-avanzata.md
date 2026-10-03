@@ -1,6 +1,6 @@
 # PO-190 — goleade in carriera avanzata, checkpoint
 
-**Stato aggiornato al 3 ottobre:** quattro carriere nate dall'interfaccia sono arrivate a S7/W1. La quarta (seme 3) ha completato i tre provini e sei stagioni con rinnovi accettati tramite i pulsanti del gioco: 204 gare di campionato simulate, zero partite con 6+ gol della squadra, una con scarto ≥5. Dal suo salvataggio S7/W1 sono state concluse tre partite vissute, descritte sotto. Il caso del PO con eroe OVR 93 in S12 resta **non verificato**. I paragrafi cronologici sotto descrivono anche i tentativi precedenti e non sostituiscono questo stato aggiornato.
+**Stato aggiornato al 3 ottobre:** quattro carriere nate dall'interfaccia sono arrivate almeno a S7/W1. La quarta (seme 3) ha completato **12 stagioni** con rinnovi accettati tramite i pulsanti del gioco: **408** gare di campionato simulate, **zero** partite con 6+ gol fatti dal club, **una** con scarto ≥5. In S12 l'eroe ha chiuso a OVR 86, 16 gol in 37 presenze; il club ha segnato 53 gol in 34 gare. Cinque partite vissute da due salvataggi sono descritte sotto, ma le ripetizioni non sono cinque campioni indipendenti. Il caso del PO con eroe OVR 93 in S12 resta **non verificato**. I paragrafi cronologici sotto descrivono anche i tentativi precedenti e non sostituiscono questo stato aggiornato.
 
 Base: `origin/main` 8cef5317, `GAME_VERSION="7.999.112"`. Al primo checkpoint i 2,51–3,39 GB liberi erano sotto la soglia di 3,5 GB per avviare Chromium; le carriere sono state misurate nelle riprese successive. I valori del PO (stagione 12, 2,90 GF/partita, 48 gol dell'eroe) sono il motivo del collaudo, non un risultato di questa sonda.
 
@@ -114,4 +114,21 @@ Comandi completi: `node --check tests/codex/goleade-live-avanzata.mjs`; `node te
 | 1 | 191003 | 0–3 | 3 | `cronaca` ×3 |
 | 2 | 192003 | 0–3 | 3 | `cronaca` ×3 |
 
-Le due tracce 0–3 **non sono identiche**: i registri completi `events` e `timeline` differiscono. Comando di controllo: `node -e "const d=require('./tests/codex/goleade-live-avanzata.json').matches.filter(x=>x.seed===3&&x.finished);console.log(d.map(x=>[x.autoplaySeed,x.match.score,x.goals.map(g=>g.source)]));console.log(JSON.stringify(d[1].match.events)===JSON.stringify(d[2].match.events),JSON.stringify(d[1].match.timeline)===JSON.stringify(d[2].match.timeline))"`. Campione: **3 partite concluse, 7 gol, tutti da cronaca, zero gol da highlight dell'eroe osservati**. La frequenza di gol da highlight nelle partite vissute e l'effetto di un eroe OVR 93 in S12 restano **non verificati**.
+I JSON completi delle due tracce 0–3 differiscono, ma **minuto, lato e fonte di ogni gol coincidono**: il diverso seme passato a `__CPM_AUTOPLAY` non dimostra di cambiare il sorteggio della partita già creata. Queste repliche sono una verifica del percorso, non due partite statisticamente indipendenti. Comando: `node -e "const d=require('./tests/codex/goleade-live-avanzata.json').matches.filter(x=>x.seed===3&&x.finished&&x.sourceSeason===7);console.log(d.map(x=>[x.autoplaySeed,x.match.score,x.goals.map(g=>[g.raw.min,g.raw.side,g.source])]))"`. Nei tre esiti tecnici ci sono 7 eventi-gol, tutti da cronaca; la frequenza reale dei gol da highlight resta **non verificata**.
+
+## Estensione della carriera a S12 e partita vissuta
+
+La stessa carriera naturale è stata proseguita fino a S13/W1 con `CPM_TARGET_SEASON=12`, senza iniettare OVR o trasferimenti. Comandi completi dalla radice: `node --check tests/codex/goleade-carriera-avanzata.mjs`; `node tests/codex/goleade-precompile.mjs`; `$env:CPM_PRECOMPILED='1'; $env:CPM_RENEW_UI='1'; $env:CPM_SEEDS='3'; $env:CPM_MATCH_SPEED='2'; $env:CPM_TARGET_SEASON='12'; node tests/codex/goleade-carriera-avanzata.mjs`. L'ultimo comando è stato ripetuto dal checkpoint dopo uno stop della **sonda** a S12/W21: sei passi `nat:euroMondiale` nella stessa settimana erano stati scambiati dal suo contatore per uno stallo. La sonda ora conta quei passi separatamente, con tetto di 30; la ripresa ha completato S12. Non è un blocco del gioco verificato. Fonte: `tests/codex/goleade-carriera-avanzata.json`, seme 3.
+
+| Stagione | OVR finale | Presenze eroe | Gol eroe | GF–GA club in 34 gare | GF/gara | Gare 6+ GF |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 7 | 80 | 35 | 11 | 47–46 | 1,38 | 0 |
+| 8 | 82 | 35 | 12 | 58–44 | 1,71 | 0 |
+| 9 | 84 | 35 | 13 | 41–41 | 1,21 | 0 |
+| 10 | 85 | 37 | 18 | 50–48 | 1,47 | 0 |
+| 11 | 85 | 35 | 12 | 54–37 | 1,59 | 0 |
+| 12 | 86 | 37 | 16 | 53–42 | 1,56 | 0 |
+
+Le 12 stagioni sommano **408 gare di lega, 600 GF, 496 GA, zero 6+ GF, uno scarto ≥5** (0–5 subito in S6/W1). Comando di sintesi: `node -e "let c=require('./tests/codex/goleade-carriera-avanzata.json').careers.find(x=>x.seed===3),a=c.seasons.reduce((a,x)=>(a.games+=x.league.games,a.gf+=x.league.gf,a.ga+=x.league.ga,a.six+=x.league.gamesSixPlus.length,a.margin+=x.league.marginsFivePlus.length,a),{games:0,gf:0,ga:0,six:0,margin:0});console.log(c.seasons.map(x=>[x.season,x.ovr,x.matches,x.goals,x.league.gf,x.league.ga]),a)"`.
+
+Il salvataggio `poc190Save` è a **S12/W1, OVR 85, contratto attivo**. Da quello, il comando `node --check tests/codex/goleade-live-avanzata.mjs; $env:CPM_PRECOMPILED='1'; $env:CPM_SEEDS='3'; $env:CPM_REPLAY='1'; $env:CPM_PO190='1'; node tests/codex/goleade-live-avanzata.mjs` ha concluso una partita vissuta contro FC Granata **1–2**: gol avversari al 36′ e 45′ da `cronaca`, gol della squadra dell'eroe al 38′ da `highlight`. Una ripetizione dal medesimo salvataggio, con seme autoplay diverso, ha prodotto **gli stessi minuti, lati e fonti** dei tre gol. Perciò conto **una traiettoria distinta**, non due partite indipendenti; il seme di autoplay non garantisce un nuovo sorteggio del motore. Grezzo: `tests/codex/goleade-live-avanzata.json`. In questo percorso vissuto entrambe le fonti (`cronaca` e `highlight`) sono effettivamente esercitate; la loro frequenza in una stagione vissuta e il caso OVR 93 all'FC Merseyside restano **non verificati**.

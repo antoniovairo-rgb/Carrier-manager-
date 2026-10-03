@@ -10,6 +10,7 @@ const output = path.resolve('tests/codex/goleade-carriera-avanzata.json');
 const version = fs.readFileSync('src/07-versione-save-interviste.jsx', 'utf8').match(/const GAME_VERSION="([^"]+)"/)?.[1];
 if (!version || Number(version.split('.').at(-1)) < 111) throw Error(`Versione insufficiente: ${version}`);
 const seeds = (process.env.CPM_SEEDS || '0,1,2').split(',').map(Number).filter(Number.isInteger);
+const targetSeason = Math.max(6, Math.min(12, Number.parseInt(process.env.CPM_TARGET_SEASON || '6', 10) || 6));
 const matchSpeed = process.env.CPM_MATCH_SPEED === '2' ? '2' : '1';
 const precompiled = process.env.CPM_PRECOMPILED === '1';
 const fixture = precompiled ? fs.readFileSync(path.resolve('tests/codex/goleade-precompiled.html'), 'utf8') : null;
@@ -96,7 +97,7 @@ try {
   for (const seed of seeds) {
     if (memoryStop()) break;
     let career = data.careers.find(c => c.seed === seed);
-    if (career?.completed) continue;
+    if (career?.completed && (career.last?.season || 0) >= targetSeason + 1) continue;
     if (!career) { career = { seed, creation: 'UI naturale', renewUI: process.env.CPM_RENEW_UI === '1', matchSpeed, trials: [], steps: [], seasons: [], lived: [], errors: [], startedAt: new Date().toISOString() }; data.careers.push(career); save(); }
     if (!career.checkpoint && career.trials.length && !career.trialProgress) {
       // Vecchi tentativi senza envelope persistito: conservarli e ripartire.
@@ -186,13 +187,16 @@ try {
       const checkpoint = async () => {
         const state = await page.evaluate(() => ({ snapshot: window.__CPM_CAREER.snapshot(), localStorage: localStorage.getItem('cpm-v3'), screen: window.__CPM_CAREER.screen() }));
         career.checkpoint = { localStorage: state.localStorage, season: state.snapshot.season, week: state.snapshot.week, screen: state.screen };
+        if (state.snapshot.season >= 12 && state.snapshot.proStatus === 'pro' && !state.snapshot.contractExpired && !career.poc190Save)
+          career.poc190Save = { localStorage: state.localStorage, season: state.snapshot.season, week: state.snapshot.week, ovr: state.snapshot.ovr, club: state.snapshot.club?.n };
         save(); return state;
       };
       let state = await checkpoint();
       career.initial = career.initial || { name: state.snapshot.name, position: state.snapshot.position, ovr: state.snapshot.ovr, age: state.snapshot.age, club: state.snapshot.club?.n };
       const started = Date.now();
       let sameState = 0;
-      while (state.snapshot.season <= 6 && Date.now() - started < 5 * 60 * 60 * 1000) {
+      let sameNationalSteps = 0;
+      while (state.snapshot.season <= targetSeason && Date.now() - started < 5 * 60 * 60 * 1000) {
         if (memoryStop()) break;
         const s = state.snapshot;
         if (process.env.CPM_RENEW_UI === '1' && s.proStatus === 'pro' && (s.contractExpired || (s.contract?.duration ?? 9) <= 1)
@@ -216,8 +220,10 @@ try {
           if (after.snapshot.season <= s.season) throw Error(`Scelta proTransition senza cambio stagione S${s.season}/W${s.week}`);
           state = after;
           sameState = 0;
+          sameNationalSteps = 0;
           continue;
         }
+        let stepResult = null;
         if (state.screen === 'seasonEnd' || state.screen === 'seasonAwards') {
           career.seasons = career.seasons.filter(row => row.season !== s.season);
           career.seasons.push({ season: s.season, age: s.age, club: s.club?.n, clubId: s.club?.id, position: s.position, ovr: s.ovr,
@@ -226,14 +232,22 @@ try {
           career.steps.push({ season: s.season, week: s.week, action: 'startNewSeason', result: next });
           if (next !== true) throw Error(`Rollover S${s.season}: ${next}`);
         } else {
-          const result = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
-          career.steps.push({ season: s.season, week: s.week, action: 'step', result });
-          if (typeof result === 'string' && (result.startsWith('error:') || result.startsWith('blocked:'))) throw Error(`S${s.season}/W${s.week}: ${result}`);
+          stepResult = await page.evaluate(() => { const C = window.__CPM_CAREER; const r = C.step(); C.dismiss(); return r; });
+          career.steps.push({ season: s.season, week: s.week, action: 'step', result: stepResult });
+          if (typeof stepResult === 'string' && (stepResult.startsWith('error:') || stepResult.startsWith('blocked:'))) throw Error(`S${s.season}/W${s.week}: ${stepResult}`);
         }
         // Il salvataggio del gioco è differito: il checkpoint deve leggere il valore persistito.
         await sleep(800);
         const nextState = await checkpoint();
-        sameState = nextState.snapshot.season === s.season && nextState.snapshot.week === s.week ? sameState + 1 : 0;
+        const sameWeek = nextState.snapshot.season === s.season && nextState.snapshot.week === s.week;
+        if (sameWeek && typeof stepResult === 'string' && stepResult.startsWith('nat:')) {
+          sameNationalSteps++;
+          sameState = 0;
+          if (sameNationalSteps > 30) throw Error(`Torneo nazionale oltre 30 passi nella stessa settimana: S${s.season}/W${s.week}`);
+        } else {
+          sameState = sameWeek ? sameState + 1 : 0;
+          if (!sameWeek) sameNationalSteps = 0;
+        }
         state = nextState;
         if (sameState > 5) throw Error(`Stagione/settimana immutate per ${sameState} passi: S${s.season}/W${s.week}, schermata ${state.screen}`);
         if (state.snapshot.season >= 6 && !career.advancedSave) {
@@ -244,7 +258,7 @@ try {
         }
         if (career.steps.length > 3000) throw Error('limite di 3000 passi');
       }
-      career.completed = state.snapshot.season >= 7;
+      career.completed = state.snapshot.season >= targetSeason + 1;
       career.last = { season: state.snapshot.season, week: state.snapshot.week, ovr: state.snapshot.ovr, goals: state.snapshot.goals, matches: state.snapshot.matches };
     } catch (error) { const message = String(error.stack || error);
       if (lowMemory || message.includes('pausa memoria')) career.paused = { reason: 'RAM libera sotto 3,5 GB', at: new Date().toISOString(), detail: message };

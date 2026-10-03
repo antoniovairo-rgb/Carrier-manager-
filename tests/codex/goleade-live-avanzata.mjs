@@ -18,7 +18,8 @@ try {
   for (const career of careers) {
     if (process.env.CPM_REPLAY !== '1' && data.matches.some(m => m.seed === career.seed && m.finished)) continue;
     if (freeGB() < 3.5) { data.paused = { reason: 'RAM libera sotto 3,5 GB', freeGB: +freeGB().toFixed(2) }; save(); break; }
-    const sourceSave = career.checkpoint?.season >= 7 ? career.checkpoint : career.advancedSave;
+    const sourceSave = process.env.CPM_PO190 === '1' && career.poc190Save
+      ? career.poc190Save : career.checkpoint?.season >= 7 ? career.checkpoint : career.advancedSave;
     const repetition = data.matches.filter(m => m.seed === career.seed).length;
     const row = { seed: career.seed, repetition, sourceSeason: sourceSave.season, sourceWeek: sourceSave.week, path: 'vissuta', startedAt: new Date().toISOString() };
     data.matches.push(row); save();
