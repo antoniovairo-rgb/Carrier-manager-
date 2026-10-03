@@ -8138,6 +8138,15 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
                 W.fr.push({k:_ck422,light:!!(P.ceremony&&P.ceremony.light),b:_bk,glb:_co._glbArms434?1:0,ry:+_co.rotation.y.toFixed(3),g:_p(_co),
                   sL:_p(_co._aL),sR:_p(_co._aR),eL:_co._glbArms434?_p(_co._fL434):null,eR:_co._glbArms434?_p(_co._fR434):null,hL:_hLp,hR:_hRp,
                   hd:_p(B.hd),pe:_p(B.pe),tL:_p(B.tL),tR:_p(B.tR)});}}catch(_e77){}}}
+          /* [7.999.119 collaudo PO-191 «giocatori che attraversano il palco»] MISURATO (testimone __CPM_CER476.corpi, nel riferimento del
+             palco rettangolare): per TUTTA la cerimonia un compagno e un avversario stavano dentro l'impronta del corpo del palco a quota 0,
+             cioe' dentro il solido. La spinta fuori dal rettangolo (7.997) valeva solo per i compagni della festa: chi «resta dove si trova»
+             (avversari, compagni fuori dalla festa) poteva trovarsi dove il palco compare. Ora la spinta vale per ogni corpo tranne l'eroe.
+             Rosso __CPM_NO_PALCO191B. */
+          if(podiumGrp.visible&&podiumGrp._rett24&&!(typeof window!=='undefined'&&window.__CPM_NO_PALCO191B)){const _c191=Math.cos(podiumGrp.rotation.y),_s191=Math.sin(podiumGrp.rotation.y),_px191=podiumGrp.position.x,_pz191=podiumGrp.position.z;
+            for(const pp of (sr.current.players||[])){const m=pp&&pp.mesh;if(!m||m===hero)continue;const dx=m.position.x-_px191,dz=m.position.z-_pz191;let lx=dx*_c191-dz*_s191,lz=dx*_s191+dz*_c191;
+              if(Math.abs(lx)<4.0&&Math.abs(lz)<2.2){if(4.0-Math.abs(lx)<2.2-Math.abs(lz))lx=Math.sign(lx||1)*4.0;else lz=Math.sign(lz||1)*2.2;
+                m.position.x=_px191+lx*_c191+lz*_s191;m.position.z=_pz191-lx*_s191+lz*_c191;}}}
           /* [7.476.0] TESTIMONE DELLA CERIMONIA (solo sotto test). Le quattro note del PO sulla premiazione
              — «l'eroe saltella come se si stesse riscaldando», «il mister vola», «entrano nel palco», «la
              coppa e' troppo grande» — sono tutte GRANDEZZE, non impressioni: la clip che l'eroe sta
@@ -8156,7 +8165,8 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _mates191=_pod?(sr.current.players||[]).map(pp=>pp&&pp.mesh&&pp.mesh.visible!==false?+Math.hypot(pp.mesh.position.x-_pod.x,pp.mesh.position.z-_pod.z).toFixed(2):null).filter(v=>v!=null):[];/* [7.999.115 PO-191] distanza di ogni corpo dal centro del podio */
               let _mani191=null;try{const _hA=(glbAvatars&&glbAvatars[0]&&glbAvatars[0].proc===hero)?glbAvatars[0]:null;if(_hA&&_hA._handL&&_hA._handR){const _l=new THREE.Vector3().setFromMatrixPosition(_hA._handL.matrixWorld),_r=new THREE.Vector3().setFromMatrixPosition(_hA._handR.matrixWorld),_tp=trophyGrp.position;
                 _mani191={dL:+_l.distanceTo(_tp).toFixed(2),dR:+_r.distanceTo(_tp).toFixed(2),apert:+_l.distanceTo(_r).toFixed(2),lY:+_l.y.toFixed(2),rY:+_r.y.toFixed(2),tY:+_tp.y.toFixed(2),testaY:+(hero.position.y+1.75).toFixed(2)};if(_hA._footL&&_hA._footR){const _fl=new THREE.Vector3().setFromMatrixPosition(_hA._footL.matrixWorld),_fr=new THREE.Vector3().setFromMatrixPosition(_hA._footR.matrixWorld);_mani191.pL=+(_fl.y-hero.position.y).toFixed(2);_mani191.pR=+(_fr.y-hero.position.y).toFixed(2);_mani191.clipT=_hA._gAct?+((_hA._gAct.time||0)/((_hA._gAct.getClip&&_hA._gAct.getClip().duration)||1)).toFixed(3):null;}}}catch(_e191){}/* [7.999.117 PO-191] coppa e mani nello stesso fotogramma */
-              _cw.push({t:+_ct.toFixed(2),beat:_bk,mates:_mates191,mani:_mani191,
+              let _corpi191=null;if(_pod&&podiumGrp._rett24){const _c=Math.cos(podiumGrp.rotation.y),_s=Math.sin(podiumGrp.rotation.y);_corpi191=(sr.current.players||[]).filter(pp=>pp&&pp.mesh&&pp.mesh.visible!==false).map(pp=>{const dx=pp.mesh.position.x-_pod.x,dz=pp.mesh.position.z-_pod.z;return [pp.team==='home'?'c':'o',+(dx*_c-dz*_s).toFixed(2),+(dx*_s+dz*_c).toFixed(2),+pp.mesh.position.y.toFixed(2)];});}/* [7.999.119 PO-191] ogni corpo nel riferimento del palco: squadra, lx, lz, quota */
+              _cw.push({t:+_ct.toFixed(2),beat:_bk,mates:_mates191,mani:_mani191,corpi:_corpi191,
                 hero:{x:+hero.position.x.toFixed(2),z:+hero.position.z.toFixed(2),y:+hero.position.y.toFixed(2),clip:(hero._gName||null),h:+_hh.toFixed(2)},
                 coach:_co2?{x:+_co2.position.x.toFixed(2),z:+_co2.position.z.toFixed(2),v:+_cv2.toFixed(2),vis:!!_co2.visible}:null,
                 trofeo:{vis:!!trophyGrp.visible,h:+_th.toFixed(2),rap:_hh>0.2?+(_th/_hh).toFixed(2):null},
