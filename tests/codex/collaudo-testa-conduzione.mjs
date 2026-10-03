@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
+import {chromium} from '../visual/node_modules/playwright/index.mjs';
 import {startServer,launchBrowser,installCdnRoutes,openMatch,sleep} from '../visual/lib/harness.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
@@ -12,6 +13,8 @@ fs.mkdirSync(out,{recursive:true});
 const version=fs.readFileSync(path.join(root,'src/07-versione-save-interviste.jsx'),'utf8').match(/const GAME_VERSION="([^"]+)"/)[1];
 const expected=process.env.CPM_EXPECT_VERSION||'7.999.112';
 if(version!==expected)throw Error(`Versione ${version}, attesa ${expected}`);
+const precompiled=process.env.CPM_PRECOMPILED==='1';
+const fixture=precompiled?fs.readFileSync(path.join(root,'tests/codex/goleade-precompiled.html'),'utf8'):null;
 const actionIndices=(process.env.CPM_ACTIONS||'0,1,2').split(',').map(Number).filter(Number.isInteger);
 const headPlan=[171,6,7,55,64,86,90].flatMap(gi=>actionIndices.flatMap(actionIndex=>['success','fail'].flatMap(outcome=>[0,1,2].map(rep=>({kind:'header',gi,actionIndex,outcome,rep})))));
 const carryPlan=[18,19,21,22,47,96,104,112,178].flatMap(gi=>[0,1].flatMap(actionIndex=>['success','fail'].flatMap(outcome=>[0,1,2].map(rep=>({kind:'carry',gi,actionIndex,outcome,rep})))));
@@ -42,17 +45,19 @@ const pending=plan.filter(c=>
  !data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.versione===version&&r.skipped)
  &&!data.runs.some(r=>r.kind===c.kind&&r.gi===c.gi&&r.actionIndex===c.actionIndex&&r.outcome===c.outcome&&r.rep===c.rep&&r.arm===arm&&r.versione===version&&r.methodVersion>=3&&r.valid)
 ).slice(0,count);
-const srv=await startServer();const browser=await launchBrowser();
+const srv=await startServer();
+const browser=precompiled?await chromium.launch({headless:true,executablePath:process.env.CPM_CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',args:['--headless=new','--use-gl=angle','--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist','--renderer-process-limit=1','--disable-extensions','--disable-background-networking','--no-sandbox']}):await launchBrowser();
 try{
  for(const c of pending){
   if(os.freemem()<3.5*1024**3){console.log('Pausa: RAM libera sotto 3,5 GB');break;}
-  const r={...c,arm,versione:version,methodVersion:3,startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
+  const r={...c,arm,versione:version,methodVersion:3,environment:{precompiled,renderer:precompiled?'d3d11':'swiftshader'},startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
   const context=await browser.newContext({viewport:{width:412,height:915},deviceScaleFactor:1,serviceWorkers:'block'});
   const page=await context.newPage();page.setDefaultTimeout(90000);
   let lowMemory=false;const guard=setInterval(()=>{if(os.freemem()<3.5*1024**3){lowMemory=true;context.close().catch(()=>{});}},1000);
   try{
    await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+60000));
    await installCdnRoutes(page);
+   if(fixture)await page.route('**/CARRIER-MANAGER-AV.html?*',route=>route.fulfill({contentType:'text/html; charset=utf-8',body:fixture}));
    await page.addInitScript(red=>{window.__CPM_GLB=true;window.__CPM_PRESENT=1;window.__CPM_CINE=1;window.__CPM_TESTA33_REC=1;window.__CPM_TIRO34_REC=1;window.__CPM_REC=true;window.__CPM_NO_TUFFO109=red?1:0;},arm==='red');
    let boot=true;const pump=(async()=>{while(boot){try{await page.clock.runFor(100);}catch{}await sleep(25);}})();
    try{await openMatch(page,srv.address().port,{skipLoadAll:true,name:`Testa-${c.gi}-${c.outcome}-${c.rep}`});}finally{boot=false;await pump;}
