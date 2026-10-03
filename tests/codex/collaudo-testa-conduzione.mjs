@@ -49,7 +49,7 @@ try{
   const r={...c,arm,versione:version,methodVersion:3,startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
   const context=await browser.newContext({viewport:{width:412,height:915},deviceScaleFactor:1,serviceWorkers:'block'});
   const page=await context.newPage();page.setDefaultTimeout(90000);
-  let lowMemory=false;const guard=setInterval(()=>{if(os.freemem()<1.8*1024**3){lowMemory=true;context.close().catch(()=>{});}},2000);
+  let lowMemory=false;const guard=setInterval(()=>{if(os.freemem()<3.5*1024**3){lowMemory=true;context.close().catch(()=>{});}},1000);
   try{
    await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+60000));
    await installCdnRoutes(page);
