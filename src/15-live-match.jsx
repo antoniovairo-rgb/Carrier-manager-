@@ -1699,6 +1699,7 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
   useEffect(()=>{clockRef.current=clock;},[clock]);
   const [score,setScore]=useState(_rsScore);
   const scoreRef=useRef(_rsScore);
+  const ko207Ref=useRef(null);/* [7.999.126 PO-207] punteggio all'ultimo minuto giocato senza scena */
   /* [7.811.0 — S3 v1: LA TABELLA DELL'ENFASI, stato x momentum, come FUNZIONE PURA. La misura sul diario e' cieca
      (una riga d'enfasi in quattro partite: la porta seedata <0.12 su momentum >=80/<=20 scatta di rado), quindi la
      tabella si misura DIRETTAMENTE su tutta la griglia degli stati (tabella-830): nessuna frase puo' contraddire il
@@ -5302,7 +5303,20 @@ function LiveMatch({player,opponent,context="career",onMatchEnd,isMatchHome=true
              Misurato: sorteggi del motore al 78' 1004 contro 1022 PRIMA, 1004 contro 1022 DOPO. Zero.
              La lettura resta valida in linea di principio (la simulazione e' la source of truth) ma non
              e' questa la causa, e una modifica che non muove il suo numero non si spedisce. */
-          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:possTurnRef.current>0?"home":"away",gioc:((typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))?(matchPlayersRef.current||[]):null)/* [23/09 POC B3] col brain che muove la scena, il motore riprende dalle SUE posizioni: quelle di fine scena dipendono dal tempo reale */,eroe:pPosRef.current,centro:((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
+          /* [7.999.126 PO-207 collaudo PO 03/10 «Ad ogni gol il 2D non riparte dalla rimessa in gioco da centrocampo»] MISURATO su una
+             partita vera dal salvataggio S12 (sonda ko207b, 3 gol): dopo ogni gol il motore restava in «tenuta»/«volo» e il pallone dove
+             era, mai il calcio d'inizio a (50,50). I gol nati in una SCENA non passano dallo stato «rete» del motore, e qui la ripresa
+             chiedeva il centro solo se c'era gia' una ripartenza in sospeso. Ora: se durante la scena il punteggio e' salito, il motore
+             riparte dal centro con la palla a chi ha subito il gol. Rosso __CPM_NO_KO207. */
+          /* [prima stesura, sonda ko207b] il controllo solo a fine scena non scattava mai: i gol misurati erano da cronaca (nessuna
+             scena), da piazzato e da highlight. La regola vale quindi per QUALUNQUE aumento del punteggio, al primo battito giocato. */
+          let _c207=false,_l207=null;
+          if(!(typeof window!=='undefined'&&window.__CPM_NO_KO207)){const _p207=ko207Ref.current,_s207=scoreRef.current||{};
+            if(_p207){if((_s207.home|0)>(_p207.home|0))_l207="away";else if((_s207.away|0)>(_p207.away|0))_l207="home";_c207=!!_l207;}
+            ko207Ref.current={home:_s207.home|0,away:_s207.away|0};
+            if(_c207){try{(window.__CPM_KO207=window.__CPM_KO207||[]).push({min:clockRef.current|0,lato:_l207,scena:!!_st0.scena});}catch(_e){}
+              if(!_st0.scena){try{_M.chiedi.riprendi({centro:true,lato:_l207});}catch(_e207){}}}}
+          if(_st0.scena)_M.chiedi.riprendi({x:(ballPosRef.current&&ballPosRef.current.x)||50,y:(ballPosRef.current&&ballPosRef.current.y)||50,lato:_c207?_l207:(possTurnRef.current>0?"home":"away"),gioc:((typeof window!=='undefined'&&(window.__CPM_NO_B3MUOVI||window.__CPM_NO870))?(matchPlayersRef.current||[]):null)/* [23/09 POC B3] col brain che muove la scena, il motore riprende dalle SUE posizioni: quelle di fine scena dipendono dal tempo reale */,eroe:pPosRef.current,centro:_c207||((kickRef.current|0)>0||(kickoffRef.current|0)>0)});
           /* il gol del microsim diventa una richiesta: il motore lo costruisce */
           if(_simEv77){const _latoG=_simEv77.ef==="team_goal"?"home":"away";golMotoreRef.current={ev:_simEv77,lato:_latoG,min:nx};_M.chiedi.gol(_latoG);pendingGoalRef.current={ev:_simEv77,dir:_latoG==="home"?1:-1,ticks:0,righe:0,righeLato:0,cap:0,motore870:1};if(!(typeof window!=='undefined'&&window.__CPM_NO543))setTurn616(_latoG==="home"?1:-1,"gol-in-costruzione");_simEv77=null;}
           if(pendingGoalRef.current&&pendingGoalRef.current.motore870){pendingGoalRef.current.ticks++;if(nx>=90)_M.chiedi.urgenza();/* al 90' il decreto non puo' restare appeso: entra da dove sta la palla */}
