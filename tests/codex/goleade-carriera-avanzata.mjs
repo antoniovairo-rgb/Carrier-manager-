@@ -11,7 +11,10 @@ const version = fs.readFileSync('src/07-versione-save-interviste.jsx', 'utf8').m
 if (!version || Number(version.split('.').at(-1)) < 111) throw Error(`Versione insufficiente: ${version}`);
 const seeds = (process.env.CPM_SEEDS || '0,1,2').split(',').map(Number).filter(Number.isInteger);
 const data = fs.existsSync(output) ? JSON.parse(fs.readFileSync(output, 'utf8')) : { version, commit: '8cef5317', command: 'node tests/codex/goleade-carriera-avanzata.mjs', careers: [] };
-const save = () => fs.writeFileSync(output, JSON.stringify(data, null, 2));
+const save = () => { const raw = JSON.stringify(data, null, 2); for (let i = 0; i < 15; i++) {
+  try { fs.writeFileSync(output, raw); return; }
+  catch (e) { if (e.code !== 'EBUSY' || i === 14) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 200); }
+} };
 const leagueSummary = s => {
   const played = (s.calendar || []).filter(m => m && !m.type && m.played && m.result && Number.isFinite(m.result.homeScore) && Number.isFinite(m.result.awayScore));
   const scored = m => m.isHome ? m.result.homeScore : m.result.awayScore;
@@ -37,7 +40,7 @@ try {
     let career = data.careers.find(c => c.seed === seed);
     if (career?.completed) continue;
     if (!career) { career = { seed, creation: 'UI naturale', trials: [], steps: [], seasons: [], lived: [], errors: [], startedAt: new Date().toISOString() }; data.careers.push(career); save(); }
-    delete career.failure;
+    delete career.failure; delete career.paused;
     const context = await browser.newContext({ viewport: { width: 360, height: 640 }, deviceScaleFactor: 1, serviceWorkers: 'block' });
     const page = await context.newPage(); page.setDefaultTimeout(30000);
     page.on('pageerror', e => career.errors.push(String(e.message)));
@@ -114,7 +117,10 @@ try {
       }
       career.completed = state.snapshot.season >= 7;
       career.last = { season: state.snapshot.season, week: state.snapshot.week, ovr: state.snapshot.ovr, goals: state.snapshot.goals, matches: state.snapshot.matches };
-    } catch (error) { career.failure = String(error.stack || error); }
+    } catch (error) { const message = String(error.stack || error);
+      if (message.includes('pausa memoria')) career.paused = { reason: 'RAM libera sotto 3,5 GB', at: new Date().toISOString(), detail: message };
+      else career.failure = message;
+    }
     finally { career.finishedAt = new Date().toISOString(); save(); await context.close().catch(() => {}); }
     console.log(JSON.stringify({ seed, completed: career.completed, initial: career.initial, last: career.last, failure: career.failure?.slice(0, 180) }));
   }
