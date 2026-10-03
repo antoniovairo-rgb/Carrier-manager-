@@ -5360,7 +5360,7 @@ function capDiary(a){try{if(!Array.isArray(a)||a.length<=DIARY_CAP)return a;
   const cur=a.reduce((m,e)=>Math.max(m,(e&&e.season)|0),0);
   let r=a.filter(e=>!e||((e.season|0)>=cur-1)||!_DIARY_MINORI.has(e.type));
   return r.length>DIARY_CAP?r.slice(-DIARY_CAP):r;}catch(_e){return Array.isArray(a)?a.slice(-DIARY_CAP):a;}}
-const GAME_VERSION="7.999.113";/* [7.999.113 PO-194 GRAVE «partita già giocata» alla 34ª: la conferenza pre-partita si apriva insieme alla partita, compariva DOPO il fischio e il discorso del mister che la segue riapriva la gara appena giocata; ora conferenza → discorso → partita, e a fine gara niente resta in sospeso (rosso __CPM_NO_CONF194) · PO-192 «è una partita Primavera, ma quale bolgia?»: la domanda «quasi un derby» esce solo in un derby vero e tra i professionisti (rosso __CPM_NO_DERBY192) · PO-193 «SETTIMANA 39 DI 38» → «Fine stagione» (rosso __CPM_NO_SETT193)] *//* [7.999.112 PO-189 — collaudo PO 02/10 «a ogni caricamento del campo fa uno strano rimbalzo»: la striscia alta c'e' dal primo fotogramma e il campo 2D nasce della misura giusta. Rosso __CPM_NO_RIMB189] *//* [7.999.111 PO-188 — collaudo PO 02/10 «statistiche pre partita con sfondo troppo scuro», seconda volta dopo la 7.937]
+const GAME_VERSION="7.999.114";/* [7.999.114 PO-196 «non si capisce in che serie giocano le squadre offerenti»: lega e bandiera su ogni offerta (rosso __CPM_NO_LEGA196) · PO-195 «nel calendario fai vedere le avversarie!»: sigla, sede e punteggio in ogni casella (rosso __CPM_NO_AVV195)] *//* [7.999.113 PO-194 GRAVE «partita già giocata» alla 34ª: la conferenza pre-partita si apriva insieme alla partita, compariva DOPO il fischio e il discorso del mister che la segue riapriva la gara appena giocata; ora conferenza → discorso → partita, e a fine gara niente resta in sospeso (rosso __CPM_NO_CONF194) · PO-192 «è una partita Primavera, ma quale bolgia?»: la domanda «quasi un derby» esce solo in un derby vero e tra i professionisti (rosso __CPM_NO_DERBY192) · PO-193 «SETTIMANA 39 DI 38» → «Fine stagione» (rosso __CPM_NO_SETT193)] *//* [7.999.112 PO-189 — collaudo PO 02/10 «a ogni caricamento del campo fa uno strano rimbalzo»: la striscia alta c'e' dal primo fotogramma e il campo 2D nasce della misura giusta. Rosso __CPM_NO_RIMB189] *//* [7.999.111 PO-188 — collaudo PO 02/10 «statistiche pre partita con sfondo troppo scuro», seconda volta dopo la 7.937]
    Il vetro della scheda all'ingresso in campo passa da 0,74/0,62 a 0,45/0,34 (sfocatura 6 px), con un'ombra sotto il testo bianco
    per restare leggibile sul prato. Rosso __CPM_NO_PRE188, guardiano pre-188. */
 /* [7.999.110 collaudo PO 02/10 «deve comparire sopra e deve essere più leggibile» — riquadro «Campioni di …!»]
@@ -37592,6 +37592,7 @@ function ProTransitionScreen({player,onChoose}){
             <TeamBadge team={o.club||{col:"#888",col2:"#fff",n:"?"}} size={46}/>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{o.club?.n||o.club?.name}</div>
+              {!(typeof window!=='undefined'&&window.__CPM_NO_LEGA196)&&(o.club?.lg)&&<div data-cpm="lega196" style={{fontSize:FS.caption,color:TH.text,fontWeight:FW.semibold,marginTop:1}}>{(o.club.nat?o.club.nat+" ":"")+o.club.lg+(o.isStayU18?" · giovanili":" · prima squadra")}</div>}{/* [7.999.114 collaudo PO-196 «non si capisce in che serie giocano le squadre offerenti»] la lega del club (gia' risolta per il primo contratto: Lega B per una Primavera 2) e la bandiera. Rosso __CPM_NO_LEGA196 */}
               <div style={{fontSize:FS.caption,color:o.isMain?TH.primary:o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>
                 {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno"+(o.isStayU18?" (stipendio attuale)":""):"–"} · {o.duration} stagion{o.duration===1?"e":"i"}
@@ -52051,11 +52052,18 @@ const getThisWeekMatchday=()=>{
                     color:cur?TH.brandText:mh?mh.won?TH.txGreen:mh.drew?TH.txAmber:TH.txRed:past?TH.faint:TH.faint,
                     fontWeight:cur||mh?700:400}}>
                   {w}
-                  {mh?<div style={{fontSize:FS.caption,marginTop:1}}>{mh.won?"V":mh.drew?"N":"P"}</div>:hasScheduled?<div style={{fontSize:FS.caption,color:cur?TH.brandText:TH.faint,marginTop:1}}>⚽</div>:null}
+                  {(()=>{/* [7.999.114 collaudo PO-195 «nel calendario fai vedere le avversarie!»] sigla dell'avversaria e sede (c = in casa, t = in trasferta) in ogni casella, e il punteggio sulle giocate. Rosso __CPM_NO_AVV195 */
+                    if(typeof window!=='undefined'&&window.__CPM_NO_AVV195)return null;
+                    const _on=(mh&&mh.opponent)||(calEntry&&calEntry.opponentName)||"";if(!_on)return null;
+                    const _cl=(calEntry&&calEntry.opponentId&&(CLUBS||[]).find(c=>c.id===calEntry.opponentId))||(CLUBS||[]).find(c=>c.n===_on||(c.n+" Primavera")===_on);
+                    const _sg=(mh&&mh.oppAbbr)||(_cl&&_cl.a)||String(_on).replace(/^(FC|AC|AS|SS|US|CF|SC)\s+/i,"").slice(0,3).toUpperCase();
+                    const _casa=mh&&mh.isHome!=null?mh.isHome:(calEntry?!!calEntry.isHome:null);
+                    return <div data-cpm="avv195" style={{fontSize:FS.caption,fontWeight:FW.semibold,marginTop:1,letterSpacing:.3}}>{_sg}{_casa==null?"":(_casa?" · c":" · t")}</div>;})()}
+                  {mh?<div style={{fontSize:FS.caption,marginTop:1}}>{mh.won?"V":mh.drew?"N":"P"}{!(typeof window!=='undefined'&&window.__CPM_NO_AVV195)&&mh.homeScore!=null?" "+mh.homeScore+"-"+mh.awayScore:""}</div>:hasScheduled?<div style={{fontSize:FS.caption,color:cur?TH.brandText:TH.faint,marginTop:1}}>⚽</div>:null}
                 </div>;
               })}
             </div>
-            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>V vinta · N pareggio · P persa · ⚽ partita in programma · vuota = settimana senza partite</div>{/* [7.999.49 parte A] legenda della griglia */}
+            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>V vinta · N pareggio · P persa (prima i gol della tua squadra) · sigla dell'avversaria, c in casa, t in trasferta · ⚽ partita in programma · vuota = settimana senza partite</div>{/* [7.999.49 parte A] legenda della griglia */}
           </Card></Fisarmonica>
         </div>
       )}

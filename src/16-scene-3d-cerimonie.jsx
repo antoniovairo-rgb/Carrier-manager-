@@ -81,6 +81,7 @@ function ProTransitionScreen({player,onChoose}){
             <TeamBadge team={o.club||{col:"#888",col2:"#fff",n:"?"}} size={46}/>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontWeight:700,fontSize:FS.body,color:TH.text}}>{o.club?.n||o.club?.name}</div>
+              {!(typeof window!=='undefined'&&window.__CPM_NO_LEGA196)&&(o.club?.lg)&&<div data-cpm="lega196" style={{fontSize:FS.caption,color:TH.text,fontWeight:FW.semibold,marginTop:1}}>{(o.club.nat?o.club.nat+" ":"")+o.club.lg+(o.isStayU18?" · giovanili":" · prima squadra")}</div>}{/* [7.999.114 collaudo PO-196 «non si capisce in che serie giocano le squadre offerenti»] la lega del club (gia' risolta per il primo contratto: Lega B per una Primavera 2) e la bandiera. Rosso __CPM_NO_LEGA196 */}
               <div style={{fontSize:FS.caption,color:o.isMain?TH.primary:o.isStayU18?TH.warning:TH.muted,fontWeight:600}}>{o.contractType}</div>
               <div style={{fontSize:FS.caption,color:TH.muted,marginTop:1}}>
                 {o.role} · {o.wage?_fmtWageY133(o.wage)+"/anno"+(o.isStayU18?" (stipendio attuale)":""):"–"} · {o.duration} stagion{o.duration===1?"e":"i"}

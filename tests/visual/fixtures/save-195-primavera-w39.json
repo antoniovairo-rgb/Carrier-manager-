@@ -1,0 +1,5040 @@
+{
+  "phase": "career",
+  "player": {
+    "name": "Antonio Vairo",
+    "nation": "Italia",
+    "avatarId": 0,
+    "archetype": {
+      "id": "fantasista",
+      "e": "🪄",
+      "name": "Fantasista",
+      "desc": "Tecnica sopraffina e imprevedibile",
+      "bonus": {
+        "tecnica": 8,
+        "dribbling": 7,
+        "passaggio": 4,
+        "fisico": -4,
+        "tiro": -2
+      },
+      "favored": [
+        "tecnica",
+        "dribbling",
+        "passaggio"
+      ]
+    },
+    "position": "Attaccante",
+    "age": 17,
+    "stats": {
+      "velocità": 68,
+      "tecnica": 67,
+      "fisico": 63,
+      "mentalità": 62,
+      "tiro": 63,
+      "passaggio": 64,
+      "dribbling": 75,
+      "posizionamento": 70
+    },
+    "ovr": 70,
+    "club": {
+      "id": "ven",
+      "n": "FC Laguna Primavera",
+      "a": "LAG",
+      "p": 36,
+      "c": "#0f0f0f",
+      "c2": "#f97316",
+      "nat": "🇮🇹",
+      "lg": "Primavera 2",
+      "isU18": true
+    },
+    "trialsDone": 0,
+    "trialStats": [],
+    "season": 1,
+    "week": 39,
+    "weekLived": false,
+    "u18Seasons": 0,
+    "isU18": true,
+    "proStatus": "u18",
+    "goals": 21,
+    "assists": 15,
+    "matches": 34,
+    "totalGoals": 21,
+    "totalAssists": 15,
+    "totalMatches": 34,
+    "morale": 100,
+    "fatigue": 34,
+    "popularity": 65,
+    "skillPoints": 2,
+    "log": [
+      "🎙️ [diretto] \"L'intensità. Nelle ultime partite ce n'è stat…\"",
+      "🎙️ [diplomatico] \"Atmosfera da grande calcio. La vivremo con pa…\"",
+      "⚽ vs FC Altoadige Primavera (0-2) | 0⚽ 0🎯 | 5.7★",
+      "⚽ vs FC Altoadige Primavera (3-1) | 2⚽ 0🎯 | 8.5★",
+      "⚽ vs FC Lariano Primavera (1-1) | 1⚽ 0🎯 | 6.5★",
+      "⚽ vs FC Cesenate Primavera (3-0) | 1⚽ 0🎯 | 6.8★",
+      "⚽ vs FC Bruzio Primavera (2-1) | 1⚽ 0🎯 | 6.8★",
+      "⚽ vs FC Cittadino Primavera (1-0) | 0⚽ 1🎯 | 6.5★",
+      "⚽ vs FC Bruzio Primavera (1-1) | 1⚽ 0🎯 | 6.5★",
+      "⚽ vs FC Pisano Primavera (2-0) | 0⚽ 0🎯 | 6.1★",
+      "⚽ vs FC Sicania Primavera (1-0) | 0⚽ 0🎯 | 6.3★",
+      "⚽ vs FC Pisano Primavera (2-0) | 1⚽ 1🎯 | 7.3★",
+      "🎙️ [diplomatico] \"Onorato ma concentrato. Le etichette non mi i…\"",
+      "🧳 Trasferta lunga e snervante. Jet-lag alle stelle.",
+      "⚽ vs FC Sicania Primavera (2-0) | 1⚽ 0🎯 | 6.9★",
+      "⚽ vs FC Cittadino Primavera (0-0) | 0⚽ 0🎯 | 5.8★",
+      "⚽ vs FC Calabro Primavera (2-0) | 1⚽ 1🎯 | 7.2★",
+      "🎙️ [diplomatico] \"Onorato ma concentrato. Le etichette non mi i…\"",
+      "⚽ vs FC Ciociaro Primavera (0-0) | 0⚽ 0🎯 | 5.8★",
+      "⚽ vs FC Pugliese Primavera (2-1) | 0⚽ 0🎯 | 5.9★",
+      "⚽ vs FC Salernum Primavera (2-2) | 2⚽ 0🎯 | 7.2★",
+      "⚽ vs FC Cesenate Primavera (1-0) | 0⚽ 1🎯 | 6.5★",
+      "⚽ vs FC Cremona Primavera (2-0) | 1⚽ 0🎯 | 6.8★",
+      "🤵 Hai ingaggiato Gianni Ferretti.",
+      "⚽ vs FC Leonessa Primavera (2-0) | 0⚽ 0🎯 | 6.1★",
+      "🎙️ [diplomatico] \"Con il lavoro, la dedizione e il rispetto per…\"",
+      "⚽ vs FC Empolese Primavera (5-1) | 2⚽ 1🎯 | 8★",
+      "🎙️ [diplomatico] \"Rispetto e concentrazione. Ogni stadio ha la …\"",
+      "⚽ vs FC Modenese Primavera (2-1) | 0⚽ 2🎯 | 6.9★",
+      "⚽ vs FC Calabro Primavera (2-0) | 1⚽ 1🎯 | 7.2★",
+      "⚽ vs FC Modenese Primavera (2-0) | 1⚽ 0🎯 | 6.9★",
+      "⚽ vs FC Ciociaro Primavera (3-0) | 1⚽ 0🎯 | 6.8★",
+      "⚽ vs FC Pugliese Primavera (0-0) | 0⚽ 0🎯 | 5.8★",
+      "⚽ vs FC Spezzino Primavera (2-0) | 0⚽ 2🎯 | 6.8★",
+      "🌊 Momento di dubbio: stai vivendo la carriera che desideri?",
+      "⚽ vs FC Parmense Primavera (1-0) | 0⚽ 1🎯 | 6.5★",
+      "🏆 MVP settimana in allenamento. Il gruppo ti rispetta.",
+      "⚽ vs FC Salernum Primavera (3-0) | 1⚽ 2🎯 | 7.4★",
+      "⚽ vs FC Spezzino Primavera (1-0) | 1⚽ 0🎯 | 6.7★",
+      "📺 Intervista sui media: ottima impressione.",
+      "⚽ vs FC Doria Primavera (1-0) | 1⚽ 0🎯 | 6.8★",
+      "🎙️ [umile] \"Cerco di ascoltare il corpo e seguire i consi…\"",
+      "📰 Critica pesante dai media. Pressione psicologica.",
+      "🎙️ [umile] \"A chiedere più aiuto quando ne ho bisogno. La…\"",
+      "⚽ vs FC Lariano Primavera (2-0) | 1⚽ 1🎯 | 7.1★",
+      "🏟️ Hai scelto FC Laguna Primavera!"
+    ],
+    "history": [],
+    "matchHistory": [
+      {
+        "season": 1,
+        "week": 1,
+        "opponent": "FC Lariano Primavera",
+        "oppAbbr": "LCC",
+        "oppCol": "#1d4ed8",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 1,
+        "rating": 7.1,
+        "won": true,
+        "drew": false
+      },
+      {
+        "season": 1,
+        "week": 2,
+        "opponent": "FC Doria Primavera",
+        "oppAbbr": "DOR",
+        "oppCol": "#1d4ed8",
+        "homeScore": 1,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.8,
+        "won": true,
+        "drew": false
+      },
+      {
+        "season": 1,
+        "week": 3,
+        "opponent": "FC Spezzino Primavera",
+        "oppAbbr": "SPE",
+        "oppCol": "#0f0f0f",
+        "homeScore": 1,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.7,
+        "won": true,
+        "drew": false
+      },
+      {
+        "season": 1,
+        "week": 4,
+        "opponent": "FC Salernum Primavera",
+        "oppAbbr": "SAL",
+        "oppCol": "#7c2d12",
+        "homeScore": 3,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 2,
+        "rating": 7.4,
+        "won": true,
+        "drew": false
+      },
+      {
+        "season": 1,
+        "week": 5,
+        "opponent": "FC Parmense Primavera",
+        "oppAbbr": "PAR",
+        "oppCol": "#f59e0b",
+        "homeScore": 1,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 1,
+        "rating": 6.5,
+        "won": true,
+        "drew": false
+      },
+      {
+        "season": 1,
+        "week": 6,
+        "opponent": "FC Spezzino Primavera",
+        "oppAbbr": "SPE",
+        "oppCol": "#0f0f0f",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 2,
+        "rating": 6.8,
+        "won": true,
+        "drew": false
+      },
+      {
+        "season": 1,
+        "week": 7,
+        "opponent": "FC Pugliese Primavera",
+        "oppAbbr": "PUG",
+        "oppCol": "#f5f5f5",
+        "homeScore": 0,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 0,
+        "rating": 5.8,
+        "won": false,
+        "drew": true,
+        "isHome": true,
+        "minutesPlayed": 35,
+        "matchStatus": "bench"
+      },
+      {
+        "season": 1,
+        "week": 8,
+        "opponent": "FC Ciociaro Primavera",
+        "oppAbbr": "CIO",
+        "oppCol": "#f59e0b",
+        "homeScore": 3,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.8,
+        "won": true,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [],
+          "received": [
+            {
+              "min": 71,
+              "name": "Vallone",
+              "full": "Zeno Vallone",
+              "archetype": "capitano"
+            }
+          ]
+        }
+      },
+      {
+        "season": 1,
+        "week": 10,
+        "opponent": "FC Modenese Primavera",
+        "oppAbbr": "MOD",
+        "oppCol": "#f59e0b",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.9,
+        "won": true,
+        "drew": false,
+        "isHome": true,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [],
+          "received": [
+            {
+              "min": 41,
+              "name": "Napolitano",
+              "full": "Simone Napolitano",
+              "archetype": "conflittuale"
+            }
+          ]
+        }
+      },
+      {
+        "season": 1,
+        "week": 11,
+        "opponent": "FC Cremona Primavera",
+        "oppAbbr": "CRE",
+        "oppCol": "#dc2626",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 0,
+        "rating": 6.5,
+        "won": true,
+        "drew": false,
+        "simulated": true
+      },
+      {
+        "season": 1,
+        "week": 12,
+        "opponent": "FC Calabro Primavera",
+        "oppAbbr": "CLB",
+        "oppCol": "#f59e0b",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 1,
+        "rating": 7.2,
+        "won": true,
+        "drew": false,
+        "isHome": true,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [
+            {
+              "min": 71,
+              "name": "Vallone",
+              "full": "Zeno Vallone",
+              "archetype": "capitano"
+            }
+          ],
+          "received": [
+            {
+              "min": 43,
+              "name": "Napolitano",
+              "full": "Simone Napolitano",
+              "archetype": "conflittuale"
+            }
+          ]
+        }
+      },
+      {
+        "season": 1,
+        "week": 13,
+        "opponent": "FC Modenese Primavera",
+        "oppAbbr": "MOD",
+        "oppCol": "#f59e0b",
+        "homeScore": 2,
+        "awayScore": 1,
+        "goals": 0,
+        "assists": 2,
+        "rating": 6.9,
+        "won": true,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [
+            {
+              "min": 15,
+              "name": "Napolitano",
+              "full": "Simone Napolitano",
+              "archetype": "conflittuale"
+            },
+            {
+              "min": 17,
+              "name": "Ratti",
+              "full": "Ivan Ratti",
+              "archetype": "mentore"
+            }
+          ],
+          "received": []
+        }
+      },
+      {
+        "season": 1,
+        "week": 14,
+        "opponent": "FC Empolese Primavera",
+        "oppAbbr": "EMP",
+        "oppCol": "#1e6fd0",
+        "homeScore": 5,
+        "awayScore": 1,
+        "goals": 2,
+        "assists": 1,
+        "rating": 8,
+        "won": true,
+        "drew": false,
+        "isHome": true,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [
+            {
+              "min": 57,
+              "name": "Napolitano",
+              "full": "Simone Napolitano",
+              "archetype": "conflittuale"
+            }
+          ],
+          "received": [
+            {
+              "min": 38,
+              "name": "Vallone",
+              "full": "Zeno Vallone",
+              "archetype": "capitano"
+            }
+          ]
+        }
+      },
+      {
+        "season": 1,
+        "week": 15,
+        "opponent": "FC Leonessa Primavera",
+        "oppAbbr": "LNS",
+        "oppCol": "#60a5fa",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 0,
+        "rating": 6.1,
+        "won": true,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 75,
+        "matchStatus": "subbed_off"
+      },
+      {
+        "season": 1,
+        "week": 16,
+        "opponent": "FC Cremona Primavera",
+        "oppAbbr": "CRE",
+        "oppCol": "#dc2626",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.8,
+        "won": true,
+        "drew": false,
+        "isHome": true,
+        "minutesPlayed": 78,
+        "matchStatus": "subbed_off"
+      },
+      {
+        "season": 1,
+        "week": 17,
+        "opponent": "FC Cesenate Primavera",
+        "oppAbbr": "CES",
+        "oppCol": "#f5f5f5",
+        "homeScore": 1,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 1,
+        "rating": 6.5,
+        "won": true,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [
+            {
+              "min": 14,
+              "name": "Ratti",
+              "full": "Ivan Ratti",
+              "archetype": "mentore"
+            }
+          ],
+          "received": []
+        }
+      },
+      {
+        "season": 1,
+        "week": 18,
+        "opponent": "FC Salernum Primavera",
+        "oppAbbr": "SAL",
+        "oppCol": "#6c1f2e",
+        "homeScore": 2,
+        "awayScore": 2,
+        "goals": 2,
+        "assists": 0,
+        "rating": 7.2,
+        "won": false,
+        "drew": true,
+        "isHome": true,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [],
+          "received": [
+            {
+              "min": 31,
+              "name": "Vallone",
+              "full": "Zeno Vallone",
+              "archetype": "capitano"
+            },
+            {
+              "min": 34,
+              "name": "Vallone",
+              "full": "Zeno Vallone",
+              "archetype": "capitano"
+            }
+          ]
+        }
+      },
+      {
+        "season": 1,
+        "week": 20,
+        "opponent": "FC Pugliese Primavera",
+        "oppAbbr": "PUG",
+        "oppCol": "#f5f5f5",
+        "homeScore": 2,
+        "awayScore": 1,
+        "goals": 0,
+        "assists": 0,
+        "rating": 5.9,
+        "won": true,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter"
+      },
+      {
+        "season": 1,
+        "week": 21,
+        "opponent": "FC Ciociaro Primavera",
+        "oppAbbr": "CIO",
+        "oppCol": "#f59e0b",
+        "homeScore": 0,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 0,
+        "rating": 5.8,
+        "won": false,
+        "drew": true,
+        "isHome": true,
+        "minutesPlayed": 90,
+        "matchStatus": "starter"
+      },
+      {
+        "season": 1,
+        "week": 22,
+        "opponent": "FC Calabro Primavera",
+        "oppAbbr": "CLB",
+        "oppCol": "#f59e0b",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 1,
+        "rating": 7.2,
+        "won": true,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [
+            {
+              "min": 16,
+              "name": "Ratti",
+              "full": "Ivan Ratti",
+              "archetype": "mentore"
+            }
+          ],
+          "received": [
+            {
+              "min": 76,
+              "name": "Napolitano",
+              "full": "Simone Napolitano",
+              "archetype": "conflittuale"
+            }
+          ]
+        }
+      },
+      {
+        "season": 1,
+        "week": 23,
+        "opponent": "FC Cittadino Primavera",
+        "oppAbbr": "CIT",
+        "oppCol": "#6c1f2e",
+        "homeScore": 0,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 0,
+        "rating": 5.8,
+        "won": false,
+        "drew": true,
+        "isHome": true,
+        "minutesPlayed": 90,
+        "matchStatus": "starter"
+      },
+      {
+        "season": 1,
+        "week": 24,
+        "opponent": "FC Sicania Primavera",
+        "oppAbbr": "SIC",
+        "oppCol": "#f472b6",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.9,
+        "won": true,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter"
+      },
+      {
+        "season": 1,
+        "week": 25,
+        "opponent": "FC Pisano Primavera",
+        "oppAbbr": "PIS",
+        "oppCol": "#0f0f0f",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 1,
+        "rating": 7.3,
+        "won": true,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [
+            {
+              "min": 60,
+              "name": "Vallone",
+              "full": "Zeno Vallone",
+              "archetype": "capitano"
+            }
+          ],
+          "received": [
+            {
+              "min": 45,
+              "name": "Vallone",
+              "full": "Zeno Vallone",
+              "archetype": "capitano"
+            }
+          ]
+        }
+      },
+      {
+        "season": 1,
+        "week": 26,
+        "opponent": "FC Sicania Primavera",
+        "oppAbbr": "SIC",
+        "oppCol": "#f472b6",
+        "homeScore": 1,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 0,
+        "rating": 6.3,
+        "won": true,
+        "drew": false,
+        "isHome": true,
+        "minutesPlayed": 90,
+        "matchStatus": "starter"
+      },
+      {
+        "season": 1,
+        "week": 27,
+        "opponent": "FC Pisano Primavera",
+        "oppAbbr": "PIS",
+        "oppCol": "#0f0f0f",
+        "homeScore": 2,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 0,
+        "rating": 6.1,
+        "won": true,
+        "drew": false,
+        "isHome": true,
+        "minutesPlayed": 78,
+        "matchStatus": "subbed_off"
+      },
+      {
+        "season": 1,
+        "week": 29,
+        "opponent": "FC Bruzio Primavera",
+        "oppAbbr": "BRU",
+        "oppCol": "#dc2626",
+        "homeScore": 1,
+        "awayScore": 1,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.5,
+        "won": false,
+        "drew": true,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter"
+      },
+      {
+        "season": 1,
+        "week": 30,
+        "opponent": "FC Cittadino Primavera",
+        "oppAbbr": "CIT",
+        "oppCol": "#6c1f2e",
+        "homeScore": 1,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 1,
+        "rating": 6.5,
+        "won": true,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [
+            {
+              "min": 24,
+              "name": "Palumbo",
+              "full": "Nino Palumbo",
+              "archetype": null
+            }
+          ],
+          "received": []
+        }
+      },
+      {
+        "season": 1,
+        "week": 31,
+        "opponent": "FC Bruzio Primavera",
+        "oppAbbr": "BRU",
+        "oppCol": "#dc2626",
+        "homeScore": 2,
+        "awayScore": 1,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.8,
+        "won": true,
+        "drew": false,
+        "isHome": true,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [],
+          "received": [
+            {
+              "min": 58,
+              "name": "Colombo",
+              "full": "Toni Colombo",
+              "archetype": null
+            }
+          ]
+        }
+      },
+      {
+        "season": 1,
+        "week": 32,
+        "opponent": "FC Cesenate Primavera",
+        "oppAbbr": "CES",
+        "oppCol": "#f5f5f5",
+        "homeScore": 3,
+        "awayScore": 0,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.8,
+        "won": true,
+        "drew": false,
+        "isHome": true,
+        "minutesPlayed": 90,
+        "matchStatus": "starter",
+        "assistLinks": {
+          "given": [],
+          "received": [
+            {
+              "min": 27,
+              "name": "Leone",
+              "full": "Ivan Leone",
+              "archetype": null
+            }
+          ]
+        }
+      },
+      {
+        "season": 1,
+        "week": 33,
+        "opponent": "FC Lariano Primavera",
+        "oppAbbr": "LAR",
+        "oppCol": "#60a5fa",
+        "homeScore": 1,
+        "awayScore": 1,
+        "goals": 1,
+        "assists": 0,
+        "rating": 6.5,
+        "won": false,
+        "drew": true,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter"
+      },
+      {
+        "season": 1,
+        "week": 34,
+        "opponent": "FC Altoadige Primavera",
+        "oppAbbr": "ALT",
+        "oppCol": "#f5f5f5",
+        "homeScore": 3,
+        "awayScore": 1,
+        "goals": 2,
+        "assists": 0,
+        "rating": 8.5,
+        "won": true,
+        "drew": false,
+        "isHome": true,
+        "minutesPlayed": 78,
+        "matchStatus": "subbed_off"
+      },
+      {
+        "season": 1,
+        "week": 36,
+        "opponent": "FC Parmense Primavera",
+        "oppAbbr": "PAR",
+        "oppCol": "#f59e0b",
+        "homeScore": 1,
+        "awayScore": 0,
+        "goals": 0,
+        "assists": 0,
+        "rating": 6.7,
+        "won": true,
+        "drew": false,
+        "simulated": true
+      },
+      {
+        "season": 1,
+        "week": 37,
+        "opponent": "FC Leonessa Primavera",
+        "oppAbbr": "LNS",
+        "oppCol": "#60a5fa",
+        "homeScore": 3,
+        "awayScore": 1,
+        "goals": 0,
+        "assists": 1,
+        "rating": 6.7,
+        "won": true,
+        "drew": false,
+        "simulated": true
+      },
+      {
+        "season": 1,
+        "week": 38,
+        "opponent": "FC Altoadige Primavera",
+        "oppAbbr": "ALT",
+        "oppCol": "#f5f5f5",
+        "homeScore": 0,
+        "awayScore": 2,
+        "goals": 0,
+        "assists": 0,
+        "rating": 5.7,
+        "won": false,
+        "drew": false,
+        "isHome": false,
+        "minutesPlayed": 90,
+        "matchStatus": "starter"
+      }
+    ],
+    "value": 9.9,
+    "coachTrust": 100,
+    "form": 90,
+    "transferOffers": [],
+    "offerHistory": [],
+    "contract": {
+      "duration": 1,
+      "wage": 577,
+      "expiresAtSeason": 2
+    },
+    "aiData": {
+      "lastOpponentTactic": {
+        "formation": "4-3-3",
+        "pressure": 52.5,
+        "reasoning": "Tattica deterministica (AI non disponibile).",
+        "week": 38
+      },
+      "scoutReports": {
+        "S1W1": {
+          "weaknesses": [
+            "Pressing disorganizzato — facilmente superati con uno-due veloci",
+            "Difesa alta e vulnerabile agli scatti in profondità"
+          ],
+          "strengths": [
+            "Squadra compatta in fase difensiva",
+            "Buona organizzazione sulle palle inattive"
+          ],
+          "recommendation": "Sfrutta il dribbling per saltare l'uomo nei duelli sulla trequarti. Il FC Lariano Primavera è alla tua portata — mantieni la concentrazione per tutti i 90 minuti. Prima volta vs questa squadra.",
+          "difficulty": 44,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null
+        },
+        "S1W2": {
+          "weaknesses": [
+            "Transizioni difensive lente dopo il 60°",
+            "Pressing disorganizzato — facilmente superati con uno-due veloci"
+          ],
+          "strengths": [
+            "Entusiasmo e voglia di lottare",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Sfrutta il dribbling per saltare l'uomo nei duelli sulla trequarti. Il FC Doria Primavera è alla tua portata — mantieni la concentrazione per tutti i 90 minuti. Prima volta vs questa squadra.",
+          "difficulty": 54,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null
+        },
+        "S1W3": {
+          "weaknesses": [
+            "Difesa alta e vulnerabile agli scatti in profondità",
+            "Terzini sbilanciati in avanti — fasce scoperte"
+          ],
+          "strengths": [
+            "Entusiasmo e voglia di lottare",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Sfrutta il dribbling per saltare l'uomo nei duelli sulla trequarti. Il FC Spezzino Primavera è alla tua portata — mantieni la concentrazione per tutti i 90 minuti. Prima volta vs questa squadra.",
+          "difficulty": 51,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null
+        },
+        "S1W4": {
+          "weaknesses": [
+            "Transizioni difensive lente dopo il 60°",
+            "Bassa concentrazione sulle situazioni di palla inattiva"
+          ],
+          "strengths": [
+            "Squadra compatta in fase difensiva",
+            "Buona organizzazione sulle palle inattive"
+          ],
+          "recommendation": "Sfrutta il dribbling per saltare l'uomo nei duelli sulla trequarti. Il FC Salernum Primavera è alla tua portata — mantieni la concentrazione per tutti i 90 minuti. Prima volta vs questa squadra.",
+          "difficulty": 48,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null
+        },
+        "S1W5": {
+          "weaknesses": [
+            "Portiere poco sicuro sulle palle alte",
+            "Difficoltà nel reparto basso sulle rimesse laterali veloci"
+          ],
+          "strengths": [
+            "Buona organizzazione sulle palle inattive",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Sfrutta il dribbling per saltare l'uomo nei duelli sulla trequarti. Il FC Parmense Primavera è alla tua portata — mantieni la concentrazione per tutti i 90 minuti. Prima volta vs questa squadra.",
+          "difficulty": 53,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null
+        },
+        "S1W6": {
+          "weaknesses": [
+            "Portiere poco sicuro sulle palle alte",
+            "Difesa alta e vulnerabile agli scatti in profondità"
+          ],
+          "strengths": [
+            "Buona organizzazione sulle palle inattive",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Sfrutta il dribbling per saltare l'uomo nei duelli sulla trequarti. Il FC Spezzino Primavera è alla tua portata — mantieni la concentrazione per tutti i 90 minuti. 1V-0P-0S nei precedenti.",
+          "difficulty": 51,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null
+        },
+        "S1W7": {
+          "weaknesses": [
+            "Palle filtranti: si abbassano tardi in transizione: verticalizza dietro la difesa.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Reparto arretrato dominante nel gioco aereo",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca palle filtranti e tiri potenti — sono i loro punti deboli. Attenzione: sono forti di testa, evita i palloni alti e gioca basso. Il FC Pugliese Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 51,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "through",
+              "cat": "def",
+              "fam": "Palle filtranti",
+              "rx": {},
+              "tip": "si abbassano tardi in transizione: verticalizza dietro la difesa."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "aerial",
+            "strDesc": "Reparto arretrato dominante nel gioco aereo",
+            "rx": {},
+            "tip": "attenzione: sono forti di testa, evita i palloni alti e gioca basso."
+          }
+        },
+        "S1W8": {
+          "weaknesses": [
+            "Palle filtranti: si abbassano tardi in transizione: verticalizza dietro la difesa.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Centrocampo fisico e aggressivo nei contrasti",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca palle filtranti e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: centrocampo fisico, evita i duelli e gioca sul movimento. Il FC Ciociaro Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 50,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "through",
+              "cat": "def",
+              "fam": "Palle filtranti",
+              "rx": {},
+              "tip": "si abbassano tardi in transizione: verticalizza dietro la difesa."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "tackle",
+            "strDesc": "Centrocampo fisico e aggressivo nei contrasti",
+            "rx": {},
+            "tip": "attenzione: centrocampo fisico, evita i duelli e gioca sul movimento."
+          }
+        },
+        "S1W10": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e tiri potenti — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Modenese Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 50,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W12": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Centrocampo fisico e aggressivo nei contrasti",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: centrocampo fisico, evita i duelli e gioca sul movimento. Il FC Calabro Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 48,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "tackle",
+            "strDesc": "Centrocampo fisico e aggressivo nei contrasti",
+            "rx": {},
+            "tip": "attenzione: centrocampo fisico, evita i duelli e gioca sul movimento."
+          }
+        },
+        "S1W13": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e tiri potenti — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Modenese Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 50,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W14": {
+          "weaknesses": [
+            "Palle filtranti: si abbassano tardi in transizione: verticalizza dietro la difesa.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Entusiasmo e voglia di lottare"
+          ],
+          "recommendation": "Il piano del mister: cerca palle filtranti e tiri potenti — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Empolese Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 54,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "through",
+              "cat": "def",
+              "fam": "Palle filtranti",
+              "rx": {},
+              "tip": "si abbassano tardi in transizione: verticalizza dietro la difesa."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W15": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e tiri potenti — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Leonessa Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 52,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W16": {
+          "weaknesses": [
+            "Dribbling nell'1v1: i terzini si fanno saltare: punta l'uomo nell'uno-contro-uno sulla trequarti.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca dribbling nell'1v1 e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Cremona Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 50,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "dribble",
+              "cat": "def",
+              "fam": "Dribbling nell'1v1",
+              "rx": {},
+              "tip": "i terzini si fanno saltare: punta l'uomo nell'uno-contro-uno sulla trequarti."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W17": {
+          "weaknesses": [
+            "Gioco aereo: sono deboli in mezzo all'area: attacca di testa quando arriva il cross.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Entusiasmo e voglia di lottare"
+          ],
+          "recommendation": "Il piano del mister: cerca gioco aereo e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Cesenate Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 47,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "header",
+              "cat": "def",
+              "fam": "Gioco aereo",
+              "rx": {},
+              "tip": "sono deboli in mezzo all'area: attacca di testa quando arriva il cross."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W18": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Reparto arretrato dominante nel gioco aereo",
+            "Buona organizzazione sulle palle inattive"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: sono forti di testa, evita i palloni alti e gioca basso. Il FC Salernum Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 48,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "aerial",
+            "strDesc": "Reparto arretrato dominante nel gioco aereo",
+            "rx": {},
+            "tip": "attenzione: sono forti di testa, evita i palloni alti e gioca basso."
+          }
+        },
+        "S1W20": {
+          "weaknesses": [
+            "Palle filtranti: si abbassano tardi in transizione: verticalizza dietro la difesa.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Reparto arretrato dominante nel gioco aereo",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca palle filtranti e tiri potenti — sono i loro punti deboli. Attenzione: sono forti di testa, evita i palloni alti e gioca basso. Il FC Pugliese Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 0V-1P-0S nei precedenti.",
+          "difficulty": 51,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 0,
+            "d": 1,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "through",
+              "cat": "def",
+              "fam": "Palle filtranti",
+              "rx": {},
+              "tip": "si abbassano tardi in transizione: verticalizza dietro la difesa."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "aerial",
+            "strDesc": "Reparto arretrato dominante nel gioco aereo",
+            "rx": {},
+            "tip": "attenzione: sono forti di testa, evita i palloni alti e gioca basso."
+          }
+        },
+        "S1W21": {
+          "weaknesses": [
+            "Palle filtranti: si abbassano tardi in transizione: verticalizza dietro la difesa.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Centrocampo fisico e aggressivo nei contrasti",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca palle filtranti e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: centrocampo fisico, evita i duelli e gioca sul movimento. Il FC Ciociaro Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 50,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "through",
+              "cat": "def",
+              "fam": "Palle filtranti",
+              "rx": {},
+              "tip": "si abbassano tardi in transizione: verticalizza dietro la difesa."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "tackle",
+            "strDesc": "Centrocampo fisico e aggressivo nei contrasti",
+            "rx": {},
+            "tip": "attenzione: centrocampo fisico, evita i duelli e gioca sul movimento."
+          }
+        },
+        "S1W22": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Centrocampo fisico e aggressivo nei contrasti",
+            "Squadra compatta in fase difensiva"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: centrocampo fisico, evita i duelli e gioca sul movimento. Il FC Calabro Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 48,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "tackle",
+            "strDesc": "Centrocampo fisico e aggressivo nei contrasti",
+            "rx": {},
+            "tip": "attenzione: centrocampo fisico, evita i duelli e gioca sul movimento."
+          }
+        },
+        "S1W23": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Entusiasmo e voglia di lottare"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Cittadino Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 46,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W24": {
+          "weaknesses": [
+            "Gioco aereo: sono deboli in mezzo all'area: attacca di testa quando arriva il cross.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Centrocampo fisico e aggressivo nei contrasti",
+            "Buona organizzazione sulle palle inattive"
+          ],
+          "recommendation": "Il piano del mister: cerca gioco aereo e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: centrocampo fisico, evita i duelli e gioca sul movimento. Il FC Sicania Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 52,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "header",
+              "cat": "def",
+              "fam": "Gioco aereo",
+              "rx": {},
+              "tip": "sono deboli in mezzo all'area: attacca di testa quando arriva il cross."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "tackle",
+            "strDesc": "Centrocampo fisico e aggressivo nei contrasti",
+            "rx": {},
+            "tip": "attenzione: centrocampo fisico, evita i duelli e gioca sul movimento."
+          }
+        },
+        "S1W25": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Buona organizzazione sulle palle inattive"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e tiri potenti — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Pisano Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 48,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W26": {
+          "weaknesses": [
+            "Gioco aereo: sono deboli in mezzo all'area: attacca di testa quando arriva il cross.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Centrocampo fisico e aggressivo nei contrasti",
+            "Buona organizzazione sulle palle inattive"
+          ],
+          "recommendation": "Il piano del mister: cerca gioco aereo e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: centrocampo fisico, evita i duelli e gioca sul movimento. Il FC Sicania Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 52,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "header",
+              "cat": "def",
+              "fam": "Gioco aereo",
+              "rx": {},
+              "tip": "sono deboli in mezzo all'area: attacca di testa quando arriva il cross."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "tackle",
+            "strDesc": "Centrocampo fisico e aggressivo nei contrasti",
+            "rx": {},
+            "tip": "attenzione: centrocampo fisico, evita i duelli e gioca sul movimento."
+          }
+        },
+        "S1W27": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Buona organizzazione sulle palle inattive"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e tiri potenti — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Pisano Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 48,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W29": {
+          "weaknesses": [
+            "Palle filtranti: si abbassano tardi in transizione: verticalizza dietro la difesa.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Entusiasmo e voglia di lottare"
+          ],
+          "recommendation": "Il piano del mister: cerca palle filtranti e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Bruzio Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 44,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "through",
+              "cat": "def",
+              "fam": "Palle filtranti",
+              "rx": {},
+              "tip": "si abbassano tardi in transizione: verticalizza dietro la difesa."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W30": {
+          "weaknesses": [
+            "Cross tesi dal fondo: la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Entusiasmo e voglia di lottare"
+          ],
+          "recommendation": "Il piano del mister: cerca cross tesi dal fondo e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Cittadino Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 0V-1P-0S nei precedenti.",
+          "difficulty": 46,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 0,
+            "d": 1,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "cross",
+              "cat": "def",
+              "fam": "Cross tesi dal fondo",
+              "rx": {},
+              "tip": "la loro difesa va in affanno: appena arrivi sul fondo, mettila tesa in mezzo."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W31": {
+          "weaknesses": [
+            "Palle filtranti: si abbassano tardi in transizione: verticalizza dietro la difesa.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Entusiasmo e voglia di lottare"
+          ],
+          "recommendation": "Il piano del mister: cerca palle filtranti e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Bruzio Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 0V-1P-0S nei precedenti.",
+          "difficulty": 44,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 0,
+            "d": 1,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "through",
+              "cat": "def",
+              "fam": "Palle filtranti",
+              "rx": {},
+              "tip": "si abbassano tardi in transizione: verticalizza dietro la difesa."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W32": {
+          "weaknesses": [
+            "Gioco aereo: sono deboli in mezzo all'area: attacca di testa quando arriva il cross.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Entusiasmo e voglia di lottare"
+          ],
+          "recommendation": "Il piano del mister: cerca gioco aereo e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Cesenate Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 47,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "header",
+              "cat": "def",
+              "fam": "Gioco aereo",
+              "rx": {},
+              "tip": "sono deboli in mezzo all'area: attacca di testa quando arriva il cross."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W33": {
+          "weaknesses": [
+            "Dribbling nell'1v1: i terzini si fanno saltare: punta l'uomo nell'uno-contro-uno sulla trequarti.",
+            "Scavetto e tiro a giro: il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+          ],
+          "strengths": [
+            "Pressing alto e organizzato",
+            "Entusiasmo e voglia di lottare"
+          ],
+          "recommendation": "Il piano del mister: cerca dribbling nell'1v1 e scavetto e tiro a giro — sono i loro punti deboli. Attenzione: pressano alto, non attardarti sul palleggio e scarica veloce. Il FC Lariano Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 44,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "dribble",
+              "cat": "def",
+              "fam": "Dribbling nell'1v1",
+              "rx": {},
+              "tip": "i terzini si fanno saltare: punta l'uomo nell'uno-contro-uno sulla trequarti."
+            },
+            {
+              "key": "finesse",
+              "cat": "gk",
+              "fam": "Scavetto e tiro a giro",
+              "rx": {},
+              "tip": "il portiere esce a vuoto: puniscilo con lo scavetto o a giro nell'angolino."
+            }
+          ],
+          "solid": {
+            "key": "press",
+            "strDesc": "Pressing alto e organizzato",
+            "rx": {},
+            "tip": "attenzione: pressano alto, non attardarti sul palleggio e scarica veloce."
+          }
+        },
+        "S1W34": {
+          "weaknesses": [
+            "Palle filtranti: si abbassano tardi in transizione: verticalizza dietro la difesa.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Centrocampo fisico e aggressivo nei contrasti",
+            "Buona organizzazione sulle palle inattive"
+          ],
+          "recommendation": "Il piano del mister: cerca palle filtranti e tiri potenti — sono i loro punti deboli. Centrocampo fisico: evita i duelli e gioca sul movimento. Il FC Altoadige Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. Prima volta vs questa squadra.",
+          "difficulty": 45,
+          "league": "Primavera 2",
+          "h2h": null,
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "through",
+              "cat": "def",
+              "fam": "Palle filtranti",
+              "rx": {},
+              "tip": "si abbassano tardi in transizione: verticalizza dietro la difesa."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "tackle",
+            "strDesc": "Centrocampo fisico e aggressivo nei contrasti",
+            "rx": {},
+            "tip": "centrocampo fisico: evita i duelli e gioca sul movimento."
+          }
+        },
+        "S1W38": {
+          "weaknesses": [
+            "Palle filtranti: si abbassano tardi in transizione: verticalizza dietro la difesa.",
+            "Tiri potenti: il portiere è insicuro: quando puoi, calcia forte e teso."
+          ],
+          "strengths": [
+            "Centrocampo fisico e aggressivo nei contrasti",
+            "Buona organizzazione sulle palle inattive"
+          ],
+          "recommendation": "Il piano del mister: cerca palle filtranti e tiri potenti — sono i loro punti deboli. Centrocampo fisico: evita i duelli e gioca sul movimento. Il FC Altoadige Primavera è alla tua portata: colpisci i loro punti deboli e resta concentrato. 1V-0P-0S nei precedenti.",
+          "difficulty": 45,
+          "league": "Primavera 2",
+          "h2h": {
+            "w": 1,
+            "d": 0,
+            "l": 0,
+            "total": 1
+          },
+          "memNote": null,
+          "exploits": [
+            {
+              "key": "through",
+              "cat": "def",
+              "fam": "Palle filtranti",
+              "rx": {},
+              "tip": "si abbassano tardi in transizione: verticalizza dietro la difesa."
+            },
+            {
+              "key": "power",
+              "cat": "gk",
+              "fam": "Tiri potenti",
+              "rx": {},
+              "tip": "il portiere è insicuro: quando puoi, calcia forte e teso."
+            }
+          ],
+          "solid": {
+            "key": "tackle",
+            "strDesc": "Centrocampo fisico e aggressivo nei contrasti",
+            "rx": {},
+            "tip": "centrocampo fisico: evita i duelli e gioca sul movimento."
+          }
+        }
+      },
+      "pressReports": {
+        "S1W2": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Lariano Primavera 2-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 7.1)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-0 — tre punti d'oro!",
+            "Dati: Antonio Vairo con 1G+1A — efficienza da top player per il FC Laguna Primavera",
+            "✅ FC Laguna Primavera 2-0 FC Lariano Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "papers": [
+            "Gazzetta dello Sport",
+            "Corriere dello Sport",
+            "Tuttosport",
+            "La Stampa Sport",
+            "Sky Sport 24"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 7.1,
+            "label": "BUONO",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 1
+          },
+          "motm": "Rizzo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Lariano Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Avevamo preparato bene la partita e si è visto in campo.\" — Mister",
+            "\"Tre punti fondamentali. Il lavoro paga sempre.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W3": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Doria Primavera 1-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 6.8)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 1-0 — tre punti d'oro!",
+            "Analisi: 1 reti e posizionamento premiato nel 1-0",
+            "✅ FC Laguna Primavera 1-0 FC Doria Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "papers": [
+            "Gazzetta dello Sport",
+            "Corriere dello Sport",
+            "Tuttosport",
+            "La Stampa Sport",
+            "Sky Sport 24"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.8,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Pepe",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Doria Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Avevamo preparato bene la partita e si è visto in campo.\" — Mister",
+            "\"Vittoria di squadra. Andiamo avanti step by step.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W4": {
+          "headlines": [
+            "3ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 1-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 6.7)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 1-0 — tre punti d'oro!",
+            "Analisi: 1 reti e posizionamento premiato nel 1-0",
+            "✅ FC Laguna Primavera 1-0 FC Spezzino Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "papers": [
+            "Gazzetta dello Sport",
+            "Corriere dello Sport",
+            "Tuttosport",
+            "La Stampa Sport",
+            "Sky Sport 24"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.7,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Merlo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Spezzino Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Antonio Vairo ha fatto la differenza stasera. Sono orgoglioso della squadra.\" — Mister",
+            "\"Dedico questa vittoria ai tifosi che ci hanno sostenuto.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W5": {
+          "headlines": [
+            "4ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 3-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 7.4)",
+            "SPETTACOLO! Antonio Vairo è un fenomeno: FC Laguna Primavera vince 3-0",
+            "Dati: Antonio Vairo con 1G+2A — efficienza da top player per il FC Laguna Primavera",
+            "✅ FC Laguna Primavera 3-0 FC Salernum Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "papers": [
+            "Gazzetta dello Sport",
+            "Corriere dello Sport",
+            "Tuttosport",
+            "La Stampa Sport",
+            "Sky Sport 24"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 7.4,
+            "label": "BUONO",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 2
+          },
+          "motm": "Antonio Vairo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Salernum Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Tre punti meritatissimi. Antonio Vairo ha giocato a un livello superiore.\" — Mister",
+            "\"Dedico questa vittoria ai tifosi che ci hanno sostenuto.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W6": {
+          "headlines": [
+            "5ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 1-0",
+            "Solidità premia il FC Laguna Primavera: clean sheet e vittoria 1-0 su FC Parmense Primavera",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 1-0 — tre punti d'oro!",
+            "Tattica vincente: il FC Laguna Primavera domina e porta a casa i 3 punti vs FC Parmense Primavera",
+            "✅ FC Laguna Primavera 1-0 FC Parmense Primavera | +3pts"
+          ],
+          "papers": [
+            "Gazzetta dello Sport",
+            "Corriere dello Sport",
+            "Tuttosport",
+            "La Stampa Sport",
+            "Sky Sport 24"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.5,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 0,
+            "assists": 1
+          },
+          "motm": "Marini",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Antonio Vairo ha fatto la differenza stasera. Sono orgoglioso della squadra.\" — Mister",
+            "\"Stiamo crescendo come gruppo. È bello farne parte.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraVince",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W7": {
+          "headlines": [
+            "5ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 2-0",
+            "Solidità premia il FC Laguna Primavera: clean sheet e vittoria 2-0 su FC Spezzino Primavera",
+            "SPETTACOLO! Antonio Vairo è un fenomeno: FC Laguna Primavera vince 2-0",
+            "Tattica vincente: il FC Laguna Primavera domina e porta a casa i 3 punti vs FC Spezzino Primavera",
+            "✅ FC Laguna Primavera 2-0 FC Spezzino Primavera | +3pts"
+          ],
+          "papers": [
+            "Gazzetta dello Sport",
+            "Corriere dello Sport",
+            "Tuttosport",
+            "La Stampa Sport",
+            "Sky Sport 24"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.8,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 0,
+            "assists": 2
+          },
+          "motm": "Antonio Vairo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Antonio Vairo ha fatto la differenza stasera. Sono orgoglioso della squadra.\" — Mister",
+            "\"Volevamo questi tre punti e li abbiamo conquistati con sacrificio.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraVince",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W8": {
+          "headlines": [
+            "Pari combattuto: FC Laguna Primavera e FC Pugliese Primavera dividono la posta 0-0",
+            "Equilibrio totale: FC Laguna Primavera–FC Pugliese Primavera 0-0, la classifica non sorride",
+            "Rimpianto enorme! Il FC Laguna Primavera non sfonda: finisce 0-0 con FC Pugliese Primavera",
+            "Il 0-0 riflette l'equilibrio tattico: FC Laguna Primavera e FC Pugliese Primavera si equivalgono",
+            "🟡 FC Laguna Primavera 0-0 FC Pugliese Primavera | Pari | Antonio Vairo 5.8★"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 5.8,
+            "label": "INSUFFICIENTE",
+            "color": "#dc2626",
+            "goals": 0,
+            "assists": 0
+          },
+          "motm": "Leone",
+          "flop": "Antonio Vairo — prestazione opaca, fatica a incidere",
+          "tacticalNote": "Partita tatticamente chiusa. Entrambe le squadre hanno preferito non rischiare.",
+          "fanReactions": [
+            "Tifosi divisi: punto guadagnato o due persi?",
+            "Si poteva vincere, ma un punto è pur sempre un punto."
+          ],
+          "quotes": [
+            "\"Avremmo meritato di più, ma il calcio è anche questo.\" — Mister",
+            "\"Un punto è un punto. Guardiamo avanti con fiducia.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraPareggio",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W9": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Ciociaro Primavera 3-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 6.8)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 3-0 — tre punti d'oro!",
+            "Analisi: 1 reti e posizionamento premiato nel 3-0",
+            "✅ FC Laguna Primavera 3-0 FC Ciociaro Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.8,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Leone",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Ciociaro Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Avevamo preparato bene la partita e si è visto in campo.\" — Mister",
+            "\"Stiamo crescendo come gruppo. È bello farne parte.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W11": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Modenese Primavera 2-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 6.9)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-0 — tre punti d'oro!",
+            "Analisi: 1 reti e posizionamento premiato nel 2-0",
+            "✅ FC Laguna Primavera 2-0 FC Modenese Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.9,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Colombo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Modenese Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Antonio Vairo è in un momento di grazia. Continuiamo così.\" — Mister",
+            "\"Dedico questa vittoria ai tifosi che ci hanno sostenuto.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W13": {
+          "headlines": [
+            "4ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 2-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 7.2)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-0 — tre punti d'oro!",
+            "Dati: Antonio Vairo con 1G+1A — efficienza da top player per il FC Laguna Primavera",
+            "✅ FC Laguna Primavera 2-0 FC Calabro Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 7.2,
+            "label": "BUONO",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 1
+          },
+          "motm": "Colombo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Calabro Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Avevamo preparato bene la partita e si è visto in campo.\" — Mister",
+            "\"Dedico questa vittoria ai tifosi che ci hanno sostenuto.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W14": {
+          "headlines": [
+            "5ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 2-1",
+            "Il FC Laguna Primavera la spunta 2-1 su FC Modenese Primavera: vittoria di carattere",
+            "SPETTACOLO! Antonio Vairo è un fenomeno: FC Laguna Primavera vince 2-1",
+            "Tattica vincente: il FC Laguna Primavera domina e porta a casa i 3 punti vs FC Modenese Primavera",
+            "✅ FC Laguna Primavera 2-1 FC Modenese Primavera | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.9,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 0,
+            "assists": 2
+          },
+          "motm": "Antonio Vairo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Antonio Vairo è in un momento di grazia. Continuiamo così.\" — Mister",
+            "\"Vittoria di squadra. Andiamo avanti step by step.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraVince",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W15": {
+          "headlines": [
+            "5ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 5-1",
+            "Antonio Vairo decide — 2 reti e FC Laguna Primavera conquista 3 punti (voto 8)",
+            "SPETTACOLO! Antonio Vairo è un fenomeno: FC Laguna Primavera vince 5-1",
+            "Dati: Antonio Vairo con 2G+1A — efficienza da top player per il FC Laguna Primavera",
+            "✅ FC Laguna Primavera 5-1 FC Empolese Primavera | Antonio Vairo x2 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 8,
+            "label": "OTTIMO",
+            "color": "#16a34a",
+            "goals": 2,
+            "assists": 1
+          },
+          "motm": "Antonio Vairo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Empolese Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Avevamo preparato bene la partita e si è visto in campo.\" — Mister",
+            "\"Vittoria di squadra. Andiamo avanti step by step.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W16": {
+          "headlines": [
+            "5ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 2-0",
+            "Solidità premia il FC Laguna Primavera: clean sheet e vittoria 2-0 su FC Leonessa Primavera",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-0 — tre punti d'oro!",
+            "Tattica vincente: il FC Laguna Primavera domina e porta a casa i 3 punti vs FC Leonessa Primavera",
+            "✅ FC Laguna Primavera 2-0 FC Leonessa Primavera | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.1,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 0,
+            "assists": 0
+          },
+          "motm": "Fiorentino",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Prestazione maiuscola. Questo gruppo non smette mai di sorprendermi.\" — Mister",
+            "\"Stiamo crescendo come gruppo. È bello farne parte.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraVince",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W17": {
+          "headlines": [
+            "5ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 2-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 6.8)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-0 — tre punti d'oro!",
+            "Analisi: 1 reti e posizionamento premiato nel 2-0",
+            "✅ FC Laguna Primavera 2-0 FC Cremona Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.8,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Marra",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Cremona Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Prestazione maiuscola. Questo gruppo non smette mai di sorprendermi.\" — Mister",
+            "\"Dedico questa vittoria ai tifosi che ci hanno sostenuto.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W18": {
+          "headlines": [
+            "5ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 1-0",
+            "Solidità premia il FC Laguna Primavera: clean sheet e vittoria 1-0 su FC Cesenate Primavera",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 1-0 — tre punti d'oro!",
+            "Tattica vincente: il FC Laguna Primavera domina e porta a casa i 3 punti vs FC Cesenate Primavera",
+            "✅ FC Laguna Primavera 1-0 FC Cesenate Primavera | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.5,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 0,
+            "assists": 1
+          },
+          "motm": "Palumbo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Non era semplice, ma i ragazzi hanno risposto presente. Bravi tutti.\" — Mister",
+            "\"Volevamo questi tre punti e li abbiamo conquistati con sacrificio.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraVince",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W19": {
+          "headlines": [
+            "Antonio Vairo salva il pari: FC Laguna Primavera–FC Salernum Primavera 2-2 con una giocata decisiva",
+            "Equilibrio totale: FC Laguna Primavera–FC Salernum Primavera 2-2, la classifica non sorride",
+            "Rimpianto enorme! Il FC Laguna Primavera non sfonda: finisce 2-2 con FC Salernum Primavera",
+            "Il 2-2 riflette l'equilibrio tattico: FC Laguna Primavera e FC Salernum Primavera si equivalgono",
+            "🟡 FC Laguna Primavera 2-2 FC Salernum Primavera | Pari | Antonio Vairo 7.2★"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 7.2,
+            "label": "BUONO",
+            "color": "#d97706",
+            "goals": 2,
+            "assists": 0
+          },
+          "motm": "Antonio Vairo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Partita tatticamente chiusa. Entrambe le squadre hanno preferito non rischiare.",
+          "fanReactions": [
+            "Tifosi divisi: punto guadagnato o due persi?",
+            "Si poteva vincere, ma un punto è pur sempre un punto."
+          ],
+          "quotes": [
+            "\"La squadra ha lottato fino alla fine. Posso rimproverare poco.\" — Mister",
+            "\"Il pareggio brucia, ma la prestazione c'è stata. Testa bassa e lavoro.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraPareggio",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W21": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Pugliese Primavera 2-1",
+            "Il FC Laguna Primavera la spunta 2-1 su FC Pugliese Primavera: vittoria di carattere",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-1 — tre punti d'oro!",
+            "Tattica vincente: il FC Laguna Primavera domina e porta a casa i 3 punti vs FC Pugliese Primavera",
+            "✅ FC Laguna Primavera 2-1 FC Pugliese Primavera | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 5.9,
+            "label": "INSUFFICIENTE",
+            "color": "#dc2626",
+            "goals": 0,
+            "assists": 0
+          },
+          "motm": "Ferraro",
+          "flop": "Antonio Vairo — prestazione opaca, fatica a incidere",
+          "tacticalNote": "Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Tre punti meritatissimi. Antonio Vairo ha giocato a un livello superiore.\" — Mister",
+            "\"Volevamo questi tre punti e li abbiamo conquistati con sacrificio.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraVince",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W22": {
+          "headlines": [
+            "Pari combattuto: FC Laguna Primavera e FC Ciociaro Primavera dividono la posta 0-0",
+            "Equilibrio totale: FC Laguna Primavera–FC Ciociaro Primavera 0-0, la classifica non sorride",
+            "Rimpianto enorme! Il FC Laguna Primavera non sfonda: finisce 0-0 con FC Ciociaro Primavera",
+            "Il 0-0 riflette l'equilibrio tattico: FC Laguna Primavera e FC Ciociaro Primavera si equivalgono",
+            "🟡 FC Laguna Primavera 0-0 FC Ciociaro Primavera | Pari | Antonio Vairo 5.8★"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 5.8,
+            "label": "INSUFFICIENTE",
+            "color": "#dc2626",
+            "goals": 0,
+            "assists": 0
+          },
+          "motm": "Ferretti",
+          "flop": "Antonio Vairo — prestazione opaca, fatica a incidere",
+          "tacticalNote": "Partita tatticamente chiusa. Entrambe le squadre hanno preferito non rischiare.",
+          "fanReactions": [
+            "Tifosi divisi: punto guadagnato o due persi?",
+            "Si poteva vincere, ma un punto è pur sempre un punto."
+          ],
+          "quotes": [
+            "\"Non siamo stati cinici sotto porta. Dobbiamo migliorare lì.\" — Mister",
+            "\"Il pareggio brucia, ma la prestazione c'è stata. Testa bassa e lavoro.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraPareggio",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W23": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Calabro Primavera 2-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 7.2)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-0 — tre punti d'oro!",
+            "Dati: Antonio Vairo con 1G+1A — efficienza da top player per il FC Laguna Primavera",
+            "✅ FC Laguna Primavera 2-0 FC Calabro Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 7.2,
+            "label": "BUONO",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 1
+          },
+          "motm": "Colombo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Calabro Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Antonio Vairo è in un momento di grazia. Continuiamo così.\" — Mister",
+            "\"Vittoria di squadra. Andiamo avanti step by step.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W24": {
+          "headlines": [
+            "Pari combattuto: FC Laguna Primavera e FC Cittadino Primavera dividono la posta 0-0",
+            "Equilibrio totale: FC Laguna Primavera–FC Cittadino Primavera 0-0, la classifica non sorride",
+            "Rimpianto enorme! Il FC Laguna Primavera non sfonda: finisce 0-0 con FC Cittadino Primavera",
+            "Il 0-0 riflette l'equilibrio tattico: FC Laguna Primavera e FC Cittadino Primavera si equivalgono",
+            "🟡 FC Laguna Primavera 0-0 FC Cittadino Primavera | Pari | Antonio Vairo 5.8★"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 5.8,
+            "label": "INSUFFICIENTE",
+            "color": "#dc2626",
+            "goals": 0,
+            "assists": 0
+          },
+          "motm": "Leone",
+          "flop": "Antonio Vairo — prestazione opaca, fatica a incidere",
+          "tacticalNote": "Partita tatticamente chiusa. Entrambe le squadre hanno preferito non rischiare.",
+          "fanReactions": [
+            "Tifosi divisi: punto guadagnato o due persi?",
+            "Si poteva vincere, ma un punto è pur sempre un punto."
+          ],
+          "quotes": [
+            "\"Pareggio che può starci, ma sappiamo di poter fare di più.\" — Mister",
+            "\"Un punto è un punto. Guardiamo avanti con fiducia.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraPareggio",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W25": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Sicania Primavera 2-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 6.9)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-0 — tre punti d'oro!",
+            "Analisi: 1 reti e posizionamento premiato nel 2-0",
+            "✅ FC Laguna Primavera 2-0 FC Sicania Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.9,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Ferraro",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Sicania Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Non era semplice, ma i ragazzi hanno risposto presente. Bravi tutti.\" — Mister",
+            "\"Volevamo questi tre punti e li abbiamo conquistati con sacrificio.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W26": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Pisano Primavera 2-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 7.3)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-0 — tre punti d'oro!",
+            "Dati: Antonio Vairo con 1G+1A — efficienza da top player per il FC Laguna Primavera",
+            "✅ FC Laguna Primavera 2-0 FC Pisano Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 7.3,
+            "label": "BUONO",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 1
+          },
+          "motm": "Ferraro",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Pisano Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Antonio Vairo ha fatto la differenza stasera. Sono orgoglioso della squadra.\" — Mister",
+            "\"Volevamo questi tre punti e li abbiamo conquistati con sacrificio.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W27": {
+          "headlines": [
+            "3ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 1-0",
+            "Solidità premia il FC Laguna Primavera: clean sheet e vittoria 1-0 su FC Sicania Primavera",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 1-0 — tre punti d'oro!",
+            "Tattica vincente: il FC Laguna Primavera domina e porta a casa i 3 punti vs FC Sicania Primavera",
+            "✅ FC Laguna Primavera 1-0 FC Sicania Primavera | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.3,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 0,
+            "assists": 0
+          },
+          "motm": "Palumbo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Antonio Vairo ha fatto la differenza stasera. Sono orgoglioso della squadra.\" — Mister",
+            "\"Tre punti fondamentali. Il lavoro paga sempre.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraVince",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W28": {
+          "headlines": [
+            "4ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 2-0",
+            "Solidità premia il FC Laguna Primavera: clean sheet e vittoria 2-0 su FC Pisano Primavera",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-0 — tre punti d'oro!",
+            "Tattica vincente: il FC Laguna Primavera domina e porta a casa i 3 punti vs FC Pisano Primavera",
+            "✅ FC Laguna Primavera 2-0 FC Pisano Primavera | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.1,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 0,
+            "assists": 0
+          },
+          "motm": "Tucci",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Non era semplice, ma i ragazzi hanno risposto presente. Bravi tutti.\" — Mister",
+            "\"Volevamo questi tre punti e li abbiamo conquistati con sacrificio.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraVince",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W30": {
+          "headlines": [
+            "Pari combattuto: FC Laguna Primavera e FC Bruzio Primavera dividono la posta 1-1",
+            "Equilibrio totale: FC Laguna Primavera–FC Bruzio Primavera 1-1, la classifica non sorride",
+            "Rimpianto enorme! Il FC Laguna Primavera non sfonda: finisce 1-1 con FC Bruzio Primavera",
+            "Il 1-1 riflette l'equilibrio tattico: FC Laguna Primavera e FC Bruzio Primavera si equivalgono",
+            "🟡 FC Laguna Primavera 1-1 FC Bruzio Primavera | Pari | Antonio Vairo 6.5★"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.5,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Riva",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Partita tatticamente chiusa. Entrambe le squadre hanno preferito non rischiare.",
+          "fanReactions": [
+            "Tifosi divisi: punto guadagnato o due persi?",
+            "Si poteva vincere, ma un punto è pur sempre un punto."
+          ],
+          "quotes": [
+            "\"Ci mancava quel guizzo finale. Portiamo a casa un punto.\" — Mister",
+            "\"Il pareggio brucia, ma la prestazione c'è stata. Testa bassa e lavoro.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraPareggio",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W31": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Cittadino Primavera 1-0",
+            "Solidità premia il FC Laguna Primavera: clean sheet e vittoria 1-0 su FC Cittadino Primavera",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 1-0 — tre punti d'oro!",
+            "Tattica vincente: il FC Laguna Primavera domina e porta a casa i 3 punti vs FC Cittadino Primavera",
+            "✅ FC Laguna Primavera 1-0 FC Cittadino Primavera | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.5,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 0,
+            "assists": 1
+          },
+          "motm": "Leone",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Blocco difensivo impeccabile. Il contropiede ha fatto la differenza.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Antonio Vairo è in un momento di grazia. Continuiamo così.\" — Mister",
+            "\"Vittoria di squadra. Andiamo avanti step by step.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraVince",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W32": {
+          "headlines": [
+            "Vittoria di carattere: FC Laguna Primavera supera FC Bruzio Primavera 2-1",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 6.8)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 2-1 — tre punti d'oro!",
+            "Analisi: 1 reti e posizionamento premiato nel 2-1",
+            "✅ FC Laguna Primavera 2-1 FC Bruzio Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.8,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Tucci",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Bruzio Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Tre punti meritatissimi. Antonio Vairo ha giocato a un livello superiore.\" — Mister",
+            "\"Tre punti fondamentali. Il lavoro paga sempre.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W33": {
+          "headlines": [
+            "3ª VITTORIA DI FILA! Il FC Laguna Primavera è inarrestabile: 3-0",
+            "Antonio Vairo decide — 1 reti e FC Laguna Primavera conquista 3 punti (voto 6.8)",
+            "VITTORIA FONDAMENTALE! FC Laguna Primavera 3-0 — tre punti d'oro!",
+            "Analisi: 1 reti e posizionamento premiato nel 3-0",
+            "✅ FC Laguna Primavera 3-0 FC Cesenate Primavera | Antonio Vairo x1 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.8,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Palumbo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Cesenate Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Non era semplice, ma i ragazzi hanno risposto presente. Bravi tutti.\" — Mister",
+            "\"Tre punti fondamentali. Il lavoro paga sempre.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W34": {
+          "headlines": [
+            "Pari combattuto: FC Laguna Primavera e FC Lariano Primavera dividono la posta 1-1",
+            "Equilibrio totale: FC Laguna Primavera–FC Lariano Primavera 1-1, la classifica non sorride",
+            "Rimpianto enorme! Il FC Laguna Primavera non sfonda: finisce 1-1 con FC Lariano Primavera",
+            "Il 1-1 riflette l'equilibrio tattico: FC Laguna Primavera e FC Lariano Primavera si equivalgono",
+            "🟡 FC Laguna Primavera 1-1 FC Lariano Primavera | Pari | Antonio Vairo 6.5★"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 6.5,
+            "label": "SUFFICIENTE",
+            "color": "#d97706",
+            "goals": 1,
+            "assists": 0
+          },
+          "motm": "Ferretti",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Partita tatticamente chiusa. Entrambe le squadre hanno preferito non rischiare.",
+          "fanReactions": [
+            "Tifosi divisi: punto guadagnato o due persi?",
+            "Si poteva vincere, ma un punto è pur sempre un punto."
+          ],
+          "quotes": [
+            "\"Ci mancava quel guizzo finale. Portiamo a casa un punto.\" — Mister",
+            "\"Il pareggio brucia, ma la prestazione c'è stata. Testa bassa e lavoro.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraPareggio",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W35": {
+          "headlines": [
+            "Fantasista in stato di grazia: Antonio Vairo trascina il FC Laguna Primavera 3-1",
+            "Antonio Vairo decide — 2 reti e FC Laguna Primavera conquista 3 punti (voto 8.5)",
+            "SPETTACOLO! Antonio Vairo è un fenomeno: FC Laguna Primavera vince 3-1",
+            "Analisi: 2 reti e posizionamento premiato nel 3-1",
+            "✅ FC Laguna Primavera 3-1 FC Altoadige Primavera | Antonio Vairo x2 | +3pts"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 8.5,
+            "label": "OTTIMO",
+            "color": "#16a34a",
+            "goals": 2,
+            "assists": 0
+          },
+          "motm": "Antonio Vairo",
+          "flop": "Nessun flop evidente — giornata da archiviare",
+          "tacticalNote": "Il pressing alto ha soffocato FC Altoadige Primavera. Antonio Vairo ha sfruttato ogni spazio.",
+          "fanReactions": [
+            "I tifosi esultano: serata perfetta!",
+            "Tre punti che valgono oro! Avanti così!"
+          ],
+          "quotes": [
+            "\"Tre punti meritatissimi. Antonio Vairo ha giocato a un livello superiore.\" — Mister",
+            "\"Tre punti fondamentali. Il lavoro paga sempre.\" — Antonio Vairo"
+          ],
+          "trending": "#AntonioVairoGol🔥",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        },
+        "S1W39": {
+          "headlines": [
+            "Serata da dimenticare: FC Laguna Primavera cede 0-2, serve di più da Antonio Vairo",
+            "Sotto analisi: Antonio Vairo al minimo (5.7/10), il FC Laguna Primavera deve reagire",
+            "ALLARME ROSSO! FC Laguna Primavera cade 0-2 — serve una scossa",
+            "Studio: lacune difensive del FC Laguna Primavera sfruttate da FC Altoadige Primavera, 0-2",
+            "❌ FC Laguna Primavera 0-2 FC Altoadige Primavera | Sconfitta | Antonio Vairo 5.7★"
+          ],
+          "titleWon": false,
+          "titleName": null,
+          "papers": [
+            "Sprint Sportivo",
+            "Cronaca di Sport",
+            "Zona Mista",
+            "Sport in Rete",
+            "Diretta Sport TV"
+          ],
+          "paperColors": [
+            "#e8000d",
+            "#003da5",
+            "#7c3aed",
+            "#16a34a",
+            "#0099d6"
+          ],
+          "paperEmojis": [
+            "📰",
+            "📋",
+            "📄",
+            "🗞️",
+            "📡"
+          ],
+          "playerRating": {
+            "value": 5.7,
+            "label": "INSUFFICIENTE",
+            "color": "#dc2626",
+            "goals": 0,
+            "assists": 0
+          },
+          "motm": "Palumbo",
+          "flop": "Antonio Vairo — prestazione opaca, fatica a incidere",
+          "tacticalNote": "FC Altoadige Primavera ha sfruttato le transizioni rapide. Il FC Laguna Primavera ha sofferto in fase difensiva.",
+          "fanReactions": [
+            "Fischi a fine partita — i tifosi chiedono di più.",
+            "Delusione in curva: servono risposte immediate."
+          ],
+          "quotes": [
+            "\"Dobbiamo analizzare gli errori e reagire subito.\" — Mister",
+            "\"Non eravamo al 100%. Ma le scuse non servono, serve lavorare.\" — Antonio Vairo"
+          ],
+          "trending": "#FCLagunaPrimaveraRiparti",
+          "memoriaTag": "✨ Enfant prodige (17 anni)",
+          "isLocal": true
+        }
+      }
+    },
+    "dreamClub": {
+      "id": "sal",
+      "n": "FC Salernum",
+      "a": "SAL",
+      "p": 45,
+      "c": "#7c2d12",
+      "c2": "#f5f5f5",
+      "nat": "🇮🇹",
+      "lg": "Lega B"
+    },
+    "worldMemory": [
+      {
+        "type": "vita",
+        "label": "Il gatto portafortuna",
+        "season": 1,
+        "week": 32
+      }
+    ],
+    "rival": null,
+    "saveVersion": 9,
+    "teammates": [
+      {
+        "name": "Simone Napolitano",
+        "archetype": "conflittuale",
+        "icon": "😤",
+        "bond": 48,
+        "bondMilestones": []
+      },
+      {
+        "name": "Zeno Vallone",
+        "archetype": "capitano",
+        "icon": "🤝",
+        "bond": 65,
+        "bondMilestones": [
+          50
+        ]
+      },
+      {
+        "name": "Ivan Ratti",
+        "archetype": "mentore",
+        "icon": "🧠",
+        "bond": 79,
+        "bondMilestones": [
+          50,
+          75
+        ]
+      }
+    ],
+    "journalists": [
+      {
+        "id": "j_lombardi",
+        "name": "Anna Lombardi",
+        "paper": "TuttoSport",
+        "icon": "🎙️",
+        "color": "#f59e0b",
+        "type": "fan",
+        "desc": "Ti segue dalla U18. Ha una vera stima nei tuoi confronti.",
+        "trust": 62,
+        "lastTone": "diplomatico"
+      },
+      {
+        "id": "j_neri",
+        "name": "Giovanni Neri",
+        "paper": "Il Corriere del Calcio",
+        "icon": "🔍",
+        "color": "#7c3aed",
+        "type": "investigativa",
+        "desc": "Caccia gli scoop. Tratta ogni risposta come un indizio.",
+        "trust": 54,
+        "lastTone": "umile"
+      },
+      {
+        "id": "j_ricci",
+        "name": "Davide Ricci",
+        "paper": "FootballItalia",
+        "icon": "📊",
+        "color": "#10b981",
+        "type": "critico",
+        "desc": "Statistiche e fredda razionalità. Non mente mai — e non è sempre bello.",
+        "trust": 52,
+        "lastTone": "diplomatico"
+      }
+    ],
+    "calendar": [
+      {
+        "matchday": 1,
+        "week": 1,
+        "opponentId": "lec2",
+        "opponentName": "FC Lariano Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 2,
+        "week": 2,
+        "opponentId": "samp",
+        "opponentName": "FC Doria Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 1,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 3,
+        "week": 3,
+        "opponentId": "spe",
+        "opponentName": "FC Spezzino Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 1,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 4,
+        "week": 4,
+        "opponentId": "sal",
+        "opponentName": "FC Salernum Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 3,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 5,
+        "week": 5,
+        "opponentId": "par",
+        "opponentName": "FC Parmense Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 1,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 6,
+        "week": 6,
+        "opponentId": "spe",
+        "opponentName": "FC Spezzino Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 7,
+        "week": 7,
+        "opponentId": "bar2",
+        "opponentName": "FC Pugliese Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 0,
+          "awayScore": 0,
+          "won": false,
+          "drew": true
+        }
+      },
+      {
+        "matchday": 8,
+        "week": 8,
+        "opponentId": "fro",
+        "opponentName": "FC Ciociaro Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 3,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 9,
+        "week": 10,
+        "opponentId": "mod",
+        "opponentName": "FC Modenese Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 10,
+        "week": 11,
+        "opponentId": "cre",
+        "opponentName": "FC Cremona Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        },
+        "simulated": true
+      },
+      {
+        "matchday": 11,
+        "week": 12,
+        "opponentId": "cat",
+        "opponentName": "FC Calabro Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 12,
+        "week": 13,
+        "opponentId": "mod",
+        "opponentName": "FC Modenese Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 1,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 13,
+        "week": 14,
+        "opponentId": "samp",
+        "opponentName": "FC Doria Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 5,
+          "awayScore": 1,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 14,
+        "week": 15,
+        "opponentId": "bres",
+        "opponentName": "FC Leonessa Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 15,
+        "week": 16,
+        "opponentId": "cre",
+        "opponentName": "FC Cremona Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 16,
+        "week": 17,
+        "opponentId": "ces",
+        "opponentName": "FC Cesenate Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 1,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 17,
+        "week": 18,
+        "opponentId": "sal",
+        "opponentName": "FC Salernum Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 2,
+          "won": false,
+          "drew": true
+        }
+      },
+      {
+        "matchday": 18,
+        "week": 20,
+        "opponentId": "bar2",
+        "opponentName": "FC Pugliese Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 1,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 19,
+        "week": 21,
+        "opponentId": "fro",
+        "opponentName": "FC Ciociaro Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 0,
+          "awayScore": 0,
+          "won": false,
+          "drew": true
+        }
+      },
+      {
+        "matchday": 20,
+        "week": 22,
+        "opponentId": "cat",
+        "opponentName": "FC Calabro Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 21,
+        "week": 23,
+        "opponentId": "cit",
+        "opponentName": "FC Cittadino Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 0,
+          "awayScore": 0,
+          "won": false,
+          "drew": true
+        }
+      },
+      {
+        "matchday": 22,
+        "week": 24,
+        "opponentId": "pal",
+        "opponentName": "FC Sicania Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 23,
+        "week": 25,
+        "opponentId": "pis",
+        "opponentName": "FC Pisano Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 24,
+        "week": 26,
+        "opponentId": "pal",
+        "opponentName": "FC Sicania Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 1,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 25,
+        "week": 27,
+        "opponentId": "pis",
+        "opponentName": "FC Pisano Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 26,
+        "week": 29,
+        "opponentId": "cos",
+        "opponentName": "FC Bruzio Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 1,
+          "awayScore": 1,
+          "won": false,
+          "drew": true
+        }
+      },
+      {
+        "matchday": 27,
+        "week": 30,
+        "opponentId": "cit",
+        "opponentName": "FC Cittadino Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 1,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 28,
+        "week": 31,
+        "opponentId": "cos",
+        "opponentName": "FC Bruzio Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 2,
+          "awayScore": 1,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 29,
+        "week": 32,
+        "opponentId": "ces",
+        "opponentName": "FC Cesenate Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 3,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 30,
+        "week": 33,
+        "opponentId": "lec2",
+        "opponentName": "FC Lariano Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 1,
+          "awayScore": 1,
+          "won": false,
+          "drew": true
+        }
+      },
+      {
+        "matchday": 31,
+        "week": 34,
+        "opponentId": "sdt",
+        "opponentName": "FC Altoadige Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 3,
+          "awayScore": 1,
+          "won": true,
+          "drew": false
+        }
+      },
+      {
+        "matchday": 32,
+        "week": 36,
+        "opponentId": "par",
+        "opponentName": "FC Parmense Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 1,
+          "awayScore": 0,
+          "won": true,
+          "drew": false
+        },
+        "simulated": true
+      },
+      {
+        "matchday": 33,
+        "week": 37,
+        "opponentId": "bres",
+        "opponentName": "FC Leonessa Primavera",
+        "isHome": true,
+        "played": true,
+        "result": {
+          "homeScore": 3,
+          "awayScore": 1,
+          "won": true,
+          "drew": false
+        },
+        "simulated": true
+      },
+      {
+        "matchday": 34,
+        "week": 38,
+        "opponentId": "sdt",
+        "opponentName": "FC Altoadige Primavera",
+        "isHome": false,
+        "played": true,
+        "result": {
+          "homeScore": 0,
+          "awayScore": 2,
+          "won": false,
+          "drew": false
+        }
+      }
+    ],
+    "standings": [
+      {
+        "id": "ven",
+        "n": "FC Laguna",
+        "a": "LAG",
+        "p": 36,
+        "c": "#0f0f0f",
+        "c2": "#f97316",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 27,
+        "draws": 6,
+        "losses": 1,
+        "gf": 59,
+        "ga": 12,
+        "gd": 47,
+        "pts": 87
+      },
+      {
+        "id": "bres",
+        "n": "FC Leonessa",
+        "a": "LNS",
+        "p": 35,
+        "c": "#60a5fa",
+        "c2": "#f5f5f5",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 16,
+        "draws": 7,
+        "losses": 11,
+        "gf": 49,
+        "ga": 42,
+        "gd": 7,
+        "pts": 55
+      },
+      {
+        "id": "cit",
+        "n": "FC Cittadino",
+        "a": "CIT",
+        "p": 27,
+        "c": "#6c1f2e",
+        "c2": "#f5f5f5",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 15,
+        "draws": 5,
+        "losses": 14,
+        "gf": 43,
+        "ga": 44,
+        "gd": -1,
+        "pts": 50
+      },
+      {
+        "id": "samp",
+        "n": "FC Empolese",
+        "a": "EMP",
+        "p": 38,
+        "c": "#1e6fd0",
+        "c2": "#ffffff",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 14,
+        "draws": 7,
+        "losses": 13,
+        "gf": 49,
+        "ga": 45,
+        "gd": 4,
+        "pts": 49
+      },
+      {
+        "id": "pis",
+        "n": "FC Pisano",
+        "a": "PIS",
+        "p": 30,
+        "c": "#0f0f0f",
+        "c2": "#38bdf8",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 14,
+        "draws": 7,
+        "losses": 13,
+        "gf": 41,
+        "ga": 45,
+        "gd": -4,
+        "pts": 49
+      },
+      {
+        "id": "sal",
+        "n": "FC Salernum",
+        "a": "SAL",
+        "p": 30,
+        "c": "#6c1f2e",
+        "c2": "#f5f5f5",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 13,
+        "draws": 9,
+        "losses": 12,
+        "gf": 52,
+        "ga": 46,
+        "gd": 6,
+        "pts": 48
+      },
+      {
+        "id": "bar2",
+        "n": "FC Pugliese",
+        "a": "PUG",
+        "p": 34,
+        "c": "#f5f5f5",
+        "c2": "#dc2626",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 13,
+        "draws": 9,
+        "losses": 12,
+        "gf": 46,
+        "ga": 42,
+        "gd": 4,
+        "pts": 48
+      },
+      {
+        "id": "mod",
+        "n": "FC Modenese",
+        "a": "MOD",
+        "p": 32,
+        "c": "#f59e0b",
+        "c2": "#1d4ed8",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 14,
+        "draws": 6,
+        "losses": 14,
+        "gf": 41,
+        "ga": 43,
+        "gd": -2,
+        "pts": 48
+      },
+      {
+        "id": "cre",
+        "n": "FC Cremona",
+        "a": "CRE",
+        "p": 33,
+        "c": "#dc2626",
+        "c2": "#9ca3af",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 11,
+        "draws": 13,
+        "losses": 10,
+        "gf": 39,
+        "ga": 39,
+        "gd": 0,
+        "pts": 46
+      },
+      {
+        "id": "lec2",
+        "n": "FC Lariano",
+        "a": "LAR",
+        "p": 23,
+        "c": "#60a5fa",
+        "c2": "#1d4ed8",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 12,
+        "draws": 9,
+        "losses": 13,
+        "gf": 33,
+        "ga": 39,
+        "gd": -6,
+        "pts": 45
+      },
+      {
+        "id": "par",
+        "n": "FC Parmense",
+        "a": "PAR",
+        "p": 37,
+        "c": "#f59e0b",
+        "c2": "#1d4ed8",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 12,
+        "draws": 8,
+        "losses": 14,
+        "gf": 45,
+        "ga": 44,
+        "gd": 1,
+        "pts": 44
+      },
+      {
+        "id": "pal",
+        "n": "FC Sicania",
+        "a": "SIC",
+        "p": 35,
+        "c": "#f472b6",
+        "c2": "#0f0f0f",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 10,
+        "draws": 12,
+        "losses": 12,
+        "gf": 47,
+        "ga": 49,
+        "gd": -2,
+        "pts": 42
+      },
+      {
+        "id": "cos",
+        "n": "FC Bruzio",
+        "a": "BRU",
+        "p": 23,
+        "c": "#dc2626",
+        "c2": "#1d4ed8",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 9,
+        "draws": 14,
+        "losses": 11,
+        "gf": 44,
+        "ga": 38,
+        "gd": 6,
+        "pts": 41
+      },
+      {
+        "id": "spe",
+        "n": "FC Spezzino",
+        "a": "SPE",
+        "p": 34,
+        "c": "#f5f5f5",
+        "c2": "#0f0f0f",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 10,
+        "draws": 10,
+        "losses": 14,
+        "gf": 49,
+        "ga": 51,
+        "gd": -2,
+        "pts": 40
+      },
+      {
+        "id": "fro",
+        "n": "FC Ciociaro",
+        "a": "CIO",
+        "p": 32,
+        "c": "#f59e0b",
+        "c2": "#1d4ed8",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 9,
+        "draws": 13,
+        "losses": 12,
+        "gf": 45,
+        "ga": 52,
+        "gd": -7,
+        "pts": 40
+      },
+      {
+        "id": "ces",
+        "n": "FC Cesenate",
+        "a": "CES",
+        "p": 28,
+        "c": "#f5f5f5",
+        "c2": "#0f0f0f",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 11,
+        "draws": 7,
+        "losses": 16,
+        "gf": 39,
+        "ga": 53,
+        "gd": -14,
+        "pts": 40
+      },
+      {
+        "id": "cat",
+        "n": "FC Calabro",
+        "a": "CLB",
+        "p": 29,
+        "c": "#f59e0b",
+        "c2": "#dc2626",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 10,
+        "draws": 8,
+        "losses": 16,
+        "gf": 34,
+        "ga": 51,
+        "gd": -17,
+        "pts": 38
+      },
+      {
+        "id": "sdt",
+        "n": "FC Altoadige",
+        "a": "ALT",
+        "p": 25,
+        "c": "#f5f5f5",
+        "c2": "#dc2626",
+        "nat": "🇮🇹",
+        "lg": "Primavera 2",
+        "isU18": true,
+        "played": 34,
+        "wins": 9,
+        "draws": 8,
+        "losses": 17,
+        "gf": 37,
+        "ga": 54,
+        "gd": -17,
+        "pts": 35
+      }
+    ],
+    "trophies": [],
+    "transferListed": false,
+    "sessionsThisWeek": 0,
+    "sessionLog": [],
+    "diary": [
+      {
+        "season": 1,
+        "week": 1,
+        "type": "first_goal",
+        "e": "⚽",
+        "headline": "Primo gol in carriera!",
+        "body": "1 gol contro FC Lariano Primavera (2-0)",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 3,
+        "type": "milestone",
+        "e": "🔥",
+        "headline": "Serie di 3 partite consecutive in gol!",
+        "body": "In rete nelle ultime 3 partite · S.1",
+        "color": "#f59e0b"
+      },
+      {
+        "season": 1,
+        "week": 3,
+        "type": "milestone",
+        "e": "🏆",
+        "headline": "3 vittorie consecutive!",
+        "body": "Striscia vincente: 3 partite di fila · S.1",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 5,
+        "type": "milestone",
+        "e": "🏆",
+        "headline": "5 vittorie consecutive!",
+        "body": "Striscia vincente: 5 partite di fila · S.1",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 12,
+        "type": "milestone",
+        "e": "🔥",
+        "headline": "Serie di 3 partite consecutive in gol!",
+        "body": "In rete nelle ultime 3 partite · S.1",
+        "color": "#f59e0b"
+      },
+      {
+        "season": 1,
+        "week": 12,
+        "type": "milestone",
+        "e": "🏆",
+        "headline": "3 vittorie consecutive!",
+        "body": "Striscia vincente: 3 partite di fila · S.1",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 13,
+        "type": "milestone",
+        "e": "🎯",
+        "headline": "Obiettivo: Dai 9 assist",
+        "body": "Traguardo stagionale completato! S.1 · Settimana 13",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 14,
+        "type": "milestone",
+        "e": "🏆",
+        "headline": "5 vittorie consecutive!",
+        "body": "Striscia vincente: 5 partite di fila · S.1",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 15,
+        "type": "milestone",
+        "e": "🏅",
+        "headline": "🎯 10 assist in carriera — sai far giocare la squadra!",
+        "body": "S.1 · Settimana 15",
+        "color": "#0891b2"
+      },
+      {
+        "season": 1,
+        "week": 16,
+        "type": "milestone",
+        "e": "🏅",
+        "headline": "⚽ 10 gol in carriera raggiunti!",
+        "body": "S.1 · Settimana 16",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 17,
+        "type": "milestone",
+        "e": "🏆",
+        "headline": "8 vittorie consecutive!",
+        "body": "Striscia vincente: 8 partite di fila · S.1",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 21,
+        "type": "milestone",
+        "e": "🤝",
+        "headline": "Legame 50% con Zeno Vallone",
+        "body": "Il rapporto con Zeno Vallone ha raggiunto il 50% — bonus archivio attivato · S.1",
+        "color": "#2563eb"
+      },
+      {
+        "season": 1,
+        "week": 22,
+        "type": "milestone",
+        "e": "🎯",
+        "headline": "Obiettivo: Segna 13 gol",
+        "body": "Traguardo stagionale completato! S.1 · Settimana 22",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 24,
+        "type": "milestone",
+        "e": "🧠",
+        "headline": "Legame 50% con Ivan Ratti",
+        "body": "Il rapporto con Ivan Ratti ha raggiunto il 50% — bonus archivio attivato · S.1",
+        "color": "#2563eb"
+      },
+      {
+        "season": 1,
+        "week": 26,
+        "type": "milestone",
+        "e": "🏆",
+        "headline": "3 vittorie consecutive!",
+        "body": "Striscia vincente: 3 partite di fila · S.1",
+        "color": "#16a34a"
+      },
+      {
+        "season": 1,
+        "week": 27,
+        "type": "milestone",
+        "e": "🏅",
+        "headline": "👟 25 presenze in carriera!",
+        "body": "S.1 · Settimana 27",
+        "color": "#0891b2"
+      },
+      {
+        "season": 1,
+        "week": 32,
+        "type": "milestone",
+        "e": "🏆",
+        "headline": "3 vittorie consecutive!",
+        "body": "Striscia vincente: 3 partite di fila · S.1",
+        "color": "#166534"
+      },
+      {
+        "season": 1,
+        "week": 33,
+        "type": "milestone",
+        "e": "🔥",
+        "headline": "Serie di 3 partite consecutive in gol!",
+        "body": "In rete nelle ultime 3 partite · S.1",
+        "color": "#a34a08"
+      },
+      {
+        "season": 1,
+        "week": 38,
+        "type": "milestone",
+        "e": "🧠",
+        "headline": "Legame 75% con Ivan Ratti",
+        "body": "Il rapporto con Ivan Ratti ha raggiunto il 75% — bonus archivio attivato · S.1",
+        "color": "#7c3aed"
+      }
+    ],
+    "trainingStreak": 32,
+    "lastTrainingType": null,
+    "windowOfferUsed": false,
+    "seasonObjectives": [
+      {
+        "type": "goals",
+        "target": 13,
+        "label": "Segna 13 gol",
+        "bonus": {
+          "morale": 15,
+          "coachTrust": 10,
+          "value": 0.2
+        }
+      },
+      {
+        "type": "standing",
+        "target": 12,
+        "label": "Finisci nei primi 12",
+        "bonus": {
+          "popularity": 15,
+          "value": 0.25
+        }
+      },
+      {
+        "type": "assists",
+        "target": 9,
+        "label": "Dai 9 assist",
+        "bonus": {
+          "coachTrust": 10,
+          "morale": 12,
+          "value": 0.15
+        }
+      }
+    ],
+    "nationalCaps": 0,
+    "lastNationalSeason": 0,
+    "clubPrestigeShifts": {},
+    "cup": null,
+    "coach": {
+      "name": "Mister Allegri",
+      "style": "Bilanciato",
+      "trustMod": 0
+    },
+    "goldenBoys": [],
+    "records": {
+      "topSeasonGoals": 0,
+      "topSeasonAssists": 0,
+      "topOvr": 66
+    },
+    "playerAwards": {
+      "palloneOros": [],
+      "scarpaOros": [],
+      "youngYears": [],
+      "seasonRecords": [],
+      "leagueMvpYears": [],
+      "leagueTopScorerYears": [],
+      "teamOfYearYears": []
+    },
+    "milestones": [
+      "a10",
+      "g10",
+      "m25"
+    ],
+    "achievements": [
+      "all_round",
+      "comeback",
+      "goleador",
+      "freekick"
+    ],
+    "rivalries": [
+      {
+        "opponent": "FC Lariano Primavera",
+        "oppAbbr": "LCC",
+        "oppCol": "#1d4ed8",
+        "matches": 2,
+        "wins": 1,
+        "goals": 2,
+        "lastSeason": 1
+      },
+      {
+        "opponent": "FC Doria Primavera",
+        "oppAbbr": "DOR",
+        "oppCol": "#1d4ed8",
+        "matches": 1,
+        "wins": 1,
+        "goals": 1,
+        "lastSeason": 1
+      },
+      {
+        "opponent": "FC Spezzino Primavera",
+        "oppAbbr": "SPE",
+        "oppCol": "#0f0f0f",
+        "matches": 2,
+        "wins": 2,
+        "goals": 1,
+        "lastSeason": 1
+      },
+      {
+        "opponent": "FC Salernum Primavera",
+        "oppAbbr": "SAL",
+        "oppCol": "#7c2d12",
+        "matches": 2,
+        "wins": 1,
+        "goals": 3,
+        "lastSeason": 1
+      },
+      {
+        "opponent": "FC Parmense Primavera",
+        "oppAbbr": "PAR",
+        "oppCol": "#f59e0b",
+        "matches": 1,
+        "wins": 1,
+        "goals": 0,
+        "lastSeason": 1
+      },
+      {
+        "opponent": "FC Pugliese Primavera",
+        "oppAbbr": "PUG",
+        "oppCol": "#f5f5f5",
+        "matches": 2,
+        "wins": 1,
+        "goals": 0,
+        "lastSeason": 1
+      },
+      {
+        "opponent": "FC Ciociaro Primavera",
+        "oppAbbr": "CIO",
+        "oppCol": "#f59e0b",
+        "matches": 2,
+        "wins": 1,
+        "goals": 1,
+        "lastSeason": 1
+      },
+      {
+        "opponent": "FC Modenese Primavera",
+        "oppAbbr": "MOD",
+        "oppCol": "#f59e0b",
+        "matches": 2,
+        "wins": 2,
+        "goals": 1,
+        "lastSeason": 1
+      },
+      {
+        "opponent": "FC Calabro Primavera",
+        "oppAbbr": "CLB",
+        "oppCol": "#f59e0b",
+        "matches": 2,
+        "wins": 2,
+        "goals": 2,
+        "lastSeason": 1
+      },
+      {
+        "opponent": "FC Empolese Primavera",
+        "oppAbbr": "EMP",
+        "oppCol": "#1e6fd0",
+        "matches": 1,
+        "wins": 1,
+        "goals": 2,
+        "lastSeason": 1
+      }
+    ],
+    "momentsFired": [],
+    "isCaptain": false,
+    "captainSince": null,
+    "fanLegend": [],
+    "hasAgent": true,
+    "nationalGoals": 0,
+    "presidentModalSeason": 1,
+    "justRecovered": false,
+    "injurySeverity": null,
+    "originalInjuryWeeks": 0,
+    "returnPenaltyWeeks": 0,
+    "teamChemistry": 97,
+    "leagueArchive": [],
+    "euro": null,
+    "nationsCupQueue": null,
+    "euroMondiale": null,
+    "tutorialDone": true,
+    "goalStreak": 0,
+    "bestGoalStreak": 4,
+    "lastMonthlyReview": 0,
+    "weeklyFocusType": null,
+    "coachHistory": [],
+    "jerseyNum": 39,
+    "jerseyNumSeason": 1,
+    "yellAccum": 0,
+    "isSuspended": false,
+    "seasonCards": {
+      "y": 0,
+      "r": 0
+    },
+    "leagueOverrides": {},
+    "lastLeagueShift": null,
+    "u18Goals": 0,
+    "u18Assists": 0,
+    "u18Matches": 0,
+    "primaveraAwards": [],
+    "mvpMonthAwards": [],
+    "assistantCoachRel": 52,
+    "squadRole": "primavera",
+    "coachPromise": null,
+    "campDone": false,
+    "loan": null,
+    "matchStatus": "starter",
+    "playedMd": {
+      "s": 1,
+      "md": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ]
+    },
+    "clubEvo": {
+      "fanbase": 0,
+      "stadiumTier": 0,
+      "budget": 187198,
+      "seasonsTop": 0,
+      "seasonsLow": 0,
+      "clubId": "ven"
+    },
+    "bankBalance": 7423,
+    "perkTrainer": false,
+    "perkNutrition": false,
+    "foot": "R",
+    "migratedFrom": 6,
+    "recentImpulses": [
+      "wi_personal_chef",
+      "wi_nazionale_b",
+      "wi_famiglia_visita",
+      "wi_primo_mister",
+      "wi_fan_speciale",
+      "wi_ristorante_socio",
+      "wi_ciclo_forza",
+      "wi_bonus_gol_social",
+      "wi_social",
+      "wi_recupero_hitech",
+      "wi_donazione",
+      "wi_giovani_accademia",
+      "wi_cena_squadra",
+      "wi_es_bar",
+      "wi_es_busta",
+      "wi_es_prof",
+      "wi_es_canzone",
+      "wi_es_autografo",
+      "wi_es_muretto"
+    ],
+    "impulseSeen": {
+      "wi_personal_chef": 1,
+      "wi_nazionale_b": 1,
+      "wi_famiglia_visita": 1,
+      "wi_primo_mister": 1,
+      "wi_fan_speciale": 1,
+      "wi_ristorante_socio": 1,
+      "wi_ciclo_forza": 1,
+      "wi_bonus_gol_social": 1,
+      "wi_social": 1,
+      "wi_recupero_hitech": 1,
+      "wi_donazione": 1,
+      "wi_giovani_accademia": 1,
+      "wi_cena_squadra": 1,
+      "wi_es_bar": 1,
+      "wi_es_busta": 1,
+      "wi_es_prof": 1,
+      "wi_es_canzone": 1,
+      "wi_es_autografo": 1,
+      "wi_es_muretto": 1
+    },
+    "agentHistory": [],
+    "agentInit": {
+      "k": null,
+      "s": 0,
+      "w": 0,
+      "open": false
+    },
+    "agentCheckin": {
+      "due": false
+    },
+    "agentHint": {
+      "n": 0,
+      "s": 0,
+      "w": 0,
+      "due": null
+    },
+    "agent": {
+      "id": "prudente",
+      "name": "Gianni Ferretti",
+      "arch": "prudente",
+      "since": {
+        "s": 1,
+        "w": 16
+      },
+      "rapport": 50,
+      "memory": {
+        "amb": [
+          "crescita"
+        ],
+        "note": []
+      },
+      "lastCheckin": {
+        "s": 1,
+        "w": 16
+      }
+    },
+    "agentPlan": null,
+    "smLast": "sm_mentor_storia",
+    "smSeen": {
+      "sm_amico_problema": 27,
+      "sm_mentor_storia": 38,
+      "sm_mentor_advice": 37
+    },
+    "chem": 53,
+    "bank": 0,
+    "vitaSeen": {
+      "vita_cena_squadra": {
+        "n": 1,
+        "at": 128
+      },
+      "vita_mixed_zone": {
+        "n": 1,
+        "at": 130
+      },
+      "vita_gatto": {
+        "n": 1,
+        "at": 132
+      }
+    },
+    "vitaCat": {
+      "squadra": 128,
+      "social": 130,
+      "assurdo": 132
+    },
+    "vitaLastCat": "assurdo",
+    "vitaNext": null,
+    "titleCeremonyShown": 1,
+    "ultimoVoto12": {
+      "r": 5.7,
+      "s": 1,
+      "w": 38
+    }
+  },
+  "savedAt": 1790971156564,
+  "saveVersion": 9
+}

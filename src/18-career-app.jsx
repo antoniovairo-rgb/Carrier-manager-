@@ -8806,11 +8806,18 @@ const getThisWeekMatchday=()=>{
                     color:cur?TH.brandText:mh?mh.won?TH.txGreen:mh.drew?TH.txAmber:TH.txRed:past?TH.faint:TH.faint,
                     fontWeight:cur||mh?700:400}}>
                   {w}
-                  {mh?<div style={{fontSize:FS.caption,marginTop:1}}>{mh.won?"V":mh.drew?"N":"P"}</div>:hasScheduled?<div style={{fontSize:FS.caption,color:cur?TH.brandText:TH.faint,marginTop:1}}>⚽</div>:null}
+                  {(()=>{/* [7.999.114 collaudo PO-195 «nel calendario fai vedere le avversarie!»] sigla dell'avversaria e sede (c = in casa, t = in trasferta) in ogni casella, e il punteggio sulle giocate. Rosso __CPM_NO_AVV195 */
+                    if(typeof window!=='undefined'&&window.__CPM_NO_AVV195)return null;
+                    const _on=(mh&&mh.opponent)||(calEntry&&calEntry.opponentName)||"";if(!_on)return null;
+                    const _cl=(calEntry&&calEntry.opponentId&&(CLUBS||[]).find(c=>c.id===calEntry.opponentId))||(CLUBS||[]).find(c=>c.n===_on||(c.n+" Primavera")===_on);
+                    const _sg=(mh&&mh.oppAbbr)||(_cl&&_cl.a)||String(_on).replace(/^(FC|AC|AS|SS|US|CF|SC)\s+/i,"").slice(0,3).toUpperCase();
+                    const _casa=mh&&mh.isHome!=null?mh.isHome:(calEntry?!!calEntry.isHome:null);
+                    return <div data-cpm="avv195" style={{fontSize:FS.caption,fontWeight:FW.semibold,marginTop:1,letterSpacing:.3}}>{_sg}{_casa==null?"":(_casa?" · c":" · t")}</div>;})()}
+                  {mh?<div style={{fontSize:FS.caption,marginTop:1}}>{mh.won?"V":mh.drew?"N":"P"}{!(typeof window!=='undefined'&&window.__CPM_NO_AVV195)&&mh.homeScore!=null?" "+mh.homeScore+"-"+mh.awayScore:""}</div>:hasScheduled?<div style={{fontSize:FS.caption,color:cur?TH.brandText:TH.faint,marginTop:1}}>⚽</div>:null}
                 </div>;
               })}
             </div>
-            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>V vinta · N pareggio · P persa · ⚽ partita in programma · vuota = settimana senza partite</div>{/* [7.999.49 parte A] legenda della griglia */}
+            <div style={{fontSize:FS.caption,color:TH.muted,marginTop:8,lineHeight:1.5}}>V vinta · N pareggio · P persa (prima i gol della tua squadra) · sigla dell'avversaria, c in casa, t in trasferta · ⚽ partita in programma · vuota = settimana senza partite</div>{/* [7.999.49 parte A] legenda della griglia */}
           </Card></Fisarmonica>
         </div>
       )}
