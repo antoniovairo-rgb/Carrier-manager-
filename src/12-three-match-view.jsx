@@ -8154,7 +8154,9 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
               const _cv2=_co2?Math.hypot(_co2.position.x-(_co2._px476!=null?_co2._px476:_co2.position.x),_co2.position.z-(_co2._pz476!=null?_co2._pz476:_co2.position.z))/Math.max(aDt,1e-3):0;
               if(_co2){_co2._px476=_co2.position.x;_co2._pz476=_co2.position.z;}
               const _mates191=_pod?(sr.current.players||[]).map(pp=>pp&&pp.mesh&&pp.mesh.visible!==false?+Math.hypot(pp.mesh.position.x-_pod.x,pp.mesh.position.z-_pod.z).toFixed(2):null).filter(v=>v!=null):[];/* [7.999.115 PO-191] distanza di ogni corpo dal centro del podio */
-              _cw.push({t:+_ct.toFixed(2),beat:_bk,mates:_mates191,
+              let _mani191=null;try{const _hA=(glbAvatars&&glbAvatars[0]&&glbAvatars[0].proc===hero)?glbAvatars[0]:null;if(_hA&&_hA._handL&&_hA._handR){const _l=new THREE.Vector3().setFromMatrixPosition(_hA._handL.matrixWorld),_r=new THREE.Vector3().setFromMatrixPosition(_hA._handR.matrixWorld),_tp=trophyGrp.position;
+                _mani191={dL:+_l.distanceTo(_tp).toFixed(2),dR:+_r.distanceTo(_tp).toFixed(2),apert:+_l.distanceTo(_r).toFixed(2),lY:+_l.y.toFixed(2),rY:+_r.y.toFixed(2),tY:+_tp.y.toFixed(2),testaY:+(hero.position.y+1.75).toFixed(2)};}}catch(_e191){}/* [7.999.117 PO-191] coppa e mani nello stesso fotogramma */
+              _cw.push({t:+_ct.toFixed(2),beat:_bk,mates:_mates191,mani:_mani191,
                 hero:{x:+hero.position.x.toFixed(2),z:+hero.position.z.toFixed(2),y:+hero.position.y.toFixed(2),clip:(hero._gName||null),h:+_hh.toFixed(2)},
                 coach:_co2?{x:+_co2.position.x.toFixed(2),z:+_co2.position.z.toFixed(2),v:+_cv2.toFixed(2),vis:!!_co2.visible}:null,
                 trofeo:{vis:!!trophyGrp.visible,h:+_th.toFixed(2),rap:_hh>0.2?+(_th/_hh).toFixed(2):null},
@@ -8257,7 +8259,11 @@ const _mx47=clamp(Math.max(Math.min(_rm.position.x+_lead54,AWAY_GOAL_X-13),ball.
              impugna per i MANICI (il piatto per il centro) e il suo punto piu' basso non scende mai sotto la
              sommita' della testa. Rosso __CPM_NO_ALZA24. Testimone __CPM_PREM24.sopra. */
           if(!(typeof window!=='undefined'&&window.__CPM_NO_ALZA24)&&trophyGrp.visible&&trophyGrp.position.y>-10&&(_trofeoInMano||_bk==="lift"||_bk==="fest")){try{
-            if(sr.current._hh24==null){const _hb24=new THREE.Box3().setFromObject(hero);sr.current._hh24=Math.max(1.2,_hb24.max.y-_hb24.min.y);}
+            if(sr.current._hh24==null){const _hb24=new THREE.Box3().setFromObject(hero);sr.current._hh24=Math.max(1.2,_hb24.max.y-_hb24.min.y);
+              /* [7.999.117 collaudo PO-191 «trofeo davanti / non in mano»] MISURATO (__CPM_CER476.mani): il riquadro dell'INTERO corpo con le
+                 braccia alzate vale 2,31 — la regola credeva la testa sopra le mani e alzava la coppa 0,45 sopra la presa, staccata dalle mani.
+                 La sommita' della testa e' quella di un uomo in piedi: tetto 1,85. Rosso __CPM_NO_COPPA191. */
+              if(!(typeof window!=='undefined'&&window.__CPM_NO_COPPA191))sr.current._hh24=Math.min(sr.current._hh24,1.85);}
             const _sc24=trophyGrp.scale.y,_lg24=trophyGrp._kind24==="league";
             const _grip24=(_lg24?0.14:0.95)*_sc24,_low24=(_lg24?-0.44:0.25)*_sc24;
             const _top24=hero.position.y+sr.current._hh24;

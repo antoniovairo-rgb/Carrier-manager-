@@ -16,7 +16,7 @@ async function braccio(rosso) {
   await p.waitForFunction(() => window.__CPM_GLB_READY, null, { timeout: 60000 }).catch(() => {}); await sleep(1500);
   await p.evaluate(() => { window.__CPM_CER476 = []; window.__CPM_FORCE_CEREMONY({ name: 'CAMPIONI PREMIER DIVISION', kind: 'league' }); });
   await sleep(3000);
-  const info = await p.evaluate(() => window.__CPM_CER425 || null);
+  await p.waitForFunction(() => !!window.__CPM_CER425, null, { timeout: 60000 }).catch(() => {}); const info = await p.evaluate(() => window.__CPM_CER425 || null);
   const i = info ? info.beats.indexOf('lift') : -1; const t0 = i > 0 ? info.beatsD.slice(0, i).reduce((a, x) => a + x, 0) : 6.8;
   await p.evaluate(t => { window.__CPM_CER476 = []; window.__CPM_CERT_SET = t; }, t0 - 0.1); await sleep(9000);
   const W = (await p.evaluate(() => window.__CPM_CER476 || [])).filter(w => w.beat === 'lift' && w.podio);
