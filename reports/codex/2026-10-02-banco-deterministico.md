@@ -55,6 +55,11 @@ Le due ripetizioni procedurali partono con il pallone in posizioni molto diverse
 
 ## B. Europeo del seme 6
 
+### Caso GLB aggiunto il 3 ottobre: gi32 success
+
+Comando: `$env:CPM_SCENES='32'; $env:CPM_MODE='1'; $env:CPM_OUTCOME='success'; $env:CPM_REPEAT='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs`. Esito **valido**: `ActionResolved` registra gi32, «Anticipo di posizione», `ok:true`; risoluzione dopo 45 fotogrammi di `hl_choose`, 6 PNG. Con corpi GLB accesi, `__CPM_FRAME480` conta 111 letture, eroe fuori quadro 10/111 e pallone fuori 53/111 (prime 12: 12/12). La foto `reports/codex/banco-difesa-3d/gi32-success-glb-r0-01-apertura.png` mostra l'eroe ma non il pallone; nelle foto 04 e 06 appare già il messaggio di esito «Entrata pulita!» e nella 06 il pallone è visibile. Le foto campionate non mostrano l'istante dell'anticipo: il gesto al contatto resta **non verificato**. I numeri di fuori quadro sono del testimone; una segnalazione 001/002 al giocatore resta ipotesi da verificare con ripresa continua. Il caso gi32 fail GLB resta aperto.
+
+
 La sonda `tests/codex/banco-europeo-181.mjs` riprende il banco carriere esterno con `__CPM_SIM_NAT=1`, forza il seme 6, registra i passi fra S8/W19 e W25 e conserva un checkpoint a fine stagione. Il primo avvio è stato interrotto dopo sei stagioni per liberare memoria; la seconda esecuzione dalla stagione 1 è arrivata oltre W24 senza blocco. Dal suo checkpoint S8/W1 sono state poi eseguite due prove appaiate con lo stesso salvataggio: una normale e una con `CPM_RED181=1`. La sonda non azzera il torneo quando compare `blocked:`: in tal caso avrebbe salvato il blocco come esito.
 
 | Braccio appaiato | Flag letto in pagina | Passi del banco | Prima fase `group` | Stato a W24 | `blocked:euroMondiale` |
