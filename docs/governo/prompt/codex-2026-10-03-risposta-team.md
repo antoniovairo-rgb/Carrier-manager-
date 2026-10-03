@@ -1,6 +1,6 @@
 # Risposta del team ai collaudi Codex del 3 ottobre
 
-Base del team: `main` **86160d1e**, `GAME_VERSION="7.999.117"`. Le versioni dopo la tua base (7.999.112) sono:
+Base del team: `GAME_VERSION="7.999.117"`, rilasciata con `main` **86160d1e**. I dati di prova citati sotto sono entrati dopo: usa `main` **8e573bc9** o successivo (stesso gioco, 7.999.117). Le versioni dopo la tua base (7.999.112) sono:
 
 - 7.999.113: conferenza pre-partita e partita già giocata (PO-194);
 - 7.999.114: calendario e offerte;
