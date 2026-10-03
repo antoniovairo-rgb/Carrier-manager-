@@ -9043,7 +9043,7 @@ const _vic577=eligible.filter(e=>!!e.ef||!e.bpos||Math.hypot(e.bpos.x-_bp577.x,(
       if(_okM){res.outKind="goal";res.ok=true;res.chipStay=false;}
       else if(res.outKind==="goal"){const _pw=clamp((+res.pErr||0)/Math.max(0.02,1-(+res.pGoalEV||0)),0,1);
         res.outKind=(!opt.chip&&_M3.risolviEroe.dado(_pw))?"wide":"saved";res.ok=false;if(opt.chip&&res.outKind==="saved")res.chipStay=true;}
-      if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SP3=window.__CPM_SP3||[]).push({p:res.pGoalEV,prima:_prima3,dopo:res.outKind});}catch(_e3){}}
+      if(typeof window!=='undefined'&&window.__CPM_REC)(window.__CPM_SP3=window.__CPM_SP3||[]).push({p:res.pGoalEV,prima:_prima3,dopo:res.outKind,k:_aimIntent,chip:!!opt.chip,min:clockRef.current|0});}catch(_e3){}}
     try{if(!(typeof window!=='undefined'&&window.__CPM_NO_RISOLVI)&&_M3&&_M3.registra)_M3.registra('tiro','home',{esito:res.outKind==="goal"?'gol':res.outKind==="saved"?'parato':res.outKind==="post"?'legno':'fuori',xg:+res.pGoalEV||0});}catch(_e3r){}/* nel motore «home» e' sempre la squadra dell'eroe */
     gkDiveRef.current=res.gkDir;const gkLabel=RIGORE_DIRS[res.gkDir]||"";
     setEnergy(e=>clamp(e-(opt.nrg||8),0,100));
