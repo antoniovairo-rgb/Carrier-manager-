@@ -59542,6 +59542,2288 @@
         "ovr": 85,
         "club": "FC Ciociaro"
       }
+    },
+    {
+      "seed": 4,
+      "creation": "UI naturale",
+      "renewUI": true,
+      "matchSpeed": "2",
+      "trials": [
+        {
+          "number": 1,
+          "completedAt": "2026-10-03T07:06:24.778Z"
+        },
+        {
+          "number": 2,
+          "completedAt": "2026-10-03T07:08:11.764Z"
+        },
+        {
+          "number": 3,
+          "completedAt": "2026-10-03T07:10:01.457Z"
+        }
+      ],
+      "steps": [
+        {
+          "season": 1,
+          "week": 1,
+          "action": "step",
+          "result": "opening-resolved"
+        },
+        {
+          "season": 1,
+          "week": 1,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 1,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 2,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 2,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 3,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 3,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 4,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 4,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 5,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 5,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 6,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 6,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 7,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 7,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 8,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 8,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 9,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 9,
+          "action": "step",
+          "result": "advanced"
+        },
+        {
+          "season": 1,
+          "week": 10,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 10,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 11,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 11,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 12,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 12,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 13,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 13,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 14,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 14,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 15,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 15,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 16,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 16,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 17,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 17,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 18,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 18,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 19,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 19,
+          "action": "step",
+          "result": "advanced"
+        },
+        {
+          "season": 1,
+          "week": 20,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 20,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 21,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 21,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 22,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 22,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 23,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 23,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 24,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 24,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 25,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 25,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 26,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 26,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 27,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 27,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 28,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 28,
+          "action": "step",
+          "result": "advanced"
+        },
+        {
+          "season": 1,
+          "week": 29,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 29,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 30,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 30,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 31,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 31,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 32,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 32,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 33,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 33,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 34,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 34,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 35,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 35,
+          "action": "step",
+          "result": "advanced"
+        },
+        {
+          "season": 1,
+          "week": 36,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 36,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 37,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 37,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 38,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 38,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 1,
+          "week": 39,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 1,
+          "week": 39,
+          "action": "step",
+          "result": "advanced"
+        },
+        {
+          "season": 1,
+          "week": 39,
+          "action": "UI: Enter on proTransition",
+          "result": {
+            "season": 2,
+            "week": 1,
+            "screen": "clubPresentation"
+          }
+        },
+        {
+          "season": 2,
+          "week": 1,
+          "action": "step",
+          "result": "opening-resolved"
+        },
+        {
+          "season": 2,
+          "week": 1,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 1,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 2,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 2,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 3,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 3,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 4,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 4,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 5,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 5,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 6,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 6,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 7,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 7,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 8,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 8,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 9,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 9,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 10,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 10,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 11,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 11,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 12,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 12,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 13,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 13,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 14,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 14,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 15,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 15,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 16,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 16,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 17,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 17,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 18,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 18,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 19,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 19,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 20,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 20,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 21,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 21,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 22,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 22,
+          "action": "step",
+          "result": "simulated"
+        },
+        {
+          "season": 2,
+          "week": 23,
+          "action": "step",
+          "result": "lived"
+        },
+        {
+          "season": 2,
+          "week": 23,
+          "action": "step",
+          "result": "simulated"
+        }
+      ],
+      "seasons": [
+        {
+          "season": 1,
+          "age": 17,
+          "club": "FC Cesenate Primavera",
+          "clubId": "ces",
+          "position": "Attaccante",
+          "ovr": 66,
+          "goals": 10,
+          "matches": 34,
+          "league": {
+            "games": 34,
+            "gf": 48,
+            "ga": 36,
+            "gfPerGame": 1.411764705882353,
+            "gaPerGame": 1.0588235294117647,
+            "gamesSixPlus": [],
+            "marginsFivePlus": [],
+            "heroLeagueGoalsSimulated": 10,
+            "heroGoalShareSimulated": 0.20833333333333334,
+            "perspective": "calendar.isHome: homeScore/awayScore",
+            "source": "src/09-audio-scout-anagrafiche.jsx generateSeasonCalendar + calendar.result"
+          },
+          "standings": [
+            {
+              "id": "cos",
+              "n": "FC Bruzio",
+              "a": "BRU",
+              "p": 23,
+              "c": "#dc2626",
+              "c2": "#1d4ed8",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 14,
+              "draws": 13,
+              "losses": 7,
+              "gf": 50,
+              "ga": 36,
+              "gd": 14,
+              "pts": 55
+            },
+            {
+              "id": "mod",
+              "n": "FC Modenese",
+              "a": "MOD",
+              "p": 32,
+              "c": "#f59e0b",
+              "c2": "#1d4ed8",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 16,
+              "draws": 7,
+              "losses": 11,
+              "gf": 50,
+              "ga": 45,
+              "gd": 5,
+              "pts": 55
+            },
+            {
+              "id": "bres",
+              "n": "FC Leonessa",
+              "a": "LNS",
+              "p": 35,
+              "c": "#60a5fa",
+              "c2": "#f5f5f5",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 14,
+              "draws": 11,
+              "losses": 9,
+              "gf": 52,
+              "ga": 44,
+              "gd": 8,
+              "pts": 53
+            },
+            {
+              "id": "sdt",
+              "n": "FC Altoadige",
+              "a": "ALT",
+              "p": 25,
+              "c": "#f5f5f5",
+              "c2": "#dc2626",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 15,
+              "draws": 8,
+              "losses": 11,
+              "gf": 51,
+              "ga": 49,
+              "gd": 2,
+              "pts": 53
+            },
+            {
+              "id": "par",
+              "n": "FC Parmense",
+              "a": "PAR",
+              "p": 37,
+              "c": "#f59e0b",
+              "c2": "#1d4ed8",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 14,
+              "draws": 10,
+              "losses": 10,
+              "gf": 56,
+              "ga": 44,
+              "gd": 12,
+              "pts": 52
+            },
+            {
+              "id": "pal",
+              "n": "FC Sicania",
+              "a": "SIC",
+              "p": 35,
+              "c": "#f472b6",
+              "c2": "#0f0f0f",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 15,
+              "draws": 7,
+              "losses": 12,
+              "gf": 44,
+              "ga": 34,
+              "gd": 10,
+              "pts": 52
+            },
+            {
+              "id": "cat",
+              "n": "FC Calabro",
+              "a": "CLB",
+              "p": 29,
+              "c": "#f59e0b",
+              "c2": "#dc2626",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 12,
+              "draws": 12,
+              "losses": 10,
+              "gf": 55,
+              "ga": 49,
+              "gd": 6,
+              "pts": 48
+            },
+            {
+              "id": "ven",
+              "n": "FC Laguna",
+              "a": "LAG",
+              "p": 36,
+              "c": "#0f0f0f",
+              "c2": "#f97316",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 14,
+              "draws": 6,
+              "losses": 14,
+              "gf": 50,
+              "ga": 52,
+              "gd": -2,
+              "pts": 48
+            },
+            {
+              "id": "cit",
+              "n": "FC Cittadino",
+              "a": "CIT",
+              "p": 27,
+              "c": "#6c1f2e",
+              "c2": "#f5f5f5",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 13,
+              "draws": 8,
+              "losses": 13,
+              "gf": 49,
+              "ga": 47,
+              "gd": 2,
+              "pts": 47
+            },
+            {
+              "id": "spe",
+              "n": "FC Spezzino",
+              "a": "SPE",
+              "p": 34,
+              "c": "#f5f5f5",
+              "c2": "#0f0f0f",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 13,
+              "draws": 7,
+              "losses": 14,
+              "gf": 46,
+              "ga": 34,
+              "gd": 12,
+              "pts": 46
+            },
+            {
+              "id": "ces",
+              "n": "FC Cesenate",
+              "a": "CES",
+              "p": 28,
+              "c": "#f5f5f5",
+              "c2": "#0f0f0f",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 12,
+              "draws": 10,
+              "losses": 12,
+              "gf": 41,
+              "ga": 43,
+              "gd": -2,
+              "pts": 46
+            },
+            {
+              "id": "sal",
+              "n": "FC Salernum",
+              "a": "SAL",
+              "p": 30,
+              "c": "#6c1f2e",
+              "c2": "#f5f5f5",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 13,
+              "draws": 6,
+              "losses": 15,
+              "gf": 47,
+              "ga": 51,
+              "gd": -4,
+              "pts": 45
+            },
+            {
+              "id": "cre",
+              "n": "FC Cremona",
+              "a": "CRE",
+              "p": 33,
+              "c": "#dc2626",
+              "c2": "#9ca3af",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 13,
+              "draws": 6,
+              "losses": 15,
+              "gf": 49,
+              "ga": 54,
+              "gd": -5,
+              "pts": 45
+            },
+            {
+              "id": "samp",
+              "n": "FC Empolese",
+              "a": "EMP",
+              "p": 38,
+              "c": "#1e6fd0",
+              "c2": "#ffffff",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 12,
+              "draws": 8,
+              "losses": 14,
+              "gf": 46,
+              "ga": 52,
+              "gd": -6,
+              "pts": 44
+            },
+            {
+              "id": "pis",
+              "n": "FC Pisano",
+              "a": "PIS",
+              "p": 30,
+              "c": "#0f0f0f",
+              "c2": "#38bdf8",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 10,
+              "draws": 10,
+              "losses": 14,
+              "gf": 47,
+              "ga": 50,
+              "gd": -3,
+              "pts": 40
+            },
+            {
+              "id": "bar2",
+              "n": "FC Pugliese",
+              "a": "PUG",
+              "p": 34,
+              "c": "#f5f5f5",
+              "c2": "#dc2626",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 10,
+              "draws": 10,
+              "losses": 14,
+              "gf": 36,
+              "ga": 43,
+              "gd": -7,
+              "pts": 40
+            },
+            {
+              "id": "lec2",
+              "n": "FC Lariano",
+              "a": "LAR",
+              "p": 23,
+              "c": "#60a5fa",
+              "c2": "#1d4ed8",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 12,
+              "draws": 4,
+              "losses": 18,
+              "gf": 35,
+              "ga": 57,
+              "gd": -22,
+              "pts": 40
+            },
+            {
+              "id": "fro",
+              "n": "FC Ciociaro",
+              "a": "CIO",
+              "p": 32,
+              "c": "#f59e0b",
+              "c2": "#1d4ed8",
+              "nat": "🇮🇹",
+              "lg": "Primavera 2",
+              "isU18": true,
+              "played": 34,
+              "wins": 8,
+              "draws": 9,
+              "losses": 17,
+              "gf": 38,
+              "ga": 58,
+              "gd": -20,
+              "pts": 33
+            }
+          ],
+          "matchHistory": [
+            {
+              "season": 1,
+              "week": 1,
+              "opponent": "FC Pisano Primavera",
+              "oppAbbr": "PIS",
+              "oppCol": "#0f0f0f",
+              "homeScore": 3,
+              "awayScore": 1,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6.6,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 2,
+              "opponent": "FC Empolese Primavera",
+              "oppAbbr": "EMP",
+              "oppCol": "#1e6fd0",
+              "homeScore": 1,
+              "awayScore": 0,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6.6,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 3,
+              "opponent": "FC Sicania Primavera",
+              "oppAbbr": "SIC",
+              "oppCol": "#f472b6",
+              "homeScore": 1,
+              "awayScore": 1,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 4,
+              "opponent": "FC Cremona Primavera",
+              "oppAbbr": "CRE",
+              "oppCol": "#dc2626",
+              "homeScore": 1,
+              "awayScore": 1,
+              "goals": 1,
+              "assists": 0,
+              "rating": 6.2,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 5,
+              "opponent": "FC Spezzino Primavera",
+              "oppAbbr": "SPE",
+              "oppCol": "#f5f5f5",
+              "homeScore": 0,
+              "awayScore": 0,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.7,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 6,
+              "opponent": "FC Modenese Primavera",
+              "oppAbbr": "MOD",
+              "oppCol": "#f59e0b",
+              "homeScore": 2,
+              "awayScore": 3,
+              "goals": 1,
+              "assists": 0,
+              "rating": 5.8,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 7,
+              "opponent": "FC Salernum Primavera",
+              "oppAbbr": "SAL",
+              "oppCol": "#6c1f2e",
+              "homeScore": 0,
+              "awayScore": 2,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.1,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 8,
+              "opponent": "FC Calabro Primavera",
+              "oppAbbr": "CLB",
+              "oppCol": "#f59e0b",
+              "homeScore": 2,
+              "awayScore": 1,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6.4,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 10,
+              "opponent": "FC Altoadige Primavera",
+              "oppAbbr": "ALT",
+              "oppCol": "#f5f5f5",
+              "homeScore": 0,
+              "awayScore": 1,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.5,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 11,
+              "opponent": "FC Cittadino Primavera",
+              "oppAbbr": "CIT",
+              "oppCol": "#6c1f2e",
+              "homeScore": 1,
+              "awayScore": 4,
+              "goals": 1,
+              "assists": 0,
+              "rating": 5.5,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 12,
+              "opponent": "FC Parmense Primavera",
+              "oppAbbr": "PAR",
+              "oppCol": "#f59e0b",
+              "homeScore": 2,
+              "awayScore": 0,
+              "goals": 1,
+              "assists": 0,
+              "rating": 7.2,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 13,
+              "opponent": "FC Lariano Primavera",
+              "oppAbbr": "LAR",
+              "oppCol": "#60a5fa",
+              "homeScore": 2,
+              "awayScore": 0,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6.8,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 14,
+              "opponent": "FC Ciociaro Primavera",
+              "oppAbbr": "CIO",
+              "oppCol": "#f59e0b",
+              "homeScore": 1,
+              "awayScore": 1,
+              "goals": 1,
+              "assists": 0,
+              "rating": 6.3,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 15,
+              "opponent": "FC Bruzio Primavera",
+              "oppAbbr": "BRU",
+              "oppCol": "#dc2626",
+              "homeScore": 0,
+              "awayScore": 3,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 16,
+              "opponent": "FC Leonessa Primavera",
+              "oppAbbr": "LNS",
+              "oppCol": "#60a5fa",
+              "homeScore": 3,
+              "awayScore": 3,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.8,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 17,
+              "opponent": "FC Pugliese Primavera",
+              "oppAbbr": "PUG",
+              "oppCol": "#f5f5f5",
+              "homeScore": 1,
+              "awayScore": 1,
+              "goals": 1,
+              "assists": 0,
+              "rating": 6.3,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 18,
+              "opponent": "FC Laguna Primavera",
+              "oppAbbr": "LAG",
+              "oppCol": "#0f0f0f",
+              "homeScore": 3,
+              "awayScore": 2,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6.4,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 20,
+              "opponent": "FC Pisano Primavera",
+              "oppAbbr": "PIS",
+              "oppCol": "#0f0f0f",
+              "homeScore": 0,
+              "awayScore": 0,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.8,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 21,
+              "opponent": "FC Empolese Primavera",
+              "oppAbbr": "EMP",
+              "oppCol": "#1e6fd0",
+              "homeScore": 1,
+              "awayScore": 2,
+              "goals": 1,
+              "assists": 0,
+              "rating": 5.9,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 22,
+              "opponent": "FC Sicania Primavera",
+              "oppAbbr": "SIC",
+              "oppCol": "#f472b6",
+              "homeScore": 1,
+              "awayScore": 2,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.4,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 23,
+              "opponent": "FC Cremona Primavera",
+              "oppAbbr": "CRE",
+              "oppCol": "#dc2626",
+              "homeScore": 1,
+              "awayScore": 0,
+              "goals": 1,
+              "assists": 0,
+              "rating": 7,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 24,
+              "opponent": "FC Spezzino Primavera",
+              "oppAbbr": "SPE",
+              "oppCol": "#f5f5f5",
+              "homeScore": 2,
+              "awayScore": 1,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6.5,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 25,
+              "opponent": "FC Modenese Primavera",
+              "oppAbbr": "MOD",
+              "oppCol": "#f59e0b",
+              "homeScore": 0,
+              "awayScore": 1,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.5,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 26,
+              "opponent": "FC Salernum Primavera",
+              "oppAbbr": "SAL",
+              "oppCol": "#6c1f2e",
+              "homeScore": 0,
+              "awayScore": 3,
+              "goals": 0,
+              "assists": 0,
+              "rating": 4.8,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 27,
+              "opponent": "FC Calabro Primavera",
+              "oppAbbr": "CLB",
+              "oppCol": "#f59e0b",
+              "homeScore": 3,
+              "awayScore": 0,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6.8,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 29,
+              "opponent": "FC Altoadige Primavera",
+              "oppAbbr": "ALT",
+              "oppCol": "#f5f5f5",
+              "homeScore": 0,
+              "awayScore": 1,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.4,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 30,
+              "opponent": "FC Cittadino Primavera",
+              "oppAbbr": "CIT",
+              "oppCol": "#6c1f2e",
+              "homeScore": 1,
+              "awayScore": 1,
+              "goals": 0,
+              "assists": 1,
+              "rating": 6.2,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 31,
+              "opponent": "FC Parmense Primavera",
+              "oppAbbr": "PAR",
+              "oppCol": "#f59e0b",
+              "homeScore": 2,
+              "awayScore": 1,
+              "goals": 2,
+              "assists": 0,
+              "rating": 7.1,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 32,
+              "opponent": "FC Lariano Primavera",
+              "oppAbbr": "LAR",
+              "oppCol": "#60a5fa",
+              "homeScore": 1,
+              "awayScore": 0,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6.5,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 33,
+              "opponent": "FC Ciociaro Primavera",
+              "oppAbbr": "CIO",
+              "oppCol": "#f59e0b",
+              "homeScore": 1,
+              "awayScore": 2,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.4,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 34,
+              "opponent": "FC Bruzio Primavera",
+              "oppAbbr": "BRU",
+              "oppCol": "#dc2626",
+              "homeScore": 2,
+              "awayScore": 2,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.6,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 36,
+              "opponent": "FC Leonessa Primavera",
+              "oppAbbr": "LNS",
+              "oppCol": "#60a5fa",
+              "homeScore": 1,
+              "awayScore": 0,
+              "goals": 0,
+              "assists": 0,
+              "rating": 6.4,
+              "won": true,
+              "drew": false,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 37,
+              "opponent": "FC Pugliese Primavera",
+              "oppAbbr": "PUG",
+              "oppCol": "#f5f5f5",
+              "homeScore": 2,
+              "awayScore": 2,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.6,
+              "won": false,
+              "drew": true,
+              "simulated": true
+            },
+            {
+              "season": 1,
+              "week": 38,
+              "opponent": "FC Laguna Primavera",
+              "oppAbbr": "LAG",
+              "oppCol": "#0f0f0f",
+              "homeScore": 0,
+              "awayScore": 1,
+              "goals": 0,
+              "assists": 0,
+              "rating": 5.4,
+              "won": false,
+              "drew": false,
+              "simulated": true
+            }
+          ],
+          "calendar": [
+            {
+              "matchday": 1,
+              "week": 1,
+              "opponentId": "pis",
+              "opponentName": "FC Pisano Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 3,
+                "awayScore": 1,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 2,
+              "week": 2,
+              "opponentId": "samp",
+              "opponentName": "FC Empolese Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 0,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 3,
+              "week": 3,
+              "opponentId": "pal",
+              "opponentName": "FC Sicania Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 1,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 4,
+              "week": 4,
+              "opponentId": "cre",
+              "opponentName": "FC Cremona Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 1,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 5,
+              "week": 5,
+              "opponentId": "spe",
+              "opponentName": "FC Spezzino Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 0,
+                "awayScore": 0,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 6,
+              "week": 6,
+              "opponentId": "mod",
+              "opponentName": "FC Modenese Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 2,
+                "awayScore": 3,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 7,
+              "week": 7,
+              "opponentId": "sal",
+              "opponentName": "FC Salernum Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 0,
+                "awayScore": 2,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 8,
+              "week": 8,
+              "opponentId": "cat",
+              "opponentName": "FC Calabro Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 2,
+                "awayScore": 1,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 9,
+              "week": 10,
+              "opponentId": "sdt",
+              "opponentName": "FC Altoadige Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 0,
+                "awayScore": 1,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 10,
+              "week": 11,
+              "opponentId": "cit",
+              "opponentName": "FC Cittadino Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 4,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 11,
+              "week": 12,
+              "opponentId": "par",
+              "opponentName": "FC Parmense Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 2,
+                "awayScore": 0,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 12,
+              "week": 13,
+              "opponentId": "lec2",
+              "opponentName": "FC Lariano Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 2,
+                "awayScore": 0,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 13,
+              "week": 14,
+              "opponentId": "fro",
+              "opponentName": "FC Ciociaro Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 1,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 14,
+              "week": 15,
+              "opponentId": "cos",
+              "opponentName": "FC Bruzio Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 0,
+                "awayScore": 3,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 15,
+              "week": 16,
+              "opponentId": "bres",
+              "opponentName": "FC Leonessa Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 3,
+                "awayScore": 3,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 16,
+              "week": 17,
+              "opponentId": "bar2",
+              "opponentName": "FC Pugliese Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 1,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 17,
+              "week": 18,
+              "opponentId": "ven",
+              "opponentName": "FC Laguna Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 3,
+                "awayScore": 2,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 18,
+              "week": 20,
+              "opponentId": "pis",
+              "opponentName": "FC Pisano Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 0,
+                "awayScore": 0,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 19,
+              "week": 21,
+              "opponentId": "samp",
+              "opponentName": "FC Empolese Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 2,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 20,
+              "week": 22,
+              "opponentId": "pal",
+              "opponentName": "FC Sicania Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 2,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 21,
+              "week": 23,
+              "opponentId": "cre",
+              "opponentName": "FC Cremona Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 0,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 22,
+              "week": 24,
+              "opponentId": "spe",
+              "opponentName": "FC Spezzino Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 2,
+                "awayScore": 1,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 23,
+              "week": 25,
+              "opponentId": "mod",
+              "opponentName": "FC Modenese Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 0,
+                "awayScore": 1,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 24,
+              "week": 26,
+              "opponentId": "sal",
+              "opponentName": "FC Salernum Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 0,
+                "awayScore": 3,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 25,
+              "week": 27,
+              "opponentId": "cat",
+              "opponentName": "FC Calabro Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 3,
+                "awayScore": 0,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 26,
+              "week": 29,
+              "opponentId": "sdt",
+              "opponentName": "FC Altoadige Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 0,
+                "awayScore": 1,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 27,
+              "week": 30,
+              "opponentId": "cit",
+              "opponentName": "FC Cittadino Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 1,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 28,
+              "week": 31,
+              "opponentId": "par",
+              "opponentName": "FC Parmense Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 2,
+                "awayScore": 1,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 29,
+              "week": 32,
+              "opponentId": "lec2",
+              "opponentName": "FC Lariano Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 0,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 30,
+              "week": 33,
+              "opponentId": "fro",
+              "opponentName": "FC Ciociaro Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 2,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 31,
+              "week": 34,
+              "opponentId": "cos",
+              "opponentName": "FC Bruzio Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 2,
+                "awayScore": 2,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 32,
+              "week": 36,
+              "opponentId": "bres",
+              "opponentName": "FC Leonessa Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 1,
+                "awayScore": 0,
+                "won": true,
+                "drew": false
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 33,
+              "week": 37,
+              "opponentId": "bar2",
+              "opponentName": "FC Pugliese Primavera",
+              "isHome": true,
+              "played": true,
+              "result": {
+                "homeScore": 2,
+                "awayScore": 2,
+                "won": false,
+                "drew": true
+              },
+              "simulated": true
+            },
+            {
+              "matchday": 34,
+              "week": 38,
+              "opponentId": "ven",
+              "opponentName": "FC Laguna Primavera",
+              "isHome": false,
+              "played": true,
+              "result": {
+                "homeScore": 0,
+                "awayScore": 1,
+                "won": false,
+                "drew": false
+              },
+              "simulated": true
+            }
+          ]
+        }
+      ],
+      "lived": [],
+      "errors": [],
+      "startedAt": "2026-10-03T07:04:23.242Z",
+      "trialProgress": "{\"ph\":\"trial\",\"p\":{\"name\":\"QA Naturale 4\",\"nation\":\"Italia\",\"avatarId\":0,\"voltoEroe\":1,\"foot\":\"R\",\"archetype\":{\"id\":\"bomber\",\"e\":\"💪\",\"name\":\"Bomber\",\"desc\":\"Potenza e istinto del gol\",\"bonus\":{\"tiro\":8,\"fisico\":5,\"posizionamento\":6,\"velocità\":-2,\"passaggio\":-3},\"favored\":[\"tiro\",\"posizionamento\",\"fisico\"]},\"position\":\"Attaccante\",\"age\":17,\"stats\":{\"velocità\":59,\"tecnica\":55,\"fisico\":67,\"mentalità\":67,\"tiro\":69,\"passaggio\":50,\"dribbling\":55,\"posizionamento\":68},\"ovr\":64,\"club\":null,\"trialsDone\":0,\"trialStats\":[],\"season\":1,\"week\":1,\"weekLived\":false,\"u18Seasons\":0,\"isU18\":true,\"proStatus\":\"u18\",\"goals\":0,\"assists\":0,\"matches\":0,\"totalGoals\":0,\"totalAssists\":0,\"totalMatches\":0,\"morale\":70,\"fatigue\":0,\"popularity\":20,\"skillPoints\":2,\"log\":[],\"history\":[],\"matchHistory\":[],\"value\":0.8,\"coachTrust\":60,\"form\":70,\"transferOffers\":[],\"offerHistory\":[],\"contract\":{\"duration\":1,\"wage\":577,\"expiresAtSeason\":2},\"aiData\":{\"lastOpponentTactic\":null,\"scoutReports\":{},\"pressReports\":{}},\"dreamClub\":null,\"worldMemory\":[],\"rival\":null,\"saveVersion\":9,\"teammates\":[{\"name\":\"Dario Porcu\",\"archetype\":\"conflittuale\",\"icon\":\"😤\",\"bond\":40},{\"name\":\"Rocco Landi\",\"archetype\":\"mentore\",\"icon\":\"🧠\",\"bond\":40},{\"name\":\"Michele Giordano\",\"archetype\":\"amico\",\"icon\":\"😄\",\"bond\":40}],\"journalists\":[{\"id\":\"j_lombardi\",\"name\":\"Anna Lombardi\",\"f\":true,\"paper\":\"Zona Mista\",\"icon\":\"🎙️\",\"color\":\"#f59e0b\",\"type\":\"fan\",\"desc\":\"Ti segue dalla U18. Ha una vera stima nei tuoi confronti.\",\"trust\":50,\"lastTone\":null},{\"id\":\"j_esposito\",\"name\":\"Sofia Esposito\",\"f\":true,\"paper\":\"Diretta TV\",\"icon\":\"📺\",\"color\":\"#3b82f6\",\"type\":\"fan\",\"desc\":\"Appassionata. Ha già deciso che sei speciale — ma non tollera tradimenti.\",\"trust\":50,\"lastTone\":null},{\"id\":\"j_ferretti\",\"name\":\"Marco Ferretti\",\"paper\":\"Sprint Sportivo\",\"icon\":\"📰\",\"color\":\"#ef4444\",\"type\":\"critico\",\"desc\":\"Analitico e spietato. Ti esalta quando meriti, ti demolisce quando sbagli.\",\"trust\":50,\"lastTone\":null}]},\"tn\":2,\"res\":[{\"goals\":1,\"assists\":0,\"rating\":7.4},{\"goals\":0,\"assists\":0,\"rating\":5.8},{\"goals\":1,\"assists\":1,\"rating\":8.6}],\"opps\":[\"t_pol\",\"t_sud\",\"t_cef\"],\"slot\":0}",
+      "checkpoint": {
+        "localStorage": "{\"phase\":\"career\",\"player\":{\"name\":\"QA Naturale 4\",\"nation\":\"Italia\",\"avatarId\":0,\"voltoEroe\":1,\"foot\":\"R\",\"archetype\":{\"id\":\"bomber\",\"e\":\"💪\",\"name\":\"Bomber\",\"desc\":\"Potenza e istinto del gol\",\"bonus\":{\"tiro\":8,\"fisico\":5,\"posizionamento\":6,\"velocità\":-2,\"passaggio\":-3},\"favored\":[\"tiro\",\"posizionamento\",\"fisico\"]},\"position\":\"Attaccante\",\"age\":18,\"stats\":{\"velocità\":59,\"tecnica\":58,\"fisico\":67,\"mentalità\":71,\"tiro\":69,\"passaggio\":57,\"dribbling\":57,\"posizionamento\":74},\"ovr\":67,\"club\":{\"id\":\"ces\",\"n\":\"FC Cesenate\",\"a\":\"CES\",\"p\":40,\"c\":\"#f5f5f5\",\"c2\":\"#0f0f0f\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"isU18\":false,\"name\":\"FC Cesenate\"},\"trialsDone\":0,\"trialStats\":[],\"season\":2,\"week\":24,\"weekLived\":false,\"u18Seasons\":1,\"isU18\":false,\"proStatus\":\"pro\",\"goals\":4,\"assists\":1,\"matches\":23,\"totalGoals\":14,\"totalAssists\":2,\"totalMatches\":57,\"morale\":99,\"fatigue\":48,\"popularity\":44,\"skillPoints\":2,\"log\":[\"👏 Elogio pubblico del mister in conferenza.\",\"🏆 Coppa · Quarti di Finale (sim): 0-3 vs FC Leonessa — ELIMINATO\",\"🏆 Coppa · Ottavi di Finale (sim): 1-0 vs FC Sicania — passi il turno\",\"📩 FC Gent presenta un'offerta ufficiale: hai superato il livello del tuo club.\",\"📋 Rinnovo: 1 stag. a €260 mila/anno\",\"🎓 PROFESSIONISTA! Primo contratto professionistico con FC Cesenate!\",\"🏁 Fine Primavera 2 S.1: 10⚽ 1🎯\",\"🤵 Sergio Donato segue la tua carriera dal primo giorno.\",\"🏟️ Hai scelto FC Cesenate Primavera!\"],\"history\":[{\"season\":1,\"club\":\"FC Cesenate Primavera\",\"clubId\":\"ces\",\"goals\":10,\"assists\":1,\"matches\":34,\"ovr\":66,\"league\":\"Primavera 2\"}],\"matchHistory\":[{\"season\":2,\"week\":1,\"opponent\":\"FC Pisano\",\"oppAbbr\":\"PIS\",\"oppCol\":\"#0f0f0f\",\"homeScore\":0,\"awayScore\":1,\"goals\":0,\"assists\":0,\"rating\":5.3,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":2,\"opponent\":\"FC Calabro\",\"oppAbbr\":\"CLB\",\"oppCol\":\"#f59e0b\",\"homeScore\":2,\"awayScore\":3,\"goals\":1,\"assists\":0,\"rating\":5.7,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":3,\"opponent\":\"FC Bruzio\",\"oppAbbr\":\"BRU\",\"oppCol\":\"#dc2626\",\"homeScore\":1,\"awayScore\":3,\"goals\":0,\"assists\":1,\"rating\":5.4,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":4,\"opponent\":\"FC Altoadige\",\"oppAbbr\":\"ALT\",\"oppCol\":\"#f5f5f5\",\"homeScore\":1,\"awayScore\":2,\"goals\":1,\"assists\":0,\"rating\":5.8,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":5,\"opponent\":\"FC Pugliese\",\"oppAbbr\":\"PUG\",\"oppCol\":\"#f5f5f5\",\"homeScore\":2,\"awayScore\":4,\"goals\":0,\"assists\":0,\"rating\":5.2,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":6,\"opponent\":\"FC Ciociaro\",\"oppAbbr\":\"CIO\",\"oppCol\":\"#f59e0b\",\"homeScore\":2,\"awayScore\":4,\"goals\":0,\"assists\":0,\"rating\":5,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":7,\"opponent\":\"FC Cremona\",\"oppAbbr\":\"CRE\",\"oppCol\":\"#dc2626\",\"homeScore\":0,\"awayScore\":0,\"goals\":0,\"assists\":0,\"rating\":5.9,\"won\":false,\"drew\":true,\"simulated\":true},{\"season\":2,\"week\":8,\"opponent\":\"FC Leonessa\",\"oppAbbr\":\"LNS\",\"oppCol\":\"#60a5fa\",\"homeScore\":1,\"awayScore\":0,\"goals\":0,\"assists\":0,\"rating\":6.4,\"won\":true,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":9,\"opponent\":\"FC Sicania\",\"oppAbbr\":\"SIC\",\"oppCol\":\"#f472b6\",\"homeScore\":1,\"awayScore\":0,\"goals\":0,\"assists\":0,\"rating\":6.4,\"won\":true,\"drew\":false,\"simulated\":true,\"cup\":true,\"cupRound\":\"Ottavi di Finale\"},{\"season\":2,\"week\":10,\"opponent\":\"FC Empolese\",\"oppAbbr\":\"EMP\",\"oppCol\":\"#1e6fd0\",\"homeScore\":3,\"awayScore\":0,\"goals\":0,\"assists\":0,\"rating\":7,\"won\":true,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":11,\"opponent\":\"FC Spezzino\",\"oppAbbr\":\"SPE\",\"oppCol\":\"#f5f5f5\",\"homeScore\":0,\"awayScore\":4,\"goals\":0,\"assists\":0,\"rating\":5.1,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":12,\"opponent\":\"FC Parmense\",\"oppAbbr\":\"PAR\",\"oppCol\":\"#f59e0b\",\"homeScore\":0,\"awayScore\":0,\"goals\":0,\"assists\":0,\"rating\":5.8,\"won\":false,\"drew\":true,\"simulated\":true},{\"season\":2,\"week\":13,\"opponent\":\"FC Cittadino\",\"oppAbbr\":\"CIT\",\"oppCol\":\"#6c1f2e\",\"homeScore\":0,\"awayScore\":0,\"goals\":0,\"assists\":0,\"rating\":5.8,\"won\":false,\"drew\":true,\"simulated\":true},{\"season\":2,\"week\":14,\"opponent\":\"FC Sicania\",\"oppAbbr\":\"SIC\",\"oppCol\":\"#f472b6\",\"homeScore\":0,\"awayScore\":1,\"goals\":0,\"assists\":0,\"rating\":5.5,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":15,\"opponent\":\"FC Laguna\",\"oppAbbr\":\"LAG\",\"oppCol\":\"#0f0f0f\",\"homeScore\":0,\"awayScore\":0,\"goals\":0,\"assists\":0,\"rating\":5.9,\"won\":false,\"drew\":true,\"simulated\":true},{\"season\":2,\"week\":16,\"opponent\":\"FC Lariano\",\"oppAbbr\":\"LAR\",\"oppCol\":\"#60a5fa\",\"homeScore\":0,\"awayScore\":1,\"goals\":0,\"assists\":0,\"rating\":5.2,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":17,\"opponent\":\"FC Salernum\",\"oppAbbr\":\"SAL\",\"oppCol\":\"#6c1f2e\",\"homeScore\":2,\"awayScore\":1,\"goals\":0,\"assists\":0,\"rating\":6.3,\"won\":true,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":18,\"opponent\":\"FC Modenese\",\"oppAbbr\":\"MOD\",\"oppCol\":\"#f59e0b\",\"homeScore\":1,\"awayScore\":2,\"goals\":0,\"assists\":0,\"rating\":5.3,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":19,\"opponent\":\"FC Leonessa\",\"oppAbbr\":\"LNS\",\"oppCol\":\"#60a5fa\",\"homeScore\":0,\"awayScore\":3,\"goals\":0,\"assists\":0,\"rating\":5.1,\"won\":false,\"drew\":false,\"simulated\":true,\"cup\":true,\"cupRound\":\"Quarti di Finale\"},{\"season\":2,\"week\":20,\"opponent\":\"FC Pisano\",\"oppAbbr\":\"PIS\",\"oppCol\":\"#0f0f0f\",\"homeScore\":0,\"awayScore\":0,\"goals\":0,\"assists\":0,\"rating\":5.8,\"won\":false,\"drew\":true,\"simulated\":true},{\"season\":2,\"week\":21,\"opponent\":\"FC Calabro\",\"oppAbbr\":\"CLB\",\"oppCol\":\"#f59e0b\",\"homeScore\":1,\"awayScore\":1,\"goals\":1,\"assists\":0,\"rating\":6.4,\"won\":false,\"drew\":true,\"simulated\":true},{\"season\":2,\"week\":22,\"opponent\":\"FC Bruzio\",\"oppAbbr\":\"BRU\",\"oppCol\":\"#dc2626\",\"homeScore\":2,\"awayScore\":3,\"goals\":0,\"assists\":0,\"rating\":5.2,\"won\":false,\"drew\":false,\"simulated\":true},{\"season\":2,\"week\":23,\"opponent\":\"FC Altoadige\",\"oppAbbr\":\"ALT\",\"oppCol\":\"#f5f5f5\",\"homeScore\":1,\"awayScore\":2,\"goals\":1,\"assists\":0,\"rating\":5.8,\"won\":false,\"drew\":false,\"simulated\":true}],\"value\":4.3,\"coachTrust\":67,\"form\":70,\"transferOffers\":[],\"offerHistory\":[],\"contract\":{\"duration\":1,\"wage\":4994,\"expiresAtSeason\":3},\"aiData\":{\"lastOpponentTactic\":null,\"scoutReports\":{},\"pressReports\":{}},\"dreamClub\":null,\"worldMemory\":[{\"type\":\"vita\",\"label\":\"Il caffè dell'oratorio\",\"season\":1,\"week\":30},{\"type\":\"vita\",\"label\":\"La maglia scritta a pennarello\",\"season\":2,\"week\":10},{\"type\":\"vita\",\"label\":\"La famiglia in tribuna\",\"season\":2,\"week\":13},{\"type\":\"vita\",\"label\":\"La serata karaoke passata alla storia\",\"season\":2,\"week\":14},{\"type\":\"vita\",\"label\":\"«Era tutto calcolato?»\",\"season\":2,\"week\":22}],\"rival\":null,\"saveVersion\":9,\"teammates\":[{\"name\":\"Tommaso Bruno\",\"archetype\":\"capitano\",\"icon\":\"🤝\",\"bond\":40},{\"name\":\"Umberto Neri\",\"archetype\":\"mentore\",\"icon\":\"🧠\",\"bond\":40},{\"name\":\"Giulio Vitale\",\"archetype\":\"amico\",\"icon\":\"😄\",\"bond\":40}],\"journalists\":[{\"id\":\"j_lombardi\",\"name\":\"Anna Lombardi\",\"f\":true,\"paper\":\"Zona Mista\",\"icon\":\"🎙️\",\"color\":\"#f59e0b\",\"type\":\"fan\",\"desc\":\"Ti segue dalla U18. Ha una vera stima nei tuoi confronti.\",\"trust\":50,\"lastTone\":null},{\"id\":\"j_esposito\",\"name\":\"Sofia Esposito\",\"f\":true,\"paper\":\"Diretta TV\",\"icon\":\"📺\",\"color\":\"#3b82f6\",\"type\":\"fan\",\"desc\":\"Appassionata. Ha già deciso che sei speciale — ma non tollera tradimenti.\",\"trust\":50,\"lastTone\":null},{\"id\":\"j_ferretti\",\"name\":\"Marco Ferretti\",\"paper\":\"Sprint Sportivo\",\"icon\":\"📰\",\"color\":\"#ef4444\",\"type\":\"critico\",\"desc\":\"Analitico e spietato. Ti esalta quando meriti, ti demolisce quando sbagli.\",\"trust\":50,\"lastTone\":null}],\"calendar\":[{\"matchday\":1,\"week\":1,\"opponentId\":\"pis\",\"opponentName\":\"FC Pisano\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":1,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":2,\"week\":2,\"opponentId\":\"cat\",\"opponentName\":\"FC Calabro\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":2,\"awayScore\":3,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":3,\"week\":3,\"opponentId\":\"cos\",\"opponentName\":\"FC Bruzio\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":1,\"awayScore\":3,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":4,\"week\":4,\"opponentId\":\"sdt\",\"opponentName\":\"FC Altoadige\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":1,\"awayScore\":2,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":5,\"week\":5,\"opponentId\":\"bar2\",\"opponentName\":\"FC Pugliese\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":2,\"awayScore\":4,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":6,\"week\":6,\"opponentId\":\"fro\",\"opponentName\":\"FC Ciociaro\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":2,\"awayScore\":4,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":7,\"week\":7,\"opponentId\":\"cre\",\"opponentName\":\"FC Cremona\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":0,\"won\":false,\"drew\":true},\"simulated\":true},{\"matchday\":8,\"week\":8,\"opponentId\":\"bres\",\"opponentName\":\"FC Leonessa\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":1,\"awayScore\":0,\"won\":true,\"drew\":false},\"simulated\":true},{\"matchday\":9,\"week\":10,\"opponentId\":\"samp\",\"opponentName\":\"FC Empolese\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":3,\"awayScore\":0,\"won\":true,\"drew\":false},\"simulated\":true},{\"matchday\":10,\"week\":11,\"opponentId\":\"spe\",\"opponentName\":\"FC Spezzino\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":4,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":11,\"week\":12,\"opponentId\":\"par\",\"opponentName\":\"FC Parmense\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":0,\"won\":false,\"drew\":true},\"simulated\":true},{\"matchday\":12,\"week\":13,\"opponentId\":\"cit\",\"opponentName\":\"FC Cittadino\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":0,\"won\":false,\"drew\":true},\"simulated\":true},{\"matchday\":13,\"week\":14,\"opponentId\":\"pal\",\"opponentName\":\"FC Sicania\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":1,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":14,\"week\":15,\"opponentId\":\"ven\",\"opponentName\":\"FC Laguna\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":0,\"won\":false,\"drew\":true},\"simulated\":true},{\"matchday\":15,\"week\":16,\"opponentId\":\"lec2\",\"opponentName\":\"FC Lariano\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":1,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":16,\"week\":17,\"opponentId\":\"sal\",\"opponentName\":\"FC Salernum\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":2,\"awayScore\":1,\"won\":true,\"drew\":false},\"simulated\":true},{\"matchday\":17,\"week\":18,\"opponentId\":\"mod\",\"opponentName\":\"FC Modenese\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":1,\"awayScore\":2,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":18,\"week\":20,\"opponentId\":\"pis\",\"opponentName\":\"FC Pisano\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":0,\"won\":false,\"drew\":true},\"simulated\":true},{\"matchday\":19,\"week\":21,\"opponentId\":\"cat\",\"opponentName\":\"FC Calabro\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":1,\"awayScore\":1,\"won\":false,\"drew\":true},\"simulated\":true},{\"matchday\":20,\"week\":22,\"opponentId\":\"cos\",\"opponentName\":\"FC Bruzio\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":2,\"awayScore\":3,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":21,\"week\":23,\"opponentId\":\"sdt\",\"opponentName\":\"FC Altoadige\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":1,\"awayScore\":2,\"won\":false,\"drew\":false},\"simulated\":true},{\"matchday\":22,\"week\":24,\"opponentId\":\"bar2\",\"opponentName\":\"FC Pugliese\",\"isHome\":true,\"played\":false,\"result\":null},{\"matchday\":23,\"week\":25,\"opponentId\":\"fro\",\"opponentName\":\"FC Ciociaro\",\"isHome\":false,\"played\":false,\"result\":null},{\"matchday\":24,\"week\":26,\"opponentId\":\"cre\",\"opponentName\":\"FC Cremona\",\"isHome\":true,\"played\":false,\"result\":null},{\"matchday\":25,\"week\":27,\"opponentId\":\"bres\",\"opponentName\":\"FC Leonessa\",\"isHome\":false,\"played\":false,\"result\":null},{\"matchday\":26,\"week\":29,\"opponentId\":\"samp\",\"opponentName\":\"FC Empolese\",\"isHome\":true,\"played\":false,\"result\":null},{\"matchday\":27,\"week\":30,\"opponentId\":\"spe\",\"opponentName\":\"FC Spezzino\",\"isHome\":false,\"played\":false,\"result\":null},{\"matchday\":28,\"week\":31,\"opponentId\":\"par\",\"opponentName\":\"FC Parmense\",\"isHome\":true,\"played\":false,\"result\":null},{\"matchday\":29,\"week\":32,\"opponentId\":\"cit\",\"opponentName\":\"FC Cittadino\",\"isHome\":false,\"played\":false,\"result\":null},{\"matchday\":30,\"week\":33,\"opponentId\":\"pal\",\"opponentName\":\"FC Sicania\",\"isHome\":true,\"played\":false,\"result\":null},{\"matchday\":31,\"week\":34,\"opponentId\":\"ven\",\"opponentName\":\"FC Laguna\",\"isHome\":false,\"played\":false,\"result\":null},{\"matchday\":32,\"week\":36,\"opponentId\":\"lec2\",\"opponentName\":\"FC Lariano\",\"isHome\":true,\"played\":false,\"result\":null},{\"matchday\":33,\"week\":37,\"opponentId\":\"sal\",\"opponentName\":\"FC Salernum\",\"isHome\":false,\"played\":false,\"result\":null},{\"matchday\":34,\"week\":38,\"opponentId\":\"mod\",\"opponentName\":\"FC Modenese\",\"isHome\":true,\"played\":false,\"result\":null},{\"matchday\":990,\"week\":9,\"opponentId\":\"pal\",\"opponentName\":\"FC Sicania\",\"isHome\":true,\"played\":true,\"result\":{\"homeScore\":1,\"awayScore\":0,\"won\":true,\"drew\":false},\"type\":\"cup\",\"competition\":\"Coppa Nazionale\",\"cupRound\":1,\"cupRoundName\":\"R16\",\"simulated\":true},{\"matchday\":992,\"week\":19,\"opponentId\":\"bres\",\"opponentName\":\"FC Leonessa\",\"isHome\":false,\"played\":true,\"result\":{\"homeScore\":0,\"awayScore\":3,\"won\":false,\"drew\":false},\"type\":\"cup\",\"competition\":\"Coppa Nazionale\",\"cupRound\":2,\"cupRoundName\":\"Quarti di Finale\",\"simulated\":true}],\"standings\":[{\"id\":\"bar2\",\"n\":\"FC Pugliese\",\"a\":\"PUG\",\"p\":49,\"c\":\"#f5f5f5\",\"c2\":\"#dc2626\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":11,\"draws\":6,\"losses\":4,\"gf\":31,\"ga\":24,\"gd\":7,\"pts\":39},{\"id\":\"par\",\"n\":\"FC Parmense\",\"a\":\"PAR\",\"p\":52,\"c\":\"#f59e0b\",\"c2\":\"#1d4ed8\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":10,\"draws\":6,\"losses\":5,\"gf\":38,\"ga\":20,\"gd\":18,\"pts\":36},{\"id\":\"fro\",\"n\":\"FC Ciociaro\",\"a\":\"CIO\",\"p\":47,\"c\":\"#f59e0b\",\"c2\":\"#1d4ed8\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":11,\"draws\":3,\"losses\":7,\"gf\":31,\"ga\":25,\"gd\":6,\"pts\":36},{\"id\":\"spe\",\"n\":\"FC Spezzino\",\"a\":\"SPE\",\"p\":49,\"c\":\"#f5f5f5\",\"c2\":\"#0f0f0f\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":10,\"draws\":5,\"losses\":6,\"gf\":31,\"ga\":21,\"gd\":10,\"pts\":35},{\"id\":\"ven\",\"n\":\"FC Laguna\",\"a\":\"LAG\",\"p\":51,\"c\":\"#0f0f0f\",\"c2\":\"#f97316\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":9,\"draws\":7,\"losses\":5,\"gf\":38,\"ga\":24,\"gd\":14,\"pts\":34},{\"id\":\"cre\",\"n\":\"FC Cremona\",\"a\":\"CRE\",\"p\":48,\"c\":\"#dc2626\",\"c2\":\"#9ca3af\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":9,\"draws\":6,\"losses\":6,\"gf\":24,\"ga\":21,\"gd\":3,\"pts\":33},{\"id\":\"cat\",\"n\":\"FC Calabro\",\"a\":\"CLB\",\"p\":44,\"c\":\"#f59e0b\",\"c2\":\"#dc2626\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":9,\"draws\":5,\"losses\":7,\"gf\":30,\"ga\":25,\"gd\":5,\"pts\":32},{\"id\":\"mod\",\"n\":\"FC Modenese\",\"a\":\"MOD\",\"p\":47,\"c\":\"#f59e0b\",\"c2\":\"#1d4ed8\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":8,\"draws\":7,\"losses\":6,\"gf\":26,\"ga\":22,\"gd\":4,\"pts\":31},{\"id\":\"bres\",\"n\":\"FC Leonessa\",\"a\":\"LNS\",\"p\":50,\"c\":\"#60a5fa\",\"c2\":\"#f5f5f5\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":8,\"draws\":7,\"losses\":6,\"gf\":28,\"ga\":25,\"gd\":3,\"pts\":31},{\"id\":\"lec2\",\"n\":\"FC Lariano\",\"a\":\"LAR\",\"p\":38,\"c\":\"#60a5fa\",\"c2\":\"#1d4ed8\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":8,\"draws\":7,\"losses\":6,\"gf\":29,\"ga\":27,\"gd\":2,\"pts\":31},{\"id\":\"samp\",\"n\":\"FC Empolese\",\"a\":\"EMP\",\"p\":53,\"c\":\"#1e6fd0\",\"c2\":\"#ffffff\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":8,\"draws\":6,\"losses\":7,\"gf\":34,\"ga\":35,\"gd\":-1,\"pts\":30},{\"id\":\"pis\",\"n\":\"FC Pisano\",\"a\":\"PIS\",\"p\":45,\"c\":\"#0f0f0f\",\"c2\":\"#38bdf8\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":7,\"draws\":6,\"losses\":8,\"gf\":27,\"ga\":29,\"gd\":-2,\"pts\":27},{\"id\":\"cos\",\"n\":\"FC Bruzio\",\"a\":\"BRU\",\"p\":38,\"c\":\"#dc2626\",\"c2\":\"#1d4ed8\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":8,\"draws\":3,\"losses\":10,\"gf\":26,\"ga\":36,\"gd\":-10,\"pts\":27},{\"id\":\"sal\",\"n\":\"FC Salernum\",\"a\":\"SAL\",\"p\":45,\"c\":\"#6c1f2e\",\"c2\":\"#f5f5f5\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":7,\"draws\":4,\"losses\":10,\"gf\":27,\"ga\":31,\"gd\":-4,\"pts\":25},{\"id\":\"sdt\",\"n\":\"FC Altoadige\",\"a\":\"ALT\",\"p\":40,\"c\":\"#f5f5f5\",\"c2\":\"#dc2626\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":7,\"draws\":2,\"losses\":12,\"gf\":19,\"ga\":32,\"gd\":-13,\"pts\":23},{\"id\":\"pal\",\"n\":\"FC Sicania\",\"a\":\"SIC\",\"p\":50,\"c\":\"#f472b6\",\"c2\":\"#0f0f0f\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":4,\"draws\":6,\"losses\":11,\"gf\":25,\"ga\":39,\"gd\":-14,\"pts\":18},{\"id\":\"ces\",\"n\":\"FC Cesenate\",\"a\":\"CES\",\"p\":43,\"c\":\"#f5f5f5\",\"c2\":\"#0f0f0f\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":3,\"draws\":6,\"losses\":12,\"gf\":19,\"ga\":32,\"gd\":-13,\"pts\":15},{\"id\":\"cit\",\"n\":\"FC Cittadino\",\"a\":\"CIT\",\"p\":42,\"c\":\"#6c1f2e\",\"c2\":\"#f5f5f5\",\"nat\":\"🇮🇹\",\"lg\":\"Lega B\",\"played\":21,\"wins\":3,\"draws\":6,\"losses\":12,\"gf\":18,\"ga\":33,\"gd\":-15,\"pts\":15}],\"trophies\":[],\"transferListed\":false,\"sessionsThisWeek\":0,\"sessionLog\":[],\"diary\":[{\"season\":2,\"week\":1,\"type\":\"contract_renewal\",\"e\":\"📋\",\"headline\":\"Contratto rinnovato!\",\"body\":\"1 anno con FC Cesenate · €260 mila/anno (+15% agente)\",\"color\":\"#1e40af\"},{\"season\":2,\"week\":19,\"type\":\"cup_out\",\"e\":\"🏆\",\"headline\":\"Coppa: eliminati ai Quarti di Finale\",\"body\":\"0–3 vs FC Leonessa · S.2 (sim.)\",\"color\":\"#dc2626\"}],\"trainingStreak\":61,\"lastTrainingType\":null,\"windowOfferUsed\":false,\"playedMd\":{\"s\":2,\"md\":[1,2,3,4,5,6,7,8,990,9,10,11,12,13,14,15,16,17,992,18,19,20,21]},\"seasonObjectives\":[{\"type\":\"goals\",\"target\":16,\"label\":\"Segna 16 gol\",\"bonus\":{\"morale\":15,\"coachTrust\":10,\"value\":0.2}},{\"type\":\"standing\",\"target\":12,\"label\":\"Finisci nei primi 12\",\"bonus\":{\"popularity\":15,\"value\":0.25}},{\"type\":\"matches\",\"target\":21,\"label\":\"Gioca 21 partite\",\"bonus\":{\"coachTrust\":10,\"morale\":8}}],\"nationalCaps\":0,\"lastNationalSeason\":0,\"clubPrestigeShifts\":{},\"clubEvo\":{\"fanbase\":0,\"stadiumTier\":0,\"budget\":0,\"seasonsTop\":0,\"seasonsLow\":0,\"clubId\":\"ces\"},\"cup\":{\"active\":true,\"round\":3,\"nextWeek\":null,\"eliminated\":true,\"champion\":false,\"results\":[{\"round\":1,\"name\":\"Ottavi di Finale\",\"opponent\":\"FC Sicania\",\"homeScore\":1,\"awayScore\":0,\"won\":true,\"penalties\":false},{\"round\":2,\"name\":\"Quarti di Finale\",\"opponent\":\"FC Leonessa\",\"homeScore\":0,\"awayScore\":3,\"won\":false,\"penalties\":false}],\"bracket\":[\"samp\",\"pal\",\"cit\",\"bar2\",\"bres\",\"ces\",\"pis\",\"spe\",\"cat\",\"cos\",\"fro\",\"cre\",\"par\",\"mod\",\"sal\",\"ven\"],\"cupSurvivors\":[\"bres\",\"spe\",\"cre\",\"sal\"],\"cupBracketMatches\":{\"r16\":[{\"home\":\"samp\",\"away\":\"cit\",\"homeScore\":0,\"awayScore\":0,\"winner\":\"samp\"},{\"home\":\"bar2\",\"away\":\"bres\",\"homeScore\":1,\"awayScore\":1,\"winner\":\"bres\"},{\"home\":\"pis\",\"away\":\"spe\",\"homeScore\":1,\"awayScore\":4,\"winner\":\"spe\"},{\"home\":\"cat\",\"away\":\"cos\",\"homeScore\":0,\"awayScore\":2,\"winner\":\"cos\"},{\"home\":\"fro\",\"away\":\"cre\",\"homeScore\":0,\"awayScore\":1,\"winner\":\"cre\"},{\"home\":\"par\",\"away\":\"mod\",\"homeScore\":2,\"awayScore\":2,\"winner\":\"par\"},{\"home\":\"sal\",\"away\":\"ven\",\"homeScore\":1,\"awayScore\":0,\"winner\":\"sal\"},{\"home\":\"ces\",\"away\":\"pal\",\"homeScore\":1,\"awayScore\":0,\"winner\":\"ces\",\"isPlayer\":true}],\"quarters\":[{\"home\":\"samp\",\"away\":\"spe\",\"homeScore\":1,\"awayScore\":1,\"winner\":\"spe\"},{\"home\":\"cos\",\"away\":\"cre\",\"homeScore\":1,\"awayScore\":2,\"winner\":\"cre\"},{\"home\":\"par\",\"away\":\"sal\",\"homeScore\":1,\"awayScore\":1,\"winner\":\"sal\"},{\"home\":\"ces\",\"away\":\"bres\",\"homeScore\":0,\"awayScore\":3,\"winner\":\"bres\",\"isPlayer\":true}],\"semi\":[{\"home\":\"bres\",\"away\":\"spe\",\"homeScore\":1,\"awayScore\":3,\"winner\":\"spe\"},{\"home\":\"cre\",\"away\":\"sal\",\"homeScore\":0,\"awayScore\":2,\"winner\":\"sal\"}],\"final\":[{\"home\":\"spe\",\"away\":\"sal\",\"homeScore\":3,\"awayScore\":1,\"winner\":\"spe\"}]},\"season\":2,\"winnerId\":\"spe\"},\"coach\":{\"name\":\"Mister Ferrantini\",\"style\":\"Bilanciato\",\"trustMod\":0},\"goldenBoys\":[],\"records\":{\"topSeasonGoals\":0,\"topSeasonAssists\":0,\"topOvr\":64},\"playerAwards\":{\"palloneOros\":[],\"scarpaOros\":[],\"youngYears\":[],\"seasonRecords\":[],\"leagueMvpYears\":[],\"leagueTopScorerYears\":[],\"teamOfYearYears\":[]},\"milestones\":[],\"achievements\":[],\"rivalries\":[],\"momentsFired\":[],\"isCaptain\":false,\"captainSince\":null,\"fanLegend\":[],\"hasAgent\":true,\"agentHistory\":[],\"agentInit\":{\"k\":\"sponsor\",\"why\":\"immagine\",\"tab\":\"agente\",\"open\":true,\"s\":2,\"w\":1},\"agentCheckin\":{\"due\":true,\"s\":2,\"w\":1},\"agentHint\":{\"n\":0,\"s\":0,\"w\":0,\"due\":null},\"bankBalance\":103385,\"perkTrainer\":false,\"perkNutrition\":false,\"nationalGoals\":0,\"presidentModalSeason\":2,\"justRecovered\":false,\"injurySeverity\":null,\"originalInjuryWeeks\":0,\"returnPenaltyWeeks\":0,\"teamChemistry\":27,\"leagueArchive\":[],\"euro\":null,\"nationsCupQueue\":null,\"euroMondiale\":null,\"tutorialDone\":false,\"goalStreak\":0,\"bestGoalStreak\":0,\"lastMonthlyReview\":16,\"weeklyFocusType\":null,\"coachHistory\":[],\"jerseyNum\":10,\"jerseyNumSeason\":2,\"yellAccum\":0,\"isSuspended\":false,\"seasonCards\":{\"y\":0,\"r\":0},\"leagueOverrides\":{},\"lastLeagueShift\":null,\"u18Goals\":10,\"u18Assists\":1,\"u18Matches\":34,\"primaveraAwards\":[],\"mvpMonthAwards\":[],\"assistantCoachRel\":50,\"matchStatus\":null,\"fitnessCoachRel\":69,\"squadRole\":\"primavera\",\"coachPromise\":null,\"campDone\":true,\"loan\":null,\"agent\":{\"id\":\"prudente\",\"name\":\"Sergio Donato\",\"arch\":\"prudente\",\"since\":{\"s\":1,\"w\":1},\"rapport\":50,\"memory\":{\"amb\":[],\"note\":[]},\"lastCheckin\":{\"s\":1,\"w\":1}},\"agentPlan\":{\"season\":2,\"base\":3.41,\"target\":4.6,\"hold\":false},\"agentDefault23\":true,\"drawSeen\":2,\"mercatoSeen\":2,\"presentSeason\":2,\"chem\":56,\"bank\":0,\"vitaSeen\":{\"vita_cena_squadra\":{\"n\":1,\"at\":101},\"vita_telecronaca\":{\"n\":1,\"at\":128},\"vita_caffe_oratorio\":{\"n\":1,\"at\":130},\"vita_agente_cena\":{\"n\":1,\"at\":138},\"vita_bimbo_maglia\":{\"n\":1,\"at\":210},\"vita_famiglia_stadio\":{\"n\":1,\"at\":213},\"vita_karaoke\":{\"n\":1,\"at\":214},\"vita_mixed_zone\":{\"n\":1,\"at\":217},\"vita_tutto_calcolato\":{\"n\":1,\"at\":222}},\"vitaCat\":{\"squadra\":214,\"social\":217,\"vita\":213,\"agente\":138,\"assurdo\":222},\"vitaLastCat\":\"assurdo\",\"vitaNext\":null,\"smLast\":\"sm_bad_result\",\"smSeen\":{\"sm_mentor_advice\":2,\"sm_friend_joke\":14,\"sm_amico_problema\":18,\"sm_crisis\":42,\"sm_bad_result\":50},\"recentImpulses\":[\"wi_es_prof\",\"wi_es_canzone\",\"wi_scommessa_amici\",\"wi_es_busta\",\"wi_giovani_accademia\",\"wi_personal_chef\",\"wi_tifoso_fisso\",\"wi_bimbo_sogno\",\"wi_figlia_mister\",\"wi_cripto\",\"wi_donazione\",\"wi_dieta_ferrea\",\"wi_infortunato_posto\",\"wi_giornata_libera\",\"wi_extra_portieri\",\"wi_carita_anonima\",\"wi_viaggio\",\"wi_crioterapia\",\"wi_compagno_lite\",\"wi_sogno\",\"wi_social\",\"wi_recupero_hitech\",\"wi_analisi_video\",\"wi_intervista_sorpresa\",\"wi_famiglia_visita\",\"wi_torneo_padel\",\"wi_media\",\"wi_staff\",\"wi_amichevole\",\"wi_asta_maglia\",\"wi_cena_capitano\",\"wi_cena_squadra\",\"wi_sponsor_auto\",\"wi_pioggia_scelta\",\"wi_beneficenza\",\"wi_primo_mister\",\"wi_bonus_gol_social\",\"wi_giovane_aiuto\",\"wi_giornalista_mercato\",\"wi_campo_bagnato\"],\"impulseSeen\":{\"wi_es_muretto\":1,\"wi_es_bar\":1,\"wi_es_autografo\":1,\"wi_es_prof\":1,\"wi_es_canzone\":1,\"wi_scommessa_amici\":1,\"wi_es_busta\":1,\"wi_giovani_accademia\":1,\"wi_personal_chef\":1,\"wi_tifoso_fisso\":1,\"wi_bimbo_sogno\":1,\"wi_figlia_mister\":1,\"wi_cripto\":1,\"wi_donazione\":1,\"wi_dieta_ferrea\":1,\"wi_infortunato_posto\":1,\"wi_giornata_libera\":1,\"wi_extra_portieri\":1,\"wi_carita_anonima\":1,\"wi_viaggio\":1,\"wi_crioterapia\":1,\"wi_compagno_lite\":1,\"wi_sogno\":1,\"wi_social\":1,\"wi_recupero_hitech\":1,\"wi_analisi_video\":1,\"wi_intervista_sorpresa\":1,\"wi_famiglia_visita\":1,\"wi_torneo_padel\":1,\"wi_media\":1,\"wi_staff\":1,\"wi_amichevole\":1,\"wi_asta_maglia\":1,\"wi_cena_capitano\":1,\"wi_cena_squadra\":1,\"wi_sponsor_auto\":1,\"wi_pioggia_scelta\":1,\"wi_beneficenza\":1,\"wi_primo_mister\":1,\"wi_bonus_gol_social\":1,\"wi_giovane_aiuto\":1,\"wi_giornalista_mercato\":1,\"wi_campo_bagnato\":1},\"seasonClosedAt\":1,\"growthBoost\":{\"pct\":20,\"until\":2},\"proSeason\":1,\"stanceSeen\":{\"cid\":\"ces\",\"pres\":null,\"mister\":\"neutro\",\"curva\":\"osservazione\"},\"contractExpired\":false,\"agentRenewalBonus\":0,\"renewalSeason\":2,\"seasonPledge\":{\"season\":2,\"tone\":\"equilibrato\"},\"transferSaga\":{\"offer\":{\"club\":{\"id\":\"gent\",\"n\":\"FC Gent\",\"a\":\"GNT\",\"p\":72,\"c\":\"#1d4ed8\",\"c2\":\"#f5f5f5\",\"nat\":\"🇧🇪\",\"lg\":\"Liga Belga\"},\"type\":\"prestito\",\"minutaggio\":61,\"moralBonus\":8,\"growthBonus\":8,\"prestigeRatio\":1.8,\"wage\":6854,\"duration\":1},\"week\":3,\"season\":2,\"club\":\"FC Gent\",\"tone\":null,\"delivered\":true},\"recentCoachLines\":[\"Nessun dramma, ma nemmeno alibi: da te mi aspetto un gradino in più a ogni verifica.\",\"A tratti illumini, a tratti sparisci. Trova il modo di restare dentro la partita per 90 minuti.\"],\"recentCoachChoices\":[\"🧠 Ho idee per migliorare. Mi dia fiducia.\",\"🤝 Mi metta dove serve alla squadra: io rispondo presente.\",\"💪 Ha ragione. Alzo il ritmo da domani.\",\"🎧 Ascolto tutto quello che mi dice. Voglio crescere qui.\",\"🔧 Lavorerò sui dettagli che mi chiede. Voglio quel gradino in più.\",\"😤 So di poter fare di più. Non la deluderò.\"],\"evSeen\":{\"👏 Elogio pubblico del mister in conferenza.\":1}},\"savedAt\":1791011517469,\"saveVersion\":9}",
+        "season": 2,
+        "week": 24,
+        "screen": "agente"
+      },
+      "initial": {
+        "name": "QA Naturale 4",
+        "position": "Attaccante",
+        "ovr": 64,
+        "age": 17,
+        "club": "FC Cesenate Primavera"
+      },
+      "renewals": [
+        {
+          "before": {
+            "season": 2,
+            "week": 1,
+            "expired": false,
+            "duration": 1,
+            "expiresAtSeason": 3
+          },
+          "ui": {
+            "choices": [
+              "Inizia la tua storia",
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              },
+              {
+                "ready": false,
+                "reason": "renew button obstructed"
+              }
+            ],
+            "buttonVisible": true,
+            "tab": "agente",
+            "offerVisible": true,
+            "accepted": true
+          },
+          "after": {
+            "season": 2,
+            "week": 1,
+            "expired": false,
+            "duration": 1,
+            "expiresAtSeason": 3
+          }
+        }
+      ],
+      "completed": false,
+      "last": {
+        "season": 2,
+        "week": 24,
+        "ovr": 67,
+        "goals": 4,
+        "matches": 23
+      },
+      "finishedAt": "2026-10-03T07:11:59.817Z"
     }
   ],
   "environment": {
@@ -59550,5 +61832,10 @@
     "viewport": "360x640",
     "deviceScaleFactor": 1,
     "lastRunMatchSpeed": "2"
+  },
+  "paused": {
+    "at": "2026-10-03T07:11:59.628Z",
+    "freeGB": 3.33,
+    "reason": "RAM libera sotto 3,5 GB"
   }
 }
