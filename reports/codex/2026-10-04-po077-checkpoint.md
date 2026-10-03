@@ -33,3 +33,7 @@ Dai campioni ogni 50 ms nel medesimo grezzo ho calcolato la distanza 3D fra le p
 | fail 2 | 8,89 | 3,40 | 0,38 | 10 |
 
 Il rapporto minimo è 0,37: in questi sei casi **non** è misurato un rallentamento sotto il 30% della velocità precedente. I passi sopra 2 u rispettano la regola di segnalazione della scheda, ma alcuni sono consecutivi durante il volo veloce del cross (success r0: 1150–1400 ms); una soglia di distanza senza controllo della continuità della velocità non prova da sola un teletrasporto. La classificazione visiva dei salti resta **non verificata**.
+
+### Guardia di memoria per la ripresa
+
+Dopo i sei casi validi, il tentativo successivo è partito con circa 4,01 GiB liberi ed è stato interrotto perché la memoria è scesa sotto 1,8 GiB. La sonda richiede ora 6 GiB liberi prima di ogni pagina GLB e chiude la pagina se scende sotto 3,5 GiB durante il caso. È un margine basato sul calo osservato di oltre 2,2 GiB, non una misura delle prestazioni del gioco. `node --check tests/codex/collaudo-testa-conduzione.mjs` passa; `CPM_KIND=header CPM_GI=86 CPM_BATCH=1 node tests/codex/collaudo-testa-conduzione.mjs` si ferma prima di Chromium con `Pausa: RAM libera sotto 6 GB per la sonda GLB`. Nessun caso gi86 è stato eseguito da questo controllo.

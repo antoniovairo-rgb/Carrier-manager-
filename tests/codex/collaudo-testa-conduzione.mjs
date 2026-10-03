@@ -7,6 +7,9 @@ import {fileURLToPath} from 'node:url';
 import {startServer,launchBrowser,installCdnRoutes,openMatch,sleep} from '../visual/lib/harness.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
+// Nel lotto gi64 la RAM libera e' scesa da 4,01 a meno di 1,8 GiB durante
+// una singola pagina GLB. 6 GiB lascia margine sopra la soglia di 3,5 GiB.
+const minFreeGB=6;
 const out=path.join(root,'reports/codex/collaudo-testa-7999122');
 const raw=path.join(root,'tests/codex/collaudo-testa-7999122.json.gz');
 fs.mkdirSync(out,{recursive:true});
@@ -27,7 +30,7 @@ for(const run of data.runs){
  if(!run.finishedAt&&!run.error){run.error='Interrotto prima del completamento; dati non validi';run.valid=false;run.finishedAt=new Date().toISOString();}
 }
 save();
-if(os.freemem()<3.5*1024**3){console.log('Pausa: RAM libera sotto 3,5 GB');process.exit(0);}
+if(os.freemem()<minFreeGB*1024**3){console.log(`Pausa: RAM libera sotto ${minFreeGB} GB per la sonda GLB`);process.exit(0);}
 const selectedGi=(process.env.CPM_GI||'64,86,90').split(',').filter(Boolean).map(Number);
 const selectedOutcome=process.env.CPM_OUTCOME||'';
 const selectedRep=process.env.CPM_REP==null?null:Number(process.env.CPM_REP);
@@ -44,11 +47,11 @@ const pending=plan.filter(c=>
 const srv=await startServer();const browser=await launchBrowser();
 try{
  for(const c of pending){
-  if(os.freemem()<3.5*1024**3){console.log('Pausa: RAM libera sotto 3,5 GB');break;}
+  if(os.freemem()<minFreeGB*1024**3){console.log(`Pausa: RAM libera sotto ${minFreeGB} GB per la sonda GLB`);break;}
   const r={...c,versione:version,methodVersion:2,startedAt:new Date().toISOString(),samples:[],frames:[]};data.runs.push(r);save();
   const context=await browser.newContext({viewport:{width:412,height:915},deviceScaleFactor:1,serviceWorkers:'block'});
   const page=await context.newPage();page.setDefaultTimeout(90000);
-  let lowMemory=false;const guard=setInterval(()=>{if(os.freemem()<1.8*1024**3){lowMemory=true;context.close().catch(()=>{});}},2000);
+  let lowMemory=false;const guard=setInterval(()=>{if(os.freemem()<3.5*1024**3){lowMemory=true;context.close().catch(()=>{});}},2000);
   try{
    await page.clock.install();await page.clock.pauseAt(new Date(Date.now()+60000));
    await installCdnRoutes(page);
