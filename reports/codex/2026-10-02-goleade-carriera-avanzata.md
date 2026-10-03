@@ -61,6 +61,18 @@ Comando del braccio vissuto: `$env:CPM_PRECOMPILED='1'; $env:CPM_SEEDS='0'; node
 
 Un nuovo seme 3 è stato avviato con rinnovo via UI prima della scadenza: `$env:CPM_PRECOMPILED='1'; $env:CPM_RENEW_UI='1'; $env:CPM_SEEDS='3'; node tests/codex/goleade-carriera-avanzata.mjs`. Ha completato 2 provini, poi la guardia ha chiuso la pagina durante il terzo quando la memoria è scesa sotto 3,5 GB. Nessuna stagione del seme 3 è stata misurata. Il flusso dei tre provini è conservato in memoria React e **non è riprendibile dal secondo provino dopo la chiusura della pagina**; la sonda ora archivia i provini parziali in `interruptedTrialRuns` e ricomincia quel flusso dall'inizio, senza contarli come carriera conclusa. Le partite vissute su eroe attivo e la fonte dei gol restano non verificate.
 
+## Controllo numerico supplementare: eroe OVR alto
+
+Poiché il braccio di carriera non ha ancora prodotto un eroe attivo OVR 93, ho misurato separatamente il motore senza grafica con `occasioniV2:true` e scelte automatiche: `node tests/codex/goleade-eroe-alto.mjs`. Sono **100 partite per accoppiamento**, semi nel grezzo `tests/codex/goleade-eroe-alto.json`. Questo esercita gli eventi `occasione_eroe` (3,58–4,78 per partita in media), ma **non** include la progressione di carriera, il calendario, il rendering o l'azione scelta dal giocatore; non sostituisce PO-190.
+
+| Forza casa–trasferta | Gare | GF casa medi | GA casa medi | Gol eroe medi | Occasioni eroe medie | Gare casa 6+ GF | Gare con scarto 5+ |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 93–80 | 100 | 1,50 | 0,92 | 0,47 | 3,58 | 0 | 1 |
+| 93–50 | 100 | 2,43 | 0,54 | 0,49 | 3,77 | 1 | 4 |
+| 80–93 | 100 | 1,30 | 1,90 | 0,39 | 4,78 | 0 | 1 |
+
+Unico 6+ della squadra di casa: seme **191172**, risultato **6–2** nel 93–50. Nessun 7+ in queste 300 gare. Comando di sintesi: `node -e "const d=require('./tests/codex/goleade-eroe-alto.json');for(const p of ['93-80','93-50','80-93']){let r=d.rows.filter(x=>x.pair===p),a=k=>r.reduce((n,x)=>n+x[k],0)/r.length;console.log(p,r.length,a('home'),a('away'),a('heroGoals'),a('heroOpportunities'),r.filter(x=>x.home>=6).map(x=>x.seed),r.filter(x=>Math.abs(x.home-x.away)>=5).length)}"`. Le 4 goleade viste dal PO nella sua S12 e i 48 gol dell'eroe restano **non verificati** nel percorso reale di carriera.
+
 ```powershell
 node tests/codex/goleade-live-avanzata.mjs
 ```
