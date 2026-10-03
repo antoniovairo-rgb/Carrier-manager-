@@ -18,3 +18,18 @@ La sonda usa una pagina nuova per caso, GLB acceso, 412×915, esito verificato t
 **Misurato:** nei sei casi validi della scena 64 il minimo è sotto la soglia di 0,6 u e il picco calcolato cade nello stesso record del contatto, quindi entro 150 ms. `ActionResolved` coincide con l'esito richiesto. Questo dato **non chiude PO-077** per le altre scene e non misura ancora il rapporto fra velocità del cross prima/dopo il contatto.
 
 **Scarto:** il tentativo successivo, scena 64 azione 1 success r0, è stato interrotto dalla guardia di memoria (`lowMemory:true`, pagina chiusa, nessun frame utile). Rimane nel grezzo con `valid:false` e non entra nella tabella. Le scene 86, 90 e il braccio rosso 171 non sono ancora stati misurati su questa base. La memoria libera dopo la chiusura del browser era 4,088 GiB, ma durante il tentativo scartato è scesa sotto la soglia interna di 1,8 GiB: non è sicuro proseguire in un lotto continuo senza ulteriore margine.
+
+### Velocità del cross e passi del pallone, scena 64
+
+Dai campioni ogni 50 ms nel medesimo grezzo ho calcolato la distanza 3D fra le posizioni a contatto−200 ms, contatto e contatto+200 ms. Conversione del campo logico: `x` mondiale = `ball.x−50`, `z` mondiale = `(ball.y−50)×0,68`, `y` = `ball.worldY`; è la conversione del gioco in `src/12-three-match-view.jsx:248` e l'inverso del testimone `__CPM_BALL` alla riga 2701. Velocità qui = distanza fra gli estremi / 0,2 s, quindi media nell'intervallo, non velocità istantanea. Riproduzione dal grezzo: per ogni `run.valid`, prendere `contactWitness.ms` e `samples` ai tre tempi indicati, applicare questa conversione e la distanza euclidea.
+
+| Esito/giro | Prima (u/s) | Dopo (u/s) | Dopo/prima | Passi >2 u/50 ms fino al contatto |
+| --- | ---: | ---: | ---: | ---: |
+| success 0 | 7,67 | 3,77 | 0,49 | 9 |
+| success 1 | 7,32 | 3,86 | 0,53 | 8 |
+| success 2 | 9,08 | 3,36 | 0,37 | 9 |
+| fail 0 | 7,89 | 4,04 | 0,51 | 5 |
+| fail 1 | 7,32 | 3,85 | 0,53 | 8 |
+| fail 2 | 8,89 | 3,40 | 0,38 | 10 |
+
+Il rapporto minimo è 0,37: in questi sei casi **non** è misurato un rallentamento sotto il 30% della velocità precedente. I passi sopra 2 u rispettano la regola di segnalazione della scheda, ma alcuni sono consecutivi durante il volo veloce del cross (success r0: 1150–1400 ms); una soglia di distanza senza controllo della continuità della velocità non prova da sola un teletrasporto. La classificazione visiva dei salti resta **non verificata**.
