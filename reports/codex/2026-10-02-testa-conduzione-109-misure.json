@@ -4142,6 +4142,972 @@
           "deltaMs": 0
         }
       ]
+    },
+    {
+      "kind": "header",
+      "arm": "green",
+      "gi": 64,
+      "actionIndex": 0,
+      "action": "✈️ Testa potente angolato",
+      "outcome": "success",
+      "rep": 0,
+      "valid": true,
+      "measurable": true,
+      "contact": {
+        "t": 2.405,
+        "d": 0.051,
+        "ballY": 2.05
+      },
+      "peak": {
+        "t": 2.405,
+        "headY": 2.007
+      },
+      "syncMs": 0,
+      "guardContact": {
+        "t": 2.405,
+        "d": 0.051,
+        "g": "header"
+      },
+      "guardPeak": {
+        "t": 2.405,
+        "headY": 2.007,
+        "g": "header"
+      },
+      "guardSyncMs": 0,
+      "speedSource": "testimone per fotogramma __CPM_TIRO34.pb",
+      "speedBefore": 8.03,
+      "speedAfter": 11.4,
+      "speedRatio": 1.42,
+      "stepsOver2": 14,
+      "stepsOver85": 1,
+      "steps": [
+        {
+          "ms": 750,
+          "d": 2.12,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1150,
+          "d": 2.79,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1200,
+          "d": 2.43,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1250,
+          "d": 2.4,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1300,
+          "d": 2.4,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1350,
+          "d": 2.41,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1400,
+          "d": 2.44,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1800,
+          "d": 2.22,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1850,
+          "d": 2.46,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1900,
+          "d": 3.45,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1950,
+          "d": 2.56,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 2000,
+          "d": 2.4,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 2050,
+          "d": 2.01,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 4100,
+          "d": 6.84,
+          "dtMs": 50,
+          "over85": true
+        }
+      ],
+      "photos": [
+        {
+          "tag": "01-partenza-cross",
+          "ms": 50,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r0-green-01-partenza-cross.png"
+        },
+        {
+          "tag": "02-meta-volo",
+          "ms": 1250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r0-green-02-meta-volo.png"
+        },
+        {
+          "tag": "03-meno-100ms",
+          "ms": 2300,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r0-green-03-meno-100ms.png"
+        },
+        {
+          "tag": "04-contatto",
+          "ms": 2400,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r0-green-04-contatto.png"
+        },
+        {
+          "tag": "05-piu-100ms",
+          "ms": 2500,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r0-green-05-piu-100ms.png"
+        },
+        {
+          "tag": "06-esito",
+          "ms": 8000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r0-green-06-esito.png"
+        }
+      ],
+      "photoTimingErrorMs": [
+        {
+          "tag": "02-meta-volo",
+          "deltaMs": 50
+        },
+        {
+          "tag": "03-meno-100ms",
+          "deltaMs": 0
+        },
+        {
+          "tag": "04-contatto",
+          "deltaMs": 0
+        },
+        {
+          "tag": "05-piu-100ms",
+          "deltaMs": 0
+        }
+      ]
+    },
+    {
+      "kind": "header",
+      "arm": "green",
+      "gi": 64,
+      "actionIndex": 0,
+      "action": "✈️ Testa potente angolato",
+      "outcome": "success",
+      "rep": 1,
+      "valid": true,
+      "measurable": true,
+      "contact": {
+        "t": 2.405,
+        "d": 0.049,
+        "ballY": 2.05
+      },
+      "peak": {
+        "t": 2.405,
+        "headY": 2.007
+      },
+      "syncMs": 0,
+      "guardContact": {
+        "t": 2.405,
+        "d": 0.049,
+        "g": "header"
+      },
+      "guardPeak": {
+        "t": 2.405,
+        "headY": 2.007,
+        "g": "header"
+      },
+      "guardSyncMs": 0,
+      "speedSource": "testimone per fotogramma __CPM_TIRO34.pb",
+      "speedBefore": 8.01,
+      "speedAfter": 13.35,
+      "speedRatio": 1.67,
+      "stepsOver2": 13,
+      "stepsOver85": 0,
+      "steps": [
+        {
+          "ms": 1150,
+          "d": 2.73,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1200,
+          "d": 2.3,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1250,
+          "d": 3.02,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1300,
+          "d": 2.26,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1350,
+          "d": 2.3,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1400,
+          "d": 2.31,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1800,
+          "d": 2.31,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1850,
+          "d": 2.52,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1900,
+          "d": 2.6,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1950,
+          "d": 2.56,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 2000,
+          "d": 2.4,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 2050,
+          "d": 2.53,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 4200,
+          "d": 2.3,
+          "dtMs": 50,
+          "over85": false
+        }
+      ],
+      "photos": [
+        {
+          "tag": "01-partenza-cross",
+          "ms": 50,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r1-green-01-partenza-cross.png"
+        },
+        {
+          "tag": "02-meta-volo",
+          "ms": 1250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r1-green-02-meta-volo.png"
+        },
+        {
+          "tag": "03-meno-100ms",
+          "ms": 2300,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r1-green-03-meno-100ms.png"
+        },
+        {
+          "tag": "04-contatto",
+          "ms": 2400,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r1-green-04-contatto.png"
+        },
+        {
+          "tag": "05-piu-100ms",
+          "ms": 2500,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r1-green-05-piu-100ms.png"
+        },
+        {
+          "tag": "06-esito",
+          "ms": 8000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r1-green-06-esito.png"
+        }
+      ],
+      "photoTimingErrorMs": [
+        {
+          "tag": "02-meta-volo",
+          "deltaMs": 50
+        },
+        {
+          "tag": "03-meno-100ms",
+          "deltaMs": 0
+        },
+        {
+          "tag": "04-contatto",
+          "deltaMs": 0
+        },
+        {
+          "tag": "05-piu-100ms",
+          "deltaMs": 0
+        }
+      ]
+    },
+    {
+      "kind": "header",
+      "arm": "green",
+      "gi": 64,
+      "actionIndex": 0,
+      "action": "✈️ Testa potente angolato",
+      "outcome": "success",
+      "rep": 2,
+      "valid": true,
+      "measurable": true,
+      "contact": {
+        "t": 2.405,
+        "d": 0.032,
+        "ballY": 2.01
+      },
+      "peak": {
+        "t": 2.405,
+        "headY": 2.007
+      },
+      "syncMs": 0,
+      "guardContact": {
+        "t": 2.405,
+        "d": 0.032,
+        "g": "header"
+      },
+      "guardPeak": {
+        "t": 2.405,
+        "headY": 2.007,
+        "g": "header"
+      },
+      "guardSyncMs": 0,
+      "speedSource": "testimone per fotogramma __CPM_TIRO34.pb",
+      "speedBefore": 7.65,
+      "speedAfter": 13.47,
+      "speedRatio": 1.76,
+      "stepsOver2": 11,
+      "stepsOver85": 0,
+      "steps": [
+        {
+          "ms": 1150,
+          "d": 2.92,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1200,
+          "d": 2.31,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1250,
+          "d": 2.27,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1300,
+          "d": 2.28,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1350,
+          "d": 3.07,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1800,
+          "d": 2.34,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1850,
+          "d": 2.53,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1900,
+          "d": 2.6,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1950,
+          "d": 2.55,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 2000,
+          "d": 2.4,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 4150,
+          "d": 2.39,
+          "dtMs": 50,
+          "over85": false
+        }
+      ],
+      "photos": [
+        {
+          "tag": "01-partenza-cross",
+          "ms": 50,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r2-green-01-partenza-cross.png"
+        },
+        {
+          "tag": "02-meta-volo",
+          "ms": 1250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r2-green-02-meta-volo.png"
+        },
+        {
+          "tag": "03-meno-100ms",
+          "ms": 2300,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r2-green-03-meno-100ms.png"
+        },
+        {
+          "tag": "04-contatto",
+          "ms": 2400,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r2-green-04-contatto.png"
+        },
+        {
+          "tag": "05-piu-100ms",
+          "ms": 2500,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r2-green-05-piu-100ms.png"
+        },
+        {
+          "tag": "06-esito",
+          "ms": 8000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-success-r2-green-06-esito.png"
+        }
+      ],
+      "photoTimingErrorMs": [
+        {
+          "tag": "02-meta-volo",
+          "deltaMs": 50
+        },
+        {
+          "tag": "03-meno-100ms",
+          "deltaMs": 0
+        },
+        {
+          "tag": "04-contatto",
+          "deltaMs": 0
+        },
+        {
+          "tag": "05-piu-100ms",
+          "deltaMs": 0
+        }
+      ]
+    },
+    {
+      "kind": "header",
+      "arm": "green",
+      "gi": 64,
+      "actionIndex": 0,
+      "action": "✈️ Testa potente angolato",
+      "outcome": "fail",
+      "rep": 0,
+      "valid": true,
+      "measurable": true,
+      "contact": {
+        "t": 2.293,
+        "d": 0.033,
+        "ballY": 2.02
+      },
+      "peak": {
+        "t": 2.293,
+        "headY": 2.007
+      },
+      "syncMs": 0,
+      "guardContact": {
+        "t": 2.293,
+        "d": 0.033,
+        "g": "header"
+      },
+      "guardPeak": {
+        "t": 2.293,
+        "headY": 2.007,
+        "g": "header"
+      },
+      "guardSyncMs": 0,
+      "speedSource": "testimone per fotogramma __CPM_TIRO34.pb",
+      "speedBefore": 7.71,
+      "speedAfter": 11.51,
+      "speedRatio": 1.49,
+      "stepsOver2": 11,
+      "stepsOver85": 0,
+      "steps": [
+        {
+          "ms": 650,
+          "d": 2.06,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1050,
+          "d": 2.99,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1100,
+          "d": 3.26,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1150,
+          "d": 2.41,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1200,
+          "d": 2.42,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1250,
+          "d": 2.45,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1700,
+          "d": 2.34,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1750,
+          "d": 2.53,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1800,
+          "d": 2.6,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1850,
+          "d": 2.55,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1900,
+          "d": 3.12,
+          "dtMs": 50,
+          "over85": false
+        }
+      ],
+      "photos": [
+        {
+          "tag": "01-partenza-cross",
+          "ms": 50,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r0-green-01-partenza-cross.png"
+        },
+        {
+          "tag": "02-meta-volo",
+          "ms": 1250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r0-green-02-meta-volo.png"
+        },
+        {
+          "tag": "03-meno-100ms",
+          "ms": 2200,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r0-green-03-meno-100ms.png"
+        },
+        {
+          "tag": "04-contatto",
+          "ms": 2300,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r0-green-04-contatto.png"
+        },
+        {
+          "tag": "05-piu-100ms",
+          "ms": 2400,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r0-green-05-piu-100ms.png"
+        },
+        {
+          "tag": "06-esito",
+          "ms": 8000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r0-green-06-esito.png"
+        }
+      ],
+      "photoTimingErrorMs": [
+        {
+          "tag": "02-meta-volo",
+          "deltaMs": 100
+        },
+        {
+          "tag": "03-meno-100ms",
+          "deltaMs": 0
+        },
+        {
+          "tag": "04-contatto",
+          "deltaMs": 0
+        },
+        {
+          "tag": "05-piu-100ms",
+          "deltaMs": 0
+        }
+      ]
+    },
+    {
+      "kind": "header",
+      "arm": "green",
+      "gi": 64,
+      "actionIndex": 0,
+      "action": "✈️ Testa potente angolato",
+      "outcome": "fail",
+      "rep": 1,
+      "valid": true,
+      "measurable": true,
+      "contact": {
+        "t": 2.405,
+        "d": 0.042,
+        "ballY": 1.98
+      },
+      "peak": {
+        "t": 2.405,
+        "headY": 2.007
+      },
+      "syncMs": 0,
+      "guardContact": {
+        "t": 2.405,
+        "d": 0.042,
+        "g": "header"
+      },
+      "guardPeak": {
+        "t": 2.405,
+        "headY": 2.007,
+        "g": "header"
+      },
+      "guardSyncMs": 0,
+      "speedSource": "testimone per fotogramma __CPM_TIRO34.pb",
+      "speedBefore": 7.35,
+      "speedAfter": 12.32,
+      "speedRatio": 1.68,
+      "stepsOver2": 11,
+      "stepsOver85": 0,
+      "steps": [
+        {
+          "ms": 1150,
+          "d": 2.28,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1200,
+          "d": 2.27,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1250,
+          "d": 2.98,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1300,
+          "d": 2.25,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1350,
+          "d": 2.27,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1800,
+          "d": 2.36,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1850,
+          "d": 2.55,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1900,
+          "d": 2.6,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1950,
+          "d": 2.53,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 2000,
+          "d": 2.37,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 2050,
+          "d": 2.37,
+          "dtMs": 50,
+          "over85": false
+        }
+      ],
+      "photos": [
+        {
+          "tag": "01-partenza-cross",
+          "ms": 50,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r1-green-01-partenza-cross.png"
+        },
+        {
+          "tag": "02-meta-volo",
+          "ms": 1250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r1-green-02-meta-volo.png"
+        },
+        {
+          "tag": "03-meno-100ms",
+          "ms": 2300,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r1-green-03-meno-100ms.png"
+        },
+        {
+          "tag": "04-contatto",
+          "ms": 2400,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r1-green-04-contatto.png"
+        },
+        {
+          "tag": "05-piu-100ms",
+          "ms": 2500,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r1-green-05-piu-100ms.png"
+        },
+        {
+          "tag": "06-esito",
+          "ms": 8000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r1-green-06-esito.png"
+        }
+      ],
+      "photoTimingErrorMs": [
+        {
+          "tag": "02-meta-volo",
+          "deltaMs": 50
+        },
+        {
+          "tag": "03-meno-100ms",
+          "deltaMs": 0
+        },
+        {
+          "tag": "04-contatto",
+          "deltaMs": 0
+        },
+        {
+          "tag": "05-piu-100ms",
+          "deltaMs": 0
+        }
+      ]
+    },
+    {
+      "kind": "header",
+      "arm": "green",
+      "gi": 64,
+      "actionIndex": 0,
+      "action": "✈️ Testa potente angolato",
+      "outcome": "fail",
+      "rep": 2,
+      "valid": true,
+      "measurable": true,
+      "contact": {
+        "t": 2.405,
+        "d": 0.035,
+        "ballY": 1.99
+      },
+      "peak": {
+        "t": 2.405,
+        "headY": 2.007
+      },
+      "syncMs": 0,
+      "guardContact": {
+        "t": 2.405,
+        "d": 0.035,
+        "g": "header"
+      },
+      "guardPeak": {
+        "t": 2.405,
+        "headY": 2.007,
+        "g": "header"
+      },
+      "guardSyncMs": 0,
+      "speedSource": "testimone per fotogramma __CPM_TIRO34.pb",
+      "speedBefore": 7.46,
+      "speedAfter": 12.04,
+      "speedRatio": 1.61,
+      "stepsOver2": 11,
+      "stepsOver85": 0,
+      "steps": [
+        {
+          "ms": 1150,
+          "d": 2.38,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1200,
+          "d": 3.01,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1250,
+          "d": 2.23,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1300,
+          "d": 2.23,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1350,
+          "d": 2.25,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1400,
+          "d": 2.27,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1800,
+          "d": 2.26,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1850,
+          "d": 2.5,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1900,
+          "d": 2.6,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 1950,
+          "d": 2.57,
+          "dtMs": 50,
+          "over85": false
+        },
+        {
+          "ms": 2000,
+          "d": 3.21,
+          "dtMs": 50,
+          "over85": false
+        }
+      ],
+      "photos": [
+        {
+          "tag": "01-partenza-cross",
+          "ms": 50,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r2-green-01-partenza-cross.png"
+        },
+        {
+          "tag": "02-meta-volo",
+          "ms": 1250,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r2-green-02-meta-volo.png"
+        },
+        {
+          "tag": "03-meno-100ms",
+          "ms": 2300,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r2-green-03-meno-100ms.png"
+        },
+        {
+          "tag": "04-contatto",
+          "ms": 2400,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r2-green-04-contatto.png"
+        },
+        {
+          "tag": "05-piu-100ms",
+          "ms": 2500,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r2-green-05-piu-100ms.png"
+        },
+        {
+          "tag": "06-esito",
+          "ms": 8000,
+          "file": "reports/codex/collaudo-testa-conduzione-109/gi64-a0-fail-r2-green-06-esito.png"
+        }
+      ],
+      "photoTimingErrorMs": [
+        {
+          "tag": "02-meta-volo",
+          "deltaMs": 50
+        },
+        {
+          "tag": "03-meno-100ms",
+          "deltaMs": 0
+        },
+        {
+          "tag": "04-contatto",
+          "deltaMs": 0
+        },
+        {
+          "tag": "05-piu-100ms",
+          "deltaMs": 0
+        }
+      ]
     }
   ]
 }
