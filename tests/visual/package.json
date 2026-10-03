@@ -326,6 +326,7 @@
     "walkout-fermi-197": "node walkout-fermi-197.mjs",
     "premiazione-palco-191": "node premiazione-palco-191.mjs",
     "coppa-mani-191": "node coppa-mani-191.mjs",
+    "posa-sollevamento-191": "node posa-sollevamento-191.mjs",
     "titolo-110:rosso": "CPM_RED=1 node titolo-110-test.mjs",
     "rinvio-coppe-107:rosso": "CPM_RED=1 node rinvio-coppe-107-test.mjs",
     "avversario-106:rosso": "CPM_RED=1 node avversario-106-test.mjs",
