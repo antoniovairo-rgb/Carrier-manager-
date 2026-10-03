@@ -5329,7 +5329,14 @@ const getThisWeekMatchday=()=>{
       //   dell'Under 18 (rosa/mister del vecchio club) → spogliatoio incoerente col nuovo club senior.
       const _proTeammates=generateTeammates({...base,club:offer.club,proStatus:"pro"});
       const _proCoach={name:"Mister "+pick(COACH_NAMES),style:"Bilanciato",trustMod:0};
-      return{...base,club:offer.club,isU18:false,proStatus:"pro",...( (p.proStatus||"u18")!=="pro"?{proSeason:(p.season||1)}:{} ),/* [7.435.0] l'anno del salto: gli impulsi del primo anno da pro leggono questo */teammates:_proTeammates,coach:_proCoach,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:45,/* [7.325.0] primo spogliatoio da pro: i rapporti della Primavera non ti seguono */...(_cupPro?{cup:_cupPro,calendar:_calPro}:{}),value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+popGain(p,15),0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
+      /* [7.999.120 collaudo Codex PO-176 «salvataggio/ricarica», 6 differenze visibili] rivale e sponsor del club nascevano SOLO dalla
+         migrazione al caricamento (src/17, se mancanti e giocatore pro): passando professionista in sessione non c'erano, e comparivano
+         alla prima ricarica (S2W1: rivale in Profilo, sponsor in Club). Ora il passaggio li crea subito, con la stessa regola. Rosso __CPM_NO_PRO176. */
+      const _pro176=!(typeof window!=='undefined'&&window.__CPM_NO_PRO176);
+      const _base176={...base,club:offer.club,proStatus:"pro"};
+      const _riv176=(_pro176&&!p.rival&&offer.club&&typeof generateRival==="function")?{rival:generateRival(_base176)}:{};
+      const _sp176=(_pro176&&offer.club&&typeof genClubSponsor==="function"&&!(p.clubSponsor&&p.clubSponsor.clubId===(offer.club.id||offer.club.n)))?{clubSponsor:genClubSponsor(offer.club,base.season||p.season||1,((p.clubPrestigeShifts||{})[offer.club.id||offer.club.n]||0)+(offer.club.p||60))}:{};
+      return{...base,..._riv176,..._sp176,club:offer.club,isU18:false,proStatus:"pro",...( (p.proStatus||"u18")!=="pro"?{proSeason:(p.season||1)}:{} ),/* [7.435.0] l'anno del salto: gli impulsi del primo anno da pro leggono questo */teammates:_proTeammates,coach:_proCoach,fitnessCoachRel:50,assistantCoachRel:50,teamChemistry:45,/* [7.325.0] primo spogliatoio da pro: i rapporti della Primavera non ti seguono */...(_cupPro?{cup:_cupPro,calendar:_calPro}:{}),value:Math.max(0.5,(p.value||0.8)+0.5),popularity:clamp((p.popularity||20)+popGain(p,15),0,100),log:[`🎓 PROFESSIONISTA! ${offer.contractType} con ${offer.club?.n||offer.club?.name}!`,...(p.log||[])].slice(0,60)};
     });
     if(offer.isStayU18){setScreen("dashboard");setTab("dashboard");notify("🔄 Resti in Under 18!",TH.warning);return;}
     setPresentationData({club:offer.club,contractType:offer.contractType||"Primo contratto professionistico",playerName:player.name});

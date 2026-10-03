@@ -328,6 +328,7 @@
     "coppa-mani-191": "node coppa-mani-191.mjs",
     "posa-sollevamento-191": "node posa-sollevamento-191.mjs",
     "palco-corpi-191": "node palco-corpi-191.mjs",
+    "pro-rivale-176": "node pro-rivale-176.mjs",
     "titolo-110:rosso": "CPM_RED=1 node titolo-110-test.mjs",
     "rinvio-coppe-107:rosso": "CPM_RED=1 node rinvio-coppe-107-test.mjs",
     "avversario-106:rosso": "CPM_RED=1 node avversario-106-test.mjs",
