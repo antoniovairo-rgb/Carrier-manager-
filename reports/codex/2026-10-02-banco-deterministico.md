@@ -88,6 +88,26 @@ Tutte le osservazioni provengono dal ramo del vecchio banco che controllava `s.p
 
 I rilievi sul gioco restano ipotesi finché il team non li riproduce con un proprio guardiano.
 
+### Ripresa del 3 ottobre: scena 133 con corpi GLB
+
+Comandi eseguiti dalla radice del repository, con memoria libera rispettivamente 4,62 e 4,72 GiB prima dei lotti:
+
+```powershell
+$env:CPM_SCENES='33'; $env:CPM_MODE='1'; $env:CPM_OUTCOME='fail'; $env:CPM_REPEAT='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs
+$env:CPM_SCENES='133'; $env:CPM_MODE='1'; $env:CPM_OUTCOME='success'; $env:CPM_REPEAT='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs
+$env:CPM_SCENES='133'; $env:CPM_MODE='1'; $env:CPM_OUTCOME='fail'; $env:CPM_REPEAT='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs
+```
+
+| Tentativo | Validità | Letture `FRAME480` | Eroe fuori | Pallone fuori | Sei foto |
+| --- | --- | ---: | ---: | ---: | --- |
+| gi33 fail GLB r0 | scartato: `hl_result` dopo 1 frame di scelta, prima dei 45 richiesti | non verificato | non verificato | non verificato | no, solo apertura |
+| gi133 success GLB r0 | valido, `ActionResolved.ok=true` | 118 | 2 | 75 | sì |
+| gi133 fail GLB r0 | valido, `ActionResolved.ok=false` | 105 | 14 | 98 | sì |
+
+Fonte numerica: `tests/codex/banco-difesa-3d.json.gz`, ultime tre righe di `cases`. La quota `bfuori` è dunque 75/118 nel successo e 98/105 nel fallimento; è una misura del testimone, non una deduzione dalle sei foto. Nella foto `gi133-success-glb-r0-01-apertura.png` l'eroe si vede sopra la scheda, ma il pallone non si distingue. Nelle foto `gi133-success-glb-r0-04-contatto.png` e `gi133-fail-glb-r0-04-contatto.png` il pallone non è distinguibile e la camera mostra molto prato senza la linea di fondo annunciata dal titolo. La foto `gi133-fail-glb-r0-06-esito.png` mostra l'eroe parzialmente coperto dalla scheda; il testo «Supera e segna» concorda con `ActionResolved.ok=false` e con il tabellone 0–1, mentre il percorso visivo del pallone verso la rete non è verificato. La riproduzione del codice 002 sul pallone è una **segnalazione da verificare dal team**; 001 e 003 non vengono attribuiti da questo campione. Restano aperti gli altri casi e la prova di ripetibilità.
+
+Lotto successivo: `$env:CPM_SCENES='134,138'; $env:CPM_MODE='1'; $env:CPM_REPEAT='1'; $env:CPM_SETTLE_MODE='fixed-45-frames'; node tests/codex/banco-difesa-3d.mjs`. Gi134 success GLB r0 è valido (`ActionResolved.ok=true`), con 98 letture, eroe fuori 0, pallone fuori 2 e sei foto. Nello scatto `gi134-success-glb-r0-04-contatto.png` il pallone è vicino al bordo destro e non appare vicino alla testa dell'eroe; `06-esito.png` mostra un pallone presso un altro giocatore, mentre il testo è «SALVATO! Che intervento!». Il fotogramma isolato non prova quale giocatore abbia effettuato il salvataggio: il codice 003 resta **non verificato**. Il caso fail della stessa scena è stato scartato **prima di aprire la pagina** perché la memoria libera era 2,77 GiB, inferiore alla guardia di 3,5 GiB; gi138 non è stato avviato. Il checkpoint conserva il caso valido e lo scarto. Nessun altro lotto 3D è stato avviato dopo questa guardia.
+
 ## Ripresa serale 02/10: orologio e 45 fotogrammi
 
 È pronta una nuova serie distinta dai tentativi precedenti: `tests/codex/orologio-300.mjs` conta 300 callback `requestAnimationFrame`, i passi nativi e quelli virtuali; `tests/codex/banco-difesa-3d.mjs` con `CPM_NO_SHOTS=1` usa ora `settleMode: fixed-45-frames`, risolvendo solo in `hl_choose` dopo 45 fotogrammi osservati in quella fase. Ogni tentativo nuovo registra `chooseFrames`, l'eventuale fase cambiata, l'esito `ActionResolved`, i conteggi `FRAME480` e GLB sì/no. I vecchi tentativi restano nel grezzo con il loro `settleMode` e **non entrano nel verdetto della nuova serie**.
