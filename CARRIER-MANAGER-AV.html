@@ -26127,7 +26127,7 @@ for(let a=0;a<g.length;a++){const p=g[a];if(!attivo(p)||p.gk)continue;for(let b=
   const espulsi=()=>Object.keys(S.cartellini||{}).filter(k=>S.cartellini[k].r).map(Number);
   /* [7.999.2] l'xG di un punto del campo per la squadra dell'eroe (verso di attacco = x crescente): lo usa l'highlight per decidere
      la sua giocata con lo STESSO modello che decide i tiri di tutti gli altri */
-  const addebita=(x)=>{if((typeof window!=='undefined'&&window&&window.__CPM_NO_PUNT36))return;const v=+x;if(v>0&&isFinite(v)){S.debito36=Math.round(((S.debito36||0)+v)*1000)/1000;S.conta.addebitato36=Math.round(((S.conta.addebitato36||0)+v)*1000)/1000;}};/* [7.999.36] gol attesi di una scena dell'eroe */
+  const addebita=(x)=>{if((typeof window!=='undefined'&&window&&window.__CPM_NO_PUNT36))return;const v=+x*((typeof window!=='undefined'&&window&&window.__CPM_DEB36_K!=null&&(new URLSearchParams(window.location.search||'')).get('cpmtest')==='1')?+window.__CPM_DEB36_K:1);/* [7.999.120 PO-190] __CPM_DEB36_K: solo collaudo (cpmtest), scala del debito per misurare la taratura */if(v>0&&isFinite(v)){S.debito36=Math.round(((S.debito36||0)+v)*1000)/1000;S.conta.addebitato36=Math.round(((S.conta.addebitato36||0)+v)*1000)/1000;}};/* [7.999.36] gol attesi di una scena dell'eroe */
   const xgPunto=(x,y,intent,press)=>{try{if(!V2)return null;return xgV2({team:HOME,x:clamp(+x||50,0,100),y:clamp(+y||50,0,100)},intent||null,press==null?4:+press);}catch(_e){return null;}};
   /* [7.999.82 — BRAIN UNICO. Direttiva PO 30/09: «succRate deve essere calcolato da brain, deve essere l'unico cervello / motore del gioco»]
      La probabilita' della giocata dell'eroe nella scena non viene piu' da una formula della partita vissuta (succRate + moltiplicatore q
