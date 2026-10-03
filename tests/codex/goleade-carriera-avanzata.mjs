@@ -10,10 +10,12 @@ const output = path.resolve('tests/codex/goleade-carriera-avanzata.json');
 const version = fs.readFileSync('src/07-versione-save-interviste.jsx', 'utf8').match(/const GAME_VERSION="([^"]+)"/)?.[1];
 if (!version || Number(version.split('.').at(-1)) < 111) throw Error(`Versione insufficiente: ${version}`);
 const seeds = (process.env.CPM_SEEDS || '0,1,2').split(',').map(Number).filter(Number.isInteger);
+const matchSpeed = process.env.CPM_MATCH_SPEED === '2' ? '2' : '1';
 const precompiled = process.env.CPM_PRECOMPILED === '1';
 const fixture = precompiled ? fs.readFileSync(path.resolve('tests/codex/goleade-precompiled.html'), 'utf8') : null;
 const data = fs.existsSync(output) ? JSON.parse(fs.readFileSync(output, 'utf8')) : { version, commit: '8cef5317', command: 'node tests/codex/goleade-carriera-avanzata.mjs', careers: [] };
-data.environment = { ...(data.environment || {}), precompiled, renderer: precompiled ? 'd3d11' : 'swiftshader', viewport: '360x640', deviceScaleFactor: 1 };
+for (const prior of data.careers) prior.matchSpeed ||= '1';
+data.environment = { ...(data.environment || {}), precompiled, renderer: precompiled ? 'd3d11' : 'swiftshader', viewport: '360x640', deviceScaleFactor: 1, lastRunMatchSpeed: matchSpeed };
 const save = () => { const raw = JSON.stringify(data, null, 2); for (let i = 0; i < 15; i++) {
   try { fs.writeFileSync(output, raw); return; }
   catch (e) { if (e.code !== 'EBUSY' || i === 14) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 200); }
@@ -82,13 +84,14 @@ try {
     if (memoryStop()) break;
     let career = data.careers.find(c => c.seed === seed);
     if (career?.completed) continue;
-    if (!career) { career = { seed, creation: 'UI naturale', renewUI: process.env.CPM_RENEW_UI === '1', trials: [], steps: [], seasons: [], lived: [], errors: [], startedAt: new Date().toISOString() }; data.careers.push(career); save(); }
+    if (!career) { career = { seed, creation: 'UI naturale', renewUI: process.env.CPM_RENEW_UI === '1', matchSpeed, trials: [], steps: [], seasons: [], lived: [], errors: [], startedAt: new Date().toISOString() }; data.careers.push(career); save(); }
     if (!career.checkpoint && career.trials.length) {
       // React keeps the three-trial flow in memory. A closed page cannot resume
       // midway; preserve the partial run as evidence and restart its UI flow.
       career.interruptedTrialRuns ||= [];
       career.interruptedTrialRuns.push({ trials: career.trials, interruptedAt: career.paused?.at || career.finishedAt || null });
       career.trials = [];
+      career.matchSpeed = matchSpeed;
       save();
     }
     delete career.failure; delete career.paused;
@@ -100,12 +103,13 @@ try {
     await installCdnRoutes(page);
     if (fixture) await page.route('**/CARRIER-MANAGER-AV.html?*', route => route.fulfill({ contentType: 'text/html; charset=utf-8', body: fixture }));
     const resume = career.checkpoint?.localStorage || null;
-    await page.addInitScript(({ seed, resume }) => {
+    await page.addInitScript(({ seed, resume, matchSpeed }) => {
       window.__CPM_GLB = false; window.__CPM_SIM_NAT = 1;
       if (resume) localStorage.setItem('cpm-v3', resume);
+      localStorage.setItem('cpm-match-speed', matchSpeed);
       let x = (Number(sessionStorage.getItem('qa-rng') || seed + 1) >>> 0) || 1;
       Math.random = () => { x ^= x << 13; x ^= x >>> 17; x ^= x << 5; sessionStorage.setItem('qa-rng', String(x >>> 0)); return (x >>> 0) / 4294967296; };
-    }, { seed, resume });
+    }, { seed, resume, matchSpeed });
     try {
       const url = `http://localhost:${server.address().port}/CARRIER-MANAGER-AV.html?cpmtest=1`;
       await page.goto(url, { waitUntil: 'load', timeout: 90000 });
