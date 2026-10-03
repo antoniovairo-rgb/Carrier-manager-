@@ -494,8 +494,18 @@ function creaMotorePossesso(cfg){
     if(_st.g>=2){_st.r=true;ev("espulsione",{chi:chi(W),su:chi(P),per:"seconda ammonizione",lato:W.team});}
     else ev("ammonizione",{chi:chi(W),su:chi(P),lato:W.team});
   }catch(_e){}};
+  /* [7.999.121 PO-190 «goleade» — decisione PO 03/10 «ridurre i gol dell'eroe»] MISURATO dal salvataggio S12 (testimone __CPM_SP3 col
+     tipo di piazzato + tabellino del motore, 12 partite vissute): OGNI fallo subito in area diventava rigore, e la squadra dell'eroe
+     ne riceveva 1,08 a partita (13 in 12); l'eroe li batte quasi tutti (0,67-0,92 scene di rigore a partita, p 0,89). Premier League
+     2023/24: 0,29 rigori a partita IN TOTALE, 89,6% trasformati (The Analyst). In area il difensore rischia meno e l'arbitro fischia
+     meno: solo un contatto su quattro e' rigore, gli altri sono un intervento pulito (il pallone passa al difensore). La conversione
+     resta quella vera. Rosso __CPM_NO_RIG190; __CPM_RIG190_K solo in collaudo (cpmtest) per misurare la taratura. */
+  const _kRig190=()=>{if(typeof window==='undefined'||!window)return 0.25;if(window.__CPM_NO_RIG190)return 1;
+    if(window.__CPM_RIG190_K!=null&&(new URLSearchParams(window.location.search||'')).get('cpmtest')==='1')return +window.__CPM_RIG190_K;return 0.25;};
   const fallo=(P)=>{const l=P.team;const m=piuVicino(P.x,P.y,altro(l),{noGk:true});const adv=advDi(P.x,l);
-    const rig=adv>=84&&Math.abs(P.y-50)<=20;S.conta.falli++;
+    const rig=adv>=84&&Math.abs(P.y-50)<=20;
+    if(rig){const _k=_kRig190();if(_k<1&&rnd()>=_k){S.conta.rigNo190=(S.conta.rigNo190|0)+1;perdi(P,"contrasto");return;}}
+    S.conta.falli++;
     _cart913(m?m.p:null,P,adv);
     if(rig)fermoSet("pen",l,xDa(89,l),50,{chi:chi(m?m.p:null),su:chi(P)});
     else fermoSet("foul",l,P.x,P.y,{chi:chi(m?m.p:null),su:chi(P),adv:+adv.toFixed(0)});};
