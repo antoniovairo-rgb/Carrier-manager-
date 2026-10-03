@@ -1,5 +1,7 @@
 # Banco deterministico e carriere — CPM 7.999.105
 
+**Inventario aggiornato al 4 ottobre.** `node tests/codex/banco-difesa-mancanti.mjs` confronta il grezzo compresso con l'intero piano: 16 scene × 2 esiti × 2 rappresentazioni = 64 casi base, più 16 ripetizioni sulle scene 33, 133, 45 e 24. Risultato: **80 attesi, 15 validi con sei foto, 65 mancanti** (29 GLB, 36 procedurali). Il primo mancante nell'ordine del piano è `gi33-fail-procedurale-r0`; `gi32-fail-glb-r0` resta mancante. Le percentuali del banco non vanno inferite dai soli 64 casi base. La memoria libera misurata con `node -p "(require('os').freemem()/1073741824).toFixed(3)"` è 3,214 GiB, sotto la soglia di 3,5 GiB: nessun nuovo caso 3D è stato avviato in questa ripresa.
+
 Base verificata: `b2094979df9c6fdce4bc8c62b836cde43fac8eef`, `GAME_VERSION="7.999.105"`. Ramo `codex/2026-10-02-banco-deterministico`. Solo sonde e rapporti esterni; nessun file del gioco modificato.
 
 ## A. Difesa 3D
